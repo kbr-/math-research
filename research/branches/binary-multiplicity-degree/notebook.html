@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-07-cube-tie-gegenbauer-review">Gegenbauer review</a> finds the tie-window algebra nearly closed: one identity, confirmed at \(m\le10\) and proved at \(m=1\), gives full rank. The highest risk is now the unproved reduction to the tie window.</p>
-<p>Next: the tied-pair valuation lemma. Along one-parameter approaches to a top-tie F-curve point, show that the maximal minors of \(A_{R+1}\) are, at leading order, a nonzero deep-cluster factor times the tie-window minors, by adapting the bookkeeping of thm:cube-caterpillar-minimality. After that, prove the Gegenbauer identity for \(m\ge2\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-07-cube-top-tie-contact-avoidance">Top-tie points over a caterpillar avoid the contact locus</a> whenever their tie window has full rank, which makes the window reduction rigorous for top ties.</p>
+<p>Next: extend the lemma to intermediate ties by peeling singleton roots above the tie, as in the inductive proof of caterpillar minimality, while tracking the leading part of the lower Plücker vector. Then prove conj:cube-tie-window-gegenbauer for \(m\ge2\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -54978,6 +54978,76 @@ Without the Gamma weights the left side would be \(C^{(\lambda-m)}_{s+2m}(x)\). 
 <tr><td>Computation design and coding</td><td class="elapsed">54.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">53.78 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-top-tie-contact-avoidance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-cone-route-review:1" data-claims="lem:cube-top-tie-contact-avoidance">
+<h3>7 October 2026 — Top-tie contact avoidance: a top-tie F-curve point over a caterpillar lies outside the closure of the contact locus whenever its tie contact window has full rank</h3>
+<p class="entry-meta">Working proof for every N = m + 2 ≥ 4, top tie parameter c₀ ∉ {0,1} and caterpillar deep tree. With the Gegenbauer conjecture it covers every top-tie point. Intermediate ties are sketched, not proved. Top tie cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), the highest-risk item of the <a href="#entry-2026-10-07-cube-tie-gegenbauer-review">Gegenbauer review</a>. The <a href="#entry-2026-10-06-cube-tie-window">tie window reduction</a> described, but did not prove, how the maximal minors of \(A_{R+1}\) near a tie F-curve point factor into a deep-cluster factor times tie-window minors. Is this rigorous, and does it give contact avoidance?</p>
+<p><strong>Setting.</strong> Fix \(N=m+2\ge4\), \(\lambda=3/2\) (any non-integer \(\lambda\) works), \(R=\binom N2\) and \(d=\binom m2\). A top-tie F-curve point of \(\overline M_{0,N+1}\), with the mark at \(\infty\), has:</p>
+<ul>
+<li>a four-pointed component carrying \(\infty\), two roots and a node, with cross-ratio \(c_0\notin\{0,1\}\);</li>
+<li>below the node, a caterpillar chain carrying the other \(m\) roots in some order. This is a hypothesis: a non-caterpillar tree below the node, such as two two-root subclusters meeting at one component, is not covered.</li>
+</ul>
+<p>Along an arc, apply the affine map sending the bottom deep root to \(\varepsilon^V\) and the top root \(r_2\) to \(1\), with \(V\) larger than every other deep valuation, as in the caterpillar corollary. The top roots become \(c(\varepsilon)\) and \(1\), where \(c(\varepsilon)\to c_0\) because the cross-ratio of \((\infty,\text{cluster},r_2,r_1)\) is preserved in the limit. The deep roots become \(b_j=c_j\varepsilon^{v_j}(1+o(1))\) with \(c_j\ne0\) and \(0&lt;v_1&lt;\cdots&lt;v_m\) in the chain order. The tie contact window \(W(c)\) is the \((2m+1)\times(2m+3)\) matrix of the coefficients of \(T^k\), \(d\le k\le d+2m+2\), of \(T^n(1+cT)^{-\lambda}\), \(T^n(1+T)^{-\lambda}\) (\(n&lt;m\)) and \(((1+cT)(1+T))^{-\lambda}\).</p>
+<p><strong>General statement.</strong> lem:cube-top-tie-contact-avoidance: if \(W(c_0)\) has rank \(2m+1\), then the top-tie point lies outside \(\overline{K/{\rm Aff}}\), where \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\). By lem:cube-tie-window-gegenbauer-consequences, this holds for every \(c_0\notin\{0,1\}\) once conj:cube-tie-window-gegenbauer is proved.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Arc.</em> Suppose the point lies in \(\overline{K/{\rm Aff}}\). As in the proof of cor:cube-caterpillar-contact-avoidance (constructibility, then curve selection), there is an analytic arc \(\varepsilon\mapsto\) configuration in \(K\) for \(\varepsilon\ne0\), converging to the point. In the chart its roots are \(c(\varepsilon)\to c_0\), \(1\), and \(b_j(\varepsilon)=c_j\varepsilon^{v_j}(1+o(1))\) with distinct \(v_j&gt;0\). Translation and dilation preserve \(\operatorname{rank}A_{R+1}\): \(A_L(a+s\mathbf1)=A_L(a)C\) with \(C\) invertible (lem:cube-contact-plane-criterion part (1)), and dilation scales the columns. The proof only uses rank.</li>
+<li><em>Blocks.</em> With \(H_k(X,Y)=[T^k]((1+XT)(1+YT))^{-\lambda}\), the rows of \(A_{R+1}\) split into four blocks.
+<ul>
+<li>\(Q\): the \(d\) deep pairs, with rows \(H_k(b_i,b_j)\).</li>
+<li>\(P_c\): the rows \(H_k(c,b_j)=\sum_n\beta_nb_j^n\,[T^k]T^n(1+cT)^{-\lambda}\), with \(\beta_n=\binom{-\lambda}n\). So \(P_c=V\cdot B_c\), where \(V=(\beta_nb_j^n)_{j,\,n\ge0}\) and \(B_c\) has the rows \(T^n(1+cT)^{-\lambda}\), \(n\ge0\).</li>
+<li>\(P_1=V\cdot B_1\), in the same way.</li>
+<li>The top row \(H_k(c,1)\), with entries analytic in \(\varepsilon\) through \(c=c(\varepsilon)\) and limits at \(c_0\).</li>
+</ul></li>
+<li><em>Valuations.</em> For a column set \(S\subset\{0,\ldots,R+1\}\) with \(|S|=R\), expand \(\det A_S\) by Laplace along \(Q\), and expand the complementary minor by Cauchy–Binet through the two copies of \(V\).
+<ul>
+<li>\(Q\)-minors: by thm:cube-caterpillar-minimality applied to the \(m\) deep roots (\(M=m\)), \(\det Q_{\{0,\ldots,d-1\}}\) has valuation \(v^*\) with nonzero leading coefficient, and every other \(Q\)-minor has valuation strictly greater than \(v^*\). The theorem holds for convergent series, by the argument of the caterpillar corollary.</li>
+<li>\(V\)-minors on an index set \(I\) are \(\prod_{n\in I}\beta_n\) times an alternant \(\mathrm{Vand}(b)\,s_\mu(b)\). Here \(s_\mu=1\) for \(I=\{0,\ldots,m-1\}\). Otherwise \(s_\mu\) is a nonzero sum of monomials in the \(b_j\), each of positive valuation, so its valuation is positive.</li>
+<li>\(B_c\), \(B_1\) and the top row have entries analytic in \(\varepsilon\), with limits at \(c_0\).</li>
+</ul>
+Hence every term has valuation at least \(v^*+2\,\mathrm{val}\,\mathrm{Vand}(b)\). Equality requires the \(Q\)-columns \(\{0,\ldots,d-1\}\) and \(I=\{0,\ldots,m-1\}\) for both copies of \(V\).</li>
+<li><em>Leading term.</em> Choose \(S'\subset\{d,\ldots,d+2m+2\}\) with \(|S'|=2m+1\) and \(\det W(c_0)_{S'}\ne0\), and put \(S=\{0,\ldots,d-1\}\cup S'\). Only one term reaches the minimal valuation. Its coefficient is \(\pm\,\mathrm{lc}(\det Q_{\{0..d-1\}})\cdot(\prod_{n&lt;m}\beta_n)^2\,\mathrm{lc}(\mathrm{Vand}(b))^2\cdot\det W(c_0)_{S'}\), which is nonzero: \(\beta_n\ne0\) for non-integer \(\lambda\), and with distinct \(v_j\) each factor \(b_i-b_j\) has as leading term that of the root of smaller valuation, so \(\mathrm{lc}(\mathrm{Vand})\) is \(\pm\) a product of the \(c_j\), nonzero. The last factor uses that \([T^k]T^n(1+cT)^{-\lambda}\) on the columns \(S'\) are exactly the rows of \(W(c)\), and that \(\det W(c(\varepsilon))_{S'}\to\det W(c_0)_{S'}\). So \(\det A_S\ne0\) for small \(\varepsilon\ne0\), and \(\operatorname{rank}A_{R+1}=R\) along the arc, contradicting the arc lying in \(K\). \(\square\)</li>
+</ol>
+<p><strong>Scope.</strong> This proves the window reduction of the <a href="#entry-2026-10-06-cube-tie-window">tie window entry</a> for top ties, under two conditions: \(W(c_0)\) has full rank, and the deep tree is a caterpillar. Three other cases remain.</p>
+<ul>
+<li><em>Intermediate ties.</em> Two roots share a level with singleton roots above them. The natural extension peels the singleton roots above one at a time, as in the inductive proof of caterpillar minimality. Each peeled root contributes a block \(V(y)B\) whose minimal Cauchy–Binet term pairs it with the highest available columns. The induction must track the leading part of the Plücker vector of the lower configuration, which for a tie is supported on several column sets (\(\{0..d-1\}\cup S'\)) rather than one. This is not carried out.</li>
+<li><em>Non-caterpillar deep trees</em> below a top tie, whose \(Q\)-block thm:cube-caterpillar-minimality does not cover.</li>
+<li><em>Other F-curves.</em> A four-pointed component may carry one root and two subcluster nodes, or three subcluster nodes, or, at the bottom, a node and three roots. These are not ties, and the cone route does not yet know which boundary points are limits of cancelling points (gap 1).</li>
+</ul>
+<p><strong>Remaining gap.</strong> Prove conj:cube-tie-window-gegenbauer for every \(m\), and extend the lemma to intermediate ties. Then: the other boundary strata reached by cancelling points, compactness, and the non-separated points of the cone.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-caterpillar-minimality (statement); cor:cube-caterpillar-contact-avoidance (arc argument, convergent series, translation and dilation); lem:cube-contact-plane-criterion part (1); thm:cube-tie-window-general-functional; lem:cube-tie-window-gegenbauer-consequences.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the row and column counts;</li>
+<li>the factorization \(P_c=VB_c\);</li>
+<li>that the block-diagonal Cauchy–Binet admits no compensating cross terms;</li>
+<li>the term-by-term lower bounds;</li>
+<li>uniqueness of the minimal term;</li>
+<li>coverage of all \(Q\)-minors by the caterpillar theorem.</li>
+</ul>
+<p>Its fixes are applied:</p>
+<ul>
+<li>rank invariance in place of minor invariance;</li>
+<li>the normalization through the map to \(\varepsilon^V\);</li>
+<li>the \(\varepsilon\)-dependence of the top row;</li>
+<li>the caterpillar hypothesis on the deep tree and the extended scope list;</li>
+<li>the Vandermonde leading coefficient.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 12.82 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 35.84 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 40.48 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.36 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
