@@ -38,10 +38,11 @@ leading(e, l, P) = {
     for (i = 1, #G, my(s = G[i][2] * 'u^(G[i][1] - m)); for (k = 0, C - 1, M[i, k + 1] = polcoef(s, k, 'u)));
     my(piv = pivots(M, q));
     if (#piv < #G, error("rank deficient class"));
-    listput(dets, matdet(matrix(#G, #G, i, j, M[i, piv[j]])));
+    listput(dets, matdet(matrix(#G, #G, i, j, M[i, piv[j]]), 1));  \\ flag 1 (Gauss-Bareiss) avoids the threaded
+    \\ multimodular determinant, whose thread stack overflows for d > 200
     foreach (piv, k, listput(exps, m + k - 1)));
   my(ex = vecsort(Vec(exps)), V = prod(i = 1, #ex, prod(j = i + 1, #ex, ex[j] - ex[i])));
-  [prod(i = 1, #dets, dets[i]), V, ex];
+  [prod(i = 1, #dets, dets[i]), V, ex, [Vec(cls), Vec(dets)]];
 }
 \\ SCAN mode (cycle bmd-20261004-h; conj:cube-middle-far-layer-count): from local data alone (no W needed), for each
 \\ (e, l) in SCANLIST and every prime p in (d, 3d], report v_p(L_0/L_oo), v_p(L_-1/L_oo) and the valuations of the
@@ -51,6 +52,31 @@ SCAN = getenv("SCAN");
 \\ sets I_0 = [-R_l-2,-3] u [0,R_e+4e], H_0 = [4e-4el-7/2, 4e+4l-9/2], I_-1 = {-3} u [0, M-1] (M = R_e+R_l+4el),
 \\ H_-1 = -7/2 + [0, 4e+4l-1], I_oo = [-(R_e-1),0] u [3, R_l+4l+3], H_oo = 9/2-4e + [0, 4el+4e-1], and the predicted
 \\ window max(d, 2 Q_lo + 1) < p <= 2(R_e+4el+3)+1 against the scanned valuations.
+\\ MINORS mode (cycle bmd-20261004-j; lem:cube-far-pivot-minors-all): compare the six pivot minors with closed forms
+\\ (box formula and det[binom(c_j, s+i)] = V(c) prod c^(falling s) / prod (s+i)!), and list window primes dividing any.
+MINORS = getenv("MINORS");
+ffl(a, r) = prod(s = 0, r - 1, a - s);
+sfac(m) = prod(i = 0, m - 1, i!);
+vdmv(v) = prod(i = 1, #v, prod(j = i + 1, #v, v[j] - v[i]));
+vbin(cs, s) = abs(vdmv(cs)) * prod(j = 1, #cs, abs(ffl(cs[j], s))) / prod(i = 0, #cs - 1, (s + i)!);
+boxdet(a, s, m) = abs(prod(i = 0, m - 1, binomial(a + i, s) / binomial(s + i, s)));
+classdet(A, c) = { my(k = 0); for (i = 1, #A[4][1], if (A[4][1][i] == c, k = i)); abs(A[4][2][k]); }
+{
+if (MINORS != 0 && MINORS != "",
+  foreach (eval(MINORS), el,
+    my(e = el[1], l = el[2], Re = Rn(e), Rl = Rn(l), M = Re + Rl + 4 * e * l, d = Re + 1 + Rl + 4 * e + 4 * l + 4 * e * l);
+    my(A0 = leading(e, l, 0), Am = leading(e, l, -1), Ai = leading(e, l, oo));
+    my(C0 = concat([-3], vector(4 * e, j, -7/2 + j - 1)));
+    my(Cm = concat([vector(Re, j, j - 1), vector(Rl, j, -Rl - 2 + j - 1), vector(4 * e * l, j, 4 * e - 4 * e * l - 7/2 + j - 1)]));
+    my(pred = [vbin(C0, Re), boxdet(-5/2, 4 * e + 4 * l - 4, 4 * l),
+               abs(vdmv(Cm)) / sfac(M), vbin(vector(4 * l, j, 1/2 - 4 * l + j - 1), 4 * e - 1),
+               vbin(concat([-3], vector(4 * l, j, -5/2 + j - 1)), Rl), vbin(vector(4 * e, j, -7/2 + j - 1), 4 * e * l)]);
+    my(got = [classdet(A0, 0), classdet(A0, 1/2), classdet(Am, 0), classdet(Am, 1/2), classdet(Ai, 0), classdet(Ai, 1/2)]);
+    my(Qlo = vecmax([M + 3 - 4 * e - 4 * l, 4 * e * l + 3, Rl + 4 * l + 4 * e - 1]), Qhi = Re + 4 * e * l + 3, bad = []);
+    forprime (p = max(d, 2 * Qlo) + 1, 2 * Qhi + 1, if (vecsum(apply(x -> valuation(x, p), got)) != 0, bad = concat(bad, [[p, apply(x -> valuation(x, p), got)]])));
+    emit(Str("MINORS e=", e, ", l=", l, ": closed forms equal the computed minors [int 0, half 0, int -1, half -1, int oo, half oo]: ", vector(6, i, got[i] == pred[i]), "; window primes dividing a minor, with the six valuations: ", bad)));
+  quit);
+}
 SETS = getenv("SETS");
 rng(a, b) = vector(b - a + 1, i, a + i - 1);
 {
