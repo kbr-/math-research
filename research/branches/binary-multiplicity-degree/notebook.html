@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-block-pair-wronskian">block-pair Wronskian</a> gives each idealized expansion term \(T_m\) exactly: \(C_mx^{\alpha_m}(1+x)^{\beta_m}R_m\), with \(\deg R_m=6k+4,4k+6,2k+4,4k+6,6k+4\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The exact <a href="#entry-2026-10-03-cube-last-far-ideal-balance">idealized expansion terms</a> do not reproduce the far circles. Their amplitudes follow the count, so the \(x\)-dependent factors decide.</p>
 <p>Next:</p>
 <ol>
-<li>Locate the zeros of \(R_m\) relative to the far circles, at small \(e\), exactly. Then compare the balance curves \(|T_m|=|T_{m-1}|\) of the idealized terms with the actual circles. This is the first exact test of the expansion as a factorization.</li>
-<li>Count the middle steps (\(l\ge2\)) with the same lemma.</li>
+<li>Build the actual terms \(T_m\) with the full echelon residual series of block IV. Each residual is \(\partial^n\) of an explicit function, \(x^{j-7/2}(1+x)^{-5/2}\) minus its first \(k-j\) Taylor terms at \(0\). Compute their balance circles exactly at \(e=4..6\). If they match, the expansion is the model, and the tails are what must be controlled.</li>
+<li>If they do not match, the splitting itself is at fault. Then return to the six-space and look for the factor \(F_i\) there directly: for example, the Wronskian of \(u_1,u_2\) with three of the four \(v_j\), restricted to each circle.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45806,6 +45806,52 @@ These degrees are \(O(e)\), the same order as the \(8e-10\) far roots off the ci
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-ideal-balance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-radius-review:1" data-claims="conj:cube-last-far-ideal-balance">
+<h3>3 October 2026 — The idealized block-IV expansion terms do not reproduce the far circles at e = 4..6: two of their balance radii miss by 2 to 4 units of log N/N</h3>
+<p class="entry-meta">Refutation, as a description at e = 4..6, of the idealized balance model (monomial residuals, exact block-pair Wronskians and 4x4 amplitudes); asymptotics untested. Last far ideal balance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input. The <a href="#entry-2026-10-03-cube-last-far-radius-step">radius count</a> predicts the far circles from a power count of the expansion terms \(T_m\). The <a href="#entry-2026-10-03-cube-block-pair-wronskian">block-pair Wronskian</a> makes the idealized terms exact. Do the balance circles of the exact idealized terms reproduce the actual circles? This is the first exact test of the expansion as a model, beyond counting.</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-ideal-balance</code>, for every \(e\): the hypothesis that the far circles are the balance circles of the idealized terms. It is refuted as a description at \(e=4..6\); its asymptotic form is untested.</p>
+<h4>The idealized terms</h4>
+<p>Let \(n=R_e\), \(k=4e\), \(\gamma_0=k-\tfrac72\) and \(N=n+\tfrac72\). For \(m=0,\ldots,4\) block-IV functions in their \((1+x)\)-part:
+\[
+T_m=A_m\,\Pi_m\,W_m .
+\]</p>
+<ul>
+<li>\(A_m\) is the determinant of the \(4\times4\) matrix with rows \(\binom{-5/2}{k-j+i}\) (\(i&lt;4-m\)) and \((-1)^j\binom{j-7/2}{k-1+i}\) (\(i&lt;m\)), \(j=0,\ldots,3\). By Laplace expansion it is the sum over subsets \(S\) of \(X\)-minor\((S^c)\) times \(Y\)-minor\((S)\). It is exact up to a phase, with no dominance assumption.</li>
+<li>\(\Pi_m=\prod_{i&lt;4-m}(\gamma_0+i)^{\underline n}\prod_{i&lt;m}(\gamma_0+i)^{\underline n}\) are the residual amplitudes.</li>
+<li>\(W_m\) is the Wronskian of the two-class monomial space of the count: \(x^{-n-3}\), \(x^{-n-7/2+i}\) (\(i&lt;k+4-m\)), \((1+x)^{-n-3}\), \((1+x)^{-n-7/2+i}\) (\(i&lt;k+m\)). By lem:block-pair-wronskian it equals \(C_mx^{\alpha_m}(1+x)^{\beta_m}R_m\), with \(\deg R_m=6k+4,4k+6,2k+4,4k+6,6k+4\).</li>
+</ul>
+<p>Factors common to all \(m\) are omitted. The idealization replaces each echelon residual of block IV by its leading monomial.</p>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_last_far_ideal_terms.gp computes, for each circle \(i\), the mean of \(\log|T_{i+1}/T_i|\) over \(|t|=r\), with \(x=t/(1-t)\). It solves for the \(r\) where the mean vanishes, by secant in \(\log r\), giving a predicted slope \(u^{\rm pred}_i=\log r\). This is compared with the actual hull slope \(u_i\) (block-logderiv-2.txt) in units of \(\log N/N\). \(W_m\) is a numerical determinant of size \(2k+6\). The prediction under test is \(|u^{\rm pred}_i-u_i|N/\log N\) small and decreasing in \(e\). Output: research/results/bmd-20261003-zzv/ideal-terms.txt (\(48\) points, \(150\) digits). The run reached \(e=4..7\); \(e=8\) did not finish within \(600\) s.</p>
+<p>Controls (ideal-terms-precision.txt), at \(e=4\) only. With \(16\) points, \(150\) and \(400\) digits agree to all printed digits on circles \(0,2,3\). Circle \(1\) moves by \(0.012\), which suggests that its secant iteration, capped at \(8\) steps and not checked for convergence, did not converge. The reviewer found the determinants themselves accurate to about \(10^{-120}\) at \(e=4\) and \(10^{-74}\) at \(e=7\). The \(16\)-point run agrees with the \(48\)-point run to \(0.11\). No grid control was run at \(e\ge5\).</p>
+<p><strong>Outcome: refuted.</strong> The predicted against the actual values of \(uN/\log N\) are:</p>
+<ul>
+<li>\(e=4\): \((-9.61,0.79,-2.49,6.91)\) against \((-7.29,-2.96,1.38,5.85)\);</li>
+<li>\(e=5\): \((-8.86,0.16,-1.87,6.47)\) against \((-7.23,-2.93,1.40,5.82)\);</li>
+<li>\(e=6\): \((-8.39,-0.57,-1.45,7.68)\) against \((-7.18,-2.91,1.41,5.80)\);</li>
+<li>\(e=7\): \((-8.70,-2.96,2.60,5.38)\) against \((-7.15,-2.89,1.41,5.79)\).</li>
+</ul>
+<p>The refutation rests on the circles whose values are stable under the precision control. On circle \(2\) the prediction misses by \(3.9,3.3,2.9\) at \(e=4,5,6\), comparable to the whole step of \(4\) units. On circle \(0\) it misses by \(2.3,1.6,1.2\). Circle \(1\) is reported but not relied on, because its secant convergence is unverified; it would put circles \(1\) and \(2\) in the wrong order. At \(e=7\) the order is restored, circle \(1\) matches to \(0.07\), and circles \(0\) and \(2\) miss by \(1.5\) and \(1.2\). Over \(e=4..7\), \(\log N\) runs only from \(3.4\) to \(4.5\), so misses of this size cannot be told apart from \(O(1)/N\) corrections. No convergence is visible at \(e\le7\) (\(e=8\) was not reached), and the asymptotic question stays open.</p>
+<p><strong>The amplitudes approach the count's exponents slowly.</strong> With AONLY=1 the script reports \(\log|A_m|/\log k\) and \(\log(\Pi_m/\Pi_0)/\log N\) for \(e=4..11\) (ideal-amplitudes.txt). For example, at \(e=11\), \(\log|A_m|/\log k=-5.92,0.63,3.54,2.73,-1.86\). The count's minor exponents are \(-6,1,4,3,-2\). Without the column signs \((-1)^j\) the values are \(-5.92,0.72,3.61,2.75,-1.86\). The \(\Pi_m\) are symmetric under \(m\leftrightarrow4-m\), as the count assumes. At \(e=4\) the amplitudes deviate from the count by up to about \(0.6\log k\) (\(A_1\)) and \(0.5\log N\) (\(\Pi_1/\Pi_0\)). Each such deviation moves a balance by about \(0.5\) to \(0.6\) units. So most of the misses of \(2\) to \(4\) units probably come from the \(W_m\), the only factors carrying the \(x\)-dependence. This is an inference: the separate contributions were not computed. Their far factors \(R_m\), of degree \(O(e)\), can vary along the circles by \(e^{O(e)}\). The review flagged this risk: such a variation moves the balance by \(O(1/e)\) in \(\log|t|\), far more than \(\log N/N\).</p>
+<p><strong>What this means.</strong> The power count matched the fitted constants \(4i-\tfrac{13}2\), but the exact idealized model does not reproduce them. The match may come from the count's crude treatment, or the idealization (monomial residuals) may be the error. Either way, the expansion is not yet a validated model of the circles, and conj:cube-last-far-radius-step keeps only its empirical support. The echelon tails that the idealization drops carry the same \(x\)-dependence as \(R_m\) and must be kept. The actual \(T_m\) need the full residual series, not their leading monomials.</p>
+<p><strong>Dependencies re-read.</strong> lem:block-pair-wronskian; conj:cube-last-far-radius-step (the terms and the minors); lem:cube-last-far-eisenstein-minors (Toeplitz minors).</p>
+<p><strong>Verification gate.</strong> I re-read the block-pair lemma and the count. One fresh-context medium reviewer checked the code against the model: the \(4\times4\) rows and signs, the Laplace expansion, \(\Pi_m\), the exponent lists and scaling of \(W_m\), the factors common to all \(m\), and the balance equation and mapping. It found no bug, and it rechecked determinant precision at \(e=4,7\). Verdict: pass with corrections, applied as narrower claims. Circle \(1\) is not relied on, since its secant convergence is unverified. The grid control is stated for \(e=4\) only. The scope is a description at \(e=4..6\), with asymptotics untested. The attribution to \(W_m\) is marked as an inference. A further scan run was refused by the protected launcher, which allows at most four argument lists per program and cycle, so the convergence check of circle \(1\) is left open.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 47.25 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 38.51 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 47.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 48.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
