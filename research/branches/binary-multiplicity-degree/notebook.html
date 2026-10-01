@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). Every peeling step reduces to an explicit space of dimension \(1+R_l+4l\). The middle steps at \(l=2\) are squarefree through \(b=8\), and they carry <a href="#entry-2026-10-03-cube-far-steps-review">\(4l\) circles</a> of about \(N\) roots.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The <a href="#entry-2026-10-03-cube-far-step-circles">uniform circle conjecture</a> predicts \(4l\) long Newton edges, one per block-IV function, at every peeling step.</p>
 <p>Next:</p>
 <ol>
-<li>State the uniform circle conjecture for every step.</li>
-<li>Derive the \(4l\)-edge profile from the reduced space, where each block-IV function contributes a factor \(t^N\).</li>
+<li>Test the conjecture at \(l=3\) (\(b=7,8\)) with a faster exact kernel on the reduced space: modular determinants with FLINT and interpolation.</li>
+<li>Make the Cauchy–Binet edge count rigorous at the level of exponent ranges.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45274,6 +45274,45 @@ These span \(\mathcal P_{&lt;k_1}\) and \(t^{\beta-n}\mathcal P_{&lt;k_2}\). By 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-far-step-circles" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-steps-review:2" data-claims="conj:cube-far-step-circles">
+<h3>3 October 2026 — Uniform circle conjecture: at every even-peeling step the far polynomial has 4l long Newton edges of length about N, one per block-IV function, by a Cauchy–Binet count</h3>
+<p class="entry-meta">Conjecture for all steps with a Cauchy–Binet heuristic for the edge count 4l; it rests on the recorded data at l = 1 (e = 6..9) and l = 2 (e = 3..5); no new computation. Far step circles cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). The <a href="#entry-2026-10-03-cube-far-steps-review">far steps review</a> found \(4\) long Newton edges at the last step (\(l=1\)) and \(8\) at \(l=2\), each of length about \(N=R_e+\tfrac72\). What uniform statement covers every step, and why \(4l\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-step-circles</code>: for every \(b\ge3\) and step \(2\le k\le b-1\) (\(e=k-1\), \(l=b-k\)), write \(P_k(t)=(1-t)^{d}W_k(t/(1-t))\), \(t=x/(1+x)\). The upper Newton polygon of \(\log|\text{coefficients of }P_k|\) has exactly \(4l\) edges of length \(N+O(e)\), with slopes \(-u_i\) such that \(e\,u_i\) is close to an arithmetic progression. All but \(O(el)\) roots of \(W_k\) lie on the \(4l\) corresponding circles \(|t|=e^{u_i}\), about \(N\) each, at angle steps \(2\pi/N\) (unit steps in \(\log t\), as in conj:cube-last-far-four-circles). Where the radii are distinct, these roots are simple.</p>
+<h4>The count \(4l\)</h4>
+<p>By cor:cube-middle-far-reduction, \(W_k\) is the far part of the Wronskian of the reduced space. It consists of the image of the class integral \(C\), the \(R_l\) images of \(X_0\), and the \(4l\) images of block IV, \((1+x)^{-5/2}x^{1/2-4l}\mathcal P_{&lt;4l}\). By Cauchy–Binet, the coefficient of \(t^m\) in a Wronskian of functions \(f_i=\sum_jc_{ij}t^{\gamma_j}\) is
+\[
+\sum_{\substack{S\\\sum_{s\in S}s=m+\binom d2}}\det(C_S)\prod_{s&lt;s'\in S}(s'-s),
+\]
+a sum over \(d\)-sets \(S\) of exponents. So the tropical polynomial of \(P_k\) is a maximum over \(S\) of \(\log|\det C_S|+\log|V(S)|+u\sum S\).</p>
+<p>In the large-parameter regime, the images of \(C\) and \(X_0\) have short exponent ranges near the bottom: \(X_0\) carries \(R_l\) consecutive exponents. Each block-IV function, by contrast, has exponents near its bottom and near its top, about \(N\) apart, like the single long edge of \(\rho_3\) at \(l=1\) (<a href="#entry-2026-10-03-cube-last-far-geometric-circles">geometric circles</a>). A dominant set \(S\) then picks, for each of the \(4l\) block-IV functions, its low or its high part. As \(u\) decreases, the maximizing \(S\) switches the IV functions to their high parts one at a time. Each switch raises \(\sum S\) by about \(N\) and creates one long edge, for \(4l\) in all. The magnitude gaps between successive switches would give the equal spacing, if each switch costs the same factor up to a geometric drift. This is a heuristic: it assumes the dominant terms do not cancel, and that the low and high parts of each IV image are well separated in exponent.</p>
+<p><strong>Evidence (recorded).</strong></p>
+<ul>
+<li>At \(l=1\), \(e=6,\ldots,9\): \(4\) edges of length \(70,95,124,157/158\approx N\), equally spaced to \(3\%\) (newton-hull.txt).</li>
+<li>At \(l=2\), \(e=3,4,5\): \(8\) edges of lengths \(15\) to \(25\), \(29\) to \(40\) and \(49\) to \(59\), against \(N=18.5,31.5,48.5\), with steps \(1.3\) to \(1.7\) in \(e\,u\) (middle-hull.txt).</li>
+<li>The degree \(\#F_k=4l(2e^2+6el-5e-4l+5)\) equals \(4lN+O(el)\). So \(4l\) circles of \(N\) roots leave \(O(el)\) roots elsewhere, consistent with the \(8e-10\) at \(l=1\).</li>
+</ul>
+<p><strong>Falsifiers.</strong></p>
+<ul>
+<li>A step whose polygon has a long-edge count other than \(4l\).</li>
+<li>An edge length far from \(N\).</li>
+<li>A collision of two radii, which would make simplicity depend on phases.</li>
+</ul>
+<p>The \(l=3\) steps at \(b\ge7\) are the next test; the reduced space makes them computable with a faster kernel.</p>
+<p><strong>Dependencies re-read.</strong> cor:cube-middle-far-reduction; conj:cube-last-far-four-circles; conj:cube-last-far-geometric-circles; thm:cube-base-peeling-degeneration (the far counts).</p>
+<p><strong>Verification gate.</strong> A conjecture with a heuristic labelled as such; no new computation. No reviewer: no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 26.39 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
