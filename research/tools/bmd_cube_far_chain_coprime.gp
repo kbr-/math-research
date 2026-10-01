@@ -73,7 +73,28 @@ TESTS = getenv("TESTS"); EXACT = getenv("EXACT"); LADDER = getenv("LADDER");
 \\ LADDER mode (cycle bmd-20261004-l; lem:cube-far-derivative-ladder): in y = 1/x the A-block x^-(m+2) P_<m is
 \\ y^3 P_<m(y), so T_m is the Wronskian of P_<m + Psi with Psi = y^-3 U (blocks below, same [g, b, cnt] format in y),
 \\ that is of the m-th derivatives of Psi. Control: the y-side polynomial is proportional to the reversal of T_m.
-psiblk(e, l) = [[0, -Rn(e) - 2, Rn(e)], [-3, 0, 1], [-7/2, 3/2 - 4 * e, 4 * e], [-5/2, 0, 4 * l], [0, 3/2 - 4 * e, 4 * e * l]];
+\\ ROOTS mode (cycle bmd-20261004-n; conj:cube-far-sector-circles): exact T_(R_l) over Q at (e, l) in ROOTS, its complex
+\\ roots, and the moduli |1+x| sorted, grouped where consecutive log-moduli differ by more than GAP (default 0.05); the
+\\ sector expansion predicts 4e groups of about R_l roots each near circles |1+x| = rho_i for l large against e.
+ROOTS = getenv("ROOTS");
+{
+if (ROOTS != 0 && ROOTS != "",
+  default(realprecision, 300);
+  my(gap = if (getenv("GAP") != "" && getenv("GAP") != 0, eval(getenv("GAP")), 0.05));
+  foreach (eval(ROOTS), el,
+    my(e = el[1], l = el[2], m = Rn(l), T = tpoly(chain(e, l, m), 0)[1], rt = polroots(T));
+    my(v = vecsort(apply(z -> log(abs(1 + z)), rt)), groups = List(), cur = [v[1], v[1], 1]);
+    for (i = 2, #v, if (v[i] - v[i - 1] > gap, listput(groups, cur); cur = [v[i], v[i], 1], cur[2] = v[i]; cur[3]++));
+    listput(groups, cur);
+    emit(Str("ROOTS (e,l)=(", e, ",", l, "), m=R_l=", m, ", deg T=", poldegree(T), ", 4e m=", 4 * e * m,
+      ": groups of log|1+x| [min, max, count]: ", apply(g -> [precision(g[1], 4) * 1., precision(g[2], 4) * 1., g[3]], Vec(groups))));
+    \\ also |x/(1+x)| for comparison with the last-step circle law
+    my(t = vecsort(apply(z -> log(abs(z / (1 + z))), rt)));
+    emit(Str("  log|x/(1+x)| range: [", precision(t[1], 4) * 1., ", ", precision(t[#t], 4) * 1., "]; min |root spacing| ",
+      precision(vecmin(concat(vector(#rt, i, vector(#rt - i, j, abs(rt[i] - rt[i + j]))))), 4) * 1.)));
+  quit);
+}
+psiblk(e, l) =[[0, -Rn(e) - 2, Rn(e)], [-3, 0, 1], [-7/2, 3/2 - 4 * e, 4 * e], [-5/2, 0, 4 * l], [0, 3/2 - 4 * e, 4 * e * l]];
 {
 if (LADDER != 0 && LADDER != "",
   my(q = 2^61 - 1);
