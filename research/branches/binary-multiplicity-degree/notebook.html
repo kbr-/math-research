@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. The <a href="#entry-2026-10-05-cube-cross-statement-review">cross-statement review</a> finds no mechanism for statement 3; its four new leads fail on dimension counts or translations. Statement 2's three-centre line has certificates for \(n\le10\) and a criterion, ordinariness at \(m=\infty\).</p>
-<p>Next: prove or refute that every classical three-centre limit is ordinary at \(m=\infty\), the converse of conj:cube-three-centre-mark-ordinary. A refutation needs one classical split with a Weierstrass point there.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-05-cube-three-centre-generic-centre">generic-centre criterion</a> proves: a three-centre limit is classical iff \(\nu_{\rm gen}=v\), the generic order of \(\Delta_{n,2}\) at a three-cluster point against the lattice valuation, and it is then ordinary at \(m=\infty\) for generic \(c\).</p>
+<p>Next: attack \(\nu_{\rm gen}\) and \(v\) for every \(N\) as two separate integers. \(\nu_{\rm gen}\) is a Taylor order of \(\Delta\) at a clustered point. A characteristic-zero formula for it would follow from the cluster factorization of \(\Delta\) at collisions, and its reduction modulo \(3\) is what can jump. First derive the characteristic-zero order, which the saved valuations suggest equals \(v\), as a formula in the cluster sizes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -50265,6 +50265,60 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 12.82 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">39.32 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-three-centre-generic-centre" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-three-centre-generic-centre-criterion">
+<h3>5 October 2026 — Generic-centre criterion: for c outside a proper closed set, a three-centre limit is classical exactly when it is ordinary at m = ∞; both are the equality of the lattice valuation with the generic initial-form order of Δ</h3>
+<p class="entry-meta">Working proof (reviewed) for every split, characteristic and generic slopes: transport turns the Wronskian of the limit at a generic point into the mark determinant of a three-centre family with transported centre. Three centre generic centre cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-05-cube-cross-statement-review">cross-statement review</a> asked to prove or refute the converse of conj:cube-three-centre-mark-ordinary: is every classical three-centre limit ordinary at \(m=\infty\)?</p>
+<p><strong>General statement.</strong> prop:cube-three-centre-generic-centre-criterion.</p>
+<p><strong>Setting.</strong> Let \(F\) be a field of characteristic \(p\ne2\) (or \(0\)) and \(c\in F\setminus\{0,1\}\). "Generic" refers to points over \(\bar F\), or to transcendental parameters, since \(F\) may be finite.</p>
+<ul>
+<li><em>Labels.</em> Cluster sizes \(s_0,s_1,s_c\) sum to \(N\), and \(a_i(\varepsilon)=\gamma_k+\varepsilon\sigma_i\), where \(\gamma_k\in\{0,1,c\}\) is the centre of label \(i\)'s cluster. The slopes \(\sigma\) are generic subject to one zero slope in each cluster; in the cluster at \(0\) that label is the dummy \(a=0\).</li>
+<li><em>\(\Delta\).</em> \(\Delta=\Delta_{n,2}\) is the mark Wronskian in the \(T\)-normalization \(w_i^2=1+a_iT\), with the dummy label fixed at \(0\). The record's convention evaluates at \(a/4\); that differs by a nonzero power of \(4\), by scaling covariance.</li>
+<li><em>Rows and limit.</em> \(V(\varepsilon)=\langle1,T,w_iw_j\rangle\) has \(D=\binom N2+2\) original rows \(R\). Let \(L\) be the saturated \(F[[\varepsilon]]\)-lattice of \(V\) in the functions on the conic of the <a href="#entry-2026-10-04-cube-three-centre-limit">three-centre construction</a>, \(B\) a regular basis of \(L\), and \(U\) its reduction. Write \(R=MB\) and \(v=v(c)=\operatorname{ord}_\varepsilon\det M\), the lattice valuation; it is finite because \(M\) is invertible over \(F((\varepsilon))\).</li>
+<li><em>The slice \(\Sigma_{c'}\).</em> For \(c'\ne0,1\), let \(\Sigma_{c'}\) be the affine slice of label space where one label per cluster, in the same positions as the zero slopes, equals its centre \(0\), \(1\) or \(c'\). The dummy is at \(0\).</li>
+<li><em>The order \(\nu\).</em> Let \(\nu(c')\in\mathbb N\cup\{\infty\}\) be the least degree of a nonzero homogeneous part of the Taylor expansion of \(\Delta|_{\Sigma_{c'}}\) at the cluster point \(\gamma'=(0,\ldots,1,\ldots,c',\ldots)\), in the deviations of the remaining labels. Let \(P_{c'}\) be that part. Its coefficients are polynomials in \(c'\). Let \(\nu_{\rm gen}\) be the value at generic \(c'\); it is \(\infty\) exactly when \(\Delta\equiv0\) in characteristic \(p\).</li>
+</ul>
+<p><strong>Proposition (generic-centre criterion).</strong> In this setting, with generic slopes:</p>
+<ol>
+<li>\(v(c)\le\nu_{\rm gen}\le\nu(c)\).</li>
+<li>\(U\) is ordinary at \(m=\infty\) iff \(\nu(c)=v(c)\).</li>
+<li>\(U\) is classical at a generic point iff \(\nu_{\rm gen}=v(c)\).</li>
+<li>Consequently ordinary at \(m=\infty\) implies classical. Classical implies ordinary at \(m=\infty\) whenever \(\nu(c)=\nu_{\rm gen}\). This holds for \(c\) outside a proper closed subset when \(\nu_{\rm gen}<\infty\); when \(\nu_{\rm gen}=\infty\), \(U\) is never classical.</li>
+</ol>
+<p><strong>Proof.</strong> <em>Step 1: Wronskians along the arc.</em> Let \(m\) be a point of the conic with \(t_0=T(m)\), where \(T-t_0\) is a local coordinate and \(X(m)Z(m)\ne0\). The second condition is equivalent to \(1+\gamma_kt_0\ne0\) for every centre, and it is used in Step 2. Every coefficient function of \(R\), at each \(\varepsilon\)-order, is a polynomial in \(x,z,T,T/x^2,T/z^2\). So is every coefficient function of \(B=M^{-1}R\), as a finite \(F\)-combination at each order. These are regular at such \(m\), including at \(m=\infty\), where \(x\to1\), \(z\to-1\), \(T\to0\) and \(T=-4/m+O(m^{-2})\) is a coordinate. The Hasse–Wronskian of order \(D\) in the coordinate \(T-t_0\) satisfies \(W_R(m;\varepsilon)=\det M\cdot W_B(m;\varepsilon)\), with \(W_B(m;0)=W_U(m)\). Hence \(\operatorname{ord}_\varepsilon W_R(m;\varepsilon)\ge v\), with equality iff \(U\) is ordinary at \(m\).</p>
+<p><em>Step 2: transport.</em> On the sheet of \(m\), write \(T=t_0+S\). Then \(1+a_i(t_0+S)=(1+a_it_0)(1+a_i'S)\) with \(a_i'=a_i/(1+a_it_0)\), so \(w_i=e_i\sqrt{1+a_it_0}\,w_i'(S)\), with a sign \(e_i\) fixed by the sheet. The pair functions become constants times \(w_i'w_j'\), nonzero at \(\varepsilon=0\) since \(1+\gamma_kt_0\ne0\), and \(\langle1,T\rangle=\langle1,S\rangle\). The row change is triangular, \(T=t_0+S\), with diagonal scalars on the pair rows, so it is invertible at \(\varepsilon=0\). Hence \(W_R(m;\varepsilon)=\kappa(\varepsilon)\,\Delta(a'(\varepsilon))\) with \(\kappa(0)\ne0\). This is the transport of lem:cube-moving-point-limit-criterion at a finite point; at \(t_0=0\) it is the identity.</p>
+<p><em>Step 3: initial forms.</em> The pinned labels stay exactly at the transported centres \(\gamma_k'=\gamma_k/(1+\gamma_kt_0)\), and the dummy stays at \(0\). Every other label satisfies \(a_i'=\gamma_k'+\varepsilon\kappa_k\sigma_i+O(\varepsilon^2)\), with \(\kappa_k=(1+\gamma_kt_0)^{-2}\ne0\). Scale by \(\lambda=1+t_0\), which multiplies \(\Delta\) by a power of \(\lambda\), since the \(k\)-th jets scale by \(\lambda^k\). Then the centres become \(0,1,c'\) with \(c'=c(1+t_0)/(1+ct_0)\), the arc lies in \(\Sigma_{c'}\), and the deviations are \(\delta_i=\varepsilon\lambda\kappa_k\sigma_i+O(\varepsilon^2)\). The part of degree \(\nu=\nu(c')\) contributes \(\varepsilon^\nu P_{c'}(\lambda\kappa\sigma)+O(\varepsilon^{\nu+1})\), and each part of degree \(j>\nu\) is \(O(\varepsilon^j)\). Fix \(\sigma\) generic once. When \(\nu_{\rm gen}<\infty\), the coefficients of \(P\) are polynomials in \(c'\), and \(c'\), \(\lambda\), \(\kappa\) are rational in \(t_0\). So \(P_{c'(t_0)}(\lambda\kappa\sigma)\ne0\) is a nonzero polynomial condition in \((t_0,\sigma)\). For generic \(\sigma\) it holds at \(t_0=0\), when \(\nu(c)\) is finite, and for all but finitely many \(t_0\). Then \(\operatorname{ord}_\varepsilon\Delta(a'(\varepsilon))=\nu(c'(t_0))\). If \(\nu(c')=\infty\), the order is \(\infty\).</p>
+<p><em>Step 4: conclusion.</em> By Steps 1–3, \(U\) is ordinary at \(m\) iff \(\nu(c'(t_0))=v\), and always \(\nu(c'(t_0))\ge v\).</p>
+<ul>
+<li>At \(m=\infty\): \(t_0=0\) and \(c'=c\). This is (2).</li>
+<li>At a generic point: since \(c\ne0,1\), the Möbius map \(t_0\mapsto c(1+t_0)/(1+ct_0)\) has determinant \(c(1-c)\ne0\). So it is nonconstant, \(c'\) is generic, and \(\nu(c')=\nu_{\rm gen}\). This gives (3) and \(\nu_{\rm gen}\ge v\).</li>
+<li>Parts of degree below \(\nu_{\rm gen}\) are polynomials in \(c'\) that vanish generically, hence identically. So \(\nu(c)\ge\nu_{\rm gen}\), completing (1).</li>
+<li>For (4), when \(\nu_{\rm gen}<\infty\), the set \(\{c:\nu(c)>\nu_{\rm gen}\}\) is the common zero set of the finitely many coefficients of \(P_{c}\) of degree \(\nu_{\rm gen}\), a proper closed subset. When \(\nu_{\rm gen}=\infty\), (3) shows that \(U\) is never classical.</li>
+</ul>
+<p>Every hypothesis is used. \(p\ne2\) is needed for the square-root series and for \(T\) to be a coordinate at \(\infty\); \(c\ne0,1\) for the Möbius sweep; the pinned labels for the slice. \(\square\)</p>
+<p><strong>What it settles and what it does not.</strong></p>
+<ul>
+<li>Ordinary at \(m=\infty\) implies classical, for every \(c\); this reproves the recorded direction.</li>
+<li>The converse of conj:cube-three-centre-mark-ordinary is proved for \(c\) off a proper closed set. At the tested value \(c=g^2\), the converse is consistent with the data but proved only if \(g^2\) lies off that set, which was not checked.</li>
+<li>Classicality depends on \(c\) only through the lattice valuation \(v(c)\). Whether \(v(c)\) is independent of \(c\), as the <a href="#entry-2026-10-04-cube-mixed-factor-review">four-value test</a> suggests, is not proved.</li>
+<li>For the goal, the search for a split rule becomes one integer comparison, \(\nu_{\rm gen}=v\): a restricted Taylor order of \(\Delta\) at a three-cluster point against a lattice valuation of the explicit limit.</li>
+</ul>
+<p><strong>Checks.</strong> The predictions agree with all saved runs. At \(c=g^2\), \(24\) of \(24\) conclusive multisets match. At \(c=g^7,g^{41},g^{100}\), the classification of \(\{2,3,3\}\) and \(\{2,2,4\}\) agrees with ordinariness at \(\infty\) (research/results/bmd-20261004-zy/). The <a href="#entry-2026-10-04-cube-three-centre-order-jump">order-jump check</a> computed \(\operatorname{ord}_\varepsilon\Delta\) along the family with fixed slopes, powers of \(t\), and \(c=t\) transcendental. Those values equal \(\nu(t)\) if those slopes are generic: \(\nu=v\) for both classical splits, and \(101>85=v\) for \(\{1,1,5\}\). No new computation was needed.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-moving-point-limit-criterion (statement, transport \(a_i'=a_i/(1+a_ib)\)); the three-centre construction (conic, branches, regularity of the lattice away from the special points); the leading-coefficient sketch, whose step at \(m=\infty\) is Step 1 here at \(t_0=0\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium-effort reviewer passed the argument with corrections, all applied: the slice definition of \(\nu\) (pinned zero-slope labels), dropping translation covariance (scaling suffices), the \(a/4\) normalization, genericity quantifiers in \((t_0,\sigma)\), regularity at \(m=\infty\), the case \(\nu=\infty\), and the overclaim at \(c=g^2\). The reviewer found every hypothesis used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-b">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 53.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 7.52 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">45.76 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
