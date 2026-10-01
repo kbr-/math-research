@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. The <a href="#entry-2026-10-05-cube-generic-mechanism-review">generic-mechanism review</a> finds that every fixed degeneration and cyclic labels fail. Apolarity suggests that statement 2's slice is characteristic-three independence of the jets of the \((1+x)^{-3/2}\)-type pair family behind statement 3.</p>
-<p>Next: prove that apolarity lemma for every \(N\), with the pairing and binomial units checked in characteristic three, and compare its matrix with statement 3's pair matrix.</p>
+<p>Route item: cube-odd-characteristic. The apolarity link between statements 2 and 3 <a href="#entry-2026-10-05-cube-apolarity-lucas">fails in characteristic three</a>: the multiplier columns of the ternary recurrence are essential.</p>
+<p>Next: statement 3, the highest-risk item, at its recorded stuck point, the merge rows for \(n\ge2\), where no operator is known. Read the stable-tree and merge-chain entries in full. Then try the generic-centre transport, which turns a moving point into a mark determinant of a transported family, as the missing operator relating merge rows at different points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51056,6 +51056,31 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Computation design and coding</td><td class="elapsed">25.85 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.36 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-apolarity-lucas" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-05-cube-generic-mechanism-review:1" data-claims="conj:cube-apolarity-pair-jets">
+<h3>5 October 2026 — The apolarity link between statements 2 and 3 fails in characteristic three: by Lucas, the pair-product jets see only every third column, the record's cube columns</h3>
+<p class="entry-meta">Refutation with proof, for every N: the binomial weights binom(2m, j), m = (Q−3)/2, vanish modulo 3 unless 3 | j, so jets of (1+b_iy)^m(1+b_jy)^m determine only q_(3k). Apolarity Lucas cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-05-cube-generic-mechanism-review">generic-mechanism review</a> sketched an apolarity translation: \(\Delta_{n,2}\not\equiv0\pmod3\) iff the \(R\)-jets of the pair products \((1+b_iy)^m(1+b_jy)^m\) are independent, putting statement 2's slice on statement 3's \((1+x)^{-3/2}\) pair family. Does it hold in characteristic three?</p>
+<p><strong>General statement.</strong> conj:cube-apolarity-pair-jets (refuted for every \(N\)): with \(Q=3^t\ge R+2\), \(m=(Q-3)/2\) and \(b=-1/a\), \(\Delta_{n,2}\not\equiv0\pmod3\) iff the \(R\)-jets at \(y=0\) of \((1+b_iy)^m(1+b_jy)^m\), \(i<j\), are independent.</p>
+<p><strong>Proof of the refutation.</strong> By lem:cube-raw-polarization, the original columns are \(q_j=(-1)^j\Pi_m(z^j)\) for \(j\le2m\), with \(\Pi_m(z^j)=C^{-1}\sum_i\binom ji\binom{2m-j}{m-i}X^iY^{j-i}\) and \(C=\binom{2m}m\) a unit. The integer identity
+\[\binom ji\binom{2m-j}{m-i}\binom{2m}j=\binom mi\binom m{j-i}\binom{2m}m\]
+holds because both sides equal \((2m)!/\bigl(i!\,(j-i)!\,(m-i)!\,(m-j+i)!\bigr)\). Summing over \(i\) gives \(\binom{2m}j\,\Pi_m(z^j)(X,Y)=[s^j]\,(1+sX)^m(1+sY)^m\) over \(\mathbb Z\), hence modulo \(3\). In base three, \(2m=3^t-3\) has units digit \(0\) and every higher digit \(2\). By Lucas's theorem, \(\binom{2m}j\not\equiv0\pmod3\) iff the units digit of \(j\) is \(0\), that is, iff \(3\mid j\). So for \(3\nmid j\) the \(j\)-th coefficient of the pair product vanishes identically. This is visible directly: \(m=3m'\) with \(m'=(3^{t-1}-1)/2\), so \((1+sX)^m(1+sY)^m=\bigl((1+s^3X^3)(1+s^3Y^3)\bigr)^{m'}\). The jets therefore span at most the columns \(q_{3k}\), about \(R/3\) of the \(R\), and the independence in the proposed equivalence fails for every \(N\ge3\). Meanwhile \(\Delta_{n,2}\not\equiv0\) holds at every certified size, so the equivalence is false. The surviving columns are, up to units, the record's cube columns \(q_{3k}=h_k^3\) of lem:cube-ternary-pair-algebra, whose span is the orbit of lem:cube-raw-orbit-obstruction. The remaining two thirds of the columns, \(q_{3k+1}\) and \(q_{3k+2}\), carry the pair-dependent multipliers \(\delta^{-1}\), \(sv\) and \(v^2\), and are not jets of products of powers. \(\square\)</p>
+<p><strong>What survives.</strong> In characteristic zero, with \(m\) arbitrary, \(\binom{2m}j\) is a unit for \(j\le2m\), and the apolarity correspondence (middle polar values against the forms \((x-ay)^m(x-by)^m\)) is exact. The obstruction is specifically characteristic three: the same Frobenius structure that makes certificates from cluster faces and vertices vanish. The unification of statements 2 and 3 is therefore not exact. Statement 2's slice involves the cube columns together with the multiplier columns, which is the record's ternary recurrence.</p>
+<p><strong>Remaining gap.</strong> A mechanism for every \(n\) for conj:cube-ternary-degree-two-nonvanishing. The review's de Casteljau bridge depended on this lemma and is closed with it.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-raw-polarization (formula for \(\Pi_m\), unit \(C\)); lem:cube-ternary-pair-algebra (cube and multiplier columns); lem:cube-raw-orbit-obstruction.</p>
+<p><strong>Verification gate.</strong> A refutation by a short exact argument: an integer identity and Lucas's theorem. It is checked by hand against the record's formulas; no new claim of correctness beyond the refutation, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-j">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 4.06 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.43 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
