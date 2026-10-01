@@ -47,14 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The <a href="#entry-2026-10-03-cube-last-far-eisenstein">Eisenstein branch proposition</a> proves, for every \(e\), the following. At each prime \(\max(d,2n)&lt;p\le2n+8e+7\) satisfying explicit unit hypotheses, the roots of \(W_{b-1}\) near the branch points are simple. So a triple root needs a triple factor of \(G_p\), the part of \(W_{b-1}\bmod p\) away from \(0,-1\).</p>
-<p>Next, identify \(G_p\):</p>
-<ol>
-<li>At the window primes, the transferred polynomial space \(P_p\) is degenerate (except at \(e=1\)). Compute the first \(p\)-adic order of \(W(F)\) that survives, as a Wronskian of an explicit space modulo \(p\).</li>
-<li>Test apolarity duality, \(W(V)\propto W(V^\perp)\) inside \(\mathcal P_{\le p-3}\) (valid since \(p-3&lt;p\)). In the window \(V^\perp\) is small.</li>
-<li>Decide whether \(G_p\) has a triple factor.</li>
-</ol>
-<p>Closed forms of the pivot minors, which give the unit hypotheses, come second.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The Frobenius lead controls only the branch clusters (<a href="#entry-2026-10-03-cube-last-far-eisenstein">Eisenstein branch proposition</a>). The bulk \(G_p\) is <a href="#entry-2026-10-03-cube-last-far-modp-bulk">generic modulo \(p\)</a>, with no low-order equation. The far input again has no mechanism for its bulk.</p>
+<p>Next, a route review on the highest-risk item. All leads of the far Frobenius review are now closed or developed. The review moves cycles to the necessary statement with the most concrete open mechanism: statement 2's slice (\(\Phi_N\ne0\)) or (K)'s assembly. It needs new outside leads and bridges for the far input's bulk.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -43539,6 +43533,36 @@ For \(n\le q\le n+4e+3\), the bounds are as follows:</p>
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 40.86 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 4.54 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-modp-bulk" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-frobenius-review:1" data-claims="conj:cube-last-far-modp-igusa conj:cube-last-far-collapse-multiplicity">
+<h3>3 October 2026 — Modulo window primes, the non-branch factor of the last-step far polynomial has no low-order Fuchsian equation and factors generically; the Frobenius lead controls only the branch clusters</h3>
+<p class="entry-meta">Refutation at e = 2, 3, all window primes: no three-point Fuchsian equation of order at most 4 over F_p annihilates G_p; collapse multiplicity q - n + 1 at all 7 primes. The Frobenius lead closes for the bulk. Last far mod p cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). By the <a href="#entry-2026-10-03-cube-last-far-eisenstein">Eisenstein branch proposition</a>, at a window prime \(p\) a triple root of \(W_{b-1}\) needs a triple factor of \(G_p\), the part of \(W_{b-1}\bmod p\) away from \(0,-1\). Can \(G_p\) be controlled?</p>
+<p>The test is the Igusa mechanism. Igusa (Amer. J. Math. 80 (1958)) proved that the Hasse polynomial has simple roots modulo \(p\), using its second-order hypergeometric equation. A polynomial annihilated by an order-\(r\) equation cannot have a root of multiplicity in \([r,p)\) at a regular point, by the Taylor recurrence. Over \(\mathbb Q\), the record already refuted Fuchsian equations of order at most \(3\) for \(W_{b-1}\). Modulo \(p\) the collapse might create one.</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-modp-igusa</code>: for every \(e\) and every window prime \(p\), \(G_p\) is annihilated over \(\mathbb F_p\) by a three-point Fuchsian operator \(\sum_k(x(1+x))^kc_k(x)D^k\) of order at most \(3\), whose top coefficient is coprime to \(G_p\). It is refuted here.</p>
+<h4>Computation</h4>
+<p>Scripts research/tools/bmd_cube_last_far_modp_ode.gp and bmd_cube_last_far_modp_pattern.gp. Outputs research/results/bmd-20261003-zr/modp-ode.txt and modp-pattern-2.txt; the first pattern run, modp-pattern.txt, had a syntax error. The window primes are \(17\); \(29,31\); \(47,53,59,61\) at \(e=1,2,3\).</p>
+<ul>
+<li><strong>Equations.</strong> For \(G_p\) and for \(W_{b-1}\bmod p\), at every window prime for \(e=2,3\), the kernel is zero for order \(r\le4\) and \(\deg c_k\le r-k+s\), \(s\le2\). The systems are overdetermined: for example \(10\) unknowns against \(34\) to \(96\) equations at \(r=3\), \(s=0\).</li>
+<li><strong>Factorization.</strong> The degrees of the irreducible factors of \(G_p\) over \(\mathbb F_p\) are irregular, and \(G_p\) does not split over \(\mathbb F_{p^2}\). Examples: \([1,2,4,8,11]\) at \((2,29)\); \([1,1,1,4,8,55]\) at \((3,47)\); \([3,6,6,7,8,26]\) at \((3,61)\). Neither \(x\mapsto-1-x\) nor reversal of coefficients preserves \(G_p\) up to a scalar.</li>
+<li><strong>Collapse multiplicity.</strong> The multiplicity \(k\) of \(x\) in \(W_{b-1}\bmod p\) equals \(q-n+1\), \(q=(p-1)/2\), at all seven primes. The values are \(8\); \(9,10\); \(9,12,15,16\). Recorded as <code>conj:cube-last-far-collapse-multiplicity</code>. In the window, \(q-n+1\le4e+4\).</li>
+</ul>
+<p><strong>Outcome.</strong> The Igusa conjecture is refuted at \(e=2,3\). \(G_p\) looks as generic modulo \(p\) as \(W_{b-1}\) does over \(\mathbb Q\). If the multiplicity formula holds, the branch clusters contain at most \(2(4e+4)\) of the \(4(2e^2+e+1)\) roots. The Eisenstein branch proposition therefore controls a fraction of order \(1/e\) of the roots, and the bulk \(G_p\) is the original rigid problem modulo \(p\). Only \(e=1\) (\(G_{17}\) constant) closes this way, and that size was already known. The Frobenius lead is developed and closed for the bulk.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch; the far Frobenius review; the earlier Fuchsian refutation over \(\mathbb Q\) (the far input review).</p>
+<p><strong>Verification gate.</strong> A refutation by exact linear algebra over \(\mathbb F_p\), and factorizations modulo \(p\). The Taylor-recurrence remark is standard and is not used for any positive claim. No reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 6.78 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 24.05 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.42 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
