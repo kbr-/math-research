@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, far simplicity of the merge rows. The <a href="#entry-2026-10-05-cube-far-euler-image">Euler image lemma</a> gives explicit forward-difference bases for the reduced far space \(P_3'\oplus w^\gamma P_4'\).</p>
-<p>Next: try to identify the blocks with classical hypergeometric families: write \(P_3'\) and \(P_4'\) as terminating \({}_3F_2\)-type sums from the falling-factorial product, and test whether \(P_3'\) is a classical space, such as Jacobi polynomials of fixed parameters. That would make the \(n\ge2\) rows a problem about a known space plus an \(n\)-dimensional block, as \(n=1\) reduced to Gegenbauer zeros.</p>
+<p>Route item: cube-odd-characteristic; open statement 3. The reduced far space's polynomial block <a href="#entry-2026-10-05-cube-far-block-rigidity">is rigid only for \(n=1\)</a>, so the Gegenbauer mechanism does not extend block by block.</p>
+<p>Next: a route review of statement 3's far-simplicity line, with outside leads on simplicity of Weierstrass points of coupled spaces (two polynomial blocks with a fractional relative exponent), and their cheap tests run in the same cycle.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51116,6 +51116,42 @@ For the merge far spaces, with \(C=\binom n2\), \(P=\binom{k-1}2\), \(E=\{-C,\ld
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 1.73 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.14 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-far-block-rigidity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-far-polynomial-block-rigid">
+<h3>5 October 2026 — The polynomial block of the reduced far space is rigid only in the Gegenbauer row: for n ≥ 2 its Wronskian has the generic number of far zeros</h3>
+<p class="entry-meta">Refutation at (n,k) = (2,3) of rigidity of the block P3′ for every n ≥ 2, with block data at seven (n,k); the n = 1 mechanism does not extend block by block. Far block rigidity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, far simplicity of the merge rows. By the <a href="#entry-2026-10-05-cube-far-euler-image">Euler image lemma</a>, the far points are the Weierstrass points off \(\{0,1\}\) of \(P_3'+w^\gamma P_4'\). In the row \(n=1\), the proof works because one part of the space is rigid: its Wronskian has no zeros off \(\{0,1\}\), so it is determined by its local exponents, and the far points come from one added function. Is \(P_3'\), of dimension \(k-1\), rigid in every row?</p>
+<p><strong>General statement.</strong> conj:cube-far-polynomial-block-rigid (refuted): for every \(n\ge1\), \(k\ge3\), the Wronskian of \(P_3'\) has no zeros off \(\{0,1\}\).</p>
+<p><strong>Test.</strong> research/tools/bmd_far_block_structure.gp builds \(P_3'\) and \(P_4'\) from the lemma's closed form and computes their Wronskians exactly over \(\mathbb Q\) (research/results/bmd-20261005-l/block-structure.txt). The table lists the zeros off \(\{0,1\}\) of \(W(P_3')\) and of \(W(P_4')\):</p>
+<table>
+<tr><th>\((n,k)\)</th><th>degree of the \(P_3'\) generators</th><th>zeros of \(W(P_3')\)</th><th>zeros of \(W(P_4')\)</th></tr>
+<tr><td>\((1,4)\)</td><td>\(2\)</td><td>\(0\)</td><td>\(3\)</td></tr>
+<tr><td>\((2,3)\)</td><td>\(3\)</td><td>\(4\)</td><td>\(2\)</td></tr>
+<tr><td>\((2,4)\)</td><td>\(5\)</td><td>\(9\)</td><td>\(6\)</td></tr>
+<tr><td>\((2,5)\)</td><td>\(7\)</td><td>\(16\)</td><td>\(12\)</td></tr>
+<tr><td>\((3,3)\)</td><td>\(6\)</td><td>\(10\)</td><td>\(3\)</td></tr>
+<tr><td>\((3,4)\)</td><td>\(9\)</td><td>\(21\)</td><td>\(9\)</td></tr>
+<tr><td>\((4,3)\)</td><td>\(10\)</td><td>\(18\)</td><td>\(4\)</td></tr>
+</table>
+<p>The generators of \(P_3'\) all have the same degree \(\delta\), and the zero count is the generic \((k-1)(\delta-k+2)\) in every row \(n\ge2\).</p>
+<p><strong>Outcome.</strong> Refuted at \((2,3)\), the first case with \(n\ge2\). Rigidity of \(P_3'\) holds only in the Gegenbauer row \(n=1\), consistent with cor:cube-merge-far-binary-face. For \(n\ge2\) neither block is rigid. The far points of the row are therefore not those of one rigid block plus a small perturbation. The \(n=1\) mechanism does not extend block by block, and a mechanism for \(n\ge2\) must treat the coupled space.</p>
+<p><strong>Remaining gap.</strong> Far simplicity of \(P_3'+w^\gamma P_4'\) for \(n\ge2\), and the chain end and the assembly, for (K); far simplicity at peeling limits for (B).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-euler-image; cor:cube-merge-far-binary-face.</p>
+<p><strong>Verification gate.</strong> A refutation by exact Wronskians of the lemma's explicit bases. No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 51.59 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">26.03 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">23.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.60 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
