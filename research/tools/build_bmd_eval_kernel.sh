@@ -6,4 +6,4 @@ set -e
 out=${1:?output path}
 g++ -O3 -march=native -fopenmp -D__FFLASFFPACK_WINOTHRESHOLD=100000000 -D__FFLASFFPACK_WINOTHRESHOLD_FLT=100000000 \
     -D__FFLASFFPACK_WINOTHRESHOLD_BAL=100000000 -D__FFLASFFPACK_WINOTHRESHOLD_BAL_FLT=100000000 \
-    $(pkg-config --cflags fflas-ffpack) research/tools/bmd_eval_kernel.cpp -o "$out" -lgivaro -lgmpxx -lgmp -lopenblas
+    $(pkg-config --cflags fflas-ffpack) research/tools/bmd_eval_kernel.cpp -o "$out" -lgivaro -lflint -lgmpxx -lgmp -lopenblas

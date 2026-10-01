@@ -24,6 +24,7 @@
 // precision was measured 9x slower at p = 4093, where products cannot accumulate before reduction.
 #include <fflas-ffpack/fflas-ffpack.h>
 #include <givaro/modular.h>
+#include <flint/nmod_mat.h>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -110,8 +111,17 @@ static long solve(const char *evalsPath, int exc, int margin, const std::string 
     std::printf("matrix rows=%zu (%s), %.2f GB\n", R, compress ? "compressed" : "direct", (double)R * U * 8 / 1e9);
     std::fflush(stdout);
     if ((double)R * U * 8 > kMaxMatrixBytes) { std::fprintf(stderr, "matrix exceeds the %.1f GB cap\n", kMaxMatrixBytes / 1e9); return -1; }
-    double *A = FFLAS::fflas_new<double>(R * U);
-    std::fill(A, A + R * U, 0.0);
+    // Backend: fflas-ffpack (default) or FLINT (BMD_BACKEND=flint), whose in-place LU needs almost no workspace;
+    // fflas's NullSpaceBasis peaked about 3 GB above the matrix (cycle bmd-20261006-b).
+    const char *be = std::getenv("BMD_BACKEND");
+    const bool useFlint = be && std::string(be) == "flint";
+    double *A = nullptr;
+    nmod_mat_t FA;
+    if (useFlint) { nmod_mat_init(FA, R, U, (mp_limb_t)p); nmod_mat_zero(FA); }  // 2.8 does not zero on init
+    else { A = FFLAS::fflas_new<double>(R * U); std::fill(A, A + R * U, 0.0); }
+    auto cell = [&](size_t i, size_t u) -> long { return useFlint ? (long)nmod_mat_entry(FA, i, u) : (long)A[i * U + u]; };
+    auto setCell = [&](size_t i, size_t u, long v) { if (useFlint) nmod_mat_entry(FA, i, u) = (mp_limb_t)v; else A[i * U + u] = (double)v; };
+    std::printf("backend: %s\n", useFlint ? "FLINT nmod_mat_lu (in place)" : "fflas-ffpack NullSpaceBasis");
     std::vector<long> rowBuf(U);
     std::mt19937_64 rng(20261006);
     std::vector<long> phiRow(ord + 1, 0);
@@ -119,6 +129,8 @@ static long solve(const char *evalsPath, int exc, int margin, const std::string 
     for (int k = 0; k < npts; ++k) {
         long e[4];
         in >> tag >> e[0] >> e[1] >> e[2] >> e[3];
+        // Macaulay2 lifts residues to balanced representatives; reduce every input to [0, p) (6 October 2026).
+        for (int i = 0; i < 4; ++i) e[i] = md(e[i], p);
         if (tag != "P") { std::fprintf(stderr, "bad point record %d\n", k); return -1; }
         const long chi[5] = {e[3] % p, md(-e[2], p), e[1] % p, md(-e[0], p), 1};
         std::vector<std::vector<long>> monVal(mons.size());
@@ -132,7 +144,7 @@ static long solve(const char *evalsPath, int exc, int margin, const std::string 
                     monVal[b].push_back(v);
                 }
         for (int r = 0; r < rows; ++r) {
-            for (int c = 2; c <= ord; ++c) in >> phiRow[c];
+            for (int c = 2; c <= ord; ++c) { in >> phiRow[c]; phiRow[c] = md(phiRow[c], p); }
             // kappa_k = sum_i phi_{r,k+i} chi_i / gamma_{k+i}: the coefficient of Q_k in row r
             std::vector<long> kappa(kmax + 1, 0);
             for (int kk = 2; kk <= kmax; ++kk) {
@@ -152,14 +164,14 @@ static long solve(const char *evalsPath, int exc, int margin, const std::string 
             for (size_t b = 0; b < mons.size(); ++b)
                 for (size_t t = 0; t < mons[b].size(); ++t) rowBuf[offset[b] + t] = kappa[b + 2] * monVal[b][t] % p;
             if (!compress) {
-                double *row = A + (nextRow++) * U;
-                for (size_t u = 0; u < U; ++u) row[u] = (double)rowBuf[u];
+                const size_t i = nextRow++;
+                for (size_t u = 0; u < U; ++u) setCell(i, u, rowBuf[u]);
             } else {
                 for (int rep = 0; rep < 6; ++rep) {
-                    double *row = A + (rng() % R) * U;
+                    const size_t i = rng() % R;
                     const long coef = 1 + (long)(rng() % (p - 1));
                     for (size_t u = 0; u < U; ++u)
-                        if (rowBuf[u]) row[u] = (double)(((long)row[u] + coef * rowBuf[u]) % p);
+                        if (rowBuf[u]) setCell(i, u, (cell(i, u) + coef * rowBuf[u]) % p);
                 }
             }
         }
@@ -168,8 +180,52 @@ static long solve(const char *evalsPath, int exc, int margin, const std::string 
     std::fflush(stdout);
     double *NS = nullptr;
     size_t ldn = 0, nsdim = 0;
-    FFPACK::NullSpaceBasis(F, FFLAS::FflasRight, R, U, A, U, NS, ldn, nsdim);
-    FFLAS::fflas_delete(A);
+    if (useFlint) {
+        // reduced row echelon form in place; the nullspace basis has one vector per free column f:
+        // x_f = 1, x_{pivot(i)} = -A[i][f]
+        // FLINT 2.8's nmod_mat_rref exited with status 1 on these matrices (6 October 2026), so use the in-place LU:
+        // the first `rank` rows hold an echelon form whose row i has its pivot at the first nonzero entry after row
+        // i-1's pivot (multipliers sit only in earlier pivot columns).  Back-substitution gives one nullspace vector
+        // per free column.
+        std::vector<slong> perm(R);
+        size_t bad = 0;
+        for (size_t i = 0; i < R; ++i) for (size_t u = 0; u < U; ++u) bad += nmod_mat_entry(FA, i, u) >= (mp_limb_t)p;
+        if (bad) { std::fprintf(stderr, "%zu matrix entries outside [0, p)\n", bad); return -1; }
+        std::fflush(stdout);
+        const size_t rank = (size_t)nmod_mat_lu(perm.data(), FA, 0);
+        std::printf("LU rank %zu\n", rank); std::fflush(stdout);
+        std::vector<long> pivotOf(rank);
+        std::vector<char> isPivot(U, 0);
+        for (size_t i = 0; i < rank; ++i) {
+            size_t c = i == 0 ? 0 : (size_t)pivotOf[i - 1] + 1;
+            while (c < U && nmod_mat_entry(FA, i, c) == 0) ++c;
+            if (c == U) { std::fprintf(stderr, "LU pivot scan failed at row %zu\n", i); return -1; }
+            pivotOf[i] = (long)c; isPivot[c] = 1;
+        }
+        nsdim = U - rank; ldn = nsdim;
+        NS = FFLAS::fflas_new<double>(U * (nsdim ? nsdim : 1));
+        std::fill(NS, NS + U * (nsdim ? nsdim : 1), 0.0);
+        std::vector<long> x(U);
+        for (size_t f = 0, j = 0; f < U; ++f) {
+            if (isPivot[f]) continue;
+            std::fill(x.begin(), x.end(), 0);
+            x[f] = 1;
+            for (size_t ii = rank; ii-- > 0;) {
+                const size_t c = (size_t)pivotOf[ii];
+                long s = 0;
+                for (size_t u = c + 1; u < U; ++u)
+                    if (x[u]) s = (s + (long)nmod_mat_entry(FA, ii, u) * x[u]) % p;
+                const long piv = (long)nmod_mat_entry(FA, ii, c);
+                x[c] = md(-s, p) * powmod(piv, p - 2, p) % p;
+            }
+            for (size_t u = 0; u < U; ++u) NS[u * ldn + j] = (double)x[u];
+            ++j;
+        }
+        nmod_mat_clear(FA);
+    } else {
+        FFPACK::NullSpaceBasis(F, FFLAS::FflasRight, R, U, A, U, NS, ldn, nsdim);
+        FFLAS::fflas_delete(A);
+    }
     std::printf("RANK=%zu EVALUATED_KERNEL_DIM=%zu\n", U - nsdim, nsdim);
     size_t topRank = 0;
     std::vector<double> top(topCount * (nsdim ? nsdim : 1));
