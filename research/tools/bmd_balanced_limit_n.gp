@@ -17,17 +17,19 @@ foreach(eval(getenv("NS")), N,
   my(sd = if(getenv("SEED") != "" && getenv("SEED") != 0, eval(getenv("SEED")), 0));
   my(slopes = vector(N, i, if(i == 1 || i == M + 1, 0 * one, if(i <= M, g^(7 * i + 1 + 5 * sd), g^(11 * i + 3 + 3 * sd) + one))));
   for (i = 1, N, for (j = i + 1, N, if (base[i] == base[j] && slopes[i] == slopes[j], error("slope collision"))));
+  my(vals = if(getenv("VALS") != "" && getenv("VALS") != 0, eval(getenv("VALS"))[N - 5], vector(N, i, 1)));
   my(prec = prec0, cut = prec0, pairs = List());
   for (i = 1, N, for (j = i + 1, N, listput(pairs, [i, j])));
   pairs = Vec(pairs);
   my(nr = #pairs + 2, nc = 4 * cut + 3, coefs = vector(prec + 1, m, matrix(nr, nc, i, j, 0 * one)));
   coefs[1][1, 2 * cut + 1] = one; coefs[1][2, 2 * cut + 1] = -one; coefs[1][2, 2 * cut + 3] = one;
   for (k = 1, #pairs, my(ii = pairs[k][1], jj = pairs[k][2]);
-    for (m = 0, prec, my(poly = 0 * one);
-      for (u = 0, m, my(v = m - u, fac = bet(u) * bet(v) * slopes[ii]^u * slopes[jj]^v);
-        if (fac != 0, poly += fac * x^(2 * cut + base[ii] + base[jj] - 2 * (base[ii] * u + base[jj] * v))));
-      poly *= (x^2 - 1)^m;
-      for (d = 0, nc - 1, coefs[m + 1][k + 2, d + 1] = polcoef(poly, d, x))));
+    \\ cycle bmd-20261004-zn: label i has branch eps^vals[i] * slope (VALS, default all 1); term (u, v) sits at eps-order
+    \\ vals[ii] u + vals[jj] v and carries T^(u+v) = (x^2-1)^(u+v)
+    for (u = 0, prec, for (v = 0, prec, my(e = vals[ii] * u + vals[jj] * v);
+      if (e <= prec, my(fac = bet(u) * bet(v) * slopes[ii]^u * slopes[jj]^v);
+        if (fac != 0, my(poly = fac * x^(2 * cut + base[ii] + base[jj] - 2 * (base[ii] * u + base[jj] * v)) * (x^2 - 1)^(u + v));
+          for (d = 0, nc - 1, coefs[e + 1][k + 2, d + 1] += polcoef(poly, d, x)))))));
   my(step = 0, ranks = List(), ok = 1);
   while (1,
     my(M0 = coefs[1], ix = matindexrank(M0)[1], rk = #ix);
