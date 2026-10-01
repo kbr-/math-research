@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-mixed-factor-review">mixed-factor review</a> finds the split rule stable under changing \(c\), and its form still unknown.</p>
-<p>Next: compute the leading coefficient at \(N=7\), for \(\{1,2,4\}\) and \(\{1,1,5\}\), with slopes that are distinct powers of a transcendental \(t\) over \(\mathbb F_3\), and factor it. If that gives no rule, move cycles back to statement 3 or to statement 4.</p>
+<p>Route item: cube-odd-characteristic. The three-centre line for statement 2 has its criterion, <a href="#entry-2026-10-04-cube-three-centre-order-jump">an order jump of the mark determinant</a>, and certificates for \(n\le10\), but no rule for every \(N\). The mixed-factor review's condition for leaving it is met.</p>
+<p>Next: a route review across statements 2, 3 and 4. Statement 3, the highest-risk item, was left awaiting a new mechanism for two-class Wronskians. The review must propose one, by Outside leads and Absurd bridges aimed at that obstacle and tested in the same cycle, rather than return to listed steps.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -50041,6 +50041,36 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Computation design and coding</td><td class="elapsed">13.88 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.34 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">51.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-order-jump" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-mixed-factor-review:1" data-claims="check:cube-three-centre-order-jump">
+<h3>4 October 2026 — Over F_3(t) the three-centre mark determinant jumps in ε-order exactly at the nonclassical split; its leading coefficients carry non-difference factors in classical and nonclassical splits alike, so they give no rule</h3>
+<p class="entry-meta">Finite check at N = 6, 7 of the leading-coefficient reformulation, with transcendental slopes: ε-orders 24, 60 match the saturation valuations, 101 exceeds 85. No split rule visible in the factors. Three centre order jump cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-mixed-factor-review">mixed-factor review</a> asked for one symbolic leading coefficient, with transcendental slopes, for the smallest pair of multisets that differ. Does its form name the classical splits?</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-leading-factorization predicts, via the <a href="#entry-2026-10-04-cube-three-centre-leading">sketch</a>, that \(\operatorname{ord}_\varepsilon\Delta_{n,2}\) along the family equals the saturation valuation \(v\) exactly for classical splits. This cycle registers the finite check check:cube-three-centre-order-jump.</p>
+<p><strong>Computation.</strong> research/tools/bmd_three_centre_leading_t.gp computes \(\Delta(\varepsilon)\) exactly in \(\mathbb F_3[t,\varepsilon]\). It uses centres \(0,1,t\), slopes \(t^2,t^3,\ldots\) (one zero slope per cluster) and the rows of the <a href="#entry-2026-10-04-cube-three-centre-delta-q">characteristic-zero attempt</a>. It then factors the lowest \(\varepsilon\)-coefficient over \(\mathbb F_3\) (research/results/bmd-20261004-zz/leading-t.txt). A first version used power series and overflowed in PARI; the second factored lifted integer coefficients over \(\mathbb Q\); both outputs were discarded.</p>
+<ul>
+<li>\(\{2,2,2\}\) (classical, \(v=24\)): \(\varepsilon\)-order \(24\). The factors are \(t^{97}(t+1)^9(t-1)^{30}\), one quadratic factor of \(t^4+1\), a quartic, and an irreducible factor of degree \(14\).</li>
+<li>\(\{1,2,4\}\) (classical, \(v=60\)): \(\varepsilon\)-order \(60\). The factors are \(t^{251}(t+1)^9(t-1)^{137}\), both quadratic factors of \(t^4+1\), and \(\Phi_5\). These are all cyclotomic factors, as products of slope and centre differences would give.</li>
+<li>\(\{1,1,5\}\) (nonclassical, \(v=85\)): \(\varepsilon\)-order \(101\), a jump of \(16\). The factors include cyclotomic ones and irreducible factors of degrees \(4\), \(12\) and \(13\).</li>
+</ul>
+<p><strong>Outcome.</strong> The prediction passes on all three: the order equals \(v\) for both classical splits, and exceeds it for the nonclassical one. Since \(t\) is transcendental, the leading coefficient at the actual order is never zero, so the information is in the order, not in the coefficient's form. Non-difference irreducible factors occur in the classical \(\{2,2,2\}\) and the nonclassical \(\{1,1,5\}\) alike, so the factorization does not name the classical splits. The review's condition for leaving the line is met: this computation gives no rule.</p>
+<p><strong>Remaining gap.</strong> A mechanism for the order jump, or a family of splits without it, for every \(N\). Statement 2's slice stays certified at \(n\le10\) only.</p>
+<p><strong>Dependencies re-read.</strong> The three-centre leading-coefficient sketch; conj:cube-three-centre-mark-ordinary; the saturation valuations of the earlier runs (research/results/bmd-20261004-zx/valuations.txt).</p>
+<p><strong>Verification gate.</strong> A finite check by exact determinants over \(\mathbb F_3[t,\varepsilon]\). No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 34.98 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 12.65 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 3.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.60 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12 min 15.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
