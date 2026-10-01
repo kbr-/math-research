@@ -43,6 +43,18 @@ leading(e, l, P) = {
   my(ex = vecsort(Vec(exps)), V = prod(i = 1, #ex, prod(j = i + 1, #ex, ex[j] - ex[i])));
   [prod(i = 1, #dets, dets[i]), V, ex];
 }
+\\ SCAN mode (cycle bmd-20261004-h; conj:cube-middle-far-layer-count): from local data alone (no W needed), for each
+\\ (e, l) in SCANLIST and every prime p in (d, 3d], report v_p(L_0/L_oo), v_p(L_-1/L_oo) and the valuations of the
+\\ pivot-minor ratios; the prediction is a run of primes with minors units, v_p(L_0/L_oo) = 1 and v_p(L_-1/L_oo) = R_l.
+SCAN = getenv("SCAN");
+{
+if (SCAN != 0 && SCAN != "",
+  foreach (eval(SCAN), el,
+    my(e = el[1], l = el[2], d = Rn(e) + 1 + Rn(l) + 4 * e + 4 * l + 4 * e * l, A0 = leading(e, l, 0), Am = leading(e, l, -1), Ai = leading(e, l, oo), res = List());
+    forprime (p = d + 1, 3 * d, listput(res, [p, valuation(A0[1] * A0[2], p) - valuation(Ai[1] * Ai[2], p), valuation(Am[1] * Am[2], p) - valuation(Ai[1] * Ai[2], p), valuation(A0[1], p) - valuation(Ai[1], p), valuation(Am[1], p) - valuation(Ai[1], p)]));
+    emit(Str("SCAN e=", e, ", l=", l, ", d=", d, ", R_l=", Rn(l), ": [p, v_p(L0/Loo), v_p(L-1/Loo), v_p(minors_0/minors_oo), v_p(minors_-1/minors_oo)]: ", Vec(res))));
+  quit);
+}
 {
 foreach ([[6, 4, [53, 59, 61, 67, 71, 73, 79, 83]], [7, 5, [67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127]], [8, 6, [97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173]]], spec,
   my(b = spec[1], k = spec[2], e = k - 1, l = b - k, W = read(Str("research/results/bmd-20261003-zzm/W_mid_b", b, "_k", k, ".gp")));
