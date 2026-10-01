@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. The <a href="#entry-2026-10-05-cube-first-step-spectrum">spectrum formula</a> reduces the threshold to \(H^1\)-vanishing, the Chern classes and the spectrum of \(E_d\). At \(d=2\) the spectrum multiplicities are \(2,4,6,8,10,11\) down to \(-6\).</p>
-<p>Next: derive \(c_2(E_d)\) and \(c_3(E_d)\) for every \(d\), from the polar-colon presentation by liaison and from the singular points. Check them against \(c_2=71\), \(c_3=840\) at \(d=2\), and look for a mechanism for \(H^1\)-vanishing, such as a resolution of \(E_d\) of fixed shape for every \(d\).</p>
+<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. Its threshold is \(t\) plus the least generator degree of the first-step module, <a href="#entry-2026-10-05-cube-first-step-resolution-spectrum">read off a two-term resolution</a>. The \(d=2\) resolution is known.</p>
+<p>Next: estimate the cost of the \(d=3\) first-step module with the record's threshold tool and compute its minimal resolution if within budget. Compare its degrees and spectrum with \(d=2\), and state a resolution shape for every \(d\) to be proved.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51643,6 +51643,42 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">47.83 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 4.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-first-step-resolution-spectrum" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Observation that the spectrum of a first-step sheaf with a two-term resolution is determined by the resolution degrees, and that the threshold is the least generator degree; it applies the registered spectrum formula and the recorded d = 2 resolution, and registers no new claim.">
+<h3>5 October 2026 — The first-step spectrum is a shadow of the resolution: with a two-term resolution by line bundles the threshold is t plus the least generator degree, and at d = 2 the full spectrum is 2, 4, 6, 8, 10, 11, 11, 9, 6, 3, 1</h3>
+<p class="entry-meta">Reduction of the spectrum route for dimension four's first step to the resolution degrees of the first-step module; the d = 2 spectrum is computed in full. First step resolution spectrum cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 4, dimension four's first step. The <a href="#entry-2026-10-05-cube-first-step-spectrum">spectrum formula</a> determines the threshold from the spectrum of \(E_d\), given stability and \(H^1\)-vanishing. Does the spectrum give a handle on every \(d\) beyond what the record already has?</p>
+<p><strong>General statement.</strong> lem:cube-first-step-spectrum-formula, applied to sheaves with a two-term resolution. No new claim.</p>
+<p><strong>Reduction.</strong> The record's \(d=2\) sheaf has the exact resolution \(0\to\mathcal O(-10)\oplus\mathcal O(-11)\oplus\mathcal O(-12)\to\mathcal O(-5)\oplus\mathcal O(-6)\oplus\mathcal O(-7)^2\oplus\mathcal O(-8)\to E_2\to0\) (<a href="#entry-2026-09-27-cube-global-degree-review">global-degree review</a>, obs:cube-first-step-index-obstruction). For any sheaf with such a resolution \(0\to F_1\to F_0\to E\to0\) by sums of line bundles, \(H^1(F_1(l))=H^2(F_1(l))=0\). So:</p>
+<ul>
+<li>\(H^1(E(l))=0\) for every \(l\), and \(h^0(E(l))=h^0(F_0(l))-h^0(F_1(l))\);</li>
+<li>\(h^2(E(l))=\dim\ker\bigl(H^3(F_1(l))\to H^3(F_0(l))\bigr)\), so the spectrum is a function of the resolution;</li>
+<li>if the resolution is minimal, every relation degree exceeds the least generator degree \(g\), so the first section is in twist \(g\).</li>
+</ul>
+<p>Hence the first-step threshold is \(a=t+g\). At \(d=2\), \(t=7\) and \(g=5\) give \(a=12=\ell_0(3,13)\), the recorded value. Given a two-term resolution, the spectrum formula adds nothing beyond the generator degrees of the first-step module. Those degrees for every \(d\) are the record's open "uniform first kernel degree".</p>
+<p><strong>The \(d=2\) spectrum.</strong> research/tools/bmd_first_step_spectrum_d2.gp computes \(h^0(E_2(l))\) and \(h^2(E_2(l))\) from the resolution (research/results/bmd-20261005-q/spectrum-d2.txt). For \(l=0,\ldots,12\):</p>
+<ul>
+<li>\(h^0\): \(0,0,0,0,0,1,5,16,39,79,140,225,336\);</li>
+<li>\(h^2\): \(280,215,156,105,64,34,15,5,1,0,\ldots\).</li>
+</ul>
+<p>With \(m_i=-k_i\), the multiplicities of \(m=1,\ldots,11\) are \(2,4,6,8,10,11,11,9,6,3,1\). They sum to \(71=c_2\), and \(\sum m_i=420=c_3/2\). This completes the partial determination of the spectrum entry, and its first six values agree with it.</p>
+<p><strong>Outcome.</strong> The spectrum route gives the threshold as \(t\) plus the least generator degree. The question for every \(d\) is again the least generator degree of the first-step module, or equivalently a uniform shape of its minimal resolution. The spectrum is a convenient invariant for comparing \(d=2\) with \(d=3\), but not an independent mechanism.</p>
+<p><strong>Remaining gap.</strong> The minimal resolution of the first-step module for every \(d\), or at least its least generator degree.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-first-step-spectrum-formula; obs:cube-first-step-index-obstruction and its resolution in the global-degree review; lem:cube-normalized-first-step-sheaf.</p>
+<p><strong>Verification gate.</strong> No new claim. The reduction is the standard cohomology of a two-term resolution by line bundles, and the numbers are recomputed from the recorded resolution.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 31.74 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">46.79 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">44.14 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
