@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. The apolarity link between statements 2 and 3 <a href="#entry-2026-10-05-cube-apolarity-lucas">fails in characteristic three</a>: the multiplier columns of the ternary recurrence are essential.</p>
-<p>Next: statement 3, the highest-risk item, at its recorded stuck point, the merge rows for \(n\ge2\), where no operator is known. Read the stable-tree and merge-chain entries in full. Then try the generic-centre transport, which turns a moving point into a mark determinant of a transported family, as the missing operator relating merge rows at different points.</p>
+<p>Route item: cube-odd-characteristic; open statement 3, far simplicity of the merge rows. The <a href="#entry-2026-10-05-cube-far-euler-image">Euler image lemma</a> gives explicit forward-difference bases for the reduced far space \(P_3'\oplus w^\gamma P_4'\).</p>
+<p>Next: try to identify the blocks with classical hypergeometric families: write \(P_3'\) and \(P_4'\) as terminating \({}_3F_2\)-type sums from the falling-factorial product, and test whether \(P_3'\) is a classical space, such as Jacobi polynomials of fixed parameters. That would make the \(n\ge2\) rows a problem about a known space plus an \(n\)-dimensional block, as \(n=1\) reduced to Gegenbauer zeros.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51081,6 +51081,41 @@ holds because both sides equal \((2m)!/\bigl(i!\,(j-i)!\,(m-i)!\,(m-j+i)!\bigr)\
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 4.06 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17.49 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.43 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-far-euler-image" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-euler-image">
+<h3>5 October 2026 — Euler image lemma: the reduced merge far space X(n,k) has explicit bases through forward differences, and splits off monomial factors w^(P+2) and w^((k−1)n), leaving two explicit polynomial blocks</h3>
+<p class="entry-meta">Working proof (reviewed) for every n, k of a closed form for the pure reduction of the merge far spaces; it removes the implicit Euler operator from statement 3's stuck point. Far Euler image cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, \(N\ge11\), at its recorded stuck point: far simplicity of the merge rows for \(n\ge2\) (<a href="#entry-2026-10-04-cube-stable-tree-rows">stable-tree rows</a>, <a href="#entry-2026-10-04-cube-merge-two-row-operator">\(n=2\) operator attempt</a>). By lem:cube-far-pure-reduction, the far points are the Weierstrass points off \(\{0,1\}\) of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\). There \((1-w)^{1/2-q}P_3=L\bigl((1-w)^{1/2}\operatorname{Pol}_{<k-1}\bigr)\) and \((1-w)^{1/2-q}w^{1/2-(n-1)}P_4=L(B_4)\). The Euler operator \(L=\prod_{e\in E}(\theta-e)\), \(\theta=w\,d/dw\), runs over the \(q\) exponents of the monomial classes. The record computes \(P_3,P_4\) by iterating \(\theta\)-steps. Is there a closed form, and what does it show?</p>
+<p><strong>General statement.</strong> lem:cube-far-euler-image: for every \(n\ge1\), \(k\ge2\) and every exponent \(s\), \((1-w)^{q-1/2}\varphi(\theta)[(1-w)^{1/2}w^s]=w^s\sum_{r\le q}\Delta^r\varphi(s)\binom{1/2}r(-1)^rw^r(1-w)^{q-r}\), and the far points of \(F(n,k)\) are the Weierstrass points off \(\{0,1\}\) of \(P_3'+w^{\gamma}P_4'\), \(\gamma=\tfrac32-n+(k-1)n-\binom{k-1}2-2\).</p>
+<p><strong>Lemma (Euler image).</strong> Let \(\varphi(x)=\prod_{e\in E}(x-e)\), of degree \(q\), and let \(\Delta\) be the forward difference. For every exponent \(s\),
+\[(1-w)^{q-1/2}\,\varphi(\theta)\bigl[(1-w)^{1/2}w^s\bigr]=w^s\sum_{r=0}^{q}\Delta^r\varphi(s)\,\binom{1/2}r(-1)^r\,w^r(1-w)^{q-r}.\]
+For the merge far spaces, with \(C=\binom n2\), \(P=\binom{k-1}2\), \(E=\{-C,\ldots,P+1\}\cup\{\tfrac32-n,\ldots,\tfrac32-n+(k-1)n-1\}\) and \(q=C+P+2+(k-1)n\):</p>
+<ul>
+<li>\(\varphi(x)=(x+C)^{\underline{C+P+2}}\,(x-\tfrac32+n)^{\underline{(k-1)n}}\), a product of two falling factorials;</li>
+<li>every generator of \(P_3\) (\(s=j\), \(0\le j\le k-2\)) is divisible by \(w^{P+2}\);</li>
+<li>every generator of \(P_4\) (\(s=\tfrac32-n+j\), \(0\le j\le n-1\)) is divisible by \(w^{(k-1)n}\). Equivalently, \(L\) of the corresponding element of \(B_4\) is \((1-w)^{1/2-q}w^{3/2-n}\) times a polynomial divisible by \(w^{(k-1)n}\).</li>
+</ul>
+<p>Hence the far points of \(F(n,k)\) are the Weierstrass points off \(\{0,1\}\) of \(P_3'\oplus w^{\gamma}P_4'\), with \(P_3=w^{P+2}P_3'\), \(P_4=w^{(k-1)n}P_4'\) and \(\gamma=\tfrac32-n+(k-1)n-P-2\).</p>
+<p><strong>Proof.</strong> Since \(\theta w^{t}=t\,w^{t}\), \(\varphi(\theta)\) acts on \(\sum_mc_mw^{s+m}\), with \(c_m=(-1)^m\binom{1/2}m\) the coefficients of \((1-w)^{1/2}\), by \(w^{s+m}\mapsto\varphi(s+m)w^{s+m}\). Newton's forward formula gives \(\varphi(s+m)=\sum_{r\le q}\Delta^r\varphi(s)\binom mr\). Moreover \(\sum_mc_m\binom mr w^m=\frac{w^r}{r!}D^r(1-w)^{1/2}=(-1)^r\binom{1/2}rw^r(1-w)^{1/2-r}\). Exchanging the finite sum over \(r\) with the convergent sum over \(m\), and multiplying by \((1-w)^{q-1/2}\), gives the formula. The product form of \(\varphi\) holds because each part of \(E\) is an arithmetic progression of step one: \(\prod_{e=a}^{a+\ell-1}(x-e)=(x-a)^{\underline\ell}\). For \(s=j\le k-2\), the points \(j,j+1,\ldots,P+1\) lie in \(E\), since \(j\ge0\ge-C\) and \(j\le k-2\le P+1\), which holds for every \(k\ge2\); for \(k=1\) the block \(P_3\) is empty. So \(\varphi(j+i)=0\) for \(0\le i\le P+1-j\), and \(\Delta^r\varphi(j)=\sum_{i\le r}(-1)^{r-i}\binom ri\varphi(j+i)=0\) for \(r\le P+1-j\). Every surviving term has \(w^{j+r}\) with \(j+r\ge P+2\). For \(s=\tfrac32-n+j\), the points \(s+i\), \(0\le i\le(k-1)n-1-j\), lie in the half-integer part of \(E\); this range is nonempty since \(j\le n-1\le(k-1)n-1\) for \(k\ge2\), and for \(k=1\) the claim is trivial. So \(\Delta^r\varphi(s)=0\) for \(r\le(k-1)n-1-j\), and the surviving terms have \(w^{s+r}\) with \(j+r\ge(k-1)n\). Hence \(P_3+w^{3/2-n}P_4=w^{P+2}\bigl(P_3'+w^{\gamma}P_4'\bigr)\). Multiplying the whole space by the single monomial \(w^{P+2}\) multiplies its Wronskian by a power of \(w\), while the relative factor \(w^\gamma\) stays inside. The far points lie off \(w=0\), so they are the Weierstrass points of \(P_3'+w^\gamma P_4'\) off \(\{0,1\}\). \(\square\)</p>
+<p><strong>Checks.</strong> research/tools/bmd_far_euler_image.gp compares the closed form with the iterated \(\theta\)-steps of research/tools/bmd_cube_far_pure_reduction.gp for every generator at \((n,k)=(2,3),(3,3),(2,4),(4,3)\): all equal (research/results/bmd-20261005-k/euler-image-check.txt). research/tools/bmd_far_euler_valuations.gp finds the \(w\)-valuations of the generators exactly \(P+2\) and \((k-1)n\) (research/results/bmd-20261005-k/euler-image-valuations.txt).</p>
+<p><strong>What it gives.</strong> Statement 3's stuck point becomes explicit. The far simplicity of row \(n\) is simplicity of the Weierstrass points of a space made of a \((k-1)\)-dimensional polynomial block and an \(n\)-dimensional block times \(w^\gamma\). Both blocks have bases written through forward differences of a product of two falling factorials. Equivalently, each basis element is \((1-w)^{q-1/2}\sum_m\varphi(s+m)c_mw^m\), a hypergeometric series in \(m\) (\(\varphi(s+m)\) is a ratio of Pochhammer symbols) made polynomial by Euler's transformation. So the blocks are candidates for identification with classical families, as the \(n=1\) row was identified with Gegenbauer polynomials. That identification is not made here, and simplicity for \(n\ge2\) remains open.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-pure-reduction (statement and the tool's \(\theta\)-step convention); lem:cube-merge-far-limit (classes and exponents); cor:cube-merge-far-binary-face.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium-effort reviewer passed the lemma with changes, all applied: the \(P_4\) divisibility statement corrected for \(j\ge1\), the Wronskian argument stated through one global monomial, the range conditions made exact, the unused hypothesis \(k\ge3\) dropped, and the hypergeometric description made precise. The closed form, the product form, the vanishing ranges and \(\gamma\) were confirmed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-k">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 52.60 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 52.38 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 14.07 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 1.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.14 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
