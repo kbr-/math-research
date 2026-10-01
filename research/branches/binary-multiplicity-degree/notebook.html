@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. The <a href="#entry-2026-10-05-cube-three-statements-review">three-statements review</a> finds that the recorded first-step sheaf is stable rank-two reflexive with \(c_1=0\) and \(H^1=0\) in every twist. Statements 2 and 3 stay as lines with certificates.</p>
-<p>Next: read Hartshorne's spectrum theory for such sheaves. Test whether \(c_2=71\), \(c_3=840\) and \(H^1=0\) force the first section in twist \(5\) at \(d=2\). Then derive the Chern classes of \(E_d\) for every \(d\).</p>
+<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. The <a href="#entry-2026-10-05-cube-first-step-spectrum">spectrum formula</a> reduces the threshold to \(H^1\)-vanishing, the Chern classes and the spectrum of \(E_d\). At \(d=2\) the spectrum multiplicities are \(2,4,6,8,10,11\) down to \(-6\).</p>
+<p>Next: derive \(c_2(E_d)\) and \(c_3(E_d)\) for every \(d\), from the polar-colon presentation by liaison and from the singular points. Check them against \(c_2=71\), \(c_3=840\) at \(d=2\), and look for a mechanism for \(H^1\)-vanishing, such as a resolution of \(E_d\) of fixed shape for every \(d\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51596,6 +51596,52 @@ For the merge far spaces, with \(C=\binom n2\), \(P=\binom{k-1}2\), \(E=\{-C,\ld
 <tr><td>Marked reading and review windows</td><td class="elapsed">25.85 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 16.19 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.74 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-first-step-spectrum" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-05-cube-three-statements-review:1" data-claims="lem:cube-first-step-spectrum-formula">
+<h3>5 October 2026 — Spectrum formula for dimension four's first step: when H¹ vanishes, the threshold is read off the Hartshorne spectrum, and at d = 2 the recorded data force the spectrum multiplicities 2, 4, 6, 8, 10, 11 down to −6</h3>
+<p class="entry-meta">Working proof (reviewed) of a spectrum formula for sections of the first-step sheaf, conditional on H¹-vanishing, with the d = 2 spectrum determined through −6. First step spectrum cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 4, dimension four's first post-boundary threshold. By lem:cube-normalized-first-step-sheaf, it is the first \(a\) with \(h^0(E_d(a-t))>h^0(\mathcal O(a-2t))\), where \(E_d\) is rank-two reflexive on \(\mathbb P^3\) with \(c_1=0\) and \(t=5d(d-1)-3\). The <a href="#entry-2026-10-05-cube-three-statements-review">three-statements review</a> proposed Hartshorne's spectrum.</p>
+<p><strong>Source.</strong> R. Hartshorne, Stable reflexive sheaves, Math. Ann. 254 (1980), Section 7 and Theorems 7.1, 7.5, 8.2, as restated in M. Jardim and A. Muniz, arXiv:2312.05509, Section 2. For a normalized rank-two reflexive sheaf \(F\) on \(\mathbb P^3\) with \(h^0(F(-1))=0\) there is a unique multiset \(\{k_1,\ldots,k_{c_2}\}\), the spectrum, with:</p>
+<ul>
+<li>(S1) \(h^1(F(p))=\sum_ih^0(\mathbb P^1,\mathcal O(k_i+p+1))\) for \(p\le-1\);</li>
+<li>(S2) \(h^2(F(p))=\sum_ih^1(\mathbb P^1,\mathcal O(k_i+p+1))\) for \(p\ge-3\) when \(c_1=0\);</li>
+<li>\(c_3=-2\sum k_i+c_1c_2\);</li>
+<li>the connectedness and stability conditions of Hartshorne's Theorem 7.5.</li>
+</ul>
+<p>The source PDF was read for this cycle and is not stored in the repository.</p>
+<p><strong>General statement.</strong> lem:cube-first-step-spectrum-formula: let \(E\) be a stable rank-two reflexive sheaf on \(\mathbb P^3\) with \(c_1=0\), spectrum \(\{k_i\}\), and \(H^1(E(p))=0\) for every \(p\). Then every \(k_i\le-1\), and for every \(l\ge-3\)
+\[h^0(E(l))=\chi(E(l))-\sum_{i}\max(0,-k_i-l-2),\qquad\chi(E(l))=\tfrac13(l+1)(l+2)(l+3)-c_2(l+2)+\tfrac12c_3.\]
+Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l\) are used for the formula. Stability, \(h^0(E)=0\), is kept for the threshold: for \(l=a-t\le0\) it gives \(h^0(E_d(l))=0\), so the strict inequality defining the threshold fails there. So for \(E=E_d\), given stability and \(H^1\)-vanishing, the first-step threshold is determined by the spectrum, which also determines \(c_2=\#\{k_i\}\) and \(c_3=-2\sum k_i\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Spectrum entries.</em> Stability gives \(h^0(E)=0\), hence \(h^0(E(-1))=0\), so the spectrum exists. By (S1) at \(p=-1\), \(0=h^1(E(-1))=\sum_ih^0(\mathcal O(k_i))\), so every \(k_i\le-1\).</li>
+<li><em>Top cohomology.</em> For any coherent sheaf on \(\mathbb P^3\), \(H^3(E(l))^\vee\cong\operatorname{Hom}(E(l),\omega)=H^0(E^\vee(-l-4))\). A rank-two reflexive sheaf with \(c_1=0\) satisfies \(E^\vee\cong E\otimes\det E^{-1}=E\), so \(h^3(E(l))=h^0(E(-l-4))\). This vanishes for \(l\ge-4\), because stability and \(c_1=0\) give \(h^0(E(m))=0\) for \(m\le0\).</li>
+<li><em>Middle cohomology.</em> For \(l\ge-3\), (S2) gives \(h^2(E(l))=\sum_ih^1(\mathcal O_{\mathbb P^1}(k_i+l+1))=\sum_i\max(0,-k_i-l-2)\). The hypothesis gives \(h^1(E(l))=0\).</li>
+<li><em>Conclusion.</em> Hence \(h^0(E(l))=\chi(E(l))-h^2(E(l))\). Hirzebruch–Riemann–Roch for a rank-two reflexive sheaf with \(c_1=0\) gives the stated \(\chi\); at \(c_2=4\) it is the formula of Jardim–Muniz, Lemma 3. \(\square\)</li>
+</ul>
+<p><strong>Application at \(d=2\).</strong> obs:cube-first-step-index-obstruction records, for \(E=E_2\): \(h^0(E)=0\), so \(E\) is stable; \(H^1(E(t))=0\) for every \(t\); \(c_2=71\), \(c_3=840\); \(h^0(E(l))=0\) for \(l<5\) and \(h^0(E(5))=1\). The formula gives \(\chi(E)=2-142+420=280\), matching the recorded \(\chi=280\), and \(\chi(E(l))=280,215,156,105,64,35\) for \(l=0,\ldots,5\). Write \(m_i=-k_i\ge1\), with \(\sum m_i=420\), and \(f(l)=\sum_i\max(0,m_i-l-2)\). The recorded sections give \(f(l)=\chi(E(l))\) for \(l\le4\) and \(f(5)=34\). Since \(f(l)-f(l+1)=\#\{m_i\ge l+3\}\), we get \(\#\{m\ge3\}=65\), \(\#\{m\ge4\}=59\), \(\#\{m\ge5\}=51\), \(\#\{m\ge6\}=41\), \(\#\{m\ge7\}=30\). From \(f(0)=280=\sum_i(m_i-2)+\#\{m_i=1\}=278+\#\{m_i=1\}\) we get \(\#\{m=1\}=2\), so \(\#\{m\ge2\}=69\). So the multiplicities of \(-1,-2,\ldots,-6\) in the spectrum are \(2,4,6,8,10,11\). The other \(30\) entries are \(\le-7\) with sum \(-244\).</p>
+<p><strong>What it gives and what remains.</strong> For every \(d\), the dimension-four first-step threshold follows from three inputs:</p>
+<ul>
+<li>stability, \(h^0(E_d)=0\), and \(H^1(E_d(t))=0\) for every \(t\) (both recorded at \(d=2\), open in general);</li>
+<li>\(c_2(E_d)\) and \(c_3(E_d)\), expected to be computable by liaison from the polar-colon presentation (not done);</li>
+<li>the spectrum of \(E_d\), which determines the Chern classes given the first two inputs.</li>
+</ul>
+<p>The \(d=2\) multiplicities \(2,4,6,8,10\) suggest an arithmetic pattern, but the spectrum below \(-6\) is not determined by the recorded data.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-normalized-first-step-sheaf; obs:cube-first-step-index-obstruction; the spectrum statements of the source as quoted above.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium-effort reviewer passed the lemma with changes, all applied. The hypotheses actually used are now stated, and stability is listed as an input to the threshold. The liaison claim is marked as not done. An unquoted stability condition and a vacuous consistency check were removed. The Euler characteristic, the duality step and the \(d=2\) arithmetic were confirmed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-p">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 49.47 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.83 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 4.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
