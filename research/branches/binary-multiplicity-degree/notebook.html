@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. The <a href="#entry-2026-10-05-cube-small-prime-review">small-prime review</a> finds the full \(d=3\) row out of reach, but one rank at \((m,\ell)=(21,46)\) decides the self-linkage prediction.</p>
-<p>Next: build a compiled generator for that graded system over \(\mathbb F_{32003}\) from operator entries exported by Macaulay2. Validate it at \(d=2\) against the recorded thresholds and size the \(d=3\) elimination.</p>
+<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. A <a href="#entry-2026-10-06-cube-certified-evaluation-kernel">certified evaluation kernel</a> is validated at \(d=2\), and the \(d=3\) evaluations are exported.</p>
+<p>Next: one series invocation of the kernel on the \(d=3\) evaluations, descending from excess \(46\). A negative answer at \(46\) refutes the four-generator self-linkage prediction. Otherwise the least excess with an order-\(21\) element is the first-step threshold, verified symbolically.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -52502,6 +52502,49 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-certified-evaluation-kernel" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Builds and validates a certified evaluation kernel for the d = 3 test of conj:cube-four-first-step-self-link; the degree-limited Macaulay2 syzygy run timed out; no new claim.">
+<h3>6 October 2026 — A certified evaluation kernel for the d = 3 first-step test: the degree-limited Gröbner run times out, and exact equations at random points decide the threshold both ways</h3>
+<p class="entry-meta">Method cycle for the d = 3 test of the self-linkage prediction; validated at d = 2 against the recorded row. The d = 3 run itself is the next cycle's. Certified evaluation kernel cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 4, dimension four's first step. conj:cube-four-first-step-self-link predicts that if \(T_3\) has four generators, the first-step threshold \(\ell_0\) at order \(21\) is at most \(46\). The <a href="#entry-2026-10-05-cube-small-prime-review">small-prime review</a> found that one graded piece decides this: is there a kernel element of order exactly \(21\) and excess \(46\)?</p>
+<p><strong>General statement.</strong> conj:cube-four-first-step-self-link (under test). No new claim.</p>
+<p><strong>Degree-limited Gröbner attempt.</strong> research/tools/bmd_cube_truncated_threshold.m2 keeps the columns \(0,\ldots,21\) of the record's operator matrix. A kernel element of order at most \(21\) vanishes beyond them. It computes syzygies up to module degree \(\ell+21-(U-1)=29\), which contains every element of order at most \(21\) and excess at most \(46\). At \(d=2\) (order \(13\), excess at most \(12\)) it reproduces the recorded thresholds \(12\) and \(11\) at orders \(13\) and \(14\) (truncated-syz-d2-control.txt). At \(d=3\) over \(\mathbb F_{32003}\) the syzygy computation did not finish in \(600\) s (truncated-syz-d3-timeout.txt).</p>
+<p><strong>Certified evaluation method.</strong> The unknowns are the coefficients of \(W_c\), \(2\le c\le21\), of weighted degree \(\ell+21-c\). The rows with \(s=0\) read exactly \(W_0=W_1=0\); this is asserted. At a point \(e\in\mathbb F_p^4\), each row gives the exact linear equation \(\sum_c\varphi_{rc}(e)W_c(e)=0\) in those coefficients. So the true kernel \(K\) lies in the evaluated kernel \(K_N\), and two conclusions are rigorous:</p>
+<ul>
+<li>If \(W_{21}=0\) on all of \(K_N\), no element of order exactly \(21\) and excess \(\ell\) exists.</li>
+<li>A vector of \(K_N\) with \(W_{21}\ne0\) certifies existence once \(\varphi W=0\) is checked symbolically.</li>
+</ul>
+<p>Row \(r\)'s equation lies in polynomials of weighted degree \(\ell+21-q_r-w_r\), of dimension \(M_r\), so it gets \(M_r+40\) points. Too few points only enlarge \(K_N\) and never cause a false conclusion. Tools:</p>
+<ul>
+<li>research/tools/bmd_cube_phi_evals.m2 evaluates the record's matrix at seeded random points.</li>
+<li>research/tools/bmd_eval_kernel.cpp, built with fflas-ffpack over \(\mathbb F_{4093}\) in single precision, computes \(K_N\) and the rank of its \(W_{21}\) block. A descending series of excesses stops at the first negative answer, since multiplying by \(e_1\) raises the excess by one.</li>
+<li>research/tools/bmd_cube_verify_kernel_vector.m2 checks vectors symbolically.</li>
+</ul>
+<p><strong>Validation at \(d=2\), order \(13\).</strong></p>
+<ul>
+<li><em>Excess \(12\).</em> With \(111\) points per row, \(K_N\) had dimension \(74\), far above the true kernel. This showed that a row stops adding constraints after \(M_r\) points. With per-row counts, \(1001\) is the rank on \(1002\) unknowns, the kernel is one-dimensional with \(W_{13}\ne0\), and the vector satisfies \(\varphi W=0\) exactly (verify-d2-o13-e12.txt).</li>
+<li><em>Excess \(11\).</em> The \(W_{13}\) block of \(K_N\) has rank \(0\) even with too few points, certifying that no element exists (kernel-d2-o13-e11-firstdesign-run.txt).</li>
+</ul>
+<p>The recorded threshold \(12\) is reproduced.</p>
+<p><strong>The \(d=3\) system.</strong> At order \(21\) and excess \(46\) there are \(31{,}531\) unknowns and \(43{,}770\) equations, \(5.5\) GB in single precision. The evaluations at \(2700\) points are in research/results/bmd-20261006-a/evals-d3-o21.txt. The kernel was not run in this cycle: the launcher allows at most four argument lists of one program per session, and I spent them on separate controls instead of one series invocation.</p>
+<p><strong>Remaining gap.</strong> The \(d=3\) run itself, and then the conjecture's other consequences.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-four-first-step-self-link (full entry); the bounded-kernel tool and its cutoff \(U=20d-21\).</p>
+<p><strong>Verification gate.</strong> No claim. The method's two certification directions are stated above, and the \(d=2\) validation is exact.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-a">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 6.04 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 46.13 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">27.28 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 51.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 41.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 9.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">10.87 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
