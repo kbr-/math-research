@@ -8,10 +8,10 @@ default(parisizemax, 4000000000);
 OUT = getenv("OUT");
 emit(s) = print(s); if (OUT != 0 && OUT != "", write(OUT, s));
 {
-my(t = 't, e = 'e, one = Mod(1, 3));
+my(t = 't, e = 'e, pr = if(getenv("PRIME") != "" && getenv("PRIME") != 0, eval(getenv("PRIME")), 3), fixed = getenv("FIXEDSLOPES") != "" && getenv("FIXEDSLOPES") != 0, one = Mod(1, pr));
 foreach(eval(getenv("SIZES")), sz,
   my(N = vecsum(sz), D = N * (N - 1) / 2 + 2, cen = [0, 1, t], lab = List(), k = 0, t0 = getwalltime());
-  for (q = 1, 3, for (r = 1, sz[q], listput(lab, cen[q] * one + if(r == 1, 0, k++; t^(k + 1) * one * e))));
+  for (q = 1, 3, for (r = 1, sz[q], listput(lab, cen[q] * one + if(r == 1, 0, k++; if(fixed, (7 * k^2 + 3 * k + 5), t^(k + 1)) * one * e))));
   lab = Vec(lab);
   my(bh = vector(D, j, binomial(1/2, j - 1) * one), M = matrix(D, D), row = 2);
   M[1, 1] = one; M[2, 2] = one;
@@ -20,7 +20,7 @@ foreach(eval(getenv("SIZES")), sz,
   my(dl = matdet(M));
   if (dl == 0, emit(Str("sizes ", sz, ": Delta = 0 identically")); next);
   my(v = valuation(dl, e), lc = polcoef(dl, v, e));
-  emit(Str("sizes ", sz, " N = ", N, ": eps-order ", v, "; leading coefficient factorization over F_3: ", factor(lc),
+  emit(Str("sizes ", sz, " N = ", N, ": eps-order ", v, "; leading coefficient factorization over F_p (p = ", pr, if(fixed, ", fixed integer slopes", ""), "): ", factor(lc),
     " (", getwalltime() - t0, " ms)")));
 }
 quit;
