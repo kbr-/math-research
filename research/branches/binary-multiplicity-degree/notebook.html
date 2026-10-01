@@ -47,11 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. \(W_{b-1}\) is squarefree for \(b\le11\). Its <a href="#entry-2026-10-03-cube-last-far-min-spacing">minimal root spacing times \(e^2\) converges near \(0.80\)</a>, and the dense chains approach without merging (conj:cube-last-far-min-spacing).</p>
-<p>Next, find the local limit along the chains:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. Along the dense chains, the roots of \(W_{b-1}\) follow a <a href="#entry-2026-10-03-cube-last-far-two-term">two-term law</a>, \((x/(1+x))^{n+7/2}=-\rho_e\), with simple zeros. Its spacing matches the data to within \(0.4\%\), and it predicts \(e^2\min|r-r'|\to\pi/4\).</p>
+<p>Next:</p>
 <ol>
-<li>Rescale the roots near a chain point by \(e^2\) and compare consecutive configurations (\(e=7,8,9\)) for convergence to a lattice-like pattern.</li>
-<li>Locate the chains analytically, as the curves where two of the six-space's large-parameter phases balance, now including the subleading blocks.</li>
+<li>Derive the two-term asymptotic of \(W(Z_e)\) on the chains from the large-parameter asymptotics of the six-space, with explicit amplitudes.</li>
+<li>Test the prediction \(\pi/4\) and the drift \(x_e\to-\tfrac12\) at \(e=10,11\).</li>
+<li>Locate the sparse roots and the chain ends in the same framework.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -44349,6 +44350,50 @@ of prop:cube-last-far-six-space has no Weierstrass point of weight at least \(3\
 <tr><td>Computation design and coding</td><td class="elapsed">52.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.22 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 22.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-two-term" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-cluster-review:2" data-claims="conj:cube-last-far-two-term-law">
+<h3>3 October 2026 — Near the real axis the closest last-step far roots form a vertical progression with spacing 2 pi |x(1+x)|/(n+7/2): a two-term balance with simple zeros, predicting a limiting spacing constant pi/4</h3>
+<p class="entry-meta">Conjecture with quantitative support at e = 5..9: along the dense chains, W_(b-1) behaves as a two-term sum balancing (x/(1+x))^(n+7/2), whose zeros are simple. Last far two term cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The <a href="#entry-2026-10-03-cube-last-far-min-spacing">min spacing cycle</a> found \(e^2\min|r-r'|\) converging near \(0.80\). What is the local law at the closest pair? A local limit with simple zeros is what Hurwitz's theorem needs.</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-two-term-law</code>: along the dense chains, the roots of \(W_{b-1}\) are, to leading order as \(e\to\infty\), the solutions of
+\[
+\Bigl(\frac{x}{1+x}\Bigr)^{n+7/2}=-\rho_e(x)\,(1+o(1)),\qquad n=R_e,
+\]
+with \(\rho_e\) a nonvanishing amplitude ratio that varies on scales much larger than \(1/n\). In particular, near the real-axis crossing \(x_e\) of a chain, which tends to \(-\tfrac12\), the roots are
+\[
+x_e+i(2j+1)\,h_e\,(1+o(1)),\qquad h_e=\frac{\pi\,|x_e(1+x_e)|}{n+7/2},
+\]
+and \(e^2\min_{r\ne r'}|r-r'|\to\pi/4\). The zeros of such a two-term law are simple, so the law implies squarefreeness on the chains for large \(e\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_last_far_local_pattern.gp locates the closest pair of roots for \(e=5,\ldots,9\) and lists the \(8\) roots nearest to its midpoint, scaled by \(e^2\) (research/results/bmd-20261003-zza/local-pattern.txt).</p>
+<ul>
+<li>The closest pair always straddles the real axis: either a conjugate pair \(x_e\pm ih_e\), or a real root with a neighbour \(2h_e\) away in \(e=6,8\). The positions are \(x_e\approx-0.359,-0.392,-0.415,-0.431,-0.443\), moving towards \(-\tfrac12\).</li>
+<li>The nearby roots lie on the vertical line through \(x_e\), at scaled offsets \(\pm0.3998,\pm1.1998,\pm2.0008\) at \(e=9\). These are in the ratio \(1:3:5\), an arithmetic progression symmetric about the real axis, as for the zeros of \(\cosh\). The horizontal drift is under \(0.01\) in these units.</li>
+<li>The formula matches the observed half-spacing:
+<ul>
+<li>at \(e=5\) (\(n=45\), \(x_e=-0.35868\)): \(h_e=\pi\cdot0.23003/48.5=0.014900\), observed \(0.014913\);</li>
+<li>at \(e=7\) (\(n=91\), \(x_e=-0.41455\)): \(h_e\cdot e^2=0.3954\), observed \(0.3940\);</li>
+<li>at \(e=9\) (\(n=153\), \(x_e=-0.44276\)): \(h_e\cdot e^2=0.4010\), observed \(0.3998\).</li>
+</ul>
+The exponent \(n+\tfrac72\) is \(-a\), the parameter of the two-class kernel in the six-space (lem:cube-last-far-six-reduction). Fitting the exponent at \(e=5\) gives \(N=48.46\) against \(n+\tfrac72=48.5\).</li>
+</ul>
+<p><strong>The prediction \(c_*=\pi/4\).</strong> \(e^2\cdot2h_e=2\pi|x_e(1+x_e)|\,e^2/(n+\tfrac72)\). As \(e\to\infty\), \(e^2/(n+\tfrac72)\to\tfrac12\) from above, and \(|x_e(1+x_e)|\to\tfrac14\) from below if \(x_e\to-\tfrac12\). So the limit is \(\pi/4\approx0.785\). The observed \(0.800\) at \(e=9\) exceeds it because \(e^2/(n+\tfrac72)=0.518\). The sequence should peak and then decrease to \(0.785\). This is a falsifiable prediction; it corrects the estimate \(c_*\approx0.80\) of conj:cube-last-far-min-spacing.</p>
+<p><strong>Mechanism.</strong> In the six-space, the integral class carries \(t^{n+k+3}\), and the half-integral class arises from \(t^{a}\) and \((1-t)\)-weights, \(a=-n-\tfrac72\). A two-term balance of size \(|t|^{n+7/2}=|x/(1+x)|^{n+7/2}\) against a subexponential amplitude is the natural source of the progression, with the curve shifted from \(|x|=|1+x|\) by \(O(\log|\rho_e|/n)\). Zeros of \(A(1+\epsilon)+B\,s^N(1+\epsilon')\), with \(A,B\ne0\) slowly varying and \(\epsilon,\epsilon'\to0\) uniformly, are simple for large \(N\), by Rouché's theorem on discs of radius a fixed fraction of the spacing. The task is therefore to derive this two-term asymptotic for \(W(Z_e)\) on the chains, with explicit \(A\) and \(B\) from the large-parameter asymptotics of \(u_1\), \(u_2\) and \(V_e\). The sparse roots and the chain ends near \(x^*\) need separate treatment.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-last-far-min-spacing (its \(c_*\approx0.80\) is corrected here to the prediction \(\pi/4\)); prop:cube-last-far-six-space; lem:cube-last-far-six-reduction (the exponent \(a\)).</p>
+<p><strong>Verification gate.</strong> Numerical root geometry at \(100\) digits on exact polynomials; the formula is compared at three sizes. No reviewer: no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zza">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 17.97 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 20.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 2.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
