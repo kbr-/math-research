@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step the \(4R_e\) balanced roots have a conjectural chain to simplicity (<a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a>). The edge has no mechanism: \(8e+4\) roots on a far ring at \(|x|\approx5\)–\(18\), or near the real axis. The integral-class Wronskian is <a href="#entry-2026-10-04-cube-last-far-pair-edge">refuted</a> as a mechanism for it.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, the \(4R_e\) balanced roots have a conjectural chain to simplicity. The \(8e+4\) edge roots are the <a href="#entry-2026-10-04-cube-last-far-circle-ends">fringe of the four sector circles</a>: near \(t=1\), where three sector sums are comparable, and at the crossings of the positive real \(t\)-axis.</p>
 <p>Next:</p>
 <ol>
-<li>Test whether the ring is a Newton edge at \(x=\infty\). Take the archimedean hull of \(W_{b-1}\) in \(s=1/(1+x)\) at \(e=2,\ldots,9\) from the saved exact polynomials, and check whether the edge radius stays bounded. A long two-term-dominated edge would give simple roots by Pellet's theorem.</li>
-<li>Otherwise, find which pair minors of the class split balance at the edge roots.</li>
+<li>Formulate and test a three-term balance certificate, extending lem:cube-far-balance-certificate to three comparable sector sums, at the far-ring roots of \(e=2,4\).</li>
+<li>Derive the local model at the real-axis crossings from the two-term law.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -48249,6 +48249,55 @@ uniformly, with \(n=R_e\). The term \(2\log|r(1+r)|\) follows from the \(r\)-exp
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 16.71 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.80 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-circle-ends" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-edge-circle-ends conj:cube-last-far-infinity-newton-edge">
+<h3>4 October 2026 — Circle ends: the last-step edge roots continue their sector circles, so the edge is the circles' fringe near t = 1 and the real axis, not a separate population; no Newton edge at infinity</h3>
+<p class="entry-meta">Conjecture with finite support (18 of 21 edge pairs at e = 2, 4) and a refutation at e = 2..9: the hull at x = ∞ overpredicts and has an exponential-series pattern. Corrects the edge review's separate-population reading. Last far circle ends cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step: the edge. The <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> read the \(8e+4\) unbalanced roots as a separate population, and the <a href="#entry-2026-10-04-cube-last-far-pair-edge">pair Wronskian</a> does not locate them. Two hypotheses are tested here. First, the edge is a Newton edge at \(x=\infty\), which Pellet's theorem could then separate. Second, the edge consists of the ends of the four sector circles.</p>
+<p><strong>General statement.</strong> Two claims: conj:cube-last-far-edge-circle-ends, proposed, and conj:cube-last-far-infinity-newton-edge, refuted.</p>
+<ul>
+<li>conj:cube-last-far-infinity-newton-edge (refuted): for every \(e\), the archimedean Newton polygon of \(Q(s)=s^DW_{b-1}((1-s)/s)\), with \(s=1/(1+x)\), has segments whose lengths predict the roots with \(|1+x|\ge4\).</li>
+<li>conj:cube-last-far-edge-circle-ends: for every \(e\), at all but \(O(1)\) of the non-real unbalanced roots of \(W_{b-1}\), the two largest \(x\)-side sector sums are an adjacent pair \((E_s,E_{s+1})\). The root then lies on the same side of \(|t|=1\) as the balanced roots of that pair. So the edge consists of the ends of the four sector circles: where the circles of the pairs \((1,2)\) and \((2,3)\) approach \(t=1\), and where the circles cross the positive real \(t\)-axis.</li>
+</ul>
+<p><strong>Test design.</strong> For the hull, the prediction at each \(e=2,\ldots,9\) is the number of roots with \(|1+x|\ge4\). Pellet separation needs a long segment carrying the outer roots. For the circle ends, the balanced roots of each pair lie on one side of \(|t|=1\) (pairs \((0,1)\), \((1,2)\) outside, \((2,3)\), \((3,4)\) inside, at both sizes). A dominant pair chosen at random would land on the same side about half the time.</p>
+<p><strong>Newton hull at infinity.</strong> research/tools/bmd_cube_last_far_infinity_hull.gp, on the saved exact \(W_{b-1}\) for \(e=2,\ldots,9\) (output research/results/bmd-20261004-z/infinity-hull.txt):</p>
+<ul>
+<li>The hull segments with predicted \(|1+x|\ge4\) have total length \(13,25,39,56,90,115,143,189\). The actual numbers of roots with \(|1+x|\ge4\) are \(11,19,27,36,53,67,85,106\).</li>
+<li>The largest predicted radii (\(34.5\) at \(e=2\), \(90.0\) at \(e=4\), \(395.8\) at \(e=9\)) lie far beyond the largest actual \(|1+x|\): \(18.8\), \(13.9\) and \(19.7\).</li>
+<li>Almost every segment has length \(1\), with radii close to \(a/j\) for \(j=1,2,3,\ldots\) (\(90.0,45.0,30.0,22.5,18.1\) at \(e=4\)). That is the hull of the Taylor coefficients of \(e^{as}\), which has no zeros at all. It comes from the factors \(t^{mN}=(1-s)^{mN}\approx e^{-mNs}\), and it says nothing about root positions.</li>
+<li>One long segment appears at each \(e\): lengths \(4,10,14,19,24,29,34,39\) at radii \(|1+x|=10.8,10.5,11.1,12.2,13.5,15.0,16.5,18.0\). From \(e=4\) on, that is length \(5e-6\). It is not the edge: \(14\) at \(e=4\) against \(22\) far-ring roots.</li>
+</ul>
+<p>So the hull at infinity overpredicts at every \(e\), and the claim is refuted. The outer root radius is not bounded either: \(\max|1+x|\) grows from \(13.9\) at \(e=4\) to \(19.7\) at \(e=9\), about \(3.7\)–\(4.0\log N\) at \(e=4,\ldots,9\). That fit is empirical, over six sizes. It corrects the edge review's "radius about \(5\)–\(18\) at both sizes", which held only for \(e=2,4\).</p>
+<p><strong>Circle ends.</strong> research/tools/bmd_cube_last_edge_sides.py reads the saved sector classifications (research/results/bmd-20261004-t/; output research/results/bmd-20261004-z/edge-sides.txt).</p>
+<ul>
+<li>The balanced roots of the pairs \((0,1),(1,2),(2,3),(3,4)\) have \(\log|t|\) in \([1.28,1.49]\), \([0.26,0.32]\), \([-0.74,-0.68]\) and \([-1.85,-1.67]\) at \(e=2\), and in \([0.40,0.64]\), \([0.07,0.15]\), \([-0.33,-0.24]\) and \([-0.80,-0.60]\) at \(e=4\).</li>
+<li>Edge pairs whose dominant pair is adjacent and on the same side: \(7\) of \(7\) at \(e=2\) and \(11\) of \(14\) at \(e=4\). One more edge pair at \(e=4\) is dominated by the non-adjacent pair \((1,3)\).</li>
+<li>The three exceptions (\(1.20+6.93i\), \(0.57+11.17i\), \(10.13+7.58i\), all dominated by \((1,2)\)) have \(|\log|t||\le0.062\). They lie where the circles of \((1,2)\) and \((2,3)\) close in on \(|t|=1\) from both sides.</li>
+</ul>
+<p>With probability one half each, \(18\) or more same-side outcomes out of \(21\) has probability below \(10^{-3}\). The edge roots split into two kinds:</p>
+<ul>
+<li>the near-real pairs, dominated by \((3,4)\) or \((2,3)\), at the crossings of those circles with the positive real \(t\)-axis. This is where the record's <a href="#entry-2026-10-03-cube-last-far-two-term">two-term law</a> already found a local vertical progression with offsets \(1:3:5\);</li>
+<li>the far ring, dominated by \((1,2)\), \((2,3)\) and, once at each size, \((0,1)\), on the arcs near \(t=1\), where three sector sums are comparable (third/largest \(0.1\) to \(0.6\)).</li>
+</ul>
+<p><strong>Correction to the edge review.</strong> The <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> concluded that the unbalanced roots are "a separate population, outside the reach of the sector mechanism, not its fringe". The side test shows the opposite at \(e=2,4\): they are the circles' fringe, where two-term balance degrades into three-term balance or a real-axis crossing. The sector mechanism reaches them, but its two-term certificate does not.</p>
+<p><strong>What this gives.</strong> The edge needs a local analysis in two places along each circle, not a separate global mechanism. The places are the junction near \(t=1\), with a three-term exponential balance, and the real-axis crossing, with the Hermite-type pattern. Each is a local model with a fixed number of terms.</p>
+<p><strong>Remaining gap.</strong> Neither local model is derived. A three-term certificate, extending lem:cube-far-balance-certificate, is not formulated. The circle-ends claim is supported only at \(e=2,4\), where sector sums exist.</p>
+<p><strong>Dependencies re-read.</strong> the edge review's root classification; conj:cube-far-sector-circle-count (the balanced pairs); conj:cube-last-far-two-term-law (the real-axis pattern); conj:cube-last-far-geometric-circles (the \(t\)-hull).</p>
+<p><strong>Verification gate.</strong> A refutation and a conjecture, both from exact polynomials and saved sector classifications, with every number read by script from saved output. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-z">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 10.99 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 15.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 57.00 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.21 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 6.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
