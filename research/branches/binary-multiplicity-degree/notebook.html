@@ -47,10 +47,10 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). By the <a href="#entry-2026-10-04-cube-base-deformation-splitting">deformation splitting criterion</a>, (B) at \(N\) needs, at one attaining configuration of the base family, only one moving derivative per non-branch root of multiplicity at least three.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B), middle steps. At the middle steps the cluster at \(-1\) is a <a href="#entry-2026-10-04-cube-middle-far-ore-staircase">staircase of Eisenstein sides</a> at every collapse prime, so Ore's theorem makes it simple. This structured part may have a local-exponent proof.</p>
 <p>Next:</p>
 <ol>
-<li>Look for a configuration of the base family whose Wronskian is classical. Candidates are a real configuration symmetric under \(z\mapsto-z\), or doubles in a geometric progression, where the hierarchical exponents \(-5/2\) and \(-7/2\) are compatible with the symmetry. Test at \(N=8,10\) whether its non-branch part is a polynomial in a smaller variable, or factors.</li>
+<li>Explain the staircase by local exponents at \(-1\) for the middle reduced space \(C\oplus X_0\oplus\mathrm{IV}\). Count the pairs of exponents differing by \(p/2\) layer by layer, as in the Eisenstein branch proposition, and derive the side lengths.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46623,6 +46623,45 @@ Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with pri
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 51.92 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 31.63 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-middle-far-ore-staircase" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-arithmetic-route-review:1" data-claims="conj:cube-middle-far-ore-separable">
+<h3>4 October 2026 — At the middle steps the cluster at −1 is a staircase of Eisenstein sides, so Ore's theorem makes it simple at every collapse prime</h3>
+<p class="entry-meta">Conjecture with an exact check at l = 2: at all 37 collapse primes the Newton polygon of W_k at -1 has 6 to 8 sides of height 1 (two of height 2), all residual polynomials separable. Middle far Ore staircase cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B), middle steps. The <a href="#entry-2026-10-04-cube-arithmetic-route-review">arithmetic route review</a> found that at the middle steps (\(l=2\)) the collapse primes give an Eisenstein cluster at \(0\) and non-branch multiplicity at most \(2\). The cluster at \(-1\) has valuation \(6\) to \(9\), so it is not of Eisenstein type. Its first Outside lead proposed Ore's residual polynomials, which were not computed there. Are the roots at residue \(-1\) simple?</p>
+<p><strong>General statement.</strong> <code>conj:cube-middle-far-ore-separable</code>, for every even-peeling middle step \(2\le k\le b-2\). There is a prime \(p\) at which \(W_k\) collapses onto \(0\) and \(-1\) and the following hold:</p>
+<ul>
+<li>\(v_p(W_k(0))=1\);</li>
+<li>every side of the Newton polygon of \(W_k(y-1)\) at \(p\) has a separable residual polynomial;</li>
+<li>the non-branch factor has multiplicity at most two.</li>
+</ul>
+<p>Then \(W_k\) has roots of multiplicity at most two: a one-prime certificate of the middle far input of (B).</p>
+<p><strong>Imported theorem.</strong> Ore's theorem (Ore 1928; see also Montes' algorithm) applies to \(f\in\mathbb Z_p[y]\). Each side of slope \(-h/e\), in lowest terms, of its Newton polygon has a residual polynomial \(R(T)\in\mathbb F_p[T]\), of degree the gcd of the side's length and height. If \(R\) is separable, the part of \(f\) belonging to that side factors over \(\mathbb Q_p\) into pieces matching the irreducible factors of \(R\), and these pieces are pairwise distinct. Different sides give factors with roots of different valuations. So if every residual polynomial is separable, \(f\) has no repeated irreducible factor among its roots of positive valuation, and those roots are simple. A side of height \(1\) has a residual polynomial of degree \(1\), which is trivially separable: this is Dumas's Eisenstein case.</p>
+<p><strong>Certificate assembly.</strong> At a prime \(p\nmid\operatorname{lc}(W_k)\), every root of \(W_k\) is integral over \(\mathbb Z_p\) and reduces to a residue in \(\overline{\mathbb F}_p\).</p>
+<ul>
+<li>Roots with residue \(0\) are simple when \(v_p(W_k(0))=1\), by Dumas.</li>
+<li>Roots with residue \(-1\) are simple when every residual polynomial at \(-1\) is separable, by Ore.</li>
+<li>A root with any other residue \(r\) of multiplicity \(\mu\) makes \(x-r\) divide \(W_k\bmod p\) at least \(\mu\) times. So non-branch multiplicity at most \(2\) bounds all other multiplicities by \(2\).</li>
+</ul>
+<p>So the three conditions certify multiplicity at most two at step \(k\).</p>
+<p><strong>Test.</strong> research/tools/bmd_cube_middle_far_ore.gp computes, at every collapse prime of the review's runs, the lower Newton polygon of \(W_k(y-1)\) up to the first unit coefficient and the residual polynomial of each side, and tests separability. It uses \((b,k)=(6,4)\) with \(p=53..83\) (\(8\) primes), \((7,5)\) with \(p=67..127\) (\(13\)) and \((8,6)\) with \(p=97..173\) (\(16\)) (research/results/bmd-20261004-f/middle-ore.txt).</p>
+<p><strong>Outcome.</strong> All residual polynomials are separable at all \(37\) primes. The polygon is a staircase. It has \(6\) to \(8\) sides, as many as \(v_p(W_k(-1))\), almost all of height \(1\). Their lengths increase mostly in steps of \(2\): for example \(3,5,7,9,11,14,16,18\) at \((6,4)\), \(p=53\), summing to the cluster size \(83\), and \(2,4,\ldots,14\) at \(p=59\). Only two sides have height \(2\) (gcd \(2\)), at \((7,5)\), \(p=67\) and \((8,6)\), \(p=107\), and both residual polynomials are separable. With the review's data (Eisenstein at \(0\), non-branch multiplicity at most \(2\)), every one of these \(37\) primes certifies that \(W_k\) has roots of multiplicity at most two. That recovers, by a one-prime certificate, the exact squarefreeness up to multiplicity two already known at these three steps.</p>
+<p><strong>What this suggests.</strong> The staircase is a structural fact, unlike the random-like non-branch factor. Its sides have height \(1\), and their lengths increase by \(2\). This is the pattern produced when several pairs of local exponents at \(-1\) differ by \(p/2\) in successive layers, with each layer adding one to the valuation, as in the Eisenstein count \(N_0-N_\infty=1\) of the last step. A local-exponent proof at \(-1\), extending the Eisenstein branch proposition layer by layer, looks feasible. The non-branch factor would remain the only random-like input.</p>
+<p><strong>Dependencies re-read.</strong> the arithmetic route review (collapse primes and the non-branch data); prop:cube-last-far-eisenstein-branch (the one-layer count at the last step).</p>
+<p><strong>Verification gate.</strong> A conjecture with an exact check. The certificate assembly uses Dumas's and Ore's theorems as imported results, with Hensel-type reduction of multiplicities, and is stated in full. No reviewer was used: no new proof is claimed beyond the assembly of classical theorems, which is spelled out above.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 56.21 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">43.80 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">39.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.33 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
