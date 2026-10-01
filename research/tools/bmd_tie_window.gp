@@ -105,6 +105,23 @@ foreach(eval(getenv("MS")), m,
     emit(Str("    exact: deg D = ", poldegree(D), ", deg L = ", poldegree(L), ", reciprocity signs D, L: ", [recsign(D), recsign(L)],
       "; [c, c-1] exponents of Delta_2m, Delta_2m+1: ", ex(A1), ", ", ex(A2),
       "; R(-1) = ", if (subst(R, 'c, -1), "nonzero", "0"), "; real common roots of Cayley parts: ", if (poldegree(g) > 0, polsturm(g), 0))));
+  \\ LOG0=1 (cycle bmd-20261006-v): the lambda -> 0 limit, m >= 3.  Rows T^n log(1+cT), T^n log(1+T) (n < m) and
+  \\ log(1+cT) log(1+T) on the same columns; every maximal minor of W'_lambda is lambda^(2m+2) times the corresponding
+  \\ minor here, up to O(lambda^(2m+3)).  Report the stripped powers, degree and exact stability of the limit f.
+  if (getenv("LOG0") == "1" && m >= 3,
+    my(R2 = m * (m - 1) / 2, cols = vector(2 * m + 2, j, R2 + j - 1), lg(t, k) = if (k <= 0, 0, (-1)^(k - 1) * t^k / k), rows = List());
+    for (n = 0, m - 1, listput(rows, vector(#cols, j, lg('c, cols[j] - n))));
+    for (n = 0, m - 1, listput(rows, vector(#cols, j, lg(1, cols[j] - n))));
+    listput(rows, vector(#cols, j, sum(i = 1, cols[j] - 1, lg('c, i) * lg(1, cols[j] - i))));
+    my(M = matrix(#rows, #cols, i, j, rows[i][j]));
+    my(d1 = matdet(vecextract(M, "..", setminus([1 .. 2 * m + 2], [2 * m + 1]))), d2 = matdet(vecextract(M, "..", setminus([1 .. 2 * m + 2], [2 * m + 2]))));
+    my(ex(P) = if (P == 0, "zero", [valuation(P, 'c), valuation(P, 'c - 1)]), f = d1 + d2);
+    my(schur(g) = while (poldegree(g) > 0, my(a0 = polcoef(g, 0), an = pollead(g)); if (abs(a0) >= abs(an), return(0)); g = (an * g - a0 * polrecip(g)) / 'c; g = g / content(g)); 1);
+    if (f == 0, emit("  log limit: f = 0"), my(ft = f / ('c^valuation(f, 'c) * ('c - 1)^valuation(f, 'c - 1)));
+      emit(Str("  log limit: powers of Delta_2m, Delta_2m+1, f: ", ex(d1), ", ", ex(d2), ", ", ex(f), "; deg f~ = ", poldegree(ft),
+        "; stable inside: ", schur(ft), "; factor degrees ", apply(poldegree, factor(ft)[, 1]~), "; f~ = ", if (poldegree(ft) <= 7, ft / content(ft), "(long)")));
+      my(g = ft / content(ft), nz = select(k -> polcoef(g, k) != 0, [0 .. poldegree(g)]));
+      emit(Str("    nonzero terms (exponent, coefficient): ", apply(k -> [k, polcoef(g, k)], nz)))));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());

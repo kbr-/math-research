@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-06-cube-tie-window-circle-crossing">Zeros of the stability polynomial cross the unit circle only at common zeros of the last two minors or \(c=1\)</a>, and stability holds for every tested exponent \(\lambda\).</p>
-<p>Next: compute the \(\lambda\to0\) limit of the stability polynomial, a determinant of logarithmic Cauchy-like coefficients \(c^{j}/j\) with one product row \(\log(1+cT)\log(1+T)\). Seek its closed form and stability, the starting point of an exponent homotopy.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The \(\lambda\to0\) limit of the tie-window stability polynomial has <a href="#entry-2026-10-06-cube-tie-window-log-limit">four terms with cubic coefficients</a>, and is then provably stable. Six research entries have accumulated since the last review.</p>
+<p>Next: a route review of the cone route's tie-window programme. Weigh three approaches: proving the log-limit closed form plus the \(\lambda\to1^+\) limit for the homotopy; a direct proof of the stability; and the untouched gaps (tied-pair valuation lemma, multiple ties, compactness, non-separated points).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -54051,6 +54051,59 @@ for \(0\le n&lt;m\). The contour is a large circle, and the branches are those a
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-window-log-limit" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-window-route-review:1" data-claims="lem:cube-tie-window-four-term-stability conj:cube-tie-window-log-limit-closed-form">
+<h3>6 October 2026 — Tie window log limit: as λ → 0 the stability polynomial has four terms with cubic coefficients, and a symmetric Rouché argument makes it stable for every m</h3>
+<p class="entry-meta">Working proof that the four-term form is stable for every m. The closed form is a conjecture, exact for 3 ≤ m ≤ 7. This is the starting point of the exponent homotopy. Tie window log-limit cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap 1, through the exponent homotopy of lem:cube-tie-window-circle-crossing. It needs a starting exponent where stability is provable. Is the \(\lambda\to0\) limit of the stability polynomial explicit and stable?</p>
+<p><strong>Setting.</strong> Fix \(m\ge3\), \(d=\binom m2=R''\). Let \(M_m(c)\) be the \((2m+1)\times(2m+2)\) matrix on the window columns \(T^{d+j}\), \(0\le j\le2m+1\), of the series \(T^n\log(1+cT)\), \(T^n\log(1+T)\) (\(0\le n&lt;m\)) and \(\log(1+cT)\log(1+T)\). Let \(\Delta_j^{\log}\) be its maximal minors and \(f^{\log}_m=\Delta^{\log}_{2m}+\Delta^{\log}_{2m+1}\).</p>
+<p>For the exponent-\(\lambda\) window, \(T^n(1+cT)^{-\lambda}=T^n-\lambda T^n\log(1+cT)+O(\lambda^2)\), and \(T^n\) lies below the window since \(n&lt;m\le d\) for \(m\ge3\). Subtract the two \(n=0\) rows from the top row. The result is \((A-1)(B-1)-1\), with \(A,B\) those rows. Its window part is \(\lambda^2\log(1+cT)\log(1+T)(1+O(\lambda))\). So every maximal minor of \(W'_\lambda\) equals \(\lambda^{2m+2}\) times the corresponding minor of \(M_m\), plus \(O(\lambda^{2m+3})\) coefficientwise in \(c\).</p>
+<p><strong>General statement.</strong> For every \(m\ge3\), the \(\lambda\to0\) limit of the tie-window stability polynomial is \(\kappa_mc^a(c-1)^bg_m\), a four-term polynomial with cubic coefficients, all of whose zeros lie in the unit disc: conj:cube-tie-window-log-limit-closed-form with lem:cube-tie-window-four-term-stability.</p>
+<ul>
+<li>conj:cube-tie-window-log-limit-closed-form: for every \(m\ge3\), \(f^{\log}_m=\kappa_mc^{a}(c-1)^{b}\,g_m\), with \(\kappa_m\ne0\) and \(S=m^3+m^2-1\), \(A=m^2+m+1\), \(B=2m+1\), where
+\[g_m(c)=\tfrac{S+A}2\,c^{d+1}+\tfrac{S-A}2\,c^{d}+\tfrac{S+B}2\,c+\tfrac{S-B}2=\tfrac{m(m+1)^2}2c^{d+1}+\tfrac{m^3-m-2}2c^{d}+\tfrac{m(m^2+m+2)}2c+\tfrac{(m+1)(m^2-2)}2.\]</li>
+<li>lem:cube-tie-window-four-term-stability: for every \(m\ge2\), \(g_m\) has all \(d+1\) zeros in the open unit disc.</li>
+</ul>
+<p><strong>Proof of the lemma.</strong> Write \(\alpha,\beta=(S\pm A)/2\), \(\gamma,\delta=(S\pm B)/2\), \(F=c^d(\alpha c+\beta)\), \(G=\gamma c+\delta\), so \(g_m=F+G\). On \(|c|=1\), \(c=e^{i\theta}\),
+\[|F|^2-|G|^2=(\alpha^2+\beta^2-\gamma^2-\delta^2)+2(\alpha\beta-\gamma\delta)\cos\theta=\tfrac{A^2-B^2}2(1-\cos\theta).\]
+Indeed \(\alpha^2+\beta^2=(S^2+A^2)/2\), \(\gamma^2+\delta^2=(S^2+B^2)/2\), \(\alpha\beta=(S^2-A^2)/4\) and \(\gamma\delta=(S^2-B^2)/4\). For \(m\ge2\), \(A&gt;B&gt;0\), so \(|G|&lt;|F|\) on the circle except at \(c=1\), where \(|G|=|F|=S\) and \(|g_m(1)|=2S&gt;0\). Hence \(|g_m-F|=|G|&lt;|F|+|g_m|\) everywhere on \(|c|=1\). By the symmetric form of Rouché's theorem (Estermann; Glicksberg), \(g_m\) and \(F\) have equally many zeros in the disc. \(F\) has \(d\) zeros at \(0\) and one at \(-\beta/\alpha\), with \(|\beta|&lt;\alpha\) because \(S,A&gt;0\). So all \(d+1\) zeros of \(g_m\), its full degree, lie inside. \(\square\)</p>
+<p><strong>Computation.</strong> research/tools/bmd_tie_window.gp (option LOG0) builds \(M_m\) exactly over \(\mathbb Q[c]\) for \(m=3,\ldots,7\) (research/results/bmd-20261006-v/log-limit-terms.txt).</p>
+<ul>
+<li>The stripped \(f^{\log}_m\) has exactly four nonzero terms, in degrees \(0\), \(1\), \(d\), \(d+1\). After division by the content, the coefficients are \(\mp(14,21,11,24)\), \((35,44,29,50)\), \((69,80,59,90)\), \((119,132,104,147)\), \((188,203,167,224)\). These are exactly \(\pm g_m\) for \(m=3,\ldots,7\).</li>
+<li>The exact Schur–Cohn test passes.</li>
+<li>The stripped powers \((a,b)\) of \(c\) and \(c-1\) of \(\Delta_{2m}^{\log}\), \(\Delta_{2m+1}^{\log}\) and \(f^{\log}_m\) are all \((12,9)\), \((28,16)\), \((55,25)\), \((96,36)\), \((154,49)\). These equal the powers at \(\lambda=3/2\) where recorded (\(m\le6\)), and \(\deg g_m=d+1\) equals the degree of \(\tilde f_m\) at \(\lambda=3/2\).</li>
+<li>Control: at \(\lambda=1/1000\), \(\tilde f_m^{(\lambda)}\) is stable for \(m=3,\ldots,6\) (log-limit.txt; the \(m=7\) control timed out).</li>
+</ul>
+<p>The closed form was fitted to these five values. Each coefficient is a cubic in \(m\), determined by four values, so the fit is tested by one further value per coefficient.</p>
+<p><strong>Outcome.</strong> The exponent homotopy has a provable starting point, given the closed form and two hypotheses for small \(\lambda&gt;0\). First, the exact powers \(a,b\) of \(c\) and \(c-1\) in \(f_m^{(\lambda)}\) equal those of the limit. Second, the degree of \(\tilde f_m^{(\lambda)}\) stays \(d+1\). Neither is proved. The control at \(\lambda=1/1000\), \(m\le6\), is consistent with both.</p>
+<p>The degree is not a separate issue. By step 1 of the <a href="#entry-2026-10-06-cube-tie-window-schur-stability">stability criterion</a>, \(\Delta_J(1/c)=\pm c^{e_J}\Delta_J(c)\), with \(e_J\) and the sign independent of \(\lambda\). So \(\deg\Delta_J=-e_J-\operatorname{val}_c\Delta_J\) for every \(\lambda\) and in the limit. Zeros escaping to infinity would mirror a drop of a \(c\)-valuation, which for small \(\lambda\) can only fall below the limit's. The leading coefficient is then controlled by continuity from \(\alpha\ne0\).</p>
+<p>Under these hypotheses strict stability, an open condition, gives \(\tilde f^{(\lambda)}_m\) stable for all small \(\lambda\). By the circle-crossing lemma it stays stable on any subinterval of \((0,1)\) on which the powers and degree remain constant and the last two minors have no common zero on the unit circle minus \(\{1\}\).</p>
+<p>The homotopy does not reach \(3/2\). Every window degenerates at \(\lambda=1\), so the interval \((1,2)\) needs its own starting point, the limit \(\lambda\to1^+\) (or \(2^-\)), which is not computed.</p>
+<p>The four-term sparsity of the limit is unexplained. Whether each minor is sparse, or only their sum, was not checked.</p>
+<p><strong>Correction.</strong> In the <a href="#entry-2026-10-06-cube-tie-window-circle-crossing">circle-crossing entry</a> the stripped powers are listed as \([a,b]=[9,12],[16,28],[25,55]\) for \(m=3,4,5\), with \(a\) the power of \(c\). The data give \(c^{12}(c-1)^9\), \(c^{28}(c-1)^{16}\) and \(c^{55}(c-1)^{25}\), so the pairs are swapped there. The tool prints the exponents in the order of PARI's factorization, \(c-1\) before \(c\). This does not affect that entry's argument, which uses only constancy across \(\lambda\).</p>
+<p><strong>Remaining gap.</strong> Prove the closed form, for instance via Cauchy-type determinants for the coefficients \(c^k/k\). Control the degree for small \(\lambda\). Compute the \(\lambda\to1^+\) limit and an analogous closed form. Exclude common zeros on the circle along \((1,3/2]\). Also open: the tied-pair valuation lemma, multiple ties, compactness and non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-circle-crossing; lem:cube-tie-window-stability-criterion; conj:cube-tie-window-stable-all-exponents.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the identity \(|F|^2-|G|^2=\frac{A^2-B^2}2(1-\cos\theta)\), the symmetric Rouché step, and \(m=2\) (\(g_2=9c^2+10c+3\), with \(|\text{zeros}|^2=1/3\));</li>
+<li>the \(\lambda\to0\) expansion and the need for \(m\ge3\);</li>
+<li>all five coefficient tuples against \(g_m\), and the powers against \(\lambda=3/2\).</li>
+</ul>
+<p>Its fixes are applied: the Outcome no longer implies the small-\(\lambda\) hypotheses are proved, degree control is recast as valuation control, the homotopy hypotheses are stated in full, and a superfluous condition is dropped. It also found the swapped exponent pairs in the previous entry, corrected above. Status: working proof of the four-term lemma; the closed form is a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-v">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 18.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 59.59 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 5.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 55.91 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 17.31 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
