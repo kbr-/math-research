@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-tie-stability-review">tie stability review</a> finds the \(\lambda\to0\) closed form confirmed at \(m=8\), and the two log minors are sparse on their own.</p>
-<p>Next: read off closed forms of the two sparse log minors, with \(4\) and \(2\) terms, and prove them by row reduction of the Cauchy-like log matrix. That proves conj:cube-tie-window-log-limit-closed-form. Then compute the \(\lambda\to1^+\) limit.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-tie-window-log-minors">log minors have closed forms</a>: \(E(c^d+1)\) and \(\alpha(c^{d+1}+1)+\gamma(c^d+c)\), exact for \(m\le7\).</p>
+<p>Next: prove the square closed form. Show that the log Hermite–Padé system has a solution exactly when \(c^d=-1\), by finding the symmetry or explicit solution behind it, and evaluate the determinant's normalization. Then the second minor, and then the \(\lambda\to1^+\) start.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -54336,6 +54336,53 @@ Indeed \(\alpha^2+\beta^2=(S^2+A^2)/2\), \(\gamma^2+\delta^2=(S^2+B^2)/2\), \(\a
 <tr><td>Computation design and coding</td><td class="elapsed">46.06 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.12 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5 min 36.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-window-log-minors" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-tie-stability-review:1" data-claims="conj:cube-tie-window-log-minor-closed-forms">
+<h3>6 October 2026 — Tie window log minors: in the λ → 0 limit the square minor is a multiple of c^d + 1 and the other a symmetric four-term polynomial, so the limit zeros are the d-th roots of −1</h3>
+<p class="entry-meta">Conjecture for every m ≥ 3, exact for 3 ≤ m ≤ 7. It refines the four-term closed form into one closed form per minor. Tie window log minors cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), the obstacle of the <a href="#entry-2026-10-06-cube-tie-stability-review">tie stability review</a>: a proof of conj:cube-tie-window-log-limit-closed-form. Its Krattenthaler lead found the two log minors sparse on their own. What are their closed forms?</p>
+<p><strong>General statement.</strong> conj:cube-tie-window-log-minor-closed-forms. Fix \(m\ge3\), \(d=\binom m2\), \(E=\binom{m+2}2\), \(\alpha=\frac{m(m+1)^2}2\), \(\gamma=\frac{m(m^2+m+2)}2\). For the log matrix \(M_m\) of the <a href="#entry-2026-10-06-cube-tie-window-log-limit">log-limit entry</a> there are \(\kappa_m\ne0\) and the exponents \(a,b\) of that entry with
+\[\Delta^{\log}_{2m+1}=\kappa_mc^a(c-1)^b\,E\,(c^d+1),\qquad \Delta^{\log}_{2m}=-\kappa_mc^a(c-1)^b\bigl(\alpha(c^{d+1}+1)+\gamma(c^d+c)\bigr).\]</p>
+<p><strong>Consequences.</strong></p>
+<ul>
+<li>The sum is \(-\kappa_mc^a(c-1)^b\bigl(\alpha c^{d+1}+(\gamma-E)c^d+\gamma c+(\alpha-E)\bigr)\). Here \(\gamma-E=\frac{m^3-m-2}2\) and \(\alpha-E=\frac{(m+1)(m^2-2)}2\). This is \(-\kappa_mc^a(c-1)^bg_m\), so the conjecture implies conj:cube-tie-window-log-limit-closed-form. With lem:cube-tie-window-four-term-stability, the limit stability polynomial is stable.</li>
+<li>In the limit, the zeros of the square (tie) minor off \(\{0,1\}\) are exactly the \(d\)-th roots of \(-1\): simple, equally spaced on the unit circle. This is the \(\lambda\to0\) form of conj:cube-tie-square-window-unit-circle.</li>
+<li>The stripped second minor \(D^{\log}=\alpha(c^{d+1}+1)+\gamma c(c^{d-1}+1)\) is palindromic. On \(c=e^{i\theta}\),
+\[e^{-i(d+1)\theta/2}D^{\log}=2\alpha\cos\tfrac{(d+1)\theta}2+2\gamma\cos\tfrac{(d-1)\theta}2,\qquad e^{-id\theta/2}(c^d+1)=2\cos\tfrac{d\theta}2.\]
+At the zeros \(\theta_j=(2j+1)\pi/d\) of the second function, the first equals
+\[2\alpha\cos\bigl(\tfrac{(2j+1)\pi}2+\tfrac{\theta_j}2\bigr)+2\gamma\cos\bigl(\tfrac{(2j+1)\pi}2-\tfrac{\theta_j}2\bigr)=(-1)^{j+1}\,2(\alpha-\gamma)\sin\tfrac{\theta_j}2.\]
+Since \(\alpha-\gamma=\frac{m(m-1)}2=d&gt;0\) and \(\sin(\theta_j/2)&gt;0\) on \((0,2\pi)\), its sign alternates. So between consecutive zeros of the tie minor the second minor changes sign, and the limit pair interlaces strictly on \((0,2\pi)\) (conj:cube-tie-window-interlacing at \(\lambda\to0\)).</li>
+</ul>
+<p><strong>Computation.</strong> research/tools/bmd_tie_window.gp (option LOG0) prints the terms of both stripped minors over their common content for \(m=3,\ldots,7\) (research/results/bmd-20261006-x/log-minor-terms.txt). They are, up to a common sign:</p>
+<ul>
+<li>\(\Delta^{\log}_{2m}\): \(\pm(24,21,21,24)\), \((50,44,44,50)\), \((90,80,80,90)\), \((147,132,132,147)\), \((224,203,203,224)\) in degrees \(0,1,d,d+1\);</li>
+<li>\(\Delta^{\log}_{2m+1}\): \(\mp(10,10)\), \((15,15)\), \((21,21)\), \((28,28)\), \((36,36)\) in degrees \(0,d\).</li>
+</ul>
+<p>These are \(\alpha,\gamma\) and \(E\) exactly. Both minors carry the stripped powers \((a,b)\) of the log-limit entry. At \(m=8\), the sum predicted by these forms was confirmed in the review.</p>
+<p><strong>Proof attempt.</strong> \(\Delta^{\log}_{2m+1}=0\) means that \(S+P\log(1+cT)+Q\log(1+T)+\alpha'\log(1+cT)\log(1+T)=O(T^{d+2m+1})\) has a nonzero solution, with \(\deg S&lt;d\) and \(\deg P,\deg Q&lt;m\).</p>
+<ul>
+<li>Differentiating \(d\) times removes \(S\), and the \(P\) and \(Q\) terms become rational with denominators \((1+cT)^d\) and \((1+T)^d\), since \(m\le d\).</li>
+<li>The product term keeps \(\alpha'\bigl(\log(1+cT)\,\partial^d\log(1+T)+\partial^d\log(1+cT)\,\log(1+T)\bigr)\) plus rational terms.</li>
+<li>The predicted vanishing exactly at \(c^d=-1\) suggests a symmetry \(T\mapsto\omega T\) that exchanges the two logarithms when \(c^d=-1\). This was not found.</li>
+</ul>
+<p>The closed forms remain conjectural.</p>
+<p><strong>Remaining gap.</strong> Prove the two closed forms, for instance by a Cauchy-type evaluation of the \(1/(k-n)\) matrix with one product row. Then the \(\lambda\to1^+\) start, the homotopy on \((1,3/2]\), and the other cone-route gaps.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-tie-window-log-limit-closed-form; lem:cube-tie-window-four-term-stability; conj:cube-tie-window-interlacing; conj:cube-tie-square-window-unit-circle.</p>
+<p><strong>Verification gate.</strong> Exact computation over \(\mathbb Q[c]\). The consequences are short algebra stated with their derivations. The trigonometric identity uses \(\frac{(d\pm1)\theta_j}2=\frac{(2j+1)\pi}2\pm\frac{\theta_j}2\). The closed forms are a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 25.49 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">40.70 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">36.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">50.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 17.32 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

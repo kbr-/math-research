@@ -124,7 +124,10 @@ foreach(eval(getenv("MS")), m,
       emit(Str("    nonzero terms (exponent, coefficient): ", apply(k -> [k, polcoef(g, k)], nz)));
       \\ cycle bmd-20261006-w: sparsity of the two minors separately
       my(st(P) = P / ('c^valuation(P, 'c) * ('c - 1)^valuation(P, 'c - 1)));
-      emit(Str("    stripped minors: degrees ", [poldegree(st(d1)), poldegree(st(d2))], ", nonzero terms ", [#select(x -> x != 0, Vec(st(d1))), #select(x -> x != 0, Vec(st(d2)))]))));
+      emit(Str("    stripped minors: degrees ", [poldegree(st(d1)), poldegree(st(d2))], ", nonzero terms ", [#select(x -> x != 0, Vec(st(d1))), #select(x -> x != 0, Vec(st(d2)))]));
+      \\ cycle bmd-20261006-x: the terms of both stripped minors over a common content, and the common scalar
+      my(s1 = st(d1), s2 = st(d2), cc = content([s1, s2]), tm(P) = apply(k -> [k, polcoef(P / cc, k)], select(k -> polcoef(P, k) != 0, [0 .. poldegree(P)])));
+      emit(Str("    Delta_2m terms ", tm(s1), "; Delta_2m+1 terms ", tm(s2), "; common scalar ", factor(cc)))));
   \\ KERNEL=1 (cycle bmd-20261006-w): zeros of the Cramer kernel polynomial V_c at c = -1 (the real Angelesco point).
   if (getenv("KERNEL") == "1",
     my(Wk = subst(winmat(m, 2 * m + 2), 'c, -1), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wk, "..", setminus([1 .. 2 * m + 2], [j])))));
