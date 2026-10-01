@@ -32,6 +32,11 @@ foreach(eval(getenv("MS")), m,
     forsubset([2 * m + 3, 2 * m + 1], S, my(d = matdet(vecextract(W, "..", Vec(S)))); if (d != 0 && poldegree(strip01(d)) == 0,
       listput(pure, setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1])));
     emit(Str("  pure minors (dropped window columns, 0-based): ", Vec(pure))));
+  \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
+  if (getenv("SIGNS") == "1",
+    foreach([2, 3, 1/2], c0, my(sg = List());
+      forsubset([2 * m + 3, 2 * m + 1], S, listput(sg, sign(subst(matdet(vecextract(W, "..", Vec(S))), 'c, c0))));
+      emit(Str("  c=", c0, ": minors positive ", #select(x -> x > 0, Vec(sg)), ", negative ", #select(x -> x < 0, Vec(sg)), ", zero ", #select(x -> x == 0, Vec(sg))))));
 );
 }
 quit;
