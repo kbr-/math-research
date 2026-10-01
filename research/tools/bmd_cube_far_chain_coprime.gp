@@ -93,6 +93,83 @@ if (PAIRS != 0 && PAIRS != "",
       precision(inter / min(ia, ib), 4) * 1.)));
   quit);
 }
+\\ XSECTOR mode (cycle bmd-20261004-p; lem:cube-far-x-sector-decomposition, conj:cube-far-x-sector-balance): x-side
+\\ ladder. With n = R_e, W_k corresponds off {0,-1} to the Casorati determinant det[c_(i,n+s)(r)] of the Taylor
+\\ coefficients at x = r of the k' = 1+R_l+4e+4l+4el non-polynomial block functions. The 4l mixed rows
+\\ (1+x)^(-5/2) x^(1/2-4l+j) split as c_N = I_0(N) + I_-1(N), I_-1 the integral of f(y)(y-r)^(-N-1)/(2 pi i) over a
+\\ hairpin loop around the cut (-oo,-1] (circle of radius RHO about -1), with y^beta cut along [0,oo) (arg in (0,2pi))
+\\ and (1+y)^alpha principal. Sector sums E_s = sum over |S| = s of the determinants with the rows in S taking I_0.
+\\ At each root r of W_k (sampled, every SKIP-th): |E_s| for s = 0..4l, the two largest indices, the ratio of the third
+\\ largest to the largest, and the control |sum E_s| / max |E_s| (vanishes at roots iff the x-side ladder holds).
+\\ Orientation and branch control: for the pure row (1+x)^(-7/2) the loop integral must equal its Taylor coefficient.
+XSECTOR = getenv("XSECTOR");
+brpow(y, b) = exp(b * if (arg(y) < 0, log(y) + 2 * Pi * I, log(y)));
+xrows(e, l) = { my(L = List(), Rl = Rn(l));
+  listput(L, [-3, 0, 0]);
+  for (j = 0, Rl - 1, listput(L, [0, -(Rl + 2) + j, 0]));
+  for (j = 0, 4 * e - 1, listput(L, [-7/2, j, 0]));
+  for (j = 0, 4 * l - 1, listput(L, [-5/2, 1/2 - 4 * l + j, 1]));
+  for (j = 0, 4 * e * l - 1, listput(L, [0, -7/2 + 4 * e - 4 * e * l + j, 0]));
+  Vec(L); }
+\\ Taylor coefficients c_N, N = N0..N1, of (1+x)^g x^b at r (branches as above)
+taylorc(g, b, r, N0, N1) = { my(h = 'h, S = (1 + r)^g * (1 + h / (1 + r) + O(h^(N1 + 1)))^g * brpow(r, b) * (1 + h / r + O(h^(N1 + 1)))^b);
+  vector(N1 - N0 + 1, i, polcoef(S, N0 + i - 1, 'h)); }
+loopint(g, b, r, N0, N1, rho) = {
+  my(del = 1/10, Ap = -1 + rho * exp(I * (Pi - del)), Am = -1 + rho * exp(-I * (Pi - del)));
+  my(F = y -> (1 + y)^g * brpow(y, b) * vector(N1 - N0 + 1, i, (y - r)^(-(N0 + i))));
+  \\ lower ray from -oo to Am (u = (1-v)/v), circle from angle -(pi-del) to (pi-del), upper ray from Ap to -oo
+  my(low = intnum(v = 0, 1, F(Am - (1 - v) / v) / v^2));
+  my(circ = intnum(th = -(Pi - del), Pi - del, F(-1 + rho * exp(I * th)) * I * rho * exp(I * th)));
+  my(up = -intnum(v = 0, 1, F(Ap - (1 - v) / v) / v^2));
+  -(low + circ + up) / (2 * Pi * I); }  \\ the hairpin as parametrized runs clockwise about the cut
+\\ Per root r the cuts are the rays from -1 and from 0 pointing directly away from r (distinct rays from the common centre
+\\ r, so disjoint); powers are taken with those cuts, so the hairpin keeps distance about |1+r| from r and no precision is
+\\ lost. cpow(z, a, u) = z^a with cut along the ray {s u : s > 0} (a fixed constant factor u^a per row).
+cpow(z, a, u) = u^a * brpow(z / u, a);
+taylorb(g, b, r, u1, u0, N0, N1) = { my(h = 'h, S = cpow(1 + r, g, u1) * (1 + h / (1 + r) + O(h^(N1 + 1)))^g * cpow(r, b, u0) * (1 + h / r + O(h^(N1 + 1)))^b);
+  vector(N1 - N0 + 1, i, polcoef(S, N0 + i - 1, 'h)); }
+loopb(g, b, r, u1, u0, N0, N1, P = -1) = {
+  my(uu = if (P == -1, u1, u0), rho = abs(P - r) / 50, eps = rho / 100, F = y -> cpow(1 + y, g, u1) * cpow(y, b, u0) * vector(N1 - N0 + 1, i, (y - r)^(-(N0 + i))));
+  if (rho >= 1/2, error("hairpin circle would reach the other singularity"));
+  my(Y = w -> P + uu * w, wl = sqrt(rho^2 - eps^2) - I * eps, wu = sqrt(rho^2 - eps^2) + I * eps, th0 = arg(wu));
+  \\ in w = (y+1)/u1 the cut is [0, oo): lower ray from +oo to wl, circle through the negative side to wu, upper ray to +oo
+  my(low = -intnum(v = 0, 1, F(Y(wl + (1 - v) / v)) * uu / v^2));
+  my(circ = intnum(th = -th0, -(2 * Pi - th0), F(Y(rho * exp(I * th))) * uu * I * rho * exp(I * th)));
+  my(up = intnum(v = 0, 1, F(Y(wu + (1 - v) / v)) * uu / v^2));
+  (low + circ + up) / (2 * Pi * I); }
+{
+if (XSECTOR != 0 && XSECTOR != "",
+  default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 80));
+  my(skip = if (getenv("SKIP") != "" && getenv("SKIP") != 0, eval(getenv("SKIP")), 1));
+  foreach (eval(XSECTOR), el,
+    my(e = el[1], l = el[2], n = Rn(e), rows = xrows(e, l), K = #rows, T = tpoly(chain(e, l, Rn(l)), 0)[1], rt = polroots(T));
+    my(mix = select(i -> rows[i][3] == 1, [1..K]), nm = #mix, out = List(), ctl = 0., cerr = 0., serr = 0., nreal = 0);
+    forstep (q = 1, #rt, skip,
+      my(r = rt[q], u1 = (-1 - r) / abs(1 + r), u0 = -r / abs(r));
+      if (abs(imag(r)) < 10^-20, nreal++; next);
+      my(cc = taylorb(-7/2, 0, r, u1, u0, n, n + 3), ci = loopb(-7/2, 0, r, u1, u0, n, n + 3), sg = 1);
+      \\ orientation fixed once by the control row, then its error recorded
+      if (normlp(ci + cc) < normlp(ci - cc), sg = -1);
+      cerr = max(cerr, normlp(sg * ci - cc) / normlp(cc));
+      my(C = matrix(K, K), I1 = vector(K));
+      for (i = 1, K, my(tt = taylorb(rows[i][1], rows[i][2], r, u1, u0, n, n + K - 1)); for (s = 1, K, C[i, s] = tt[s]));
+      foreach (mix, i, I1[i] = sg * loopb(rows[i][1], rows[i][2], r, u1, u0, n, n + K - 1));
+      my(i1 = mix[1], z0 = sg * loopb(rows[i1][1], rows[i1][2], r, u1, u0, n, n + 3, 0), cz = taylorb(rows[i1][1], rows[i1][2], r, u1, u0, n, n + 3));
+      serr = max(serr, normlp(I1[i1][1..4] + z0 - cz) / normlp(cz));
+      my(E = vector(nm + 1));
+      forsubset (nm, S,
+        my(M = C);
+        for (a = 1, nm, my(i = mix[a]); if (setsearch(Set(S), a), M[i, ] = C[i, ] - I1[i], M[i, ] = I1[i]));
+        E[#S + 1] += matdet(M));
+      my(A = apply(abs, E), srt = vecsort(A, , 5), mx = A[srt[1]]);
+      my(cr = abs(vecsum(E)) / mx); ctl = max(ctl, cr);
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., srt[1] - 1, srt[2] - 1, precision(A[srt[3]] / mx, 4) * 1., precision(cr, 3) * 1.]));
+    emit(Str("XSECTOR (e,l)=(", e, ",", l, "): n=R_e=", n, ", rows ", K, ", mixed ", nm, ", deg W ", poldegree(T),
+      "; max control error of the loop on (1+x)^(-7/2): ", precision(cerr, 4) * 1., "; max split error |I_-1 + I_0 - c| / |c| on the first mixed row (0-cut hairpin): ", precision(serr, 4) * 1., "; real roots skipped: ", nreal));
+    emit(Str("  per sampled root [log|t|, largest s, second s, third/largest, |sum E_s|/max|E_s|]: ", Vec(out)));
+    emit(Str("  max |sum E_s| / max|E_s| = ", precision(ctl, 4) * 1.)));
+  quit);
+}
 ROOTS = getenv("ROOTS");
 {
 if (ROOTS != 0 && ROOTS != "",

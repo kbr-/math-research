@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-two-ladders-review">two-ladders review</a> found that chain coprimality has no separation margin. It also found that the derivative trick in \(x\) gives a second ladder, with \(4l\) mixed rows and bands in \(t^{R_e}\), \(t=x/(1+x)\). This matches the last step's four-circle law.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). <a href="#entry-2026-10-04-cube-last-far-sector-balance">Last-step sector balance</a>: on the \(x\)-side ladder, most roots of the last-step far polynomial lie where two consecutive Cauchy sector sums \(E_i,E_{i+1}\) dominate, with \(i\) fixed by the circle. This is the exact form of the four-circle law, checked at \(e=2,4\).</p>
 <p>Next:</p>
 <ol>
-<li>Prove the \(x\)-side sector decomposition. At \(l=1\), \(e=4,5\), test whether its five sector sums dominate in consecutive pairs on the four circles, using numerical keyhole integrals at sample points.</li>
-<li>If they do, derive the leading terms and state the two-term band equation for the last step.</li>
-<li>The \(y\)-side bands for \(l\gg e\), and the steps with \(e\sim l\), follow.</li>
+<li>Derive the leading asymptotics of \(E_s\) in \(N=R_e\): which determinants dominate each sum, and the ratio \(E_{i+1}/E_i\) as \(c_i(x)\,t^{\pm N}\) with slowly varying \(c_i\). Check them against the computed \(E_s\) at \(e=4\).</li>
+<li>With those, state the band equations and apply the log-derivative criterion on each circle.</li>
+<li>Treat the \(O(e)\) roots off the circles separately.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47471,6 +47471,75 @@ where \(D_S\) is the \(k\times k\) determinant \(\det[c_{i,m+s}]\) with each mix
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 1.64 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 0.02 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">57.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-sector-balance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-far-two-ladders-review:1" data-claims="lem:cube-far-x-sector-decomposition conj:cube-far-x-sector-balance">
+<h3>4 October 2026 — Last-step sector balance: on the x-side ladder the four circles are exact two-term balances of consecutive Cauchy sector sums</h3>
+<p class="entry-meta">Working proof of the x-side sector decomposition (derivative order R_e, 4l mixed rows, cuts pointing away from the point). At the last step, e = 4, consecutive sector sums E_i, E_(i+1) dominate at most sampled roots, i = 0..3 by circle; conjectured for all e. Last-step sector balance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step \(l=1\), which has no reduction. The <a href="#entry-2026-10-04-cube-far-two-ladders-review">two-ladders review</a> proposed that the four-circle law (conj:cube-last-far-four-circles) is a balance between consecutive sector sums of the \(x\)-side ladder. Two exact splittings, the idealized one and the \(t\)-degree split, had failed as models. Does the canonical Cauchy split succeed?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-x-sector-decomposition</code> for every step; <code>conj:cube-far-x-sector-balance</code> for the last step at every \(e\).</p>
+<p><strong>Lemma (x-side sector decomposition).</strong> Let \(F\) be the span of the far blocks other than \(\mathcal P_{&lt;R_e}(x)\), of dimension \(k'=1+R_l+4e+4l+4el\), and \(n=R_e\).</p>
+<ol>
+<li>Off \(\{0,-1,\infty\}\), \(W_k\) has the same roots, with multiplicity, as \(\operatorname{Wr}_x(F^{(n)})\), which is \(\prod_{s&lt;k'}(n+s)!\,\det[c_{i,n+s}(r)]\) at \(x=r\). Here \(c_{i,N}\) are the Taylor coefficients at \(r\) of the block functions.</li>
+<li>The rows singular at both \(0\) and \(-1\) are exactly the \(4l\) mixed rows \((1+x)^{-5/2}x^{1/2-4l+j}\).</li>
+<li>Fix \(r\notin\mathbb R\) (for real \(r\) outside \([-1,0]\) the two rays below overlap), and take as cuts the rays from \(-1\) and from \(0\) pointing directly away from \(r\). They are distinct rays from the common centre \(r\), so they are disjoint. Then each mixed row splits exactly, \(c_N=I_0(N)+I_{-1}(N)\), into keyhole integrals around the two cuts. So \(\det[c_{i,n+s}(r)]=\sum_{s=0}^{4l}E_s(r)\), where \(E_s\) sums the \(\binom{4l}{s}\) determinants in which \(s\) mixed rows take their \(I_0\)-parts and the others their \(I_{-1}\)-parts.</li>
+</ol>
+<p><strong>Proof.</strong> (1) This is the classical identity \(\operatorname{Wr}(1,x,\ldots,x^{n-1},F)=\prod i!\cdot\operatorname{Wr}(F^{(n)})\). \(F\) contains no nonzero polynomial: its components \((1+x)^{-7/2}\mathcal P_{&lt;4e}\), \((1+x)^{-5/2}x^{1/2-4l}\mathcal P_{&lt;4l}\) and \(x^{-7/2+4e-4el}\mathcal P_{&lt;4el}\) have the distinct nontrivial monodromy characters \((1,-1)\), \((-1,-1)\), \((-1,1)\) at \((0,-1)\). Its rational part \(\langle(1+x)^{-3}\rangle\oplus x^{-(R_l+2)}\mathcal P_{&lt;R_l}\) has poles. So \(F^{(n)}\) has dimension \(k'\).</p>
+<p>(2) is read off the blocks.</p>
+<p>(3) A mixed row is analytic off the two cuts, with the powers taken with those cuts. At infinity it is \(O(|x|^{j-2-4l})=O(|x|^{-3})\), so the Cauchy integral for \(c_N\) deforms to the two keyhole integrals for every \(N\ge0\). The rest is multilinearity in the mixed rows, as in lem:cube-far-sector-decomposition. \(\square\)</p>
+<p>For each \(r\), the cuts pointing away from \(r\) keep the keyhole contours at distance about \(|r|\) and \(|1+r|\) from \(r\). That is what makes the numerical split stable. An earlier run with fixed cuts lost about \(14\) digits near \(-1\) and gave spurious \(4:6:4\) patterns.</p>
+<h4>Check: the last step</h4>
+<p>Here \(W_{b-1}\) is \(W_k\) at \(l=1\). research/tools/bmd_cube_far_chain_coprime.gp (xsector mode, new) proceeds as follows:</p>
+<ul>
+<li>it computes \(W_{b-1}\) exactly over \(\mathbb Q\) and its roots;</li>
+<li>at every third non-real root it evaluates the Taylor coefficients and the hairpin integrals \(I_{-1}\) of the four mixed rows, with the cuts of part 3 and \(I_0=c-I_{-1}\);</li>
+<li>it forms \(E_0,\ldots,E_4\);</li>
+<li>it records, per root, the two largest \(|E_s|\) and the ratio of the third largest to the largest.</li>
+</ul>
+<p>Controls, at \(160\) digits (research/results/bmd-20261004-p/x-sector-balance.txt):</p>
+<ul>
+<li>The split itself: on the first mixed row, a separate hairpin around the \(0\)-cut gives \(I_0\), and \(|I_{-1}+I_0-c|/|c|\le10^{-38}\) at \(e=2\) and \(\le1.7\cdot10^{-29}\) at \(e=4\), over all sampled roots. The hairpin radius is \(|P-r|/50\), asserted below \(1/2\), so it never reaches the other singularity.</li>
+<li>The orientation: the hairpin of the pure row \((1+x)^{-7/2}\) reproduces its Taylor coefficients to \(6\cdot10^{-114}\).</li>
+<li>Part 1: \(|\sum_sE_s|/\max|E_s|\le1.1\cdot10^{-100}\). Since \(\sum_sE_s=\det[c]\) whatever the split, this checks the \(x\)-side ladder, not the split.</li>
+</ul>
+<p>Two real roots at each \(e\) are skipped. An earlier \(80\)-digit run with fixed cuts had included them, and they were the only values that changed with the precision.</p>
+<p>Results at \(e=4\) (\(N=R_e=28\), degree \(148\), \(48\) sampled non-real roots):</p>
+<ul>
+<li>\(38\) roots show a two-term balance: the two largest sums are consecutive, and the third is at most \(2.5\cdot10^{-4}\) of the largest, mostly \(10^{-7}\) to \(10^{-5}\);</li>
+<li>the balancing pair is fixed by the circle, with \(t=x/(1+x)\):
+<ul>
+<li>\((E_0,E_1)\) at \(\log|t|\in[0.46,0.64]\), \(9\) roots;</li>
+<li>\((E_1,E_2)\) at \([0.07,0.15]\), \(9\) roots;</li>
+<li>\((E_2,E_3)\) at \([-0.33,-0.24]\), \(8\) roots;</li>
+<li>\((E_3,E_4)\) at \([-0.80,-0.60]\), \(12\) roots;</li>
+</ul></li>
+<li>the other \(10\) lie in \(\log|t|\in[-0.40,0.13]\), with third-to-largest ratios \(0.10..0.46\).</li>
+</ul>
+<p>The four-circle entry counts \(8e-10=22\) roots of \(W_{b-1}\) outside the circles, \(22/148\) of all roots. The \(10\) here are \(10/48\) of the sample.</p>
+<p>At \(e=2\) (\(13\) sampled non-real roots), \(7\) balance with ratio at most \(2.5\cdot10^{-4}\). Again all four pairs occur, in the same order in \(\log|t|\): \((E_0,E_1)\) at \(1.28..1.49\), \((E_1,E_2)\) at \(0.26..0.31\), \((E_2,E_3)\) at \(-0.74\), \((E_3,E_4)\) at \(-1.85\).</p>
+<p><strong>Conjecture (last-step sector balance).</strong> For every \(e\ge2\), all but \(O(e)\) non-real roots \(r\) of \(W_{b-1}\) satisfy the following, with \(\varepsilon_e\to0\): with the cuts of part 3, there is \(i\in\{0,1,2,3\}\) with \(|E_s(r)|\le\varepsilon_e\max(|E_i(r)|,|E_{i+1}(r)|)\) for \(s\notin\{i,i+1\}\). Here \(i\) is determined by the circle and increases as \(|t|\) decreases.</p>
+<p>At a root, \(\sum_sE_s=0\), so the conjecture says that \(E_i+E_{i+1}\) is small there. Leading asymptotics of the \(E_s\), uniform in \(N=R_e\), are needed to place the roots on the circles. We propose the conjecture as the canonical form of conj:cube-last-far-iv-splitting-mechanism. With those asymptotics, the log-derivative criterion might then give simplicity on each circle.</p>
+<p><strong>What this gives.</strong> At the last step there is an exact expansion whose consecutive terms balance on the observed circles, numerically at \(e=2,4\). It is a candidate for the factor the analytic route lacked. Still missing:</p>
+<ul>
+<li>the leading asymptotics of the \(E_s\), with a slowly varying ratio \(E_{i+1}/E_i\sim c_i(x)t^{\pm N}\);</li>
+<li>a treatment of the \(O(e)\) roots off the circles, and of the real roots;</li>
+<li>the step from balance to simplicity.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-sector-decomposition and lem:cube-far-derivative-ladder (the \(y\)-side analogues); conj:cube-last-far-four-circles and conj:cube-last-far-iv-splitting-mechanism; the refuted balance models.</p>
+<p><strong>Verification gate.</strong> I re-read the sector decomposition and ladder lemmas, the four-circle and splitting conjectures, and the refuted balance models. One fresh-context medium reviewer checked parts 1 and 3, the code (row list, subset sums, orientation) and every count against the files. Verdict: pass with corrections. Its main gap: the sum control cannot validate the split, since \(\sum_sE_s=\det[c]\) holds whatever the split is, and the orientation control never used the \(0\)-cut. A direct split check with an independent \(0\)-cut hairpin was added, and it passes. Real roots, where the cuts overlap, are now excluded. They explain the one value that changed with the precision. The conjecture names the cuts, and four overclaims were softened.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-p">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 54.28 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 20.92 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 38.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 3.44 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 51.17 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
