@@ -59,6 +59,19 @@ foreach(eval(getenv("SIZES")), sz,
   my(rowsP = vector(nr, i, sum(k = 1, nc, coefs[1][i, k] * m^(k - 1))));
   my(pole = vector(3, f, my(F = [Q, X, Z][f], gF = [2 * P + 4, 2 * P + 2, 2 * P + 2][f]); gF - vecmin(apply(h -> if (h == 0, 10^6, valuation(h, F)), rowsP))));
   emit(Str("sizes ", sz, ": pole orders along Q, X, Z (each a pair of points) ", pole, "; total ", 2 * vecsum(pole), " vs D - 1 = ", nr - 1));
+  \\ cycle bmd-20261004-zs: product model.  Cluster k (size s_k, centre w0) limit W_k = w0 <(T/w0^2)^u : u among the first
+  \\ s_k exponents with bet(u) != 0>.  Model space Pm = <1, T> + <f g : f in W_a, g in W_b>.  Compare with U: dim Pm, and
+  \\ rank of U + Pm (U inside Pm iff it equals dim Pm).
+  if (getenv("PRODUCT") != "" && getenv("PRODUCT") != 0,
+    my(supp = List(), u = 0); while (#supp < vecmax(sz), if (bet(u) != 0, listput(supp, u)); u++);
+    my(W = vector(3, k, vector(sz[k], q, w0[k] * (T / w0[k]^2)^supp[q])), fun = List([G * one, G * T]));
+    for (a = 1, 3, for (b = a, 3, for (i = 1, #W[a], for (j = 1, #W[b], listput(fun, G * W[a][i] * W[b][j])))));
+    my(ok2 = 1, dm = 0); foreach (fun, h, if (type(h) != "t_POL" && denominator(h) != 1, ok2 = 0));
+    if (!ok2, emit(Str("sizes ", sz, ": product model needs a larger G")),
+      dm = max(nc - 1, vecmax(apply(h -> poldegree(lift(h), m), Vec(fun))));
+      my(Mp = matrix(#fun, dm + 1, i, d, polcoef(lift(fun[i]), d - 1, m)), Mu = matrix(nr, dm + 1, i, d, if(d <= nc, coefs[1][i, d], 0 * one)));
+      my(rp = matrank(Mp), ru = matrank(concat(Mp~, Mu~)~));
+      emit(Str("sizes ", sz, ": product model dim ", rp, " (D = ", nr, "); dim(U + model) ", ru, if (ru == rp && rp == nr, " -> U EQUALS the product model", if (ru == rp, " -> U inside model", " -> U NOT inside model"))))));
   my(B0 = coefs[1], mov = vector(3, q, my(t = g^([5, 13, 29][q])); matrank(matrix(nr, nr, i, j, sum(d = j - 1, nc - 1, B0[i, d + 1] * binomial(d, j - 1) * t^(d - j + 1))))));
   emit(Str("sizes ", sz, " N = ", N, ", D = ", nr, ": saturation steps ", step, ", ranks ", Vec(ranks), "; generic Hasse jet ranks at m = g^5, g^13, g^29: ", mov,
     if (vecmin(mov) == nr, " (classical)", " (nonclassical)"))));

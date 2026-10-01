@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-complete">Three-centre limits are classical exactly when complete</a> on all fifteen multisets tested.</p>
-<p>Next: describe the saturated limit structurally. Test whether it is the span of products of per-cluster single-label limits, with each cluster's limit \(w_0\cdot\langle(T/w_0^2)^u\rangle\) over its first digit-supported exponents \(u\). If it is, compute its completeness for every split from that description.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The three-centre limit contains the <a href="#entry-2026-10-04-cube-three-centre-product-model">product span</a> but has \(3\) to \(12\) more directions from higher-order saturation. Completeness, which decides classicality, depends on them.</p>
+<p>Next: a route review. It weighs describing those higher-order rows, which are combinations whose low orders cancel, much like the coupled endpoint rows of the six-label limit, against returning to statement 3 or to the cube-free arithmetic. It also checks the time spent on certificates one size at a time.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49523,6 +49523,37 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.14 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 54.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-product-model" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="conj:cube-three-centre-product-model">
+<h3>4 October 2026 — The three-centre limit is not the span of products of per-cluster limits: that span lies inside it but misses 3 to 12 dimensions, supplied by higher-order saturation</h3>
+<p class="entry-meta">Refutation at N = 6..9 (eight multisets) of the product description of the three-centre limit; the product span is contained in the limit with codimension 3..12. Three centre product model cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-three-centre-complete">completeness criterion</a> needs a description of the saturated limit \(U\) for every split. The simplest candidate is the span of \(1\), \(T\) and all products \(fg\), with \(f,g\) in per-cluster limits. A cluster of size \(s\) at centre \(w_0\) would contribute \(W=w_0\langle(T/w_0^2)^u\rangle\), over the first \(s\) exponents \(u\) with \(\binom{1/2}u\not\equiv0\pmod3\): units digit \(0,1,2\), higher digits \(0,1\).</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-product-model (refuted): for every split, \(U=\langle1,T\rangle+\sum_{a\le b}W_aW_b\).</p>
+<p><strong>Computation.</strong> The PRODUCT mode of research/tools/bmd_three_centre_limit.gp builds the model functions times \(G\). It compares \(\dim\) of the model with \(\dim(U+\text{model})\) (research/results/bmd-20261004-zs/product-model.txt). Model dimension against \(D\):</p>
+<ul>
+<li>\(\{2,2,2\}\): \(14/17\); \(\{1,1,5\}\): \(20/23\); \(\{1,2,4\}\): \(19/23\); \(\{2,2,3\}\): \(18/23\);</li>
+<li>\(\{1,3,4\}\): \(23/30\); \(\{2,3,3\}\): \(22/30\);</li>
+<li>\(\{1,1,7\}\): \(31/38\); \(\{3,3,3\}\): \(26/38\).</li>
+</ul>
+<p>In every case \(\dim(U+\text{model})=D\), so the model lies inside \(U\).</p>
+<p><strong>Outcome.</strong> Refuted for classical and nonclassical splits alike. The products give a subspace of codimension \(3\) to \(12\). The remaining directions arise only at higher \(\varepsilon\)-orders of the saturation, where combinations of pair rows cancel and leave new functions, like the coupled endpoint rows of the six-label limit. The codimension does not separate classical from nonclassical splits: \(3\) for both \(\{2,2,2\}\) and \(\{1,1,5\}\). So completeness is decided by those higher-order rows.</p>
+<p><strong>Remaining gap.</strong> A description of the higher-order rows for every split. Without it, the three-centre route certifies statement 2's slice one size at a time, \(n=7,8,9\) so far.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-three-centre-complete-series; the per-cluster expansion of check:cube-three-centre-certificates.</p>
+<p><strong>Verification gate.</strong> A refutation by exact finite-field rank comparison. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 3.51 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">13.56 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 19.93 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 4.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
