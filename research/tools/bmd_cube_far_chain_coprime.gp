@@ -76,6 +76,23 @@ TESTS = getenv("TESTS"); EXACT = getenv("EXACT"); LADDER = getenv("LADDER");
 \\ ROOTS mode (cycle bmd-20261004-n; conj:cube-far-sector-circles): exact T_(R_l) over Q at (e, l) in ROOTS, its complex
 \\ roots, and the moduli |1+x| sorted, grouped where consecutive log-moduli differ by more than GAP (default 0.05); the
 \\ sector expansion predicts 4e groups of about R_l roots each near circles |1+x| = rho_i for l large against e.
+\\ PAIRS mode (route review bmd-20261004-o): exact roots of T_m and T_(m+1), m = R_l, at (e, l) in PAIRS; the minimum
+\\ distance between the two root sets against the minimum spacing inside each (equal-temperament picture: rung
+\\ coincidences come within about spacing / m).
+PAIRS = getenv("PAIRS");
+{
+if (PAIRS != 0 && PAIRS != "",
+  default(realprecision, 300);
+  foreach (eval(PAIRS), el,
+    my(e = el[1], l = el[2], m = Rn(l), A = polroots(tpoly(chain(e, l, m), 0)[1]), B = polroots(tpoly(chain(e, l, m + 1), 0)[1]));
+    my(inter = vecmin(concat(vector(#A, i, vector(#B, j, abs(A[i] - B[j]))))));
+    my(ia = vecmin(concat(vector(#A - 1, i, vector(#A - i, j, abs(A[i] - A[i + j]))))));
+    my(ib = vecmin(concat(vector(#B - 1, i, vector(#B - i, j, abs(B[i] - B[j + i]))))));
+    emit(Str("PAIRS (e,l)=(", e, ",", l, "), m=", m, ": min |root(T_m) - root(T_(m+1))| = ", precision(inter, 4) * 1.,
+      "; min spacing within T_m ", precision(ia, 4) * 1., ", within T_(m+1) ", precision(ib, 4) * 1., "; ratio inter/within ",
+      precision(inter / min(ia, ib), 4) * 1.)));
+  quit);
+}
 ROOTS = getenv("ROOTS");
 {
 if (ROOTS != 0 && ROOTS != "",
