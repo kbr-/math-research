@@ -137,6 +137,40 @@ loopb(g, b, r, u1, u0, N0, N1, P = -1) = {
   my(circ = intnum(th = -th0, -(2 * Pi - th0), F(Y(rho * exp(I * th))) * uu * I * rho * exp(I * th)));
   my(up = intnum(v = 0, 1, F(Y(wu + (1 - v) / v)) * uu / v^2));
   (low + circ + up) / (2 * Pi * I); }
+\\ sector sums E_0..E_nm at the point x (cuts fixed by u1, u0 chosen for a nearby root), sign sg of the hairpin
+sectorE(rows, mix, x, u1, u0, n, K, sg) = {
+  my(nm = #mix, C = matrix(K, K), I1 = vector(K), E = vector(nm + 1));
+  for (i = 1, K, my(tt = taylorb(rows[i][1], rows[i][2], x, u1, u0, n, n + K - 1)); for (s = 1, K, C[i, s] = tt[s]));
+  foreach (mix, i, I1[i] = sg * loopb(rows[i][1], rows[i][2], x, u1, u0, n, n + K - 1));
+  forsubset (nm, S,
+    my(M = C);
+    for (a = 1, nm, my(i = mix[a]); if (setsearch(Set(S), a), M[i, ] = C[i, ] - I1[i], M[i, ] = I1[i]));
+    E[#S + 1] += matdet(M));
+  E; }
+\\ XDERIV mode (cycle bmd-20261004-q; conj:cube-far-x-sector-ratio): at sampled non-real roots r of W_(b-1) with a
+\\ two-term balance (third/largest <= 1e-3), kappa = r(1+r) d/dr log(E_(i+1)/E_i) for the dominant pair, by a central
+\\ difference with step H = 10^-30 and the cuts of r; the prediction is kappa = -(R_e + 7/2) (sector step t^-N, N = n+7/2).
+XDERIV = getenv("XDERIV");
+{
+if (XDERIV != 0 && XDERIV != "",
+  default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 160));
+  my(skip = if (getenv("SKIP") != "" && getenv("SKIP") != 0, eval(getenv("SKIP")), 1), hh = 10^-30);
+  foreach (eval(XDERIV), el,
+    my(e = el[1], l = el[2], n = Rn(e), rows = xrows(e, l), K = #rows, T = tpoly(chain(e, l, Rn(l)), 0)[1], rt = polroots(T));
+    my(mix = select(i -> rows[i][3] == 1, [1..K]), out = List());
+    forstep (q = 1, #rt, skip,
+      my(r = rt[q]); if (abs(imag(r)) < 10^-20, next);
+      my(u1 = (-1 - r) / abs(1 + r), u0 = -r / abs(r));
+      my(cc = taylorb(-7/2, 0, r, u1, u0, n, n + 3), ci = loopb(-7/2, 0, r, u1, u0, n, n + 3), sg = if (normlp(ci + cc) < normlp(ci - cc), -1, 1));
+      my(E = sectorE(rows, mix, r, u1, u0, n, K, sg), A = apply(abs, E), srt = vecsort(A, , 5));
+      if (abs(srt[1] - srt[2]) != 1 || A[srt[3]] / A[srt[1]] > 10^-3, next);
+      my(i = min(srt[1], srt[2]), Ep = sectorE(rows, mix, r + hh, u1, u0, n, K, sg), Em = sectorE(rows, mix, r - hh, u1, u0, n, K, sg));
+      my(dl = log((Ep[i + 1] / Ep[i]) / (Em[i + 1] / Em[i])) / (2 * hh), kap = r * (1 + r) * dl);  \\ one log of the quotient: no branch jump
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., i - 1, precision(real(kap), 6) * 1., precision(imag(kap), 4) * 1.]));
+    emit(Str("XDERIV (e,l)=(", e, ",", l, "): n=R_e=", n, ", predicted kappa = -(n+7/2) = ", -(n + 7/2),
+      "; per balanced root [log|t|, i (pair E_i, E_(i+1)), Re kappa, Im kappa]: ", Vec(out))));
+  quit);
+}
 {
 if (XSECTOR != 0 && XSECTOR != "",
   default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 80));

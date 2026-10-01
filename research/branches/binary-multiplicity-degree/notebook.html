@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). <a href="#entry-2026-10-04-cube-last-far-sector-balance">Last-step sector balance</a>: on the \(x\)-side ladder, most roots of the last-step far polynomial lie where two consecutive Cauchy sector sums \(E_i,E_{i+1}\) dominate, with \(i\) fixed by the circle. This is the exact form of the four-circle law, checked at \(e=2,4\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, the <a href="#entry-2026-10-04-cube-last-far-sector-ratio">sector ratio law</a> makes consecutive sector sums differ by \(t^{-(R_e+7/2)}\) times a slowly varying factor, checked at \(e=2,4\). A balance certificate reduces simplicity on the circles to remainder bounds.</p>
 <p>Next:</p>
 <ol>
-<li>Derive the leading asymptotics of \(E_s\) in \(N=R_e\): which determinants dominate each sum, and the ratio \(E_{i+1}/E_i\) as \(c_i(x)\,t^{\pm N}\) with slowly varying \(c_i\). Check them against the computed \(E_s\) at \(e=4\).</li>
-<li>With those, state the band equations and apply the log-derivative criterion on each circle.</li>
-<li>Treat the \(O(e)\) roots off the circles separately.</li>
+<li>Find why \(E_{i+1}/E_i\) carries exactly \(t^{-(R_e+7/2)}\): which determinants in each sector sum dominate. Test whether one Laplace term (column split) dominates \(E_s\).</li>
+<li>Evaluate the certificate, with \(R'\), at \(e=4\) to measure its margin.</li>
+<li>The roots off the circles, and the \(y\)-side analogue for \(l\gg e\).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47540,6 +47540,60 @@ where \(D_S\) is the \(k\times k\) determinant \(\det[c_{i,m+s}]\) with each mix
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 38.61 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 3.44 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11 min 51.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-sector-ratio" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-far-two-ladders-review:1" data-claims="lem:cube-far-balance-certificate conj:cube-far-x-sector-ratio">
+<h3>4 October 2026 — Sector ratio law: consecutive last-step sector sums differ by t^-(R_e+7/2) up to a slowly varying factor, which reduces simplicity on the circles to remainder bounds</h3>
+<p class="entry-meta">Working proof of a balance certificate for simple roots. Conjecture, from exact sector sums at e = 2, 4: r(1+r) d log(E_(i+1)/E_i) = -(R_e+7/2) + O(slow) at balanced roots, recovering the four-circle exponent. Last-step sector ratio cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. The <a href="#entry-2026-10-04-cube-last-far-sector-balance">last-step sector balance</a> found two consecutive sector sums dominating at most roots. Is their ratio of the form \(c_i(x)\,t^{-N}\) with slowly varying \(c_i\) and \(N=R_e+\tfrac72\), the exponent of the four-circle law? And what would that give for simplicity?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-balance-certificate</code> (any analytic decomposition); <code>conj:cube-far-x-sector-ratio</code> for the last step at every \(e\).</p>
+<p><strong>Lemma (balance certificate).</strong> Let \(T=E_i+E_{i+1}+R\) near a root \(r\) of \(T\), with \(E_i,E_{i+1},R\) analytic and \(E_i(r)E_{i+1}(r)\ne0\). Put \(\varphi=E_{i+1}/E_i\). If
+\[
+|E_i(r)|\,\bigl|(\log\varphi)'(r)\bigr|&gt;|R(r)|\,\Bigl|\frac{E_{i+1}'}{E_{i+1}}(r)\Bigr|+|R'(r)|,
+\]
+then \(r\) is a simple root of \(T\).</p>
+<p><strong>Proof.</strong> Write \(T'=E_i\frac{E_i'}{E_i}+E_{i+1}\frac{E_{i+1}'}{E_{i+1}}+R'\). At the root, \(E_{i+1}=-E_i-R\), so
+\[
+T'(r)=-E_i(\log\varphi)'-R\frac{E_{i+1}'}{E_{i+1}}+R',
+\]
+which is nonzero under the inequality. \(\square\)</p>
+<p>The sector sums \(E_s\) are analytic in \(r\) near any non-real root: the cuts of lem:cube-far-x-sector-decomposition can be held fixed while \(r\) moves in a small disc, since rotating a cut without crossing the point does not change the keyhole integrals. So the lemma applies with \(R=\sum_{s\ne i,i+1}E_s\). Suppose \(|R|\le\varepsilon|E_i|\), \(|R'|\le\varepsilon N|E_i|/|r(1+r)|\), \(|E_{i+1}'/E_{i+1}|\le CN/|r(1+r)|\), and \(\kappa_i:=r(1+r)(\log\varphi)'\) satisfies \(|\kappa_i|\ge\delta N\). Then the certificate holds once \(\varepsilon(C+1)&lt;\delta\). So simplicity on the circles reduces to two asymptotic statements about explicit Cauchy sector sums: the remainder is small, and \(\kappa_i\) stays of size \(N\).</p>
+<p><strong>Conjecture (sector ratio law).</strong> At the last step, at all but \(O(1)\) of the roots where \(E_i,E_{i+1}\) balance, \(\kappa_i=-(R_e+\tfrac72)+\lambda_i\), with \(|\lambda_i|\le(1-\delta)(R_e+\tfrac72)\) for a fixed \(\delta&gt;0\). Equivalently, \(E_{i+1}/E_i=c_i(x)\,t^{-(R_e+7/2)}\), where \(r(1+r)\,c_i'/c_i=\lambda_i\) is smaller than \(N\). This is the annulus condition of lem:far-logderivative-criterion.</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (xderiv mode, new) does the following at sampled non-real roots where two consecutive sums balance (third/largest \(\le10^{-3}\)):</p>
+<ul>
+<li>it recomputes \(E_s\) at \(r\pm10^{-30}\), with the cuts of \(r\) held fixed and at \(160\) digits;</li>
+<li>it reports \(\kappa_i\) by central difference.</li>
+</ul>
+<p>Results (research/results/bmd-20261004-q/):</p>
+<ul>
+<li>At \(e=2\) (prediction \(-9.5\)), all \(12\) balanced roots and their conjugates give \(\operatorname{Re}\kappa\in[-9.52,-6.84]\), except one at \(-3.29\). Their \(|\operatorname{Im}\kappa|\le1.8\).</li>
+<li>At \(e=4\) (prediction \(-31.5\)), \(37\) of \(38\) balanced roots give \(\operatorname{Re}\kappa\in[-32.0,-21.4]\) and \(|\operatorname{Im}\kappa|\le5.4\), on all four circles. In each band, \(\kappa\) is nearest \(-31.5\) at the end of largest \(|\log|t||\) (\(0.64,0.15,-0.33,-0.80\); for example \(-31.2\) at \(-0.80\)) and drifts at the other end, to \(-26.0\), \(-26.6\), \(-24.8\) and \(-21.4\) respectively. The exception, at \(\log|t|=-0.793\), gives \(-417-264i\), presumably a zero of \(E_3\) or \(E_4\) close to that root; it is not examined further here.</li>
+</ul>
+<p>So \(|\lambda_i|\le11.1\) (\(|\operatorname{Re}\lambda_i|\le10.1\)) against \(N=31.5\), apart from the exception. The exception violates the upper bound but still has \(|\kappa_i|\ge\delta N\), which is all the certificate needs. The central difference uses \(h=10^{-30}\), finer than the \(1.7\cdot10^{-29}\) accuracy of the split, so it relies on the quadrature error varying smoothly in \(x\); no step-size control was run. The logarithm is now taken of the quotient, avoiding branch jumps; no value in the outputs shows one. This is the predicted structure, and it recovers the exponent \(R_e+\tfrac72\) of the four-circle law from the exact sector sums. The certificate inequality itself, which needs \(R'\), was not evaluated.</p>
+<p><strong>What this gives.</strong> A conditional route to simplicity at the last step. It needs, uniformly in \(e\):</p>
+<ol>
+<li>sector balance with \(\varepsilon_e\) small (conj:cube-far-x-sector-balance);</li>
+<li>the ratio law (this conjecture);</li>
+<li>derivative bounds on the remainder, \(|R'|\le\varepsilon N|E_i|/|r(1+r)|\), and on \(|E_{i+1}'/E_{i+1}|\le CN/|r(1+r)|\); the latter likely fails at the exceptional root;</li>
+<li>the roots off the circles, and the exceptional roots where one sector sum nearly vanishes.</li>
+</ol>
+<p>All the inputs are asymptotic statements about explicit Cauchy integrals. None is proved.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-x-sector-decomposition; conj:cube-far-x-sector-balance; lem:far-logderivative-criterion (the annulus condition); conj:cube-last-far-four-circles (the exponent \(N=n+\tfrac72\)).</p>
+<p><strong>Verification gate.</strong> I re-read the sector decomposition and balance entries and the log-derivative criterion. One fresh-context medium reviewer checked the lemma, the reduction algebra, the analyticity with fixed cuts, the code's index convention, and all ranges against the outputs. Verdict: pass with corrections, all applied. The bound on \(\lambda\) now accounts for its imaginary part, and the description of the drift along each band was corrected. The conjecture now excludes \(O(1)\) roots, since the exception contradicts its upper bound. The missing derivative hypothesis is stated, the step-size caveat is recorded, and the code takes one logarithm of the quotient.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 28.28 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 17.94 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 9.02 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.20 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9 min 17.97 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
