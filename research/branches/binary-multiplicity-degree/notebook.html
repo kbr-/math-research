@@ -47,8 +47,15 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). Every polynomial-level route to the last-step far polynomials has failed (<a href="#entry-2026-10-03-cube-far-input-review">far input review</a>). The one uniform structure left is the \(2\)-adic cluster of the \(4(e+1)\) unit roots near \(-1\).</p>
-<p>Next, the second-order Newton polygon of \(W_{b-1}\) at the key polynomial \(x+1\), with its residual polynomials, for \(e=1,\ldots,4\). Look for a uniform type. If one appears, state it and attempt a proof from the explicit space \(X_e\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The \(2\)-adic route to the last-step far polynomials is <a href="#entry-2026-10-03-cube-last-far-unit-cluster">closed at two levels</a>, and every other polynomial-level route has failed.</p>
+<p>Next, a route review that decides, with this evidence, where the next cycles go. The candidates are:</p>
+<ul>
+<li>(B)'s far input, with a genuinely new idea;</li>
+<li>(K), whose far side is the merge polynomials \(R_{n,k}\) and whose assembly is open;</li>
+<li>statement 2, the small-prime stable orders (the \(p=3\), \(d=2\) slice);</li>
+<li>statement 4.</li>
+</ul>
+<p>The review should name the necessary statement with the most concrete open mechanism and move there.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42969,6 +42976,42 @@ K_W+2\tbinom{c+q}2+2\textstyle\sum_s\binom{n_s}2-\sum_so_sn_s=(c+q)^2+\sum_{s\ge
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11.14 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 17.70 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-unit-cluster" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-input-review:1" data-claims="conj:cube-last-far-unit-cluster-type">
+<h3>3 October 2026 — The 2-adic unit-root cluster of the last-step far polynomials has no uniform second-order type: it certifies simple or double roots at e = 1, 3 but leaves a residual root of multiplicity six at e = 2</h3>
+<p class="entry-meta">Refutation, exact over Q at b = 3, 4, 5: second-order 2-adic polygons at x+1 differ with e, and at e = 2 the residual has a root of multiplicity six; the 2-adic route has no uniform mechanism. Last far unit cluster cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-far-input-review">far input review</a> named one remaining uniform structure of the last-step far polynomials \(W_{b-1}\): their \(4(e+1)\) unit roots all reduce to \(-1\) modulo \(2\). Does the next level, the \(2\)-adic Newton polygon in \(t=x+1\), have a type that is the same for every \(e\), with residual polynomials whose roots have multiplicity at most two? Such a type would certify, by Ore's theorem at second order, that these roots have multiplicity at most two for every \(e\).</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-unit-cluster-type</code>: for every \(e\ge1\), the segments of positive slope of the \(2\)-adic Newton polygon of \(W_{b-1}(t-1)\) have residual polynomials without roots of multiplicity at least \(3\). It is refuted here at \(e=2\).</p>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_last_far_unit_cluster.gp computes \(W_{b-1}\) exactly (\(c=1\)), substitutes \(x=t-1\), and lists the segments of positive slope with their residual polynomials factored over \(\mathbb F_2\). It also writes the polynomials \(W_{b-1}\) to research/results/bmd-20261003-zl/ for reuse. Output: research/results/bmd-20261003-zl/unit-cluster-e3.txt.</p>
+<table>
+<thead><tr><th>\(e\)</th><th>cluster size</th><th>segments: valuation of \(t\), length, residual factors (degree, multiplicity)</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>8</td><td>\(2\), 4, \((1,1),(3,1)\); \(7/4\), 4, \((1,1)\)</td></tr>
+<tr><td>2</td><td>12</td><td>\(2\), 12, \((1,6),(3,2)\)</td></tr>
+<tr><td>3</td><td>16</td><td>\(15/8\), 8, \((1,1)\); \(7/4\), 8, \((1,2)\)</td></tr>
+</tbody>
+</table>
+<p>The segments' lengths add up to the cluster sizes \(8,12,16\) predicted by the first-order polygon.</p>
+<p><strong>Outcome.</strong> At \(e=1\) every unit root is certified simple. At \(e=3\) every unit root is certified of multiplicity at most two: the residual \((y+1)^2\) on the segment of slope \(7/4\) allows at most double roots. At \(e=2\) the single segment has residual \((y+1)^6(y^3+y^2+1)^2\), with a root of multiplicity six, so the certificate fails there. The type also changes with \(e\): \(\{2,7/4\}\), \(\{2\}\), \(\{15/8,7/4\}\). So the conjecture is refuted, and with it a uniform second-order \(2\)-adic mechanism for this cluster.</p>
+<p>Together with the first-order result (conj:cube-last-far-two-adic-ore) and the record's level-two check, this closes the \(2\)-adic route to the last-step far input. The \(2\)-adic tree of \(W_{b-1}\) is not self-similar at the first two levels. A proof along it would need the full tree for every \(e\).</p>
+<p><strong>What remains.</strong> The far input of (B), at the last steps and the first-order condition elsewhere, has no mechanism. The routes tried on the peeling's own far polynomials are low-order equations, zero-free intervals, Jacobi Wronskians of one family, half-plane stability, and \(2\)-adic certificates at two levels. All failed. The next cycle is a route review. It should decide, with this evidence, whether to keep cycles on this input or to move them to another necessary statement: (K), statement 2 or statement 4.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-last-far-two-adic-ore and its entry (the first-order polygon and the unit cluster); check:cube-far-two-adic-level-two (statement); Ore's theorem (as cited there).</p>
+<p><strong>Verification gate.</strong> A refutation by exact computation: the residual polynomials are factored over \(\mathbb F_2\) by PARI, and the segments' lengths are checked against the predicted cluster sizes. No reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 17.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">32.15 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">27.80 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">37.95 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">39.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
