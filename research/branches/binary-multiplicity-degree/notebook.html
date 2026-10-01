@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-far-mechanism-review">far mechanism review</a> moves the main effort to the arithmetic route. Modulo window primes, the non-branch factor \(G_p\) of \(W_{b-1}\) is squarefree at \(47\) of the \(48\) primes for \(e=4..8\). Each such prime certifies squarefreeness, given the remaining unit hypotheses.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input, arithmetic route. The <a href="#entry-2026-10-03-cube-last-far-frobenius-shift">Frobenius shift</a> computes \(W_{b-1}\bmod p\) as a polynomial-space Wronskian over \(\mathbb F_p\). This works at every prime with \(v_p(C)=0\), including all tested primes above the window. At the lower window primes checked it vanishes, and \(G_p\) there is a first-order \(p\)-adic quantity.</p>
 <p>Next:</p>
 <ol>
-<li>Frobenius shift: build the integral-exponent space \(V_p\) with \(W(V_p)\equiv W_{b-1}\pmod p\) up to units, and identify \(G_p\) as a block Wronskian.</li>
-<li>Close the two remaining unit hypotheses: the integral minor at \(0\), and the minors at \(-1\).</li>
+<li>Above the window: apply the local-exponent method of the block-pair lemma to \(V_p\) over \(\mathbb F_p\). Its exponents at \(0,-1,\infty\) are integral and its blocks have degrees near \(p\). Seek a prime \(p\) just above the window where the far part of \(W(V_p)\) is forced to be squarefree.</li>
+<li>Close the two remaining Eisenstein unit hypotheses, which the window primes still need.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46059,6 +46059,56 @@ By multilinearity \(\sum_mT_m=W_t(u_1,u_2,v_0,\ldots,v_3)\), whose far part is \
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">57.32 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.01 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-frobenius-shift" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-mechanism-review:2" data-claims="lem:cube-last-far-frobenius-shift">
+<h3>3 October 2026 — Modulo p the last-step far space becomes a polynomial space by shifting half-integral exponents by p/2; at the lower window primes its Wronskian vanishes identically</h3>
+<p class="entry-meta">Working proof of the Frobenius shift for every odd prime p &gt; d, with exact checks at e = 1, 2, 3. It computes W_(b-1) mod p whenever v_p(C) = 0, and vanishes otherwise. Last far Frobenius shift cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input. The <a href="#entry-2026-10-03-cube-far-mechanism-review">far mechanism review</a> made the arithmetic route the main line. Its second Outside lead proposed to compute the non-branch factor \(G_p\) as the Wronskian of an integral-exponent space, obtained by shifting half-integral exponents by \(p/2\). Does this hold, and at which primes?</p>
+<p><strong>General statement.</strong> <code>lem:cube-last-far-frobenius-shift</code>, for every \(e\ge1\) and every odd prime \(p&gt;d=R_{e+2}\).</p>
+<p><strong>Setting.</strong> \(F=F_{b-1}\), of dimension \(d=n+8e+6\), \(n=R_e\), is spanned by
+\[
+\mathcal P_{&lt;n},\ (1+x)^{-3},\ x^{-3},\ (1+x)^{-7/2}\mathcal P_{&lt;4e},\ x^{-7/2}\mathcal P_{&lt;4e},\ (1+x)^{-5/2}x^{-7/2}\mathcal P_{&lt;4},
+\]
+and \(W(F)=C\,x^{\alpha}(1+x)^{\beta}W_{b-1}\) with \(W_{b-1}\in\mathbb Z[x]\) primitive and \(C\in\mathbb Q^\times\) (prop:cube-last-far-eisenstein-branch). The saved \(W_{b-1}\) for \(e=1,2,3\) have content \(1\) and no factor \(x\) or \(1+x\). Here \(W(F)\) is the Wronskian of the displayed basis. Put \(q=(p-1)/2\) and
+\[
+V_p=x^3(1+x)^3\mathcal P_{&lt;n}\oplus\langle x^3\rangle\oplus\langle(1+x)^3\rangle\oplus x^3(1+x)^{q}\mathcal P_{&lt;4e}\oplus x^{q}(1+x)^{3}\mathcal P_{&lt;4e}\oplus x^{q}(1+x)^{q+1}\mathcal P_{&lt;4},
+\]
+a space of integer polynomials of dimension \(d\).</p>
+<p><strong>Lemma (Frobenius shift).</strong> For every odd prime \(p&gt;d\):</p>
+<ol>
+<li>\(v_p(C)\ge0\), and \(W_{\mathbb F_p}(V_p)\equiv0\) exactly when \(v_p(C)&gt;0\).</li>
+<li>Otherwise, the parts of \(W_{\mathbb F_p}(V_p)\) and of \(W_{b-1}\bmod p\) prime to \(x(1+x)\) are proportional over \(\mathbb F_p\).</li>
+</ol>
+<p><em>Proof.</em> The derivatives of the basis functions have coefficients in \(\mathbb Z[\tfrac12]\), so \(W(F)\) is \(p\)-integral; since \(W_{b-1}\) is primitive, \(v_p(C)\ge0\). Reduction commutes with \(\partial\), so the reduction of \(W(F)\) is the Wronskian \(W_p(F)\) of the reduced functions, computed in the differential field \(K=\mathbb F_p(x)(\sqrt x,\sqrt{1+x})\). In \(K\), \(x^{p/2}=(\sqrt x)^p\) and \((1+x)^{p/2}\) have derivative \(0\). So for a half-integral \(a\), \(x^{a}=x^{a+p/2}\cdot x^{-p/2}\), the product of an integral power and a constant, and likewise for \(1+x\).</p>
+<p>Write each basis function as \(f_i=\kappa_i\tilde f_i\), with \(\kappa_i\) a possibly empty product of \(x^{-p/2}\) and \((1+x)^{-p/2}\) (empty on \(\mathcal P_{&lt;n}\), \(x^{-3}\), \((1+x)^{-3}\)) and \(\tilde f_i\) the shifted function with integral exponents. Then \(W_p(F)=\prod\kappa_i\cdot W_p(\tilde F)\), since the Wronskian is multilinear and constants pass through \(\partial\). Multiplying every function by \(x^3(1+x)^3\) multiplies the Wronskian by \((x^3(1+x)^3)^d\). The shifted space times \(x^3(1+x)^3\) is \(V_p\), of dimension \(d\) because \(p&gt;d\) keeps its blocks distinct (for \(q=3\) two of them would coincide): \((1+x)^{-7/2}\mapsto(1+x)^{q-3}\), \(x^{-7/2+j}\mapsto x^{q-3+j}\), and \((1+x)^{-5/2}x^{-7/2+j}\mapsto(1+x)^{q-2}x^{q-3+j}\). Hence
+\[
+W_{\mathbb F_p}(V_p)=(x^3(1+x)^3)^d\prod_i\kappa_i^{-1}\cdot\bigl(W(F)\bmod p\bigr).
+\]
+Since \(W_{b-1}\) is primitive, \(W(F)\bmod p=(C\bmod p)\,x^\alpha(1+x)^\beta\,(W_{b-1}\bmod p)\) when \(v_p(C)=0\), and is \(0\) when \(v_p(C)&gt;0\). Both claims follow, because the \(\kappa_i\) and the powers of \(x\) and \(1+x\) are units away from \(\{0,-1\}\). \(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_cube_last_far_frobenius_shift.gp computes \(W_{\mathbb F_p}(V_p)\) exactly. It compares far parts with the saved \(W_{b-1}\bmod p\) at \(e=1,2,3\), at every window prime \(\max(d,2n)&lt;p\le2n+8e+7\) and at the primes up to \(20\) above the window: five for \(e=1,2\) and four for \(e=3\) (research/results/bmd-20261003-zzy/frobenius-shift.txt).</p>
+<ul>
+<li>At all \(14\) primes above the windows, the far parts are proportional, of full degree \(16,44,88\).</li>
+<li>At the window primes \(p=29,31\) (\(e=2\)) and \(p=47,53,59\) (\(e=3\)), \(W_{\mathbb F_p}(V_p)\) vanishes identically: \(V_p\) is linearly dependent over the constants \(\mathbb F_p(x^p)\).</li>
+<li>At the window primes \(p=17\) (\(e=1\)) and \(p=61\) (\(e=3\)), both equal to \(2n+8e+7\), the far parts are proportional, of degree \(0\) and \(56\). At \(e=2\), \(2n+8e+7=35\) is not prime, and the largest window prime, \(31\), vanishes.</li>
+</ul>
+<p>An earlier run compared far parts after lifting to \(\mathbb Z\), so its test for the factor \(1+x\) was taken over \(\mathbb Z\). That run is superseded.</p>
+<p><strong>What this gives, and what it does not.</strong> At every prime with \(v_p(C)=0\), \(W_{b-1}\bmod p\) is, off \(x(1+x)\), the Wronskian of an explicit polynomial space in characteristic \(p\). In the checks these are all primes above the window, and \(p=2n+8e+7\) when it is prime. Squarefreeness of its far part at one such prime certifies squarefreeness of \(W_{b-1}\) if two conditions hold: the far part mod \(p\) has the full degree \(\deg W_{b-1}\), and \(W_{b-1}\) has no factor \(x\) or \(1+x\). Both hold at the \(14\) primes above the window here. Otherwise a repeated factor could hide at the residues \(0,-1\) or in a drop of degree. At \(p=17\) and \(61\) the degree drops (\(0\) and \(56\)), so the Eisenstein argument is still needed there. At the window primes below \(2n+8e+7\) checked here (\(e\le3\)), \(W(V_p)\) vanishes, so \(v_p(C)&gt;0\). This is observed, not derived from the Eisenstein count, and the squarefree \(G_p\) data of the review are at \(e=4..8\). At such primes \(G_p\) is a first-order \(p\)-adic quantity, \((W(F)/p^{v})\bmod p\), which this lemma does not compute. To use \(V_p\), the route must choose a prime with \(v_p(C)=0\), most simply one above the window. There, \(V_p\) has blocks of degree about \(p\), and its squarefreeness needs its own argument.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch (the basis, \(C\), the window and the content count \(N_0\)); the far mechanism review (the lead and the \(G_p\) data).</p>
+<p><strong>Verification gate.</strong> I re-read the Eisenstein proposition's setting and the review. One fresh-context medium reviewer checked the shift block by block, the differential-field argument and the identity, and the primitivity of the saved \(W_{b-1}\) for \(e\le3\) (content \(1\), no factor \(x\) or \(1+x\)). It also checked the script's comparison. Verdict: pass with corrections, all applied: the prime count is corrected to \(14\); the hypothesis \(p&gt;d\) is placed where it is used; the condition is stated as \(v_p(C)&gt;0\) with \(v_p(C)\ge0\); \(\kappa_i\) is described exactly; the window statements are restricted to what was observed; and the certification needs full degree and no branch factor.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 57.34 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 0.17 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 32.02 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 16.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
