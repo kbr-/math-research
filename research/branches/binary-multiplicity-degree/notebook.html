@@ -47,12 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. Even part: an explicit six-space, squarefree for \(b\le13\), with four-circle and two-term laws. Odd part: an explicit <a href="#entry-2026-10-03-cube-odd-last-far-reduction">\((2e+2)\)-dimensional space</a>.</p>
-<p>Next:</p>
-<ol>
-<li>Compute \(W_b\) exactly from the odd reduction for \(b\) up to about \(12\), and verify squarefreeness.</li>
-<li>Test the four-circle and two-term laws, or their odd analogue, on its roots.</li>
-</ol>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. Last-step squarefreeness is verified for even \(N\le26\) and <a href="#entry-2026-10-03-cube-odd-last-far-squarefree">odd \(N\le17\)</a>.</p>
+<p>Next, a route review. It weighs:</p>
+<ul>
+<li>the analytic proof for the last steps (four-circle and two-term laws; phase control);</li>
+<li>the first-order condition at the other steps of both peelings, which nothing has yet verified at the new sizes;</li>
+<li>(K).</li>
+</ul>
+<p>It picks the highest-risk necessary input with a concrete next test.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -45017,6 +45019,40 @@ Then \(W\bigl((1+x)^{-N}U\bigr)=(1+x)^{-N(4e+1)}W(U)\), and \(W(U)=W(\mathcal P_
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-odd-last-far-squarefree" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-odd-last-far-squarefree check:cube-odd-last-far-squarefree-eight">
+<h3>3 October 2026 — The odd last-step far polynomials, computed from the (2e+2)-dimensional reduction, are squarefree for b &lt;= 8, with degree 8e^2 - 4e + 2</h3>
+<p class="entry-meta">Finite check: W_b squarefree for b = 2..8 (odd N = 2b+1 &lt;= 17), the reduction matching the full Wronskian at e = 1, 2; conjecture for all b. Odd last far squarefree cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), odd peeling. The <a href="#entry-2026-10-03-cube-odd-last-far-reduction">odd last far reduction</a> expresses \(W_b\) through \(2e+2\) explicit functions (\(e=b-1\)). How far does exact verification reach, and is \(W_b\) squarefree there?</p>
+<p><strong>General statement.</strong> <code>conj:cube-odd-last-far-squarefree</code>: for every \(b\ge2\), the odd last-step far polynomial \(W_b\) (prop:cube-odd-last-far-mobius) is squarefree, of degree \(8e^2-4e+2\) with \(e=b-1\). Squarefreeness is stronger than the no-triple-roots input that (B) needs at odd \(N=2b+1\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_odd_last_far_series.gp carries out \(L_A=\bigl((1+x)\partial+4e-\tfrac12\bigr)\partial^{4e}(1+x)^N\partial^n\) on \(III\oplus IV\) exactly over \(\mathbb Q\), on triples \(x^b(1+x)^gp\), and takes the Wronskian with each row's own exponents. The first run (odd-series.txt) failed: it shifted all functions to one class, which puts the half-integral \((1+x)\)-exponent of IV into the polynomial parts. Output of the corrected run: research/results/bmd-20261003-zzk/odd-series-2.txt. The polynomials are in W_odd_e1.gp to W_odd_e7.gp.</p>
+<ul>
+<li><strong>Control.</strong> At \(e=1,2\), the result equals the far part of the full Wronskian of \(F_b\) exactly (degrees \(6\) and \(26\)).</li>
+<li><strong>Results.</strong> At \(e=1,\ldots,7\) (\(b=2,\ldots,8\)), the degrees are \(6,26,62,114,182,266,366\), which is \(8e^2-4e+2\), and all are squarefree over \(\mathbb Q\).</li>
+<li><strong>Cost.</strong> The times are \(0\) ms, \(5\) ms, \(0.12\) s, \(1.4\) s, \(11\) s, \(69\) s and \(338\) s, growing about fivefold per step. \(e=8\) hit the \(600\) s limit. Faster exact computation, for example modulo primes with a squarefreeness certificate, would extend the range.</li>
+</ul>
+<p><strong>Status of (B)'s last-step input.</strong></p>
+<ul>
+<li>Even last step (\(W_{b-1}\), \(N=2b\)): squarefree for \(b\le13\), \(N\le26\).</li>
+<li>Odd last step (\(W_b\), \(N=2b+1\)): squarefree for \(b\le8\), \(N\le17\).</li>
+</ul>
+<p>The first-order condition at the other steps (lem:cube-far-first-order-splitting and its odd form) is a separate part of the far input.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-odd-last-far-reduction; prop:cube-odd-last-far-mobius.</p>
+<p><strong>Verification gate.</strong> Exact computation over \(\mathbb Q\), with the full-Wronskian control at \(e=1,2\) and the failed first run recorded. No reviewer: no proof is claimed beyond the exact checks.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzk">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 2.72 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 0.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.48 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 0.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
