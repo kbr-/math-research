@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-derivative-ladder">derivative ladder</a> shows that \(W_k=T_{R_l}\) is the Wronskian of the \(R_l\)-th derivatives of a fixed space \(\Psi\) in \(y=1/x\). At \(l\ge2\) a failure of the first-order criterion needs a common root of two consecutive rungs, or a triple root shared by two rungs.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-ga-asymmetry">first-order coefficients</a> entry turns the independence of \(G_A\) into its asymmetry under \(w_1\leftrightarrow w_2\). This is proved at \(l=2\) and checked to \(l=5\). At \(l\ge2\), (B) now rests on chain coprimality, conj:cube-far-chain-coprime.</p>
 <p>Next:</p>
 <ol>
-<li>Large derivative order: for \(l\gg e\), find the zero asymptotics of \(\operatorname{Wr}(\Psi^{(m)})\), Pólya-type near the Voronoi boundary of \(0,-1\). Test whether they separate the rungs \(m,m\pm1\) uniformly.</li>
-<li>Prove the independence of \(G_A\) from \(G_B,G_C\) for \(l\ge2\).</li>
+<li>Chain coprimality, the highest-risk input. Test the high-derivative regime \(l\gg e\) of the <a href="#entry-2026-10-04-cube-far-derivative-ladder">derivative ladder</a>, and look for a mechanism that separates consecutive rungs.</li>
+<li>Prove the asymmetry of \(G_A\) for every \(l\), for instance from the Wronskian formula and a degeneration that isolates the term \(4(l-1)w_1\).</li>
 <li>For \(l=1\), find a structure for the fixed first-order correction.</li>
 </ol>
 </section>
@@ -47176,6 +47176,64 @@ Each block follows from \(x^a=y^{-a}\) and \(1+x=(1+y)/y\).</p>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-far-ga-asymmetry" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-ga-asymmetry conj:cube-far-ga-asymmetric">
+<h3>4 October 2026 — First-order coefficients: G_B and G_C are symmetric in the doubles and G_A is not, so G_A is independent of them whenever it is asymmetric; proved at l = 2</h3>
+<p class="entry-meta">Working proof that independence of G_A from G_B, G_C follows from asymmetry of G_A under a transposition, of a Wronskian formula for G_A, and of G_A = -(11w_1+13w_2)/3 at l = 2; asymmetry checked exactly at l = 3, 4, 5. First-order coefficients cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at \(l\ge2\). The <a href="#entry-2026-10-04-cube-far-chain-review">chain reduction</a> and the <a href="#entry-2026-10-04-cube-far-derivative-ladder">derivative ladder</a> need \(G_A\) to be linearly independent of \(G_B,G_C\) as functions of the configuration. So far this is a finite check at four \((e,l)\). Can it be proved?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-ga-asymmetry</code> for every step with \(l\ge2\), and <code>conj:cube-far-ga-asymmetric</code> for the remaining input.</p>
+<h4>Setting</h4>
+<p>As in lem:cube-far-first-order-splitting and its script research/tools/bmd_cube_far_first_order_g.gp, write \(w_s=1/D_s\), \(s=1,\ldots,l\). At the cluster, in \(u=\varepsilon/x\), the classes are:</p>
+<ul>
+<li>\(A\), spanned by \(u^3(1+w_su)^{-3}\) for \(s\le l\) and \(u^{6-j}(1+w_ru)^{-5/2}(1+w_su)^{-7/2}\) for \(r&lt;s\), \(j&lt;4\), with pivots \(u^3,\ldots,u^{R_l+2}\);</li>
+<li>\(B\), spanned by \(u^j(1+w_su)^{-7/2}\), \(j&lt;4e\), with pivots \(u^0,\ldots,u^{4el-1}\);</li>
+<li>\(C\), as \(B\) with \(j&lt;4\).</li>
+</ul>
+<p>\(G_X\) is the coefficient of the first power beyond the pivots in the last triangular element.</p>
+<p><strong>Lemma (first-order coefficients).</strong> Let \(l\ge2\).</p>
+<ol>
+<li>\(G_X\) depends only on the span of class \(X\). So \(G_B\) and \(G_C\) are symmetric functions of \(w_1,\ldots,w_l\).</li>
+<li>If \(G_A\) is not invariant under some permutation of the \(w_s\), then \(G_A\notin\operatorname{span}_{\mathbb C}(G_B,G_C)\). In that case the first-order criterion holds at every root \(r\) of \(W_k\) with \(Q_A(r)\ne0\), so lem:cube-far-chain-reduction and lem:cube-far-derivative-ladder hold without the independence hypothesis.</li>
+<li>(Wronskian formula.) Let \(n\) be the dimension of a class with consecutive pivots \(p,\ldots,p+n-1\), and \(W\) its Wronskian. Then the last triangular element's next coefficient is \(G=\frac1n\,\frac{d}{du}\log\bigl(W(u)/u^{N}\bigr)\big|_{u=0}\), where \(u^N\) is the leading power of \(W\).</li>
+<li>At \(l=2\), \(G_A=-\tfrac13(11w_1+13w_2)\), which is not symmetric.</li>
+</ol>
+<p><strong>Proof.</strong> (1) With consecutive pivots, the last triangular element is the unique element of the span of the form \(u^{p_{\max}}+O(u^{p_{\max}+1})\) with zero coefficients at the other pivots. There are none above \(p_{\max}\), so it is determined by the span. The spans of \(B\) and \(C\), \(\bigoplus_s(1+w_su)^{-7/2}\mathcal P_{&lt;n}\), are invariant under permuting the \(w_s\).</p>
+<p>(2) Every element of \(\operatorname{span}(G_B,G_C)\) is symmetric. \(W_k\) and the \(Q_X\) depend only on \(c\), so the values \(Q_X(r)\) are constants in \(D\). With \(G_A\) outside it, \(R_1(r;\cdot)=G_AQ_A(r)+G_BQ_B(r)+G_CQ_C(r)\) is not identically zero when \(Q_A(r)\ne0\), since a vanishing combination would put \(G_A\) in the span. That is the first-order criterion at \(r\).</p>
+<p>(3) Write the triangular basis as \(f_i=u^{p+i}+g_iu^{p+n}+O(u^{p+n+1})\). By multilinearity, \(W=\operatorname{Wr}(u^p,\ldots,u^{p+n-1})+\sum_ig_i\operatorname{Wr}(\ldots,u^{p+n}\text{ in place of }u^{p+i},\ldots)+\ldots\). The \(i\)-th correction has relative order \(u^{n-i}\), so only \(i=n-1\) contributes at relative order \(u\). Wronskians of monomials are Vandermonde products: \(\operatorname{Wr}(u^{a_1},\ldots,u^{a_n})=V(a)u^{\sum a-\binom n2}\). The ratio of the two Vandermondes is \(\prod_{i=0}^{n-2}\frac{n-i}{n-1-i}=n\). So \(W=Cu^N(1+nG\,u+O(u^2))\), which is the formula.</p>
+<p>(4) At \(l=2\) the class \(A\) has six functions, \(N=3\cdot6\), and branch points \(-1/w_1,-1/w_2\).</p>
+<ul>
+<li>At \(-1/w_1\), the integral class has exponents \(\{-3,0\}\) and the half class \(\{-\tfrac52,-\tfrac32,-\tfrac12,\tfrac12\}\). The total is \(-7\), so the Wronskian exponent is \(\beta_1=-7-\binom62=-22\).</li>
+<li>At \(-1/w_2\), the integral class has \(\{-3,0\}\) and the half class \(\{-\tfrac72,\ldots,-\tfrac12\}\), so \(\beta_2=-11-15=-26\).</li>
+<li>At \(u=\infty\) all six functions lie in one integral class, with six distinct nonnegative exponents in \(1/u\). So the Wronskian has order \(\operatorname{ord}\ge0\) in \(1/u\), and \(W=O(u^{-30-\operatorname{ord}})\).</li>
+</ul>
+<p>\(W\) is rational, since the half class has even dimension, and its orders at \(0,-1/w_1,-1/w_2\) are exact. So \(\operatorname{ord}+\deg P=-30-18+48=0\) for the non-branch factor \(P\), with both terms nonnegative. Hence \(\deg P=0\), and the exponents at infinity are \(0,\ldots,5\). So \(W=Cu^{18}(1+w_1u)^{-22}(1+w_2u)^{-26}\), and (3) gives \(G_A=(-22w_1-26w_2)/6\). These exponents are those found by the script below, which computes \(G_A\) symbolically and obtains the same linear form. \(\square\)</p>
+<p><strong>Branch exponents for every \(l\).</strong> At \(-1/w_s\), the half class is spanned by the \(4(l-1)\) pair functions involving \(s\). These carry \((1+w_su)^{-5/2}\) when \(s\) is the first index of the pair, and \((1+w_su)^{-7/2}\) when it is the second. If the exponents are consecutive in each class, then \(\beta_1-\beta_s=4(l-1)\) for \(s\ge2\), and \(\beta_s\) is the same for all \(s\ge2\). Then \(G_A=\frac1{R_l}\bigl(\beta\sum_sw_s+4(l-1)w_1-\sum_j\zeta_j^{-1}\bigr)\), with \(\zeta_j\) the non-branch zeros of the \(A\)-class Wronskian. The asymmetric term \(4(l-1)w_1\) could be cancelled only by the non-branch zeros. These are absent at \(l=2\), and of degree at most \(16\) at \(l=3\) (exactly \(16\) if all local exponents are consecutive), so the formula alone does not decide \(l\ge3\).</p>
+<p><strong>Conjecture (asymmetric first-order coefficient).</strong> For every \(l\ge2\), \(G_A\) is not symmetric under \(w_1\leftrightarrow w_2\).</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_ga_symmetry.gp computes \(G_A\) from the triangular basis.</p>
+<ul>
+<li>Symbolically at \(l=2\): \(G_A=-\tfrac{11}3w_1-\tfrac{13}3w_2\) (research/results/bmd-20261004-m/ga-symmetry.txt). The symbolic \(l=3\) run exceeded its time limit and was stopped.</li>
+<li>Exactly over \(\mathbb Q\) at \(w_s=(2s+1)/(s+3)\), \(l=2,3,4,5\): \(G_A\) changes under the swap \(w_1\leftrightarrow w_2\) in all four cases (ga-asymmetry.txt).</li>
+</ul>
+<p>This is consistent with the record's rank-\(2\) data: \(G_B\) and \(G_C\) are symmetric, and \(G_A\) is not. The proportionality of \(G_B\) and \(G_C\) is not explained.</p>
+<p><strong>What this gives.</strong> The independence hypothesis of the chain reduction is now a symmetry statement about one explicit coefficient of the \(l\)-level class. It is proved at \(l=2\), which covers every step with \(l=2\), and checked exactly at \(l\le5\). The chain coprimality itself remains the open input.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-first-order-splitting and bmd_cube_far_first_order_g.gp (the classes and pivots); lem:cube-far-chain-reduction.</p>
+<p><strong>Verification gate.</strong> I re-read the first-order splitting lemma, its \(G\)-script and the chain reduction. One fresh-context medium reviewer re-derived parts 1–4 by hand and matched the \(l=2\) formula against both outputs (\(-85/12\) and \(-83/12\) at \(w=(3/4,1)\)). Verdict: pass with corrections, all applied. The constancy of \(Q_X(r)\) in \(D\) is stated. The exponents at infinity are derived by a nonnegativity argument instead of asserted. The \(l=3\) degree is hedged as at most \(16\). The rank remark is weakened. The reviewer did not have the chain-reduction and ladder texts. Their independence hypothesis is used only in the step that part 2 replaces, which I checked against lem:cube-far-chain-reduction.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-m">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 47.83 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">48.62 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4.94 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">56.19 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">53.59 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 4.35 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
