@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3, far simplicity. The <a href="#entry-2026-10-06-cube-mechanism-review">mechanism review</a> finds that the far polynomials have neither a bounded ODE nor real roots, after Newton polygons and product discriminants also failed.</p>
-<p>Next: identify \(R_{n,k}\) as the Wronskian of a quasi-polynomial Grassmannian point and test the Mukhin–Tarasov–Varchenko route to simple roots at the recorded sizes.</p>
+<p>Route item: cube-odd-characteristic; statement 3, far simplicity. The far-polynomial roots <a href="#entry-2026-10-06-cube-far-root-geometry">form a log-polar lattice that sharpens with \(k\)</a>, while five arithmetic and classical mechanisms fail.</p>
+<p>Next: search for a linear recurrence in \(k\) satisfied by \(R_{2,k}\), or by a natural basis of the far space \(F(2,k)\), allowing \(q\)-type coefficients. Such a recurrence would bring in the Beraha–Kahane–Weiss equimodular-curve theorem, which gives simplicity away from finitely many points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -52803,6 +52803,38 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 1.07 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.47 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-far-root-geometry" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-mechanism-review:1" data-claims="none" data-claim-note="Tests of simple-root mechanisms for conj:cube-merge-far-polynomial: the Wronski-map lead does not apply as stated, and Archimedean Newton polygons fail in both natural bases; the root lattice is recorded as an observation; no claim.">
+<h3>6 October 2026 — Far-polynomial roots form a lattice in log-polar coordinates that sharpens with k, but neither the Wronski-map theorem nor Archimedean Newton polygons explain their simplicity</h3>
+<p class="entry-meta">Unsuccessful mechanism cycle for statement 3's far simplicity: the Mukhin–Tarasov–Varchenko lead does not apply as stated, and tropical root counts fail in both bases. Far root geometry cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3 needs \(R_{n,k}\) squarefree for every \(n\ge2\), \(k\ge3\). The <a href="#entry-2026-10-06-cube-mechanism-review">mechanism review</a> proposed a geometric route through the Wronski map.</p>
+<p><strong>General statement.</strong> conj:cube-merge-far-polynomial (under test; no new claim).</p>
+<p><strong>The Wronski-map lead.</strong> \(R_{n,k}\) is the non-branch part of the Wronskian of a space \(V\) of quasi-polynomials with exponent classes \(0\) and \(\gamma\). A double root at \(z\ne0,1\) means \(V\) has ramification \((0,\ldots,0,2)\) or \((0,\ldots,1,1)\) at \(z\). The Mukhin–Tarasov–Varchenko theorem goes the other way: the fibre of the Wronski map over a polynomial with distinct real roots is reduced. It needs real roots, but \(R_{n,k}\) has few (<a href="#entry-2026-10-06-cube-mechanism-review">cycle c</a>), and it concerns fibres over a given Wronskian, not the Wronskian of a given space. As stated the lead does not apply. Its useful content is the ramification reformulation, which turns simplicity into the absence of codimension-two Schubert conditions on \(V\) away from \(0\), \(1\) and \(\infty\).</p>
+<p><strong>Root geometry.</strong> research/tools/bmd_far_ode_search.gp (options ROOTS, NEWTON) lists the roots of \(R_{2,k}\) for \(k=4,5,6,8,10\), of degrees \(15\), \(28\), \(45\), \(91\) and \(153\), and of \(R_{3,4}\) (research/results/bmd-20261006-d/far-roots.txt, far-roots-large.txt). In coordinates \((\log|w|,\arg w)\), the roots of \(R_{2,10}\) form a lattice. There are rows of nearly constant argument (about \(\pi\), \(0.9\pi\), \(0.8\pi\), \(0.7\pi\), \(0.6\pi\)), each with roots evenly spaced in \(\log|w|\) between about \(-1\) and \(1\). In addition, two curves run from small \(|w|\) at low argument. The pattern is visible but irregular at \(k=6\), clearer at \(k=8\), and sharp at \(k=10\).</p>
+<p><strong>Archimedean Newton polygons.</strong> If a few terms dominated, the Hadamard–Ostrowski–Pólya polygon of \(|a_j|\) would predict the root moduli, with near-equal spacing on each circle and hence simple roots, by Rouché. The tool compares each segment's length with the number of roots in its annulus (far-newton-archimedean.txt, far-newton-u.txt).</p>
+<ul>
+<li><em>In \(w\).</em> At \(k=10\), segments of length one hold \(0\) to \(16\) roots, and a segment of length \(49\) holds \(6\).</li>
+<li><em>In \(u=w/(1-w)\)</em>, the variable of the Bernstein-type basis in which the far space is built. Only \(2\) of \(83\) segments match.</li>
+</ul>
+<p>The coefficients cancel massively in both bases, so the tropical mechanism is falsified in both encodings.</p>
+<p><strong>Outcome.</strong> Five mechanisms have now failed: Newton polygons at primes, a product-formula discriminant, a bounded ODE, real roots and tropical root counts. The Wronski-map theorem does not apply as stated. The one new structural fact is the lattice. Zeros of a family satisfying a linear recurrence in the size parameter accumulate on equimodular curves (Beraha–Kahane–Weiss) and are simple there away from finitely many points. A lattice in log-polar coordinates with quadratic degree growth \((k-1)(2k-3)\) suggests a \(q\)-type recurrence in \(k\), not one with fixed coefficient degrees. Finding such a recurrence would give the first uniform-in-\(k\) mechanism.</p>
+<p><strong>Remaining gap.</strong> A recurrence in \(k\) for \(R_{n,k}\), or for the far space \(F(n,k)\), and its equimodular-curve analysis. Far simplicity for every \(n,k\) remains open.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-merge-far-polynomial and conj:cube-merge-far-irreducible (statements); conj:cube-last-far-four-circles (the analogous root picture for another far family); the far-space construction in research/tools/bmd_far_discriminants.gp.</p>
+<p><strong>Verification gate.</strong> No claim. The root and Newton-polygon data are computed from the record's construction, with root counts summed over annuli.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-d">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 31.87 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 14.81 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">36.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.36 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
