@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-caterpillar-contact-avoidance">caterpillar contact avoidance</a> removes the non-cancelling part of the geometric cone from the contact locus.</p>
-<p>Next: the limits of the cancelling points of the geometric cone, and the boundary points with two roots at a common scale. Determine whether the record's multi-cluster spine results (lem:cube-multicluster-spine-classes and the spine-chain checks) decide them, and test the first nontrivial case, one two-root cluster.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). On <a href="#entry-2026-10-06-cube-tie-fcurves">tie F-curves</a> the low-contact divisor appears at finitely many palindromic roots, so the cone route needs contact-level analysis there.</p>
+<p>Next: a route review, after four research cycles on the cone route. It weighs a contact-level test at the roots of \(L_i\) for \(N\ge6\) against the remaining gaps, and consolidates the living sections, which exceed their soft budgets.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53250,6 +53250,43 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 6.40 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 35.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11 min 7.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-fcurves" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-tie-fcurve-low-contact">
+<h3>6 October 2026 — On F-curves with one tie the low-contact divisor appears at finitely many points, at c = −1 and the roots of palindromic polynomials, so the caterpillar argument does not extend there</h3>
+<p class="entry-meta">Finite check, N = 4, 5 and one level at N = 6, of the low-contact locus along tie F-curves; locates where the cone route needs a contact-level analysis. Tie F-curves cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1) of the <a href="#entry-2026-10-06-cube-geometric-cone-collapse">collapse entry</a>. Near the cancellation curve \(C_1\), \(a_1-s=f(q)\) is of order \(q^m\). If \(m\) matches no level, \(a_1\) slots into the chain and the limit is a caterpillar point of another ordering, covered by the <a href="#entry-2026-10-06-cube-caterpillar-contact-avoidance">caterpillar contact avoidance</a>. If \(m=i+1\), then \(a_1\) sits at the scale of \(a_i\). The limit is then a point of the F-curve whose four branches are the upper chain with \(\infty\), \(\{a_i\}\), \(\{a_1\}\) and the lower cluster, with coordinate \(c\), the ratio of \(a_1\) to \(a_i\) relative to the lower cluster. Its two singleton parts put it outside the neck type of conj:cube-fcurve-neck-obstruction. Does the caterpillar argument extend to these F-curves?</p>
+<p><strong>General statement.</strong> conj:cube-offcollision-contact-bound, (K), along the cone route. The finite result is check:cube-tie-fcurve-low-contact.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_tie_fcurve.m2 takes \(a_j=\varepsilon^j\) (\(2\le j\le N-1\)), \(a_N=0\) and \(a_1=c\varepsilon^i\). It computes \(\det A_{R-1}\) over \(\mathbb Q[c,\varepsilon]\) and its lowest \(\varepsilon\)-coefficient \(L_i(c)\). At \(c\) off the roots of \(L_i\), the low-contact locus, and hence \(K\), avoids the F-curve point; at a root it reaches it. Results (research/results/bmd-20261006-k/), up to the factors \(c^\ast\) and \((c-1)^\ast\), which mark degeneration and the collision \(a_1=a_i\):</p>
+<ul>
+<li>\(N=4\): \(L_2\) has the root \(c=-1\); \(L_3\) has no further root.</li>
+<li>\(N=5\): \(L_2\) has the roots \(c=-1\) and those of \(7c^2+2c+7\); \(L_3\) has \(c=-1\); \(L_4\) has none.</li>
+<li>\(N=6\): \(L_2\) has the roots of \(429c^6+594c^5+675c^4+700c^3+675c^2+594c+429\). The other levels did not finish in \(900\) s.</li>
+</ul>
+<p><strong>Observations.</strong></p>
+<ul>
+<li>The deepest tie (\(i=N-1\), with \(a_N=0\) in the lower cluster) is clean at \(N=4,5\).</li>
+<li>Every factor found is palindromic, as the exchange of the tied pair (\(c\mapsto1/c\) after rescaling) predicts.</li>
+<li>\(c=-1\), where \(a_1\) and \(a_i\) are symmetric about the lower cluster, is a root at \(N=4,5\) for \(i\le N-2\), but not at \(N=6\), \(i=2\).</li>
+<li>The non-symmetric factors \(7c^2+2c+7\) and the sextic have roots on or off the unit circle in reciprocal pairs.</li>
+</ul>
+<p><strong>Outcome.</strong> The codimension-one argument that settled the caterpillar points fails on tie F-curves: the low-contact divisor reaches finitely many of their points. Whether the contact locus \(K\), a codimension-three condition, also reaches them is a separate question. At \(N\le5\) it cannot, since \(K\) is then finite inside \(M_{0,N+1}\) (if (K) holds there) and its closure has no boundary points. From \(N=6\) on, the roots of \(L_i\) are the only candidate points on these F-curves, so the cone route needs a contact-level test at finitely many explicit points per F-curve.</p>
+<p><strong>Remaining gap.</strong> For \(N\ge6\), whether the F-curve points at the roots of \(L_i\) lie in \(\overline{K/{\rm Aff}}\). Also gaps (2) and (3) of the collapse entry, and limits with more than one tie.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-geometric-cone-collapse; cor:cube-caterpillar-contact-avoidance; conj:cube-fcurve-neck-obstruction (statement).</p>
+<p><strong>Verification gate.</strong> Exact determinants over \(\mathbb Q[c,\varepsilon]\). No proof is claimed. The interpretation of roots as boundary points of the low-contact closure uses the one-parameter approach along \(\varepsilon\) at fixed \(c\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-k">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 32.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 26.44 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 48.98 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 8.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
