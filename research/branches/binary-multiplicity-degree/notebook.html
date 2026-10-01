@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input, arithmetic route. The <a href="#entry-2026-10-04-cube-arithmetic-route-review">arithmetic route review</a> found that the route reduces each step to one modular polynomial \(G_p\), without a mechanism for it. At the middle steps the cluster at \(-1\) is not Eisenstein.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. Neither route has a uniform mechanism at the special peeling configurations. The analytic route lacks the factor \(F_i\), and in the arithmetic route <a href="#entry-2026-10-04-cube-last-far-gp-random">\(G_p\) is random-like</a>.</p>
 <p>Next:</p>
 <ol>
-<li>Dwork lead: compute \(W(F)\bmod p^{v+1}\) through the six-space at a window prime. Extract \(G_p\) and test whether it factors into truncated hypergeometric (Jacobi-type) pieces over \(\mathbb F_p\).</li>
-<li>Ore lead: compute the residual polynomials of the middle-step cluster at \(-1\) at the collapse primes.</li>
+<li>Route review: weigh replacing the peeling degeneration as the source of (B). Options are a degeneration in which the far polynomials are classical, with real or interlacing roots, or a genericity argument over the full configuration space that never evaluates a special far polynomial. Check what cor:cube-peeling-weight-two-reduction really needs: multiplicity at most two along a curve of configurations, or at one point.</li>
+<li>Look at the triple factor modulo \(251\) at \(e=8\), which is unlikely under the random model.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46377,6 +46377,38 @@ Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with pri
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.98 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">14.01 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-gp-random" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-arithmetic-route-review:2" data-claims="conj:cube-last-far-gp-structured">
+<h3>4 October 2026 — The non-branch factor G_p factors like a random polynomial, so the arithmetic route certifies each e but offers no uniform mechanism</h3>
+<p class="entry-meta">Refutation at e = 4..8 of a structured (hypergeometric-type) factorization of G_p: factor counts and largest degrees match random polynomials and the no-collapse control primes. Last far G_p random cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input, arithmetic route. The <a href="#entry-2026-10-04-cube-arithmetic-route-review">arithmetic route review</a> reduced the last step to the non-branch factor \(G_p\) at a window prime. It proposed Dwork's congruences: if \(G_p\) factored into truncated hypergeometric pieces, its squarefreeness would follow from theirs. Does \(G_p\) show such structure?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-gp-structured</code>, for every \(e\): the hypothesis that at window primes \(G_p\) factors into pieces of a bounded or regular degree pattern, unlike a random polynomial of its degree. It is refuted at \(e=4..8\).</p>
+<p><strong>Test.</strong> research/tools/bmd_cube_last_far_gp_factor_degrees.gp factors \(W_{b-1}\bmod p\) for \(e=4..8\). It uses every window prime above \(\max(d,2n+5)\), and, as a control, every prime up to \(30\) above the window, where nothing collapses. It reports the degree of \(G_p\), the number of irreducible factors and the largest degree (research/results/bmd-20261004-c/gp-factor-degrees.txt). For a random polynomial of degree \(D\) over \(\mathbb F_p\), the number of irreducible factors is about \(\log D+0.58\), and the largest factor averages about \(0.62D\) (Dickman–Golomb).</p>
+<p><strong>Outcome: refuted.</strong> Window primes and controls look alike.</p>
+<ul>
+<li>At the \(46\) window primes above \(\max(d,2n+5)\), \(G_p\) has degree \(114\) to \(536\), with \(4\) to \(11\) irreducible factors against an expectation of \(5.3\) to \(6.9\).</li>
+<li>Its largest factor covers between \(0.27\) and \(0.98\) of the degree.</li>
+<li>The \(26\) control primes give \(3\) to \(10\) factors and largest fractions \(0.31\) to \(0.98\).</li>
+</ul>
+<p>No degree pattern repeats across primes or sizes. So \(G_p\) behaves like a random polynomial of its degree, and no hypergeometric factorization is visible.</p>
+<p><strong>The random model explains the data, and limits the route.</strong> A random polynomial over \(\mathbb F_p\) has a repeated factor with probability about \(1/p\). Over these \(46\) window primes this predicts about \(\sum1/p\approx0.3\) primes with a repeated factor, against the one observed at \(p=251\), \(e=8\) (far mechanism review). Under the same model, \(G_p\) is squarefree at some window prime with probability close to \(1\), which matches the data. But a triple factor has probability about \(1/p^2\), and the observed triple factor at \(p=251\) is unlikely under the model (\(\sum1/p^2\approx10^{-3}\)). That one event deserves a look. Its residue may be special, for example a root of a factor of the branch data.</p>
+<p>The main consequence is negative for a proof. If \(G_p\) is random-like, squarefreeness at some window prime is a statement about the distribution of \(W_{b-1}\) modulo primes. It holds with overwhelming heuristic probability, but no argument short of knowing \(W_{b-1}\) gives it. The arithmetic route therefore certifies each \(e\) cheaply, one window prime at a time, without proving (B) uniformly. Together with the analytic route's lack of a factor \(F_i\), this means that neither route has a uniform mechanism for the far input at the special peeling configurations.</p>
+<p><strong>Dependencies re-read.</strong> the arithmetic route review and its Dwork lead; lem:cube-last-far-frobenius-shift; prop:cube-last-far-eisenstein-branch.</p>
+<p><strong>Verification gate.</strong> A refutation based on exact modular factorizations, compared against standard random-polynomial statistics; no proof is claimed. No reviewer was used: the statistics are read directly from the output.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-c">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 0.97 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">54.93 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">28.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">35.47 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
