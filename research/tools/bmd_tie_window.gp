@@ -64,6 +64,24 @@ foreach(eval(getenv("MS")), m,
     my(mrg = vecsort(concat(apply(t -> [t, "L"], aL), apply(t -> [t, "D"], aD)), 1), word = concat(apply(x -> x[2], mrg)));
     emit(Str("  D_m: degree ", poldegree(D), ", roots on |c|=1: ", #onD, " of ", #zD, "; gcd with L: ", poldegree(gcd(D, L)),
       "; angular order in (0,pi]: ", word)));
+  \\ STABLE=1 (cycle bmd-20261006-s): the width-(2m+2) window W' has the Cramer kernel vector v_j = (-1)^j det(W' minus
+  \\ column j); v_(2m+1) and v_(2m) are, up to c^a (c-1)^b and constants, L and D_m.  Report the factor structure of the
+  \\ last two coordinates and, for f = v_(2m) + v_(2m+1) and v_(2m) - v_(2m+1) (stripped of c, c-1 only through the
+  \\ coordinates' common powers), the number of roots inside, on and outside |c| = 1.
+  if (getenv("STABLE") == "1",
+    my(Wp = winmat(m, 2 * m + 2), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wp, "..", setminus([1 .. 2 * m + 2], [j])))));
+    my(A = v[2 * m + 2], B = v[2 * m + 1], g = gcd(A, B), io(f) = my(z = Vec(polroots(f))); [#select(x -> abs(x) < 1 - 1e-30, z), #select(x -> abs(abs(x) - 1) <= 1e-30, z), #select(x -> abs(x) > 1 + 1e-30, z)]);
+    emit(Str("  Cramer coordinates: v_last = ", factor(A)[, 1]~, " exps ", factor(A)[, 2]~, " content ", content(A)));
+    emit(Str("    v_prev factors: ", apply(f -> if (poldegree(f) <= 2, f, Str("deg ", poldegree(f))), factor(B)[, 1]~), " exps ", factor(B)[, 2]~, " content ", content(B)));
+    my(a = A / g, b = B / g);
+    \\ exact Schur-Cohn test over Q: all zeros in the open unit disc (Rouche: f and (a_n f - a_0 f*)/z have equally many
+    \\ zeros inside when |a_0| < |a_n|).
+    my(schur(f) = while (poldegree(f) > 0, my(a0 = polcoef(f, 0), an = pollead(f)); if (abs(a0) >= abs(an), return(0));
+      f = (an * f - a0 * polrecip(f)) / 'c; f = f / content(f)); 1);
+    emit(Str("    exact Schur-Cohn: v_prev - v_last stable inside: ", schur(b - a), "; reversal of v_prev + v_last stable inside: ", schur(polrecip(b + a))));
+    foreach([1, -1], s, my(f = b + s * a);
+      emit(Str("    v_prev/g ", if (s > 0, "+", "-"), " v_last/g: degree ", poldegree(f), ", roots inside/on/outside |c|=1: ", io(f), ", content ", content(f),
+        ", factor degrees ", apply(poldegree, factor(f)[, 1]~)))));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());
