@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2's slice, conj:cube-ternary-degree-two-nonvanishing. The <a href="#entry-2026-10-05-cube-mechanism-review">mechanism review</a> finds that certificates are no longer the bottleneck, and that extreme and geometric coefficients give no route for every \(n\).</p>
-<p>Next: compute the Schur expansion of the symmetric factor \(\Phi_N\) of \(\Delta_{n,2}\) modulo \(3\) at \(N=5,6\). Look for a shape, defined for every \(N\), whose coefficient is a unit, and try to prove its value.</p>
+<p>Route item: cube-odd-characteristic; open statement 2's slice. The Schur route's simplest family <a href="#entry-2026-10-05-cube-phi-schur-mod3">fails at \(N=6\)</a>. \(\Phi_N\) is squarefree modulo \(3\) on lines through \(N=8\).</p>
+<p>Next: a route review of statements 2 and 3 together. Both are verified at every tested size and lack a mechanism for every size. The review should look for one input serving both, or make a reasoned choice between them, with outside leads aimed at nonvanishing and transversality of explicit determinant families.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -50814,6 +50814,40 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 6.15 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.65 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-phi-schur-mod3" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-phi-three-row-unit check:cube-phi-schur-mod3">
+<h3>5 October 2026 — Schur expansion of Φ_N modulo 3: the three-equal-rows coefficient is a unit at N = 4, 5 but zero at N = 6; Φ_N is squarefree modulo 3 on lines through N = 8, with no Frobenius factor</h3>
+<p class="entry-meta">Refutation at N = 6 of a unit Schur coefficient for every N; the Schur expansions at N = 4, 5 and the three-row coefficients at N = 6 are recorded, as is squarefreeness modulo 3 on random lines for N = 5..8. Phi Schur mod 3 cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2's slice, conj:cube-ternary-degree-two-nonvanishing. The <a href="#entry-2026-10-05-cube-mechanism-review">mechanism review</a> asked for a Schur coefficient of the symmetric factor \(\Phi_N\) that is a unit modulo \(3\) for every \(N\). Here \(\Delta=V_N^N\Phi_N\) over \(\mathbb Z[1/2]\), and \(\Phi_N\) is symmetric, translation invariant and of degree \(3\binom N4\) (thm:cube-odd-schur-hull).</p>
+<p><strong>General statement.</strong> conj:cube-phi-three-row-unit (refuted): the coefficient of \(s_{(b,b,b)}\), \(b=\binom N4\), in \(\Phi_N\) is a unit modulo \(3\) for every \(N\ge4\).</p>
+<p><strong>Method.</strong> research/tools/bmd_phi_schur_mod3.gp evaluates \(\Phi=\Delta/V^N\) at random points of \(\mathbb F_{3^{12}}\) and solves for all Schur coefficients over the partitions of \(3\binom N4\) with at most \(N\) parts. Five extra points check the solution. research/tools/bmd_phi_three_row_mod3.gp uses \(\Phi(x_1,x_2,x_3,0,\ldots,0)=\sum_{\ell(\lambda)\le3}c_\lambda s_\lambda(x_1,x_2,x_3)\). It computes the left side as the \(\varepsilon^0\) term of \(\Delta/V^N\) at labels \((x_1,x_2,x_3,\varepsilon y_4,\ldots)\), exactly in \(\mathbb F_{3^{12}}[\varepsilon]\). Its \(N=5\) output reproduces all \(18\) three-row coefficients of the full expansion, which is the control.</p>
+<p><strong>Results</strong> (research/results/bmd-20261005-h/).</p>
+<ul>
+<li>\(N=4\): \(\Phi_4\equiv s_3+s_{21}+2s_{111}\).</li>
+<li>\(N=5\): \(40\) of \(84\) coefficients are nonzero, among them \(s_{555}\) with coefficient \(1\) and \(s_{933}\) with \(2\).</li>
+<li>\(N=6\): \(36\) of \(192\) three-row coefficients are nonzero, but \(s_{(15,15,15)}\) has coefficient \(0\). So the conjecture is refuted.</li>
+</ul>
+<p>The \(N=6\) support is digit-structured. For each third part, the differences \(\lambda_1-\lambda_2\) take four values, alternating between \(\{12,10,6,4\}\) and \(\{9,7,3,1\}\) as the third part steps from \(3\) to \(8\). The largest first part is \(27=3^3\).</p>
+<p><strong>Frobenius test.</strong> Such supports often come from a factorization \(\Phi\equiv G^3H\). research/tools/bmd_phi_line_mod3.gp restricts \(\Phi_N\) modulo \(3\) to a random line and factors it. For \(N=5,6,7,8\), of degrees \(15,45,105,210\), every irreducible factor occurs once. \(\Phi_N\) modulo \(3\) is squarefree on a generic line, so it is reduced and has no Frobenius part (check:cube-phi-schur-mod3). This is a characteristic-three counterpart of the record's characteristic-zero boundary radicality question, and it holds through \(N=8\).</p>
+<p><strong>Outcome.</strong> The three-equal-rows route is refuted at \(N=6\), and no other shape is present at \(N=4,5,6\) with a common description. The digit structure of the \(N=6\) support is unexplained. The squarefreeness on lines is a new observation with no use yet for statement 2.</p>
+<p><strong>Remaining gap.</strong> A mechanism for every \(n\) for conj:cube-ternary-degree-two-nonvanishing.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-odd-schur-hull (the factorization \(\Delta=V^N\Phi_N\), symmetry and degree).</p>
+<p><strong>Verification gate.</strong> Exact finite-field linear algebra with extra-point checks and the \(N=5\) cross-check. No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-h">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 34.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">40.65 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">33.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 33.51 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">45.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 1.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
