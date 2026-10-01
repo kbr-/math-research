@@ -16,7 +16,8 @@ mark(lab) = {
 my(t = 't);
 foreach(eval(getenv("NS")), N,
   my(t0 = getwalltime(), dl = mark(vector(N, i, if(i == 1, 0, t^(i - 1)))));
-  my(top = pollead(dl), v = valuation(dl, t), bot = polcoef(dl, v), d3 = dl * Mod(1, 3));
+  my(top = pollead(dl), v = valuation(dl, t), bot = polcoef(dl, v), d3 = dl * Mod(1, 3), v3 = if(d3 == 0, -1, valuation(lift(d3), t)));
+  if (v3 > v, emit(Str("N = ", N, ": coefficient at the mod-3 valuation t^", v3, " over Q: ", factor(polcoef(dl, v3)))));
   emit(Str("N = ", N, ": deg_t ", poldegree(dl), ", val_t ", v, "; top coefficient ", factor(top), "; bottom coefficient ", factor(bot),
     "; mod 3: ", if(d3 == 0, "identically 0", Str("deg ", poldegree(lift(d3)), ", val ", valuation(lift(d3), t))), " (", getwalltime() - t0, " ms)")));
 }
