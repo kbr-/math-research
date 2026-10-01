@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. At \(d=3\) the dimension-four first step is <a href="#entry-2026-10-06-cube-four-first-step-fifty-one">at least \(51\)</a>, so self-linkage needs at least eight generators. Statement 3's far simplicity awaits a recurrence in \(k\).</p>
-<p>Next: search for a linear recurrence in \(k\) for \(R_{2,k}\), or for a natural basis of the far space \(F(2,k)\), allowing \(q\)-type coefficients. This tests the Beraha–Kahane–Weiss route to simple roots suggested by the <a href="#entry-2026-10-06-cube-far-root-geometry">root lattice</a>.</p>
+<p>Route item: cube-odd-characteristic; statement 3, far simplicity. The <a href="#entry-2026-10-06-cube-far-degree-growth">far degree-growth obstruction</a> excludes recurrences with coefficients polynomial in \(k\) and \(w\). The root lattice suggests \(q\)-type structure; the growth data are inconclusive.</p>
+<p>Next: a route review. It weighs a \(q\)-holonomic search for the far space, with coefficients in \(\mathbb Q[w,w^k]\), against returning to statement 4's generators of \(T_3\). It also develops the review's open leads before choosing.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -52874,6 +52874,41 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">41.41 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 8.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-far-degree-growth" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-degree-growth-obstruction">
+<h3>6 October 2026 — Far degree-growth obstruction: no polynomial multiple of the far polynomials satisfies a recurrence in k or n with polynomial coefficients, so the classical Beraha–Kahane–Weiss route is closed</h3>
+<p class="entry-meta">Working proof of the far degree-growth obstruction, for all n ≥ 1, k ≥ 2; growth data at two points; a q-type recurrence remains possible. Far degree growth cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's far simplicity. The <a href="#entry-2026-10-06-cube-far-root-geometry">root lattice</a> suggested that \(R_{n,k}\) is a recursive family, whose zeros the Beraha–Kahane–Weiss theory places on equimodular curves, where they are simple away from finitely many points. Does such a recurrence exist?</p>
+<p><strong>General statement.</strong> lem:cube-far-degree-growth-obstruction. Fix \(n\ge1\) and nonzero polynomials \(h_k\in\mathbb Q[w]\), for instance constants. There are no \(r\ge1\), \(k_0\), and polynomials \(p_0,\ldots,p_r\in\mathbb Q[k,w]\) with \(p_r\ne0\) such that \(\sum_{i=0}^rp_i(k,w)\,h_{k+i}(w)R_{n,k+i}(w)=0\) for all \(k\ge k_0\). The same holds with the roles of \(n\) and \(k\) exchanged, for \(k\ge2\) fixed. Rescalings by rational functions of \(w\) are not excluded.</p>
+<p><strong>Proof.</strong> Put \(y_k=h_kR_{n,k}\), which is nonzero, and \(D=\max_i\deg_wp_i\). Since \(p_r\ne0\) in \(\mathbb Q[k,w]\), the polynomial \(p_r(k,\cdot)\in\mathbb Q[w]\) vanishes identically for only finitely many integers \(k\), namely the integer roots of the nonzero polynomial in \(k\) given by any nonzero coefficient of \(p_r\) in \(w\). Take \(k_1\ge k_0\) beyond them. For \(k\ge k_1\), the identity \(p_r(k,\cdot)\,y_{k+r}=-\sum_{i<r}p_i(k,\cdot)\,y_{k+i}\) gives \(\deg y_{k+r}\le D+M_k\), where \(M_k=\max_{0\le i<r}\deg y_{k+i}\). Then \(M_{k+1}\le\max(M_k,\deg y_{k+r})\le M_k+D\), so \(M_k\le M_{k_1}+D(k-k_1)\) and \(\deg y_k\le M_{k_1}+D(k-k_1)\) for \(k\ge k_1\): at most linear in \(k\). But \(\deg y_k\ge\deg R_{n,k}=(k-1)((3n-2)k+n^2-7n+4)/2\) by thm:cube-merge-far-count. There the Weierstrass points are counted with their weights, which are the vanishing orders of the stripped Wronskian, so the count is the degree of \(R_{n,k}\). This degree is quadratic in \(k\) with leading coefficient \((3n-2)/2&gt;0\). This is a contradiction. For fixed \(k\ge2\) the degree is \((k-1)(n^2+(3k-7)n+4-2k)/2\), quadratic in \(n\) with leading coefficient \((k-1)/2&gt;0\), and the same argument applies to recurrences in \(n\). \(\square\)</p>
+<p><strong>What it excludes and what it leaves.</strong> Beraha–Kahane–Weiss, and Sokal's extension, need recurrences with coefficients in \(\mathbb Q[w]\) independent of \(k\). The lemma excludes the larger class with coefficients in \(\mathbb Q[k,w]\), for every polynomial multiple of the far family. Only linear degree growth is excluded. A recurrence such as \(y_{k+1}=w^ky_k\), with coefficients in \(\mathbb Q[w,w^k]\), gives quadratic growth, but it falls outside the classical hypotheses. A remaining route would need a \(q\)-analogue of Beraha–Kahane–Weiss, not the theorem itself. Any superlinear lower bound on \(\deg R_{n,k}\) would serve the proof; the exact formula is more than it needs.</p>
+<p><strong>Growth data</strong> (research/tools/bmd_far_k_recurrence.gp, research/results/bmd-20261006-f/far-k-recurrence.txt). For the raw Wronskian \(a_k=\mathrm{Wr}_k(w_0)\) at \(n=2\), \(k=3,\ldots,16\) and \(w_0\in\{1/3,-1\}\), the second differences of \(\log|a_k|\) grow by \(16\) to \(22\) per step, slowly increasing. Every recurrence with enough equations to test, order at most \(2\) with degree at most \(2\) in \(k\) or order \(3\) with degree at most \(1\), fails. Order \(3\) with degree \(2\) has more unknowns than equations and is reported as skipped. The normalization-free ratio \(\log|a_k(w_0)/a_k(2)|\) has second differences near \(-3\) for \(k\ge6\) at \(w_0=1/3\) (the first value is \(+2.1\)), but at \(w_0=-1\) they drift from \(-3\) to positive values. So the \(q\)-type signal is inconclusive. The lemma does not depend on these data.</p>
+<p><strong>Remaining gap.</strong> A \(q\)-holonomic recurrence for the far space, or another uniform mechanism, for the simplicity of \(R_{n,k}\) for every \(n,k\).</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-merge-far-count (statement and degree formula); conj:cube-merge-far-polynomial.</p>
+<p><strong>Verification gate.</strong> A fresh medium-effort reviewer found the lemma and proof correct and the scope of thm:cube-merge-far-count sufficient. It required:</p>
+<ul>
+<li>the stronger statement for polynomial multiples, or a weaker title;</li>
+<li>stating that the weighted count equals the degree;</li>
+<li>correcting the Beraha–Kahane–Weiss hypothesis;</li>
+<li>removing an untested recurrence case, previously skipped silently;</li>
+<li>recording the tool's parameters and the ratio in its output;</li>
+<li>precise growth wording.</li>
+</ul>
+<p>All are made, and the tool was rerun with these outputs. The \(w_0=-1\) ratio, newly computed, weakened the \(q\)-type signal, and the text says so.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 0.53 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 35.54 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 15.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.67 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 53.85 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
