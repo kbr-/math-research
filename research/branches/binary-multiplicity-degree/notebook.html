@@ -47,13 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The last-step far polynomials are rigid special members without a mechanism (<a href="#entry-2026-10-03-cube-far-direction-review">far direction review</a>).</p>
-<p>Next, replace the base exponent by a parameter \(\lambda\) in the last even step, at \(b=3\):</p>
-<ol>
-<li>compare the generic far count with the count at \(-7/2\);</li>
-<li>find a classical value of \(\lambda\) with simple zeros;</li>
-<li>state and prove squarefreeness for all but finitely many \(\lambda\), and locate the exceptional set relative to \(-7/2\).</li>
-</ol>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The free-exponent route is <a href="#entry-2026-10-03-cube-last-far-kappa">closed</a>: the cube's exponent is resonant, and the exceptional exponents are not explicit. Every uniform route to the rigid far polynomials has failed.</p>
+<p>Next, a route review that moves cycles to the necessary statement with the most concrete open mechanism. Candidates:</p>
+<ul>
+<li>statement 2's slice (\(p=3\), \(d=2\): \(\Phi_N\ne0\)), a nonvanishing problem of the kind the lexicographic-extreme method solved for the neck constants;</li>
+<li>(K)'s assembly at a fixed size.</li>
+</ul>
+<p>The far input of (B) is kept as the recorded highest risk, without a mechanism.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -43180,6 +43180,48 @@ K_W+2\tbinom{c+q}2+2\textstyle\sum_s\binom{n_s}2-\sum_so_sn_s=(c+q)^2+\sum_{s\ge
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-kappa" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-direction-review:2" data-claims="conj:cube-last-far-kappa-discriminant">
+<h3>3 October 2026 — With a free exponent, the last-step far space has 28 far points, 12 of which escape into a branch point at the cube's exponent; its discriminant has non-linear factors of degree up to 180, so the exceptional exponents are not explicit</h3>
+<p class="entry-meta">Refutation, mod 2^61-1 at b = 3: the exponent family's discriminant is not a product of linear factors; kappa = 1/2 is a resonance where far points escape, so a generic-exponent argument cannot reach the cube's exponent directly. Last far exponent cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-far-direction-review">far direction review</a> proposed replacing the base exponent by a parameter. At the last step the far space is exact (prop:cube-peeling-last-far-mobius), so the replacement is clean:</p>
+\[
+F(\kappa)=\mathcal P_{&lt;R_e}\oplus\langle(1+x)^{-3}\rangle\oplus\langle x^{-3}\rangle\oplus(1+x)^{-3-\kappa}\mathcal P_{&lt;4e}\oplus x^{-3-\kappa}\mathcal P_{&lt;4e}\oplus(1+x)^{-3+\kappa}x^{-3-\kappa}\mathcal P_{&lt;4}.
+\]
+<p>This is \(F_{b-1}\) at \(\kappa=1/2\), with \(c=1\). If the discriminant \(D(\kappa)\) of its far polynomial were a product of explicit linear factors, as for Jacobi polynomials, the exceptional exponents would be explicit, and it would remain to check \(\kappa=1/2\) against them.</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-kappa-discriminant</code>: for every \(e\), \(D(\kappa)\) is a product of linear factors in \(\kappa\) over \(\mathbb Q\). It is refuted here at \(e=1\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_last_far_kappa.gp works modulo \(q=2^{61}-1\). For \(f=x^b(1+x)^gp\) it uses \(f^{(m)}=x^{b-m}(1+x)^{g-m}h_m\), with \(h_{m+1}=x(1+x)h_m'+(b(1+x)+gx-m(1+2x))h_m\). So \(\det[h_m^{(i)}]\) is a polynomial in \(x\) and \(\kappa\), equal to \(W(F(\kappa))\) up to explicit powers of \(x\) and \(1+x\). The script strips the generic powers and evaluates \(D(t)\) at \(6400\) points \(t\in\mathbb F_q\), interpolates it (two extra checks) and factors it modulo \(q\).</p>
+<p>Output: research/results/bmd-20261003-zn/last-far-kappa-2.txt. The first run, last-far-kappa.txt, tested divisibility by \(1+x\) on the integer lift of a polynomial modulo \(q\) by mistake, and is superseded. The bug was found by factoring at \(\kappa=1/2\) and recovering the known degree \(16\).</p>
+<ul>
+<li>At generic \(\kappa\), the far polynomial has degree \(28\), with branch powers \(x^{43}(1+x)^{27}\). At \(\kappa=1/2\) the power of \(1+x\) rises to \(39\) and the far degree drops to \(16\), which is \(W_2\). So \(12\) far points escape into the branch point \(x=-1\) at the cube's exponent, and \(D(1/2)=0\) for that reason alone.</li>
+<li>\(D(\kappa)\) modulo \(q\) has degree \(4380\). It has linear factors at \(\kappa\in\{0,\pm1,\ldots,\pm8,\pm\tfrac12,\pm\tfrac32\}\), the resonant exponents, with multiplicities up to \(444\). It also has irreducible factors of degrees \(2,2,3,3,4,4,6,18,160,160,180,180\).</li>
+</ul>
+<p><strong>Outcome.</strong> A factor of degree greater than one modulo \(q\) has degree greater than one over \(\mathbb Q\). So \(D(\kappa)\) is not a product of linear factors, and the conjecture is refuted at \(e=1\). The exponents where the free-exponent far polynomial has a multiple root include the roots of irreducible factors of degree up to \(180\), with no explicit description. Moreover the cube's exponent \(\kappa=1/2\) is itself resonant: far points escape there, as the rigid simplicity review found for the merge chain. So the far polynomial at \(1/2\) is the reduced limit of a family whose discriminant vanishes there for a trivial reason. A generic-exponent argument would have to follow the \(16\) surviving roots through the resonant limit, which is again a statement about the rigid member.</p>
+<p><strong>What this closes.</strong> The free-exponent route to the last-step far input. With the earlier routes, every attempt at a uniform mechanism for the rigid far polynomials has failed:</p>
+<ul>
+<li>polynomial structure;</li>
+<li>\(p\)-adic certificates at two levels;</li>
+<li>exceptional Jacobi polynomials;</li>
+<li>stability;</li>
+<li>free exponents.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> prop:cube-peeling-last-far-mobius (exactness at \(l=1\)); the far direction review; the rigid simplicity review (resonance at half-integral exponents).</p>
+<p><strong>Verification gate.</strong> A refutation by computation modulo a prime. The direction used, that a non-linear factor modulo \(q\) implies one over \(\mathbb Q\), is rigorous, since the leading coefficient is nonzero modulo \(q\) and the interpolation passed two extra checks. The superseded run is recorded. No reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 57.75 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">40.12 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 9.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">57.70 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 10.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
