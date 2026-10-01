@@ -59,6 +59,11 @@ foreach(eval(getenv("SIZES")), sz,
   my(rowsP = vector(nr, i, sum(k = 1, nc, coefs[1][i, k] * m^(k - 1))));
   my(pole = vector(3, f, my(F = [Q, X, Z][f], gF = [2 * P + 4, 2 * P + 2, 2 * P + 2][f]); gF - vecmin(apply(h -> if (h == 0, 10^6, valuation(h, F)), rowsP))));
   emit(Str("sizes ", sz, ": pole orders along Q, X, Z (each a pair of points) ", pole, "; total ", 2 * vecsum(pole), " vs D - 1 = ", nr - 1));
+  \\ cycle bmd-20261004-zu: per irreducible factor (a point when linear) of Q, X, Z over F_(3^5)
+  my(pts = List());
+  for (f = 1, 3, my(F = [Q, X, Z][f], gF = [2 * P + 4, 2 * P + 2, 2 * P + 2][f], fa = factor(F)[, 1]);
+    for (q = 1, #fa, my(phi = fa[q]); listput(pts, [["Q", "X", "Z"][f], poldegree(phi), gF - vecmin(apply(h -> if (h == 0, 10^6, valuation(h, phi)), rowsP))])));
+  emit(Str("sizes ", sz, ": pole orders per factor [factor of, degree, order] ", Vec(pts)));
   \\ cycle bmd-20261004-zs: product model.  Cluster k (size s_k, centre w0) limit W_k = w0 <(T/w0^2)^u : u among the first
   \\ s_k exponents with bet(u) != 0>.  Model space Pm = <1, T> + <f g : f in W_a, g in W_b>.  Compare with U: dim Pm, and
   \\ rank of U + Pm (U inside Pm iff it equals dim Pm).

@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-review">Three-centre certificates</a> now cover \(n=7,\ldots,10\), and completeness matches classicality on every conclusive multiset.</p>
-<p>Next: compute the pole order at each of the six special points of the conic separately for \(N=7,\ldots,11\). Look for an additive formula naming a family of complete splits for every \(N\).</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The three-centre criterion is <a href="#entry-2026-10-04-cube-three-centre-correction">ordinariness of the limit at \(m=\infty\)</a>, over the mark, not completeness. The certificates for \(n=7,\ldots,10\) stand.</p>
+<p>Next: expand the pair rows and the saturation at \(m=\infty\), in the coordinate \(1/m\). Determine for which splits the vanishing sequence there is gap-free, and aim for a family of splits for every \(N\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49750,6 +49750,31 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.49 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5 min 32.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-correction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="conj:cube-three-centre-mark-ordinary">
+<h3>4 October 2026 — Correction: the three-centre "complete series" criterion was a misreading; the measured property is that the point m = ∞ over the mark is not a Weierstrass point of the limit</h3>
+<p class="entry-meta">Correction of the completeness entry and of the three-centre review's Riemann–Roch lead: the interval test concerns top degrees, so the criterion is ordinariness at m = ∞ (over T = 0). The easy direction holds by the moving-point lemma. Three centre correction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>What was wrong.</strong> The <a href="#entry-2026-10-04-cube-three-centre-complete">completeness entry</a> read the tool's "leading \(m\)-degrees form an interval of length \(D\)" as \(G\cdot U\) being all polynomials of degree below \(D\), so a complete linear series. The <a href="#entry-2026-10-04-cube-three-centre-review">three-centre review</a> repeated this in its Riemann–Roch lead. A direct check at \((2,2,2)\) shows otherwise. The rows of \(G\cdot U\) have degree about \(160=\deg G\), and they vanish to high order at the special points: \(\deg G=160\), \(v_Q(G\,T)=26\), \(v_{m-g}(G)=28\) at \(P=12\). Output: research/results/bmd-20261004-zu/degree-check.txt, from research/tools/bmd_three_centre_degree_check.gp, run from a scratch copy of the same file. The leading degrees are top degrees near \(\deg G\), and only their consecutiveness was tested. So the pole-order reading and the claim that "complete implies classical by the Wronskian of \(1,m,\ldots\)" do not apply as stated.</p>
+<p><strong>What the test measured.</strong> Write \(u\in U\) in the coordinate \(1/m\) at \(m=\infty\). Since \(G\) is a fixed polynomial, the degree of \(G\cdot u\) is \(\deg G\) minus the vanishing order of \(u\) at \(m=\infty\). So the leading degrees of a reduced basis are \(\deg G\) minus the vanishing sequence of \(U\) at \(m=\infty\). An interval of length \(D\) means that sequence is gap-free, so \(m=\infty\) is not a Weierstrass point of \(U\). As \(m\to\infty\), \(x\to1\), \(z\to-1\) and \(T\to0\), so this point lies over the mark \(T=0\), on the sheet \(z=-1\).</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-mark-ordinary, corrected: for every \(N\) and every split, the three-centre limit \(U\) is classical at a generic point if and only if \(m=\infty\) is not a Weierstrass point of \(U\). Its leading \(m\)-degrees after multiplying by \(G\) are consecutive. The direction "ordinary at \(\infty\) implies classical" holds: consecutive largest exponents are residue-balanced, so lem:cube-moving-point-limit-criterion's extremal test gives \(W_U\not\equiv0\). The converse is the conjecture. It is supported by the same data as before, with all \(24\) conclusive multisets at \(N=6,\ldots,11\) matching. The deficit equals the number of gaps in the vanishing sequence in all but one recorded case. The pole orders per special point (research/results/bmd-20261004-zu/pole-points.txt) are genuine valuations, but they do not decide classicality.</p>
+<p><strong>Effect on the route.</strong> The criterion is now local at one explicit point, which may be easier: proving that some split is ordinary at \(m=\infty\) for every \(N\) needs only the expansions of the limit at that point. The certificates for \(n=7,\ldots,10\) are unaffected. They rest on the jet ranks at points of \(\mathbb F_{3^5}\), not on this criterion.</p>
+<p><strong>Remaining gap.</strong> The expansions of the saturated limit at \(m=\infty\) for every split, and a split whose vanishing sequence there is gap-free for every \(N\).</p>
+<p><strong>Dependencies re-read.</strong> The completeness entry and the three-centre review (corrected here); lem:cube-moving-point-limit-criterion (the extremal test); the tool's degree output code.</p>
+<p><strong>Verification gate.</strong> A correction based on a direct degree and valuation check. The corrected easy direction is the lemma's extremal test, applied as stated there.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zu">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 44.64 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">39.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 22.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 12.55 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 29.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
