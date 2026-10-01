@@ -25,6 +25,7 @@ main() = {
   foreach(eval(getenv("CASES")), cs, my(l = cs[1], n = cs[2], w = 4, beta = concat([0], vector(l - 1, s, eval(Str("'b", s + 1)))));
     for (c = w, l * w, my(nus = orderings(balanced(l * w - c, l - 1)), f = 0);
       foreach(nus, nu, my(A = anu(l, w, c, n, nu, beta)); f += xi(l, w, c, nu, beta) * A[1] / A[2]);
+      if (#nus == 1, my(nu = nus[1], A = anu(l, w, c, n, nu, beta)); emit(Str("  separate factors at c=", c, ": xi ", factor(xi(l, w, c, nu, beta)), "; kappa_B numerator ", factor(numerator(A[1] / A[2])), " denominator ", factor(denominator(A[1] / A[2])))));
       my(F = factor(numerator(f)), G = factor(denominator(f)));
       emit(Str("l=", l, " n=", n, " c=", c, ": orderings ", #nus, "; numerator factors ", F, "; denominator factors ", G))));
 }

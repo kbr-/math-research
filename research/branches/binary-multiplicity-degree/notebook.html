@@ -47,14 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The neck statement needs only \(f_{\rm lead}\ne0\) for every \(l\ge3\). At \(l=3\) it is a <a href="#entry-2026-10-03-cube-neck-leading-factor">discriminant power</a> when the split is equal.</p>
-<p>Next, a proof of the product formula for equal splits, by collision divisibility in \(\beta\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). Six research entries since the last review, so next is a route review of the neck and far lines. The neck half of (B) is reduced to \(f_{\rm lead}\ne0\). Both of its factors are <a href="#entry-2026-10-03-cube-neck-leading-exponents">discriminant powers</a> in all tested equal-split windows. The far polynomials and (K) remain without mechanism. The review should weigh:</p>
 <ul>
-<li>compute the total degree of \(\xi\kappa_B\) in \(\beta\) by homogeneity;</li>
-<li>show that it vanishes to order \(a\) along each \(\beta_s=\beta_t\), from the confluent limit of two species;</li>
-<li>show that the constant, a confluent limit of all species at one point, is nonzero, through Toeplitz and Jacobi determinants as for two species.</li>
+<li>the confluent proof of the product formulas (Hermite-type Wronskians of power functions);</li>
+<li>the unequal splits;</li>
+<li>the far obstacle.</li>
 </ul>
-<p>Then handle unequal splits by summing over orderings.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -41247,6 +41245,46 @@ using \(\sum m_k=lw=c+q+\sum_sn_s\). \(\det P''[I,:]\ne0\) needs \(c\le c+q\le l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-neck-leading-exponents" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-leading-exponents check:cube-neck-leading-ratio">
+<h3>3 October 2026 — Both factors of the neck leading constant are separately discriminant powers, with exponents (w−k)² and k(2n+k); checked for three, four and five species</h3>
+<p class="entry-meta">Finite check: in the equal-split windows, ξ/∏(β_s−β_t)^((w−k)²) and κ_B/∏(β_s−β_t)^(k(2n+k)) are nonzero constants at l = 3, 4, 5 (n = 4) and l = 3 (n = 8); refined product conjecture. Leading exponents cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-neck-leading-factor">leading factor entry</a> found \(f_{\rm lead}=C(\beta_2\beta_3(\beta_2-\beta_3))^{a}\) at \(l=3\) in the equal-split windows. Which factor carries which part of the exponent, and does the structure persist for more species? A product formula for each factor separately is what a proof by collision divisibility in \(\beta\) would establish.</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-leading-exponents</code> (every \(l\ge2\), \(w\le n\), equal-split window). <code>check:cube-neck-leading-ratio</code> is the finite check.</p>
+<p><strong>Computations.</strong> Both scripts use the reviewed definitions (leading constant entry), at \(\beta_1=0\), \(w=4\), in the equal-split windows \(c=lw-(l-1)k\), \(0\le k\le w\).</p>
+<ul>
+<li>research/tools/bmd_cube_neck_leading_factor.gp, extended to print \(\xi\) and \(\kappa_B\) separately (\(l=3\), \(n=4\), symbolic; research/results/bmd-20261003-t/leading-separate.txt). A first attempt wrote to a missing directory and was rerun. A symbolic run at \(l=4\) was stopped after ten minutes without output; the next item replaces it.</li>
+<li>research/tools/bmd_cube_neck_leading_ratio.gp tests, at three random rational points each, whether \(\xi/\prod_{s&lt;t}(\beta_s-\beta_t)^{(w-k)^2}\) and \(\kappa_B/\prod_{s&lt;t}(\beta_s-\beta_t)^{k(2n+k)}\) are constant, with \(s,t\) over all species and \(\beta_1=0\). It covers \((l,n)=(3,4),(4,4),(5,4),(3,8)\) (research/results/bmd-20261003-t/leading-ratio.txt).</li>
+</ul>
+<p><strong>Outcome.</strong></p>
+<ul>
+<li>Symbolically at \(l=3\), \(n=4\): \(\xi=C_\xi(\beta_2\beta_3(\beta_2-\beta_3))^{(w-k)^2}\), with exponents \(0,1,4,9,16\) for \(k=4,\ldots,0\), and \(\kappa_B=C_\kappa(\beta_2\beta_3(\beta_2-\beta_3))^{k(2n+k)}\), with exponents \(48,33,20,9,0\).</li>
+<li>Both ratios are constant at the three points and nonzero, in all \(20\) equal-split windows of the four cases (\(l=3,4,5\), \(n=4\); \(l=3\), \(n=8\)).</li>
+<li>\(C_\xi\) does not depend on \(n\) (equal values at \(n=4,8\)), as expected, since \(\xi\) does not involve \(U\).</li>
+</ul>
+<p><strong>Conjecture (neck leading exponents).</strong> For every \(l\ge2\), \(w\le n\) and \(0\le k\le w\) with \(c=lw-(l-1)k\ge w\):</p>
+<ul>
+<li>\(\xi=C_\xi\prod_{s&lt;t}(\beta_s-\beta_t)^{(w-k)^2}\);</li>
+<li>\(\kappa_B=C_\kappa\prod_{s&lt;t}(\beta_s-\beta_t)^{k(2n+k)}\);</li>
+</ul>
+<p>with \(C_\xi,C_\kappa\ne0\), for all \(\beta\). Hence \(f_{\rm lead}\ne0\) for distinct \(\beta\) in the equal-split windows. For \(l=2\) this agrees with the <a href="#cube-neck-two-species-leading-nonvanishing">two-species theorem</a>, whose factors at \(\beta_1=0\) were a Toeplitz determinant (power \(t^2=(w-k)^2\) of \(\beta_2\)) and a Hankel determinant.</p>
+<p><strong>A route to a proof.</strong> The exponents have Hermite's form for confluent determinants: a product over pairs of the block sizes. For \(\xi\), each species has \(w-k\) free coefficients beyond the conditions at \(0\), and \((w-k)^2\) is the product of two such counts. For \(\kappa_B\), \(k(2n+k)\) is a product of \(k\) evaluation conditions and \(2n+k\) coefficients.</p>
+<p>A proof would show that each factor vanishes to exactly that order along \(\beta_s=\beta_t\), the confluent limit of two species, and compare with the total degree. The degree of \(\xi\), \(\binom c2+(l-1)\binom k2-l\binom w2\), equals \(\binom l2(w-k)^2\); this identity was checked for \(l=2\) by expansion. The constants would then be confluent limits at a single point. For \(\xi\), up to the factor \(x^k\), the species functions span \((1+\beta_sx)^{\alpha+j}\), \(j&lt;w-k\): power functions at distinct points with consecutive exponents, whose Wronskians have classical product formulas.</p>
+<p><strong>Dependencies re-read.</strong> The leading constant and leading factor entries (definitions, reviewed script); thm:cube-neck-window-vanishing-all.</p>
+<p><strong>Verification gate.</strong> Exact symbolic and rational computations with the reviewed definitions. The ratio test is a finite check at three points per case. No proof is claimed, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 36.35 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 18.67 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.07 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 1.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
