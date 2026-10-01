@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). With the <a href="#entry-2026-10-07-cube-tie-single-series-block">single-series block theorem</a>, the tie window at \(\lambda=3/2\) has full rank off \(\{0,1\}\) exactly where the explicit sums \(r_N\), \(r_{N+1}\), \(r_{N+2}\) do not all vanish.</p>
-<p>Next: find a closed or recursive form of \(r_N(c)\) at \(\lambda=3/2\), as a hypergeometric sum in \(c\), and prove that \(r_N\) and \(r_{N+1}\) are coprime for every \(m\). For instance, show that their resultant is a nonzero product, or that a contiguous relation forces a common zero to propagate to \(\lambda\to0\), where the log-limit theorem excludes it.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The tie coefficient is a <a href="#entry-2026-10-07-cube-tie-window-gegenbauer">Gegenbauer polynomial</a> (conjecture, exact in 34 symbolic cases), and given that identity the tie window has full rank for every \(m\).</p>
+<p>Next: a route review is due. It should weigh proving the weighted Gegenbauer identity against the untouched gaps of the cone route (the tied-pair valuation lemma, multiple ties, compactness, non-separated points) and the effort each needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -54675,6 +54675,73 @@ Since \(\beta=\varepsilon/(y+\varepsilon)\), \(\det N_\lambda\in\mathbb Q[y][\va
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 37.92 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 52.62 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 45.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-window-gegenbauer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-tie-stability-review:1" data-claims="conj:cube-tie-window-gegenbauer lem:cube-tie-window-gegenbauer-consequences">
+<h3>7 October 2026 — The tie coefficient is a Gegenbauer polynomial: the explicit functional equals c^m times one coefficient of ((1+cT)(1+T))^{−λ}, which would give unit-circle zeros and full rank of the tie window for every m</h3>
+<p class="entry-meta">Conjecture for every m, start s and λ, exact with symbolic λ in 32 cases up to powers of c and c − 1. Working proof that it implies the unit-circle and full-rank conjectures for every m ≥ 2 and non-integer λ > 0. Tie Gegenbauer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K): after the <a href="#entry-2026-10-07-cube-tie-single-series-block">single-series block theorem</a>, the tie contact window has full rank off \(\{0,1\}\) iff the explicit sums \(r_N\), \(r_{N+1}\), \(r_{N+2}\) of thm:cube-tie-window-general-functional do not all vanish. What are these sums?</p>
+<p><strong>Setting.</strong> As in thm:cube-tie-window-general-functional, at \(x=c\), \(y=1\), with window start \(s\ge0\) and \(N=s+2m\). Let \(t_k=[T^k]\,((1+cT)(1+T))^{-\lambda}\) and \(G_k(c)=\sum_j\binom kj(\lambda)_j(\lambda)_{k-j}c^j\). The generating function \((1-t)^{-\lambda}(1-ct)^{-\lambda}=\sum_kG_kt^k/k!\) gives \(t_k=(-1)^kG_k/k!\).</p>
+<p><strong>General statement.</strong> conj:cube-tie-window-gegenbauer: for all \(m\ge1\), \(s\ge0\) and \(\lambda\),
+\[\frac{r_{s+2m}}{\rho_{s+2m}}=\kappa_{m,s}(\lambda)\,c^{v}(c-1)^{w}\,t_s(c),\qquad \kappa_{m,s}(\lambda)=C_{m,s}\prod_{j=-m}^{m-1}(\lambda+j),\ C_{m,s}\in\mathbb Q^\times,\]
+for some integers \(v,w\ge0\); the data suggest \(v=m\) and \(w=0\), which is not tested.
+The proved part is lem:cube-tie-window-gegenbauer-consequences: if the conjecture holds, then for every \(m\ge2\) and non-integer \(\lambda&gt;0\), with \(d=\binom m2\):</p>
+<ol>
+<li>The tie coefficient is \(L_m\propto G_d\). With \(c=e^{2i\theta}\), \(G_d(c)=d!\,e^{id\theta}C^{(\lambda)}_d(\cos\theta)\), so all \(d\) zeros of \(L_m\) are simple and lie on the unit circle, away from \(c=1\). This is conj:cube-tie-square-window-unit-circle, at every non-integer \(\lambda&gt;0\). The statement about the zeros of \(G_d\) alone holds for every \(\lambda&gt;0\).</li>
+<li>The tie contact window has full rank \(2m+1\) for every \(c\ne0,1\). This is conj:cube-tie-window-full-rank, for every non-integer \(\lambda&gt;0\), including \(3/2\).</li>
+</ol>
+<p><strong>Proof of the lemma.</strong></p>
+<ol>
+<li><em>Gegenbauer form.</em> In the generating function put \(c=e^{2i\theta}\) and \(t=e^{-i\theta}\tau\). Then \((1-e^{-i\theta}\tau)(1-e^{i\theta}\tau)=1-2\tau\cos\theta+\tau^2\), whose \((-\lambda)\)-th power generates \(C^{(\lambda)}_k(\cos\theta)\). So \(G_d(e^{2i\theta})e^{-id\theta}/d!=C^{(\lambda)}_d(\cos\theta)\). For \(\lambda&gt;0\), \(C^{(\lambda)}_d\) is orthogonal on \((-1,1)\) and has \(d\) simple zeros there. They give \(d\) distinct \(\theta_j\in(0,\pi)\) and \(d\) distinct zeros \(e^{2i\theta_j}\ne1\) of \(G_d\). Since \(\deg G_d=d\), with leading coefficient \((\lambda)_d\ne0\), these are all its zeros. By the general-functional theorem, the single-series block theorem and the conjecture at \(s=d\), \(L_m\propto r_N/(\rho_Nc^m)\propto t_d\propto G_d\), the normalising factors being nonzero for non-integer \(\lambda\).</li>
+<li><em>No common zero.</em> \(F=((1+cT)(1+T))^{-\lambda}\) satisfies \((1+cT)(1+T)F'=-\lambda\bigl((1+c)+2cT\bigr)F\). Comparing coefficients of \(T^k\) gives
+\[(k+1)t_{k+1}+(1+c)(k+\lambda)t_k+c(k-1+2\lambda)t_{k-1}=0\quad(k\ge1),\qquad t_0=1.\]
+If \(t_s(c_0)=t_{s+1}(c_0)=0\) with \(c_0\ne0\), the relation at \(k=s\) gives \(c_0(s-1+2\lambda)t_{s-1}(c_0)=0\), so \(t_{s-1}(c_0)=0\). Repeating at \(k=s-1,\ldots,1\) uses \(k-1+2\lambda&gt;0\) for all \(1\le k\le s\), which holds since \(\lambda&gt;0\); this is the only use of positivity. Descending, \(t_0(c_0)=0\), a contradiction. For \(s=0\), \(t_0=1\ne0\) directly. So \(t_s\) and \(t_{s+1}\) have no common zero in \(\mathbb C^\times\).</li>
+<li><em>Full rank.</em> By the conjecture at starts \(d\) and \(d+1\) (both \(\ge m-1\) for \(m\ge2\), as thm:cube-tie-window-general-functional requires), \(r_N\) and \(r_{N+1}\) are \(t_d\) and \(t_{d+1}\) times powers of \(c\) and \(c-1\), with nonzero constants for non-integer \(\lambda\). The functional \(\psi_{N+1}\) is the start-\((d+1)\) functional. By step 2 they do not vanish together at \(c\ne0\). By the contact-window criterion of thm:cube-tie-window-general-functional, with \(\det N_\lambda\ne0\) off \(\{0,1\}\) by thm:cube-tie-single-series-block, the contact window has full rank there. \(\square\)</li>
+</ol>
+<p><strong>Computation.</strong> research/tools/bmd_tie_rN.gp evaluates \(r_N\) from its definition, with \(\lambda\) as a symbolic variable (research/results/bmd-20261007-c/):</p>
+<ul>
+<li>tie-polynomial-lambda.txt: every coefficient of the stripped tie polynomial factors into linear factors in \(\lambda\), with consecutive ratios \(\propto(\lambda+k)/(\lambda+d-1-k)\), for \(m=2,\ldots,5\).</li>
+<li>tie-gegenbauer.txt: after removing all powers of \(c\) and \(c-1\), \(r_N/G_d\) is free of \(c\), with quotient \(\propto\prod_{j=-m}^{m-1}(\lambda+j)\), exactly for \(m=2,\ldots,7\) at \(s=d\).</li>
+<li>tie-gegenbauer-starts.txt: the same holds for \(m=1,\ldots,4\) at the starts \(s\in\{0,1,2,3,5,8,13\}\), \(28\) cases. Two cases repeat the previous file, so there are \(32\) distinct cases. The constant \(C_{m,s}\) is not shown, since factor drops the content.</li>
+</ul>
+<p>The data agree with the earlier numerical findings at \(\lambda=3/2\): \(L_3\propto(c+1)(7c^2+2c+7)\), \(G_3\) having coefficients \(7,9,9,7\) up to scale; unit-circle zeros through \(m=8\); and \(c^d+1\) at \(\lambda\to0\), the Chebyshev limit of \(C^{(\lambda)}_d/\lambda\).</p>
+<p><strong>Toward a proof.</strong> In Gegenbauer form, with \(x=\cos\theta\), the conjecture reads
+\[\sum_{i=0}^{2m}[\tau^i](1-2x\tau+\tau^2)^m\;\frac{(s+2m-i)!\;C^{(\lambda)}_{s+2m-i}(x)}{\Gamma(s+2m-i+\lambda-m+1)}=K\,C^{(\lambda)}_s(x),\]
+with \(K\) a multiple of \(\kappa_{m,s}\rho_{s+2m}\). The substitution \(T=-e^{-i\theta}\tau\) produces matching signs and powers of \(e^{i\theta}\) on both sides. The reviewer confirmed numerically that the left side over \(C_s\) is constant at \(m=2\), \(s=1\), \(\lambda=3/2\).
+Without the Gamma weights the left side would be \(C^{(\lambda-m)}_{s+2m}(x)\). With them it is a weighted connection identity between Gegenbauer families. Natural tools are the Rodrigues formula, the fractional-integral representation \(\rho_k=B(k+1,\lambda-m)/\Gamma(\lambda-m)\), or creative telescoping (Zeilberger) for fixed symbolic \(m\). None was carried out this cycle.</p>
+<p><strong>Remaining gap.</strong> Prove conj:cube-tie-window-gegenbauer. With it, the tie part of (K) is complete for every \(N\) under the window reduction. Still open: the tied-pair valuation lemma behind that reduction, multiple ties, compactness and non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-window-general-functional; thm:cube-tie-single-series-block; conj:cube-tie-window-full-rank; conj:cube-tie-square-window-unit-circle.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the generating function and the Gegenbauer substitution;</li>
+<li>the zero count;</li>
+<li>the ODE and the recurrence;</li>
+<li>the start indexing of \(r_{N+1}\);</li>
+<li>the unweighted connection remark;</li>
+<li>the tool's \(\rho\) ratios and \(t_k\).</li>
+</ul>
+<p>Its fixes are applied:</p>
+<ul>
+<li>the missing factorial in the Gegenbauer-form display;</li>
+<li>non-integer \(\lambda\) and \(m\ge2\) in the lemma;</li>
+<li>the full descent condition and the case \(s=0\);</li>
+<li>the conjecture stated up to powers of \(c\) and \(c-1\), which is what the data test;</li>
+<li>the distinct case count.</li>
+</ul>
+<p>Status: working proof of the lemma; the identity is a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-c">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 31.18 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 31.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 17.64 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 41.28 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.60 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
