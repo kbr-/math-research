@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-perron-review">Perron review</a> found two things. The last-step sector parts are the two Poincaré–Perron solutions of a second-order recurrence. Each sector circle carries exactly \(R_e\) balanced roots, at \(e=2,4\); the \(e=4\) count is provisional on one failed split control.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-sector-gas">sector gas</a> entry validates the count of \(R_e\) balanced roots per circle at \(e=2,4\). It writes the sector polynomial as a two-electrode log-gas integral.</p>
 <p>Next:</p>
 <ol>
-<li>Locate the root at which the \(e=4\) split control failed, and confirm the counts.</li>
-<li>Write the sector sums through Andréief's identity as multiple contour integrals, verify on a \(2\times2\) instance, and use the Perron expansions to locate the dominant configurations.</li>
-<li>Explain the count \(R_e\) per circle as a winding number of \(z_j\).</li>
+<li>Steepest descent on the log-gas: place \(a_0\) particles at \(0\) and \(a_1\) at \(-1\), each in a cluster of size about \(1/n\), and compute the leading \(r\)-dependence of \(E_{i+1}/E_i\). Test it against the measured \(\kappa\) at \(e=4\).</li>
+<li>Resolve the count \(R_e\) against the exponent \(R_e+\tfrac72\), by tracking the phases of the sector sums around one circle.</li>
+<li>The roots near \(|t|=1\), and the middle steps.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47837,6 +47837,55 @@ No numerical control of the Laplace code was run, for example recovering the det
 <tr><td>Computation design and coding</td><td class="elapsed">4.35 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 29.22 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9 min 51.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-sector-gas" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-last-far-perron-review:2" data-claims="lem:cube-far-sector-multiple-integral conj:cube-far-sector-circle-count">
+<h3>4 October 2026 — Sector gas: the sector polynomial is a multiple contour integral with a Vandermonde interaction in 1/(y−r); each sector circle carries exactly R_e balanced roots, with every split control passed after a contour fix</h3>
+<p class="entry-meta">Working proof of a multiple-integral, log-gas-like form of the sector polynomial. The failed split control at e = 4 came from a hairpin crossing a cut; with a geometric guard every control passes and the count is 28 = R_e per circle. Conjecture for every e. Sector gas cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. The <a href="#entry-2026-10-04-cube-last-far-perron-review">Perron review</a> left two tasks. First, its \(e=4\) count of \(R_e\) balanced roots per circle was provisional, because a split control failed at an unlocated root. Second, it proposed writing the sector sums as multiple integrals, the log-gas form suited to steepest descent.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-sector-multiple-integral</code> for every step; <code>conj:cube-far-sector-circle-count</code> for the last step at every \(e\).</p>
+<h4>The failed control, and a correction</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (xsector mode, now recording the per-root split error and the root) was rerun on all roots at \(e=4\). The split error was below \(10^{-20}\) at every non-real root except the conjugate pair \(r\approx12.66\pm2.75i\), where it was \(1.68\) (research/results/bmd-20261004-t/x-sector-all-e4.txt).</p>
+<p>The cause is the \(I_{-1}\) hairpin used for the sector sums. There \(r\), \(0\) and \(-1\) are nearly collinear, and the \(0\)-cut passes at distance \(\operatorname{Im}r/|r|=0.212\) from \(-1\). The radius of the \(I_{-1}\) hairpin circle was \(|1+r|/50=0.279\), so the circle crossed the \(0\)-cut, the branch cut of \(x^b\), twice. Its values, and so every \(E_s\) at that pair, were invalid.</p>
+<p><strong>Correction.</strong> In the <a href="#entry-2026-10-04-cube-last-far-sector-balance">last-step sector balance entry</a>, the sentence "The hairpin radius is \(|P-r|/50\), asserted below \(1/2\), so it never reaches the other singularity" is insufficient. The radius must also stay below the distance from \(P\) to the other cut. The code now takes the radius to be at most half that distance.</p>
+<p>The rerun with this guard passes the split control at every non-real root, with maximal error \(9.3\cdot10^{-19}\) (research/results/bmd-20261004-t/x-sector-all-e4-guarded.txt). The pair \(r\approx12.66\pm2.75i\) turns out to be unbalanced: the third sum is \(0.47\) of the largest, at \(\log|t|=-0.073\). The balanced roots are unchanged: exactly \(28=R_4\) per circle, all four pairs. At \(e=2\) every control passed already: exactly \(6=R_2\) per circle (x-sector-all-e2.txt), and no root there meets the crossing condition.</p>
+<p>The fixed threshold \(10^{-3}\) is somewhat fragile: at \(e=4\) one root sits at \(1.7\cdot10^{-3}\), just outside it.</p>
+<p><strong>Conjecture (circle count).</strong> For every \(e\ge2\), with the cuts of lem:cube-far-x-sector-decomposition and the balance threshold \(10^{-3}\), each of the four sector pairs \((E_i,E_{i+1})\) balances at exactly \(R_e\) non-real roots of \(W_{b-1}\). The other \(\deg W_{b-1}-4R_e\) roots are real or unbalanced. The unbalanced ones lie in \(\log|t|\in[-0.57,0.13]\) at \(e=4\) and \([-1.15,0.07]\) at \(e=2\).</p>
+<p>A winding number of the sector root \(z_{i+1}(r)\) along a closed level curve would explain a count independent of \(i\). But the ratio law's exponent is \(R_e+\tfrac72\), not \(R_e\), and \(t^{-7/2}\) is not single-valued around \(t=0\). The cuts of the sector split move with \(r\), so continuing the sector sums around a curve may pick up phases. The relation between the count \(R_e\) and the exponent \(R_e+\tfrac72\) is not resolved here.</p>
+<h4>Lemma (sector multiple integral)</h4>
+<p>Let \(r\) be non-real, with the cuts of lem:cube-far-x-sector-decomposition, and \(k'\) rows \(f_i\) with \(n=R_e\). For a pure row let \(\Gamma_i\) be a small circle about \(r\). For a mixed row let \(\Gamma_i=K_{-1}+zK_0\), the formal sum of its two keyhole contours with weight \(z\) on \(K_0\). Then
+\[
+E(z;r)=\frac1{(2\pi i)^{k'}}\int_{\Gamma_1}\!\!\cdots\int_{\Gamma_{k'}}\ \prod_{i=1}^{k'}f_i(y_i)\,(y_i-r)^{-n-1}\ \prod_{1\le i&lt;i'\le k'}\Bigl(\frac1{y_{i'}-r}-\frac1{y_i-r}\Bigr)\,dy_1\cdots dy_{k'}.
+\]</p>
+<p><strong>Proof.</strong> Each entry of the matrix defining \(E(z;r)\) is \(\frac1{2\pi i}\int_{\Gamma_i}f_i(y)(y-r)^{-n-s-1}dy\) for row \(i\) and column \(s=0,\ldots,k'-1\). For a mixed row, the integral over \(K_{-1}+zK_0\) gives \(I_{-1}+zI_0\). Each \(f_i(y)(y-r)^{-n-1-s}\) is absolutely integrable on its contour, since the mixed rows are \(O(|y|^{-3})\) on the unbounded keyholes. So Fubini and multilinearity in rows put row \(i\)'s variable \(y_i\) into its own integral:
+\[
+E=\frac1{(2\pi i)^{k'}}\int\cdots\int\prod_if_i(y_i)\,\det\bigl[(y_i-r)^{-n-1-s}\bigr]_{i,s}\,dy .
+\]
+With \(w_i=1/(y_i-r)\), the determinant is \(\prod_i(y_i-r)^{-n-1}\det[w_i^{\,s}]=\prod_i(y_i-r)^{-n-1}\prod_{i&lt;i'}(w_{i'}-w_i)\). \(\square\)</p>
+<p>Each pure-row circle about \(r\) can be deformed outward to keyholes around that row's singularities, plus a circle at infinity. The circle at infinity matters for rows that grow there, so this deformation is not needed or used.</p>
+<p><strong>Reading.</strong> The integrand is a two-electrode log-gas:</p>
+<ul>
+<li>each particle \(y_i\) has weight \(f_i(y_i)(y_i-r)^{-n-1}\); for a mixed particle, this weight concentrates for large \(n=R_e\) where \(|y_i-r|\) is smallest on its keyholes;</li>
+<li>the particles interact through \(\prod(w_{i'}-w_i)\), which penalizes particles with equal \(1/(y-r)\);</li>
+<li>the variable \(z\) counts the mixed particles placed on the \(0\)-electrode.</li>
+</ul>
+<p>This is the form in which steepest descent could produce the ratio law. The weights are complex, so this is only log-gas-like. For pure rows on circles about \(r\), \(|y-r|\) is constant, so the concentration statement applies only to the mixed rows. Moving one mixed particle from \(-1\) to \(0\) changes the weight by about \(t^{-(n+1)}\), and the rest of the exponent \(\tfrac52\), together with the slowly varying factor, would come from the interaction and from \(f\) near the endpoints. That computation is not done here.</p>
+<p><strong>What this gives.</strong> First, a count validated at every root after the contour fix: \(R_e\) balanced roots on each circle at \(e=2,4\). Second, an exact multiple-integral form of the sector polynomial, the starting point for uniform asymptotics. Third, a stated tension: the count \(R_e\) versus the exponent \(R_e+\tfrac72\). Its resolution is a test of any proposed asymptotic picture.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-sector-polynomial and lem:cube-far-x-sector-decomposition; conj:cube-far-x-sector-ratio; the Perron review's tests.</p>
+<p><strong>Verification gate.</strong> I re-read the sector polynomial and decomposition lemmas. One fresh-context medium reviewer passed the lemma, adding the Fubini sentence. It found the first diagnosis inverted: the \(I_{-1}\) hairpin, not the validation contour, crossed the \(0\)-cut. Its verdict was fail on that point and on overclaims in the title, the count and the conjecture. All of these are corrected. A geometric guard was added to the code, and the \(e=4\) run repeated, now passing every control. The reviewer did not see the rerun.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 48.11 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 42.93 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 4.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.29 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">18 min 13.26 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

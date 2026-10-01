@@ -129,8 +129,10 @@ cpow(z, a, u) = u^a * brpow(z / u, a);
 taylorb(g, b, r, u1, u0, N0, N1) = { my(h = 'h, S = cpow(1 + r, g, u1) * (1 + h / (1 + r) + O(h^(N1 + 1)))^g * cpow(r, b, u0) * (1 + h / r + O(h^(N1 + 1)))^b);
   vector(N1 - N0 + 1, i, polcoef(S, N0 + i - 1, 'h)); }
 loopb(g, b, r, u1, u0, N0, N1, P = -1) = {
-  my(uu = if (P == -1, u1, u0), rho = abs(P - r) / 50, eps = rho / 100, F = y -> cpow(1 + y, g, u1) * cpow(y, b, u0) * vector(N1 - N0 + 1, i, (y - r)^(-(N0 + i))));
-  if (rho >= 1/2, error("hairpin circle would reach the other singularity"));
+  \\ the hairpin circle must stay clear of the other cut (cycle bmd-20261004-t: the old guard rho < 1/2 let the -1 circle
+  \\ cross the 0-cut at a near-collinear root): rho <= half the distance from P to the other ray
+  my(uu = if (P == -1, u1, u0), Q = -1 - P, uq = if (P == -1, u0, u1), sq = real((P - Q) * conj(uq)), dq = if (sq > 0, abs(imag((P - Q) * conj(uq))), abs(P - Q)));
+  my(rho = min(abs(P - r) / 50, dq / 2), eps = rho / 100, F = y -> cpow(1 + y, g, u1) * cpow(y, b, u0) * vector(N1 - N0 + 1, i, (y - r)^(-(N0 + i))));
   my(Y = w -> P + uu * w, wl = sqrt(rho^2 - eps^2) - I * eps, wu = sqrt(rho^2 - eps^2) + I * eps, th0 = arg(wu));
   \\ in w = (y+1)/u1 the cut is [0, oo): lower ray from +oo to wl, circle through the negative side to wu, upper ray to +oo
   my(low = -intnum(v = 0, 1, F(Y(wl + (1 - v) / v)) * uu / v^2));
@@ -231,7 +233,7 @@ if (XSECTOR != 0 && XSECTOR != "",
       for (i = 1, K, my(tt = taylorb(rows[i][1], rows[i][2], r, u1, u0, n, n + K - 1)); for (s = 1, K, C[i, s] = tt[s]));
       foreach (mix, i, I1[i] = sg * loopb(rows[i][1], rows[i][2], r, u1, u0, n, n + K - 1));
       my(i1 = mix[1], z0 = sg * loopb(rows[i1][1], rows[i1][2], r, u1, u0, n, n + 3, 0), cz = taylorb(rows[i1][1], rows[i1][2], r, u1, u0, n, n + 3));
-      serr = max(serr, normlp(I1[i1][1..4] + z0 - cz) / normlp(cz));
+      my(se = normlp(I1[i1][1..4] + z0 - cz) / normlp(cz)); serr = max(serr, se);  \\ per-root split error (cycle bmd-20261004-t)
       my(E = vector(nm + 1));
       forsubset (nm, S,
         my(M = C);
@@ -239,10 +241,10 @@ if (XSECTOR != 0 && XSECTOR != "",
         E[#S + 1] += matdet(M));
       my(A = apply(abs, E), srt = vecsort(A, , 5), mx = A[srt[1]]);
       my(cr = abs(vecsum(E)) / mx); ctl = max(ctl, cr);
-      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., srt[1] - 1, srt[2] - 1, precision(A[srt[3]] / mx, 4) * 1., precision(cr, 3) * 1.]));
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., srt[1] - 1, srt[2] - 1, precision(A[srt[3]] / mx, 4) * 1., precision(cr, 3) * 1., precision(se, 3) * 1., precision(real(r), 4) * 1., precision(imag(r), 4) * 1.]));
     emit(Str("XSECTOR (e,l)=(", e, ",", l, "): n=R_e=", n, ", rows ", K, ", mixed ", nm, ", deg W ", poldegree(T),
       "; max control error of the loop on (1+x)^(-7/2): ", precision(cerr, 4) * 1., "; max split error |I_-1 + I_0 - c| / |c| on the first mixed row (0-cut hairpin): ", precision(serr, 4) * 1., "; real roots skipped: ", nreal));
-    emit(Str("  per sampled root [log|t|, largest s, second s, third/largest, |sum E_s|/max|E_s|]: ", Vec(out)));
+    emit(Str("  per sampled root [log|t|, largest s, second s, third/largest, |sum E_s|/max|E_s|, split error, Re r, Im r]: ", Vec(out)));
     emit(Str("  max |sum E_s| / max|E_s| = ", precision(ctl, 4) * 1.)));
   quit);
 }
