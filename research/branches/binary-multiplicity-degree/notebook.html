@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input, arithmetic route. All pivot-minor and exponent-set hypotheses of the Eisenstein branch proposition are <a href="#entry-2026-10-03-cube-last-far-pivot-minors">proved</a> for window primes \(p&gt;\max(d,2n+5)\). The open inputs are the leading-coefficient condition, a prime in \((\max(d,2n+5),2n+8e+7]\), and squarefreeness of \(G_p\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input, arithmetic route. The Eisenstein branch proposition is proved except for \(p\nmid\operatorname{lc}\). That condition is <a href="#entry-2026-10-04-cube-last-far-leading-coefficient">conjectured</a> through the bound of \(8e+7\) on the primes of \(\operatorname{lc}\). The hard input is squarefreeness of \(G_p\) at one window prime.</p>
 <p>Next:</p>
 <ol>
-<li>The leading coefficient: express \(\operatorname{lc}(W_{b-1})\) through \(L_\infty\) and the content of \(W(F)\). The pivot data at \(\infty\) are known, so this may close the condition \(p\nmid\operatorname{lc}\) in the same way.</li>
-<li>\(G_p\): at the window primes, \(G_p\) is the first-order \(p\)-adic part of \(W(F)\). Look for its structure through the Frobenius shift at order \(p^1\).</li>
+<li>\(G_p\) at a window prime is \((W(F)/p^{v})\bmod p\). Compute it through the six-space modulo \(p^2\): a first-order Frobenius shift. Look for its structure, for example a factorization or an identification with a known polynomial family over \(\mathbb F_p\).</li>
+<li>The content statement \(v_q(C)=v_q(L_\infty)\): try a \(q\)-adic column-operation argument that pairs exponents at \(\infty\) differing by \(q/2\).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46156,6 +46156,47 @@ where \(V\) is the Vandermonde product.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 29.65 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-leading-coefficient" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-leading-coefficient">
+<h3>4 October 2026 — The leading coefficient of the last-step far polynomial has no prime factor above 8e + 7, so it is prime to every window prime through e = 11</h3>
+<p class="entry-meta">Conjecture, with the identity lc = L_infinity/C, on the last unproved hypothesis of the Eisenstein branch proposition; evidence e = 1..11; the proposition's conclusion v_p(W(0)) = 1 is confirmed at every window prime above 2n+5. Last far leading coefficient cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input, arithmetic route. After the <a href="#entry-2026-10-03-cube-last-far-pivot-minors">pivot minors</a>, the only unproved hypothesis of the Eisenstein branch proposition is \(p\nmid\operatorname{lc}(W_{b-1})\) at the window prime. What is known about \(\operatorname{lc}(W_{b-1})\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-leading-coefficient</code>, for every \(e\ge1\): every prime factor of \(\operatorname{lc}(W_{b-1})\), for the primitive \(W_{b-1}\in\mathbb Z[x]\), is at most \(8e+7\). Since \(8e+7&lt;d\), it would follow that no window prime divides \(\operatorname{lc}\). The proposition would then hold unconditionally at every window prime above \(\max(d,2n+5)\).</p>
+<p><strong>The identity.</strong> Write \(W(F)=C\,x^\alpha(1+x)^\beta W_{b-1}\), with \(W_{b-1}\) primitive. As \(x\to\infty\), the leading coefficient of \(W(F)\) is \(\pm L_\infty\) (Step 1 of the proposition). So
+\[
+\operatorname{lc}(W_{b-1})=\pm L_\infty/C,\qquad W_{b-1}(0)=\pm L_0/C .
+\]
+Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with primes at most \(8e+5\) by lem:cube-last-far-eisenstein-minors, and the Vandermonde \(V(\mu^{(\infty)})\). Its cross differences between integral and half-integral exponents are \(\pm m/2\) with \(m\) odd up to \(2n+8e+7\). So \(L_\infty\) does contain large primes, among them every window prime \(p\) with \(N_\infty(p)&gt;0\). The conjecture says the content \(C\) carries exactly these large primes. Equivalently, \(v_q(C)=v_q(L_\infty)\) for every prime \(q&gt;8e+7\). This content statement is what remains to be proved.</p>
+<p><strong>Evidence.</strong> research/tools/bmd_cube_last_far_leading_coefficient.gp factors \(\operatorname{lc}\), \(W_{b-1}(0)\) and \(W_{b-1}(-1)\) for the saved primitive \(W_{b-1}\), \(e=1,\ldots,11\) (research/results/bmd-20261004-a/leading-coefficient.txt).</p>
+<ul>
+<li>The largest prime factor of \(|\operatorname{lc}|\) is \(7,17,19,31,47,47,53,61,79,79,89\), against \(8e+7=15,23,31,39,47,55,63,71,79,87,95\). Equality holds at \(e=5\) and \(e=9\), and no window prime divides \(\operatorname{lc}\).</li>
+<li>At every window prime \(p&gt;2n+5\), \(v_p(W_{b-1}(0))=v_p(W_{b-1}(-1))=1\), at all \(e\le11\). This is the conclusion of the proposition, observed far beyond the earlier \(e\le3\).</li>
+<li>At the excluded primes \(2n+1,2n+3,2n+5\), the valuations are higher: \(137\) at \(e=6\) (\(2,2\)), \(241\) at \(e=8\) (\(4,4\)), \(307\) and \(311\) at \(e=9\) (\(4\) and \(2\)), \(383\) at \(e=10\) (\(3\)), and \(463\), \(467\) at \(e=11\) (\(4\) and \(2\)). There the integral minors are divisible by \(p\), as lem:cube-last-far-pivot-minors predicts.</li>
+</ul>
+<p>The equalities at \(e=5,9\) show that the bound \(8e+7\) cannot be lowered. They fit the largest odd numerator \(2(4e+\tfrac72)\) of the half-integral class at \(\infty\).</p>
+<p><strong>What this gives.</strong> The arithmetic route at the last step now rests on three inputs:</p>
+<ul>
+<li>the content statement above (conjectured, \(e\le11\));</li>
+<li>a prime in \((\max(d,2n+5),2n+8e+7]\) (Legendre type; the prime-gap tables cover \(184\le e&lt;10^9\));</li>
+<li>squarefreeness of \(G_p\) at one such prime (\(47\) of \(48\) primes for \(e=4..8\)).</li>
+</ul>
+<p>The third is the hard one.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch (Step 1 and the hypotheses); lem:cube-last-far-pivot-minors; lem:cube-last-far-eisenstein-minors.</p>
+<p><strong>Verification gate.</strong> A conjecture with exact factorizations of saved polynomials. The identity is Step 1 of the proposition. No new proof is claimed, so no reviewer was used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-a">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 20.01 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">39.98 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">31.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 6.77 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.44 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
