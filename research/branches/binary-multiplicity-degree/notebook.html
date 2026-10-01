@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-chain-review">far chain review</a> closed the branch-arithmetic route. At \(l\ge2\) it reduced the first-order criterion, by Crum's identity, to <a href="#entry-2026-10-04-cube-far-chain-review">chain coprimality</a>: \(W_k=T_{R_l}\) coprime to its \(A\)-chain neighbours \(T_{R_l\pm1}\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-derivative-ladder">derivative ladder</a> shows that \(W_k=T_{R_l}\) is the Wronskian of the \(R_l\)-th derivatives of a fixed space \(\Psi\) in \(y=1/x\). At \(l\ge2\) a failure of the first-order criterion needs a common root of two consecutive rungs, or a triple root shared by two rungs.</p>
 <p>Next:</p>
 <ol>
-<li>Derive the three-term Plücker relations among the gap Wronskians \(\operatorname{Wr}(S,x^{a},x^{b})\). Test whether, with Crum's identity, they force \(\gcd(T_m,T_{m+1})=1\) by induction on \(m\).</li>
-<li>Prove that \(G_A\) is independent of \(G_B,G_C\) for \(l\ge2\).</li>
+<li>Large derivative order: for \(l\gg e\), find the zero asymptotics of \(\operatorname{Wr}(\Psi^{(m)})\), Pólya-type near the Voronoi boundary of \(0,-1\). Test whether they separate the rungs \(m,m\pm1\) uniformly.</li>
+<li>Prove the independence of \(G_A\) from \(G_B,G_C\) for \(l\ge2\).</li>
 <li>For \(l=1\), find a structure for the fixed first-order correction.</li>
 </ol>
 </section>
@@ -47117,6 +47117,63 @@ Here \(a,c\) are the orders at \(0,-1\), \(s,t\) are integers (differences of lo
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.36 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4 min 56.55 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-far-derivative-ladder" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-derivative-ladder">
+<h3>4 October 2026 — Derivative ladder: the A-chain is the chain of derivatives of one fixed space, and a failure of the first-order criterion propagates one rung up</h3>
+<p class="entry-meta">Working proof that T_m is, up to y = 1/x and powers of y, 1+y, the Wronskian of the m-th derivatives of Psi = y^-3 U, of a jet description of mult T_m and Q_A at roots with T_(m-1) != 0, and that a failure there makes r a root of multiplicity &gt;= 3 of T_(m+1). Far derivative ladder cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at \(l\ge2\). The <a href="#entry-2026-10-04-cube-far-chain-review">far chain review</a> reduced the first-order criterion, by Crum's identity, to the \(A\)-chain \(T_{m-1},T_m,T_{m+1}\), \(m=R_l\). Its next step asked for further relations. What is the \(A\)-chain intrinsically, and what must happen at a root where the criterion fails?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-derivative-ladder</code>, for every even-peeling step \((e,l)\) and every \(m\ge2\).</p>
+<h4>The ladder</h4>
+<p>Normalize \(c=1\). Let \(U\) be the sum of the non-\(A\) classes of the far space, of dimension \(k=R_e+1+4e+4l+4el\). Put \(y=1/x\). Then \(x^{-(m+2)}\mathcal P_{&lt;m}(x)=y^3\mathcal P_{&lt;m}(y)\), and
+\[
+\Psi:=y^{-3}U=y^{-R_e-2}\mathcal P_{&lt;R_e}\oplus\langle(1+y)^{-3}\rangle\oplus y^{3/2-4e}(1+y)^{-7/2}\mathcal P_{&lt;4e}\oplus(1+y)^{-5/2}\mathcal P_{&lt;4l}\oplus y^{3/2-4e}\mathcal P_{&lt;4el}.
+\]
+Each block follows from \(x^a=y^{-a}\) and \(1+x=(1+y)/y\).</p>
+<p><strong>Lemma (derivative ladder).</strong> Let \(m\ge2\). In parts 2 and 3, a root \(r\) of \(T_m\) in \(x\) is identified with the point \(\rho=1/r\) in \(y\); orders, derivatives and the \(c_i\) are taken in \(y\) at \(\rho\), written \(r\) for brevity.</p>
+<ol>
+<li>Off \(\{0,-1,\infty\}\), \(T_j\) has the same roots, with multiplicity, as \(\operatorname{Wr}_y(\Psi^{(j)})\) at \(y=1/x\), for every \(j\ge1\). Here \(\Psi^{(j)}\) is the space of \(j\)-th derivatives, of dimension \(k\). Likewise \(Q_A\) corresponds to \(\operatorname{Wr}_y(y,\Psi^{(m-1)})\).</li>
+<li>Let \(r\notin\{0,-1\}\) be a root of \(T_m\) with \(T_{m-1}(r)\ne0\). Let \(f_0,\ldots,f_{k-1}\) be the adapted basis of \(\Psi^{(m-1)}\) at \(r\), with \(f_i^{(s)}(r)=\delta_{is}\) for \(s&lt;k\), and put \(c_i=f_i^{(k)}(r)\). Then the multiplicity of \(r\) in \(T_m\) is \(\operatorname{ord}_r(f_0-1)-k\), and \(Q_A(r)=0\) exactly when \(c_1=0\).</li>
+<li>In the situation of 2, if \(r\) has multiplicity at least \(3\) in \(T_m\) and \(Q_A(r)=0\), then \(r\) has multiplicity at least \(3\) in \(T_{m+1}\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) Under \(x=1/y\) a Wronskian changes by a nonzero power of \(dy/dx=-y^2\), and multiplying all functions by \(y^{-3}\) multiplies it by a power of \(y\). Neither affects roots off \(0,-1,\infty\). The block-triangular Wronski matrix gives \(\operatorname{Wr}(1,y,\ldots,y^{j-1},g_1,\ldots,g_k)=\prod_{i&lt;j}i!\cdot\operatorname{Wr}(g_1^{(j)},\ldots,g_k^{(j)})\). The space of \(Q_A\) has \(A\)-block \(y^3\langle\mathcal P_{&lt;m-1},y^m\rangle\), and \((y^m)^{(m-1)}=m!\,y\). Every \(\Psi^{(j)}\) has dimension \(k\), so \(T_j\not\equiv0\). Indeed, the kernel of \(d^j/dy^j\) on \(\Psi\) is \(\Psi\cap\mathcal P_{&lt;j}\). A polynomial has trivial monodromy around \(0\) and \(-1\). The components \(y^{3/2-4e}(1+y)^{-7/2}\mathcal P_{&lt;4e}\), \((1+y)^{-5/2}\mathcal P_{&lt;4l}\) and \(y^{3/2-4e}\mathcal P_{&lt;4el}\) have the monodromy characters \((-1,-1)\), \((1,-1)\), \((-1,1)\), so they are independent of the rational component \(y^{-R_e-2}\mathcal P_{&lt;R_e}\oplus\langle(1+y)^{-3}\rangle\). Hence a polynomial in \(\Psi\) lies in the rational component, where every nonzero element has a pole at \(0\) or \(-1\). So \(\Psi\cap\mathcal P_{&lt;j}=0\).</p>
+<p>(2) \(\Psi^{(m-1)}\) is unramified at \(r\), since \(T_{m-1}(r)\ne0\), so the adapted basis exists. Its derivatives \(f_i'\), \(i\ge1\), have exact orders \(i-1\). Also \(f_0'\) has order \(t-1\ge k-1\), where \(t=\operatorname{ord}_r(f_0-1)\). This order cannot be lowered by the \(f_i'\), whose leading orders are at most \(k-2\). So the exponents of \(\Psi^{(m)}\) are \(\{0,\ldots,k-2,t-1\}\), with weight \(t-k\), which is the multiplicity of \(T_m\) at \(r\). For \(Q_A\), expand \(\operatorname{Wr}(y,f_0,\ldots,f_{k-1})(r)\) along the row \((r,1,0,\ldots,0)\) of \(y\). The \(f\)-rows are unit vectors in the columns \(0..k-1\), with last entries \(c_i\). The minor deleting column \(0\) is \(\pm c_0\), and \(c_0=0\) since \(T_m(r)=0\). The minor deleting column \(1\) is \(\pm c_1\). So \(\operatorname{Wr}(y,\Psi^{(m-1)})(r)=\pm c_1\).</p>
+<p>(3) Multiplicity at least \(3\) means \(t\ge k+3\), and \(c_1=0\) means \(f_1-(y-r)\) has order at least \(k+1\). The second derivatives behave as follows:</p>
+<ul>
+<li>\(f_i''\), \(i\ge2\), have orders \(i-2\), filling \(0..k-3\);</li>
+<li>\(f_1''\) has order at least \(k-1\);</li>
+<li>\(f_0''\) has order at least \(k+1\).</li>
+</ul>
+<p>So the exponents of \(\Psi^{(m+1)}\) are \(\{0,\ldots,k-3,a,b\}\) with \(k-1\le a&lt;b\). The case \(a=k-1\) forces \(b\ge k+1\), since the leading order of \(f_0''\), or of a combination with \(f_1''\), is at least \(k+1\). The case \(a\ge k\) gives \(b\ge k+1\). The weight is \(a+b-(2k-3)\ge3\). \(\square\)</p>
+<p><strong>Corollary (where the criterion can fail).</strong> Assume, as in lem:cube-far-chain-reduction, that \(G_A\) is independent of \(G_B,G_C\) (\(l\ge2\)). A root \(r\) of \(W_k=T_m\) of multiplicity at least \(3\) violates the first-order criterion only if one of two things holds:</p>
+<ul>
+<li>(a) \(T_{m-1}(r)=0\), a common root of two consecutive rungs;</li>
+<li>(b) \(r\) is a root of multiplicity at least \(3\) of both \(T_m\) and \(T_{m+1}\).</li>
+</ul>
+<p>If \(R_1(r;\cdot)\equiv0\), the independence of \(G_A\) forces \(Q_A(r)=0\). If moreover \(T_{m-1}(r)\ne0\), part (3) gives (b). (Crum's identity gives only the weaker \(T_{m+1}(r)=0\).) \(T_{m+1}\) is not the far polynomial of any step: its non-\(A\) classes are those of \((e,l)\), whose far polynomial is \(T_{R_l}\).</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (ladder mode, new) computes the \(y\)-side Wronskian of \(\mathcal P_{&lt;m}\oplus\Psi\) and compares it with the reversal of \(T_m\). They are proportional, of equal degree, at \(m=R_l-1,R_l,R_l+1\) for \((e,l)=(1,2),(2,2),(1,3)\): nine cases (research/results/bmd-20261004-l/ladder.txt). This checks the block list of \(\Psi\), the only part of (1) that is not a classical identity.</p>
+<h4>What this gives</h4>
+<ul>
+<li>The \(A\)-length \(m\) is a derivative order. So \(W_k=T_{R_l}\) is the Wronskian of the \(R_l\)-th derivatives of a fixed space \(\Psi\). Of its blocks only \(y^{3/2-4e}(1+y)^{-7/2}\mathcal P_{&lt;4e}\) is not mapped to a block by differentiation: its \(m\)-th derivatives are Rodrigues-type, \(y^{3/2-4e-m}(1+y)^{-7/2-m}\) times polynomials of degree \(m+j\). This fits the observed degree growth of \(4e\) per rung, though the entry does not prove that formula.</li>
+<li>For \(l\gg e\), \(m=R_l\) is large compared with the \(4e\) Rodrigues functions. That is a lead, not a result: high-derivative asymptotics, as in Pólya's theorem on zeros of high derivatives near the Voronoi boundary of the singularities. That theorem concerns derivatives of one function, not Wronskians of a space of derivatives, so it does not apply as stated.</li>
+<li>For (B), the corollary restricts a failure to a common root of two consecutive rungs, or to a triple root shared by two rungs.</li>
+</ul>
+<p>This sharpens the obligation but does not discharge it. Neither (a) nor (b) is excluded for any \((e,l)\) except by computation (the five steps of the review, where all gcds are \(1\)).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-chain-reduction (Crum's identity and the role of \(Q_A\)); lem:cube-far-first-order-splitting (the definition of \(Q_A\)).</p>
+<p><strong>Verification gate.</strong> I re-read the chain reduction lemma and the definition of \(Q_A\). One fresh-context medium reviewer re-derived each block of \(\Psi\), the derivative identity, the \(Q_A\) correspondence, the exponents, the minors \(\pm c_0,\pm c_1\) and the weight bound, including combinations of \(f_0''\) and \(f_1''\). It also checked ladder.txt. Verdict: pass with corrections, all applied. The \(x\)/\(y\) coordinates of \(r\) are fixed. The range \(m\ge2\) is stated. The hypothesis \(T_{m+1}\not\equiv0\) is replaced by a monodromy proof that it always holds. The corollary attributes (b) to part (3), not Crum's identity. An irrelevant remark on \(R_l+1\) is replaced. The Pólya remark is labelled as a lead.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 17.56 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 59.75 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 33.17 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">44.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

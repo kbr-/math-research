@@ -69,7 +69,22 @@ dg(P) = poldegree(P);
 \\ EXACT mode, at (e, l) in EXACT, over Q: resultant of T_m and T_(m+1) (m = R_l), and discriminant of T_m as a control;
 \\ prime factors below 10^5 and the size of the unfactored cofactor (a product formula leaves cofactor 1).
 brk(A, B) = 'x * (1 + 'x) * (A[1] * deriv(B[1]) - deriv(A[1]) * B[1]) + ((B[2] - A[2]) * (1 + 'x) + (B[3] - A[3]) * 'x) * A[1] * B[1];
-TESTS = getenv("TESTS"); EXACT = getenv("EXACT");
+TESTS = getenv("TESTS"); EXACT = getenv("EXACT"); LADDER = getenv("LADDER");
+\\ LADDER mode (cycle bmd-20261004-l; lem:cube-far-derivative-ladder): in y = 1/x the A-block x^-(m+2) P_<m is
+\\ y^3 P_<m(y), so T_m is the Wronskian of P_<m + Psi with Psi = y^-3 U (blocks below, same [g, b, cnt] format in y),
+\\ that is of the m-th derivatives of Psi. Control: the y-side polynomial is proportional to the reversal of T_m.
+psiblk(e, l) = [[0, -Rn(e) - 2, Rn(e)], [-3, 0, 1], [-7/2, 3/2 - 4 * e, 4 * e], [-5/2, 0, 4 * l], [0, 3/2 - 4 * e, 4 * e * l]];
+{
+if (LADDER != 0 && LADDER != "",
+  my(q = 2^61 - 1);
+  foreach (eval(LADDER), el,
+    my(e = el[1], l = el[2], res = List());
+    for (m = Rn(l) - 1, Rn(l) + 1,
+      my(Tx = tpoly(chain(e, l, m), q)[1], Ty = tpoly(concat([[0, 0, m]], psiblk(e, l)), q)[1], Rx = polrecip(Tx));
+      listput(res, [m, dg(Tx), dg(Ty), dg(Rx) == dg(Ty) && pollead(Ty) * Rx == pollead(Rx) * Ty]));
+    emit(Str("LADDER (e,l)=(", e, ",", l, "): [m, deg T_m (x side), deg (y side), proportional to the reversal]: ", Vec(res))));
+  quit);
+}
 {
 if (TESTS != 0 && TESTS != "",
   my(q = 2^61 - 1);
