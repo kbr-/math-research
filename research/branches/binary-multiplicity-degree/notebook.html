@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). At the <a href="#entry-2026-10-06-cube-tie-root-contact">tie roots</a> only the low-contact minor drops, so the contact locus does not reach those points along the tie approach (conditionally).</p>
-<p>Next: attempt a proof of the tied-pair extension of the caterpillar minimality. With one pair of roots at a common scale, the maximal minors of \(A_{R+1}\) should have a monomial-times-unit form whose leading coefficients do not all vanish. This would turn the last two checks into a theorem for every \(N\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-tie-window">tie window reduction</a> turns the tie part of the cone route into a one-variable Hermite–Padé statement. It is verified through \(N=10\).</p>
+<p>Next: seek a closed form of the window minors. They are determinants of binomial coefficients of \((1+cT)^{-3/2}\), \((1+T)^{-3/2}\) and their product, and Jacobi–Trudi or hypergeometric determinant identities may evaluate them. Prove full rank for every \(m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53541,6 +53541,50 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-window" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-window-full-rank">
+<h3>6 October 2026 — Tie window reduction: at a top tie the contact question becomes a one-variable Hermite–Padé window, which has full rank for every c ≠ 0, 1 through N = 10</h3>
+<p class="entry-meta">Conjecture for every m, reproduced against the direct tie computations at N = 4, 5, 6 and verified exactly for m ≤ 8 (N ≤ 10); a norm-argument proof attempt fails. Tie window cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), the obstacle of the <a href="#entry-2026-10-06-cube-cone-route-review">cone-route review</a>. At tie F-curve points, do the maximal minors of \(A_{R+1}\) avoid a common zero? The <a href="#entry-2026-10-06-cube-tie-root-contact">tie-root check</a> answered this at one level of \(N=6\). A form uniform in \(N\) is needed.</p>
+<p><strong>General statement.</strong> conj:cube-tie-window-full-rank. For every \(m\ge1\) and every \(c\ne0,1\), the \((2m+1)\times(2m+3)\) matrix of the coefficients of \(T^k\), \(\binom m2\le k\le\binom m2+2m+2\), of the series</p>
+<p>\[T^n(1+cT)^{-3/2},\quad T^n(1+T)^{-3/2}\ (0\le n&lt;m),\qquad\bigl((1+cT)(1+T)\bigr)^{-3/2}\]</p>
+<p>has full rank \(2m+1\). It bears on conj:cube-offcollision-contact-bound.</p>
+<p><strong>The reduction.</strong> At a top tie the configuration is, up to dilation, two roots \(c\) and \(1\) above a deep cluster of \(m=N-2\) roots in caterpillar position. The block recursion of the <a href="#entry-2026-10-06-cube-caterpillar-contact-avoidance">caterpillar entry</a> applies.</p>
+<ul>
+<li><em>Deep pairs.</em> Their rows are the \(m\)-point matrix with columns scaled, whose limit row space is \(\mathrm{span}(e_0,\ldots,e_{\binom m2-1})\) by caterpillar minimality.</li>
+<li><em>Pairs of a deep root with \(c\) or with \(1\).</em> These are \(F(t,y_j)\) with \(y_j\to0\). By the Vandermonde (Cauchy–Binet) argument, their limit span is that of the \(Y^n\)-coefficients, \(n&lt;m\): the series \(T^n(1+tT)^{-3/2}\), up to the nonzero factor \(b_n\).</li>
+<li><em>The top pair.</em> It contributes \(((1+cT)(1+T))^{-3/2}\).</li>
+</ul>
+<p>The minors of minimal valuation therefore factor as a nonzero deep-cluster factor times a window minor:</p>
+<ul>
+<li>on the square window of columns \(\binom m2,\ldots,\binom m2+2m\), this gives the tie coefficient \(L(c)\);</li>
+<li>on the contact window, with two more columns, it gives the leading coefficients of the minors of \(A_{R+1}\) that contain the deep cluster's columns.</li>
+</ul>
+<p>The factorization along one-parameter approaches is the mechanism of thm:cube-caterpillar-minimality with one tied pair. A full proof needs that theorem's valuation bookkeeping redone with the tie, which is not written here. Deeper ties have a caterpillar chain on top. The same factorization then multiplies the window minor by hook-content Toeplitz factors, and the window statement is the same.</p>
+<p><strong>Validation and evidence.</strong> research/tools/bmd_tie_window.gp computes the windows exactly over \(\mathbb Q[c]\) (research/results/bmd-20261006-n/tie-window.txt).</p>
+<ul>
+<li>The square-window \(L(c)\), off \(c=0,1\), reproduces the directly computed tie coefficients of the <a href="#entry-2026-10-06-cube-tie-fcurves">tie check</a>: \(c+1\) at \(N=4\); \((c+1)(7c^2+2c+7)\) at \(N=5\); the same sextic at \(N=6\). This independently confirms the reduction.</li>
+<li>For \(m=5,6,7,8\) (\(N=7\) to \(10\)), \(L(c)\) has palindromic factors of degrees \(10\), \(1+14\), \(1+20\) and \(28\). The factor \(c+1\) returns at \(m=6,7\).</li>
+<li>For every \(m\le8\), the gcd of all maximal minors of the contact window is \(1\) off \(c=0,1\): full rank for every \(c\ne0,1\).</li>
+</ul>
+<p>This agrees with the modular check at \(N=6\), where all other minors kept their valuations.</p>
+<p><strong>Proof attempt and where it breaks.</strong> Put \(u=(1+cT)^{1/2}\) and \(v=(1+T)^{1/2}\). A dependency is a combination \(S+Pu^{-3}+Qv^{-3}+\alpha u^{-3}v^{-3}\), with \(\deg S&lt;\binom m2\) and \(\deg P,\deg Q&lt;m\), vanishing to order \(\binom m2+2m+3\). Multiplied by \(u^3v^3\), it becomes an element of \(\mathbb Q[T][u,v]\). Its norm over \(\mathbb Q(T)\) is a polynomial divisible by \(T^{\binom m2+2m+3}\), of degree at most \(4\binom m2+8\). The degree bound exceeds the vanishing order for every \(m\ge1\), so the norm gives no contradiction. A proof needs the explicit structure of these binomial Hermite–Padé systems, for instance a closed form of the window minors as hypergeometric determinants.</p>
+<p><strong>Remaining gap.</strong> A proof of the window statement for every \(m\). The tied-pair valuation lemma that makes the reduction rigorous. Then multiple ties, compactness and non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-caterpillar-minimality (statement and method); check:cube-tie-fcurve-low-contact; check:cube-tie-root-contact-minors.</p>
+<p><strong>Verification gate.</strong> Exact computation over \(\mathbb Q[c]\), validated against the independent tie computations. The reduction is presented as a mechanism, not a proof, and the status is conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-n">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 58.91 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 9.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.85 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 12.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
