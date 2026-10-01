@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-cone-route-review">cone-route review</a> finds the caterpillar points cleared and the geometric cone free of \(K\) at \(N=8\) over \(\mathbb F_{1009}\). The tie F-curves remain.</p>
-<p>Next: at \(N=6\), \(i=2\), test contact-level rank at the roots of the sextic \(L_2(c)\), through the leading coefficients of the \(R\times R\) minors of \(A_{R+1}\). Seek a tied-pair Jacobi–Trudi formula for \(L_i(c)\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). At the <a href="#entry-2026-10-06-cube-tie-root-contact">tie roots</a> only the low-contact minor drops, so the contact locus does not reach those points along the tie approach (conditionally).</p>
+<p>Next: attempt a proof of the tied-pair extension of the caterpillar minimality. With one pair of roots at a common scale, the maximal minors of \(A_{R+1}\) should have a monomial-times-unit form whose leading coefficients do not all vanish. This would turn the last two checks into a theorem for every \(N\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53510,6 +53510,37 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-root-contact" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-tie-root-contact-minors">
+<h3>6 October 2026 — At the tie roots only the low-contact minor drops: the other 135 maximal minors keep their valuations, so the contact locus does not reach those F-curve points along the tie approach</h3>
+<p class="entry-meta">Finite check at N = 6, tie level 2, over F_10037; the passage to the closure of K needs a monomial-times-unit structure in local coordinates, not proved. Tie root contact cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), the obstacle of the <a href="#entry-2026-10-06-cube-cone-route-review">cone-route review</a>. At a root \(c_0\) of \(L_i(c)\) the low-contact divisor reaches the tie F-curve (<a href="#entry-2026-10-06-cube-tie-fcurves">tie check</a>). Does the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\) reach it too?</p>
+<p><strong>General statement.</strong> conj:cube-offcollision-contact-bound, (K), along the cone route. The finite result is check:cube-tie-root-contact-minors.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_tie_contact_minors.m2 works at \(N=6\), \(i=2\), with \(a_j=\varepsilon^j\), \(a_6=0\), \(a_1=c\varepsilon^2\). Modulo \(p=10037\) the sextic \(L_2\) has the roots \(c_0=4822\) and \(6155\), a reciprocal pair. The tool computes the \(\varepsilon\)-valuation of all \(136\) maximal minors of \(A_{R+1}\), \(R=15\), at each root and at the control \(c=17\) (research/results/bmd-20261006-m/tie-root-contact-minors-n6.txt).</p>
+<ul>
+<li><em>Control.</em> The low-column minor has valuation \(253\), the minimum over all minors.</li>
+<li><em>At both roots.</em> The low-column minor rises to \(254\), as \(L_2(c_0)=0\) predicts. The other \(135\) minors keep their control valuations, all at least \(254\), with examples at \(255\). So their leading coefficients are nonzero at \(c_0\).</li>
+</ul>
+<p><strong>What it shows.</strong> Along the approach at fixed \(c_0\), \(\operatorname{rank}A_{R+1}=R\), with every minor other than the low-column one at the same order as for generic \(c\). This is the picture of a simple root: the codimension-one divisor \(\{\det A_{R-1}=0\}\) passes through the F-curve point, and the other maximal minors do not vanish there.</p>
+<p>It becomes a proof that the point lies outside \(\overline{K/{\rm Aff}}\) under the following assumption. Near the point, in the chain coordinates \(x\) and the coordinate \(c\), one such minor has the form \(x^{e}u(x,c)\) with \(u(0,c_0)\ne0\). That minor is then nonzero at every separated point nearby, so \(K\) misses a neighbourhood. This is the same monomial-times-unit structure that is only sketched for the caterpillar case (<a href="#entry-2026-10-06-cube-caterpillar-contact-avoidance">caterpillar contact avoidance</a>), and it is not proved here.</p>
+<p><strong>Scope.</strong> One tie level, \(i=2\), at \(N=6\), modulo one prime, along the one-parameter approach. At \(N=6\) the contact locus is expected to be a curve in \(M_{0,7}\), so this is the first size where its closure can meet the boundary.</p>
+<p><strong>Remaining gap.</strong> The monomial-times-unit structure for one non-low minor at tie points for every \(N\), perhaps by extending the caterpillar minimality proof to one tied pair. Then multiple ties, compactness and non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> check:cube-tie-fcurve-low-contact; cor:cube-caterpillar-contact-avoidance; lem:cube-contact-plane-criterion (definition of \(K_U\)).</p>
+<p><strong>Verification gate.</strong> Exact valuations over \(\mathbb F_{10037}[\varepsilon]\), with the control behaving as predicted. The interpretation is labelled conditional, and no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-m">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 49.43 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">18.77 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 15.66 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 14.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 0.34 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
