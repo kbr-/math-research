@@ -47,15 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The <a href="#entry-2026-10-03-cube-neck-leading-review">leading review</a> reduced the neck half of (B) to the product formulas of conj:cube-neck-leading-exponents. The far polynomials remain without mechanism.</p>
-<p>Next, prove \(\xi=C_\xi\prod_{s&lt;t}(\beta_s-\beta_t)^{(w-k)^2}\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The type I factor of the neck leading constant is <a href="#cube-neck-xi-product">proved</a> to be a nonzero multiple of \(\prod(\beta_s-\beta_t)^{(w-k)^2}\).</p>
+<p>Next, \(\kappa_B=C_\kappa\prod(\beta_s-\beta_t)^{k(2n+k)}\) with \(C_\kappa\ne0\) in the equal-split windows, by the same three steps applied to the block-Hankel matrix \(A_\nu\):</p>
 <ul>
-<li>Write \(\xi\) as the Taylor (Wronskian) determinant at \(x=0\) of \(\{(1+\beta_1x)^{\alpha+j}\}_{j&lt;w}\cup\{x^k(1+\beta_sx)^{\alpha+j}\}_{j&lt;w-k,\ s\ge2}\).</li>
-<li>Show divisibility by \((\beta_s-\beta_t)^{(w-k)^2}\) through the confluent limit of two species.</li>
-<li>Compare with the proved degree \(\binom l2(w-k)^2\).</li>
-<li>Compute the constant \(C_\xi\) from the power-function Wronskian formula.</li>
+<li>homogeneity degree;</li>
+<li>confluent vanishing along \(\beta_s=\beta_t\) in a Möbius coordinate;</li>
+<li>a lex-extreme coefficient made of Jacobi Hankel determinants (prop:cube-neck-sequence-hankel's product).</li>
 </ul>
-<p>Then attempt \(\kappa_B\) by Mahler duality.</p>
+<p>Then the unequal splits.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -41468,6 +41467,60 @@ using \(\sum m_k=lw=c+q+\sum_sn_s\). \(\det P''[I,:]\ne0\) needs \(c\le c+q\le l
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-neck-xi-product" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-neck-leading-review:1" data-claims="thm:cube-neck-xi-product">
+<h3>3 October 2026 — The type I factor of the neck leading constant is a nonzero constant times ∏(β_s−β_t)^((w−k)²): Hermite confluence in a Möbius coordinate, and rectangular Schur functions for the constant</h3>
+<p class="entry-meta">Working proof, for every number of species, block size and equal split, that ξ = C ∏_(s&lt;t)(β_s−β_t)^((w−k)²) with C ≠ 0: confluent vanishing orders, homogeneity, and a lex-extreme coefficient equal to a product of rectangular Schur functions at 1^(−7/2). Neck ξ cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-neck-leading-review">leading review</a> reduced the neck half of (B) to conj:cube-neck-leading-exponents. Its first lead was the power-function Wronskian form. Can the formula for the type I factor \(\xi\) be proved for every \(l\)?</p>
+<p><strong>General statement.</strong> <code>thm:cube-neck-xi-product</code>, for every \(l\ge2\), \(1\le w\), \(0\le k\le w\), and every \(\alpha\notin\mathbb Z\) (here \(\alpha=-7/2\)).</p>
+<h4 id="cube-neck-xi-product">The product formula for ξ</h4>
+<p><strong>Setting.</strong> Let \(\varphi_s=(1+\beta_sx)^\alpha\), \(\alpha\notin\mathbb Z\), \(d=w-k\), and \(c=lw-(l-1)k=w+(l-1)d\), the equal-split window. Let \(\xi\) be the determinant of the functionals \([x^i](\sum_sP_s\varphi_s)\), \(i&lt;c\), and \([x^j]P_s\), \(j&lt;k\), \(s\ge2\), on \((P_1,\ldots,P_l)\in\mathcal P_{&lt;w}^l\), as in thm:cube-neck-hankel-leading-form with \(\nu=(k,\ldots,k)\). The species \(s\) and \(\beta\) are arbitrary, with \(\beta_1\) not fixed (needed to re-centre at species \(1\)).</p>
+<p><strong>Theorem (ξ product).</strong> \(\xi=C_{l,w,k}(\alpha)\prod_{1\le s&lt;t\le l}(\beta_s-\beta_t)^{(w-k)^2}\) with \(C_{l,w,k}(\alpha)\in\mathbb Q(\alpha)\) nonzero; for rational \(\alpha\), such as \(-7/2\), \(C\in\mathbb Q^\times\). For \(d=0\) (\(k=w\)) the product is empty and \(\xi=\pm1\).</p>
+<p><strong>Proof.</strong> (1) Reduction. Each functional \([x^j]P_s\), \(j&lt;k\), \(s\ge2\), is a column with a single \(1\), in row \((s,j)\). With the Vandermonde convention of the leading form, the constant term of \(\det[f_r(x_i)]/\operatorname{Vand}(x)\) at \(0\) is \(\det\bigl[[x^i]f_r\bigr]\) for power series \(f_r\). So \(\xi\) is the determinant of these Taylor functionals and of the functionals \([x^j]P_s\). Laplace expansion along the latter columns gives \(\xi=\pm T\), where \(T\) is the \(c\times c\) Taylor determinant \(\det\bigl[[x^i]f\bigr]_{f\in F,\,i&lt;c}\) of the functions</p>
+<ul>
+<li>\(F_1=\{x^p\varphi_1:p&lt;w\}\);</li>
+<li>\(F_s=\{x^{k+j}\varphi_s:j&lt;d\}\) for \(s\ge2\).</li>
+</ul>
+<p>Entries are \(\binom{\alpha}{i-p}\beta_s^{i-p}\), so \(T\) is a polynomial in \(\beta\), homogeneous of degree \(\sum_{i&lt;c}i-\sum_{\text{rows}}(\text{power of }x)=\binom c2-l\binom w2+(l-1)\binom k2\). By the identity in the <a href="#entry-2026-10-03-cube-neck-leading-review">leading review</a>, this equals \(\binom l2d^2\). A linear relation among functions gives one among their Taylor vectors, so \(T=0\) whenever the rows are linearly dependent as functions.</p>
+<p>(2) Vanishing along \(\beta_t=\beta_s\). Fix \(s\ne t\) and a point with \(\beta_t=\beta_s\), and put \(\delta=\beta_t-\beta_s\). In the coordinate \(y=x/(1+\beta_sx)\), so \(x=y/(1-\beta_sy)\) and \(1+\beta_sx=(1-\beta_sy)^{-1}\):</p>
+<ul>
+<li>\(\mathcal P_{&lt;m}(x)=(1-\beta_sy)^{-(m-1)}\mathcal P_{&lt;m}(y)\);</li>
+<li>\(\varphi_t=\varphi_s\cdot(1+\delta y)^\alpha\).</li>
+</ul>
+<p>With \(k_1=0\) and \(k_u=k\) for \(u\ge2\), species \(u\in\{s,t\}\) spans \(x^{k_u}\mathcal P_{&lt;w-k_u}(x)\varphi_u\). For both \(u\) this is \(G(y)\,y^{k_u}\mathcal P_{&lt;w-k_u}(y)\), times \((1+\delta y)^\alpha\) when \(u=t\), with the same \(G=(1-\beta_sy)^{-\alpha-w+1}\): the exponent is \(-\alpha-k_u-(w-k_u-1)\), the same for both shapes.</p>
+<p>The rows of \(T\) are \(x^{e}\varphi_u\), and \(x^e\varphi_u=G\,y^e(1-\beta_sy)^{w-1-e}\), times \((1+\delta y)^\alpha\) when \(u=t\). Within each species the change to the basis \(G\,y^{e}(\cdot)\) is unitriangular, depends only on \(\beta_s\), and has determinant \(1\), so \(T\) is unchanged. Write the rows of \(t\) as \(G\,y^{k_t+j}(1+\delta y)^\alpha=\sum_m\binom\alpha m\delta^mG\,y^{k_t+j+m}\), \(j&lt;w-k_t\). Expanding \(T\) multilinearly in these rows gives a power series in \(\delta\). A term chooses one order \(m_j\) per row, and is zero unless the chosen functions \(G\,y^{k_t+j+m_j}\), together with species \(s\) and the other species, are linearly independent. Species \(s\) contains \(G\,y^e\) for \(k_s\le e&lt;w\). So the exponents \(e_j=k_t+j+m_j\) must be distinct and lie outside \([k_s,w)\). Since \(e_j\ge k_t\ge k_s\), each satisfies \(e_j\ge w\).</p>
+<ul>
+<li>For \(s,t\ge2\) (\(k_s=k_t=k\)): \(\sum_jm_j\ge\sum_{i&lt;d}(w+i)-\sum_{j&lt;d}(k+j)=d(w-k)=d^2\).</li>
+<li>For \(s=1\), \(t\ge2\): the same count gives \(d^2\).</li>
+<li>The pair \(\{1,t\}\) is unordered, so it suffices to centre the coordinate at \(\beta_1\), as in the previous case.</li>
+</ul>
+<p>So \(T\) vanishes to order at least \(d^2\) in \(\delta\) at every point of \(\{\beta_s=\beta_t\}\), and is divisible by \((\beta_s-\beta_t)^{d^2}\) in \(\mathbb Q[\beta]\). The linear forms \(\beta_s-\beta_t\) are pairwise non-associate primes, so \(\prod_{s&lt;t}(\beta_s-\beta_t)^{d^2}\), of degree \(\binom l2d^2\), divides \(T\). Comparing degrees, \(T=C\prod_{s&lt;t}(\beta_s-\beta_t)^{d^2}\) with \(C\in\mathbb Q\).</p>
+<p>(3) \(C\ne0\). It suffices that \(T\not\equiv0\); evaluate at \(\beta_1=0\). Then \(F_1=\{x^p:p&lt;w\}\) occupies the columns \(i&lt;w\) as an identity block and vanishes elsewhere. So \(T=\pm\det M\), where \(M\) has rows \((s,j)\), \(s=2,\ldots,l\), \(j&lt;d\), and columns \(i'=i-w\in[0,(l-1)d)\), with entries \(\binom\alpha{d+i'-j}\beta_s^{d+i'-j}\).</p>
+<p>Laplace-expand \(\det M\) along the row blocks of the species. A term assigns column sets \(I_s\) of size \(d\), and the block minor is homogeneous in \(\beta_s\) of degree \(\sum_{i'\in I_s}(d+i')-\binom d2\). Each block minor is \(\beta_s^{\deg}\) times a constant, so each Laplace term is a constant times one monomial with exponent vector \((\sum I_2,\ldots,\sum I_l)\). Different assignments may share a vector, but the lexicographically largest vector is attained only by the greedy assignment (maximize \(\sum I_2\), then \(\sum I_3\), and so on), \(I_s=[(l-s)d,(l-s+1)d)\). So its coefficient is a single product of minors.</p>
+<p>Its coefficient is \(\pm\prod_s\det\bigl[\binom\alpha{N_s+i''-j}\bigr]_{i'',j&lt;d}\) with \(N_s=d+(l-s)d\). By the dual Jacobi–Trudi identity (after reversing rows and columns), \(\det[e_{N+i-j}]_{i,j&lt;d}=s_{(d^N)}\), with \(e_m=\binom\alpha m\). The hook-content formula, a polynomial identity in \(\alpha\), gives \(s_{(d^N)}(1^\alpha)=\prod_u(\alpha+c(u))/h(u)\). This is nonzero because the contents \(c(u)\) are integers and \(\alpha\notin\mathbb Z\). So \(T\not\equiv0\) and \(C\ne0\). \(\square\)</p>
+<p><strong>Consistency.</strong> For \(l=2\), step (3) is the Toeplitz step of the <a href="#cube-neck-two-species-leading-nonvanishing">two-species theorem</a>: one block, \(N=d\), \(s_{(d^d)}\). The theorem agrees with the symbolic factorization (\(l=3\), \(n=4\)) and the ratio checks (\(l=3,4,5\), and at \(\beta_1\ne0\)) of the previous entries.</p>
+<p><strong>What remains for the neck.</strong> In the equal-split windows, \(f_{\rm lead}\ne0\) now needs only \(\kappa_B\ne0\), conjecturally \(C_\kappa\prod(\beta_s-\beta_t)^{k(2n+k)}\). Then the unequal splits remain, where \(f_{\rm lead}\) is a sum over orderings. Leading review lead 2 (Mahler duality) is the next tool for \(\kappa_B\). Alternatively, the same three steps may apply to the block-Hankel \(A_\nu\): divisibility by Möbius confluence, homogeneity, and a lex-extreme coefficient made of Hankel (Jacobi) determinants.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-neck-hankel-leading-form (definition of \(\xi\)); the leading review (degree identity); thm:cube-neck-two-species-leading-nonvanishing (step (3)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the reduction, the degree identity (sympy, symbolically), the Möbius coordinate and the confluent count, the passage to divisibility, and step (3). It factored \(T\) directly in PARI at \((l,w,k)=(3,3,1),(4,2,0),(3,3,0)\): exponents \(4,4,9\), with nonzero constants. Verdict: pass with corrections, applied:</p>
+<ul>
+<li>the Laplace step in (3) now argues by the greedy lex-maximal vector, since different assignments may share exponent vectors;</li>
+<li>the unitriangular change to the \(G\,y^e\) basis is stated;</li>
+<li>the field of the constant is stated (\(\mathbb Q(\alpha)\), rational for rational \(\alpha\));</li>
+<li>the case \(d=0\) is noted;</li>
+<li>the identification of \(\xi\) with the Taylor determinant is explicit.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-v">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 57.86 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 12.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 43.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
