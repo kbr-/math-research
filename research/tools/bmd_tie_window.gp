@@ -47,6 +47,23 @@ foreach(eval(getenv("MS")), m,
     forsubset([2 * m + 3, 2 * m + 1], S, my(d = strip01(matdet(vecextract(W, "..", Vec(S))))); if (poldegree(d) > 0 && onc(d)[1] == 0,
       listput(offc, setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1])));
     emit(Str("  minors with no root on |c|=1 (dropped columns): ", Vec(offc))));
+  \\ COPRIME=1 (cycle bmd-20261006-r): the dropped column pairs whose minor is coprime to L(c), written relative to the
+  \\ window end as [2m+2-j, 2m+2-i], so that a rule uniform in m shows up as the same pair for every m.
+  if (getenv("COPRIME") == "1",
+    my(cp = List());
+    forsubset([2 * m + 3, 2 * m + 1], S, my(d = strip01(matdet(vecextract(W, "..", Vec(S)))));
+      if (poldegree(gcd(d, L)) == 0, my(dr = setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1]); listput(cp, vecsort([2 * m + 2 - dr[2], 2 * m + 2 - dr[1]]))));
+    emit(Str("  minors coprime to L (dropped columns counted from the window end): ", #cp, ": ", Vec(cp))));
+  \\ INTERLACE=1 (cycle bmd-20261006-r): D_m = the minor dropping window columns 2m and 2m+2; report its degree, roots on
+  \\ |c| = 1, and the merged angular order of the unit-circle roots of L and D in (0, pi] (L as 'L', D as 'D'), since both
+  \\ polynomials have real coefficients and conjugate roots.
+  if (getenv("INTERLACE") == "1",
+    my(D = strip01(matdet(vecextract(W, "..", setminus([1 .. 2 * m + 3], [2 * m + 1, 2 * m + 3])))));
+    my(aL = select(t -> t > 1e-20, apply(z -> arg(z), select(z -> abs(abs(z) - 1) < 1e-30, Vec(polroots(L))))));
+    my(zD = Vec(polroots(D)), onD = select(z -> abs(abs(z) - 1) < 1e-30, zD), aD = select(t -> t > 1e-20, apply(z -> arg(z), onD)));
+    my(mrg = vecsort(concat(apply(t -> [t, "L"], aL), apply(t -> [t, "D"], aD)), 1), word = concat(apply(x -> x[2], mrg)));
+    emit(Str("  D_m: degree ", poldegree(D), ", roots on |c|=1: ", #onD, " of ", #zD, "; gcd with L: ", poldegree(gcd(D, L)),
+      "; angular order in (0,pi]: ", word)));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());
