@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The free-exponent route is <a href="#entry-2026-10-03-cube-last-far-kappa">closed</a>: the cube's exponent is resonant, and the exceptional exponents are not explicit. Every uniform route to the rigid far polynomials has failed.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The <a href="#entry-2026-10-03-cube-last-far-calogero">Calogero–Moser lead</a> is closed: its translations add no constraint, and at e = 1 the rigid member is a resonant point of its KP flow line. Every outside lead and absurd bridge of the far direction review has now been tested, so the far input of (B) has no mechanism.</p>
 <p>Next, a route review that moves cycles to the necessary statement with the most concrete open mechanism. Candidates:</p>
 <ul>
 <li>statement 2's slice (\(p=3\), \(d=2\): \(\Phi_N\ne0\)), a nonvanishing problem of the kind the lexicographic-extreme method solved for the neck constants;</li>
@@ -43222,6 +43222,64 @@ F(\kappa)=\mathcal P_{&lt;R_e}\oplus\langle(1+x)^{-3}\rangle\oplus\langle x^{-3}
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-calogero" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-direction-review:3" data-claims="lem:cube-last-far-klein-tau check:cube-last-far-klein-flow">
+<h3>3 October 2026 — The last-step far space lifts to a soliton KP tau-function, but its Calogero–Moser formulations add no constraint, and at e = 1 the rigid member is a resonant point of its own flow line</h3>
+<p class="entry-meta">Working proof of the Klein lift of the last even-peeling far space for every e, and a finite check at e = 1: the KP flow releases all 96 zeros parked at branch preimages. The Calogero–Moser lead closes. Last far Calogero cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B): \(W_{b-1}\) must have no triple roots. The <a href="#entry-2026-10-03-cube-far-direction-review">far direction review</a> left its Calogero–Moser lead (Wilson's adelic Grassmannian, Invent. Math. 133 (1998)) not run. Its idea: lift the far space to a KP tau-function, so that a triple root becomes a triple eigenvalue of a Calogero–Moser matrix. This cycle builds the lift and tests whether any Calogero–Moser formulation constrains the multiplicities. The review cannot move cycles away from the far input before this lead is developed.</p>
+<p><strong>General statement.</strong> <code>lem:cube-last-far-klein-tau</code>, for every \(e\ge1\) (\(b=e+2\)).</p>
+<h4>The lift</h4>
+<p>In \(x\) (\(c=1\), doubles at \(x=0\) and \(x=-1\)), the last far space \(F_{b-1}\) of prop:cube-peeling-last-far-mobius is spanned by \((1+x)^gx^{\beta}x^j\), \(0\le j&lt;\mathrm{cnt}\), for
+\[
+[g,\beta,\mathrm{cnt}]\in\{[0,0,R_e],[-3,0,1],[0,-3,1],[-\tfrac72,0,4e],[0,-\tfrac72,4e],[-\tfrac52,-\tfrac72,4]\},\qquad R_e=e(2e-1).
+\]
+Its dimension is \(d=R_b\).</p>
+<p><strong>Lemma (last far Klein lift).</strong> Characteristic zero, every \(e\ge1\). Put \(s=(t-t^{-1})/2\), \(c=(t+t^{-1})/2\), so that \(x=s^2\) and \(1+x=c^2\), and \(D=c^7s^7\).</p>
+<ol>
+<li>\(V=D\cdot F_{b-1}(x(t))\) is a space of Laurent polynomials in \(t\), spanned by \(c^{2g+7}s^{2\beta+2j+7}\).</li>
+<li>With \(\theta=t\,d/dt\), \(W_\theta(V)=D^d\,(2sc)^{\binom d2}\,(W_xF_{b-1})\circ x\).</li>
+<li>Off \(t\in\{0,\infty,\pm1,\pm i\}\), the zeros of \(W_\theta(V)\) are the four preimages of each far point of \(F_{b-1}\), each with that point's multiplicity. So \(W_{b-1}\) has no triple roots exactly when \(W_\theta(V)\) has none off these six points.</li>
+<li>Writing each basis element as \(\sum_ma_mt^m\), \(W_\theta(V)=\sum_S\Delta_S(A)\,\mathrm{Vand}(S)\,t^{\sum S}\), with \(\Delta_S\) the maximal minors of the coefficient matrix. This is a KP soliton tau-function in \(y=\log t\), as in lem:cube-far-klein-tau. The maps \(t\mapsto-t\) and \(t\mapsto1/t\) fix \(x\), and the even KP flows \(a_m\mapsto a_mz^{m^2}\) commute with them.</li>
+</ol>
+<p><em>Proof.</em> (1) Since \(2g+7\in\{7,1,0,2\}\) and \(2\beta+7\in\{7,1,0\}\), all exponents of \(c\) and \(s\) are non-negative, and \(c,s\) are Laurent polynomials. (2) Since \(\theta s=c\) and \(\theta c=s\), \(dx/d\theta=2sc\). With the branches \(x^{1/2}\circ x=s\) and \((1+x)^{1/2}\circ x=c\), used in the definition of \(V\), the chain rule for Wronskians gives \(W_\theta(f\circ x)=(dx/d\theta)^{\binom d2}(W_xf)\circ x\), and \(W(Df)=D^dW(f)\). (3) \(D\) and \(sc\) vanish only at \(t=\pm1,\pm i\). Elsewhere, for \(t\ne0,\infty\), \(dx/dt=2sc/t\ne0\), so \(x\) is locally biholomorphic and multiplicities are preserved. A far point \(x_0\notin\{0,-1,\infty\}\) has four preimages: \(t^2\mp2\sqrt{x_0}\,t-1=0\). These are distinct, since each quadratic has discriminant \(4(x_0+1)\ne0\) and the two quadratics have no common root, as \(\sqrt{x_0}\ne0\). (4) Expand the determinant multilinearly: \(\theta^it^m=m^it^m\). The symmetries hold because \(s\mapsto-s\) and \(c\mapsto-c\) under \(t\mapsto-t\), and \(s\mapsto-s\), \(c\mapsto c\) under \(t\mapsto1/t\). Each basis element is an eigenvector up to sign, and \(m^2\) is invariant under \(m\mapsto-m\). \(\square\)</p>
+<h4>Three Calogero–Moser formulations</h4>
+<ul>
+<li><strong>The bare translation.</strong> Wilson's theorem concerns rational KP tau-functions: a Wronskian of a space of polynomials is \(\tau(x)=\det(X-x)\) for a Calogero–Moser pair \((X,Z)\), and a triple root is a triple eigenvalue of \(X\). \(F_{b-1}\) is not a polynomial space, so the translation applies to \(W_{b-1}\) as a polynomial, through some other polynomial space. It adds no constraint. Over \(\mathbb C\) the Wronski map from \(k\)-planes in \(\mathcal P_{\le d}\) to \(\mathbb P(\mathcal P_{\le k(d+1-k)})\) is finite (Eisenbud–Harris), from an irreducible projective variety to a space of equal dimension, so it is surjective. Every polynomial, with any multiplicities, is a Wronskian and so a spectrum. Any exclusion must come from the specific space. <strong>Falsified as a mechanism.</strong></li>
+<li><strong>The Klein-equivariant translation.</strong> Spaces with the Klein symmetries and the given exponents at the six branch preimages descend to the \(x\)-line with fixed ramification at \(0,-1,\infty\). Their exponents at \(0\) and \(-1\) are not integral, so this is a Schubert-type family of spaces with fixed local exponents, not literally a polynomial Schubert problem. Even granting finiteness and dominance of its Wronski map, these would speak of a general member. The <a href="#entry-2026-10-03-cube-far-direction-review">far direction review</a>'s Schubert lead counted this case: the family through the far space has dimension at least \(\deg W_{b-1}=16\) at \(b=3\), while at the last step the base family is a single rigid point. Dominance says nothing about it. <strong>Falsified as a mechanism.</strong></li>
+<li><strong>The flow line.</strong> By part 2, zeros sit at the branch preimages for every \(e\). The even KP flow is a one-parameter family through the rigid member. Matrices with a triple eigenvalue have codimension two, so a generic line avoids them. If the rigid member were a generic point of its line, simplicity along the line would reach it. The test below falsifies this: the rigid member is a resonant point of its line.</li>
+</ul>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_last_far_klein_flow.gp computes \(W_\theta\) of the flowed space exactly over \(\mathbb Q\), at \(z=1\) (the rigid member), \(2\) and \(3\). It strips powers of \(t\), \(t^2-1\) and \(t^2+1\). Output: research/results/bmd-20261003-zo/last-far-klein-flow-2.txt; the e = 1 rows are complete. The first run, last-far-klein-flow.txt, failed on a name clash with a built-in function. The \(e=2\) run overflowed the stack and was not repeated. The question was whether the rigid member is a generic point of its flow line, as the uniform genericity argument needs; one resonant instance defeats that argument. At \(e=1\) (\(d=15\)):</p>
+<ul>
+<li>At \(z=1\): \((t^2-1)\)-valuation \(24\), \((t^2+1)\)-valuation \(24\), and \(64=4\cdot16\) zeros elsewhere, simple. This matches \(\deg W_2=16\), a control on the lemma.</li>
+<li>At \(z=2\) and \(z=3\): valuations \(0\) and \(0\), with \(160\) zeros elsewhere, simple, even and reciprocal.</li>
+</ul>
+<p>So the flow releases all \(96\) zeros parked at the branch preimages. The rigid member sits where \(96\) zeros meet the branch preimages. Simplicity at generic flow time therefore says nothing at \(z=1\). This is the same resonance as the free exponent (\(12\) far points escape at \(\kappa=1/2\), <a href="#entry-2026-10-03-cube-last-far-kappa">last far exponent</a>) and as the merge check check:cube-far-klein-tau-flow (\(36\) zeros at the branch preimages at \((3,3)\)).</p>
+<p><strong>A triangular-multiplicity formulation.</strong> If \(W_{b-1}\) were the tau-function of a monodromy-free second-order operator, its root multiplicities would be triangular numbers \(1,3,6,\ldots\) (Duistermaat–Grünbaum). That allows triple roots, so it cannot help. A recorded fact, not a test of that pattern: research/tools/bmd_cube_last_far_squarefree.gp finds the saved \(W_{b-1}\) at \(e=1,2,3\) irreducible over \(\mathbb Q\), of degrees \(16,44,88\), hence squarefree (research/results/bmd-20261003-zo/last-far-squarefree.txt). So the last-step far input of (B) holds at \(b=3,4,5\).</p>
+<p><strong>The far direction review's two bridges, not run there.</strong></p>
+<ul>
+<li><em>Level repulsion.</em> Its translation is the flowed family. Its prediction, simple zeros at generic flow time, holds at \(z=2,3\). It does not reach the resonant rigid member.</li>
+<li><em>Multiplicity codes.</em> A triple root is a point where the jet evaluation of \(F_{b-1}\) loses three dimensions. The only code-theoretic bound available is the total Plücker count, which already fixes \(\deg W_{b-1}\). It gives no local bound.</li>
+</ul>
+<p>Both are closed for the rigid member.</p>
+<p><strong>Outcome.</strong> The Calogero–Moser lead is developed and closed. The lift exists for every \(e\). Its bare and equivariant translations carry no constraint. Its flow line is resonant at the rigid member at \(e=1\). With the dimension count of the first lead and the <a href="#entry-2026-10-03-cube-last-far-kappa">last far exponent</a> cycle for the second, every outside lead and absurd bridge of the <a href="#entry-2026-10-03-cube-far-direction-review">far direction review</a> has now been tested. The far input of (B) has no mechanism, and the record now supports moving cycles to another necessary statement.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-peeling-last-far-mobius (the blocks of \(F_{b-1}\)); lem:cube-far-klein-tau and check:cube-far-klein-tau-flow (the merge-space lift and its flow); prop:cube-far-schubert-dimension; the last far exponent entry.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked parts 1–4 of the lemma, the script against the entry, and the quoted numbers against the outputs. Verdict: pass with corrections, applied: Wilson's theorem is applied to \(W_{b-1}\) as a polynomial, with surjectivity over \(\mathbb C\); the equivariant item no longer rests on a statement about a different space; the resonance is scoped to \(e=1\); the squarefree check is recast as a recorded fact; the branch choice in part 2 is stated. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 3.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 9.77 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 23.92 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 35.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 40.99 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
