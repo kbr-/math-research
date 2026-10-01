@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-cluster-ratio">cluster ratio law</a> predicts \(E_{s+1}/E_s\approx C_s\,t^{-n-15/2+2s}(1+x)^{4s-6}\) at the last step, from endpoint clusters of the sector log-gas. It fits the measured \(\kappa\) with median error \(0.46\) at \(e=4\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, <a href="#entry-2026-10-04-cube-last-far-sector-concavity">sector concavity</a> reduces balance to concavity of \(\log|E_s|\) in \(s\), with second differences near \(-4\log(n+1)\), seen at every sampled root at \(e=4\). With the cluster ratio law it would give the balance certificate's hypotheses, apart from the remainder derivative bound.</p>
 <p>Next:</p>
 <ol>
-<li>Compute the constants \(C_s\) as ratios of Selberg-type cluster integrals. Test the predicted balance curves \(|C_s|\,|t|^{-n-15/2+2s}|1+x|^{4s-6}=1\) against the observed circle radii at \(e=2,4\).</li>
-<li>Turn the cluster heuristic into an asymptotic statement for one pair, starting with the pure-row clusters, which are exact monomial integrals.</li>
-<li>The roots near \(|t|=1\), and the middle steps.</li>
+<li>Remainder derivative bound: check \(|R'|\le\varepsilon N|E_i|/|r(1+r)|\) and \(|E_{i+1}'/E_{i+1}|\le CN/|r(1+r)|\) at \(e=4\). Then evaluate the full certificate at every balanced root.</li>
+<li>Derive the concavity law from the log-gas: the \(-4\log(n+1)\) from the cluster scalings, with an error estimate.</li>
+<li>The roots where \(|r(1+r)|\) is large or \(|t|\approx1\), and the middle steps.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47935,6 +47935,59 @@ None of this is proved. The scaling ignores how the exponents interact within a 
 <tr><td>Computation design and coding</td><td class="elapsed">23.03 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.16 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">7 min 53.01 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-sector-concavity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-last-far-perron-review:2" data-claims="lem:cube-far-concave-balance conj:cube-far-sector-concavity">
+<h3>4 October 2026 — Sector concavity: log|E_s| is concave in s with second differences near −4 log(n+1), which forces the two-term balance at every root</h3>
+<p class="entry-meta">Working proof that concavity of log|E_s| in s with gap δ ≥ log(32 l^2) forces adjacent two-term balance at every root, others below 2e^(-δ). Conjecture: second differences = −4 log(n+1) + 2 log|r(1+r)| + O(1), n-part fitted; all 48 sampled roots concave at e = 4. Sector concavity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. Sector balance (conj:cube-far-x-sector-balance) is the first input of the balance certificate. It has been observed but not explained. The <a href="#entry-2026-10-04-cube-last-far-cluster-ratio">cluster ratio law</a> fixes the exponents of \(E_{s+1}/E_s\), and these change linearly with \(s\). Does that make \(\log|E_s|\) concave in \(s\), and would concavity imply balance?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-concave-balance</code> (any finite sum); <code>conj:cube-far-sector-concavity</code> for the last step at every \(e\).</p>
+<p><strong>Lemma (concave balance).</strong> Let \(E_0,\ldots,E_K\), \(K\ge2\), be nonzero complex numbers with \(\sum_sE_s=0\). Put \(L_s=\log|E_s|\), and suppose \(L_{s+1}-2L_s+L_{s-1}\le-\delta\) for \(0&lt;s&lt;K\), with \(\delta\ge\log(2K^2)\). Let \(m\) maximize \(L_s\), and let \(m'\) be its neighbour with the larger \(L\). Then:</p>
+<ul>
+<li>\(|E_{m'}|\ge\tfrac12|E_m|\);</li>
+<li>\(|E_s|\le2e^{-\delta}|E_m|\) for every \(s\notin\{m,m'\}\).</li>
+</ul>
+<p>For the last step, \(K=4l=4\).</p>
+<p><strong>Proof.</strong> A concave sequence decreases away from its maximum, so the second largest value is at a neighbour of \(m\), namely \(m'\), and every other \(|E_s|\) is at most \(|E_{m'}|\). Write \(x=|E_{m'}|/|E_m|=e^{-a}\le1\). From \(\sum E_s=0\), \(|E_m|\le|E_{m'}|+(K-1)|E_{m'}|\), so \(x\ge1/K\) and \(a\le\log K\).</p>
+<p>Next bound the others. Say \(m'=m+1\); the case \(m'=m-1\) is symmetric. Concavity at \(m\) gives \(L_{m-1}\le2L_m-L_{m+1}-\delta=L_m+a-\delta\), and indices beyond \(m-1\) are smaller still. Concavity at \(m+1\) gives \(L_{m+2}\le2L_{m+1}-L_m-\delta=L_m-2a-\delta\), and indices beyond are smaller still. So every \(s\notin\{m,m'\}\) has \(|E_s|\le e^{a-\delta}|E_m|\le Ke^{-\delta}|E_m|\).</p>
+<p>Then \(|E_m|\le|E_{m'}|+(K-1)Ke^{-\delta}|E_m|\), so \(x\ge1-K^2e^{-\delta}\ge\tfrac12\). Hence \(a\le\log2\), and every other \(|E_s|\le e^{a-\delta}|E_m|\le2e^{-\delta}|E_m|\). \(\square\)</p>
+<p>So concavity with a large gap gives the hypothesis \(|R|\le\varepsilon|E_i|\) of lem:cube-far-balance-certificate, with \(\varepsilon=4(K-1)e^{-\delta}\) (\(=12e^{-\delta}\) at the last step) relative to the smaller balancing sum, which is at least \(|E_m|/2\). It does not give the certificate's derivative hypotheses.</p>
+<p><strong>Conjecture (sector concavity).</strong> At the last step, at all but \(O(e)\) roots of \(W_{b-1}\), \(L_s=\log|E_s|\) satisfies
+\[
+L_{s+1}-2L_s+L_{s-1}=-4\log(n+1)+2\log|r(1+r)|+O(1),\qquad 0&lt;s&lt;4,
+\]
+uniformly, with \(n=R_e\). The term \(2\log|r(1+r)|\) follows from the \(r\)-exponents of the cluster ratio law. The term \(-4\log(n+1)\) is an empirical fit. A first scaling estimate seemed to give \(|C_s|\approx(n+1)^{6-4s}\), but the reviewer's rederivation with the ratio entry's conventions finds that the powers of \(n\) from moving one particle cancel. This term therefore has no derivation yet.</p>
+<p>Wherever \(4\log(n+1)-2\log|r(1+r)|-O(1)\ge\log 32\), the lemma then yields balance with \(\varepsilon\lesssim12(n+1)^{-4}|r(1+r)|^2\). Together with the cluster ratio law, \(|\kappa|\) of order \(n\), this would make the certificate's condition \(\varepsilon(C+1)&lt;\delta'\) hold for large \(e\). Roots with \(|r(1+r)|\) of order \((n+1)^2\) are excluded.</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (xconcave mode, new) computes, at every third non-real root, the three second differences of \(\log|E_s|\) and the prediction, at \(160\) digits (research/results/bmd-20261004-v/concavity.txt).</p>
+<ul>
+<li>At \(e=4\) (\(n=28\), \(48\) roots): all \(48\) are strictly concave. The second differences range from \(-16.0\) to \(-0.42\). Their deviation from the prediction has median \(0.96\) and quartiles \(0.67\) and \(1.23\), a nearly constant offset.</li>
+<li>At \(e=2\) (\(n=6\), \(13\) roots): \(12\) are concave. The exception, at \(\log|t|=0.07\), has second differences \((-1.4,-1.4,0.3)\). The deviation has median \(-0.17\) and quartiles \(-1.83\) and \(0.55\).</li>
+</ul>
+<p>At \(e=4\) the typical gap, the smallest \(|{\rm second\ difference}|\) at a root, is \(13\) to \(16\). The lemma's threshold \(\log32\approx3.5\) is met at \(38\) of the \(48\) roots; the other \(10\) have gaps \(0.42\) to \(2.3\). At \(e=2\) it is met at \(8\) of \(13\). The large gaps are consistent with the observed third-to-largest ratios of \(10^{-7}\) to \(10^{-5}\) at balanced roots. In every sampled root the second largest sum is adjacent to the largest. Neither the clause "all but \(O(e)\) roots" nor the uniform \(O(1)\) is tested: the deviation reaches \(5.8\) at the root with gap \(0.42\).</p>
+<p><strong>What this gives.</strong> The balance input of the last step reduces to an exponent-level statement, concavity in \(s\) with second differences near \(-4\log n\). Its \(r\)-part follows from the cluster exponents, but its \(n\)-part is so far only fitted. With the cluster ratio law and remainder derivative bounds, it would give simplicity of the last-step far roots away from the region where \(|r(1+r)|\) is large. That region, the roots near \(|t|=1\) and the middle steps remain.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-balance-certificate; conj:cube-far-x-sector-balance; conj:cube-far-cluster-ratio; conj:cube-last-far-ideal-balance (where constants failed).</p>
+<p><strong>Verification gate.</strong> I re-read the balance certificate and the cluster ratio law. One fresh-context medium reviewer checked every step of the lemma, including the edge cases, and re-parsed all numbers. Verdict: pass with corrections, all applied:
+<ul>
+<li>\(\varepsilon\) now carries the factor \(K-1\);</li>
+<li>the lemma gives only the \(|R|\) hypothesis of the certificate;</li>
+<li>the \(-4\log(n+1)\) is relabelled as an empirical fit, since the claimed scaling derivation does not hold;</li>
+<li>the gap value and its sign are corrected, and the lemma's coverage (\(38\) of \(48\) roots) and the untested clauses are stated.</li>
+</ul></p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-v">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 55.43 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">38.68 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 10.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 6.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 22.55 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 37.03 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

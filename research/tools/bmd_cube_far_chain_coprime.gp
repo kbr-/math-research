@@ -149,6 +149,27 @@ sectorE(rows, mix, x, u1, u0, n, K, sg) = {
     for (a = 1, nm, my(i = mix[a]); if (setsearch(Set(S), a), M[i, ] = C[i, ] - I1[i], M[i, ] = I1[i]));
     E[#S + 1] += matdet(M));
   E; }
+\\ XCONCAVE mode (cycle bmd-20261004-v; conj:cube-far-sector-concavity): at every SKIP-th non-real root of W_(b-1),
+\\ the second differences D2(s) = log|E_(s+1)| - 2 log|E_s| + log|E_(s-1)|, s = 1..4l-1, against the cluster prediction
+\\ -4 log(n+1) + 2 log|r(1+r)|; concavity (all D2 < 0) makes only adjacent sums able to tie.
+XCONCAVE = getenv("XCONCAVE");
+{
+if (XCONCAVE != 0 && XCONCAVE != "",
+  default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 160));
+  my(skip = if (getenv("SKIP") != "" && getenv("SKIP") != 0, eval(getenv("SKIP")), 1));
+  foreach (eval(XCONCAVE), el,
+    my(e = el[1], l = el[2], n = Rn(e), rows = xrows(e, l), K = #rows, T = tpoly(chain(e, l, Rn(l)), 0)[1], rt = polroots(T));
+    my(mix = select(i -> rows[i][3] == 1, [1..K]), nm = #mix, out = List());
+    forstep (q = 1, #rt, skip,
+      my(r = rt[q]); if (abs(imag(r)) < 10^-20, next);
+      my(u1 = (-1 - r) / abs(1 + r), u0 = -r / abs(r));
+      my(cc = taylorb(-7/2, 0, r, u1, u0, n, n + 3), ci = loopb(-7/2, 0, r, u1, u0, n, n + 3), sg = if (normlp(ci + cc) < normlp(ci - cc), -1, 1));
+      my(E = sectorE(rows, mix, r, u1, u0, n, K, sg), L = apply(z -> log(abs(z)), E), A = apply(abs, E), srt = vecsort(A, , 5));
+      my(pred = -4 * log(n + 1) + 2 * log(abs(r * (1 + r))));
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., srt[1] - 1, srt[2] - 1, precision(pred, 4) * 1., vector(nm - 1, s, precision(L[s + 2] - 2 * L[s + 1] + L[s], 4) * 1.)]));
+    emit(Str("XCONCAVE (e,l)=(", e, ",", l, "): n=", n, "; per root [log|t|, largest s, second s, predicted D2, [D2(1..", nm - 1, ")]]: ", Vec(out))));
+  quit);
+}
 \\ XLAPLACE mode (cycle bmd-20261004-r): is each sector sum E_s dominated by one contiguous Laplace term? For every
 \\ subset S of mixed rows, D_S splits by rows into the 0-sector (pure rows without a (1+x) factor, and the mixed rows of S
 \\ with their I_0 parts) and the (-1)-sector. L_s^top (L_s^bot) sums over |S| = s the Laplace terms in which the 0-sector
