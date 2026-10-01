@@ -15,7 +15,7 @@ OUT = getenv("OUT");
 emit(s) = print(s); if (OUT != 0 && OUT != "", write(OUT, s));
 {
 my(ff = ffinit(3, 5, 'a), g = ffgen(ff, 'a), one = g^0, m = 'm, P = if(getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 24));
-my(c = g^2, Q = m^2 - c, X = m^2 - 2 * m + c, Z = -m^2 + 2 * c * m - c, T = (X^2 - Q^2) / Q^2);
+my(c = g^(if(getenv("CPOW") != "" && getenv("CPOW") != 0, eval(getenv("CPOW")), 2)), Q = m^2 - c, X = m^2 - 2 * m + c, Z = -m^2 + 2 * c * m - c, T = (X^2 - Q^2) / Q^2);
 my(w0 = [one + 0 * m, X / Q, Z / Q], cen = [0 * one, one, c]);
 my(G = Q^(2 * P + 4) * X^(2 * P + 2) * Z^(2 * P + 2));
 foreach(eval(getenv("SIZES")), sz,
