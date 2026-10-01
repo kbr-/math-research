@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The three-centre mixed factor <a href="#entry-2026-10-04-cube-three-centre-pairwise">does not split over cluster pairs</a>, and simple size invariants do not decide classicality.</p>
-<p>Next: compute the leading \(\varepsilon\)-coefficient symbolically, with slopes and \(c\) as indeterminates, for the smallest multisets where classicality differs, \(\{1,1,5\}\) against \(\{1,2,4\}\) at \(N=7\). Read off the form of the mixed factor.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The mixed factor of the three-centre leading coefficient is unknown. A characteristic-zero shortcut with integer slopes is <a href="#entry-2026-10-04-cube-three-centre-delta-q">uninformative</a>, because the labels collide modulo \(3\).</p>
+<p>Next: a route review. Weigh a symbolic computation over \(\mathbb F_3(c,s_i)\) at \(N=7\) against the time already spent on statement 2. Weigh both against returning to statement 3 with the transversality obstacle stated in its review.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49825,6 +49825,31 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.74 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-delta-q" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="none" data-claim-note="Inconclusive attempt: integer slopes collide modulo 3, so characteristic-zero leading coefficients do not expose the mixed factor; valuations recorded, no claim.">
+<h3>4 October 2026 — Mark determinant over Q along the three-centre family: integer slopes collide modulo 3, so the characteristic-zero leading coefficient cannot show the mixed factor; lattice valuations agree across characteristics</h3>
+<p class="entry-meta">Unsuccessful attempt to read the three-centre mixed factor from exact characteristic-zero leading coefficients at N = 6, 7; a side observation on valuations. Three centre Delta Q cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-three-centre-pairwise">pairwise test</a> showed that the mixed factor of conj:cube-three-centre-leading-factorization couples all three clusters. Its form might be read from the exact leading \(\varepsilon\)-coefficient of the mark determinant over \(\mathbb Q\), by comparing powers of \(3\) between classical and nonclassical multisets.</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-leading-factorization. No new claim.</p>
+<p><strong>Computation.</strong> research/tools/bmd_three_centre_delta_q.gp computes \(\Delta(\varepsilon)\) exactly over \(\mathbb Q[\varepsilon]\). Its rows are \(1\), \(T\), and the first \(D\) coefficients of \(((1+a_iT)(1+a_jT))^{1/2}\). The labels are \(a=\text{centre}+\varepsilon s\), with \(c=5\) and integer slopes (research/results/bmd-20261004-zx/delta-q-7.txt). Characteristic-zero \(\varepsilon\)-orders: \(24\) for \(\{2,2,2\}\); \(85\), \(60\), \(54\) and \(45\) for \(\{1,1,5\}\), \(\{1,2,4\}\), \(\{1,3,3\}\) and \(\{2,2,3\}\). The leading coefficients carry \(3^{26}\) to \(3^{37}\), and \(\Delta(\varepsilon)\) vanishes identically modulo \(3\) for every multiset, the classical ones included. The reason is that the integer slopes in a cluster coincide modulo \(3\). The labels then collide modulo \(3\) for every \(\varepsilon\), so these powers of \(3\) measure collisions, not the mixed factor. The attempt is uninformative for its purpose. A test of this kind needs slopes that are distinct modulo \(3\), in an extension of \(\mathbb Z_3\), or symbolic slopes.</p>
+<p><strong>Side observation.</strong> research/tools/bmd_three_centre_valuations.py compares the characteristic-zero \(\varepsilon\)-orders with the characteristic-three saturation valuations of the earlier runs (research/results/bmd-20261004-zx/valuations.txt). They agree at \(\{2,2,2\}\) (\(24\)), \(\{1,1,5\}\) (\(85\)), \(\{1,2,4\}\) (\(60\)) and \(\{2,2,3\}\) (\(45\)), and differ by one at \(\{1,3,3\}\) (\(54\) against \(55\)). Agreement at the nonclassical \(\{1,1,5\}\) shows that the lattice valuation does not detect classicality. The loss is in the observation at the point, not in the lattice.</p>
+<p><strong>Remaining gap.</strong> The mixed factor. The next attempt should use slopes in \(\mathbb F_{3}(s_1,\ldots)\) symbolically, or slopes in \(\mathbb Z_3[\zeta]\) distinct modulo the maximal ideal.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-three-centre-leading-factorization; the three-centre saturation outputs.</p>
+<p><strong>Verification gate.</strong> No claim. The failure mode, label collisions modulo \(3\), is read off the construction.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 50.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11.40 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">57.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20.71 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
