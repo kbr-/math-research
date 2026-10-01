@@ -47,14 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. Last-step squarefreeness is verified for even \(N\le26\) and <a href="#entry-2026-10-03-cube-odd-last-far-squarefree">odd \(N\le17\)</a>.</p>
-<p>Next, a route review. It weighs:</p>
-<ul>
-<li>the analytic proof for the last steps (four-circle and two-term laws; phase control);</li>
-<li>the first-order condition at the other steps of both peelings, which nothing has yet verified at the new sizes;</li>
-<li>(K).</li>
-</ul>
-<p>It picks the highest-risk necessary input with a concrete next test.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). Every peeling step's far polynomial \(W_k\) is now the Weierstrass polynomial of a space of dimension \(1+R_l+4l\), independent of \(e\) (<a href="#entry-2026-10-03-cube-middle-far-reduction">middle far reduction</a>). The last steps are verified for even \(N\le26\) and odd \(N\le17\).</p>
+<p>Next:</p>
+<ol>
+<li>Compute the middle \(W_k\) with \(l=2,3\) exactly from the reduced space for \(b\) up to about \(10\), and verify squarefreeness. This extends conj:cube-peeling-simplicity beyond \(b\le6\).</li>
+<li>Test the four-circle law on them.</li>
+</ol>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -45051,6 +45049,62 @@ Then \(W\bigl((1+x)^{-N}U\bigr)=(1+x)^{-N(4e+1)}W(U)\), and \(W(U)=W(\mathcal P_
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.48 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">10 min 0.18 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-middle-far-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="cor:cube-middle-far-reduction check:cube-middle-far-reduction-data">
+<h3>3 October 2026 — At every even-peeling step 2 &lt;= k &lt;= b-1 the far polynomial is the Weierstrass polynomial of a space of dimension 1 + R_l + 4l, independent of e: the six-space reduction extends from the last step</h3>
+<p class="entry-meta">Working proof that the polynomial block and the two half-integral blocks of every even-peeling far space F_k, 2 &lt;= k &lt;= b-1, have a monomial Wronskian; W_k reduces to 1 + R_l + 4l functions (six at the last step). Middle far reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). Besides the last steps, (B)'s far input needs the first-order condition at the middle steps \(2\le k\le b-2\) (lem:cube-far-first-order-splitting). It is vacuous if the middle far polynomials \(W_k\) are squarefree, and that is checked only for \(b\le6\) (conj:cube-peeling-simplicity). Does the last-step reduction extend?</p>
+<p><strong>General statement.</strong> <code>cor:cube-middle-far-reduction</code>, for every \(b\ge3\) and \(2\le k\le b-1\). At \(k=b-1\), that is \(l=1\), it is lem:cube-last-far-six-reduction.</p>
+<h4>Setting</h4>
+<p>By thm:cube-base-peeling-degeneration, with \(e=k-1\), \(l=b-k\) and \(c=1\), the far space \(F_k\) is the sum of six blocks, of total dimension \(R_b\):</p>
+<ul>
+<li>\(I=\mathcal P_{&lt;R_e}\);</li>
+<li>\(C=\langle(1+x)^{-3}\rangle\);</li>
+<li>\(X_0=x^{-(R_l+2)}\mathcal P_{&lt;R_l}\);</li>
+<li>\(II=(1+x)^{-7/2}\mathcal P_{&lt;4e}\);</li>
+<li>\(IV=(1+x)^{-5/2}x^{1/2-4l}\mathcal P_{&lt;4l}\);</li>
+<li>\(III=x^{\beta}\mathcal P_{&lt;4el}\), with \(\beta=-\tfrac72+4e-4el\).</li>
+</ul>
+<p><strong>Corollary (middle far reduction).</strong> Characteristic zero. Put \(A=I\oplus II\oplus III\) and \(n=R_e\).</p>
+<ol>
+<li>\(W(A)=C_A\,x^{\mu}(1+x)^{\nu}\) with \(C_A\ne0\) and rational \(\mu,\nu\).</li>
+<li>\(W_k\) is the far part of the Wronskian of the space \(L_A(C\oplus X_0\oplus IV)\), of dimension \(1+R_l+4l\), with the same weights. Here \(L_A\) is the monic operator with kernel \(A\).</li>
+</ol>
+<p><em>Proof.</em> (1) Pólya–Mammana with \(\partial^n\): \(W(A)=W(\mathcal P_{&lt;n})\,W(\partial^nII\oplus\partial^nIII)\). Expanding in powers of \(1+x\) and of \(x\), \(\partial^n\) maps \(II\) onto \((1+x)^{a}\mathcal P_{&lt;k_1}\), with \(a=-\tfrac72-n\) and \(k_1=4e\). It maps \(III\) onto \(x^{\beta-n}\mathcal P_{&lt;k_2}\), with \(k_2=4el\). Both use the nonvanishing of falling factorials at half-integers. The key identity is
+\[
+a+k_1=\beta-n+k_2=4e-\tfrac72-n.
+\]
+Put \(t=x/(1+x)\), so \(1+x=(1-t)^{-1}\) and \(x=t(1-t)^{-1}\). Multiply by \((1-t)^{a+k_1-1}\):
+\[
+(1+x)^ax^j\mapsto t^j(1-t)^{k_1-1-j},\qquad x^{\beta-n}x^j\mapsto t^{\beta-n}\,t^j(1-t)^{k_2-1-j}.
+\]
+These span \(\mathcal P_{&lt;k_1}\) and \(t^{\beta-n}\mathcal P_{&lt;k_2}\). By the factorization again, \(W(\mathcal P_{&lt;k_1}\oplus t^{\beta-n}\mathcal P_{&lt;k_2})=W(\mathcal P_{&lt;k_1})\,W(\partial^{k_1}t^{\beta-n}\mathcal P_{&lt;k_2})\). The second factor is a Wronskian of distinct monomials \(t^{\beta-n+j-k_1}\), with nonzero coefficients because \(\beta\notin\mathbb Z\), so it is a monomial. Returning to \(x\) changes only powers of \(x\) and \(1+x\). (2) \(W(F_k)\not\equiv0\), since \(\dim F_k=R_b\). Apply the factorization off \(\{0,-1\}\). The complement has dimension \(R_b-R_e-4e-4el=1+R_l+4l\). \(\square\)</p>
+<p>At \(l=1\), \(\beta=-\tfrac72\), and \(C\oplus X_0\oplus IV\) has dimension \(1+1+4=6\): this is the six-space of lem:cube-last-far-six-reduction. The odd last-step reduction (lem:cube-odd-last-far-reduction) uses the other zero-free block \(I\oplus C\oplus II\).</p>
+<h4>Which unions are zero-free</h4>
+<p>research/tools/bmd_cube_middle_far_reduction.gp computes far degrees of block unions modulo \(2^{61}-1\), at \(3\le b\le6\) and all \(k\) (research/results/bmd-20261003-zzl/middle-reduction.txt; \(b=7\) did not finish within \(600\) s).</p>
+<ul>
+<li>\(I+C+II\) and \(I+X_0\) are zero-free.</li>
+<li>\(I+X_0+C+II\) has far degrees \(4,24,8,60,48,12,112,120,72,16\).</li>
+<li>The full far degrees are \(16,48,44,96,152,88,160,324,288,148\), equal to \(\#F_k\).</li>
+</ul>
+<p>The rerun with further unions (middle-reduction-2.txt, \(b\le6\)) gives: \(I+II+III\): \(0\) at all ten pairs, as the corollary proves; \(I+C+II+III\): \(4,8,8,12,16,12,16,24,24,16\); \(I+C+II+IV\): \(8,16,28,24,56,64,32,84,128,116\); \(I+X_0+II\): \(4,24,8,60,48,12,112,120,72,16\). The degrees are reductions modulo a prime and could drop there; the proof does not depend on them.</p>
+<p><strong>What this gives.</strong> \(W_k\) is now the Weierstrass polynomial of a space of dimension \(1+R_l+4l\) for every step, independent of \(e\). For \(l=1,2,3\) this is \(6,15,28\), against \(R_b=O(b^2)\) for \(F_k\). So the steps near the end of the peeling (bounded \(l\)) reduce to comparably small spaces. The best available complement is \(\min\bigl(1+R_l+4l,\;1+4e+4l(e+1)\bigr)\): the second, from the zero-free union \(I+X_0\), is smaller exactly when \(R_l&gt;4e(l+1)\). Exact verification and root geometry of the middle \(W_k\) at larger \(b\) are next.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-last-far-six-reduction (the \(l=1\) case and the \(t\)-substitution); lem:cube-odd-last-far-reduction; thm:cube-base-peeling-degeneration (blocks and dimension of \(F_k\)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer failed the first draft, which stated the weaker reduction with \(I\oplus C\oplus II\) and claimed that no larger union was zero-free; the reviewer found the zero-free union \(I+II+III\). The same reviewer then re-checked the corrected parts (1)–(2) and the wording. Verdict: pass with corrections, applied: the title and meta are restricted to even steps \(2\le k\le b-1\); the best complement is stated as a minimum; \"as accessible\" is weakened; the further unions are saved and rerun (middle-reduction-2.txt); the exponents are renamed. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 22.03 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">37.94 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 26.71 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 6.99 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13 min 10.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.23 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
