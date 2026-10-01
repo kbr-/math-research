@@ -43,6 +43,22 @@ foreach(eval(getenv("SIZES")), sz,
     coefs = vector(prec, e, matrix(nr, nc, i, j, if(i <= rk, trans[e][i, j], trans[e + 1][i, j])));
     prec--; step++);
   if (!ok, emit(Str("sizes ", sz, ": precision exhausted, ranks ", Vec(ranks))); next);
+  \\ cycle bmd-20261004-zr: leading m-degrees of a reduced basis of G*U (echelon from the highest degree); an interval of
+  \\ length D means G*U/m^min is the full space of polynomials of degree < D after a triangular change, hence classical
+  my(A = matrix(nr, nc, i, k, coefs[1][i, nc + 1 - k]), row = 1, lead = List());
+  for (col = 1, nc, if (row > nr, break);
+    my(piv = 0); for (i = row, nr, if (A[i, col] != 0, piv = i; break));
+    if (!piv, next);
+    my(tmp = A[row, ]); A[row, ] = A[piv, ]; A[piv, ] = tmp; A[row, ] = A[row, ] / A[row, col];
+    for (i = 1, nr, if (i != row && A[i, col] != 0, A[i, ] -= A[i, col] * A[row, ]));
+    listput(lead, nc - col); row++);
+  my(ld = vecsort(Vec(lead)), lo = vecmin(apply(i -> my(e = nc); for (k = 1, nc, if (coefs[1][i, k] != 0, e = k - 1; break)); e, [1..nr])));
+  emit(Str("sizes ", sz, ": leading m-degrees ", ld, " (span ", ld[#ld] - ld[1] + 1, " for D = ", nr, "); lowest degree occurring ", lo,
+    if (ld[#ld] - ld[1] + 1 == nr, " INTERVAL", " gaps")));
+  \\ pole orders of the limit U along the special factors: deg_F(G) - min over the basis of valuation(G*u, F), F = Q, X, Z
+  my(rowsP = vector(nr, i, sum(k = 1, nc, coefs[1][i, k] * m^(k - 1))));
+  my(pole = vector(3, f, my(F = [Q, X, Z][f], gF = [2 * P + 4, 2 * P + 2, 2 * P + 2][f]); gF - vecmin(apply(h -> if (h == 0, 10^6, valuation(h, F)), rowsP))));
+  emit(Str("sizes ", sz, ": pole orders along Q, X, Z (each a pair of points) ", pole, "; total ", 2 * vecsum(pole), " vs D - 1 = ", nr - 1));
   my(B0 = coefs[1], mov = vector(3, q, my(t = g^([5, 13, 29][q])); matrank(matrix(nr, nr, i, j, sum(d = j - 1, nc - 1, B0[i, d + 1] * binomial(d, j - 1) * t^(d - j + 1))))));
   emit(Str("sizes ", sz, " N = ", N, ", D = ", nr, ": saturation steps ", step, ", ranks ", Vec(ranks), "; generic Hasse jet ranks at m = g^5, g^13, g^29: ", mov,
     if (vecmin(mov) == nr, " (classical)", " (nonclassical)"))));

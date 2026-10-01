@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-splits">Three-centre classicality</a> depends only on the multiset of cluster sizes, and some multiset is classical at every \(N=7,\ldots,10\). No rule is known.</p>
-<p>Next: find a coordinate on the conic in which the three-centre limits are monomial, such as the parameter centred at a branch point. Read their exponent sets, and test a Lucas-type rule against the deficit tables (\(N=7,\ldots,10\)) before any further sizes.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-complete">Three-centre limits are classical exactly when complete</a> on all fifteen multisets tested.</p>
+<p>Next: describe the saturated limit structurally. Test whether it is the span of products of per-cluster single-label limits, with each cluster's limit \(w_0\cdot\langle(T/w_0^2)^u\rangle\) over its first digit-supported exponents \(u\). If it is, compute its completeness for every split from that description.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49483,6 +49483,45 @@ Exact squarefreeness is known for \(k\le6\) (check:cube-merge-far-polynomials).<
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 11.00 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.34 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8 min 54.88 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-complete" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="conj:cube-three-centre-complete-series">
+<h3>4 October 2026 — A three-centre limit is classical exactly when it is a complete linear series on the conic: its leading degrees fill an interval, on all fifteen multisets tested</h3>
+<p class="entry-meta">Conjecture with finite support (15 of 15 multisets, N = 6..9): classicality coincides with completeness of the limit series in the conic parameter, and most deficits equal the number of degree gaps. Pole orders recorded; no formula yet. Three centre complete cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-splits">Three-centre classicality</a> depends only on the multiset of cluster sizes, with no simple rule. With three centres the conic has six special points, so no single monomial coordinate is expected. Is there a structural criterion?</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-complete-series: for every \(N\) and every split, the three-centre limit \(U\) is classical at a generic point if and only if \(G\cdot U\) is the full space of polynomials of degree below \(D\) in the conic parameter \(m\). Equivalently, its leading \(m\)-degrees form the interval \(\{0,\ldots,D-1\}\), so \(U\) is a complete linear series \(L(E)\) on \(\mathbb P^1\) with \(\deg E=D-1\). The direction "complete implies classical" is immediate: \(1,m,\ldots,m^{D-1}\) have Hasse–Wronskian \(1\), and multiplication by \(G\) is a unit at a generic point. The converse is the conjecture.</p>
+<p><strong>Computation.</strong> research/tools/bmd_three_centre_limit.gp now reduces the saturated limit by highest degree, prints its leading \(m\)-degrees, and prints the pole orders along the special factors \(Q\), \(X\), \(Z\) (each a pair of points). Outputs: research/results/bmd-20261004-zr/degree-sets.txt and pole-orders.txt.</p>
+<ul>
+<li>The degree sets are an interval for exactly the classical multisets: \(\{2,2,2\}\); \(\{1,2,4\},\{1,3,3\},\{2,2,3\}\); \(\{2,3,3\}\); \(\{3,3,3\},\{2,2,5\},\{1,4,4\}\). They have gaps for every nonclassical one.</li>
+<li>Gaps against deficits:
+<ul>
+<li>\(\{1,1,5\}\): spread \(30\) for \(D=23\), so \(7\) gaps; deficit \(3\);</li>
+<li>\(\{1,1,6\}\): \(6\) gaps, deficit \(6\);</li>
+<li>\(\{1,2,5\}\): \(3\), \(3\);</li>
+<li>\(\{1,3,4\}\) and \(\{2,2,4\}\): \(1\), \(1\);</li>
+<li>\(\{1,1,7\}\): \(2\), \(2\);</li>
+<li>\(\{1,3,5\}\): \(1\), \(1\).</li>
+</ul>
+In all but one case the deficit equals the number of gaps.</li>
+<li>Pole orders along \((Q,X,Z)\) do not depend on a cluster's own size alone. A cluster of size \(2\) at centre \(1\) has pole order \(3\), \(5\) or \(7\) along \(X\), depending on the other sizes: \(\{2,2,2\}\): \(3\); \(\{1,2,4\}\): \(5\); \(\{2,2,5\}\): \(7\).</li>
+</ul>
+<p><strong>Outcome.</strong> Classical coincides with complete on all fifteen multisets, so the criterion is structural, not a digit coincidence. Proving existence for every \(N\) now means showing that some split gives a complete limit, which is a dimension statement about a space of rational functions on \(\mathbb P^1\). The pole data show that the limit is not simply a sum of per-cluster pieces: the mixed pairs shape the poles.</p>
+<p><strong>Remaining gap.</strong> A description of the saturated limit \(U\), for instance as a span of products of per-cluster limits, from which completeness can be read for every \(N\).</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-three-centre-multiset-invariance; check:cube-three-centre-certificates; lem:cube-moving-point-limit-criterion.</p>
+<p><strong>Verification gate.</strong> A conjecture with finite support; every number is read from the saved outputs. The easy direction is the one-line Wronskian identity above. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 2.08 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">36.57 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 7.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.14 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 54.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
