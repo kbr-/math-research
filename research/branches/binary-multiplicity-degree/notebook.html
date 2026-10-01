@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, the <a href="#entry-2026-10-04-cube-last-far-sector-ratio">sector ratio law</a> makes consecutive sector sums differ by \(t^{-(R_e+7/2)}\) times a slowly varying factor, checked at \(e=2,4\). A balance certificate reduces simplicity on the circles to remainder bounds.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-sector-polynomial">sector polynomial</a> writes the last-step far polynomial exactly as \(E(1;r)\) for a quartic \(E(z;r)\) in \(z\). Its roots are crossings \(z_j(r)=1\), and simplicity holds where the quartic's roots are simple and cross \(1\) with nonzero speed.</p>
 <p>Next:</p>
 <ol>
-<li>Find why \(E_{i+1}/E_i\) carries exactly \(t^{-(R_e+7/2)}\): which determinants in each sector sum dominate. Test whether one Laplace term (column split) dominates \(E_s\).</li>
-<li>Evaluate the certificate, with \(R'\), at \(e=4\) to measure its margin.</li>
-<li>The roots off the circles, and the \(y\)-side analogue for \(l\gg e\).</li>
+<li>Compute the four roots \(z_j(r)\) along the four circles at \(e=4\). Test the three non-degeneracy conditions: simple roots, \(E_4\ne0\), nonzero crossing speed. Check whether \(|z_j|\) separate by factors of order \(|t|^N\).</li>
+<li>Find a formula, or a monotonicity, for \(z_j(r)\), for instance an argument-principle count of how often \(z_j\) winds around \(0\) along a circle.</li>
+<li>The \(y\)-side analogue for \(l\gg e\), and the roots off the circles.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47594,6 +47594,65 @@ which is nonzero under the inequality. \(\square\)</p>
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 9.02 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.20 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9 min 17.97 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-sector-polynomial" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-far-two-ladders-review:1" data-claims="lem:cube-far-sector-polynomial conj:cube-far-sector-extreme-laplace">
+<h3>4 October 2026 — Sector polynomial: the far polynomial is the value at z = 1 of a polynomial in z of degree at most 4l, so its roots are where a root of that polynomial crosses 1; extreme Laplace splits do not explain the ratio law</h3>
+<p class="entry-meta">Working proof that W_k corresponds to E(1; r) for the sector polynomial E(z; r) = det with mixed rows I_-1 + z I_0, with a simplicity criterion. Refutation: contiguous Laplace splits are negligible in E_s. Corrections to the sector ratio entry. Sector polynomial cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Corrections to the <a href="#entry-2026-10-04-cube-last-far-sector-ratio">sector ratio entry</a></strong> (from the reviewer's full report, received after that checkpoint):</p>
+<ul>
+<li>The analyticity sentence there ("rotating a cut without crossing the point does not change the keyhole integrals") is false as stated: a rotated cut can sweep across the other branch point, and the per-row phase changes. What is needed and true is this. With the cuts of \(r\) held fixed, each \(E_s\) is analytic for \(x\) in a disc about \(r\) that misses both cuts and hairpins, \(\sum_sE_s=\det[c(x)]\) there, and at \(x=r\) these are the sector sums of \(r\). This is what the derivative mode differentiates.</li>
+<li>The \(e=2\) value \(\kappa=-3.29+1.79i\) is unexplained.</li>
+<li>At \(e=4\), "presumably a zero of \(E_3\) or \(E_4\)" is untested.</li>
+</ul>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. The <a href="#entry-2026-10-04-cube-far-two-ladders-review">two-ladders review</a> asked which terms of the sector sums carry the ratio law \(E_{i+1}/E_i\approx c_i\,t^{-(R_e+7/2)}\). Is there an exact structure behind the balance?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-sector-polynomial</code> for every step; the refuted <code>conj:cube-far-sector-extreme-laplace</code>.</p>
+<p><strong>Lemma (sector polynomial).</strong> In the setting of lem:cube-far-x-sector-decomposition, at a non-real \(r\) with its cuts, let \(E(z;r)\) be the Casorati determinant \(\det[c_{i,n+s}]\) in which each mixed row is replaced by \(I_{-1}+z\,I_0\). Then:</p>
+<ol>
+<li>\(E(z;r)=\sum_{s=0}^{4l}E_s(r)z^s\), and \(E(1;r)=\det[c(r)]\), which has the roots of \(W_k\).</li>
+<li>Let \(r_0\) be a root of \(W_k\) at which \(z=1\) is a simple root of \(E(\cdot;r_0)\), that is, \(\partial_zE(1;r_0)\ne0\). Then near \(r_0\) there is an analytic root \(z_j(r)\) with \(z_j(r_0)=1\), and \(r_0\) is a simple root of \(W_k\) if and only if \(z_j'(r_0)\ne0\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) The determinant is multilinear in the mixed rows, so expanding each \(I_{-1}+zI_0\) gives \(\sum_S z^{|S|}D_S\). At \(z=1\) each mixed row is \(I_{-1}+I_0=c\).</p>
+<p>(2) Near \(r_0\) the coefficients \(E_s\) are analytic, as in the correction above. By the implicit function theorem, \(E(z_j(r);r)=0\) defines an analytic \(z_j\) with \(z_j(r_0)=1\), and
+\[
+\partial_rE(1;r_0)=-\partial_zE(1;r_0)\,z_j'(r_0).
+\]
+\(E(1;r)=\det[c(r)]\) differs from \(W_k\) off the branch points by a nonvanishing analytic factor (lem:cube-far-x-sector-decomposition, part 1), so the multiplicities agree. \(\square\)</p>
+<p>Part 2 is a reformulation of \(\frac{d}{dr}\det[c]\ne0\), not a reduction. Its use is that \(z_j\) has an asymptotic description.</p>
+<p>The lemma makes exact the structure of conj:cube-last-far-iv-splitting-mechanism: a polynomial of degree at most \(4l\) whose roots, as functions of \(r\), meet \(1\) at the roots of \(W_k\). Order the roots by increasing modulus. Conditionally on the ratio law, and with bounds on the remaining sector sums and their derivatives, the root crossing \(1\) at a balanced pair \((E_i,E_{i+1})\) is \(z_{i+1}\approx-E_i/E_{i+1}=-1/\varphi\). Then \(r(1+r)\,z_{i+1}'/z_{i+1}\approx-\kappa_i\), of order \(R_e+\tfrac72\), and in particular nonzero.</p>
+<h4>Two tested mechanisms for the ratio law</h4>
+<ul>
+<li><strong>Drift \(-r\).</strong> The \(j=0\) mixed row alone suggests \(\varphi\propto t^{-N}/(1+x)\), so \(\kappa=-N-r\). At \(e=2\), \(\mu=\kappa+N+r\) ranges over \([-0.6,2.2]\), with one root at \(6.4\). That is hardly smaller than \(\kappa+N\) itself, so the hypothesis is refuted (research/results/bmd-20261004-r/x-sector-ratio-r-e2.txt).</li>
+<li><strong>Extreme Laplace splits (conj:cube-far-sector-extreme-laplace, refuted).</strong> Split each \(D_S\) by rows into the \(0\)-sector, meaning pure rows without a \((1+x)\) factor plus the mixed rows of \(S\), and the \((-1)\)-sector. The hypothesis says the Laplace term in which the \(0\)-sector rows take the top, or the bottom, block of columns dominates \(E_s\). Tested at the balanced roots, every fourth root at \(e=2,4\) (research/results/bmd-20261004-r/x-laplace.txt). Neither extreme term approximates \(E_s\) at any of the \(33\) balanced roots tested (\(5\) at \(e=2\), \(28\) at \(e=4\)), in any of \(132\) comparisons:
+<ul>
+<li>in \(112\), the term is negligible, \(|L/E_s-1|\) within \(2.5\%\) of \(1\);</li>
+<li>in the other \(20\), it is comparable to \(E_s\) or exceeds it, by up to \(10^{130}\).</li>
+</ul>
+So no contiguous (extreme) Laplace term dominates. This is consistent with the earlier refutation of the idealized two-class model.</li>
+</ul>
+<p><strong>What this gives.</strong> The last step now has an exact algebraic form: roots of \(W_{b-1}\) are the crossings \(z_j(r)=1\) of the roots of an explicit polynomial in \(z\) of degree at most \(4\). Simplicity is equivalent to a simple crossing with nonzero speed. The ratio-law cycle measured a related quantity of order \(R_e+\tfrac72\): \(\operatorname{Re}\kappa\in[-32.0,-21.4]\) at \(e=4\), and one root at \(-3.29\) at \(e=2\). Proving this for all \(e\) still needs control of the \(E_s\), and no contiguous Laplace term provides it.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-x-sector-decomposition; conj:cube-far-x-sector-ratio; conj:cube-last-far-iv-splitting-mechanism.</p>
+<p><strong>Verification gate.</strong> I re-read the sector decomposition, balance and ratio entries and the splitting conjecture. One fresh-context medium reviewer checked both lemma parts, the sign \(r(1+r)z'/z\approx-\kappa\), the Laplace row split and signs in the code, and all counts against the outputs. Verdict: pass with corrections, all applied:
+<ul>
+<li>part 2 now assumes only that \(z=1\) is a simple root, and is labelled a reformulation;</li>
+<li>the claim that no remainder bounds are needed is withdrawn;</li>
+<li>degree statements now read "at most", and the speed is stated as of order \(R_e+\tfrac72\);</li>
+<li>the Laplace counts and wording are corrected.</li>
+</ul>
+No numerical control of the Laplace code was run, for example recovering the determinant from all column blocks. Its conclusion would survive a global sign error, except possibly in one comparison.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-r">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 30.73 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 6.54 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">50.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 56.83 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 36.88 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

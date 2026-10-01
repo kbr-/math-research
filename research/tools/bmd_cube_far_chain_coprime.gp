@@ -147,6 +147,47 @@ sectorE(rows, mix, x, u1, u0, n, K, sg) = {
     for (a = 1, nm, my(i = mix[a]); if (setsearch(Set(S), a), M[i, ] = C[i, ] - I1[i], M[i, ] = I1[i]));
     E[#S + 1] += matdet(M));
   E; }
+\\ XLAPLACE mode (cycle bmd-20261004-r): is each sector sum E_s dominated by one contiguous Laplace term? For every
+\\ subset S of mixed rows, D_S splits by rows into the 0-sector (pure rows without a (1+x) factor, and the mixed rows of S
+\\ with their I_0 parts) and the (-1)-sector. L_s^top (L_s^bot) sums over |S| = s the Laplace terms in which the 0-sector
+\\ rows take the top (bottom) columns, with the Laplace sign. At balanced roots, report |L_s^top/E_s - 1| and
+\\ |L_s^bot/E_s - 1| for the two balancing sums.
+laplaceE(rows, mix, x, u1, u0, n, K, sg) = {
+  my(nm = #mix, C = matrix(K, K), I1 = vector(K), E = vector(nm + 1), Lt = vector(nm + 1), Lb = vector(nm + 1));
+  for (i = 1, K, my(tt = taylorb(rows[i][1], rows[i][2], x, u1, u0, n, n + K - 1)); for (s = 1, K, C[i, s] = tt[s]));
+  foreach (mix, i, I1[i] = sg * loopb(rows[i][1], rows[i][2], x, u1, u0, n, n + K - 1));
+  forsubset (nm, S,
+    my(M = C, z = List(), o = List());
+    for (a = 1, nm, my(i = mix[a]); if (setsearch(Set(S), a), M[i, ] = C[i, ] - I1[i], M[i, ] = I1[i]));
+    for (i = 1, K, if (rows[i][3] == 1, if (setsearch(Set(S), select(a -> mix[a] == i, [1..nm])[1]), listput(z, i), listput(o, i)), if (rows[i][1] == 0, listput(z, i), listput(o, i))));
+    z = Vec(z); o = Vec(o);
+    my(a = #z, P = concat(z, o), sgn = permsign(Vecsmall(P)));
+    \\ rows reordered as (z, o): det M = sgn * det(M[P,]); Laplace: top columns for z means columns K-a+1..K
+    my(Mz = matrix(a, K, i, j, M[z[i], j]), Mo = matrix(K - a, K, i, j, M[o[i], j]));
+    my(top = (-1)^(a * (K - a)) * matdet(matrix(a, a, i, j, Mz[i, K - a + j])) * matdet(matrix(K - a, K - a, i, j, Mo[i, j])));
+    my(bot = matdet(matrix(a, a, i, j, Mz[i, j])) * matdet(matrix(K - a, K - a, i, j, Mo[i, a + j])));
+    E[#S + 1] += matdet(M); Lt[#S + 1] += sgn * top; Lb[#S + 1] += sgn * bot);
+  [E, Lt, Lb]; }
+XLAPLACE = getenv("XLAPLACE");
+{
+if (XLAPLACE != 0 && XLAPLACE != "",
+  default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 160));
+  my(skip = if (getenv("SKIP") != "" && getenv("SKIP") != 0, eval(getenv("SKIP")), 1));
+  foreach (eval(XLAPLACE), el,
+    my(e = el[1], l = el[2], n = Rn(e), rows = xrows(e, l), K = #rows, T = tpoly(chain(e, l, Rn(l)), 0)[1], rt = polroots(T));
+    my(mix = select(i -> rows[i][3] == 1, [1..K]), out = List());
+    forstep (q = 1, #rt, skip,
+      my(r = rt[q]); if (abs(imag(r)) < 10^-20, next);
+      my(u1 = (-1 - r) / abs(1 + r), u0 = -r / abs(r));
+      my(cc = taylorb(-7/2, 0, r, u1, u0, n, n + 3), ci = loopb(-7/2, 0, r, u1, u0, n, n + 3), sg = if (normlp(ci + cc) < normlp(ci - cc), -1, 1));
+      my(R3 = laplaceE(rows, mix, r, u1, u0, n, K, sg), E = R3[1], A = apply(abs, E), srt = vecsort(A, , 5));
+      if (abs(srt[1] - srt[2]) != 1 || A[srt[3]] / A[srt[1]] > 10^-3, next);
+      my(dev = v -> precision(log(abs(v)) / log(10), 3) * 1.);
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., min(srt[1], srt[2]) - 1,
+        vector(2, k, my(s = srt[k]); [dev(R3[2][s] / E[s] - 1), dev(R3[3][s] / E[s] - 1)])]));
+    emit(Str("XLAPLACE (e,l)=(", e, ",", l, "): per balanced root [log|t|, i, for E_i and E_(i+1) by size: [log10|L^top/E - 1|, log10|L^bot/E - 1|]]: ", Vec(out))));
+  quit);
+}
 \\ XDERIV mode (cycle bmd-20261004-q; conj:cube-far-x-sector-ratio): at sampled non-real roots r of W_(b-1) with a
 \\ two-term balance (third/largest <= 1e-3), kappa = r(1+r) d/dr log(E_(i+1)/E_i) for the dominant pair, by a central
 \\ difference with step H = 10^-30 and the cuts of r; the prediction is kappa = -(R_e + 7/2) (sector step t^-N, N = n+7/2).
@@ -166,9 +207,10 @@ if (XDERIV != 0 && XDERIV != "",
       if (abs(srt[1] - srt[2]) != 1 || A[srt[3]] / A[srt[1]] > 10^-3, next);
       my(i = min(srt[1], srt[2]), Ep = sectorE(rows, mix, r + hh, u1, u0, n, K, sg), Em = sectorE(rows, mix, r - hh, u1, u0, n, K, sg));
       my(dl = log((Ep[i + 1] / Ep[i]) / (Em[i + 1] / Em[i])) / (2 * hh), kap = r * (1 + r) * dl);  \\ one log of the quotient: no branch jump
-      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., i - 1, precision(real(kap), 6) * 1., precision(imag(kap), 4) * 1.]));
+      my(mu = kap + (n + 7/2) + r);  \\ cycle bmd-20261004-r: the j = 0 mixed row predicts kappa = -(n+7/2) - r
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., i - 1, precision(real(kap), 6) * 1., precision(imag(kap), 4) * 1., precision(real(r), 4) * 1., precision(imag(r), 4) * 1., precision(real(mu), 4) * 1., precision(imag(mu), 4) * 1.]));
     emit(Str("XDERIV (e,l)=(", e, ",", l, "): n=R_e=", n, ", predicted kappa = -(n+7/2) = ", -(n + 7/2),
-      "; per balanced root [log|t|, i (pair E_i, E_(i+1)), Re kappa, Im kappa]: ", Vec(out))));
+      "; per balanced root [log|t|, i (pair E_i, E_(i+1)), Re kappa, Im kappa, Re r, Im r, Re mu, Im mu] with mu = kappa + n + 7/2 + r: ", Vec(out))));
   quit);
 }
 {
