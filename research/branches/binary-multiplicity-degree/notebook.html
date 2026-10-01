@@ -47,11 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). Three of the five unit hypotheses of the Eisenstein branch proposition are <a href="#entry-2026-10-03-cube-eisenstein-minors">proved for every \(e\)</a>. The circle conjecture (conj:cube-far-step-circles) gives the asymptotic picture at every step.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). By the <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a>, simplicity on each far-root circle follows from a factorization \(P=F_i(t^N-s_i)\) on an annulus, with \(|t\,s_i'/s_i|&lt;N\). Coefficient windows do not give such a factorization.</p>
 <p>Next:</p>
 <ol>
-<li>Close the remaining unit hypotheses: the integral minor at \(0\), the minors at \(-1\) (closed forms via a Padé-remainder evaluation), and \(p\nmid\operatorname{lc}\).</li>
-<li>Test the circle conjecture at \(l=3\) with a faster kernel.</li>
+<li>Measure the actual size of \(t\,s_i'/s_i\) at every root, not only the median: from consecutive roots on a circle, \(\Delta\log\tau=2\pi i/(N-\tau s_i'/s_i)\) to first order. Then state a uniform bound.</li>
+<li>Construct \(F_i\) and \(s_i\) analytically from the six-space, using the connection-formula split of each block-IV function into its parts at \(0\) and at \(-1\) and multilinear expansion. The earlier scale refutation applies to balance curves of single \(S_j\), not to the Wronskian combinations.</li>
+<li>Close the remaining Eisenstein unit hypotheses (integral minor at \(0\), minors at \(-1\)).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45348,6 +45349,53 @@ a sum over \(d\)-sets \(S\) of exponents. So the tropical polynomial of \(P_k\) 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">42.75 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-far-logderivative-criterion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-steps-review:3" data-claims="lem:far-logderivative-criterion conj:cube-last-far-coefficient-cut-blocks">
+<h3>3 October 2026 — A log-derivative criterion reduces simplicity on a far-root circle to one slowly varying ratio; splitting at a coefficient index does not supply it</h3>
+<p class="entry-meta">Working proof of a general criterion for multiple zeros and its annulus form; refutation, at e = 4..11, of the coefficient-cut instantiation for the last-step far polynomial. Log-derivative criterion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). The <a href="#entry-2026-10-03-cube-far-steps-review">far steps review</a> names, as the obstacle, the block-Rouché step: turning the \(4l\) circles into simple roots. Its third Outside lead, zeros of exponential sums (Pólya, Ritt), was not run. This cycle develops that lead. The question is what exactly a block form \(P\approx\sum_mA_m\,t^{mN}\) must satisfy for the roots on a circle to be simple, and whether the coefficient blocks of \(P\) satisfy it.</p>
+<p><strong>General statement.</strong> <code>lem:far-logderivative-criterion</code>, for every pair of functions \(A,B\) holomorphic near a point and every integer \(c\). The instantiation tested here is <code>conj:cube-last-far-coefficient-cut-blocks</code>, refuted.</p>
+<p><strong>Lemma (Log-derivative criterion).</strong> Let \(A,B\) be holomorphic on an open set \(U\subset\mathbb C\setminus\{0\}\), let \(c\in\mathbb Z\), and put \(P=A+t^cB\). Let \(\tau\in U\) be a zero of \(P\) with \(A(\tau)B(\tau)\ne0\). Then
+\[
+\tau P'(\tau)=A(\tau)\Bigl(\tau\frac{A'}{A}(\tau)-\tau\frac{B'}{B}(\tau)-c\Bigr),
+\]
+so \(\tau\) is a multiple zero exactly when \(\tau(A'/A-B'/B)(\tau)=c\). Moreover, if \(\tau\) is a zero of \(P\) and \(A(\tau)=0\), then \(B(\tau)=0\).</p>
+<p><em>Proof.</em> \(\tau P'=\tau A'+c\tau^cB+\tau^{c+1}B'\). At a zero, \(\tau^cB(\tau)=-A(\tau)\), so \(c\tau^cB=-cA\) and \(\tau^{c+1}B'=-\tau A\,B'/B\). This gives the identity. Since \(\tau A(\tau)\ne0\), \(P'(\tau)=0\) exactly when the bracket vanishes. The last claim holds because \(\tau^cB(\tau)=-A(\tau)\) and \(\tau\ne0\). \(\square\)</p>
+<p><strong>Corollary (annulus form).</strong> Let \(N\ge1\), \(0&lt;r_1&lt;r_2\), \(K=\{r_1\le|t|\le r_2\}\), and suppose \(P=F\cdot(t^N-s)\) on a neighbourhood of \(K\), with \(F,s\) holomorphic and zero-free there. Suppose that
+<ul>
+<li>\(|t\,s'(t)/s(t)|&lt;N\) on \(K\);</li>
+<li>\(|s|&lt;r_2^N\) on \(|t|=r_2\);</li>
+<li>\(|s|&gt;r_1^N\) on \(|t|=r_1\).</li>
+</ul>
+Then every zero of \(P\) in \(K\) is simple, there are none on \(\partial K\), and their number is \(N-\omega\), where \(\omega\) is the winding number of \(s\) around \(0\) along \(|t|=r_1\).</p>
+<p><em>Proof.</em> The zeros of \(P\) in \(K\) are those of \(g=t^N-s\). Apply the lemma to \(g=A+t^NB\) with \(A=-s\), \(B=1\), \(c=N\). Then \(A\) has no zeros, and \(\tau(A'/A-B'/B)=\tau s'/s\ne N\) by the first condition. So every zero is simple. On \(|t|=r_2\), \(|t^N|&gt;|s|\), so \(g\) has no zero there, and \(g\) and \(t^N\) have the same winding, \(N\). On \(|t|=r_1\), \(|s|&gt;|t^N|\), so \(g\) and \(-s\) have the same winding, \(\omega\). Because \(s\) is zero-free on the annulus, \(\omega\) is the same on both circles. By the argument principle the number of zeros of \(g\) in the open annulus is \(N-\omega\). \(\square\)</p>
+<p>The four-circle conjecture (conj:cube-last-far-four-circles) asserts \(t^N=s_i(x)(1+o(1))\) on the \(i\)-th circle, with \(s_i\) slowly varying. In that form it becomes a proof of simplicity as soon as there are an exact factor \(F_i\), with \(s_i:=t^N-P/F_i\) zero-free on an annulus around circle \(i\), and the bound \(|t\,s_i'/s_i|&lt;N\) there. The recorded steps between neighbouring roots, \((2\pi/N)(1.005\ldots0.997)\) in median at \(e=4..9\), say only that the angular derivative of \(\arg s_i\), averaged between neighbouring roots, is about \(N/200\) at the median. They bound neither the modulus of \(t\,s_i'/s_i\), nor its radial part, nor its supremum over an annulus, all of which the corollary needs.</p>
+<p><strong>The coefficient-cut instantiation.</strong> The most direct candidate for \(A,B\) uses the coefficient profile. Take a long Newton edge \([m_1,m_2]\) of \(P(t)=(1-t)^dW_{b-1}(t/(1-t))\), of length \(L=m_2-m_1\), and slope giving radius \(r\). Cut at \(c=\lfloor(m_1+m_2)/2\rfloor\): \(A=P\bmod t^c\), \(B=P\operatorname{div}t^c\). If the two vertex blocks dominated \(A\) and \(B\) on the circle, then \(tA'/A\approx m_1\) and \(tB'/B\approx m_2-c\), and the lemma would make every root on the circle simple provided
+\[
+\rho=\frac{\sup|tA'/A-m_1|+\sup|tB'/B-(m_2-c)|}{L}&lt;1
+\]
+on the band \(|\log|t|-\log r|\le\pi/L\). This is conj:cube-last-far-coefficient-cut-blocks.</p>
+<p><strong>Test.</strong> research/tools/bmd_cube_last_far_block_logderiv.gp evaluates the two deviations on \(2\deg P\) points of the circles \(r e^{-\pi/L},r,r e^{\pi/L}\) of each of the four long edges, for \(e=4,\ldots,11\) (the saved \(W_{b-1}\)). At \(e=4,5\) it also evaluates them at the actual roots in the band. The prediction under test is \(\rho&lt;1\) on all \(8\cdot4\cdot3=96\) circles, ideally with \(\rho\) decreasing in \(e\). Output: research/results/bmd-20261003-zzp/block-logderiv-2.txt. The first run stopped at \(e=6\) on a stack overflow in the root computation (block-logderiv.txt, \(e=4,5\) only, identical values).</p>
+<p><strong>Outcome: refuted.</strong> \(\rho\) lies between \(1.86\) and \(15.3\) on every one of the \(96\) circles, with no decrease in \(e\). For example, on the circle \(r\) itself, \(\rho=6.52,3.46,3.38,3.61\) at \(e=4\) and \(2.50,3.50,4.48,2.33\) at \(e=11\). At the actual roots in the band, the maximum of \((\mathrm{dev}_A+\mathrm{dev}_B)/L\) per circle ranges from \(0.80\) to \(4.16\). On edge \([165,214]\) at \(e=5\) it stays below \(1\) at every root in the band, although \(\rho=2.02\) to \(3.94\) on its circles. So the refutation concerns the circle-wide a priori bound, not the values at the roots. Up to \(13\) roots per circle have \(|\tau(A'/A-B'/B)-c|&lt;L/2\). This is a reduced margin, not near-multiplicity: the quantity is nonzero at every root, since the roots are simple.</p>
+<p><em>Heuristic explanation, not computed.</em> The script counts neither the zeros of \(A\) and \(B\) nor the distances of the coefficients from the edge line, and tests no vertex cut. A plausible reason is the following. The cut inside an edge gives \(A\) the part \([m_1,c]\) of the same edge, so \(A\) itself may have about \(c-m_1\) zeros near the circle, and \(B\) has about \(m_2-c\). A cut at a vertex would leave the other part with a hull edge from a point below the line, which may carry its zeros towards the circle. The <a href="#entry-2026-10-03-cube-far-newton-hull-review">Newton hull review</a> already found that single-term Pellet separation fails, with transitions between edges made of runs of about \(8e\) comparable coefficients. The large margins suggest that the coefficients inside each edge also lie close to the edge line. So the blocks \(A_m\) of the four-circle form are not the midpoint-cut windows tested here. Plausibly they are slowly varying functions, such as powers of \(1-t\) times short polynomials, whose coefficients spread across the whole edge.</p>
+<p><strong>What this gives.</strong> Given a factorization \(P=F_i(t^N-s_i)\) with \(F_i,s_i\) zero-free on an annulus, simplicity of the roots there is equivalent, by an exact identity, to \(\tau s_i'/s_i\ne N\) at the roots. By the corollary, it follows from an a priori bound \(|t\,s_i'/s_i|&lt;N\) on an annulus. The data give only the median angular part, about \(N/200\). The open part is an analytic factor \(F_i\) with slowly varying ratio \(s_i\). It must come from the reduced space, not from the coefficient index.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-last-far-four-circles (the form \(t^N=s_i(x)(1+o(1))\)); conj:cube-far-step-circles; the far steps review (the obstacle and leads); the Newton hull review (single-term Pellet test, pellet.txt).</p>
+<p><strong>Verification gate.</strong> I re-read the four-circle conjecture and the Newton hull review's Pellet test. One fresh-context medium reviewer checked the lemma's identity, the corollary's winding count (every hypothesis is used), the script against the description, and every quoted number against the output. Verdict: pass with corrections, all applied. The root-wise range is corrected to \(0.80\)–\(4.16\), with the edge where it stays below \(1\). The median-step reading is restricted to the angular part. The equivalence is conditioned on the factorization. The structural paragraph is labelled heuristic. The script's claim label is aligned.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzp">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 58.89 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 42.58 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 3.30 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 5.56 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">35.20 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">30.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
