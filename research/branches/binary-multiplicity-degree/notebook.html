@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-07-cube-top-tie-contact-avoidance">Top-tie points over a caterpillar avoid the contact locus</a> whenever their tie window has full rank, which makes the window reduction rigorous for top ties.</p>
-<p>Next: extend the lemma to intermediate ties by peeling singleton roots above the tie, as in the inductive proof of caterpillar minimality, while tracking the leading part of the lower Plücker vector. Then prove conj:cube-tie-window-gegenbauer for \(m\ge2\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-07-cube-single-tie-chain-avoidance">Every single-tie chain point avoids the contact locus</a> once its tie contact window has full rank.</p>
+<p>Next: the Gegenbauer identity for \(m\ge2\), which supplies that rank for every tie parameter. Attempt an induction on \(m\) that combines the three-term recurrence of \(t_k\) with the level-\((m-1)\) identity at two consecutive starts, guided by the \(m=1\) computation of the last review.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -55048,6 +55048,89 @@ Hence every term has valuation at least \(v^*+2\,\mathrm{val}\,\mathrm{Vand}(b)\
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 35.84 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 40.48 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">56.36 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-single-tie-chain-avoidance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-cone-route-review:1" data-claims="thm:cube-single-tie-chain-avoidance">
+<h3>7 October 2026 — Single-tie chain avoidance: every tie F-curve point of a caterpillar chain, at any level, lies outside the closure of the contact locus once its tie contact window has full rank</h3>
+<p class="entry-meta">Working proof for every N, every tie level and every tie parameter c₀ ∉ {0,1} at which the tie contact window has full rank. It extends the top-tie lemma by an induction on singleton levels. Single-tie chain cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K): the extension of lem:cube-top-tie-contact-avoidance to intermediate ties, named as the next step of the <a href="#entry-2026-10-07-cube-top-tie-contact-avoidance">top-tie entry</a>.</p>
+<p><strong>Setting.</strong> Let \(\lambda\) be non-integer (here \(3/2\)) and \(N\ge4\). A single-tie chain point of \(\overline M_{0,N+1}\), with the mark at \(\infty\), has a chain of components from \(\infty\) downwards.</p>
+<ul>
+<li>Each level carries one root, except one four-pointed tie level, which carries two roots with cross-ratio \(c_0\notin\{0,1\}\) against the nodes above and below.</li>
+<li>Below the tie level the remaining \(m\ge2\) roots form a caterpillar. The case \(m\le1\) is the bottom four-pointed type and is not covered.</li>
+<li>Above it there are \(k\ge0\) singleton levels, so \(N=m+2+k\).</li>
+</ul>
+<p>Let \(W(c)\) be the \((2m+1)\times(2m+3)\) tie contact window at start \(d=\binom m2\). Only interior points of the F-curve are treated.</p>
+<p><strong>General statement.</strong> thm:cube-single-tie-chain-avoidance: if \(\operatorname{rank}W(c_0)=2m+1\), the single-tie chain point lies outside \(\overline{K/{\rm Aff}}\), where \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\) and \(R=\binom N2\). For \(k=0\) this is lem:cube-top-tie-contact-avoidance. Given conj:cube-tie-window-gegenbauer, the hypothesis holds for every \(c_0\notin\{0,1\}\) by lem:cube-tie-window-gegenbauer-consequences.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Arc and frames.</em> As in the caterpillar corollary, an arc in \(K\) tends to the point, and along it the roots are convergent series.
+<ul>
+<li>Let \(C_0\) be the tie pair together with the \(m\) roots below it, and \(C_j\) the union of \(C_{j-1}\) and the \(j\)-th singleton root counted upwards.</li>
+<li>Translate once, so that the bottom deep root of \(C_0\) goes to \(\varepsilon^V\), with \(V\) larger than every valuation used below. Then dilate, so that the top root is \(1\).</li>
+<li>Every \(C_j\) contains the point \(\varepsilon^V\). So with absolute exponents \(W_j\), \(C_{j-1}=\varepsilon^{W_j}u_j\tilde C_{j-1}\), where \(u_j\) is a unit series and \(\tilde C_{j-1}\) is \(O(1)\) with top root \(1\) (or tie roots \(c(\varepsilon),1\) at \(j=1\)) and its own sub-cluster \(o(1)\)-close to \(0\), at every level at once.</li>
+<li>Consecutive frames differ by the dilation \(\varepsilon^{w}u_j/u_{j+1}\), with relative exponent \(w=W_j-W_{j+1}&gt;0\). No inner translation is needed.</li>
+<li>The frame of \(\tilde C_0\) is a dilation of the frame of lem:cube-top-tie-contact-avoidance, with the bottom root at \(\varepsilon^{V'}\) and top root \(1\).</li>
+</ul>
+\(\operatorname{rank}A_{R+1}\) is invariant under the global translation and dilation.</li>
+<li><em>Homogeneity.</em> For a configuration \(C\), write \(p_C(S)\) for the minor of its pair matrix on the column set \(S\). Since \(H_k\) is homogeneous of degree \(k\), \(p_{\mu C}(S)=\mu^{\Sigma S}p_C(S)\), where \(\Sigma S\) is the column sum.</li>
+<li><em>Invariant.</em> Say that \((C,L)\) satisfies (H) if \(p_C(L)\) has nonzero leading coefficient and \(\operatorname{val}p_C(S)\ge\operatorname{val}p_C(L)\) for every \(S\) of the same size with \(S\subset L\cup\{j:j&gt;\max L\}\).</li>
+<li><em>Base.</em> Choose \(S'\subset\{d,\ldots,d+2m+2\}\) with \(|S'|=2m+1\) and \(\det W(c_0)_{S'}\ne0\), and put \(L_0=\{0,\ldots,d-1\}\cup S'\). Then \(|L_0|=R_0=d+2m+1\) and \(\max L_0\le R_0+1\).
+<ul>
+<li>In the valuation analysis of the proof of lem:cube-top-tie-contact-avoidance, the lower bound \(v_0=v^*+2\,\mathrm{val}\,\mathrm{Vand}\) holds for every column set \(S\), not only for \(S\subset\{0..R_0+1\}\). The \(Q\)-bound comes from thm:cube-caterpillar-minimality, which covers every Plücker coordinate, and the \(V\)- and \(B\)-factors are analytic in every column.</li>
+<li>The unique-minimal-term argument of that proof gives \(\operatorname{val}p_{\tilde C_0}(L_0)=v_0\), with leading coefficient a nonzero constant times \(\det W(c_0)_{S'}\).</li>
+</ul>
+So \((\tilde C_0,L_0)\) satisfies (H).</li>
+<li><em>Step.</em> Let \((\tilde C,L)\) satisfy (H), where \(\tilde C\) is normalized with \(M\) roots, \(|L|=R_{\tilde C}\) and \(\max L\le R_{\tilde C}+1\). Add the root \(1\) above \(C=\varepsilon^wu\tilde C\) to obtain \(C'\), and put \(L'=L\cup T\) with \(T=\{\max L+1,\ldots,\max L+M\}\). Then \(|L'|=R_{\tilde C}+M=R_{C'}\).
+<ul>
+<li><em>New rows.</em> \(H_k(1,y)=\sum_n\beta_ny^n[T^k]T^n(1+T)^{-\lambda}\), with \(\beta_n=\binom{-\lambda}n\) and \(y\) the roots of \(C\), all of valuation at least \(w&gt;0\). So the new block is \(P=VB\), as in the top-tie lemma.</li>
+<li><em>Lower bound.</em> Take \(S'\subset L'\cup\{j&gt;\max L'\}=L\cup\{j&gt;\max L\}\). Expand \(p_{C'}(S')\) by Laplace along the \(C\)-rows and by Cauchy–Binet through \(V\); the sum is finite, since \(B_{n,t}=0\) for \(n&gt;t\). By (H) and step 2, every term has valuation at least
+\[\operatorname{val}p_C(S_C)+\mathrm{val}\,\mathrm{Vand}(y)\ge w\Sigma S_C+\operatorname{val}p_{\tilde C}(L)+\mathrm{val}\,\mathrm{Vand}(y)\ge w\Sigma L+\operatorname{val}p_{\tilde C}(L)+\mathrm{val}\,\mathrm{Vand}(y).\]</li>
+<li><em>The minimal term.</em> For \(S'=L'\), the lowest \(|L|\) columns of \(L'\) are \(L\). Every other \(S_C\subset L'\) has integer column sum \(\Sigma S_C\ge\Sigma L+1\), so its terms are larger by at least \(w\). Index sets other than \(I=\{0,\ldots,M-1\}\) add \(\operatorname{val}s_\mu(y)\ge w|\mu|&gt;0\). So the minimal term is unique, with coefficient
+\[\pm\,\mathrm{lc}\,p_C(L)\cdot\textstyle\prod_{n&lt;M}\beta_n\cdot\mathrm{lc}\,\mathrm{Vand}(y)\cdot\det[\beta_{t-n}]_{n&lt;M,\,t\in T}.\]
+The last factor is the Jacobi–Trudi \(h\)-form, with \(h_j=\binom{-\lambda}j\), of a rectangular Schur function, nonzero by hook-content for non-integer \(\lambda\). Also \(\mathrm{lc}\,\mathrm{Vand}(y)\ne0\), since the roots are distinct.</li>
+</ul>
+So \(\operatorname{val}p_{C'}(L')\) attains the lower bound, \((C',L')\) satisfies (H), and \(\max L'=\max L+M\le R_{C'}+1\).</li>
+<li><em>Conclusion.</em> After \(k\) steps, \(L_k\subset\{0,\ldots,R+1\}\) and \(p(L_k)\ne0\) for small \(\varepsilon\ne0\). This is a minor of the globally framed configuration, so \(\operatorname{rank}A_{R+1}=R\) along the arc, contradicting the arc lying in \(K\). \(\square\)</li>
+</ol>
+<p><strong>Scope.</strong> This covers every interior F-curve point whose four-pointed component is a tie (two roots, a node above, a node below), with a chain of singletons above and a caterpillar below. Three kinds of point remain:</p>
+<ul>
+<li>non-caterpillar trees below or above the tie;</li>
+<li>F-curves whose four-pointed component carries one root and two subcluster nodes, three subcluster nodes, or a node and three roots at the bottom;</li>
+<li>higher-codimension boundary strata other than caterpillars.</li>
+</ul>
+<p>Which of these are limits of cancelling points of the geometric cone is gap (1) of the cone route.</p>
+<p><strong>Remaining gap.</strong> Prove conj:cube-tie-window-gegenbauer for \(m\ge2\). Determine which boundary points the cancelling points reach, and treat those not covered. Then compactness and the non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-top-tie-contact-avoidance (valuation analysis); thm:cube-caterpillar-minimality; cor:cube-caterpillar-contact-avoidance (arc argument); thm:cube-tie-window-general-functional; lem:cube-tie-window-gegenbauer-consequences.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the base (\(R_0\), the column sets of \(\Delta_{\rm sq}\) and \(\Delta_{\rm sec}\), the lower bound for all column sets);</li>
+<li>the invariant and its propagation, including sets beyond \(\max L'\);</li>
+<li>integrality of the column-sum gaps;</li>
+<li>the Schur valuation bound and finiteness of the Cauchy–Binet sum;</li>
+<li>the Toeplitz factor;</li>
+<li>the conclusion.</li>
+</ul>
+<p>Its fixes are applied:</p>
+<ul>
+<li>the single translation to \(\varepsilon^V\), which centres every level at once;</li>
+<li>the relative exponent notation;</li>
+<li>the corrected definition of \(C_j\);</li>
+<li>the base taken with the contact window (\(\max L\le R+1\)), so that the theorem holds under the lemma's own hypothesis and genuinely extends it (the earlier "weakens" claim was backwards);</li>
+<li>the \(h\)-form of the Toeplitz factor.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 19.86 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 13.40 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 6.32 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
