@@ -47,8 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The far input is weakened by the <a href="#cube-far-first-order-splitting">first-order splitting lemma</a>: a triple root of \(W_k\) is harmless if the correction \(R_1=G_AQ_A+G_C(Q_C+\kappa_eQ_B)\) does not vanish there. The weakened condition still has no mechanism.</p>
-<p>Next, look for a relation between \(W_k\) and \(Q_A\). \(Q_A\) differs from \(W_k\) by one swapped function, so Sylvester's identity gives \(W_kQ_A'-W_k'Q_A=W(V_0)\,W(V_0+f+g)\), with \(V_0\) the space without the swapped element. Test whether this identity, with the exponents of \(V_0\) and \(V_0+f+g\) at \(0,-1/c,\infty\), forbids a common root of \(W_k\) and \(Q_A\) of multiplicity \(\ge3\) for \(W_k\). If so, the far input is proved.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The <a href="#cube-peeling-last-far-mobius">last peeling step</a> is an exact Möbius orbit, so \(W_{b-1}\) itself must have no triple roots. At the other steps the first-order correction is not Möbius and can split multiple roots.</p>
+<p>Next, the last-step far polynomials \(W_{b-1}\), a one-parameter family in \(b\) (\(l=1\), \(e=b-2\)). Their space \(F_{b-1}\) has only one double at the cluster and blocks of fixed shape in \(e\). Look for structure in \(e\) that excludes triple roots:</p>
+<ul>
+<li>a recursion \(e\to e+1\) (one more polynomial block at \(\infty\));</li>
+<li>a reduction like the pure reduction of the merge chain;</li>
+<li>a three-term relation among consecutive \(W_{b-1}\).</li>
+</ul>
+<p>Test at \(b=4,\ldots,7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42319,6 +42325,76 @@ K_W+2\tbinom{c+q}2+2\textstyle\sum_s\binom{n_s}2-\sum_so_sn_s=(c+q)^2+\sum_{s\ge
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 21.85 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.12 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-peeling-last-far-mobius" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-peeling-last-far-mobius check:cube-far-first-order-mobius">
+<h3>3 October 2026 — At the last peeling step the far family is an exact Möbius orbit, so its far polynomial must itself have no triple roots; at the tested earlier steps the first-order correction is not Möbius. Correction: (B)'s far polynomials are the peeling's, not the merge chain's</h3>
+<p class="entry-meta">Working proof that the last step's far space moves by a Möbius map; exact test, at five sizes, that the first-order correction is Möbius at l = 1 and not at l = 2, 3; correction of the far family named in three reviews. Last far step cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-far-first-order-splitting">first-order splitting lemma</a> weakens the far input of (B) wherever the correction \(R_1\) is nonzero at a multiple root. For the merge chain, prop:cube-merge-far-mobius-covariance found that the first-order motion is often a Möbius flow, \(R_1\equiv vW'\pmod W\), which vanishes at every multiple root. That lemma is the peeling counterpart of lem:cube-merge-far-first-order (same method: consecutive pivots, top element, multilinearity). Is the peeling's first-order motion Möbius too?</p>
+<p><strong>General statement.</strong> <code>prop:cube-peeling-last-far-mobius</code> (every \(b\ge3\)), with the exact check <code>check:cube-far-first-order-mobius</code>.</p>
+<h4 id="cube-peeling-last-far-mobius">The last step</h4>
+<p><strong>Proposition (last far step).</strong> Characteristic zero, even peeling, step \(k=b-1\) (\(l=1\), \(e=b-2\)). Let \(D\ne0\) be the remaining double and \(x_0=-\varepsilon/D\). Then, for every \(\varepsilon\notin\{0,D/c\}\) (so that \(1+cx_0\ne0\)), the class decomposition of \(E_{k-1}\) at \(D_k=\varepsilon c\), written in \(x=\varepsilon z\), is exactly \(F_k\circ\phi^{-1}\), where \(\phi(x)=x_0+(1+cx_0)x\) is the affine map fixing \(-1/c\) and \(\infty\) with \(\phi(0)=x_0\). Hence the far points of step \(b-1\) are \(\phi\) of the roots of \(W_{b-1}\), with the same multiplicities. The first-order splitting lemma gives nothing at this step, and (B) through the peeling needs \(W_{b-1}\) without triple roots.</p>
+<p><strong>Proof.</strong> With one double left, \(1+Dz=(D/\varepsilon)(x-x_0)\), and every function of \(E_{k-1}\) is a product of a power of \(x-x_0\), a power of \(1+cx\), and a polynomial in \(x\) of bounded degree. The classes are as follows.</p>
+<ul>
+<li>\(\mathcal P_{&lt;R_e}(z)=\mathcal P_{&lt;R_e}(x)\).</li>
+<li>\((1+cx)^{-3}\), and \((1+cx)^{-7/2}\mathcal P_{&lt;4e}\).</li>
+<li>\(V^{(1)}=\langle(1+Dz)^{-3}\rangle=\langle(x-x_0)^{-3}\rangle\).</li>
+<li>The extension block \((1+Dz)^{-7/2}\mathcal P_{&lt;4e}(z)=(x-x_0)^{-7/2}\mathcal P_{&lt;4e}(x)\).</li>
+<li>The pair block \((1+cx)^{-5/2}(x-x_0)^{-7/2}\mathcal P_{&lt;4}(x)\).</li>
+</ul>
+<p>\(F_k\) at \(l=1\) has the same blocks with \(x_0=0\): \(x^{-3}\), \(x^{-7/2}\mathcal P_{&lt;4e}\) and \((1+cx)^{-5/2}x^{-7/2}\mathcal P_{&lt;4}\). Under \(\phi\):</p>
+<ul>
+<li>\(\phi(x)-x_0=(1+cx_0)x\) and \(1+c\phi(x)=(1+cx_0)(1+cx)\);</li>
+<li>polynomial spaces \(\mathcal P_{&lt;m}\) are preserved;</li>
+<li>so each block of \(E_{k-1}\) is the pullback by \(\phi^{-1}\) of the corresponding block of \(F_k\), up to constants.</li>
+</ul>
+<p>Wronskians transform by \(W(f\circ\phi^{-1})=(\phi^{-1})'^{\binom d2}W(f)\circ\phi^{-1}\), with \((\phi^{-1})'\) constant. So the zeros move by \(\phi\) with their multiplicities. \(\square\)</p>
+<p>In the notation of the first-order lemma, \(R_1\) agrees modulo \(W_k\) with the \(\varepsilon\)-derivative of \(W_k\circ\phi^{-1}\), as functions regular off \(\{0,-1/c\}\). Normalizing by \((x-x_0)^{w_0}\) instead of \(x^{w_0}\) adds a multiple of \(W_k\). So \(R_1\equiv v\,W_k'\pmod{W_k}\) with \(v=(1+cx)/D\) up to a constant, and \(R_1\) vanishes at every multiple root. This is all the first-order lemma uses.</p>
+<h4>Test for the earlier steps</h4>
+<p>research/tools/bmd_cube_far_mobius_test.gp normalizes \(Q_A,Q_B,Q_C\) exactly like \(W_k\). It forms \(R_1=\sum G_XQ_X\), with \(G_X\) exact at \(D=(2,5,11,17)/3\), and computes the degree of \(R_1\cdot(W_k')^{-1}\bmod W_k\) modulo \(2^{61}-1\). Degree at most \(2\) means a Möbius field. The criterion needs \(W_k\) squarefree, so that \(W_k'\) is invertible modulo \(W_k\); it is, at every tested size. Output: research/results/bmd-20261003-ze/far-mobius-test-st40.txt; the first run, with too small a pole allowance, is far-mobius-test.txt.</p>
+<ul>
+<li>\(l=1\), \((b,k)=(4,3),(5,4)\): degree \(1\), Möbius, as the proposition predicts. This is the positive control of the normalization.</li>
+<li>\(l\ge2\), \((b,k)=(4,2),(5,3),(5,2)\): degree \(47,151,95\), that is \(\deg W_k-1\). Not Möbius.</li>
+<li>The individual \(Q_X/W_k'\bmod W_k\) have full degree in every case.</li>
+</ul>
+<p>So at the tested sizes with \(l\ge2\), at one \(D\) and modulo one prime, \(R_1\) is not a Möbius field, and the Möbius-covariance obstruction is absent there. There \(W_k\) is squarefree, so the lemma is not needed at those sizes. At the last step the lemma gives nothing at any size.</p>
+<h4>Correction</h4>
+<p>The <a href="#entry-2026-10-03-cube-far-route-review">far route review</a>, the <a href="#entry-2026-10-03-cube-far-descent-review">far descent review</a> and the <a href="#entry-2026-10-03-cube-far-triple-review">far triple review</a> took the far input of (B) to be the merge far polynomials \(R_{n,k}\) of lem:cube-far-u-space. Those are the far polynomials of the merge chain (lem:cube-merge-far-limit, conj:cube-merge-far-polynomial), which serves (K). The far input of (B) is the peeling's \(W_k\) (conj:cube-far-wronskian-irreducible, conj:cube-peeling-simplicity) and its odd counterpart. They are different families, of the same kind: rigid three-point spaces, as the <a href="#entry-2026-10-02-cube-rigid-simplicity-review">rigid simplicity review</a> put it. A degree coincidence was checked: \(\deg W_k=48\) at \((b,k)=(4,2)\) and \(\deg R_{4,4}=48\). Their factorization patterns modulo the primes \(101\) to \(157\) differ at every prime. At \(137\), for instance, \(W_k\) is irreducible and \(R_{4,4}\) has pattern \((1,2,2,19,24)\) (research/tools/bmd_cube_far_family_compare.gp, research/results/bmd-20261003-ze/far-family-compare.txt). A Möbius bijection of the roots defined over \(\mathbb Q\) would be Galois-equivariant. At a prime where both polynomials are squarefree of full degree modulo \(p\), each factorization pattern is the cycle type of Frobenius. Every listed pattern sums to \(48\), so every listed prime qualifies, and \(p=137\) alone excludes such a map. The script's \(W_k\) uses \(c=2\), not the far-components convention \(c=-3\) at \(k=2\). This does not matter, since \(W_k(x;c)\) is proportional to \(W_k(cx;1)\), a rational scaling.</p>
+<p>The <a href="#entry-2026-10-03-cube-far-first-order">first-order entry</a> also said that for \(l=1\) the far condition weakens to "no triple root common with the fixed \(R_1\)". By the proposition above, \(R_1\equiv vW_k'\) there, so that weakening is empty: at \(l=1\) the condition is "no triple roots".</p>
+<p>So the tests of those reviews were run on the merge far polynomials. They bear on (K)'s far side, not on (B). This covers the Fuchsian equations in \(u\), the unit-circle zeros, and the reductions modulo small primes. Their outcomes stand as statements about \(R_{n,k}\). Statements in those reviews that name the peeling's far input generically, such as "far polynomials of both peelings", are correct. The living sections already name the peeling's far polynomials.</p>
+<p><strong>What remains for (B).</strong></p>
+<ul>
+<li>Even peeling, last step: \(W_{b-1}\) without triple roots, exactly.</li>
+<li>Even peeling, other steps: no triple root of \(W_k\) at which \(R_1(\cdot;D)\) vanishes identically in \(D\).</li>
+<li>Odd peeling: no triple roots of its far polynomials. Neither the first-order lemma nor the Möbius proposition has been carried over; the simple root may break the three-point rigidity at the last odd step.</li>
+</ul>
+<p>None of these has a mechanism. The last-step polynomials form a one-parameter family in \(b\), the smallest structured target.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-first-order-splitting; lem:cube-merge-far-first-order and prop:cube-merge-far-mobius-covariance (statements); thm:cube-base-peeling-degeneration (the classes of \(E_{k-1}\) and \(F_k\) at \(l=1\)); lem:cube-merge-far-limit and conj:cube-far-wronskian-irreducible (statements, for the correction).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the blocks of \(E_{b-2}\) and \(F_{b-1}\), the map \(\phi\) and the Wronskian rule. It also checked the script's normalization (exponent \(A_0-1\), common shifts), the meaning of the control, the outputs, and the accuracy of the correction against the three reviews. No hypothesis was unused. Verdict: pass with corrections, applied:</p>
+<ul>
+<li>the proposition excludes \(\varepsilon=D/c\) and states \(D\ne0\);</li>
+<li>\(R_1\) agrees with the Möbius derivative modulo \(W_k\), with \(v=(1+cx)/D\);</li>
+<li>the criterion's squarefreeness hypothesis is stated;</li>
+<li>the claims about \(l\ge2\) are restricted to the tested sizes;</li>
+<li>the non-identification argument uses Frobenius cycle types;</li>
+<li>the script's \(c\) is corrected;</li>
+<li>the odd steps are scoped;</li>
+<li>the first-order entry's \(l=1\) clause is corrected.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-ze">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 54.64 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 32.95 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 56.08 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">53.81 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11.49 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
