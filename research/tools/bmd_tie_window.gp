@@ -170,6 +170,30 @@ foreach(eval(getenv("MS")), m,
       if (getenv("CONST") == "1", Str("; square equals exact part-2 formula: ", logstart(m, s0) == sqpred(m, s0)), ""),
       if (getenv("RATIO") == "1", Str("; second/square equals prediction: ", logsecond(m, s0) / logstart(m, s0) == ratiopred(m, s0)), ""),
       if (getenv("NDET") == "1", Str("; single-log block = ", logdescr(lognblock(m, s0)), "; ratio = ", logdescr(logstart(m, s0) / lognblock(m, s0))), ""))))));
+  \\ NBLOCK=1 (cycle bmd-20261007-a): the 2m x 2m block of the single-series rows of the exponent-lambda window on
+  \\ columns binom(m,2)..binom(m,2)+2m-1, and the square minor divided by it.
+  if (getenv("NBLOCK") == "1",
+    my(Nb = matdet(matrix(2 * m, 2 * m, i, j, M[i, j])));
+    emit(Str("  single-series block: ", logdescr(Nb), "; square/block: ", if (Nb == 0, "block zero", logdescr(matdet(M) / Nb))));
+    \\ the top-row weights: w_j = (-1)^j det(single-series rows on the square columns minus column j) / det N,
+    \\ so that the square minor is det N * sum_j w_j * top_j (Laplace along the last row, up to a global sign).
+    \\ GENFUN=1: the predicted square minor det N * sum_i p_i (rho_(N-i)/rho_N) t_(N-i), N = binom(m,2)+2m, with p_i the
+    \\ coefficients of (1+cT)^m (1+T)^m, rho_(N-i)/rho_N = (N-i)!/N! * prod_(j=1..i) (N-j+lambda-m+1) and t_k the
+    \\ coefficient of T^k in ((1+cT)(1+T))^(-lambda).
+    if (getenv("GENFUN") == "1" && Nb != 0,
+      my(Nn = m * (m - 1) / 2 + 2 * m, tk(k) = sum(a = 0, k, b(a) * b(k - a) * 'c^a));
+      my(pred = Nb * sum(i = 0, 2 * m, polcoef(((1 + 'c * 'T) * (1 + 'T))^m, i, 'T) * (Nn - i)! / Nn! * prod(j = 1, i, Nn - j + LAMV - m + 1) * tk(Nn - i)));
+      emit(Str("    general-lambda functional: square minor equals prediction up to sign: ", pred == matdet(M) || pred == -matdet(M)));
+      \\ second identity: rho_(N+1) Dsec + p_1 rho_N Dsq = r_(N+1) det N, checked via ratios to rho_N (exact rationals)
+      my(Wp = winmat(m, 2 * m + 2), Dsq = matdet(vecextract(Wp, "..", setminus([1 .. 2 * m + 2], [2 * m + 2]))), Dsec = matdet(vecextract(Wp, "..", setminus([1 .. 2 * m + 2], [2 * m + 1]))));
+      \\ rho_(N+1-i)/rho_N = (N+1-i)!/N! * Gamma(A)/Gamma(A+1-i), A = N+lambda-m+1
+      my(Aa = Nn + LAMV - m + 1, gr(i) = if (i == 0, 1 / Aa, prod(j = 1, i - 1, Aa - j)));
+      my(rr1 = sum(i = 0, 2 * m, polcoef(((1 + 'c * 'T) * (1 + 'T))^m, i, 'T) * (Nn + 1 - i)! / Nn! * gr(i) * tk(Nn + 1 - i)));
+      my(lhs = (Nn + 1) / Aa * Dsec + m * ('c + 1) * Dsq, rhs = Nb * rr1);
+      emit(Str("    second identity holds up to sign: ", lhs == rhs || lhs == -rhs)));
+    if (getenv("WEIGHTS") == "1" && Nb != 0,
+      my(Ms = matrix(2 * m, 2 * m + 1, i, j, M[i, j]), w = vector(2 * m + 1, j, (-1)^(j - 1) * matdet(vecextract(Ms, "..", setminus([1 .. 2 * m + 1], [j]))) / Nb));
+      emit(Str("    weights w_j / w_last: ", apply(t -> factor(t / w[2 * m + 1]), w)))));
   \\ KERNEL=1 (cycle bmd-20261006-w): zeros of the Cramer kernel polynomial V_c at c = -1 (the real Angelesco point).
   if (getenv("KERNEL") == "1",
     my(Wk = subst(winmat(m, 2 * m + 2), 'c, -1), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wk, "..", setminus([1 .. 2 * m + 2], [j])))));
