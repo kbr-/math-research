@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The exact <a href="#entry-2026-10-03-cube-last-far-ideal-balance">idealized expansion terms</a> do not reproduce the far circles. Their amplitudes follow the count, so the \(x\)-dependent factors decide.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. Three linear splittings of block IV have <a href="#entry-2026-10-03-cube-last-far-split-balance">failed</a> to explain the far circles as two-term balances. The factor \(F_i\) of the log-derivative criterion must come from a nonlinear factorization.</p>
 <p>Next:</p>
 <ol>
-<li>Build the actual terms \(T_m\) with the full echelon residual series of block IV. Each residual is \(\partial^n\) of an explicit function, \(x^{j-7/2}(1+x)^{-5/2}\) minus its first \(k-j\) Taylor terms at \(0\). Compute their balance circles exactly at \(e=4..6\). If they match, the expansion is the model, and the tails are what must be controlled.</li>
-<li>If they do not match, the splitting itself is at fault. Then return to the six-space and look for the factor \(F_i\) there directly: for example, the Wronskian of \(u_1,u_2\) with three of the four \(v_j\), restricted to each circle.</li>
+<li>Test a Pólya–Mammana factorization by subspaces. For each ordered choice of a three-dimensional subspace \(U\subset V_e\), \(W(Z_e)=W(u_1,u_2,U)\cdot W(L_U\,v)\), with \(v\) the remaining function. Ask whether, on circle \(i\), one such factorization has a slowly varying first factor and a second factor of the form \(t^N-s_i\).</li>
+<li>Prepare a route review that weighs the analytic line (circles, without a mechanism) against the arithmetic one (Eisenstein clusters plus \(G_p\)) and against (K).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45852,6 +45852,39 @@ T_m=A_m\,\Pi_m\,W_m .
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-split-balance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-split-balance">
+<h3>3 October 2026 — An exact split of block IV by t-degree gives terms that sum to the far Wronskian but do not balance on the circles: the middle term dominates everywhere</h3>
+<p class="entry-meta">Refutation at e = 4, 5, 6 (two cuts each) of the exact degree-split realization of the block-IV expansion; multilinearity checked exactly. Last far split balance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input. The <a href="#entry-2026-10-03-cube-last-far-ideal-balance">idealized terms</a> missed the circles, and the next step proposed keeping the full residual series. In \(t\), each block-IV image after \(\partial_x^n\) is \(t^{b}(1-t)^{g}S_j(t)\) with \(S_j\) a polynomial of degree about \(n\). Its low \(t\)-degrees come from the \(x=0\) side and its high ones from the \(x=-1\) side. Splitting \(S_j\) by degree is therefore an exact analogue of the splitting \(h_j=X_j+Y_j\), with every tail kept; the identification of low degree with the \(X\)-part is heuristic. Do the resulting exact terms balance on the circles?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-split-balance</code>, for every \(e\). It is the hypothesis that, for a cut \(c\) near the middle, the exact degree-split terms \(T_m\) have \(T_i,T_{i+1}\) dominant on the \(i\)-th far circle and balance there. It is refuted at \(e=4,5,6\).</p>
+<h4>Construction</h4>
+<p>Following prop:cube-last-far-six-space, apply \(\partial_x^n\) and \(\mu\) to the six functions. For each block-IV image write \(S_j=S_j^X+S_j^Y\), where \(S_j^X\) holds the degrees \(&lt;c\). Apply \(D_2\) to each part separately, giving \(v_j=v_j^X+v_j^Y\). Put
+\[
+T_m=\sum_{|S|=m}W_t\bigl(u_1,u_2,v_j^Y\ (j\in S),\ v_j^X\ (j\notin S)\bigr).
+\]
+By multilinearity \(\sum_mT_m=W_t(u_1,u_2,v_0,\ldots,v_3)\), whose far part is \(P\).</p>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_last_far_split_terms.gp builds the \(T_m\) exactly over \(\mathbb Q\) for \(e=4,5,6\) and cuts \(c=\lfloor n/2\rfloor,\lfloor n/3\rfloor\). It checks \(\sum_mT_m=W_t\) exactly. For each actual far circle \(|t|=e^{u_i}\), \(i=0,\ldots,3\), it reports the two terms with the largest mean \(\log|T_m|\) over \(64\) points of the circle. It also searches \(\log r\in u_i+[-0.6,0.6]\) for balance points of the pair \(T_i,T_{i+1}\) belonging to that circle, on a \(25\)-point grid of step \(0.05\) followed by bisection. Two crossings inside one grid step would be missed. The dominance margins are not reported, and \(64\) points is coarse for polynomials of degree \(150\) to \(320\) with zeros near the circles. Output: research/results/bmd-20261003-zzw/split-terms.txt. A first run stopped on a sorting error and an unbracketed secant. Its exactness check (\(\sum_mT_m=W_t\) at \(e=4\)) had already passed.</p>
+<p><strong>Outcome: refuted.</strong> The identity \(\sum_mT_m=W_t\) holds exactly in all six cases. On every circle, at every size and for both cuts, the largest term is \(T_2\), with \(T_1\) or \(T_3\) second. For each circle, the pair \(T_i,T_{i+1}\) has no balance point within \(0.6\) in \(\log r\). The circles are about \(0.48\) apart in \(\log r\) at \(e=4\) and \(0.26\) at \(e=6\). For the pairs containing \(T_2\), searched at circles \(1\) and \(2\), these windows cover all four circles. So \(T_2\) is not balanced by \(T_1\) or \(T_3\) anywhere on the range of the circles. So the dominance pattern does not change from circle to circle, and the circles cannot be balance curves of these terms. A likely reading is that the roots of \(P\) arise from cancellation among \(T_1,T_2,T_3\), not from a two-term balance. This is not established: dominance of the circle mean does not imply pointwise dominance, and the sizes of \(T_m\) relative to \(P\) were not computed.</p>
+<p><strong>What this closes.</strong> Three realizations of the block-IV expansion have now failed as models of the circles: a coefficient cut of \(P\) itself (<a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a>), monomial residuals (ideal balance), and an exact degree split of \(S_j\) (here). Only the crude power count matched the fitted radii. The circle structure is real: equal spacing, logarithmic radii, fitted constants. But the factor \(F_i\) that the log-derivative criterion needs does not come from these splittings: the degree split of \(S_j\) at \(c=\lfloor n/2\rfloor,\lfloor n/3\rfloor\), or the monomial residuals. Other linear splittings, such as other bases, other cuts, or splits by pole or by branch, were not tested. A natural next attempt is a nonlinear factorization, such as a Wronskian of three of the four \(v_j\) with \(u_1,u_2\), or work on the circle directly.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-six-space (the operators and images); conj:cube-last-far-ideal-balance; conj:cube-last-far-radius-step.</p>
+<p><strong>Verification gate.</strong> I re-read the six-space construction and its script. One fresh-context medium reviewer checked that the split commutes with \(\mu\), the \(x=0\) side, and the exactness check: the dropped factor is common to all \(16\) subsets, so \(\sum T_m=W_t\) is a real check. It also checked the bookkeeping, the sort and the radii. Verdict: pass with corrections, all applied: a false spacing claim is replaced, circles are indexed \(0..3\), the scope of the balance search and the grid resolution are stated, the cancellation reading is marked as unestablished, and the conclusion is limited to the splittings tested.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 57.66 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">16.47 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 23.27 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">56.60 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.65 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 20.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
