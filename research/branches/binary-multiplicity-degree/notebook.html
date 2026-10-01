@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-two-block-wronskian">two-block Wronskian</a> is exact: \(q(p-q)\) far zeros and an explicit product constant. It replaces the leading-order factor of the radius count with bounded corrections.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-block-pair-wronskian">block-pair Wronskian</a> gives each idealized expansion term \(T_m\) exactly: \(C_mx^{\alpha_m}(1+x)^{\beta_m}R_m\), with \(\deg R_m=6k+4,4k+6,2k+4,4k+6,6k+4\).</p>
 <p>Next:</p>
 <ol>
-<li>Extend the local-exponent method to the actual terms \(T_m\): the two worlds with the class integrals \(x^{-3-n}\), \((1+x)^{-3-n}\) and the echelon residuals of block IV. Determine their exact local exponents at \(0,-1,\infty\), the far-part degrees, and the leading constants.</li>
-<li>Give the middle steps (\(l\ge2\)) the same treatment.</li>
+<li>Locate the zeros of \(R_m\) relative to the far circles, at small \(e\), exactly. Then compare the balance curves \(|T_m|=|T_{m-1}|\) of the idealized terms with the actual circles. This is the first exact test of the expansion as a factorization.</li>
+<li>Count the middle steps (\(l\ge2\)) with the same lemma.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45741,6 +45741,69 @@ The expansion needs \(p+q&lt;n\), so that every factor \(n+\tfrac72-i+j\) is pos
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 27.51 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.56 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-block-pair-wronskian" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-radius-review:1" data-claims="lem:block-pair-wronskian">
+<h3>3 October 2026 — Several pairs of monomial blocks at 0 and −1: the Wronskian has exactly PQ − Σ min(p_c, q_c)^2 far zeros, with a Vandermonde constant</h3>
+<p class="entry-meta">Working proof generalizing the two-block Wronskian to several exponent classes, including one negative integral class; exact check of 2412 cases. The idealized expansion terms T_m have 6k+4, 4k+6, 2k+4 far zeros. Block pair Wronskian cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), far input. The <a href="#entry-2026-10-03-cube-two-block-wronskian">two-block Wronskian</a> handles one exponent class. The expansion terms \(T_m\) of the last step contain two classes, half-integral and integral (the class integrals \(x^{-3-n}\), \((1+x)^{-3-n}\)). What is the exact form for several classes?</p>
+<p><strong>General statement.</strong> <code>lem:block-pair-wronskian</code>, for every finite family of classes satisfying (H) below.</p>
+<p><strong>Lemma (block-pair Wronskian).</strong> Let \(a_1,\ldots,a_r\in\mathbb C\) and \(p_c,q_c\ge0\), with \(P=\sum p_c\), \(Q=\sum q_c\) and \(K=P+Q\ge1\). Assume (H):</p>
+<ul>
+<li>the \(a_c\) are pairwise incongruent modulo \(\mathbb Z\);</li>
+<li>each \(a_c\) is either non-integral, or an integer with \(a_c\le-\max(p_c,q_c)\).</li>
+</ul>
+<p>Put \(V=\bigoplus_c\bigl(x^{a_c}\mathcal P_{&lt;p_c}\oplus(1+x)^{a_c}\mathcal P_{&lt;q_c}\bigr)\). Then \(W(V)=C\,x^{\alpha}(1+x)^{\beta}R(x)\), where \(R\) is a polynomial with \(R(0)=1\) and \(R(-1)\ne0\), and
+\[
+\deg R=PQ-\sum_c\min(p_c,q_c)^2,\qquad \alpha=\sum_c\Bigl(p_ca_c+\tbinom{p_c}2\Bigr)+\tbinom Q2-\tbinom K2,
+\]
+with \(\beta\) obtained by exchanging \(p\) and \(q\). In the monomial basis \(x^{a_c+i}\), \((1+x)^{a_c+i}\), up to order and sign, the constant satisfies
+\[
+|C|=\frac{|V(\mu_0)|\,|V(y)|}{\mathrm{sf}(Q)},
+\]
+where \(V\) denotes the Vandermonde product, \(\mu_0=\{a_c+i:i&lt;p_c\}\cup\{0,\ldots,Q-1\}\) are the exponents at \(0\), and \(y=\{a_c+i:i&lt;q_c\}\). For one class this is lem:two-block-wronskian.</p>
+<p><em>Proof.</em> <em>Form.</em> As in the two-block case, \(W(V)\in x^{\sum_c p_ca_c}(1+x)^{\sum_c q_ca_c}\,\mathbb C[x,x^{-1},(1+x)^{-1}]\), so \(W=x^\alpha(1+x)^\beta R\) with \(R\) a polynomial prime to \(x(1+x)\).</p>
+<p><em>At \(0\).</em> The \(X\)-functions \(x^{a_c+i}\) are monomials, with exponents \(a_c+i\). By (H) these are distinct, and not in \(\{0,\ldots,Q-1\}\): they are non-integral, or negative integers. The \(Q\) functions \((1+x)^{y_\rho}\), \(y_\rho\in y\), are analytic at \(0\). Their Taylor matrix up to degree \(Q-1\) is \([\binom{y_\rho}j]_{\rho,\,j&lt;Q}\). Since \(\binom yj=y^j/j!+(\text{lower})\), column operations give \(\det=V(y)/\mathrm{sf}(Q)\). This is nonzero because the \(y_\rho\) are distinct by (H). So the exponents at \(0\) are \(\mu_0\), all distinct. The order of \(W\) at \(0\) is \(\sum\mu_0-\binom K2=\alpha\), with leading coefficient \(\pm V(\mu_0)\cdot V(y)/\mathrm{sf}(Q)\), as in Step 1 of prop:cube-last-far-eisenstein-branch. This gives \(C\), with \(R(0)=1\).</p>
+<p><em>At \(-1\).</em> The same argument with \(x\) and \(1+x\) exchanged gives \(\beta\) and \(R(-1)\ne0\).</p>
+<p><em>At \(\infty\).</em> In \(u=1/x\), class \(c\) lies in \(u^{-a_c}\mathbb C((u))\), and different classes lie in different cosets by (H). So the exponent set is the union over classes. Within class \(c\) with \(p_c\ge q_c\), the \(X\)-block gives \(u^{-a_c}u^{-i}\), \(i&lt;p_c\). The \(Y\)-functions reduce, as in the two-block proof, to tails \(u^{-a_c}\sum_{s\ge1}\binom{a_c+i}{i+s}u^s\), \(i&lt;q_c\). The tail minor is \(\det[\binom{a_c+i}{i+s}]_{i&lt;q_c,\,1\le s\le q_c}\).</p>
+<ul>
+<li>For non-integral \(a_c\), it factors as \(\prod_i\Gamma(a_c+i+1)\prod_s\Gamma(a_c-s+1)^{-1}\det[1/(i+s)!]\ne0\).</li>
+<li>For an integer \(a_c\le-\max(p_c,q_c)\), every \(a_c+i\) is negative. Then \(\binom{a_c+i}{i+s}=(-1)^{i+s}\Gamma(s-a_c)/\bigl(\Gamma(i+s+1)\Gamma(-a_c-i)\bigr)\), with finite nonzero Gamma factors since \(-a_c-i\ge1\). Again the minor is a nonzero multiple of \(\det[1/(i+s)!]=\pm\mathrm{sf}(q_c)/\prod_i(i+q_c)!\).</li>
+</ul>
+<p>So class \(c\) has exponents \(-a_c+j\) for \(j=-(p_c-1),\ldots,q_c\). For \(p_c&lt;q_c\), apply the involution \(\sigma:x\mapsto-1-x\) to the class subspace \(V_c\) alone; its exponent set at \(\infty\) is intrinsic to \(V_c\). \(\sigma\) fixes \(\infty\), with \(u\mapsto-u/(1+u)\), so it preserves \(u\)-orders. It multiplies each function by a constant phase, as in \((-1-x)^{a}=e^{\pm i\pi a}(1+x)^{a}\), and maps \(V_c\) to the same class with \(p_c\) and \(q_c\) exchanged. Since (H) is symmetric in \(p_c,q_c\), the case \(p\ge q\) applies to the image, giving \(j=-(q_c-1),\ldots,p_c\). In both cases class \(c\) contributes \(-K_ca_c+\tfrac12\bigl(\underline m_c(\underline m_c+1)-\overline m_c(\overline m_c-1)\bigr)\) to \(\sum\mu_\infty\), where \(K_c=p_c+q_c\), \(\underline m_c=\min(p_c,q_c)\) and \(\overline m_c=\max(p_c,q_c)\). Then \(w_\infty=\sum\mu_\infty-\binom K2\).</p>
+<p><em>Degree.</em> As before, \(\deg R=-2\binom K2-w_\infty-\alpha-\beta\). The terms in \(a_c\) cancel, since \(K_c=p_c+q_c\). Using \(\binom K2-\binom P2-\binom Q2=PQ\),
+\[
+\deg R=PQ-\sum_c\Bigl[\tbinom{p_c}2+\tbinom{q_c}2+\tfrac12\bigl(\underline m_c(\underline m_c+1)-\overline m_c(\overline m_c-1)\bigr)\Bigr]=PQ-\sum_c\underline m_c^{\,2},
+\]
+because the bracket is \(\tfrac12(p_c^2+q_c^2-p_c-q_c+\underline m_c^2+\underline m_c-\overline m_c^2+\overline m_c)=\underline m_c^2\). \(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_cube_block_pair_wronskian.gp computes \(W(V)\) exactly over \(\mathbb Q(x)\), after dividing each column by its monomial. Output: research/results/bmd-20261003-zzu/block-pair.txt.</p>
+<ul>
+<li>It covers \(2197\) cases with \(2\) or \(3\) classes: exponent sets \((-\tfrac{47}2,-20-\tfrac13)\), \((\tfrac12,\tfrac13,-\tfrac15)\) and \((-\tfrac{61}2,-\tfrac73)\), all \(p_c,q_c\le3\) with \(K\le8\), including empty blocks.</li>
+<li>A control adds \(80\) cases with the integral class \(-n-3\) beside the class \(-n-\tfrac72\): \(n=5..9\), \(p,q\le4\), and \(p=q=1\) for the integral class, as in the class integrals.</li>
+<li>A second control adds \(135\) cases at the boundary of (H): an integral class \(a_c=-\max(p_c,q_c)\) with \(p_c,q_c\le3\), beside the class \(-\tfrac52\) with blocks of size at most \(2\).</li>
+</ul>
+<p>In every case \(R\) is a polynomial with \(R(0)R(-1)\ne0\), of the stated degree, and \(|R(0)|\) after the shift equals the predicted \(|C|\). There are no mismatches.</p>
+<p><strong>The idealized expansion terms.</strong> In \(T_m\) of the <a href="#entry-2026-10-03-cube-last-far-radius-step">radius count</a>, replace each echelon residual of block IV by its leading monomial. The \(X\)-world is then \(x^{-n-7/2}\mathcal P_{&lt;k+4-m}\oplus x^{-n-3}\), and the \(Y\)-world is \((1+x)^{-n-7/2}\mathcal P_{&lt;k+m}\oplus(1+x)^{-n-3}\). This is a block-pair space with two classes satisfying (H). Here \(P=k+5-m\), \(Q=k+1+m\), and the minima are \(k+\min(m,4-m)\) and \(1\). So
+\[
+\deg R_m=(k+5-m)(k+1+m)-\bigl(k+\min(m,4-m)\bigr)^2-1=6k+4,\;4k+6,\;2k+4,\;4k+6,\;6k+4\quad(m=0,\ldots,4).
+\]
+These degrees are \(O(e)\), the same order as the \(8e-10\) far roots off the circles. The constant \(C\) of each idealized term is an explicit Vandermonde product. The idealization (monomials for residuals) and the splitting itself remain formal.</p>
+<p><strong>What remains.</strong> The balance between \(T_m\) and \(T_{m-1}\) on a circle involves \(|R_m/R_{m-1}|\) there, not only the constants. The \(R_m\) have degree \(O(e)\) and could vary by \(e^{O(e)}\) along the circle. That would move the balance by \(O(1/e)\) in \(\log|t|\), unless the zeros of \(R_m\) and \(R_{m-1}\) sit off the circles in a compatible way. The fitted law \(Nu_i=c_i\log N+O(1)\) suggests they do. Locating the zeros of \(R_m\) is the next question; the lemma gives their number exactly.</p>
+<p><strong>Dependencies re-read.</strong> lem:two-block-wronskian (the one-class proof, extended here); prop:cube-last-far-eisenstein-branch, Step 1; conj:cube-last-far-radius-step. The description of the \(X\)- and \(Y\)-worlds of \(T_m\) is cited from that entry, not re-derived here.</p>
+<p><strong>Verification gate.</strong> I re-read the two-block proof and Step 1 of the Eisenstein branch proposition. One fresh-context medium reviewer checked (H) at \(0\), \(-1\) and \(\infty\), including the integral case and its tail formula. It also checked the joint Taylor minor, the class-wise involution, the per-class sums, the degree and \(\alpha\), the \(T_m\) degrees, and the script. Verdict: pass with corrections, all applied: the involution is applied to \(V_c\) alone, with its phase; the basis of \(C\) is named; boundary cases of the integral alternative were added to the script and rerun (\(135\) cases); the header is aligned with (H); the \(T_m\) worlds are marked as cited. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzu">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 5.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 55.16 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">49.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.12 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
