@@ -25,6 +25,13 @@ foreach(eval(getenv("MS")), m,
   forsubset([2 * m + 3, 2 * m + 1], S, g = gcd(g, matdet(vecextract(W, "..", Vec(S)))));
   g = strip01(g);
   emit(Str("  contact window: gcd of maximal minors off c=0,1: ", g, if (poldegree(g) == 0, "  -> full rank for every c != 0,1", "  -> DEFECT")));
+  \\ PURE=1 (cycle bmd-20261006-o): list the maximal minors that are c^a (c-1)^b times a constant, i.e. never vanish
+  \\ off c = 0, 1 by themselves; such a minor would prove full rank at that m alone.
+  if (getenv("PURE") == "1",
+    my(pure = List());
+    forsubset([2 * m + 3, 2 * m + 1], S, my(d = matdet(vecextract(W, "..", Vec(S)))); if (d != 0 && poldegree(strip01(d)) == 0,
+      listput(pure, setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1])));
+    emit(Str("  pure minors (dropped window columns, 0-based): ", Vec(pure))));
 );
 }
 quit;

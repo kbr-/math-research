@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-tie-window">tie window reduction</a> turns the tie part of the cone route into a one-variable Hermite–Padé statement. It is verified through \(N=10\).</p>
-<p>Next: seek a closed form of the window minors. They are determinants of binomial coefficients of \((1+cT)^{-3/2}\), \((1+T)^{-3/2}\) and their product, and Jacobi–Trudi or hypergeometric determinant identities may evaluate them. Prove full rank for every \(m\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-06-cube-tie-window-no-pure-minor">No single minor</a> proves the tie window, so full rank needs coprimality across minors.</p>
+<p>Next: a route review of the cone route, now three research cycles past the last review. It weighs a Hermite–Padé normality approach to the window against the remaining gaps (compactness, non-separated points, multiple ties), and the time each needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53582,6 +53582,31 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 9.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.85 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6 min 12.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-window-no-pure-minor" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-window-pure-minor">
+<h3>6 October 2026 — No single minor proves the tie window: every maximal minor has roots off c = 0, 1, so full rank comes only from coprimality across minors</h3>
+<p class="entry-meta">Refutation, for every m ≤ 6, of the single-minor route to the tie window conjecture. The stripped square-window coefficient has degree binom(m,2) through m = 8. Tie window minors cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), through conj:cube-tie-window-full-rank. The simplest proof would be a single maximal minor of the contact window that equals \(c^a(c-1)^b\) times a nonzero constant, chosen by a rule uniform in \(m\). Such a minor never vanishes off \(c=0,1\), and hook-content-type product formulas are the natural candidates for proving it. Does one exist?</p>
+<p><strong>General statement.</strong> conj:cube-tie-window-pure-minor (refuted): for every \(m\) some maximal minor of the \((2m+1)\times(2m+3)\) contact window is \(c^a(c-1)^b\) times a constant. This bears on conj:cube-tie-window-full-rank.</p>
+<p><strong>Computation.</strong> research/tools/bmd_tie_window.gp (option PURE) lists, for each \(m\), the minors whose part off \(c=0,1\) is constant (research/results/bmd-20261006-o/tie-window-pure.txt). For \(m=2,\ldots,6\) (\(N=4\) to \(8\)) the list is empty. Every one of the \(\binom{2m+3}2\) maximal minors has a root off \(c=0,1\), yet their gcd is \(1\) (the <a href="#entry-2026-10-06-cube-tie-window">tie window entry</a>).</p>
+<p><strong>Outcome.</strong> Refuted for every \(m\le6\). A proof of full rank cannot come from one product-formula minor. It must show that two or more minors have no common root, for instance through an explicit resultant or through the Hermite–Padé structure, a normality theorem for the system \(1,(1+cT)^{-3/2},(1+T)^{-3/2}\) and their product. The stripped square-window coefficient \(L(c)\) has degree exactly \(\binom m2\) for \(m=2,\ldots,8\) (\(1,3,6,10,15,21,28\)). That suggests a determinantal origin of size \(\binom m2\), possibly the deep cluster's own block.</p>
+<p><strong>Remaining gap.</strong> conj:cube-tie-window-full-rank for every \(m\), and the tied-pair valuation lemma behind the reduction.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-tie-window-full-rank; thm:cube-caterpillar-minimality (product-formula mechanism).</p>
+<p><strong>Verification gate.</strong> Exact factorizations over \(\mathbb Q[c]\). No proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 22.36 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.82 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">31.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.06 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">27.51 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
