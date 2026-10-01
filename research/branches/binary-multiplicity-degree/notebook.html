@@ -47,13 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). For two species the peeling necks are <a href="#cube-two-species-neck-rings">proved</a>. For every \(l\), the <a href="#cube-neck-block-four-hull">block-four hull theorem</a> reduces the neck statement to exact window valuations. With the <a href="#cube-neck-hankel-leading-form">leading form</a> and <a href="#cube-neck-sequence-hankel">\(H_k\ne0\)</a>, those need only \(f\ne0\) for generic \(\beta\), and the form at \(c=6\), \(l\ge4\).</p>
-<p>Next, \(f\ne0\) for \(l\ge3\). At \(\beta_1=0\) every Bezoutian becomes \(-[\omega_j\varphi_s]_+\), and \(f\) is a sum over orderings \(\nu\) of \(\xi(\nu)\kappa_B(\nu)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The neck statement at \(w=4\) is reduced to \(f\ne0\) by the <a href="#cube-neck-block-four-hull">hull theorem</a>. \(f\ne0\) is proved for \(l=2\) and checked exactly for \(l=3\) (\(e\le2\)) and \(l=4\) (\(e=1\)) (<a href="#entry-2026-10-03-cube-neck-leading-constant">leading constant</a>). The window \(c=6\), \(l\ge4\) still lacks the leading form.</p>
+<p>Next, \(f\ne0\) for every \(l\) through an Angelesco-type positivity at \(\beta_1=0\) with \(\beta_s\) of alternating signs:</p>
 <ul>
-<li>Degenerate further, with \(\beta_s=\eta^{s}\gamma_s\), \(\eta\to0\), so that one ordering dominates.</li>
-<li>Show that the dominant term factors into Toeplitz (Schur) and Hankel (Jacobi) determinants, as for two species.</li>
+<li>Express \(\xi(\nu)\) and \(\kappa_B(\nu)\) as Hermite–Padé determinants of \((1,\varphi_2,\ldots,\varphi_l)\).</li>
+<li>Write \(\varphi_s(y)=(1+\beta_sy)^{-7/2}\) as a Laplace or Stieltjes-type transform of a positive measure supported on one side.</li>
+<li>Prove that each term has a sign independent of \(\nu\), by total positivity of the kernels (Karlin) or the Angelesco normality theory.</li>
 </ul>
-<p>The far polynomials remain the other open part of (B), and of (K).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -41122,6 +41122,50 @@ Hence, if \(\operatorname{val}\det C[:,W_c]=f(c)\) and \(\operatorname{val}\det 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9 min 26.42 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 2.09 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-neck-leading-constant" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-leading-constant check:cube-neck-leading-constant">
+<h3>3 October 2026 — At β₁ = 0 the neck leading constant is a sum of products of type I and type II Hermite–Padé determinants; it is nonzero in every tested window for three and four species</h3>
+<p class="entry-meta">Finite check, exact over Q, that the leading constant f is nonzero at β₁ = 0 for l = 3 (e = 1, 2) and l = 4 (e = 1) in every window, with a conjecture for every l, e; combined with the hull theorem this proves the three-species necks at e = 1, 2. Leading constant cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-neck-block-four-hull">block-four hull theorem</a> reduces the neck statement of (B) to exact window valuations. By the <a href="#cube-neck-hankel-leading-form">Hankel leading form</a> and the <a href="#cube-neck-sequence-hankel">neck Hankel proposition</a>, these need the constant \(f=\pm\varphi_1(0)^{c-lw}\sum_\nu\xi(\nu)\kappa_B(\nu)\) to be nonzero. For \(l=2\) it is a single product, <a href="#cube-neck-two-species-leading-nonvanishing">proved nonzero</a> at \(\beta_1=0\). For \(l\ge3\) it is a sum over the orderings \(\nu\) of the balanced split. Is it nonzero, and do the terms cancel?</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-leading-constant</code> (every \(l\ge3\), \(e\), window). <code>check:cube-neck-leading-constant</code> is the finite check.</p>
+<p><strong>The two factors at β₁ = 0.</strong></p>
+<ul>
+<li>\(\xi(\nu)\) is the determinant of the functionals \([x^i]\bigl(\sum_sP_s\varphi_s\bigr)\), \(i&lt;c\), and \([x^j]P_s\), \(j&lt;\nu_s\) (\(s\ge2\)), on \((P_1,\ldots,P_l)\in\mathcal P_{&lt;w}^l\): a type I Hermite–Padé determinant of \((1,\varphi_2,\ldots,\varphi_l)\) with shifted degrees.</li>
+<li>\(\kappa_B(\nu)\), as in step (4) of the two-species theorem. The residue lemma there is linear in \(\varphi\) and holds verbatim for each Bezoutian \(\operatorname{Bez}_{1s}\) of thm:cube-neck-atomic-laplace-bound, so \(B_s(a)_j=-[\omega_j\varphi_s]_+(a)\) since \(\varphi_1=1\). It equals \(\det A_\nu/\det A_{\rm cons}\). Here \(A_\nu\) is the matrix of \(\omega\mapsto[y^e](\omega\varphi_s)\), \(s\ge2\), \(-n\le e\le\nu_s-1\), on \(\omega\in\operatorname{span}(y^{-m}:n+1\le m\le M+K-c)\), and \(A_{\rm cons}\) is its \(\nu\)-independent block of constraint rows (\(e&lt;0\)) on \(m\le M\). \(A_\nu\) is a stacked block-Hankel matrix: a type II Hermite–Padé determinant of \((\varphi_2,\ldots,\varphi_l)\).</li>
+</ul>
+<p><strong>Computation.</strong> research/tools/bmd_cube_neck_leading_constant.gp computes every \(\xi(\nu)\), \(\kappa_B(\nu)\) and their sum exactly over \(\mathbb Q\), for \(w=4\) and every window \(4\le c&lt;4l\), at:</p>
+<ul>
+<li>\(\beta=(0,1)\) for \(l=2\), \(n=4\);</li>
+<li>\(\beta=(0,1,-2)\) for \(l=3\), \(n=4,8\);</li>
+<li>\(\beta=(0,2,3)\) for \(l=3\), \(n=4\);</li>
+<li>\(\beta=(0,1,-2,3)\) for \(l=4\), \(n=4\).</li>
+</ul>
+<p>Output: research/results/bmd-20261003-q/leading-constant.txt. Two script errors were found and corrected before the recorded run: the orderings were enumerated only from the given order, and the constraint block was taken from the wrong rows.</p>
+<p><strong>Outcome.</strong></p>
+<ul>
+<li>In all \(40\) windows the sum is nonzero, and \(\det A_{\rm cons}\ne0\).</li>
+<li>For \(\beta=(0,1,-2)\) and \((0,1,-2,3)\) all terms \(\xi(\nu)\kappa_B(\nu)\) of a window have the same sign.</li>
+<li>For \(\beta=(0,2,3)\) the two terms have opposite signs in four windows, yet the sum stays nonzero.</li>
+</ul>
+<p><strong>Consequences (exact, at the tested sizes).</strong> \(f\) is a rational function of \(\beta\), regular at these points (\(\det A_{\rm cons}\ne0\) is the ordinarity of \(U\)). It is nonzero there, hence for generic \(\beta\), at \((l,e)=(3,1),(3,2),(4,1)\) in every window \(4\le c&lt;4l\) covered by the leading form. At the last window \(c=4l\), \(f=\pm\xi\), with \(\kappa_B\) empty. \(\xi\ne0\) exactly when \((1,\varphi_2,\ldots,\varphi_l)\) is ordinary at degree \(w=4\). This is the constraint determinant of the \(n=4\) run at the same \(\beta\), nonzero, and \(\xi\) does not depend on \(n\).</p>
+<p>For three species every window is covered. So, with the neck Hankel proposition (\(H_k\ne0\)), the block-four vanishing, the hull theorem (which discharges the two-minimizer condition) and prop:cube-peeling-neck-reduction, the three-species peeling necks at \(e=1,2\) (\(b=5,6\), \(N=10,12\)) consist of \(8\) rings of simple points. For four species at \(e=1\), the window \(c=6\) still lacks the leading form.</p>
+<p><strong>Conjecture (neck leading constant).</strong> For every \(l\ge3\), \(e\ge1\) and window \(4\le c&lt;4l\) covered by the Hankel leading form, \(f\ne0\) for generic \(\beta\). (Observed, on one \(\beta\) per \(l\): at \(\beta_1=0\) with real \(\beta_s\), \(s\ge2\), not all of one sign, the terms \(\xi(\nu)\kappa_B(\nu)\) shared one sign.)</p>
+<p>An untested lead: a positivity mechanism of Angelesco type (Nikishin–Sorokin, Rational Approximations and Orthogonality, Ch. 4). It does not apply directly. The branch cuts of \((1+\beta_sy)^{-7/2}\) are half-lines, which overlap for \(l\ge4\). Their jumps behave like \(|z+\beta|^{-7/2}\), which is not integrable, so these are not Markov functions of positive measures. A reformulation (for instance after integrating, or for \(l=3\) with cuts on opposite sides) would be needed.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-neck-hankel-leading-form (definitions of \(\xi,\kappa_B\)); thm:cube-neck-two-species-leading-nonvanishing (step (4), the matrix \(A\)); thm:cube-neck-block-four-hull; prop:cube-neck-sequence-hankel; cor:cube-neck-block-four-vanishing; prop:cube-peeling-neck-reduction; thm:cube-neck-atomic-laplace-bound (the Bezoutians).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked that the script computes \(f\) up to a factor common to all \(\nu\), with the theorem's conventions. \(\xi\) is the exact confluent limit. In the unitriangular basis \(A_\nu\) is block lower-triangular, so \(\det A_\nu=\det A_{\rm cons}\cdot\det E_\nu\), with a sign independent of \(\nu\). The counts and signs match the output. Verdict: pass with corrections, applied: the window \(c=4l\) is covered through ordinarity; the dependencies of the neck consequence are listed; the residue form is extended to every species; the conjecture's sign remark is labelling-invariant and marked as observed; the Angelesco remark is reduced to an untested lead, with the reasons it does not apply directly.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 8.54 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 17.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 48.63 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.77 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.60 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
