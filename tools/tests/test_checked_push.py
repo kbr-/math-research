@@ -48,8 +48,20 @@ class CheckedPushTest(unittest.TestCase):
         self.assertIn('--public-history main', calls)
         self.assertIn('--base origin/main', calls)
         self.assertNotIn('worktree-x', git(self.remote, 'branch', '--list'))
-        self.assertIn(f'origin/main is at {git(self.work, "rev-parse", "--short", "HEAD")} work, the local tip.',
+        self.assertRegex(result.stdout, r'Pushing 1 commits, \d+B, to origin/main\.')
+        self.assertIn(f'origin/main is at {git(self.work, "rev-parse", "--short", "HEAD")} work, the commit pushed.',
                       result.stdout)
+
+    def test_refuses_when_head_moves_during_the_checks(self):
+        checked = git(self.work, 'rev-parse', '--short', 'HEAD')
+        (self.work / 'tools/notebook_context.py').write_text(
+            'import pathlib, subprocess\npathlib.Path("g").write_text("y")\n'
+            'subprocess.run(["git", "add", "g"], check=True)\n'
+            'subprocess.run(["git", "commit", "-qm", "during"], check=True)\n')
+        result = self.run_push('main')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(f'HEAD moved from {checked} while the checks ran', result.stderr)
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'main'))
 
     def test_fails_when_the_remote_branch_is_not_the_pushed_commit(self):
         # The remote accepts the push, then the branch moves, as a concurrent push could move it.
