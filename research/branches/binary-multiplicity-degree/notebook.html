@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The tie window's last two minors are the <a href="#entry-2026-10-06-cube-tie-window-kernel-orthogonality">zero sum of a Hermite–Padé kernel polynomial on two segments</a>, whose Wronskian on the unit circle vanishes only at \(c=1\) (checked \(m\le6\)).</p>
-<p>Next: attempt a Markov-type monotonicity proof. Move the orthogonality to integrable weights by one integration by parts, and test it first at the classical Angelesco point \(c=-1\), where the segments \([0,1]\) and \([-1,0]\) are real. Read the Jacobi–Angelesco literature (Kalyagin; Van Assche and Coussement) for zero location and parameter dependence.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). <a href="#entry-2026-10-06-cube-tie-window-circle-crossing">Zeros of the stability polynomial cross the unit circle only at common zeros of the last two minors or \(c=1\)</a>, and stability holds for every tested exponent \(\lambda\).</p>
+<p>Next: compute the \(\lambda\to0\) limit of the stability polynomial, a determinant of logarithmic Cauchy-like coefficients \(c^{j}/j\) with one product row \(\log(1+cT)\log(1+T)\). Seek its closed form and stability, the starting point of an exponent homotopy.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53987,6 +53987,67 @@ for \(0\le n&lt;m\). The contour is a large circle, and the branches are those a
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 13.78 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 34.69 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">27.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-window-circle-crossing" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-window-route-review:1" data-claims="lem:cube-tie-window-circle-crossing conj:cube-tie-window-stable-all-exponents">
+<h3>6 October 2026 — Tie window circle crossing: the stability polynomial can meet the unit circle only at c = 1 or at a common zero of the last two minors, and its stability holds for every tested exponent λ</h3>
+<p class="entry-meta">Working proof of the crossing lemma and the exponent homotopy for every m and non-integer λ. Uniform stability is a conjecture, checked exactly in 40 cases. Tie window crossing cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap 1: a route to conj:cube-tie-window-schur-stable for every \(m\). The kernel orthogonality lemma (lem:cube-tie-window-kernel-orthogonality) makes \(c^{-1/2}\sigma(c)\) real on the unit circle. Where can the zeros of \(f_m=\Delta_{2m}+\Delta_{2m+1}\) cross the circle, and can the exponent \(3/2\) be deformed?</p>
+<p><strong>Setting.</strong> Replace \(3/2\) by a real \(\lambda&gt;0\) in all three series of the tie window: \(T^n(1+cT)^{-\lambda}\), \(T^n(1+T)^{-\lambda}\) and \(((1+cT)(1+T))^{-\lambda}\). Write \(W'_\lambda(c)\), \(\Delta_j^{(\lambda)}\), \(f_m^{(\lambda)}\) and \(\sigma_\lambda\).</p>
+<p>For an integer \(\lambda=k\le m\) and \(c\ne1\), partial fractions write the top series as a combination of \(T^n(1+cT)^{-k}\) and \(T^n(1+T)^{-k}\) with \(n\le k-1\), with coefficients rational in \(c\). So it lies in the span of the other rows, and \(f_m\equiv0\). Integers are excluded below.</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-circle-crossing, for every \(m\ge2\) and non-integer \(\lambda&gt;0\):</p>
+<ol>
+<li>Every zero of \(f_m^{(\lambda)}\) on \(|c|=1\) other than \(c=1\) is a common zero of \(\Delta_{2m}^{(\lambda)}\) and \(\Delta_{2m+1}^{(\lambda)}\). Such a point need not be a rank defect of \(W'_\lambda\), which has \(2m+2\) maximal minors.</li>
+<li><em>Homotopy.</em> Let \(I\) be an interval of non-integer exponents with the following properties. The exact powers \(a,b\) of \(c\) and \(c-1\) dividing \(f_m^{(\lambda)}\) are constant on \(I\). So is the degree of \(\tilde f_m^{(\lambda)}=f_m^{(\lambda)}/(c^a(c-1)^b)\). And \(\Delta_{2m}^{(\lambda)}\), \(\Delta_{2m+1}^{(\lambda)}\) have no common zero on the unit circle minus \(\{1\}\). Then the number of zeros of \(\tilde f_m^{(\lambda)}\) in the open unit disc is constant on \(I\). In particular, stability at one \(\lambda\in I\) gives stability on all of \(I\), and so, by the stability criterion, full rank of the contact window for all \(c\ne0,1\) and all \(\lambda\in I\).</li>
+</ol>
+<p>The conjecture conj:cube-tie-window-stable-all-exponents: for every \(m\ge2\) and every non-integer \(\lambda&gt;0\), \(\tilde f_m^{(\lambda)}\) has all zeros in the open unit disc.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The inversion symmetry of the minors (step 1 of the <a href="#entry-2026-10-06-cube-tie-window-schur-stability">stability criterion</a>) uses only the substitution \(T=cS\), under which \((1+T/c)^{-\lambda}=(1+S)^{-\lambda}\), so it holds for every \(\lambda\), with the same exponents \(e_J\). For real \(\lambda\) the entries are real polynomials in \(c\). So part 3 of the kernel lemma holds: \(c^{-1/2}\sigma_\lambda(c)\) is real at every \(c\) on the unit circle with \(\Delta_{2m+1}^{(\lambda)}(c)\ne0\).
+<ul>
+<li>If \(f_m^{(\lambda)}(c)=0\) at such a point, then \(\sigma_\lambda(c)=-1\). So \(c^{-1/2}\), which has modulus one, is real, \(c^{1/2}=\pm1\), and \(c=1\).</li>
+<li>If instead \(\Delta_{2m+1}^{(\lambda)}(c)=0\), then \(f_m^{(\lambda)}(c)=0\) forces \(\Delta_{2m}^{(\lambda)}(c)=0\).</li>
+</ul></li>
+<li>With \(a,b\) fixed, \(\tilde f_m^{(\lambda)}\) has coefficients polynomial in \(\lambda\). Its value at \(0\), its value at \(1\) and its leading coefficient are nonzero on \(I\), by the exactness of \(a,b\) and the constant degree.
+<ul>
+<li>Its zeros, counted with multiplicity, move continuously on \(I\), and none escapes to \(0\), \(1\) or infinity.</li>
+<li>The count inside the disc changes only if a zero lies on the circle. By part 1 that zero is \(c=1\), excluded, or a common zero of the two minors, excluded by hypothesis.</li>
+<li>Where \(\tilde f_m^{(\lambda)}\) is stable, lem:cube-tie-window-stability-criterion applies. Its proof uses only step 1, valid for every \(\lambda\), and \(f_m\not\equiv0\) follows from the constant degree. \(\square\)</li>
+</ul></li>
+</ol>
+<p><strong>Computation.</strong> research/tools/bmd_tie_window.gp takes a list LAMS of exponents. The exact Schur–Cohn test and the full-rank gcd were run for \(m=2,\ldots,5\) and \(\lambda\in\{\frac1{10},\frac12,\frac9{10},\frac{11}{10},\frac{13}{10},\frac32,\frac{17}{10},\frac52,\frac72,\frac{13}3\}\) (research/results/bmd-20261006-u/lambda-stability.txt; the \(\lambda=3/2\) block is printed without a header). In all \(40\) cases:</p>
+<ul>
+<li>\(\tilde f_m^{(\lambda)}\) is stable inside the disc;</li>
+<li>the reversal of the stripped difference \(\Delta_{2m}-\Delta_{2m+1}\) is stable;</li>
+<li>the contact-window gcd is \(1\).</li>
+</ul>
+<p>The gcd of the two minors is \(c^a(c-1)^b\) throughout, so the tested quotient is \(\tilde f_m^{(\lambda)}\). The stripped powers \([a,b]\) are \([4,4]\), \([9,12]\), \([16,28]\), \([25,55]\) for \(m=2,3,4,5\), the same at all ten exponents, consistent with the homotopy hypothesis. This was a falsification test of the uniform form, and it passed, including on both sides of the integer exponents up to \(4\).</p>
+<p><strong>Outcome.</strong> Zeros of the stability polynomial cross the unit circle only at a common zero of the last two minors there, or at \(c=1\). On the circle the problem is real, a one-parameter family in \(\theta\) by the kernel lemma. So the remaining work can be organized as a homotopy in \(\lambda\).</p>
+<p>A candidate starting point is \(\lambda\to0\), for \(m\ge3\), where \(R''\ge3&gt;n\) hides the constant terms. There the rows are \(-\lambda T^n\log(1+cT)+O(\lambda^2)\), with coefficients \((-1)^{k-n}c^{k-n}/(k-n)\). The top row minus the two \(n=0\) rows equals \(\lambda^2\log(1+cT)\log(1+T)(1+O(\lambda))\) up to a constant outside the window. That this limit has nondegenerate minors and a stable limit polynomial is not checked.</p>
+<p>The homotopy also needs constant \(a,b\) and degree, and no common zero of the two minors on the circle along the path. The last is a real (\(\theta\)-parametrized) form of the original question. So the reduction is partial: it trades the complex plane for the circle, not the problem for a solved one.</p>
+<p><strong>Remaining gap.</strong> Exclude common zeros of the last two minors on the unit circle along an exponent path from a stable starting exponent to \(3/2\), with constant powers and degree. Or prove conj:cube-tie-window-stable-all-exponents directly. Also open: the tied-pair valuation lemma, multiple ties, compactness and non-separated points.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-stability-criterion; lem:cube-tie-window-kernel-orthogonality (part 3); conj:cube-tie-window-schur-stable.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review confirmed the transfer of the symmetry and reality to every real \(\lambda\), the crossing argument and the data. It corrected the following, all applied:</p>
+<ul>
+<li>a common zero of the last two minors is not a rank defect, so the homotopy hypothesis now excludes common zeros, not rank defects;</li>
+<li>constant powers \(a,b\) are now stated, and the redundant \(\tilde f(1)\ne0\) is dropped;</li>
+<li>degeneracy holds only at integers \(k\le m\);</li>
+<li>the sign of the \(\lambda\to0\) term and the \(m=2\) exception are fixed, and the limit is marked unverified.</li>
+</ul>
+<p>Status: working proof of the lemma; the uniform stability is a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 50.02 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 43.21 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.26 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">43.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

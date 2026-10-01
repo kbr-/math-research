@@ -6,7 +6,9 @@
 \\ i.e. the gcd of its maximal minors has no root off c = 0, 1.  Env MS (list of m), OUT.
 OUT = getenv("OUT");
 emit(s) = print(s); if (OUT != 0 && OUT != "", write(OUT, s));
-b(k) = if (k < 0, 0, binomial(-3/2, k));
+\\ LAMS (cycle bmd-20261006-u): optional list of exponents lambda replacing 3/2 in all three series (default [3/2]).
+LAMV = 3/2;
+b(k) = if (k < 0, 0, binomial(-LAMV, k));
 row_t(t, n, cols) = vector(#cols, j, b(cols[j] - n) * t^(cols[j] - n));
 row_top(cols) = vector(#cols, j, sum(i = 0, cols[j], b(i) * b(cols[j] - i) * 'c^i));
 winmat(m, w) = {
@@ -18,6 +20,8 @@ winmat(m, w) = {
 }
 strip01(f) = { if (f == 0, return(0)); while (subst(f, 'c, 0) == 0, f /= 'c); while (subst(f, 'c, 1) == 0, f /= ('c - 1)); f / content(f); }
 {
+foreach(if (getenv("LAMS") != 0 && getenv("LAMS") != "", eval(getenv("LAMS")), [3/2]), lam, LAMV = lam;
+if (LAMV != 3/2, emit(Str("lambda=", LAMV)));
 foreach(eval(getenv("MS")), m,
   my(M = winmat(m, 2 * m + 1), L = strip01(matdet(M)));
   emit(Str("m=", m, " (N=", m + 2, ", top tie): square-window L(c) off c=0,1 factors: ", factor(L)[, 1]~));
@@ -106,6 +110,7 @@ foreach(eval(getenv("MS")), m,
     foreach([2, 3, 1/2], c0, my(sg = List());
       forsubset([2 * m + 3, 2 * m + 1], S, listput(sg, sign(subst(matdet(vecextract(W, "..", Vec(S))), 'c, c0))));
       emit(Str("  c=", c0, ": minors positive ", #select(x -> x > 0, Vec(sg)), ", negative ", #select(x -> x < 0, Vec(sg)), ", zero ", #select(x -> x == 0, Vec(sg))))));
+);
 );
 }
 quit;
