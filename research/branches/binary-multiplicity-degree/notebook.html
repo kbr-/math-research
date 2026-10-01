@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-tie-window-log-minors">log minors have closed forms</a>: \(E(c^d+1)\) and \(\alpha(c^{d+1}+1)+\gamma(c^d+c)\), exact for \(m\le7\).</p>
-<p>Next: prove the square closed form. Show that the log Hermite–Padé system has a solution exactly when \(c^d=-1\), by finding the symmetry or explicit solution behind it, and evaluate the determinant's normalization. Then the second minor, and then the \(\lambda\to1^+\) start.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The square log minor is a <a href="#entry-2026-10-06-cube-tie-log-square-binomial">binomial in every window start</a>. Its axis orders are proved, and the rest reduces to two divisibilities.</p>
+<p>Next: prove the divisibility by \(x^s+y^s\). Find the explicit Hermite–Padé solution at \(x=\zeta y\), \(\zeta^s=-1\), for instance by an ansatz built from \(\log(1+xT)-\log(1+yT)\) and its symmetrization, starting at \(m=1\). Then prove the diagonal order \(m^2\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -54383,6 +54383,75 @@ Since \(\alpha-\gamma=\frac{m(m-1)}2=d&gt;0\) and \(\sin(\theta_j/2)&gt;0\) on \
 <tr><td>Computation design and coding</td><td class="elapsed">36.95 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.38 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 17.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-tie-log-square-binomial" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-tie-stability-review:1" data-claims="lem:cube-tie-log-square-orders conj:cube-tie-log-square-binomial">
+<h3>6 October 2026 — Log square binomial: for every window start s the square log minor is c^{m(s+1)}(c−1)^{m²}(c^s+1) up to a constant; the axis orders are proved exactly and the diagonal order to at least m(m+1)/2</h3>
+<p class="entry-meta">Conjecture for all m and s ≥ m, exact for 2 ≤ m ≤ 5, m ≤ s ≤ 12. Working proof of the axis orders and of a diagonal lower bound. The degree count reduces the rest to two divisibilities. Log square binomial cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), toward conj:cube-tie-window-log-minor-closed-forms, whose square part is \(\Delta^{\log}_{2m+1}\propto c^a(c-1)^b(c^d+1)\) with \(d=\binom m2\). Does the window start \(\binom m2\) matter, or does the identity hold for every start, which would make it a two-parameter statement open to induction?</p>
+<p><strong>Setting.</strong> For \(m\ge1\) and \(s\ge m\), let \(M_{m,s}(x,y)\) be the \((2m+1)\times(2m+1)\) matrix on columns \(k=s,\ldots,s+2m\) with the following rows:</p>
+<ul>
+<li>\(A_n(k)=x^{k-n}/(k-n)\) and \(B_n(k)=y^{k-n}/(k-n)\) for \(0\le n&lt;m\);</li>
+<li>the top row \(C(k)=\sum_{i=1}^{k-1}x^iy^{k-i}/(i(k-i))\).</li>
+</ul>
+<p>Up to signs \((-1)^{k-n-1}\) and \((-1)^k\) absorbed into rows and columns, this is the log matrix of \(T^n\log(1+xT)\), \(T^n\log(1+yT)\) and \(\log(1+xT)\log(1+yT)\). The tie case is \(x=c\), \(y=1\), \(s=\binom m2\).</p>
+<p><strong>General statement.</strong> conj:cube-tie-log-square-binomial: for all \(m\ge1\) and \(s\ge m\),
+\[\det M_{m,s}=K_{m,s}\,x^{m(s+1)}y^{m(s+1)}(x-y)^{m^2}\,(x^s+y^s),\qquad K_{m,s}\ne0.\] The proved part is lem:cube-tie-log-square-orders:</p>
+<ol>
+<li>\(\det M_{m,s}\) is a binary form of degree \(D=(2m+1)s+m^2+2m\).</li>
+<li>Its order in \(x\), and by symmetry in \(y\), is exactly \(m(s+1)\).</li>
+<li>Its order along \(x=y\) is at least \(m(m+1)/2\).</li>
+<li>Consequently the conjecture holds once two things are known: the order along \(x=y\) is at least \(m^2\), and \(x^s+y^s\) divides the form. In characteristic \(0\), \(x^s+y^s\) is coprime to \(x\), \(y\) and \(x-y\), and \(2m(s+1)+m^2+s=D\), so the quotient is a constant, nonzero by part 2.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>\(A_n(k)\) and \(B_n(k)\) are homogeneous of degree \(k-n\), and \(C(k)\) of degree \(k\). Every term of the determinant uses each column once and each row once, so its degree is \(\sum_{j=0}^{2m}(s+j)-2\binom m2=D\).</li>
+<li>Write \(C=\sum_{i\ge1}\frac{x^i}iB_i\), where \(B_i(k)=y^{k-i}/(k-i)\) for \(k&gt;i\) and \(0\) otherwise. For \(i&lt;m\) these are rows of the matrix, so they can be subtracted. Hence \(\det M_{m,s}=\det[A;B;C']\) with \(C'=\sum_{i\ge m}\frac{x^i}iB_i\), of \(x\)-order at least \(m\). Expand by Laplace along the \(A\)-rows.
+<ul>
+<li>The \(A\)-minor on window columns \(J\) equals \(x^{\sum_{j\in J}(s+j)-\binom m2}\) times the Cauchy determinant \(\det[1/(s+j-n)]_{n,j\in J}\), which is nonzero. Its order is at least \(ms\), with equality only for \(J=\{0,\ldots,m-1\}\).</li>
+<li>The complementary minor contains \(C'\), so every term has order at least \(ms+m\).</li>
+<li>The coefficient of \(x^{m(s+1)}\) comes only from \(J=\{0,\ldots,m-1\}\) and the term \(\frac{x^m}mB_m\) of \(C'\). It equals \(\pm\frac1m\) times the product of two nonzero Cauchy determinants times a power of \(y\): \([1/(s+j-n)]\) for \(n&lt;m\), \(j&lt;m\), and \([y^{s+j-n}/(s+j-n)]\) for \(0\le n\le m\), \(m\le j\le2m\). So the order is exactly \(m(s+1)\).</li>
+<li>Exchanging \(x\) and \(y\) swaps the row blocks and fixes \(C\), so the \(y\)-order is the same.</li>
+</ul></li>
+<li>Put \(x=y+\varepsilon\). With \(F(u)=\log(1+u)\), \(T^nF((y+\varepsilon)T)=\sum_{r\ge0}\varepsilon^rU_{n,r}\), where \(U_{n,r}=T^{n+r}F^{(r)}(yT)/r!\) and \(F^{(r)}(u)=(-1)^{r-1}(r-1)!(1+u)^{-r}\). Expand the determinant multilinearly in the \(A\)-rows.
+<ul>
+<li>A term with some \(r_n=0\) repeats \(B_n\) and vanishes.</li>
+<li>For \(r\ge1\), division gives \(T^{n+r}(1+yT)^{-r}=Q(T)+\sum_{q=1}^r\gamma_q(1+yT)^{-q}\) with \(\deg Q\le n&lt;m\le s\) and \(\gamma_q\in\mathbb Q(y)\). So on the window, \(U_{n,r}\) lies in \(\mathrm{span}(\rho_1,\ldots,\rho_r)\), where \(\rho_q=(1+yT)^{-q}\).</li>
+<li>If for some \(t\) more than \(t\) of the \(r_n\) are at most \(t\), those rows lie in a \(t\)-dimensional space over \(\mathbb Q(y)\) and the term vanishes. So nonvanishing terms have sorted \(r_{(t)}\ge t\) and \(\sum r_n\ge m(m+1)/2\).</li>
+<li>The top row only adds nonnegative powers of \(\varepsilon\).</li>
+</ul></li>
+<li>This is the degree count stated above. \(\square\)</li>
+</ol>
+<p><strong>Computation.</strong> research/tools/bmd_tie_window.gp (option LOGS, functions logstart and logdescr) for \(m=2,\ldots,5\) and every \(s\) with \(m\le s\le12\) (research/results/bmd-20261006-y/log-start-test.txt). In all \(38\) cases the square log minor at \(x=c\), \(y=1\) is \(\pm c^{m(s+1)}(c-1)^{m^2}(c^s+1)\) times a constant. The axis order \(m(s+1)\) agrees with part 2, and the \(m^2\) exceeds the bound of part 3 from \(m=2\) on.</p>
+<p><strong>What remains.</strong></p>
+<ul>
+<li>The diagonal order \(m^2\). The Hall bound counts only the \(A\)-block; the missing \(m(m-1)/2\) must come from cancellations with the \(B\)-rows and the top row, as for confluent Vandermonde blocks.</li>
+<li>The factor \(x^s+y^s\): the Hermite–Padé system with \(x=\zeta y\), \(\zeta^s=-1\), should have an explicit solution, not yet found.</li>
+<li>An explicit value of \(K_{m,s}\). It is nonzero by part 2 once the divisibilities hold.</li>
+</ul>
+<p>For \(m\ge3\) the tie start \(s=\binom m2\) satisfies \(s\ge m\), and the conjecture gives the square half of conj:cube-tie-window-log-minor-closed-forms. The case \(m=2\), \(s=1\) lies outside part 3. There the factor \(c+1\) is a finite check from earlier entries. For \(m=1\) the Hall bound already gives \(m^2=1\), so only the divisibility remains. The four-term minor needs a similar analysis.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-tie-window-log-minor-closed-forms; conj:cube-tie-window-log-limit-closed-form.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked parts 1–4 step by step: the degree, the identity for \(C\), the Laplace and Cauchy steps, the symmetry sign \((-1)^m\), the Taylor and division step, the Hall count, the sign conventions and the \(38\) data cases. Its fixes are applied:</p>
+<ul>
+<li>the sign in \(x^s+y^s\) is forced, and coprimality is stated;</li>
+<li>\(K\ne0\) follows from part 2;</li>
+<li>the tie claim needs \(m\ge3\), with \(m=2\) separate;</li>
+<li>the scope and wording are tightened.</li>
+</ul>
+<p>Status: working proof of the lemma; the binomial identity is a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-y">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 40.85 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 26.19 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 0.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

@@ -18,6 +18,23 @@ winmat(m, w) = {
   listput(rows, row_top(cols));
   matrix(#rows, w, i, j, rows[i][j]);
 }
+\\ LOGS=[s,...] (cycle bmd-20261006-y): the log matrix (lambda -> 0 limit) with window start s in place of binom(m,2),
+\\ s >= m; logstart(m, s) returns its square minor, to test whether c^s + 1 appears for every start s.
+lgc(t, k) = if (k <= 0, 0, (-1)^(k - 1) * t^k / k);
+logstart(m, s0) = {
+  my(cols = vector(2 * m + 1, j, s0 + j - 1), M = matrix(2 * m + 1, 2 * m + 1));
+  for (j = 1, #cols,
+    for (n = 0, m - 1, M[n + 1, j] = lgc('c, cols[j] - n); M[m + n + 1, j] = lgc(1, cols[j] - n));
+    M[2 * m + 1, j] = sum(i = 1, cols[j] - 1, lgc('c, i) * lgc(1, cols[j] - i)));
+  matdet(M);
+}
+logdescr(P) = {
+  my(a, bb, g, nz);
+  if (P == 0, return("0"));
+  a = valuation(P, 'c); bb = valuation(P, 'c - 1); g = P / ('c^a * ('c - 1)^bb); g = g / content(g);
+  nz = #select(x -> x != 0, Vec(g));
+  Str("c^", a, " (c-1)^", bb, " * ", if (nz <= 4, g, Str("(", nz, " terms, degree ", poldegree(g), ", factor degrees ", apply(poldegree, factor(g)[, 1]~), ")")));
+}
 strip01(f) = { if (f == 0, return(0)); while (subst(f, 'c, 0) == 0, f /= 'c); while (subst(f, 'c, 1) == 0, f /= ('c - 1)); f / content(f); }
 {
 foreach(if (getenv("LAMS") != 0 && getenv("LAMS") != "", eval(getenv("LAMS")), [3/2]), lam, LAMV = lam;
@@ -128,6 +145,8 @@ foreach(eval(getenv("MS")), m,
       \\ cycle bmd-20261006-x: the terms of both stripped minors over a common content, and the common scalar
       my(s1 = st(d1), s2 = st(d2), cc = content([s1, s2]), tm(P) = apply(k -> [k, polcoef(P / cc, k)], select(k -> polcoef(P, k) != 0, [0 .. poldegree(P)])));
       emit(Str("    Delta_2m terms ", tm(s1), "; Delta_2m+1 terms ", tm(s2), "; common scalar ", factor(cc)))));
+  if (getenv("LOGS") != 0 && getenv("LOGS") != "",
+    foreach(eval(getenv("LOGS")), s0, if (s0 >= m, emit(Str("  start s=", s0, ": square log minor = ", logdescr(logstart(m, s0)))))));
   \\ KERNEL=1 (cycle bmd-20261006-w): zeros of the Cramer kernel polynomial V_c at c = -1 (the real Angelesco point).
   if (getenv("KERNEL") == "1",
     my(Wk = subst(winmat(m, 2 * m + 2), 'c, -1), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wk, "..", setminus([1 .. 2 * m + 2], [j])))));
