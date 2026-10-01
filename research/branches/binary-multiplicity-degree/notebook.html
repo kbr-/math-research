@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-limit">Three-centre limits</a> certify generic normality for \(n=7,8,9\); \((2,4,4)\) passes and \((4,3,3)\) fails at \(N=10\).</p>
-<p>Next: find the rule for classical splits, as a statement for every \(N\). Use the exponent structure of the three-centre limits, which are monomial or nearly so in a coordinate adapted to the conic, and the Lucas condition. Do not certify more sizes one at a time.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-three-centre-splits">Three-centre classicality</a> depends only on the multiset of cluster sizes, and some multiset is classical at every \(N=7,\ldots,10\). No rule is known.</p>
+<p>Next: find a coordinate on the conic in which the three-centre limits are monomial, such as the parameter centred at a branch point. Read their exponent sets, and test a Lucas-type rule against the deficit tables (\(N=7,\ldots,10\)) before any further sizes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49447,6 +49447,42 @@ Exact squarefreeness is known for \(k\le6\) (check:cube-merge-far-polynomials).<
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 52.19 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.28 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 10.97 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-splits" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="conj:cube-three-centre-multiset-invariance">
+<h3>4 October 2026 — Three-centre splits: classicality depends only on the multiset of cluster sizes, every size from seven to ten labels has a classical multiset, and the deficits follow no simple congruence</h3>
+<p class="entry-meta">Conjecture of centre invariance (all 28 compositions at N = 9) and deficit tables at N = 7..10 for the three-centre family; supports the existence conjecture through N = 10 and leaves the split rule open. Three centre splits cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-three-centre-limit">three-centre limits</a> certify \(n=7,8,9\), but which splits are classical? Proving conj:cube-three-centre-limit-classical for every \(N\) needs a rule.</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-multiset-invariance: for every \(N\), the generic Hasse jet rank of the three-centre limit depends only on the multiset of cluster sizes, not on which of the centres \(0,1,c\) carries which cluster. This holds even though the cluster at \(0\) contains the dummy label. The existence conjecture conj:cube-three-centre-limit-classical is tested alongside.</p>
+<p><strong>Computation.</strong> research/tools/bmd_three_centre_limit.gp, as before, at precision \(30\) to \(32\); every run reached full rank before the precision ran out. Outputs are in research/results/bmd-20261004-zq/: splits-9.txt has all \(28\) compositions of \(9\); splits-7-8.txt and splits-10.txt have one composition per multiset. The deficit is \(D\) minus the jet rank, the same at three points of \(\mathbb F_{3^5}\).</p>
+<ul>
+<li>\(N=7\) (\(D=23\)): \(\{1,1,5\}\): \(3\); \(\{1,2,4\},\{1,3,3\},\{2,2,3\}\): \(0\).</li>
+<li>\(N=8\) (\(D=30\)): \(\{1,1,6\}\): \(6\); \(\{1,2,5\}\): \(3\); \(\{1,3,4\},\{2,2,4\}\): \(1\); \(\{2,3,3\}\): \(0\).</li>
+<li>\(N=9\) (\(D=38\)): \(\{1,1,7\},\{1,2,6\}\): \(2\); \(\{1,3,5\},\{2,3,4\}\): \(1\); \(\{1,4,4\},\{2,2,5\},\{3,3,3\}\): \(0\). Each multiset gives the same deficit in all its orderings.</li>
+<li>\(N=10\) (\(D=47\)): \(\{1,1,8\}\): \(1\); \(\{3,3,4\}\): \(2\); \(\{1,2,7\},\{1,3,6\},\{1,4,5\},\{2,2,6\},\{2,3,5\},\{2,4,4\}\): \(0\).</li>
+</ul>
+<p><strong>Outcome.</strong> Centre invariance holds on all \(28\) compositions at \(N=9\). The existence conjecture holds through \(N=10\). \(N=8\) is the tightest case, with \(\{2,3,3\}\) its only classical multiset. Two simple candidate rules fail:</p>
+<ul>
+<li>all sizes congruent modulo \(3\) (\(\{1,1,7\}\) fails, \(\{1,2,4\}\) passes);</li>
+<li>a threshold on the internal pair count \(\sum\binom{s_i}2\) (at \(N=10\), \(12\) fails and \(13\) passes).</li>
+</ul>
+<p>The deficits are small and irregular, which suggests a digit (Lucas) condition on the limit's exponent data, as for <a href="#entry-2026-10-04-cube-two-cluster-limit-exponents">two clusters</a>. That reading needs a monomial coordinate on the conic, which is not yet identified.</p>
+<p><strong>Remaining gap.</strong> A rule for classical multisets, or any proof that one exists for every \(N\).</p>
+<p><strong>Dependencies re-read.</strong> check:cube-three-centre-certificates and its construction; conj:cube-three-centre-limit-classical.</p>
+<p><strong>Verification gate.</strong> A conjecture with finite support; the tables are read from the saved outputs. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 50.45 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.09 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 11.00 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.34 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 54.88 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
