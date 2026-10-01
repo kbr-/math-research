@@ -47,12 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-far-radius-review">far radius review</a> found that two monomial blocks with equal starting exponents have a Wronskian with only \(\min(p,q)|p-q|\) far zeros, and none when \(p=q\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), far input. The <a href="#entry-2026-10-03-cube-two-block-wronskian">two-block Wronskian</a> is exact: \(q(p-q)\) far zeros and an explicit product constant. It replaces the leading-order factor of the radius count with bounded corrections.</p>
 <p>Next:</p>
 <ol>
-<li>Prove the closed form of \(W(x^a\mathcal P_{&lt;p}\oplus(1+x)^a\mathcal P_{&lt;q})\): the far-part degree \(\min(p,q)|p-q|\) and the constant for \(p=q\).</li>
-<li>Use it to compute the expansion terms \(T_m\) exactly at small \(e\), and compare their balance curves with the far circles.</li>
-<li>Give the middle steps (\(l\ge2\), step about \(3.2\log N\)) their own count.</li>
+<li>Extend the local-exponent method to the actual terms \(T_m\): the two worlds with the class integrals \(x^{-3-n}\), \((1+x)^{-3-n}\) and the echelon residuals of block IV. Determine their exact local exponents at \(0,-1,\infty\), the far-part degrees, and the leading constants.</li>
+<li>Give the middle steps (\(l\ge2\)) the same treatment.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45687,6 +45686,61 @@ The \(m=1\) balance has the smallest radius, matching \(u_0&lt;u_1&lt;u_2&lt;u_3
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.77 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-two-block-wronskian" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-radius-review:1" data-claims="lem:two-block-wronskian">
+<h3>3 October 2026 — Two monomial blocks with a common non-integral exponent have a Wronskian with exactly q(p − q) far zeros and an explicit product constant</h3>
+<p class="entry-meta">Working proof of a closed form for W(x^a P_(&lt;p) + (1+x)^a P_(&lt;q)), a not an integer, by local exponents at 0, -1 and infinity; exact check of 150 cases. It replaces the leading-order n^(pq) factor of the radius count. Two block Wronskian cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). The <a href="#entry-2026-10-03-cube-far-radius-review">far radius review</a> named as obstacle the uncontrolled leading order of the mixed Wronskian of an \(x^{-n}\)-block and a \((1+x)^{-n}\)-block. Its first Outside lead found that two monomial blocks with equal starting exponent have few far zeros. What is the exact form?</p>
+<p><strong>General statement.</strong> <code>lem:two-block-wronskian</code>, for every \(a\in\mathbb C\setminus\mathbb Z\) and all \(p,q\ge1\).</p>
+<p><strong>Lemma (two-block Wronskian).</strong> Let \(a\in\mathbb C\setminus\mathbb Z\), \(p,q\ge1\), \(K=p+q\), and \(V=x^a\mathcal P_{&lt;p}\oplus(1+x)^a\mathcal P_{&lt;q}\). Write \(\mathrm{sf}(m)=\prod_{i&lt;m}i!\). Then
+\[
+W(V)=c\,x^{pa-pq}(1+x)^{qa-pq}R(x),\qquad c=\pm\,\mathrm{sf}(p)\,\mathrm{sf}(q)\prod_{i&lt;p,\;j&lt;q}(a+i-j),
+\]
+where \(R\) is a polynomial with \(R(0)=1\), \(R(-1)\ne0\) and \(\deg R=\min(p,q)\,|p-q|\). In particular, for \(p=q\),
+\[
+W(V)=c\,\bigl(x(1+x)\bigr)^{p(a-p)},
+\]
+with no zeros off \(\{0,-1,\infty\}\). The form and the constant are proved directly for all \(p,q\). The degree is proved for \(p\ge q\); for \(p&lt;q\) it follows from the involution \(x\mapsto-1-x\), which exchanges the two blocks. That involution changes \(W\) by a constant, including a branch phase such as \((-1)^{(p+q)a}\), so it does not move the zeros.</p>
+<p><em>Proof.</em> <em>Form.</em> The \(r\)-th derivatives of \(x^{a+i}\) and \((1+x)^{a+i}\) are \((a+i)^{\underline r}x^{a+i-r}\) and \((a+i)^{\underline r}(1+x)^{a+i-r}\). Expanding the determinant shows that \(W(V)\in x^{pa}(1+x)^{qa}\,\mathbb C[x,x^{-1},(1+x)^{-1}]\). So \(W(V)=x^{\alpha}(1+x)^{\beta}R(x)\) with \(R\) a polynomial prime to \(x(1+x)\).</p>
+<p><em>At \(0\).</em> The exponents of \(V\) at \(0\) are \(a,\ldots,a+p-1\) (the \(X\)-block, non-integral) and \(0,\ldots,q-1\) (the \(Y\)-block, analytic at \(0\)). These are distinct because \(a\notin\mathbb Z\). In the \(Y\)-class the Taylor matrix \([\binom{a+i}{j}]_{i,j&lt;q}\) has determinant \(1\). Indeed \(\binom{a+i}j=\sum_r\binom ir\binom a{j-r}\) factors it into a lower and an upper unitriangular matrix. The \(X\)-class is monomial. So, as in Step 1 of prop:cube-last-far-eisenstein-branch, \(W(V)\) has order \(\alpha=\sum\mu-\binom K2=pa+\binom p2+\binom q2-\binom K2=pa-pq\) at \(0\). Its leading coefficient is \(\pm\) the Vandermonde of the exponents, \(\mathrm{sf}(p)\,\mathrm{sf}(q)\prod_{i,j}(a+i-j)\). This is \(c\), with \(R(0)=1\).</p>
+<p><em>At \(-1\).</em> By the same argument with the blocks exchanged, \(\beta=qa-pq\) and \(R(-1)\ne0\).</p>
+<p><em>At \(\infty\)</em> (here \(p\ge q\)). Put \(u=1/x\). Then \(x^{a+i}=u^{-a-i}\) and \((1+x)^{a+i}=u^{-a-i}(1+u)^{a+i}\). So both blocks lie in \(u^{-a}\mathbb C((u))\). The \(X\)-block spans \(u^{-a}\langle u^{-p+1},\ldots,u^0\rangle\). Modulo it, each \(Y\)-function \(u^{-a}\sum_r\binom{a+i}ru^{r-i}\) reduces to its tail \(u^{-a}\sum_{s\ge1}\binom{a+i}{i+s}u^s\), because \(i-r\le i&lt;q\le p\). The tails have exponents \(1,\ldots,q\) after echelon reduction, provided \(\Delta=\det[\binom{a+i}{i+s}]_{i&lt;q,\,1\le s\le q}\ne0\). Now
+\[
+\binom{a+i}{i+s}=\frac{\Gamma(a+i+1)}{\Gamma(a-s+1)}\cdot\frac1{(i+s)!},
+\]
+so \(\Delta=\prod_i\Gamma(a+i+1)\prod_s\Gamma(a-s+1)^{-1}\det[1/(i+s)!]\). The Gamma factors are finite and nonzero for \(a\notin\mathbb Z\). Multiplying row \(i\) by \((i+q)!\) gives entries \((i+q)^{\underline{q-s}}\): monic polynomials in \(i\) of degrees \(q-1,\ldots,0\). By column operations the determinant is \(\pm\prod_{i&lt;i'&lt;q}(i'-i)=\pm\mathrm{sf}(q)\ne0\). So the \(u\)-exponents are \(-a+j\), \(j=-(p-1),\ldots,q\), all distinct, and \(W_u(V)\) has order
+\[
+w_\infty=-Ka+\tfrac{q(q+1)-p(p-1)}2-\tbinom K2
+\]
+with a nonzero leading coefficient.</p>
+<p><em>Degree count.</em> Since \(W_x=(du/dx)^{\binom K2}W_u=(-u^2)^{\binom K2}W_u\), \(W_x\) grows like \(x^D\) with \(D=-2\binom K2-w_\infty\). So \(\deg R=D-\alpha-\beta\), which equals
+\[
+\deg R=Ka-\tbinom K2-\tfrac{q(q+1)-p(p-1)}2-pa-qa+2pq=2pq-\tfrac{2pq+2q^2}2=q(p-q).
+\]
+\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_cube_two_block_closed_form.gp computes \(W(V)\) exactly over \(\mathbb Q(x)\) for six values of \(a\): \(-\tfrac{47}2\), \(-\tfrac{61}2\), \(\tfrac13\), \(-\tfrac72-40\), \(\tfrac52\), \(-\tfrac27\). It covers all \(1\le p,q\le5\) in both orders, that is \(150\) cases. In every case it confirms, with a strict type test, that \(R\) is a polynomial with \(R(-1)\ne0\), of degree \(\min(p,q)|p-q|\), and that \(|c|=\mathrm{sf}(p)\mathrm{sf}(q)\prod|a+i-j|\). The script also checks \(\det[(i+q)!/(i+s)!]=\pm\mathrm{sf}(q)\) for \(q\le12\). There are no mismatches (research/results/bmd-20261003-zzt/two-block-closed-form.txt). For \(a\ne b\), the review's data (cited, not rechecked here) show \(\deg R=pq\) generically. The lemma explains the drop: with a common exponent the two blocks share their exponent class at \(\infty\), and the \(Y\)-block can only add exponents \(1,\ldots,q\) above the \(X\)-block.</p>
+<p><strong>What this gives for the radius count.</strong> At the last step both worlds start at exponent \(a=-n-\tfrac72\). The count used the leading power \(n^{pq}\,W(f)W(g)\) of the mixed Wronskian, with an uncontrolled next order. For the two pure monomial blocks, the lemma replaces it by the exact constant
+\[
+|c|=\mathrm{sf}(p)\,\mathrm{sf}(q)\prod_{i&lt;p,\,j&lt;q}|n+\tfrac72-i+j|=\mathrm{sf}(p)\,\mathrm{sf}(q)\,n^{pq}\exp\Bigl(\sum_{i,j}\log\bigl(1+\tfrac{7/2-i+j}n\bigr)\Bigr).
+\]
+The expansion needs \(p+q&lt;n\), so that every factor \(n+\tfrac72-i+j\) is positive. Its first-order sum is \(\tfrac72pq/n+(q-p)pq/(2n)\), and the second order is \(O(p^4/n^2)\). So the correction is bounded in terms of \(pq/n\), \(|p-q|pq/n\) and \(p^4/n^2\). For \(p,q\approx k=4e\), \(n\approx2e^2\), and \(|p-q|=|4-2m|\le4\) bounded, as for the five terms \(T_m\), all three are \(O(1)\). So for this factor the review's condition holds: no power of \(e\) enters, and the coefficients of \(\log N\) in the count are unaffected. The \(m\)-dependent first-order part, about \((2m-4)\cdot pq/(2n)\approx4(2m-4)\), changes only the constants \(d_i\). The lemma also counts the far zeros of a two-block term: \(q(p-q)\) with \(p-q=4-2m\), about \(2k|2-m|\) for \(T_m\). These are not zeros of \(P\), but they mark where a single term \(T_m\) cannot be used as the factor \(F_i\).</p>
+<p><strong>What remains.</strong> The actual terms \(T_m\) also contain the class integrals \(x^{-3-n}\) and \((1+x)^{-3-n}\), and residual tails rather than monomials. The splitting \(h_j=X_j+Y_j\) is still formal. The next step is the three-block form with the class integrals and the echelon residuals, using the same local-exponent method.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch, Step 1 (leading coefficient as pivot minor times Vandermonde); lem:cube-block-wronskian-ordinary (a related ordinariness criterion at \(w=0\), with different hypotheses); conj:cube-last-far-radius-step (the count).</p>
+<p><strong>Verification gate.</strong> I re-read Step 1 of the Eisenstein branch proposition and the related block lemma. One fresh-context medium reviewer checked the form, the order and constant at \(0\), the order at \(-1\), the tail reduction and minor at \(\infty\), the degree arithmetic and the first-order sum. Verdict: pass with corrections, all applied. The constant and the form hold for all \(p,q\), with the degree \(\min(p,q)|p-q|\) via the involution, which changes \(c\) by a phase. The script's polynomial test was made strict, a check \(R(-1)\ne0\) and both orders were added, and the script was rerun (\(150\) cases). The boundedness claim now states its hypotheses \(|p-q|\) bounded and \(p+q&lt;n\). The \(a\ne b\) degree is marked as cited. The reviewer's own independent run did not complete; the rerun of the strengthened script replaces it. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 11.63 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 22.77 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">19.30 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 27.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
