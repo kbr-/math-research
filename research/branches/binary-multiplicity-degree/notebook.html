@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-geometric-cone-collapse">geometric cone collapse</a> reduces the cone criterion at small \(q\) to boundary avoidance near the caterpillar point.</p>
-<p>Next: decide whether the closure of the contact locus contains the caterpillar point. Test the contact rank along the curve \(a_i=q^i\) as \(q\to0\), using its valuation (leading-order) matrix, and then identify the strata reached along the cancellation curves.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-caterpillar-contact-avoidance">caterpillar contact avoidance</a> removes the non-cancelling part of the geometric cone from the contact locus.</p>
+<p>Next: the limits of the cancelling points of the geometric cone, and the boundary points with two roots at a common scale. Determine whether the record's multi-cluster spine results (lem:cube-multicluster-spine-classes and the spine-chain checks) decide them, and test the first nontrivial case, one two-root cluster.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53196,6 +53196,63 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-caterpillar-contact-avoidance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="cor:cube-caterpillar-contact-avoidance">
+<h3>6 October 2026 — Caterpillar contact avoidance: the closure of the contact locus misses every caterpillar point, so the geometric cone avoids K wherever it does not cancel</h3>
+<p class="entry-meta">Working proof of the caterpillar contact avoidance from the record's caterpillar minimality, with a multivariate rediscovery checked at N = 4, 5; gaps (1) to (3) of the cone route remain. Caterpillar contact avoidance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K). The <a href="#entry-2026-10-06-cube-geometric-cone-collapse">geometric cone collapse</a> reduces the cone criterion at small \(q\), on the non-cancelling part, to the caterpillar point \(p_{\rm cat}\) lying outside \(\overline{K/{\rm Aff}}\). Does it?</p>
+<p><strong>General statement.</strong> conj:cube-offcollision-contact-bound, advanced by cor:cube-caterpillar-contact-avoidance. For every \(N\ge2\) and every ordering of the roots, the caterpillar point \(p_{\rm cat}\in\overline M_{0,N+1}\), with the mark at \(\infty\), has a neighbourhood on which every separated configuration satisfies \(\operatorname{rank}A_{R-1}=R\). Hence \(p_{\rm cat}\notin\overline{K/{\rm Aff}}\), and \(p_{\rm cat}\) is also outside the closure of the codimension-one locus \(\{\operatorname{rank}A_{R-1}&lt;R\}\).</p>
+<p><strong>Proof from the record.</strong> thm:cube-caterpillar-minimality (working proof) states the following. In characteristic zero, for non-integer \(\lambda\) and roots \(b_i=c_i\varepsilon^{v_i}\) with nonzero \(c_i\) and \(0&lt;v_1&lt;\cdots&lt;v_M\), the Taylor Plücker coordinate on the columns \(0,\ldots,\binom M2-1\) of the pair products has minimal valuation and a nonzero leading coefficient. Here \(\lambda=3/2\), \(M=N\), and the coordinate is \(\det A_{R-1}\). The proof has four steps.</p>
+<ol>
+<li>Suppose \(p_{\rm cat}\in\overline{K/{\rm Aff}}\). \(K/{\rm Aff}\) is constructible, and for a constructible set in a complex variety the Zariski and Euclidean closures agree. The curve selection lemma then gives an analytic arc \(\gamma\) with \(\gamma(0)=p_{\rm cat}\) and \(\gamma(\varepsilon)\in K/{\rm Aff}\) for \(\varepsilon\ne0\). Inside the chart it lifts to configurations with \(a_N=0\), \(a_1=1\).</li>
+<li>In the nested coordinates of the collapse lemma (\(a_N=0\), \(a_i=x_1\cdots x_{i-1}\)), \(x_i(\varepsilon)=c'_i\varepsilon^{w_i}(1+o(1))\) with \(w_i&gt;0\). So \(v(a_i)=\sum_{j&lt;i}w_j\) strictly increases, with \(a_1=1\) and \(a_N=0\).</li>
+<li>Translating by \(\varepsilon^V\), with \(V\) larger than every \(v(a_i)\), and dilating by \(\varepsilon\) gives roots of the theorem's form. Neither changes whether \(\det A_{R-1}\) vanishes: \(A_L(a+s\mathbf 1)=A_L(a)C\) with \(C\) unitriangular (lem:cube-contact-plane-criterion, part (1)), and dilation multiplies the determinant by a power of the factor.</li>
+<li>The theorem is stated for exact monomials \(c_i\varepsilon^{v_i}\), and along the arc the roots are convergent series \(c_i\varepsilon^{v_i}(1+o(1))\). Its proof uses only valuations and leading coefficients: the factorization, Cauchy–Binet, the bialternant lower bound, the leading monomial of each Vandermonde and the rearrangement step. So it holds verbatim for such series. It gives \(\det A_{R-1}(\gamma(\varepsilon))\ne0\) for small \(\varepsilon\ne0\). So \(\operatorname{rank}A_{R+1}=R\) along the arc, contradicting \(\gamma\subset K\).</li>
+</ol>
+<p>The same argument applies to the codimension-one locus. Other orderings follow by relabelling. \(\square\)</p>
+<p><strong>Multivariate form (rediscovery, sketch).</strong> Write \(H_k(X,Y)=[T^k]\bigl((1+XT)(1+YT)\bigr)^{-3/2}\), so that \(A_L=(H_k(a_i,a_j))_{i&lt;j,\,k\le L}\). Before finding the record's theorem, I derived the same mechanism in nested coordinates. Label the pairs containing point \(1\) as the block \(P\), and the pairs inside \(\{2,\ldots,N\}\) as the block \(Q\).</p>
+<ul>
+<li>\(Q\) equals the \((N-1)\)-point matrix with column \(k\) scaled by \(x_1^k\), since \(H_k\) is homogeneous of degree \(k\).</li>
+<li>\(P=V(y)B\), with \(y_j=x_1a'_j\), \(B_{nk}=b_nb_{k-n}\) and \(b_m=\binom{-3/2}{m}\).</li>
+</ul>
+<p>Laplace and Cauchy–Binet expansion then express \(\det A_{R-1}\) as a sum over column splits. The unique term of minimal \(x_1\)-degree pairs the lowest columns with \(Q\). Its coefficient is the Vandermonde of \(a'\) times the \((N-1)\)-point determinant times a Toeplitz minor \(\det(b_{R'+j-n})\), \(R'=\binom{N-1}2\). That minor is the Jacobi–Trudi determinant of a rectangle, nonzero by the hook-content formula since \(3/2\) is not an integer. This shows the scaling of \(Q\), the factorization of \(P\), the unique \(x_1\)-minimal term, and \(e_1(N)=R'(R'+1)/2\). The full multivariate statement, \(\det A_{R-1}=x^{e(N)}u(x)\) with \(u(0)\ne0\), would need componentwise lower bounds for every column set, so that the factorization of the \(x_1\)-minimal coefficient survives the higher \(x_1\)-terms. Those bounds are not proved here, and the statement is only a sketch; the corollary does not depend on it. research/tools/bmd_cube_caterpillar_det.m2 confirms it exactly over \(\mathbb Q\) (research/results/bmd-20261006-j/caterpillar-det-n4-n5.txt):</p>
+<ul>
+<li>\(N=4\): \(46\) terms, minimal monomial \(x_1^6x_2^2\) dividing all of them, constant \(-14175/2^{23}\);</li>
+<li>\(N=5\): \(4152\) terms, \(x_1^{21}x_2^9x_3^3\).</li>
+</ul>
+<p>Both match the predicted exponents.</p>
+<p><strong>Consequence for the cone route.</strong> Combined with lem:cube-geometric-cone-collapse: let \(\rho_N\le1\) be the radius of a neighbourhood of \(p_{\rm cat}\), inside the chart domain, that is free of \(K\). Then for \(\delta&gt;9|q|/\rho_N\), every point of \(L_q\) satisfying relative non-cancellation avoids \(K\). The cone criterion for \(L_q\) at small \(q\) is thereby reduced to the three gaps of the collapse entry:</p>
+<ol>
+<li>the limits of the cancelling points;</li>
+<li>compactness of the special fibre;</li>
+<li>the non-separated points of \(L_q\).</li>
+</ol>
+<p>For (1), I expect, without proof, the cancelling points to tend to other boundary points, where valuations of differences jump; limits in the interior of \(M_{0,N+1}\) are not excluded. The corollary covers exactly the caterpillar points, over all orderings. Every other boundary point has two roots at a common scale.</p>
+<p><strong>Remaining gap.</strong> Gaps (1) to (3), including the limits of the cancelling points and the boundary points with two roots at a common scale.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-caterpillar-minimality (statement and assessment); lem:cube-contact-plane-criterion (part (1), translation); lem:cube-geometric-cone-collapse.</p>
+<p><strong>Verification gate.</strong> A fresh medium-effort reviewer checked the convention \(\varphi_b=(1+bT)^{-\lambda}\) and the columns of the recorded theorem, the translation and dilation step, the chart, the rank step and the data, and passed the corollary. It required:</p>
+<ul>
+<li>justifying the theorem's application to convergent series;</li>
+<li>citing the form of curve selection used;</li>
+<li>rephrasing the multivariate induction as an unproved sketch;</li>
+<li>defining \(H_k\);</li>
+<li>marking the limits of cancelling points as an expectation, and stating \(\rho_N\le1\) inside the chart.</li>
+</ul>
+<p>All are made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-j">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 31.91 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 42.97 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 6.40 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 35.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 7.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
