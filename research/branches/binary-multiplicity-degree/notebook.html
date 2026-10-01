@@ -47,12 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. From the six-space, \(W_{b-1}\) is <a href="#entry-2026-10-03-cube-last-far-separation">squarefree for \(b\le8\)</a>. Its roots stay in a fixed region, with spacing of order \(e^{-2}\) and a stable separation ratio, which points to accumulation on finitely many curves (conj:cube-last-far-separation).</p>
-<p>Next, identify the limit curves:</p>
-<ol>
-<li>Fit the roots at \(e=4,5,6\) against level curves of \(|x|^p|1+x|^q\) and of the large-parameter potentials of the six-space (Jacobi asymptotics of \(u_1\)).</li>
-<li>From the fitted curves, state the local limit and the Hurwitz argument, with its threshold.</li>
-</ol>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. \(W_{b-1}\) is <a href="#entry-2026-10-03-cube-last-far-separation">squarefree for \(b\le8\)</a> by the explicit six-space. Its roots split into <a href="#entry-2026-10-03-cube-last-far-two-populations">dense chains and a sparse bulk</a>, not along the balance curves, so the asymptotic lead is a two-scale analytic problem without a candidate limit.</p>
+<p>Next, a route review of the far input. It weighs three options:</p>
+<ul>
+<li>the two-scale asymptotic route;</li>
+<li>certified computation, which now reaches \(b\le8\) cheaply;</li>
+<li>moving cycles to another necessary statement, statement 2's slice or (K).</li>
+</ul>
+<p>It needs new outside leads aimed at the obstacle.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -44102,6 +44104,43 @@ of prop:cube-last-far-six-space has no Weierstrass point of weight at least \(3\
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.62 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">16.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-two-populations" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-bulk-review:3" data-claims="conj:cube-last-far-anti-stokes">
+<h3>3 October 2026 — The last-step far roots do not approach the balance curves through e = 6, and split into shrinking dense chains and a sparse remainder; the curve reading of the separation conjecture is withdrawn</h3>
+<p class="entry-meta">Refutation through e = 6 of accumulation on the three balance curves; correction of the curve interpretation in conj:cube-last-far-separation (squarefreeness and the e &lt;= 6 data stand). Last far two populations cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The <a href="#entry-2026-10-03-cube-last-far-separation">separation cycle</a> read the stable separation ratio and the minimal spacing of order \(e^{-2}\) as accumulation on finitely many fixed curves. Which curves? The natural candidates balance the large-parameter sizes \(|x|^n\), \(|1+x|^n\) and \(1\): \(\operatorname{Re}x=-\tfrac12\), \(|1+x|=1\) and \(|x|=1\). They were not seen at \(e\le3\), which may be pre-asymptotic.</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-anti-stokes</code>: as \(e\to\infty\), the roots of \(W_{b-1}\) approach the balance curves, \(\max_r\operatorname{dist}(r,C_1\cup C_2\cup C_3)\to0\) in log-modulus coordinates. It is not supported through \(e=6\), and the root structure found below contradicts it.</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_last_far_stokes_series.gp extends the earlier distance test to \(e\le6\) (research/results/bmd-20261003-zx/stokes-series.txt). The mean log-distance to the nearest balance curve is \(0.177,0.168,0.187,0.187,0.186,0.171\), and the maximum stays near \(0.46\). The share within \(0.1\) is \(0.50,0.34,0.32,0.31,0.33,0.41\). So no approach is seen.</p>
+<p>research/tools/bmd_cube_last_far_root_chains.gp links the roots in the upper half-plane into chains of nearest neighbours within \(2.5\) times the median nearest-neighbour distance (root-chains.txt). At \(e=4,5,6\):</p>
+<ul>
+<li>The median nearest-neighbour distance times \(e^2\) is \(1.88,1.87,1.86\).</li>
+<li>There are exactly two long chains, of \(25,24\), \(38,38\) and \(53,52\) roots. They grow linearly in \(e\), by about \(14\) per step.</li>
+<li>All other roots of the upper half-plane are isolated at that scale: \(28,40,56\) of them, growing faster, plausibly quadratically.</li>
+<li>Each chain runs along two arcs at different \(|t|\) (\(t=x/(1+x)\)), joined near the negative real \(t\)-axis. At \(e=6\) these are \(|t|\approx0.85\) and \(0.66\), and \(|t|\approx1.08\) and \(1.40\). The chains end near \(x\approx-0.3+1.0i\) to \(0.03+1.0i\), and \(-0.6+1.1i\) to \(-0.9+1.0i\).</li>
+</ul>
+<p><strong>Reading.</strong> There are two populations. A dense one of \(O(e)\) roots lies along four arcs (with conjugates), with spacing of order \(e^{-2}\), so its arcs have length of order \(1/e\) or carry clusters. A sparse one holds the remaining \(\approx8e^2\) roots, at larger spacing. The minimal distance and the median were set by the dense population at \(e\le6\). Once the sparse population dominates the count, the median will follow its spacing instead. So the stable ratio in the separation cycle is likely pre-asymptotic. The reading "finitely many fixed curves with spacing \(e^{-2}\)" of conj:cube-last-far-separation is withdrawn. Its squarefreeness part, the data through \(e=6\) and check:cube-last-far-squarefree-six stand.</p>
+<p><strong>For the asymptotic lead.</strong> An asymptotic argument would have to treat two regimes:</p>
+<ul>
+<li>dense chains, whose limit may be a local cluster law near four points, as the \(2\)-adic unit cluster of \(4e+4\) roots suggested arithmetically;</li>
+<li>the sparse bulk.</li>
+</ul>
+<p>Neither has a candidate limit yet. The lead continues, but it is now a two-scale analytic problem.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-last-far-separation and its data; conj:cube-last-far-unit-cluster-type (the \(4e+4\) unit-root cluster at \(p=2\)); check:cube-last-far-six-reduction-data (the first balance test).</p>
+<p><strong>Verification gate.</strong> Numerical root geometry at \(80\) to \(120\) digits on exact polynomials. The chain linking uses a fixed threshold, so the population split depends on it; the counts are reported, not a theorem. No reviewer: no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 9.41 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 36.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">36.65 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
