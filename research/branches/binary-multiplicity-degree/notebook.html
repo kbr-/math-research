@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-necessity-review">necessity review</a> finds that far simplicity is stronger than (K) needs, and comparable to Veselov's conjecture.</p>
-<p>Next: the cone form of lem:cube-contact-plane-criterion. Choose a four-dimensional cone of progression-based configurations, stable under \(a\mapsto ta+s\mathbf 1\), and determine its intersection with the contact locus at the recorded sizes. Then look for a structure uniform in \(N\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). On <a href="#entry-2026-10-06-cube-contact-structured-planes">structured planes</a> the contact locus is exactly symmetric. Polynomial nodes fail as a cone because they contain the arithmetic progression. Geometric nodes miss \(K\) at \(N=9\).</p>
+<p>Next: attempt a proof that the geometric-node cone \(\{a_i=s+tq^i+uq^{2i}+vq^{3i}\}\) meets \(\overline{K_U}\) only in \(k\mathbf 1\) for every \(N\). Analyse the \(q\)-structure of the matrices \(H_k(q^i,q^j)\), and treat the non-separated limits.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53116,6 +53116,42 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 14.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.84 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-contact-structured-planes" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-06-cube-necessity-review:2" data-claims="check:cube-contact-structured-planes">
+<h3>6 October 2026 — On structured planes the contact locus is exactly symmetric: polynomial nodes meet it only in reflection-symmetric configurations, and geometric nodes miss it</h3>
+<p class="entry-meta">Finite check of the cone form of the contact bound on structured planes, N = 7, 8, 9 over F_211; consistent with (K) through the symmetry restatement. Contact structured planes cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K). The <a href="#entry-2026-10-06-cube-necessity-review">necessity review</a> proposed the cone form of lem:cube-contact-plane-criterion. A four-dimensional cone, stable under \(a\mapsto ta+s\mathbf 1\) and built from nodes with structure uniform in \(N\), would meet \(\overline{K_U}\) only in \(k\mathbf 1\). Do progression-based cones qualify?</p>
+<p><strong>General statement.</strong> conj:cube-offcollision-contact-bound, (K) itself, under test. By lem:cube-symmetry-restatement it is equivalent to: every component of \(K\cap U\) of codimension at most two lies in the mark-fixed symmetric locus. The finite result is check:cube-contact-structured-planes.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_contact_plane_count.c gained two structured planes. Each counts the separated \(\mathbb F_{211}\)-points \(a=x\alpha+y\beta+z\gamma\) with \(\operatorname{rank}A_{R+1}(a)&lt;R\) (the locus \(K\)), and with \(\operatorname{rank}A_R&lt;R\) as a control (research/results/bmd-20261006-h/).</p>
+<ul>
+<li><em>Polynomial nodes</em> (BMD_PLANE=poly): \(\alpha_i=i\), \(\beta_i=i^2\), \(\gamma_i=i^3\). With translation this is \(L_N=\{a_i=s+ti+ui^2+vi^3\}\).
+<ul>
+<li>\(N=7\): no \(K\) point among \(40{,}441\) separated points; the control has \(211\) points.</li>
+<li>\(N=8\): \(199\) \(K\) points; \(197\) lie on the line \(z=39y\).</li>
+<li>\(N=9\): \(202\) \(K\) points; \(200\) lie on the line \(z=14y\).</li>
+</ul></li>
+<li><em>Geometric nodes</em> (BMD_PLANE=geom): \(\alpha_i=2^i\), \(\beta_i=4^i\), \(\gamma_i=8^i\). At \(N=9\): no \(K\) point and no control point among \(37{,}632\) separated points.</li>
+</ul>
+<p><strong>Identification.</strong> An element \(s+tx+ux^2+vx^3\) of \(L_N\) is invariant under the reflection \(i\mapsto N+1-i\), meaning \(a_i+a_{N+1-i}\) is constant, exactly when \(u=-3mv\) with \(m=(N+1)/2\). In plane coordinates this is \(z=-y/(3m)\): modulo \(211\), \(-2/27\equiv39\) at \(N=8\) and \(-1/15\equiv14\) at \(N=9\). So the line is the reflection-symmetric locus, which contains the arithmetic progression \([1:0:0]\). research/tools/bmd_contact_hits_symmetry.py checks the four remaining points (hits-symmetry.txt). Their node sets are each invariant under a reflection \(a\mapsto c-a\) with a different pairing: centres \(146\) and \(67\) at \(N=8\), \(0\) and \(27\) at \(N=9\). Every \(K\) point found therefore lies in the symmetric locus. That is what (K) predicts through the symmetry restatement, and it matches the recorded symmetric members of \(K\) (check:cube-symmetric-outside-eprime).</p>
+<p><strong>Outcome for the cone criterion.</strong> Polynomial nodes cannot serve as the cone. They contain the arithmetic progression, which is symmetric and lies in \(K\) for \(N\ge8\). Geometric nodes avoid the symmetric locus, and at \(N=9\) the plane misses \(K\) at every separated \(\mathbb F_{211}\)-point. That is consistent with the cone criterion, but proves nothing: it covers only separated points modulo one prime, not the closure. The geometric cone is the candidate to develop. Its matrices \(H_k(q^i,q^j)\) are \(q\)-structured, so \(q\)-binomial identities might give their rank for every \(N\).</p>
+<p><strong>Remaining gap.</strong> A proof that the geometric-node cone meets \(\overline{K_U}\) only in \(k\mathbf 1\) for every \(N\), including non-separated limits. Short of that, (K) remains certified only through \(N=13\).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-contact-plane-criterion and lem:cube-symmetry-restatement (statements); check:cube-symmetric-outside-eprime; the tool's self-tests (recurrence, and the recorded symmetric control at \(N=8\), reproduced).</p>
+<p><strong>Verification gate.</strong> A finite check over \(\mathbb F_{211}\) with the tool's self-tests passing. The symmetric identification is exact algebra, and the off-line points were checked by a committed tool. No proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-h">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 14.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">51.16 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 42.03 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">56.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">43.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.40 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

@@ -156,6 +156,22 @@ int main(int argc, char **argv) {
   for (int pl = 0; pl < nplanes; pl++) {
     ulong *al = malloc(3 * N * sizeof(ulong));
     for (int i = 0; i < 3 * N; i++) al[i] = n_randint(st, P);
+    /* BMD_PLANE=poly (6 October 2026, cycle bmd-20261006-h): the structured plane alpha_i = i, beta_i = i^2,
+     * gamma_i = i^3 (i = 1..N), which with the translation direction 1 spans the polynomial-node subspace
+     * {a_i = s + t i + u i^2 + v i^3}, a candidate cone for the cone form of lem:cube-contact-plane-criterion. */
+    const char *pm = getenv("BMD_PLANE");
+    if (pm && strcmp(pm, "poly") == 0)
+      for (int i = 0; i < N; i++) {
+        ulong v = (ulong)(i + 1) % P;
+        al[i] = v; al[N + i] = nmod_mul(v, v, MOD); al[2 * N + i] = nmod_mul(al[N + i], v, MOD);
+      }
+    /* BMD_PLANE=geom: geometric nodes alpha_i = 2^i, beta_i = 4^i, gamma_i = 8^i, which avoid the reflection-symmetric
+     * configurations that the polynomial-node plane contains (they lie in K). */
+    if (pm && strcmp(pm, "geom") == 0)
+      for (int i = 0; i < N; i++) {
+        ulong v = n_powmod2_ui_preinv(2, (ulong)(i + 1), P, n_preinvert_limb(P));
+        al[i] = v; al[N + i] = nmod_mul(v, v, MOD); al[2 * N + i] = nmod_mul(al[N + i], v, MOD);
+      }
     long npts = (long)P * P + P + 1;
     long nsep = 0, hitK = 0, hitC = 0;
     char *hitlist = malloc(1 << 16); hitlist[0] = 0; size_t hl = 0;
