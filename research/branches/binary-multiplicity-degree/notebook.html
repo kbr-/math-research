@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The balanced simultaneous limit is <a href="#entry-2026-10-04-cube-balanced-limit-seven-eight">nonclassical at seven and eight labels</a>, so the record's candidate certificate for every \(N\) fails beyond six.</p>
-<p>Next: a route review. It weighs other limits that might stay classical for every \(N\) (unbalanced splits, three clusters, the mirror family) against returning to statement 3 with a new idea. It also asks whether the deficiency \(D-\)rank (\(1\) at \(N=7\), \(2\) at \(N=8\)) has a structural source, such as a Frobenius relation among the mixed rows.</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-04-cube-two-cluster-limit-exponents">Two-cluster limits</a> are nonclassical beyond six labels, because their monomial exponent sets fail the Lucas condition modulo \(3\).</p>
+<p>Next: a route review on the combinatorial form of the limit route. Is there a degeneration (three clusters, nested scales, or labels at \(\infty\)) whose limit exponent set satisfies \(\det\binom ek\not\equiv0\pmod3\) for every \(N\)? The review weighs this against returning to statement 3.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49143,6 +49143,40 @@ Exact squarefreeness is known for \(k\le6\) (check:cube-merge-far-polynomials).<
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 9.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.66 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-two-cluster-limit-exponents" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-statement-two-switch-review:1" data-claims="conj:cube-two-cluster-limits-nonclassical">
+<h3>4 October 2026 — Why two-cluster limits fail beyond six labels: the saturated limits are monomial, and their exponent sets have gaps whose binomial matrix is singular modulo 3, for every split tried at seven and eight labels</h3>
+<p class="entry-meta">Conjecture with finite support (all splits M = 2, 3, 4 at N = 7, 8) and its mechanism: the deficits equal the mod-3 rank defects of the limits' exponent sets. Two cluster limit exponents cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-balanced-limit-seven-eight">balanced limit</a> is nonclassical at seven and eight labels. Why, and does another two-cluster split avoid it?</p>
+<p><strong>General statement.</strong> conj:cube-two-cluster-limits-nonclassical: in characteristic three, for every \(N\ge7\) and every split of the labels into two clusters (near \(0\) and near \(1\), single smoothing parameter, generic slopes), the simultaneous limit of the degree-two space is nonclassical. Its length-\(D\) Hasse jet matrix is singular at a generic point. So no two-cluster limit can feed the moving-point criterion beyond six labels.</p>
+<p><strong>Mechanism.</strong> If a limit is spanned by monomials \(x^{e}\), \(e\in S\), \(|S|=D\), its Hasse jet matrix at a point \(t\ne0\) is \(\operatorname{diag}(t^{e})\bigl(\binom ek\bigr)_{e\in S,\,k&lt;D}\operatorname{diag}(t^{-k})\), since \(D^{(k)}x^e=\binom ekx^{e-k}\). So the limit is classical iff \(\det\binom ek\not\equiv0\pmod3\), a Lucas condition on \(S\). This is a one-line computation, not registered as a lemma.</p>
+<p><strong>Computation.</strong> research/tools/bmd_balanced_limit_n.gp now prints the reduced limit basis by largest exponent and the mod-\(3\) rank of \(\binom ek\) on the leading exponents (SUPPORTS), and takes the split \(M\) as a parameter (MFIX). Outputs are in research/results/bmd-20261004-zm/: balanced-supports.txt, split-m2.txt, split-m3.txt.</p>
+<ul>
+<li>\(N=6\), \((3,3)\), control: leading exponents \(11,9,8,\ldots,-6\), with two coupled rows \(\{11,-9\},\{9,-7\}\). Binomial rank \(17\) of \(17\), jet rank \(17\).</li>
+<li>\(N=7\), \((3,4)\): the limit is exactly monomial, \(S=\{-13,\ldots,11\}\setminus\{-11,10\}\). Binomial rank \(22\) of \(23\), equal to the jet rank \(22\).</li>
+<li>\(N=7\), \((2,5)\): one coupled row \(\{9,-15\}\). Leading-exponent rank \(21\), jet rank \(22\) of \(23\).</li>
+<li>\(N=8\), \((4,4)\): one coupled row \(\{13,-11\}\). Binomial rank \(28\), jet rank \(28\) of \(30\).</li>
+<li>\(N=8\), \((3,5)\): one coupled row \(\{15,-17\}\). Leading-exponent rank \(28\), jet rank \(29\) of \(30\).</li>
+<li>\(N=8\), \((2,6)\): monomial, binomial rank \(26\), jet rank \(26\) of \(30\).</li>
+</ul>
+<p><strong>Outcome.</strong> Every two-cluster split at \(N=7,8\) gives a nonclassical limit. Where the limit is monomial, the deficit is exactly the mod-\(3\) rank defect of its exponent set. Where a row is coupled, the coupling recovers at most one dimension. So the failure is combinatorial: the saturation leaves gaps in the exponent range, at \(-11\) and \(10\) for \((3,4)\), and the remaining set is \(3\)-adically degenerate. The six-label success came from a gap-free middle and two coupled endpoint rows.</p>
+<p><strong>Consequence for statement 2.</strong> The limit route turns into a combinatorial question: is there a degeneration, with more than two clusters or with nested scales, whose limit exponent set satisfies the Lucas condition for every \(N\)? Its limits would be monomial or nearly so, as here. A positive answer would prove the characteristic-three slice for every \(N\) through the moving-point criterion.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-balanced-limit-generic-classical; lem:cube-moving-point-limit-criterion; prop:cube-generic-balanced-six-label-limit.</p>
+<p><strong>Verification gate.</strong> A conjecture with finite support. The mechanism is the monomial Hasse identity above, checked against the jet ranks in every monomial case. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zm">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 3.55 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">36.60 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">57.75 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
