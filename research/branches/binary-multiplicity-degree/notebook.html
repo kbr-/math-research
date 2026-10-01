@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, far simplicity of the merge rows. The <a href="#entry-2026-10-05-cube-far-simplicity-review">far-simplicity review</a> finds no discriminant product formula for \(n\ge2\). Irreducibility of \(R_{n,k}\), seen at every tested case, remains as an arithmetic route.</p>
-<p>Next: a Newton-polygon degree sieve on \(R_{2,k}\), \(k=3,\ldots,7\), at primes below \(200\). Look for a family of primes, defined for every \(k\), whose polygons together forbid every factor degree.</p>
+<p>Route item: cube-odd-characteristic. The merge far polynomials are <a href="#entry-2026-10-05-cube-far-irreducibility-sieve">irreducible at every tested size</a>, with full-symmetric reduction statistics. No uniform arithmetic proof is available: the Newton polygons are nearly trivial.</p>
+<p>Next: a route review across statements 2, 3 and 4 that consolidates this period. Both statements 2 and 3 now have cheap certificates and no mechanism. Look again at statement 4 for a part with a structural handle, such as the dimension-four rows or a threshold formula in a range where the record's methods apply, and rank the three by what a mechanism would need.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51359,6 +51359,43 @@ For the merge far spaces, with \(C=\binom n2\), \(P=\binom{k-1}2\), \(E=\{-C,\ld
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 4.44 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-far-irreducibility-sieve" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-05-cube-far-simplicity-review:2" data-claims="check:cube-merge-far-irreducible-sieve">
+<h3>5 October 2026 — The merge far polynomials are irreducible at every tested size, with reduction statistics of a full symmetric Galois group; Newton polygons are far too weak to prove it, so the multi-prime route of Filaseta type fails</h3>
+<p class="entry-meta">Irreducibility of R_(n,k) at (2,3)–(2,6), (3,3), (3,4), (4,3) by factorization patterns modulo primes, and a refutation of the Newton-polygon sieve as a route for every k. Far irreducibility sieve cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, far simplicity of the merge rows. The <a href="#entry-2026-10-05-cube-far-simplicity-review">far-simplicity review</a> proposed irreducibility of \(R_{n,k}\), which implies squarefreeness in characteristic zero. The proposed proof was a Newton-polygon degree sieve at several primes, in the manner of Filaseta.</p>
+<p><strong>General statement.</strong> conj:cube-merge-far-irreducible, already in the record (this cycle restated it before finding it, and only adds evidence): for every \(n\ge2\), \(k\ge3\), \(R_{n,k}\) is irreducible over \(\mathbb Q\). This implies conj:cube-merge-far-polynomial.</p>
+<p><strong>Newton sieve.</strong> research/tools/bmd_far_newton_sieve.gp intersects, over the primes below \(200\), the factor degrees allowed by Dumas's theorem (research/results/bmd-20261005-n/newton-sieve.txt). Only \(p=3\) (at \((2,4)\) and \((3,3)\)) and \(p=11\) (at \((3,4)\)) remove any degree. At \((2,3)\), \((2,5)\) and \((4,3)\) no prime removes anything, and every case keeps most degrees. The route fails: the \(p\)-adic Newton polygons of \(R_{n,k}\) are almost all trivial. That is the opposite of the Bessel and Laguerre families, where primes between \(k\) and \(2k\) give long segments with large denominators.</p>
+<p><strong>Factorization-pattern sieve.</strong> research/tools/bmd_far_modp_sieve.gp intersects, over the primes \(3\le p<400\) not dividing the leading coefficient or the discriminant, the subset sums of the degree patterns of \(R\bmod p\) (research/results/bmd-20261005-n/modp-sieve.txt). Every tested case is irreducible:</p>
+<table>
+<tr><th>\((n,k)\)</th><th>degree</th><th>first prime with irreducible reduction</th><th>irreducible reductions</th></tr>
+<tr><td>\((2,3)\)</td><td>\(6\)</td><td>\(19\)</td><td>\(15\) of \(74\)</td></tr>
+<tr><td>\((2,4)\)</td><td>\(15\)</td><td>\(73\)</td><td>\(5\) of \(69\)</td></tr>
+<tr><td>\((2,5)\)</td><td>\(28\)</td><td>\(59\)</td><td>\(3\) of \(68\)</td></tr>
+<tr><td>\((2,6)\)</td><td>\(45\)</td><td>\(137\)</td><td>\(1\) of \(63\)</td></tr>
+<tr><td>\((3,3)\)</td><td>\(13\)</td><td>\(89\)</td><td>\(4\) of \(71\)</td></tr>
+<tr><td>\((3,4)\)</td><td>\(30\)</td><td>none below \(400\)</td><td>\(0\) of \(66\)</td></tr>
+<tr><td>\((4,3)\)</td><td>\(22\)</td><td>\(59\)</td><td>\(3\) of \(67\)</td></tr>
+</table>
+<p>At \((3,4)\) irreducibility comes from incompatible patterns, not from one irreducible reduction. These certify squarefreeness of \(R_{n,k}\) at these sizes (check:cube-merge-far-irreducible-sieve), extending the recorded squarefreeness to \((2,6)\) and \((3,4)\). The proportion of irreducible reductions is close to \(1/\deg R\): \(0.20\) against \(0.17\), \(0.072\) against \(0.067\), \(0.044\) against \(0.036\), \(0.016\) against \(0.022\). By Chebotarev, that is the density of \(d\)-cycles when the Galois group is the full symmetric group.</p>
+<p><strong>Outcome.</strong> Irreducibility holds at every tested size, and the statistics fit a full symmetric Galois group. The multi-prime Newton-polygon route, the one uniform arithmetic method proposed, fails because the polygons are almost trivial. Generic-looking Galois behaviour with trivial Newton polygons is the profile of polynomials whose irreducibility has no known uniform proof. So this line gives certificates, not a mechanism.</p>
+<p><strong>Remaining gap.</strong> Far simplicity of \(R_{n,k}\) for every \(n\ge2\), \(k\ge3\), and the chain end and the assembly, for (K); far simplicity at peeling limits for (B).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-euler-image (construction of \(R\)); conj:cube-merge-far-polynomial; check:cube-merge-far-exact (earlier irreducibility at four sizes).</p>
+<p><strong>Verification gate.</strong> Exact factorization modulo primes, with subset-sum intersection; primes dividing the leading coefficient or the discriminant are skipped. No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-n">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 38.82 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">34.99 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">33.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 29.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
