@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The three-centre criterion is the <a href="#entry-2026-10-04-cube-three-centre-leading">leading \(\varepsilon\)-coefficient of the mark determinant</a> along the family. A cluster factorization would give an induction avoiding degree one.</p>
-<p>Next: test the factorization's valuation prediction on saved runs. Does the saturation valuation of a split equal the sum of its clusters' internal valuations plus a mixed term depending only on the sizes?</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The three-centre mixed factor <a href="#entry-2026-10-04-cube-three-centre-pairwise">does not split over cluster pairs</a>, and simple size invariants do not decide classicality.</p>
+<p>Next: compute the leading \(\varepsilon\)-coefficient symbolically, with slopes and \(c\) as indeterminates, for the smallest multisets where classicality differs, \(\{1,1,5\}\) against \(\{1,2,4\}\) at \(N=7\). Read off the form of the mixed factor.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49798,6 +49798,32 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Marked reading and review windows</td><td class="elapsed">36.79 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25.80 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-three-centre-pairwise" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-limit-design-review:3" data-claims="conj:cube-three-centre-pairwise-mixed">
+<h3>4 October 2026 — The three-centre mixed factor does not split over cluster pairs: six nonclassical multisets have only good pairs, and no simple invariant of the sizes modulo 3 or 9 decides classicality</h3>
+<p class="entry-meta">Refutation on the recorded tables (34 multisets, N = 6..11) of a pairwise-product form of the leading-coefficient factorization, with a negative scan of simple invariants; centre invariance holds on all data. Three centre pairwise cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). conj:cube-three-centre-leading-factorization predicts that the leading coefficient along the three-centre family factors into cluster determinants and a mixed factor. The simplest form of the mixed factor is a product over pairs of clusters. Under it a split is classical iff its three size pairs are all good. Is that consistent with the tables?</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-pairwise-mixed (refuted): there is a set of good size pairs such that, for every \(N\), a three-centre split is classical iff all three of its pairs are good.</p>
+<p><strong>Test.</strong> research/tools/bmd_three_centre_pair_test.py reads every saved three-centre result (research/results/bmd-20261004-zw/pair-test.txt). There are \(34\) conclusive multisets, \(18\) of them classical. Each classical multiset forces its pairs good, and this forces \(19\) pairs good. Six nonclassical multisets have all three pairs forced good: \(\{1,2,5\}\), \(\{2,2,4\}\), \(\{1,2,6\}\), \(\{1,3,5\}\), \(\{2,2,7\}\), \(\{3,3,5\}\). For example, \(\{2,2,4\}\) fails although \((2,2)\) is good in \(\{2,2,3\}\) and \((2,4)\) in \(\{1,2,4\}\). Every multiset with several orderings tested gave one answer, so centre invariance holds on all the data.</p>
+<p><strong>Invariant scan.</strong> research/tools/bmd_three_centre_invariant_scan.py asks whether, at fixed \(N\), a symmetric invariant modulo \(q\) separates the two kinds (research/results/bmd-20261004-zw/invariant-scan.txt). The invariants are \(\sum\binom s2\), \(e_2\), \(e_3\), \(\sum s^3\), \(\sum\binom s3\) and the largest size; \(q\) is \(3\), \(9\) or \(27\). None separates modulo \(3\) or \(9\). Modulo \(27\), \(\sum\binom s2\) and \(e_2\) (equivalent at fixed \(N\)) separate, but only because nearly every residue class then holds a single multiset, so the separation is not informative.</p>
+<p><strong>Outcome.</strong> The pairwise form is refuted. Whatever the mixed factor is, it couples all three clusters at once, and it is not a function of the sizes modulo \(3\) or \(9\) through these invariants. The factorization conjecture itself is not refuted, since its mixed factor may depend jointly on all three sizes and on the slopes.</p>
+<p><strong>Remaining gap.</strong> The mixed factor. A symbolic computation of the leading coefficient for small sizes, with slopes and \(c\) as indeterminates, would show its form.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-three-centre-leading-factorization; conj:cube-three-centre-multiset-invariance; the saved three-centre outputs.</p>
+<p><strong>Verification gate.</strong> A refutation by consistency on saved data, checked by script. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 20.33 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.11 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">52.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.74 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
