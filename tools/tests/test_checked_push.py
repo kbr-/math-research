@@ -48,6 +48,18 @@ class CheckedPushTest(unittest.TestCase):
         self.assertIn('--public-history main', calls)
         self.assertIn('--base origin/main', calls)
         self.assertNotIn('worktree-x', git(self.remote, 'branch', '--list'))
+        self.assertIn(f'origin/main is at {git(self.work, "rev-parse", "--short", "HEAD")} work, the local tip.',
+                      result.stdout)
+
+    def test_fails_when_the_remote_branch_is_not_the_pushed_commit(self):
+        # The remote accepts the push, then the branch moves, as a concurrent push could move it.
+        base = git(self.work, 'rev-parse', 'main')
+        hook = self.remote / 'hooks' / 'post-receive'
+        hook.write_text(f'#!/bin/sh\ngit update-ref refs/heads/main {base}\n')
+        hook.chmod(0o755)
+        result = self.run_push('main')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(f'Pushed, but origin/main is at {base}', result.stderr)
 
     def test_refuses_non_fast_forward(self):
         git(self.work, 'switch', '-qc', 'other', 'main')
