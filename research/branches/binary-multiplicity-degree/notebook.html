@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 4's small-prime thresholds. The <a href="#entry-2026-10-05-cube-blocked-and-open-review">review</a> finds the \(d=3\) dimension-four datum blocked on the user. The small-prime degree-two row is unblocked.</p>
-<p>Next: run the bounded kernel at \(n=4\), \(d=2\) modulo \(p=3,5,7,11,13\), compare with the characteristic-zero row \(15,12,11,6,5,2,2,0\), and state the pattern of changes.</p>
+<p>Route item: cube-odd-characteristic; statement 4's small-prime thresholds. The dimension-four degree-two row <a href="#entry-2026-10-05-cube-four-small-prime-row">differs from characteristic zero at \(p=83\)</a>, so pre-stable exceptions are not bounded by \(2^{n-1}d\). At order \(14\) the exceptional primes are \(5,11,17,31,43,83\).</p>
+<p>Next: compute the content (gcd of maximal minors) of the excess-\(9\), order-\(14\) integral coefficient system and check that its odd prime divisors are exactly the observed order-\(14\) exceptions. Then prove the general principle: each threshold's exceptional characteristics are the prime divisors of explicit integers.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -52212,6 +52212,46 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Computation design and coding</td><td class="elapsed">17.60 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 6.55 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.64 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-four-small-prime-row" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-prestable-large-characteristic check:cube-four-degree-two-row-small-primes">
+<h3>5 October 2026 — Small-prime dimension-four degree-two rows: the thresholds differ from characteristic zero at p = 83, far beyond 2^(n−1)d = 16, so the large-characteristic bound of the stable orders does not extend to pre-stable thresholds</h3>
+<p class="entry-meta">Refutation, for the dimension-four degree-two row, of a large-characteristic bound for pre-stable thresholds; the row in every odd characteristic below 100 is recorded. Four small prime row cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 4 asks for the pre-stable thresholds over every odd field. In characteristic zero the dimension-four degree-two row is \(15,12,11,6,5,2,2\) at orders \(12,\ldots,18\). How does it change modulo small primes, and is there a bound beyond which it agrees with characteristic zero?</p>
+<p><strong>General statement.</strong> conj:cube-prestable-large-characteristic (refuted): every pre-stable threshold \(\ell_0(h,m)\) in characteristic \(p>2^{n-1}d\) equals its characteristic-zero value. For the stable orders this bound is a theorem (thm:cube-large-characteristic); this hypothesis extends it to every threshold.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_bounded_operator_kernel_d.m2 now takes a list of characteristics (CUBE_PS) and computes the bounded kernel of the record's operator ideal over each field. Thresholds are reported at orders below the characteristic-zero cutoff \(U=19\); the value at \(U\) is not computed in characteristic \(p\). The characteristic-zero control reproduces the recorded row. Rows at orders \(12,\ldots,18\) (research/results/bmd-20261005-x/small-prime-row-summary.txt):</p>
+<table>
+<tr><th>\(p\)</th><th>row</th><th>differs at</th></tr>
+<tr><td>\(0\)</td><td>\(15,12,11,6,5,2,2\)</td><td>—</td></tr>
+<tr><td>\(3\)</td><td>\(15,10,7,5,4,0,0\)</td><td>\(13\)–\(18\)</td></tr>
+<tr><td>\(5\)</td><td>\(15,12,9,6,3,3,1\)</td><td>\(14,16,17,18\)</td></tr>
+<tr><td>\(7\)</td><td>\(15,10,10,6,5,2,2\)</td><td>\(13,14\)</td></tr>
+<tr><td>\(11,17,31,43,83\)</td><td>\(15,12,9,6,5,2,2\)</td><td>\(14\)</td></tr>
+<tr><td>all other primes \(\le97\)</td><td>\(15,12,11,6,5,2,2\)</td><td>—</td></tr>
+</table>
+<p><strong>Outcome.</strong> Refuted: at \(n=4\), \(d=2\), \(2^{n-1}d=16\), and the threshold at order \(14\) is \(9\), not \(11\), for \(p=17,31,43,83\). So the small-prime exceptions of pre-stable thresholds are not bounded by \(2^{n-1}d\), unlike those of the stable orders. Two further observations:</p>
+<ul>
+<li><em>Order \(14\).</em> The exceptional primes \(5,11,17,31,43,83\) look like the prime divisors of one fixed integer. A natural candidate is the content of the excess-\(9\), order-\(14\) coefficient system: a kernel element of lower excess appears modulo \(p\) exactly when \(p\) divides the gcd of its maximal minors.</li>
+<li><em>Thresholds can rise modulo \(p\).</em> At \(p=5\), order \(17\), the threshold is \(3\), above the characteristic-zero \(2\). This happens when the leading coefficient of a characteristic-zero witness vanishes modulo \(p\). It refutes the semicontinuity lead of the <a href="#entry-2026-10-05-cube-blocked-and-open-review">review</a>.</li>
+</ul>
+<p>The review's remark that the large-characteristic theorem gives equality for \(p>16\) was also wrong for pre-stable thresholds: that theorem concerns the stable orders only.</p>
+<p><strong>What it means for statement 4.</strong> For each fixed order, the exceptional characteristics should be the prime divisors of explicit integers, finitely many but not bounded by a simple function of \(n,d\). A determination over all odd fields therefore needs, row by row, the content of the relevant coefficient systems, not a single characteristic bound.</p>
+<p><strong>Remaining gap.</strong> The integer whose prime divisors are the order-\(14\) exceptions, a proof that the exceptional set is exactly its divisors, and a formula for the rows in every \(d\).</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-large-characteristic (statement: stable orders only); the record's bounded-kernel tool and its order-zero cutoff; prop:cube-monotonicity-char-five-refutation.</p>
+<p><strong>Verification gate.</strong> A refutation by exact kernel computations over \(\mathbb F_p\), with the characteristic-zero control. The finite-field rows below the cutoff use the record's method unchanged. No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 46.06 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 20.29 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 2.10 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">48.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 35.11 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
