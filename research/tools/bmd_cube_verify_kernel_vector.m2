@@ -22,13 +22,21 @@ for s from 0 to min(n,d) do (
 rowData=flatten apply(toList(0..d//2),q -> flatten apply(toList(0..min(n,d-2*q)),s ->
     apply(toList(0..binomial(n,s)-1),j -> (q,s,j,(cubeWeights#s)#j))));
 cubeMatrix=matrix apply(rowData,rw -> apply(toList(0..ord),c -> if c<rw#0 then 0_B else ((cubeBlocks#(rw#1))#(c-rw#0))_(rw#2,0)));
-vecs=select(drop(L,1),l->#l>6 and substring(0,6,l)=="VECTOR");
+-- QVECTOR lines (cycle bmd-20261006-b) give Q_k, k = 2..ord-4, and W_c = (chi Q)_c / binom(1/2, c) with
+-- chi(a) = a^4 - e_1 a^3 + e_2 a^2 - e_3 a + e_4.
+chiCoeff={e_4,-e_3,e_2,-e_1,1_B};
+gammaB=c -> (g:=product(toList(0..c-1),i->1/2-i)/c!; Fp:=ZZ/charP; promote(((numerator g)*1_Fp)*((denominator g)*1_Fp)^(-1),B));
+vecs=select(drop(L,1),l->(#l>6 and substring(0,6,l)=="VECTOR") or (#l>7 and substring(0,7,l)=="QVECTOR"));
 << "vectors to verify: " << #vecs << endl;
 scan(vecs,l -> (
     W:=new MutableList from toList(ord+1:0_B);
+    isQ:=substring(0,1,l)=="Q";
+    Qk:=new MutableList from toList(ord+1:0_B);
     scan(drop(separate(" ",l),1),tok -> (
         parts:=separate(":",tok); c:=value parts#0; ex:=apply(separate(",",parts#1),value); v:=value parts#2;
-        W#c=W#c+v*e_1^(ex#0)*e_2^(ex#1)*e_3^(ex#2)*e_4^(ex#3)));
+        mono:=v*e_1^(ex#0)*e_2^(ex#1)*e_3^(ex#2)*e_4^(ex#3);
+        if isQ then Qk#c=Qk#c+mono else W#c=W#c+mono));
+    if isQ then scan(toList(2..ord),c -> W#c=(gammaB(c))^(-1)*sum(toList(max(2,c-4)..min(c,ord-4)),k -> chiCoeff#(c-k)*Qk#k));
     assert(W#ord!=0);
     scan(toList(2..ord),c -> if W#c!=0 then assert(isHomogeneous W#c and first degree W#c==exc+ord-c));
     res:=cubeMatrix*transpose matrix{toList W};
