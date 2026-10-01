@@ -28,6 +28,26 @@ logstart(m, s0) = {
     M[2 * m + 1, j] = sum(i = 1, cols[j] - 1, lgc('c, i) * lgc(1, cols[j] - i)));
   matdet(M);
 }
+\\ NDET (cycle bmd-20261006-z): the 2m x 2m block of the single-log rows on columns s..s+2m-1, the cofactor left
+\\ after the column operation that extracts c^s + 1.
+lognblock(m, s0) = {
+  my(M = matrix(2 * m, 2 * m));
+  for (j = 1, 2 * m, for (n = 0, m - 1, M[n + 1, j] = lgc('c, s0 + j - 1 - n); M[m + n + 1, j] = lgc(1, s0 + j - 1 - n)));
+  matdet(M);
+}
+\\ RATIO=1 (cycle bmd-20261006-z): the second minor (columns s..s+2m-1, s+2m+1) of the log window with start s, compared
+\\ with the proved prediction Delta_2m / Delta_2m+1 = -(s(c^(s+1)+1) + m(s+m+1)(c+1)(c^s+1)) / ((s+2m+1)(c^s+1)).
+logsecond(m, s0) = {
+  my(cols = concat(vector(2 * m, j, s0 + j - 1), [s0 + 2 * m + 1]), M = matrix(2 * m + 1, 2 * m + 1));
+  for (j = 1, #cols,
+    for (n = 0, m - 1, M[n + 1, j] = lgc('c, cols[j] - n); M[m + n + 1, j] = lgc(1, cols[j] - n));
+    M[2 * m + 1, j] = sum(i = 1, cols[j] - 1, lgc('c, i) * lgc(1, cols[j] - i)));
+  matdet(M);
+}
+ratiopred(m, s0) = -(s0 * ('c^(s0 + 1) + 1) + m * (s0 + m + 1) * ('c + 1) * ('c^s0 + 1)) / ((s0 + 2 * m + 1) * ('c^s0 + 1));
+\\ CONST=1 (cycle bmd-20261006-z review): part 2 with its exact constant,
+\\ square = (-1)^(s+m) (m-1)! B(s,m+1) (s+m)!/(s+2m)! c^m (c^s+1) det N at x = c, y = 1.
+sqpred(m, s0) = (-1)^(s0 + m) * (m - 1)! * (s0 - 1)! * m! / (s0 + m)! * (s0 + m)! / (s0 + 2 * m)! * 'c^m * ('c^s0 + 1) * lognblock(m, s0);
 logdescr(P) = {
   my(a, bb, g, nz);
   if (P == 0, return("0"));
@@ -146,7 +166,10 @@ foreach(eval(getenv("MS")), m,
       my(s1 = st(d1), s2 = st(d2), cc = content([s1, s2]), tm(P) = apply(k -> [k, polcoef(P / cc, k)], select(k -> polcoef(P, k) != 0, [0 .. poldegree(P)])));
       emit(Str("    Delta_2m terms ", tm(s1), "; Delta_2m+1 terms ", tm(s2), "; common scalar ", factor(cc)))));
   if (getenv("LOGS") != 0 && getenv("LOGS") != "",
-    foreach(eval(getenv("LOGS")), s0, if (s0 >= m, emit(Str("  start s=", s0, ": square log minor = ", logdescr(logstart(m, s0)))))));
+    foreach(eval(getenv("LOGS")), s0, if (s0 >= m, emit(Str("  start s=", s0, ": square log minor = ", logdescr(logstart(m, s0)),
+      if (getenv("CONST") == "1", Str("; square equals exact part-2 formula: ", logstart(m, s0) == sqpred(m, s0)), ""),
+      if (getenv("RATIO") == "1", Str("; second/square equals prediction: ", logsecond(m, s0) / logstart(m, s0) == ratiopred(m, s0)), ""),
+      if (getenv("NDET") == "1", Str("; single-log block = ", logdescr(lognblock(m, s0)), "; ratio = ", logdescr(logstart(m, s0) / lognblock(m, s0))), ""))))));
   \\ KERNEL=1 (cycle bmd-20261006-w): zeros of the Cramer kernel polynomial V_c at c = -1 (the real Angelesco point).
   if (getenv("KERNEL") == "1",
     my(Wk = subst(winmat(m, 2 * m + 2), 'c, -1), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wk, "..", setminus([1 .. 2 * m + 2], [j])))));
