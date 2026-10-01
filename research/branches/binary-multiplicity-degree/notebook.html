@@ -47,8 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The far-root circles have radii in geometric progression (coefficient magnitudes), but <a href="#entry-2026-10-03-cube-last-far-rho3-factor">\(\rho_3\) is not an approximate factor</a>: the phases differ.</p>
-<p>Next, a route review. It weighs the analytic route, which now needs phase control of the full six-space Wronskian along each circle, against the other necessary inputs, and records the state for the user.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. Even part: an explicit six-space, squarefree for \(b\le13\), with four-circle and two-term laws. Odd part: an explicit <a href="#entry-2026-10-03-cube-odd-last-far-reduction">\((2e+2)\)-dimensional space</a>.</p>
+<p>Next:</p>
+<ol>
+<li>Compute \(W_b\) exactly from the odd reduction for \(b\) up to about \(12\), and verify squarefreeness.</li>
+<li>Test the four-circle and two-term laws, or their odd analogue, on its roots.</li>
+</ol>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -44958,6 +44962,59 @@ The steps agree within \(3\%\) at each \(e\). The step \(d_e\) decreases with \(
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 0.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-odd-last-far-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-odd-last-far-reduction check:cube-odd-last-far-reduction-data">
+<h3>3 October 2026 — The odd last-step far polynomial is the Weierstrass polynomial of a (2e+2)-dimensional space, obtained by removing a block with a power Wronskian</h3>
+<p class="entry-meta">Working proof that the polynomial block, the class integral and the (1+x)^(-7/2) block of the odd last far space have a Wronskian that is a power of 1+x, for every e; W_b reduces to 2e + 2 functions. Odd last far reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). The far input has two last-step parts. The even one, \(W_{b-1}\), now has an <a href="#entry-2026-10-03-cube-last-far-six-space">explicit six-space</a> and is squarefree for \(b\le13\). The odd one, \(W_b\) (prop:cube-odd-last-far-mobius), had only the generic \(R_b'\)-dimensional description. Does the same reduction shrink it?</p>
+<p><strong>General statement.</strong> <code>lem:cube-odd-last-far-reduction</code>, for every \(b\ge2\) (\(e=b-1\)).</p>
+<h4>Setting</h4>
+<p>By the odd last far step proposition, \(F_b\) is, in \(x\) with \(c=1\), the sum of the following blocks, with \(n=R_e\):</p>
+<ul>
+<li>\(I=\mathcal P_{&lt;n}\);</li>
+<li>\(C=\langle(1+x)^{-3}\rangle\);</li>
+<li>\(II=(1+x)^{-7/2}\mathcal P_{&lt;4e}\);</li>
+<li>\(IV=(1+x)^{-5/2}x^{-3/2}\mathcal P_{&lt;2}\);</li>
+<li>\(III=x^{-3/2}\mathcal P_{&lt;2e}\).</li>
+</ul>
+<p>Its dimension is \(n+6e+3\), and \(W_b\) is the part of \(W(F_b)\) prime to \(x(1+x)\).</p>
+<p><strong>Lemma (odd last far reduction).</strong> Characteristic zero, every \(e\ge1\). Put \(A=I\oplus C\oplus II\) and \(N=n+\tfrac72\).</p>
+<ol>
+<li>\(W(A)=C_A(1+x)^{\gamma}\) with \(C_A\ne0\) and \(\gamma=-N(4e+1)+\tfrac12-4e\), so it has no zeros off \(x=-1\).</li>
+<li>The monic operator with kernel \(A\) is \(L_A=(1+x)^{-N-1}\bigl((1+x)\partial+4e-\tfrac12\bigr)\partial^{4e}(1+x)^{N}\partial^{n}\).</li>
+<li>\(W(F_b)=W(A)\,W(L_A(III\oplus IV))\) off \(\{0,-1\}\). So \(W_b\) is the far part of the Wronskian of the \((2e+2)\)-dimensional space \(L_A(III\oplus IV)\), with the same weights.</li>
+</ol>
+<p><em>Proof.</em> (1) By the classical Pólya–Mammana factorization \(W(f,g)=W(f)\,W(L_fg)\), with \(L_f\) monic and killing \(f\), \(W(A)=W(\mathcal P_{&lt;n})\,W(\partial^n(C\oplus II))\). Here \(\partial^n(1+x)^{-3}=(-1)^n(3)_n(1+x)^{-3-n}\), and \(\partial^n\bigl((1+x)^{-7/2}\mathcal P_{&lt;4e}\bigr)=(1+x)^{-7/2-n}\mathcal P_{&lt;4e}\): writing the polynomials in powers of \(1+x\), each \((1+x)^{-7/2+j}\) goes to a nonzero multiple of \((1+x)^{-7/2+j-n}\), since the falling factorials of a half-integer do not vanish. So \(\partial^n(C\oplus II)=(1+x)^{-N}U\), with
+\[
+U=\mathcal P_{&lt;4e}\oplus\langle(1+x)^{1/2}\rangle .
+\]
+Then \(W\bigl((1+x)^{-N}U\bigr)=(1+x)^{-N(4e+1)}W(U)\), and \(W(U)=W(\mathcal P_{&lt;4e})\,\partial^{4e}(1+x)^{1/2}\). The latter is a nonzero constant times \((1+x)^{1/2-4e}\), since \(\tfrac12\notin\mathbb Z\). (2) The operator \(\partial^{4e}\) kills \(\mathcal P_{&lt;4e}\) and sends \((1+x)^{1/2}\) to a multiple of \((1+x)^{1/2-4e}\). The first-order operator \((1+x)\partial-(\tfrac12-4e)\) kills that. So the composite \(\bigl((1+x)\partial+4e-\tfrac12\bigr)\partial^{4e}(1+x)^N\partial^n\) has order \(n+4e+1=\dim A\) and kernel \(A\). Its leading coefficient is \((1+x)^{N+1}\), and dividing by it gives \(L_A\). (3) \(W(F_b)\not\equiv0\), because \(F_b\) has dimension \(n+6e+3\) (thm:cube-odd-base-peeling). So \(A\cap(III\oplus IV)=0\), and \(L_A(III\oplus IV)\) has dimension \(2e+2\). The factorization holds where \(W(A)\ne0\). \(\square\)</p>
+<h4>Check, and the other splittings</h4>
+<p>research/tools/bmd_cube_odd_last_far_reduction.gp computes far degrees of Wronskians of block unions modulo \(2^{61}-1\), at \(e=1,\ldots,4\) (research/results/bmd-20261003-zzj/odd-reduction.txt).</p>
+<ul>
+<li>\(I+C+II\), \(I+II\) and \(I+III\): \(0\) (zero-free).</li>
+<li>\(I+II+III\), the analogue of the even six-space split: \(0,8,24,48\), that is \(4e(e-1)\). Not clean for \(e\ge2\).</li>
+<li>\(I+II+III+C\): \(2,12,30,56\). \(I+II+III+IV\): \(4,22,56,106\).</li>
+<li>\(F_b\) itself: \(6,26,62,114\), the degrees of \(W_b\).</li>
+</ul>
+<p>Among these splittings, \(A=I+C+II\) leaves the smallest complement, of dimension \(2e+2\). The check covers these unions only. The degrees are reductions modulo a prime, so a degree could drop there; the zero-free result for \(I+C+II\) only corroborates part (1), which is proved for every \(e\).</p>
+<p><strong>What this gives.</strong> The odd last-step input of (B) is now about the explicit \((2e+2)\)-dimensional space \(L_A(III\oplus IV)\), against the generic description of dimension \(R_e+6e+3\). The complement \(III\oplus IV=x^{-3/2}\bigl(\mathcal P_{&lt;2e}\oplus(1+x)^{-5/2}\mathcal P_{&lt;2}\bigr)\) is one class at \(x=0\). Next, exact computation of \(W_b\) for larger \(b\) from this space, and its root geometry against the even case.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-odd-last-far-mobius (the blocks of \(F_b\)); thm:cube-odd-base-peeling (dimension of \(F_b\)); the classical Pólya–Mammana factorization.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the block list and dimension, parts (1)–(3), the first-order factor (it kills \((1+x)^{1/2-4e}\)), and the script against every quoted number. Verdict: pass with corrections, applied: \(h\) and \(\gamma\) are made explicit; the factorization is cited as classical; the image of II is argued directly; directness is derived from the dimension of \(F_b\); the modular caveat is added. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzj">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 45.64 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">29.97 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 18.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.30 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
