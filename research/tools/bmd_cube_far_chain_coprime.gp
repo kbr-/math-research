@@ -231,9 +231,16 @@ if (XDERIV != 0 && XDERIV != "",
       my(i = min(srt[1], srt[2]), Ep = sectorE(rows, mix, r + hh, u1, u0, n, K, sg), Em = sectorE(rows, mix, r - hh, u1, u0, n, K, sg));
       my(dl = log((Ep[i + 1] / Ep[i]) / (Em[i + 1] / Em[i])) / (2 * hh), kap = r * (1 + r) * dl);  \\ one log of the quotient: no branch jump
       my(mu = kap + (n + 7/2) + r);  \\ cycle bmd-20261004-r: the j = 0 mixed row predicts kappa = -(n+7/2) - r
-      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., i - 1, precision(real(kap), 6) * 1., precision(imag(kap), 4) * 1., precision(real(r), 4) * 1., precision(imag(r), 4) * 1., precision(real(mu), 4) * 1., precision(imag(mu), 4) * 1.]));
+      \\ cycle bmd-20261004-w (lem:cube-far-balance-certificate): R = sum of the other sector sums, R' and E_(i+1)' by central
+      \\ difference; certificate margin = |E_i (log phi)'| / (|R| |E_(i+1)'/E_(i+1)| + |R'|) (> 1 certifies a simple root);
+      \\ normalized eps = |R|/|E_i|, eps' = |R'| |r(1+r)| / (N |E_i|), C = |E_(i+1)'/E_(i+1)| |r(1+r)| / N with N = n + 7/2
+      my(oth = setminus(Set([1..#E]), Set([i, i + 1])), Rs = v -> sum(k = 1, #oth, v[oth[k]]));
+      my(R0 = Rs(E), Rd = (Rs(Ep) - Rs(Em)) / (2 * hh), Ed = (Ep[i + 1] - Em[i + 1]) / (2 * hh), NN = n + 7/2, w = abs(r * (1 + r)));
+      my(cert = abs(E[i] * dl) / (abs(R0) * abs(Ed / E[i + 1]) + abs(Rd)));
+      my(cinfo = [precision(log(cert) / log(10), 4) * 1., precision(abs(R0 / E[i]), 3) * 1., precision(abs(Rd) * w / (NN * abs(E[i])), 3) * 1., precision(abs(Ed / E[i + 1]) * w / NN, 3) * 1.]);
+      listput(out, [precision(log(abs(r / (1 + r))), 4) * 1., i - 1, precision(real(kap), 6) * 1., precision(imag(kap), 4) * 1., precision(real(r), 4) * 1., precision(imag(r), 4) * 1., precision(real(mu), 4) * 1., precision(imag(mu), 4) * 1., cinfo]));
     emit(Str("XDERIV (e,l)=(", e, ",", l, "): n=R_e=", n, ", predicted kappa = -(n+7/2) = ", -(n + 7/2),
-      "; per balanced root [log|t|, i (pair E_i, E_(i+1)), Re kappa, Im kappa, Re r, Im r, Re mu, Im mu] with mu = kappa + n + 7/2 + r: ", Vec(out))));
+      "; per balanced root [log|t|, i (pair E_i, E_(i+1)), Re kappa, Im kappa, Re r, Im r, Re mu, Im mu] with mu = kappa + n + 7/2 + r, then [log10 certificate margin, eps, eps', C]: ", Vec(out))));
   quit);
 }
 {

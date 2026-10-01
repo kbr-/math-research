@@ -47,12 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, <a href="#entry-2026-10-04-cube-last-far-sector-concavity">sector concavity</a> reduces balance to concavity of \(\log|E_s|\) in \(s\), with second differences near \(-4\log(n+1)\), seen at every sampled root at \(e=4\). With the cluster ratio law it would give the balance certificate's hypotheses, apart from the remainder derivative bound.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step the <a href="#entry-2026-10-04-cube-last-far-certificate">balance certificate</a> holds numerically at every sampled balanced root at \(e=2,4\). Simplicity there would follow from three asymptotic conjectures: concavity, the cluster ratio law and the certificate scaling.</p>
 <p>Next:</p>
 <ol>
-<li>Remainder derivative bound: check \(|R'|\le\varepsilon N|E_i|/|r(1+r)|\) and \(|E_{i+1}'/E_{i+1}|\le CN/|r(1+r)|\) at \(e=4\). Then evaluate the full certificate at every balanced root.</li>
-<li>Derive the concavity law from the log-gas: the \(-4\log(n+1)\) from the cluster scalings, with an error estimate.</li>
-<li>The roots where \(|r(1+r)|\) is large or \(|t|\approx1\), and the middle steps.</li>
+<li>The unbalanced or real roots at the last step (\(20\) at \(e=2\), \(36\) at \(e=4\)): classify them (near \(|t|=1\), large \(|r|\), real), and find their mechanism. A second sector polynomial, or the \(y\)-side ladder, may govern them.</li>
+<li>A route review is due soon: weigh the last-step programme against the middle steps (\(l\ge2\)) and (K).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -47988,6 +47987,49 @@ uniformly, with \(n=R_e\). The term \(2\log|r(1+r)|\) follows from the \(r\)-exp
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 6.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 22.55 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 37.03 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-certificate" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-last-far-perron-review:2" data-claims="conj:cube-far-certificate-scaling">
+<h3>4 October 2026 — Balance certificate at the last step: it holds at every sampled balanced root at e = 2, 4, with the remainder falling by a factor of about 130 from e = 2 to e = 4, consistent in order with n^−4</h3>
+<p class="entry-meta">Finite check of lem:cube-far-balance-certificate at all sampled balanced roots of the last-step far polynomial (e = 2: 24; e = 4: 56 pairs), inequality holding numerically at all, margin at least 10^1.0; scaling conjectured for every e. Certificate cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. The balance certificate (lem:cube-far-balance-certificate) reduces simplicity at a balanced root to the inequality
+\[
+|E_i||(\log\varphi)'|&gt;|R|\,|E_{i+1}'/E_{i+1}|+|R'|.
+\]
+<a href="#entry-2026-10-04-cube-last-far-sector-concavity">Sector concavity</a> supplies \(|R|\) small, but the derivative quantities were never measured. Does the certificate actually hold, and how do its ingredients scale?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-certificate-scaling</code>, for the last step at every \(e\).</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (xderiv mode, extended) works at balanced non-real roots, those with third/largest \(\le10^{-3}\), at \(160\) digits. With the cuts of each root it computes:</p>
+<ul>
+<li>\(R=\sum_{s\ne i,i+1}E_s\);</li>
+<li>\(R'\) and \(E_{i+1}'\) by central differences, with step \(10^{-30}\);</li>
+<li>the certificate margin \(|E_i(\log\varphi)'|/(|R||E_{i+1}'/E_{i+1}|+|R'|)\);</li>
+<li>the normalized quantities \(\varepsilon=|R/E_i|\), \(\varepsilon'=|R'||r(1+r)|/(N|E_i|)\) and \(C=|E_{i+1}'/E_{i+1}||r(1+r)|/N\), with \(N=R_e+\tfrac72\).</li>
+</ul>
+<p>Results (research/results/bmd-20261004-w/):</p>
+<ul>
+<li>\(e=2\) (\(24\) balanced roots, every root sampled): the margin is above \(1\) at all of them. Its \(\log_{10}\) ranges over \(1.03\) to \(4.03\), median \(2.55\). \(\varepsilon\) has median \(8.8\cdot10^{-5}\) and maximum \(5.2\cdot10^{-4}\); \(\varepsilon'\le0.018\); \(C\in[5.7,35.9]\).</li>
+<li>\(e=4\) (\(56\) conjugate pairs, that is \(112\) balanced roots, with one root of each pair sampled): the margin is above \(1\) at all of them. Its \(\log_{10}\) ranges over \(1.06\) to \(6.23\), median \(4.48\). \(\varepsilon\) has median \(6.8\cdot10^{-7}\) and maximum \(2.6\cdot10^{-4}\); \(\varepsilon'\le0.036\); \(C\in[2.8,140.8]\), median \(28.5\).</li>
+</ul>
+<p>So the certificate inequality holds numerically at every sampled balanced root, with margin at least \(10^{1.03}\). This is not a rigorous certificate: the margin is evaluated at a numerical root, and the difference step \(10^{-30}\) is finer than the split accuracy, with no step-size control. Simplicity itself still rests on the squarefreeness computation. The smallest margins occur near \(|t|=1\) (\(\log|t|=0.07,-0.24,0.40\) at \(e=4\)).</p>
+<p><strong>Scalings.</strong> The median \(\varepsilon\) falls by a factor of about \(130\) from \(e=2\) to \(e=4\). The concavity law predicts \(((n+1)_{e=4}/(n+1)_{e=2})^4=(29/7)^4\approx295\), the same order. The measured ratio corresponds to an exponent of about \(3.4\), and two sizes cannot fix the exponent. \(C\) is not of order \(1\): an individual sector sum carries \(a_0+a_1=8e+6\) cluster particles. Each contributes about \(n/|r|\) or \(n/|1+r|\) to its logarithmic derivative, so \(C\) is expected to be of order \(e\) times a geometric factor. Measured, the median \(C\) goes from \(21.4\) to \(28.5\) and the maximum from \(35.9\) to \(140.8\). The certificate needs \(\varepsilon'+\varepsilon C&lt;|\kappa|/N\), which also uses \(|\kappa_i|\ge\delta N\) (conj:cube-far-x-sector-ratio).</p>
+<p><strong>Conjecture (certificate scaling).</strong> At the last step, at all but \(O(e)\) balanced roots, \(\varepsilon=O(n^{-4}|r(1+r)|^2)\), \(\varepsilon'=O(e\,\varepsilon)\) and \(C=O(e)\), uniformly in \(e\) on the circles. Together with \(|\kappa_i|\ge\delta N\) (conj:cube-far-x-sector-ratio), and hence \(\varepsilon'+\varepsilon C&lt;|\kappa|/N\) for large \(e\), the balance certificate then holds at all those roots for every large \(e\).</p>
+<p><strong>What this gives.</strong> At the last step, simplicity at the balanced roots is now a consequence of three asymptotic statements: concavity, the cluster ratio law (with \(|\kappa_i|\ge\delta N\)) and the certificate scaling. At \(e=2,4\) all three hold numerically with margin. The unbalanced roots, \(20\) at \(e=2\) and \(36\) at \(e=4\) including the real ones, still need a separate argument, as do the middle steps.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-balance-certificate; lem:cube-far-concave-balance; conj:cube-far-sector-concavity; conj:cube-far-cluster-ratio.</p>
+<p><strong>Verification gate.</strong> I re-read the certificate, concave-balance and ratio-law entries. One fresh-context medium reviewer confirmed the code and every number against the output files. Verdict: pass with corrections, all applied. The check is stated as numerical, not a rigorous certificate. The \(e=4\) sample is identified as one root per conjugate pair. The scaling claims are weakened to what two sizes show. The missing hypotheses \(|\kappa|\ge\delta N\) and \(\varepsilon'\) are named, and the unbalanced count is given as data, not a formula.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-w">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 53.75 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.19 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">22.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.17 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 54.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
