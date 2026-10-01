@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-sector-gas">sector gas</a> entry validates the count of \(R_e\) balanced roots per circle at \(e=2,4\). It writes the sector polynomial as a two-electrode log-gas integral.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-cluster-ratio">cluster ratio law</a> predicts \(E_{s+1}/E_s\approx C_s\,t^{-n-15/2+2s}(1+x)^{4s-6}\) at the last step, from endpoint clusters of the sector log-gas. It fits the measured \(\kappa\) with median error \(0.46\) at \(e=4\).</p>
 <p>Next:</p>
 <ol>
-<li>Steepest descent on the log-gas: place \(a_0\) particles at \(0\) and \(a_1\) at \(-1\), each in a cluster of size about \(1/n\), and compute the leading \(r\)-dependence of \(E_{i+1}/E_i\). Test it against the measured \(\kappa\) at \(e=4\).</li>
-<li>Resolve the count \(R_e\) against the exponent \(R_e+\tfrac72\), by tracking the phases of the sector sums around one circle.</li>
+<li>Compute the constants \(C_s\) as ratios of Selberg-type cluster integrals. Test the predicted balance curves \(|C_s|\,|t|^{-n-15/2+2s}|1+x|^{4s-6}=1\) against the observed circle radii at \(e=2,4\).</li>
+<li>Turn the cluster heuristic into an asymptotic statement for one pair, starting with the pure-row clusters, which are exact monomial integrals.</li>
 <li>The roots near \(|t|=1\), and the middle steps.</li>
 </ol>
 </section>
@@ -47886,6 +47886,55 @@ With \(w_i=1/(y_i-r)\), the determinant is \(\prod_i(y_i-r)^{-n-1}\det[w_i^{\,s}
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 4.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">47.29 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">18 min 13.26 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-cluster-ratio" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-last-far-perron-review:2" data-claims="conj:cube-far-cluster-ratio">
+<h3>4 October 2026 — Cluster ratio law: in the sector log-gas, moving one charge between endpoint clusters predicts κ_s = −n − 15/2 + 2s + r(4s − 6), reducing the error of the flat value by a factor of about two to three</h3>
+<p class="entry-meta">Conjecture, from a cluster (steepest-descent) heuristic for the sector multiple integral: E_(s+1)/E_s ≈ C_s t^(-n-15/2+2s) (1+x)^(4s-6). The predicted κ fits the measured κ with median error 0.79 at e = 2 and 0.46 at e = 4. Cluster ratio cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step. The ratio law (conj:cube-far-x-sector-ratio) gave \(\kappa_s=r(1+r)\,d\log(E_{s+1}/E_s)\approx-(n+\tfrac72)\), with a drift of up to \(10\) along each circle. Two explanations of the drift were refuted. Does the log-gas form (lem:cube-far-sector-multiple-integral) predict it?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-cluster-ratio</code>, for the last step at every \(e\).</p>
+<h4>Heuristic</h4>
+<p>For columns \(N\ge n=R_e\), every row's Taylor coefficient at \(r\) is the integral over keyholes around its own cut. The circle at infinity drops out because \(N\) exceeds every row's growth exponent: since \(j\le4e-1\), the exponents are at most \(4e-\tfrac92\), and \(R_e-(4e-\tfrac92)=2e^2-5e+\tfrac92&gt;0\) for every \(e\), since its discriminant is negative. So every particle of the multiple integral sits on a keyhole of the cut at \(0\) or at \(-1\). The cuts point away from \(r\), so each weight \(|y-r|^{-n-1}\) is largest at the endpoint. For large \(n\), each particle lies within distance about \(|r|/n\), or \(|1+r|/n\), of its endpoint.</p>
+<p>Put \(a_0\) particles in the cluster at \(0\) and \(a_1\) at \(-1\). A cluster's local integral has effective exponents \(\gamma_i\): those left after the coinciding leading terms of the pure rows are removed, as for the Darboux terms (<a href="#entry-2026-10-04-cube-far-two-ladders-review">two-ladders review</a>). Scaling \(y=r u/n\) shows that it carries the factor \(r^{\sum(\gamma_i+1)-\binom{a_0}2}\), times \((-r)^{-(n+1)a_0}\). The same holds at \(-1\) with \(1+r\). Each inter-cluster Vandermonde factor contributes \(w_0-w_{-1}\approx-1/(r(1+r))\).</p>
+<p>In sector \(s\) the effective exponents are as follows:</p>
+<ul>
+<li>the pure rows give \(\{-3\}\cup\{-\tfrac72+j\}_{j&lt;4e}\) at each endpoint;</li>
+<li>the \(s\) mixed particles at \(0\) take \(-\tfrac72+4e+\{0,\ldots,s-1\}\);</li>
+<li>the \(4-s\) at \(-1\) take \(-\tfrac72+4e+\{0,\ldots,3-s\}\).</li>
+</ul>
+<p>So \(a_0=4e+1+s\) and \(a_1=4e+5-s\). Moving the \((s+1)\)-st mixed particle from \(-1\) to \(0\) changes the \(r\)-dependence by
+\[
+\frac{E_{s+1}}{E_s}\approx C_s\,r^{-n-15/2+2s}(1+r)^{\,n+3/2+2s}=C_s\,t^{-n-15/2+2s}(1+x)^{4s-6},
+\]
+with \(C_s\) independent of \(r\). The \(C_s\) are ratios of Selberg-type cluster integrals. Hence
+\[
+\kappa_s=-n-\tfrac{15}2+2s+r(4s-6).
+\]
+None of this is proved. The scaling ignores how the exponents interact within a cluster beyond the leading order, and it ignores the pure rows' sign structure, which produces the cancellations seen in the Laplace test.</p>
+<p><strong>Conjecture (cluster ratio law).</strong> At the last step, at all but \(O(1)\) balanced roots of the pair \((E_s,E_{s+1})\), \(\kappa_s=-n-\tfrac{15}2+2s+r(4s-6)+o(1)\) as \(e\to\infty\), with \(n=R_e\). Equivalently, \(E_{s+1}/E_s=C_s\,t^{-n-15/2+2s}(1+x)^{4s-6}(1+o(1))\) locally, with \(C_s\) constant.</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_chain_coprime.gp (xderiv mode, now recording \(r\)) at \(160\) digits gives the following (research/results/bmd-20261004-u/):</p>
+<ul>
+<li>At \(e=2\) (\(n=6\), every second root, \(12\) balanced): the median of \(|\kappa-\kappa_{\rm pred}|\) is \(0.79\), against \(1.34\) for the flat value \(-(n+\tfrac72)\). The imaginary parts are matched closely, for example \(0.34\) predicted against \(0.32\) measured.</li>
+<li>At \(e=4\) (\(n=28\), every third root, \(38\) balanced): the median error is \(0.46\), against \(1.49\) for the flat value. The per-pair medians are \(0.33\), \(0.87\), \(0.54\) and \(0.33\). Errors up to \(5.5\) occur at some roots of pairs \(1\) and \(2\), and the known exceptional root gives \(474\).</li>
+</ul>
+<p>The median error decreases from \(e=2\) to \(e=4\), but the largest error, excluding the exception, grows from \(4.0\) to \(5.5\). So the data support the median behaviour, not the "all but \(O(1)\)" clause, and two sizes do not establish a rate. \(\kappa\) also does not test the \(r\)-independence of \(C_s\).</p>
+<p><strong>What this gives.</strong> An explicit candidate for the leading ratio of consecutive sector sums at the last step. Its ingredients are computable: the effective cluster exponents, and Selberg-type constants \(C_s\). The balance curves would then be \(|C_s|\,|t|^{-n-15/2+2s}|1+x|^{4s-6}=1\). With \(|\kappa_s|\) of order \(n\), lem:cube-far-balance-certificate would give simple roots there, given remainder bounds. To be proved: the cluster asymptotics, including the cancellations; the constants \(C_s\); and the remainder bounds.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-sector-multiple-integral; conj:cube-far-x-sector-ratio; lem:cube-far-balance-certificate; the Darboux exponent shifts recorded in the two-ladders review.</p>
+<p><strong>Verification gate.</strong> I re-read the sector multiple integral and the ratio law entries. One fresh-context medium reviewer independently redid the exponent bookkeeping and confirmed \(\kappa_s\). It recomputed the error statistics from the output files. Verdict: pass with corrections, all applied. The growth-exponent inequality is now proved for every \(e\); a draft had \(4e\le n\), which is false at \(e=2\). Four medians are corrected from a recomputation with exact medians. The title is weakened, and the growth of the largest error and the untested constancy of \(C_s\) are stated.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 22.76 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 43.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">23.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.16 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7 min 53.01 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
