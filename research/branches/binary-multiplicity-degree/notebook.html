@@ -47,13 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The far roots follow the <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> \(t^N=s_i(x)\), \(N=n+\tfrac72\): at \(e=9\), \(88\%\) of roots have a unit step \(2\pi/N\) along a circle.</p>
-<p>Next, make the derivation precise:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The block-IV polynomials have zeros near \(|t|=1\) (within about \(\log n/n\)); for the symmetric one, <a href="#entry-2026-10-03-cube-last-far-iv-zeros">exactly on \(|t|=1\)</a>. The far-root circles of the <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> lie farther out (about \(2/e\)), where one endpoint term of each IV polynomial dominates.</p>
+<p>Next:</p>
 <ol>
-<li>Split each IV polynomial as \(S_j=(1+x)^Na_j+x^Nb_j\), with explicit amplitudes from Rodrigues' formula.</li>
-<li>Compute the coefficients \(A_m(x)\) of the degree-\(4\) polynomial in \(s=t^N\).</li>
-<li>Compare its root moduli \(|s_i|^{1/N}\) with the observed circles \(|t|\approx0.66,0.85,1.08,1.40\).</li>
-<li>Locate the \(8e-10\) remaining roots.</li>
+<li>Write the exact two-term splitting \(S_j=(1+x)^Na_j+x^Nb_j\) from the Rodrigues contour integral, with \(a_j,b_j\) from endpoint expansions.</li>
+<li>Form the degree-\(4\) polynomial \(\sum A_ms^m\) in \(s=t^N\).</li>
+<li>Compare its root moduli with the observed circles at \(e=6\) to \(10\).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -44662,6 +44661,47 @@ with \(S_j\) polynomials of degree at most \(n+3\) (lem:cube-last-far-reduction,
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 27.14 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 50.50 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4 min 4.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-iv-zeros" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-two-term-review:2" data-claims="lem:cube-last-far-iv-symmetric-zeros">
+<h3>3 October 2026 — The symmetric block-IV polynomial has all its zeros simple on Re x = -1/2; the IV zero curves approach |t| = 1 much faster than the far-root circles, so on those circles one term of each IV polynomial dominates</h3>
+<p class="entry-meta">Working proof (Gegenbauer) that the zeros of d^n[(x(1+x))^(-5/2)] are simple and lie on Re x = -1/2; the other IV zeros approach |t| = 1 like log n/n, the far roots like 2/e. Last far IV zeros cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The derivation sketch of the <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> splits each block-IV polynomial \(S_j\) as \((1+x)^Na_j+x^Nb_j\), with \(N=n+\tfrac72\). That splitting is two-term where the zeros of \(S_j\) lie. Where are they, and is that where the far-root circles are?</p>
+<p><strong>General statement.</strong> <code>lem:cube-last-far-iv-symmetric-zeros</code>, for every \(n\ge1\).</p>
+<p><strong>Lemma (symmetric IV zeros).</strong> For every \(n\ge1\),
+\[
+\partial_x^n\bigl(x(1+x)\bigr)^{-5/2}=\bigl(x(1+x)\bigr)^{-5/2-n}S_1(x)
+\]
+with \(S_1\) a polynomial of degree \(n\). Its \(n\) zeros are simple and lie on \(\operatorname{Re}x=-\tfrac12\), that is on \(|t|=1\) for \(t=x/(1+x)\).</p>
+<p><em>Proof.</em> Put \(u=x+\tfrac12\), so \(x(1+x)=u^2-\tfrac14\), and \(u=iy\), \(c=\tfrac12\), so \(u^2-\tfrac14=-(y^2+c^2)\). Then \(\partial_u^n=(-i)^n\partial_y^n\). The classical formula
+\[
+\frac{d^n}{dy^n}(1+y^2)^{-\lambda}=(-1)^nn!\,(1+y^2)^{-\lambda-n/2}\,C_n^{(\lambda)}\!\Bigl(\frac{y}{\sqrt{1+y^2}}\Bigr),
+\]
+after the rescaling \(y\mapsto y/c\), applies with \(\lambda=\tfrac52&gt;0\). Up to nonzero constants, including a constant phase from the branch of \((\cdot)^{-5/2}\) on the line, it identifies the two sides. \(r^nC_n^{(\lambda)}(y/r)\), \(r^2=y^2+c^2\), is a polynomial of degree \(n\) in \(y\), by the parity of \(C_n^{(\lambda)}\). (The formula follows from the generating function of the Gegenbauer polynomials; see Szegő, Orthogonal Polynomials, §4.7.) For \(\lambda&gt;0\), \(C_n^{(\lambda)}\) has \(n\) simple zeros in \((-1,1)\), and \(y\mapsto y/\sqrt{c^2+y^2}\) maps \(\mathbb R\) monotonically onto \((-1,1)\). So \(\partial_y^n(y^2+c^2)^{-5/2}\) has exactly \(n\) simple real zeros in \(y\). On the other hand, \(\partial_u^n(u^2-\tfrac14)^{-5/2}=(u^2-\tfrac14)^{-5/2-n}\tilde S_1(u)\), \(\tilde S_1(u)=S_1(x)\),, with \(\deg S_1\le n\), by induction on \(n\). Comparing the two expressions on the line \(u\in i\mathbb R\), \(\tilde S_1\) is a nonzero constant times \(r^nC_n^{(5/2)}(y/r)\), with \(n\) distinct zeros there, so \(\deg S_1=n\), and these are all its zeros, each simple. They lie on \(u\in i\mathbb R\), that is \(\operatorname{Re}x=-\tfrac12\). \(\square\)</p>
+<h4>The other IV polynomials, and the far-root circles</h4>
+<p>research/tools/bmd_cube_last_far_iv_zeros.gp computes \(S_j\), \(j=0,\ldots,3\) (\(\partial_x^n[x^{j-7/2}(1+x)^{-5/2}]=x^{j-7/2-n}(1+x)^{-5/2-n}S_j\)), and the \(|t|\) of their zeros at \(e=4,\ldots,9\) (research/results/bmd-20261003-zze/iv-zeros.txt).</p>
+<ul>
+<li>\(j=1\): \(|t|=1\) exactly, as the lemma says.</li>
+<li>\(j=0\): median \(|t|\) \(1.098,1.073,1.055,1.043,1.035,1.029\).</li>
+<li>\(j=2\): \(0.892,0.922,0.940,0.953,0.962,0.968\).</li>
+<li>\(j=3\): \(0.764,0.828,0.869,0.897,0.916,0.931\).</li>
+</ul>
+<p>So each \(S_j\) has its zeros on a curve approaching \(|t|=1\). The rate appears to be \(|\log|t||\approx|j-1|\log n/n\), that is \(\Theta(\log e/e^2)\). For example, at \(e=4\) and \(e=9\), \(\log n/n=0.119\) and \(0.0329\), against median \(|\log|t||=0.0935\) and \(0.0288\) for \(j=0\), and half of \(0.135\) and \(0.036\) for \(j=3\). This is what a balance of the two Rodrigues endpoint terms, \(|t|^n\sim n^{j-1}\), predicts. The far roots behave differently. Their real-axis crossing \(x_e\), at \(e=5,\ldots,10\), has \(|t_e|=0.559,0.644,0.708,0.757,0.795,0.824\), so \((1-|t_e|)e=2.20,2.13,2.04,1.95,1.85,1.76\): a distance of about \(2/e\), far larger than \(\log n/n\). At \(e=9\) all \(S_j\) zeros lie in \(|t|\in[0.927,1.031]\), while \(|t_e|=0.795\). At \(e=6\) the far-root arcs at \(|t|\approx0.66\) and \(1.40\) lie outside the \(S_j\) zero range \([0.86,1.06]\).</p>
+<p><strong>Consequence for the four-circle sketch.</strong> The far-root circles lie outside the zero curves of the \(S_j\). There, one endpoint term of each \(S_j\) dominates: by a factor of about \(|t|^{\pm n}\), that is \(e^{\pm O(e)}\) at distance \(2/e\). In the multilinear expansion of the sketch, terms using a subdominant part of some IV function are therefore smaller by \(e^{-O(e)}\). This is a heuristic consistent with coefficient ratios \(e^{O(e)}\), and so with circles at \(|t|=1+O(1/e)\). It does not establish them. The coefficients \(A_m\) also involve \(a_j,b_j\) and the other blocks, which are not analysed, and the step to \(|s_i|^{1/N}\) is a consistency argument, not a proof.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-last-far-reduction (part (4), the images of IV under \(\partial^n\)); conj:cube-last-far-four-circles and its derivation sketch; conj:cube-last-far-two-term-law (the crossings \(x_e\)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the lemma's substitution, the Gegenbauer formula (sign, exponent, rescaling), the zero count and the degree argument, and confirmed \(S_1(iy-\tfrac12)=(-i)^nn!\,r^nC_n^{(5/2)}(y/r)\) numerically for \(n\le6\). Verdict: pass with corrections, applied. The claimed \(O(1/e)\) rate for the \(S_j\) zeros was false, and is replaced by the observed \(\log n/n\). The far-root circles are now stated to lie outside the \(S_j\) zero curves. The consequence paragraph is reduced to a heuristic. The values \(|t_6|\) and \((1-|t_8|)\cdot8\) are corrected. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zze">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 14.69 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 5.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
