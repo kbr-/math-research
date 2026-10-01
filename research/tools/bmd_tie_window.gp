@@ -32,6 +32,21 @@ foreach(eval(getenv("MS")), m,
     forsubset([2 * m + 3, 2 * m + 1], S, my(d = matdet(vecextract(W, "..", Vec(S)))); if (d != 0 && poldegree(strip01(d)) == 0,
       listput(pure, setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1])));
     emit(Str("  pure minors (dropped window columns, 0-based): ", Vec(pure))));
+  \\ ROOTS=1 (cycle bmd-20261006-q): moduli of the roots of L(c) and, over all maximal minors of the contact window, how
+  \\ many roots off c = 0, 1 lie on |c| = 1 (to 1e-30) and how many minors have all their roots there.
+  if (getenv("ROOTS") == "1",
+    my(onc(f) = my(z = polroots(f)); [#select(x -> abs(abs(x) - 1) < 1e-30, Vec(z)), #z]);
+    my(rl = onc(L));
+    emit(Str("  L(c): roots on |c|=1: ", rl[1], " of ", rl[2], if (rl[2], Str(", moduli range ", round(vecmin(apply(abs, Vec(polroots(L)))) * 10^6) / 10^6., "..", round(vecmax(apply(abs, Vec(polroots(L)))) * 10^6) / 10^6.), "")));
+    my(allon = 0, tot = 0, ron = 0, rtot = 0);
+    forsubset([2 * m + 3, 2 * m + 1], S, my(d = strip01(matdet(vecextract(W, "..", Vec(S))))); if (poldegree(d) > 0,
+      my(r = onc(d)); tot++; ron += r[1]; rtot += r[2]; if (r[1] == r[2], allon++)));
+    emit(Str("  contact-window minors: ", allon, " of ", tot, " have all roots on |c|=1; roots on |c|=1 overall: ", ron, " of ", rtot));
+    \\ minors with no root on |c| = 1: each is coprime to L if L has all roots on the circle (dropped columns, 0-based)
+    my(offc = List());
+    forsubset([2 * m + 3, 2 * m + 1], S, my(d = strip01(matdet(vecextract(W, "..", Vec(S))))); if (poldegree(d) > 0 && onc(d)[1] == 0,
+      listput(offc, setminus([1 .. 2 * m + 3], Vec(S)) - [1, 1])));
+    emit(Str("  minors with no root on |c|=1 (dropped columns): ", Vec(offc))));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());
