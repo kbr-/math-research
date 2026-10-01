@@ -47,8 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). For the neck windows, the <a href="#cube-neck-window-vanishing-all">cross-collision theorem</a> gives the vanishing and the Hankel leading form in every window, and the <a href="#cube-neck-block-four-hull">hull theorem</a> gives the two-minimizer condition at \(w=4\). What remains for the necks is \(f_{\rm lead}\ne0\) for every \(l\ge3\) (conj:cube-neck-leading-constant). It is proved for \(l=2\) and checked exactly at \((l,e)=(3,1),(3,2),(4,1)\).</p>
-<p>Next, \(f_{\rm lead}\ne0\) for every \(l\). The cross-collision count is sharp only at \(q=0\), so \(f_{\rm lead}\) is the constant term of the whole-block quotient. Try to evaluate it directly as one confluent determinant, summing over \(\nu\) inside the determinant, in the spirit of the \(\beta_1=0\) factorization. Look for a factorization into Toeplitz and Hankel determinants of the \(\varphi_s\), as for two species.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The neck statement needs only \(f_{\rm lead}\ne0\) for every \(l\ge3\). At \(l=3\) it is a <a href="#entry-2026-10-03-cube-neck-leading-factor">discriminant power</a> when the split is equal.</p>
+<p>Next, a proof of the product formula for equal splits, by collision divisibility in \(\beta\):</p>
+<ul>
+<li>compute the total degree of \(\xi\kappa_B\) in \(\beta\) by homogeneity;</li>
+<li>show that it vanishes to order \(a\) along each \(\beta_s=\beta_t\), from the confluent limit of two species;</li>
+<li>show that the constant, a confluent limit of all species at one point, is nonzero, through Toeplitz and Jacobi determinants as for two species.</li>
+</ul>
+<p>Then handle unequal splits by summing over orderings.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -41208,6 +41214,36 @@ using \(\sum m_k=lw=c+q+\sum_sn_s\). \(\det P''[I,:]\ne0\) needs \(c\le c+q\le l
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 27.85 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 28.59 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 57.79 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-neck-leading-factor" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-leading-product check:cube-neck-leading-factor">
+<h3>3 October 2026 — For three species the neck leading constant at β₁ = 0 is a pure discriminant power whenever the balanced split is equal, and a nonzero polynomial in every window</h3>
+<p class="entry-meta">Finite check by exact symbolic factorization: at l = 3, w = 4, n = 4, 8, f_lead is a nonzero polynomial in (β₂, β₃) in every window, equal to C·(β₂β₃(β₂−β₃))^a when there is one ordering. Product conjecture for every l. Leading factor cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> After the <a href="#cube-neck-window-vanishing-all">cross-collision theorem</a>, the neck statement of (B) needs only \(f_{\rm lead}\ne0\) for generic \(\beta\) and every \(l\ge3\), \(e\) (conj:cube-neck-leading-constant). At \(\beta_1=0\), \(f_{\rm lead}=\sum_\nu\xi(\nu)\kappa_B(\nu)\). Is it a closed product in the \(\beta_s\), as the two-species factors were, which would make a proof by divisibility possible?</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-leading-product</code> (every \(l\ge3\), \(e\), window). <code>check:cube-neck-leading-factor</code> is the finite check.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_neck_leading_factor.gp uses the definitions of research/tools/bmd_cube_neck_leading_constant.gp, reviewed in the <a href="#entry-2026-10-03-cube-neck-leading-constant">leading constant entry</a>, with symbolic \(\beta_2,\beta_3\). It computes \(\sum_\nu\xi(\nu)\kappa_B(\nu)\) exactly and factors it over \(\mathbb Q\), for \(l=3\), \(w=4\), \(n=4\) and \(8\), every window \(4\le c\le12\) (research/results/bmd-20261003-s/leading-factor.txt, leading-factor-n8.txt; the first \(n=8\) attempt stopped on a stack limit, then was rerun).</p>
+<p><strong>Outcome.</strong></p>
+<ul>
+<li>For even \(c\) the split of \(12-c\) is equal, there is one ordering, and \(f_{\rm lead}=C\,(\beta_2\beta_3(\beta_2-\beta_3))^{a(c)}\) with \(C\in\mathbb Q^\times\). With \(\beta_1=0\) this is \(C\prod_{s&lt;t}(\beta_s-\beta_t)^{a(c)}\), a power of the discriminant of the \(\beta\). The exponents are \(a=48,34,24,18,16\) at \(n=4\) and \(80,58,40,26,16\) at \(n=8\), for \(c=4,6,8,10,12\). Both rows fit \(a(c)=(12-c)n+8+(c-8)^2/2\).</li>
+<li>For odd \(c\) there are two orderings. \(f_{\rm lead}\) is the same discriminant power (the exponent of the neighbouring even window) times \(\beta_2^2-\beta_2\beta_3+\beta_3^2\) times one further symmetric irreducible polynomial (degrees \(18,12,6\) at \(n=4\), for \(c=5,7,9\); none at \(c=11\)).</li>
+<li>In every window \(f_{\rm lead}\) is a nonzero polynomial. So it is nonzero for generic \(\beta\), exactly, at \(l=3\), \(e=1,2\). This agrees with the point evaluations of the leading constant entry.</li>
+</ul>
+<p><strong>Conjecture (neck leading product).</strong> For every \(l\ge2\), \(w\le n\) and window \(c\) whose balanced split of \(lw-c\) into \(l-1\) parts is equal, \(f_{\rm lead}=C_{l,w,n,c}\prod_{s&lt;t}(\beta_s-\beta_t)^{a}\) with \(C\ne0\), for all \(\beta\) (not only \(\beta_1=0\)). In every window \(f_{\rm lead}\not\equiv0\). For \(l=2\) this is consistent with the <a href="#cube-neck-two-species-leading-nonvanishing">two-species theorem</a>, where both factors are nonzero products at \(\beta_1=0\).</p>
+<p><strong>Why a product is plausible, and a route to a proof.</strong> \(\xi\) and \(\kappa_B\) are polynomials in \(\beta\), up to the ordinarity denominator. They vanish when two species coincide, \(\beta_s=\beta_t\), since the two species blocks become dependent. As in the collision arguments for the atoms, the order of vanishing along \(\beta_s=\beta_t\) should be computable from the confluent limit. If it matches the total degree of \(f_{\rm lead}\) (computable by homogeneity), \(f_{\rm lead}\) is a constant times the product, and the constant is a confluent limit to be shown nonzero. For unequal splits the extra symmetric factors show that \(f_{\rm lead}\) is not a pure product, so there the route needs the sum over orderings.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-neck-window-vanishing-all; the leading constant entry (definitions, reviewed script); conj:cube-neck-leading-constant.</p>
+<p><strong>Verification gate.</strong> Exact symbolic computation with the reviewed definitions; no proof is claimed, so no reviewer was run. The fitted exponent formula is stated as a fit to two values of \(n\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-s">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 3.37 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 25.81 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.25 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 24.83 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
