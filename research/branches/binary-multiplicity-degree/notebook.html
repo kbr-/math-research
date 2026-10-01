@@ -47,10 +47,10 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B) and (K): far simplicity. The <a href="#entry-2026-10-04-cube-far-impasse-review">far impasse review</a> found no uniform mechanism on the analytic, arithmetic or symmetric routes. It proposes to leave the special peeling configurations.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). By the <a href="#entry-2026-10-04-cube-base-deformation-splitting">deformation splitting criterion</a>, (B) at \(N\) needs, at one attaining configuration of the base family, only one moving derivative per non-branch root of multiplicity at least three.</p>
 <p>Next:</p>
 <ol>
-<li>Kleiman–Bertini lead: (B) needs weights at most two at one configuration of the base family. Formulate the weight-three incidence \(\{(D,z):\operatorname{wt}_zV^{(b)}_D\ge3\}\) and seek a proof of its expected dimension \(b-4\), for example by a deformation that moves a weight-three point. Test at \(N=8\) (\(b=4\)), where the expected dimension is \(0\).</li>
+<li>Look for a configuration of the base family whose Wronskian is classical. Candidates are a real configuration symmetric under \(z\mapsto-z\), or doubles in a geometric progression, where the hierarchical exponents \(-5/2\) and \(-7/2\) are compatible with the symmetry. Test at \(N=8,10\) whether its non-branch part is a polynomial in a smaller variable, or factors.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46592,6 +46592,38 @@ Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with pri
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">35.54 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-base-deformation-splitting" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-far-impasse-review:1" data-claims="lem:cube-base-deformation-splitting">
+<h3>4 October 2026 — A deformation splitting criterion: (B) holds at N if, at one attaining configuration, every root of multiplicity at least three is moved by some configuration derivative</h3>
+<p class="entry-meta">Working proof of a first-order splitting criterion at interior configurations of the base family, analogous to the peeling version. It also corrects the impasse review's heuristic dimension count to b - 5. Base deformation splitting cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B). The <a href="#entry-2026-10-04-cube-far-impasse-review">far impasse review</a> proposed to leave the peeling limits. (B) needs weights at most two at one configuration of the base family attaining \(T(b)\) (cor:cube-collision-half-reduction). What is the least that must be checked at one configuration \(D_0\) for this to follow nearby?</p>
+<p><strong>Correction to the review's count.</strong> The review counted a weight-three point as two conditions on (configuration, point). In the local coordinate \(z\) at an unramified non-branch point, the weight is at most the order of vanishing of the Wronskian there; it equals the sum of the weights of the points over that value. So weight at least three requires three conditions, \(W=W'=W''=0\). The incidence then has expected dimension \((b-3)+1-3=b-5\), not \(b-4\). This is a heuristic count, not a proof that the incidence has that dimension.</p>
+<p><strong>General statement.</strong> <code>lem:cube-base-deformation-splitting</code>, for every \(N\ge5\) and every holomorphic family of configurations.</p>
+<p><strong>Lemma (deformation splitting).</strong> Let \(W_s(z)\) be holomorphic jointly in \((s,z)\) near \((0,z_0)\). Let \(z_0\) be a root of \(W_0\) of multiplicity \(m\ge1\), and suppose \(a:=\partial_sW_s(z_0)|_{s=0}\ne0\). Then for all small \(s\ne0\), \(W_s\) has exactly \(m\) roots in a fixed small disc around \(z_0\), and they are simple.</p>
+<p><em>Proof.</em> Write \(W_0(z)=c(z-z_0)^m(1+O(z-z_0))\) with \(c\ne0\), and \(W_s=W_0+sA+O(s^2)\) with \(A(z_0)=a\). By Hurwitz's theorem, \(W_s\) has exactly \(m\) roots, with multiplicity, in a fixed disc \(|z-z_0|&lt;\rho\) for small \(s\). Put \(z=z_0+|s|^{1/m}w\) and divide by \(|s|\). The rescaled function tends to \(cw^m+a\,e^{i\arg s}\), uniformly in \(\arg s\) on compact sets of \(w\). This limit has \(m\) distinct simple roots \(w_j\), of modulus \(|a/c|^{1/m}\). Rouché's theorem on small discs around the \(w_j\) gives exactly one root of the rescaled function in each disc. Rouché's theorem on \(|w|=R\), with \(R\) large, shows that the rescaled region contains \(m\) roots. So all \(m\) roots near \(z_0\) are simple. \(\square\)</p>
+<p><strong>Consequence (base family).</strong> Let \(D_0\) be an interior configuration of the base family \(V^{(b)}_D\) (\(N\ge5\)) that attains \(T(b)\). Near \(D_0\), write the Wronskian as \(\prod_i(z-\beta_i(D))^{e_i}\,W_D(z)\). Here the \(\beta_i\) are the branch values, holomorphic in \(D\), and the exponents \(e_i\) are constant near \(D_0\), given by the local exponents of the generic structure. The non-branch part \(W_D\) is then holomorphic jointly in \((D,z)\), and it has constant degree, so its leading coefficient is nonzero near \(D_0\). Suppose:</p>
+<ul>
+<li>every root \(z_0\) of \(W_{D_0}\) of multiplicity at least \(3\) has a direction \(v\) with \(\partial_vW_D(z_0)|_{D_0}\ne0\);</li>
+<li>no root of \(W_{D_0}\) lies at a branch value \(\beta_i(D_0)\).</li>
+</ul>
+<p>Then configurations \(D\) arbitrarily close to \(D_0\) attain \(T(b)\) and have all finite non-branch weights at most two. That is the base hypothesis of cor:cube-collision-half-reduction.</p>
+<p><em>Proof.</em> For each root \(z_0\) of multiplicity at least \(3\), \(v\mapsto\partial_vW_D(z_0)|_{D_0}\) is a linear functional, nonzero by hypothesis, so its bad directions form a hyperplane. Finitely many hyperplanes do not cover the space, so some \(v\) is good for all of these roots. Apply the lemma to \(s\mapsto W_{D_0+sv}\), which stays in the configuration space for small \(s\) because \(D_0\) is interior. Roots of multiplicity at most \(2\) perturb to roots of total multiplicity at most \(2\) in a small disc, by Hurwitz. Since the leading coefficient stays nonzero, no root comes in from infinity. The roots of \(W_{D_0}\) are separated from the \(\beta_i(D_0)\), and by continuity they stay separated, so the nearby roots remain non-branch. Their weights are bounded by the order of \(W_D\), which is at most two. Attaining \(T(b)\) holds on an open set: thm:cube-hierarchical-attainment proves it at a generic configuration, and cor:cube-collision-half-reduction records the semicontinuity that makes the attaining set open. So small \(s\ne0\) gives the required configuration. \(\square\)</p>
+<p><strong>Relation to the record.</strong> lem:cube-far-first-order-splitting is an analogous mechanism at the boundary point \(\varepsilon=0\) of the peeling degeneration. There \(R_1\) plays the derivative, \(\varepsilon=0\) lies outside the base family, and the Wronskian is normalized by a power of \(\varepsilon\) in the far coordinate \(x=\varepsilon z\). The present form works at interior configurations. At a configuration where a symmetry forces roots of high multiplicity, it can remove that obstruction, provided a symmetry-breaking first derivative is nonzero at each forced root. Nothing yet shows that such a derivative exists at a symmetric configuration attaining \(T(b)\). It does not repair the failure of rotation symmetry for the base space, which is not rotation invariant (symmetric-base side test).</p>
+<p><strong>What this gives.</strong> At one attaining configuration, (B) at \(N\) needs only a first-order condition at the roots of multiplicity at least three, not their absence. The condition still has to be checked at a specific \(D_0\), and no such \(D_0\) has been exhibited for general \(N\). (B) remains open.</p>
+<p><strong>Dependencies re-read.</strong> cor:cube-collision-half-reduction (the base hypothesis); lem:cube-far-first-order-splitting (the boundary version); the symmetric-base side test.</p>
+<p><strong>Verification gate.</strong> I re-read the collision-half reduction and the first-order splitting lemma. One fresh-context medium reviewer checked the local argument for every \(m\), the choice of direction, and the match with the base hypothesis. Verdict: pass with corrections, all applied. The root count now uses Rouché explicitly. The bad directions are hyperplanes. The non-branch part is defined as holomorphic in \((D,z)\), with constant branch exponents, and constant degree is used to exclude roots from infinity. Openness of attainment is cited. The weight bound is stated as \(\le\) the order, the dimension count is labelled heuristic, and the claims about symmetric configurations are softened. The reviewer did not check the definition of \(T(b)\) or the holomorphy of the branch factor in the record; both are stated here as structure of the generic configuration.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 51.92 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 31.63 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
