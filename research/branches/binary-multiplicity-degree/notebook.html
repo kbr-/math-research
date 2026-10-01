@@ -47,12 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The <a href="#entry-2026-10-03-cube-far-two-term-review">two term review</a> fixes the target: prove that \(W(Z_e)\) is asymptotically a two-term sum along the chains, balancing \(t^{0}\) against \(t^{n+7/2}\) with nonvanishing amplitudes. Simplicity for large \(e\) then follows by Rouché's theorem, and exact computation covers small \(e\) (now \(N\le26\)).</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The far roots follow the <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> \(t^N=s_i(x)\), \(N=n+\tfrac72\): at \(e=9\), \(88\%\) of roots have a unit step \(2\pi/N\) along a circle.</p>
+<p>Next, make the derivation precise:</p>
 <ol>
-<li>Expand \(W(Z_e)\) along the two classes.</li>
-<li>Identify the dominant terms and their amplitudes from Jacobi strong asymptotics.</li>
-<li>Extract the amplitude ratio \(\rho_e\), and check it against the observed chains.</li>
+<li>Split each IV polynomial as \(S_j=(1+x)^Na_j+x^Nb_j\), with explicit amplitudes from Rodrigues' formula.</li>
+<li>Compute the coefficients \(A_m(x)\) of the degree-\(4\) polynomial in \(s=t^N\).</li>
+<li>Compare its root moduli \(|s_i|^{1/N}\) with the observed circles \(|t|\approx0.66,0.85,1.08,1.40\).</li>
+<li>Locate the \(8e-10\) remaining roots.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -44600,6 +44601,67 @@ The exponent \(n+\tfrac72\) is \(-a\), the parameter of the two-class kernel in 
 <tr><td>Computation design and coding</td><td class="elapsed">6.65 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">55.05 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 58.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-four-circles" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-two-term-review:2" data-claims="conj:cube-last-far-four-circles">
+<h3>3 October 2026 — In t = x/(1+x) the last-step far roots solve t^N = s_i(x) on four slowly varying circles, N = n + 7/2: consecutive roots are 2 pi i/N apart in log t, for a share of roots rising to 88% at e = 9</h3>
+<p class="entry-meta">Conjecture with a derivation sketch: splitting block IV between the two exponential classes makes W a degree-4 polynomial in s = t^N; numerically the predicted unit steps hold with growing accuracy at e = 4..9. Last far four circles cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The <a href="#entry-2026-10-03-cube-far-two-term-review">two term review</a> asked for the two-term asymptotic of the six-space Wronskian. What global form does it take?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-four-circles</code>: with \(t=x/(1+x)\) and \(N=n+\tfrac72\), all but \(O(e)\) roots of \(W_{b-1}\) satisfy \(t^N=s_i(x)(1+o(1))\) for one of four functions \(s_1,\ldots,s_4\). These are the roots of a polynomial \(\sum_{m=0}^4A_m(x)s^m\) whose coefficients vary slowly on the scale \(1/N\). So consecutive roots on each of the four curves \(|t|^N=|s_i|\) differ by \(\Delta\log t=2\pi i/N\,(1+o(1))\). Where the \(|s_i|\) are distinct, the roots are simple.</p>
+<h4>Derivation sketch</h4>
+<p>After the polynomial block is removed, \(W(F)\) is, up to a constant, the Wronskian of
+\[
+(1+x)^{-N}\mathcal P_{&lt;k},\quad x^{-N}\mathcal P_{&lt;k},\quad (1+x)^{-N}(1+x)^{1/2},\quad x^{-N}x^{1/2},\quad x^{-N}(1+x)^{-N+1}S_j,\ j&lt;4,
+\]
+with \(S_j\) polynomials of degree at most \(n+3\) (lem:cube-last-far-reduction, part (4)). Off its zeros, a Jacobi-type polynomial \(S_j\) of degree about \(N\) splits as \(S_j=(1+x)^{N}a_j+x^{N}b_j\), with amplitudes \(a_j\), \(b_j\) of subexponential size (the two endpoint contributions of its Rodrigues integral). So each IV function is \(x^{-N}(1+x)\,a_j+(1+x)^{-N}(1+x)\,b_j\). By multilinearity, \(W\) is a sum over the choice of class for each of the four IV functions. A term with \(m\) of them in the \(x^{-N}\)-class carries \(x^{-N(k+1+m)}(1+x)^{-N(k+1+4-m)}\). Factoring out the \(m=0\) term, the sum is \(\sum_{m}A_m(x)s^m\) with \(s=(x/(1+x))^{-N}\), or \(t^{N}\) after inversion. The coefficient \(A_m\) is a sum of two-class Wronskians with algebraic amplitudes, which vary on scale \(1\), not \(1/N\). Roots then lie where \(t^N\) equals a root \(s_i\) of this degree-\(4\) polynomial. That gives four curves, each crossed by about \(N\) roots spaced \(2\pi/N\) in \(\arg t\). The count \(4N=8e^2-4e+14\) against \(\deg W_{b-1}=8e^2+4e+4\) leaves \(8e-10\) roots outside this picture: an \(O(e)\) population, presumably tied to the \(\mathcal P_{&lt;k}\) blocks. This sketch is not a proof. The splitting of \(S_j\), the uniformity of the amplitudes, and the treatment of the cross terms all need work.</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_last_far_logt_steps.gp takes, for every root, the nearest neighbour in \(\log t\) (modulo \(2\pi i\)), as a step \(D\) (research/results/bmd-20261003-zzd/logt-steps.txt). An earlier grouping by \(|t|\) (bmd_cube_last_far_circles.gp, circles.txt and circles-2.txt) split conjugate pairs into separate groups and is superseded; its largest group, \(11\) roots at \(|t|\approx0.45\) for \(e=4\), already had angle steps \(1.01\cdot2\pi/N\).</p>
+<table>
+<thead><tr><th>\(e\)</th><th>\(N\)</th><th>median \(|D|N/2\pi\)</th><th>median \(|\operatorname{Re}D|/|D|\)</th><th>roots with unit on-circle step</th><th>\(\deg-4N\)</th></tr></thead>
+<tbody>
+<tr><td>4</td><td>31.5</td><td>1.005</td><td>0.051</td><td>107/148</td><td>22</td></tr>
+<tr><td>5</td><td>48.5</td><td>1.000</td><td>0.037</td><td>175/224</td><td>30</td></tr>
+<tr><td>6</td><td>69.5</td><td>0.998</td><td>0.027</td><td>259/316</td><td>38</td></tr>
+<tr><td>7</td><td>94.5</td><td>0.997</td><td>0.020</td><td>355/424</td><td>46</td></tr>
+<tr><td>8</td><td>123.5</td><td>0.997</td><td>0.015</td><td>475/548</td><td>54</td></tr>
+<tr><td>9</td><td>156.5</td><td>0.997</td><td>0.0125</td><td>603/688</td><td>62</td></tr>
+</tbody></table>
+<p>Here a "unit on-circle step" means \(|D|N/2\pi\in[0.8,1.25]\) and \(|\operatorname{Re}D|/|D|&lt;0.3\).</p>
+<p><strong>Reading.</strong></p>
+<ul>
+<li>The step modulus is \(2\pi/N\) to within \(0.5\%\) at the median.</li>
+<li>The steps align with the circles: the median \(|\operatorname{Re}D|/|D|\) falls roughly like \(1/e^{1.3}\).</li>
+<li>The share of roots following the law rises from \(72\%\) to \(88\%\).</li>
+<li>The non-conforming roots number \(41,49,57,69,73,85\), close to \(\deg-4N=8e-10\) plus the roots near chain ends and crossings. This supports the \(O(e)\) remainder.</li>
+</ul>
+<p>The earlier observations fit this picture:</p>
+<ul>
+<li>the arcs at \(|t|\approx0.66,0.85,1.08,1.40\);</li>
+<li>the vertical progression at the real-axis crossing, which is the circle \(|t|=\kappa\) near \(t=-\kappa\);</li>
+<li>the "sparse" roots, which are the parts of the circles far from \(t=-1\), where steps in \(x\) are larger.</li>
+</ul>
+<p><strong>What a proof needs.</strong></p>
+<ol>
+<li>The splitting \(S_j=(1+x)^Na_j+x^Nb_j\), with uniform control from Rodrigues' formula and steepest descent.</li>
+<li>The degree-\(4\) polynomial \(\sum A_ms^m\) with explicit \(A_m\), and the separation of its root moduli.</li>
+<li>Rouché's theorem on each circle.</li>
+<li>The \(8e-10\) remaining roots.</li>
+<li>Exact computation below the threshold, which now reaches \(e=11\).</li>
+</ol>
+<p><strong>Dependencies re-read.</strong> lem:cube-last-far-reduction (the images under \(\partial^n\)); conj:cube-last-far-two-term-law (its local form); prop:cube-last-far-six-space.</p>
+<p><strong>Verification gate.</strong> Numerical root geometry at \(80\) digits on exact polynomials, and a derivation sketch labelled as such. No reviewer: no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 22.68 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 27.14 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 50.50 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 4.90 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
