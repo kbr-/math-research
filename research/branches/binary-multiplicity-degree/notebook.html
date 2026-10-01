@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-05-cube-split-rule-review">split-rule review</a> falsified pair-collision induction and the equal-split family; \(\{4,4,4\}\) is nonclassical.</p>
-<p>Next: test conj:cube-three-centre-limit-classical at \(N=12\) on all twelve multisets. This is a refutation attempt on the line's general claim: none classical ends the line, and one classical certifies \(n=11\).</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). <a href="#entry-2026-10-05-cube-three-centre-twelve">No three-centre split is classical at \(N=12\)</a> at the tested parameters, so the three-centre route stops at \(n=10\).</p>
+<p>Next: four-centre limits, on the genus-one branch curve. Build the limit with local series at a generic point and validate it against the three-centre classifications at \(N=8,\ldots,11\) by placing one cluster of size zero. Then test four-centre splits at \(N=12\) as the replacement certificate family.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -50553,6 +50553,40 @@ In all but one case the deficit equals the number of gaps.</li>
 <tr><td>Computation design and coding</td><td class="elapsed">38.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 33.93 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 14.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-three-centre-twelve" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-three-centre-twelve-none">
+<h3>5 October 2026 — At twelve labels no three-centre split is classical at the tested parameters: the existence conjecture fails there on all evidence, and the three-centre route ends at n = 10</h3>
+<p class="entry-meta">Finite check against conj:cube-three-centre-limit-classical at N = 12: all eleven conclusive splits deficient, the two near-misses at three values of c; {1,1,10} inconclusive. Three centre twelve cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-05-cube-split-rule-review">split-rule review</a> named the existence conjecture's test at \(N=12\) as a refutation attempt on the line's general claim.</p>
+<p><strong>General statement.</strong> conj:cube-three-centre-limit-classical: for every \(N\) some three-centre split is classical. Tested at \(N=12\) by check:cube-three-centre-twelve-none.</p>
+<p><strong>Computation.</strong> All twelve partitions of \(12\) into three parts were run with research/tools/bmd_three_centre_limit.gp at precision \(40\), \(c=g^2\) in \(\mathbb F_{3^5}\) (research/results/bmd-20261005-e/splits-12.txt; \(\{4,4,4\}\) in research/results/bmd-20261005-d/equal-split-12.txt). Jet ranks are out of \(D=68\):</p>
+<ul>
+<li>\(\{3,4,5\}\) and \(\{2,5,5\}\): \(67\);</li>
+<li>\(\{2,4,6\}\) and \(\{3,3,6\}\): \(65\);</li>
+<li>\(\{4,4,4\}\): \(64\);</li>
+<li>\(\{2,3,7\}\), \(\{1,4,7\}\) and \(\{1,5,6\}\): \(63\);</li>
+<li>\(\{1,3,8\}\): \(62\); \(\{2,2,8\}\): \(59\); \(\{1,2,9\}\): \(58\);</li>
+<li>\(\{1,1,10\}\): precision exhausted, no conclusion. Every earlier \(\{1,1,s\}\) failed.</li>
+</ul>
+<p>The two near-misses were rerun at \(c=g^7\) and \(g^{41}\) (research/results/bmd-20261005-e/splits-12-c7.txt, splits-12-c41.txt). Their rank at generic test points stays \(67\), with lower rank at some special points.</p>
+<p><strong>Outcome.</strong> No three-centre split is classical at \(N=12\) with the tested parameters. Jet ranks at specific slopes and \(c\) only bound the generic rank from below, so this does not prove that every split is nonclassical for generic parameters. But three values of \(c\) and the earlier orderings, which change the slopes, have never changed a classification, so the evidence is consistent. The existence conjecture fails at \(N=12\) on all evidence. The three-centre route certifies \(\Delta_{n,2}\not\equiv0\pmod3\) for \(n\le10\) and stops there. Deficits at \(N=12\) are at least one, and the best splits are the most balanced ones.</p>
+<p><strong>What it means for the route.</strong> Three clusters break the reflection pairs of two-cluster limits, but at \(N=12\) they no longer suffice. The generic-centre criterion holds for any number of centres: its proof uses one Möbius sweep of a single centre. So the next formulation is four-centre limits. Their branch curve \(x^2=1+T\), \(z^2=1+cT\), \(y^2=1+dT\) has genus one, so the limit must be computed with local series at a point, not with rational functions on a conic.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-three-centre-limit-classical; prop:cube-three-centre-generic-centre-criterion; the three-centre construction.</p>
+<p><strong>Verification gate.</strong> A finite check with the construction reviewed in the three-centre certificate entry; the precision and \(c\) settings are the only changes. No proof is claimed, so no reviewer.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 36.57 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.89 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">41.51 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">17 min 37.49 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
