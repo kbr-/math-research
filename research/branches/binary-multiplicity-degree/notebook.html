@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The far-root circles follow the <a href="#entry-2026-10-03-cube-last-far-log-radii">logarithmic radius law</a>, \(Nu_i=c_i\log N+O(1)\), with equal differences. The block-IV splitting mechanism is open again. Through the <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a> it would give simplicity.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). A <a href="#entry-2026-10-03-cube-last-far-radius-step">leading-order count</a> of the block-IV expansion predicts the far-circle step \(4\log N/N\), and offsets \(Nu_i=(4i-\tfrac{13}2)\log N\), which the fits support.</p>
 <p>Next:</p>
 <ol>
-<li>Derive the amplitude exponent \(Q(m)\) of the multilinear expansion exactly, from the space \(\partial^n G\): \(x^{-n}\)-monomials, \((1+x)^{-n}\)-monomials and the four block-IV functions. Use the leading order of mixed Wronskians, the Pochhammer amplitudes and the binomial minors. Compare \(-Q''\) with the fitted step \(4.1\) and the \(c_i\).</li>
-<li>Turn the leading-order expansion into a factorization \(P=F_i(t^N-s_i)\) with an explicit error, and check \(|t\,s_i'/s_i|&lt;N\).</li>
+<li>Compute the five terms \(T_m\) of the expansion exactly at small \(e\), by multilinearity over truncated \(X_j\)/\(Y_j\) parts. Compare their balance curves with the circles. This tests the splitting as an actual factorization, not only a count.</li>
+<li>A route review is due within two research entries. It should weigh this line (an analytic factorization, then the log-derivative criterion) against the arithmetic one (Eisenstein clusters and \(G_p\)).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45444,6 +45444,76 @@ with constants \(c_0&lt;c_1&lt;c_2&lt;c_3\) whose consecutive differences are eq
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 19.92 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">35.80 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-radius-step" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-radius-step">
+<h3>3 October 2026 — A leading-order count of the block-IV expansion predicts the far-circle radii N u_i = (4i − 13/2) log N + O(1), as fitted</h3>
+<p class="entry-meta">Conjecture with a heuristic leading-order derivation: N u_i = (4i - 13/2) log N + O(1), so the steps are 4 log N/N. At e = 4..11 the predicted slopes fit best on every circle, against controls shifted by 1/2. Last far radius step cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). With the scale objection <a href="#entry-2026-10-03-cube-last-far-log-radii">withdrawn</a>, the multilinear expansion over the block-IV splitting is the candidate source of the factorization \(P=F_i(t^N-s_i)\) required by the <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a>. Does a leading-order count of that expansion predict the fitted radii \(Nu_i\approx c_i\log N\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-radius-step</code>, for every \(e\ge1\): \(Nu_i=(4i-\tfrac{13}2)\log N+O(1)\) for \(i=0,\ldots,3\), so the steps are \(N(u_{i+1}-u_i)=4\log N+O(1)\).</p>
+<h4>Setting</h4>
+<p>Let \(n=R_e\), \(N=n+\tfrac72\), \(k=4e\), and \(t=x/(1+x)\). By Pólya–Mammana with the block \(\mathcal P_{&lt;n}\) (lem:cube-last-far-reduction), \(W_{b-1}\) is, up to factors at \(0,-1,\infty\), the Wronskian of \(\partial^nG\). This space has dimension \(2k+6=8e+6\) and consists of the following functions.</p>
+<ul>
+<li>\(X\)-monomials: \(x^{-3-n}\) and \(x^{-7/2+i-n}\), \(i&lt;k\). These come from \(x^{-3}\) and \(x^{-7/2}\mathcal P_{&lt;k}\), up to nonzero Pochhammer constants.</li>
+<li>\(Y\)-monomials: \((1+x)^{-3-n}\) and \((1+x)^{-7/2+i-n}\), \(i&lt;k\). These come from \((1+x)^{-3}\) and \((1+x)^{-7/2}\mathcal P_{&lt;k}\).</li>
+<li>The four block-IV functions \(h_j=\partial^n[x^{j-7/2}(1+x)^{-5/2}]\), \(j&lt;4\).</li>
+</ul>
+<p>The splitting writes \(h_j=X_j+Y_j\), and is the heuristic input. Here \(X_j=\sum_r\binom{-5/2}{r}(j-\tfrac72+r)^{\underline n}x^{j-7/2+r-n}\) is \(\partial^n\) of the expansion at \(0\), and \(Y_j\) is the analogous expansion at \(-1\). Each is taken asymptotically in \(n\), and is used only formally. The expansion over the choice of part is \(W=\sum_{m=0}^4T_m\), where \(T_m\) collects the choices with \(m\) functions in their \(Y\)-part. Adjacent terms balance where \(|T_m|=|T_{m-1}|\).</p>
+<h4>The count (heuristic)</h4>
+<p><em>Echelon residuals.</em> Modulo the \(X\)-monomials, \(X_j\) keeps only \(r\ge k-j\). The \(m'=4-m\) functions in \(X\)-parts then have residual exponents \(\gamma_0+i-n\), \(i&lt;m'\), with \(\gamma_0=k-\tfrac72\). Their leading amplitude is a binomial Toeplitz minor \(\det[\binom{-5/2}{k-j+i}]\) times \(\prod_i(\gamma_0+i)^{\underline n}\). In the \(Y\)-world, \(x^{j-7/2}=\pm(1-(1+x))^{j-7/2}\) gives residual exponents \(\gamma_0+i-n\), \(i&lt;m\), with minor \(\det[\binom{j-7/2}{k-1+i}]_{i&lt;m,\,j\in S}\). By power counting, the dominant choice is \(S=\{0,\ldots,m-1\}\), since \(\binom{j-7/2}{s}\sim s^{5/2-j}\) favours small \(j\). So the \(X\)-world is a monomial block with exponents \(\{-3\}\cup\{-\tfrac72+i:i&lt;k+m'\}\), shifted by \(-n\), and the \(Y\)-world likewise with \(k+m\). The block sizes are \(p=k+5-m\) and \(q=k+1+m\).</p>
+<p><em>Mixed Wronskian.</em> Work in \(\sigma=\log t\), so that \(\partial_\sigma=x(1+x)\partial_x\) and \(t^n=e^{n\sigma}\). This change multiplies every Wronskian by the same power of \(d\sigma/dx\). Write the \(X\)-functions as \(x^{-n}f\) and the \(Y\)-functions as \(x^{-n}t^ng\), where \(g\) is \((1+x)^\gamma\) times the amplitude; indeed \((1+x)^{\gamma-n}=x^{-n}t^n(1+x)^\gamma\). Then \(\partial_\sigma^r(t^ng)=t^n(\partial_\sigma+n)^rg\) exactly. A unipotent row operation turns the Wronskian matrix into \([(\partial_\sigma-n)^rf\mid\partial_\sigma^rg]\). Its unique top power of \(n\) is \(n^{pq}\,W_\sigma(f)W_\sigma(g)\), since \(\det[\binom{q+i}{s}]_{i,s&lt;p}=1\). From \(T_{m-1}\) to \(T_m\), \(pq\) changes by \(5-2m\). The remaining factors that depend on \(m\) are powers of \(d\sigma/dx\), of \(x\) and of \(t\) with exponents \(O(e)\). These are \(O(1)\) on circles with \(|t|=1+O(\log N/N)\) and \(|x|=O(1)\), so they are left out of the ratio.</p>
+<p><em>Ratio \(T_m/T_{m-1}\).</em> Write \(s=k\approx\sqrt{8N}\) and \(n\approx N\). The \(m\)-dependent factors are the following.</p>
+<ol>
+<li>\(t^n\).</li>
+<li>\(n^{5-2m}\), from \(n^{pq}\).</li>
+<li>The Pochhammer amplitudes. The \(Y\)-world gains \(\gamma_0+m-1\), and the \(X\)-world loses \(\gamma_0+4-m\). With \(|\gamma^{\underline n}|\approx\Gamma(\gamma+1)\Gamma(n)n^{-\gamma}/\pi\), this gives \((k/n)^{2m-5}\).</li>
+<li>The exponent Vandermondes. In \(T_{m-1}\) the \(X\)-world has \(5-m\) residuals, so it loses half-integral index \(k+4-m\), with product \((k+4-m)!\) against the lower exponents. The \(Y\)-world gains index \(k+m-1\), with product \((k+m-1)!\). The cross terms with \(-3\) cancel to order \(1\). This gives \((k+m-1)!/(k+4-m)!\approx k^{2m-5}\).</li>
+<li>The minors. The box formula gives \(|\det[\binom{-5/2}{s+i-j}]_{m'}|\approx s^{3m'/2-m'(m'-1)}\). The \(Y\)-minor is about \(s^{5m/2-m(m-1)}\). Their changes are \(s^{13/2-2m}\) and \(s^{9/2-2m}\), with product \(s^{11-4m}\).</li>
+</ol>
+<p>In units of \(\log N\), using \(\log k\approx\tfrac12\log N\), the exponent of \(T_m/T_{m-1}\) is
+\[
+(5-2m)+\tfrac12(5-2m)+\tfrac12(2m-5)+\tfrac12(11-4m)=\tfrac{21-8m}2 .
+\]
+So the balance \(|T_m|=|T_{m-1}|\) lies at \(n\log|t|=(4m-\tfrac{21}2)\log N+O(1)\). For circle \(i=m-1\), this predicts
+\[
+Nu_i=\Bigl(4i-\tfrac{13}2\Bigr)\log N+O(1),\qquad N(u_{i+1}-u_i)=4\log N+O(1).
+\]
+The \(m=1\) balance has the smallest radius, matching \(u_0&lt;u_1&lt;u_2&lt;u_3\).</p>
+<p><em>What is not controlled.</em></p>
+<ul>
+<li>The next order of \(\det[(\partial_\sigma-n)^rf\mid\partial_\sigma^rg]\) is smaller only by about \((p+q)\gamma/n\approx k^2/n\approx8\), which is not small. So the leading term need not dominate: the full series in \(k^2/n\) could cancel it or change it by large factors. The same applies to the Pochhammer correction \(\exp(O(\gamma^2/n))\). The coefficients of \(\log N\) survive only if these corrections depend on \(m\) through bounded functions of \(k^2/n\), with no powers of \(e\).</li>
+<li>The subsets \(S\ne\{0,\ldots,m-1\}\) are dropped on power counting alone.</li>
+<li>The minor asymptotics need nonvanishing leading constants. lem:cube-last-far-eisenstein-minors gives the nonvanishing of specific pivot minors, not of these leading coefficients.</li>
+<li>The splitting \(h_j=X_j+Y_j\) is formal.</li>
+</ul>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_last_far_radius_exponents.py uses the exact hull slopes at \(e=4,\ldots,11\) (block-logderiv-2.txt) and makes two tests. Output: research/results/bmd-20261003-zzr/radius-exponents.txt.</p>
+<ul>
+<li>Offsets: it fits \(Nu_i-c_i\log N=d+f/e\) for the predicted \(c_i=4i-\tfrac{13}2\) and the controls \(c_i\pm\tfrac12\).</li>
+<li>Steps: it fits \(N(u_{i+1}-u_i)-c\log N=\delta+f/e\) for \(c=4\) and the controls \(3.5,4.5\).</li>
+</ul>
+<p>An earlier version of the count had a slip in factor 4: it took index \(k+3-m\), giving \(k^{2m-4}\). That version predicted the offset \(4i-7\), which the reviewer caught. The script was rerun with the corrected prediction. Its \(-7\) control is that earlier value.</p>
+<p>Outcome.</p>
+<ul>
+<li><em>Offsets: supported.</em> The predicted slopes leave residuals \(0.037,0.0074,0.0025,0.034\) on the four circles. The controls \(c_i-\tfrac12\) leave \(0.049,0.066,0.075,0.105\), and \(c_i+\tfrac12\) leave \(0.108,0.080,0.071,0.049\). The prediction is best on every circle. The free fits of the log-radii entry, \(c\approx(-6.72,-2.65,1.52,5.61)\), also sit near \((-6.5,-2.5,1.5,5.5)\).</li>
+<li><em>Steps: supported, not established.</em> For \(c=4\), the step series run \(1.16\to1.29\), \(1.17\to1.50\) and \(1.62\to1.80\) over \(e=4..11\), with residuals \(0.030,0.010,0.032\). The control \(c=3.5\) leaves \(0.100,0.081,0.102\), and \(c=4.5\) leaves \(0.056,0.064,0.051\), less than twice the \(c=4\) residuals on two of the three steps. The \(c=4\) series still drift slowly upward.</li>
+</ul>
+<p><strong>What this gives.</strong> The arithmetic progression of the far-circle log-radii now has a mechanism: five factors of the expansion depend quadratically on \(m\). The leading-order count predicts both the step \(4\log N/N\) and the offsets \(-\tfrac{13}2\log N/N\), and the fits support both. It is the first quantitative derivation of the circle structure from the reduced space, though still heuristic. For the log-derivative criterion it suggests \(s_i\approx t^N\,T_{i}/T_{i+1}\) on circle \(i\): a ratio of two leading terms, each a product of slowly varying Wronskians. The next step is to make the leading order rigorous in the \(\sigma\)-variable, which requires controlling the series in \(k^2/n\).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-last-far-reduction (the Pólya–Mammana block and the functions); lem:cube-last-far-eisenstein-minors (the box formula and the Toeplitz minors); conj:cube-last-far-log-radii; conj:cube-last-far-iv-splitting-mechanism.</p>
+<p><strong>Verification gate.</strong> I re-read the six blocks of \(F_{b-1}\) in the Eisenstein entry, the reduction, and the box formula. One fresh-context medium reviewer checked the block sizes, the exactness of the \(\sigma\)-step and the unipotent reduction, the unique top power \(n^{pq}\), each ratio factor, and every quoted number. Verdict: pass with corrections, all applied. The Vandermonde factor was corrected from \(k^{2m-4}\) to \(k^{2m-5}\), which moves the predicted offset from \(4i-7\) to \(4i-\tfrac{13}2\); the script and the test were rerun. The definition of \(g\) was corrected. The omitted \(O(1)\) factors are justified. The list of uncontrolled points is completed, the step test stays "supported, not established", and the script's claim label and docstring are fixed. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 46.54 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 30.29 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.92 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.67 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
