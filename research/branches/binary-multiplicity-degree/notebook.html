@@ -47,13 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The block-IV polynomials have zeros near \(|t|=1\) (within about \(\log n/n\)); for the symmetric one, <a href="#entry-2026-10-03-cube-last-far-iv-zeros">exactly on \(|t|=1\)</a>. The far-root circles of the <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> lie farther out (about \(2/e\)), where one endpoint term of each IV polynomial dominates.</p>
-<p>Next:</p>
-<ol>
-<li>Write the exact two-term splitting \(S_j=(1+x)^Na_j+x^Nb_j\) from the Rodrigues contour integral, with \(a_j,b_j\) from endpoint expansions.</li>
-<li>Form the degree-\(4\) polynomial \(\sum A_ms^m\) in \(s=t^N\).</li>
-<li>Compare its root moduli with the observed circles at \(e=6\) to \(10\).</li>
-</ol>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The empirical four-circle law and the local two-term law stand, and \(W_{b-1}\) is squarefree for \(b\le13\). The <a href="#entry-2026-10-03-cube-last-far-mechanism-scale">IV-splitting mechanism is refuted</a>: the circles need amplitude ratios \(e^{\Theta(e)}\), not \(n^{O(1)}\).</p>
+<p>Next, a route review. Weigh identifying the true \(e^{\Theta(e)}\) balance, through the \(k\)-dimensional blocks and class integrals in the six-space, against the other inputs of (B) and (K). Choose outside leads aimed at that balance.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -44702,6 +44697,30 @@ after the rescaling \(y\mapsto y/c\), applies with \(\lambda=\tfrac52&gt;0\). Up
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 5.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.42 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.89 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-mechanism-scale" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-two-term-review:2" data-claims="conj:cube-last-far-iv-splitting-mechanism">
+<h3>3 October 2026 — The block-IV splitting cannot produce the far-root circles: it balances at distance log n/n from |t| = 1, while the circles sit at about 2/e</h3>
+<p class="entry-meta">Refutation by a scale count of the derivation sketch of the four-circle law; the empirical law t^N = s_i stands, but its amplitudes must be of size e^(O(e)) from another source. Last far mechanism scale cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The <a href="#entry-2026-10-03-cube-last-far-four-circles">four-circle law</a> came with a derivation sketch: split each block-IV polynomial as \(S_j=(1+x)^Na_j+x^Nb_j\), and expand the Wronskian multilinearly into a degree-\(4\) polynomial in \(s=t^N\). Does this sketch produce circles at the observed distance from \(|t|=1\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-iv-splitting-mechanism</code>: the far-root curves of the four-circle law are the balance curves \(|t|^N|A_{m-1}/A_m|=1\) of the multilinear expansion over the splitting of block IV. It is refuted here by a scale count, against the data of the <a href="#entry-2026-10-03-cube-last-far-iv-zeros">IV zeros cycle</a>.</p>
+<h4>The scale count</h4>
+<p>Adjacent terms \(m\) and \(m-1\) of the expansion differ in one IV function, which contributes \(x^{-N}(1+x)a_j\) in one and \((1+x)^{-N}(1+x)b_j\) in the other. The rest of the Wronskian changes only in amplitude factors that do not involve \(N\)-th powers. So \(|A_{m-1}/A_m|\) is, up to such factors, \(|b_j/a_j|\). The zeros of \(S_j\) are exactly where its two endpoint terms balance, \(|t|^{N}|b_j/a_j|\approx1\). Those zeros lie at \(|\log|t||\approx|j-1|\log n/n\) (IV zeros cycle, data at \(e=4,\ldots,9\)), so \(|b_j/a_j|=n^{O(1)}\), polynomial in \(n\). The sketch therefore puts its balance curves within \(O(\log n/n)=O(\log e/e^2)\) of \(|t|=1\).</p>
+<p>The far roots are much farther away. Their real-axis crossings have \(1-|t_e|=2.20/e,\ldots,1.76/e\) at \(e=5,\ldots,10\), and the far-root arcs at \(e=6\) reach \(|t|\approx0.66\) and \(1.40\), outside the \(S_j\) zero range \([0.86,1.06]\). At the crossing, \(|t_e|^N=\exp(-N\cdot1.9/e)\approx e^{-3.8e}\). So the amplitude ratio balancing \(t^N\) there is \(e^{\Theta(e)}\), not \(n^{O(1)}\). The IV splitting cannot supply it, and the sketch's mechanism is refuted.</p>
+<p><strong>What stands.</strong> The empirical four-circle law: unit steps \(2\pi/N\) in \(\log t\), conforming for \(88\%\) of the roots at \(e=9\). The two-term law at the real-axis crossing, confirmed at \(e=10\). Squarefreeness for \(b\le13\). What changes is the source of the amplitudes. A ratio \(e^{\Theta(e)}=e^{\Theta(k)}\), with \(k=4e\), points to the \(k\)-dimensional blocks \(x^{-N}\mathcal P_{&lt;k}\) and \((1+x)^{-N}\mathcal P_{&lt;k}\), and to the class integrals. For example, the Wronskian of a \(k\)-dimensional polynomial block together with an algebraic amplitude function involves \(k\)-th derivatives of that amplitude, of size \(k!\,|x|^{-k}\) or \(k!\,|1+x|^{-k}\). Ratios of such factors between the two classes are \(|t|^{\pm k}\cdot(\ldots)\), which is exponential in \(k\). The balance \(|t|^N\sim|t|^{\pm ck}\cdots\) is not obviously at \(2/e\) either. Identifying the true balance is the next step.</p>
+<p><strong>Correction.</strong> The derivation sketch in the four-circle entry, and the heuristic consequence in the IV zeros entry, are withdrawn as mechanisms. conj:cube-last-far-four-circles is kept as an empirical law. Its summary's "degree-4 polynomial arising from splitting block IV" is superseded by this refutation.</p>
+<p><strong>Dependencies re-read.</strong> conj:cube-last-far-four-circles; lem:cube-last-far-iv-symmetric-zeros and its data; conj:cube-last-far-two-term-law (the crossings).</p>
+<p><strong>Verification gate.</strong> A scale count against recorded data; no new computation. No reviewer: the refutation is the elementary comparison \(\log n/n\ll1/e\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 32.73 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.59 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
