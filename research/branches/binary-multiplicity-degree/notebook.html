@@ -47,10 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-layer-count">far layer count</a> conjectures, with evidence at \(l=1,2,3\), that every peeling step has one Vandermonde layer at \(0\) and \(R_l\) at \(-1\) in a prime window just above its dimension.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-far-layer-count-lemma">layer count lemma</a> proves one Vandermonde layer at \(0\) and \(R_l\) at \(-1\) at every peeling step, in an explicit prime window.</p>
 <p>Next:</p>
 <ol>
-<li>Prove the layer count, as Step 2 of the Eisenstein proposition. Write the exponent sets of the far component at \(0,-1,\infty\) explicitly, count the pairs at distance \(p/2\), and determine the window and the condition on \((e,l)\).</li>
+<li>Prove the pivot minors are units for \(l\ge2\), with closed forms as at \(l=1\). The minors combine box-formula Toeplitz blocks with Vandermonde-type blocks.</li>
+<li>Seek the mechanism separating the \(R_l\) layers at \(-1\) into the Ore staircase. A second-order count (sub-Wronskians) is a candidate.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46732,6 +46733,97 @@ Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with pri
 <tr><td>Computation design and coding</td><td class="elapsed">39.54 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">48.08 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-far-layer-count-lemma" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-layer-count">
+<h3>4 October 2026 — Layer count lemma: at every peeling step, in an explicit prime window, the Vandermonde factors give one layer at 0 and R_l layers at −1</h3>
+<p class="entry-meta">Working proof, given the local exponent sets (checked at seven (e, l)), of the pair count N_0 - N_oo = 1 and N_-1 - N_oo = R_l in the window Q_lo &lt;= (p-1)/2 &lt;= R_e + 4el + 3, p &gt; d; it extends Step 2 of the Eisenstein proposition. Far layer count lemma cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B). The <a href="#entry-2026-10-04-cube-far-layer-count">far layer count</a> conjectured, from local data, one Vandermonde layer at \(0\) and \(R_l\) at \(-1\) in a prime window at every peeling step. Can the count be proved as in Step 2 of the Eisenstein branch proposition?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-layer-count</code>, for every even-peeling step \((e,l)\), \(e,l\ge1\), and every prime \(p\) in the window below.</p>
+<h4>Setting and exponent sets</h4>
+<p>The far component of step \(k\) (\(e=k-1\), \(l=b-k\)) is spanned by \((1+x)^gx^{\beta}\mathcal P_{&lt;\mathrm{cnt}}\), with \([g,\beta,\mathrm{cnt}]\) running over the blocks
+\[
+B_1=[0,0,R_e],\ B_2=[-3,0,1],\ B_3=[0,-(R_l+2),R_l],\ B_4=[-\tfrac72,0,4e],\ B_5=[-\tfrac52,\tfrac12-4l,4l],\ B_6=[0,-\tfrac72+4e-4el,4el].
+\]
+Its dimension is \(d=R_e+1+R_l+4e+4l+4el\), and its branch points are \(0,-1,\infty\). Put \(M=R_e+R_l+4el\). Hypothesis (E) says that the local exponents of the integral classes \(I_P\) and the half-integral classes \(H_P\) are:</p>
+<ul>
+<li>\(I_0=[-R_l-2,-3]\cup[0,R_e+4e]\) and \(H_0=[4e-4el-\tfrac72,\,4e+4l-\tfrac92]\);</li>
+<li>\(I_{-1}=\{-3\}\cup[0,M-1]\) and \(H_{-1}=-\tfrac72+[0,4e+4l-1]\);</li>
+<li>\(I_\infty=[-(R_e-1),0]\cup[3,R_l+4l+3]\) and \(H_\infty=\tfrac92-4e+[0,4el+4e-1]\).</li>
+</ul>
+<p>All intervals are of integers or of half-integers, step \(1\), and the parameter at \(\infty\) is \(u=1/x\). These are the generic echelon exponents of the blocks. At \(0\), \(B_3\) and \(B_1\) are monomial; \(B_2\) and \(B_4\) continue after \(B_1\); \(B_5\) reduces modulo the monomials \(B_6\) to tails starting at \(4e-\tfrac72\). At \(-1\), \(B_2\) has exponent \(-3\); \(B_1,B_3,B_6\) are analytic; \(B_5\) continues after \(B_4\). At \(\infty\), \(B_2\) and \(B_5\) continue after the monomials of \(B_3\), and \(B_4\) after those of \(B_6\). (E) holds exactly when the corresponding pivot minors are nonzero. For \(l=1\) it is the exponent list of prop:cube-last-far-eisenstein-branch, with minors proved nonzero. research/tools/bmd_cube_middle_far_branch_values.gp (sets mode) confirms it exactly at \((e,l)=(3,1),(3,2),(3,3),(4,3),(2,4),(4,2),(5,2)\) (research/results/bmd-20261004-i/exponent-sets.txt).</p>
+<p><strong>Lemma (layer count).</strong> Assume (E). Let \(p&gt;d\) be prime, \(q=(p-1)/2\), and
+\[
+Q_{\rm lo}\le q\le Q_{\rm hi}:=R_e+4el+3,
+\]
+\[
+Q_{\rm lo}=\max\bigl(M+3-4e-4l,\ 4el+3,\ R_l+4l+4e-1\bigr).
+\]
+The proof also uses \(q\ge R_e-4l+4\), \(q\ge R_e+3-4e\) and \(q\ge4el-4e+3\). These follow, since \(R_e-4l+4\le M+3-4e-4l\) (the difference is \(R_l+4e(l-1)-1\ge0\)), \(R_e+3-4e\le M+3-4e-4l\) (difference \(R_l+4l(e-1)\ge0\)) and \(4el-4e+3\le4el+3\).
+\[
+\]
+For \(P\in\{0,-1,\infty\}\) let \(N_P\) be the number of pairs \((a,h)\in I_P\times H_P\) with \(|a-h|=p/2\). Then
+\[
+N_0=R_e+4el+4-q,\qquad N_{-1}=M+3-q,\qquad N_\infty=R_e+4el+3-q,
+\]
+so \(N_0-N_\infty=1\) and \(N_{-1}-N_\infty=R_l\). Moreover \(v_p(V(\mu^{(P)}))=N_P\). Hence, if the pivot minors at \(0,-1,\infty\) are \(p\)-adic units and \(p\nmid\operatorname{lc}(W_k)\):
+\[
+v_p(W_k(0))=1\quad\text{and}\quad v_p(W_k(-1))=R_l .
+\]
+By Dumas's theorem, the roots of \(W_k\) with residue \(0\) are then simple.</p>
+<p><em>Proof.</em> <em>Bounds from \(p&gt;d\).</em> Since \(d-1=(8e+8l-2)+2e^2-5e+2l^2-5l+4el+2\ge8e+8l-2\) for \(e,l\ge1\), we have \(q\ge(d-1)/2\ge4e+4l-1\). The union \(I_P\cup H_P\) lies in an interval of length less than \(d&lt;p\). Its span is at most \(\max(R_e+R_l+4e+2,\,R_e+4el+\tfrac72,\,R_l+4l+4e-\tfrac52,\,4el+4l-1)\) at \(0\), \(M+\tfrac52\) at \(-1\), and \(\max(R_e+R_l+4l+2,\,R_e+4el+\tfrac52,\,R_l+4l+4e-\tfrac32,\,4el+4e-1)\) at \(\infty\), all below \(d\). So integer differences within a class are prime to \(p\). A mixed difference is \(\pm m/2\) with \(m\) odd and \(m&lt;2p\), so it is divisible by \(p\) exactly when \(m=p\), and then only once. Hence \(v_p(V(\mu^{(P)}))=N_P\).</p>
+<p><em>At \(-1\).</em> Write \(h=-\tfrac72+i\), \(0\le i\le4e+4l-1\), so \(h\pm p/2=i-3+q\) or \(i-4-q\).</p>
+<ul>
+<li>The value \(i-4-q\) is \(\ge0\) only if \(i\ge q+4&gt;4e+4l-1\).</li>
+<li>\(a=-3\) would need \(i-3+q=-3\), that is \(i=-q&lt;0\), or \(i-4-q=-3\), that is \(i=q+1&gt;4e+4l-1\). Both lie outside \(0\le i\le4e+4l-1\).</li>
+<li>\(i-3+q\in[0,M-1]\) holds exactly when \(3-q\le i\le M+2-q\). Here \(3-q\le0\). Also \(M+2-q\le4e+4l-1\), because \(q\ge M+3-4e-4l\), and \(M+2-q\ge-1\), because \(q\le Q_{\rm hi}\le M+3\).</li>
+</ul>
+<p>So \(N_{-1}=M+3-q\).</p>
+<p><em>At \(\infty\).</em> Write \(I_\infty=A\cup B\) with \(A=[-(R_e-1),0]\) and \(B=[3,R_l+4l+3]\), and \(H_\infty=[\tfrac92-4e,\tfrac72+4el]\).</p>
+<ul>
+<li>For \(a\in A\) and \(h=a+p/2=a+q+\tfrac12\): \(h\in H_\infty\) exactly when \(4-4e-q\le a\le3+4el-q\). Since \(q\ge4el+3\), the upper end is \(\le0\). Since \(q\ge R_e+3-4e\), the lower end is \(\le-(R_e-1)\). This gives \(R_e+4el+3-q\ge0\) pairs.</li>
+<li>For \(a\in A\) and \(h=a-p/2\le-q-\tfrac12\): this is below \(\tfrac92-4e\) since \(q&gt;4e-5\).</li>
+<li>For \(a\in B\) and \(h=a-q-\tfrac12\ge\tfrac92-4e\): this needs \(a\ge q+5-4e&gt;R_l+4l+3\), because \(q\ge R_l+4l+4e-1\). So there are none.</li>
+<li>For \(a\in B\) and \(h=a+q+\tfrac12\ge q+\tfrac72&gt;\tfrac72+4el\): this exceeds \(\max H_\infty\) since \(q&gt;4el\).</li>
+</ul>
+<p>So \(N_\infty=R_e+4el+3-q\).</p>
+<p><em>At \(0\).</em> Write \(I_0=C\cup D\) with \(C=[-R_l-2,-3]\) and \(D=[0,R_e+4e]\), and \(H_0=[4e-4el-\tfrac72,4e+4l-\tfrac92]\).</p>
+<ul>
+<li>For \(a\in D\) and \(h=a-q-\tfrac12\): \(h\in H_0\) exactly when \(q+4e-4el-3\le a\le q+4e+4l-4\). The lower end is \(\ge0\) since \(q\ge4el-4e+3\). The upper end is \(\ge R_e+4e\) since \(q\ge R_e-4l+4\). This gives \(R_e+4el+4-q\) pairs, which is \(\ge1\) since \(q\le Q_{\rm hi}\).</li>
+<li>For \(a\in D\) and \(h=a+q+\tfrac12&gt;4e+4l-\tfrac92\): this holds since \(q&gt;4e+4l-5\), so there are none.</li>
+<li>For \(a\in C\) and \(h=a+q+\tfrac12\le4e+4l-\tfrac92\): this needs \(a\le4e+4l-5-q&lt;-R_l-2\), because \(q\ge R_l+4l+4e-1\). So there are none.</li>
+<li>For \(a\in C\) and \(h=a-q-\tfrac12\le-q-\tfrac72\): this is below \(4e-4el-\tfrac72\) since \(q&gt;4el-4e\).</li>
+</ul>
+<p>So \(N_0=R_e+4el+4-q\).</p>
+<p><em>Valuations.</em> Step 1 of prop:cube-last-far-eisenstein-branch needs only distinct exponents within each class and the factorization \(W(F)=C\,x^\alpha(1+x)^\beta W_k\) with \(W_k\in\mathbb Z[x]\), which thm:cube-base-peeling-degeneration and the far-component tool provide for every \((e,l)\). So \(W_k(P)/\operatorname{lc}=\pm L_P/L_\infty\) with \(L_P=(\text{minors})\cdot V(\mu^{(P)})\). With the minors units and \(p\nmid\operatorname{lc}\), \(v_p(W_k(0))=N_0-N_\infty=1\) and \(v_p(W_k(-1))=N_{-1}-N_\infty=R_l\). The Dumas step is Step 4 of the proposition, applied at \(0\). \(\square\)</p>
+<p><strong>The window.</strong> The window is \(\max(d,2Q_{\rm lo})&lt;p\le2R_e+8el+7\). At \(l=1\) it is the Eisenstein window \(\max(d,2n)&lt;p\le2n+8e+7\), with \(Q_{\rm lo}=\max(n,4e+4)\). The sets-mode run prints it for the seven pairs.</p>
+<ul>
+<li>\((3,1)\): \(46..61\).</li>
+<li>\((3,2)\): \(67..85\).</li>
+<li>\((3,3)\): \(92..109\).</li>
+<li>\((4,3)\): \(133..159\).</li>
+<li>\((4,2)\): \(92..127\).</li>
+<li>\((5,2)\): \(133..177\).</li>
+<li>\((2,4)\): empty, since \(Q_{\rm lo}=51&gt;Q_{\rm hi}=41\).</li>
+</ul>
+<p>The sets-mode output prints the lower end as \(2Q_{\rm lo}+2\) when \(2Q_{\rm lo}\ge d\): \(134\) instead of \(133\), and \(104\) instead of \(103\) at \((2,4)\). This display slip is harmless, since \(133=7\cdot19\) is not prime.</p>
+<p>These agree exactly with the scanned runs of the previous cycle, including the partial layers below the window at \((4,3)\) (\(p=127,131\)) and the empty window at \((2,4)\). They also agree with the valuations of the actual far polynomials at \(l=2\) (\(97..127\) and \(137..173\)).</p>
+<p><strong>What this gives.</strong> At every peeling step with a nonempty window, and every window prime at which the minors are units and \(p\nmid\operatorname{lc}\), the cluster of \(W_k\) at \(0\) is Eisenstein, so its roots are simple. The cluster at \(-1\) carries valuation \(R_l\), which at \(l=2\) splits into the Ore staircase. Still open: the minors as units for \(l\ge2\) (proved for \(l=1\)); the leading coefficient; nonemptiness of the window, which needs roughly \(e\) at least of order \(l\); the separation of the \(R_l\) layers at \(-1\); and the random-like non-branch factor.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch (Steps 1, 2 and 4); lem:cube-last-far-pivot-minors and lem:cube-last-far-eisenstein-minors (the \(l=1\) minors); conj:cube-far-layer-count; thm:cube-base-peeling-degeneration (the far components).</p>
+<p><strong>Verification gate.</strong> I re-read Steps 1, 2 and 4 of the Eisenstein proposition. One fresh-context medium reviewer checked everything by hand: the bound from \(p&gt;d\), the set sizes, every case and clipping at \(-1\), \(\infty\) and \(0\), the \(l=1\) reduction, and the conclusions; every hypothesis is used. Its brute-force check was refused by the session's isolation hook, so no independent enumeration was run. The exact scans and sets checks are the computational evidence. Corrections applied: the garbled case at \(-1\) is rewritten; the span argument covers \(I_P\cup H_P\); \(Q_{\rm lo}\) is reduced to three terms, with the dominated ones justified; two window lower ends are corrected to \(133\) and the tool's display slip is noted; and the hypotheses of Step 1 are stated.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 1.83 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 20.95 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">38.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.73 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.76 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

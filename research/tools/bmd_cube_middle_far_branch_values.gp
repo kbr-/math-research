@@ -47,6 +47,24 @@ leading(e, l, P) = {
 \\ (e, l) in SCANLIST and every prime p in (d, 3d], report v_p(L_0/L_oo), v_p(L_-1/L_oo) and the valuations of the
 \\ pivot-minor ratios; the prediction is a run of primes with minors units, v_p(L_0/L_oo) = 1 and v_p(L_-1/L_oo) = R_l.
 SCAN = getenv("SCAN");
+\\ SETS mode (cycle bmd-20261004-i; lem:cube-far-layer-count): compare the computed local exponents with the predicted
+\\ sets I_0 = [-R_l-2,-3] u [0,R_e+4e], H_0 = [4e-4el-7/2, 4e+4l-9/2], I_-1 = {-3} u [0, M-1] (M = R_e+R_l+4el),
+\\ H_-1 = -7/2 + [0, 4e+4l-1], I_oo = [-(R_e-1),0] u [3, R_l+4l+3], H_oo = 9/2-4e + [0, 4el+4e-1], and the predicted
+\\ window max(d, 2 Q_lo + 1) < p <= 2(R_e+4el+3)+1 against the scanned valuations.
+SETS = getenv("SETS");
+rng(a, b) = vector(b - a + 1, i, a + i - 1);
+{
+if (SETS != 0 && SETS != "",
+  foreach (eval(SETS), el,
+    my(e = el[1], l = el[2], Re = Rn(e), Rl = Rn(l), M = Re + Rl + 4 * e * l, d = Re + 1 + Rl + 4 * e + 4 * l + 4 * e * l);
+    my(P0 = vecsort(concat([rng(-Rl - 2, -3), rng(0, Re + 4 * e), rng(4 * e - 4 * e * l - 7/2, 4 * e + 4 * l - 9/2)])));
+    my(P1 = vecsort(concat([[-3], rng(0, M - 1), apply(i -> -7/2 + i, rng(0, 4 * e + 4 * l - 1))])));
+    my(Pi = vecsort(concat([rng(-(Re - 1), 0), rng(3, Rl + 4 * l + 3), apply(i -> 9/2 - 4 * e + i, rng(0, 4 * e * l + 4 * e - 1))])));
+    my(c0 = leading(e, l, 0)[3] == P0, c1 = leading(e, l, -1)[3] == P1, ci = leading(e, l, oo)[3] == Pi);
+    my(Qlo = vecmax([M + 3 - 4 * e - 4 * l, 4 * e * l + 3, Rl + 4 * l + 4 * e - 1, Re - 4 * l + 4, Re + 3 - 4 * e, 4 * e * l - 4 * e + 3]), Qhi = Re + 4 * e * l + 3);
+    emit(Str("SETS e=", e, ", l=", l, ": exponents at 0, -1, oo as predicted: ", [c0, c1, ci], "; predicted window ", max(d, 2 * Qlo + 1) + 1, " <= p <= ", 2 * Qhi + 1, if (Qlo > Qhi, " (empty: Q_lo > Q_hi)", ""))));
+  quit);
+}
 {
 if (SCAN != 0 && SCAN != "",
   foreach (eval(SCAN), el,
