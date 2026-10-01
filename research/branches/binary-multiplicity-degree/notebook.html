@@ -47,14 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The <a href="#cube-peeling-last-far-mobius">last peeling step</a> is an exact Möbius orbit, so \(W_{b-1}\) itself must have no triple roots. At the other steps the first-order correction is not Möbius and can split multiple roots.</p>
-<p>Next, the last-step far polynomials \(W_{b-1}\), a one-parameter family in \(b\) (\(l=1\), \(e=b-2\)). Their space \(F_{b-1}\) has only one double at the cluster and blocks of fixed shape in \(e\). Look for structure in \(e\) that excludes triple roots:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The last even-peeling far polynomial \(W_{b-1}\) is the Wronskian of the explicit \((8e+4)\)-dimensional space \(X_e\) of the <a href="#cube-last-far-reduction">last far reduction</a>, built from three blocks and one Gauss operator.</p>
+<p>Next, a route review of the far input of (B), now split three ways:</p>
 <ul>
-<li>a recursion \(e\to e+1\) (one more polynomial block at \(\infty\));</li>
-<li>a reduction like the pure reduction of the merge chain;</li>
-<li>a three-term relation among consecutive \(W_{b-1}\).</li>
+<li>the last steps (\(X_e\), even, and its odd counterpart, not yet reduced);</li>
+<li>the first-order condition at the other even steps;</li>
+<li>the odd steps.</li>
 </ul>
-<p>Test at \(b=4,\ldots,7\).</p>
+<p>Its leads should target "no triple roots of \(W(X_e)\)": the blocks of \(X_e\) are Jacobi-type, so Wronskians of Jacobi-type polynomial spaces (exceptional Jacobi polynomials) and their known zero results are the first place to look.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42395,6 +42395,66 @@ K_W+2\tbinom{c+q}2+2\textstyle\sum_s\binom{n_s}2-\sum_so_sn_s=(c+q)^2+\sum_{s\ge
 <tr><td>Computation design and coding</td><td class="elapsed">53.81 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.18 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-last-far-reduction">
+<h3>3 October 2026 — The last-step far polynomial is the Wronskian of an (8e+4)-dimensional space, obtained from the far space by a derivative and a Gauss hypergeometric operator</h3>
+<p class="entry-meta">Working proof of a Pólya–Mammana reduction of the last even-peeling far space, from dimension R_b = b(2b-1) to 8e+4, with an explicit hypergeometric operator; an exponent count shows that the larger natural reduction is not clean. Last far reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-peeling-last-far-mobius">last far step proposition</a>, (B) through the even peeling needs \(W_{b-1}\) itself without triple roots. \(W_{b-1}\) is the non-branch part of the Wronskian of \(F_{b-1}\), of dimension \(R_b=b(2b-1)=2e^2+7e+6\). Can it be reduced, as the merge far spaces were by the pure reduction (lem:cube-far-pure-reduction), to a smaller explicit space?</p>
+<p><strong>General statement.</strong> <code>lem:cube-last-far-reduction</code>, for every \(b\ge3\) (\(e=b-2\ge1\)).</p>
+<h4 id="cube-last-far-reduction">The reduction</h4>
+<p><strong>Setting.</strong> Put \(y=-cx\). Up to constants, the blocks of \(F_{b-1}\) (\(l=1\), \(e=b-2\), \(n=R_e\)) are the following.</p>
+<ul>
+<li>\(I=\mathcal P_{&lt;n}\oplus\langle(1-y)^{-3},y^{-3}\rangle\): the class integral at \(0\) and at \(1\);</li>
+<li>\(II=(1-y)^{-7/2}\mathcal P_{&lt;4e}\) and \(III=y^{-7/2}\mathcal P_{&lt;4e}\);</li>
+<li>\(IV=(1-y)^{-5/2}y^{-7/2}\mathcal P_{&lt;4}\).</li>
+</ul>
+<p>Let \(m=n+3\) and \(\Theta_m=y(1-y)\partial^2+(m+1)(1-2y)\partial-m(m+1)\), the Gauss operator with \((\alpha,\beta,\gamma)=(m,m+1,m+1)\).</p>
+<p><strong>Lemma (last far reduction).</strong> Characteristic zero.</p>
+<ol>
+<li>\(W(I)=C\,y^{-m-1}(1-y)^{-m-1}\) with \(C\ne0\), so \(I\) has no Weierstrass points off \(\{0,1,\infty\}\).</li>
+<li>The monic operator with kernel \(I\) is \(L_I=(y(1-y))^{-1}\Theta_m\,\partial^n\).</li>
+<li>Off \(\{0,1\}\), the non-branch Weierstrass points of \(F_{b-1}\), with their weights, are those of the \((8e+4)\)-dimensional space \(X_e=\Theta_m\partial^n(II\oplus III\oplus IV)\). So \(W_{b-1}\) is the part of \(W(X_e)\) prime to \(y(1-y)\), up to the change of variable.</li>
+<li>Explicitly, \(\partial^nII=(1-y)^{-7/2-n}\mathcal P_{&lt;4e}\) and \(\partial^nIII=y^{-7/2-n}\mathcal P_{&lt;4e}\). Also \(\partial^nIV=y^{-7/2-n}(1-y)^{-5/2-n}S\), with \(S\) a \(4\)-dimensional space of polynomials of degree at most \(n+3\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) By the Frobenius–Pólya–Mammana factorization (as in lem:cube-far-pure-reduction), \(W(I)=W(\mathcal P_{&lt;n})\,W(\partial^n(1-y)^{-3},\partial^ny^{-3})\). Here \(\partial^n(1-y)^{-3}=(3)_n(1-y)^{-m}\) and \(\partial^ny^{-3}=(-1)^n(3)_ny^{-m}\). For \(g_1=(1-y)^{-m}\), \(g_2=y^{-m}\), \[g_1g_2'-g_1'g_2=-m\,y^{-m-1}(1-y)^{-m}-m(1-y)^{-m-1}y^{-m}=-m\,y^{-m-1}(1-y)^{-m-1}.\]</p>
+<p>(2) \(L_I=M\partial^n\), where \(M\) is the monic second-order operator with kernel \(\langle g_1,g_2\rangle\). Its first coefficient is \(-(\log W(g_1,g_2))'=(m+1)(1/y-1/(1-y))\). Its zeroth coefficient \(-m(m+1)/(y(1-y))\) follows from \(M(y^{-m})=0\), and \(M(g_1)=0\) checks. Multiplying by \(y(1-y)\) gives \(\Theta_m\).</p>
+<p>(3) The factorization gives \(W(I\oplus B)=W(I)\,W(L_IB)\) on any domain where \(W(I)\ne0\), here \(\mathbb C\setminus\{0,1\}\), with \(B=II\oplus III\oplus IV\). The kernel of \(L_I\) is \(I\), which meets \(B\) only in \(0\) (different characters). So \(\dim L_IB=8e+4\). Replacing \(L_I\) by \(\Theta_m\partial^n=y(1-y)L_I\) multiplies the Wronskian by \((y(1-y))^{8e+4}\), a unit off \(\{0,1\}\).</p>
+<p>(4) \(\partial^n\bigl((1-y)^ay^j\bigr)=(1-y)^{a-n}p_j(y)\), with \(\deg p_j=j\) and leading coefficient \(\pm(a+j)(a+j-1)\cdots(a+j-n+1)\): write \(y^j\) in powers of \(1-y\) and differentiate term by term. This is nonzero for \(a=-7/2\), so the images of the \(y^j\), \(j&lt;4e\), are triangular. \(\partial^ny^{-7/2+j}\) is a nonzero multiple of \(y^{-7/2+j-n}\). For \(IV\), \(\partial^n(y^{\alpha}(1-y)^{\beta})=y^{\alpha-n}(1-y)^{\beta-n}q(y)\), with \(\deg q\le n\), by induction. Applying this to \(y^{\alpha+j}(1-y)^\beta\), \(j&lt;4\), gives \(y^{\alpha-n}(1-y)^{\beta-n}\,y^jq_j\), of polynomial degree at most \(n+3\), and injectivity holds because \(\ker\partial^n\) contains no element of \(IV\). \(\square\)</p>
+<h4>What does not reduce further</h4>
+<p>A natural stronger reduction removes \(I\oplus II\oplus III\) instead, which would leave a Wronskian of \(4\) functions. It needs \(W(I\oplus II\oplus III)\) zero-free off \(\{0,1\}\). The space \(II\oplus III\) alone has a monomial Wronskian. Under \(t=y/(1-y)\) it becomes \((1+t)^{9/2-4e}\bigl(\mathcal P_{&lt;4e}\oplus t^{-7/2}\mathcal P_{&lt;4e}\bigr)\), to which the two-class lemma applies. But the Fuchs count for \(A=I\oplus II\oplus III\) is \(\binom{d}{2}-\Sigma_0-\Sigma_1-\Sigma_\infty=8e\), with \(d=n+2+8e\) and the exponents below. The exponents are:</p>
+<ul>
+<li>at \(0\) and at \(1\), by the nested lemma: integral \(0,\ldots,n+4e\) and \(-3\), half-integral \(-7/2,\ldots,4e-9/2\);</li>
+<li>at \(\infty\), in orders of \(1/y\): \(-(n-1),\ldots,0\) and \(3,4\), and half-integral \(9/2-4e,\ldots,7/2+4e\), by the two-class lemma.</li>
+</ul>
+<p>So \(W(A)\) has \(8e\) zeros off \(\{0,1,\infty\}\), counted with weight. These exponents are exact: the nested and two-class lemmas, and at \(\infty\), \((1-y)^{-3}+y^{-3}\) has order exactly \(4\). So \(W(A)\) has exactly \(8e\) such zeros. Since \(W(L_AIV)=W(F)/W(A)\), the \(4\)-function reduction generally carries the zeros of \(W(A)\) as poles, unless \(W(F)\) vanishes there to at least the same order. So it is not clean. The \((8e+4)\)-dimensional \(X_e\) is the reduction that holds without hypotheses. Its far count is that of \(F_{b-1}\), \(4(2e^2+e+1)\).</p>
+<p><strong>What this gives.</strong> The last-step far input of (B) is now a statement about the explicit space \(X_e\): three blocks of polynomials times \(y^\alpha(1-y)^\beta\), mapped by one Gauss operator. Its dimension grows linearly in \(b\), against \(R_b\), quadratic, for \(F_{b-1}\). It is the analogue of the merge chain's pure reduction. The question whether \(W(X_e)\) has no triple roots remains open; the reduction gives no mechanism by itself.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-peeling-last-far-mobius; thm:cube-base-peeling-degeneration (the blocks of \(F_k\), the nested Wronskian lemma); lem:cube-far-pure-reduction (the factorization).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the following:</p>
+<ul>
+<li>the normalization, \(W(I)\), the coefficients and Gauss parameters of \(\Theta_m\), and its kernel;</li>
+<li>the factorization numerically at \(e=1\), in sympy, unsaved: the ratio \(W(F)(y(1-y))^{12}/(W(I)W(X_1))\) equals \(1\) at \(y=1/3\) and \(2/7\);</li>
+<li>part (4);</li>
+<li>the exponent count, which is exactly \(8e\) for \(e=1,\ldots,7\), and the far count.</li>
+</ul>
+<p>No hypothesis was unused. Verdict: pass with corrections, applied:</p>
+<ul>
+<li>the dimension of \(F_{b-1}\) is \(R_b\), not \(R_{b-1}\);</li>
+<li>the monomial Wronskian of \(II\oplus III\) is derived through \(t=y/(1-y)\);</li>
+<li>the pole remark is qualified;</li>
+<li>the degree bound for \(IV\) is stated precisely.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 0.91 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 57.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 3.46 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
