@@ -47,10 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B), middle steps. At the middle steps the cluster at \(-1\) is a <a href="#entry-2026-10-04-cube-middle-far-ore-staircase">staircase of Eisenstein sides</a> at every collapse prime, so Ore's theorem makes it simple. This structured part may have a local-exponent proof.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B), middle steps. The <a href="#entry-2026-10-04-cube-middle-far-branch-count">middle branch count</a> shows the last step's arithmetic anatomy at \(l=2\): one Vandermonde layer at \(0\) and six at \(-1\) at the upper collapse primes.</p>
 <p>Next:</p>
 <ol>
-<li>Explain the staircase by local exponents at \(-1\) for the middle reduced space \(C\oplus X_0\oplus\mathrm{IV}\). Count the pairs of exponents differing by \(p/2\) layer by layer, as in the Eisenstein branch proposition, and derive the side lengths.</li>
+<li>Prove the pair count \(N_0-N_\infty=1\) and \(N_{-1}-N_\infty=c(l)\) for the middle exponent sets in an explicit window, as in Step 2 of the Eisenstein proposition, and determine \(c(l)\).</li>
+<li>Then seek the mechanism that separates the \(c(l)\) layers into height-one sides, the Ore staircase.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -46662,6 +46663,37 @@ Here \(L_\infty\) is the product of the two pivot minors at \(\infty\), with pri
 <tr><td>Computation design and coding</td><td class="elapsed">39.36 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.33 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-middle-far-branch-count" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-middle-far-branch-count">
+<h3>4 October 2026 — At the middle steps the branch valuations come from exponent pairs at distance p/2, as at the last step: one layer at 0 and six at −1 for l = 2</h3>
+<p class="entry-meta">Conjecture with exact checks: the local leading-coefficient identities hold at the middle steps (l = 2), and at the upper collapse primes v_p(W(0)/lc) = 1 and v_p(W(-1)/lc) = 6 come entirely from Vandermonde pairs, the minors being units. Middle far branch count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B), middle steps. The <a href="#entry-2026-10-04-cube-middle-far-ore-staircase">Ore staircase</a> at \(-1\) has as many sides as \(v_p(W_k(-1))\). Does that valuation come from the same local-exponent count as the last step's Eisenstein proposition, where one pair layer gave valuation \(1\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-middle-far-branch-count</code>, for every middle step (\(l\ge2\)). For primes \(p\) in an upper window of the collapse range, the pivot minors at \(0,-1,\infty\) are \(p\)-adic units, \(v_p(W_k(0)/\operatorname{lc})=1\), and \(v_p(W_k(-1)/\operatorname{lc})=c(l)\), with \(c(2)=6\). Both valuations arise only from Vandermonde pairs of local exponents at distance \(p/2\), as in prop:cube-last-far-eisenstein-branch.</p>
+<p><strong>Setting.</strong> The far component of step \(k\) (\(e=k-1\), \(l=b-k\)) is spanned by the blocks \((1+x)^gx^{\beta}\mathcal P_{&lt;\mathrm{cnt}}\), with \([g,\beta,\mathrm{cnt}]\) equal to \([0,0,R_e]\), \([-3,0,1]\), \([0,-(R_l+2),R_l]\), \([-7/2,0,4e]\), \([-5/2,\tfrac12-4l,4l]\) and \([0,-\tfrac72+4e-4el,4el]\) (thm:cube-base-peeling-degeneration, as in bmd_cube_base_peeling_far.gp, with branch point \(-1\)). By Step 1 of the Eisenstein proposition, which holds for any such space, the local leading coefficient of the Wronskian at \(P\in\{0,-1,\infty\}\) is \(L_P=(\text{pivot minors})\cdot V(\mu^{(P)})\). Hence \(W_k(P)/\operatorname{lc}=\pm L_P/L_\infty\) for \(P=0,-1\).</p>
+<p><strong>Test.</strong> research/tools/bmd_cube_middle_far_branch_values.gp computes the local exponents (first columns where the rank grows, modulo \(2^{61}-1\)), the exact pivot minors and the Vandermonde factors at \(0,-1,\infty\), for \((b,k)=(6,4),(7,5),(8,6)\). It compares \(|W_k(0)/\operatorname{lc}|\) and \(|W_k(-1)/\operatorname{lc}|\) with \(|L_0/L_\infty|\) and \(|L_{-1}/L_\infty|\), and reports the \(p\)-adic split at the \(37\) collapse primes (research/results/bmd-20261004-g/middle-branch-values.txt).</p>
+<p><strong>Outcome.</strong></p>
+<ul>
+<li><em>Control:</em> both identities hold exactly at all three steps, so the local-exponent description of the middle far components is right.</li>
+<li><em>Upper primes:</em> at \(p=61..83\) for \((6,4)\), \(97..127\) for \((7,5)\) and \(137..173\) for \((8,6)\), the minors are \(p\)-adic units. The Vandermonde ratios give \(v_p(W_k(-1)/\operatorname{lc})=6\) and \(v_p(W_k(0)/\operatorname{lc})=1\). By the Ore entry, the staircase at \(-1\) there has exactly \(6\) sides.</li>
+<li><em>Lower primes</em> (\(p=53,59\); \(67..89\); \(97..131\)): the minors carry powers of \(p\). The total \(v_p(W_k(-1)/\operatorname{lc})\) is \(7\) to \(9\), with the Vandermonde part between \(-12\) and \(5\). These primes play the role of the excluded primes \(2n+1,2n+3,2n+5\) at the last step.</li>
+</ul>
+<p><strong>What this gives.</strong> The arithmetic route has the same anatomy at the middle steps as at the last step. Exponent pairs at distance \(p/2\) produce exactly one layer at \(0\) and \(c(2)=6\) layers at \(-1\), at the upper collapse primes. At the last step the cluster at \(-1\) needed one layer; here it needs six. The Ore staircase shows that these six layers separate into six height-one sides. A proof would extend the proposition's Step 2 count to the middle exponent sets, with \(N_{-1}-N_\infty=c(l)\), and then show that the layers separate. The Vandermonde count gives the total height, not the individual sides. The non-branch factor remains the random-like input, as at the last step.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-eisenstein-branch (Step 1, valid for any block space); thm:cube-base-peeling-degeneration (the far components); conj:cube-middle-far-ore-separable.</p>
+<p><strong>Verification gate.</strong> A conjecture with exact checks. The identity between local leading coefficients and branch values is Step 1 of a reviewed proposition, and it is checked here exactly as a control. No reviewer was used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-g">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 33.58 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">40.10 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">36.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 13.81 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
