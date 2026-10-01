@@ -121,7 +121,16 @@ foreach(eval(getenv("MS")), m,
       emit(Str("  log limit: powers of Delta_2m, Delta_2m+1, f: ", ex(d1), ", ", ex(d2), ", ", ex(f), "; deg f~ = ", poldegree(ft),
         "; stable inside: ", schur(ft), "; factor degrees ", apply(poldegree, factor(ft)[, 1]~), "; f~ = ", if (poldegree(ft) <= 7, ft / content(ft), "(long)")));
       my(g = ft / content(ft), nz = select(k -> polcoef(g, k) != 0, [0 .. poldegree(g)]));
-      emit(Str("    nonzero terms (exponent, coefficient): ", apply(k -> [k, polcoef(g, k)], nz)))));
+      emit(Str("    nonzero terms (exponent, coefficient): ", apply(k -> [k, polcoef(g, k)], nz)));
+      \\ cycle bmd-20261006-w: sparsity of the two minors separately
+      my(st(P) = P / ('c^valuation(P, 'c) * ('c - 1)^valuation(P, 'c - 1)));
+      emit(Str("    stripped minors: degrees ", [poldegree(st(d1)), poldegree(st(d2))], ", nonzero terms ", [#select(x -> x != 0, Vec(st(d1))), #select(x -> x != 0, Vec(st(d2)))]))));
+  \\ KERNEL=1 (cycle bmd-20261006-w): zeros of the Cramer kernel polynomial V_c at c = -1 (the real Angelesco point).
+  if (getenv("KERNEL") == "1",
+    my(Wk = subst(winmat(m, 2 * m + 2), 'c, -1), v = vector(2 * m + 2, j, (-1)^(j - 1) * matdet(vecextract(Wk, "..", setminus([1 .. 2 * m + 2], [j])))));
+    my(V = Pol(Vecrev(v), 'x), z = polroots(V));
+    emit(Str("  kernel at c=-1: degree ", poldegree(V), ", real zeros ", polsturm(V), ", zeros in [-1,0): ", #select(t -> abs(imag(t)) < 1e-20 && real(t) >= -1 && real(t) < 0, Vec(z)),
+      ", in (0,1]: ", #select(t -> abs(imag(t)) < 1e-20 && real(t) > 0 && real(t) <= 1, Vec(z)), ", zero sum ", round(real(vecsum(Vec(z))) * 10^8) / 10^8.)));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());
