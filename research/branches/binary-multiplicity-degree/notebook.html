@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 4, the dimension-four first step. Its threshold is \(t\) plus the least generator degree of the first-step module, <a href="#entry-2026-10-05-cube-first-step-resolution-spectrum">read off a two-term resolution</a>. The \(d=2\) resolution is known.</p>
-<p>Next: estimate the cost of the \(d=3\) first-step module with the record's threshold tool and compute its minimal resolution if within budget. Compare its degrees and spectrum with \(d=2\), and state a resolution shape for every \(d\) to be proved.</p>
+<p>Route item: cube-odd-characteristic; statement 4, dimension four. The \(d=3\) threshold row <a href="#entry-2026-10-05-cube-four-degree-three-attempt">did not complete</a> (time limit over \(\mathbb Q\); the modular run was stopped for low system memory). A user request is filed, and no heavy rerun follows without it.</p>
+<p>Next: theory without heavy computation. Look for a uniform shape of the first-step module's minimal resolution. The \(d=2\) degrees \(5,6,7,7,8\) and \(10,11,12\) sit above \(t=7\) in a pattern to explain from the polar-colon presentation (degrees \(\lambda,\lambda+1,\lambda+2\)) through linkage. Derive the predicted shape for every \(d\) and its first generator degree.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -51681,6 +51681,38 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-05-cube-four-degree-three-attempt" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Unsuccessful computation of the dimension-four degree-three threshold row: the rational kernel hit the 30-minute limit and the modular run was stopped for low system memory; the parametrized tool reproduces the d = 2 row in both fields; no claim.">
+<h3>5 October 2026 — Attempt at the dimension-four degree-three threshold row: the parametrized bounded kernel reproduces d = 2 over Q and modulo 32003, but d = 3 did not complete</h3>
+<p class="entry-meta">Unsuccessful computation for statement 4: the rational d = 3 kernel exceeded the 30-minute run limit, and the modular run was stopped by the session for low system memory. Not restarted; a user request is filed. Four degree three attempt cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 4, dimension four. The <a href="#entry-2026-10-05-cube-first-step-resolution-spectrum">resolution-spectrum entry</a> reduces the first step to the least generator degree of the first-step module. A formula for every \(d\) needs a second row of data, which only \(d=2\) supplies: \(15,12,11,6,5,2,2,0\) at orders \(12,\ldots,19\). The record's bounded commutative kernel gives the whole row of thresholds at once.</p>
+<p><strong>General statement.</strong> The target is the row \(\ell_0(d+1,m)\) for \(8d-4\le m\le20d-21\) and every \(d\); lem:cube-first-step-spectrum-formula relates its first entry to the first-step sheaf. No new claim.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_bounded_operator_kernel_d.m2 is the record's bounded-kernel tool with \(d\) as a parameter (CUBE_D, cutoff \(U=20d-21\)) and an optional prime (CUBE_P).</p>
+<ul>
+<li>\(d=2\): over \(\mathbb Q\) (23 s) and modulo \(32003\) (7 s) it reproduces the recorded row \(15,12,11,6,5,2,2,0\) (research/results/bmd-20261005-r/kernel-n4-d2-mod32003.txt).</li>
+<li>\(d=3\) over \(\mathbb Q\): the \(20\times39\) kernel did not finish within the 30-minute run limit (research/results/bmd-20261005-r/kernel-n4-d3-qq-timeout.txt).</li>
+<li>\(d=3\) modulo \(32003\): the session stopped the run because the machine was critically low on memory. That is a session safeguard, not the computation's own budget watchdog, and it says nothing about the computation's result.</li>
+</ul>
+<p>The run was not restarted. The \(d=2\) kernel step is eleven times faster modulo \(p\) than over \(\mathbb Q\), so the modular \(d=3\) run is the realistic route once memory allows.</p>
+<p><strong>Outcome.</strong> No \(d=3\) data. A user request asks for approval and free memory to rerun it, or for a longer rational run.</p>
+<p><strong>Remaining gap.</strong> The \(d=3\) row and a formula for every \(d\); the least generator degree of the first-step module.</p>
+<p><strong>Dependencies re-read.</strong> research/tools/bmd_cube_bounded_operator_kernel.m2 (construction, order-zero cutoff \(U=20d-21\)); the dimension-four degree-two row.</p>
+<p><strong>Verification gate.</strong> No claim. The parametrized tool is validated by its \(d=2\) control in both fields.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261005-r">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>50 min 54.33 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">51.65 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5.81 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 25.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">37.37 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">47 min 53.68 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
