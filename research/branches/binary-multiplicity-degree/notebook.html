@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). On <a href="#entry-2026-10-06-cube-contact-structured-planes">structured planes</a> the contact locus is exactly symmetric. Polynomial nodes fail as a cone because they contain the arithmetic progression. Geometric nodes miss \(K\) at \(N=9\).</p>
-<p>Next: attempt a proof that the geometric-node cone \(\{a_i=s+tq^i+uq^{2i}+vq^{3i}\}\) meets \(\overline{K_U}\) only in \(k\mathbf 1\) for every \(N\). Analyse the \(q\)-structure of the matrices \(H_k(q^i,q^j)\), and treat the non-separated limits.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-06-cube-geometric-cone-collapse">geometric cone collapse</a> reduces the cone criterion at small \(q\) to boundary avoidance near the caterpillar point.</p>
+<p>Next: decide whether the closure of the contact locus contains the caterpillar point. Test the contact rank along the curve \(a_i=q^i\) as \(q\to0\), using its valuation (leading-order) matrix, and then identify the strata reached along the cancellation curves.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -53152,6 +53152,48 @@ Only \(h^0(E(-1))=0\) and \(H^1\)-vanishing at \(p=-1\) and at the evaluated \(l
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">43.27 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.40 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-geometric-cone-collapse" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-geometric-cone-collapse">
+<h3>6 October 2026 — Geometric cone collapse: under relative non-cancellation the geometric-node cone converges to the caterpillar point as q → 0; the cone criterion for (K) then reduces, conditionally, to boundary avoidance</h3>
+<p class="entry-meta">Working proof of the geometric cone collapse (every N ≥ 5); the reduction of the cone criterion for (K) is conditional, with three listed gaps. Geometric cone collapse cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K). By lem:cube-contact-plane-criterion (part (3), \(N\ge5\)), (K) holds at \(N\) if some irreducible four-dimensional cone, stable under \(a\mapsto ta+s\mathbf 1\), meets \(\overline{K_U}\) only in \(k\mathbf 1\). The <a href="#entry-2026-10-06-cube-contact-structured-planes">structured-plane check</a> proposed the geometric cones \(L_q=\{a_i=s+f(q^i)\}\), with \(f(x)=tx+ux^2+vx^3\). For \(N\ge4\), \(q\ne0\) and the nodes \(q^1,\ldots,q^N\) pairwise distinct (\(q\) not a root of unity of order below \(N\)), they are four-dimensional by Vandermonde. Can a degeneration \(q\to0\) prove the criterion for every \(N\)?</p>
+<p><strong>General statement.</strong> conj:cube-offcollision-contact-bound, attempted through lem:cube-geometric-cone-collapse.</p>
+<p><strong>Setting.</strong> Separated configurations modulo \(a\mapsto ta+s\mathbf 1\) are the points of \(M_{0,N+1}\), with the mark at \(\infty\). Let \(p_{\rm cat}\in\overline M_{0,N+1}\) be the caterpillar point. Its dual tree is a path of \(N-1\) components:</p>
+<ul>
+<li>the first carries \(\infty\), \(a_1\) and a node;</li>
+<li>component \(i\), for \(2\le i\le N-2\), carries \(a_i\) and two nodes;</li>
+<li>the last carries \(a_{N-1}\), \(a_N\) and a node.</li>
+</ul>
+<p>Every component has three special points, so the stratum is a point. Near \(p_{\rm cat}\) the ratios \(x_i=(a_{i+1}-a_N)/(a_i-a_N)\), \(1\le i\le N-2\), form the standard nested coordinates: \(a_i-a_N=(a_1-a_N)x_1\cdots x_{i-1}\), and \(p_{\rm cat}\) is \(x=0\). This is the standard local description of \(\overline M_{0,N+1}\) at a maximally degenerate point; it is used here without a new proof.</p>
+<p><strong>Geometric cone collapse.</strong> Let \(N\ge3\) (the cone criterion needs \(N\ge5\)) and \(\delta&gt;0\). Suppose \((t,u,v)\ne0\) satisfies relative non-cancellation at \(q\):</p>
+<p>\[|f(q^i)|\ge\delta\max\bigl(|t||q|^i,\ |u||q|^{2i},\ |v||q|^{3i}\bigr)\qquad(1\le i\le N-1).\]</p>
+<p>Then, for \(|q|&lt;\delta/9\), the point of \(L_q\) is separated, and its nested coordinates satisfy \(|x_i|\le 9|q|/\delta\) for every \(i\). In particular these points converge to \(p_{\rm cat}\) as \(q\to0\), uniformly in \((t,u,v)\).</p>
+<p><strong>Proof.</strong> For \(|q|&lt;1\),</p>
+<p>\[|f(q^{i+1})|\le|q|\bigl(|t||q|^i+|u||q|^{2i}+|v||q|^{3i}\bigr)\le3|q|\max(\ldots)\le(3|q|/\delta)\,|f(q^i)|.\]</p>
+<p>Iterating, \(|f(q^j)|\le(3|q|/\delta)^{j-i}|f(q^i)|\) for \(i&lt;j\). Put \(r=3|q|/\delta&lt;1/3\). Then \(a_i-a_j=f(q^i)(1+\eta_{ij})\) with \(|\eta_{ij}|\le\sum_{m\ge1}r^m=r/(1-r)\le1/2\). In particular \(a_i\ne a_j\): \(f(q^i)\ne0\) by the hypothesis, since the maximum is positive for \((t,u,v)\ne0\). Hence \(x_i=f(q^{i+1})(1+\eta_{i+1,N})/\bigl(f(q^i)(1+\eta_{i,N})\bigr)\), for \(i\le N-2\), satisfies \(|x_i|\le r\cdot(3/2)/(1/2)=3r=9|q|/\delta\). \(\square\)</p>
+<p><strong>Where non-cancellation fails.</strong> It fails exactly near the cancellation curves, where \(f(q^i)\) is small compared with its three terms for some \(i\), that is, near \(t+uq^i+vq^{2i}=0\). Separated points there need not converge to \(p_{\rm cat}\). Two counterexamples have \(f(q)=0\): \((t,u,v)=(-q,1,0)\) and \((q^2,-2q,1)\). In both, \(a_1\) clusters with \(a_3\). All these curves tend to the line \(t=0\) as \(q\to0\), so "near \(C_i\)" cannot mean a fixed neighbourhood.</p>
+<p><strong>Conditional reduction.</strong> Suppose \(\overline{K/{\rm Aff}}\subset\overline M_{0,N+1}\) misses \(p_{\rm cat}\). Then a neighbourhood \(|x|&lt;\rho\), with \(\rho\le1\) inside the chart domain, misses it. By the lemma, every point of \(L_q\) satisfying relative non-cancellation with \(\delta&gt;9|q|/\rho\) avoids \(K_U\); that inequality also gives \(|q|&lt;\delta/9\). Since \(K_U\) is closed in the separated locus, this is avoidance in \(a\)-space for these points. The cone criterion for \(L_q\) needs three more things, none proved here:</p>
+<ol>
+<li>a description of the limits of the points violating relative non-cancellation, including double cancellations where \(f\) has a near-double root at some \(q^i\);</li>
+<li>a compactness statement: the special fibre over \(q=0\) of the closure of \(\{S_q\}\) in \(\overline M_{0,N+1}\times\)(disc) equals \(p_{\rm cat}\) together with the set in (1), so that avoiding that compact set gives avoidance for small \(q\);</li>
+<li>the non-separated points of \(L_q\) other than \(k\mathbf 1\). Lemma part (3) needs \(\overline{K_U}\) in \(a\)-space to avoid them at each fixed \(q\). That requires \(\overline{K/{\rm Aff}}\) to avoid the whole boundary fibre over each such point, which is not a \(q\to0\) limit.</li>
+</ol>
+<p><strong>Outcome.</strong> No proof of (K). The collapse lemma is proved, and the cone route becomes a boundary question with three explicit gaps. The first test is whether \(\overline{K/{\rm Aff}}\) contains \(p_{\rm cat}\) at all.</p>
+<p><strong>Remaining gap.</strong> Whether \(p_{\rm cat}\in\overline{K/{\rm Aff}}\), and gaps (1) to (3).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-contact-plane-criterion (statement, part (3)); lem:cube-symmetry-restatement; the <a href="#entry-2026-10-01-cube-spine-chain-obstruction">spine-chain obstruction</a>.</p>
+<p><strong>Verification gate.</strong> A fresh medium-effort reviewer failed the first draft. Its lemma claimed convergence on three dominance regions, two of which are false: \(t=-q\), \(u=1\) cancels \(f(q)\). Its covering step did not follow, and its reduction asserted more than it proved. The lemma was rewritten on relative non-cancellation with an explicit nested-coordinate chart, and the reduction made conditional with gaps (1) to (3). On re-check the same reviewer passed the lemma: constants, chart and uniformity. It asked for the Vandermonde condition on \(q^1,\ldots,q^N\), the hypothesis \((t,u,v)\ne0\), and a strict inequality in the reduction; all are made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261006-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 9.41 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">6 min 0.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
