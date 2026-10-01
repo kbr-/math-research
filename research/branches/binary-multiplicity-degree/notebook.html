@@ -47,12 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). By the <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a>, simplicity on each far-root circle follows from a factorization \(P=F_i(t^N-s_i)\) on an annulus, with \(|t\,s_i'/s_i|&lt;N\). Coefficient windows do not give such a factorization.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The far-root circles follow the <a href="#entry-2026-10-03-cube-last-far-log-radii">logarithmic radius law</a>, \(Nu_i=c_i\log N+O(1)\), with equal differences. The block-IV splitting mechanism is open again. Through the <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a> it would give simplicity.</p>
 <p>Next:</p>
 <ol>
-<li>Measure the actual size of \(t\,s_i'/s_i\) at every root, not only the median: from consecutive roots on a circle, \(\Delta\log\tau=2\pi i/(N-\tau s_i'/s_i)\) to first order. Then state a uniform bound.</li>
-<li>Construct \(F_i\) and \(s_i\) analytically from the six-space, using the connection-formula split of each block-IV function into its parts at \(0\) and at \(-1\) and multilinear expansion. The earlier scale refutation applies to balance curves of single \(S_j\), not to the Wronskian combinations.</li>
-<li>Close the remaining Eisenstein unit hypotheses (integral minor at \(0\), minors at \(-1\)).</li>
+<li>Derive the amplitude exponent \(Q(m)\) of the multilinear expansion exactly, from the space \(\partial^n G\): \(x^{-n}\)-monomials, \((1+x)^{-n}\)-monomials and the four block-IV functions. Use the leading order of mixed Wronskians, the Pochhammer amplitudes and the binomial minors. Compare \(-Q''\) with the fitted step \(4.1\) and the \(c_i\).</li>
+<li>Turn the leading-order expansion into a factorization \(P=F_i(t^N-s_i)\) with an explicit error, and check \(|t\,s_i'/s_i|&lt;N\).</li>
 </ol>
 </section>
 <section id="working-context">
@@ -45395,6 +45394,56 @@ on the band \(|\log|t|-\log r|\le\pi/L\). This is conj:cube-last-far-coefficient
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 5.56 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">35.20 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">30.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-log-radii" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-log-radii">
+<h3>3 October 2026 — The far-root circle radii fit distance Θ(log N/N) from |t| = 1 at e = 4..11; the scale refutation of the block-IV splitting mechanism is withdrawn</h3>
+<p class="entry-meta">Conjecture: logarithmic radius law for the four last-step circles, fitted at e = 4..11. Correction: the mechanism-scale refutation compared O(log n/n) with a constant fitted at e ≤ 10, and is withdrawn. Last far log radii cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B). The <a href="#entry-2026-10-03-cube-far-logderivative-criterion">log-derivative criterion</a> needs an analytic factorization \(P=F_i(t^N-s_i)\) on each circle. The natural source is the multilinear expansion over the two-term splitting of the block-IV functions. The <a href="#entry-2026-10-03-cube-last-far-mechanism-scale">mechanism-scale entry</a> rejected that source, because its balance curves lie within \(O(\log n/n)\) of \(|t|=1\), while the circles appeared to lie at about \(2/e\). Which scale do the radii actually follow?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-log-radii</code>, for every \(e\ge1\).</p>
+<p><strong>Conjecture (logarithmic radius law).</strong> Let \(N=R_e+\tfrac72\), and let \(-u_0&gt;-u_1&gt;-u_2&gt;-u_3\) be the slopes of the four long Newton edges of \(P(t)=(1-t)^dW_{b-1}(t/(1-t))\). Then
+\[
+N\,u_i=c_i\log N+d_i+o(1)\qquad(e\to\infty),
+\]
+with constants \(c_0&lt;c_1&lt;c_2&lt;c_3\) whose consecutive differences are equal. This places the earlier observation of conj:cube-last-far-geometric-circles, a step \(d_e\) with \(d_ee/\log e\) between about \(5.1\) and \(5.3\), on a common logarithmic scale for all four radii. The fits give \(c_i\approx(-6.72,-2.65,1.52,5.61)\), differences \(4.07,4.17,4.09\). So the circles lie at distance \(\Theta(\log N/N)\) from \(|t|=1\), and their log-radii are asymptotically in arithmetic progression with step \(\approx4.1\log N/N\).</p>
+<p><strong>Test.</strong> research/tools/bmd_cube_last_far_log_radii.py fits \(Nu_i\) against \((\log N,1)\) and against \((\log e,1)\), and reports the drift of \(e\,u_i\). It uses the exact hull slopes at \(e=4,\ldots,11\) from block-logderiv-2.txt of the log-derivative cycle. Output: research/results/bmd-20261003-zzq/log-radii.txt. The two scale laws make different predictions.</p>
+<ul>
+<li>Under \(u_i=C_i/e\), \(e\,u_i\) is constant.</li>
+<li>Under the logarithmic law, \(|e\,u_i|\) decreases like \(e\log N/N\approx\log(2e^2)/(2e)\), by a factor of about \(0.57\) from \(e=4\) to \(e=11\), while \(Nu_i/\log N\) is nearly constant.</li>
+</ul>
+<p>Outcome.</p>
+<ul>
+<li>\(e\,u_i\) falls from \(-3.196,-1.296,0.605,2.564\) at \(e=4\) to \(-1.813,-0.728,0.366,1.475\) at \(e=11\). The ratios are \(0.567,0.562,0.605,0.575\). So \(e\,u_i\) is not constant. A finite range cannot falsify an asymptotic law, so the comparison is between two-parameter fits.</li>
+<li>\(Nu_i/\log N\) moves only from \(-7.29,-2.96,1.38,5.85\) to \(-7.08,-2.85,1.43,5.76\).</li>
+<li>The fits \(Nu_i=c_i\log N+d_i\) have maximal residuals \(0.009,0.016,0.0005,0.021\) over the eight sizes.</li>
+<li>Alternatives fit worse. \(e\,u=C+D/e\) leaves residuals \(0.090,0.038,0.020,0.074\) in \(e\,u\), against at most \(0.021\cdot e/N\le0.0027\) in \(e\,u\) for the logarithmic fit. \(Nu=a\sqrt e+b\) (that is, \(u\sim e^{-3/2}\)) leaves \(0.47,0.20,0.11,0.37\), and \(Nu=aN^{1/4}+b\) leaves \(0.52,0.23,0.12,0.42\), both in \(Nu\).</li>
+<li>The fits in \(\log e\), with coefficients \(-13.36,-5.26,3.02,11.16\), are the same law in another basis, since \(\log N\approx2\log e+\log2\). They test no alternative, and for circle \(1\) they fit slightly better (\(0.0073\) against \(0.016\)).</li>
+<li>Adding a term \(f/e\) moves \(c_i\) to \(-6.72,-2.55,1.52,5.71\), with differences \(4.17,4.07,4.19\).</li>
+</ul>
+<p>Eight sizes do not determine the constants. The conjecture claims the scale and the equal differences, not the values. The equal differences are supported only to a few percent, about \(\pm0.1\), and the \(d_i\) are not identified.</p>
+<p><strong>Correction to the mechanism-scale entry.</strong> That entry compared the asymptotic scale \(O(\log n/n)\) of the splitting's balance curves with real-axis crossings \(1-|t_e|=2.20/e,\ldots,1.76/e\) at \(e=5,\ldots,10\). It read the constant \(\approx2\) as a scale \(1/e\). The drift of \(e(1-|t_e|)\) from \(2.20\) to \(1.76\), and the logarithmic step already recorded in conj:cube-last-far-geometric-circles, did not support that reading. The present fits are consistent with \(\log N/N\) and coefficients up to about \(7\): at \(e=10\), \(6.7\log N/N=0.18\approx1.8/e\). The step that fails is "\(|A_{m-1}/A_m|\approx|b_j/a_j|\) up to factors not involving \(N\)-th powers". Those factors are themselves \(N^{O(1)}\), with exponents that the next paragraph estimates at several units, and they outweigh \(|b_j/a_j|\). That entry's fixed-\(e\) observation still stands: at \(e=6\) the \(S_j\) zeros lie in \(0.86\le|t|\le1.06\), while the far arcs reach \(|t|\approx0.66\) and \(1.40\). The same \(N^{O(1)}\) factors account for it. So the data are consistent with amplitude ratios \(|A_{m-1}/A_m|=N^{O(1)}\), polynomial in \(N\). They do not require \(e^{\Theta(e)}\). The argument that the splitting "cannot produce the circles" is therefore withdrawn. conj:cube-last-far-iv-splitting-mechanism returns to open status, as a hypothesis neither confirmed nor refuted. Its scale objection fails, and nothing here verifies it.</p>
+<p><strong>Why equal spacing (heuristic, not computed).</strong> Assume (a) that within each class the residual exponents of the block-IV functions are consecutive, \(\gamma_0+i\), and (b) \(n\approx N\) and \(\log(4e)\approx\tfrac12\log N\). If the term of the multilinear expansion with \(m\) block-IV functions in their \(-1\) part has size \(|t|^{mN}N^{Q(m)}C^m\) times factors of lower order, then adjacent terms balance at \(N\log|t|=-(Q(m)-Q(m-1))\log N-\log C\). The log-radii are then in arithmetic progression exactly when \(Q\) is quadratic, with step \(-Q''\log N/N\). Two quadratic sources are visible.</p>
+<ul>
+<li>The mixed Wronskian of a \(p\)-function block of \(x^{-n}\)-type and a \(q\)-function block of \((1+x)^{-n}\)-type carries a factor of order \((n/(x(1+x)))^{pq}\). Here \(pq\) has second difference \(-2\) in \(m\).</li>
+<li>The Pochhammer amplitudes \((\gamma)_n\) of the echelonized residual exponents \(\gamma_0+i\) contribute \(n^{-\gamma}\Gamma(\gamma+1)\) per function. The logarithm of the amplitude, summed over both classes, has second difference about \(-2\log n+2\log(4e)\).</li>
+</ul>
+<p>Together these give about \(3\log N\), against the fitted \(4.1\log N\). The binomial minors of the residuals, whose dependence on which IV functions are chosen is not computed here, may supply the rest. This count is a heuristic; deriving \(Q\) exactly is the next step.</p>
+<p><strong>Middle steps.</strong> At \(l=2\), \(e=3,4,5\) (middle-hull.txt), \(e\,u\) on the first circle is \(-9.34,-9.11,-8.86\). Three sizes are too few to separate the two scale laws there.</p>
+<p><strong>Dependencies re-read.</strong> the mechanism-scale entry and conj:cube-last-far-iv-splitting-mechanism; conj:cube-last-far-geometric-circles (equal spacing, at fixed \(e\)); lem:far-logderivative-criterion.</p>
+<p><strong>Verification gate.</strong> I re-read the mechanism-scale entry and its claim, the geometric-circles conjecture and the log-derivative criterion. One fresh-context medium reviewer matched every quoted number with the outputs. It ran its own comparison of fit laws, now reproduced by the script, and checked the heuristic arithmetic. Verdict: pass with corrections, all applied. The scale is stated as a fit, not a fact. The falsification of \(u=C/e\) is replaced by the comparison of two-parameter fits. The \(\log e\) basis is identified as the same law. The stability of the constants is stated. The earlier logarithmic step in the geometric-circles record is credited. The correction now names the failing step of the earlier argument. The heuristic's assumptions are made explicit. A wrong <code>refines</code> edge is replaced by <code>cites</code>.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 1.35 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 3.72 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 19.92 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">35.80 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
