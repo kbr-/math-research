@@ -82,6 +82,25 @@ foreach(eval(getenv("MS")), m,
     foreach([1, -1], s, my(f = b + s * a);
       emit(Str("    v_prev/g ", if (s > 0, "+", "-"), " v_last/g: degree ", poldegree(f), ", roots inside/on/outside |c|=1: ", io(f), ", content ", content(f),
         ", factor degrees ", apply(poldegree, factor(f)[, 1]~)))));
+  \\ WRONSKIAN=1 (cycle bmd-20261006-t): with L and D_m stripped, Q = 2c(D'L - DL') - DL is, on |c| = 1 and up to a unit
+  \\ factor, the Wronskian in theta of the real functions e^(-i(d+1)theta/2) D and e^(-i d theta/2) L.  Report its factor
+  \\ structure and its zeros on |c| = 1 (none would force interlacing).
+  if (getenv("WRONSKIAN") == "1",
+    my(D = strip01(matdet(vecextract(W, "..", setminus([1 .. 2 * m + 3], [2 * m + 1, 2 * m + 3])))));
+    my(Q = 2 * 'c * (deriv(D, 'c) * L - D * deriv(L, 'c)) - D * L, F = factor(Q), z = Vec(polroots(Q)));
+    emit(Str("  Wronskian Q: degree ", poldegree(Q), ", factor degrees ", apply(poldegree, F[, 1]~), " exps ", F[, 2]~,
+      ", zeros inside/on/outside |c|=1: ", [#select(x -> abs(x) < 1 - 1e-30, z), #select(x -> abs(abs(x) - 1) <= 1e-30, z), #select(x -> abs(x) > 1 + 1e-30, z)]));
+    emit(Str("    low-degree factors: ", select(f -> poldegree(f) <= 3, F[, 1]~)));
+    \\ exact data (review of cycle t): degrees, self-reciprocity signs, stripped exponents of the two Cramer minors, and
+    \\ an exact count of zeros of R = Q/(c-1) on |c| = 1: Cayley c = (1+it)/(1-it) gives S = A + iB, and zeros on the
+    \\ circle other than c = -1 are the real common roots of A, B.
+    my(R = Q / ('c - 1), recsign(P) = if (polrecip(P) == P, 1, if (polrecip(P) == -P, -1, 0)));
+    my(Wp = winmat(m, 2 * m + 2), A1 = matdet(vecextract(Wp, "..", setminus([1 .. 2 * m + 2], [2 * m + 1]))), A2 = matdet(vecextract(Wp, "..", setminus([1 .. 2 * m + 2], [2 * m + 2]))));
+    my(ex(P) = [valuation(P, 'c), valuation(P, 'c - 1)]);
+    my(S = subst(R, 'c, (1 + I * 't) / (1 - I * 't)) * (1 - I * 't)^poldegree(R), SA = real(S), SB = imag(S), g = gcd(SA, SB));
+    emit(Str("    exact: deg D = ", poldegree(D), ", deg L = ", poldegree(L), ", reciprocity signs D, L: ", [recsign(D), recsign(L)],
+      "; [c, c-1] exponents of Delta_2m, Delta_2m+1: ", ex(A1), ", ", ex(A2),
+      "; R(-1) = ", if (subst(R, 'c, -1), "nonzero", "0"), "; real common roots of Cayley parts: ", if (poldegree(g) > 0, polsturm(g), 0))));
   \\ SIGNS=1 (cycle bmd-20261006-p): signs of all maximal minors at c = 2, 3, 1/2 (a total-positivity test).
   if (getenv("SIGNS") == "1",
     foreach([2, 3, 1/2], c0, my(sg = List());
