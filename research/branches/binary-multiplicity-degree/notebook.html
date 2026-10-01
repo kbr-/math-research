@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The <a href="#entry-2026-10-03-cube-far-newton-hull-review">Newton hull review</a> finds that the four far-root circles are the four long edges, of length \(N\), of the coefficient-magnitude polygon of the far polynomial in \(t\). Single-term Pellet separation fails at the transitions, which are blocks of about \(8e\) comparable coefficients.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The four far-root circles have radii in <a href="#entry-2026-10-03-cube-last-far-geometric-circles">geometric progression</a>, the \(q\)-Pochhammer signature, and one circle is the Newton edge of \(\rho_3\).</p>
 <p>Next:</p>
 <ol>
-<li>Derive the four-edge profile of the coefficients from the six-space.</li>
-<li>Formulate the block-Rouché separation that places \(N\) roots on each circle and \(8e-10\) in the transitions.</li>
+<li>Test the approximate product shape on each circle, comparing \(P\) with \(\rho_3\) times the remaining blocks.</li>
+<li>Identify the partners of the other three edges among the six-space Wronskian minors.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -44894,6 +44894,43 @@ after the rescaling \(y\mapsto y/c\), applies with \(\lambda=\tfrac52&gt;0\). Up
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 41.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">45.85 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 7.37 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-geometric-circles" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-newton-hull-review:2" data-claims="conj:cube-last-far-geometric-circles">
+<h3>3 October 2026 — The four far-root circles have radii in geometric progression, and one of them is the single long Newton edge of the top block-IV polynomial: a q-Pochhammer shape for the far polynomial</h3>
+<p class="entry-meta">Conjecture: log-radii of the four circles equally spaced (to 3% at e = 6..9); the circle at e u ~ 0.41 coincides with the Newton edge of rho_3 to 0.1% at e = 9. Last far geometric circles cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B), last-step far input. The <a href="#entry-2026-10-03-cube-far-newton-hull-review">Newton hull review</a> identified the four far-root circles with the four long edges, of length \(N=n+\tfrac72\), of the coefficient polygon of \(P(t)=(1-t)^dW_{b-1}(t/(1-t))\). Where do these edges come from in the six-space \(Z_e=\langle u_1,u_2\rangle\oplus t^{k-1/2}V_e\)?</p>
+<p><strong>General statement.</strong> <code>conj:cube-last-far-geometric-circles</code>: for every \(e\), the four long Newton edges of \(P\) have slopes \(-u_i\) with \(e\,u_i=c_e+i\,d_e\), \(i=0,\ldots,3\), an arithmetic progression. So the circle radii \(|t|=e^{u_i}\) form a geometric progression, as for the roots in \(s=t^N\) of a polynomial with coefficients \(\propto q^{m(m-1)/2}\), a \(q\)-Pochhammer product \(\prod_{i=0}^3(1+c\,q^is)\). With distinct radii, each circle carries \(N\) simple roots.</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_last_far_rho_hull.gp computes the upper hull of \(\log|\text{coefficients}|\) of the four block-IV polynomials \(\rho_j\) of the six-space, \(e=6,\ldots,9\) (research/results/bmd-20261003-zzh/rho-hull.txt). It compares them with the four edges of \(P\) (research/results/bmd-20261003-zzg/newton-hull.txt).</p>
+<ul>
+<li>\(\rho_3\) has a single long edge, of length \(\deg\rho_3-1=N-\tfrac32\). Its slope gives \(e\,u=0.527,0.484,0.446,0.414\) at \(e=6,\ldots,9\). The third edge of \(P\) gives \(0.515,0.476,0.443,0.414\). At \(e=9\) the two values are \(0.41437\) and \(0.41386\), within \(0.1\%\).</li>
+<li>\(\rho_0\), \(\rho_1\), \(\rho_2\) have only short edges: lengths about \(2e\) for \(j=0,1\), and two edges of about \(4e\) for \(j=2\). So the other three edges of \(P\) do not come from single \(\rho_j\); they arise in the determinant.</li>
+<li>The four edges of \(P\) are equally spaced in slope:
+<ul>
+<li>\(e=6\): \(e\,u=-2.630,-1.064,0.515,2.123\), steps \(1.566,1.579,1.608\);</li>
+<li>\(e=7\): \(-2.411,-0.974,0.476,1.950\), steps \(1.437,1.450,1.474\);</li>
+<li>\(e=8\): \(-2.225,-0.897,0.443,1.803\), steps \(1.328,1.340,1.360\);</li>
+<li>\(e=9\): \(-2.067,-0.832,0.414,1.677\), steps \(1.235,1.246,1.263\).</li>
+</ul>
+The steps agree within \(3\%\) at each \(e\). The step \(d_e\) decreases with \(e\); \(d_e\cdot e/\log e\) stays between about \(5.1\) and \(5.3\), so \(d_e\) is plausibly of order \(\log e\).</li>
+</ul>
+<p><strong>Reading.</strong> Equal spacing of the log-radii is the signature of block magnitudes \(|R_m|\propto Q^{m(m-1)/2}\rho^m\), a Gaussian profile in \(m\). It is what a product \(\prod_{i=0}^{3}\bigl(\alpha_i(t)+\beta_i(t)t^N\bigr)\) with \(|\beta_{i+1}/\alpha_{i+1}|=Q\,|\beta_i/\alpha_i|\) would give. Such a product has its roots on four distinct circles, \(N\) simple roots each, so a quantitative product structure would prove squarefreeness on the circles. The coincidence of the third edge with \(\rho_3\) suggests that one factor is essentially \(\rho_3\). Over \(\mathbb Q\), \(W_{b-1}\) is irreducible at \(e\le3\), so any product structure is approximate: magnitude-level, not algebraic.</p>
+<p><strong>Next.</strong> Test the product shape directly: on the circle \(|t|=e^{u_2}\), compare \(P\) with \(\rho_3\) times the values of the other blocks. Then identify the partners of the other three edges in the six-space determinant: Wronskian minors pairing \(u_1\) and \(u_2\) with \(\rho_0,\ldots,\rho_2\).</p>
+<p><strong>Dependencies re-read.</strong> the Newton hull review and its data; prop:cube-last-far-six-space; conj:cube-last-far-four-circles.</p>
+<p><strong>Verification gate.</strong> Exact coefficients, with hulls computed in \(60\)-digit floating point. No reviewer: no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zzh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 5.36 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 2.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.48 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
