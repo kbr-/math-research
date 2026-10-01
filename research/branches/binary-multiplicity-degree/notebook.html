@@ -47,13 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The far input of (B) has three parts (<a href="#entry-2026-10-03-cube-last-far-review">last far review</a>). The odd peeling's part is not yet scoped.</p>
-<p>Next, the odd peeling's far components at its last steps:</p>
-<ul>
-<li>\(k=b\) (\(l=0\)), where the cluster is the simple root alone, presumably an exact Möbius orbit;</li>
-<li>\(k=b-1\) (\(l=1\)), with one double and the simple root;</li>
-<li>the odd first-order lemma, with the simple root's classes.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B). The far input of (B) has the same three-part shape at both parities (<a href="#entry-2026-10-03-cube-odd-far-scope">odd far scope</a>). Its sharpest part is the last-step families \(W_{b-1}\) (even) and \(W_b\) (odd), which must have no triple roots.</p>
+<p>Next, develop the last far review's leads on the even last-step family, starting with the exceptional Jacobi lead. Write \(X_e\) of the last far reduction in Jacobi form: each block is \(y^\alpha(1-y)^\beta\) times polynomials, and \(\Theta_m\) is a Gauss operator. Test whether \(X_e\) is a Darboux–Crum transform of a Jacobi system, that is, whether \(W(X_e)\) at \(e=1\) is a Wronskian of Jacobi polynomials of one family. If so, the zero results for exceptional Jacobi denominators apply. If not, the lead is closed for this family.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42624,6 +42619,94 @@ K_W+2\tbinom{c+q}2+2\textstyle\sum_s\binom{n_s}2-\sum_so_sn_s=(c+q)^2+\sum_{s\ge
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 1.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.61 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">38.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-odd-far-scope" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-odd-last-far-mobius lem:cube-odd-far-first-order-splitting">
+<h3>3 October 2026 — The odd peeling's far input has the same shape as the even one: its last step is an exact Möbius orbit, and the first-order splitting holds at its other steps</h3>
+<p class="entry-meta">Working proofs that the odd peeling's last far step (l = 0) is a Möbius orbit and that the first-order splitting lemma holds at its steps with l ≥ 1; together they scope (B)'s far input at odd N. Odd far scope cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-last-far-review">last far review</a> found the odd peeling's far input unscoped. Do the <a href="#cube-peeling-last-far-mobius">last-step Möbius proposition</a> and the <a href="#cube-far-first-order-splitting">first-order splitting lemma</a> carry over to the odd base, whose simple root adds classes?</p>
+<p><strong>General statement.</strong> <code>prop:cube-odd-last-far-mobius</code> and <code>lem:cube-odd-far-first-order-splitting</code>, for every odd \(N=2b+1\ge5\).</p>
+<h4 id="cube-odd-last-far-mobius">The odd last step</h4>
+<p><strong>Proposition (odd last far step).</strong> Characteristic zero, odd peeling (thm:cube-odd-base-peeling), \(b\ge2\), step \(k=b\) (\(l=0\), \(e=b-1\)), \(D_b=\varepsilon c\), simple root \(a\ne0\), and \(x_0=-\varepsilon/a\). For \(\varepsilon\notin\{0,a/c\}\), the space \(E_{b-1}\) in \(x=\varepsilon z\) is exactly \(F_b\circ\phi^{-1}\), with \(\phi(x)=x_0+(1+cx_0)x\). So the far points of step \(b\) are \(\phi\) of the roots of \(W_b\), with the same multiplicities.</p>
+<p><strong>Proof.</strong> By the setup of the odd theorem, \(E_{b-1}\) is the sum of the following blocks:</p>
+<ul>
+<li>\(\mathcal P_{&lt;R_{b-1}}\);</li>
+<li>\(V^{(1)}_{\rm odd}(D_b,a)=\langle(1+D_bz)^{-3}\rangle\oplus(1+D_bz)^{-5/2}(1+az)^{-3/2}\mathcal P_{&lt;2}\);</li>
+<li>\((1+D_bz)^{-7/2}\mathcal P_{&lt;4(b-1)}\);</li>
+<li>\((1+az)^{-3/2}\mathcal P_{&lt;2(b-1)}\).</li>
+</ul>
+<p>In \(x\), \(1+D_bz=1+cx\) and \(1+az=(a/\varepsilon)(x-x_0)\), so the blocks are, up to constants:</p>
+<ul>
+<li>\(\mathcal P_{&lt;R_e}\) and \((1+cx)^{-3}\);</li>
+<li>\((1+cx)^{-5/2}(x-x_0)^{-3/2}\mathcal P_{&lt;2}\);</li>
+<li>\((1+cx)^{-7/2}\mathcal P_{&lt;4e}\) and \((x-x_0)^{-3/2}\mathcal P_{&lt;2e}\).</li>
+</ul>
+<p>\(F_b\) at \(l=0\) has the blocks:</p>
+<ul>
+<li>\(\mathcal P_{&lt;R_e}\) and \(\langle(1+cx)^{-3}\rangle\);</li>
+<li>\(x^{-(R'_0+2)}\mathcal P_{&lt;R'_0}=0\), since \(R'_0=0\);</li>
+<li>\((1+cx)^{-7/2}\mathcal P_{&lt;4e}\);</li>
+<li>\((1+cx)^{-5/2}x^{-3/2}\mathcal P_{&lt;2}\);</li>
+<li>\(x^{-7/2+2}\mathcal P_{&lt;2e}=x^{-3/2}\mathcal P_{&lt;2e}\).</li>
+</ul>
+<p>These are the same blocks with \(x_0=0\). The map \(\phi\) fixes \(-1/c\) and \(\infty\), satisfies \(\phi(x)-x_0=(1+cx_0)x\) and \(1+c\phi(x)=(1+cx_0)(1+cx)\), and preserves polynomial spaces. So it carries each block of \(F_b\) onto the corresponding block of \(E_{b-1}\), and Wronskians change by a constant factor. \(\square\)</p>
+<p>So, as in the even case, the first-order relaxation gives nothing at this step, and the peeling argument for (B) needs \(W_b\) without triple roots.</p>
+<h4 id="cube-odd-far-first-order-splitting">The other odd steps</h4>
+<p><strong>Lemma (odd first-order splitting).</strong> Characteristic zero, odd peeling, step \(2\le k\le b-1\) (\(l\ge1\)). Near the far limit, on compact subsets of \(\mathbb C\setminus\{0,-1/c\}\), the normalized far Wronskian is \(W_k+\varepsilon R_1+O(\varepsilon^2)\). Here \(R_1=\sum_XG_X(D,a)Q_X\) over the three classes that depend on the cluster:</p>
+<ul>
+<li>\(V^{(l)}_{\rm odd}\);</li>
+<li>the extension blocks of \(s&gt;k\) and of \(a\);</li>
+<li>the pairs \((k,s)\) and \((k,a)\).</li>
+</ul>
+<p>As before, \(Q_X\) is the Wronskian of \(F_k\) with the class's element of most negative \(x\)-power multiplied by \(x^{-1}\), and \(G_X\) is the first subleading coefficient of the class's triangular basis at the cluster. A root of \(W_k\) of multiplicity \(m\) with \(R_1\ne0\) there gives \(m\) simple far points. Hence (B) at odd \(N=2b+1\ge5\) holds if:</p>
+<ol>
+<li>\(W_b\) has no triple roots;</li>
+<li>for \(2\le k\le b-1\), every root of \(W_k\) of multiplicity at least \(3\) has \(R_1(r;D,a)\not\equiv0\) in \((D,a)\);</li>
+</ol>
+<p>given the odd necks, which are proved (cor:cube-odd-peeling-necks-all).</p>
+<p><strong>Proof.</strong> The proof of lem:cube-far-first-order-splitting uses only three facts:</p>
+<ul>
+<li>the cluster classes are analytic in \(u=\varepsilon/x\);</li>
+<li>their triangular bases at the cluster have consecutive pivots;</li>
+<li>the remaining classes do not depend on \(\varepsilon\) in \(x\).</li>
+</ul>
+<p>The odd theorem gives the pivots, which are the exponents of the far limit. They are \(3,\ldots,R'_l+2\) for \(V^{(l)}_{\rm odd}\) (attainment). For the extension blocks with the simple root's block they are consecutive for generic \((D,a)\), consistent with the Zariski clause, by the block Wronskian lemma (lem:cube-block-wronskian-ordinary), with the doubles first and the \(a\)-block shift \(4el-(2e-2)\ge0\). For the pairs, including \((k,a)\), they are consecutive by the same lemma, since all blocks start at \(0\).</p>
+<p>The classes \(\mathcal P_{&lt;R_e}\), \(\langle(1+cx)^{-3}\rangle\) and \((1+cx)^{-7/2}\mathcal P_{&lt;4e}\) do not depend on \(\varepsilon\). Parts (2) and (3) are unchanged. The induction is that of cor:cube-peeling-weight-two-reduction in its odd form, whose count step covers the orders at \(-1/a\). The Zariski genericity is now in \((D_{&gt;k},a)\). \(\square\)</p>
+<p><strong>Where the relaxation can act.</strong> At \(l\ge1\) the cluster has at least two points, a double and the simple root, at different positions \(-\varepsilon/D_s\) and \(-\varepsilon/a\). So the first-order motion need not be a Möbius flow. Whether it is one, as at the even step \(l=1\), is not tested here. This cycle registers no computation.</p>
+<p><strong>What this gives.</strong> (B)'s inputs now have the same three-part shape at both parities:</p>
+<ul>
+<li>the necks, proved;</li>
+<li>the last steps, \(W_{b-1}\) (even) and \(W_b\) (odd), without triple roots, exactly;</li>
+<li>at the other steps, the first-order condition.</li>
+</ul>
+<p>None of these has a mechanism.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-odd-base-peeling (\(E_k\), \(F_k\) at \(l=0\), the classes and exponents); prop:cube-peeling-last-far-mobius and lem:cube-far-first-order-splitting (proofs); lem:cube-block-wronskian-ordinary; cor:cube-peeling-weight-two-reduction (odd case); cor:cube-odd-peeling-necks-all.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the following:</p>
+<ul>
+<li>\(E_{b-1}\) at \(k=b\), block by block against \(F_b\) at \(l=0\) (\(R'_0=0\), \(j_0=2\));</li>
+<li>\(\phi\) and the excluded \(\varepsilon\);</li>
+<li>that the even first-order proof uses only the three facts, and that the odd classes satisfy them, with their pivots, the \(a\)-block shift and the pairs \((k,a)\);</li>
+<li>the scoping over \(2\le k\le b\).</li>
+</ul>
+<p>The odd neck corollary and the odd weight-two reduction were not excerpted for it. They were reviewed in their own entries: the <a href="#entry-2026-10-03-cube-mixed-neck-hull">mixed neck hull</a> entry, and the weight-two reduction's entry, whose odd case is part of its statement. No hypothesis was unused. Verdict: pass with corrections, applied:</p>
+<ul>
+<li>\(b\ge2\) is stated;</li>
+<li>the consequence is phrased as a need of the peeling argument;</li>
+<li>the expansion holds on compact sets;</li>
+<li>the pivots hold for generic \((D,a)\);</li>
+<li>the shape lists the necks.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 25.94 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 26.48 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
