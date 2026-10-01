@@ -47,12 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step, the \(4R_e\) balanced roots have a conjectural chain to simplicity. The \(8e+4\) edge roots are the <a href="#entry-2026-10-04-cube-last-far-circle-ends">fringe of the four sector circles</a>: near \(t=1\), where three sector sums are comparable, and at the crossings of the positive real \(t\)-axis.</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B), and (K). Since the <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> the last-step sector programme has grown only conjectures supported at \(e=2,4\). Its certificate <a href="#entry-2026-10-04-cube-last-far-edge-certificate">fails on the far ring</a>.</p>
+<p>Next: a route review that targets the sector programme itself.</p>
 <ol>
-<li>Formulate and test a three-term balance certificate, extending lem:cube-far-balance-certificate to three comparable sector sums, at the far-ring roots of \(e=2,4\).</li>
-<li>Derive the local model at the real-axis crossings from the two-term law.</li>
+<li>Can any link be proved for all \(e\), starting with the \(R_e\) roots per circle, via the argument principle on the exact sector polynomial?</li>
+<li>If no link can be proved, weigh an all-\(e\) algebraic argument for "no triple roots", which is all (B) needs, against (K) and the middle steps, which received no cycles in this period.</li>
 </ol>
+<p>No further size-by-size runs on this line.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -48297,6 +48298,38 @@ uniformly, with \(n=R_e\). The term \(2\log|r(1+r)|\) follows from the \(r\)-exp
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 57.00 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.21 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 6.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-edge-certificate" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-edge-sector-certificate">
+<h3>4 October 2026 — Edge certificate refuted: at the far-ring roots the sector sums cancel, so no two- or three-term sector certificate holds there</h3>
+<p class="entry-meta">Refutation at e = 2, 4: all 16 far-ring roots fail both certificates, with normalized |T'| down to 1e-12 and 1.4e-4, while sampled balanced roots pass. Diagnosis: the ray cuts inflate at large |x|. Last far edge certificate cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step: the edge. The <a href="#entry-2026-10-04-cube-last-far-circle-ends">circle-ends entry</a> placed the edge roots at the ends of the sector circles, where three sector sums are comparable. Does a three-term version of the balance certificate (lem:cube-far-balance-certificate) hold there?</p>
+<p><strong>General statement.</strong> conj:cube-last-far-edge-sector-certificate (refuted): for every \(e\), the sector certificate holds at every non-real edge root \(r\) of \(W_{b-1}\), with \(S\) the two or the three largest sector sums. The certificate is defined as follows. Write \(T=\sum_sE_s\), \(s_0\in S\) the largest, \(L_0=E_{s_0}'/E_{s_0}\), \(R=\sum_{s\notin S}E_s\). Since \(\sum_{s\in S}E_s=-R\) at a root, \[T'(r)=\sum_{s\in S}\bigl(E_s'-E_sL_0\bigr)-L_0R+R',\] so \(\bigl|\sum_{s\in S}(E_s'-E_sL_0)\bigr|&gt;|R||L_0|+|R'|\) certifies a simple root. With \(S=\{i,i+1\}\) this is the two-term lemma. The certificate is useful only if its main term has a lower bound of the sector scale \(N\max_s|E_s|/|r(1+r)|\), \(N=n+\tfrac72\), coming from asymptotics.</p>
+<p><strong>Test design.</strong> The roots are all non-real edge roots with \(\operatorname{Im}r&gt;0\): \(7\) at \(e=2\) and \(15\) at \(e=4\). Every fourth balanced root is included as a control: \(3\) and \(14\). The diagnostic is the normalized derivative \(m=|T'(r)||r(1+r)|/(N\max_s|E_s|)\). It is of order \(1\) where the sector sums have the size of the function, and small where they cancel.</p>
+<p><strong>Computation.</strong> XEDGE mode of research/tools/bmd_cube_far_chain_coprime.gp. Inputs: the root lists research/results/bmd-20261004-za/sel-e2.gp and sel-e4.gp, from research/tools/bmd_cube_last_edge_select.py. Derivatives by central differences at \(160\) digits. Outputs: edge-margin-e2.txt and edge-margin-e4.txt; summary edge-margin-summary.txt, from research/tools/bmd_cube_last_edge_margin_stats.py.</p>
+<ul>
+<li>Balanced controls: \(m\) from \(0.40\) to \(0.98\) at \(e=2\) and from \(0.70\) to \(15.7\) at \(e=4\). Both certificates hold at all \(3+14\).</li>
+<li>Far-ring edge roots (\(|r|\ge5\)): \(m\) from \(1.1\cdot10^{-12}\) to \(1.3\cdot10^{-5}\) at \(e=2\) (\(4\) roots), and from \(1.4\cdot10^{-4}\) to \(1.54\) at \(e=4\) (\(12\) roots). Neither certificate holds at any of the \(16\).</li>
+<li>Near-real edge roots (\(|r|&lt;5\)): \(m\) from \(0.001\) to \(0.94\) at \(e=2\) and from \(2.1\) to \(2.9\) at \(e=4\). The three-term certificate holds at \(1\) of \(3\) and at \(2\) of \(3\).</li>
+</ul>
+<p><strong>Outcome.</strong> Refuted at both sizes. On the far ring the sector sums are much larger than \(T\) and cancel in it. A certificate built from bounds on sector magnitudes then cannot work, whatever \(S\) is. With \(S\) all sectors it reduces to \(T'(r)\ne0\) itself. The cancellation is milder at \(e=4\) than at \(e=2\). Two sizes do not show a trend, and no further sizes are run on this line.</p>
+<p><strong>Diagnosis.</strong> A mixed row \(f=(1+x)^{-5/2}x^{1/2-4l+j}\) has an integral total exponent at infinity, so it is single-valued outside the segment \([-1,0]\). Its Taylor coefficients at \(x\) are therefore one contour integral around that segment. The <a href="#entry-2026-10-04-cube-last-far-sector-balance">x-side decomposition</a> instead splits them along two rays to infinity, \(c_N=I_0+I_{-1}\). Writing \((\xi-x)^{-N-1}\approx(-x)^{-N-1}e^{N\xi/x}\) for large \(|x|\), the segment integral is a Laplace transform at \(\zeta=N/x\). This heuristic is not proved here. On that reading, \(I_0\) and \(I_{-1}\) are its two endpoint expansions, which are large and cancel unless \(|\zeta|\) is large. That is the Stokes picture of a Kummer-type function. The far ring, where \(|\zeta|\) is of order \(1\) to \(6\), is where the ray split stops being a good representation.</p>
+<p><strong>Remaining gap.</strong> The edge needs a representation without ray cuts, such as the segment integral, and no certificate exists there. The balanced-root chain itself is still conjectural.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-balance-certificate; lem:cube-far-x-sector-decomposition (the ray cuts and the decay that justifies them); conj:cube-last-far-edge-circle-ends.</p>
+<p><strong>Verification gate.</strong> A refutation computed by script, with every number read from saved output and balanced roots as a passing control. The displayed identity is a one-line computation, not registered as a lemma. No reviewer, since no proof is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-za">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 37.32 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 52.83 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 45.05 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

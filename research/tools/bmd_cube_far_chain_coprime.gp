@@ -276,6 +276,36 @@ if (XSECTOR != 0 && XSECTOR != "",
     emit(Str("  max |sum E_s| / max|E_s| = ", precision(ctl, 4) * 1.)));
   quit);
 }
+\\ XEDGE mode (cycle bmd-20261004-za; lem:cube-far-multi-balance-certificate, conj:cube-last-far-edge-margin): at the
+\\ roots listed in the file SELFILE, a list [[Re r, Im r, kind], ...] (kind 1 edge, 0 balanced; the nearest root of W_(b-1) is used), with
+\\ S the three largest sector sums, s0 the largest, R the others: main = sum_(s in S) (E_s' - E_s E_s0'/E_s0),
+\\ certificate margin = |main| / (|R| |E_s0'/E_s0| + |R'|) (> 1 certifies a simple root), the same with S the two largest,
+\\ and the normalized derivative m = |sum_s E_s'| |r(1+r)| / (N max|E_s|), N = n + 7/2.  Derivatives: central differences.
+edgecert(E, D, L0, S, w, NN, mx) = {
+  my(oth = setminus(Set([1..#E]), Set(S)), R0 = sum(k = 1, #oth, E[oth[k]]), Rd = sum(k = 1, #oth, D[oth[k]]), mn = sum(k = 1, #S, D[S[k]] - E[S[k]] * L0));
+  [abs(mn) / (abs(R0) * abs(L0) + abs(Rd)), abs(mn) * w / (NN * mx)]; }
+XEDGE = getenv("XEDGE");
+{
+if (XEDGE != 0 && XEDGE != "",
+  default(realprecision, if (getenv("PREC") != "" && getenv("PREC") != 0, eval(getenv("PREC")), 160));
+  my(hh = 10^-30, sel = read(getenv("SELFILE")));
+  foreach (eval(XEDGE), el,
+    my(e = el[1], l = el[2], n = Rn(e), rows = xrows(e, l), K = #rows, T = tpoly(chain(e, l, Rn(l)), 0)[1], rt = polroots(T));
+    my(mix = select(i -> rows[i][3] == 1, [1..K]), out = List(), NN = n + 7/2);
+    foreach (sel, sv,
+      my(z = sv[1] + I * sv[2], q = 1); for (j = 2, #rt, if (abs(rt[j] - z) < abs(rt[q] - z), q = j));
+      my(r = rt[q], u1 = (-1 - r) / abs(1 + r), u0 = -r / abs(r), w = abs(r * (1 + r)));
+      my(cc = taylorb(-7/2, 0, r, u1, u0, n, n + 3), ci = loopb(-7/2, 0, r, u1, u0, n, n + 3), sg = if (normlp(ci + cc) < normlp(ci - cc), -1, 1));
+      my(E = sectorE(rows, mix, r, u1, u0, n, K, sg), Ep = sectorE(rows, mix, r + hh, u1, u0, n, K, sg), Em = sectorE(rows, mix, r - hh, u1, u0, n, K, sg));
+      my(D = (Ep - Em) / (2 * hh), A = apply(abs, E), srt = vecsort(A, , 5), mx = A[srt[1]], s0 = srt[1], L0 = D[s0] / E[s0]);
+      my(c3 = edgecert(E, D, L0, srt[1..3], w, NN, mx), c2 = edgecert(E, D, L0, srt[1..2], w, NN, mx), m = abs(vecsum(D)) * w / (NN * mx));
+      listput(out, [sv[3], precision(real(r), 4) * 1., precision(imag(r), 4) * 1., srt[1] - 1, srt[2] - 1, srt[3] - 1,
+        precision(A[srt[3]] / mx, 3) * 1., precision(log(c2[1]) / log(10), 4) * 1., precision(log(c3[1]) / log(10), 4) * 1.,
+        precision(c3[2], 4) * 1., precision(m, 4) * 1., precision(abs(vecsum(E)) / mx, 3) * 1.]));
+    emit(Str("XEDGE (e,l)=(", e, ",", l, "): n=R_e=", n, ", N = ", NN, "; per root [kind (1 edge, 0 balanced), Re r, Im r, largest s, second s, third s, third/largest,",
+      " log10 two-term margin, log10 three-term margin, normalized three-term main term, normalized |T'| m, |sum E_s|/max|E_s|]: ", Vec(out))));
+  quit);
+}
 ROOTS = getenv("ROOTS");
 {
 if (ROOTS != 0 && ROOTS != "",
