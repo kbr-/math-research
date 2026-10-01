@@ -47,11 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. The <a href="#entry-2026-10-03-cube-far-bulk-review">far bulk review</a> closed the algebraic routes to the bulk of \(W_{b-1}\): local-degree irreducibility, Toda recurrence and real-rootedness. Its root separation, however, is stable in \(e\).</p>
-<p>Next, develop the asymptotic lead:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (B), last-step far input. By the <a href="#entry-2026-10-03-cube-last-far-six-reduction">six-function reduction</a>, \(W_{b-1}\) is the Weierstrass polynomial of a six-dimensional space \(Y_e=M\partial^nB'\). In \(t=x/(1+x)\), \(M\) is conjugate to \(\partial^kt^{k-a}\partial^k\).</p>
+<p>Next:</p>
 <ol>
-<li>Find the scaling limit of the zeros of \(W_{b-1}\) from the explicit space \(X_e\): the limit region, the local spacing, and a limit function.</li>
-<li>State asymptotic simplicity via Hurwitz's theorem, with the threshold that a finite computation must cover.</li>
+<li>Write the six functions of \(Y_e\) in closed form as Gauss hypergeometric functions.</li>
+<li>Use contiguity to reduce \(W(Y_e)\) to a smaller determinant of hypergeometric functions with explicit parameters.</li>
+<li>Test whether that determinant has a structure (a low-order equation, or a bilinear identity in the parameters) that excludes weight-three points.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -43748,6 +43749,67 @@ For \(n\le q\le n+4e+3\), the bounds are as follows:</p>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 48.24 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.08 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-last-far-six-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-bulk-review:3" data-claims="lem:cube-last-far-six-reduction check:cube-last-far-six-reduction-data">
+<h3>3 October 2026 — The last-step far polynomial is the Weierstrass polynomial of a six-dimensional space; the naive anti-Stokes picture of its zeros fails at small sizes</h3>
+<p class="entry-meta">Working proof that removing the polynomial and two-class blocks is clean, reducing W_(b-1) from 8e+4 functions to 6, for every e; anti-Stokes accumulation is not seen at e &lt;= 3. Last far six reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, input (B): \(W_{b-1}\) must have no triple roots. The <a href="#entry-2026-10-03-cube-far-bulk-review">far bulk review</a> proposed an asymptotic argument for its bulk. Two questions follow:</p>
+<ul>
+<li>Do the zeros approach the curves where the dominant exponential sizes balance?</li>
+<li>Which smallest space carries them?</li>
+</ul>
+<p><strong>General statement.</strong> <code>lem:cube-last-far-six-reduction</code>, for every \(e\ge1\).</p>
+<h4>Anti-Stokes test</h4>
+<p>The heuristic: after the polynomial block is removed, the blocks have sizes \(|1+x|^{-N}\), \(|x|^{-N}\) and \(|x(1+x)|^{-N}\) with \(N\approx n=R_e\). The zeros would accumulate on \(\operatorname{Re}x=-\tfrac12\), \(|1+x|=1\) and \(|x|=1\). research/tools/bmd_cube_last_far_stokes.gp measures, for each root, the log-distance to the nearest of these curves (research/results/bmd-20261003-zt/stokes.txt). The mean distance is \(0.177,0.168,0.187\) at \(e=1,2,3\), with no systematic decrease. The share of roots within \(0.2\) is \(10/16\), \(28/44\) and \(47/88\). The measure has no baseline for non-accumulating points, so it is uncalibrated. The heuristic is also flawed: after \(\partial^n\), block IV carries polynomial factors of degree \(n+3\). So its size is not \(|x(1+x)|^{-N}\). By the lemma below, the zeros are exactly those of \(W(Y_e)\), and the two-class part \(\mathrm{II}\oplus\mathrm{III}\) contributes none by itself. \(Y_e\) depends on all of \(A'\), so a balance mechanism among its six functions is not ruled out. Sizes \(e\le3\) are pre-asymptotic (\(n\le15\) against \(4e\le12\)), and this test does not decide the asymptotic lead.</p>
+<h4>The reduction</h4>
+<p><strong>Setting.</strong> In \(x\), normalized by \(x\mapsto cx\) so that \(c=1\) (with \(y=-x\) relative to lem:cube-last-far-reduction), and with \(W_{b-1}\) the correspondingly rescaled polynomial, \(F=F_{b-1}=A'\oplus B'\), where
+\[
+A'=\mathcal P_{&lt;n}\oplus(1+x)^{-7/2}\mathcal P_{&lt;4e}\oplus x^{-7/2}\mathcal P_{&lt;4e},\qquad
+B'=\langle(1+x)^{-3},x^{-3}\rangle\oplus(1+x)^{-5/2}x^{-7/2}\mathcal P_{&lt;4},
+\]
+with \(n=R_e\), \(\dim A'=n+8e\) and \(\dim B'=6\).</p>
+<p><strong>Lemma (six-function reduction).</strong> Characteristic zero, every \(e\ge1\).</p>
+<ol>
+<li>\(W(A')=C'x^{\alpha'}(1+x)^{\beta'}\) with \(C'\ne0\): \(W(A')\) has no zeros off \(\{0,-1\}\).</li>
+<li>Let \(L_{A'}\) be the monic operator of order \(n+8e\) with kernel \(A'\). Then \(Y_e=L_{A'}B'\) is six-dimensional, and \(W(F)=W(A')\,W(Y_e)\) off \(\{0,-1\}\). So the far points of \(F_{b-1}\), with their weights, are the Weierstrass points of \(Y_e\) off \(\{0,-1,\infty\}\), and \(W_{b-1}\) is the part of \(W(Y_e)\) prime to \(x(1+x)\), up to a constant.</li>
+<li>Explicitly, \(L_{A'}=M\partial^n\), where \(M\) is the monic operator of order \(8e\) with kernel \((1+x)^{a}\mathcal P_{&lt;k}\oplus x^{a}\mathcal P_{&lt;k}\), \(k=4e\), \(a=-n-\tfrac72\). In \(t=x/(1+x)\), and after multiplication by \((1-t)^{a+k-1}\), that kernel is \(\mathcal P_{&lt;k}\oplus t^a\mathcal P_{&lt;k}\), which is annihilated by \(\partial_t^k\,t^{k-a}\,\partial_t^k\). Precisely, \(M=(1+x)^{-4k}\mu^{-1}t^{a-k}\partial_t^kt^{k-a}\partial_t^k\mu\), with \(\mu\) multiplication by \((1-t)^{a+k-1}=(1+x)^{-(a+k-1)}\) and \(\partial_t=(1+x)^2\partial_x\).</li>
+</ol>
+<p><em>Proof.</em> (1) By the Pólya–Mammana factorization (as in lem:cube-far-pure-reduction), \(W(\mathcal P_{&lt;n}\oplus U)=W(\mathcal P_{&lt;n})\,W(\partial^nU)\), and \(W(\mathcal P_{&lt;n})\) is a nonzero constant. By part (4) of lem:cube-last-far-reduction, \(\partial^n\) maps \((1+x)^{-7/2}\mathcal P_{&lt;4e}\) onto \((1+x)^{a}\mathcal P_{&lt;k}\) and \(x^{-7/2}\mathcal P_{&lt;4e}\) onto \(x^{a}\mathcal P_{&lt;k}\). Put \(t=x/(1+x)\), so \(1+x=(1-t)^{-1}\) and \(x=t(1-t)^{-1}\). Then
+\[
+(1+x)^ax^j=(1-t)^{-a-j}t^j,\qquad x^{a}x^j=t^{a+j}(1-t)^{-a-j}.
+\]
+After multiplication by \((1-t)^{a+k-1}\), these become \(t^j(1-t)^{k-1-j}\) and \(t^a\,t^j(1-t)^{k-1-j}\), \(j&lt;k\), which span \(\mathcal P_{&lt;k}\) and \(t^a\mathcal P_{&lt;k}\). Again by the factorization,
+\[
+W(\mathcal P_{&lt;k}\oplus t^a\mathcal P_{&lt;k})=W(\mathcal P_{&lt;k})\,W(\partial^k t^a\mathcal P_{&lt;k}).
+\]
+Here \(\partial^kt^{a+j}=(a+j)(a+j-1)\cdots(a+j-k+1)\,t^{a+j-k}\), which is nonzero since \(a\notin\mathbb Z\). A Wronskian of distinct monomials \(t^{\mu_j}\) is \(\prod_{i&lt;j}(\mu_j-\mu_i)\,t^{\sum\mu-\binom k2}\). Returning to \(x\) multiplies by a power of the common factor and of \(dt/dx=(1+x)^{-2}\), so the Wronskian stays a monomial in \(x\) and \(1+x\). (2) \(A'\cap B'=0\), since \(F=A'\oplus B'\) has dimension \(R_b\). Away from the zeros of \(W(A')\), the factorization \(W(A'\oplus B')=W(A')\,W(L_{A'}B')\) holds, with \(L_{A'}\) monic. By (1) these zeros lie in \(\{0,-1\}\). (3) \(L_{A'}=M\partial^n\), since \(\partial^n\) has kernel \(\mathcal P_{&lt;n}\) and maps the rest of \(A'\) onto \(\ker M\). The operator \(\partial^k\,t^{k-a}\,\partial^k\) sends \(t^{a+j}\) to \(\partial^k(c\,t^j)=0\) for \(j&lt;k\), and kills \(\mathcal P_{&lt;k}\); its order is \(2k\). \(\square\)</p>
+<h4>Check, and minimality</h4>
+<p>research/tools/bmd_cube_last_far_six_reduction.gp works modulo \(2^{61}-1\). Outputs: research/results/bmd-20261003-zt/six-reduction.txt (\(e\le3\); \(e=4\) overflowed the stack) and six-reduction-2.txt. Far degrees of Wronskians at \(e=1,2,3\):</p>
+<ul>
+<li>\(W(A')\): \(0\);</li>
+<li>\(A'\) plus both class integrals: \(8,16,24\), the recorded \(8e\);</li>
+<li>\(A'\) plus one class integral: \(4e\);</li>
+<li>\(A'\oplus\mathrm{IV}\): \(8,28,64=8e^2-4e+4\);</li>
+<li>\(A'\) plus one integral and IV: \(12,36,76\), for either integral (the case with \(x^{-3}\) is research/results/bmd-20261003-zt/six-reduction-3.txt);</li>
+<li>\(F\): \(16,44,88\).</li>
+</ul>
+<p>So, for \(e\le3\), no union of whole blocks strictly containing \(A'\) has a zero-free Wronskian. This is a finite check modulo \(2^{61}-1\); a positive far degree modulo \(q\) implies one in characteristic zero. It covers only unions of whole blocks containing \(A'\), not sub-blocks of IV or splittings that omit part of \(A'\).</p>
+<p><strong>What this gives.</strong> (B)'s last-step input is now a statement about the Weierstrass points of a six-dimensional space \(Y_e\), against \(8e+4\) in lem:cube-last-far-reduction. A triple root of \(W_{b-1}\) is a Weierstrass point of weight at least \(3\) of \(Y_e\). \(\partial^n\) sends the two class integrals to \((1+x)^{-3-n}\) and \(x^{-3-n}\). It sends IV to \(x^{-7/2-n}(1+x)^{-5/2-n}\) times polynomials of degree up to \(n+3\). \(M\) is gauge-equivalent to \(\partial_t^kt^{k-a}\partial_t^k\) after the change of variable, up to a left factor. So the images of the class integrals should be Gauss hypergeometric functions with large parameters, and those of IV sums of such terms; this is an expectation, not proved here. Their contiguity relations are the next tool.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-last-far-reduction (part (4), the images under \(\partial^n\)); lem:cube-far-pure-reduction (the factorization); prop:cube-peeling-last-far-mobius (the blocks).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked parts (1)–(3), the script and all quoted numbers. It also checked that the saved \(W_{b-1}\) equal the far part of \(W(F)\) in this orientation. Verdict: pass with corrections, applied: the missing block union \(A'+x^{-3}+\mathrm{IV}\) was run (\(12,36,76\)); the minimality claim is restricted to its scope; the operator relation is stated exactly; the images of IV under \(\partial^n\) are corrected; the anti-Stokes paragraph is calibrated and its inference weakened; the normalization is stated. No hypothesis was unused.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-zt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 2.58 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 52.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.35 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.67 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
