@@ -47,11 +47,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). The <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> separates the last-step roots into two populations. The \(4R_e\) balanced roots have a conjectural chain to simplicity. The edge, \(20\) and \(36\) roots at \(e=2,4\), lies on a far ring at \(|x|\approx5\)–\(18\) or near the real axis, outside the sector mechanism.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), (B). At the last step the \(4R_e\) balanced roots have a conjectural chain to simplicity (<a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a>). The edge has no mechanism: \(8e+4\) roots on a far ring at \(|x|\approx5\)–\(18\), or near the real axis. The integral-class Wronskian is <a href="#entry-2026-10-04-cube-last-far-pair-edge">refuted</a> as a mechanism for it.</p>
 <p>Next:</p>
 <ol>
-<li>Track the edge in the saved last-step far polynomials for larger \(e\): its count against \(8e+4\), its radius, and convergence after normalization. Roots only.</li>
-<li>Find the effective far-field problem predicted by screening.</li>
+<li>Test whether the ring is a Newton edge at \(x=\infty\). Take the archimedean hull of \(W_{b-1}\) in \(s=1/(1+x)\) at \(e=2,\ldots,9\) from the saved exact polynomials, and check whether the edge radius stays bounded. A long two-term-dominated edge would give simple roots by Pellet's theorem.</li>
+<li>Otherwise, find which pair minors of the class split balance at the edge roots.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -48214,6 +48214,40 @@ uniformly, with \(n=R_e\). The term \(2\log|r(1+r)|\) follows from the \(r\)-exp
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 13.78 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">39.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-last-far-pair-edge" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-last-far-pair-edge">
+<h3>4 October 2026 — Pair edge refuted: the last-step edge roots are not near the zeros of the integral-class Wronskian</h3>
+<p class="entry-meta">Refutation at e = 2, 3, 4: none of the 72 far zeros of Wr(u_1, u_2) has a root of W_(b-1) nearby, and the zeros move outward with e while the edge ring does not. Last far pair edge cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3, (B) at the last step: the edge. The <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> separated the \(8e+4\) roots of \(W_{b-1}\) outside the four sector circles from the \(4R_e\) balanced ones and found no mechanism for them. A mechanism for the edge would have to produce \(O(e)\) roots. The six-space has one explicit object with \(O(e)\) far zeros: the Wronskian of its integral class \(U=\langle u_1,u_2\rangle\) (prop:cube-last-far-six-space), with exactly \(8e\) far zeros. Does the edge sit on them?</p>
+<p><strong>General statement.</strong> conj:cube-last-far-pair-edge (refuted): for every \(e\), each of the \(8e\) far zeros of \(G_U=\operatorname{Wr}_t(u_1,u_2)\), mapped to \(x=t/(1-t)\), lies near a root of \(W_{b-1}\). Near means that the nearest root is closer than a tenth of the distance to the second nearest. If true, the Laplace expansion of \(\operatorname{Wr}(U\oplus t^{k-1/2}V_e)\) along the class split would be dominated by the term \(\operatorname{Wr}(U)\operatorname{Wr}(t^{k-1/2}V_e)\) near the edge. Then Rouché's theorem would carry simplicity from \(G_U\), a Wronskian of two explicit Jacobi-type polynomials, to the edge.</p>
+<p><strong>Test design.</strong> The hypothesis predicts \(8e\) close pairs at each \(e\): \(16+24+32=72\) predictions at \(e=2,3,4\). Every outcome below \(d_1/d_2&lt;0.1\) at some zero counts against it. The control is that \(\deg G_U\) after removing the factors \(t\) and \(1-t\) equals \(8e\), the count proved in the six-space entry.</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_last_far_pair_edge.gp builds \(u_1,u_2\) exactly by Rodrigues' formula and takes the far part of their Wronskian. It finds its roots and those of the saved exact \(W_{b-1}\) (research/results/bmd-20261003-zl, -zw) at \(80\) digits. Output: research/results/bmd-20261004-y/pair-edge.txt. The \(e=5\) case stopped on a PARI stack overflow and was not rerun, since \(e=2,3,4\) already decide the question.</p>
+<ul>
+<li>Control: the far degree of \(G_U\) is \(16,24,32=8e\).</li>
+<li>Close pairs (\(d_1/d_2&lt;0.1\)): \(0\) of \(16\), \(0\) of \(24\), \(0\) of \(32\). The smallest ratio at \(e=2\) is \(0.12\), at a conjugate pair \(2.91\pm2.08i\); most ratios lie between \(0.3\) and \(1\).</li>
+<li>Only \(2\), \(0\) and \(4\) roots of \(W_{b-1}\) lie within \(0.1|z|\) of some zero \(z\), against edge sizes \(20\), \(28\) and \(36\).</li>
+<li>The zeros of \(G_U\) lie at \(|x|\) from \(1.86\) to \(4.69\), from \(2.28\) to \(6.03\), and from \(2.78\) to \(7.55\). They move outward roughly linearly in \(e\), while the edge ring stays at \(|x|\approx5\)–\(18\) (<a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a>).</li>
+</ul>
+<p><strong>Outcome.</strong> The hypothesis is refuted at \(e=2,3,4\): the integral-class Wronskian does not locate the edge. So, near the edge, the Laplace expansion along the class split is not dominated by its \((0,1)\) pair minor. The edge must come from cancellation between several pair minors of \(U\) against complementary minors of \(t^{k-1/2}V_e\), as the multi-sector imbalance at the edge roots suggests: the third largest sector sum is \(0.1\) to \(0.6\) of the largest there (research/results/bmd-20261004-t/).</p>
+<p><strong>Correction to the edge review.</strong> The <a href="#entry-2026-10-04-cube-last-far-edge-review">edge review</a> lists its anti-Stokes lead as passed, because the far-ring roots have \(|\log|t||\le0.14\). For large \(|x|\), though, \(\log t=-\log(1+1/x)=-1/x+O(|x|^{-2})\), so every root with \(|x|\ge5\) has \(|\log|t||\lesssim0.2\) automatically. The test therefore had no power. The lead stands untested, not passed. Its later follow-ups should treat it as not run.</p>
+<p><strong>Remaining gap.</strong> The edge of \(8e+4\) roots still has no mechanism, and (B) at the last step needs their simplicity. Two things are not yet known: whether the ring stays bounded in \(|x|\) beyond \(e=4\), and whether it is a Newton edge at \(x=\infty\). Only two sizes are known, and the saved exact polynomials reach \(e=11\).</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-last-far-six-space (the class \(U\) and its \(8e\) far zeros); check:cube-last-far-six-reduction-data; the edge review's root classification.</p>
+<p><strong>Verification gate.</strong> A refutation by exact polynomials and \(80\)-digit roots, with the degree control passing. No reviewer, since no proof is claimed. The quoted numbers were read from the saved output.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-y">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 14.29 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">32.57 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 7.39 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 15.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 16.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.80 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
