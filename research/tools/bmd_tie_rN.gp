@@ -16,8 +16,11 @@ foreach(eval(getenv("MS")), m,
   for (i = 0, 2 * m,
     my(k = N - i, tk = sum(a = 0, k, bb(a) * bb(k - a) * 'c^a), ratio = k! / N! * prod(j = 1, i, N - j + 'L - m + 1));
     r += polcoef(P, i, 'T) * ratio * tk);
-  r = r / 'c^valuation(r, 'c);
-  while (subst(r, 'c, 1) == 0, r = r / ('c - 1));
+  \\ cycle bmd-20261007-d: record the stripped powers v (of c) and w (of c-1); the conjecture's form has v = m, w = 0
+  my(vv = valuation(r, 'c), ww = 0);
+  r = r / 'c^vv;
+  while (subst(r, 'c, 1) == 0, r = r / ('c - 1); ww++);
+  if (getenv("GEG") == "1", emit(Str("m=", m, " s=", s0, ": stripped powers v=", vv, " w=", ww, " (v = m: ", vv == m, ")")));
   \\ GEG=1: test r_N/rho_N = kappa(lambda) * c^m * (c-1)^0 * G_d(c), G_d = sum_k binom(d,k) (L)_k (L)_(d-k) c^k
   \\ (proportional to t_d, the coefficient of T^d in ((1+cT)(1+T))^(-L)); prints the quotient's c-degree.
   if (getenv("GEG") == "1",
