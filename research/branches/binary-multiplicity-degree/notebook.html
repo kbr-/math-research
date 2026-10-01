@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\) (<a href="#entry-2026-10-04-cube-statement-two-switch-review">switch review</a>). Statement 3 keeps its structure, with no listed next step.</p>
-<p>Next: derive, for every \(N\), the leading exponents of a reduced basis of the balanced simultaneous limit's regular lattice. Decide whether they form a residue-balanced set modulo \(3\). If they do, the recorded moving-point criterion gives generic nonvanishing for every \(N\).</p>
+<p>Route item: cube-odd-characteristic; open statement 2, characteristic three, \(d=2\). The balanced limit's mixed block is mostly odd monomials over an interval with gaps (<a href="#entry-2026-10-04-cube-balanced-mixed-shape">mixed shape</a>).</p>
+<p>Next: test the balanced simultaneous-limit conjecture itself at seven and eight labels, the first sizes past the proved six. Assemble the even internal blocks with the mixed block and compute the length-\(D\) Hasse map of the full limit at \(x=1\). A singular map refutes the conjecture at a named size. An invertible one, together with the monomial structure, is the input for a residue count for every \(N\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -49080,6 +49080,37 @@ Exact squarefreeness is known for \(k\le6\) (check:cube-merge-far-polynomials).<
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 3.29 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 33.34 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">29.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-04-cube-balanced-mixed-shape" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-04-cube-statement-two-switch-review:1" data-claims="conj:cube-balanced-mixed-shape">
+<h3>4 October 2026 — Balanced mixed block at seven and eight labels: the six-label shape does not persist; the limits are odd-monomial intervals with gaps, isolated outer powers and occasional two-term couplings</h3>
+<p class="entry-meta">Refutation of a shape law for the mixed block of the balanced simultaneous limit at (M,L) = (3,4), (4,4) over F_(3^5), with the six-label limit reproduced as control. Balanced mixed shape cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 2, characteristic three, \(d=2\). The <a href="#entry-2026-10-04-cube-statement-two-switch-review">switch review</a> reduced it, through the moving-point criterion, to the leading exponents of the balanced simultaneous limit (conj:cube-balanced-simultaneous-limit-normality) for every \(N\). Its mixed block, the pair products across the two clusters, is the part that couples the clusters. In characteristic three, \((1+z)^{1/2}\equiv(1+z)^{-1}(1+z^3)^{1/2}\), so below order \(\varepsilon^3\) the mixed rows behave like the rational kernel \(\bigl((1+\varepsilon aT)(1+\varepsilon cT/y)\bigr)^{-1}\). By partial fractions that kernel spans only about \(M+L\) directions, and the six-label limit has a middle interval of seven odd powers and two coupled endpoint rows. Does that shape persist?</p>
+<p><strong>General statement.</strong> conj:cube-balanced-mixed-shape (refuted): for every \(M,L\ge3\), the saturated mixed limit consists of an interval of consecutive odd powers of \(x\) together with \((M-1)(L-1)-1\) rows outside it, the remaining rows of the \(ML\).</p>
+<p><strong>Computation.</strong> research/tools/bmd_balanced_mixed_ml.gp generalizes the six-label tool to cluster sizes \((M,L)\). Its rows are \(w_iw_j/x\) with coefficients \(\beta_u\beta_v a_i^ub_j^v\varepsilon^{u+v}y^{-v}(y-1)^{u+v}\), \(y=x^2\), with \(\beta\) the ternary-digit signs of \(\binom{1/2}{u}\bmod3\). It uses fixed generic slopes in \(\mathbb F_{3^5}\), one zero slope per cluster, and precision \(30\). It saturates coefficientwise and reports the limit basis in reduced echelon form by largest exponent (research/results/bmd-20261004-zk/mixed-ml.txt).</p>
+<ul>
+<li>Control \((3,3)\): saturation ranks \(1,3,5,5,5,7,7,8,9\), valuation \(31\), middle odd powers \(-5,\ldots,7\), endpoint rows \(\{11,-9\}\) and \(\{9,-7\}\). This reproduces prop:cube-generic-balanced-six-label-limit.</li>
+<li>\((3,4)\), twelve rows: ranks \(1,3,5,6,6,7,8,10,11,11,11,12\), valuation \(53\). The limit is the monomials \(x^{11},x^9,\ldots,x^{-9}\) (eleven consecutive odd powers) and \(x^{-13}\). Only one row lies outside the interval, against the shape law's prediction of \(5\).</li>
+<li>\((4,4)\), sixteen rows: ranks \(1,3,5,7,7,7,9,11,11,11,12,14,16\), valuation \(94\). The limit is \(x^{17},x^{15}\), \(x^{11},\ldots,x^{-9}\), \(x^{-13}\), \(x^{-15}\), and one coupled row \(\{13,-11\}\).</li>
+</ul>
+<p><strong>Outcome.</strong> The shape law is refuted at \((3,4)\) and \((4,4)\). The mixed limits are mostly odd monomials over an interval with gaps, filled by isolated outer powers. Couplings are occasional, one or two rows. The rational-kernel reading accounts only for the first saturation steps: the ranks follow \(1,3,5\) and then depend on the Frobenius levels. Monomial limits are good news for the moving-point criterion, since their Hasse matrix at \(x=1\) is a matrix of binomials \(\binom ek\) modulo \(3\). But the full limit also needs the even internal blocks, and the gap pattern has no formula yet.</p>
+<p><strong>Remaining gap.</strong> A formula for the exponent sets of the full balanced limit, internal and mixed, for every \((M,L)\), and its residue balance. The conjecture itself is still tested only at six labels.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-generic-balanced-six-label-limit (construction and certificate); conj:cube-balanced-simultaneous-limit-normality; lem:cube-moving-point-limit-criterion.</p>
+<p><strong>Verification gate.</strong> A refutation by exact finite-field saturation with the six-label limit reproduced as control. No reviewer, since no proof is claimed. Fixed slopes in \(\mathbb F_{3^5}\) may be special, and a special slope could only add couplings.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261004-zk">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 29.98 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 35.95 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">23.19 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">42.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.07 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
