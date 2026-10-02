@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-basis-factorization">tie basis factorization entry</a> writes the tie window's staircase matrix as \(U=BC_5\) (lem:cube-tie-basis-factorization). A special value needs a root of \(\det C_5\) and two more conditions, one per product row. At \(m=2,3,4\) each of the two fails on its own at every root (conj:cube-tie-single-block-exclusion).</p>
-<p>Next: at \(m\le4\) the staircase degenerates exactly at the roots of the shifted pure determinants \(H^{(d+j)}\), \(j=1,\ldots,4\). Decide the window there. At such a root \(c_0\), replace \(q(d+j)\) by a pure-kernel vector adapted to the singular block on the columns \(d+j,\ldots,d+j+3m-1\), and redo the basis factorization. Then test whether the window's rank at these \(c_0\) follows from an explicit formula valid for every \(m\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-staircase-rank-bound">tie staircase rank bound entry</a> proves \(\operatorname{rank}W\ge3m+\operatorname{rank}U\) at every \(c\) (lem:cube-tie-staircase-rank-bound). The Forney bound for every \(m\) thus follows from \(\operatorname{rank}U(c)=3\) off \(\{0,1\}\), and so from either half of conj:cube-tie-single-block-exclusion, with no exceptional set. No minor of \(U\) has a closed form (check:cube-tie-staircase-minors).</p>
+<p>Next: a route review is due. Weigh a uniform coprimality argument for \(D=\det C_5\) and \(A_2\) against the cone's gap (1) types, which have had no cycle since 7 October. For the coprimality, test whether \(D\) and \(A_2\) separate at \(c\to0\) or \(c\to\infty\) by their leading exponents, or whether a specialization such as \(c=-1\) or \(c\) a root of unity gives a parity argument.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -61754,6 +61754,73 @@ A_2=\nu_2e_2(d+1)-\nu_3e_2(d),\qquad A_3=\nu_4e_3(d+1)-\nu_5e_3(d).
 <tr><td>Computation design and coding</td><td class="elapsed">5 min 17.54 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.39 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">12.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-staircase-rank-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-propagation-review:3" data-claims="lem:cube-tie-staircase-rank-bound check:cube-tie-staircase-minors">
+<h3>8 October 2026 — Correction: the staircase degeneracy is harmless. The tie window's rank is at least 3m + rank U at every c ∉ {0,1}, so conj:cube-tie-single-block-exclusion implies the Forney bound without exceptions</h3>
+<p class="entry-meta">Working proof of an unconditional rank bound; it corrects the restriction in the tie basis factorization entry. No minor of U has a closed form at m = 2, 3, 4. Gap (3), confluent tie window. Tie staircase rank bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-basis-factorization">tie basis factorization entry</a> found that the staircase vectors degenerate at the roots of the shifted pure determinants. It concluded that the window needs a separate argument there. Is that so?</p>
+<p><strong>General statement.</strong> lem:cube-tie-staircase-rank-bound. Let \(m\ge1\), \(d=\binom m2\) and \(c_0\notin\{0,1\}\), and let \(U(c_0)=\bigl((Q_{c_0}e_a)(d+s)\bigr)_{a\le3,\ s\le4}\) be as in lem:cube-tie-basis-factorization. Then</p>
+\[
+\operatorname{rank}W(c_0)\ \ge\ 3m+\operatorname{rank}U(c_0),
+\]
+<p>where \(W\) is the confluent tie window. No independence or nonvanishing of the staircase vectors is assumed. In particular, if \(\operatorname{rank}U(c_0)=3\) then the window has full rank \(3m+3\) at \(c_0\).</p>
+<p><strong>Proof.</strong> Let \(P\) be the \(3m\) pure rows and \(E\) the three extra rows, as maps on the column space \(\mathbb C^{3m+5}\). Then</p>
+\[
+\operatorname{rank}\begin{pmatrix}P\\E\end{pmatrix}=\operatorname{rank}P+\operatorname{rank}\bigl(E|_{\ker P}\bigr).
+\]
+<p>Indeed, the kernel of the stacked map is \(\ker P\cap\ker E\), whose dimension is \(\dim\ker P-\operatorname{rank}(E|_{\ker P})\). Here \(\operatorname{rank}P=3m\) by thm:cube-tie-pure-wide-normality.</p>
+<p>Each vector \(q(d+s,c_0)\), placed on the columns \(d+s,\ldots,d+s+3m\), lies in \(\ker P\). This is the pointwise annihilation of both pure spans by \(Q_{c_0}\) (lem:cube-tie-holonomic-staircase (4), with the normalization of lem:cube-tie-propagation-candidates). It holds whether or not the vector is zero or dependent on the others.</p>
+<p>The values of \(E\) on these five vectors are the columns of \(U(c_0)\). So \(\operatorname{rank}(E|_{\ker P})\ge\operatorname{rank}U(c_0)\). \(\square\)</p>
+<p><strong>Correction.</strong> This removes the restriction in the tie basis factorization entry and in the implication stated with conj:cube-tie-single-block-exclusion. The data there show that at every root of \(D=\det C_5\), \(C_5\) has corank one and \(A_2\ne0\). By lem:cube-tie-basis-factorization, \(\operatorname{rank}U=3\) there. Off the roots of \(D\), \(\operatorname{rank}U=3\) because \(C_5\) is invertible and \(B\) has rank \(3\).</p>
+<p>So at \(m=2,3,4\) the window has full rank at every \(c\notin\{0,1\}\), including the roots of the shifted pure determinants. That entry wrongly left those roots to a separate argument. The window there was already covered by the record's exact gcds for \(m\le6\); what is new is that the holonomic route covers them too.</p>
+<p>For every \(m\), either half of conj:cube-tie-single-block-exclusion implies the Forney bound, with no exceptional set. Only the "if" direction of the basis factorization is needed, and it needs no staircase hypothesis.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_two_conditions.gp, extended this cycle (research/results/bmd-20261008-t/two-conditions.txt), exact over \(\mathbb Q(c)\).</p>
+<ul>
+<li>At \(m=2,3,4\), the gcd of the ten \(3\times3\) minors of \(U\) has no root off \(\{0,1\}\). This confirms the corollary directly.</li>
+<li>No single minor has a closed form \(\kappa\,c^a(c-1)^b\). Their essential degrees are \(10\)–\(14\), \(27\)–\(31\) and \(52\)–\(56\).</li>
+<li>The minor on columns \(s=0,2,4\) is irreducible, of degree \(13\), \(30\), \(55\).</li>
+<li>The consecutive minors, the Casoratians \(\det(u_a(d+s+i))_{i\le2}\), contain two factors of degree \(m(m-1)\), at \(s=0,1,2\). At \(s=0\) one further factor has degree \(m(2m-1)\): \(6\), \(15\), \(28\). At \(m=2\) the remaining factor has degree \(8\) at \(s=1\) and \(10\) at \(s=2\). All factors are simple.</li>
+</ul>
+<p>So at \(m=2,3,4\) no single minor, Casoratian or not, has a product formula. This suggests that a coprimality argument is needed, as in the single-block conjecture.</p>
+<p><strong>What this means.</strong> The holonomic route now reduces the Forney bound, for every \(m\) and with no exceptional set, to one algebraic statement about explicit polynomials in \(c\): \(\operatorname{rank}U(c)=3\) off \(\{0,1\}\). By the basis factorization this follows from either half of conj:cube-tie-single-block-exclusion. The polynomials come only from the operator \(Q\) and three hypergeometric-type recurrences, with no Taylor-coefficient windows.</p>
+<p><strong>Lead follow-up.</strong> This continues lead 3 of the tie propagation review: the corank-one excess conditions now decide the window at every candidate, at \(m\le4\). <strong>Follow-up.</strong> Continuing: a uniform coprimality argument for \(D\) and \(A_2\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-single-block-exclusion, or \(\operatorname{rank}U=3\), for \(m\ge5\); the Forney bound itself for \(m\ge7\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the cone's gaps (1) and (2).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-basis-factorization; lem:cube-tie-propagation-candidates (normalization of \(q\)); lem:cube-tie-holonomic-staircase (4); thm:cube-tie-pure-wide-normality.</p>
+<p><strong>Verification gate.</strong> One fresh medium reviewer passed the entry with minor corrections, all applied. It checked:</p>
+<ul>
+<li>the rank formula and its use;</li>
+<li>the membership of the padded vectors in the pure kernel at every \(c_0\notin\{0,1\}\), including zero vectors and common factors in \(k\);</li>
+<li>the column count;</li>
+<li>the logic of the Correction;</li>
+<li>every Test number against the output.</li>
+</ul>
+<p>The corrections:</p>
+<ul>
+<li>the range \(c\notin\{0,1\}\) in the title;</li>
+<li>"apparent" dropped for the Casoratian factors;</li>
+<li>the conclusion about product formulas limited to \(m\le4\);</li>
+<li>a separated status line;</li>
+<li>\(m\le4\) in the lead follow-up.</li>
+</ul>
+<p>Status: working proof (the lemma, and the implication from either half of the conjecture to the Forney bound for every \(m\)); finite check (full rank at the roots of the shifted pure determinants at \(m=2,3,4\), and the minor structure).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 24.97 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 48.71 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.47 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">17.64 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

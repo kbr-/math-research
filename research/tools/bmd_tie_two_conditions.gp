@@ -46,6 +46,12 @@ foreach([2, 3, 4], m,
   for (j = 0, 6, my(v = st(subst(Sf, 'k, d + j))); for (t = 1, #F[, 1], if (poldegree(gcd(F[t, 1], v), 'c) > 0, listput(sh, [t, j]))));
   St = matrix(3 * m + 5, 5, i, j, my(r = i - j); if (r >= 0 && r <= n, subst(q[r + 1], 'k, d + j - 1), 0));
   forsubset([3 * m + 5, 5], R, Gs = gcd(Gs, matdet(vecextract(St, Vec(R), ".."))); if (Gs != 0 && poldegree(st(gcd(D, Gs)), 'c) == 0, break));
+  \\ (cycle bmd-20261008-t) gcd of the 3 x 3 minors of U = B C_5 itself, off c(c-1)
+  my(Bm = matrix(3, 5), U, Gu = 0); Bm[1, 1] = (-1)^d * (d + 1) * (d + 2) / 2; Bm[2, 2] = e2[1]; Bm[2, 3] = e2[2]; Bm[3, 4] = e3[1]; Bm[3, 5] = e3[2];
+  U = Bm * C; forsubset([5, 3], R, Gu = gcd(Gu, numerator(matdet(vecextract(U, "..", Vec(R))))));
+  emit(Str("m = ", m, ": gcd of the 3 x 3 minors of U, off c(c-1), has degree ", poldegree(st(Gu), 'c)));
+  my(L = List()); forsubset([5, 3], R, my(f = st(numerator(matdet(vecextract(U, "..", Vec(R)))))); listput(L, [Vec(R) - [1, 1, 1], poldegree(f, 'c), if (f == 0, "zero", apply(g -> poldegree(g, 'c), factor(f)[, 1]~))]));
+  emit(Str("m = ", m, ": minors [columns s, essential degree, factor degrees]: ", Vec(L)));
   emit(Str("m = ", m, ": factors of D sharing a root with S(d+j, c) (factor index, j): ", Vec(sh),
     "; degree of gcd(D, staircase minors) off c(c-1): ", poldegree(st(gcd(D, Gs)), 'c)));
   emit(Str("m = ", m, ": det C_5 off c(c-1) has degree ", poldegree(D, 'c), ", factor degrees ", vector(#F[, 1], t, [poldegree(F[t, 1], 'c), F[t, 2]]),
