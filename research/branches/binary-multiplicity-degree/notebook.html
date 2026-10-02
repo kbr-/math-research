@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-first-order-penalty">first-order penalty</a>; eight open items). Window domination is proved for every term of order \(t\le1\); the near-window terms start at \(t=2\).</p>
-<p>Next: the second-order coefficient. Expand \(u^{B+2}\) with the Möbius derivation \(\partial_2=\sum y_s^2\partial_{y_s}\) and the integration corrections, and test whether it loses at most one Hankel level. Then find the dominator of the refuted-threshold term (\(p=2\), \(\delta_N=1\), \(t=2\)) among \(\Lambda_2\)'s higher terms.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-half-speed-penalty">half-speed penalty</a>; eight open items). Window domination holds for \(t\le1\). The penalty appears to fall at half the window speed (conjecture), and windows do not minimize it order by order.</p>
+<p>Next: prove the case \(t&lt;p\) of the half-speed conjecture for every \(p\), the full penalty before order \(p\), by expanding the kernel columns with the kernel-column expansion and bounding the mixed-operator determinants. Then seek the per-tree link between window and non-window losses that domination needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -66451,6 +66451,82 @@ every term with \(g(k-1)&lt;g(k)\) could have refuted the statement, and \(p=1\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 41.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6 min 2.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-half-speed-penalty" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-kernel-column-expansion conj:cube-half-speed-hankel-penalty ex:cube-window-order-minimality-fails">
+<h3>9 October 2026 — Kernel columns expand into remainder values times powers of the root; the Hankel penalty appears to fall at half the window speed, and windows do not minimize the penalty order by order</h3>
+<p class="entry-meta">Working proof of an exact kernel-column expansion; conjectured half-speed penalty, with no violations on six trees at M = 4, t ≤ 6; two candidates refuted (one-level loss, window order-minimality). Half-speed penalty cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4: conj:cube-window-domination, open from order \(t=2\) by cor:cube-first-order-window-domination. Which Hankel level does a term of order \(t\) actually lose, and do the windows' own terms of the same order dominate?</p>
+<p><strong>General statement.</strong> lem:cube-kernel-column-expansion. Let \(T_1f=\sum_if_i\frac{c_{i+1}}{c_i}z^{i+1}\), with \(c_i=\binom{-3/2}i\), and let \(I\) be integration from \(0\). For \(m\ge1\) put
+\[ \alpha_{m,l}=\frac{\prod_{s=1}^m(s-l+\frac12)}{\prod_{s\ne l}(s-l)}\qquad(1\le l\le m). \]
+Then, for every polynomial \(F\),
+\[ T_1^mF=(-1)^m\Bigl[z^mF+\sum_{l=1}^m\alpha_{m,l}\,z^{m-l}\,I(z^{l-1}F)\Bigr]. \]
+Consequently, if \(P=\prod(z-y_s)\) and \(h[w]=I(Pw)\), then at every root \(y\) of \(P\) the kernel column of lem:cube-cross-hypergeometric-alternant is
+\[ G_j(u,y)=\sum_{m\ge1}u^mc_m(T_1^mPv_j)(y)=\sum_{m\ge1}\sum_{l=1}^m(-1)^mc_m\alpha_{m,l}\,u^m\,y^{m-l}\,h[z^{l-1}v_j](y). \]
+Every kernel column is thus a combination of powers \(y^a\) times values of remainder-type polynomials \(h[w]\), whose derivative \(Pw\) vanishes at every root. The \(u\)-order of the term \((a,l)\) is \(a+l\).</p>
+<p><strong>Proof.</strong> \(T_1^mz^i=\frac{c_{i+m}}{c_i}z^{i+m}\) and \(\frac{c_{i+m}}{c_i}=(-1)^m\prod_{s=1}^m\frac{i+s+1/2}{i+s}\). This is a rational function of \(i\) of degree \(0\), with simple poles at \(i=-1,\ldots,-m\). Its partial fractions are \((-1)^m\bigl[1+\sum_l\alpha_{m,l}/(i+l)\bigr]\), with \(\alpha_{m,l}\) the residue at \(i=-l\). Finally \(z^{i+m}/(i+l)=z^{m-l}I(z^{i+l-1})\), which is defined since \(i+l\ge1\). At a root, \(z^mPv_j\) vanishes. \(\square\) The partial fractions were checked in PARI/GP for \(m\le5\), together with the ratio identity for \(i\le6\): \(\alpha_{1,1}=\frac12\), \(\alpha_{2,\cdot}=(\frac34,\frac14)\), \(\alpha_{3,\cdot}=(\frac{15}{16},\frac38,\frac3{16})\). All \(\alpha_{m,l}\) are positive: numerator and denominator have \(l-1\) negative factors each.</p>
+<p><strong>Second statement.</strong> conj:cube-half-speed-hankel-penalty. In the setting of thm:cube-graded-hankel-penalty, for every cross coordinate with \(1\le p\le M-1\) and every \(t\ge0\),
+\[ \operatorname{val}[u^{B+t}]P_\Lambda\ \ge\ 2\operatorname{val}\mathrm{Vand}+g\bigl(\max(k-d_p(t),0)\bigr),\qquad d_p(t)=\max\{d\ge0:\ dp+\tbinom d2\le t\}. \]
+The graded theorem has \(t\) in place of \(d_p(t)\). For \(t&lt;p\) the conjecture gives the full penalty \(g(k)\); at \(t=1\) this is thm:cube-first-order-hankel-penalty for \(p\ge2\).</p>
+<p>Mechanism (heuristic, not a proof). Expand \(D(u)\) multilinearly: the negative block by exponent sets \(E\), and each kernel column by the lemma into terms \(y^{a_j}h[z^{l_j-1}v_j]\). A determinant \(\det[y^E\,|\,h_j]\) whose rows \([0,M-1]\setminus E\) include row \(0\) loses at most one level (thm:cube-graded-hankel-penalty, step (4)); the loss occurs only through row \(0\). By integration by parts, \(y^ah[w]\) is a combination of \(I^{b+1}(Pz^{a-b}w)\), \(b\le a\), each free in its rows \(0,\ldots,b\).</p>
+<p>Count a lost level for each column matched to an exposed row \(r\le b_j\), with distinct rows. With \(E=\{0,\ldots,p-1\}\) the exposed rows start at \(p\), so \(d\) losses need \(b\)-values at least \(p,p+1,\ldots,p+d-1\). That costs at least \(dp+\binom d2\). Moving \(E\) off low rows plausibly costs the same; this is not checked. The neck divided-difference bound lem:cube-neck-divided-difference-bound is a bound of the same kind, a minimum over injective assignments of columns to slots.</p>
+<p><strong>Evidence.</strong> research/tools/bmd_one_level_penalty.gp and bmd_window_order_minimality.gp (research/results/bmd-20261009-h/) compute every coordinate in \([-4,8]\) with \(1\le p\le3\) at \(M=4\), for \(t\le6\). They use six trees and the prime \(q=1000003\), at which the expansion's denominators are units.</p>
+<ul>
+<li>The conjecture has no violations: \(0\) in all \(6\times3\times7\) classes \((p,t)\).</li>
+<li>It is attained at the first permitted loss of every level that the trees separate, except one. For \(p=1\) the first level is lost at \(t=1\) (by \(N\ne\{1\}\)), and the second at \(t=3\) above two separated cherries (penalty \(0&lt;g(2)=2\)). For \(p=2\) the first level is lost at \(t=2\) (the refuted-threshold term). For \(p=3\) the first level is lost at \(t=3\) above the caterpillar. The exception is the second level for \(p=2\): it is lost at \(t=6\) above the caterpillar, against a permitted \(t\ge5\).</li>
+<li>The predictions are not vacuous: \(d_p(t)\) is below \(t\) at \(17\) of the \(21\) pairs \((p,t)\) with \(p\le3\), \(t\le6\).</li>
+</ul>
+<p>Refuted on the way. The candidate "a term never loses more than one level", suggested by trace identities for single operators, fails. Above nested cherries, \(\Lambda=\{-4,0,\ldots,6\}\) (\(p=1\)) has penalty \(0&lt;g(2)=2\) at \(t=4\). Two-level losses occur for \(p=1\) on three trees, from \(t=3\) above separated cherries and from \(t=4\) above nested cherries and the caterpillar. For \(p=2\) they occur at \(t=6\) above the caterpillar (one-level-penalty.txt).</p>
+<p><strong>Third statement.</strong> ex:cube-window-order-minimality-fails. The window \(\Lambda_p\) does not have the least penalty among the coordinates with the same \(p\) at each relative order \(t\). So "dominate each term by the window's term of the same order" fails as a proof route. Violations occur on five of the six trees (window-order-minimality.txt). Examples:
+above nested cherries, \(p=1\), \(t=1\): \(108\) coordinates have penalty below the window's \(10\), least \(2\);
+above the caterpillar cluster, \(p=3\), \(t=3\): \(\Lambda=\{-4,-3,-2,0,\ldots,4\}\) has penalty \(0\) against the window's \(2\).
+In the record's domination test such terms are dominated by other window terms. The windows' own losses often follow the full window gap, losing level \(d\) at \(t=d(2p+d-1)=B_{p+d}-B_p\). Examples:
+\(p=1\) loses its first level at \(t=2\) and its second at \(t=6\) above nested cherries and the caterpillar;
+\(p=2\) loses its first level at \(t=4\) and \(p=3\) at \(t=6\) above the caterpillar.
+Exceptions:</p>
+<ul>
+<li>\(\Lambda_2\) loses its first level at \(t=2\), at half speed, above two separated cherries and above the cherry over a deep cherry. Above separated cherries this term dominates the refuted-threshold term.</li>
+<li>Above separated cherries \(\Lambda_1\) loses its second level at \(t=4\), between half speed and the full gap.</li>
+<li>Above the tie over a cherry \(\Lambda_1\) never loses a level for \(t\le6\). Above the cherry over a deep cherry it reaches penalty \(4\), strictly between \(g(2)=2\) and \(g(3)=6\).</li>
+</ul>
+<p><strong>What this means.</strong> The lower bounds now have a precise conjectural form, and it is twice as fast as the window gap. Domination here means componentwise \(\le\) in \((X,E,v)\). Say a term has lost \(d\) levels when its penalty is below \(g(k-d+1)\). A single window leading term dominates it only if it comes from \(\Lambda_j\) with \(j\ge p+d\), which needs \(E\ge B_{p+d}\), that is \(\delta_N+t\ge d(2p+d-1)\).</p>
+<p>Conditionally on convexity of \(g\) (an open input of thm:cube-graded-hankel-penalty), convex combinations of window leading points do not help much. Such a combination with value below \(g(k-d+1)\) has mean index \(\bar j&gt;p+d-1\), by Jensen and monotonicity of \(g\). By convexity of \(B_j\) its \(E\)-coordinate is then above \(B_{p+d-1}\).</p>
+<p>So terms that lose levels at half speed, with small \(\delta_N\), must be dominated by window higher terms that lose levels at half speed too. In the data this happens on the tree where it is needed (separated cherries). Domination therefore needs a statement that ties non-window losses to window losses on the same tree, not two separate bounds. The record's domination test, with all window terms to \(u^{20}\) on five trees, found no undominated term (window-domination.txt), so conj:cube-window-domination stands.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Proof of conj:cube-half-speed-hankel-penalty: the multilinear expansion mixes different operators across columns, so the single-operator trace identities do not close it.</li>
+<li>A link between non-window and window losses on each tree, for conj:cube-window-domination at \(t\ge2\).</li>
+<li>Adjacency, \(p=0\), non-cancellation, and the other core items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-first-order-hankel-penalty and thm:cube-graded-hankel-penalty (step (4));</li>
+<li>lem:cube-cross-hypergeometric-alternant;</li>
+<li>window-domination.txt and penalty-levels.txt;</li>
+<li>lem:cube-neck-divided-difference-bound (statement only).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the lemma (partial fractions, \(\alpha_{m,l}\), positivity, the column identification), every quoted number and example against both output files, the bound column of the script, the consistency of the conjecture with the first-order theorem, and the domination argument. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>\(g(\max(\cdot,0))\) in the conjecture;</li>
+<li>the attainment claim corrected (second level for \(p=2\)) and \(p=3\) added;</li>
+<li>the window-loss description corrected, with all exceptions listed;</li>
+<li>the convex-combination argument restated with lost levels defined by \(g(k-d+1)\), its conclusion weakened, and made conditional on convexity of \(g\);</li>
+<li>the heuristic softened in two places;</li>
+<li>which conjecture stands, and the \(108\) count, stated precisely.</li>
+</ul>
+<p>Status: working proof (expansion lemma); conjecture (half-speed penalty) with finite evidence; refutation (window order-minimality).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-h">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 20.54 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9 min 49.84 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.79 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 37.77 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
