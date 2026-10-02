@@ -47,15 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the confluent tie window. The <a href="#entry-2026-10-07-cube-tie-contiguity">tie contiguity entry</a> rules out bounded contiguous relations among the minors \(N_{m,K}\) at \(m\le5\). The window has no proof mechanism.</p>
-<p>Next: develop the never-run Outside lead of the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>, multiple orthogonal polynomials with Rodrigues formulas (Jacobi–Piñeiro, Aptekarev, Van Assche). The steps:</p>
-<ol>
-<li>Write the window's two single-series families, after the \(d\)-th derivative that removes the polynomial part, as moment functionals of two weights.</li>
-<li>Find their type II multiple orthogonal polynomials by a Rodrigues formula.</li>
-<li>Express the annihilators of the pure block explicitly, and with them the \(3\times5\) Schur complement.</li>
-<li>Test the formula against the exact \(N_{m,K}\) at \(m\le3\).</li>
-</ol>
-<p>If the transform to moments fails, record why and move to the confluent cherry proof.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-window-moments">tie window moments entry</a> develops the Rodrigues lead. It gives an exact multiple-orthogonality form of the confluent tie window's pure block, with real singular parameters only in \((0,1)\) at \(m\le5\). There is no closed form.</p>
+<p>Next: the confluent cherry proof, the item with a working mechanism. Prove conj:cube-confluent-cherry-expansion for caterpillars. Identify the \(2^{M-1}3^k\) minimal triples \((N_1,N_2,N_3)\) of the reduced expansion and show their sum factorizes, as the \(2^k\) choices did for the cherry. Then prove the three-set top-mass bound and the non-window bound by rank normalization.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57660,6 +57653,69 @@ with \(\kappa_{m,K}\ne0\), \(N_{m,K}\) irreducible over \(\mathbb Q\), \(N_{m,K}
 <tr><td>Computation design and coding</td><td class="elapsed">33.86 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.97 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-window-moments" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-collision-points-review:2" data-claims="lem:cube-tie-window-moments conj:cube-tie-pure-real-zeros">
+<h3>7 October 2026 — The confluent tie's pure block is a multiple-orthogonality problem on [0,1] and [0,c]; its real singular parameters at m ≤ 5 lie in (0,1), where the intervals are nested</h3>
+<p class="entry-meta">Working proof of the moment form; the real zeros of H_m lie only in (0,1) at m ≤ 5 (conjecture). Develops the Rodrigues lead, which does not give a closed form. Gap (3), confluent tie window. Tie moments cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the confluent tie window. The never-run lead "multiple orthogonal polynomials by Rodrigues formulas" of the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a> is developed here, as the <a href="#entry-2026-10-07-cube-tie-contiguity">tie contiguity entry</a> required. Can the window's single-series rows be written as moments of weights, so that their annihilators are multiple orthogonal polynomials with explicit formulas?</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-moments. Let \(a,b\) be complex, \(p,q\ge1\), \(d\ge0\). Put
+\[\ell_a(s^n)=\frac{(a)_n}{n!}\quad(n\ge0),\qquad\ell_a(s^n)=0\quad(n&lt;0),\]
+A vector \(x\) on the columns \(d,\ldots,d+p+q-1\) annihilates the rows \(T^i(1+T)^{-a}\) (\(i&lt;p\)) and \(T^n(1+cT)^{-b}\) (\(n&lt;q\)) iff \(Y(s)=\sum_kx_k(-1)^ks^{k-d}\) satisfies
+\[\ell_a\bigl(s^{d-i}Y(s)\bigr)=0\ (i&lt;p),\qquad\ell^c_b\bigl(s^{d-n}Y(s)\bigr)=0\ (n&lt;q),\]
+where \(\ell^c_b\) has the moments \(\ell^c_b(s^j)=c^j(b)_j/j!\) (and \(0\) for \(j&lt;0\)). For \(0&lt;a,b&lt;1\) and \(c&gt;0\), the nonnegative moments are integrals against \(w_a=s^{a-1}(1-s)^{-a}/(\Gamma(a)\Gamma(1-a))\) on \([0,1]\), and against \(w_b=t^{b-1}(c-t)^{-b}/(\Gamma(b)\Gamma(1-b))\) on \([0,c]\), the latter after \(t=cs\). So the square block is nonsingular iff the type II multiple orthogonal polynomial of index \((p,q)\) for the weights \(s^{d-p+1}w_a\) and \(s^{d-q+1}w_b\) has full degree \(p+q\). These weights share the endpoint \(0\). When \(d&lt;\max(p,q)-1\) (for the tie, \(m\le4\)), the negative moments are the continued values \(0\), not convergent integrals. For other \(a,b\) the identity holds with the moment functionals, by analytic continuation. The hypothesis \(a,b\notin\mathbb Z\) is needed only for the normalization of the integral form. For the confluent tie, \(a=5/2\), \(b=3/2\), \(p=2m\), \(q=m\), \(d=\binom m2\).</p>
+<p><strong>Proof.</strong> \([T^k]\,T^i(1+T)^{-a}=\binom{-a}{k-i}=(-1)^{k-i}(a)_{k-i}/(k-i)!\), which is \(0\) for \(k&lt;i\). So \(\sum_kx_k[T^k]T^i(1+T)^{-a}=(-1)^i\sum_kx_k(-1)^k\ell_a(s^{k-i})\). With \(x_k(-1)^k\) the coefficients of \(s^{k-d}Y\), this is \((-1)^i\ell_a(s^{d-i}Y)\). The second family is the same computation with \([T^k]T^n(1+cT)^{-b}=(-c)^{k-n}(b)_{k-n}/(k-n)!\). It gives \((-1)^n\sum_kx_k(-1)^kc^{k-n}(b)_{k-n}/(k-n)!\), the functional with moments \(c^j(b)_j/j!\) applied to \(s^{d-n}Y(s)\). The Beta integral \(B(a+j,1-a)=\Gamma(a+j)\Gamma(1-a)/\Gamma(j+1)\) gives the integral form for \(0&lt;a&lt;1\). The substitution \(t=cs\) moves the second weight to \([0,c]\). \(\square\)</p>
+<p><strong>Where the lead stops.</strong> For the confluent tie the weights are \(s^{d-i}\) against \(s^{a-1}(1-s)^{-a}\) on \([0,1]\), and \(s^{d-n}\) against \(s^{b-1}(1-s)^{-b}\) rescaled to \([0,c]\). Two features block the classical tools.</p>
+<ul>
+<li>The exponent at \(1\) is \(-a=-5/2\). The weight is not integrable there, and the functional is a finite part. So positivity arguments, which give perfectness of Angelesco systems, do not apply directly.</li>
+<li>The effective exponents at the common endpoint \(0\) differ. After absorbing \(s^{d}\), the two families see \(s^{d+a-1-i}\) and \(s^{d+b-1-n}\), with index ranges \(i&lt;2m\) and \(n&lt;m\). The Rodrigues formulas for Jacobi–Angelesco polynomials (Kaliaguine) use a common exponent at the shared endpoint and diagonal indices. The two weights are also different functions, not one Jacobi weight restricted to two intervals. The known Rodrigues formulas (Kaliaguine; Van Assche–Coussement) do not cover this case, and we found none for index \((2m,m)\).</li>
+</ul>
+<p>So the lead yields an exact reformulation, but no closed form for the annihilators or the Schur complement.</p>
+<p><strong>Conjecture and test.</strong> conj:cube-tie-pure-real-zeros. For every \(m\ge2\), every real zero of \(H_m\) lies in \((0,1)\). That is the range where the intervals are nested, \([0,c]\subset[0,1]\). The pure block is nonsingular for real \(c&lt;0\), the Angelesco configuration of opposite intervals, and for \(c&gt;1\). research/tools/bmd_tie_moment_test.gp (research/results/bmd-20261007-ze/tie-moment-test.txt) checks two things.</p>
+<ul>
+<li>The pure block equals the signed Pochhammer matrix entrywise (the coefficient identity) for \(m\le4\).</li>
+<li>Sturm counts of the real roots of \(H_m\) in \((-\infty,0)\), \((0,1)\), \((1,\infty)\), within a Cauchy root bound, are \((0,0,0)\), \((0,2,0)\), \((0,0,0)\), \((0,4,0)\) for \(m=2,3,4,5\).</li>
+</ul>
+<p>So no negative or large real \(c\) makes the pure block singular at these sizes. That is consistent with Angelesco perfectness surviving the analytic continuation for \(c&lt;0\). Perfectness is a theorem only for \(0&lt;a,b&lt;1\), \(c&lt;0\) and \(d\ge\max(p,q)-1\), where the shifted weights have constant sign. At \(a=5/2\) it is a hypothesis. A first run had a syntax error, and a second gave a wrong count from an infinite interval; both are kept in the session archive.</p>
+<p><strong>What this means for the window.</strong> The full window is overdetermined, and part C of the confluent route review found it has full rank at the zeros of \(H_m\). With the conjecture, the remaining difficulty sits in \(c\in(0,1)\) and at complex \(c\). If the Angelesco perfectness could be proved by continuation in \(a\) and \(b\) for \(c&lt;0\), it would make the pure block nonsingular there. Full rank of the window for real \(c&lt;0\) would then reduce to the \(3\times5\) Schur complement, since the pure block covers only the first \(3m\) of the \(3m+5\) window columns.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the collision points review: moment form proved; Rodrigues closed form blocked by unequal endpoint exponents and a non-integrable weight. It stays open toward an analytic-continuation proof of Angelesco perfectness for \(c&lt;0\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-window-full-rank, now with a moment form of its pure block;</li>
+<li>the confluent cherry proof;</li>
+<li>the other types of the special cancellations and of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-confluent-tie-reduction (rows); conj:cube-confluent-tie-schur-minors; the collision points review (lead 2).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the binomial identity, the signs and the powers of \(c\);</li>
+<li>the Beta integral and the substitution;</li>
+<li>the reported root counts.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the integral form holds only for the nonnegative moments, so the weights are shifted, and the negative moments are continued values;</li>
+<li>the normalization of the second weight;</li>
+<li>an unused hypothesis removed;</li>
+<li>the Rodrigues remark stated as an obstruction, not an impossibility;</li>
+<li>the entrywise nature of the matrix check;</li>
+<li>the scope of Angelesco perfectness;</li>
+<li>the reduction to the Schur complement in place of an overclaimed full rank.</li>
+</ul>
+<p>Status: working proof (moment form); conjecture (real zeros).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-ze">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 22.36 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 22.65 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">43.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 16.04 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
