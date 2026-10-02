@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (B) (<a href="#entry-2026-10-09-cube-switch-to-base-review">switch review</a>). By the goal-level decision, statement 3's work moves from (K) items 3–4 to (B). (B) needs, per \(N\), only one configuration attaining the count \(T(b)\) at which the base \(V^{(b)}\) has every finite non-branch weight at most two.</p>
-<p>Next: rewrite \(V^{(b)}\) on the double cover as a space of polynomials, and identify \(T(b)\) and the weights with a Schubert problem for the Wronski map. Then test, at the recorded sizes, whether real configurations attaining \(T(b)\) have all weights at most two, as Mukhin–Tarasov–Varchenko transversality suggests.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (B) (<a href="#entry-2026-10-09-cube-base-restart">base restart</a>). Chain coprimality can fail only at multiple roots of consecutive chain Wronskians, by the weight-step lemma. The transversality lead fails in its whole-space form, because the base mixes monodromy characters.</p>
+<p>Next: the per-character form of the transversality lead. Split \(V^{(b)}\) by monodromy character at the doubles, pull each piece back to a cover on which it is polynomial, and test whether the pieces' Wronskians are real-rooted at real configurations attaining \(T(b)\), at the recorded sizes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -67256,6 +67256,58 @@ The true valuation of a series is at least its minimum term, and for \(\Lambda_q
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17.61 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">40.93 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-base-restart" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-wronskian-weight-step">
+<h3>9 October 2026 — Restarting (B): consecutive chain Wronskians can share a root only where one of them is multiple, so chain coprimality is weaker than squarefreeness; the transversality lead fails in its whole-space form</h3>
+<p class="entry-meta">Working proof of an elementary weight-step lemma localizing chain-coprimality failures at multiple roots; the whole-space form of the transversality lead fails on mixed monodromy characters. Base restart cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (B), after the <a href="#entry-2026-10-09-cube-switch-to-base-review">switch review</a>. (B) needs one configuration per \(N\), attaining \(T(b)\), at which the base \(V^{(b)}\) has every finite non-branch weight at most two (cor:cube-collision-half-reduction). Two mechanisms are on the table:
+real Schubert transversality, from the switch review;
+chain coprimality, conj:cube-far-chain-coprime, which by lem:cube-far-chain-reduction gives (B) at the middle steps \(l\ge2\), with the independence hypothesis.
+What do they give?</p>
+<p><strong>General statement.</strong> lem:cube-wronskian-weight-step. In characteristic zero, let \(S\) be a space of functions of dimension \(D\), analytic near \(r\), and let \(f\) be analytic near \(r\) with \(f\notin S\). If \(\operatorname{Wr}(S)\) has a simple zero at \(r\), then \(\operatorname{Wr}(S\oplus f)\) either does not vanish at \(r\) or vanishes there to order at least \(2\).</p>
+<p><strong>Proof.</strong> In characteristic zero, the order of \(\operatorname{Wr}\) at \(r\) is the weight \(\sum_i(o_i-(i-1))\) of the vanishing orders \(o_1&lt;\cdots\) of a basis adapted to \(r\). A simple zero means the orders of \(S\) are \(\{0,\ldots,D-2,D\}\). Reduce \(f\) modulo \(S\). Since \(f\notin S\), this ends at a nonzero element whose order \(o\) lies outside that set.
+If \(o=D-1\), the orders of \(S\oplus f\) are \(\{0,\ldots,D\}\), weight \(0\).
+Otherwise \(o\ge D+1\), and the weight is \(1+(o-D)\ge2\). \(\square\)</p>
+<p>Consequence for the chain. In the far chain review's notation, \(S_m\) has \(A\)-block exponents \(-(m+2),\ldots,-3\), and \(T_{m+1}\) is the Wronskian of \(\langle S_m,x^{-(m+3)}\rangle\), up to factors that are units off \(\{0,-1\}\). Every function involved is analytic off \(\{0,-1\}\), on any branch, and \(x^{-(m+3)}\notin S_m\). So a common root \(r\notin\{0,-1\}\) of \(T_m\) and \(T_{m+1}\) is a multiple root of one of them. Hence squarefree \(T_{m-1},T_m,T_{m+1}\) imply chain coprimality at \(T_m\): coprimality is weaker than squarefreeness.</p>
+<p>The lemma is silent at a root of \(T_m\) of multiplicity at least two. A triple root of \(W_k=T_{R_l}\) is such a root, and it is exactly what (B) must exclude. So the chain route is not circular. The lemma locates where coprimality can fail: only at multiple roots of the chain. A proof of coprimality must therefore control what happens to a multiple root of \(T_m\) when one function is added to or removed from the space.</p>
+<p><strong>The transversality lead.</strong> By lem:cube-hierarchical-limit, with \(\phi=(1+aT)^{-3/2}\), the rows of \(V^{(a)}\) include \(\phi_D^2\), \(\phi_D\phi_k\), \(\phi_D'\phi_k\) and the blocks \(T^j(1+D_rT)^{-5/2}(1+D_sT)^{-7/2}\). At one double \(D\), the local exponents of these rows at \(T=-1/D\) are \(-3\), \(-3/2\), \(-5/2\) and, from the blocks, \(-5/2\) and \(-7/2\): integral and half-integral together. So \(V^{(b)}\) as a whole is not \(t^{\lambda}\) times a space of polynomials on a single cover branched at the doubles.</p>
+<p>The Mukhin–Tarasov–Varchenko theorems (Ann. of Math. 170 (2009) and their transversality sequel) concern spaces of polynomials with a real Wronskian. So in this whole-space formulation the lead fails. By character splitting, \(V^{(b)}\) decomposes into pieces of fixed monodromy character. Applying the theorems piece by piece, or after a pullback to a cover that makes each piece polynomial, was not tried. That one-step objection falsifies only the whole-space formulation, and the lead stays open.</p>
+<p><strong>What this means.</strong> For the chain route the target is now sharper: coprimality can fail only at multiple roots of consecutive chain Wronskians. For the transversality route the next attempt is per character. Neither yields (B) yet.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(B): weight at most two at one configuration per \(N\); chain coprimality at multiple roots; the per-character form of the transversality lead.</li>
+<li>(K): eight open items, unchanged.</li>
+<li>Statements 2 and 4.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>cor:cube-collision-half-reduction (statement);</li>
+<li>lem:cube-hierarchical-limit (rows of \(V^{(a)}\));</li>
+<li>lem:cube-far-chain-reduction and the far chain review (Crum's identity, \(T_m\), \(Q_A\));</li>
+<li>the necessity review.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the lemma, the chain bookkeeping and the exponent list. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>characteristic zero added to the lemma;</li>
+<li>the chain consequence corrected: the lemma shows that squarefreeness implies coprimality and is silent at multiple roots, so the route is not circular;</li>
+<li>the block exponents listed in full;</li>
+<li>the transversality outcome restricted to the whole-space formulation, with the per-character form left open;</li>
+<li>the title and meta line matched.</li>
+</ul>
+<p>Status: working proof (weight-step lemma); the whole-space transversality formulation falsified.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-n">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 18.59 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 54.87 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 19.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 4.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
