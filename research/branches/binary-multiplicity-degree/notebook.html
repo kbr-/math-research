@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-pure-extremes">tie pure block extremes entry</a> proves that the confluent tie window's pure block is nonsingular for all but at most \(2m^2\) values of \(c\), at every \(m\). Its extreme coefficients in \(c\) are products of rectangular Schur values (lem:cube-tie-pure-extreme-coefficients).</p>
-<p>Next: generic full rank of the window \(W^c(c)\) at every \(m\), still on the highest-risk item. Find an extreme term in \(c\) of a maximal window minor, or one \(c\) per \(m\) where the \(3\times5\) Schur complement has rank \(3\). The extra rows lie in the span of the pure rows up to order \(c^{2m-2}\), so this is a lattice problem in \(c\) like the confluent cherry's. Then turn to the repair at the zeros of \(H_m\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-window-generic-rank">tie window generic rank entry</a> proves that the confluent tie window has full rank for all but finitely many \(c\) at every \(m\) (lem:cube-tie-window-generic-rank). Reducing the extra rows in \(c\) leaves a two-exponent window. So confluent tie level points avoid the contact locus except at finitely many special cross-ratios per \(m\).</p>
+<p>Next: the special values, still the highest-risk item. Decide whether the cone needs them. They form a codimension-one family of confluent tie level points. Check whether the dimension count behind (K) tolerates such a family, or whether arcs through them are decided by the next order, as for the special cancellations. If they are needed, look for a second extreme in \(c\) (the degree, or the expansion at \(c=1\)) and a gcd argument between two maximal minors with explicit extreme terms.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58121,6 +58121,88 @@ Both \(b_K\) and \(a_{K^c}\) are rational constants.</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-window-generic-rank" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-tie-window-generic-rank">
+<h3>7 October 2026 — The confluent tie window has full rank for all but finitely many c at every m: reducing the extra rows in c leaves a two-exponent window</h3>
+<p class="entry-meta">Working proof that the square minor of the confluent tie window has exact c-order m·binom(m,2)+4m with a nonzero lowest coefficient, so the window has full rank off a finite set. Gap (3), confluent tie window. Tie generic rank cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the confluent tie window, the highest-risk item. The <a href="#entry-2026-10-07-cube-tie-pure-extremes">tie pure block extremes entry</a> proved the pure block nonsingular off a finite set. For the whole window it left a reduction: find one \(c\) per \(m\) where the three extra rows add rank \(3\). That entry noted that at \(c=0\) the row \(T(1+T)^{-5/2}(1+cT)^{-3/2}\) lies in the span of the pure rows, up to order \(c^{2m-2}\). So the question is whether some maximal minor still has a single lowest term in \(c\). The test: compute the \(c\)-orders of all maximal minors (\(m\le5\)), then prove the least order and its coefficient for every \(m\).</p>
+<p><strong>Setting.</strong> Characteristic zero, \(\lambda=3/2\), \(d=\binom m2\), \(b_r=\binom{-3/2}r\). The window \(W^c(c)\) consists of the coefficients of \(T^d,\ldots,T^{d+3m+4}\) of the following rows:</p>
+<ul>
+<li>\(f_i=T^i(1+T)^{-5/2}\), for \(i&lt;2m\);</li>
+<li>\(g_n=T^n(1+cT)^{-3/2}\), for \(n&lt;m\);</li>
+<li>\(R_1=(1+T)^{-3}\), \(R_2=((1+T)(1+cT))^{-3/2}\) and \(R_3=T(1+T)^{-5/2}(1+cT)^{-3/2}\).</li>
+</ul>
+<p>Let \(\Delta^W_m(c)\) be its maximal minor on the first \(3m+3\) columns, \(T^d,\ldots,T^{d+3m+2}\). Let \(E_m\) be the determinant of the coefficients of \(T^{d+m},\ldots,T^{d+3m+2}\) of \(f_0,\ldots,f_{2m+1}\) and \(R_1\).</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-generic-rank. For every \(m\ge1\), \(\Delta^W_m\) has \(c\)-order exactly \(md+4m\), and
+\[[c^{md+4m}]\Delta^W_m=\pm\,s_{(d^m)}(1^{3/2})\,\bigl(b_{2m+1}b_{2m-1}-b_{2m}^2\bigr)\,E_m\ne0 .\]
+Let \(Z^W_m\) be the common zero set of the maximal minors of \(W^c(c)\). It lies in the zero set of the nonzero polynomial \(\Delta^W_m\), so it is finite; it contains \(0\). So \(W^c(c)\) has full rank for every \(c\notin Z^W_m\), at every \(m\), and conj:cube-confluent-tie-window-full-rank holds off \(Z^W_m\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Reducing the extra rows.</em> Expand \(R_2=\sum_rb_rc^rT^r(1+T)^{-3/2}\) and \(R_3=\sum_rb_rc^rT^{r+1}(1+T)^{-5/2}\). Use \(T^r(1+T)^{-3/2}=f_r+f_{r+1}\), where \(f_j=T^j(1+T)^{-5/2}\) for every \(j\). Subtract from \(R_3\) the rows \(b_rc^rf_{r+1}\) for \(r\le2m-2\), and from \(R_2\) the rows \(b_rc^r(f_r+f_{r+1})\) for \(r\le2m-2\). These are pure rows, so the minor does not change. That leaves
+\[R_3'=\sum_{r\ge2m-1}b_rc^rf_{r+1},\qquad R_2'=\sum_{r\ge2m-1}b_rc^r(f_r+f_{r+1}).\]
+Then put
+\[R_2''=\frac{R_2'-R_3'}{b_{2m-1}}-c^{2m-1}f_{2m-1}-\frac{b_{2m}}{b_{2m-1}^2}\,c\,R_3' .\]
+This is a row operation that multiplies the minor by \(1/b_{2m-1}\), since \(f_{2m-1}\) is a pure row. Directly,
+\[R_2''=\sum_{r\ge2m+1}\frac{b_rb_{2m-1}-b_{2m}b_{r-1}}{b_{2m-1}^2}\,c^rf_r .\]
+The \(c^{2m}\) coefficient cancels. So \(R_3'\) has \(c\)-order at least \(2m-1\), with leading part \(b_{2m-1}f_{2m}\). \(R_2''\) has \(c\)-order at least \(2m+1\), with leading part \(\frac{b_{2m+1}b_{2m-1}-b_{2m}^2}{b_{2m-1}^2}f_{2m+1}\).</li>
+<li><em>Laplace along \(g\).</em> Expand along the \(m\) rows \(g_n\). As in lem:cube-tie-pure-extreme-coefficients, the block on a column set \(K\) is \(c^{\Sigma K-\binom m2}\) times a constant, and the least \(\Sigma K\) occurs only at \(K=[d,d+m-1]\). There the constant is \(\pm s_{(d^m)}(1^{3/2})\), and the power is \(c^{md}\). The complementary block has the constant rows \(f_0,\ldots,f_{2m-1}\) and \(R_1\), and the rows \(R_3'\) and \(R_2''\). So it has \(c\)-order at least \(4m\). Every other \(K\) gives order more than \(md+4m\).</li>
+<li><em>The leading term.</em> At \(K=[d,d+m-1]\), the \(c^{4m}\) coefficient of the complementary block is the determinant of \(f_0,\ldots,f_{2m-1},R_1,b_{2m-1}f_{2m},\frac{b_{2m+1}b_{2m-1}-b_{2m}^2}{b_{2m-1}^2}f_{2m+1}\), on the columns \(T^{d+m},\ldots,T^{d+3m+2}\). That is \(\pm\frac{b_{2m+1}b_{2m-1}-b_{2m}^2}{b_{2m-1}}E_m\). Undoing the factor \(1/b_{2m-1}\) gives the stated coefficient.</li>
+<li><em>Nonvanishing.</em> \(s_{(d^m)}(1^{3/2})\ne0\) by the hook-content formula, as in lem:cube-tie-pure-extreme-coefficients. Next, \(b_{2m-1}b_{2m+1}-b_{2m}^2=H_2(2m-1)\) in the notation of thm:cube-confluent-cherry-caterpillar-windows. By its Hankel formula this equals \(b_{2m-1}b_{2m}(\lambda-1)/(2m(2m+1))\) with \(\lambda=3/2\), which is nonzero. Finally, \(E_m\) is the square window of \(T^i(1+T)^{-5/2}\) (\(i&lt;2m+2\)) and \((1+T)^{-3}\) on \(2m+3\) consecutive columns. thm:cube-two-exponent-window applies with \(a=5/2\), \(n=2m+2\), \(b=3\) and \(p=1\): \(a\notin\mathbb Z\), \(a-b=-1/2\notin\mathbb Z\), and \(b-p+1=3&gt;0\). So \(E_m\ne0\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong></p>
+<ul>
+<li>research/tools/bmd_tie_window_corders.gp (research/results/bmd-20261007-zi/window-corders.txt) computes the \(c\)-order of every maximal minor for \(m\le5\). The least orders are \(4,10,21,40,70=md+4m\). They are attained exactly at the minors that keep the first \(m\) columns, as the Laplace step predicts. All \(\binom{3m+5}2\) maximal minors are nonzero there.</li>
+<li>research/tools/bmd_tie_window_generic.gp (window-generic2.txt) checks, for \(m=1,\ldots,6\), the \(c\)-order \(md+4m\) of \(\Delta^W_m\), the nonvanishing of \(E_m\) and the lowest coefficient up to sign. All pass.</li>
+<li>Its first run (window-generic.txt) used a prediction that lacked the factor \(b_{2m-1}\) from undoing the row scaling. The orders agreed and the coefficients did not, and the corrected prediction agrees.</li>
+<li>The script's header comment was shortened after the run.</li>
+</ul>
+<p><strong>What changes.</strong> The confluent tie window now has full rank at every \(m\) for all but finitely many \(c\), and the first half of the obstacle is proved. The open part of conj:cube-confluent-tie-window-full-rank is now the finite set \(Z^W_m\) of common zeros of the maximal minors, for \(m\ge7\). These are the special values of the cross-ratio \(c\) of a confluent tie level. The exact gcd checks show they are empty off \(\{0,1\}\) for \(m\le6\).</p>
+<p>With lem:cube-confluent-tie-reduction this gives contact avoidance at every confluent tie level point whose parameter \(c_0\) lies outside \(Z^W_m\), along arcs in the one-double-root stratum: a double root and a simple root on one level over a caterpillar of \(m\) roots, with singleton levels above. The special values are expected to form a codimension-one family of such points; this is not proved here.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank at the special values \(c\in Z^W_m\setminus\{0,1\}\), for \(m\ge7\);</li>
+<li>whether special values can be avoided by dimension counting along the cone, since they form a proper closed subset of the tie type;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-tie-pure-extreme-coefficients (the Laplace step and the Schur values);</li>
+<li>thm:cube-two-exponent-window (statement and conditions);</li>
+<li>thm:cube-confluent-cherry-caterpillar-windows (Hankel formula for \(H_2\));</li>
+<li>conj:cube-confluent-tie-window-full-rank (the rows of the window) and lem:cube-confluent-tie-reduction (full rank implies contact avoidance).</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following by hand:</p>
+<ul>
+<li>the reduction of the extra rows, the cancellation at \(c^{2m}\) and the scaling;</li>
+<li>the Laplace step and the uniqueness of the lowest term;</li>
+<li>the leading coefficient and its columns;</li>
+<li>the conditions of the two-exponent window;</li>
+<li>the hypothesis of lem:cube-confluent-tie-reduction;</li>
+<li>both scripts.</li>
+</ul>
+<p>It found no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>a sign: \(b_{2m-1}b_{2m+1}-b_{2m}^2=+H_2(2m-1)\), which leaves nonvanishing unaffected;</li>
+<li>one definition of \(Z^W_m\);</li>
+<li>characteristic zero in the setting;</li>
+<li>the codimension-one remark marked as expected.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zi">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 52.20 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 42.30 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 16.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">50.06 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 3.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
