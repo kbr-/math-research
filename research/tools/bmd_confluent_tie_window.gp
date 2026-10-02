@@ -21,6 +21,15 @@ winmat(m) = {
   matrix(3 * m + 3, w, r, j, rowco(r, m, d + j - 1));
 }
 strip01(f) = { if (f == 0, return(0)); while (subst(f, 'c, 0) == 0, f /= 'c); while (subst(f, 'c, 1) == 0, f /= ('c - 1)); f / content(f); }
+\\ REAL=1 (cycle bmd-20261007-p): for each m in MS, the number of real roots of the square-window minor in each of
+\\ (-oo,0), (0,1), (1,oo) (Sturm sequences on the factor stripped of c and c-1); a test of an AT-type sign pattern.
+{
+if (getenv("REAL") == "1",
+  foreach(eval(getenv("MS")), m,
+    my(A = winmat(m), nr = 3 * m + 3, sq = strip01(matdet(vecextract(A, "..", vector(nr, j, j)))));
+    emit(Str("REAL m = ", m, ": real roots of the square minor in (-oo,0), (0,1), (1,oo): ",
+      polsturm(sq, [-oo, 0]), ", ", polsturm(sq, [0, 1]), ", ", polsturm(sq, [1, +oo]), " (degree ", poldegree(sq, 'c), ")"))); quit);
+}
 \\ SCAN=1 (cycle bmd-20261007-n): instead, list the maximal minors (window column sets, 0-based offsets from d) whose
 \\ determinant is c^a (c-1)^b times a nonzero constant, i.e. that alone prove full rank off {0,1}.
 {
