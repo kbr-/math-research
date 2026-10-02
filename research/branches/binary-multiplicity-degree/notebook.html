@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The <a href="#entry-2026-10-08-cube-cross-leading-coefficient">leading coefficient</a> of every cross coordinate is an explicit determinant \(D_\Lambda\) in complete homogeneous polynomials. It pays the window's Hankel penalty on every tested tree (conj:cube-leading-hankel-penalty), and the higher \(u\)-coefficients pay a graded penalty (conj:cube-graded-hankel-penalty).</p>
-<p>Next: prove conj:cube-leading-hankel-penalty. \(D_\Lambda\) is a Plücker coordinate of the span of the evaluations at the roots and the integral functionals \(g\mapsto\sum_sw_s\int_0^{y_s}g\), with \(w\) killing moments below \(p\). Prove that this span degenerates as \(\min_{|S|=k+1}\mathrm{Vand}(y_S)^2\) along every arc, for instance cluster by cluster with divided-difference bases and Bhargava \(p\)-orderings.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The <a href="#entry-2026-10-08-cube-leading-hankel-penalty-proof">leading Hankel penalty</a> is proved: every leading cross coefficient has valuation at least \(g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\).</p>
+<p>Next: the graded penalty conj:cube-graded-hankel-penalty. Describe the \(u^{B+t}\)-terms of the two-alternant expansion (columns with \(m_l=2\), shifted negative exponents). Then test whether they again reduce, through the multiples of \(P\), to moment determinants with \(k-t\) free quotients.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65324,6 +65324,80 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">16.12 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-leading-hankel-penalty-proof" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-caterpillar-tie-route-review:1" data-claims="thm:cube-leading-hankel-penalty">
+<h3>8 October 2026 — Every leading cross coefficient pays the Hankel penalty along every arc: a moment determinant and Cauchy–Binet</h3>
+<p class="entry-meta">Working proof of the valuative form of conj:cube-leading-hankel-penalty for every M and 1 ≤ p ≤ M−1, generalizing the neck-block discriminant to arbitrary quotients. Leading penalty cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core item (W′) above cherry clusters and nested trees. By lem:cube-cross-leading-coefficient the leading \(u\)-coefficient of a cross coordinate with \(p\) negative indices is \(\mathrm{Vand}(y)^2D_\Lambda\) times a constant. The <a href="#entry-2026-10-08-cube-cross-leading-coefficient">previous entry</a> found \(\operatorname{val}D_\Lambda\ge g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\), \(k=M-p\), on every tested tree. Can it be proved?</p>
+<p><strong>General statement.</strong> thm:cube-leading-hankel-penalty. Let \(M\ge2\), \(1\le p\le M-1\), \(k=M-p\), and let \(\Lambda_+\) be any set of \(M+k\) nonnegative integers. Let \(\mathcal O\supset\mathbb Q\) be a valuation ring and \(y_1,\ldots,y_M\in\mathcal O\). Then</p>
+\[ \operatorname{val}D_\Lambda(y)\ \ge\ \min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S) . \]
+<p>Equivalently, \(D_\Lambda\) lies in the integral closure of \(I_k=(\mathrm{Vand}(y_S)^2:|S|=k+1)\) in \(\mathbb Q[y]\). For the windows, \(D_{\Lambda_j}\) is the nonzero constant of thm:cube-cherry-hankel-form times \(\mathrm{Hank}_k=\sum_S\mathrm{Vand}(y_S)^2\), so they attain the bound unless the leading subset terms cancel (they cannot when the residue field is real). This proves the valuative part of conj:cube-leading-hankel-penalty. Membership in \(I_k\) itself also holds for \(p=1\), since \(I_{M-1}=(\mathrm{Vand}(y)^2)\) is principal and principal ideals of the normal domain \(\mathbb Q[y]\) are integrally closed. For \(p\ge2\) it is open, finitely checked at \(M=3\) for \(\Lambda\subset[-3,7]\).</p>
+<p><strong>Proof.</strong> Write \(P=\prod(z-y_s)\), monic in \(\mathcal O[z]\), and \(\tau(f)=[z^{M-1}](f\bmod P)\), which equals \(\sum_sf(y_s)/P'(y_s)\) for distinct roots. Then \(\tau(z^n)=h_{n-M+1}(y)\) and \(\tau(gP')=\sum_rg(y_r)\), both as polynomial identities, so nothing below needs distinct roots. \(\tau\) vanishes on multiples of \(P\). Let \(I\) be integration from \(0\), and \(\mathrm{Pol}_\Lambda\) the span of \(z^i\), \(i\in\Lambda_+\). By definition,</p>
+\[ D_\Lambda=\det\Bigl[\tau(z^t\,g)\ (t&lt;M)\ \Big|\ \tau(z^t\,Ig)\ (t&lt;k)\Bigr]_{g=z^i,\ i\in\Lambda_+}, \]
+<p>since \(\tau(z^tI(z^i))=h_{t+i-M+2}/(i+1)\). If \(y\) has fewer than \(k+1\) distinct values, then \(g(k)=\infty\) and the proof below gives \(D_\Lambda=0\).</p>
+<p>(1) Splitting off the multiples of \(P\). Consider the map \(\mathcal O\)-\(\mathrm{Pol}_\Lambda\to\mathcal O^M\), \(g\mapsto(\tau(z^tg))_{t&lt;M}\). If its rank over the fraction field is below \(M\), the first \(M\) columns are dependent and \(D_\Lambda=0\). Otherwise its kernel \(K\) consists of the \(g\) with \(P\mid g\) (as \(\tau(z^t\cdot)\), \(t&lt;M\), detect \(g\bmod P\)), and has rank \(k\). \(K\) is saturated, because the quotient embeds in the torsion-free \(\mathcal O^M\). Over a valuation ring a saturated submodule of a finite free module is a free direct summand. So there is an \(\mathcal O\)-basis \(\{g_j\}_{j&lt;k}\cup\{e_l\}_{l&lt;M}\) of \(\mathcal O\)-\(\mathrm{Pol}_\Lambda\), with \(g_j\in K\) and change-of-basis determinant a unit from the monomials. Write \(g_j=Pv_j\), with \(v_j\in\mathcal O[z]\) since \(P\) is monic.</p>
+<p>In this basis the rows \(g_j\) vanish in the first \(M\) columns, so</p>
+\[ D_\Lambda=\pm\det\bigl[\tau(z^t\,I(Pv_j))\bigr]_{t,j&lt;k}\cdot\det\bigl[\tau(z^te_l)\bigr]_{t,l&lt;M}. \]
+<p>The second factor lies in \(\mathcal O\).</p>
+<p>(2) The neck-block steps, for arbitrary quotients. Put \(F_j=I(Pv_j)=q_jP+\rho_j\), with \(\deg\rho_j&lt;M\). Then \(q_j,\rho_j\in\mathcal O[z]\), since \(\mathbb Q\subset\mathcal O^\times\). Steps 2–4 of thm:cube-neck-block-discriminant used only this decomposition and \(1\le k\le M-1\), not the special \(v_j\) of the neck. We repeat them:</p>
+<ul>
+<li>\(\tau(z^tF_j)=\tau(z^t\rho_j)\), which is unitriangular in the top coefficients \([z^{M-1-t}]\rho_j\) for \(t&lt;k\). So \(\det[\tau(z^tF_j)]=\pm\det K\), with \(K=[[z^m]\rho_j]_{M-k\le m\le M-1,\ j&lt;k}\).</li>
+<li>Differentiating, \(Pv_j=q_j'P+q_jP'+\rho_j'\), so \(\rho_j'=-\operatorname{rem}(q_jP',P)\). Since \(m\ge M-k\ge1\), \([z^m]\rho_j=[z^{m-1}]\rho_j'/m\).</li>
+<li>The functionals \(\tau(z^s\,\cdot)\), \(0\le s\le k\), are unitriangular in the coefficients \([z^{M-1-s}]\) of polynomials of degree \(\le M-1\). Apply them to \(P'/M\) (coefficient \(1\) at \(z^{M-1}\)) and to the \(\rho_j'\) (degree \(\le M-2\)). Then \(\tau(z^sP'/M)=p_s/M\) and \(\tau(z^s\rho_j')=-\tau(z^sq_jP')=-\sum_ry_r^sq_j(y_r)\).</li>
+</ul>
+<p>Collecting,</p>
+\[ \det K=\frac{\pm1}{M\prod_{m=M-k}^{M-1}m}\det\Bigl[\sum_ry_r^sf_j(y_r)\Bigr]_{0\le s\le k,\ -1\le j\le k-1},\qquad f_{-1}=1,\ f_j=q_j . \]
+<p>(3) Cauchy–Binet. The last determinant is \(\sum_{|T|=k+1}\det[y_r^s]_{r\in T}\det[f_j(y_r)]_{r\in T}\). The first factor is \(\pm\mathrm{Vand}(y_T)\). The second is alternating in \(y_T\), with coefficients polynomial in \(y_T\) and in the coefficients of the \(f_j\), so it is \(\mathrm{Vand}(y_T)A_T\) with \(A_T\in\mathcal O\). Hence</p>
+\[ D_\Lambda=\sum_{|T|=k+1}\mathrm{Vand}(y_T)^2\,a_T,\qquad a_T\in\mathcal O, \]
+<p>and \(\operatorname{val}D_\Lambda\ge\min_T2\operatorname{val}\mathrm{Vand}(y_T)\). The integral-closure form is the valuative criterion (I. Swanson and C. Huneke, Integral Closure of Ideals, Rings, and Modules, Theorem 6.8.3): a polynomial lies in \(\overline{I_k}\) if and only if \(\operatorname{val}\ge\operatorname{val}I_k\) for every valuation nonnegative on \(\mathbb Q[y]\). \(\square\)</p>
+<p><strong>Remark.</strong> For a window, \(\mathrm{Pol}_\Lambda\) contains \(1,\ldots,z^{M-1}\), the kernel is spanned by the \(Pz^j\), and the proof reduces to the neck-block discriminant, whose exact Step 4 for those quotients gives \(\mathrm{Hank}_k\). For other \(\Lambda_+\) the coefficients \(a_T\) depend on the arc through the basis \(v_j\). That is why the proof gives the integral closure, and not membership in \(I_k\) as a polynomial identity.</p>
+<p><strong>Check.</strong> The statement is the valuative form already tested in the previous entry: research/tools/bmd_hankel_penalty_qadic.gp (hankel-penalty-qadic.txt), eleven cluster trees at \(M=4,5,6\), 32,238 nonzero cases, no value below \(g(k)\). Those valuations are \(q\)-adic, hence nontrivial on \(\mathbb Q\), so the test is an \(\eta\)-order proxy consistent with the theorem, not an instance of it. No new computation was run.</p>
+<p><strong>What this means.</strong> The leading half of the window property above any cluster tree is proved: no leading coefficient falls below the window's generic penalty \(g(k)\). The mechanism is the neck-block proof applied to every coordinate set: the multiples of \(P\) in a coordinate set produce a moment determinant over the roots, and Cauchy–Binet turns it into a sum of squared Vandermondes.</p>
+<p>What remains for (W′) above cherry clusters and nested trees:</p>
+<ul>
+<li>the graded penalty (conj:cube-graded-hankel-penalty) for the higher \(u\)-coefficients, where the same moment structure is the natural tool;</li>
+<li>the windows' exact graded values;</li>
+<li>convexity of \(k\mapsto g(k)\), the \(p\)-ordering lead.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-graded-hankel-penalty.</li>
+<li>The windows' graded valuations.</li>
+<li>Convexity of \(g\).</li>
+<li>The case \(p=0\).</li>
+<li>(W′) above cherry clusters and nested trees.</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This continues lead 1 of the caterpillar tie route review: the penalty \(g(k)\) whose convexity that lead addresses is now proved to bound every leading coefficient.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-neck-block-discriminant, Steps 1–4, from the entry text;</li>
+<li>lem:cube-cross-leading-coefficient;</li>
+<li>conj:cube-leading-hankel-penalty.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the \(\tau\)-form of \(D_\Lambda\), the saturation and direct-summand step over a general valuation ring, each reused neck-block step for arbitrary quotients (with where \(1\le k\le M-1\) is needed), Cauchy–Binet and the integrality of \(A_T\), and the valuative criterion. It found every hypothesis used. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the reduction to distinct roots replaced by polynomial definitions of \(\tau\);</li>
+<li>the kernel basis renamed \(g_j=Pv_j\), avoiding a clash with \(h_n\);</li>
+<li>membership in \(I_k\) noted as proved for \(p=1\);</li>
+<li>window attainment qualified;</li>
+<li>the \(q\)-adic check described as a proxy;</li>
+<li>the remark on the windows made precise;</li>
+<li>the criterion cited.</li>
+</ul>
+<p>Status: working proof (valuative form); ideal membership open.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 15.85 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 40.25 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 27.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.56 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
