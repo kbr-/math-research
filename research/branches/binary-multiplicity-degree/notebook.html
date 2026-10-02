@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-mechanisms-review">tie mechanisms review</a> isolates the open statement as transversality of the rigid configuration. Every sub-block is proved for all \(m\). Degree counts, shift-invariant functionals, rational weights and characteristic-\(p\) orders give no extra input.</p>
-<p>Next: develop the apparent-singularity lead of the tie Wronskian review as a transversality computation. On the square sub-window, at the roots of \(D_0\), compute the \(c\)-derivative pairing \(y^{\mathsf T}W'(c_0)x\) and the two extra columns' pairings with the left kernel. Look for a uniform pattern for \(m\le4\) and a determinantal identity explaining it.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-staircase">tie staircase entry</a> finds no geometric closed form for the staircase pairings, and falsifies the folded-Wronskian bridge. The confluent tie window's full rank remains a transversality statement without a visible identity.</p>
+<p>Next: test whether the cone route can tolerate special values after all. At a hypothetical special \(c_0\), the point \(P(c_0)\) of the confluent tie F-curve lies in \(\overline{K/{\rm Aff}}\) only if the next-order data along arcs through it also degenerate. Write the first-order expansion of the window in the smoothing parameters at \(P(c_0)\) as an explicit pairing \(y^{\mathsf T}W_1x\). Test, using a perturbed window with genuine special values (for example a nearby exponent \(\lambda\) where they exist), whether that pairing can vanish simultaneously. If it cannot, the cone route needs only the generic window, and the Forney bound becomes unnecessary.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -61266,6 +61266,45 @@ So \(B_M(S)\) is affine in \((m,d)\). Its coefficient of \(d\) is \(1-[5\in S]\g
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 39.92 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.13 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-staircase" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-08-cube-tie-mechanisms-review:1" data-claims="ex:cube-tie-staircase-pairings">
+<h3>8 October 2026 — Staircase pairings of the confluent tie window: three rows paired with five pure-kernel functionals, with regular degree growth but no geometric closed form; the folded Wronskian is worse than the ordinary one</h3>
+<p class="entry-meta">Refutation at m = 2, 3 of a geometric closed form for the staircase pairings; falsification of the folded-Wronskian bridge by an exponent count. Gap (3), confluent tie window. Tie staircase cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the joint independence of the point row and the product rows on the pure kernel (tie mechanisms review). The non-confluent proof rested on a pairing that is geometric in the column index: \(r_{s+2m}\propto c^m\rho_st_s\). Do the confluent window's pairings with an explicit basis of the pure kernel have such structure? And does the review's folded-Wronskian bridge give the missing order?</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-wronskian-rigidity, the open configuration, tested through two mechanisms. The refutation ex:cube-tie-staircase-pairings is recorded.</p>
+<p><strong>Setting.</strong> On the window columns \(T^d,\ldots,T^{d+3m+4}\), let \(y^{(M)}\), for \(M=d,\ldots,d+4\), be the Cramer vector of the pure block on the \(3m+1\) columns \(M,\ldots,M+3m\), extended by zero. By thm:cube-tie-pure-wide-normality, each is nonzero for \(c\notin\{0,1\}\). Where their leading entries are nonzero, they form a staircase basis of the five-dimensional pure kernel. The window then has full rank iff the \(3\times5\) matrix \(E_{a,M}=\sum_ry^{(M)}_re_a(M+r)\) has rank \(3\), where \(e_a\) are the coefficients of the three extra rows.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_staircase_pairings.gp (research/results/bmd-20261008-o/staircase.txt), exact, \(m=2,3\).</p>
+<ul>
+<li>The point-row entries \(E_{1,M}\) have \((c-1)\)-order \(m(m+1)\) for every \(M\). Their \(c\)-order and degree both rise by exactly \(m\) from one \(M\) to the next, and each has one further irreducible factor of degree \(m^2\) (\(4\), then \(9\)). But the ratios \(E_{1,M+1}/E_{1,M}\) are not polynomials: the factors of degree \(m^2\) differ from one \(M\) to the next. So there is no geometric relation of the non-confluent kind.</li>
+<li>The product-row entries have \((c-1)\)-order \(m(m+1)\) and \(c\)-order rising by \(m\), with degree rising by \(m+1\). Their further factor degrees rise by one: \(4,\ldots,8\) at \(m=2\), \(10,\ldots,14\) at \(m=3\). Their ratios are not polynomials either.</li>
+<li>The gcd of the \(3\times3\) minors of \(E\) has no root off \(\{0,1\}\), consistent with the absence of special values.</li>
+</ul>
+<p><strong>Folded Wronskian (develops bridge 1 of the tie mechanisms review).</strong> Dilations \(T\mapsto\gamma T\) preserve the window's vanishing at \(0\) with no loss. If \(G=\sum g_i=O(T^{d+M})\), every \(G(\gamma^jT)\) has the same order, whereas each derivative loses one. So the folded Wronskian \(D(T)=\det[g_i(\gamma^jT)]_{i,j&lt;5}\) has order at least \(d+M\) at \(0\), not \(d+M-4\). But each column \(j\) brings its own singular points \(-\gamma^{-j}\) and \(-1/(c\gamma^j)\).</p>
+<p>Expanding along the singular column at each of these, \(D\) has order at least \(-3\) at each \(-\gamma^{-j}\) (from \(g_3\)) and at least \(-\tfrac52\) at each \(-1/(c\gamma^j)\). At \(\infty\) it has order at least the sum of the rows' minimal exponents, \(13-3m-d\). The total is at least \((d+M)-15-\tfrac{25}2+13-3m-d=M-3m-\tfrac{29}2\), which is \(-\tfrac{19}2\) on the window. The ordinary Wronskian's total is \(0\). The ten extra singular points cost far more than the four orders saved at \(0\). So the bridge is falsified in this form.</p>
+<p><strong>What this means.</strong> Neither the staircase pairings nor dilations carry the structure that made the non-confluent tie window provable. The pairings grow regularly in degree and order, but their essential factors change with \(M\). The obstacle stays where the tie mechanisms review placed it: a transversality statement without a visible identity.</p>
+<p><strong>Bridge follow-up.</strong> Bridge 1 of the tie mechanisms review, folded Wronskians, is developed here and falsified as stated. <strong>Follow-up.</strong> Closed: the extra singular points of the dilated functions cost more than the saved orders.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank of the confluent tie window for \(m\ge7\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the cone's gaps (1) and (2).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-pure-wide-normality (nonvanishing of the Cramer vectors); thm:cube-tie-window-general-functional (the geometric pairing in the non-confluent case); lem:cube-tie-window-wronskian-rigidity (the exponent lists).</p>
+<p><strong>Verification gate.</strong> No new lemma. The refutation is exact arithmetic, and the folded count uses the exponent lists of the tie exponent count entry. No reviewer was used.</p>
+<p>Status: refutation (finite, \(m=2,3\)); falsified bridge.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 40.09 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 43.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.38 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
