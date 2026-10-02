@@ -1,0 +1,55 @@
+\\ Basis factorization of the confluent tie window (8 October 2026; cycle bmd-20261008-s).
+\\ u_a(M) = (Q e_a)(M) as in lem:cube-tie-propagation-candidates (q primitive over Q[k, c]).  Every u_a(d+s) is a
+\\ combination, rational in c, of the five basis values b = (e_1(d), e_2(d), e_2(d+1), e_3(d), e_3(d+1)).  So the
+\\ 3 x 5 matrix U = (u_a(d+s))_(a, s<5) equals B C_5, with B the 3 x 5 block matrix of basis values (rank 3 for
+\\ c != 0) and C_5 the 5 x 5 coordinate matrix.  A special value needs det C_5 = 0 and the left kernel vector nu of
+\\ C_5 in the row space of B: A_2 = nu_2 e_2(d+1) - nu_3 e_2(d) = 0 and A_3 = nu_4 e_3(d+1) - nu_5 e_3(d) = 0.
+\\ Prints, for m = 2, 3, 4: the factor degrees of D = det C_5 off c(c-1) (numerator), the degree off c(c-1) of
+\\ gcd(D, A_2 over all adjugate rows), of gcd(D, A_3 ...), and of gcd(D, A_2, A_3); which factors of D are the shifted
+\\ apparent factors S(d+j, c) of q_(3m); and the degree of gcd(D, staircase minors): the gcd of the maximal minors of the
+\\ five staircase vectors q(M, c), M = d..d+4, padded into C^(3m+5) (0 = staircase independent at every root of D).
+default(parisizemax, 6 * 10^9);
+OUT = getenv("OUT");
+emit(s) = print(s); if (OUT != 0 && OUT != "", write(OUT, s));
+st(q) = { if (q == 0, return(0)); q = q / 'c^valuation(q, 'c); while (subst(q, 'c, 1) == 0, q = q / ('c - 1)); q; }
+bn(a, k) = if (k < 0, 0, binomial(a, k));
+coords(Sh, J) = {
+  my(v = vector(J + 1)); v[1] = [1, 0]; v[2] = [0, 1];
+  for (j = 2, J, v[j + 1] = subst(Sh[1], 'k, 'k + j - 2) * v[j - 1] + subst(Sh[2], 'k, 'k + j - 2) * v[j]);
+  v;
+}
+{
+foreach([2, 3, 4], m,
+  my(n = 3 * m, d = m * (m - 1) / 2, A = matrix(n, n + 1), q, C = matrix(5, 5), D, adj, e2, e3, G2 = 0, G3 = 0, G23 = 0,
+     rf = r -> prod(i = 0, r - 1, -('k + i - 2 * m + 7/2) / ('k + i + 1)),
+     rg = r -> prod(i = 0, r - 1, -'c * ('k + i - m + 5/2) / ('k + i + 1)),
+     S2 = [-'c * ('k + 3) / ('k + 2), -(1 + 'c) * ('k + 5/2) / ('k + 2)],
+     S3 = [-'c * ('k + 3) / ('k + 1), -((1 + 'c) * ('k + 1) + (3 + 'c) / 2) / ('k + 1)]);
+  for (j = 0, 2 * m - 1, for (r = 0, n, A[j + 1, r + 1] = rf(r) * ('k + r)^j));
+  for (j = 0, m - 1, for (r = 0, n, A[2 * m + j + 1, r + 1] = rg(r) * ('k + r)^j));
+  q = matker(A)[, 1]; my(den = 1); for (r = 1, n + 1, den = lcm(den, denominator(q[r]))); q = q * den;
+  my(g = 0); for (r = 1, n + 1, g = gcd(g, q[r])); q = q / g;
+  \\ row 1 of C: u_1(d+s)/e_1(d), e_1(k) = (-1)^k (k+1)(k+2)/2
+  for (s = 0, 4, C[1, s + 1] = sum(r = 0, n, subst(q[r + 1], 'k, d + s) * (-1)^(s + r) * (d + s + r + 1) * (d + s + r + 2) / ((d + 1) * (d + 2))));
+  foreach([[S2, 2], [S3, 4]], SB, my(Cs = coords(SB[1], n + 6));
+    for (s = 0, 4, my(v = sum(r = 0, n, subst(q[r + 1], 'k, d + s) * subst(Cs[s + r + 1], 'k, d)));
+      C[SB[2], s + 1] = v[1]; C[SB[2] + 1, s + 1] = v[2]));
+  D = st(numerator(matdet(C)));
+  e2 = [polcoef(((1 + 'x) * (1 + 'c * 'x))^(-3/2) + O('x^(d + 3)), j, 'x) | j <- [d, d + 1]];
+  e3 = [polcoef('x * (1 + 'x)^(-5/2) * (1 + 'c * 'x)^(-3/2) + O('x^(d + 3)), j, 'x) | j <- [d, d + 1]];
+  adj = matadjoint(C);
+  \\ left kernel of C at a root: rows of adj(C) (adj(C) C = det I)
+  for (i = 1, 5, my(nu = adj[i, ], a2 = numerator(nu[2] * e2[2] - nu[3] * e2[1]), a3 = numerator(nu[4] * e3[2] - nu[5] * e3[1]));
+    G2 = gcd(G2, a2); G3 = gcd(G3, a3); G23 = gcd(G23, gcd(a2, a3)));
+  my(F = factor(D), Sf = 1, Fq = factor(q[n + 1]), sh = List(), St, Gs = 0);
+  for (t = 1, #Fq[, 1], if (poldegree(Fq[t, 1], 'k) > 0 && poldegree(Fq[t, 1], 'c) > 0, Sf = Fq[t, 1]));
+  for (j = 0, 6, my(v = st(subst(Sf, 'k, d + j))); for (t = 1, #F[, 1], if (poldegree(gcd(F[t, 1], v), 'c) > 0, listput(sh, [t, j]))));
+  St = matrix(3 * m + 5, 5, i, j, my(r = i - j); if (r >= 0 && r <= n, subst(q[r + 1], 'k, d + j - 1), 0));
+  forsubset([3 * m + 5, 5], R, Gs = gcd(Gs, matdet(vecextract(St, Vec(R), ".."))); if (Gs != 0 && poldegree(st(gcd(D, Gs)), 'c) == 0, break));
+  emit(Str("m = ", m, ": factors of D sharing a root with S(d+j, c) (factor index, j): ", Vec(sh),
+    "; degree of gcd(D, staircase minors) off c(c-1): ", poldegree(st(gcd(D, Gs)), 'c)));
+  emit(Str("m = ", m, ": det C_5 off c(c-1) has degree ", poldegree(D, 'c), ", factor degrees ", vector(#F[, 1], t, [poldegree(F[t, 1], 'c), F[t, 2]]),
+    "; degree off c(c-1) of gcd(D, A_2) = ", poldegree(st(gcd(D, G2)), 'c), ", of gcd(D, A_3) = ", poldegree(st(gcd(D, G3)), 'c),
+    ", of gcd(D, A_2, A_3) = ", poldegree(st(gcd(D, G23)), 'c))));
+}
+quit

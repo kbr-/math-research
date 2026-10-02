@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-propagation-review">tie propagation review</a> proves that every special value of the confluent tie window off \(\{0,1\}\) is a root of \(\rho_5(d,c)\), the leading coefficient at \(M=d\) of the order-five recurrence of the three extra rows, or a staircase degeneracy point (lem:cube-tie-propagation-candidates). At \(m=2,3,4\), \(\rho_5\) is \((M+3)(M+4)(M+5)\prod_{j=1}^4S(M+j,c)\,X(M,c)\), with \(\deg_MX=m^2\) (check:cube-tie-propagation-structure).</p>
-<p>Next: for \(m=2,3\), find the degeneracy points of \(q(d),\ldots,q(d+5)\) and test whether they are exactly the roots of the shifted pure determinants. Then look for a structural description of \(X\), or for a second relation whose leading coefficient at \(M=d\) is coprime to \(\rho_5(d,c)\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-basis-factorization">tie basis factorization entry</a> writes the tie window's staircase matrix as \(U=BC_5\) (lem:cube-tie-basis-factorization). A special value needs a root of \(\det C_5\) and two more conditions, one per product row. At \(m=2,3,4\) each of the two fails on its own at every root (conj:cube-tie-single-block-exclusion).</p>
+<p>Next: at \(m\le4\) the staircase degenerates exactly at the roots of the shifted pure determinants \(H^{(d+j)}\), \(j=1,\ldots,4\). Decide the window there. At such a root \(c_0\), replace \(q(d+j)\) by a pure-kernel vector adapted to the singular block on the columns \(d+j,\ldots,d+j+3m-1\), and redo the basis factorization. Then test whether the window's rank at these \(c_0\) follows from an explicit formula valid for every \(m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -61679,6 +61679,84 @@ These counts are check:cube-tie-propagation-structure.</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-basis-factorization" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-propagation-review:3" data-claims="lem:cube-tie-basis-factorization conj:cube-tie-single-block-exclusion">
+<h3>8 October 2026 — The confluent tie window factors through five basis values; at m = 2, 3, 4 either product row alone excludes the candidates off the shifted pure determinants, where the staircase degenerates</h3>
+<p class="entry-meta">Working proof of U = B C₅ for the tie window's staircase matrix; at m = 2, 3, 4 each product-row condition alone excludes the candidates where the staircase is independent. Gap (3), confluent tie window. Tie basis factorization cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. lem:cube-tie-propagation-candidates confines the special values of the confluent tie window to the roots of \(\rho_5(d,c)\). What must happen at such a root for the window to drop rank, and how many independent conditions is that?</p>
+<p><strong>General statement.</strong> lem:cube-tie-basis-factorization. Let \(m\ge1\), \(d=\binom m2\) and \(c\ne0\). Let \(u_a(M)=(Qe_a)(M)\) be as in lem:cube-tie-propagation-candidates. Here \(q\) is primitive in \(\mathbb Q[k,c]\) by convention; the lemma holds for any \(q\). Let \(U=(u_a(d+s))_{a\le3,\ s\le4}\). Then \(U=B\,C_5\), where:</p>
+<ul>
+<li>\(B\) is the \(3\times5\) block matrix with rows \((e_1(d),0,0,0,0)\), \((0,e_2(d),e_2(d+1),0,0)\) and \((0,0,0,e_3(d),e_3(d+1))\). It has rank \(3\).</li>
+<li>\(C_5\) is the \(5\times5\) matrix of coordinates of \(u_a(d+s)\) in these basis values. Its entries are polynomials in \(c\), built only from \(q\) and the recurrences of the \(e_a\).</li>
+</ul>
+<p>Hence, at \(c_0\), the \(3\times5\) matrix \(U\) has rank \(&lt;3\) iff the row space of \(B(c_0)\) meets the left kernel of \(C_5(c_0)\). In particular this requires \(\det C_5(c_0)=0\). Where \(C_5(c_0)\) has corank one with left kernel vector \(\nu\), it holds iff both of the following vanish:</p>
+\[
+A_2=\nu_2e_2(d+1)-\nu_3e_2(d),\qquad A_3=\nu_4e_3(d+1)-\nu_5e_3(d).
+\]
+<p>For \(c_0\notin\{0,1\}\) at which the staircase vectors \(q(M,c_0)\), \(M=d,\ldots,d+4\), are nonzero and independent, these are exactly the special values of the window, by lem:cube-tie-holonomic-staircase (5).</p>
+<p><strong>Proof.</strong> The coordinates come from the recurrences of lem:cube-tie-propagation-candidates:</p>
+<ul>
+<li>\(e_1(k+1)=-\frac{k+3}{k+1}e_1(k)\);</li>
+<li>the order-two recurrences of \(e_2,e_3\), whose leading coefficients \(k+2\) and \(k+1\) do not vanish for \(k\ge0\).</li>
+</ul>
+<p>Write each \(e_a(d+j)\) in terms of \(e_1(d)\), or of \((e_a(d),e_a(d+1))\), and substitute into \(u_a(d+s)=\sum_rq_r(d+s)e_a(d+s+r)\). This gives \(U=BC_5\) entrywise.</p>
+<p>\(B\) has rank \(3\) because each block row is nonzero. First, \(e_1(d)=(-1)^d\binom{d+2}2\ne0\). Next, suppose \(e_2(d)=e_2(d+1)=0\). The recurrence at \(k=d-1\), solved for \(e_2(d-1)\) with the nonzero trailing coefficient \(c(d+2)\), gives \(e_2(d-1)=0\). Descending in the same way gives \(e_2(0)=0\), contradicting \(e_2(0)=1\). The same descent for \(e_3\) contradicts \(e_3(1)=1\).</p>
+<p>A left relation \(\lambda^{\mathsf T}U=0\) means \(\lambda^{\mathsf T}B\) lies in the left kernel of \(C_5\). Since \(\lambda\mapsto\lambda^{\mathsf T}B\) is injective, rank drops of \(U\) correspond to nonzero vectors in the row space of \(B\) and the left kernel of \(C_5\). If the left kernel is spanned by \(\nu\), then \(\nu\) lies in the row space of \(B\) iff its block components are proportional to \((e_2(d),e_2(d+1))\) and \((e_3(d),e_3(d+1))\). These are \(A_2=0\) and \(A_3=0\); the first block has one coordinate and imposes nothing. \(\square\)</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_two_conditions.gp (research/results/bmd-20261008-s/two-conditions.txt), exact over \(\mathbb Q(c)\), \(m=2,3,4\). Let \(D\) be the numerator of \(\det C_5\) with powers of \(c\) and \(c-1\) removed.</p>
+<ul>
+<li>\(D\) has degree \(12\), \(33\), \(64\), with irreducible factors of degrees \(m(m-1)\) four times and \(m^2\) once. \(\det C_5\) is the Cramer minor of the \(5\times6\) system for \(P\) at \(M=d\), so it equals \(\rho_5(d,c)\) up to the content removed when \(\rho\) was made primitive.</li>
+<li>Each of the four factors of degree \(m(m-1)\) shares a root with exactly one \(S(d+j,c)\), \(j=1,\ldots,4\): these are the shifted pure determinants. The fifth factor is \(X(d,c)\).</li>
+<li>Staircase check: the gcd of the maximal minors of the five padded staircase vectors \(q(M,c)\), \(M=d,\ldots,d+4\), shares with \(D\) a factor of degree \(8\), \(24\), \(48\), that is \(4m(m-1)\). So the staircase degenerates at the roots of the shifted pure determinants. It stays independent at the roots of \(X(d,c)\).</li>
+<li>Take \(A_2\) and \(A_3\) over all five rows \(\nu\) of the adjugate of \(C_5\), which has rank one at a corank-one point and vanishes at a higher-corank point.</li>
+<li>\(\gcd(D,A_2^{(1)},\ldots,A_2^{(5)})\) has no root off \(\{0,1\}\) at \(m=2,3,4\). The same holds for \(A_3\).</li>
+</ul>
+<p>So every root of \(D\) is a corank-one point at which the \(e_2\)-condition fails, and also one at which the \(e_3\)-condition fails. At the roots of \(X(d,c)\) the staircase is independent, so the window has full rank there, for \(m=2,3,4\).</p>
+<p>At the roots of the shifted pure determinants the staircase degenerates. There the lemma says nothing about the window, and those candidates need a separate argument. For \(m\le6\) they are covered by the record's exact minor gcds.</p>
+<p><strong>Conjecture.</strong> conj:cube-tie-single-block-exclusion: for every \(m\ge1\), \(\gcd(D,A_2^{(1)},\ldots,A_2^{(5)})\) and \(\gcd(D,A_3^{(1)},\ldots,A_3^{(5)})\) have no root off \(\{0,1\}\). Either half implies the Forney bound of the confluent tie window, through the lemma and lem:cube-tie-holonomic-staircase, at every \(c_0\) where the staircase vectors at \(M=d,\ldots,d+4\) are independent. At \(m\le4\) that excludes only the roots of the shifted pure determinants.</p>
+<p>The \(A_2\) half has an equivalent row form, at every \(c_0\notin\{0,1\}\) where the staircase vectors \(q(M,c_0)\), \(M=d,\ldots,d+4\), are nonzero and independent. The \(A_2\) half constrains the \(e_2\) block and leaves the \(e_3\) block free. So split the \(e_3\) row, \(T(1+T)^{-5/2}(1+cT)^{-3/2}\), into two rows: the solutions of its coefficient recurrence with initial values \((1,0)\) and \((0,1)\) at \(k=d,d+1\). The resulting \((3m+4)\times(3m+5)\) window has full rank at such \(c_0\).</p>
+<p>This follows from the proof of the lemma, with the \(4\times5\) block matrix \(B'\) of rank four. Its rank drops exactly when the left kernel of \(C_5\) meets the row space of \(B'\). At a point of corank two or more this always happens, since \(2+4&gt;5\). At corank one it is the condition \(A_2=0\).</p>
+<p><strong>What this means.</strong> Where the staircase is independent, a special value would need a root of \(D\) and two further conditions, one per product row. The data show that each fails on its own at every root. There, the Forney bound holds with two conditions to spare, not one.</p>
+<p>The roots of \(X(d,\cdot)\) are covered at \(m\le4\) by a computation that rests on the conjecture. The open candidates are the roots of the shifted pure determinants \(H^{(d+j)}\), \(j=1,\ldots,4\). There the pure block on the columns \(d+j,\ldots,d+j+3m-1\) is singular, and the staircase vector \(q(d+j)\) must be replaced. A pure-kernel basis adapted to that singular block would give the window's rank at these values directly.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 3 of the tie propagation review, the Jacobian criterion at corank-one points. The excess conditions at the candidates are now two explicit polynomials. Each fails on its own at every candidate for \(m\le4\), and that decides the window where the staircase is independent. <strong>Follow-up.</strong> Continuing: the candidates at the shifted pure determinants, where the staircase degenerates.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-single-block-exclusion for \(m\ge5\), and the window at the roots of the shifted pure determinants \(H^{(d+j)}\), \(j=1,\ldots,4\), for every \(m\); or the Forney bound itself for \(m\ge7\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the cone's gaps (1) and (2).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-propagation-candidates (recurrences, normalization of \(q\)); lem:cube-tie-holonomic-staircase (5).</p>
+<p><strong>Verification gate.</strong> One fresh medium reviewer passed the lemma with corrections. It checked:</p>
+<ul>
+<li>\(U=BC_5\), including the index conventions of the script;</li>
+<li>the descent for the rank of \(B\);</li>
+<li>the corank-one criterion;</li>
+<li>that the adjugate-row gcd certifies "corank one and \(A_2\ne0\)" at every root of \(D\);</li>
+<li>the implication of the conjecture and the row form.</li>
+</ul>
+<p>It required:</p>
+<ul>
+<li>the staircase qualifier in the row form and in the conclusions;</li>
+<li>the proof's \(4\times5\) matrix \(B'\) and the corank-two case;</li>
+<li>"two further conditions" without the unproved word "independent";</li>
+<li>the identification of the factors of \(D\), which the script now computes;</li>
+<li>a corrected script header;</li>
+<li>\(c\notin\{0,1\}\) for the final clause.</li>
+</ul>
+<p>Its main objection was that staircase independence was checked only at three values of \(c\). A new run settles it: the staircase degenerates exactly at the roots of the shifted pure determinants. The entry now restricts its conclusions accordingly.</p>
+<p>Status: working proof (lemma); conjecture (checked at \(m=2,3,4\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-s">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 56.27 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 17.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
