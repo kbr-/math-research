@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-forney-review">tie Forney review</a> records that every local datum of the confluent tie window at \(c=0,1,\infty\) is proved. The special values are now exactly the global bound \(\nu_1+\nu_2\ge2m^2+m+4\) for its kernel's Forney indices. No natural augmentation of the window has a monomial determinant.</p>
-<p>Next: develop the Fuchsian bridge. Compute a minimal kernel basis of \(W^c(c)\) exactly for \(m\le3\), and test whether its vectors satisfy a linear differential equation in \(c\) with singular points only at \(0\), \(1\) and \(\infty\). Fuchs's relation between the local exponents and the degree would then be the global identity. In parallel, look for a Christoffel–Darboux identity for two kernel vectors.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The special values of the confluent tie window are exactly the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree). The <a href="#entry-2026-10-07-cube-tie-kernel-basis">tie kernel basis entry</a> shows that a minimal kernel basis is not flat in \(c\), so the first-order Fuchsian bridge fails (ex:cube-tie-kernel-not-flat).</p>
+<p>Next: develop the Christoffel–Darboux lead of the tie Forney review, still on the highest-risk item. Extend the moment form of lem:cube-tie-window-moments to the three extra rows. Then look for an identity expressing a \(2\times2\) minor of the kernel basis, in a suitable column basis, as \(c^x(c-1)^y\) times a constant.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58939,6 +58939,50 @@ For the window there are now the degree counts \(a_m\), \(b_m\) and \(\delta_m\)
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 7.14 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.74 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">12.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-kernel-basis" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-07-cube-tie-forney-review:2" data-claims="ex:cube-tie-kernel-not-flat">
+<h3>7 October 2026 — The confluent tie window's minimal kernel basis is not flat in c and has no visible closed form: the first-order Fuchsian bridge fails</h3>
+<p class="entry-meta">Refutation (m = 1–3) of a first-order connection in c on the kernel of the confluent tie window; the minimal basis is computed exactly. Gap (3), confluent tie window. Tie kernel basis cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree). The <a href="#entry-2026-10-07-cube-tie-forney-review">tie Forney review</a> proposed the Fuchsian bridge.</p>
+<ul>
+<li>If a minimal kernel basis \(N(c)=[u\ v]\) satisfied a first-order system \(N'=NA\) with \(A\) rational and poles only at \(0\), \(1\) and \(\infty\), the degree of \(\det\)-type invariants would follow from the local exponents by Fuchs's relation.</li>
+<li>The local exponents are known from \(a_m\), \(b_m\) and \(\delta_m\).</li>
+</ul>
+<p>The test: compute \(N\) exactly and check whether the kernel is stable under \(d/dc\).</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-forney-criterion, through the Fuchsian strategy. The finite refutation ex:cube-tie-kernel-not-flat: for \(m=1,2,3\), with a minimal polynomial basis \(N\) of the right kernel of \(W^c(c)\), \(W'(c)N(c)\ne0\). So \(N'\) does not lie in the kernel, and the kernel carries no first-order connection \(N'=NA\). The basis entries are irreducible polynomials with large coefficients and no visible product structure.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_kernel_basis.gp (research/results/bmd-20261007-zp/kernel-basis.txt) computes the kernel vectors of the linearized system exactly over \(\mathbb Q\), at the Forney degrees \((3,4)\), \((7,7)\) and \((12,13)\). Its findings:</p>
+<ul>
+<li>\(WN=0\), and the gcd of the \(2\times2\) minors of \(N\) is \(1\), so \(N\) is minimal.</li>
+<li>\(W'N\ne0\) in all three cases.</li>
+<li>The first entries of \(u\) carry powers \(c^{m},c^{m-1},\ldots\). The remaining factors are irreducible, of degree up to \(12\), with coefficients of more than \(30\) digits at \(m=3\).</li>
+<li>The minor of \(N\) on the first two columns is \(c^{2m}\) times an irreducible factor of degree \(5\), \(10\) and \(19\).</li>
+</ul>
+<p>Two runs failed before this one, on a parenthesis and on a row-extraction syntax; both are kept in the session archive.</p>
+<p><strong>What this means.</strong> \(d/dc\) moves the row space: the derivative of \(T^n(1+cT)^{-3/2}\) is \(-\tfrac32T^{n+1}(1+cT)^{-5/2}\), a new family. So a connection would have to live on a larger, \(d/dc\)-stable family of windows, not on this one kernel. A higher-order linear equation in \(c\) for each entry always exists and gives nothing. The Fuchsian bridge in its first-order form is falsified. A version on the \(d/dc\)-closure (windows with exponents \(-3/2-j\)) remains possible but is a different object.</p>
+<p><strong>Bridge follow-up.</strong> This develops bridge 2 of the tie Forney review, Heine–Stieltjes electrostatics. Its first-order form fails, since the kernel is not flat. The higher-order form needs a \(d/dc\)-stable enlargement of the window.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) for \(m\ge7\), still without a mechanism;</li>
+<li>the review's Christoffel–Darboux and Kronecker leads, not yet developed;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-forney-criterion and lem:cube-tie-window-top-degree (the equivalence and the degrees); the tie Forney review (bridge 2).</p>
+<p><strong>Verification gate.</strong> No new argument: a finite refutation checked against its script and output (\(WN=0\), minimality by the gcd of minors, \(W'N\ne0\)). No reviewer was used.</p>
+<p>Status: refutation (of the first-order Fuchsian strategy, finite check).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zp">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 21.26 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">33.00 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">23.64 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.98 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.51 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
