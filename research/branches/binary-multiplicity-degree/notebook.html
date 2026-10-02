@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-reductions-review">tie reductions review</a> reduces the confluent tie window's special values to a \(2\times3\) matrix: the two product rows on the rank-three kernel \(K_3\) of the other rows (lem:cube-tie-two-by-three-reduction). The constant rank of \(K_3\) is checked for \(m\le4\) (check:cube-tie-g-block-rank).</p>
-<p>Next: compute a minimal polynomial basis of \(K_3\) and its splitting degrees for \(m\le4\), and the three minors of \(P\,K_3\) with their degrees and orders at \(0\) and \(1\). Test the rank-three Forney count. The constant rank of \(K_3\) for general \(m\) still needs an argument.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-block-factorization">tie block factorization entry</a> splits the excess-one window's minor gcd into two factors (lem:cube-tie-block-minor-factorization). At \(m=2,3,4\), the rows without the product functionals contribute \(c^{md}(c-1)^{m(m+1)}\) (inferred), and the two product rows on the rank-three kernel only \(c^{4m}(c-1)^2\) (conj:cube-tie-product-rows-gcd).</p>
+<p>Next: attack statement (1), the block without product rows, as an excess-three extension of the pure block. The pure block's orders at \(0\) and \(1\) are proved by unique extreme terms. Compute its gcd directly, and test whether Laplace extremes like the pure block's, applied to all its maximal minors, give exactly \(c^{md}(c-1)^{m(m+1)}\) and no other root. A Forney count for the block, with its top degree from the mirror, may close (1) at every \(m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60365,6 +60365,70 @@ entrywise. At the negative integer \(\lambda=\tfrac{3-p}2\), every row is a poly
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.33 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.22 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-block-factorization" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-reductions-review:3" data-claims="lem:cube-tie-block-minor-factorization conj:cube-tie-product-rows-gcd">
+<h3>8 October 2026 — The tie window's minor gcd factors through its kernel; at m = 2, 3, 4 the two product rows on the rank-three kernel contribute only c^(4m)(c−1)²</h3>
+<p class="entry-meta">Working proof of a block factorization of minor ideals over ℚ[c]; conjecture on the residual factor, exact at m = 2, 3, 4. Gap (3), confluent tie window. Tie block factorization cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item, in the form of the <a href="#entry-2026-10-08-cube-tie-reductions-review">tie reductions review</a>: the two product rows \(P\) on the rank-three kernel \(K_3\) of the other rows \(G\) of the excess-one sub-window \(V\). How do the orders of \(V\)'s minor gcd at \(c=0,1\), namely \(md+4m\) and \(m^2+m+2\), split between \(G\) and \(P\,K_3\)? And how much of the problem is left in \(P\,K_3\)?</p>
+<p><strong>General statement.</strong> lem:cube-tie-block-minor-factorization and conj:cube-tie-product-rows-gcd.</p>
+<p><strong>Block factorization (lem:cube-tie-block-minor-factorization).</strong> Let \(A\) be a principal ideal domain with fraction field \(F\). Let \(V=\begin{pmatrix}G\\P\end{pmatrix}\in A^{(r+s)\times N}\), with \(G\) of rank \(r\) over \(F\) and \(r+s\le N\). Let \(K\in A^{N\times(N-r)}\) be a basis of the free module \(\ker G\cap A^N\). Then
+\[I_{r+s}(V)=I_r(G)\cdot I_s(PK),\]
+where \(I_k\) is the ideal of \(k\times k\) minors. Any finite generating set of \(\ker G\cap A^N\) may replace \(K\). In particular \(\gcd(\text{maximal minors of }V)=\gcd(\text{maximal minors of }G)\cdot\gcd(s\times s\text{ minors of }PK)\).</p>
+<p><em>Proof.</em> By the Smith form, \(G=X\,[\Delta\;0]\,U\) with \(X\in GL_r(A)\), \(U\in GL_N(A)\) and \(\Delta\) diagonal with \(\det\Delta\) generating \(I_r(G)\). The kernel of \(G\) in \(A^N\) is \(U^{-1}\binom{0}{A^{N-r}}\), so we may take \(K=U^{-1}\binom0I\); another basis differs by an element of \(GL_{N-r}(A)\), which preserves \(I_s(PK)\).</p>
+<p>Write \(PU^{-1}=[P_1\;P_2]\) with \(P_2=PK\). Then \(VU^{-1}=\begin{pmatrix}X\Delta&amp;0\\P_1&amp;P_2\end{pmatrix}\), and \(I_{r+s}(V)=I_{r+s}(VU^{-1})\) because \(U\) is invertible over \(A\). A maximal minor omitting one of the first \(r\) columns vanishes, since the top \(r\) rows are then supported on \(r-1\) columns. A maximal minor containing them equals \(\det(X\Delta)\) times an \(s\times s\) minor of \(P_2\).</p>
+<p>Generating sets. A matrix \(K'=KY\), with \(Y\in A^{(N-r)\times t}\), generates \(\ker G\cap A^N\) exactly when \(Y\) maps onto \(A^{N-r}\). This is equivalent to the maximal minors of \(Y\) generating \(A\), and to the existence of \(Z\) with \(YZ=I\).</p>
+<ul>
+<li>Cauchy–Binet gives \(I_s(PK')\subseteq I_s(PK)\).</li>
+<li>Conversely, \(PK=PK'Z\), so \(I_s(PK)\subseteq I_s(PK')\).</li>
+</ul>
+<p>So the two ideals are equal. If \(s&gt;N-r\), both sides of the lemma are zero. \(\square\)</p>
+<p>The constant-row reduction (lem:cube-tie-constant-row-reduction) is the case where \(G\) has constant full rank. In general the lemma separates the rank drops of \(G\) from those of the extra rows on its kernel.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_k3_export.gp writes the rows, scaled by positive integers, to research/results/bmd-20261008-f/k3-m*.m2. research/tools/bmd_tie_k3.m2 then computes, in Macaulay2 over \(\mathbb Q[c]\), a trimmed generating set of \(\ker G\) and all \(2\times2\) minors of \(P\,K\) (research/results/bmd-20261008-f/k3.txt). For \(m=2,3,4\):</p>
+<ul>
+<li>\(\ker G\) has rank \(3\). The trimmed generators have degrees \((5,6,11)\), \((8,8,9)\) and \((13,13,14)\). They are not guaranteed minimal, so these are not splitting degrees.</li>
+<li>The gcd of the \(2\times2\) minors of \(P\,K\) is exactly \(c^{4m}(c-1)^2\): orders \(8,12,16\) at \(0\) and \(2\) at \(1\), with no other factor.</li>
+<li>By the lemma and the excess-one orders (tie excess one entry), \(G\) then contributes \(c^{md}(c-1)^{m(m+1)}\) at \(m=2,3,4\). This is inferred, not computed: \(G\)'s gcd was not computed directly.</li>
+<li>These exponents coincide numerically with the orders of the square \(3m\times3m\) pure block at \(0\) (lem:cube-tie-pure-extreme-coefficients) and at \(1\) (lem:cube-tie-window-order-at-one). The pure block is not a maximal minor of \(G\), which has the extra row \((1+T)^{-3}\) and three more columns, and no argument links the two.</li>
+</ul>
+<p><strong>Conjecture (conj:cube-tie-product-rows-gcd).</strong> For every \(m\ge1\), let \(G\) be the \(c\)-free rows and the rows \(T^n(1+cT)^{-3/2}\) on the columns \(T^d,\ldots,T^{d+3m+3}\), and \(P\) the two product rows. Then:</p>
+<ol>
+<li>the maximal minors of \(G\) have gcd \(c^{md}(c-1)^{m(m+1)}\) up to a constant;</li>
+<li>the \(2\times2\) minors of \(P\,K\), for a basis \(K\) of \(\ker G\cap\mathbb Q[c]^{3m+4}\), have gcd \(c^{4m}(c-1)^2\) up to a constant.</li>
+</ol>
+<p>By the lemma, (1) and (2) together imply conj:cube-tie-excess-one-window with its exponents. Through it they imply full rank of the window off \(\{0,1\}\), which is the Forney bound by lem:cube-tie-window-forney-criterion.</p>
+<p><strong>What this means.</strong> At \(m=2,3,4\), the orders at \(0\) and \(1\) of the highest-risk statement are almost all carried by \(G\), the pure two-point binomial system with the point condition at \(s=1\). The two product rows add only \(c^{4m}(c-1)^2\). Statement (1) remains fully open: its exponents only coincide with the proved orders of the square pure block.</p>
+<p>In our assessment the residual problem (2) is small. Three polynomials, of degrees \(16,21,20\), then \(28,28,29\), then \(45,45,46\), have gcd exactly \(c^{4m}(c-1)^2\). Statement (1) is the rank of a block without product rows.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 3 of the tie reductions review, Grothendieck splitting of the kernel bundle. Its constant rank is now separated, as statement (1), from the product-row degeneracy (2). The trimmed generators are close to balanced at \(m=3,4\), but minimality was not checked. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>statements (1) and (2) of conj:cube-tie-product-rows-gcd for \(m\ge5\), the highest-risk item;</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-two-by-three-reduction and check:cube-tie-g-block-rank (tie reductions review); conj:cube-tie-excess-one-window; lem:cube-tie-pure-extreme-coefficients and lem:cube-tie-window-order-at-one (pure-block orders).</p>
+<p><strong>Verification gate.</strong> The lemma is the Smith form over a PID, with Cauchy–Binet and a right inverse for generating sets. The computation uses all column pairs of a generating set, so by the lemma's last part it does not depend on minimality.</p>
+<p>One fresh-context medium reviewer passed the lemma and the script. It asked for several corrections, all applied:</p>
+<ul>
+<li>the reverse inclusion for generating sets;</li>
+<li>\(G\)'s factor stated as inferred at \(m=2,3,4\);</li>
+<li>the pure-block agreement stated as a coincidence;</li>
+<li>"imply" rather than "are" for the conjecture's relation to conj:cube-tie-excess-one-window;</li>
+<li>removal of the unsupported "classical" remark.</li>
+</ul>
+<p>Status: working proof (block factorization); conjecture with exact evidence at \(m\le4\) (residual gcd).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 20.59 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 3.40 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.78 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
