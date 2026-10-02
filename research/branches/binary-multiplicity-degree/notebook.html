@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-cherry-windows">confluent cherry entry</a> finds the cross limit on one window \([-j,3M-1-j]\), \(2\le j\le M+1\), at nine arcs. It proves that this would put confluent-cherry points outside \(\overline K\).</p>
-<p>Next: prove conj:cube-confluent-cherry-windows for caterpillar clusters. Expand the cross block by Cauchy–Binet over the doubled family \(w^{-1}\langle\psi_q,\partial_\beta\psi_q\rangle\), \(\psi=(1+\beta w)^{-1/2}\), against the \(E\)-block \((U_\varepsilon-1)V\). Use the unique leading monomials of confluent alternants, with node factors \((n'-n)\beta^{n+n'-1}\). Find the window valuations, then prove an assignment bound and a non-cancelling sum of minimal terms, as in thm:cube-cherry-caterpillar-windows. A route review is due after this cycle.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). Five research cycles have passed since the <a href="#entry-2026-10-07-cube-cherry-route-review">cherry route review</a>: the cherry theorem, the two-point window, the special cancellations, and the two confluent cherry entries. The finisher allows one more.</p>
+<p>Next: a route review of the cone route for (K). Take stock of gaps (1) and (3) after these cycles. Rank the open items: the confluent cherry proof (conj:cube-confluent-cherry-expansion), ties and cherries above a double root, a displaced index inside the lower cluster, the three-root shape, the confluent tie window \(m\ge7\), the two-cherry and nested cherry types, the three-root levels and the two-displacement types. Then choose leads for the highest-risk item. The review should also ask whether the growing list of types calls for a uniform step lemma, a cherry or tie step over any base with the invariant (H), instead of type-by-type windows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57256,6 +57256,75 @@ So the roots \(a_n\), \(n&lt;\rho\), are singleton levels. At level \(V\), the p
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-confluent-cherry-expansion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-confluent-cherry-expansion">
+<h3>7 October 2026 — Confluent cherries: in the expansion V, w^(−1)V, E′V the least Cauchy–Binet terms never cancel and give every window valuation exactly</h3>
+<p class="entry-meta">Conjecture with exact agreement at all 26 windows of nine caterpillar arcs (M = 2, 3, 4); the doubled-node expansion cancels at its minimal terms, with a defect matching a heuristic count. Gap (3), confluent cherry. Confluent cherry expansion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): a proof of conj:cube-confluent-cherry-windows for caterpillar clusters, the step proposed by the <a href="#entry-2026-10-07-cube-confluent-cherry-windows">confluent cherry entry</a>. The proof of thm:cube-cherry-caterpillar-windows needs an expansion whose terms have exact valuations and whose minimal terms do not cancel. Which expansion of the confluent cross block has this property?</p>
+<p><strong>Setting.</strong> Up to \(w^{-\lambda}\), the cross block is spanned by \(V_q\), \(w^{-1}V_q\) and \(Q_q=(U_\varepsilon-1)V_q\), for \(q\le M\). Here \(\beta_q\) has valuation \(w_x+v_q\), with \(0=v_1&lt;\cdots&lt;v_M\), and \(\varepsilon\) has valuation \(w_e\). The windows are \(\Lambda'_j=[-j,3M-1-j]\), \(2\le j\le M+1\), and \(k=M+1-j\).</p>
+<p><strong>Two expansions.</strong></p>
+<ol>
+<li><em>Doubled.</em> \(\mathrm{span}\{V,w^{-1}V\}=w^{-1}\langle\psi_q,\partial_\beta\psi_q\rangle\), with \(\psi=(1+\beta w)^{-1/2}\). Cauchy–Binet over the confluent alternants of this doubled family, against the block \(E\), gives terms with exact valuations when their gated Toeplitz minors (here \(r\ge1\)) are nonzero, since the leading monomials are unique. But its minimal terms cancel at every window with \(k\ge1\). research/tools/bmd_confluent_cherry_windows.gp (confluent-cherry-windows.txt) compares the least term \(F_j\) with the exact valuation. At \(j=M+1\) they agree. For \(k\ge1\) the exact valuation is \(F_j+k(w_x+w_e)+\sum_{i\le k}v_i\) at all \(17\) such windows (nine arcs, \(M=2,3,4\)). The minimal terms number \(3^k\).</li>
+<li><em>Reduced.</em> Replace \(Q_q\) by \(E'_q=Q_q-c_1\varepsilon\,w^{-1}V_q=\bigl((1+\varepsilon/w)^{-\lambda}-1-c_1\varepsilon/w\bigr)V_q\). Its Toeplitz factor is \(c_r\varepsilon^r\) for \(r\ge2\) only. The rows \(V\), \(w^{-1}V\), \(E'V\) span the same space. Cauchy–Binet over \((N_1,N_2,N_3)\) has three parts: unit rows at the columns \(N_1\); unit rows at the columns \(N_2-1\); and the Toeplitz block on the remaining columns \(\Lambda_3\). Admissibility requires \(n_a\ge\max(t_a+2,0)\). Every alternant is an ordinary one, \(a_{N}(\beta)\), with a unique leading monomial for a caterpillar. A term has the valuation below whenever its gated Toeplitz minor \(\det[c_{n_a-t_b}]_{n_a-t_b\ge2}\) is nonzero. Nonvanishing at the least \(N_3\) is not proved; the agreement at \(26\) windows is consistent with it. The term valuation is
+\[T=f(N_1)+f(N_2)+f(N_3)+w_e\bigl(\Sigma N_3-\Sigma\Lambda_3\bigr),\qquad f(N)=\sum_in_{(i)}\,(w_x+v_{M+1-i}).\]</li>
+</ol>
+<p>A heuristic accounting of the cancellation in the doubled expansion follows. It rests on \(F'_j=\operatorname{val}P\), which is the conjecture itself, checked only numerically. At a window with \(k\ge1\), the doubled expansion's least terms put \(\varepsilon\)-order \(1\) on each of the \(k\) complement columns, through the \(c_1\) part of \(Q\). In the reduced expansion that part has moved into the \(S\)-block, and the \(k\) complement columns pay \(\varepsilon^2\) and one more power of \(\beta\). This matches the observed defect \(k(w_x+w_e)+\sum_{i\le k}v_i\) at all \(17\) windows; it is not a proof.</p>
+<p><strong>General statement.</strong> conj:cube-confluent-cherry-expansion. For a caterpillar cluster with \(M\ge2\) and any rates:</p>
+<ul>
+<li>at every window \(\Lambda'_j\), \(2\le j\le M+1\), the minimal terms of the reduced expansion add to a nonzero coefficient, so \(\operatorname{val}P_{\Lambda'_j}=F'_j\), the least term valuation;</li>
+<li>every non-window \(3M\)-set has all its terms above \(\min_jF'_j\).</li>
+</ul>
+<p>With the implication proved in the confluent cherry entry, this gives contact avoidance at every confluent-cherry point over a caterpillar.</p>
+<p><strong>Test.</strong> research/tools/bmd_confluent_cherry_windows2.gp (research/results/bmd-20261007-za/confluent-cherry-windows2.txt) computes \(F'_j\) by brute force over \((N_1,N_2)\), with the least admissible \(N_3\). It compares \(F'_j\) with the exact \(P\)-adic valuation of the window coordinate, at nine caterpillar arcs:</p>
+<ul>
+<li>\(M=2\): \((w_x,w_e)=(1,1),(2,1),(1,3)\);</li>
+<li>\(M=3\): \((1,1),(1,3),(3,1),(1,2)\);</li>
+<li>\(M=4\): \((1,1),(2,1)\);</li>
+<li>various inner valuations.</li>
+</ul>
+<p>All \(26\) windows agree. The numbers of minimizing pairs \((N_1,N_2)\), each with its least \(N_3\), are \(2^{M-1}3^{k}\): \(2,6\); \(4,12,36\); \(8,24,72,216\). The exactness of the rational specialization is as in the confluent cherry entry, far above every reported value. The second part is untested at the level of terms. The earlier entry's five caterpillar arcs (\(M=2,3\)) found no non-window set reaching the minimum valuation within the computed range. \(M=4\) was not tested.</p>
+<p><strong>Toward a proof.</strong> The structure parallels thm:cube-cherry-caterpillar-windows.</p>
+<ul>
+<li>The \(x\)-degree of the least terms at a window is constant over the choices. The sets \(N_1\), \(N_2-1\) and \(\Lambda_3\cap[-1,\infty)\) partition \([-1,3M-1-j]\). So \(\Sigma N_1+\Sigma N_2+\Sigma N_3=\Sigma[-1,3M-1-j]+M+\binom{j-1}2+2k\) when nothing collides.</li>
+<li>The inner cost \(\sum_iE_iV_i\) then decides, as for the cherry, with \(E_i\) now the excess of three sets.</li>
+<li>The counts \(2^{M-1}3^k\) suggest independent local choices again: a binary choice for each of \(M-1\) pairs of the \(N_1\)/\(N_2\) columns, and a ternary one for each complement column. The sum of minimal terms should then factor, as the \(\delta_i\)-sum did.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of conj:cube-confluent-cherry-expansion: the three-set assignment bound, the minimal family and its factorized sum, and the non-window bound;</li>
+<li>the other types of the special cancellations, and the confluent tie window \(m\ge7\);</li>
+<li>in gap (1), the two-cherry and nested cherry types, the three-root levels and the two-displacement types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-confluent-cherry-windows (setting, implication); thm:cube-cherry-caterpillar-windows (method); thm:cube-doubled-node-identity.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the spans: the reduction is a unimodular row operation, so the minors agree in both expansions;</li>
+<li>both scripts against the entry;</li>
+<li>the counts and the defect at all \(17\) windows, by hand;</li>
+<li>the \(x\)-degree formula.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the term valuations need nonzero gated Toeplitz minors, which are not proved;</li>
+<li>the account of the cancellation is heuristic;</li>
+<li>the non-window part is untested at the level of terms, and \(M=4\) not at all;</li>
+<li>the minimal terms are counted as pairs \((N_1,N_2)\).</li>
+</ul>
+<p>Status: conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-za">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 56.63 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 38.98 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 22.17 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
