@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-exponent-review">tie exponent review</a> finds that the confluent tie window's lack of special values is not tied to \(\lambda=3/2\). At \(m=2\) the window with the exponent \(\lambda\) free loses rank only on \(c\in\{0,1\}\) and eight integer lines (check:cube-tie-window-two-parameter). As \(\lambda\to\infty\) its consecutive minors become confluent Vandermonde determinants (lem:cube-tie-window-exponential-limit). The Forney bound becomes conj:cube-tie-window-uniform-exponent.</p>
-<p>Next: compute the minimal right kernel basis of \(W(\lambda,c)\) over \(\mathbb Q(\lambda)[c]\) at \(m=2,3\), with \(\lambda\) symbolic, and look for Pochhammer-product closed forms that contiguity in \(\lambda\) could prove. Failing that, test the \(\lambda\)-direction Forney count at \(m=3\). The cherry over a double root, now at local sums, is the lower-risk parallel line.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item: conj:cube-tie-window-uniform-exponent, which is the Forney bound at \(\lambda=\tfrac32\). The <a href="#entry-2026-10-08-cube-tie-pair-minors">tie pair minors entry</a> closes closed forms and two-minor resultants at \(m=2\) (ex:cube-tie-pair-minors-not-uniform). It opens a Lucas reduction: \(W(\tfrac32,c)\equiv W(\tfrac{3-p}2,c)\pmod p\) for \(p&gt;d+3m+4\), a window of binomial polynomials.</p>
+<p>Next: test the reduced windows. For \(m\le4\) and several primes \(p\), compute the gcd of the maximal minors of \(W(\tfrac{3-p}2,c)\) over \(\mathbb F_p[c]\) and its roots off \(\{0,1\}\). If none appear, look for a lattice-path (Lindström–Gessel–Viennot) or Krawtchouk-type formula for these polynomial windows, valid for every integer exponent, that would prove their absence of special values.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59936,6 +59936,53 @@ for the nodes \(x=-1,-c,-2,-1-c\) with multiplicities \(\mu=2m,m,1,2\).</p>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-pair-minors" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-exponent-review:2" data-claims="ex:cube-tie-pair-minors-not-uniform">
+<h3>8 October 2026 — The tie window in two parameters: its quotient minors have irreducible mixed parts, and no pair of minors excludes special values uniformly in λ</h3>
+<p class="entry-meta">Refutation at m = 2 of two mechanisms for the tie window's special values: Pochhammer closed forms of the quotient minors, and a two-minor resultant in λ. Gap (3), confluent tie window. Tie pair minors cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window, now restated as conj:cube-tie-window-uniform-exponent. The <a href="#entry-2026-10-08-cube-tie-exponent-review">tie exponent review</a> proposed looking for closed forms with \(\lambda\) symbolic. Two mechanisms were tested.</p>
+<ul>
+<li>Do the canonical quotient minors \(D_S/G\) factor into Pochhammer products in \(\lambda\), which contiguity in \(\lambda\) could prove?</li>
+<li>Failing that, does some pair of them have a resultant in \(c\) whose roots in \(\lambda\) lie only at exceptional values? Then that pair alone would exclude special values at every other \(\lambda\).</li>
+</ul>
+<p><strong>General statement.</strong> conj:cube-tie-window-uniform-exponent, tested through its two-parameter structure. The refutation ex:cube-tie-pair-minors-not-uniform is as follows. At \(m=2\), each quotient minor \(D_S/G\) of \(W(\lambda,c)\) is \(c^a\prod_k(\lambda-k)^{b_k}\cdot Q_S(\lambda,c)\), with \(Q_S\) irreducible of bidegree between \((4,6)\) and \((10,14)\). For each tested pair of quotient minors, \(\operatorname{Res}_c\) has irreducible factors in \(\lambda\) of degree \(8\) to \(49\). At their real roots, for instance \(\lambda\approx-1.1371\), the two minors share a finite root in \(c\) off \(\{0,1\}\), while the window keeps full rank there.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_quotient_minors.gp (research/results/bmd-20261008-b/quotient-minors.txt) computes all \(55\) quotient minors at \(m=2\) exactly in \(\mathbb Q[\lambda,c]\) and factors them.</p>
+<ul>
+<li>Every one has the shape above. Its mixed factor is a single irreducible polynomial: \((4,6)\) for the columns \(\{10,11\}\) dropped, \((5,7)\) for \(\{9,11\}\), and up to \((10,14)\). So neither the minors nor the Cramer kernel entries, which are ratios of minors, are Pochhammer products.</li>
+<li>For the pairs \((\{9,11\},\{10,11\})\), \((\{1,2\},\{10,11\})\) and \((\{1,2\},\{1,3\})\), stripped of the powers of \(c\) and \(c-1\), the resultants in \(c\) have \(\lambda\)-degrees \(46\), \(157\) and \(428\). Besides linear factors at integers between \(-7\) and \(4\) and at \(-\tfrac12\) and \(-\tfrac32\), they have irreducible factors of \(\lambda\)-degree \(8\) and \(15\), then \(49\), then \(21\) and \(38\).</li>
+<li>None of these shares a root with the leading coefficients in \(c\) (gcd degree \(0\)). At the real roots \(\lambda\approx-1.1371,-1.1448,-5.0000,-4.4719,-6.0011\) the closest pair of \(c\)-roots of the two minors differs by less than \(10^{-14}\). So the common roots are finite.</li>
+<li>By check:cube-tie-window-two-parameter the window has full rank at these \(\lambda\) for every \(c\notin\{0,1\}\). The third minor separates.</li>
+</ul>
+<p><strong>What this means.</strong> At \(m=2\), the absence of special values at a general non-integer \(\lambda\) needs at least three minors jointly. That is the expected codimension three of the maximal-minor locus of a \((3m+3)\times(3m+5)\) matrix. The coprimality of two explicit minors, \(P_m\) and \(Q_m\) of the special-values review, held at \(\lambda=\tfrac32\) for \(m\le6\). Any proof built on a pair would therefore use the value \(\tfrac32\), which the uniform evidence makes unlikely to be the mechanism. Closed-form routes through single minors or pairs are closed at \(m=2\). What remains is the kernel, or the whole ideal of minors.</p>
+<p><strong>A new route: Lucas reduction to integer exponents.</strong> Let \(p&gt;d+3m+4\) be prime. Every entry of \(W(\lambda,c)\) in a column \(k&lt;p\) is a polynomial in \(\lambda\) with coefficients in \(\mathbb Z_{(p)}[c]\), since \(k!\) is a \(p\)-unit. Also \(-\tfrac32\equiv\tfrac{p-3}2\pmod p\). Hence
+\[W(\tfrac32,c)\equiv W\bigl(\tfrac{3-p}2,c\bigr)\pmod p\]
+entrywise. At the negative integer \(\lambda=\tfrac{3-p}2\), every row is a polynomial: \((1+T)^{(p-5)/2}T^i\), \((1+cT)^{(p-3)/2}T^n\), \((1+T)^{p-3}\), and so on.</p>
+<p>Suppose \(c_0\notin\{0,1\}\) is a special value at \(\lambda=\tfrac32\). Then \(c_0\) is algebraic, and for all but finitely many \(p\) it reduces, at a prime above \(p\), to a special value of the polynomial window over \(\overline{\mathbb F}_p\) that is not \(0\) or \(1\).</p>
+<p>So the following would suffice: for infinitely many primes \(p\), the windows of the binomial polynomials \(W(\tfrac{3-p}2,c)\) have no special values off \(\{0,1\}\) over \(\overline{\mathbb F}_p\). Windows of coefficients of products of powers of linear forms are classical objects. They are lattice-path (Lindström–Gessel–Viennot) and Krawtchouk-type determinants, where explicit formulas are more likely. At \(m=2\), check:cube-tie-window-two-parameter already shows that over \(\mathbb Q\) the negative-integer windows with \(\lambda\le-5\) have no special values. The characteristic-\(p\) version, with \(p\) tied to the exponent, is untested.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the tie exponent review, zero coprimeness. The quotient-minor ideal is supported on \(c(c-1)=0\) at \(m=2\), but no pair of its generators shows this uniformly. <strong>Follow-up.</strong> Continuing: the third generator is essential.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-window-uniform-exponent and the Forney bound at \(\lambda=\tfrac32\) for \(m\ge7\), the highest-risk item;</li>
+<li>the Lucas-reduced windows in characteristic \(p\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> check:cube-tie-window-two-parameter and lem:cube-tie-window-exponential-limit, from the tie exponent review; lem:cube-tie-window-forney-criterion.</p>
+<p><strong>Verification gate.</strong> No new lemma. This is a finite refutation by exact factorization and exact resultants. The finiteness of the common roots was checked twice: against the leading coefficients (exact gcd) and numerically at one real root per factor. The Lucas congruence is the standard reduction of \(\binom xk\) for a \(p\)-integral \(x\) and \(k&lt;p\). It is stated as a route, not registered. No reviewer was used.</p>
+<p>Status: refutation (finite, at \(m=2\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-b">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 51.66 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 43.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.63 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 23.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
