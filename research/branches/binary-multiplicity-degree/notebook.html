@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-order-at-one">tie window at c = 1 entry</a> proves \(b_m=m^2+m+2\) and the pure block's order \(m(m+1)\) at \(c=1\) (lem:cube-tie-window-order-at-one), through the substitution \(u=T/(1+T)\). This settles the numerical part of the two-point window factorization. By lem:cube-tie-window-forney-criterion, the special values of the confluent tie window vanish iff the window kernel's Forney indices sum to \(\delta_m-a_m-b_m\). \(a_m\) and \(b_m\) are now proved.</p>
-<p>Next: \(\delta_m\), the top degree in \(c\) of the maximal minors (conjectured \(md+3m^2+6m+6\)), by a coordinate change at \(c=\infty\) and a unique extreme term. Then the Forney lower bound \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\), the last step for the special values.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-top-degree">tie top-degree entry</a> completes the three degree counts of the confluent tie window: \(a_m=m\binom m2+4m\), \(b_m=m^2+m+2\) and \(\delta_m=m\binom m2+3m^2+6m+6\). So its special values vanish iff the Forney indices of its right kernel sum to \(2m^2+m+4\) (lem:cube-tie-window-top-degree).</p>
+<p>Next: prove \(\nu_1+\nu_2\ge2m^2+m+4\), the highest-risk step. Equivalently, show that the window has no polynomial kernel vectors below the balanced degrees. Kernel vectors are functionals on the window's coefficients that annihilate the five row families. Use the substitution \(u=T/(1+T)\) and the mirror \(T\mapsto T/c\) to write them as polynomial type II Hermite–Padé forms, and look for a degree bound from their behaviour at \(c=0\), \(1\) and \(\infty\) together.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58633,6 +58633,73 @@ The \(r=1\) term cancels, and the \(r=2\) coefficient is \(b_2/b_1-b_1=-\tfrac54
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 41.85 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-top-degree" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-tie-window-top-degree">
+<h3>7 October 2026 — The confluent tie window's top degree in c is m·binom(m,2)+3m²+6m+6; its special values are now exactly the statement that its kernel's Forney indices sum to 2m²+m+4</h3>
+<p class="entry-meta">Working proof of the top degree in c of the confluent tie window's maximal minors for every m, by the mirror substitution T ↦ T/c. This completes the three degree counts of the Forney criterion. Gap (3), confluent tie window. Tie top-degree cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. lem:cube-tie-window-forney-criterion reduces the special values of the confluent tie window to the inequality \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\). Here \(a_m\) and \(b_m\) are proved (lem:cube-tie-window-generic-rank and lem:cube-tie-window-order-at-one). The remaining count is \(\delta_m\), the largest degree in \(c\) of a maximal minor. Can the extreme-term method of \(c=0\) be mirrored at \(c=\infty\)?</p>
+<p><strong>Setting.</strong> As in lem:cube-tie-window-generic-rank: \(d=\binom m2\), the window \(W^c(c)\) on \(T^d,\ldots,T^{d+3m+4}\), and the rows \(f_i\), \(g_n\), \(R_1,R_2,R_3\). Put \(b_r=\binom{-3/2}r\), \(\beta_r=\binom{-5/2}r\), \(t=1/c\).</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-top-degree. For every \(m\ge1\), every maximal minor of \(W^c(c)\) has degree at most \(\delta_m=md+3m^2+6m+6\) in \(c\). The minor on the last \(3m+3\) columns has exactly this degree. Hence \(\delta_m-a_m-b_m=2m^2+m+4\). By lem:cube-tie-window-forney-criterion, conj:cube-confluent-tie-window-full-rank at \(m\) is equivalent to \(\nu_1+\nu_2=2m^2+m+4\), that is, to \(\nu_1+\nu_2\ge2m^2+m+4\) for the Forney indices of the window's right kernel.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Mirror.</em> For a row \(F\), put \(\tilde F(T)=F(T/c)\). Then \([T^k]\tilde F=c^{-k}[T^k]F\), so the minor on a column set \(S\) satisfies \(D_S(F)=c^{\Sigma S}D_S(\tilde F)\). Pulling the powers \(c^{-i}\), \(c^{-n}\) and \(c^{-1}\) out of \(\tilde f_i\), \(\tilde g_n\) and \(\tilde R_3\) gives
+\[D_S(c)=c^{E_S}\hat D_S(t),\qquad E_S=\Sigma S-\tbinom{2m}2-d-1,\]
+where \(\hat D_S\) is the minor of the rows \(h_i=T^i(1+tT)^{-5/2}\) (\(i&lt;2m\)), \(q_n=T^n(1+T)^{-3/2}\) (\(n&lt;m\)), \(\hat R_1=(1+tT)^{-3}\), \(\hat R_2=(1+T)^{-3/2}(1+tT)^{-3/2}\) and \(\hat R_3=T(1+T)^{-3/2}(1+tT)^{-5/2}\). So \(\deg_cD_S=E_S-\operatorname{ord}_t\hat D_S\) when \(D_S\ne0\). Every entry of \(\hat D_S\) is a polynomial in \(t\).</li>
+<li><em>The column-scaled rows.</em> The coefficient of \(T^k\) in \(h_i\) is \(\beta_{k-i}t^{k-i}\), and in \(\hat R_1\) it is \(\binom{-3}kt^k\). Expand \(\hat D_S\) along these \(2m+1\) rows. Taking \(t^k\) out of column \(k\) and \(t^{-i}\) out of row \(h_i\), the block on \(K\subset S\) is \(t^{\Sigma K-\binom{2m}2}\) times the constant minor on \(K\) of \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \((1+T)^{-3}\). The least \(\Sigma K\) occurs only for \(K\) the \(2m+1\) smallest elements of \(S\).</li>
+<li><em>The other rows.</em> Subtract \(\sum_{r&lt;m}b_rt^rq_r\) from \(\hat R_2\) and \(\sum_{r\le m-2}\beta_rt^rq_{r+1}\) from \(\hat R_3\). This leaves \(\hat R_2'=\sum_{r\ge m}b_rt^rT^r(1+T)^{-3/2}\) and \(\hat R_3'=\sum_{r\ge m-1}\beta_rt^rT^{r+1}(1+T)^{-3/2}\). Then put
+\[\hat R_2''=\frac{\hat R_2'}{b_m}-\frac{t\,\hat R_3'}{\beta_{m-1}}=\sum_{r\ge m+1}\Bigl(\frac{b_r}{b_m}-\frac{\beta_{r-1}}{\beta_{m-1}}\Bigr)t^rT^r(1+T)^{-3/2}.\]
+The \(r=m\) term cancels, and the \(r=m+1\) coefficient is \(\frac{m+3/2}{m(m+1)}\ne0\). The subtractions use only the \(q\) rows, which belong to the complementary row set, and leave the minors unchanged. The scaling of \(\hat R_2'\) multiplies every minor by \(1/b_m\). So the complementary block, on the \(m+2\) columns \(S\setminus K\), has \(t\)-order at least \((m-1)+(m+1)=2m\). Its \(t^{2m}\) coefficient is the minor of \(q_0,\ldots,q_{m-1}\), \(\beta_{m-1}T^m(1+T)^{-3/2}\) and \(\frac{m+3/2}{m(m+1)}T^{m+1}(1+T)^{-3/2}\). These span \((1+T)^{-3/2}\mathrm{Pol}_{&lt;m+2}\).</li>
+<li><em>Bound.</em> So \(\operatorname{ord}_t\hat D_S\ge\Sigma K_{\min}-\binom{2m}2+2m\). Hence \(\deg_cD_S\le\Sigma(S\setminus K_{\min})-d-1-2m\), where \(S\setminus K_{\min}\) is the set of the \(m+2\) largest elements of \(S\). This is greatest when these are the last \(m+2\) window columns, \(d+2m+3,\ldots,d+3m+4\). That gives
+\[\deg_cD_S\le(m+2)d+\tfrac{(m+2)(5m+7)}2-d-1-2m=md+3m^2+6m+6 .\]</li>
+<li><em>Equality.</em> Let \(S\) be the last \(3m+3\) columns. The lowest term is a single Laplace term. Its first factor is the window of \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \((1+T)^{-3}\) on \(2m+1\) consecutive columns. That is nonzero by thm:cube-two-exponent-window with \(a=5/2\), \(n=2m\), \(b=3\), \(p=1\). Its second factor is a window of \((1+T)^{-3/2}\mathrm{Pol}_{&lt;m+2}\) on \(m+2\) consecutive columns, which is \(\pm s_{(k_0^{m+2})}(1^{3/2})\ne0\) with \(k_0=d+2m+3\), the first of the last \(m+2\) columns, by Jacobi–Trudi and hook-content, as in lem:cube-tie-pure-extreme-coefficients.</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_tie_top_degree.gp (research/results/bmd-20261007-zn/top-degree.txt) gives the degree of the last-columns minor as \(15,32,60,102,161,240=md+3m^2+6m+6\) for \(m=1,\ldots,6\). The maxima over all maximal minors for \(m\le4\) agree, in research/results/bmd-20261007-zl/forney.txt.</p>
+<p><strong>What changes.</strong> The three degree counts are proved for every \(m\):</p>
+<ul>
+<li>\(a_m=md+4m\) at \(c=0\);</li>
+<li>\(b_m=m^2+m+2\) at \(c=1\);</li>
+<li>\(\delta_m=md+3m^2+6m+6\) at \(c=\infty\).</li>
+</ul>
+<p>The counts at \(0\) and \(\infty\) come from a unique extreme Laplace term after reducing the extra rows. The count at \(1\) comes from a unique extreme Cauchy–Binet term after the substitution \(u=T/(1+T)\). So the special values of the confluent tie window, the open part of the highest-risk item, are now equivalent to one statement about the kernel: its Forney indices sum to at least \(2m^2+m+4\). Equivalently, by Forney's duality, the window's row space has degree \(2m^2+m+4\) as a rational subspace.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(\nu_1+\nu_2\ge2m^2+m+4\), the remaining part of conj:cube-tie-window-balanced-kernel;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-forney-criterion; lem:cube-tie-window-generic-rank (the analogous reduction); lem:cube-tie-pure-extreme-coefficients (hook-content); thm:cube-two-exponent-window (statement and conditions).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked all of the following by hand:</p>
+<ul>
+<li>the mirror and its powers of \(c\);</li>
+<li>the Laplace step;</li>
+<li>the reductions, including \(m=1\), and the coefficient with its sign;</li>
+<li>the arithmetic of the bound;</li>
+<li>the equality case and the theorem's conditions;</li>
+<li>the consequence;</li>
+<li>the script.</li>
+</ul>
+<p>It found no mathematical error and no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>\(k_0\) is defined;</li>
+<li>the degree formula is stated for nonzero minors;</li>
+<li>the constant \(1/b_m\) is named;</li>
+<li>the \(c=1\) count is attributed to its Cauchy–Binet term.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 16.93 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 36.05 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">14.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.23 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
