@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the two-double-root points. The <a href="#entry-2026-10-07-cube-second-double-root">second double root entry</a> proves that the leading coefficient of a double root over a cluster containing another double root is a Birkhoff determinant \(c\prod(y-y')^4\prod(y-B)^8\). The step itself (conj:cube-second-double-root-step) is confirmed by exact valuations.</p>
-<p>Next: prove the full factorization of \(\Gamma\), for all orders in \(x\), as the data at \(M\le2\) indicate. That gives the step over degenerating clusters. Then classify the cone's two-double points as \(q\to0\), by solving \(F(q^k)=F(q^l)\) for \(r\) on \(\ell_{ij}\), and check the column slack along their chains.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-second-double-root-step">second double-root step entry</a> proves the step for every base with (H), so double roots can be stacked in chains.</p>
+<p>Next: classify the cone's two-double limits as \(q\to0\), from \(r=q^k+P_{ij}(q^l)/D\) and \(B=-P_{ij}(q^k)P_{ij}(q^l)/D\), \(D=q^k+q^l-q^i-q^j\). Determine where \(B\) sits relative to the chain: on its own level, on the level of \(A\), or inside a cluster with \(A\). Then cover the chain types by the double-root steps, and list what remains.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -56361,6 +56361,82 @@ plus higher order. The remaining rows then form a Birkhoff matrix with orders \(
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-second-double-root-step" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-second-double-root-step">
+<h3>7 October 2026 — Second double-root step proved for degenerating clusters: every cross minor is divisible by Π(y−y′)⁴·Π(y−B)⁸</h3>
+<p class="entry-meta">Working proof for every M and every base with the chain invariant, removing the degenerate-cluster gap of the previous entry. Gap (3), two-double-root points. Second double-root step cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-second-double-root">second double root entry</a> proved the step for clusters of fixed shape and left conj:cube-second-double-root-step open for degenerating clusters. Those are the clusters the cone actually produces, since a caterpillar below a double root degenerates. The missing input was that all minors of the cross block carry the node factors, not only the leading one.</p>
+<p><strong>Setting.</strong> \(\lambda=3/2\). \(G\) is the matrix whose rows are the coefficients of \((1+T)\varphi_{y_s}\) and \((1+T)T\varphi_{y_s}\) (\(s\le M\)), and \(T^i\chi_B\) (\(i\le4\), \(\chi_B=(1+BT)^{-7/2}\)). Put \(P(y,B)=\prod_{s&lt;t}(y_t-y_s)^4\prod_s(y_s-B)^8\) and \(\psi_y=(1+yT)^{1/2}\).</p>
+<p><strong>General statement.</strong> thm:cube-second-double-root-step. Every maximal minor of \(G\), on any column set, is divisible by \(P\). Consequently conj:cube-second-double-root-step holds: a double root placed above a cluster \(C\) that contains a double root \(B\) and satisfies the invariant (H) with \(\max L\le R_C-1\) gives (H) for the extended rows of \(C\cup\{A\}\) with \(L'=L\cup\{\max L+1,\ldots,\max L+2M_C+2\}\). No condition is imposed on the shape of \(\tilde C\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>One family at each node.</em> \(\langle\varphi_y,T\varphi_y,T^2\varphi_y\rangle=\langle\psi_y,\partial\psi_y,\partial^2\psi_y\rangle\) (lem:cube-multiple-node-identity, \(r=3\)). Explicitly,
+\[\varphi_y=\psi_y-4y\,\partial\psi_y-4y^2\partial^2\psi_y,\qquad T\varphi_y=2\partial\psi_y+4y\,\partial^2\psi_y,\qquad T^2\varphi_y=-4\partial^2\psi_y.\]
+Hence the two rows at \(y\) are \(K(y)\cdot(\psi_y,\partial\psi_y,\partial^2\psi_y)^{\mathsf T}\), with
+\[K(y)=\begin{pmatrix}1&amp;2-4y&amp;4y-4y^2\\0&amp;2&amp;4y-4\end{pmatrix}\]
+polynomial in \(y\). The \(B\)-rows are \(\langle\partial^i\psi_B:i\le4\rangle\), as in lem:cube-two-double-leading-birkhoff. The change from \(T^i\chi_B\) to \(\partial^i\psi_B\) goes through \(T^i(1+BT)^{4-i}\chi_B\): it is a matrix with polynomial entries and constant determinant \(\prod_i(-1)^i(-\tfrac12)_i\ne0\). So divisibility transfers from the Birkhoff minors back to the minors of \(G\).</li>
+<li><em>Expansion.</em> By Cauchy–Binet at each simple node, every minor of \(G\) on a column set \(S\) is a sum over choices \(E_s\subset\{0,1,2\}\), \(|E_s|=2\), of \(\prod_s\det K(y_s)_{E_s}\) times the Birkhoff minor on \(S\) of the rows \(\partial^e\psi\) at \(y_s\) (\(e\in E_s\)) and at \(B\) (\(e\le4\)), up to the constants \(\binom{1/2}m\).</li>
+<li><em>Divisibility by \((y_s-B)^8\).</em> Fix the other nodes and use Taylor's formula at \(B\), modulo the rows at \(B\). For \(e_1&lt;e_2\) in \(E_s\), the row \(e\) is \((y_s-B)^{5-e}\bigl[\partial^5/(5-e)!+(y_s-B)\partial^6/(6-e)!+\cdots\bigr]\). Subtract \((y_s-B)^{e_2-e_1}(5-e_2)!/(5-e_1)!\) times row \(e_2\) from row \(e_1\). This removes the \(\partial^5\)-term of row \(e_1\), which becomes divisible by \((y_s-B)^{6-e_1}\). These are row operations with polynomial coefficients, valid on every column restriction. So the Birkhoff minor is divisible by \((y_s-B)^{(5-e_2)+(6-e_1)}\), and \((5-e_2)+(6-e_1)\ge8\) for every 2-subset of \(\{0,1,2\}\) (it equals \(10\), \(9\), \(8\) for \(\{0,1\}\), \(\{0,2\}\), \(\{1,2\}\)). Each term is divisible, so the minor of \(G\) is.</li>
+<li><em>Divisibility by \((y_t-y_s)^4\).</em> Write \(G=G''U\), where \(U\) is the unitriangular multiplication by \((1+T)\). The rows of \(G''\) are \(\langle\psi'_y,\partial\psi'_y\rangle\) at each simple node, for \(\psi'=(1+yT)^{-1/2}\), and \((1+T)^{-1}T^i\chi_B\). The change \((\varphi,T\varphi)\to(\psi',\partial\psi')\) has constant determinant \(-\tfrac12\) (thm:cube-doubled-node-identity). By Cauchy–Binet, each minor of \(G\) is \(\sum_{S'}G''(S')U(S',S)\), so it suffices to treat the minors of \(G''\). Put \(h=y_t-y_s\) and work modulo the rows at \(y_s\): \(\psi'_{y_t}\equiv h^2[\partial^2/2+h\partial^3/6+\cdots]\) and \(\partial\psi'_{y_t}\equiv h[\partial^2+h\partial^3/2+\cdots]\). Subtracting \(h/2\) times the second row from the first leaves a multiple of \(h^3\). So every minor is divisible by \(h^{1+3}=h^4\), on every column set. Coprime factors give divisibility by \(P\).</li>
+<li><em>The step.</em> Follow lem:cube-double-root-step.
+<ul>
+<li>A term of \(p_{C'}(S)\) is \(\pm p_C(S_C)\,G(S')\,U(S',S_X)\,h_s\), with \(U\) the multiplication by \((1+T)^{-\lambda-2}\).</li>
+<li>Write \(G(S')(x\tilde y,x\tilde b)=P(x\tilde y,x\tilde b)\,Q_{S'}(x\tilde y,x\tilde b)\). Every term of \(G(S')\) has \(x\)-degree at least \(\Sigma S'-3M-10\), by the row-shift count of the leading Birkhoff lemma. Since \(P(x\tilde y,x\tilde b)=x^{\deg P}P(\tilde y,\tilde b)\), and \(k[\tilde y,\tilde b]\) is a domain, \(Q_{S'}\) has \(x\)-degree at least \(\Sigma S'-3M-10-\deg P\). Its coefficients are polynomials in the bounded \(\tilde y,\tilde b\), of valuation \(\ge0\). For the initial set \(S'_0\), \(Q_{S'_0}\) has constant term \(c_M\), because \(\Gamma_0=c_MP\).</li>
+<li>So \(\operatorname{val}G(S')\ge w(\Sigma S'-3M-10)+\operatorname{val}P(\tilde y,\tilde b)\), and the factor \(P(\tilde y,\tilde b)\) is common to all \(S'\). For \(S'\) the initial set, the leading part is \(c_M P\), with \(c_M\ne0\) (lem:cube-two-double-leading-birkhoff). Every other \(S'\), and every higher-order term, is larger by at least \(w\).</li>
+<li>With (H) for \(C\) this forces \(S_C=L\). The leading coefficient on \(L'\) is \(\mathrm{lc}\,p_{\tilde C}(L)\cdot c_M\cdot\mathrm{lc}\,P(\tilde y,\tilde b)\) times the minor of \((1+T)^{-\lambda-2}\mathrm{Pol}_{\le2M_C}\oplus\langle(1+T)^{-3}\rangle\) on \(2M_C+2\) consecutive columns. That minor is nonzero by thm:cube-two-exponent-window.</li>
+<li>Here \(P(\tilde y(t),\tilde b(t))\) is a nonzero series, because the nodes are distinct for \(t\ne0\) along the arc. Its valuation may be positive (degenerate \(\tilde C\)), but it is the same factor in every term.</li>
+<li>The slack bookkeeping is that of the previous entry.</li>
+</ul></li>
+</ol>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_two_double_divisibility.gp (research/results/bmd-20261007-r/two-double-divisibility.txt) tests the divisibility exactly, with symbolic nodes:</p>
+<ul>
+<li>all \(120\) column sets of size \(7\) in \(\{0,\ldots,9\}\) at \(M=1\);</li>
+<li>\(20\) sampled column sets of size \(9\) in \(\{0,\ldots,11\}\) at \(M=2\).</li>
+</ul>
+<p>None fails. A first run ran out of PARI stack at \(M=2\); its output is in the session archive.</p>
+<p><strong>On the cone.</strong> On the collision line \(\ell_{ij}\), a second coincidence \(a_k=a_l\), with \(\{k,l\}\cap\{i,j\}=\emptyset\) and \(D\ne0\), fixes \(r\). Write \(P_{ij}(x)=(x-q^i)(x-q^j)\) and \(D=q^k+q^l-q^i-q^j\). Then
+\[r=q^k+\frac{P_{ij}(q^l)}{D}=q^l+\frac{P_{ij}(q^k)}{D},\qquad B=F(q^k)=-\frac{P_{ij}(q^k)\,P_{ij}(q^l)}{D},\]
+by \(F(q^k)-F(q^l)=(q^k-q^l)\bigl[q^{2k}+q^{k+l}+q^{2l}-\sigma_1(q^k+q^l)+\sigma_2\bigr]\), which is linear in \(r\). This is the starting point for classifying the cone's two-double limits, the next item. With the present theorem, every limit in which one double root sits as a level above a cluster containing the other, and all other levels are singletons over a caterpillar base, is covered.</p>
+<p><strong>Remaining gap.</strong> In gap (3):</p>
+<ul>
+<li>the classification of the cone's two-double limits, including both double roots on one level or in one cluster;</li>
+<li>the confluent tie window for \(m\ge7\);</li>
+<li>the special cancellations.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-two-double-leading-birkhoff (row shifts, \(c_M\)); lem:cube-multiple-node-identity; thm:cube-doubled-node-identity; lem:cube-double-root-step; thm:cube-two-exponent-window; cor:cube-two-double-base-condition.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked by hand the following:</p>
+<ul>
+<li>the expressions in \(\psi\)-derivatives and \(K(y)\);</li>
+<li>the expansion, the Taylor elimination at \(B\) (including column sets where the leading block vanishes) and the exponents;</li>
+<li>the degree bound, the strictness, and why \(L\) is initial;</li>
+<li>the harmlessness of a positive valuation of \(P\);</li>
+<li>the cone formulas.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the polynomial change of basis at \(B\);</li>
+<li>the factor \((1+T)\) handled through \(G=G''U\);</li>
+<li>an explicit elimination for \((y_t-y_s)^4\);</li>
+<li>the domain argument for \(Q_{S'}\), and the constant term \(c_M\);</li>
+<li>nodes distinct along the arc;</li>
+<li>the hypotheses on the cone.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-r">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 9.19 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 51.24 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 55.62 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 39.21 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 42.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
