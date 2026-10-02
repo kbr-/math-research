@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above tie clusters (<a href="#entry-2026-10-08-cube-tie-cluster-route-review">tie cluster route review</a>). It is proved for the four-root cluster. Beyond it, it rests on conj:cube-deep-row-reduction with two or more surplus rows, and on the binomial Hankel formula, whose ratios have the shape of a classical continued fraction.</p>
-<p>Next: prove conj:cube-binomial-hankel-product from the continued fraction of \(((1+x)^{-3/2}-1)/x\) (Gauss), making lem:cube-deep-row-deficiency-one unconditional for windows. Then compute the residual rows of the two-surplus case \(r=3\), \(p=1\) in Schur form.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above tie clusters (<a href="#entry-2026-10-08-cube-tie-cluster-route-review">tie cluster route review</a>). It is proved for the four-root cluster. The <a href="#entry-2026-10-08-cube-binomial-hankel-proof">binomial Hankel determinants are now proved nonzero</a>, so the deficiency-one reduction holds on every window. Beyond it, (W′) rests on conj:cube-deep-row-reduction with two or more surplus rows.</p>
+<p>Next: compute the residual rows of the two-surplus case \(r=3\), \(p=1\) in Schur form. Identify their leading blocks as minors of the \(c_n=\binom{-3/2}n\), and prove those nonzero by the same Jacobi product.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -64729,6 +64729,62 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.14 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-binomial-hankel-proof" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-cluster-route-review:1" data-claims="thm:cube-binomial-hankel-product cor:cube-deficiency-one-windows">
+<h3>8 October 2026 — The binomial Hankel determinants are −(4p²−1)/2^{p(2p−1)} for every p; the deficiency-one deep-row reduction holds unconditionally on window negative sets</h3>
+<p class="entry-meta">Working proof: the Hankel product formula, from the record's Beta-moment Jacobi product, with a telescoping evaluation. Consequence: lem:cube-deep-row-deficiency-one without hypothesis for window negative sets. Binomial Hankel cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement (W′) above tie clusters. The deficiency-one deep-row reduction (lem:cube-deep-row-deficiency-one, <a href="#entry-2026-10-08-cube-deficiency-one">deficiency one</a>) assumes a nonzero Hankel minor of the binomials \(c_n=\binom{-3/2}n\). The <a href="#entry-2026-10-08-cube-tie-cluster-route-review">tie cluster route review</a> found its ratios to have continued-fraction form. Can the product formula be proved for every \(p\)?</p>
+<p><strong>General statement.</strong> thm:cube-binomial-hankel-product. For every \(p\ge1\),</p>
+\[ H_p=\det\bigl[c_{j+k-1}\bigr]_{j,k=1}^{p}=-\frac{4p^2-1}{2^{p(2p-1)}}\ne0 . \]
+<p>This proves conj:cube-binomial-hankel-product.</p>
+<p><strong>Second statement.</strong> cor:cube-deficiency-one-windows. lem:cube-deep-row-deficiency-one holds without its Hankel hypothesis for every coordinate set whose negative indices are \(\{-1,\ldots,-(r-1)\}\), for every number \(r\ge2\) of deep roots. In particular the windows of the regime \(p=M-3\), with \(r=M-2\) deep roots, above a tie over any caterpillar pay the penalty \(2\nu_1\) as a lower bound.</p>
+<p><strong>Proof of the theorem.</strong></p>
+<p>(1) Reduction. Index rows and columns by \(i,j=0,\ldots,p-1\), so the entry is \(c_{1+i+j}\). Since \(\binom{-3/2}{N}=(-1)^N(3/2)_N/N!\) and</p>
+\[ \frac{(3/2)_{1+m}}{(1+m)!}=\frac32\cdot\frac{(5/2)_m}{(2)_m}, \]
+<p>the entry is \((-1)^{1+i+j}\tfrac32\,\mu_{i+j}\) with \(\mu_m=(\alpha)_m/(\gamma)_m\), \(\alpha=5/2\), \(\gamma=2\). The signs \((-1)^{i+j}\) cancel in the determinant (conjugation by \(\mathrm{diag}((-1)^i)\)), leaving \(H_p=(-3/2)^pD_p\) with \(D_p=\det[\mu_{i+j}]_{i,j&lt;p}\).</p>
+<p>(2) Jacobi product. By step (2) of the proof of prop:cube-neck-sequence-hankel (<a href="#entry-2026-10-03-cube-neck-sequence-hankel">neck sequence Hankel</a>), \(D_k=\prod_{j&lt;k}h_j\) as an identity of rational functions of \((\alpha,\gamma)\), with \(b=\gamma-\alpha\) and</p>
+\[ h_j=\frac{j!\,(\alpha)_j\,(b)_j\,(\alpha+b-1)_j}{(\alpha+b-1)_{2j}\,(\alpha+b)_{2j}} . \]
+<p>That is the Beta-moment Hankel product, imported there from Szegő's Jacobi norms and extended by rationality. Here \(b=-1/2\) and \(\alpha+b=2\). Every factor is finite, and \(h_j\ne0\): \((5/2)_j&gt;0\), \((-1/2)_j\ne0\) since \(-1/2+i\) is never \(0\), \((1)_j&gt;0\), and the denominators \((1)_{2j}\), \((2)_{2j}\) are positive.</p>
+<p>(3) Evaluation. \(h_0=1\), and</p>
+\[ \frac{h_j}{h_{j-1}}=\frac{j\,(j+\tfrac32)(j-\tfrac32)\,j}{(2j-1)(2j)\,(2j)(2j+1)}=\frac{(2j+3)(2j-3)}{16(4j^2-1)} . \]
+<p>So \(H_{p+1}/H_p=-\tfrac32h_p=-\tfrac32\prod_{i=1}^p\frac{(2i+3)(2i-3)}{16(2i-1)(2i+1)}\). Both products telescope: \(\prod_{i=1}^p\frac{2i+3}{2i+1}=\frac{2p+3}{3}\) and \(\prod_{i=1}^p\frac{2i-3}{2i-1}=\frac{-1}{2p-1}\). Hence</p>
+\[ \frac{H_{p+1}}{H_p}=\frac{2p+3}{2p-1}\,2^{-4p-1}, \]
+<p>which is also the ratio of consecutive values of \(-(4p^2-1)/2^{p(2p-1)}\), since \(\frac{4(p+1)^2-1}{4p^2-1}=\frac{2p+3}{2p-1}\) and \((p+1)(2p+1)-p(2p-1)=4p+1\). With \(H_1=c_1=-3/2\), induction gives the formula. \(\square\)</p>
+<p>The exact values for \(p\le13\) (research/results/bmd-20261008-zp/binomial-hankel.txt and bmd-20261008-zq/review-tests.txt) agree, as do the ratios \(\lambda_p=H_{p+1}H_{p-1}/H_p^2=h_p/h_{p-1}\) found in the route review.</p>
+<p><strong>Proof of the corollary.</strong> For \(N=\{1,\ldots,p\}\), \(p=r-1\), the lemma's \(H_N\) is \(\det[c_{j-1+k}]_{j,k=1}^p=H_p\ne0\) by the theorem. \(\square\)</p>
+<p><strong>What this means.</strong> The deficiency-one reduction is now unconditional on the sets that matter first, the windows. It is the same Beta-moment structure that proved the neck windows. Non-window negative sets still need their own minors; these were nonzero in every computed case (\(p\le4\), \(N\subset\{1,\ldots,8\}\)).</p>
+<p>The next piece of the item is the multi-row reduction, two or more surplus rows. Its leading blocks are again minors of the \(c_n\), so the same Jacobi structure should supply their nonvanishing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-deep-row-reduction with two or more surplus rows.</li>
+<li>Non-window Hankel minors.</li>
+<li>The Hankel form for \(M\ge6\).</li>
+<li>The window equality at \(p=0\).</li>
+<li>The moduli and uniqueness hypotheses.</li>
+<li>(W′) above cherry clusters.</li>
+<li>The other core statements.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the tie cluster route review (Gauss's continued fraction and the Flajolet–Viennot product): the product formula is proved through the equivalent Jacobi product.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-neck-sequence-hankel, step (2) of its proof and its imported Szegő formula;</li>
+<li>lem:cube-deep-row-deficiency-one;</li>
+<li>conj:cube-binomial-hankel-product.</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the reduction and its signs, the applicability of the imported Jacobi product at \(\alpha=5/2\), \(\gamma=2\), \(b=-1/2\) (all denominators positive), the ratio, the telescoping, the match with the closed form at \(p=1\), and the corollary's identification \(H_N=H_p\). Verdict: pass. Two optional wording changes were applied: \(\lambda_p\) is now given through the \(H\)'s, and \(r=M-2\) is restated.</p>
+<p>Status: working proof (theorem and corollary), resting on the record's imported Jacobi norm formula.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 3.41 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 16.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">10.09 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
