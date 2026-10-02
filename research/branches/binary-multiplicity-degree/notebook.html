@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), its core (<a href="#entry-2026-10-08-cube-goal-route-review">goal route review</a>). The confluent tie window has full rank at every start \(s\le d+3\) for \(m=2,3\). Coverage items wait until a core statement is proved.</p>
-<p>Next: register the all-start conjecture for the confluent tie window. Write the Desnanot–Jacobi identity for one shift of the start, and test whether its bordered minors are window minors. If they are, prove the descent and the base case at \(s=0\); if not, record the obstruction and develop the singularity-confinement bridge for the pure determinants.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), its core, the confluent tie window. It is now a special case of conj:cube-confluent-tie-table-normality, which holds on 120 tested windows (<a href="#entry-2026-10-08-cube-tie-table-normality">confluent tie table</a>). A descent in the start cannot stay inside one space.</p>
+<p>Next: look for an induction on \((a,b)\) at a fixed start. Pass from \(V(a,b)\) to \(V(a+1,b)\) and \(V(a,b+1)\) by a Frobenius-type identity between window minors, as in the Padé table, which moves only the \(\varphi\) and \(\psi\) classes. Base case \(a=b=0\): the three extra rows alone, a statement about \(E\) proved directly.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -63622,6 +63622,71 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 28.06 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 36.33 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 41.74 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-table-normality" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-confluent-tie-table-normality prop:cube-tie-shift-intersection">
+<h3>8 October 2026 — Confluent tie table: every tested window of the two-index Hermite–Padé table has full rank, but a shift of the start leaves the table through its three extra rows</h3>
+<p class="entry-meta">Conjecture with an exact check: normality of the extended confluent Hermite–Padé table on 120 windows. Working proof: the shift identity and the intersection dimension that block a condensation descent. Core statement cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), its core: the confluent tie window (<a href="#entry-2026-10-08-cube-goal-route-review">goal route review</a>, decision to work the core). The review proposed a Desnanot–Jacobi descent in the start \(s\). Does one shift of the start relate windows of the same space, and is the window statement true in a form closed under shifts?</p>
+<p><strong>Setting.</strong> Characteristic zero, \(\lambda=\tfrac32\), \(c\notin\{0,1\}\). Put \(\varphi=(1+T)^{-5/2}\), \(\psi=(1+cT)^{-3/2}\) and \(g=((1+T)(1+cT))^{-3/2}\). Let \(E=\langle(1+T)^{-3},\,g,\,gT/(1+T)\rangle\) be the span of the three extra rows; note \(gT/(1+T)=T(1+T)^{-5/2}(1+cT)^{-3/2}\). For \(a,b\ge0\) put</p>
+\[ V(a,b)=\varphi\,\mathrm{Pol}_{&lt;a}+\psi\,\mathrm{Pol}_{&lt;b}+E , \]
+<p>and let \(W_s(a,b)\) be its window on the columns \(T^s,\ldots,T^{s+a+b+4}\), with \(a+b+3\) rows. The confluent tie window of lem:cube-confluent-tie-reduction is \(W_d(2m,m)\), \(d=\binom m2\).</p>
+<p><strong>General statement.</strong> conj:cube-confluent-tie-table-normality. For all \(a,b\ge0\), \(s\ge0\) and \(c\notin\{0,1\}\), \(W_s(a,b)\) has full rank \(a+b+3\). Equivalently, no nonzero element of \(V(a,b)\) has \(a+b+5\) consecutive vanishing Taylor coefficients starting at any \(s\ge0\). Its case \((2m,m,d)\) gives full rank of the confluent tie window at every \(c_0\notin\{0,1\}\). That is stronger than what conj:cube-tie-single-block-exclusion concludes, the Forney bound only where the staircase vectors are independent, and by lem:cube-confluent-tie-reduction it would settle gap (3)'s confluent tie level.</p>
+<p>Evidence. research/tools/bmd_tie_table_normality.gp (research/results/bmd-20261008-zh/table-normality.txt) computes, exactly over \(\mathbb Q[c]\), the gcd of the maximal minors of \(W_s(a,b)\) with the powers of \(c\) and \(c-1\) removed, for \(a\le5\), \(b\le3\), \(s\le4\). That is \(120\) windows, among them the cone's windows \(W_0(2,1)\) (\(m=1\)) and \(W_1(4,2)\) (\(m=2\)). The gcd is constant for all \(120\). The previous review found the same for \((2m,m)\), \(m=2,3\), at every \(s\le d+3\). Each window could have shown a common root; none did, though windows with nested row sets are not independent tests.</p>
+<p><strong>Second statement.</strong> prop:cube-tie-shift-intersection. For all \(a,b\ge0\), \(s\ge0\) and \(c\notin\{0,1\}\):</p>
+<ol>
+<li>\(W_s(a,b)\) is the window of \(T\,V(a,b)\) at start \(s+1\), with the same number of columns;</li>
+<li>\(\dim V(a,b)=a+b+3\), and for \(a,b\ge1\), \(\dim\bigl(T\,V(a,b)\cap V(a,b)\bigr)=a+b-1\), so each of the two spaces has four directions outside the other;</li>
+<li>every space containing \(T^jV(a,b)\) for \(j=0,1,2,3\) contains the constant \(1\). So none of its windows at a start \(s\ge1\) has full rank.</li>
+</ol>
+<p>So a Desnanot–Jacobi step between starts \(s\) and \(s+1\) relates windows of two different spaces. A descent of four or more steps cannot stay inside one space whose windows have full rank.</p>
+<p><strong>Proof.</strong></p>
+<p>(1) \([T^{k}](TF)=[T^{k-1}]F\), so the coefficients of \(TF\) on the columns \(T^{s+1},\ldots,T^{s+a+b+5}\) are those of \(F\) on \(T^{s},\ldots,T^{s+a+b+4}\).</p>
+<p>(2) Since \(c\ne0\), \(-1/c\) is a finite branch point. The four summands lie in four rank-one local systems on \(\mathbb P^1\setminus\{-1,-1/c,\infty\}\), with monodromy characters \((-1,1)\) for \(\varphi\), \((1,-1)\) for \(\psi\), \((-1,-1)\) for \(g\), and trivial for \((1+T)^{-3}\), at the loops around \(-1\) and \(-1/c\). These are distinct when \(c\ne1\). Equivalently, \(1,\sqrt{1+T},\sqrt{1+cT},\sqrt{(1+T)(1+cT)}\) are linearly independent over \(\mathbb C(T)\). So functions from different classes are independent, the generators of \(V(a,b)\) are independent (giving \(\dim V(a,b)=a+b+3\), which the equivalence in the General statement uses), and the intersection is computed class by class, using \(a,b\ge1\):</p>
+<ul>
+<li>\(\varphi\): \(T\mathrm{Pol}_{&lt;a}\cap\mathrm{Pol}_{&lt;a}=T\mathrm{Pol}_{&lt;a-1}\), dimension \(a-1\);</li>
+<li>\(\psi\): likewise \(b-1\);</li>
+<li>\(g\): \(g\cdot(T\langle1,T/(1+T)\rangle\cap\langle1,T/(1+T)\rangle)\). Writing both over the denominator \(1+T\), the numerators are \(\alpha T+(\alpha+\beta)T^2\) and \(\gamma+(\gamma+\delta)T\). Equality forces \(\gamma=0\), \(\alpha=\delta\), \(\beta=-\alpha\): dimension \(1\), spanned by \(gT/(1+T)\);</li>
+<li>rational: \(T(1+T)^{-3}\notin\mathbb C(1+T)^{-3}\): dimension \(0\).</li>
+</ul>
+<p>The total is \(a+b-1\), against \(\dim V(a,b)=\dim TV(a,b)=a+b+3\).</p>
+<p>(3) The space contains \(T^j(1+T)^{-3}\) for \(j=0,\ldots,3\), hence \((1+T)^3(1+T)^{-3}=1\). The constant \(1\) has zero coefficients on every window with \(s\ge1\), so it is a nonzero element in the kernel of every such window. \(\square\)</p>
+<p><strong>What this means.</strong> The window statement is not special to the cone: it holds for the whole two-index table in every tested case, at every tested start. This suggests a structural reason independent of \(d=\binom m2\). The windows are highly correlated across \((a,b,s)\), so they are not \(120\) independent tests. Part (3) rules out a condensation induction inside a single space containing \(V,TV,T^2V,T^3V\). It does not rule out a Desnanot–Jacobi induction over the family \(T^jV\), each with its own windows; by part (1) these are the windows of \(V\) at shifted starts, so that induction would need identities between window minors of different spaces. The natural candidates are now:</p>
+<ul>
+<li>an induction on \((a,b)\) at fixed \(s\), in the style of the Frobenius identities of the Padé table, which moves only the \(\varphi\) and \(\psi\) classes;</li>
+<li>a direct zero count for sequences \((-1)^k[h_f(k)P(k)+\alpha\binom{k+2}2]+(-c)^kh_g(k)Q(k)+w_g(k)\), the coefficient form of lem:cube-tie-holonomic-staircase.</li>
+</ul>
+<p><strong>Remaining gap.</strong> conj:cube-confluent-tie-table-normality itself. The core statements of the cone route are unchanged: this conjecture (which implies the confluent tie window), conj:cube-triple-window-full-rank and condition (W′).</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-confluent-tie-reduction (the rows and the columns);</li>
+<li>lem:cube-tie-holonomic-staircase (the coefficient form);</li>
+<li>conj:cube-tie-single-block-exclusion.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the hypotheses \(a,b\ge1\) moved into part (2);</li>
+<li>the uses of \(c\ne0\) and \(c\ne1\) stated;</li>
+<li>\(\dim V(a,b)=a+b+3\) stated;</li>
+<li>the limit of part (3) stated precisely;</li>
+<li>the strength claim weakened;</li>
+<li>"implies" in place of "contains".</li>
+</ul>
+<p>Status: conjecture with an exact check, and a working proof of the shift proposition.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 34.99 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17.30 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 13.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.56 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">4 min 45.10 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.15 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
