@@ -21,6 +21,16 @@ winmat(m) = {
   matrix(3 * m + 3, w, r, j, rowco(r, m, d + j - 1));
 }
 strip01(f) = { if (f == 0, return(0)); while (subst(f, 'c, 0) == 0, f /= 'c); while (subst(f, 'c, 1) == 0, f /= ('c - 1)); f / content(f); }
+\\ SCAN=1 (cycle bmd-20261007-n): instead, list the maximal minors (window column sets, 0-based offsets from d) whose
+\\ determinant is c^a (c-1)^b times a nonzero constant, i.e. that alone prove full rank off {0,1}.
+{
+if (getenv("SCAN") == "1",
+  foreach(eval(getenv("MS")), m,
+    my(A = winmat(m), nr = 3 * m + 3, w = 3 * m + 5, hits = List(), tot = 0);
+    forsubset([w, nr], S, tot++; my(D = matdet(vecextract(A, "..", Vec(S))));
+      if (D != 0 && poldegree(strip01(D), 'c) == 0, listput(hits, [apply(x -> x - 1, Vec(S)), valuation(D, 'c), valuation(D, 'c - 1)])));
+    emit(Str("SCAN m = ", m, ": ", #hits, " monomial minors of ", tot, ": ", Vec(hits)))); quit);
+}
 {
 my(MS = eval(getenv("MS")));
 foreach(MS, m,

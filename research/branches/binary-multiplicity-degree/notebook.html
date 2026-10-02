@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-tie-window">confluent tie entry</a> reduces the confluent tie level of the collision cones, including its three-root end, to conj:cube-confluent-tie-window-full-rank, which is checked exactly for \(m\le5\).</p>
-<p>Next: prove that window conjecture. Look for a weighted functional killing both the series \((1+T)^{-5/2}\mathrm{Pol}_{&lt;2m}\) and \((1+cT)^{-3/2}\mathrm{Pol}_{&lt;m}\), as thm:cube-tie-window-general-functional did for the tie, or for closed forms of the two minors whose gcd is trivial. The square minor factors as \(c^{e_m}(c-1)^{m^2+m+2}\) times a polynomial whose only distinct irreducible factor has degree \(m(2m-1)\). Then return to the remaining confluent types: \(a_\rho\) meeting \(A\), a displaced \(a_\rho\), and the meeting points of collision lines.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-tie-hermite-pade">Hermite–Padé entry</a> recasts conj:cube-confluent-tie-window-full-rank (exact at \(m\le5\)) as the normality of a mixed Hermite–Padé system, and shows that the tie's block-and-functional method does not transfer.</p>
+<p>Next: describe the five annihilators of the window's single-series rows explicitly. One candidate is multiple orthogonal polynomials for the weights of \((1+T)^{-5/2}\) and \((1+cT)^{-3/2}\). Another is to compute them at \(m\le5\) and fit their dependence on \(m\). With them, reduce full rank to a \(3\times5\) matrix of explicit numbers for the three pair rows. If this stalls, turn to the other open types of gap (3) and the cherry chain.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -55843,6 +55843,87 @@ By thm:cube-caterpillar-minimality (Taylor dominance, trivial for \(m=1\)) and t
 <tr><td>Computation design and coding</td><td class="elapsed">48.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 40.58 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-confluent-tie-hermite-pade" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-cone-limits-review:2" data-claims="lem:cube-confluent-tie-hermite-pade">
+<h3>7 October 2026 — Confluent tie window as a Hermite–Padé problem: a rank defect is exactly a type I relation; the tie's closed-form route is blocked</h3>
+<p class="entry-meta">Working proof of the Hermite–Padé reformulation and of a two-series annihilating functional; exact checks show the tie method does not transfer. Develops the Hermite–Padé lead of the cone limits review. Confluent tie Padé cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): conj:cube-confluent-tie-window-full-rank, on which the confluent tie level rests (lem:cube-confluent-tie-reduction). The tie window was settled by a block formula (thm:cube-tie-single-series-block) and a weighted functional (thm:cube-tie-window-general-functional). Do these transfer? This cycle develops Outside lead 2 of the <a href="#entry-2026-10-07-cube-cone-limits-review">cone limits review</a>, Hermite–Padé confluence.</p>
+<p><strong>Setting.</strong> \(\lambda=3/2\), \(d=\binom m2\), and \(W^c(c)\) is the confluent tie window of the <a href="#entry-2026-10-07-cube-confluent-tie-window">confluent tie entry</a>. Its single-series rows are \(X_1=(1+T)^{-\lambda-1}\mathrm{Pol}_{&lt;2m}\) and \(X_2=(1+cT)^{-\lambda}\mathrm{Pol}_{&lt;m}\). Its pair rows are \(h=(1+T)^{-3}\), \(f=\varphi_1\varphi_c\) and \(g=T(1+T)^{-\lambda-1}\varphi_c\).</p>
+<p><strong>General statement.</strong> lem:cube-confluent-tie-hermite-pade. For every \(m\ge1\) and \(c\):</p>
+<ol>
+<li><em>Reformulation.</em> \(\operatorname{rank}W^c(c)&lt;3m+3\) if and only if there are polynomials \(P\) (\(\deg&lt;2m\)), \(Q\) (\(\deg&lt;m\)), \(R\) (\(\deg&lt;d\)) and scalars \(\alpha,\beta,\gamma\), with \((P,Q,\alpha,\beta,\gamma)\ne0\), such that
+\[(1+T)^{-\lambda-1}P+(1+cT)^{-\lambda}Q+\alpha h+\beta f+\gamma g=R+O(T^{d+3m+5}).\]
+This is a type I Hermite–Padé relation for the six functions \(1,(1+T)^{-5/2},(1+cT)^{-3/2},(1+T)^{-3},\varphi_1\varphi_c,g\), with degree vector \((d,2m,m,1,1,1)\) and order \(d+3m+5\). The order exceeds the number of free coefficients, \(d+3m+3\), by two. Full rank is the statement that this overdetermined problem has only the trivial solution.</li>
+<li><em>A two-series annihilator.</em> Put \(\rho_k=\Gamma(k+1)/\Gamma(k+\lambda+2-2m)\). For \(M\ge4m-1\), the functional
+\[\psi_M(E)=[T^M]\,(1+T)^{2m}(1+cT)^{2m-1}\sum_k\rho_ke_kT^k\]
+vanishes on \(X_1\oplus X_2\). For \(c\ne0\) it is supported on the \(4m\) columns \(M-4m+1,\ldots,M\); at \(c=0\) its support has \(2m+1\) columns.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>A left kernel vector of \(W^c(c)\) is a combination of the rows whose coefficients vanish on the columns \(d,\ldots,d+3m+4\). That means it equals a polynomial of degree less than \(d\) plus \(O(T^{d+3m+5})\). Nontriviality is \((P,Q,\alpha,\beta,\gamma)\ne0\).</li>
+<li><em>The rows of \(X_1\).</em> For the row \(T^i(1+T)^{-\lambda-1}\), \(i&lt;2m\),
+\[\rho_ke_k=(-1)^{k-i}\,k^{\underline i}\,\frac{\Gamma(\lambda+1+k-i)}{\Gamma(\lambda+1)\Gamma(k+\lambda+2-2m)}.\]
+The Gamma ratio is a rising factorial of length \(2m-1-i\ge0\), so this is \((-1)^k\) times a polynomial in \(k\) of degree at most \(2m-1\). It is also valid for \(k&lt;i\), where both sides vanish. Hence \(\sum\rho_ke_kT^k=R_1(T)/(1+T)^{2m}\) with \(\deg R_1\le2m-1\).</li>
+<li><em>The rows of \(X_2\).</em> For \(T^n(1+cT)^{-\lambda}\), \(n&lt;m\), the ratio \(\Gamma(\lambda+k-n)/\Gamma(k+\lambda+2-2m)\) is a rising factorial of length \(2m-2-n\ge0\). For \(c\ne0\), \(\rho_ke_k=(-c)^k\) times a polynomial of degree at most \(2m-2\), and \(\sum\rho_ke_kT^k=R_2(T)/(1+cT)^{2m-1}\) with \(\deg R_2\le2m-2\). At \(c=0\) the row is \(T^n\), and the conclusion is immediate.</li>
+<li>After multiplication by \((1+T)^{2m}(1+cT)^{2m-1}\), both become polynomials of degree at most \(4m-2\). So \([T^M]\) vanishes for \(M\ge4m-1\).</li>
+</ol>
+<p>\(\square\)</p>
+<h4>Why the tie method does not transfer</h4>
+<p>Exact computations (research/results/bmd-20261007-n/) show three obstructions.</p>
+<ul>
+<li><em>The block has an extra factor.</em> research/tools/bmd_two_series_block.gp computes the square block of \(X_1\oplus X_2\) on columns \(s,\ldots,s+3m-1\), at \(m=1,\ldots,4\) and three starts each (two-series-block.txt). It equals \(c^{ms}(c-1)^{m(m+1)}\,Q_{m,s}(c)\). Here \(Q_{m,s}\) is constant at \(m=1\) and has one distinct irreducible factor over \(\mathbb Q\), of degree \(m(m-1)\), at \(m=2,3,4\). It depends on \(s\), as printed at \(m=2,3\): for example \(c^2-\tfrac29c+\tfrac1{33}\) at \((m,s)=(2,1)\) and \(c^2-\tfrac6{11}c+\tfrac{15}{143}\) at \((2,2)\) (two-series-block-q.txt). For the tie the block is a constant times \(x^{ms}y^{ms}(x-y)^{m^2}\). Controls:
+<ul>
+<li>the tie block (equal exponents) reproduces that shape;</li>
+<li>exponents \((7/3,3/2)\), whose difference is not an integer, give no factor \(c-1\) at all.</li>
+</ul></li>
+<li><em>No monomial minor.</em> Among all maximal minors of \(W^c(c)\) at \(m=1,2,3\) (\(28\), \(55\) and \(91\)), none is \(c^a(c-1)^b\) times a constant (confluent-window-monomial-minors.txt, research/tools/bmd_confluent_tie_window.gp in SCAN mode). So at \(m\le3\) no single minor of this form certifies full rank.</li>
+<li><em>The annihilator is too wide.</em> The functional of part 2 has the product form of the tie functional, but its support of \(4m\) columns exceeds the window's \(3m+5\) columns once \(m\ge6\). It lies inside the window only for \(d+4m-1\le M\le d+3m+4\), that is for \(6-m\) values of \(M\) when \(m\le5\), exactly the range where full rank is already checked. The tie functional, of support \(2m+1\), fitted in the tie window for every \(m\).</li>
+</ul>
+<p><strong>Reading.</strong> The window's full rank says that one overdetermined, mixed Hermite–Padé problem has only the trivial solution. The system has two branch points (\(-1\), carrying exponents \(5/2\) and \(3\), and \(-1/c\)) and three product functions.</p>
+<ul>
+<li><em>Heuristic.</em> For real parameters such statements often follow from an AT (Chebyshev) system property, as for Angelesco and Nikishin systems. This mixed system is not shown to be of those types.</li>
+<li><em>Complex \(c\).</em> The parameter is complex in general: by part 2 of lem:cube-collision-cone-limit-types, \(c_0=1-q_0^\rho/\mathrm{lc}(r)\) for complex leading coefficients. So a real-variable argument would not suffice.</li>
+<li><em>A proposal, untested.</em> Give the annihilators explicitly, for example as coefficients of multiple orthogonal polynomials for the two weights.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> Outside lead 2 of the cone limits review: developed into the reformulation above, which identifies the exact Hermite–Padé problem. The direct transfer of the tie functional is ruled out.</p>
+<p><strong>Remaining gap.</strong> conj:cube-confluent-tie-window-full-rank for \(m\ge6\) (exact for \(m\le5\)). In gap (3) also:</p>
+<ul>
+<li>\(a_\rho\) meeting \(A\);</li>
+<li>a displaced \(a_\rho\);</li>
+<li>types inside the lower cluster;</li>
+<li>meeting points of collision lines.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-confluent-tie-reduction (window definition); thm:cube-tie-window-general-functional and thm:cube-tie-single-series-block (the tie method being compared).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the reformulation, including the count of free coefficients and nontriviality;</li>
+<li>part 2's Gamma ratios, the case \(m=1\) and the degree bounds. It also confirmed \(\psi_M\) numerically at \(m\le4\) for \(c\in\{7/3,-2+i,0\}\) and all \(M\) from \(4m-1\) to \(4m+29\);</li>
+<li>the block and minor claims against the files.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the case \(c=0\);</li>
+<li>\(Q_{m,s}\) is constant at \(m=1\), and its dependence on \(s\) is shown at \(m=2,3\);</li>
+<li>the false claim about annihilators of product form is replaced by the range where \(\psi_M\) fits;</li>
+<li>the scope of the monomial-minor check;</li>
+<li>"normal" is dropped;</li>
+<li>the Reading is marked heuristic, with the reason \(c\) is complex.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-n">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 14.41 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 16.61 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 6.65 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 49.64 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.37 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
