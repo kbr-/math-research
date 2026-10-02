@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-local-exchange-route-review">local exchange route review</a>; eight open items). Along each arc the cross coordinates form a valuated matroid, so (W′) reduces to single exchanges at the leading windows (prop:cube-window-local-exchange-reduction).</p>
-<p>Next: prove \(\omega(\Lambda_p-a+b)\ge\omega(\Lambda_p)\) along arcs where \(\Lambda_p\) leads. Start with \(b\) adjacent to the window (\(b=2M-p\) or \(b=-p-1\)), through a three-term Plücker relation linking \(\Lambda_p\), \(\Lambda_{p\pm1}\) and the exchange.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-standard-exchanges">standard exchanges</a>; eight open items). (W′) reduces to single exchanges at the leading windows. Every exchange that keeps the negative part standard is settled, conditionally on kernel monomial minimality.</p>
+<p>Next: prove kernel monomial minimality in its single-shift form, comparing \(K_u(z^i)\) with \(K_u(z^{i-1})\) through the kernel-column expansion. Then turn to exchanges with a non-standard negative part. The goal-level decision allows two cycles before switching to (B).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -66867,6 +66867,77 @@ Exceptions:</p>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.80 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5 min 23.72 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-standard-exchanges" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-local-exchange-route-review:1" data-claims="prop:cube-standard-exchange-reduction conj:cube-standard-negative-minimality conj:cube-kernel-monomial-minimality">
+<h3>9 October 2026 — Windows minimize the penalty order by order among coordinates with their own negative part; this settles every single exchange that keeps the negative part standard, conditionally on a kernel monomial minimality</h3>
+<p class="entry-meta">Working proof that kernel monomial minimality implies standard-negative minimality, which implies the local exchange condition for all standard exchanges; both minimalities conjectured, with no violations on seven trees including the M = 5 refuting tree. Standard exchanges cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4, through prop:cube-window-local-exchange-reduction. Along an arc where the window \(\Lambda_p\) leads, is \(\omega(\Lambda_p-a+b)\ge\omega(\Lambda_p)\) for every single exchange? ex:cube-window-order-minimality-fails rules out comparing all coordinates order by order. Its listed violations all change the negative part \(N\).</p>
+<p><strong>General statement.</strong> prop:cube-standard-exchange-reduction. Work in the setting of thm:cube-graded-hankel-penalty. Call \(N\) standard if \(N=\{1,\ldots,p\}\).</p>
+<p>For a \(k\)-set \(T\) of nonnegative integers (\(k=M-p\)), let \(D_T(u)\) be the coefficient-space determinant of the \(p\) standard negative columns and the kernel columns \(K_u(z^i)\), \(i\in T\). These are \(\operatorname{rem}(\sum_mc_mc_{n+m}u^{n+m}z^m,P)\) and \(K_u(w)=\sum_mu^mc_m\operatorname{rem}(T_1^m(Pw),P)\), as in lem:cube-kernel-column-expansion. Put \(T_0=\{0,\ldots,k-1\}\).</p>
+<ol>
+<li>Assume monomial minimality: \(\operatorname{val}[u^n]D_T\ge\operatorname{val}[u^n]D_{T_0}\) for all \(T\) and \(n\). Then every coordinate \(\Lambda\) with standard negatives has, at every relative order \(t\), penalty at least the window \(\Lambda_p\)'s.</li>
+<li>Assume that conclusion (standard-negative minimality), for all \(p\). Fix an arc with \(w_x&gt;0\) on which \(\Lambda_p\) leads, and on which the minimum terms of the windows \(\Lambda_{p-1},\Lambda_p,\Lambda_{p+1}\) do not cancel. Then every single exchange \(\Lambda'=\Lambda_p-a+b\) whose negative part is standard satisfies \(\omega(\Lambda')\ge\omega(\Lambda_p)\). Equality occurs only if \(\Lambda'\in\{\Lambda_{p-1},\Lambda_{p+1}\}\), whose union with \(\Lambda_p\) lies in one interval of \(2M+1\) columns.</li>
+</ol>
+<p>The standard single exchanges are three kinds:
+\(a\ge0\) and \(b\ge2M-p\) (same \(N\));
+\(a\ge0\) and \(b=-p-1\) (\(N=\{1,\ldots,p+1\}\));
+\(a=-p\) and \(b\ge2M-p\) (\(N=\{1,\ldots,p-1\}\)).
+Every other exchange produces a non-standard \(N\): it removes \(-n\) with \(n&lt;p\), adds \(-m\) with \(m\ge p+2\), or is \(a=-p\), \(b=-p-1\) (\(N=\{1,\ldots,p-1,p+1\}\)).</p>
+<p><strong>Proof.</strong></p>
+<p>(1) By steps (1)–(2) of thm:cube-graded-hankel-penalty, \(P_\Lambda=\pm\mathrm{Vand}^2\det(\mathcal A_1|_E)\,D_\Lambda\). Here \(\det(\mathcal A_1|_E)\in\mathcal O\), and \(D_\Lambda\) is the coefficient-space determinant of the negative columns and the kernel columns \(K_u(v_j)\). The \(v_j\) form an \(\mathcal O\)-basis of \(\{v:Pv\in\mathrm{Pol}_{\Lambda_+}\}\). For the window, \(v_j=z^j\) and \(\det(\mathcal A_1|_E)=\pm\prod c_i\) is a unit (lem:cube-cross-hypergeometric-alternant), so its penalty sequence is that of \(D_{T_0}\). If \(\mathcal A_1\) has rank below \(M\), then \(P_\Lambda=0\) and there is nothing to prove. At \(p=M\) (\(k=0\)) the only set is \(T=\emptyset\), so standard-negative minimality holds outright there.</p>
+<p>\(K_u\) is linear in \(w\), so Cauchy–Binet over the monomial coordinates of the \(v_j\) gives \(D_\Lambda=\sum_T\pi_T\,D_T\), with \(\pi_T\in\mathcal O\) the \(k\)-minors of the coefficient matrix of the \(v_j\). The negative columns are the window's, so \(B(\Lambda)=B_p\). Hence \(\operatorname{val}[u^{B_p+t}]D_\Lambda\ge\min_T\operatorname{val}[u^{B_p+t}]D_T\ge\operatorname{val}[u^{B_p+t}]D_{T_0}\). Since \(\det(\mathcal A_1|_E)\in\mathcal O\), the penalty of \(\Lambda\) is at least that of \(D_\Lambda\), hence at least the window's.</p>
+<p>(2) The terms of \(\Lambda\) are \((X,E,v)=(\sum\Lambda+B(\Lambda)+t,\ B(\Lambda)+t,\ 2\operatorname{val}\mathrm{Vand}+\mathrm{pen}_t)\), and \(\omega(\Lambda)=\min_t[Xw_x+Ew_e+v]\). Compare each standard exchange with the window \(\Lambda_q\) of the same number \(q\) of negatives. Its \(B\) equals \(B_q\), its penalties are termwise \(\ge\) those of \(\Lambda_q\) by standard-negative minimality, and its column sum exceeds \(\sum\Lambda_q\) by:
+\(b-a\ge1\) for the first kind (\(q=p\));
+\(2M-1-p-a\ge0\) for the second (\(q=p+1\)), zero only for \(a=2M-1-p\), when \(\Lambda'=\Lambda_{p+1}\);
+\(b-(2M-p)\ge0\) for the third (\(q=p-1\)), zero only for \(b=2M-p\), when \(\Lambda'=\Lambda_{p-1}\).
+The true valuation of a series is at least its minimum term, and for \(\Lambda_q\) the two agree because its minimum terms do not cancel. So \(\omega(\Lambda')\ge\omega(\Lambda_q)+(\text{excess})\,w_x\ge\omega(\Lambda_p)\), the last since \(\Lambda_p\) leads. Only \(w_x\ge0\) is used, except for strict inequality in the first kind; \(q\) ranges over \(0,\ldots,M\), where \(p=M\) is automatic by (1) and \(p=0\) is neither tested nor covered by (1). Equality needs zero excess, that is, \(\Lambda'\) a window adjacent to \(\Lambda_p\). \(\square\)</p>
+<p><strong>Evidence for the two hypotheses.</strong></p>
+<ul>
+<li>research/tools/bmd_standard_negatives_minimality.gp (research/results/bmd-20261009-k/standard-negatives.txt) tests standard-negative minimality for every coordinate with standard negatives, \(1\le p\le M-1\), and \(t\le5\). It covers six trees at \(M=4\) (\(243\) coordinates each, columns \([-4,8]\)) and nested cherries over a cherry at \(M=5\) (\(1008\) coordinates, columns \([-5,10]\)), the tree of ex:cube-half-speed-penalty-fails. There are no violations. A first run filtered the negative part in the wrong order and kept only \(p=1\) (standard-negatives.txt.first-run).</li>
+<li>bmd_monomial_minimality.gp (monomial-minimality.txt) tests monomial minimality for all \(k\)-sets \(T\subset[0,6]\), \(t\le5\), on three \(M=4\) trees and the \(M=5\) tree. There are no violations. It also checks the single-shift form: lowering one element of \(T\) by one never raises a valuation. There are no violations of that either.</li>
+<li>Both are \(q\)-adic at \(q=1000003\). The windows' penalties computed both ways agree.</li>
+</ul>
+<p>A stronger form fails. If \(D_T/D_{T_0}\) were a power series with integral coefficients, like a Schur function as an alternant over a Vandermonde, minimality would follow at once. bmd_monomial_quotient.gp (monomial-quotient.txt) finds negative valuations in the quotient for \(p\le M-2\) on all four trees, for example \(-24\) above the caterpillar at \(p=1\). These are multiples of the gaps between Hankel levels. So minimality holds order by order in the tests, but not through divisibility.</p>
+<p><strong>What this means.</strong> Conditionally on kernel monomial minimality, the local exchange conditions of prop:cube-window-local-exchange-reduction hold for every exchange that keeps the negative part standard. That includes every exchange adding a column on the right while removing a nonnegative column or \(-p\), and the adjacent window moves.</p>
+<p>The remaining exchanges change the negative part non-standardly: they remove \(-n\) with \(n&lt;p\), add \(-m\) with \(m\ge p+2\), or replace \(-p\) by \(-p-1\). These are exactly the coordinates on which ex:cube-window-order-minimality-fails and ex:cube-half-speed-penalty-fails found early losses. thm:cube-partial-window-domination handles part of them through \(\delta_N\). Monomial minimality concerns only the kernel block, with a fixed negative block, so it is a cleaner target than domination.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Proofs of conj:cube-kernel-monomial-minimality (the single-shift form suffices) and hence conj:cube-standard-negative-minimality.</li>
+<li>Single exchanges with non-standard negative part.</li>
+<li>The tie condition at non-window leaders.</li>
+<li>Columns outside the tested ranges (\([-4,8]\) and \([-5,10]\) here, \([-M,2M-1]\) in the reduction's tests); \(p=0\); and the other core items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the <a href="#entry-2026-10-09-cube-local-exchange-route-review">local exchange route review</a> (valuated matroids): its reduction is now discharged, conditionally, for all standard exchanges.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-window-local-exchange-reduction;</li>
+<li>thm:cube-graded-hankel-penalty (steps (1)–(2)) and lem:cube-cross-hypergeometric-alternant (window constant);</li>
+<li>lem:cube-kernel-column-expansion;</li>
+<li>ex:cube-window-order-minimality-fails and ex:cube-half-speed-penalty-fails.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked both implications against the graded penalty and alternant entries, the classification of exchanges, the excesses and equality case, and the scripts and numbers. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>non-cancellation of the windows' minimum terms added, since \(\omega\) is a true valuation;</li>
+<li>the exchange \(a=-p\), \(b=-p-1\) added to the non-standard ones;</li>
+<li>an overclaim about right-hand exchanges restricted;</li>
+<li>the ranges of \(p\) and columns stated, with \(p=M\) automatic and \(p=0\) uncovered;</li>
+<li>the integrality step and the rank-zero case stated.</li>
+</ul>
+<p>Status: working proof (the two implications); conjectures (monomial and standard-negative minimality) with finite evidence.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-k">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 22.60 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9.56 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 31.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">19.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
