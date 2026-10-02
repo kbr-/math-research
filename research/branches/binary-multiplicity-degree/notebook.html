@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-double-node-alternant">double node entry</a> proves that the unit-row block minors of a cherry over a cluster with a double root have unique leading terms (lem:cube-double-node-alternant). The confluent tie window's Forney bound remains the highest-risk item.</p>
-<p>Next: the \(E'\)-block minors of the reduced expansion for the cherry over a double root. The double root's rows \(U\psi\) and \(wU\psi-c_1\varepsilon\psi\) share the \(\beta\)-vector \(e_n\beta^n\) and differ in their Toeplitz kernels. Find their leading terms, then the prefix bound with the zero valuation gap.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-bound">cherry double bound entry</a> transfers the cherry bounds to bases with a double root (lem:cube-cherry-double-lower-bound). The leading sets are windows whenever a minimizing window attains its bound \(W'_j\), which holds at five of six tested arcs. The confluent tie window's Forney bound remains the highest-risk item.</p>
+<p>Next: attainment at a minimizing window for the cherry over a double root. Compute the minimal-term sum of the factored expansion at the tied slots of the double root, with the node coefficients \(g\), and determine when it vanishes. Where it vanishes, use the reduced expansion's two-block bound, which is exact there in all tested arcs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59571,6 +59571,67 @@ where \(n_{(i)}\) is the \(i\)-th smallest element of \(N\) and \(\mu_{(i)}\) th
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 55.93 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-cherry-double-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:2" data-claims="lem:cube-cherry-double-lower-bound">
+<h3>7 October 2026 — Cherries over a double root: the unreduced cross block has the cherry lattice form with double-node alternants, so the cherry bounds hold, and windows lead whenever a minimizing window attains its bound</h3>
+<p class="entry-meta">Working proof of the cherry window bounds over a caterpillar with one double root, and of window leading sets when a minimizing window attains its bound (five of six arcs); the reduced block does not factor. Gap (3), cherry above a double root. Cherry double bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the cherry over a double root (conj:cube-cherry-double-root-windows). lem:cube-double-node-alternant controls the unit-row minors. Does the whole cross block have the Cauchy–Binet form of thm:cube-cherry-lattice-splitting, so that the cherry theorem's bounds transfer? This cycle also tests whether the reduced expansion of conj:cube-cherry-double-reduced-expansion factors the same way.</p>
+<p><strong>Setting.</strong> Characteristic zero, \(\lambda=\tfrac32\), \(c_n=\binom{-3/2}n\), \(e_n=\binom{-5/2}n\), as in lem:cube-double-node-alternant. A cherry \(\{1,1+e\}\) over a caterpillar cluster of total multiplicity \(M\) with one double root \(\beta\). The inner valuations are normalized with \(v_1=0\) and nondecreasing, with exactly one tie, the double root repeated, and \(w_x,w_e&gt;0\). Let \(B\) be the row structure of that lemma: \(c_m\beta_q^m\) for the simple roots, and \(e_m\beta^m\), \(e_{m-1}\beta^{m-1}\) for the double root. Let \(K(m,t)=c_{m-t}\varepsilon^{m-t}\) for \(m-t\ge1\). Let \(W'_j\) be as in the cherry double root entry.</p>
+<p><strong>General statement.</strong> lem:cube-cherry-double-lower-bound. For every window, \(\operatorname{val}P_{\Lambda_j}\ge W'_j\), and \(\operatorname{val}P_\Lambda&gt;\min_jW'_j\) for every non-window; in detail:</p>
+<ol>
+<li>In the basis \(\psi,w\psi\) for the double root, the cross block is \([B;\,BK]\). So
+\[P_\Lambda=\sum_{N_1,N_2}\pm\det B[N_1]\,\det B[N_2]\,\det K[N_2,\Lambda\setminus N_1],\]
+the formula of thm:cube-cherry-lattice-splitting with double-node alternants.</li>
+<li>Hence \(\operatorname{val}P_{\Lambda_j}\ge W'_j\) at every window, and \(\operatorname{val}P_\Lambda&gt;\min_jW'_j\) for every non-window \(\Lambda\).</li>
+<li>So if some window with \(W'_j=\min W'\) has \(\operatorname{val}P_{\Lambda_j}=W'_j\), the leading sets are windows (one or two adjacent).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Part 1.</em> The \(E\)-rows are \(U_\varepsilon\psi\) and \(U_\varepsilon w\psi=wU_\varepsilon\psi\), with entries \(\sum_{r\ge1}c_r\varepsilon^re_{t+r}\beta^{t+r}\) and \(\sum_{r\ge1}c_r\varepsilon^re_{t+r-1}\beta^{t+r-1}\). Writing \(m=t+r\), both are \(\sum_mB(m)K(m,t)\) with the same \(K\). The simple roots' rows are the same as in the cherry. The \(I\)-rows are \(B\) itself. Laplace along the two row blocks and Cauchy–Binet in the \(E\)-block give the formula.</li>
+<li><em>Part 2.</em> By lem:cube-double-node-alternant, \(\det B[N]\) has valuation \(f_*(N)=\sum n_{(i)}\mu_{(i)}-\mu_*\) with weights nonincreasing in \(i\). The double root's two slots have equal weight. Each term therefore has valuation at least \(f_*(N_1)+f_*(N_2)+w_e(\Sigma N_2-\Sigma\Lambda_2)\), with equality when the \(K\)-minor is nonzero. The steps of thm:cube-cherry-caterpillar-windows that bound these terms use the weights only through Abel summation, with coefficients equal to the gaps between consecutive weights. These are the window bound, the inner cost, the top-mass bound and the non-window comparison. All gaps are \(\ge0\), one of them \(0\), so the inequalities hold unchanged. The two alternants subtract \(2\mu_*\), which is the last term of \(W'_j\). The non-window comparison uses three more facts, none of them a strict gap. The first is the reduction to the componentwise least \(N_2\), which needs positive slot weights. The second is rank normalization, where the inner cost is monotone because \(v_i\ge0\), followed by the gap bound. The third is the strict window bound \(b(\Lambda)&gt;b(\Lambda_p)\), with \(W'_0-W'_1=2Mw_x+2\sum_iv_i&gt;0\) for \(p=0\), the double root counted twice. Strict gaps are needed only for the equality case, which is not used.</li>
+<li><em>Part 3.</em> Under the hypothesis, the least valuation is \(\min W'\), attained at a window. Every non-window coordinate is strictly larger by part 2. The other windows are at least their \(W'_j\). The strict convexity of \(W'_j\) in \(j\) is that of the cherry theorem, unchanged by the constant \(-2\mu_*\). So the minimizing windows are one or two adjacent.</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>The reduced block does not factor.</strong> The reduced row of conj:cube-cherry-double-reduced-expansion is \(R=U_\varepsilon w\psi-c_1\varepsilon\psi\). In the \(\psi\)-index its kernel is \(c_{m-t+1}\varepsilon^{m-t+1}\) restricted to \(m-t\ge1\), so \(R=B_RK-c_1\varepsilon\psi\) is not of the form \(BK\); this is a direct algebraic remark. research/tools/bmd_cherry_double_terms.gp (research/results/bmd-20261007-zy/double-terms2.txt; the first output, double-terms.txt, carries an earlier mislabelled header) computes the least term of the unreduced factored formula. It equals \(W'_j\) at every window of the six arcs, and so is not exact where the exact valuation exceeds \(W'_j\). One interpretation, not proved: the factored expansion cancels inside its \(E\)-block minors at the tied slots of the double root, and the reduced expansion avoids this by splitting the blocks differently. A first draft of this entry claimed that the reduced block factors; the script's output contradicted it before recording.</p>
+<p><strong>What this proves.</strong> By part 3, together with the exact valuations of the cherry double root entry, the leading sets are windows at the five arcs where a minimizing window attains \(W'_j\). Those valuations are \(P\)-adic, with \(P=1000003\). The lemma's lower bound holds \(P\)-adically, since the \(c_t\) and \(g\) involved are \(P\)-units at these sizes. The \(t\)-adic series has \(P\)-integral coefficients, so \(\operatorname{val}_P=W'_j\) forces the \(t^{W'_j}\) coefficient to be nonzero. That is attainment for the formal arc with the same coefficients. So this is a proof for those specific arcs, including their leading coefficients \(3,-2,5\), not for every arc with those valuations; the lemma itself covers every arc where attainment holds. The sixth arc, \((w_x,w_e)=(1,3)\) with the double root of smallest valuation, has \(\min W'=36\) unattained (exact \(38\)), so part 3 does not apply. There the windows lead only by the exact computation. The general statement still needs the attainment at a minimizing window, or the exact minimal-term sum of the \(E\)-block at the tied slots.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the confluent route review. The cherry bounds transfer, and window leading sets follow under attainment.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>attainment at a minimizing window, or the minimal-term sum at the tied slots, for conj:cube-cherry-double-root-windows;</li>
+<li>the Forney bound for the confluent tie window, the highest-risk item;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-cherry-lattice-splitting (the Cauchy–Binet formula); thm:cube-cherry-caterpillar-windows (steps 2–4 and convexity); lem:cube-double-node-alternant; conj:cube-cherry-double-reduced-expansion.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the common-kernel factorization, including the basis change (determinant \((-3/2)^2\));</li>
+<li>each step of the cherry proof for its use of the weights;</li>
+<li>part 3 and the convexity;</li>
+<li>the identification of the five arcs.</li>
+</ul>
+<p>It found parts 1–3 correct and no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>the normalization of the valuations;</li>
+<li>the non-window comparison's actual ingredients;</li>
+<li>the transfer from \(P\)-adic valuations to attainment, and its scope;</li>
+<li>the reduced-block paragraph separated into remark, computation and interpretation;</li>
+<li>the script's header and label, with the output regenerated.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 37.74 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 39.41 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 13.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 38.79 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
