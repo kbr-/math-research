@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-moment-review">tie moment review</a> places the special values of the confluent tie window in the theory of multiple orthogonality. The window is a one-variable type II problem with five functionals and excess order \(2\) (lem:cube-tie-window-moment-form), and its pure part is generically perfect at \(224\) indices. Total positivity fails on \(c&lt;0\). The highest-risk item is still the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree).</p>
-<p>Next: develop the Nikishin lead. Read Fidalgo Prieto and López Lagomasino, Nikishin systems are perfect (Constr. Approx. 34, 2011), in full. Then determine whether the five functionals of the window form a generalized Nikishin system after an admissible change of functionals. In parallel, find a reduced expansion for the cherry over a double root (conj:cube-cherry-double-root-windows).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-nikishin">tie Nikishin entry</a> matches the confluent tie window to a mixed Angelesco–Nikishin system. Its product functionals are Nikishin products in both orders. But the perfectness theorem's positivity and support hypotheses fail, at \(a=5/2\) and for non-real or nested \(c\). The Forney bound (lem:cube-tie-window-top-degree) remains the highest-risk item, without a mechanism.</p>
+<p>Next: the reduced expansion for the cherry over a double root (conj:cube-cherry-double-root-windows), where the valuation method has a candidate mechanism. Recombine \(\partial_\beta V\) and \(U_\varepsilon\partial_\beta V\) so that the zero valuation gap no longer produces cancelling minimal terms. Prove the windows by the prefix method of thm:cube-confluent-cherry-caterpillar-windows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59419,6 +59419,53 @@ For the window there are now the degree counts \(a_m\), \(b_m\) and \(\delta_m\)
 <tr><td>Computation design and coding</td><td class="elapsed">27.67 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.57 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-nikishin" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-tie-moment-review:1" data-claims="none" data-claim-note="Development of the Nikishin lead by reading the source and matching its hypotheses against lem:cube-tie-window-moment-form; the identities used are standard partial fractions, and no new claim is registered.">
+<h3>7 October 2026 — The confluent tie window as a Nikishin-type system: its product functionals are Nikishin products in both orders, and positivity fails, so perfectness theorems do not apply</h3>
+<p class="entry-meta">Development of the Nikishin lead (Fidalgo Prieto–López Lagomasino, arXiv:1001.0554): the window's functionals match a mixed Angelesco–Nikishin structure, but the theorem's positivity and single-order hypotheses fail. Gap (3), confluent tie window. Tie Nikishin cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound of lem:cube-tie-window-top-degree. The <a href="#entry-2026-10-07-cube-tie-moment-review">tie moment review</a> named Nikishin perfectness as its first lead. Do the five functionals of lem:cube-tie-window-moment-form form a Nikishin system, so that the perfectness theorem excludes special values?</p>
+<p><strong>Source.</strong> U. Fidalgo Prieto and G. López Lagomasino, Nikishin systems are perfect, arXiv:1001.0554, Constr. Approx. 34 (2011). Read: the introduction, Definitions 1.1–1.4, and the setting of the main theorem (pages 1–4). A Nikishin system \(\mathcal N(\sigma_0,\ldots,\sigma_m)\) is built from measures \(\sigma_j\) of constant sign on intervals \(\Delta_j\), with \(\Delta_j\cap\Delta_{j+1}=\emptyset\). Its products are \(d\langle\sigma_\alpha,\sigma_\beta\rangle=\hat\sigma_\beta\,d\sigma_\alpha\), with \(\hat\sigma\) the Cauchy transform. The theorem proves type I and type II normality at every multi-index, so the system is perfect. The paper also recalls that binomial systems \((1-z)^{w_0},\ldots,(1-z)^{w_m}\) at one point, \(w_i-w_j\notin\mathbb Z\), are perfect.</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-moment-form, read against this source. The window's conditions, in Cauchy-transform form, are as follows.</p>
+<ul>
+<li>The two families are moments of \(\sigma_a\) on \([0,1]\) (\(a=5/2\)) and of \(\sigma^c_b\) on \([0,c]\) (\(b=3/2\)), as in lem:cube-tie-window-moments. These are continued, not positive, measures: the density \(s^{a-1}(1-s)^{-a}\) is not integrable at \(1\) for \(a&gt;1\).</li>
+<li>The row \((1+T)^{-3}\) is the point functional \(\tfrac12(s^2Z)''(1)\), the limit of \(\sigma_3\) at the integer exponent \(3\).</li>
+<li>The two mixed rows have moment generating functions that are products of the two families' generating functions. By partial fractions,
+\[\hat\mu(z)\hat\nu(z)=\widehat{\langle\mu,\nu\rangle}(z)+\widehat{\langle\nu,\mu\rangle}(z),\qquad\frac1{(z-x)(z-y)}=\frac1{x-y}\Bigl(\frac1{z-x}-\frac1{z-y}\Bigr).\]
+So each mixed functional is a sum of the Nikishin products \(\langle\sigma_a,\sigma^c_b\rangle\) and \(\langle\sigma^c_b,\sigma_a\rangle\), in both orders. This is the divided-difference form of lem:cube-tie-window-moment-form.</li>
+</ul>
+<p><strong>Where the theorem breaks.</strong></p>
+<ul>
+<li><em>Positivity.</em> The proof uses measures of constant sign: the AT property, and the zero counting of the multiple orthogonal polynomials. Here \(\sigma_{5/2}\) is a non-integrable continuation and the point functional is a second derivative at \(s=1\).</li>
+<li><em>Supports.</em> For real \(c&lt;0\) the supports \([c,0]\) and \([0,1]\) touch at \(0\). That case is covered for positive measures by the sequel, Nikishin systems are perfect: case of unbounded and touching supports (arXiv:1009.1922). For \(0&lt;c&lt;1\) they are nested, and for complex \(c\) they are not on a line. Nikishin's setting needs disjoint or touching real intervals.</li>
+<li><em>Structure.</em> A Nikishin system uses the products of one generating sequence in one order. The window uses both orders at once, together with the two base measures and a point functional, and it imposes the conditions with excess order \(2\), not at a normal index.</li>
+</ul>
+<p><strong>What this means.</strong> The lead identifies the right family of objects: Angelesco–Nikishin mixtures with products of Cauchy transforms. But none of the three hypotheses holds, so the perfectness theorem gives nothing directly. A possible route is deformation in the exponents.</p>
+<ul>
+<li>For \(0&lt;a,b&lt;1\) and real \(c&lt;0\) the measures are positive, and a perfectness result for the mixed system, if proved there, would hold for generic \((a,b)\).</li>
+<li>The specific values \(a=5/2\), \(b=3/2\) could still be exceptional. A deformation argument would also need control of the degenerations, which is the original difficulty.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the tie moment review. The structure matches a mixed Angelesco–Nikishin system with products in both orders, and the perfectness theorem's positivity and support hypotheses fail. <strong>Follow-up.</strong> Continuing only as a deformation in the exponents, which is not yet formulated.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) for \(m\ge7\), the highest-risk item;</li>
+<li>a reduced expansion for conj:cube-cherry-double-root-windows;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-moment-form and lem:cube-tie-window-moments; the source, Definitions 1.1–1.4 and the introduction.</p>
+<p><strong>Verification gate.</strong> No new claim: a source reading matched against registered lemmas, with a standard partial-fraction identity. No reviewer was used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 53.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">34.13 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">49.40 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
