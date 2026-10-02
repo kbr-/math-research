@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-window-generic-rank">tie window generic rank entry</a> proves that the confluent tie window has full rank for all but finitely many \(c\) at every \(m\) (lem:cube-tie-window-generic-rank). Reducing the extra rows in \(c\) leaves a two-exponent window. So confluent tie level points avoid the contact locus except at finitely many special cross-ratios per \(m\).</p>
-<p>Next: the special values, still the highest-risk item. Decide whether the cone needs them. They form a codimension-one family of confluent tie level points. Check whether the dimension count behind (K) tolerates such a family, or whether arcs through them are decided by the next order, as for the special cancellations. If they are needed, look for a second extreme in \(c\) (the degree, or the expansion at \(c=1\)) and a gcd argument between two maximal minors with explicit extreme terms.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The confluent tie window has full rank off a finite set \(Z^W_m\) of special cross-ratios (lem:cube-tie-window-generic-rank). The <a href="#entry-2026-10-07-cube-tie-minor-zeros">tie minor zeros entry</a> shows that these cannot be excluded by localizing the zeros of single minors, since every maximal minor has zeros in both half-planes and on the positive axis (ex:cube-tie-window-minor-zeros-spread).</p>
+<p>Next: a route review of gap (3), with the special values of the confluent tie window as the highest-risk item and no mechanism. Its leads should use several minors together: the left-kernel type I Hermite–Padé form, overdetermined by two conditions, and a Shidlovskii-type zero estimate by differential operators. It should also reassess the other special-cancellation types, which may yield to the method of the confluent cherry theorem.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58200,6 +58200,42 @@ The \(c^{2m}\) coefficient cancels. So \(R_3'\) has \(c\)-order at least \(2m-1\
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 16.61 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.06 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 3.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-minor-zeros" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-07-cube-confluent-cherry-route-review:1" data-claims="ex:cube-tie-window-minor-zeros-spread">
+<h3>7 October 2026 — The special values of the confluent tie window cannot be excluded by localizing minor zeros: every maximal minor has zeros in both half-planes and on the positive axis</h3>
+<p class="entry-meta">Refutation of a half-plane or sector separation of the zeros of two maximal minors of the confluent tie window (m = 2–5); the special values keep no mechanism. Gap (3), confluent tie window. Tie minor zeros cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), still the highest-risk item. The <a href="#entry-2026-10-07-cube-tie-window-generic-rank">generic rank entry</a> left the finite set \(Z^W_m\) of special cross-ratios, the common zeros of the maximal minors of \(W^c(c)\). The cone route needs all of them. The fibre over a non-separated point of \(L_q\) contains confluent tie levels with every \(c\), so they cannot be avoided by choosing the cone. A dimension count does not help, since the cone criterion is a set-theoretic avoidance.</p>
+<p>The review's bridge 1 found the zeros of \(H_m\) in \(\operatorname{Re}c&gt;0\). That suggested a mechanism: two maximal minors whose zeros lie in disjoint regions, a half-plane or a sector, each provable by a positivity argument. Then \(Z^W_m\subset\{0,1\}\). The test: locate the zeros of every maximal minor for \(m\le5\).</p>
+<p><strong>General statement.</strong> conj:cube-confluent-tie-window-full-rank, through the separation strategy. The finite refutation ex:cube-tie-window-minor-zeros-spread: for \(m=2,\ldots,5\), every maximal minor of \(W^c(c)\) (\(\binom{3m+5}2\) of them) has, off \(\{0,1\}\), zeros with real part \(\le0\), zeros with real part \(\ge0\), and a positive real zero. So no two of them are separated by the line \(\operatorname{Re}c=0\), and every sector about the positive real axis meets the zeros of each.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_minor_zeros.gp (research/results/bmd-20261007-zj/minor-zeros.txt) strips the factors \(c\) and \(c-1\) from each maximal minor and computes its roots, \(m=2,\ldots,5\). There are \(55\), \(91\), \(136\) and \(190\) minors. None is a monomial in \(c\) and \(c-1\). In every one, the least real part is \(\le0\) and the greatest \(\ge0\). Every one has a zero of argument \(0\), a positive real zero, and a zero of absolute argument at least \(2.25\). Sturm counts give many real zeros. For example, at \(m=3\) the minor without the first two columns has \(19\) zeros, \(7\) of them real. The first run failed on a parenthesis and is kept in the session archive.</p>
+<p><strong>What this means.</strong> Each maximal minor vanishes at many \(c\). The fact that their common zeros are only \(0\) and \(1\) for \(m\le6\) is therefore a coincidence-free statement about several polynomials together, not a localization of one. A proof has to use more than one minor at once. Candidates:</p>
+<ul>
+<li>the left-kernel form: at a special \(c_0\), a nonzero type I Hermite–Padé form of the five functions with degrees \((2m,m,1,1,1)\) vanishing on \(3m+5\) consecutive coefficients, which is two more conditions than unknowns;</li>
+<li>a zero estimate for such forms by differential operators, in the style of Shidlovskii's lemma, which uses all the functions together.</li>
+</ul>
+<p><strong>Bridge follow-up.</strong> This develops bridge 1 of the confluent cherry route review, the Lee–Yang zero-free region. It holds for the pure block's \(H_m\), but it does not extend to the window's maximal minors, whose zeros fill both half-planes.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the special values \(Z^W_m\setminus\{0,1\}\) for \(m\ge7\), with no mechanism;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-generic-rank (the set \(Z^W_m\)); the geometric cone collapse entry (gap (3): fibres over non-separated points); the confluent cherry route review (bridge 1).</p>
+<p><strong>Verification gate.</strong> No new lemma: a finite refutation of a strategy, checked against its script and output. No reviewer was used, since there is no new argument to check.</p>
+<p>Status: refutation (of the separation strategy, finite check).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zj">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 23.94 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 15.92 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 28.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.80 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 30.04 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
