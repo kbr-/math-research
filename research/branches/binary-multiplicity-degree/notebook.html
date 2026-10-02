@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It holds in the fast regimes \(p\ge M-2\), under the Hankel form (<a href="#entry-2026-10-08-cube-tie-cluster-window-coefficients">tie cluster window coefficients</a>).</p>
-<p>Next: the slow regimes \(p\le M-3\). There the window coefficient vanishes at the limit with \(\eta\)-penalty \((k-1)(k-2)w_\eta\). Use the window bound's exact gaps to show that the leading coordinates stay inside \([-p-1,2M-p]\) whatever \(w_\eta\) is. Check against one exact arc at \(M=5\), regime \(2\), with a large deeper scale.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It now reduces to conj:cube-tie-cluster-penalty-sharing, which predicted the leaders and every window valuation exactly on seven slow-regime arcs (<a href="#entry-2026-10-08-cube-tie-cluster-penalty-sharing">penalty sharing</a>).</p>
+<p>Next: prove penalty sharing in the regime \(p=1\). The least \(\varepsilon\)-order part of every coordinate is a confluent alternant at doubled nodes, \(\mathrm{Vand}^4\) times a symmetric polynomial. Show that the terms of higher \(\varepsilon\)-order also carry \(\mathrm{Vand}(\tilde y')^2\) beyond the common factor, for instance by writing \(Q_s=(U_\varepsilon-1)V_s\) through the doubled-node rows \(V_s,w^{-1}V_s,w^{-2}V_s,\ldots\)</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -64082,6 +64082,83 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Computation design and coding</td><td class="elapsed">5 min 12.45 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">44.50 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">20 min 1.71 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-cluster-penalty-sharing" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-cluster-penalty-sharing prop:cube-penalty-sharing-gives-window">
+<h3>8 October 2026 — Cherry above a tie cluster in slow regimes: every cross coordinate pays its window's penalty on the tested arcs, which would give condition (W′) on every arc</h3>
+<p class="entry-meta">Conjecture with q-adic checks of the leaders and the window penalties: penalty sharing for a cherry above a tie cluster over a caterpillar. Working proof that it implies (W′) on such arcs off two moduli. Penalty sharing cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement (W′) above a tie cluster, in the slow regimes \(p\le M-3\) left open by cor:cube-cherry-above-tie-fast-regimes (<a href="#entry-2026-10-08-cube-tie-cluster-window-coefficients">tie cluster window coefficients</a>). There the window coefficient \(L_p(\tilde y')\) has positive valuation, a penalty. Which coordinates lead, and can a non-window coordinate escape the penalty and break (W′)?</p>
+<p><strong>Setting.</strong> As in the previous entry: a cherry above \(x\tilde C\), \(\tilde y'\to(c_0,1,0,\ldots,0)\), and below the tie a caterpillar of \(M-2\) roots of valuations \(\nu_1&lt;\nu_2&lt;\cdots\) (relative to the tie's scale). Put \(\pi_k=0\) for \(k\le2\) and, for \(k\ge3\),</p>
+\[ \pi_k=2\sum_{1\le i&lt;j\le k-1}\nu_i , \]
+<p>for \(3\le k\le M\). For \(1\le k\le M-1\) this is the valuation of the least term of \(\operatorname{Hank}_k(\tilde y')\) (prop:cube-tie-cluster-window-coefficients). For \(k=M\), the window \(\Lambda_0=[0,2M-1]\), the Hankel form says nothing, and \(\pi_M\) is defined by the same formula, which uses only \(\nu_1,\ldots,\nu_{M-2}\). For a coordinate set \(\Lambda\) let \(p(\Lambda)\) be its number of negative elements.</p>
+<p><strong>General statement.</strong> conj:cube-tie-cluster-penalty-sharing. For \(c_0\) off the two unit-circle moduli of prop:cube-tie-cluster-window-coefficients, along every arc of this form (a caterpillar below the tie, with strictly increasing \(\nu_i\)) and for every \(\Lambda\) with \(p=p(\Lambda)\), including \(p=0\),</p>
+\[ \operatorname{val}P_\Lambda\ \ge\ 2\operatorname{val}\mathrm{Vand}(\tilde y')+b(\Lambda)+\pi_{M-p}, \]
+<p>with equality for the windows \(\Lambda=\Lambda_p\). In words, every cross coordinate pays at least the penalty of the window with the same number of negative indices.</p>
+<p><strong>Second statement.</strong> prop:cube-penalty-sharing-gives-window. If conj:cube-tie-cluster-penalty-sharing holds, then along every arc of this form (with \(c_0\) off the two moduli) the leading cross Plücker vector of a cherry above a tie cluster is a window \(e_{\Lambda_p}\) or a pencil of two adjacent windows. So (W′) holds, and with the uniqueness hypothesis of cor:cube-cherry-step, the arc avoids \(K\).</p>
+<p><strong>Proof of the proposition.</strong> Put \(f(p)=b(\Lambda_p)+\pi_{M-p}\). By the window bound, \(b(\Lambda_p)=w_xA_p+w_eB_p\) is strictly convex in \(p\). The penalty is convex in \(p\): \(\pi_k-\pi_{k-1}\) is \(0\) for \(k\le2\) and \(2\sum_{i\le k-2}\nu_i\) for \(k\ge3\), nondecreasing in \(k\), and \(k=M-p\) is affine in \(p\). So \(f\) is strictly convex, and its minimum is attained at one \(p\) or at two adjacent values.</p>
+<p>By the equality case, the window \(\Lambda_p\) has valuation \(2\operatorname{val}\mathrm{Vand}+f(p)\). A non-window \(\Lambda\) with \(p\) negative indices has \(b(\Lambda)\ge b(\Lambda_p)+\min(w_x,w_e)\), since \(b\) is least exactly at \(\Lambda_p\) for fixed \(p\) and the bound moves in integer steps of \(w_x\) or \(w_e\). By the conjecture its valuation is at least \(2\operatorname{val}\mathrm{Vand}+f(p)+\min(w_x,w_e)\), which exceeds the minimum. So the least valuation is attained only at windows minimizing \(f\): one window, or two adjacent ones, whose union \([-p-1,2M-1-p]\) has \(2M+1\) elements. That is (W′). \(\square\)</p>
+<p><strong>Evidence.</strong> research/tools/bmd_cherry_tie_slow_regime.gp (research/results/bmd-20261008-zl/slow-regime-v2.txt). It takes \(M=4\), \(c_0=2\), a cherry \(\{1,1+e\}\) with \(e=q^b\), the tie cluster \(x(c_0,1,q^d,-3q^{d+1})\) with \(x=q^a\), and \(q=1000003\). So \(\nu=(d,d+1)\), \(\pi_3=2d\), \(\pi_4=6d+2\), and the common shift is \(2\operatorname{val}\mathrm{Vand}(\tilde y')=2d\).</p>
+<p>How it computes:</p>
+<ul>
+<li>The arc is made \(q\)-adic. Every cross coordinate \(P_\Lambda\) on the columns \([-4,10]\), \(6435\) sets per arc, is a rational determinant of the rows truncated at \(m\le34\). That is exact below valuation about \(136\), far above the values reported.</li>
+<li>All denominators are prime to \(q\). So each computed valuation is at least the arc's order, with equality unless a leading integer coefficient happens to be divisible by \(q\).</li>
+<li>The column range suffices. A set with \(p=1\) reaching column \(11\) has \(b\ge b(\Lambda_1)+5w_x\), and a set reaching \(-5\) pays at least \(3w_e\). With the shift, both exceed the least value on the first six arcs (narrowest margins: \(61\) against \(60\) at \((1,5,6)\), \(53\) against \(52\) at \((1,5,2)\), \(41\) against \(40\) at \((1,3,2)\)). On the seventh arc, \((1,9,6)\), the bound \(77\) for a set reaching column \(11\) lies below the least value \(84\). There the column range is justified only by penalty sharing itself, so that arc is evidence for the window equalities, not for the leaders.</li>
+</ul>
+<p>The arcs \((a,b,d)\) are \((1,4,1)\), \((1,4,2)\), \((1,4,4)\), \((1,5,2)\), \((1,5,6)\), \((1,3,2)\) and \((1,9,6)\). They have \(\rho\le1/4\), the slow regime \(p=1\), with \((1,3,2)\) on the wall between \(p=1\) and \(p=2\).</p>
+<p>The test is a prediction, made before the run: the leaders should be the windows minimizing \(f\), unless some non-window with \(p=1\) escapes the penalty.</p>
+<ul>
+<li>In every arc the least valuation within the column range is attained exactly at the predicted windows (with the caveat above for \((1,9,6)\), where the predicted tie appears as a pencil).</li>
+<li>The predicted ties \(f(1)=f(2)\) at \((1,4,1)\) and \((1,5,2)\) appear as the pencil \(\{\Lambda_1,\Lambda_2\}\). On the other arcs \(\Lambda_2\) leads alone, and \(\Lambda_1\), which minimizes the window bound off the wall, loses to its penalty.</li>
+<li>The best non-window with \(p=1\) sits at least one step above, as penalty sharing predicts (for instance \(49\) against \(46\) at \((1,4,2)\)).</li>
+<li>Every union fits in an interval of \(9=2M+1\) integers.</li>
+<li>The equality clause for all five windows, \(p=0,\ldots,4\), is checked directly. On all seven arcs \(\operatorname{val}P_{\Lambda_p}-b(\Lambda_p)-2d\) equals the predicted \(\pi_{M-p}\) exactly, for instance \((14,4,0,0,0)\) at \(d=2\) and \((38,12,0,0,0)\) at \(d=6\). So \(\pi_4=6d+2\) holds also for \(\Lambda_0\).</li>
+</ul>
+<p>What is not checked:</p>
+<ul>
+<li>the inequality for non-windows with \(p\ne1\) above the minimum;</li>
+<li>sets outside the column range, which are excluded from leading but not tested for the penalty;</li>
+<li>other moduli and sizes;</li>
+<li>the \(C\)-block uniqueness hypothesis.</li>
+</ul>
+<p>\(q\)-adic genericity stands in for the arc's leading coefficients.</p>
+<p><strong>What this means.</strong> Above a tie cluster over a caterpillar, (W′) is reduced to one inequality on the cross coordinates, which the tested leaders and windows satisfy. The penalty is the valuation of a sum of squared Vandermondes, the same quantity for the window and its non-window neighbours.</p>
+<p>The natural proof route is the identity behind the case \(p=1\). There every coordinate's least \(\varepsilon\)-order part is a confluent alternant at doubled nodes, \(\mathrm{Vand}^4\) times a symmetric polynomial (thm:cube-doubled-node-identity, used in the lattice theorem for \(L_1\)). So it carries \(\mathrm{Vand}^2\) beyond the common factor, which equals \(\pi_{M-1}\) for every \(M\). The open point there is the terms of higher \(\varepsilon\)-order, which the data show also pay the penalty.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-cluster-penalty-sharing, and the Hankel form;</li>
+<li>the two moduli;</li>
+<li>(W′) above cherry clusters;</li>
+<li>the other core statements.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-tie-cluster-window-coefficients and cor:cube-cherry-above-tie-fast-regimes;</li>
+<li>thm:cube-cherry-lattice-splitting (window bound and the rows of the cross block);</li>
+<li>cor:cube-cherry-step.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the window \(p=0\) included, with \(\pi_M\) defined by the formula;</li>
+<li>the scope limited to a caterpillar below the tie;</li>
+<li>the column range and the truncation justified;</li>
+<li>the claims narrowed to what the run checks;</li>
+<li>"symmetric polynomial" in place of a Schur function;</li>
+<li>"\(q\)-adic".</li>
+</ul>
+<p>The reviewer's run found the predicted window excesses for \(\Lambda_0\) and \(\Lambda_1\) on further arcs, and its check was folded into the rerun. It also reported that the script's output function never writes to the file. That is not so: a GP function body extends to the end of its line. The doubled header in the first output came from an earlier failed run appending to the same file, so the file was regenerated.</p>
+<p>Status: conjecture with exact checks, and a working proof of the implication.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>24 min 42.01 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 40.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 23.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">16 min 37.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
