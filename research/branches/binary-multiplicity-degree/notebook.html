@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-running-minimum">running minimum</a>; eight open items). (W′) and local optimality hold above clusters symmetric about the origin. Minimality survives in running-minimum form, which settles every standard single exchange, conditionally on a kernel-only conjecture.</p>
-<p>Next: prove running-minimum kernel monomial minimality at first order, using thm:cube-first-order-hankel-penalty's structure (\(e_1L\), \(H^+\), \(S\)) applied to \(D_T\). Then examine the non-standard exchanges on the symmetric trees.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-kernel-arc-reduction">kernel arc reduction</a>; eight open items). The standard exchanges of (W′) reduce to single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\) along each arc.</p>
+<p>Next: the smallest single kernel exchange, \(j=k\), \(i=k-1\). Express \(D_{T_0-(k-1)+k}\) and \(D_{T_0}\) through the kernel-column expansion. Since \(K_u(z\cdot w)\) and \(K_u(w)\) are linked by \(y\,h[w]=h[zw]+Ih[w]\) at the roots, compare them along every arc, starting at \(p=M-1\) (\(k=1\)), where each \(D_T\) is one functional applied to one column.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -67421,6 +67421,59 @@ So its arc value is at most that of \((\Lambda',t)\). The true valuation \(\omeg
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 2.46 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">27.13 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-kernel-arc-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-local-exchange-route-review:1" data-claims="prop:cube-kernel-arc-reduction conj:cube-kernel-arc-minimality">
+<h3>9 October 2026 — The kernel determinants are a valuated matroid along each arc: standard exchanges reduce to single kernel exchanges D_{T0−i+j}, with true valuations and no non-cancellation hypothesis</h3>
+<p class="entry-meta">Working proof that arc-wise kernel minimality follows from single kernel exchanges and implies the local condition for every standard exchange; arc-wise minimality conjectured, no violations on six trees. Kernel arc reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4. prop:cube-running-minimum-exchange-reduction needs running-minimum kernel minimality, an order-by-order statement, and non-cancellation of window terms. Along an arc only valuations matter. Is there a weaker kernel statement that suffices, with a smaller target?</p>
+<p><strong>General statement.</strong> prop:cube-kernel-arc-reduction. Use the setting and the \(D_T\) of prop:cube-standard-exchange-reduction. Fix an arc: a cluster tree \(y(s)\) of roots of valuation \(\ge0\), and weights \(w_x,w_e\ge0\) with \(w=w_x+w_e&gt;0\). For a series \(F(u)\) whose coefficients are polynomial in \(y\), let \(\omega(F)\) be the valuation of \(F\) at \(u=\gamma s^{w}\), with \(\gamma\) a generic unit. Then \(\omega(F)=\min_n(nw+\operatorname{val}[u^n]F)\): different powers of \(u\) cannot cancel. This is the record's arc convention, the minimum over terms, and "leads" below refers to it. Write \(P_\Lambda=x^{\sum\Lambda}\tilde P_\Lambda(u)\). Then \(\omega(P_\Lambda)=w_x\sum\Lambda+\omega(\tilde P_\Lambda)\), since a term \(u^n\) has arc value \((\sum\Lambda+n)w_x+nw_e+\operatorname{val}\).</p>
+<ol>
+<li>(Kernel local optimality.) For each \(p\), the \(D_T\), \(T\) ranging over \(k\)-sets of \([0,I]\), are the Plücker coordinates of the matrix \([N\mid K_u(z^0),\ldots,K_u(z^I)]\) over the arc's valued field, contracted by the \(N\)-columns. So \(T\mapsto\omega(D_T)\) is a valuated matroid. If \(D_{T_0}\ne0\) (which also makes the \(N\)-columns independent, so the contraction is defined) and \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\) for all \(i&lt;k\le j\le I\), then \(\omega(D_T)\ge\omega(D_{T_0})\) for every \(T\) (arc-wise kernel minimality).</li>
+<li>(Standard exchanges.) If arc-wise kernel minimality holds on an arc for every \(p\), and \(\Lambda_p\) leads there, then \(\omega(\Lambda')\ge\omega(\Lambda_p)\) for every single exchange \(\Lambda'\) of \(\Lambda_p\) with standard negative part. If \(w_x&gt;0\), equality occurs only for the adjacent windows.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<p>(1) Substitute \(u=\gamma s^{w}\) into the series. They converge \(s\)-adically, since \(w&gt;0\) and every coefficient has valuation \(\ge0\) at \(y(s)\). Every maximal minor of the resulting matrix is a Plücker coordinate of its row space. By the Grassmann–Plücker relations their valuations form a valuated matroid (Dress and Wenzel). Restricting to bases containing the \(N\)-columns is a contraction, again a valuated matroid. Local optimality of a base is global optimality (Murota, Discrete Convex Analysis, 2003, Ch. 6), and a single exchange of \(T_0\) inside the contraction is \(T_0-i+j\). \(I\) is arbitrary, so the conclusion holds for all \(T\).</p>
+<p>(2) By step (1) of prop:cube-standard-exchange-reduction, \(P_\Lambda=\pm\mathrm{Vand}^2\det(\mathcal A_1|_E)\,D_\Lambda\) with \(D_\Lambda=\sum_T\pi_TD_T\), a finite sum. Here \(\pi_T\) (minors of the \(u\)-free kernel basis) and \(\det(\mathcal A_1|_E)\) are polynomials in \(y\) with coefficients in \(\mathcal O\supset\mathbb Q\), so they have \(s\)-valuation \(\ge0\) at \(y(s)\), and the window's factor \(\pm\prod c_i\) has valuation \(0\). \(\mathrm{Vand}\) is the same for \(\Lambda'\) and \(\Lambda_q\). If \(D_{T_0}=0\) at \(q\), the claim is trivial. So, along the arc,
+\[ \omega(P_{\Lambda'})\ \ge\ w_x\textstyle\sum\Lambda'+2\omega(\mathrm{Vand})+\min_T\omega(D_T)\ \ge\ w_x\sum\Lambda'+2\omega(\mathrm{Vand})+\omega(D_{T_0})=\omega(P_{\Lambda_q})+w_x\,\text{excess}. \]
+Here \(\Lambda_q\) is the comparison window of the plain case, with the excess computed there (\(\ge0\)), and \(D_{T_0}\) is taken at \(q\) negatives. Finally \(\omega(P_{\Lambda_q})\ge\omega(P_{\Lambda_p})\) because \(\Lambda_p\) leads. With this convention no separate non-cancellation hypothesis on window terms is needed: \(\omega\) is the minimum-term value by construction. Equality with \(w_x&gt;0\) needs zero excess, which means an adjacent window. \(\square\)</p>
+<p>Relation to the earlier forms. Running-minimum kernel minimality implies arc-wise kernel minimality: each term of \(D_T\) is dominated by an earlier-or-equal term of \(D_{T_0}\), so the minimum-term values compare. Under the convention above these are the \(\omega\)'s, so running-minimum minimality implies arc-wise minimality for \(w&gt;0\). Arc-wise minimality is weaker. It is what (2) needs, and by (1) it is a single-exchange statement.</p>
+<p><strong>Evidence.</strong> conj:cube-kernel-arc-minimality. research/tools/bmd_kernel_arc_minimality.gp (research/results/bmd-20261009-q/kernel-arc-minimality.txt) computes \(D_T\) for all \(k\)-sets \(T\subset[0,6]\), to \(t\le10\), at \(u\)-weights \(w\in\{1,2,3,5,9,20\}\). It uses the minimum-term value, which is \(\omega\) under the convention above, truncated at \(t\le10\), so violations beyond that order are not seen. It covers \(1\le p\le M-1\) (not \(p=0\)) on six trees: nested cherries, the caterpillar cluster, the three trees symmetric about the origin, and nested cherries over a cherry at \(M=5\). There are no violations of arc-wise minimality, and none among the single exchanges. The test is \(q\)-adic at one prime, with the caveats of the running-minimum entry.</p>
+<p><strong>What this means.</strong> The standard exchanges of (W′) now rest on one family of statements, each comparing two kernel determinants that differ in one column, \(K_u(z^j)\) for \(K_u(z^i)\), along each arc. The smallest is \(j=k\), \(i=k-1\): replace the top monomial of the window kernel by the next one. Non-standard exchanges and the tie condition remain separate.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\), \(i&lt;k\le j\).</li>
+<li>Non-standard single exchanges of windows.</li>
+<li>The tie condition; \(p=0\); column ranges; the other open items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the local exchange route review on the kernel side: the same valuated-matroid principle applies to the kernel determinants.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-standard-exchange-reduction and prop:cube-running-minimum-exchange-reduction;</li>
+<li>prop:cube-window-local-exchange-reduction (Dress–Wenzel, Murota);</li>
+<li>the record's arc convention for terms \((X,E,v)\).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked both parts, the minor structure, the exchange \(T_0-i+j\), the inequality chain and the evidence. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>one arc convention, \(u=\gamma s^w\) with a generic unit, stated, under which \(\omega\) is the minimum-term value;</li>
+<li>\(w&gt;0\) and roots of valuation \(\ge0\) required;</li>
+<li>the integrality of \(\pi_T\) and \(\det(\mathcal A_1|_E)\) along the arc, and the finite sum, stated;</li>
+<li>an ill-formed formula replaced;</li>
+<li>the evidence regenerated, after a duplicated run, and its scope stated.</li>
+</ul>
+<p>Status: working proof (both parts); conjecture (arc-wise kernel minimality) with finite evidence.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 28.22 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 5.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.61 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">25.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
