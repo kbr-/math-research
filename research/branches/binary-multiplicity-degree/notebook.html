@@ -47,8 +47,15 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the confluent tie window. The <a href="#entry-2026-10-07-cube-tie-schur-minors">tie Schur minors entry</a> reduces full rank to the absence of a common root of ten irreducible polynomials \(N_{m,K}\), \(\deg N_{m,K}=m(2m-1)+\Sigma K-6\), with the zeros of \(H_m\) cancelling.</p>
-<p>Next: look for contiguous relations. Find linear relations \(\sum_KA_K(c)N_{m,K}=0\) with coefficients of low degree among neighbouring \(K\), by linear algebra at \(m\le4\). A three-term relation whose outer coefficients vanish only at \(\{0,1\}\) would propagate a common root through all \(K\). It would then reach a minor known to be nonzero, which proves coprimality uniformly. If no such relation exists, develop the Angelesco lead for real \(c&lt;0\), where the two cuts are disjoint.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the confluent tie window. The <a href="#entry-2026-10-07-cube-tie-contiguity">tie contiguity entry</a> rules out bounded contiguous relations among the minors \(N_{m,K}\) at \(m\le5\). The window has no proof mechanism.</p>
+<p>Next: develop the never-run Outside lead of the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>, multiple orthogonal polynomials with Rodrigues formulas (Jacobi–Piñeiro, Aptekarev, Van Assche). The steps:</p>
+<ol>
+<li>Write the window's two single-series families, after the \(d\)-th derivative that removes the polynomial part, as moment functionals of two weights.</li>
+<li>Find their type II multiple orthogonal polynomials by a Rodrigues formula.</li>
+<li>Express the annihilators of the pure block explicitly, and with them the \(3\times5\) Schur complement.</li>
+<li>Test the formula against the exact \(N_{m,K}\) at \(m\le3\).</li>
+</ol>
+<p>If the transform to moments fails, record why and move to the confluent cherry proof.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57603,6 +57610,56 @@ with \(\kappa_{m,K}\ne0\), \(N_{m,K}\) irreducible over \(\mathbb Q\), \(N_{m,K}
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 31.18 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 8.27 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-contiguity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Falsification test of a proposed proof mechanism (bounded contiguous relations) for conj:cube-confluent-tie-schur-minors; it registers no new claim.">
+<h3>7 October 2026 — No bounded contiguous relations among the confluent tie minors: the relations between neighbouring minors have generic Padé degree</h3>
+<p class="entry-meta">Falsification of the contiguity mechanism for the confluent tie window at m ≤ 5; the window remains without a proof mechanism. Gap (3), confluent tie window. Tie contiguity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the confluent tie window. The <a href="#entry-2026-10-07-cube-tie-schur-minors">tie Schur minors entry</a> reduced full rank to the absence of a common root of the ten irreducible polynomials \(N_{m,K}\). It proposed a mechanism. A three-term relation \(AN_K+BN_{K'}+CN_{K''}=0\) between neighbouring \(K\), with coefficients of bounded degree vanishing only at \(\{0,1\}\), would propagate a common root through all \(K\), as consecutive orthogonal polynomials do. The test: find the least coefficient degree \(\delta\) of such relations for natural triples.</p>
+<p><strong>General statement.</strong> The statement tested is conj:cube-confluent-tie-schur-minors, through the proposed mechanism: for some triple of neighbouring \(K\), the least \(\delta\) stays bounded as \(m\) grows. Three polynomials of degree about \(D\) always satisfy a relation with \(\delta\approx D/2\), by counting coefficients. So a contiguity relation must beat that bound.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_contiguity.gp (research/results/bmd-20261007-zd/tie-contiguity.txt) computes the least \(\delta\) by exact linear algebra. It covers \(m=1,\ldots,5\) and four triples:</p>
+<ul>
+<li>the consecutive square windows \([1,2,3],[2,3,4],[3,4,5]\);</li>
+<li>the last-column shifts \([1,2,3],[1,2,4],[1,2,5]\);</li>
+<li>\([1,2,3],[1,2,4],[1,3,4]\);</li>
+<li>\([2,3,4],[2,3,5],[2,4,5]\).</li>
+</ul>
+<p>Results:</p>
+<ul>
+<li>The least \(\delta\) is \(3,1,1,3\) at \(m=1\), and \(6,4,4,5\); \(10,8,8,10\); \(17,15,15,16\); \(25,23,23,25\) at \(m=2,\ldots,5\).</li>
+<li>That is \(\lceil D/2\rceil\) or one more, where \(D\) is the largest degree in the triple, which is the generic count.</li>
+<li>The coefficients \(A,B,C\) are irreducible, of degrees close to \(\delta\). No relation has coefficients supported on \(c\) and \(c-1\).</li>
+</ul>
+<p>So the neighbouring minors satisfy no relation of bounded degree. A first run had a syntax error and is kept in the session archive.</p>
+<p><strong>Outcome.</strong> The contiguity mechanism is falsified for these triples at \(m\le5\). The minors \(N_{m,K}\) behave like generic polynomials of degree \(m(2m-1)+\Sigma K-6\), with no hypergeometric contiguity in \(K\). This matches the earlier findings:</p>
+<ul>
+<li>no monomial minor;</li>
+<li>real roots in all three intervals;</li>
+<li>no product formula for the pure block.</li>
+</ul>
+<p>The confluent tie window keeps its exact evidence through \(m\le6\) and the reduction to the \(N_{m,K}\), but has no proof mechanism.</p>
+<p>One Outside lead bearing on it has never been run: the multiple orthogonal polynomials with Rodrigues formulas of the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>. They would give explicit annihilators of the window's single-series rows, and reduce full rank to a small explicit matrix. Under the review rules it gets a development cycle before the route moves away from this item.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-window-full-rank, through the coprimality of the \(N_{m,K}\);</li>
+<li>the confluent cherry proof;</li>
+<li>the other types of the special cancellations and of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-confluent-tie-schur-minors (definition of \(N_{m,K}\)); the collision points review (its Rodrigues lead).</p>
+<p><strong>Verification gate.</strong> No new mathematical claim is made. The computation is plain exact linear algebra, and the generic-degree comparison is a coefficient count, so no reviewer was used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 59.52 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">19.74 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">33.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.80 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
