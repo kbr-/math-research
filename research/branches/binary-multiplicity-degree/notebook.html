@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-two-point-window">two-point window entry</a> shows that full rank of the confluent tie window must come from its three extra rows, through a \(3\times5\) Schur complement. That item stays open, exact through \(m\le6\).</p>
-<p>Next: the special cancellations of lem:cube-collision-cone-limit-types, where \(\mathrm{lc}(r)=q_0^\rho\) and \(a_\rho\) is displaced. Write \(r=q^\rho(1+uq^\eta+\cdots)\) and find the exact valuation function of the points, as for lem:cube-two-double-cone-chains. Decide where \(a_\rho\) lands as a function of \(\eta\) and \(u\): an upper level, level \(V\), next to \(A\), or inside the lower cluster. Cover the chain and single-cherry types by the existing steps (cor:cube-single-cherry-avoidance included), and list what remains.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-special-cancellation-trees">special cancellation entry</a> classifies the displaced root exactly and covers its chains. The main new type is the confluent cherry: a double root \(A\) and a simple root at distance \(e\), on one level with a caterpillar \(\mathcal L\) at scale \(x\).</p>
+<p>Next: the confluent cherry over a caterpillar, by the method of thm:cube-cherry-caterpillar-windows. In the basis \(w^{-\lambda+t}\) its cross block is \(w^{-\lambda}\mathrm{span}\{V_s,\,w^{-1}V_s,\,(U_\varepsilon-1)V_s\}\), so there are three Cauchy–Binet blocks \(B\cdot I\), \(B\cdot S\) (shift), \(B\cdot E\). Find the window bound and the windows, test them exactly along caterpillar arcs, then prove the assignment bound and the non-cancellation of the minimal terms. Then use them for contact avoidance.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57086,6 +57086,110 @@ Hence, since \(\deg H_m\ge2\) for \(m\ge2\), \(H_m\) has roots off \(\{0,1\}\), 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.42 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-special-cancellation-trees" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-special-cancellation-trees">
+<h3>7 October 2026 — Special cancellations on the collision cone: the displaced root slides down the double root's branch; the new types are ties and cherries above it, and a confluent cherry below it</h3>
+<p class="entry-meta">Working proof of the exact limit trees at the special cancellations, for every N; chains are covered, three new types are isolated. Gap (3), special cancellations. Special cancellation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the special cancellations of lem:cube-collision-cone-limit-types, where \(\mathrm{lc}(r)=q_0^\rho\) and the root \(a_\rho\) is displaced. The next step of the <a href="#entry-2026-10-07-cube-two-point-window">two-point window entry</a> asked for their exact valuation function, as for the <a href="#entry-2026-10-07-cube-two-double-cone-chains">two-double points</a>, and for the list of types they reach.</p>
+<p><strong>Setting.</strong> On the collision cone \(a_m=F(q^m)\), with \(F=(x-q^i)(x-q^j)(x-r)\), \(i&lt;j\), and double root \(A=a_i=a_j=0\). Take \(q\) as the arc parameter, \(\operatorname{val}q=1\), and
+\[r=q^\rho\bigl(1+uq^\eta+o(q^\eta)\bigr),\qquad\rho\in\{1,\ldots,N\}\setminus\{i,j\},\quad\eta&gt;0,\ u\ne0.\]
+Put \(V=i+j+\rho\). Represent \(A\) by \(\mu(A)=j\) and each simple root \(a_m\) by \(\mu(a_m)=m\).</p>
+<p><strong>General statement.</strong> lem:cube-special-cancellation-trees. For every \(N\) and all such \(i,j,\rho\):</p>
+<ol>
+<li><em>\(\rho&lt;j\).</em> Put \(s_1=\min(i,\rho)\) and \(h(m)=m+\min(2m,\,m+s_1,\,\rho+i)\).
+<ul>
+<li>Pairs not involving \(a_\rho\): \(\operatorname{val}(P-Q)=h(\min(\mu(P),\mu(Q)))\). Here \(h\) is strictly increasing on indices outside \(\{i,\rho\}\), so these points form the chain of the generic collision cone, with \(A\) splitting off at level \(h(j)=V\) above the lower cluster \(\mathcal L=\{a_n:n&gt;j\}\). If \(\mathcal L=\emptyset\), \(V\) is not a level and \(A\) is in the bottom pair.</li>
+<li>\(\operatorname{val}(a_\rho-A)=D:=h(\rho)+\eta\), and \(\operatorname{val}(a_\rho-a_n)=\min(D,h(\min(n,j)))\) whenever the two differ.</li>
+</ul>
+So \(a_\rho\) is attached to the path from the top to \(A\) at height \(D\). As \(\eta\) grows it slides down from its generic level \(h(\rho)\) toward \(A\).</li>
+<li><em>\(\rho&gt;j\).</em> Put \(h(m)=m+\min(2m,\,m+i,\,i+j)\).
+<ul>
+<li>Pairs of simple roots other than \(a_\rho\): \(\operatorname{val}=h(\min)\).</li>
+<li>\(\operatorname{val}(a_n-A)=h(n)\) for \(n&lt;\rho\), and \(V\) for \(n&gt;\rho\).</li>
+<li>\(\operatorname{val}(a_\rho-A)=V+\eta\), and \(\operatorname{val}(a_\rho-a_n)=h(n)\) for \(n&lt;\rho\), \(V\) for \(n&gt;\rho\).</li>
+</ul>
+So the roots \(a_n\), \(n&lt;\rho\), are singleton levels. At level \(V\), the pair \(\{A,a_\rho\}\) splits from the lower cluster \(\mathcal L=\{a_n:n&gt;\rho\}\), which is a caterpillar. The pair itself splits at \(V+\eta\).</li>
+</ol>
+<p><strong>The types.</strong></p>
+<ul>
+<li><em>Chains.</em> Case 1 with \(D\) different from every \(h(m)\) with \(\rho&lt;m\le j\), \(m\ne i\). (For \(\rho&lt;i\), \(h(i)\) is not a level: there is no simple root \(a_i\).) Also case 1 with \(D=V\) and \(\mathcal L=\emptyset\), where \(\{A,a_\rho\}\) is the bottom pair. Also both cases when the pair \(\{A,a_\rho\}\) lies below \(V\) with \(|\mathcal L|\le1\). These are chains of singleton levels and one double-root level over a caterpillar base, or with \(\{A,a_\rho\}\) as the base pair. They are covered by lem:cube-double-root-step and the singleton steps.</li>
+<li><em>Tie or cherry above \(A\).</em> Case 1 with \(D=h(m)\), \(\rho&lt;m&lt;j\), \(m\ne i\). Two roots \(a_\rho,a_m\) meet at one level above a cluster containing \(A\). They form a tie, or a cherry if the leading coefficients of \(a_\rho-A\) and \(a_m-A\) agree. Not covered: the tie and cherry results need bases of simple roots.</li>
+<li><em>Confluent tie, three-root shape, or \(a_\rho\) inside \(\mathcal L\).</em> Case 1 with \(D=V\). If \(|\mathcal L|\ge2\), then \(A\), \(a_\rho\) and \(\mathcal L\) share a level: the confluent tie level, reduced to conj:cube-confluent-tie-window-full-rank. If \(|\mathcal L|=1\), it is the three-root shape of lem:cube-collision-cone-limit-types, not covered. If \(a_\rho-A\) and \(c_0-A\) have the same leading coefficient, \(a_\rho\) enters \(\mathcal L\) instead, as a displaced index there. That case is not covered.</li>
+<li><em>Confluent cherry.</em> Case 1 with \(D&gt;V\), and case 2, with \(|\mathcal L|\ge2\). A pair \(\{A,a_\rho\}\) of a double and a simple root, at its own scale, sits on one level with a caterpillar \(\mathcal L\). This is an open set of arcs, so it is the main new type. It is the cherry of cor:cube-single-cherry-avoidance with the simple root \(1\) of the cherry replaced by a double root.</li>
+</ul>
+<p><strong>Proof.</strong> As in lem:cube-two-double-cone-chains, \(a_m-a_n=(q^m-q^n)G(q^m,q^n)\), with \(G=x^2+xy+y^2-\sigma_1(x+y)+\sigma_2\), \(\sigma_1=q^i+q^j+r\) and \(\sigma_2=q^{i+j}+r(q^i+q^j)\).</p>
+<ol>
+<li><em>Case \(\rho&lt;j\).</em> Here \(\mathrm{lc}(r)=1\) and \(\rho\ne i\). So \(\sigma_1=q^{s_1}(1+o(1))\), with one leading term. Also \(\sigma_2=q^{\rho+i}(1+o(1))\), since \(\rho+i&lt;\min(i+j,\rho+j)\).
+<ul>
+<li>For \(m&lt;n\), the candidates for the least monomial of \(G(q^m,q^n)\) are \(2m\), \(m+s_1\) and \(\rho+i\). The first two tie only at \(m=s_1\), the last two only at \(m=\rho+i-s_1=\max(i,\rho)\). And \(2m&lt;\rho+i\) whenever \(m&lt;s_1\). At \(2m=\rho+i\), where \(s_1&lt;m&lt;\max(i,\rho)\), the term \(m+s_1\) is strictly smaller, so that tie is harmless. So for \(m\notin\{i,\rho\}\), \(\operatorname{val}(a_m-a_n)=h(m)\), exactly.</li>
+<li>Representatives: \(j\) for \(A\), and \(m\notin\{i,j,\rho\}\) for the others. The smaller one is never \(i\) or \(\rho\), which gives the first statement. Each of \(2m\), \(m+s_1\), \(\rho+i\) is nondecreasing, so \(h(m+1)\ge h(m)+1\).</li>
+<li>Directly, \(a_\rho-A=F(q^\rho)\), and \(\operatorname{val}(q^\rho-r)=\rho+\eta\). So \(\operatorname{val}=\min(\rho,i)+\rho+\rho+\eta=h(\rho)+\eta\). Note that \(h(\rho)=s_1+2\rho\) in both orders of \(i\) and \(\rho\).</li>
+<li>Then \(a_\rho-a_n=(a_\rho-A)-(a_n-A)\), with \(\operatorname{val}(a_n-A)=h(\min(n,j))\). The ultrametric inequality is an equality when the valuations differ.</li>
+<li>\(h(j)=j+\rho+i=V\), because \(\rho+i&lt;j+s_1\).</li>
+</ul></li>
+<li><em>Case \(\rho&gt;j\).</em> Here \(\sigma_1=q^i(1+o(1))\), and \(\sigma_2=q^{i+j}(1+o(1))\) since \(\rho+i&gt;i+j\).
+<ul>
+<li>The candidates are \(2m\), \(m+i\) and \(i+j\). They tie only at \(m=i\) and \(m=j\). At \(2m=i+j\) the term \(m+i\) is strictly smaller. So for simple roots \(\operatorname{val}(a_m-a_n)=h(\min)\).</li>
+<li>Directly, \(\operatorname{val}(a_n-A)=\min(n,i)+\min(n,j)+\min(n,\rho)\) for \(n\ne\rho\). This equals \(h(n)\) for \(n&lt;\rho\) (check \(n&lt;i\), \(i&lt;n&lt;j\), \(j&lt;n&lt;\rho\)), and \(i+j+\rho=V\) for \(n&gt;\rho\).</li>
+<li>\(\operatorname{val}(a_\rho-A)=i+j+\rho+\eta\).</li>
+<li>The differences \(a_\rho-a_n\) follow as before. Strictness holds because \(h(n)&lt;V\) for \(n&lt;\rho\), and \(V&lt;h(\min(n,n'))\) for \(n,n'&gt;\rho\).</li>
+</ul></li>
+<li><em>Coverage.</em> In a chain, \(a_\rho\) is a singleton level, or one root of a bottom pair. The base below the double root is the caterpillar \(\mathcal L\), a single root, or the pair \(\{A,a_\rho\}\). The latter is the double-root step with \(C\) one root. All of these are steps of lem:cube-double-root-step and thm:cube-single-tie-chain-avoidance, as in the coverage of lem:cube-collision-cone-limit-types.</li>
+</ol>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_special_cancellations.gp (research/results/bmd-20261007-y/special-cancellations.txt) substitutes \(q=Q=1000003\), \(r=Q^\rho(1+uQ^\eta)\), and computes exact \(Q\)-adic valuations. It runs at \(N=8\), over all \(i&lt;j\), \(\rho\notin\{i,j\}\), \(\eta\in\{1,2,3\}\) and \(u\in\{1,-2,5\}\).</p>
+<ul>
+<li>All \(31167\) predicted valuations hold.</li>
+<li>The \(585\) pairs where \(D\) equals \(h(\min(n,j))\) for a simple root \(a_n\) are counted separately and not predicted. These are the ties, the cherries and the cases \(D=V\).</li>
+</ul>
+<p>Any wrong exponent in \(h\), \(D\) or \(V\) would have shown up as a mismatch. The script tests valuations only, for integer \(\eta\) and \(\mathrm{lc}(r)=1\). It does not test the type classification or the leading-coefficient criteria.</p>
+<p><strong>What this changes.</strong> The special cancellations of gap (3) now have an exact description, and their chains are covered. Four types remain:</p>
+<ol>
+<li>the confluent cherry, an open set of arcs;</li>
+<li>the three-root shape at \(D=V\), \(|\mathcal L|=1\);</li>
+<li>a tie or cherry on a level above a double root;</li>
+<li>a displaced index inside \(\mathcal L\).</li>
+</ol>
+<p>The confluent tie appears again, at \(D=V\) with \(|\mathcal L|\ge2\). The confluent cherry looks within reach of the cherry method. In the basis \(w^{-\lambda+t}\) its cross block is \(w^{-\lambda}\mathrm{span}\{V_s,\,w^{-1}V_s,\,U_\varepsilon V_s\}\): the cherry block with the exact shifted rows \(w^{-1}V_s\) added. These come from \(\partial\varphi_A\), since \(\partial_a(1+aT)^{-\lambda}|_{a=1}=-\lambda(w-1)w^{-\lambda-1}\). The \(D\)-block and the pair's own rows lie on the integer lattice, so the splitting of thm:cube-cherry-lattice-splitting persists.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the confluent cherry over a caterpillar: a Cauchy–Binet analysis with the three row blocks \(V\), \(w^{-1}V\), \((U_\varepsilon-1)V\);</li>
+<li>ties and cherries above a double root: tie and cherry steps over bases with the invariant (H);</li>
+<li>a displaced index inside \(\mathcal L\), and the three-root shape;</li>
+<li>the confluent tie window \(m\ge7\);</li>
+<li>in gap (1), the two-cherry and nested cherry types, the three-root levels and the two-displacement types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-collision-cone-limit-types (setting, part 4, coverage); lem:cube-two-double-cone-chains (method); lem:cube-double-root-step; thm:cube-single-tie-chain-avoidance.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review re-derived by hand:</p>
+<ul>
+<li>the leading terms and the monomial ties;</li>
+<li>\(h(\rho)=s_1+2\rho\) in both orders, and \(h(j)=V\);</li>
+<li>all of case \(\rho&gt;j\), including \(j&lt;n&lt;\rho\);</li>
+<li>the strictness claims and the coverage of the chains.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>\(m\ne i\) in the chain and tie types;</li>
+<li>the split of \(D=V\) by \(|\mathcal L|\), which adds the three-root shape;</li>
+<li>the description of the counted coincidences and of the scope of the script;</li>
+<li>\(1+o(1)\) for non-integer \(\eta\), and the harmless ties at \(2m=\rho+i\) and \(2m=i+j\);</li>
+<li>the empty lower cluster.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-y">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 20.60 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 52.27 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">24.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 3.37 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
