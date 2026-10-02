@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-cherry-combination-orders">cherry combination entry</a> finds unramified limit spaces on all 22 tested arcs of the remaining cherry types (conj:cube-cherry-combination-avoidance). It proposes a node inequality to make the Wronskian weight additive along chains.</p>
-<p>Next: state and prove the node inequality for a cherry or single-root top level above an arbitrary cluster. Relate the exponents of \(L_0\) at \(T=\infty\) to the vanishing orders of the cluster's limit space at its mark through the rescaling \(S=xT\), and test the inequality on the computed arcs.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-node-weight-bound">node weight entry</a> proves that a single root or a cherry above any cluster adds to the mark weight only the spreads of the leading supports (lem:cube-node-weight-bound). So a cherry step needs only condition (W′) on the cross block and a unique leading cluster coordinate (cor:cube-cherry-step).</p>
+<p>Next: a route review is due. It should weigh condition (W′) for tie and cherry clusters against gap (3)'s special cancellations, which this period has not examined. For (W′): compute the sum of the minimal Cauchy–Binet terms at the leading window for a cherry above a tie cluster, as a polynomial in \(c_0\), and find its zeros.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -62918,6 +62918,94 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.19 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 14.42 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-node-weight-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-cone-limits-review-two:1" data-claims="lem:cube-node-weight-bound cor:cube-cherry-step">
+<h3>8 October 2026 — Node weight bound: above a cluster, a single root or a cherry adds to the mark weight only the spreads of the leading supports, so a cherry step needs only the window property of its cross block</h3>
+<p class="entry-meta">Working proof of a weight bound for the limit pair space when the top level is one root or one cherry above an arbitrary cluster, and of a conditional cherry step. Gap (1), cherry types. Node weight cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1), the highest-risk item. conj:cube-cherry-combination-avoidance needs a step that adds a cherry above an arbitrary cluster, as the cherry slack theorem did above a caterpillar. What does the step need from the cluster below?</p>
+<p><strong>Setting.</strong> Use \(\lambda=\tfrac32\), the chain frame, and the notation of thm:cube-cherry-lattice-splitting. The top level carries a point \(P\): one root \(1\), or a cherry \(\{1,1+e\}\). Below it is a cluster \(C=x\tilde C\) of \(M\) roots, with \(x\to0\). Put \(w=1+T\), \(\beta=a/(1-a)\) for \(a\in C\), so \(\beta=x\tilde y'\). The hypotheses:</p>
+<ul>
+<li>\(w_x=\operatorname{val}x&gt;0\), and \(w_e=\operatorname{val}e&gt;0\) for a cherry;</li>
+<li>for \(\varepsilon\ne0\) the roots of \(\tilde C\) are distinct, so the \(C\)-block has dimension \(\binom M2\), \(\mathrm{Vand}(\tilde y')\ne0\) and the leading valuations are finite;</li>
+<li>\(\tilde y'\) is bounded, which follows from \(\operatorname{val}\tilde y\ge0\). This gives \(\operatorname{val}p_S(\tilde y')\ge0\) and \(\operatorname{val}s_\mu(\tilde y')\ge0\).</li>
+</ul>
+<p>The pair rows split in the family \(\{w^t\}\cup\{w^{-\lambda+t}\}\) into blocks with disjoint supports:</p>
+<ul>
+<li>the \(C\)-block, the pair space of \(\tilde C'\) in the variable \(xw\), on \(w^t\), \(t\ge0\);</li>
+<li>the cherry row, if \(P\) is a cherry, a constant times \(w^{-3}(1+\varepsilon/w)^{-\lambda}\), on \(w^t\), \(t\le-3\);</li>
+<li>the cross block, on \(w^{-\lambda+t}\).</li>
+</ul>
+<p>For a space \(X\) spanned by finitely many \(w^{\gamma+t}\) with a fixed \(\gamma\), call the spread of \(X\) the number \(\Sigma S_{\max}-\Sigma S_{\min}\). Here \(S_{\max}\) and \(S_{\min}\) are the Gale-largest and Gale-least sets of exponents \(t\) on which the Plücker vector of \(X\) is nonzero.</p>
+<p><strong>General statement.</strong> lem:cube-node-weight-bound. Along every analytic arc, the limit \(L_0\) of the pair space in Taylor coefficients is \(E\oplus Q\oplus U\). Here \(E\), \(Q\) (zero or \(\langle w^{-3}\rangle\)) and \(U\) are the images under \(\iota:w^u\mapsto(1+T)^u\) of the leading parts of the three blocks. Its vanishing orders \(a_0&lt;\cdots&lt;a_{R-1}\) at \(T=0\) satisfy</p>
+\[
+\sum_i(a_i-i)\ \le\ \operatorname{spread}(E)+\operatorname{spread}(U).
+\]
+<p>If the leading \(C\)-block coordinate is unique, \(\operatorname{spread}(E)=0\). If \(P\) is a single root, \(U=(1+T)^{-\lambda}\mathrm{Pol}_{&lt;M}\) after \(\iota\), and \(\operatorname{spread}(U)=0\).</p>
+<p>cor:cube-cherry-step. Let \(P\) be a cherry. Suppose that along the arc:</p>
+<ul>
+<li>every nonzero coordinate of the leading cross Plücker vector is a \(2M\)-subset of one interval \(I\) of \(2M+1\) consecutive integers (condition (W′)). This holds for a window \(e_{\Lambda_j}\) and for a pencil \(\alpha e_{\Lambda_j}+\beta e_{\Lambda_{j+1}}\), whose union is \([-j-1,2M-1-j]\);</li>
+<li>the leading \(C\)-block coordinate is unique.</li>
+</ul>
+<p>Then \(L_0\) has no section vanishing to order \(R+1\) at \(T=0\). So the arc avoids \(K\), and the slack is at least \(1\).</p>
+<p><strong>Proof.</strong></p>
+<p>Splitting and limits. The block structure is the computation of thm:cube-cherry-lattice-splitting (1). It uses only \(1+aT=(1-a)(1+\beta w)\) and \(2\lambda=3\), not the shape of \(C\).</p>
+<p>The \(C\)-block is the pair space of the roots \(\beta=x\tilde y'\) in the variable \(w\). By homogeneity its coordinate on \(S\) is \(x^{\Sigma S}p^{w}_S(\tilde C')\), of valuation \(w_x\Sigma S+\operatorname{val}p^w_S(\tilde C')\). So the margin over the least coordinate grows linearly in \(\Sigma S\).</p>
+<p>For the cross block of a cherry, the bound \(\operatorname{val}P_\Lambda\ge2\operatorname{val}\mathrm{Vand}(\tilde y')+b(\Lambda)\) of thm:cube-cherry-lattice-splitting (2) holds for every cluster. It grows linearly in \(\max|t|\), since \(\binom p2+M-p\ge0\) for \(p\le M\). For a single root, the cross coordinate on \(\Lambda\subset\mathbb Z_{\ge0}\) is \(\prod_{n\in\Lambda}c_n\,x^{\Sigma\Lambda}\mathrm{Vand}(\tilde y')s_\mu(\tilde y')\), with margin at least \(w_x(\Sigma\Lambda-\binom M2)\). The cherry row has the single leading coordinate \(w^{-3}\).</p>
+<p>The normalization argument of that theorem then applies verbatim. The Taylor-coefficient limit is \(\iota\) of the limit in the family, and by disjoint supports it is the direct sum of the three blocks' leading spaces.</p>
+<p>Weight bound. Each block's leading space is spanned by functions \((1+T)^{\gamma}\) times polynomials, with \(\gamma=0\) (block \(E\)), \(\gamma\in\mathbb Z\) (\(Q\)) and \(\gamma=-\lambda\) (\(U\)). On \(\mathbb P^1\) they are singular only at \(-1\) and \(\infty\).</p>
+<p>At \(-1\), the orders of a block's leading space, in powers of \(w\), are \(\gamma+S_{\min}\): the greedy pivot set is the Gale-least support set. At \(\infty\), in \(u=1/T\), they are \(-(\gamma+S_{\max})\). These sets are disjoint across blocks:</p>
+<ul>
+<li>\(E\) has nonnegative integers;</li>
+<li>\(Q\) has \(\{-3\}\) at \(-1\) and \(\{3\}\) at \(\infty\);</li>
+<li>\(U\) has half-integers.</li>
+</ul>
+<p>So \(\Sigma_{-1}(L_0)+\Sigma_\infty(L_0)=-\operatorname{spread}(E)-\operatorname{spread}(U)\), with \(Q\) contributing \(-3+3=0\).</p>
+<p>The global count of lem:cube-enlarged-cherry-window applies: monodromy, \(W=(1+T)^{\sigma'}p\), and the chain rule at \(\infty\). It gives \(\sum_{P\ne-1,\infty}\operatorname{ord}_PW=-(\Sigma_{-1}+\Sigma_\infty)\), and the order at \(T=0\) is at most this sum.</p>
+<p>The special cases. For a single root, Cauchy–Binet through \(V(\beta)\) gives the leading index set \(\{0,\ldots,M-1\}\), because \(\operatorname{val}s_\mu(\beta)\ge w_x|\mu|&gt;0\). So \(U=\iota\,\mathrm{span}\{w^{-\lambda+n}:n&lt;M\}\), with spread \(0\). A unique leading coordinate has spread \(0\) by definition.</p>
+<p><strong>Proof of the corollary.</strong> First the window case. The spreads are \(0\), so the weight is \(0\) and the orders are \(0,\ldots,R-1\).</p>
+<p>Now the general case of (W′). The cross leading space lies in \(\iota\,\mathrm{span}\{w^{-\lambda+t}:t\in I\}\). So \(L_0\subset\tilde L:=E\oplus Q\oplus\iota\,\mathrm{span}\{w^{-\lambda+t}:t\in I\}\), of dimension \(R+1\). The cross part of \(\tilde L\) is a single coordinate space, of spread \(0\). The weight bound applies to \(\tilde L\), whose exponent sums are those of a direct sum of spread-zero pieces, so \(\tilde L\) has orders \(0,\ldots,R\). Hence every element of \(L_0\) vanishes to order at most \(R\) at \(0\).</p>
+<p>In both cases no section vanishes to order \(R+1\), let alone \(R+2\). By the coordinatewise convergence of the normalized minors to the Plücker coordinates of \(L_0\) (the Least sets step of thm:cube-single-cherry-slack-one), the vanishing-order set of \(L_0\), which lies in \(\{0,\ldots,R\}\), attains the least valuation. So \(\operatorname{rank}A_{R+1}=R\) along the arc. \(\square\)</p>
+<p><strong>What this means.</strong> The cluster below a single root or a cherry enters the mark weight only through ties among its leading coordinates in the \(w\)-basis, and its own ramification does not propagate. A tie at a Gegenbauer zero, with weight \(1\) at its own mark, is harmless when it lies below, if its \(w\)-scaled leading coordinate is unique.</p>
+<p>The open input for the remaining cherry types is condition (W′) for the cross block above a tie cluster or a cherry cluster. thm:cube-cherry-lattice-splitting shows that windows minimize the valuation bound \(b(\Lambda)\) for every cluster. (W′) can fail only where the leading sum at the minimizing window vanishes. After factoring out \(\mathrm{Vand}(\tilde y')^2\), that sum is \(L_j(\tilde y_0)\) when \(\mathrm{Vand}(\tilde y_0)\ne0\). For a caterpillar it is the nonzero \(\kappa_{M,j}\). For tie and cherry clusters \(\mathrm{Vand}(\tilde y_0)\) can vanish, and Schur-type values at the tie pair \((c_0,1)\) enter.</p>
+<p>The weakened condition already covers the record's ex:cube-cherry-cube-root-cluster on the arc \(x=e=s\). There the leading sets \([-2,3]\) and \(\{-2,\ldots,2,4\}\) are not consecutive windows, but they lie in the interval \([-2,4]\).</p>
+<p>The 22 arcs of the cherry combination entry, all unramified, are consistent with (W) on generic arcs.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the cone limits review: the node inequality takes the form of the spread bound. <strong>Follow-up.</strong> Continuing: condition (W) for tie and cherry clusters.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>in gap (1): condition (W), and uniqueness of the leading \(C\)-block coordinate, or a spread bound, for cherries above tie and cherry clusters; the same analysis for a tie and a cherry on one level and for the flat three-cluster; conj:cube-triple-window-full-rank;</li>
+<li>in gap (3): conj:cube-tie-single-block-exclusion and the special cancellations;</li>
+<li>the cherry local sums.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-cherry-lattice-splitting (splitting, window bound, normalization argument); lem:cube-enlarged-cherry-window (global count); thm:cube-single-cherry-slack-one (enlarged containment).</p>
+<p><strong>Verification gate.</strong> One fresh medium reviewer passed the lemma and the corollary with corrections, all applied. It checked:</p>
+<ul>
+<li>the splitting and margins for an arbitrary cluster;</li>
+<li>the identification of orders with the extreme support sets, their disjointness and the sum;</li>
+<li>the global count;</li>
+<li>the single-root case;</li>
+<li>the pencil containment.</li>
+</ul>
+<p>The corrections:</p>
+<ul>
+<li>the single-root cross margin stated;</li>
+<li>the hidden hypotheses stated;</li>
+<li>the \(\gamma\)-shift in the orders at \(-1\);</li>
+<li>the final step tied to the coordinatewise convergence.</li>
+</ul>
+<p>It also proposed weakening (W) to (W′), which the proof already supports. This is adopted, together with the remark on the cube-root cluster.</p>
+<p>Status: working proof (lemma and conditional step).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 19.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 35.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
