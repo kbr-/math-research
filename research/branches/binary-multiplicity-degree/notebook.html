@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It holds above the four-root tie cluster on every arc, under the Hankel form at \(M=4\) (<a href="#entry-2026-10-08-cube-small-pair-order">small pair order</a>).</p>
-<p>Next: verify the Hankel form \(L_2,L_3\propto\operatorname{Hank}_{2},\operatorname{Hank}_1\) at \(M=4\) exactly, as a polynomial identity. Then extend lem:cube-small-pair-order to all the deep roots of a caterpillar, for penalty sharing at \(M\ge5\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above tie clusters. It is proved above the four-root tie cluster on every arc (<a href="#entry-2026-10-08-cube-hankel-form-exact">Hankel form exact</a>). The Hankel form holds for \(M\le5\).</p>
+<p>Next: penalty sharing with three deep roots, a tie over a three-root caterpillar (\(M=5\), slow regimes \(p\le2\)). Extend lem:cube-small-pair-order by divided differences of all deep roots, aiming at the bound \(4\sum_{\text{pairs}}\min\nu\) for sets with at most one negative index. Check it against an exact \(\eta\)-order computation at \(M=5\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -64255,6 +64255,61 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 43.48 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9 min 46.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-hankel-form-exact" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-hankel-form-small thm:cube-cherry-above-four-tie">
+<h3>8 October 2026 — The Hankel form of the cherry window coefficients holds exactly for M ≤ 5; condition (W′) above the four-root tie cluster on every arc without the conjecture, off two moduli and under the cherry step's uniqueness hypothesis</h3>
+<p class="entry-meta">Working proof by exact computation: the Hankel form at M = 4, 5. Consequence: (W′) above a tie over a two-root caterpillar on every arc, off two moduli, under the cherry step's uniqueness hypothesis. Hankel form cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement (W′) above a tie cluster. cor:cube-cherry-above-four-tie (<a href="#entry-2026-10-08-cube-small-pair-order">small pair order</a>) was conditional on the Hankel form at \(M=4\), a finite polynomial identity. Does it hold exactly, and how far can the exact check go?</p>
+<p><strong>General statement.</strong> prop:cube-hankel-form-small. For \(M\in\{4,5\}\) and every \(1\le j\le M\), the leading coefficient of the cherry window coordinate satisfies</p>
+\[ L_j(y)=c_{M,j}\operatorname{Hank}_{M-j}(y),\qquad c_{M,j}\in\mathbb Q^\times , \]
+<p>as an identity of polynomials in \(y_1,\ldots,y_M\). This is conj:cube-cherry-hankel-coefficient at \(M=4,5\). With the known cases (\(M=3\) exactly, and \(j=1,M\) for every \(M\)) the Hankel form now holds for all \(M\le5\).</p>
+<p><strong>Second statement.</strong> thm:cube-cherry-above-four-tie. Let a cherry sit above a cluster of four roots: a tie \(\{c_0,1\}\), \(c_0\notin\{0,1\}\) and \(c_0\ne(1\pm2\sqrt2\,i)/3\), over a caterpillar of two roots with \(\nu_1&lt;\nu_2\). Assume the leading \(C\)-block coordinate is unique (the hypothesis of cor:cube-cherry-step). Then along every arc the leading cross Plücker vector is a window or a pencil of adjacent windows, so (W′) holds and the arc avoids \(K\).</p>
+<p><strong>Proof of the proposition.</strong> research/tools/bmd_hankel_form_m4.m2 and bmd_hankel_form_m5.m2 (research/results/bmd-20261008-zn/hankel-form-m4.txt, hankel-form-m5.txt), in Macaulay2. They compute the window coordinate exactly in \(\mathbb Q[u,y_1,\ldots,y_M]/(u^{B_j+1})\), with \(B_j=j^2-j+M\):</p>
+<ul>
+<li>rows \(V_s=\sum c_ty_s^tw^t\) and \(Q_s=(U_u-1)V_s\), at \(x=1\), \(\varepsilon=u\);</li>
+<li>columns the window \(\Lambda_j=[-j,2M-1-j]\);</li>
+<li>\(Q_s\) truncated at \(u^{B_j}\), which is exact modulo \(u^{B_j+1}\).</li>
+</ul>
+<p>They take the coefficient of \(u^{B_j}\). By the Cauchy–Binet bound of thm:cube-cherry-lattice-splitting, every term has \(\varepsilon\)-exponent \(\Sigma N_1+\Sigma N_2-\Sigma\Lambda\ge B_j\) for all \(y\), so this is the least coefficient, and by homogeneity it equals \(\mathrm{Vand}(y)^2L_j(y)\). The scripts divide it by \(\mathrm{Vand}(y)^2\operatorname{Hank}_{M-j}(y)\) in \(\mathbb Q[y]\). The division is exact, with a nonzero rational quotient, in every case:</p>
+<ul>
+<li>\(M=4\), \(j=1,2,3,4\): quotients \(265493653425/2^{44}\), \(-3094331625/2^{38}\), \(156279375/2^{38}\), \(-156279375/2^{46}\). The cases \(j=1,4\) are controls, proved in the lattice theorem.</li>
+<li>\(M=5\), \(j=2,3,4\): quotients \(-25626774896848125/2^{64}\), \(46461389349375/2^{59}\), \(-6823001233125/2^{64}\).</li>
+</ul>
+<p>The \(M=4\) run took \(3\) seconds and the \(M=5\) run \(286\) seconds. \(\square\)</p>
+<p><strong>Proof of the theorem.</strong> cor:cube-cherry-above-four-tie, with the Hankel form at \(M=4\) now proved by the proposition. \(\square\)</p>
+<p>The proposition also removes the Hankel premise from prop:cube-tie-cluster-window-coefficients and cor:cube-cherry-above-tie-fast-regimes at \(M=4,5\). Their other hypotheses remain: the moduli exclusion, needed only in regime \(p=M-1\) and on the walls next to it, and the uniqueness hypothesis. At \(M=5\) the moduli are \((1\pm i\sqrt{15})/4\). So above a cluster with normalized limit \((c_0,1,0,0,0)\) (the fast-regimes corollary does not use the structure below the tie), (W′) holds in the regimes \(p\ge3\). The slow regimes \(p\le2\) still need penalty sharing with three deep roots, where the proposition's \(k\ge3\) items leave (W′) undecided.</p>
+<p><strong>What this means.</strong> The first tie-cluster case of (W′) is settled except for the moduli exclusion and the uniqueness hypothesis that every cherry step carries. The node weight bound entry names the Gegenbauer zeros of the tie modulus as the place where uniqueness is at risk for a tie cluster; it has not been checked there. Above this cluster the cone route therefore has a complete argument on all arcs, for \(c_0\) off the two moduli and wherever uniqueness holds.</p>
+<p>The constants \(c_{M,j}\) are explicit. A closed form for them, together with the neck-block structure the lattice entry noted (the cherry join is a neck), is the natural route to the Hankel form for every \(M\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The Hankel form for \(M\ge6\).</li>
+<li>Penalty sharing with three or more deep roots (lem:cube-small-pair-order covers one pair).</li>
+<li>The two moduli, and \(C\)-block uniqueness at Gegenbauer zeros.</li>
+<li>(W′) above cherry clusters.</li>
+<li>The other core statements.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-cherry-lattice-splitting (rows, homogeneity, \(L_1\), \(L_M\));</li>
+<li>conj:cube-cherry-hankel-coefficient;</li>
+<li>cor:cube-cherry-above-four-tie and lem:cube-small-pair-order;</li>
+<li>prop:cube-tie-cluster-window-coefficients.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer, who checked the scripts against the lattice theorem, the least \(\varepsilon\)-order and the exactness of the determinant over the quotient ring (Macaulay2 uses cofactor expansion there). Verdict: pass with corrections. All were applied: the qualifiers in the title, the moduli at \(M=5\), the scope of the removed premise, the Cauchy–Binet sentence, and the script header. The optional explicit cofactor strategy was not added, since the default already uses it.</p>
+<p>Status: working proof by exact computation (Hankel form at \(M=4,5\)); working proof of the theorem under the cherry step's uniqueness hypothesis.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 23.38 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 41.46 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 34.12 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">18.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 49.30 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
