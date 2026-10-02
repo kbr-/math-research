@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-tie-hermite-pade">Hermite–Padé entry</a> recasts conj:cube-confluent-tie-window-full-rank (exact at \(m\le5\)) as the normality of a mixed Hermite–Padé system, and shows that the tie's block-and-functional method does not transfer.</p>
-<p>Next: describe the five annihilators of the window's single-series rows explicitly. One candidate is multiple orthogonal polynomials for the weights of \((1+T)^{-5/2}\) and \((1+cT)^{-3/2}\). Another is to compute them at \(m\le5\) and fit their dependence on \(m\). With them, reduce full rank to a \(3\times5\) matrix of explicit numbers for the three pair rows. If this stalls, turn to the other open types of gap (3) and the cherry chain.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-triple-root-points">triple-root entry</a> settles the triple-collision points of the cone by a two-exponent window theorem and an r-fold node identity.</p>
+<p>Next: the points where two disjoint pairs collide. On the cone these are the intersections \(\ell_{ij}\cap\ell_{kl}\), one value of \(r\) on each collision line. Their fibre is not canonical: by lem:cube-double-root-full-limits the limits depend on a direction in \(\mathbb P^1\) for each pair of double roots. So determine which directions the cone's arcs take, and treat each limit with two double-root steps. The confluent tie window for \(m\ge6\) remains open as well.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -55924,6 +55924,120 @@ The Gamma ratio is a rising factorial of length \(2m-1-i\ge0\), so this is \((-1
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 6.65 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 49.64 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.37 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-triple-root-points" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-two-exponent-window lem:cube-multiple-node-identity lem:cube-triple-root-step">
+<h3>7 October 2026 — Triple-root points: a two-exponent window theorem and an r-fold node identity let a triple root sit over any base, so the triple collisions of the cone avoid the contact locus</h3>
+<p class="entry-meta">Working proofs: a window theorem for two exponents at one root, an r-fold node identity, and a triple-root fibre and step. They cover the triple-collision points of the collision cones. Triple-root cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the points where collision lines of the cone meet. Where \(\ell_{ij}\) and \(\ell_{jk}\) meet, three roots coincide. On the cone this is \(r=q^k\) in the parametrization of lem:cube-collision-cone-limit-types, that is \(a_m=(q^m-q^i)(q^m-q^j)(q^m-q^k)\), one point for each triple and each \(q\). Is it outside \(\overline{K_U}\)? Points where two disjoint pairs coincide are not treated here.</p>
+<h4>Two exponents at one root</h4>
+<p><strong>General statement.</strong> thm:cube-two-exponent-window. Let \(n,p\ge1\), \(d\ge0\), \(a\notin\mathbb Z\), and \(b\) real with \(a-b\notin\mathbb Z\) and \(b-p+1>0\). Then the \((n+p)\)-square matrix of the coefficients of \(T^d,\ldots,T^{d+n+p-1}\) of
+\[T^i(1+T)^{-a}\ (i&lt;n),\qquad T^l(1+T)^{-b}\ (l&lt;p)\]
+is nonsingular. For \(p=1\) this is thm:cube-confluent-window, under these slightly different hypotheses.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Coefficients.</em> As in thm:cube-confluent-window, \([T^k]Q_1(1+T)^{-a}=(-1)^k(\alpha)_k\sigma_1(k)/(k!\,c_1)\) with \(\alpha=a-n+1\), \(\deg\sigma_1&lt;n\) and \(c_1=(\alpha)_{n-1}\ne0\). Likewise \([T^k]Q_2(1+T)^{-b}=(-1)^k(\beta)_k\sigma_2(k)/(k!\,c_2)\) with \(\beta=b-p+1>0\), \(\deg\sigma_2&lt;p\) and \(c_2=(\beta)_{p-1}\ne0\). The maps \(Q_1\mapsto\sigma_1\) and \(Q_2\mapsto\sigma_2\) are injective by the triangularity shown there: the diagonal factors are \(\prod(a+i-s)\ne0\) since \(a\notin\mathbb Z\), and \(\prod(b+l-s)\) with \(b+l-s\ge\beta>0\).</li>
+<li><em>A kernel vector.</em> It gives \(g(k)\sigma_1(k)+C\sigma_2(k)=0\) at the \(n+p\) window points, with \(g(k)=(\alpha)_k/(\beta)_k\), which is finite and nonzero there, and a constant \(C\ne0\).</li>
+<li><em>Finite differences.</em> For a hypergeometric term \(G\) with \(G(k+1)/G(k)=(k+\alpha)/(k+\gamma)\) and a polynomial \(f\) of degree \(e\),
+\[\Delta(fG)(k)=\frac{G(k)}{k+\gamma}\bigl[f(k+1)(k+\alpha)-f(k)(k+\gamma)\bigr].\]
+The bracket has degree \(e\), with leading coefficient \(\mathrm{lc}(f)(\alpha-\gamma+e)\ne0\), since \(\alpha-\gamma\notin\mathbb Z\). Iterating \(p\) times with \(\gamma=\beta,\beta+1,\ldots\) gives \(\Delta^p(\sigma_1g)(k)=g(k)f_p(k)/(k+\beta)_p\), with \(\deg f_p=\deg\sigma_1\), and \(f_p=0\) only if \(\sigma_1=0\). Here \(\alpha-\beta=a-b-n+p\notin\mathbb Z\).</li>
+<li><em>Conclusion.</em> Since \(\Delta^p\sigma_2=0\), \(f_p\) vanishes at the \(n\) points \(d,\ldots,d+n-1\). It has degree below \(n\), so \(f_p=0\) and \(\sigma_1=0\). Then \(\sigma_2\) vanishes at \(n+p\ge p\) points, so \(\sigma_2=0\), and both polynomials vanish by injectivity.</li>
+</ol>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_two_exponent_window_check.gp (research/results/bmd-20261007-o/two-exponent-window-check.txt) found the following:</p>
+<ul>
+<li>all \(248\) triple-root windows (\(a=7/2\), \(b=5\), \(n=3M\), \(p=3\), \(M\le8\), \(d\le30\)) nonsingular;</li>
+<li>\(300\) random rational cases nonsingular;</li>
+<li>all \(126\) controls with \(a-b\in\mathbb Z\) (\(b=a-1\), \(p=1\); \(b=a\), \(p=2\)) singular.</li>
+</ul>
+<h4>r-fold nodes</h4>
+<p>lem:cube-multiple-node-identity. Let \(r\ge1\), \(\lambda\notin\mathbb Z\), \(\varphi_y=(1+yT)^{-\lambda}\) and \(\psi_y=(1+yT)^{-\mu}\) with \(\mu=\lambda-r+1\). Then:</p>
+<ul>
+<li>\(\langle T^i\varphi_y:i&lt;r\rangle=\langle\partial_y^i\psi_y:i&lt;r\rangle\);</li>
+<li>the Taylor minor on columns \(0,\ldots,rM-1\) of the rows \(T^i\varphi_{y_j}\) (\(i&lt;r\), \(1\le j\le M\)) is a nonzero constant times \(\prod_{m&lt;rM}\binom{-\mu}m\prod_{j&lt;j'}(y_{j'}-y_j)^{r^2}\);</li>
+<li>on any column set \(S\) it is a nonzero constant times \(\prod_{m\in S}\binom{-\mu}m\) times the confluent Vandermonde with \(r\)-fold nodes times a Schur polynomial at the repeated nodes.</li>
+</ul>
+<p><strong>Proof.</strong> \(\partial_y^i\psi_y=(-1)^i(\mu)_iT^i(1+yT)^{-\mu-i}=(-1)^i(\mu)_iT^i(1+yT)^{r-1-i}\varphi_y\). The polynomials \(T^i(1+yT)^{r-1-i}\), \(i&lt;r\), span \(\mathrm{Pol}_{&lt;r}\) triangularly, with diagonal \(1\), and \((\mu)_i\ne0\) since \(\mu\notin\mathbb Z\). Factoring \(\binom{-\mu}m\) out of column \(m\) leaves the confluent Vandermonde with \(r\)-fold nodes, of determinant \(\prod(y_{j'}-y_j)^{r^2}\) times nonzero factorials. \(\square\) For \(r=2\) this is thm:cube-doubled-node-identity.</p>
+<h4>The triple root</h4>
+<p>lem:cube-triple-root-step. Let \(\lambda=3/2\).</p>
+<ol>
+<li><em>Fibre.</em> At a configuration with one triple root \(A\) and the other roots simple and distinct, \(C_N^+\otimes\kappa(x)\cong\operatorname{coker}A^{t}_{R+1}\). Here \(A^t\) is the Taylor matrix of the rows
+\[f_{ik},\qquad \varphi_k\varphi_A,\ \varphi_k\partial_A\varphi_A,\ \varphi_k\partial_A^2\varphi_A\ (k\ne A),\qquad (1+AT)^{-5}\,\mathrm{Pol}_{&lt;3}.\]
+So the closure of \(K_U\) meets this stratum inside \(K^t=\{\operatorname{rank}A^t_{R+1}&lt;R\}\).</li>
+<li><em>Step.</em> If a cluster \(C\) of \(M\ge1\) simple roots, at scale \(w\) below \(A=1\), satisfies the invariant (H) with \((\tilde C,L)\) and \(\max L\le R_C+1\), then \(C\cup\{A\}\) satisfies (H) for the rows of part 1. The set is \(L'=L\cup\{\max L+1,\ldots,\max L+3M+3\}\), with \(\max\emptyset=-1\), and \(\max L'\le R_{C'}+1\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The fibre follows as in part (1) of thm:cube-confluent-weight-criterion, by the Chinese remainder theorem for \(p_x=(Z-A)^3\prod(Z-a_k)\).
+<ul>
+<li>The component \(k[Z]/(Z-A)^3\otimes k[Z]/(Z-a_k)\) gives \(\Delta(X,a_k)\) and its first two \(X\)-derivatives at \(A\). After triangular operations these are the rows \(H\), \(\partial_XH\) and \(\partial_X^2H\) at \((A,a_k)\).</li>
+<li>The component \(\bigwedge^2(k[Z]/(Z-A)^3)\cong k^3\) takes \(f\wedge g\) to the coefficients of \(\Delta(X,Y)\) on the antisymmetric basis \(Y-X\), \((Y-X)(u+v)\), \(uv(v-u)\), where \(u=X-A\), \(v=Y-A\), modulo \((u^3,v^3)\). For \(\Delta=q(h)=(Y-X)h\) with \(h\) symmetric, these are \(h_{00}\), \(h_{10}\) and \(h_{11}-h_{20}\) of the Taylor expansion of \(h\) at \((A,A)\). This uses \((v-u)(u^2+v^2)\equiv uv(u-v)\).</li>
+<li>For \(h=H(X,Y;T)\) these are \((1+AT)^{-3}\), \(-\lambda T(1+AT)^{-4}\) and \(\tfrac{\lambda(\lambda-1)}2T^2(1+AT)^{-5}\), with \(\lambda(\lambda-1)/2=3/8\ne0\). Together they span \((1+AT)^{-5}\mathrm{Pol}_{&lt;3}\).</li>
+<li>The rest is as in the cited proof. Closure: \(\operatorname{Supp}C_N^+\) is closed and contains \(K_U\).</li>
+</ul></li>
+<li>The step repeats lem:cube-double-root-step.
+<ul>
+<li>The cross rows are \((1+T)^{-\lambda-2}\langle(1+T)^2\varphi_y,T(1+T)\varphi_y,T^2\varphi_y\rangle=(1+T)^{-\lambda-2}\langle T^i\varphi_y:i&lt;3\rangle\), by triangular operations.</li>
+<li>By lem:cube-multiple-node-identity with \(r=3\) and \(\mu=-1/2\), their minors are \(\prod\binom{1/2}m\) times \(\prod(y_{j'}-y_j)^9\) times Schur polynomials at triple nodes. So the valuation bound and its equality case go through unchanged: \(S_C=L\) and pre-image set \(S'=\{0,\ldots,3M-1\}\), with exponent shift \(3M(3M-1)/2\).</li>
+<li>The leading coefficient on \(L'\) is a nonzero product times the minor. The product includes \((\prod_{i&lt;3}(\mu)_i)^{-M}\). The minor is taken on the \(3M+3\) consecutive columns after \(\max L\), of \((1+T)^{-7/2}\mathrm{Pol}_{&lt;3M}\oplus(1+T)^{-5}\mathrm{Pol}_{&lt;3}\). That minor is nonzero by thm:cube-two-exponent-window, with \(a=7/2\), \(b=5\), \(n=3M\), \(p=3\): \(a-b=-3/2\) and \(b-p+1=3\).</li>
+<li>Finally \(R_{C'}=R_C+3M+3\) gives the column bound.</li>
+</ul></li>
+</ol>
+<p>\(\square\)</p>
+<p><strong>The cone's triple points.</strong> For \(a_m=F(q^m)\), \(F=(x-q^i)(x-q^j)(x-q^k)\), \(i&lt;j&lt;k\), the proof of lem:cube-collision-cone-limit-types applies with \(r=q^k\), \(\rho=k\).</p>
+<ul>
+<li>Roots \(m&lt;k\), \(m\notin\{i,j\}\), are singleton levels at valuation \(\nu(m)\).</li>
+<li>The triple root sits at level \(V=i+j+k\) over the cluster \(\{m>k\}\) around \(c_0=-q^{i+j+k}\).</li>
+<li>That cluster is a caterpillar: \(\operatorname{val}\sigma_1=i\) and \(\operatorname{val}\sigma_2=i+j\), so the corners of \(g\) are at \(j\), \(i\) and \((i+j)/2\), all below \(k\).</li>
+</ul>
+<p>So every limit is a chain of singleton levels over the triple root over a caterpillar.</p>
+<p><strong>Bases and levels above.</strong></p>
+<ul>
+<li><em>Bases.</em> With one or more roots below, the base is a caterpillar or a single root, with (H) by thm:cube-caterpillar-minimality, and part 2 adds the triple root. With no root below (\(k\) the last index), the base is \(\{A\}\) alone. Its rows are \((1+T)^{-5}\mathrm{Pol}_{&lt;3}\), with \(L=\{0,1,2\}\) and a unitriangular minor there. All its entries are constants, so (H) holds.</li>
+<li><em>Levels above.</em> When a root \(1\) is added above a cluster containing the triple root \(A\), its new rows are \(\varphi_1\langle\varphi_y\ (y\text{ simple}),\varphi_A,\partial_A\varphi_A,\partial_A^2\varphi_A\rangle\), by the cross rows of part 1. So the Vandermonde factor of the singleton step is the confluent one with a \(3\)-fold node at \(A\). Its minors are the confluent Vandermonde times Schur polynomials at the nodes with \(A\) repeated three times. They have valuation at least \(w|\mu|\), and the leading coefficient on the initial index set is nonzero.</li>
+<li><em>Homogeneity.</em> The \(T^m\)-coefficients of the cross rows \(\varphi_k\partial_A\varphi_A\) and \(\varphi_k\partial_A^2\varphi_A\) have degrees \(m-1\) and \(m-2\), and that of \((1+AT)^{-5}T^i\) has degree \(m-i\). The shift is therefore the same for every column set, and the comparisons of the step are unchanged.</li>
+</ul>
+<p><strong>Conclusion for the cone.</strong> Fix \((i,j,k,N)\). The triple point is itself an arc \(q\to0\) in the open triple-root stratum: the other roots are distinct, by their valuations. The chain gives a maximal minor of \(A^t_{R+1}\) with nonzero leading coefficient. So for small \(q\ne0\) the rank is \(R\), and by part 1 the point lies outside \(\operatorname{Supp}C_N^+\supset\overline{K_U}\).</p>
+<p><strong>Remaining gap.</strong> In gap (3):</p>
+<ul>
+<li>points with two double roots;</li>
+<li>the confluent tie window for \(m\ge6\);</li>
+<li>\(a_\rho\) meeting \(A\);</li>
+<li>the displaced \(a_\rho\);</li>
+<li>types inside the lower cluster.</li>
+</ul>
+<p>At two double roots the fibre is not canonical: by lem:cube-double-root-full-limits the limits depend on a direction in \(\mathbb P^1\). So that case needs the limits along each direction.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-confluent-window (coefficient form); thm:cube-confluent-weight-criterion part (1) (CRT fibre); lem:cube-double-root-step and lem:cube-collision-cone-limit-types; thm:cube-doubled-node-identity; thm:cube-single-tie-chain-avoidance (invariant (H)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the window theorem's hypotheses and iteration, and the \(248\) count;</li>
+<li>the \(r\)-fold triangularity and the exponent \(r^2\);</li>
+<li>the basis of \(\bigwedge^2\), the coefficients \(h_{00},h_{10},h_{11}-h_{20}\) and the CRT dimension count \(3+3(N-3)+\binom{N-3}2=R\);</li>
+<li>the step's parameters, and the valuations at the cone's triple points.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>\(b\) real;</li>
+<li>the factors in the general column-set form, and \(1\le j\le M\);</li>
+<li>\(\max\emptyset=-1\) and the named factors in the step;</li>
+<li>the singleton steps over a triple node, written out;</li>
+<li>the base with no root below;</li>
+<li>the direct conclusion for the cone's triple points, in place of the unclear arc caveat.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 48.60 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 54.06 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">7.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 46.65 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.54 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
