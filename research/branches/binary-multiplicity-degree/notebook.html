@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-bound">cherry double bound entry</a> transfers the cherry bounds to bases with a double root (lem:cube-cherry-double-lower-bound). The leading sets are windows whenever a minimizing window attains its bound \(W'_j\), which holds at five of six tested arcs. The confluent tie window's Forney bound remains the highest-risk item.</p>
-<p>Next: attainment at a minimizing window for the cherry over a double root. Compute the minimal-term sum of the factored expansion at the tied slots of the double root, with the node coefficients \(g\), and determine when it vanishes. Where it vanishes, use the reduced expansion's two-block bound, which is exact there in all tested arcs.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-minimal">cherry double minimal entry</a> identifies the defect of the cherry bound over a double root as cancellation among extra minimal terms at the double root's zero valuation gap (conj:cube-cherry-double-minimal-cancellation). The confluent tie window's Forney bound remains the highest-risk item.</p>
+<p>Next: a route review, due after the cycles since the tie moment review. It should weigh the Forney bound, which has no mechanism after the Nikishin, total-positivity and Fuchsian attempts, against the cherry-over-double-root line, which now reduces to local sums. It should also reassess whether the cone route needs every special cross-ratio of the tie window.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59632,6 +59632,49 @@ the formula of thm:cube-cherry-lattice-splitting with double-node alternants.</l
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 38.79 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.56 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-cherry-double-minimal" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:2" data-claims="conj:cube-cherry-double-minimal-cancellation">
+<h3>7 October 2026 — Cherries over a double root: the bound fails exactly where the minimal Cauchy–Binet terms, extra ones created by the zero valuation gap, sum to zero</h3>
+<p class="entry-meta">Conjecture (six exact arcs): the defect of the cherry bound over a double root is cancellation of minimal terms, when both copies of the double root are choice slots and at j = 1. Gap (3), cherry above a double root. Cherry double minimal cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the cherry over a double root. lem:cube-cherry-double-lower-bound proves window leading sets wherever a minimizing window attains \(W'_j\). The remaining question is when attainment fails. Is the failure cancellation among the minimal terms of the factored expansion, and which windows does it affect?</p>
+<p><strong>General statement.</strong> conj:cube-cherry-double-minimal-cancellation. For a cherry over a caterpillar cluster with one double root, at window \(j\ge1\), the following hold.</p>
+<ul>
+<li>The exact valuation exceeds \(W'_j\) iff the leading coefficients of the minimal terms of the factored expansion of lem:cube-cherry-double-lower-bound sum to zero.</li>
+<li>The minimal terms outnumber the cherry's \(2^k\) when the zero valuation gap between the double root's two slots lies at the edge of, or inside, the choice ranks.</li>
+<li>Cancellation occurs exactly when both copies of the double root lie among the \(k\) shallowest (choice) slots, and at every window \(j=1\).</li>
+</ul>
+<p><strong>Test.</strong> research/tools/bmd_cherry_double_minimal.gp (research/results/bmd-20261007-zz/minimal.txt) enumerates, at every window \(1\le j\le M\) of the six arcs, the terms of least valuation \(W'_j\). Each has \(N_2\) elementwise least. The script computes each term's leading coefficient modulo \(P\) from the exact block minors and the Laplace sign, and sums them.</p>
+<ul>
+<li>The sum is zero exactly at the windows where the exact valuation of the cherry double root entry exceeds \(W'_j\). These are all \(j=1\) windows, and \(j=2\) in the two arcs with \(M=4\) and the double root shallowest, where both copies lie in the \(k=2\) choice slots. It is nonzero at all others. That includes \(M=3\), \(j=2\) with the double root shallowest, where \(k=1\) and only one copy is a choice slot. The \(j=1\) window with the double root deepest cancels although only one copy is a choice slot, which is why \(j=1\) appears separately in the statement.</li>
+<li>The numbers of minimal terms are \(6,3,1\) at \(M=3\), and at \(M=4\) they are \(12\), then \(6\) or \(4\), then \(3\) or \(2\), then \(1\). Where the double root is away from the choice ranks they are the cherry's \(2^k\); elsewhere half again as many.</li>
+</ul>
+<p><strong>What this means.</strong> The window theorem for the cherry over a double root reduces to a local computation. Where the extra minimal terms appear, the cherry's two-term local sums \(g(b)+g(b+1)\) are replaced by sums involving the double root's node coefficients \(g(t,t')\) of lem:cube-double-node-alternant and the Toeplitz entries. The cancellation should be an identity among these. Where no extra terms appear, the cherry's factorization should go through with the node coefficient as an extra nonzero factor, which would prove attainment there.</p>
+<p>For the cone, the relevant windows are the minimizing ones. In five of the six arcs they show no cancellation. The open case is a minimizing window where both copies of the double root are choice slots, as in the arc \((1,3)\). There the reduced expansion of conj:cube-cherry-double-reduced-expansion gives the exact valuation.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the confluent route review. The mechanism of the defect is identified as minimal-term cancellation at the double root's zero gap.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the local sums: nonvanishing where the double root is away from the choice ranks, which proves attainment there, and the cancelling identity elsewhere;</li>
+<li>the case of a minimizing window with cancellation, through the reduced expansion;</li>
+<li>the Forney bound for the confluent tie window, the highest-risk item;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-cherry-double-lower-bound (the factored formula); lem:cube-double-node-alternant; conj:cube-cherry-double-root-windows (the exact valuations).</p>
+<p><strong>Verification gate.</strong> No new lemma: a conjecture with exact finite evidence, consistent with the independent exact valuations of the cherry double root entry. No reviewer was used.</p>
+<p>Status: conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 25.90 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">42.86 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">21.53 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 21.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
