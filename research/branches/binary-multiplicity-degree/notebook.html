@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item: conj:cube-tie-window-uniform-exponent, which is the Forney bound at \(\lambda=\tfrac32\). The <a href="#entry-2026-10-08-cube-tie-pair-minors">tie pair minors entry</a> closes closed forms and two-minor resultants at \(m=2\) (ex:cube-tie-pair-minors-not-uniform). It opens a Lucas reduction: \(W(\tfrac32,c)\equiv W(\tfrac{3-p}2,c)\pmod p\) for \(p&gt;d+3m+4\), a window of binomial polynomials.</p>
-<p>Next: test the reduced windows. For \(m\le4\) and several primes \(p\), compute the gcd of the maximal minors of \(W(\tfrac{3-p}2,c)\) over \(\mathbb F_p[c]\) and its roots off \(\{0,1\}\). If none appear, look for a lattice-path (Lindström–Gessel–Viennot) or Krawtchouk-type formula for these polynomial windows, valid for every integer exponent, that would prove their absence of special values.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window. The <a href="#entry-2026-10-08-cube-tie-lucas">tie Lucas entry</a> proves that infinitely many primes without special values modulo \(p\) suffice (lem:cube-tie-lucas-reduction). Modulo \(p\) the window is one of binomial polynomials. It is forced rank-deficient below \(p=m^2+m+5\), and through \(m=5\) it is clean at every tested prime from there on (conj:cube-tie-window-mod-p).</p>
+<p>Next: look for structure in the reduced windows, uniform in \(p\). Write the window as a Lindström–Gessel–Viennot matrix of a planar network whose steps carry weights \(1\) and \(c\). Test whether its maximal minors are generating functions of non-intersecting path families. If so, find which families survive at a special value. The next route review is due after two more research cycles.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59980,6 +59980,61 @@ entrywise. At the negative integer \(\lambda=\tfrac{3-p}2\), every row is a poly
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 43.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">44.63 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 23.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-lucas" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-tie-lucas-reduction conj:cube-tie-window-mod-p">
+<h3>8 October 2026 — Lucas reduction of the confluent tie window: modulo p it is a window of binomial polynomials, rank-deficient below p = m² + m + 5 and, through m = 5, free of special values from there on</h3>
+<p class="entry-meta">Working proof of a Lucas reduction and its converse; mod-p conjecture for p ≥ m² + m + 5, exact evidence at m ≤ 5. Gap (3), confluent tie window. Tie Lucas cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window \(W^c(c)=W(\tfrac32,c)\). The <a href="#entry-2026-10-08-cube-tie-pair-minors">tie pair minors entry</a> observed that, modulo a large prime \(p\), the window equals one with integer exponents. Does this reduce the characteristic-zero statement to a family of characteristic-\(p\) statements about binomial polynomials? And do those hold?</p>
+<p><strong>General statement.</strong> lem:cube-tie-lucas-reduction and conj:cube-tie-window-mod-p.</p>
+<p><strong>Lucas reduction (lem:cube-tie-lucas-reduction).</strong> Fix \(m\ge1\), \(d=\binom m2\), and a prime \(p&gt;d+3m+4\). Write \(W_p(c)\) for \(W(\tfrac32,c)\) reduced modulo \(p\).</p>
+<ol>
+<li>Entrywise, \(W_p(c)=W(\tfrac{3-p}2,c)\bmod p\). This is the window, on columns \(T^d,\ldots,T^{d+3m+4}\), of the polynomials \(T^i(1+T)^{(p-5)/2}\), \(T^n(1+cT)^{(p-3)/2}\), \((1+T)^{p-3}\), \(((1+T)(1+cT))^{(p-3)/2}\) and \(T(1+T)^{(p-5)/2}(1+cT)^{(p-3)/2}\).</li>
+<li>Suppose \(c_0\in\overline{\mathbb Q}\setminus\{0,1\}\) is a special value of \(W(\tfrac32,c)\). Then for all but finitely many primes \(p\), and every prime \(\mathfrak p\) of \(\mathbb Q(c_0)\) above \(p\), the reduction \(\bar c_0\) is a special value of \(W_p\) in \(\overline{\mathbb F}_p\setminus\{0,1\}\).</li>
+<li>Hence, if \(W_p\) has no special values off \(\{0,1\}\) over \(\overline{\mathbb F}_p\) for infinitely many primes \(p\), then \(W(\tfrac32,c)\) has none in \(\mathbb C\setminus\{0,1\}\). Equivalently, the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) holds at that \(m\) (lem:cube-tie-window-forney-criterion).</li>
+<li>Conversely, if \(W(\tfrac32,c)\) has no special values off \(\{0,1\}\), then \(W_p\) has none for every prime \(p\) outside a finite set. So the characteristic-zero statement is equivalent to its validity for all sufficiently large \(p\).</li>
+<li>For every prime \(p\) with \(d+3m+4&lt;p&lt;m^2+m+5\), \(W_p\) has rank below \(3m+3\) at every \(c\ne1\).</li>
+</ol>
+<p><em>Proof.</em> (1) Every entry is a finite sum of products of \(\binom xk\), with \(x\in\{-\tfrac32,-\tfrac52,-3\}\) and \(k\le d+3m+4&lt;p\), times powers of \(c\). The coefficients \(\binom xk=x(x-1)\cdots(x-k+1)/k!\) are polynomials in \(x\) with \(p\)-integral coefficients, since \(k!\) is a \(p\)-unit. So they depend on \(x\) only modulo \(p\). Now \(-\tfrac32\equiv\tfrac{p-3}2\), \(-\tfrac52\equiv\tfrac{p-5}2\) and \(-3\equiv p-3\). The same exponents appear in the entries at \(\lambda=\tfrac{3-p}2\), which are binomial coefficients of the listed polynomials.</p>
+<p>(2) The entries of \(W(\tfrac32,c)\) lie in \(\mathbb Z[\tfrac12][c]\), since \(\binom{-3/2}k=(-1)^k(2k+1)\binom{2k}k/4^k\), and similarly for \(-\tfrac52\) and \(-3\). So every maximal minor \(D_S\) lies in \(\mathbb Z[\tfrac12][c]\), and \(D_S(c_0)=0\) for all \(S\). Let \(K=\mathbb Q(c_0)\). For all but finitely many \(p\), every prime \(\mathfrak p\) of \(K\) above \(p\) satisfies three conditions: \(p\ne2\); \(c_0\) is \(\mathfrak p\)-integral; and \(c_0\not\equiv0,1\pmod{\mathfrak p}\). The last holds because \(c_0\) and \(c_0-1\) are nonzero, so they are \(\mathfrak p\)-units for almost all \(\mathfrak p\). Reducing \(D_S(c_0)=0\) modulo \(\mathfrak p\) gives \(\bar D_S(\bar c_0)=0\) in the residue field for every \(S\). Each \(\bar D_S\) is a maximal minor of \(W_p\). So \(\bar c_0\in\overline{\mathbb F}_p\setminus\{0,1\}\) is a common zero of all maximal minors of \(W_p\), that is, a special value.</p>
+<p>(3) A complex special value is algebraic. Either it is a common root of nonzero minors in \(\mathbb Q[c]\), or all minors vanish identically, in which case every algebraic \(c_0\) is special. So (3) is the contrapositive of (2): a special value would leave only finitely many clean primes.</p>
+<p>(4) The gcd of the minors is then \(c^a(c-1)^b\). By Bézout in \(\mathbb Q[c]\), \(\sum_Su_SD_S=c^a(c-1)^b\). Clearing denominators gives \(\sum_Su'_SD_S=Nc^a(c-1)^b\) with \(u'_S\in\mathbb Z[\tfrac12][c]\) and an integer \(N\ne0\). For \(p\nmid2N\), reduce this identity: a common zero of the reduced minors lies in \(\{0,1\}\).</p>
+<p>(5) Take a combination \(A(T)(1+T)^{(p-5)/2}+B(T)(1+cT)^{(p-3)/2}\) of the first \(3m\) rows, with \(\deg A&lt;2m\) and \(\deg B&lt;m\). It is a polynomial of degree at most \(\tfrac{p-5}2+2m-1\). Vanishing on the window imposes at most \(\tfrac{p-5}2+2m-d\) linear conditions on \(3m\) unknowns. These are fewer than \(3m\) exactly when \(p&lt;2d+2m+5=m^2+m+5\). A nonzero solution \((A,B)\) gives a nonzero polynomial. Otherwise \((1+T)^{(p-5)/2}\) would divide \(B(1+cT)^{(p-3)/2}\), which for \(c\ne1\) forces \(B=0\) by degree and then \(A=0\). So the rows are dependent on the window. \(\square\)</p>
+<p>The reduction keeps the original window. No minor is replaced, and the rows are the same functions with their exponents read modulo \(p\). It turns non-integer exponents into integer ones, and power series into polynomials of degree at most \(p-3\). The window lies inside these degrees once \(p\ge d+3m+7\).</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_lucas.gp (research/results/bmd-20261008-c/lucas.txt).</p>
+<ul>
+<li>Part 1 checks (1) entrywise for \(m=2,3,4\) and every prime from \(d+3m+5\) to \(60\).</li>
+<li>Part 2 computes, over \(\mathbb F_p[c]\), the gcd of all maximal minors of \(W_p\), stripped of the powers of \(c\) and \(c-1\). This is done for \(m=2,3,4\) and every prime \(p\) from \(d+3m+5\) to \(150\).</li>
+<li>The stripped gcd is constant for every prime at \(m=2\) (\(30\) primes) and \(m=3\) (\(29\) primes), and for every prime at \(m=4\) except \(p=23\) (\(26\) primes). At \(p=23\) every minor vanishes, as (5) predicts, since \(23&lt;m^2+m+5=25\).</li>
+<li>Part 3 was added after review. It gives ranks at \(c=5,7\): \(14\) of \(15\) at \(m=4\), \(p=23\); \(16\) of \(18\) at \(m=5\), \(p=31\); \(18\) and \(19\) of \(21\) at \(m=6\), \(p=41,43\). In all these cases \(p&lt;m^2+m+5\). Full rank holds at the next primes, \(29,31\) (\(m=4\)), \(37,41,43\) (\(m=5\)) and \(47,53\) (\(m=6\)). At \(m=5\), the stripped gcd is constant for all \(11\) primes from \(37\) to \(79\).</li>
+</ul>
+<p><strong>Conjecture (conj:cube-tie-window-mod-p).</strong> For every \(m\ge1\) and every prime \(p\ge\max(m^2+m+5,\,d+3m+5)\), the reduction \(W_p\) has no special values off \(\{0,1\}\) over \(\overline{\mathbb F}_p\). By part (3) of the lemma it implies the Forney bound at \(\lambda=\tfrac32\), and infinitely many \(p\) for each \(m\) suffice. By part (4), the form "for all sufficiently large \(p\)" is equivalent to the Forney bound. The explicit threshold is a guess: it is sharp by part (5) and tested at \(m\le5\).</p>
+<p>A first draft placed the threshold at \(p\ge d+3m+6\). It is refuted for \(m\ge5\) by part (5) and the ranks above: \(m=5\), \(p=31\), and \(m=6\), \(p=41,43\). The fresh reviewer found this.</p>
+<p><strong>What this means.</strong> The highest-risk statement now has an integer-exponent form, of equal strength in its "all sufficiently large \(p\)" version. Each reduced window is a window of coefficients of \((1+T)^a(1+cT)^b\) times monomials, with \(a,b\) close to \(p/2\). Such windows are lattice-path objects: \(\binom a{k-i}\) counts paths, and the \(c\)-weights record steps of the second kind. Candidate tools are Lindström–Gessel–Viennot, Krawtchouk polynomials and the explicit theory of binomial determinants. No lattice-path formula has been derived yet. Part (5) shows that the rank count already involves the degrees: below \(m^2+m+5\) the window outruns the polynomials.</p>
+<p>The reduction costs nothing in degree accounting, since the window is unchanged. Its weakness is that the exponents grow with \(p\). A proof must hold along the family \(a=\tfrac{p-5}2\), \(b=\tfrac{p-3}2\) and \(2b=p-3\), in characteristic \(p\). The check does not test whether the analogous integer-exponent windows over \(\mathbb Q\) behave the same. Part A of the tie exponent review covers that only at \(m=2\).</p>
+<p>Characteristic \(p\) also offers Frobenius. In \(\mathbb F_p[[T]]\), \((1+T)^{p-3}=(1+T^p)(1+T)^{-3}\), so the reduced rows are the original series cut at degree \(p\). This is the lemma read backwards, and it gives nothing new by itself.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-window-mod-p, or the Forney bound directly, for \(m\ge7\), the highest-risk item;</li>
+<li>a lattice-path or explicit formula for the reduced windows;</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-forney-criterion; the window definition in research/tools/bmd_tie_forney.gp; the \(2\)-power denominators of \(\binom{-3/2}k\).</p>
+<p><strong>Verification gate.</strong> Parts (1) to (3) are a standard specialization argument: \(p\)-integrality of binomial polynomials for \(k&lt;p\), and reduction of a common zero at a prime of good reduction. Part (1) was checked against the exact entrywise congruence. One fresh-context medium reviewer passed parts (1) to (3). It asked for the algebraicity remark, now added, and supplied the Bézout converse, now part (4). It failed the first draft's conjecture threshold and its explanation of \(m=4\), \(p=23\), and supplied the counting argument of part (5). Part 3 of the script confirms that argument at \(m=4,5,6\). The conjecture is restated at \(p\ge m^2+m+5\).</p>
+<p>Status: working proof (reduction lemma, converse and the small-prime rank drop); conjecture with exact finite evidence (mod-\(p\) statement at \(p\ge m^2+m+5\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-c">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 34.12 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 3.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">53.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">36.50 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
