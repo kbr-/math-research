@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-block-factorization">tie block factorization entry</a> splits the excess-one window's minor gcd into two factors (lem:cube-tie-block-minor-factorization). At \(m=2,3,4\), the rows without the product functionals contribute \(c^{md}(c-1)^{m(m+1)}\) (inferred), and the two product rows on the rank-three kernel only \(c^{4m}(c-1)^2\) (conj:cube-tie-product-rows-gcd).</p>
-<p>Next: attack statement (1), the block without product rows, as an excess-three extension of the pure block. The pure block's orders at \(0\) and \(1\) are proved by unique extreme terms. Compute its gcd directly, and test whether Laplace extremes like the pure block's, applied to all its maximal minors, give exactly \(c^{md}(c-1)^{m(m+1)}\) and no other root. A Forney count for the block, with its top degree from the mirror, may close (1) at every \(m\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-pure-split">tie pure split entry</a> splits the confluent tie window into two parts. One is the pure Padé statement (P), conj:cube-tie-pure-wide-normality, for the single function \(h_c=(1+T)^{-5/2-d}(1+cT)^{3/2+d}\). The other is a \(3\times4\) matrix (E) of the three extra functionals on the rank-four pure kernel, whose minors have gcd \(c^{4m}(c-1)^2\) at \(m=2,3,4\) (conj:cube-tie-extra-rows-pure-kernel).</p>
+<p>Next: attack (P), a one-function Padé question. Read the tie Padé entry's \(u\)-form, \(\tilde P(u)(1-u)(1+su)^\beta+\tilde Q(u)(1-u)^m=O(u^N)\). Look for a proof that its type \((m-1,2m-1)\) forms have order at most \(3m\), for example through the contiguity relations of \({}_2F_1\) Padé approximants of \((1+su)^\beta\), or through the Lucas reduction modulo \(p\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60429,6 +60429,51 @@ where \(I_k\) is the ideal of \(k\times k\) minors. Any finite generating set of
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.27 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.78 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-pure-split" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-extra-rows-pure-kernel">
+<h3>8 October 2026 — The tie window splits into the pure Padé statement and three extra rows on a rank-four kernel, whose minors have gcd exactly c^(4m)(c−1)² at m = 2, 3, 4</h3>
+<p class="entry-meta">Conjecture with exact evidence at m = 2, 3, 4; rediscovery of the pure-wide normality reduction. Gap (3), confluent tie window. Tie pure split cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. The tie block factorization entry splits the excess-one sub-window \(V\) into its rows \(G\) without product functionals and the product rows on \(\ker G\). Statement (1) of conj:cube-tie-product-rows-gcd concerns \(G\). Does \(G\) split further, into the pure two-point rows and the point row \((1+T)^{-3}\)? And which part carries the risk?</p>
+<p><strong>General statement.</strong> conj:cube-tie-extra-rows-pure-kernel. For every \(m\ge1\), consider the columns \(T^d,\ldots,T^{d+3m+3}\). Let \(S\) be the \(3m\) pure rows, \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)). Let \(E\) be the three extra rows \((1+T)^{-3}\), \(((1+T)(1+cT))^{-3/2}\) and \(T(1+T)^{-5/2}(1+cT)^{-3/2}\), and \(K\) a generating set of the rank-four module \(\ker S\cap\mathbb Q[c]^{3m+4}\). Then the \(3\times3\) minors of the \(3\times4\) matrix \(EK\) have gcd \(c^{4m}(c-1)^2\) up to a constant.</p>
+<p>By lem:cube-tie-block-minor-factorization, the gcd of the maximal minors of \(V\) is the gcd for \(S\) times the gcd for \(EK\). So this conjecture and conj:cube-tie-pure-wide-normality imply conj:cube-tie-excess-one-window with its exponents, hence the Forney bound. conj:cube-tie-pure-wide-normality is the full rank of the pure rows already on \(3m+1\) columns, a Padé condition for \(h_c\) (tie Padé entry).</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_pure_split.m2 runs in Macaulay2 over \(\mathbb Q[c]\), on the rows written by the tie block factorization cycle (research/results/bmd-20261008-g/pure-split.txt). For \(m=2,3,4\):</p>
+<ul>
+<li>The pure rows \(S\) have maximal-minor gcd exactly \(c^{md}(c-1)^{m(m+1)}\): orders \((2,6)\), \((9,12)\), \((24,20)\), with no root off \(\{0,1\}\).</li>
+<li>\(\ker S\) has rank \(4\).</li>
+<li>The \(3\times3\) minors of \(EK\) have gcd exactly \(c^{4m}(c-1)^2\), with no root off \(\{0,1\}\).</li>
+</ul>
+<p>Comparing with conj:cube-tie-product-rows-gcd, the point row \((1+T)^{-3}\) adds nothing to the gcd at these \(m\). The orders \(4m\) at \(0\) and \(2\) at \(1\) come entirely from the product rows.</p>
+<p><strong>Rediscovery.</strong> The absence of special values for the pure rows on these \(3m+4\) columns is implied by conj:cube-tie-pure-wide-normality, which asserts full rank already on \(3m+1\) columns and was checked for \(m\le5\) in the <a href="#entry-2026-10-07-cube-tie-pade">tie Padé entry</a>. The orders are elementary. Every maximal minor of \(S\) has \(c\)-order at least \(md\): expanding along the \(m\) rows in \(c\), each term is homogeneous of degree \(\sum K-\binom m2\ge md\). The square pure block attains \(md\) and has \((c-1)\)-order \(m(m+1)\) (lem:cube-tie-pure-extreme-coefficients, lem:cube-tie-window-order-at-one). And the gcd divides that block's determinant, \(\kappa c^{md}(c-1)^{m(m+1)}H_m\). So the pure part can only fail at roots of \(H_m\). conj:cube-tie-pure-wide-normality says it never does.</p>
+<p><strong>What this means.</strong> The highest-risk statement now has two independent parts, each with exact evidence.</p>
+<ul>
+<li>(P) The pure Padé statement conj:cube-tie-pure-wide-normality: no form of type \((m-1,2m-1)\) for \(h_c=(1+T)^{-5/2-d}(1+cT)^{3/2+d}\) has order \(3m+1\) at \(c\notin\{0,1\}\). It involves only one explicit function.</li>
+<li>(E) Three explicit functionals on the rank-four pure kernel, with minor gcd \(c^{4m}(c-1)^2\).</li>
+</ul>
+<p>Part (P) is a classical one-function Padé question. Part (E) is a \(3\times4\) degeneracy with known orders. The orders of the full window, \(md+4m\) and \(m^2+m+2\), are now accounted for: \(md\) and \(m(m+1)\) by the pure block, \(4m\) and \(2\) by (E).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(P), conj:cube-tie-pure-wide-normality, for \(m\ge6\);</li>
+<li>(E), conj:cube-tie-extra-rows-pure-kernel, for \(m\ge5\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-block-minor-factorization; conj:cube-tie-pure-wide-normality and lem:cube-tie-pure-pade-normality (tie Padé entry); lem:cube-tie-pure-extreme-coefficients and lem:cube-tie-window-order-at-one.</p>
+<p><strong>Verification gate.</strong> No new lemma. The split is lem:cube-tie-block-minor-factorization, reviewed in the last cycle. The order remarks are recorded results. The conjecture rests on exact Macaulay2 gcds of all minors for a generating set.</p>
+<p>Status: conjecture with exact evidence at \(m=2,3,4\); rediscovery noted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-g">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 42.15 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 59.43 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">27.45 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">51.52 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 23.61 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
