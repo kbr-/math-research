@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement condition (W′) above a tie cluster (<a href="#entry-2026-10-08-cube-mason-route-review">Mason route review</a>). The confluent tie table is proved at its base by a Mason–Stothers defect bound, which does not extend to two classes.</p>
-<p>Next: write the leading cross Cauchy–Binet sum at the minimizing window for a cluster whose leading roots contain the tie pair \((c_0,1)\), where \(\mathrm{Vand}(\tilde y_0)=0\). Expand in the tie's deviation to the first nonvanishing order, identify the coefficient as a Schur-type value at \((c_0,1)\), and prove it nonzero or find its zeros.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It holds in the fast regimes \(p\ge M-2\), under the Hankel form (<a href="#entry-2026-10-08-cube-tie-cluster-window-coefficients">tie cluster window coefficients</a>).</p>
+<p>Next: the slow regimes \(p\le M-3\). There the window coefficient vanishes at the limit with \(\eta\)-penalty \((k-1)(k-2)w_\eta\). Use the window bound's exact gaps to show that the leading coordinates stay inside \([-p-1,2M-p]\) whatever \(w_\eta\) is. Check against one exact arc at \(M=5\), regime \(2\), with a large deeper scale.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -64004,6 +64004,84 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 6.95 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 13.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 52.95 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-cluster-window-coefficients" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-tie-cluster-window-coefficients cor:cube-cherry-above-tie-fast-regimes">
+<h3>8 October 2026 — Window coefficients at a tie cluster: nonzero except in one regime at two moduli on the unit circle, where the tested limit spaces stay unramified; condition (W′) holds above tie clusters in the three fastest regimes</h3>
+<p class="entry-meta">Conditional result: the leading window coefficients of a cherry above a tie cluster, under the Hankel form, and (W′) in the regimes p ≥ M−2. Exact test at the predicted danger modulus, M = 4. Tie cluster coefficients cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement condition (W′) above a tie cluster (<a href="#entry-2026-10-08-cube-mason-route-review">Mason route review</a>). The leading cross Plücker coordinate of a cherry above a cluster \(\tilde C\) at the window \(\Lambda_p\) is \(\mathrm{Vand}(\tilde y')^2L_p(\tilde y')\) times a monomial (thm:cube-cherry-lattice-splitting). For a tie cluster, the normalized roots converge to \(\tilde y_0=(c_0,1,0,\ldots,0)\), with \(M-2\) zeros, where the lattice theorem's hypothesis \(\mathrm{Vand}(\tilde y_0)\ne0\) fails. Where can \(L_p(\tilde y')\) degenerate, and where does (W′) follow?</p>
+<p><strong>Setting.</strong> \(\lambda=\tfrac32\). A cherry \(\{1,1+e\}\) sits above a cluster \(x\tilde C\) of \(M\ge3\) roots. The cluster has a tie at its top level, with positions \(c_0,1\) (\(c_0\notin\{0,1\}\)), and below it a caterpillar of \(M-2\) roots at relative scale \(\eta\): \(\tilde y'=(c_0',1,\eta z')\) with \(c_0'\to c_0\) and \(z'\to z_0\). Rates \(w_x=\operatorname{val}x\), \(w_e=\operatorname{val}e\), and \(p=\lceil M\rho\rceil\), \(\rho=w_x/(w_x+w_e)\), the regime of the window bound. Write \(k=M-p\).</p>
+<p><strong>General statement.</strong> prop:cube-tie-cluster-window-coefficients. Assume conj:cube-cherry-hankel-coefficient, \(L_p=c_{M,p}\operatorname{Hank}_k\), with \(\operatorname{Hank}_k(y)=\sum_{|S|=k+1}\mathrm{Vand}(y_S)^2\). At the tie cluster:</p>
+<ul>
+<li>\(k=0\): \(L_M\) is a nonzero constant (proved in thm:cube-cherry-lattice-splitting);</li>
+<li>\(k=1\): \(L_{M-1}(\tilde y_0)=c_{M,M-1}\bigl((M-1)c_0^2-2c_0+(M-1)\bigr)\). It vanishes exactly at the two roots \(c_0=\bigl(1\pm i\sqrt{M(M-2)}\bigr)/(M-1)\), which lie on the unit circle;</li>
+<li>\(k=2\): \(L_{M-2}(\tilde y_0)=c_{M,M-2}(M-2)(c_0-1)^2c_0^2\ne0\);</li>
+<li>\(k\ge3\): \(L_p(\tilde y_0)=0\). Along the arc, the leading term of \(\operatorname{Hank}_k(\tilde y')\) is the single term of the subset \(S^*=\{c_0',1\}\cup\{\)the \(k-1\) shallowest roots of the caterpillar\(\}\). Its valuation is \((k-1)(k-2)w_\eta+\operatorname{val}\mathrm{Vand}(z'_{S^*})^2\), and its leading coefficient is a nonzero multiple of \((c_0-1)^2c_0^{2k-2}\). So \(L_p(\tilde y')\ne0\) along the arc for every \(c_0\notin\{0,1\}\), but only at positive valuation.</li>
+</ul>
+<p>So along an arc the leading coefficient vanishes only at the two \(k=1\) moduli (for \(M=3\) the primitive sixth roots of unity, for \(M=4\) the values \((1\pm2\sqrt2\,i)/3\)). For \(k\ge3\) it is nonzero only at a higher order, and (W′) is undecided there. Roots of unity matter only through the \(k=1\) quadratic at \(M=3\). The items \(k=0\), and \(k=2\) at \(M=3\) (where \(p=1\) and \(L_1\) is a constant times \(\mathrm{Vand}^2\)), are unconditional. The rest assume the Hankel form.</p>
+<p><strong>Second statement.</strong> cor:cube-cherry-above-tie-fast-regimes. Under the same assumption, and the hypothesis of cor:cube-cherry-step that the leading \(C\)-block coordinate is unique, for any cluster whose normalized roots converge to \((c_0,1,0,\ldots,0)\) (the caterpillar structure below is not used): along every arc whose rates lie in an open regime \(p\in\{M-2,M\}\), or in the regime \(p=M-1\) off the two moduli, or on a wall between two such regimes, (W′) holds. The leading cross vector is the window \(e_{\Lambda_p}\), or a pencil on the wall. Hence the limit space has no section vanishing to order \(R+1\), and the arc avoids \(K\).</p>
+<p><strong>Proof of the proposition.</strong> The \(k=0\) item is in the lattice theorem. For \(k\ge1\), evaluate \(\operatorname{Hank}_k\) at \(\tilde y'\).</p>
+<ul>
+<li>\(k=1\): \(\operatorname{Hank}_1(y)=\sum_{a&lt;b}(y_a-y_b)^2\). At \(\tilde y_0\) the pairs are \((c_0,1)\), \(M-2\) pairs \((c_0,0)\), \(M-2\) pairs \((1,0)\), and pairs \((0,0)\). That gives \((c_0-1)^2+(M-2)(c_0^2+1)=(M-1)c_0^2-2c_0+(M-1)\). Its discriminant \(4-4(M-1)^2\) is negative for \(M\ge3\), and the product of its roots is \(1\), so both roots lie on the unit circle.</li>
+<li>\(k=2\): a subset of size \(3\) has distinct entries only if it is \(\{c_0,1,0_i\}\). There are \(M-2\) of these, each contributing \(\mathrm{Vand}(c_0,1,0)^2=(c_0-1)^2c_0^2\).</li>
+<li>\(k\ge3\): every subset of size \(k+1\ge4\) repeats \(0\), so \(\operatorname{Hank}_k(\tilde y_0)=0\).</li>
+</ul>
+<p>Along the arc compare valuations directly over all \((k+1)\)-subsets \(S\) of \(\tilde y'\). The caterpillar's roots have distinct valuations \(\nu_i&gt;0\), and the top roots valuation \(0\). Then \(\operatorname{val}\mathrm{Vand}(\tilde y'_S)^2=2\sum_{\{a,b\}\subset S}\min(\nu_a,\nu_b)\).</p>
+<ul>
+<li>If \(S\) contains at most one top root, removing its deepest element and adding a missing top root strictly lowers this sum.</li>
+<li>Among subsets containing both top roots, the \(k-1\) shallowest deep roots give the unique minimum, since replacing an element by a deeper one strictly increases the sum.</li>
+</ul>
+<p>So \(S^*\) gives the unique least term, with no cancellation. Its leading coefficient is \((c_0-1)^2c_0^{2k-2}\) times the leading coefficient of \(\mathrm{Vand}(z'_{S^*})^2\), which is nonzero. \(\square\)</p>
+<p><strong>Proof of the corollary.</strong> In those regimes \(k\le2\), so \(L_p(\tilde y_0)\ne0\) (off the two moduli when \(k=1\)). The terms of \(P_{\Lambda_p}\) of least \((x,\varepsilon)\)-degree sum to \(x^{A_p}\varepsilon^{B_p}\mathrm{Vand}(\tilde y')^2L_p(\tilde y')\), of valuation exactly \(2\operatorname{val}\mathrm{Vand}(\tilde y')+b(\Lambda_p)\), since \(L_p(\tilde y')\to L_p(\tilde y_0)\ne0\). All other terms have larger \((x,\varepsilon)\)-degree, so larger valuation. Every other \(\Lambda\) has \(\operatorname{val}P_\Lambda\ge2\operatorname{val}\mathrm{Vand}(\tilde y')+b(\Lambda)\). In an open regime this is strictly larger. On a wall between \(p\) and \(p+1\) it is strictly larger for every \(\Lambda\notin\{\Lambda_p,\Lambda_{p+1}\}\), because \(b\) is least uniquely at \(\Lambda_p\) for each fixed \(p\) and strictly convex in \(p\). These bounds use only that \(\tilde y'\) is bounded, not \(\mathrm{Vand}(\tilde y_0)\ne0\), and \(\mathrm{Vand}(\tilde y')\ne0\) for \(\varepsilon\ne0\) is a common factor. So the leading cross vector is \(e_{\Lambda_p}\), a window. On a wall between two such regimes it is a pencil of adjacent windows, as in the lattice theorem. Both satisfy (W′), and cor:cube-cherry-step applies. \(\square\)</p>
+<p><strong>Test at the danger modulus.</strong> research/tools/bmd_cherry_tie_hankel_zero.gp (research/results/bmd-20261008-zk/hankel-zero-arcs-v2.txt), exact over \(\mathbb Q(\sqrt{-2})\). Configuration: \(M=4\) (\(R=15\)), cherry \(\{1,1+\epsilon\}\), tie \(c_0\epsilon^2,\epsilon^2\), caterpillar \(\epsilon^{2+d},-3\epsilon^{3+d}\). The rates are \((w_x,w_e)=(2,1)\), \(\rho=2/3\), regime \(p=3=M-1\), with \(d=1,2,4\).</p>
+<ul>
+<li>At \(c_0=(1+2\sqrt2\,i)/3\), where the regime's window coefficient vanishes at the limit, all three limit spaces have orders exactly \(0,\ldots,14\): unramified, so contact is avoided.</li>
+<li>The control \(c_0=2\) gives the same.</li>
+<li>A first run that also had the rates \((3,2,2)\), \((3,1,2)\) and \((5,3,1)\) was stopped after 30 minutes on \((3,2,2)\), the number-field series being slow at larger exponents. Its three finished arcs agree with the second run.</li>
+</ul>
+<p>So the one predicted degeneration does not reach the limit space on the tested arcs: one rate pair, three deeper scales, without a check of the \(C\)-block uniqueness hypothesis. There the window's coefficient vanishes at the limit and its next term decides, which this test does not compute.</p>
+<p><strong>What this means.</strong> Above a tie cluster, (W′) is now reduced to two pieces.</p>
+<ul>
+<li>The slow regimes \(p\le M-3\). There the window coefficient vanishes at the limit, and the competition between the \(\eta\)-penalty \((k-1)(k-2)w_\eta\) and the gaps of the window bound decides which coordinates lead.</li>
+<li>Regime \(M-1\) at the two unit-circle moduli.</li>
+</ul>
+<p>The node route review's worry about roots of unity is resolved for windows: they enter only through the \(k=1\) quadratic at \(M=3\). Otherwise the leading coefficients involve the tie pair only through \((c_0-1)^2c_0^{2k-2}\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(W′) above tie clusters in the regimes \(p\le M-3\), and at the two moduli;</li>
+<li>conj:cube-cherry-hankel-coefficient itself (exact for \(M=3\); for \(M=4,5\) checked by the ratio at three random integer points);</li>
+<li>(W′) above cherry clusters;</li>
+<li>the other core statements, conj:cube-confluent-tie-table-normality and conj:cube-triple-window-full-rank.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-cherry-lattice-splitting (window bound, leading coefficients, limits) and conj:cube-cherry-hankel-coefficient;</li>
+<li>cor:cube-cherry-step and lem:cube-node-weight-bound;</li>
+<li>the node route review's arc tests.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the \(k\ge3\) proof replaced by a direct valuation comparison over all subsets;</li>
+<li>the summary of where coefficients vanish corrected, including the \(M=3\) roots of unity;</li>
+<li>the caterpillar hypothesis dropped from the corollary;</li>
+<li>the unconditional items named and the evidence for the Hankel form stated precisely;</li>
+<li>the wall case of the corollary's proof made explicit;</li>
+<li>the scope of the test stated.</li>
+</ul>
+<p>Status: conditional result (on the Hankel form), with an exact test at the danger modulus.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zk">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>29 min 45.65 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 46.85 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 12.45 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.50 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20 min 1.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
