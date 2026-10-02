@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-special-cancellation-trees">special cancellation entry</a> classifies the displaced root exactly and covers its chains. The main new type is the confluent cherry: a double root \(A\) and a simple root at distance \(e\), on one level with a caterpillar \(\mathcal L\) at scale \(x\).</p>
-<p>Next: the confluent cherry over a caterpillar, by the method of thm:cube-cherry-caterpillar-windows. In the basis \(w^{-\lambda+t}\) its cross block is \(w^{-\lambda}\mathrm{span}\{V_s,\,w^{-1}V_s,\,(U_\varepsilon-1)V_s\}\), so there are three Cauchy–Binet blocks \(B\cdot I\), \(B\cdot S\) (shift), \(B\cdot E\). Find the window bound and the windows, test them exactly along caterpillar arcs, then prove the assignment bound and the non-cancellation of the minimal terms. Then use them for contact avoidance.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-cherry-windows">confluent cherry entry</a> finds the cross limit on one window \([-j,3M-1-j]\), \(2\le j\le M+1\), at nine arcs. It proves that this would put confluent-cherry points outside \(\overline K\).</p>
+<p>Next: prove conj:cube-confluent-cherry-windows for caterpillar clusters. Expand the cross block by Cauchy–Binet over the doubled family \(w^{-1}\langle\psi_q,\partial_\beta\psi_q\rangle\), \(\psi=(1+\beta w)^{-1/2}\), against the \(E\)-block \((U_\varepsilon-1)V\). Use the unique leading monomials of confluent alternants, with node factors \((n'-n)\beta^{n+n'-1}\). Find the window valuations, then prove an assignment bound and a non-cancelling sum of minimal terms, as in thm:cube-cherry-caterpillar-windows. A route review is due after this cycle.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57192,6 +57192,70 @@ So the roots \(a_n\), \(n&lt;\rho\), are singleton levels. At level \(V\), the p
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-confluent-cherry-windows" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-confluent-cherry-windows">
+<h3>7 October 2026 — Confluent cherries: the cross limit sits on one window [−j, 3M−1−j], 2 ≤ j ≤ M+1, which would give contact avoidance through the two-exponent window</h3>
+<p class="entry-meta">Conjecture with exact leading sets at nine arcs (M = 2, 3); its implication to contact avoidance is proved. Gap (3), confluent cherry. Confluent cherry cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3). The main new type of lem:cube-special-cancellation-trees is the confluent cherry: a double root \(A=1\) and a simple root \(1+e\), on one level with a cluster \(x\tilde D\) of \(M\) roots. Does its limit space behave like the cherry's, on windows in the basis \(w^{-\lambda+t}\)? The test: compute every leading coordinate set exactly along caterpillar and fixed-cluster arcs.</p>
+<p><strong>Setting.</strong> As in thm:cube-cherry-lattice-splitting, \(w=1+T\), \(\lambda=3/2\), with \(\varepsilon=-e/(1+e)\), \(\beta_q=x\tilde y_q/(1-x\tilde y_q)\), \(V_q=(1+\beta_qw)^{-\lambda}\), \(U_\varepsilon=(1+\varepsilon/w)^{-\lambda}\). The rows split into three blocks.</p>
+<ul>
+<li><em>The \(D\)-pairs</em> lie on \(w^t\), \(t\ge0\), as before.</li>
+<li><em>The cross rows.</em> \(\varphi_A\varphi_y\) and \(\partial\varphi_A\cdot\varphi_y\), with \(\partial_a(1+aT)^{-\lambda}|_{a=1}=-\lambda(w-1)w^{-\lambda-1}\), and \(\varphi_{1+e}\varphi_y\). They span \(w^{-\lambda}\,\mathrm{span}\{V_q,\,w^{-1}V_q,\,(U_\varepsilon-1)V_q\}\), with \(3M\) rows.</li>
+<li><em>The pair's own rows.</em> \(\varphi_A^2\), \(\varphi_A\varphi_{1+e}\) and \(\partial\varphi_A\cdot\varphi_{1+e}\) span \(\mathrm{span}\{w^{-3},w^{-3}U_\varepsilon,w^{-4}U_\varepsilon\}\), on \(w^t\), \(t\le-3\).</li>
+</ul>
+<p>By \(V+\beta wV=(1+\beta w)^{-1/2}\), the first two cross families together are \(w^{-1}\) times the doubled-node family \(\langle\psi_q,\partial_\beta\psi_q\rangle\) of \(\psi=(1+\beta w)^{-1/2}\) (thm:cube-doubled-node-identity).</p>
+<p><strong>General statement.</strong> conj:cube-confluent-cherry-windows. Take \(M\ge2\), any rates, and a cluster that is fixed or a caterpillar. Then the leading Plücker coordinates of the cross block in the basis \(w^{-\lambda+t}\) lie on one window \(\Lambda'_j=[-j,3M-1-j]\) with \(2\le j\le M+1\), or on two adjacent ones.</p>
+<p><strong>Implication (proved).</strong> If the conjecture holds for caterpillar clusters, then every confluent-cherry point avoids \(\overline K\) along all arcs. That is a level carrying the node up, a pair \(\{A,a\}\) of a double and a simple root, and a caterpillar \(\mathcal L\) of \(M\ge2\) roots. The argument:</p>
+<ol>
+<li><em>Pair block.</em> Its limit is \(\mathrm{span}\{w^{-3},w^{-4},w^{-5}\}\). The rows \(w^{-3}\) and \((w^{-3}U-w^{-3})/\varepsilon\to c_1w^{-4}\) give the first two. Then \(w^{-4}U\) minus \((w^{-3}U-w^{-3})/(c_1\varepsilon)\) is \(\varepsilon(c_1-c_2/c_1)w^{-5}+\cdots\), and \(c_1^2=\tfrac94\ne\tfrac{15}8=c_2\). Under \(\iota\) this limit is \((1+T)^{-5}\mathrm{Pol}_{\le2}\).</li>
+<li><em>Cross block.</em> Its limit is \(\iota\,\mathrm{span}\{w^{-\lambda+t}:t\in\Lambda'_j\}=(1+T)^{-\lambda-j}\mathrm{Pol}_{&lt;3M}\), or a pencil inside \((1+T)^{-\lambda-j-1}\mathrm{Pol}_{&lt;3M+1}\). The transfer of thm:cube-cherry-lattice-splitting applies. Every cross-row entry in column \(t\) has valuation at least \(\min(w_x,w_e)|t|-C\), since it carries \(\beta^n\) with \(n\ge t\) or \(\varepsilon^r\) with \(r\ge-t\). So corrections grow linearly once the minimum is attained on finitely many sets, which the conjecture asserts.</li>
+<li><em>Window.</em> The cluster \(C'=\mathcal L\cup\{A,a\}\) has \(R_{C'}=R_{\mathcal L}+3M+3\). Above \(R_{\mathcal L}\) the contact window has \(3M+5\) columns. thm:cube-two-exponent-window applies with \(b=5\), \(p=3\), and either \(a=\lambda+j\), \(n=3M\) for a single window, or \(a=\lambda+j+1\), \(n=3M+1\) for a pencil; its conditions \(a\notin\mathbb Z\), \(a-b\notin\mathbb Z\) and \(b-p+1=3&gt;0\) hold. It makes the two limits jointly injective on \(n+3\le3M+4\) consecutive columns. With the \(D\)-block, which has Taylor dominance for caterpillars (thm:cube-caterpillar-minimality, transferred as in cor:cube-single-cherry-avoidance), this gives condition (G). lem:cube-singleton-extension then handles the singleton levels above.</li>
+</ol>
+<p><strong>Test.</strong> research/tools/bmd_confluent_cherry_sets.gp specializes the arc parameter to \(P=1000003\) and builds exact rational entries. The \(\varepsilon\)-series is truncated at order \(R\). Every valuation below \((R+1)(a+b)-|lo|\,a\), which is at least \(44\) in every run, is exact. All reported values lie far below it. It then computes the \(P\)-adic valuation of every \(3M\)-minor on \([-6,8]\) for \(M=2\) and on \([-5,9]\) for \(M=3\). Outputs: research/results/bmd-20261007-z/confluent-cherry-sets-m2.txt and confluent-cherry-sets-m3.txt.</p>
+<ul>
+<li>\(M=2\): rates \((1,1)\), \((1,3)\), \((3,1)\) at a fixed cluster, and \((1,1)\), \((2,1)\) at caterpillars. The least sets are single windows \([-3,2]\) (\(j=3\)) or \([-2,3]\) (\(j=2\)).</li>
+<li>\(M=3\): rate \((1,1)\) at a fixed cluster, and \((1,3)\), \((3,1)\), \((1,1)\) at a caterpillar \((0,1,2)\). The least sets are single windows \([-4,4]\) (\(j=4\)) or \([-3,5]\) (\(j=3\)).</li>
+<li>In all nine arcs, sets touching the range edge have strictly larger valuation. Sets reaching outside the range were not computed. No window bound for this block is proved yet, so the minima are minima over the range only.</li>
+</ul>
+<p>No arc reached \(j=1\): the rows \(w^{-1}V\) already supply \(w^{-1}\) without cost. Three runs failed before these: a polynomial version that timed out, a stack overflow, and an output file missing its directory. They are kept in the session archive.</p>
+<p><strong>Toward a proof.</strong> The Cauchy–Binet bound of the cherry, applied naively to the three blocks, is tight at \(j=M+1\) for the fixed clusters tested. For example, \(M=2\): \(x\)-degree \(5\), \(\varepsilon\)-degree \((j-1)^2+M=6\); \(M=3\): \(15\) and \(12\). It is not tight at \(j=M\): at \(M=2\) the true valuation exceeds it by \(w_x+w_e\). The reason is the doubled-node structure. Terms of the blocks \(V\) and \(w^{-1}V\) cancel below \(\mathrm{Vand}^4\). The right expansion uses the confluent alternants of \(\langle\psi_q,\partial_\beta\psi_q\rangle\) (shifted by \(w^{-1}\)) against the \(E\)-block. These alternants have unique leading monomials for caterpillars, with \(2\times2\) node factors \((n'-n)\beta^{n+n'-1}\). So the proof architecture of thm:cube-cherry-caterpillar-windows should carry over: exact term valuations, an assignment bound, and a sum of minimal terms.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of conj:cube-confluent-cherry-windows for caterpillars, by the confluent Cauchy–Binet expansion;</li>
+<li>the other types of the special cancellations (ties and cherries above a double root, a displaced index in \(\mathcal L\), the three-root shape);</li>
+<li>the confluent tie window \(m\ge7\);</li>
+<li>in gap (1), the two-cherry and nested cherry types, the three-root levels and the two-displacement types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-cherry-lattice-splitting; thm:cube-two-exponent-window (statement); thm:cube-doubled-node-identity; cor:cube-single-cherry-avoidance (transfer of Taylor dominance); lem:cube-special-cancellation-trees (the type).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following against the script and outputs:</p>
+<ul>
+<li>the three blocks and the doubled-node remark;</li>
+<li>the pair-block limit (\(c_1^2-c_2=\tfrac38\));</li>
+<li>the window counts and the conditions of the two-exponent window, the block triangularity and the pencil;</li>
+<li>the nine reported least sets, and the "toward a proof" numbers, recomputed by hand.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the parameters of the two-exponent window for a pencil;</li>
+<li>the linear growth needed for the transfer;</li>
+<li>the exactness threshold of the test, which is not the precision;</li>
+<li>the test's minima, which are over the range only.</li>
+</ul>
+<p>Status: conjecture, with a proved implication.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-z">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 35.08 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 6.15 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 2.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 17.58 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 9.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
