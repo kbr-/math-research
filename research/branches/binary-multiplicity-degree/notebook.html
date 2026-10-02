@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-cherry-route-review">confluent cherry route review</a> keeps the confluent tie window (conj:cube-confluent-tie-window-full-rank) as the highest risk. Full rank is now checked through \(m=6\). The pure block's determinant \(H_m\) has product-type values at \(c=0\) and \(c=\infty\), and its zeros lie in \(\operatorname{Re}c&gt;0\) for \(m\le6\).</p>
-<p>Next: prove \(H_m(0)\ne0\) for every \(m\) by the small-parameter method of the <a href="#entry-2026-10-07-cube-confluent-cherry-theorem">confluent cherry theorem</a>, with \(c\) as the parameter. Bound the terms of the pure block by \(c\)-valuation, identify the minimal family and sum it, expecting binomial Hankel or Toeplitz determinants with a product formula. This gives full rank of the window off the finitely many zeros of \(H_m\). Then study the repair by the three extra rows at those zeros.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-pure-extremes">tie pure block extremes entry</a> proves that the confluent tie window's pure block is nonsingular for all but at most \(2m^2\) values of \(c\), at every \(m\). Its extreme coefficients in \(c\) are products of rectangular Schur values (lem:cube-tie-pure-extreme-coefficients).</p>
+<p>Next: generic full rank of the window \(W^c(c)\) at every \(m\), still on the highest-risk item. Find an extreme term in \(c\) of a maximal window minor, or one \(c\) per \(m\) where the \(3\times5\) Schur complement has rank \(3\). The extra rows lie in the span of the pure rows up to order \(c^{2m-2}\), so this is a lattice problem in \(c\) like the confluent cherry's. Then turn to the repair at the zeros of \(H_m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58052,6 +58052,75 @@ So \(\Delta_1=-3\sum_i\mu_i&lt;0\), and every term at \(p=0\) exceeds \(F'_2\). 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-pure-extremes" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-cherry-route-review:1" data-claims="lem:cube-tie-pure-extreme-coefficients">
+<h3>7 October 2026 — The confluent tie window's pure block is nonsingular for all but finitely many c at every m: its extreme coefficients in c are products of rectangular Schur values</h3>
+<p class="entry-meta">Working proof that the pure block's determinant has exact c-order m·binom(m,2) and degree m(binom(m,2)+2m), with hook-content coefficients, so it is nonsingular off a finite set. Gap (3), confluent tie window. Tie extremes cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the confluent tie window, the highest-risk item of the <a href="#entry-2026-10-07-cube-confluent-cherry-route-review">confluent cherry route review</a>. Its obstacle has two halves. The first: is the window's pure block nonsingular for generic \(c\) at every \(m\)? Until now this was known only from exact computations, \(m\le6\). The review's lead 1 found product-type values of the determinant at \(c=0\) and \(c=\infty\). It proposed the small-parameter method of the confluent cherry theorem, with \(c\) as the parameter. The test: prove those extreme coefficients nonzero for every \(m\), or find the \(m\) where the extreme term cancels.</p>
+<p><strong>Setting.</strong> As in conj:cube-two-point-window-factorization: \(d=\binom m2\). The pure block \(B_m(c)\) is the \(3m\times3m\) matrix of the coefficients of \(T^d,\ldots,T^{d+3m-1}\) of the rows \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)). Put \(\Delta_m(c)=\det B_m(c)\). For a rectangle \((u^h)\) (\(h\) rows of length \(u\)) and any number \(x\), put
+\[s_{(u^h)}(1^x)=\prod_{0\le i&lt;h,\ 0\le j&lt;u}\frac{x+j-i}{(u-j)+(h-i)-1},\]
+the hook-content product: content \(j-i\), hook length \((u-j)+(h-i)-1\).</p>
+<p><strong>General statement.</strong> lem:cube-tie-pure-extreme-coefficients. For every \(m\ge1\):</p>
+<ol>
+<li>\(\Delta_m\) has \(c\)-order exactly \(md\) and degree exactly \(m(d+2m)\), with
+\[[c^{md}]\Delta_m=\pm s_{(d^m)}(1^{3/2})\,s_{((d+m)^{2m})}(1^{5/2}),\qquad[c^{m(d+2m)}]\Delta_m=\pm s_{(d^{2m})}(1^{5/2})\,s_{((d+2m)^m)}(1^{3/2}),\]
+both nonzero.</li>
+<li>Hence \(\Delta_m\not\equiv0\), and \(B_m(c)\) is nonsingular for every \(c\ne0\) outside a set \(Z_m\) of at most \(2m^2\) elements, \(c=1\) included. Indeed \(\Delta_m(1)=0\): \(T^n(1+T)^{-3/2}=(T^n+T^{n+1})(1+T)^{-5/2}\) and \(n+1\le m\le2m-1\), so at \(c=1\) the pure rows are dependent. Off \(Z_m\cup\{0\}\), full rank of the confluent tie window \(W^c(c)\) is equivalent to rank \(3\) of the \(3\times5\) Schur complement of its three extra rows (part 2 of conj:cube-two-point-window-factorization, block elimination).</li>
+</ol>
+<p>This proves the \(c\)-order and degree parts of conj:cube-two-point-window-factorization for every \(m\). It shows \(\Delta_m\not\equiv0\). So \(H_m\not\equiv0\) wherever the conjectured factorization holds (proved for \(m\le4\), checked for \(m\le6\)), with \(\deg H_m=m(m-1)\) given the \((c-1)\)-order \(m(m+1)\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Laplace expansion.</em> Expand \(\Delta_m\) along the \(m\) rows \(T^n(1+cT)^{-3/2}\). For a set \(K\) of \(m\) columns, write \(K^c\) for the complement. The coefficient of \(T^k\) in \(T^n(1+cT)^{-3/2}\) is \(\binom{-3/2}{k-n}c^{k-n}\), which is \(0\) for \(k&lt;n\). Take \(c^{k}\) out of column \(k\) and \(c^{-n}\) out of row \(n\). This gives
+\[\Delta_m=\sum_K\pm\,c^{\Sigma K-\binom m2}\,b_K\,a_{K^c},\qquad b_K=\det\Bigl[\tbinom{-3/2}{k-n}\Bigr]_{n&lt;m,\,k\in K},\quad a_{K^c}=\det\Bigl[\tbinom{-5/2}{k-i}\Bigr]_{i&lt;2m,\,k\in K^c}.\]
+Both \(b_K\) and \(a_{K^c}\) are rational constants.</li>
+<li><em>Extreme sets.</em> The columns are \(d,\ldots,d+3m-1\). The sum \(\Sigma K\) is least only at \(K=[d,d+m-1]\) and greatest only at \(K=[d+2m,d+3m-1]\). So the coefficients of \(c^{md}\) and \(c^{m(d+2m)}\) are single terms, \(\pm b_Ka_{K^c}\) for these \(K\). Every other \(K\) gives a strictly intermediate power. Once these two terms are nonzero, they are the lowest and highest terms of \(\Delta_m\).</li>
+<li><em>Schur values.</em> Put \(h_k(1^x)=(x)_k/k!\), so that \(\binom{-x}k=(-1)^kh_k(1^x)\). In a Toeplitz determinant \(\det[(-1)^{u+j-i}h_{u+j-i}]_{i,j&lt;h}\), the factors \((-1)^{j}\) and \((-1)^{-i}\) come out of the columns and rows. That leaves \((-1)^{uh}\det[h_{u-i+j}]\), which is \(\pm s_{(u^h)}\) by the Jacobi–Trudi identity. At \(K=[d,d+m-1]\), \(b_K\) has entries \(\binom{-3/2}{d+j-n}\), so it is \(\pm s_{(d^m)}(1^{3/2})\). \(a_{K^c}\) has entries \(\binom{-5/2}{d+m+j-i}\), so it is \(\pm s_{((d+m)^{2m})}(1^{5/2})\). The top set is the same computation, with \(a\) on \([d,d+2m-1]\) and \(b\) on \([d+2m,d+3m-1]\).</li>
+<li><em>Nonvanishing.</em> For a positive integer \(x\), \(h_k(1^x)\) is the complete symmetric function of \(x\) ones. The hook-content formula then gives \(s_\lambda(1^x)=\prod_{\square}(x+c(\square))/h(\square)\). Both sides are polynomials in \(x\), so the formula holds for every \(x\). All contents are integers, and \(x\in\{3/2,5/2\}\), so no factor vanishes. For \(d=0\) (\(m=1\)), the empty rectangles give \(1\).</li>
+<li><em>Finiteness.</em> \(\Delta_m/c^{md}\) is a polynomial of degree \(2m^2\) with nonzero constant term. So \(B_m(c)\) is singular for at most \(2m^2\) values \(c\ne0\). Off them, the \(3m\) pure rows have rank \(3m\) on the first \(3m\) window columns, which are exactly \(T^d,\ldots,T^{d+3m-1}\), so the pure block is the leading block of the window. Eliminating these columns from the three extra rows leaves the \(3\times5\) Schur complement, and \(W^c(c)\) has full rank exactly when it has rank \(3\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>What the lemma does not give.</strong> Generic full rank of the window \(W^c(c)\) for every \(m\) is not proved. It needs one \(c\) per \(m\) where the Schur complement has rank \(3\). An extreme term in \(c\) of a maximal window minor is the natural candidate, but it is not a single Laplace term. At \(c=0\) the extra row \(T(1+T)^{-5/2}(1+cT)^{-3/2}\) lies in the span of the rows \(T^i(1+T)^{-5/2}\), and so do its corrections up to order \(c^{2m-2}\).</p>
+<p><strong>Check.</strong> research/tools/bmd_tie_pure_extremes.gp computes \(\Delta_m\) exactly for \(m=1,\ldots,6\) and writes research/results/bmd-20261007-zh/pure-extremes.txt. The \(c\)-orders \(0,2,9,24,50,90\) and degrees \(2,10,27,56,100,162\) are as predicted. Both extreme coefficients equal the hook-content products up to sign. The \((c-1)\)-orders are \(2,6,12,20,30,42=m(m+1)\). This extends the \((c-1)\)-order check of conj:cube-two-point-window-factorization, recorded for \(m\le4\), to \(m=5,6\). The products are consistent with the small prime factors found in part L1 of the review. The first run failed on a syntax error. The second printed all six lines and was then stopped by its timeout, since the script did not end with an explicit quit, now added. Both are kept in the session archive.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the confluent cherry route review. The explicit one-point formulas it named are the Jacobi–Trudi and hook-content identities for rectangles. The \(c\to0\) limit is a single Laplace term.</p>
+<p><strong>What changes.</strong> The pure block of the confluent tie window is nonsingular at every \(m\) for all but finitely many \(c\), with explicit extreme coefficients. So the obstacle's first half is proved for the pure block. For the window it reduces to one value of \(c\) per \(m\) with a rank-\(3\) Schur complement. The second half, the repair at the zeros of \(H_m\), is untouched.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>generic full rank of \(W^c(c)\) for every \(m\): one \(c\) per \(m\) with a rank-\(3\) Schur complement, for example from an extreme term in \(c\) of the window's maximal minors;</li>
+<li>full rank at the zeros of \(H_m\), conj:cube-confluent-tie-window-full-rank for \(m\ge7\);</li>
+<li>the \((c-1)\)-order \(m(m+1)\) of \(\Delta_m\);</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-two-point-window-factorization (the pure block, \(d\), the Schur complement reduction); the confluent cherry route review (lead 1, part L1); the hook-content formula and the Jacobi–Trudi identity (Macdonald, Symmetric Functions and Hall Polynomials, I.3 and I.3 Example 4).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following by hand:</p>
+<ul>
+<li>the Laplace expansion and its powers of \(c\);</li>
+<li>the unique extreme sets;</li>
+<li>the four rectangle shapes, the signs, the hook lengths and the continuation in \(x\);</li>
+<li>the Schur complement reduction and the span remark;</li>
+<li>the script against its output.</li>
+</ul>
+<p>It found no mathematical error and no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>a proof that \(\Delta_m(1)=0\);</li>
+<li>\(H_m\ne0\) only where the factorization holds;</li>
+<li>the \((c-1)\)-orders at \(m=5,6\) marked as new finite evidence;</li>
+<li>a final quit in the script;</li>
+<li>the pure block identified as the leading block of the window.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 29.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 31.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">57.14 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 0.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
