@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3) of the cone route. The <a href="#entry-2026-10-07-cube-confluent-caterpillar-avoidance">confluent caterpillar entry</a> proves that caterpillar points carrying one double root avoid the confluent contact locus, via a doubled-node Vandermonde identity.</p>
-<p>Next: classify the \(q\to0\) limits of the collision cone \(L_q\cap\{a_i=a_j\}\). This is the analogue of lem:cube-geometric-cone-limit-types with the double root as a marked confluent point: on this cone, \(f(x)-f(q^i)\) vanishes at \(q^j\). Then list the confluent types that are not caterpillars, and test whether the doubled-node change of family settles them as it settled the caterpillars.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-collision-cone-limits">collision cone entry</a> classifies the \(q\to0\) limits of the collision cones and covers the generic ones by a double-root step valid over any base with (H).</p>
+<p>Next: the confluent tie level, where the double root \(A\) and a simple root \(a_\rho\) share a four-pointed level over a caterpillar cluster with \(m\) roots, at cross-ratio \(c\). Use the doubled-node identity to write its window as the rows \((1+T)^{-\lambda-1}T^i\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-\lambda}\) (\(n&lt;m\)), together with the pair rows \((1+T)^{-3}\) and \(((1+T)(1+cT))^{-\lambda}\). Then find its full-rank condition, as the general functional and the Gegenbauer theorem did for the tie.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -55676,6 +55676,97 @@ Equality forces \(S_D=E_0\) and \(S'=\{0,\ldots,2M-1\}\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-collision-cone-limits" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-collision-cone-limit-types lem:cube-double-root-step">
+<h3>7 October 2026 — Collision cone limits: generically a chain over a double root over a caterpillar, covered by a double-root step that works over any base; one confluent tie level and special cancellations remain</h3>
+<p class="entry-meta">Working proofs: the q → 0 limits of each collision cone, and a double-root step that preserves the chain invariant. Generic collision limits are covered; the confluent tie level and special cancellations remain. Collision cone cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3) of the cone route. The <a href="#entry-2026-10-07-cube-confluent-caterpillar-avoidance">confluent caterpillar entry</a> settled one boundary type of the collision cones \(L_q\cap\{a_i=a_j\}\). Which boundary points do these cones reach as \(q\to0\)?</p>
+<p><strong>Parametrization.</strong> On \(L_q\) put \(a_k=s+f(q^k)\), with \(f\in\langle x,x^2,x^3\rangle\). The condition \(a_i=a_j\), \(i&lt;j\), says that \(f-f(q^i)\) vanishes at \(q^i\) and \(q^j\). So \(f(x)-f(q^i)=(x-q^i)(x-q^j)(\alpha x+\beta)\), and \(f(0)=0\) fixes \(f(q^i)=-q^{i+j}\beta\). Up to affine maps the configuration is therefore
+\[a_k=F(q^k),\qquad F(x)=(x-q^i)(x-q^j)(x-r),\qquad r=-\beta/\alpha\in\mathbb P^1,\]
+with the double root \(A=a_i=a_j=0\). For \(r=\infty\) take \(F=(x-q^i)(x-q^j)\). Expanding at \(0\),
+\[F(q^k)=c_0+\sigma_2q^k-\sigma_1q^{2k}+q^{3k},\qquad c_0=F(0)=-q^{i+j}r,\quad\sigma_1=q^i+q^j+r,\quad\sigma_2=q^{i+j}+r(q^i+q^j).\]</p>
+<p><strong>General statement.</strong> lem:cube-collision-cone-limit-types. Fix an arc \(q\to0\), \(r=r(q)\). Rescale the valuation so that \(\operatorname{val}q=1\), and put \(\rho=\operatorname{val}r\in\mathbb Q\cup\{\pm\infty\}\), \(V=i+j+\rho\), \(K^*=\max(j,\rho)\) and \(\nu(k)=\min(k,i)+\min(k,j)+\min(k,\rho)\). (For \(\rho=-\infty\), and for \(r=\infty\), drop \(\rho\) and \(\min(k,\rho)\) and use the quadratic \(F\): only the common scale changes.) For \(k\notin\{i,j\}\), apart from the special cancellations listed in part 4:</p>
+<ol>
+<li><em>Upper chain.</em> For \(k&lt;K^*\), \(\operatorname{val}a_k=\nu(k)&lt;V\), and \(\nu\) is strictly increasing there. These roots are singleton levels, at distance \(\nu(k)\) from \(A\), from \(c_0\) and from all deeper roots.</li>
+<li><em>The double root's level.</em> At valuation \(V\) there is a level carrying the node up, \(A\), and the node to the lower cluster \(\mathcal L=\{k>K^*\}\) (or its root, if \(|\mathcal L|=1\); nothing, if \(\mathcal L=\emptyset\), in which case \(A\) and the deepest upper root form the bottom pair). If \(\rho\) is an integer with \(j&lt;\rho\le k_{\max}\), the root \(a_\rho\) also lies on this level, unless the cancellation of part 4 occurs. Its position is \(a_\rho/c_0\to1-q_0^\rho/\mathrm{lc}(r)\), which is never \(1\). The shape depends on \(|\mathcal L|\):<ul><li>\(|\mathcal L|\ge2\): a four-pointed component, which we call the confluent tie level;</li><li>\(|\mathcal L|=1\): the four points are the node up, \(A\), \(a_\rho\) and one root, the three-root shape;</li><li>\(\rho=k_{\max}\), so \(\mathcal L=\emptyset\): \(\{A,a_\rho\}\) is the bottom pair, a confluent caterpillar.</li></ul></li>
+<li><em>The lower cluster.</em> \(\mathcal L\) is a cluster around \(c_0\): \(a_k-c_0=g(q^k)\) with \(g(x)=\sigma_2x-\sigma_1x^2+x^3\). It is a geometric-cone configuration, so lem:cube-geometric-cone-limit-types applies. Without cancellation in \(\sigma_1,\sigma_2\), every corner of \(\min(\operatorname{val}\sigma_2+k,\operatorname{val}\sigma_1+2k,3k)\) lies at \(k\le K^*\), so \(\mathcal L\) is a caterpillar.</li>
+<li><em>Special cancellations</em> (special leading coefficients of \(r\)):
+<ul>
+<li>\(\rho\) an integer below \(j\) with \(\mathrm{lc}(r)=q_0^\rho\): \(a_\rho\) is displaced, and can land on an upper level, on level \(V\), next to \(A\), or next to \(c_0\) (anywhere inside \(\mathcal L\));</li>
+<li>\(\rho\) an integer with \(j&lt;\rho\le k_{\max}\) and \(\mathrm{lc}(r)=q_0^\rho\): then \(\operatorname{val}a_\rho>V\) and \(a_\rho/c_0\to0\), so \(a_\rho\) moves next to \(A\). Exact \(r=q^\rho\) is a triple collision;</li>
+<li>\(\rho=j\) with \(\mathrm{lc}(r)=-q_0^j\), cancelling in \(\sigma_2\): one corner of \(g\) can move into \(\mathcal L\), giving at most one displaced index of \(\mathcal L\), at \(k=\operatorname{val}\sigma_2-i\);</li>
+<li>\(\rho=i\) with \(\mathrm{lc}(r)=-q_0^i\) cancels in \(\sigma_1\) but leaves \(\mathcal L\) a caterpillar: then \(\operatorname{val}\sigma_2=2i\), and the \(\sigma_1\) term is never the minimum once \(\operatorname{val}\sigma_1>i\).</li>
+</ul></li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ul>
+<li>\(\operatorname{val}(q^k-q^i)=\min(k,i)\) for \(k\ne i\), and \(\operatorname{val}(q^k-r)=\min(k,\rho)\) unless \(k=\rho\) and the leading coefficients cancel. This gives \(\operatorname{val}a_k=\nu(k)\).</li>
+<li>For \(k&lt;K^*\), at least one of \(\min(k,j)\), \(\min(k,\rho)\) is \(k\) and strictly below its cap, so \(\nu(k)&lt;i+j+\rho\). For \(k&lt;k+1&lt;K^*\) the increment \(\nu(k+1)-\nu(k)\) is at least \(1\). Across a non-integer \(\rho\) it is \(\rho-k&gt;0\). So \(\nu\) is strictly increasing below \(K^*\). Different valuations give \(\operatorname{val}(a_k-a_l)=\min(\nu(k),\nu(l))\), and similarly against \(A=0\) and \(c_0\), since \(\operatorname{val}c_0=V\).</li>
+<li>For \(k>K^*\): \(\operatorname{val}\sigma_2\ge i+\min(j,\rho)\) and \(\operatorname{val}\sigma_1\ge\min(i,\rho)\), so the linear term of \(g(q^k)\) has valuation at least \(k+i+\min(j,\rho)\). The other two terms meet the same bound, since \(2k+\min(i,\rho)\ge k+i+\min(j,\rho)\) and \(3k\ge k+i+\min(j,\rho)\) for \(k>K^*\). Hence \(\operatorname{val}g(q^k)\ge k+i+\min(j,\rho)>i+j+\rho\). For \(k=\rho>j\) the same bound gives exactly \(V\) when nothing cancels. Then \(a_\rho/c_0=1+g(q^\rho)/c_0\), and the leading coefficient follows from \(F(q^\rho)/F(0)=(1-q^{\rho-i})(1-q^{\rho-j})(1-q^\rho/r)\).</li>
+<li>Corners of \(g\): the \(\sigma_2\)–\(\sigma_1\) corner is at \(\operatorname{val}\sigma_2-\operatorname{val}\sigma_1\), the \(\sigma_1\)–cubic corner at \(\operatorname{val}\sigma_1\), and the \(\sigma_2\)–cubic corner at \(\operatorname{val}\sigma_2/2\). Without cancellation these are \(\min(j,\rho)+i-\min(i,\rho)\le K^*\), \(\min(i,\rho)\) and \((i+\min(j,\rho))/2\), all at most \(K^*\). So on \(\mathcal L\) the linear term dominates, and lem:cube-geometric-cone-limit-types (no displaced index) gives a caterpillar. Only the cancellation in \(\sigma_2\) (\(\rho=j\), \(\mathrm{lc}(r)=-q_0^j\)) moves a corner into \(\mathcal L\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_collision_cone_valuations.gp computes exact \(Q\)-adic valuations, \(Q=1000003\), for six triples \((i,j,\rho)\) with generic \(\mathrm{lc}(r)\) and \(N=9\). These include \(\rho>j\) integer, \(\rho&lt;i\) and \(\rho&lt;0\) (research/results/bmd-20261007-l/collision-cone-valuations.txt). All \(42\) roots match parts 1–3, including the roots \(a_\rho\) on level \(V\). The control \(r=q^\rho\) exactly makes \(a_\rho=0\), a triple collision. A first run had an operator-precedence error in its test and one non-generic case, and it led to the confluent tie level in part 2. Its output is kept in the session archive.</p>
+<h4>The double-root step</h4>
+<p>lem:cube-double-root-step. Let \(C\) be a cluster of \(M\ge1\) simple roots, framed as in thm:cube-single-tie-chain-avoidance at scale \(w>0\) below a double root \(A=1\). Suppose \((\tilde C,L)\) satisfies the invariant (H) of that theorem, with \(\max L\le R_C+1\). Let \(C'=C\cup\{A\}\), \(R_{C'}=R_C+2M+1\), and \(L'=L\cup J\) with \(J=\{\max L+1,\ldots,\max L+2M+1\}\), where \(\max\emptyset=-1\) (so \(J=\{0,\ldots,2M\}\) when \(C\) is a single root). Then \((C',L')\) satisfies (H) for the confluent pair rows, and \(\max L'\le R_{C'}+1\).</p>
+<p><strong>Proof.</strong> This is the argument of the confluent caterpillar entry, with (H) in place of caterpillar minimality.</p>
+<ul>
+<li>The new rows are \((1+T)^{-\lambda-1}\langle\psi_y,\partial_y\psi_y\rangle\), \(y\in C\), together with \(h=(1+T)^{-3}\).</li>
+<li>For \(S\subset L'\cup\{j>\max L'\}\), every term of \(p_{C'}(S)\) is \(\pm p_C(S_C)\,q(S')\,U(S',S_X)\,h_s\), with \(S_C\subset L\cup\{j>\max L\}\).</li>
+<li>Its valuation is at least \(w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+4\operatorname{val}\mathrm{Vand}(y)+w(\Sigma S'-M(2M-1))\), by homogeneity, thm:cube-doubled-node-identity and \(\operatorname{val}s_\mu(y,y)\ge w|\mu|\).</li>
+<li>By (H) and \(\Sigma S_C\ge\Sigma L\), this is at least \(w\Sigma L+\operatorname{val}p_{\tilde C}(L)+4\operatorname{val}\mathrm{Vand}(y)\). Equality forces \(S_C=L\) and \(S'=\{0,\ldots,2M-1\}\).</li>
+<li>For \(S=L'\) the equality terms sum to \(\mathrm{lc}\,p_{\tilde C}(L)\cdot\mathrm{lc}\,\mathrm{Vand}(y)^4\cdot\mu^{-M}\prod_{m&lt;2M}\binom{-\mu}m\), times the minor of \(P_1\) on the \(2M+1\) consecutive columns \(J\). That minor is nonzero by thm:cube-confluent-window (\(a=5/2\), \(b=3\), \(n=2M\)).</li>
+<li>Finally \(\max L'=\max L+2M+1\le R_{C'}+1\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Consequences.</strong> The double-root step combines with the (H)-form singleton step of thm:cube-single-tie-chain-avoidance, using the confluent Vandermonde and the constant homogeneity shift \(-M_C\) of the confluent caterpillar entry. Every chain of singleton levels and one double-root level, above a base cluster satisfying (H), avoids the closure of \(K^c\) along arcs in \(\Sigma^\circ\). The known bases are caterpillars (thm:cube-caterpillar-minimality) and ties over caterpillars (thm:cube-single-tie-chain-avoidance, whose base and steps all satisfy (H)).</p>
+<p><strong>Coverage of the collision cone limits.</strong></p>
+<ul>
+<li>Covered: the generic type, parts 1–3 with no confluent tie level: singleton levels, then \(A\), then the caterpillar \(\mathcal L\), with \(|\mathcal L|\le1\) included. It is a confluent caterpillar.</li>
+<li>Covered: \(\rho=k_{\max}\) in part 2 (bottom pair \(\{A,a_\rho\}\)).</li>
+<li>Covered: \(\rho=j\), \(\mathrm{lc}(r)=-q_0^j\), where the one displaced index of \(\mathcal L\) is of type (i), a caterpillar, or type (ii), a tie with at least two deeper roots in \(\mathcal L\). The base is then thm:cube-single-tie-chain-avoidance, with full rank from cor:cube-tie-window-full-rank, followed by the double-root step. Types (iii) and (iv) there are not covered.</li>
+<li>Not covered:
+<ul>
+<li>the confluent tie level of part 2 (\(|\mathcal L|\ge2\)), and its three-root shape (\(|\mathcal L|=1\));</li>
+<li>the cancellation in which \(a_\rho\) meets \(A\);</li>
+<li>a displaced \(a_\rho\) with \(\rho&lt;j\) that lands on an upper level, on level \(V\), next to \(A\), or inside \(\mathcal L\), including a tie with a root of \(\mathcal L\) (separate from the covered tie types);</li>
+<li>cherry and three-root types inside \(\mathcal L\);</li>
+<li>the points where collision lines meet.</li>
+</ul></li>
+</ul>
+<p><strong>Remaining gap.</strong> The confluent tie level comes first. It is a one-parameter family, the analogue of the tie F-curve, and needs a confluent tie window: the rows of \(A\) and \(a_\rho\) against the cluster \(\mathcal L\). The doubled-node identity should reduce it to a window of the form \((1+T)^{-\lambda-1}\mathrm{Pol}_{&lt;2m}\), \((1+cT)^{-\lambda}\mathrm{Pol}_{&lt;m}\) plus pair rows, comparable with the tie Gegenbauer window.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-geometric-cone-limit-types (statement, for \(g\)); thm:cube-confluent-caterpillar-avoidance and thm:cube-doubled-node-identity (rows, expansion through \(U\), homogeneity shift); thm:cube-single-tie-chain-avoidance (invariant (H)); thm:cube-confluent-window.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the parametrization, the expansion and the valuations;</li>
+<li>the position on level \(V\) and the corner values;</li>
+<li>in the double-root step: the sum bound for non-initial \(L\), the valuation bookkeeping, the constant Laplace sign, the window theorem at any start, and the column bound.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the missing cancellation \(a_\rho\to A\) for \(\rho>j\);</li>
+<li>\(\rho=i\) leaves \(\mathcal L\) a caterpillar;</li>
+<li>the end cases \(|\mathcal L|\le1\) of the confluent tie level;</li>
+<li>the bound on all three terms of \(g\);</li>
+<li>the increment of \(\nu\) across a non-integer \(\rho\);</li>
+<li>\(\max\emptyset=-1\);</li>
+<li>the exact covered tie types;</li>
+<li>the (H)-form singleton step.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 35.77 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 29.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 5.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
