@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The special values of the confluent tie window are exactly the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree). The <a href="#entry-2026-10-07-cube-tie-kernel-basis">tie kernel basis entry</a> shows that a minimal kernel basis is not flat in \(c\), so the first-order Fuchsian bridge fails (ex:cube-tie-kernel-not-flat).</p>
-<p>Next: develop the Christoffel–Darboux lead of the tie Forney review, still on the highest-risk item. Extend the moment form of lem:cube-tie-window-moments to the three extra rows. Then look for an identity expressing a \(2\times2\) minor of the kernel basis, in a suitable column basis, as \(c^x(c-1)^y\) times a constant.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-pade">tie Padé entry</a> proves \(\det B_m=\kappa c^{md}\det[h_{m+i-j}]\) for \(h_c=(1+T)^{-5/2-d}(1+cT)^{3/2+d}\) (lem:cube-tie-pure-pade-normality). The window itself is a one-point Hermite–Padé rank condition of five functions with excess order \(2\). The special values remain the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree).</p>
+<p>Next: search the Padé and Hermite–Padé literature for Toeplitz determinants of products of two binomials and for excess-order rank conditions of binomial systems at one point. Read sources in full. Then try to prove conj:cube-tie-pure-wide-normality from the Padé structure, and the independence of the three extra rows modulo the pure span.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58983,6 +58983,72 @@ For the window there are now the degree counts \(a_m\), \(b_m\) and \(\delta_m\)
 <tr><td>Computation design and coding</td><td class="elapsed">23.64 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.98 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.51 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-pade" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:1" data-claims="lem:cube-tie-pure-pade-normality conj:cube-tie-pure-wide-normality">
+<h3>7 October 2026 — The confluent tie window's pure block is a Toeplitz determinant of h_c = (1+T)^{−5/2−d}(1+cT)^{3/2+d}: det B_m = κ c^{m·binom(m,2)} det[h_{m+i−j}]</h3>
+<p class="entry-meta">Working proof that the pure block of the confluent tie window is, up to κc^{md}, a Toeplitz determinant of h_c, with a rank criterion on any number of columns; conjecture of full rank on 3m+1 columns. Gap (3), confluent tie window. Tie Padé cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound for the confluent tie window (lem:cube-tie-window-top-degree). After the failure of the first-order Fuchsian bridge (ex:cube-tie-kernel-not-flat), this cycle develops lead 1 of the confluent route review, Mahler's perfect systems. Can the window's pieces be identified with classical Padé objects, whose degeneracies have known structure? The first test: the window's \(3m\) pure rows on all \(3m+5\) window columns. If they have full rank off \(\{0,1\}\), the special values split into a pure two-point statement and the independence of the three extra rows.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_pure_wide.gp (research/results/bmd-20261007-zq/pure-wide.txt) computes, for \(m=1,\ldots,5\), the gcd of the \(3m\)-minors of the pure rows on the \(3m+5\) columns. It is a power of \(c(c-1)\) after at most two minors: the first \(3m\) columns, and the first \(3m-1\) together with column \(3m+1\). So the pure rows already have full rank on the first \(3m+1\) columns, at every \(c\notin\{0,1\}\), for \(m\le5\).</p>
+<p><strong>Setting.</strong> \(B_m(c)\) is the pure block of the confluent tie window and \(H_m\) the part of \(\det B_m\) prime to \(c(c-1)\), as in conj:cube-two-point-window-factorization and lem:cube-tie-pure-extreme-coefficients. \(d=\binom m2\), \(\alpha=\tfrac52+d\), \(\beta=\tfrac32+d=\alpha-1\), and
+\[h_c(T)=(1+T)^{-\alpha}(1+cT)^{\beta}=\sum_kh_kT^k=(1-u)\,(1+su)^{\beta},\qquad u=\frac T{1+T},\ s=c-1 .\]</p>
+<p><strong>General statement.</strong> lem:cube-tie-pure-pade-normality. Let \(m\ge1\) and \(c\ne0\). For every \(N\ge3m\), the following are equivalent:</p>
+<ol>
+<li>the pure rows \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)) have rank \(3m\) on the columns \(T^d,\ldots,T^{d+N-1}\);</li>
+<li>there is no nonzero pair of polynomials \(P\), \(Q\), with \(\deg P&lt;2m\) and \(\deg Q&lt;m\), such that \(Ph_c+Q=O(T^N)\);</li>
+<li>the \((N-m)\times2m\) Toeplitz matrix \([h_{m+i-j}]_{0\le i&lt;N-m,\,0\le j&lt;2m}\) has rank \(2m\).</li>
+</ol>
+<p>Moreover \(\det B_m=\kappa\,c^{md}\,C_m(c)\) with \(C_m=\det[h_{m+i-j}]_{i,j&lt;2m}\) and \(\kappa\) a nonzero rational. So \(H_m\) is the part of \(C_m\) prime to \(c(c-1)\). In Padé terms, \(C_m\ne0\) says that no form of type \((m-1,2m-1)\) for \(h_c\) has order at least \(3m\). That is one of the conditions for normality of the \([m-1/2m-1]\) entry, not normality itself. (\(C_m\) is \(\pm C(m/2m)\) in Baker's notation.)</p>
+<p>conj:cube-tie-pure-wide-normality. For every \(m\ge1\) and \(c\notin\{0,1\}\), the case \(N=3m+1\) holds. Equivalently, no form of type \((m-1,2m-1)\) for \(h_c\) has order at least \(3m+1\). It is checked for \(m\le5\) (below).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>(1)\(\Leftrightarrow\)(2).</em> A rank defect on the columns \(T^d,\ldots,T^{d+N-1}\) is a nonzero form \(F=P_0(1+T)^{-5/2}+Q_0(1+cT)^{-3/2}\), with \(\deg P_0&lt;2m\) and \(\deg Q_0&lt;m\), whose coefficients there vanish. Since \([T^j]\partial^dF=(j+1)\cdots(j+d)[T^{j+d}]F\), that is \(\partial^dF=O(T^N)\).</li>
+<li>Next, \(\partial^d[T^j(1+T)^{-a}]=(1+T)^{-a-d}R_j(T)\) with \(\deg R_j=j\). Its leading coefficient is \((j-a)(j-a-1)\cdots(j-a-d+1)\), nonzero for \(a\notin\mathbb Z\). Likewise for \((1+cT)^{-b}\), with leading coefficient \(c^d\prod_{t&lt;d}(j-b-t)\), nonzero for \(c\ne0\). So \((P_0,Q_0)\mapsto(P_1,Q_1)\) with \(\partial^dF=P_1(1+T)^{-\alpha}+Q_1(1+cT)^{-\beta}\) is a bijection of \(\mathrm{Pol}_{&lt;2m}\times\mathrm{Pol}_{&lt;m}\).</li>
+<li>Multiplying by the unit \((1+cT)^{\beta}\) gives \(P_1h_c+Q_1=O(T^N)\). This is (2) with \((P,Q)=(P_1,Q_1)\).</li>
+<li><em>(2)\(\Leftrightarrow\)(3).</em> The coefficients \(T^m,\ldots,T^{N-1}\) of \(Ph_c\) must vanish, and those below \(T^m\) are absorbed by \(Q\). The coefficient of \(T^{m+i}\) is \(\sum_jp_jh_{m+i-j}\).</li>
+<li><em>The determinant identity.</em> At \(N=3m\), every step above acts on the \(3m\times3m\) block by one of three operations. These are a triangular change of the row basis (diagonal: the leading coefficients, a constant times \(c^d\) for each of the \(m\) rows of the second family), a column scaling by \((j+1)\cdots(j+d)\), or a unipotent lower-triangular Toeplitz matrix (the unit \((1+cT)^\beta\)). After them, the rows of \(Q\) are unit vectors on the first \(m\) columns. Expanding along them leaves \(C_m\). So \(\det B_m=\kappa c^{md}C_m\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_tie_pade.gp (research/results/bmd-20261007-zq/pade2.txt) finds, for \(m=1,\ldots,5\), that the parts of \(\det B_m\) and \(C_m\) prime to \(c(c-1)\) are equal up to sign, of degree \(m(m-1)\). It also finds the gcd of the \(2m\)-minors of the \((2m+1)\times2m\) Toeplitz matrix trivial off \(\{0,1\}\), matching the pure-rows test. research/tools/bmd_tie_pade_identity.gp (pade-identity.txt) checks the full identity: \(\det B_m/(c^{md}C_m)\) is a nonzero rational constant for \(m\le5\) (\(1\), \(-1/1024\), …). The script's type flag reads it as a polynomial of degree \(0\) and prints \(0\); the printed values are the evidence. The first run of bmd_tie_pade.gp compared without the sign and reported a mismatch at \(m=2\). It is kept in the session archive and corrected by the second.</p>
+<p><strong>What this means.</strong> \(H_m\) is a Toeplitz determinant of the explicit function \(h_c\), and the defects of the pure block on \(N\) columns are rank conditions on Toeplitz matrices of \(h_c\). Heuristically, \(h_c=(1-u)(1+su)^\beta\) is a binomial times a linear factor. But the Padé problem is posed in \(T\), and under \(T=u/(1-u)\) it becomes the two-function problem \(\tilde P(u)(1-u)(1+su)^\beta+\tilde Q(u)(1-u)^m=O(u^N)\). So the normal Padé table of \((1+su)^\beta\) does not apply directly.</p>
+<p>The full window, after \(\partial^d\) and the same unit, is a type I Hermite–Padé condition at \(T=0\) for \(1\), \(h_c\) and three explicit functions, with coefficient counts \((m,2m,1,1,1)\): \(3m+3\) unknowns against \(3m+5\) order conditions. That is a rank condition with excess order \(2\), not Mahler's perfectness, which concerns order one less than the number of unknowns.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the confluent route review, Mahler's perfect systems. The pure block is a Toeplitz determinant of an explicit function. The window is a one-point Hermite–Padé rank condition of five functions with excess order \(2\), outside Mahler's perfectness setting.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the Forney bound, equivalently the excess-order rank condition of the window's one-point Hermite–Padé system, for \(m\ge7\);</li>
+<li>conj:cube-tie-pure-wide-normality;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-top-degree and lem:cube-tie-window-order-at-one (the window, \(u=T/(1+T)\)); conj:cube-two-point-window-factorization (the pure block); the confluent route review (lead 1).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the derivative identity, the leading coefficients and the bijection, with all hypotheses used;</li>
+<li>the unit, the Toeplitz indexing and the identity for \(h_c\);</li>
+<li>both scripts.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>\(C_m\ne0\) is one condition of Padé normality, not normality, and the title is restated;</li>
+<li>the relation between \(H_m\) and \(C_m\) is proved at the level of determinants, \(\det B_m=\kappa c^{md}C_m\), not only of zero sets;</li>
+<li>\(B_m\) and \(H_m\) are defined;</li>
+<li>the \(u\)-variable remark is marked as heuristic;</li>
+<li>the window is described as an excess-order rank condition, not perfectness;</li>
+<li>the conjecture is stated exactly.</li>
+</ul>
+<p>Status: working proof (equivalence and determinant identity); conjecture (wide normality).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 43.96 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 16.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 37.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.78 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
