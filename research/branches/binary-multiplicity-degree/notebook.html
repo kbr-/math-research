@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-half-speed-penalty">half-speed penalty</a>; eight open items). Window domination holds for \(t\le1\). The penalty appears to fall at half the window speed (conjecture), and windows do not minimize it order by order.</p>
-<p>Next: prove the case \(t&lt;p\) of the half-speed conjecture for every \(p\), the full penalty before order \(p\), by expanding the kernel columns with the kernel-column expansion and bounding the mixed-operator determinants. Then seek the per-tree link between window and non-window losses that domination needs.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-half-speed-refuted">half-speed refuted</a>; eight open items). Window domination holds for \(t\le1\) (proved) and on every tested tree; the half-speed penalty is refuted at \(M=5\), where windows themselves lose levels early.</p>
+<p>Next: compare window and non-window coefficients directly. On the refuting tree, take a non-window term of order \(t=2\) and its dominating window term, and express both \(u\)-coefficients through the kernel-column expansion as combinations of the same remainder minors. Look for the identity that ties their losses.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -66526,6 +66526,65 @@ Exceptions:</p>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9 min 49.84 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.79 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 37.77 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-half-speed-refuted" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-half-speed-penalty-fails check:cube-window-domination-five-roots">
+<h3>9 October 2026 — The half-speed penalty conjecture fails at five roots, even for the window itself, while window domination survives there</h3>
+<p class="entry-meta">Refutation of the half-speed Hankel penalty (and of a row-cost rule that would have implied it) above nested cherries over a cherry at M = 5; finite check that window domination still holds there to u^18. Half-speed refutation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4: conj:cube-window-domination at orders \(t\ge2\). The previous cycle conjectured its lower-bound side in sharp form, conj:cube-half-speed-hankel-penalty, from data at \(M=4\). Can it be reduced to a statement about the kernel block alone and proved? Does it hold at \(M=5\)?</p>
+<p><strong>General statement.</strong> conj:cube-window-domination, tested above the tree on which the lower bounds fail; and conj:cube-half-speed-hankel-penalty, refuted by ex:cube-half-speed-penalty-fails.</p>
+<p><strong>A reduction that failed.</strong> Write \(D(u)=\sum_S\pm\det N_{S^c}\det K_S\) by Laplace expansion, where \(N\) is the negative block, \(K\) the kernel block, and \(S\) runs over \(k\)-sets of coefficient rows. A row \(r\) of a negative column \(n\) has \(u\)-order \(\ge n+r\), so \(\det N_{S^c}\) has relative order \(\ge\sum S^c-\binom p2\). Consider the candidate row-cost rule for the kernel block:</p>
+<p>(R) if \(S=\{s_1&lt;\cdots&lt;s_k\}\), then \([u^{k+\tau}]\det K_S\) has valuation \(\ge g(k-d)\), with \(d=\max\{d:s_1+\cdots+s_d\le\tau\}\).</p>
+<p>(R) would imply the half-speed conjecture. By steps (1)–(2) of thm:cube-graded-hankel-penalty, \(P_\Lambda=\pm\mathrm{Vand}^2\det(\mathcal A_1|_E)\det(\mathcal A_2|_K)\), with \(\det(\mathcal A_1|_E)\) and the negative-block coefficients integral; this supplies the \(2\operatorname{val}\mathrm{Vand}\) term. Since \(g\) is nondecreasing, a bound \(g(k-d)\) with \(d\le d_p(t)\) gives \(g(k-d_p(t))\). The set \(U=S^c\cup\{s_1,\ldots,s_d\}\) has \(p+d\) elements, so \(\sum S^c+\sum_{i\le d}s_i\ge\binom{p+d}2=\binom p2+dp+\binom d2\). By Cauchy–Binet it suffices to test (R) for monomial tuples \(v_j=z^{i_j}\) of every degree; the tests below cover only low degrees, so their passes are partial.</p>
+<p>research/tools/bmd_row_cost.gp (research/results/bmd-20261009-i/row-cost.txt) tests (R) for \(i_j\le4\), \(\tau\le6\), every row set and \(k\le3\), above six trees at \(M=4\). There are \(5040\) nonzero coefficients, with no violations, and most attain the bound. bmd_row_cost_m5.gp (row-cost-m5.txt) repeats the test at \(M=5\) with \(i_j\le5\). It finds no violations above two trees (\(3185\) coefficients each). Above nested cherries over a cherry, \((1,1+\eta,1+\eta+\eta^3,3,3+\eta^2)\), it finds \(75\) violations. For example \(k=2\), \(v=(1,z)\), rows \(\{3,4\}\), \(\tau=2\) gives valuation \(0&lt;g(2)=2\). So (R) is false.</p>
+<p><strong>The refutation.</strong> ex:cube-half-speed-penalty-fails. bmd_half_speed_m5.gp (half-speed-m5.txt) computes every coordinate in \([-5,9]\), for \(t\le4\), above the same tree. The penalty profile is \(g=(0,0,2,6,14)\).</p>
+<ul>
+<li>\(p=3\), \(t=2\): \(1200\) coordinates have penalty below the conjectured \(g(2)=2\) (\(d_3(2)=0\)); it is \(0\) in every listed example. One is \(\Lambda=\{-5,-4,-3,0,\ldots,6\}\). The window \(\Lambda_3\) is among them: its profile is \((2,2,0,0,0)\). So the penalty is lost before order \(p\), even for a window.</li>
+<li>\(p=2\), \(t=4\): \(270\) coordinates have penalty below the conjectured \(g(2)=2\).</li>
+</ul>
+<p>The values are \(q\)-adic at \(q=1000003\), with \(\eta=q\). A \(q\)-adic valuation of an integral polynomial in \(\eta\) is at least its \(\eta\)-order. The root differences have lowest-order \(\eta\)-coefficients prime to \(q\) (for example \((3+\eta^2)-(1+\eta)=2-\eta+\eta^2\)), so \(g\) and \(\operatorname{val}\mathrm{Vand}\) are exact, and the expansion coefficients have only powers of \(2\) as denominators, which are \(q\)-units. A penalty below the bound is therefore conclusive.</p>
+<p>The data are consistent with thm:cube-first-order-hankel-penalty: the \(t=1\) columns show no violations. Why the six \(M=4\) trees missed the effect is not established; this tree is the first tested one with a three-root cluster and a separate cherry.</p>
+<p><strong>Domination survives.</strong> check:cube-window-domination-five-roots. bmd_window_domination_m5.gp (window-domination-m5.txt) runs the record's domination test above the same tree. It uses columns \([-5,9]\) and every \(u\)-term to \(u^{18}\). (At these columns \(p=0\) has only the window \([0,9]\).)</p>
+<ul>
+<li>With all window terms as dominators, none of the \(11244\) non-window terms is undominated, and none is dominated only with equality.</li>
+<li>With only the windows' leading terms, \(3024\) are undominated, for example \((X,E,v)=(28,16,14)\) for \(\Lambda=\{-5,-3,-1,0,\ldots,6\}\).</li>
+<li>Scope: \(882\) coordinates have no nonzero term up to \(u^{18}\) and are untested: all \(252\) with \(p=5\) (\(B\ge25\)) and \(630\) with \(p=4\), \(\sum N\ge12\) (\(B\ge19\)). Non-window terms beyond \(u^{18}\), such as most of the \(p=3,4\) tails, are untested. Window terms beyond \(u^{18}\) cannot matter, since a dominator needs \(E'\le E\le18\).</li>
+</ul>
+<p><strong>What this means.</strong> The sharp level bound \(g(k-d_p(t))\) is false beyond first order; the graded bound \(g(k-t)\) remains valid. Above this tree a window loses a level at \(t=2&lt;p=3\). Some non-windows also fall below the window at the same \((p,t)\) (the (W) columns: \(40\) each at \(p=1\), \(t=1,3\); \(270\) at \(p=2\), \(t=4\)). So on this tree no common level bound separates windows from non-windows at equal \((p,t)\).</p>
+<p>Yet domination holds to \(u^{18}\) on this tree, through other window terms. Whatever couples them is specific to the tree's coefficients. The next step should seek it directly: compare a non-window coordinate's \(u^{B+t}\)-coefficient with window coefficients of the same tree as polynomials in the roots, not through a common lower bound.</p>
+<p>Lesson. The half-speed conjecture was stated from six trees at one cluster size. A size-five tree with a three-root cluster beside a cherry refuted it at once. Each penalty statement should be tested at \(M=5\) on such a tree before it is registered.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-window-domination for \(t\ge2\): a per-tree comparison of window and non-window coefficients.</li>
+<li>Adjacency, \(p=0\), non-cancellation, and the other core items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>conj:cube-half-speed-hankel-penalty and lem:cube-kernel-column-expansion;</li>
+<li>thm:cube-graded-hankel-penalty (Laplace structure, step (4)) and thm:cube-first-order-hankel-penalty;</li>
+<li>the record's domination tool (bmd_window_domination.gp).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked every number against the outputs, the scripts' bounds and rule (R) as coded, the implication (R) \(\Rightarrow\) half-speed, the \(q\)-adic transfer and the domination scope. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the \(1200\) count stated as below the bound;</li>
+<li>the scope corrected (\(p=0\) vacuous; the \(882\) untested coordinates broken down; truncation of non-window tails);</li>
+<li>the conclusiveness argument made precise;</li>
+<li>the factorization, monotonicity of \(g\) and the partial Cauchy–Binet coverage stated;</li>
+<li>the interpretation restricted to this tree and to \(d_p(t)\).</li>
+</ul>
+<p>Status: refutation (half-speed penalty, row-cost rule); finite check (window domination at M = 5 on one tree).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 32.23 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 24.76 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 35.81 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12 min 31.52 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
