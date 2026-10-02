@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-07-cube-cherry-caterpillar-theorem">cherry caterpillar theorem</a> removes the single-cherry trees over caterpillar clusters from gap (1). Among the two-root windows, the confluent tie window of gap (3) is now the one without a mechanism, exact only through \(m\le6\).</p>
-<p>Next: the confluent tie window (conj:cube-confluent-tie-window-full-rank) in lattice coordinates. Its rows are \((1+T)^{-5/2}T^i\), \(T^n(1+cT)^{-3/2}\), \((1+T)^{-3}\) and pair rows at \(c\). Find a basis in which the two families split, as \(w^{-\lambda+t}\) and \(w^t\) did for the cherry. Then express the window minors as Cauchy–Binet sums with explicit Toeplitz factors, and look for a factorization like the \((\lambda-1)^k\) of the cherry.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-two-point-window">two-point window entry</a> shows that full rank of the confluent tie window must come from its three extra rows, through a \(3\times5\) Schur complement. That item stays open, exact through \(m\le6\).</p>
+<p>Next: the special cancellations of lem:cube-collision-cone-limit-types, where \(\mathrm{lc}(r)=q_0^\rho\) and \(a_\rho\) is displaced. Write \(r=q^\rho(1+uq^\eta+\cdots)\) and find the exact valuation function of the points, as for lem:cube-two-double-cone-chains. Decide where \(a_\rho\) lands as a function of \(\eta\) and \(u\): an upper level, level \(V\), next to \(A\), or inside the lower cluster. Cover the chain and single-cherry types by the existing steps (cor:cube-single-cherry-avoidance included), and list what remains.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57026,6 +57026,66 @@ Since \(g(b)+g(b+1)=(-1)^b(\lambda-1)/((b+1)(b+2))\ne0\), this gives \(\kappa_{M
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 46.12 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.96 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-two-point-window" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-two-point-window-factorization">
+<h3>7 October 2026 — The pure two-point window of the confluent tie is singular at isolated c: full rank must come from the three extra rows</h3>
+<p class="entry-meta">Conjecture with exact factorizations at m ≤ 4; the product-formula lead for the confluent tie window is falsified. Gap (3), confluent tie window. Two-point window cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): conj:cube-confluent-tie-window-full-rank, the one two-root window without a mechanism after the <a href="#entry-2026-10-07-cube-cherry-caterpillar-theorem">cherry caterpillar theorem</a>. The lattice splitting of thm:cube-cherry-lattice-splitting does not transfer. The tie has the four special points \(T=0,-1,-1/c,\infty\) with cross-ratio \(c\), so \((1+cT)^{-3/2}\) is not a power of \(w=1+T\). No single maximal minor is \(c^\alpha(1-c)^\beta\) times a constant (the earlier scan, \(m\le3\)). The test here: does the pure part, the \(3m\) single-series rows on \(3m\) consecutive columns, have such a product formula? If it did, full rank would reduce to a \(3\times5\) Schur complement with known pivots.</p>
+<p><strong>Setting.</strong> For \(a,b\notin\mathbb Z\), \(p,q\ge1\) and \(d\ge0\), let \(\Delta_{a,b}(p,q,d)(c)\) be the determinant of the coefficients of \(T^d,\ldots,T^{d+p+q-1}\) in the rows \(T^i(1+T)^{-a}\) (\(i&lt;p\)) and \(T^n(1+cT)^{-b}\) (\(n&lt;q\)). The confluent tie window W^c(c) of lem:cube-confluent-tie-reduction contains the rows of \(\Delta_{5/2,3/2}(2m,m,\binom m2)\) on its first \(3m\) columns. It adds the three rows \((1+T)^{-3}\), \(((1+T)(1+cT))^{-3/2}\), \(T(1+T)^{-5/2}(1+cT)^{-3/2}\), and five more columns.</p>
+<p><strong>General statement.</strong> conj:cube-two-point-window-factorization. For every \(m\ge1\),
+\[\Delta_{5/2,3/2}\bigl(2m,m,\tbinom m2\bigr)(c)=\kappa_m\,c^{m\binom m2}(c-1)^{m(m+1)}H_m(c),\qquad\deg H_m=m(m-1),\quad H_m(0)H_m(1)\ne0,\quad\kappa_m\ne0.\]
+Hence, since \(\deg H_m\ge2\) for \(m\ge2\), \(H_m\) has roots off \(\{0,1\}\), and the pure part is singular at finitely many \(c\notin\{0,1\}\), and no product formula exists.</p>
+<p><strong>Reduction (proved).</strong> If \(\Delta_{5/2,3/2}(2m,m,\binom m2)(c)\ne0\) (that is, \(H_m(c)\ne0\) and \(c\notin\{0,1\}\), where the factorization holds), the pure block on the first \(3m\) window columns is invertible. W^c(c) then has full rank \(3m+3\) iff the Schur complement of the three extra rows on the last five columns has rank \(3\). This is block elimination. So conj:cube-confluent-tie-window-full-rank splits into two statements:</p>
+<ul>
+<li>the \(3\times5\) Schur complement has rank \(3\) off the zeros of \(H_m\);</li>
+<li>the full window has rank \(3m+3\) at the finitely many zeros of \(H_m\). The window's overdetermination must supply this, since the pure block is singular there.</li>
+</ul>
+<p><strong>Test.</strong> research/tools/bmd_two_point_window.gp (research/results/bmd-20261007-x/two-point-window.txt) factors \(\Delta\) exactly.</p>
+<ul>
+<li>For the confluent tie parameters \((2m,m,\binom m2)\), \(m=1,2,3,4\): the exponents of \(c-1\) are \(2,6,12,20\) and those of \(c\) are \(0,2,9,24\). The remaining factor is irreducible over \(\mathbb Q\), of degree \(0,2,6,12\), with nonzero values at \(0\) and \(1\). It has \(0\), \(2\) and \(0\) real roots for \(m=2,3,4\). For \(m=2\) it is \(99c^2-22c+3\).</li>
+<li>Other parameters also give non-monomial factors. At \((4,2,0)\) they are \((3c+1)(21c-1)\). Others are \((4,2,3)\), \((2,2,0)\) (both without real roots), \((3,3,2)\), and the non-tie exponents \((1/3,7/5,3,2,1)\).</li>
+</ul>
+<p>So the product formula fails in general, and for the tie parameters from \(m=2\) on. A first run had a syntax error and is kept in the session archive.</p>
+<p><strong>Reading.</strong> A two-point Hermite–Padé system \(\{(1+T)^{-a},(1+cT)^{-b}\}\) with polynomial multipliers is not perfect at the tested indices: these square windows degenerate at isolated \(c\). This is consistent with the earlier finding that the square window minor is not monomial (<a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>). The zeros of \(H_m\) are complex for \(m=2,4\). Full rank of the confluent tie window is therefore an overdetermination phenomenon, as the gcd computations through \(m\le6\) suggested. A uniform proof needs the three extra rows. Its most promising form is the Schur complement above. Its rows are the combinations of the extra rows that vanish on the first \(3m\) window columns, that is, type I Hermite–Padé forms (lem:cube-confluent-tie-hermite-pade).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-window-full-rank: the Schur complement off the zeros of \(H_m\), and the window at those zeros;</li>
+<li>the special cancellations of lem:cube-collision-cone-limit-types;</li>
+<li>the two-cherry and nested cherry types, the three-root levels and the two-displacement types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-confluent-tie-reduction (rows and window); lem:cube-confluent-tie-hermite-pade; the scan output of the confluent tie window entry (research/results/bmd-20261007-n).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>that the script's rows, columns and powers of \(c\) match the window definition, so the pure block is exactly the first \(3m\) rows and columns of W^c(c);</li>
+<li>the exponents and degrees against the output;</li>
+<li>\(H_m(0)H_m(1)\ne0\) and irreducibility, by its own gp check;</li>
+<li>the Schur complement step.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>two factors stated to have real roots have none;</li>
+<li>irreducibility over \(\mathbb Q\), with real-root counts;</li>
+<li>the comparison with the earlier real-root finding corrected;</li>
+<li>"not perfect" restricted to the tested indices;</li>
+<li>the Schur complement described correctly;</li>
+<li>the reduction stated with \(\Delta\ne0\).</li>
+</ul>
+<p>Status: conjecture, with a proved reduction.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 11.31 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 6.52 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.85 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 13.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">54.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
