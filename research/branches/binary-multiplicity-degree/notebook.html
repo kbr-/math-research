@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-kernel-exchange-route-review">kernel exchange review</a>; eight open items). The standard exchanges of (W′) rest on single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\) on unit-scale arcs. The kernel determinants were sign-regular at one real point.</p>
-<p>Next: the positivity lead. Test sign-regularity of the contracted kernel determinants at many real configurations, ordered and unordered, with negative roots and several \(u\). If it holds for ordered positive configurations, look for a subtraction-free expansion of \(D_{T_0-i+j}/D_{T_0}\) at \(k=1\). Decision rule: switch to statement 2 after three cycles without the \(k=1\) exchange.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-kernel-positivity">kernel positivity</a>; eight open items). The single kernel exchanges are the target. The kernel determinants are sign-regular for nonnegative roots (conjecture) but not across the origin.</p>
+<p>Next: the \(k=1\) kernel exchange through the moment representation \(D_{\{j\}}=\langle\nu,K_u(z^j)\rangle=\sum_s\tilde\nu_s\int_0^{y_s}P\,z^j\,\Psi_s\). That form covers both one-sided and straddling configurations; compare \(j\ge1\) with \(j=0\) along unit-scale arcs. The decision rule allows two more cycles before switching to statement 2.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -67779,6 +67779,48 @@ so \(\omega_w(D_T)(y)-\omega_w(D_{T_0})(y)=\mu(\sum T-\sum T_0)+\bigl[\omega_{w+
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.00 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-kernel-positivity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-kernel-exchange-route-review:1" data-claims="conj:cube-kernel-total-positivity">
+<h3>9 October 2026 — The kernel determinants are sign-regular when all roots are nonnegative and fail to be once a root is well on the negative side: positivity can cover only part of the arcs</h3>
+<p class="entry-meta">Conjecture: total positivity of the kernel Plücker vector for nonnegative roots and small u > 0, no exceptions in 13 such configurations at M = 3, 4, 5; sign-regularity fails in 6 of the 7 configurations with a negative root. Kernel positivity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4, through prop:cube-kernel-arc-reduction: the single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\). The <a href="#entry-2026-10-09-cube-kernel-exchange-route-review">kernel exchange review</a>'s positivity lead passed at one real point. If the \(D_T\) are all of one sign, the contracted kernel matrix is a totally positive point of a Grassmannian. Then subtraction-free expansions are available, and \(T_0\) is the natural candidate for the minimum. For which real configurations does sign-regularity hold?</p>
+<p><strong>General statement.</strong> conj:cube-kernel-total-positivity. For real roots \(0\le y_1\le\cdots\le y_M\), real \(u&gt;0\) small enough for the series to converge, and every \(1\le p\le M-1\), the determinants \(D_T(u)\) for all \(k\)-sets \(T\) of nonnegative integers have one common sign. That sign depends only on \(M\) and \(p\).</p>
+<p><strong>Evidence.</strong> research/tools/bmd_kernel_sign_regularity.gp (research/results/bmd-20261009-t/kernel-sign-regularity.txt) evaluates every \(D_T\), \(T\subset[0,6]\), exactly over \(\mathbb Q\) at \(u\in\{\tfrac1{1000},\tfrac1{100},\tfrac1{20},\tfrac15\}\). It uses the series truncated at \(B+16\). A sign is accepted only when the last computed term is below \(10^{-6}\) of the value; at \(u=\tfrac15\), and sometimes at \(\tfrac1{20}\), every value is left undecided. The configurations are \(20\) in all, at \(M=3,4,5\).</p>
+<ul>
+<li>All roots nonnegative: \(13\) configurations (eleven random, two of them drawn in the mixed-sign family, including repeated roots and \(y=0\), and two near-collision clusters). There are no mixed signs in any decided block.</li>
+<li>At least one negative root: \(7\) configurations. \([-2/7,16/7,25/7]\) is sign-regular. The other six, among them an all-negative one, have both signs in every \(p\) block. For example \([-33/7,1,27/7]\) has \(10\) positive and \(11\) negative at \(p=1\).</li>
+<li>A first run stopped at \(M=3\) on an index error in the near-collision case, after the six \(M=3\) lines (kernel-sign-regularity.txt.first-run).</li>
+</ul>
+<p>Since \(u&gt;0\) puts the singular point \(-1/u\) of \((1+uz)^{-3/2}\) on the negative side, positivity is tied to the half-line \(\{uy\ge0\}\). The one mixed configuration that stays regular has a negative root of small modulus.</p>
+<p><strong>What this means.</strong> Positivity is real but not universal. The arc-wise kernel minimality it would explain also holds on clusters symmetric about the origin (prop:cube-kernel-arc-reduction's evidence and the kernel exchange review). There positivity fails. So positivity can at best prove the single kernel exchanges for arcs whose roots stay on one side of the origin, the side opposite \(-1/u\). The symmetric case needs another mechanism.</p>
+<p>The finding also locates the role of the origin seen before. The factors such as \(e_1\) that broke plain minimality appear exactly when roots straddle the origin, which is also where positivity fails.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of conj:cube-kernel-total-positivity, and from it the single kernel exchanges on one-sided arcs, through subtraction-free expansions.</li>
+<li>The single kernel exchanges on arcs straddling the origin.</li>
+<li>Non-standard exchanges; the tie condition; \(p=0\); the other open items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the kernel exchange review (total positivity). It passes on the half-line and fails across the origin.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-kernel-arc-reduction (definition of \(D_T\));</li>
+<li>the kernel exchange review's test (3).</li>
+</ul>
+<p><strong>Verification gate.</strong> No new lemma: a conjecture with finite evidence, so no correctness review was required. The evidence is exact rational evaluation with a stated truncation criterion.</p>
+<p>Status: conjecture (total positivity for nonnegative roots) with finite evidence; observation of failure across the origin.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 40.00 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 23.67 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 2.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7 min 13.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
