@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-forney-kernel">tie Forney entry</a> turns the special values of the confluent tie window into a degree count of its kernel (lem:cube-tie-window-forney-criterion). They vanish iff the Forney indices sum to \(\delta_m-a_m-b_m\). Here \(a_m=m\binom m2+4m\) is proved, and \(b_m=m^2+m+2\) and \(\delta_m\) hold through \(m=4\), with balanced indices summing to \(2m^2+m+4\) (conj:cube-tie-window-balanced-kernel).</p>
-<p>Next: prove conj:cube-tie-window-balanced-kernel, the highest-risk item. Start with \(\delta_m\) and \(b_m\), by extreme terms at \(c=\infty\) and in \(s=c-1\), as for \(a_m\). Then attack the lower bound \(\nu_1+\nu_2\ge2m^2+m+4\). It says that no nonzero polynomial kernel vectors exist below the balanced degrees, a rank statement for constant linearized matrices.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-order-at-one">tie window at c = 1 entry</a> proves \(b_m=m^2+m+2\) and the pure block's order \(m(m+1)\) at \(c=1\) (lem:cube-tie-window-order-at-one), through the substitution \(u=T/(1+T)\). This settles the numerical part of the two-point window factorization. By lem:cube-tie-window-forney-criterion, the special values of the confluent tie window vanish iff the window kernel's Forney indices sum to \(\delta_m-a_m-b_m\). \(a_m\) and \(b_m\) are now proved.</p>
+<p>Next: \(\delta_m\), the top degree in \(c\) of the maximal minors (conjectured \(md+3m^2+6m+6\)), by a coordinate change at \(c=\infty\) and a unique extreme term. Then the Forney lower bound \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\), the last step for the special values.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58550,6 +58550,88 @@ The \(c^{2m}\) coefficient cancels. So \(R_3'\) has \(c\)-order at least \(2m-1\
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 51.86 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.84 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">12.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-order-at-one" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-tie-window-order-at-one">
+<h3>7 October 2026 — The confluent tie window at c = 1: in u = T/(1+T) the pure rows become polynomials, giving order m(m+1) for the pure block and m²+m+2 for the window</h3>
+<p class="entry-meta">Working proof of the exact (c−1)-orders of the confluent tie window and its pure block for every m, with the limit spaces at c = 1. This completes the numerical part of the two-point window factorization. Gap (3), confluent tie window. Tie order-at-one cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: conj:cube-tie-window-balanced-kernel. By lem:cube-tie-window-forney-criterion, the special values of the confluent tie window vanish iff \(\nu_1+\nu_2=\delta_m-a_m-b_m\), where \(a_m\) is proved. This cycle proves \(b_m\), the least order at \(c=1\) of the maximal minors. The test: is the expansion in \(s=c-1\) governed by one extreme term, as the expansion in \(c\) was?</p>
+<p><strong>Setting.</strong> Characteristic zero, \(d=\binom m2\), \(b_r=\binom{-3/2}r\), \(\varphi(x)=(1+x)^{-3/2}\), \(s=c-1\), \(u=T/(1+T)\). The rows are \(f_i=T^i(1+T)^{-5/2}\) (\(i&lt;2m\)), \(g_n=T^n(1+cT)^{-3/2}\) (\(n&lt;m\)), \(R_1=(1+T)^{-3}\), \(R_2=((1+T)(1+cT))^{-3/2}\) and \(R_3=T(1+T)^{-5/2}(1+cT)^{-3/2}\). The pure block \(B_m\) has the rows \(f,g\) on \(T^d,\ldots,T^{d+3m-1}\). The window \(W^c\) has all rows on \(T^d,\ldots,T^{d+3m+4}\). The key identity is
+\[1+cT=(1+T)(1+su).\]</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-order-at-one. For every \(m\ge1\):</p>
+<ol>
+<li>\(\det B_m\) has \((c-1)\)-order exactly \(m(m+1)\). As \(s\to0\), the row space of \(f,g\) tends to \((1+T)^{-5/2-m}\mathrm{Pol}_{&lt;3m}\).</li>
+<li>Every maximal minor of \(W^c(c)\) has \((c-1)\)-order at least \(m^2+m+2\), and the minor on the first \(3m+3\) columns has exactly that order. So \(b_m=m^2+m+2\). As \(s\to0\), the row space tends to \((1+T)^{-5/2-m}\mathrm{Pol}_{&lt;3m}\oplus(1+T)^{-5}\mathrm{Pol}_{\le2}\).</li>
+</ol>
+<p>With the \(c\)-order \(md\) and the degree \(m(d+2m)\) from lem:cube-tie-pure-extreme-coefficients, part 1 gives \(\det B_m=\kappa\,c^{md}(c-1)^{m(m+1)}H_m\) with \(H_m(0)H_m(1)\ne0\) and \(\deg H_m=m(m-1)\), for every \(m\). For \(m\ge2\), \(\deg H_m\ge2\), so the pure block vanishes at between \(1\) and \(m(m-1)\) values of \(c\notin\{0,1\}\) over the algebraic closure. Nothing is claimed over \(\mathbb Q\) or \(\mathbb R\). Together with part 2 of conj:cube-two-point-window-factorization (block elimination), this proves that conjecture. It leaves no part open except the remarks on irreducibility in its record, which its summary does not state.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Change of coordinates.</em> Let \(\Phi(F)=(1-u)^{2m-1}(1+T)^{5/2}F\), written as a series in \(u\). Here \(T=u/(1-u)\) and \(1+T=(1-u)^{-1}\). \(\Phi\) does not depend on \(s\) and is invertible. In the monomial bases it is lower triangular: \(T^k\) goes to \(u^k\) plus higher powers, and back. So a Plücker coordinate in one basis, on a column set \(C\), is a finite combination of coordinates in the other on column sets \(C'\le C\) elementwise. The inverse is triangular too. Hence the least \(s\)-order over all coordinates, and the leading Plücker vector, correspond in the two bases. Individual coordinates need not keep their orders.</li>
+<li><em>The pure rows become polynomials.</em> \(\Phi(f_i)=u^i(1-u)^{2m-1-i}\). These span \(\mathrm{Pol}_{&lt;2m}(u)\), call it \(A\). By the key identity,
+\[\Phi(g_n)=u^n(1-u)^{2m-2-n}\varphi(su)=e_n(u)\,\varphi(su),\]
+where the \(e_n=(1-u)^{m-1}u^n(1-u)^{m-1-n}\) span \(E=(1-u)^{m-1}\mathrm{Pol}_{&lt;m}\). \(E\) has a basis with degrees \(m-1,\ldots,2m-2\) and nonzero leading coefficients.</li>
+<li><em>Coordinates of the pure part.</em> Take a column set \(C\) of size \(3m\) (powers of \(u\)). The rows of \(A\) vanish beyond \(u^{2m-1}\). So a nonzero coordinate needs \(C\supseteq[0,2m-1]\), and then it is \(\pm\det A[0,2m-1]\cdot\det G[J]\) with \(J=C\setminus[0,2m-1]\subset[2m,\infty)\). The entry of \(e\varphi(su)\) at \(u^j\) is \(\sum_ie_ib_{j-i}s^{j-i}\). By Cauchy–Binet over \(I\subset[0,2m-2]\),
+\[\det G[J]=\sum_I\det E[\cdot,I]\;s^{\Sigma J-\Sigma I}\det[b_{j-i}]_{i\in I,\,j\in J}.\]
+The largest \(\Sigma I\) with \(\det E[\cdot,I]\ne0\) occurs only at \(I^*=[m-1,2m-2]\), by the degree basis of \(E\). The least \(\Sigma J\) occurs only at \(J^*=[2m,3m-1]\). So every coordinate has order at least \(\Sigma J^*-\Sigma I^*=m(m+1)\). At \(C=[0,3m-1]\) the coefficient of \(s^{m(m+1)}\) is \(\pm\det A\,\det E[\cdot,I^*]\det[b_{m+1+j-p}]_{p,j&lt;m}\), and \(\det[b_{m+1+j-p}]=\pm s_{((m+1)^m)}(1^{3/2})\ne0\) by hook-content.</li>
+<li><em>Part 1.</em> So the Plücker vector of \(\Phi(f),\Phi(g)\) is \(s^{m(m+1)}(\gamma\,e_{[0,3m-1]}+O(s))\) with \(\gamma\ne0\). Its limit space is \(\mathrm{Pol}_{&lt;3m}(u)\). Back in \(T\): \(\Phi^{-1}(u^k)=(1+T)^{-5/2}(1-u)^{1-2m}u^k\). For \(k&lt;3m\) this is \((1+T)^{-5/2-m}\) times \(T^k(1+T)^{3m-1-k}\), so the limit is \(L=(1+T)^{-5/2-m}\mathrm{Pol}_{&lt;3m}\). By the first bullet, the Plücker vector of \(f,g\) in the \(T\)-basis is \(s^{m(m+1)}(P_L+O(s))\), with \(P_L\) the Plücker vector of \(L\). Its coordinate on any \(3m\) consecutive columns \(T^{d'},\ldots\) is \(\pm\det[\binom{-5/2-m}{d'+j-i}]=\pm s_{(d'^{3m})}(1^{5/2+m})\ne0\), by Jacobi–Trudi and hook-content as in lem:cube-tie-pure-extreme-coefficients. So \(\det B_m\) has order exactly \(m(m+1)\).</li>
+<li><em>The extra rows.</em> By the key identity, \(R_1=(1+T)^{-3}\), \(R_2=(1+T)^{-3}\varphi(su)\) and \(R_3=(1+T)^{-3}u\,\varphi(su)\). Replace \(R_2\) by
+\[R_2''=\frac{R_2-R_1}{b_1}-sR_3=(1+T)^{-3}\sum_{r\ge2}\Bigl(\frac{b_r}{b_1}-b_{r-1}\Bigr)s^ru^r .\]
+The \(r=1\) term cancels, and the \(r=2\) coefficient is \(b_2/b_1-b_1=-\tfrac54+\tfrac32=\tfrac14\). This changes every maximal minor by the factor \(1/b_1\). So \(R_1\), \(R_3\) and \(R_2''\) have orders \(0\), \(0\) and \(2\), with leading parts \((1+T)^{-3}\), \(T(1+T)^{-4}\) and \(\tfrac14T^2(1+T)^{-5}\). These span \((1+T)^{-5}\mathrm{Pol}_{\le2}\).</li>
+<li><em>Part 2.</em> The Plücker vector of all rows is the wedge product of \(s^{m(m+1)}(P_L+O(s))\) with the three reduced extra rows. A Laplace expansion over the \(3m\) pure rows bounds every maximal minor's order by at least \(m(m+1)+0+0+2\), unconditionally. The coefficient of \(s^{m^2+m+2}\) is the corresponding coordinate of the Plücker vector of \(L\oplus(1+T)^{-5}\mathrm{Pol}_{\le2}\). Independence of the leading spaces is used only for the exactness on \(T^d,\ldots,T^{d+3m+2}\). They are: on \(3m+3\) consecutive columns, thm:cube-two-exponent-window with \(a=5/2+m\), \(n=3m\), \(b=5\), \(p=3\) makes \((1+T)^{-a}\mathrm{Pol}_{&lt;3m}\) and \((1+T)^{-5}\mathrm{Pol}_{&lt;3}\) jointly injective (\(a\notin\mathbb Z\), \(a-b\notin\mathbb Z\), \(b-p+1=3&gt;0\)). The minor on \(T^d,\ldots,T^{d+3m+2}\) has exactly that order, with nonzero leading coefficient.</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_tie_order_at_one.gp (research/results/bmd-20261007-zm/order-at-one.txt) gives the following.</p>
+<ul>
+<li>The square window minor has \((c-1)\)-order \(4,8,14,22,32,44=m^2+m+2\) for \(m=1,\ldots,6\).</li>
+<li>For \(m\le4\), the least order over all maximal minors that do not vanish identically is the same.</li>
+<li>The pure block's orders \(m(m+1)\) for \(m\le6\) are in research/results/bmd-20261007-zh/pure-extremes.txt.</li>
+</ul>
+<p><strong>What changes.</strong> Two of the three quantities in conj:cube-tie-window-balanced-kernel are now proved: \(a_m=md+4m\) and \(b_m=m^2+m+2\). The third, \(\delta_m\), is the top degree in \(c\). The special values vanish iff the Forney indices of the window's kernel sum to \(\delta_m-a_m-b_m\). The same kind of argument should give \(\delta_m\) at \(c=\infty\): a coordinate change making the rows polynomial, then a unique extreme Cauchy–Binet term. The substitution \(u=T/(1+T)\) is the useful new tool. It turns the two-point system into polynomials times \(\varphi(su)\), so that \(c=1\) becomes a small-parameter problem with a polynomial base.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(\delta_m\), the top degree of the maximal minors;</li>
+<li>the lower bound \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\), equivalent to the special values;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-tie-window-forney-criterion and lem:cube-tie-pure-extreme-coefficients;</li>
+<li>lem:cube-tie-window-generic-rank (the analogous reduction at \(c=0\));</li>
+<li>thm:cube-two-exponent-window (statement and conditions);</li>
+<li>conj:cube-two-point-window-factorization (statement).</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked all of the following by hand:</p>
+<ul>
+<li>the key identity and the coordinate change;</li>
+<li>the space \(E\), the Cauchy–Binet extremes and the Toeplitz rectangle;</li>
+<li>the limit space and its window coordinate;</li>
+<li>the reduced extra rows and the two-exponent conditions;</li>
+<li>the wedge bound;</li>
+<li>the implication for the factorization conjecture;</li>
+<li>the script.</li>
+</ul>
+<p>It found no mathematical error and no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>the transfer is stated for the least order and the leading vector only;</li>
+<li>the factorization uses the degree as well as the \(c\)-order, and the zeros of \(H_m\) are counted over the algebraic closure;</li>
+<li>the lower bound is unconditional, and independence is used only for exactness;</li>
+<li>the check excludes minors that vanish identically.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zm">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 3.39 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.09 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 1.58 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 41.85 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
