@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The lower-bound side is complete for \(p\ge1\): the graded penalty and its <a href="#entry-2026-10-08-cube-hankel-penalty-convexity">convexity</a>. The windows do not attain the graded bound at \(t\ge1\), yet (W′) holds on all 55 tested arcs. A comparison of a coordinate at order \(t\) with the window \(\Lambda_{p+t}\) is not uniform in the arc (the \(x\)-lattice favours one, the \(\varepsilon\)-lattice the other).</p>
-<p>Next: list, from the existing expansions, which coordinate sets attain \(g(k-t)\) at order \(t\ge1\), and their lattice costs. State the sharpened lower bound they suggest for every coordinate, and prove it with the remainder-minor lemma.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). Five research cycles since the <a href="#entry-2026-10-08-cube-caterpillar-tie-route-review">caterpillar tie route review</a> proved the lower-bound side of (W′) above every cluster tree. They reduced the rest to <a href="#entry-2026-10-08-cube-window-domination">window domination</a>, which needs the windows' higher-order coefficients.</p>
+<p>Next: a route review of the (K) line. Recount the open items, test window domination at one more cluster size, and choose between a graded Hankel form for the windows and the other core items (confluent tie table, triple window) as the next highest-risk target.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65552,6 +65552,65 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 8.21 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 4.13 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.87 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-window-domination" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-window-domination prop:cube-domination-gives-window-leaders ex:cube-leading-window-domination-fails">
+<h3>8 October 2026 — Every term of every non-window cross coordinate is strictly dominated by a window term above five cluster trees at M = 4; the windows' leading terms alone do not suffice</h3>
+<p class="entry-meta">Conjecture: strict window domination of all u-terms above any cluster tree. Working proof: domination makes every leader a window. Finite checks at M = 4. Window domination cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core item (W′) above cherry clusters and nested trees. The lower bound for every coordinate is proved, but the windows do not attain it beyond the leading order (<a href="#entry-2026-10-08-cube-hankel-penalty-convexity">penalty convexity</a>), so a bound-against-bound argument cannot give (W′). Yet (W′) held on every tested arc. What structural statement explains this?</p>
+<p><strong>Setting.</strong> By the homogeneity step of cor:cube-cherry-above-four-tie, the \(u^n\)-term of a cross coordinate \(P_\Lambda\) (at \(x=1\), \(\varepsilon=u\)) contributes \(Xw_x+Ew_e+v\) along an arc, where</p>
+\[ (X,E,v)=\Bigl(\textstyle\sum\Lambda+n,\ n,\ \operatorname{val}[u^n]P_\Lambda\Bigr) . \]
+<p>The valuation of \(P_\Lambda\) along the arc is the least such value over its terms, unless the minimizing terms cancel. Call a term of \(\Lambda\) strictly dominated by a term of \(\Lambda'\) if \(X'\le X\), \(E'\le E\), \(v'\le v\), and the triples differ.</p>
+<p><strong>General statement.</strong> conj:cube-window-domination. Above every cluster tree with \(M\ge2\) roots (root valuations \(\ge0\), distinct roots), every term of every non-window cross coordinate is strictly dominated by a term of some window \(\Lambda_j=[-j,2M-1-j]\), \(0\le j\le M\).</p>
+<p><strong>Second statement.</strong> prop:cube-domination-gives-window-leaders. If conj:cube-window-domination holds above a cluster tree, then along every arc with \(w_x,w_e&gt;0\) on which each window's least-valued term is unique, every leading cross coordinate is a window. So (W′) holds there whenever the leading windows are one window or two adjacent ones.</p>
+<p><strong>Proof.</strong> Since the roots have valuation \(\ge0\), every \(v\ge0\), and \(X,E\) grow with \(n\). So only finitely many terms have arc value below any bound, and each coordinate's least term value exists. By the ultrametric inequality, a coordinate's valuation is at least the least value of its terms, with equality when that least term is unique. So a window whose least-valued term is unique has valuation \(V_j\) equal to that term's value.</p>
+<p>Let \(\Lambda\) be a non-window, and take any term of it. It is strictly dominated by a term of some window \(\Lambda_j\): all three entries are \(\le\), and one is strictly smaller. Since \(w_x,w_e&gt;0\), its arc value is strictly smaller than the given term's. It is also at least \(V_j\). So every term of \(\Lambda\) has value \(&gt;\min_jV_j\), and \(\operatorname{val}P_\Lambda&gt;\min_jV_j\). \(\square\)</p>
+<p>On arcs where two terms of one window tie in arc value, they can cancel and the window's valuation can rise. Within one coordinate \(X-X'=E-E'=n-n'\), so two terms tie exactly when \((n-n')(w_x+w_e)=v'-v\): finitely many lines \(w_x+w_e=\text{const}\), from the negative-slope edges of the lower hull of the points \((n,v_n)\). Those arcs need a coefficient comparison.</p>
+<p>The adjacency condition is not automatic. The windows' actual valuations \(V_j\) are minima over their own terms, and convexity of \(j\mapsto V_j\) is not proved. Their lower bounds are strictly convex (lem:cube-hankel-penalty-convexity), but the windows do not attain them at \(t\ge1\).</p>
+<p><strong>Test.</strong> research/tools/bmd_window_domination.gp (window-domination.txt) computes, at \(M=4\), every coordinate with columns in \([-4,8]\) and \(p\le4\) to \(u^{20}\). It does this above the five trees of the penalty convexity entry, read \(q\)-adically at one prime, \(\eta=q=1000003\). That is 1287 coordinates per tree, 65 window terms and 14,290 non-window terms.</p>
+<ul>
+<li>With all window terms as dominators, every non-window term is strictly dominated, in every tree. No term is dominated only by an equal window term.</li>
+<li>With the windows' leading terms only, domination fails on two trees: 444 terms for two separated cherries and 103 for a cherry over a deeper cherry. A typical case is \(\Lambda=\{-3,-1,0,\ldots,5\}\) at \(u^9\), \((X,E,v)=(20,9,6)\), with penalty \(0\) above \(2\operatorname{val}\mathrm{Vand}=6\). The window leading terms with \(E\le9\) are those of \(\Lambda_0\) and \(\Lambda_1\), both with \(X&gt;20\) (\(32\) and \(24\)), and that of \(\Lambda_2\) at \((18,6,8)\), whose penalty is \(g(2)=2\). So none dominates. The only window terms with \(X\le20\) and \(E\le9\) are those of \(\Lambda_2\) at \(u^6,u^7,u^8\), so the dominator is its \(u^7\)- or \(u^8\)-term, with \(v=6\). The script does not print which.</li>
+</ul>
+<p>A first version of the tool counted exact ties without checking strict domination elsewhere; its output is kept as a <code>.first-run</code> file. The test is a one-prime proxy and is evidence only.</p>
+<p><strong>What this means.</strong> The data suggest the statement to prove. Non-windows lose term by term to windows, not to bounds, and the dominating window term is sometimes one of a window's higher-order terms. A proof by term domination therefore needs the windows' higher-order coefficients, not only their leading Hankel form. A natural route is a graded Hankel form for the windows: an identification of the window's \(u^{B_j+t}\)-coefficient with explicit symmetric functions, as the leading one was identified with \(\mathrm{Hank}_k\).</p>
+<p>The finite check covers one cluster size and five trees. Its role is to fix the statement to prove, not to establish it.</p>
+<p>Recorded as ex:cube-leading-window-domination-fails: the windows' leading terms alone do not dominate.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-window-domination, which needs the windows' graded coefficients.</li>
+<li>Adjacency of the leading windows.</li>
+<li>Whether (W′) and cor:cube-cherry-step handle a leading \(\Lambda_0\); the conjecture already covers the non-windows with \(p=0\).</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-graded-hankel-penalty and lem:cube-hankel-penalty-convexity;</li>
+<li>cor:cube-cherry-step (condition (W′));</li>
+<li>cor:cube-cherry-above-four-tie (homogeneity).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the proposition's use of \(w_x,w_e&gt;0\) and of uniqueness, the script against the definition, and every quoted count. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the cancellation argument restated through the ultrametric inequality, with the finiteness clause;</li>
+<li>the tie arcs described as lines, not rays;</li>
+<li>the window range \(0\le j\le M\) stated, and the \(p=0\) gap restated;</li>
+<li>the tie wording and the example's dominator corrected to what the output supports;</li>
+<li>one prime and \(M=4\) stated in the title and text.</li>
+</ul>
+<p>Status: conjecture (domination); working proof (reduction to window leaders); finite checks.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 29.48 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 3.93 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 29.10 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">46.67 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 1.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.66 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
