@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The <a href="#entry-2026-10-08-cube-graded-hankel-penalty-proof">graded Hankel penalty</a> is proved, so every cross coordinate with \(p\ge1\) has valuation \(\ge b(\Lambda)+2\operatorname{val}\mathrm{Vand}+\min_t[t(w_x+w_e)+g(k-t)]\). The windows minimize this bound within each \(p\).</p>
-<p>Next: prove that \(k\mapsto g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\) is convex for points of a valuation ring (Bhargava's greedy \(p\)-orderings). Then determine whether the windows attain the bound at the minimizing \(t\), starting from their \(u^{B+t}\)-coefficients.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The lower-bound side is complete for \(p\ge1\): the graded penalty and its <a href="#entry-2026-10-08-cube-hankel-penalty-convexity">convexity</a>. The windows do not attain the graded bound at \(t\ge1\), yet (W′) holds on all 55 tested arcs. A comparison of a coordinate at order \(t\) with the window \(\Lambda_{p+t}\) is not uniform in the arc (the \(x\)-lattice favours one, the \(\varepsilon\)-lattice the other).</p>
+<p>Next: list, from the existing expansions, which coordinate sets attain \(g(k-t)\) at order \(t\ge1\), and their lattice costs. State the sharpened lower bound they suggest for every coordinate, and prove it with the remainder-minor lemma.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65482,6 +65482,76 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 17.38 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 8.99 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.86 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-hankel-penalty-convexity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-caterpillar-tie-route-review:1" data-claims="lem:cube-hankel-penalty-convexity ex:cube-window-graded-nonattainment">
+<h3>8 October 2026 — The Hankel penalty is convex in the subset size; the windows do not attain the graded bound beyond the leading order (finite check), yet (W′) holds on every tested arc above five cluster trees</h3>
+<p class="entry-meta">Working proof: convexity of the minimal squared-Vandermonde valuation, by an ultrametric recursion. Finite checks: graded non-attainment by the windows, and (W′) on 55 arcs (two primes). Penalty convexity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core item (W′) above cherry clusters and nested trees. thm:cube-graded-hankel-penalty gives every coordinate with \(p\ge1\) the lower bound</p>
+\[ b(\Lambda)+2\operatorname{val}\mathrm{Vand}+\min_t\bigl[t(w_x+w_e)+g(k-t)\bigr]. \]
+<p>Two inputs remain for (W′): convexity of \(g\), and whether the windows attain the bound. Are they true?</p>
+<p><strong>General statement.</strong> lem:cube-hankel-penalty-convexity. Let \(\mathcal O\) be a valuation ring and \(y_1,\ldots,y_M\in\mathcal O\) distinct. For \(0\le m\le M\) put</p>
+\[ G(m)=\min_{|S|=m}\sum_{\{a,b\}\subseteq S}\operatorname{val}(y_a-y_b) , \]
+<p>with \(G(0)=G(1)=0\). Then \(G\) is discrete convex: \(G(m+1)-G(m)\) is nondecreasing. Hence \(g(k)=2G(k+1)\) is convex and nondecreasing on \(0\le k\le M-1\).</p>
+<p><strong>Proof.</strong> Induction on \(M\). Let \(\sigma=\min_{a\ne b}\operatorname{val}(y_a-y_b)\). By the ultrametric inequality, \(\operatorname{val}(y_a-y_b)&gt;\sigma\) is an equivalence relation, with classes \(C_1,\ldots,C_r\), \(r\ge2\). Pairs in different classes have valuation exactly \(\sigma\). For \(S\) with \(n_i=|S\cap C_i|\),</p>
+\[ \sum_{\{a,b\}\subseteq S}\operatorname{val}(y_a-y_b)=\sigma\binom m2+\sum_i\sum_{\{a,b\}\subseteq S\cap C_i}\bigl(\operatorname{val}(y_a-y_b)-\sigma\bigr) . \]
+<p>The inner sums are the function \(G'_i\) of the class \(C_i\) with the shifted valuations \(\operatorname{val}-\sigma&gt;0\). These are again of the same kind: pick \(c\) with \(\operatorname{val}c=\sigma\), a point \(y_{a_0}\in C_i\), and replace \(y_a\) by \((y_a-y_{a_0})/c\in\mathcal O\). (Equivalently, the lemma holds for any finite ultrametric with values \(\ge0\) in an ordered group.) So</p>
+\[ G(m)=\sigma\binom m2+\min_{\sum n_i=m,\ 0\le n_i\le|C_i|}\ \sum_iG'_i(n_i). \]
+<p>Each \(G'_i\) is convex by induction (\(|C_i|&lt;M\); a single point gives \(G'(0)=G'(1)=0\)). An infimal convolution of convex sequences on intervals is convex: its increments are the merged, sorted increments of the summands. \(\sigma\binom m2\) is convex because \(\sigma\ge0\), which uses \(y\in\mathcal O\). A sum of convex sequences is convex. Monotonicity follows from convexity and \(G(1)-G(0)=0\). \(\square\)</p>
+<p>This proves the convexity half of Outside lead 1 of the <a href="#entry-2026-10-08-cube-caterpillar-tie-route-review">caterpillar tie route review</a>. One checks similarly that a greedy filling attains \(G\), which is Bhargava's \(p\)-ordering in tree form. This is not needed below. The lemma is applied to distinct roots; coincident roots give \(g=\infty\) on the affected sizes.</p>
+<p><strong>Consequence.</strong> \(b(\Lambda_p)=w_xA_p+w_eB_p\) is strictly convex in \(p\), with second differences \(2(w_x+w_e)\). Extending \(g\) by \(0\) to negative arguments keeps it convex, since it is nondecreasing with \(g(0)=0\). So \(k\mapsto\min_{t\ge0}[t(w_x+w_e)+g(\max(k-t,0))]\) is an infimal convolution of convex functions on \(\mathbb Z\), and \(k=M-p\) is affine in \(p\). Hence, when \(w_x+w_e&gt;0\), the windows' lower bound \(F(p)=b(\Lambda_p)+2\operatorname{val}\mathrm{Vand}+\min_t[\ldots]\) is strictly convex on \(1\le p\le M\).</p>
+<p><strong>Test of attainment.</strong> research/tools/bmd_window_graded_attainment.gp (window-graded-attainment.txt) computes, for the windows \(\Lambda_p\), \(1\le p\le M-1\), the excess of each \(u^{B_p+t}\)-coefficient over \(2\operatorname{val}\mathrm{Vand}+g(k-t)\). It covers nine root configurations at \(M=4,5\) (cherry on top, nested cherries, two separated cherries, a tie over a cherry, a three-root cluster, and a cherry over a deeper cherry), read \(q\)-adically at two primes, \(q=1000003\) and \(1000033\), with identical results. Every \(t=0\) excess is \(0\), as thm:cube-cherry-hankel-form predicts. For \(t\ge1\) the excess is often positive. Two examples:</p>
+<ul>
+<li>nested cherries at \(M=4\), \(p=1\): \(g(k-t)=10,2,0,0\), window values \(10,10,2,2\);</li>
+<li>a tie over a cherry at \(M=5\), \(p=1\): excesses \(0,6,8,8,8\).</li>
+</ul>
+<p>So, up to accidental divisibility by both primes, the windows do not attain the graded bound beyond the leading order. Recorded as the finite check ex:cube-window-graded-nonattainment. The bound is still sharp for other coordinate sets (cross leading coefficient entry), so non-windows can sit closer to it than the windows at \(t\ge1\).</p>
+<p><strong>Test of (W′).</strong> research/tools/bmd_cherry_cluster_arcs.gp (cherry-cluster-arcs.txt) checks (W′) directly. It computes the full \(u\)-expansions (to \(u^{14}\)) of all coordinates with columns in \([-4,8]\), \(p\le4\), at \(M=4\), and evaluates each along 11 arcs \((w_x,w_e)\in\{(1,1),(1,3),(3,1),(1,5),(5,1),(2,7),(7,2),(1,9),(9,1),(1,20),(20,1)\}\). It does this above five trees: a cherry on top, nested cherries, two separated cherries, a tie over a cherry, and a cherry over a deeper cherry. Every coordinate's expansion is nonzero below \(u^{20}\), above the largest leading order \(M^2=16\).</p>
+<p>On all 55 arcs the leaders are a single window or a pencil of two adjacent windows, so (W′) holds. The leaders are the same at both primes. The top window \(\Lambda_4\) leads when \(w_x&gt;3w_e\) and ties with \(\Lambda_3\) at \(w_x=3w_e\), as \(b(\Lambda_4)-b(\Lambda_3)=-2w_x+6w_e\) predicts. The tree depths are \(1\) to \(3\) and the arc weights \(1\) to \(20\), so the ratio of depth to \(w_x+w_e\) ranges over \([1/21,3/2]\).</p>
+<p>The test is a two-prime \(q\)-adic proxy. An accidental extra divisibility could inflate a value in either direction, so it is evidence, not proof.</p>
+<p>A first run truncated the \(u\)-expansions at \(u^{14}\) and silently dropped every coordinate with four negative indices, whose leading order is \(16\). It reported \(\Lambda_3\) where \(\Lambda_4\) leads, on 25 of the 55 arcs. The fresh-context reviewer caught this. The first outputs are kept beside the new ones as <code>.first-run</code> files.</p>
+<p><strong>What this means.</strong> The lower-bound side of (W′) above any cluster tree is complete for \(p\ge1\): a bound for every coordinate, minimized within each \(p\) by the window, and strictly convex across \(p\). The upper-bound side is not: the windows' actual valuations exceed the bound at \(t\ge1\), and on some arcs the bound's minimum is reached only at \(t\ge1\) (above nested cherries at \(p=1\), whenever \(w_x+w_e&lt;8\), since \(g=10,2,0,0\)). Yet on every tested arc the windows still lead.</p>
+<p>So the proof of (W′) above cherry clusters needs a sharper statement than the graded bound. Each non-window must lose against some window, not against the window's lower bound. The data suggest comparing \(\Lambda\) at order \(t\) with the window \(\Lambda_{p+t}\) at order \(0\), which has the same penalty \(g(k-t)\). The lattice cost of a non-window at \((p,t)\) then has to exceed \(b(\Lambda_{p+t})\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(W′) above cherry clusters and nested trees, via the comparison above.</li>
+<li>The case \(p=0\).</li>
+<li>The moduli and uniqueness hypotheses.</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> Outside lead 1 of the caterpillar tie route review (Bhargava's \(p\)-orderings) is developed: convexity is proved by the tree recursion.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-graded-hankel-penalty and thm:cube-cherry-hankel-form;</li>
+<li>thm:cube-cherry-lattice-splitting (\(A_p\), \(B_p\));</li>
+<li>cor:cube-cherry-step (condition (W′));</li>
+<li>conj:cube-cherry-combination-avoidance.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the recursion, the infimal convolution, the consequence and both scripts against their outputs. Verdict: fail, on the arc test's truncation; the lemma and consequence passed with corrections. All were applied:</p>
+<ul>
+<li>\(\sigma\ge0\) credited to \(y\in\mathcal O\) and the recursion's normalization stated;</li>
+<li>the greedy remark softened;</li>
+<li>strictness tied to \(w_x+w_e&gt;0\) and the extension of \(g\) to negative arguments stated;</li>
+<li>the arc test rerun with \(u^{20}\), a dropped-coordinate count and a second prime, with the result corrected above;</li>
+<li>the attainment result downgraded to a two-prime finite check and the trees relabelled;</li>
+<li>the scale range corrected;</li>
+<li>the arc of the \(t\ge1\) remark named.</li>
+</ul>
+<p>The corrections replace a false test report by a rerun, so no follow-up review was needed for the lemma. The rerun's numbers are read from the new outputs.</p>
+<p>Status: working proof (convexity); finite checks (window non-attainment; (W′) on 55 arcs at two primes).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 25.58 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 35.31 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 29.05 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 8.21 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 4.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.87 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
