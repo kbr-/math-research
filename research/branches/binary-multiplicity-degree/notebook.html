@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), cherry trees. The <a href="#entry-2026-10-07-cube-cherry-lattice-splitting">cherry lattice entry</a> makes the cherry window a valuation problem in the basis \(w^{-\lambda+t}\), \(w=1+T\), and replaces the refuted cherry-join conjecture by conj:cube-cherry-support-window, which suffices for contact avoidance.</p>
-<p>Next: prove conj:cube-cherry-support-window for caterpillar clusters, the case the cone needs. Redo the Cauchy–Binet bound with inner valuations \(\tilde y_s\sim c_s\delta^{v_s}\). Each alternant then has a unique leading monomial, so the leading terms are explicit. Show that every leading set lies in one interval of \(2M+2\) integers, testing the prediction exactly at \(M=3,4\) on several inner rates first.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). The <a href="#entry-2026-10-07-cube-cherry-caterpillar-windows">cherry caterpillar entry</a> reduces the cone's cherry trees to conj:cube-cherry-caterpillar-windows, exact at 16 arcs. Five research cycles have passed since the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>, including a refutation (ex:cube-cherry-cube-root-cluster).</p>
+<p>Next: a route review of the cone route for (K). Restate what remains in gaps (1) and (3) after the two-double points, the lattice splitting and the caterpillar windows. Rank the remaining items: the caterpillar windows proof, the Hankel coefficient, the special cancellations, the three-root levels and the confluent tie window for \(m\ge7\). Then choose leads for the highest-risk item, which is probably the Cauchy–Binet tie structure of the caterpillar windows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -56619,6 +56619,78 @@ This is the power-sum Hankel determinant of thm:cube-neck-block-discriminant, wi
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 26.55 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 5.06 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">47.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-cherry-caterpillar-windows" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-cherry-caterpillar-windows">
+<h3>7 October 2026 — Cherries over caterpillars: the leading coordinates are windows only, chosen by the window bound plus a Hankel valuation (conjecture, exact at 16 arcs)</h3>
+<p class="entry-meta">Conjecture with an exact prediction of the least valuation and of every leading set, confirmed at 16 caterpillar and fixed-cluster arcs; it implies the support conjecture, hence contact avoidance, for the cone's cherry trees. Cherry caterpillar cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1), cherry trees: conj:cube-cherry-support-window for caterpillar clusters, the case the cone produces. In the Newton basis a caterpillar looks like the equal-scale problem at \(\tilde y_0=(1,0,\ldots,0)\). There \(\operatorname{Hank}_k\) vanishes for \(k\ge2\), as at the cube-root cluster of the <a href="#entry-2026-10-07-cube-cherry-lattice-splitting">cherry lattice entry</a>. So the middle windows might lose to non-window sets, and the support could widen. The test: compute every leading set exactly along caterpillar arcs.</p>
+<p><strong>Setting.</strong> As in thm:cube-cherry-lattice-splitting: the cross block of \(x\tilde D\cup\{1,1+e\}\) in the basis \(w^{-\lambda+t}\), \(w=1+T\), with Plücker coordinates \(P_\Lambda\), windows \(\Lambda_j=[-j,2M-1-j]\), \(A_j=2M^2-2Mj+j^2-j\) and \(B_j=j^2-j+M\). Arcs: \(\operatorname{val}x=w_x\), \(\operatorname{val}e=w_e\), and \(\tilde y_q=c_q\delta_q\) with \(\delta_q=s^{v_q}(1+o(1))\), \(0=v_1\le v_2\le\cdots\le v_M\). Strict inequalities give a caterpillar; all \(v_q=0\) gives a fixed cluster.</p>
+<p><strong>General statement.</strong> conj:cube-cherry-caterpillar-windows. For \(M\ge2\), \(1\le j\le M\), every arc with \(0=v_1&lt;v_2&lt;\cdots&lt;v_M\), and generic leading coefficients \(c_q\), put
+\[W_j=2\sum_q(M-q)v_q+w_xA_j+w_eB_j+2\sum_{i=1}^{k}(k+1-i)\,v_i,\qquad k=M-j.\]
+Then \(\min_\Lambda\operatorname{val}P_\Lambda=\min_jW_j\), and it is attained exactly at the windows \(\Lambda_j\) with \(W_j=\min W\). These are one window or two adjacent ones, since \(W_j\) is convex in \(j\). Each term has a source:</p>
+<ul>
+<li>the first term is \(2\operatorname{val}\mathrm{Vand}(\tilde y')\);</li>
+<li>the middle terms are the window bound \(b(\Lambda_j)\);</li>
+<li>the last term is \(\operatorname{val}\operatorname{Hank}_k(\tilde y')\), by the caterpillar corollary of thm:cube-neck-block-discriminant: the leading sets \(\{1,\ldots,k,s\}\).</li>
+</ul>
+<p>If the conjecture holds, the leading sets cover \(2M\) or \(2M+1\) consecutive integers. So conj:cube-cherry-support-window holds for caterpillar clusters with generic leading coefficients. The \(D\)-block of a caterpillar has Taylor dominance by thm:cube-caterpillar-minimality, so contact avoidance follows for those single-cherry trees. The cone's caterpillars need not have generic leading coefficients; that case stays open.</p>
+<p><strong>Proved toward it.</strong></p>
+<ul>
+<li><em>The top window is exact on every arc.</em> For every arc with distinct limit roots and every rate, \(\operatorname{val}P_{\Lambda_M}=2\operatorname{val}\mathrm{Vand}(\tilde y')+b(\Lambda_M)\), which equals \(W_M\) for caterpillars and fixed clusters. By homogeneity, \(P_{\Lambda_M}/\mathrm{Vand}(\tilde y')^2=x^{A_M}\varepsilon^{B_M}\sum_{m\ge0}(x\varepsilon)^mQ_m(\tilde y')\), with polynomials \(Q_m\). Here \(Q_0=L_M\) is a nonzero constant (thm:cube-cherry-lattice-splitting, part 3), and \(\operatorname{val}Q_m(\tilde y')\ge0\). So the \(m=0\) term is strictly least. Hence \(\min_\Lambda\operatorname{val}P_\Lambda\le W_M\) always. With the window bound, every leading set \(\Lambda\) satisfies \(b(\Lambda)\le b(\Lambda_M)\).</li>
+<li><em>The fixed-cluster case.</em> For \(v=0\) the formula is the window bound itself. thm:cube-cherry-lattice-splitting proves the conjecture there wherever \(L_j(\tilde y_0)\ne0\), and conj:cube-cherry-hankel-coefficient identifies \(L_j\) with \(\operatorname{Hank}_k\).</li>
+<li><em>Exactness at the windows (conditional).</em> If conj:cube-cherry-hankel-coefficient holds, and the \(m=0\) term of \(P_{\Lambda_j}\) has valuation strictly below that of the sum of the \(m\ge1\) terms, then \(\operatorname{val}P_{\Lambda_j}=W_j\). That term is \(\mathrm{Vand}^2L_j(\tilde y')\), of valuation \(2\operatorname{val}\mathrm{Vand}+\operatorname{val}\operatorname{Hank}_k(\tilde y')\). The caterpillar corollary gives the Hankel valuation with a leading coefficient \((M-k)\prod_{i\le k}c_i^{2(k+1-i)}\ne0\), so its terms do not cancel. That strict inequality is not proved: the higher terms \((x\varepsilon)^mQ_m(\tilde y')\) are bounded only by \(\operatorname{val}Q_m\ge0\).</li>
+</ul>
+<p>Not proved: the lower bound \(\operatorname{val}P_\Lambda&gt;\min W\) for non-window sets, and the exactness at the middle windows. Both need the Cauchy–Binet terms with inner valuations. For a caterpillar each alternant \(a_N(\beta)\) has a unique leading monomial, \(\prod_q\beta_q^{n_{(M+1-q)}}\). So every term's valuation is exact. The open point is which terms tie and whether ties cancel.</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_caterpillar_windows.gp (research/results/bmd-20261007-u/caterpillar-windows.txt) works with the exact reparametrized roots, \(c=(1,3,-2,5)\), and polynomial truncation, so valuations below the precision are exact. Along each arc it computes:</p>
+<ul>
+<li>every window coordinate exactly, which gives an upper bound ref;</li>
+<li>every coordinate on \(2M\)-subsets of \([-M-3,2M+3]\) whose window bound is at most ref. One arc used a range two wider, after an earlier run's outside bound tied with the least value.</li>
+</ul>
+<p>It prints the least valuation, all sets attaining it and the prediction. It covers 16 arcs:</p>
+<ul>
+<li>\(M=3\): 7 caterpillar arcs, with inner valuations \((0,1,2)\), \((0,3,6)\), \((0,1,5)\), \((0,4,5)\), \((0,2,3)\) with rates \((w_x,w_e)\) equal to \((1,4)\), \((1,1)\), \((4,1)\) for \((0,1,2)\), covering all three regimes, and \((1,1)\), \((2,1)\) or \((1,2)\) for the others; and one fixed cluster at \((1,1)\);</li>
+<li>\(M=4\): 7 caterpillar arcs, with inner valuations \((0,1,2,3)\) at rates \((1,5)\), \((1,1)\), \((5,1)\), and \((0,2,4,6)\), \((0,1,4,5)\), \((0,3,4,8)\), \((0,1,2,6)\) at \((1,2)\), \((1,1)\), \((2,1)\), \((1,3)\); and one fixed cluster at \((1,1)\).</li>
+</ul>
+<p>Each arc predicts the exact least valuation and the exact list of leading sets. All 16 match, including three ties between adjacent windows: two at caterpillars (\(M=3\), \(v=(0,4,5)\); \(M=4\), \(v=(0,2,4,6)\)) and the fixed-cluster wall at \(M=4\), \(w_x=w_e\). In every case the outside bound exceeds the least valuation. No non-window set ever attains the minimum. An earlier version, research/tools/bmd_cherry_caterpillar_support.gp (caterpillar-support.txt), found windows only on 14 arcs with uniform inner gaps, without the prediction; the arcs shared with the new run agree. Its first runs failed on a missing output directory, a precision loss in series determinants, and a Vandermonde term counted twice. The two \(M=5\) arcs overflowed the PARI stack. These failures are kept in the session archive. The windows cover \(2M\) or \(2M+1\) integers, inside the support conjecture's \(2M+2\).</p>
+<p><strong>Reading.</strong> The caterpillar shifts the regimes. At \(w_x=w_e\) and \(M=4\), a fixed cluster sits on the wall between \(j=2\) and \(j=3\), while the caterpillar \((0,1,2,3)\) chooses \(j=3\) alone. The middle windows pay the Hankel valuation and lose, but always to another window, never to a non-window set. The cube-root degeneration of the previous entry has no caterpillar analogue at these sizes.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of conj:cube-cherry-caterpillar-windows: the Cauchy–Binet terms with inner valuations, their ties, and the comparison of non-window sets with \(\min W\);</li>
+<li>conj:cube-cherry-hankel-coefficient;</li>
+<li>gap (3): the special cancellations and the confluent tie window for \(m\ge7\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-cherry-lattice-splitting (bound, homogeneity, \(L_M\)); thm:cube-neck-block-discriminant (caterpillar corollary); conj:cube-cherry-support-window.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following by hand:</p>
+<ul>
+<li>the Vandermonde and Hankel valuations for general strictly increasing inner valuations, and the convexity of \(W_j\);</li>
+<li>the exactness of the top window;</li>
+<li>the script: rows, exactness of the truncation, pruning, outside bound;</li>
+<li>the counts against the output.</li>
+</ul>
+<p>It did not rerun the script. Its corrections are applied:</p>
+<ul>
+<li>\(\mathrm{Vand}(\tilde y')\) in the homogeneity formula, and the scope of the top-window statement;</li>
+<li>the range \(1\le j\le M\), and leading coefficient \(1\) for \(\delta_q\);</li>
+<li>the conditional exactness at the windows;</li>
+<li>the implication to contact avoidance made conditional, with generic leading coefficients;</li>
+<li>the tie count and the rates.</li>
+</ul>
+<p>It also judged Taylor dominance of caterpillar \(D\)-blocks unestablished; thm:cube-caterpillar-minimality establishes it, so only the genericity of the leading coefficients remains as an extra hypothesis.</p>
+<p>Status: conjecture, with a proved top-window statement.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 19.54 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 45.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 46.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 11.36 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12 min 35.79 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
