@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-two-tie-chains">two-tie chain entry</a> proves a level step for (H) that tracks the slack (lem:cube-level-step). It shows that every chain of singletons and at most two ties, over a caterpillar or a bottom triple, avoids \(\overline K\) (thm:cube-two-tie-chain-avoidance). Gap (1) is left with the cherry combinations (tie and cherry, two cherries, nested cherries), the flat three-cluster, and conj:cube-triple-window-full-rank.</p>
-<p>Next: a cherry step. Re-read the cherry caterpillar theorem's leading windows in the basis \(w^{-\lambda+t}\), and test whether a cherry level placed above an arbitrary cluster satisfying (H) preserves (H). That would be the cherry analogue of the level step. Then a tie above a single-cherry tree, and a cherry above a tie chain, follow by the level step.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-above-cherry">tie above cherry entry</a> reduces a tie above a single-cherry tree to a slack property of the cherry cluster (thm:cube-tie-above-cherry-avoidance). That property holds with slack two in nine exact arc regimes (conj:cube-single-cherry-slack). Still open in gap (1): a cherry step, needed for a cherry above a tie, two cherries, nested cherries and a tie with a cherry on one level; and conj:cube-triple-window-full-rank.</p>
+<p>Next: a route review is due after four research cycles on gap (1). It should weigh the cherry step against proving the two conjectures that now carry gap (1), the cherry slack and the triple window. It should also check which cherry types the cone actually reaches: a cherry needs \(c_0=1\), a tie of leading coefficients, which may constrain the arcs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -62375,6 +62375,66 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-above-cherry" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-cone-limits-review:1" data-claims="thm:cube-tie-above-cherry-avoidance conj:cube-single-cherry-slack">
+<h3>8 October 2026 — A tie above a single-cherry tree is avoided once the cherry cluster's least Plücker coordinate lies in its first columns; in the tested arc regimes the initial segment is least, with slack two</h3>
+<p class="entry-meta">Working proof of a conditional avoidance theorem for a tie above a cherry, and a slack conjecture for single-cherry clusters, checked exactly in nine arc regimes, six of them on four extra columns. Gap (1), cherry combinations. Tie above cherry cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1), the highest-risk item. The remaining two-displacement limits of lem:cube-geometric-cone-limit-types involve a cherry. Take "a tie and a cherry at different levels" with the tie above. Does lem:cube-level-step reduce it to a property of the single-cherry tree below?</p>
+<p><strong>General statement.</strong> thm:cube-tie-above-cherry-avoidance. Characteristic zero, \(\lambda=\tfrac32\). Consider a point of \(\overline M_{0,N+1}\) whose dual tree is, from the bottom up:</p>
+<ul>
+<li>a single-cherry tree \(C\): a level carrying one cherry and a caterpillar of \(M\ge2\) roots;</li>
+<li>\(k_1\ge0\) singleton levels;</li>
+<li>a tie with modulus \(c\notin\{0,1\}\);</li>
+<li>\(k_2\ge0\) singleton levels.</li>
+</ul>
+<p>Fix an analytic arc of separated configurations tending to this point. Frame \(C\) as in thm:cube-single-tie-chain-avoidance. Suppose that some \(R_C\)-subset \(L\) of the columns \(\{0,\ldots,R_C\}\), with \(R_C=\binom{M+2}2\), attains the least valuation among all minors of \(\tilde C\) on column sets \(S\subset L\cup\{j&gt;\max L\}\), with no upper bound on the columns. Then \(\operatorname{rank}A_{R+1}=R\) along the arc near the point. In particular, if this holds for every arc (conj:cube-single-cherry-slack), the point lies outside \(\overline K\).</p>
+<p><strong>Proof.</strong> The hypothesis is exactly (H) for \((\tilde C,L)\). (H) needs the bound for every \(S\subset L\cup\{j&gt;\max L\}\), because the later steps reach columns up to \(R+1\) of the whole configuration; a bound on the columns \(0,\ldots,R_C+1\) alone would not suffice. The slack is \(R_C+1-\max L\ge1\), since \(L\subset\{0,\ldots,R_C\}\).</p>
+<p>Frame: the chain's single translation puts the deepest root at \(\varepsilon^V\) and keeps \(\tilde C\) near \(0\) inside every upper frame, as in thm:cube-single-tie-chain-avoidance. The framed \(\tilde C\) has roots of valuation \(\ge0\), which is what lem:cube-level-step needs. If the top root of \(C\) sits at the same exponent as the next level, use the shift \(w-\eta\) as for the caterpillar base in thm:cube-two-tie-chain-avoidance.</p>
+<p>Singleton steps (lem:cube-level-step with \(h=1\)) keep (H) and the slack. The tie step at slack \(\ge1\) applies by the proof of thm:cube-two-tie-chain-avoidance: at slack \(2\) through cor:cube-tie-window-full-rank, at slack \(1\) through the general-functional and Gegenbauer argument. Its hypothesis \(M'\ge2\) on the roots below holds, since \(M'\ge M+2\ge4\). At slack \(1\) the tie may leave slack \(0\), which is harmless because there is only one tie. Further singleton steps follow. The conclusion is that of thm:cube-single-tie-chain-avoidance. \(\square\)</p>
+<p><strong>Conjecture.</strong> conj:cube-single-cherry-slack: along every analytic arc tending to a single-cherry tree with a caterpillar of \(M\ge2\) roots, framed with top root \(1\), the initial segment \(\{0,\ldots,R_C-1\}\) attains the least valuation among all \(R_C\)-minors, on any columns. Then (H) holds there with slack \(2\).</p>
+<p>Scope within the cone limits. This is the type "a tie and a cherry at different levels" with the tie above. The tie is case (ii) of lem:cube-geometric-cone-limit-types: a displaced root against a non-displaced one. The cherry is case (iii) with \(M\ge2\) deeper roots. With exactly one deeper root, case (iii) is a caterpillar: the level carries that root and the node to the two-root cherry at the bottom. So the theorem with a caterpillar base covers it.</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_slack.gp (research/results/bmd-20261008-y/cherry-slack.txt) computes every minor exactly, over \(\mathbb Q[\varepsilon]\). The arcs have roots \(1\), \(1+c_e\varepsilon^b\) and \(c_q\varepsilon^{a+v_q}\), with integer rates. The cases are \(M=2\) at \((a,b)=(1,1),(1,2),(2,1),(1,3),(3,1)\) and \(M=3\) at \((1,1),(1,2),(2,1),(1,4)\), with fixed leading coefficients.</p>
+<ul>
+<li>On the columns \(0,\ldots,R_C+1\), in all nine regimes, the least valuation is attained by \(21\) of the \(28\) sets (\(M=2\)) or \(36\) of the \(66\) sets (\(M=3\)), including the initial segment. The best slack is \(2\) in every regime.</li>
+<li>The conjecture concerns every column. So the run was repeated on the columns \(0,\ldots,R_C+5\) (research/results/bmd-20261008-y/cherry-slack-ext4.txt). Six regimes finished: the five at \(M=2\) and \(M=3\) at \((1,1)\). In each the least valuation is unchanged and the initial segment still attains it: \(462\) of \(924\) sets at \(M=2\) and \(1716\) of \(8008\) at \(M=3\).</li>
+<li>The other three regimes at \(M=3\) did not finish within the \(1200\) s limit.</li>
+<li>Each regime uses monomial arcs with one fixed choice of leading coefficients, so it tests one point of the leading-coefficient space.</li>
+</ul>
+<p>The prediction could have failed in any regime with a smaller best slack. A slack of \(0\) would have made the tie step need a square tie determinant, which vanishes at the Gegenbauer zeros.</p>
+<p><strong>What this means.</strong> A tie above a cherry costs nothing beyond the slack of the cherry cluster. The cherry theorems computed the cluster's leading windows in the basis \(w^{-\lambda+t}\), \(w=1+T\), not in the Taylor columns. A proof of the conjecture must translate them, or show directly that the initial Taylor minor is least.</p>
+<p>The many minimizers suggest a cleaner mechanism. The single-cherry cluster's leading Plücker vector seems to be supported on most column sets of the least possible degree. That is what a leading vector looks like when it is the Plücker vector of a fixed limit space.</p>
+<p>The other cherry types need a cherry step, adding a cherry level above an arbitrary cluster satisfying (H): a cherry above a tie, two cherries, nested cherries, and a tie and a cherry on one level. Unlike a simple-root level, a cherry level's two roots lie at a deeper scale inside the level. So the cross block mixes two scales, as in thm:cube-cherry-lattice-splitting.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the cone limits review, the leading Plücker vectors along arcs. Here they are computed exactly for single-cherry clusters, and their least set decides the next step. <strong>Follow-up.</strong> Continuing: a cherry step for (H).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>in gap (1): conj:cube-single-cherry-slack; the cherry step for the other cherry types; conj:cube-triple-window-full-rank;</li>
+<li>in gap (3): conj:cube-tie-single-block-exclusion and the special cancellations;</li>
+<li>the cherry local sums.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-level-step; thm:cube-two-tie-chain-avoidance (the tie step at slack one and two); cor:cube-single-cherry-avoidance (the single-cherry setting and frame); lem:cube-geometric-cone-limit-types (the cherry types).</p>
+<p><strong>Verification gate.</strong> One fresh medium reviewer failed the first draft, which stopped early on request. Its hypothesis bounded the minors only on the columns \(0,\ldots,R_C+1\), but (H) needs every column set in \(L\cup\{j&gt;\max L\}\), since the later steps reach columns up to \(R+1\). The hypothesis and the conjecture were restated, and the check was rerun on four extra columns.</p>
+<p>The reviewer confirmed:</p>
+<ul>
+<li>the tie step's hypotheses;</li>
+<li>that conditioning on each arc is legitimate;</li>
+<li>the match with the cone-limit type;</li>
+<li>the frame.</li>
+</ul>
+<p>The scope sentences on \(M=1\) and on case (ii), the frame sentence, the remark on slack \(0\) and the limitation of the evidence are added. The reviewer did not check the script's indexing; the rerun reports the same counts on the base columns.</p>
+<p>Status: working proof (conditional theorem); conjecture (slack, checked in nine regimes).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-y">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>26 min 3.40 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 33.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 12.57 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20 min 17.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
