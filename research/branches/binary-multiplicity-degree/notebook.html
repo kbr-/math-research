@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The <a href="#entry-2026-10-08-cube-leading-hankel-penalty-proof">leading Hankel penalty</a> is proved: every leading cross coefficient has valuation at least \(g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\).</p>
-<p>Next: the graded penalty conj:cube-graded-hankel-penalty. Describe the \(u^{B+t}\)-terms of the two-alternant expansion (columns with \(m_l=2\), shifted negative exponents). Then test whether they again reduce, through the multiples of \(P\), to moment determinants with \(k-t\) free quotients.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core item (W′) above cherry clusters and nested trees. The <a href="#entry-2026-10-08-cube-graded-hankel-penalty-proof">graded Hankel penalty</a> is proved, so every cross coordinate with \(p\ge1\) has valuation \(\ge b(\Lambda)+2\operatorname{val}\mathrm{Vand}+\min_t[t(w_x+w_e)+g(k-t)]\). The windows minimize this bound within each \(p\).</p>
+<p>Next: prove that \(k\mapsto g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\) is convex for points of a valuation ring (Bhargava's greedy \(p\)-orderings). Then determine whether the windows attain the bound at the minimizing \(t\), starting from their \(u^{B+t}\)-coefficients.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65396,6 +65396,92 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 40.25 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 27.05 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.56 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-graded-hankel-penalty-proof" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-caterpillar-tie-route-review:1" data-claims="lem:cube-remainder-minor-penalty thm:cube-graded-hankel-penalty">
+<h3>8 October 2026 — Every u-coefficient of every cherry cross coordinate pays the graded Hankel penalty: remainder minors on arbitrary rows</h3>
+<p class="entry-meta">Working proof of conj:cube-graded-hankel-penalty for every M and 1 ≤ p ≤ M−1, via a minor bound for integral remainders on arbitrary rows. Graded penalty cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core item (W′) above cherry clusters and nested trees. thm:cube-leading-hankel-penalty bounds the leading \(u\)-coefficient of every cross coordinate by \(g(k)=\min_{|S|=k+1}2\operatorname{val}\mathrm{Vand}(y_S)\). Along an arc the higher \(u\)-coefficients matter too, and the record's data say the \(t\)-th one pays \(g(k-t)\) (conj:cube-graded-hankel-penalty). Can the moment argument reach them?</p>
+<p><strong>General statement.</strong> thm:cube-graded-hankel-penalty. In the setting of lem:cube-cross-leading-coefficient (\(\lambda=3/2\), \(x=1\), \(\varepsilon=u\)), let \(1\le p\le M\), \(k=M-p\), and let \(\mathcal O\supset\mathbb Q\) be a valuation ring with \(y_1,\ldots,y_M\in\mathcal O\). Then for every coordinate set \(\Lambda\) with \(p\) negative indices and every \(t\ge0\),</p>
+\[ \operatorname{val}\,[u^{B(\Lambda)+t}]\,P_\Lambda\ \ge\ 2\operatorname{val}\mathrm{Vand}(y)+g\bigl(\max(k-t,0)\bigr) . \]
+<p>The case \(t=0\) is thm:cube-leading-hankel-penalty. The case \(p=M\) (\(k=0\)) only claims \(2\operatorname{val}\mathrm{Vand}\), which follows from step (1) since \(\det\mathcal A\) is integral.</p>
+<p><strong>Second statement.</strong> lem:cube-remainder-minor-penalty. Let \(P\in\mathcal O[z]\) be monic of degree \(M\) with roots \(y_s\in\mathcal O\), and let \(v_1,\ldots,v_{k'}\in\mathcal O[z]\). Put \(\rho_j=\operatorname{rem}(I(Pv_j),P)\), with \(I\) integration from \(0\). Then for every set \(R\subset[1,M-1]\) of \(k'\) rows,</p>
+\[ \operatorname{val}\det\bigl[[z^m]\rho_j\bigr]_{m\in R,\ j\le k'}\ \ge\ g(k') . \]
+<p>The constant row \(m=0\) is excluded.</p>
+<p><strong>Proof of the lemma.</strong> Write \(I(Pv_j)=q_jP+\rho_j\). Then \(q_j,\rho_j\in\mathcal O[z]\), and \(\rho_j'=-\operatorname{rem}(q_jP',P)\), of degree \(\le M-2\) (thm:cube-leading-hankel-penalty, step (2)). Since \(m\ge1\), \([z^m]\rho_j=[z^{m-1}]\rho_j'/m\), so the minor is a unit times the minor of the \(\rho_j'\) on the rows \(R-1\subset[0,M-2]\).</p>
+<p>Adjoin the column \(P'/M\) and the row \(M-1\). There \(P'/M\) has entry \(1\) and every \(\rho_j'\) has entry \(0\), so the \(\rho'\)-minor equals the \((k'+1)\)-minor of \([P'/M\,|\,\rho_1',\ldots,\rho_{k'}']\) on the coefficient rows \(\{M-1\}\cup(R-1)\).</p>
+<p>The functionals \(\tau(z^s\,\cdot)\), \(0\le s\le M-1\), are unitriangular with integral entries in the coefficients of polynomials of degree \(\le M-1\), in reversed order. So each coefficient row is an \(\mathcal O\)-combination of \(\tau\)-rows, and by Cauchy–Binet over row sets the minor is an \(\mathcal O\)-combination of \((k'+1)\)-minors of \([\tau(z^sP'/M)\,|\,\tau(z^s\rho_j')]=[p_s/M\,|\,-\sum_ry_r^sq_j(y_r)]\) on arbitrary row sets \(S\).</p>
+<p>Each of these is \(\pm\frac1M\det[\sum_ry_r^sf_j(y_r)]_{s\in S}\), with \(f_0=1\) and \(f_j=q_j\). By Cauchy–Binet this equals</p>
+\[ \sum_{|T|=k'+1}\det[y_r^s]_{s\in S,\,r\in T}\,\det[f_j(y_r)]_{r\in T} . \]
+<p>Both factors are alternating in \(y_T\) with integral coefficients, so each is \(\mathrm{Vand}(y_T)\) times an element of \(\mathcal O\). (The first factor is \(\mathrm{Vand}(y_T)\) times a Schur polynomial, for any \(S\).) Hence the minor lies in \(\sum_T\mathrm{Vand}(y_T)^2\mathcal O\). \(\square\)</p>
+<p><strong>Proof of the theorem.</strong></p>
+<p>(1) The coordinate as a determinant over \(\mathcal O[[u]]\). Write \(C\) for the operator \(z^i\mapsto c_iz^i\), which is zero on negative powers, and \(\varphi_u=(1+uz)^{-3/2}-1=\sum_{m\ge1}c_mu^mz^m\). The \(V\)- and \(Q\)-row functionals at the root \(y_s\) are \(g\mapsto(Cg)(y_s)\) and \(g\mapsto(C(\varphi_ug))(y_s)\). Multiplying both row blocks by \(X=[y_s^t/P'(y_s)]\), as in lem:cube-cross-leading-coefficient, gives</p>
+\[ P_\Lambda=\pm\mathrm{Vand}(y)^2\det\mathcal A,\qquad \mathcal A:g\mapsto\bigl(Cg\bmod P,\ C(\varphi_ug)\bmod P\bigr), \]
+<p>a map from \(\mathcal O[[u]]\)-\(\mathrm{Pol}_\Lambda\) (Laurent monomials \(z^i\), \(i\in\Lambda\)) to \((\mathcal O[[u]][z]/P)^2\), in coefficient bases (the change from \(\tau\)-coordinates is unimodular). The derivation through \(X\) assumes distinct roots. Both sides are polynomials in \(y\), coefficientwise in \(u\), so the identity holds identically.</p>
+<p>(2) The kernel of the first component. The first component kills the negative monomials \(z^{-n}\), \(n\in N\). On the nonnegative part its kernel is \(C^{-1}\) of the multiples of \(P\). This kernel \(K\) is saturated, so it is a free summand. It has an \(\mathcal O\)-basis \(\{z^{-n}\}_{n\in N}\cup\{g_j=C^{-1}(Pv_j)\}_{j&lt;k}\), with \(v_j\in\mathcal O[z]\). The \(c_i\) are units, and if the rank of the first component is below \(M\), then \(\det\mathcal A=0\). So \(\det\mathcal A=\pm\det(\mathcal A_1|_E)\det(\mathcal A_2|_K)\), with the first factor in \(\mathcal O\) and independent of \(u\).</p>
+<p>(3) The columns of \(\mathcal A_2|_K\), in the coefficient rows \(z^0,\ldots,z^{M-1}\) of \(\mathcal O[z]/P\).</p>
+<ul>
+<li>Negative columns: \(C(\varphi_uz^{-n})=u^n\sum_{j\ge0}c_{n+j}c_ju^jz^j\). Reducing \(z^j\), \(j\ge M\), modulo \(P\) gives \(u\)-order \(\ge M\). So the entry of this column in row \(r\) is \(u^n\) times an integral series of \(u\)-order \(\ge r\).</li>
+<li>Kernel columns: \(C(\varphi_ug_j)=\sum_{m\ge1}u^mc_m\sum_i(Pv_j)_i\frac{c_{i+m}}{c_i}z^{i+m}\), with integral coefficients. Its \(u^1\)-part is \(c_1u\bigl(-zPv_j-\tfrac12I(Pv_j)\bigr)\equiv-\tfrac{c_1}2u\,\rho_j\pmod P\), using \(c_{i+1}/c_i=-1-\tfrac1{2(i+1)}\). So column \(j\) is \(u(-\tfrac{c_1}2\rho_j+u\,\sigma_j)\) with \(\sigma_j\) integral.</li>
+</ul>
+<p>(4) Expansion. Factor \(u^{\sum N}\) from the negative columns and \(u^k\) from the kernel columns. Expand each kernel column multilinearly into \(-\tfrac{c_1}2\rho_j\) or \(u\sigma_j\), choosing \(u\sigma_j\) on a set \(C\) of columns. Then Laplace-expand along the remaining \(k-|C|\) columns \(\rho_j\), on a row set \(R'\). Each term is a \(\rho\)-minor in \(\mathcal O\) times an \(\mathcal O[[u]]\) series, so its \(u^{B+t}\) coefficient is that minor times an element of \(\mathcal O\). Let \(R_N\) be the rows of the negative block in that Laplace term.</p>
+<ul>
+<li>The \(u\)-order is at least \(\sum N+k+|C|+\sum R_N\). Here \(\sum R_N\ge\binom p2\), with excess \(e_N=\sum R_N-\binom p2\).</li>
+<li>If \(0\in R'\), then \(R_N\subset[1,M-1]\), so \(e_N\ge p\ge1\).</li>
+<li>The \(\rho\)-minor on \(R'\) has valuation \(\ge g(k-|C|)\) if \(0\notin R'\), by the lemma. If \(0\in R'\), Laplace along row \(0\) gives \(\ge g(k-|C|-1)\). All other factors are integral.</li>
+</ul>
+<p>A term contributes to \(u^{B+t}\) only if \(t\ge|C|+e_N\ge|C|+[0\in R']\). As \(g\) is nondecreasing, its valuation is at least \(g(k-t)\), or \(0\) once \(t\ge k\). Restoring \(\mathrm{Vand}(y)^2\) gives the theorem. \(\square\)</p>
+<p><strong>Checks.</strong> The statement was tested in the <a href="#entry-2026-10-08-cube-cross-leading-coefficient">cross leading coefficient entry</a>: exact ideal data at \(M=3\), and a \(q\)-adic proxy at \(M=4\) on five cluster trees (\(5\times1152\) sets, \(t\le3\)), sharp at every \(t\). No new computation was run.</p>
+<p>The role of \(p\ge1\) is visible in the proof. Only the negative block keeps the kernel columns off the constant row, and without it the leading coefficient can lose one step. The \(p=0\) data of the \(M=3\) run (\(t=0,1\) in \(I_2\), not \(I_3=0\)) are of a different shape.</p>
+<p><strong>What this means.</strong> The lower-bound half of (W′) above any cluster tree is proved for every coordinate set with \(p\ge1\). Along every arc,</p>
+\[ \operatorname{val}P_\Lambda\ \ge\ b(\Lambda)+2\operatorname{val}\mathrm{Vand}+\min_t\bigl[t(w_x+w_e)+g(k-t)\bigr], \]
+<p>an infimal convolution (each \(u\)-step adds \(w_x+w_e\) by the homogeneity step of cor:cube-cherry-above-four-tie). The bound depends on \(\Lambda\) only through \(b(\Lambda)\) and \(p\). Within each \(p\), \(b\) is least exactly at the window (thm:cube-cherry-lattice-splitting), so the windows minimize the bound. Whether their actual valuations equal it is the open attainment input.</p>
+<p>Three inputs remain for (W′) above cherry clusters and nested trees:</p>
+<ul>
+<li>the windows attain it, at the minimizing \(t\);</li>
+<li>\(p\mapsto b(\Lambda_p)+\min_t[\ldots]\) is strictly convex, for which convexity of \(k\mapsto g(k)\) (the \(p\)-ordering lead) would suffice, with \(b\) strictly convex;</li>
+<li>a bound at \(p=0\).</li>
+</ul>
+<p>The lemma may also address the obstacle recorded in conj:cube-caterpillar-neck-slopes. That conjecture's Case A/B must be redone "with the multiscale valuations of every block minor". The neck's high block has leading entries \(t_1\Gamma_{m,D}\), defined through \(\Phi_1(\tilde q_D)=-(\lambda-1)\operatorname{rem}(I(\tilde q_DP),P)\) (thm:cube-neck-block-discriminant, Step 1). In Case B the high columns are arbitrary. Whether each high column is \(\operatorname{rem}(I(Pv),P)\) for an integral \(v\) is the matching still to be done, so this is a lead, not a claim.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The windows' graded valuations.</li>
+<li>Convexity of \(g\).</li>
+<li>The case \(p=0\).</li>
+<li>(W′) above cherry clusters and nested trees.</li>
+<li>The neck application.</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This continues lead 1 of the caterpillar tie route review. The convexity of \(g(k)\) it targets is now the main missing input of the lower-bound side.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-leading-hankel-penalty and lem:cube-cross-leading-coefficient;</li>
+<li>thm:cube-neck-window-theorem (Case A/B, from the entry text);</li>
+<li>conj:cube-caterpillar-neck-slopes;</li>
+<li>cor:cube-cherry-above-four-tie (homogeneity step).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the lemma (derivative shift, the \(P'/M\) column, the integral row conversion, Cauchy–Binet on arbitrary row sets), the functional form of the rows and the factorization, the kernel, the \(u\)-orders and leading terms, and the bookkeeping \(t\ge|C|+e_N\ge|C|+[0\in R']\). Verdict: pass with minor corrections. All were applied:</p>
+<ul>
+<li>the factorization extended to coincident roots by polynomiality;</li>
+<li>the range widened to \(p\le M\);</li>
+<li>the lower-bound claim restricted to \(p\ge1\);</li>
+<li>the windows' minimality tied to the lattice splitting;</li>
+<li>the neck remark softened to a lead;</li>
+<li>the transfer from minors to \(u\)-coefficients stated.</li>
+</ul>
+<p>Status: working proof (lemma and theorem).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 14.24 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 39.01 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 17.38 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 8.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.86 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
