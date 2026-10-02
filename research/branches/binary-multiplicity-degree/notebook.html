@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-wronskian-slack">tie Wronskian slack entry</a> locates the slack of the Wronskian count. It sits in genuine extra zeros of \(W\) away from the singular points, without visible structure, and a special value would make them collide at \(T=0\).</p>
-<p>Next: develop the Mukhin–Tarasov–Varchenko lead of the tie Wronskian review. Write the relations' span as a point of a Grassmannian of a fixed finite-dimensional space of Kummer-twisted rational functions. Identify the curve whose osculating flags at \(0,-1,-1/c,\infty\) define the exponent conditions, and check whether that curve is a rational normal curve after a change of variable. That is the setting where their transversality theorem applies.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-subblock-ranks">tie sub-block ranks entry</a> proves every sub-block of the confluent tie window for all \(m\) (thm:cube-tie-subblock-ranks). The rows without product functionals have full rank on \(3m+3\) columns, and the rows without the point row on \(3m+4\). What remains is the joint independence of the point row \((1+T)^{-3}\) and the two product rows on the pure kernel, exactly where the Wronskian count is tight.</p>
+<p>Next: look for the input beyond degree counting in the special shape of the point row. \((1+T)^{-3}=\bigl((1+T)^{-3/2}\bigr)^2\) is the square of a function in the pure family's class. Test whether that relation, combined with a product row \(((1+T)(1+cT))^{-3/2}\), yields a second relation, for example by multiplying the window relation by \((1+T)^{-1/2}\) or \((1+cT)^{-1/2}\) and comparing with the pure Padé forms. That would give the missing order.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60909,6 +60909,70 @@ and the roots of \(S\) are the remaining zeros of \(W\).</p>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-subblock-ranks" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-tie-subblock-ranks">
+<h3>8 October 2026 — The Wronskian count proves the tie window's sub-blocks independent for every m: the rows without product functionals on 3m + 3 columns, the rows without the point row on 3m + 4; the 2 × 3 reduction becomes unconditional</h3>
+<p class="entry-meta">Theorem (working proof, every m) on two sub-blocks; consequences for the excess-one reduction. Gap (3), confluent tie window. Tie sub-block ranks cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. The full window is exactly balanced for the Wronskian count (lem:cube-tie-window-wronskian-rigidity). Do the sub-blocks without some row types have slack? If so, which of the open reductions become theorems?</p>
+<p><strong>General statement.</strong> thm:cube-tie-subblock-ranks. Let \(m\ge1\), \(d=\binom m2\) and \(c\notin\{0,1\}\).</p>
+<ol>
+<li>The \(3m+1\) rows \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)), \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)) and \((1+T)^{-3}\) have rank \(3m+1\) on the \(3m+3\) columns \(T^d,\ldots,T^{d+3m+2}\). For \(m=1\), already on \(3m+2\) columns.</li>
+<li>The \(3m+2\) rows \(T^i(1+T)^{-5/2}\), \(T^n(1+cT)^{-3/2}\), \(((1+T)(1+cT))^{-3/2}\) and \(T(1+T)^{-5/2}(1+cT)^{-3/2}\) have rank \(3m+2\) on the \(3m+4\) columns \(T^d,\ldots,T^{d+3m+3}\). For \(m=1\), already on \(3m+2\) columns.</li>
+</ol>
+<p><em>Proof.</em> A relation among the rows of a block is a relation \(G=\sum_{i\in S}g_i=O(T^{d+M})\) of the tie exponent count entry, with \(S\) inside the block's term set: \(\{1,2,3,5\}\) for (1) and \(\{1,2,4,5\}\) for (2). Here \(g_5=-L\) is the part below \(T^d\), and \(S\ne\{5\}\). By that entry's count, it suffices that \(B_M(S)\ge1\) for every such \(S\).</p>
+<ul>
+<li>For \(m\ge2\) and each \(S\), the order of the minimal exponents within each class and point does not depend on \(m\).
+<ul>
+<li>At \(\infty\), \(g_1\) and \(g_2\) need no raising, since \(\tfrac52-m&gt;\tfrac72-2m\).</li>
+<li>The integer class there is \(\{1-d,3,4\}\).</li>
+<li>The raisings at \(-1\) and \(-1/c\) are constants.</li>
+</ul>
+So \(B_M(S)\) is affine in \((m,d)\). Its coefficient of \(d\) is \(1-[5\in S]\ge0\), from \(0\) and \(\infty\), and its coefficient of \(m\) is \(3-2[1\in S]-[2\in S]\ge0\), from \(M=3m+\text{offset}\) and \(\infty\). It is also nondecreasing in \(M\), with \(B_{M+1}=B_M+1\).</li>
+<li>research/tools/bmd_tie_exponent_count.py (research/results/bmd-20261008-l/exponent-count-blocks.txt) evaluates the least \(M\) with \(\min_SB_M(S)\ge1\). For \(m=2\) it is \(3m+3\) for block (1) and \(3m+4\) for block (2). It is the same at every \(m\le40\), consistent with the affine argument, which gives at most these values.</li>
+<li>For \(m=1\), where \(g_5=0\), it is \(3m+2\) for both blocks.</li>
+</ul>
+<p>As controls, for \(m\ge2\) the same computation gives \(3m+1\) for the pure rows, which is thm:cube-tie-pure-wide-normality, and \(3m+6\) for all rows, which is thm:cube-tie-excess-three-window. At \(m=1\) it gives \(3m\) and \(3m+4\). \(\square\)</p>
+<p><strong>Sharpness, reviewer's check.</strong> The reviewer's exact PARI/GP checks, not archived here, find that both blocks have full rank off \(\{0,1\}\) one column narrower than proved. The gcd of the maximal minors is \(c^2(c-1)^6\) and \(c^9(c-1)^{12}\) for block (1) on \(3m+2\) columns, and \(c^{10}(c-1)^6\) and \(c^{21}(c-1)^{12}\) for block (2) on \(3m+3\) columns, at \(m=2,3\). The square cases do drop rank at some \(c\notin\{0,1\}\). So the count has one column of slack on these blocks, as on the excess-one window. This is further evidence that degree counting is not the mechanism.</p>
+<p><strong>Consequences.</strong></p>
+<ul>
+<li>The block \(G\) of the tie reductions review, the rows without product functionals on the excess-one columns \(T^d,\ldots,T^{d+3m+3}\), has full rank at every \(c\notin\{0,1\}\), for every \(m\). So check:cube-tie-g-block-rank holds for all \(m\), and \(K_3=\ker G\) has constant rank three off \(\{0,1\}\).</li>
+<li>The no-root part of statement (1) of conj:cube-tie-product-rows-gcd is proved. The exact exponents of its gcd remain conjectural.</li>
+<li>lem:cube-tie-two-by-three-reduction holds unconditionally: for every \(m\), the excess-one sub-window loses rank at \(c_0\notin\{0,1\}\) iff the \(2\times3\) matrix of the two product rows on \(K_3(c_0)\) has rank below \(2\). On the full window, \(\ker G\) has rank four, and the condition is a \(2\times4\) matrix.</li>
+<li>Block (2) has full rank with excess two, which is the window's excess. So, on the window's columns, the open statement is that adding the point row \((1+T)^{-3}\) to block (2) keeps full rank. This is where the full count is tight.</li>
+</ul>
+<p><strong>What this means.</strong> The Wronskian count settles, for all \(m\), the two sub-blocks that omit the point row or omit both product rows. Sub-blocks containing the point row and a product row are not covered: their relations have \(S\supseteq\{3,4\}\), where the count is tight. The highest-risk statement is the interaction of the point row with the product rows on the pure kernel.</p>
+<p>In the language of the reduction: on the window's \(3m+5\) columns the pure rows have a kernel of rank \(5\). By (1), the point row restricts to it nontrivially. By (2), the two product rows restrict to it independently. What remains is the independence of all three restrictions.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank of the window, the three extra rows together on the pure kernel, for \(m\ge7\) (exact for \(m\le6\), tie special values review and tie excess one entry);</li>
+<li>the exact exponents of conj:cube-tie-product-rows-gcd;</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-excess-three-window (the count and its affine argument); lem:cube-tie-two-by-three-reduction; check:cube-tie-g-block-rank.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer passed the reduction to the count, the exponent lists, the affine argument per subset, the \(m=1\) cases and the consequences. It asked for several changes, all applied:</p>
+<ul>
+<li>the affine argument written out;</li>
+<li>"consistent with" for the \(m\le40\) values;</li>
+<li>the \(m=1\) controls;</li>
+<li>"What this means" restricted to the two blocks proved;</li>
+<li>the \(m\le6\) evidence cited.</li>
+</ul>
+<p>It also checked ranks numerically at seven values of \(c\), including complex ones, for \(m\le4\).</p>
+<p>Status: working proof (theorem, every \(m\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 53.25 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 41.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 

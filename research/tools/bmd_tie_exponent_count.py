@@ -65,6 +65,21 @@ def main():
             att = [S for S in subsets if vals[S] == lo]
             row.append(f"M = {M}: least B = {lo} at {att}")
         lines.append("  ".join(row))
+    # Sub-blocks (cycle bmd-20261008-l): rows restricted to the terms in `allowed`; for each, the least offset
+    # M - 3m at which every nonempty S inside `allowed` (S != {5}) has B(S) >= 1, so the block has full rank on
+    # d..d+M-1.  Blocks: no product rows {1,2,3,5}; no point row {1,2,4,5}; pure only {1,2,5}.
+    lines.append("Sub-blocks: least M - 3m with min B >= 1 over S inside the block (m = 1..40):")
+    for name, allowed in (("pure+point (3m+1 rows)", [1, 2, 3, 5]), ("pure+products (3m+2 rows)", [1, 2, 4, 5]),
+                          ("pure (3m rows)", [1, 2, 5]), ("all (3m+3 rows)", [1, 2, 3, 4, 5])):
+        offs = []
+        for m in range(1, 41):
+            al = [i for i in allowed if m >= 2 or i != 5]
+            subsets = [S for r in range(1, len(al) + 1) for S in itertools.combinations(al, r) if S != (5,)]
+            off = -10
+            while min(bound(m, S, 3 * m + off) for S in subsets) < 1:
+                off += 1
+            offs.append(off)
+        lines.append(f"  {name}: offset for m = 1: {offs[0]}, for m = 2..40: {sorted(set(offs[1:]))}")
     with open(args.out, 'w') as fh:
         fh.write("\n".join(lines) + "\n")
     print("\n".join(lines[:6] + lines[-2:]))
