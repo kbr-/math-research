@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), as ranked by the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>. The two-double-root points of the cone are the one type of gap (3) without a reduction.</p>
-<p>Next: classify their \(q\to0\) limits, by solving \(F(q^k)=F(q^l)\) for \(r\) on the collision line \(\ell_{ij}\). Then prove a second double-root step with the extended block \((1+AT)^{-\lambda-2}(1+BT)^{-\lambda-2}\mathrm{Pol}_{\le4}\) of cor:cube-two-double-base-condition, keeping track of the column slack, and check its window against thm:cube-two-exponent-window.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the two-double-root points. The <a href="#entry-2026-10-07-cube-second-double-root">second double root entry</a> proves that the leading coefficient of a double root over a cluster containing another double root is a Birkhoff determinant \(c\prod(y-y')^4\prod(y-B)^8\). The step itself (conj:cube-second-double-root-step) is confirmed by exact valuations.</p>
+<p>Next: prove the full factorization of \(\Gamma\), for all orders in \(x\), as the data at \(M\le2\) indicate. That gives the step over degenerating clusters. Then classify the cone's two-double points as \(q\to0\), by solving \(F(q^k)=F(q^l)\) for \(r\) on \(\ell_{ij}\), and check the column slack along their chains.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -56277,6 +56277,90 @@ So the closure of \(K_U\) meets this stratum inside \(K^t=\{\operatorname{rank}A
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-second-double-root" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-two-double-leading-birkhoff conj:cube-second-double-root-step">
+<h3>7 October 2026 — Second double root: the leading coefficient of a double root over a cluster containing another is a Birkhoff determinant, c·Π(y−y′)⁴·Π(y−B)⁸; the step holds for clusters of fixed shape</h3>
+<p class="entry-meta">Working proof of the leading Birkhoff factorization for every M, and of the second double-root step for clusters of fixed shape; degenerating clusters remain conjectural. Gap (3), two-double-root points. Second double root cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the two-double-root points of the cone, the item the <a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a> ranked first. By cor:cube-two-double-base-condition, a two-double point avoids \(\overline{K_U}\) iff the extended matrix \([W_0;U;V]\) has rank \(R+1\) on the columns \(0,\ldots,R+1\). Its \((A,B)\) block is \((1+AT)^{-7/2}(1+BT)^{-7/2}\mathrm{Pol}_{\le4}\) (shown in that review). In chains this needs a step: a double root \(A=1\) placed above a cluster \(C=x\tilde C\) that contains the other double root \(B=x\tilde b\) and \(M\) simple roots \(x\tilde y_s\).</p>
+<p><strong>Rows of the step.</strong> The new rows are:</p>
+<ul>
+<li>\(\varphi_1\varphi_y\) and \(\partial\varphi_1\cdot\varphi_y\) for simple \(y\), which span \((1+T)^{-\lambda-1}\langle\varphi_y,T\varphi_y\rangle=(1+T)^{-\lambda-2}\langle(1+T)\varphi_y,(1+T)T\varphi_y\rangle\);</li>
+<li>the extended block \((1+T)^{-\lambda-2}\langle T^i\chi_B:i\le4\rangle\), with \(\chi_y=(1+yT)^{-\lambda-2}\);</li>
+<li>\(h_A=(1+T)^{-3}\).</li>
+</ul>
+<p>That is \(2M+6=2M_C+2\) rows, with \(M_C=M+2\) counting \(B\) twice.</p>
+<p>The cross part, before the common factor \((1+T)^{-\lambda-2}\), is spanned by \((1+T)\varphi_{y_s},(1+T)T\varphi_{y_s},T^i\chi_B\). Let \(\Gamma(y,B)\) be its Taylor minor on the columns \(0,\ldots,2M+4\), with \(\lambda=3/2\).</p>
+<p><strong>General statement.</strong> lem:cube-two-double-leading-birkhoff. For every \(M\ge1\):</p>
+<ol>
+<li>Every term of \(\Gamma(xy,xB)\) has \(x\)-degree at least \(2M^2+6M\).</li>
+<li>The coefficient \(\Gamma_0\) of \(x^{2M^2+6M}\) is
+\[\Gamma_0(y,B)=c_M\prod_{s&lt;t}(y_t-y_s)^4\prod_s(y_s-B)^8,\qquad c_M\ne0.\]</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Degree bound.</em> Expand \(\Gamma\) by Laplace along the five \(B\)-rows.
+<ul>
+<li>A \(B\)-row \(T^i\chi_B\) at column \(c\) carries \(B^{c-i}\).</li>
+<li>A simple row of type \(t\in\{0,1\}\) at column \(k\) carries \(y^{k-t}\) or \(y^{k-t-1}\).</li>
+</ul>
+So every term has degree at least \(\sum_{c}c-10-2M-M=\binom{2M+5}2-3M-10=2M^2+6M\), whatever the column split. The minimal-degree part takes the lower power from each simple row. So \(\Gamma_0\) is the Taylor minor of \(T\varphi_y\), \(T^2\varphi_y\), \(T^i\chi_B\).</li>
+<li><em>One family.</em> With \(\psi_y=(1+yT)^{1/2}\), \(\partial_y\psi_y\propto T(1+yT)^{-1/2}\) and \(\partial^2_y\psi_y\propto T^2(1+yT)^{-3/2}\). So \(\langle T\varphi_y,T^2\varphi_y\rangle=T(1+yT)^{-3/2}\langle1,T\rangle=\langle\partial\psi_y,\partial^2\psi_y\rangle\). By lem:cube-multiple-node-identity (the same computation with exponent \(1/2\)), \(\langle T^i\chi_B:i&lt;5\rangle=\langle\partial^i\psi_B:i&lt;5\rangle\). Factoring \(\binom{1/2}m\) out of column \(m\) turns \(\Gamma_0\) into a nonzero constant times the Birkhoff determinant \(D=\det[\partial^j(z^m)]\). Its rows are the derivative orders \(j\in\{1,2\}\) at each \(y_s\) and \(j\in\{0,\ldots,4\}\) at \(B\), and its columns \(m=0,\ldots,2M+4\). \(D\) is homogeneous of degree \(\binom{2M+5}2-10-3M=2M^2+6M\).</li>
+<li><em>Coalescence with \(B\).</em> Fix the other nodes generic and let \(y_s\to B\). Taylor's formula gives \(\partial^j(z^m)|_{y_s}=\sum_l\frac{(y_s-B)^l}{l!}\partial^{j+l}(z^m)|_B\). Modulo the rows at \(B\) (orders \(0\) to \(4\)), the row of order \(1\) is \(\frac{(y_s-B)^4}{4!}\partial^5+\frac{(y_s-B)^5}{5!}\partial^6+\cdots\), and the row of order \(2\) is \(\frac{(y_s-B)^3}{3!}\partial^5+\frac{(y_s-B)^4}{4!}\partial^6+\cdots\). Their determinant on the directions \(\partial^5,\partial^6\) is
+\[(y_s-B)^7\det\begin{pmatrix}1/24&amp;(y_s-B)/120\\1/6&amp;(y_s-B)/24\end{pmatrix}=\tfrac1{2880}(y_s-B)^8,\]
+plus higher order. The remaining rows then form a Birkhoff matrix with orders \(\{0,\ldots,6\}\) at \(B\), which is nonzero at generic other nodes: at \(B=0\) its rows at \(B\) are unit vectors on the columns \(0,\ldots,6\), and the rest is a doubled-node minor on a shifted column set, as in step 5. So \(D\) vanishes to order at least \(8\) along \(y_s=B\). Exactness then follows from step 5.</li>
+<li><em>Coalescence of simple nodes.</em> Similarly \(y_s\to y_t\) merges the orders \(\{1,2\}\) and \(\{1,2\}\) into \(\{1,2,3,4\}\), so \(D\) vanishes to order at least \((3-1)+(4-2)=4\). Only these lower bounds are needed: the degree match and \(c_M\ne0\) finish the proof.</li>
+<li><em>Conclusion.</em> The factors are coprime, and the degrees agree: \(4\binom M2+8M=2M^2+6M\). So \(\Gamma_0=c_M\prod(y_t-y_s)^4\prod(y_s-B)^8\). For \(c_M\ne0\), set \(B=0\). The \(B\)-rows become \(T^0,\ldots,T^4\), and \(\Gamma_0(y,0)\) is \(\pm\) the minor of \(T\varphi_y,T^2\varphi_y\) on columns \(5,\ldots,2M+4\). That is the doubled-node minor of thm:cube-doubled-node-identity on the column set \(\{4,\ldots,2M+3\}\): a nonzero constant times \(\prod(y_t-y_s)^4\) times \(s_{(4^{2M})}\) at the doubled nodes, which is \(\prod y_s^8\). So it is nonzero.</li>
+</ol>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_two_double_gamma.gp factors \(\Gamma\) exactly at \(M=1,2\) (research/results/bmd-20261007-q/two-double-gamma.txt). It finds:</p>
+<ul>
+<li>\((y_1-B)^8\) times an irreducible factor with constant term \(120\) at \(M=1\);</li>
+<li>\((y_1-B)^8(y_2-B)^8(y_1-y_2)^4\) times one with constant term \(-1792\) at \(M=2\).</li>
+</ul>
+<p>So the full \(\Gamma\), not only \(\Gamma_0\), carries the node factors at these sizes. The \(M=3\) run did not finish in \(600\) s.</p>
+<h4>The step</h4>
+<p>Here \(R_C\) counts the ordinary confluent rows of \(C\), so \(R_{C'}=R_C+2M_C+1\), while the extended matrix adds \(2M_C+2\) rows.</p>
+<p><strong>Proved for fixed shape.</strong> Let \(\tilde C\) be fixed: distinct nodes and a nonzero Taylor minor of its confluent rows. Then the Taylor set \(L=\{0,\ldots,R_C-1\}\) satisfies (H) for \(C=x\tilde C\), and \(L'=\{0,\ldots,R_{C'}\}\) satisfies (H) for \(C'\). By the step 1 bound, every column set other than the initial one for the cross part has strictly larger \(x\)-degree. The leading coefficient is the Taylor minor of \(\tilde C\), times \(\Gamma_0(\tilde y,\tilde b)\ne0\), times the window minor below. This is the Laplace and valuation argument of thm:cube-confluent-caterpillar-avoidance.</p>
+<p>conj:cube-second-double-root-step (degenerating clusters). Let a cluster \(C\), containing the double root \(B\) and \(M\) simple roots at scale \(w\) below a double root \(A=1\), satisfy the invariant (H) for its confluent rows, with \(\max L\le R_C-1\). This holds for chains built from a caterpillar base by double-root, triple-root and singleton steps, since each step adds exactly as many consecutive columns as rows; tie bases use the slack instead. Then \(C'=C\cup\{A\}\) satisfies (H) for the extended rows \([W_0;U;V]\) with \(L'=L\cup\{\max L+1,\ldots,\max L+2M_C+2\}\), and \(\max L'\le R_{C'}\), using one column of slack. The singleton steps above then keep \(|L|=R+1\) inside \(\{0,\ldots,R+1\}\), as the extended test of cor:cube-two-double-base-condition requires.</p>
+<p><strong>What is proved toward it.</strong></p>
+<ul>
+<li><em>The window.</em> Since \(\Gamma_0\ne0\) on the columns \(0,\ldots,2M+4\), the \(x\to0\) limit of the cross span is \((1+T)^{-\lambda-2}\mathrm{Pol}_{\le2M+4}=(1+T)^{-\lambda-2}\mathrm{Pol}_{\le2M_C}\). Together with \((1+T)^{-3}\), it is nonsingular on any \(2M_C+2\) consecutive columns by thm:cube-two-exponent-window (\(a=7/2\), \(b=3\), \(n=2M_C+1\), \(p=1\)).</li>
+<li><em>The leading coefficient.</em> By the lemma, it is \(\Gamma_0\), nonzero at distinct nodes.</li>
+<li><em>Not proved.</em> The bound for all column sets when \(\tilde C\) itself degenerates along the arc. The higher terms of \(\Gamma\) must then carry the node factors too, as they do at \(M\le2\).</li>
+</ul>
+<p><strong>Consistency check (fixed shape).</strong> research/tools/bmd_two_double_step.gp computes the extended matrix of \(A=1\) over \(x\{B,\text{simple roots}\}\), with fixed generic shape and \(M=1,2,3\) simple roots (two-double-step.txt). In all three cases the Taylor minor attains the least \(x\)-valuation among the \(R+2\) maximal minors. Many column sets tie there (at \(M=1\), all minors omitting columns \(3\) to \(11\)), and (H) needs only that \(L'\) attains the minimum with a nonzero leading coefficient. The valuations are \(10\), \(33\), \(78\). They equal the \(C\)-part \(\binom{R_C}2-M=2,13,42\) (the Taylor minor of \(C\), whose \(M\) rows \(\partial\varphi_B\varphi_s\) lose one degree each) plus the lemma's \(2M^2+6M=8,20,36\). This checks the proved fixed-shape regime. It does not test degenerating clusters.</p>
+<p><strong>Remaining gap.</strong> First, the second double-root step for degenerating \(C\) (the full factorization of \(\Gamma\)). Then the classification of the cone's two-double points as \(q\to0\), by solving \(F(q^k)=F(q^l)\) for \(r\), and the slack bookkeeping along their chains.</p>
+<p><strong>Dependencies re-read.</strong> cor:cube-two-double-base-condition; lem:cube-multiple-node-identity; thm:cube-doubled-node-identity (general column set); thm:cube-two-exponent-window; lem:cube-double-root-step.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the degree bound and the identification of \(\Gamma_0\);</li>
+<li>the single family and the factoring of \(\binom{1/2}m\);</li>
+<li>the coalescence constant \(1/2880\) and the regularity of the coalesced scheme at \(B=0\);</li>
+<li>\(c_M\ne0\) and the valuation sums.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>coalescence orders are stated as lower bounds;</li>
+<li>the window is derived directly from \(\Gamma_0\ne0\);</li>
+<li>\(R_C\) is defined and the slack bookkeeping explained;</li>
+<li>the fixed-shape step is stated as proved, and the conjecture is limited to degenerating clusters;</li>
+<li>the source of the \(C\)-part valuations, and the ties.</li>
+</ul>
+<p>Status: working proof for the lemma and the fixed-shape step; conjecture for degenerating clusters.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 26.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 59.84 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 37.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 21.48 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 27.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
