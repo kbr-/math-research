@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-standard-exchanges">standard exchanges</a>; eight open items). (W′) reduces to single exchanges at the leading windows. Every exchange that keeps the negative part standard is settled, conditionally on kernel monomial minimality.</p>
-<p>Next: prove kernel monomial minimality in its single-shift form, comparing \(K_u(z^i)\) with \(K_u(z^{i-1})\) through the kernel-column expansion. Then turn to exchanges with a non-standard negative part. The goal-level decision allows two cycles before switching to (B).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-standard-minimality-refuted">standard minimality refuted</a>; eight open items). The kernel-only route to the local exchange conditions fails when the sum of the roots is small. Two cycles have passed without proving the adjacent exchanges.</p>
+<p>Next: the goal-level review that the <a href="#entry-2026-10-09-cube-local-exchange-route-review">local exchange route review</a> scheduled. It switches to (B): the even last step's explicit six-space and the middle steps' chain coprimality.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -66938,6 +66938,68 @@ The true valuation of a series is at least its minimum term, and for \(\Lambda_q
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.82 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">19.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-standard-minimality-refuted" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-standard-negative-minimality-fails">
+<h3>9 October 2026 — Standard-negative and kernel monomial minimality fail when the sum of the roots is small: at two roots the window's first-order coefficient carries the factor \(e_1\)</h3>
+<p class="entry-meta">Refutation of conj:cube-standard-negative-minimality and conj:cube-kernel-monomial-minimality at M = 2 and 3, roots with e_1 of positive valuation, checked exactly in eta; symbolic first-order data at M = 2 (p = 1) and M = 3 (p = 2). Standard minimality refuted cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4. prop:cube-standard-exchange-reduction settles every standard single exchange, conditionally on conj:cube-kernel-monomial-minimality. Can that be proved, starting from \(k=1\), where \(D_T\) is one functional applied to one kernel column?</p>
+<p><strong>General statement.</strong> conj:cube-standard-negative-minimality and conj:cube-kernel-monomial-minimality, refuted by ex:cube-standard-negative-minimality-fails.</p>
+<p><strong>Exact data.</strong> research/tools/bmd_monomial_symbolic.gp (research/results/bmd-20261009-l/monomial-symbolic.txt) factors \([u^{B+t}]D_i\) symbolically for \(M=2,3\), \(p=M-1\) (\(k=1\)), \(i\le3\), \(t\le3\), where \(D_i\) is the coordinate divided by \(\mathrm{Vand}^2\) up to units. Two earlier runs are kept: the first reduced modulo \(P\) in the wrong main variable and printed zeros (monomial-symbolic.txt.first-run), and the second divided by \(\mathrm{Vand}^2\) once too often (monomial-symbolic.txt.second-run). At \(M=2\):</p>
+<ul>
+<li>the window (\(i=0\)) has \(t=0\): \((y_1-y_2)^2\), and \(t=1\): \((y_1-y_2)^2e_1\); at \(t=2\) the factor \((y_1-y_2)^2\) disappears, so the level is lost at \(t=2=2p\);</li>
+<li>\(i=1\) has \(t=0\): \((y_1-y_2)^2e_1\), and \(t=1\): \((y_1-y_2)^2(9y_1^2+17y_1y_2+9y_2^2)\).</li>
+</ul>
+<p>At \(t=1\) monomial minimality therefore requires \(\operatorname{val}(9y_1^2+17y_1y_2+9y_2^2)\ge\operatorname{val}e_1\). That fails when \(e_1\) is small and \(y_1y_2\) is a unit, since then the form is \(\equiv y_1^2\). At \(M=3\), \(p=2\), the window's leading coefficient (\(t=0\)) is \(\tfrac12\sum_{a&lt;b}(y_a-y_b)^2\), the Hankel form \(\mathrm{Hank}_1\), and the other coefficients are irreducible symmetric forms. In particular the window's \(t=1\) coefficient there is an irreducible cubic, not divisible by \(e_1\); the factor \(e_1\) is shown only at \(M=2\).</p>
+<p><strong>The refutation.</strong> ex:cube-standard-negative-minimality-fails. bmd_symmetric_roots_check.gp (symmetric-roots.txt) computes penalty sequences, \(q\)-adic with \(\eta=q=1000003\).</p>
+<ul>
+<li>Roots \((1,-1+\eta)\), \(\operatorname{val}e_1=1\): the window \(\Lambda_1=[-1,2]\) has penalties \((0,1,0,1)\) at \(t=0,\ldots,3\). Three of the nine coordinates in \([-2,4]\) with negatives \(\{1\}\) fall below it, each at \(t=1\) and \(t=3\), for example \(\Lambda=\{-1,0,1,3\}\) with penalty \(0\).</li>
+<li>Roots \((1,-4+\eta,3)\), \(\operatorname{val}e_1=1\): the window's penalties are \((0,1,0,0)\), and all \(20\) such coordinates have penalty \(0&lt;1\) at \(t=1\).</li>
+<li>Control \((1,1+\eta)\), with \(e_1\) a unit: no violations.</li>
+</ul>
+<p>The \(q\)-adic point \(\mathbb Z_{(q)}\) does not contain \(\mathbb Q\), so it lies outside the conjectures' setting. research/tools/bmd_symmetric_roots_exact.gp (symmetric-roots-exact.txt) therefore checks both violations exactly, with \(\eta\) a formal variable, in \(\mathbb Q[\eta]_{(\eta)}\). The \(t=1\) coefficients factor as follows:</p>
+<ul>
+<li>\(M=2\) window: \((\eta-2)^4\eta\), valuation \(1\); \(\{-1,0,1,3\}\): \((\eta-2)^4(53\eta^2-2\eta+2)\), valuation \(0\);</li>
+<li>\(M=3\) window \([-1,4]\): \((\eta-7)^4(\eta-5)^4\eta\), valuation \(1\); \(\{-1,0,1,2,3,5\}\): \((\eta-7)^4(\eta-5)^4(129\eta^2-8\eta+26)\), valuation \(0\).</li>
+</ul>
+<p>\(\mathrm{Vand}\) has valuation \(0\) at both points, so these are the penalties, and both violations hold exactly. A second prime, \(q=1000033\), gave the same \(q\)-adic output.</p>
+<p>Kernel monomial minimality fails too. With \(\Lambda=\{-1,0,1,3\}\) the kernel is spanned by \(v=e_1+z\), so \(D_\Lambda=e_1D_0+D_1\). Its first-order penalty \(0\) forces \(\operatorname{val}[u^{B+1}]D_1=0&lt;1=\operatorname{val}[u^{B+1}]D_0\). This also follows symbolically: \([u^{B+1}]D_1=(y_1-y_2)^2(9y_1^2+17y_1y_2+9y_2^2)\), and at \((1,-1)\) the cofactor is \(9-17+9=1\).</p>
+<p><strong>What this means.</strong> The window's higher coefficients carry factors such as \(e_1\) that depend on where the cluster sits relative to the origin. Non-windows need not share them. So order-by-order minimality, even within the window's own negative class, holds only when those factors are units, as on every tree tested before.</p>
+<p>prop:cube-standard-exchange-reduction stays a correct implication, but its hypothesis is false in general. The local exchange condition itself is not refuted here. For \(\Lambda=\{-1,0,1,3\}\) at these roots, each of its terms with \(t\le3\) exceeds the window's leading (\(t=0\)) term by \((1+t)w_x+tw_e+\mathrm{pen}_t\ge0\), since both have penalty \(0\) at \(t=0\). So if the window's leading term does not cancel, no term of \(\Lambda\) beats it on any arc with \(w_x,w_e\ge0\). This holds at these roots only. But it is no longer reduced to a kernel statement.</p>
+<p>By the goal-level decision of the <a href="#entry-2026-10-09-cube-local-exchange-route-review">local exchange route review</a>, two research cycles have now passed without proving the adjacent exchanges. The next review is goal-level and switches to (B).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The local exchange conditions of prop:cube-window-local-exchange-reduction, now without a kernel-only route;</li>
+<li>the other open items of (K);</li>
+<li>(B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-standard-exchange-reduction and its two conjectures;</li>
+<li>thm:cube-first-order-hankel-penalty (the first-order structure \(e_1L\), \(H^+\), \(S\));</li>
+<li>lem:cube-kernel-column-expansion.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the numbers, the hypotheses of the conjectures, the kernel derivation, the local-exchange remark and the conclusiveness argument. It reproduced both violations exactly in \(\eta\) and at a second prime. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the \(q\)-adic conclusiveness argument replaced by the exact check, now recorded as a tool;</li>
+<li>the count corrected to three coordinates, each at two orders;</li>
+<li>the \(e_1\) claim restricted to \(M=2\);</li>
+<li>the local-exchange comparison restated against the window's \(t=0\) term;</li>
+<li>the symbolic form of the kernel step added.</li>
+</ul>
+<p>Status: refutation (both minimality conjectures); exact data at \(M=2,3\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 7.25 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 21.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 29.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 15.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
