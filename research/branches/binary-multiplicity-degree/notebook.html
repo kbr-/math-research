@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). Items 3–4 ((W′) above cherry clusters and nested trees) are reduced to window domination. The windows' coefficients now have an exact <a href="#entry-2026-10-09-cube-window-hypergeometric-alternant">hypergeometric alternant</a> form, but upper bounds for them are not in hand. Items 1–2 (the confluent tie table beyond its base, the triple window) have had no work since the Mason review.</p>
-<p>Next: item 1, the confluent tie table. Test whether the moment method (multiples of the cluster polynomial turned into moment determinants and Cauchy–Binet) gives the table's missing normality beyond its base, starting from conj:cube-confluent-tie-table-normality's smallest open case.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). Items 1–2 do not yield to the moment method (<a href="#entry-2026-10-09-cube-core-items-moment-reach">core items reach</a>). Items 3–4 are reduced to window domination, and the windows' coordinates are explicit <a href="#entry-2026-10-09-cube-window-hypergeometric-alternant">hypergeometric alternants</a>.</p>
+<p>Next: window domination in the first nontrivial regime. For a non-window term at order \(t=1\) with penalty \(g(k-1)\), find the dominating window term from the alternant: the window \(\Lambda_{p+1}\)'s leading term or \(\Lambda_p\)'s \(u^{B+1}\)-term (which keeps the penalty \(g(k)\) at \(M=3\)). Prove the corresponding lattice and penalty inequalities for every tree.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65947,6 +65947,54 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.58 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.72 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.67 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-core-items-moment-reach" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-triple-window-functionals-not-low-order">
+<h3>9 October 2026 — The moment method does not reach the confluent tie table or the triple window directly: a curve degree count fails, and the triple-window functionals are fractional derivatives of elliptic type</h3>
+<p class="entry-meta">Investigation of core items 1–2 with the tools of the last cycles. Finite check: the triple-window functionals satisfy no low-order recurrence. No new theorem. Core items reach cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K). Items 1 (the confluent tie table beyond its base) and 2 (the triple window) have had no work since the Mason review. The moment method proved every lower bound of items 3–4. Does it, or the genus-zero curve suggested in the tie table base entry, reach items 1–2?</p>
+<p><strong>General statement.</strong> conj:cube-triple-window-full-rank, tested here: for every \(m\ge2\) and distinct \(c_1,c_2\notin\{0,1\}\), \(\operatorname{rank}U_3(c_1,c_2,1)=3\), equivalently \(\operatorname{rank}W_3=3m+3\). conj:cube-confluent-tie-table-normality is examined by argument only. No new general claim.</p>
+<p><strong>Item 1: the genus-zero curve.</strong> The <a href="#entry-2026-10-08-cube-tie-table-base">tie table base</a> entry proposed replacing its conjugate trick by Mason's theorem on the curve \(X:u^2=1+T,\ v^2=1+cT\). This curve has genus \(0\): it is a \((\mathbb Z/2)^2\)-cover of the \(T\)-line branched at \(-1\), \(-1/c\) and \(\infty\), each with two points of index \(2\), so \(2g-2=-8+6\). On \(X\) every element \(F\) of the table's space \(V(a,b)\) is a rational function \(\Phi=u^{-5}A+v^{-3}B+\alpha u^{-6}+u^{-3}v^{-3}L\).</p>
+<p>A window vanishing on \(T^s,\ldots,T^{s+a+b+4}\) says that \(\Phi-P\), with \(\deg P\le s-1\), vanishes to order \(\ge s+a+b+5\) at the point \(u=v=1\) above \(T=0\). Counting zeros against poles bounds this order by \(\deg_X(\Phi-P)\). The polynomial alone contributes poles of total order \(4(s-1)\): \(T\) has degree \(4\) on \(X\). So the count gives only \(s+a+b+5\le4s+O(1)\), which says nothing for large \(s\). The base case avoided this through the two-term conjugate product \((P-RG)(P+RG)\). With four classes the norm has four factors and is no longer a three-term relation, so Mason–Stothers does not apply.</p>
+<p>So the curve gives no bound by itself. A Mason-type inequality for the four conjugates, with radicals counted, would be needed. That is the \(n\)-term abc situation the base entry already flagged as heuristically lossy.</p>
+<p><strong>Item 2: the triple-window functionals.</strong> In lem:cube-level-window-reduction the reduced matrix \(U_3\) has the entries \(f_M(\mathrm{pair}_{ij})=\sum_ip_i\rho_{M-i}e_{M-i}\), with \(\rho_k=\Gamma(k+1)/\Gamma(k+\lambda-m+1)\). The weight \(\rho_k\) is the Riemann–Liouville derivative of order \(m-\lambda\): \(T^{m-\lambda}D^{m-\lambda}T^k=\rho_kT^k\). So \(U_3\) is a five-coefficient window of</p>
+\[ G_{ij}(T)=\prod_l(1+a_lT)^m\;T^{m-\lambda}D^{m-\lambda}\bigl[((1+a_iT)(1+a_jT))^{-\lambda}\bigr], \]
+<p>and \(D^{m-\lambda}=D^mI^{3/2}\) involves \(\int_0^T(T-s)^{1/2}((1+a_is)(1+a_js))^{-3/2}ds\), an incomplete integral of elliptic type.</p>
+<p>research/tools/bmd_triple_window_gf.gp (research/results/bmd-20261009-c/triple-window-gf.txt) computes the sequences exactly at \((a_1,a_2,a_3)=(2/7,-5/3,1)\) for \(m=2,3,4\), 90 coefficients from \(d=\binom m2\). It finds:</p>
+<ul>
+<li>no constant-coefficient recurrence of order \(\le21\), so \(G_{ij}\) is not rational of small degree;</li>
+<li>no recurrence of order \(\le2\) with polynomial coefficients of degree \(\le3\).</li>
+</ul>
+<p>Recorded as the finite check ex:cube-triple-window-functionals-not-low-order. The moment method needs the functions to become polynomial modulo the cluster polynomial. Here the window's functions are transcendental of this elliptic type, and the cluster has collapsed to a point.</p>
+<p><strong>Outcome.</strong> No progress on items 1–2. The investigation does fix where each stands:</p>
+<ul>
+<li>Item 1 needs a multi-term abc inequality without the usual losses, or an operator killing a class at no cost to the others. Neither is in the record.</li>
+<li>Item 2 is a five-coefficient Padé statement for elliptic-type integrals, uniform in \(m\). The evidence is still one prime for \(m\le5\).</li>
+</ul>
+<p>Items 3–4 remain the closest to closure: their lower bounds are proved, and window domination is the single remaining statement.</p>
+<p><strong>Remaining gap.</strong> Unchanged: items 1–8 of the <a href="#entry-2026-10-09-cube-window-domination-route-review">window domination route review</a>.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-tie-table-base and lem:cube-square-rational-pade-defect;</li>
+<li>lem:cube-level-window-reduction and conj:cube-triple-window-full-rank;</li>
+<li>conj:cube-confluent-tie-table-normality.</li>
+</ul>
+<p><strong>Verification gate.</strong> No new lemma. The degree count and the genus computation are elementary. The recurrence search is an exact finite check at one point. No reviewer was used, since nothing is claimed beyond the stated finite check.</p>
+<p>Status: finite check (no low-order recurrence); no new theorem.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-c">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 9.36 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 1.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">32.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 14.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 2.60 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">17.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
