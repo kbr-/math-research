@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4. <a href="#entry-2026-10-09-cube-partial-window-domination">Partial window domination</a> is proved. Window domination is open only for near-window terms: \(t\ge1\) and \(\delta_N+t&lt;s(2p+s-1)\).</p>
-<p>Next: the near-window terms at \(t=1\) (\(\delta_N&lt;2p-1\)). At \(M=3\) the window's own \(u^{B_p+1}\)-term keeps the full penalty \(g(k)\), so it cannot dominate a term at \(g(k-1)\). The likely mechanism is that near-window terms also pay more than the graded bound. Sharpen thm:cube-graded-hankel-penalty for coordinates whose negative set is close to \(\{1,\ldots,p\}\), tracking which kernel columns can take the higher-order parts.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). Items 3–4 are reduced to window domination for near-window terms, which must be <a href="#entry-2026-10-09-cube-sharp-penalty-refuted">dominated by the windows' higher terms</a>. Items 1–2 do not yield to the moment method. Four research entries have run since the last review, and the line's open-item count is unchanged.</p>
+<p>Next: a route review of the (K) line. Weigh items 3–4 (near-window domination through the hypergeometric alternant) against items 1–2 and the remaining items 5–8, and reconsider whether the cone route's open items can be reduced by a different decomposition of the boundary.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -66051,6 +66051,60 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 37.38 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 12.07 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 16.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.61 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-sharp-penalty-refuted" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-sharp-penalty-threshold-fails">
+<h3>9 October 2026 — A fitted sharp threshold for the graded penalty is refuted by a recorded term; near-window terms do lose Hankel levels cheaply, so window domination must use the windows' higher terms</h3>
+<p class="entry-meta">Refutation: the candidate "a term loses a level only when its excess reaches the next window's leading order", fitted on two trees, fails on a recorded third. Sharp penalty cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4. thm:cube-partial-window-domination leaves the near-window terms open. Do those terms pay more than the graded bound, enough to be dominated by window leading terms?</p>
+<p><strong>General statement.</strong> conj:cube-window-domination, tested through a candidate refinement of thm:cube-graded-hankel-penalty. Put \(f(e,p)=\max\{s\ge0:s(2p+s-1)\le e\}\). The candidate:</p>
+\[ \operatorname{val}[u^{B(\Lambda)+t}]P_\Lambda\ \ge\ 2\operatorname{val}\mathrm{Vand}+g\bigl(k-\min(t,f(\delta_N+t,p),k)\bigr) . \]
+<p>That is, a term loses a Hankel level only when its excess \(\delta_N+t\) reaches the leading order of the window with more negative indices. If true, it would make every term with \(p\ge1\) strictly dominated by a window's leading term. The comparison is with \(\Lambda_{p+f}\) in the coordinates of thm:cube-partial-window-domination.</p>
+<p><strong>Fit.</strong> research/tools/bmd_penalty_levels.gp (research/results/bmd-20261009-e/penalty-levels.txt) records, at \(M=4\) (columns \([-4,8]\), one prime), the least penalty of every class \((p,\delta_N,t)\), \(t\le3\). It uses two trees: nested cherries and a four-root caterpillar cluster. All 104 lines satisfy the candidate. It is not attained at \(p=1\), \((\delta_N,t)=(3,3)\), and at \(p=3\) above nested cherries it is vacuous, since \(g(1)=0\).</p>
+<p><strong>Refutation.</strong> The candidate is false. The record already contains a counterexample, in the <a href="#entry-2026-10-08-cube-window-domination">window domination entry</a>. Above two separated cherries \((1,1+\eta,2,2+\eta^2)\) at \(M=4\), the coordinate \(\Lambda=\{-3,-1,0,\ldots,5\}\) has a \(u^9\)-term with penalty \(0\):</p>
+<ul>
+<li>\(p=2\), \(k=2\), \(N=\{1,3\}\), \(\delta_N=1\);</li>
+<li>\(B(\Lambda)=1+4+2=7\), so \(t=2\) and \(\delta_N+t=3\);</li>
+<li>\(f(3,2)=0\), so the candidate demands penalty \(\ge g(2)=2\).</li>
+</ul>
+<p>Here \(2\operatorname{val}\mathrm{Vand}=6\) and \(g(2)=2\) exactly, since the root differences have small integer leading coefficients. A \(q\)-adic value can only overestimate the true order, so an observed penalty \(0&lt;2\) is conclusive.</p>
+<p>The same term also refutes the conclusion that the candidate was meant to give: the record shows that no window leading term dominates it. Recorded as ex:cube-sharp-penalty-threshold-fails.</p>
+<p>The fit failed because the two trees used were among the three on which leading-only domination never failed. The two trees with the 444 and 103 leading-only failures were left out. A fitted threshold must be tested on the cases that motivated it.</p>
+<p><strong>What this means.</strong> Near-window terms do reach lower Hankel levels at small excess, below what any window's leading term offers. So window domination cannot come from window leading terms. It needs the windows' higher coefficients, which the hypergeometric alternant (lem:cube-cross-hypergeometric-alternant) describes: in the counterexample the dominator is a \(u^7\)- or \(u^8\)-term of \(\Lambda_2\).</p>
+<p>The open statement is unchanged: conj:cube-window-domination. Its proof needs:</p>
+<ul>
+<li>lower bounds for non-window terms, which are proved (graded, partial);</li>
+<li>upper bounds for specific window higher terms: the valuation of \(\Lambda_p\)'s \(u^{B_p+t}\)-coefficient on the trees where near-window terms reach low levels.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-window-domination for near-window terms, via windows' higher terms.</li>
+<li>Adjacency of the leading windows.</li>
+<li>\(p=0\).</li>
+<li>Hankel non-cancellation off ties over caterpillars.</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-partial-window-domination and thm:cube-graded-hankel-penalty;</li>
+<li>ex:cube-leading-window-domination-fails and its data (window-domination.txt);</li>
+<li>lem:cube-cross-hypergeometric-alternant.</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, which stated the candidate as a conjecture with a reduction to domination. It checked all 104 data lines against it and found the counterexample above in the record. Verdict: fail. The entry was rewritten as this refutation. The reduction itself was sound as an implication; its range gap at \(p=M\) is moot.</p>
+<p>Status: refutation (of the fitted threshold); window domination remains a conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 22.77 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 42.85 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">58.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">29.78 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.61 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
