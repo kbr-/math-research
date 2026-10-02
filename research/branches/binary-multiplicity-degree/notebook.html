@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-special-values-review">special values review</a> reduces the confluent tie window to a statement about two explicit polynomials. The first-columns and last-columns maximal minors \(P_m\), \(Q_m\) must have no common root off \(\{0,1\}\). They are coprime for \(m\le6\). Localization fails both archimedeanly and at small primes.</p>
-<p>Next: the pair \(P_m\), \(Q_m\), still the highest-risk item. Look for a recurrence in \(m\), or for Plücker or Sylvester relations among neighbouring maximal minors of one window. Compute the factored resultant \(\operatorname{Res}_c(P_m,Q_m)\) for \(m\le5\) and look for a product formula. In parallel, by the method of the confluent cherry theorem, start on ties and cherries above a double root.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-forney-kernel">tie Forney entry</a> turns the special values of the confluent tie window into a degree count of its kernel (lem:cube-tie-window-forney-criterion). They vanish iff the Forney indices sum to \(\delta_m-a_m-b_m\). Here \(a_m=m\binom m2+4m\) is proved, and \(b_m=m^2+m+2\) and \(\delta_m\) hold through \(m=4\), with balanced indices summing to \(2m^2+m+4\) (conj:cube-tie-window-balanced-kernel).</p>
+<p>Next: prove conj:cube-tie-window-balanced-kernel, the highest-risk item. Start with \(\delta_m\) and \(b_m\), by extreme terms at \(c=\infty\) and in \(s=c-1\), as for \(a_m\). Then attack the lower bound \(\nu_1+\nu_2\ge2m^2+m+4\). It says that no nonzero polynomial kernel vectors exist below the balanced degrees, a rank statement for constant linearized matrices.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58474,6 +58474,82 @@ The \(c^{2m}\) coefficient cancels. So \(R_3'\) has \(c\)-order at least \(2m-1\
 <tr><td>Computation design and coding</td><td class="elapsed">42.06 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.61 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.38 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-forney-kernel" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-tie-special-values-review:2" data-claims="lem:cube-tie-window-forney-criterion conj:cube-tie-window-balanced-kernel">
+<h3>7 October 2026 — The special values of the confluent tie window are a degree count of its kernel: they vanish iff the Forney indices sum to 2m²+m+4, as they do through m = 4</h3>
+<p class="entry-meta">Working proof of a Forney-index criterion for the special values and of the exact c-order of the window's maximal minors; conjecture of balanced Forney indices. The resultant of two minors has no product formula. Gap (3), confluent tie window. Tie Forney cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the special values \(Z^W_m\) of the confluent tie window, the highest-risk item of the <a href="#entry-2026-10-07-cube-tie-special-values-review">special values review</a>. The review proposed two tests.</p>
+<ul>
+<li>Its lead 1: is the resultant of the first-columns and last-columns minors \(P_m\), \(Q_m\) a product formula?</li>
+<li>Its lead 2, not run there: left primeness. Can the special values be read off the polynomial right kernel of \(W^c(c)\), which uses all minors at once?</li>
+</ul>
+<p><strong>Resultant.</strong> research/tools/bmd_tie_minor_resultant.gp (research/results/bmd-20261007-zl/minor-resultant.txt) computes \(\operatorname{Res}_c(P_m,Q_m)\) for \(m=2,3,4\) and factors it by trial division up to \(10^6\). The results have \(64\), \(313\) and \(1117\) digits. Each has factors below \(10^6\) and a cofactor of \(27\), \(132\) and \(369\) digits with no prime factor below \(10^6\). So this pair has no product formula in small primes, and lead 1 is falsified in that form. Two runs failed on output formatting before this one; they are kept in the session archive.</p>
+<p><strong>Setting.</strong> \(W=W^c(c)\), the \((3m+3)\times(3m+5)\) window over \(\mathbb Q[c]\), \(d=\binom m2\). Write \(D_{ij}\) for the maximal minor without columns \(i&lt;j\), \(\lambda_m=\gcd_{ij}D_{ij}\), \(\delta_m=\max_{ij}\deg D_{ij}\), and \(a_m,b_m\) for the orders of \(\lambda_m\) at \(c=0\) and \(c=1\). The right kernel of \(W\) over \(\mathbb Q(c)\) has dimension \(2\) by lem:cube-tie-window-generic-rank. Let \(\nu_1\le\nu_2\) be its Forney indices: the column degrees of a minimal polynomial basis.</p>
+<p><strong>General statement.</strong> lem:cube-tie-window-forney-criterion. For every \(m\ge1\):</p>
+<ol>
+<li>\(\deg\lambda_m=\delta_m-(\nu_1+\nu_2)\). Hence \(Z^W_m\subset\{0,1\}\) iff \(\nu_1+\nu_2=\delta_m-a_m-b_m\). Otherwise \(\nu_1+\nu_2&lt;\delta_m-a_m-b_m\).</li>
+<li>\(a_m=md+4m\): every maximal minor has \(c\)-order at least \(md+4m\), and \(D\) on the first \(3m+3\) columns attains it.</li>
+</ol>
+<p>conj:cube-tie-window-balanced-kernel. For every \(m\ge1\):</p>
+<ul>
+<li>\(b_m=m^2+m+2\);</li>
+<li>\(\delta_m=md+3m^2+6m+6\);</li>
+<li>the Forney indices are \(\lfloor(2m^2+m+4)/2\rfloor\) and \(\lceil(2m^2+m+4)/2\rceil\).</li>
+</ul>
+<p>By part 1 of the lemma, the conjecture implies \(Z^W_m\subset\{0,1\}\), hence conj:cube-confluent-tie-window-full-rank. Conversely, given the first two items, \(Z^W_m\subset\{0,1\}\) is equivalent to \(\nu_1+\nu_2=2m^2+m+4\). The conjecture is stronger than needed. Since \(\nu_1+\nu_2\le\delta_m-a_m-b_m\) always holds, the sufficient endpoint is the inequality \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\). Balance and the closed forms for \(b_m\) and \(\delta_m\) are conveniences.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Part 1.</em> Let \(V\subset\mathbb Q(c)^{3m+5}\) be the row space of \(W\), of dimension \(3m+3\), and \(V^\perp\) its orthogonal complement, the right kernel. The complementary \(2\times2\) minors of any kernel basis are proportional to the maximal minors of \(W\) (Plücker duality). Forney's dual degree theorem (Forney, Minimal bases of rational vector spaces, with applications to multivariable linear systems, SIAM J. Control 13, 1975) gives \(\deg V=\deg V^\perp\). Here the degree of a rational subspace is the largest degree of its Plücker coordinates, normalized to be coprime polynomials. For \(V\), these are the \(D_{ij}/\lambda_m\), so \(\deg V=\delta_m-\deg\lambda_m\). For \(V^\perp\), a minimal polynomial basis has coprime \(2\times2\) minors of largest degree \(\nu_1+\nu_2\) (Forney, same paper, with the predictable degree property), so \(\deg V^\perp=\nu_1+\nu_2\). Since \(c^{a_m}(c-1)^{b_m}\) divides \(\lambda_m\), \(\deg\lambda_m\ge a_m+b_m\), with equality iff \(\lambda_m\) has no root off \(\{0,1\}\). Since \(Z^W_m\) is the zero set of \(\lambda_m\), this is iff \(Z^W_m\subset\{0,1\}\). Gcds and minimal bases over \(\mathbb Q[c]\) stay so over \(\mathbb C[c]\), so \(Z^W_m\) is the complex zero set.</li>
+<li><em>Part 2.</em> The proof of lem:cube-tie-window-generic-rank reduces the two \(c\)-dependent extra rows by adding polynomial multiples of other rows and by one constant scaling. These operations change every maximal minor by the same nonzero constant. After them, the rows \(R_3'\) and \(R_2''\) have \(c\)-orders at least \(2m-1\) and \(2m+1\). For any column set \(S\), expand along the rows \(g_n\). Each block on \(K\subset S\) has order \(\Sigma K-\binom m2\ge md\), and its complement has order at least \(4m\). So every maximal minor has order at least \(md+4m\), and that lemma shows equality for the first \(3m+3\) columns.</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Test of the conjecture.</strong> research/tools/bmd_tie_forney.gp (research/results/bmd-20261007-zl/forney.txt), \(m=1,\ldots,4\). Over \(\mathbb Q\), it computes all maximal minors, \(\delta_m\), \(\lambda_m\), \(a_m\) and \(b_m\), so the sum \(\nu_1+\nu_2=\delta_m-\deg\lambda_m\) is exact. Modulo the prime \(10^9+7\), a computational choice, it computes the kernel dimension of the linearized system at every degree bound. Rank modulo \(p\) is at most the rational rank, since \(p\) divides no denominator, so this count can only exceed the rational one. It gives \(\nu_1(\bmod p)\le\nu_1\). Since \(\nu_1\le\lfloor(\nu_1+\nu_2)/2\rfloor\) and the sum is exact, and the modular value equals \(\lfloor(\nu_1+\nu_2)/2\rfloor\) in all four cases, the indices in the table are exact.</p>
+<table>
+<tr><th>\(m\)</th><th>\(\delta_m\)</th><th>\(a_m\)</th><th>\(b_m\)</th><th>\(\deg\lambda_m-a_m-b_m\)</th><th>\(\nu_1+\nu_2\)</th><th>\((\nu_1,\nu_2)\)</th></tr>
+<tr><td>1</td><td>15</td><td>4</td><td>4</td><td>0</td><td>7</td><td>(3,4)</td></tr>
+<tr><td>2</td><td>32</td><td>10</td><td>8</td><td>0</td><td>14</td><td>(7,7)</td></tr>
+<tr><td>3</td><td>60</td><td>21</td><td>14</td><td>0</td><td>25</td><td>(12,13)</td></tr>
+<tr><td>4</td><td>102</td><td>40</td><td>22</td><td>0</td><td>40</td><td>(20,20)</td></tr>
+</table>
+<p>The modular kernel dimensions, upper bounds for the rational ones, at degree bound \(\delta\) are \(0\) below \(\nu_1\), then rise by \(1\) or \(2\) and by \(2\) per step from \(\nu_2\) on. This is the predictable-degree count of a minimal basis with these indices. The first run failed on a parenthesis and is kept in the session archive.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the special values review, left primeness. Left primeness of \(W\) off \(\{0,1\}\) is equivalent to a degree count of its kernel module, and the count holds through \(m=4\).</p>
+<p><strong>What changes.</strong> The special values no longer need a pointwise argument at unknown \(c\). They are a statement about the kernel module: no polynomial kernel vectors of low degree, so that the indices sum to \(2m^2+m+4\). Kernel vectors are functionals on the window's coefficients that annihilate all five row families, a type II Hermite–Padé problem with polynomial dependence on \(c\). A lower bound on their degrees is a constant-coefficient rank statement for the linearized matrices, with no parameter. The small-parameter method may reach it. The extreme terms in \(c\) already give \(a_m\), and similar extremes at \(c=\infty\) and at \(c=1\) should give \(\delta_m\) and \(b_m\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the sufficient endpoint \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\), for which conj:cube-tie-window-balanced-kernel gives explicit values;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-generic-rank (the row reduction and its operations); lem:cube-tie-pure-extreme-coefficients (the Laplace step); Forney's minimal bases (the dual degree theorem and the predictable degree property).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>Forney's duality and the coprime minimal-basis minors;</li>
+<li>the uniform constant of the row operations and the order bound for every column set;</li>
+<li>the formulas against the table;</li>
+<li>both scripts and their outputs.</li>
+</ul>
+<p>It found no mathematical error and no unused hypothesis. Its corrections are applied:</p>
+<ul>
+<li>the step that makes the individual indices exact;</li>
+<li>the modular kernel counts marked as upper bounds;</li>
+<li>"no product formula in small primes";</li>
+<li>the sufficient endpoint \(\nu_1+\nu_2\ge\delta_m-a_m-b_m\) stated separately from the stronger conjecture;</li>
+<li>the Plücker duality made explicit.</li>
+</ul>
+<p>Status: working proof (criterion, \(a_m\)); conjecture (balanced kernel).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 16.47 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 7.73 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 51.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12.90 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
