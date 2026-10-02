@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-cherry-slack-theorem">cherry slack theorem</a> proves slack at least one for single-cherry clusters on every arc (thm:cube-single-cherry-slack-one), by a Wronskian exponent count on an enlarged window (lem:cube-enlarged-cherry-window). So a tie above a cherry is avoided (cor:cube-tie-above-cherry). Open in gap (1): a cherry above a tie, two cherries, nested cherries, a tie and a cherry on one level, the flat three-cluster, and conj:cube-triple-window-full-rank.</p>
-<p>Next: a cherry above a tie chain. Identify the limit space of a cherry level above an arbitrary cluster as the cluster's limit space plus Kummer-class pieces, using the lattice splitting with the lower cluster in place of a caterpillar. Then apply the exponent count, or the level step's minimal-term argument, to show the leading coordinate lies in the admissible columns.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-cherry-combination-orders">cherry combination entry</a> finds unramified limit spaces on all 22 tested arcs of the remaining cherry types (conj:cube-cherry-combination-avoidance). It proposes a node inequality to make the Wronskian weight additive along chains.</p>
+<p>Next: state and prove the node inequality for a cherry or single-root top level above an arbitrary cluster. Relate the exponents of \(L_0\) at \(T=\infty\) to the vanishing orders of the cluster's limit space at its mark through the rescaling \(S=xT\), and test the inequality on the computed arcs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -62863,6 +62863,61 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 18.58 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.62 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-cherry-combination-orders" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-cone-limits-review-two:1" data-claims="conj:cube-cherry-combination-avoidance">
+<h3>8 October 2026 — Cherry combinations: along every tested arc the limit pair space is unramified at the mark, and a node-additivity route for the Wronskian count is proposed</h3>
+<p class="entry-meta">Conjecture, with exact limit-space computations on 22 arcs of the remaining cherry types: a cherry above a tie, two cherries, a tie and a cherry on one level. Gap (1). Cherry combination cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1), the highest-risk item. After the cherry slack theorem, the remaining two-displacement types with a cherry are:</p>
+<ul>
+<li>a cherry above a tie;</li>
+<li>two cherries at different levels;</li>
+<li>a tie and a cherry on one level;</li>
+<li>a cherry inside a cherry, and the flat three-cluster.</li>
+</ul>
+<p>Do their limit spaces satisfy the avoidance criterion along every arc: no section vanishing to order \(R+2\) at the mark? Is there a uniform mechanism?</p>
+<p><strong>General statement.</strong> conj:cube-cherry-combination-avoidance: for every cone limit of lem:cube-geometric-cone-limit-types involving a cherry (types (A)–(C)) and every analytic arc tending to it, the limit \(L_0\) of the pair space has no nonzero section vanishing to order \(R+2\) at \(T=0\). Hence these points lie outside \(\overline K\).</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_combo_orders.gp (research/results/bmd-20261008-zc/combo-orders.txt) computes \(L_0\) exactly, by valuation-pivoted elimination over \(\mathbb Q(\varepsilon)\), on the columns \(0,\ldots,R+3\). The arcs:</p>
+<ul>
+<li>a cherry \(\{1,1+\varepsilon^b\}\) above a tie cluster \(\varepsilon^a\{c_0,1\}\) over a two-root caterpillar (\(N=6\), \(R=15\)): \(c_0\in\{2,-1,-\tfrac12,3\}\), \((a,b)\in\{(1,1),(1,3),(3,1)\}\);</li>
+<li>two cherries, \(\{1,1+\varepsilon^b\}\) above \(\varepsilon^a\{1,1+2\varepsilon^{b_2}\}\) over a two-root caterpillar (\(R=15\)), at four rate triples;</li>
+<li>a tie and a cherry on one level, roots \(1,1+\varepsilon^b,c_0\) over \(\varepsilon^a\{1,-2\varepsilon\}\) (\(R=10\)): \(c_0\in\{2,-1\}\), three rate pairs.</li>
+</ul>
+<p>In all \(22\) arcs the vanishing orders of \(L_0\) at \(T=0\) are exactly \(0,\ldots,R-1\): unramified, with slack two. This includes \(c_0=-1\), where a Schur value \(s_{(1)}(c_0,1)=c_0+1\) of the tie pair vanishes.</p>
+<p>The arcs are monomial, with one choice of leading coefficients each. Special arcs, such as those of ex:cube-single-cherry-slack-two-fails, can lower the slack, so this tests generic arcs only. The prediction could have failed on every arc: a single order \(\ge R+2\) would have shown an arc into \(\overline K\).</p>
+<p><strong>A proposed mechanism.</strong> In the chain frame, when the top level carries one root or one cherry, the top component of the \(T\)-line has only two singular points:</p>
+<ul>
+<li>\(-1\), the top root or the cherry;</li>
+<li>\(\infty\), where all deeper roots collect, since a root near \(0\) has branch point \(-1/a\) near \(\infty\).</li>
+</ul>
+<p>Every element of \(L_0\) is then \((1+T)^\gamma\) times a polynomial, with \(\gamma\in\mathbb Z\cup(\tfrac12+\mathbb Z)\). The Wronskian count of lem:cube-enlarged-cherry-window bounds the weight at the mark:</p>
+\[
+\textstyle\sum_i(a_i-i)\ \le\ -\bigl(\Sigma_{-1}(L_0)+\Sigma_\infty(L_0)\bigr).
+\]
+<p>The exponents at \(-1\) are explicit: the cherry or root rows. The exponents at \(\infty\) are, through the node at \(T=\infty\) (in the rescaled variable \(S=xT\), at \(S=0\)), complementary to the vanishing orders of the deeper cluster's own limit space at its mark. An Eisenbud–Harris-type node inequality \(e_i^{\rm top}(\infty)+a_{R'-1-i}^{\rm cluster}(0)\ge\mathrm{const}\) would make the weights additive along the chain. Avoidance would then follow by induction from the cluster's slack.</p>
+<p>The cherry slack theorem is the case where the cluster is a caterpillar, with weight \(0\). Ties and three-root levels have three or more singular points on their component, which is why they needed the window theorems instead.</p>
+<p><strong>Lead follow-up.</strong> This continues lead 1 of the cone limits review, Eisenbud–Harris limit series: the node inequality is the missing ingredient. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>in gap (1): conj:cube-cherry-combination-avoidance, through a node inequality for pair-space limits; conj:cube-triple-window-full-rank;</li>
+<li>in gap (3): conj:cube-tie-single-block-exclusion and the special cancellations;</li>
+<li>the cherry local sums.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-enlarged-cherry-window; thm:cube-single-cherry-slack-one; lem:cube-geometric-cone-limit-types (the cherry types).</p>
+<p><strong>Verification gate.</strong> No new lemma. The computation is exact. Its only claim beyond the data is the conjecture.</p>
+<p>Status: conjecture (checked on 22 arcs).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 20.18 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 9.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 14.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
