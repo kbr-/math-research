@@ -47,8 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-pade">tie Padé entry</a> proves \(\det B_m=\kappa c^{md}\det[h_{m+i-j}]\) for \(h_c=(1+T)^{-5/2-d}(1+cT)^{3/2+d}\) (lem:cube-tie-pure-pade-normality). The window itself is a one-point Hermite–Padé rank condition of five functions with excess order \(2\). The special values remain the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree).</p>
-<p>Next: search the Padé and Hermite–Padé literature for Toeplitz determinants of products of two binomials and for excess-order rank conditions of binomial systems at one point. Read sources in full. Then try to prove conj:cube-tie-pure-wide-normality from the Padé structure, and the independence of the three extra rows modulo the pure span.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-pade-literature">tie Padé literature entry</a> finds no theorem covering the two-point product \(h_c\) or the window's excess-order rank condition. \(H_m\) is not a Wronskian of consecutive coefficients (ex:cube-tie-pure-not-wronskian). The special values of the confluent tie window remain the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) (lem:cube-tie-window-top-degree), the highest-risk item, without a mechanism.</p>
+<p>Next: develop the two leads of the tie Forney review not yet run, before moving cycles away from the bound.</p>
+<ul>
+<li>Christoffel–Darboux: extend the moment form of lem:cube-tie-window-moments to the three extra rows, as two-variable or convolution functionals.</li>
+<li>Kronecker: find a rational matrix function whose McMillan degree is the Forney sum, so that the bound becomes a constant Hankel rank.</li>
+</ul>
+<p>After that, the cherry over a double root, by the confluent cherry theorem's prefix method.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59050,6 +59055,43 @@ For the window there are now the degree counts \(a_m\), \(b_m\) and \(\delta_m\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.78 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-pade-literature" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-tie-pure-not-wronskian">
+<h3>7 October 2026 — Literature for the confluent tie window's Toeplitz determinant: one-point product theorems do not reach two points, and H_m is not a Wronskian of consecutive coefficients</h3>
+<p class="entry-meta">Literature search on Padé forms of products of binomials and Karlin–Szegő identities, with a refutation (m = 2–4) of the naive Wronskian form of H_m. Gap (3), confluent tie window. Tie Padé literature cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound of lem:cube-tie-window-top-degree. lem:cube-tie-pure-pade-normality writes the pure block of the confluent tie window as a Toeplitz determinant, \(\det B_m=\kappa c^{md}C_m\) with \(C_m=\det[h_{m+i-j}]\). Here \(h_c=(1+T)^{-5/2-d}(1+cT)^{3/2+d}\). The tie Padé entry proposed a literature search for theorems on such determinants. Which known results cover \(h_c\), and does \(H_m\) have the Karlin–Szegő shape?</p>
+<p><strong>Sources read (abstracts and statements).</strong></p>
+<ul>
+<li>Kawashima, Padé approximations for products of functions, arXiv:2511.10057. It constructs Padé approximations, and proves perfectness by a bijection with exponential systems, for products \((1+z)^{\omega_i}\log^{j_i}(1+z)\). All binomials there share the point \(-1\), with exponents \(0\le\omega_1&lt;\cdots&lt;\omega_m&lt;1\). Products at two points, like \(h_c\), are not covered.</li>
+<li>The explicit Padé denominators for \({}_2F_1(a,1;c;z)\) (Baker and Graves-Morris; Encyclopedia of Mathematics, Padé approximation) do not apply. \(h_c\) is not of that form, and its coefficients \(h_k(c)=\sum_j\binom{-\alpha}{k-j}\binom{\beta}jc^j\) are Jacobi-type polynomials in \(c\) whose parameters vary with \(k\).</li>
+<li>Karlin and Szegő; Leclerc, On certain formulas of Karlin and Szegő, Sém. Lothar. Combin. 41 (1998). Hankel determinants of classical orthogonal polynomials are constants times \((x^2-1)^N\), \(x^N\) or \(1\), times Wronskians of orthogonal polynomials of another family. \(\det B_m=\kappa c^{md}(c-1)^{m(m+1)}H_m\) has the same shape.</li>
+</ul>
+<p><strong>General statement.</strong> lem:cube-tie-pure-pade-normality, through the Karlin–Szegő strategy. The finite refutation ex:cube-tie-pure-not-wronskian: for \(m=2,3,4\), \(H_m\) is not, up to a constant and powers of \(c\) and \(c-1\), the Wronskian in \(c\) of consecutive coefficients \(h_a,\ldots,h_{a+k-1}\) of \(h_c\), for any \(0\le a\le3m\) and \(1\le k\le2m\).</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_wronskian_test.gp (research/results/bmd-20261007-zr/wronskian.txt) compares the stripped Wronskians with \(H_m\) for all those \(a,k\) and finds no match. A first run failed because the script redefined a built-in function; it is kept in the session archive. Karlin–Szegő need sequences with derivative relations, of Appell type, which \(h_k(c)\) lacks: \(\partial_ch_c=\beta T(1+cT)^{-1}h_c\) is not a shift. So only the naive form is refuted. A Wronskian of another family is not excluded.</p>
+<p><strong>What this means.</strong> No source found covers a two-point product of binomials, or the excess-order rank condition of the window. The pure block is no longer the bottleneck, since its generic and wide behaviour are proved or checked. The window's special values remain a global statement with no known theorem behind them.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the Forney bound \(\nu_1+\nu_2\ge2m^2+m+4\) for \(m\ge7\);</li>
+<li>conj:cube-tie-pure-wide-normality;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-pure-pade-normality and lem:cube-tie-window-top-degree; the abstracts and statements of the sources listed.</p>
+<p><strong>Verification gate.</strong> No new argument: a finite refutation checked against its script and output, and source statements read at abstract level. No reviewer was used.</p>
+<p>Status: refutation (of the naive Wronskian form, finite check).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 22.42 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">53.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.31 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 26.47 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
