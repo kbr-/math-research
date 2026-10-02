@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), its core, the confluent tie window. It is now a special case of conj:cube-confluent-tie-table-normality, which holds on 120 tested windows (<a href="#entry-2026-10-08-cube-tie-table-normality">confluent tie table</a>). A descent in the start cannot stay inside one space.</p>
-<p>Next: look for an induction on \((a,b)\) at a fixed start. Pass from \(V(a,b)\) to \(V(a+1,b)\) and \(V(a,b+1)\) by a Frobenius-type identity between window minors, as in the Padé table, which moves only the \(\varphi\) and \(\psi\) classes. Base case \(a=b=0\): the three extra rows alone, a statement about \(E\) proved directly.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), its core, conj:cube-confluent-tie-table-normality. The base case is proved at every start by a Mason–Stothers Padé defect bound (<a href="#entry-2026-10-08-cube-tie-table-base">tie table base</a>).</p>
+<p>Next: carry the Mason–Stothers argument to the four-class windows. On the genus-zero curve \(u^2=1+T\), \(v^2=1+cT\) every row is a rational function. Bound the order at one place above \(T=0\) of a combination of the rows minus a polynomial by an abc-type count there. Compare with the Wronskian count, which is one column short, and find where the specific exponents \(-5/2\), \(-3/2\), \(-3\) recover that column.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -63687,6 +63687,74 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.56 s</td></tr>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">4 min 45.10 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-table-base" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-square-rational-pade-defect thm:cube-tie-table-base">
+<h3>8 October 2026 — Mason–Stothers bounds the Padé defect of square-rational functions; the base of the confluent tie table has full rank at every start</h3>
+<p class="entry-meta">Working proofs: a Padé defect bound for power series whose square is rational, by the Mason–Stothers theorem, and full rank of the three extra rows' windows at every start. Exact check to s = 40. Tie table base cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), its core: conj:cube-confluent-tie-table-normality (<a href="#entry-2026-10-08-cube-tie-table-normality">confluent tie table</a>). The proposed induction on \((a,b)\) needs its base case \(a=b=0\), the span \(E\) of the three extra rows, at every start \(s\). Is there a mechanism that proves window statements uniformly in \(s\)?</p>
+<p><strong>General statement.</strong> lem:cube-square-rational-pade-defect. Let \(G\in\mathbb C[[T]]\) with \(G\notin\mathbb C(T)\) and \(G^2=U/W\) for polynomials \(U,W\) whose zeros together lie in a set \(Z\subset\mathbb C\setminus\{0\}\) of size \(z\) (so \(G(0)\ne0\)). Then for all polynomials \(R\ne0\) and \(P\ne0\),</p>
+\[ \operatorname{ord}_0(RG-P)\le\deg R+\deg P+z . \]
+<p>For \(P=0\), \(\operatorname{ord}_0(RG)=\operatorname{ord}_0R\le\deg R\). In particular, for \(G=(1+T)^\alpha(1+cT)^\beta\) with \(2\alpha,2\beta\) odd and \(c\ne1\), where \(Z=\{-1,-1/c\}\) and \(z=2\), the Padé defect is at most one: the order exceeds the normal value \(\deg R+\deg P+1\) by at most \(1\) (and by \(0\) when \(c=0\), where \(z=1\)).</p>
+<p><strong>Second statement.</strong> thm:cube-tie-table-base. Let \(c\ne1\), \(g=((1+T)(1+cT))^{-3/2}\) and \(E=\langle(1+T)^{-3},\,g,\,gT/(1+T)\rangle\). For every \(s\ge0\), the window of \(E\) on the columns \(T^s,\ldots,T^{s+4}\) has rank \(3\). This is the case \(a=b=0\) of conj:cube-confluent-tie-table-normality, now proved for every start.</p>
+<p><strong>Proof of the lemma.</strong> The Mason–Stothers theorem (W. W. Stothers, Quart. J. Math. 32, 1981; R. C. Mason, Diophantine equations over function fields, 1984): if \(A+B=C\) for coprime polynomials over \(\mathbb C\), not all constant, then \(\max(\deg A,\deg B,\deg C)\le n_0(ABC)-1\), where \(n_0\) counts distinct roots.</p>
+<p>Write \(\sigma=\operatorname{ord}_0(RG-P)\), \(r=\deg R\), \(p=\deg P\).</p>
+<p>Step 1: reduce to \(\gcd(R,P)=1\). If \(T-\rho\) divides both with \(\rho\ne0\), dividing by this unit of \(\mathbb C[[T]]\) keeps \(\sigma\) and lowers \(r\) and \(p\) by one each. If \(T\) divides both, dividing lowers \(\sigma\), \(r\), \(p\) by one each. In both cases the inequality for the reduced pair implies it for the original pair.</p>
+<p>Step 2. Put \(A=P^2W\), \(B=R^2U\) and</p>
+\[ C=A-B=W\,(P-RG)(P+RG). \]
+<p>\(C\ne0\), since otherwise \(G=\pm P/R\) would be rational. As \(W(0)\ne0\), \(\operatorname{ord}_0C\ge\sigma\). Let \(D=\gcd(A,B)\). If \(T\mid D\), then \(T\mid P\) (as \(W(0)\ne0\)) and \(T\mid R\) (as \(U(0)\ne0\)), contrary to Step 1. So \(D(0)\ne0\), and \(C'=C/D\) still has \(\operatorname{ord}_0C'\ge\sigma\).</p>
+<p>If \(A/D\), \(B/D\) and \(C'\) are all constant, then \(\operatorname{ord}_0C'=0\), so \(\sigma\le0\). Otherwise Mason–Stothers applies to the coprime relation \(A/D-B/D=C'\). The roots of \((A/D)(B/D)C'\) lie among the roots of \(P\), \(R\), the set \(Z\), the point \(0\), and the at most \(\deg C'-\sigma\) roots of \(C'\) away from \(0\) (counted with multiplicity). Hence</p>
+\[ \deg C'\le p+r+z+1+(\deg C'-\sigma)-1 , \]
+<p>that is, \(\sigma\le p+r+z\). \(\square\)</p>
+<p><strong>Proof of the theorem.</strong> \(E\) has dimension \(3\): its three generators lie in the monodromy classes of \((1+T)^{-3}\) (trivial) and of \(g\), which differ when \(c\ne1\), and \(g\), \(gT/(1+T)\) are independent over \(\mathbb C\).</p>
+<p>Let \(F=\alpha(1+T)^{-3}+(1+T)^{-5/2}(1+cT)^{-3/2}L\in E\), with \(L\) linear (since \(g\beta+\gamma gT/(1+T)=(1+T)^{-5/2}(1+cT)^{-3/2}(\beta(1+T)+\gamma T)\)), and suppose its coefficients \(u_k\) vanish for \(s\le k\le s+4\). Apply \(\mathcal M=(1+T)\frac d{dT}+3\). It kills \((1+T)^{-3}\), and a direct computation gives</p>
+\[ \mathcal MF=\bigl((1+T)(1+cT)\bigr)^{-5/2}N,\qquad N=\tfrac12(1+cT)L-\tfrac{3c}2(1+T)L+(1+T)(1+cT)L', \]
+<p>with \(\deg N\le2\). On coefficients, \([T^k]\mathcal MF=(k+1)u_{k+1}+(k+3)u_k\), so the coefficients of \(\mathcal MF\) vanish for \(s\le k\le s+3\).</p>
+<p>Suppose \(N\ne0\). Then \(\mathcal MF=NG-P\) with \(G=((1+T)(1+cT))^{-5/2}\), \(P=0\) if \(s=0\), and \(P\) the truncation of \(NG\) below \(T^s\) otherwise, so \(\deg P\le s-1\), and \(\operatorname{ord}_0(NG-P)\ge s+4\).</p>
+<ul>
+<li>For \(s=0\) and \(P=0\): \(\operatorname{ord}_0N\ge4&gt;\deg N\), impossible.</li>
+<li>For \(P=0\) with \(s\ge1\), the same.</li>
+<li>For \(P\ne0\), the lemma with \(z\le2\) gives \(s+4\le2+(s-1)+2=s+3\), impossible.</li>
+</ul>
+<p>So \(N=0\), that is \(\mathcal MF=0\). Then \(F\) is a multiple of \((1+T)^{-3}\), whose coefficients \((-1)^k\binom{k+2}2\) never vanish, so \(F=0\). \(\square\)</p>
+<p><strong>Checks.</strong> research/tools/bmd_tie_table_base.gp (research/results/bmd-20261008-zi/table-base.txt), exact over \(\mathbb Q[c]\), for \(s=0,\ldots,40\). It computes:</p>
+<ul>
+<li>the gcd of the maximal minors of the \(3\times5\) window of \(E\);</li>
+<li>the gcd for the \(3\times4\) window of \(\mathrm{Pol}_{\le2}G\);</li>
+<li>the single \(3\times3\) Toeplitz minor on \(T^s,\ldots,T^{s+2}\).</li>
+</ul>
+<p>The two gcds are constant off \(c(c-1)\) at every start, as the theorem says. The single minor does vanish at special \(c\). For even \(s\) it is one irreducible factor of degree \(3s\); for odd \(s\) it is \(c+1\) times an irreducible factor of degree \(3s-1\) (for \(s=1\), \((c+1)(c^2+14c+1)\)). The script removes powers of \(c\) and \(c-1\), so \(c=0\) is covered by the proof; the reviewer's extra check found rank \(3\) at \(c=0\) and \(c=-1\) for \(s\le24\). That is the defect one the lemma allows: one minor can vanish, never the whole window.</p>
+<p><strong>What this means.</strong> This is the first argument on this route that proves a window statement of the tie family uniformly in the start, with no exceptional parameters, and it is short. Its reach is limited by the number of classes. Mason–Stothers is optimal for three-term relations, and one class plus the approximating polynomial gives exactly three terms after the conjugate trick \((P-RG)(P+RG)\). The general table has four classes (\(\varphi\), \(\psi\), \(g\) and the rational one). Its windows are relations with five terms. The \(n\)-term versions (Brownawell–Masser, Voloch) carry extra terms of size about \(\binom{n-1}2\) times the number of places in their degree bounds. That they lose here is a heuristic, not a result. The record's Wronskian count (<a href="#entry-2026-10-08-cube-tie-wronskian-review">tie Wronskian review</a>) is of that kind, and it comes one column short.</p>
+<p>Killing classes with first-order operators before applying the lemma costs exactly one column per dimension for the rational class, as \(\mathcal M\) does here. But on the other classes each such operator raises the polynomial degree by one, which the lemma charges in full.</p>
+<p><strong>Remaining gap.</strong> conj:cube-confluent-tie-table-normality for \((a,b)\ne(0,0)\). The next question is whether a class-preserving operator kills \(\varphi\mathrm{Pol}_{&lt;a}\) at cost \(a\) without raising the degrees of the \(\psi\) and \(g\) parts. Alternatively, Mason's theorem on the genus-zero curve \(u^2=1+T\), \(v^2=1+cT\), where all four classes become rational functions, could replace the conjugate trick.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-table-normality and prop:cube-tie-shift-intersection (monodromy classes);</li>
+<li>lem:cube-confluent-tie-reduction (the extra rows).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer, who recomputed \(\mathcal MF\) with gp and checked ranks at \(c=0,-1\). Verdict: pass with minor corrections. All were applied:</p>
+<ul>
+<li>the factor description of the single minor;</li>
+<li>\(G(0)=1\) dropped as a hypothesis;</li>
+<li>\(z\) counted on \(U\) and \(W\) together;</li>
+<li>the claim of being first limited to this route;</li>
+<li>the anchor of the Wronskian count;</li>
+<li>the \(n\)-term remark labelled as heuristic.</li>
+</ul>
+<p>Status: working proofs (lemma and base case), exact check to \(s=40\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zi">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 12.70 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 30.59 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 27.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 12.93 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.30 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
