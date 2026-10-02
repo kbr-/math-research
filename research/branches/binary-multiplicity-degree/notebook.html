@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K). Items 1–2 do not yield to the moment method (<a href="#entry-2026-10-09-cube-core-items-moment-reach">core items reach</a>). Items 3–4 are reduced to window domination, and the windows' coordinates are explicit <a href="#entry-2026-10-09-cube-window-hypergeometric-alternant">hypergeometric alternants</a>.</p>
-<p>Next: window domination in the first nontrivial regime. For a non-window term at order \(t=1\) with penalty \(g(k-1)\), find the dominating window term from the alternant: the window \(\Lambda_{p+1}\)'s leading term or \(\Lambda_p\)'s \(u^{B+1}\)-term (which keeps the penalty \(g(k)\) at \(M=3\)). Prove the corresponding lattice and penalty inequalities for every tree.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4. <a href="#entry-2026-10-09-cube-partial-window-domination">Partial window domination</a> is proved. Window domination is open only for near-window terms: \(t\ge1\) and \(\delta_N+t&lt;s(2p+s-1)\).</p>
+<p>Next: the near-window terms at \(t=1\) (\(\delta_N&lt;2p-1\)). At \(M=3\) the window's own \(u^{B_p+1}\)-term keeps the full penalty \(g(k)\), so it cannot dominate a term at \(g(k-1)\). The likely mechanism is that near-window terms also pay more than the graded bound. Sharpen thm:cube-graded-hankel-penalty for coordinates whose negative set is close to \(\{1,\ldots,p\}\), tracking which kernel columns can take the higher-order parts.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65995,6 +65995,63 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 2.60 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">17.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-partial-window-domination" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-partial-window-domination">
+<h3>9 October 2026 — Partial window domination: every leading term, and every higher term with spread negatives, of a non-window cross coordinate is strictly dominated by a window's leading term</h3>
+<p class="entry-meta">Working proof: window domination for all terms outside an explicit near-window class, from the graded penalty and the Hankel form, above every cluster tree with non-cancelling Hankel leading terms. Partial domination cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4: (W′) above cherry clusters and nested trees, reduced to conj:cube-window-domination. Which terms do the proved results already dominate?</p>
+<p><strong>General statement.</strong> thm:cube-partial-window-domination. Work in the setting of lem:cube-cross-leading-coefficient (\(\lambda=3/2\), \(x=1\), \(\varepsilon=u\)). Let \(y_1,\ldots,y_M\) be distinct elements of a valuation ring \(\mathcal O\supset\mathbb Q\). Hankel non-cancellation at index \(j\) means \(\operatorname{val}\mathrm{Hank}_j(y)=g(j)=\min_{|S|=j+1}2\operatorname{val}\mathrm{Vand}(y_S)\). It holds when the minimum is attained by a single subset. It also holds when the residue field is formally real: after dividing by \(\mathrm{Vand}(y_{S_0})^2\) for a minimizing \(S_0\), the residue is a sum of nonzero squares. That case does not cover the record's arcs over \(\mathbb C\) or its \(q\)-adic tests. It is automatic at \(j=0\), since \(\mathrm{Hank}_0=M\).</p>
+<p>Let \(\Lambda\neq\Lambda_p\) be a cross coordinate set with negative part \(-N\), \(1\le p=|N|\le M\), \(k=M-p\). Take its \(u^{B(\Lambda)+t}\)-term \((X,E,v)\) (notation of conj:cube-window-domination). Put \(s=\min(t,k)\) and \(\delta_N=\sum N-\binom{p+1}2\ge0\). If</p>
+\[ \delta_N+t\ \ge\ s(2p+s-1), \]
+<p>and non-cancellation holds at index \(k-s\), then the term is strictly dominated by the leading term of the window \(\Lambda_{p+s}\). (Coordinates with \(p&gt;M\) vanish, by step (2) of thm:cube-graded-hankel-penalty.) In particular every leading term (\(t=0\)) of every non-window with \(p\ge1\) is strictly dominated by the leading term of \(\Lambda_p\), under non-cancellation at index \(k\).</p>
+<p><strong>Proof.</strong></p>
+<p>(1) Coordinates. For \(\Lambda\) at order \(n=B(\Lambda)+t\), with \(B(\Lambda)=\binom p2+\sum N+k\) and \(\sum\Lambda=\sum\Lambda_+-\sum N\):</p>
+\[ X=\textstyle\sum\Lambda_++\binom p2+k+t,\qquad E=B_p+\delta_N+t , \]
+<p>where \(B_p=p^2-p+M\) is the window's leading order. For the window \(\Lambda_j\) at its leading order, \(X_j=A_j=2M^2-2Mj+j^2-j\) and \(E_j=B_j\) (thm:cube-cherry-lattice-splitting). Its value is \(v_j=2\operatorname{val}\mathrm{Vand}+\operatorname{val}\mathrm{Hank}_{M-j}=2\operatorname{val}\mathrm{Vand}+g(M-j)\), by thm:cube-cherry-hankel-form and non-cancellation.</p>
+<p>(2) The \(X\)-coordinate. \(\Lambda_+\) consists of \(2M-p\) distinct nonnegative integers, so \(\sum\Lambda_+\ge\binom{2M-p}2\), with equality only for \([0,2M-p-1]\). Hence \(X\ge X_p+t\). Also \(X_{p+s}-X_p=s(2p+s-1-2M)\). As \(p+s\le M\), this is \(\le-s(s+1)\) for \(s\ge1\). So \(X_{p+s}\le X\), strictly when \(s\ge1\).</p>
+<p>(3) The \(E\)-coordinate. \(B_{p+s}-B_p=s(2p+s-1)\), so \(E_{p+s}\le E\) exactly under the hypothesis.</p>
+<p>(4) The value. By thm:cube-graded-hankel-penalty, \(v\ge2\operatorname{val}\mathrm{Vand}+g(\max(k-t,0))=2\operatorname{val}\mathrm{Vand}+g(k-s)=v_{p+s}\).</p>
+<p>(5) Strictness. If \(s\ge1\), (2) is strict. If \(s=0\), then \(t=0\) or \(k=0\). For \(t=0\), equality in (2) and (3) forces \(\Lambda_+=[0,2M-p-1]\) and \(\delta_N=0\), that is \(N=\{1,\ldots,p\}\), so \(\Lambda=\Lambda_p\). For \(k=0\) (\(p=M\)), equality in (2) needs \(t=0\), which is the previous case. \(\square\)</p>
+<p><strong>The remaining terms.</strong> Window domination is now open only for the near-window terms: \(t\ge1\), \(p&lt;M\), and \(\delta_N+t&lt;s(2p+s-1)\). Their negative sets are close to \(\{1,\ldots,p\}\) relative to \(t\), and they need dominators among the windows' higher terms. Windows \(\Lambda_{p+s'}\) with \(s'&lt;s\) also serve when the term's actual value \(v\) is at least \(2\operatorname{val}\mathrm{Vand}+g(k-s')\), that is, when it exceeds its graded lower bound.</p>
+<p>The example of the <a href="#entry-2026-10-08-cube-window-domination">window domination entry</a> is of this kind: \(\Lambda=\{-3,-1,0,\ldots,5\}\), \(p=2\), \(\delta_N=1\), \(t=2\), \(s=2\), and \(1+2&lt;10\). Its dominator was a higher term of \(\Lambda_2\).</p>
+<p>For \(t=1\) the condition reads \(\delta_N\ge2p-1\). So the open terms at first order are those whose negatives exceed \(\{1,\ldots,p\}\) by less than \(2p-1\) in total.</p>
+<p><strong>Check.</strong> The theorem implies that the leading-window-only failures of the record's domination data are near-window terms, or terms with \(p=0\), or terms on trees where non-cancellation fails at the needed index. The data's single prime has residue field \(\mathbb F_q\), so non-cancellation there is not established by the criteria above. The example is consistent with this. No new computation was run.</p>
+<p><strong>What this means.</strong> Window domination is reduced to an explicit, small class of terms. It is the class where the needed dominator is a window's higher term, which the hypergeometric alternant describes. The hypothesis of Hankel non-cancellation is the one the windows' exactness needed all along. For a tie over a caterpillar it fails exactly at the two moduli of \(c_0\), which the record already excludes. On other trees the minimizing subsets can tie, and non-cancellation there is open.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The near-window terms (\(t\ge1\), \(\delta_N+t&lt;s(2p+s-1)\)).</li>
+<li>Adjacency of the leading windows.</li>
+<li>Coordinates with \(p=0\).</li>\n<li>Hankel non-cancellation on trees other than ties over caterpillars.</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-graded-hankel-penalty and thm:cube-cherry-hankel-form;</li>
+<li>thm:cube-cherry-lattice-splitting (\(A_j\), \(B_j\));</li>
+<li>conj:cube-window-domination and prop:cube-domination-gives-window-leaders.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the coordinate formulas, both inequalities, the value step, strictness including \(k=0\), and the example. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the example's arithmetic (\(10\), not \(8\));</li>
+<li>non-cancellation reduced to the one index used, "formally real" with its reason, and its limited reach stated;</li>
+<li>the moduli remark restricted to ties over caterpillars;</li>
+<li>the check paragraph weakened;</li>
+<li>the near-window clause corrected;</li>
+<li>the \(p&gt;M\) scope and the setting stated.</li>
+</ul>
+<p>Status: working proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-d">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 37.38 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 12.07 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 16.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.61 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
