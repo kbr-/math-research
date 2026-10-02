@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-staircase">tie staircase entry</a> finds no geometric closed form for the staircase pairings, and falsifies the folded-Wronskian bridge. The confluent tie window's full rank remains a transversality statement without a visible identity.</p>
-<p>Next: test whether the cone route can tolerate special values after all. At a hypothetical special \(c_0\), the point \(P(c_0)\) of the confluent tie F-curve lies in \(\overline{K/{\rm Aff}}\) only if the next-order data along arcs through it also degenerate. Write the first-order expansion of the window in the smoothing parameters at \(P(c_0)\) as an explicit pairing \(y^{\mathsf T}W_1x\). Test, using a perturbed window with genuine special values (for example a nearby exponent \(\lambda\) where they exist), whether that pairing can vanish simultaneously. If it cannot, the cone route needs only the generic window, and the Forney bound becomes unnecessary.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-holonomic-staircase">tie holonomic staircase entry</a> makes the pure kernel of the confluent tie window the coefficient vector of one explicit difference operator \(Q=\mathrm{LCLM}(h_f\Delta^{2m}h_f^{-1},h_g\Delta^mh_g^{-1})\) (lem:cube-tie-holonomic-staircase). Full rank is then the rank of the \(3\times5\) matrix \(((Qe_a)(M))\).</p>
+<p>Next: compute \(Q\) for \(m\le3\) by linear algebra over \(\mathbb Q(k,c)\), with its leading and trailing coefficients and their roots in \(k\). Compute recurrences in \(M\) for the three sequences \(Qe_a\). Test whether a combination vanishing at five consecutive positions forces a singular position of its recurrence inside the window, and whether such positions are excluded for \(c\notin\{0,1\}\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -61306,6 +61306,65 @@ So \(B_M(S)\) is affine in \((m,d)\). Its coefficient of \(d\) is \(1-[5\in S]\g
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.27 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.38 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-holonomic-staircase" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-mechanisms-review:3" data-claims="lem:cube-tie-holonomic-staircase">
+<h3>8 October 2026 — The pure kernel of the confluent tie window is the coefficient vector of one explicit difference operator: the least common left multiple of h_f Δ^(2m) h_f^(−1) and h_g Δ^m h_g^(−1)</h3>
+<p class="entry-meta">Working proof of a holonomic description of the pure kernel, setting up creative telescoping for the three extra rows. Gap (3), confluent tie window. Tie holonomic staircase cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. Lead 3 of the tie mechanisms review was creative telescoping. Constant-coefficient operators cannot give a short killing functional (lem:cube-tie-confluent-functional-length), so a shorter one must have coefficients depending on the column index. Is the pure kernel, at each position, the coefficient vector of one explicit operator with rational coefficients? Then the window's three extra rows become explicit holonomic sequences, the setting of Zeilberger's method.</p>
+<p><strong>General statement.</strong> lem:cube-tie-holonomic-staircase. Let \(m\ge1\) and \(c\notin\{0,1\}\). For \(k\ge0\) put
+\[h_f(k)=(-1)^k\frac{\Gamma(k-2m+\frac72)}{\Gamma(k+1)},\qquad h_g(k)=(-c)^k\frac{\Gamma(k-m+\frac52)}{\Gamma(k+1)} .\]
+These are finite: the Gamma arguments are half-integers. Let \(\Delta=E-1\), with \(E\) the shift in \(k\).</p>
+<ol>
+<li>The coefficient sequences \(k\mapsto[T^k]\,T^i(1+T)^{-5/2}\), \(i&lt;2m\), span exactly \(h_f\cdot\mathrm{Pol}_{\le2m-1}(k)\).</li>
+<li>The sequences \(k\mapsto[T^k]\,T^n(1+cT)^{-3/2}\), \(n&lt;m\), span exactly \(h_g\cdot\mathrm{Pol}_{\le m-1}(k)\).</li>
+<li>Let \(L_f=h_f\Delta^{2m}h_f^{-1}\) and \(L_g=h_g\Delta^mh_g^{-1}\), and let \(Q=\sum_{r=0}^{3m}q_r(k)E^r\) be their least common left multiple, with polynomial coefficients after clearing denominators. It has order \(3m\). As germs of sequences at infinity, its solutions are exactly the sums of the two spans. On \(k\ge0\) it annihilates both spans.</li>
+<li>At every position \(M\ge0\) where \((q_0(M),\ldots,q_{3m}(M))\ne0\), this vector is proportional to the Cramer vector \(y^{(M)}\) of the pure block on the columns \(T^M,\ldots,T^{M+3m}\).</li>
+<li>Hence, where these vectors are defined, nonzero and independent for \(M=d,\ldots,d+4\), the confluent tie window has full rank iff the \(3\times5\) matrix \(\bigl((Qe_a)(M)\bigr)_{a,\,M}\) has rank \(3\). Here \(e_a\) are the coefficient sequences of \((1+T)^{-3}\), \(((1+T)(1+cT))^{-3/2}\) and \(T(1+T)^{-5/2}(1+cT)^{-3/2}\), and \((Qe)(M)=\sum_rq_r(M)e(M+r)\).</li>
+</ol>
+<p><em>Proof.</em> (1) Since \(\binom{-a}{j}=(-1)^j\Gamma(j+a)/(\Gamma(a)\Gamma(j+1))\),
+\[[T^k]\,T^i(1+T)^{-5/2}=\frac{(-1)^{k-i}}{\Gamma(\frac52)}\frac{\Gamma(k-i+\frac52)}{\Gamma(k-i+1)}=\frac{(-1)^i}{\Gamma(\frac52)}\,h_f(k)\,\bigl(k-2m+\tfrac72\bigr)_{2m-1-i}\,k^{\underline i}.\]
+The ratio \(\Gamma(k-i+\tfrac52)/\Gamma(k-2m+\tfrac72)\) is the rising factorial shown, of length \(2m-1-i\ge0\), and \(\Gamma(k+1)/\Gamma(k-i+1)=k^{\underline i}\). For \(k&lt;i\) both sides vanish, through \(k^{\underline i}\) and the binomial coefficient. The \(i\)-th polynomial has degree \(2m-1\). It vanishes at \(k=0,\ldots,i-1\) and not at \(k=i\), because the rising factorial's roots \(2m-\tfrac72-t\) are not integers. Evaluating at \(k=0,\ldots,2m-1\) gives a triangular matrix with nonzero diagonal. So the \(2m\) polynomials are a basis of \(\mathrm{Pol}_{\le2m-1}\).</p>
+<p>(2) In the same way, \([T^k]\,T^n(1+cT)^{-3/2}=\kappa_n\,h_g(k)\,(k-m+\tfrac52)_{m-1-n}\,k^{\underline n}\), with \(\kappa_n=(-1)^nc^{-n}/\Gamma(\tfrac32)\ne0\) since \(c\ne0\). These are \(m\) polynomials of degree \(m-1\), triangular at \(k=0,\ldots,m-1\).</p>
+<p>(3) \(L_f(h_fp)=h_f\Delta^{2m}p=0\) for \(\deg p\le2m-1\), and similarly for \(L_g\). Work with germs of sequences at infinity, beyond the integer zeros of the leading and trailing coefficients. There an operator of order \(r\) has an \(r\)-dimensional solution space. The germ solutions of \(L_f\) are exactly \(h_f\cdot\mathrm{Pol}_{\le2m-1}\), of dimension \(2m\), and those of \(L_g\) are \(h_g\cdot\mathrm{Pol}_{\le m-1}\).</p>
+<p>A nontrivial greatest common right divisor would have a nonzero germ solution in both spaces, \(h_fp=h_gq\). That would make \(c^{-k}\) equal to a rational function \(R(k)\) for all large \(k\). Since \(R(k+1)/R(k)\to1\), this forces \(c=1\), also when \(|c|=1\). So the least common left multiple, over \(\mathbb C(k)\), has order \(3m\), and its germ solutions are the direct sum. On \(k\ge0\) the solution space can be larger where \(q_{3m}\) or \(q_0\) vanishes at an integer. Only the containment, that \(Q\) annihilates both spans, is used below.</p>
+<p>(4) Pointwise annihilation: for \(s=h_fp\), the quotient \((Qs)(k)/h_f(k)=\sum_rq_r(k)\bigl(h_f(k+r)/h_f(k)\bigr)p(k+r)\) is a rational function of \(k\). It vanishes identically because \(Q=A\cdot L_f\) for some operator \(A\). Each ratio \(h_f(k+r)/h_f(k)=\prod_{i&lt;r}\bigl(-(k+i-2m+\tfrac72)/(k+i+1)\bigr)\) is finite at every integer \(k\ge0\), so \(\sum_rq_r(M)s(M+r)=0\) at every \(M\ge0\). The same holds for \(h_g\), using \(c\ne0\).</p>
+<p>The pure block on the columns \(M,\ldots,M+3m\) has rank \(3m\). This is thm:cube-tie-pure-wide-normality applied with \(d\) replaced by \(M\ge0\), \(\alpha=\tfrac52+M\) and \(\beta=\tfrac32+M\). In the \(\partial^M\) step of lem:cube-tie-pure-pade-normality, the leading coefficients stay nonzero because the exponents are non-integers. In the Wronskian, \(\deg R\le3m-1\) still holds, \(\ell\) still has degree at most one, and the residue \(-\tfrac52-M\) at \(-1\) is still not an integer. So the left-annihilating column vector of the block is unique up to scale.</p>
+<p>(5) This is the staircase reduction of the tie staircase entry, with \(y^{(M)}\) replaced by the proportional vectors \(q(M)\). Column scalings do not change rank. \(\square\)</p>
+<p><strong>What this means.</strong> The pure kernel is now explicit and uniform in \(M\): the coefficients of one holonomic operator. The window's rank question becomes a question about three explicit holonomic sequences \(Qe_a\) at five consecutive positions. Each \(e_a\) satisfies a low-order recurrence: order \(1\) for \((1+T)^{-3}\), order \(2\) for each product row. So \(Qe_a\) lies in the \(\mathbb C(k)[E]\)-module generated by \(e_a\), and these three modules together have dimension at most \(1+2+2=5\) over \(\mathbb C(k)\).</p>
+<p>A special value would need a combination \(z=\sum\lambda_ae_a\) with \((Qz)(M)=0\) at five consecutive positions \(M=d,\ldots,d+4\). Since \(Qz\) lies in a space of dimension at most five over \(\mathbb C(k)\), it satisfies a recurrence of order at most five, depending on \(\lambda\). If that recurrence holds pointwise from \(k=d\) onward, forward propagation leaves two alternatives:</p>
+<ul>
+<li>\(Qz\) vanishes for all \(k\ge d\), so \(z\) is a pure sequence. This must be excluded separately, for instance through the different singular exponents of the \(e_a\).</li>
+<li>The recurrence's leading coefficient vanishes at some integer \(k\ge d\), not necessarily inside the window.</li>
+</ul>
+<p>Creative telescoping can compute these recurrences and their leading coefficients explicitly. That is the next test.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 3 of the tie mechanisms review, creative telescoping. It supplies the variable-coefficient operator that the shift-invariant obstruction leaves open. <strong>Follow-up.</strong> Continuing: compute \(Q\), its singular positions and the recurrences of \(Qe_a\) for \(m\le3\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank of the confluent tie window for \(m\ge7\), now the rank of \(((Qe_a)(M))\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the cone's gaps (1) and (2).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-pure-wide-normality and lem:cube-tie-pure-pade-normality (rank on \(3m+1\) columns, and the \(\partial^M\) reduction); lem:cube-tie-confluent-functional-length; ex:cube-tie-staircase-pairings (the staircase reduction).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer passed items (1), (2) and (5). It checked formulas (1) and (2) numerically for \(m=2,3\), \(k\le15\) (maximum error \(10^{-75}\)). It also checked the rank \(3m\) of the pure block on the columns \(M,\ldots,M+3m\) exactly, in \(70\) cases (\(m=2,3\), \(M=d,\ldots,d+6\), five values of \(c\)). It asked for several changes, all applied:</p>
+<ul>
+<li>the order and "exactly" claims of (3) argued for germs at infinity;</li>
+<li>the pointwise annihilation in (4) derived from \(Q=A\cdot L_f\) with finite ratios \(h_f(k+r)/h_f(k)\);</li>
+<li>the start-\(M\) form of the pure theorem stated;</li>
+<li>"dimension over \(\mathbb C(k)\)" in place of "rank";</li>
+<li>the "What this means" inference corrected, since a singular point need not lie on the window, and the alternative \(Qz=0\) is noted.</li>
+</ul>
+<p>A machine reboot interrupted this cycle after drafting. The drafting and review were measured in session bmd-20261008-p, which cannot be exported after the reboot. The table below covers only the finishing session bmd-20261008-p2.</p>
+<p>Status: working proof (lemma).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-p2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>37.84 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">37.84 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
