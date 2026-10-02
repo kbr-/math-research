@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-collision-cone-limits">collision cone entry</a> classifies the \(q\to0\) limits of the collision cones and covers the generic ones by a double-root step valid over any base with (H).</p>
-<p>Next: the confluent tie level, where the double root \(A\) and a simple root \(a_\rho\) share a four-pointed level over a caterpillar cluster with \(m\) roots, at cross-ratio \(c\). Use the doubled-node identity to write its window as the rows \((1+T)^{-\lambda-1}T^i\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-\lambda}\) (\(n&lt;m\)), together with the pair rows \((1+T)^{-3}\) and \(((1+T)(1+cT))^{-\lambda}\). Then find its full-rank condition, as the general functional and the Gegenbauer theorem did for the tie.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-tie-window">confluent tie entry</a> reduces the confluent tie level of the collision cones, including its three-root end, to conj:cube-confluent-tie-window-full-rank, which is checked exactly for \(m\le5\).</p>
+<p>Next: prove that window conjecture. Look for a weighted functional killing both the series \((1+T)^{-5/2}\mathrm{Pol}_{&lt;2m}\) and \((1+cT)^{-3/2}\mathrm{Pol}_{&lt;m}\), as thm:cube-tie-window-general-functional did for the tie, or for closed forms of the two minors whose gcd is trivial. The square minor factors as \(c^{e_m}(c-1)^{m^2+m+2}\) times a polynomial whose only distinct irreducible factor has degree \(m(2m-1)\). Then return to the remaining confluent types: \(a_\rho\) meeting \(A\), a displaced \(a_\rho\), and the meeting points of collision lines.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -55764,6 +55764,85 @@ with the double root \(A=a_i=a_j=0\). For \(r=\infty\) take \(F=(x-q^i)(x-q^j)\)
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 29.54 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 5.82 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-confluent-tie-window" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-confluent-tie-reduction conj:cube-confluent-tie-window-full-rank">
+<h3>7 October 2026 — Confluent tie window: the confluent tie level and its three-root end reduce to one explicit window, which has full rank for every c ∉ {0, 1} at m ≤ 5</h3>
+<p class="entry-meta">Working proof of the reduction for every N and every lower cluster size m ≥ 1; the window's full rank is a conjecture with exact gcd checks at m ≤ 5. Gap (3), confluent tie level. Confluent tie cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-collision-cone-limits">collision cone entry</a> left the confluent tie level as its first uncovered type. On that level the double root \(A\) and a simple root \(a_\rho\) share a component over a caterpillar cluster \(\mathcal L\) of \(m\) roots. Its end \(|\mathcal L|=1\) is the three-root shape. Do these points avoid the closure of \(K^c\)?</p>
+<p><strong>Setting.</strong> Frame as in thm:cube-single-tie-chain-avoidance: translate the bottom simple root of \(\mathcal L\) to \(\varepsilon^V\), and dilate so that \(A=1\). Then \(a_\rho=c(\varepsilon)\to c_0\notin\{0,1\}\), and \(\mathcal L=x\tilde{\mathcal L}\) with \(x\to0\). For \(m=1\), \(x\) is the position of the single root of \(\mathcal L\) after translation, \(\tilde{\mathcal L}=\{1\}\), \(d=0\) and \(E_0=\emptyset\). Put \(d=\binom m2\), \(\lambda=3/2\), \(\varphi_a=(1+aT)^{-\lambda}\). The confluent tie window \(W^c(c)\) is the \((3m+3)\times(3m+5)\) matrix of the coefficients of \(T^d,\ldots,T^{d+3m+4}\) of the rows
+\[(1+T)^{-\lambda-1}T^i\ (i&lt;2m),\qquad T^n\varphi_c\ (n&lt;m),\qquad (1+T)^{-3},\qquad \varphi_1\varphi_c,\qquad T(1+T)^{-\lambda-1}\varphi_c.\]</p>
+<p><strong>General statement.</strong> lem:cube-confluent-tie-reduction. Let \(m\ge1\). If \(\operatorname{rank}W^c(c_0)=3m+3\), then every analytic arc in \(\Sigma^\circ\) tending to a confluent tie level point with parameter \(c_0\) has \(\operatorname{rank}A^c_{R+1}=R\) near the point. The point has \(\mathcal L\) a caterpillar (or a single root), \(A\) and \(a_\rho\) on one level, and singleton levels above.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Rows of \(C'=\mathcal L\cup\{A,a_\rho\}\).</em> There are four groups:
+<ul>
+<li>the pairs inside \(\mathcal L\);</li>
+<li>the \(A\)-block \(f_{Ay}=\varphi_1\varphi_y\), \(g_y=T(1+T)^{-\lambda-1}\varphi_y\), which spans \((1+T)^{-\lambda-1}\langle\psi_y,\partial_y\psi_y\rangle\) (thm:cube-doubled-node-identity);</li>
+<li>the \(c\)-block \(\varphi_c\varphi_y=\sum_n\beta_ny^nT^n\varphi_c\);</li>
+<li>the three pair rows \(h=(1+T)^{-3}\), \(f_{Ac}=\varphi_1\varphi_c\) and \(g_c=T(1+T)^{-\lambda-1}\varphi_c\).</li>
+</ul>
+Both blocks factor through matrices in the same \(y\in\mathcal L\): the doubled-node matrix and the Vandermonde.</li>
+<li><em>Expansion.</em> Laplace over the groups and Cauchy–Binet through each block give terms (the rows \((1+T)^{-\lambda-1}T^{S'}\) are kept as rows, so no factor \(U\) is needed)
+\[\pm\,p_{\mathcal L}(S_{\mathcal L})\;q(S')\;\det V(I)\;\cdot\;\det\bigl[(1+T)^{-\lambda-1}T^{S'},\ T^I\varphi_c,\ h,f_{Ac},g_c\bigr]_{S\setminus S_{\mathcal L}}.\]
+Here \(q(S')\) is the doubled-node minor and \(\det V(I)=\prod_{n\in I}\beta_n\,\mathrm{Vand}(y)s_{\mu(I)}(y)\). Both Cauchy–Binet sums are finite, since \(T^n\) times a series vanishes below column \(n\), so only \(n\le\max S\) contributes.</li>
+<li><em>Valuation.</em> With \(w=\operatorname{val}x\), a term has valuation at least
+\[w\bigl(\Sigma S_{\mathcal L}+\Sigma S'-m+\Sigma I\bigr)+\operatorname{val}p_{\tilde{\mathcal L}}(S_{\mathcal L})+5\operatorname{val}\mathrm{Vand}(\tilde y),\]
+because the Schur factors \(s_{\mu(S')}(\tilde y,\tilde y)\) and \(s_{\mu(I)}(\tilde y)\) have valuation \(\ge0\) (\(\tilde y\) is bounded), and the last determinant has valuation \(\ge0\) (it is polynomial in the bounded \(c(\varepsilon)\)). Each column sum moves by an integer, so every other choice is at least \(w\) higher; at the initial sets the Schur factors are \(1\).
+By thm:cube-caterpillar-minimality (Taylor dominance, trivial for \(m=1\)) and the strict increase of the column sums, the minimum over all column sets is attained only at \(S_{\mathcal L}=E_0=\{0,\ldots,d-1\}\), \(S'=\{0,\ldots,2m-1\}\) and \(I=\{0,\ldots,m-1\}\).</li>
+<li><em>Leading coefficient.</em> For \(S=E_0\cup J\), \(J\) a \((3m+3)\)-subset of \(\{d,\ldots,d+3m+4\}\), the minimal terms sum to a product of nonzero factors times the minor of \(W^c(c)\) on \(J\). The factors are \(\mathrm{lc}\,p_{\tilde{\mathcal L}}(E_0)\), \(\mathrm{lc}\,\mathrm{Vand}(\tilde y)^5\), \(\mu^{-m}\prod_{m'&lt;2m}\binom{-\mu}{m'}\), \(\prod_{n&lt;m}\beta_n\) and a power of \(x\). The minor tends to that of \(W^c(c_0)\), by polynomiality in \(c\). If \(W^c(c_0)\) has full rank, some \(J\) gives a nonzero leading coefficient. So \(L=E_0\cup J\) attains the least valuation among all column sets: condition (G), with \(\max L\le R_{C'}+1\), since \(R_{C'}=d+3m+3\).</li>
+<li><em>Levels above.</em> (G) implies (H). The (H)-form singleton step of thm:cube-single-tie-chain-avoidance, with the confluent Vandermonde and the constant homogeneity shift of the confluent caterpillar entry, carries it through the singleton levels to a nonzero minor in \(\{0,\ldots,R+1\}\).</li>
+</ol>
+<p>\(\square\)</p>
+<h4>The window</h4>
+<p>conj:cube-confluent-tie-window-full-rank. For every \(m\ge1\) and \(c\notin\{0,1\}\), \(\operatorname{rank}W^c(c)=3m+3\).</p>
+<p><strong>Evidence.</strong> research/tools/bmd_confluent_tie_window.gp computes the maximal minors exactly as polynomials in \(c\) (research/results/bmd-20261007-m/confluent-tie-window.txt). At \(m=1,\ldots,5\), the gcd of the first two minors already has no root outside \(\{0,1\}\). The minors are those on the square window \(d,\ldots,d+3m+2\) and on the next column set. The square-window determinant is \(c^{e_m}(c-1)^{m^2+m+2}\) times a polynomial whose only distinct irreducible factor over \(\mathbb Q\) has degree \(m(2m-1)\), with \(e_m=4,10,21,40,70\). The script printed distinct factor degrees, not multiplicities. Two earlier runs failed on series precision and variable priority in PARI (rational functions of \(c\) expanded in \(T\)). The final script uses explicit binomial coefficients, and the failed runs are in the session archive.</p>
+<p><strong>Reading.</strong> The window is the confluent analogue of the tie window of thm:cube-single-tie-chain-avoidance, but less symmetric:</p>
+<ul>
+<li>the double root contributes the single series \((1+T)^{-\lambda-1}\mathrm{Pol}_{&lt;2m}\) of length \(2m\), as in the cherry-first vertex of the cherry entry;</li>
+<li>the simple root contributes \(\varphi_c\mathrm{Pol}_{&lt;m}\);</li>
+<li>three pair rows, not one.</li>
+</ul>
+<p>The tie window was settled by a weighted functional killing both series (thm:cube-tie-window-general-functional) and a Gegenbauer identity. Here the two series have exponents \(\lambda+1\) and \(\lambda\), so a functional must combine the weights \(\Gamma(k+1)/\Gamma(k+\lambda+1-j)\) of both.</p>
+<p><strong>Coverage.</strong> With this lemma, the confluent tie level and its three-root end (\(m=1\)) are reduced to conj:cube-confluent-tie-window-full-rank, and they are unconditional for every \(N\) and every \(c_0\notin\{0,1\}\) when the lower cluster has at most five roots (given the working proofs thm:cube-caterpillar-minimality and the (H)-form singleton step). Still open in gap (3):</p>
+<ul>
+<li>the cancellation in which \(a_\rho\) meets \(A\);</li>
+<li>the displaced \(a_\rho\), \(\rho&lt;j\);</li>
+<li>cherry and three-root types inside \(\mathcal L\);</li>
+<li>the points where collision lines meet.</li>
+</ul>
+<p><strong>Remaining gap.</strong> Prove the window conjecture for all \(m\): a weighted functional for two series of different exponents, or an explicit formula for the two minors whose gcd is trivial.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-double-root-step and thm:cube-confluent-caterpillar-avoidance (blocks, expansion through \(U\), homogeneity shift); thm:cube-doubled-node-identity; thm:cube-caterpillar-minimality; thm:cube-single-tie-chain-avoidance (invariant (H) and step); lem:cube-collision-cone-limit-types (the confluent tie level).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following:</p>
+<ul>
+<li>the completeness of the confluent rows (\(3m+3\) new rows, \(R_{C'}=d+3m+3\)) and the formula for \(g_c\);</li>
+<li>the joint Cauchy–Binet expansion and the factor \(5\operatorname{val}\mathrm{Vand}\);</li>
+<li>the uniqueness of the minimal term and the column bound;</li>
+<li>the script's explicit coefficients, against series expansion at \(m=2\);</li>
+<li>that a trivial gcd gives full rank for every \(c_0\) at \(m\le5\).</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>no \(U\) is needed, and the sums are finite;</li>
+<li>the two valuation facts used in the bound are stated;</li>
+<li>the frame at \(m=1\);</li>
+<li>the factor claim is restricted to what the script printed;</li>
+<li>the scope of the coverage is stated.</li>
+</ul>
+<p>Status: working proof for the reduction; conjecture with exact checks at \(m\le5\) for the window.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-m">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 18.24 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 47.31 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">48.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 40.58 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.32 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
