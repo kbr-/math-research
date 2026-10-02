@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-confluent-route-review">confluent route review</a> ranks the confluent tie window highest: it is a generic type of the collision cones and has no mechanism. At the zeros of \(H_m\) the extra rows repair the singular pure block, for \(m\le4\).</p>
-<p>Next: the \(3\times5\) Schur complement of the three extra rows of W^c(c) against the pure two-point block. Factor its \(3\times3\) minors for \(m\le5\), and look for a common factor or a product formula that would prove full rank off the zeros of \(H_m\). Explain the repair at those zeros.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the confluent tie window. The <a href="#entry-2026-10-07-cube-tie-schur-minors">tie Schur minors entry</a> reduces full rank to the absence of a common root of ten irreducible polynomials \(N_{m,K}\), \(\deg N_{m,K}=m(2m-1)+\Sigma K-6\), with the zeros of \(H_m\) cancelling.</p>
+<p>Next: look for contiguous relations. Find linear relations \(\sum_KA_K(c)N_{m,K}=0\) with coefficients of low degree among neighbouring \(K\), by linear algebra at \(m\le4\). A three-term relation whose outer coefficients vanish only at \(\{0,1\}\) would propagate a common root through all \(K\). It would then reach a minor known to be nonzero, which proves coprimality uniformly. If no such relation exists, develop the Angelesco lead for real \(c&lt;0\), where the two cuts are disjoint.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -57552,6 +57552,57 @@ So the roots \(a_n\), \(n&lt;\rho\), are singleton levels. At level \(V\), the p
 <tr><td>Computation design and coding</td><td class="elapsed">10.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 33.29 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 58.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-tie-schur-minors" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-confluent-tie-schur-minors">
+<h3>7 October 2026 — Confluent tie window through its pure block: the zeros of H_m cancel, and the ten remaining minors are irreducible with no common factor</h3>
+<p class="entry-meta">Conjecture with exact factorizations at m ≤ 5; explains the full rank at the zeros of H_m and reduces full rank to ten explicit polynomials. Gap (3), confluent tie window. Tie Schur minors cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the confluent tie window, the highest-risk item of the <a href="#entry-2026-10-07-cube-confluent-route-review">confluent route review</a>. Its next step asked for the \(3\times5\) Schur complement of the three extra rows against the pure two-point block, and the reason for full rank at the zeros of \(H_m\).</p>
+<p><strong>Setting.</strong> W^c(c) is the \((3m+3)\times(3m+5)\) window of lem:cube-confluent-tie-reduction. Its pure block is the first \(3m\) rows on the first \(3m\) columns, with determinant \(\Delta_m=\kappa_mc^{m\binom m2}(c-1)^{m(m+1)}H_m(c)\) (conj:cube-two-point-window-factorization). For a \(3\)-subset \(K\) of the last five columns, let \(W_K\) be the maximal minor on the first \(3m\) columns together with \(K\). Then \(W_K=\Delta_m\cdot S_K\), where \(S_K\) is the \(3\times3\) minor of the Schur complement on \(K\).</p>
+<p><strong>General statement.</strong> conj:cube-confluent-tie-schur-minors. For every \(m\ge1\) and every \(K\),
+\[W_K=\kappa_{m,K}\,c^{m\binom m2+4m}(c-1)^{m(m+1)+2}\,N_{m,K}(c),\]
+with \(\kappa_{m,K}\ne0\), \(N_{m,K}\) irreducible over \(\mathbb Q\), \(N_{m,K}(0)N_{m,K}(1)\ne0\), and \(\deg N_{m,K}=m(2m-1)+\Sigma K-6\). The ten \(N_{m,K}\) have no common root.</p>
+<p>Two consequences follow:</p>
+<ul>
+<li>\(S_K=\pm\,c^{4m}(c-1)^2N_{m,K}/H_m\) up to a constant. The Schur complement has its poles exactly at the zeros of \(H_m\), and they cancel in every \(W_K\). That is why the window keeps full rank where the pure block is singular, as part C of the review found.</li>
+<li>Over a field of characteristic zero, as in statement 3, full rank of W^c(c) holds at every \(c\notin\{0,1\}\) where some \(N_{m,K}(c)\ne0\), since \(W_K\) is then a nonzero maximal minor. Off the zeros of \(H_m\) the condition is also necessary. There the pure block is invertible, so the rank is \(3m\) plus the rank of the Schur complement, and the Schur complement has rank \(3\) iff some \(S_K\ne0\). So the last claim of the conjecture implies conj:cube-confluent-tie-window-full-rank. Off the zeros of \(H_m\) the two are equivalent.</li>
+</ul>
+<p><strong>Test.</strong> research/tools/bmd_tie_schur_minors.gp (research/results/bmd-20261007-zc/tie-schur-minors.txt) computes all ten \(W_K/\Delta_m\) exactly for \(m=1,\ldots,5\), with symbolic \(c\), and factors them.</p>
+<ul>
+<li>In every case \(W_K/\Delta_m\) has \(c^{4m}(c-1)^2\) and one irreducible numerator factor, of multiplicity \(1\). The stripped denominator divides \(H_m\), since \(W_K\) is a polynomial. Its degree is \(0,2,6,12,20=m(m-1)=\deg H_m\), so it equals \(H_m\) up to a constant, given conj:cube-two-point-window-factorization at these \(m\).</li>
+<li>The numerator degrees are \(m(2m-1)+\Sigma K-6\): from \(1\) to \(7\) at \(m=1\), and from \(45\) to \(51\) at \(m=5\).</li>
+<li>The gcd of the ten stripped numerators is \(1\) for each \(m\le5\).</li>
+</ul>
+<p>The degree pattern, a fixed base plus one per column shift, holds in all \(50\) minors.</p>
+<p><strong>What it rules out.</strong> No \(W_K\) is a product \(c^\alpha(c-1)^\beta\) times a constant, so no single minor through the pure block proves full rank. This extends the earlier scan of all maximal minors at \(m\le3\). Full rank is genuinely a statement about the common zeros of several irreducible polynomials of growing degree. A uniform proof must therefore show that \(N_{m,K}\) and \(N_{m,K'}\) share no root, for instance through a contiguous relation between neighbouring \(K\) whose coefficients vanish only at \(\{0,1\}\). The consecutive-shift degree pattern suggests such relations exist.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-window-full-rank, implied by the absence of a common root of the ten \(N_{m,K}\), and equivalent to it off the zeros of \(H_m\);</li>
+<li>the confluent cherry proof (conj:cube-confluent-cherry-expansion);</li>
+<li>the other types of the special cancellations, and the remaining types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-confluent-tie-reduction (rows); conj:cube-two-point-window-factorization (\(\Delta_m\)); the confluent route review's part C.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following against the script and the full output:</p>
+<ul>
+<li>the exponents and degrees of all \(50\) minors, and the gcds;</li>
+<li>\(N(0)N(1)\ne0\);</li>
+<li>the reduction.</li>
+</ul>
+<p>Its corrections are applied. The script now prints factor multiplicities: all \(50\) are \(1\), so irreducibility is shown; the rerun replaced the output file. The entry also gives the argument that the denominator is \(H_m\), states \(\kappa\ne0\) and \(c\notin\{0,1\}\), and limits the reduction to characteristic zero, the setting of statement 3. A first run, without multiplicities, is kept in the session archive.</p>
+<p>Status: conjecture, with a proved reduction.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 30.08 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 43.68 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.18 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 8.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6.81 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
