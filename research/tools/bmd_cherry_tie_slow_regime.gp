@@ -41,6 +41,9 @@ run(a, b, d, c0) = {
 }
 {
   emit(Str("q = ", q, ", c0 = 2, columns [", T0, ", ", T1, "], m <= ", MMAX));
-  foreach([[1, 4, 1], [1, 4, 2], [1, 4, 4], [1, 5, 2], [1, 5, 6], [1, 3, 2], [1, 9, 6]], A, run(A[1], A[2], A[3], 2));
+  \\ ARCS: the cycle-zl run used [[1,4,1],[1,4,2],[1,4,4],[1,5,2],[1,5,6],[1,3,2],[1,9,6]] (slow-regime-v2.txt); the
+  \\ cycle-zm run uses the deep arcs d > w_x + w_e below (deep-arcs.txt), where the p = 1 penalty is predicted to be
+  \\ capped at 2(w_x + w_e) by the deep-pair multiplicity pattern (4, 4, 2) of bmd_cross_deep_pair.gp.
+  foreach([[1, 3, 6], [1, 3, 8]], A, run(A[1], A[2], A[3], 2));
 }
 quit

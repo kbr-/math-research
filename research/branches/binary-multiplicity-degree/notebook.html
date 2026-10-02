@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It now reduces to conj:cube-tie-cluster-penalty-sharing, which predicted the leaders and every window valuation exactly on seven slow-regime arcs (<a href="#entry-2026-10-08-cube-tie-cluster-penalty-sharing">penalty sharing</a>).</p>
-<p>Next: prove penalty sharing in the regime \(p=1\). The least \(\varepsilon\)-order part of every coordinate is a confluent alternant at doubled nodes, \(\mathrm{Vand}^4\) times a symmetric polynomial. Show that the terms of higher \(\varepsilon\)-order also carry \(\mathrm{Vand}(\tilde y')^2\) beyond the common factor, for instance by writing \(Q_s=(U_\varepsilon-1)V_s\) through the doubled-node rows \(V_s,w^{-1}V_s,w^{-2}V_s,\ldots\)</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (W′) above a tie cluster. It holds above the four-root tie cluster on every arc, under the Hankel form at \(M=4\) (<a href="#entry-2026-10-08-cube-small-pair-order">small pair order</a>).</p>
+<p>Next: verify the Hankel form \(L_2,L_3\propto\operatorname{Hank}_{2},\operatorname{Hank}_1\) at \(M=4\) exactly, as a polynomial identity. Then extend lem:cube-small-pair-order to all the deep roots of a caterpillar, for penalty sharing at \(M\ge5\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -64159,6 +64159,101 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Computation design and coding</td><td class="elapsed">5 min 40.74 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 23.42 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">16 min 37.71 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-small-pair-order" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-small-pair-order cor:cube-cherry-above-four-tie">
+<h3>8 October 2026 — A small pair of cluster roots costs every cross coordinate with at most one negative index the doubled order; condition (W′) above a tie over a two-root caterpillar on every arc, off two moduli</h3>
+<p class="entry-meta">Working proof: the small-pair order of cross coordinates with at most one negative index. Conditional result: (W′) above the four-root tie cluster on every arc, under the Hankel form at M = 4, off two moduli. Exact checks. Small pair cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement (W′) above a tie cluster, through conj:cube-tie-cluster-penalty-sharing (<a href="#entry-2026-10-08-cube-tie-cluster-penalty-sharing">penalty sharing</a>). The next step proposed proving it in the regime \(p=1\). Do the terms of higher \(\varepsilon\)-order also pay the penalty, and why?</p>
+<p><strong>A wrong turn first.</strong> research/tools/bmd_cross_vand4.gp (research/results/bmd-20261008-zm/cross-vand4.txt) and the first version of research/tools/bmd_cross_deep_pair.gp (cross-deep-pair.txt) measured the multiplicity of \((\beta_3-\beta_4)\) at a generic \(\beta_3\).</p>
+<ul>
+<li>For \(M=2\) it is \(4\) at the least \(\varepsilon\)-order and drops to \(2\) at the next orders.</li>
+<li>For \(M=4\), on the \(120\) sets \(\{-1\}\cup\) seven columns of \([0,9]\), the pattern is \((4,4,2)\).</li>
+</ul>
+<p>That suggested a cap of the penalty at \(2(w_x+w_e)\). The prediction was tested on two arcs with \(d&gt;w_x+w_e\), \((a,b,d)=(1,3,6),(1,3,8)\) (research/tools/bmd_cherry_tie_slow_regime.gp, deep-arcs.txt), and failed. The window excesses are the full \(\pi\) values \((38,12,0,0,0)\) and \((50,16,0,0,0)\), and the leaders are again the predicted windows. The quantity was wrong: on the arc the deep pair is small, \((\beta_3,\beta_4)=O(\eta)\), not merely close.</p>
+<p>With \(\beta=(2,1,3\eta,5\eta)\) the second version (cross-deep-pair-eta.txt) gives \(\eta\)-orders between \(4\) and \(13\) for all \(120\) sets, the same at the least \(\varepsilon\)-order and the next two. None is below \(4\).</p>
+<p><strong>General statement.</strong> lem:cube-small-pair-order. Take the cross block of thm:cube-cherry-lattice-splitting, with rows \(V(\beta_s)=(1+\beta_sw)^{-\lambda}\) and \(Q(\beta_s)=(U_\varepsilon-1)V(\beta_s)\). For every coordinate set \(\Lambda\) with at most one negative index, every \(r\) and any two of the roots \(\beta_3,\beta_4\),</p>
+\[ [\varepsilon^r]P_\Lambda\ \in\ (\beta_4-\beta_3)^2\,(\beta_3,\beta_4)^2\ \subset\ \mathbb Q[\beta_1,\ldots,\beta_M]. \]
+<p>Consequently, when the other \(\beta_s\) have valuation \(\ge0\), \(\operatorname{val}[\varepsilon^r]P_\Lambda\ge2\operatorname{val}(\beta_4-\beta_3)+2\min(\operatorname{val}\beta_3,\operatorname{val}\beta_4)\). Interpretation: a small pair costs the doubled order.</p>
+<p><strong>Second statement.</strong> cor:cube-cherry-above-four-tie. Let a cherry sit above a cluster of \(M=4\) roots: a tie \(\{c_0,1\}\), \(c_0\notin\{0,1\}\), over a caterpillar of two roots with valuations \(\nu_1&lt;\nu_2\), and \(c_0\) off the two moduli \((1\pm2\sqrt2\,i)/3\). Assume the Hankel form at \(M=4\) for \(L_2,L_3\) (conj:cube-cherry-hankel-coefficient), and the hypothesis of cor:cube-cherry-step that the leading \(C\)-block coordinate is unique. Then along every arc the leading cross vector is a window or an adjacent pencil, so (W′) holds and the arc avoids \(K\).</p>
+<p><strong>Proof of the lemma.</strong> Replace the four rows of the small pair by</p>
+<ul>
+<li>\(A=V(\beta_3)\);</li>
+<li>\(B=(V(\beta_4)-V(\beta_3))/(\beta_4-\beta_3)\);</li>
+<li>\(C=Q(\beta_3)\);</li>
+<li>\(D=(U_\varepsilon-1)B\).</li>
+</ul>
+<p>This divides every coordinate by \((\beta_4-\beta_3)^2\). Write \(A=\sum a_nw^n\) and \(B=\sum b_nw^n\), with \(a_n=c_n\beta_3^n\) and \(b_n=c_nh_{n-1}(\beta_3,\beta_4)\): homogeneous of degrees \(n\) and \(n-1\), so \(a_n=O(\eta^n)\) and \(b_n=O(\eta^{n-1})\). Then \(C=\sum_mc_m\varepsilon^m\sum_na_nw^{n-m}\) and \(D=\sum_mc_m\varepsilon^m\sum_nb_nw^{n-m}\).</p>
+<p>Let \(\Lambda\) have at most one negative index, \(-k\). Restricted to the columns of \(\Lambda\), the parts of order \(\eta^0\) are:</p>
+<ul>
+<li>\(A_0=e_0\) and \(B_0=c_1e_1\);</li>
+<li>\(C_0=c_k\varepsilon^ke_{-k}\) (zero if \(\Lambda\) has no negative index);</li>
+<li>\(D_0=c_1^2\varepsilon e_0+c_{k+1}c_1\varepsilon^{k+1}e_{-k}\).</li>
+</ul>
+<p>So \(D'=D-c_1^2\varepsilon A-\gamma C\) with \(\gamma=c_{k+1}c_1\varepsilon/c_k\) (or \(\gamma=0\)) has \(D'_0=0\).</p>
+<p>Its order-\(\eta\) part comes from \(b_2\) in \(D\) (columns \(2-m\)), \(a_1\) in \(A\) (column \(1\)) and \(a_1\) in \(C\) (columns \(1-m\)). Restricted to \(\Lambda\), it lies on the columns \(\{-k,0,1\}\cap\Lambda\). After restriction, \(C_0\), \(A_0\) and \(B_0\) are nonzero multiples of the unit vectors of those columns (\(c_1,c_k\ne0\) since \(\lambda\notin\mathbb Z\)), and zero for absent ones, so they span exactly the support of \(D'_1\). The subtraction coefficients are polynomials in \(\varepsilon\): the column \(-k\) entries of \(D'_1\) carry \(\varepsilon^{k+2}\), and dividing by \(c_k\varepsilon^k\) leaves a polynomial. Subtracting the corresponding \(O(\eta)\) combination of \(A\), \(B\), \(C\) gives \(D''=O(\eta^2)\) with \(A\wedge B\wedge C\wedge D''=A\wedge B\wedge C\wedge D\).</p>
+<p>Every \(4\times4\) minor of the pair's rows on columns of \(\Lambda\) is therefore \(O(\eta^2)\), and the Laplace expansion along these rows gives the claim. The construction is exact in \(\varepsilon\), so it holds at each order. \(\square\)</p>
+<p><strong>Proof of the corollary.</strong> By homogeneity \(P_\Lambda=\sum_Sx^S\varepsilon^{S-\Sigma\Lambda}F_S(\tilde y')\), and the lemma applies to each \(F_S\) with \(\beta=\tilde y'\). Below the tie the two roots have valuations \(\nu_1&lt;\nu_2\), so \(\operatorname{val}(\tilde y'_3-\tilde y'_4)=\nu_1\) and \(2\operatorname{val}\mathrm{Vand}(\tilde y')=2\nu_1\). For every \(\Lambda\) with \(p(\Lambda)\le1\) this gives</p>
+\[ \operatorname{val}P_\Lambda\ \ge\ b(\Lambda)+2\nu_1+2\nu_1=b(\Lambda)+2\operatorname{val}\mathrm{Vand}+\pi_3 . \]
+<p>The windows have exact valuations:</p>
+<ul>
+<li>\(\Lambda_1\) has exactly \(b(\Lambda_1)+4\nu_1\), since \(L_1\propto\mathrm{Vand}^2\) (thm:cube-cherry-lattice-splitting);</li>
+<li>\(\Lambda_2,\Lambda_3,\Lambda_4\) have exactly \(b(\Lambda_p)+2\nu_1\), by prop:cube-tie-cluster-window-coefficients under the Hankel form, \(c_0\) off the moduli.</li>
+</ul>
+<p>Put \(h(p)=b(\Lambda_p)+2\nu_1[p=1]\) for \(1\le p\le4\). The penalty's increments in \(p\) are \(-2\nu_1,0,0\), nondecreasing, so \(h\) is strictly convex and is least at one \(p\) or two adjacent ones.</p>
+<p>Every competitor loses:</p>
+<ul>
+<li>A non-window with \(p\ge1\) has valuation at least \(h(p)+\min(w_x,w_e)\) plus the common shift (the lemma for \(p=1\), the window bound for \(p\ge2\)).</li>
+<li>Every set with \(p=0\) has at least \(b(\Lambda_0)+4\nu_1=b(\Lambda_1)+8w_x+4\nu_1\), which exceeds \(h(1)\) plus the shift.</li>
+</ul>
+<p>So the leaders are the windows minimizing \(h\), and cor:cube-cherry-step applies. \(\square\)</p>
+<p>The corollary does not need the full penalty \(\pi_4\) at \(p=0\); the lemma's weaker bound suffices.</p>
+<p><strong>Checks.</strong></p>
+<ul>
+<li>cross-deep-pair-eta.txt: the lemma's conclusion on \(120\) sets with \(p=1\) and negative index \(-1\), at one point \(z=(3,5)\) and three \(\varepsilon\)-orders. The tool truncates the \(Q\)-rows at \(m\le\max(1,-t)+M+3\). For these sets the least \(\varepsilon\)-order is \(4\), so the coefficients up to order \(6\) use \(Q\)-terms only up to \(\varepsilon^3\), inside the cut.</li>
+<li>deep-arcs.txt: two arcs with \(d&gt;w_x+w_e\). They match the corollary's prediction, and also the full conjecture's window excesses at \(p=0\).</li>
+<li>The seven arcs of the previous entry.</li>
+</ul>
+<p><strong>What this means.</strong> For the smallest tie cluster, \(M=4\), (W′) now holds on every arc. It is conditional on the Hankel form at \(M=4\) (a finite polynomial identity, so it can be checked exactly), with \(c_0\) off the two moduli and, for avoiding \(K\), the \(C\)-block uniqueness hypothesis.</p>
+<p>The lemma is the mechanism behind penalty sharing at \(p=1\) for \(M=4\). After the divided differences the small pair's four rows live, on such column sets, in three columns to first order, which costs a doubled order. At \(p=0\) it gives only \(2\nu_1\) of the penalty \(\pi_4=4\nu_1+2\nu_2\) seen in the data, a weaker bound that happens to suffice here.</p>
+<p>For larger clusters it is open. One pair gains only \(2\nu_a\) beyond the common shift, and gains from different pairs do not simply add: \(M=5\), \(p=1\) needs \(\pi_4=2(2\nu_1+\nu_2)\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The Hankel form at \(M=4\), exactly.</li>
+<li>Penalty sharing for \(M\ge5\): several deep roots, and \(p\ge2\) with \(k\ge3\).</li>
+<li>The two moduli.</li>
+<li>(W′) above cherry clusters.</li>
+<li>The other core statements.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-cherry-lattice-splitting (rows, window bound, \(L_1\));</li>
+<li>prop:cube-tie-cluster-window-coefficients;</li>
+<li>conj:cube-tie-cluster-penalty-sharing and prop:cube-penalty-sharing-gives-window;</li>
+<li>cor:cube-cherry-step.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the lemma stated as an exact ideal membership, with the unused smallness hypothesis removed;</li>
+<li>the spanning step and the polynomial dependence on \(\varepsilon\) made explicit;</li>
+<li>the moduli and uniqueness qualifiers added to the title, status and summary;</li>
+<li>the claim about larger clusters marked open;</li>
+<li>the mechanism claim restricted to \(p=1\);</li>
+<li>\(c_0\notin\{0,1\}\) and \(\nu_1&lt;\nu_2\) stated.</li>
+</ul>
+<p>Status: working proof (lemma); conditional result (corollary, on the Hankel form at \(M=4\)); exact checks.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-zm">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 51.52 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">10 min 21.20 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 43.48 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9 min 46.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
