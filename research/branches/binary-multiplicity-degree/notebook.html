@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-pure-wronskian">tie pure Wronskian entry</a> proves the pure Padé half for every \(m\) (thm:cube-tie-pure-wide-normality), by a Wronskian against the first-order equation of \(h_c\). The tie window's special values are now exactly the degeneracies of its three extra rows on the pure kernel (conj:cube-tie-extra-rows-pure-kernel).</p>
-<p>Next: extend the Wronskian method to the full window. Its relation involves five functions in four Kummer classes, \((1+T)^{-1/2}\), \((1+cT)^{-1/2}\), \(1\) and \(((1+T)(1+cT))^{-1/2}\), with the low polynomial part below \(T^d\) as the fifth. Count local exponents at \(0\), \(-1\), \(-1/c\) and \(\infty\), with the zero/pole balance of the Wronskian on \(\mathbb P^1\). A draft count excludes relations on \(3m+6\) columns and is exactly tight on the window's \(3m+5\). Settle the degenerate cases, then look for the one missing order.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-exponent-count">tie exponent count entry</a> proves the tie rows independent one column beyond the window, for every \(m\) (thm:cube-tie-excess-three-window). On the window itself it shows that a special value would be a rigid, exactly balanced configuration (lem:cube-tie-window-wronskian-rigidity).</p>
+<p>Next: a route review, due after the Wronskian results. Its main question is where the one missing order can come from: the truncation structure of the low part \(L\), the coupling of \(g_3,g_4\) at \(\infty\), or the nonexistence of the balanced fifth-order Fuchsian equation, with its apparent singularity at \(0\). It should also update the living sections: the pure half is proved, and the obstacle is one order on the window.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60537,6 +60537,93 @@ The \(h\)-terms cancel, so \(R\) is a polynomial. Its three terms have degree at
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 17.63 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 51.61 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 25.89 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-exponent-count" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-tie-excess-three-window lem:cube-tie-window-wronskian-rigidity">
+<h3>8 October 2026 — A Wronskian exponent count proves the tie rows independent on 3m + 6 columns for every m; on the window's 3m + 5 columns the count is exactly balanced and a special value would be rigid</h3>
+<p class="entry-meta">Theorem (working proof, every m) one column beyond the window; rigidity lemma on the window itself. Gap (3), confluent tie window. Tie exponent count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-pure-wronskian">tie pure Wronskian entry</a> proved the pure half by a Wronskian. Does a Wronskian count over \(\mathbb P^1\) also handle the full window, whose rows fall into four Kummer classes?</p>
+<p><strong>General statement.</strong> thm:cube-tie-excess-three-window and lem:cube-tie-window-wronskian-rigidity.</p>
+<p><strong>Setting.</strong> A left-kernel relation of the tie window's rows on the columns \(T^d,\ldots,T^{d+M-1}\) is
+\[G=g_1+g_2+g_3+g_4+g_5=O(T^{d+M}),\]
+with the following five terms.</p>
+<ul>
+<li>\(g_1=P(1+T)^{-5/2}\), \(\deg P&lt;2m\).</li>
+<li>\(g_2=Q(1+cT)^{-3/2}\), \(\deg Q&lt;m\).</li>
+<li>\(g_3=\alpha(1+T)^{-3}\).</li>
+<li>\(g_4=u\,(1+T)^{-5/2}(1+cT)^{-3/2}\), with \(u=\beta(1+T)+\gamma T\). This term carries both product rows, since \(T(1+T)^{-5/2}(1+cT)^{-3/2}=\tfrac T{1+T}((1+T)(1+cT))^{-3/2}\).</li>
+<li>\(g_5=-L\), where \(L\) is the part of \(g_1+\cdots+g_4\) below \(T^d\), so \(\deg L&lt;d\).</li>
+</ul>
+<p>Over \(\mathbb C(T)\), \(g_1,g_2,g_4\) and \(\{g_3,g_5\}\) lie in the four distinct Kummer classes of \((1+T)^{-1/2}\), \((1+cT)^{-1/2}\), \(((1+T)(1+cT))^{-1/2}\) and \(1\), for \(c\notin\{0,1\}\). Inside the last class, \(g_3\) is not a polynomial unless \(\alpha=0\). So the nonzero \(g_i\), \(k\) of them, are linearly independent over \(\mathbb C\), and their Wronskian \(W\) is nonzero. A nontrivial relation has some nonzero \(g_i\) with \(i\le4\), since \(g_5\) is determined by \(g_1,\ldots,g_4\). So \(S=\{5\}\) cannot occur.</p>
+<p><strong>Count.</strong> \(W\) is a rational function times powers of \(1+T\) and \(1+cT\), so the sum over \(\mathbb P^1\) of \(\operatorname{ord}_zW\) is zero.</p>
+<ul>
+<li>At a finite point \(z\), \(\operatorname{ord}_zW=\sum e_i(z)-\binom k2\), where the \(e_i(z)\) are the distinct local exponents of the span. Within one class modulo \(1\) a basis can be chosen with distinct exponents; across classes they differ automatically.</li>
+<li>If the sorted minimal exponents in a class are \(a_1\le\cdots\le a_r\), the elements of order at least \(a_j\) form a subspace of dimension at least \(r-j+1\). So the \(j\)-th exponent \(f_j\) satisfies \(f_j\ge a_j\) and \(f_j\ge f_{j-1}+1\). At \(0\), the top exponent is the largest order of a nonzero element of the span, hence at least \(\operatorname{ord}_0G\).</li>
+<li>At \(\infty\), in \(t=1/T\), \(\operatorname{ord}=\sum e_i(\infty)+\binom k2\), since \(W_T=(-t^2)^{\binom k2}W_t\).</li>
+<li>Elsewhere the order is at least \(0\).</li>
+</ul>
+<p>So \(0\ge B(S):=\sum_{z\in\{0,-1,-1/c,\infty\}}\sum_ie^{\min}_i(z)-k(k-1)\), where \(S\) is the set of nonzero terms and the minimal exponents, made distinct within each class, are as follows.</p>
+<ul>
+<li>At \(0\): the span contains \(G\), of order at least \(d+M\). The other exponents are at least \(0,1,\ldots,k-2\).</li>
+<li>At \(-1\): \(g_1,g_4\): \(-\tfrac52\); \(g_3\): \(-3\); \(g_2,g_5\): \(0\).</li>
+<li>At \(-1/c\): \(g_2,g_4\): \(-\tfrac32\); \(g_1,g_3,g_5\): \(0\).</li>
+<li>At \(\infty\): \(g_1\): \(\tfrac72-2m\); \(g_2\): \(\tfrac52-m\); \(g_3,g_4\): \(3\); \(g_5\): \(1-d\).</li>
+</ul>
+<p>For \(S=\{1,\ldots,5\}\) this gives \(B=M-3m-5\), with the five values below.</p>
+<ul>
+<li>At \(0\): \(6+d+M\).</li>
+<li>At \(-1\): \(\{-3,0,1\}\cup\{-\tfrac52,-\tfrac32\}\), sum \(-6\).</li>
+<li>At \(-1/c\): \(\{0,1,2\}\cup\{-\tfrac32,-\tfrac12\}\), sum \(1\).</li>
+<li>At \(\infty\): \(\{1-d,3,4\}\cup\{\tfrac72-2m,\tfrac52-m\}\), sum \(14-d-3m\).</li>
+<li>Subtract \(k(k-1)=20\).</li>
+</ul>
+<p><strong>Excess-three theorem (thm:cube-tie-excess-three-window).</strong> For every \(m\ge1\) and \(c\notin\{0,1\}\), the \(3m+3\) rows of the confluent tie window have rank \(3m+3\) on the \(3m+6\) columns \(T^d,\ldots,T^{d+3m+5}\).</p>
+<p><em>Proof.</em> With \(M=3m+6\), every nonempty \(S\) has \(B(S)\ge1\), contradicting \(0\ge B(S)\).</p>
+<ul>
+<li>For \(m\ge2\), the relative order of the minimal exponents within each class and point does not depend on \(m\): \(1-d\le0&lt;3\), and \(\tfrac72-2m&lt;\tfrac52-m\). So \(B(S)\) is affine in \((m,d)\), with coefficient \(1-[5\in S]\ge0\) for \(d\) and \(3-2[1\in S]-[2\in S]\ge0\) for \(m\). Hence \(B(S)\) is nondecreasing in \(m\).</li>
+<li>Its values at \(m=2\) are all at least \(1\), by research/tools/bmd_tie_exponent_count.py (research/results/bmd-20261008-i/exponent-count.txt). The least is \(1\), at \(S=\{1,\ldots,5\}\).</li>
+<li>For \(m=1\), \(g_5=0\) since \(d=0\), and the least value is \(3\).</li>
+<li>\(B\) is always an integer: each half-integer class appears at exactly two points for each of \(g_1,g_2,g_4\).</li>
+</ul>
+<p>The script lists all subsets for \(m\le40\) as a check. \(\square\)</p>
+<p><strong>The case \(m=1\).</strong> At \(M=3m+5=8\), the least value is \(B=2&gt;0\). So for \(m=1\) the window itself has full rank at every \(c\notin\{0,1\}\).</p>
+<p><strong>Rigidity on the window (lem:cube-tie-window-wronskian-rigidity), for \(m\ge2\).</strong> With \(M=3m+5\), the window itself, \(B_{3m+5}(S)=B_{3m+6}(S)-1\). For \(m\ge2\) the same monotonicity, integrality and the \(m=2\) values give \(B(S)\ge1\) for every \(S\ne\{1,\ldots,5\}\), and \(B=0\) for the full set. Suppose \(c_0\notin\{0,1\}\) is a special value of the window. Then:</p>
+<ul>
+<li>all of \(P,Q,\alpha,u,L\) are nonzero;</li>
+<li>every inequality in the count is an equality, so \(\deg P=2m-1\), \(\deg Q=m-1\), \(\deg L=d-1\), \(\operatorname{ord}_0G=d+3m+5\), and the distinct-ified exponents listed (for example \(\{1-d,3,4\}\) at \(\infty\)) are the actual local exponents of the span;</li>
+<li>the Wronskian has no zeros off \(\{0,-1,-1/c_0,\infty\}\), and \(W=\kappa\,T^{d+3m+1}(1+T)^{-16}(1+c_0T)^{-9}\).</li>
+</ul>
+<p>So a special value is an exactly balanced configuration. The span of \(g_1,\ldots,g_5\) would be the solution space of a fifth-order Fuchsian equation with singular points \(0,-1,-1/c_0,\infty\). At \(0\) it would have an apparent singularity with exponents \(0,1,2,3,d+3m+5\), and the local exponents prescribed above at the other three points.</p>
+<p><strong>What this means.</strong> The same method that proved the pure half reaches one column beyond the window, uniformly in \(m\). On the window itself it is exactly balanced. The highest-risk statement is now the exclusion of one rigid configuration. Any single additional order of vanishing, anywhere on \(\mathbb P^1\), would finish it. So would a structural reason that one of the local exponents cannot be minimal, or that the Fuchsian equation cannot exist.</p>
+<p>The data show no special values for \(m\le6\), so the configuration does not occur there. One candidate source of the extra order is the specific form of \(L\): it is the truncation of \(g_1+\cdots+g_4\) below \(T^d\), not an arbitrary polynomial. Another is the coupling of \(g_3\) and \(g_4\) at \(\infty\), whose leading terms are \((\alpha+(\beta+\gamma)c^{-3/2})T^{-3}\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>exclusion of the rigid configuration of lem:cube-tie-window-wronskian-rigidity for \(m\ge7\), equivalently the absence of special values on the window;</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-pure-wide-normality (method); the row list of lem:cube-tie-window-moment-form and research/tools/bmd_tie_forney.gp (the five row types).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer passed the setting, the Wronskian order formulas, every exponent list, the point sums and the monotonicity argument. It checked the theorem numerically for \(m\le4\) at \(c=-1,2,\tfrac12,3+i,-\tfrac13,7\) and at generic \(c\), on both the window and \(3m+6\) columns. It asked for several changes, all applied:</p>
+<ul>
+<li>the distinct-ification rule justified;</li>
+<li>\(S=\{5\}\) excluded explicitly;</li>
+<li>the rigidity bound for all \(m\) argued, not only stated;</li>
+<li>the lemma restricted to \(m\ge2\), with \(m=1\) proved separately;</li>
+<li>"actual local exponents" in place of "attained".</li>
+</ul>
+<p>Status: working proof (excess-three theorem, every \(m\); the window at \(m=1\); rigidity lemma, \(m\ge2\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 25.56 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 14.76 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
