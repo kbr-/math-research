@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item (<a href="#entry-2026-10-08-cube-cone-limits-review-two">cone limits review</a>). The leading Plücker vector along an arc is the Plücker vector of the limit linear series \(L_0\). The slack of (H) is a vanishing-order condition on \(L_0\) at the mark. Open in gap (1): the cherry step, conj:cube-single-cherry-slack and conj:cube-triple-window-full-rank.</p>
-<p>Next: for the single-cherry cluster, compute \(L_0\) along arcs in two rate regimes and decompose it into aspects on the cherry and level components. Test whether the Eisenbud–Harris node inequalities hold with equality. If they do, derive the slack from the Plücker formula on each component, and attempt a cherry step.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (1), the highest-risk item. The <a href="#entry-2026-10-08-cube-cherry-limit-spaces">cherry limit space entry</a> refutes slack two for single-cherry clusters (ex:cube-single-cherry-slack-two-fails): arcs inside a hyperplane of the initial minor have slack one. The tie step needs only slack one (conj:cube-single-cherry-slack-one). The limit spaces depend on the arc.</p>
+<p>Next: prove conj:cube-single-cherry-slack-one for \(M=2\) by a complete arc analysis. Four roots have no interior configuration with \(\operatorname{rank}A_6&lt;6\) (the exact certificate of thm:cube-bottom-quadruple-avoidance, columns \(0,\ldots,6\)). So what must be excluded is a rank drop in the limit, not in the interior. Parametrize the arcs to the vertex by their rates and leading coefficients, compute the leading Plücker coordinates on the columns \(0,\ldots,6\) symbolically, and show that one of them is always nonzero. Then look for the mechanism for every \(M\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -62689,6 +62689,66 @@ w\Sigma S_C+\operatorname{val}p_{\tilde C}(S_C)+h\,\operatorname{val}\mathrm{Van
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 5.19 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.25 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">7.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-cherry-limit-spaces" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-cone-limits-review-two:1" data-claims="ex:cube-single-cherry-slack-two-fails conj:cube-single-cherry-slack-one">
+<h3>8 October 2026 — Cherry limit spaces depend on the arc; slack two fails on arcs inside a hyperplane of the initial minor, but slack one survives, which is all the tie step needs</h3>
+<p class="entry-meta">Refutation of conj:cube-single-cherry-slack (slack two) by explicit arcs, and the corrected conjecture (slack at least one), equivalent to a vanishing-order bound on limit series. Gap (1), cherry types. Cherry limit space cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (1), the highest-risk item; the Eisenbud–Harris lead of the <a href="#entry-2026-10-08-cube-cone-limits-review-two">cone limits review</a>. A single-cherry tree over a caterpillar is a vertex of \(\overline M_{0,N+1}\): all its components are trivalent. Is the limit space \(L_0\) the same along every arc? And is its initial Taylor minor always nonzero, as conj:cube-single-cherry-slack asserts?</p>
+<p><strong>General statement.</strong> ex:cube-single-cherry-slack-two-fails: conj:cube-single-cherry-slack is false for \(M=2\). Along the arcs with roots</p>
+\[
+\bigl(1,\ 1+\varepsilon+2\varepsilon^2,\ \varepsilon,\ -2\varepsilon^2\bigr)\qquad\text{and}\qquad\bigl(1,\ 1+2\varepsilon^2+3\varepsilon^5,\ 2\varepsilon^2,\ -3\varepsilon^5\bigr),
+\]
+<p>both tending to the single-cherry vertex, the initial Taylor minor vanishes identically. Both arcs lie in the hyperplane \(a_1+a_3=a_2+a_4\). By the four-root factorization (conj:cube-pair-taylor-vandermonde, true for four roots), that hyperplane is a factor of the initial minor. The best slack along these arcs, computed on the columns \(0,\ldots,R_C+4\), is \(1\).</p>
+<p>Corrected: conj:cube-single-cherry-slack-one. Along every arc tending to a single-cherry tree over a caterpillar of \(M\ge2\) roots, some column set inside \(\{0,\ldots,R_C\}\) attains the least valuation among all \(R_C\)-minors, on any columns.</p>
+<p>The least sets are the nonzero Plücker coordinates of the limit space \(L_0\), and they lie above its vanishing-order set in the Gale order. So the conjecture is equivalent to: \(L_0\) contains no nonzero section vanishing to order \(R_C+1\) at the mark. It implies (H) with slack at least \(1\), which is all thm:cube-tie-above-cherry-avoidance needs. That theorem therefore stands with this conjecture in place of the refuted one.</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_limit_space.gp (research/results/bmd-20261008-za/cherry-limit-space.txt) computes \(L_0\) by valuation-pivoted elimination over \(\mathbb Q(\varepsilon)\), on columns \(0,\ldots,11\) (\(M=2\)) and \(0,\ldots,13\) (\(M=3\)). The arcs are six with \(M=2\) and four with \(M=3\), with monomial rates and fixed leading coefficients.</p>
+<ul>
+<li>\(L_0\) is not the same along all arcs. It agrees with the first arc's \(L_0\) only once among eight comparisons, \(M=3\) at rates \((1,2)\) against \((1,1)\). The sixth \(M=2\) arc has the rates of the first but other leading coefficients, and its \(L_0\) differs too. So \(L_0\) depends on the leading coefficients, not only on the rates.</li>
+<li>Every \(L_0\) contains the naive limit functions \(1\), \((1+T)^{-3/2}\) and \((1+T)^{-3}\).</li>
+<li>On these ten generic arcs, \(L_0\) has vanishing orders \(0,\ldots,R_C-1\) at \(T=0\).</li>
+<li>On the two hyperplane arcs below, the reviewer's rerun of the same routine gives vanishing orders \(\{0,1,2,3,4,6\}\): one section vanishes to order \(R_C=6\) and none to order \(7\). This is the corrected conjecture's condition, met exactly.</li>
+</ul>
+<p>research/tools/bmd_slack_arcs.gp (slack-arcs.txt) computes all minors on the columns \(0,\ldots,R_C+4\) along three arcs:</p>
+<ul>
+<li>a generic cherry arc: least valuation \(6\), attained by the initial minor, slack \(2\);</li>
+<li>the two hyperplane arcs above: initial minor identically zero, least valuations \(6\) and \(12\), best slack \(1\).</li>
+</ul>
+<p><strong>What this means.</strong> The slack of a cluster is a property of the arc, not of the boundary point. Arcs can run inside the hypersurface where the initial minor vanishes, which is the codimension-one locus \(\operatorname{rank}A_{R-1}&lt;R\). Its closure contains the cherry vertex. Slack two would need the vertex to lie outside that closure, which fails.</p>
+<p>Slack one on every arc needs the vertex to lie outside the closure of the codimension-two locus \(\operatorname{rank}A_R&lt;R\), one order below the contact locus. The converse is not shown. It holds on every arc tested, including the hyperplane arcs. In limit-series terms, the needed property of the cherry cluster is a bound on vanishing orders at the mark, at order \(R_C+1\): the same kind of statement as (K) for the cluster, one order lower.</p>
+<p>Only the tie step needs slack at least \(1\) from the cluster below. Singleton steps preserve whatever slack they get, and they work at slack \(0\). So a tie above a cluster asks of that cluster a slack condition of codimension two, while the conclusion for the whole configuration is a codimension-three condition. Where slack two fails, the induction carries a stronger hypothesis than its conclusion.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the cone limits review, Eisenbud–Harris limit series. The limit series is computed exactly, and it depends on the arc, so the quantifier over arcs stays essential. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>in gap (1): conj:cube-single-cherry-slack-one, the cherry step and conj:cube-triple-window-full-rank;</li>
+<li>in gap (3): conj:cube-tie-single-block-exclusion and the special cancellations;</li>
+<li>the cherry local sums.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-above-cherry-avoidance and conj:cube-single-cherry-slack; conj:cube-pair-taylor-vandermonde, its four-root factorization; the review's test (a).</p>
+<p><strong>Verification gate.</strong> One fresh medium reviewer passed the entry with corrections, all applied. It checked the frame of both arcs, the hyperplane, the exact vanishing of the initial minor, the elimination and the theorem's slack-one hypothesis. It also recomputed the hyperplane arcs' limit spaces (vanishing orders \(\{0,\ldots,4,6\}\)).</p>
+<p>The corrections:</p>
+<ul>
+<li>the conjecture stated with the global least valuation, so that it is equivalent to the vanishing-order bound;</li>
+<li>the generic-arc scope of the vanishing orders;</li>
+<li>eight comparisons, not nine, and the dependence on the leading coefficients;</li>
+<li>the column range of the slack computation;</li>
+<li>"needs" in place of an asserted equivalence;</li>
+<li>the slack requirement restricted to the tie step;</li>
+<li>an unsupported inference about Osserman's framework removed.</li>
+</ul>
+<p>Status: refutation (slack two); conjecture (slack one).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-za">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 21.32 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 56.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 17.55 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
