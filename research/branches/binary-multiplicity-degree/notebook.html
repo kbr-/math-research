@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-kernel-arc-reduction">kernel arc reduction</a>; eight open items). The standard exchanges of (W′) reduce to single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\) along each arc.</p>
-<p>Next: the smallest single kernel exchange, \(j=k\), \(i=k-1\). Express \(D_{T_0-(k-1)+k}\) and \(D_{T_0}\) through the kernel-column expansion. Since \(K_u(z\cdot w)\) and \(K_u(w)\) are linked by \(y\,h[w]=h[zw]+Ih[w]\) at the roots, compare them along every arc, starting at \(p=M-1\) (\(k=1\)), where each \(D_T\) is one functional applied to one column.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4 (<a href="#entry-2026-10-09-cube-kernel-homogeneity">kernel homogeneity</a>; eight open items). The standard exchanges of (W′) reduce to single kernel exchanges along arcs, and by homogeneity to configurations with a unit root.</p>
+<p>Next: the single kernel exchange at \(k=1\) (\(p=M-1\)), where \(D_{\{j\}}=\langle\nu,K_u(z^j)\rangle\) for the normal functional \(\nu\) of the negative block. Write \(\langle\nu,K_u(Pg)\rangle\) as a moment functional \(\sum_s\tilde\nu_s\int_0^{y_s}P\,g\,\Psi_s\) of \(g\), and compare its value at \(g=z^j\) with that at \(g=1\) along unit-scale arcs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -67473,6 +67473,57 @@ Here \(\Lambda_q\) is the comparison window of the plain case, with the excess c
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 5.99 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.61 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">25.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-kernel-homogeneity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-kernel-homogeneity">
+<h3>9 October 2026 — The kernel determinants are weighted homogeneous: higher monomial sets gain a factor per unit of root scale, so arc-wise kernel minimality reduces to configurations with a unit root</h3>
+<p class="entry-meta">Working proof of the scaling identity D_T(u, λy) = λ^{δ_T} D_T(λu, y) with δ_T − δ_{T0} = ΣT − ΣT0, checked exactly at M = 3, 4; reduction of conj:cube-kernel-arc-minimality to configurations with a unit root. Kernel homogeneity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4, through prop:cube-kernel-arc-reduction: the single kernel exchanges \(\omega(D_{T_0-i+j})\ge\omega(D_{T_0})\) along each arc. The \(M=2\) symbolic data show that \(D_T\) for higher \(T\) carries higher powers of the roots. Is this a structural homogeneity, and what does it reduce?</p>
+<p><strong>General statement.</strong> lem:cube-kernel-homogeneity. For \(\lambda\ne0\) and every \(k\)-set \(T\), with standard negative part \(N=\{1,\ldots,p\}\),
+\[ D_T(u,\lambda y)=\lambda^{\delta_T}\,D_T(\lambda u,y),\qquad \delta_T=\textstyle\sum_{i\in T}(M+i)-\sum_{n\in N}n-\binom M2 , \]
+so \(\delta_T-\delta_{T_0}=\sum T-\sum T_0\ge0\). Consequently, along an arc on which the roots are not all zero and every root has valuation at least \(\mu\ge0\) (rational \(\mu\) allowed, after reparametrizing \(s\mapsto s^d\)), write \(y=s^{\mu}y'\). Then
+\[ \omega_w(D_T)(y)=\mu\,\delta_T+\omega_{w+\mu}(D_T)(y'), \]
+so \(\omega_w(D_T)(y)-\omega_w(D_{T_0})(y)=\mu(\sum T-\sum T_0)+\bigl[\omega_{w+\mu}(D_T)-\omega_{w+\mu}(D_{T_0})\bigr](y')\). Arc-wise kernel minimality at \((y,w)\) follows from it at \((y',w+\mu)\), where some root is a unit. The condition \(\mu\ge0\) is used only to make the extra term \(\mu(\sum T-\sum T_0)\) nonnegative, and \(D_{T_0}\ne0\) transfers between \(y\) and \(y'\) by the identity.</p>
+<p><strong>Proof.</strong> Let \(S_\lambda f(z)=f(z/\lambda)\). In the coefficient basis \(z^0,\ldots,z^{M-1}\) it is \(\operatorname{diag}(\lambda^{-r})\), with determinant \(\lambda^{-\binom M2}\).</p>
+<p>The kernel operator \(\mathcal T_u=C\varphi_uC^{-1}\), \(\varphi_u=(1+uz)^{-3/2}-1\), acts by \(z^j\mapsto\sum_mc_mu^m\frac{c_{j+m}}{c_j}z^{j+m}\). Hence \(\mathcal T_uS_\lambda=S_\lambda\mathcal T_{\lambda u}\). For the roots \(\lambda y\), \(P_\lambda(z)=\prod(z-\lambda y_s)=\lambda^MS_\lambda P\), and \(\operatorname{rem}(S_\lambda F,S_\lambda P)=S_\lambda\operatorname{rem}(F,P)\); a remainder modulo a scalar multiple of \(S_\lambda P\) is the same. So the kernel column satisfies \(K^{(\lambda y)}_u(z^i)=\lambda^{M+i}S_\lambda K^{(y)}_{\lambda u}(z^i)\).</p>
+<p>The negative column is \(\operatorname{rem}(u^nG_n(uz),P)\) with \(G_n(x)=\sum_mc_mc_{n+m}x^m\). Since \(u^nG_n(uz)=\lambda^{-n}S_\lambda[(\lambda u)^nG_n(\lambda uz)]\), it equals \(\lambda^{-n}S_\lambda\) applied to the column at \((\lambda u,y)\).</p>
+<p>Taking the determinant of the \(M\) columns gives the identity. The valuation statement follows by substituting \(\lambda=s^{\mu}\): the arc's \(u=\gamma s^{w}\) becomes \(\lambda u=\gamma s^{w+\mu}\). \(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_kernel_homogeneity.gp (research/results/bmd-20261009-r/kernel-homogeneity.txt) verifies the identity exactly over \(\mathbb Q\), with \(\lambda=5/3\) at random rational roots, for \(M=3,4\), every \(p\), every \(k\)-set \(T\subset[0,4]\) and \(u\)-orders up to \(B+4\). The absolute exponent \(\delta_T\) of the formula holds at every order, zero coefficients included, in all \(40\) cases, and no case has all coefficients zero. A first run tested only the differences \(\delta_T-\delta_{T_0}\) on nonzero orders (kernel-homogeneity.txt.first-run).</p>
+<p><strong>What this means.</strong> A common scale of the roots favours the window kernel by \(\mu(\sum T-\sum T_0)\) and shifts the \(u\)-weight. So arc-wise kernel minimality needs to be proved only at configurations with a root of valuation \(0\).</p>
+<p>Observation, not proved here: the \(M=2\) refutation configuration, roots \((1,-1+\eta)\), already has a unit root. There, by the symbolic data of the minimality refutation, the window wins through its lower-order terms, not through scale. The factors like \(e_1\) seen in the window's coefficients there depend on the origin's position relative to the roots.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The single kernel exchanges at configurations with a unit root.</li>
+<li>Non-standard exchanges.</li>
+<li>The tie condition; \(p=0\); the other open items.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-kernel-arc-reduction (the arc convention \(u=\gamma s^w\));</li>
+<li>lem:cube-kernel-column-expansion and the definition of \(K_u\);</li>
+<li>the \(M=2\) symbolic data (monomial-symbolic.txt).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer rederived every step and the valuation consequence, and checked the script, reproducing the absolute exponents in a modified copy. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the scalar-multiple remark for the remainder;</li>
+<li>the hypotheses of the valuation step (nonzero roots, rational \(\mu\), the role of \(\mu\ge0\), transfer of \(D_{T_0}\ne0\));</li>
+<li>the committed check strengthened to the absolute exponent at every order, with vacuous cases reported;</li>
+<li>an overclaim about the remaining regime corrected;</li>
+<li>an observation labelled as such.</li>
+</ul>
+<p>Status: working proof (homogeneity and reduction), exact check at \(M=3,4\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-r">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 36.82 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 39.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 49.55 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7.96 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
