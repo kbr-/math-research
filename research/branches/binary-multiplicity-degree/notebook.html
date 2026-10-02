@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-subblock-ranks">tie sub-block ranks entry</a> proves every sub-block of the confluent tie window for all \(m\) (thm:cube-tie-subblock-ranks). The rows without product functionals have full rank on \(3m+3\) columns, and the rows without the point row on \(3m+4\). What remains is the joint independence of the point row \((1+T)^{-3}\) and the two product rows on the pure kernel, exactly where the Wronskian count is tight.</p>
-<p>Next: look for the input beyond degree counting in the special shape of the point row. \((1+T)^{-3}=\bigl((1+T)^{-3/2}\bigr)^2\) is the square of a function in the pure family's class. Test whether that relation, combined with a product row \(((1+T)(1+cT))^{-3/2}\), yields a second relation, for example by multiplying the window relation by \((1+T)^{-1/2}\) or \((1+cT)^{-1/2}\) and comparing with the pure Padé forms. That would give the missing order.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-functional-length">tie functional length entry</a> shows that the Gegenbauer functional of the non-confluent tie window, with its one-shift Gamma weights, needs \(4m\) columns on the confluent window (lem:cube-tie-confluent-functional-length). That is too many from \(m=6\) on. With the Wronskian count tight, neither proved mechanism reaches the joint independence of the three extra rows.</p>
+<p>Next: a route review, due after six research cycles. Weigh the remaining options for the highest-risk item: weights with two Gamma shifts; transversality of the rigid configuration; the Lucas reduction modulo \(p\). Also weigh whether to spend cycles on the lower-risk cherry line or on the cone's other gaps, (1) and (2), while the tie window stays open.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60970,6 +60970,57 @@ So \(B_M(S)\) is affine in \((m,d)\). Its coefficient of \(d\) is \(1-[5\in S]\g
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 41.04 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-functional-length" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-tie-confluent-functional-length">
+<h3>8 October 2026 — The shift-invariant Gegenbauer functional of the non-confluent tie window does not transfer: on the confluent pure rows its annihilator has degree at least 4m − 1, beyond the window's 3m + 5 columns from m = 6 on</h3>
+<p class="entry-meta">Working proof of an obstruction to the shift-invariant weighted-functional method on the confluent tie window, within the one-shift Gamma weights. Gap (3), confluent tie window. Tie functional length cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. The Wronskian count is exhausted on the confluent tie window (tie sub-block ranks entry): only the three extra rows together remain. The non-confluent tie window was proved for every \(c\ne0,1\) by an exact identity (thm:cube-tie-window-general-functional, thm:cube-tie-window-gegenbauer). There, a weighted difference operator \(\Pi(E)\) kills the weighted coefficient sequences of all single-series rows, as sequences. A fractional-integral recursion then evaluates the remaining sum in closed form. Can the same operator form be used on the confluent window?</p>
+<p><strong>General statement.</strong> lem:cube-tie-confluent-functional-length. Let \(m\ge1\), \(\lambda=\tfrac32\) and \(c\notin\{0,1\}\), with weights in the family \(\rho^{(j)}_k=\Gamma(k+1)/\Gamma(k+\lambda+1-j)\), \(j\in\mathbb Z\). Suppose a constant-coefficient difference operator \(\Pi(E)\) annihilates, as sequences on a range of columns \(k\ge0\) of length at least \(\deg\Pi+3m\), the weighted coefficient sequences \(\rho^{(j)}_k[T^k]\) of all pure rows \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)). Then \(j\ge2m-1\) and \(\deg\Pi\ge2j+1\ge4m-1\). So the functional \(y_k=\sum_ip_i\rho^{(j)}_{M-i}\) of that method has support of at least \(4m\) columns. The confluent window has \(3m+5\), so the method does not fit within it for \(m\ge6\).</p>
+<p><em>Proof.</em> Since \(\binom{-a}{k}=(-1)^k(a)_k/k!\), the weighted coefficients are as follows, up to constants.</p>
+<ul>
+<li>For \(T^i(1+T)^{-\lambda-1}\): \((-1)^kk^{\underline i}\,\Gamma(k-i+\lambda+1)/\Gamma(k+\lambda+1-j)\).</li>
+<li>For \(T^n(1+cT)^{-\lambda}\): \((-c)^kk^{\underline n}\,\Gamma(k-n+\lambda)/\Gamma(k+\lambda+1-j)\).</li>
+</ul>
+<p>These closed forms hold for all \(k\ge0\), since the falling factorial vanishes for \(k&lt;i\) (or \(k&lt;n\)). The Gamma ratios are polynomials in \(k\) iff \(j\ge i\), respectively \(j\ge n+1\). Then they are \((k+\lambda+1-j)_{j-i}\) and \((k+\lambda+1-j)_{j-n-1}\). Otherwise they are rational and non-polynomial in \(k\).</p>
+<p>The kernel of a constant-coefficient difference operator, on a range longer than its order, consists of exponential-polynomial sequences. A rational non-polynomial function times \((-1)^k\) is not one of these. So \(\Pi\) can annihilate the \(f\)-family only if \(j\ge2m-1\), using \(i=2m-1\).</p>
+<p>For \(j\ge2m-1\), each \(f\)-image is \((-1)^k\) times a polynomial of exact degree \(j\). So \(\Pi\) is divisible by \((E+1)^{j+1}\). The \(g\)-image at \(n=0\) is \((-c)^k\) times a polynomial of exact degree \(j-1\), so \(\Pi\) is divisible by \((E+c)^j\). Since \(c\ne1\), these factors are coprime, and \(c\ne0\) makes the \(g\)-family non-trivial. Hence \(\deg\Pi\ge2j+1\ge4m-1\). The range condition ensures that annihilation on the range is equivalent to annihilation as operators on the span. \(\square\)</p>
+<p><strong>Remarks.</strong></p>
+<ul>
+<li>The lemma concerns only the shift-invariant operator form, which the closed-form recursion of the non-confluent proof needs. A functional killing all pure rows at one fixed column position always exists with \(3m+1\) columns. That is the pure kernel, and thm:cube-tie-pure-wide-normality settles its rank, but it gives no closed form.</li>
+<li>In the non-confluent case both families have \(m\) rows and the same exponent. There \(j=m\), and \(\Pi=((1+xE)(1+yE))^m\) has degree \(2m\), which fits the window. The confluent window is asymmetric, with \(2m\) rows of exponent \(\lambda+1\) and \(m\) of exponent \(\lambda\). This forces \(j\ge2m-1\), and the \(g\)-images carry the factor \((k+\lambda+1-j)_{j-n-1}\) with non-integer roots.</li>
+<li>\(4m\le3m+5\) holds exactly for \(m\le5\). The exact checks already cover \(m\le6\).</li>
+<li>Other weight families, for example Gamma ratios with two different shifts, are not covered. They are the natural next test.</li>
+</ul>
+<p><strong>What this means.</strong> Both proved mechanisms stop short of the confluent window. The Wronskian count is exactly tight there. The shift-invariant Gegenbauer operator, within the one-shift weights, needs at least \(4m\) columns. The obstacle is the asymmetric two-family structure, with exponents \(\lambda+1\) and \(\lambda\). Its pure part is settled (thm:cube-tie-pure-wide-normality), but no shift-invariant functional reduces the extra rows to a closed form.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank of the confluent tie window for \(m\ge7\): the three extra rows on the pure kernel;</li>
+<li>weighted functionals beyond \(\rho^{(j)}\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-tie-window-general-functional (statement and mechanism); thm:cube-tie-window-gegenbauer (the identity and its proof); thm:cube-tie-subblock-ranks.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the coefficient formulas against direct binomial expansions (\(m=3\), \(j=5\), \(c=2\), \(k\le15\)) and the rank of the \(f\)-images (\(m=2,3\)). It asked for several changes, all applied:</p>
+<ul>
+<li>the exponential-polynomial argument for \(j&lt;2m-1\);</li>
+<li>the divisibility argued from exact degrees for every \(j\ge2m-1\), which gives \(\deg\Pi\ge2j+1\);</li>
+<li>the lemma restricted to the shift-invariant operator form and to the one-shift weights, with the trivial single-position functional noted;</li>
+<li>the uses of \(c\ne0,1\) stated.</li>
+</ul>
+<p>It also found the first draft's "triangle system" remark unsupported, since limits of subspaces keep their dimension. That remark is removed.</p>
+<p>Status: working proof (obstruction lemma, within its stated scope).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-m">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 3.88 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 0.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
