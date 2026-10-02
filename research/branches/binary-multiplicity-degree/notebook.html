@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), items 3–4: (W′) above cherry clusters and nested trees (<a href="#entry-2026-10-09-cube-window-domination-route-review">window domination route review</a>; eight open items). The lower-bound side is proved. The rest is window domination, true on every test at \(M=4,5\), with adjacent windows sufficing.</p>
-<p>Next: match the cherry cross block to the neck window theorem's normal form, and read off the windows' \(u^{B+t}\)-coefficients from its Schur elimination. Start with the three windows \(\Lambda_{p-1},\Lambda_p,\Lambda_{p+1}\) that domination needs for a coordinate with \(p\) negative indices.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K). Items 3–4 ((W′) above cherry clusters and nested trees) are reduced to window domination. The windows' coefficients now have an exact <a href="#entry-2026-10-09-cube-window-hypergeometric-alternant">hypergeometric alternant</a> form, but upper bounds for them are not in hand. Items 1–2 (the confluent tie table beyond its base, the triple window) have had no work since the Mason review.</p>
+<p>Next: item 1, the confluent tie table. Test whether the moment method (multiples of the cluster polynomial turned into moment determinants and Cauchy–Binet) gives the table's missing normality beyond its base, starting from conj:cube-confluent-tie-table-normality's smallest open case.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -65883,6 +65883,70 @@ For every \(1\le p\le M-1\) and every \(\Lambda_+\subset[0,2M+1]\), it asks whet
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 8.15 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">19 min 19.58 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-window-hypergeometric-alternant" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-window-domination-route-review:1" data-claims="lem:cube-cross-hypergeometric-alternant">
+<h3>9 October 2026 — Every nonzero cherry cross coordinate, at all u-orders, is an alternant of Gauss hypergeometric functions at the cluster roots; at M = 3 the windows' first higher coefficient keeps the full penalty</h3>
+<p class="entry-meta">Working proof: an exact alternant formula for every cross coordinate in all u-orders, explicit for windows; numerical check of the window case for M ≤ 4; symbolic window coefficients at M = 3. Hypergeometric alternant cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), items 3–4: (W′) above cherry clusters and nested trees. By the <a href="#entry-2026-10-09-cube-window-domination-route-review">window domination route review</a>, the remaining input is the windows' higher \(u\)-coefficients, which window domination needs and which no tool in the record computes. Is there a closed form for a cross coordinate at all orders in \(u\)?</p>
+<p><strong>General statement.</strong> lem:cube-cross-hypergeometric-alternant. Put</p>
+\[ F_n(w)=\sum_{m\ge0}c_mc_{n+m}w^m=c_n\,{}_2F_1\bigl(\tfrac32,n+\tfrac32;n+1;w\bigr),\qquad c_n=\tbinom{-3/2}n . \]
+<p>In the setting of thm:cube-graded-hankel-penalty (\(x=1\), \(\varepsilon=u\)), let \(\Lambda\) have negative part \(-N\), \(|N|=p\), and nonnegative part \(\Lambda_+\). Let \(\{Pv_j\}_{j&lt;k}\) be a basis of the multiples of \(P=\prod(z-y_s)\) in \(C(\mathrm{Pol}_{\Lambda_+})\), where \(C:z^i\mapsto c_iz^i\), completed by \(\{e_l\}\) as in that proof. Suppose the first component \(\mathcal A_1\) has rank \(M\) on \(\mathrm{Pol}_\Lambda\); otherwise \(P_\Lambda=0\). Then, as power series in \(u\),</p>
+\[ P_\Lambda=\pm\kappa\,\mathrm{Vand}(y)\,\det\Bigl[\,u^nF_n(uy_s)\ (n\in N)\ \Big|\ \sum_i(Pv_j)_i\,y_s^i\,\frac{F_i(uy_s)}{c_i}\ (j&lt;k)\Bigr]_{s=1,\ldots,M}, \]
+<p>with \(\kappa=\det(\mathcal A_1|_E)\) times the inverse determinant of the basis change. In general \(\kappa\) and the \(v_j\) depend on \(y\). For a window \(\Lambda_p\) one may take \(v_j=z^j\) and \(e_l=z^l/c_l\), and then \(\kappa=\pm\prod_{i=0}^{2M-p-1}c_i\).</p>
+<p><strong>Proof.</strong> By steps (1)–(2) of the proof of thm:cube-graded-hankel-penalty, \(P_\Lambda=\pm\mathrm{Vand}(y)^2\det\mathcal A\), and \(\det\mathcal A=\pm\det(\mathcal A_1|_E)\det(\mathcal A_2|_K)\) in a basis adapted to the kernel \(K\). Here \(\mathcal A_2\) is \(g\mapsto C(\varphi_ug)\bmod P\) and \(\varphi_u=(1+uz)^{-3/2}-1\). The rank hypothesis makes \(\dim K=p+k=M\) and \(\mathcal A_1|_E\) invertible. For a window, \(\mathcal A_1|_E\) is the identity, and the basis change from monomials is triangular by degree with diagonal entries \(1/c_i\), which gives the stated \(\kappa\).</p>
+<p>A column \(\operatorname{rem}(\phi,P)\), written in coefficients, and its values \(\phi(y_s)\) at the roots differ by the Vandermonde. So \(\det(\mathcal A_2|_K)=\pm\det[\phi_{\mathrm{col}}(y_s)]/\mathrm{Vand}(y)\), with the columns:</p>
+<ul>
+<li>a negative monomial: \(C(\varphi_uz^{-n})=\sum_{m\ge n}c_mc_{m-n}u^mz^{m-n}=u^nF_n(uz)\);</li>
+<li>a kernel vector \(C^{-1}(Pv_j)\): \(C(\varphi_uC^{-1}(Pv_j))=\sum_i(Pv_j)_iz^i\bigl(F_i(uz)/c_i-1\bigr)\). At a root the term \(-\sum_i(Pv_j)_iy_s^i=-(Pv_j)(y_s)\) vanishes.</li>
+</ul>
+<p>Collecting the factors gives the formula. The evaluation step assumed distinct roots. For windows both sides are polynomial in \(y\), coefficientwise in \(u\), so the formula holds identically. In general, at coincident roots both sides vanish. \(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_window_alternant_check.gp (research/results/bmd-20261009-b/window-alternant-check.txt) compares the two sides for every window, \(2\le M\le4\), \(1\le p\le M\). It does so as power series to \(u^{B_p+6}\), at two random rational points each. The ratio is the same constant at both points in all nine cases, for example \(-45/16\), \(-496125/32768\) and \(1575/256\). These agree with \(\kappa=\pm\prod c_i\). The formula for non-windows has no computational check.</p>
+<p><strong>The windows' higher coefficients at \(M=3\).</strong> research/tools/bmd_window_graded_symbolic.m2 (window-graded-M3.txt) computes the windows' \(u^{B_p+t}\)-coefficients exactly, \(t\le3\), divided by \(\mathrm{Vand}^2\).</p>
+<ul>
+<li>For \(p=1\) (\(k=2\)): \(t=0\) gives \(c\,\mathrm{Vand}^2\), and \(t=1\) gives \(c'\,\mathrm{Vand}^2e_1\), so the first higher coefficient keeps the full penalty \(g(2)\). At \(t=2,3\) the quotients lie in \(I_1\) but not in \(I_2\), and are irreducible over \(\mathbb Q\), of degrees \(8\) and \(9\).</li>
+<li>For \(p=2\) (\(k=1\)), the quotients stay in \(I_1=I_k\) for all \(t\le3\), more than the bound \(g(\max(k-t,0))\) requires. For \(p=3\) (\(k=0\)), the \(t=1\) quotient is a constant times \(e_1\). The other quotients are irreducible symmetric polynomials.</li>
+</ul>
+<p>This is consistent with the repeated penalties seen at \(M=4\) (\(10,10,2,2\) above nested cherries). A higher window coefficient need not drop its penalty at the first step.</p>
+<p><strong>What this means.</strong> The windows' higher coefficients now have an exact source: the Taylor coefficients in \(u\) of an alternant of hypergeometric functions. The kernel columns' entries are \(\sum_i(Pz^j)_iy^i(F_i(uy)/c_i-1)\). At first order these are the integral remainders of the moment method, and at higher orders they are the hypergeometric corrections.</p>
+<p>The moment method bounded the first-order part from below. For domination, the higher parts must be bounded from above on the dominating terms, that is, nonvanishing of specific leading terms along each tree. The alternant form makes that a question about Schur expansions of explicit functions. The data show the expansions do not factor simply beyond the leading order.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-window-domination: the valuations of the windows' dominating terms from the alternant.</li>
+<li>Adjacency of the leading windows.</li>
+<li>Whether (W′) handles a leading \(\Lambda_0\).</li>
+<li>The other core items.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the window domination route review (neck elimination) along a different path. The neck's Schur elimination is replaced by the kernel decomposition, which gives the windows' coefficients at all orders directly, without matching the neck's normal form.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-graded-hankel-penalty, steps (1)–(3);</li>
+<li>lem:cube-cross-leading-coefficient;</li>
+<li>conj:cube-window-domination.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked both column formulas, the evaluation identity, the window constant (matching every computed ratio), the hypergeometric identification, and both scripts against their outputs. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the rank hypothesis added;</li>
+<li>the constant and the polynomiality argument restricted to windows, with \(\kappa=\pm\prod c_i\) stated;</li>
+<li>the missing check for non-windows stated;</li>
+<li>the \(M=4\) remark softened;</li>
+<li>the \(p=2,3\) data stated precisely;</li>
+<li>the script's claim name and the \(M=3\) run's parameters recorded.</li>
+</ul>
+<p>Status: working proof (alternant formula); exact symbolic data at \(M=3\); numerical check of the window case for \(M\le4\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-b">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 3.69 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 51.39 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 40.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.58 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.72 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.67 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
