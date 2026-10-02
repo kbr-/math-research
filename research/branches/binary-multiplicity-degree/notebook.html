@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-window-moment-form">tie window moment form entry</a> writes the whole confluent tie window in moment form (lem:cube-tie-window-moment-form). Its kernel is a one-variable type II multiple orthogonality problem: the two binomial families, a point functional at \(s=1\), and two functionals whose generating functions are products of the families' generating functions. The Kronecker lead is an equivalent restatement and is closed.</p>
-<p>Next: the cherry over a double root, by the confluent cherry theorem's prefix method, a passed lead with a candidate mechanism. The tie window's Forney bound stays the highest-risk item. Its next development is a normality theorem for type II problems with product-weight functionals, of Nikishin type, at the next route review.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-root">cherry double root entry</a> finds window leading sets for cherries over caterpillars with a double root at six arcs (conj:cube-cherry-double-root-windows). The naive Cauchy–Binet bound is not exact where the double root's copies fall in the choice ranks. The confluent tie window's Forney bound (lem:cube-tie-window-top-degree) remains the highest-risk item, without a mechanism.</p>
+<p>Next: a route review, due after the cycles since the tie Forney review, with the Forney bound as the highest-risk item. Its leads should include a normality theorem for type II problems with product-weight functionals (lem:cube-tie-window-moment-form). They should also include a reduced expansion for the cherry over a double root.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59147,6 +59147,48 @@ For the window there are now the degree counts \(a_m\), \(b_m\) and \(\delta_m\)
 <tr><td>Computation design and coding</td><td class="elapsed">5.26 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 4.27 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-cherry-double-root" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:2" data-claims="conj:cube-cherry-double-root-windows">
+<h3>7 October 2026 — Cherries over a caterpillar with a double root: the least sets stay single windows, but the naive bound fails at windows where the double root's two copies fall in the choice ranks</h3>
+<p class="entry-meta">Conjecture with exact leading sets at six arcs (total multiplicity 3 and 4): cherry limits over a caterpillar with one double root lie on windows. The naive Cauchy–Binet bound is exact at most windows and too low at others. Gap (3), ties and cherries above a double root. Cherry double root cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3): the special-cancellation type "cherry above a double root", lead 2 of the confluent route review. That review's part B found window leading sets at five arcs with one double and one simple root. The proof of thm:cube-cherry-caterpillar-windows uses alternants with unique leading monomials and positive valuation gaps. With a double root, the confluent alternant has the factor \((n'-n)\beta^{n+n'-1}\), and the gap between the two copies is zero. Does the theorem's conclusion survive, and is its bound still exact?</p>
+<p><strong>Setting.</strong> A cherry \(\{1,1+e\}\) over a caterpillar cluster of total multiplicity \(M\), with one double root. Its rows are \(V,\partial_\beta V\) for the double root, \(V\) for the simple ones, and \(U_\varepsilon\) times all of these (research/results/bmd-20261007-zb/review-tests.txt, part B). Sort the inner valuations increasingly with the double root repeated. The naive bound counts the double root twice and subtracts \(\operatorname{val}\beta\) for each of the two confluent alternants:
+\[W'_j=2\sum_q(M-q)v_q+w_x(2M^2-2Mj+j^2-j)+w_e(j^2-j+M)+2\sum_{i\le k}(k+1-i)v_i-2(w_x+v_{\rm dbl}),\qquad k=M-j .\]</p>
+<p><strong>General statement.</strong> conj:cube-cherry-double-root-windows. For a cherry over a caterpillar cluster with one double root, any rates, the leading Plücker coordinates of the cross block lie on one window \([-j,2M-1-j]\), or on two adjacent ones. So the cherry step of cor:cube-single-cherry-avoidance would extend to these bases. The naive bound \(W'_j\) is a lower bound at window \(j\). It is not exact in general.</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_double_windows.gp (research/results/bmd-20261007-zt/double-windows.txt) computes the exact valuation at every window \(0\le j\le M\) and the least valuation over all \(2M\)-subsets of \([-M-2,2M+1]\). It uses exact rational arcs, \(P=1000003\), at six arcs: \(M=3\), and \(M=4\) with the double root in each position.</p>
+<ul>
+<li>In all six arcs, the least valuation over all subsets is attained at a single window.</li>
+<li>Exact equals \(W'_j\) at all windows with \(j\ge3\). At \(j=2\) it is exact in four arcs and exceeds \(W'_j\) by \(2\) in two. At \(j\le1\) it exceeds \(W'_j\) in every arc, by \(4\) to \(10\).</li>
+<li>In five arcs the minimizing window attains \(W'_j\). In the arc \((w_x,w_e)=(1,3)\) with the double root shallowest, the minimizing window \(j=2\) has valuation \(38&gt;W'_2=36\), yet it is still the unique least set.</li>
+<li>The excess appears when both copies of the double root fall among the \(k\) shallowest ranks, the free choice ranks of the cherry proof, where a zero valuation gap lets the minimal terms cancel. The single exception is the double root deepest at \(j=1\), \(M=4\), with excess \(8\).</li>
+</ul>
+<p>The run took \(503\) s against an estimate of \(300\) s. It is kept in the session archive.</p>
+<p><strong>What this means.</strong> The window conclusion survives the double root, but the naive expansion does not prove it. A proof needs a reduced expansion, as for the confluent cherry (conj:cube-confluent-cherry-expansion, proved there by the prefix method). Rows \(\partial_\beta V\) and \(U_\varepsilon\partial_\beta V\) should be recombined, so that the zero gap no longer produces cancelling minimal terms.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the confluent route review. The windows persist at total multiplicity \(4\), but the naive bound is not exact, so a reduced expansion is needed.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a reduced expansion and proof of conj:cube-cherry-double-root-windows;</li>
+<li>the Forney bound for the confluent tie window, the highest-risk item;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-cherry-caterpillar-windows (formula and proof structure); thm:cube-confluent-cherry-caterpillar-windows (the prefix method); the confluent route review (part B).</p>
+<p><strong>Verification gate.</strong> No new lemma: a conjecture with exact finite evidence, checked against its script and output. No reviewer was used.</p>
+<p>Status: conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 34.52 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">53.51 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">36.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">40.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.56 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 22.80 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
