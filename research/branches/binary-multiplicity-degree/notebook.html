@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-reduced">cherry double reduced entry</a> finds the reduced expansion for cherries over a double root, \(E'(\partial V)=U\partial V+c_1\varepsilon(\lambda V+\beta\partial V)\). After it, the two-block Laplace bound is exact at every window with \(j\ge2\) in all six arcs (conj:cube-cherry-double-reduced-expansion). The confluent tie window's Forney bound remains the highest-risk item.</p>
-<p>Next: prove the windows for the cherry over a double root by the prefix method. Compute the block-minor valuations, where the double root gives \(\beta^{t_1+t_2-1}\) times a \(2\times2\) binomial coefficient. Prove the assignment bound with the zero valuation gap, and sum the minimal terms.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-double-node-alternant">double node entry</a> proves that the unit-row block minors of a cherry over a cluster with a double root have unique leading terms (lem:cube-double-node-alternant). The confluent tie window's Forney bound remains the highest-risk item.</p>
+<p>Next: the \(E'\)-block minors of the reduced expansion for the cherry over a double root. The double root's rows \(U\psi\) and \(wU\psi-c_1\varepsilon\psi\) share the \(\beta\)-vector \(e_n\beta^n\) and differ in their Toeplitz kernels. Find their leading terms, then the prefix bound with the zero valuation gap.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59510,6 +59510,66 @@ has Toeplitz factor \(c_r\varepsilon^r\) with \(r\ge2\) only. In coefficients th
 <tr><td>Computation design and coding</td><td class="elapsed">16.73 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.38 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-double-node-alternant" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:2" data-claims="lem:cube-double-node-alternant">
+<h3>7 October 2026 — The double root's block minors have unique leading terms: in the basis (1+βw)^{−5/2}, w(1+βw)^{−5/2} the node coefficient is a strictly log-concave 2×2 determinant</h3>
+<p class="entry-meta">Working proof that the unit-row block minors of a cherry over a cluster with one double root have exact valuations and nonzero leading coefficients, a first step of the prefix method for the cherry over a double root. Gap (3), cherry above a double root. Double node cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the cherry over a double root. The <a href="#entry-2026-10-07-cube-cherry-double-reduced">cherry double reduced entry</a> found the reduced expansion whose two-block Laplace bound is exact at the minimizing windows. A proof by the prefix method of thm:cube-confluent-cherry-caterpillar-windows needs exact valuations of the block minors. Its first step: the block of unit rows. Do its minors have a unique leading term, as alternants of distinct roots do?</p>
+<p><strong>Setting.</strong> Characteristic zero (the residue field of the arc's valuation has characteristic \(0\)), \(\lambda=\tfrac32\), \(c_n=\binom{-3/2}n\) and \(e_n=\binom{-5/2}n\), with \(e_{-1}=0\). The cluster has one double root \(\beta\) and simple roots \(\beta_q\), with pairwise distinct valuations between distinct roots. In the basis \(w^t\), \(t\ge0\), the \(I\)-block rows are:</p>
+<ul>
+<li>\(V_q=(1+\beta_qw)^{-3/2}\), with entries \(c_t\beta_q^t\);</li>
+<li>for the double root, \(\psi=(1+\beta w)^{-5/2}\), with entries \(e_t\beta^t\), and \(w\psi\), with entries \(e_{t-1}\beta^{t-1}\).</li>
+</ul>
+<p>The rows \(\psi,w\psi\) span the same space as \(V,\partial_\beta V\), since \(V=\psi+\beta w\psi\) and \(\partial_\beta V=-\tfrac32w\psi\). Let \(M\) be the total multiplicity. Rank the \(M\) slots by decreasing valuation, with the double root occupying two consecutive slots of equal weight \(\mu_*=\operatorname{val}\beta\). Put \(g(t,t')=e_te_{t'-1}-e_{t'}e_{t-1}\).</p>
+<p><strong>General statement.</strong> lem:cube-double-node-alternant. For every set \(N\) of \(M\) nonnegative integers, \(\det I[N]\) has valuation exactly
+\[f_*(N)=\sum_{i=1}^Mn_{(i)}\mu_{(i)}-\mu_*,\]
+where \(n_{(i)}\) is the \(i\)-th smallest element of \(N\) and \(\mu_{(i)}\) the weight of the \(i\)-th slot. Its leading coefficient is \(\pm\prod_qc_{t_q}\cdot g(t_a,t_b)\) times a monomial in the leading coefficients. Here \(t_a&lt;t_b\) are the two columns at the double root's slots and \(t_q\) the column at the slot of \(\beta_q\). Moreover \(g(t,t')\ne0\) for all \(0\le t&lt;t'\). In odd characteristic the \(c_t\) and \(g\) can vanish modulo \(p\); there the lemma needs them to be units.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Laplace.</em> Expand along the rows \(\psi,w\psi\). The \(2\times2\) minor on columns \(t&lt;t'\) is \(\beta^{t+t'-1}g(t,t')\). The rest is a weighted Vandermonde \(\det[c_t\beta_q^t]\) of the simple roots on the other columns. Every term has valuation \(\mu_*(t+t'-1)+\sum_q\mu_q\,t_q\) for an assignment of columns to roots.</li>
+<li><em>Unique minimum.</em> By the rearrangement inequality, the sum \(\sum\mu\cdot n\) over the \(M\) slots is least only when larger columns go to smaller weights. The only tie is between the two slots of the double root, whose columns form the same set either way. So exactly one Laplace term, with one leading monomial, attains \(f_*(N)\). Its coefficient is the product of \(g\), the \(c_{t_q}\) and the leading coefficients, provided \(g\ne0\). The \(c_t\) are nonzero in characteristic zero.</li>
+<li><em>\(g\ne0\).</em> Write \(e_n=(-1)^nh_n\) with \(h_n=(5/2)_n/n!&gt;0\). Then \(g(t,t')=\pm(h_th_{t'-1}-h_{t'}h_{t-1})\). For \(t=0\) this is \(\pm h_0h_{t'-1}\ne0\). For \(t\ge1\), the ratio \(h_{k+1}/h_k=(5/2+k)/(k+1)\) is strictly decreasing in \(k\), since \(\tfrac52&gt;1\). Hence \(h_{t'}/h_{t'-1}&lt;h_t/h_{t-1}\) for \(t'&gt;t\), so \(h_th_{t'-1}&gt;h_{t'}h_{t-1}\).</li>
+</ul>
+<p>\(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_double_node_alternant.gp (research/results/bmd-20261007-zx/double-node.txt) finds \(g\ne0\) for all \(0\le t&lt;t'\le40\). It also finds the exact valuation of \(\det I[N]\) equal to \(f_*(N)\) for every \(N\subset[0,9]\) at three arcs. In the first the double root has the smallest valuation among the roots, and in the other two a middle one. That is \(120\), \(210\) and \(210\) sets. The check covers the valuation only, not the leading coefficient, and uses monomial roots without higher-order terms. No arc with the double root of largest valuation was run.</p>
+<p><strong>What remains for the window theorem.</strong> The \(E'\)-block minors are the harder part. There the double root's two rows \(U\psi\) and \(R=wU\psi-c_1\varepsilon\psi\) carry the Toeplitz kernels \(c_r\varepsilon^r\) (\(r\ge1\)) and \(c_r\varepsilon^r\) (\(r\ge2\)) against the same \(\beta\)-vector \(e_n\beta^n\). They may therefore use equal exponents \(n\), unlike the unit rows. After that come a prefix-sum bound with the zero gap between the double root's slots, and the sum of the minimal terms, as in thm:cube-confluent-cherry-caterpillar-windows.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the confluent route review: the unit-row block of the double root is under control.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the \(E'\)-block minors, the prefix bound and the minimal sum, for conj:cube-cherry-double-reduced-expansion and conj:cube-cherry-double-root-windows;</li>
+<li>the Forney bound for the confluent tie window, the highest-risk item;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-cherry-double-reduced-expansion (the rows); thm:cube-cherry-caterpillar-windows (alternant leading terms).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium review checked the following by hand:</p>
+<ul>
+<li>the span identity and the entries;</li>
+<li>the \(2\times2\) minor;</li>
+<li>the rearrangement and the uniqueness of the minimal term (a non-consecutive pair for the double root is an inversion);</li>
+<li>the sign and log-concavity argument for \(g\);</li>
+<li>the script.</li>
+</ul>
+<p>Its corrections are applied:</p>
+<ul>
+<li>the characteristic-zero hypothesis is stated;</li>
+<li>the arcs' positions are described correctly;</li>
+<li>the scope of the check is given.</li>
+</ul>
+<p>Status: working proof (characteristic zero).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 58.02 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.59 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5.07 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 55.93 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
