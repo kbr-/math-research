@@ -120,6 +120,52 @@ def validate_leads(body, article, close):
                              '"Falsified ..." or "Not run: <reason>" (AGENTS.md); falsified items stay and count')
 
 
+OPEN_ITEMS_RE = re.compile(r'\bdata-open-items="(\d+)"')
+CONVERGENCE_SPAN = 10   # research entries after which a line's open-item count must have dropped
+ACROSS_GOAL_RE = re.compile(r'<h4>Across the goal</h4>\s*<ul>(.*?)</ul>', re.S)
+DECISION_RE = re.compile(r'<strong>Decision\.</strong>\s*(Core|Switch)\b')
+
+
+def validate_convergence(body, article, close):
+    """A line must converge, not only produce cases (user, 2 October 2026, after a day of conditional
+    coverage proofs on one line left every open statement unchanged).  Each route review declares
+    data-open-items="N", the open items its line still needs.  If N has not dropped since the line's
+    review at least CONVERGENCE_SPAN research entries back, only a goal-level review (data-scope="goal")
+    is accepted: it weighs the cycles against the open statements across the whole goal and decides
+    Core (work a core statement next) or Switch (take up another open statement)."""
+    if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
+        return
+    tag = body[article:body.index('>', article) + 1]
+    count = OPEN_ITEMS_RE.search(tag)
+    if count is None:
+        raise ValueError('A route review declares data-open-items="N" in its article tag: the number of open '
+                         'items its line still needs, so that the finisher can tell whether the line converges')
+    goal = 'data-scope="goal"' in tag
+    if goal:
+        across = ACROSS_GOAL_RE.search(body, article, close)
+        if across is None or len(re.findall(r'<li\b', across.group(1))) < 2:
+            raise ValueError('A goal-level review needs an <h4>Across the goal</h4> section followed by a <ul> '
+                             'with one item per open statement of the goal: its status change since the last '
+                             'goal-level review and the cycles spent on it')
+        if not DECISION_RE.search(body, article, close):
+            raise ValueError('A goal-level review ends with "<strong>Decision.</strong> Core" (naming the core '
+                             'statement worked next) or "<strong>Decision.</strong> Switch" (naming the open '
+                             'statement taken up instead)')
+        return
+    research = 0
+    for position, ident, kind, _ in reversed(route_articles(body, article, entry_tags(body, article)['route'])):
+        if kind == 'research':
+            research += 1
+        elif kind == 'review' and research >= CONVERGENCE_SPAN:
+            earlier = OPEN_ITEMS_RE.search(body[position:body.index('>', position) + 1])
+            if earlier and int(count.group(1)) >= int(earlier.group(1)):
+                raise ValueError(f'The line still needs {count.group(1)} open items, against {earlier.group(1)} '
+                                 f'at review {ident}, {research} research entries ago: it is not converging. '
+                                 'This review must be goal-level (data-scope="goal", an Across the goal '
+                                 'section and a Core or Switch decision)')
+            return
+
+
 FOLLOWUP_RE = re.compile(r'<h4>Bridge follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-bridge="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LEAD_FOLLOWUP_RE = re.compile(r'<h4>Lead follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
@@ -348,6 +394,7 @@ def validate_marker(body, marker):
     validate_route(body, article)
     validate_general(body, article, close)
     validate_leads(body, article, close)
+    validate_convergence(body, article, close)
     validate_bridges(body, article, close)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).

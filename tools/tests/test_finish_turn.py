@@ -189,7 +189,7 @@ sys.exit(compute.main())
             return (route + '<section id="research-record">' + old_review + earlier + f'<article {tags}>'
                     '<p class="entry-meta">Status.</p>' + general + extra + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
-        reviewed = 'id="rev2" data-kind="review" data-route="general-step"'
+        reviewed = 'id="rev2" data-kind="review" data-route="general-step" data-open-items="2"'
         follow = '<h4>Bridge follow-up</h4><ul><li data-bridge="rev1:1">Tried it. <strong>Follow-up.</strong> {}</li></ul>'
         lead_follow = ('<h4>Lead follow-up</h4><ul>' + ''.join(
             f'<li data-lead="rev1:{n}">Worked on it. <strong>Follow-up.</strong> Continuing: next.</li>'
@@ -232,13 +232,17 @@ sys.exit(compute.main())
                    'short elements (conj:fixture-general).</p>')
         def record(earlier, tags, status='Status.', general=general, earlier_status='Status.', earlier_claims=None):
             claims = earlier_claims or [''] * len(earlier)
-            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step"'
+            entries = ''.join(f'<article data-kind="{kind.split(":")[0]}" data-route="general-step"'
+                              + (f' data-open-items="{kind.split(":")[1]}"' if ':' in kind else '')
                               + (f' data-claims="{cl}"' if cl else '') + '>'
                               f'<p class="entry-meta">{earlier_status}</p></article>' for kind, cl in zip(earlier, claims))
             return (route + '<section id="research-record">' + entries + f'<article {tags}>'
                     f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
-        reviewed = 'data-kind="review" data-route="general-step"'
+        reviewed = 'data-kind="review" data-route="general-step" data-open-items="3"'
+        goal_review = reviewed + ' data-scope="goal"'
+        across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged, ten cycles.</li>'
+                  '<li>Statement 2: unchanged, none.</li></ul><p><strong>Decision.</strong> Core: the window.</p>')
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
         leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li>'
@@ -246,6 +250,12 @@ sys.exit(compute.main())
                  '<li>e <strong>Answers.</strong> y. <strong>Test.</strong> Not run: needs a kernel.</li></ul>')
         rejected = [
             record(['research'] * 6, reviewed),                       # a review without outside leads
+            record(['research'] * 6, reviewed.replace(' data-open-items="3"', ''),
+                   general=general + leads),                          # no open-item count
+            record(['review:3'] + ['research'] * 10, reviewed, general=general + leads),  # count not dropped
+            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads),  # no Across the goal
+            record(['review:3'] + ['research'] * 10, goal_review,
+                   general=general + leads + across.replace('Core', 'Maybe')),  # no decision
             record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 '<li>e <strong>Test.</strong> Not run: needs a kernel.</li>', '')),
@@ -278,6 +288,10 @@ sys.exit(compute.main())
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
         accepted = [
             record(['research'] * 6, reviewed, general=general + leads),
+            record(['review:4'] + ['research'] * 10, reviewed, general=general + leads),  # count dropped
+            record(['review:3'] + ['research'] * 9, reviewed, general=general + leads),   # span not reached
+            record(['review'] + ['research'] * 10, reviewed, general=general + leads),    # no earlier count
+            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads + across),
             record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
