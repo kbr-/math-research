@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window. The <a href="#entry-2026-10-08-cube-tie-lucas">tie Lucas entry</a> proves that infinitely many primes without special values modulo \(p\) suffice (lem:cube-tie-lucas-reduction). Modulo \(p\) the window is one of binomial polynomials. It is forced rank-deficient below \(p=m^2+m+5\), and through \(m=5\) it is clean at every tested prime from there on (conj:cube-tie-window-mod-p).</p>
-<p>Next: look for structure in the reduced windows, uniform in \(p\). Write the window as a Lindström–Gessel–Viennot matrix of a planar network whose steps carry weights \(1\) and \(c\). Test whether its maximal minors are generating functions of non-intersecting path families. If so, find which families survive at a special value. The next route review is due after two more research cycles.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window. The <a href="#entry-2026-10-08-cube-tie-excess-one">tie excess one entry</a> sharpens it. Already the sub-window without its last column has no special values for \(m\le6\), with a single kernel vector of \(c\)-degree \(2m^2+2\) (conj:cube-tie-excess-one-window). Its special values are the rank drops of an \((m+2)\times(m+3)\) matrix \(M(c)\) on the fixed annihilator of the \(c\)-free rows (lem:cube-tie-constant-row-reduction).</p>
+<p>Next: a route review, consolidating the exponent family, the Lucas reduction and the excess-one reduction. Its first test should compute \(M(c)\) in a Jacobi-type basis of \(\ker C\), and check whether its entries are explicit hypergeometric polynomials in \(c\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -60035,6 +60035,63 @@ entrywise. At the negative integer \(\lambda=\tfrac{3-p}2\), every row is a poly
 <tr><td>Computation design and coding</td><td class="elapsed">5 min 3.96 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">53.53 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">36.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-excess-one" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-excess-one-window lem:cube-tie-constant-row-reduction">
+<h3>8 October 2026 — Through m = 6 the confluent tie window has no special values even after dropping a column; its single kernel vector has c-degree 2m² + 2 and lies in the fixed annihilator of the c-free rows</h3>
+<p class="entry-meta">Conjecture with exact evidence at m ≤ 6, a working reduction to an (m+2) × (m+3) matrix, and a falsified Plücker route. Gap (3), confluent tie window. Tie excess one cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item: the Forney bound of the confluent tie window \(W=W^c(c)\), of size \((3m+3)\times(3m+5)\). Dropping a column can only lower the rank. So if a \((3m+3)\times(3m+4)\) sub-window has no special values off \(\{0,1\}\), neither has \(W\). An excess-one sub-window has a one-dimensional kernel, which is the classical normal-index setting of type II Hermite–Padé problems. Do the two excess-one sub-windows already have no special values?</p>
+<p><strong>General statement.</strong> conj:cube-tie-excess-one-window and lem:cube-tie-constant-row-reduction.</p>
+<p><strong>Conjecture (conj:cube-tie-excess-one-window).</strong> For every \(m\ge1\), let \(V\) be the sub-window of \(W^c(c)\) on the columns \(T^d,\ldots,T^{d+3m+3}\), dropping the last column. It has rank \(3m+3\) at every \(c\notin\{0,1\}\). Equivalently, the gcd of its \(3m+4\) maximal minors is \(c^a(c-1)^b\) for some \(a,b\). Moreover, conjecturally, \(a=md+4m\) and \(b=m^2+m+2\), and its primitive kernel vector \(x(c)\in\mathbb Q[c]^{3m+4}\) has \(c\)-degree \(2m^2+2\). The first statement gives full rank of \(W\) off \(\{0,1\}\), since \(V\) is a column sub-matrix. By lem:cube-tie-window-forney-criterion, that is the Forney bound.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_excess_one.gp (research/results/bmd-20261008-d/excess-one.txt) computes, for \(m=1,\ldots,6\) and both excess-one sub-windows, the exact gcd of the \(3m+4\) maximal minors and their largest degree.</p>
+<ul>
+<li>Neither sub-window has a root off \(\{0,1\}\) at any \(m\le6\).</li>
+<li>Dropping the last column: the \(c\)-orders \(4,10,21,40,70,114\) equal \(md+4m\), the order of the full window (lem:cube-tie-window-generic-rank). The \((c-1)\)-orders \(4,8,14,22,32,44\) equal \(m^2+m+2\) (lem:cube-tie-window-order-at-one). The top degrees are \(12,28,55,96,154,232\). So the kernel degrees are \(4,10,20,34,52,74=2m^2+2\). They are computed directly from the kernel for \(m\le3\). For \(m=4,5,6\) they are the top degree minus the degree of the gcd, which is the degree of the Cramer vector divided by the gcd, that is, of the primitive kernel vector.</li>
+<li>Dropping the first column: the orders are \(md+5m\) and \(m^2+m+2\), and the kernel degrees are \(2m^2+4\).</li>
+<li>An early guess, \(\binom{m+3}3\), fits \(m\le3\) and fails from \(m=4\) on.</li>
+<li>For \(m\le3\), the kernel polynomial \(Y(s,c)=\sum_jx_j(c)s^j\) is irreducible over \(\mathbb Q\). The ratios \(x_{j+1}/x_j\) have \(c\)-degrees close to \(\nu\), so there is no low-degree term ratio.</li>
+</ul>
+<p><strong>Constant-row reduction (lem:cube-tie-constant-row-reduction).</strong> Let \(X\) be \(V\) or \(W\), with \(N=3m+4\) or \(3m+5\) columns. Let \(C\) be its \(2m+1\) rows that do not involve \(c\): \(T^i(1+T)^{-5/2}\) (\(i&lt;2m\)) and \((1+T)^{-3}\). Assume \(C\) has full row rank \(2m+1\). Let \(B\) be an \(N\times(N-2m-1)\) basis matrix of \(\ker C\), so \(N-2m-1=m+3\) or \(m+4\). Let \(R(c)\) be the other \(m+2\) rows: \(T^n(1+cT)^{-3/2}\) (\(n&lt;m\)), \(((1+T)(1+cT))^{-3/2}\) and \(T(1+T)^{-5/2}(1+cT)^{-3/2}\). Put \(M(c)=R(c)B\), of size \((m+2)\times(m+3)\) or \((m+2)\times(m+4)\).</p>
+<ul>
+<li>The ideals of maximal minors of \(X\) and of \(M(c)\) are equal in \(\mathbb Q[c]\). The minors agree up to the constant \(\det(CA)\) and a constant change of basis. Also \(\operatorname{rank}X(c)=2m+1+\operatorname{rank}M(c)\) for every \(c\).</li>
+<li>\(\ker X(c)=B\ker M(c)\) for every \(c\).</li>
+<li>So the special values of \(X\) are exactly the \(c\) at which \(M(c)\) loses rank, and every kernel vector of \(X\) lies in the fixed space \(\ker C\).</li>
+</ul>
+<p><em>Proof.</em> Complete \(B\) to an invertible constant matrix \([A\;B]\). The product \(X[A\;B]=\begin{pmatrix}CA&amp;0\\RA&amp;RB\end{pmatrix}\) is block lower triangular, and \(CA\) is square and invertible, since \(C\) has full row rank and \(CB=0\). Right multiplication by an invertible constant matrix multiplies the ideal of maximal minors by a nonzero constant (Cauchy–Binet both ways).</p>
+<p>A maximal minor of \(X[A\;B]\) that omits a column of \(A\) vanishes: its \(2m+1\) rows from \(C\) are supported on \(2m\) columns. A minor that keeps all of \(A\) equals \(\det(CA)\) times a maximal minor of \(RB\). The kernel statement follows from the same block form. \(\square\)</p>
+<p>The hypothesis on \(C\) holds for \(m\le8\): it is the finite check of part L1 in the tie exponent review, which showed the first \(2m+1\) columns of \(C\) nonsingular. The general case is open.</p>
+<p><strong>Correction to the tie exponent review.</strong> Lead 1 of the <a href="#entry-2026-10-08-cube-tie-exponent-review">tie exponent review</a> justified that check by Mahler's theorem, stating that the exponent differences \(\tfrac52\), \(3\), \(\tfrac12\) are not integers. That is wrong: \(3\) is an integer. The review's system has exponents \(0\) (the free polynomial below \(T^d\)), \(\tfrac52\) and \(3\), so Mahler's hypothesis fails for the pair \((1,(1+T)^{-3})\). The check is a finite check only. Its outcome, nonsingular for \(m\le8\), stands. No registered claim rests on that justification.</p>
+<p><strong>Plücker test (falsified).</strong> The kernel curve \(c\mapsto[x(c)]\) is base-point free of degree \(\nu\). The Plücker formula gives total ramification \((n+1)(\nu-n)\), where \(n+1\) is the dimension of its span. If all ramification sat at \(c=0,1,\infty\), local data would determine \(\nu\). research/tools/bmd_tie_kernel_plucker.gp (research/results/bmd-20261008-d/plucker.txt) finds:</p>
+<ul>
+<li>\(n+1=m+3\) for \(m\le4\). The curve lies in \(\ker C\) by the reduction lemma, and the computation shows that it spans it.</li>
+<li>For \(m\le4\), the vanishing sequences at \(0\), \(1\) and \(\infty\) are all \(0,1,\ldots,n\). There is no ramification at these points: all \((m+3)(2m^2-m)\) of it lies elsewhere. The route is falsified in this form for \(m\le4\).</li>
+</ul>
+<p><strong>What this means.</strong> The highest-risk statement has a sharper and smaller form. An \((m+2)\times(m+3)\) polynomial matrix \(M(c)\), built from the \(m+2\) rows that involve \(c\), has no rank drop off \(\{0,1\}\). Its maximal minors have gcd \(c^{md+4m}(c-1)^{m^2+m+2}\) and quotient degree \(2m^2+2\).</p>
+<p>The basis \(B\) of \(\ker C\) consists of the polynomials, in the moment form of lem:cube-tie-window-moment-form, that satisfy the \(2m\) orthogonality conditions of \(\sigma_{5/2}\) and the point condition at \(s=1\). These are one-point (Jacobi-type) objects, independent of \(c\). The entries of \(M(c)\) are then \(c\)-dependent functionals of them: moments of \(\sigma^c_{3/2}\) and the two product functionals. These are candidates for explicit hypergeometric polynomials in \(c\).</p>
+<p>The mirror \(T\to T/c\) makes the \(g\)-rows constant instead. For \(c\ne0\), \(\ker V\) is also the intersection of \(\ker C\) with a torus translate \(D_c^{-1}\ker C_g\) of a second fixed space, where \(C_g\) is the window of the \(m\) rows \(U^n(1+U)^{-3/2}\) (\(n&lt;m\)) in \(U=cT\), and \(D_c=\operatorname{diag}(c^k)\) over the column degrees \(k=d,\ldots,d+3m+3\), cut by the two product rows.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-excess-one-window, which gives the Forney bound, for \(m\ge7\), the highest-risk item;</li>
+<li>full row rank of \(C\) for \(m\ge9\);</li>
+<li>conj:cube-tie-window-mod-p as an alternative;</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-window-generic-rank and lem:cube-tie-window-order-at-one (the orders); lem:cube-tie-window-moment-form (the moment form); part L1 of research/tools/bmd_route_review6_tests.gp.</p>
+<p><strong>Verification gate.</strong> The reduction lemma is block-triangular linear algebra. The Plücker test is consistent with it (\(n+1=m+3\)). The conjecture rests on exact gcds at \(m\le6\). One fresh-context medium reviewer passed the lemma and the computations. It asked for several fixes, all applied: equality of ideals and the rank identity; the conjecture's exponents and degree as a separate "moreover" statement; the derivation of \(\nu\) for \(m\ge4\); "spans" as computed, not implied; scope \(m\le4\) for the Plücker falsification; and the hypotheses of the torus remark.</p>
+<p>Status: conjecture (excess-one window); working proof (constant-row reduction, under full row rank of \(C\)); refutation (Plücker at three points).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-d">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 40.53 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6 min 16.20 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 4.03 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 20.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
