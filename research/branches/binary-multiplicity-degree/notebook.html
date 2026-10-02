@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-tie-nikishin">tie Nikishin entry</a> matches the confluent tie window to a mixed Angelesco–Nikishin system. Its product functionals are Nikishin products in both orders. But the perfectness theorem's positivity and support hypotheses fail, at \(a=5/2\) and for non-real or nested \(c\). The Forney bound (lem:cube-tie-window-top-degree) remains the highest-risk item, without a mechanism.</p>
-<p>Next: the reduced expansion for the cherry over a double root (conj:cube-cherry-double-root-windows), where the valuation method has a candidate mechanism. Recombine \(\partial_\beta V\) and \(U_\varepsilon\partial_\beta V\) so that the zero valuation gap no longer produces cancelling minimal terms. Prove the windows by the prefix method of thm:cube-confluent-cherry-caterpillar-windows.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3). The <a href="#entry-2026-10-07-cube-cherry-double-reduced">cherry double reduced entry</a> finds the reduced expansion for cherries over a double root, \(E'(\partial V)=U\partial V+c_1\varepsilon(\lambda V+\beta\partial V)\). After it, the two-block Laplace bound is exact at every window with \(j\ge2\) in all six arcs (conj:cube-cherry-double-reduced-expansion). The confluent tie window's Forney bound remains the highest-risk item.</p>
+<p>Next: prove the windows for the cherry over a double root by the prefix method. Compute the block-minor valuations, where the double root gives \(\beta^{t_1+t_2-1}\) times a \(2\times2\) binomial coefficient. Prove the assignment bound with the zero valuation gap, and sum the minimal terms.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -59466,6 +59466,50 @@ So each mixed functional is a sum of the Nikishin products \(\langle\sigma_a,\si
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.46 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">34.13 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">49.40 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-cherry-double-reduced" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-07-cube-confluent-route-review:2" data-claims="conj:cube-cherry-double-reduced-expansion">
+<h3>7 October 2026 — Cherries over a double root: removing the r = 1 term of U∂V makes the two-block Laplace bound exact at every window with j ≥ 2</h3>
+<p class="entry-meta">Conjecture with exact checks at six arcs: after the reduction E′(∂V) = U∂V + c₁ε(λV + β∂V), the two-block Laplace bound equals the exact valuation at all windows j ≥ 2, including the minimizing ones. Gap (3), cherry above a double root. Cherry double reduced cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the cherry over a double root (conj:cube-cherry-double-root-windows). The <a href="#entry-2026-10-07-cube-cherry-double-root">cherry double root entry</a> found the naive Cauchy–Binet bound too low at windows where the double root's copies fall in the choice ranks, once at a minimizing window. As for the confluent cherry, a reduced expansion should remove the cancelling terms. Which row operation does this?</p>
+<p><strong>The reduction.</strong> For the double root, \(\partial_\beta V=-\lambda w(1+\beta w)^{-\lambda-1}\). So the two rows \(V,\partial_\beta V\) span \((1+\beta w)^{-\lambda-1}\mathrm{span}\{1,w\}\), and \(\psi=(1+\beta w)^{-\lambda-1}=V+\tfrac\beta\lambda\partial_\beta V\) lies in their span. The \(r=1\) term of \(U_\varepsilon\partial_\beta V\) is \(c_1\varepsilon w^{-1}\partial_\beta V=-\lambda c_1\varepsilon\psi\). So
+\[E'(\partial V)=U_\varepsilon\partial_\beta V+c_1\varepsilon(\lambda V+\beta\,\partial_\beta V)\]
+has Toeplitz factor \(c_r\varepsilon^r\) with \(r\ge2\) only. In coefficients this is \(c_{t+1}(t+1)=-(\lambda+t)c_t\). It is a row operation, so every maximal minor is unchanged. This is the exact analogue of the reduction \(E'=E-c_1\varepsilon S\) of the confluent cherry (thm:cube-confluent-cherry-caterpillar-windows).</p>
+<p><strong>General statement.</strong> conj:cube-cherry-double-reduced-expansion. For a cherry over a caterpillar cluster with one double root, in the reduced expansion, Laplace along the block \(I\) (rows \(V_q\), and \(\partial V\) for the double root) against the block \(E'\) has no cancellation between its terms at the minimizing windows. That is, \(\min_S\bigl(\operatorname{val}\det I[S]+\operatorname{val}\det E'[S^c]\bigr)\) equals the exact window valuation there. The windows with \(j\le1\) keep an excess of exactly \(w_x+w_e+v_{\rm dbl}\). This, with a prefix-sum bound for the block minors, would prove conj:cube-cherry-double-root-windows.</p>
+<p><strong>Test.</strong> research/tools/bmd_cherry_double_reduced.gp (research/results/bmd-20261007-zw/double-reduced.txt) reruns the six arcs of the cherry double root entry, at every window \(0\le j\le M\). It checks that the reduced rows give the same exact minor, and computes the two-block Laplace bound for the original and for the reduced \(E\)-block.</p>
+<ul>
+<li>The reduced bound equals the exact valuation at every window with \(j\ge2\), in all six arcs. That includes the two defective minimizing windows of the earlier entry (\(26\) and \(38\)), where the original bound was \(2\) too low.</li>
+<li>At \(j\le1\) the reduced bound is too low by exactly \(w_x+w_e+v_{\rm dbl}\), half the original defect, in all six arcs. These windows are never minimizing, and their reduced bounds already exceed the minimum.</li>
+</ul>
+<p><strong>What this means.</strong> The reduction removes the cancellation that mattered, at the windows that carry the leading coefficient. A proof along the lines of the confluent cherry theorem now needs two things.</p>
+<ul>
+<li>The valuations of the block minors. The double root contributes \(\beta^{t_1+t_2-1}\) times a \(2\times2\) coefficient (\(e_{t_1}e_{t_2-1}-e_{t_2}e_{t_1-1}\), \(e=\binom{-5/2}{\cdot}\), in the basis \(\psi,w\psi\)), and similarly in \(E'\) with the shifted Toeplitz.</li>
+<li>A prefix-sum assignment bound with the zero valuation gap between the double root's two ranks, and the sum of its minimal terms.</li>
+</ul>
+<p>The residual excess at \(j\le1\) suggests a second-order reduction there, which a window theorem does not need if those windows are shown non-minimizing by the bound itself.</p>
+<p><strong>Lead follow-up.</strong> This develops lead 2 of the confluent route review further. The reduced expansion is identified and exact at the relevant windows in all six arcs.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of conj:cube-cherry-double-reduced-expansion and of conj:cube-cherry-double-root-windows by the prefix method;</li>
+<li>the Forney bound for the confluent tie window, the highest-risk item;</li>
+<li>the other special-cancellation types and the types of gap (1).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-confluent-cherry-caterpillar-windows (the analogous reduction); conj:cube-cherry-double-root-windows and its arcs.</p>
+<p><strong>Verification gate.</strong> The row identity \(c_{t+1}(t+1)=-(\lambda+t)c_t\) is checked by hand and by the equality of the reduced and original minors in the script. The rest is a conjecture with exact finite evidence. No reviewer was used.</p>
+<p>Status: conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261007-zw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 41.95 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">32.61 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">16.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.09 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.38 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
