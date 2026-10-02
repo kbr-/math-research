@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-holonomic-staircase">tie holonomic staircase entry</a> makes the pure kernel of the confluent tie window the coefficient vector of one explicit difference operator \(Q=\mathrm{LCLM}(h_f\Delta^{2m}h_f^{-1},h_g\Delta^mh_g^{-1})\) (lem:cube-tie-holonomic-staircase). Full rank is then the rank of the \(3\times5\) matrix \(((Qe_a)(M))\).</p>
-<p>Next: compute \(Q\) for \(m\le3\) by linear algebra over \(\mathbb Q(k,c)\), with its leading and trailing coefficients and their roots in \(k\). Compute recurrences in \(M\) for the three sequences \(Qe_a\). Test whether a combination vanishing at five consecutive positions forces a singular position of its recurrence inside the window, and whether such positions are excluded for \(c\notin\{0,1\}\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), gap (3), the highest-risk item. The <a href="#entry-2026-10-08-cube-tie-holonomic-q">tie holonomic Q entry</a> computes the operator \(Q\) at \(m=2,3\). On the point row it acts by an irreducible polynomial \(N_1(k,c)\) of bidegree \((m^2,m^2)\), and its end coefficients carry an apparent-singularity factor of bidegree \((m(m-1),m(m-1))\) (check:cube-tie-holonomic-q).</p>
+<p>Next: a route review, due after the holonomic cycles. Weigh the holonomic description against the cone's other open obligations: gaps (1) and (2), and the untreated special-cancellation types. Decide whether to continue the creative-telescoping computation (the product-row coefficients) or to advance those obligations in parallel while the tie window stays open.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -61365,6 +61365,43 @@ The ratio \(\Gamma(k-i+\tfrac52)/\Gamma(k-2m+\tfrac72)\) is the rising factorial
 <tbody>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>37.84 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">37.84 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-08-cube-tie-holonomic-q" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-08-cube-tie-mechanisms-review:3" data-claims="check:cube-tie-holonomic-q">
+<h3>8 October 2026 — The operator Q of the confluent tie window at m = 2, 3: its end coefficients carry the shifted pure determinant as an apparent singularity, and on the point row it acts by one irreducible polynomial of bidegree (m², m²)</h3>
+<p class="entry-meta">Finite check at m = 2, 3 of the structure of the holonomic operator of lem:cube-tie-holonomic-staircase and of its action on the point row. Gap (3), confluent tie window. Tie holonomic Q cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), gap (3), the highest-risk item. lem:cube-tie-holonomic-staircase reduces the confluent tie window to the \(3\times5\) matrix \(((Qe_a)(M))\). What do \(Q\) and its action on the point row \(e_1(k)=(-1)^k(k+1)(k+2)/2\) look like? This is the first step of the creative-telescoping lead.</p>
+<p><strong>General statement.</strong> lem:cube-tie-holonomic-staircase, the window as \(((Qe_a)(M))\), made explicit. check:cube-tie-holonomic-q records the result.</p>
+<p><strong>Test.</strong> research/tools/bmd_tie_holonomic_q.gp (research/results/bmd-20261008-q/holonomic-q.txt) computes \(Q\) exactly over \(\mathbb Q(k,c)\). Its coefficients are normalized to coprime polynomials and solve the \(3m\) annihilation conditions on \(h_f\cdot k^j\) (\(j&lt;2m\)) and \(h_g\cdot k^j\) (\(j&lt;m\)). For \(m=2,3\):</p>
+<ul>
+<li>\(q_0\) and \(q_{3m}\) have bidegrees \((8,4),(8,2)\) at \(m=2\) and \((15,9),(15,6)\) at \(m=3\). Each factors into linear factors in \(k\), at \(q_0\) also \(c^m\), and one irreducible factor \(S(k,c)\) of bidegree \((m(m-1),m(m-1))\): \((2,2)\), then \((6,6)\). Its \(c\)-degree is \(m(m-1)=\deg H_m\), the degree of the essential part of the square pure determinant. This is consistent with \(q_{3m}(M)\) being, up to sign, the minor omitting the last column, that is, the square pure block at start \(M\). So \(S\) appears to interpolate the shifted pure determinants in \(M\). This identification is not separately checked here.</li>
+<li>\(R_1=(Qe_1)/e_1\) is a polynomial, with no denominator, irreducible over \(\mathbb Q\), of bidegree \((m^2,m^2)\): \((4,4)\), then \((9,9)\). At \(k=d\) its part off \(c(c-1)\) has \(c\)-degree \(m^2\). That matches the point-row factor found in the tie staircase entry, which is therefore \(N_1(M,c)\), the value of one polynomial at the position \(M\).</li>
+</ul>
+<p><strong>What this means.</strong> The point row's contribution to the window is explicit: \(E_{1,M}=h(M)\,N_1(M,c)\,e_1(M)\), where \(h(M)\) is the common column scaling and \(N_1\) is a fixed irreducible polynomial of bidegree \((m^2,m^2)\). The staircase entry saw its factors change with \(M\) because they are values of \(N_1\) at different \(M\).</p>
+<p>The product rows behave the same way, through their order-two recurrences: \((Qe_a)(M)=A_a(M)e_a(M)+B_a(M)e_a(M+1)\) with polynomial \(A_a\), \(B_a\). A special value is then a dependency among three explicit expressions at five consecutive integers.</p>
+<p>This gives a finite description, uniform in \(M\), but still no mechanism. A mechanism would need, for example, \(N_1\) not to vanish at the window positions with \(c\notin\{0,1\}\), together with an independence of the product-row pair. Neither follows from bidegrees.</p>
+<p><strong>Lead follow-up.</strong> This continues lead 3 of the tie mechanisms review, creative telescoping, with the explicit operator and its action on the point row. <strong>Follow-up.</strong> Continuing: the product-row coefficients \(A_a,B_a\), and the relation of \(S\) to the shifted pure determinants.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>full rank of the confluent tie window for \(m\ge7\);</li>
+<li>the local sums for the cherry over a double root;</li>
+<li>the other special-cancellation types and the cone's gaps (1) and (2).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-tie-holonomic-staircase; ex:cube-tie-staircase-pairings (the point-row factor degrees).</p>
+<p><strong>Verification gate.</strong> No new lemma. The structure is exact arithmetic over \(\mathbb Q(k,c)\), and its consistency with the staircase data is checked at \(M=d\). No reviewer was used.</p>
+<p>Status: finite check (\(m=2,3\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261008-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 3.42 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 2.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.94 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
