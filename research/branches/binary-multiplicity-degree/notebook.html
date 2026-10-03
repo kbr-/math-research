@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\) is certified for \(d\le7\) at every small prime (<a href="#entry-2026-10-09-cube-conic-route-review">review</a>). For statement 4, the odd-characteristic degree-two boundary threshold is \(3\binom N4\) whenever \(\Phi_N\ne0\) and \(\gcd(\Phi_N,\delta\Phi_N)=1\) mod \(p\), for \(p\nmid\binom N2+2\) (<a href="#entry-2026-10-09-cube-boundary-abel-identity">boundary Abel identity</a>).</p>
-<p>Next: the queue head, Cramer's rule and Gauss's lemma (entry three of four). Decide \(\gcd(\Phi_N,\delta\Phi_N)\) mod \(p\) structurally.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\) is certified for \(d\le7\) at every small prime (<a href="#entry-2026-10-09-cube-conic-route-review">review</a>). For statement 4, the degree-two boundary threshold equals \(3\binom N4\) in dimensions \(4,5,6\) at every odd \(p\le2^n\) (<a href="#entry-2026-10-09-cube-boundary-flow-coprimality">boundary flow coprimality</a>).</p>
+<p>Next: the queue head, Cramer's rule and Gauss's lemma (entry four of four). Seek a structural reason, uniform in \(N\), for coprimality of the boundary minors \(\Phi_N\) and \(G'\); the \(N=8\) certificates are queued as a sub-idea.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,6 +98,7 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <ol>
 <li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:1</a> (lead): Cramer's rule and Gauss's lemma. Apply primitive cofactors to the actual polynomial prefix, keeping its last coordinate. In the smallest retained five-root boundary the explicit residual and three component tests prove p…<ul>
 <li data-check="entry-2026-10-09-cube-boundary-abel-identity:s1"><a href="#entry-2026-10-09-cube-boundary-abel-identity">entry-2026-10-09-cube-boundary-abel-identity:s1</a> (check): When \(p\mid\binom N2+2\), the identity makes \(\Phi_N\) a \(\delta\)-semi-invariant mod \(p\); at \(p=3\) this is every \(N\equiv2\pmod3\), with \(\delta\Phi_N\equiv0\). Find which other minor relation, such as the seco…</li>
+<li data-check="entry-2026-10-09-cube-boundary-flow-coprimality:s1"><a href="#entry-2026-10-09-cube-boundary-flow-coprimality">entry-2026-10-09-cube-boundary-flow-coprimality:s1</a> (check): Extend the line certificates to \(N=8\) (\(n=7\), \(p\le127\)), after sizing one determinant of size \(30\) over \(\mathrm{GF}(p^e)[s]\).</li>
 </ul></li>
 <li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:3</a> (lead): Faithfully flat monic splitting. The raw prefix transformation (RT) and monic root tower descend kernels while preserving the top coordinate and all weights, including when the characteristic divides the symmetric-group …</li>
 <li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:2</a> (bridge): A polynomial parity check. Treat the three-by-four residual as a prescribed transfer matrix, and its primitive cofactor vector as the single polynomial relation among four transmitted columns. Its marked final coordinate…</li>
@@ -78560,6 +78561,56 @@ which is the stated identity. If \(p\nmid m\), then \(G'=-m^{-1}(\delta\Phi_N+c\
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 38.15 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 59.79 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 38.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-boundary-flow-coprimality" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1" data-claims="lem:cube-boundary-flow-coprimality check:cube-boundary-coprimality-lines">
+<h3>9 October 2026 — Boundary flow coprimality: line certificates give the degree-two boundary threshold \(3\binom N4\) for \(N\le7\) at every odd prime \(p\le2^{N-1}\), and \(\gcd(\Phi_N,\delta\Phi_N)=1\) means squarefree with no Darboux factor</h3>
+<p class="entry-meta">Working lemma (every \(N\), every field) and finite check (\(N=4,\ldots,7\), every odd \(p\le2^{N-1}\)). Lead-queue development (head item, entry three of four, Continuing). Boundary flow coprimality cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-09-cube-boundary-cofactor-threshold">boundary cofactor threshold</a> gives the odd-characteristic degree-two boundary threshold as \(3\binom N4-\deg g\), with \(g\) the gcd of the maximal minors of the reduced pair matrix \(P\). The <a href="#entry-2026-10-09-cube-boundary-abel-identity">boundary Abel identity</a> ties two of those minors to \(\Phi_N\) and \(\delta\Phi_N\). Does \(g=1\) hold at the small primes of statement 4? And what does the coprimality of \(\Phi_N\) and \(\delta\Phi_N\) mean in characteristic \(p\), where the characteristic-zero argument (lem:cube-first-step-polar-colon) may break?</p>
+<p><strong>General statement.</strong> lem:cube-boundary-flow-coprimality (every \(N\ge2\), every field).</p>
+<h4>The lemma</h4>
+<p><strong>Lemma (lem:cube-boundary-flow-coprimality).</strong> Let \(F\) be a field, \(A=F[a_1,\ldots,a_n]\), \(\delta=\sum a_i^2\partial_{a_i}\), and \(0\ne\Phi\in A\). Then \(\gcd(\Phi,\delta\Phi)=1\) if and only if \(\Phi\) is squarefree and no irreducible factor \(\pi\) of \(\Phi\) satisfies \(\pi\mid\delta\pi\) (no Darboux factor of \(\delta\)). In characteristic zero, a Darboux factor is the same as a hypersurface invariant under the flow \(a_i\mapsto a_i/(1-ta_i)\). In the coordinates \(u_i=1/a_i\) these hypersurfaces are defined by polynomials in the differences \(u_i-u_j\). In characteristic \(p\), \(\delta\) has further Darboux factors involving \(p\)-th powers, such as the numerator of \(u_1^p+u_2-u_1\), which are not flow-invariant.</p>
+<p><strong>Proof.</strong> If \(\pi^2\mid\Phi\), write \(\Phi=\pi^2u\); then \(\delta\Phi=2\pi u\,\delta\pi+\pi^2\delta u\) is divisible by \(\pi\). If \(\Phi\) is squarefree and \(\Phi=\pi u\) with \(\pi\nmid u\), then \(\delta\Phi=u\,\delta\pi+\pi\,\delta u\), so \(\pi\mid\delta\Phi\) if and only if \(\pi\mid\delta\pi\). Since \(\delta u_i=-1\), \(\delta\) acts as \(-\sum\partial_{u_i}\). With \(v_1=u_1\) and \(v_i=u_i-u_1\), it is \(-\partial_{v_1}\), whose polynomial kernel is \(F[v_2,\ldots,v_n]\) in characteristic zero and \(F[v_1^p,v_2,\ldots,v_n]\) in characteristic \(p\). Clearing denominators by monomials, which are themselves Darboux, turns kernel elements into Darboux polynomials. In characteristic zero the flow \(u_i\mapsto u_i-t\) preserves a hypersurface exactly when its equation is semi-invariant. In characteristic \(p\) the flow sends \(u_1^p+u_2-u_1\) to \(u_1^p+u_2-u_1-t^p\), which is not a multiple, so \(\delta\)-semi-invariance is weaker than flow-invariance there. \(\square\)</p>
+<p>So in characteristic \(p\), the condition \(\gcd(\Phi_N,\delta\Phi_N)=1\) can fail through Darboux factors involving \(p\)-th powers, which characteristic zero does not have. It is a genuine question, not a reduction of a characteristic-zero fact.</p>
+<h4>Line certificates</h4>
+<p><strong>The criterion used.</strong> \(\Phi_N\) and \(G'\) are both maximal minors of \(P\), so the gcd \(g\) of all maximal minors divides \(\gcd(\Phi_N,G')\). Therefore \(\Phi_N\ne0\) and \(\gcd(\Phi_N,G')=1\) give \(g=1\), and lem:cube-boundary-cofactor-threshold gives \(\ell_0(3,\binom N2+2)=3\binom N4\) in characteristic \(p\). No condition on \(p\) and \(m=\binom N2+2\) is needed. The Abel identity is needed only for the equivalence with \(\gcd(\Phi_N,\delta\Phi_N)=1\), which holds when \(p\nmid m\).</p>
+<p><strong>Finite check (check:cube-boundary-coprimality-lines).</strong> The script <code>research/tools/bmd_boundary_coprimality_lines.gp</code> takes a random line \(a_i=\alpha_i+s\beta_i\) (\(a_0=0\)) over \(\mathrm{GF}(p^e)\), \(p^e&gt;10^6\). It computes the original minors \(\Delta=V^N\Phi_N\) and \(\Delta'=V^NG'\) and asserts two things:</p>
+<ul>
+<li>\(\deg_s\Delta=N\binom N2+3\binom N4\), the full weight. Equivalently \(\Delta(\beta)\ne0\), so every homogeneous factor of \(\Phi_N\) keeps its degree on the line.</li>
+<li>\(\gcd(\Delta(s),\Delta'(s))=V(s)^N\) exactly.</li>
+</ul>
+<p>Together these prove \(\gcd(\Phi_N,G')=1\) deterministically: a common factor of positive weight would restrict to a common factor of the same positive degree. The predictions are every odd \(p\le2^{N-1}\), the small primes of statement 4 at \(d=2\), \(n=N-1\), for \(N=4,\ldots,7\): \(35\) pairs.</p>
+<p>Result (research/results/bmd-20261009-kca/boundary-coprimality-lines.txt): all \(35\) are certified, with full degrees \(27,65,135,252\). So in dimensions \(n=4,5,6\), the degree-two boundary threshold equals its characteristic-zero value \(3\binom N4\) at every odd prime \(p\le2^n\). \(N=4\) is dimension three, already solved, and serves as a control. \((n,p)=(4,3)\) agrees with the record's \(\ell_0(3,12)=15\).</p>
+<p>Two earlier runs are kept as superseded. The first had the series variable at lower priority than the line variable, so every line failed with gcd degree \(0\), which is impossible since \(V^N\) divides both minors (boundary-coprimality-lines-variable-bug-superseded.txt). The second skipped \(p\mid m\) and lacked the degree assertion, so it was only a probabilistic certificate (boundary-coprimality-lines-skip-superseded.txt). The reviewer pointed out both gaps.</p>
+<p><strong>Follow-up.</strong> Continuing (entry three of four). The lead has given the degree-two boundary at every small prime through \(n=6\). Next attempt: a uniform proof. The line certificate only needs two minors coprime on one line. A structural reason, such as a degeneration of the line in which \(\Phi_N\) and \(G'\) acquire distinct leading factors, would cover every \(N\).</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">Extend the line certificates to \(N=8\) (\(n=7\), \(p\le127\)), after sizing one determinant of size \(30\) over \(\mathrm{GF}(p^e)[s]\).</li>
+</ul>
+<p><strong>Remaining gap.</strong> Statement 4: the degree-two boundary for \(N\ge8\) at small primes; all higher pre-stable thresholds. Statement 2's \(\Phi_N\ne0\) beyond the certified range.</p>
+<p><strong>Process.</strong> The lemma is a factor argument. The check applies the proved threshold formula at \(35\) prime-dimension pairs. Two runs were superseded, one for a variable-priority bug and one for a missing degree assertion.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-boundary-cofactor-threshold; thm:cube-boundary-abel-identity; lem:cube-first-step-polar-colon (the characteristic-zero coprimality argument, from its statement).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the lemma's equivalence, the kernel of \(\delta\), the script's matrix against the recorded identity check, the variable fix and the prime ranges. It found three substantive gaps:</p>
+<ul>
+<li>"flow-invariant" was wrong in characteristic \(p\); the lemma now says Darboux factor, with the example corrected;</li>
+<li>the certificate was probabilistic; the full-degree assertion now makes it deterministic;</li>
+<li>\(p\nmid m\) was unnecessary, since \(\Phi_N\) and \(G'\) are both maximal minors.</li>
+</ul>
+<p>It certified the three previously skipped pairs in its own variant. The script was corrected and rerun, and all \(35\) pairs pass. The unused hypothesis \(\operatorname{char}F\ne2\) was removed from the lemma.</p>
+<p><strong>Status:</strong> working lemma and finite check (boundary threshold \(3\binom N4\) certified for \(N\le7\) at every odd \(p\le2^{N-1}\)); lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kca">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 11.81 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 16.86 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">27.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 35.31 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 52.27 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
