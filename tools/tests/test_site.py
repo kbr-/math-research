@@ -60,16 +60,31 @@ class PublishedClient(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
+BROWSER_GROUPS = 3   # browsers, each running every third case concurrently
+
+
 class Browser(unittest.TestCase):
-    def test_cases(self):
-        """Every case in tests/test_*.cjs passes within BROWSER_LIMIT_S; they run concurrently in one
-        browser, which costs less CPU than a browser each."""
+    """Every case in tests/test_*.cjs passes within BROWSER_LIMIT_S. The cases run in BROWSER_GROUPS browsers,
+    one test each, so the suite's workers run the groups in parallel: nine cases sharing one browser took
+    4-6 s each under load where each alone takes 0.5-1.3 s, while a browser per case cost about 8 s more CPU
+    and nine launches at once took 10 s each (3 October 2026)."""
+
+    def test_group_0(self):
+        self.run_group(0)
+
+    def test_group_1(self):
+        self.run_group(1)
+
+    def test_group_2(self):
+        self.run_group(2)
+
+    def run_group(self, k):
         modules = node_modules()
         if not modules:
             self.skipTest('Playwright is not installed')
-        result, _ = node('run_browser_tests.cjs', modules=modules, timeout=60)
+        result, _ = node('run_browser_tests.cjs', '--group', f'{k}/{BROWSER_GROUPS}', modules=modules, timeout=60)
         cases = [json.loads(line) for line in result.stdout.splitlines() if line.startswith('{')]
-        self.assertGreaterEqual(len(cases), 9, result.stdout + result.stderr)
+        self.assertGreaterEqual(len(cases), 3, result.stdout + result.stderr)   # nine or more cases in all
         for case in cases:
             with self.subTest(case['name']):
                 self.assertTrue(case['ok'], case.get('error'))
