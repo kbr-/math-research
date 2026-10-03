@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cofactor-double-coincidence">double coincidence</a>; eight open items). The Taylor cofactor vanishes on double coincidences (conjecture; exact at \(M=6\) for the tie limit). So uniqueness of the leading \(C\)-block coordinate above a tie is settled only for \(M\le5\).</p>
-<p>Next: prove conj:cube-cofactor-double-coincidence from the product form \(f(x,y)=g(x)g(y)\), \(g=(1+xT)^{-3/2}\). The leading rows at a double coincidence are symmetric products in a space \(U\) of dimension \(M\) with two derivative elements. Find the linear relation among their first \(\binom M2\) Taylor coefficients, for instance from a Wronskian identity for \(g,g'\) at two points.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cofactor-double-coincidence-proof">EPD cofactor</a>; eight open items). The Taylor cofactor vanishes on every double coincidence, by the recorded Euler–Poisson–Darboux identity. So uniqueness of the leading \(C\)-block coordinate above a tie is settled only for \(M\le5\).</p>
+<p>Next: uniqueness above a tie over a caterpillar for \(M\ge6\), through a hierarchical count. Along the arc, the valuation of each \(p_S\) is a sum over the caterpillar's nested levels, as in thm:cube-caterpillar-minimality. Show that the tie level adds the same amount to \(p_{T_0}\) as to the least other coordinate, using the cofactor at the tie's own level \((c_0,1)\), which is nonzero for \(c_0\ne-1\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68987,6 +68987,68 @@ of dimension \(M\), with \(g'\) vanishing at \(T=0\). The conjecture says these 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">23.62 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cofactor-double-coincidence-proof" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-cofactor-double-coincidence cor:cube-tie-cofactor-vanishes-large">
+<h3>9 October 2026 — The Taylor cofactor vanishes on every double coincidence, by the recorded Euler–Poisson–Darboux identity; so the tie-limit criterion fails for every \(M\ge6\)</h3>
+<p class="entry-meta">Working proof of conj:cube-cofactor-double-coincidence from the Euler–Poisson–Darboux identity of lem:cube-double-cluster-osculating-limit (a rediscovery of its first-order dependence); corollary for all \(M\ge6\) at the tie limit. EPD cofactor cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement: uniqueness of the leading \(C\)-block coordinate above a tie. The <a href="#entry-2026-10-09-cube-cofactor-double-coincidence">double coincidence entry</a> conjectured that the Taylor cofactor \(F=p_{T_0}/\mathrm{Vand}^{M-2}\) vanishes whenever two disjoint pairs of roots coincide. That explains why the tie-limit criterion stopped at \(M=5\). Is there a proof?</p>
+<p><strong>General statement.</strong> prop:cube-cofactor-double-coincidence. In characteristic zero, for every \(M\ge4\), \(F\) vanishes on every locus \(\{y_i=y_j,\ y_k=y_l\}\) with \(\{i,j\}\cap\{k,l\}=\varnothing\). This proves conj:cube-cofactor-double-coincidence.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The identity. The pair function is \(\Phi(x,y)=\varphi(x)\varphi(y)\), \(\varphi(x)=(1+xT)^{-3/2}\). By lem:cube-double-cluster-osculating-limit it satisfies \(\Phi_x-\Phi_y=\tfrac23(x-y)\Phi_{xy}\). Directly: \(\varphi'(x)=-\tfrac32T(1+xT)^{-5/2}\), and \(\tfrac{T}{1+xT}-\tfrac{T}{1+yT}=\tfrac{(y-x)T^2}{(1+xT)(1+yT)}\).</li>
+<li>Coordinates. Relabel so that the pairs are \(\{1,2\}\) and \(\{3,4\}\). Put \(y_1=a\), \(y_2=a+s\), \(y_3=b\), \(y_4=b+t\), with \(a,b,y_5,\ldots,y_M\) distinct. Replace rows by differences:
+<ul>
+<li>\((2,k)-(1,k)\) for \(k\ge5\) and for \(k=3\): each is \(s\,(\Phi_x(a,y_k)+O(s))\), \(M-3\) rows;</li>
+<li>\((4,k)-(3,k)\) for \(k\ge5\) and \((1,4)-(1,3)\): each is \(t\,(\Phi_y(y_k,b)+O(t))\), using the symmetry of \(\Phi\), \(M-3\) rows;</li>
+<li>\((2,4)-(2,3)-(1,4)+(1,3)=st\,(\Phi_{xy}(a,b)+O(s,t))\), one row.</li>
+</ul>
+The entries are polynomials in \(y\), so each difference row is exactly divisible by \(s\), by \(t\) or by \(st\), as a divided difference. Hence \(p_{T_0}=(st)^{M-2}\det D(s,t)\) with \(D\) polynomial and \(D(0,0)=L\), the matrix of first \(\binom M2\) Taylor coefficients of the leading rows. \(L\) has rows, truncations of, \(\Phi_x(a,b)\), \(\Phi_y(a,b)\) and \(\Phi_{xy}(a,b)\), coming from the rows \((2,3)\), \((1,4)\) and \((2,4)\).</li>
+<li>Vandermonde. \(\mathrm{Vand}^{M-2}=(st)^{M-2}W\), with \(W\) nonzero on the locus at such points. So \(F=\det D(s,t)/W\), and on the locus \(F=\det L/W\).</li>
+<li>Conclusion. By step 1, \(\Phi_x(a,b)-\Phi_y(a,b)-\tfrac23(a-b)\Phi_{xy}(a,b)=0\) as functions, so three rows of \(L\) are dependent and \(\det L=0\). Thus \(F=0\) on the dense open part of the locus where the remaining values are distinct, and on the whole locus by continuity. \(\square\)</li>
+</ol>
+<p>Relation to the record. lem:cube-double-cluster-osculating-limit uses the same identity: at \(c\ge2\) double roots, the first-order rows span only \(W_0\), and the flat limit needs the second-order vectors \(w_{rs}\). The proposition is the Taylor-cofactor form of that rank drop, a rediscovery of its mechanism. The identity is also checked directly in step 1, so the proof uses the lemma only as a citation. It is checked against the exact zeros of cofactor-double-coincidence.txt (\(M=4,5,6\)).</p>
+<p><strong>Second statement.</strong> cor:cube-tie-cofactor-vanishes-large. In characteristic zero, for every \(M\ge6\) and every \(c\), \(F(c,1,0^{M-2})=0\). The point has \(y_3=y_4\) and \(y_5=y_6\), so the proposition applies. This extends ex:cube-tie-cofactor-six to every \(M\ge6\) and gives it a structural proof. It also accounts for the vanishing of the cofactors of cor:cube-tie-cofactor-small at \(c=1\) (\(M=4,5\)) and at \(c=0\) (\(M=5\)), but not for their multiplicities. So the criterion of lem:cube-cofactor-gives-unique-cblock fails at every tie limit \((c,1,0^{M-2})\) with \(M\ge6\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>For \(M\ge6\), uniqueness of the leading \(C\)-block coordinate above a tie over a caterpillar must come from a hierarchical valuation count. One may expect the valuation of \(F\) along the arc to split over the nested coincidences, as in thm:cube-caterpillar-minimality; that is a heuristic, not proved.</li>
+<li>The proof also shows which second-order data decide the leading term at a double coincidence: the vectors \(w_{rs}\) of the recorded osculating limit. A hierarchical count for ties over caterpillars should therefore go through lem:cube-double-root-full-limits rather than the cofactor's value.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Uniqueness of the leading \(C\)-block coordinate above a tie over a caterpillar for \(M\ge6\).</li>
+<li>(W″) under Hankel non-cancellation; the other open items of (K), and (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-double-cluster-osculating-limit (the identity and the space \(W_0\));</li>
+<li>lem:cube-double-root-full-limits (statement);</li>
+<li>conj:cube-cofactor-double-coincidence and ex:cube-tie-cofactor-six;</li>
+<li>lem:cube-cofactor-gives-unique-cblock.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer verified the identity (sign and constant), the row bookkeeping (\(M-3\) rows in \(s\), \(M-3\) in \(t\), one mixed row, total \(\binom M2\)), the Vandermonde factor, the conclusion by continuity and the corollary. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>exact divisibility of the difference rows in place of asymptotic expansions;</li>
+<li>the symmetry used for the \(t\)-rows;</li>
+<li>the rows of \(L\) named;</li>
+<li>the corollary worded as an extension of the \(M=6\) example, without the multiplicities;</li>
+<li>the criterion's failure scoped to tie limits;</li>
+<li>the hierarchical splitting marked a heuristic.</li>
+</ul>
+<p>Status: working proof (proposition and corollary); proves the previous entry's conjecture, by the recorded identity.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-af">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 57.55 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">41.52 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">44.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">14.55 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 14.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
