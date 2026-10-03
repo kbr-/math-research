@@ -255,16 +255,18 @@ def picked(tag, text):
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
 
+@functools.lru_cache(maxsize=8)
 def record_articles(body):
-    """(tag, text) of the Research-record articles, in order."""
+    """(tag, text) of the Research-record articles, in order.  Cached: one check parses the same notebook
+    several times (the spell and parent lookups)."""
     start = body.find('<section id="research-record">')
     if start < 0:
-        return []
+        return ()
     out = []
     for m in ARTICLE_RE.finditer(body, start):
         text = m.group(0)
         out.append((text[:text.index('>') + 1], text))
-    return out
+    return tuple(out)
 
 
 def developed_by(tag, text):
