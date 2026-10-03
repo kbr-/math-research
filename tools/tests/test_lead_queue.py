@@ -135,6 +135,11 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             lq.check(small_head, notebook([big] + done, rest[1:], draining=True))
 
+    def test_item_text_escapes_entities_once(self):
+        listing = subideas('t1', [('check', 'the hook&#x27;s flags &amp; their &lt;precision&gt;')])
+        self.assertEqual(lq.item_text(notebook([listing]), 'check', 't1:s1'),
+                         "the hook's flags &amp; their &lt;precision&gt;")
+
     def test_item_text_never_cuts_inline_math(self):
         long = review('r1', [' The ring \\(F[p_2]\\) ' + 'word ' * 40 + '\\(x+y\\) end.' + PASS])
         text = lq.item_text(notebook([long]), 'lead', 'r1:1')

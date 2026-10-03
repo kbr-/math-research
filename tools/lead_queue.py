@@ -695,7 +695,8 @@ def item_text(body, kind, ident):
     listed = listed_item(kind, art.group(0), ident) if art else None
     if listed is None:
         return ''
-    text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', listed[1])).strip()
+    # the entry's text is HTML: unescape it before the queue line escapes it, so an entity is not escaped twice
+    text = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', listed[1])).strip())
     short = text[:220]
     while short.count('\\(') > short.count('\\)'):   # never cut inside inline math
         short = short[:short.rindex('\\(')].rstrip()
