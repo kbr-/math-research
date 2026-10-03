@@ -585,15 +585,18 @@ def arrivals_of(tag, text):
         return []
     audit = 'data-kind="audit"' in tag
     tested = re.search(r'data-kind="(?:review|research|audit)"', tag)
-    out = []
+    out, walked = [], set()
     for kind in KINDS.values():
         section = kind.listed.search(text) if kind.listed else None
-        if not section or (not kind.sub and not tested):
+        if not section or (not kind.sub and not tested) or kind.listed in walked:
             continue
+        walked.add(kind.listed)     # a list several kinds share (Sub-ideas) is walked once, in its order
+        subs = {k.name for k in KINDS.values() if k.sub and k.listed is kind.listed}
         for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
             if kind.sub:
-                if re.match(r'[^>]*\bdata-sub="' + kind.name + '"', item):
-                    out.append((kind.name, f'{ident.group(1)}:s{n}'))
+                sub = re.match(r'[^>]*\bdata-sub="([^"]+)"', item)
+                if sub and sub.group(1) in subs:
+                    out.append((sub.group(1), f'{ident.group(1)}:s{n}'))
             elif audit or TEST_PASSED.search(item):
                 out.append((kind.name, f'{ident.group(1)}:{n}'))
     return out

@@ -295,6 +295,11 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([self.rev, listing], self.q))
         self.assertIn('run it on ARM', lq.item_text(body, 'check', 't1:s1'))
 
+    def test_subideas_arrive_in_their_lists_order(self):
+        listing = subideas('t1', [('build', 'b'), ('check', 'c'), ('build', 'd')])
+        self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([listing]))[0]),
+                         [('build', 't1:s1'), ('check', 't1:s2'), ('build', 't1:s3')])
+
     def test_subidea_ids_never_meet_lead_ids(self):
         entry = ('<article id="w" data-kind="review" data-route="step"><h4>Outside leads</h4><ul><li>L' + PASS
                  + '</li></ul><h4>Sub-ideas</h4><ul><li data-sub="check">c</li><li data-sub="build">b</li></ul></article>')
