@@ -10,8 +10,9 @@ finish-turn.py against HEAD:
 - A research entry develops at most one item, always the head, tagged data-lead or data-bridge="ANCHOR:N",
   and states <strong>Follow-up.</strong> Closed (a reason the attempt found), Developed (no remaining
   application to an open statement) or Continuing (it still bears on one; user, 3 October 2026: squeeze
-  items, do not close them at their first usable result).  Closed and Developed remove the item;
-  Continuing moves it to the tail.
+  items, do not close them at their first usable result).  Closed and Developed remove the item; a
+  Continuing item keeps the head for up to SPELL consecutive research entries, so its context is not
+  restored from scratch each time, and then moves to the tail.
 - An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
@@ -28,6 +29,7 @@ import sys
 from pathlib import Path
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
+SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
 ITEM_RE = re.compile(r'<li data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
@@ -59,6 +61,24 @@ def developed_by(tag, text):
         return None
     outcome = OUTCOME_RE.search(FOLLOWUP_ITEM.sub('', text[len(tag):]))   # not a listed item's outcome
     return (found.group(1), found.group(2)), outcome.group(1) if outcome else None
+
+
+def spell(body, item, pending=False):
+    """Consecutive research entries, from the record's end, that develop `item`; review entries in between
+    neither count nor break the run.  With pending=True the entry about to be appended counts too, unless it
+    is already the last article (its <!-- TIMING TURN --> marker is still unfilled)."""
+    count, last = 0, True
+    for tag, text in reversed(record_articles(body)):
+        if 'data-kind="research"' not in tag:
+            continue
+        if pending and last and '<!-- TIMING ' in text:
+            pending = False
+        last = False
+        work = developed_by(tag, text)
+        if not work or work[0] != item:
+            break
+        count += 1
+    return count + (1 if pending else 0)
 
 
 def review_passed(tag, text):
@@ -176,11 +196,15 @@ def check(head_body, body):
                          f'research entry must develop the head, {head[1]}, tagged data-{head[0]}="{head[1]}"')
     expected = [i for i in old if not work or i != work[0]]
     if work and work[1] == 'Continuing':
-        expected.append(work[0])
+        if spell(body, work[0]) < SPELL:
+            expected.insert(0, work[0])      # keeps the head for up to SPELL consecutive entries
+        else:
+            expected.append(work[0])
     new = [i for i in arrivals if i not in old]
     if queue[:len(expected)] != expected or sorted(queue[len(expected):]) != sorted(set(new)):
         raise ValueError('Queue update: keep the earlier items in order; remove the developed head if Closed or '
-                         'Developed, or move it to the tail if Continuing; append at the end exactly this entry\'s '
+                         'Developed; if Continuing, keep it at the head until its ' + str(SPELL) + 'th consecutive entry, '
+                         'then move it to the tail; append at the end exactly this entry\'s '
                          'newly passed review items and the items it marks Reopened ('
                          + (', '.join(i for _, i in new) or 'none') + ')')
     should_drain = len(queue) > FLOOR if draining_before else len(queue) >= CAP
@@ -203,8 +227,9 @@ def head_lines(body, count=HEAD_READ):
 
 
 def done(body, outcome):
-    """The notebook with the head item removed (Closed, Developed) or moved to the tail (Continuing), and the
-    draining flag recomputed from the previous state."""
+    """The notebook with the head item removed (Closed, Developed), kept at the head (Continuing, before its
+    SPELLth consecutive entry) or moved to the tail (Continuing, at it), and the draining flag recomputed from
+    the previous state.  Run it before or after appending the developing entry; spell() tells which."""
     found = SECTION_RE.search(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
@@ -214,7 +239,10 @@ def done(body, outcome):
     lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
     head = lines.pop(0)
     if outcome == 'Continuing':
-        lines.append(head)
+        if spell(body, queue[0], pending=True) < SPELL:
+            lines.insert(0, head)
+        else:
+            lines.append(head)
     elif outcome not in ('Closed', 'Developed'):
         raise ValueError('Outcome is Closed, Developed or Continuing')
     was = draining or len(queue) >= CAP

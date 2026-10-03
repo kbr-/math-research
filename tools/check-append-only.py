@@ -28,7 +28,19 @@ def normalize(article):
     return article.replace('&nbsp;', ' ').replace('\u00a0', ' ')
 
 
+def record_articles_text(body):
+    """The record from its section tag through the last article's end."""
+    start = body.find('<section id="research-record">')
+    end = body.rfind('</article>')
+    return body[start:end + len('</article>')] if 0 <= start < end else None
+
+
 def violations(base_body, current_body):
+    # Fast path: entries are appended at the record's end, so an untouched record starts with the base's.
+    # Anything else (link repairs, layout spaces, real changes) takes the full comparison below.
+    record = record_articles_text(base_body)
+    if record is not None and current_body[current_body.find('<section id="research-record">'):].startswith(record):
+        return [], []
     base, current = entries(base_body), entries(current_body)
     missing = [name for name in base if name not in current]
     changed = [name for name in base if name in current and base[name] != current[name]]
@@ -46,10 +58,15 @@ def check(root, ref):
     before = [p for p in listing.stdout.splitlines() if p == 'notebook.html' or
               re.fullmatch(r'research/branches/[^/]+/notebook.html',p)]
     current = {p.relative_to(root).as_posix() for p in paths(root)}
+    present = [p for p in before if p in current and (root/p).exists()]
+    diff = subprocess.run(['git','diff','--name-only',ref,'--',*present],cwd=root,capture_output=True,text=True)
+    differing = set(diff.stdout.splitlines()) if diff.returncode == 0 else set(present)
     missing, changed = [], []
     for path in before:
         if path not in current or not (root/path).exists():
             missing.append(path + ' (notebook deleted or unregistered)'); continue
+        if path not in differing:   # identical to the base revision
+            continue
         shown = subprocess.check_output(['git','show',f'{ref}:{path}'],cwd=root,text=True)
         left,right = violations(shown,(root/path).read_text())
         missing.extend(path+'#'+x for x in left)

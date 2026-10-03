@@ -95,15 +95,27 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
 
 
 def check_revision(after, revision='HEAD', root=ROOT):
-    commit,before=baseline(revision,root)
-    command=['git','ls-files'] if commit=='EMPTY' else ['git','diff','--name-only',commit,'--']
-    changed=subprocess.check_output(command,cwd=root,text=True).splitlines()
+    if revision=='EMPTY':
+        commit,before=baseline(revision,root)
+        changed=subprocess.check_output(['git','ls-files'],cwd=root,text=True).splitlines()
+    else:
+        commit=subprocess.check_output(['git','rev-parse',revision+'^{commit}'],cwd=root,text=True).strip()
+        changed=subprocess.check_output(['git','diff','--name-only',commit,'--'],cwd=root,text=True).splitlines()
+        # An index tracked and identical at the base needs no second parse: `after` is the base's registry.
+        # (git diff omits untracked files, so tracking is checked separately.)
+        path='research/claims/index.json'
+        tracked=subprocess.check_output(['git','ls-tree','--name-only',commit,'--',path],cwd=root,text=True).strip()
+        before=after if tracked and path not in changed else baseline(commit,root)[1]
     result=maintenance(before,after,root,changed)
     result['base_revision']=commit
     from notebooks import paths
     registrations=[]
-    for notebook in paths(root):
-        relative=notebook.relative_to(root).as_posix()
+    notebooks=[(n,n.relative_to(root).as_posix()) for n in paths(root)]
+    at_base=set() if commit=='EMPTY' else set(subprocess.check_output(
+        ['git','ls-tree','--name-only',commit,'--',*[r for _,r in notebooks]],cwd=root,text=True).splitlines())
+    for notebook,relative in notebooks:
+        if relative in at_base and relative not in changed:
+            continue   # identical to the base: no new entries to register
         def notebook_at(ref):
             if ref=='EMPTY':return ''
             shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)

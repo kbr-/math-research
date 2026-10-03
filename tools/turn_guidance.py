@@ -77,12 +77,14 @@ def queue_notes(body):
     if not queue:
         return ['Lead queue: empty. New passed leads and bridges of a review go at its end.']
     kind, ident = queue[0]
-    head = f'the head is {ident} ({kind}), tagged data-{kind}="{ident}"'
+    head = (f'the head is {ident} ({kind}), tagged data-{kind}="{ident}"; this would be its entry '
+            f'{lq.spell(body, queue[0]) + 1} of at most {lq.SPELL} in a row')
     if draining or len(queue) >= lq.CAP:
         return [f'Lead queue: {len(queue)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
                 f'research entry must develop the head until the queue has {lq.FLOOR} items: {head}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
-                'update the queue: Closed and Developed remove the item, Continuing moves it to the tail. ' + SQUEEZE]
+                'update the queue: Closed and Developed remove the item; Continuing keeps the head until its '
+                f'{lq.SPELL}th consecutive entry, then moves it to the tail. ' + SQUEEZE]
     return [f'Lead queue: {len(queue)} items (backpressure at {lq.CAP}); {head}. A research entry that develops '
             'a queue item must take the head, state its Follow-up outcome and update the queue. ' + SQUEEZE]
 

@@ -22,6 +22,13 @@ class AppendOnlyTest(unittest.TestCase):
     def test_text_change_is_rejected(self):
         self.assertEqual(MODULE.violations(body('38 / 527'), body('38 / 528')), ([], ['e1']))
 
+    def test_appended_entries_and_their_neighbours(self):
+        base = body('x')
+        added = base.replace('</section>', '<article id="e2">new</article></section>')
+        self.assertEqual(MODULE.violations(base, added), ([], []))                     # the fast path
+        self.assertEqual(MODULE.violations(base, added.replace('<td>x', '<td>y')), ([], ['e1']))
+        self.assertEqual(MODULE.violations(added, base), (['e2'], []))                 # a deleted last entry
+
 
 if __name__ == '__main__':
     unittest.main()

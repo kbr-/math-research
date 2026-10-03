@@ -59,11 +59,29 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([self.rev, research(self.q[0])], self.q))
         lq.check(head, notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:]))
         lq.check(head, notebook([self.rev, research(self.q[0], 'Developed')], self.q[1:]))
-        lq.check(head, notebook([self.rev, research(self.q[0], 'Continuing')], self.q[::-1]))   # to the tail
-        with self.assertRaises(ValueError):                             # Continuing stays at the head
-            lq.check(head, notebook([self.rev, research(self.q[0], 'Continuing')], self.q))
+        lq.check(head, notebook([self.rev, research(self.q[0], 'Continuing')], self.q))   # keeps the head
+        with self.assertRaises(ValueError):                             # not yet to the tail
+            lq.check(head, notebook([self.rev, research(self.q[0], 'Continuing')], self.q[::-1]))
         with self.assertRaises(ValueError):                             # Closed but still listed
             lq.check(head, notebook([self.rev, research(self.q[0], 'Closed')], self.q))
+
+    def test_continuing_head_keeps_the_head_for_a_spell(self):
+        cont = research(self.q[0], 'Continuing')
+        review_between = review('r0', [FAIL])
+        for n in range(1, lq.SPELL + 1):
+            earlier = [cont] * (n - 1)
+            if n > 2:
+                earlier.insert(1, review_between)                       # reviews neither count nor break it
+            before = notebook([self.rev] + earlier, self.q)
+            after_entry = [self.rev] + earlier + [cont]
+            want = self.q if n < lq.SPELL else self.q[::-1]
+            lq.check(before, notebook(after_entry, want))
+            self.assertEqual(lq.parse(lq.done(before, 'Continuing'))[1], want)                    # before append
+            appended = notebook(after_entry[:-1] + [cont.replace('</article>', '<!-- TIMING t --></article>')],
+                                self.q)
+            self.assertEqual(lq.parse(lq.done(appended, 'Continuing'))[1], want)                  # after append
+        broken = notebook([self.rev, cont, research(self.q[1], 'Closed'), cont, cont], self.q)
+        self.assertEqual(lq.spell(broken, self.q[0]), 2)                 # another item's entry ends the run
 
     def test_new_items_go_to_the_end(self):
         head = notebook([self.rev], self.q)
@@ -103,8 +121,8 @@ class LeadQueueTest(unittest.TestCase):
         head = notebook([self.rev], self.q)
         closed = lq.done(head, 'Closed')
         self.assertEqual(lq.parse(closed)[1], self.q[1:])
-        moved = lq.done(head, 'Continuing')
-        self.assertEqual(lq.parse(moved)[1], self.q[::-1])
+        kept = lq.done(head, 'Continuing')                              # first of its spell: stays
+        self.assertEqual(lq.parse(kept)[1], self.q)
         big = review('r1', [PASS] * (lq.FLOOR + 1))
         queue = [('lead', f'r1:{n}') for n in range(1, lq.FLOOR + 2)]
         draining = notebook([big], queue, draining=True)

@@ -235,7 +235,9 @@ rules to growing checklists or one-off setup narratives.
   statement, naming and where possible making the concrete next attempt; Developed only when its results
   leave it no remaining application to an open statement; Closed only for a reason the attempt found
   (a restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
-  result). Closed and Developed remove the item, Continuing moves it to the tail. An item closed too early
+  result). Closed and Developed remove the item. A Continuing item keeps the head for up to four
+  consecutive research entries, so its context is not rebuilt each cycle, and then moves to the tail
+  (user, 3 October 2026). An item closed too early
   is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
   to the tail (`lead_queue.py append`). Backpressure: at 50 items the
   queue drains (`data-draining="true"`), and every research entry develops the head until 20 remain;
