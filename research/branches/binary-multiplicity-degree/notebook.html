@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-open-rate-pencil">open-rate pencil</a>; eight open items). Above the cube-root cluster two cross coordinates lead on an open set of rates, so the phase-rule reduction of \(\nu\le2\) fails in the cherry setting. Hankel cancellation raises a window's least term by the vanishing order of its leading coefficient, which lets a single-swap neighbour tie with it.</p>
-<p>Next: bound which coordinates can be lifted into a tie with a window, in terms of the vanishing orders of the window coefficients \(L_j\propto\mathrm{Hank}_{M-j}\) at the limit cluster. Then derive \(\nu\le2\) from that bound when only \(\mathrm{Hank}_1\) vanishes.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-hankel-flow-order">Hankel flow order</a>; eight open items). Along fixed-cluster arcs the reparametrization is the flow of \(\sum y_i^2\partial_i\), and cancellation of \(\mathrm{Hank}_1\) lifts the window \(\Lambda_{M-1}\) by exactly one power of \(x\) at the Hankel moduli and the equilateral points.</p>
+<p>Next: determine the coordinates that reach value \(b(\Lambda_{M-1})+w_x\), the equality cases of the window bound one step above it, along fixed-cluster arcs. Show that they form a pencil, or a triangle where a third window ties, so \(\nu\le2\) (conj:cube-cancellation-wide-support).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -69952,6 +69952,68 @@ in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. 
 <tr><td>Computation design and coding</td><td class="elapsed">28.13 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.51 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 49.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-hankel-flow-order" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-reparametrization-flow cor:cube-hankel-flow-order-one">
+<h3>9 October 2026 — The cherry reparametrization is the flow of \(\sum y_i^2\partial_i\); \(\mathrm{Hank}_1\) has flow order exactly one at the tie Hankel moduli and the equilateral points, which lifts one window by one power of \(x\) where the limit roots are distinct</h3>
+<p class="entry-meta">Working proof that coefficient x-orders along fixed-cluster arcs are flow orders of D = sum y_i^2 d_i, and that the polynomial Hank_1 has flow order one at the tie Hankel moduli (M >= 3) and the equilateral points. Hankel flow order cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. The <a href="#entry-2026-10-09-cube-open-rate-pencil">open-rate pencil</a> showed that Hankel cancellation raises a window's least term by a power of \(x\), which lets a single-swap neighbour tie with it on an open set of rates. Bounding the leaders' nullity needs to know which coefficients are raised, and by how much.</p>
+<p><strong>General statement.</strong> lem:cube-reparametrization-flow. In the cherry setting of thm:cube-cherry-lattice-splitting, take an arc along which the cluster \(\tilde y\) is fixed, and let \(D=\sum_iy_i^2\partial_{y_i}\). For every polynomial \(a\), \(a(\tilde y')=\sum_{r\ge0}\frac{x^r}{r!}(D^ra)(\tilde y)\), where \(\tilde y'_i=\tilde y_i/(1-x\tilde y_i)\) are the reparametrized roots. So the \(x\)-order of \(a(\tilde y')\) is the least \(r\) with \((D^ra)(\tilde y)\ne0\), the flow order of \(a\) at \(\tilde y\). Moreover \(\mathrm{Vand}(\tilde y')=\mathrm{Vand}(\tilde y)\prod_{i&lt;j}(1-x\tilde y_i)^{-1}(1-x\tilde y_j)^{-1}\) has flow order \(0\) wherever it is nonzero.</p>
+<p><strong>Proof.</strong> The solution of \(dy/dx=y^2\), \(y(0)=\tilde y\), is \(y(x)=\tilde y/(1-x\tilde y)\). So \(x\mapsto\tilde y'(x)\) is the flow of \(D\) for time \(x\), coordinatewise and with all roots at once. For a polynomial \(a\), \(\frac{d^r}{dx^r}a(y(x))=(D^ra)(y(x))\) by induction, since \(\frac d{dx}b(y(x))=(Db)(y(x))\). Taylor's formula at \(x=0\) gives the expansion, convergent for small \(x\). For the Vandermonde, \(\tilde y_i'-\tilde y_j'=(\tilde y_i-\tilde y_j)/((1-x\tilde y_i)(1-x\tilde y_j))\). \(\square\)</p>
+<p>\(D\) is, up to sign, the derivation \(\delta=-\sum a_i^2\partial_{a_i}\) of the record's polynomial Ore model (Working mathematical context). The cherry reparametrization is the same Möbius flow.</p>
+<p><strong>Corollary.</strong> cor:cube-hankel-flow-order-one. \(D\,\mathrm{Hank}_1=2\sum_{i&lt;j}(y_i-y_j)^2(y_i+y_j)\), where \(\mathrm{Hank}_1=\sum_{i&lt;j}(y_i-y_j)^2\).</p>
+<ol>
+<li>At the tie limit \((c_0,1,0^{M-2})\) with \(c_0\) a Hankel modulus, \((M-1)c_0^2-2c_0+(M-1)=0\), \(M\ge3\): \(\mathrm{Hank}_1=0\) and \(D\,\mathrm{Hank}_1\ne0\). So \(\mathrm{Hank}_1\) has flow order exactly \(1\) there.</li>
+<li>At the equilateral points \((1,\omega,\omega^2)\) and \((3,2+\omega,2+\omega^2)\): \(\mathrm{Hank}_1=0\) and \(D\,\mathrm{Hank}_1=18\) at both. The flow order is \(1\).</li>
+</ol>
+<p>These are statements about the polynomial \(\mathrm{Hank}_1\). For \(M\ge4\) the tie limit has \(M-2\) coincident roots. A fixed-cluster arc there has \(\mathrm{Vand}(\tilde y')\equiv0\), so item 1 does not by itself describe any window coefficient for \(M\ge4\). For \(M=3\), \((c_0,1,0)\) has distinct roots, and with \(c_0=e^{\pm i\pi/3}\) it is itself an equilateral triangle.</p>
+<p><strong>Proof.</strong> \(D(y_i-y_j)=y_i^2-y_j^2\), so \(D(y_i-y_j)^2=2(y_i-y_j)^2(y_i+y_j)\).</p>
+<p>(1) At \((c_0,1,0^{M-2})\), \(\mathrm{Hank}_1=(c_0-1)^2+(M-2)(c_0^2+1)=(M-1)c_0^2-2c_0+(M-1)\), and \[\tfrac12D\,\mathrm{Hank}_1=(c_0-1)^2(c_0+1)+(M-2)(c_0^3+1)=(M-1)c_0^3-c_0^2-c_0+(M-1).\] Using \((M-1)c_0^2=2c_0-(M-1)\) twice, this reduces to \(\big(c_0(2-M(M-1))+(M-1)(M-2)\big)/(M-1)\). That vanishes only at \(c_0=(M-1)/(M+1)\), a real number. The Hankel moduli are not real, since the discriminant \(4-4(M-1)^2\) is negative for \(M\ge3\). Independently, the resultant of the two polynomials in \(c_0\) is a constant times \((M-2)^2(M-1)^2M\), nonzero for \(M\ge3\) (computed with PARI).</p>
+<p>(2) The pairs of \((1,\omega,\omega^2)\) give \((y_i-y_j)^2(y_i+y_j)=3\) each: \((-3\omega)(-\omega^2)\), \((-3\omega^2)(-\omega)\), \((-3)(-1)\). So \(D\,\mathrm{Hank}_1=18\). The second configuration is \(\tilde y+2\), with \(\tilde y=(1,\omega,\omega^2)\). For a translate \(y+\beta\), \(D_{y+\beta}=D_y+2\beta\sum y_i\partial_i+\beta^2\sum\partial_i\). \(\mathrm{Hank}_1\) is translation invariant, so \(\sum\partial_i\mathrm{Hank}_1=0\), and homogeneous of degree two, so \(\sum y_i\partial_i\mathrm{Hank}_1=2\,\mathrm{Hank}_1\). Hence \((D\,\mathrm{Hank}_1)(y+\beta)=(D\,\mathrm{Hank}_1)(y)+4\beta\,\mathrm{Hank}_1(y)\). At \(\tilde y\), with \(\beta=2\), this equals \(18\). \(\square\)</p>
+<p><strong>Consequence for the windows.</strong> By thm:cube-cherry-hankel-form (every \(M\ge2\)), \([u^{B_j}]P_{\Lambda_j}=c_{M,j}\mathrm{Vand}^2\mathrm{Hank}_{M-j}\) with \(c_{M,j}\ne0\). So the leading coefficient of \(\Lambda_{M-1}\) is \(c_{M,M-1}\mathrm{Vand}^2\mathrm{Hank}_1\).</p>
+<ul>
+<li>Along fixed-cluster arcs whose limit has distinct roots and \(\mathrm{Hank}_1=0\), namely the equilateral points and the \(M=3\) tie at \(c_0=e^{\pm i\pi/3}\), its \(x\)-order is exactly \(1\). This is the extra factor of \(x\) in the open-rate pencil at \(M=3\): \(\Lambda_2\)'s least term has value \(b(\Lambda_2)+w_x=9w_x+5w_e\). The next term, \(n=B_j+1\), costs \(w_x+w_e\) more and does not compete.</li>
+<li>For \(M\ge4\) above the tie cluster the limit has coincident roots, and the deep roots carry their own scales, so the flow lemma does not apply. There \(\mathrm{Hank}_1(\tilde y')=\mathrm{Hank}_1(\tilde y)+x(D\,\mathrm{Hank}_1)(\tilde y)+\cdots\). Its valuation is at least the minimum of \(w_x\) and the valuation of \(\mathrm{Hank}_1(\tilde y)\), with equality when these differ; the two terms can cancel otherwise.</li>
+</ul>
+<p>So, along fixed-cluster arcs with distinct limit roots, cancellation of \(\mathrm{Hank}_1\) alone lifts one window, \(\Lambda_{M-1}\), by exactly one power of \(x\).</p>
+<p><strong>What this means for \(\nu\le2\).</strong> On those arcs, a coordinate \(L\) can tie with \(\Lambda_{M-1}\) on an open set of rates only if its least term has the same gradient. Writing \(k'\) for the flow order of \(L\)'s coefficient, that means \(n'=B_{M-1}\) and \(\Sigma L+k'=\Sigma\Lambda_{M-1}+1\). The single swap of the top column (\(\Sigma L=\Sigma\Lambda+1\), \(k'=0\)) is the case seen in the refutation. Coordinates with \(\Sigma L=\Sigma\Lambda-m\) and \(k'=m+1\) could join too; nothing here bounds which coordinates have vanishing coefficients. On rays and at isolated rates other gradients can tie as well. A proof of \(\nu\le2\) along fixed-cluster arcs therefore needs the equality cases at value \(b(\Lambda_{M-1})+w_x\), including the flow orders \(k'\) of non-window coordinates. The record proves only that the window bound \(b\) is minimized exactly at the windows; the equality cases one step above it remain open.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The coordinates reaching value \(b(\Lambda_{M-1})+w_x\), with their flow orders, giving \(\nu\le2\) at cancellation (conj:cube-cancellation-wide-support) for fixed-cluster arcs; arcs with moving clusters; \(M\ge4\) above the tie cluster.</li>
+<li>Items 3–4; levels above slack-zero data; the window cores; the other open items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-cherry-lattice-splitting (setting, reparametrized roots, \(L_j\) and \(B_j\));</li>
+<li>thm:cube-cherry-hankel-form (\([u^{B_j}]P_{\Lambda_j}=c_{M,j}\mathrm{Vand}^2\mathrm{Hank}_{M-j}\), \(c_{M,j}\ne0\));</li>
+<li>ex:cube-cube-root-open-pencil (the pencil it explains).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p>
+<ul>
+<li>the flow lemma and the Vandermonde factor;</li>
+<li>\(D\,\mathrm{Hank}_1\), the reduction at the tie limit, the resultant (by hand), the equilateral value and the translation formula;</li>
+<li>the match with the pencil.</li>
+</ul>
+<p>Verdict: pass with corrections; no unused hypotheses (\(M\ge3\) is used, since \(\mathrm{Hank}_1=\mathrm{Vand}^2\) at \(M=2\)). All corrections were applied:</p>
+<ul>
+<li>the window factorization written with the record's notation and constant;</li>
+<li>the tie consequence restricted to distinct limit roots, which for the tie means \(M=3\), with \(M\ge4\) stated as a polynomial fact only;</li>
+<li>the deep-scale valuation stated as an inequality;</li>
+<li>the tie condition stated as \(\Sigma L+k'=\Sigma\Lambda_{M-1}+1\) on open sets;</li>
+<li>the claim that the record treats the equality cases withdrawn.</li>
+</ul>
+<p>Status: working proof (flow lemma; flow order one of \(\mathrm{Hank}_1\) at the tie moduli and the equilateral points; one-power lift of \(\Lambda_{M-1}\) on fixed-cluster arcs with distinct limit roots).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-an">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 9.12 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 16.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 52.55 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
