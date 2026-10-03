@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). The <a href="#entry-2026-10-09-cube-pair-confluence-review">goal-level review</a> switched to statement 2: at \(n=5\), every odd prime, it rests on generic normality of one space \(v^{2d}L_d\) on an elliptic curve (<a href="#entry-2026-10-09-cube-pair-confluence-limit">pair confluence limit</a>), which passed a small-prime test.</p>
-<p>Next: the queue head, the coherent base change lead (nodal extension review, lead two), applied to that elliptic interpolation: its finite complex with the marked jet map retained.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), in every odd characteristic and every \(d\ge3\), is now one \(12\times12\) matrix on an elliptic curve (<a href="#entry-2026-10-09-cube-merged-elliptic-criterion">merged elliptic criterion</a>). Eight of its conditions are top coefficients at infinity and four are values on a coset of two-torsion.</p>
+<p>Next: the head (coherent base change lead), entry two: block the matrix by the sign characters, then its Tate expansion, as in the all-odd dimension-four proof.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -96,7 +96,9 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <h2>Lead and bridge queue</h2>
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
-<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:2</a> (lead): Grothendieck's coherent cohomology and base change. The finite-complex statement in Stacks, Lemma 30.22.1 retains torsion that plain central-fibre dimensions lose. Translate the focused line bundle into this complex and …</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:2</a> (lead): Grothendieck's coherent cohomology and base change. The finite-complex statement in Stacks, Lemma 30.22.1 retains torsion that plain central-fibre dimensions lose. Translate the focused line bundle into this complex and …<ul>
+<li data-check="entry-2026-10-09-cube-merged-elliptic-criterion:s1"><a href="#entry-2026-10-09-cube-merged-elliptic-criterion">entry-2026-10-09-cube-merged-elliptic-criterion:s1</a> (check): The block structure of \(\Phi'_P\) under the sign characters: split the twelve rows by the characters \(\{i\},\{i,v\},\{3,4\},\{3,4,v\}\), and check whether \(\det\Phi'_P\) factors into smaller determinants at a generic …</li>
+</ul></li>
 <li data-lead="entry-2026-09-27-cube-nodal-extension-review:3"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:3</a> (lead): Serre duality with the canonical twist retained. The line-bundle duality formula identifies the obstruction layers with dimensions of \(H^0(B,(n-4-r)H)\). Those spaces have the explicit complete character bases proved in…</li>
 <li data-lead="entry-2026-09-27-cube-resonance-composition-review:2"><a href="#entry-2026-09-27-cube-resonance-composition-review">entry-2026-09-27-cube-resonance-composition-review:2</a> (lead): Gauss' lemma and polynomial content. The exact residual formula is \((N^2-1)F_{A-1}(u^4)\), with \(F_{A-1}\) integral and constant coefficient one. Its coefficient ideal over \(\mathbb Z[1/2]\) is therefore exactly…</li>
 <li data-lead="entry-2026-09-27-cube-resonance-composition-review:3"><a href="#entry-2026-09-27-cube-resonance-composition-review">entry-2026-09-27-cube-resonance-composition-review:3</a> (lead): The Schur determinant identity and formal perturbation. Formula (JT) tests the coupled map after eliminating a genuinely invertible block. For a corank-one family over \(k[[\varepsilon]]\), isolate a unit maximal minor; …</li>
@@ -77433,6 +77435,86 @@ This is a space of root-curve sections in \(\tau\) with poles only over \(\tau=\
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-merged-elliptic-criterion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-27-cube-nodal-extension-review:2" data-claims="lem:cube-merged-elliptic-criterion">
+<h3>9 October 2026 — Merged elliptic criterion: statement 2 at \(n=5\) is one \(12\times12\) matrix on an elliptic curve in every degree, with eight conditions at infinity and four on a coset of two-torsion</h3>
+<p class="entry-meta">Working lemma (\(n=5\), every \(d\ge3\), every odd characteristic). Lead-queue development (head item, entry one of four, Continuing). Merged elliptic criterion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-09-cube-pair-confluence-review">goal-level review</a> reduced open statement 2 at \(n=5\), in every odd characteristic, to generic normality of the one-merge limit \(v^{2d}L_d\) on an elliptic curve (lem:cube-pair-confluence-limit). The head lead, Grothendieck's coherent base change, asks that a bounded finite complex retain the marked jet map rather than its underlying module. For the original collision series that complex is the bounded matrix \(\Phi_P\) of lem:cube-bounded-collision-interpolation. What is the bounded complex for the merged space, and how big is it?</p>
+<p><strong>General statement.</strong> lem:cube-merged-elliptic-criterion (\(n=5\), every \(d\ge3\), every characteristic other than two).</p>
+<h4>Setup</h4>
+<p>Take the coordinate \(\tau=T/(1+a_1T)\) of lem:cube-pair-confluence-limit, with \(b_i=a_i-a_1\) (\(i=3,4\)), \(w'_i=\sqrt{1+b_i\tau}\) and \(v=\sqrt{1-a_1\tau}\), all normalized to \(1\) at \(\tau=0\). Let \(E\) be the smooth projective curve of \(k(\tau)(v,w'_3,w'_4)\): a root curve with three roots, hence elliptic. The parameters \(-a_1,b_3,b_4\) are distinct and nonzero for generic \(a_1,a_3,a_4\). Write \(H\) for the reduced divisor of the four points over \(\tau=\infty\), and \(Z\) for the four ramification points of \(v\), over \(\tau=1/a_1\). For \(S\subseteq\{v,3,4\}\), \(u_S\) is the product of the corresponding roots. By the complete character spaces of lem:cube-bounded-collision-interpolation, for \(b\ge0\),
+\[L(bH)=\bigoplus_Su_S\,k[\tau]_{\le\lfloor(b-|S|)/2\rfloor}.\]</p>
+<p>Multiplying the limit of lem:cube-pair-confluence-limit at \(r=4\) by the unit \(v^{2d}\) and sorting by character gives, for \(d\ge3\),
+\[L'_d:=v^{2d}L_d=\bigoplus_{S}u_S\,(1-a_1\tau)^{\kappa_S}\,k[\tau]_{\le m_S},\]
+where \(R=S\setminus\{v\}\) and:</p>
+<ul>
+<li>\(S=\emptyset\) and \(S=\{v\}\): \(\kappa_S=0\), \(m_S=2d-1\);</li>
+<li>\(S=\{i\}\) (\(i=3,4\)): \(\kappa_S=1\), \(m_S=2d-3\);</li>
+<li>\(S=\{i,v\}\): \(\kappa_S=0\), \(m_S=2d-3\);</li>
+<li>\(S=\{3,4\}\) and \(S=\{3,4,v\}\): \(\kappa_S=1\), \(m_S=2d-5\).</li>
+</ul>
+<p>This follows from \(w_R(1+a_1T)^j=w'_Rv^{-|R|-2j}\) and \(w_Rw_1(1+a_1T)^{j-1}=w'_Rv^{-|R|-2j+1}\) with \(j=d-|R|\). After multiplying by \(v^{2d}\) these become \(w'_Rv^{|R|}\) and \(w'_Rv^{|R|+1}\), and \(v^2=1-a_1\tau\). The total dimension is \(16d-16=N_{2,5}(d)\).</p>
+<h4>The lemma</h4>
+<p><strong>Lemma (lem:cube-merged-elliptic-criterion).</strong> Let \(k\) be algebraically closed with \(\operatorname{char}k\ne2\) (otherwise pass to the algebraic closure), let \(a_1,a_3,a_4\in k\) be distinct and nonzero, and let \(d\ge3\), \(N=16d-16\), \(M=4d-1\), with \(E,H,Z,L'_d\) as above and \(P\) the point \(\tau=0\), \(v=w'_i=1\). Then \(L'_d\subset L(MH)\), and \(L'_d\) is the kernel of a surjective map \(\Phi':L(MH)\to k^{12}\) with these twelve components:</p>
+<ul>
+<li>The omitted top coefficients, eight of them. In the character blocks \(u_{\{i\}}\) (\(i=3,4\)): the coefficient of \(\tau^{2d-1}\). In \(u_{\{i,v\}}\): the coefficient of \(\tau^{2d-2}\). In \(u_{\{3,4\}}\) and \(u_{\{3,4,v\}}\): the coefficients of \(\tau^{2d-3}\) and \(\tau^{2d-2}\).</li>
+<li>The vanishing conditions at \(Z\), four of them. In the blocks \(u_{\{i\}}\) (\(i=3,4\)), \(u_{\{3,4\}}\) and \(u_{\{3,4,v\}}\): the value at \(\tau=1/a_1\) of the polynomial factor \(f\), taken after the top coefficients above are removed.</li>
+</ul>
+<p>Moreover \(\dim L(MH-NP)=12\). \(L'_d\) has an invertible length-\(N\) Hasse jet map at \(P\) if and only if the square map \(\Phi'_P:L(MH-NP)\to k^{12}\) is invertible. If this holds for one such triple \(a_1,a_3,a_4\), then the original dimension-five series \(V_{5,d}\) is generically normal in that characteristic.</p>
+<p><strong>Proof.</strong> <em>Pole orders.</em> At each point of \(H\), \(\tau\) has a pole of order two and each root a pole of order one. So \(u_S\tau^m\) has pole order \(|S|+2m\) there. The maxima over the blocks are \(4d-2\), \(4d-1\), \(4d-3\), \(4d-4\), \(4d-6\), \(4d-5\), all at most \(M\), so \(L'_d\subset L(MH)\).</p>
+<p><em>The kernel.</em> In each character the ambient bound \(\lfloor(M-|S|)/2\rfloor\) is \(2d-1\) for \(S=\emptyset,\{v\},\{i\}\) and \(2d-2\) for the other four. Comparing with \(L'_d\) block by block:</p>
+<ul>
+<li>\(\emptyset\) and \(\{v\}\): equal.</li>
+<li>\(\{i,v\}\): the top coefficient is omitted.</li>
+<li>\(\{i\}\): \((1-a_1\tau)k[\tau]_{\le2d-3}\) is the set of \(f\in k[\tau]_{\le2d-2}\) with \(f(1/a_1)=0\), so the top coefficient is omitted and the value at \(1/a_1\) vanishes.</li>
+<li>\(\{3,4\}\) and \(\{3,4,v\}\): \((1-a_1\tau)k[\tau]_{\le2d-5}\) inside \(k[\tau]_{\le2d-2}\) omits two top coefficients and adds one value condition.</li>
+</ul>
+<p>Within each block, evaluation at \(1/a_1\) is independent of the top-coefficient projections because it is nonzero on constants. And \(a_1\ne0\) makes the kernel of both together exactly \((1-a_1\tau)k[\tau]_{\le m}\). So \(\Phi'\) is onto with kernel \(L'_d\), and there are \(2\cdot2+2\cdot1+3+3=12\) conditions.</p>
+<p>A function \(u_Sf(\tau)\) with \(v\notin S\) vanishes at the points of \(Z\) exactly when \(f(1/a_1)=0\). For \(S=\{3,4,v\}\) the condition is one order beyond the automatic vanishing of \(v\). So the four value conditions are conditions at \(Z\).</p>
+<p><em>Dimensions.</em> \(E\) has genus one and \(\deg H=4\), so \(\dim L(MH)=4M=16d-4=N+12\). Next, \(\deg(MH-NP)=12>0\), so by Riemann–Roch \(\dim L(MH-NP)=12\) and \(H^1\) vanishes. The length-\(N\) jet map \(L(MH)\to k^N\) at \(P\) is therefore onto with kernel \(L(MH-NP)\). The kernel of \(\Phi'_P\) is \(L'_d\cap L(MH-NP)\), which is the kernel of the length-\(N\) jet map on \(L'_d\). Both maps are square, which proves the equivalence. \(\tau\) is a local coordinate at the unramified point \(P\), and \(v^{2d}\) is a unit there, so orders in \(\tau\) for \(L'_d\) are orders in \(T\) for \(L_d\).</p>
+<p><em>Transfer.</em> Normality of \(L_d\) at one parameter point gives generic normality of the collision series \(U_d\) on \(C_4\) (lem:cube-pair-confluence-limit). For \(d\ge2\) that gives generic normality of \(V_{5,d}\) (lem:cube-bounded-collision-interpolation). \(\square\)</p>
+<p><strong>Comparison with dimension four.</strong> There the analogous kernel was four-dimensional and the criterion was one scalar \(\Phi_d\) (thm:cube-four-all-odd-normality, after its intrinsic conditions (1)). Here twelve conditions remain on a twelve-dimensional space. Two features keep them structured:</p>
+<ul>
+<li>the eight top coefficients are taken at the four points of \(H\), with the characters acting as sign patterns there;</li>
+<li>the four value conditions sit on \(Z\).</li>
+</ul>
+<p>\(H\) and \(Z\) are both cosets of \(E[2]\) on any model. Each is the fixed-point set of an involution \(x\mapsto c-x\) in the sign group: flipping all three roots gives \(H\), flipping \(v\) gives \(Z\).</p>
+<p>The intended next step is to write \(\Phi'_P\) on a Tate curve as a matrix of theta values and their first expansions, as in the dimension-four proof; that representation is not derived here. The size \(12\) does not depend on \(d\). By this lemma, the record's small-prime test (<a href="#entry-2026-10-09-cube-pair-confluence-review">review</a>) is equivalently a test of \(\Phi'_P\), since it computed Hasse determinants of \(L_d\) at sample points. Its coverage:</p>
+<ul>
+<li>\(d=3\) at every \(p\le61\): \(3\) and \(5\) over \(\mathrm{GF}(p^4)\), \(7\)–\(61\) at integer points;</li>
+<li>\(d=4\) only at \(p=3,5\);</li>
+<li>\(d=2\), outside this lemma's range, at every \(p\le61\).</li>
+</ul>
+<p><strong>Follow-up.</strong> Continuing (entry one of four). The bounded object the coherent base change lead asks for is here the \(12\times12\) map \(\Phi'_P\), in every degree. The two-term map \(L(MH)\to k^{12}\oplus k^N\) is square of size \(16d-4\), growing with \(d\), and is invertible exactly when \(\Phi'_P\) is. The match with the lead's demand is heuristic. Next attempt: block \(\Phi'_P\) by the character sign patterns at \(H\), then its Tate expansion, with the four value rows on the coset \(Z\).</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">The block structure of \(\Phi'_P\) under the sign characters: split the twelve rows by the characters \(\{i\},\{i,v\},\{3,4\},\{3,4,v\}\), and check whether \(\det\Phi'_P\) factors into smaller determinants at a generic \(P\).</li>
+</ul>
+<p><strong>Remaining gap.</strong> Nonvanishing of \(\det\Phi'_P\) for every \(d\ge3\) at every odd prime; \(d=2\) separately.</p>
+<p><strong>Process.</strong> No computation. The criterion is the merged analogue of the record's bounded interpolation lemma, built from the character spaces and Riemann–Roch.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-pair-confluence-limit (the limit and its rewriting); lem:cube-bounded-collision-interpolation (character spaces in every degree, and the square-map argument); thm:cube-four-all-odd-normality (the comparison).</p>
+<p><strong>Verification gate.</strong> One fresh-context reviewer at medium effort confirmed the lemma: the rewriting and character table (with \(d\ge3\) needed), the genus, the pole orders and ambient bounds, the twelve conditions and their independence, vanishing at \(Z\), the Riemann–Roch and square-map argument, the transfer, and that \(H\) and \(Z\) are cosets of \(E[2]\). It required these changes, all applied:</p>
+<ul>
+<li>explicit parameter hypotheses;</li>
+<li>the right reason for independence of the conditions;</li>
+<li>the exact coverage of the small-prime test (\(d=4\) only at \(3,5\)), stated as a test of \(L_d\);</li>
+<li>marking the theta-value representation as intended, not shown;</li>
+<li>a citation for the dimension-four comparison;</li>
+<li>a heuristic, not exact, match with the lead's bounded complex.</li>
+</ul>
+<p><strong>Status:</strong> working lemma; lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 8.83 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 22.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 46.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
