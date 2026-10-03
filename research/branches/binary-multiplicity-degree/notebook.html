@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-identity-five">top-up identity at five</a>; eight open items). The top-up flow identity is proved for \(M\le5\). So on every arc with \(M\le5\), the leaders' nullity is at most two unless the limit cluster lies in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\) and no window satisfies (H1).</p>
-<p>Next: the residual \(\Sigma_k\), starting with the square at \(M=4\), where both the window and the top-up coefficients vanish. Find the next coordinate whose least coefficient survives there, for example the double top-up with \(E^+=2\). Then extend the near-window family argument to value \(b^*+2w_x\). The \(q\)-adic data show \(\nu\le1\) there.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-square-survivors">square survivors</a>; eight open items). At the square, the residual instance of the support criterion, every set with at most one top shift in the middle families has vanishing least coefficient. The first survivors sit at \(E^+=2\), so the residual is a second-order problem.</p>
+<p>Next: the required goal-level route review of (K). It should weigh the support core, now proved off \(\Sigma_k\) for \(M\le5\), against its residual, the top-up identity for \(M\ge6\), and the untouched cores: \(C\)-block uniqueness, the confluent tie window and the triple window.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70954,6 +70954,53 @@ None leads.</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 13.92 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.31 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-square-survivors" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-square-survivors">
+<h3>9 October 2026 — At the square cluster every set with at most one top shift has vanishing least coefficient in the two middle families; the first survivors sit at E⁺ = 2, so the residual is a second-order problem</h3>
+<p class="entry-meta">Exact check over Q(i) of which least coefficients survive at the square (1, i, −1, −i), M = 4, for all sets with excesses at most 3. Square survivors cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. With the top-up identity proved for \(M\le5\) (<a href="#entry-2026-10-09-cube-topup-identity-five">top-up identity at five</a>), the support condition \(\nu\le2\) holds on every arc unless the limit cluster lies in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\), \(k=M-p^*\), and no window satisfies (H1). The square \((1,i,-1,-i)\) lies in \(\Sigma_1\cap\Sigma_2\). Which coordinates have nonvanishing least coefficients there, so that their values are exactly \(b(\Lambda)\)?</p>
+<p><strong>General statement.</strong> conj:cube-cancellation-wide-support (\(\nu\le2\) at Hankel cancellation along every arc), here at its residual instance.</p>
+<p><strong>Check.</strong> check:cube-square-survivors. research/tools/bmd_square_survivors.gp (research/results/bmd-20261009-ay/square-survivors.txt) covers families \(p=1,\ldots,4\) and every \(8\)-set with \(E^+\le3\), \(E^-\le3\) (lem:cube-window-bound-excess). For each it computes the coefficient of \(x^{A_p+E^+}\varepsilon^{B_p+E^-}\), the least term, divided by \(\mathrm{Vand}^2\), exactly over \(\mathbb Q(i)\) at the square and at the control \((1,2,4,7)\).</p>
+<ul>
+<li>Square, \(p=1\) and \(p=4\): the survivors are exactly the window and its bottom shifts (\(E^+=0\)); every set with \(E^+\ge1\) vanishes.</li>
+<li>Square, \(p=2\) and \(p=3\): every set with \(E^+\le1\) vanishes, the windows included. The first survivors have \(E^+=2\). For \(E^-=0\) exactly one of the two nonnegative parts with \(E^+=2\) survives.</li>
+<li>Control: every set survives.</li>
+</ul>
+<p>A first run gave all zeros, including the window \(\Lambda_4\) whose coefficient \(c\,\mathrm{Vand}^2\mathrm{Hank}_0\) cannot vanish. The cause was the number-field variable outranking \(\varepsilon\) in PARI's variable order, so coefficient extraction in \(\varepsilon\) returned \(0\). The script now uses a variable of lowest priority, and the control and \(\Lambda_4\) come out nonzero.</p>
+<p><strong>Reading.</strong></p>
+<ul>
+<li>The pattern matches the identities. The window coefficients of families \(2,3\) are \(\mathrm{Hank}_2,\mathrm{Hank}_1\), both \(0\) at the square. The top-ups are \(\propto(D+2k\,e_1)\mathrm{Hank}_k\), with \(D\,\mathrm{Hank}_k=0\) and \(e_1=0\). The top-up of family \(1\) is \(\propto e_1\mathrm{Vand}^2=0\).</li>
+<li>In the two middle families the residual is second order: their first surviving coordinates lie at \(b_p+2w_x\).</li>
+<li>Along arcs with the reparametrized roots fixed at the square, as in the \(q\)-adic check of the review, vanishing coefficients vanish identically. The candidates near a minimizer \(p^*\in\{2,3\}\) are then \(\Lambda_1\), \(\Lambda_4\) and their bottom shifts at exact values, the single \(E^+=2\) survivor at \(b_{p^*}+2w_x\), and sets at \(b+w_x+w_e\) or more. This is consistent with the observed \(\nu\le1\).</li>
+<li>Along arcs with the cluster itself fixed, vanishing coefficients reappear through the flow, at \(b+2w_x\) or later, since \(D\) kills the first-order terms. So several sets of family \(p^*\) can tie at \(b_{p^*}+2w_x\), and no bound on \(\nu\) follows yet.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A second-order criterion: coordinates within \(2w_x\) of the bound, using the \(E^+=2\) survivors and second flow derivatives.</li>
+<li>conj:cube-topup-flow-identity for \(M\ge6\); coincident limits; \(C\)-block uniqueness; slack-zero levels; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-window-bound-excess (least terms of each set);</li>
+<li>prop:cube-topup-flow-identity-small;</li>
+<li>check:cube-cancellation-wide-support and the square data of the Hankel criterion review.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. No new mathematical claim; the entry registers an exact computation, so no reviewer was run. The control cluster and the nonvanishing window \(\Lambda_4\) serve as checks on the computation.</p>
+<p>Status: finite check (exact over \(\mathbb Q(i)\), square cluster, \(M=4\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ay">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 7.96 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 7.26 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.64 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">16.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
