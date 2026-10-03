@@ -40,6 +40,30 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertNotIn('TOO SLOW', result.stdout)
 
 
+class LongestFirst(unittest.TestCase):
+    """run.py starts the tests the previous run found slowest first, and unknown tests before those."""
+
+    def test_order_follows_the_previous_durations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy2(RUNNER, root / 'run.py')
+            log = root / 'order.txt'
+            for name, seconds in (('a_quick', 0), ('b_slow', 0.3), ('c_middle', 0.1)):
+                (root / f'test_{name}.py').write_text(
+                    f'import time, unittest\nclass T(unittest.TestCase):\n    def test_it(self):\n'
+                    f'        open({str(log)!r}, "a").write("{name}\\n"); time.sleep({seconds})\n')
+            run = lambda: subprocess.run([sys.executable, 'run.py', '-j', '1'], cwd=root, capture_output=True,
+                                         text=True, timeout=30)
+            self.assertEqual(run().returncode, 0)
+            self.assertEqual(log.read_text().split(), ['a_quick', 'b_slow', 'c_middle'])   # discovery order
+            (root / 'test_d_new.py').write_text('import unittest\nclass T(unittest.TestCase):\n'
+                                                f'    def test_it(self):\n        open({str(log)!r}, "a")'
+                                                '.write("d_new\\n")\n')
+            log.unlink()
+            self.assertEqual(run().returncode, 0)
+            self.assertEqual(log.read_text().split(), ['d_new', 'b_slow', 'c_middle', 'a_quick'])
+
+
 class SkippedTests(unittest.TestCase):
     """run.py lists each skipped test with its reason, and counts them in its summary."""
 

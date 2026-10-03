@@ -2,7 +2,10 @@
 """Run the framework test suite: every test in this directory's test_*.py modules, in parallel.
 
 Worker processes take tests one at a time from a shared queue, so the suite's wall time is set by the
-total work divided among the workers rather than by the sum of all tests. Workers default to the CPUs
+total work divided among the workers rather than by the sum of all tests. The queue is ordered longest
+first by the durations of the previous run, kept in the git-ignored DURATIONS beside this file, with tests
+it has no time for first of all: in discovery order the browser tests, which sort last and take 6 s,
+started 4.5 s into the run and set its end (3 October 2026: 10.9 s, and 7.5 s longest first). Workers default to the CPUs
 this process may use. Each failure's traceback is printed; the exit status is nonzero if any test
 fails or errors, or if the run takes longer than the limit (10 s, AGENTS.md), in which case the
 slowest tests are listed. Skipped tests are listed with their reasons.
@@ -11,6 +14,7 @@ Usage: python3 tools/tests/run.py [-j WORKERS] [--limit SECONDS] [MODULE ...]
 """
 import argparse
 import io
+import json
 import multiprocessing
 import os
 from pathlib import Path
@@ -20,6 +24,7 @@ import unittest
 
 HERE = Path(__file__).resolve().parent
 LIMIT_S = 10.0
+DURATIONS = HERE / '.durations.json'
 
 
 def tests(suite):
@@ -58,9 +63,18 @@ def main():
     broken = [t for t in found if t.id().startswith('unittest.loader._FailedTest.')]
     start = time.monotonic()
     results = [run(t, t.id()) for t in broken]
+    try:
+        known = json.loads(DURATIONS.read_text())
+    except (OSError, ValueError):
+        known = {}
+    queue = sorted((t.id() for t in found if t not in broken), key=lambda i: -known.get(i, float('inf')))
     with multiprocessing.get_context('fork').Pool(max(1, args.j)) as pool:
-        results += pool.imap_unordered(run_one, [t.id() for t in found if t not in broken])
+        results += pool.imap_unordered(run_one, queue)
     elapsed = time.monotonic() - start
+    try:
+        DURATIONS.write_text(json.dumps({**known, **{r[0]: round(r[4], 3) for r in results}}, sort_keys=True))
+    except OSError:
+        pass
     failed = [r for r in results if not r[2]]
     for test_id, _, _, output, _, _ in sorted(failed):
         print(f'===== {test_id} =====\n{output}')
