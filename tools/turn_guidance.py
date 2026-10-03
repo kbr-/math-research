@@ -92,7 +92,10 @@ def queue_notes(body):
 SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing '
            'while it still bears on an open statement, with the concrete next attempt named and made where '
            'possible; Developed only when no application to an open statement remains; Closed only for a reason '
-           'the attempt found (restatement, inapplicability, falsification, supersession).')
+           'the attempt found (restatement, inapplicability, falsification, supersession). Alternatively settle up '
+           'to four head items in one entry under <h4>Queue triage</h4> (then lead_queue.py triage), each with the '
+           'care it would get alone: 80+ words of what was checked, evidence cited, Closed or Developed only. A '
+           'research entry may add one Outside lead and one Absurd bridge of its own.')
 
 
 def guidance(body, ft, which=shutil.which, has=installed_header):

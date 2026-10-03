@@ -13,6 +13,10 @@ finish-turn.py against HEAD:
   items, do not close them at their first usable result).  Closed and Developed remove the item; a
   Continuing item keeps the head for up to SPELL consecutive research entries, so its context is not
   restored from scratch each time, and then moves to the tail.
+- A research entry may instead settle a batch of the first items (at most TRIAGE_MAX) under <h4>Queue triage</h4>,
+  one <li data-lead="ANCHOR:N"> block each, with the care each would get alone: at least TRIAGE_WORDS words, cited
+  evidence, outcome Closed or Developed only.  Research entries may also carry Outside leads and Absurd bridges;
+  their passed items join the tail like a review's.
 - An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
@@ -21,6 +25,7 @@ finish-turn.py against HEAD:
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)
+       lead_queue.py triage NOTEBOOK.html  (after appending an entry with a Queue triage batch)
        lead_queue.py append NOTEBOOK.html  (after the last entry: its newly passed review items and the items
                                             it marks Reopened go to the tail)"""
 import html
@@ -30,6 +35,12 @@ from pathlib import Path
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
 SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
+# A research entry may settle the first TRIAGE_MAX queue items at once (user, 3 October 2026), each with the care
+# it would get alone: its own block of at least TRIAGE_WORDS words citing its evidence, outcome Closed or Developed
+# only; an item still bearing on an open statement is not batched but gets its own spell.
+TRIAGE_MAX, TRIAGE_WORDS = 4, 80
+TRIAGE_RE = re.compile(r'<h4>Queue triage</h4>\s*<ul>(.*?)</ul>', re.S)
+EVIDENCE_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs):[A-Za-z0-9.-]+|href="#[^"]+"')
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
 ITEM_RE = re.compile(r'<li data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
@@ -82,9 +93,10 @@ def spell(body, item, pending=False):
 
 
 def review_passed(tag, text):
-    """Passed items of one review article, as (kind, id): leads then bridges."""
+    """Passed items of one review or research article, as (kind, id): leads then bridges.  Research entries may
+    carry their own Outside leads and Absurd bridges (user, 3 October 2026: work on a lead can generate new ones)."""
     ident = re.search(r'\bid="([^"]+)"', tag)
-    if 'data-kind="review"' not in tag or not ident:
+    if not re.search(r'data-kind="(?:review|research)"', tag) or not ident:
         return []
     out = []
     for kind, pattern in (('lead', LEADS_RE), ('bridge', BRIDGES_RE)):
@@ -94,6 +106,42 @@ def review_passed(tag, text):
                 if TEST_PASSED.search(item):
                     out.append((kind, f'{ident.group(1)}:{n}'))
     return out
+
+
+def triaged(tag, text):
+    """[((kind, id), outcome, words, has_evidence)] of a research entry's Queue triage list, in order."""
+    if 'data-kind="research"' not in tag:
+        return []
+    section = TRIAGE_RE.search(text)
+    if not section:
+        return []
+    out = []
+    for kind, item_id, item in FOLLOWUP_ITEM.findall(section.group(1)):
+        outcome = OUTCOME_RE.search(item)
+        words = len(re.sub(r'<[^>]+>', ' ', item).split())
+        out.append(((kind, item_id), outcome.group(1) if outcome else None, words, bool(EVIDENCE_RE.search(item))))
+    return out
+
+
+def check_triage(batch, old):
+    """The rigor rules of a Queue triage batch against the queue `old` before the entry."""
+    if len(batch) > TRIAGE_MAX:
+        raise ValueError(f'A Queue triage batch settles at most {TRIAGE_MAX} items, each with full care')
+    items = [b[0] for b in batch]
+    if items != old[:len(items)]:
+        raise ValueError('A Queue triage batch takes the first items of the queue, in order: expected '
+                         + ', '.join(i for _, i in old[:len(items)]))
+    for (kind, ident), outcome, words, evidence in batch:
+        if outcome not in ('Closed', 'Developed'):
+            raise ValueError(f'Triage item {ident}: a batch only closes or develops ("<strong>Follow-up.</strong> '
+                             'Closed: ..." or "Developed ..."); an item still bearing on an open statement gets its '
+                             'own spell, so end the batch before it')
+        if words < TRIAGE_WORDS:
+            raise ValueError(f'Triage item {ident}: {words} words; each batched item gets the care it would get '
+                             f'alone, at least {TRIAGE_WORDS} words of what was checked and why (user, 3 October 2026)')
+        if not evidence:
+            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID or an entry '
+                             'anchor link)')
 
 
 def reopened_by(text):
@@ -165,6 +213,10 @@ def check(head_body, body):
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
     work = developed_by(tag, text)
+    batch = triaged(tag, text)
+    if work and batch:
+        raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
+                         'batch, not both')
     if work and work[1] is None:
         raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
                          '"Developed ..." or "Continuing ..."')
@@ -186,15 +238,17 @@ def check(head_body, body):
     if unknown:
         raise ValueError('Reopened items must be passed review items: ' + ', '.join(unknown))
     was_draining, old = before
+    if batch:
+        check_triage(batch, old)
     head = old[0] if old else None
     if work and work[0] != head:
         raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the head '
                          f'is {head[1] if head else "empty"}')
     draining_before = was_draining or len(old) >= CAP
-    if draining_before and 'data-kind="research"' in tag and not work:
+    if draining_before and 'data-kind="research"' in tag and not work and not batch:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
                          f'research entry must develop the head, {head[1]}, tagged data-{head[0]}="{head[1]}"')
-    expected = [i for i in old if not work or i != work[0]]
+    expected = [i for i in old if not work or i != work[0]][len(batch):]
     if work and work[1] == 'Continuing':
         if spell(body, work[0]) < SPELL:
             expected.insert(0, work[0])      # keeps the head for up to SPELL consecutive entries
@@ -252,6 +306,26 @@ def done(body, outcome):
     return body[:found.start()] + section + body[found.end():]
 
 
+def settle_triage(body):
+    """The notebook with the last entry's Queue triage items removed from the queue's head."""
+    found = SECTION_RE.search(body)
+    if found is None:
+        raise ValueError('No lead and bridge queue')
+    draining, queue = parse(body)
+    articles = record_articles(body)
+    tag, text = articles[-1] if articles else ('', '')
+    batch = triaged(tag, text)
+    if not batch:
+        raise ValueError('The last entry has no Queue triage list')
+    check_triage(batch, queue)
+    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)[len(batch):]
+    was = draining or len(queue) >= CAP
+    flag = (len(lines) > FLOOR) if was else (len(lines) >= CAP)
+    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
+    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
+    return body[:found.start()] + section + body[found.end():], len(batch)
+
+
 def append_new(body):
     """The notebook with the last entry's newly passed review items and its Reopened items appended at the
     queue's tail, and the draining flag set if the queue reaches CAP."""
@@ -277,6 +351,12 @@ def main(argv):
         body, count = append_new(path.read_text())
         path.write_text(body)
         print(f'Appended {count} items; ' + head_lines(body, 0)[0])
+        return 0
+    if len(argv) == 3 and argv[1] == 'triage':
+        path = Path(argv[2])
+        body, count = settle_triage(path.read_text())
+        path.write_text(body)
+        print(f'Settled {count} items; ' + '\n'.join(head_lines(body, 1)))
         return 0
     if len(argv) == 4 and argv[1] == 'done':
         path = Path(argv[2])

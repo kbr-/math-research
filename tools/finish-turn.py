@@ -81,6 +81,7 @@ def validate_route(body, article):
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
+RESEARCH_ITEMS_MAX = 1   # per section, in a research entry (user, 3 October 2026)
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
 OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
 OBSTACLE_MIN = 80
@@ -93,7 +94,24 @@ def validate_leads(body, article, close):
     stood near them.  Each item records the outcome of its cheap test, run in the review cycle (user
     instruction, 25 September 2026): passed, falsified, or not run with the reason. Falsified items stay
     listed and count."""
-    if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
+    if not re.search(r'data-route-item="', body):
+        return
+    if entry_tags(body, article)['kind'] == 'research':
+        # A research entry may carry at most one Outside lead and one Absurd bridge that its work turned up
+        # (user, 3 October 2026); each still answers and tests like a review's, and a passed one joins the queue.
+        for pattern, heading in ((LEADS_RE, 'Outside leads'), (BRIDGES_RE, 'Absurd bridges')):
+            found = pattern.search(body, article, close)
+            if found is None:
+                continue
+            items = re.findall(r'<li\b(.*?)</li>', found.group(1), re.S)
+            if len(items) > RESEARCH_ITEMS_MAX:
+                raise ValueError(f'A research entry carries at most {RESEARCH_ITEMS_MAX} item under {heading} '
+                                 '(user, 3 October 2026); route reviews have minimums and no upper bound')
+            if any('<strong>Answers.</strong>' not in item or not TEST_RE.search(item) for item in items):
+                raise ValueError(f'{heading} items of a research entry need "<strong>Answers.</strong>" and a '
+                                 '"<strong>Test.</strong>" outcome, as in a review (AGENTS.md)')
+        return
+    if entry_tags(body, article)['kind'] != 'review':
         return
     # Leads and bridges exist to answer the line's current obstacle, not as items of their own (user,
     # 26 September 2026): the review states the obstacle, and every item says how it would resolve it.

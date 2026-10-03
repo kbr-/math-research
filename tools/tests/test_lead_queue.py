@@ -156,6 +156,37 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([self.rev, research(self.q[0], 'Developed'), stray],
                                     [self.q[1], ('lead', 'r9:1')]))
 
+    def test_triage_batch_settles_a_prefix_with_full_care(self):
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        head = notebook([rev], q)
+        careful = ' '.join(['checked'] * 85)
+
+        def batch(*items):
+            body = ''.join(f'<li data-lead="{i}">{text} <strong>Follow-up.</strong> {outcome}: reason.</li>'
+                           for i, outcome, text in items)
+            return f'<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul>{body}</ul></article>'
+        good = batch(('r1:1', 'Closed', careful + ' lem:x-y'), ('r1:2', 'Developed', careful + ' <a href="#e">e</a>'))
+        after = notebook([rev, good], q)
+        body, count = lq.settle_triage(after)
+        self.assertEqual((count, lq.parse(body)[1]), (2, q[2:]))
+        lq.check(head, body)
+        for bad, why in [(batch(('r1:2', 'Closed', careful + ' lem:x-y')), 'not the head'),
+                         (batch(('r1:1', 'Continuing', careful + ' lem:x-y')), 'Continuing is not batched'),
+                         (batch(('r1:1', 'Closed', 'too short lem:x-y')), 'too short'),
+                         (batch(('r1:1', 'Closed', careful)), 'no evidence')]:
+            with self.subTest(why=why), self.assertRaises(ValueError):
+                lq.check(head, notebook([rev, bad], q[1:]))
+
+    def test_research_entries_add_passed_items(self):
+        head = notebook([self.rev], self.q)
+        entry = ('<article id="w" data-kind="research" data-route="step" data-lead="r1:1"><p><strong>Follow-up.'
+                 '</strong> Closed: done.</p><h4>Outside leads</h4><ul><li>New lead' + PASS + '</li></ul></article>')
+        body, count = lq.append_new(lq.done(notebook([self.rev, entry], self.q), 'Closed'))
+        self.assertEqual(count, 1)
+        self.assertEqual(lq.parse(body)[1], [self.q[1], ('lead', 'w:1')])
+        lq.check(head, body)
+
     def test_history_closes_only_by_closed_follow_ups(self):
         old = ('<article data-kind="review" data-route="step"><ul><li data-lead="r1:1">x <strong>Follow-up.'
                '</strong> Closed: no.</li><li data-lead="r1:2">x <strong>Follow-up.</strong> Continuing.</li>'
