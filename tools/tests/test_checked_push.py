@@ -73,6 +73,13 @@ class CheckedPushTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(f'Pushed, but origin/main is at {base}', result.stderr)
 
+    def test_refuses_long_commit_message_lines(self):
+        git(self.work, 'commit', '-q', '--amend', '-m', 'work', '-m', 'x' * 101)
+        result = self.run_push('main')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('over 100 characters', result.stderr)
+        self.assertFalse((self.work / 'calls').exists())
+
     def test_refuses_non_fast_forward(self):
         git(self.work, 'switch', '-qc', 'other', 'main')
         (self.work / 'g').write_text('y')

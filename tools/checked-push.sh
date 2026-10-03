@@ -16,6 +16,16 @@ if git rev-parse -q --verify "origin/$branch" > /dev/null && ! git merge-base --
   echo "Not pushed: origin/$branch is not an ancestor of HEAD; rebase first." >&2
   exit 1
 fi
+# Commit messages: every line at most 100 characters (AGENTS.md); checked on the commits to be pushed.
+long=""
+for c in $(git rev-list "$commit" --not --remotes=origin); do
+  long="$long$(git log -1 --format=%B "$c" | awk -v id="$(git rev-parse --short "$c")" \
+    'length($0) > 100 { print id ": " substr($0, 1, 60) "..." }')"
+done
+if [ -n "$long" ]; then
+  printf 'Not pushed: commit message lines over 100 characters (AGENTS.md):\n%s\n' "$long" >&2
+  exit 1
+fi
 logs="$(mktemp -d)"
 trap 'rm -rf "$logs"' EXIT
 python3 tools/verify-checkout.py --public-history "$branch" > "$logs/1" 2>&1 & verify=$!
