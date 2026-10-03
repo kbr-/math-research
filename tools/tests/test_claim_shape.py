@@ -1,10 +1,12 @@
 import copy
 import importlib.util
 import json
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'tools'))   # claim_registry imports its siblings; the test must run alone
 spec = importlib.util.spec_from_file_location('claim_registry_shape', ROOT / 'tools/claim_registry.py')
 cr = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cr)
@@ -23,8 +25,9 @@ class CompiledShapeTest(unittest.TestCase):
 
     def setUp(self):
         self.schema = json.loads((ROOT / 'research/claims/schema.json').read_text())
-        registry = json.loads((ROOT / 'research/claims/index.json').read_text())
-        self.value = dict(registry, claims=registry['claims'][:3])
+        # a committed sample, so the test reads the same input on every branch (some registries hold no claims)
+        self.value = json.loads((ROOT / 'tools/tests/fixtures/claim-registry-sample.json').read_text())
+
 
     def test_valid_sample_and_mutations_agree(self):
         cases = [self.value]
@@ -35,6 +38,8 @@ class CompiledShapeTest(unittest.TestCase):
         broken = copy.deepcopy(self.value); del broken['claims'][0]['id']
         cases.append(broken)
         broken = copy.deepcopy(self.value); broken['claims'][0]['id'] = 7
+        cases.append(broken)
+        broken = copy.deepcopy(self.value); broken['claims'][0]['summary'] = ''   # minLength, no pattern
         cases.append(broken)
         broken = copy.deepcopy(self.value); broken['claims'][1]['id'] = 'not an id!'
         cases.append(broken)
