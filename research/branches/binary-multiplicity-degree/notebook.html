@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-elliptic-form">triple window elliptic form</a>; seven open items). On the elliptic root curve the window asks for a high-order zero of an incomplete series at one point. The degree-zero criterion therefore does not apply, and single-minor zeros are not torsion. The window holds exactly for \(m\le7\).</p>
-<p>Next: the bilinear bridge of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a> (integrable lattices, not run there). The objection that killed linear recurrences does not apply to it. Bilinear Somos and Hirota sequences, for example elliptic divisibility sequences, grow like \(\exp(cm^2)\) as the minors do, and they are attached to elliptic curves. At fixed points, test whether the window's minors, or their Plücker combinations, satisfy a bilinear relation in \(m\) with constant or simple coefficients. A positive answer would give an induction in \(m\) through a nonvanishing bilinear structure.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-bilinear">triple window bilinear</a>; seven open items). The window's minors satisfy no linear recurrence and no scalar Somos relation in \(m\). The window holds exactly for \(m\le7\).</p>
+<p>Next: the Desnanot–Jacobi lead of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a>, on the lattice of mixed multiplicities. Define the windows \(W(m_1,m_2,m_3;d)\): rows \(T^nw_i^{-3}\) for \(n&lt;m_i\), and the pair rows, on \(\sum m_i+5\) columns from \(d\). Determine for which \(d\) they have full rank. Then write Sylvester's identity linking \(W(m,m,m;d)\) to its neighbours. A neighbour structure in which the minors' nonvanishing propagates would give the induction on \(m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -75318,6 +75318,52 @@ This corrected ratio equals \(-1\) on \(S\in i\pi(\pm\tfrac14+\mathbb Z)\), the 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 8.47 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.60 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-window-bilinear" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-triple-window-no-somos">
+<h3>9 October 2026 — The triple window's Plücker vector satisfies no Somos-4 or Somos-5 relation in m with common scalar coefficients</h3>
+<p class="entry-meta">Refutation of the scalar bilinear form of the integrable-lattice bridge, at one point and two normalizations. Triple window bilinear cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, triple window, developing the integrable-lattice bridge of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a>, which was not run there. The missing implication: full rank of \(U_3\) for every \(m\). Linear recurrences in \(m\) are impossible, because the minors grow like \(\exp(cm^2)\) (<a href="#entry-2026-10-09-cube-elliptic-window-route-review">elliptic window review</a>). Bilinear sequences of Somos type grow in exactly this way, and elliptic divisibility sequences attach them to elliptic curves, like the window's root curve (lem:cube-triple-window-elliptic-form). A bilinear relation in \(m\) whose coefficients never vanish would propagate nonvanishing of the Plücker vector from the exact base \(m\le7\).</p>
+<p><strong>General statement.</strong> conj:cube-triple-window-full-rank (recorded). This cycle refutes the scalar bilinear form of the bridge, ex:cube-triple-window-no-somos.</p>
+<p><strong>The test.</strong> Let \(P(m)\in\mathbb C^{10}\) be the vector of maximal minors of \(U_3\) at a fixed point. A per-\(m\) rescaling of the rows multiplies \(P(m)\) by one scalar. So the natural bilinear forms with scalar coefficients are:</p>
+<ul>
+<li>Somos-4: \(P_S(m+2)P_S(m-2)=\alpha(m)P_S(m+1)P_S(m-1)+\beta(m)P_S(m)^2\) for all ten \(S\);</li>
+<li>Somos-5: \(P_S(m+3)P_S(m-2)=\alpha(m)P_S(m+2)P_S(m-1)+\beta(m)P_S(m+1)P_S(m)\).</li>
+</ul>
+<p>Both forms are invariant under the gauge \(P\mapsto AB^mC^{m^2}P\). Such \(\alpha(m),\beta(m)\) exist iff the \(10\times3\) matrix of the three products has rank \(2\).</p>
+<p>research/tools/bmd_triple_window_bilinear.gp (research/results/bmd-20261009-ci/triple-window-bilinear.txt) computes \(U_3\) exactly at \(a=(2/7,-5/3,1)\) for \(m=2,\ldots,20\). It uses two normalizations: the export normalization, and rows divided by their largest entry, which changes \(P\) by more than a gauge. It prints the matrix's singular values relative to the largest, at \(200\) digits.</p>
+<ul>
+<li>The third singular value lies between \(1.5\cdot10^{-3}\) and \(3.9\cdot10^{-8}\) in every case: Somos-4 for \(m=4,\ldots,18\), Somos-5 for \(m=4,\ldots,17\), both normalizations.</li>
+<li>An exact relation would give a value near \(10^{-190}\).</li>
+</ul>
+<p>So there is no such relation. The third singular value decreases steadily with \(m\), because the dominant exponential terms of the minors nearly satisfy a relation. Cyclic dominance (lem:cube-triple-window-cyclic-dominance) predicts such near-relations, and they are not identities.</p>
+<p>Scope. One point, two normalizations, scalar coefficients common to all ten minors. Relations with column-dependent gauges, or between different column sets, are not tested. Neither are relations on the lattice of mixed multiplicities, which the bridge's Hermite–Padé form suggests (below).</p>
+<p><strong>What this means.</strong> The integrable-lattice bridge fails in its simplest form: the window sequence indexed by \(m\) is not a Somos sequence. The remaining form of the idea is the one on which Hermite–Padé theory actually works. The full window \(W_3\) has block-shift rows \(T^nw_i^{-3}\), \(n&lt;m\). By Sylvester's (Desnanot–Jacobi) identity, its minors relate to windows with mixed multiplicities \((m_1,m_2,m_3)\). Determinants on that multi-index lattice satisfy bilinear Frobenius-type identities, which are the classical tool for normality of Hermite–Padé systems. This is the Desnanot–Jacobi lead of the window cores review, which was not run.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-triple-window-full-rank for \(m\ge8\).</li>
+<li>The confluent window; the other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-level-window-gegenbauer-form (rows; export normalization);</li>
+<li>lem:cube-triple-window-elliptic-form;</li>
+<li>lem:cube-triple-window-cyclic-dominance.</li>
+</ul>
+<p><strong>Verification gate.</strong> No new proof; the refutation is a numerical rank test at \(200\) digits, with the threshold set by the precision. It is listed in the next review's brief rather than sent to a separate reviewer.</p>
+<p>Status: refutation (scalar Somos-4/5 relations at one point).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ci">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 38.13 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 8.52 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.22 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.26 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
