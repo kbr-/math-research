@@ -513,17 +513,17 @@ def group_of(body, nodes, item, position=None):
     return record_parent(body, item, position) or item
 
 
-def spell(body, item, nodes=None):
+def spell(body, item, nodes=None, end=None):
     """Research entries, from the record's end, that developed `item` or one of its children since it became
     the head: entries that develop no queue item (reviews, other research) neither count nor break the run, which
     ends at an entry developing another item or settling a triage batch.  `nodes`, the queue the children are
     looked up in, defaults to `body`'s; the check passes the queue before the last entry, which still holds a
-    child that entry closed."""
+    child that entry closed.  `end` cuts the record before that many articles from its end."""
     if nodes is None:
         found = parse_tree(body)
         nodes = found[1] if found else []
     count = 0
-    articles = record_articles(body)
+    articles = record_articles(body)[:end]
     for position in range(len(articles) - 1, -1, -1):
         tag, text = articles[position]
         if not counted(tag, text) or 'data-picked="user"' in tag:
@@ -931,6 +931,7 @@ def check(head_body, body, path=None, root=None):
         raise ValueError('These items are not reopened by a follow-up; their kind has its own way back: '
                          + ', '.join(barred))
     was_draining, old = before
+    old = settle(head_body, [n.copy() for n in old])
     if batch:
         check_triage(batch, old)
     closed, developed = listed_closures(tag, text)
@@ -995,6 +996,7 @@ def head_lines(body, count=HEAD_READ):
     if found is None:
         return []
     draining, nodes = found
+    settle(body, nodes)
     state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
     def plain(node):     # with its ID first, which a lead's text has and an idea's (business) has not
@@ -1004,6 +1006,17 @@ def head_lines(body, count=HEAD_READ):
         out.append(f'{n}. {plain(node)}{waiting_note(node)}')
         out += [f'   - {plain(c)}{waiting_note(c)}' for c in node.children]
     return out
+
+
+def settle(body, nodes, end=None):
+    """`nodes` with the head moved to the tail if the record (cut by `end`, as in `spell`) already owes it that
+    move: its spell is complete though the queue still has it first, as a queue committed before a spell rule was
+    enforced can.  On a queue the tools kept, the head's spell is under SPELL and nothing moves."""
+    head = head_of(nodes)
+    if head is not None and len(nodes) > 1 and spell(body, head.item, nodes, end) >= SPELL:
+        nodes.remove(head)
+        nodes.append(head)
+    return nodes
 
 
 def end_spell(body, nodes, top, picked, before=None):
@@ -1027,6 +1040,7 @@ def done(body, outcome):
     draining, nodes = found
     if not nodes:
         raise ValueError('The queue is empty')
+    settle(body, nodes, end=-1)
     if outcome not in ('Closed', 'Developed', 'Continuing'):
         raise ValueError('Outcome is Closed, Developed or Continuing')
     was = draining or len(nodes) >= CAP

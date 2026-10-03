@@ -447,6 +447,21 @@ class LeadQueueTest(unittest.TestCase):
                      notebook([self.rev] + earlier + [closing], [(self.q[0], [('check', 'k:s2')]), self.q[1]]))
         self.assertEqual(lq.shape(lq.parse_tree(lq.done(notebook([self.rev] + earlier + [closing], tree),
                                                         'Closed'))[1]), left)
+        # a queue committed with the parent still first after that entry owes the move: the next entry develops
+        # the item behind it, done and the head shown settle it, and developing the parent instead is refused
+        # (as in a real record, the sub-ideas were listed by an entry developing their parent, here with ID k)
+        stale = [(self.q[0], [('check', 'k:s2')]), (self.q[1], [])]
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">a</li>'
+                             '<li data-sub="check">b</li></ul>').replace('id="d"', 'id="k"')
+        settled = [listing, cont_child.replace('id="d"', 'id="d1"'), cont_parent, closing]
+        nxt = research(self.q[1], 'Continuing')
+        lq.check(notebook([self.rev] + settled, stale), notebook([self.rev] + settled + [nxt], left))
+        self.assertEqual(lq.shape(lq.parse_tree(lq.done(notebook([self.rev] + settled + [nxt], stale),
+                                                        'Continuing'))[1]), left)
+        self.assertIn(self.q[1][1], lq.head_lines(notebook([self.rev] + settled, stale))[1])
+        with self.assertRaises(ValueError):
+            lq.check(notebook([self.rev] + settled, stale),
+                     notebook([self.rev] + settled + [research(self.q[0], 'Continuing')], stale))
 
     def test_a_parent_with_subideas_is_not_developed_and_closes_them(self):
         tree = [(self.q[0], [('check', 'k:s1'), ('build', 'k:s2')]), (self.q[1], [])]
