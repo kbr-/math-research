@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-flow-order-ratio-law">flow-order ratio law</a>; eight open items). The order relation (R) follows from an explicit local law, observed at all \(62\) computed flow lines: \([t^{2a-2}]H_{k+1}H_{k-1}=-a(a+2k^2)c^2/(4k^2(4k^2-1))\) at an \(a\)-fold flow zero of \(H_k=ct^a+\cdots\). The binary-form Hessian explanation fails for \(k&lt;M-2\).</p>
-<p>Next: prove the ratio law. Write \(H_k(y_t)\) as the Hankel determinant of the measure \(\sum_i(1-ty_i)^{-2k}\delta_{y_i}\) with fixed points. Express \(H_{k\pm1}\) through Christoffel–Darboux kernels of the \(k\)-th orthogonal polynomial at an \(a\)-fold degeneration, and read off the leading coefficients.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-hankel-block-flow-orders">Hankel block flow orders</a>; eight open items). Flow orders of the Hankel determinants are \(i(N-i)\) inside each Hankel block of the cluster's power sums, so the order relation (R) is proved. Fixed-cluster support (\(\nu\le1\)) now needs only two statements: ramification equals flow order (proved at \(M=4\)), and hypothesis (F).</p>
+<p>Next: prove conj:cube-ramification-flow-order for every \(M\) with the same Cauchy–Schubert technique. Expand the least coefficients of family \(p\) along the flow as Schur functions times Plücker coordinates of \(V_p\). Identify the pivots \(O_p\) with the Hankel blocks through the formal orthogonal polynomial, and show \(r_p=i(N-i)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -72278,6 +72278,98 @@ Equivalently, by thm:cube-hankel-bilinear-identity,
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 44.00 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.58 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-hankel-block-flow-orders" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-hankel-block-flow-orders ex:cube-flow-order-ratio-law-block">
+<h3>9 October 2026 — Flow orders of the Hankel determinants are read off the Hankel block structure at the cluster: inside a block of length N the k-th determinant vanishes to order i(N − i); this proves the order relation, and the leading coefficients are Schur functions, refuting the (k, a)-form of the ratio law</h3>
+<p class="entry-meta">Working proof for every M via the Cauchy identity, Schubert cells and formal orthogonal polynomials; refutation of conj:cube-flow-order-ratio-law at a quintic. Hankel block flow orders cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs. The order relation (R), conj:cube-hankel-flow-order-relation, is the missing piece of the decreasing-breakpoint argument of the flow-order route review. The <a href="#entry-2026-10-09-cube-flow-order-ratio-law">ratio law</a> proposed a universal leading-coefficient law that would imply it. The ratio law was observed as \(1-\rho=(a+2k^2)/(4k^2-1)\). A ratio script for a Schur-function source matched that law to \(-s\)-ratios of rectangles, suggesting Sato's Schur expansion of \(\tau\)-functions. This cycle turns that into a proof.</p>
+<p><strong>Setting.</strong> \(y\in\mathbb C^M\), power sums \(p_n=\sum_qy_q^n\) with \(p_0=M\), \(H_k=\det(p_{i+j})_{0\le i,j\le k}\), \(y_t=y/(1-ty)\). The moment matrix is \(\mathcal P_k=(p_{r+c})_{r\ge0,\,0\le c\le k}\), and \(C_k\) is its column space in the space of sequences. For a partition \(\lambda\) with at most \(k+1\) parts, put \(I_\lambda=\{\lambda_{k+2-i}+i-1:1\le i\le k+1\}\) (parts \(\lambda_1\ge\cdots\ge\lambda_{k+1}\)) and let \(\pi^{(k)}_\lambda=\det(p_{r+c})_{r\in I_\lambda,\,c\le k}\) be the corresponding maximal minor. \(S(r,c,n)=s_{(c^r)}(1^n)=\prod_{a\le r,\,b\le c}\frac{n+b-a}{a+b-1}\).</p>
+<p><strong>General statement.</strong> thm:cube-hankel-block-flow-orders. Over \(\mathbb C\), for every \(M\), \(y\in\mathbb C^M\) and \(k\ge0\):</p>
+<ol>
+<li>(Cauchy–Schur expansion) \(H_k(y_t)=\sum_\lambda t^{|\lambda|}\,s_\lambda(1^{2k})\,\pi^{(k)}_\lambda(y)\) as formal power series in \(t\).</li>
+<li>(Block law) Suppose \(H_{k_0}(y)\ne0\), \(H_{k_0+1}(y)=\cdots=H_{k_0+N-1}(y)=0\) and \(H_{k_0+N}(y)\ne0\), with \(N\ge1\). For \(k=k_0+i\), \(0\le i\le N\), the flow order of \(H_k\) at \(y\) is \(j_k=i(N-i)\), and its leading coefficient is
+\[c_k=[t^{i(N-i)}]H_k(y_t)=S(i,N-i,2k)\cdot(-1)^{i(i-1)/2}\,D\,g^{\,i},\]
+where \(D=H_{k_0}(y)\), and \(g\ne0\) is defined in the proof from the formal orthogonal polynomial of degree \(k_0+1\).</li>
+<li>(Order relation) If \(H_{M-1}(y)\ne0\), for instance if the coordinates of \(y\) are distinct, every \(k\le M-1\) lies in a block. So conj:cube-hankel-flow-order-relation holds: for \(k\le M-1\), \(j_{k+1}+j_{k-1}=2j_k-2\) whenever \(j_k\ge1\), and \(j_k\ge1\) forces \(1\le k\le M-2\). For \(k\ge M\), \(H_k\equiv0\).</li>
+<li>(Leading coefficients) Inside a block, \(c_{k+1}c_{k-1}/c_k^2=-S(i+1,N-i-1,2k+2)\,S(i-1,N-i+1,2k-2)/S(i,N-i,2k)^2\). For \(k_0=0\) (\(i=k\)) this equals \(-a(a+2k^2)/(4k^2(4k^2-1))\) with \(a=k(N-k)\), the observed ratio law.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<p><em>Part 1.</em> By Cauchy–Binet, as in thm:cube-hankel-bilinear-identity, \(H_k(y_t)=\sum_{|S|=k+1}\mathrm{Vand}(y_S)^2\prod_{i\in S}(1-ty_i)^{-2k}\), since \(\mathrm{Vand}((y_t)_S)=\mathrm{Vand}(y_S)\prod_{i\in S}(1-ty_i)^{-k}\). Apply the Cauchy identity to the variables \(y_S\) and to \(2k\) copies of \(t\):
+\[\prod_{i\in S}(1-ty_i)^{-2k}=\sum_\lambda s_\lambda(y_S)\,s_\lambda(t,\ldots,t)=\sum_\lambda t^{|\lambda|}s_\lambda(1^{2k})s_\lambda(y_S),\]
+with \(\ell(\lambda)\le k+1\). Then \(\sum_S\mathrm{Vand}(y_S)^2s_\lambda(y_S)=\sum_S\det(y_s^r)_{s\in S,r\in I_\lambda}\det(y_s^c)_{s\in S,c\le k}=\pi^{(k)}_\lambda\) by Cauchy–Binet. Here we use the bialternant formula \(a_{\lambda+\delta}=s_\lambda a_\delta\) with rows in increasing order.</p>
+<p><em>Part 2, pivots.</em> Let \(n=k_0+1\) and let \(L\) be the moment functional \(L(x^r)=p_r\). Since \(H_{k_0}(y)=\det(p_{i+j})_{i,j&lt;n}\ne0\), there is a unique monic \(P_n\) of degree \(n\) with \(L(x^jP_n)=0\) for \(j&lt;n\). Put \(g_u=L(x^{n+u}P_n)\), so \(g_u=0\) for \(u&lt;0\). If all \(g_u\) vanished, the sequence of \(P_n\) would be zero, the columns of \(\mathcal P_k\) would be dependent for every \(k\ge n\), and \(H_{k_0+N}(y)=0\). So let \(u_0\) be the least index with \(g_{u_0}\ne0\). The pivot computation below, valid for \(1\le i\le u_0+1\), shows that the pivot set of \(C_{k_0+i}\) is \([0,n-1]\cup[n+u_0+1-i,\,n+u_0]\). This equals \([0,k_0+i]\), i.e. \(H_{k_0+i}(y)\ne0\), exactly when \(i=u_0+1\). Hence \(N=u_0+1\): \(g_0=\cdots=g_{N-2}=0\) and \(g:=g_{N-1}\ne0\).</p>
+<p>Now fix \(k=k_0+i\), \(1\le i\le N\). The column space \(C_k\) is spanned, by a unitriangular change of columns, by the sequences of \(x^j\), \(j&lt;n\), and of \(x^sP_n\), \(s&lt;i\); the latter is \((L(x^{r+s}P_n))_r\).</p>
+<ul>
+<li>The sequence of \(x^sP_n\) vanishes for \(r&lt;n+N-1-s\), and equals \(g\ne0\) at \(r=n+N-1-s\). It vanishes at all rows \(r&lt;n\), since \(n+N-1-s\ge n\) for \(s\le N-1\). This also covers \(i=N\).</li>
+<li>The sequences of \(x^j\), \(j&lt;n\), restricted to rows \(0,\ldots,n-1\), form the invertible matrix \((p_{r+j})\) with determinant \(H_{k_0}\).</li>
+</ul>
+<p>So the pivot rows (vanishing orders) of \(C_k\) are \(O=[0,n-1]\cup[n+N-i,\,n+N-1]\): the window \([0,k]\) with its top \(i\) rows raised by \(N-i\). The partition is the rectangle \(\lambda_k=((N-i)^i)\), of size \(i(N-i)\).</p>
+<p><em>Part 2, minimality and the coefficient.</em> As in prop:cube-family-schubert-reduction, a maximal minor on rows \(I\) vanishes unless \(I\ge O\) elementwise, and \(I\ge O\) with \(\sum I=\sum O\) forces \(I=O\). So \(\lambda_k\) is the unique partition of least size with \(\pi^{(k)}_\lambda\ne0\), and every other nonzero \(\pi^{(k)}_\lambda\) has larger \(|\lambda|\).</p>
+<p>In the basis above, the minor on \(O\) is block lower triangular:</p>
+<ul>
+<li>the rows \(&lt;n\) against the \(x^j\) give \(D=H_{k_0}\);</li>
+<li>the rows \(n+N-i,\ldots,n+N-1\) against \(x^sP_n\), \(s&lt;i\), have entries \(g_{r+s-n}\), which vanish when \(r+s&lt;n+N-1\). This block is anti-triangular with anti-diagonal \(g\), so its determinant is \((-1)^{i(i-1)/2}g^i\);</li>
+<li>the block of rows \(&lt;n\) against \(x^sP_n\) is zero.</li>
+</ul>
+<p>So \(\pi^{(k)}_{\lambda_k}=(-1)^{i(i-1)/2}Dg^i\). Finally \(s_{\lambda_k}(1^{2k})=S(i,N-i,2k)\ne0\): all factors \(2k+b-a\) are positive since \(a\le i\le k\). By part 1, \(j_k=i(N-i)\) and \(c_k=S(i,N-i,2k)(-1)^{i(i-1)/2}Dg^i\). The case \(i=0\) gives \(j=0\), \(c=D\). For \(i=N\) the pivot set is \([0,n+N-1]\), \(j=0\), and the same block computation gives \(H_{k_0+N}(y)=(-1)^{N(N-1)/2}Dg^N\), which is the formula with \(S(N,0,2k)=1\). Parts 4 and the refutation use this value of \(c_{k_0+N}\).</p>
+<p><em>Part 3.</em> \(H_0=M\ne0\), and \(H_{M-1}(y)\ne0\) closes the last block. So every \(k\le M-1\) has the form \(k_0+i\) with \(0\le i\le N\) in some block. If \(j_k\ge1\) then \(0&lt;i&lt;N\), and \(j_{k\pm1}=(i\pm1)(N-i\mp1)\), so \(j_{k+1}+j_{k-1}=2i(N-i)-2\).</p>
+<p><em>Part 4.</em> The \(D\) factors cancel in \(c_{k+1}c_{k-1}/c_k^2\). The sign exponent is \(\tfrac{(i+1)i+(i-1)(i-2)}2-i(i-1)=1\), and the powers of \(g\) cancel. For \(k_0=0\), write \(S(r):=S(r,N-r,2r)\) and \(L(m)=\log m!\). Then \(\log S(r)=T_N(r)-T_r(r)\), where \(T_x(r)=\sum_{u=x}^{x+r-1}L(u)-\sum_{u=x-r}^{x-1}L(u)\). Taking second differences in \(r\):
+\[\Delta^2T_N(k)=\log\bigl((N+k)(N-k)\bigr),\qquad\Delta^2[T_r(r)](k)=\log\bigl(4(4k^2-1)\bigr).\]
+So \(S(k+1)S(k-1)/S(k)^2=(N-k)(N+k)/(4(4k^2-1))=a(a+2k^2)/(4k^2(4k^2-1))\), with \(a=k(N-k)\). \(\square\)</p>
+<p><strong>Refutation.</strong> ex:cube-flow-order-ratio-law-block. The ratio law, with its constant depending only on \((k,a)\), holds only for blocks starting at \(k_0=0\). At the centred quintic \(z^5+z^3-z^2+\tfrac{57}{40}z-\tfrac{187}{100}\), which has distinct roots (the point \(e_2=e_3=1\) of the \(\Sigma_2\) data), \(H_2(y)=H_3(y)=0\) and \(H_0,H_1,H_4\ne0\). So this is a block with \(k_0=1\), \(N=3\). research/tools/bmd_hankel_block_test.gp (research/results/bmd-20261009-bj/hankel-block-test.txt) computes exactly:</p>
+<ul>
+<li>flow orders \((0,0,2,2,0)\);</li>
+<li>\(c_3c_1/c_2^2=-3/20\) and \(c_4c_2/c_3^2=-2/45\), the block predictions, against \(-1/12\) and \(-2/63\) from the \((k,a)\)-law.</li>
+</ul>
+<p>A first run kept the rational root inside a polynomial-mod wrapper, which broke the valuations. The printed leading terms already showed \(-3/20\) and \(-2/45\).</p>
+<p><strong>Consequences for the support core.</strong></p>
+<ul>
+<li>(R) is now a theorem. With conj:cube-ramification-flow-order, the argument of the flow-order route review gives strictly decreasing breakpoints \(\Delta_p\). With hypothesis (F) it then gives \(\nu\le1\) on every fixed-cluster arc with distinct roots.</li>
+<li>At \(M=4\) conj:cube-ramification-flow-order is proved (prop:cube-ramification-flow-order-four), so the fixed-cluster support core at \(M=4\) rests on (F) alone. It was already settled at \(M=4\) by the classification of \(\Sigma_k\).</li>
+<li>The flow orders depend only on which \(H_k(y)\) vanish. So the fixed-cluster programme is governed by the Hankel block structure of the power sums of the cluster, a classical object: the Padé table of the Stieltjes transform \(\sum_q1/(x-y_q)\) at \(x=\infty\), with its square blocks.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-ramification-flow-order for \(M\ge5\). The same Cauchy–Schubert technique may identify \(V_p\)'s pivots with the Hankel blocks.</li>
+<li>Hypothesis (F).</li>
+<li>Moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-hankel-bilinear-identity (Heine form);</li>
+<li>prop:cube-family-schubert-reduction (Schubert minimality argument);</li>
+<li>the flow-order route review (breakpoint argument);</li>
+<li>conj:cube-flow-order-ratio-law and its data.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed.</p>
+<p>One medium-effort reviewer checked parts 1 to 4 step by step and found the mathematics sound:</p>
+<ul>
+<li>the Cauchy and Cauchy–Binet steps, the orthogonal-polynomial pivots and \(N=u_0+1\);</li>
+<li>the Schubert minimality, the block minor and its sign;</li>
+<li>the second differences of the hook-content product.</li>
+</ul>
+<p>In gp it recomputed the refutation point: discriminant nonzero, \(H_0,\ldots,H_4=5,-10,0,0,24871517559/800000\), and the four ratios.</p>
+<p>Its required changes, all made:</p>
+<ul>
+<li>the block minor extended to \(i=N\), which parts 4 and the refutation use;</li>
+<li>the indexing of \(I_\lambda\);</li>
+<li>the range \(k\le M-1\) in part 3.</li>
+</ul>
+<p>Status: working proof (block law and order relation, every \(M\)); refutation (ratio law beyond \(k_0=0\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bj">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 35.69 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 55.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 45.26 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 53.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
