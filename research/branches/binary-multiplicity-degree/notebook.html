@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-phase">triple window phase</a>; seven open items). Leading-order asymptotics cannot decide the triple window's rank off the balanced locus, by cyclic dominance; there it is a subleading effect. The window holds exactly for \(m\le7\). No mechanism covers \(m\ge8\).</p>
-<p>Next: the route review that is due. It should weigh the remaining triple-window route against the other open items of (K), none of which has had a cycle: cone types with cherries, stacked levels above slack-zero cherries, non-separated points, the Hankel-moduli ray. Remaining triple-window approaches include a subleading expansion of the two rows sharing an exponential and an exact algebraic mechanism. The review should also weigh (B), which has had no cycles in this period.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-elliptic-window-route-review">elliptic window review</a>; seven open items). Four all-\(m\) routes failed: properness, the global count, leading asymptotics, recurrences in \(m\). The window holds exactly for \(m\le7\). Its functions live on a genus-one \((\mathbb Z/2)^3\) cover; the proved tie window's live on a rational one.</p>
+<p>Next: write the window's rank condition on the elliptic cover \(E\): the vanishing order at the point over \(T=0\) of a function with poles over \(T=\infty\). Decompose it by the group's characters, and seek a Riemann–Roch or divisor-class form. Check it against the rational tie case and the exact cases \(m\le7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -74959,6 +74959,292 @@ This corrected ratio equals \(-1\) on \(S\in i\pi(\pm\tfrac14+\mathbb Z)\), the 
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 25.68 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 6.89 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.76 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-elliptic-window-route-review" data-kind="review" data-scope="goal" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-open-items="7" data-claims="none" data-claim-note="Goal-level route review after the triple-window cycles; its tests are recorded here and register no claims.">
+<h3>9 October 2026 — Goal-level review: every all-m route tried on the triple window fails, but the window lives on a genus-one cover while the proved tie window lives on a rational one</h3>
+<p class="entry-meta">Goal-level review after three triple-window cycles. Tests: growth of the minors, sign patterns at real points, recurrence order, genus of the window's cover. Decision: Core, the triple window via its elliptic cover. Elliptic window review cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> conj:cube-offcollision-contact-bound, (K), with (B), for statement 3. Within (K), every boundary limit of the geometric cone avoids \(\overline K\). The window cores are two of its seven open items, and the non-separated points were reduced to windows (<a href="#entry-2026-10-07-cube-collision-points-review">collision points review</a>).</p>
+<p><strong>What the main goal needs.</strong> Statements 2, 3 and 4. For statement 3: (K) and (B). Within (K), this review checked whether conj:cube-triple-window-full-rank is stronger than needed. In lem:cube-geometric-cone-limit-types, type (C) puts two displaced roots on one level with a non-displaced root. Their leading coefficients are the residuals of cancelling terms, which depend on free subleading coefficients of the arc. So every modulus \((c_1,c_2)\) occurs, and the criterion of lem:cube-contact-plane-criterion (3) needs the window at all of them. thm:cube-level-window-avoidance uses full rank as a sufficient condition. A point where the window drops rank could still avoid \(\overline K\) through higher-order terms, but no such argument exists. The conjecture as stated is what the route needs.</p>
+<p>Since the window cores review the record has:</p>
+<ul>
+<li>check:cube-triple-window-boundary (Hilbert–Mumford bridge, developed): rank \(3\) at the generic points of every boundary curve, \(m\le5\). Properness excludes curves of rank drop, not points.</li>
+<li>ex:cube-triple-window-count-insufficient: the global Wronskian count bounds the contact weight only by \(\tfrac32m(m+3)\).</li>
+<li>prop:cube-triple-window-phase and lem:cube-triple-window-cyclic-dominance: leading-order asymptotics decide rank three only on a balanced locus.</li>
+<li>check:cube-triple-window-six-seven: exact for \(m=6,7\).</li>
+</ul>
+<p><strong>Falsification attempt.</strong> If the conjecture failed, its rank drop would sit at isolated points (properness), possibly special ones. The phase cycle's tests probed the corrected asymptotic model's candidate curves and found no effect. Exact elimination at \(m\le7\) covers every complex point. No counterexample. The isolated candidate points on the balanced surface near the torus remain untested.</p>
+<p><strong>Tests of this review.</strong> research/tools/bmd_route_review29_tests.gp, output research/results/bmd-20261009-cg/route-review29-tests.txt.</p>
+<ol>
+<li>At \(a=(2/7,-5/3,1)\), \(\log|\text{largest minor}|/m^2\) rises from \(-0.28\) (\(m=4\)) to \(0.208\) (\(m=30\)), still increasing.</li>
+<li>At the positive real points \((3/10,3/5,1)\) and \((5/2,7/4,1)\), after signing column \(n\) by \((-1)^n\), all ten minors have one strict sign for every \(m\le16\). The one exception is \(m=3\) at the second point, where one minor has the other sign. At the mixed-sign points \((-1/2,2/5,1)\) and \((-3,-1/2,1)\) the sign pattern is fixed for \(m\ge4\) but not uniform.</li>
+<li>One filtered row, \((12|3)\) at \(m=3\), satisfies no recurrence of order \(\le2\) with coefficients of degree \(\le8\). It satisfies one of order \(3\) and degree \(6\).</li>
+</ol>
+<p><strong>Assessment.</strong> The triple window has had a closed form, exact proofs to \(m=7\), and four all-\(m\) attempts:</p>
+<ul>
+<li>properness: excludes only curves;</li>
+<li>the global count: too weak by a factor of order \(m^2\);</li>
+<li>leading-order asymptotics: blind off a balanced locus;</li>
+<li>recurrences in \(m\): impossible, by test 1.</li>
+</ul>
+<p>Each failure was found within one cycle, with its reason recorded, so the cycles were efficient. But the line has not produced an all-\(m\) mechanism, and the same implication has stood since the window cores review. The one new structural observation is the genus below, which separates the proved \(h=2\) case from \(h=3\).</p>
+<h4>Across the goal</h4>
+<ul>
+<li>Statement 1: proved.</li>
+<li>Statement 2: certificates through \(n\le21\); no cycles.</li>
+<li>Statement 3: (K) has seven items, none closed in this period; the triple window is exact for \(m\le7\). (B) has had no cycles.</li>
+<li>Statement 4: unchanged.</li>
+</ul>
+<h4>Obstacle</h4>
+<p>Full rank of the reduced triple window \(U_3\) for every \(m\) and every admissible \((c_1,c_2)\): no combination of the three filtered pair sequences vanishes on the five window indices. Every mechanism tried is either uniform in \(m\) but too weak (the count), or sharp but blind off a locus (asymptotics), or valid only up to a fixed \(m\) (elimination). The obstacle is the lack of a structure in which the window's condition becomes an exact algebraic statement for every \(m\), as the Gegenbauer kernel did for the tie window.</p>
+<h4>Outside leads</h4>
+<ul>
+<li>Creative telescoping (Zeilberger; Koutschan), the first lead of the window cores review. It targets conj:cube-triple-window-full-rank by a recurrence in \(m\) for the minors. It breaks if the minors are not P-recursive in \(m\). A P-recursive sequence grows at most like \(\exp(O(m\log m))\). The minors contain products of three factors \((-a_l)^n\) with \(n\approx m^2/2\), so at unequal moduli they grow like \(\exp(cm^2)\). Test 1 shows exactly this growth. <strong>Answers.</strong> It would have given induction from the exact base \(m\le7\); it cannot. <strong>Test.</strong> Falsified: \(\log|\text{minor}|/m^2\) increases to \(0.208\) at \(m=30\).</li>
+<li>Total positivity and Chebyshev systems (Karlin, <em>Total Positivity</em>, the basic composition formula; Karlin–Studden). Each filtered entry is a moment, \(\sum_l\binom ml a_k^lh_{n-l}=\int u^{n-m}(u+a_k)^m\,d\sigma_{ij}(u)\), where \(\sigma_{ij}\) is the representing measure of \(e^{(ij)}\) (for \(\lambda=\tfrac32\) only a distribution, unless the Beta factor regularizes it) pushed through the Beta factor \(\rho_n=\int_0^1s^n(1-s)^{\lambda+m-1}ds/\Gamma(\lambda+m)\). On \(u&gt;0\) the monomials \(u^n\) at increasing \(n\) form a totally positive kernel. If the three weights were sign-regular of order three, every \(3\times3\) minor would have one sign, for every \(m\). It targets conj:cube-triple-window-full-rank on real chambers and breaks off them, since the goal needs complex moduli. <strong>Answers.</strong> All-\(m\) rank three on the positive real chamber, as a model for the complex statement. <strong>Test.</strong> Falsified as an all-\(m\) statement: at \((5/2,7/4,1)\) and \(m=3\) one signed minor has the other sign. At both positive points the signs are uniform for every other \(m\le16\), so a version for \(m\ge4\) survives.</li>
+<li>Zero counting for linear recurrences (Skolem–Mahler–Lech; a nonzero solution of a recurrence of order \(r\) with nonvanishing leading coefficient has no \(r\) consecutive zeros). It targets conj:cube-triple-window-full-rank. A combination of the three rows satisfies a recurrence of order at most the sum of the rows' orders. Five consecutive zeros would force it to vanish if that order were at most \(5\), and then the rows' distinct singularities force the coefficients to vanish. It breaks if the order exceeds \(5\). <strong>Answers.</strong> A one-line proof for every \(m\). <strong>Test.</strong> Falsified: one row already needs order \(3\) (test 3), so the combination has order up to \(9\).</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li>Elliptic curves and limit linear series (Eisenbud–Harris, ramification on elliptic components, where vanishing conditions become torsion conditions). The window's functions are \(w_i=(1+a_iT)^{-3/2}\), \(T^nw_i\) for \(n&lt;m\), and \(w_iw_j\). They live on the \((\mathbb Z/2)^h\) cover \(w_i^2=(1+a_iT)^{-3}\) of the \(T\)-line, branched at \(-1/a_i\) and at \(\infty\), with \(h+1\) branch points of index \(2\). Riemann–Hurwitz gives \(2g-2=2^h(-2+(h+1)/2)\). So \(g=0\) for \(h=2\): the tie window, proved by an explicit Gegenbauer kernel, lives on a rational curve. And \(g=1\) for \(h=3\): the triple window lives on an elliptic curve \(E\). Its two moduli \((c_1,c_2)\) become the \(j\)-invariant of \(E\) and the position of the point \(P_0\) over \(T=0\) where the Taylor coefficients are taken. Rank deficiency means: some \(f\) in the span of the window's functions plus the polynomials of degree \(&lt;d\) vanishes at \(P_0\) to order at least \(d+3m+5\). This is an order of vanishing at one point, of a function with poles only over \(T=\infty\). The span decomposes into isotypic pieces for the \((\mathbb Z/2)^3\)-characters. Each piece is a complete series on the quotient (polynomials of degree \(&lt;d\); \(w_i\) times polynomials of degree \(&lt;m\); constants times \(w_iw_j\)). But the vanishing at \(P_0\) mixes characters, so Riemann–Roch on \(E\) does not apply directly. <strong>Answers.</strong> An exact algebraic structure for every \(m\), separating \(h=3\) from the proved \(h=2\). If rank deficiency became a divisor-class condition on \(E\), the all-\(m\) statement would become a statement about points of \(E\). <strong>Test.</strong> Passed: the genus count is exact, and the moduli count matches (two for \(h=3\): \(j(E)\) and \(P_0\)). Whether the condition is a divisor-class condition is not yet tested.</li>
+<li>Resurgence and WKB connection formulae (Écalle; exact WKB in quantum mechanics), for the subleading terms that cyclic dominance leaves in charge off the balanced locus. In a resurgent transseries the subleading exponentials' coefficients are fixed by the dominant ones through Stokes constants. Translation: the two rows sharing a dominant exponential, expanded in \(1/m\), with the third exponential as the transseries sector. <strong>Answers.</strong> A uniform expansion deciding rank three off the balanced locus. <strong>Test.</strong> Not run: it needs the second-order Darboux expansion of the filtered rows, which is a research cycle, not a cheap test; and it would still not cover the balanced surface uniformly.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-statement-three-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-discriminant-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rodrigues-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rodrigues-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-cluster-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-two-term-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-newton-hull-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-steps-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-radius-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-arithmetic-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-last-far-perron-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-sector-programme-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-sector-programme-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-limit-design-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-three-centre-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-mixed-factor-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-cross-statement-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-split-rule-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-generic-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-three-statements-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-consolidation-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-blocked-and-open-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-small-prime-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-cone-limits-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-cone-limits-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-tie-forney-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-tie-moment-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-exponent-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-propagation-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-coprimality-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-node-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-node-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-goal-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-mason-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-cluster-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-caterpillar-tie-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-window-domination-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-window-domination-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-near-window-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-cancellation-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-cancellation-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-ternary-faces-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-hankel-criterion-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-hankel-criterion-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dilate-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-corner-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-corner-hankel-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-first-order-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rodrigues-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-mod-p-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-bulk-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-cluster-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-cluster-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-two-term-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-newton-hull-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-steps-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-steps-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-radius-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-impasse-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-chain-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-two-ladders-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-last-far-perron-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-last-far-perron-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-sector-programme-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-three-common-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-two-switch-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-two-switch-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-limit-design-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-limit-design-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-cross-statement-review:4">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-split-rule-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-mechanism-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-three-statements-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-consolidation-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-06-cube-necessity-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cherry-route-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-cherry-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-cherry-route-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-tie-exponent-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-tie-propagation-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-tie-coprimality-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-cone-limits-review-two:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-node-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-mason-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-near-window-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-local-exchange-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-kernel-exchange-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-cancellation-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-cancellation-route-review:3">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-ternary-faces-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-tie-cblock-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-phase-rule-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:2">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-blocks-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1">No new work in this period: cycles stayed on the triple window. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Next step.</strong> Route item cube-odd-characteristic, statement 3's (K), core statement, triple window. Develop the elliptic bridge.</p>
+<ul>
+<li>Write the window's rank condition on the genus-one cover \(E\): the space spanned by the window's functions and the polynomials of degree \(&lt;d\), its pole divisor over \(T=\infty\), and the required vanishing order at \(P_0\).</li>
+<li>Use the \((\mathbb Z/2)^3\)-action to express that vanishing as conditions at the eight points over \(T=0\), one isotypic piece at a time, and look for a Riemann–Roch count or a divisor-class condition on \(E\).</li>
+<li>Check the result against the \(h=2\) case on the rational cover, where the Gegenbauer kernel is known, and against the exact cases \(m\le7\).</li>
+</ul>
+<p>A divisor-class form would either prove the conjecture or locate its failure points, as torsion conditions.</p>
+<p><strong>Decision.</strong> Core: the triple window, through its elliptic cover. The confluent window, cone types with cherries, stacked levels, non-separated points, the Hankel-moduli ray and (B) remain listed.</p>
+<p><strong>Verification gate.</strong> No new claim. Dependencies re-read: lem:cube-geometric-cone-limit-types (type (C) and its free residuals), lem:cube-contact-plane-criterion, thm:cube-level-window-avoidance, and the research entries since the window cores review. The genus computation is Riemann–Hurwitz with \(h+1\) branch points of index two. The growth, sign and recurrence tests are exact or 150-digit computations from the closed form.</p>
+<p>Status: goal-level route review.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-cg">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 3.13 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">6 min 7.89 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 8.20 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2.81 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">41.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
