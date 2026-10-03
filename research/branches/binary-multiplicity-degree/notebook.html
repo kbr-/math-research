@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 2 at \(p=3\), \(d=2\) (<a href="#entry-2026-10-09-cube-ternary-two-root-face">ternary two-root face</a>). Faces with one or two dominant labels give induction steps only up to \(n=4\) and \(n=5\). Their minors vanish identically beyond, so faces with a bounded dominant set cannot reach every \(n\).</p>
-<p>Next: the opposite face, where one label \(a_n\to0\) and the other \(n-1\) labels are dominant. Its lowest \(a_n\)-order term relates \(\Delta_n\) to the confluent limit of \(a_n\) with the dummy label \(0\). Identify that term as a known minor times \(\Delta_{n-1}\) or a confluent variant, and test it modulo \(3\). The factorization \((1+x)^{1/2}=(1+x)^2H(x^3)\), with \(H\) the indicator series of the integers whose ternary digits are \(0\) or \(1\), is the tool for the minor.</p>
+<p>Route item: cube-odd-characteristic; statement 2 at \(p=3\), \(d=2\) (<a href="#entry-2026-10-09-cube-ternary-coface">ternary co-face</a>). Every reduction tried so far meets the same obstruction. The one-root face, the two-root face and the iterated co-face all funnel into Toeplitz minors of \((1+x)^{1/2}\) modulo \(3\) on consecutive rows, and these vanish from size \(5\) on. One co-face step trades \(\Delta_n\) for a confluent \(\Delta'_{n-1}\), nonzero through \(20\) labels.</p>
+<p>Next: a goal-level route review on statement 2. It should state the minor obstruction as the line's obstacle and choose outside leads that bypass consecutive-row minors. Candidates are Frobenius splitting of the confluent space into residue classes modulo \(3\) through \((1+x)^{1/2}=(1+x)^2H(x^3)\), and a Hasse-derivative (Garcia–Voloch) order sequence that need not be \(0,\ldots,D-1\) at the dummy label.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68510,6 +68510,88 @@ Here \(G_n\) is the determinant, on the columns \(k\in\mathrm{top}'_n\), of the 
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 13.81 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">36.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.55 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-ternary-coface" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-ternary-coface check:cube-ternary-confluent-nonvanishing">
+<h3>9 October 2026 — Sending one label to the dummy label reduces the characteristic-three degree-two determinant to a confluent one, nonzero through 20 labels; iterating the reduction meets the same Toeplitz minor that kills the one-root face</h3>
+<p class="entry-meta">Working proof of the co-face reduction \(\Delta_n=\pm2^{n-1}a_n^{n+1}\Delta'_{n-1}+O(a_n^{n+2})\) over \(\mathbb F_3\); finite check \(\Delta'_m\ne0\), \(m\le20\); the iterated collapse stops at the minor \(B_n\). Co-face cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 2 at \(p=3\), \(d=2\), conj:cube-ternary-degree-two-nonvanishing. Faces with one or two dominant labels die at \(n=5,6\) (<a href="#entry-2026-10-09-cube-ternary-two-root-face">two-root face</a>). The opposite face sends one label to \(0\) and keeps \(n-1\) labels free, so its dominant set grows with \(n\). Does it reduce \(\Delta_n\) to something that survives?</p>
+<p><strong>General statement.</strong> lem:cube-ternary-coface. Over \(\mathbb F_3\), for \(n\ge1\),
+\[
+\Delta_n(a_1,\ldots,a_n)=a_n^{\,n+1}\Big(\pm\beta(1)^{n-1}\beta(2)\,\Delta'_{n-1}(a_1,\ldots,a_{n-1})+O(a_n)\Big),
+\]
+with \(\beta(1)=2\) and \(\beta(2)=1\). Here \(\Delta'_m\) is the determinant of the Taylor coefficients \(0,\ldots,D'-1\), \(D'=2m+3+\binom m2\), of the confluent space
+\[
+\{1,\ T,\ T^2,\ w_j,\ Tw_j,\ w_iw_j\ :\ 1\le i&lt;j\le m\}.
+\]
+Hence \(\Delta'_{n-1}\not\equiv0\) implies \(\Delta_n\not\equiv0\).</p>
+<p><strong>Proof.</strong> Subtracting multiples of other rows leaves the determinant unchanged.</p>
+<ol>
+<li>Replace the row of \(w_n\) by \(w_n-1-\beta(1)a_nT=a_n^2\big(\beta(2)T^2+O(a_n)\big)\).</li>
+<li>Replace each row \(w_nw_j\), \(j&lt;n\), by \(w_nw_j-w_j=\sum_{e\ge1}\beta(e)a_n^eT^ew_j=a_n\big(\beta(1)Tw_j+O(a_n)\big)\).</li>
+<li>Factor \(a_n^2\) and \(a_n^{n-1}\) out of these \(n\) rows. At \(a_n=0\) the rows are \(1\), \(T\), \(\beta(2)T^2\), \(w_j\), \(\beta(1)Tw_j\) and \(w_iw_j\) with \(i,j&lt;n\). Their number is \(3+2(n-1)+\binom{n-1}2=\binom{n+1}2+2\), the size of \(\Delta_n\). This is the space of \(\Delta'_{n-1}\), up to row order and the constants. \(\square\)</li>
+</ol>
+<p>Check, exact in \(\mathbb F_{3^{12}}[a_n]\) at random \(a_1,\ldots,a_{n-1}\in\mathbb F_{3^{12}}\), \(n=2,\ldots,6\): the lowest \(a_n\)-order is \(n+1\), and its coefficient is \(\pm\beta(1)^{n-1}\beta(2)\Delta'_{n-1}\) (research/results/bmd-20261009-ab/coface.txt, part (a)).</p>
+<p><strong>Check.</strong> check:cube-ternary-confluent-nonvanishing. \(\Delta'_m\ne0\) over \(\mathbb F_3\) for \(m=1,\ldots,20\), each certified by a nonzero value at random labels in \(\mathbb F_{3^{20}}\) (coface.txt, part (b); research/tools/bmd_ternary_coface.gp). By the lemma this certifies \(\Delta_n\not\equiv0\) for \(n\le21\). That adds \(n=14,16,18,20,21\) to the sizes of check:cube-ternary-direct-certificates (\(n=5,\ldots,13,15,17,19,23,27\)).</p>
+<p><strong>Iterating the reduction (sketch).</strong> This part is a sketch, not a proved lemma. Collapse the labels one at a time. After \(c\) steps the space \(\Delta^{(c)}_m\), on the remaining \(m\) labels, consists of:</p>
+<ul>
+<li>the pure powers \(T^t\), \(0\le t&lt;p_c=2+\binom{c+1}2\);</li>
+<li>the rows \(T^qw_j\), \(q\in Q_c\), the first \(c+1\) elements of \(A\);</li>
+<li>the pairs \(w_iw_j\).</li>
+</ul>
+<p>Its columns are \(0,\ldots,p_c+(c+1)m+\binom m2-1\).</p>
+<p>One step sends the label \(a_m\to0\). The proof would follow the lemma:</p>
+<ul>
+<li>The pair rows \(w_mw_j\), after subtracting \(T^qw_j\) for \(q\in Q_c\), become \(\beta(\alpha)a_m^\alpha(T^\alpha w_j+O(a_m))\), with \(\alpha\) the next element of \(A\) and \(\beta(\alpha)\ne0\).</li>
+<li>In the Laplace expansion along the own rows \(T^qw_m\), the consecutive block \(S=[p_c,p_c+c]\) is the unique minimal-sum column set outside \([0,p_c)\). It fits the columns once \(n\ge c+1\). Every other term has higher \(a_m\)-degree.</li>
+<li>The lowest coefficient is then a unit times \(B_{c+1}\Delta^{(c+1)}_{m-1}\).</li>
+</ul>
+<p>Since \(B_1,\ldots,B_4\) are units, \(\Delta^{(4)}_{n-4}\not\equiv0\) would imply \(\Delta_n\not\equiv0\), for \(n\ge4\). That condition fails at \(n=5\): with one label left, the own rows fill the remaining columns, so \(\Delta^{(n-1)}_1=\pm a_1^{\ast}B_n\) exactly, and \(\Delta^{(4)}_1=\pm a^{\ast}B_5=0\). For \(m=n-4\ge2\) it is untested. At step \(5\) the consecutive block has minor \(B_5\equiv0\), so the lowest-order term there comes from a non-consecutive block. A different choice at an earlier step \(k\le4\) is forced only where \(\Delta^{(k)}\) vanishes, as for \(n=5\).</p>
+<p>research/tools/bmd_ternary_collapse.gp (collapse.txt) follows the greedy chain: at each step, the minimal-sum set with nonzero minor. A greedy set is only a candidate for the lowest term, because the complementary determinant may vanish and the steps interact. The simulation places no cap at \(D\), so beyond step \(4\) it models no fixed \(\Delta_n\), and its flag "\(P=[0,D-1]\)" ties \(D\) to \(n=c+1\), which has no meaning there.</p>
+<ul>
+<li>Step \(5\): unique minimal \(S=\{12,13,14,15,18\}\). This is admissible for \(n\ge6\), where \(D\ge23\).</li>
+<li>For \(n=6\) the last step is then forced onto the columns \(\{16,17,19,20,21,22\}\). That minor is zero: the run's minimal nonzero set at step \(6\) has sum \(137\), above their \(115\), and its window contains them. So the greedy chain also dies at \(n=6\).</li>
+<li>The run found steps \(6\) and \(7\) and no nonzero minor at step \(8\) within its window of \(8\) extra columns.</li>
+<li>A first run with a window of \(4\) stopped at step \(6\) (collapse.txt.first-run).</li>
+</ul>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>One co-face step is clean. It trades \(\Delta_n\) for the confluent \(\Delta'_{n-1}\), nonzero in every size tested.</li>
+<li>Further steps, sketched above, meet the minors \(B_{c+1}\): units through \(c+1=4\), and zero at \(5\), the same obstruction as the one-root face. Both routes funnel into Toeplitz minors of \((1+x)^{1/2}\) modulo \(3\) on consecutive rows.</li>
+<li>A proof must bypass those minors rather than meet them one step at a time.</li>
+</ul>
+<p><strong>Remaining gap.</strong> \(\Delta_n\not\equiv0\pmod3\) for every \(n\). By the lemma, \(\Delta'_{n-1}\not\equiv0\) is sufficient. The four-step condition \(\Delta^{(4)}_{n-4}\not\equiv0\) is a sketch, false at \(n=5\) and untested beyond.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-ternary-one-root-face and ex:cube-ternary-one-root-face-vanishes (\(B_n\));</li>
+<li>lem:cube-ternary-two-root-face;</li>
+<li>conj:cube-ternary-degree-two-nonvanishing (definition of \(\Delta_{n,2}\)).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the row operations, the row count, the tool's coefficient test, and the last-step formula. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the certificate sentence corrected: the lemma adds \(n=14,16,18,20,21\);</li>
+<li>"sufficient" in place of "equivalently";</li>
+<li>the four-step reduction marked a sketch, with its failure at \(n=5\) stated;</li>
+<li>the description of the true lowest terms made precise;</li>
+<li>the collapse simulation's scope and its \(n=6\) failure reported;</li>
+<li>the tool header rewritten;</li>
+<li>the coefficient field of part (a) corrected.</li>
+</ul>
+<p>Status: working proof (co-face reduction); finite check (\(\Delta'_m\ne0\), \(m\le20\)); the iterated reduction fails at \(B_5\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ab">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 4.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">28.68 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 43.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">45.37 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 57.30 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.44 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
