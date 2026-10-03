@@ -814,7 +814,8 @@ def check(head_body, body, path=None, root=None):
         return
     if now is None:
         raise ValueError('The notebook needs its lead and bridge queue: run python3 tools/lead_queue.py init '
-                         'NOTEBOOK.html, review the section, and commit it with this entry (AGENTS.md)')
+                         'NOTEBOOK.html, with the --counted, --backpressure and --kind-modules options its branch '
+                         'uses, review the section, and commit it with this entry (AGENTS.md)')
     draining, nodes = now
     items = every_item(nodes)
     if len(set(items)) != len(items):
@@ -857,7 +858,14 @@ def check(head_body, body, path=None, root=None):
             raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
                              'commit the section, then develop its head')
         wanted = open_tree(body)
-        if shape(nodes) != shape(wanted) or marks(nodes):
+        admitted = [n for n in nodes if KINDS[n.kind].admit is not None]
+        for node in admitted:
+            problems = KINDS[node.kind].admit(body, head_body, node.item)
+            if problems:
+                raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
+        seeded = [n for n in nodes if n not in admitted]
+        items = every_item(seeded)
+        if shape(seeded) != shape(wanted) or marks(nodes):
             have, want = set(items), set(every_item(wanted))
             raise ValueError('A new queue holds exactly the listed items not closed, sub-ideas under their parents: '
                              'missing ' + (', '.join(i for _, i in want - have) or 'none') + '; not open '
@@ -944,10 +952,12 @@ def head_lines(body, count=HEAD_READ):
     draining, nodes = found
     state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
-    plain = lambda t: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', t)).strip()
+    def plain(node):     # with its ID first, which a lead's text has and an idea's (business) has not
+        text = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', node.text)).strip())
+        return text if text.startswith(node.ident) else f'{node.ident}: {text}'
     for n, node in enumerate(nodes[:count], 1):
-        out.append(f'{n}. {plain(node.text)}{waiting_note(node)}')
-        out += [f'   - {plain(c.text)}{waiting_note(c)}' for c in node.children]
+        out.append(f'{n}. {plain(node)}{waiting_note(node)}')
+        out += [f'   - {plain(c)}{waiting_note(c)}' for c in node.children]
     return out
 
 

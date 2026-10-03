@@ -708,6 +708,40 @@ class LeadQueueTest(unittest.TestCase):
                 sys.path.remove(tmp)
                 sys.modules.pop('idea_kinds', None)
 
+    def test_a_kind_with_its_own_admit_in_a_new_queue_and_its_head_lines(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, 'own_kinds.py').write_text(
+                'def kinds(lq):\n'
+                '    return [lq.Kind("idea", admit=lambda body, head, item: [] if item[1] != "bad" else ["no"])]\n')
+            sys.path.insert(0, tmp)
+            try:
+                section = '<section id="lead-queue" data-kind-modules="own_kinds"{}><ol>{}</ol></section>'
+                def body(ids, flag=''):
+                    return (ROUTE + section.format(flag, ''.join(f'<li data-idea="{i}">Sold to x.</li>' for i in ids))
+                            + '<section id="research-record">' + self.rev + '</section>')
+                with self.assertRaises(ValueError):                     # init seeds the leads, which are missing
+                    lq.check(None, body(['one', 'two']))
+                seeded = body(['one', 'two']).replace('</ol>', '<li data-lead="r1:1">r1:1</li><li data-lead="r1:2">'
+                                                     'r1:2</li></ol>')
+                lq.check(None, seeded)                                  # ideas admitted, leads as init seeds them
+                with self.assertRaises(ValueError):
+                    lq.check(None, seeded.replace('data-idea="two"', 'data-idea="bad"'))
+                full = [f'i{n}' for n in range(lq.CAP - 2)]
+                many = lambda flag: body(full, flag).replace('</ol>', '<li data-lead="r1:1">r1:1</li><li '
+                                                             'data-lead="r1:2">r1:2</li></ol>')
+                with self.assertRaises(ValueError):                     # 50 items with the ideas: draining
+                    lq.check(None, many(''))
+                lq.check(None, many(' data-draining="true"'))
+                self.assertEqual(lq.head_lines(seeded, 3)[1:], ['1. one: Sold to x.', '2. two: Sold to x.',
+                                                                 '3. r1:1'])
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop('own_kinds', None)
+
+    def test_a_notebook_without_its_queue_is_told_inits_options(self):
+        with self.assertRaisesRegex(ValueError, '--kind-modules'):
+            lq.check(None, notebook([self.rev]))
+
     def test_check_command_compares_the_staged_notebook_with_a_base(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
