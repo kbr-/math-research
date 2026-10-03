@@ -1,0 +1,62 @@
+// Toda-type bilinear identity test for Hankel determinants along the D-flow (route review bmd-20261009-bg, 9 October 2026).
+// Hank_k = det(p_(i+j))_(0 <= i,j <= k) in y_1..y_M, D = sum y_i^2 d/dy_i (the flow y -> y/(1 - t y)).
+// Candidate identity: Hank_k D^2 Hank_k - (D Hank_k)^2 = C Hank_(k+1) Hank_(k-1) + Hank_k (A D Hank_k + B Hank_k)
+// with C a nonzero constant and A, B polynomials. It would give, along any flow line where Hank_k has finite order
+// a >= 1, ord Hank_(k+1) + ord Hank_(k-1) = 2a - 2 (the leading coefficient of the left side is -a c_a^2).
+// Test: (1) find a constant C with (D Hank_k)^2 + C Hank_(k+1) Hank_(k-1) = 0 mod Hank_k;
+//       (2) check that E = Hank_k D^2 Hank_k - (D Hank_k)^2 - C Hank_(k+1) Hank_(k-1) lies in Hank_k (Hank_k, D Hank_k).
+proc Dop(poly f, int M)
+{
+  poly r = 0; int i;
+  for (i = 1; i <= M; i++) { r = r + var(i)^2 * diff(f, var(i)); }
+  return(r);
+}
+proc runM(int M)
+{
+  int k, j, q, a, b;
+  list P; for (j = 0; j <= 2 * M + 2; j++) { poly pj = 0; for (q = 1; q <= M; q++) { pj = pj + var(q)^j; } P[j + 1] = pj; kill pj; }
+  list H;
+  for (k = 0; k <= M - 1; k++)
+  {
+    matrix Hm[k + 1][k + 1];
+    for (a = 1; a <= k + 1; a++) { for (b = 1; b <= k + 1; b++) { Hm[a, b] = P[a + b - 1]; } }
+    H[k + 1] = det(Hm); kill Hm;
+  }
+  H[M + 1] = 0;  // Hank_M vanishes for M points
+  for (k = 1; k <= M - 1; k++)
+  {
+    poly Hk = H[k + 1]; poly DH = Dop(Hk, M); poly D2H = Dop(DH, M);
+    ideal SK = std(ideal(Hk));
+    poly x1 = reduce(DH^2, SK); poly x2 = reduce(H[k + 2] * H[k], SK);
+    string verdict;
+    if (x2 == 0)
+    {
+      verdict = "Hank_(k+1) Hank_(k-1) = 0 mod Hank_k; (D Hank_k)^2 mod Hank_k is zero: " + string(x1 == 0);
+    }
+    else
+    {
+      number C = -leadcoef(x1) / leadcoef(x2);
+      if (x1 + C * x2 == 0)
+      {
+        poly E = Hk * D2H - DH^2 - C * H[k + 2] * H[k];
+        list dv = division(E, Hk);
+        int divis = (dv[2][1, 1] == 0);
+        poly Q = dv[1][1, 1];
+        poly rq = reduce(Q, std(ideal(Hk, DH)));
+        verdict = "C = " + string(C) + "; E divisible by Hank_k: " + string(divis) + "; E / Hank_k in (Hank_k, D Hank_k): " + string(rq == 0);
+        kill E; kill dv; kill divis; kill Q; kill rq;
+      }
+      else { verdict = "(D Hank_k)^2 not proportional to Hank_(k+1) Hank_(k-1) mod Hank_k"; }
+      kill C;
+    }
+    print("M = " + string(M) + ", k = " + string(k) + ": " + verdict);
+    kill Hk; kill DH; kill D2H; kill SK; kill x1; kill x2; kill verdict;
+  }
+}
+ring r3 = 0, (y1, y2, y3), dp;
+runM(3);
+ring r4 = 0, (y1, y2, y3, y4), dp;
+runM(4);
+ring r5 = 0, (y1, y2, y3, y4, y5), dp;
+runM(5);
+quit;
