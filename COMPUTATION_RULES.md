@@ -316,6 +316,12 @@ while command records remain unfinished.
   to fit: the smallest informative size, symmetry classes instead of all cases, and
   a sizing run before the full one. Stop each computation as soon as its question
   is decided; a closure checking derivability of 1 stops when 1 enters the span.
+- **Long runs go to the background** (user, 3 October 2026): start any run that may take
+  over a minute in the background and keep working meanwhile. A run still going after
+  5 minutes is a decision point, not a wait: find what it is doing (which step, memory),
+  and stop it to optimize or redesign unless its measured progress justifies the rest.
+  Before scaling a script past its control case, size each expensive step, such as
+  Gröbner bases or saturations on generators of the new degrees.
 
 ## Persist computation outputs
 
