@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-window-kernel">tie window kernel</a>; eight open items). The tie window's kernel is cut out by the Gegenbauer coefficients, so above a tie over a caterpillar every \(C\)-block tie has spread at most \(1\) for every \(m\). Avoidance holds there whenever the cross leader is unique.</p>
-<p>Next: joint ties above ties over caterpillars. On a cone arc into a Gegenbauer zero, find the cherry rates at which the cross block also has two leaders. Decide by exact limit spaces whether the rank on columns \(0,\ldots,R\) can drop, and if it can, on how many conditions.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-joint-tie-avoidance">joint tie avoidance</a>; eight open items). The cherry step avoids \(K\) whenever the two spreads add up to at most two. So above ties over caterpillars every arc whose cross supports stay within \(2M+1\) columns avoids \(K\), joint ties included. The \(C\)-block side is closed there.</p>
+<p>Next: the route review that is due. It should restate (K)'s remaining items on cone clusters: the cross support condition along cone arcs above ties over caterpillars (where (F) and (W″) were proved for fixed or special clusters), cone types (A) and (C), stacked levels above slack-zero cherries, the window cores and (B). It should then choose the highest-risk one.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73885,6 +73885,91 @@ Here \(k!/j!=(j+1)\cdots(j+n)\) is a polynomial of degree \(n\) in \(j\). \(\Gam
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-joint-tie-avoidance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="cor:cube-cherry-step-spread-two prop:cube-joint-tie-slack-zero check:cube-joint-tie-cone">
+<h3>9 October 2026 — With a C-block tie of spread one, the cherry step still avoids K whenever the cross supports lie in 2M+1 columns, so joint ties above cone ties are harmless; their slack is zero for exactly one pair of leading ratios</h3>
+<p class="entry-meta">Working proof of avoidance without C-block uniqueness; working proof of the slack-zero locus at joint ties; exact checks on the cone tie at the Gegenbauer zero −1. Joint tie cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement on cone clusters. After cor:cube-tie-cblock-spread-one, the remaining case above a tie over a caterpillar was the joint tie: two \(C\)-block leaders and two cross leaders at one rate. Part (5) of prop:cube-cblock-spread-bound covered only spreads summing to at most \(1\). Adjacent cross windows have \(\operatorname{spread}(U)=2M\). The missing implication: does avoidance survive a joint tie?</p>
+<p><strong>General statement.</strong> cor:cube-cherry-step-spread-two. In the setting of cor:cube-cherry-step, along an arc, either of the following implies that the vanishing orders of \(L_0\) lie in \(\{0,\ldots,R+1\}\), \(\operatorname{rank}A_{R+1}=R\) along the arc, and the arc avoids \(K\). No uniqueness of the leading \(C\)-block coordinate is needed.</p>
+<ol>
+<li>\(\operatorname{spread}(E)+\operatorname{spread}(U)\le2\).</li>
+<li>\(\operatorname{spread}(E)\le1\), and every nonzero coordinate of the leading cross Plücker vector is a \(2M\)-subset of one set \(S\) of \(2M+1\) integers.</li>
+</ol>
+<p>With cor:cube-tie-cblock-spread-one (\(\operatorname{spread}(E)\le1\) above ties over caterpillars), case 2 gives: every cherry arc above a tie over a caterpillar whose leading cross supports lie in \(2M+1\) columns, as in (W″), avoids \(K\), at every rate and at every Gegenbauer zero, joint ties included.</p>
+<p><em>Proof.</em></p>
+<p>Case 1. By lem:cube-node-weight-bound the orders \(a_0&lt;\cdots&lt;a_{R-1}\) of \(L_0\) satisfy \(\sum_i(a_i-i)\le2\), with nonnegative terms, so \(a_{R-1}\le R+1\).</p>
+<p>Case 2. By the containment step of prop:cube-cherry-step-any-set, \(U\subset\tilde U\), the coordinate space on \(-\lambda+S\). So \(L_0\subset X:=E\oplus Q\oplus\iota\tilde U\), of dimension \(R+1\). The weight bound of lem:cube-node-weight-bound applies to \(X\), as in the proof of cor:cube-cherry-step, with \(\operatorname{spread}(\tilde U)=0\). It gives \(\operatorname{wt}_0(X)\le\operatorname{spread}(E)\le1\). So the largest order of \(X\) is at most \(R+1\), and every element of \(L_0\subset X\) vanishes to order at most \(R+1\).</p>
+<p>In both cases the vanishing-order set \(J\) of \(L_0\) lies in \(\{0,\ldots,R+1\}\), the columns of \(A_{R+1}\). The rank step of prop:cube-cherry-step-wide uses only this. The Plücker coordinate of \(L_0\) on its pivot set \(J\) is nonzero, so by coordinatewise convergence of the normalized minors the minor of \(A_{R+1}\) on \(J\) is nonzero for small nonzero parameter. \(\square\)</p>
+<p>In prop:cube-cherry-step-wide the only use of \(C\)-block uniqueness was the containment step, which made \(E\) a coordinate space. The weight bound replaces it. Case 1 covers only \(\operatorname{spread}(U)\le1\): a single cross leader, or two differing by a swap \(t\to t+1\). Adjacent windows are covered by case 2.</p>
+<p><strong>Second statement.</strong> prop:cube-joint-tie-slack-zero. In the setting of cor:cube-cherry-step, suppose that at the rate in question:</p>
+<ul>
+<li>the leading \(C\)-block support is two sets \(S\), \(S'=S-\sigma+\sigma'\);</li>
+<li>the leading cross support is two sets \(\Lambda_1\), \(\Lambda_2\) whose union has \(2M+1\) columns.</li>
+</ul>
+<p>Let \(\tilde L\) be the coordinate space on \(A=(S\cup S')\sqcup\{-3\}\sqcup(-\lambda+\Lambda_1\cup\Lambda_2)\), of dimension \(R_C+1+1+2M+1=R+2\), and \(g\) its unique element of order \(R+1\). Its coefficients are the Lagrange weights \(\prod_{a'\ne a}(a-a')^{-1}\), all nonzero.</p>
+<p>Then \(L_0\subset\tilde L\), and its orders lie in \(\{0,\ldots,R+1\}\), so the arc avoids \(K\) by the rank step. Its slack is \(0\) iff \(g\in L_0\), iff both \(g_E\in E\) and \(g_U\in U\). Each is one condition on the ratio of that block's two leading coefficients. So the slack is \(0\) for exactly one pair of leading ratios, and at least \(1\) otherwise. Adjacency of \(\sigma,\sigma'\) is not needed.</p>
+<p><em>Proof.</em> A decomposable vector supported on two sets differing by one swap spans their intersection plus one vector in the two-dimensional complement. Dually, its annihilator's Plücker vector is supported on the two swapped coordinates. So \(E\) is a hyperplane of the coordinate space \(\tilde E\) on \(S\cup S'\) containing the coordinates of \(S\cap S'\), and likewise \(U\subset\tilde U\). Hence \(L_0=E\oplus Q\oplus U\subset\tilde L=\tilde E\oplus Q\oplus\tilde U\). The Vandermonde Wronskian of \(R+2\) distinct powers gives \(\tilde L\) the orders \(0,\ldots,R+1\).</p>
+<p>The slack is \(0\) iff \(L_0\) has an element of order \(R+1\), iff \(g\in L_0\). By directness this holds iff \(g_E\in E\), \(g_Q\in Q\) (automatic, \(Q\) being the full line on \(-3\)) and \(g_U\in U\). The hyperplanes of \(\tilde E\) containing the coordinates of \(S\cap S'\) form a pencil, parametrized by the leading ratio. Exactly one contains \(g_E\), since both of its components on the swapped coordinates are nonzero; likewise for \(U\). \(\square\)</p>
+<p><strong>Checks.</strong> check:cube-joint-tie-cone. The cone cluster is the tie \((-1+s,1)\) over the caterpillar \((2s^2,5s^4)\), moving into the Gegenbauer zero \(c_0=-1\) (\(m=2\), \(M=4\), \(R=15\)). Its \(C\)-block ties at \(w_x=1\), between \(\{0,\ldots,5\}\) and \(\{0,\ldots,4,6\}\) (cone C-block review, part (2)).</p>
+<ul>
+<li>Joint ties exist. research/tools/bmd_joint_tie_cross_leaders.gp (adapted from bmd_cherry_cluster_arcs.gp; research/results/bmd-20261009-bw/joint-tie-cross-leaders.txt) scans cherry rates \(w_e\in\{\tfrac14,\ldots,12\}\) at \(w_x=1\), with leading coefficient \(x=1\), \(q\)-adically at two primes. Exactly \(w_e=1\) and \(w_e=5\) have two cross leaders: the adjacent windows \([-3,4],[-2,5]\) and \([-2,5],[-1,6]\), each pair with \(\operatorname{spread}(U)=8\) and union of \(9=2M+1\) columns.</li>
+<li>Slack-zero locus. research/tools/bmd_joint_tie_segre.gp (joint-tie-segre.txt) writes the vanishing of \(L_0\)'s Plücker coordinates on \(T_0\), \(\{0..13,15\}\) and \(\{0..12,14,15\}\) as three bilinear forms in \((\pi,\pi')\otimes(\gamma,\gamma')\), with exact coefficients \(\det\binom yj\) (lem:cube-leading-wronskian-sum). At both joint ties the coefficient matrix has rank \(3\), and its kernel vector is rank one with nonzero entries, for example \((-945)(383724)=(-18130959)(20)\). So the common zero locus of the three minors is a single pair of leading ratios, consistent with the proposition.</li>
+<li>Generic arcs. research/tools/bmd_joint_tie_scan.gp (joint-tie-scan.txt) computes exact limit spaces over \(\mathbb Q(s)\) for the cherry \(\{1,1+c_es^b\}\) above \(x_1s\cdot\)cluster, \(b=1,\ldots,10\), \(c_e\in\{3,-2,\tfrac12\}\), \(x_1\in\{1,2,-3\}\). \(83\) arcs finished within the \(900\) s limit (\(b=10\) incomplete). All have orders \(0,\ldots,14\), weight \(0\), including the joint-tie rates \(b=1,5\) of the leaders scan. These arcs do not hit the slack-zero pair, as expected for a single point.</li>
+</ul>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>Above ties over caterpillars, the cherry step avoids \(K\) on every arc whose cross supports stay within \(2M+1\) columns. The \(C\)-block's tie is absorbed because its spread is at most \(1\), and the cross side is handled by enlargement, not by its spread.</li>
+<li>The \(C\)-block side of the core statement there is closed for every \(m\). What remains is the cross-side support condition on cone clusters (the analogue of (F) and (W″) for moving cone arcs). With a \(C\)-block tie the cross condition must be \(2M+1\) columns; without one, \(2M+2\) suffice (prop:cube-cherry-step-wide).</li>
+<li>The slack is \(0\) on one pair of leading ratios per joint tie. That matters only when further levels sit above the cherry, the caveat of prop:cube-cherry-step-wide.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The cross support condition along cone arcs above ties over caterpillars.</li>
+<li>Cone types (A) and (C).</li>
+<li>Levels stacked above slack-zero cherries.</li>
+<li>The window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-cherry-step-wide (rank step, Lagrange element) and prop:cube-cherry-step-any-set (containment);</li>
+<li>lem:cube-node-weight-bound and cor:cube-cherry-step (weight bound for an enlarged space);</li>
+<li>cor:cube-tie-cblock-spread-one;</li>
+<li>lem:cube-leading-wronskian-sum;</li>
+<li>bmd_cherry_cluster_arcs.gp (cross valuations).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer confirmed:</p>
+<ul>
+<li>the rank step needs only \(J\subset\{0,\ldots,R+1\}\);</li>
+<li>the weight bound uses no uniqueness;</li>
+<li>the hyperplane structure, the dimension count, directness and uniqueness in the proposition;</li>
+<li>the check data.</li>
+</ul>
+<p>It found one error: the draft read "cross supports in \(2M+1\) columns" as \(\operatorname{spread}(U)\le1\), but adjacent windows have spread \(2M\). The corrections, all applied:</p>
+<ul>
+<li>case 2 of the corollary, proved by enlargement;</li>
+<li>the proposition's avoidance from its own containment;</li>
+<li>adjacency of the \(C\)-block swap dropped as unused;</li>
+<li>the leaders' coefficient stated;</li>
+<li>the Segre wording ("common zero locus, consistent with");</li>
+<li>the script header's claim ID and spread corrected.</li>
+</ul>
+<p>Unused hypotheses: adjacency of the swap, now dropped.</p>
+<p>Status: working proof (both statements, every \(M\)); exact checks at one cone tie (\(M=4\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 31.54 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">21.65 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 15.72 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 15.44 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.74 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 38.85 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
