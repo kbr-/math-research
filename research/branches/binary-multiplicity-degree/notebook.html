@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), \(d\ge3\), is one \(5\times5\) theta determinant (<a href="#entry-2026-10-09-cube-merged-route-review">review</a>). For the \(p=3\), \(d=2\) slice, the <a href="#entry-2026-10-09-cube-merge-order-limit">merge order limit</a> makes the sequential coface exact, and it fails from \(n=5\); the remaining route keeps roots apart.</p>
-<p>Next: the queue head, Lucas digit factorization (entry three of four), on statement 2's \(p=3\), \(d=2\) slice. Apply the Padé form of the merge criterion to the pair confluence limit, where two roots merge and the rest stay generic.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), \(d\ge3\), is one \(5\times5\) theta determinant (<a href="#entry-2026-10-09-cube-merged-route-review">review</a>). Every two-block square-root merge now has a closed carry criterion (<a href="#entry-2026-10-09-cube-merge-product-formula">merge product formula</a>); the sequential coface fails at \(p=3\) from \(n=5\).</p>
+<p>Next: the queue head, Lucas digit factorization (entry four of four), on statement 2. Write the second merge of the pair confluence limit as a monomial merge in \(\tau\) and read its resonance primes from the carry criterion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -77987,6 +77987,55 @@ After \(n\) merges only the trivial character remains, the space \(\operatorname
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-merge-product-formula" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2" data-claims="thm:cube-merge-product-formula check:cube-merge-product-formula">
+<h3>9 October 2026 — Merge product formula: the merge criterion is a product of central binomials over binomials, so a two-block square-root merge keeps consecutive orders mod \(p\) exactly when two carry counts agree</h3>
+<p class="entry-meta">Working theorem (every \(A\ge B\ge0\), every odd \(p\)), with an exact control. Lead-queue development (head item, entry three of four, Continuing). Merge product formula cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-09-cube-unbalanced-merge-criterion">unbalanced merge criterion</a> and the <a href="#entry-2026-10-09-cube-merge-order-limit">merge order limit</a> reduce consecutiveness of the merge \(k[T]_{\le A}+x\,k[T]_{\le B}\) to a Toeplitz determinant of the coefficients \(c_j=\binom{1/2}{j}\). The head lead, Lucas digit factorization, asks for a digit-by-digit description; the previous entries named that as the next attempt. Statement 2's reductions (the <a href="#entry-2026-10-09-cube-pair-confluence-limit">pair confluence limit</a> and its second merge) meet such merges at specific primes. Which primes, exactly, for every \((A,B)\)?</p>
+<p><strong>General statement.</strong> thm:cube-merge-product-formula (every \(A\ge B\ge0\), every odd prime \(p\)).</p>
+<h4>The theorem</h4>
+<p><strong>Theorem (thm:cube-merge-product-formula).</strong> For \(A\ge B\ge0\), put \(m_k=A+1-k\). Then
+\[\det\Bigl[\tbinom{1/2}{A+1+i-j}\Bigr]_{0\le i,j\le B}=\pm2^{-e}\prod_{k=1}^{B+1}\frac{\binom{2m_k}{m_k}}{\binom{A+k}{2k-1}}\]
+with \(e=(B+1)(2A+1)\). Hence, for an odd prime \(p\), the merge \(k[T]_{\le A}+x\,k[T]_{\le B}\) with \(x=\sqrt{1+\varepsilon T}\) has the consecutive limit \(k[T]_{\le A+B+1}\) in characteristic \(p\) if and only if
+\[\sum_{k=1}^{B+1}\kappa_p(m_k,m_k)=\sum_{k=1}^{B+1}\kappa_p(m_k,2k-1),\]
+where \(\kappa_p(x,y)\) is the number of carries when adding \(x\) and \(y\) in base \(p\). Equivalently, the block \(M_{A,B}\) of lem:cube-unbalanced-merge-criterion is invertible mod \(p\) if and only if that equality holds.</p>
+<p><strong>Proof.</strong> <em>The product.</em> MacMahon's box formula (Krattenthaler, Advanced determinant calculus, 1999; the record states it in Gamma form in the <a href="#entry-2026-09-30-cube-far-class-determinants">far class determinants</a>, which with \(s=L\), \(m=M\) equals the middle expression below after telescoping) gives for integers \(n\ge L\ge0\), \(M\ge1\)
+\[\det_{1\le i,j\le M}\tbinom{n}{L+i-j}=\prod_{i=1}^{L}\prod_{j=1}^{n-L}\prod_{k=1}^{M}\frac{i+j+k-1}{i+j+k-2}=\prod_{i=1}^{L}\prod_{k=1}^{M}\frac{n-L+i+k-1}{i+k-1}.\]
+The second equality telescopes in \(j\). Both ends are polynomials in \(n\) (each entry \(\binom n{L+i-j}\) is), equal at infinitely many integers, so the identity holds at \(n=\alpha\) for every \(\alpha\). Take \(L=A+1\), \(M=B+1\), \(\alpha=\tfrac12\). For fixed \(k\), the factors \(\alpha-A-2+i+k\), \(1\le i\le A+1\), are the halves of the consecutive odd numbers \(2k-2A-1,\ldots,2k-1\). Their product has absolute value \(2^{-(A+1)}(2m_k-1)!!\,(2k-1)!!\), since \(k\le A+1\). The denominators give \(\prod_{i}(i+k-1)=(A+k)!/(k-1)!\). With \((2m-1)!!=\binom{2m}{m}m!/2^m\), \((A+k)!=m_k!\,(2k-1)!\binom{A+k}{2k-1}\) and \(k!\,(k-1)!/(2k-1)!=1/\binom{2k-1}{k}\), the \(k\)-th factor is \(2^{-(A+1)-m_k-k}\) times \(\binom{2m_k}{m_k}\binom{2k}{k}\big/\bigl(\binom{A+k}{2k-1}\binom{2k-1}{k}\bigr)\). Finally \(\binom{2k}{k}=2\binom{2k-1}{k}\), so each factor carries \(2^{-(2A+1)}\), and \(e=(B+1)(2A+1)\).</p>
+<p><em>The criterion.</em> The Toeplitz determinant lies in \(\mathbb Z[1/2]\), so it vanishes mod \(p\) exactly when its \(p\)-adic valuation is positive. By Kummer's theorem, \(v_p\binom{x+y}{x}=\kappa_p(x,y)\). Here \(\binom{2m_k}{m_k}\) has \(x=y=m_k\), and \(\binom{A+k}{2k-1}\) has \(x=m_k\), \(y=2k-1\), since \(m_k+2k-1=A+k\). So \(v_p\) of the determinant is \(\sum_k\kappa_p(m_k,m_k)-\sum_k\kappa_p(m_k,2k-1)\), which is nonnegative because the determinant lies in \(\mathbb Z[1/2]\), and it is zero exactly when the two sums agree. By the <a href="#entry-2026-10-09-cube-merge-order-limit">Padé corollary</a>, zero valuation is equivalent to the consecutive limit. By lem:cube-unbalanced-merge-criterion, the consecutive limit is equivalent to \(M_{A,B}\) invertible. \(\square\)</p>
+<p><strong>Checks against the record.</strong></p>
+<ul>
+<li>\(B=0\): the condition is \(\kappa_p(A,A)=\kappa_p(A,1)\), that is \(v_p(C_A)=0\), since \(C_A=\binom{2A}{A}/(A+1)\). This is the Catalan rule of the merge order limit.</li>
+<li>Characteristic zero: the product is a nonzero rational number. This is consistent with, and independently reproves, the nonvanishing in characteristic zero.</li>
+<li>\(B=A-2\): <a href="#cube-odd-unbalanced-confluence">obs:cube-odd-unbalanced-confluence</a> says the merge fails exactly when \(p\mid A\). This case was checked through part (b) below for \(A\le40\), not derived symbolically.</li>
+</ul>
+<p><strong>Control (check:cube-merge-product-formula).</strong> The script is <code>research/tools/bmd_merge_product_formula.gp</code>, with output in research/results/bmd-20261009-kbn/merge-product-formula.txt.</p>
+<ul>
+<li>(a) The identity holds exactly over \(\mathbb Q\) for \(0\le B\le A\le14\).</li>
+<li>(b) For \(p=3,5,7,11\) and all \(861\) pairs \(0\le B\le A\le40\), singularity by the product formula agrees with \(\det M_{A,B}\equiv0\). The block test was computed independently from binomial matrices mod \(p\), and there were no mismatches. The singular pairs number \(463\), \(416\), \(485\) and \(278\).</li>
+<li>(c) The carry form equals the product's valuation in all those cases.</li>
+</ul>
+<p>The theorem was proved before these runs; they test an identity, not cases of a conjecture. A first run of part (c) printed nothing, because a function was defined inside a braced block. It was moved to the top level and rerun. Only the rerun is recorded.</p>
+<p><strong>What this means.</strong> Every two-block square-root merge now has an explicit resonance set: the primes where a central binomial \(\binom{2m_k}{m_k}\), \(m_k=A+1-k\), carries more than \(\binom{A+k}{2k-1}\), in total over \(k\le B+1\). This is the digit factorization the lead asked for, in closed form. For statement 2 it predicts, without computation, where a merge of two full intervals \(\{0,\ldots,A\}\), \(\{0,\ldots,B\}\) changes profile. It does not cover merges of non-interval exponent sets, such as the sets after the first failure of the sequential coface, or twisted blocks. The open case is the second merge of the <a href="#entry-2026-10-09-cube-pair-confluence-limit">pair confluence limit</a>, whose blocks carry factors \((1+a_1T)^j\) and the variable \(\tau\). The theorem does not apply to it until that merge is put in the monomial form of the merge order limit.</p>
+<p><strong>Follow-up.</strong> Continuing (entry three of four). The lead still bears on statement 2 through the second merge of the pair confluence limit. Next attempt: write that merge, in each character, as a monomial merge in \(\tau\), and read its resonance primes from the carry criterion. Compare them with the record's \(p\mid2j-1\).</p>
+<p><strong>Remaining gap.</strong> Statement 2: generic normality of the one-merge limit \(L_d\) on \(C_{n-2}\), and the \(p=3\), \(d=2\) slice beyond \(n\le21\).</p>
+<p><strong>Process.</strong> Proof first, from a record identity; one control run (three parts) tested it.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-class-determinants (MacMahon's formula and its polynomial extension); lem:cube-merge-order-limit (Padé corollary); lem:cube-unbalanced-merge-criterion; obs:cube-odd-unbalanced-confluence.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer passed the MacMahon step, its orientation and polynomial extension, every factorial step including \(k=A+1\), the Kummer step, the equivalence chain and the script. It reran an independent check: the exact power of two, the singular counts from the Toeplitz valuation, and \(B=A-2\) singular exactly when \(p\mid A\) for \(p=3,5,7\), \(A\le40\). Its required changes were applied: the citation form of MacMahon's formula, the exponent \(e\), the characteristic-zero wording, and the scope of the prediction to two-interval merges.</p>
+<p><strong>Status:</strong> working theorem (closed product and carry criterion for every two-block merge) and exact control; lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 20.47 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 16.20 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 2.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.03 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
