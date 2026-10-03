@@ -1,0 +1,63 @@
+// Wronskian divisibility test (cycle bmd-20261009-be, 9 October 2026), toward conj:cube-ramification-flow-order.
+// U_p(y) = span{Q' pi - Q pi' : Q = z, ..., z^M} + span{z^m pi : p-1 <= m <= M-2}, pi = prod(1 - y_i z), k = M - p.
+// W(z, y) = Wronskian of this basis, a polynomial in z, y. Hhat(z, y) = sum_(|S| = k+1) Vand(y_S)^2 prod_(i not in S)
+// (1 - z y_i)^(2k) is the flowed Hankel determinant Hank_k(y/(1 - z y)) times prod_i (1 - z y_i)^(2k), a polynomial.
+// Question: is W divisible by Hhat in Q[z, y]? If W = Hhat * U with U(0, y) a nonzero constant, then
+// ord_(z=0) W = flow order of Hank_k at every y, which is conj:cube-ramification-flow-order.
+// (A first version also divided by Vand(y); W is symmetric in y, so that was dropped.)
+// Reports: divisibility by Hhat, and the quotient's constant term and z-degree. M = 4 (k = 1, 2), M = 5 (k = 1, 2).
+LIB "general.lib";
+proc subsetsk(int M, int k)
+{
+  list L; int c, t, cnt;
+  for (c = 0; c < 2^M; c++)
+  {
+    intvec s; cnt = 0;
+    for (t = 1; t <= M; t++) { if ((c div 2^(t - 1)) mod 2 == 1) { cnt++; s[cnt] = t; } }
+    if (cnt == k) { L = insert(L, s, size(L)); }
+    kill s;
+  }
+  return(L);
+}
+proc runM(int M, int kmax)
+{
+  int k, j, a, b, i, n;
+  poly pi = 1; for (i = 1; i <= M; i++) { pi = pi * (1 - var(i + 1) * var(1)); }
+  poly V = 1; for (a = 1; a <= M; a++) { for (b = a + 1; b <= M; b++) { V = V * (var(b + 1) - var(a + 1)); } }
+  for (k = 1; k <= kmax; k++)
+  {
+    int p = M - k; int N = M + k;
+    list B;
+    for (j = 1; j <= M; j++) { B = insert(B, diff(var(1)^j, var(1)) * pi - var(1)^j * diff(pi, var(1)), size(B)); }
+    for (j = p - 1; j <= M - 2; j++) { B = insert(B, var(1)^j * pi, size(B)); }
+    matrix Wm[N][N];
+    for (j = 1; j <= N; j++) { poly f = B[j]; for (i = 1; i <= N; i++) { Wm[i, j] = f; f = diff(f, var(1)); } kill f; }
+    poly W = det(Wm); kill Wm;
+    // Hhat
+    list SS = subsetsk(M, k + 1); poly Hh = 0;
+    for (j = 1; j <= size(SS); j++)
+    {
+      intvec S = SS[j]; poly vs = 1; poly rest = 1;
+      for (a = 1; a <= size(S); a++) { for (b = a + 1; b <= size(S); b++) { vs = vs * (var(S[b] + 1) - var(S[a] + 1)); } }
+      for (i = 1; i <= M; i++) { int inS = 0; for (a = 1; a <= size(S); a++) { if (S[a] == i) { inS = 1; } } if (inS == 0) { rest = rest * (1 - var(1) * var(i + 1))^(2 * k); } kill inS; }
+      Hh = Hh + vs^2 * rest; kill S; kill vs; kill rest;
+    }
+    // W is symmetric in y (U_p is defined through pi), so no Vandermonde factor is expected
+    list dh = division(W, Hh);
+    int okH = (dh[2][1, 1] == 0);
+    poly U = dh[1][1, 1];
+    print("M = " + string(M) + ", k = " + string(k) + " (p = " + string(p) + "): W divisible by Hhat: " + string(okH));
+    if (okH)
+    {
+      poly U0 = subst(U, var(1), 0);
+      print("   quotient U: constant term at z = 0: " + string(U0) + "; z-degree " + string(deg(U, intvec(1, 0:M))) + "; U = " + string(U));
+      kill U0;
+    }
+    kill p; kill N; kill B; kill W; kill SS; kill Hh; kill dh; kill okH; kill U;
+  }
+}
+ring r4 = 0, (z, y1, y2, y3, y4), dp;
+runM(4, 2);
+ring r5 = 0, (z, y1, y2, y3, y4, y5), dp;
+runM(5, 2);
+quit;

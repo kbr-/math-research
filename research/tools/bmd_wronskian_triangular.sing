@@ -1,0 +1,74 @@
+// Triangular congruence test (cycle bmd-20261009-be, 9 October 2026), toward conj:cube-ramification-flow-order.
+// W(z, y) = Wronskian of U_p(y) = span{Q' pi - Q pi' : Q = z..z^M} + span{z^m pi : p-1 <= m <= M-2},
+// Hhat(z, y) = Hank_k(y/(1 - z y)) prod (1 - z y)^(2k) = sum_(|S|=k+1) Vand(y_S)^2 prod_(i not in S) (1 - z y_i)^(2k).
+// Write W = sum w_n z^n, Hhat = sum hh_n z^n. Claim tested: for n = 0..nmax there are constants c_n != 0 with
+// w_n - c_n hh_n in J_(n-1) = (hh_0, ..., hh_(n-1)) = (Hank_k, D Hank_k, ..., D^(n-1) Hank_k).
+// That gives (w_0..w_n) = (hh_0..hh_n) for all n, hence ord_0 W = flow order at every y.
+// Method: reduce w_n and hh_n modulo a standard basis of J_(n-1) and test proportionality by a constant.
+LIB "general.lib";
+proc subsetsk(int M, int k)
+{
+  list L; int c, t, cnt;
+  for (c = 0; c < 2^M; c++)
+  {
+    intvec s; cnt = 0;
+    for (t = 1; t <= M; t++) { if ((c div 2^(t - 1)) mod 2 == 1) { cnt++; s[cnt] = t; } }
+    if (cnt == k) { L = insert(L, s, size(L)); }
+    kill s;
+  }
+  return(L);
+}
+proc zcoef(poly f, int n)
+{
+  // coefficient of z^n (z = var(1)) as a polynomial in y
+  poly g = jet(f, n, intvec(1, 0:(nvars(basering) - 1))) - jet(f, n - 1, intvec(1, 0:(nvars(basering) - 1)));
+  if (n == 0) { g = jet(f, 0, intvec(1, 0:(nvars(basering) - 1))); }
+  return(subst(g / var(1)^n, var(1), 0));
+}
+proc runM(int M, int kmax, int nmax)
+{
+  int k, j, a, b, i, n;
+  poly pi = 1; for (i = 1; i <= M; i++) { pi = pi * (1 - var(i + 1) * var(1)); }
+  for (k = 1; k <= kmax; k++)
+  {
+    int p = M - k; int N = M + k;
+    list B;
+    for (j = 1; j <= M; j++) { B = insert(B, diff(var(1)^j, var(1)) * pi - var(1)^j * diff(pi, var(1)), size(B)); }
+    for (j = p - 1; j <= M - 2; j++) { B = insert(B, var(1)^j * pi, size(B)); }
+    matrix Wm[N][N];
+    for (j = 1; j <= N; j++) { poly f = B[j]; for (i = 1; i <= N; i++) { Wm[i, j] = jet(f, nmax + N, intvec(1, 0:M)); f = diff(f, var(1)); } kill f; }
+    poly W = jet(det(Wm), nmax, intvec(1, 0:M)); kill Wm;
+    list SS = subsetsk(M, k + 1); poly Hh = 0;
+    for (j = 1; j <= size(SS); j++)
+    {
+      intvec S = SS[j]; poly vs = 1; poly rest = 1;
+      for (a = 1; a <= size(S); a++) { for (b = a + 1; b <= size(S); b++) { vs = vs * (var(S[b] + 1) - var(S[a] + 1)); } }
+      for (i = 1; i <= M; i++) { int inS = 0; for (a = 1; a <= size(S); a++) { if (S[a] == i) { inS = 1; } } if (inS == 0) { rest = rest * (1 - var(1) * var(i + 1))^(2 * k); } kill inS; }
+      Hh = Hh + vs^2 * jet(rest, nmax, intvec(1, 0:M)); kill S; kill vs; kill rest;
+    }
+    ideal J = 0;
+    for (n = 0; n <= nmax; n++)
+    {
+      poly wn = zcoef(W, n); poly hn = zcoef(Hh, n);
+      ideal SJ = std(J);
+      poly rw = reduce(wn, SJ); poly rh = reduce(hn, SJ);
+      string verdict;
+      if (rh == 0) { verdict = "hh_n in J_(n-1); w_n reduced to 0: " + string(rw == 0); }
+      else
+      {
+        number c = leadcoef(rw) / leadcoef(rh);
+        if (rw - c * rh == 0) { verdict = "w_n = c hh_n mod J_(n-1), c = " + string(c); } else { verdict = "NOT proportional mod J_(n-1)"; }
+        kill c;
+      }
+      print("M = " + string(M) + ", k = " + string(k) + ", n = " + string(n) + ": " + verdict);
+      J = J, hn;
+      kill wn; kill hn; kill SJ; kill rw; kill rh; kill verdict;
+    }
+    kill p; kill N; kill B; kill W; kill SS; kill Hh; kill J;
+  }
+}
+ring r4 = 0, (z, y1, y2, y3, y4), dp;
+runM(4, 2, 3);
+ring r5 = 0, (z, y1, y2, y3, y4, y5), dp;
+runM(5, 2, 2);
+quit;

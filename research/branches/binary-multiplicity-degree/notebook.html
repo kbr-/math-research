@@ -47,8 +47,15 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-family-schubert-reduction">family Schubert reduction</a>; eight open items). Each family's least coefficients are the minors of one space \(V_p(y)\). The unique cheapest candidate is its vanishing-order set at \(0\), and its excess is the ramification weight of the polynomial space \(U_p=\{Q'\pi-Q\pi'\}+\pi\,\operatorname{span}\{z^m:p-1\le m\le M-2\}\).</p>
-<p>Next: prove conj:cube-ramification-flow-order, that the ramification weight equals the flow order of \(\mathrm{Hank}_{M-p}\). Use the dual space \(U_p^\perp\) of dimension \(p-1\) under the residue pairing, or control the twist \((z_0+w)^m\) under translation. This also settles the top-up identity's vanishing pattern for every \(M\). The next entry is the required route review if the proof does not close within one cycle.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), goal-level route review (<a href="#entry-2026-10-09-cube-wronskian-congruence">Wronskian congruence</a>; eight open items). Since the selection rule review, five research cycles have done the following:</p>
+<ul>
+<li>proved the rotation-cluster theorem and the dilation transfer;</li>
+<li>settled every fixed-cluster arc at \(M=4\);</li>
+<li>reduced each family's cheapest least coefficient to the ramification of a polynomial space;</li>
+<li>proved that ramification equals flow order at \(M=4\).</li>
+</ul>
+<p>At \(M=5\) the ideal-level congruence fails at second order, while the orders agree pointwise.</p>
+<p>Next: the required route review. It should weigh the fixed-cluster programme (ramification equals flow order for \(M\ge5\), higher \(u\)-coefficients, ties) against moving arcs and the untouched cores: \(C\)-block uniqueness, the confluent tie window and the triple window. It should then choose the highest-risk item, with outside leads on Wronskians, Schubert calculus and ramification of linear series.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -71663,6 +71670,98 @@ where \(W\) is the Wronskian and \(U_p\) is the space of polynomials of degree a
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-wronskian-congruence" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-ramification-flow-order-four check:cube-wronskian-congruence">
+<h3>9 October 2026 — The Wronskian of each family's polynomial space matches the flowed Hankel determinant order by order modulo the lower flow ideal at M = 4, proving ramification equals flow order there; at M = 5 the congruence fails at second order while the orders still agree</h3>
+<p class="entry-meta">Working proof at M = 4 by exact Gröbner certificates; finite checks at M = 5; refutation of two stronger mechanisms. Wronskian congruence cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs. By prop:cube-family-schubert-reduction, each family's cheapest least coefficient has excess equal to the ramification weight \(r_p\) of the polynomial space \(U_p(y)\) at \(0\). conj:cube-ramification-flow-order asks that \(r_p\) equal the flow order of \(\mathrm{Hank}_k\). The missing implication is an algebraic mechanism tying the Wronskian coefficients of \(U_p\) to the derivatives \(D^r\mathrm{Hank}_k\). The cycle tests three candidate mechanisms of decreasing strength. A mechanism that holds proves the conjecture where it holds; one that fails redirects the proof.</p>
+<p><strong>Notation.</strong></p>
+<ul>
+<li>\(W(z,y)=\sum_nw_n(y)z^n\) is the Wronskian of the basis \(\{Q'\pi-Q\pi':Q=z,\ldots,z^M\}\cup\{z^m\pi:p-1\le m\le M-2\}\) of \(U_p(y)\). It is a polynomial in \(z\) and \(y\), symmetric in \(y\).</li>
+<li>\(\hat H(z,y)=\sum_{|S|=k+1}\mathrm{Vand}(y_S)^2\prod_{i\notin S}(1-zy_i)^{2k}=\prod_i(1-zy_i)^{2k}\,\mathrm{Hank}_k(y/(1-zy))=\sum_n\hat h_n(y)z^n\).</li>
+<li>Since \(\mathrm{Hank}_k(y/(1-zy))=\sum_mz^mD^m\mathrm{Hank}_k/m!\) and the prefactor is a unit, \(J_n:=(\hat h_0,\ldots,\hat h_n)=(\mathrm{Hank}_k,D\,\mathrm{Hank}_k,\ldots,D^n\mathrm{Hank}_k)\). The flow order at \(y\) is the least \(n\) with \(y\notin V(J_n)\).</li>
+</ul>
+<p><strong>Mechanism 1: shifted windows.</strong> By partial fractions, \(U_p/\pi^2=\operatorname{span}\{(1-y_qz)^{-2}\}\oplus\{\sum_qg(y_q)w_q/(1-y_qz):g\in G_0\}\). Here \(w_q=1/\prod_{l\ne q}(y_q-y_l)\) and \(G_0=\operatorname{span}\{u,\ldots,u^k\}\). The element \(z^m\pi\) has residue vector \((y_q^{M-1-m}w_q)_q\), and \(m\in[p-1,M-2]\) gives exponents \(s=M-1-m\in[1,k]\).</p>
+<p>A heuristic, not derived in full here: translating to \(z_0\) replaces \(G_0\) by its image \(\operatorname{span}\{u^s(1+z_0u)^{M-1-s}\}\) under the flow. Expanding in Plücker coordinates would write \(W(z_0)\) as \(\sum_I\kappa_Iz_0^{d_I}F_I(y_{z_0})\), up to units, over \(k\)-subsets \(I\subseteq[1,M-1]\) with \(d_I=\sum I-\binom{k+1}2\). Here \(F_I\) is the window-type Wronskian at \(0\) with residue polynomials \(u^s\), \(s\in I\). The computation below concerns only membership facts about the \(F_I\).</p>
+<p>research/tools/bmd_shifted_window_ideal.sing (research/results/bmd-20261009-be/shifted-window-ideal.txt) finds, exactly over \(\mathbb Q[y]\), \(M=4\) (\(k=1,2\)) and \(M=5\) (\(k=1,2,3\)):</p>
+<ul>
+<li>\(F_{[1,k]}=c\,\mathrm{Vand}\,\mathrm{Hank}_k\) with \(c\in\{-2,1,-6,2,-1\}\), as the window identity requires;</li>
+<li>no shifted \(F_I\) lies in \(\mathrm{Vand}\cdot J_{d_I-1}\), the membership a termwise proof of equality would need;</li>
+<li>every shifted \(F_I\) lies in \(\mathrm{Vand}\cdot J_{d_I}\) at \(M=4\) and at \(M=5\), \(k=1,3\);</li>
+<li>several at \(M=5\), \(k=2\) are not in \(\mathrm{Vand}\cdot J_{d_I}\).</li>
+</ul>
+<p>Given the expansion, the \(J_{d_I}\) memberships give only the lower bound \(r_p\ge j_p\), where they hold. The memberships needed for equality fail as ideal memberships; non-membership does not show pointwise failure.</p>
+<p><strong>Mechanism 2: divisibility (refuted).</strong> research/tools/bmd_wronskian_divisibility.sing (research/results/bmd-20261009-be/wronskian-divisibility.txt): \(W\) is not divisible by \(\hat H\) in \(\mathbb Q[z,y]\) for \(M=4\), \(k=1,2\) and \(M=5\), \(k=1,2\). This is consistent with the translation picture: at \(z_0\ne0\) the ramification of \(U_p(y)\) is that of the twisted space, not of \(U_p(y_{z_0})\), so \(W\) need not vanish where \(\hat H\) does away from \(z=0\). A first version divided by \(\mathrm{Vand}\) first. That was wrong, since \(W\) is symmetric, and that version was replaced. The conjecture compares orders at \(z=0\) only.</p>
+<p><strong>Mechanism 3: triangular congruence.</strong> Is \(w_n\equiv c_n\hat h_n\pmod{J_{n-1}}\) with constants \(c_n\ne0\)? research/tools/bmd_wronskian_triangular.sing (research/results/bmd-20261009-be/wronskian-triangular.txt) reduces \(w_n\) and \(\hat h_n\) modulo a standard basis of \(J_{n-1}\) over \(\mathbb Q\):</p>
+<ul>
+<li>\(M=4\), \(k=1\): \(c_0,c_1,c_2=-576,-1440,-2880\); and \(\hat h_3\in J_2\), \(w_3\in J_2\).</li>
+<li>\(M=4\), \(k=2\): \(c_0,c_1,c_2=-34560,-51840,-86400\); and \(\hat h_3,w_3\in J_2\).</li>
+<li>\(M=5\), \(k=1\): \(c_0,c_1,c_2=-207360,-622080,-1451520\).</li>
+<li>\(M=5\), \(k=2\): \(c_0,c_1=-49766400,-87091200\), but at \(n=2\) the reductions of \(w_2\) and \(\hat h_2\) are not proportional.</li>
+</ul>
+<p><strong>General statement.</strong> prop:cube-ramification-flow-order-four. For \(M=4\), \(p\in\{2,3\}\) (\(k=2,1\)) and every \(y\in\mathbb C^4\) (no distinctness needed, since \(\pi(0)=1\)), with \(V_p,U_p,r_p\) as in prop:cube-family-schubert-reduction: flow orders take only the values \(0,1,2,\infty\). Whenever the flow order \(j_p(y)\) is finite, \(\operatorname{ord}_{z=0}W(z,y)=j_p(y)\). So \(\dim V_p(y)=M+k\) and \(r_p(y)=j_p(y)\): conj:cube-ramification-flow-order holds at every such \(y\). (For \(p=1\), \(\mathrm{Hank}_3=\mathrm{Vand}^2\), and for \(p=4\) there is no Hankel condition.)</p>
+<p><em>Proof.</em></p>
+<ul>
+<li>The certificates above are exact: a normal form \(0\) modulo a standard basis proves membership.</li>
+<li>\(D\) is a derivation, so \(\hat h_3\in J_2\), i.e. \(D^3\mathrm{Hank}_k\in J_2\), gives \(D^{m}\mathrm{Hank}_k\in J_2\) for all \(m\ge3\) by induction: \(D(\sum a_iD^i\mathrm{Hank})\in J_3=J_2\). Hence \(V(J_n)=V(J_2)\) for \(n\ge2\), and flow orders lie in \(\{0,1,2,\infty\}\).</li>
+<li>Let \(j=j_p(y)\le2\). For \(n&lt;j\), \(w_n(y)=c_n\hat h_n(y)+(\text{element of }J_{n-1})(y)=0\), since \(\hat h_0,\ldots,\hat h_{j-1}\) vanish at \(y\). Then \(w_j(y)=c_j\hat h_j(y)\ne0\). So \(\operatorname{ord}_0W=j\).</li>
+<li>A nonzero Wronskian means the basis of \(U_p(y)\) is independent. So \(\dim U_p=\dim V_p=M+k\), and \(r_p(y)=\operatorname{ord}_0W(U_p)=j\) by prop:cube-family-schubert-reduction. \(\square\)</li>
+</ul>
+<p>Combined with that proposition: at \(M=4\), on fixed-cluster arcs at any \(y_0\) of finite flow order, consider the sets of family \(p\) with negative part \([-p,-1]\) and nonvanishing least coefficient. Among them, the unique one of least excess, \([-p,-1]\cup O_p(y_0)\), has excess exactly \(j_p(y_0)\). That is independent of the classification of \(\Sigma_k\) in the dilation-transfer entry.</p>
+<p><strong>The failure at \(M=5\), \(k=2\).</strong> The congruence at \(n=2\) fails as ideal membership. research/tools/bmd_sigma2_quintic_ramification.gp (research/results/bmd-20261009-be/sigma2-quintic-ramification.txt) tests the conjecture pointwise where it matters, on \(V(J_1)=\Sigma_2\). It uses centred quintics with \(e_2,e_3\) free and \(e_4=(12e_2^3+45e_3^2)/(40e_2)\), \(e_5=(4e_2^2e_3+30e_3e_4)/(25e_2)\), which solve \(\mathrm{Hank}_2=D\,\mathrm{Hank}_2=0\). The points lie on the centred slice \(e_1=0\), \(e_2\ne0\). Centring is not a reduction here, since \(D\,\mathrm{Hank}_2\) need not be translation invariant off \(\mathrm{Hank}_2=0\). At six points with \(e_3\ne0\), all with distinct roots, and every \(p\le4\), the ramification weight equals the flow order:</p>
+<ul>
+<li>\(2\) for \(p=2,3\);</li>
+<li>\(0\) for \(p=1,4\).</li>
+</ul>
+<p>All spaces have full dimension. The vanishing orders are \([0,5]\cup\{7,8\}\) for \(p=2\) and \([0,5]\cup\{8\}\) for \(p=3\). So at the six tested points \(\operatorname{ord}_0W=2\), equal to the flow order, while \(w_2-c\,\hat h_2\notin J_1\) for every constant \(c\). The likely reason is that \(J_1\) is not radical there, or that the difference vanishes only off the distinct-root locus. A direct comparison of the saturated loci \(V(J_1,w_2)\) and \(V(J_1,\hat h_2)\) off the collisions, with radicals in Singular (research/tools/bmd_wronskian_locus_compare.sing), timed out at the \(600\) s limit during the radical computation. This is a tool timeout, not a mathematical result. Before it stopped, it printed the dimensions after saturation by \(\mathrm{Vand}\) (research/results/bmd-20261009-be/locus-compare-partial.txt):</p>
+<ul>
+<li>\(\dim V(J_1)=3\), the affine cone \(\Sigma_2\) at \(M=5\);</li>
+<li>\(\dim V(J_1,w_2)=\dim V(J_1,\hat h_2)=2\).</li>
+</ul>
+<p>So both second-order conditions cut proper divisors of \(\Sigma_2\), consistent with the conjecture. Whether the two divisors coincide is open.</p>
+<p><strong>What this means.</strong> The conjecture is now proved at \(M=4\) and supported at \(M=5\), but its mechanism is not a clean ideal identity for all \(M\). The coefficientwise congruence holds through first order in every computed case. At first order it is the top-up identity, now with the Wronskian as its source. At \(M=4\) it holds through the stabilization of the flow ideal, but it breaks at \(M=5\), \(k=2\), second order. A proof for all \(M\) must work with radicals or with points, not with ideal membership alone.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-ramification-flow-order for \(M\ge5\); the radical form of the congruence.</li>
+<li>Flow-order-infinite points (\(V(J_2)\) at \(M=4\)): the conjecture predicts a dimension drop there or no such distinct-root points.</li>
+<li>The higher \(u\)-coefficients on fixed-cluster arcs; ties and the union bound; moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-family-schubert-reduction and its proof;</li>
+<li>conj:cube-ramification-flow-order;</li>
+<li>lem:cube-reparametrization-flow;</li>
+<li>thm:cube-cherry-hankel-form.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. The proposition's computational inputs are exact standard-basis reductions over \(\mathbb Q\), saved in full. The window identity \(F_{[1,k]}=c\,\mathrm{Vand}\,\mathrm{Hank}_k\) recovered by the same code serves as control.</p>
+<p>One medium-effort reviewer verified the following and matched every quoted number against the saved outputs:</p>
+<ul>
+<li>the \(J_n\) identification, the derivation step and the pointwise step;</li>
+<li>the basis and dimension of \(U_p\) and the basis independence of \(\operatorname{ord}_0W\);</li>
+<li>the \(z\)-truncation, Singular's <code>jet</code>/<code>reduce</code> behaviour and the soundness of the proportionality certificates.</li>
+</ul>
+<p>Its required changes, all made:</p>
+<ul>
+<li>the shifted-window expansion marked as heuristic, and the conclusion reworded to membership facts, including the \(J_{d_I}\) lower bound;</li>
+<li>the six-point claim narrowed to the points and the centred slice;</li>
+<li>the proposition's scope;</li>
+<li>the qualifiers inherited from the Schubert reduction.</li>
+</ul>
+<p>Status: working proof (\(M=4\), via exact certificates); finite checks and two refuted mechanisms (\(M=5\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-be">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 14.37 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.33 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 23.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 43.78 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 0.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 

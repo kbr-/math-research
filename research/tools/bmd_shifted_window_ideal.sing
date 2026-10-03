@@ -1,0 +1,89 @@
+// Shifted-window ideal membership (cycle bmd-20261009-be, 9 October 2026), toward conj:cube-ramification-flow-order.
+// For a k-subset I of [1, M-1] let F_I(y) = det of the (M+k) x (M+k) matrix with rows n = 0..M+k-1 and columns
+// ((n+1) y_q^n)_(q = 1..M) and (h_(s+n-M+1)(y))_(s in I): up to constants the Wronskian at 0 of
+// span{1/(1-y_q z)^2} + span{sum_q y_q^s w_q / (1 - y_q z) : s in I}. I0 = [1,k] is the window (U_p / pi^2).
+// Claim tested: F_I0 = c Vand Hank_k (c != 0), and for d = sum I - k(k+1)/2 >= 1,
+// F_I / Vand lies in the ideal J_(d-1) = (Hank_k, D Hank_k, ..., D^(d-1) Hank_k), D = sum y_i^2 d/dy_i.
+// That membership would give conj:cube-ramification-flow-order through the translation argument of the entry.
+// Cases: M = 4 (k = 1, 2) and M = 5 (k = 1, 2, 3).
+LIB "general.lib";
+proc hh(int n, int M)
+{
+  if (n < 0) { return(poly(0)); }
+  poly r = 0; int i;
+  ideal m = maxideal(n);
+  if (n == 0) { return(poly(1)); }
+  for (i = 1; i <= size(m); i++) { r = r + m[i]; }
+  return(r);
+}
+proc Dop(poly f, int M)
+{
+  poly r = 0; int i;
+  for (i = 1; i <= M; i++) { r = r + var(i)^2 * diff(f, var(i)); }
+  return(r);
+}
+proc runM(int M)
+{
+  int k, n, q, j, d, a, b;
+  poly V = 1;
+  for (a = 1; a <= M; a++) { for (b = a + 1; b <= M; b++) { V = V * (var(b) - var(a)); } }
+  // power sums
+  list P; for (j = 0; j <= 2 * M; j++) { poly pj = 0; for (q = 1; q <= M; q++) { pj = pj + var(q)^j; } P[j + 1] = pj; kill pj; }
+  for (k = 1; k <= M - 2; k++)
+  {
+    matrix Hm[k + 1][k + 1];
+    for (a = 1; a <= k + 1; a++) { for (b = 1; b <= k + 1; b++) { Hm[a, b] = P[a + b - 1]; } }
+    poly Hk = det(Hm); kill Hm;
+    // all k-subsets of [1, M-1]
+    list subs = list();
+    intvec sel; int c;
+    for (c = 0; c < 2^(M - 1); c++)
+    {
+      intvec s; int cnt = 0; int t;
+      for (t = 1; t <= M - 1; t++) { if ((c div 2^(t - 1)) mod 2 == 1) { cnt++; s[cnt] = t; } }
+      if (cnt == k) { subs = insert(subs, s, size(subs)); }
+      kill s; kill cnt; kill t;
+    }
+    int N = M + k;
+    poly F0;
+    for (j = 1; j <= size(subs); j++)
+    {
+      intvec I = subs[j];
+      d = sum(I) - k * (k + 1) div 2;
+      matrix G[N][N];
+      for (n = 0; n < N; n++)
+      {
+        for (q = 1; q <= M; q++) { G[n + 1, q] = (n + 1) * var(q)^n; }
+        for (a = 1; a <= k; a++) { G[n + 1, M + a] = hh(I[a] + n - M + 1, M); }
+      }
+      poly F = det(G); kill G;
+      poly Fq = F / V;
+      if (F - Fq * V != 0) { print("M = " + string(M) + ", k = " + string(k) + ", I = " + string(I) + ": not divisible by Vand"); }
+      if (d == 0)
+      {
+        F0 = Fq;
+        poly r0 = reduce(Fq, std(ideal(Hk)));
+        print("M = " + string(M) + ", k = " + string(k) + ", I = " + string(I) + " (window): F/Vand in (Hank_k): " + string(r0 == 0) + ", F/(Vand Hank_k) = " + string(Fq / Hk));
+        kill r0;
+      }
+      else
+      {
+        ideal J = Hk; poly g = Hk; int r;
+        for (r = 1; r <= d - 1; r++) { g = Dop(g, M); J = J, g; }
+        poly rr = reduce(Fq, std(J));
+        // also membership in the larger ideal J_d (one more derivative), for comparison
+        ideal Jd = J, Dop(g, M);
+        poly rd = reduce(Fq, std(Jd));
+        print("M = " + string(M) + ", k = " + string(k) + ", I = " + string(I) + ", d = " + string(d) + ": F/Vand in J_(d-1): " + string(rr == 0) + "; in J_d: " + string(rd == 0) + "; F = 0: " + string(Fq == 0));
+        kill J; kill g; kill r; kill rr; kill Jd; kill rd;
+      }
+      kill F; kill Fq; kill I;
+    }
+    kill subs; kill sel; kill c; kill N; kill F0; kill Hk;
+  }
+}
+ring r4 = 0, (y1, y2, y3, y4), dp;
+runM(4);
+ring r5 = 0, (y1, y2, y3, y4, y5), dp;
+runM(5);
+quit;
