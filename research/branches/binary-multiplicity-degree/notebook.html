@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 2 at \(p=3\), \(d=2\) (<a href="#entry-2026-10-09-cube-ternary-one-root-face">ternary one-root face</a>). The one-root face of \(\Delta_{n,2}\bmod3\) is the smaller determinant times a Toeplitz minor \(B_n\) of \((1+x)^{1/2}\). \(B_n\) vanishes for \(5\le n\le60\), so that induction stops at \(n=4\).</p>
-<p>Next: the two-root face. Make \(a_1,a_2\) dominant together, expand along the \(2n-1\) rows containing them, and identify the extreme coefficient as a two-variable minor times \(\Delta_{n-2}\). Test whether that minor survives modulo \(3\) where \(B_n\) dies. If it does, prove its nonvanishing in general.</p>
+<p>Route item: cube-odd-characteristic; statement 2 at \(p=3\), \(d=2\) (<a href="#entry-2026-10-09-cube-ternary-two-root-face">ternary two-root face</a>). Faces with one or two dominant labels give induction steps only up to \(n=4\) and \(n=5\). Their minors vanish identically beyond, so faces with a bounded dominant set cannot reach every \(n\).</p>
+<p>Next: the opposite face, where one label \(a_n\to0\) and the other \(n-1\) labels are dominant. Its lowest \(a_n\)-order term relates \(\Delta_n\) to the confluent limit of \(a_n\) with the dummy label \(0\). Identify that term as a known minor times \(\Delta_{n-1}\) or a confluent variant, and test it modulo \(3\). The factorization \((1+x)^{1/2}=(1+x)^2H(x^3)\), with \(H\) the indicator series of the integers whose ternary digits are \(0\) or \(1\), is the tool for the minor.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68441,6 +68441,74 @@ Here \(E\) runs over \(n\)-subsets of \(A\). The last factor vanishes unless \(0
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">16.67 s</td></tr>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 32.40 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.55 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-ternary-two-root-face" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-ternary-two-root-face ex:cube-ternary-two-root-face-vanishes">
+<h3>9 October 2026 — The two-root face of the characteristic-three degree-two determinant is a two-label minor times a squared Vandermonde times \(\Delta_{n-2}\); the minor vanishes identically for \(6\le n\le12\), one size later than the one-root face</h3>
+<p class="entry-meta">Working proof of the exact two-root face of \(\Delta_{n,2}\bmod3\) for every \(n\); exact refutation of that induction step for \(6\le n\le12\). Two-root face cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 2 at \(p=3\), \(d=2\), conj:cube-ternary-degree-two-nonvanishing. The <a href="#entry-2026-10-09-cube-ternary-one-root-face">one-root face</a> gives an induction step only for \(n\le4\), because its Toeplitz minor \(B_n\) vanishes modulo \(3\) from \(n=5\) on. Does the face with two jointly dominant labels survive longer, and how much longer?</p>
+<p><strong>General statement.</strong> lem:cube-ternary-two-root-face. In the setting of lem:cube-ternary-one-root-face, with \(n\ge2\), give \(a_1,a_2\) weight \(1\) and the other labels weight \(0\). Put \(\mathrm{top}'_n=\{\binom{n-1}2+2,\ldots,\binom{n+1}2+1\}\), which has \(2n-1\) columns, and \(d'_n=\Sigma\,\mathrm{top}'_n-2\Sigma E_{n-1}\). Then the \((a_1,a_2)\)-degree of \(\Delta_n\) is at most \(d'_n\), and its component of that degree is
+\[
+\pm\,G_n(a_1,a_2)\cdot\det\big[a_j^{\,e}\big]_{3\le j\le n,\ e\in E_{n-1}\setminus\{0\}}^{\,2}\cdot\Delta_{n-2}(a_3,\ldots,a_n).
+\]
+Here \(G_n\) is the determinant, on the columns \(k\in\mathrm{top}'_n\), of the \(2n-1\) rows:</p>
+<ul>
+<li>\(\beta(k-e)\beta(e)\,a_1^{k-e}\) for \(e\in E_{n-1}\);</li>
+<li>\(\beta(k-e)\beta(e)\,a_2^{k-e}\) for \(e\in E_{n-1}\);</li>
+<li>\(\sum_m\beta(m)\beta(k-m)\,a_1^ma_2^{k-m}\).</li>
+</ul>
+<p>So \(G_n\not\equiv0\) and \(\Delta_{n-2}\not\equiv0\) give \(\Delta_n\not\equiv0\), with \(\Delta_0=1\): \(\det[a_j^e]\) is a nonzero polynomial since its exponents are distinct, and \(\mathbb F_3[a_1,\ldots,a_n]\) is a domain.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The rows containing \(a_1\) or \(a_2\) are \(w_1\), \(w_2\), \(w_1w_2\), and \(w_iw_j\) for \(i\in\{1,2\}\), \(j\ge3\): \(2n-1\) rows, \(R_{12}\). The others are the rows of \(\Delta_{n-2}(a_3,\ldots,a_n)\). Its columns after deleting rows \(1\), \(T\) and columns \(0\), \(1\), namely \(\{2,\ldots,\binom{n-1}2+1\}\), are the complement of \(\mathrm{top}'_n\), since \(\binom{n+1}2-\binom{n-1}2=2n-1\). Laplace along \(R_{12}\) gives \(\Delta_n=\sum_K\pm\det(R_{12},K)\det(R',K^c)\), with \(\det(R',(\mathrm{top}'_n)^c)=\pm\Delta_{n-2}\).</li>
+<li>Write \(y_0=0\) for the dummy label and \(y_j=a_j\) for \(j\ge3\). The row of \((i,j)\), \(i\in\{1,2\}\), has entry \(\sum_e\beta(k-e)\beta(e)\,a_i^{k-e}y_j^{\,e}\), of \((a_1,a_2)\)-degree \(k-e\). The row \(w_1w_2\) is homogeneous of degree \(k\).</li>
+<li>Expand \(\det(R_{12},K)\) multilinearly in the rows \((i,j)\), choosing one exponent \(e_{i,j}\) per row. Each term is \(\prod y_j^{\,e_{i,j}}\) times a determinant whose rows are the vectors \(\beta(k-e)\beta(e)a_i^{k-e}\) and the mixed row. That determinant vanishes when two rows with the same \(i\) carry the same \(e\). The rows with \(j=0\) force \(e_{i,0}=0\). So for each \(i\) the exponents \(e_{i,\cdot}\) are \(n-1\) distinct elements of \(A\) containing \(0\).</li>
+<li>Each term is homogeneous of degree \(\Sigma K-\sum_{i,j}e_{i,j}\), or zero. It is maximal only for \(K=\mathrm{top}'_n\) and \(\{e_{i,\cdot}\}=E_{n-1}\) for both \(i\). Summing over the bijections \(j\mapsto e_{1,j}\) and \(j\mapsto e_{2,j}\) onto \(E_{n-1}\setminus\{0\}\) separately, the sign of each reordering times the monomial gives \(G_n\) times \(\det[y_j^e]\) twice. \(\square\)</li>
+</ol>
+<p><strong>Second statement.</strong> ex:cube-ternary-two-root-face-vanishes. \(G_n\not\equiv0\) over \(\mathbb F_3\) for \(n=2,3,4,5\), of degrees \(6,15,32,57\) in \(a_1\) at \(a_2=1\), and \(G_n\equiv0\) identically for \(6\le n\le12\). These are exact computations in \(\mathbb F_3[a_1]\), and \(G_n\) is homogeneous, so \(a_2=1\) loses nothing. For \(13\le n\le40\), \(G_n\) vanishes at three random points of \(\mathbb F_{3^{20}}\); its degree is far below \(3^{20}\), but this is evidence, not proof.</p>
+<p>Source: research/tools/bmd_ternary_two_root_face.gp (research/results/bmd-20261009-aa/two-root-face.txt).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The two-root face extends the face induction by one size, to \(n\le5\), still inside the certified range.</li>
+<li>With the one-root face this suggests that a face with \(r\) jointly dominant labels survives exactly for \(n\le r+3\). That is an observation on \(r=1,2\), not a conjecture.</li>
+<li>If that pattern held, which rests on \(r=1,2\) only, with \(r=2\) exact up to \(n=12\), no extreme face with a bounded number of dominant labels would give an induction for all \(n\). An extreme-face proof would then need \(r\) growing with \(n\).</li>
+<li>So the extreme faces with one or two dominant labels do not give statement 2, which matches the record's earlier failures of extreme-term routes. Lower-degree components of these weightings, and other weightings, are untested.</li>
+</ul>
+<p>Structural remark. Modulo \(3\), \((1+x)^{1/2}=(1+x)^2(1+x^3)^{-1/2}=(1+x)^2H(x^3)\), with \(H(t)=\sum_{b\in\mathcal B}t^b\) and \(\mathcal B\) the integers with ternary digits in \(\{0,1\}\), since \(-\tfrac12=\ldots111\) in base \(3\). Equivalently \(\beta(m)=\binom2{m\bmod3}\mathbf 1_{\mathcal B}(\lfloor m/3\rfloor)\), and the Toeplitz matrix of \(\beta\) is the product of those of \((1+x)^2\) and \(H(x^3)\). The latter splits by residues modulo \(3\) into \(0/1\) Toeplitz blocks. Heuristically, their rank on a short window of large rows causes the vanishing of \(B_n\); for \(G_n\), whose mixed row is a convolution, even this is unclear. Nothing here is proved.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A mechanism for \(\Delta_n\not\equiv0\pmod3\) for every \(n\).</li>
+<li>A proof that face minors vanish beyond \(n=r+3\), which would close the face route rigorously.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-ternary-one-root-face and its proof;</li>
+<li>conj:cube-ternary-degree-two-nonvanishing (definition of \(\Delta_{n,2}\)).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the counts, the multilinear expansion, the uniqueness of the extreme choice, the squared Vandermonde, the tool against the definition (including \(a_2=1\) by homogeneity), and the identity \((1+x)^{1/2}=(1+x)^2H(x^3)\bmod3\). Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the domain argument added;</li>
+<li>"homogeneous of degree … or zero";</li>
+<li>the column bookkeeping reworded;</li>
+<li>the closure claim scoped to the extreme one- and two-label faces;</li>
+<li>the \(r+3\) pattern made explicitly conditional;</li>
+<li>the structural remark restated exactly, with the vanishing mechanism marked heuristic.</li>
+</ul>
+<p>Status: working proof (the two-root face, for every \(n\)); refutation of the two-root face induction for \(6\le n\le12\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-aa">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 31.05 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.65 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 27.52 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">24.32 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 13.81 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">36.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.55 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
