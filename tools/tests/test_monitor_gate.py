@@ -62,21 +62,48 @@ class WatchRunTest(unittest.TestCase):
                                          'systemd_unit': 'u.service'}])
         old = watch_run.LOGS
         watch_run.LOGS = directory
-        clock = iter([10.0, 400.0, 500.0, 600.0])
+        times = [10.0, 400.0, 500.0, 600.0]
         out = io.StringIO()
+
+        def clock():
+            return times.pop(0) if len(times) > 1 else times[0]
 
         def sleep(_):
             if next(iter([0])) == 0 and 'decision point' in out.getvalue() and 'r1' not in path.read_text()[60:]:
                 with path.open('a') as handle:
                     handle.write(json.dumps({'event': 'run_end', 'id': 'r1', 'unix_s': 550.0, 'returncode': 0}) + '\n')
         try:
-            watch_run.watch('t1', at=300, poll=0, clock=lambda: next(clock), sleep=sleep, out=out)
+            watch_run.watch("t1", at=300, poll=0, clock=clock, sleep=sleep, out=out, grace=0)
         finally:
             watch_run.LOGS = old
         text = out.getvalue()
         self.assertIn('still running after 400 s (decision point)', text)
         self.assertIn('systemctl --user stop u.service', text)
         self.assertIn('Run r1 ended after 550 s: exit 0', text)
+
+    def test_a_chained_run_is_picked_up(self):
+        directory, path = self.journal([{'event': 'run_start', 'id': 'r1', 'unix_s': 0.0, 'output': 'x'}])
+        steps = []
+
+        def sleep(_):   # first sleep: r1 ends and r2 starts a moment later; later: r2 ends
+            steps.append(1)
+            with path.open('a') as handle:
+                if len(steps) == 1:
+                    handle.write(json.dumps({'event': 'run_end', 'id': 'r1', 'unix_s': 5.0, 'returncode': 0}) + '\n')
+                elif len(steps) == 2:
+                    handle.write(json.dumps({'event': 'run_start', 'id': 'r2', 'unix_s': 6.0, 'output': 'x'}) + '\n')
+                elif len(steps) == 3:
+                    handle.write(json.dumps({'event': 'run_end', 'id': 'r2', 'unix_s': 9.0, 'returncode': 0}) + '\n')
+        old = watch_run.LOGS
+        watch_run.LOGS = directory
+        out = io.StringIO()
+        try:
+            ticks = iter(range(7, 10**6))
+            watch_run.watch('t1', at=300, poll=0, clock=lambda: float(next(ticks)), sleep=sleep, out=out, grace=15)
+        finally:
+            watch_run.LOGS = old
+        self.assertIn('Run r1 ended', out.getvalue())
+        self.assertIn('Run r2 ended', out.getvalue())
 
     def test_nothing_to_watch(self):
         directory, _ = self.journal([])

@@ -52,7 +52,7 @@ def last_line(event):
         return '(no output file)'
 
 
-def watch(session=None, at=300.0, poll=2.0, clock=time.time, sleep=time.sleep, out=sys.stdout):
+def watch(session=None, at=300.0, poll=2.0, clock=time.time, sleep=time.sleep, out=sys.stdout, grace=15.0):
     paths = journals(session)
     running, _ = unfinished(paths)
     if not running:
@@ -78,6 +78,11 @@ def watch(session=None, at=300.0, poll=2.0, clock=time.time, sleep=time.sleep, o
                       f'optimize (COMPUTATION_RULES.md, long runs).', file=out, flush=True)
         for rid, event in current.items():   # runs started after the watch began
             running.setdefault(rid, event)
+        if not running:   # a chain (a && b) starts its next run a moment later: wait a grace period for it
+            quiet_since = clock()
+            while not running and clock() - quiet_since < grace:
+                sleep(poll)
+                running.update(unfinished(paths)[0])
         if running:
             sleep(poll)
     return 0
@@ -88,8 +93,9 @@ def main(argv=None):
     parser.add_argument('session', nargs='?')
     parser.add_argument('--at', type=float, default=300.0)
     parser.add_argument('--poll', type=float, default=2.0)
+    parser.add_argument('--grace', type=float, default=15.0, help='seconds to wait for the next run of a chain')
     args = parser.parse_args(argv)
-    return watch(args.session, args.at, args.poll)
+    return watch(args.session, args.at, args.poll, grace=args.grace)
 
 
 if __name__ == '__main__':
