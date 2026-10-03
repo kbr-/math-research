@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -83,6 +84,12 @@ sys.exit(compute.main())
             guard.write_text('#!/bin/sh\necho "Unexpected host-service access in fixture" >&2\nexit 99\n')
             guard.chmod(0o755)
         self.command_env = dict(os.environ, PATH=str(bin_dir) + os.pathsep + os.environ.get('PATH', ''))
+        # a real session's scratchpad must not decide fixture runs (in process or in a subprocess)
+        self.command_env.pop('CLAUDE_CODE_SESSION_ID', None)
+        scrub = mock.patch.dict(os.environ)
+        scrub.start()
+        self.addCleanup(scrub.stop)
+        os.environ.pop('CLAUDE_CODE_SESSION_ID', None)
         (self.root / 'research/claims').mkdir(parents=True)
         (self.root / 'research/context-budgets.json').write_text(json.dumps({
             'version': 1, 'hard_multiplier': 1.5, 'characters_per_word': 12,

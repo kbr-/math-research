@@ -57,11 +57,11 @@ def validate_route(body, article):
     streak, after_review = 0, False
     for position in reversed(earlier):
         kind = entry_tags(body, position)['kind']
-        if kind == 'formalization':
-            continue
-        if kind != 'research':   # a review, or an entry from before the tags existed
-            after_review = kind == 'review'
+        if kind == 'review':
+            after_review = True
             break
+        if kind != 'research':   # formalization, task or untagged entries neither count nor end the scan
+            continue
         streak += 1
     if tags['kind'] == 'review':
         # One route review in seven entries (user, 3 October 2026: "That's too frequent. Drop to one in
@@ -160,7 +160,8 @@ def convergence_reference(body, article, route):
             research += 1
         elif kind == 'review' and research >= CONVERGENCE_SPAN:
             earlier = OPEN_ITEMS_RE.search(body[position:body.index('>', position) + 1])
-            return (ident, research, int(earlier.group(1))) if earlier else None
+            if earlier:   # older reviews predating data-open-items are passed over, not a stop
+                return ident, research, int(earlier.group(1))
     return None
 
 
@@ -211,7 +212,6 @@ FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-bridge="([^"]+)"[^>]*>(.*?)</li>', r
 LEAD_FOLLOWUP_RE = re.compile(r'<h4>Lead follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
 LEAD_FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-lead="([^"]+)"[^>]*>(.*?)</li>', re.S)
 FOLLOWUP_OUTCOME = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened)\b')
-BRIDGE_WINDOW = 3    # research entries after a review before a reminder to develop an open passed item
 
 # Passed Outside leads and passed Absurd bridges are both leads to develop (user, 26 September 2026:
 # "Both should have followups").  (kind, section, follow-up section, follow-up item, heading, attribute)
@@ -259,17 +259,12 @@ def open_items(body, articles, section_re=BRIDGES_RE, followup_re=FOLLOWUP_RE, i
     return [b for b in passed if b not in closed]
 
 
-def open_bridges(body, articles):
-    return open_items(body, articles)
-
-
 def validate_bridges(body, article, close):
     """Passed Absurd bridges and passed Outside leads must be developed, not only listed (user, 26 September
     2026: six bridges had passed their smallest tests and none was explored further; later "Both should have
-    followups").  A route review reports, under Bridge follow-up and Lead follow-up, the work done in its
-    cycle on every passed item of earlier reviews on its route that no follow-up has closed.  After
-    BRIDGE_WINDOW research entries since a review with none developing an open passed item (tagged
-    data-bridge or data-lead="REVIEW-ANCHOR:N"), it prints a reminder."""
+    followups").  Open passed items wait in the lead queue (tools/lead_queue.py, checked in finish()); a
+    review's Bridge follow-up and Lead follow-up lists report only items whose status changed, and every item
+    they list states its outcome."""
     if not re.search(r'data-route-item="', body):
         return
     tags = entry_tags(body, article)
@@ -498,7 +493,13 @@ def check_scratch(env=os.environ, home=Path.home(), cap=SCRATCH_CAP):
     pad = scratchpad(env, home)
     if pad is None:
         return
-    files = [(p.stat().st_size, p) for p in pad.rglob('*') if p.is_file() and not p.is_symlink()]
+    files = []
+    for path in pad.rglob('*'):
+        try:   # a file can vanish between the listing and the stat
+            if path.is_file() and not path.is_symlink():
+                files.append((path.stat().st_size, path))
+        except OSError:
+            continue
     total = sum(size for size, _ in files)
     if total > cap:
         largest = ', '.join(f'{p.relative_to(pad)} ({size // 10**6} MB)' for size, p in sorted(files)[-5:][::-1])
