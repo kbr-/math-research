@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-fixed-cluster-wide-support">fixed-cluster wide support</a>; eight open items). On fixed-cluster arcs with distinct roots where only \(\mathrm{Hank}_1\) vanishes, the leaders' nullity is at most two at every rate, by bottom-shift proportionality. So the support core at Hankel cancellation is proved there.</p>
-<p>Next: arcs along which the cluster itself degenerates, starting with the \(M\ge4\) tie cluster \((c_0,1,0^{M-2})\) whose deep roots coincide in the limit. The proportionality lemma is a polynomial identity in the reparametrized roots, so it holds on every arc. What changes is the valuation of the window coefficients \(\mathrm{Vand}^2\mathrm{Hank}_{M-p}\), which now carry deep-scale valuations. Determine whether the convexity argument survives with those valuations added to \(b_p\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-hankel-valuation-criterion">Hankel valuation criterion</a>; eight open items). On every arc, the leaders' nullity is at most two whenever the Hankel valuations \(h_p=\mathrm{val}\,\mathrm{Hank}_{M-p}(\tilde y')\) of the windows near the minimum satisfy (H1)–(H2). This covers fixed clusters at \(\mathrm{Hank}_1\) cancellation and the degenerating tie clusters near the lifted window.</p>
+<p>Next: the required goal-level route review of (K), weighing the support core's new state against the two window cores (the confluent tie window and the triple window) and the uniqueness of the leading \(C\)-block coordinate.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70248,6 +70248,90 @@ in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 1.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 58.37 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-hankel-valuation-criterion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-hankel-valuation-wide-support cor:cube-tie-cluster-wide-support">
+<h3>9 October 2026 — On every arc, the leaders' nullity is at most two as soon as one window comes within \(w_x\) of the window bound after its Hankel valuation; this covers degenerating clusters, including the tie cluster near the lifted window</h3>
+<p class="entry-meta">Working proof of a Hankel-valuation criterion for nu <= 2 along arbitrary arcs (degenerating clusters allowed), and its corollary above the M >= 4 tie cluster when val Hank_1 <= w_x. Hankel valuation criterion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. The <a href="#entry-2026-10-09-cube-fixed-cluster-wide-support">fixed-cluster wide support</a> theorem proved \(\nu\le2\) along fixed-cluster arcs with distinct roots. Its next step was arcs along which the cluster degenerates, such as the \(M\ge4\) tie cluster \((c_0,1,0^{M-2})\), where the window coefficients carry deep-scale valuations.</p>
+<p><strong>General statement.</strong> thm:cube-hankel-valuation-wide-support. Let \(M\ge3\). Take any analytic arc in the cherry setting (thm:cube-cherry-lattice-splitting), with rates \(w_x,w_e>0\). Assume the reparametrized roots \(\tilde y'(s)\) are bounded and \(\mathrm{Vand}(\tilde y'(s))\) is not identically zero; the cluster may degenerate. Define:</p>
+<ul>
+<li>\(b_p=b(\Lambda_p)\) and \(b^*=\min_pb_p\), with \(p^*\) the least minimizer;</li>
+<li>\(h_p=\mathrm{val}\,\mathrm{Hank}_{M-p}(\tilde y'(s))\) for \(1\le p\le M\), so \(h_M=0\);</li>
+<li>\(v=\mathrm{val}\,\mathrm{Vand}(\tilde y'(s))&lt;\infty\).</li>
+</ul>
+<p>Assume (H1): \(b_p+h_p\le b^*+w_x\) for some \(p\). Then every leading cross coordinate lies in \([-p^*-1,2M-p^*]\). So the leaders' nullity is at most \(2\), and the support condition of prop:cube-cherry-step-wide holds.</p>
+<p><strong>Proof.</strong> Every Laplace term of \(P_\Lambda\) carries the factor \(\mathrm{Vand}(\tilde y')^2\) times Schur polynomials of the bounded \(\tilde y'\), of valuation \(\ge0\). So all values below are relative to \(2v\). The term's \(x\)- and \(\varepsilon\)-exponents rise together with \(\Sigma U+\Sigma N\), so each unit of integer excess costs \(w_x+w_e\).</p>
+<p>By thm:cube-cherry-lattice-splitting, \(\mathrm{val}\,P_\Lambda\ge b(\Lambda)\). Terms other than the least ones have value \(\ge b(\Lambda)+w_x+w_e\). The least coefficient of \(\Lambda_p\) is \(c_{M,p}\mathrm{Vand}^2\mathrm{Hank}_{M-p}\) (thm:cube-cherry-hankel-form, \(1\le p\le M\)). So \(\mathrm{val}\,P_{\Lambda_p}\ge b_p+\min(h_p,w_x+w_e)\), with equality when \(h_p&lt;w_x+w_e\).</p>
+<p>The window of (H1) has \(h_p\le w_x&lt;w_x+w_e\), so its value is exactly \(b_p+h_p\). Hence the least value \(m\) satisfies \(m\le b^*+w_x\). By lem:cube-window-bound-excess, a set in family \(p\) has \(b=b_p+w_xE^++w_eE^-\).</p>
+<ol>
+<li><strong>Families with \(b_p>b^*+w_x\), and \(p\notin[1,M]\).</strong> Every set has value \(\ge b_p>m\), or vanishes for \(p>M\). For \(p=0\), \(b_0=b_1+2Mw_x>b^*+w_x\). None leads.</li>
+<li><strong>Bottom shifts</strong> (\(E^+=0\), \(E^-=e\ge1\)). By lem:cube-bottom-shift-proportionality, their least coefficient is a constant times that of \(\Lambda_p\). So the value is \(\ge b_p+ew_e+\min(h_p,w_x+w_e)\).
+<ul>
+<li>If \(h_p&lt;w_x+w_e\), this exceeds \(b_p+h_p=\mathrm{val}\,P_{\Lambda_p}\ge m\).</li>
+<li>Otherwise it is \(\ge b_p+w_e+w_x+w_e>b^*+w_x\ge m\).</li>
+</ul>
+None leads.</li>
+<li><strong>Sets with \(E^+\ge1\).</strong> \(b(\Lambda)\ge b_p+w_x\ge b^*+w_x\ge m\). Equality needs \(b_p=b^*\), \(E^+=1\), \(E^-=0\) and \(m=b^*+w_x\). So the only possible leaders here are the top-ups \(T_p=\Lambda_p\setminus\{2M-1-p\}\cup\{2M-p\}\) of minimizers \(p\) of \(b\).</li>
+<li><strong>Windows.</strong> A leading window has \(b_p\le\mathrm{val}\,P_{\Lambda_p}=m\le b^*+w_x\). Write \(\Delta_p=b_{p+1}-b_p\), increasing by \(2(w_x+w_e)\) (thm:cube-cherry-lattice-splitting). Two steps from a minimizer, \(b\) exceeds \(b^*\) by at least \(2(w_x+w_e)\). So, for a unique minimizer \(p^*\), the windows with \(b_p\le b^*+w_x\) are among \(p^*-1,p^*,p^*+1\). At a wall, \(b_{p^*}=b_{p^*+1}\) with \(p^*\) the least minimizer, they are \(p^*,p^*+1\), since \(b_{p^*-1}-b^*=b_{p^*+2}-b^*=2(w_x+w_e)\).</li>
+</ol>
+<p>The candidate windows and the top-ups \(T_{p^*}\), and \(T_{p^*+1}=[-p^*-1,2M-3-p^*]\cup\{2M-1-p^*\}\) at a wall, all lie in \([-p^*-1,2M-p^*]\), which has \(2M+2\) columns. Apply lem:cube-leader-polytope-bound. \(\square\)</p>
+<p><strong>Relation to the fixed-cluster theorem.</strong> Along fixed-cluster arcs with distinct roots, at \(\mathrm{Hank}_1\) cancellation with \(D\,\mathrm{Hank}_1\ne0\) and the other Hankel forms nonzero, \(h_{M-1}=w_x\) (cor:cube-hankel-flow-order-one) and \(h_p=0\) otherwise. So (H1) holds at the least minimizer. The criterion recovers the nullity bound of thm:cube-fixed-cluster-wide-support; the column window may differ. Without cancellation, all \(h_p=0\) and (H1) holds trivially.</p>
+<p><strong>Corollary.</strong> cor:cube-tie-cluster-wide-support. Let \(M\ge4\), and take an arc whose cluster tends to the tie limit \((c_0,1,0^{M-2})\), \(c_0\notin\{0,1\}\). The deep roots may degenerate in any way that keeps \(\mathrm{Vand}(\tilde y'(s))\) not identically zero. Assume \(\mathrm{val}\,\mathrm{Hank}_1(\tilde y'(s))\le w_x\). Then the leaders' nullity is at most \(2\) at every rate whose window-bound minimizers lie in \(\{M-1,M\}\) or form the wall \(\{M-2,M-1\}\). With \(\rho=w_x/(w_x+w_e)\), these are the rates with \(\rho\ge(M-2)/M\).</p>
+<p><strong>Proof.</strong> At the limit \(\mathrm{Hank}_0=M\). And \(\mathrm{Hank}_2=\sum_{|S|=3}\mathrm{Vand}(y_S)^2\) has nonzero terms only for the \(M-2\) sets \(\{c_0,1,0\}\), so it equals \((M-2)c_0^2(c_0-1)^2\ne0\). Since \(\tilde y'\) tends to the same limit, \(h_M=h_{M-2}=0\); and \(h_{M-1}\le w_x\) by assumption. In each allowed case, (H1) holds at the least minimizer:</p>
+<ul>
+<li>\(p^*=M\): \(h_M=0\);</li>
+<li>\(p^*=M-1\), alone or at the wall \(\{M-1,M\}\): \(h_{M-1}\le w_x\);</li>
+<li>the wall \(\{M-2,M-1\}\): \(h_{M-2}=0\).</li>
+</ul>
+<p>The region is \(\lceil M\rho\rceil\in\{M-1,M\}\) or \(M\rho\in\{M-2,M-1\}\) (thm:cube-cherry-lattice-splitting), that is \(\rho\ge(M-2)/M\). \(M\ge4\) is used to separate \(\mathrm{Hank}_2=\mathrm{Hank}_{M-2}\) from \(\mathrm{Hank}_1\). \(\square\)</p>
+<p>For least minimizers \(p^*\le M-2\) away from that wall, (H1) needs some window near \(p^*\) whose Hankel form has small deep-scale valuation. The forms \(\mathrm{Hank}_k\), \(k\ge3\), vanish at the limit, since every \((k+1)\)-subset contains two coincident roots. This entry does not settle that range.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The support core reduces, on every arc, to one inequality: some window satisfies \(b_p+\mathrm{val}\,\mathrm{Hank}_{M-p}(\tilde y')\le b^*+w_x\). No other coordinate's coefficient matters.</li>
+<li>The criterion is sufficient only. It is silent when no window satisfies (H1). For example, above the tie cluster the cluster's own \(\mathrm{Hank}_1\) deviation might cancel the flow term \(xD\,\mathrm{Hank}_1\) at \(p^*=M-1\); how often that happens on arcs is not established. Such arcs need not violate \(\nu\le2\).</li>
+<li>Degenerating clusters, an open item of (K)'s support core, are thus reduced to explicit valuation inequalities, settled near the lifted window above the tie cluster.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Arcs on which no window satisfies (H1): Hankel cancellations beyond the flow order, and deep-scale valuations of \(\mathrm{Hank}_k\), \(k\ge3\), when the least minimizer is far from \(M-1\).</li>
+<li>Uniqueness of the leading \(C\)-block coordinate off the recorded cases; levels above slack-zero data; the window cores; the other open items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-cherry-lattice-splitting (window bound along every arc with bounded reparametrized roots; increments \(\Delta_p\));</li>
+<li>thm:cube-cherry-hankel-form (registered working proof for every \(M\ge2\), \(1\le j\le M\));</li>
+<li>lem:cube-bottom-shift-proportionality; lem:cube-window-bound-excess; lem:cube-leader-polytope-bound;</li>
+<li>thm:cube-fixed-cluster-wide-support.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p>
+<ul>
+<li>the common Vandermonde factor and the cost of non-least terms;</li>
+<li>the exact window values;</li>
+<li>each step of the proof, including the two-step bound and walls;</li>
+<li>the corollary's Hankel values and region.</li>
+</ul>
+<p>Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the second hypothesis, (H2), shown redundant and dropped: bottom shifts are handled by (H1) when \(h_p\ge w_x+w_e\);</li>
+<li>the least minimizer specified at walls;</li>
+<li>\(\mathrm{Vand}(\tilde y')\not\equiv0\) added;</li>
+<li>the exceptions reworded as cases where the criterion is silent, with the codimension remark removed;</li>
+<li>the relation to the fixed-cluster theorem limited to the nullity bound.</li>
+</ul>
+<p>The reviewer could not read the proof of thm:cube-cherry-hankel-form from the excerpts supplied; its registered status and scope were checked in the claim index.</p>
+<p>Status: working proof (Hankel-valuation criterion; tie-cluster corollary for \(\rho\ge(M-2)/M\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ar">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 14.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 43.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 30.83 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
