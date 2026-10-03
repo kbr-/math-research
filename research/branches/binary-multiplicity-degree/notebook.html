@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 2, small-prime stable orders, at \(p=3\), \(d=2\), by the <a href="#entry-2026-10-09-cube-cancellation-route-review">cancellation route review</a>'s decision. On (K), the <a href="#entry-2026-10-09-cube-cherry-step-any-set">any-set cherry step</a> weakens (W′) to supports in any \(2M+1\) columns. That covers the failing ray at Hankel cancellation except at three-leader ties, where the check still avoids \(K\). Eight open items remain.</p>
-<p>Next: restore statement 2's current state from its latest entries: the ternary pair algebra, the raw polarization and the additive-branch defect. Name the missing implication for \(\Phi_N\ne0\) at \(p=3\), \(d=2\), and test the most recent unexplored lead there.</p>
+<p>Route item: cube-odd-characteristic; statement 2 at \(p=3\), \(d=2\) (<a href="#entry-2026-10-09-cube-ternary-one-root-face">ternary one-root face</a>). The one-root face of \(\Delta_{n,2}\bmod3\) is the smaller determinant times a Toeplitz minor \(B_n\) of \((1+x)^{1/2}\). \(B_n\) vanishes for \(5\le n\le60\), so that induction stops at \(n=4\).</p>
+<p>Next: the two-root face. Make \(a_1,a_2\) dominant together, expand along the \(2n-1\) rows containing them, and identify the extreme coefficient as a two-variable minor times \(\Delta_{n-2}\). Test whether that minor survives modulo \(3\) where \(B_n\) dies. If it does, prove its nonvanishing in general.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68358,6 +68358,90 @@ Also \(Q=(M-1)p_2-2e_2=(M-1)e_1^2-2Me_2\).</li>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 30.58 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.62 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.45 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-ternary-one-root-face" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-ternary-one-root-face ex:cube-ternary-one-root-face-vanishes">
+<h3>9 October 2026 — The one-root face of the characteristic-three degree-two determinant is a Toeplitz minor of \((1+x)^{1/2}\) times the smaller determinant; the minor vanishes modulo \(3\) for every \(5\le n\le60\), so the face induction stops at \(n=4\)</h3>
+<p class="entry-meta">Working proof of the exact one-root face of \(\Delta_{n,2}\bmod 3\) for every \(n\), an induction step; refutation of that step for \(5\le n\le60\). Explains the recorded failure of the one-root-face route. Ternary face cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 2 at \(p=3\), \(d=2\), by the <a href="#entry-2026-10-09-cube-cancellation-route-review">cancellation route review</a>'s decision: conj:cube-ternary-degree-two-nonvanishing, \(\Delta_{n,2}\not\equiv0\pmod3\) for every \(n\). The record certifies it for many sizes (check:cube-ternary-direct-certificates) and lacks a mechanism. Its assessment records that the extreme-term routes, one-root faces and geometric labels, fail modulo \(3\). lem:cube-joint-leading-coefficient already computes the one-root face over \(\mathbb Z[\tfrac12]\), at degree \(rs\) with \(r=\binom n2+2\), \(s=n\):
+\[
+[a^{rs}]\,\Delta_{n,2}=\pm H_s^{(h)}\,\Delta_{n-1,2}\,\Delta_{n-1,1}.
+\]
+Modulo \(3\) that coefficient vanishes, and the coefficients of \((1+aT)^{1/2}\) lose most of their support. What is the true one-root face modulo \(3\), and does it give an induction on \(n\)?</p>
+<p><strong>General statement.</strong> lem:cube-ternary-one-root-face. Work over \(\mathbb F_3\), with labels \(0,a_1,\ldots,a_n\) and \(D=\binom{n+1}2+2\). \(\Delta_n=\Delta_{n,2}\) is the determinant of the Taylor coefficients \(0,\ldots,D-1\) of the rows \(1\), \(T\), \(w_i\) and \(w_iw_j\), where \(w_i=(1+a_iT)^{1/2}\).</p>
+<ol>
+<li>(Lucas.) \(w_i=\sum_m\beta(m)(a_iT)^m\), with \(\beta(m)=\binom2{m_0}\prod_{j\ge1}\binom1{m_j}\) for the ternary digits \(m_j\) of \(m\). Let \(A=\{m:\beta(m)\ne0\}\) and let \(E_n\) be its \(n\) smallest elements.</li>
+<li>(Face.) Put \(\mathrm{top}_n=\{\binom n2+2,\ldots,\binom{n+1}2+1\}\) and \(d_n=\Sigma\,\mathrm{top}_n-\Sigma E_n\). Then \(\deg_{a_1}\Delta_n\le d_n\), and
+\[
+[a_1^{d_n}]\,\Delta_n=\pm\prod_{e\in E_n}\beta(e)\cdot B_n\cdot\det\big[a_j^{\,e}\big]_{2\le j\le n,\ e\in E_n\setminus\{0\}}\cdot\Delta_{n-1}(a_2,\ldots,a_n),
+\]
+with \(B_n=\det[\beta(k-e)]_{k\in\mathrm{top}_n,\,e\in E_n}\), a Toeplitz minor of \((1+x)^{1/2}\bmod3\).</li>
+<li>Hence, with \(\Delta_0=1\), \(B_n\ne0\) and \(\Delta_{n-1}\not\equiv0\) imply \(\Delta_n\not\equiv0\). Here \(\mathbb F_3[a]\) is a domain and \(\prod_{e\in E_n}\beta(e)\ne0\) since \(E_n\subset A\).</li>
+</ol>
+<p>This is the characteristic-three refinement of lem:cube-joint-leading-coefficient. For \(n\le6\), \(E_n=\{0,\ldots,n-1\}\), \(d_n=rs\), and the lemma is that identity reduced modulo \(3\): \(\prod\beta(e)\det[a_j^e]\) is \(\Delta_{n-1,1}\) and \(B_n\) is \(\pm\) a power of \(2\) times \(H_n^{(h)}\), \(h=\binom n2+2-n\). For \(n\ge7\), \(6\notin A\), so \(E_n\ne\{0,\ldots,n-1\}\) and \(d_n&lt;rs\): the support of \(\beta\) modulo \(3\) moves the extreme term.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Lucas' theorem holds for \(3\)-adic integers, and \(\tfrac12=\ldots1112\) in base \(3\). So \(\binom{1/2}m\equiv\binom2{m_0}\prod_{j\ge1}\binom1{m_j}\pmod 3\). This is the digit structure of lem:cube-ternary-pair-algebra, written for one label.</li>
+<li>The rows \(1\) and \(T\) occupy only columns \(0\) and \(1\), so \(\Delta_n\) is the determinant of the other rows on columns \(2,\ldots,D-1\). Those columns number \(\binom{n+1}2\).
+<ul>
+<li>Let \(R_1\) be the \(n\) rows containing \(a_1\): \(w_1\), and \(w_1w_j\) for \(j\ge2\).</li>
+<li>The remaining rows, \(w_j\) and \(w_iw_j\) with \(i,j\ge2\), are those of \(\Delta_{n-1}(a_2,\ldots,a_n)\).</li>
+</ul>
+Laplace expansion along \(R_1\) gives \(\Delta_n=\sum_K\pm\det(R_1,K)\det(R',K^c)\) over \(n\)-sets \(K\) of columns. For \(K=\mathrm{top}_n\), \(K^c=\{2,\ldots,\binom n2+1\}\) and \(\det(R',K^c)=\pm\Delta_{n-1}\).</li>
+<li>Write \(y_1=0\) and \(y_j=a_j\). The entry of the row of \(y_j\) in column \(k\) is \(\sum_{e}\beta(k-e)\beta(e)\,a_1^{k-e}y_j^{\,e}\); for \(j=1\) only \(e=0\) survives, giving \(\beta(k)a_1^k\). By Cauchy–Binet,
+\[
+\det(R_1,K)=\sum_{E}\det\big[\beta(k-e)\beta(e)\big]_{K,E}\;a_1^{\Sigma K-\Sigma E}\;\det[y_j^{\,e}]_{j,\,e\in E}.
+\]
+Here \(E\) runs over \(n\)-subsets of \(A\). The last factor vanishes unless \(0\in E\), and then it is \(\pm\det[a_j^e]_{j\ge2,\,e\in E\setminus\{0\}}\), a nonzero polynomial since the exponents are distinct.</li>
+<li>The \(a_1\)-degree of the \((K,E)\) term is at most \(\Sigma K-\Sigma E\). \(\mathrm{top}_n\) is the unique \(n\)-set of columns with largest sum, and \(E_n\) the unique \(n\)-subset of \(A\) with least sum, with \(0\in E_n\). So \(d_n\) is attained only by \((\mathrm{top}_n,E_n)\), and \(\det[\beta(k-e)\beta(e)]=\prod_{e\in E_n}\beta(e)\cdot B_n\). \(\square\)</li>
+</ol>
+<p><strong>Second statement.</strong> ex:cube-ternary-one-root-face-vanishes. \(B_n\ne0\) in \(\mathbb F_3\) exactly for \(n\le4\) among \(1\le n\le60\). For \(5\le n\le60\) the one-root face of \(\Delta_n\) vanishes identically, so the induction of the lemma proves only \(\Delta_n\not\equiv0\) for \(n\le4\), which is already known. Over \(\mathbb Q\), with \(k\in\mathrm{top}_n\) and \(e\in E_n\), the support of \(\beta\) modulo \(3\), the \(3\)-adic valuations of \(\det[\binom{1/2}{k-e}]\) are \(0,0,0,0,1,3,3,2,4,13,13,14\) for \(n=1,\ldots,12\). For \(n\ge7\) this is not the rational face coefficient, whose columns are \(\{0,\ldots,n-1\}\); for \(n\le6\) the two coincide, and the valuations at \(n=5,6\) agree with \(v_3(H_5^{(7)})=1\) and \(v_3(H_6^{(11)})=3\).</p>
+<p><strong>A remark on the record.</strong> The three-centre entries attribute the failure of this face modulo \(3\) to \(\Delta_{n-1,1}\), which contains the Catalan number \(C_5=42\) once \(n-1\ge6\). The Hankel factor fails earlier: \(B_n\equiv0\) already at \(n=5,6\). Those entries are not edited; this remark supplements them.</p>
+<p>Source: research/tools/bmd_ternary_induction_criterion.gp (research/results/bmd-20261009-z/ternary-induction-criterion.txt). A first version also compared \(B_n\) with a content-formula product, using an index map that turned out to be wrong; it was removed, and its output survives only in the session archive.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>Modulo \(3\) the true one-root face sits at degree \(d_n\), below the rational \(rs\) once \(n\ge7\). It is the smaller determinant times a single Toeplitz minor of \((1+x)^{1/2}\) on the support of \(\beta\), and that minor dies from \(n=5\) on.</li>
+<li>The obstruction sits entirely in \(B_n\), a minor in one variable. The labels play no part in it.</li>
+<li>Any face-type induction must use a face where the analogous one-variable minor survives. Candidates are a two-root face (\(a_1,a_2\) dominant together), where the minor becomes a two-variable Toeplitz-type determinant, or a different column grouping.</li>
+<li>Since \(B_n=0\), the true \(a_1\)-degree of \(\Delta_n\) is below \(d_n\). The next face combines several pairs \((K,E)\), so it is no longer a single product.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A mechanism for \(\Delta_n\not\equiv0\pmod3\) for every \(n\): the faces of lower \(a_1\)-degree, or two-root faces.</li>
+<li>The other open statements.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>conj:cube-ternary-degree-two-nonvanishing (statement and assessment);</li>
+<li>lem:cube-joint-leading-coefficient (the face over \(\mathbb Z[\tfrac12]\)) and the three-centre entries' account of its failure modulo \(3\);</li>
+<li>check:cube-ternary-direct-certificates (definition of \(\Delta_{n,2}\), rows and dummy label);</li>
+<li>lem:cube-ternary-pair-algebra (digit structure).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked Lucas, the row and column bookkeeping, the Cauchy–Binet step and the uniqueness of the extreme pair, the definition of \(\Delta_{n,2}\) against the record, and the tool. It cross-checked \(n\le6\) against the record's Catalan–Hankel product. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the missing dependency lem:cube-joint-leading-coefficient cited, and the lemma framed as its characteristic-three refinement, new for \(n\ge7\);</li>
+<li>the remark that \(B_n\) already vanishes at \(n=5,6\);</li>
+<li>the scope of the rational valuations stated;</li>
+<li>\(\pm\Delta_{n-1}\);</li>
+<li>\(\Delta_0=1\) and the domain argument;</li>
+<li>the tool header's claim label.</li>
+</ul>
+<p>Status: working proof (the one-root face, for every \(n\)); refutation of the face induction for \(5\le n\le60\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-z">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 17.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 55.40 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 34.78 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">43.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">16.67 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 32.40 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.55 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
