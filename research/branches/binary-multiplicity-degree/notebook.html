@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-flow-order-route-review">flow-order route review</a>; eight open items). Three statements would give \(\nu\le1\) at every fixed cluster: ramification equals flow order, hypothesis (F), and the order relation (R), \(j_{k+1}+j_{k-1}=2j_k-2\) whenever \(j_k\ge1\). (R) holds at every computed cluster through \(M=8\), and as a congruence \((D\,\mathrm{Hank}_k)^2\equiv-4k^2\mathrm{Hank}_{k+1}\mathrm{Hank}_{k-1}\pmod{\mathrm{Hank}_k}\) exactly for \(M\le5\).</p>
-<p>Next: prove (R). Derive the congruence for every \(M\) by Desnanot–Jacobi with the weighted shift \(D\,p_n=np_{n+1}\). Then bound the flow order of the remainder \(E/\mathrm{Hank}_k\) by \(j_k-1\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-hankel-bilinear-identity">Hankel bilinear identity</a>; eight open items). The exact identity \(H_kD^2H_k-(DH_k)^2=4k^2H_{k+1}H_{k-1}+2kH_k\Phi_k[p_2]\) reduces the order relation (R) to one non-cancellation: \(-ac-2k\varphi\ne0\) at the leading order of each flow line.</p>
+<p>Next: prove the non-cancellation. One route is a Möbius-covariant modification of \(H_k\) whose subset exponents are constant along the flow, so that the identity has no remainder. The other is an explicit formula for \(\varphi/c\) through the Heine sums of the bump profiles.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -72137,6 +72137,95 @@ Then, writing \(g(p)=j_{M-p}\) and \(d_p=g(p)-g(p+1)\), (R) gives \(d_p=d_{p-1}+
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-hankel-bilinear-identity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-flow-order-route-review:1" data-claims="thm:cube-hankel-bilinear-identity conj:cube-hankel-flow-order-relation">
+<h3>9 October 2026 — An exact Toda-type identity for Hankel determinants of power sums along the reparametrization flow: the order relation among consecutive flow orders becomes a single leading-coefficient non-cancellation</h3>
+<p class="entry-meta">Working proof of the bilinear identity for every M and k; the order relation (R) registered as a conjecture with its exact equivalent form. Hankel bilinear identity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs. The <a href="#entry-2026-10-09-cube-flow-order-route-review">flow-order route review</a> identified one implication that, with conj:cube-ramification-flow-order and hypothesis (F), gives \(\nu\le1\) at every fixed cluster. That implication is the order relation (R): \(j_{k+1}+j_{k-1}=2j_k-2\) whenever \(1\le j_k&lt;\infty\). The review found the congruence \((D\,\mathrm{Hank}_k)^2\equiv-4k^2\mathrm{Hank}_{k+1}\mathrm{Hank}_{k-1}\pmod{\mathrm{Hank}_k}\) for \(M\le5\). This cycle asks for the exact identity for every \(M\), as Outside lead 1 proposed (Desnanot–Jacobi), and for what it leaves of (R).</p>
+<p><strong>Notation.</strong></p>
+<ul>
+<li>\(H_k=\mathrm{Hank}_k=\det(p_{i+j})_{0\le i,j\le k}\), with \(p_0=M\), \(H_0=M\), and \(H_M=0\).</li>
+<li>For a symmetric function \(f\) of \(k+1\) variables, \(\Phi_k[f]=\sum_{|S|=k+1}\mathrm{Vand}(y_S)^2f(y_S)\). By Cauchy–Binet, \(H_k=\Phi_k[1]\). Inside \(\Phi_k\), \(e_1\) and \(p_2\) are evaluated on the subset: \(\Phi_k[p_2]=\sum_S\mathrm{Vand}(y_S)^2\sum_{s\in S}y_s^2\). In \(H_k\), \(p_r\) is the power sum over all \(M\) variables.</li>
+<li>The field is \(\mathbb C\), or any field of characteristic \(0\). The identity holds over \(\mathbb Z\). The consequences divide by \(4k^2\) and use \(a\ne0\) and \(M\ne0\) in the field.</li>
+<li>\(D=\sum y_i^2\partial_i\), whose flow is \(y\mapsto y/(1-ty)\).</li>
+</ul>
+<p><strong>General statement.</strong> thm:cube-hankel-bilinear-identity. For every \(M\ge2\) and \(1\le k\le M-1\), as polynomials in \(y\):
+\[H_k\,D^2H_k-(DH_k)^2=4k^2\,H_{k+1}H_{k-1}+2k\,H_k\,\Phi_k[p_2],\]
+\[H_{k+1}H_{k-1}=H_k\,\Phi_k[e_1^2]-\Phi_k[e_1]^2=\tfrac12\sum_{|S|=|T|=k+1}\mathrm{Vand}(y_S)^2\mathrm{Vand}(y_T)^2\bigl(e_1(y_S)-e_1(y_T)\bigr)^2.\]</p>
+<p><strong>Proof.</strong></p>
+<p><em>Minors.</em> \(p_{r+c}=\sum_sy_s^ry_s^c\), so for row and column sets \(R,C\) of size \(k+1\), Cauchy–Binet gives \(\det(p_{r+c})_{R\times C}=\sum_{|S|=k+1}\det(y_s^r)_{S\times R}\det(y_s^c)_{S\times C}\). For \(R=[0,k]\) the alternant is \(\mathrm{Vand}(y_S)\). For \(R=[0,k-1]\cup\{k+1\}\) it is \(\mathrm{Vand}(y_S)\,e_1(y_S)\) (the Schur function \(s_{(1)}\)).</p>
+<p><em>Desnanot–Jacobi.</em> Apply it to the \((k+2)\times(k+2)\) Hankel matrix \((p_{i+j})_{0\le i,j\le k+1}\), deleting rows and columns \(k\) and \(k+1\):</p>
+<ul>
+<li>the full determinant is \(H_{k+1}\), and deleting both gives \(H_{k-1}\);</li>
+<li>deleting row and column \(k+1\) gives \(H_k\);</li>
+<li>deleting row and column \(k\) gives \(\Phi_k[e_1^2]\);</li>
+<li>the two mixed deletions give \(\Phi_k[e_1]\) each.</li>
+</ul>
+<p>So \(H_{k+1}H_{k-1}=H_k\Phi_k[e_1^2]-\Phi_k[e_1]^2\). Expanding \(\Phi_k[1]\Phi_k[e_1^2]-\Phi_k[e_1]^2\) as a double sum over \(S,T\) gives the symmetric square form. For \(k=M-1\) both sides vanish, since \(H_M=0\) and the double sum has the single term \(S=T\).</p>
+<p><em>Derivatives.</em> For \(|S|=k+1\), \(D\,\mathrm{Vand}(y_S)=\sum_{i&lt;j\in S}\frac{y_j^2-y_i^2}{y_j-y_i}\mathrm{Vand}(y_S)=k\,e_1(y_S)\mathrm{Vand}(y_S)\), since each index lies in \(k\) pairs. Also \(De_1=p_2\). Hence \(DH_k=2k\Phi_k[e_1]\) and \(D^2H_k=2k\Phi_k[p_2]+4k^2\Phi_k[e_1^2]\). Substituting:
+\[H_kD^2H_k-(DH_k)^2=2kH_k\Phi_k[p_2]+4k^2\bigl(H_k\Phi_k[e_1^2]-\Phi_k[e_1]^2\bigr)=2kH_k\Phi_k[p_2]+4k^2H_{k+1}H_{k-1}.\ \square\]</p>
+<p>The first form recovers the review's congruence with constant \(4k^2\), now for every \(M\). The quotient \(E/H_k\) is \(2k\Phi_k[p_2]\). By analogy, in the Toda lattice, with moments \(\sum_sw_sy_s^re^{ty_s}\), the subset exponents are \(e_1(y_S)\), constant in time, and \(\tau\tau''-\tau'^2=\tau_{k+1}\tau_{k-1}\) holds with no remainder. Here they move with the flow, and \(De_1=p_2\) produces the extra term.</p>
+<p><strong>Consequence for (R).</strong> Take a flow line \(t\mapsto y_t\) with \(a=\operatorname{ord}_tH_k(y_t)\), \(1\le a&lt;\infty\), and \(H_k(y_t)=ct^a+\cdots\). Along the flow \(D\) is \(d/dt\), so \(DH_k\) has order exactly \(a-1\) and \(H_kD^2H_k-(DH_k)^2=-ac^2t^{2a-2}+\cdots\). Hence:</p>
+<ul>
+<li>\(\operatorname{ord}(H_{k+1}H_{k-1})\ge\min(2a-2,\ a+\operatorname{ord}\Phi_k[p_2])\);</li>
+<li>(R) at \(k\) holds exactly when \(\operatorname{ord}\Phi_k[p_2]\ge a-2\) and \(-ac-2k\varphi\ne0\), where \(\varphi=[t^{a-2}]\Phi_k[p_2](y_t)\). If \(b=\operatorname{ord}\Phi_k[p_2]&lt;a-2\), then \(\operatorname{ord}(H_{k+1}H_{k-1})=a+b&lt;2a-2\) and (R) fails.</li>
+<li>Equivalently, by the second form and \(D^2H_k=2k\Phi_k[p_2]+4k^2\Phi_k[e_1^2]\): \(\operatorname{ord}\Phi_k[e_1^2]\ge a-2\) and \([t^{a-2}]\Phi_k[e_1^2](y_t)\ne a^2c/(4k^2)\). That is, the subset variance of \(e_1\) does not degenerate at leading order.</li>
+<li>(R) holds unconditionally when \(a=1\). The order-\(0\) coefficient of \(4k^2H_{k+1}H_{k-1}\) is \(-c^2\ne0\), so \(j_{k+1}=j_{k-1}=0\). Hence the conjecture is open only for \(j_k\ge2\).</li>
+</ul>
+<p>So (R) is an order condition plus a leading-coefficient non-cancellation, not an ideal-membership statement. The order condition is observed (\(\operatorname{ord}\Phi_k[p_2]=j_k-2\)) but not proved.</p>
+<p><strong>Second statement.</strong> conj:cube-hankel-flow-order-relation. Over \(\mathbb C\), for every \(M\), every \(y\in\mathbb C^M\) (repeated coordinates allowed) and \(1\le k\le M-2\), let \(j_k\) be the \(t\)-adic order at \(t=0\) of the rational function \(H_k(y/(1-ty))\). If it satisfies \(1\le j_k&lt;\infty\), then \(j_{k+1}+j_{k-1}=2j_k-2\), with \(j_0=0\). (Proved for \(j_k=1\) above. With repeated coordinates, \(d\) distinct values make \(H_{d-1}(y_t)\) a nonzero multiple of a unit, so \(j_k\ge1\) forces \(k\le d-2\).) By the review's argument it gives strictly decreasing breakpoints \(\Delta_p\) under conj:cube-ramification-flow-order, and so \(\nu\le1\) at fixed clusters under (F).</p>
+<p><strong>Checks.</strong></p>
+<ul>
+<li>research/tools/bmd_bilinear_identity_explore.gp (research/results/bmd-20261009-bh/bilinear-identity.txt) verifies the identity symbolically at \(M=4\), \(k=1,2\), and at random integer points for \(M=5\) (\(k\le3\)) and \(M=6\) (\(k\le3\)). The run was stopped by its time limit in the symbolic \(M=6\), \(k=4\) case, which is not needed since the identity is proved. A first run overflowed the PARI stack at \(M=5\).</li>
+<li>research/tools/bmd_bilinear_order_explore.gp (research/results/bmd-20261009-bh/order-explore.txt) covers the flow lines of \(16\) clusters (\(z^M+z+1\), \(z^M-1\), \(z^M+z^2+1\), \(z^M+z^3-2\), \(M=4,\ldots,8\)) at every \(k\) with \(1\le j_k&lt;\infty\). It finds \(\operatorname{ord}\Phi_k[p_2]=j_k-2\) whenever \(j_k\ge2\). So the sufficient condition \(\operatorname{ord}\Phi_k[p_2]\ge j_k-1\) fails, and (R) rests on the non-cancellation, which holds in every case.</li>
+</ul>
+<p>The evidence for (R) itself is the review's data: \(15\) clusters for \(M=6\) to \(8\) (research/results/bmd-20261009-bg/flow-order-bilinear.txt) and all earlier recorded profiles. A first version of the exploration failed on a type error (a rational function where a series was needed) before producing data.</p>
+<p><strong>What this means.</strong> The Toda structure behind the flow orders is exact. Its defect is one explicit term, \(2kH_k\Phi_k[p_2]\), coming from the motion of the subset exponents \(e_1(y_S)\) under the Möbius flow. (R) reduces to showing that this term never cancels the leading Toda term. In the Toda case that term is \(-a\) times a square, and here the observed \(\Phi_k[p_2]\) has exactly the order where it could interfere. Two routes to the non-cancellation:</p>
+<ul>
+<li>an explicit formula for \(\varphi/c\), as in the rotation profiles, where everything is computable;</li>
+<li>a modified \(\tau\)-function absorbing the moving exponents, for instance a Möbius-covariant weight making \(e_1(y_S)\) constant along the flow.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-hankel-flow-order-relation (the non-cancellation);</li>
+<li>conj:cube-ramification-flow-order for \(M\ge5\);</li>
+<li>hypothesis (F);</li>
+<li>moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the flow-order route review (Desnanot–Jacobi and the Toda lattice). The identity is now exact for every \(M\), with an explicit remainder.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>the flow-order route review (its congruence data and the breakpoint argument);</li>
+<li>lem:cube-reparametrization-flow (\(D\) generates \(y\mapsto y/(1-ty)\));</li>
+<li>thm:cube-cherry-hankel-form (definition of \(\mathrm{Hank}_k\) with \(p_0=M\)).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One medium-effort reviewer checked by hand, without a gp run since it was asked to report early: the Cauchy–Binet minors, the Desnanot–Jacobi minors including \(k=1\) and \(k=M-1\), the derivatives, the flow, the leading term and the equivalence of the two non-cancellation forms.</p>
+<p>The identity is also checked by the saved runs (symbolic at \(M=4\); random points at \(M=5,6\)).</p>
+<p>The reviewer's required changes, all made:</p>
+<ul>
+<li>subset notation for \(\Phi_k[p_2]\);</li>
+<li>characteristic \(0\) for the consequences;</li>
+<li>the full equivalence, including the order condition;</li>
+<li>the order hypothesis of the \(e_1^2\) form;</li>
+<li>the unconditional case \(j_k=1\);</li>
+<li>the precise statement of the conjecture;</li>
+<li>the Toda remark as an analogy.</li>
+</ul>
+<p>Status: working proof (bilinear identity, every \(M,k\)); conjecture (order relation).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 51.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 52.70 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">52.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 3.69 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 2.62 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
