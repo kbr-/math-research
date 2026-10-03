@@ -73,20 +73,31 @@ def queue_notes(body):
     if found is None:
         return ['Lead queue: this notebook has none yet. Run python3 tools/lead_queue.py init NOTEBOOK.html and '
                 'commit the section with this cycle\'s entry; the finisher requires it.']
-    draining, queue = found
-    if not queue:
-        return ['Lead queue: empty. New passed leads and bridges of a review go at its end.']
-    kind, ident = queue[0]
-    head = (f'the head is {ident} ({kind}), tagged data-{kind}="{ident}"; this would be its entry '
-            f'{lq.spell(body, queue[0]) + 1} of at most {lq.SPELL} in a row')
-    if draining or len(queue) >= lq.CAP:
-        return [f'Lead queue: {len(queue)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
-                f'research entry must develop the head until the queue has {lq.FLOOR} items: {head}. End the '
+    draining, nodes = lq.parse_tree(body)
+    if not nodes:
+        return ['Lead queue: empty. New passed leads and bridges of a review and the sub-ideas entries list go '
+                'at its end.']
+    head = lq.head_of(nodes)
+    waiting = len(lq.marks(nodes))
+    waits = f'; {waiting} items wait on the user and are passed over' if waiting else ''
+    if head is None:
+        return [f'Lead queue: {len(nodes)} items, every one waiting on the user; nothing to develop until an '
+                'Unblocked follow-up.']
+    first = next((c for c in head.children if not c.waits), None)
+    target = (f'the head is {head.ident} ({head.kind}), tagged data-{head.kind}="{head.ident}"'
+              + (f', or its first sub-idea {first.ident} ({first.kind})' if first else '')
+              + f'; this would be its entry {lq.spell(body, head.item) + 1} of at most {lq.SPELL} in a row{waits}')
+    entries = ' or '.join(sorted(lq.SETTINGS['counted']))
+    if lq.SETTINGS['backpressure'] and (draining or len(nodes) >= lq.CAP):
+        return [f'Lead queue: {len(nodes)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
+                f'{entries} entry must develop the head until the queue has {lq.FLOOR} items: {target}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
                 'update the queue: Closed and Developed remove the item; Continuing keeps the head until its '
-                f'{lq.SPELL}th consecutive entry, then moves it to the tail. ' + SQUEEZE]
-    return [f'Lead queue: {len(queue)} items (backpressure at {lq.CAP}); {head}. A research entry that develops '
-            'a queue item must take the head, state its Follow-up outcome and update the queue. ' + SQUEEZE]
+                f'{lq.SPELL}th consecutive entry, then moves it with its sub-ideas to the tail. ' + SQUEEZE]
+    pressure = f'backpressure at {lq.CAP}' if lq.SETTINGS['backpressure'] else 'no backpressure here'
+    return [f'Lead queue: {len(nodes)} items ({pressure}); {target}. A {entries} entry that develops a queue '
+            'item takes the head or its first sub-idea, unless the user picked another, states its Follow-up '
+            'outcome and updates the queue. ' + SQUEEZE]
 
 
 SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing '
@@ -95,7 +106,9 @@ SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user,
            'the attempt found (restatement, inapplicability, falsification, supersession). Alternatively settle up '
            'to four head items in one entry under <h4>Queue triage</h4> (then lead_queue.py triage), each with the '
            'care it would get alone: 80+ words of what was checked, evidence cited, Closed or Developed only. A '
-           'research entry may add one Outside lead and one Absurd bridge of its own.')
+           'research entry may add one Outside lead and one Absurd bridge of its own. Any entry lists the questions, '
+           'checks and builds it names and leaves undone under <h4>Sub-ideas</h4> (data-sub="check" or "build"); '
+           'lead_queue.py append queues them under the item they belong to.')
 
 
 def guidance(body, ft, which=shutil.which, has=installed_header):

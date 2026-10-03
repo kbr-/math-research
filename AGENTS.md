@@ -247,8 +247,17 @@ rules to growing checklists or one-off setup narratives.
   is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
   to the tail (`lead_queue.py append`). A queue audit (`data-kind="audit"`, outside the review cadence) lists
   ideas that older reviews named outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`;
-  all of them are queued ("when unsure, queue it"). Backpressure: at 50 items the
-  queue drains (`data-draining="true"`), and every research entry develops the head until 20 remain;
+  all of them are queued ("when unsure, queue it"). Any entry lists the questions, checks and builds it
+  names and leaves undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`); they join
+  the queue nested under the item they belong to (user, 3 October 2026: "I want it to look like a nested
+  list of entries"), a sub-idea's development counting toward its parent's spell; a check is Developed
+  only with evidence that resolves, a build only with its opened task or its path. The user may pick any
+  item out of order (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and
+  an item waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
+  follow-ups). The queue section's attributes set, per notebook, the entry kinds that count, backpressure
+  and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details. Backpressure: at 50
+  top-level items the queue drains (`data-draining="true"`), and every research entry develops the head
+  or its first sub-idea until 20 remain;
   then work returns to the route, or to a better route the leads opened. Reviews report only follow-ups
   whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the
   queue's state and head. A one-step objection

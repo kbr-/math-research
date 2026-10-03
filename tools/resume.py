@@ -103,7 +103,7 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     from lead_queue import head_lines
     queue=head_lines(source)
     if queue:
-        parts.append(('Lead and bridge queue — head (develop oldest first)','\n'.join(queue)+'\n','lead-queue','head'))
+        parts.append(('Lead and bridge queue — head (develop oldest first; sub-ideas under their item)','\n'.join(queue)+'\n','lead-queue','head'))
     toc,omitted=book.toc(tail=tail)
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))

@@ -480,6 +480,9 @@ class LeadQueueTest(unittest.TestCase):
             lq.parse_tree(lead_child)
         lines = lq.head_lines(notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]))
         self.assertEqual(lines[1:], ['1. r1:1', '   - k:s1', '2. r1:2'])
+        waiting = notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]).replace(
+            'data-check="k:s1">', 'data-check="k:s1" data-waits="the licence">')
+        self.assertEqual(lq.head_lines(waiting)[2], '   - k:s1 [waiting: the licence]')
 
     def test_a_notebook_without_route_items_is_checked_once_it_has_a_queue(self):
         lq.check(None, notebook([self.rev], route=False))               # no section: nothing to check

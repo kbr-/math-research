@@ -81,6 +81,23 @@ class TurnGuidanceTest(unittest.TestCase):
         absent = ' '.join(self.guide.guidance(body, self.ft, has=lambda h: False))
         self.assertNotIn('C/C++ kernels:', absent)
 
+    def test_queue_notes_name_the_head_its_first_subidea_and_waiting_items(self):
+        route = '<section id="remaining-route"><li data-route-item="step">x</li></section>'
+        record = '<section id="research-record"></section>'
+        queue = ('<section id="lead-queue"{attrs}><ol><li data-lead="r:1" data-waits="x">r:1</li><li data-lead="r:2">r:2'
+                 '<ul><li data-check="k:s1" data-waits="y">k:s1</li><li data-check="k:s2">k:s2</li></ul></li></ol></section>')
+        notes = ' '.join(self.guide.queue_notes(route + queue.format(attrs='') + record))
+        self.assertIn('the head is r:2', notes)
+        self.assertIn('its first sub-idea k:s2', notes)
+        self.assertIn('2 items wait on the user', notes)
+        self.assertIn('backpressure at', notes)
+        off = ' '.join(self.guide.queue_notes(route + queue.format(attrs=' data-backpressure="off" data-counted="task"')
+                                              + record))
+        self.assertIn('no backpressure here', off)
+        self.assertIn('A task entry', off)
+        everyone = queue.format(attrs='').replace('data-lead="r:2">', 'data-lead="r:2" data-waits="z">')
+        self.assertIn('every one waiting', ' '.join(self.guide.queue_notes(route + everyone + record)))
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 

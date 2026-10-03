@@ -915,6 +915,12 @@ def check(head_body, body, path=None, root=None):
                                                                       ' (backpressure is off here)'))
 
 
+def waiting_note(node):
+    """' [waiting: REFERENCE]' for an item waiting on the user, else ''."""
+    found = re.search(r'data-waits="([^"]*)"', node.attrs)
+    return f' [waiting: {html.unescape(found.group(1))}]' if found else ''
+
+
 def head_lines(body, count=HEAD_READ):
     found = parse_tree(body)
     if found is None:
@@ -924,8 +930,8 @@ def head_lines(body, count=HEAD_READ):
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
     plain = lambda t: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', t)).strip()
     for n, node in enumerate(nodes[:count], 1):
-        out.append(f'{n}. {plain(node.text)}')
-        out += [f'   - {plain(c.text)}' for c in node.children]
+        out.append(f'{n}. {plain(node.text)}{waiting_note(node)}')
+        out += [f'   - {plain(c.text)}{waiting_note(c)}' for c in node.children]
     return out
 
 
