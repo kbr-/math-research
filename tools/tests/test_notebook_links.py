@@ -1,5 +1,6 @@
 import contextlib
 import io
+import json
 import subprocess
 import sys
 import tempfile
@@ -53,6 +54,53 @@ class NotebookLinksTest(unittest.TestCase):
             self.assertEqual(nl.main(['notebook_links.py', 'fix', str(self.nb)]), 0)
         self.assertIn('1 links rewritten', out.getvalue())
         self.assertEqual(self.nb.read_text(), self.links('research/results/out.txt'))
+
+
+class EvidenceRefreshTest(unittest.TestCase):
+    """fix refreshes the claim evidence hashes its rewrite changes, and only those."""
+
+    def setUp(self):
+        import shutil
+        from branch import SECTIONS, create
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        real = Path(__file__).resolve().parents[2]
+        for name in ['index.html', 'notebook.html', 'LICENSES/MIT.txt', 'research/context-budgets.json']:
+            (self.root / name).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(real / name, self.root / name)
+        context = {k: '<p>Side.</p>' for k in SECTIONS}
+        context['goal'] = 'Side goal'
+        context['remaining-route'] = '<li data-route-item="side-test">Test</li>'
+        create('alpha', 'Alpha', context, self.root)
+        (self.root / 'research/results').mkdir(parents=True, exist_ok=True)
+        (self.root / 'research/results/out.txt').write_text('answer')
+        self.nb = self.root / 'research/branches/alpha/notebook.html'
+        body = self.nb.read_text()
+        end = body.rindex('</section>')
+        self.nb.write_text(body[:end] + '<article id="linked"><p><a href="../../results/out.txt">out</a></p>'
+                           '</article>\n<article id="plain"><p>No links.</p></article>\n' + body[end:])
+        from claim_reviews import Evidence
+        evidence = Evidence(self.root)
+        url = 'https://kbr.is-a.dev/math-research/branches/alpha/#'
+        self.items = {name: {'target': url + anchor, 'sha256': evidence.sha256(url + anchor)}
+                      for name, anchor in [('current', 'linked'), ('plain', 'plain'), ('stale', 'linked')]}
+        self.items['stale']['sha256'] = '0' * 64
+        self.registry = self.root / 'research/claims/index.json'
+        self.registry.parent.mkdir(parents=True, exist_ok=True)
+        self.registry.write_text(json.dumps({'claims': [{'id': 'lem:x', 'reviews': {'significance': {
+            'evidence': list(self.items.values())}}}]}, ensure_ascii=False, indent=2) + '\n')
+
+    def test_only_hashes_that_matched_and_changed_are_refreshed(self):
+        before = {k: v['sha256'] for k, v in self.items.items()}
+        text, count = nl.fix(self.nb.read_text(), self.nb, self.root)
+        self.assertEqual((count, nl.rewrite_with_evidence(self.nb, text, self.root)), (1, 1))
+        self.assertIn('href="research/results/out.txt"', self.nb.read_text())
+        stored = json.loads(self.registry.read_text())['claims'][0]['reviews']['significance']['evidence']
+        from claim_reviews import Evidence
+        now = Evidence(self.root).sha256(self.items['current']['target'])
+        self.assertEqual([e['sha256'] for e in stored], [now, before['plain'], before['stale']])
+        self.assertNotEqual(now, before['current'])
 
 
 if __name__ == '__main__':

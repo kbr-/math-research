@@ -9,9 +9,11 @@ Usage: notebook_links.py check NOTEBOOK.html   (lists relative links that do not
                                                exit 1 when there are any)
        notebook_links.py fix NOTEBOOK.html     (rewrites each <a> href that resolves from the notebook's
                                                folder but not from the root into its root path; the
-                                               fragment and query are kept)"""
+                                               fragment and query are kept; refreshes the claim
+                                               registry's evidence hashes the rewrite changes)"""
 # SPDX-License-Identifier: MIT
 import html
+import json
 import os
 import posixpath
 import re
@@ -66,6 +68,44 @@ def fix(text, notebook, root=ROOT):
     return A_HREF.sub(repair, text), len(rewritten)
 
 
+def rewrite_with_evidence(notebook, text, root=ROOT):
+    """Write `text` to `notebook`, refreshing the claim registry's evidence hashes the rewrite changes:
+    a stored hash is replaced only when it matched the notebook before and the new text hashes differently,
+    so a hash already stale stays stale. Returns the number of hashes refreshed."""
+    registry = root / 'research/claims/index.json'
+    if not registry.exists():
+        notebook.write_text(text)
+        return 0
+    from claim_registry import write_json
+    from claim_reviews import Evidence
+    data, path = json.loads(registry.read_text()), notebook.resolve()
+
+    def hashes(evidence, items):
+        found = {}
+        for key, item in items:
+            try:
+                found[key] = evidence.sha256(item['target'], item.get('normalization'))
+            except (OSError, ValueError):
+                found[key] = None
+        return found
+    evidence = Evidence(root)
+    items = [(id(item), item) for claim in data['claims'] for review in claim.get('reviews', {}).values()
+             for item in review.get('evidence', [])
+             if (evidence.local(item['target']) or (None,))[0] is not None
+             and Path(evidence.local(item['target'])[0]).resolve() == path]
+    before = hashes(evidence, items)
+    notebook.write_text(text)
+    after = hashes(Evidence(root), items)
+    refreshed = 0
+    for key, item in items:
+        if item['sha256'] == before[key] and after[key] not in (None, before[key]):
+            item['sha256'] = after[key]
+            refreshed += 1
+    if refreshed:
+        write_json(registry, data)
+    return refreshed
+
+
 def main(argv):
     if len(argv) != 3 or argv[1] not in ('check', 'fix'):
         print(__doc__, file=sys.stderr)
@@ -77,8 +117,9 @@ def main(argv):
     text = notebook.read_text()
     if argv[1] == 'fix':
         text, count = fix(text, notebook, root)
-        notebook.write_text(text)
-        print(f'{notebook}: {count} links rewritten to their path from the repository root')
+        refreshed = rewrite_with_evidence(notebook, text, root)
+        print(f'{notebook}: {count} links rewritten to their path from the repository root; '
+              f'{refreshed} claim evidence hashes refreshed')
     missing = unresolved(text, root)
     for href in missing:
         print(f'{notebook}: does not resolve from the repository root: {href}')
