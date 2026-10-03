@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-taylor-dominance">tie Taylor cofactor</a>; eight open items). A nonzero Taylor cofactor \(F\) at the cluster's limit makes the leading \(C\)-block coordinate unique. Above a tie, for \(M\le5\), \(F\) vanishes only at \(c_0=-1\) and, for \(M=5\), at \(7c_0^2+2c_0+7=0\), never at the excluded Hankel moduli.</p>
-<p>Next: \(F(c,1,0^{M-2})\) for every \(M\). Find its closed form, perhaps through the Gegenbauer tie coefficient of thm:cube-tie-window-gegenbauer, whose zeros also lie on the unit circle. Decide whether its zeros other than \(0\) and \(1\) ever meet the Hankel moduli \((M-1)c^2-2c+(M-1)=0\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cofactor-double-coincidence">double coincidence</a>; eight open items). The Taylor cofactor vanishes on double coincidences (conjecture; exact at \(M=6\) for the tie limit). So uniqueness of the leading \(C\)-block coordinate above a tie is settled only for \(M\le5\).</p>
+<p>Next: prove conj:cube-cofactor-double-coincidence from the product form \(f(x,y)=g(x)g(y)\), \(g=(1+xT)^{-3/2}\). The leading rows at a double coincidence are symmetric products in a space \(U\) of dimension \(M\) with two derivative elements. Find the linear relation among their first \(\binom M2\) Taylor coefficients, for instance from a Wronskian identity for \(g,g'\) at two points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68928,6 +68928,65 @@ Hence \(\Delta'_{n-1}\not\equiv0\) implies \(\Delta_n\not\equiv0\).</p>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 9.26 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.51 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cofactor-double-coincidence" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-tie-cofactor-six conj:cube-cofactor-double-coincidence">
+<h3>9 October 2026 — The Taylor cofactor vanishes identically at the tie limit for six roots, apparently because it vanishes on every double coincidence; the tie-limit uniqueness criterion stops at \(M=5\)</h3>
+<p class="entry-meta">Example (exact, by a degree bound): \(F(c,1,0^4)\equiv0\) at \(M=6\). Conjecture: the Taylor cofactor vanishes whenever two disjoint pairs of roots coincide. The tie-limit criterion of lem:cube-cofactor-gives-unique-cblock fails for \(M\ge6\). Double coincidence cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement: uniqueness of the leading \(C\)-block coordinate above a tie. The <a href="#entry-2026-10-09-cube-tie-taylor-dominance">tie cofactor entry</a> proved it where the Taylor cofactor \(F=p_{T_0}/\mathrm{Vand}^{M-2}\) is nonzero at the tie limit \((c,1,0^{M-2})\), and computed \(F\) there for \(M\le5\). What is \(F(c,1,0^{M-2})\) for every \(M\)?</p>
+<p><strong>Example.</strong> ex:cube-tie-cofactor-six. At \(M=6\), \(F(c,1,0,0,0,0)\equiv0\).</p>
+<p>Proof. Each pair row has, in column \(t\), an entry homogeneous of degree \(t\) in \(y\). So \(p_{T_0}\) is homogeneous of degree \(\binom R2=105\), \(R=15\), and \(F\) of degree \(105-4\binom62=45\). Hence \(F(c,1,0^4)\) is a polynomial in \(c\) of degree at most \(45\). research/tools/bmd_tie_cofactor_interp.gp (research/results/bmd-20261009-ae/tie-cofactor-interp.txt) computes it exactly at \(c=2,\ldots,47\), as the value at \(e=0\) of the exact quotient along \((c,1,ez)\), and finds zero at all \(46\) points. \(\square\) The same tool reproduces the \(M=4,5\) cofactors of the tie cofactor entry.</p>
+<p><strong>General statement.</strong> conj:cube-cofactor-double-coincidence. For every \(M\ge4\), the Taylor cofactor \(F\) vanishes on every locus \(\{y_i=y_j,\ y_k=y_l\}\) with \(\{i,j\}\cap\{k,l\}=\varnothing\).</p>
+<p>Evidence:</p>
+<ul>
+<li>The cofactors at the tie limit carry exactly these factors: \((c-1)\) at \(M=4,5\), where the roots \((1,1,0,0,\ldots)\) give two coincident pairs; \(c\) at \(M=5\), where four roots coincide; and \(F\equiv0\) at \(M=6\), where four zeros always contain two coincident pairs.</li>
+<li>research/tools/bmd_cofactor_double_coincidence.gp (cofactor-double-coincidence.txt) evaluates \(F\) exactly at \((a+3e,a,b+5e,b,y_5,\ldots)\), \(e\to0\), at three random rational points each for \(M=4,5,6\): all zero.</li>
+<li>Control: with one coincident pair, \((a+3e,a,b,b+11,\ldots)\), all nine values are nonzero.</li>
+</ul>
+<p>The count before the run: each of the \(9\) double-coincidence values could have been nonzero. The controls show that the computation does not return zero by construction.</p>
+<p><strong>Proof attempt.</strong> Write \(f(x,y)=g(x)g(y)\), \(g(x)=(1+xT)^{-3/2}\), and \(y_1=a\), \(y_2=a+s\), \(y_3=b\), \(y_4=b+t\). Taking differences of rows:</p>
+<ul>
+<li>the rows \((1,k),(2,k)\) and \((3,k),(4,k)\) for \(k\ge5\) give \(2(M-4)\) rows of order \(1\) in \((s,t)\);</li>
+<li>the four rows of \(\{1,2\}\times\{3,4\}\) give orders \(0,1,1,2\).</li>
+</ul>
+<p>That totals \(2M-4\), exactly the order of \(\mathrm{Vand}^{M-2}\) in \((s,t)\). So \(F\) at the double coincidence is the determinant of the leading rows. These are products of two elements of
+\[
+U=\mathrm{span}\{g(a),g'(a),g(b),g'(b),g(y_5),\ldots,g(y_M)\},
+\]
+of dimension \(M\), with \(g'\) vanishing at \(T=0\). The conjecture says these \(\binom M2\) symmetric products are dependent in the first \(\binom M2\) Taylor coefficients. A dimension count does not show it. No proof is claimed.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The tie-limit criterion of lem:cube-cofactor-gives-unique-cblock is useful only for \(M\le5\). For \(M\ge6\) the deeper cluster has at least four roots tending to \(0\), and \(F\) vanishes there: proved at \(M=6\), and for every larger \(M\) under the conjecture.</li>
+<li>Uniqueness above a tie with \(M\ge6\) therefore needs a hierarchical count. The valuation of \(F\) along the arc is set by the caterpillar's nested coincidences, as in thm:cube-caterpillar-minimality for pure caterpillars, rather than by one limit value.</li>
+<li>The double-coincidence loci are the two-double points, which the record treats separately among (K)'s open items. The vanishing of \(F\) there is the cofactor-level reason they are special.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of conj:cube-cofactor-double-coincidence.</li>
+<li>The hierarchical cofactor valuation above a tie over a caterpillar, for \(M\ge6\).</li>
+<li>The other open items of (K), and (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-cofactor-gives-unique-cblock and cor:cube-tie-cofactor-small;</li>
+<li>prop:cube-minimality-small-clusters (divisibility);</li>
+<li>thm:cube-caterpillar-minimality (statement).</li>
+</ul>
+<p><strong>Verification gate.</strong> No new lemma: an example proved by exact computation under an explicit degree bound, and a conjecture with exact evidence and controls. No correctness review was required. The degree bound was checked: \(\binom{15}2-4\binom62=45\).</p>
+<p>Status: example (exact, \(M=6\)); conjecture (vanishing on double coincidences) with finite evidence.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ae">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 40.80 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">43.98 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 29.02 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">23.62 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.69 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.49 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
