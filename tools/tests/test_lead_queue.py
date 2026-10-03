@@ -776,6 +776,26 @@ class LeadQueueTest(unittest.TestCase):
             self.assertEqual(subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'nonsense'],
                                             capture_output=True).returncode, 2)
 
+    def test_check_command_finds_the_notebook_under_a_hooks_git_dir(self):
+        # a pre-commit hook runs with GIT_DIR set, where git rev-parse --show-toplevel answers the current directory
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            git = lambda *a: subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', *a], cwd=repo,
+                                            check=True, capture_output=True)
+            git('init', '-q')
+            (repo / 'notebook.html').write_text(notebook([self.rev]))      # a root notebook without a queue
+            nb = repo / 'branch' / 'notebook.html'
+            nb.parent.mkdir()
+            nb.write_text(notebook([self.rev], self.q))
+            git('add', '.')
+            git('commit', '-q', '-m', 'one')
+            nb.write_text(notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:]))
+            git('add', '.')
+            result = subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'check', str(nb)],
+                                    capture_output=True, text=True, cwd=repo,
+                                    env=dict(os.environ, GIT_DIR=str(repo / '.git')))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_creating_the_queue_without_an_entry_ignores_the_last_entrys_work(self):
         older = research(self.q[0], 'Continuing')                       # an entry already in HEAD
         lq.check(notebook([self.rev, older]), notebook([self.rev, older], self.q))

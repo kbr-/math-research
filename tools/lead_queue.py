@@ -63,6 +63,7 @@ import functools
 import html
 import importlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -1055,19 +1056,22 @@ def staged_check(notebook, base='HEAD'):
     1 when the queue breaks a rule, 3 when the check cannot run (no repository, nothing staged, no such base);
     2 stays the usage error's, which a caller reads as a tool without this command."""
     path = Path(notebook).resolve()
-    top = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=path.parent, capture_output=True, text=True)
+    # a pre-commit hook inherits GIT_DIR, under which --show-toplevel answers the current directory: find the
+    # repository from the notebook's own place (GIT_INDEX_FILE stays, so the hook's index is the one read)
+    env = {k: v for k, v in os.environ.items() if k not in ('GIT_DIR', 'GIT_WORK_TREE')}
+    git = functools.partial(subprocess.run, capture_output=True, text=True, env=env)
+    top = git(['git', 'rev-parse', '--show-toplevel'], cwd=path.parent)
     if top.returncode != 0:
         return 3, f'{notebook} is not in a git repository'
     root = Path(top.stdout.strip())
     relative = path.relative_to(root).as_posix()
-    staged = subprocess.run(['git', 'show', f':{relative}'], cwd=root, capture_output=True, text=True)
+    staged = git(['git', 'show', f':{relative}'], cwd=root)
     if staged.returncode != 0:
         return 3, f'{relative} is not staged'
-    known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', f'{base}^{{commit}}'], cwd=root,
-                           capture_output=True, text=True)
+    known = git(['git', 'rev-parse', '--verify', '--quiet', f'{base}^{{commit}}'], cwd=root)
     if known.returncode != 0:
         return 3, f'{base} is no commit in this repository'
-    head = subprocess.run(['git', 'show', f'{base}:{relative}'], cwd=root, capture_output=True, text=True)
+    head = git(['git', 'show', f'{base}:{relative}'], cwd=root)
     try:
         check(head.stdout if head.returncode == 0 else None, staged.stdout, path, root)
     except ValueError as error:
