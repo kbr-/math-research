@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-flow-order-families">flow-order families</a>; eight open items). Conjecture: each family's least value is \(b_p+w_x\,j_p(y_0)\), with \(j_p\) the \(D\)-flow order of \(\mathrm{Hank}_{M-p}\) at the cluster, attained by one set. It holds at all \(70\) computed family minima, including the non-rotation-invariant points \(z^5+az+b\) of \(\Sigma_1\cap\Sigma_2\), where the leaders still have nullity at most one.</p>
-<p>Next: prove the conjecture. Seek a generating identity expressing the least coefficients of family \(p\)'s top-raised sets through \(\mathrm{Hank}_k(y/(1-ty))\), using the \(\hat G\) form and the transfer between arcs with \(\tilde y'\) fixed and with \(\tilde y\) fixed. The top-up identity is its first coefficient. Then identify the minimizer shapes, and bound the union of tied families.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-family-schubert-reduction">family Schubert reduction</a>; eight open items). Each family's least coefficients are the minors of one space \(V_p(y)\). The unique cheapest candidate is its vanishing-order set at \(0\), and its excess is the ramification weight of the polynomial space \(U_p=\{Q'\pi-Q\pi'\}+\pi\,\operatorname{span}\{z^m:p-1\le m\le M-2\}\).</p>
+<p>Next: prove conj:cube-ramification-flow-order, that the ramification weight equals the flow order of \(\mathrm{Hank}_{M-p}\). Use the dual space \(U_p^\perp\) of dimension \(p-1\) under the residue pairing, or control the twist \((z_0+w)^m\) under translation. This also settles the top-up identity's vanishing pattern for every \(M\). The next entry is the required route review if the proof does not close within one cycle.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -71575,6 +71575,91 @@ the flow order of \(\mathrm{Hank}_k\) at \(y_0\) (lem:cube-reparametrization-flo
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 49.80 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 34.13 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 55.35 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-family-schubert-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-family-schubert-reduction conj:cube-ramification-flow-order check:cube-ramification-flow-order">
+<h3>9 October 2026 — Each family's cheapest least coefficient is the Schubert-cell pivot of a space of power series: it is unique, it is the vanishing-order set at 0, and its excess is the ramification weight; the flow-order conjecture becomes a statement about a space of polynomials</h3>
+<p class="entry-meta">Working proof of the Schubert reduction for least coefficients; conjecture that ramification equals flow order, with exact checks at 21 families. Family Schubert reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs, conj:cube-flow-order-family-value (<a href="#entry-2026-10-09-cube-flow-order-families">flow-order families</a>). Which set of family \(p\) is cheapest, and why is it unique? The missing implication is a mechanism that identifies the minimizer for every \(M\) and every cluster. The cycle tests whether the least coefficients of a family are the minors of one space of power series. If they are, uniqueness and shape follow from Schubert cells, and what remains is the value.</p>
+<p><strong>General statement.</strong> prop:cube-family-schubert-reduction. Let \(y=(y_1,\ldots,y_M)\), \(\pi(z)=\prod_q(1-y_qz)\), \(H=1/\pi=\sum h_nz^n\), and \(1\le p\le M\), \(k=M-p\). Let \(V_p(y)\subset\mathbb Q(y)[[z]]\) be spanned by the \(M+k\) series
+\[z^jH\ (0\le j&lt;M),\qquad G_m=\tfrac1z\int_0^zw^mH(w)\,dw\ (p-1\le m\le M-2).\]</p>
+<ol>
+<li>For every set \(\Lambda\) of family \(p\) with negative part \([-p,-1]\) and nonnegative part \(\Lambda_+\), the coefficient of \(x^{\sum\Lambda+B_p}\varepsilon^{B_p}\) in \(P_\Lambda\) is a nonzero constant times \(\mathrm{Vand}(y)^2\Delta_{\Lambda_+}(y)\). Here \(\Delta_{\Lambda_+}\) is the minor on the rows \(i\in\Lambda_+\) of the coefficient matrix \(([z^i]\Phi)\) of the basis above. This monomial is the least term allowed by the window bound for that set.</li>
+<li>Suppose \(V_p(y_0)\) has dimension \(M+k\) at a cluster \(y_0\), and let \(O_p(y_0)\) be its set of vanishing orders at \(z=0\). Then \(\Delta_{\Lambda_+}(y_0)\ne0\) implies \(\Lambda_+\ge O_p(y_0)\) elementwise after sorting, and \(\Delta_{O_p}(y_0)\ne0\). Hence among these sets with nonvanishing least coefficient, the least excess \(E^+\) is attained only at \(\Lambda_+=O_p(y_0)\). It equals the ramification weight
+\[r_p(y_0)=\sum_i\bigl(o_i-(i-1)\bigr)=\operatorname{ord}_{z=0}W(V_p(y_0))=\operatorname{ord}_{z=0}W(U_p(y_0)),\]
+where \(W\) is the Wronskian and \(U_p\) is the space of polynomials of degree at most \(2M-2\)
+\[U_p(y)=\{Q'\pi-Q\pi':\deg Q\le M\}+\pi\cdot\operatorname{span}\{z^m:p-1\le m\le M-2\}.\]</li>
+<li>On a fixed-cluster arc at \(y_0\), with the reparametrized roots constant and \(w_x,w_e&gt;0\), the set with \(\Lambda_+=O_p(y_0)\) and \(N=[1,p]\) has value exactly \(b_p+w_xr_p(y_0)\). So the least value of family \(p\) is at most \(b_p+w_xr_p(y_0)\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<p><em>Part 1.</em> By lem:cube-cross-leading-coefficient, with \(N=[1,p]\), \(B(\Lambda)=B_p\), the coefficient is \(\pm H_{[1,p]}c_1^k\prod_{e&lt;p}c_e\prod_{i\in\Lambda_+}c_i(-\tfrac12)^k\,\mathrm{Vand}^2D_\Lambda\). The constant is nonzero, with \(H_{[1,p]}\ne0\) by thm:cube-cherry-hankel-form. In \(D_\Lambda\) the row \(i\) has entries \(h_{i-M+1+t}=[z^i]z^{M-1-t}H\) for \(t&lt;M\). It also has \(h_{i+t-M+2}/(i+1)=[z^i]G_{M-2-t}\) for \(t&lt;k\), since \([z^i]G_m=h_{i-m}/(i+1)\). As \(t\) runs over \([0,k)\), \(m=M-2-t\) runs over \([p-1,M-2]\). So \(D_\Lambda=\pm\Delta_{\Lambda_+}\). The term is least because \(a-b=\sum\Lambda\) for every monomial and \(b\ge B(\Lambda)\) (rotation cluster leaders, step 1; lem:cube-cross-leading-coefficient).</p>
+<p><em>Part 2.</em> Choose a basis of \(V_p(y_0)\) in echelon form, with the distinct leading orders \(O_p=\{o_1&lt;\cdots&lt;o_n\}\), \(n=M+k\). The minor on rows \(L\) is the minor of this basis times the nonzero determinant of the change of basis. If \(L\not\ge O_p\), some \(l_i&lt;o_i\). Then the rows \(l_1,\ldots,l_i\) see only the basis vectors with \(o_j\le l_i\), of which there are fewer than \(i\), so the minor vanishes. The minor on \(O_p\) is triangular with nonzero diagonal. If \(L\ge O_p\) and \(\sum L=\sum O_p\), then \(L=O_p\). So the least excess is attained only at \(O_p\), and it equals \(\sum o_i-\binom n2\), since the window \(\Lambda_+=[0,n-1]\) has excess \(0\).</p>
+<p>The Wronskian of the echelon basis is \(c\,z^{\sum o_i-\binom n2}(1+O(z))\), with \(c=\prod_{i&lt;j}(o_j-o_i)\) times the leading coefficients, which is nonzero in characteristic zero. So \(r_p=\operatorname{ord}_0W(V_p)\).</p>
+<p>For \(U_p\):</p>
+<ul>
+<li>Every element of \(zV_p\) vanishes at \(0\). So \(\mathbb C\oplus zV_p\) has vanishing orders \(\{0\}\cup(O_p+1)\) and the same ramification weight as \(V_p\).</li>
+<li>\(W(1,f_1,\ldots,f_n)=W(f_1',\ldots,f_n')\), and \((zV_p)'\) is spanned by \((z^{j+1}H)'\), \(0\le j&lt;M\), and \(z^mH\).</li>
+<li>Multiplying by the unit \(\pi^2\) multiplies the Wronskian by \(\pi^{2n}\). It gives \(\pi^2(z^{j+1}/\pi)'=Q'\pi-Q\pi'\) with \(Q=z^{j+1}\), and \(z^m\pi\).</li>
+<li>\(Q=\pi\) gives \(0\), so allowing every \(Q\) of degree at most \(M\), including constants, gives the same span.</li>
+<li>The top coefficient cancels in \(Q'\pi-Q\pi'\) for \(Q=z^M\), and \(\deg z^m\pi\le2M-2\). So \(U_p\subseteq\mathbb Q(y)[z]_{\le2M-2}\).</li>
+</ul>
+<p><em>Part 3.</em> The cross coordinates are indexed by all \(2M\)-sets of integer columns (thm:cube-cherry-lattice-splitting), so \([-p,-1]\cup O_p(y_0)\) is a coordinate. If a computation truncates the columns, assume \(O_p\) lies inside the truncation. By part 1 the coefficient is nonzero at \(y_0\). The monomial \(x^{\sum\Lambda+b}\varepsilon^b\) has order \(w_x\sum\Lambda+(w_x+w_e)b\), strictly increasing in \(b\) since \(w_x+w_e&gt;0\). So the coefficient's monomial is the only one of its order. (If the roots moved along the arc with limit \(y_0\), all coefficients would have valuation \(\ge0\). This one would have valuation \(0\), so its value would be the same; the statement is made for constant roots.) Its order is \(b_p+w_xE^+=b_p+w_xr_p\) by lem:cube-window-bound-excess. \(\square\)</p>
+<p><strong>Second statement.</strong> conj:cube-ramification-flow-order. For every cluster \(y_0\) and \(1\le p\le M\) with \(\dim V_p(y_0)=M+k\), the ramification weight equals the flow order:
+\[r_p(y_0)=j_p(y_0)=\operatorname{ord}_{t=0}\mathrm{Hank}_k\bigl(y_0/(1-ty_0)\bigr).\]</p>
+<p>For \(r=0\) this is the window statement \(D_{\Lambda_p}=c\,\mathrm{Hank}_k\) (thm:cube-cherry-hankel-form). The degree-one part is the top-up identity. By the generalized Wronskian expansion \(W(\Phi)=\sum_L\Delta_L\prod_{i&lt;j}(l_j-l_i)\,z^{\sum L-\binom n2}\), the \(z^1\)-coefficient is a nonzero multiple of \(\Delta_{T_p}\), where \(T_p\) has \(\Lambda_+=[0,n-2]\cup\{n\}\). So conj:cube-ramification-flow-order contains conj:cube-topup-flow-identity's vanishing pattern.</p>
+<p><strong>Relation to the family conjecture.</strong> conj:cube-flow-order-family-value follows from conj:cube-ramification-flow-order together with one further statement. On fixed-cluster arcs no higher \(u\)-coefficient beats the least one: the coefficient at \(\varepsilon^{B(\Lambda)+\delta}\) must vanish at \(y_0\) whenever \(E^+(\Lambda)+\delta&lt;j_p(y_0)\). That is the graded penalty question (conj:cube-graded-hankel-penalty) in flow form. Given both, the minimizer is unique and equals \([-p,-1]\cup O_p(y_0)\).</p>
+<ul>
+<li>A set with excesses \(E^\pm\) and a monomial \(\delta=b-B(\Lambda)\ge0\) above its least one has candidate value \(b_p+w_xE^++w_eE^-+(w_x+w_e)\delta\).</li>
+<li>Under the graded vanishing, a nonzero monomial has \(E^++\delta\ge j_p\). The value then exceeds \(b_p+w_xj_p\) strictly if \(\delta&gt;0\) or \(E^-&gt;0\), using \(w_e&gt;0\) and \(w_x\ge0\).</li>
+<li>For \(\delta=0\), \(E^-=0\), part 2 gives uniqueness.</li>
+<li>The graded condition as stated ignores \(E^-\). It is therefore sufficient, though stronger than needed.</li>
+<li>For \(N\ne[1,p]\) the factor \(H_N\) may vanish, which only helps.</li>
+</ul>
+<p><strong>Checks.</strong> check:cube-ramification-flow-order.</p>
+<ul>
+<li>research/tools/bmd_wronskian_flow_identity.gp (research/results/bmd-20261009-bd/wronskian-flow.txt): exact series in \(z\) at six clusters (\(M=4,5\), including \(z^4-1\), \(z^4+z+1\), \(z^5+z+1\)), every \(p\le M-1\). \(\operatorname{ord}_0W(V_p)\) equals the flow order in all \(21\) cases; orders \(0,1,2\) occur. A first version also tested a closed form \(W=\text{const}\cdot\prod(1-yz)^{-c}\,z^e\,\mathrm{Hank}_k(y/(1-zy))\): the fitted \(c\) differed between families at the generic quartic, so that product form is false. The run then stopped on a division by zero at \(z^4-1\), and the script was reduced to the order comparison.</li>
+<li>research/tools/bmd_vanishing_order_shapes.gp (research/results/bmd-20261009-bd/vanishing-orders.txt): at five clusters, \(O_p\) from the echelon form of \(V_p\) equals the minimizer's nonnegative part in every case of the flow-order families data. Examples: \([0,4]\cup\{7,8\}\) at \(z^5-1\), \(p=3\), which is \(\Lambda_3^*\); \([0,4]\cup\{6,7\}\) and \([0,4]\cup\{7\}\) at \(z^5+z+1\), \(p=3,4\). \(U_p\) has the same dimension and the same vanishing-order set as \(V_p\) in all \(18\) cases; the proof needs only the same weight. All spaces have full dimension.</li>
+</ul>
+<p><strong>What this means.</strong> The support core on fixed-cluster arcs is now organized by one object per family, the polynomial space \(U_p(y_0)\). Its pivots give the only candidate minimizer of the family, and its ramification at \(0\) gives the candidate's excess. Ties between families, and hence the union bound, are questions about the pivot sets \(O_p\) of different \(p\). The remaining identity, ramification weight equals flow order, compares a Wronskian at \(z=0\) with a Hankel determinant along the \(D\)-flow. Translating \(U_p(y)\) to \(z_0\) gives \(U_p(y_{z_0})\), \(y_{z_0}=y/(1-z_0y)\), except for its second summand. That summand becomes \(\pi\cdot\operatorname{span}\{(z_0+w)^m\}\) instead of \(\pi\cdot\operatorname{span}\{w^m\}\), so a proof must control this twist.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-ramification-flow-order. It would also prove the top-up pattern for every \(M\).</li>
+<li>The higher \(u\)-coefficients on fixed-cluster arcs.</li>
+<li>Full dimension of \(V_p\). It holds at every computed cluster. A proof is likely for distinct nonzero roots, through independence of the logarithmic terms of the \(G_m\), but none is given here.</li>
+<li>Ties between families and the union bound; moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-cross-leading-coefficient (formula and proof);</li>
+<li>thm:cube-cherry-hankel-form (\(H_p\ne0\));</li>
+<li>lem:cube-window-bound-excess;</li>
+<li>thm:cube-rotation-cluster-leaders, step 1;</li>
+<li>conj:cube-flow-order-family-value and its data.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed.</p>
+<p>One medium-effort reviewer checked parts 1 to 3: the entries, the constant, the Schubert argument, the Wronskian chain, the constant-\(Q\) step and the degree bound. In gp it compared the lemma's \(D_\Lambda\) with the coefficient-matrix minors at \(M=3\), \(y=(2,5,-7)\), for all \(1287\) sets \(\Lambda_+\subset[0,11]\) at \(p=1,2\), and found no mismatch.</p>
+<p>Its required changes, all made:</p>
+<ul>
+<li>the admissibility of the pivot set as a column set;</li>
+<li>\(w_x+w_e&gt;0\) for the strict order;</li>
+<li>constant roots in part 3, with a remark on moving roots;</li>
+<li>the correct cost \((w_x+w_e)\delta\) of higher monomials, with the strictness conditions;</li>
+<li>the generalized Wronskian expansion for the top-up remark.</li>
+</ul>
+<p>Status: working proof (Schubert reduction); conjecture (ramification equals flow order) with finite checks.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 19.01 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 4.34 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 47.30 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 26.66 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.57 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
