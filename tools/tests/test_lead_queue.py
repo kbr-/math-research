@@ -1,4 +1,7 @@
 import importlib.util
+import json
+import os
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -22,6 +25,17 @@ def research(develops=None, outcome=None):
     tag = f' data-{develops[0]}="{develops[1]}"' if develops else ''
     body = f'<p><strong>Follow-up.</strong> {outcome}: x.</p>' if outcome else ''
     return f'<article data-kind="research" data-route="step"{tag}>{body}</article>'
+
+
+def subideas(ident, items, kind='task', extra=''):
+    """An entry listing sub-ideas: items are (sub kind, text)."""
+    return (f'<article id="{ident}" data-kind="{kind}"{extra}>{"" if extra else "<p>work</p>"}<h4>Sub-ideas</h4><ul>'
+            + ''.join(f'<li data-sub="{k}">{x}</li>' for k, x in items) + '</ul></article>')
+
+
+def developing(item, outcome, body=''):
+    return (f'<article id="d" data-kind="research" data-route="step" data-{item[0]}="{item[1]}">{body}'
+            f'<p><strong>Follow-up.</strong> {outcome}: x.</p></article>')
 
 
 def notebook(articles, queue=None, draining=False):
@@ -253,6 +267,91 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.open_items(body), [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'a:2'),
                                                ('lead', 'r2:1'), ('lead', 'a:1'), ('bridge', 'a:1')])
         lq.check(None, notebook([self.rev, later, closing, audit], lq.open_items(body)))
+
+    def test_subideas_join_the_tail_from_any_entry(self):
+        head = notebook([self.rev], self.q)
+        listing = subideas('t1', [('check', 'run it on ARM'), ('build', 'the PDF register')])
+        want = self.q + [('check', 't1:s1'), ('build', 't1:s2')]
+        body, count = lq.append_new(notebook([self.rev, listing], self.q))
+        self.assertEqual((count, lq.parse(body)[1]), (2, want))
+        lq.check(head, body)
+        with self.assertRaises(ValueError):                             # a listed sub-idea must reach the queue
+            lq.check(head, notebook([self.rev, listing], self.q))
+        self.assertIn('run it on ARM', lq.item_text(body, 'check', 't1:s1'))
+
+    def test_subidea_ids_never_meet_lead_ids(self):
+        entry = ('<article id="w" data-kind="review" data-route="step"><h4>Outside leads</h4><ul><li>L' + PASS
+                 + '</li></ul><h4>Sub-ideas</h4><ul><li data-sub="check">c</li><li data-sub="build">b</li></ul></article>')
+        self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([entry]))[0]),
+                         [('lead', 'w:1'), ('check', 'w:s1'), ('build', 'w:s2')])
+
+    def test_init_seeds_listed_subideas(self):
+        listing = subideas('t1', [('check', 'c')])
+        self.assertEqual(lq.open_items(notebook([self.rev, listing])), self.q + [('check', 't1:s1')])
+
+    def test_check_and_build_need_resolving_evidence_to_be_developed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research/results').mkdir(parents=True)
+            (root / 'research/results/out.txt').write_text('answer')
+            (root / 'tasks/arm-check').mkdir(parents=True)
+            (root / 'research/claims').mkdir(parents=True)
+            (root / 'research/claims/index.json').write_text(json.dumps({'claims': [{'id': 'lem:known'}]}))
+            nb = root / 'notebook.html'
+            listing = subideas('t1', [('check', 'c'), ('build', 'b')])
+            queue = [('check', 't1:s1'), ('build', 't1:s2')]
+            head = notebook([listing], queue)
+
+            def after(item, outcome, body, rest):
+                return notebook([listing, developing(item, outcome, body)], rest)
+            accepted = [('check', '<a href="research/results/out.txt">out</a>'),
+                        ('check', 'see <a href="#t1">the listing</a>'),
+                        ('check', 'by lem:known, and prose naming lem:elsewhere'),
+                        ('check', '<a href="https://example.org">a page</a> and lem:known'),
+                        ('check', 'see <a href="notebook.html#t1">the listing</a>')]     # through the file
+            for kind, body in accepted:
+                with self.subTest(accepted=body):
+                    lq.check(head, after(queue[0], 'Developed', body, queue[1:]), nb, root)
+            refused = ['no evidence at all', 'only lem:elsewhere, unregistered',
+                       '<a href="research/results/missing.txt">gone</a> and lem:known', '<a href="#nowhere">x</a>',
+                       'answered <a href="#d">here</a>',                 # the entry's own anchor
+                       'answered <a href="notebook.html#d">here</a>', '<a href="notebook.html#gone">x</a>',
+                       'in <a href="notebook.html">this notebook</a>']
+            for body in refused:
+                with self.subTest(refused=body), self.assertRaises(ValueError):
+                    lq.check(head, after(queue[0], 'Developed', body, queue[1:]), nb, root)
+            here = os.getcwd()
+            os.chdir(ROOT)                  # a link that resolves from the working directory, not from a notebook
+            try:
+                with self.assertRaises(ValueError):                     # no path: a file link cannot resolve
+                    lq.check(head, after(queue[0], 'Developed', '<a href="tools/lead_queue.py">x</a>', queue[1:]),
+                             None, root)
+            finally:
+                os.chdir(here)
+            lq.check(head, after(queue[0], 'Closed', 'no evidence needed', queue[1:]), nb, root)
+            build_head = notebook([listing, developing(queue[0], 'Closed')], queue[1:])
+
+            def built(body):
+                return notebook([listing, developing(queue[0], 'Closed'), developing(queue[1], 'Developed', body)
+                                 .replace('id="d"', 'id="e"')], [])
+            lq.check(build_head, built('<a href="tasks/arm-check/">task</a>'), nb, root)
+            lq.check(build_head, built('<a href="research/results/out.txt">built</a>'), nb, root)
+            for body in ('<a href="#t1">an anchor is no build</a>', 'lem:known', '<a href="tasks/none/">x</a>'):
+                with self.subTest(build_refused=body), self.assertRaises(ValueError):
+                    lq.check(build_head, built(body), nb, root)
+
+    def test_subideas_keep_the_head_only_rule_and_reopen(self):
+        listing = subideas('t1', [('check', 'c'), ('check', 'd')])
+        queue = [('check', 't1:s1'), ('check', 't1:s2')]
+        head = notebook([listing], queue)
+        with self.assertRaises(ValueError):                             # not the head
+            lq.check(head, notebook([listing, developing(queue[1], 'Closed')], queue[:1]))
+        closed = notebook([listing, developing(queue[0], 'Closed')], queue[1:])
+        reopen = ('<article id="r" data-kind="research" data-route="step"><ul><li data-check="t1:s1">x '
+                  '<strong>Follow-up.</strong> Reopened: closed too early.</li></ul></article>')
+        body, count = lq.append_new(notebook([listing, developing(queue[0], 'Closed'), reopen], queue[1:]))
+        self.assertEqual((count, lq.parse(body)[1]), (1, [queue[1], queue[0]]))
+        lq.check(closed, body)
 
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))

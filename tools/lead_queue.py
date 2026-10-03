@@ -20,6 +20,12 @@ finish-turn.py against HEAD:
 - A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
   the standard sections, each <li data-source="REVIEW-ANCHOR">; all its items are queued, at their source's
   place in record order when the queue is created.
+- Sub-ideas (user, 3 October 2026): any Research-record entry may list, under <h4>Sub-ideas</h4>, questions to
+  research and checks to run (<li data-sub="check">) and things to build (<li data-sub="build">) that it names and
+  leaves undone; they join the tail with no test, as ANCHOR:sN, N counted over the whole list.  A check is Developed
+  when the developing entry answers it citing evidence that resolves (a registered claim ID, an anchor, a repository
+  file); a build when its task opens (a link to an existing tasks/ID/) or the thing exists and its path is linked.
+  Every relative link of an entry developing either must resolve.
 - An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
@@ -32,9 +38,12 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py append NOTEBOOK.html  (after the last entry: its newly passed review items and the items
                                             it marks Reopened go to the tail)"""
 import html
+import json
 import re
 import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
 SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
@@ -43,23 +52,98 @@ SPELL = 4   # consecutive research entries a Continuing head keeps the head (use
 # only; an item still bearing on an open statement is not batched but gets its own spell.
 TRIAGE_MAX, TRIAGE_WORDS = 4, 80
 TRIAGE_RE = re.compile(r'<h4>Queue triage</h4>\s*<ul>(.*?)</ul>', re.S)
-EVIDENCE_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs):[A-Za-z0-9.-]+|href="#[^"]+"')
+CLAIM_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs|local):[A-Za-z0-9.-]+')
+EVIDENCE_RE = re.compile(CLAIM_RE.pattern + r'|href="(?!https?:|mailto:)[^"]+"')
+HREF_RE = re.compile(r'href="([^"]+)"')
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
+SUBIDEAS_RE = re.compile(r'<h4>Sub-ideas</h4>\s*<ul>(.*?)</ul>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened)\b')
 
 
 class Kind:
     """A kind of queue item: its name, as in data-NAME="ID" on the queue's items, developing entries and
-    follow-up lists, and the entry heading that lists its items (`listed`, a pattern whose group 1 is the list)."""
+    follow-up lists; the entry heading that lists its items (`listed`, a pattern whose group 1 is the list);
+    whether that list is the shared Sub-ideas list (`sub`: items <li data-sub="NAME">, IDs ANCHOR:sN, no test);
+    and `developed(tag, text, where)`, the problems with an entry calling an item Developed (None: no rule)."""
 
-    def __init__(self, name, listed):
-        self.name, self.listed = name, listed
+    def __init__(self, name, listed, sub=False, developed=None):
+        self.name, self.listed, self.sub, self.developed = name, listed, sub, developed
 
 
-KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE)}
+class Where:
+    """What an entry's links resolve against: the notebook's text (anchors), the notebook's directory
+    (relative paths; None when the notebook's path is not known) and the repository root (claim registry)."""
+
+    def __init__(self, body, path=None, root=None):
+        self.body, self.root = body, Path(root) if root else ROOT
+        self.path = Path(path).resolve() if path else None
+        self.base = self.path.parent if path else None
+        self._claims = None
+
+    def anchors(self):
+        return set(re.findall(r'\bid="([^"]+)"', self.body))
+
+    def claims(self):
+        if self._claims is None:
+            registry = self.root / 'research/claims/index.json'
+            self._claims = ({c['id'] for c in json.loads(registry.read_text())['claims']}
+                            if registry.exists() else set())
+        return self._claims
+
+
+def references(tag, text, where):
+    """(unresolved links, resolved paths, resolved anchors, registered claim IDs) of an entry's text; a link to
+    the entry's own anchor resolves but is no evidence, since what the entry says is cited by a claim or a file."""
+    unresolved, paths, anchors = [], [], []
+    known = where.anchors()
+    own = re.search(r'\bid="([^"]+)"', tag)
+    for href in HREF_RE.findall(text):
+        if href.startswith(('http:', 'https:', 'mailto:')):
+            continue
+        if href.startswith('#'):
+            if href[1:] not in known:
+                unresolved.append(href)
+            elif not (own and href[1:] == own.group(1)):
+                anchors.append(href)
+            continue
+        target = where.base / href.split('#')[0] if where.base else None
+        if target is not None and where.path is not None and target.resolve() == where.path:
+            fragment = href.partition('#')[2]       # the notebook itself: read as its anchor
+            if fragment not in known:
+                unresolved.append(href)
+            elif fragment and not (own and fragment == own.group(1)):
+                anchors.append(href)
+            continue
+        (paths if target is not None and target.exists() else unresolved).append(href)
+    claims = [c for c in CLAIM_RE.findall(text) if c in where.claims()]
+    return unresolved, paths, anchors, claims
+
+
+def check_developed(tag, text, where):
+    """A check is Developed when the entry answers it citing evidence that resolves."""
+    unresolved, paths, anchors, claims = references(tag, text, where)
+    problems = [f'links that do not resolve: {", ".join(unresolved)}'] if unresolved else []
+    if not (paths or anchors or claims):
+        problems.append('cite the evidence that answers it: a registered claim ID, an entry anchor or a '
+                        'repository file')
+    return problems
+
+
+def build_developed(tag, text, where):
+    """A build is Developed when its task opens (tasks/ID/) or the thing exists and its path is linked."""
+    unresolved, paths, anchors, claims = references(tag, text, where)
+    problems = [f'links that do not resolve: {", ".join(unresolved)}'] if unresolved else []
+    if not paths:
+        problems.append('link the opened task (tasks/ID/) or the built thing\'s path in the repository')
+    return problems
+
+
+KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
+         'check': Kind('check', SUBIDEAS_RE, sub=True, developed=check_developed),
+         'build': Kind('build', SUBIDEAS_RE, sub=True, developed=build_developed)}
 NAMES = '|'.join(KINDS)
 ITEM_RE = re.compile(r'<li data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LINE_RE = re.compile(r'<li data-(?:' + NAMES + r')="[^"]+"[^>]*>.*?</li>', re.S)
@@ -114,21 +198,35 @@ def spell(body, item, pending=False):
     return count + (1 if pending else 0)
 
 
-def review_passed(tag, text):
-    """Passed items of one review or research article, as (kind, id): leads then bridges.  Research entries may
-    carry their own Outside leads and Absurd bridges (user, 3 October 2026: work on a lead can generate new ones)."""
+def arrivals_of(tag, text):
+    """Items one article adds, as (kind, id): its passed Outside leads and Absurd bridges (reviews, research
+    entries, which may carry their own, user, 3 October 2026, and audits, all of whose items are queued), then
+    the Sub-ideas any entry lists (no test: when unsure, queue it)."""
     ident = re.search(r'\bid="([^"]+)"', tag)
-    if not re.search(r'data-kind="(?:review|research|audit)"', tag) or not ident:
+    if not ident:
         return []
-    audit = 'data-kind="audit"' in tag   # every item an audit lists is queued: "when unsure, queue it"
+    audit = 'data-kind="audit"' in tag
+    tested = re.search(r'data-kind="(?:review|research|audit)"', tag)
     out = []
     for kind in KINDS.values():
         section = kind.listed.search(text)
-        if section:
-            for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
-                if audit or TEST_PASSED.search(item):
-                    out.append((kind.name, f'{ident.group(1)}:{n}'))
+        if not section or (not kind.sub and not tested):
+            continue
+        for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
+            if kind.sub:
+                if re.match(r'[^>]*\bdata-sub="' + kind.name + '"', item):
+                    out.append((kind.name, f'{ident.group(1)}:s{n}'))
+            elif audit or TEST_PASSED.search(item):
+                out.append((kind.name, f'{ident.group(1)}:{n}'))
     return out
+
+
+def listed_item(kind, text, ident):
+    """The <li> attributes and content of a listed item ANCHOR:N or ANCHOR:sN in an article's text, or None."""
+    n = ident.rsplit(':', 1)[1].lstrip('s')
+    section = KINDS[kind].listed.search(text)
+    items = re.findall(r'<li\b([^>]*)>(.*?)</li>', section.group(1), re.S) if section else []
+    return items[int(n) - 1] if n.isdigit() and 0 < int(n) <= len(items) else None
 
 
 def triaged(tag, text):
@@ -163,8 +261,8 @@ def check_triage(batch, old):
             raise ValueError(f'Triage item {ident}: {words} words; each batched item gets the care it would get '
                              f'alone, at least {TRIAGE_WORDS} words of what was checked and why (user, 3 October 2026)')
         if not evidence:
-            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID or an entry '
-                             'anchor link)')
+            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID, an entry '
+                             'anchor link or a repository file)')
 
 
 def listed_closures(tag, text):
@@ -196,7 +294,7 @@ def open_items(body):
     for position, (tag, text) in enumerate(articles):
         ident = re.search(r'\bid="([^"]+)"', tag)
         place[ident.group(1) if ident else None] = position
-        for item in review_passed(tag, text):
+        for item in arrivals_of(tag, text):
             source = audit_source(text, item) if 'data-kind="audit"' in tag else None
             passed.append((place.get(source, position), item))
         for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
@@ -208,11 +306,9 @@ def open_items(body):
 
 
 def audit_source(text, item):
-    """The data-source anchor of an audit's listed item (kind, 'ANCHOR:N'), or None."""
-    section = KINDS[item[0]].listed.search(text)
-    tags = re.findall(r'<li\b([^>]*)>', section.group(1)) if section else []
-    n = int(item[1].rsplit(':', 1)[1])
-    found = re.search(r'data-source="([^"]+)"', tags[n - 1]) if n <= len(tags) else None
+    """The data-source anchor of an audit's listed item (kind, 'ANCHOR:N' or 'ANCHOR:sN'), or None."""
+    listed = listed_item(item[0], text, item[1])
+    found = re.search(r'data-source="([^"]+)"', listed[0]) if listed else None
     return found.group(1) if found else None
 
 
@@ -225,16 +321,13 @@ def parse(body):
 
 
 def item_text(body, kind, ident):
-    """A short description of a review item, for the queue line."""
-    anchor, n = ident.rsplit(':', 1)
+    """A short description of a listed item, for the queue line."""
+    anchor = ident.rsplit(':', 1)[0]
     art = re.search(r'<article\b[^>]*\bid="' + re.escape(anchor) + r'"[^>]*>.*?</article>', body, re.S)
-    if art is None:
+    listed = listed_item(kind, art.group(0), ident) if art else None
+    if listed is None:
         return ''
-    section = KINDS[kind].listed.search(art.group(0))
-    items = re.findall(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S) if section else []
-    if int(n) > len(items):
-        return ''
-    text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', items[int(n) - 1])).strip()
+    text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', listed[1])).strip()
     short = text[:220]
     while short.count('\\(') > short.count('\\)'):   # never cut inside inline math
         short = short[:short.rindex('\\(')].rstrip()
@@ -250,9 +343,10 @@ def render(body, items, draining):
             + '\n'.join(lines) + '\n</ol>\n</section>\n')
 
 
-def check(head_body, body):
+def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
-    The entry checked is the last Research-record article of `body`."""
+    The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
+    directory its relative links resolve, and `root` the repository (default: this one)."""
     if not re.search(r'data-route-item="', body):
         return
     now = parse(body)
@@ -272,6 +366,10 @@ def check(head_body, body):
     if work and work[1] not in ('Closed', 'Developed', 'Continuing'):
         raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
                          '"Developed ..." or "Continuing ..."')
+    rule = KINDS[work[0][0]].developed if work and work[1] == 'Developed' else None
+    problems = rule(tag, text, Where(body, path, root)) if rule else []
+    if problems:
+        raise ValueError(f'{work[0][1]} ({work[0][0]}) is not Developed yet: ' + '; '.join(problems))
     before = parse(head_body) if head_body else None
     if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
@@ -290,11 +388,11 @@ def check(head_body, body):
             raise ValueError(f'The queue has {len(queue)} items, at least {CAP}: mark the section '
                              'data-draining="true"')
         return
-    every = {item for t, x in articles for item in review_passed(t, x)}
-    arrivals = review_passed(tag, text) + reopened_by(text)
+    every = {item for t, x in articles for item in arrivals_of(t, x)}
+    arrivals = arrivals_of(tag, text) + reopened_by(text)
     unknown = [i for k, i in arrivals if (k, i) not in every]
     if unknown:
-        raise ValueError('Reopened items must be passed review items: ' + ', '.join(unknown))
+        raise ValueError('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(unknown))
     was_draining, old = before
     if batch:
         check_triage(batch, old)
@@ -398,7 +496,7 @@ def append_new(body):
     draining, queue = parse(body)
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
-    new = list(dict.fromkeys(i for i in review_passed(tag, text) + reopened_by(text) if i not in queue))
+    new = list(dict.fromkeys(i for i in arrivals_of(tag, text) + reopened_by(text) if i not in queue))
     lines = LINE_RE.findall(found.group(2))
     lines += [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
               f'{item_text(body, kind, ident)}</li>' for kind, ident in new]

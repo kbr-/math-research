@@ -479,7 +479,7 @@ def validate_queue(root, notebook):
     from lead_queue import check
     relative = notebook.resolve().relative_to(root.resolve()).as_posix()
     head = subprocess.run(['git', 'show', f'HEAD:{relative}'], cwd=root, capture_output=True, text=True)
-    check(head.stdout if head.returncode == 0 else None, notebook.read_text())
+    check(head.stdout if head.returncode == 0 else None, notebook.read_text(), notebook, root)
 
 
 SCRATCH_CAP = 500 * 10**6   # bytes a session may keep in its scratchpad at a checkpoint
