@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-hankel-bilinear-identity">Hankel bilinear identity</a>; eight open items). The exact identity \(H_kD^2H_k-(DH_k)^2=4k^2H_{k+1}H_{k-1}+2kH_k\Phi_k[p_2]\) reduces the order relation (R) to one non-cancellation: \(-ac-2k\varphi\ne0\) at the leading order of each flow line.</p>
-<p>Next: prove the non-cancellation. One route is a Möbius-covariant modification of \(H_k\) whose subset exponents are constant along the flow, so that the identity has no remainder. The other is an explicit formula for \(\varphi/c\) through the Heine sums of the bump profiles.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-flow-order-ratio-law">flow-order ratio law</a>; eight open items). The order relation (R) follows from an explicit local law, observed at all \(62\) computed flow lines: \([t^{2a-2}]H_{k+1}H_{k-1}=-a(a+2k^2)c^2/(4k^2(4k^2-1))\) at an \(a\)-fold flow zero of \(H_k=ct^a+\cdots\). The binary-form Hessian explanation fails for \(k&lt;M-2\).</p>
+<p>Next: prove the ratio law. Write \(H_k(y_t)\) as the Hankel determinant of the measure \(\sum_i(1-ty_i)^{-2k}\delta_{y_i}\) with fixed points. Express \(H_{k\pm1}\) through Christoffel–Darboux kernels of the \(k\)-th orthogonal polynomial at an \(a\)-fold degeneration, and read off the leading coefficients.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -72226,6 +72226,60 @@ Then, writing \(g(p)=j_{M-p}\) and \(d_p=g(p)-g(p+1)\), (R) gives \(d_p=d_{p-1}+
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-flow-order-ratio-law" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-flow-order-ratio-law check:cube-flow-order-ratio-law">
+<h3>9 October 2026 — The remainder of the Hankel bilinear identity obeys a universal leading-coefficient law depending only on k and the flow order, which would prove the order relation; a binary-form Hessian identity holds only for k = M − 2</h3>
+<p class="entry-meta">Conjecture with exact data at 62 flow lines (20 distinct pairs (k, a), M = 4 to 8); refutation of the Hessian form. Flow-order ratio law cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs, conj:cube-hankel-flow-order-relation (R). By thm:cube-hankel-bilinear-identity, at a flow line with \(a=\operatorname{ord}H_k\ge2\), (R) at \(k\) holds exactly when two conditions hold:</p>
+<ul>
+<li>\(\operatorname{ord}\Phi_k[p_2]\ge a-2\);</li>
+<li>\(\rho:=2k\varphi/(-ac)\ne1\), where \(c=[t^a]H_k\) and \(\varphi=[t^{a-2}]\Phi_k[p_2]\).</li>
+</ul>
+<p>The missing implication is a reason why \(\rho\ne1\). The cycle measures \(\rho\) and tests one structural explanation, a Hessian identity for binary forms. A universal value of \(\rho\) would turn (R) into a local statement; a cluster-dependent \(\rho\) would mean the cancellation question is global.</p>
+<p><strong>Measurement.</strong> research/tools/bmd_bilinear_ratio_explore.gp (research/results/bmd-20261009-bi/ratio-explore.txt) computes \(\rho\) exactly along the flow at \(25\) clusters: \(z^M+z+1\), \(z^M-1\), \(z^M+z^2+1\), \(z^M+z^3-2\), \(z^M+3z-5\), for \(M=4,\ldots,8\). It covers every \(k\) with \(j_k\ge2\): \(62\) flow lines, \(20\) distinct pairs \((k,a)\). In every case \(\rho\) depends only on \((k,a)\), not on the cluster or on \(M\), and
+\[1-\rho=\frac{a+2k^2}{4k^2-1}.\]
+For example, \(k=1\) gives \(\rho=-(a-1)/3\). For the pairs \((2,4),(3,12),(5,10)\), \(\rho=1/5,1/7,13/33\). In particular \(\rho&lt;1\) always.</p>
+<p><strong>General statement.</strong> conj:cube-flow-order-ratio-law. Over \(\mathbb C\), for every \(M\), \(y\in\mathbb C^M\) and \(1\le k\le M-2\), suppose \(H_k(y/(1-ty))=ct^a+O(t^{a+1})\) with \(c\ne0\), \(2\le a&lt;\infty\). Then \(\operatorname{ord}_t\Phi_k[p_2](y_t)\ge a-2\) and
+\[[t^{a-2}]\,\Phi_k[p_2](y_t)=-\frac{a\,(2k^2-1-a)}{2k\,(4k^2-1)}\,c.\]
+Equivalently, by thm:cube-hankel-bilinear-identity,
+\[[t^{2a-2}]\,H_{k+1}(y_t)H_{k-1}(y_t)=-\frac{a\,(a+2k^2)}{4k^2(4k^2-1)}\,c^2\ne0.\]</p>
+<p><strong>Consequence.</strong> The law implies conj:cube-hankel-flow-order-relation: the leading coefficient of \(H_{k+1}H_{k-1}\) at order \(2a-2\) is nonzero, and \(\operatorname{ord}\ge2a-2\) holds by the identity. Together with the proved case \(a=1\), it gives (R) for all \(a\). It also gives a recursion for the leading coefficients along a bump, \(c_{k+1}c_{k-1}=-a_k(a_k+2k^2)c_k^2/(4k^2(4k^2-1))\), a discrete Toda equation with explicit constants. Under (R) these are parabolic bumps \(a_k=k(N-k)\).</p>
+<p><strong>A refuted explanation.</strong> Homogenize the flow: \(H_k(y/(1-ty))\prod_i(1-ty_i)^{2k}=G_k(-t,1)\), where \(G_k(c,d)=\sum_{|S|=k+1}\mathrm{Vand}(y_S)^2\prod_{i\notin S}(cy_i+d)^{2k}\) is a binary form of degree \(n_k=2k(M-k-1)\). Then \(j_k\) is the multiplicity of the root \((0:1)\). The degrees satisfy \(n_{k+1}+n_{k-1}=2n_k-4=\deg\operatorname{Hess}(G_k)\). If \(\operatorname{Hess}(G_k)=C_kG_{k+1}G_{k-1}\), (R) would follow from the classical fact that the Hessian has multiplicity \(2a-2\) at an \(a\)-fold root.</p>
+<p>research/tools/bmd_hessian_identity_test.gp (research/results/bmd-20261009-bi/hessian-identity.txt) tests this exactly at two random integer clusters each for \(M=3,\ldots,6\). The identity holds for \(k=M-2\), with \(C_k=(2k(2k-1))^2\) (\(4,144,900,3136\)). For every \(k&lt;M-2\) the quotient is a non-constant rational function. So the Hessian form is false in general. The ratio law also cannot be a Hessian-type relation \(\nu ff''-(\nu-1)f'^2\) with fixed \(\nu\): matching its leading coefficient for all \(a\) is inconsistent. The script's label "(NOT constant)" is wrong on the integer quotients, by a type test; the printed values are correct.</p>
+<p><strong>Check.</strong> check:cube-flow-order-ratio-law: the two runs above. Nature of the test:</p>
+<ul>
+<li>The \(62\) flow lines include five clusters per \(M\), of which the three non-rotation families (\(z^M+z+1\), \(z^M+z^2+1\) or \(z^M+z^3-2\), \(z^M+3z-5\)) are not rotation invariant.</li>
+<li>Every computed profile is a parabolic bump starting at \(k=1\). Profiles with a second bump (such as \(z^6+z^3-2\)) have \(a=1\) and are excluded.</li>
+<li>The law is therefore tested on \(20\) pairs \((k,a)\) with \(a=k(N-k)\), \(3\le N\le7\). Pairs with \(a\) not of this form are untested.</li>
+</ul>
+<p><strong>What this means.</strong> The order relation, and with it the decreasing breakpoints of the fixed-cluster support core, now rests on one explicit local law. That law is a closed formula for a single leading coefficient, and it holds identically across clusters with the same profile. Its universality suggests a proof by a local normal form at an \(a\)-fold flow zero: a statement about the jet of \(y\) along the flow, independent of \(M\). The Hessian route, the obvious classical explanation, fails except at \(k=M-2\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of conj:cube-flow-order-ratio-law. Candidate routes: a local normal form for \(\Phi_k\)-jets at flow zeros, or an explicit Christoffel–Darboux computation for the \(k\)-th orthogonal polynomial of the measure \(\sum_i(1-ty_i)^{-2k}\delta_{y_i}\).</li>
+<li>Tests at profiles with \(a\ne k(N-k)\), if any exist (none found).</li>
+<li>conj:cube-ramification-flow-order for \(M\ge5\); hypothesis (F); moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-hankel-bilinear-identity (statement, consequence bullets);</li>
+<li>conj:cube-hankel-flow-order-relation;</li>
+<li>lem:cube-reparametrization-flow.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. The new claims are a conjecture and a finite check, so no correctness reviewer was run. The algebra in the consequence was checked as follows: \(-ac-2k\varphi=-ac(1-\rho)\), and \(4k^2[t^{2a-2}]H_{k+1}H_{k-1}=-ac^2(1-\rho)\). The ratio script reproduces \(\rho\) consistently across clusters with the same profile, which serves as an internal control.</p>
+<p>Status: conjecture (ratio law) with finite checks; refutation of the Hessian form.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bi">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 36.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">50.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 44.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.58 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
