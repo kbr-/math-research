@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-bilinear">triple window bilinear</a>; seven open items). The window's minors satisfy no linear recurrence and no scalar Somos relation in \(m\). The window holds exactly for \(m\le7\).</p>
-<p>Next: the Desnanot–Jacobi lead of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a>, on the lattice of mixed multiplicities. Define the windows \(W(m_1,m_2,m_3;d)\): rows \(T^nw_i^{-3}\) for \(n&lt;m_i\), and the pair rows, on \(\sum m_i+5\) columns from \(d\). Determine for which \(d\) they have full rank. Then write Sylvester's identity linking \(W(m,m,m;d)\) to its neighbours. A neighbour structure in which the minors' nonvanishing propagates would give the induction on \(m\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-window-hermite-pade-lattice">Hermite–Padé lattice</a>; seven open items). The window is a defect-two condition in a seven-function Hermite–Padé table with a three-term Frobenius identity. A rank drop forces zeros on the \(36\)-point simplex above its index, but the proved faces lie below. No single neighbour certifies the window at \(m=2\). The window holds exactly for \(m\le7\).</p>
+<p>Next: a route review. Three cycles since the elliptic window review left the same implication untouched: elliptic form, bilinear, Hermite–Padé lattice. The review should weigh the remaining triple-window lines against the other open items of (K), none of which has had a cycle in this period. The remaining lines are block structure from the identity (with its direction problem) and a vector-bundle form on the elliptic curve. The review should also weigh (B), and decide whether cycles move.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -75366,6 +75366,72 @@ This corrected ratio equals \(-1\) on \(S\in i\pi(\pm\tfrac14+\mathbb Z)\), the 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-window-hermite-pade-lattice" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-window-hermite-pade-frobenius ex:cube-triple-window-no-certifying-neighbour">
+<h3>9 October 2026 — The triple window is a defect-two Hermite–Padé condition on a seven-function lattice whose determinants satisfy a three-term Frobenius identity; no single neighbouring determinant certifies it</h3>
+<p class="entry-meta">Working proof of the lattice identity and the neighbourhood implication; refutation of single-neighbour certification at m = 2. Hermite–Padé lattice cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, triple window, developing the Desnanot–Jacobi lead of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a>, which was not run there. The missing implication: full rank of \(U_3\) for every \(m\). The scalar bilinear form in \(m\) failed (ex:cube-triple-window-no-somos). The window's rows are shifts \(T^nw_i^{-3}\), so its natural bilinear structure lives on a lattice of multiplicities, where Hermite–Padé theory proves normality by Frobenius-type identities. This cycle sets up that lattice, proves its identity, and tests the simplest certificate it suggests.</p>
+<p><strong>Setting.</strong> Take the seven functions \(g_0=1\), \(g_i=w_i^{-3}=(1+a_iT)^{-3/2}\) and \(g_{ij}=(w_iw_j)^{-3}\), as in lem:cube-triple-window-elliptic-form. A multi-index \(N=(N_0;N_1,N_2,N_3;N_{12},N_{13},N_{23})\) has \(|N|=\sum N_g\). Let \(H(N)\) be the determinant of the square matrix with:</p>
+<ul>
+<li>rows \(T^rg\) for \(r&lt;N_g\), over the six non-polynomial \(g\), in block order with \(r\) increasing;</li>
+<li>columns the Taylor coefficients at \(T^{N_0},\ldots,T^{|N|-1}\).</li>
+</ul>
+<p>The polynomial rows \(T^r\), \(r&lt;N_0\), are unit vectors on the first \(N_0\) columns. So \(H(N)\) is, up to sign, the determinant of the full \(|N|\times|N|\) coefficient system of the type-I Hermite–Padé problem with index \(N\). The window is the index \(n=(d;m,m,m;1,1,1)\), with \(d=\binom m2\).</p>
+<p><strong>General statement.</strong> lem:cube-window-hermite-pade-frobenius, for every index \(N\) and every \(m\ge2\): a rank drop of the triple window forces \(H(n'')=0\) on the \(36\)-point simplex above \(n\), and the determinants satisfy the three-term identity (2) below.</p>
+<ol>
+<li>In characteristic zero, for \(m\ge2\) and distinct nonzero \(a_1,a_2,a_3\) (the setting of lem:cube-triple-window-elliptic-form and thm:cube-level-window-avoidance): if \(W_3\) drops rank, then \(H(n'')=0\) for all \(36\) indices with \(n\le n''\) and \(|n''|\le|n|+2\).</li>
+<li>For any seven power series over a commutative ring (here the \(g\) above, which need \(2\) invertible), every index \(N\) and every two distinct non-polynomial directions \(i\ne j\), with \(e_0\) the polynomial direction:
+\[H(N)\,H(N+e_0-e_i-e_j)=H(N+e_0-e_i)\,H(N-e_j)-H(N-e_i)\,H(N+e_0-e_j),\]
+whenever all indices are nonnegative. Here \(i\) precedes \(j\) in the block order, and \(H\) of an empty matrix is \(1\).</li>
+</ol>
+<p><em>Proof.</em> (1) By lem:cube-triple-window-elliptic-form (1), rank drop gives a nonzero form \(f\) of index \(n\) with order \(\ge|n|+2\) at \(T=0\). For \(n''\ge n\) the form \(f\) also has index \(n''\), and if \(|n''|\le|n|+2\) its order is \(\ge|n''|\). So the \(|n''|\times|n''|\) coefficient system has a nonzero kernel, and \(H(n'')=0\). There are \(1+7+28=36\) such \(n''\).</p>
+<p>(2) Let \(A\) be the matrix of \(H(N)\), with columns \(N_0,\ldots,|N|-1\). Let \(p&lt;q\) be the positions of the top rows \(T^{N_i-1}g_i\) and \(T^{N_j-1}g_j\). The top row of a block is its row with the largest \(r\), the last of the block in the stated order. Jacobi's identity for complementary minors (Desnanot–Jacobi), for rows \(p&lt;q\) and the first and last columns, is
+\[\det A\det A^{pq}_{1,\mathrm{last}}=\det A^p_1\det A^q_{\mathrm{last}}-\det A^p_{\mathrm{last}}\det A^q_1.\]
+Deleting a block's top row keeps the remaining rows of that block of the form \(T^rg\), \(r&lt;N_g-1\), so the result is again a lattice matrix:</p>
+<ul>
+<li>deleting the last column as well gives the matrix of \(H(N-e_g)\);</li>
+<li>deleting the first column as well gives the matrix of \(H(N+e_0-e_g)\): the columns start at \(T^{N_0+1}\) and every row keeps its entries.</li>
+</ul>
+<p>So \(A^p_1,A^q_{\mathrm{last}},A^p_{\mathrm{last}},A^q_1,A^{pq}_{1,\mathrm{last}}\) are the matrices of \(H(N+e_0-e_i)\), \(H(N-e_j)\), \(H(N-e_i)\), \(H(N+e_0-e_j)\) and \(H(N+e_0-e_i-e_j)\), with rows in block order. \(\square\)</p>
+<p>Deleting a block's bottom row instead (\(r=0\)) leaves rows \(T^rg\), \(1\le r&lt;N_g\). These are not on the lattice, because the shift is not matched by the other blocks. That is why only top rows appear.</p>
+<p>research/tools/bmd_hp_frobenius_check.gp (research/results/bmd-20261009-cj/hp-frobenius-check.txt) checks (2) exactly at \(a=(2/7,-5/3,1)\) for \(N=(1;2,2,2;1,1,1)\) and \((3;3,3,3;1,1,1)\) and all \(15\) pairs \(i&lt;j\). All \(30\) hold, with the signs stated.</p>
+<p><strong>Refutation.</strong> ex:cube-triple-window-no-certifying-neighbour. By (1), a single \(H(n'')\) with no zero off the excluded locus \(xy(x-1)(y-1)(x-y)\) (with \(a=(x,y,1)\)) would prove the window everywhere. research/tools/bmd_triple_window_neighbours.gp (research/results/bmd-20261009-cj/triple-window-neighbours.txt) factors \(H(n'')\) over \(\mathbb Q\).</p>
+<ul>
+<li>At \(m=2\), each of the \(36\) neighbours is a product of powers of the five excluded linear factors and exactly one further irreducible polynomial, of degree between \(9\) and \(20\).</li>
+<li>At \(m=3\), the nine computed neighbours have the same form, with degrees \(18\) to \(26\): the base, the seven unit steps and \(2e_0\). The other \(27\) did not finish within the run's \(900\)-second limit, which is recorded in the run's log in the archived session record and in a closing line of the result file.</li>
+</ul>
+<p>So no single neighbour certifies the window at \(m=2\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The window is a statement about zeros of the Hermite–Padé determinant table: a rank drop forces zeros on the \(36\)-point simplex above \(n\), and (2) is the available relation among neighbouring determinants. By analogy with the Padé table's square-block theorem, one may hope for a block-structure statement. No such theorem is proved here: the square-block theorem uses uniqueness and normality arguments not shown to carry over to multi-index type-I tables.</li>
+<li>The forced zeros lie above \(n\). The faces where one root's multiplicities are zero lie below \(n\), so using them would need downward propagation, which (2) does not obviously supply. Whether nonvanishing at those faces is proved is also open. lem:cube-tie-window-generic-rank and the two-root window \(W_2\) are not stated as nonvanishing of \(H\) at the face indices.</li>
+<li>Single neighbours do not certify the window at \(m=2\) (and not for the nine computed at \(m=3\)). A proof must use several neighbours together, and (2) is the available relation among them.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A block-structure theorem for this lattice from (2): what shapes can a zero region containing the simplex have, and does it reach a proved face?</li>
+<li>conj:cube-triple-window-full-rank for \(m\ge8\); the confluent window; the other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-triple-window-elliptic-form (1) (the window as an order condition);</li>
+<li>thm:cube-level-window-avoidance (the window's rows and columns).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. A medium-effort reviewer confirmed (1), (2), all five lattice identifications, the edge cases, both scripts and the refutation. It asked for: the hypotheses of (1) (characteristic zero, \(m\ge2\)); (2) stated without the unused hypotheses on the \(a_i\); the record of the \(m=3\) time limit; and withdrawal of three overreaching claims: a block theorem by analogy, reaching proved faces (the forced zeros lie above \(n\), the faces below), and sufficiency of (2). All applied.</p>
+<p>Status: working proof (lattice identity, neighbourhood implication); refutation (single-neighbour certificates, \(m=2\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-cj">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 37.07 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 57.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 37.93 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 1.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
