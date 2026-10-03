@@ -758,6 +758,25 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.shape(lq.parse_tree(after)[1]), [(self.q[1], []), (('check', 'd:s1'), [])])
         lq.check(notebook([self.rev], self.q), after)
 
+    def test_append_applies_a_follow_up_lists_closures(self):
+        tree = [self.q[0], (self.q[1], [('check', 'k:s1'), ('check', 'k:s2')])]
+        entry = developing(self.q[0], 'Continuing', '<ul><li data-lead="r1:2">no longer bears on anything '
+                           '<strong>Follow-up.</strong> Closed: superseded.</li><li data-check="k:s2">still open '
+                           '<strong>Follow-up.</strong> Continuing: on its own.</li></ul><h4>Sub-ideas</h4><ul>'
+                           '<li data-sub="check">c</li></ul>')
+        body, count = lq.append_new(lq.done(notebook([self.rev, entry], tree), 'Continuing'))
+        self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])),
+                         (1, [(self.q[0], [('check', 'd:s1')]), (('check', 'k:s2'), [])]))
+        lq.check(notebook([self.rev], tree), body)
+        big = review('r1', [PASS] * lq.CAP)
+        queue = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+        closes = developing(queue[0], 'Continuing', '<ul>' + ''.join(
+            f'<li data-lead="r1:{n}">x <strong>Follow-up.</strong> Closed: moot.</li>' for n in range(2, 33))
+            + '</ul>')
+        body, _ = lq.append_new(lq.done(notebook([big, closes], queue, draining=True), 'Continuing'))
+        self.assertFalse(lq.parse(body)[0])                             # down to the floor: the flag goes
+        lq.check(notebook([big], queue, draining=True), body)
+
     def test_a_queue_section_cannot_go_away(self):
         with self.assertRaises(ValueError):
             lq.check(notebook([self.rev], self.q, route=False), notebook([self.rev], route=False))

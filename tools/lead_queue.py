@@ -53,8 +53,9 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
        lead_queue.py triage NOTEBOOK.html  (after appending an entry with a Queue triage batch)
-       lead_queue.py append NOTEBOOK.html  (after the last entry, and done: its newly listed items join the queue, the
-                                            items it reopens go to the tail, its Waiting and Unblocked marks apply)
+       lead_queue.py append NOTEBOOK.html  (after the last entry, and done: items its follow-up list closes leave,
+                                            its newly listed items join the queue, the items it reopens go to
+                                            the tail, its Waiting and Unblocked marks apply)
        lead_queue.py init NOTEBOOK.html [--counted KINDS] [--backpressure off] [--kind-modules MODULES]
        lead_queue.py check NOTEBOOK.html [--base REV]  (the staged notebook against REV's, default HEAD;
                                             exit 0 when it passes, 1 when refused, 3 when it cannot run)"""
@@ -993,8 +994,10 @@ def settle_triage(body):
 
 
 def append_new(body):
-    """The notebook with the last entry's newly listed items added (sub-ideas under their parent, the rest and
-    the items it reopens at the tail), and the draining flag set if the queue reaches CAP."""
+    """The notebook with the items the last entry's follow-up list marks Closed removed (their sub-ideas with
+    them, but for those it keeps Continuing, which go to the tail), its newly listed items added (sub-ideas under
+    their parent, the rest and the items it reopens at the tail), and the draining flag recomputed; with the number
+    of items added."""
     found = parse_tree(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
@@ -1008,11 +1011,15 @@ def append_new(body):
     problems = subidea_problems(text)
     if problems:
         raise ValueError('; '.join(problems))
+    was = draining or len(nodes) >= CAP
+    promoted = []
+    for item in listed_closures(tag, text)[0]:
+        close(nodes, item, kept_children(text), promoted)
+    nodes += promoted
     before = len(every_item(nodes))
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
     apply_marks(nodes, text)
-    return (rewrite(body, nodes, SETTINGS['backpressure'] and (draining or len(nodes) >= CAP)),
-            len(every_item(nodes)) - before)
+    return rewrite(body, nodes, draining_after(was, nodes)), len(every_item(nodes)) - before
 
 
 def staged_check(notebook, base='HEAD'):
