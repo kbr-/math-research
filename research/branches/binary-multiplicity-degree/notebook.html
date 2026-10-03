@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-fuchs">triple window count</a>; seven open items). Properness and the global Wronskian count are both ruled out for the triple window. The count's bound is \(\tfrac32m(m+3)\), not \(2\). The window holds exactly for \(m\le7\).</p>
-<p>Next: lead 1 of the window cores review. At a fixed rational modulus pair, compute the ten minors of \(U_3\) exactly for \(m=2,\ldots,30\) from the closed form, which is cheap, and guess a P-recursive relation in \(m\) for a suitable minor or combination. A recurrence whose leading coefficient has no admissible zero would give induction from the exact base \(m\le7\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-phase">triple window phase</a>; seven open items). Leading-order asymptotics cannot decide the triple window's rank off the balanced locus, by cyclic dominance; there it is a subleading effect. The window holds exactly for \(m\le7\). No mechanism covers \(m\ge8\).</p>
+<p>Next: the route review that is due. It should weigh the remaining triple-window route against the other open items of (K), none of which has had a cycle: cone types with cherries, stacked levels above slack-zero cherries, non-separated points, the Hankel-moduli ray. Remaining triple-window approaches include a subleading expansion of the two rows sharing an exponential and an exact algebraic mechanism. The review should also weigh (B), which has had no cycles in this period.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -74880,6 +74880,85 @@ and this is the bound the count yields from the minimal exponents permitted by t
 <tr><td>Computation design and coding</td><td class="elapsed">54.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.61 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-window-phase" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-triple-window-phase lem:cube-triple-window-cyclic-dominance check:cube-triple-window-curve-test">
+<h3>9 October 2026 — The triple window's leading-order Darboux model decides rank three only on a balanced locus: a cross-ratio identity gives the model determinant phase ±i there, and forces two rows to share a dominant exponential elsewhere</h3>
+<p class="entry-meta">Working proof of the phase identity and of cyclic dominance; finite check on the torus. No leading-order argument proves the triple window off its balanced locus. Triple window phase cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, triple window. Properness and the global count are ruled out (the two previous entries). The missing implication: a mechanism for full rank for every \(m\). The window sits at \(n\approx m(m+1)/2\), so large-\(m\) asymptotics of the filtered Gegenbauer-moment rows are a natural source. A recurrence in \(m\) is not natural: the index depends quadratically on \(m\), and ex:cube-triple-window-functionals-not-low-order already found no low-order recurrence of the generating functions. This cycle asks whether the leading-order (Darboux) model of the rows can decide rank three. A model that does, uniformly, would be the mechanism.</p>
+<p><strong>General statement.</strong> conj:cube-triple-window-full-rank (recorded). This cycle proves two all-\(m\) facts about its leading-order model, prop:cube-triple-window-phase and lem:cube-triple-window-cyclic-dominance. Together they show that leading order decides rank three only on the balanced locus.</p>
+<p><strong>The leading-order model.</strong> By Darboux, \(e^{(ij)}_n=[T^n]((1+a_iT)(1+a_jT))^{-\lambda}\sim\frac{n^{\lambda-1}}{\Gamma(\lambda)}\bigl(u_{ij}^{-\lambda}(-a_i)^n+u_{ji}^{-\lambda}(-a_j)^n\bigr)\), with \(u_{ij}=1-a_j/a_i\) and \(\lambda=\tfrac32\). The filter \((1+a_kE^{-1})^m\) multiplies \((-a_i)^n\) by \(u_{ik}^m\) to leading order. So the rows of \(U_3\) are asymptotically combinations of three exponentials \(E_l=(-a_l)^n\), with a cyclic zero pattern:</p>
+<ul>
+<li>row \((12)\): \(\alpha=(u_{12}^{-\lambda}u_{13}^m,\ u_{21}^{-\lambda}u_{23}^m)\) on \((E_1,E_2)\);</li>
+<li>row \((13)\): \(\beta=(u_{13}^{-\lambda}u_{12}^m,\ u_{31}^{-\lambda}u_{32}^m)\) on \((E_1,E_3)\);</li>
+<li>row \((23)\): \(\gamma=(u_{23}^{-\lambda}u_{21}^m,\ u_{32}^{-\lambda}u_{31}^m)\) on \((E_2,E_3)\).</li>
+</ul>
+<p>The coefficient determinant is \(-(\alpha_1\beta_3\gamma_2+\alpha_2\beta_1\gamma_3)\). It controls the rank only where its two terms dominate everything else: where the three exponentials have comparable size and each row's two terms are comparable. Elsewhere the slowly varying factors and the Darboux \(1/n\) corrections exceed it, and the subdominant coefficient also depends on the branch. The proposition below therefore concerns the model, not \(U_3\).</p>
+<p><strong>First statement.</strong> prop:cube-triple-window-phase. For distinct nonzero \(a_1,a_2,a_3\):</p>
+<ol>
+<li>\(Q:=\dfrac{u_{13}u_{32}u_{21}}{u_{12}u_{31}u_{23}}=-1\) identically.</li>
+<li>For every \(m\), every half-odd-integer \(\lambda\) and every choice of branches of the powers \(u^{-\lambda}\), the ratio \(\rho=\alpha_1\beta_3\gamma_2/(\alpha_2\beta_1\gamma_3)\) satisfies \(\rho^2=-1\). So \(\rho=\pm i\), and the model determinant \(-\alpha_2\beta_1\gamma_3(1+\rho)\) is nonzero.</li>
+</ol>
+<p><em>Proof.</em> (1) \(u_{ij}=(a_i-a_j)/a_i\). The numerator is \((a_1-a_3)(a_3-a_2)(a_2-a_1)/(a_1a_2a_3)\), and the denominator is \((a_1-a_2)(a_3-a_1)(a_2-a_3)/(a_1a_2a_3)\), which is \(-1\) times the numerator.</p>
+<p>(2) Write \(A=u_{13}u_{32}u_{21}\) and \(B=u_{12}u_{31}u_{23}\). Collecting factors, \(\rho=(A/B)^m\cdot B^{-\lambda}/A^{-\lambda}\), where \(A^{-\lambda}\) and \(B^{-\lambda}\) stand for products of the chosen branches of the individual factors. For every branch, \((u^{-\lambda})^2=u^{-2\lambda}\) is an honest integer power. So \(\rho^2=(A/B)^{2m}\,(A/B)^{2\lambda}=Q^{2m+2\lambda}=-1\), since \(2m+2\lambda\) is odd. The determinant vanishes iff \(\rho=-1\), which would give \(\rho^2=1\). Also \(\alpha_2\beta_1\gamma_3\ne0\), since every \(u_{ij}\ne0\). \(\square\)</p>
+<p>research/tools/bmd_triple_window_phase.gp (research/results/bmd-20261009-cf/triple-window-phase.txt) confirms \(Q=-1\) symbolically. With principal branches at four random complex points, \(\rho\) alternates \(\pm i\) for \(m=2,\ldots,12\).</p>
+<p><strong>Second statement.</strong> lem:cube-triple-window-cyclic-dominance. For distinct nonzero \(a_1,a_2,a_3\) and any real \(n,m\), put \(W(i,k)=n\log|a_i|+m\log|u_{ik}|\): the growth rate of \(E_i\) in the row with filter \(a_k\), the row being \((ij)\) with \(\{i,j,k\}=\{1,2,3\}\). Then</p>
+<ol>
+<li>\(W(1,3)+W(3,2)+W(2,1)=W(2,3)+W(1,2)+W(3,1)\).</li>
+<li>If the rows are assigned three distinct exponentials, each row one of its own two, with each assigned rate \(\ge\) the row's other rate, then all three rows tie: \(W(i,k)=W(j,k)\) in every row. Call the set where all three rows tie the <em>balanced locus</em>. By (1) it is cut out by two independent real conditions.</li>
+<li>Hence in the leading-order model, off the balanced locus, the leading-order part of \(U_3\) has rank at most \(2\). This assumes the bounded factors stay bounded above and away from \(0\): \(a\) in a compact set away from coincidences and from \(0\). On the balanced locus, its rank is three, by the first statement.</li>
+</ol>
+<p><em>Proof.</em> (1) The \(n\)-terms cancel, since each \(i\) occurs once on each side. The \(m\)-terms differ by \(m\log|Q|=0\), by the first statement.</p>
+<p>(2) A bijection from rows to exponentials, with each row sent to one of its own two, is one of two cyclic patterns: \((12)\mapsto E_1,(13)\mapsto E_3,(23)\mapsto E_2\), or \((12)\mapsto E_2,(13)\mapsto E_1,(23)\mapsto E_3\). For the first, the hypothesis reads \(W(1,3)\ge W(2,3)\), \(W(3,2)\ge W(1,2)\) and \(W(2,1)\ge W(3,1)\). By (1) the three differences sum to zero, so all three are equalities. The second pattern gives the reverse inequalities and the same conclusion.</p>
+<p>(3) The leading part of each row is supported on its exponentials of maximal rate. Up to bounded factors, the coefficient of each exponential is \(n^{\lambda-1}\), common to all rows, times \(u^{-\lambda}\) and the filter-range correction below. Rank three of the leading parts requires a nonzero term in the expansion of a \(3\times3\) determinant of their coefficients. That term assigns distinct exponentials, each of maximal rate in its row, so (2) puts \(a\) on the balanced locus. Off it, the leading parts are proportional at leading order, up to the row-dependent \(O(1/m)\) column variation of the filter correction, and span at most two directions. \(\square\)</p>
+<p>The \(\lambda\)-factors satisfy the same cyclic identity, via \(|Q|=1\). The filter correction does not: it contributes \(|e^{-2S}|=e^{-2\operatorname{Re}S}\). It is bounded, so (3) is unaffected. For fixed \(a\) with \(|a_i|\) not all equal, the \(n\)-terms dominate, so fixed \(a\) is unbalanced for large \(m\). But the two tie conditions are linear in \(x_i=n\log|a_i|\), so they can be solved with \(\log|a_i|=O(m/n)=O(1/m)\) at every angle configuration. For each \(m\), the balanced locus is therefore a real two-dimensional surface near the torus \(|a_i|=1\). On the exact torus, the rate of \(E_i\) in a row is \(m\log|a_i-a_k|\), and the balanced points are the equilateral triples, where \(S=\pm i\sqrt3\).</p>
+<p><strong>What the two statements say together.</strong> The determinant of the model is never zero (the first statement), but it governs \(U_3\) only on the balanced locus. Off that locus, the leading-order part has rank at most \(2\) (the second statement). There rank three is decided by subleading terms: the second exponential, which is exponentially smaller, and the Darboux and filter corrections, which are polynomially smaller. So no leading-order asymptotic argument proves conj:cube-triple-window-full-rank. A proof must control the subleading structure of the rows that share a dominant exponential, uniformly in \(m\).</p>
+<p><strong>The filter-range correction and its predicted curves.</strong> The naive model neglects the variation of \(\rho^{(-m)}_{n-l}/\rho^{(-m)}_n=\prod_{t&lt;l}(n-t+\lambda+m)/(n-t)\approx(1+2/m)^l\) over the filter's range \(l\le m\). At \(n\approx m^2/2\) this does not tend to \(1\). It multiplies each filtered coefficient by the \(m\)-independent factor \(\exp(-2a_k/(a_i-a_k))\), and the ratio becomes \(\rho\,e^{-2S}\), with
+\[S=\frac{a_1+a_3}{a_1-a_3}+\frac{a_2+a_3}{a_3-a_2}+\frac{a_1+a_2}{a_2-a_1}.\]
+This corrected ratio equals \(-1\) on \(S\in i\pi(\pm\tfrac14+\mathbb Z)\), the sign depending on the parity of \(m\). By the second statement, these curves matter only where they meet the balanced locus. On the \(m\)-dependent balanced surface that is one complex equation, so it predicts isolated candidate points for each \(m\). On the exact torus it predicts no degeneracy at all, since \(e^{-2S}=e^{\mp2i\sqrt3}\ne\pm i\) at the equilateral triples.</p>
+<p><strong>Tests.</strong> check:cube-triple-window-curve-test. All runs use the closed form at \(120\) digits. The measure is the largest \(3\times3\) minor of \(U_3\) divided by the product of the row norms.</p>
+<ul>
+<li><em>First test, uninformative.</em> research/tools/bmd_triple_window_curve_test.gp (triple-window-curve-test.txt) took \(a=(c_1,2+i,1)\) on the predicted curves, \(m=8,12,\ldots,40\). There the moduli differ, so rows \((12)\) and \((23)\) share the dominant exponential, and the observed \(m^{-2}\) decay measures subleading differences. It says nothing about the model's prediction. A first run truncated the series at PARI's default precision and failed; the rerun truncates inside the power.</li>
+<li><em>Torus test.</em> research/tools/bmd_triple_window_torus_test.gp (triple-window-torus-test.txt) takes \(a=(e^{it},e^{2.1i},1)\), where \(S\in i\mathbb R\) and \(|\operatorname{Im}S|\ge1.7\). The curves are crossed at \(\operatorname{Im}S=3\pi/4,5\pi/4,-5\pi/4\) (\(t\approx3.117,2.641,0.562\)), with \(e^{-2S}=i,-i,i\).
+<ul>
+<li>At these points, for \(m=8,\ldots,31\), the measure decays slowly from \(4\)–\(8\cdot10^{-3}\) to \(4\)–\(8\cdot10^{-4}\), with no parity alternation. At the control \(t=4\), near the balanced point, it goes from \(0.28\) to \(0.027\).</li>
+<li>A scan of \(t\in[0.2,6.1]\) at \(m=20,21\) shows no dip at any crossing. The measure is at least \(10^{-2}\) only for \(t\in[3.85,4.55]\), peaking at \(0.40\). That interval surrounds the nearly equilateral triple \(t\approx4.2\), the balanced point the second statement predicts. Elsewhere it is at most \(8.6\cdot10^{-3}\).</li>
+</ul></li>
+</ul>
+<p>So the curves crossing the scanned slice miss its only balanced point, and they show no effect, as the second statement predicts. The torus test confirms localization to the balanced point; it does not test the corrected model's degeneracy points. A smaller bump near \(t\approx1.05\) (\(3.7\)–\(4.1\cdot10^{-3}\)) sits at the isosceles point where row \((23)\) alone ties. The scan is symmetric under \(t\mapsto2.1-t\). Only even \(m\) entered the first test; both parities enter the torus test. Principal branches are justified only at the dominant singularity, which is why the first statement is branch-independent.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>On the balanced locus the naive model determinant is nonzero, by \(Q=-1\) and the half-odd exponent. With the filter correction, the predicted degeneracy points on the \(m\)-dependent balanced surface near the torus remain untested: an open falsification target.</li>
+<li>Off the balanced locus, which contains every fixed \(a\) with unequal moduli once \(m\) is large, leading-order asymptotics give rank at most two by cyclic dominance. Full rank is then a subleading effect: in the tests the measure there is about \(10^{-3}\) and decays polynomially in \(m\).</li>
+<li>So no leading-order argument proves the conjecture. A uniform proof must handle the pair of rows that share a dominant exponential, for example by an exact expansion of their difference in \(1/m\). With exact elimination through \(m=7\) and no recurrence, the triple window has no mechanism for \(m\ge8\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-triple-window-full-rank for \(m\ge8\): a subleading or exact mechanism.</li>
+<li>The corrected model's predicted points on the balanced surface near the torus, untested.</li>
+<li>The confluent window; the other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-level-window-gegenbauer-form (rows of \(U_3\));</li>
+<li>thm:cube-triple-window-small and check:cube-triple-window-six-seven;</li>
+<li>ex:cube-triple-window-functionals-not-low-order (no low-order recurrence).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. A medium-effort reviewer made two passes. The first found that the first curve test was in the wrong regime, and asked for the branch-independent squaring proof, the model's scope and the parity caveat. The second checked cyclic dominance and asked for the weak-inequality form, the boundedness hypothesis, the filter correction's failure of the cyclic identity, and the \(m\)-dependent balanced surface instead of "route closed". It found the torus reading matched the data. All changes applied; no unused hypotheses.</p>
+<p>Status: working proof (phase identity and cyclic dominance of the leading-order model); finite check (torus test).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-cf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 9.40 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11 min 32.94 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 25.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 6.89 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.76 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
