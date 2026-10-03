@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core at \(\Sigma_k\) (<a href="#entry-2026-10-09-cube-dilation-leader-transfer">dilation leader transfer</a>; eight open items). Dilations about the cherry root preserve the leaders. At \(M=4\), \(\Sigma_k\) consists of translates of scaled squares, so every fixed-cluster arc with four distinct roots has nullity at most two. At \(M\ge5\), \(\Sigma_1\) contains \(z^5+az+b\), which is not rotation invariant.</p>
-<p>Next: fixed clusters at the non-rotation-invariant points of \(\Sigma_1\) for \(M=5\). Bound each coordinate's least surviving \(u\)-order through the Laplace terms and the top-up identity (proved at \(M=5\)), and prove or refute nullity at most two there. Then treat moving arcs into \(\Sigma_k\), reduced by the transfer to arcs approaching the cluster itself.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core on fixed-cluster arcs (<a href="#entry-2026-10-09-cube-flow-order-families">flow-order families</a>; eight open items). Conjecture: each family's least value is \(b_p+w_x\,j_p(y_0)\), with \(j_p\) the \(D\)-flow order of \(\mathrm{Hank}_{M-p}\) at the cluster, attained by one set. It holds at all \(70\) computed family minima, including the non-rotation-invariant points \(z^5+az+b\) of \(\Sigma_1\cap\Sigma_2\), where the leaders still have nullity at most one.</p>
+<p>Next: prove the conjecture. Seek a generating identity expressing the least coefficients of family \(p\)'s top-raised sets through \(\mathrm{Hank}_k(y/(1-ty))\), using the \(\hat G\) form and the transfer between arcs with \(\tilde y'\) fixed and with \(\tilde y\) fixed. The top-up identity is its first coefficient. Then identify the minimizer shapes, and bound the union of tied families.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -71500,6 +71500,81 @@ The minor vanishes unless \(L\le L'\) elementwise after sorting. It has valuatio
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 0.31 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.54 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">27.85 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-flow-order-families" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-flow-order-family-value check:cube-flow-order-family-value">
+<h3>9 October 2026 — On fixed-cluster arcs each family's least value is the window bound plus w_x times the flow order of its Hankel determinant: exact at 70 family minima, including the non-rotation-invariant points z⁵ + az + b of Σ₁ ∩ Σ₂</h3>
+<p class="entry-meta">Conjecture with exact checks at seven clusters (M = 4, 5), consistent with every proved case; the wide-support conjecture survives at z⁵ + az + b. Flow-order families cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core at \(\Sigma_k\). At \(M\ge5\), \(\Sigma_1\cap\Sigma_2\) contains the clusters \(z^5+az+b\), which are not rotation invariant even up to translation (<a href="#entry-2026-10-09-cube-dilation-leader-transfer">dilation leader transfer</a>), so the Fourier mechanism does not apply. The missing implication: what governs which coordinates survive at a general fixed cluster? The cycle tests the wide-support conjecture there, then a candidate general law for each family's least value. A leader union above \(2M+2\) would refute the support conjecture. A family minimum off the law would refute the law.</p>
+<p><strong>Method.</strong> By the proof of lem:cube-cross-leading-coefficient, left multiplication by \(\operatorname{diag}(X,X)\), \(X=[y_q^t/P'(y_q)]\), turns the cross block into a matrix \(\hat G_\Lambda\). Its upper entries are \(c_ix^ih_{t+i-M+1}\) and its lower entries \(\sum_rc_rc_{i+r}\varepsilon^rx^{i+r}h_{t+i+r-M+1}\), and \(P_\Lambda=\pm\mathrm{Vand}^2\det\hat G_\Lambda\). At a fixed cluster \(\mathrm{Vand}^2\) is a nonzero constant. The \(h_n\) are rational when the cluster's polynomial is: \(\sum h_nz^n=1/(z^MP(1/z))\). So exact values need no splitting field. The fifth roots of unity serve as control: they reproduce the leaders proved by thm:cube-rotation-cluster-leaders at all three rates.</p>
+<p><strong>Wide support at \(z^5+az+b\).</strong> research/tools/bmd_quintic_sigma_leaders.gp (research/results/bmd-20261009-bc/quintic-sigma-leaders.txt) covers the clusters \(z^5+z+1\) and \(z^5+3z-2\), with distinct roots, at rates \((1,1),(3,2),(2,3)\). It uses \(298\) sets with \(E^+\le6\), \(E^-\le1\).</p>
+<ul>
+<li>Rate \((1,1)\): value \(39\), below the rotation value \(41\). The leaders are the window \(\Lambda_2\) and the family-\(3\) set \([-3,4]\cup\{6,7\}\) (\(E^+=2\)), union \(11\) columns.</li>
+<li>Rate \((3,2)\): value \(106\). The leaders are \([-3,4]\cup\{6,7\}\) and \([-4,4]\cup\{7\}\), both with \(E^+=2\), union \(11\).</li>
+<li>Rate \((2,3)\): value \(85\), the single leader \(\Lambda_2\).</li>
+</ul>
+<p>Both clusters give identical results. The nullity is at most one throughout, so conj:cube-cancellation-wide-support is not falsified at these points.</p>
+<p><strong>General statement.</strong> conj:cube-flow-order-family-value. In the cherry setting, let an arc have its reparametrized roots fixed at a cluster \(y_0\) with distinct roots, at rate \((w_x,w_e)\), \(w_x,w_e&gt;0\). Let \(1\le p\le M\), \(k=M-p\), and let
+\[j_p(y_0)=\operatorname{ord}_{t=0}\mathrm{Hank}_k\bigl(y_0/(1-ty_0)\bigr)=\min\{r:(D^r\mathrm{Hank}_k)(y_0)\ne0\},\]
+the flow order of \(\mathrm{Hank}_k\) at \(y_0\) (lem:cube-reparametrization-flow: \(y/(1-ty)\) is the time-\(t\) flow of \(D=\sum y_i^2\partial_i\)). Then the least value among the sets of family \(p\) is \(b_p+w_x\,j_p(y_0)\). It is attained by exactly one set, which has \(E^-=0\) and \(E^+=j_p(y_0)\).</p>
+<p><strong>Interpretation.</strong> By lem:cube-reparametrization-flow, \(j_p(y_0)\) is the \(x\)-order of the window's coefficient on the arc whose original roots \(\tilde y\) are fixed at \(y_0\). The conjecture says that the cheapest member of family \(p\) on the arc with \(\tilde y'\equiv y_0\) costs exactly what the window costs on the arc with \(\tilde y\equiv y_0\). The excess that the window pays in flow order is paid instead by raising top columns.</p>
+<p><strong>Proved cases.</strong></p>
+<ul>
+<li>\(j_p=0\): \(b_p\) is a lower bound for every set of the family (lem:cube-window-bound-excess). The window attains it, since its coefficient is \(c_{M,p}\mathrm{Vand}^2\mathrm{Hank}_k\) (thm:cube-cherry-hankel-form). Its bottom shifts cost \(w_e\) more and the other sets at least \(w_x\) more, so the minimizer is unique.</li>
+<li>\(j_p=1\), \(M\le5\): every \(E^+=0\) set has least coefficient proportional to \(W_p=0\) (lem:cube-bottom-shift-proportionality). The top-up \(T_p\), the only set with \(E^+=1\), \(E^-=0\), has least coefficient \(\kappa\,\mathrm{Vand}^2D\,\mathrm{Hank}_k\ne0\) by prop:cube-topup-flow-identity-small, since \(\mathrm{Hank}_k(y_0)=0\). Every other set has bound at least \(b_p+\min(2w_x,w_x+w_e)\). So the family minimum is \(b_p+w_x\), attained only by \(T_p\).</li>
+<li>Rotation-invariant clusters, every \(M\): thm:cube-rotation-cluster-leaders gives family minimum \(V(p)=b_p+w_xk(p-1)\), attained only by \(\Lambda_p^*\), which has \(E^+=k(p-1)\). The conjecture therefore predicts \(j_p=k(p-1)\). research/tools/bmd_rotation_flow_orders.gp (research/results/bmd-20261009-bc/rotation-flow-orders.txt) computes the flow orders exactly and finds \(j_p=k(p-1)\) for all \(M=4,\ldots,8\) and \(1\le p\le M-1\). That includes \(M=6,7,8\), where the degree rule would allow smaller orders. The general flow-order identity at roots of unity is not proved, so this case of the conjecture is proved only for \(M\le8\).</li>
+</ul>
+<p><strong>Check.</strong> check:cube-flow-order-family-value. research/tools/bmd_flow_order_families.gp (research/results/bmd-20261009-bc/flow-order-families.txt) computes, for each family, the least value over all sets with \(E^+\le7\), \(E^-\le1\), exactly via \(\hat G_\Lambda\). It covers rates \((1,1)\) and \((3,2)\) and seven clusters:</p>
+<ul>
+<li>\(z^5-1\);</li>
+<li>\(z^5+z+1\), \(z^5+3z-2\), and a translate of \(z^5+z+1\) (all in \(\Sigma_1\cap\Sigma_2\));</li>
+<li>\(z^5-z^2+2z+3\), generic;</li>
+<li>the square \(z^4-1\);</li>
+<li>\(z^4+z+1\), which lies on \(\{\mathrm{Hank}_1=0\}\) but not in \(\Sigma_1\).</li>
+</ul>
+<p>It compares each with \(b_p+w_xj_p(y_0)\). All \(70\) family minima agree. Every minimizer is unique and has \(E^-=0\) and \(E^+=j_p\). The flow orders that occur are \(0,1,2,3,4\). The translate gives the same values as \(z^5+z+1\), as lem:cube-dilation-leader-transfer requires for the least value, here family by family. The multipliers \(\prod(1-ty)^c\), \(c\in\{-2k,0,2k\}\), give the same order, since they are units at \(t=0\). A first run failed on a programming error (a reversed polynomial built in the wrong variable) and produced no data.</p>
+<p>Prediction count: \(70\) integer predictions, counted from the output file. \(22\) of them have \(j_p\ge2\). Of those, the \(12\) at the three clusters \(z^5+az+b\) (including the translate) are covered by no proved case. The other \(10\) are at rotation-invariant clusters.</p>
+<p>Not tested: rates with \(w_x/w_e\) far from one, and \(E^+&gt;7\). No cluster had a flow order above \(4\).</p>
+<p><strong>Minimizer shapes.</strong> The unique minimizer raises top columns. In the data:</p>
+<ul>
+<li>\(j=1\): the top-up;</li>
+<li>\(k=1\), \(j=2\): the top column raised by \(2\);</li>
+<li>\(k=2\), \(j=2\): the top two columns raised by \(1\) each;</li>
+<li>rotation: the top \(k\) columns raised by \(p-1\) each.</li>
+</ul>
+<p>No general rule for the shape is proposed yet. The support condition needs one, since the union of tied minimizers from different families must have at most \(2M+2\) columns.</p>
+<p><strong>What this means.</strong> If the conjecture holds, the least cross value on any fixed-cluster arc is \(\min_p(b_p+w_xj_p(y_0))\), computable from flow orders of Hankel determinants alone. The leaders are one set per minimizing family. The support core on fixed-cluster arcs then reduces to two questions: which set realizes each family minimum, and which families tie. The rotation theorem and the top-up identity are its first two instances. The mechanism suggested by the interpretation is a transfer between arcs with \(\tilde y'\) fixed and arcs with \(\tilde y\) fixed. The two differ by the flow \(\tilde y'=\tilde y/(1-x\tilde y)\), as translations differed by dilations.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of conj:cube-flow-order-family-value. A candidate is a generating identity: the least coefficients of the family's raised sets as the \(t\)-coefficients of \(\mathrm{Hank}_k(y/(1-ty))\) in a suitable basis. The top-up identity is its first coefficient.</li>
+<li>The minimizer shapes and the union bound.</li>
+<li>Moving arcs; conj:cube-topup-flow-identity for \(M\ge6\); coincident limits; \(C\)-block uniqueness; slack-zero levels; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-cross-leading-coefficient (the \(\hat G\) form, from its proof);</li>
+<li>lem:cube-reparametrization-flow;</li>
+<li>thm:cube-rotation-cluster-leaders;</li>
+<li>prop:cube-topup-flow-identity-small;</li>
+<li>lem:cube-bottom-shift-proportionality;</li>
+<li>lem:cube-window-bound-excess;</li>
+<li>lem:cube-dilation-leader-transfer.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. The new claims are a conjecture and a finite check, so no correctness reviewer was run. The arguments for the proved cases (\(j_p\le1\) at \(M\le5\), rotation clusters at \(M\le8\)) are compositions of reviewed results stated above. The fifth roots of unity reproduce the proved leaders, and the translate reproduces its cluster's values; these serve as controls for the \(\hat G\) computation.</p>
+<p>Status: conjecture with finite checks (exact; seven clusters, \(M=4,5\), two rates).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 29.16 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 9.74 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 49.80 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 34.13 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 55.35 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
