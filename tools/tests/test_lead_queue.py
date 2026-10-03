@@ -187,6 +187,54 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.parse(body)[1], [self.q[1], ('lead', 'w:1')])
         lq.check(head, body)
 
+    def test_review_report_defects(self):
+        """Regression cases of the fresh-context review of 3 October 2026, one per defect."""
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        head = notebook([rev], q)
+        cont = research(q[0], 'Continuing')
+        idle = '<article id="i" data-kind="research" data-route="step"><p>other work</p></article>'
+        with self.subTest(defect=1):
+            # 1: a research entry developing nothing does not restart the spell
+            self.assertEqual(lq.spell(notebook([rev, cont, cont, cont, idle, cont], q), q[0]), 4)
+        with self.subTest(defect=2):
+            # 2: Reopened is not an outcome of the developing entry itself
+            with self.assertRaises(ValueError):
+                lq.check(head, notebook([rev, research(q[0], 'Reopened')], q[1:]))
+        with self.subTest(defect=3):
+            # 3: the entry's own (last) Follow-up counts, not a quoted earlier one
+            quoting = ('<article data-kind="research" data-route="step" data-lead="r1:1"><p>Earlier: <strong>Follow-up.'
+                       '</strong> Closed: old.</p><p><strong>Follow-up.</strong> Continuing: now.</p></article>')
+            self.assertEqual(lq.developed_by(*lq.record_articles(notebook([rev, quoting], q))[-1])[1], 'Continuing')
+        with self.subTest(defect=4):
+            # 4: a review's Closed follow-up removes the item, as init counts it
+            rv = ('<article id="rv" data-kind="review" data-route="step"><ul><li data-lead="r1:2">x <strong>Follow-up.'
+                  '</strong> Closed: gone.</li></ul></article>')
+            with self.assertRaises(ValueError):
+                lq.check(head, notebook([rev, rv], q))
+            lq.check(head, notebook([rev, rv], [q[0], q[2]]))
+            self.assertEqual(lq.open_items(notebook([rev, rv])), [q[0], q[2]])
+        with self.subTest(defect=5):
+            # 5: closing the head and reopening it in the same entry puts it at the tail
+            reo = ('<article data-kind="research" data-route="step" data-lead="r1:1"><ul><li data-lead="r1:1">y <strong>'
+                   'Follow-up.</strong> Reopened: back.</li></ul><p><strong>Follow-up.</strong> Closed: done.</p></article>')
+            lq.check(head, notebook([rev, reo], q[1:] + q[:1]))
+        with self.subTest(defect=6):
+            # 6: two developed items in one entry are refused
+            two = ('<article data-kind="research" data-route="step" data-lead="r1:1" data-bridge="r1:2"><p><strong>'
+                   'Follow-up.</strong> Closed: x.</p></article>')
+            with self.assertRaises(ValueError):
+                lq.check(head, notebook([rev, two], q[1:]))
+        with self.subTest(defect=7):
+            # 7: two entries in one commit are refused; before, a first entry developing a non-head item went
+            # unchecked behind a valid last entry
+            with self.assertRaises(ValueError):
+                lq.check(head, notebook([rev, research(q[2], 'Closed'), research(q[0], 'Continuing')], q))
+        with self.subTest(defect=8):
+            # 8: the commit creating the queue may not develop items
+            with self.assertRaises(ValueError):
+                lq.check(None, notebook([rev, research(q[1], 'Closed')], q))
+
     def test_history_closes_only_by_closed_follow_ups(self):
         old = ('<article data-kind="review" data-route="step"><ul><li data-lead="r1:1">x <strong>Follow-up.'
                '</strong> Closed: no.</li><li data-lead="r1:2">x <strong>Follow-up.</strong> Continuing.</li>'

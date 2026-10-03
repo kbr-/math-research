@@ -64,20 +64,25 @@ def record_articles(body):
 
 
 def developed_by(tag, text):
-    """((kind, id), outcome) for a research entry developing a queue item, or None."""
+    """((kind, id), outcome) for a research entry developing a queue item, or None.  The outcome is the entry's
+    own: the last Follow-up outside listed items, so a quoted earlier Follow-up does not count."""
     if 'data-kind="research"' not in tag:
         return None
-    found = re.search(r'\bdata-(lead|bridge)="([^"]+)"', tag)
+    found = re.findall(r'\bdata-(lead|bridge)="([^"]+)"', tag)
     if not found:
         return None
-    outcome = OUTCOME_RE.search(FOLLOWUP_ITEM.sub('', text[len(tag):]))   # not a listed item's outcome
-    return (found.group(1), found.group(2)), outcome.group(1) if outcome else None
+    if len(found) > 1:
+        raise ValueError('A research entry develops at most one queue item: its tag names '
+                         + ', '.join(i for _, i in found))
+    outcomes = OUTCOME_RE.findall(FOLLOWUP_ITEM.sub('', text[len(tag):]))
+    return found[0], outcomes[-1] if outcomes else None
 
 
 def spell(body, item, pending=False):
-    """Consecutive research entries, from the record's end, that develop `item`; review entries in between
-    neither count nor break the run.  With pending=True the entry about to be appended counts too, unless it
-    is already the last article (its <!-- TIMING TURN --> marker is still unfilled)."""
+    """Research entries, from the record's end, that developed `item` since it became the head: entries that
+    develop no queue item (reviews, other research) neither count nor break the run, which ends at an entry
+    developing another item or settling a triage batch.  With pending=True the entry about to be appended counts
+    too, unless it is already the last article (its <!-- TIMING TURN --> marker is still unfilled)."""
     count, last = 0, True
     for tag, text in reversed(record_articles(body)):
         if 'data-kind="research"' not in tag:
@@ -86,9 +91,10 @@ def spell(body, item, pending=False):
             pending = False
         last = False
         work = developed_by(tag, text)
-        if not work or work[0] != item:
+        if triaged(tag, text) or (work and work[0] != item):
             break
-        count += 1
+        if work:
+            count += 1
     return count + (1 if pending else 0)
 
 
@@ -142,6 +148,20 @@ def check_triage(batch, old):
         if not evidence:
             raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID or an entry '
                              'anchor link)')
+
+
+def listed_closures(tag, text):
+    """Items a follow-up list (outside a Queue triage batch) marks Closed, and items it marks Developed."""
+    section = TRIAGE_RE.search(text)
+    rest = text.replace(section.group(0), '') if section else text
+    closed, developed = [], []
+    for kind, item_id, item in FOLLOWUP_ITEM.findall(rest):
+        outcome = OUTCOME_RE.search(item)
+        if outcome and outcome.group(1) == 'Closed':
+            closed.append((kind, item_id))
+        elif outcome and outcome.group(1) == 'Developed':
+            developed.append((kind, item_id))
+    return closed, developed
 
 
 def reopened_by(text):
@@ -217,11 +237,17 @@ def check(head_body, body):
     if work and batch:
         raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
                          'batch, not both')
-    if work and work[1] is None:
+    if work and work[1] not in ('Closed', 'Developed', 'Continuing'):
         raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
                          '"Developed ..." or "Continuing ..."')
     before = parse(head_body) if head_body else None
+    if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
+        raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
+                         'against the commit before it')
     if before is None:
+        if work or batch:
+            raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
+                             'commit the section, then develop its head')
         wanted = open_items(body)
         missing = [i for k, i in wanted if (k, i) not in queue]
         stale = [i for k, i in queue if (k, i) not in wanted]
@@ -240,6 +266,11 @@ def check(head_body, body):
     was_draining, old = before
     if batch:
         check_triage(batch, old)
+    closed, developed = listed_closures(tag, text)
+    listed_developed = [i for k, i in developed if (k, i) in old]
+    if listed_developed:
+        raise ValueError('A follow-up list may mark a queued item Closed (it leaves the queue), Continuing or '
+                         'Reopened; Developed is said by a research entry developing it: ' + ', '.join(listed_developed))
     head = old[0] if old else None
     if work and work[0] != head:
         raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the head '
@@ -248,13 +279,13 @@ def check(head_body, body):
     if draining_before and 'data-kind="research"' in tag and not work and not batch:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
                          f'research entry must develop the head, {head[1]}, tagged data-{head[0]}="{head[1]}"')
-    expected = [i for i in old if not work or i != work[0]][len(batch):]
+    expected = [i for i in old if (not work or i != work[0]) and i not in closed][len(batch):]
     if work and work[1] == 'Continuing':
         if spell(body, work[0]) < SPELL:
             expected.insert(0, work[0])      # keeps the head for up to SPELL consecutive entries
         else:
             expected.append(work[0])
-    new = [i for i in arrivals if i not in old]
+    new = list(dict.fromkeys(i for i in arrivals if i not in expected))
     if queue[:len(expected)] != expected or sorted(queue[len(expected):]) != sorted(set(new)):
         raise ValueError('Queue update: keep the earlier items in order; remove the developed head if Closed or '
                          'Developed; if Continuing, keep it at the head until its ' + str(SPELL) + 'th consecutive entry, '
