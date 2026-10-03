@@ -230,8 +230,14 @@ rules to growing checklists or one-off setup narratives.
   restoration reads its first five items), FIFO, maintained per [tools/lead_queue.py](tools/lead_queue.py).
   A review appends its newly passed items at the end. A research entry develops at most one item, always
   the head, tagged `data-lead` or `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>`
-  Closed (with the reason the attempt found), Developed (taken into a result or route) or Continuing;
-  Closed and Developed remove the item, Continuing moves it to the tail. Backpressure: at 50 items the
+  Closed, Developed or Continuing. Squeeze an item until it can produce nothing more, not until its first
+  usable result (user, 3 October 2026): Continuing whenever its translation still bears on an open
+  statement, naming and where possible making the concrete next attempt; Developed only when its results
+  leave it no remaining application to an open statement; Closed only for a reason the attempt found
+  (a restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
+  result). Closed and Developed remove the item, Continuing moves it to the tail. An item closed too early
+  is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
+  to the tail (`lead_queue.py append`). Backpressure: at 50 items the
   queue drains (`data-draining="true"`), and every research entry develops the head until 20 remain;
   then work returns to the route, or to a better route the leads opened. Reviews report only follow-ups
   whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the

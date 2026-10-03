@@ -120,6 +120,30 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.parse(body)[1], self.q + [('lead', 'r2:1'), ('lead', 'r2:3')])
         lq.check(head, body)
 
+    def test_reopened_items_go_to_the_tail(self):
+        head = notebook([self.rev, research(self.q[0], 'Developed')], self.q[1:])
+        reopen = ('<article data-kind="research" data-route="step" data-lead="r1:2"><ul><li data-lead="r1:1">'
+                  'still bears on an open statement. <strong>Follow-up.</strong> Reopened: closed too early.</li>'
+                  '</ul><p><strong>Follow-up.</strong> Continuing: next attempt.</p></article>')
+        after = notebook([self.rev, research(self.q[0], 'Developed'), reopen], self.q[1:])
+        self.assertEqual(lq.developed_by(*lq.record_articles(after)[-1]), (self.q[1], 'Continuing'))
+        body, count = lq.append_new(lq.done(after, 'Continuing'))
+        self.assertEqual(count, 1)
+        self.assertEqual(lq.parse(body)[1], [self.q[1], self.q[0]])
+        lq.check(head, body)
+        with self.assertRaises(ValueError):                             # the reopened item must be appended
+            lq.check(head, lq.done(after, 'Continuing'))
+        stray = reopen.replace('r1:1">', 'r9:1">')
+        with self.assertRaises(ValueError):                             # only passed review items reopen
+            lq.check(head, notebook([self.rev, research(self.q[0], 'Developed'), stray],
+                                    [self.q[1], ('lead', 'r9:1')]))
+
+    def test_history_closes_only_by_closed_follow_ups(self):
+        old = ('<article data-kind="review" data-route="step"><ul><li data-lead="r1:1">x <strong>Follow-up.'
+               '</strong> Closed: no.</li><li data-lead="r1:2">x <strong>Follow-up.</strong> Continuing.</li>'
+               '</ul></article>')
+        self.assertEqual(lq.open_items(notebook([self.rev, old])), self.q[1:])
+
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
         self.assertIn('2 items', lines[0])

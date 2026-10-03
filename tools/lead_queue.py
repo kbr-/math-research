@@ -6,18 +6,22 @@ the living section <section id="lead-queue">, the last section before the Resear
 budget (notebook_context.py skips it) and restoration reads only its head (resume.py).  Rules, checked by
 finish-turn.py against HEAD:
 
-- The queue holds exactly the passed items not yet closed, once each.  A review appends its newly passed
-  items at the end.
+- The queue holds passed review items once each.  A review appends its newly passed items at the end.
 - A research entry develops at most one item, always the head, tagged data-lead or data-bridge="ANCHOR:N",
-  and states <strong>Follow-up.</strong> Closed (the attempt's reason), Developed (taken into a result or
-  route) or Continuing.  Closed and Developed remove the item; Continuing moves it to the tail.
+  and states <strong>Follow-up.</strong> Closed (a reason the attempt found), Developed (no remaining
+  application to an open statement) or Continuing (it still bears on one; user, 3 October 2026: squeeze
+  items, do not close them at their first usable result).  Closed and Developed remove the item;
+  Continuing moves it to the tail.
+- An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
+  <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
   the head until the queue is down to FLOOR items, when the flag is removed.
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)
-       lead_queue.py append NOTEBOOK.html  (after a review: its newly passed items go to the tail)"""
+       lead_queue.py append NOTEBOOK.html  (after the last entry: its newly passed review items and the items
+                                            it marks Reopened go to the tail)"""
 import html
 import re
 import sys
@@ -29,7 +33,7 @@ ITEM_RE = re.compile(r'<li data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
-OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed)\b')
+OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened)\b')
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
@@ -53,31 +57,43 @@ def developed_by(tag, text):
     found = re.search(r'\bdata-(lead|bridge)="([^"]+)"', tag)
     if not found:
         return None
-    outcome = OUTCOME_RE.search(text)
+    outcome = OUTCOME_RE.search(FOLLOWUP_ITEM.sub('', text[len(tag):]))   # not a listed item's outcome
     return (found.group(1), found.group(2)), outcome.group(1) if outcome else None
 
 
+def review_passed(tag, text):
+    """Passed items of one review article, as (kind, id): leads then bridges."""
+    ident = re.search(r'\bid="([^"]+)"', tag)
+    if 'data-kind="review"' not in tag or not ident:
+        return []
+    out = []
+    for kind, pattern in (('lead', LEADS_RE), ('bridge', BRIDGES_RE)):
+        section = pattern.search(text)
+        if section:
+            for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
+                if TEST_PASSED.search(item):
+                    out.append((kind, f'{ident.group(1)}:{n}'))
+    return out
+
+
+def reopened_by(text):
+    """Items an entry reopens: follow-up list items whose outcome is Reopened."""
+    return [(kind, item_id) for kind, item_id, item in FOLLOWUP_ITEM.findall(text)
+            if (OUTCOME_RE.search(item) or [None, None])[1] == 'Reopened']
+
+
 def open_items(body):
-    """Passed, unclosed items as (kind, id), in record order: per review, leads then bridges."""
-    passed, closed = [], set()
+    """The queue's initial contents: passed items, in record order, that no follow-up list item has Closed
+    (and not Reopened since).  Once a queue exists, its changes are checked as transitions from HEAD (check),
+    not recomputed from the history, whose older entries used Developed and Continuing for progress."""
+    passed, closed = [], {}
     for tag, text in record_articles(body):
-        ident = re.search(r'\bid="([^"]+)"', tag)
-        if 'data-kind="review"' in tag and ident:
-            for kind, pattern in (('lead', LEADS_RE), ('bridge', BRIDGES_RE)):
-                section = pattern.search(text)
-                if section:
-                    for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
-                        if TEST_PASSED.search(item):
-                            passed.append((kind, f'{ident.group(1)}:{n}'))
-            # follow-up lists of reviews (the earlier form) may close items
-            for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
-                outcome = OUTCOME_RE.search(item)
-                if outcome and outcome.group(1) == 'Closed':
-                    closed.add((kind, item_id))
-        work = developed_by(tag, text)
-        if work and work[1] in ('Closed', 'Developed'):
-            closed.add(work[0])
-    return [p for p in passed if p not in closed]
+        passed += review_passed(tag, text)
+        for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
+            outcome = OUTCOME_RE.search(item)
+            if outcome and outcome.group(1) in ('Closed', 'Reopened'):
+                closed[(kind, item_id)] = outcome.group(1) == 'Closed'
+    return [p for p in passed if not closed.get(p)]
 
 
 def parse(body):
@@ -126,15 +142,6 @@ def check(head_body, body):
     draining, queue = now
     if len(set(queue)) != len(queue):
         raise ValueError('The lead and bridge queue lists an item twice')
-    wanted = open_items(body)
-    missing = [i for k, i in wanted if (k, i) not in queue]
-    stale = [i for k, i in queue if (k, i) not in wanted]
-    if missing:
-        raise ValueError('Passed leads or bridges missing from the queue (append new ones at its end): '
-                         + ', '.join(missing))
-    if stale:
-        raise ValueError('Queue items that are closed or are not passed review items: ' + ', '.join(stale)
-                         + '. Remove a Closed or Developed item; a Continuing one moves to the tail')
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
     work = developed_by(tag, text)
@@ -143,10 +150,21 @@ def check(head_body, body):
                          '"Developed ..." or "Continuing ..."')
     before = parse(head_body) if head_body else None
     if before is None:
+        wanted = open_items(body)
+        missing = [i for k, i in wanted if (k, i) not in queue]
+        stale = [i for k, i in queue if (k, i) not in wanted]
+        if missing or stale:
+            raise ValueError('A new queue holds exactly the passed items not closed: missing '
+                             + (', '.join(missing) or 'none') + '; not open ' + (', '.join(stale) or 'none'))
         if len(queue) >= CAP and not draining:
             raise ValueError(f'The queue has {len(queue)} items, at least {CAP}: mark the section '
                              'data-draining="true"')
         return
+    every = {item for t, x in articles for item in review_passed(t, x)}
+    arrivals = review_passed(tag, text) + reopened_by(text)
+    unknown = [i for k, i in arrivals if (k, i) not in every]
+    if unknown:
+        raise ValueError('Reopened items must be passed review items: ' + ', '.join(unknown))
     was_draining, old = before
     head = old[0] if old else None
     if work and work[0] != head:
@@ -156,13 +174,15 @@ def check(head_body, body):
     if draining_before and 'data-kind="research"' in tag and not work:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
                          f'research entry must develop the head, {head[1]}, tagged data-{head[0]}="{head[1]}"')
-    expected = [i for i in old if i in queue and (not work or i != work[0])]
+    expected = [i for i in old if not work or i != work[0]]
     if work and work[1] == 'Continuing':
         expected.append(work[0])
-    expected += [i for i in queue if i not in old]
-    if queue != expected:
-        raise ValueError('Queue order: keep the earlier order, move a Continuing item to the tail, and append '
-                         'new items at the end')
+    new = [i for i in arrivals if i not in old]
+    if queue[:len(expected)] != expected or sorted(queue[len(expected):]) != sorted(set(new)):
+        raise ValueError('Queue update: keep the earlier items in order; remove the developed head if Closed or '
+                         'Developed, or move it to the tail if Continuing; append at the end exactly this entry\'s '
+                         'newly passed review items and the items it marks Reopened ('
+                         + (', '.join(i for _, i in new) or 'none') + ')')
     should_drain = len(queue) > FLOOR if draining_before else len(queue) >= CAP
     if draining != should_drain:
         raise ValueError(f'The queue has {len(queue)} items: data-draining="true" must be '
@@ -205,13 +225,15 @@ def done(body, outcome):
 
 
 def append_new(body):
-    """The notebook with every open passed item missing from the queue appended at its tail, in record order,
-    and the draining flag set if the queue reaches CAP."""
+    """The notebook with the last entry's newly passed review items and its Reopened items appended at the
+    queue's tail, and the draining flag set if the queue reaches CAP."""
     found = SECTION_RE.search(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
     draining, queue = parse(body)
-    new = [item for item in open_items(body) if item not in queue]
+    articles = record_articles(body)
+    tag, text = articles[-1] if articles else ('', '')
+    new = list(dict.fromkeys(i for i in review_passed(tag, text) + reopened_by(text) if i not in queue))
     lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
     lines += [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
               f'{item_text(body, kind, ident)}</li>' for kind, ident in new]

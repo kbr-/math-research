@@ -82,9 +82,15 @@ def queue_notes(body):
         return [f'Lead queue: {len(queue)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
                 f'research entry must develop the head until the queue has {lq.FLOOR} items: {head}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
-                'update the queue: Closed and Developed remove the item, Continuing moves it to the tail.']
+                'update the queue: Closed and Developed remove the item, Continuing moves it to the tail. ' + SQUEEZE]
     return [f'Lead queue: {len(queue)} items (backpressure at {lq.CAP}); {head}. A research entry that develops '
-            'a queue item must take the head, state its Follow-up outcome and update the queue.']
+            'a queue item must take the head, state its Follow-up outcome and update the queue. ' + SQUEEZE]
+
+
+SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing '
+           'while it still bears on an open statement, with the concrete next attempt named and made where '
+           'possible; Developed only when no application to an open statement remains; Closed only for a reason '
+           'the attempt found (restatement, inapplicability, falsification, supersession).')
 
 
 def guidance(body, ft, which=shutil.which, has=installed_header):
