@@ -24,6 +24,7 @@ class CheckedPushTest(unittest.TestCase):
         git(self.tmp, 'init', '-q', '-b', 'main', str(self.work))
         (self.work / 'tools').mkdir()
         shutil.copy(ROOT / 'tools/checked-push.sh', self.work / 'tools')
+        shutil.copy(ROOT / 'tools/ff-base.sh', self.work / 'tools')
         for name in ('verify-checkout.py', 'check-append-only.py', 'notebook_context.py'):
             (self.work / 'tools' / name).write_text(STUB)
         (self.work / '.gitignore').write_text('calls\n')
@@ -79,6 +80,13 @@ class CheckedPushTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('over 100 characters', result.stderr)
         self.assertFalse((self.work / 'calls').exists())
+
+    def test_push_also_fast_forwards_the_local_branch(self):
+        # the work branch's commit reaches origin/main and the local main, which no worktree has checked out
+        result = self.run_push('main')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Local main fast-forwarded', result.stdout)
+        self.assertEqual(git(self.work, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'HEAD'))
 
     def test_counts_characters_not_bytes(self):
         # 99 characters, over 100 bytes: accepted under the C locale too (review of 3 October 2026)

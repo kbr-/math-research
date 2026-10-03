@@ -60,3 +60,7 @@ if [ "$remote_tip" != "$commit" ]; then
   exit 1
 fi
 echo "origin/$branch is at $(git log --oneline -1 "$commit"), the commit pushed."
+
+# Fast-forward the local branch of the same name to the pushed commit (ff-base.sh, which never pushes), so
+# the base never lags its remote; a branch that cannot be fast-forwarded is reported, not a failed push.
+tools/ff-base.sh --no-rebase "$branch" || true
