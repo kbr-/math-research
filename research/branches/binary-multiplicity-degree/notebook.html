@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cofactor-double-coincidence-proof">EPD cofactor</a>; eight open items). The Taylor cofactor vanishes on every double coincidence, by the recorded Euler–Poisson–Darboux identity. So uniqueness of the leading \(C\)-block coordinate above a tie is settled only for \(M\le5\).</p>
-<p>Next: uniqueness above a tie over a caterpillar for \(M\ge6\), through a hierarchical count. Along the arc, the valuation of each \(p_S\) is a sum over the caterpillar's nested levels, as in thm:cube-caterpillar-minimality. Show that the tie level adds the same amount to \(p_{T_0}\) as to the least other coordinate, using the cofactor at the tie's own level \((c_0,1)\), which is nonzero for \(c_0\ne-1\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-dominance-gegenbauer">Gegenbauer dominance</a>; eight open items). Taylor dominance above a tie over a caterpillar of \(m\) roots appears to fail exactly at the zeros of the Gegenbauer tie coefficient \(t_{\binom m2}\). These zeros never meet the excluded Hankel moduli for \(M\le120\).</p>
+<p>Next: prove conj:cube-tie-dominance-gegenbauer. Read the proof of thm:cube-single-tie-chain-avoidance for the lattice splitting at a tie level over a caterpillar. Show that the leading coordinate of the cluster's pair span is the caterpillar's Taylor minor times a tie-window corner proportional to \(t_{\binom m2}(c_0)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -69049,6 +69049,64 @@ The entries are polynomials in \(y\), so each difference row is exactly divisibl
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">14.55 s</td></tr>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 14.06 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-dominance-gegenbauer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-dominance-gegenbauer check:cube-hankel-moduli-not-gegenbauer">
+<h3>9 October 2026 — Taylor dominance above a tie over a caterpillar appears to fail exactly at the zeros of the Gegenbauer tie coefficient \(t_{\binom m2}\), which never meet the excluded Hankel moduli for \(M\le120\)</h3>
+<p class="entry-meta">Conjecture: above a tie \((c_0,1)\) over a caterpillar of \(m\) roots, Taylor dominance holds iff \(t_{\binom m2}(c_0)\ne0\); \(q\)-adic tests at \(M=6\) in both directions; exact check that the Hankel moduli are not such zeros, \(M\le120\). Gegenbauer dominance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement: uniqueness of the leading \(C\)-block coordinate above a tie with \(M\ge6\). The tie-limit criterion fails there (<a href="#entry-2026-10-09-cube-cofactor-double-coincidence-proof">EPD cofactor</a>). For \(M=4,5\) the cofactor's extra zeros, \(c=-1\) and \(7c^2+2c+7=0\), lie on the unit circle. Which moduli spoil dominance in general?</p>
+<p><strong>Observation.</strong> The tie coefficient of thm:cube-tie-window-gegenbauer is \(t_k(c)=[T^k]((1+cT)(1+T))^{-3/2}\). It has \(t_1=-\tfrac32(c+1)\) and \(t_3\doteq(c+1)(7c^2+2c+7)\). These are exactly the extra factors of the cofactors at \(M=4\) (\(m=2\), \(\binom m2=1\)) and \(M=5\) (\(m=3\), \(\binom m2=3\)) in cor:cube-tie-cofactor-small. By lem:cube-tie-window-gegenbauer-consequences, the zeros of \(t_d\) are \(e^{2i\theta}\), with \(\cos\theta\) a zero of \(C^{(3/2)}_d\).</p>
+<p><strong>General statement.</strong> conj:cube-tie-dominance-gegenbauer. In characteristic zero, take a cluster formed by a tie \((c_0x,x)\), \(c_0\notin\{0,1\}\), over a caterpillar of \(m\ge2\) roots at positive relative valuations, \(M=m+2\). Along every arc, Taylor dominance \(\operatorname{val}p_{T_0}=\min_S\operatorname{val}p_S\) holds iff \(t_{\binom m2}(c_0)\ne0\). By lem:cube-cofactor-gives-unique-cblock the "if" direction would give a unique leading \(C\)-block coordinate.</p>
+<p><strong>Evidence.</strong> research/tools/bmd_tie_gegenbauer_dominance.gp (research/results/bmd-20261009-ag/tie-gegenbauer-dominance.txt).</p>
+<ul>
+<li>(a) The factorizations of \(t_1\) and \(t_3\). With cor:cube-tie-cofactor-small this proves the "if" direction for \(M=4,5\) at the tie limit, where the cofactor is \((c-1)^ac^bt_{\binom m2}\) up to a constant.</li>
+<li>(b) \(M=6\), \(m=4\), \(d=6\). Roots \((c_0,1,q,q+q^2,q+q^2+q^3,q+q^2+q^3+q^4)\), a tie over a four-root caterpillar. All \(\binom{18}{15}\) Plücker coordinates on columns \([0,17]\), \(q\)-adically, \(q=1000183\), chosen so that \(t_6\) has a root in \(\mathbb Z_q\) and \(-6\) is a square:
+<ul>
+<li>\(c_0=2\): \(\operatorname{val}p_{T_0}=70=\min\), dominance;</li>
+<li>\(c_0\) a root of \(t_6\): \(\operatorname{val}p_{T_0}=71&gt;70=\min\), dominance fails;</li>
+<li>\(c_0=(1+\sqrt{-24})/5\), an excluded Hankel modulus: \(70=\min\), dominance.</li>
+</ul>
+The test discriminates in both directions at a size where the tie-limit criterion is void.</li>
+</ul>
+<p><strong>Check.</strong> check:cube-hankel-moduli-not-gegenbauer. For every \(M=4,\ldots,120\), \(t_{\binom{M-2}2}\) does not vanish at the roots of \((M-1)c^2-2c+(M-1)\). The tool computes \(t_d\) by the three-term recurrence
+\[
+(k+1)t_{k+1}=-(1+c)(k+\tfrac32)t_k-c(k+2)t_{k-1}
+\]
+in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. Since \(p\) exceeds every denominator \(k+1\le\binom{118}2\) and is odd, a nonzero reduction certifies \(t_d\not\equiv0\) modulo the quadratic over \(\mathbb Q\). So, under the conjecture, the leading \(C\)-block coordinate is unique above a tie at either excluded Hankel modulus, for every \(M\le120\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The obstruction to uniqueness above a tie is the same Gegenbauer coefficient that governs the record's tie windows (cor:cube-tie-window-full-rank). This suggests the leading \(C\)-block coordinate of a tie over a caterpillar factors as the caterpillar's Taylor minor times a tie-window corner proportional to \(t_{\binom m2}(c_0)\). That is the natural proof route.</li>
+<li>The Hankel moduli, \(c+1/c=2/(M-1)\), and the Gegenbauer moduli, \(c=e^{2i\theta}\) with \(C^{(3/2)}_{\binom m2}(\cos\theta)=0\), are disjoint through \(M=120\). Above the excluded moduli, the any-set cherry step's uniqueness hypothesis is therefore conditional only on this conjecture.</li>
+<li>At the Gegenbauer moduli themselves the cherry step needs another argument, as it already did for ties at Gegenbauer zeros in the record.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of conj:cube-tie-dominance-gegenbauer through the lattice splitting of the tie level, and the disjointness of the two sets of moduli for every \(M\).</li>
+<li>The cherry step at Gegenbauer moduli.</li>
+<li>(W″) under Hankel non-cancellation; the other open items of (K), and (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-tie-window-gegenbauer and lem:cube-tie-window-gegenbauer-consequences (statements);</li>
+<li>cor:cube-tie-window-full-rank;</li>
+<li>cor:cube-tie-cofactor-small, prop:cube-cofactor-double-coincidence and lem:cube-cofactor-gives-unique-cblock.</li>
+</ul>
+<p><strong>Verification gate.</strong> No new lemma: a conjecture with \(q\)-adic evidence in both directions and an exact finite check, so no correctness review was required. The check's certificate argument, a nonzero reduction modulo a prime above every denominator, was verified against the recurrence's denominators.</p>
+<p>Status: conjecture (Gegenbauer criterion for Taylor dominance) with finite evidence; finite check (Hankel moduli are not Gegenbauer zeros, \(M\le120\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ag">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 45.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">43.57 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">46.16 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">15.89 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">34.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">23.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.45 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
