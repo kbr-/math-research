@@ -47,15 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), goal-level route review (<a href="#entry-2026-10-09-cube-wronskian-congruence">Wronskian congruence</a>; eight open items). Since the selection rule review, five research cycles have done the following:</p>
-<ul>
-<li>proved the rotation-cluster theorem and the dilation transfer;</li>
-<li>settled every fixed-cluster arc at \(M=4\);</li>
-<li>reduced each family's cheapest least coefficient to the ramification of a polynomial space;</li>
-<li>proved that ramification equals flow order at \(M=4\).</li>
-</ul>
-<p>At \(M=5\) the ideal-level congruence fails at second order, while the orders agree pointwise.</p>
-<p>Next: the required route review. It should weigh the fixed-cluster programme (ramification equals flow order for \(M\ge5\), higher \(u\)-coefficients, ties) against moving arcs and the untouched cores: \(C\)-block uniqueness, the confluent tie window and the triple window. It should then choose the highest-risk item, with outside leads on Wronskians, Schubert calculus and ramification of linear series.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), goal-level route review (<a href="#entry-2026-10-09-cube-nested-family-pivots">nested family pivots</a>; eight open items). The family spaces are nested, so the leaders' nullity on fixed-cluster arcs is the spread of the minimizing families. Under hypothesis (F), the support condition there reduces to excluding three-step skips in the lower envelope of \(f_p\). Decreasing breakpoints \(\Delta_p=(o^*_p-p+1)/(2p)\) suffice, and they hold at every computed cluster.</p>
+<p>Next: the required route review. It should weigh this fixed-cluster programme (the envelope inequality, (F), ramification equals flow order for \(M\ge5\)) against moving arcs and the untouched cores: \(C\)-block uniqueness and the window cores. It should then choose the highest-risk item, with outside leads on Wronskians, Schubert calculus and ramification of linear series.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -71762,6 +71755,99 @@ where \(W\) is the Wronskian and \(U_p\) is the space of polynomials of degree a
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-nested-family-pivots" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-nested-family-pivots cor:cube-pivot-envelope-support">
+<h3>9 October 2026 — The family spaces are nested, so their pivot sets grow by one order per family; the leaders' nullity is the spread of the minimizing families, and a decreasing breakpoint sequence gives nullity at most one</h3>
+<p class="entry-meta">Working proof of the nesting and the cost differences; conditional reduction of the fixed-cluster support condition to an envelope inequality on the added orders. Nested pivots cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core on fixed-cluster arcs. prop:cube-family-schubert-reduction gives one candidate per family, the pivot set \(P_p=[-p,-1]\cup O_p(y_0)\). Its cost is \(f_p=b_p+w_xr_p\). The support condition concerns the union of the leaders across tied families. The missing implication is a relation between the pivot sets of different families, and between their costs, that bounds that union. The cycle tests whether the family spaces are nested. If they are, the union is computable and the support condition becomes an inequality on the costs.</p>
+<p><strong>General statement.</strong> lem:cube-nested-family-pivots. With \(V_p(y)\) as in prop:cube-family-schubert-reduction, \(1\le p\le M\), suppose \(\dim V_1(y_0)=2M-1\).</p>
+<ol>
+<li>\(V_M\subset V_{M-1}\subset\cdots\subset V_1\), with \(\dim V_p=2M-p\). Hence \([0,M-1]=O_M\subset O_{M-1}\subset\cdots\subset O_1\), and \(O_p=O_{p+1}\sqcup\{o^*_p\}\) for \(p\le M-1\). Moreover \(O_1=[0,2M-2]\), so \((o^*_1,\ldots,o^*_{M-1})\) is a permutation of \([M,2M-2]\).</li>
+<li>\(r_p-r_{p+1}=o^*_p-(2M-p-1)\).</li>
+<li>For any set \(S\) of families, \(\bigcup_{p\in S}P_p=[-\max S,-1]\cup O_{\min S}\), which has \(2M+\max S-\min S\) columns.</li>
+<li>With \(f_p=w_x(A_p+r_p)+w_eB_p\), \(A_p=2M^2-2Mp+p^2-p\), \(B_p=p^2-p+M\):
+\[f_p-f_{p+1}=w_x\,(o^*_p-p+1)-w_e\cdot2p.\]
+So with \(\rho=w_e/w_x\), \(f_p&lt;f_{p+1}\) iff \(\rho&gt;\Delta_p:=(o^*_p-p+1)/(2p)\), and \(f_p=f_{p+1}\) iff \(\rho=\Delta_p\).</li>
+<li>If \(\Delta_1&gt;\Delta_2&gt;\cdots&gt;\Delta_{M-1}\), then at every rate \(f\) is minimized at one family or at two adjacent families.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>\(V_p\) is spanned by \(z^jH\), \(j&lt;M\), and \(G_m\), \(m\in[p-1,M-2]\). The range of \(m\) shrinks as \(p\) grows, so \(V_{p+1}\subseteq V_p\). A subset of the independent spanning set of \(V_1\) is independent, so \(\dim V_p=M+(M-p)\). The vanishing orders of a subspace form a subset of those of the space: an echelon basis of the subspace extends to one of the space, keeping its leading orders. The dimensions differ by one, so \(O_p\) adds exactly one order \(o^*_p\). These are distinct because they are added along a chain. \(O_M=[0,M-1]\) because \(z^jH\) has order exactly \(j\) (\(H(0)=1\)). Hence \(o^*_p\notin O_M\) gives \(o^*_p\ge M\).
+<p>For \(O_1\): in the proof of prop:cube-family-schubert-reduction the derivative step kills only constants, so \(\dim U_1=\dim V_1=2M-1\). Thus \(U_1\) is the whole space of polynomials of degree at most \(2M-2\). Its Wronskian is a nonzero constant, so \(r_1=0\) and \(O_1=[0,2M-2]\).</p></li>
+<li>\(r_p=\sum O_p-\binom{2M-p}2\), so \(r_p-r_{p+1}=o^*_p-\bigl(\binom{2M-p}2-\binom{2M-p-1}2\bigr)=o^*_p-(2M-p-1)\).</li>
+<li>The negative parts are \([-p,-1]\), increasing with \(p\). The nonnegative parts \(O_p\) decrease with \(p\) by part 1.</li>
+<li>\(A_p-A_{p+1}=2M-2p\) and \(B_{p+1}-B_p=2p\). So \(f_p-f_{p+1}=w_x(2M-2p+r_p-r_{p+1})-2pw_e\), and part 2 gives the formula.</li>
+<li>At a rate \(\rho\), let \(p_0\) be the least \(p\) with \(\Delta_p&lt;\rho\), or \(p_0=M\) if none.
+<ul>
+<li>For \(p\ge p_0\), \(\Delta_p\le\Delta_{p_0}&lt;\rho\), so \(f_p&lt;f_{p+1}\).</li>
+<li>For \(p&lt;p_0\), \(\Delta_p\ge\rho\), so \(f_p\ge f_{p+1}\), with equality only if \(\Delta_p=\rho\). Since \(\Delta\) is strictly decreasing, that can hold only for \(p=p_0-1\).</li>
+</ul>
+So the minimum is at \(p_0\), tied with \(p_0-1\) exactly when \(\Delta_{p_0-1}=\rho\). \(\square\)</li>
+</ol>
+<p><strong>Second statement.</strong> cor:cube-pivot-envelope-support, a conditional result. Its hypotheses:</p>
+<ul>
+<li>an arc with the reparametrized roots constant, equal to \(y_0\), with distinct roots and \(\dim V_1(y_0)=2M-1\);</li>
+<li>rate \(w_x,w_e&gt;0\);</li>
+<li>every cross coordinate lies in a family \(1\le p\le M\): \(P_\Lambda=0\) for \(p&gt;M\) by thm:cube-cherry-lattice-splitting, and family \(0\) is excluded as in thm:cube-rotation-cluster-leaders;</li>
+<li>hypothesis (F): every set of family \(p\) has value at least \(f_p\), with equality only for \(P_p\).</li>
+</ul>
+<p>Then:</p>
+<ul>
+<li>the leaders are the \(P_p\) with \(p\) minimizing \(f_p\);</li>
+<li>their nullity is the spread \(\max-\min\) of the minimizing families;</li>
+<li>the support condition \(\nu\le2\) holds at every rate iff no rate has minimizing families \(p&lt;q\) with \(q-p\ge3\);</li>
+<li>if the breakpoints \(\Delta_p=(o^*_p-p+1)/(2p)\) are strictly decreasing, \(\nu\le1\) at every rate.</li>
+</ul>
+<p>Hypothesis (F) follows from conj:cube-flow-order-family-value. That conjecture's unique minimizer has \(E^-=0\), \(E^+=j_p\) and value \(b_p+w_xj_p\), which forces \(\delta=0\). So its least coefficient is nonzero, and part 2 of the Schubert reduction gives \(j_p\ge r_p\). Part 3 gives the upper bound \(f_p\), so \(j_p\le r_p\). Hence \(j_p=r_p\), and the minimizer is \(P_p\).</p>
+<p>Given prop:cube-family-schubert-reduction, (F) is equivalent to the following: every monomial of every family-\(p\) set other than the pivot's least one has order strictly greater than \(f_p\). This includes sets with \(E^-&gt;0\) and monomials with \(\delta&gt;0\). The corollary's proof is parts 3 and 5 of the lemma.</p>
+<p><strong>Third statement.</strong> The corollary for \(M\le6\), conditional on its hypotheses: \(\nu\le2\) at every rate. Proof: by part 1, \(o^*\) is a permutation of \([M,2M-2]\). research/tools/bmd_pivot_envelope_search.gp (research/results/bmd-20261009-bf/pivot-envelope-search.txt) runs over all permutations for \(M=3,\ldots,8\) and all intersection rates of the lines \(f_p/w_x\), with exact rationals; ties occur only at intersection points. For \(M\le6\) the largest spread of minimizing families is at most \(2\) for every permutation. (This exhaustive search was first run by the reviewer and then redone as the committed script.)</p>
+<p><strong>Consistency with proved and computed cases.</strong> These are readings of recorded data, not new computations.</p>
+<ul>
+<li>Rotation-invariant clusters: \(O_p=[0,M-1]\cup[M+p-1,2M-2]\) for every \(M\). This follows from thm:cube-rotation-cluster-leaders: \(\Lambda_p^*\) has a nonzero least coefficient, and by its step 3 every other set with negative part \([-p,-1]\) and nonzero least coefficient has larger excess. So \(\Lambda_p^*\) is the pivot. Hence \(o^*_p=M+p-1\) and \(\Delta_p=M/(2p)\), strictly decreasing. This recovers the adjacency and \(\nu\le1\) of thm:cube-rotation-cluster-leaders. The spread formula \(\Lambda_p^*\cup\Lambda_{p+1}^*\) of \(2M+1\) columns is part 3.</li>
+<li>Generic clusters: all windows, \(o^*_p=2M-p-1\), \(\Delta_p=(M-p)/p\), decreasing. This is the window picture of thm:cube-cherry-lattice-splitting.</li>
+<li>\(z^5+z+1\) (research/results/bmd-20261009-bd/vanishing-orders.txt): \(o^*=(8,5,6,7)\) and \(\Delta=(4,1,\tfrac23,\tfrac12)\), decreasing. These are the breakpoints of the leaders in research/results/bmd-20261009-bc/quintic-sigma-leaders.txt: a tie of families \(2,3\) at \(\rho=1\), and \(3,4\) at \(\rho=2/3\) (rate \((3,2)\)).</li>
+<li>Points of \(\Sigma_2\) at \(M=5\) (research/results/bmd-20261009-be/sigma2-quintic-ramification.txt): \(o^*=(6,7,8,5)\) and \(\Delta=(3,\tfrac32,1,\tfrac14)\), decreasing.</li>
+</ul>
+<p><strong>What can fail.</strong> The inequalities do not force monotonicity by themselves. With \(a=o^*_p-p+1\), \(b=o^*_{p+1}-p\), \(c=o^*_{p+2}-p-1\), families \(p\) and \(p+3\) tie strictly below \(p+1,p+2\) at some \(\rho\) iff \(a+b+c=(6p+6)\rho\), \(a&lt;2p\rho\) and \(c&gt;(2p+4)\rho\). By the exhaustive search no permutation produces a global spread of \(3\) or more for \(M\le6\). At \(M=7\) one does: \(o^*=(8,9,11,7,10,12)\) at \(\rho=17/30\). There \(f/w_x=(2639,2433,2261,2093,2109,2099,2093)/30\), so families \(4\) and \(7\) tie at the global minimum, with spread \(3\). That is \(24\) of the \(720\) permutations at \(M=7\), and \(504\) of \(5040\) at \(M=8\). The pattern is a small \(o^*_p\) with a large \(o^*_{p+2}\) (\(o^*_4=M\), \(o^*_6=2M-2\)): the order added from \(V_{p+1}\) to \(V_p\) is small, while \(V_{p+2}\) is highly ramified.</p>
+<p>Whether any cluster realizes such a permutation is open. Under (F), the support condition holds exactly when no rate has global minimizers \(p&lt;q\) with \(q-p\ge3\). Under conj:cube-ramification-flow-order, \(o^*_p-(2M-p-1)=j_p-j_{p+1}\), a difference of flow orders of consecutive Hankel determinants. The obstruction is a jump pattern in those flow orders.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>For \(M\ge7\), determine which permutations \(o^*\) clusters realize, and exclude the \(24\) (\(M=7\)) and \(504\) (\(M=8\)) patterns with spread \(3\). One route is to bound the jumps \(j_p-j_{p+1}\) of flow orders. Then the higher \(u\)-coefficients (hypothesis (F)) and conj:cube-ramification-flow-order for \(M\ge5\).</li>
+<li>Moving arcs; \(C\)-block uniqueness; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-family-schubert-reduction (definitions, part 2);</li>
+<li>lem:cube-window-bound-excess (\(A_p,B_p\));</li>
+<li>thm:cube-rotation-cluster-leaders;</li>
+<li>the saved vanishing-order data of cycles bd and be.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One medium-effort reviewer checked parts 1 to 5, the three-step inequalities and the data readings, and found no error in them.</p>
+<p>Its required changes, all made:</p>
+<ul>
+<li>the stronger statement \(O_1=[0,2M-2]\);</li>
+<li>a correct feasibility statement, with its exhaustive search (\(M\le6\) excluded; the \(M=7\) instance), now redone as a committed script;</li>
+<li>the exact equivalence;</li>
+<li>the corollary's hypotheses;</li>
+<li>the derivation of (F) from the conjecture;</li>
+<li>"strictly greater", covering \(E^-&gt;0\);</li>
+<li>the rotation formula derived for all \(M\) from the theorem;</li>
+<li>wording.</li>
+</ul>
+<p>Status: working proof (nesting and cost differences); conditional result (envelope reduction, under hypothesis (F)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 53.35 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 22.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 30.21 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
