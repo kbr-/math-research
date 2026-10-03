@@ -43,6 +43,10 @@ finish-turn.py against HEAD:
 - The user may pick any item out of order (user, 3 October 2026): the developing entry's tag carries
   data-picked="user" and its text a paragraph <strong>Picked.</strong> with the user's words in quotation marks.
   A picked entry satisfies draining and neither counts toward nor ends any spell.
+- The user may also reorder the queue (user, 3 October 2026): an entry tagged data-picked="user", quoting them in its Picked. paragraph,
+  lists under <h4>Queue order</h4> one <ol> of <li data-KIND="ID"></li>, every top-level item it leaves once, in
+  the new order; sub-ideas stay under their parent.  It develops no item and settles no triage batch, and while the
+  queue drains it is an uncounted kind (an audit).  `append` applies the order after the entry's other changes.
 - An item that waits on the user's answer stays queued, marked data-waits: a follow-up list item for it ending
   <strong>Follow-up.</strong> Waiting: <the request> sets the mark, one ending Unblocked: <the answer> removes it.
   The head is the first item not waiting, and its first sub-idea not waiting; draining asks nothing when every
@@ -85,6 +89,7 @@ SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 SUBIDEAS_RE = re.compile(r'<h4>Sub-ideas</h4>\s*<ul>(.*?)</ul>', re.S)
+ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol>(.*?)</ol>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')
 PICKED_RE = re.compile(r'<strong>Picked\.</strong>[^<]*?["\u201c][^"\u201d<]{3,}["\u201d]')
@@ -680,6 +685,39 @@ def listed_closures(tag, text):
     return closed, developed
 
 
+def ordered(tag, text, nodes):
+    """`nodes` (top-level Nodes, as the entry's other changes leave them) in the order the entry's Queue order
+    section gives, or unchanged without one; ValueError for an order the user did not give, or that is not exactly
+    the remaining top-level items, each once and with no outcome."""
+    section = ORDER_RE.search(text)
+    if not section:
+        return nodes
+    if 'data-picked="user"' not in tag:
+        raise ValueError('A Queue order is the user\'s: tag the entry data-picked="user" and quote their words in a '
+                         '<strong>Picked.</strong> paragraph')
+    if developed_by(tag, text) or triaged(tag, text):
+        raise ValueError('An entry with a Queue order develops no item and settles no triage batch: the order '
+                         'moves the head')
+    listed = FOLLOWUP_ITEM.findall(section.group(1))
+    if [i for _, i, item in listed if OUTCOME_RE.search(item)]:
+        raise ValueError('Queue order items carry no outcome: close or develop an item in the follow-up list')
+    order = [(kind, ident) for kind, ident, _ in listed]
+    top = [n.item for n in nodes]
+    if len(set(order)) != len(order):
+        raise ValueError('A Queue order lists each item once')
+    nested = [i for k, i in order if (k, i) not in top and (k, i) in every_item(nodes)]
+    if nested:
+        raise ValueError('A Queue order lists top-level items only; sub-ideas keep their place under their '
+                         'parent: ' + ', '.join(nested))
+    if set(order) != set(top):
+        missing = [i for k, i in top if (k, i) not in order]
+        unknown = [i for k, i in order if (k, i) not in top]
+        raise ValueError('A Queue order lists every remaining top-level item: missing '
+                         + (', '.join(missing) or 'none') + '; not queued ' + (', '.join(unknown) or 'none'))
+    place = {item: n for n, item in enumerate(order)}
+    return sorted(nodes, key=lambda node: place[node.item])
+
+
 def reopened_by(text):
     """Items an entry reopens: follow-up list items whose outcome is Reopened."""
     return [(kind, item_id) for kind, item_id, item in FOLLOWUP_ITEM.findall(text)
@@ -800,7 +838,7 @@ def transition(body, old, tag, text):
     nodes += promoted
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
     apply_marks(nodes, text)
-    return nodes
+    return ordered(tag, text, nodes)
 
 
 def check(head_body, body, path=None, root=None):
@@ -1048,6 +1086,7 @@ def append_new(body):
     before = len(every_item(nodes))
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
     apply_marks(nodes, text)
+    nodes = ordered(tag, text, nodes)
     return rewrite(body, nodes, draining_after(was, nodes)), len(every_item(nodes)) - before
 
 

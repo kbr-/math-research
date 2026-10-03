@@ -544,6 +544,57 @@ class LeadQueueTest(unittest.TestCase):
         bpick = developing(bq[5], 'Closed', quote).replace('data-kind="research"', 'data-kind="research" data-picked="user"')
         lq.check(notebook([big], bq, draining=True), notebook([big, bpick], bq[:5] + bq[6:], draining=True))
 
+    def test_the_user_may_reorder_the_queue(self):
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        quote = '<p><strong>Picked.</strong> The user: \u201cmost promising first\u201d.</p>'
+
+        def order(items, tag='data-kind="audit" data-picked="user"', said=quote, extra=''):
+            return (f'<article id="o" {tag} data-route="step">{said}{extra}<h4>Queue order</h4><ol>'
+                    + ''.join(f'<li data-{k}="{i}"></li>' for k, i in items) + '</ol></article>')
+
+        new = [q[2], q[0], q[1]]
+        head = notebook([rev], q)
+        lq.check(head, notebook([rev, order(new)], new))
+        with self.assertRaises(ValueError):                             # the order must be applied
+            lq.check(head, notebook([rev, order(new)], q))
+        body, added = lq.append_new(notebook([rev, order(new)], q))
+        self.assertEqual((lq.open_items(body) and [n.item for n in lq.parse_tree(body)[1]], added), (new, 0))
+        refused = {
+            'not picked': (order(new, tag='data-kind="audit"'), 'is the user'),
+            'missing': (order(new[:2]), 'every remaining top-level item'),
+            'twice': (order(new + [q[0]]), 'each item once'),
+            'not queued': (order(new + [('lead', 'r9:1')]), 'not queued r9:1'),
+            'outcome': (order(new).replace('<li data-lead="r1:1"></li>', '<li data-lead="r1:1">x <strong>Follow-up.'
+                                          '</strong> Closed: x.</li>'), 'carry no outcome'),
+            'develops': (order(new, tag='data-kind="research" data-picked="user" data-lead="r1:3"',
+                              extra='<p><strong>Follow-up.</strong> Continuing: x.</p>'), 'develops no item'),
+        }
+        for why, (entry, message) in refused.items():
+            with self.subTest(why), self.assertRaisesRegex(ValueError, message):
+                lq.check(head, notebook([rev, entry], new))
+        triage = ('<h4>Queue triage</h4><ul><li data-lead="r1:1">' + 'word ' * lq.TRIAGE_WORDS + ' (<a href="#r1">'
+                  'r1</a>) <strong>Follow-up.</strong> Closed: x.</li></ul>')
+        with self.assertRaises(ValueError):                             # with a triage batch
+            lq.check(head, notebook([rev, order(new[:2], tag='data-kind="research" data-picked="user"',
+                                                extra=triage)], [q[2], q[1]]))
+        child = ('<article id="t" data-kind="task"><p>work</p><h4>Sub-ideas</h4><ul><li data-sub="check" '
+                 'data-parent="lead:r1:1">x</li></ul></article>')
+        nested = [(q[0], [('check', 't:s1')]), q[1], q[2]]
+        with self.assertRaisesRegex(ValueError, 'sub-ideas keep their place'):   # a sub-idea is not top-level
+            lq.check(notebook([rev, child], nested),
+                     notebook([rev, child, order([q[2], q[0], q[1], ('check', 't:s1')])],
+                              [q[2], (q[0], [('check', 't:s1')]), q[1]]))
+        lq.check(notebook([rev, child], nested), notebook([rev, child, order(new)], [q[2], (q[0], [('check', 't:s1')]), q[1]]))
+        big = review('r1', [PASS] * lq.CAP)
+        bq = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+        flipped = bq[::-1]
+        lq.check(notebook([big], bq, draining=True), notebook([big, order(flipped)], flipped, draining=True))
+        with self.assertRaises(ValueError):                             # draining: a counted entry develops
+            lq.check(notebook([big], bq, draining=True),
+                     notebook([big, order(flipped, tag='data-kind="research" data-picked="user"')], flipped,
+                              draining=True))
+
     def test_an_item_waiting_on_the_user_is_passed_over(self):
         rev = review('r1', [PASS, PASS, PASS])
         q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
