@@ -86,6 +86,8 @@ TRIAGE_RE = re.compile(r'<h4>Queue triage</h4>\s*<ul>(.*?)</ul>', re.S)
 CLAIM_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs|local):[A-Za-z0-9.-]+')
 EVIDENCE_RE = re.compile(CLAIM_RE.pattern + r'|href="(?!https?:|mailto:)[^"]+"')
 HREF_RE = re.compile(r'href="([^"]+)"')
+# A file URL of this repository (build_pages.SOURCE_URL), the form notebooks link files in: its repository path.
+REPO_FILE_RE = re.compile(r'https://github\.com/kbr-/math-research/(?:blob|tree)/[^/]+/([^#?]+)')
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
@@ -138,7 +140,10 @@ def references(tag, text, where):
     known = where.anchors()
     own = re.search(r'\bid="([^"]+)"', tag)
     for href in HREF_RE.findall(text):
-        if href.startswith(('http:', 'https:', 'mailto:')):
+        repo_file = REPO_FILE_RE.fullmatch(href.split('#')[0])
+        if repo_file:
+            href = repo_file.group(1)
+        elif href.startswith(('http:', 'https:', 'mailto:')):
             continue
         if href.startswith('#'):
             if href[1:] not in known:

@@ -377,7 +377,10 @@ class LeadQueueTest(unittest.TestCase):
                                  .replace('id="d"', 'id="e"')], [])
             lq.check(build_head, built('<a href="tasks/arm-check/">task</a>'), nb, root)
             lq.check(build_head, built('<a href="research/results/out.txt">built</a>'), nb, root)
-            for body in ('<a href="#t1">an anchor is no build</a>', 'lem:known', '<a href="tasks/none/">x</a>'):
+            github = 'https://github.com/kbr-/math-research/blob/main/'     # the notebooks' file links
+            lq.check(build_head, built(f'<a href="{github}research/results/out.txt">built</a>'), nb, root)
+            for body in ('<a href="#t1">an anchor is no build</a>', 'lem:known', '<a href="tasks/none/">x</a>',
+                         f'<a href="{github}research/results/none.txt">x</a>', '<a href="https://example.org/a">x</a>'):
                 with self.subTest(build_refused=body), self.assertRaises(ValueError):
                     lq.check(build_head, built(body), nb, root)
 
