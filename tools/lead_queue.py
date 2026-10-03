@@ -15,7 +15,8 @@ finish-turn.py against HEAD:
   the head until the queue is down to FLOOR items, when the flag is removed.
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
-       lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)"""
+       lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
+       lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)"""
 import html
 import re
 import sys
@@ -180,7 +181,34 @@ def head_lines(body, count=HEAD_READ):
     return out
 
 
+def done(body, outcome):
+    """The notebook with the head item removed (Closed, Developed) or moved to the tail (Continuing), and the
+    draining flag recomputed from the previous state."""
+    found = SECTION_RE.search(body)
+    if found is None:
+        raise ValueError('No lead and bridge queue')
+    draining, queue = parse(body)
+    if not queue:
+        raise ValueError('The queue is empty')
+    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
+    head = lines.pop(0)
+    if outcome == 'Continuing':
+        lines.append(head)
+    elif outcome not in ('Closed', 'Developed'):
+        raise ValueError('Outcome is Closed, Developed or Continuing')
+    was = draining or len(queue) >= CAP
+    flag = (len(lines) > FLOOR) if was else (len(lines) >= CAP)
+    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
+    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
+    return body[:found.start()] + section + body[found.end():]
+
+
 def main(argv):
+    if len(argv) == 4 and argv[1] == 'done':
+        path = Path(argv[2])
+        path.write_text(done(path.read_text(), argv[3]))
+        print('\n'.join(head_lines(path.read_text(), 1)))
+        return 0
     if len(argv) != 3 or argv[1] not in ('init', 'head'):
         print(__doc__, file=sys.stderr)
         return 2

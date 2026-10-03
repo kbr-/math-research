@@ -99,6 +99,19 @@ class LeadQueueTest(unittest.TestCase):
         text = lq.item_text(notebook([long]), 'lead', 'r1:1')
         self.assertEqual(text.count('\\('), text.count('\\)'))
 
+    def test_done_updates_queue_the_way_check_expects(self):
+        head = notebook([self.rev], self.q)
+        closed = lq.done(head, 'Closed')
+        self.assertEqual(lq.parse(closed)[1], self.q[1:])
+        moved = lq.done(head, 'Continuing')
+        self.assertEqual(lq.parse(moved)[1], self.q[::-1])
+        big = review('r1', [PASS] * (lq.FLOOR + 1))
+        queue = [('lead', f'r1:{n}') for n in range(1, lq.FLOOR + 2)]
+        draining = notebook([big], queue, draining=True)
+        self.assertFalse(lq.parse(lq.done(draining, 'Closed'))[0])     # at the floor the flag goes
+        with self.assertRaises(ValueError):
+            lq.done(head, 'Maybe')
+
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
         self.assertIn('2 items', lines[0])
