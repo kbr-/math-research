@@ -469,9 +469,42 @@ def validate_append_only(root):
         raise ValueError(result.stdout.strip())
 
 
+SCRATCH_CAP = 500 * 10**6   # bytes a session may keep in its scratchpad at a checkpoint
+
+
+def scratchpad(env=os.environ, home=Path.home(), uid=None):
+    """The Claude Code session's scratchpad, or None: ~/.claude/jobs/<id[:8]>/tmp for background sessions,
+    /tmp/claude-<uid>/<project>/<id>/scratchpad for interactive ones."""
+    ident = env.get('CLAUDE_CODE_SESSION_ID')
+    if not ident:
+        return None
+    job = home / '.claude/jobs' / ident[:8] / 'tmp'
+    if job.is_dir():
+        return job
+    base = Path(f'/tmp/claude-{os.getuid() if uid is None else uid}')
+    found = sorted(base.glob(f'*/{ident}/scratchpad')) if base.is_dir() else []
+    return found[0] if found else None
+
+
+def check_scratch(env=os.environ, home=Path.home(), cap=SCRATCH_CAP):
+    """A session's scratch files are its own to delete (user, 3 October 2026, with the disk near its floor).
+    Fail while the scratchpad exceeds the cap; never delete, since promotion comes first."""
+    pad = scratchpad(env, home)
+    if pad is None:
+        return
+    files = [(p.stat().st_size, p) for p in pad.rglob('*') if p.is_file() and not p.is_symlink()]
+    total = sum(size for size, _ in files)
+    if total > cap:
+        largest = ', '.join(f'{p.relative_to(pad)} ({size // 10**6} MB)' for size, p in sorted(files)[-5:][::-1])
+        raise ValueError(f'The session scratchpad {pad} holds {total // 10**6} MB, over the {cap // 10**6} MB cap '
+                         f'(AGENTS.md). Largest: {largest}. Promote what is still needed to research/results or '
+                         'research/provenance, delete the rest, and rerun')
+
+
 def finish(root, turn, next_turn=None, notebook_name=None):
     from notebooks import selected, paths
     started = time.monotonic()
+    check_scratch()
     item = selected(notebook_name, root)
     notebook = root / item["source"]
     first = json.loads((root/'research/logs'/f'{turn}.jsonl').read_text().splitlines()[0])

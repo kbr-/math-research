@@ -368,6 +368,10 @@ rules to growing checklists or one-off setup narratives.
   credentials, session IDs, binaries, environments and scratch renders stay untracked.
   Every commit-message line must be at most 100 characters; wrap prose and separate
   paragraphs with blank lines.
+- A session's scratch files are its own to delete by the end of the cycle that made them;
+  promote anything worth keeping to `research/results/` or `research/provenance/` first
+  (user, 3 October 2026, with the disk near its 10 GB floor). The finisher fails while the
+  session's scratchpad holds more than 500 MB; it never deletes for you.
 - Publish only under explicit user authorization, including a still-active scoped/
   time-limited grant. Research/edit/commit requests alone do not authorize it.
   Restore the actual grant after compaction, honor expiry/later overrides and do

@@ -313,6 +313,23 @@ sys.exit(compute.main())
                 notebook.write_text(content)
                 self.command('check.py', marker)
 
+    def test_scratchpad_cap(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('ft', Path(__file__).resolve().parents[1] / 'finish-turn.py')
+        ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)
+        home = self.root / 'home'
+        pad = home / '.claude/jobs/abcdef12/tmp'
+        pad.mkdir(parents=True)
+        (pad / 'big.json').write_bytes(b'x' * 3000)
+        env = {'CLAUDE_CODE_SESSION_ID': 'abcdef12-3456'}
+        self.assertEqual(ft.scratchpad(env, home), pad)
+        with self.assertRaises(ValueError) as caught:
+            ft.check_scratch(env, home, cap=2000)
+        self.assertIn('big.json', str(caught.exception))
+        ft.check_scratch(env, home, cap=5000)
+        ft.check_scratch({}, home, cap=1)   # no session id: nothing to check
+        self.assertTrue((pad / 'big.json').exists())   # never deletes
+
     def test_review_cadence_and_goal_level_scope(self):
         # In process: one route review in seven entries, and goal-level reviews only when the line stalled.
         import importlib.util
