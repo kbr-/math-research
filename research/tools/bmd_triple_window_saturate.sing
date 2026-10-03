@@ -1,0 +1,22 @@
+// Exact elimination for the reduced triple window (cycle bmd-20261009-cb, 9 October 2026).
+// Statement (conj:cube-triple-window-full-rank at fixed m): the ten maximal minors of U_3(x, y, 1) have no common zero
+// with x y (x-1) (y-1) (x-y) != 0, i.e. the saturation I : Bad^oo is the unit ideal. For m = 2, 3, 4 reads the minors
+// exported by bmd_triple_window_export.gp and prints whether 1 lies in the saturation; if not, its dimension, degree
+// and a primary decomposition of the radical (the rank-drop points).
+LIB "elim.lib"; LIB "primdec.lib";
+int m;
+for (m = 2; m <= 4; m++)
+{
+  execute(read("research/results/bmd-20261009-cb/triple-minors-m" + string(m) + ".sing"));
+  ideal S = std(sat(I, Bad)[1]);
+  if (reduce(1, S) == 0) { print("m = " + string(m) + ": saturation is the unit ideal; U_3 has rank 3 at every admissible (c1, c2)"); }
+  else
+  {
+    print("m = " + string(m) + ": saturation NOT the unit ideal: dim " + string(dim(S)) + ", vdim " + string(vdim(S)));
+    list L = minAssGTZ(S); int t;
+    for (t = 1; t <= size(L); t++) { print("   component " + string(t) + ": " + string(L[t])); }
+    kill L; kill t;
+  }
+  kill r;
+}
+quit;
