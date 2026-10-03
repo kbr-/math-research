@@ -69,6 +69,10 @@
           {
             "type": "command",
             "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/monitor-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" post; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
+          },
+          {
+            "type": "command",
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/base_behind.py; if [ -f \"$f\" ]; then python3 \"$f\"; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
           }
         ]
       }
