@@ -36,17 +36,34 @@ finish-turn.py against HEAD:
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
   the head until the queue is down to FLOOR items, when the flag is removed.
+- Per notebook, the section's attributes say which entry kinds count (data-counted, default research: they
+  develop items, count toward spells and are held to the head while draining), whether backpressure applies
+  (data-backpressure="off" turns it off) and which modules beside this file add kinds (data-kind-modules, each
+  with a kinds(lead_queue) function).  A notebook without route items is checked once it has a queue section.
+- The user may pick any item out of order (user, 3 October 2026): the developing entry's tag carries
+  data-picked="user" and its text a paragraph <strong>Picked.</strong> with the user's words in quotation marks.
+  A picked entry satisfies draining and neither counts toward nor ends any spell.
+- An item that waits on the user's answer stays queued, marked data-waits: a follow-up list item for it ending
+  <strong>Follow-up.</strong> Waiting: <the request> sets the mark, one ending Unblocked: <the answer> removes it.
+  The head is the first item not waiting, and its first sub-idea not waiting; draining asks nothing when every
+  item waits.
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
-       lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)
+       lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
+                                            item, and before append)
        lead_queue.py triage NOTEBOOK.html  (after appending an entry with a Queue triage batch)
-       lead_queue.py append NOTEBOOK.html  (after the last entry: its newly passed review items and the items
-                                            it marks Reopened go to the tail)"""
+       lead_queue.py append NOTEBOOK.html  (after the last entry, and done: its newly listed items join the queue, the
+                                            items it reopens go to the tail, its Waiting and Unblocked marks apply)
+       lead_queue.py init NOTEBOOK.html [--counted KINDS] [--backpressure off] [--kind-modules MODULES]
+       lead_queue.py check NOTEBOOK.html [--base REV]  (the staged notebook against REV's, default HEAD;
+                                            exit 0 when it passes, 1 when refused, 3 when it cannot run)"""
 import functools
 import html
+import importlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -67,17 +84,21 @@ LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 SUBIDEAS_RE = re.compile(r'<h4>Sub-ideas</h4>\s*<ul>(.*?)</ul>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
-OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened)\b')
+OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')
+PICKED_RE = re.compile(r'<strong>Picked\.</strong>[^<]*?["\u201c][^"\u201d<]{3,}["\u201d]')
 
 
 class Kind:
     """A kind of queue item: its name, as in data-NAME="ID" on the queue's items, developing entries and
     follow-up lists; the entry heading that lists its items (`listed`, a pattern whose group 1 is the list);
     whether that list is the shared Sub-ideas list (`sub`: items <li data-sub="NAME">, IDs ANCHOR:sN, no test);
-    and `developed(tag, text, where)`, the problems with an entry calling an item Developed (None: no rule)."""
+    `rules`, per outcome (Developed, Closed, Continuing), rule(tag, text, where) giving the problems with an entry
+    stating that outcome; `admit(body, head_body, item)`, for a kind whose items its own tool adds (listed=None),
+    the problems with a new item; and `reopen`, whether a Reopened follow-up may reopen one."""
 
-    def __init__(self, name, listed, sub=False, developed=None):
-        self.name, self.listed, self.sub, self.developed = name, listed, sub, developed
+    def __init__(self, name, listed=None, sub=False, rules=None, admit=None, reopen=True):
+        self.name, self.listed, self.sub = name, listed, sub
+        self.rules, self.admit, self.reopen = rules or {}, admit, reopen
 
 
 class Where:
@@ -149,10 +170,64 @@ def build_developed(tag, text, where):
 
 
 KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
-         'check': Kind('check', SUBIDEAS_RE, sub=True, developed=check_developed),
-         'build': Kind('build', SUBIDEAS_RE, sub=True, developed=build_developed)}
+         'check': Kind('check', SUBIDEAS_RE, sub=True, rules={'Developed': check_developed}),
+         'build': Kind('build', SUBIDEAS_RE, sub=True, rules={'Developed': build_developed})}
+BUILTIN = dict(KINDS)
+SETTINGS = {'counted': {'research'}, 'backpressure': True}
 NAMES = '|'.join(KINDS)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
+
+
+
+class Live:
+    """This module as kind modules see it: its names as they are when read, however it was loaded (tests load
+    it by path, under no sys.modules entry), so a kind's rules see NAMES with the kinds the section added."""
+
+    def __getattr__(self, name):
+        try:
+            return globals()[name]
+        except KeyError:
+            raise AttributeError(name) from None
+
+
+LIVE = Live()
+
+
+def configure(attrs):
+    """Apply a queue section's attributes (a notebook without a section gets the defaults): the entry kinds
+    that count, whether backpressure applies, and the kinds of the modules it names, loaded from beside this file."""
+    global NAMES, FOLLOWUP_ITEM
+    counted = re.search(r'\bdata-counted="([^"]*)"', attrs)
+    SETTINGS['counted'] = set(counted.group(1).split()) if counted else {'research'}
+    SETTINGS['backpressure'] = 'data-backpressure="off"' not in attrs
+    KINDS.clear()
+    KINDS.update(BUILTIN)
+    modules = re.search(r'\bdata-kind-modules="([^"]*)"', attrs)
+    if modules and modules.group(1).split():
+        here = str(Path(__file__).resolve().parent)
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        for name in modules.group(1).split():
+            for kind in importlib.import_module(name).kinds(LIVE):
+                KINDS[kind.name] = kind
+    NAMES = '|'.join(KINDS)
+    FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
+
+
+def counted(tag):
+    """Whether an entry's kind counts: it may develop items, its entries make spells, draining binds it."""
+    kind = re.search(r'\bdata-kind="([^"]+)"', tag)
+    return bool(kind) and kind.group(1) in SETTINGS['counted']
+
+
+def picked(tag, text):
+    """Whether the entry develops an item the user picked; ValueError if the tag says so without the quote."""
+    if 'data-picked="user"' not in tag:
+        return False
+    if not PICKED_RE.search(text):
+        raise ValueError('An entry tagged data-picked="user" quotes the user\'s words in a <strong>Picked.</strong> '
+                         'paragraph')
+    return True
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
 
@@ -171,7 +246,7 @@ def record_articles(body):
 def developed_by(tag, text):
     """((kind, id), outcome) for a research entry developing a queue item, or None.  The outcome is the entry's
     own: the last Follow-up outside listed items, so a quoted earlier Follow-up does not count."""
-    if 'data-kind="research"' not in tag:
+    if not counted(tag):
         return None
     found = re.findall(r'\bdata-(' + NAMES + r')="([^"]+)"', tag)
     if not found:
@@ -193,6 +268,10 @@ class Node:
     @property
     def item(self):
         return self.kind, self.ident
+
+    @property
+    def waits(self):
+        return 'data-waits="' in self.attrs
 
     def copy(self):
         return Node(self.kind, self.ident, self.attrs, self.text, [c.copy() for c in self.children])
@@ -236,8 +315,9 @@ def parse_nodes(content):
 
 
 def parse_tree(body):
-    """(draining, [Node]) of the queue section, or None if the notebook has none."""
+    """(draining, [Node]) of the queue section, or None if the notebook has none; applies the section's settings."""
     found = SECTION_RE.search(body)
+    configure(found.group(1) if found else '')
     if found is None:
         return None
     ol = re.search(r'<ol>(.*)</ol>', found.group(2), re.S)
@@ -252,6 +332,16 @@ def parse(body):
 
 def shape(nodes):
     return [(n.item, [c.item for c in n.children]) for n in nodes]
+
+
+def marks(nodes):
+    """The queued items marked as waiting on the user."""
+    return {n.item for n in nodes if n.waits} | {c.item for n in nodes for c in n.children if c.waits}
+
+
+def head_of(nodes):
+    """The head: the first top-level item not waiting on the user, or None."""
+    return next((n for n in nodes if not n.waits), None)
 
 
 def every_item(nodes):
@@ -294,8 +384,61 @@ def rewrite(body, nodes, draining):
 
 
 def draining_after(was, nodes):
-    """Backpressure counts top-level items: on at CAP, off once down to FLOOR."""
+    """Backpressure counts top-level items: on at CAP, off once down to FLOOR; never where the section turns it
+    off."""
+    if not SETTINGS['backpressure']:
+        return False
     return len(nodes) > FLOOR if was else len(nodes) >= CAP
+
+
+def wait_changes(text):
+    """{item: reference or None} of an entry's Waiting (set the mark) and Unblocked (remove it) follow-ups."""
+    out = {}
+    for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
+        outcome = OUTCOME_RE.search(item)
+        if outcome and outcome.group(1) == 'Waiting':
+            rest = item[outcome.end():]
+            link = re.search(r'href="([^"]*USER_REQUESTS\.md)"', rest)
+            number = re.search(r'\bitem (\d+)', re.sub(r'<[^>]+>', ' ', rest))
+            plain = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', rest)).strip(' :.')
+            out[(kind, item_id)] = (link.group(1) + (f' item {number.group(1)}' if number else '') if link
+                                    else plain[:80])
+        elif outcome and outcome.group(1) == 'Unblocked':
+            out[(kind, item_id)] = None
+    return out
+
+
+def apply_marks(nodes, text):
+    """Set or remove data-waits on queued items as the entry's Waiting and Unblocked follow-ups say."""
+    for item, ref in wait_changes(text).items():
+        node = locate(nodes, item)[1]
+        if node is None:
+            continue
+        node.attrs = re.sub(r'\s*data-waits="[^"]*"', '', node.attrs)
+        if ref is not None:
+            node.attrs += f' data-waits="{html.escape(ref or "the user", quote=True)}"'
+
+
+def check_waits(text, where):
+    """Problems with an entry's Waiting follow-ups: each names its request; a task's request must exist."""
+    problems = []
+    for item, ref in wait_changes(text).items():
+        if ref is None:
+            continue
+        if not ref:
+            problems.append(f'{item[1]}: a Waiting follow-up names the request it waits on')
+            continue
+        task = re.match(r'(\S*USER_REQUESTS\.md)(?: item (\d+))?$', ref)
+        if task:
+            listing = (where.base or where.root) / task.group(1)
+            record = listing.parent / 'task.json'
+            if not listing.exists() or not record.exists():
+                problems.append(f'{item[1]}: {task.group(1)} does not resolve to a task\'s requests')
+            elif not task.group(2):
+                problems.append(f'{item[1]}: name the request as "item N" after the link to {task.group(1)}')
+            elif int(task.group(2)) not in {r['number'] for r in json.loads(record.read_text())['requests']}:
+                problems.append(f'{item[1]}: {task.group(1)} has no open request {task.group(2)}')
+    return problems
 
 
 @functools.lru_cache(maxsize=4)
@@ -350,29 +493,24 @@ def group_of(body, nodes, item, position=None):
     return record_parent(body, item, position) or item
 
 
-def spell(body, item, pending=False):
+def spell(body, item):
     """Research entries, from the record's end, that developed `item` or one of its children since it became
     the head: entries that develop no queue item (reviews, other research) neither count nor break the run, which
-    ends at an entry developing another item or settling a triage batch.  With pending=True the entry about to be
-    appended counts too, unless it is already the last article (its <!-- TIMING TURN --> marker is still
-    unfilled)."""
+    ends at an entry developing another item or settling a triage batch."""
     found = parse_tree(body)
     nodes = found[1] if found else []
-    count, last = 0, True
+    count = 0
     articles = record_articles(body)
     for position in range(len(articles) - 1, -1, -1):
         tag, text = articles[position]
-        if 'data-kind="research"' not in tag:
+        if not counted(tag) or 'data-picked="user"' in tag:
             continue
-        if pending and last and '<!-- TIMING ' in text:
-            pending = False
-        last = False
         work = developed_by(tag, text)
         if triaged(tag, text) or (work and group_of(body, nodes, work[0], position) != item):
             break
         if work:
             count += 1
-    return count + (1 if pending else 0)
+    return count
 
 
 def kept_children(text):
@@ -441,7 +579,7 @@ def arrivals_of(tag, text):
     tested = re.search(r'data-kind="(?:review|research|audit)"', tag)
     out = []
     for kind in KINDS.values():
-        section = kind.listed.search(text)
+        section = kind.listed.search(text) if kind.listed else None
         if not section or (not kind.sub and not tested):
             continue
         for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
@@ -455,6 +593,8 @@ def arrivals_of(tag, text):
 
 def listed_item(kind, text, ident):
     """The <li> attributes and content of a listed item ANCHOR:N or ANCHOR:sN in an article's text, or None."""
+    if KINDS[kind].listed is None or ':' not in ident:
+        return None
     n = ident.rsplit(':', 1)[1].lstrip('s')
     section = KINDS[kind].listed.search(text)
     items = re.findall(r'<li\b([^>]*)>(.*?)</li>', section.group(1), re.S) if section else []
@@ -462,8 +602,8 @@ def listed_item(kind, text, ident):
 
 
 def triaged(tag, text):
-    """[((kind, id), outcome, words, has_evidence)] of a research entry's Queue triage list, in order."""
-    if 'data-kind="research"' not in tag:
+    """[((kind, id), outcome, words, has_evidence, text)] of a counted entry's Queue triage list, in order."""
+    if not counted(tag):
         return []
     section = TRIAGE_RE.search(text)
     if not section:
@@ -472,8 +612,26 @@ def triaged(tag, text):
     for kind, item_id, item in FOLLOWUP_ITEM.findall(section.group(1)):
         outcome = OUTCOME_RE.search(item)
         words = len(re.sub(r'<[^>]+>', ' ', item).split())
-        out.append(((kind, item_id), outcome.group(1) if outcome else None, words, bool(EVIDENCE_RE.search(item))))
+        out.append(((kind, item_id), outcome.group(1) if outcome else None, words, bool(EVIDENCE_RE.search(item)),
+                    item))
     return out
+
+
+def listed_outcomes(text):
+    """[((kind, id), outcome, text)] of a follow-up list's items outside a Queue triage batch."""
+    section = TRIAGE_RE.search(text)
+    rest = text.replace(section.group(0), '') if section else text
+    return [((kind, item_id), (OUTCOME_RE.search(item) or [None, None])[1], item)
+            for kind, item_id, item in FOLLOWUP_ITEM.findall(rest)]
+
+
+def kind_rule_problems(tag, blocks, where):
+    """Problems the item kinds' rules find with the outcomes stated in `blocks`, [((kind, id), outcome, text)]."""
+    problems = []
+    for (kind, ident), outcome, text in blocks:
+        rule = KINDS[kind].rules.get(outcome) if kind in KINDS else None
+        problems += [f'{ident} ({kind}), {outcome}: {p}' for p in (rule(tag, text, where) if rule else [])]
+    return problems
 
 
 def subidea_problems(text):
@@ -538,10 +696,11 @@ def check_triage(batch, old):
     if len(batch) > TRIAGE_MAX:
         raise ValueError(f'A Queue triage batch settles at most {TRIAGE_MAX} items, each with full care')
     items = [b[0] for b in batch]
-    if items != [n.item for n in old[:len(items)]]:
-        raise ValueError('A Queue triage batch takes the first items of the queue, in order: expected '
-                         + ', '.join(n.ident for n in old[:len(items)]))
-    for ((kind, ident), outcome, words, evidence), node in zip(batch, old):
+    active = [n for n in old if not n.waits]
+    if items != [n.item for n in active[:len(items)]]:
+        raise ValueError('A Queue triage batch takes the first items of the queue not waiting on the user, in '
+                         'order: expected ' + ', '.join(n.ident for n in active[:len(items)]))
+    for ((kind, ident), outcome, words, evidence, _), node in zip(batch, active):
         if outcome not in ('Closed', 'Developed'):
             raise ValueError(f'Triage item {ident}: a batch only closes or develops ("<strong>Follow-up.</strong> '
                              'Closed: ..." or "Developed ..."); an item still bearing on an open statement gets its '
@@ -596,8 +755,8 @@ def open_items(body):
     return [n.item for n in open_tree(body)]
 
 
-def render(body, nodes, draining):
-    flag = ' data-draining="true"' if draining else ''
+def render(body, nodes, draining, attrs=''):
+    flag = attrs + (' data-draining="true"' if draining else '')
     return (f'<section id="lead-queue"{flag}>\n<h2>Lead and bridge queue</h2>\n<p>Passed Outside leads and Absurd '
             'bridges and listed sub-ideas awaiting development, oldest first (FIFO), each sub-idea under the item '
             'it belongs to; rules in <code>tools/lead_queue.py</code>.</p>\n<ol>\n'
@@ -608,6 +767,7 @@ def transition(body, old, tag, text):
     """The queue `old` (top-level Nodes before the entry) as the entry (tag, text) leaves it."""
     nodes = [n.copy() for n in old]
     work, batch = developed_by(tag, text), triaged(tag, text)
+    chosen = 'data-picked="user"' in tag
     closed, _ = listed_closures(tag, text)
     kept, promoted = kept_children(text), []
     for item in closed + [b[0] for b in batch]:
@@ -617,10 +777,12 @@ def transition(body, old, tag, text):
     elif work and work[1] == 'Continuing':
         parent, node = locate(nodes, work[0])
         top = parent if parent is not None else node
-        if top is not None and nodes and top is nodes[0] and spell(body, top.item) >= SPELL:
-            nodes.append(nodes.pop(0))       # the head keeps its place for up to SPELL entries, then the tail
+        if top is not None and not chosen and top is head_of(nodes) and spell(body, top.item) >= SPELL:
+            nodes.remove(top)                # the head keeps its place for up to SPELL entries, then the tail
+            nodes.append(top)
     nodes += promoted
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
+    apply_marks(nodes, text)
     return nodes
 
 
@@ -628,9 +790,12 @@ def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
     directory its relative links resolve, and `root` the repository (default: this one)."""
-    if not re.search(r'data-route-item="', body):
-        return
+    before = parse_tree(head_body) if head_body else None     # parsed first: the notebook's own settings win
     now = parse_tree(body)
+    if before is not None and now is None:
+        raise ValueError('The lead and bridge queue section is gone: a notebook keeps its queue once it has one')
+    if not re.search(r'data-route-item="', body) and now is None:
+        return
     if now is None:
         raise ValueError('The notebook needs its lead and bridge queue: run python3 tools/lead_queue.py init '
                          'NOTEBOOK.html, review the section, and commit it with this entry (AGENTS.md)')
@@ -639,45 +804,63 @@ def check(head_body, body, path=None, root=None):
     if len(set(items)) != len(items):
         raise ValueError('The lead and bridge queue lists an item twice')
     articles = record_articles(body)
-    tag, text = articles[-1] if articles else ('', '')
+    fresh = head_body is None or len(articles) > len(record_articles(head_body))
+    tag, text = articles[-1] if articles and fresh else ('', '')     # only a new entry's work is checked
+    where = Where(body, path, root)
     work = developed_by(tag, text)
     batch = triaged(tag, text)
+    chosen = picked(tag, text)
     if work and batch:
         raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
                          'batch, not both')
     if work and work[1] not in ('Closed', 'Developed', 'Continuing'):
         raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
                          '"Developed ..." or "Continuing ..."')
-    rule = KINDS[work[0][0]].developed if work and work[1] == 'Developed' else None
-    problems = rule(tag, text, Where(body, path, root)) if rule else []
+    rule = KINDS[work[0][0]].rules.get(work[1]) if work else None
+    problems = rule(tag, text, where) if rule else []
     if problems:
-        raise ValueError(f'{work[0][1]} ({work[0][0]}) is not Developed yet: ' + '; '.join(problems))
+        raise ValueError(f'{work[0][1]} ({work[0][0]}), {work[1]}: ' + '; '.join(problems))
+    problems = check_waits(text, where)
+    if problems:
+        raise ValueError('Waiting follow-ups: ' + '; '.join(problems))
     problems = subidea_problems(text)
     if problems:
         raise ValueError('; '.join(problems))
-    before = parse_tree(head_body) if head_body else None
+    problems = kind_rule_problems(tag, [(b[0], b[1], b[4]) for b in batch] + listed_outcomes(text), where)
+    if problems:
+        raise ValueError('; '.join(problems))
     if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
                          'against the commit before it')
+    if not fresh and before is not None:
+        if shape(nodes) != shape(before[1]) or marks(nodes) != marks(before[1]) or draining != before[0]:
+            raise ValueError('A commit that adds no Research-record entry leaves the queue as it was')
+        return
     if before is None:
         if work or batch:
             raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
                              'commit the section, then develop its head')
         wanted = open_tree(body)
-        if shape(nodes) != shape(wanted):
+        if shape(nodes) != shape(wanted) or marks(nodes):
             have, want = set(items), set(every_item(wanted))
             raise ValueError('A new queue holds exactly the listed items not closed, sub-ideas under their parents: '
                              'missing ' + (', '.join(i for _, i in want - have) or 'none') + '; not open '
                              + (', '.join(i for _, i in have - want) or 'none') + '; otherwise the placement differs '
                              '(lead_queue.py init writes it)')
-        if len(nodes) >= CAP and not draining:
-            raise ValueError(f'The queue has {len(nodes)} items, at least {CAP}: mark the section '
-                             'data-draining="true"')
+        if draining != draining_after(False, nodes):
+            raise ValueError(f'The queue has {len(nodes)} top-level items: data-draining="true" must be '
+                             + ('set' if not draining else 'absent') + f' (on at {CAP} items unless backpressure is '
+                             'off)')
         return
     every = {item for t, x in articles for item in arrivals_of(t, x)}
-    unknown = [i for k, i in reopened_by(text) if (k, i) not in every]
+    reopened = reopened_by(text)
+    unknown = [i for k, i in reopened if (k, i) not in every and KINDS[k].admit is None]
     if unknown:
         raise ValueError('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(unknown))
+    barred = [i for k, i in reopened if not KINDS[k].reopen]
+    if barred:
+        raise ValueError('These items are not reopened by a follow-up; their kind has its own way back: '
+                         + ', '.join(barred))
     was_draining, old = before
     if batch:
         check_triage(batch, old)
@@ -686,21 +869,32 @@ def check(head_body, body, path=None, root=None):
     if listed_developed:
         raise ValueError('A follow-up list may mark a queued item Closed (it leaves the queue), Continuing or '
                          'Reopened; Developed is said by a research entry developing it: ' + ', '.join(listed_developed))
-    head = old[0] if old else None
+    head = head_of(old)
+    first = next((c for c in head.children if not c.waits), None) if head else None
     if work:
-        allowed = [head.item] + [head.children[0].item] if head and head.children else [head.item] if head else []
-        if work[0] not in allowed:
+        located = locate(old, work[0])[1]
+        if located is None:
+            raise ValueError(f'{work[0][1]} is not queued')
+        if not chosen and work[0] not in [n.item for n in (head, first) if n is not None]:
             raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the '
-                             f'head is {head.ident if head else "empty"}' + (f' and its first sub-idea '
-                             f'{head.children[0].ident}' if head and head.children else ''))
-        if work[1] == 'Developed' and locate(old, work[0])[1].children:
+                             f'head is {head.ident if head else "none (every item waits)"}' + (f' and its first '
+                             f'sub-idea {first.ident}' if first else '') + '; the user may pick another (data-picked)')
+        if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
-    draining_before = was_draining or len(old) >= CAP
-    if draining_before and 'data-kind="research"' in tag and not work and not batch:
+    draining_before = SETTINGS['backpressure'] and (was_draining or len(old) >= CAP)
+    if draining_before and counted(tag) and not work and not batch and head is not None:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
-                         f'research entry must develop the head, {head.ident}, tagged data-{head.kind}="{head.ident}", '
+                         f'entry must develop the head, {head.ident}, tagged data-{head.kind}="{head.ident}", '
                          'or its first sub-idea')
     expected = transition(body, old, tag, text)
+    known = set(every_item(old)) | set(every_item(expected))
+    for node in nodes:
+        if node.item in known or KINDS[node.kind].admit is None:
+            continue
+        problems = KINDS[node.kind].admit(body, head_body, node.item)
+        if problems:
+            raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
+        expected.append(node.copy())
     if shape(nodes) != shape(expected):
         raise ValueError('Queue update: keep the earlier items in order; remove a Closed or Developed item (a closed '
                          'parent\'s sub-ideas close with it unless a follow-up keeps one Continuing, which goes to the '
@@ -709,10 +903,16 @@ def check(head_body, body, path=None, root=None):
                          'under their parent) and the items it reopens. Expected: '
                          + '; '.join(f'{i[1]}' + (' [' + ', '.join(c[1] for c in cs) + ']' if cs else '')
                                      for i, cs in shape(expected)))
+    if marks(nodes) != marks(expected):
+        raise ValueError('Waiting marks: data-waits is set by a Waiting follow-up and removed by an Unblocked one, '
+                         'and changes no other way (lead_queue.py append applies them). Expected waiting: '
+                         + (', '.join(i for _, i in marks(expected)) or 'none'))
     should_drain = draining_after(draining_before, nodes)
     if draining != should_drain:
         raise ValueError(f'The queue has {len(nodes)} top-level items: data-draining="true" must be '
-                         + ('set' if should_drain else 'removed') + f' (on at {CAP} items, off at {FLOOR})')
+                         + ('set' if should_drain else 'removed') + (f' (on at {CAP} items, off at {FLOOR})'
+                                                                      if SETTINGS['backpressure'] else
+                                                                      ' (backpressure is off here)'))
 
 
 def head_lines(body, count=HEAD_READ):
@@ -730,11 +930,10 @@ def head_lines(body, count=HEAD_READ):
 
 
 def done(body, outcome):
-    """The notebook with the item the last entry develops (else the head) removed (Closed, Developed; a parent's
-    sub-ideas close with it unless the entry keeps one Continuing, which goes to the tail), or kept (Continuing:
-    a head keeps its place before its SPELLth consecutive entry, then moves with its sub-ideas to the tail), and the
-    draining flag recomputed from the previous state.  Run it before or after appending the developing entry;
-    spell() tells which.  Kept sub-ideas need the entry appended first."""
+    """The notebook with the item the last entry develops removed (Closed, Developed; a parent's sub-ideas close
+    with it unless the entry keeps one Continuing, which goes to the tail), or kept (Continuing: a head keeps its
+    place before its SPELLth consecutive entry, then moves with its sub-ideas to the tail), and the draining flag
+    recomputed from the previous state.  Run it after appending the developing entry and before `append`."""
     found = parse_tree(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
@@ -747,12 +946,19 @@ def done(body, outcome):
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
     work = developed_by(tag, text)
-    item = work[0] if work and locate(nodes, work[0])[1] is not None else nodes[0].item
+    if not work:
+        raise ValueError('Append the entry developing the item first: done acts on the last entry\'s item')
+    if work[1] != outcome:
+        raise ValueError(f'The last entry states {work[1]} for {work[0][1]}, not {outcome}')
+    if locate(nodes, work[0])[1] is None:
+        raise ValueError(f'{work[0][1]} is not queued (has done already run?)')
+    item = work[0]
     if outcome == 'Continuing':
         parent, node = locate(nodes, item)
         top = parent if parent is not None else node
-        if top is nodes[0] and spell(body, top.item, pending=True) >= SPELL:
-            nodes.append(nodes.pop(0))
+        if top is head_of(nodes) and 'data-picked="user"' not in tag and spell(body, top.item) >= SPELL:
+            nodes.remove(top)
+            nodes.append(top)
     else:
         promoted = []
         close(nodes, item, kept_children(text) if work else set(), promoted)
@@ -798,10 +1004,42 @@ def append_new(body):
         raise ValueError('; '.join(problems))
     before = len(every_item(nodes))
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
-    return rewrite(body, nodes, draining or len(nodes) >= CAP), len(every_item(nodes)) - before
+    apply_marks(nodes, text)
+    return (rewrite(body, nodes, SETTINGS['backpressure'] and (draining or len(nodes) >= CAP)),
+            len(every_item(nodes)) - before)
+
+
+def staged_check(notebook, base='HEAD'):
+    """Check the staged copy of `notebook` against its copy at `base`: (exit status, message): 0 when it passes,
+    1 when the queue breaks a rule, 3 when the check cannot run (no repository, nothing staged, no such base);
+    2 stays the usage error's, which a caller reads as a tool without this command."""
+    path = Path(notebook).resolve()
+    top = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=path.parent, capture_output=True, text=True)
+    if top.returncode != 0:
+        return 3, f'{notebook} is not in a git repository'
+    root = Path(top.stdout.strip())
+    relative = path.relative_to(root).as_posix()
+    staged = subprocess.run(['git', 'show', f':{relative}'], cwd=root, capture_output=True, text=True)
+    if staged.returncode != 0:
+        return 3, f'{relative} is not staged'
+    known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', f'{base}^{{commit}}'], cwd=root,
+                           capture_output=True, text=True)
+    if known.returncode != 0:
+        return 3, f'{base} is no commit in this repository'
+    head = subprocess.run(['git', 'show', f'{base}:{relative}'], cwd=root, capture_output=True, text=True)
+    try:
+        check(head.stdout if head.returncode == 0 else None, staged.stdout, path, root)
+    except ValueError as error:
+        return 1, f'{relative}: {error}'
+    return 0, None
 
 
 def main(argv):
+    if len(argv) in (3, 5) and argv[1] == 'check' and (len(argv) == 3 or argv[3] == '--base'):
+        status, error = staged_check(argv[2], argv[4] if len(argv) == 5 else 'HEAD')
+        if error:
+            print(error, file=sys.stderr)
+        return status
     if len(argv) == 3 and argv[1] == 'append':
         path = Path(argv[2])
         body, count = append_new(path.read_text())
@@ -819,7 +1057,10 @@ def main(argv):
         path.write_text(done(path.read_text(), argv[3]))
         print('\n'.join(head_lines(path.read_text(), 1)))
         return 0
-    if len(argv) != 3 or argv[1] not in ('init', 'head'):
+    options = dict(zip(argv[3::2], argv[4::2]))
+    allowed = {'--counted': 'data-counted', '--backpressure': 'data-backpressure', '--kind-modules': 'data-kind-modules'}
+    if (len(argv) < 3 or argv[1] not in ('init', 'head') or len(argv) % 2 == 0 or not set(options) <= set(allowed)
+            or (argv[1] == 'head' and options) or options.get('--backpressure', 'off') != 'off'):
         print(__doc__, file=sys.stderr)
         return 2
     path = Path(argv[2])
@@ -830,12 +1071,14 @@ def main(argv):
     if parse(body) is not None:
         print('The notebook already has a lead and bridge queue', file=sys.stderr)
         return 1
+    attrs = ''.join(f' {allowed[k]}="{html.escape(v, quote=True)}"' for k, v in options.items())
+    configure(attrs)
     nodes = open_tree(body)
     record = body.find('<section id="research-record">')
     if record < 0:
         print('The notebook has no Research record', file=sys.stderr)
         return 1
-    path.write_text(body[:record] + render(body, nodes, len(nodes) >= CAP) + body[record:])
+    path.write_text(body[:record] + render(body, nodes, draining_after(False, nodes), attrs) + body[record:])
     print(f'Added the queue with {len(nodes)} items and {len(every_item(nodes)) - len(nodes)} sub-ideas under them')
     return 0
 

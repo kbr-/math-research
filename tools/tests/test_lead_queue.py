@@ -1,6 +1,8 @@
 import importlib.util
 import json
 import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -46,16 +48,17 @@ def line(entry):
     return f'<li data-{entry[0]}="{entry[1]}">{entry[1]}</li>'
 
 
-def notebook(articles, queue=None, draining=False):
+def notebook(articles, queue=None, draining=False, attrs='', route=True):
     section = ''
     if queue is not None:
-        flag = ' data-draining="true"' if draining else ''
+        flag = attrs + (' data-draining="true"' if draining else '')
         section = f'<section id="lead-queue"{flag}><ol>' + ''.join(line(e) for e in queue) + '</ol></section>'
-    return ROUTE + section + '<section id="research-record">' + ''.join(articles) + '</section>'
+    return (ROUTE if route else '') + section + '<section id="research-record">' + ''.join(articles) + '</section>'
 
 
 class LeadQueueTest(unittest.TestCase):
     def setUp(self):
+        lq.configure('')            # a notebook's section settings stay in force until the next is parsed
         self.rev = review('r1', [PASS, PASS, FAIL])     # two passed leads: r1:1, r1:2
         self.q = [('lead', 'r1:1'), ('lead', 'r1:2')]
 
@@ -97,10 +100,9 @@ class LeadQueueTest(unittest.TestCase):
             after_entry = [self.rev] + earlier + [cont]
             want = self.q if n < lq.SPELL else self.q[::-1]
             lq.check(before, notebook(after_entry, want))
-            self.assertEqual(lq.parse(lq.done(before, 'Continuing'))[1], want)                    # before append
             appended = notebook(after_entry[:-1] + [cont.replace('</article>', '<!-- TIMING t --></article>')],
                                 self.q)
-            self.assertEqual(lq.parse(lq.done(appended, 'Continuing'))[1], want)                  # after append
+            self.assertEqual(lq.parse(lq.done(appended, 'Continuing'))[1], want)
         broken = notebook([self.rev, cont, research(self.q[1], 'Closed'), cont, cont], self.q)
         self.assertEqual(lq.spell(broken, self.q[0]), 2)                 # another item's entry ends the run
 
@@ -140,13 +142,20 @@ class LeadQueueTest(unittest.TestCase):
 
     def test_done_updates_queue_the_way_check_expects(self):
         head = notebook([self.rev], self.q)
-        closed = lq.done(head, 'Closed')
+        with self.assertRaises(ValueError):                             # the developing entry is appended first
+            lq.done(head, 'Closed')
+        entry = lambda outcome: notebook([self.rev, research(self.q[0], outcome)], self.q)
+        closed = lq.done(entry('Closed'), 'Closed')
         self.assertEqual(lq.parse(closed)[1], self.q[1:])
-        kept = lq.done(head, 'Continuing')                              # first of its spell: stays
+        with self.assertRaises(ValueError):                             # twice: the item is gone
+            lq.done(closed, 'Closed')
+        with self.assertRaises(ValueError):                             # the entry states another outcome
+            lq.done(entry('Continuing'), 'Closed')
+        kept = lq.done(entry('Continuing'), 'Continuing')               # first of its spell: stays
         self.assertEqual(lq.parse(kept)[1], self.q)
         big = review('r1', [PASS] * (lq.FLOOR + 1))
         queue = [('lead', f'r1:{n}') for n in range(1, lq.FLOOR + 2)]
-        draining = notebook([big], queue, draining=True)
+        draining = notebook([big, research(queue[0], 'Closed')], queue, draining=True)
         self.assertFalse(lq.parse(lq.done(draining, 'Closed'))[0])     # at the floor the flag goes
         with self.assertRaises(ValueError):
             lq.done(head, 'Maybe')
@@ -472,6 +481,256 @@ class LeadQueueTest(unittest.TestCase):
         lines = lq.head_lines(notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]))
         self.assertEqual(lines[1:], ['1. r1:1', '   - k:s1', '2. r1:2'])
 
+    def test_a_notebook_without_route_items_is_checked_once_it_has_a_queue(self):
+        lq.check(None, notebook([self.rev], route=False))               # no section: nothing to check
+        with self.assertRaises(ValueError):                             # a section: checked, here an item twice
+            lq.check(None, notebook([self.rev], self.q + self.q[:1], route=False))
+        lq.check(None, notebook([self.rev], self.q, route=False))
+
+    def test_counted_entry_kinds_come_from_the_section(self):
+        task = lambda item, outcome: developing(item, outcome).replace('data-kind="research"', 'data-kind="task"')
+        attrs = ' data-counted="task"'
+        head = notebook([self.rev], self.q, attrs=attrs)
+        lq.check(head, notebook([self.rev, task(self.q[0], 'Closed')], self.q[1:], attrs=attrs))
+        with self.assertRaises(ValueError):                             # a research entry does not count here
+            lq.check(head, notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:], attrs=attrs))
+        with self.assertRaises(ValueError):                             # nor does a task entry by default
+            lq.check(notebook([self.rev], self.q), notebook([self.rev, task(self.q[0], 'Closed')], self.q[1:]))
+        earlier = [task(self.q[0], 'Continuing').replace('id="d"', f'id="d{n}"') for n in range(3)]
+        self.assertEqual(lq.spell(notebook([self.rev] + earlier, self.q, attrs=attrs), self.q[0]), 3)
+
+    def test_backpressure_can_be_off(self):
+        big = review('r1', [PASS] * lq.CAP)
+        queue = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+        attrs = ' data-backpressure="off"'
+        head = notebook([big], queue, attrs=attrs)
+        lq.check(None, head)                                            # 50 items, no flag
+        with self.assertRaises(ValueError):
+            lq.check(None, notebook([big], queue, draining=True, attrs=attrs))
+        lq.check(head, notebook([big, research()], queue, attrs=attrs))  # nothing must develop the head
+        self.assertFalse(lq.parse(lq.done(notebook([big, research(queue[0], 'Continuing')], queue, attrs=attrs),
+                                          'Continuing'))[0])
+
+    def test_the_user_may_pick_an_item_out_of_order(self):
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        head = notebook([rev], q)
+        quote = '<p><strong>Picked.</strong> The user: \u201ctake r1:3 next, it unblocks the release\u201d.</p>'
+        pick = lambda outcome, said=quote: developing(q[2], outcome, said).replace(
+            'data-kind="research"', 'data-kind="research" data-picked="user"')
+        lq.check(head, notebook([rev, pick('Closed')], q[:2]))
+        lq.check(head, notebook([rev, pick('Continuing')], q))           # it stays where it is
+        with self.assertRaises(ValueError):                             # no quotation
+            lq.check(head, notebook([rev, pick('Closed', '<p><strong>Picked.</strong> by the user.</p>')], q[:2]))
+        with self.assertRaises(ValueError):                             # not picked: the head only
+            lq.check(head, notebook([rev, developing(q[2], 'Closed')], q[:2]))
+        cont = research(q[0], 'Continuing')
+        self.assertEqual(lq.spell(notebook([rev, cont, cont, pick('Continuing'), cont], q), q[0]), 3)
+        big = review('r1', [PASS] * lq.CAP)
+        bq = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+        bpick = developing(bq[5], 'Closed', quote).replace('data-kind="research"', 'data-kind="research" data-picked="user"')
+        lq.check(notebook([big], bq, draining=True), notebook([big, bpick], bq[:5] + bq[6:], draining=True))
+
+    def test_an_item_waiting_on_the_user_is_passed_over(self):
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        wait = ('<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">needs a licence '
+                '<strong>Follow-up.</strong> Waiting: the user\'s answer on the licence.</li></ul></article>')
+        body, _ = lq.append_new(notebook([rev, wait], q))
+        self.assertEqual(lq.marks(lq.parse_tree(body)[1]), {q[0]})
+        lq.check(notebook([rev], q), body)
+        with self.assertRaises(ValueError):                             # a mark needs its follow-up
+            lq.check(notebook([rev], q), body.replace('Waiting: the', 'about the'))
+        marked = body
+        with self.assertRaises(ValueError):                             # the waiting head is passed over
+            lq.check(marked, notebook([rev, wait, research(q[0], 'Closed')], q[1:]))
+        nxt = marked.replace('</article></section>', '</article>' + research(q[1], 'Closed') + '</section>')
+        lq.check(marked, lq.done(nxt, 'Closed'))
+        unblock = ('<article id="u" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
+                   'Follow-up.</strong> Unblocked: licence granted.</li></ul></article>')
+        body2, _ = lq.append_new(marked.replace('</article></section>', '</article>' + unblock + '</section>'))
+        self.assertEqual(lq.marks(lq.parse_tree(body2)[1]), set())
+        lq.check(marked, body2)
+        everyone = notebook([rev], q).replace('data-lead="r1:1">', 'data-lead="r1:1" data-waits="a">').replace(
+            'data-lead="r1:2">', 'data-lead="r1:2" data-waits="b">').replace('data-lead="r1:3">', 'data-lead="r1:3" data-waits="c">')
+        draining = everyone.replace('<section id="lead-queue">', '<section id="lead-queue" data-draining="true">')
+        # every item waits: draining asks nothing of the entry (the flag goes, three items being under the floor)
+        lq.check(draining, everyone.replace('</article></section>', '</article>' + research() + '</section>'))
+
+    def test_waiting_subideas_and_triage_items_are_passed_over(self):
+        wait_child = notebook([self.rev], [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2')]), self.q[1]]).replace(
+            'data-check="k:s1">', 'data-check="k:s1" data-waits="x">')
+        ok = lq.done(wait_child.replace('</article></section>', '</article>' + developing(('check', 'k:s2'), 'Closed')
+                                        + '</section>'), 'Closed')
+        lq.check(wait_child, ok)                                        # the first sub-idea not waiting
+        with self.assertRaises(ValueError):
+            lq.check(wait_child, lq.done(wait_child.replace('</article></section>', '</article>' + developing(
+                ('check', 'k:s1'), 'Closed') + '</section>'), 'Closed'))
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        waiting_head = notebook([rev], q).replace('data-lead="r1:1">', 'data-lead="r1:1" data-waits="x">')
+        careful = ' '.join(['checked'] * 85) + ' lem:x-y'
+        triage = lambda ident: ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul>'
+                                f'<li data-lead="{ident}">{careful} <strong>Follow-up.</strong> Closed: reason.</li>'
+                                '</ul></article>')
+        body, _ = lq.settle_triage(waiting_head.replace('</article></section>', '</article>' + triage('r1:2')
+                                                        + '</section>'))
+        lq.check(waiting_head, body)
+        with self.assertRaises(ValueError):
+            lq.settle_triage(waiting_head.replace('</article></section>', '</article>' + triage('r1:1') + '</section>'))
+        nameless = ('<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
+                    'Follow-up.</strong> Waiting:</li></ul></article>')
+        with self.assertRaises(ValueError):                             # a Waiting follow-up names its request
+            lq.check(notebook([rev], q), lq.append_new(notebook([rev, nameless], q))[0])
+
+    def test_a_waiting_task_request_must_exist(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'tasks/x').mkdir(parents=True)
+            (root / 'tasks/x/task.json').write_text(json.dumps({'requests': [{'number': 3}]}))
+            (root / 'tasks/x/USER_REQUESTS.md').write_text('3. a request')
+            (root / 'tasks/z').mkdir()
+            (root / 'tasks/z/task.json').write_text(json.dumps({'requests': [{'number': 3}]}))
+
+            def wait(n):
+                return (f'<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
+                        f'Follow-up.</strong> Waiting: <a href="tasks/x/USER_REQUESTS.md">item {n}</a>.</li></ul>'
+                        '</article>')
+            head = notebook([self.rev], self.q)
+            body, _ = lq.append_new(notebook([self.rev, wait(3)], self.q))
+            lq.check(head, body, root / 'notebook.html', root)
+            body, _ = lq.append_new(notebook([self.rev, wait(4)], self.q))
+            with self.assertRaises(ValueError):
+                lq.check(head, body, root / 'notebook.html', root)
+            for broken in (wait(3).replace('item 3', 'request 3'),                     # no "item N"
+                           wait(3).replace('tasks/x/', 'tasks/z/')):                   # the link does not resolve
+                with self.subTest(broken=broken), self.assertRaises(ValueError):
+                    lq.check(head, lq.append_new(notebook([self.rev, broken], self.q))[0], root / 'notebook.html',
+                             root)
+
+    def test_a_kind_module_adds_its_kind(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, 'fake_kinds.py').write_text(
+                'def kinds(lq):\n'
+                '    def admit(body, head_body, item):\n'
+                '        assert "idea" in lq.NAMES          # the live module, not a copy taken before it\n'
+                '        return [] if item[1].startswith("ok") else ["not admitted"]\n'
+                '    def closed(tag, text, where):\n'
+                '        return [] if "Kill criterion" in text else ["no kill criterion"]\n'
+                '    return [lq.Kind("idea", admit=admit, rules={"Closed": closed}, reopen=False)]\n')
+            sys.path.insert(0, tmp)
+            try:
+                attrs = ' data-kind-modules="fake_kinds" data-counted="research business"'
+                ideas = [('idea', 'ok-one'), ('idea', 'ok-two')]
+                head = notebook([self.rev], [self.q[0]] + ideas, attrs=attrs)
+                lq.check(head, notebook([self.rev, research()], [self.q[0]] + ideas + [('idea', 'ok-three')], attrs=attrs))
+                with self.assertRaises(ValueError):                     # the module refuses it
+                    lq.check(head, notebook([self.rev, research()], [self.q[0]] + ideas + [('idea', 'bad')], attrs=attrs))
+                closed = lambda body: notebook([self.rev, research(self.q[0], 'Closed'),
+                                                developing(ideas[0], 'Closed', body).replace('data-kind="research"',
+                                                                                           'data-kind="business"')],
+                                               ideas[1:], attrs=attrs)
+                after_lead = notebook([self.rev, research(self.q[0], 'Closed')], ideas, attrs=attrs)
+                lq.check(after_lead, closed('<p>Kill criterion: none sold.</p>'))
+                with self.assertRaises(ValueError):                     # its Closed rule
+                    lq.check(after_lead, closed('<p>no test</p>'))
+                listed = ('<article id="l" data-kind="research" data-route="step"><ul><li data-idea="ok-one">{} '
+                          '<strong>Follow-up.</strong> Closed: done.</li></ul></article>')
+                lq.check(after_lead, notebook([self.rev, research(self.q[0], 'Closed'),
+                                               listed.format('Kill criterion: none.')], ideas[1:], attrs=attrs))
+                with self.assertRaises(ValueError):                     # also when a follow-up list closes it
+                    lq.check(after_lead, notebook([self.rev, research(self.q[0], 'Closed'), listed.format('no')],
+                                                  ideas[1:], attrs=attrs))
+                reopen = ('<article id="r" data-kind="research" data-route="step"><ul><li data-idea="ok-one">x '
+                          '<strong>Follow-up.</strong> Reopened: early.</li></ul></article>')
+                idea_closed = closed('<p>Kill criterion: none sold.</p>')
+                reopened = idea_closed.replace('</article></section>', '</article>' + reopen + '</section>').replace(
+                    '<li data-idea="ok-two">ok-two</li>', '<li data-idea="ok-two">ok-two</li><li data-idea="ok-one">ok-one</li>')
+                with self.assertRaises(ValueError):                     # not reopened by a follow-up
+                    lq.check(idea_closed, reopened)
+                lq.check(None, notebook([self.rev], self.q))           # the defaults return without the attribute
+                self.assertNotIn('idea', lq.KINDS)
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop('fake_kinds', None)
+
+    def test_check_command_compares_the_staged_notebook_with_a_base(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            git = lambda *a: subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', *a], cwd=repo,
+                                            check=True, capture_output=True)
+            git('init', '-q')
+            nb = repo / 'notebook.html'
+            nb.write_text(notebook([self.rev], self.q))
+            git('add', '.')
+            git('commit', '-q', '-m', 'one')
+            run = lambda *a: subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'check', str(nb), *a],
+                                            capture_output=True, text=True).returncode
+            nb.write_text(notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:]))
+            git('add', '.')
+            self.assertEqual(run(), 0)
+            nb.write_text(notebook([self.rev, research(self.q[1], 'Closed')], self.q[:1]))
+            self.assertEqual(run(), 0)                                  # the working file is not what is checked
+            git('add', '.')
+            self.assertEqual(run(), 1)
+            nb.write_text(notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:]))
+            git('add', '.')
+            git('commit', '-q', '-m', 'two')
+            git('add', '.')
+            self.assertEqual(run(), 0)                                  # against HEAD: no new entry, same queue
+            nb.write_text(notebook([self.rev, research(self.q[0], 'Closed')], self.q))
+            git('add', '.')
+            self.assertEqual(run(), 1)                                  # no new entry may not change the queue
+            nb.write_text(notebook([self.rev, research(self.q[0], 'Closed')], self.q[1:]))
+            git('add', '.')
+            self.assertEqual(run('--base', 'HEAD^'), 0)                 # as an amend sees it: HEAD's parent
+            self.assertEqual(run('--base', 'nonsense^^'), 3)            # no such base: the check cannot run
+            self.assertEqual(subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'nonsense'],
+                                            capture_output=True).returncode, 2)
+
+    def test_creating_the_queue_without_an_entry_ignores_the_last_entrys_work(self):
+        older = research(self.q[0], 'Continuing')                       # an entry already in HEAD
+        lq.check(notebook([self.rev, older]), notebook([self.rev, older], self.q))
+        with self.assertRaises(ValueError):                             # a new entry still may not develop items
+            lq.check(notebook([self.rev]), notebook([self.rev, older], self.q))
+
+    def test_init_writes_the_section_settings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            nb = Path(tmp, 'notebook.html')
+            nb.write_text(notebook([self.rev], route=False))
+            code = subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'init', str(nb), '--counted',
+                                   'task', '--backpressure', 'off'], capture_output=True).returncode
+            self.assertEqual(code, 0)
+            body = nb.read_text()
+            self.assertIn('<section id="lead-queue" data-counted="task" data-backpressure="off">', body)
+            lq.check(None, body)
+            self.assertEqual(subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'init', str(nb),
+                                             '--backpressure', 'on'], capture_output=True).returncode, 2)
+            # seeding uses the new section's settings: a task entry closing a listed check counts there
+            listing = subideas('t1', [('check', 'c'), ('check', 'd')])
+            closing = developing(('check', 't1:s1'), 'Closed').replace('data-kind="research"', 'data-kind="task"')
+            nb.write_text(notebook([self.rev, listing, closing], route=False))
+            subprocess.run([sys.executable, str(ROOT / 'tools/lead_queue.py'), 'init', str(nb), '--counted', 'task'],
+                           check=True, capture_output=True)
+            self.assertEqual(lq.parse(nb.read_text())[1], self.q + [('check', 't1:s2')])
+            lq.check(notebook([self.rev, listing, closing], route=False), nb.read_text())
+
+    def test_kind_rules_apply_to_triage_blocks_and_listed_outcomes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            listing = subideas('t1', [('check', 'c'), ('check', 'e')])
+            queue = [('check', 't1:s1'), ('check', 't1:s2')]
+            careful = ' '.join(['checked'] * 85)
+            triage = lambda evidence: ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4>'
+                                       f'<ul><li data-check="t1:s1">{careful} {evidence} <strong>Follow-up.</strong> '
+                                       'Developed: answered.</li></ul></article>')
+            head = notebook([listing], queue)
+            lq.check(head, notebook([listing, triage('<a href="#t1">the listing</a>')], queue[1:]),
+                     root / 'nb.html', root)
+            with self.assertRaises(ValueError):                         # a link that does not resolve
+                lq.check(head, notebook([listing, triage('<a href="#t1">x</a> <a href="#gone">y</a>')], queue[1:]),
+                         root / 'nb.html', root)
+
     def test_malformed_subideas_are_refused(self):
         head = notebook([self.rev], self.q)
         for item in ('<li data-sub="chek">c</li>', '<li>c</li>', '<li data-sub="check" data-parent="r1:2">c</li>',
@@ -496,6 +755,10 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.shape(lq.parse_tree(after)[1]), [(self.q[1], []), (('check', 'd:s1'), [])])
         lq.check(notebook([self.rev], self.q), after)
 
+    def test_a_queue_section_cannot_go_away(self):
+        with self.assertRaises(ValueError):
+            lq.check(notebook([self.rev], self.q, route=False), notebook([self.rev], route=False))
+
     def test_a_reopened_subidea_no_longer_counts_toward_its_old_parent(self):
         listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
         closing = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="e"')
@@ -510,6 +773,13 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.spell(notebook([self.rev, listing, closing, reopen, later], self.q + [('check', 'd:s1')]),
                                   self.q[0]), 3)
         self.assertEqual(lq.spell(notebook([self.rev, listing, closing, reopen, later], self.q), self.q[0]), 3)
+
+    def test_a_parent_developed_with_its_last_subideas_closed_in_the_same_entry(self):
+        tree = [(self.q[0], [('check', 'k:s1')]), (self.q[1], [])]
+        entry = ('<article data-kind="research" data-route="step" data-lead="r1:1"><ul><li data-check="k:s1">done '
+                 'with it <strong>Follow-up.</strong> Closed: moot.</li></ul><p><strong>Follow-up.</strong> '
+                 'Developed: x.</p></article>')
+        lq.check(notebook([self.rev], tree), notebook([self.rev, entry], [self.q[1]]))
 
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
