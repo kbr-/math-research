@@ -15,6 +15,8 @@
 // here (exact synthetic division by each collision form while it divides all of them), so that the Groebner work
 // in Macaulay2 runs on low-degree generators.
 //
+// It also writes extraK = K / (common factor), K = det[b_0..b_{N-2}, b_{N+1}]: by the second polar minor
+// identity, Q is a unit times K modulo the polar ideal (cycle bmd-20261009-dh).
 // Usage: bmd_plane_minors p d seed OUT.m2
 #include <flint/nmod_mat.h>
 #include <flint/nmod_poly.h>
@@ -53,9 +55,11 @@ int main(int argc, char **argv) {
         hb[k] = nmod_mul(hb[k - 1], nmod_mul(nmod_sub(half, (mp_limb_t)(k - 1) % p, mod), nmod_inv(k, mod), mod), mod);
     const int G = D + 1;
     // vals[c][j*G + k]: minor omitting column c at (x, y) = (j, k)
-    vector<vector<mp_limb_t>> vals(C, vector<mp_limb_t>((size_t)G * G));
+    // vals[C] holds K = det[b_0..b_{N-2}, b_{N+1}], the Taylor-frame analogue of Q (lem:cube-polar-minor-identity)
+    vector<vector<mp_limb_t>> vals(C + 1, vector<mp_limb_t>((size_t)G * G));
     nmod_mat_t M, sub; nmod_mat_init(M, N, C, p); nmod_mat_init(sub, N, N, p);
-    vector<mp_limb_t> a(4), ser(C), tmp(C);
+    const int CS = C + 1;   // series through T^(N+1)
+    vector<mp_limb_t> a(4), ser(CS), tmp(CS), kcol(N);
     for (int j = 0; j < G; ++j)
         for (int k = 0; k < G; ++k) {
             for (int i = 0; i < 4; ++i)
@@ -63,30 +67,36 @@ int main(int argc, char **argv) {
             for (int r = 0; r < N; ++r) {
                 fill(ser.begin(), ser.end(), 0); ser[0] = 1;
                 for (int i = 0; i < 4; ++i) if (rows[r].S >> i & 1) {
-                    // multiply by sum_k hb[k] a_i^k T^k, truncated at T^(C-1)
-                    vector<mp_limb_t> f(C); mp_limb_t pw = 1;
-                    for (int t = 0; t < C; ++t) { f[t] = nmod_mul(hb[t], pw, mod); pw = nmod_mul(pw, a[i], mod); }
+                    // multiply by sum_k hb[k] a_i^k T^k, truncated at T^(CS-1)
+                    vector<mp_limb_t> f(CS); mp_limb_t pw = 1;
+                    for (int t = 0; t < CS; ++t) { f[t] = nmod_mul(hb[t], pw, mod); pw = nmod_mul(pw, a[i], mod); }
                     fill(tmp.begin(), tmp.end(), 0);
-                    for (int s = 0; s < C; ++s) if (ser[s]) for (int t = 0; s + t < C; ++t)
+                    for (int s = 0; s < CS; ++s) if (ser[s]) for (int t = 0; s + t < CS; ++t)
                         tmp[s + t] = nmod_add(tmp[s + t], nmod_mul(ser[s], f[t], mod), mod);
                     ser = tmp;
                 }
                 for (int c = 0; c < C; ++c) nmod_mat_entry(M, r, c) = c >= rows[r].q ? ser[c - rows[r].q] : 0;
+                kcol[r] = N + 1 >= rows[r].q ? ser[N + 1 - rows[r].q] : 0;
             }
             for (int c = 0; c < C; ++c) {
                 for (int r = 0; r < N; ++r)
                     for (int cc = 0, t = 0; cc < C; ++cc) if (cc != c) nmod_mat_entry(sub, r, t++) = nmod_mat_entry(M, r, cc);
                 vals[c][(size_t)j * G + k] = nmod_mat_det(sub);
             }
+            for (int r = 0; r < N; ++r) {
+                for (int cc = 0; cc < N - 1; ++cc) nmod_mat_entry(sub, r, cc) = nmod_mat_entry(M, r, cc);
+                nmod_mat_entry(sub, r, N - 1) = kcol[r];
+            }
+            vals[C][(size_t)j * G + k] = nmod_mat_det(sub);
         }
     // interpolate: first in y for each x = j, then in x for each y-coefficient; F[c][b][e] = coefficient of x^e y^b
     vector<mp_limb_t> xs(G); for (int t = 0; t < G; ++t) xs[t] = t;
     long bad = 0;
-    vector<vector<vector<mp_limb_t>>> F(C, vector<vector<mp_limb_t>>(G, vector<mp_limb_t>(G, 0)));
+    vector<vector<vector<mp_limb_t>>> F(C + 1, vector<vector<mp_limb_t>>(G, vector<mp_limb_t>(G, 0)));
     {
         nmod_poly_t P; nmod_poly_init(P, p);
         vector<mp_limb_t> col(G);
-        for (int c = 0; c < C; ++c) {
+        for (int c = 0; c <= C; ++c) {
             vector<vector<mp_limb_t>> cy(G, vector<mp_limb_t>(G, 0));   // cy[j][b]: coefficient of y^b at x = j
             for (int j = 0; j < G; ++j) {
                 nmod_poly_interpolate_nmod_vec(P, xs.data(), &vals[c][(size_t)j * G], G);
@@ -150,6 +160,17 @@ int main(int argc, char **argv) {
             ++stripped[t];
         }
     }
+    // K: divide by the same collision factor, reporting any shortfall
+    vector<int> kshort(forms.size(), 0);
+    for (size_t t = 0; t < forms.size(); ++t)
+        for (int e = 0; e < stripped[t]; ++e) {
+            vector<vector<mp_limb_t>> q;
+            if (!divide(F[C], forms[t], q)) { kshort[t] = stripped[t] - e; break; }
+            F[C] = move(q);
+        }
+    printf("K shortfall per form (0 = divisible by the whole factor):");
+    for (int v : kshort) printf(" %d", v);
+    printf("\n");
     printf("common collision exponents:");
     for (int v : stripped) printf(" %d", v);
     printf("\n");
@@ -169,6 +190,12 @@ int main(int argc, char **argv) {
         fprintf(out, "%s\n", c + 1 < C ? "," : "");
     }
     fprintf(out, "};\n");
+    fprintf(out, "extraK = ");
+    { bool first = true;
+      for (int b = 0; b < G; ++b) for (int e = 0; e < G; ++e) if (F[C][b][e]) {
+          fprintf(out, "%s%lu*x^%d*y^%d", first ? "" : "+", (unsigned long)F[C][b][e], e, b); first = false; }
+      if (first) fprintf(out, "0");
+      fprintf(out, ";\n"); }
     fprintf(out, "collisionForms = {");
     vector<pair<int,int>> pairs;
     for (int i = 0; i < 4; ++i) pairs.push_back({i, -1});
