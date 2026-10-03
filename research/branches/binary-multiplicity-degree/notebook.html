@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), in every odd characteristic and every \(d\ge3\), is now one \(12\times12\) matrix on an elliptic curve (<a href="#entry-2026-10-09-cube-merged-elliptic-criterion">merged elliptic criterion</a>). Eight of its conditions are top coefficients at infinity and four are values on a coset of two-torsion.</p>
-<p>Next: the head (coherent base change lead), entry two: block the matrix by the sign characters, then its Tate expansion, as in the all-odd dimension-four proof.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), in every odd characteristic and every \(d\ge3\), is now a \(5\times5\) determinant on an elliptic curve (<a href="#entry-2026-10-09-cube-merged-five-reduction">merged five reduction</a>), assuming \(H-4P\) has order not dividing \(4(d-1)\). Its rows are one coefficient below the principal parts at infinity and four values on a two-torsion coset.</p>
+<p>Next: the head (coherent base change lead), entry three, or its new sub-idea: the non-torsion hypothesis for \(H-4P\), structurally, then the Tate expansion of the \(5\times5\) determinant.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97,7 +97,8 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-nodal-extension-review:2"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:2</a> (lead): Grothendieck's coherent cohomology and base change. The finite-complex statement in Stacks, Lemma 30.22.1 retains torsion that plain central-fibre dimensions lose. Translate the focused line bundle into this complex and …<ul>
-<li data-check="entry-2026-10-09-cube-merged-elliptic-criterion:s1"><a href="#entry-2026-10-09-cube-merged-elliptic-criterion">entry-2026-10-09-cube-merged-elliptic-criterion:s1</a> (check): The block structure of \(\Phi'_P\) under the sign characters: split the twelve rows by the characters \(\{i\},\{i,v\},\{3,4\},\{3,4,v\}\), and check whether \(\det\Phi'_P\) factors into smaller determinants at a generic …</li>
+<li data-check="entry-2026-10-09-cube-merged-five-reduction:s1"><a href="#entry-2026-10-09-cube-merged-five-reduction">entry-2026-10-09-cube-merged-five-reduction:s1</a> (check): The hypothesis of lem:cube-merged-five-reduction: is the class of \(H-4P\) on the merged elliptic curve non-torsion over the algebraic closure of \(\mathbb F_p(a_1,a_3,a_4)\) (transcendental parameters), in every odd cha…</li>
+<li data-check="entry-2026-10-09-cube-merged-five-reduction:s2"><a href="#entry-2026-10-09-cube-merged-five-reduction">entry-2026-10-09-cube-merged-five-reduction:s2</a> (check): Does \(\det\Psi_P\) factor further, for instance by separating the coefficient row \(\alpha_{\{3,4\},2d-3}\) from the four value rows on \(Z\)?</li>
 </ul></li>
 <li data-lead="entry-2026-09-27-cube-nodal-extension-review:3"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:3</a> (lead): Serre duality with the canonical twist retained. The line-bundle duality formula identifies the obstruction layers with dimensions of \(H^0(B,(n-4-r)H)\). Those spaces have the explicit complete character bases proved in…</li>
 <li data-lead="entry-2026-09-27-cube-resonance-composition-review:2"><a href="#entry-2026-09-27-cube-resonance-composition-review">entry-2026-09-27-cube-resonance-composition-review:2</a> (lead): Gauss' lemma and polynomial content. The exact residual formula is \((N^2-1)F_{A-1}(u^4)\), with \(F_{A-1}\) integral and constant coefficient one. Its coefficient ideal over \(\mathbb Z[1/2]\) is therefore exactly…</li>
@@ -77512,6 +77513,73 @@ where \(R=S\setminus\{v\}\) and:</p>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 8.83 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 22.41 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 46.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-merged-five-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-check="entry-2026-10-09-cube-merged-elliptic-criterion:s1" data-claims="lem:cube-merged-five-reduction">
+<h3>9 October 2026 — Merged five reduction: seven of the twelve conditions are coordinates of the principal parts at infinity, so statement 2 at \(n=5\) is a \(5\times5\) determinant</h3>
+<p class="entry-meta">Working lemma (\(n=5\), every \(d\ge3\), under a non-principality hypothesis). Lead-queue development (the head's first sub-idea, entry two of four, Developed). Merged five reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-09-cube-merged-elliptic-criterion">merged elliptic criterion</a> made statement 2 at \(n=5\), in every odd characteristic, the invertibility of one \(12\times12\) map \(\Phi'_P\). Its sub-idea asks whether the sign characters block the determinant. In dimension four, the four conditions reduced to a single scalar because three of them were equalities of top coefficients. Which of the twelve conditions are local at infinity here, and what is left?</p>
+<p><strong>General statement.</strong> lem:cube-merged-five-reduction (\(n=5\), every \(d\ge3\), every characteristic other than two).</p>
+<h4>The lemma</h4>
+<p>Use the notation of lem:cube-merged-elliptic-criterion: the elliptic curve \(E\), \(H\), \(Z\), \(M=4d-1\), \(N=16d-16\), the character blocks \(u_S\,k[\tau]\), and \(P\) at \(\tau=0\). For \(f\in L(MH)\) write \(f=\sum_Sf_S\) by characters and \(f_S=u_S\sum_m\alpha_{S,m}(f)\tau^m\). Say \(\alpha_{S,m}\) has <em>level</em> \(|S|+2m\), its pole order at the points of \(H\).</p>
+<p><strong>Lemma (lem:cube-merged-five-reduction).</strong> Assume, besides the hypotheses of lem:cube-merged-elliptic-criterion, that the degree-zero divisor \((M-3)H-NP=(4d-4)(H-4P)\) is not principal. Then:</p>
+<ol>
+<li>The twelve coordinates \(\alpha_{S,m}\) of levels \(M\), \(M-1\), \(M-2\) restrict to an isomorphism \(L(MH-NP)\to k^{12}\). They are:
+<ul>
+<li>level \(M\): \(S=\{v\},\{3\},\{4\}\) with \(m=2d-1\), and \(\{3,4,v\}\) with \(m=2d-2\);</li>
+<li>level \(M-1\): \(\emptyset\) with \(m=2d-1\), and \(\{3,v\},\{4,v\},\{3,4\}\) with \(m=2d-2\);</li>
+<li>level \(M-2\): \(\{v\},\{3\},\{4\}\) with \(m=2d-2\), and \(\{3,4,v\}\) with \(m=2d-3\).</li>
+</ul></li>
+<li>Seven components of \(\Phi'\) are among these coordinates: \(\alpha_{\{i\},2d-1}\), \(\alpha_{\{i,v\},2d-2}\) (\(i=3,4\)), \(\alpha_{\{3,4\},2d-2}\), \(\alpha_{\{3,4,v\},2d-2}\) and \(\alpha_{\{3,4,v\},2d-3}\).</li>
+<li>Consequently, with \(\det\Phi'_P\) taken in the basis of \(L(MH-NP)\) dual to the twelve coordinates of (1), \(\det\Phi'_P=\pm\det\Psi_P\). In any other basis it changes by the nonzero determinant of the change of basis. Here \(\Psi_P\) is the \(5\times5\) matrix of the five remaining conditions, evaluated on the five functions \(f_1,\ldots,f_5\in L(MH-NP)\) whose coordinates are the unit vectors on the free coordinates \(\alpha_{\{v\},2d-1}\), \(\alpha_{\emptyset,2d-1}\), \(\alpha_{\{v\},2d-2}\), \(\alpha_{\{3\},2d-2}\), \(\alpha_{\{4\},2d-2}\), and zero on the other seven. The five remaining conditions are:
+<ul>
+<li>\(\alpha_{\{3,4\},2d-3}\), of level \(M-3\);</li>
+<li>the four values \((f_S/u_S)(1/a_1)\) for \(S=\{3\},\{4\},\{3,4\},\{3,4,v\}\), all taken on full polynomial factors.</li>
+</ul></li>
+</ol>
+<p>In particular, under the hypothesis, the original series \(V_{5,d}\) is generically normal if \(\det\Psi_P\ne0\) at one admissible parameter point.</p>
+<p><strong>Proof.</strong> (1) The levels are as listed, since \(M=4d-1\). Each character has at most one coordinate at each level of its parity, and the parities give four characters per level. If all twelve coordinates vanish on \(f\), every character component has pole order at most \(M-3\) at the points of \(H\), so \(f\in L((M-3)H)\). If moreover \(f\in L(MH-NP)\), then \(f\in L((M-3)H-NP)\). That divisor has degree \(4(4d-4)-(16d-16)=0\) and is not principal, so the space is zero. The map is injective between spaces of dimension \(12\) (lem:cube-merged-elliptic-criterion), hence an isomorphism.</p>
+<p>(2) The eight top-coefficient components of \(\Phi'\) have levels:</p>
+<ul>
+<li>\(\{i\}\), \(\tau^{2d-1}\): \(1+4d-2=M\);</li>
+<li>\(\{i,v\}\), \(\tau^{2d-2}\): \(M-1\);</li>
+<li>\(\{3,4\}\), \(\tau^{2d-2}\) and \(\tau^{2d-3}\): \(M-1\) and \(M-3\);</li>
+<li>\(\{3,4,v\}\), \(\tau^{2d-2}\) and \(\tau^{2d-3}\): \(M\) and \(M-2\).</li>
+</ul>
+<p>All except \(\alpha_{\{3,4\},2d-3}\) are among the twelve coordinates.</p>
+<p>(3) The value components of \(\Phi'\) were defined after removing the top coefficients of their blocks. Replacing them by the values of the full polynomial factors changes \(\Phi'\) by adding multiples of top-coefficient rows, which leaves the determinant unchanged. Now express \(\Phi'_P\) in the coordinates of (1). Seven of its rows are coordinate functionals, distinct and among the twelve. Expanding the determinant along these seven rows leaves, up to sign, the determinant of the other five rows restricted to the five complementary coordinates. That is \(\det\Psi_P\). The last sentence follows from lem:cube-merged-elliptic-criterion. \(\square\)</p>
+<p><strong>The hypothesis.</strong> \(H-4P\) is a degree-zero divisor, whose class is a point of \(\operatorname{Pic}^0(E)\). The hypothesis says this class has order not dividing \(4(d-1)\). Non-torsion, which would give it for every \(d\) at once, needs transcendental parameters: over \(\overline{\mathbb F}_p\) every class is torsion, so one works over, for example, the algebraic closure of \(\mathbb F_p(a_1,a_3,a_4)\). The dimension-four proof (thm:cube-four-all-odd-normality, step 3) needed the analogous \([N]P\ne O\) and got it from a transcendental marked point on a Tate curve. If the hypothesis failed for every admissible parameter triple in some characteristic, the coordinates of (1) would have a one-dimensional kernel and the reduction would need one more step. This is not ruled out here. It is a property of the section \(H-4P\) of the family of curves \(E\), checkable for each \(d\) separately on a single parameter point.</p>
+<p><strong>Comparison.</strong> In dimension four the same mechanism took four conditions to one scalar (thm:cube-four-all-odd-normality, steps 2 and 3). There the four top evaluations are coordinates on the four-dimensional space \(L((m+1)D-NP)\). The three equalities of top coefficients cut it to the line of the unique \(f_P\), and one subleading condition is left. Here seven of twelve are coordinates, and five global conditions remain on a five-dimensional space. Four of them are values on the two-torsion coset \(Z\). One is a coefficient one level below the principal parts.</p>
+<p><strong>Follow-up.</strong> Developed: the sub-idea's question, whether \(\det\Phi'_P\) blocks, is answered by lem:cube-merged-five-reduction. The rows group by character, but the domain at a generic \(P\) carries no evident character grading, so there is no evident block-diagonal splitting. There is instead a block-triangular reduction from \(12\) to \(5\), through the principal-part coordinates. Whether \(\Psi_P\) factors further is queued as a new sub-idea. The parent lead (coherent base change) continues at the head with the \(5\times5\) determinant.</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">The hypothesis of lem:cube-merged-five-reduction: is the class of \(H-4P\) on the merged elliptic curve non-torsion over the algebraic closure of \(\mathbb F_p(a_1,a_3,a_4)\) (transcendental parameters), in every odd characteristic? Settle it structurally, through the group law on \(E\) with \(H\) and \(Z\) as \(E[2]\)-cosets, before any computation.</li>
+<li data-sub="check">Does \(\det\Psi_P\) factor further, for instance by separating the coefficient row \(\alpha_{\{3,4\},2d-3}\) from the four value rows on \(Z\)?</li>
+</ul>
+<p><strong>Remaining gap.</strong> Nonvanishing of the \(5\times5\) determinant \(\det\Psi_P\) for every \(d\ge3\) at every odd prime; the non-torsion hypothesis.</p>
+<p><strong>Process.</strong> No computation.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-merged-elliptic-criterion (the twelve conditions, the block table, dimensions); thm:cube-four-all-odd-normality (step 2, the analogous reduction).</p>
+<p><strong>Verification gate.</strong> One fresh-context reviewer at medium effort confirmed all the mathematics: the levels, injectivity under the hypothesis, the eight top levels, the seven distinct coordinate rows, the row operations and the Laplace step, and the form of the hypothesis. It required these changes, all applied:</p>
+<ul>
+<li>fix the basis in which \(\det\Phi'_P=\pm\det\Psi_P\);</li>
+<li>state that non-torsion needs transcendental parameters, since over \(\overline{\mathbb F}_p\) every class is torsion;</li>
+<li>call the hypothesis non-principality;</li>
+<li>use uniform value notation;</li>
+<li>soften the no-splitting claim and queue the factorization question;</li>
+<li>verify the dimension-four comparison, now checked against the full proof of thm:cube-four-all-odd-normality, steps 2 and 3, read in this session.</li>
+</ul>
+<p><strong>Status:</strong> working lemma (under the stated hypothesis); sub-idea developed; lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 48.32 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.81 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.37 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
