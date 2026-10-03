@@ -24,6 +24,9 @@ def budgets(source, config):
     for number in [config['characters_per_word'], config['total_soft_words'], *regions.values()]:
         if type(number) is not int or number <= 0:
             raise ValueError('Context budgets must be positive integers')
+    # The lead and bridge queue is a living section without a word budget; restoration reads only its head
+    # (tools/lead_queue.py; user, 3 October 2026).
+    source = re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*', '', source, flags=re.S)
     multiplier = Fraction(str(config['hard_multiplier']))
     if multiplier < 1:
         raise ValueError('Hard multiplier must be at least one')

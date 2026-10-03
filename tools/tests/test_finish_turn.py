@@ -53,7 +53,7 @@ class FinalizationTest(unittest.TestCase):
         shutil.copy2(ROOT / 'tools/notebook_context.py', self.root / 'tools/notebook_context.py')
         shutil.copy2(ROOT / 'tools/recovery_evidence.py', self.root / 'tools/recovery_evidence.py')
         shutil.copy2(ROOT / 'tools/claim_attention.py', self.root / 'tools/claim_attention.py')
-        for name in ('tools/notebooks.py', 'tools/finish-turn.py', 'tools/result_names.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
+        for name in ('tools/notebooks.py', 'tools/finish-turn.py', 'tools/lead_queue.py', 'tools/result_names.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         # Exercise real metadata, report generation and archival without requiring
         # this laptop's systemd slice on CI. Only the tiny fixture archiver may
@@ -207,15 +207,16 @@ sys.exit(compute.main())
         lead_follow = ('<h4>Lead follow-up</h4><ul>' + ''.join(
             f'<li data-lead="rev1:{n}">Worked on it. <strong>Follow-up.</strong> Continuing: next.</li>'
             for n in (1, 2, 3)) + '</ul>')
+        # Open items wait in the lead queue (test_lead_queue.py); a review lists only changed follow-ups.
         rejected = [
-            record(research.format('') * 6, reviewed, leads),                  # review ignores the open bridge
             record(research.format('') * 6, reviewed, leads + follow.format('Pending.') + lead_follow),  # no outcome
-            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: x.')),   # passed leads ignored
             record(research.format('') * 6, reviewed, leads + follow.format('Continuing: x.')
                    + lead_follow.replace('Continuing: next.', 'Pending.')),      # lead follow-up without outcome
         ]
         accepted = [
-            record(research.format('') * 2, tagged),                          # third entry: a reminder only
+            record(research.format('') * 6, reviewed, leads),                  # no follow-ups: nothing changed
+            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: x.')),   # one change only
+            record(research.format('') * 2, tagged),
             record(research.format(' data-bridge="rev1:1"') + research.format(''), tagged),
             record(research.format('') * 2, tagged + ' data-bridge="rev1:1"'),
             record(research.format('') * 6, reviewed, leads + follow.format('Continuing: next cycle.') + lead_follow),

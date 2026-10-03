@@ -257,38 +257,18 @@ def validate_bridges(body, article, close):
     tags = entry_tags(body, article)
     if tags['kind'] not in ('research', 'review') or not tags['route']:
         return
-    earlier = route_articles(body, article, tags['route'])
+    # Open passed items now wait in the lead queue (tools/lead_queue.py, checked in finish()), so a review
+    # reports follow-ups only for items whose status changed (user, 3 October 2026: "Then you can report only
+    # changes in the route reviews").  Any follow-up item it does list still states its outcome.
     if tags['kind'] == 'review':
         for name, section_re, followup_re, item_re, heading, attr in FOLLOWUP_KINDS:
-            pending = open_items(body, earlier, section_re, followup_re, item_re)
-            if not pending:
-                continue
             found = followup_re.search(body, article, close)
             items = dict(item_re.findall(found.group(1))) if found else {}
-            missing = [b for b in pending if b not in items]
-            if missing:
-                raise ValueError(f'Passed {name} of earlier reviews are still open: ' + ', '.join(missing)
-                                 + f'. Add an <h4>{heading}</h4> <ul> with one <li {attr}="ID"> per item, '
-                                 'reporting the work done on it in this cycle (AGENTS.md)')
-            bare = [b for b in pending if not FOLLOWUP_OUTCOME.search(items[b])]
+            bare = [b for b, text in items.items() if not FOLLOWUP_OUTCOME.search(text)]
             if bare:
                 raise ValueError(f'{heading} item(s) ' + ', '.join(bare) + ' lack an outcome: end each with '
                                  '"<strong>Follow-up.</strong> Developed ...", "Continuing ..." or "Closed: '
                                  '<reason found by the attempt>" (AGENTS.md)')
-        return
-    reviews = [i for i, a in enumerate(earlier) if a[2] == 'review']
-    if not reviews:
-        return
-    since = [a for a in earlier[reviews[-1] + 1:] if a[2] == 'research']
-    tags_seen = [body[article:body.index('>', article) + 1]] + [body[a[0]:body.index('>', a[0]) + 1] for a in since]
-    developing = any('data-bridge="' in t or 'data-lead="' in t for t in tags_seen)
-    pending = [b for _, section_re, followup_re, item_re, _, _ in FOLLOWUP_KINDS
-               for b in open_items(body, earlier, section_re, followup_re, item_re)]
-    if len(since) + 1 >= BRIDGE_WINDOW and not developing and pending:
-        # A reminder, not a rejection (user, 26 September 2026: "use your judgement, but give the bridges a chance").
-        print(f'Warning: {len(since) + 1} research entries since the last route review and none develops an '
-              'open passed Absurd bridge or Outside lead (' + ', '.join(pending) + '). Consider giving one '
-              'a real attempt, tagged data-bridge or data-lead="REVIEW-ANCHOR:N" (AGENTS.md).', file=sys.stderr)
 
 
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
@@ -469,6 +449,14 @@ def validate_append_only(root):
         raise ValueError(result.stdout.strip())
 
 
+def validate_queue(root, notebook):
+    """The lead and bridge queue against HEAD's notebook (tools/lead_queue.py)."""
+    from lead_queue import check
+    relative = notebook.resolve().relative_to(root.resolve()).as_posix()
+    head = subprocess.run(['git', 'show', f'HEAD:{relative}'], cwd=root, capture_output=True, text=True)
+    check(head.stdout if head.returncode == 0 else None, notebook.read_text())
+
+
 SCRATCH_CAP = 500 * 10**6   # bytes a session may keep in its scratchpad at a checkpoint
 
 
@@ -517,6 +505,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     validate_marker(notebook.read_text(), marker)
     check_context(root, item["name"])  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)
+    validate_queue(root, notebook)
     if (root / 'research/claims/index.json').exists():
         claims = load_claims(root / 'research/claims/index.json')
         if (root / 'research/CLAIM_INDEX.md').read_text() != render_claims(claims):

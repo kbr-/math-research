@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import sqlite3
 import subprocess
@@ -95,8 +96,14 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     parts=[(path,(root/path).read_text(), 'resume-file',path) for path in files]
     source=(root/item['source']).read_text();book=excerpt.Notebook(source)
     current=source[:book.anchor('research-record')['start']].rstrip()+'\n'
+    # The lead queue has no word limit: restoration reads its head only (tools/lead_queue.py).
+    current=re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*','',current,flags=re.S)
     parts.append((item['source']+' — living sections (thread '+item['name']+')',current,'notebook-excerpt',
                   {'anchor':None,'until':None,'current':True,'toc':False,'tail':None,'since':'None'}))
+    from lead_queue import head_lines
+    queue=head_lines(source)
+    if queue:
+        parts.append(('Lead and bridge queue — head (develop oldest first)','\n'.join(queue)+'\n','lead-queue','head'))
     toc,omitted=book.toc(tail=tail)
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))

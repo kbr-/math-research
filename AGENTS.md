@@ -225,12 +225,17 @@ rules to growing checklists or one-off setup narratives.
   each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
   the reason (the finisher checks this); falsified items stay listed and count toward the minimums
   (user, 25 September 2026). A passed bridge or passed Outside lead is a lead to develop, not only to
-  list: each later review on the route reports, under **Bridge follow-up** and **Lead follow-up**
-  headings, one `<li data-bridge="REVIEW-ANCHOR:N">` or `<li data-lead="REVIEW-ANCHOR:N">` per passed
-  item not yet closed, with the work done on it in that cycle and `<strong>Follow-up.</strong>` Developed,
-  Continuing or Closed (with the reason the attempt found). A research entry developing one carries
-  `data-bridge` or `data-lead`; the finisher checks reviews and reminds research entries (user, 26
-  September 2026: "give the bridges a chance"; "Both should have followups"). A one-step objection
+  list, and none is dropped (user, 3 October 2026): every passed, unclosed item waits in the notebook's
+  **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no word budget;
+  restoration reads its first five items), FIFO, maintained per [tools/lead_queue.py](tools/lead_queue.py).
+  A review appends its newly passed items at the end. A research entry develops at most one item, always
+  the head, tagged `data-lead` or `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>`
+  Closed (with the reason the attempt found), Developed (taken into a result or route) or Continuing;
+  Closed and Developed remove the item, Continuing moves it to the tail. Backpressure: at 50 items the
+  queue drains (`data-draining="true"`), and every research entry develops the head until 20 remain;
+  then work returns to the route, or to a better route the leads opened. Reviews report only follow-ups
+  whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the
+  queue's state and head. A one-step objection
   (a structural remark, a record match, one encoding tried) falsifies only that formulation. Before
   a review declares an open statement without mechanism, or moves cycles away from it, each "Not
   run" item and each item closed by such an objection that bears on that statement gets a

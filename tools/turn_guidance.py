@@ -66,6 +66,27 @@ def library_note(has=installed_header):
             'library on small cases.')
 
 
+def queue_notes(body):
+    """The lead and bridge queue's state and what it requires of this cycle (tools/lead_queue.py)."""
+    import lead_queue as lq
+    found = lq.parse(body)
+    if found is None:
+        return ['Lead queue: this notebook has none yet. Run python3 tools/lead_queue.py init NOTEBOOK.html and '
+                'commit the section with this cycle\'s entry; the finisher requires it.']
+    draining, queue = found
+    if not queue:
+        return ['Lead queue: empty. New passed leads and bridges of a review go at its end.']
+    kind, ident = queue[0]
+    head = f'the head is {ident} ({kind}), tagged data-{kind}="{ident}"'
+    if draining or len(queue) >= lq.CAP:
+        return [f'Lead queue: {len(queue)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
+                f'research entry must develop the head until the queue has {lq.FLOOR} items: {head}. End the '
+                'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
+                'update the queue: Closed and Developed remove the item, Continuing moves it to the tail.']
+    return [f'Lead queue: {len(queue)} items (backpressure at {lq.CAP}); {head}. A research entry that develops '
+            'a queue item must take the head, state its Follow-up outcome and update the queue.']
+
+
 def guidance(body, ft, which=shutil.which, has=installed_header):
     # every article also carries data-route-item, so keep each route once, in order
     items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
@@ -88,6 +109,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
              'outcome (falsified items still count).']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+    notes += queue_notes(body)
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
     for item in items:
