@@ -75,6 +75,10 @@ sections, keep full dated arguments there, and use the shared claim registry.
 
 Public claim-source URLs use
 `https://kbr.is-a.dev/math-research/branches/thread-name/#anchor`.
+A side notebook names a repository file by its path from the repository root, as the main
+notebook does (`research/results/...`, never `../../results/...`); `tools/notebook_links.py
+check NOTEBOOK` lists links that break this, and `fix` repairs those written from the
+notebook's folder.
 Repeated living-section anchors are local to their notebook. Qualify source links;
 never infer claim independence from placement in another notebook. Bare excerpt
 lookups without a saved selection reject ambiguous anchors; use `--notebook`.
