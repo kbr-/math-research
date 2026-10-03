@@ -60,14 +60,15 @@ class PublishedClient(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
-BROWSER_GROUPS = 3   # browsers, each running every third case concurrently
+BROWSER_GROUPS = 3   # browsers, each running every third case, one at a time
 
 
 class Browser(unittest.TestCase):
     """Every case in tests/test_*.cjs passes within BROWSER_LIMIT_S. The cases run in BROWSER_GROUPS browsers,
-    one test each, so the suite's workers run the groups in parallel: nine cases sharing one browser took
-    4-6 s each under load where each alone takes 0.5-1.3 s, while a browser per case cost about 8 s more CPU
-    and nine launches at once took 10 s each (3 October 2026)."""
+    one test each, so the suite's workers run the groups in parallel, and within a group one at a time: each
+    page spends about 0.75 s of CPU starting MathJax, whatever the notebook's size, so cases run concurrently
+    in a browser timed each other's work and took 5.2-5.4 s under the suite's load where each alone takes
+    0.5-1.4 s; a browser per case cost about 8 s more CPU (3 October 2026)."""
 
     def test_group_0(self):
         self.run_group(0)

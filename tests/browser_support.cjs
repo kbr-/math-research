@@ -155,13 +155,18 @@ function browserCase(routes, body) {
   };
 }
 
-// Runs the named cases (all when none are named) concurrently in one browser, printing one JSON line
-// per case with its outcome and seconds; the exit status is nonzero if any case fails.
-async function runCases(cases, names = []) {
+// Runs the named cases (all when none are named) in one browser, concurrently or with `sequential` one
+// at a time, printing one JSON line per case with its outcome and seconds; the exit status is nonzero
+// if any case fails. Each page spends about 0.75 s of CPU starting MathJax, so concurrent cases also
+// time each other's work.
+async function runCases(cases, names = [], {sequential = false} = {}) {
   const selected = names.length ? names : Object.keys(cases);
   const browser = await launch();
   try {
-    const results = await Promise.all(selected.map(async name => {
+    const each = sequential
+      ? async run => { const out = []; for (const name of selected) out.push(await run(name)); return out; }
+      : run => Promise.all(selected.map(run));
+    const results = await each(async name => {
       const start = performance.now();
       try {
         if (!cases[name]) throw new Error(`No such case: ${name}`);
@@ -170,7 +175,7 @@ async function runCases(cases, names = []) {
       } catch (error) {
         return {name, ok: false, seconds: (performance.now() - start) / 1000, error: String(error.stack || error)};
       }
-    }));
+    });
     for (const result of results) console.log(JSON.stringify(result));
     if (results.some(result => !result.ok)) process.exitCode = 1;
   } finally {
