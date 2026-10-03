@@ -693,6 +693,21 @@ class LeadQueueTest(unittest.TestCase):
                 sys.path.remove(tmp)
                 sys.modules.pop('titled_reviews', None)
 
+    def test_a_commit_changing_the_section_settings_reads_head_under_the_new_ones(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, 'idea_kinds.py').write_text('def kinds(lq):\n    return [lq.Kind("idea")]\n')
+            sys.path.insert(0, tmp)
+            try:
+                section = '<section id="lead-queue"{}><ol><li data-idea="one">one</li></ol></section>'
+                old = ROUTE + section.format(' data-items="ideas"') + '<section id="research-record"></section>'
+                new = ROUTE + section.format(' data-kind-modules="idea_kinds"') + '<section id="research-record"></section>'
+                lq.check(old, new)
+                with self.assertRaises(ValueError):                     # the items themselves may not change
+                    lq.check(old, new.replace('data-idea="one">one', 'data-idea="two">two'))
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop('idea_kinds', None)
+
     def test_check_command_compares_the_staged_notebook_with_a_base(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

@@ -322,10 +322,11 @@ def parse_nodes(content):
     return nodes
 
 
-def parse_tree(body):
-    """(draining, [Node]) of the queue section, or None if the notebook has none; applies the section's settings."""
+def parse_tree(body, attrs=None):
+    """(draining, [Node]) of the queue section, or None if the notebook has none; applies the section's settings,
+    or those of the section attributes `attrs` when given (the draining flag stays the section's own)."""
     found = SECTION_RE.search(body)
-    configure(found.group(1) if found else '')
+    configure(attrs if attrs is not None else found.group(1) if found else '')
     if found is None:
         return None
     ol = re.search(r'<ol>(.*)</ol>', found.group(2), re.S)
@@ -802,7 +803,10 @@ def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
     directory its relative links resolve, and `root` the repository (default: this one)."""
-    before = parse_tree(head_body) if head_body else None     # parsed first: the notebook's own settings win
+    # both sections are read under the committed notebook's settings, so a commit changing them (business's move
+    # from data-items="ideas" to its kind module) reads HEAD's items as the notebook now means them
+    section = SECTION_RE.search(body)
+    before = parse_tree(head_body, section.group(1) if section else None) if head_body else None
     now = parse_tree(body)
     if before is not None and now is None:
         raise ValueError('The lead and bridge queue section is gone: a notebook keeps its queue once it has one')
