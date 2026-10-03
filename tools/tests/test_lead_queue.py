@@ -410,6 +410,17 @@ class LeadQueueTest(unittest.TestCase):
         body, _ = lq.append_new(notebook([self.rev, child], want))       # listed while developing a child: its parent
         self.assertEqual(lq.shape(lq.parse_tree(body)[1])[0], (self.q[0], [('check', 'd:s1'), ('check', 'f:s1')]))
 
+    def test_subideas_of_a_developed_subidea_join_its_parent(self):
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="build">a</li></ul>'
+                             ).replace('id="d"', 'id="k"')
+        tree = [(self.q[0], [('build', 'k:s1')]), (self.q[1], [])]
+        child = developing(('build', 'k:s1'), 'Developed', '<h4>Sub-ideas</h4><ul><li data-sub="build">b</li></ul>'
+                           ).replace('id="d"', 'id="f"')
+        body = lq.done(notebook([self.rev, listing, child], tree), 'Developed')   # removes k:s1 first
+        body, count = lq.append_new(body)
+        self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])),
+                         (1, [(self.q[0], [('build', 'f:s1')]), (self.q[1], [])]))
+
     def test_a_named_parent_must_be_queued_except_in_an_audit(self):
         head = notebook([self.rev], self.q)
         stray = subideas('t1', [('check', 'c')]).replace('data-sub="check"', 'data-sub="check" data-parent="lead:r9:1"')

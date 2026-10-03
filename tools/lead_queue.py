@@ -567,11 +567,15 @@ def placement(body, nodes, tag, text, item, audit):
         target = work[0] if work else None
     if target is None:
         return None
-    parent, node = locate(nodes, target)
-    if parent is not None:
-        return parent
-    if node is not None:
-        return node
+    # A developed sub-idea is already gone once done has run: its new sub-ideas join its parent.
+    for candidate in (target, None if named else record_parent(body, target)):
+        if candidate is None:
+            continue
+        parent, node = locate(nodes, candidate)
+        if parent is not None:
+            return parent
+        if node is not None:
+            return node
     if named and not audit:
         raise ValueError(f'{ident} names a parent that is not queued: {target[0]}:{target[1]}')
     return None
