@@ -438,6 +438,15 @@ class LeadQueueTest(unittest.TestCase):
         lq.check(notebook([self.rev] + earlier, tree), notebook([self.rev] + earlier + [cont_child], moved))
         with self.assertRaises(ValueError):                             # the fourth entry moves the parent
             lq.check(notebook([self.rev] + earlier, tree), notebook([self.rev] + earlier + [cont_child], tree))
+        # so does a fourth that closes the sub-idea: the parent goes to the tail with what is left of it
+        closing = developing(('check', 'k:s1'), 'Closed')
+        left = [(self.q[1], []), (self.q[0], [('check', 'k:s2')])]
+        lq.check(notebook([self.rev] + earlier, tree), notebook([self.rev] + earlier + [closing], left))
+        with self.assertRaises(ValueError):
+            lq.check(notebook([self.rev] + earlier, tree),
+                     notebook([self.rev] + earlier + [closing], [(self.q[0], [('check', 'k:s2')]), self.q[1]]))
+        self.assertEqual(lq.shape(lq.parse_tree(lq.done(notebook([self.rev] + earlier + [closing], tree),
+                                                        'Closed'))[1]), left)
 
     def test_a_parent_with_subideas_is_not_developed_and_closes_them(self):
         tree = [(self.q[0], [('check', 'k:s1'), ('build', 'k:s2')]), (self.q[1], [])]

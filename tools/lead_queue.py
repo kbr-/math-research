@@ -513,12 +513,15 @@ def group_of(body, nodes, item, position=None):
     return record_parent(body, item, position) or item
 
 
-def spell(body, item):
+def spell(body, item, nodes=None):
     """Research entries, from the record's end, that developed `item` or one of its children since it became
     the head: entries that develop no queue item (reviews, other research) neither count nor break the run, which
-    ends at an entry developing another item or settling a triage batch."""
-    found = parse_tree(body)
-    nodes = found[1] if found else []
+    ends at an entry developing another item or settling a triage batch.  `nodes`, the queue the children are
+    looked up in, defaults to `body`'s; the check passes the queue before the last entry, which still holds a
+    child that entry closed."""
+    if nodes is None:
+        found = parse_tree(body)
+        nodes = found[1] if found else []
     count = 0
     articles = record_articles(body)
     for position in range(len(articles) - 1, -1, -1):
@@ -829,14 +832,12 @@ def transition(body, old, tag, text):
     kept, promoted = kept_children(text), []
     for item in closed + [b[0] for b in batch]:
         close(nodes, item, kept, promoted)
+    parent, node = locate(nodes, work[0]) if work else (None, None)
     if work and work[1] in ('Closed', 'Developed'):
         close(nodes, work[0], kept, promoted)
+        end_spell(body, nodes, parent, chosen, old)  # a developed or closed sub-idea's entry counts for its parent
     elif work and work[1] == 'Continuing':
-        parent, node = locate(nodes, work[0])
-        top = parent if parent is not None else node
-        if top is not None and not chosen and top is head_of(nodes) and spell(body, top.item) >= SPELL:
-            nodes.remove(top)                # the head keeps its place for up to SPELL entries, then the tail
-            nodes.append(top)
+        end_spell(body, nodes, parent if parent is not None else node, chosen, old)
     nodes += promoted
     place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
     apply_marks(nodes, text)
@@ -1005,6 +1006,16 @@ def head_lines(body, count=HEAD_READ):
     return out
 
 
+def end_spell(body, nodes, top, picked, before=None):
+    """Move `top` with its sub-ideas to the tail when it is the head and the entry ending `body` is the SPELLth of
+    its spell, counted against the queue `before` that entry (default: `body`'s); a picked entry neither counts
+    toward nor ends a spell."""
+    if (top is not None and top in nodes and not picked and top is head_of(nodes)
+            and spell(body, top.item, before) >= SPELL):
+        nodes.remove(top)
+        nodes.append(top)
+
+
 def done(body, outcome):
     """The notebook with the item the last entry develops removed (Closed, Developed; a parent's sub-ideas close
     with it unless the entry keeps one Continuing, which goes to the tail), or kept (Continuing: a head keeps its
@@ -1029,15 +1040,14 @@ def done(body, outcome):
     if locate(nodes, work[0])[1] is None:
         raise ValueError(f'{work[0][1]} is not queued (has done already run?)')
     item = work[0]
+    parent, node = locate(nodes, item)
+    picked = 'data-picked="user"' in tag
     if outcome == 'Continuing':
-        parent, node = locate(nodes, item)
-        top = parent if parent is not None else node
-        if top is head_of(nodes) and 'data-picked="user"' not in tag and spell(body, top.item) >= SPELL:
-            nodes.remove(top)
-            nodes.append(top)
+        end_spell(body, nodes, parent if parent is not None else node, picked)
     else:
         promoted = []
         close(nodes, item, kept_children(text) if work else set(), promoted)
+        end_spell(body, nodes, parent, picked)       # a developed or closed sub-idea's entry counts for its parent
         nodes += promoted
     return rewrite(body, nodes, draining_after(was, nodes))
 
