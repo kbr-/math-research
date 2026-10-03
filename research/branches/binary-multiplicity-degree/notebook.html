@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-dominance-gegenbauer">Gegenbauer dominance</a>; eight open items). Taylor dominance above a tie over a caterpillar of \(m\) roots appears to fail exactly at the zeros of the Gegenbauer tie coefficient \(t_{\binom m2}\). These zeros never meet the excluded Hankel moduli for \(M\le120\).</p>
-<p>Next: prove conj:cube-tie-dominance-gegenbauer. Read the proof of thm:cube-single-tie-chain-avoidance for the lattice splitting at a tie level over a caterpillar. Show that the leading coordinate of the cluster's pair span is the caterpillar's Taylor minor times a tie-window corner proportional to \(t_{\binom m2}(c_0)\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-dominance-proof">tie dominance</a>; eight open items). Above a tie over a caterpillar, Taylor dominance holds exactly off the zeros of the Gegenbauer tie coefficient \(t_{\binom m2}\). So the cherry step's uniqueness hypothesis holds above the excluded Hankel moduli for \(M\le120\).</p>
+<p>Next: prove that the Hankel moduli \(c+1/c=2/(M-1)\) are never zeros of \(t_{\binom{M-2}2}\), for every \(M\). The value \(t_d\) at such \(c\) is a rational number in \(\mathbb Q(\sqrt{-(M^2-2M)})\). Look for a prime \(p\) and a valuation argument, for instance \(p\)-adic nonvanishing of the Gegenbauer value \(C^{(3/2)}_d(x)\), \(x^2=M/(2(M-1))\), from the explicit coefficients.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -69107,6 +69107,75 @@ in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">34.84 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">23.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.45 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-dominance-proof" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-tie-taylor-dominance cor:cube-hankel-tie-unique-cblock">
+<h3>9 October 2026 — Taylor dominance above a tie over a caterpillar holds exactly off the zeros of the Gegenbauer tie coefficient; so the cherry step's uniqueness hypothesis holds above the excluded Hankel moduli for \(M\le120\)</h3>
+<p class="entry-meta">Working proof of conj:cube-tie-dominance-gegenbauer from the top-tie valuation analysis, full rank of the tie window and the identification of the square window with \(t_{\binom m2}\); corollary at the excluded Hankel moduli, \(M\le120\). Tie dominance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement. The <a href="#entry-2026-10-09-cube-tie-dominance-gegenbauer">Gegenbauer dominance entry</a> conjectured that above a tie \((c_0,1)\) over a caterpillar of \(m\) roots, Taylor dominance holds iff \(t_{\binom m2}(c_0)\ne0\). Do the record's tie-window results already prove it?</p>
+<p><strong>General statement.</strong> thm:cube-tie-taylor-dominance. Characteristic zero, \(\lambda=\tfrac32\), \(m\ge2\), \(d=\binom m2\), \(R=\binom{m+2}2\). Take a cluster whose normalized roots are a tie \((c_0,1)\), \(c_0\notin\{0,1\}\), over a caterpillar of \(m\) roots at positive relative valuations, along an analytic arc. Let \(p_S\) be the Plücker coordinates of the normalized configuration: top root \(1\), scale fixed along the arc. A dilation by \(\mu\) multiplies \(p_S\) by \(\mu^{\Sigma S}\), so dominance is a statement about this frame, as in the conjecture's own test and in lem:cube-cofactor-gives-unique-cblock. Then:</p>
+<ul>
+<li>\(\min_S\operatorname{val}p_S\) is attained;</li>
+<li>\(p_{T_0}\), \(T_0=\{0,\ldots,R-1\}\), attains it iff \(t_d(c_0)\ne0\).</li>
+</ul>
+<p>This proves conj:cube-tie-dominance-gegenbauer, read in the normalized frame. Since \(T_0\) has the least column sum, step 3 of the proof of lem:cube-cofactor-gives-unique-cblock gives: whenever \(t_d(c_0)\ne0\), the leading \(C\)-block coordinate of such a cluster is unique and equals \(T_0\), along every arc with \(w_x&gt;0\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Frame. Taylor dominance is unchanged by a translation of the roots by an element of valuation \(\ge0\). That acts on the columns by an integral unitriangular matrix, so it fixes \(p_{T_0}\) and maps every \(p_S\) to an integral combination of coordinates, both ways. A dilation by a unit scales every \(p_S\) by a unit. So we may use the frame of lem:cube-top-tie-contact-avoidance: the bottom root of the caterpillar translated to \(\varepsilon^V\), then a unit dilation by \((1+s)^{-1}\), \(\operatorname{val}s&gt;0\), restoring the top root \(1\) and keeping \(c(\varepsilon)\to c_0\).</li>
+<li>Lower bound and attainment. In that frame the valuation analysis of lem:cube-top-tie-contact-avoidance gives \(\operatorname{val}p_S\ge v_0=v^\ast+2\operatorname{val}\mathrm{Vand}(b)\) for every column set \(S\), through a Laplace and Cauchy–Binet sum that is finite for every \(S\), since \(B_{n,k}=0\) for \(n&gt;k\). That this bound holds for all \(S\), not only within the window, is the base step of thm:cube-single-tie-chain-avoidance, using thm:cube-caterpillar-minimality for the caterpillar minors. For \(S=\{0,\ldots,d-1\}\cup S'\), \(S'\subset\{d,\ldots,d+2m+2\}\), \(|S'|=2m+1\), the minimal term is unique. Its coefficient is a nonzero constant times \(\det W(c_0)_{S'}\), where \(W\) is the tie contact window. By cor:cube-tie-window-full-rank, \(W(c_0)\) has full rank for \(c_0\notin\{0,1\}\). So some \(S'\) gives \(\operatorname{val}p_S=v_0\), and the minimum is \(v_0\).</li>
+<li>The Taylor set. \(T_0=\{0,\ldots,d-1\}\cup\{d,\ldots,d+2m\}\), so \(S'\) is the square window, columns \(d,\ldots,d+2m\). Its determinant is \(c^a(c-1)^bL_m(c)\): \(L_m\) is the maximal minor of the window that drops its last two columns (<a href="#entry-2026-10-06-cube-tie-window-unit-circle">tie window on the unit circle</a>, conj:cube-tie-square-window-unit-circle), with \(L_m\propto t_d\) by lem:cube-tie-window-gegenbauer-consequences and thm:cube-tie-window-gegenbauer. For \(c_0\notin\{0,1\}\) this is nonzero iff \(t_d(c_0)\ne0\).
+<ul>
+<li>If \(t_d(c_0)\ne0\), then \(\operatorname{val}p_{T_0}=v_0\).</li>
+<li>If \(t_d(c_0)=0\), every term of \(p_{T_0}\) has valuation \(\ge v_0\), and the unique term that could reach \(v_0\) has leading coefficient \(\pm\mathrm{const}\cdot\det W(c_0)_{\{d,\ldots,d+2m\}}=0\), so it lies strictly above \(v_0\). Hence \(\operatorname{val}p_{T_0}&gt;v_0\), possibly infinite, and some other \(S\) attains \(v_0\). \(\square\)</li>
+</ul></li>
+</ol>
+<p>Agreement with the evidence of the conjecture: at \(m=4\), the \(q\)-adic run gave \(\operatorname{val}p_{T_0}=70=\min\) at \(c_0=2\) and \(71&gt;70\) at a root of \(t_6\) (tie-gegenbauer-dominance.txt). For \(m=2,3\) the factors \(t_1\), \(t_3\) of the tie-limit cofactors are consistent with it; those cofactors are values at the tie limit, not valuations along arcs.</p>
+<p><strong>Second statement.</strong> cor:cube-hankel-tie-unique-cblock. Characteristic zero, \(4\le M\le120\), \(m=M-2\). Above a tie over a caterpillar at either excluded Hankel modulus \((M-1)c_0^2-2c_0+(M-1)=0\), the leading \(C\)-block coordinate is unique along every arc with \(w_x&gt;0\). Proof: check:cube-hankel-moduli-not-gegenbauer gives \(t_{\binom m2}(c_0)\ne0\). The theorem gives Taylor dominance in the normalized frame, and the least column sum of \(T_0\) gives uniqueness for \(w_x&gt;0\) (step 3 of the proof of lem:cube-cofactor-gives-unique-cblock; that lemma's hypothesis \(F(y^\ast)\ne0\) itself fails for \(M\ge6\)). \(\square\)</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>Above a tie over a caterpillar at an excluded Hankel modulus, \(M\le120\), prop:cube-cherry-step-any-set now has a proved uniqueness hypothesis. Its other hypothesis, (W″) on the failing ray except at three-leader ties, is still a finite \(q\)-adic check.</li>
+<li>The obstruction to uniqueness above ties is exactly the Gegenbauer tie coefficient, the same object that governs the tie windows. At its zeros \(T_0\) is not dominant, so the cherry step there needs a non-Taylor leading coordinate. The record's tie theory still gives avoidance at those points.</li>
+<li>Disjointness of the Hankel and Gegenbauer moduli for all \(M\) would remove the bound \(M\le120\). It is an arithmetic statement about \(C^{(3/2)}_{\binom{M-2}2}\) at \(\cos^2\theta=M/(2(M-1))\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Disjointness of the two sets of moduli for every \(M\).</li>
+<li>(W″) on the failing ray as a proof.</li>
+<li>Uniqueness above other cluster shapes, such as cherries and three-root levels.</li>
+<li>(W″) under Hankel non-cancellation; the other open items of (K), and (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-top-tie-contact-avoidance (valuation analysis and leading term);</li>
+<li>thm:cube-single-tie-chain-avoidance (the bound for all column sets);</li>
+<li>thm:cube-caterpillar-minimality;</li>
+<li>cor:cube-tie-window-full-rank, lem:cube-tie-window-gegenbauer-consequences, thm:cube-tie-window-gegenbauer, and conj:cube-tie-square-window-unit-circle (definition of \(L_m\));</li>
+<li>lem:cube-cofactor-gives-unique-cblock and check:cube-hankel-moduli-not-gegenbauer.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the translation invariance (upper unitriangular integral column change), the lower bound and its finiteness, the Taylor set and the square window, \(L_m\propto t_d\) with \(\kappa_{m,d}(3/2)\ne0\), and the "only if" direction. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the normalized frame made explicit;</li>
+<li>the unit dilation added to the frame change;</li>
+<li>the uniqueness step cited from the lemma's proof, not its hypothesis, which fails for \(M\ge6\);</li>
+<li>the "only if" wording;</li>
+<li>finiteness of the expansion;</li>
+<li>the source of the square-window columns;</li>
+<li>"consistent with" for the small cases.</li>
+</ul>
+<p>Status: working proof (theorem and corollary); proves the previous entry's conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ah">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 36.39 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 2.21 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 2.80 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">15.13 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 14.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.40 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
