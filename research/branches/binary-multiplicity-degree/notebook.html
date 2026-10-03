@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\) is certified for \(d\le7\) at every small prime. Its conic route has one exception, a Frobenius-nonclassical system with extra order \(3^4\). The one-merge target passes at \(n=6\), \(d=3\) (<a href="#entry-2026-10-09-cube-conic-route-review">review</a>).</p>
-<p>Next: the queue head, checked against statement 2's classicality form: a degenerate limit of the collision series must be Frobenius-classical.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\) is certified for \(d\le7\) at every small prime. Its conic route has one exception, a Frobenius-nonclassical system with extra order \(3^4\) (<a href="#entry-2026-10-09-cube-conic-route-review">review</a>). Two memory-route bridges were closed (<a href="#entry-2026-10-09-cube-memory-route-triage">triage</a>).</p>
+<p>Next: the queue head, Cramer's rule and Gauss's lemma with primitive cofactors, on statement 4's boundary thresholds at small primes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -96,8 +96,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <h2>Lead and bridge queue</h2>
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
-<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1"><a href="#entry-2026-09-28-cube-variable-depth-review">entry-2026-09-28-cube-variable-depth-review:1</a> (bridge): Communication with memory. Interpret the original observation as a transfer matrix over \(K[[\varepsilon]]\), and reconstruction after delay as \(LM=\varepsilon^hI\). This uses the delayed-network viewpoint of Koetter–Mé…</li>
-<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2"><a href="#entry-2026-09-28-cube-variable-depth-review">entry-2026-09-28-cube-variable-depth-review:2</a> (bridge): Effective operators in degenerate quantum perturbation. Continue the earlier Feshbach–Schur bridge with its algebraic unit-pivot version, without positive inner products or analytic spectral assumptions. At every stage t…</li>
 <li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:1</a> (lead): Cramer's rule and Gauss's lemma. Apply primitive cofactors to the actual polynomial prefix, keeping its last coordinate. In the smallest retained five-root boundary the explicit residual and three component tests prove p…</li>
 <li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:3</a> (lead): Faithfully flat monic splitting. The raw prefix transformation (RT) and monic root tower descend kernels while preserving the top coordinate and all weights, including when the characteristic divides the symmetric-group …</li>
 <li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2"><a href="#entry-2026-09-28-cube-coefficient-sensitive-review">entry-2026-09-28-cube-coefficient-sensitive-review:2</a> (bridge): A polynomial parity check. Treat the three-by-four residual as a prescribed transfer matrix, and its primitive cofactor vector as the single polynomial relation among four transmitted columns. Its marked final coordinate…</li>
@@ -78448,6 +78446,34 @@ using \(-2\equiv1\) modulo three. This is exactly the identity by which lem:cube
 <tr><td>Computation design and coding</td><td class="elapsed">15.43 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">31.72 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.78 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-memory-route-triage" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Queue triage of two head items; it settles items and registers no new claim.">
+<h3>9 October 2026 — Queue triage: the communication-with-memory and effective-operator bridges restate the delayed-observation lemma</h3>
+<p class="entry-meta">Queue triage (two items, both Closed as restatements). The third head item, Cramer's rule with primitive cofactors, bears on statement 4 and gets its own spell. Memory route triage cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The two head items are the variable-depth review's bridges. They are the delayed-network and effective-operator versions of the bridges closed in the <a href="#entry-2026-10-09-cube-delay-route-triage">delay route triage</a>. Do they add anything to lem:hasse-delayed-observation-reduction, now that statement 2 is pursued as Frobenius classicality of merge limits (<a href="#entry-2026-10-09-cube-conic-route-review">conic route review</a>)?</p>
+<p><strong>General statement.</strong> lem:hasse-delayed-observation-reduction (every power-series DVR), against which both items are checked.</p>
+<h4>Queue triage</h4>
+<ul>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">Communication with memory. The bridge reads the observation as a transfer matrix over \(K[[\varepsilon]]\) and decoding after delay as \(LM=\varepsilon^hI\). That is the termination clause of lem:hasse-delayed-observation-reduction: the least such \(h\) is the largest Smith exponent, finite exactly when \(\det M\ne0\). Its answer asks for a decoder built from the actual correlated paths, which would prove generic invertibility. A decoder exists exactly when the determinant is nonzero, so the answer is the open statement. Its test explicitly did not transfer the free-weight capacity theorem of Koetter and Médard, the only part that could have produced a decoder. The record's correlated pair weights violate that theorem's free-coefficient hypothesis, as the finite-field family with full routing and zero determinant shows. <strong>Follow-up.</strong> Closed: restatement of the termination criterion; the network capacity theorem does not apply to prescribed weights.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">Effective operators in degenerate quantum perturbation. The bridge continues the Feshbach–Schur bridge, now closed in the delay route triage, in its algebraic unit-pivot form. Its effective operator \(E-CU^{-1}B\) is the residual of lem:hasse-delayed-observation-reduction, and its own test states that no uniform bound or nonvanishing follows from the formal elimination. Its answer, a structural recursion for these operators, would be a recursion for the residual sequence. By that lemma, that sequence terminates exactly when the determinant is nonzero. The merge route now replaces this recursion with exact limit lattices (lem:cube-two-pair-confluence), whose failures are identified as Frobenius nonclassicality. <strong>Follow-up.</strong> Closed: restatement of lem:hasse-delayed-observation-reduction, superseded by the merge limits.</li>
+</ul>
+<p><strong>Remaining gap.</strong> Statement 2: a mechanism forcing merge limits to be Frobenius-classical. Statement 4: the boundary thresholds at small primes, which the next head item addresses.</p>
+<p><strong>Process.</strong> No computation; each item was checked against its own recorded test and the lemma it restates.</p>
+<p><strong>Dependencies re-read.</strong> lem:hasse-delayed-observation-reduction (its statement in the variable-depth review); lem:cube-two-pair-confluence; the delay route triage.</p>
+<p><strong>Verification gate.</strong> No new claim; the outcomes rest on recorded lemmas and the items' own tests.</p>
+<p><strong>Status:</strong> queue triage.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 4.30 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">39.32 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">24.84 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
