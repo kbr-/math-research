@@ -88,16 +88,17 @@ def queue_notes(body):
               + (f', or its first sub-idea {first.ident} ({first.kind})' if first else '')
               + f'; this would be its entry {lq.spell(body, head.item) + 1} of at most {lq.SPELL} in a row{waits}')
     entries = ' or '.join(sorted(lq.SETTINGS['counted']))
+    rule = ' '.join(lq.SETTINGS['guidance']) or SQUEEZE     # a kind module's own, else the squeeze rule
     if lq.SETTINGS['backpressure'] and (draining or len(nodes) >= lq.CAP):
         return [f'Lead queue: {len(nodes)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
                 f'{entries} entry must develop the head until the queue has {lq.FLOOR} items: {target}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
                 'update the queue: Closed and Developed remove the item; Continuing keeps the head until its '
-                f'{lq.SPELL}th consecutive entry, then moves it with its sub-ideas to the tail. ' + SQUEEZE]
+                f'{lq.SPELL}th consecutive entry, then moves it with its sub-ideas to the tail. ' + rule]
     pressure = f'backpressure at {lq.CAP}' if lq.SETTINGS['backpressure'] else 'no backpressure here'
     return [f'Lead queue: {len(nodes)} items ({pressure}); {target}. A {entries} entry that develops a queue '
             'item takes the head or its first sub-idea, unless the user picked another, states its Follow-up '
-            'outcome and updates the queue. ' + SQUEEZE]
+            'outcome and updates the queue. ' + rule]
 
 
 SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing '

@@ -174,7 +174,7 @@ KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
          'check': Kind('check', SUBIDEAS_RE, sub=True, rules={'Developed': check_developed}),
          'build': Kind('build', SUBIDEAS_RE, sub=True, rules={'Developed': build_developed})}
 BUILTIN = dict(KINDS)
-SETTINGS = {'counted': {'research'}, 'backpressure': True, 'uncounted': []}
+SETTINGS = {'counted': {'research'}, 'backpressure': True, 'uncounted': [], 'guidance': []}
 NAMES = '|'.join(KINDS)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 
@@ -197,12 +197,13 @@ LIVE = Live()
 def configure(attrs):
     """Apply a queue section's attributes (a notebook without a section gets the defaults): the entry kinds
     that count, whether backpressure applies, and the kinds of the modules it names, loaded from beside this file,
-    with each module's uncounted(tag, text), if it has one, naming entries of a counted kind that do not count."""
+    with each module's uncounted(tag, text), if it has one, naming entries of a counted kind that do not count, and
+    its GUIDANCE, the cycle guidance for its kinds, which turn_guidance.py shows in place of the squeeze rule."""
     global NAMES, FOLLOWUP_ITEM
     counted = re.search(r'\bdata-counted="([^"]*)"', attrs)
     SETTINGS['counted'] = set(counted.group(1).split()) if counted else {'research'}
     SETTINGS['backpressure'] = 'data-backpressure="off"' not in attrs
-    SETTINGS['uncounted'] = []
+    SETTINGS['uncounted'], SETTINGS['guidance'] = [], []
     KINDS.clear()
     KINDS.update(BUILTIN)
     modules = re.search(r'\bdata-kind-modules="([^"]*)"', attrs)
@@ -216,6 +217,8 @@ def configure(attrs):
                 KINDS[kind.name] = kind
             if hasattr(module, 'uncounted'):
                 SETTINGS['uncounted'].append(module.uncounted)
+            if hasattr(module, 'GUIDANCE'):
+                SETTINGS['guidance'].append(module.GUIDANCE)
     NAMES = '|'.join(KINDS)
     FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 

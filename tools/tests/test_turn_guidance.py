@@ -98,6 +98,25 @@ class TurnGuidanceTest(unittest.TestCase):
         everyone = queue.format(attrs='').replace('data-lead="r:2">', 'data-lead="r:2" data-waits="z">')
         self.assertIn('every one waiting', ' '.join(self.guide.queue_notes(route + everyone + record)))
 
+    def test_a_kind_modules_guidance_replaces_the_squeeze_rule(self):
+        import sys, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, 'guided_kinds.py').write_text('def kinds(lq):\n    return [lq.Kind("idea")]\n'
+                                                    'GUIDANCE = "Close an idea only by a test of it."\n')
+            sys.path.insert(0, tmp)
+            try:
+                body = ('<section id="remaining-route"><li data-route-item="step">x</li></section><section '
+                        'id="lead-queue" data-kind-modules="guided_kinds"><ol><li data-idea="one">One</li></ol>'
+                        '</section><section id="research-record"></section>')
+                note = ' '.join(self.guide.queue_notes(body))
+                self.assertIn('Close an idea only by a test of it.', note)
+                self.assertNotIn('open statement', note)
+                self.assertIn('open statement', ' '.join(self.guide.queue_notes(body.replace(
+                    ' data-kind-modules="guided_kinds"', '').replace('data-idea="one"', 'data-lead="r:1"'))))
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop('guided_kinds', None)
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 
