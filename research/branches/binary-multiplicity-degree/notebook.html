@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 rests on the one-merge limit \(L_d\) on \(C_{n-2}\): at \(n=5\), \(d\ge3\) one \(5\times5\) theta determinant, and at \(p=3\), \(d=2\) normal through \(n=12\) (<a href="#entry-2026-10-09-cube-merge-route-review">review</a>). Two-interval merges are closed; the sequential coface is ruled out.</p>
-<p>Next: the queue head, Bhargava's \(p\)-orderings and binomial interpolation, checked against statement 2's one-merge target \(L_d\).</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 rests on the one-merge limit \(L_d\) on \(C_{n-2}\): at \(n=5\), \(d\ge3\) one \(5\times5\) theta determinant, and at \(p=3\), \(d=2\) normal through \(n=12\) (<a href="#entry-2026-10-09-cube-merge-route-review">review</a>). Two-interval merges are closed, now also by <a href="#entry-2026-10-09-cube-merge-residue-criterion">residue balance</a>.</p>
+<p>Next: the queue head, Bhargava's \(p\)-orderings (entry two of four). Degenerate \(L_d\) to a rational curve by merging the remaining roots in disjoint pairs (first the two-pair confluence lemma), then apply (HP) per character.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -78136,6 +78136,49 @@ for the rows \(R=\{0,\ldots,m_0\}\) and the columns \(C=\{0,\ldots,D\}\setminus 
 <tr><td>Computation design and coding</td><td class="elapsed">23.52 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">32.46 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.85 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-merge-residue-criterion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3" data-claims="thm:cube-merge-residue-criterion">
+<h3>9 October 2026 — Merge residue criterion: a two-interval merge is consecutive mod \(p\) exactly when its \(x\)-exponents are residue-balanced, and its block determinant is a Vandermonde quotient</h3>
+<p class="entry-meta">Working theorem (criterion for all \(A,B\ge0\) and odd \(p\); integer identity for \(A\ge B\ge0\)), no computation. Lead-queue development (head item, entry one of four, Continuing). Merge residue criterion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The head lead, Bhargava's \(p\)-orderings, offers lem:hasse-residue-balanced-minors. A Laurent monomial space is Hasse-normal at \(x=1\) exactly when its exponents are residue-balanced modulo every \(p^h\), and a general space is governed by the Cauchy–Binet sum (HP). Statement 2's degenerations are built from square-root merges, which the last four entries characterized through binomial and Toeplitz determinants. Does the lead's criterion apply to them directly? If it does, which closed form does it give?</p>
+<p><strong>General statement.</strong> thm:cube-merge-residue-criterion (all \(A,B\ge0\) for the criterion, \(A\ge B\ge0\) for the identity).</p>
+<h4>The theorem</h4>
+<p><strong>Theorem (thm:cube-merge-residue-criterion).</strong> For \(A,B\ge0\) put
+\[E_{A,B}=\{0,2,4,\ldots,2A\}\cup\{1,3,\ldots,2B+1\},\qquad |E_{A,B}|=A+B+2.\]
+(1) For an odd prime \(p\), the merge \(k[T]_{\le A}+x\,k[T]_{\le B}\), \(x=\sqrt{1+\varepsilon T}\), has the consecutive limit \(k[T]_{\le A+B+1}\) in characteristic \(p\) if and only if \(E_{A,B}\) is residue-balanced modulo \(p^h\) for every \(h\ge1\): its counts in the residue classes modulo \(p^h\) differ by at most one.<br>
+(2) For \(A\ge B\ge0\), where \(M_{A,B}\) is defined, over the integers and with \(V(E)=\prod_{e&lt;e',\ e,e'\in E}(e'-e)\),
+\[\det M_{A,B}=\frac{V(E_{A,B})}{\prod_{j=0}^{A+B+1}j!},\]
+where \(M_{A,B}=[\binom ij]_{i\in I,j\in J}\) is the block of lem:cube-unbalanced-merge-criterion.</p>
+<p><strong>Proof.</strong> At \(\varepsilon=1\) the merge space is \(W=k[t]_{\le A}+\sqrt{1+t}\,k[t]_{\le B}\). With \(x=\sqrt{1+t}\), \(k[t]_{\le A}\) is the even polynomials in \(x\) of degree at most \(2A\), and \(x\,k[t]_{\le B}\) the odd ones of degree at most \(2B+1\). So \(W=\operatorname{span}\{x^e:e\in E_{A,B}\}\). By lem:cube-merge-order-limit, the limit is \(\operatorname{span}\{T^e:e\in\operatorname{Ord}\}\), with \(\operatorname{Ord}\) the orders of \(W\) at \(t=0\). Since \(t=(x-1)(x+1)\) and \(x+1\) is a unit at \(x=1\), \(t\) is a local parameter there, so these are the orders of \(W\) at \(x=1\). They are \(0,\ldots,A+B+1\) exactly when the length-\((A+B+2)\) Hasse determinant of the monomials \(x^e\), \(e\in E_{A,B}\), at \(x=1\) is nonzero. By lem:hasse-residue-balanced-minors that is residue balance modulo every \(p^h\). This proves (1).</p>
+<p>For (2): that Hasse determinant is the determinant of the \(y\)-coefficients, \(y=x-1\), of orders \(0,\ldots,A+B+1\) of the basis \(x^e\). That is the minor \(D_y\) of the merge determinant identity (thm:cube-merge-determinant-identity, its Jacobi step), which equals \(\det M_{A,B}\) up to sign. The same lemma's formula (BV) evaluates it as \(V(E_{A,B})/\prod_{j}j!\), which is positive. \(\det M_{A,B}\) is positive by the Gessel–Viennot positivity of lem:cube-unbalanced-merge-criterion, so the sign is \(+\). \(\square\)</p>
+<p><strong>Hand checks.</strong></p>
+<ul>
+<li>\((A,B)=(2,0)\): \(E=\{0,1,2,4\}\), \(V=1\cdot2\cdot4\cdot1\cdot3\cdot2=48\) and \(\prod_{j&lt;4}j!=12\), giving \(4=\binom43\).</li>
+<li>\((3,1)\): \(E=\{0,1,2,3,4,6\}\), \(V=288\cdot720=207360\) (the Vandermonde of \(0,\ldots,4\) times the differences from \(6\)) and \(\prod_{j&lt;6}j!=34560\), giving \(6=\binom65\).</li>
+<li>Residue balance at \(p=3\), \((A,B)=(3,1)\): the counts modulo \(3\) are \(3,2,1\), unbalanced, so the merge is singular, as \(3\mid A\) requires (obs:cube-odd-unbalanced-confluence).</li>
+<li>\((4,2)\) at \(p=3\): \(E=\{0,\ldots,8\}\setminus\{7\}\) has counts \(3,2,3\) modulo \(3\) and distinct residues modulo \(9\). It is balanced and nonsingular, as \(3\nmid4\) requires.</li>
+</ul>
+<p><strong>What this adds.</strong> The record now has three equivalent descriptions of the same merge resonance: the carry equality (thm:cube-merge-product-formula), the closed product (thm:cube-merge-determinant-identity), and residue balance of one explicit exponent set. The last is the simplest to apply: a two-interval merge is consecutive exactly when the evens up to \(2A\) and the odds up to \(2B+1\) fill the residue classes evenly at every level. The Vandermonde form (2) is the most explicit: \(\det M_{A,B}\) is \(\prod(e'-e)\) over \(E_{A,B}\) divided by the superfactorial.</p>
+<p>The lead's general tool, the Cauchy–Binet sum (HP), applies beyond monomial spaces. The even class of the pair confluence limit is the next case: at \(\varepsilon=1\) it is \(k[\tau]_{\le j}+x(1-a_1\tau)k[\tau]_{\le j-2}\), the evens up to \(2j\) plus a hyperplane of the odds up to \(2j-1\). That is a codimension-one subspace of a monomial space, so (HP) runs over the exponent sets omitting a single exponent. But lem:cube-merge-order-limit covers only monomial \(S,S'\); for the twisted class the limit need not be monomial, and the record already proves it safe by a separate argument (the hyperplane cut at a finite point in lem:cube-pair-confluence-limit).</p>
+<p><strong>Follow-up.</strong> Continuing (entry one of four). The lead's (HP) applies to spaces on a rational curve, and \(L_d\) lives on \(C_{n-2}\), so it bears on statement 2 only through a degeneration of \(L_d\) to a rational curve. Next attempt: the matching degeneration (the Mumford lead of the <a href="#entry-2026-10-09-cube-merge-route-review">merge route review</a>), merging the remaining roots in disjoint pairs. After that degeneration each character of \(L_d\) is a space of Laurent-type functions in one square root, and (HP) with residue balance decides its Hasse determinant. The first step is the two-pair version of the pair confluence lemma.</p>
+<p><strong>Remaining gap.</strong> Statement 2: normality of \(L_d\) on \(C_{n-2}\); the \(n=5\) theta determinant.</p>
+<p><strong>Process.</strong> No computation; the theorem combines three recorded lemmas, and the hand checks use exact arithmetic.</p>
+<p><strong>Dependencies re-read.</strong> lem:hasse-residue-balanced-minors (criterion and (BV)); lem:cube-merge-order-limit; thm:cube-merge-determinant-identity (Jacobi step); lem:cube-unbalanced-merge-criterion; obs:cube-odd-unbalanced-confluence.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer passed (1) and (2): the monomial identification, orders at \(t=0\) and \(x=1\), the residue lemma's hypotheses, the identification with the Jacobi step's \(D_y\) (including \(A=B\)), the sign and the hand checks. It confirmed (2) exactly for \(0\le B\le A\le14\), and the criterion against \(p\nmid\det M\) for \(p=3,5,7\), in one gp run. Its required changes were applied: the scope of (1) to all \(A,B\ge0\), the wording of the three descriptions, the limits of (HP) and of the order-limit lemma for the twisted class, and a next attempt that bears on \(L_d\).</p>
+<p><strong>Status:</strong> working theorem (residue criterion and Vandermonde formula for every two-interval merge); lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 3.35 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">36.68 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 2.84 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">23.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
