@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-near-window-family">near-window family</a>; eight open items). The window bound splits into a window value plus integer excesses. So on fixed-cluster arcs whose least value is within \(w_x\) of the bound, the leaders fit in \(2M+2\) columns when \(2w_e>w_x\) and the next window is not too close, whatever the other coefficients. At Hankel cancellation with distinct limit roots this proves \(\nu\le2\) on that part of the rate plane.</p>
-<p>Next: the range \(w_x\ge2w_e\), where sets shifted down by \(E^-\ge2\) enter the family. Bound their least terms using their own coefficients: the negative part's Schur factors in the Valuations step of thm:cube-cherry-lattice-splitting, with flow orders. This range contains the whole regime of the lifted window for \(M\ge6\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-fixed-cluster-rates">fixed-cluster rates</a>; eight open items). On fixed-cluster arcs at \(M=3\) the leaders' nullity is at most two at all \(72\) checked rate–cluster pairs, beyond the proved near-window range. The steep range \(w_x\ge2w_e\) meets the lifted regime only from \(M=4\).</p>
+<p>Next: the steep part of the lifted regime for \(M\ge4\), by proof rather than further cases. Bound the least terms of the bottom-shifted sets (\(E^-\ge2\)) from the negative-column minors of the Valuations step of thm:cube-cherry-lattice-splitting. Those minors are binomial determinants \(\det[c(s_i+k)c(k)]\) times a Vandermonde in the reparametrized roots. Show they cannot reach \(b(\Lambda_{M-1})+w_x\) beside the lifted window.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70097,6 +70097,60 @@ in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 55.18 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 4.07 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-fixed-cluster-rates" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-fixed-cluster-leaders">
+<h3>9 October 2026 — On fixed-cluster arcs at M = 3, every one of 72 rate–cluster pairs has leader nullity at most two; the steep range lies outside the lifted regime at M = 3, so its test needs M ≥ 4</h3>
+<p class="entry-meta">Exact s-adic check of the leaders of the cherry cross block on fixed-cluster arcs (reparametrized roots) at 18 rates and four M = 3 clusters. Fixed-cluster rates cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. The <a href="#entry-2026-10-09-cube-near-window-family">near-window family</a> proves \(\nu\le2\) on fixed-cluster arcs at Hankel cancellation where \(2w_e>w_x\) and the next window is not too close. Its next step named the steep range \(w_x\ge2w_e\). The only fixed-cluster evidence so far was five rates near \((1,1)\); the \(q\)-adic checks used fixed reparametrized roots. Do fixed-cluster arcs keep \(\nu\le2\) on a wider set of rates?</p>
+<p><strong>General statement.</strong> conj:cube-cancellation-wide-support, \(\nu\le2\) at Hankel cancellation along every arc, here tested on fixed-cluster arcs.</p>
+<p><strong>Count before the check.</strong> Four clusters, \(18\) rates each: \(72\) predictions that the leaders' union has at most \(2M+2=8\) columns. A failure would be a union of \(9\) or more.</p>
+<p>At \(M=3\) the lifted window \(\Lambda_2\) minimizes the window bound only for \(w_x/w_e\in(\tfrac12,2)\). The steep rates \(w_x\ge2w_e\) therefore lie outside the lifted regime at \(M=3\): there \(p^*=1\), whose coefficient \(c_{3,1}\mathrm{Vand}^2\mathrm{Hank}_2\) is nonzero. The test covers the band \([\tfrac53,2)\), where the near-window corollary's third assumption fails, only at its endpoint \(5/3\).</p>
+<p><strong>Check.</strong> check:cube-fixed-cluster-leaders. research/tools/bmd_fixed_cluster_steep_rates.gp (research/results/bmd-20261009-ap/steep-rates.txt) uses the method of bmd_cube_root_open_rates.gp: exact \(s\)-adic Plücker coordinates with the reparametrized roots, all \(6\)-subsets of \([-6,8]\) with at most \(M\) negatives. The arcs are \(x=s^a\), \(e=s^b\), \(1\le a\le6\), \(1\le b\le3\). The clusters are:</p>
+<ul>
+<li>the equilateral points \((1,\omega,\omega^2)\) and \((3,2+\omega,2+\omega^2)\);</li>
+<li>the tie \((e^{i\pi/3},1,0)\), itself equilateral;</li>
+<li>the control \((1,2,5)\).</li>
+</ul>
+<p>Results:</p>
+<ul>
+<li>The three cancelling clusters give identical results at every rate. The largest union is \(8\), at the triangle \(\Lambda_3,\Lambda_2,\{-2,\ldots,2,4\}\) at \((4,3)\).</li>
+<li>Unions of \(7\) occur at \((1,1),(2,2),(3,3)\), from the pencil \(\Lambda_2,\{-2,\ldots,2,4\}\) at value \(b^*+w_x\). They also occur at the wall \((2,3)\), where \(\Lambda_1\) joins the pencil at value \(33=b(\Lambda_1)=b(\Lambda_2)+w_x\).</li>
+<li>Every other rate, including all steep ones, has a single leader, at value \(b^*\) or, where the lifted window would be least, at the next window. For example \((3,2)\): \(b^*=34\) at \(\Lambda_2\), and the least value is \(36=b(\Lambda_3)\), attained by one leader (\(\Lambda_2\) is lifted to \(37\)). The script prints leader sets only when there are several, so the identity of this leader is inferred from its value.</li>
+<li>Control: the largest union is \(7\), at the walls of the window bound (adjacent-window pencils), with least value \(b^*\) throughout.</li>
+<li>No union exceeds \(2M+2\): all \(72\) predictions hold.</li>
+</ul>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>At \(M=3\), \(\nu\le2\) holds on fixed-cluster arcs at all \(72\) checked rate–cluster pairs, beyond the range the near-window corollary proves.</li>
+<li>The leaders follow one rule throughout. The lifted window \(\Lambda_{M-1}\) sits at \(b(\Lambda_{M-1})+w_x\), with its top-up swap beside it, and loses to whichever neighbouring window has a smaller bound. This is the behaviour the corollary proves on its range.</li>
+<li>The steep range of the next step is empty at \(M=3\). It first meets the lifted regime at \(M=4,5\), for \(w_x/w_e\in[2,M-1)\), and is all of it from \(M=6\). So a test of the steep range needs \(M\ge4\) fixed-cluster arcs. These are much larger computations: \(8\)-subsets of a range of about \(20\) columns, exact over a number field.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of \(\nu\le2\) where \(w_x\ge2w_e\) in the lifted regime (\(M\ge4\)), in the band where the corollary's third assumption fails, and at walls.</li>
+<li>Arcs with moving clusters; coincident limit roots (\(M\ge4\) tie); items 3–4; levels above slack-zero data; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>cor:cube-near-window-nullity and lem:cube-window-bound-excess (range and window bounds);</li>
+<li>ex:cube-cube-root-open-pencil (method and the five earlier rates).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. No new mathematical claim: the entry registers a finite check of an existing conjecture, so no reviewer was run. The window bounds \(b^*\) printed with each rate come from \(A_p,B_p\) of thm:cube-cherry-lattice-splitting. The least values were compared with them by hand at \((3,2)\) and \((2,3)\). A first launch failed before computing: worker threads need the series variable quoted. The output of the second, complete run is the record.</p>
+<p>Status: finite check (exact, \(M=3\), \(72\) rate–cluster pairs).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ap">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 2.05 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">39.34 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 6.32 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 38.61 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14 min 37.64 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
