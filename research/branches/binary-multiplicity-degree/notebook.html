@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on geometric-cone clusters (<a href="#entry-2026-10-09-cube-cone-cblock-route-review">cone C-block review</a>; eight open items). Only cone clusters matter. Below a cherry there are caterpillars, ties over caterpillars, and cherry and three-root levels over caterpillars. \(C\)-block ties occur only on arcs into Gegenbauer zeros, which are all simple (\(m\le10\)). A single weight-one tie is harmless.</p>
-<p>Next: rerun the hierarchical count of thm:cube-tie-taylor-dominance at a Gegenbauer zero to prove spread \(1\) for cone \(C\)-block ties. Then decide double ties above ties over caterpillars by exact limit spaces.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-cblock-spread">tie C-block spread</a>; eight open items). Above a tie over a caterpillar, the \(C\)-block spread is at most the weight of the tie window, which is \(1\) at every Gegenbauer zero for \(m\le7\). So single \(C\)-block ties there are harmless when the cross leader is unique.</p>
+<p>Next: prove conj:cube-tie-window-second-minor for every \(m\) by identifying \(N_m\) modulo \(t_d\) through the three-term recurrence used for cor:cube-tie-window-full-rank. Then decide double ties above ties over caterpillars by exact limit spaces on arcs into a Gegenbauer zero, at rates where the cross block also ties.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73662,6 +73662,83 @@ the actual cluster roots divided by \(x\). Write \(a=x_1s(y^\ast+sv_a+\cdots)\) 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.77 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-cblock-spread" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-cone-cblock-route-review:1" data-claims="prop:cube-tie-cblock-spread conj:cube-tie-window-second-minor">
+<h3>9 October 2026 — Above a tie over a caterpillar the C-block spread is at most the weight of the tie window, which is one at every Gegenbauer zero for m ≤ 7</h3>
+<p class="entry-meta">Working proof of the spread bound by the tie window, every m; exact second-minor computation for m ≤ 7, with a conjecture for every m. Tie C-block spread cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement on cone clusters. The <a href="#entry-2026-10-09-cube-cone-cblock-route-review">cone C-block review</a> found that, in the geometric cone, \(C\)-block ties occur on arcs into Gegenbauer zeros of a tie over a caterpillar. The missing implication: a bound on their spread. Spread \(1\) makes single ties harmless by prop:cube-cblock-tie-joint-weight.</p>
+<p><strong>Setting.</strong> As in thm:cube-tie-taylor-dominance. A cluster of \(M=m+2\) roots, normalized as a tie \((c(s),1)\), \(c(s)\to c_0\notin\{0,1\}\), over a caterpillar of \(m\ge2\) roots at positive relative valuations, along an analytic arc. Put \(d=\binom m2\), \(R_C=\binom{m+2}2=d+2m+1\), and \(T_0=\{0,\ldots,R_C-1\}\). \(W(c)\) is the tie contact window, the \((2m+1)\times(2m+3)\) matrix on columns \(d,\ldots,d+2m+2\) (cor:cube-tie-window-full-rank). Let \(P_W(c_0)\) be the pivot set of its row space at \(c_0\), the Gale-least set of columns with nonzero maximal minor, and \(\omega(c_0)=\Sigma P_W(c_0)-\Sigma\{d,\ldots,d+2m\}\) its weight.</p>
+<p>The hypothesis is imposed on the normalized roots \(\tilde y'=\beta/x\) used by prop:cube-cblock-spread-bound. It is equivalent to the same hypothesis on \(z=a/x\): \(\tilde y'=z/(1-xz)\) is a near-identity Möbius map, and \(\tilde y'_i-\tilde y'_j=(z_i-z_j)/((1-xz_i)(1-xz_j))\) with unit denominators. So it keeps the tree, the leading coefficients and \(c_0\). The scale \(x\) is chosen so that the top tie roots of \(\tilde y'\) are \((c,1)\) up to a unit, which matches the tie frame up to a unit dilation. A dilation of nonzero valuation would change which sets attain the minimum.</p>
+<p><strong>General statement.</strong> prop:cube-tie-cblock-spread. Characteristic zero, every \(m\ge2\), every arc as above. The flat limit \(L\) of the normalized pair span satisfies \(\operatorname{wt}_0(L)\le\omega(c_0)\). Hence, for every rate \(w_x&gt;0\), \(\operatorname{spread}(E)\le\omega(c_0)\).</p>
+<ul>
+<li>Off the Gegenbauer zeros, \(\omega(c_0)=0\) and the leading coordinate is unique, as in thm:cube-tie-taylor-dominance.</li>
+<li>At a zero \(c_0\) of \(t_d\), \(\omega(c_0)=1\) if and only if the next minor \(N_m\), on columns \(d,\ldots,d+2m-1,d+2m+1\), is nonzero at \(c_0\).</li>
+</ul>
+<p><strong>Proof.</strong> By the proof of thm:cube-tie-taylor-dominance, in its normalized frame:</p>
+<ul>
+<li>every \(p_S\) has valuation at least \(v_0\);</li>
+<li>for \(S=\{0,\ldots,d-1\}\cup S'\), \(S'\subset\{d,\ldots,d+2m+2\}\), the \(s^{v_0}\)-coefficient is a nonzero constant times \(\det W(c_0)_{S'}\).</li>
+</ul>
+<p>The frame change has two parts. A translation by an element \(a\) of valuation \(\ge0\) multiplies every row by the same unit series \((1+aT)^{-3}\) and substitutes \(T'=T/(1+aT)\). That is a column operation by an integral lower-unitriangular matrix: new column \(k\) uses old columns \(j\le k\), with diagonal \(1\). Its reduction is again unitriangular and invertible, so the flat limit is transformed by an invertible unitriangular matrix, which preserves the pivot sets and weights of both \(V_K\) and \(L\). A unit dilation scales column \(k\) by \(\mu^k\) with \(\mu\to1\), which is also harmless.</p>
+<p>The flat limit \(L\) has Plücker vector the \(s^{v_0}\)-coefficients. So its coordinate on \(B=\{0,\ldots,d-1\}\cup P_W(c_0)\) is nonzero, and its pivot set, the Gale-least nonzero coordinate, is Gale-below \(B\). Then \(\operatorname{wt}_0(L)=\Sigma\operatorname{piv}(L)-\binom{R_C}2\le\Sigma B-\Sigma T_0=\omega(c_0)\).</p>
+<p>Part (1) of prop:cube-cblock-spread-bound gives \(\operatorname{spread}(E)\le\operatorname{wt}_0(L)-\operatorname{wt}_0(V_K)\le\omega(c_0)\).</p>
+<p>For the two cases: \(\omega=0\) iff \(P_W\) is the square window, iff its minor \(L_m\propto t_d\) is nonzero at \(c_0\) (thm:cube-tie-taylor-dominance). If \(L_m(c_0)=0\), the Gale-next column set is \(\{d,\ldots,d+2m-1,d+2m+1\}\), of weight \(1\). It is the pivot set iff \(N_m(c_0)\ne0\), since every other set of weight \(\le1\) is the square window itself. \(\square\)</p>
+<p><strong>Conjecture.</strong> conj:cube-tie-window-second-minor. For every \(m\ge2\), \(N_m\) and \(t_d\) have no common zero in \(\mathbb C\setminus\{0,1\}\). Then every cone \(C\)-block tie above a tie over a caterpillar has spread at most \(1\). Single \(C\)-block ties there then never threaten the cherry step when the cross leader is unique, by part (5) of prop:cube-cblock-spread-bound. prop:cube-cblock-tie-joint-weight locates their weight-one arcs.</p>
+<p><strong>Check.</strong> research/tools/bmd_tie_window_second_minor.gp (research/results/bmd-20261009-bt/tie-window-second-minor.txt) uses the window rows of bmd_tie_window.gp. For \(m=2,\ldots,7\) it computes exactly:</p>
+<ul>
+<li>the square minor, after stripping the factors \(c\) and \(c-1\), is proportional to \(t_d\), a consistency check of the theorem's identification;</li>
+<li>\(\gcd(N_m,t_d)\) has degree \(0\) after stripping.</li>
+</ul>
+<p>So the conjecture holds for \(m\le7\), and with it \(\omega=1\) at every Gegenbauer zero. The review's arc (\(m=2\), \(c_0=-1\)) had spread exactly \(1\).</p>
+<p>The cor:cube-tie-window-full-rank proof uses that \(t_d\) and \(t_{d+1}\) have no common zero. A proof of the conjecture may identify \(N_m\) modulo \(t_d\) with a multiple of \(t_{d+1}\); that is not checked here.</p>
+<p><strong>What this means.</strong> Above ties over caterpillars, the \(C\)-block side of the cherry step is settled for \(m\le7\) up to double ties. Ties occur only on arcs into Gegenbauer zeros, where the spread is at most \(1\). So a unique cross leader gives avoidance, by part (5) of prop:cube-cblock-spread-bound. With \(\operatorname{spread}(E)\le1\) the \(C\)-block support has at most two sets (basis exchange), so the remaining double ties are joint ties with the cross block, where \(\operatorname{spread}(U)&gt;0\). Cone types (A) and (C), cherries and three-root levels over caterpillars, remain for the \(C\)-block, and double ties remain everywhere.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-tie-window-second-minor for \(m\ge8\).</li>
+<li>Double ties above ties over caterpillars.</li>
+<li>\(C\)-block weights above cherries and three-root levels.</li>
+<li>(F) on cone clusters; the window cores; (B).</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the cone C-block review. Szegő's simplicity is not what the spread needs: it needs the window's next minor. The record's own full-rank argument suggests the route.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-tie-taylor-dominance (proof: valuation bound, leading coefficients, frame);</li>
+<li>cor:cube-tie-window-full-rank (the window);</li>
+<li>prop:cube-cblock-spread-bound (1);</li>
+<li>prop:cube-cblock-tie-joint-weight.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p>
+<ul>
+<li>the use of the dominance proof (bound for every \(S\), attainment by full rank);</li>
+<li>the Gale bound;</li>
+<li>the uniqueness of the weight-one set and the "iff";</li>
+<li>the frame change as a lower-unitriangular column operation;</li>
+<li>the script (rows identical to winmat, an exact gcd, stripping harmless since \(t_d(0),t_d(1)\ne0\), and that \(N_m\equiv0\) would show).</li>
+</ul>
+<p>Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>"fixed" constant dropped;</li>
+<li>the frame change described exactly, including the flat limit;</li>
+<li>the normalized roots of the hypothesis and the scale stated;</li>
+<li>the wording of the consequences, with the double ties identified as joint ties.</li>
+</ul>
+<p>Unused hypotheses: none.</p>
+<p>Status: working proof (spread bound by the tie window, every \(m\)); conjecture on the second minor, exact for \(m\le7\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 15.28 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">41.92 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 28.51 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">24.38 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">39.24 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
