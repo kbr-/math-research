@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, the window cores (<a href="#entry-2026-10-09-cube-level-window-gegenbauer-form">level window Gegenbauer form</a>; seven open items). Every reduced level window is a filtered Gegenbauer-moment matrix. For the triple window, \(U_3\)'s rows are \((1+a_kE^{-1})^m\) applied to \(h^{(ij)}_n=\rho^{(-m)}_ne^{(ij)}_n\). The confluent staircase has no visible closed form.</p>
-<p>Next: rank \(3\) of \(U_3\) from the closed form. Look for a three-term identity among the filtered sequences, as the coprimality of \(t_d\) and \(t_{d+1}\) worked for the tie window, using recurrences of the \(h^{(ij)}\) in \(n\). Test any candidate identity at the recorded zeros of \(U_3\)'s maximal minors, if those are recorded.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, window core item 2 (<a href="#entry-2026-10-09-cube-triple-window-curves">triple window curves</a>; seven open items). The reduced triple window has rank \(3\) along three full curves for every \(m\le8\), exactly from the closed form, but no single minor certifies it.</p>
+<p>Next: a proof of rank \(3\) from the recurrences. The row sequences \(h^{(ij)}_n=\rho^{(-m)}_ne^{(ij)}_n\) satisfy three-term recurrences. Use them to propagate a hypothetical left-kernel relation on five consecutive indices down to small indices, where the sequences are explicit, as the coprimality of \(t_d\) and \(t_{d+1}\) worked for the tie window.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -74389,6 +74389,47 @@ where \(q^{(ij)}\) are the coefficients of \(\prod_{l\ne i,j}(1+a_lT)^m\). So th
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-window-curves" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-triple-window-curves">
+<h3>9 October 2026 — From the closed form, the reduced triple window has rank three along three curves for every m ≤ 8; no single maximal minor certifies it</h3>
+<p class="entry-meta">Finite check: exact symbolic rank of the reduced triple window along three curves, m ≤ 8; factored minors for m ≤ 3. Triple window curves cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, window core item 2: conj:cube-triple-window-full-rank. The record's evidence was one prime for \(m\le5\) (core items reach entry). lem:cube-level-window-gegenbauer-form makes \(U_3\) cheap to compute exactly: five values of three filtered Gegenbauer-moment sequences. The missing implication is a proof of rank \(3\) for every \(m\). This cycle tests the conjecture along whole curves, and tests whether a single maximal minor factors into the excluded loci, which would give a one-line proof.</p>
+<p><strong>General statement.</strong> conj:cube-triple-window-full-rank (recorded): for every \(m\ge2\) and distinct \(c_1,c_2\notin\{0,1\}\), \(\operatorname{rank}U_3(c_1,c_2,1)=3\).</p>
+<p><strong>Check.</strong> check:cube-triple-window-curves.</p>
+<ul>
+<li>Curves. research/tools/bmd_triple_window_curves.gp (research/results/bmd-20261009-ca/triple-window-curves.txt) builds \(U_3\) from the closed form with \(a=(x,c_2,1)\), \(x\) symbolic, for \(c_2\in\{-\tfrac53,4,\tfrac13\}\) and \(m=2,\ldots,8\). It takes the gcd of the ten \(3\times3\) minors and strips the factors \(x\), \(x-1\), \(x-c_2\). In all \(21\) cases the gcd is constant: \(U_3\) has rank \(3\) at every \(c_1\notin\{0,1,c_2\}\) on these curves. That is an exact statement for each curve, not a sample. The run took one second.</li>
+<li>Minors. research/tools/bmd_triple_window_minors.gp (triple-window-minors.txt) factors all ten minors with both \(c_1=x\) and \(c_2=y\) symbolic. No minor is a product of \(x\), \(y\), \(x-1\), \(y-1\), \(x-y\) and a constant: for \(m=2\) and \(m=3\) the remaining part of the minor on columns \(S\) has total degree \(9(m-1)+\Sigma S-6\). The run reached its \(600\) s limit during \(m=4\), on the bivariate factorizations; \(m=2,3\) are complete.</li>
+</ul>
+<p>A first version used the name of a built-in PARI function for a helper and had a misplaced parenthesis; both are fixed in the script.</p>
+<p><strong>What this means.</strong> The conjecture holds on three full curves for \(m\le8\), well beyond the one-prime evidence for \(m\le5\). But it is not certified by a single minor: the excluded loci are not cut out by any one minor, so a proof must combine minors. That is the situation of the tie window, where two minors (\(t_d\) and \(t_{d+1}\)) combined through a recurrence. The closed form makes the analogous route concrete. Each row sequence \(h^{(ij)}_n=\rho^{(-m)}_ne^{(ij)}_n\) satisfies a three-term recurrence in \(n\), inherited from \(((1+a_iT)(1+a_jT))^{-3/2}\). So a rank drop would force three filtered sequences to satisfy a common linear relation on five consecutive indices.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of rank \(3\) from the recurrences of the \(h^{(ij)}\).</li>
+<li>The confluent staircase.</li>
+<li>The other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-level-window-gegenbauer-form;</li>
+<li>lem:cube-level-window-reduction;</li>
+<li>conj:cube-triple-window-full-rank and its earlier evidence (the core items reach entry).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. No correctness reviewer: the new claim is a finite check, computed exactly over \(\mathbb Q(x)\) and \(\mathbb Q(x,y)\) from a reviewed closed form. That closed form was itself checked against the direct functionals in the previous entry.</p>
+<p>Status: finite check (exact, along curves, \(m\le8\); factored minors, \(m\le3\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ca">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 37.31 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.54 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 25.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 1.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
