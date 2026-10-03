@@ -45,12 +45,25 @@ TRIAGE_MAX, TRIAGE_WORDS = 4, 80
 TRIAGE_RE = re.compile(r'<h4>Queue triage</h4>\s*<ul>(.*?)</ul>', re.S)
 EVIDENCE_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs):[A-Za-z0-9.-]+|href="#[^"]+"')
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
-ITEM_RE = re.compile(r'<li data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened)\b')
-FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(lead|bridge)="([^"]+)"[^>]*>(.*?)</li>', re.S)
+
+
+class Kind:
+    """A kind of queue item: its name, as in data-NAME="ID" on the queue's items, developing entries and
+    follow-up lists, and the entry heading that lists its items (`listed`, a pattern whose group 1 is the list)."""
+
+    def __init__(self, name, listed):
+        self.name, self.listed = name, listed
+
+
+KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE)}
+NAMES = '|'.join(KINDS)
+ITEM_RE = re.compile(r'<li data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
+LINE_RE = re.compile(r'<li data-(?:' + NAMES + r')="[^"]+"[^>]*>.*?</li>', re.S)
+FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
 
@@ -71,7 +84,7 @@ def developed_by(tag, text):
     own: the last Follow-up outside listed items, so a quoted earlier Follow-up does not count."""
     if 'data-kind="research"' not in tag:
         return None
-    found = re.findall(r'\bdata-(lead|bridge)="([^"]+)"', tag)
+    found = re.findall(r'\bdata-(' + NAMES + r')="([^"]+)"', tag)
     if not found:
         return None
     if len(found) > 1:
@@ -109,12 +122,12 @@ def review_passed(tag, text):
         return []
     audit = 'data-kind="audit"' in tag   # every item an audit lists is queued: "when unsure, queue it"
     out = []
-    for kind, pattern in (('lead', LEADS_RE), ('bridge', BRIDGES_RE)):
-        section = pattern.search(text)
+    for kind in KINDS.values():
+        section = kind.listed.search(text)
         if section:
             for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
                 if audit or TEST_PASSED.search(item):
-                    out.append((kind, f'{ident.group(1)}:{n}'))
+                    out.append((kind.name, f'{ident.group(1)}:{n}'))
     return out
 
 
@@ -196,7 +209,7 @@ def open_items(body):
 
 def audit_source(text, item):
     """The data-source anchor of an audit's listed item (kind, 'ANCHOR:N'), or None."""
-    section = (LEADS_RE if item[0] == 'lead' else BRIDGES_RE).search(text)
+    section = KINDS[item[0]].listed.search(text)
     tags = re.findall(r'<li\b([^>]*)>', section.group(1)) if section else []
     n = int(item[1].rsplit(':', 1)[1])
     found = re.search(r'data-source="([^"]+)"', tags[n - 1]) if n <= len(tags) else None
@@ -217,7 +230,7 @@ def item_text(body, kind, ident):
     art = re.search(r'<article\b[^>]*\bid="' + re.escape(anchor) + r'"[^>]*>.*?</article>', body, re.S)
     if art is None:
         return ''
-    section = (LEADS_RE if kind == 'lead' else BRIDGES_RE).search(art.group(0))
+    section = KINDS[kind].listed.search(art.group(0))
     items = re.findall(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S) if section else []
     if int(n) > len(items):
         return ''
@@ -340,7 +353,7 @@ def done(body, outcome):
     draining, queue = parse(body)
     if not queue:
         raise ValueError('The queue is empty')
-    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
+    lines = LINE_RE.findall(found.group(2))
     head = lines.pop(0)
     if outcome == 'Continuing':
         if spell(body, queue[0], pending=True) < SPELL:
@@ -368,7 +381,7 @@ def settle_triage(body):
     if not batch:
         raise ValueError('The last entry has no Queue triage list')
     check_triage(batch, queue)
-    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)[len(batch):]
+    lines = LINE_RE.findall(found.group(2))[len(batch):]
     was = draining or len(queue) >= CAP
     flag = (len(lines) > FLOOR) if was else (len(lines) >= CAP)
     inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
@@ -386,7 +399,7 @@ def append_new(body):
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
     new = list(dict.fromkeys(i for i in review_passed(tag, text) + reopened_by(text) if i not in queue))
-    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
+    lines = LINE_RE.findall(found.group(2))
     lines += [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
               f'{item_text(body, kind, ident)}</li>' for kind, ident in new]
     flag = draining or len(lines) >= CAP
