@@ -112,6 +112,14 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             lq.done(head, 'Maybe')
 
+    def test_append_new_items_after_a_review(self):
+        head = notebook([self.rev], self.q)
+        second = review('r2', [PASS, FAIL, PASS])
+        body, count = lq.append_new(notebook([self.rev, second], self.q))
+        self.assertEqual(count, 2)
+        self.assertEqual(lq.parse(body)[1], self.q + [('lead', 'r2:1'), ('lead', 'r2:3')])
+        lq.check(head, body)
+
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
         self.assertIn('2 items', lines[0])

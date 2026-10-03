@@ -16,7 +16,8 @@ finish-turn.py against HEAD:
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
-       lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)"""
+       lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after developing the head)
+       lead_queue.py append NOTEBOOK.html  (after a review: its newly passed items go to the tail)"""
 import html
 import re
 import sys
@@ -203,7 +204,30 @@ def done(body, outcome):
     return body[:found.start()] + section + body[found.end():]
 
 
+def append_new(body):
+    """The notebook with every open passed item missing from the queue appended at its tail, in record order,
+    and the draining flag set if the queue reaches CAP."""
+    found = SECTION_RE.search(body)
+    if found is None:
+        raise ValueError('No lead and bridge queue')
+    draining, queue = parse(body)
+    new = [item for item in open_items(body) if item not in queue]
+    lines = re.findall(r'<li data-(?:lead|bridge)="[^"]+"[^>]*>.*?</li>', found.group(2), re.S)
+    lines += [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
+              f'{item_text(body, kind, ident)}</li>' for kind, ident in new]
+    flag = draining or len(lines) >= CAP
+    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
+    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
+    return body[:found.start()] + section + body[found.end():], len(new)
+
+
 def main(argv):
+    if len(argv) == 3 and argv[1] == 'append':
+        path = Path(argv[2])
+        body, count = append_new(path.read_text())
+        path.write_text(body)
+        print(f'Appended {count} items; ' + head_lines(body, 0)[0])
+        return 0
     if len(argv) == 4 and argv[1] == 'done':
         path = Path(argv[2])
         path.write_text(done(path.read_text(), argv[3]))
