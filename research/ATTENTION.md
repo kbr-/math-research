@@ -378,7 +378,7 @@ Over every characteristic-zero field and every n>=1, with N=n+1 and m_N=binom(N,
 
 **Why it matters:** Determines an explicit original pre-stable multiplicity threshold uniformly in dimension, beyond the previously solved dimension-four all-degree boundary and fixed higher-dimensional certificates. This closes the degree-two subcase of the existing all-dimensional squarefreeness conjecture. The quantitative formula merits focused literature/significance comparison; verification alone is not a novelty claim.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Compare the uniform boundary result with the primary cube-multiplicity literature before claiming novelty or planning publication. For the active goal, determine the first post-boundary initial degree uniformly, retaining the actual polynomial boundary coefficients and source.
 
