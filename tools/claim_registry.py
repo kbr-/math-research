@@ -59,12 +59,83 @@ def write_json(path, value):
 SHAPE_TYPES = {'object': dict, 'array': list, 'string': str, 'integer': int, 'null': type(None)}
 
 
+def _where(path):
+    """Format a lazily built path: a string, a callable, or a (parent, key) pair."""
+    if callable(path):
+        return path()
+    if isinstance(path, tuple):
+        parent, key = path
+        return f'{_where(parent)}[{key}]' if isinstance(key, int) else f'{_where(parent)}.{key}'
+    return path
+
+
+_COMPILED = {}
+
+
+def _compile(spec, schema):
+    """A checker for one schema node, built once: the registry has hundreds of thousands of values, and
+    resolving references and reading the node per value dominated the finisher's checks."""
+    key = (id(spec), id(schema))
+    if key in _COMPILED:
+        return _COMPILED[key][0]
+    cell = []
+    _COMPILED[key] = (lambda value, where: cell[0](value, where), spec, schema)   # recursion-safe
+    while '$ref' in spec:
+        target = schema
+        for part in spec['$ref'].removeprefix('#/').split('/'):
+            target = target[part]
+        spec = target
+    expected = spec.get('type')
+    types = tuple(SHAPE_TYPES[t] for t in (expected if isinstance(expected, list) else [expected])) if expected else ()
+    enum = spec.get('enum')
+    min_length = spec.get('minLength', 0)
+    pattern = re.compile(spec['pattern']) if 'pattern' in spec else None
+    required = set(spec.get('required', []))
+    props = {name: _compile(child, schema) for name, child in spec.get('properties', {}).items()}
+    closed = spec.get('additionalProperties') is False
+    unique = spec.get('uniqueItems')
+    items = _compile(spec['items'], schema) if 'items' in spec else None
+
+    def check(value, where):
+        if types and type(value) not in types:
+            raise ValueError(f'{_where(where)}: expected {expected}')
+        if enum is not None and value not in enum:
+            raise ValueError(f'{_where(where)}: invalid value {value!r}')
+        kind = type(value)
+        if kind is str:
+            if len(value) < min_length:
+                raise ValueError(f'{_where(where)}: empty string')
+            if pattern is not None and pattern.fullmatch(value) is None:
+                raise ValueError(f'{_where(where)}: invalid syntax')
+        elif kind is dict:
+            if required and not required <= value.keys():
+                raise ValueError(f'{_where(where)}: missing required fields')
+            if closed and not value.keys() <= props.keys():
+                raise ValueError(f'{_where(where)}: unknown fields {value.keys() - props.keys()}')
+            for name, child in value.items():
+                checker = props.get(name)
+                if checker is not None:
+                    checker(child, (where, name))
+        elif kind is list:
+            if unique and len({json.dumps(v, sort_keys=True) for v in value}) != len(value):
+                raise ValueError(f'{_where(where)}: duplicate items')
+            if items is not None:
+                for i, child in enumerate(value):
+                    items(child, (where, i))
+    cell.append(check)
+    return check
+
+
 def shape(value, spec, path='$', schema=None):
     """Validate the deliberately small JSON-Schema vocabulary used by schema.json.
 
-    `path` may be a string or a callable returning it; it is formatted only when a check
-    fails, since the registry has hundreds of thousands of values.
-    """
+    `path` may be a string or a callable returning it; it is formatted only when a check fails.
+    The schema is compiled once into checkers (_compile)."""
+    _compile(spec, spec if schema is None else schema)(value, path)
+
+
+def _shape_reference(value, spec, path='$', schema=None):
+    """The direct interpreter, kept as the reference the compiled checkers are tested against."""
     schema = spec if schema is None else schema
     where = path if callable(path) else (lambda: path)
     while '$ref' in spec:
@@ -92,14 +163,14 @@ def shape(value, spec, path='$', schema=None):
             raise ValueError(f'{where()}: unknown fields {value.keys() - props.keys()}')
         for key, child in value.items():
             if key in props:
-                shape(child, props[key], lambda key=key: f'{where()}.{key}', schema)
+                _shape_reference(child, props[key], lambda key=key: f'{where()}.{key}', schema)
     elif isinstance(value, list):
         if spec.get('uniqueItems') and len({json.dumps(v, sort_keys=True) for v in value}) != len(value):
             raise ValueError(f'{where()}: duplicate items')
         if 'items' in spec:
             items = spec['items']
             for i, child in enumerate(value):
-                shape(child, items, lambda i=i: f'{where()}[{i}]', schema)
+                _shape_reference(child, items, lambda i=i: f'{where()}[{i}]', schema)
 
 
 def markdown_links(text):
