@@ -52,18 +52,25 @@ def validate_route(body, article):
     if tags['route'] not in items and not (tags['route'] or '').startswith('side-'):
         raise ValueError(f'data-route must be one of {sorted(items)} or start with side-; '
                          'name the top-level route item, not a sub-gap of the current line')
-    if tags['kind'] == 'review':
-        return
     record = body.find('<section id="research-record">')
     earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
-    streak = 0
+    streak, after_review = 0, False
     for position in reversed(earlier):
         kind = entry_tags(body, position)['kind']
         if kind == 'formalization':
             continue
         if kind != 'research':   # a review, or an entry from before the tags existed
+            after_review = kind == 'review'
             break
         streak += 1
+    if tags['kind'] == 'review':
+        # One route review in seven entries (user, 3 October 2026: "That's too frequent. Drop to one in
+        # seven"): a review needs REVIEW_PERIOD research entries since the previous one.
+        if after_review and streak < REVIEW_PERIOD:
+            raise ValueError(f'Only {streak} research entries since the last route review; a review comes after '
+                             f'{REVIEW_PERIOD} (one entry in {REVIEW_PERIOD + 1}, AGENTS.md). Make this a research '
+                             'entry and carry the concern to the scheduled review')
+        return
     if streak >= REVIEW_PERIOD:
         raise ValueError(f'The last {streak} research entries have no route review. This entry must be '
                          'a route review (data-kind="review"): the general claim of the current line, '
@@ -126,13 +133,28 @@ ACROSS_GOAL_RE = re.compile(r'<h4>Across the goal</h4>\s*<ul>(.*?)</ul>', re.S)
 DECISION_RE = re.compile(r'<strong>Decision\.</strong>\s*(Core|Switch)\b')
 
 
+def convergence_reference(body, article, route):
+    """(review id, research entries since it, its open-item count) for the line's latest review at least
+    CONVERGENCE_SPAN research entries before position `article` on `route`, or None."""
+    research = 0
+    for position, ident, kind, _ in reversed(route_articles(body, article, route)):
+        if kind == 'research':
+            research += 1
+        elif kind == 'review' and research >= CONVERGENCE_SPAN:
+            earlier = OPEN_ITEMS_RE.search(body[position:body.index('>', position) + 1])
+            return (ident, research, int(earlier.group(1))) if earlier else None
+    return None
+
+
 def validate_convergence(body, article, close):
     """A line must converge, not only produce cases (user, 2 October 2026, after a day of conditional
     coverage proofs on one line left every open statement unchanged).  Each route review declares
     data-open-items="N", the open items its line still needs.  If N has not dropped since the line's
-    review at least CONVERGENCE_SPAN research entries back, only a goal-level review (data-scope="goal")
-    is accepted: it weighs the cycles against the open statements across the whole goal and decides
-    Core (work a core statement next) or Switch (take up another open statement)."""
+    review at least CONVERGENCE_SPAN research entries back, the line has stalled and only a goal-level
+    review (data-scope="goal") is accepted: it weighs the cycles against the open statements across the
+    whole goal and decides Core (work a core statement next) or Switch (take up another open statement).
+    Otherwise a goal-level review is refused (user, 3 October 2026: goal-level reviews only when the
+    open-item count stalls, machine-checked)."""
     if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
         return
     tag = body[article:body.index('>', article) + 1]
@@ -140,7 +162,14 @@ def validate_convergence(body, article, close):
     if count is None:
         raise ValueError('A route review declares data-open-items="N" in its article tag: the number of open '
                          'items its line still needs, so that the finisher can tell whether the line converges')
+    reference = convergence_reference(body, article, entry_tags(body, article)['route'])
+    stalled = reference is not None and int(count.group(1)) >= reference[2]
     goal = 'data-scope="goal"' in tag
+    if goal and not stalled:
+        where = (f'it dropped from {reference[2]} at review {reference[0]}, {reference[1]} research entries ago'
+                 if reference else f'no review on this line is {CONVERGENCE_SPAN} or more research entries back')
+        raise ValueError(f'A goal-level review is allowed only when the open-item count has stalled, but {where}. '
+                         'Make it an ordinary route review (no data-scope="goal")')
     if goal:
         across = ACROSS_GOAL_RE.search(body, article, close)
         if across is None or len(re.findall(r'<li\b', across.group(1))) < 2:
@@ -152,18 +181,11 @@ def validate_convergence(body, article, close):
                              'statement worked next) or "<strong>Decision.</strong> Switch" (naming the open '
                              'statement taken up instead)')
         return
-    research = 0
-    for position, ident, kind, _ in reversed(route_articles(body, article, entry_tags(body, article)['route'])):
-        if kind == 'research':
-            research += 1
-        elif kind == 'review' and research >= CONVERGENCE_SPAN:
-            earlier = OPEN_ITEMS_RE.search(body[position:body.index('>', position) + 1])
-            if earlier and int(count.group(1)) >= int(earlier.group(1)):
-                raise ValueError(f'The line still needs {count.group(1)} open items, against {earlier.group(1)} '
-                                 f'at review {ident}, {research} research entries ago: it is not converging. '
-                                 'This review must be goal-level (data-scope="goal", an Across the goal '
-                                 'section and a Core or Switch decision)')
-            return
+    if stalled:
+        raise ValueError(f'The line still needs {count.group(1)} open items, against {reference[2]} '
+                         f'at review {reference[0]}, {reference[1]} research entries ago: it is not converging. '
+                         'This review must be goal-level (data-scope="goal", an Across the goal '
+                         'section and a Core or Switch decision)')
 
 
 FOLLOWUP_RE = re.compile(r'<h4>Bridge follow-up</h4>\s*<ul>(.*?)</ul>', re.S)

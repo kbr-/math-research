@@ -40,6 +40,17 @@ class TurnGuidanceTest(unittest.TestCase):
         six = five + [('research', 'lem:b', 'Working proof.')]
         self.assertIn('must be a route review', self.notes(six))
 
+    def test_goal_level_and_cadence_notes(self):
+        research = ('research', 'lem:a', 'Working proof.')
+        def with_review(after):
+            body = self.body([('review', 'none', 'Route review.')] + [research] * after)
+            return ' '.join(self.guide.guidance(body.replace('data-kind="review"',
+                                                             'data-kind="review" data-open-items="3"'), self.ft))
+        self.assertIn('declared 3 open items. If the review declares 3 or more, it must be goal-level',
+                      with_review(self.ft.CONVERGENCE_SPAN))
+        self.assertIn('must be an ordinary route review, not goal-level', with_review(self.ft.REVIEW_PERIOD))
+        self.assertIn('the next review comes after', with_review(2))
+
     def test_route_notes_once_when_articles_carry_route_items(self):
         five = [('research', 'lem:a', 'Working proof.')] * (self.ft.REVIEW_PERIOD - 1)
         body = self.body(five).replace('data-route="step"', 'data-route="step" data-route-item="step"')

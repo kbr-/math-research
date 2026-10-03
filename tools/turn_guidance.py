@@ -88,6 +88,8 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
              'outcome (falsified items still count).']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
+    active = ft.entry_tags(body, worked[-1])['route'] if worked else None
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
                 and ft.entry_tags(body, a)['kind'] != 'formalization']
@@ -113,9 +115,22 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
         if streak >= ft.REVIEW_PERIOD:
             notes.append(f'Route {item}: {streak} research entries since the last route review; the next '
                          'entry on this route must be a route review.')
+            reference = ft.convergence_reference(body, len(body), item)
+            if reference is None:
+                notes.append(f'Route {item}: no review is {ft.CONVERGENCE_SPAN} or more research entries back, '
+                             'so that review must be an ordinary route review, not goal-level.')
+            else:
+                ident, research, count = reference
+                notes.append(f'Route {item}: review {ident}, {research} research entries back, declared '
+                             f'{count} open items. If the review declares {count} or more, it must be goal-level '
+                             '(data-scope="goal"); if fewer, it must be an ordinary route review.')
         elif streak == ft.REVIEW_PERIOD - 1:
             notes.append(f'Route {item}: {streak} research entries since the last route review; one more '
                          'research entry is allowed, then a route review is required.')
+        elif item == active:   # dormant routes stay quiet
+            notes.append(f'Route {item}: {streak} research entries since the last route review; the next review '
+                         f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
+                         'entry is research: carry concerns about the line to that review.')
     return notes
 
 

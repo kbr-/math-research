@@ -255,8 +255,7 @@ sys.exit(compute.main())
             record(['review:3'] + ['research'] * 10, reviewed, general=general + leads),  # count not dropped
             record(['review:3'] + ['research'] * 10, goal_review, general=general + leads),  # no Across the goal
             record(['review:3'] + ['research'] * 10, goal_review,
-                   general=general + leads + across.replace('Core', 'Maybe')),  # no decision
-            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
+                   general=general + leads + across.replace('Core', 'Maybe')),  # no decision            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 '<li>e <strong>Test.</strong> Not run: needs a kernel.</li>', '')),
             record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>d{ok}</li>', '<li>d</li>')),  # untested
@@ -291,8 +290,7 @@ sys.exit(compute.main())
             record(['review:4'] + ['research'] * 10, reviewed, general=general + leads),  # count dropped
             record(['review:3'] + ['research'] * 9, reviewed, general=general + leads),   # span not reached
             record(['review'] + ['research'] * 10, reviewed, general=general + leads),    # no earlier count
-            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads + across),
-            record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
+            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads + across),            record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
             record(['research'], tagged + ' data-claims="ex:b"', status='Finite check.'),
@@ -314,6 +312,40 @@ sys.exit(compute.main())
                                 'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
                 notebook.write_text(content)
                 self.command('check.py', marker)
+
+    def test_review_cadence_and_goal_level_scope(self):
+        # In process: one route review in seven entries, and goal-level reviews only when the line stalled.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('ft', Path(__file__).resolve().parents[1] / 'finish-turn.py')
+        ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)
+        marker = '<!-- TIMING test_turn -->'
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        body = ('<p><strong>General statement.</strong> For every level the kernel is spanned by short elements '
+                '(conj:fixture-general).</p>' + OBSTACLE
+                + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
+                f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e{ok}</li></ul>')
+        across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged.</li><li>Statement 2: unchanged.</li>'
+                  '</ul><p><strong>Decision.</strong> Core: the window.</p>')
+        def record(earlier, scope='', extra=''):
+            entries = ''.join(f'<article data-kind="{k.split(":")[0]}" data-route="general-step"'
+                              + (f' data-open-items="{k.split(":")[1]}"' if ':' in k else '')
+                              + '><p class="entry-meta">S.</p></article>' for k in earlier)
+            return ('<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
+                    '<section id="research-record">' + entries + '<article data-kind="review" data-route='
+                    f'"general-step" data-open-items="3"{scope}><p class="entry-meta">Review.</p>' + body + extra
+                    + marker + '</article></section>')
+        goal = ' data-scope="goal"'
+        for earlier, scope, extra in [(['review'] + ['research'] * 5, '', ''),            # too soon
+                                      (['review:4'] + ['research'] * 10, goal, across),   # not stalled
+                                      (['research'] * 6, goal, across)]:                  # nothing to compare
+            with self.subTest(earlier=earlier, scope=scope):
+                with self.assertRaises(ValueError):
+                    ft.validate_marker(record(earlier, scope, extra), marker)
+        for earlier, scope, extra in [(['research'] * 3, '', ''),                         # first review
+                                      (['review'] + ['research'] * 6, '', ''),
+                                      (['review:3'] + ['research'] * 10, goal, across)]:  # stalled
+            with self.subTest(earlier=earlier, scope=scope):
+                ft.validate_marker(record(earlier, scope, extra), marker)
 
     def test_refutation_checks_do_not_count_as_cases(self):
         import importlib.util

@@ -57,13 +57,12 @@ rules to growing checklists or one-off setup narratives.
   a surrogate becoming simple need not resolve the original obligation. Check preserved
   hypotheses and accumulated composition costs against the goal's budget.
   If these fail, or repeated cycles leave the same required implication untouched,
-  make the cycle a route review and address the failure before refining the same
-  mechanism, even before the finisher requires a review. A weak assessment also
-  triggers a review. Recheck standing hypotheses against the goal's instances every
-  cycle; an obstruction showing that those instances violate them ends the line's
-  relevance. If the line descends more than one reduction below every listed open
-  statement, the next cycle is a route review that revises the list and places the
-  line on it.
+  address the failure in the next research cycle (a different mechanism, a lead or
+  bridge) rather than refining the same mechanism, and record it for the scheduled
+  review; a weak assessment or a descent of more than one reduction below every listed
+  open statement is likewise carried to that review, which revises the list. Recheck
+  standing hypotheses against the goal's instances every cycle; an obstruction showing
+  that those instances violate them ends the line's relevance.
   Stop a series of runs once its prediction has passed or failed at the sizes that
   test it. A larger size, degree or sample needs a stated question that the finished
   runs cannot answer, and an answer that would change the goal's missing implication;
@@ -201,8 +200,13 @@ rules to growing checklists or one-off setup narratives.
   tables.
 - Tag articles with `data-kind="research|review|formalization"` and `data-route`,
   naming a top-level remaining-route `data-route-item` slug (or `side-...`), never
-  a sub-gap. The finisher rejects a seventh consecutive research entry without a
-  review. A review states the line's general claim, what the main goal needs,
+  a sub-gap. Route reviews come once in seven entries: six research entries, then a
+  review (user, 3 October 2026: "Drop to one in seven"); the finisher rejects both a
+  seventh research entry in a row and an earlier review. A review is goal-level
+  (`data-scope="goal"`) exactly when its line's open-item count has not dropped since
+  the review ten or more research entries back, and ordinary otherwise (user, 3 October
+  2026); the finisher enforces both directions and `compute.sh start` prints which one
+  is due. A review states the line's general claim, what the main goal needs,
   a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
   the next step on the highest-risk item. Under an **Obstacle** heading it states precisely what the
   line is stuck on. Outside leads and Absurd bridges exist to answer that obstacle, not as items of
