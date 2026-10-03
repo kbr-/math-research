@@ -47,8 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K) (<a href="#entry-2026-10-09-cube-family-graded-radical">family graded radical</a>; eight open items). Hypothesis (F), the last piece of the fixed-cluster support core, follows from a graded radical containment. That containment holds exactly at \(M=4\) for sets with \(E^-\le1\); the plain-ideal form fails.</p>
-<p>Next: as the Hankel blocks review decided, turn to an untouched core after this attempt on (F). The candidate is \(C\)-block uniqueness, the hypothesis both prop:cube-cherry-step-wide and (W″) still need. First re-read its last recorded state, the tie \(C\)-block review and cor:cube-hankel-tie-unique-cblock (\(M\le120\)). Then test whether the Hankel-block machinery (Cauchy expansions of determinants of power sums) applies to the \(C\)-block coordinates.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-spread-bound">C-block spread bound</a>; eight open items). The cherry steps' uniqueness hypothesis is replaced:</p>
+<ul>
+<li>uniqueness is automatic at fixed clusters;</li>
+<li>on moving arcs it fails exactly where the cluster's pivot set jumps in the limit;</li>
+<li>what the steps use, \(\operatorname{spread}(E)\), is at most the flow order \(j_F\) of the Taylor cofactor at a distinct-root limit, which is at most \(1\) above four roots.</li>
+</ul>
+<p>Next: the largest \(j_F\) at distinct roots for \(M=5\). Compute the common distinct-root zeros of \(F\) and \(DF\) exactly. If there are none, \(\operatorname{spread}(E)\le1\) above five roots too; look for the structure (a product formula like the four-root pairings) that would give it for every \(M\). If there are some, test whether \(E\) actually has weight \(2\) on arcs into them, since the spread is only an upper bound.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -72789,6 +72794,96 @@ So \(\pi^{-1}U_p=\operatorname{span}\{e_0,\ldots,e_M\}+\operatorname{span}\{z^m:
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cblock-spread-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-cblock-spread-bound cor:cube-four-cblock-spread ex:cube-cblock-midpoint-tie">
+<h3>9 October 2026 — The leading C-block coordinate ties exactly where the cluster's pivot set jumps in the limit; its spread is at most the flow order of the Taylor cofactor, which is at most one above four roots</h3>
+<p class="entry-meta">Working proof of a spread bound replacing C-block uniqueness, for every M; exact four-root cofactor; refutation of uniqueness on moving arcs. C-block spread cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement. The cherry steps (cor:cube-cherry-step, prop:cube-cherry-step-any-set, prop:cube-cherry-step-wide), and with them (W″) and conj:cube-cancellation-wide-support, assume that the leading \(C\)-block coordinate is unique. The record proved this only above ties, by Taylor dominance (thm:cube-tie-taylor-dominance; \(M\le120\) at the Hankel moduli). The missing implication: does uniqueness hold above every cluster, and if not, what does the cherry step really need from the \(C\)-block? This cycle answers both.</p>
+<p><strong>Setting.</strong> As in lem:cube-node-weight-bound. The cluster \(C=x\tilde C\) has \(M\) roots and normalized roots \(\tilde y'(s)\), bounded and distinct for \(s\ne0\), with \(w_x=\operatorname{val}x&gt;0\). \(p_S\) is the Plücker coordinate of the pair span \(V(y)=\langle[w^t]((1+y_iw)(1+y_jw))^{-3/2}\rangle_{i&lt;j}\) on the column set \(S\), \(|S|=R_C=\binom M2\). The \(C\)-block coordinate on \(S\) is \(x^{\Sigma S}p_S(\tilde y')\), of value \(f_S(w_x)=v_S+w_x\Sigma S\), with \(v_S=\operatorname{val}p_S(\tilde y')\). Let \(V_K\) be the pair span over \(K=\mathbb C((s))\), with Gale-least nonzero coordinate (pivot set) \(S_\infty\). Let \(L\) be the flat limit of \(V(\tilde y'(s))\) at \(s=0\), with pivot set \(S_0\). For a space \(X\) of series, \(\operatorname{wt}_0(X)=\Sigma O(X)-\binom{\dim X}2\) is its weight at \(0\). Write \(T_0=\{0,\ldots,R_C-1\}\) and \(F=p_{T_0}/\mathrm{Vand}^{M-2}\), the Taylor cofactor.</p>
+<p><strong>General statement.</strong> prop:cube-cblock-spread-bound. Characteristic zero, every \(M\ge2\), every arc as above.</p>
+<ol>
+<li>For every rate \(w_x&gt;0\), every set \(S\) in the support of the leading \(C\)-block Plücker vector has \(\Sigma S_\infty\le\Sigma S\le\Sigma S_0\). Hence \(\operatorname{spread}(E)\le\operatorname{wt}_0(L)-\operatorname{wt}_0(V_K)\).</li>
+<li>The leading coordinate is unique at every rate \(w_x&gt;0\) if and only if \(S_0=S_\infty\). If \(S_0\ne S_\infty\), it ties at some rate, at no more than \(\Sigma S_0-\Sigma S_\infty\) rates, and is unique at all others.</li>
+<li>If the cluster is fixed (\(\tilde y'\equiv y^\ast\), distinct coordinates), the leading coordinate is unique at every rate and equals the pivot set of \(V(y^\ast)\). No condition on \(F(y^\ast)\) is needed.</li>
+<li>If \(\tilde y'(s)\to y^\ast\) with distinct coordinates, then \(\operatorname{wt}_0(V(y^\ast))=j_F(y^\ast):=\operatorname{ord}_{t=0}F\bigl(y^\ast/(1+ty^\ast)\bigr)\), the order of \(F\) along the flow \(D=-\sum y_i^2\partial_i\). Hence \(\operatorname{spread}(E)\le j_F(y^\ast)\). Uniqueness at every rate holds if \(F(y^\ast)\ne0\), and, when \(F(\tilde y'(s))\not\equiv0\), only then.</li>
+<li>(Cherry steps without uniqueness.) In the setting of cor:cube-cherry-step, if \(\operatorname{spread}(E)+\operatorname{spread}(U)\le1\) along the arc, then \(L_0\) has no section vanishing to order \(R+1\), \(\operatorname{rank}A_{R+1}=R\) along the arc, and the arc avoids \(K\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<p>(1) Let \(m=\min_Sv_S\). The flat limit \(L\) is the reduction of the Plücker vector scaled by \(s^{-m}\), so the sets with \(v_S=m\) are the bases of the matroid of \(L\). Its Gale-least basis is the pivot set \(S_0\), so \(v_{S_0}=m\). Fix \(w_x&gt;0\) and a set \(S\) in the leading support, so \(f_S(w_x)=\min_{S'}f_{S'}(w_x)\le f_{S_0}(w_x)\). Then \(w_x\Sigma S\le w_x\Sigma S_0+(m-v_S)\le w_x\Sigma S_0\), so \(\Sigma S\le\Sigma S_0\). Also \(p_S\not\equiv0\) over \(K\), and \(S_\infty\) is the Gale-least such set, so \(S\ge S_\infty\) in Gale order and \(\Sigma S\ge\Sigma S_\infty\).</p>
+<p>The support of the leading vector is the basis set of the matroid of \(E\), so its Gale-largest and Gale-least sets lie in it. The spread is therefore at most \(\Sigma S_0-\Sigma S_\infty\). With \(O(L)=S_0\) and \(O(V_K)=S_\infty\), as for any space whose pivot set is its Gale-least nonzero coordinate, this is \(\operatorname{wt}_0(L)-\operatorname{wt}_0(V_K)\).</p>
+<p>(2) Suppose \(S_0=S_\infty\). Every \(S\) with \(p_S\not\equiv0\) has \(S\ge S_0\) in Gale order, so \(\Sigma S\ge\Sigma S_0\) with equality only for \(S=S_0\), and also \(v_S\ge m=v_{S_0}\). So \(f_S(w_x)&gt;f_{S_0}(w_x)\) for every \(S\ne S_0\) and every \(w_x&gt;0\).</p>
+<p>Finiteness. By the argument of (1), any \(S\) with \(f_S(w_x)\le f_{S_0}(w_x)\) has \(\Sigma S\le\Sigma S_0\). So at every rate only the finitely many lines with \(\Sigma S\le\Sigma S_0\) compete, and the lower envelope is the minimum of finitely many lines. By (1), its leaders always have slope \(\Sigma S\in[\Sigma S_\infty,\Sigma S_0]\). The slope of a concave envelope strictly decreases across each breakpoint, and the slopes are integers. So there are at most \(\Sigma S_0-\Sigma S_\infty\) breakpoints.</p>
+<p>Uniqueness between breakpoints. At a rate that is not a breakpoint, all leaders lie on one line of the envelope, so they share \(\Sigma S\). The leaders are the bases of the matroid of \(E\). If there were two bases \(B\ne B'\), basis exchange would give a basis \(B-e+f\) with \(e\ne f\), whose column sum differs from that of \(B\). So there is exactly one leader, and the spread is \(0\), away from breakpoints.</p>
+<p>Converse. Suppose \(S_0\ne S_\infty\). For small \(w_x\) the envelope is attained only by \(S_0\):</p>
+<ul>
+<li>any other \(S\) with \(v_S=m\) is a basis of \(L\), so \(\Sigma S&gt;\Sigma S_0\);</li>
+<li>any \(S\) with \(v_S&gt;m\) has \(v_S-m\ge1\), since valuations along an analytic arc are integers. It loses once \(w_x(\Sigma S_0-\Sigma S)&lt;1\), which holds uniformly for \(w_x&lt;1/(\Sigma S_0-\Sigma S_\infty)\), because \(\Sigma S\ge\Sigma S_\infty\).</li>
+</ul>
+<p>For \(w_x&gt;v_{S_\infty}-m\), the envelope is attained only by \(S_\infty\): it has the unique least column sum among the nonzero coordinates, and \(f_{S_\infty}&lt;f_S\) for every other competitor. So the minimizer changes, and at a breakpoint two lines meet in a tie.</p>
+<p>(3) Here \(v_S\in\{0,\infty\}\), so the lines with finite values are those of \(V(y^\ast)\)'s nonzero coordinates. These all have \(v_S=0\), and the least column sum among them is attained only at the pivot set, by Gale minimality. Equivalently \(S_0=S_\infty\), and (2) applies.</p>
+<p>(4) This transfers prop:cube-mark-weight-dictionary (2), stated there for the root-cover mark, to the cluster's own pair span at \(T=0\). For a space \(X\) of \(n\) power series, the Wronskian \(W_X(t)\) at the point \(T=t\) vanishes at \(t=0\) to order exactly \(\operatorname{wt}_0(X)\): in a basis with orders \(a_i\) it is \(\prod_{i&lt;j}(a_j-a_i)\) times the product of the leading coefficients times \(t^{\Sigma(a_i-i)}\), plus higher terms, in characteristic zero.</p>
+<p>Expand the pair functions of \(y^\ast\) at the mark \(t\). Since \(1+y(t+T')=(1+yt)\bigl(1+\tfrac{y}{1+yt}T'\bigr)\), each row equals a nonzero scalar, \(((1+y_it)(1+y_jt))^{-3/2}\), times the row of \(y_t=y^\ast/(1+ty^\ast)\) in the variable \(T'\). So \(W_{V(y^\ast)}(t)\) is a unit times \(\prod_kk!\cdot p_{T_0}(y_t)=\text{unit}\cdot\mathrm{Vand}(y_t)^{M-2}F(y_t)\). Since \(\mathrm{Vand}(y_t)\ne0\) near \(t=0\), \(\operatorname{wt}_0(V(y^\ast))=\operatorname{ord}_{t=0}F(y_t)=j_F(y^\ast)\).</p>
+<p>The flat limit at a distinct-root limit is \(L=V(y^\ast)\), since the coordinates are continuous and not all zero there. So (1) gives \(\operatorname{spread}(E)\le j_F(y^\ast)-\operatorname{wt}_0(V_K)\le j_F(y^\ast)\). If \(F(y^\ast)\ne0\), then \(S_0=T_0=S_\infty\). If \(F(y^\ast)=0\) but \(F(\tilde y'(s))\not\equiv0\), then \(S_0\ne T_0=S_\infty\), and (2) gives a tie.</p>
+<p>(5) By lem:cube-node-weight-bound, \(\sum_i(a_i-i)\le\operatorname{spread}(E)+\operatorname{spread}(U)\le1\) for the orders \(a_0&lt;\cdots&lt;a_{R-1}\) of \(L_0\). Each term is nonnegative, so \(a_{R-1}\le R\). The rest is the last step of the proof of cor:cube-cherry-step: the vanishing-order set of \(L_0\) lies in \(\{0,\ldots,R\}\), and by coordinatewise convergence of the normalized minors it attains the least valuation, so \(\operatorname{rank}A_{R+1}=R\). \(\square\)</p>
+<p><strong>Second statement.</strong> cor:cube-four-cblock-spread. At \(M=4\),
+\[F=-\tfrac{14175}{2^{23}}\,(y_1+y_2-y_3-y_4)(y_1+y_3-y_2-y_4)(y_1+y_4-y_2-y_3).\]
+At every point with distinct coordinates \(j_F\le1\). So above a four-root cluster whose normalized roots tend to a distinct-root limit, \(\operatorname{spread}(E)\le1\) along every arc. If moreover the leading cross coordinate is unique, part (5) applies and the arc avoids \(K\). At fixed four-root clusters the leading \(C\)-block coordinate is unique by part (3).</p>
+<p><em>Proof.</em> The identity is an exact polynomial division in \(\mathbb Q[y_1,\ldots,y_4]\) of the \(6\times6\) Taylor minor by \(\mathrm{Vand}^2\) and the pairing product. It is computed by research/tools/bmd_taylor_cofactor_zeros.gp, part (0) (research/results/bmd-20261009-bn/taylor-cofactor-zeros.txt), with quotient the constant \(-14175/2^{23}\).</p>
+<p>At a distinct-root point at most one pairing factor vanishes. If two did, say \(y_1+y_2=y_3+y_4\) and \(y_1+y_3=y_2+y_4\), then \(y_2=y_3\). On the vanishing factor, say \(y_1+y_2=y_3+y_4=\sigma\), the flow derivative is \(-D(y_1+y_2-y_3-y_4)=y_1^2+y_2^2-y_3^2-y_4^2=2(y_3y_4-y_1y_2)\). It vanishes only if also \(y_1y_2=y_3y_4\), that is \(\{y_1,y_2\}=\{y_3,y_4\}\), which is excluded. So \(F\) vanishes to order at most one along the flow. \(\square\)</p>
+<p><strong>Refutation.</strong> ex:cube-cblock-midpoint-tie. The uniqueness hypothesis of the cherry steps fails on moving arcs, already at \(M=4\). Take \(y^\ast=(0,1,3,4)\), where \(0+4=1+3\), and the arc \(\tilde y'(s)=y^\ast+s(1,2,-1,5)\), transverse to that hyperplane, with \(x=s\). This arc's own rate is \(w_x=1\), the tie rate. Columns from \(13\) on cannot lead: such a set has \(\Sigma S\ge23\) and value at least \(23w_x&gt;16w_x=f_{S_0}\).</p>
+<p>The same script, part (2), computes the exact \(s\)-adic valuations of all \(1716\) coordinates on \(13\) columns. It finds:</p>
+<ul>
+<li>flat-limit pivot \(S_0=\{0,1,2,3,4,6\}\) at valuation \(0\);</li>
+<li>generic pivot \(T_0\) at valuation \(1\).</li>
+</ul>
+<p>The leading coordinate is unique at every rate in \(\{1/50,\ldots,20\}\) except \(w_x=1\), where \(T_0\) and \(S_0\) tie. This is exactly the prediction of parts (2) and (4), with spread \(1=j_F(y^\ast)\).</p>
+<p>A first run kept the root as a polynomial modulus and used \(25\) columns. It reported every valuation as \(0\), the recorded failure of valuations on modulus-wrapped constants. The rerun substitutes the rational root.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>"Unique leading \(C\)-block coordinate" is the wrong hypothesis. It is automatic at fixed clusters, so cor:cube-fixed-cluster-breakpoints needs only (F) to conclude avoidance through prop:cube-cherry-step-wide. It is false on moving arcs that end on the zero set of the Taylor cofactor, at no more than \(\operatorname{wt}_0(L)-\operatorname{wt}_0(V_K)\) rates per arc; above four roots that is one rate.</li>
+<li>What the cherry steps use is \(\operatorname{spread}(E)\). That spread is bounded by a base weight: the Taylor weight of the cluster's flat limit, which at a distinct-root limit is the flow order of \(F\).</li>
+<li>Above four roots the bound is \(1\). Then a \(C\)-block tie is harmless whenever the cross leader is unique, and the budget is exhausted when both blocks tie.</li>
+<li>This connects the core statement's \(C\)-block side to (B), a base weight bound, through the same Wronskian–flow mechanism that gave thm:cube-family-hankel-pivots on the cross side.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Moving arcs where both blocks tie: \(\operatorname{spread}(E)=1\) and \(\operatorname{spread}(U)\ge1\). The weight bound alone gives order \(\le R+1\), and a wide-step argument is needed.</li>
+<li>\(j_F\) at distinct roots for \(M\ge5\). The common zeros of \(F\) and \(DF\) form a codimension-two condition, so spread \(2\) may occur.</li>
+<li>Arcs whose limit has coincidences, where \(L\) is an osculating limit.</li>
+<li>(F); moving arcs on the cross side; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-node-weight-bound and cor:cube-cherry-step (the spread inequality and the final rank step);</li>
+<li>lem:cube-cofactor-gives-unique-cblock and prop:cube-minimality-small-clusters (\(F\) and the \(C\)-block coordinates);</li>
+<li>prop:cube-mark-weight-dictionary (2) (the flow-weight dictionary transferred in part (4));</li>
+<li>thm:cube-tie-taylor-dominance and prop:cube-cofactor-double-coincidence (the tie case).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked parts (1), (3), (4) and (5), the four-root identity against the data, the flow derivative, the transversality and the column truncation of the example. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>part (2) had used "finitely many lines" over infinitely many columns; it now confines competitors by (1), counts breakpoints by integer slopes, and proves uniqueness between breakpoints by basis exchange;</li>
+<li>the count of tie rates replaces "one rate per arc";</li>
+<li>the Wronskian's leading constant;</li>
+<li>the example's own rate and the column truncation stated;</li>
+<li>the script header.</li>
+</ul>
+<p>Unused hypotheses: boundedness of \(\tilde y'\) is needed only in (4), and characteristic zero only in (4) and the corollary.</p>
+<p>Status: working proof (spread bound, every \(M\); four-root cofactor by exact computation); refutation of uniqueness on moving arcs.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 37.27 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 22.18 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 54.73 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 5.92 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">43.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7 min 30.91 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
