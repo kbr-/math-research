@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), in every odd characteristic and every \(d\ge3\), is now a \(5\times5\) determinant on an elliptic curve (<a href="#entry-2026-10-09-cube-merged-five-reduction">merged five reduction</a>), assuming \(H-4P\) has order not dividing \(4(d-1)\). Its rows are one coefficient below the principal parts at infinity and four values on a two-torsion coset.</p>
-<p>Next: the head (coherent base change lead), entry three, or its new sub-idea: the non-torsion hypothesis for \(H-4P\), structurally, then the Tate expansion of the \(5\times5\) determinant.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2 at \(n=5\), in every odd characteristic and every \(d\ge3\), is exactly the nonvanishing of one \(5\times5\) determinant \(\det\Psi_P\) on an elliptic curve at a transcendental marked point. See the <a href="#entry-2026-10-09-cube-merged-five-reduction">five reduction</a>, whose hypothesis is <a href="#entry-2026-10-09-cube-merged-torsion-condition">\([N]P\ne O\)</a>.</p>
+<p>Next: the head (coherent base change lead), entry four, through its sub-idea: does \(\det\Psi_P\) factor? Then its Tate expansion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97,7 +97,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-nodal-extension-review:2"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:2</a> (lead): Grothendieck's coherent cohomology and base change. The finite-complex statement in Stacks, Lemma 30.22.1 retains torsion that plain central-fibre dimensions lose. Translate the focused line bundle into this complex and …<ul>
-<li data-check="entry-2026-10-09-cube-merged-five-reduction:s1"><a href="#entry-2026-10-09-cube-merged-five-reduction">entry-2026-10-09-cube-merged-five-reduction:s1</a> (check): The hypothesis of lem:cube-merged-five-reduction: is the class of \(H-4P\) on the merged elliptic curve non-torsion over the algebraic closure of \(\mathbb F_p(a_1,a_3,a_4)\) (transcendental parameters), in every odd cha…</li>
 <li data-check="entry-2026-10-09-cube-merged-five-reduction:s2"><a href="#entry-2026-10-09-cube-merged-five-reduction">entry-2026-10-09-cube-merged-five-reduction:s2</a> (check): Does \(\det\Psi_P\) factor further, for instance by separating the coefficient row \(\alpha_{\{3,4\},2d-3}\) from the four value rows on \(Z\)?</li>
 </ul></li>
 <li data-lead="entry-2026-09-27-cube-nodal-extension-review:3"><a href="#entry-2026-09-27-cube-nodal-extension-review">entry-2026-09-27-cube-nodal-extension-review:3</a> (lead): Serre duality with the canonical twist retained. The line-bundle duality formula identifies the obstruction layers with dimensions of \(H^0(B,(n-4-r)H)\). Those spaces have the explicit complete character bases proved in…</li>
@@ -77580,6 +77579,56 @@ where \(R=S\setminus\{v\}\) and:</p>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 48.32 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.81 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.37 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-merged-torsion-condition" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-check="entry-2026-10-09-cube-merged-five-reduction:s1" data-claims="lem:cube-merged-torsion-condition">
+<h3>9 October 2026 — Merged torsion condition: the five reduction's hypothesis is \([N]P\ne O\), and it holds for a transcendental marked point in every characteristic</h3>
+<p class="entry-meta">Working lemma (\(n=5\), every \(d\ge3\), every characteristic other than two). Lead-queue development (the head's first sub-idea, entry three of four, Developed). Merged torsion condition cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-09-cube-merged-five-reduction">merged five reduction</a> turned statement 2 at \(n=5\) into a \(5\times5\) determinant. It assumed that \((4d-4)(H-4P)\) is not principal on the merged elliptic curve \(E\). Its first sub-idea asks whether this hypothesis holds for suitable parameters in every odd characteristic, settled structurally.</p>
+<p><strong>General statement.</strong> lem:cube-merged-torsion-condition (\(n=5\), every \(d\ge3\), every characteristic other than two).</p>
+<h4>The lemma</h4>
+<p><strong>Lemma (lem:cube-merged-torsion-condition).</strong> In the setting of lem:cube-merged-elliptic-criterion, give \(E\) the group law with origin \(O\in H\). Then:</p>
+<ol>
+<li>\(H=E[2]\).</li>
+<li>\((4d-4)(H-4P)\) is principal if and only if \([N]P=O\), where \(N=16d-16\).</li>
+<li>Let \(K_0\subset k\) be a field of characteristic other than two, and fix four distinct points \(\beta_\infty,\beta_v,\beta_3,\beta_4\in\mathbb P^1(K_0)\). They are labelled so that the coordinate \(\tau\) sends \(\beta_\infty\) (the merged branch point) to \(\infty\), \(\beta_v\) (the image of \(T=\infty\)) to \(1/a_1\), and \(\beta_i\) to \(-1/b_i\). Let the marked point \(u\) be transcendental over \(K_0\), and fix the remaining free scale of \(\tau\) by a factor in \(K_0(u)^\times\). Then the parameters \(a_1,a_3,a_4\) obtained by moving \(u\) to \(\tau=0\) are distinct, nonzero and lie in \(K_0(u)\), and \(P\) is not torsion. So the hypothesis of lem:cube-merged-five-reduction holds for every \(d\ge3\) at once.</li>
+</ol>
+<p><strong>Proof.</strong> (1) At \(\tau=\infty\) each of \(v\), \(w'_3\), \(w'_4\) is ramified, since \(1-a_1\tau\) and \(1+b_i\tau\) have simple poles there. So the inertia at the four points of \(H\) is the element \(\sigma\in G\) that flips all three roots, and \(H\) is its fixed-point set. An automorphism of the genus-one curve \(E\) has the form \(x\mapsto\zeta x+c\), with \(\zeta\) an automorphism of the group. If it has order two, then \(\zeta^2=1\). Since \(\operatorname{End}(E)\) has no zero divisors, \((\zeta-1)(\zeta+1)=0\) gives \(\zeta=\pm1\); this covers \(j=0,1728\) and characteristic three without case analysis. A map with fixed points is not a nontrivial translation, so \(\zeta=-1\). Its fixed points are then \(\{x:2x=c\}\), a coset of \(E[2]\); there are four because the characteristic is not two. \(\sigma\) fixes the four points of \(H\), so this coset is \(H\). Since \(O\in H\), \(2O=c\) gives \(c=O\), and \(H=E[2]\).</p>
+<p>(2) By Abel's theorem a degree-zero divisor \(\sum n_x(x)\) is principal if and only if \(\sum n_xx=O\) in the group. The points of \(E[2]\) sum to \(O\), so \(H-4P\) maps to \(-4P\), and \((4d-4)(H-4P)\) maps to \(-[16d-16]P=-[N]P\).</p>
+<p>(3) The merged configuration consists of four branch points and the marked point. Up to isomorphism, \(E\) is the \((\mathbb Z/2)^3\)-cover of \(\mathbb P^1\) branched at the four branch points. Concretely, \(E\cong E_0\otimes k\), where \(E_0\) is the cover of \(\mathbb P^1_t\) over \(K_0\) given by the square roots of \((t-\beta_j)/(t-\beta_\infty)\). The constant factors depending on \(u\) introduced by the normalization are squares in \(k\), so they drop out. The isomorphism commutes with the maps to \(\mathbb P^1\). It sends \(O\in H\) to a point over \(\beta_\infty\), algebraic over \(K_0\), so the group law is defined over a finite extension \(K_1\) of \(K_0\). It sends \(P\) to a point with \(t=u\).</p>
+<p>The coordinate \(\tau\) is a Möbius map with coefficients in \(K_0(u)\) once its scale is fixed in \(K_0(u)^\times\), so \(a_1,a_3,a_4\in K_0(u)\). These parameters are admissible:</p>
+<ul>
+<li>\(a_1,b_3,b_4\) are finite and nonzero, because \(u\) is none of the \(\beta\)s and each \(\beta\ne\beta_\infty\);</li>
+<li>\(a_i\ne0\) because \(\beta_i\ne\beta_v\), \(a_3\ne a_4\) because \(\beta_3\ne\beta_4\), and \(a_i\ne a_1\) because \(b_i\ne0\).</li>
+</ul>
+<p>\(P\) lies over \(u\), so a coordinate of \(P\) on a model of \(E\) over \(K_1\) is transcendental over \(K_1\). Every torsion point of \(E\) is algebraic over \(K_1\), because for \(m\ne0\) the multiplication-by-\(m\) map is defined over \(K_1\) and is finite and nonconstant, even when inseparable. Hence \(P\) is not torsion, and by (2) the hypothesis holds for every \(d\). This works in characteristic \(p\) as well, with for example \(K_0=\mathbb F_p\) and \(k\) an algebraic closure of \(\mathbb F_p(u)\). \(\square\)</p>
+<p><strong>Consequence.</strong> In every characteristic other than two, lem:cube-merged-five-reduction applies at the parameter points of (3), over \(k\) an algebraic closure of \(\mathbb F_p(u)\) (or of \(\mathbb Q(u)\)). The transfer of lem:cube-merged-elliptic-criterion holds over any algebraically closed \(k\). So, for each \(d\ge3\), generic normality of \(V_{5,d}\) follows from \(\det\Psi_P\ne0\) at one such point. This is the same transcendence input as the dimension-four proof, where \([N]P\ne O\) came from a transcendental marked point \(P=[u]\) on a Tate curve (thm:cube-four-all-odd-normality, step 3).</p>
+<p>\(\Psi_P\) is defined only where the hypothesis holds, through the coordinates of lem:cube-merged-five-reduction (1). Over \(\overline{\mathbb F}_p\) every point is torsion. So a test at an \(\overline{\mathbb F}_p\)-point needs its own check that the order of \(P\) does not divide \(N\) for that \(d\), which is not uniform in \(d\). A proof uniform in \(d\) must show \(\det\Psi_P\ne0\) over the transcendental field, or \(\det\Phi'_P\ne0\), which needs no hypothesis. For \(d\ge3\), the open part of statement 2 at \(n=5\) is now this nonvanishing. \(d=2\) is outside these lemmas and remains separate.</p>
+<p><strong>Follow-up.</strong> Developed: the sub-idea's question is answered by lem:cube-merged-torsion-condition. The hypothesis is \([N]P\ne O\), and it holds for a transcendental marked point in every characteristic other than two. The parent lead (coherent base change) continues at the head; its next sub-idea asks whether \(\det\Psi_P\) factors further.</p>
+<p><strong>Remaining gap.</strong> Nonvanishing of \(\det\Psi_P\) (over the transcendental field) for every \(d\ge3\) at every odd prime; the case \(d=2\).</p>
+<p><strong>Process.</strong> No computation.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-merged-five-reduction (the hypothesis and its divisor); lem:cube-merged-elliptic-criterion (the curve \(E\), \(H\) and the roots); thm:cube-four-all-odd-normality (step 3, the transcendental marked point).</p>
+<p><strong>Verification gate.</strong> One fresh-context reviewer at medium effort found parts (1)–(3) correct in every characteristic other than two. It required these changes, all applied:</p>
+<ul>
+<li>the reason \(\zeta=\pm1\) (no zero divisors in \(\operatorname{End}(E)\));</li>
+<li>why the fixed coset is \(H\);</li>
+<li>fixing the free scale of \(\tau\), the explicit labelling and the admissibility of the parameters;</li>
+<li>the model \(E_0\) over \(K_0\) and the transport of \(O\) and \(P\);</li>
+<li>scoping the consequence: \(\Psi_P\) needs the hypothesis, tests over \(\overline{\mathbb F}_p\) are per degree, and \(d=2\) stays open;</li>
+<li>the wording of the dimension-four comparison, a transcendental marked point \(P=[u]\).</li>
+</ul>
+<p><strong>Status:</strong> working lemma; sub-idea developed; lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kbe">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 35.87 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 42.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
