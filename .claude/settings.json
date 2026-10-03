@@ -29,7 +29,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py pre"
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" pre; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
+          },
+          {
+            "type": "command",
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/monitor-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" pre; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
           }
         ]
       },
@@ -38,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/guard-full-output.py"
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/guard-full-output.py; if [ -f \"$f\" ]; then python3 \"$f\"; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
           }
         ]
       }
@@ -49,7 +53,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py start"
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" start; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
           }
         ]
       }
@@ -60,7 +64,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py post"
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" post; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
+          },
+          {
+            "type": "command",
+            "command": "f=\"$CLAUDE_PROJECT_DIR\"/tools/hooks/monitor-gate.py; if [ -f \"$f\" ]; then python3 \"$f\" post; else echo \"hook skipped: $f is missing (update the main checkout)\" >&2; exit 1; fi"
           }
         ]
       }
