@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-ternary-faces-route-review">ternary faces review</a>; eight open items). The review switched work back from statement 2, whose slice is certified for \(n\le21\) but has no mechanism. Every face of \(\Delta_{n,2}\bmod3\) meets binomial box products with factors of three.</p>
-<p>Next: uniqueness of the leading \(C\)-block coordinate above the excluded tie moduli, the other hypothesis of prop:cube-cherry-step-any-set. Compute the \(C\)-block's leading Plücker coordinates along the failing-ray arcs, and prove uniqueness, or find the tie, from the cluster's Hankel structure.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-taylor-dominance">tie Taylor cofactor</a>; eight open items). A nonzero Taylor cofactor \(F\) at the cluster's limit makes the leading \(C\)-block coordinate unique. Above a tie, for \(M\le5\), \(F\) vanishes only at \(c_0=-1\) and, for \(M=5\), at \(7c_0^2+2c_0+7=0\), never at the excluded Hankel moduli.</p>
+<p>Next: \(F(c,1,0^{M-2})\) for every \(M\). Find its closed form, perhaps through the Gegenbauer tie coefficient of thm:cube-tie-window-gegenbauer, whose zeros also lie on the unit circle. Decide whether its zeros other than \(0\) and \(1\) ever meet the Hankel moduli \((M-1)c^2-2c+(M-1)=0\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -68853,6 +68853,81 @@ Hence \(\Delta'_{n-1}\not\equiv0\) implies \(\Delta_n\not\equiv0\).</p>
 <tr><td>Computation design and coding</td><td class="elapsed">25.82 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">16.98 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.24 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-taylor-dominance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-cofactor-gives-unique-cblock cor:cube-tie-cofactor-small">
+<h3>9 October 2026 — The leading \(C\)-block coordinate is unique wherever the Taylor cofactor is nonzero at the cluster's limit; above a tie the cofactor vanishes only at \(c_0=-1\) and one more unit-circle pair for \(M\le5\), never at the excluded Hankel moduli</h3>
+<p class="entry-meta">Working proof that a nonzero Taylor cofactor at the limit gives a unique leading \(C\)-block coordinate; exact cofactors at the tie limit for \(M\le5\). Discharges the uniqueness hypothesis above the excluded moduli for \(M\le5\). Tie cofactor cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement. prop:cube-cherry-step-any-set needs the leading \(C\)-block coordinate to be unique. The record assumes this throughout for tie clusters, for example in thm:cube-cherry-above-four-tie, and never proves it, also at the excluded tie moduli where the failing ray lives (<a href="#entry-2026-10-09-cube-ternary-faces-route-review">ternary faces review</a>). When is it unique?</p>
+<p><strong>General statement.</strong> lem:cube-cofactor-gives-unique-cblock. Work in characteristic zero. Let \(C=x\tilde C\) be a cluster of \(M\ge2\) roots, in the setting of lem:cube-node-weight-bound. Let \(p_S\) be the Plücker coordinates of the pair span \(\{[w^t]((1+y_iw)(1+y_jw))^{-3/2}\}_{i&lt;j}\), and \(T_0=\{0,\ldots,\binom M2-1\}\). Put \(F=p_{T_0}/\mathrm{Vand}^{M-2}\), a polynomial by prop:cube-minimality-small-clusters. If the normalized roots \(\tilde y'\) tend along the arc to a point \(y^\ast\) with \(F(y^\ast)\ne0\), then:</p>
+<ul>
+<li>\(\operatorname{val}p_{T_0}(\tilde y')=\min_S\operatorname{val}p_S(\tilde y')\) (Taylor dominance);</li>
+<li>for every \(w_x&gt;0\) the leading \(C\)-block coordinate is unique and equals \(T_0\).</li>
+</ul>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Every \(p_S\) is divisible by \(\mathrm{Vand}^{M-2}\) as a polynomial, the argument of prop:cube-minimality-small-clusters, valid for every \(M\). For each \(k\ne i,j\), the row \((j,k)\) minus the row \((i,k)\) is divisible by \(y_i-y_j\). That gives \(M-2\) such rows, so \((y_i-y_j)^{M-2}\) divides every minor. These factors are coprime for distinct pairs. Its cofactor is a polynomial with rational coefficients, so it has valuation \(\ge0\) at the bounded \(\tilde y'\). Hence \(\operatorname{val}p_S\ge(M-2)\operatorname{val}\mathrm{Vand}\).</li>
+<li>\(\operatorname{val}F(\tilde y')=0\), because \(F\) is continuous and \(F(y^\ast)\ne0\). So \(p_{T_0}\) attains that bound, which gives Taylor dominance.</li>
+<li>The coordinate on \(S\) is \(x^{\Sigma S}p_S(\tilde y')\), of value \(w_x\Sigma S+\operatorname{val}p_S\) (lem:cube-node-weight-bound). \(T_0\) is the unique \(\binom M2\)-set of least column sum, so for \(w_x&gt;0\) every \(S\ne T_0\) has strictly larger value. \(\square\)</li>
+</ol>
+<p><strong>Second statement.</strong> cor:cube-tie-cofactor-small. Write \(\doteq\) for equality up to a nonzero rational constant. At the tie limit \(y^\ast=(c,1,0^{M-2})\):</p>
+<ul>
+<li>\(M=3\): \(F\doteq1\);</li>
+<li>\(M=4\): \(F\doteq(c-1)^2(c+1)\);</li>
+<li>\(M=5\): \(F\doteq(c-1)^6c^3(c+1)(7c^2+2c+7)\).</li>
+</ul>
+<p>(For \(M=2\), \(F=p_{T_0}=1\).) Hence, in characteristic zero, for a tie with modulus \(c_0\notin\{0,1\}\) above a deeper cluster whose roots have strictly larger valuation than the tie, so that the normalized limit is \((c_0,1,0^{M-2})\), and \(2\le M\le5\): the leading \(C\)-block coordinate is unique along every arc, unless \(c_0=-1\), or \(M=5\) and \(7c_0^2+2c_0+7=0\), where the criterion fails. In particular it is unique at the excluded moduli \((M-1)c_0^2-2c_0+(M-1)=0\) of cor:cube-cherry-above-caterpillar-tie, \(M=4,5\); that corollary assumes \(M\ge4\).</p>
+<p><strong>Proof.</strong> \(F\) is a polynomial, so \(F(c,1,0,\ldots,0)\) is its value at \(e=0\) along \(y=(c,1,ez_3,\ldots,ez_M)\), for any fixed \(z\). research/tools/bmd_tie_taylor_cofactor.gp computes \(p_{T_0}/\mathrm{Vand}^{M-2}\) symbolically in \(c\) and \(e\), with \(z=(2,5,11)\), sets \(e=0\) and factors (research/results/bmd-20261009-ad/tie-taylor-cofactor.txt). None of the Hankel modulus polynomials \(2c^2-2c+2\), \(3c^2-2c+3\), \(4c^2-2c+4\) divides it. Apply the lemma. \(\square\)</p>
+<p>Consistency check: research/tools/bmd_cblock_uniqueness.gp (cblock-uniqueness.txt) computes all \(210\) coordinates \(p_S\), \(S\subset[0,9]\), at \((c_0,1,q,q+q^2)\) and at \((c_0,1,q^{10},q^{10}+q^{20})\), \(q\)-adically, with \(c_0=(1\pm2\sqrt{-2})/3\). It finds \(\operatorname{val}p_{T_0}=\min_S\operatorname{val}p_S\), equal to \(4\) and \(40\), \((M-2)\operatorname{val}\mathrm{Vand}\). \(T_0\) is the unique leader at every \(w_x\in\{0.1,\ldots,4\}\), as at the control \(c_0=2\). A first run without the dominance line is kept (cblock-uniqueness.txt.first-run).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>Above a tie at an excluded Hankel modulus, \(M\le5\), both hypotheses of prop:cube-cherry-step-any-set now have a status:
+<ul>
+<li>uniqueness of the leading \(C\)-block coordinate is proved, for arcs whose normalized limit is \((c_0,1,0^{M-2})\);</li>
+<li>(W″) on the failing ray, except at three-leader ties, is a finite \(q\)-adic check of the cancellation ray entry.</li>
+</ul></li>
+<li>The criterion fails only at \(c_0=-1\) and \(7c_0^2+2c_0+7=0\), on the unit circle (\(c+1/c=-2\) and \(-2/7\)). Whether uniqueness itself fails there is open. These moduli resemble the record's Gegenbauer tie zeros but have not been identified with them, and at them the uniqueness hypothesis needs another argument.</li>
+<li>The lemma gives a sufficient polynomial condition at the limit point for "unique leading \(C\)-block coordinate", checkable at any tree.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(F(c,1,0^{M-2})\) for every \(M\), and the role of its unit-circle zeros.</li>
+<li>The cherry step at \(c_0=-1\).</li>
+<li>(W″) under Hankel non-cancellation in general.</li>
+<li>The other open items of (K), and (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-node-weight-bound (the \(C\)-block coordinates \(x^{\Sigma S}p_S\));</li>
+<li>prop:cube-minimality-small-clusters (divisibility by \(\mathrm{Vand}^{M-2}\));</li>
+<li>prop:cube-cherry-step-any-set;</li>
+<li>cor:cube-cherry-above-caterpillar-tie (the excluded moduli).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the divisibility for every \(M\), the coordinates \(x^{\Sigma S}p_S(\tilde y')\) and the limit \(y^\ast\), the uniqueness of \(T_0\), the exact-quotient computation and its factorizations. It also noted that the choice of which tie root is normalized to \(1\) changes \(F\) by a power of \(c\) only. Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>characteristic zero stated;</li>
+<li>"the cofactor vanishes" in place of a failure of uniqueness, and the open status at those moduli;</li>
+<li>the scope of the proved uniqueness and the finite-check status of (W″) on the ray;</li>
+<li>\(M=2\) added and the excluded moduli limited to \(M=4,5\);</li>
+<li>the tool comment corrected;</li>
+<li>the condition called sufficient.</li>
+</ul>
+<p>Status: working proof (lemma, and the corollary by exact symbolic computation for \(M\le5\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ad">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 6.08 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">39.02 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.88 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 50.97 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">15.68 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 9.26 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.51 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
