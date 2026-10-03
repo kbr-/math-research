@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-boundary">triple window boundary</a>; seven open items). The triple window holds exactly for \(2\le m\le7\). Its boundary edges keep rank \(3\), but properness cannot exclude isolated rank-drop points.</p>
-<p>Next: a recurrence in \(m\) (lead 1 of the window cores review). Write the five-coefficient window of the filtered Gegenbauer-moment sequences at level \(m+1\) in terms of level \(m\), through \(\rho^{(-m-1)}_n=\rho^{(-m)}_n/(n+\lambda+m+1)\) and the extra factor \((1+a_kT)\). Test whether the left kernel at \(m+1\) maps injectively to that at \(m\), which would give induction from the exact base \(m\le7\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-fuchs">triple window count</a>; seven open items). Properness and the global Wronskian count are both ruled out for the triple window. The count's bound is \(\tfrac32m(m+3)\), not \(2\). The window holds exactly for \(m\le7\).</p>
+<p>Next: lead 1 of the window cores review. At a fixed rational modulus pair, compute the ten minors of \(U_3\) exactly for \(m=2,\ldots,30\) from the closed form, which is cheap, and guess a P-recursive relation in \(m\) for a suitable minor or combination. A recurrence whose leading coefficient has no admissible zero would give induction from the exact base \(m\le7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -74811,6 +74811,75 @@ where \(q^{(ij)}\) are the coefficients of \(\prod_{l\ne i,j}(1+a_lT)^m\). So th
 <tr><td>Computation design and coding</td><td class="elapsed">30.96 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.58 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-window-fuchs" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-level-window-fuchs-bound ex:cube-triple-window-count-insufficient">
+<h3>9 October 2026 — The global Wronskian count bounds the triple window's contact weight only by (3/2)m(m+3), so it cannot prove the triple window for any m</h3>
+<p class="entry-meta">Working proof of the Fuchs-relation bound for the level window space; refutation of the count as a proof route for the triple window. Triple window count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, triple window. The <a href="#entry-2026-10-09-cube-triple-window-boundary">boundary entry</a> showed that properness cannot exclude isolated rank-drop points. The record's other global tool, the Wronskian count used for lem:cube-enlarged-cherry-window, does exclude points. The missing implication: full rank of \(W_3\) for every \(m\). Does the count give it?</p>
+<p><strong>Reformulation.</strong> \(W_3\) has full rank iff no nonzero element of the row space vanishes on the window columns \(d,\ldots,d+3m+4\) (\(d=\binom m2\)). Equivalently, the space
+\[V'=\mathrm{Pol}_{&lt;d}\ \oplus\ \bigoplus_i(1+a_iT)^{-\lambda}\mathrm{Pol}_{&lt;m}\ \oplus\ \mathrm{span}\{((1+a_iT)(1+a_jT))^{-\lambda}\}_{i&lt;j},\]
+of dimension \(D=d+3m+3\), has no element vanishing at \(T=0\) to order \(\ge D+2\). This follows if \(\operatorname{wt}_0(V')\le2\), since the largest order is at most \(D-1+\operatorname{wt}_0\).</p>
+<p>The sum is direct, so \(W\ne0\). Take a relation, and its part anti-invariant under monodromy at \(-1/a_i\). It reads \(p_i+c_{ij}(1+a_jT)^{-3/2}+c_{ik}(1+a_kT)^{-3/2}=0\), and monodromy at \(-1/a_j\) and \(-1/a_k\) forces \(c=0\) and \(p_i=0\). The polynomial part then vanishes too. The same argument shows that the rows of \(W_3\) are independent.</p>
+<p><strong>General statement.</strong> prop:cube-level-window-fuchs-bound. Characteristic zero, \(\lambda=\tfrac32\), \(m\ge1\), distinct nonzero \(a_1,a_2,a_3\). The Fuchs relation \(\sum_P(\sum_j\rho_j(P)-\binom D2)=-D(D-1)\) for the Wronskian of \(V'\), with the least exponent sums permitted by the exponent classes at \(-1/a_i\) and \(\infty\), gives
+\[\operatorname{wt}_0(V')\le\tfrac32m(m+3),\]
+and this is the bound the count yields from the minimal exponents permitted by the class dimensions. A count using the actual exponents, which may exceed these minima, is not covered. The conjectured statement, conj:cube-triple-window-full-rank, needs \(\le2\).</p>
+<p><strong>Proof.</strong> At \(P_i=-1/a_i\) the space splits into a holomorphic class of dimension \(d+2m+1\) and the class \((1+a_iT)^{-\lambda}G\), \(\dim G=m+2\). \(G\) consists of \(\mathrm{Pol}_{&lt;m}\) and the two pair functions through \(a_i\), divided by \((1+a_iT)^{-\lambda}\). The classes have non-congruent exponents mod \(1\), so each contributes at least \(0+1+\cdots\) for its dimension, shifted by \(-\lambda\) for \(G\). This gives \(E_i\ge\binom{d+2m+1}2+\binom{m+2}2-\lambda(m+2)\).</p>
+<p>At \(\infty\), in \(u=1/T\), there are two classes.</p>
+<ul>
+<li>The integer class: the polynomials, of orders \(-(d-1),\ldots,0\), and the three pair functions, of orders \(\ge2\lambda,2\lambda+1,2\lambda+2\).</li>
+<li>The half-integer class: the \(3m\) single functions, of consecutive orders from \(\lambda-m+1\).</li>
+</ul>
+<p>Every other point has nonnegative weight, and \(T=0\) is one of them. Substituting into the Fuchs relation gives the bound. research/tools/bmd_triple_window_fuchs.gp (research/results/bmd-20261009-ce/triple-window-fuchs.txt) evaluates it exactly for \(m=2,\ldots,10\) (\(15,27,42,\ldots,195\)). The bound is a priori a polynomial of degree \(\le4\) in \(m\), since \(D\) is quadratic, so these nine values determine it as \(\tfrac32m^2+\tfrac92m\). The reviewer confirmed this by symbolic evaluation in \(m\). \(\square\)</p>
+<p><strong>Refutation of the route.</strong> ex:cube-triple-window-count-insufficient. The bound exceeds \(2\) for every \(m\ge1\) (\(6\) at \(m=1\)), so the global count with these exponent classes cannot prove conj:cube-triple-window-full-rank for any \(m\). The exactly proved cases \(m\le7\) (thm:cube-triple-window-small, check:cube-triple-window-six-seven) show the actual weight is \(\le2\). So the missing weight lies away from \(0\), either at apparent singularities or as excess over the minimal exponents at \(-1/a_i\) or \(\infty\). The refutation concerns the count with minimal class exponents only.</p>
+<p><strong>What this means.</strong> Both global tools fall short for the triple window. Properness excludes only curves. The count with minimal exponents gives \(\operatorname{wt}_0\le\tfrac32m(m+3)\), not \(\le2\); a count with the actual exponents would need their excess, which is itself a Hermite–Padé normality question. Remaining routes:</p>
+<ul>
+<li>A recurrence in \(m\) (creative telescoping, lead 1 of the window cores review). Its cheap test, guessing a P-recursive relation in \(m\) for the minors at a fixed rational point, has not been run.</li>
+<li>A structural identity among the three filtered sequences.</li>
+</ul>
+<p>The computer proof extends cheaply (\(m\le7\) in seconds) but not to every \(m\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-triple-window-full-rank for \(m\ge8\).</li>
+<li>The confluent window.</li>
+<li>The other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-level-window-reduction (row space of \(W_3\));</li>
+<li>lem:cube-enlarged-cherry-window (the global count, as used there);</li>
+<li>thm:cube-triple-window-small and check:cube-triple-window-six-seven.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p>
+<ul>
+<li>the contact-order reformulation;</li>
+<li>the Fuchs relation (rational \(W^2\));</li>
+<li>the exponent-class bounds and the direction of the inequality;</li>
+<li>the arithmetic, evaluating the bound symbolically as \(\tfrac32m(m+3)\), with \(6\) at \(m=1\).</li>
+</ul>
+<p>Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the directness of the sum proved;</li>
+<li>the interpolation justified by the a priori degree;</li>
+<li>"best bound" restricted to the minimal exponents;</li>
+<li>the location of the missing weight and the scope of the refutation narrowed;</li>
+<li>the script header corrected.</li>
+</ul>
+<p>Unused hypotheses: none.</p>
+<p>Status: working proof (the bound); refutation of the count as a proof of the triple window.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ce">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 32.40 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 4.82 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">54.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.61 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
