@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-identity-evidence">top-up identity evidence</a>; eight open items). The top-up flow identity is exact for \(M\le4\) and supported by a randomized check at \(M=5,6\). The flow acts on complete symmetric functions by \((D+e_1)h_j=(j+1)h_{j+1}\).</p>
-<p>Next: prove conj:cube-topup-flow-identity for all \(M\). Apply \(D\) by Leibniz, giving \((D+N\,e_1)\det\), to the \(h\)-determinant \(D_\Lambda\) of lem:cube-cross-leading-coefficient, and control the row factors \(j+1\) and \(1/(i+1)\) and the \(\mathrm{Vand}^2\) normalization that turn \(e_1\) into \(2k\,e_1\). Then treat the residual \(\Sigma_k\) at the square.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-dilation-attempt">dilation attempt</a>; eight open items). Dilation equivariance links each window to its top-up through one raising operator, but the naive computation predicts \((D+2(M-1)e_1)\mathrm{Hank}_k\) instead of the exact \((D+2k\,e_1)\mathrm{Hank}_k\) for \(p\ge2\).</p>
+<p>Next: rederive the normalization of the cross rows from the Splitting step of thm:cube-cherry-lattice-splitting. Compute the scalar by which the normalized basis changes under the dilation, and check that it turns \(2(M-1)\) into \(2k\). That would prove conj:cube-topup-flow-identity for every \(M\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70756,6 +70756,53 @@ None leads.</li>
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 31.03 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 28.88 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">24.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-topup-dilation-attempt" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Unsuccessful proof attempt of conj:cube-topup-flow-identity by dilation equivariance; the naive computation contradicts the exact identity for p >= 2, so no claim is registered.">
+<h3>9 October 2026 — A dilation-equivariance attempt at the top-up identity gives (D + 2(M−1)e1) Hank_k, which matches the exact identity only for k = M−1: a basis normalization is missing</h3>
+<p class="entry-meta">Unsuccessful attempt: equivariance of the cross coordinates under dilations about the cherry root predicts the wrong multiple of e1 for p >= 2. Top-up dilation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. conj:cube-topup-flow-identity, \(\tau_p=\kappa(D+2k\,e_1)\mathrm{Hank}_k\) with \(k=M-p\), is exact for \(M\le4\) and supported at \(M=5,6\) (<a href="#entry-2026-10-09-cube-topup-identity-evidence">top-up identity evidence</a>). The proof route there, Leibniz for \(D\) on the \(h\)-determinant, needed row-factor bookkeeping. Is there a structural source of the flow \(D\) instead?</p>
+<p><strong>General statement.</strong> conj:cube-topup-flow-identity, the all-\(M\) statement this cycle tried to prove. It remains a conjecture.</p>
+<p><strong>The attempt.</strong> Dilations \(z\mapsto1+\mu(z-1)\) fix the cherry root \(1\) and the mark at infinity, and preserve the contact problem (lem:cube-contact-plane-criterion: affine maps). Write \(U=T/(1+T)\), so a root \(r\) contributes \((1+T)(1+(r-1)U)\) and the dilation acts by \(U\mapsto\mu U\). The basis functions are \(w^{-\lambda+t}=(1-U)^{\lambda-t}\). On \(v_s=(1-U)^s\), the generator \(U\partial_U\) acts by \(v_s\mapsto s\,v_s-s\,v_{s-1}\). With \(s=\lambda-t\), this raises the column \(t\) to \(t+1\) with factor \(t-\lambda\).</p>
+<p>For a window \(\Lambda_p\), every raised set collides with \(\Lambda_p\) except the top-up \(T_p\). So equivariance of the Plücker vector reads \(G(P_{\Lambda_p})=s\,P_{\Lambda_p}+c\,P_{T_p}\), with constants \(s,c\) and \(G\) the generator's action on the parameters. On the cluster, \(a=x\tilde y\mapsto a+\delta(a-1)\), so \(G=\sum_i(\tilde y_i-1/x)\partial_{\tilde y_i}+e\partial_e\).</p>
+<p>At the least \(\varepsilon\)-order, \(P_{\Lambda_p}=x^AW(\tilde y')=x^Ae^{xD}W(\tilde y)\) by lem:cube-reparametrization-flow, with \(W\) proportional to \(\mathrm{Vand}^2\mathrm{Hank}_k\), translation invariant. Also \(P_{T_p}=x^{A+1}\tau(\tilde y')\). The coefficients of \(x^A\) and \(x^{A+1}\) then give:</p>
+<ul>
+<li>\(x^A\): \(-\partial_{\rm tr}DW+(\deg W+B)W=sW\), consistent since \([\partial_{\rm tr},D]=2E\);</li>
+<li>\(x^{A+1}\): \(c\,\tau=-\tfrac12\partial_{\rm tr}D^2W+(E+B-s)DW\), and \(\partial_{\rm tr}D^2W=2(2\deg W+1)DW\).</li>
+</ul>
+<p>Hence \(\tau\propto DW=\mathrm{Vand}^2(D+2(M-1)e_1)\mathrm{Hank}_k\), using \(D\,\mathrm{Vand}^2=2(M-1)e_1\mathrm{Vand}^2\).</p>
+<p><strong>Outcome.</strong> This contradicts the exact identity for \(p\ge2\). There the computed coefficient of \(e_1\mathrm{Hank}_k\) is \(2k\), not \(2(M-1)\): for example \(M=4\), \(k=2\) gives \(4\), not \(6\) (research/results/bmd-20261009-at/topup.txt). They agree only for \(k=M-1\).</p>
+<p>So the naive equivariance is wrong somewhere. The likely gap is that the record's cross-block rows are a normalized basis (the factors \((1-a)^{-\lambda}\), \(c(t)\), and the \(\varepsilon\)-rows of the cherry). Under the dilation that basis changes by a parameter-dependent matrix, which adds a multiple \(\gamma\,P_L\) with \(\gamma\) a function of the roots to the equivariance relation. A \(\gamma\) linear in \(e_1\) would shift \(2(M-1)\) to \(2k\) if it depends on \(p\) through the number of negative columns. This is a hypothesis about where the error lies, not a derived fact.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The structural route has the right shape: a single raising operator links the window to its top-up, and the flow \(D\) appears through the reparametrization.</li>
+<li>The constant is wrong, so the proof is not complete. The identity stays conjectural for \(M\ge5\).</li>
+<li>Next: rederive the normalization of the cross rows from thm:cube-cherry-lattice-splitting's Splitting step, and compute the scalar \(\gamma\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-topup-flow-identity for \(M\ge5\).</li>
+<li>The residual \(\Sigma_k\) (the square); coincident limits; \(C\)-block uniqueness; slack-zero levels; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-reparametrization-flow;</li>
+<li>conj:cube-topup-flow-identity and its exact data;</li>
+<li>lem:cube-contact-plane-criterion (affine invariance).</li>
+</ul>
+<p><strong>Verification gate.</strong> No claim is registered and no reviewer was run. The entry records a failed derivation and its contradiction with exact data. The contradiction itself rests on the reviewed exact identities of the top-up flow entry.</p>
+<p>Status: unsuccessful attempt (dilation equivariance predicts the wrong \(e_1\) multiple for \(p\ge2\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-av">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 13.76 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 48.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
