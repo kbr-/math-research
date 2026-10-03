@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-weight-route-review">C-block weight review</a>; eight open items). The cherry steps avoid \(K\) exactly when the limit space's Taylor matrix on columns \(0,\ldots,R\) has full rank. At the four-root \(C\)-block tie this fails, for \(E\) alone, exactly on the hyperplane \(6x_1=\ell(v)\) of first-order arc data.</p>
-<p>Next: prove that law in general. At a two-set \(C\)-block tie, \(E\) has positive weight iff the unnormalized cluster's pair span has positive weight at the mark shifted along the flow. Then count failing arcs through the Richardson variety \(X_{S_\infty}^{S_0}\) when both blocks tie.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-flowed-arc">C-block flowed arc</a>; eight open items). The \(C\)-block's limit has weight zero at the mark exactly when the Taylor cofactor along the flowed arc \(\tilde y'/(1+x\tilde y')\) has its least possible order. At weight-one ties the failures form one hyperplane of first-order arc data.</p>
+<p>Next: the joint condition on \(L_0=E\oplus Q\oplus U\). Re-centre the whole pair space at the mark as the proposition does for the \(C\)-block, and express the Taylor minors of \(L_0\) through the flowed arc and the cross coordinates. Then decide whether the failing arcs of a double tie (both blocks) cost two conditions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73226,6 +73226,78 @@ At every point with distinct coordinates \(j_F\le1\). So above a four-root clust
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 16.68 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.23 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cblock-flowed-arc" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1" data-claims="prop:cube-cblock-flowed-arc cor:cube-cblock-tie-hyperplane">
+<h3>9 October 2026 — The C-block's limit has weight zero at the mark exactly when the Taylor cofactor along the flowed arc has its least possible order; at a weight-one tie the failures form one hyperplane of arc data</h3>
+<p class="entry-meta">Working proof for every M and every arc, by re-centring the C-block at the mark and Cauchy–Binet; corollary at weight-one ties, matching the four-root law. C-block flowed arc cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement: the codimension count of the <a href="#entry-2026-10-09-cube-cblock-weight-route-review">C-block weight review</a>. At the four-root tie the review found the bad leading coefficient \(x_1=\ell(v)/6\) in five directions. The missing implication: a general description of when the \(C\)-block's leading space \(E\) has positive weight at the mark. Such a description is what turns "one extra condition" into a statement about arcs.</p>
+<p><strong>Setting.</strong> As in prop:cube-cblock-spread-bound. The normalized cluster is \(\tilde y'(s)\), distinct for \(s\ne0\), and \(x(s)\), \(\operatorname{val}x=w_x&gt;0\). The \(C\)-block coordinates are \(P_S=x^{\Sigma S}p_S(\tilde y')\), and \(\mu=\min_S\operatorname{val}P_S\). Define the flowed arc
+\[z(s)=\frac{\tilde y'(s)}{1+x(s)\tilde y'(s)},\]
+coordinatewise: the normalized roots moved by the flow \(y\mapsto y/(1+ty)\) for time \(t=x(s)\).</p>
+<p><strong>General statement.</strong> prop:cube-cblock-flowed-arc. Characteristic zero, every \(M\ge2\), every arc and rate:
+\[\operatorname{val}_s\bigl(x^{\Sigma T_0}p_{T_0}(z(s))\bigr)\ \ge\ \mu,\]
+with equality if and only if \(\operatorname{wt}_0(E)=0\). Since \(p_{T_0}=\mathrm{Vand}^{M-2}F\) and \(\operatorname{val}\mathrm{Vand}(z)=\operatorname{val}\mathrm{Vand}(\tilde y')\), the condition reads
+\[\operatorname{val}_sF(z(s))=\mu-w_x\Sigma T_0-(M-2)\operatorname{val}\mathrm{Vand}(\tilde y').\]
+So the \(C\)-block's limit is non-Weierstrass at the mark exactly when the Taylor cofactor along the flowed arc vanishes to its least possible order.</p>
+<p><strong>Proof.</strong></p>
+<p>Re-centring. The \(C\)-block rows are the pair functions \(\Phi(x\tilde y'_i,x\tilde y'_j)(w)\), \(\Phi(a,b)(u)=((1+au)(1+bu))^{-3/2}\), in the variable \(w\), with mark \(w=1\), \(w=1+T\). Since \(1+ax(1+T)=(1+ax)\bigl(1+\tfrac{ax}{1+ax}T\bigr)\), each row is a nonzero scalar \(((1+x\tilde y'_i)(1+x\tilde y'_j))^{-3/2}\), a unit of valuation \(0\), times \(\Phi(xz_i,xz_j)(T)\). The pair span of the roots \(xz\) in \(T\) has \(T_0\)-coordinate \(x^{\Sigma T_0}p_{T_0}(z)\), by homogeneity as in lem:cube-node-weight-bound. So the Taylor minor of the \(C\)-block at the mark on the columns \(T_0\) is a unit times \(x^{\Sigma T_0}p_{T_0}(z(s))\).</p>
+<p>Cauchy–Binet. The same minor equals \(\sum_SP_S\det D_{S,T_0}=\sum_SP_S\mathrm{Vand}(S)/\prod_{j&lt;R_C}j!\), by lem:cube-leading-wronskian-sum (a), with \(D_{e,j}=\binom ej\). To justify it with infinitely many columns, truncate the coefficient matrix to the columns \(e&lt;N\) and apply the finite Cauchy–Binet theorem. Then let \(N\to\infty\): the entries satisfy \(\operatorname{val}A_{ke}\ge w_xe\), so both the truncated Taylor minor and the truncated sum converge \(s\)-adically to the full ones. Every term has valuation \(\ge\mu\). The \(s^\mu\) coefficient is \(\sum_{S}P^{\mathrm{lead}}_S\mathrm{Vand}(S)/\prod j!\) over the leading support, the Vandermonde sum of \(E\). \(E\) is spanned by combinations of finitely many powers: by part (1) of prop:cube-cblock-spread-bound its leading support has column sums at most \(\Sigma S_0\). By lem:cube-leading-wronskian-sum (a), it is nonzero if and only if \(\operatorname{wt}_0(E)=0\).</p>
+<p>Vandermonde. \(z_i-z_j=(\tilde y_i-\tilde y_j)/((1+x\tilde y_i)(1+x\tilde y_j))\), so \(\mathrm{Vand}(z)\) and \(\mathrm{Vand}(\tilde y')\) differ by a unit. \(\square\)</p>
+<p><strong>Second statement.</strong> cor:cube-cblock-tie-hyperplane. Let \(\tilde y'(s)=y^\ast+sv+O(s^2)\), with \(y^\ast\) distinct, \(F(y^\ast)=0\), \(j_F(y^\ast)=1\) (equivalently \(DF(y^\ast)\ne0\), \(D=-\sum y_i^2\partial_i\)), and the arc transverse, \(dF(y^\ast)v\ne0\). Let \(x=x_1s^{w}+\cdots\).</p>
+<ul>
+<li>The leading \(C\)-block coordinate is unique except at \(w=1\), where \(T_0\) and \(T_0'=\{0,\ldots,R_C-2,R_C\}\) tie.</li>
+<li>At \(w=1\), \(\operatorname{wt}_0(E)&gt;0\) if and only if \(dF(y^\ast)\cdot(v-x_1y^{\ast2})=0\). This is one hyperplane in the first-order data \((v,x_1)\), with \(x_1=dF(y^\ast)v/dF(y^\ast)y^{\ast2}\), and \(dF(y^\ast)y^{\ast2}=-DF(y^\ast)\ne0\). On the open set \(dF(y^\ast)v\ne0\) the failure value is automatically nonzero.</li>
+<li>At \(M=4\), with vanishing pairing \(\ell\), the condition is \(\ell(v)=x_1\ell(y^{\ast2})\). At \(y^\ast=(0,1,3,4)\) this is \(6x_1=\ell(v)\), the law found in all five directions of the review's test.</li>
+</ul>
+<p><em>Proof.</em> By part (4) of prop:cube-cblock-spread-bound, \(\operatorname{wt}_0(V(y^\ast))=1\), so the flat-limit pivot set is the unique set Gale-covering \(T_0\), namely \(T_0'\), at valuation \(0\). \(T_0\) has valuation \(\operatorname{val}p_{T_0}(\tilde y')=\operatorname{val}F(\tilde y')=1\) (transversality; \(\mathrm{Vand}(y^\ast)\ne0\)). By part (1) the leaders have column sums in \([\Sigma T_0,\Sigma T_0+1]\), so only \(T_0\) and \(T_0'\) compete. Their lines \(1+w\Sigma T_0\) and \(w(\Sigma T_0+1)\) meet at \(w=1\).</p>
+<p>At \(w=1\), \(\mu=\Sigma T_0+1\) and \(\operatorname{val}\mathrm{Vand}=0\). By the proposition, \(\operatorname{wt}_0(E)=0\) iff \(\operatorname{val}F(z(s))=1\). Now \(z(s)=y^\ast+s(v-x_1y^{\ast2})+O(s^2)\) and \(F(y^\ast)=0\), so \(F(z(s))=s\,dF(y^\ast)(v-x_1y^{\ast2})+O(s^2)\). The identity \(dF\cdot y^2=-DF\) is the definition of \(D\).</p>
+<p>At \(M=4\), \(F\) is a constant times \(\ell\) times two pairing factors that are nonzero at \(y^\ast\) (cor:cube-four-cblock-spread), so \(dF(y^\ast)\) is proportional to \(\ell\). At \((0,1,3,4)\), \(\ell(y^{\ast2})=0+16-1-9=6\). \(\square\)</p>
+<p><strong>Checks.</strong> No new computation. The review's exact data (research/results/bmd-20261009-bp/review-tests.txt) has \(x_1=\ell(v)/6\) for \(v=(1,2,-1,5)\), \((1,0,0,0)\), \((0,0,0,1)\), \((2,-3,1,1)\) and \((-1,4,2,-2)\): \(5/6\), \(1/6\), \(1/6\), \(5/6\), \(-3/2\). These are the corollary's values \(\ell(v)/6\) with \(\ell=y_1+y_4-y_2-y_3\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The \(C\)-block side of the cherry step is now a statement about one scalar function: the Taylor cofactor along the flowed arc. \(E\) has positive weight exactly when the moved cluster \(z(s)\) meets \(\{F=0\}\) to higher order than its own leading terms force.</li>
+<li>This is the geometric content of the review's reading: the bad arcs are those whose normal velocity to \(\{F=0\}\) is cancelled by the flow for time \(x\), so that the flowed arc \(z\) has zero normal velocity.</li>
+<li>At weight-one ties the failing arcs form one hyperplane of first-order data, so for \(E\) alone the codimension count is done there.</li>
+<li>What remains is the joint condition on \(L_0=E\oplus Q\oplus U\). Its Vandermonde sum does not factor, because \(\mathrm{Vand}(S\sqcup Z)\) carries the cross factor \(\prod(z-s)\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The joint rank condition on \(L_0\) when both blocks tie, and its codimension.</li>
+<li>Ties at weight-two points (\(M\ge5\)), where three or more \(C\)-block sets compete.</li>
+<li>Arcs whose limit has coincidences.</li>
+<li>(F); the window cores; (B).</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the C-block weight review (Richardson varieties). The failure set for \(E\) inside the two-point Richardson variety \(X_{T_0}^{T_0'}\cong\mathbb P^1\) of leading vectors is the single point given by the hyperplane, and every point of that \(\mathbb P^1\) with both coordinates nonzero is attained by some \(x_1\ne0\); the failure point is among them.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-leading-wronskian-sum (a) (Taylor minors as Vandermonde sums);</li>
+<li>prop:cube-cblock-spread-bound (parts (1) and (4));</li>
+<li>cor:cube-four-cblock-spread (the four-root factorization);</li>
+<li>lem:cube-node-weight-bound (the \(C\)-block coordinates and homogeneity).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the re-centring identity, the units, homogeneity, the Cauchy–Binet expansion, the Vandermonde unit, the competing sets and the tie rate. It also checked the expansion of \(z\), \(dF\cdot y^2=-DF\), the four-root value \(\ell(y^{\ast2})=6\), and all five data values. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the rows written in \(\tilde y'\);</li>
+<li>the infinite Cauchy–Binet justified by truncation;</li>
+<li>finiteness of \(E\)'s support stated;</li>
+<li>the sign of the velocity reading corrected;</li>
+<li>the attained points of \(\mathbb P^1\) limited to the open torus;</li>
+<li>the nonzero failure value noted.</li>
+</ul>
+<p>Unused hypotheses: none.</p>
+<p>Status: working proof (every \(M\), every arc; the corollary at weight-one ties).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 55.76 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 17.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
