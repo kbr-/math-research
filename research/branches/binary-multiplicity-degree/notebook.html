@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-joint-tie-avoidance">joint tie avoidance</a>; eight open items). The cherry step avoids \(K\) whenever the two spreads add up to at most two. So above ties over caterpillars every arc whose cross supports stay within \(2M+1\) columns avoids \(K\), joint ties included. The \(C\)-block side is closed there.</p>
-<p>Next: the route review that is due. It should restate (K)'s remaining items on cone clusters: the cross support condition along cone arcs above ties over caterpillars (where (F) and (W″) were proved for fixed or special clusters), cone types (A) and (C), stacked levels above slack-zero cherries, the window cores and (B). It should then choose the highest-risk one.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-cherry-route-review">tie cherry review</a>; seven open items). Cherries above ties over caterpillars avoid \(K\) on every arc off the Hankel moduli. The window cores are now the highest risk. The tie window's kernel vectors also kill the confluent rows at \(c=1\).</p>
+<p>Next: the confluent tie window. Re-read conj:cube-tie-single-block-exclusion and the window's exact rows, build its kernel from the \(x^{(s)}\) at \(c=1\), and prove the coprimality of the two corank-one conditions through the tie row's coefficients.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73970,6 +73970,298 @@ Here \(k!/j!=(j+1)\cdots(j+n)\) is a polynomial of degree \(n\) in \(j\). \(\Gam
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-cherry-route-review" data-kind="review" data-scope="goal" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-open-items="7" data-claims="none" data-claim-note="Goal-level route review after the cone C-block cycles; its tests are recorded here and register no claims.">
+<h3>9 October 2026 — Goal-level review: cherries above ties over caterpillars avoid K on every arc off the Hankel moduli; the window cores are now the highest risk, and the new kernel method transfers to the confluent tie</h3>
+<p class="entry-meta">Goal-level review after four research cycles. Tests: cross supports on 768 arcs over two cone tie clusters; the tie-window kernel vectors at c = 1. Decision: Core, the confluent tie window by the kernel method. Tie cherry review cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> conj:cube-offcollision-contact-bound, (K), with (B), for statement 3. Within (K), every boundary limit of the geometric cone must avoid \(\overline K\) (lem:cube-contact-plane-criterion (3), lem:cube-geometric-cone-limit-types).</p>
+<p><strong>What the main goal needs.</strong> Statements 2, 3 and 4. For statement 3: (K) and (B).</p>
+<p>Since the <a href="#entry-2026-10-09-cube-cone-cblock-route-review">cone C-block review</a> the record has:</p>
+<ul>
+<li>prop:cube-tie-cblock-spread and thm:cube-tie-window-second-minor (the tie window's kernel is cut out by the Gegenbauer coefficients): the \(C\)-block spread is at most \(1\) above every tie over a caterpillar, for every \(m\) (cor:cube-tie-cblock-spread-one);</li>
+<li>cor:cube-cherry-step-spread-two: avoidance without \(C\)-block uniqueness, when the spreads add up to at most \(2\), or when the \(C\)-block spread is at most \(1\) and the cross supports lie in \(2M+1\) columns;</li>
+<li>prop:cube-joint-tie-slack-zero: at joint ties the slack is \(0\) for exactly one pair of leading ratios.</li>
+</ul>
+<p><strong>Consolidation.</strong> For a cherry above a tie over a caterpillar, the record now gives avoidance on every arc in all of these cases:</p>
+<ul>
+<li>Off the two Hankel moduli: cor:cube-cherry-above-caterpillar-tie gives (W′) on every arc, so the cross support lies in \(2M+1\) columns. With \(\operatorname{spread}(E)\le1\), case 2 of cor:cube-cherry-step-spread-two gives avoidance, Gegenbauer zeros and joint ties included.</li>
+<li>At the Hankel moduli, \(M\le120\): \(t_d(c_0)\ne0\) (check:cube-hankel-moduli-not-gegenbauer), so the \(C\)-block leader is unique (cor:cube-hankel-tie-unique-cblock). prop:cube-cherry-step-wide then needs cross supports in \(2M+2\) columns. Those rest on the recorded finite checks of the cancellation ray (conj:cube-cancellation-wprime-ray).</li>
+</ul>
+<p>What remains in (K):</p>
+<ul>
+<li>the Hankel-moduli ray as a proof, and \(M&gt;120\);</li>
+<li>cone types (A) and (C), cherries and three-root levels;</li>
+<li>levels stacked above slack-zero cherries;</li>
+<li>non-separated cone points;</li>
+<li>the window cores: the confluent tie window (conj:cube-tie-single-block-exclusion, reduced to one coprimality, true for \(m\le5\)) and conj:cube-triple-window-full-rank.</li>
+</ul>
+<p>Seven items: the eighth, the \(C\)-block hypothesis, is closed on cone ties.</p>
+<p><strong>Falsification attempt.</strong> The consolidation needs the cross supports along cone arcs to stay within \(2M+1\) columns where the \(C\)-block ties. research/tools/bmd_route_review28_tests.gp (research/results/bmd-20261009-bx/review-tests.txt), adapted from the cross-valuation tool, scans two clusters:</p>
+<ul>
+<li>the cone tie at the Gegenbauer zero, \((-1+\eta,1,2\eta^2,5\eta^4)\);</li>
+<li>a control tie off the zeros, \((3+\eta,\ldots)\).</li>
+</ul>
+<p>The rates are \(w_x\in\{\tfrac12,1,2,3\}\) and \(w_e\in\{\tfrac14,\ldots,12\}\), \(192\) arcs per cluster, \(q\)-adically at two primes. In every case \(9\) arcs have two cross leaders, and none has a leader union beyond \(2M+1\) columns. No counterexample.</p>
+<p><strong>Assessment.</strong> The \(C\)-block side of the cherry steps was the open hypothesis behind every cherry-above-tie result. It is now closed above ties over caterpillars for every \(m\), by an exact description of the tie window's kernel. With the recorded (W′) theorem, cherries above ties over caterpillars are settled off the Hankel moduli.</p>
+<p>The detour through off-cone clusters cost three cycles. The cone restriction fixed it, and the general statements were reused.</p>
+<p>The window cores have had no cycles for a long time. They are now the oldest open items of the core statement. The kernel method just found is the first new tool aimed at windows since they were reduced.</p>
+<h4>Across the goal</h4>
+<ul>
+<li>Statement 1: proved.</li>
+<li>Statement 2: certificates through \(n\le21\); no cycles.</li>
+<li>Statement 3: (K) down to seven items, with cherries above ties over caterpillars closed off the Hankel moduli; (B) no cycles.</li>
+<li>Statement 4: unchanged.</li>
+</ul>
+<h4>Obstacle</h4>
+<p>The confluent tie window, at \(c\to1\), reduces (conj:cube-tie-single-block-exclusion) to one coprimality between the corank-one excess conditions \(A_2,A_3\). It is true for \(m\le5\), but no mechanism is known. Its residuals decay without a visible bound. The obstacle is a structural description of the window at \(c=1\) that makes that coprimality evident, as the kernel did for the tie window at \(c\ne1\).</p>
+<h4>Outside leads</h4>
+<ul>
+<li>The tie window's explicit kernel (thm:cube-tie-window-second-minor, the record's newest theorem). At \(c=1\) the single-factor rows become \(T^n(1+T)^{-3/2}\) and their \(c\)-derivatives, the confluent rows. The vectors \(x^{(s)}\) built from \((1+T)^{2m}\) kill exponential polynomials of degree \(&lt;2m\) at base \(-1\), which include the weighted confluent rows. It targets the obstacle directly. It breaks if the confluent window has extra rows that are not of this type. <strong>Answers.</strong> An explicit kernel of the confluent window would express its minors, including the two of the coprimality, as Plücker coordinates of one vector, with the tie-row coefficients in place of \(t_d\), \(t_{d+1}\). <strong>Test.</strong> Passed: research/tools/bmd_route_review28_lead.gp (review-lead.txt) checks that for \(m=2,\ldots,6\) the \(x^{(s)}\) at \(c=1\) annihilate all \(2m\) confluent rows, values and \(c\)-derivatives, numerically with relative tolerance. A first run with an absolute tolerance failed at \(m=5,6\) from the size of the Gamma values.</li>
+<li>Mahler's perfect systems and Hermite–Padé normality (Mahler 1968). The confluent window is a Hermite–Padé system with a repeated point, the setting of Mahler's confluent perfectness. <strong>Answers.</strong> Perfectness of the confluent system at \(c=1\) would give the full-rank and coprimality statements at once. <strong>Test.</strong> Not run: the system's exponents have not been matched with Mahler's normal form.</li>
+<li>The tropical Grassmannian (Speyer–Sturmfels), carried from the cone C-block review. The cone arcs' tropical Plücker vectors could classify all leader configurations, cross and \(C\)-block. <strong>Answers.</strong> It would give the cross support condition on cone types (A) and (C) without case work. <strong>Test.</strong> Not run: the cross tropical vectors of type (A) clusters have not been computed.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li>Control theory: controllability (Kalman) matrices and the Cayley–Hamilton annihilator. The weighted window rows are Krylov sequences of a Jordan block, and the kernel vectors are the coefficients of its characteristic polynomial \((1+cX)^m(1+X)^m\). Translation: full rank of the window is controllability of a pair \((J,b)\), and at \(c=1\) the two Jordan blocks merge, the classic loss of controllability. <strong>Answers.</strong> The PBH test would reduce the confluent full rank to an eigenvector condition at the merged eigenvalue, one explicit vector. <strong>Test.</strong> Passed in its computable part: the annihilator at \(c=1\) is \((1+X)^{2m}\), which kills all confluent rows (the lead test). The eigenvector condition was not formulated.</li>
+<li>Coding theory: Hermite interpolation codes (derivative Reed–Solomon codes). The confluent window minors are Hermite interpolation determinants at a double node. Their nonvanishing is the MDS property of multiplicity codes (Kopparty–Saraf–Yekhanin), which also underlies the multiplicity Schwartz–Zippel lemma of this thread's starting point. <strong>Answers.</strong> An MDS-type statement for the weighted confluent code would give every window minor's nonvanishing. <strong>Test.</strong> Not run: the code's evaluation structure, with Gamma weights, is not of the standard form.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-statement-three-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rodrigues-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rodrigues-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-two-term-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-newton-hull-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-steps-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-radius-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-03-cube-far-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-arithmetic-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-last-far-perron-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-sector-programme-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-sector-programme-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-limit-design-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-three-centre-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-04-cube-mixed-factor-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-cross-statement-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-split-rule-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-generic-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-three-statements-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-consolidation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-blocked-and-open-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-05-cube-small-prime-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-cone-limits-review:1">Not developed in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-cone-limits-review:2">Not developed in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-tie-forney-review:1">No new work in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-07-cube-tie-moment-review:1">No new work in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-exponent-review:1">Not developed in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-propagation-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-coprimality-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-node-route-review:1">No new work, for the same reason. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-node-route-review:2">No new work, for the same reason. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-goal-route-review:1">No new work in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-mason-route-review:2">No new work in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-tie-cluster-route-review:1">Developed: the two-alternant proof is a scale-by-scale count. Abel summation splits the valuation into increments \(\nu_t-\nu_{t-1}\), and each scale contributes its own tail sum, as the bridge predicted. Off caterpillars the additivity holds for the window values but not for the root-valuation bound (this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-08-cube-caterpillar-tie-route-review:2">Developed: carried as lead 2 of this review (M-convex functions), whose test passed at \(M=5\). <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-window-domination-route-review:1">Partly overtaken: domination term by term is no longer the target, after the half-speed refutation. The locality survives in the single-exchange reduction. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-window-domination-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-near-window-route-review:2">Developed: gross-substitute valuations are the M-concave ones, and the cross coordinates along an arc are a valuated matroid (lead 1). The "demanded bundle" is the leader, and the local exchange conditions are the single-item price tests of an auction. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-cancellation-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-cancellation-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-ternary-faces-route-review:1">No new work: cycles returned to (K). <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-hankel-criterion-route-review:1">No new work beyond the square data (<a href="#entry-2026-10-09-cube-square-survivors">square survivors</a>): the surviving facets there are outer windows and one E+ = 2 set per middle family, consistent with the facet prediction. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-09-cube-hankel-criterion-route-review:2">No new work in this period. <strong>Follow-up.</strong> Continuing: the selection rule is the cyclic-code symmetry it suggested.</li>
+<li data-bridge="entry-2026-10-09-cube-cone-cblock-route-review:1">Superseded: the explicit kernel of the tie window (thm:cube-tie-window-second-minor) gives weight one at every Gegenbauer zero without the electrostatic reading. <strong>Follow-up.</strong> Closed: answered by the kernel theorem.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dilate-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-corner-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-corner-hankel-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-first-order-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rodrigues-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-mod-p-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-bulk-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-cluster-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-two-term-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-newton-hull-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-steps-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-steps-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-03-cube-far-radius-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-impasse-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-chain-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-far-two-ladders-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-last-far-perron-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-last-far-perron-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-sector-programme-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-three-common-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-two-switch-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-statement-two-switch-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-limit-design-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-04-cube-limit-design-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-cross-statement-review:4">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-split-rule-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-mechanism-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-three-statements-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-05-cube-consolidation-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-06-cube-necessity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:1">Developed through the limit-series reading and the node weight bound. <strong>Follow-up.</strong> Continuing, under lead 1 of the second cone limits review.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:2">The pole chains reappear in the pair block of the confluent cherry, whose limit is \(w^{-3},w^{-4},w^{-5}\) (\(c_1^2\ne c_2\)). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cone-limits-review:3">Not developed in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-cherry-route-review:3">Not developed: conj:cube-cherry-hankel-coefficient is not needed for the cone, since caterpillars are covered without it. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-route-review:2">No new work in this period; the local sums remain. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-cherry-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-07-cube-confluent-cherry-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-tie-exponent-review:2">No new work in this period beyond the sub-block theorem, which settles the pure-and-point and pure-and-products factors. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-tie-propagation-review:3">Developed in the basis factorization and rank bound cycles: the corank-one excess conditions \(A_2,A_3\) decide the window. Each fails on its own at every root of \(D\) for \(m\le5\) (this review). The normalized residuals decay roughly twentyfold per step in \(m\), so no uniform transversality bound is visible. <strong>Follow-up.</strong> Continuing: the statement is conj:cube-tie-single-block-exclusion.</li>
+<li data-lead="entry-2026-10-08-cube-tie-coprimality-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-cone-limits-review-two:1">Developed in four cycles: the limit spaces depend on the arc (ex:cube-single-cherry-slack-two-fails), the node weight bound (lem:cube-node-weight-bound) and the conditional cherry step (cor:cube-cherry-step). <strong>Follow-up.</strong> Continuing: condition (W′) for tie and cherry clusters.</li>
+<li data-lead="entry-2026-10-08-cube-node-route-review:1">Developed: the leading sums are explicit for every coordinate, and all their higher terms are explicit through the hypergeometric alternant. Window domination is reduced to near-window terms. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-08-cube-mason-route-review:2">No new work: Jager normality covers single-point classes, which the deep-row tool handles through the binomial Hankel minors instead. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-near-window-route-review:2">Developed: the M-convex reading is now lead 1 of this review. The exchange axiom held in all \(32\,991\) tested triples at \(M=5\), and prop:cube-window-local-exchange-reduction turns local optimality into (W′). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-local-exchange-route-review:1">The single kernel exchanges it reduced to are false at Hankel cancellation (ex:cube-hankel-cancellation-breaks-windows); the reduction itself stands, for arcs where the exchanges hold. <strong>Follow-up.</strong> Continuing: under Hankel non-cancellation.</li>
+<li data-lead="entry-2026-10-09-cube-kernel-exchange-route-review:1">Developed in the kernel positivity cycle: the kernel determinants are sign-regular for nonnegative roots, not across the origin; at complex Hankel-cancelling roots the exchanges fail outright. <strong>Follow-up.</strong> Continuing: positivity can serve only real one-sided arcs.</li>
+<li data-lead="entry-2026-10-09-cube-cancellation-route-review:1">Developed into prop:cube-cherry-step-any-set: the cherry step holds for any set of 2M+1 columns, covering the failing ray except at a three-leader tie. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-10-09-cube-cancellation-route-review:3">No new work in this period; the Hankel forms of real configurations stay positive. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-ternary-faces-route-review:1">No new work: cycles returned to (K) by that review's decision. <strong>Follow-up.</strong> Continuing: kept for a return to statement 2.</li>
+<li data-lead="entry-2026-10-09-cube-tie-cblock-route-review:1">No new work in this period; the bound M &lt;= 120 of cor:cube-hankel-tie-unique-cblock stands. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-phase-rule-route-review:2">No new work: cycles stayed on the support core. <strong>Follow-up.</strong> Continuing: the first development for the triple window.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:1">Developed in the <a href="#entry-2026-10-09-cube-topup-flow">top-up flow</a> entry: the top-up coefficient is kappa (D + 2k e1) Hank_k, proved for M &lt;= 5 (<a href="#entry-2026-10-09-cube-topup-identity-five">top-up identity at five</a>). <strong>Follow-up.</strong> Continuing: the identity for M &gt;= 6.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:2">Developed in this review: rotation by a root of unity gives a selection rule, survival only when M divides k(k+1) + E+, matching the square data exactly and predicting the M = 5 leaders. <strong>Follow-up.</strong> Continuing: the next step uses it.</li>
+<li data-lead="entry-2026-10-09-cube-hankel-blocks-route-review:1">Developed in <a href="#entry-2026-10-09-cube-family-graded-radical">family graded radical</a>: the target statement the expansion must prove is fixed as conj:cube-family-graded-radical, exact at \(M=4\) for \(E^-\le1\); the expansion itself is not yet carried out. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1">Developed in <a href="#entry-2026-10-09-cube-cblock-flowed-arc">C-block flowed arc</a>: the failure point in the two-point Richardson variety is one point of the open torus, attained by one value of \(x_1\); and in <a href="#entry-2026-10-09-cube-cblock-tie-joint-weight">joint weight</a>: the full limit space moves that point away. <strong>Follow-up.</strong> Continuing: double ties.</li>
+<li data-lead="entry-2026-10-09-cube-cone-cblock-route-review:1">Developed in <a href="#entry-2026-10-09-cube-tie-cblock-spread">tie C-block spread</a> and <a href="#entry-2026-10-09-cube-tie-window-kernel">tie window kernel</a>: the spread is governed by the tie window's second minor, not by Szegő simplicity, and it is one at every Gegenbauer zero for every \(m\). <strong>Follow-up.</strong> Closed: the obstacle it targeted is resolved.</li>
+</ul>
+<p><strong>Next step.</strong> Route item cube-odd-characteristic, statement 3's (K), core statement: the confluent tie window. First re-read conj:cube-tie-single-block-exclusion and the confluent window's exact rows (the tie staircase and rank-bound entries). Then build its kernel from the \(x^{(s)}\) at \(c=1\), which kill all confluent rows (this review's lead test). Express the two coprimality minors \(A_2\), \(A_3\) through the tie row's coefficients, and prove the coprimality or locate its failure.</p>
+<p><strong>Decision.</strong> Core: the window cores, the oldest open items of the core statement, now have a candidate mechanism. Cherries above ties over caterpillars are closed off the Hankel moduli. Types (A), (C), stacked levels and (B) remain listed.</p>
+<p><strong>Verification gate.</strong> No new claim. Dependencies re-read:</p>
+<ul>
+<li>the four research entries since the last review;</li>
+<li>cor:cube-cherry-above-caterpillar-tie and cor:cube-hankel-tie-unique-cblock, for the consolidation.</li>
+</ul>
+<p>The grid test is \(q\)-adic at two primes. The lead test is numerical, in Gamma-function floating point with relative tolerance \(10^{-25}\).</p>
+<p>Status: goal-level route review.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 4.88 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.12 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.13 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 23.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
