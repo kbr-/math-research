@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-flow">top-up flow</a>; eight open items). The top-up's least coefficient is \(\kappa(D+2k\,e_1)\mathrm{Hank}_k\) for \(M\le4\). So on every arc the leaders' nullity is at most two unless the limit cluster lies in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\). At \(M=3\) this settles every arc with distinct limit roots.</p>
-<p>Next: prove the top-up identity for every \(M\) from the Laplace pairs with \(E^+=1\), where the flow \(D\) should appear as the effect of raising one column. Then treat the residual \(\Sigma_k\), starting with the square: compute the next coordinate that reaches value \(b^*+w_x\), or a second-order term, there.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-identity-evidence">top-up identity evidence</a>; eight open items). The top-up flow identity is exact for \(M\le4\) and supported by a randomized check at \(M=5,6\). The flow acts on complete symmetric functions by \((D+e_1)h_j=(j+1)h_{j+1}\).</p>
+<p>Next: prove conj:cube-topup-flow-identity for all \(M\). Apply \(D\) by Leibniz, giving \((D+N\,e_1)\det\), to the \(h\)-determinant \(D_\Lambda\) of lem:cube-cross-leading-coefficient, and control the row factors \(j+1\) and \(1/(i+1)\) and the \(\mathrm{Vand}^2\) normalization that turn \(e_1\) into \(2k\,e_1\). Then treat the residual \(\Sigma_k\) at the square.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70706,6 +70706,56 @@ None leads.</li>
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 35.09 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.34 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 38.93 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-topup-identity-evidence" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-flow-complete-symmetric check:cube-topup-identity-large">
+<h3>9 October 2026 — The flow acts on complete symmetric functions by D h_j = (j+1) h_(j+1) − e1 h_j, and the top-up identity holds at M = 5, 6 for every p at random clusters</h3>
+<p class="entry-meta">Working proof of the action of the reparametrization flow on complete symmetric functions; random-point exact check of the top-up flow identity at M = 5, 6. Top-up identity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. The <a href="#entry-2026-10-09-cube-topup-flow">top-up flow</a> entry reduced the support condition on every arc to limits in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\). It assumes conj:cube-topup-flow-identity, \(\tau_p=\kappa_{M,p}(D+2k\,e_1)\mathrm{Hank}_k\), proved by computation only for \(M\le4\). What mechanism produces the flow \(D=\sum y_i^2\partial_i\) in a cross coordinate, and does the identity persist beyond \(M=4\)?</p>
+<p><strong>General statement.</strong> lem:cube-flow-complete-symmetric. For every number of variables, with \(h_j\) the complete homogeneous symmetric functions (\(h_0=1\), \(h_{-1}=0\)): \[D\,h_j=(j+1)h_{j+1}-e_1h_j,\qquad\text{that is}\qquad(D+e_1)\,h_j=(j+1)\,h_{j+1}.\]</p>
+<p><strong>Proof.</strong> Let \(H(t)=\prod_i(1-y_it)^{-1}=\sum_jh_jt^j\). Then \(D\log H=\sum_iy_i^2t/(1-y_it)\). Since \(y_i^2t/(1-y_it)=y_i/(1-y_it)-y_i\), this equals \(\sum_iy_i/(1-y_it)-e_1=H'(t)/H(t)-e_1\). So \(DH=H'-e_1H\); compare coefficients of \(t^j\). \(\square\)</p>
+<p>The record's least cross coefficients are determinants in the \(h_j\) (lem:cube-cross-leading-coefficient: \(D_\Lambda=\det[(h_{t+i-M+1})_{t&lt;M}\mid(h_{t+i-M+2}/(i+1))_{t&lt;k}]_{i\in\Lambda^+}\)). The top-up changes one row index \(i\) by one, which in each entry raises the index of \(h\) by one. This suggests a proof route, not carried out here.</p>
+<ul>
+<li>\(D\) is a derivation, so Leibniz over the rows applies to \(D\) alone.</li>
+<li>Each row picks up \(D\,h_j=(j+1)h_{j+1}-e_1h_j\). The \(-e_1h_j\) parts reproduce the original row and together contribute \(-N\,e_1\det\), where \(N\) is the size of the matrix. Hence \((D+N\,e_1)\det=\sum_{\text{rows}}\det(\text{row replaced by its }(j+1)h_{j+1}\text{ row})\).</li>
+<li>One expects the shifted rows to coincide with neighbouring rows, and so drop out, except at the top row, which becomes the top-up's row.</li>
+<li>The multiple of \(e_1\) then comes from two places: the size \(N\), and the \(\mathrm{Vand}^2\) normalization, since \(D(y_j-y_i)=(y_j-y_i)(y_i+y_j)\) gives \(D\,\mathrm{Vand}^2=2(M-1)e_1\mathrm{Vand}^2\).</li>
+<li>The factors \(1/(i+1)\) are constants, untouched by \(D\). They matter only for the row-shift bookkeeping.</li>
+</ul>
+<p>The unproved step is that bookkeeping: the factors \(j+1\), which vary along a row, and the change of \(1/(i+1)\) into \(1/(i+2)\).</p>
+<p><strong>Check.</strong> check:cube-topup-identity-large. research/tools/bmd_topup_identity_large.gp (research/results/bmd-20261009-au/topup-large.txt) computes \(\tau_p\) exactly at four random integer clusters, for \(M=5,6\) and every \(1\le p\le M-1\). It divides by \((D+2k\,e_1)\mathrm{Hank}_k\), with \(D\,\mathrm{Hank}_k\) from the symbolic form. In all nine cases the quotient is the same nonzero rational at the four clusters, for example \(\kappa_{5,4}=12671288004375/2^{66}\) and \(\kappa_{6,5}=21733476402903890625/2^{101}\). So the identity is exact for \(M\le4\) and supported by this randomized check at \(M=5,6\). The four clusters come from one fixed seed (setrand 20261009) and have spread-out integer coordinates.</p>
+<p>This is a randomized test of a polynomial identity, not a proof for \(M=5,6\). A false identity would make the quotient non-constant, and four random clusters agreeing exactly makes that unlikely, but it is not excluded. Two earlier launches failed before computing: a missing thread export, then symbolic variables created inside worker threads. The script was restructured so that the symbolic flow polynomial is evaluated in the main thread.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The extended criterion (thm:cube-topup-wide-support) is backed for \(M\le6\): exactly for \(M\le4\), and by randomized evidence at \(M=5,6\).</li>
+<li>A proof for all \(M\) has a concrete route: Leibniz for \(D\) on the \(h\)-determinant of lem:cube-cross-leading-coefficient, using the lemma above.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-topup-flow-identity for all \(M\) (the row-factor bookkeeping above).</li>
+<li>Arcs with limit in \(\Sigma_k\), such as the square at \(M=4\).</li>
+<li>Coincident limits where (H1) fails, for \(M\ge4\); \(C\)-block uniqueness; levels above slack-zero data; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-cross-leading-coefficient (the \(h\)-determinant \(D_\Lambda\));</li>
+<li>conj:cube-topup-flow-identity and research/tools/bmd_topup_coefficient.gp (conventions).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the lemma, the hedging of the proof route, and the script against the previous entry's conventions. Verdict: pass with corrections, all applied: the Leibniz statement corrected to \((D+N\,e_1)\det\) with the true sources of the \(e_1\) multiple; the \(M=5,6\) wording hedged; the seed stated. The new lemma is a three-line generating-function identity, which I checked against \(h_0,h_1\): \(D\,1=0=h_1-e_1h_0\), and \(D\,e_1=p_2=2h_2-e_1^2\). The check reuses the reviewed conventions of the previous entry's script. Its evidential limits are stated above.</p>
+<p>Status: working proof (flow on complete symmetric functions); finite check (randomized exact, top-up identity at \(M=5,6\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-au">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 9.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 44.58 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 28.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">24.50 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
