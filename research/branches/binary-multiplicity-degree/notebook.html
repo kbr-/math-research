@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-flowed-arc">C-block flowed arc</a>; eight open items). The \(C\)-block's limit has weight zero at the mark exactly when the Taylor cofactor along the flowed arc \(\tilde y'/(1+x\tilde y')\) has its least possible order. At weight-one ties the failures form one hyperplane of first-order arc data.</p>
-<p>Next: the joint condition on \(L_0=E\oplus Q\oplus U\). Re-centre the whole pair space at the mark as the proposition does for the \(C\)-block, and express the Taylor minors of \(L_0\) through the flowed arc and the cross coordinates. Then decide whether the failing arcs of a double tie (both blocks) cost two conditions.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-tie-joint-weight">C-block tie joint weight</a>; eight open items). A single \(C\)-block tie never threatens the cherry step. The full limit space has weight at most \(1\), and its bad arcs differ from the \(C\)-block's own. On all \(24\) four-root tangent arcs, where \(E\) has weight \(1\), \(L_0\) has weight \(0\).</p>
+<p>Next: double ties. Above the four-root tie, find arcs where the cross block also has two leaders at the same rate. These are cherry rates \(w_e\) at which (W″)-type pencils occur. Write the bilinear weight-zero condition and the second minor, and decide by exact limit spaces whether any arc reaches a section of order \(R+1\). That is the falsification test for (K) at these strata.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73301,6 +73301,84 @@ So the \(C\)-block's limit is non-Weierstrass at the mark exactly when the Taylo
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cblock-tie-joint-weight" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-cblock-tie-joint-weight check:cube-cblock-tie-contact">
+<h3>9 October 2026 — A C-block tie moves the bad ratio of the full limit space away from the C-block's own: on the four-root tangent arcs where E has positive weight, the limit pair space has weight zero</h3>
+<p class="entry-meta">Working proof of the joint weight at a single C-block tie with a unique cross leader; exact limit spaces on 40 cherry arcs above the four-root tie and a discriminating control. Joint weight cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement. cor:cube-cblock-tie-hyperplane locates the arcs on which the \(C\)-block's leading space \(E\) has positive weight at a weight-one tie. What the cherry step needs is the weight, and maximal order, of the whole limit space \(L_0=E\oplus Q\oplus U\). Does \(E\)'s weight survive in \(L_0\)?</p>
+<p><strong>A simplification.</strong> In the coordinates of lem:cube-node-weight-bound, \(\beta_q=a_q/(1-a_q)\) for the actual cluster roots \(a_q\), and \(\tilde y'=\beta/x\). So the flowed arc of prop:cube-cblock-flowed-arc is
+\[z=\frac{\beta/x}{1+\beta}=\frac ax,\]
+the actual cluster roots divided by \(x\). Write \(a=x_1s(y^\ast+sv_a+\cdots)\) with \(x=x_1s+\cdots\). Then \(E\) has positive weight at a weight-one tie iff \(dF(y^\ast)v_a=0\); at four roots, iff \(\ell(v_a)=0\).</p>
+<p>This does not depend on the choice of the scale \(x\). Changing \(x\) by a factor \(1+cs+\cdots\) moves \(v_a\) by a multiple of \(y^\ast\), and \(dF(y^\ast)y^\ast=0\) by Euler's identity, since \(F\) is homogeneous and \(F(y^\ast)=0\). At four roots this is \(\ell(y^\ast)=0\).</p>
+<p><strong>General statement.</strong> prop:cube-cblock-tie-joint-weight. Characteristic zero, the setting of cor:cube-cherry-step. Suppose that along an arc, at the rate in question:</p>
+<ul>
+<li>the leading \(C\)-block support is two sets \(S\) and \(S'=S-\sigma+\tau\), \(\sigma&lt;\tau\), with leading coefficients \(\pi\), \(\pi'\);</li>
+<li>the cross block has a unique leader \(\Lambda\);</li>
+<li>\(Z\) is the remaining exponent set: \(-\lambda+\Lambda\), together with \(-3\) for a cherry.</li>
+</ul>
+<p>Put \(c(X)=\prod_{x\in X,\,z\in Z}(z-x)\). Then:</p>
+<ol>
+<li>If \(\tau=\sigma+1\), then \(\operatorname{wt}_0(L_0)\le1\) and the arc avoids \(K\) (part (5) of prop:cube-cblock-spread-bound).</li>
+<li>\(\operatorname{wt}_0(L_0)&gt;0\) iff \(\pi\,\mathrm{Vand}(S)\,c(S)+\pi'\,\mathrm{Vand}(S')\,c(S')=0\).</li>
+<li>\(\operatorname{wt}_0(E)&gt;0\) iff \(\pi\,\mathrm{Vand}(S)+\pi'\,\mathrm{Vand}(S')=0\).</li>
+<li>Both happen at once only if \(c(S)=c(S')\), that is \(\prod_{z\in Z}(z-\sigma)=\prod_{z\in Z}(z-\tau)\). Otherwise \(E\) and \(L_0\) have positive weight on disjoint sets of arcs.</li>
+</ol>
+<p><strong>Proof.</strong> The leading Plücker vector of \(L_0\) is \(P_{X\sqcup Z}=P^E_X\cdot P^Q\cdot P^U_\Lambda\) in the block column order, by lem:cube-leading-wronskian-sum (b), with \(X\in\{S,S'\}\). So \(\operatorname{wt}_0(L_0)=0\) iff \(\sum_XP^E_X\,\mathrm{Vand}(X\sqcup Z)\ne0\), the factor \(P^QP^U_\Lambda\) being nonzero.</p>
+<p>With columns in the order \(X\), then \(Z\), \(\mathrm{Vand}(X\sqcup Z)=\mathrm{Vand}(X)\,\mathrm{Vand}(Z)\,c(X)\). All these factors are nonzero: \(X\subset\mathbb Z_{\ge0}\), while \(Z\) consists of \(-3\) and half-integers, so \(z\ne x\), and the exponents within each set are distinct. This gives part 2.</p>
+<p>Part 1 is part (5) of prop:cube-cblock-spread-bound with \(\operatorname{spread}(E)=\Sigma S'-\Sigma S=\tau-\sigma=1\) and \(\operatorname{spread}(U)=0\). Part 3 is lem:cube-leading-wronskian-sum (a) for \(E\). For part 4, both linear conditions on \((\pi,\pi')\) hold at a point with \(\pi\pi'\ne0\) only if the coefficient rows \((\mathrm{Vand}(S)c(S),\mathrm{Vand}(S')c(S'))\) and \((\mathrm{Vand}(S),\mathrm{Vand}(S'))\) are proportional, that is \(c(S)=c(S')\). Here \(c(S)/c(S')=\prod_z(z-\sigma)/(z-\tau)\). \(\square\)</p>
+<p><em>Part 4 at four roots.</em> For a cherry above four roots at the weight-one tie, \(\sigma=5\) and \(\tau=6\). The cross leader lies in a window with \(t\le2M-1=7\), so every \(z\in Z\) satisfies \(z\le5.5&lt;(\sigma+\tau)/2\). Then \(|z-\sigma|&lt;|z-\tau|\) for every \(z\), with \(|z-\sigma|/|z-\tau|\le1\), and strictly less except at \(z=5.5\). So \(c(S)\ne c(S')\).</p>
+<p><strong>Check.</strong> check:cube-cblock-tie-contact. research/tools/bmd_cblock_tie_contact.gp (research/results/bmd-20261009-br/cblock-tie-contact.txt) computes the exact limit space \(L_0\) over \(\mathbb Q(e)\), by valuation-pivoted elimination, \(15\) rows and columns \(0..19\). The configuration is a cherry \(\{1,1+c_ee^{b}\}\) above the four-root cluster with actual roots \(a_q=x_1e(y^\ast_q+ev_q+e^2u_q)\), \(y^\ast=(0,1,3,4)\). It covers three tangent velocities (\(\ell(v)=0\)) and two transverse ones, each at eight choices of \((x_1,b,c_e)\).</p>
+<p>All \(40\) limit spaces have orders \(0,\ldots,14\), weight \(0\). On the tangent arcs \(\ell(\tilde y'_1)=\ell(v)+x_1\ell(y^{\ast2})=6x_1\ne0\), so the \(C\)-block ties at \(w_x=1\), and \(E\) has positive weight there by cor:cube-cblock-tie-hyperplane. So \(E\)'s weight is absorbed in \(L_0\), as part 4 predicts. The columns \(0..19\) suffice because, with a unique cross leader, the orders of \(L_0\) are at most \(R+\operatorname{spread}\le16&lt;20\). That uniqueness is an assumption of the check, not verified by the script.</p>
+<p>A first run evaluated \((\cdot)^{-3/2}\) at PARI's default series precision \(16\) and failed at \(19\) columns. The rerun truncates inside the power.</p>
+<p><em>Discriminating control.</em> On a transverse arc, part 2 predicts one nonzero \(x_1\) with \(\operatorname{wt}_0(L_0)=1\). research/tools/bmd_cblock_tie_contact_control.gp (cblock-tie-contact-control.txt) takes \(v=(1,0,0,0)\), \(b=2\), \(c_e=3\). It computes exactly, at \(x_1=1,\ldots,5\), the lowest \(e\)-coefficient of the full Taylor \(T_0\)-minor, of valuation \(46\) in each case, and fits it exactly to the predicted form \(x_1^{33}(A+Bx_1)\). That gives the bad value \(x_1=4/147\). The exact limit space at \(x_1=4/147\) has orders \(0,\ldots,13,15\): weight \(1\) and maximal order \(15=R\). So the weight-one arc exists where predicted, and it still avoids \(K\), as part 1 says.</p>
+<p>A first version with \(x_1\) symbolic over \(\mathbb Q(x_1)(e)\) timed out at \(600\) s.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>A single weight-one \(C\)-block tie never threatens the cherry step: \(L_0\) has weight at most \(1\).</li>
+<li>Its weight-one arcs are not those of \(E\) unless the exponent identity \(\prod_z(z-\sigma)=\prod_z(z-\tau)\) holds, which fails at four roots.</li>
+<li>The open case is the double tie, with both blocks having two leaders. There the weight-zero condition is bilinear in \((\pi,\pi')\otimes(\gamma,\gamma')\), and contact needs a second minor to vanish as well. Whether arcs realizing both exist is the codimension question for (K) at these strata.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Double ties: existence of arcs with both blocks tied and both conditions, and their codimension.</li>
+<li>Ties at weight-two points (\(M\ge5\)); arcs with coincident limits.</li>
+<li>(F); the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-leading-wronskian-sum (a), (b);</li>
+<li>prop:cube-cblock-flowed-arc and cor:cube-cblock-tie-hyperplane;</li>
+<li>prop:cube-cblock-spread-bound (5);</li>
+<li>lem:cube-node-weight-bound (\(\beta=a/(1-a)\)).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the simplification, the product Plücker vector, the Vandermonde factorization, parts 2–4, and the elimination in the script. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>part 1 restricted to \(\tau=\sigma+1\);</li>
+<li>"weight 1" of \(E\) replaced by positive weight;</li>
+<li>nonvanishing of \(c\) and of the Vandermondes stated;</li>
+<li>the scale independence of the simplification justified by Euler's identity;</li>
+<li>the notation clashes removed;</li>
+<li>part 4 verified at four roots;</li>
+<li>the column truncation justified, and its assumption stated;</li>
+<li>a discriminating control added, since the transverse runs could not fail. It confirmed weight \(1\) at the predicted \(x_1=4/147\).</li>
+</ul>
+<p>Unused hypotheses: none.</p>
+<p>Status: working proof (joint weight at a single tie, every \(M\)); exact finite check (\(40\) arcs and one control, \(M=4\)).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-br">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 59.86 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">56.24 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 6.33 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 41.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.43 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14 min 7.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
