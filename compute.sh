@@ -136,8 +136,30 @@ def guidance_note(elapsed):
             'the repeated work before it grows.\n')
 
 
+def link_user_requests(root):
+    """In a linked worktree, user_requests must be a symlink to the main checkout's file, the one the user reads:
+    requests written into a worktree's own file stayed invisible to the user (3 October 2026). Creates the link;
+    refuses while the worktree holds a separate regular file, whose entries must first move to the main file."""
+    common = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=root,
+                            capture_output=True, text=True)
+    if common.returncode != 0:
+        return None
+    main = Path(common.stdout.strip()).parent
+    if main.resolve() == Path(root).resolve():
+        return None
+    local, shared = Path(root) / 'user_requests', main / 'user_requests'
+    if local.is_symlink() and local.resolve() == shared.resolve():
+        return local
+    if local.is_symlink() or local.exists():
+        raise ValueError(f'{local} is not a link to {shared}, the file the user reads: append its entries to '
+                         f'{shared}, delete it, and start again (the link is then created)')
+    local.symlink_to(shared)
+    return local
+
+
 def start_session(name, agent=None, model=None, notebook=None):
     from notebooks import selected
+    link_user_requests(ROOT)
     notebook = selected(notebook, ROOT)["name"]
     model = session_model(agent, model) or 'unspecified'
     # Record who produced the cycle; never a machine-local session ID.

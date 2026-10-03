@@ -433,7 +433,8 @@ rules to growing checklists or one-off setup narratives.
   needed personal copies locally, never publish private/backups. A source that cannot
   be retrieved after an honest attempt is a user request (below), with citation,
   attempted links and purpose.
-- Every request to the user goes into the Git-ignored `user_requests` file: a missing
+- Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the one the user
+  reads; in a worktree `user_requests` is a link to it, which `compute.sh start` creates and insists on: a missing
   source, an installation, a permission, a choice between research directions, or any
   other question. Give what is needed, why, what was tried, and the default being followed
   meanwhile. Never stop, pause or idle to wait for the answer: follow the recommended
