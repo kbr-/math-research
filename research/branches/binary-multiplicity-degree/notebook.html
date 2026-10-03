@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-translation-equation">top-up translation equation</a>; eight open items). Dilation equivariance gives \(\partial_{\rm tr}\tau^\circ_p=-(\lambda+2M-p-1)W_p\). That fixes the constant of the top-up identity and reduces the identity to the vanishing of a translation-invariant remainder.</p>
-<p>Next: find a second constraint on the top-up coefficient. Candidates: its degree in a single root, read from the Laplace pairs; or the equivariance of the full pair space under the Euler scaling. Use it to kill the remainder and prove conj:cube-topup-flow-identity for every \(M\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-topup-identity-five">top-up identity at five</a>; eight open items). The top-up flow identity is proved for \(M\le5\). So on every arc with \(M\le5\), the leaders' nullity is at most two unless the limit cluster lies in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\) and no window satisfies (H1).</p>
+<p>Next: the residual \(\Sigma_k\), starting with the square at \(M=4\), where both the window and the top-up coefficients vanish. Find the next coordinate whose least coefficient survives there, for example the double top-up with \(E^+=2\). Then extend the near-window family argument to value \(b^*+2w_x\). The \(q\)-adic data show \(\nu\le1\) there.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -70885,6 +70885,74 @@ None leads.</li>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 46.99 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 7.33 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 39.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-topup-identity-five" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-topup-flow-identity-small">
+<h3>9 October 2026 — The top-up flow identity holds exactly for M ≤ 5, with the constant predicted by the translation equation, so the extended support criterion is unconditional for M ≤ 5</h3>
+<p class="entry-meta">Working proof by exact interpolation in the elementary symmetric basis that tau_p = kappa (D + 2k e1) Hank_k at M = 5 for every p, with kappa from lem:cube-topup-translation-equation. Top-up identity at five cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. thm:cube-topup-wide-support reduces the support condition on every arc to limits in \(\Sigma_k\), and needs conj:cube-topup-flow-identity: exact for \(M\le4\), randomized evidence at \(M=5,6\). The <a href="#entry-2026-10-09-cube-topup-translation-equation">translation equation</a> fixed the constant \(\kappa_{M,p}=-(\lambda+2M-p-1)c_{M,p}/(2k(M+k+1))\). Can \(M=5\) be proved exactly?</p>
+<p><strong>General statement.</strong> prop:cube-topup-flow-identity-small. For \(3\le M\le5\) and \(1\le p\le M-1\), \(\tau_p=\kappa_{M,p}(D+2k\,e_1)\mathrm{Hank}_k\), \(k=M-p\), with \(\kappa_{M,p}\) as above.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li>\(M=3,4\): exact symbolic identities (research/results/bmd-20261009-at/topup.txt).</li>
+<li>\(M=5\): \(\tau_p\mathrm{Vand}^2\) is the coefficient of \(x^{A+1}\) in a determinant whose entries are monomials in \(xy_s\).
+<ul>
+<li>It is homogeneous of degree \(A+1\), so \(\tau_p\) is homogeneous of degree \(A+1-M(M-1)=k(k+1)+1=n_0\), as is \((D+2k\,e_1)\mathrm{Hank}_k\).</li>
+<li>Swapping two roots \(s,t\) swaps two pairs of rows, so the determinant is symmetric.</li>
+<li>When \(y_s\to y_t\), the row pairs \((s,t)\) and \((M+s,M+t)\) both coincide, which gives the factor \((y_s-y_t)^2\).</li>
+<li>Hence \(\mathrm{Vand}^2\) divides it, and \(\tau_p\) is a symmetric polynomial.</li>
+</ul></li>
+<li>So the remainder \(R_p=\tau_p-\kappa_{M,p}(D+2k\,e_1)\mathrm{Hank}_k\) lies in the span of the products \(e_1^{a_1}\cdots e_5^{a_5}\) with \(\sum ja_j=n_0\), which are linearly independent in five variables.</li>
+<li>research/tools/bmd_topup_identity_m5.gp (research/results/bmd-20261009-ax/topup-m5.txt) evaluates \(R_p\) exactly at \(\dim+5\) random integer clusters. \(c_{5,p}\) is computed as the window coefficient divided by \(\mathrm{Vand}^2\mathrm{Hank}_k\) at the first cluster. It is a constant by thm:cube-cherry-hankel-form (prop:cube-hankel-form-small at \(M=5\)), so \(\kappa\) from the formula is well defined.</li>
+<li>It finds \(R_p=0\) at every point, with the evaluation matrix of that basis of full column rank: \(221\), \(57\), \(13\), \(3\) for \(p=1,2,3,4\) (degrees \(21,13,7,3\)).</li>
+<li>A polynomial in the span vanishing at points where the evaluation map is injective is zero. \(\square\)</li>
+</ul>
+<p>The computation fixes \(\kappa\) in advance from lem:cube-topup-translation-equation, with \(c_{5,p}\) from the Hankel-form constant, rather than fitting it. So the vanishing also shows that this constant is the right one at \(M=5\).</p>
+<p><strong>Consequences.</strong></p>
+<ul>
+<li>thm:cube-topup-wide-support holds unconditionally for \(M\le5\). On every arc, the leaders' nullity is at most \(2\) unless the limit cluster lies in \(\Sigma_k=\{\mathrm{Hank}_k=D\,\mathrm{Hank}_k=0\}\), \(k=M-p^*\), and no window satisfies (H1).</li>
+<li>The \(M=6\) evidence (check:cube-topup-identity-large) remains randomized. The same interpolation would apply, with bases of size up to the partitions of \(31\) into parts at most \(6\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-topup-flow-identity for \(M\ge6\): a general proof needs a second constraint on the translation-invariant remainder.</li>
+<li>The residual \(\Sigma_k\) (the square at \(M=4\)); coincident limits; \(C\)-block uniqueness; slack-zero levels; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-topup-translation-equation (the constant);</li>
+<li>conj:cube-topup-flow-identity and the \(M\le4\) data;</li>
+<li>thm:cube-cherry-hankel-form and prop:cube-hankel-form-small (the constant \(c_{M,p}\)).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p>
+<ul>
+<li>the degrees and the basis sizes, against the partition counts;</li>
+<li>the completeness of the enumeration;</li>
+<li>the rank-and-vanishing argument;</li>
+<li>the script's flow term, window constant and points;</li>
+<li>the plausibility of the runtime.</li>
+</ul>
+<p>Verdict: pass with corrections. All were applied:</p>
+<ul>
+<li>the constancy of \(c_{M,p}\) cited;</li>
+<li>the divisibility by \(\mathrm{Vand}^2\) argued directly;</li>
+<li>the unneeded homogeneity citation dropped;</li>
+<li>the remark on the constant tied to the Hankel-form constant.</li>
+</ul>
+<p>Status: working proof (top-up identity for \(M\le5\), the case \(M=5\) by exact interpolation).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ax">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 44.08 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 47.00 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">39.71 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 13.92 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.31 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
