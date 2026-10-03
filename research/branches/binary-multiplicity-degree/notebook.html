@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-cblock-spread">tie C-block spread</a>; eight open items). Above a tie over a caterpillar, the \(C\)-block spread is at most the weight of the tie window, which is \(1\) at every Gegenbauer zero for \(m\le7\). So single \(C\)-block ties there are harmless when the cross leader is unique.</p>
-<p>Next: prove conj:cube-tie-window-second-minor for every \(m\) by identifying \(N_m\) modulo \(t_d\) through the three-term recurrence used for cor:cube-tie-window-full-rank. Then decide double ties above ties over caterpillars by exact limit spaces on arcs into a Gegenbauer zero, at rates where the cross block also ties.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-second-minor-congruence">second-minor congruence</a>; eight open items). The tie window's second minor is a constant multiple of \(t_{d+1}\) modulo \(t_d\) (exact, \(m\le7\)). That would give spread \(1\) for every cone \(C\)-block tie above ties over caterpillars, through the recorded coprimality of consecutive Gegenbauer coefficients.</p>
+<p>Next: prove the congruence through the window's right kernel and thm:cube-tie-window-gegenbauer, with starts \(s=d,d+1\). Then turn to joint ties above ties over caterpillars.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73738,6 +73738,52 @@ the actual cluster roots divided by \(x\). Write \(a=x_1s(y^\ast+sv_a+\cdots)\) 
 <tr><td>Computation design and coding</td><td class="elapsed">24.38 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">39.24 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-second-minor-congruence" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-tie-second-minor-congruence check:cube-tie-second-minor-congruence">
+<h3>9 October 2026 — The tie window's second minor is a constant multiple of t_{d+1} modulo t_d, which reduces the spread-one conjecture to the recorded coprimality of consecutive Gegenbauer coefficients</h3>
+<p class="entry-meta">Conjecture for every m with exact verification for m ≤ 7; it implies conj:cube-tie-window-second-minor. Second-minor congruence cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement on cone clusters. conj:cube-tie-window-second-minor (\(N_m\) and \(t_d\) have no common zero) gives spread at most \(1\) for every cone \(C\)-block tie above a tie over a caterpillar (prop:cube-tie-cblock-spread). The missing implication: why \(N_m\) avoids the zeros of \(t_d\). cor:cube-tie-window-full-rank used that \(t_d\) and \(t_{d+1}\) have no common zero in \(\mathbb C^\ast\). Is \(N_m\) controlled by \(t_{d+1}\) at the zeros of \(t_d\)?</p>
+<p><strong>General statement.</strong> conj:cube-tie-second-minor-congruence. For every \(m\ge2\), with \(d=\binom m2\) and the window rows of cor:cube-tie-window-full-rank:
+\[N_m=c^{m(m^2-m+2)/2}(c-1)^{m^2}\,\tilde N_m,\qquad \deg\tilde N_m=d+1,\qquad \tilde N_m\equiv\kappa_m\,t_{d+1}\pmod{t_d},\]
+with a nonzero rational constant \(\kappa_m\).</p>
+<p><em>Consequence.</em> The congruence implies conj:cube-tie-window-second-minor, and so spread at most \(1\) for every \(m\) in prop:cube-tie-cblock-spread. At a zero \(c_0\) of \(t_d\) we have \(c_0\notin\{0,1\}\) (\(t_d(0)=\binom{-3/2}d\ne0\), \(t_d(1)=\binom{-3}d\ne0\)), and \(\tilde N_m(c_0)=\kappa_mt_{d+1}(c_0)\ne0\), since \(t_d\) and \(t_{d+1}\) have no common zero in \(\mathbb C^\ast\). That is the three-term recurrence of \(((1+cT)(1+T))^{-3/2}\) used in lem:cube-tie-window-gegenbauer-consequences. A common zero would propagate down the recurrence to \(t_0=1\).</p>
+<p><strong>Check.</strong> check:cube-tie-second-minor-congruence. research/tools/bmd_tie_second_minor_mod.gp (research/results/bmd-20261009-bu/second-minor-mod.txt) computes \(N_m\) exactly for \(m=2,\ldots,7\) and reduces \(\tilde N_m/t_{d+1}\) modulo \(t_d\). In every case:</p>
+<ul>
+<li>the powers of \(c\) are \(4,12,28,55,96,154\) and those of \(c-1\) are \(4,9,16,25,36,49\), matching \(m(m^2-m+2)/2\) and \(m^2\);</li>
+<li>\(\deg\tilde N_m=2,4,7,11,16,22=d+1\);</li>
+<li>the residue is a nonzero rational constant.</li>
+</ul>
+<p>The control residue \(\tilde N_m/t_d'\bmod t_d\) is a constant only at \(m=2\) and has degree \(2\) for \(m\ge3\). So the congruence is specific to \(t_{d+1}\), not an artifact of reducing modulo \(t_d\). The exponent formulas are fitted to these six values: the third differences of the \(c\)-powers are constant.</p>
+<p><strong>A route to a proof.</strong> The window \(W(c)\) has a two-dimensional right kernel. Its maximal minors are, up to one common factor, the Plücker coordinates of that kernel on the two dropped columns. \(L_m\) drops the last two columns, \(N_m\) the columns \(d+2m\) and \(d+2m+2\). thm:cube-tie-window-gegenbauer gives explicit near-kernel vectors with coefficients \(p_i\rho^{(m)}\) of \(((1+cT)(1+T))^m\), shifted by the start \(s\). Their failure to be kernel vectors is measured by \(c^m\rho^{(-m)}_st_s\). Two consecutive starts \(s=d,d+1\) should produce the kernel modulo \(t_d\), with the defect \(t_{d+1}\) in the \(N_m\) coordinate. This has not been carried out.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of the congruence for every \(m\), along the kernel route.</li>
+<li>Double ties (joint \(C\)-block and cross ties) above ties over caterpillars.</li>
+<li>Cone types (A) and (C) for the \(C\)-block.</li>
+<li>(F) on cone clusters; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-tie-cblock-spread and conj:cube-tie-window-second-minor;</li>
+<li>cor:cube-tie-window-full-rank and lem:cube-tie-window-gegenbauer-consequences (no common zero of \(t_d\), \(t_{d+1}\));</li>
+<li>thm:cube-tie-window-gegenbauer (statement).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. No correctness reviewer: the new claims are a conjecture and a finite check. The implication from the congruence is three lines, using a recorded fact. The computation is exact over \(\mathbb Q\), and the control residue shows the reduction discriminates.</p>
+<p>Status: conjecture with exact verification for \(m\le7\); implies conj:cube-tie-window-second-minor.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bu">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 56.10 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">32.95 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">27.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">54.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
