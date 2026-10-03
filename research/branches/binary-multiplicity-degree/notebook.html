@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-phase-rule-route-review">phase-rule review</a>; eight open items). The leader nullity bound \(\nu\le2\) follows from two phase-rule conditions: (P1) no two cross coordinates share a least term where it is minimal, and (P2) no four least terms meet at the minimum. Every checked rate obeys both.</p>
-<p>Next: prove (P1) at Hankel cancellation of \(\mathrm{Hank}_1\). Compute the least terms \((\Sigma L+n,n,v)\) of window and kernel coordinates in closed form, through thm:cube-binomial-hankel-product and prop:cube-kernel-arc-reduction, and show that distinct coordinates never share one at a rate where it is minimal.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), support core (<a href="#entry-2026-10-09-cube-open-rate-pencil">open-rate pencil</a>; eight open items). Above the cube-root cluster two cross coordinates lead on an open set of rates, so the phase-rule reduction of \(\nu\le2\) fails in the cherry setting. Hankel cancellation raises a window's least term by the vanishing order of its leading coefficient, which lets a single-swap neighbour tie with it.</p>
+<p>Next: bound which coordinates can be lifted into a tie with a window, in terms of the vanishing orders of the window coefficients \(L_j\propto\mathrm{Hank}_{M-j}\) at the limit cluster. Then derive \(\nu\le2\) from that bound when only \(\mathrm{Hank}_1\) vanishes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -69876,6 +69876,82 @@ in \(\mathbb F_p[c]/((M-1)c^2-2c+(M-1))\), \(p=1000003\), and finds it nonzero. 
 <tr><td>Computation design and coding</td><td class="elapsed">25.88 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 28.71 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 29.79 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-open-rate-pencil" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-fixed-coefficient-uniqueness ex:cube-cube-root-open-pencil" data-bridge="entry-2026-10-09-cube-phase-rule-route-review:1">
+<h3>9 October 2026 — Above the cube-root cluster two cross coordinates lead on an open set of rates, so the phase-rule condition (P1) is false in the cherry setting; it holds only when coefficient valuations do not depend on the rates</h3>
+<p class="entry-meta">Refutation of (P1) in the cherry setting: an exact pencil of leaders on an open set of rates; working proof of uniqueness off a tie locus when coefficient valuations are rate-independent; correction of the phase-rule review. Open-rate pencil cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), support core. The <a href="#entry-2026-10-09-cube-phase-rule-route-review">phase-rule review</a> reduced the leader nullity bound \(\nu\le2\) to (P1), no two cross coordinates sharing a least term where it is minimal, and (P2), no four least terms meeting. Its next step was to prove (P1) at Hankel cancellation.</p>
+<p><strong>General statement.</strong> The all-parameter claim this cycle bears on is conj:cube-cancellation-wide-support (\(\nu\le2\) at Hankel cancellation). The cycle proves lem:cube-fixed-coefficient-uniqueness, the form of (P1) that survives, and refutes the general form by ex:cube-cube-root-open-pencil.</p>
+<p><strong>Where the general form fails.</strong> A first draft claimed the leading cross coordinate is unique on every open set of rates, for every arc. Its argument:</p>
+<ul>
+<li>A term \(u^n\) of \(P_L=x^{\Sigma L}\tilde P_L(u)\), \(u=xe\), has value \(w_x(\Sigma L+n)+w_en+v\), with gradient \((\Sigma L+n,n)\).</li>
+<li>Leaders on an open set share their affine function, hence their \(\Sigma L\).</li>
+<li>Two bases of a matroid differing by one swap \(i\to j\) have \(\Sigma\) differing by \(j-i\ne0\).</li>
+</ul>
+<p>The fresh-context reviewer found the gap: \(v\) need not be independent of the rates. In the cherry setting the coefficients are evaluated at the reparametrized roots \(\tilde y'=\tilde y/(1-x\tilde y)\) (setting of thm:cube-cherry-lattice-splitting). A coefficient vanishing at the limit \(\tilde y_0\), as at Hankel cancellation where \(L_2(\tilde y_0)=0\), has valuation \(k\,w_x\) with \(k\ge1\). The gradient is then \((\Sigma L+n+k,n)\). Equal gradients force equal \(\Sigma L+k\), not equal \(\Sigma L\), and a swap can be compensated by \(k\).</p>
+<p><strong>Refutation.</strong> ex:cube-cube-root-open-pencil. research/tools/bmd_cube_root_open_rates.gp (research/results/bmd-20261009-am/cube-root-open-rates.txt) reruns part 2 of bmd_cherry_hankel.gp, the exact computation of ex:cube-cherry-cube-root-cluster. It uses the cherry join \(x\tilde D\cup\{1,1+e\}\), \(\tilde D=\{1,\omega,\omega^2\}\) (\(\mathrm{Hank}_1=0\)), with the exact reparametrized roots and all \(1716\) cross coordinates on \(6\)-subsets of \([-5,7]\). The arcs are \(x=s^{w_x}\), \(e=s^{w_e}\), at five rates in the regime \(\tfrac12&lt;w_x/w_e&lt;2\).</p>
+<ul>
+<li>At \((1,1)\), \((3,4)\), \((5,6)\) and \((6,5)\), the least valuations are \(14,47,75,79\). Each is attained exactly at \(\Lambda_2=[-2,3]\) and \(\{-2,\ldots,2,4\}\).</li>
+<li>At \((4,3)\) the value is \(51\), attained there and also at \(\Lambda_3=[-3,2]\).</li>
+<li>All five values equal \(9w_x+5w_e\). So both coordinates have least term with gradient \((9,5)\) and lead together on an open set of rates.</li>
+<li>Control \(\tilde D=\{1,2,5\}\): a single leader \(\Lambda_2\) at every rate.</li>
+</ul>
+<p>The two leaders differ by one swap, \(3\to4\). The \(x\)-exponents agree because \(\Lambda_2\)'s least term carries one extra factor of \(x\) from the vanishing of \(L_2\) at \(\tilde D\), as the reviewer predicted from the record's values \(b(\Lambda_2)+1=14\). So (P1) is false in the cherry setting, and so is the claim that the leading cross space is a coordinate space on open sets of rates. The pencil has \(\nu=1\), so it does not contradict conj:cube-cancellation-wide-support. It also lies within (W″).</p>
+<p><strong>What survives.</strong> lem:cube-fixed-coefficient-uniqueness. Suppose that along a family of arcs every coefficient valuation \(v\) is independent of the rates, for example with the reparametrized roots \(\tilde y'(s)\) held fixed, as in the \(q\)-adic tools of the record. Then, on the open cone \(w_x,w_e>0\), the leading cross coordinate is unique off a locally finite union of segments and rays. The leading cross space is a coordinate space there.</p>
+<p><strong>Proof.</strong> The columns range over a finite set, and the candidate coordinates are finitely many. On a bounded set of rates with \(w_x,w_e\) bounded below, every window has a bounded value, so only terms with bounded \(n\) can be least. So each value is a minimum of finitely many affine functions there. On an open set \(O\) where each candidate's value is one affine function and the set of leaders is constant, the leaders have identical affine functions, with gradient \((\Sigma L+n,n)\) and constant \(v\). Hence they have equal \(\Sigma L\). By lem:cube-leader-polytope-bound they are the bases of a matroid; two bases differing by one swap would have different \(\Sigma\). So there is one leader on \(O\). The rates with two or more leaders lie on the zero sets of differences of distinct affine functions. \(\square\)</p>
+<p>Even here this is uniqueness off the tie locus, not (P1) at the tie rates. Two bases with equal \(\Sigma L\), for example a square of two swaps, can share a term on a tie line where the shared gradient is not a vertex of the gradients' convex hull.</p>
+<p><strong>Correction to the phase-rule review.</strong></p>
+<ul>
+<li>(P1) is false in the cherry setting (above), and its supporting evidence came from arcs with fixed reparametrized roots, which have rate-independent valuations. Those arcs are legitimate, but they are not all arcs.</li>
+<li>The review's justification of (P2) also fails. It called (P2) "the generic behaviour of a two-parameter family"; I am not saying (P2) is false. For affine functions in general position four never meet at a point. Here, above a fixed limit cluster, every value function is piecewise linear through the origin of the rate plane, with term points \((\Sigma L+n+k,n)\). So any number of them can meet along a ray, and the leaders on a ray are all coordinates whose points lie on one edge of a lattice polygon.</li>
+<li>At the level of valuated matroids such an edge can carry any realizable matroid: a trivial valuation twisted by the linear column weight is a valuated matroid.</li>
+<li>So the phase rule gives no bound on \(\nu\). The bound must come from the coefficients themselves: the Hankel forms and kernel determinants.</li>
+</ul>
+<p><strong>Bridge follow-up.</strong> This develops bridge 1 of the phase-rule review (Gibbs's phase rule), and closes it. The identical-phase condition (P1) fails here: two phases have the same free energy on an open region, because Hankel cancellation shifts one phase's energy by exactly one unit of \(w_x\). The coexistence count fails as a genericity statement because all free energies pass through one point.</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The support core cannot be reduced to counting leaders by genericity. In the cherry setting a pencil of leaders can occupy an open set of rates, and on rays any number of leaders can tie a priori.</li>
+<li>\(\nu\le2\) has to be proved from the structure of the actual leaders. In the checks they are a pencil (one swap) on open sets or on rays, and a triangle (three leaders sharing \(2M-1\) columns) at isolated rates.</li>
+<li>The mechanism visible in the refutation: Hankel cancellation raises the \(x\)-exponent of a window's least term by the vanishing order \(k\) of its leading coefficient. That lets a single-swap neighbour, whose column sum is larger by one, tie with it.</li>
+<li>So the natural target is a bound on which coordinates can be lifted into a tie, by the vanishing orders of the window coefficients \(L_j\propto\mathrm{Hank}_{M-j}\) at the limit cluster.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(\nu\le2\) at Hankel cancellation for all arcs (conj:cube-cancellation-wide-support); the \(q\)-adic checks used fixed reparametrized roots, so fixed-\(\tilde y\) arcs need their own evidence or proof.</li>
+<li>Items 3–4 under non-cancellation; levels above slack-zero three-leader data; the window cores; the other open items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-kernel-arc-reduction (arc convention, \(P_L=x^{\Sigma L}\tilde P_L(u)\));</li>
+<li>lem:cube-leader-polytope-bound (leaders as bases of the initial matroid);</li>
+<li>thm:cube-cherry-lattice-splitting and ex:cube-cherry-cube-root-cluster (setting, reparametrized roots, the \(x=e=s\) computation and its tool).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the first draft, which claimed open-rate uniqueness for every arc. Verdict: fail. The claim assumed rate-independent coefficient valuations, false in the cherry setting, and the reviewer predicted the counterexample from ex:cube-cherry-cube-root-cluster, now confirmed exactly. All of its corrections are applied:</p>
+<ul>
+<li>the lemma restricted to rate-independent valuations and restated as uniqueness off the tie locus;</li>
+<li>finiteness of columns and the bound on \(n\) stated, with the domain the open cone;</li>
+<li>"fixed cluster means \(v=0\)" withdrawn;</li>
+<li>the (P2) correction worded as a failed justification, not a falsehood;</li>
+<li>"any matroid" changed to any realizable matroid at the level of valuated matroids;</li>
+<li>the checks described as recorded: at most two leaders except at three triangle rates.</li>
+</ul>
+<p>The corrected lemma's proof is the first draft's argument under its explicit hypothesis, which the reviewer did not dispute. No second review was run.</p>
+<p>Status: refutation (P1 in the cherry setting, exact); working proof (uniqueness off the tie locus for rate-independent valuations).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-am">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 58.96 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 56.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 50.28 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">28.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">54.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 49.50 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
