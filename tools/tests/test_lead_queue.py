@@ -657,6 +657,32 @@ class LeadQueueTest(unittest.TestCase):
                 sys.path.remove(tmp)
                 sys.modules.pop('fake_kinds', None)
 
+    def test_a_kind_module_may_name_entries_that_do_not_count(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, 'titled_reviews.py').write_text(
+                'def kinds(lq):\n    return []\n'
+                'def uncounted(tag, text):\n    return "Review:" in text\n')
+            sys.path.insert(0, tmp)
+            try:
+                attrs = ' data-kind-modules="titled_reviews" data-counted="research business"'
+                big = review('r1', [PASS] * lq.CAP)
+                queue = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+                head = notebook([big], queue, draining=True, attrs=attrs)
+                entry = lambda title: ('<article id="b" data-kind="business" data-route="step"><h3>3 October 2026 '
+                                       f'&mdash; {title}</h3></article>')
+                lq.check(head, notebook([big, entry('Review: where things stand')], queue, draining=True,
+                                        attrs=attrs))                    # a review need not develop the head
+                with self.assertRaises(ValueError):                     # another business entry must
+                    lq.check(head, notebook([big, entry('A cycle')], queue, draining=True, attrs=attrs))
+                cont = developing(queue[0], 'Continuing').replace('data-kind="research"', 'data-kind="business"')
+                titled = cont.replace('<p>', '<h3>Review: x</h3><p>', 1)
+                self.assertEqual(lq.spell(notebook([big, cont, titled, cont], queue, attrs=attrs), queue[0]), 2)
+                lq.configure('')
+                self.assertEqual(lq.SETTINGS['uncounted'], [])          # the next notebook starts afresh
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop('titled_reviews', None)
+
     def test_check_command_compares_the_staged_notebook_with_a_base(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

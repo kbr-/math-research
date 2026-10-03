@@ -174,7 +174,7 @@ KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
          'check': Kind('check', SUBIDEAS_RE, sub=True, rules={'Developed': check_developed}),
          'build': Kind('build', SUBIDEAS_RE, sub=True, rules={'Developed': build_developed})}
 BUILTIN = dict(KINDS)
-SETTINGS = {'counted': {'research'}, 'backpressure': True}
+SETTINGS = {'counted': {'research'}, 'backpressure': True, 'uncounted': []}
 NAMES = '|'.join(KINDS)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 
@@ -196,11 +196,13 @@ LIVE = Live()
 
 def configure(attrs):
     """Apply a queue section's attributes (a notebook without a section gets the defaults): the entry kinds
-    that count, whether backpressure applies, and the kinds of the modules it names, loaded from beside this file."""
+    that count, whether backpressure applies, and the kinds of the modules it names, loaded from beside this file,
+    with each module's uncounted(tag, text), if it has one, naming entries of a counted kind that do not count."""
     global NAMES, FOLLOWUP_ITEM
     counted = re.search(r'\bdata-counted="([^"]*)"', attrs)
     SETTINGS['counted'] = set(counted.group(1).split()) if counted else {'research'}
     SETTINGS['backpressure'] = 'data-backpressure="off"' not in attrs
+    SETTINGS['uncounted'] = []
     KINDS.clear()
     KINDS.update(BUILTIN)
     modules = re.search(r'\bdata-kind-modules="([^"]*)"', attrs)
@@ -209,16 +211,21 @@ def configure(attrs):
         if here not in sys.path:
             sys.path.insert(0, here)
         for name in modules.group(1).split():
-            for kind in importlib.import_module(name).kinds(LIVE):
+            module = importlib.import_module(name)
+            for kind in module.kinds(LIVE):
                 KINDS[kind.name] = kind
+            if hasattr(module, 'uncounted'):
+                SETTINGS['uncounted'].append(module.uncounted)
     NAMES = '|'.join(KINDS)
     FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 
 
-def counted(tag):
-    """Whether an entry's kind counts: it may develop items, its entries make spells, draining binds it."""
+def counted(tag, text):
+    """Whether an entry counts: it may develop items, its entries make spells, draining binds it.  Its kind is one
+    the section counts, and no kind module calls it uncounted (business's reviews are business entries)."""
     kind = re.search(r'\bdata-kind="([^"]+)"', tag)
-    return bool(kind) and kind.group(1) in SETTINGS['counted']
+    return (bool(kind) and kind.group(1) in SETTINGS['counted']
+            and not any(rule(tag, text) for rule in SETTINGS['uncounted']))
 
 
 def picked(tag, text):
@@ -247,7 +254,7 @@ def record_articles(body):
 def developed_by(tag, text):
     """((kind, id), outcome) for a research entry developing a queue item, or None.  The outcome is the entry's
     own: the last Follow-up outside listed items, so a quoted earlier Follow-up does not count."""
-    if not counted(tag):
+    if not counted(tag, text):
         return None
     found = re.findall(r'\bdata-(' + NAMES + r')="([^"]+)"', tag)
     if not found:
@@ -504,7 +511,7 @@ def spell(body, item):
     articles = record_articles(body)
     for position in range(len(articles) - 1, -1, -1):
         tag, text = articles[position]
-        if not counted(tag) or 'data-picked="user"' in tag:
+        if not counted(tag, text) or 'data-picked="user"' in tag:
             continue
         work = developed_by(tag, text)
         if triaged(tag, text) or (work and group_of(body, nodes, work[0], position) != item):
@@ -604,7 +611,7 @@ def listed_item(kind, text, ident):
 
 def triaged(tag, text):
     """[((kind, id), outcome, words, has_evidence, text)] of a counted entry's Queue triage list, in order."""
-    if not counted(tag):
+    if not counted(tag, text):
         return []
     section = TRIAGE_RE.search(text)
     if not section:
@@ -883,7 +890,7 @@ def check(head_body, body, path=None, root=None):
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
     draining_before = SETTINGS['backpressure'] and (was_draining or len(old) >= CAP)
-    if draining_before and counted(tag) and not work and not batch and head is not None:
+    if draining_before and counted(tag, text) and not work and not batch and head is not None:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
                          f'entry must develop the head, {head.ident}, tagged data-{head.kind}="{head.ident}", '
                          'or its first sub-idea')
