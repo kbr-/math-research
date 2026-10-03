@@ -20,6 +20,12 @@ finish-turn.py against HEAD:
 - A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
   the standard sections, each <li data-source="REVIEW-ANCHOR">; all its items are queued, at their source's
   place in record order when the queue is created.
+- Sub-ideas sit under the item they belong to (user, 3 October 2026: "I want it to look like a nested list of
+  entries"), one level deep: a sub-idea listed by an entry developing X joins X (or X's parent), one naming
+  data-parent="KIND:ID" joins that item, others go to the tail.  The head or its first sub-idea may be developed;
+  developing a sub-idea counts toward its parent's spell, and the parent moves to the tail with its sub-ideas.  A
+  parent is not Developed while it has sub-ideas; a Closed parent closes them, except those the entry's follow-up
+  list keeps Continuing, which go to the tail.  Backpressure counts top-level items.
 - Sub-ideas (user, 3 October 2026): any Research-record entry may list, under <h4>Sub-ideas</h4>, questions to
   research and checks to run (<li data-sub="check">) and things to build (<li data-sub="build">) that it names and
   leaves undone; they join the tail with no test, as ANCHOR:sN, N counted over the whole list.  A check is Developed
@@ -37,6 +43,7 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py triage NOTEBOOK.html  (after appending an entry with a Queue triage batch)
        lead_queue.py append NOTEBOOK.html  (after the last entry: its newly passed review items and the items
                                             it marks Reopened go to the tail)"""
+import functools
 import html
 import json
 import re
@@ -145,8 +152,6 @@ KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
          'check': Kind('check', SUBIDEAS_RE, sub=True, developed=check_developed),
          'build': Kind('build', SUBIDEAS_RE, sub=True, developed=build_developed)}
 NAMES = '|'.join(KINDS)
-ITEM_RE = re.compile(r'<li data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
-LINE_RE = re.compile(r'<li data-(?:' + NAMES + r')="[^"]+"[^>]*>.*?</li>', re.S)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-(' + NAMES + r')="([^"]+)"[^>]*>(.*?)</li>', re.S)
 ARTICLE_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
@@ -178,24 +183,251 @@ def developed_by(tag, text):
     return found[0], outcomes[-1] if outcomes else None
 
 
+class Node:
+    """One queue item: its kind and ID, its <li> attributes and text as written, and its children (sub-ideas)."""
+
+    def __init__(self, kind, ident, attrs, text, children=None):
+        self.kind, self.ident, self.attrs, self.text = kind, ident, attrs, text
+        self.children = children if children is not None else []
+
+    @property
+    def item(self):
+        return self.kind, self.ident
+
+    def copy(self):
+        return Node(self.kind, self.ident, self.attrs, self.text, [c.copy() for c in self.children])
+
+
+TOKEN_RE = re.compile(r'<(/?)(li|ul|ol)\b([^>]*)>')
+
+
+def parse_nodes(content):
+    """The items of the queue's list, children nested one level, as Nodes; ValueError if malformed."""
+    nodes, stack = [], []
+    for m in TOKEN_RE.finditer(content):
+        close, tag, attrs = m.groups()
+        if tag != 'li':
+            if tag == 'ul' and not close and stack and stack[-1].text is None:
+                stack[-1].text = content[stack[-1].start:m.start()]
+            continue
+        if close:
+            if not stack:
+                raise ValueError('The queue section has an unmatched </li>')
+            node = stack.pop()
+            if node.text is None:
+                node.text = content[node.start:m.start()]
+            continue
+        found = re.search(r'\bdata-(' + NAMES + r')="([^"]+)"', attrs)
+        if found is None:
+            raise ValueError(f'Every queue item is <li data-KIND="ID">, KIND one of {", ".join(KINDS)}: <li{attrs}>')
+        node = Node(found.group(1), found.group(2), attrs, None)
+        node.start = m.end()
+        if len(stack) > 1:
+            raise ValueError(f'Queue items nest one level only: {found.group(2)}')
+        (stack[-1].children if stack else nodes).append(node)
+        stack.append(node)
+    if stack:
+        raise ValueError(f'The queue section leaves <li> {stack[-1].ident} open')
+    for node in nodes:
+        for child in node.children:
+            if not KINDS[child.kind].sub:
+                raise ValueError(f'Only checks and builds are children: {child.ident} ({child.kind})')
+    return nodes
+
+
+def parse_tree(body):
+    """(draining, [Node]) of the queue section, or None if the notebook has none."""
+    found = SECTION_RE.search(body)
+    if found is None:
+        return None
+    ol = re.search(r'<ol>(.*)</ol>', found.group(2), re.S)
+    return 'data-draining="true"' in found.group(1), parse_nodes(ol.group(1) if ol else '')
+
+
+def parse(body):
+    """(draining, [(kind, id)]) of the queue's top-level items, or None if the notebook has none."""
+    found = parse_tree(body)
+    return None if found is None else (found[0], [n.item for n in found[1]])
+
+
+def shape(nodes):
+    return [(n.item, [c.item for c in n.children]) for n in nodes]
+
+
+def every_item(nodes):
+    return [n.item for n in nodes] + [c.item for n in nodes for c in n.children]
+
+
+def locate(nodes, item):
+    """(parent Node or None, Node) of a queued item, or (None, None)."""
+    for node in nodes:
+        if node.item == item:
+            return None, node
+        for child in node.children:
+            if child.item == item:
+                return node, child
+    return None, None
+
+
+def render_nodes(nodes):
+    lines = []
+    for node in nodes:
+        children = ''
+        if node.children:
+            children = ('<ul>\n' + '\n'.join(f'<li{c.attrs}>{c.text}</li>' for c in node.children) + '\n</ul>')
+        lines.append(f'<li{node.attrs}>{node.text}{children}</li>')
+    return '\n'.join(lines)
+
+
+def new_node(body, item):
+    kind, ident = item
+    return Node(kind, ident, f' data-{kind}="{ident}"',
+                f'<a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): {item_text(body, kind, ident)}')
+
+
+def rewrite(body, nodes, draining):
+    """The notebook with the queue section's list replaced by `nodes` and its draining flag set as given."""
+    found = SECTION_RE.search(body)
+    attrs = re.sub(r'\s*data-draining="[^"]*"', '', found.group(1)) + (' data-draining="true"' if draining else '')
+    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + render_nodes(nodes) + '\n</ol>', found.group(2), flags=re.S)
+    return body[:found.start()] + f'<section id="lead-queue"{attrs}>{inner}</section>' + body[found.end():]
+
+
+def draining_after(was, nodes):
+    """Backpressure counts top-level items: on at CAP, off once down to FLOOR."""
+    return len(nodes) > FLOOR if was else len(nodes) >= CAP
+
+
+@functools.lru_cache(maxsize=4)
+def reopenings(body):
+    """{item: positions in the record of the entries reopening it}."""
+    out = {}
+    for position, (_, text) in enumerate(record_articles(body)):
+        for item in reopened_by(text):
+            out.setdefault(item, []).append(position)
+    return out
+
+
+def reopened_before(body, item, position):
+    """Whether an entry before `position` in the record (anywhere, for None) reopens `item`."""
+    return any(position is None or at < position for at in reopenings(body).get(item, []))
+
+
+def record_parent(body, item, position=None):
+    """The parent a sub-idea's own listing named: its data-parent, else the item its listing entry developed
+    (or that item's own parent); None for a top-level kind, a listing with neither, or an item reopened before
+    `position` (the whole record, for None), which returned at the top level then."""
+    kind, ident = item
+    if not KINDS[kind].sub or reopened_before(body, item, position):
+        return None
+    anchor = ident.rsplit(':', 1)[0]
+    for tag, text in record_articles(body):
+        if f'id="{anchor}"' not in tag:
+            continue
+        listed = listed_item(kind, text, ident)
+        named = re.search(r'\bdata-parent="(' + NAMES + r'):([^"]+)"', listed[0]) if listed else None
+        if named:
+            parent = (named.group(1), named.group(2))
+        else:
+            work = developed_by(tag, text)
+            parent = work[0] if work else None
+        if parent and KINDS[parent[0]].sub:
+            return record_parent(body, parent, position) or parent
+        return parent
+    return None
+
+
+def group_of(body, nodes, item, position=None):
+    """The top-level item whose spell an entry developing `item` counts toward; for the entry at `position` in
+    the record, as the record stood then: before a reopen of the item, its listing's parent."""
+    if position is not None and item in reopenings(body) and not reopened_before(body, item, position):
+        return record_parent(body, item, position) or item
+    parent, node = locate(nodes, item)
+    if parent is not None:
+        return parent.item
+    if node is not None:
+        return item
+    return record_parent(body, item, position) or item
+
+
 def spell(body, item, pending=False):
-    """Research entries, from the record's end, that developed `item` since it became the head: entries that
-    develop no queue item (reviews, other research) neither count nor break the run, which ends at an entry
-    developing another item or settling a triage batch.  With pending=True the entry about to be appended counts
-    too, unless it is already the last article (its <!-- TIMING TURN --> marker is still unfilled)."""
+    """Research entries, from the record's end, that developed `item` or one of its children since it became
+    the head: entries that develop no queue item (reviews, other research) neither count nor break the run, which
+    ends at an entry developing another item or settling a triage batch.  With pending=True the entry about to be
+    appended counts too, unless it is already the last article (its <!-- TIMING TURN --> marker is still
+    unfilled)."""
+    found = parse_tree(body)
+    nodes = found[1] if found else []
     count, last = 0, True
-    for tag, text in reversed(record_articles(body)):
+    articles = record_articles(body)
+    for position in range(len(articles) - 1, -1, -1):
+        tag, text = articles[position]
         if 'data-kind="research"' not in tag:
             continue
         if pending and last and '<!-- TIMING ' in text:
             pending = False
         last = False
         work = developed_by(tag, text)
-        if triaged(tag, text) or (work and work[0] != item):
+        if triaged(tag, text) or (work and group_of(body, nodes, work[0], position) != item):
             break
         if work:
             count += 1
     return count + (1 if pending else 0)
+
+
+def kept_children(text):
+    """Items a follow-up list marks Continuing: children kept when their parent closes."""
+    return {(kind, item_id) for kind, item_id, item in FOLLOWUP_ITEM.findall(text)
+            if (OUTCOME_RE.search(item) or [None, None])[1] == 'Continuing'}
+
+
+def close(nodes, item, kept, promoted):
+    """Remove a queued item; a closed parent's children close with it unless kept, which go to `promoted`."""
+    parent, node = locate(nodes, item)
+    if node is None:
+        return
+    if parent is not None:
+        parent.children.remove(node)
+        return
+    nodes.remove(node)
+    promoted += [c for c in node.children if c.item in kept]
+
+
+def placement(body, nodes, tag, text, item, audit):
+    """The top-level Node a listed sub-idea joins as a child, or None for the top level; ValueError for a named
+    parent that is not queued, except in an audit, which seeds like init."""
+    kind, ident = item
+    listed = listed_item(kind, text, ident)
+    named = re.search(r'\bdata-parent="(' + NAMES + r'):([^"]+)"', listed[0]) if listed else None
+    if named:
+        target = (named.group(1), named.group(2))
+    else:
+        work = developed_by(tag, text)
+        target = work[0] if work else None
+    if target is None:
+        return None
+    parent, node = locate(nodes, target)
+    if parent is not None:
+        return parent
+    if node is not None:
+        return node
+    if named and not audit:
+        raise ValueError(f'{ident} names a parent that is not queued: {target[0]}:{target[1]}')
+    return None
+
+
+def place_arrivals(body, nodes, tag, text, listed, reopened):
+    """Add new items: listed sub-ideas under their parent or at the tail, other listed items and reopened items
+    (whose parent may be gone) at the tail."""
+    audit = 'data-kind="audit"' in tag
+    queued = set(every_item(nodes))
+    for item in dict.fromkeys(listed + reopened):
+        if item in queued:
+            continue
+        sub = KINDS[item[0]].sub and item in listed and item not in reopened
+        parent = placement(body, nodes, tag, text, item, audit) if sub else None
+        (parent.children if parent is not None else nodes).append(new_node(body, item))
+        queued.add(item)
 
 
 def arrivals_of(tag, text):
@@ -244,25 +476,20 @@ def triaged(tag, text):
     return out
 
 
-def check_triage(batch, old):
-    """The rigor rules of a Queue triage batch against the queue `old` before the entry."""
-    if len(batch) > TRIAGE_MAX:
-        raise ValueError(f'A Queue triage batch settles at most {TRIAGE_MAX} items, each with full care')
-    items = [b[0] for b in batch]
-    if items != old[:len(items)]:
-        raise ValueError('A Queue triage batch takes the first items of the queue, in order: expected '
-                         + ', '.join(i for _, i in old[:len(items)]))
-    for (kind, ident), outcome, words, evidence in batch:
-        if outcome not in ('Closed', 'Developed'):
-            raise ValueError(f'Triage item {ident}: a batch only closes or develops ("<strong>Follow-up.</strong> '
-                             'Closed: ..." or "Developed ..."); an item still bearing on an open statement gets its '
-                             'own spell, so end the batch before it')
-        if words < TRIAGE_WORDS:
-            raise ValueError(f'Triage item {ident}: {words} words; each batched item gets the care it would get '
-                             f'alone, at least {TRIAGE_WORDS} words of what was checked and why (user, 3 October 2026)')
-        if not evidence:
-            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID, an entry '
-                             'anchor link or a repository file)')
+def subidea_problems(text):
+    """Problems with the form of an entry's Sub-ideas list: each item names a sub-idea kind, and a parent it
+    names is KIND:ID with a known KIND."""
+    section = SUBIDEAS_RE.search(text)
+    problems = []
+    subs = [k.name for k in KINDS.values() if k.sub]
+    for n, attrs in enumerate(re.findall(r'<li\b([^>]*)>', section.group(1)) if section else [], 1):
+        sub = re.search(r'\bdata-sub="([^"]*)"', attrs)
+        if not sub or sub.group(1) not in subs:
+            problems.append(f'Sub-ideas item {n} needs data-sub, one of {", ".join(subs)}')
+        parent = re.search(r'\bdata-parent="([^"]*)"', attrs)
+        if parent and not re.fullmatch(r'(?:' + NAMES + r'):\S+', parent.group(1)):
+            problems.append(f'Sub-ideas item {n}: data-parent is KIND:ID, KIND one of {", ".join(KINDS)}')
+    return problems
 
 
 def listed_closures(tag, text):
@@ -285,39 +512,11 @@ def reopened_by(text):
             if (OUTCOME_RE.search(item) or [None, None])[1] == 'Reopened']
 
 
-def open_items(body):
-    """The queue's initial contents: passed items, in record order, that no follow-up list item has Closed
-    (and not Reopened since).  Once a queue exists, its changes are checked as transitions from HEAD (check),
-    not recomputed from the history, whose older entries used Developed and Continuing for progress."""
-    passed, closed, place = [], {}, {}
-    articles = record_articles(body)
-    for position, (tag, text) in enumerate(articles):
-        ident = re.search(r'\bid="([^"]+)"', tag)
-        place[ident.group(1) if ident else None] = position
-        for item in arrivals_of(tag, text):
-            source = audit_source(text, item) if 'data-kind="audit"' in tag else None
-            passed.append((place.get(source, position), item))
-        for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
-            outcome = OUTCOME_RE.search(item)
-            if outcome and outcome.group(1) in ('Closed', 'Reopened'):
-                closed[(kind, item_id)] = outcome.group(1) == 'Closed'
-    # stable: an audit's items take their source review's place in record order
-    return [p for _, p in sorted(passed, key=lambda pair: pair[0]) if not closed.get(p)]
-
-
 def audit_source(text, item):
     """The data-source anchor of an audit's listed item (kind, 'ANCHOR:N' or 'ANCHOR:sN'), or None."""
     listed = listed_item(item[0], text, item[1])
     found = re.search(r'data-source="([^"]+)"', listed[0]) if listed else None
     return found.group(1) if found else None
-
-
-def parse(body):
-    """(draining, [(kind, id)]) of the queue section, or None if the notebook has none."""
-    found = SECTION_RE.search(body)
-    if found is None:
-        return None
-    return 'data-draining="true"' in found.group(1), [(k, i) for k, i, _ in ITEM_RE.findall(found.group(2))]
 
 
 def item_text(body, kind, ident):
@@ -334,13 +533,95 @@ def item_text(body, kind, ident):
     return html.escape(short + ('…' if len(short) < len(text) else ''), quote=False)
 
 
-def render(body, items, draining):
-    lines = [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
-             f'{item_text(body, kind, ident)}</li>' for kind, ident in items]
+def check_triage(batch, old):
+    """The rigor rules of a Queue triage batch against the queue's top-level Nodes `old` before the entry."""
+    if len(batch) > TRIAGE_MAX:
+        raise ValueError(f'A Queue triage batch settles at most {TRIAGE_MAX} items, each with full care')
+    items = [b[0] for b in batch]
+    if items != [n.item for n in old[:len(items)]]:
+        raise ValueError('A Queue triage batch takes the first items of the queue, in order: expected '
+                         + ', '.join(n.ident for n in old[:len(items)]))
+    for ((kind, ident), outcome, words, evidence), node in zip(batch, old):
+        if outcome not in ('Closed', 'Developed'):
+            raise ValueError(f'Triage item {ident}: a batch only closes or develops ("<strong>Follow-up.</strong> '
+                             'Closed: ..." or "Developed ..."); an item still bearing on an open statement gets its '
+                             'own spell, so end the batch before it')
+        if outcome == 'Developed' and node.children:
+            raise ValueError(f'Triage item {ident} still has open sub-ideas, so it is not Developed')
+        if words < TRIAGE_WORDS:
+            raise ValueError(f'Triage item {ident}: {words} words; each batched item gets the care it would get '
+                             f'alone, at least {TRIAGE_WORDS} words of what was checked and why (user, 3 October 2026)')
+        if not evidence:
+            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID, an entry '
+                             'anchor link or a repository file)')
+
+
+def open_tree(body):
+    """The queue's initial contents: listed items, in record order, that no follow-up list item has Closed (and
+    not Reopened since), nor, for a sub-idea, an entry developing it Closed or Developed; a sub-idea goes under
+    its parent when that is a queued top-level item, else to the top level (when unsure, queue it).  Once a queue
+    exists, its changes are checked as transitions from HEAD (check), not recomputed from the history, whose older
+    entries used Developed and Continuing for progress."""
+    passed, closed, place = [], {}, {}
+    articles = record_articles(body)
+    for position, (tag, text) in enumerate(articles):
+        ident = re.search(r'\bid="([^"]+)"', tag)
+        place[ident.group(1) if ident else None] = position
+        for item in arrivals_of(tag, text):
+            source = audit_source(text, item) if 'data-kind="audit"' in tag else None
+            passed.append((place.get(source, position), item))
+        work = developed_by(tag, text)
+        if work and KINDS[work[0][0]].sub and work[1] in ('Closed', 'Developed'):
+            closed[work[0]] = True
+        for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
+            outcome = OUTCOME_RE.search(item)
+            if outcome and outcome.group(1) in ('Closed', 'Reopened'):
+                closed[(kind, item_id)] = outcome.group(1) == 'Closed'
+    nodes, top = [], {}
+    # stable: an audit's items take their source's place in record order
+    for _, item in sorted(passed, key=lambda pair: pair[0]):
+        if closed.get(item) or item in top:
+            continue
+        parent = record_parent(body, item) if KINDS[item[0]].sub else None
+        if parent in top:
+            top[parent].children.append(new_node(body, item))
+            continue
+        top[item] = new_node(body, item)
+        nodes.append(top[item])
+    return nodes
+
+
+def open_items(body):
+    """The top-level items open_tree would queue, in order."""
+    return [n.item for n in open_tree(body)]
+
+
+def render(body, nodes, draining):
     flag = ' data-draining="true"' if draining else ''
     return (f'<section id="lead-queue"{flag}>\n<h2>Lead and bridge queue</h2>\n<p>Passed Outside leads and Absurd '
-            'bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>\n<ol>\n'
-            + '\n'.join(lines) + '\n</ol>\n</section>\n')
+            'bridges and listed sub-ideas awaiting development, oldest first (FIFO), each sub-idea under the item '
+            'it belongs to; rules in <code>tools/lead_queue.py</code>.</p>\n<ol>\n'
+            + render_nodes(nodes) + '\n</ol>\n</section>\n')
+
+
+def transition(body, old, tag, text):
+    """The queue `old` (top-level Nodes before the entry) as the entry (tag, text) leaves it."""
+    nodes = [n.copy() for n in old]
+    work, batch = developed_by(tag, text), triaged(tag, text)
+    closed, _ = listed_closures(tag, text)
+    kept, promoted = kept_children(text), []
+    for item in closed + [b[0] for b in batch]:
+        close(nodes, item, kept, promoted)
+    if work and work[1] in ('Closed', 'Developed'):
+        close(nodes, work[0], kept, promoted)
+    elif work and work[1] == 'Continuing':
+        parent, node = locate(nodes, work[0])
+        top = parent if parent is not None else node
+        if top is not None and nodes and top is nodes[0] and spell(body, top.item) >= SPELL:
+            nodes.append(nodes.pop(0))       # the head keeps its place for up to SPELL entries, then the tail
+    nodes += promoted
+    place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
+    return nodes
 
 
 def check(head_body, body, path=None, root=None):
@@ -349,12 +630,13 @@ def check(head_body, body, path=None, root=None):
     directory its relative links resolve, and `root` the repository (default: this one)."""
     if not re.search(r'data-route-item="', body):
         return
-    now = parse(body)
+    now = parse_tree(body)
     if now is None:
         raise ValueError('The notebook needs its lead and bridge queue: run python3 tools/lead_queue.py init '
                          'NOTEBOOK.html, review the section, and commit it with this entry (AGENTS.md)')
-    draining, queue = now
-    if len(set(queue)) != len(queue):
+    draining, nodes = now
+    items = every_item(nodes)
+    if len(set(items)) != len(items):
         raise ValueError('The lead and bridge queue lists an item twice')
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
@@ -370,7 +652,10 @@ def check(head_body, body, path=None, root=None):
     problems = rule(tag, text, Where(body, path, root)) if rule else []
     if problems:
         raise ValueError(f'{work[0][1]} ({work[0][0]}) is not Developed yet: ' + '; '.join(problems))
-    before = parse(head_body) if head_body else None
+    problems = subidea_problems(text)
+    if problems:
+        raise ValueError('; '.join(problems))
+    before = parse_tree(head_body) if head_body else None
     if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
                          'against the commit before it')
@@ -378,132 +663,142 @@ def check(head_body, body, path=None, root=None):
         if work or batch:
             raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
                              'commit the section, then develop its head')
-        wanted = open_items(body)
-        missing = [i for k, i in wanted if (k, i) not in queue]
-        stale = [i for k, i in queue if (k, i) not in wanted]
-        if missing or stale:
-            raise ValueError('A new queue holds exactly the passed items not closed: missing '
-                             + (', '.join(missing) or 'none') + '; not open ' + (', '.join(stale) or 'none'))
-        if len(queue) >= CAP and not draining:
-            raise ValueError(f'The queue has {len(queue)} items, at least {CAP}: mark the section '
+        wanted = open_tree(body)
+        if shape(nodes) != shape(wanted):
+            have, want = set(items), set(every_item(wanted))
+            raise ValueError('A new queue holds exactly the listed items not closed, sub-ideas under their parents: '
+                             'missing ' + (', '.join(i for _, i in want - have) or 'none') + '; not open '
+                             + (', '.join(i for _, i in have - want) or 'none') + '; otherwise the placement differs '
+                             '(lead_queue.py init writes it)')
+        if len(nodes) >= CAP and not draining:
+            raise ValueError(f'The queue has {len(nodes)} items, at least {CAP}: mark the section '
                              'data-draining="true"')
         return
     every = {item for t, x in articles for item in arrivals_of(t, x)}
-    arrivals = arrivals_of(tag, text) + reopened_by(text)
-    unknown = [i for k, i in arrivals if (k, i) not in every]
+    unknown = [i for k, i in reopened_by(text) if (k, i) not in every]
     if unknown:
         raise ValueError('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(unknown))
     was_draining, old = before
     if batch:
         check_triage(batch, old)
     closed, developed = listed_closures(tag, text)
-    listed_developed = [i for k, i in developed if (k, i) in old]
+    listed_developed = [i for k, i in developed if (k, i) in every_item(old)]
     if listed_developed:
         raise ValueError('A follow-up list may mark a queued item Closed (it leaves the queue), Continuing or '
                          'Reopened; Developed is said by a research entry developing it: ' + ', '.join(listed_developed))
     head = old[0] if old else None
-    if work and work[0] != head:
-        raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the head '
-                         f'is {head[1] if head else "empty"}')
+    if work:
+        allowed = [head.item] + [head.children[0].item] if head and head.children else [head.item] if head else []
+        if work[0] not in allowed:
+            raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the '
+                             f'head is {head.ident if head else "empty"}' + (f' and its first sub-idea '
+                             f'{head.children[0].ident}' if head and head.children else ''))
+        if work[1] == 'Developed' and locate(old, work[0])[1].children:
+            raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
     draining_before = was_draining or len(old) >= CAP
     if draining_before and 'data-kind="research"' in tag and not work and not batch:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
-                         f'research entry must develop the head, {head[1]}, tagged data-{head[0]}="{head[1]}"')
-    expected = [i for i in old if (not work or i != work[0]) and i not in closed][len(batch):]
-    if work and work[1] == 'Continuing':
-        if spell(body, work[0]) < SPELL:
-            expected.insert(0, work[0])      # keeps the head for up to SPELL consecutive entries
-        else:
-            expected.append(work[0])
-    new = list(dict.fromkeys(i for i in arrivals if i not in expected))
-    if queue[:len(expected)] != expected or sorted(queue[len(expected):]) != sorted(set(new)):
-        raise ValueError('Queue update: keep the earlier items in order; remove the developed head if Closed or '
-                         'Developed; if Continuing, keep it at the head until its ' + str(SPELL) + 'th consecutive entry, '
-                         'then move it to the tail; append at the end exactly this entry\'s '
-                         'newly passed review items and the items it marks Reopened ('
-                         + (', '.join(i for _, i in new) or 'none') + ')')
-    should_drain = len(queue) > FLOOR if draining_before else len(queue) >= CAP
+                         f'research entry must develop the head, {head.ident}, tagged data-{head.kind}="{head.ident}", '
+                         'or its first sub-idea')
+    expected = transition(body, old, tag, text)
+    if shape(nodes) != shape(expected):
+        raise ValueError('Queue update: keep the earlier items in order; remove a Closed or Developed item (a closed '
+                         'parent\'s sub-ideas close with it unless a follow-up keeps one Continuing, which goes to the '
+                         'tail); if Continuing, keep the head until its ' + str(SPELL) + 'th consecutive entry, then '
+                         'move it, with its sub-ideas, to the tail; append this entry\'s newly listed items (sub-ideas '
+                         'under their parent) and the items it reopens. Expected: '
+                         + '; '.join(f'{i[1]}' + (' [' + ', '.join(c[1] for c in cs) + ']' if cs else '')
+                                     for i, cs in shape(expected)))
+    should_drain = draining_after(draining_before, nodes)
     if draining != should_drain:
-        raise ValueError(f'The queue has {len(queue)} items: data-draining="true" must be '
+        raise ValueError(f'The queue has {len(nodes)} top-level items: data-draining="true" must be '
                          + ('set' if should_drain else 'removed') + f' (on at {CAP} items, off at {FLOOR})')
 
 
 def head_lines(body, count=HEAD_READ):
-    found = parse(body)
+    found = parse_tree(body)
     if found is None:
         return []
-    draining, queue = found
-    section = SECTION_RE.search(body).group(2)
-    texts = {(k, i): re.sub(r'<[^>]+>', '', t).strip() for k, i, t in ITEM_RE.findall(section)}
-    state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(queue) >= CAP else 'not draining'
-    out = [f'{len(queue)} items, {state}; restoration shows the first {min(count, len(queue))}.']
-    out += [f'{n}. {texts[item]}' for n, item in enumerate(queue[:count], 1)]
+    draining, nodes = found
+    state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
+    out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
+    plain = lambda t: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', t)).strip()
+    for n, node in enumerate(nodes[:count], 1):
+        out.append(f'{n}. {plain(node.text)}')
+        out += [f'   - {plain(c.text)}' for c in node.children]
     return out
 
 
 def done(body, outcome):
-    """The notebook with the head item removed (Closed, Developed), kept at the head (Continuing, before its
-    SPELLth consecutive entry) or moved to the tail (Continuing, at it), and the draining flag recomputed from
-    the previous state.  Run it before or after appending the developing entry; spell() tells which."""
-    found = SECTION_RE.search(body)
+    """The notebook with the item the last entry develops (else the head) removed (Closed, Developed; a parent's
+    sub-ideas close with it unless the entry keeps one Continuing, which goes to the tail), or kept (Continuing:
+    a head keeps its place before its SPELLth consecutive entry, then moves with its sub-ideas to the tail), and the
+    draining flag recomputed from the previous state.  Run it before or after appending the developing entry;
+    spell() tells which.  Kept sub-ideas need the entry appended first."""
+    found = parse_tree(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
-    draining, queue = parse(body)
-    if not queue:
+    draining, nodes = found
+    if not nodes:
         raise ValueError('The queue is empty')
-    lines = LINE_RE.findall(found.group(2))
-    head = lines.pop(0)
-    if outcome == 'Continuing':
-        if spell(body, queue[0], pending=True) < SPELL:
-            lines.insert(0, head)
-        else:
-            lines.append(head)
-    elif outcome not in ('Closed', 'Developed'):
+    if outcome not in ('Closed', 'Developed', 'Continuing'):
         raise ValueError('Outcome is Closed, Developed or Continuing')
-    was = draining or len(queue) >= CAP
-    flag = (len(lines) > FLOOR) if was else (len(lines) >= CAP)
-    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
-    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
-    return body[:found.start()] + section + body[found.end():]
+    was = draining or len(nodes) >= CAP
+    articles = record_articles(body)
+    tag, text = articles[-1] if articles else ('', '')
+    work = developed_by(tag, text)
+    item = work[0] if work and locate(nodes, work[0])[1] is not None else nodes[0].item
+    if outcome == 'Continuing':
+        parent, node = locate(nodes, item)
+        top = parent if parent is not None else node
+        if top is nodes[0] and spell(body, top.item, pending=True) >= SPELL:
+            nodes.append(nodes.pop(0))
+    else:
+        promoted = []
+        close(nodes, item, kept_children(text) if work else set(), promoted)
+        nodes += promoted
+    return rewrite(body, nodes, draining_after(was, nodes))
 
 
 def settle_triage(body):
     """The notebook with the last entry's Queue triage items removed from the queue's head."""
-    found = SECTION_RE.search(body)
+    found = parse_tree(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
-    draining, queue = parse(body)
+    draining, nodes = found
+    was = draining or len(nodes) >= CAP
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
     batch = triaged(tag, text)
     if not batch:
         raise ValueError('The last entry has no Queue triage list')
-    check_triage(batch, queue)
-    lines = LINE_RE.findall(found.group(2))[len(batch):]
-    was = draining or len(queue) >= CAP
-    flag = (len(lines) > FLOOR) if was else (len(lines) >= CAP)
-    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
-    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
-    return body[:found.start()] + section + body[found.end():], len(batch)
+    check_triage(batch, nodes)
+    promoted = []
+    for item in [b[0] for b in batch]:
+        close(nodes, item, kept_children(text), promoted)
+    nodes += promoted
+    return rewrite(body, nodes, draining_after(was, nodes)), len(batch)
 
 
 def append_new(body):
-    """The notebook with the last entry's newly passed review items and its Reopened items appended at the
-    queue's tail, and the draining flag set if the queue reaches CAP."""
-    found = SECTION_RE.search(body)
+    """The notebook with the last entry's newly listed items added (sub-ideas under their parent, the rest and
+    the items it reopens at the tail), and the draining flag set if the queue reaches CAP."""
+    found = parse_tree(body)
     if found is None:
         raise ValueError('No lead and bridge queue')
-    draining, queue = parse(body)
+    draining, nodes = found
     articles = record_articles(body)
     tag, text = articles[-1] if articles else ('', '')
-    new = list(dict.fromkeys(i for i in arrivals_of(tag, text) + reopened_by(text) if i not in queue))
-    lines = LINE_RE.findall(found.group(2))
-    lines += [f'<li data-{kind}="{ident}"><a href="#{ident.rsplit(":", 1)[0]}">{ident}</a> ({kind}): '
-              f'{item_text(body, kind, ident)}</li>' for kind, ident in new]
-    flag = draining or len(lines) >= CAP
-    inner = re.sub(r'<ol>.*</ol>', lambda m: '<ol>\n' + '\n'.join(lines) + '\n</ol>', found.group(2), flags=re.S)
-    section = '<section id="lead-queue"' + (' data-draining="true"' if flag else '') + '>' + inner + '</section>'
-    return body[:found.start()] + section + body[found.end():], len(new)
+    work = developed_by(tag, text)
+    if work and work[1] in ('Closed', 'Developed') and locate(nodes, work[0])[1] is not None:
+        raise ValueError(f'Run done first: the entry {work[1].lower()} {work[0][1]}, which is still queued, and '
+                         'its new sub-ideas go where the queue is after that')
+    problems = subidea_problems(text)
+    if problems:
+        raise ValueError('; '.join(problems))
+    before = len(every_item(nodes))
+    place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
+    return rewrite(body, nodes, draining or len(nodes) >= CAP), len(every_item(nodes)) - before
 
 
 def main(argv):
@@ -535,13 +830,13 @@ def main(argv):
     if parse(body) is not None:
         print('The notebook already has a lead and bridge queue', file=sys.stderr)
         return 1
-    items = open_items(body)
+    nodes = open_tree(body)
     record = body.find('<section id="research-record">')
     if record < 0:
         print('The notebook has no Research record', file=sys.stderr)
         return 1
-    path.write_text(body[:record] + render(body, items, len(items) >= CAP) + body[record:])
-    print(f'Added the queue with {len(items)} items')
+    path.write_text(body[:record] + render(body, nodes, len(nodes) >= CAP) + body[record:])
+    print(f'Added the queue with {len(nodes)} items and {len(every_item(nodes)) - len(nodes)} sub-ideas under them')
     return 0
 
 

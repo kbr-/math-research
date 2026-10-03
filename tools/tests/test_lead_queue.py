@@ -38,12 +38,19 @@ def developing(item, outcome, body=''):
             f'<p><strong>Follow-up.</strong> {outcome}: x.</p></article>')
 
 
+def line(entry):
+    """A queue line: (kind, id), or ((kind, id), [children]) for a parent with sub-ideas."""
+    if isinstance(entry[1], list):
+        (k, i), children = entry
+        return f'<li data-{k}="{i}">{i}<ul>' + ''.join(f'<li data-{ck}="{ci}">{ci}</li>' for ck, ci in children) + '</ul></li>'
+    return f'<li data-{entry[0]}="{entry[1]}">{entry[1]}</li>'
+
+
 def notebook(articles, queue=None, draining=False):
     section = ''
     if queue is not None:
         flag = ' data-draining="true"' if draining else ''
-        section = (f'<section id="lead-queue"{flag}><ol>'
-                   + ''.join(f'<li data-{k}="{i}">{i}</li>' for k, i in queue) + '</ol></section>')
+        section = f'<section id="lead-queue"{flag}><ol>' + ''.join(line(e) for e in queue) + '</ol></section>'
     return ROUTE + section + '<section id="research-record">' + ''.join(articles) + '</section>'
 
 
@@ -55,7 +62,7 @@ class LeadQueueTest(unittest.TestCase):
     def test_open_items_and_init_order(self):
         self.assertEqual(lq.open_items(notebook([self.rev])), self.q)
         body = notebook([self.rev])
-        rendered = lq.render(body, self.q, False)
+        rendered = lq.render(body, lq.open_tree(body), False)
         self.assertLess(rendered.index('r1:1'), rendered.index('r1:2'))
 
     def test_missing_section_and_membership(self):
@@ -352,6 +359,157 @@ class LeadQueueTest(unittest.TestCase):
         body, count = lq.append_new(notebook([listing, developing(queue[0], 'Closed'), reopen], queue[1:]))
         self.assertEqual((count, lq.parse(body)[1]), (1, [queue[1], queue[0]]))
         lq.check(closed, body)
+
+    def test_subideas_nest_under_the_item_they_belong_to(self):
+        head = notebook([self.rev], self.q)
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li>'
+                             '<li data-sub="build" data-parent="lead:r1:2">b</li></ul>')
+        want = [(self.q[0], [('check', 'd:s1')]), (self.q[1], [('build', 'd:s2')])]
+        body, count = lq.append_new(notebook([self.rev, listing], self.q))
+        self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])), (2, [(i, c) for i, c in want]))
+        lq.check(head, body)
+        with self.assertRaises(ValueError):                             # flat, not nested
+            lq.check(head, notebook([self.rev, listing], self.q + [('check', 'd:s1'), ('build', 'd:s2')]))
+        nested = notebook([self.rev], want)
+        child = developing(('check', 'd:s1'), 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">e</li></ul>'
+                           ).replace('id="d"', 'id="f"')
+        body, _ = lq.append_new(notebook([self.rev, child], want))       # listed while developing a child: its parent
+        self.assertEqual(lq.shape(lq.parse_tree(body)[1])[0], (self.q[0], [('check', 'd:s1'), ('check', 'f:s1')]))
+
+    def test_a_named_parent_must_be_queued_except_in_an_audit(self):
+        head = notebook([self.rev], self.q)
+        stray = subideas('t1', [('check', 'c')]).replace('data-sub="check"', 'data-sub="check" data-parent="lead:r9:1"')
+        with self.assertRaises(ValueError):
+            lq.append_new(notebook([self.rev, stray], self.q))
+        audit = stray.replace('data-kind="task"', 'data-kind="audit"')
+        body, _ = lq.append_new(notebook([self.rev, audit], self.q))
+        self.assertEqual(lq.parse(body)[1], self.q + [('check', 't1:s1')])
+        lq.check(head, body)
+
+    def test_the_head_or_its_first_subidea_and_their_spell(self):
+        tree = [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2')]), (self.q[1], [])]
+        before = notebook([self.rev], tree)
+        with self.assertRaises(ValueError):                             # not the first sub-idea
+            lq.check(before, notebook([self.rev, developing(('check', 'k:s2'), 'Closed')],
+                                      [(self.q[0], [('check', 'k:s1')]), (self.q[1], [])]))
+        first = notebook([self.rev, developing(('check', 'k:s1'), 'Closed')], [(self.q[0], [('check', 'k:s2')]), self.q[1]])
+        lq.check(before, first)
+        self.assertEqual(lq.shape(lq.parse_tree(lq.done(notebook([self.rev, developing(('check', 'k:s1'), 'Closed')],
+                                                                     tree), 'Closed'))[1]),
+                         lq.shape(lq.parse_tree(first)[1]))
+        cont_parent, cont_child = research(self.q[0], 'Continuing'), developing(('check', 'k:s1'), 'Continuing')
+        earlier = [cont_parent, cont_child.replace('id="d"', 'id="d1"'), cont_parent]
+        self.assertEqual(lq.spell(notebook([self.rev] + earlier + [cont_child], tree), self.q[0]), 4)
+        moved = [(self.q[1], []), (self.q[0], [('check', 'k:s1'), ('check', 'k:s2')])]
+        lq.check(notebook([self.rev] + earlier, tree), notebook([self.rev] + earlier + [cont_child], moved))
+        with self.assertRaises(ValueError):                             # the fourth entry moves the parent
+            lq.check(notebook([self.rev] + earlier, tree), notebook([self.rev] + earlier + [cont_child], tree))
+
+    def test_a_parent_with_subideas_is_not_developed_and_closes_them(self):
+        tree = [(self.q[0], [('check', 'k:s1'), ('build', 'k:s2')]), (self.q[1], [])]
+        before = notebook([self.rev], tree)
+        with self.assertRaises(ValueError):
+            lq.check(before, notebook([self.rev, research(self.q[0], 'Developed')], [self.q[1]]))
+        lq.check(before, notebook([self.rev, research(self.q[0], 'Closed')], [self.q[1]]))
+        keep = ('<article data-kind="research" data-route="step" data-lead="r1:1"><ul><li data-build="k:s2">still '
+                'useful <strong>Follow-up.</strong> Continuing: on its own.</li></ul><p><strong>Follow-up.</strong> '
+                'Closed: falsified.</p></article>')
+        after = notebook([self.rev, keep], [self.q[1], ('build', 'k:s2')])
+        lq.check(before, after)
+        self.assertEqual(lq.parse(lq.done(notebook([self.rev, keep], tree), 'Closed'))[1], [self.q[1], ('build', 'k:s2')])
+
+    def test_a_reopened_subidea_returns_at_the_top_level(self):
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        closing = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="e"')
+        closed = notebook([self.rev, listing, closing], self.q)
+        # the reopening entry develops the head, yet the reopened sub-idea goes to the tail, not under it
+        reopen = ('<article id="r" data-kind="research" data-route="step" data-lead="r1:1"><ul><li data-check="d:s1">'
+                  'x <strong>Follow-up.</strong> Reopened: too early.</li></ul><p><strong>Follow-up.</strong> Continuing:'
+                  ' next.</p></article>')
+        body, count = lq.append_new(notebook([self.rev, listing, closing, reopen], self.q))
+        self.assertEqual((count, lq.shape(lq.parse_tree(body)[1])),
+                         (1, [(self.q[0], []), (self.q[1], []), (('check', 'd:s1'), [])]))
+        lq.check(closed, body)
+
+    def test_triage_and_backpressure_count_top_level_items(self):
+        rev = review('r1', [PASS] * (lq.CAP - 1))
+        queue = [('lead', f'r1:{n}') for n in range(1, lq.CAP)]
+        many = [(queue[0], [('check', f'k:s{n}') for n in range(1, 6)])] + queue[1:]
+        before = notebook([rev], many)
+        self.assertEqual(lq.parse(before)[1], queue)                     # 49 top-level items: not draining
+        careful = ' '.join(['checked'] * 85) + ' lem:x-y'
+        triage = ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul><li data-lead="r1:1">'
+                  + careful + ' <strong>Follow-up.</strong> {}: reason.</li></ul></article>')
+        with self.assertRaises(ValueError):                             # a parent with sub-ideas is not Developed
+            lq.check(before, notebook([rev, triage.format('Developed')], queue[1:]))
+        body, count = lq.settle_triage(notebook([rev, triage.format('Closed')], many))
+        self.assertEqual((count, lq.parse(body)[1]), (1, queue[1:]))     # its sub-ideas close with it
+        lq.check(before, body)
+        flat = notebook([rev], queue)                                    # 49 top-level items, no sub-ideas yet
+        listing = developing(queue[0], 'Continuing', '<h4>Sub-ideas</h4><ul>' + '<li data-sub="check">c</li>' * 5
+                             + '</ul>')
+        body, count = lq.append_new(notebook([rev, listing], queue))
+        self.assertEqual((count, lq.parse(body)[0]), (5, False))          # 54 items, 49 top-level: no draining
+        lq.check(flat, body)
+
+    def test_init_places_subideas_under_their_parents(self):
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li>'
+                             '<li data-sub="build" data-parent="lead:r9:9">b</li></ul>')
+        tree = lq.open_tree(notebook([self.rev, listing]))
+        self.assertEqual(lq.shape(tree), [(self.q[0], [('check', 'd:s1')]), (self.q[1], []), (('build', 'd:s2'), [])])
+        plain = '<article id="z" data-kind="review" data-route="step"><p>no queue work</p></article>'
+        lq.check(None, notebook([self.rev, listing, plain], lq.shape(tree)[:2] + [('build', 'd:s2')]))
+
+    def test_the_section_nests_one_level_of_checks_and_builds(self):
+        deep = ('<section id="lead-queue"><ol><li data-lead="r1:1">a<ul><li data-check="k:s1">b<ul><li data-check="k:s2">'
+                'c</li></ul></li></ul></li></ol></section>')
+        with self.assertRaises(ValueError):
+            lq.parse_tree(deep)
+        lead_child = ('<section id="lead-queue"><ol><li data-lead="r1:1">a<ul><li data-lead="r1:2">b</li></ul></li>'
+                      '</ol></section>')
+        with self.assertRaises(ValueError):
+            lq.parse_tree(lead_child)
+        lines = lq.head_lines(notebook([self.rev], [(self.q[0], [('check', 'k:s1')]), self.q[1]]))
+        self.assertEqual(lines[1:], ['1. r1:1', '   - k:s1', '2. r1:2'])
+
+    def test_malformed_subideas_are_refused(self):
+        head = notebook([self.rev], self.q)
+        for item in ('<li data-sub="chek">c</li>', '<li>c</li>', '<li data-sub="check" data-parent="r1:2">c</li>',
+                     '<li data-sub="check" data-parent="nokind:r1:2">c</li>'):
+            entry = ('<article id="m" data-kind="research" data-route="step"><h4>Sub-ideas</h4><ul>' + item
+                     + '</ul></article>')
+            with self.subTest(item=item):
+                with self.assertRaises(ValueError):
+                    lq.check(head, notebook([self.rev, entry], self.q))
+                with self.assertRaises(ValueError):
+                    lq.append_new(notebook([self.rev, entry], self.q))
+        fine = ('<article id="m" data-kind="research" data-route="step"><h4>Sub-ideas</h4><ul><li data-sub="check" '
+                'data-parent="lead:r1:2">c</li></ul></article>')
+        lq.check(head, notebook([self.rev, fine], [self.q[0], (self.q[1], [('check', 'm:s1')])]))
+
+    def test_append_runs_after_done(self):
+        listing = developing(self.q[0], 'Closed', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        body = notebook([self.rev, listing], self.q)
+        with self.assertRaises(ValueError):                             # the closed item is still queued
+            lq.append_new(body)
+        after, _ = lq.append_new(lq.done(body, 'Closed'))
+        self.assertEqual(lq.shape(lq.parse_tree(after)[1]), [(self.q[1], []), (('check', 'd:s1'), [])])
+        lq.check(notebook([self.rev], self.q), after)
+
+    def test_a_reopened_subidea_no_longer_counts_toward_its_old_parent(self):
+        listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
+        closing = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="e"')
+        reopen = ('<article id="r" data-kind="research" data-route="step"><ul><li data-check="d:s1">x <strong>'
+                  'Follow-up.</strong> Reopened: too early.</li></ul></article>')
+        again = developing(('check', 'd:s1'), 'Closed').replace('id="d"', 'id="f"')
+        body = notebook([self.rev, listing, closing, reopen, again], self.q)
+        self.assertEqual(lq.spell(body, self.q[0]), 0)                  # its own entry ends the parent's run
+        self.assertEqual(lq.spell(notebook([self.rev, listing, closing], self.q), self.q[0]), 2)
+        # entries before the reopen still count toward the parent it then had
+        later = research(self.q[0], 'Continuing')
+        self.assertEqual(lq.spell(notebook([self.rev, listing, closing, reopen, later], self.q + [('check', 'd:s1')]),
+                                  self.q[0]), 3)
+        self.assertEqual(lq.spell(notebook([self.rev, listing, closing, reopen, later], self.q), self.q[0]), 3)
 
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
