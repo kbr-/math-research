@@ -16,6 +16,7 @@ by the appends, registrations and checkpoints meant to use its result.
 """
 import json
 import re
+import shlex
 import sys
 
 # The start of a command-list segment up to the program it runs: optional parentheses, variable
@@ -77,6 +78,51 @@ def blocked(command: str):
     return None
 
 
+FOREGROUND_EXPECT, FOREGROUND_TIMEOUT = 60, 180   # seconds; compute.sh's default timeout is 180
+COMPUTE_METADATA = {"start", "phase", "report", "stop", "--status", "--help", "-h"}
+
+
+def launcher_options(segment: str):
+    """compute.sh's own options in one command segment, as {name: value}, or None if the segment runs no
+    workload through compute.sh.  Options end at `--` or at the workload's program."""
+    try:
+        words = shlex.split(segment)
+    except ValueError:
+        return None
+    at = next((i for i, w in enumerate(words) if w.endswith("compute.sh")), None)
+    if at is None or at + 1 >= len(words) or words[at + 1] in COMPUTE_METADATA:
+        return None
+    rest, options = words[at + 1:], {}
+    if rest[0] == "run":
+        rest = rest[2:]   # run SESSION
+    i = 0
+    while i < len(rest) and rest[i].startswith("-") and rest[i] != "--":
+        name, _, value = rest[i].partition("=")
+        if not value and i + 1 < len(rest) and not rest[i + 1].startswith("-"):
+            value, i = rest[i + 1], i + 1
+        options[name] = value
+        i += 1
+    return options
+
+
+def foreground_long_run(command: str, background: bool):
+    """A compute.sh run that may take long, started in the foreground (COMPUTATION_RULES.md, long runs)."""
+    if background:
+        return None
+    for segment in SEPARATOR.split(command):
+        options = launcher_options(segment)
+        if options is None:
+            continue
+        def seconds(name):
+            value = options.get(name, "")
+            return int(value) if value.isdigit() else 0
+        if seconds("--expect") > FOREGROUND_EXPECT or seconds("--timeout") > FOREGROUND_TIMEOUT:
+            return (f"a compute.sh run expected over {FOREGROUND_EXPECT} s or allowed over {FOREGROUND_TIMEOUT} s "
+                    "goes to the background (run_in_background: true); keep working meanwhile and reassess it at "
+                    "5 minutes (COMPUTATION_RULES.md, long runs; user, 3 October 2026)")
+    return None
+
+
 def main() -> int:
     try:
         payload = json.load(sys.stdin)
@@ -84,7 +130,12 @@ def main() -> int:
         return 0
     if payload.get("tool_name") != "Bash":
         return 0
-    command = (payload.get("tool_input") or {}).get("command") or ""
+    tool_input = payload.get("tool_input") or {}
+    command = tool_input.get("command") or ""
+    reason = foreground_long_run(command, bool(tool_input.get("run_in_background")))
+    if reason:
+        print(f"Refused: {reason}.", file=sys.stderr)
+        return 2
     reason = unchained_heredoc(command)
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)

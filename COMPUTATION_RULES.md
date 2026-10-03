@@ -321,7 +321,9 @@ while command records remain unfinished.
   5 minutes is a decision point, not a wait: find what it is doing (which step, memory),
   and stop it to optimize or redesign unless its measured progress justifies the rest.
   Before scaling a script past its control case, size each expensive step, such as
-  Gröbner bases or saturations on generators of the new degrees.
+  Gröbner bases or saturations on generators of the new degrees. Claude Code's PreToolUse hook
+  (`tools/hooks/guard-full-output.py`) refuses a foreground `compute.sh` run with `--expect` over
+  60 s or `--timeout` over 180 s.
 
 ## Persist computation outputs
 

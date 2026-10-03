@@ -7,8 +7,8 @@ from pathlib import Path
 HOOK = Path(__file__).resolve().parents[1] / "hooks" / "guard-full-output.py"
 
 
-def run(command, tool="Bash"):
-    payload = json.dumps({"tool_name": tool, "tool_input": {"command": command}})
+def run(command, tool="Bash", background=False):
+    payload = json.dumps({"tool_name": tool, "tool_input": {"command": command, "run_in_background": background}})
     return subprocess.run([sys.executable, str(HOOK)], input=payload, text=True,
                           capture_output=True)
 
@@ -77,6 +77,25 @@ class GuardFullOutputTest(unittest.TestCase):
                      "set -e\npython3 - <<'EOF'\nprint(1)\nEOF\ngit status",
                      "cat > f <<'EOF'\nx\nEOF"]:
             self.assertEqual(run(good).returncode, 0, good)
+
+    def test_long_compute_runs_go_to_the_background(self):
+        long_runs = ["./compute.sh run t1 --threads 1 --timeout 600 --expect 300 -- M2 --script x.m2",
+                     "./compute.sh run t1 --expect 120 -- ./k",
+                     "./compute.sh --session t1 --timeout 900 python3 x.py",
+                     "cd /repo && ./compute.sh run t1 --timeout=1500 -- ./k",
+                     "./compute.sh --threads 1 --timeout 900 python3 x.py --expect 1"]
+        for command in long_runs:
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 2)
+                self.assertIn("background", run(command).stderr)
+                self.assertEqual(run(command, background=True).returncode, 0)
+        for command in ["./compute.sh run t1 --threads 1 --timeout 120 --expect 5 -- ./k",
+                        "./compute.sh run t1 -- ./k --timeout 9999",        # the workload's own option
+                        "./compute.sh phase t1 coding",
+                        "./compute.sh --threads 1 --timeout 120 python3 tools/tests/run.py",
+                        "./compute.sh --status"]:
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0)
 
 
 if __name__ == "__main__":
