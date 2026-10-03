@@ -17,6 +17,9 @@ finish-turn.py against HEAD:
   one <li data-lead="ANCHOR:N"> block each, with the care each would get alone: at least TRIAGE_WORDS words, cited
   evidence, outcome Closed or Developed only.  Research entries may also carry Outside leads and Absurd bridges;
   their passed items join the tail like a review's.
+- A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
+  the standard sections, each <li data-source="REVIEW-ANCHOR">; all its items are queued, at their source's
+  place in record order when the queue is created.
 - An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
@@ -102,14 +105,15 @@ def review_passed(tag, text):
     """Passed items of one review or research article, as (kind, id): leads then bridges.  Research entries may
     carry their own Outside leads and Absurd bridges (user, 3 October 2026: work on a lead can generate new ones)."""
     ident = re.search(r'\bid="([^"]+)"', tag)
-    if not re.search(r'data-kind="(?:review|research)"', tag) or not ident:
+    if not re.search(r'data-kind="(?:review|research|audit)"', tag) or not ident:
         return []
+    audit = 'data-kind="audit"' in tag   # every item an audit lists is queued: "when unsure, queue it"
     out = []
     for kind, pattern in (('lead', LEADS_RE), ('bridge', BRIDGES_RE)):
         section = pattern.search(text)
         if section:
             for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
-                if TEST_PASSED.search(item):
+                if audit or TEST_PASSED.search(item):
                     out.append((kind, f'{ident.group(1)}:{n}'))
     return out
 
@@ -174,14 +178,29 @@ def open_items(body):
     """The queue's initial contents: passed items, in record order, that no follow-up list item has Closed
     (and not Reopened since).  Once a queue exists, its changes are checked as transitions from HEAD (check),
     not recomputed from the history, whose older entries used Developed and Continuing for progress."""
-    passed, closed = [], {}
-    for tag, text in record_articles(body):
-        passed += review_passed(tag, text)
+    passed, closed, place = [], {}, {}
+    articles = record_articles(body)
+    for position, (tag, text) in enumerate(articles):
+        ident = re.search(r'\bid="([^"]+)"', tag)
+        place[ident.group(1) if ident else None] = position
+        for item in review_passed(tag, text):
+            source = audit_source(text, item) if 'data-kind="audit"' in tag else None
+            passed.append((place.get(source, position), item))
         for kind, item_id, item in FOLLOWUP_ITEM.findall(text):
             outcome = OUTCOME_RE.search(item)
             if outcome and outcome.group(1) in ('Closed', 'Reopened'):
                 closed[(kind, item_id)] = outcome.group(1) == 'Closed'
-    return [p for p in passed if not closed.get(p)]
+    # stable: an audit's items take their source review's place in record order
+    return [p for _, p in sorted(passed, key=lambda pair: pair[0]) if not closed.get(p)]
+
+
+def audit_source(text, item):
+    """The data-source anchor of an audit's listed item (kind, 'ANCHOR:N'), or None."""
+    section = (LEADS_RE if item[0] == 'lead' else BRIDGES_RE).search(text)
+    tags = re.findall(r'<li\b([^>]*)>', section.group(1)) if section else []
+    n = int(item[1].rsplit(':', 1)[1])
+    found = re.search(r'data-source="([^"]+)"', tags[n - 1]) if n <= len(tags) else None
+    return found.group(1) if found else None
 
 
 def parse(body):

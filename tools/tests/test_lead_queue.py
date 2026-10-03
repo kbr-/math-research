@@ -241,6 +241,19 @@ class LeadQueueTest(unittest.TestCase):
                '</ul></article>')
         self.assertEqual(lq.open_items(notebook([self.rev, old])), self.q[1:])
 
+    def test_audit_items_are_all_queued_at_their_source_place(self):
+        later = review('r2', [PASS])
+        audit = ('<article id="a" data-kind="audit" data-route="step"><h4>Outside leads</h4><ul>'
+                 '<li data-source="r2">untested idea</li><li data-source="r1">older idea</li></ul>'
+                 '<h4>Absurd bridges</h4><ul><li data-source="r2">bridge</li></ul><ul><li data-lead="r1:2">x '
+                 '<strong>Follow-up.</strong> Reopened: closed by one objection.</li></ul></article>')
+        closing = ('<article data-kind="research" data-route="step"><ul><li data-lead="r1:2">x <strong>Follow-up.'
+                   '</strong> Closed: early.</li></ul></article>')
+        body = notebook([self.rev, later, closing, audit])
+        self.assertEqual(lq.open_items(body), [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'a:2'),
+                                               ('lead', 'r2:1'), ('lead', 'a:1'), ('bridge', 'a:1')])
+        lq.check(None, notebook([self.rev, later, closing, audit], lq.open_items(body)))
+
     def test_head_lines(self):
         lines = lq.head_lines(notebook([self.rev], self.q))
         self.assertIn('2 items', lines[0])

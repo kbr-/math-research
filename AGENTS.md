@@ -245,7 +245,9 @@ rules to growing checklists or one-off setup narratives.
   lead and one Absurd bridge its work turned up, tested and answered as in a review; a passed one joins the
   tail. An item closed too early
   is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
-  to the tail (`lead_queue.py append`). Backpressure: at 50 items the
+  to the tail (`lead_queue.py append`). A queue audit (`data-kind="audit"`, outside the review cadence) lists
+  ideas that older reviews named outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`;
+  all of them are queued ("when unsure, queue it"). Backpressure: at 50 items the
   queue drains (`data-draining="true"`), and every research entry develops the head until 20 remain;
   then work returns to the route, or to a better route the leads opened. Reviews report only follow-ups
   whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the

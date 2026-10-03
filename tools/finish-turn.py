@@ -29,7 +29,7 @@ def session_name(value):
 
 REVIEW_PERIOD = 6    # research entries allowed in a row before a route review is required
 STATUS_LIMIT = 300   # characters of status-line text, before the producer credit
-KINDS = ('research', 'review', 'formalization')
+KINDS = ('research', 'review', 'formalization', 'audit')
 
 
 def entry_tags(body, article):
@@ -45,9 +45,9 @@ def validate_route(body, article):
         return
     tags = entry_tags(body, article)
     if tags['kind'] not in KINDS:
-        raise ValueError('Tag the entry: <article ... data-kind="research|review|formalization" '
+        raise ValueError('Tag the entry: <article ... data-kind="research|review|formalization|audit" '
                          'data-route="ITEM">, ITEM a data-route-item of The remaining route or side-...')
-    if tags['kind'] == 'formalization':
+    if tags['kind'] in ('formalization', 'audit'):   # a queue audit is no research cycle and no route review
         return
     if tags['route'] not in items and not (tags['route'] or '').startswith('side-'):
         raise ValueError(f'data-route must be one of {sorted(items)} or start with side-; '
@@ -110,6 +110,18 @@ def validate_leads(body, article, close):
             if any('<strong>Answers.</strong>' not in item or not TEST_RE.search(item) for item in items):
                 raise ValueError(f'{heading} items of a research entry need "<strong>Answers.</strong>" and a '
                                  '"<strong>Test.</strong>" outcome, as in a review (AGENTS.md)')
+        return
+    if entry_tags(body, article)['kind'] == 'audit':
+        # A queue audit lists ideas that earlier reviews named outside the standard sections; each item cites
+        # its source review, whose record position it takes in the queue (tools/lead_queue.py).
+        anchors = set(re.findall(r'<article\b[^>]*\bid="([^"]+)"', body[:article]))
+        for pattern in (LEADS_RE, BRIDGES_RE):
+            found = pattern.search(body, article, close)
+            for item in re.findall(r'<li\b([^>]*)>', found.group(1)) if found else []:
+                source = re.search(r'data-source="([^"]+)"', item)
+                if source is None or source.group(1) not in anchors:
+                    raise ValueError('Each Outside lead and Absurd bridge of a queue audit names its source with '
+                                     'data-source="ANCHOR", an earlier entry of the record')
         return
     if entry_tags(body, article)['kind'] != 'review':
         return
