@@ -48,7 +48,7 @@
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (193 items; backpressure from 50 until 20). Statement 3's (K) is unchanged at seven items (<a href="#entry-2026-10-09-cube-queue-drain-review">queue drain review</a>). The triple window holds exactly for \(m\le8\) and for large \(m\) off ties of the largest modulus (<a href="#entry-2026-10-09-cube-exact-eight-review">exact eight review</a>).</p>
-<p>Next: the queue's head, the linkage lead, has two more entries (<a href="#entry-2026-10-09-cube-polar-minor-identity">polar minor identity</a>). Its attempt is \(\deg T_3\) on a random plane from all maximal minors of the \(20\times21\) Taylor matrix, with \(d=2\) (degree \(120\)) as control: self-linkage needs \(1540\). After the drain to 20 items: the triple window, through an effective, uniform \(m_0(a)\).</p>
+<p>Next: the scheduled route review. Then the head's last entry (linkage lead, <a href="#entry-2026-10-09-cube-plane-degree-test">plane degree test</a>): in one series run, the \(d=3\) degree at a second prime and plane, and \(\deg T_4\) against the reflection prediction \(6390\). After the drain to 20 items: the triple window, through an effective, uniform \(m_0(a)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -76610,6 +76610,38 @@ Hence, when \(N\) is invertible in the field, \((\Delta,\delta\Delta)=(\Delta,M_
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 45.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 52.17 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.88 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-plane-degree-test" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-27-cube-polar-effectivity-review:1" data-claims="ex:cube-four-first-step-not-self-linked">
+<h3>9 October 2026 — The degree-three first-step curve has degree 1460, not 1540: the first-step ideal is not numerically self-linked</h3>
+<p class="entry-meta">Refutation, modular (one prime, one random plane; replication pending): \(\deg T_3=1460\ne1540\). Lead-queue development (head item, entry three of four, Continuing). Plane degree test cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The linkage lead's third entry at the queue head. Numerical self-linkage of the dimension-four first-step ideal (conj:cube-four-first-step-self-link) forces \(\deg T_d=\lambda(\lambda+1)/2\): equal Betti numbers give equal degrees, and the degrees of \(T_d\) and its link by \((F,\delta F)\) add to \(\lambda(\lambda+1)\). At \(d=3\) this is \(55\cdot56/2=1540\). The <a href="#entry-2026-10-09-cube-polar-minor-identity">previous entry</a> turned this into a plane computation.</p>
+<p><strong>General statement.</strong> conj:cube-four-first-step-self-link, tested at \(d=3\) by its degree consequence.</p>
+<p><strong>Method.</strong> research/tools/bmd_plane_minors.cpp evaluates the \(N+1\) maximal minors of the \(N\times(N+1)\) Taylor matrix \([b_0,\ldots,b_N]\) on a random affine plane \(a=U_0+xU_1+yU_2\) over \(\mathbb F_{32003}\) (seeded) on a \((D+1)^2\) grid, with \(D\) the degree bound (\(77\) at \(d=2\), \(205\) at \(d=3\)), and interpolates them; no coefficient above the bound occurred. The minors share a large collision factor, which the kernel divides out by exact synthetic division by each collision form while it divides all of them: exponent \(5\) for each of the ten forms at \(d=2\) (degree \(50=65-15\)), and \(13\) at \(d=3\) (degree \(130=185-55\)). research/tools/bmd_plane_degrees.m2 saturates by the collision forms \(a_i\), \(a_i-a_j\) on the plane and reports affine lengths. By cor:cube-first-step-brill-noether the saturated ideal of all maximal minors cuts out \(V(T_d)\) on the plane; by lem:cube-polar-minor-identity, \((\Delta,M_{N-1})\) saturated is \((F,\delta F)\) off collisions. A first version left the factor to Macaulay2, which ran for ten minutes on generators of degree up to \(205\) and was stopped; with it removed, the \(d=3\) Gröbner work took 30 s.</p>
+<p><strong>Control, \(d=2\).</strong> Length \(120\), with \(120\) distinct points: the recorded degree of the first-step curve, so the minor ideal and \(T_2\) agree on the plane as schemes. The complete intersection gives \(180\) off collisions, and the link of \(T_2\) inside it \(60\). With the recorded split \(T^\vee=U\cap J\), where \(J\) is the two-component collision ideal (prop:cube-polar-prefix-collision-split), this is \(240=120+60+60\): the collision component \(J\) carries the missing \(60\).</p>
+<p><strong>Result, \(d=3\)</strong> (\(\mathbb F_{32003}\), seed \(1\); research/results/bmd-20261009-de/plane-degrees-d3-s1.txt). The stripped minors have degrees \(55\) to \(73\). The first-step curve has length \(1460\). The complete intersection off collisions has length \(2420\), so its collision part carries \(3080-2420=660\). Hence \(\deg T_3=1460\) and \(\deg T_3'=3080-1460=1620\).</p>
+<p><strong>Consequence.</strong> Equal Betti numbers would force \(\deg T_3=\deg T_3'=1540\). So \(T_3\) is not numerically self-linked, and conj:cube-four-first-step-self-link is false at \(d=3\) (ex:cube-four-first-step-not-self-linked), provided the modular value is the characteristic-zero one. Its other parts, perfection of \(T_d\) and \(F\) being a minimal generator, are not tested here. The <a href="#entry-2026-10-09-cube-queue-linkage-fifty-two">generator-count constraints</a> derived from self-linkage no longer apply.</p>
+<p><strong>Scope.</strong> The computation is exact over \(\mathbb F_{32003}\) for one random plane. The characteristic-zero degree equals it unless \(32003\) is a bad prime for this curve or the plane is special, and a second prime and plane would expose either. The replicate (\(\mathbb F_{31991}\), seed \(2\)) was refused by the run-series guard, since the degree script had already run four argument lists this cycle; it belongs in one series run, the next entry's.</p>
+<p><strong>What replaces the conjecture.</strong> Under the reflection hypothesis H of the <a href="#entry-2026-10-09-cube-polar-minor-identity">previous entry</a>, \(A(d)=\deg T_d-\deg T_d'=\beta(d-\tfrac12)(d-2)(d+1)\); the value \(A(3)=-160\) gives \(\beta=-16\). That predicts \(A(4)=-560\) and \(\deg T_4=(115\cdot116-560)/2=6390\), a sharp test of H at \(d=4\) (Taylor matrix \(28\times29\), minors of degree at most \(393\)).</p>
+<p><strong>Follow-up.</strong> Continuing (entry three of four at the head). The self-linkage form of the lead's uniform description is refuted, but the lead still bears on statement 4 through the reflection hypothesis. The next attempt, in one series run: the \(d=3\) replicate at a second prime and plane, and the \(d=4\) degree against the prediction \(6390\).</p>
+<p><strong>Remaining gap.</strong> A uniform graded description of \(T_d\); the exact value of \(\ell_0(4,21)\) in \(52,\ldots,55\); the scheme comparison at \(d=3\) beyond the \(d=2\) control.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-polar-minor-identity; cor:cube-first-step-brill-noether (statement); prop:cube-polar-prefix-collision-split (the collision component \(J\)); conj:cube-four-first-step-self-link.</p>
+<p><strong>Verification gate.</strong> The kernel checks that no interpolated coefficient exceeds the degree bound. The stripped exponents match \(\deg\Delta-\lambda\) exactly at \(d=2\) and \(3\). The \(d=2\) control reproduces the recorded degree \(120\) as a reduced scheme of \(120\) points. The deduction from the degrees uses only linkage additivity, reviewed in the previous entry. The replicate at a second prime is outstanding, hence the scope clause.</p>
+<p>Status: refutation of conj:cube-four-first-step-self-link at \(d=3\), modular, one prime and plane; lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-de">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 24.78 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 36.22 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 11.81 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 16.67 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.80 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 30.93 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.36 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
