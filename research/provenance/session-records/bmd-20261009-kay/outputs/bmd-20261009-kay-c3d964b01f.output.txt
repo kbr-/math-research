@@ -1,0 +1,57 @@
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+===== test_site.Browser.test_group_0 =====
+======================================================================
+FAIL: test_group_0 (test_site.Browser) [test_notebook_deep_links:links]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/.claude/worktrees/spin-bmd/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 6.092552809 not less than 5.0 : test_notebook_deep_links:links took 6.1 s
+
+----------------------------------------------------------------------
+Ran 1 test in 11.603s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_1 =====
+======================================================================
+FAIL: test_group_1 (test_site.Browser) [test_notebook_deep_links:growth]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/.claude/worktrees/spin-bmd/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 5.569783883 not less than 5.0 : test_notebook_deep_links:growth took 5.6 s
+
+----------------------------------------------------------------------
+Ran 1 test in 10.894s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_2 =====
+======================================================================
+FAIL: test_group_2 (test_site.Browser) [test_notebook_math:layout]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/.claude/worktrees/spin-bmd/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 6.572845698 not less than 5.0 : test_notebook_math:layout took 6.6 s
+
+----------------------------------------------------------------------
+Ran 1 test in 11.397s
+
+FAILED (failures=1)
+
+Over the 10 s limit (AGENTS.md). Slowest tests:
+   11.60 s  test_site.Browser.test_group_0
+   11.40 s  test_site.Browser.test_group_2
+   10.89 s  test_site.Browser.test_group_1
+    4.70 s  test_compute_cli.RunnerChecks.test_timeout_kills_service_and_child
+    4.21 s  test_finish_turn.FinalizationTest.test_stale_claim_view_does_not_stop_session
+    4.06 s  test_finish_turn.FinalizationTest.test_refutation_checks_do_not_count_as_cases
+    4.05 s  test_finish_turn.FinalizationTest.test_scratchpad_cap
+    4.03 s  test_finish_turn.FinalizationTest.test_scratchpad_cap
+    4.03 s  test_finish_turn.FinalizationTest.test_refutation_checks_do_not_count_as_cases
+    4.00 s  test_side_workflow.SideFinalization.test_passed_bridges_need_follow_up
+Ran 419 tests in 12.1s: FAILED (3), TOO SLOW
