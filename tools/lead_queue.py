@@ -43,10 +43,11 @@ finish-turn.py against HEAD:
 - The user may pick any item out of order (user, 3 October 2026): the developing entry's tag carries
   data-picked="user" and its text a paragraph <strong>Picked.</strong> with the user's words in quotation marks.
   A picked entry satisfies draining and neither counts toward nor ends any spell.
-- The user may also reorder the queue (user, 3 October 2026): an entry tagged data-picked="user", quoting them in its Picked. paragraph,
-  lists under <h4>Queue order</h4> one <ol> of <li data-KIND="ID"></li>, every top-level item it leaves once, in
-  the new order; sub-ideas stay under their parent.  It develops no item and settles no triage batch, and while the
-  queue drains it is an uncounted kind (an audit).  `append` applies the order after the entry's other changes.
+- The user may also reorder the queue (user, 3 October 2026): an entry tagged data-picked="user", quoting them in
+  its Picked. paragraph, lists under <h4>Queue order</h4> one <ol> of <li data-KIND="ID"></li>, every top-level
+  item it leaves once, in the new order; sub-ideas stay under their parent.  It develops no item and settles no
+  triage batch, and while the queue drains it is an uncounted kind (an audit).  `append` applies the order after
+  the entry's other changes.
 - An item that waits on the user's answer stays queued, marked data-waits: a follow-up list item for it ending
   <strong>Follow-up.</strong> Waiting: <the request> sets the mark, one ending Unblocked: <the answer> removes it.
   The head is the first item not waiting, and its first sub-idea not waiting; draining asks nothing when every
