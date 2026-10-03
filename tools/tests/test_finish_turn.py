@@ -32,6 +32,19 @@ class ChecksNote(unittest.TestCase):
 
 
 class FinalizationTest(unittest.TestCase):
+    def fixture_finisher(self):
+        """The fixture's finish-turn.py loaded in process, so its ROOT is the fixture root (as in a subprocess)
+        without paying a Python start per case."""
+        import importlib.util
+        before = list(sys.path)
+        spec = importlib.util.spec_from_file_location('ft_fixture', self.root / 'tools/finish-turn.py')
+        module = importlib.util.module_from_spec(spec)
+        try:
+            spec.loader.exec_module(module)
+        finally:
+            sys.path[:] = before
+        return module
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix='math-finish-turn-')
         self.addCleanup(self.temporary.cleanup)
@@ -210,19 +223,16 @@ sys.exit(compute.main())
                    + lead_follow),
             record(research.format(' data-lead="rev1:2"') + research.format(''), tagged),
         ]
-        checker = self.root / 'check.py'
-        checker.write_text('import importlib.util, sys\n'
-                           'spec = importlib.util.spec_from_file_location("ft", "tools/finish-turn.py")\n'
-                           'ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)\n'
-                           'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
-        for content in rejected:
-            with self.subTest(content=content[-400:]):
-                notebook.write_text(content)
-                self.assertNotEqual(self.command('check.py', marker, check=False).returncode, 0)
-        for content in accepted:
-            with self.subTest(content=content[-400:]):
-                notebook.write_text(content)
-                self.command('check.py', marker)
+        import contextlib, io
+        ft = self.fixture_finisher()   # in process: these cases exercise validate_marker only
+        with contextlib.redirect_stderr(io.StringIO()):   # the bridge reminder is expected output
+            for content in rejected:
+                with self.subTest(content=content[-400:]):
+                    with self.assertRaises(ValueError):
+                        ft.validate_marker(content, marker)
+            for content in accepted:
+                with self.subTest(content=content[-400:]):
+                    ft.validate_marker(content, marker)
 
     def test_route_review_and_status_length_are_enforced(self):
         notebook = self.root / 'notebook.html'
@@ -255,9 +265,10 @@ sys.exit(compute.main())
             record(['review:3'] + ['research'] * 10, reviewed, general=general + leads),  # count not dropped
             record(['review:3'] + ['research'] * 10, goal_review, general=general + leads),  # no Across the goal
             record(['review:3'] + ['research'] * 10, goal_review,
-                   general=general + leads + across.replace('Core', 'Maybe')),  # no decision            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
+                   general=general + leads + across.replace('Core', 'Maybe')),  # no decision
+            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),  # two leads
             record(['research'] * 6, reviewed, general=general + leads.replace(
-                '<li>e <strong>Test.</strong> Not run: needs a kernel.</li>', '')),
+                '<li>e <strong>Answers.</strong> y. <strong>Test.</strong> Not run: needs a kernel.</li>', '')),  # one bridge
             record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>d{ok}</li>', '<li>d</li>')),  # untested
             record(['research'] * 6, reviewed, general=general + leads.replace(OBSTACLE, '')),  # no obstacle
             record(['research'] * 6, reviewed, general=general + leads.replace(
@@ -279,18 +290,24 @@ sys.exit(compute.main())
             record(['research', 'review', 'research', 'research', 'research'], tagged + ' data-claims="ex:e"', status='Proof sketch.',
                    earlier_claims=['ex:a', 'ex:r', 'ex:b', 'conj:c', 'ex:d lem:z']),  # reviews neither count nor reset
         ]
-        for content in rejected:
-            with self.subTest(content=content[:160]):
-                notebook.write_text(content)
-                result = self.command('tools/finish-turn.py', 'test_turn', check=False)
-                self.assertNotEqual(result.returncode, 0)
-                self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+        # One rejection through the real command shows that a refused entry leaves the session running; the
+        # other cases exercise validate_marker only and run in process.
+        notebook.write_text(rejected[0])
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+        ft = self.fixture_finisher()
+        for number, content in enumerate(rejected[1:], 1):
+            with self.subTest(case=number):
+                with self.assertRaises(ValueError):
+                    ft.validate_marker(content, marker)
         accepted = [
             record(['research'] * 6, reviewed, general=general + leads),
             record(['review:4'] + ['research'] * 10, reviewed, general=general + leads),  # count dropped
             record(['review:3'] + ['research'] * 9, reviewed, general=general + leads),   # span not reached
             record(['review'] + ['research'] * 10, reviewed, general=general + leads),    # no earlier count
-            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads + across),            record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
+            record(['review:3'] + ['research'] * 10, goal_review, general=general + leads + across),
+            record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
             record(['research'], tagged + ' data-claims="ex:b"', status='Finite check.'),
@@ -305,13 +322,7 @@ sys.exit(compute.main())
         ]
         for content in accepted:
             with self.subTest(content=content[:160]):
-                body = self.root / 'check.py'
-                body.write_text('import importlib.util, sys\n'
-                                'spec = importlib.util.spec_from_file_location("ft", "tools/finish-turn.py")\n'
-                                'ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)\n'
-                                'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
-                notebook.write_text(content)
-                self.command('check.py', marker)
+                ft.validate_marker(content, marker)
 
     def test_scratchpad_cap(self):
         import importlib.util
