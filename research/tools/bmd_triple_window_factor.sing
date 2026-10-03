@@ -1,0 +1,24 @@
+// Factor structure of the reduced triple window's ten maximal minors (cycle bmd-20261009-ch, 9 October 2026).
+// Question (elliptic window review, next step): do the minors of U_3(x, y, 1) carry a uniform exact structure in m,
+// such as common factors beyond the excluded locus x y (x-1)(y-1)(x-y)? For m = 2..5, reads the exported ideal
+// research/results/bmd-20261009-cb/triple-minors-mM.sing and prints, for each minor, its total degree and the
+// (total degree, multiplicity) of each irreducible factor over Q, marking factors of the excluded locus.
+int m; int g; int f; string s;
+for (m = 2; m <= 5; m++) {
+  execute("< \"research/results/bmd-20261009-cb/triple-minors-m" + string(m) + ".sing\";");
+  list L; poly h;
+  print("m = " + string(m) + ": " + string(size(I)) + " minors");
+  for (g = 1; g <= size(I); g++) {
+    L = factorize(I[g]);
+    s = "  minor " + string(g) + " deg " + string(deg(I[g])) + ":";
+    for (f = 2; f <= size(L[1]); f++) {
+      h = L[1][f];
+      s = s + " (" + string(deg(h)) + "^" + string(L[2][f]);
+      if (reduce(Bad, std(h)) == 0) { s = s + " excl"; }
+      s = s + ")";
+    }
+    print(s);
+  }
+  kill r;
+}
+quit;

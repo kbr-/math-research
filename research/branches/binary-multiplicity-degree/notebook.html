@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-elliptic-window-route-review">elliptic window review</a>; seven open items). Four all-\(m\) routes failed: properness, the global count, leading asymptotics, recurrences in \(m\). The window holds exactly for \(m\le7\). Its functions live on a genus-one \((\mathbb Z/2)^3\) cover; the proved tie window's live on a rational one.</p>
-<p>Next: write the window's rank condition on the elliptic cover \(E\): the vanishing order at the point over \(T=0\) of a function with poles over \(T=\infty\). Decompose it by the group's characters, and seek a Riemann–Roch or divisor-class form. Check it against the rational tie case and the exact cases \(m\le7\).</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, triple window (<a href="#entry-2026-10-09-cube-triple-window-elliptic-form">triple window elliptic form</a>; seven open items). On the elliptic root curve the window asks for a high-order zero of an incomplete series at one point. The degree-zero criterion therefore does not apply, and single-minor zeros are not torsion. The window holds exactly for \(m\le7\).</p>
+<p>Next: the bilinear bridge of the <a href="#entry-2026-10-09-cube-window-cores-route-review">window cores review</a> (integrable lattices, not run there). The objection that killed linear recurrences does not apply to it. Bilinear Somos and Hirota sequences, for example elliptic divisibility sequences, grow like \(\exp(cm^2)\) as the minors do, and they are attached to elliptic curves. At fixed points, test whether the window's minors, or their Plücker combinations, satisfy a bilinear relation in \(m\) with constant or simple coefficients. A positive answer would give an induction in \(m\) through a nonvanishing bilinear structure.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -75246,6 +75246,78 @@ This corrected ratio equals \(-1\) on \(S\in i\pi(\pm\tfrac14+\mathbb Z)\), the 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">41.88 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-window-elliptic-form" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-09-cube-elliptic-window-route-review:1" data-claims="lem:cube-triple-window-elliptic-form check:cube-triple-window-minors-irreducible check:cube-triple-window-torsion-test">
+<h3>9 October 2026 — On the elliptic root curve the triple window asks for a high-order zero in an incomplete linear series, so the line-bundle degree-zero criterion of the elliptic pushdown does not apply; its minors are irreducible, and zeros of two minors on two curves are not small torsion</h3>
+<p class="entry-meta">Working proof of the elliptic form and its incompleteness; finite checks (irreducible minors, no small torsion). The bridge's line-bundle form fails. Triple window elliptic form cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement, triple window, developing the elliptic bridge of the <a href="#entry-2026-10-09-cube-elliptic-window-route-review">elliptic window review</a>. The missing implication: full rank of \(U_3\) for every \(m\). The bridge proposed that the window's rank condition becomes a divisor-class condition on an elliptic curve. If it did, the conjecture would become a statement about points of that curve. This cycle sets up the translation, checks whether it is a divisor-class condition, and tests the candidate torsion mechanism.</p>
+<p><strong>Rediscovery.</strong> The window's functions \(w_i^{-3}=(1+a_iT)^{-3/2}\) lie in the function field of the multiquadratic root curve \(C_h:w_i^2=1+a_iT\), the curve of lem:cube-elliptic-pushdown. Its genus \(1+(h-3)2^{h-2}\) is in the <a href="#cube-tame-chain-model">tame chain model</a>. The review's Riemann–Hurwitz count reproduced it: \(C_2\) is rational, and \(C_3=E\) is the elliptic curve of the elliptic pushdown. The review did not cite these.</p>
+<p><strong>General statement.</strong> lem:cube-triple-window-elliptic-form. Let \(m\ge2\), \(d=\binom m2\), and let \(a_1,a_2,a_3\) be distinct and nonzero. Put \(w_i=(1+a_iT)^{1/2}\) on \(E=C_3\), and let \(P_0\) be the point over \(T=0\) with all \(w_i=1\). Let \(V\) be the span of:</p>
+<ul>
+<li>the polynomials in \(T\) of degree \(&lt;d\);</li>
+<li>\(T^nw_i^{-3}\) for \(n&lt;m\);</li>
+<li>\((w_iw_j)^{-3}\).</li>
+</ul>
+<ol>
+<li>\(\dim V=d+3m+3\). The window \(W_3\) of thm:cube-level-window-avoidance (equivalently \(U_3\)) has full rank iff no nonzero \(f\in V\) vanishes at \(P_0\) to order \(\ge\dim V+2\).</li>
+<li>\(V\) is stable under \(G=(\mathbb Z/2)^3\), acting by \(w_i\mapsto\pm w_i\). Its isotypic pieces are the trivial piece (the polynomials), the \(\chi_i\)-pieces \(w_i^{-3}\cdot\mathrm{Poly}_{&lt;m}\), and the \(\chi_i\chi_j\)-lines; the \(\chi_1\chi_2\chi_3\)-piece is zero.</li>
+<li>\(V\) is not a complete linear series: there is no divisor \(D\) on \(E\) with \(V=L(D)\). So the degree-zero criterion of lem:cube-elliptic-pushdown, under which a square determinant vanishes iff a degree-zero bundle has a section, does not apply to the window.</li>
+</ol>
+<p><em>Proof.</em> (1) The spanning functions lie in distinct isotypic pieces or, within the \(\chi_i\)-piece, have distinct orders at \(T=\infty\). So they are independent, and \(\dim V=d+3m+3\). A left-kernel vector of \(W_3\) is a nonzero \(F=\sum p_iw_i^{-3}+\sum c_{ij}(w_iw_j)^{-3}\), with \(\deg p_i&lt;m\), whose Taylor coefficients at \(T^d,\ldots,T^{d+3m+4}\) vanish. Then \(f=F-G\), with \(G\) the Taylor polynomial of \(F\) of degree \(&lt;d\), lies in \(V\). It vanishes at \(P_0\) to order \(\ge d+3m+5=\dim V+2\), since \(T\) is a local parameter at the unramified point \(P_0\). And \(f\ne0\), since \(F\) has no trivial isotypic part. Conversely, let \(f\in V\) be nonzero with that vanishing, and write \(f=F+G'\) with \(G'\) its polynomial part. The coefficients of \(F\) at \(T^d,\ldots,T^{d+3m+4}\) are those of \(f\), so they vanish. If \(F=0\), then \(f=G'\) is a polynomial of degree \(&lt;d\) vanishing to order \(&gt;d\), so \(f=0\). Hence \(F\ne0\) gives a left-kernel vector.</p>
+<p>(2) By construction.</p>
+<p>(3) Suppose \(V=L(D)\). Since \(1\in V\), \(D\ge0\). The points over \(T=-1/a_i\) are ramification points; at each, a local parameter \(s\) has \(s^2\sim1+a_iT\).</p>
+<ul>
+<li>\(w_i^{-3}=w_i\,(1+a_iT)^{-2}\) has order \(1-4=-3\) at every point over \(-1/a_i\), so \(D\ge3\) at all of them.</li>
+<li>Then \(1/(1+a_iT)\), whose only poles are of order \(2\) at those points, lies in \(L(D)\) (as \(D\ge0\) elsewhere), but it is not in \(V\).</li>
+</ul>
+<p>This is a contradiction. \(\square\)</p>
+<p>Part (3) is why the dimension-three degree-zero mechanism does not carry over. There, sections of a complete series with a high-order zero exist iff a degree-zero class is trivial, a torsion condition in the moving point. Here each isotypic piece is complete for its own divisor, but the pieces' divisors differ at the ramification points, and the vanishing at \(P_0\) mixes the pieces.</p>
+<p><strong>Tests.</strong></p>
+<ul>
+<li>check:cube-triple-window-minors-irreducible. research/tools/bmd_triple_window_factor.sing factors the ten exported minors (columns in lexicographic order \(123,124,\ldots,345\)) of \(U_3(x,y,1)\) over \(\mathbb Q\) for \(m=2,\ldots,5\) (research/results/bmd-20261009-ch/triple-window-factors.txt). Every minor is two linear factors of the excluded locus \(xy(x-1)(y-1)(x-y)\) times one irreducible polynomial. The total degree is \(\tfrac32m(m+1)+\Sigma S-4\) for the column set \(S\), in all forty cases. So the minors have no common factor off the excluded locus, and no visible factor structure in \(m\).</li>
+<li>check:cube-triple-window-torsion-test. A line-bundle (divisor-class) mechanism would make the zero locus of a minor, on a fixed curve, a coset of a torsion subgroup. research/tools/bmd_triple_window_torsion_test.gp (triple-window-torsion-test.txt) fixes the cross-ratio \(\lambda\in\{3,2+i\}\) of the branch points \(-1/c_1,-1/c_2,-1,\infty\), which is a conic in \((c_1,c_2)\). It solves \(D_S=0\) on that conic for \(S=\{1,2,3\},\{3,4,5\}\) and \(m=2,3\). Each admissible zero is mapped by the elliptic logarithm of \(P_0\) on \(Y^2=(1+c_1T)(1+c_2T)(1+T)\), with origin over \(T=\infty\).
+<ul>
+<li>Among \(15,21,27,33\) zeros per case, none is torsion of order \(\le60\).</li>
+<li>The script also compares pairwise sums and differences of the lattice coordinates. That comparison assumes PARI's period bases agree across the isomorphic models, which is not ensured, so it is not relied on.</li>
+<li>The positive control, at \((c_1,c_2)=(2/7,-5/3)\), returns orders \(2\) and \(3\) for a \(2\)-torsion and a \(3\)-torsion point.</li>
+<li>This curve is not \(E=C_3\) itself but its quotient by \(\{\varepsilon_1\varepsilon_2\varepsilon_3=1\}\), with \(Y=w_1w_2w_3\): an unramified isogeny of degree \(4\) sending origin to origin. It preserves torsion and non-torsion, so the test applies to \(E\). Tolerance \(10^{-30}\) at \(120\) digits.</li>
+</ul></li>
+</ul>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The bridge's exact algebraic setting exists: the triple window is a vanishing-order condition at one point of the elliptic root curve. Its moduli are the curve and the point.</li>
+<li>The line-bundle form fails: by (3) the window is not a complete series of a line bundle on \(E\), and the torsion test finds no small torsion. A vector-bundle form is not excluded. Pushing the isotypic pieces down to \(\mathbb P^1\) equivariantly gives a rank-\(7\) bundle with Euler characteristic \(-2\) after the jet modification at \(T=0\), and full rank is equivalent to that bundle having no sections. The degree-zero argument that solved dimension three needs a complete series, and the window's series is not complete.</li>
+<li>The obstruction is precise: the incompleteness sits at the ramification points over \(-1/a_i\), where the \(\chi_i\)-piece has poles of order \(3\) and the trivial piece none. A proof would have to handle a series that is complete piece by piece but not as a whole.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>conj:cube-triple-window-full-rank for \(m\ge8\).</li>
+<li>The confluent window; the other items of (K); (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>lem:cube-elliptic-pushdown (the root curve and its degree-zero criterion);</li>
+<li>thm:cube-level-window-avoidance (the window \(W_h\));</li>
+<li>lem:cube-level-window-gegenbauer-form (the minors exported by bmd_triple_window_export.gp);</li>
+<li>the tame chain model (genus).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. A medium-effort reviewer confirmed parts (1)–(3) and the degree formula in all forty cases. It asked for: a direct form of the incompleteness argument, without the unneeded reduction to invariant divisors; the isogeny between the test curve and \(E\); withdrawal of the pairwise comparison, whose period bases are not ensured to match; the lexicographic column order; the narrower title; and "line-bundle form" in place of "divisor-class form", since a vector-bundle form is not excluded. All applied.</p>
+<p>Status: working proof (elliptic form; not a complete line-bundle series); finite checks (irreducible minors for \(m\le5\); no torsion for \(m\le3\) at two curves).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ch">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 17.56 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">12.51 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 10.18 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 42.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 8.47 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.23 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
