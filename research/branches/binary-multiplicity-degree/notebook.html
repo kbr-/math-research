@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-second-minor-congruence">second-minor congruence</a>; eight open items). The tie window's second minor is a constant multiple of \(t_{d+1}\) modulo \(t_d\) (exact, \(m\le7\)). That would give spread \(1\) for every cone \(C\)-block tie above ties over caterpillars, through the recorded coprimality of consecutive Gegenbauer coefficients.</p>
-<p>Next: prove the congruence through the window's right kernel and thm:cube-tie-window-gegenbauer, with starts \(s=d,d+1\). Then turn to joint ties above ties over caterpillars.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement on cone clusters (<a href="#entry-2026-10-09-cube-tie-window-kernel">tie window kernel</a>; eight open items). The tie window's kernel is cut out by the Gegenbauer coefficients, so above a tie over a caterpillar every \(C\)-block tie has spread at most \(1\) for every \(m\). Avoidance holds there whenever the cross leader is unique.</p>
+<p>Next: joint ties above ties over caterpillars. On a cone arc into a Gegenbauer zero, find the cherry rates at which the cross block also has two leaders. Decide by exact limit spaces whether the rank on columns \(0,\ldots,R\) can drop, and if it can, on how many conditions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -73784,6 +73784,104 @@ with a nonzero rational constant \(\kappa_m\).</p>
 <tr><td>Computation design and coding</td><td class="elapsed">27.55 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.88 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-tie-window-kernel" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-tie-window-second-minor cor:cube-tie-cblock-spread-one">
+<h3>9 October 2026 — The tie window's kernel is cut out by the Gegenbauer coefficients, so its second minor never vanishes with t_d: every cone C-block tie above a tie over a caterpillar has spread at most one</h3>
+<p class="entry-meta">Working proof for every m, by explicit kernel vectors of the tie window and Plücker duality; proves both second-minor conjectures. Tie window kernel cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement on cone clusters. conj:cube-tie-window-second-minor and its sharper form conj:cube-tie-second-minor-congruence were exact only for \(m\le7\). They are the missing implication for spread at most \(1\) at every cone \(C\)-block tie above a tie over a caterpillar (prop:cube-tie-cblock-spread). The route proposed was the window's right kernel.</p>
+<p><strong>Setting.</strong> \(\lambda=\tfrac32\), \(m\ge2\), \(d=\binom m2\). The window \(W(c)\) has columns \(k=d,\ldots,d+2m+2\) and rows:</p>
+<ul>
+<li>\(A_n\): \(b(k-n)c^{k-n}\), the coefficients of \(T^n(1+cT)^{-\lambda}\);</li>
+<li>\(B_n\): \(b(k-n)\), the coefficients of \(T^n(1+T)^{-\lambda}\), for \(0\le n&lt;m\);</li>
+<li>\(C\): \(t_k(c)\), the coefficients of \(((1+cT)(1+T))^{-\lambda}\).</li>
+</ul>
+<p>Here \(b(j)=\binom{-\lambda}j\). Put \(p_i=[T^i]((1+cT)(1+T))^m\) and \(\rho^{(j)}_k=\Gamma(k+1)/\Gamma(k+\lambda-j+1)\) as in thm:cube-tie-window-gegenbauer. For \(s\in\{d,d+1,d+2\}\) let \(x^{(s)}\in\mathbb Q(c)^{2m+3}\) have entries \(x^{(s)}_k=p_{s+2m-k}\rho^{(m)}_k\), supported on \(s\le k\le s+2m\). Put \(\tau_s=\rho^{(-m)}_st_s\).</p>
+<p><strong>General statement.</strong> thm:cube-tie-window-second-minor. Characteristic zero, every \(m\ge2\), every \(c\notin\{0,1\}\):</p>
+<ol>
+<li>The vectors \(x^{(d)},x^{(d+1)},x^{(d+2)}\) are linearly independent and annihilate every row \(A_n\), \(B_n\). Their values on \(C\) are \(\Pi_m\,c^m\tau_s\), with \(\Pi_m=\prod_{j=-m}^{m-1}(\lambda+j)\ne0\).</li>
+<li>\(\ker W(c)=\{\sum_s\alpha_sx^{(s)}:\sum_s\alpha_s\tau_s=0\}\), and the maximal minors of \(W(c)\) are, up to signs and one common factor \(\gamma(c)\), the Plücker coordinates of
+\[\Omega=\tau_d\,x^{(d+1)}\wedge x^{(d+2)}-\tau_{d+1}\,x^{(d)}\wedge x^{(d+2)}+\tau_{d+2}\,x^{(d)}\wedge x^{(d+1)}\]
+on the two dropped columns. \(\gamma(c)\) is finite and nonzero wherever \(W(c)\) has full rank, in particular for every \(c\notin\{0,1\}\).</li>
+<li>The square minor is \(L_m=\pm\gamma\,\tau_d\,\rho^{(m)}_{d+2m+1}\rho^{(m)}_{d+2m+2}\). The second minor is \(N_m=\pm\gamma\,\rho^{(m)}_{d+2m+2}\bigl(-\tau_{d+1}\rho^{(m)}_{d+2m}+\tau_d\,x^{(d+1)}_{d+2m}\bigr)\).</li>
+<li>Hence at every zero \(c_0\) of \(t_d\), \(N_m(c_0)=\mp\gamma(c_0)\rho^{(m)}_{d+2m}\rho^{(m)}_{d+2m+2}\rho^{(-m)}_{d+1}t_{d+1}(c_0)\ne0\). This proves conj:cube-tie-window-second-minor for every \(m\). Since \(\gamma=\pm L_m/(\tau_d\rho\rho)\) and \(L_m\) is \(c^a(c-1)^b\) times a constant multiple of \(t_d\), it also gives \(N_m\equiv\kappa\,c^a(c-1)^b\,t_{d+1}\pmod{t_d}\), conj:cube-tie-second-minor-congruence (with the exponents of \(L_m\)).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<p>(1), annihilation. Let \(0\le n&lt;m\) and \(j=k-n\ge0\). This holds on the window since \(k\ge d\ge m-1\ge n\) for \(m\ge2\). Then
+\[\rho^{(m)}_k\,b(j)\,c^j=(-c)^j\,\frac{k!}{j!}\cdot\frac{\Gamma(\lambda+j)}{\Gamma(\lambda)\,\Gamma(j+n+\lambda-m+1)}.\]
+Here \(k!/j!=(j+1)\cdots(j+n)\) is a polynomial of degree \(n\) in \(j\). \(\Gamma(\lambda+j)/\Gamma(j+n+\lambda-m+1)=\prod_{i=1}^{m-1-n}(j+n+\lambda-m+i)\) is a polynomial of degree \(m-1-n\); the arguments are half-integers, so there are no poles. So the \(A_n\)-row, weighted by \(\rho^{(m)}\), is \(Q_n(k)(-c)^k\) with \(\deg Q_n\le m-1\), and likewise the \(B_n\)-row is \(Q_n(k)(-1)^k\).</p>
+<p>Now \(\sum_kx^{(s)}_k\,(\text{row})_k=\sum_ip_i\,u_{s+2m-i}\) for \(u_k=\rho^{(m)}_k(\text{row})_k\). This is \(\bigl(P(E^{-1})u\bigr)_{s+2m}\), with \(E\) the shift and \(P(X)=(1+cX)^m(1+X)^m\). The operator \(1+cE^{-1}\) sends \(Q(k)(-c)^k\) to \((-c)^k(Q(k)-Q(k-1))\), lowering the degree, so \((1+cE^{-1})^m\) kills \(Q(k)(-c)^k\) for \(\deg Q&lt;m\). Likewise \((1+E^{-1})^m\) kills \(Q(k)(-1)^k\). So \(x^{(s)}\) annihilates every \(A_n\), \(B_n\).</p>
+<p>(1), the other parts. The value on \(C\) is thm:cube-tie-window-gegenbauer with start \(s\). Independence: \(x^{(s)}\) has lowest nonzero entry at column \(s\), namely \(p_{2m}\rho^{(m)}_s=c^m\rho^{(m)}_s\ne0\), and the starts differ.</p>
+<p>(2) The \(2m\) rows \(A_n,B_n\) are independent for \(c\ne0,1\), for two reasons.</p>
+<ul>
+<li>The polynomials \(Q_0,\ldots,Q_{m-1}\) are independent. As a polynomial in \(k\), \(Q_n(k)\) is a nonzero constant times \(k(k-1)\cdots(k-n+1)\prod_{i=1}^{m-1-n}(k+\lambda-m+i)\). It vanishes at \(0,\ldots,n-1\), and \(Q_n(n)=n!\prod_i(n+\lambda-m+i)\ne0\) since these factors are half-integers. So \((Q_n(k))_{0\le n,k&lt;m}\) is triangular with nonzero diagonal.</li>
+<li>The sequences \(k^a(-c)^k\), \(k^a(-1)^k\), \(a&lt;m\), are independent on any \(2m\) consecutive integers. They solve the order-\(2m\) recurrence \(P(E^{-1})u=0\), whose end coefficients are \(p_0=1\) and \(p_{2m}=c^m\ne0\), so \(2m\) consecutive values determine a solution. The solution space has dimension \(2m\), since the bases \(-c\ne-1\) are distinct and nonzero.</li>
+</ul>
+<p> So their annihilator in the column space is \(3\)-dimensional, and by (1) it is spanned by the \(x^{(s)}\). The kernel of \(W\) is the subspace of that annihilator also killing \(C\), which is the stated one.</p>
+<p>\(\tau(c)\ne0\), since \(t_d\) and \(t_{d+1}\) have no common zero in \(\mathbb C^\ast\) (lem:cube-tie-window-gegenbauer-consequences). So the kernel is \(2\)-dimensional and \(W\) has full rank, recovering cor:cube-tie-window-full-rank. In the coordinates \(\alpha\), the plane \(\alpha\cdot\tau=0\) has Plücker vector the dual of \(\tau\). Pushed forward by the injective map \(\alpha\mapsto\sum\alpha_sx^{(s)}\), it becomes \(\Omega\), which is nonzero.</p>
+<p>For a full-rank \((2m+1)\times(2m+3)\) matrix, the vector of maximal minors, indexed by the complementary pairs, is proportional with signs to the Plücker vector of the kernel. Define \(\gamma(c)\) pointwise as the ratio of these two nonzero vectors at each full-rank \(c\); it is finite and nonzero there. As a function of \(c\) it equals \(\pm L_m/(\tau_d\rho^{(m)}_{d+2m+1}\rho^{(m)}_{d+2m+2})\) by (3), and that is the form (4) uses.</p>
+<p>(3) Read off from supports. \(x^{(d)}\) vanishes at columns \(&gt;d+2m\), and \(x^{(d+1)}\) at \(d+2m+2\). The top entries are \(x^{(s)}_{s+2m}=p_0\rho^{(m)}_{s+2m}=\rho^{(m)}_{s+2m}\).</p>
+<ul>
+<li>On the pair \((d+2m+1,d+2m+2)\), only the \(x^{(d+1)}\wedge x^{(d+2)}\) term survives, giving \(\tau_d\rho^{(m)}_{d+2m+1}\rho^{(m)}_{d+2m+2}\).</li>
+<li>On \((d+2m,d+2m+2)\), the \(x^{(d)}\wedge x^{(d+1)}\) term vanishes, the \(x^{(d)}\wedge x^{(d+2)}\) term gives \(\rho^{(m)}_{d+2m}\rho^{(m)}_{d+2m+2}\), and the \(x^{(d+1)}\wedge x^{(d+2)}\) term gives \(x^{(d+1)}_{d+2m}\rho^{(m)}_{d+2m+2}\).</li>
+</ul>
+<p>Since \(x^{(d+1)}_{d+2m}=p_1\rho^{(m)}_{d+2m}=m(1+c)\rho^{(m)}_{d+2m}\), this is \(N_m=\pm\gamma\,\rho^{(m)}_{d+2m}\rho^{(m)}_{d+2m+2}\bigl(m(1+c)\tau_d-\tau_{d+1}\bigr)\).</p>
+<p>These are the column pairs of the earlier entries' definitions: \(L_m\) keeps window columns \(d,\ldots,d+2m\), and \(N_m\) keeps \(d,\ldots,d+2m-1,d+2m+1\) (bmd_tie_window_second_minor.gp).</p>
+<p>(4) At \(t_d(c_0)=0\), \(\tau_d(c_0)=0\) and \(c_0\notin\{0,1\}\) (\(t_d(0)=b(d)\ne0\), \(t_d(1)=\binom{-3}d\ne0\)). Then \(\gamma(c_0)\) is finite and nonzero by (2), \(\rho^{(\pm m)}\) are finite and nonzero at these arguments (no Gamma poles, since \(\lambda\) is a half-integer), and \(t_{d+1}(c_0)\ne0\). The congruence follows by reducing (3) modulo \(t_d\), with \(\gamma=\pm L_m/(\tau_d\rho^{(m)}_{d+2m+1}\rho^{(m)}_{d+2m+2})\). Here \(L_m=c^a(c-1)^b\cdot\mathrm{const}\cdot t_d\) for every \(m\) is the Taylor-set step of thm:cube-tie-taylor-dominance (via lem:cube-tie-window-gegenbauer-consequences and thm:cube-tie-window-gegenbauer). So \(\gamma\) is a constant times \(c^a(c-1)^b\), and \(N_m\equiv\mp\gamma\,\rho\rho\,\rho^{(-m)}_{d+1}t_{d+1}\pmod{t_d}\). The nonvanishing of \(N_m(c_0)\) does not use this factorization. \(\square\)</p>
+<p><strong>Second statement.</strong> cor:cube-tie-cblock-spread-one. Characteristic zero, every \(m\ge2\). Along every arc of a cluster normalized as a tie over a caterpillar of \(m\) roots, the leading \(C\)-block vector has spread at most \(1\) at every rate. Hence, in the cherry-step setting, a unique leading cross coordinate gives avoidance of \(K\) (part (5) of prop:cube-cblock-spread-bound). The only remaining case above these clusters is a joint tie with \(\operatorname{spread}(U)\ge1\).</p>
+<p><em>Proof.</em> prop:cube-tie-cblock-spread gives \(\operatorname{spread}(E)\le\omega(c_0)\). By the theorem, \(\omega(c_0)=0\) off the zeros of \(t_d\) and \(\omega(c_0)=1\) at them. \(\square\)</p>
+<p><strong>Checks.</strong> research/tools/bmd_tie_window_kernel.gp (research/results/bmd-20261009-bv/tie-window-kernel.txt) verifies parts (1) and the tie-row identity numerically for \(m=2,\ldots,7\), in Gamma-function floating point with tolerance \(10^{-40}\). The exact computations of the two previous entries (tie-window-second-minor.txt, second-minor-mod.txt) agree with parts (3) and (4) for \(m\le7\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>Above ties over caterpillars, the \(C\)-block side of the cherry step is settled for every \(m\): spread at most \(1\), so avoidance whenever the cross leader is unique.</li>
+<li>The \(C\)-block side of the core statement now reduces to joint ties there, and to the other cone cluster types, cherries and three-root levels over caterpillars.</li>
+<li>The kernel description also re-proves cor:cube-tie-window-full-rank and explains all window minors through one Plücker vector \(\Omega\).</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Joint ties (\(\operatorname{spread}(E)=1\), \(\operatorname{spread}(U)\ge1\)) above ties over caterpillars.</li>
+<li>The \(C\)-block above cherries and three-root levels (cone types (A), (C)).</li>
+<li>(F) on cone clusters; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>thm:cube-tie-window-gegenbauer (statement, the tie-row identity);</li>
+<li>lem:cube-tie-window-gegenbauer-consequences (no common zero of \(t_d\), \(t_{d+1}\));</li>
+<li>cor:cube-tie-window-full-rank;</li>
+<li>prop:cube-tie-cblock-spread;</li>
+<li>prop:cube-cblock-spread-bound (5).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked by hand:</p>
+<ul>
+<li>the Gamma ratio and degree count, and the range \(k\ge n\);</li>
+<li>the annihilation by \(P(E^{-1})\) within the window;</li>
+<li>the independence of the \(x^{(s)}\);</li>
+<li>the tie-row value;</li>
+<li>both Plücker read-offs, with signs inside \(\Omega\).</li>
+</ul>
+<p>Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the independence of the \(A_n\) rows through the triangular \(Q_n\);</li>
+<li>the injectivity of restriction through the order-\(2m\) recurrence (using \(c\ne0\));</li>
+<li>the pointwise definition of \(\gamma\);</li>
+<li>the source of the factorization of \(L_m\) for every \(m\);</li>
+<li>the explicit form of \(N_m\).</li>
+</ul>
+<p>The reviewer was stopped early, at my request, before checking the column conventions and the definition of \(\omega\). I checked both against bmd_tie_window_second_minor.gp and prop:cube-tie-cblock-spread: \(L_m\) drops \(d+2m+1,d+2m+2\), \(N_m\) drops \(d+2m,d+2m+2\), and \(\omega\) is the weight of the window's pivot set. Unused hypotheses: none.</p>
+<p>Status: working proof (every \(m\)); proves conj:cube-tie-window-second-minor and conj:cube-tie-second-minor-congruence.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 38.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 20.73 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
