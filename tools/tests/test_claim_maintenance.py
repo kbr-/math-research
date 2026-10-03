@@ -102,6 +102,38 @@ class MaintenanceTests(unittest.TestCase):
         self.assertFalse(self.check(before,self.data,['research/source.md'])['passed'])
         self.assertTrue(self.check(before,self.data)['passed']) # old stale backlog remains reported
 
+    NOTEBOOK=('<section id="research-record"><h2>Record</h2>\n'
+              '<article id="a1"><h3>One</h3><h4 id="a1-part">Part</h4><p>x \\(a&lt;b\\)</p></article>\n'
+              '<article id="a2"><h3>Two</h3><p>y</p></article>\n</section>\n')
+
+    def test_article_excerpts_skip_the_parse_and_match_it(self):
+        path=self.root/'research/nb.html';path.write_text(self.NOTEBOOK)
+        spec=importlib.util.spec_from_file_location('ne',TOOLS/'notebook-excerpt.py')
+        ne=importlib.util.module_from_spec(spec);spec.loader.exec_module(ne)
+        parsed=ne.Notebook(self.NOTEBOOK);evidence=Evidence(self.root)
+        for anchor in ('a1','a2'):
+            self.assertEqual(evidence.article(path,anchor),parsed.excerpt(anchor))
+        self.assertEqual(evidence.notebooks,{})                         # no whole-notebook parse
+        self.assertIsNone(evidence.article(path,'a1-part'))           # an inner anchor is parsed
+        self.assertEqual(evidence.excerpt(path,'a1-part'),parsed.excerpt('a1-part'))
+
+    def test_only_articles_changed_since_the_base_are_rehashed(self):
+        import subprocess
+        from claim_maintenance import UnchangedArticles
+        git=lambda *a:subprocess.run(['git','-c','user.name=t','-c','user.email=t@t',*a],cwd=self.root,
+                                     check=True,capture_output=True)
+        path=self.root/'research/nb.html';path.write_text(self.NOTEBOOK)
+        git('init','-q');git('add','.');git('commit','-q','-m','base')
+        path.write_text(self.NOTEBOOK.replace('<p>y</p>','<p>y, corrected</p>').replace(
+            '</section>','<article id="a3"><p>new</p></article>\n</section>'))
+        unchanged=UnchangedArticles(self.root,'HEAD')
+        self.assertTrue(unchanged(path,'a1'))
+        self.assertTrue(unchanged(path,'a1-part'))                     # inside an unchanged article
+        self.assertFalse(unchanged(path,'a2'))                         # changed
+        self.assertFalse(unchanged(path,'a3'))                         # new
+        self.assertFalse(unchanged(path,None))
+        self.assertFalse(unchanged(self.root/'research/source.md','a1'))
+
     def test_parallel_complete_additions_keep_the_contract(self):
         spec=importlib.util.spec_from_file_location('merge',TOOLS/'merge-formalization-appends.py')
         module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

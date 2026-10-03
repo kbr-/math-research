@@ -1,4 +1,5 @@
 """Changed-claim completeness gate, separate from the historical curation backlog."""
+import re
 import subprocess
 from collections import defaultdict
 from pathlib import Path
@@ -19,7 +20,31 @@ def baseline(revision='HEAD', root=ROOT):
     return commit,parse_json(subprocess.check_output(['git','show',commit+':'+path],cwd=root,text=True))
 
 
-def maintenance(before, after, root=ROOT, changed_paths=()):
+class UnchangedArticles:
+    """Whether a cited anchor lies in a notebook article byte-identical to its text at the base revision. Appending
+    one entry changes the notebook file, and re-hashing every article cited from it found nothing new while it took
+    about a second (3 October 2026): only articles whose text changed since the base can change a hash in this diff.
+    An anchor inside an article (a heading or claim anchor) excerpts no further than that article."""
+
+    def __init__(self, root, base):
+        self.root, self.base, self.texts = root, base, {}
+
+    def __call__(self, path, anchor):
+        if path.suffix != '.html' or not anchor:
+            return False
+        if path not in self.texts:
+            shown = subprocess.run(['git', 'show', f'{self.base}:{path.relative_to(self.root).as_posix()}'],
+                                   cwd=self.root, capture_output=True, text=True)
+            then = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(shown.stdout)} if shown.returncode == 0 else {}
+            now = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(path.read_text())}
+            inner = {name: ident for ident, text in now.items() for name in re.findall(r'\bid="([^"]+)"', text)}
+            self.texts[path] = then, now, inner
+        then, now, inner = self.texts[path]
+        ident = inner.get(anchor)
+        return ident is not None and ident in then and then[ident] == now[ident]
+
+
+def maintenance(before, after, root=ROOT, changed_paths=(), base=None):
     old={c['id']:c for c in before['claims']};new={c['id']:c for c in after['claims']}
     required=defaultdict(set);reasons=defaultdict(list);errors=[]
     def need(label,fields,reason):
@@ -60,6 +85,7 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
                 if label in old and old[label].get('reviews',{}).get('significance')==new[label].get('reviews',{}).get('significance'):
                     errors.append(f'{label}: explicitly refresh significance review for {key}')
     evidence=Evidence(root);changed_paths=set(changed_paths)
+    unchanged=UnchangedArticles(root,base) if base and base!='EMPTY' else (lambda path,anchor:False)
     # Changed cited sources matter even if someone forgot to edit the index.
     # Corpus-wide negative mapping census changes stay visible in backlog instead.
     for label,claim in new.items():
@@ -67,6 +93,7 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
             for item in review['evidence']:
                 target=evidence.local(item['target'])
                 if not target or str(target[0].relative_to(root)) not in changed_paths:continue
+                if unchanged(*target):continue   # its article is as it was at the base
                 try:current=evidence.sha256(item['target'],item.get('normalization'))
                 except (OSError,ValueError):current='missing'
                 if current!=item['sha256']:need(label,[field],'cited evidence changed')
@@ -106,7 +133,7 @@ def check_revision(after, revision='HEAD', root=ROOT):
         path='research/claims/index.json'
         tracked=subprocess.check_output(['git','ls-tree','--name-only',commit,'--',path],cwd=root,text=True).strip()
         before=after if tracked and path not in changed else baseline(commit,root)[1]
-    result=maintenance(before,after,root,changed)
+    result=maintenance(before,after,root,changed,base=commit)
     result['base_revision']=commit
     from notebooks import paths
     registrations=[]

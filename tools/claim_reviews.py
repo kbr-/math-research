@@ -58,12 +58,36 @@ class Evidence:
     def __init__(self, root=ROOT):
         from notebooks import catalogue
         self.root, self.cache, self.notebooks, self.items, self.resolved = root, {}, {}, catalogue(root), {}
+        self.articles = {}
 
     def local(self, target):
         """local_target, resolved once per target."""
         if target not in self.resolved:
             self.resolved[target] = local_target(target, self.root, self.items)
         return self.resolved[target]
+
+    ARTICLE = re.compile(r'<article\b[^>]*\bid="([^"]+)"[^>]*>.*?</article>', re.S)
+
+    def article(self, path, anchor):
+        """The excerpt of an article anchor without parsing the whole notebook: notebook-excerpt's excerpt of an
+        <article id> is its source text plus a newline (all 2097 articles of the four notebooks, 3 October 2026),
+        and parsing a 13 MB notebook took 0.9 s per check. None for other anchors, or text with a nested article."""
+        if path not in self.articles:
+            self.articles[path] = {m.group(1): m.group(0) for m in self.ARTICLE.finditer(path.read_text())}
+        text = self.articles[path].get(anchor)
+        return None if text is None or text.count('<article') != 1 else text + '\n'
+
+    def excerpt(self, path, anchor):
+        """notebook-excerpt's excerpt of an anchor; the whole notebook is parsed only for non-article anchors."""
+        article = self.article(path, anchor)
+        if article is not None:
+            return article
+        if path not in self.notebooks:
+            spec = importlib.util.spec_from_file_location('notebook_excerpt', ROOT/'tools/notebook-excerpt.py')
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            self.notebooks[path] = module.Notebook(path.read_text())
+        return self.notebooks[path].excerpt(anchor)
 
     def sha256(self, target, normalization=None):
         key = (target, normalization)
@@ -76,12 +100,7 @@ class Evidence:
             return None
         path, anchor = local
         if path.suffix == '.html' and anchor:
-            if path not in self.notebooks:
-                spec = importlib.util.spec_from_file_location('notebook_excerpt', ROOT/'tools/notebook-excerpt.py')
-                module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
-                self.notebooks[path] = module.Notebook(path.read_text())
-            content = self.notebooks[path].excerpt(anchor).encode()
+            content = self.excerpt(path, anchor).encode()
         else:
             content = path.read_bytes()
         if normalization is not None:
@@ -98,7 +117,7 @@ class Evidence:
             path, anchor = local
             if path.suffix == '.html' and anchor:
                 self.sha256(target)  # Load and validate the raw excerpt first.
-                excerpt = self.notebooks[path].excerpt(anchor)
+                excerpt = self.excerpt(path, anchor)
                 # Legacy sources need no decoration normalization. In particular,
                 # do not parse their historical free-form HTML more strictly than
                 # the existing excerpt reader just to refresh a metadata review.
@@ -107,8 +126,8 @@ class Evidence:
                     r'<(?:div|span)\b[^>]*\bdata-generated=[\"\']'
                     r'finish-turn-(?:producer|timing)-v1[\"\']', excerpt)
                 if generated:
-                    normalization = (ARTICLE_NORMALIZATION
-                                     if self.notebooks[path].anchor(anchor)['tag'] == 'article'
+                    normalization = (ARTICLE_NORMALIZATION if self.article(path, anchor) is not None
+                                     or self.notebooks[path].anchor(anchor)['tag'] == 'article'
                                      else FRAGMENT_NORMALIZATION)
         item = {'target': target, 'sha256': self.sha256(target, normalization)}
         if normalization is not None:
