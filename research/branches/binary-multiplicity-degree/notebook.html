@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (190 items; backpressure from 50 until 20). Statement 3's (K) is unchanged at seven items (<a href="#entry-2026-10-09-cube-queue-drain-review">queue drain review</a>). The triple window has full rank for large \(m\) off ties of the largest modulus. On a test slice it shows no degeneration across the tie transition, and its leading term is within \(10\%\) from \(m=7\).</p>
-<p>Next: the scheduled route review; then develop the queue's head, one item per research entry, stating its Follow-up outcome and updating the queue with <code>tools/lead_queue.py done</code>, until 20 items remain. Then the triple window, through an effective, uniform \(m_0(a)\).</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (191 items; backpressure from 50 until 20). Statement 3's (K) is unchanged at seven items (<a href="#entry-2026-10-09-cube-queue-drain-review">queue drain review</a>). The triple window has full rank for large \(m\) off ties of the largest modulus. It holds exactly for \(m\le8\) (<a href="#entry-2026-10-09-cube-exact-eight-review">exact eight review</a>).</p>
+<p>Next: develop the queue's head, one item per research entry, stating its Follow-up outcome and updating the queue with <code>tools/lead_queue.py done</code>, until 20 items remain. Then the triple window, through an effective, uniform \(m_0(a)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -286,6 +286,7 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <li data-lead="entry-2026-10-09-cube-hermite-pade-route-review:1"><a href="#entry-2026-10-09-cube-hermite-pade-route-review">entry-2026-10-09-cube-hermite-pade-route-review:1</a> (lead): The Padé table's block structure (Gragg 1972; for Hermite–Padé, Mahler's perfect systems and de Bruin's block structure). It targets conj:cube-triple-window-full-rank. Zero sets of the table should be unions of simplices…</li>
 <li data-lead="entry-2026-10-09-cube-queue-drain-review:1"><a href="#entry-2026-10-09-cube-queue-drain-review">entry-2026-10-09-cube-queue-drain-review:1</a> (lead): Uniform asymptotics through coalescing exponentials (Chester–Friedman–Ursell; Olver, Asymptotics and Special Functions, Ch. 9): when two exponential terms of a sum reach equal modulus, an expansion uniform in the gap rep…</li>
 <li data-lead="entry-2026-10-09-cube-queue-drain-review:2"><a href="#entry-2026-10-09-cube-queue-drain-review">entry-2026-10-09-cube-queue-drain-review:2</a> (lead): Effective error bounds for singularity analysis (Flajolet–Sedgewick, Analytic Combinatorics, VI.10, explicit remainders; for products, Cauchy estimates on the disc of Step 1). It targets an explicit \(m_0(a)\) small enou…</li>
+<li data-lead="entry-2026-10-09-cube-exact-eight-review:1"><a href="#entry-2026-10-09-cube-exact-eight-review">entry-2026-10-09-cube-exact-eight-review:1</a> (lead): msolve's exact elimination (Berthomieu–Eder–Safey El Din, ISSAC 2021): it targets the finite range \(m\le m_0\) by exact Gröbner bases with the Rabinowitsch generator. It breaks if the cost grows too fast in \(m\). Answe…</li>
 </ol>
 </section>
 <section id="research-record">
@@ -76391,6 +76392,66 @@ Here the left side of part 1 means the logarithm of the ratio of ratios, which i
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 5.39 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 21.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.29 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-exact-eight-review" data-kind="review" data-scope="goal" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-open-items="7" data-claims="none" data-claim-note="Goal-level route review during the lead-queue drain; its tests are recorded here and register no claims.">
+<h3>9 October 2026 — Goal-level review: the triple window holds exactly at m = 8 in seconds, and its large-m threshold grows only slowly toward a tie</h3>
+<p class="entry-meta">Goal-level review during the queue drain (open items stalled at seven). Tests: exact elimination at m = 8; the large-m threshold near a tie. Decision: Core, the queue drain, then the triple window. Exact eight review cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> conj:cube-offcollision-contact-bound, (K), with (B), for statement 3. Within (K), every boundary limit of the geometric cone avoids \(\overline K\). The window cores are its oldest open items.</p>
+<p><strong>What the main goal needs.</strong> Statements 2, 3 and 4. For statement 3: (K) and (B).</p>
+<p>Since the <a href="#entry-2026-10-09-cube-queue-drain-review">queue drain review</a>, the research entries developed six queue items from the record: four Developed, two Closed. Each is listed under the follow-ups below. No route result changed.</p>
+<p><strong>Falsification attempt and tests.</strong> research/tools/bmd_route_review32_tests.gp (research/results/bmd-20261009-cy/route-review32-tests.txt), and msolve on the recorded \(m=8\) input.</p>
+<ol>
+<li><em>Exact elimination at \(m=8\).</em> With the inputs written by bmd_triple_window_export.gp (research/results/bmd-20261009-cb/triple-minors-m8.ms, with the Rabinowitsch generator for \(xy(x-1)(y-1)(x-y)\)), msolve over \(\mathbb Q\) returns the reduced Gröbner basis \(\{1\}\) in \(11\) seconds (research/results/bmd-20261009-cy/triple-gb-m8.txt). So the triple window has full rank at every admissible point for \(m=8\) as well. The exact range is now \(2\le m\le8\).</li>
+<li><em>The large-\(m\) threshold near a tie.</em> At \(a=(1,re^{1.3i},0.4e^{2.5i})\), the scaled separation of prop:cube-triple-window-large-m comes within \(10\%\) of its limit from \(m=5\) (\(r=0.5\)), \(m=8\) (\(r=0.9\)) and \(m=12\) (\(r=0.97\)). The threshold grows as the tie is approached, but slowly.</li>
+</ol>
+<p>No counterexample. The two ranges are close to meeting: the exact one now reaches \(m=8\), and the asymptotic one starts near \(m=5\) to \(12\) for moduli ratios up to \(0.97\).</p>
+<p><strong>Assessment.</strong> The triple window's two ends are approaching each other: exact elimination stays cheap (seconds at \(m=8\)), and the large-\(m\) theorem becomes accurate early except near ties. A proof could combine an effective, tie-uniform \(m_0\) with exact elimination up to it. The pieces are not proved: the effective constants, and uniformity at the tie, where the queued coalescing-exponential lead applies. The (K) count is unchanged, so this review is goal-level. The queue rule keeps the next cycles on the queue.</p>
+<h4>Across the goal</h4>
+<ul>
+<li>Statement 1: proved.</li>
+<li>Statement 2: no cycles; no queue item in this period bore on it.</li>
+<li>Statement 3: (K) has seven items; the triple window is now exact for \(m\le8\). (B) has had no cycles.</li>
+<li>Statement 4: unchanged; four queue items in this period were found developed into its dimension-four and degree-two results.</li>
+</ul>
+<h4>Obstacle</h4>
+<p>The triple window's full rank for every \(m\). It is exact for \(m\le8\), and asymptotic for \(m\ge m_0(a)\) at points with a unique largest modulus, where \(m_0\) grows as two moduli approach the maximum. Missing: an explicit \(m_0\) bound, uniform up to the balanced points, below the reach of exact elimination.</p>
+<h4>Outside leads</h4>
+<ul>
+<li>msolve's exact elimination (Berthomieu–Eder–Safey El Din, ISSAC 2021): it targets the finite range \(m\le m_0\) by exact Gröbner bases with the Rabinowitsch generator. It breaks if the cost grows too fast in \(m\). <strong>Answers.</strong> With an explicit \(m_0\), the finite range closes by computation. <strong>Test.</strong> Passed: \(m=8\) gives \(\{1\}\) in \(11\) seconds, against one or two seconds at \(m=6,7\).</li>
+<li>Olver's explicit error bounds for asymptotic expansions (Olver, <em>Asymptotics and Special Functions</em>, Ch. 4, §5–§7). It targets an explicit \(m_0(a)\). It breaks where the bounds exceed the exact range. <strong>Answers.</strong> An explicit \(m_0\), which exact elimination would then meet. <strong>Test.</strong> Falsified as a stand-alone route near ties. At \(r=0.97\) the leading term is within \(10\%\) only from \(m=12\), beyond the exact range \(m\le8\), and rigorous error bounds are larger than the observed error. Away from ties (\(r\le0.9\)) the ranges meet.</li>
+<li>Hurwitz's theorem (a locally uniform limit of nonvanishing analytic functions is nonvanishing or identically zero). It targets uniformity in \(a\): if the normalized minors converge locally uniformly in the moduli to a nonvanishing limit, rank three holds for large \(m\) on whole compact regions, not point by point. <strong>Answers.</strong> Compact-uniform \(m_0\) away from the balanced locus. <strong>Test.</strong> Not run: it needs the normalized minors' limit as an analytic function of \((c_1,c_2)\) near ties, which is the queued coalescing-exponential lead's object.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li>Validated numerics and computer-assisted proof (Tucker's proof for the Lorenz attractor; ball arithmetic). Translation: cover the compactified moduli space for each \(m\) up to \(m_0\) by boxes, and certify a nonzero minor on each box with interval enclosures. <strong>Answers.</strong> An alternative to exact elimination for the finite range, scaling to larger \(m\) if the Gröbner cost grows. <strong>Test.</strong> Not run: no ball-arithmetic library is installed (FLINT 2.8 lacks arb), and exact elimination is still cheap at \(m=8\).</li>
+<li>The argument principle as a zero counter (complex analysis applied to engineering stability: Nyquist's criterion). Translation: for a fixed \(c_2\), count the zeros in \(c_1\) of one minor inside a contour by its winding number, and certify that none is a common zero by a second minor's winding on small circles. <strong>Answers.</strong> A one-variable-at-a-time certificate, as in Nyquist plots, for the finite range. <strong>Test.</strong> Not run: Gröbner elimination answers the same question exactly at the sizes reached.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">Developed in <a href="#entry-2026-10-09-cube-queue-kapranov">Kapranov</a>: the boundary setting of the contact route. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">Closed in <a href="#entry-2026-10-09-cube-queue-bgg">BGG</a>: no reduction over the direct computation. <strong>Follow-up.</strong> Closed: no gain.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">Developed in <a href="#entry-2026-10-09-cube-queue-ore-monic">Ore monic division</a>: the bounded-kernel lemma and the effective cutoff. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">Developed in <a href="#entry-2026-10-09-cube-queue-kapranov-collision">Kapranov collision</a>: prefix stabilization and the collision split. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">Closed in <a href="#entry-2026-10-09-cube-queue-bgg-graded">graded BGG</a>, with the first BGG lead. <strong>Follow-up.</strong> Closed: no gain.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">Developed in <a href="#entry-2026-10-09-cube-queue-linkage">linkage</a>: the polar-colon formula and the self-link conjecture. <strong>Follow-up.</strong> Developed.</li>
+</ul>
+<p><strong>Next step.</strong> Route item cube-odd-characteristic. The queue drains (backpressure), one head item per research entry, until 20 items remain. The msolve lead passed here and joins its tail. After the drain: the triple window, through an explicit tie-uniform \(m_0\) and exact elimination up to it.</p>
+<p><strong>Decision.</strong> Core: the lead queue's drain, which the backpressure rule requires, then statement 3's triple window. The confluent window, cone types with cherries, stacked levels, non-separated points, the Hankel-moduli ray and (B) remain listed.</p>
+<p><strong>Verification gate.</strong> No new claim. The \(m=8\) result is an exact Gröbner basis over \(\mathbb Q\) on inputs from the reviewed export script, the same method as \(m=6,7\). A later research entry will extend the scope of thm:cube-triple-window-small and check:cube-triple-window-six-seven. Dependencies re-read: prop:cube-triple-window-large-m and the six research entries since the queue drain review.</p>
+<p>Status: goal-level route review.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-cy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 47.18 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 21.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.63 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
