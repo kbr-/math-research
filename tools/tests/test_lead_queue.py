@@ -315,6 +315,21 @@ class LeadQueueTest(unittest.TestCase):
         listing = subideas('t1', [('check', 'c')])
         self.assertEqual(lq.open_items(notebook([self.rev, listing])), self.q + [('check', 't1:s1')])
 
+    def test_a_side_notebooks_links_resolve_from_the_repository_root(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research/results').mkdir(parents=True)
+            (root / 'research/results/out.txt').write_text('answer')
+            nb = root / 'research/branches/side/notebook.html'
+            nb.parent.mkdir(parents=True)
+            listing = subideas('t1', [('check', 'c')])
+            head = notebook([listing], [('check', 't1:s1')])
+            answered = lambda link: notebook([listing, developing(('check', 't1:s1'), 'Developed',
+                                                                  f'<a href="{link}">out</a>')], [])
+            lq.check(head, answered('research/results/out.txt'), nb, root)
+            with self.assertRaisesRegex(ValueError, 'do not resolve'):       # resolves only from its own folder
+                lq.check(head, answered('../../results/out.txt'), nb, root)
+
     def test_check_and_build_need_resolving_evidence_to_be_developed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

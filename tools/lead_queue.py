@@ -110,13 +110,14 @@ class Kind:
 
 
 class Where:
-    """What an entry's links resolve against: the notebook's text (anchors), the notebook's directory
-    (relative paths; None when the notebook's path is not known) and the repository root (claim registry)."""
+    """What an entry's links resolve against: the notebook's text (anchors) and the repository root (claim
+    registry, and relative paths, which notebooks write repository-relative, side notebooks too; `base` is None
+    when the notebook's path is not known)."""
 
     def __init__(self, body, path=None, root=None):
         self.body, self.root = body, Path(root) if root else ROOT
         self.path = Path(path).resolve() if path else None
-        self.base = self.path.parent if path else None
+        self.base = self.root.resolve() if path else None
         self._claims = None
 
     def anchors(self):
