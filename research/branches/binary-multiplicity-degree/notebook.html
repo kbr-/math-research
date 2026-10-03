@@ -47,13 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-cblock-spread-bound">C-block spread bound</a>; eight open items). The cherry steps' uniqueness hypothesis is replaced:</p>
-<ul>
-<li>uniqueness is automatic at fixed clusters;</li>
-<li>on moving arcs it fails exactly where the cluster's pivot set jumps in the limit;</li>
-<li>what the steps use, \(\operatorname{spread}(E)\), is at most the flow order \(j_F\) of the Taylor cofactor at a distinct-root limit, which is at most \(1\) above four roots.</li>
-</ul>
-<p>Next: the largest \(j_F\) at distinct roots for \(M=5\). Compute the common distinct-root zeros of \(F\) and \(DF\) exactly. If there are none, \(\operatorname{spread}(E)\le1\) above five roots too; look for the structure (a product formula like the four-root pairings) that would give it for every \(M\). If there are some, test whether \(E\) actually has weight \(2\) on arcs into them, since the spread is only an upper bound.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-leading-wronskian-sum">leading Wronskian sum</a>; eight open items). At \(M=5\) the cluster's own pair span reaches weight \(2\), so the four-root spread argument does not extend. The cherry steps' avoidance condition is exactly the rank of the limit space's Taylor matrix on columns \(0,\ldots,R\). Its minors are explicit sums over the leading Plücker vector, and a nonzero Vandermonde sum suffices.</p>
+<p>Next: the route review that is due. It should weigh a codimension count for the rank condition on arcs with ties (do the failing arcs have the codimension (K) needs?) against (F), the window cores and (B). It should also develop the two Not-run items of the tie \(C\)-block review: the \(C_3\) symmetry and the secular matrix.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -72884,6 +72879,78 @@ At every point with distinct coordinates \(j_F\le1\). So above a four-root clust
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-leading-wronskian-sum" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-leading-wronskian-sum ex:cube-five-cofactor-weight-two">
+<h3>9 October 2026 — At five roots the cluster's own pair span reaches weight two, so the four-root spread bound does not extend; a nonzero Vandermonde sum of the leading Plücker vector suffices instead</h3>
+<p class="entry-meta">Refutation of the flow-order bound at M = 5, by exact algebraic common zeros; working proof of a Cauchy–Binet criterion for limit spaces. Wronskian sum cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement. The <a href="#entry-2026-10-09-cube-cblock-spread-bound">C-block spread bound</a> gives \(\operatorname{spread}(E)\le j_F(y^\ast)\), the order of the Taylor cofactor \(F\) along the flow. That order is at most \(1\) at four roots. The cherry steps then need \(\operatorname{spread}(E)+\operatorname{spread}(U)\le1\). Does \(j_F\le1\) hold at every distinct-root point for \(M=5\)? If not, what can replace spread bounds?</p>
+<p><strong>Refutation.</strong> ex:cube-five-cofactor-weight-two. At \(M=5\), \(F\) and \(DF\) have common zeros with five distinct coordinates. At such points the cluster's own pair span \(V(y^\ast)\) has weight \(\operatorname{wt}_0(V(y^\ast))=j_F(y^\ast)\ge2\) at \(T=0\). This is the weight of the cluster's pair span, not of \(L_0\) or of the global mark. It bounds \(\operatorname{spread}(E)\) only from above, so the bound of the previous entry allows \(\operatorname{spread}(E)=2\) above such clusters. No arc with \(\operatorname{spread}(E)=2\) has been exhibited.</p>
+<p>By the proof of part (4) of prop:cube-cblock-spread-bound, at distinct roots \(\operatorname{wt}_0\ge2\) if and only if \(p_{T_0}=p_{T_0'}=0\), with \(T_0'=\{0,\ldots,8,10\}\). The reason is that the pivot set is the Gale-least nonzero coordinate, and \(T_0'\) is the only set covering \(T_0\) in Gale order. Every minor is divisible by \(\mathrm{Vand}^3\); put \(G=p_{T_0'}/\mathrm{Vand}^3\).</p>
+<p>research/tools/bmd_five_cofactor_flow.gp (research/results/bmd-20261009-bo/five-cofactor-flow.txt) works on the slice \(y=(0,1,3,a,b)\):</p>
+<ul>
+<li>it computes \(F\) (total degree \(15\), irreducible over \(\mathbb Q\) on the slice) and \(G\) (degree \(16\)) exactly;</li>
+<li>\(\operatorname{Res}_b(F,G)\) has six linear factors and two of degrees \(56\) and \(112\);</li>
+<li>over the number field of each large factor, \(\gcd_b(F,G)\) has degree \(1\), with root off \(b\in\{0,1,3,a\}\), and \(a\notin\{0,1,3\}\) since the factor is irreducible of high degree;</li>
+<li>of the linear factors, \(a\), \(a-1\) and \(a-3\) give coincidences. The other three give no common finite zero in \(b\), presumably common zeros at \(b=\infty\), where both leading coefficients vanish.</li>
+</ul>
+<p>Three earlier runs failed:</p>
+<ul>
+<li>a five-variable symbolic \(DF\), stopped after \(30\) minutes;</li>
+<li>a flowed series over \(\mathbb Q[a,b]\), timed out at \(900\) s;</li>
+<li>a gcd over a modulus written in the variable \(a\), which PARI reads in the wrong ring and which returned trivial gcds even at the linear factors. The rerun uses a lower-priority generator.</li>
+</ul>
+<p>The degree count \(\deg F=\binom{R_C}2-(M-2)R_C=3\binom M4\) equals the number of pairings for every \(M\). But \(F_5\) is not their product: it is irreducible on the slice, and the recorded tie value contains \(7c^2+2c+7\).</p>
+<p><strong>General statement.</strong> lem:cube-leading-wronskian-sum. Characteristic zero.</p>
+<p>(a) Let \(X\) be an \(n\)-dimensional space spanned by finite combinations \(g_k=\sum_eA_{ke}w^e\), \(w=1+T\), of powers with exponents in a finite set, with Plücker coordinates \(P_Y=\det A_Y\) on \(n\)-subsets \(Y\) taken in a fixed column order. Then for any \(n\) Taylor columns \(J\), the minor of the Taylor coefficient matrix of \(X\) at \(T=0\) on \(J\) is \(\sum_YP_Y\det D_{Y,J}\), with \(D_{e,j}=(e)_j/j!\). For \(J=\{0,\ldots,n-1\}\) this is \(\sum_YP_Y\mathrm{Vand}(Y)/\prod_{j&lt;n}j!\). Hence \(\operatorname{wt}_0(X)=0\) if and only if \(\sum_YP_Y\mathrm{Vand}(Y)\ne0\).</p>
+<p>(b) In the setting of lem:cube-node-weight-bound, let \(P\) be the leading Plücker vector of the limit pair space \(L_0=E\oplus Q\oplus U\). The arc avoids \(K\) if and only if the Taylor matrix of \(L_0\) on columns \(0,\ldots,R\) has rank \(R\), that is, some minor \(\sum_YP_Y\det D_{Y,J}\) with \(J=\{0,\ldots,R\}\setminus\{j\}\) is nonzero. In particular, \(\sum_YP_Y\mathrm{Vand}(Y)\ne0\) suffices, with weight \(0\) and slack at least \(1\), with no condition on spreads or uniqueness. Weight \(1\) also avoids \(K\), as in part (5) of prop:cube-cblock-spread-bound.</p>
+<p><strong>Proof.</strong> (a) The \(j\)-th Taylor coefficient of \((1+T)^e\) at \(T=0\) is \(\binom ej=(e)_j/j!\). So the Taylor matrix is \(A\cdot D\), and Cauchy–Binet gives each \(n\times n\) minor on \(J\) as \(\sum_Y\det A_Y\det D_{Y,J}\). For \(J=\{0,\ldots,n-1\}\), each \((e)_j\) is monic of degree \(j\) in \(e\), so column operations give \(\det D_{Y,J}=\mathrm{Vand}(Y)/\prod j!\). That minor is the Plücker coordinate of \(X\) on \(T_0\), which is nonzero exactly when the pivot set is \(\{0,\ldots,n-1\}\), that is, when the weight is \(0\).</p>
+<p>(b) Each block's leading support is finite: for \(E\) by the competitor bound in part (2) of prop:cube-cblock-spread-bound, for \(U\) by the margin linear in \(\max|t|\) of lem:cube-node-weight-bound, and \(Q\) is at most one power. So (a) applies to \(L_0=\iota(\ldots)\). Fix one global column order, block by block (\(E\), then \(Q\), then \(U\)), and evaluate \(\mathrm{Vand}(Y)\) in that order. The blocks have disjoint exponent supports, so \(P_Y=P^E_S\,P^Q\,P^U_\Lambda\) exactly for \(Y=S\sqcup\{-3\}^\epsilon\sqcup(-\lambda+\Lambda)\). The arc avoids \(K\) when no section of \(L_0\) vanishes to order \(R+1\), that is, when the Taylor matrix on columns \(0,\ldots,R\) has rank \(R\). Then the final step of cor:cube-cherry-step (coordinatewise convergence of the normalized minors) gives \(\operatorname{rank}A_{R+1}=R\) along the arc. The criterion with \(J=T_0\) is the weight-zero case. \(\square\)</p>
+<p><em>Ties.</em> If the leading \(C\)-block support is two sets \(S\), \(S'=S-a+b\) and the other blocks have unique leaders, the Vandermonde sum is \(\alpha\mathrm{Vand}(S\sqcup Z)+\beta\mathrm{Vand}(S'\sqcup Z)\). Here \(Z\) collects the other exponents, and both Vandermondes are nonzero. So it vanishes for exactly one ratio \(\alpha:\beta\), and at that ratio the weight is \(1\) and the arc still avoids \(K\).</p>
+<p>In the four-root example of ex:cube-cblock-midpoint-tie, \(\alpha=x_1^{15}[s]p_{T_0}\) and \(\beta=x_1^{16}p_{S_0}(y^\ast)\), with \(x=x_1s+\cdots\). So weight \(1\) occurs for one value of \(x_1\), consistent with \(\operatorname{spread}(E)\le1\).</p>
+<p><strong>What this means.</strong></p>
+<ul>
+<li>The four-root bound \(j_F\le1\) fails at \(M=5\). Whether \(\operatorname{spread}(E)=2\) actually occurs on an arc is open.</li>
+<li>The exact avoidance condition is the rank of \(L_0\)'s Taylor matrix on columns \(0,\ldots,R\). By (a), its minors are explicit sums over the leading Plücker vector with generalized-Vandermonde weights, so spreads are only a crude bound for it. At a tie in one block, avoidance can fail only on arcs where the leading coefficients satisfy two equations: the Vandermonde sum and the next minor.</li>
+<li>Conjecture-level, not proved: when several ties occur at once, these sums could vanish on the whole locus of attainable leading vectors. A codimension count must rule that out.</li>
+</ul>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A codimension count, or nonvanishing, for the rank condition of (b) on arcs with ties in either block.</li>
+<li>The exact \(j_F\) at the \(M=5\) weight-two points; whether weight \(3\) occurs; \(M\ge6\).</li>
+<li>(F); moving arcs on the cross side; the window cores; (B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>prop:cube-cblock-spread-bound (parts (2), (4) and (5));</li>
+<li>lem:cube-node-weight-bound and cor:cube-cherry-step (the direct sum, the margins, the rank step);</li>
+<li>ex:cube-cblock-midpoint-tie.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the Cauchy–Binet lemma, the falling-factorial determinant, the Plücker vector of the direct sum, the tie remark and the four-root coefficients. It also checked the script and data: columns of \(G\), irreducibility, gcd degrees, variable priority, and the Gale-cover argument for \(\operatorname{wt}_0\ge2\). Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the Vandermonde sum is sufficient, not the exact condition; the exact condition is the rank on columns \(0,\ldots,R\), whose minors are given by (a);</li>
+<li>the refutation scoped to the bound \(j_F\le1\) at \(M=5\), with \(\operatorname{spread}(E)=2\) not exhibited;</li>
+<li>the weight identified as that of the cluster's own pair span;</li>
+<li>"above five roots" replaced by \(M=5\);</li>
+<li>the linear factors described;</li>
+<li>finiteness of the leading supports and a fixed global column order stated;</li>
+<li>the codimension remark marked as unproved.</li>
+</ul>
+<p>Unused hypotheses: none.</p>
+<p>Status: working proof (Cauchy–Binet criterion, every \(M\)); refutation of \(j_F\le1\) at \(M=5\) by exact algebraic points.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-bo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>33 min 49.14 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 46.61 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 35.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 14.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">26 min 11.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
