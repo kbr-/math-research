@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; statement 3's (K), core statement (<a href="#entry-2026-10-09-cube-tie-cherry-route-review">tie cherry review</a>; seven open items). Cherries above ties over caterpillars avoid \(K\) on every arc off the Hankel moduli. The window cores are now the highest risk. The tie window's kernel vectors also kill the confluent rows at \(c=1\).</p>
-<p>Next: the confluent tie window. Re-read conj:cube-tie-single-block-exclusion and the window's exact rows, build its kernel from the \(x^{(s)}\) at \(c=1\), and prove the coprimality of the two corank-one conditions through the tie row's coefficients.</p>
+<p>Route item: cube-odd-characteristic; statement 3's (K), core statement, the confluent tie window (<a href="#entry-2026-10-09-cube-confluent-staircase-structure">confluent staircase structure</a>; seven open items). The tie window's kernel method does not transfer: the confluent window's two families carry the exponents \(5/2\) and \(3/2\), and its staircase vectors are not Toeplitz times diagonal. The last review's lead test checked a different matrix (corrected).</p>
+<p>Next: express the confluent staircase through multiple orthogonal polynomials. The window is a Hermite–Padé system for \((1+T)^{-5/2}\) (multiplicity \(2m\)) and \((1+cT)^{-3/2}\) (multiplicity \(m\)). Match it with the Jacobi–Angelesco or Jacobi–Piñeiro normal form, compute the type I approximants from their Rodrigues formulas, and compare them with the computed staircase vectors for \(m\le5\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -74259,6 +74259,60 @@ Here \(k!/j!=(j+1)\cdots(j+n)\) is a polynomial of degree \(n\) in \(j\). \(\Gam
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 31.12 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.13 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 23.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-confluent-staircase-structure" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-tie-cherry-route-review:1" data-claims="ex:cube-confluent-staircase-not-toeplitz">
+<h3>9 October 2026 — The tie window's kernel method does not transfer to the confluent tie window: its staircase vectors are not Toeplitz times diagonal, because its two families carry exponents 5/2 and 3/2; correction to the last review's lead</h3>
+<p class="entry-meta">Refutation of the transfer, by exact staircase vectors for m = 2..5; correction of the tie cherry review's lead test. Confluent staircase cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement: the confluent tie window, conj:cube-confluent-tie-window-full-rank, reduced to the coprimality conj:cube-tie-single-block-exclusion. The <a href="#entry-2026-10-09-cube-tie-cherry-route-review">tie cherry review</a> proposed transferring the explicit kernel of thm:cube-tie-window-second-minor to this window. The missing implication: a closed form for the window's staircase, the 3×5 matrix \(U\) of lem:cube-tie-staircase-rank-bound, as the Gegenbauer coefficients gave for the tie window.</p>
+<p><strong>Correction to the review.</strong> The review's lead test checked that the tie window's vectors \(x^{(s)}\) at \(c=1\) annihilate \(T^n(1+T)^{-3/2}\) and the \(c\)-derivatives of \(T^n(1+cT)^{-3/2}\). That is the \(c\to1\) limit of the tie window. The confluent tie window of the record is a different matrix, with \(c\notin\{0,1\}\). Its rows are:</p>
+<ul>
+<li>\((1+T)^{-5/2}T^i\), \(i&lt;2m\);</li>
+<li>\(T^n(1+cT)^{-3/2}\), \(n&lt;m\);</li>
+<li>\((1+T)^{-3}\), \(((1+T)(1+cT))^{-3/2}\) and \(T(1+T)^{-5/2}(1+cT)^{-3/2}\);</li>
+</ul>
+<p>on columns \(d,\ldots,d+3m+4\) (research/tools/bmd_confluent_tie_window.gp). So the review's statement that the single-factor rows "become the confluent rows" at \(c=1\) is wrong. Its "Passed" outcome for lead 1, and the passed part of the control-theory bridge, do not bear on this window. The lead is tested on the right object below.</p>
+<p><strong>General statement.</strong> conj:cube-confluent-tie-window-full-rank (recorded): for every \(m\ge1\) and \(c\notin\{0,1\}\), \(W^c(c)\) has full rank. This cycle tests one proof mechanism for it.</p>
+<p><strong>The structure tested.</strong> The \(3m\) single-type rows have, for each start \(s=d,\ldots,d+4\), a unique annihilating vector \(y^{(s)}\) supported on \([s,s+3m]\); these are the staircase vectors. For the tie window the analogous vectors were Toeplitz times diagonal, \(x^{(s)}_k=p_{s+2m-k}w_k\), with \(p\) the coefficients of \(((1+cT)(1+T))^m\) and \(w=\rho^{(m)}\). Then the mixed rows' values on them, which form the staircase matrix, had closed forms.</p>
+<p><strong>Refutation.</strong> ex:cube-confluent-staircase-not-toeplitz. For \(m=2,\ldots,5\) (exact, at \(c=7/3\)), the staircase vectors of \(W^c\) are not of the form \(\kappa_s\,p_{s+3m-k}\,w_k\) for any sequences \(p\), \(w\) and scalars \(\kappa_s\): the ratio test fails. For \(m=1\) they are. The natural guess \(p\) from \((1+T)^{2m}(1+cT)^m\) fails for every \(m\le5\).</p>
+<p>research/tools/bmd_confluent_staircase_structure.gp (research/results/bmd-20261009-by/confluent-staircase-structure.txt) computes \(y^{(s)}\) as the one-dimensional kernels of the single-type rows on \([s,s+3m]\). It tests whether \(y^{(s)}_{s+i}/y^{(s+1)}_{s+i}\), normalized at \(i=3m\), is independent of \(s\), which a Toeplitz-times-diagonal form forces.</p>
+<p><strong>Why.</strong> A common Gamma weight \(w_k=\Gamma(k+1)/\Gamma(k+a)\) turns a family \(T^j(1+zT)^{-\mu}\) into exponential polynomials \(Q(k)(-z)^k\) only if \(j+a\le\mu\), with degree \(\mu-a\).</p>
+<ul>
+<li>The \((1+T)^{-5/2}T^i\) family with \(i&lt;2m\) needs \(a\le\tfrac72-2m\), giving degree \(\ge2m-1\).</li>
+<li>With that weight the \(c\)-family has degree \(\tfrac32-a\ge2m-2\), although it has only \(m\) rows.</li>
+<li>The joint annihilating polynomial then has degree at least \((2m)+(2m-1)\), so the vectors are longer than the window's \(3m+5\) columns once \(m&gt;5\), and never of length \(3m+1\) for \(m\ge2\).</li>
+</ul>
+<p>The tie window worked because both of its families carry the same exponent \(\tfrac32\) with \(m\) rows each.</p>
+<p><strong>What this means.</strong> The window cores do not yield to the one-weight kernel. The confluent window is a Hermite–Padé system for \((1+T)^{-5/2}\) and \((1+cT)^{-3/2}\), two different exponents at two points, with multiplicities \(2m\) and \(m\). Systems of exactly this kind have explicit type I and type II approximants in the theory of multiple orthogonal polynomials: Jacobi–Angelesco and Jacobi–Piñeiro polynomials, with Rodrigues formulas (Van Assche and coauthors). Those formulas are the natural candidate for the staircase in closed form.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A closed form for the confluent staircase, from multiple orthogonal polynomials.</li>
+<li>conj:cube-tie-single-block-exclusion; conj:cube-triple-window-full-rank.</li>
+<li>The other items of (K); (B).</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops lead 1 of the tie cherry review on the correct object: the transfer is refuted, and a different explicit-kernel source is identified.</p>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>conj:cube-confluent-tie-window-full-rank, conj:cube-tie-single-block-exclusion and lem:cube-tie-staircase-rank-bound (statements);</li>
+<li>bmd_confluent_tie_window.gp (row definitions);</li>
+<li>thm:cube-tie-window-second-minor (the construction being transferred).</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. No correctness reviewer: the new claim is a refutation by exact computation over \(\mathbb Q\), with \(m=1\) as the positive control (the form holds trivially there), plus a correction of a test's object.</p>
+<p>Status: refutation (the kernel transfer, \(m=2..5\)); correction of the tie cherry review's lead test.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-by">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 54.64 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 12.68 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">37.33 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">21.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">42.49 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
