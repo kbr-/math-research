@@ -80,6 +80,17 @@ class CheckedPushTest(unittest.TestCase):
         self.assertIn('over 100 characters', result.stderr)
         self.assertFalse((self.work / 'calls').exists())
 
+    def test_counts_characters_not_bytes(self):
+        # 99 characters, over 100 bytes: accepted under the C locale too (review of 3 October 2026)
+        git(self.work, 'commit', '-q', '--amend', '-m', 'work', '-m', 'é—' * 49 + 'x')
+        result = subprocess.run(['bash', 'tools/checked-push.sh', 'main'], cwd=self.work, capture_output=True,
+                                text=True, env={**os.environ, 'GIT_TERMINAL_PROMPT': '0', 'LC_ALL': 'C'})
+        self.assertNotIn('over 100 characters', result.stderr)
+        git(self.work, 'commit', '-q', '--allow-empty', '-m', 'more', '-m', 'é—' * 51)
+        result = subprocess.run(['bash', 'tools/checked-push.sh', 'main'], cwd=self.work, capture_output=True,
+                                text=True, env={**os.environ, 'GIT_TERMINAL_PROMPT': '0', 'LC_ALL': 'C'})
+        self.assertIn('over 100 characters', result.stderr)
+
     def test_refuses_non_fast_forward(self):
         git(self.work, 'switch', '-qc', 'other', 'main')
         (self.work / 'g').write_text('y')

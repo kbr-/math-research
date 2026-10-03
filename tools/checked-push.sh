@@ -19,8 +19,13 @@ fi
 # Commit messages: every line at most 100 characters (AGENTS.md); checked on the commits to be pushed.
 long=""
 for c in $(git rev-list "$commit" --not --remotes=origin); do
-  long="$long$(git log -1 --format=%B "$c" | awk -v id="$(git rev-parse --short "$c")" \
-    'length($0) > 100 { print id ": " substr($0, 1, 60) "..." }')"
+  # Characters, not bytes: awk under LC_ALL=C counted an 88-character line with dashes as 154.
+  long="$long$(git log -1 --format=%B "$c" | python3 -c '
+import sys
+ident = sys.argv[1]
+for line in sys.stdin.buffer.read().decode("utf-8", "replace").splitlines():
+    if len(line) > 100:
+        print(ident + ": " + line[:60] + "...")' "$(git rev-parse --short "$c")")"
 done
 if [ -n "$long" ]; then
   printf 'Not pushed: commit message lines over 100 characters (AGENTS.md):\n%s\n' "$long" >&2
