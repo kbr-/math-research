@@ -25,6 +25,16 @@ class CodexRegistrationTest(unittest.TestCase):
         self.skill.parent.mkdir(parents=True)
         self.skill.write_text('A single authoritative skill')
 
+    def test_uninitialized_skill_submodule_is_not_silently_omitted(self):
+        (self.root/'.gitmodules').write_text('[submodule "skills/Discipline"]\npath = skills/Discipline\nurl = https://example.invalid/discipline\n')
+        with self.assertRaisesRegex(ValueError,'git submodule update --init'):
+            registry.register(self.root)
+        self.assertFalse((self.root/'.agents/skills/example').exists())
+        source=self.root/'skills/Discipline/SKILL.md';source.parent.mkdir();source.write_text('Initialized source')
+        self.assertEqual(registry.register(self.root)['skills'],2)
+        (self.root/'.gitmodules').write_text('')
+        self.assertEqual(registry.register(self.root)['skills'],2)
+
     def test_native_instruction_budget_covers_complete_file(self):
         spec=importlib.util.spec_from_file_location('checkout_budget',ROOT/'tools/verify-checkout.py')
         module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

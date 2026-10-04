@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import subprocess
 import tempfile
 
 from codex_state import atomic_json
@@ -19,6 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def desired(root):
+    modules = root/'.gitmodules'
+    if modules.exists():
+        result = subprocess.run(['git', 'config', '--file', str(modules), '--get-regexp',
+                                 r'^submodule\..*\.path$'], capture_output=True, text=True)
+        if result.returncode not in (0, 1):
+            raise ValueError('Cannot read declared skill submodules')
+        for line in result.stdout.splitlines():
+            path = line.split(None, 1)[1]
+            if re.fullmatch(r'skills/[A-Za-z0-9_-]+', path) and not (root/path/'SKILL.md').is_file():
+                raise ValueError('Initialize the declared skill source before startup: '
+                                 'git submodule update --init -- '+path)
     result = {}
     for source in sorted((root/'skills').glob('*/SKILL.md')):
         name = source.parent.name

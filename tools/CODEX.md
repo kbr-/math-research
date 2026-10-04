@@ -28,7 +28,8 @@ deletes files. Other actors and durable results are excluded; legacy Claude scra
 continues to use the existing Claude locations.
 
 `python3 tools/register_codex.py` registers the checkout's present `skills/*/SKILL.md` sources
-through relative links. The launcher runs it before startup/resume. Missing sources are removed
+through relative links. The launcher runs it before startup/resume. A declared skill submodule without its SKILL.md
+refuses startup with the specific initialization command; the registrar never fetches it silently. Missing sources are removed
 only if their generated descriptors still match the managed manifest; unrelated or edited files
 are preserved with an error. Nothing is installed globally. Commit canonical relative links with their source branch so phone-created sessions and fresh
 clones discover them without a launcher. The verifier admits only links to that checkout's
