@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20). Statement 2: the ternary slice is certified for \(n\le25\), with a Frobenius functional equation as its new lead (<a href="#entry-2026-10-09-cube-ternary-mahler-route-review">review</a>); \(n=5\) is certified for \(d\le9\), with its seven-functional criterion. For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, (K) rests on the confluent tie window, the triple window, the top-up identity for \(M\ge6\) and the Hankel tie moduli for \(M&gt;200\) (<a href="#entry-2026-10-09-cube-hankel-gegenbauer-padic">\(p\)-adic certificates</a>).</p>
-<p>Next: the queue head, the Gegenbauer lead (entry two of four): a mechanism for every \(M\), not tied to a single prime of \(M-1\).</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20), one item per entry (batch triage retired, user, 9 October 2026). Statement 2: the ternary slice is certified for \(n\le25\); \(n=5\) is certified for \(d\le9\). For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, (K) rests on the confluent tie window, the triple window, the top-up identity for \(M\ge6\), and the Hankel tie moduli for \(M\equiv2\pmod4\), \(M&gt;200\), now that the other classes are proved (<a href="#entry-2026-10-09-cube-hankel-gegenbauer-two-adic">two-adic separation</a>).</p>
+<p>Next: reopen the items that batch triage settled, then the Gegenbauer lead (entry three of four) on \(M\equiv2\pmod4\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -80525,6 +80525,45 @@ So disjointness at \(M\) is \(Q(u)\ne0\). A prime \(p\) for which \(V_k=v_p(a_k)
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 39.57 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 9.88 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-hankel-gegenbauer-two-adic" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-tie-cblock-route-review:1" data-claims="lem:cube-hankel-gegenbauer-two-adic">
+<h3>9 October 2026 — Two-adic separation: the Hankel tie moduli avoid the Gegenbauer moduli for every \(M\not\equiv2\pmod4\)</h3>
+<p class="entry-meta">Working proof for \(M\) odd or divisible by four; \(M\equiv2\pmod4\) open. Lead development (head item, entry two of four, Continuing). Two-adic separation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), C-block uniqueness above a tie over a caterpillar at the Hankel moduli, known for \(M\le200\) (check:cube-hankel-moduli-padic-certificate). The previous entry found that a certificate at one odd prime of \(M-1\) can fail for adversarial \(M\) (ex:cube-hankel-topterm-not-uniform). The prime \(2\) was not analysed. Does it give a certificate for whole residue classes of \(M\)?</p>
+<p><strong>General statement.</strong> lem:cube-hankel-gegenbauer-two-adic. Let \(M\ge4\), \(d=\binom{M-2}2\), \(D=\lfloor d/2\rfloor\), \(u=2M/(M-1)\), \(a_k=(-1)^k(3/2)_{d-k}/(k!(d-2k)!)\) and \(Q(u)=\sum_{k=0}^Da_ku^{D-k}\), so that \(C^{(3/2)}_d(x)=(2x)^{d\bmod2}Q(4x^2)\). If \(M\) is odd, the term \(k=0\) of \(Q(u)\) has strictly the least \(2\)-adic valuation; if \(4\mid M\), the term \(k=D\) does. In both cases \(Q(u)\ne0\), so \(C^{(3/2)}_d\) does not vanish at \(x^2=M/(2(M-1))\): the Hankel moduli \((M-1)c^2-2c+(M-1)=0\) are not zeros of the Gegenbauer tie coefficient \(t_d\), and cor:cube-hankel-tie-unique-cblock holds for every such \(M\).</p>
+<p><strong>Proof.</strong> Write \(v=v_2\) and \(V_k=v(a_k)+(D-k)v(u)\), the valuation of the \(k\)-th term. From \((3/2)_{n}/(3/2)_{n-1}=n+\tfrac12\),
+\[ \frac{a_{k+1}}{a_k}=-\frac{2(d-2k)(d-2k-1)}{(k+1)(2d-2k+1)}\qquad(0\le k&lt;D), \]
+all factors nonzero since \(d-2k\ge2\) for \(k\le D-1\). As \(2d-2k+1\) is odd,
+\[ V_{k+1}-V_k=1+v\big((d-2k)(d-2k-1)\big)-v(k+1)-v(u). \tag{1} \]
+<em>\(M\) odd.</em> Then \(e=v(M-1)\ge1\) and \(v(u)=v(2M)-e=1-e\). By (1), \(V_{k+1}-V_k=e+v((d-2k)(d-2k-1))-v(k+1)\), and summing over \(i&lt;k\),
+\[ V_k-V_0=ke+v\Big(\frac{d!}{(d-2k)!}\Big)-v(k!)\ \ge\ ke+v((2k)!)-v(k!)\ \ge\ ke\ &gt;0 \]
+for \(1\le k\le D\), since a product of \(2k\) consecutive positive integers is divisible by \((2k)!\), and \(v((2k)!)\ge v(k!)\).</p>
+<p><em>\(4\mid M\).</em> Then \(M-1\) is odd and \(v(u)=1+f\), \(f=v(M)\ge2\). By (1), \(V_{i+1}-V_i=v((d-2i)(d-2i-1))-v(i+1)-f\). For \(0\le k&lt;D\), put \(j=D-k\ge1\) and \(r=d-2D\in\{0,1\}\). Summing over \(k\le i&lt;D\),
+\[ V_k-V_D=jf+v\Big(\frac{D!}{k!}\Big)-v\Big(\frac{(d-2k)!}{(d-2D)!}\Big)=jf+v\Big(\frac{D!}{(D-j)!}\Big)-v\Big(\frac{(2j+r)!}{r!}\Big). \]
+Here \(v((2j+r)!/r!)=v((2j)!)=j+v(j!)\), because \(2j+1\) is odd, and \(v(D!/(D-j)!)\ge v(j!)\). So \(V_k-V_D\ge j(f-1)\ge j&gt;0\).</p>
+<p>In either case one term has strictly smaller valuation than all others, so the sum is nonzero; \(x\ne0\), so \(C^{(3/2)}_d(x)\ne0\). The link to the tie moduli is the substitution of the previous entry: with \(c=e^{2i\theta}\), \(t_k=(-1)^ke^{ik\theta}C^{(3/2)}_k(\cos\theta)\), and the Hankel moduli are \(\cos^2\theta=M/(2(M-1))\), so \(4x^2=u\). The corollary follows by thm:cube-tie-taylor-dominance as in the tie dominance entry. \(\square\)</p>
+<h4>The remaining class</h4>
+<p>For \(M\equiv2\pmod4\) the same computation with \(f=1\) gives exactly \(V_{D-j}-V_D=v\binom Dj\). So the minimal terms are those with \(\binom Dj\) odd, \(2^{s(D)}\) of them with \(s(D)\) the binary digit sum, and the \(2\)-adic Newton polygon alone does not decide. In that class \(d=2m'(4m'-1)\) with \(M=4m'+2\), so \(d\) is even and \(r=0\) (in general the denominator below is \((M-1)(2j+1+2r)\)). The consecutive term ratio is \(\binom{D}{j+1}/\binom Dj\) times the \(2\)-adic unit \(w_j=-(M/2)(2d-2k+1)/((M-1)(2j+1))\), \(k=D-j-1\), so \(Q(u)=a_D\sum_j\binom Dj\prod_{i&lt;j}w_i\), a binomial sum with unit weights; its residues modulo higher powers of \(2\) decide the class. The odd primes of \(M-1\) and \(M\) remain available as certificates (check:cube-hankel-moduli-padic-certificate), and the data of that check show every \(M\equiv2\pmod4\) up to \(200\) certified by an odd prime.</p>
+<p><strong>Checks.</strong> The lemma agrees with the recorded runs: in research/results/bmd-20261009-kej/gegenbauer-padic.txt, every odd \(M\le60\) has the certificate \([2,0]\), every \(M\equiv0\pmod4\) has \([2,D]\), and no \(M\equiv2\pmod4\) has a certificate at \(2\).</p>
+<p><strong>Follow-up.</strong> Continuing (entry two of four). The lead now bears only on \(M\equiv2\pmod4\). Next attempt: evaluate the unit-weighted binomial sum modulo \(2^{s(D)+1}\) or higher, using the explicit \(w_j\), or identify \(Q\) with a terminating \({}_2F_1\) at a \(2\)-adic unit argument and use a Dwork-type congruence for it.</p>
+<p><strong>Remaining gap.</strong> Hankel and Gegenbauer moduli for \(M\equiv2\pmod4\), \(M&gt;200\); the other (K) items; (B); statement 2 beyond its certificates; statement 4's first step.</p>
+<p><strong>Process.</strong> The lemma came from analysing by hand the prime that the previous scan found certifying every odd \(M\) and every \(M\equiv0\pmod4\); no new computation.</p>
+<p><strong>Dependencies re-read.</strong> The previous entry (reduction to \(Q(u)\), ratio formula); thm:cube-tie-taylor-dominance and cor:cube-hankel-tie-unique-cblock; check:cube-hankel-moduli-padic-certificate.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the coefficients \(a_k\) against the generating function (identical for \(M=4,\ldots,8\) in gp), the ratio and (1), both \(2\)-adic estimates with their edge cases (\(M=4\) has \(D=0\) and a single nonzero term; \(M=5\) has \(D=1\)), the ultrametric conclusion, the link to the tie moduli (the Hankel moduli lie on the unit circle, product one, negative discriminant), the identity \(V_{D-j}-V_D=v\binom Dj\) for \(M\equiv2\pmod4\) (all equal at \(M=6\)), and agreement with every line of the recorded certificate data. Verdict: pass with one correction, applied: the definition of \(w_j\) holds for even \(d\), which is the case \(M\equiv2\pmod4\). No unused hypotheses; \(M\ge4\) ensures \(d\ge1\).</p>
+<p><strong>Status:</strong> working proof (\(M\) odd or \(4\mid M\)); lead continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kek">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 40.38 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 7.35 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 9.72 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 23.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
