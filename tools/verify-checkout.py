@@ -87,7 +87,7 @@ def main():
     forbidden = ['.codex-session-id', '.claude-session-id', 'php_codex_handoff.zip']
     failures += ['Machine-local or redundant file tracked: ' + name for name in forbidden if name in tracked]
     for name in tracked:
-        if name in ('.codex/config.toml', '.claude/settings.json') or name.startswith('.claude/agents/'):
+        if name in ('.codex/config.toml', '.codex/hooks.json', '.claude/settings.json') or name.startswith('.claude/agents/'):
             continue  # Shared project defaults; all other agent state stays local.
         if name.startswith(('.resource-runtime/', '.codex/', '.claude/', '.agents/', 'research/tmp/', 'research/logs/', 'private/')) or '__pycache__/' in name:
             failures.append('Runtime or scratch file tracked: ' + name)

@@ -196,6 +196,8 @@ Codex rejects permission overrides when resuming a remote task.
 Context and auto-compaction budgets are shared constants at the top of
 `start-codex.sh`, applied when starting or resuming the terminal session.
 The project `.codex/config.toml` also supplies defaults for phone-created sessions.
+Review and trust the [Codex framework hooks](tools/CODEX.md) to enable restoration
+and command guards; changed hook definitions need normal trust review.
 Use the same `CODEX_HOME` for both launchers and pairing. A Codex CLI version
 supporting daemon remote control and `--remote unix://` is required.
 

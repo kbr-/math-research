@@ -1,0 +1,38 @@
+{
+  "description": "Ordered framework restoration and command protections. Review hooks through Codex before use.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) || exit 1; f=\"$root/tools/hooks/codex_dispatch.py\"; if [ -f \"$f\" ]; then python3 \"$f\"; else echo \"hook skipped: $f is missing (update the checkout)\" >&2; exit 1; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) || exit 1; f=\"$root/tools/hooks/codex_dispatch.py\"; if [ -f \"$f\" ]; then python3 \"$f\"; else echo \"hook skipped: $f is missing (update the checkout)\" >&2; exit 1; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) || exit 1; f=\"$root/tools/hooks/codex_dispatch.py\"; if [ -f \"$f\" ]; then python3 \"$f\"; else echo \"hook skipped: $f is missing (update the checkout)\" >&2; exit 1; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
