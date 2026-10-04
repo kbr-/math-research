@@ -232,6 +232,14 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             client = AsyncMock();client.call.return_value = response;client.turn.return_value = 'pass'
             client.isolation_config.return_value = isolated_config('medium')
             self.assertEqual(await reviewer.review(client, root, state, 'supplied excerpts', model='selected'), 'pass')
+            client.isolation_config.assert_awaited_once_with(root, 'medium')
+            injected_method, injected = client.call.call_args_list[1].args
+            self.assertEqual(injected_method, 'thread/inject_items')
+            self.assertEqual(injected['threadId'], response['thread']['id'])
+            item, = injected['items']
+            self.assertEqual(item['type'], 'message');self.assertEqual(item['role'], 'user')
+            content, = item['content']
+            self.assertEqual(content['type'], 'input_text');self.assertTrue(content['text'])
             method, params = client.call.call_args_list[0].args
             self.assertEqual(method, 'thread/start')
             self.assertEqual(params['baseInstructions'], 'Canonical brief')
