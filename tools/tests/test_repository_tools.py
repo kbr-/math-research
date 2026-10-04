@@ -23,6 +23,8 @@ class RepositoryTools(unittest.TestCase):
         shutil.copy2(ROOT / 'start-session.sh', self.root / 'start-session.sh')
         (self.root / 'tools').mkdir()
         shutil.copy2(ROOT / 'tools/remember-codex-session.py', self.root / 'tools/remember-codex-session.py')
+        for name in ('register_codex.py', 'codex_state.py'):
+            shutil.copy2(ROOT / 'tools' / name, self.root / 'tools' / name)
         shutil.copy2(ROOT / 'start-claude.sh', self.root / 'start-claude.sh')
         (self.root / 'bin').mkdir()
         self.capture = self.root / 'capture.json'
@@ -97,6 +99,14 @@ else:
         calls = self.capture.with_suffix('.jsonl').read_text().splitlines()
         self.assertEqual(json.loads(calls[0]), ['remote-control', 'start'])
         self.assertEqual(len(calls), 2)
+
+    def test_startup_registers_present_skills(self):
+        source = self.root/'skills/example'
+        source.mkdir(parents=True)
+        (source/'SKILL.md').write_text('fixture skill')
+        result = self.launch()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.root/'.agents/skills/example').resolve(), source)
 
     def test_existing_checkout_uses_exact_session(self):
         (self.root / '.codex-session-id').write_text(SESSION + '\n')

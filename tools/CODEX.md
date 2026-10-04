@@ -26,3 +26,11 @@ The startup/child hook supplies the same owner path. The finisher refuses more t
 logical bytes, unreadable scratch, or symlinks in that tree or its runtime ancestors. It never
 deletes files. Other actors and durable results are excluded; legacy Claude scratch lookup
 continues to use the existing Claude locations.
+
+`python3 tools/register_codex.py` registers the checkout's present `skills/*/SKILL.md` sources
+through relative links. The launcher runs it before startup/resume. Missing sources are removed
+only if their generated descriptors still match the managed manifest; unrelated or edited files
+are preserved with an error. Nothing is installed globally. Commit canonical relative links with their source branch so phone-created sessions and fresh
+clones discover them without a launcher. The verifier admits only links to that checkout's
+`skills/NAME/SKILL.md`; the runtime ownership manifest remains ignored. Keep private links and
+skill text on their private branch.

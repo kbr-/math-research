@@ -3,6 +3,8 @@
 import argparse
 import hashlib
 import json
+import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -18,6 +20,15 @@ def digest(path):
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             value.update(chunk)
     return value.hexdigest()
+
+
+def skill_descriptor(root, name):
+    if not re.fullmatch(r'\.agents/skills/[A-Za-z0-9_-]+', name):
+        return False
+    path = root/name
+    source = root/'skills'/path.name
+    return (path.is_symlink() and os.readlink(path) == '../../skills/' + path.name
+            and source.resolve().is_relative_to(root.resolve()) and (source/'SKILL.md').is_file())
 
 
 def main():
@@ -87,7 +98,7 @@ def main():
     forbidden = ['.codex-session-id', '.claude-session-id', 'php_codex_handoff.zip']
     failures += ['Machine-local or redundant file tracked: ' + name for name in forbidden if name in tracked]
     for name in tracked:
-        if name in ('.codex/config.toml', '.codex/hooks.json', '.claude/settings.json') or name.startswith('.claude/agents/'):
+        if name in ('.codex/config.toml', '.codex/hooks.json', '.claude/settings.json') or name.startswith('.claude/agents/') or skill_descriptor(ROOT, name):
             continue  # Shared project defaults; all other agent state stays local.
         if name.startswith(('.resource-runtime/', '.codex/', '.claude/', '.agents/', 'research/tmp/', 'research/logs/', 'private/')) or '__pycache__/' in name:
             failures.append('Runtime or scratch file tracked: ' + name)

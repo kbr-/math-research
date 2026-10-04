@@ -21,6 +21,8 @@ if (( $# )); then
   exit 2
 fi
 
+python3 tools/register_codex.py
+
 options=(--remote unix://
   -c "model_context_window=${CONTEXT_WINDOW_TOKENS}"
   -c "model_auto_compact_token_limit=${AUTO_COMPACT_TOKENS}")
