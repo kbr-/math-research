@@ -32,7 +32,7 @@ async def review(client, root, state, text, close=False, model=None):
     if saved:
         if saved['root'] != str(root):
             raise NativeError('Reviewer handle belongs to another checkout')
-        response = await client.call('thread/resume', {'threadId': saved['thread']})
+        response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True})
     else:
         params = {'cwd': str(root), 'approvalPolicy': 'never', 'sandbox': 'read-only',
                   'ephemeral': False, 'baseInstructions': reviewer_brief(root),

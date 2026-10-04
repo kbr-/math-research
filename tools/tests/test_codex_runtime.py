@@ -227,7 +227,7 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             client.turn.assert_awaited_once_with('reviewer', 'supplied excerpts', 'medium')
             self.assertEqual(json.loads(state.read_text())['thread'], 'reviewer')
             await reviewer.review(client, root, state, 'concrete correction')
-            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': 'reviewer'}))
+            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': 'reviewer', 'excludeTurns': True}))
             await reviewer.review(client, root, state, '', close=True)
             self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': 'reviewer'}))
             self.assertFalse(state.exists());self.assertEqual(binding.read_text(), 'parent')
