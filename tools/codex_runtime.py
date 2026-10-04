@@ -34,7 +34,7 @@ class Client:
             raise NativeError('Existing Codex daemon unavailable: ' + error.decode(errors='replace'))
         address = json.loads(output)['socketPath']
         socket = await websockets.unix_connect(address, uri='ws://localhost',
-                                              open_timeout=2, max_size=16*1024*1024)
+                                              open_timeout=2, close_timeout=.1, max_size=16*1024*1024)
         client = cls(socket)
         try:
             await asyncio.wait_for(client.call('initialize', {

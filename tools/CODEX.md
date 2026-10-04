@@ -89,3 +89,17 @@ Cancel before terminating or abandoning a cell: terminating JavaScript alone is 
 cancellation operation. Keep the cell alive until completion; delivery after session termination
 is not guaranteed. Operational state is ignored under research/logs/codex-watchers. These
 harness primitives do not create another agent, resume the owner, or inject synthetic user turns.
+
+## Branch-local Stop judging
+
+The shared Stop registration calls tools/hooks/codex_unchecked_claim.py in the active worktree
+when that optional private handler exists. Main contains no private predicate or prompt.
+The handler can call tools/codex_judge.py with a JSON object containing prompt and schema on
+stdin. It returns result or a visible error category, without forwarding daemon diagnostics.
+Use a 4.5-second subprocess timeout within the five-second hook budget.
+
+Inference uses the existing login/daemon in a fresh ephemeral gpt-6-luna thread at low effort,
+read-only/no-approval, with no environments, project instructions, shell, web, apps or hooks.
+It interrupts timed-out inference and unsubscribes the owned thread. No Claude fallback or
+additional login is used. Host-side validation of the returned schema and quoted evidence is
+the handler's responsibility; a structured model response alone does not establish correctness.

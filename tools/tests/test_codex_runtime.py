@@ -57,7 +57,7 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             launch.assert_awaited_once_with('codex', 'app-server', 'daemon', 'version',
                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             connect.assert_awaited_once_with('/tmp/owned.socket', uri='ws://localhost',
-                                            open_timeout=2, max_size=16*1024*1024)
+                                            open_timeout=2, close_timeout=.1, max_size=16*1024*1024)
             self.assertEqual(sock.sent[0]['method'], 'initialize')
             self.assertEqual(sock.sent[0]['params']['capabilities'], {'experimentalApi': True})
             self.assertEqual(set(sock.sent[0]['params']['clientInfo']), {'name', 'version'})

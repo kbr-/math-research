@@ -55,6 +55,15 @@ class CodexHooksTest(unittest.TestCase):
         value = self.call('PreToolUse', 'printf normal', **fields)
         return value.get('hookSpecificOutput', {}).get('permissionDecision') == 'deny'
 
+    def test_stop_uses_optional_active_worktree_predicate(self):
+        self.assertEqual(self.call('Stop'), {})
+        directory=self.root/'tools/hooks';directory.mkdir()
+        (directory/'codex_unchecked_claim.py').write_text(
+            "def check(event):\n    return {'decision': 'block', 'reason': event['last_assistant_message']}\n")
+        self.assertEqual(self.call('Stop',last_assistant_message='fixture'),
+                         {'decision':'block','reason':'fixture'})
+        self.assertIn('Stop',json.loads((ROOT/'.codex/hooks.json').read_text())['hooks'])
+
     def test_full_receipts_and_retry_not_last_marker(self):
         self.call('SessionStart', source='compact')
         self.assertTrue(self.denied())

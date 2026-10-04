@@ -120,6 +120,15 @@ def deny(message):
 
 def dispatch(event, root):
     name = event.get('hook_event_name')
+    if name == 'Stop':
+        # The private branch owns its predicate and prompt; shared hooks resolve it there.
+        path = Path(root) / 'tools/hooks/codex_unchecked_claim.py'
+        if not path.is_file():
+            return {}
+        spec = importlib.util.spec_from_file_location('codex_unchecked_claim', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.check(event)
     command = (event.get('tool_input') or {}).get('command', '')
     if not isinstance(command, str):
         raise ValueError('Invalid command in Codex hook input')
