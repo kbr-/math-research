@@ -1,0 +1,30 @@
+{
+  "source": {
+    "record": "[Single-shift Schur-Hankel formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-09-cube-single-shift-schur-hankel)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-09-cube-single-shift-schur-hankel",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20261009-ket/single-shift.txt"
+    ],
+    "label": "Single-shift Schur-Hankel formula"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-10-09",
+  "topics": [
+    "finite-certificates"
+  ],
+  "claims": [
+    {
+      "id": "thm:cube-single-shift-schur-hankel",
+      "summary": "For M >= 2, 1 <= p <= M-1, k = M-p, N = 2M-p, t >= 1, and L_t the cherry window with its top column raised by t: the least coefficient of P_(L_t) is Vand^2 tau^(t), tau^(t) = c_(M,p) (c_(N-1+t)/c_(N-1)) N sum_(b<=t) alpha_b H_(b), H_(b) = sum_(|S|=k+1) Vand(y_S)^2 h_b(y_S), alpha_b = sum_(s=b..t) h_(t-s)(y) V[b,s], V the inverse of the upper triangular U with U[r,r] = N+r, U[r,q] = p_(q-r); alpha_t = 1/(N+t). Hence where H_(0) = ... = H_(t-1) = 0 (e.g. t = 2 on Sigma_k), tau^(t) is a nonzero constant times H_(t).",
+      "assessment": "Working proof (the top-up proof with eliminator z^(k-1) h P, h the polynomial part of z^(M+t)/P, Jacobi's complementary minor expanded along the staircase rows, Cauchy-Binet with Jacobi-Trudi); exact check 30/30 for M = 3, 4, every p, t <= 3 (research/results/bmd-20261009-ket/single-shift.txt); reviewed by one fresh-context medium reviewer.",
+      "status": "working_proof",
+      "rationale": "Gives the top-shift coefficients the Hankel criterion review asked for, as a triangular Schur-Hankel hierarchy deciding the residual Sigma_k level by level.",
+      "next_action": "Decide whether all H_(b) can vanish at once (generating function sum_S Vand_S^2 prod_(i in S) (1 - y_i z)^-1), and treat two raised columns."
+    }
+  ],
+  "relationships": [
+    ["thm:cube-single-shift-schur-hankel", "refines", "thm:cube-topup-flow-identity-all", "The case t = 1."],
+    ["thm:cube-single-shift-schur-hankel", "depends_on", "thm:cube-cherry-hankel-form", "Steps (1)-(3) and the Jacobi argument."],
+    ["thm:cube-single-shift-schur-hankel", "cites", "cor:cube-topup-wide-support-all", "Decides its residual Sigma_k level by level."]
+  ]
+}
