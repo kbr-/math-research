@@ -199,8 +199,8 @@ sys.exit(compute.main())
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
-        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
-                 f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e <strong>Answers.</strong> y. '
+        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li>c{ok}</li></ul>'
+                 f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li>e <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li></ul>')
         old_review = ('<article id="rev1" data-kind="review" data-route="general-step">'
                       '<p class="entry-meta">Review.</p>' + general + leads + '</article>')
@@ -262,9 +262,9 @@ sys.exit(compute.main())
         across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged, ten cycles.</li>'
                   '<li>Statement 2: unchanged, none.</li></ul><p><strong>Decision.</strong> Core: the window.</p>')
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
-        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b <strong>Answers.</strong> y. '
+        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li>b <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li>'
-                 f'<li>c{ok}</li></ul><h4>Absurd bridges</h4><ul><li>d{ok}</li>'
+                 f'<li data-pick>c{ok}</li></ul><h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li>'
                  '<li>e <strong>Answers.</strong> y. <strong>Test.</strong> Not run: needs a kernel.</li></ul>')
         rejected = [
             record(['research'] * 6, reviewed),                       # a review without outside leads
@@ -274,13 +274,13 @@ sys.exit(compute.main())
             record(['review:3'] + ['research'] * 10, goal_review, general=general + leads),  # no Across the goal
             record(['review:3'] + ['research'] * 10, goal_review,
                    general=general + leads + across.replace('Core', 'Maybe')),  # no decision
-            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),  # two leads
+            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li data-pick>c{ok}</li>', '')),  # two leads
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 '<li>e <strong>Answers.</strong> y. <strong>Test.</strong> Not run: needs a kernel.</li>', '')),  # one bridge
-            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>d{ok}</li>', '<li>d</li>')),  # untested
+            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li data-pick>d{ok}</li>', '<li data-pick>d</li>')),  # untested
             record(['research'] * 6, reviewed, general=general + leads.replace(OBSTACLE, '')),  # no obstacle
             record(['research'] * 6, reviewed, general=general + leads.replace(
-                f'<li>a{ok}</li>', '<li>a <strong>Test.</strong> Passed.</li>')),  # item not aimed at the obstacle
+                f'<li data-pick>a{ok}</li>', '<li data-pick>a <strong>Test.</strong> Passed.</li>')),  # item not aimed at the obstacle
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
@@ -358,8 +358,8 @@ sys.exit(compute.main())
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
         body = ('<p><strong>General statement.</strong> For every level the kernel is spanned by short elements '
                 '(conj:fixture-general).</p>' + OBSTACLE
-                + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
-                f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e{ok}</li></ul>')
+                + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li>c{ok}</li></ul>'
+                f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li>e{ok}</li></ul>')
         across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged.</li><li>Statement 2: unchanged.</li>'
                   '</ul><p><strong>Decision.</strong> Core: the window.</p>')
         def record(earlier, scope='', extra=''):

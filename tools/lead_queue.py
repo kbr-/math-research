@@ -6,7 +6,9 @@ the living section <section id="lead-queue">, the last section before the Resear
 budget (notebook_context.py skips it) and restoration reads only its head (resume.py).  Rules, checked by
 finish-turn.py against HEAD:
 
-- The queue holds passed review items once each.  A review appends its newly passed items at the end.
+- The queue holds passed review items once each.  A review appends its newly passed items at the end; a review
+  that marks picks (<li data-pick>: its two most promising passed leads and one bridge, user, 9 October 2026:
+  "pick the most promising 2 leads and 1 bridge and drop the rest immediately") appends only those.
 - A research entry develops at most one item, always the head, tagged data-lead or data-bridge="ANCHOR:N",
   and states <strong>Follow-up.</strong> Closed (a reason the attempt found), Developed (no remaining
   application to an open statement) or Continuing (it still bears on one; user, 3 October 2026: squeeze
@@ -15,8 +17,8 @@ finish-turn.py against HEAD:
   restored from scratch each time, and then moves to the tail.
 - Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
   one at a time"): every item is developed in its own entry.  Older entries' <h4>Queue triage</h4> lists are still
-  read as history; a new entry with one is refused.  Research entries may also carry Outside leads and Absurd
-  bridges; their passed items join the tail like a review's.
+  read as history; a new entry with one is refused.  Older research entries' own Outside leads and Absurd bridges
+  joined the tail like a review's; new research entries carry none (user, 9 October 2026).
 - A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
   the standard sections, each <li data-source="REVIEW-ANCHOR">; all its items are queued, at their source's
   place in record order when the queue is created.
@@ -602,9 +604,10 @@ def place_arrivals(body, nodes, tag, text, listed, reopened):
 
 
 def arrivals_of(tag, text):
-    """Items one article adds, as (kind, id): its passed Outside leads and Absurd bridges (reviews, research
-    entries, which may carry their own, user, 3 October 2026, and audits, all of whose items are queued), then
-    the Sub-ideas any entry lists (no test: when unsure, queue it)."""
+    """Items one article adds, as (kind, id): its passed Outside leads and Absurd bridges (reviews, older research
+    entries, which carried their own, user, 3 October 2026, and audits, all of whose items are queued), then the
+    Sub-ideas any entry lists (no test: when unsure, queue it).  A section that marks picks (<li data-pick>)
+    adds only its picks; the other items are dropped (user, 9 October 2026)."""
     ident = re.search(r'\bid="([^"]+)"', tag)
     if not ident:
         return []
@@ -617,7 +620,10 @@ def arrivals_of(tag, text):
             continue
         walked.add(kind.listed)     # a list several kinds share (Sub-ideas) is walked once, in its order
         subs = {k.name for k in KINDS.values() if k.sub and k.listed is kind.listed}
+        picking = not kind.sub and re.search(r'<li\b[^>]*\bdata-pick\b', section.group(1))
         for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', section.group(1), re.S), 1):
+            if picking and not re.match(r'[^>]*\bdata-pick\b', item):
+                continue
             if kind.sub:
                 sub = re.match(r'[^>]*\bdata-sub="([^"]+)"', item)
                 if sub and sub.group(1) in subs:

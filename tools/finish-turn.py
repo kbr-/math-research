@@ -81,7 +81,10 @@ def validate_route(body, article):
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
-RESEARCH_ITEMS_MAX = 1   # per section, in a research entry (user, 3 October 2026)
+# A review queues only its most promising passed items, marked <li data-pick>: PICKS per section, the rest dropped
+# (user, 9 October 2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately").
+PICKS = {'Outside leads': 2, 'Absurd bridges': 1}
+PICK_RE = re.compile(r'^[^>]*\bdata-pick\b')
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
 OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
 OBSTACLE_MIN = 80
@@ -97,19 +100,12 @@ def validate_leads(body, article, close):
     if not re.search(r'data-route-item="', body):
         return
     if entry_tags(body, article)['kind'] == 'research':
-        # A research entry may carry at most one Outside lead and one Absurd bridge that its work turned up
-        # (user, 3 October 2026); each still answers and tests like a review's, and a passed one joins the queue.
+        # Research entries no longer carry their own Outside leads or Absurd bridges (user, 9 October 2026:
+        # "drop the \"at most one lead and at most one bridge\" produced by regular cycle"); only reviews add them.
         for pattern, heading in ((LEADS_RE, 'Outside leads'), (BRIDGES_RE, 'Absurd bridges')):
-            found = pattern.search(body, article, close)
-            if found is None:
-                continue
-            items = re.findall(r'<li\b(.*?)</li>', found.group(1), re.S)
-            if len(items) > RESEARCH_ITEMS_MAX:
-                raise ValueError(f'A research entry carries at most {RESEARCH_ITEMS_MAX} item under {heading} '
-                                 '(user, 3 October 2026); route reviews have minimums and no upper bound')
-            if any('<strong>Answers.</strong>' not in item or not TEST_RE.search(item) for item in items):
-                raise ValueError(f'{heading} items of a research entry need "<strong>Answers.</strong>" and a '
-                                 '"<strong>Test.</strong>" outcome, as in a review (AGENTS.md)')
+            if pattern.search(body, article, close) is not None:
+                raise ValueError(f'A research entry has no <h4>{heading}</h4> section (user, 9 October 2026): '
+                                 'only route reviews propose leads and bridges; list undone work under Sub-ideas')
         return
     if entry_tags(body, article)['kind'] == 'audit':
         # A queue audit lists ideas that earlier reviews named outside the standard sections; each item cites
@@ -155,6 +151,14 @@ def validate_leads(body, article, close):
             raise ValueError(f'{heading} item(s) {untested} lack a test outcome: run each cheap test in the '
                              'review cycle and end the item with "<strong>Test.</strong> Passed ...", '
                              '"Falsified ..." or "Not run: <reason>" (AGENTS.md); falsified items stay and count')
+        # Only the most promising passed items are queued; the rest are dropped at once.
+        passed = [i for i, item in enumerate(items, 1) if (TEST_RE.search(item) or [None, None])[1] == 'Passed']
+        picks = [i for i, item in enumerate(items, 1) if PICK_RE.search(item)]
+        want = min(PICKS[heading], len(passed))
+        if not set(picks) <= set(passed) or len(picks) != want:
+            raise ValueError(f'Mark the {want} most promising passed {heading} item(s) with <li data-pick> '
+                             f'(at most {PICKS[heading]}; passed: {passed or "none"}, marked: {picks or "none"}): '
+                             'only picks join the lead queue, the rest are dropped (user, 9 October 2026)')
 
 
 OPEN_ITEMS_RE = re.compile(r'\bdata-open-items="(\d+)"')

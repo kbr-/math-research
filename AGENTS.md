@@ -224,11 +224,13 @@ rules to growing checklists or one-off setup narratives.
   translation. Run every cheap test named in these sections within the review cycle itself, and end
   each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
   the reason (the finisher checks this); falsified items stay listed and count toward the minimums
-  (user, 25 September 2026). A passed bridge or passed Outside lead is a lead to develop, not only to
-  list, and none is dropped (user, 3 October 2026): every passed, unclosed item waits in the notebook's
+  (user, 25 September 2026). The review then marks its two most promising passed Outside leads and its
+  most promising passed bridge with `<li data-pick>`; only these are queued and the rest are dropped at once
+  (user, 9 October 2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately"). A
+  picked item is a lead to develop, not only to list: every picked, unclosed item waits in the notebook's
   **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no word budget;
   restoration reads its first five items), FIFO, maintained per [tools/lead_queue.py](tools/lead_queue.py).
-  A review appends its newly passed items at the end. A research entry develops at most one item, always
+  A review appends its picks at the end. A research entry develops at most one item, always
   the head, tagged `data-lead` or `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>`
   Closed, Developed or Continuing. Squeeze an item until it can produce nothing more, not until its first
   usable result (user, 3 October 2026): Continuing whenever its translation still bears on an open
@@ -239,9 +241,8 @@ rules to growing checklists or one-off setup narratives.
   consecutive research entries, so its context is not rebuilt each cycle, and then moves to the tail
   (user, 3 October 2026). Every item, also during backpressure, is developed in its own entry; batch
   triage is retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a
-  time"). A research entry may carry at most one Outside
-  lead and one Absurd bridge its work turned up, tested and answered as in a review; a passed one joins the
-  tail. An item closed too early
+  time"). Research entries carry no Outside leads or Absurd bridges of their own (user, 9 October 2026);
+  undone work they name goes under Sub-ideas. An item closed too early
   is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
   to the tail (`lead_queue.py append`). A queue audit (`data-kind="audit"`, outside the review cadence) lists
   ideas that older reviews named outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`;

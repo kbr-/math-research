@@ -105,8 +105,8 @@ SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user,
            'while it still bears on an open statement, with the concrete next attempt named and made where '
            'possible; Developed only when no application to an open statement remains; Closed only for a reason '
            'the attempt found (restatement, inapplicability, falsification, supersession). Every item gets its own '
-           'entry; batch triage is retired (user, 9 October 2026). A '
-           'research entry may add one Outside lead and one Absurd bridge of its own. Any entry lists the questions, '
+           'entry; batch triage is retired (user, 9 October 2026). Only '
+           'route reviews propose Outside leads and Absurd bridges; research entries carry none. Any entry lists the questions, '
            'checks and builds it names and leaves undone under <h4>Sub-ideas</h4> (data-sub="check" or "build"); '
            'lead_queue.py append queues them under the item they belong to.')
 
@@ -131,7 +131,8 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
              'or anything else (Absurd bridges). Every route review lists at least three '
              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
-             'outcome (falsified items still count).']
+             'outcome (falsified items still count); it marks its two most promising passed leads and one bridge '
+             'with <li data-pick>, which alone join the queue (user, 9 October 2026).']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     notes += queue_notes(body)
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']

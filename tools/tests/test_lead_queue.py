@@ -301,6 +301,13 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([entry]))[0]),
                          [('lead', 'w:1'), ('check', 'w:s1'), ('build', 'w:s2')])
 
+    def test_a_review_with_picks_queues_only_its_picks(self):
+        entry = ('<article id="w" data-kind="review" data-route="step"><h4>Outside leads</h4><ul><li data-pick>A' + PASS
+                 + '</li><li>B' + PASS + '</li><li data-pick>C' + PASS + '</li></ul><h4>Absurd bridges</h4><ul><li>D'
+                 + PASS + '</li><li data-pick>E' + PASS + '</li></ul></article>')
+        self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([entry]))[0]),
+                         [('lead', 'w:1'), ('lead', 'w:3'), ('bridge', 'w:2')])
+
     def test_init_seeds_listed_subideas(self):
         listing = subideas('t1', [('check', 'c')])
         self.assertEqual(lq.open_items(notebook([self.rev, listing])), self.q + [('check', 't1:s1')])

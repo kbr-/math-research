@@ -25,21 +25,50 @@ def body(leads=(), bridges=()):
 
 
 class ResearchLeadsTest(unittest.TestCase):
-    """Research entries may carry one Outside lead and one Absurd bridge (user, 3 October 2026)."""
+    """Research entries carry no Outside leads or Absurd bridges (user, 9 October 2026)."""
 
-    def test_one_of_each_is_allowed(self):
-        FT.validate_leads(*body([ITEM], [ITEM]))
+    def test_any_lead_or_bridge_is_refused(self):
         FT.validate_leads(*body())
-
-    def test_more_than_one_is_refused(self):
-        for case in (body([ITEM, ITEM]), body((), [ITEM, ITEM])):
+        for case in (body([ITEM]), body((), [ITEM]), body([ITEM], [ITEM])):
             with self.assertRaises(ValueError):
                 FT.validate_leads(*case)
 
-    def test_items_still_answer_and_test(self):
-        with self.assertRaises(ValueError):
-            FT.validate_leads(*body(['<li>A lead. <strong>Test.</strong> Passed.</li>']))
 
+OK = ' <strong>Answers.</strong> It would. <strong>Test.</strong> '
+OBSTACLE = ('<h4>Obstacle</h4><p>No recorded mechanism bounds the residual regularity uniformly in the degree, '
+            'which the first step needs.</p>')
+
+
+def review(leads, bridges):
+    """A route review whose items are (outcome, picked) pairs."""
+    li = lambda items: ''.join(f'<li{" data-pick" if pick else ""}>x{OK}{outcome}.</li>' for outcome, pick in items)
+    text = ('<li data-route-item="step">x</li><section id="research-record"><article id="r" data-kind="review" '
+            'data-route="step">' + OBSTACLE + '<h4>Outside leads</h4><ul>' + li(leads) + '</ul><h4>Absurd bridges'
+            '</h4><ul>' + li(bridges) + '</ul></article></section>')
+    start = text.index('<article')
+    return text, start, text.index('</article>', start)
+
+
+class ReviewPicksTest(unittest.TestCase):
+    """A review marks its two most promising passed leads and one bridge; only these are queued (user, 9 October
+    2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately")."""
+
+    P, F = 'Passed', 'Falsified'
+
+    def test_exact_picks_are_accepted(self):
+        P, F = self.P, self.F
+        FT.validate_leads(*review([(P, 1), (P, 0), (P, 1)], [(P, 0), (P, 1)]))
+        FT.validate_leads(*review([(P, 1), (F, 0), (F, 0)], [(F, 0), (F, 0)]))     # fewer passed, fewer picks
+
+    def test_wrong_picks_are_refused(self):
+        P, F = self.P, self.F
+        for leads, bridges in (([(P, 0), (P, 0), (P, 0)], [(P, 1), (F, 0)]),       # no lead picked
+                               ([(P, 1), (P, 1), (P, 1)], [(P, 1), (F, 0)]),       # three leads picked
+                               ([(P, 1), (P, 1), (F, 0)], [(P, 1), (P, 1)]),       # two bridges picked
+                               ([(P, 1), (F, 1), (F, 0)], [(P, 1), (F, 0)]),       # a falsified item picked
+                               ([(P, 1), (P, 1), (F, 0)], [(P, 0), (F, 0)])):      # passed bridge not picked
+            with self.assertRaises(ValueError):
+                FT.validate_leads(*review(leads, bridges))
 
 
 class AuditLeadsTest(unittest.TestCase):
