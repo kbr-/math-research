@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import uuid
 
 from codex_runtime import Client, NativeError, verify_isolation
 from codex_state import atomic_json
@@ -23,6 +24,10 @@ def reviewer_brief(root):
 
 async def review(client, root, state, text, close=False, model=None):
     saved = json.loads(state.read_text()) if state.exists() else None
+    if saved:
+        if saved['root'] != str(root):
+            raise NativeError('Reviewer handle belongs to another checkout')
+        uuid.UUID(saved['thread'])
     if close:
         if not saved:
             raise NativeError('No owned reviewer with this handle')
@@ -31,8 +36,6 @@ async def review(client, root, state, text, close=False, model=None):
         return 'Owned reviewer archived.'
     config = await client.isolation_config(root, 'medium')
     if saved:
-        if saved['root'] != str(root):
-            raise NativeError('Reviewer handle belongs to another checkout')
         response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True,
             'approvalPolicy': 'never', 'permissions': ':read-only', 'config': config})
     else:
@@ -43,8 +46,15 @@ async def review(client, root, state, text, close=False, model=None):
         if model:
             params['model'] = model
         response = await client.call('thread/start', params)
-        # Persist before inference, so an interrupted controller never loses its owned session.
-        atomic_json(state, {'thread': response['thread']['id'], 'root': str(root)})
+    ident = str(uuid.UUID(response['thread']['id']))
+    if Path(response['cwd']).resolve() != root or (saved and ident != saved['thread']):
+        raise NativeError('Native reviewer response belongs to a different thread or checkout')
+    if not saved:
+        # Preserve ownership before inference; materialize without spending model tokens.
+        atomic_json(state, {'thread': ident, 'root': str(root)})
+        await client.call('thread/inject_items', {'threadId': ident, 'items': [{
+            'type': 'message', 'role': 'user', 'content': [{'type': 'input_text',
+            'text': 'External reviewer initialized. Await the supplied review brief.'}]}]})
     verify_isolation(response, 'medium')
     return await client.turn(response['thread']['id'], text, 'medium')
 

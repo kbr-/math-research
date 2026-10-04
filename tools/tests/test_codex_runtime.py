@@ -227,12 +227,12 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             source.parent.mkdir(parents=True);source.write_text('---\nname: role\n---\nCanonical brief')
             binding = root/'.codex-session-id';binding.write_text('parent')
             state = root/'review.json'
-            response = {'thread': {'id': 'reviewer'}, 'reasoningEffort': 'medium',
+            response = {'cwd': str(root), 'thread': {'id': '11111111-2222-3333-4444-555555555555'}, 'reasoningEffort': 'medium',
                         'approvalPolicy': 'never', 'sandbox': {'type': 'readOnly', 'networkAccess': False}}
             client = AsyncMock();client.call.return_value = response;client.turn.return_value = 'pass'
             client.isolation_config.return_value = isolated_config('medium')
             self.assertEqual(await reviewer.review(client, root, state, 'supplied excerpts', model='selected'), 'pass')
-            method, params = client.call.call_args.args
+            method, params = client.call.call_args_list[0].args
             self.assertEqual(method, 'thread/start')
             self.assertEqual(params['baseInstructions'], 'Canonical brief')
             self.assertEqual(params['cwd'], str(root))
@@ -243,25 +243,43 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn('sandbox', params)
             self.assertEqual(params['approvalPolicy'], 'never')
             self.assertEqual(params['config']['model_reasoning_effort'], 'medium')
-            client.turn.assert_awaited_once_with('reviewer', 'supplied excerpts', 'medium')
-            self.assertEqual(json.loads(state.read_text())['thread'], 'reviewer')
+            client.turn.assert_awaited_once_with('11111111-2222-3333-4444-555555555555', 'supplied excerpts', 'medium')
+            self.assertEqual(json.loads(state.read_text())['thread'], '11111111-2222-3333-4444-555555555555')
             await reviewer.review(client, root, state, 'concrete correction')
-            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': 'reviewer', 'excludeTurns': True,
+            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': '11111111-2222-3333-4444-555555555555', 'excludeTurns': True,
                 'approvalPolicy':'never','permissions':':read-only','config':isolated_config('medium')}))
             await reviewer.review(client, root, state, '', close=True)
-            self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': 'reviewer'}))
+            self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': '11111111-2222-3333-4444-555555555555'}))
             self.assertFalse(state.exists());self.assertEqual(binding.read_text(), 'parent')
 
     async def test_misconfigured_reviewer_never_receives_brief_and_remains_owned(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp);state = root/'review.json'
-            state.write_text(json.dumps({'root': str(root), 'thread': 'reviewer'}))
-            client = AsyncMock();client.call.return_value = {'thread': {'id': 'reviewer'},
+            state.write_text(json.dumps({'root': str(root), 'thread': '11111111-2222-3333-4444-555555555555'}))
+            client = AsyncMock();client.call.return_value = {'cwd': str(root), 'thread': {'id': '11111111-2222-3333-4444-555555555555'},
                 'reasoningEffort': 'high', 'approvalPolicy': 'never',
                 'sandbox': {'type': 'readOnly', 'networkAccess': False}}
             with self.assertRaises(NativeError):
                 await reviewer.review(client, root, state, 'secret brief')
             client.turn.assert_not_awaited();self.assertTrue(state.exists())
+
+    async def test_reviewer_rejects_wrong_identity_before_binding_or_brief(self):
+        ident='11111111-2222-3333-4444-555555555555'
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);source=root/'.claude/agents/medium-reviewer.md';source.parent.mkdir(parents=True)
+            source.write_text('---\nname: role\n---\nReview only the brief')
+            state=root/'review.json';client=AsyncMock();client.isolation_config.return_value=isolated_config('medium')
+            for response in ({'thread':{'id':'invalid'},'cwd':str(root)},
+                             {'thread':{'id':ident},'cwd':'/other'}):
+                client.call.return_value=response
+                with self.assertRaises((ValueError,NativeError)):
+                    await reviewer.review(client,root,state,'secret')
+                self.assertFalse(state.exists());client.turn.assert_not_awaited()
+            state.write_text(json.dumps({'thread':ident,'root':str(root)}))
+            client.call.return_value={'thread':{'id':'11111111-2222-3333-4444-666666666666'},'cwd':str(root)}
+            with self.assertRaises(NativeError):await reviewer.review(client,root,state,'secret')
+            client.turn.assert_not_awaited()
+            self.assertEqual(json.loads(state.read_text())['thread'],ident)
 
 
 class ReviewerCLITest(unittest.TestCase):
