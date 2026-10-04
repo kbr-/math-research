@@ -25,6 +25,19 @@ class CodexRegistrationTest(unittest.TestCase):
         self.skill.parent.mkdir(parents=True)
         self.skill.write_text('A single authoritative skill')
 
+    def test_native_instruction_budget_covers_complete_file(self):
+        spec=importlib.util.spec_from_file_location('checkout_budget',ROOT/'tools/verify-checkout.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        (self.root/'.codex').mkdir(exist_ok=True)
+        config=self.root/'.codex/config.toml';instructions=self.root/'AGENTS.md'
+        config.write_text('# native context\nproject_doc_max_bytes = 10\n[features]\nhooks = true\n')
+        instructions.write_bytes(b'x'*10)
+        self.assertTrue(module.instruction_budget(self.root))
+        instructions.write_bytes(b'x'*11)
+        self.assertFalse(module.instruction_budget(self.root))
+        config.write_text('[features]\nproject_doc_max_bytes = 100\n')
+        self.assertFalse(module.instruction_budget(self.root))
+
     def test_relative_links_are_idempotent_and_use_present_sources(self):
         source = self.root/'skills/Capital-Skill'
         source.mkdir();(source/'SKILL.md').write_text('another source')

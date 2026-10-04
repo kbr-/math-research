@@ -22,6 +22,12 @@ def digest(path):
     return value.hexdigest()
 
 
+def instruction_budget(root):
+    config = re.split(r'(?m)^\s*\[', (root/'.codex/config.toml').read_text(), maxsplit=1)[0]
+    limit = re.search(r'^project_doc_max_bytes\s*=\s*(\d+)\s*$', config, re.M)
+    return bool(limit) and (root/'AGENTS.md').stat().st_size <= int(limit[1])
+
+
 def skill_descriptor(root, name):
     if not re.fullmatch(r'\.agents/skills/[A-Za-z0-9_-]+', name):
         return False
@@ -95,6 +101,8 @@ def main():
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
                 'ATTRIBUTION.md', 'CITATION.cff', 'THIRD_PARTY_NOTICES.md']
     failures += ['Untracked essential file: ' + name for name in required if name not in tracked]
+    if not instruction_budget(ROOT):
+        failures.append('Native project_doc_max_bytes does not cover the complete AGENTS.md')
     forbidden = ['.codex-session-id', '.claude-session-id', 'php_codex_handoff.zip']
     failures += ['Machine-local or redundant file tracked: ' + name for name in forbidden if name in tracked]
     for name in tracked:
