@@ -121,7 +121,9 @@ rules to growing checklists or one-off setup narratives.
   In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
   reasoning, regardless of the main agent's reasoning level; do not inherit its
   high or higher setting. Claude Code uses the committed `medium-reviewer` agent
-  type (`.claude/agents/medium-reviewer.md`, loaded at session start). If medium
+  type (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses
+  `tools/codex_reviewer.py` with an owned handle and brief file; see [the native reviewer](tools/CODEX.md).
+  This creates an isolated root reviewer because child agents inherit live parent permissions. If medium
   effort is unavailable, never substitute a higher-effort reviewer: leave the gate
   incomplete (conditional status) and file a user request.
   Resolve every reported gap and drop or justify each unused hypothesis. Brief

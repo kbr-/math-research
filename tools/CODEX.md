@@ -34,3 +34,14 @@ are preserved with an error. Nothing is installed globally. Commit canonical rel
 clones discover them without a launcher. The verifier admits only links to that checkout's
 `skills/NAME/SKILL.md`; the runtime ownership manifest remains ignored. Keep private links and
 skill text on their private branch.
+
+Use `python3 tools/codex_reviewer.py --handle NAME --brief FILE` for a fresh reviewer.
+The helper uses the running authenticated daemon and the installed `websockets` package;
+it never starts or reconfigures the daemon. Run inference through `compute.sh`. The native
+root session has medium effort, read-only filesystem access and no approval escalation;
+its effective policy is checked before sending the brief. Its instructions come from the
+body of `.claude/agents/medium-reviewer.md`, not the parent conversation. Native child agents
+inherit the parent's live permission overrides, so a custom child profile alone does not
+provide this isolation. Reuse the handle only for a concrete correction to the same review;
+`--close` archives that owned session. An interrupted review keeps its local handle for
+recovery. Reviewer handles never replace `.codex-session-id`.
