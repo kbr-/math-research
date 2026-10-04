@@ -237,11 +237,9 @@ rules to growing checklists or one-off setup narratives.
   (a restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
   result). Closed and Developed remove the item. A Continuing item keeps the head for up to four
   consecutive research entries, so its context is not rebuilt each cycle, and then moves to the tail
-  (user, 3 October 2026). During backpressure a research entry may instead settle a batch of up to four
-  head items, in order, under `<h4>Queue triage</h4>` (`lead_queue.py triage`), each with the same care and
-  attention it would get worked on alone: its own block of at least 80 words saying what was checked and
-  why, its evidence cited, outcome Closed or Developed only; an item still bearing on an open statement ends
-  the batch and gets its own spell (user, 3 October 2026). A research entry may carry at most one Outside
+  (user, 3 October 2026). Every item, also during backpressure, is developed in its own entry; batch
+  triage is retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a
+  time"). A research entry may carry at most one Outside
   lead and one Absurd bridge its work turned up, tested and answered as in a review; a passed one joins the
   tail. An item closed too early
   is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes

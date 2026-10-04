@@ -13,10 +13,10 @@ finish-turn.py against HEAD:
   items, do not close them at their first usable result).  Closed and Developed remove the item; a
   Continuing item keeps the head for up to SPELL consecutive research entries, so its context is not
   restored from scratch each time, and then moves to the tail.
-- A research entry may instead settle a batch of the first items (at most TRIAGE_MAX) under <h4>Queue triage</h4>,
-  one <li data-lead="ANCHOR:N"> block each, with the care each would get alone: at least TRIAGE_WORDS words, cited
-  evidence, outcome Closed or Developed only.  Research entries may also carry Outside leads and Absurd bridges;
-  their passed items join the tail like a review's.
+- Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
+  one at a time"): every item is developed in its own entry.  Older entries' <h4>Queue triage</h4> lists are still
+  read as history; a new entry with one is refused.  Research entries may also carry Outside leads and Absurd
+  bridges; their passed items join the tail like a review's.
 - A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
   the standard sections, each <li data-source="REVIEW-ANCHOR">; all its items are queued, at their source's
   place in record order when the queue is created.
@@ -57,7 +57,6 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
-       lead_queue.py triage NOTEBOOK.html  (after appending an entry with a Queue triage batch)
        lead_queue.py append NOTEBOOK.html  (after the last entry, and done: items its follow-up list closes leave,
                                             its newly listed items join the queue, the items it reopens go to
                                             the tail, its Waiting and Unblocked marks apply)
@@ -78,10 +77,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
 SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
-# A research entry may settle the first TRIAGE_MAX queue items at once (user, 3 October 2026), each with the care
-# it would get alone: its own block of at least TRIAGE_WORDS words citing its evidence, outcome Closed or Developed
-# only; an item still bearing on an open statement is not batched but gets its own spell.
-TRIAGE_MAX, TRIAGE_WORDS = 4, 80
+# Queue triage batches (3 October 2026) are retired (user, 9 October 2026): batched items were closed by record
+# matches without the attempt a single-item entry makes.  TRIAGE_RE still reads the batches of older entries.
+TRIAGE_RETIRED = ('Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each '
+                  'item was done one at a time"): develop the head in its own entry (data-lead or data-bridge)')
 TRIAGE_RE = re.compile(r'<h4>Queue triage</h4>\s*<ul>(.*?)</ul>', re.S)
 CLAIM_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|check|ex|def|obs|local):[A-Za-z0-9.-]+')
 EVIDENCE_RE = re.compile(CLAIM_RE.pattern + r'|href="(?!https?:|mailto:)[^"]+"')
@@ -762,29 +761,6 @@ def item_text(body, kind, ident):
     return html.escape(short + ('…' if len(short) < len(text) else ''), quote=False)
 
 
-def check_triage(batch, old):
-    """The rigor rules of a Queue triage batch against the queue's top-level Nodes `old` before the entry."""
-    if len(batch) > TRIAGE_MAX:
-        raise ValueError(f'A Queue triage batch settles at most {TRIAGE_MAX} items, each with full care')
-    items = [b[0] for b in batch]
-    active = [n for n in old if not n.waits]
-    if items != [n.item for n in active[:len(items)]]:
-        raise ValueError('A Queue triage batch takes the first items of the queue not waiting on the user, in '
-                         'order: expected ' + ', '.join(n.ident for n in active[:len(items)]))
-    for ((kind, ident), outcome, words, evidence, _), node in zip(batch, active):
-        if outcome not in ('Closed', 'Developed'):
-            raise ValueError(f'Triage item {ident}: a batch only closes or develops ("<strong>Follow-up.</strong> '
-                             'Closed: ..." or "Developed ..."); an item still bearing on an open statement gets its '
-                             'own spell, so end the batch before it')
-        if outcome == 'Developed' and node.children:
-            raise ValueError(f'Triage item {ident} still has open sub-ideas, so it is not Developed')
-        if words < TRIAGE_WORDS:
-            raise ValueError(f'Triage item {ident}: {words} words; each batched item gets the care it would get '
-                             f'alone, at least {TRIAGE_WORDS} words of what was checked and why (user, 3 October 2026)')
-        if not evidence:
-            raise ValueError(f'Triage item {ident}: cite the evidence for the outcome (a claim ID, an entry '
-                             'anchor link or a repository file)')
-
 
 def open_tree(body):
     """The queue's initial contents: listed items, in record order, that no follow-up list item has Closed (and
@@ -944,7 +920,7 @@ def check(head_body, body, path=None, root=None):
     was_draining, old = before
     old = settle(head_body, [n.copy() for n in old])
     if batch:
-        check_triage(batch, old)
+        raise ValueError(TRIAGE_RETIRED)
     closed, developed = listed_closures(tag, text)
     listed_developed = [i for k, i in developed if (k, i) in every_item(old)]
     if listed_developed:
@@ -1077,25 +1053,6 @@ def done(body, outcome):
     return rewrite(body, nodes, draining_after(was, nodes))
 
 
-def settle_triage(body):
-    """The notebook with the last entry's Queue triage items removed from the queue's head."""
-    found = parse_tree(body)
-    if found is None:
-        raise ValueError('No lead and bridge queue')
-    draining, nodes = found
-    was = draining or len(nodes) >= CAP
-    articles = record_articles(body)
-    tag, text = articles[-1] if articles else ('', '')
-    batch = triaged(tag, text)
-    if not batch:
-        raise ValueError('The last entry has no Queue triage list')
-    check_triage(batch, nodes)
-    promoted = []
-    for item in [b[0] for b in batch]:
-        close(nodes, item, kept_children(text), promoted)
-    nodes += promoted
-    return rewrite(body, nodes, draining_after(was, nodes)), len(batch)
-
 
 def append_new(body):
     """The notebook with the items the last entry's follow-up list marks Closed removed (their sub-ideas with
@@ -1168,11 +1125,8 @@ def main(argv):
         print(f'Appended {count} items; ' + head_lines(body, 0)[0])
         return 0
     if len(argv) == 3 and argv[1] == 'triage':
-        path = Path(argv[2])
-        body, count = settle_triage(path.read_text())
-        path.write_text(body)
-        print(f'Settled {count} items; ' + '\n'.join(head_lines(body, 1)))
-        return 0
+        print(TRIAGE_RETIRED, file=sys.stderr)
+        return 1
     if len(argv) == 4 and argv[1] == 'done':
         path = Path(argv[2])
         path.write_text(done(path.read_text(), argv[3]))

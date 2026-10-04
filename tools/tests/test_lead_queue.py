@@ -191,27 +191,17 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([self.rev, research(self.q[0], 'Developed'), stray],
                                     [self.q[1], ('lead', 'r9:1')]))
 
-    def test_triage_batch_settles_a_prefix_with_full_care(self):
+    def test_triage_batches_are_retired(self):
         rev = review('r1', [PASS, PASS, PASS])
         q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
         head = notebook([rev], q)
         careful = ' '.join(['checked'] * 85)
-
-        def batch(*items):
-            body = ''.join(f'<li data-lead="{i}">{text} <strong>Follow-up.</strong> {outcome}: reason.</li>'
-                           for i, outcome, text in items)
-            return f'<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul>{body}</ul></article>'
-        good = batch(('r1:1', 'Closed', careful + ' lem:x-y'), ('r1:2', 'Developed', careful + ' <a href="#e">e</a>'))
-        after = notebook([rev, good], q)
-        body, count = lq.settle_triage(after)
-        self.assertEqual((count, lq.parse(body)[1]), (2, q[2:]))
-        lq.check(head, body)
-        for bad, why in [(batch(('r1:2', 'Closed', careful + ' lem:x-y')), 'not the head'),
-                         (batch(('r1:1', 'Continuing', careful + ' lem:x-y')), 'Continuing is not batched'),
-                         (batch(('r1:1', 'Closed', 'too short lem:x-y')), 'too short'),
-                         (batch(('r1:1', 'Closed', careful)), 'no evidence')]:
-            with self.subTest(why=why), self.assertRaises(ValueError):
-                lq.check(head, notebook([rev, bad], q[1:]))
+        batch = ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul>'
+                 f'<li data-lead="r1:1">{careful} lem:x-y <strong>Follow-up.</strong> Closed: reason.</li></ul></article>')
+        with self.assertRaisesRegex(ValueError, 'retired'):        # user, 9 October 2026: one item per entry
+            lq.check(head, notebook([rev, batch], q[1:]))
+        lq.check(notebook([rev, batch], q[1:]), notebook([rev, batch], q[1:]))   # an older batch is history
+        self.assertEqual(lq.main(['lead_queue.py', 'triage', 'nb.html']), 1)
 
     def test_research_entries_add_passed_items(self):
         head = notebook([self.rev], self.q)
@@ -509,14 +499,6 @@ class LeadQueueTest(unittest.TestCase):
         many = [(queue[0], [('check', f'k:s{n}') for n in range(1, 6)])] + queue[1:]
         before = notebook([rev], many)
         self.assertEqual(lq.parse(before)[1], queue)                     # 49 top-level items: not draining
-        careful = ' '.join(['checked'] * 85) + ' lem:x-y'
-        triage = ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul><li data-lead="r1:1">'
-                  + careful + ' <strong>Follow-up.</strong> {}: reason.</li></ul></article>')
-        with self.assertRaises(ValueError):                             # a parent with sub-ideas is not Developed
-            lq.check(before, notebook([rev, triage.format('Developed')], queue[1:]))
-        body, count = lq.settle_triage(notebook([rev, triage.format('Closed')], many))
-        self.assertEqual((count, lq.parse(body)[1]), (1, queue[1:]))     # its sub-ideas close with it
-        lq.check(before, body)
         flat = notebook([rev], queue)                                    # 49 top-level items, no sub-ideas yet
         listing = developing(queue[0], 'Continuing', '<h4>Sub-ideas</h4><ul>' + '<li data-sub="check">c</li>' * 5
                              + '</ul>')
@@ -626,7 +608,7 @@ class LeadQueueTest(unittest.TestCase):
         for why, (entry, message) in refused.items():
             with self.subTest(why), self.assertRaisesRegex(ValueError, message):
                 lq.check(head, notebook([rev, entry], new))
-        triage = ('<h4>Queue triage</h4><ul><li data-lead="r1:1">' + 'word ' * lq.TRIAGE_WORDS + ' (<a href="#r1">'
+        triage = ('<h4>Queue triage</h4><ul><li data-lead="r1:1">' + 'word ' * 85 + ' (<a href="#r1">'
                   'r1</a>) <strong>Follow-up.</strong> Closed: x.</li></ul>')
         with self.assertRaises(ValueError):                             # with a triage batch
             lq.check(head, notebook([rev, order(new[:2], tag='data-kind="research" data-picked="user"',
@@ -686,15 +668,6 @@ class LeadQueueTest(unittest.TestCase):
         rev = review('r1', [PASS, PASS, PASS])
         q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
         waiting_head = notebook([rev], q).replace('data-lead="r1:1">', 'data-lead="r1:1" data-waits="x">')
-        careful = ' '.join(['checked'] * 85) + ' lem:x-y'
-        triage = lambda ident: ('<article id="t" data-kind="research" data-route="step"><h4>Queue triage</h4><ul>'
-                                f'<li data-lead="{ident}">{careful} <strong>Follow-up.</strong> Closed: reason.</li>'
-                                '</ul></article>')
-        body, _ = lq.settle_triage(waiting_head.replace('</article></section>', '</article>' + triage('r1:2')
-                                                        + '</section>'))
-        lq.check(waiting_head, body)
-        with self.assertRaises(ValueError):
-            lq.settle_triage(waiting_head.replace('</article></section>', '</article>' + triage('r1:1') + '</section>'))
         nameless = ('<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
                     'Follow-up.</strong> Waiting:</li></ul></article>')
         with self.assertRaises(ValueError):                             # a Waiting follow-up names its request
@@ -937,8 +910,9 @@ class LeadQueueTest(unittest.TestCase):
                                        f'<ul><li data-check="t1:s1">{careful} {evidence} <strong>Follow-up.</strong> '
                                        'Developed: answered.</li></ul></article>')
             head = notebook([listing], queue)
-            lq.check(head, notebook([listing, triage('<a href="#t1">the listing</a>')], queue[1:]),
-                     root / 'nb.html', root)
+            with self.assertRaisesRegex(ValueError, 'retired'):
+                lq.check(head, notebook([listing, triage('<a href="#t1">the listing</a>')], queue[1:]),
+                         root / 'nb.html', root)
             with self.assertRaises(ValueError):                         # a link that does not resolve
                 lq.check(head, notebook([listing, triage('<a href="#t1">x</a> <a href="#gone">y</a>')], queue[1:]),
                          root / 'nb.html', root)
