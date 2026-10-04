@@ -317,8 +317,10 @@ while command records remain unfinished.
   a sizing run before the full one. Stop each computation as soon as its question
   is decided; a closure checking derivability of 1 stops when 1 enters the span.
 - **Long runs go to the background** (user, 3 October 2026): start any run that may take
-  over a minute in the background and, as the very next step, arm a monitor on it: Claude
-  Code's Monitor tool with `python3 tools/watch_run.py SESSION` and a 30-minute timeout. It
+  over a minute in the background with an armed monitor. In Codex's functions.exec harness,
+  use [the native background bridge](tools/CODEX.md#background-monitoring), which acknowledges
+  the watcher before releasing the protected run and reports through notify. In Claude Code,
+  as the very next step arm the Monitor tool with `python3 tools/watch_run.py SESSION` and a 30-minute timeout. It
   reports the run's 5-minute mark and its end; keep working meanwhile. A run still going after
   5 minutes is a decision point, not a wait: find what it is doing (which step, memory),
   and stop it to optimize or redesign unless its measured progress justifies the rest.

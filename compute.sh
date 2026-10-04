@@ -374,11 +374,21 @@ def run_job(args, command):
     name = args.session or ('run_' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')
                             + '_' + uuid.uuid4().hex[:8])
     path = start_session(name) if automatic else session_path(name)
-    rid = uuid.uuid4().hex[:10]
+    rid = getattr(args, 'run_id', None) or uuid.uuid4().hex[:10]
+    if not re.fullmatch(r'[0-9a-f]{10,32}', rid):
+        raise ValueError('Invalid run ID')
+    native = os.environ.get('CODEX_THREAD_ID') if not os.environ.get('CLAUDE_CODE_SESSION_ID') else None
+    if native and (getattr(args, 'run_id', None) or args.timeout > 180 or (getattr(args, 'expect', None) or 0) > 60):
+        from watch_run import native_ready
+        if not native_ready(ROOT, name, rid, native):
+            raise ValueError('Long Codex runs require an armed harness watcher; see tools/CODEX.md')
     unit = f'mathcompute-job-{uuid.uuid4().hex}.service'
     log = LOGS / f'{name}-{rid}.output.txt'
     with locked(path):
-        ensure_active(read_events(path))
+        events = read_events(path)
+        ensure_active(events)
+        if any(e.get('event') == 'run_start' and e.get('id') == rid for e in events):
+            raise ValueError('Run ID already exists; refusing duplicate execution')
         add_event(path, 'run_start', id=rid, category=args.category, command=command,
                   output=str(log.relative_to(ROOT / 'research')), cwd=str(Path.cwd()),
                   systemd_unit=unit, threads=args.threads, timeout_s=args.timeout,
@@ -669,6 +679,7 @@ def sizing_error(events, sized_by, command, expect):
 
 
 def run_options(parser):
+    parser.add_argument('--run-id', help='Identity returned by an armed watcher')
     parser.add_argument('--threads', type=int, default=14)
     parser.add_argument('--timeout', type=float, default=180)
     parser.add_argument('--expect', type=float,

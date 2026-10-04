@@ -64,3 +64,28 @@ session. Detached mode returns after native acceptance; it does not claim restor
 finished. Normal mode attaches the terminal. Resume checks the saved working directory and does
 not override permissions. Run launchers outside agent shells: agent and worker invocations cannot
 replace the main binding. `remember-codex-session.py` now only verifies the externally saved ID.
+
+## Background monitoring
+
+In the functions.exec harness, evaluate tools/codex_monitor.js and call the returned function
+with tools, notify, yield_control, the absolute checkout root, a started timing session, and
+compute.sh arguments as a string array:
+
+```javascript
+const source = await tools.exec_command({cmd: "cat tools/codex_monitor.js", workdir: root});
+const monitor = eval(source.output);
+text(await monitor({tools, notify, yield_control, root, session,
+  args: ["--threads", "1", "--timeout", "180", "--", "python3", "calculation.py"]}));
+```
+
+The helper arms watch_run.py before releasing the protected job, yields the cell, and forwards
+its five-minute decision point, completion, and full controller output through notify. Continue
+independent work while the cell runs; reap it with functions.wait when complete. The launcher
+rejects long native runs without a live owned watcher and refuses duplicate run IDs.
+
+To cancel, run `python3 tools/watch_run.py --cancel RUN_ID` from the same checkout/thread,
+using the ID printed in WATCH_READY. This stops the recorded protected service and its children.
+Cancel before terminating or abandoning a cell: terminating JavaScript alone is not a service
+cancellation operation. Keep the cell alive until completion; delivery after session termination
+is not guaranteed. Operational state is ignored under research/logs/codex-watchers. These
+harness primitives do not create another agent, resume the owner, or inject synthetic user turns.
