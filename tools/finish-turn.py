@@ -506,6 +506,10 @@ def scratchpad(env=os.environ, home=Path.home(), uid=None):
 def check_scratch(env=os.environ, home=Path.home(), cap=SCRATCH_CAP):
     """A session's scratch files are its own to delete (user, 3 October 2026, with the disk near its floor).
     Fail while the scratchpad exceeds the cap; never delete, since promotion comes first."""
+    if env.get('CODEX_THREAD_ID') and not env.get('CLAUDE_CODE_SESSION_ID'):
+        from codex_state import check_owned_scratch
+        check_owned_scratch(ROOT, env['CODEX_THREAD_ID'], cap)
+        return
     pad = scratchpad(env, home)
     if pad is None:
         return

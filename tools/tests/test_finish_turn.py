@@ -54,7 +54,7 @@ class FinalizationTest(unittest.TestCase):
         shutil.copy2(ROOT / 'tools/notebook_context.py', self.root / 'tools/notebook_context.py')
         shutil.copy2(ROOT / 'tools/recovery_evidence.py', self.root / 'tools/recovery_evidence.py')
         shutil.copy2(ROOT / 'tools/claim_attention.py', self.root / 'tools/claim_attention.py')
-        for name in ('tools/notebooks.py', 'tools/finish-turn.py', 'tools/lead_queue.py', 'tools/result_names.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
+        for name in ('tools/notebooks.py', 'tools/codex_state.py', 'tools/finish-turn.py', 'tools/lead_queue.py', 'tools/result_names.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         # Exercise real metadata, report generation and archival without requiring
         # this laptop's systemd slice on CI. Only the tiny fixture archiver may
@@ -86,10 +86,12 @@ sys.exit(compute.main())
         self.command_env = dict(os.environ, PATH=str(bin_dir) + os.pathsep + os.environ.get('PATH', ''))
         # a real session's scratchpad must not decide fixture runs (in process or in a subprocess)
         self.command_env.pop('CLAUDE_CODE_SESSION_ID', None)
+        self.command_env.pop('CODEX_THREAD_ID', None)
         scrub = mock.patch.dict(os.environ)
         scrub.start()
         self.addCleanup(scrub.stop)
         os.environ.pop('CLAUDE_CODE_SESSION_ID', None)
+        os.environ.pop('CODEX_THREAD_ID', None)
         (self.root / 'research/claims').mkdir(parents=True)
         (self.root / 'research/context-budgets.json').write_text(json.dumps({
             'version': 1, 'hard_multiplier': 1.5, 'characters_per_word': 12,
@@ -348,6 +350,18 @@ sys.exit(compute.main())
         ft.check_scratch(env, home, cap=5000)
         ft.check_scratch({}, home, cap=1)   # no session id: nothing to check
         self.assertTrue((pad / 'big.json').exists())   # never deletes
+
+    def test_codex_scratch_cap_in_real_finisher(self):
+        import codex_state
+        ft = self.fixture_finisher()
+        pad = codex_state.scratch_directory(self.root, 'fixture-thread', create=True)
+        (pad/'large.txt').write_bytes(b'x' * 3000)
+        env = {'CODEX_THREAD_ID': 'fixture-thread'}
+        with self.assertRaisesRegex(ValueError, 'Codex scratch'):
+            ft.check_scratch(env, cap=2000)
+        ft.check_scratch(env, cap=3000)
+        ft.check_scratch({'CODEX_THREAD_ID': 'other'}, cap=1)
+        self.assertEqual((pad/'large.txt').stat().st_size, 3000)
 
     def test_review_cadence_and_goal_level_scope(self):
         # In process: one route review in seven entries, and goal-level reviews only when the line stalled.

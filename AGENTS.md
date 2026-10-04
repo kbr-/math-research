@@ -400,7 +400,9 @@ rules to growing checklists or one-off setup narratives.
 - A session's scratch files are its own to delete by the end of the cycle that made them;
   promote anything worth keeping to `research/results/` or `research/provenance/` first
   (user, 3 October 2026, with the disk near its 10 GB floor). The finisher fails while the
-  session's scratchpad holds more than 500 MB; it never deletes for you.
+  session's scratchpad holds more than 500 MB; it never deletes for you. Codex gets its
+  owned directory with `python3 tools/codex_state.py scratch`; use it for all temporary
+  work. Do not place symlinks inside managed scratch.
 - Publish only under explicit user authorization, including a still-active scoped/
   time-limited grant. Research/edit/commit requests alone do not authorize it.
   Restore the actual grant after compaction, honor expiry/later overrides and do

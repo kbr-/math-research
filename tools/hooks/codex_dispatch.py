@@ -14,7 +14,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from codex_state import actor_state
+from codex_state import actor_state, scratch_directory
 from resume import read_part
 import base_behind
 
@@ -132,7 +132,11 @@ def dispatch(event, root):
     if name == 'SessionStart':
         with actor_state(root, event) as state:
             state.update(pending=True, bundle=None, delivered=[])
-        return context(name, CONTEXT)
+        scratch = scratch_directory(root, event.get('agent_id') or event['session_id'], create=True)
+        return context(name, CONTEXT + f" Put this thread's scratch in {scratch}.")
+    if name == 'SubagentStart':
+        scratch = scratch_directory(root, event['agent_id'], create=True)
+        return context(name, f"Put this thread's scratch in {scratch}; never use another actor's directory.")
     if name in ('PreToolUse', 'PostToolUse'):
         call = resume_call(command, root, event.get('cwd')) if shell else None
         with actor_state(root, event) as state:

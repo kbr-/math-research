@@ -18,3 +18,9 @@ The command checks reuse the existing full-output and dependent-heredoc guards. 
 feedback reports local-upstream lag as context, preserving the actual command's result.
 Native hooks do not cover every hosted tool or an already-running `write_stdin` session;
 these protections supplement the rules in AGENTS.md rather than supersede them.
+
+Codex temporary files belong in the directory printed by `python3 tools/codex_state.py scratch`.
+The startup/child hook supplies the same owner path. The finisher refuses more than 500 MB of
+logical bytes, unreadable scratch, or symlinks in that tree or its runtime ancestors. It never
+deletes files. Other actors and durable results are excluded; legacy Claude scratch lookup
+continues to use the existing Claude locations.

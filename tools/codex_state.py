@@ -55,3 +55,60 @@ def actor_state(root, event):
             raise ValueError('Invalid Codex actor state; restore context before continuing')
         yield state
         atomic_json(path, state)
+
+
+SCRATCH_CAP = 500 * 10**6
+
+
+def scratch_directory(root, thread, create=False):
+    """One thread's managed scratch, never a caller-selected path or a sanitized identity."""
+    if not isinstance(thread, str) or not thread:
+        raise ValueError('Codex scratch requires an actual thread identity')
+    root = Path(root).resolve()
+    key = hashlib.sha256(thread.encode()).hexdigest()
+    path = root
+    for part in ('.codex', 'framework', 'scratch', key):
+        path = path / part
+        if path.is_symlink():
+            raise ValueError(f'Managed scratch path must not be a symlink: {path}')
+    if create:
+        path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def check_owned_scratch(root, thread, cap=SCRATCH_CAP):
+    """Count logical bytes without following links; a failed check never removes evidence."""
+    directory = scratch_directory(root, thread)
+    if not directory.exists():
+        return
+    total = 0
+    pending = [directory]
+    while pending:
+        with os.scandir(pending.pop()) as entries:
+            for entry in entries:
+                if entry.is_symlink():
+                    raise ValueError(f'Managed scratch contains a symlink: {entry.path}; '
+                                     'move links outside the owned scratch tree before finalizing')
+                if entry.is_dir(follow_symlinks=False):
+                    pending.append(entry.path)
+                elif entry.is_file(follow_symlinks=False):
+                    total += entry.stat(follow_symlinks=False).st_size
+    if total > cap:
+        raise ValueError(f'The Codex scratch directory {directory} holds {total} logical bytes, '
+                         f'over the {cap} byte cap. Promote needed evidence to research/results or '
+                         'research/provenance, delete only your remaining scratch, and rerun.')
+
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description='Print/create this Codex thread\'s managed scratch directory.')
+    parser.add_argument('action', choices=['scratch'])
+    parser.parse_args()
+    try:
+        print(scratch_directory(Path(__file__).resolve().parents[1], os.environ.get('CODEX_THREAD_ID'), create=True))
+    except (OSError, ValueError) as error:
+        parser.exit(1, str(error) + '\n')
+
+
+if __name__ == '__main__':
+    main()
