@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20), one item per entry, each searched by objects in the record first (batch triage retired, user, 9 October 2026; the \(156\) items it settled are reopened). Statement 2: the ternary slice is certified for \(n\le25\); \(n=5\) is certified for \(d\le9\). For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, (K) rests on the confluent tie window, the triple window (\(m\ge8\)) and the support core: ramification equals flow order at every distinct-root cluster (<a href="#entry-2026-10-09-cube-ramification-flow-order-proof">proof</a>), so (F) there needs only the graded vanishing of higher coefficients, proved for flow order at most two.</p>
-<p>Next: the new queue head (the Cauchy–Sato lead moved to the tail after four entries), developed in its own entry.</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20), one item per entry, each searched by objects in the record first (batch triage retired, user, 9 October 2026; the \(156\) items it settled are reopened). Statement 2: the ternary slice is certified for \(n\le25\); \(n=5\) is certified for \(d\le9\). For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, (K) rests on the confluent tie window, the triple window (\(m\ge8\)) and the support core. Ramification equals flow order at distinct roots, so (F) needs only the graded vanishing; on moving arcs the \(C\)-block alone fails on <a href="#entry-2026-10-09-cube-cblock-weight-hypersurface">one hypersurface at every weight</a>.</p>
+<p>Next: the Richardson lead (entry two of four): the joint \(C\)-block and cross condition at weight-\(j\) points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -96,7 +96,10 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <h2>Lead and bridge queue</h2>
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
-<li data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1"><a href="#entry-2026-10-09-cube-cblock-weight-route-review">entry-2026-10-09-cube-cblock-weight-route-review:1</a> (lead): Richardson varieties and the Bruhat interval (Kazhdan–Lusztig 1979; Knutson–Lam–Speyer, positroid varieties). By prop:cube-cblock-spread-bound the leading \(C\)-block vector at any rate is supported in the Gale interval …</li>
+<li data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1"><a href="#entry-2026-10-09-cube-cblock-weight-route-review">entry-2026-10-09-cube-cblock-weight-route-review:1</a> (lead): Richardson varieties and the Bruhat interval (Kazhdan–Lusztig 1979; Knutson–Lam–Speyer, positroid varieties). By prop:cube-cblock-spread-bound the leading \(C\)-block vector at any rate is supported in the Gale interval …<ul>
+<li data-check="entry-2026-10-09-cube-cblock-weight-hypersurface:s1"><a href="#entry-2026-10-09-cube-cblock-weight-hypersurface">entry-2026-10-09-cube-cblock-weight-hypersurface:s1</a> (check): Points with \(dF(y^\ast)=0\) at distinct roots: the Newton polygon gains interior edges, and failure may hold on an open set of arcs into them; their codimension in cluster space decides whether this matters for (K).</li>
+<li data-check="entry-2026-10-09-cube-cblock-weight-hypersurface:s2"><a href="#entry-2026-10-09-cube-cblock-weight-hypersurface">entry-2026-10-09-cube-cblock-weight-hypersurface:s2</a> (check): The tangent case \(w&gt;1/j\), \(dF(y^\ast)v=0\): which second-order data give positive weight.</li>
+</ul></li>
 <li data-bridge="entry-2026-10-09-cube-elliptic-window-route-review:1"><a href="#entry-2026-10-09-cube-elliptic-window-route-review">entry-2026-10-09-cube-elliptic-window-route-review:1</a> (bridge): Elliptic curves and limit linear series (Eisenbud–Harris, ramification on elliptic components, where vanishing conditions become torsion conditions). The window's functions are \(w_i=(1+a_iT)^{-3/2}\), \(T^nw_i\) for…</li>
 <li data-lead="entry-2026-10-09-cube-hermite-pade-route-review:1"><a href="#entry-2026-10-09-cube-hermite-pade-route-review">entry-2026-10-09-cube-hermite-pade-route-review:1</a> (lead): The Padé table's block structure (Gragg 1972; for Hermite–Padé, Mahler's perfect systems and de Bruin's block structure). It targets conj:cube-triple-window-full-rank. Zero sets of the table should be unions of simplices…</li>
 <li data-lead="entry-2026-10-09-cube-queue-drain-review:1"><a href="#entry-2026-10-09-cube-queue-drain-review">entry-2026-10-09-cube-queue-drain-review:1</a> (lead): Uniform asymptotics through coalescing exponentials (Chester–Friedman–Ursell; Olver, Asymptotics and Special Functions, Ch. 9): when two exponential terms of a sum reach equal modulus, an expansion uniform in the gap rep…</li>
@@ -81937,6 +81940,77 @@ This is an identity of polynomials in distinct \(y\); we evaluate it at the poly
 <tr><td>Computation design and coding</td><td class="elapsed">32.62 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 59.57 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.09 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-cblock-weight-hypersurface" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-cblock-weight-route-review:1" data-claims="thm:cube-cblock-failure-hypersurface">
+<h3>9 October 2026 — At a point of any cofactor weight, the arcs on which the C-block's limit gains weight form one hypersurface of first-order data</h3>
+<p class="entry-meta">Working proof for every \(M\) and every flow order \(j\ge1\), extending the weight-one hyperplane. Richardson lead (head item, entry one of four, Continuing). C-block failure hypersurface cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K), core statement on moving arcs: the codimension count of the <a href="#entry-2026-10-09-cube-cblock-weight-route-review">C-block weight review</a>. Its first Outside lead (Richardson varieties) asks whether the arcs whose leading \(C\)-block vector lies in the zero set of the Vandermonde form cost one condition. The <a href="#entry-2026-10-09-cube-cblock-flowed-arc">flowed-arc entry</a> answered this at weight-one points (cor:cube-cblock-tie-hyperplane). It listed as open the points where the Taylor cofactor \(F\) has flow order \(j_F\ge2\), where the leading \(C\)-support could a priori contain three or more sets; ex:cube-five-cofactor-weight-two shows they occur at five roots. Is the failure set still one condition there?</p>
+<p><strong>General statement.</strong> thm:cube-cblock-failure-hypersurface. Characteristic zero, every \(M\), every distinct-root point \(y^\ast\) with \(j=j_F(y^\ast)\ge1\). Take arcs with \(\tilde y'(s)=y^\ast+sv+O(s^2)\) analytic and \(x=x_1s^w+\cdots\) a Puiseux series, \(x_1\ne0\), \(w&gt;0\) rational (equivalently, substitute \(s=\sigma^N\); first-order data means the leading terms), and put \(\gamma=[t^j]F\big(y^\ast/(1+ty^\ast)\big)\ne0\). The first-order data \((v,x_1)\) on which the \(C\)-block's leading space \(E\) has positive weight at the mark are:</p>
+<ul>
+<li>none, for \(w&lt;1/j\);</li>
+<li>exactly the hypersurface \(dF(y^\ast)v+\gamma x_1^j=0\), for \(w=1/j\);</li>
+<li>contained in the hyperplane \(dF(y^\ast)v=0\) of tangent arcs, for \(w&gt;1/j\).</li>
+</ul>
+<p>When \(dF(y^\ast)\ne0\), the failures therefore cost at least one condition on first-order data at every rate; that hypothesis is used only for this conclusion at \(w&gt;1/j\). Moreover, at \(w=1/j\) on transverse arcs (\(dF(y^\ast)v\ne0\)) the leading \(C\)-support is exactly the two sets \(T_0\) and \(S_0\), the generic pivot set and the pivot set at \(y^\ast\).</p>
+<p><strong>Setting.</strong> As in prop:cube-cblock-flowed-arc and prop:cube-cblock-spread-bound:</p>
+<ul>
+<li>\(P_S=x^{\Sigma S}p_S(\tilde y')\) are the \(C\)-block coordinates, \(\mu=\min_S\operatorname{val}P_S\), and \(T_0=\{0,\ldots,R_C-1\}\) is the generic pivot set;</li>
+<li>\(p_{T_0}=\mathrm{Vand}^{M-2}F\);</li>
+<li>the flowed arc is \(z(s)=\tilde y'(s)/(1+x(s)\tilde y'(s))\), the time-\(x\) flow of \(y\mapsto y/(1+ty)\);</li>
+<li>\(j_F(y^\ast)=\operatorname{ord}_{t=0}F(y^\ast/(1+ty^\ast))\).</li>
+</ul>
+<p><em>Proof.</em> (1) The least valuation. By part (4) of prop:cube-cblock-spread-bound, \(\operatorname{wt}_0(V(y^\ast))=j\). So the pivot set \(S_0\) of the pair span at \(y^\ast\) has \(\Sigma S_0=\Sigma T_0+j\) and \(p_{S_0}(y^\ast)\ne0\). The pivot set is the Gale-least basis of the matroid of \(V(y^\ast)\), and every basis Gale-dominates it, as used in part (3) there; so \(p_S(y^\ast)\ne0\) only if \(S\ge S_0\) elementwise, which forces \(\Sigma S\ge\Sigma S_0\). Hence for every \(S\):</p>
+<ul>
+<li>if \(\Sigma S\ge\Sigma S_0\), then \(\operatorname{val}P_S\ge w(\Sigma T_0+j)\);</li>
+<li>if \(\Sigma S&lt;\Sigma S_0\), then \(p_S(y^\ast)=0\), so \(\operatorname{val}p_S(\tilde y')\ge1\) and \(\operatorname{val}P_S\ge w\Sigma T_0+1\), using \(\Sigma S\ge\Sigma T_0\).</li>
+</ul>
+<p>So \(\mu\ge w\Sigma T_0+\min(1,wj)\). Also \(\operatorname{val}P_{T_0}=w\Sigma T_0+\operatorname{val}F(\tilde y')\) (as \(\mathrm{Vand}(y^\ast)\ne0\)), and, since \(F(y^\ast)=0\) because \(j\ge1\), \(\operatorname{val}F(\tilde y')=1\) when \(dF(y^\ast)v\ne0\); then \(\mu\le w\Sigma T_0+1\). (Valuations of \(\tilde y'\) are integers, which is all step (1) uses; the flowed-arc proposition's proof works over Puiseux series unchanged.)</p>
+<p>(2) The criterion. Since \(\mathrm{Vand}(y^\ast)\ne0\), prop:cube-cblock-flowed-arc gives two facts:</p>
+<ul>
+<li>\(\operatorname{val}F(z(s))\ge\mu-w\Sigma T_0\);</li>
+<li>\(\operatorname{wt}_0(E)=0\) if and only if equality holds.</li>
+</ul>
+<p>(3) Newton polygon. Write \(F(z(s))=G(s,x(s))\) with \(G(s,x)=F\big(\Phi_x(\tilde y'(s))\big)\), \(\Phi_x(y)=y/(1+xy)\), a convergent power series in \((s,x)\). Its monomials \(s^ax^b\) are as follows:</p>
+<ul>
+<li>\((0,b)\): these come from \(F(\Phi_x(y^\ast))=\gamma x^j+O(x^{j+1})\), so \(b\ge j\), and \(\gamma\ne0\) by the definition of \(j\).</li>
+<li>\((1,0)\): coefficient \(dF(y^\ast)v\).</li>
+<li>All others have \(a\ge2\), or \(a\ge1\) and \(b\ge1\).</li>
+</ul>
+<p>Under \(x=x_1s^w+\cdots\), the monomial \(s^ax^b\) has valuation \(a+wb\). The monomials other than \((1,0)\) and \((0,j)\) have \(a+wb&gt;\min(1,wj)\): \((0,b)\) with \(b&gt;j\) has \(wb&gt;wj\), and every \((a,b)\) with \(a\ge1\), \(a+b\ge2\) has value \(&gt;1\). So \(\operatorname{val}F(z)\ge\min(1,wj)\), and the coefficient of \(s^{\min(1,wj)}\) is \(\gamma x_1^j\) if \(wj&lt;1\), \(dF(y^\ast)v\) if \(wj&gt;1\), and \(dF(y^\ast)v+\gamma x_1^j\) if \(wj=1\). Write \(m=\mu-w\Sigma T_0\); by (1), \(m\ge\min(1,wj)\), and by (2), \(\operatorname{val}F(z)\ge m\), with \(\operatorname{wt}_0(E)=0\) iff equality.</p>
+<ul>
+<li>\(wj&lt;1\): \(\operatorname{val}F(z)=wj\le m\), so equality holds and \(E\) has weight \(0\).</li>
+<li>\(wj=1\), \(dF(y^\ast)v=0\): the coefficient is \(\gamma x_1^j\ne0\), so \(\operatorname{val}F(z)=1\le m\), equality holds, and \(E\) has weight \(0\).</li>
+<li>\(wj=1\), \(dF(y^\ast)v\ne0\): \(m=1\), since \(P_{T_0}\) attains it. So \(E\) has positive weight iff \(\operatorname{val}F(z)&gt;1\), that is iff \(dF(y^\ast)v+\gamma x_1^j=0\).</li>
+<li>\(wj&gt;1\), \(dF(y^\ast)v\ne0\): \(\operatorname{val}F(z)=1\), and \(m=1\) since \(P_{T_0}\) attains it, so \(E\) has weight \(0\).</li>
+<li>\(wj&gt;1\), \(dF(y^\ast)v=0\): not decided at first order; these arcs lie in the hyperplane of the statement.</li>
+</ul>
+<p>Together these give the three cases of the statement. If \(dF(y^\ast)=0\), the same cases give an empty failure set at \(w=1/j\) (as \(x_1\ne0\)) and leave every arc undecided at \(w&gt;1/j\).</p><p>(4) The leading support at \(w=1/j\), \(dF(y^\ast)v\ne0\). Here \(m=1\) and \(\mu=w\Sigma T_0+1\), attained by \(T_0\) and by \(S_0\) (\(w(\Sigma T_0+j)=w\Sigma T_0+1\)). A set with \(\Sigma T_0&lt;\Sigma S&lt;\Sigma S_0\) has value \(\ge w\Sigma S+1&gt;\mu\). A set with \(\Sigma S&gt;\Sigma S_0\) has value \(\ge w\Sigma S&gt;\mu\). A set with \(\Sigma S=\Sigma S_0\) and \(p_S(y^\ast)\ne0\) Gale-dominates \(S_0\) with equal sum, so it is \(S_0\); if \(p_S(y^\ast)=0\) its value is \(\ge w\Sigma S_0+1&gt;\mu\). So the leading support is \(\{T_0,S_0\}\). \(\square\)</p>
+<p><strong>Checks.</strong> No new computation. At \(j=1\), with \(\gamma=\frac{d}{dt}F(y^\ast/(1+ty^\ast))|_0=-dF(y^\ast)y^{\ast2}\), the condition \(dF(y^\ast)v+\gamma x_1=0\) is \(dF(y^\ast)(v-x_1y^{\ast2})=0\), the hyperplane of cor:cube-cblock-tie-hyperplane. That corollary's exact four-root data (\(x_1=\ell(v)/6\) in five directions) therefore also test this theorem at \(j=1\).</p>
+<p><strong>What this means.</strong> For the \(C\)-block alone, at distinct-root points with \(dF(y^\ast)\ne0\) and every cofactor weight, failures cost at least one condition on first-order data. Transverse arcs fail only at the rate \(1/j\), on the hypersurface \(dF(y^\ast)v+\gamma x_1^j=0\), where the flow cancels the arc's normal velocity to \(\{F=0\}\). Tangent arcs at faster rates are contained in a hyperplane but are not decided at first order. At the tie rate the leading support is just \(\{T_0,S_0\}\), a two-point Richardson picture as at weight one. So the joint condition with the cross block, needed by the cherry step, falls under prop:cube-cblock-tie-joint-weight whenever \(S_0=T_0-a+b\) is a single exchange and the cross leader is unique. For other \(S_0\) that proposition needs extending. Points with \(dF(y^\ast)=0\) and tangent arcs remain open.</p>
+<p><strong>Follow-up.</strong> Continuing (entry one of four): the lead still bears on (K)'s core through the joint condition. Next attempt: extend prop:cube-cblock-tie-joint-weight from single exchanges to any two-set support \(\{T_0,S_0\}\), and determine which pivot sets \(S_0\) occur at weight-\(j\) points (at weight one \(S_0\) is a single exchange). The aim is to show that the joint failure is again one hypersurface.</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">Points with \(dF(y^\ast)=0\) at distinct roots: the Newton polygon gains interior edges, and failure may hold on an open set of arcs into them; their codimension in cluster space decides whether this matters for (K).</li>
+<li data-sub="check">The tangent case \(w&gt;1/j\), \(dF(y^\ast)v=0\): which second-order data give positive weight.</li>
+</ul>
+<p><strong>Remaining gap.</strong> (K): the confluent tie window; the triple window (\(m\ge8\)); the joint \(C\)-block and cross condition on moving arcs; the graded vanishing for \(j_p\ge3\); conj:cube-tie-window-second-minor for \(m\ge8\). Also (B); statement 2 beyond its certificates; statement 4's first step.</p>
+<p><strong>Process.</strong> Searched the record by objects (C-block, weight, tie, hypersurface, flowed arc) first. The weight-one corollary and the spread bound's identification \(\operatorname{wt}_0(V(y^\ast))=j_F\) were the inputs. The proof is by hand.</p>
+<p><strong>Dependencies re-read.</strong> prop:cube-cblock-flowed-arc and cor:cube-cblock-tie-hyperplane (full entry); prop:cube-cblock-spread-bound (statement, parts (1) and (4)); prop:cube-cblock-tie-joint-weight (statement); the C-block weight review (lead and obstacle).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked:</p><ul><li>that the pair span \(V(y^\ast)\) has full dimension, and Gale minimality for it;</li><li>the offset in the flowed-arc criterion;</li><li>the Newton polygon with all five cases;</li><li>the flow direction, \(\gamma\), and the case \(j=1\).</li></ul><p>Verdict: pass with corrections, all applied:</p><ul><li>the rate stated for Puiseux series;</li><li>\(F(y^\ast)=0\) made explicit;</li><li>the Gale citation corrected;</li><li>\(dF(y^\ast)\ne0\) shown to be used only for the codimension at \(w&gt;1/j\), and "smooth points" replaced;</li><li>the overclaim about tangent arcs and an unproved sentence on attained vectors removed.</li></ul><p>The reviewer's argument that the leading support at the tie rate is exactly \(\{T_0,S_0\}\) is added as step (4).</p>
+<p><strong>Status:</strong> working proof (every \(M\), every flow order, distinct-root points).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-kfh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 19.40 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 25.46 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 45.93 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
