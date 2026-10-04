@@ -71,14 +71,17 @@ async def trusted(client, root):
     response = await client.call('hooks/list', {'cwds': [str(root)]})
     entries = response['data']
     definitions = json.loads((root/'.codex/hooks.json').read_text())['hooks']
-    expected = {event[0].lower() + event[1:] for event in definitions}
-    if not expected:
+    expected = {event[0].lower() + event[1:]: [hook['command'] for group in groups
+                for hook in group['hooks'] if hook.get('type') == 'command']
+                for event, groups in definitions.items()}
+    if not expected or any(len(commands) != 1 for commands in expected.values()):
         raise NativeError('No framework hooks are registered in this checkout')
     entries = [e for e in entries if Path(e['cwd']).resolve() == root]
     if len(entries) != 1 or entries[0].get('errors') or entries[0].get('warnings'):
         raise NativeError('Hook discovery is incomplete; review Codex hooks before startup')
     hooks = [h for h in entries[0]['hooks'] if 'tools/hooks/codex_dispatch.py' in (h.get('command') or '')]
-    if any(sum(h['eventName'] == event for h in hooks) != 1 for event in expected) or any(
+    if any([h.get('command') for h in hooks if h['eventName'] == event] != commands
+           for event, commands in expected.items()) or any(
             not h['enabled'] or h['trustStatus'] != 'trusted' for h in hooks):
         raise NativeError('Framework hooks need normal Codex trust review in ' + str(root)
                           + '; open codex --remote unix:// there and review /hooks, then retry.')
@@ -109,9 +112,11 @@ async def session(client, root, mode, context, compact):
         response = await client.call('thread/start', {
             'cwd': str(root), 'runtimeWorkspaceRoots': [str(root)], 'ephemeral': False,
             'approvalPolicy': 'on-request', 'approvalsReviewer': 'auto_review',
-            'sandbox': 'workspace-write', 'config': {
+            'permissions': ':workspace', 'config': {
                 'model_context_window': context, 'model_auto_compact_token_limit': compact}})
-        ident = response['thread']['id']
+        ident = str(uuid.UUID(response['thread']['id']))
+        if Path(response['cwd']).resolve() != root:
+            raise NativeError('Created session belongs to a different worktree')
         atomic_json(bootstrap, {'thread': ident, 'accepted': False, 'bound': False})
         await client.call('thread/inject_items', {'threadId': ident, 'items': [{
             'type': 'message', 'role': 'user', 'content': [{'type': 'input_text',

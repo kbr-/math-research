@@ -9,12 +9,14 @@ from unittest.mock import AsyncMock, Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import codex_judge as judge
+from codex_runtime import isolated_config
 
 
 class JudgeTest(unittest.IsolatedAsyncioTestCase):
     def client(self):
         client = AsyncMock()
         client.socket = Mock()
+        client.isolation_config.return_value = {**isolated_config('low', tools=False), 'mcp_servers': {'fixture': {'enabled': False}}}
         client.call.return_value = {'thread': {'id': 'owned'}, 'reasoningEffort': 'low',
             'approvalPolicy': 'never', 'sandbox': {'type': 'readOnly', 'networkAccess': False}}
         client.turn.return_value = '{"kind":"other"}'
@@ -36,6 +38,8 @@ class JudgeTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(params['sandbox'], 'read-only')
         self.assertFalse(params['config']['features.hooks'])
         self.assertFalse(params['config']['features.shell_tool'])
+        self.assertEqual(params['config']['mcp_servers'], {'fixture': {'enabled': False}})
+        client.isolation_config.assert_awaited_once_with(params['cwd'], 'low', tools=False)
         self.assertEqual(params['config']['project_doc_max_bytes'], 0)
         self.assertFalse(Path(params['cwd']).exists())
         client.turn.assert_awaited_once_with('owned', 'data', 'low', {'type':'object'})

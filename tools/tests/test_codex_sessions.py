@@ -27,7 +27,7 @@ class FakeClient:
         self.root = root
         self.calls = []
         (root/'.codex').mkdir(exist_ok=True)
-        (root/'.codex/hooks.json').write_text(json.dumps({'hooks': {name: [] for name in ('SessionStart','PreToolUse','PostToolUse','SubagentStart')}}))
+        (root/'.codex/hooks.json').write_text(json.dumps({'hooks': {name: [{'hooks':[{'type':'command','command':'python3 tools/hooks/codex_dispatch.py'}]}] for name in ('SessionStart','PreToolUse','PostToolUse','SubagentStart')}}))
         self.hooks = [{'eventName': event, 'enabled': True, 'trustStatus': 'trusted',
                        'command': 'python3 tools/hooks/codex_dispatch.py'} for event in
                       ('sessionStart','preToolUse','postToolUse','subagentStart')]
@@ -80,7 +80,8 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(start['runtimeWorkspaceRoots'], [str(self.root)])
         self.assertEqual(start['approvalPolicy'], 'on-request')
         self.assertEqual(start['approvalsReviewer'], 'auto_review')
-        self.assertEqual(start['sandbox'], 'workspace-write')
+        self.assertEqual(start['permissions'], ':workspace')
+        self.assertNotIn('sandbox', start)
         self.assertIs(start['ephemeral'], False)
         self.assertEqual(start['config'], {'model_context_window':600000,'model_auto_compact_token_limit':550000})
         self.assertEqual([m for m,_ in self.client.calls], ['hooks/list','thread/start','thread/inject_items','turn/start'])
@@ -89,6 +90,18 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         await self.start('resume')
         self.assertEqual(self.client.calls[-1], ('thread/resume', {'threadId': IDENT, 'excludeTurns': True}))
         self.assertEqual(sum(method=='turn/start' for method,_ in self.client.calls), 1)
+
+    async def test_created_wrong_cwd_or_invalid_id_never_binds_or_injects(self):
+        original=self.client.call
+        for change in ({'cwd':'/different'},{'thread':{'id':'invalid'}}):
+            async def altered(method,params):
+                result=await original(method,params)
+                return {**result,**change} if method=='thread/start' else result
+            with patch.object(self.client,'call',altered),self.assertRaises((NativeError,ValueError)):
+                await self.start()
+            self.assertFalse((self.root/'.codex-session-id').exists())
+            self.assertFalse((self.root/'.codex/framework/bootstrap.json').exists())
+        self.assertFalse(any(m=='thread/inject_items' for m,_ in self.client.calls))
 
     async def test_bootstrap_failure_keeps_exact_identity_for_retry(self):
         self.client.fail_bootstrap = True
@@ -117,7 +130,8 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         baseline = [dict(h) for h in self.client.hooks]
         cases = [baseline[:-1], baseline+[baseline[0]],
                  [{**h,'trustStatus':'untrusted'} for h in baseline],
-                 [{**h,'enabled':False} for h in baseline]]
+                 [{**h,'enabled':False} for h in baseline],
+                 [{**h,'command':'echo tools/hooks/codex_dispatch.py'} for h in baseline]]
         for hooks in cases:
             self.client.hooks = hooks
             with self.assertRaisesRegex(NativeError, 'trust review'):

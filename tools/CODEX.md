@@ -39,7 +39,9 @@ Use `python3 tools/codex_reviewer.py --handle NAME --brief FILE` for a fresh rev
 The helper uses the running authenticated daemon and the installed `websockets` package;
 it never starts or reconfigures the daemon. Run inference through `compute.sh`. The native
 root session has medium effort, read-only filesystem access and no approval escalation;
-its effective policy is checked before sending the brief. Its instructions come from the
+its effective policy is checked before sending the brief. Configured MCP servers are disabled
+for isolated reviewers and judges, since MCP tools are outside the filesystem sandbox. Every resume reapplies the named
+read-only profile and medium effort: ad-hoc sandbox overrides can be lost after native unloading. Its instructions come from the
 body of `.claude/agents/medium-reviewer.md`, not the parent conversation. Native child agents
 inherit the parent's live permission overrides, so a custom child profile alone does not
 provide this isolation. Reuse the handle only for a concrete correction to the same review;
@@ -62,7 +64,8 @@ for retry. A creation interrupted before binding retains its pending ID; retry a
 and reports failure rather than creating a replacement. `--new` deliberately creates a new
 session. Detached mode returns after native acceptance; it does not claim restoration is already
 finished. Normal mode attaches the terminal. Resume checks the saved working directory and does
-not override permissions. Run launchers outside agent shells: agent and worker invocations cannot
+not override permissions. New sessions select the native :workspace profile; permission changes
+made through native named profiles survive unloading and resume. Run launchers outside agent shells: agent and worker invocations cannot
 replace the main binding. `remember-codex-session.py` now only verifies the externally saved ID.
 
 ## Background monitoring

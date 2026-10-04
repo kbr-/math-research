@@ -204,6 +204,23 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(NativeError):
             verify_isolation({'reasoningEffort': 'medium', 'approvalPolicy': 'never'}, 'medium')
 
+    async def test_isolation_disables_configured_mcp_without_copying_secrets(self):
+        client=Client(None)
+        client.call=AsyncMock(return_value={'config':{'mcp_servers':{'docs':{'command':'private command','env':{'KEY':'secret'}}}}})
+        result=await client.isolation_config('/fixture','low',tools=False)
+        client.call.assert_awaited_once_with('config/read',{'cwd':'/fixture','includeLayers':False})
+        self.assertEqual(result['mcp_servers'],{'docs':{'enabled':False}})
+        self.assertEqual(result['model_reasoning_effort'],'low')
+        self.assertFalse(result['features.shell_tool'])
+        self.assertNotIn('secret',str(result));self.assertNotIn('private command',str(result))
+        client.call.return_value={'config':{'mcp_servers':[]}}
+        default=await client.isolation_config('/fixture','medium')
+        self.assertEqual(default['mcp_servers'],{})
+        self.assertEqual(default['model_reasoning_effort'],'medium')
+        self.assertNotIn('features.shell_tool',default)
+        client.call.return_value={'config':{'mcp_servers':['bad']}}
+        with self.assertRaises(NativeError):await client.isolation_config('/fixture','medium')
+
     async def test_reviewer_fresh_root_same_handle_and_own_archive(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp);source = root/'.claude/agents/medium-reviewer.md'
@@ -213,6 +230,7 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             response = {'thread': {'id': 'reviewer'}, 'reasoningEffort': 'medium',
                         'approvalPolicy': 'never', 'sandbox': {'type': 'readOnly', 'networkAccess': False}}
             client = AsyncMock();client.call.return_value = response;client.turn.return_value = 'pass'
+            client.isolation_config.return_value = isolated_config('medium')
             self.assertEqual(await reviewer.review(client, root, state, 'supplied excerpts', model='selected'), 'pass')
             method, params = client.call.call_args.args
             self.assertEqual(method, 'thread/start')
@@ -221,13 +239,15 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             self.assertIs(params['ephemeral'], False)
             self.assertIn('Edit no files', params['developerInstructions'])
             self.assertEqual(params['model'], 'selected')
-            self.assertEqual(params['sandbox'], 'read-only')
+            self.assertEqual(params['permissions'], ':read-only')
+            self.assertNotIn('sandbox', params)
             self.assertEqual(params['approvalPolicy'], 'never')
             self.assertEqual(params['config']['model_reasoning_effort'], 'medium')
             client.turn.assert_awaited_once_with('reviewer', 'supplied excerpts', 'medium')
             self.assertEqual(json.loads(state.read_text())['thread'], 'reviewer')
             await reviewer.review(client, root, state, 'concrete correction')
-            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': 'reviewer', 'excludeTurns': True}))
+            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': 'reviewer', 'excludeTurns': True,
+                'approvalPolicy':'never','permissions':':read-only','config':isolated_config('medium')}))
             await reviewer.review(client, root, state, '', close=True)
             self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': 'reviewer'}))
             self.assertFalse(state.exists());self.assertEqual(binding.read_text(), 'parent')

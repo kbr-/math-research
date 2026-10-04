@@ -101,6 +101,15 @@ class Client:
                 pass
             raise
 
+    async def isolation_config(self, cwd, effort, tools=True):
+        effective = await self.call('config/read', {'cwd': str(cwd), 'includeLayers': False})
+        servers = effective['config'].get('mcp_servers') or {}
+        if not isinstance(servers, dict):
+            raise NativeError('Cannot establish configured MCP server isolation')
+        config = isolated_config(effort, tools=tools)
+        config['mcp_servers'] = {name: {'enabled': False} for name in servers}
+        return config
+
     async def close(self):
         await self.socket.close()
 

@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import sys
 
-from codex_runtime import Client, NativeError, isolated_config, verify_isolation
+from codex_runtime import Client, NativeError, verify_isolation
 from codex_state import atomic_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,15 +29,17 @@ async def review(client, root, state, text, close=False, model=None):
         await client.call('thread/archive', {'threadId': saved['thread']})
         state.unlink()
         return 'Owned reviewer archived.'
+    config = await client.isolation_config(root, 'medium')
     if saved:
         if saved['root'] != str(root):
             raise NativeError('Reviewer handle belongs to another checkout')
-        response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True})
+        response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True,
+            'approvalPolicy': 'never', 'permissions': ':read-only', 'config': config})
     else:
-        params = {'cwd': str(root), 'approvalPolicy': 'never', 'sandbox': 'read-only',
+        params = {'cwd': str(root), 'approvalPolicy': 'never', 'permissions': ':read-only',
                   'ephemeral': False, 'baseInstructions': reviewer_brief(root),
                   'developerInstructions': 'Use only the supplied brief and excerpts. Edit no files.',
-                  'config': isolated_config('medium')}
+                  'config': config}
         if model:
             params['model'] = model
         response = await client.call('thread/start', params)
