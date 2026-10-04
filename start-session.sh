@@ -1,46 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 source ./start-codex.sh
-export VISUAL=vim
-export EDITOR=vim
-
-mode=auto
+export VISUAL=vim EDITOR=vim
 case "${1-}" in
-  --new) mode=new; shift ;;
-  --resume) mode=resume; shift ;;
   -h|--help)
-    printf '%s\n' 'Usage: ./start-session.sh [--new|--resume]' \
-      'Default: resume the exact ID in .codex-session-id, or start fresh.' \
-      '--new starts a fresh session and binds its ID to this checkout.'
+    printf '%s\n' 'Usage: ./start-session.sh [--new|--resume] [--detached] [--worktree NAME] [--base BRANCH]' \
+      'Use one persistent Git worktree and externally bind its exact native session.' \
+      'Resume preserves permissions. Detached startup returns after native acceptance.'
     exit 0 ;;
 esac
-if (( $# )); then
-  printf '%s\n' 'Unexpected arguments. Use ./start-session.sh --help.' >&2
-  exit 2
-fi
-
-python3 tools/register_codex.py
-
-options=(--remote unix://
-  -c "model_context_window=${CONTEXT_WINDOW_TOKENS}"
-  -c "model_auto_compact_token_limit=${AUTO_COMPACT_TOKENS}")
-if [[ "$mode" != new && -f .codex-session-id ]]; then
-  session_id="$(cat .codex-session-id)"
-  if [[ ! "$session_id" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then
-    printf '%s\n' 'Invalid .codex-session-id. Use --new to establish a fresh session.' >&2
-    exit 1
-  fi
-  start_codex_daemon
-  # Remote resume retains the task's existing permissions and rejects overrides.
-  exec codex resume "$session_id" "${options[@]}"
-fi
-if [[ "$mode" == resume ]]; then
-  printf '%s\n' 'No session ID is recorded for this checkout. Run without --resume to start fresh.' >&2
+if [[ -n "${CODEX_THREAD_ID-}" ]]; then
+  printf '%s\n' 'Run the session launcher outside an agent; workers cannot replace session bindings.' >&2
   exit 1
 fi
-
-bootstrap='Restore this repository research context. First run ./tools/remember-codex-session.py to save this main session ID for the launcher. Use default tool output allowances for all resume calls, including enclosing wrappers. Then run python3 tools/resume.py and read every listed part with separate bounded outputs. Retry missing parts without preparing another resume. Follow its included restart guide without rereading bundled files; load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
 start_codex_daemon
-exec codex "${options[@]}" --approve-for-me "$bootstrap"
+exec python3 tools/codex_sessions.py --context "$CONTEXT_WINDOW_TOKENS" \
+  --compact "$AUTO_COMPACT_TOKENS" "$@"

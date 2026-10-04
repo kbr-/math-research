@@ -26,6 +26,7 @@ class RepositoryTools(unittest.TestCase):
         for name in ('register_codex.py', 'codex_state.py'):
             shutil.copy2(ROOT / 'tools' / name, self.root / 'tools' / name)
         shutil.copy2(ROOT / 'start-claude.sh', self.root / 'start-claude.sh')
+        (self.root/'tools/codex_sessions.py').write_text('import json,os,sys\nfrom pathlib import Path\nPath(os.environ["MATH_LAUNCH_CAPTURE"]).write_text(json.dumps({"args":sys.argv[1:],"cwd":os.getcwd(),"editor":os.environ["EDITOR"],"visual":os.environ["VISUAL"]}))\n')
         (self.root / 'bin').mkdir()
         self.capture = self.root / 'capture.json'
         fake = self.root / 'bin/codex'
@@ -71,6 +72,7 @@ else:
         claude.chmod(0o755)
         self.env = dict(os.environ, PATH=str(self.root / 'bin') + os.pathsep + os.environ['PATH'],
                         MATH_LAUNCH_CAPTURE=str(self.capture))
+        self.env.pop('CODEX_THREAD_ID', None)
 
     def tearDown(self):
         self.temp.cleanup()
@@ -79,49 +81,26 @@ else:
         return subprocess.run([str(self.root / 'start-session.sh'), *args],
                               cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
 
-    def test_fresh_checkout_bootstraps_from_files(self):
+    def test_session_wrapper_forwards_mode_budgets_and_worktree(self):
         script = self.root / 'start-codex.sh'
         content = re.sub(r'CONTEXT_WINDOW_TOKENS=\d+', 'CONTEXT_WINDOW_TOKENS=640000', script.read_text())
         content = re.sub(r'AUTO_COMPACT_TOKENS=\d+', 'AUTO_COMPACT_TOKENS=530000', content)
         script.write_text(content)
-        result = self.launch()
+        result = self.launch('--new', '--detached', '--worktree', 'worker', '--base', 'main')
         self.assertEqual(result.returncode, 0, result.stderr)
         data = json.loads(self.capture.read_text())
-        self.assertNotIn('resume', data['args'])
-        self.assertIn('--approve-for-me', data['args'])
-        self.assertIn('python3 tools/resume.py', data['args'][-1])
-        self.assertIn('remember-codex-session.py', data['args'][-1])
-        self.assertIn('model_context_window=640000', data['args'])
-        self.assertIn('model_auto_compact_token_limit=530000', data['args'])
+        self.assertEqual(data['args'], ['--context', '640000', '--compact', '530000',
+                                       '--new', '--detached', '--worktree', 'worker', '--base', 'main'])
         self.assertEqual(data['cwd'], str(self.root))
         self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
-        self.assertEqual(data['args'][:2], ['--remote', 'unix://'])
-        calls = self.capture.with_suffix('.jsonl').read_text().splitlines()
-        self.assertEqual(json.loads(calls[0]), ['remote-control', 'start'])
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(json.loads(self.capture.with_suffix('.jsonl').read_text()), ['remote-control', 'start'])
+        self.assertEqual(self.launch('--resume').returncode, 0)
+        self.assertEqual(json.loads(self.capture.read_text())['args'][-1], '--resume')
 
-    def test_startup_registers_present_skills(self):
-        source = self.root/'skills/example'
-        source.mkdir(parents=True)
-        (source/'SKILL.md').write_text('fixture skill')
-        result = self.launch()
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.root/'.agents/skills/example').resolve(), source)
-
-    def test_existing_checkout_uses_exact_session(self):
-        (self.root / '.codex-session-id').write_text(SESSION + '\n')
-        for mode in ((), ('--resume',)):
-            with self.subTest(mode=mode):
-                self.assertEqual(self.launch(*mode).returncode, 0)
-                args = json.loads(self.capture.read_text())['args']
-                self.assertEqual(args[:2], ['resume', SESSION])
-                self.assertEqual(args[2:4], ['--remote', 'unix://'])
-                self.assertNotIn('--last', args)
-                self.assertNotIn('--approve-for-me', args)
-                self.assertNotIn('--sandbox', args)
-                self.assertNotIn('--ask-for-approval', args)
-                self.assertIn('model_context_window=600000', args)
-                self.assertIn('model_auto_compact_token_limit=550000', args)
+    def test_agent_cannot_launch_and_replace_binding(self):
+        self.env['CODEX_THREAD_ID'] = SESSION
+        self.assertNotEqual(self.launch('--new').returncode, 0)
+        self.assertFalse(self.capture.exists())
 
     def test_daemon_only_launcher_does_not_open_a_session(self):
         result = subprocess.run([str(self.root / 'start-codex.sh')],
@@ -141,24 +120,19 @@ else:
         self.assertFalse(self.capture.exists())
         self.assertFalse(self.capture.with_suffix('.jsonl').exists())
 
-    def test_explicit_new_bypasses_existing_binding(self):
-        (self.root / '.codex-session-id').write_text(SESSION)
-        self.assertEqual(self.launch('--new').returncode, 0)
-        self.assertNotIn('resume', json.loads(self.capture.read_text())['args'])
-        self.assertIn('--approve-for-me', json.loads(self.capture.read_text())['args'])
-
-    def test_invalid_or_missing_explicit_binding_fails(self):
-        self.assertNotEqual(self.launch('--resume').returncode, 0)
-        (self.root / '.codex-session-id').write_text('invalid session id')
-        self.assertNotEqual(self.launch().returncode, 0)
-        self.assertFalse(self.capture.exists())
-
-    def test_main_session_binding_is_saved_locally(self):
+    def test_agent_only_validates_existing_session_binding(self):
         env = dict(self.env, CODEX_THREAD_ID=SESSION)
-        result = subprocess.run([str(self.root / 'tools/remember-codex-session.py')],
-                                env=env, capture_output=True, text=True, timeout=5)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.root / '.codex-session-id').read_text(), SESSION + '\n')
+        command = [str(self.root/'tools/remember-codex-session.py')]
+        result = subprocess.run(command, env=env, capture_output=True, text=True, timeout=5)
+        self.assertNotEqual(result.returncode, 0)
+        binding = self.root/'.codex-session-id'
+        self.assertFalse(binding.exists())
+        binding.write_text('other session')
+        self.assertNotEqual(subprocess.run(command, env=env, capture_output=True).returncode, 0)
+        self.assertEqual(binding.read_text(), 'other session')
+        binding.write_text(SESSION+'\n')
+        self.assertEqual(subprocess.run(command, env=env, capture_output=True).returncode, 0)
+        self.assertEqual(binding.read_text(), SESSION+'\n')
 
     def launch_claude(self, *args):
         return subprocess.run([str(self.root / 'start-claude.sh'), *args],

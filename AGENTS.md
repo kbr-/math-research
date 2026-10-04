@@ -382,14 +382,21 @@ rules to growing checklists or one-off setup narratives.
 ## Portable sessions, Git and publication
 
 - Work from the repository root without assuming a machine/user/absolute path.
-  `start-codex.sh` starts the remote-control daemon; `start-session.sh` and
-  `start-claude.sh` resume exact machine-local IDs in `.codex-session-id` or
-  `.claude-session-id`, or start context restoration when absent. Only the main
-  Codex session explicitly bootstrapped by its launcher runs
-  `./tools/remember-codex-session.py`; never overwrite a binding from a worker or
-  unrelated session. Claude's launcher binds its own ID. Never commit IDs.
+  `start-codex.sh` starts/reuses the remote-control daemon. `start-session.sh` and
+  `start-claude.sh` resume exact machine-local IDs or restore context for a fresh session.
+  Launchers bind their own IDs outside the agent; workers and unrelated sessions must never
+  replace a binding. The legacy `remember-codex-session.py` only validates an existing binding.
+  Never commit IDs. Codex startup/repair and hook trust are described in [tools/CODEX.md](tools/CODEX.md).
   Clones restore files, not chat history. Private agent memory may hold preferences
   only, never mathematics or research progress.
+- Background sessions use one persistent Git worktree, never the shared checkout. Create it
+  from the intended local base with `git worktree add --track -b NAME PATH BASE`; set a missing
+  local upstream with `git branch --set-upstream-to=BASE`. The branch name is only a convention.
+  Codex's launcher manages `.codex/worktrees/`; Claude uses `.claude/worktrees/`.
+  After every worktree commit, run `tools/ff-base.sh`, with or without a push grant. It rebases
+  onto a moved local upstream and fast-forwards that upstream, including local main when main
+  is the base. It never pushes; dirty bases/conflicts require resolution. The post-commit hook
+  reminds about lag or a missing upstream. This local synchronization does not authorize publication.
 - Every research turn ends in a local Git commit, including failures/no results.
   Include living sections, full record, sources/provenance, code, reproducibility
   data and complete important outputs per the computation policy. Promote essential

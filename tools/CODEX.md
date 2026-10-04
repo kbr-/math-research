@@ -45,3 +45,22 @@ inherit the parent's live permission overrides, so a custom child profile alone 
 provide this isolation. Reuse the handle only for a concrete correction to the same review;
 `--close` archives that owned session. An interrupted review keeps its local handle for
 recovery. Reviewer handles never replace `.codex-session-id`.
+
+`./start-session.sh [--new|--resume] [--detached] [--worktree NAME] [--base BRANCH]`
+starts/reuses the existing daemon, selects a persistent Git worktree and registers its skills.
+An existing linked worktree is retained and must have a local upstream. A shared checkout uses
+`.codex/worktrees/codex-BASE` by default. Folder and hook trust are separate: startup refuses
+missing, disabled, duplicate or untrusted framework hooks. Run the normal CLI **from the target
+directory with `-C` naming that directory**, review the displayed hook source through `/hooks`,
+and retry; remote startup otherwise can use the daemon's default directory for initial UI state.
+Never bypass trust or edit its saved decisions by hand.
+
+The external launcher serializes startup, creates the native root with workspace-write and
+automatic approval review, materializes an initialization record without inference, then binds
+its exact ID before requesting restoration. A failed restoration request preserves that binding
+for retry. A creation interrupted before binding retains its pending ID; retry attempts that ID
+and reports failure rather than creating a replacement. `--new` deliberately creates a new
+session. Detached mode returns after native acceptance; it does not claim restoration is already
+finished. Normal mode attaches the terminal. Resume checks the saved working directory and does
+not override permissions. Run launchers outside agent shells: agent and worker invocations cannot
+replace the main binding. `remember-codex-session.py` now only verifies the externally saved ID.

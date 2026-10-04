@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Keep a worktree's base branch level with it, without pushing (CLAUDE.md, background sessions).
+# Keep a worktree's base branch level with it, without pushing (AGENTS.md, persistent worktrees).
 # Usage: tools/ff-base.sh [--no-rebase] [BRANCH]
 # BRANCH defaults to the current branch's upstream when that is a local branch (set it once with
 # git branch --set-upstream-to=BASE), so nothing depends on how the worktree's branch is named.
