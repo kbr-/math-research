@@ -1,0 +1,39 @@
+{
+  "source": {
+    "record": "[Polygon raise selection](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-09-cube-polygon-raise-selection)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-09-cube-polygon-raise-selection",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20261009-kev/square-gaussian.txt"
+    ],
+    "label": "Polygon raise selection"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-10-09",
+  "topics": [
+    "finite-certificates"
+  ],
+  "claims": [
+    {
+      "id": "lem:cube-polygon-raise-selection",
+      "summary": "In the cherry setting, for L = {-p..-1} u J with J a set of N = 2M-p nonnegative columns and E+ = sum J - C(N,2), the coefficient of x^(A_p+E+) eps^(B_p) in P_L is Vand^2 tau_L with tau_L symmetric and homogeneous of degree k(k+1)+E+; hence at the M-th roots of unity (centred at 0) tau_L = 0 unless M divides k(k+1)+E+.",
+      "assessment": "Working proof (homogeneity in x y_s, symmetry under exchange of roots, the window's degree); reviewed by one fresh-context medium reviewer.",
+      "status": "working_proof",
+      "rationale": "Restricts the possible leaders at regular polygons in the residual Omega_k to raises E+ = -k(k+1) mod M.",
+      "next_action": "Evaluate the first allowed raise at the pentagon and hexagon; prove the multi-column Schur-Hankel expansion."
+    },
+    {
+      "id": "check:cube-square-two-column-leader",
+      "summary": "At M = 4, p = k = 2: tau of the top-two-columns raise L_11 is a(-H_(1,1) + H_(2) - 2 e1 H_(1)), a = 21070924875/2^41, at 12 random rational clusters (basis of rank 4 with the relation H_(2) - e1 H_(1) + e2 H_0 = 0); at the square {1, i, -1, -i} exactly tau_(L_11) = 64a != 0 and tau_(L_2) = 0 (L_2 = top column raised by two), with H_(1,1) = -64.",
+      "assessment": "Finite check: exact rational fit at 12 points and exact Gaussian evaluation at the square (research/results/bmd-20261009-kev/two-column-fit.txt, square-gaussian.txt); an earlier polmod evaluation returned 0 and is recorded as invalid.",
+      "status": "finite_check",
+      "rationale": "Identifies the leading raise at the square, the residual case of the record, as two adjacent raised columns through H_(1,1).",
+      "next_action": "Prove the multi-column expansion with constants."
+    }
+  ],
+  "relationships": [
+    ["lem:cube-polygon-raise-selection", "depends_on", "thm:cube-cherry-hankel-form", "The window's degree."],
+    ["lem:cube-polygon-raise-selection", "cites", "thm:cube-schur-hankel-termination", "Generalizes its rotation remark to every raised set."],
+    ["check:cube-square-two-column-leader", "cites", "lem:cube-polygon-raise-selection", "The allowed raise E+ = 2 at the square."],
+    ["check:cube-square-two-column-leader", "cites", "check:cube-fixed-cluster-leaders", "Consistent with the recorded leaders at the square."]
+  ]
+}
