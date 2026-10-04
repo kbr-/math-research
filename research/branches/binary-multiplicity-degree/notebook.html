@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20), one item per entry (batch triage retired, user, 9 October 2026; the \(156\) items it settled are reopened). Statement 2: the ternary slice is certified for \(n\le25\); \(n=5\) is certified for \(d\le9\). For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, C-block uniqueness at the Hankel tie moduli now holds for every \(M\) (<a href="#entry-2026-10-09-cube-hankel-gegenbauer-disjoint">disjointness theorem</a>); (K) rests on the confluent tie window, the triple window and the top-up identity for \(M\ge6\).</p>
-<p>Next: the queue head, the Appell \(F_1\) lead on the triple window's matrix \(U_3\).</p>
+<p>Route item: cube-odd-characteristic; the lead and bridge queue is draining (backpressure from 50 until 20), one item per entry (batch triage retired, user, 9 October 2026; the \(156\) items it settled are reopened). Statement 2: the ternary slice is certified for \(n\le25\); \(n=5\) is certified for \(d\le9\). For statement 4, the degree-two boundary equals \(3\binom N4\) at every odd \(p\le2^n\) for \(n\le7\), and at \(p\le7\) for \(n=8\). For statement 3, C-block uniqueness at the Hankel tie moduli holds for every \(M\); (K) rests on the confluent tie window, the triple window (\(m\ge8\); its pair functionals satisfy a three-term recurrence, <a href="#entry-2026-10-09-cube-triple-appell-recurrence">Appell lead</a>) and the top-up identity for \(M\ge6\).</p>
+<p>Next: the Appell lead (entry two of four): a difference operator annihilating the three pair sequences on the triple window, the analogue of the tie's holonomic staircase.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -96,7 +96,9 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <h2>Lead and bridge queue</h2>
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
-<li data-lead="entry-2026-10-09-cube-phase-rule-route-review:2"><a href="#entry-2026-10-09-cube-phase-rule-route-review">entry-2026-10-09-cube-phase-rule-route-review:2</a> (lead): Appell's \(F_1\) and the Riemann–Liouville integral (P. Appell, 1880; A. Erdélyi et al., Higher Transcendental Functions I, §5.10). The weights \(\rho_k=k!/\Gamma(k+\lambda-m+1)\) of the window functionals factor as…</li>
+<li data-lead="entry-2026-10-09-cube-phase-rule-route-review:2"><a href="#entry-2026-10-09-cube-phase-rule-route-review">entry-2026-10-09-cube-phase-rule-route-review:2</a> (lead): Appell's \(F_1\) and the Riemann–Liouville integral (P. Appell, 1880; A. Erdélyi et al., Higher Transcendental Functions I, §5.10). The weights \(\rho_k=k!/\Gamma(k+\lambda-m+1)\) of the window functionals factor as…<ul>
+<li data-check="entry-2026-10-09-cube-triple-appell-recurrence:s1"><a href="#entry-2026-10-09-cube-triple-appell-recurrence">entry-2026-10-09-cube-triple-appell-recurrence:s1</a> (check): Compute the Casoratian of the three sequences \(f_M\) (pairs \(12,13,23\)) on consecutive windows for \(m\le7\) and compare its factorization with the recorded minors of \(U_3\); a closed form there would point to the op…</li>
+</ul></li>
 <li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:1"><a href="#entry-2026-10-09-cube-hankel-criterion-route-review">entry-2026-10-09-cube-hankel-criterion-route-review:1</a> (lead): Jacobi–Trudi and the Schur expansion of shifted minors (I. G. Macdonald, Symmetric Functions and Hall Polynomials, I.3). A top shift replaces the alternant \(a_U\) by \(a_{U'}\) with \(\Sigma U'=\Sigma U+E^+\). Its least…</li>
 <li data-lead="entry-2026-10-09-cube-hankel-criterion-route-review:2"><a href="#entry-2026-10-09-cube-hankel-criterion-route-review">entry-2026-10-09-cube-hankel-criterion-route-review:2</a> (lead): Newton's identities and power sums of roots of unity (classical). For the \(M\)-th roots of unity \(p_1=\cdots=p_{M-1}=0\) and \(p_M=M\). So every \(\mathrm{Hank}_k\) and every Schur coefficient factors through \(p_0\) a…</li>
 <li data-bridge="entry-2026-10-09-cube-hankel-criterion-route-review:1"><a href="#entry-2026-10-09-cube-hankel-criterion-route-review">entry-2026-10-09-cube-hankel-criterion-route-review:1</a> (bridge): Crystal growth and Wulff shapes (materials science). The window bound \(b(\Lambda)=b_p+w_xE^++w_eE^-\) is a surface energy with two facet costs, and the leaders are the equilibrium facets for the "temperature"…</li>
@@ -80939,6 +80941,48 @@ and \(v_2((i+1)!)=i+1-s(i+1)\le i\), with \(s\) the binary digit sum, with equal
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-cube-triple-appell-recurrence" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-phase-rule-route-review:2" data-claims="none" data-claim-note="Lead development: identifies the pair-row generating functions of the triple window as Appell F1 functions with elliptic Euler integrals, and derives their three-term recurrence (checked exactly); the rank statement remains conj:cube-triple-window-full-rank, and no new claim is registered.">
+<h3>9 October 2026 — Appell lead: the triple window's pair functionals are \(F_1\) sequences with elliptic Euler integrals and an explicit three-term recurrence for every \(m\)</h3>
+<p class="entry-meta">Lead development (head item, entry one of four, Continuing): derivation and exact check; no rank result. Triple Appell cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3's (K): the triple window, conj:cube-triple-window-full-rank, known for \(2\le m\le7\) by exact elimination (thm:cube-triple-window-small, check:cube-triple-window-six-seven) and open beyond. By lem:cube-level-window-reduction, full rank means that the \(3\times5\) matrix \(U_3\) of the window functionals \(f_M\) on the three pair rows has rank three. The Appell lead of the phase-rule review proposed writing the entries of \(U_3\) in hypergeometric closed form, valid for every \(m\), in place of the modular saturations. What form do the entries take, and what does it give?</p>
+<p><strong>General statement.</strong> conj:cube-triple-window-full-rank (every \(m\ge2\), distinct moduli off \(\{0,1\}\)), through lem:cube-level-window-reduction.</p>
+<h4>The generating functions</h4>
+<p>Fix a pair \(\{i,j\}\), \(a=a_i\), \(b=a_j\), \(\lambda=\tfrac32\), and let \(e_k\) be the coefficients of \(((1+aT)(1+bT))^{-\lambda}\). The functionals are \(f_M(e)=[T^M]\,P(T)\,\Phi(T)\), with \(P=\prod_l(1+a_lT)^m\) over the three roots and \(\Phi=\sum_k\rho_ke_kT^k\), \(\rho_k=k!/\Gamma(k+\lambda-m+1)\). Expanding \(e_k\) as a double sum,
+\[ \Phi(T)=\frac1{\Gamma(\lambda-m+1)}\sum_{r,s}\frac{(r+s)!\,(\lambda)_r(\lambda)_s}{(\lambda-m+1)_{r+s}\,r!\,s!}(-aT)^r(-bT)^s=\frac{F_1(1;\lambda,\lambda;\lambda-m+1;-aT,-bT)}{\Gamma(\lambda-m+1)}, \]
+the lead's identification. Writing \(\rho_k=\frac{k!}{\Gamma(k+\lambda+1)}(k+\lambda-m+1)_m\) moves the dependence on \(m\) into the polynomial operator \((\vartheta+\lambda-m+1)_m\), \(\vartheta=T\,d/dT\), applied to \(F_1(1;\lambda,\lambda;\lambda+1;-aT,-bT)/\Gamma(\lambda+1)\). That function has the Euler integral \(\lambda\int_0^1(1-t)^{\lambda-1}((1+aTt)(1+bTt))^{-\lambda}\,dt\). At \(\lambda=\tfrac32\) the integrand is algebraic of genus one in \(t\), so the closed form is an elliptic integral, not a finite product. This agrees with lem:cube-triple-window-elliptic-form, which puts the window on the elliptic root curve \(C_3\). The lead's hoped-for "nonvanishing determinant of \(F_1\) coefficients" is therefore a statement about coefficients of elliptic integrals, and no Euler-type transformation of \(F_1\) turns the integrand rational: the transformed parameters (\(\gamma-\alpha=\lambda-m\), \(\gamma-\beta-\beta'=-\tfrac12-m\)) are never nonpositive integers, as the lead's own test noted.</p>
+<h4>A recurrence for every \(m\)</h4>
+<p>What the hypergeometric form does give uniformly is a short recurrence. From \((1+aT)(1+bT)e'=-\lambda(a+b+2abT)e\), comparing coefficients of \(T^k\),
+\[ (k+1)e_{k+1}=-(a+b)\big(k+\tfrac32\big)e_k-ab\,(k+2)\,e_{k-1}. \]
+Since \(\rho_{k+1}/\rho_k=(k+1)/(k+\tfrac52-m)\), the weighted coefficients \(c_k=\rho_ke_k\) satisfy, for \(k\ge1\),
+\[ c_{k+1}=-\frac{(a+b)(k+\tfrac32)}{k+\tfrac52-m}\,c_k-\frac{ab\,k(k+2)}{(k+\tfrac52-m)(k+\tfrac32-m)}\,c_{k-1}. \]
+So each entry of \(U_3\) is \(f_M=\sum_{i\le3m}p_ic_{M-i}\), with \(p_i\) the coefficients of \(P\) and \(c\) generated by a three-term recurrence whose coefficients are explicit in \(m\), \(k\) and the pair's two roots. <code>research/tools/bmd_triple_pair_recurrence.gp</code> checks the recurrence exactly against the series for \(m=2,\ldots,6\), \(k\le59\) and three pairs \((a,b)\): \(885\) of \(885\) identities hold (research/results/bmd-20261009-ken/pair-recurrence.txt). The check confirms the arithmetic of a two-line derivation; it is not evidence for the rank statement.</p>
+<p><strong>What this gives the window.</strong> Writing \(\mathbf c_k=(c_k,c_{k-1})\), the recurrence is \(\mathbf c_{k+1}=A_k\mathbf c_k\) with an explicit \(2\times2\) transfer matrix \(A_k\) for each pair. The five columns of \(U_3\) are then convolutions of the three pair sequences with the fixed polynomial \(P\), all generated by products of transfer matrices from initial vectors at small \(k\). This is the structure the tie window had before lem:cube-tie-holonomic-staircase turned its window into a staircase of explicit vectors. For the triple window the three pair rows have different transfer matrices, so the tie's single operator \(Q_c\) does not apply directly.</p>
+<p><strong>Follow-up.</strong> Continuing (entry one of four): the lead still bears on the triple window for \(m\ge8\). Next attempt: find the analogue of the holonomic staircase, a constant-coefficient difference operator in \(M\) (or one with coefficients in \(m\) only) annihilating \(P\cdot\Phi_{ij}\) for all three pairs at once on the window, from the three transfer matrices; or show that none exists of the needed length, which would be an obstruction recorded against this route.</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">Compute the Casoratian of the three sequences \(f_M\) (pairs \(12,13,23\)) on consecutive windows for \(m\le7\) and compare its factorization with the recorded minors of \(U_3\); a closed form there would point to the operator.</li>
+</ul>
+<p><strong>Remaining gap.</strong> conj:cube-triple-window-full-rank for \(m\ge8\); the confluent tie window; the top-up identity for \(M\ge6\); (B); statement 2 beyond its certificates; statement 4's first step.</p>
+<p><strong>Process.</strong> Derivation by hand of the \(F_1\) form, its Euler integral and the recurrence; one exact check of the recurrence.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-level-window-reduction (functionals \(f_M\), weights \(\rho_k\)); lem:cube-triple-window-elliptic-form; lem:cube-tie-holonomic-staircase (the tie's analogue); thm:cube-triple-window-small and check:cube-triple-window-six-seven (range proved); the phase-rule review's Appell item.</p>
+<p><strong>Verification gate.</strong> No new claim. The identification with \(F_1\) is the defining double series, and the recurrence follows from the first-order equation of the pair row and the ratio of the weights; both were checked exactly as stated.</p>
+<p><strong>Status:</strong> lead development; continuing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261009-ken">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 39.95 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">54.12 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">37.97 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">27.75 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
