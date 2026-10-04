@@ -17,7 +17,9 @@ cc(n) = binomial(-lam, n);
     for (col = 1, 5, my(n = N0 + col - 1);
       U[r, col] = sum(l = 0, m, binomial(m, l) * a[k]^l * if (n - l >= 0, rq(-m, n - l) * e[n - l + 1], 0))));
   my(gens = List());
-  forsubset([5, 3], S, my(Sv = Vec(S), D = matdet(matrix(3, 3, r, t, U[r, Sv[t]]))); if (D != 0, listput(gens, D / content(D))));
+  \\ explicit cofactor expansion: matdet on polynomial entries goes through rational functions and was the export's bottleneck
+  my(det3(A) = A[1,1] * (A[2,2] * A[3,3] - A[2,3] * A[3,2]) - A[1,2] * (A[2,1] * A[3,3] - A[2,3] * A[3,1]) + A[1,3] * (A[2,1] * A[3,2] - A[2,2] * A[3,1]));
+  forsubset([5, 3], S, my(Sv = Vec(S), D = det3(matrix(3, 3, r, t, U[r, Sv[t]]))); if (D != 0, listput(gens, D / content(D))));
   my(G = Str(outdir, "/triple-minors-m", m, ".ms"));
   write(G, "x,y,t"); write(G, "0");
   for (g = 1, #gens, write(G, gens[g], ","));
