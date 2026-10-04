@@ -67,7 +67,7 @@ def scratch_directory(root, thread, create=False):
     root = Path(root).resolve()
     key = hashlib.sha256(thread.encode()).hexdigest()
     path = root
-    for part in ('.codex', 'framework', 'scratch', key):
+    for part in ('research', 'tmp', 'codex', key):
         path = path / part
         if path.is_symlink():
             raise ValueError(f'Managed scratch path must not be a symlink: {path}')

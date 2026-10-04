@@ -25,6 +25,7 @@ class CodexScratchTest(unittest.TestCase):
     def test_cap_boundary_siblings_and_no_deletion(self):
         pad = state.scratch_directory(self.root, 'root', create=True)
         self.assertEqual(state.scratch_directory(self.root, 'root', create=True), pad)
+        self.assertEqual(pad.relative_to(self.root).parts[:3], ('research', 'tmp', 'codex'))
         other = state.scratch_directory(self.root, 'child', create=True)
         (other/'other').write_bytes(b'o' * 1000)
         (pad/'subdir').mkdir()
@@ -62,7 +63,7 @@ class CodexScratchTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'symlink'):
             state.scratch_directory(self.root, 'root', create=True)
         pad.unlink()
-        base = self.root/'.codex/framework/scratch';base.rmdir();base.symlink_to(outside)
+        base = self.root/'research/tmp/codex';base.rmdir();base.symlink_to(outside)
         with self.assertRaisesRegex(ValueError, 'symlink'):
             state.scratch_directory(self.root, 'child')
         self.assertEqual((outside/'evidence').read_text(), 'preserve')
