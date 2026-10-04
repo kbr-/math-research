@@ -163,7 +163,14 @@ def cancel(run):
         unit = started[run]['systemd_unit']
         if not re.fullmatch(r'mathcompute-job-[0-9a-f]+\.service', unit):
             raise ValueError('Invalid protected service identity')
-        subprocess.run(['systemctl','--user','stop',unit], check=True, timeout=10)
+        deadline = time.monotonic()+10
+        while True:
+            result = subprocess.run(['systemctl','--user','stop',unit], capture_output=True, timeout=2)
+            if result.returncode == 0 or run in records(journals(state['session']))[1]:
+                break
+            if time.monotonic() >= deadline:
+                raise RuntimeError('Cancellation is recorded but service stop is unconfirmed; inspect the run')
+            time.sleep(.1)
     print('Watcher cancellation requested; any recorded live protected service was stopped.', flush=True)
     return 0
 
@@ -184,7 +191,7 @@ def main(argv=None):
         if args.arm:
             return arm(args.session, args.at, args.poll)
         return watch(args.session, args.at, args.poll, grace=args.grace)
-    except (OSError, ValueError, subprocess.SubprocessError) as error:
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
         print('Watcher: '+str(error), file=sys.stderr)
         return 1
 

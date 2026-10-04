@@ -377,11 +377,13 @@ def run_job(args, command):
     rid = getattr(args, 'run_id', None) or uuid.uuid4().hex[:10]
     if not re.fullmatch(r'[0-9a-f]{10,32}', rid):
         raise ValueError('Invalid run ID')
+    cancel_path = None
     native = os.environ.get('CODEX_THREAD_ID') if not os.environ.get('CLAUDE_CODE_SESSION_ID') else None
     if native and (getattr(args, 'run_id', None) or args.timeout > 180 or (getattr(args, 'expect', None) or 0) > 60):
-        from watch_run import native_ready
+        from watch_run import native_ready, native_path, cancel
         if not native_ready(ROOT, name, rid, native):
             raise ValueError('Long Codex runs require an armed harness watcher; see tools/CODEX.md')
+        cancel_path = native_path(ROOT, rid).with_suffix('.cancel')
     unit = f'mathcompute-job-{uuid.uuid4().hex}.service'
     log = LOGS / f'{name}-{rid}.output.txt'
     with locked(path):
@@ -404,7 +406,15 @@ def run_job(args, command):
         with log.open('w', buffering=1) as output:
             try:
                 args_list = invocation(command, args.threads, args.timeout, unit)
+                if cancel_path is not None and cancel_path.exists():
+                    raise KeyboardInterrupt()
                 process = subprocess.Popen(args_list, stdout=output, stderr=subprocess.STDOUT)
+                if cancel_path is not None and cancel_path.exists():
+                    try:
+                        cancel(rid)
+                    except Exception:
+                        terminate_job(unit, process, output)
+                        raise
                 try:
                     rc = process.wait(timeout=args.timeout)
                 except subprocess.TimeoutExpired:

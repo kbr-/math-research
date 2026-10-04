@@ -68,12 +68,22 @@ class NativeMonitorTest(unittest.TestCase):
         atomic_json(self.path,{'owner':'owner','session':'fixture'})
         (self.logs/'fixture.jsonl').write_text(json.dumps({'event':'run_start','id':RUN,'systemd_unit':'mathcompute-job-'+RUN+'.service'})+'\n')
         with patch.object(watch,'ROOT',self.root),patch.object(watch,'LOGS',self.logs), \
-             patch.object(watch.subprocess,'run') as stop,redirect_stdout(io.StringIO()):
+             patch.object(watch.subprocess,'run',return_value=subprocess.CompletedProcess([],0)) as stop,redirect_stdout(io.StringIO()):
             self.assertEqual(watch.cancel(RUN),0)
-            stop.assert_called_once_with(['systemctl','--user','stop','mathcompute-job-'+RUN+'.service'],check=True,timeout=10)
+            stop.assert_called_once_with(['systemctl','--user','stop','mathcompute-job-'+RUN+'.service'],capture_output=True,timeout=2)
         self.assertTrue(self.path.with_suffix('.cancel').exists())
         with patch.object(watch,'ROOT',self.root),patch.dict(os.environ,{'CODEX_THREAD_ID':'other'}),self.assertRaises(ValueError):
             watch.cancel(RUN)
+
+    def test_cancel_retries_until_the_recorded_service_exists(self):
+        atomic_json(self.path,{'owner':'owner','session':'fixture'})
+        (self.logs/'fixture.jsonl').write_text(json.dumps({'event':'run_start','id':RUN,'systemd_unit':'mathcompute-job-'+RUN+'.service'})+'\n')
+        with patch.object(watch,'ROOT',self.root),patch.object(watch,'LOGS',self.logs), \
+             patch.object(watch.subprocess,'run',side_effect=[subprocess.CompletedProcess([],1),subprocess.CompletedProcess([],0)]) as stop, \
+             patch.object(watch.time,'sleep') as sleep,redirect_stdout(io.StringIO()):
+            self.assertEqual(watch.cancel(RUN),0)
+            self.assertEqual(stop.call_count,2);sleep.assert_called_once_with(.1)
+            self.assertTrue(self.path.with_suffix('.cancel').exists())
 
     def test_arm_rejects_missing_owner_and_unsafe_sessions(self):
         with patch.object(watch,'ROOT',self.root),patch.object(watch,'LOGS',self.logs):
@@ -111,7 +121,7 @@ class NativeMonitorTest(unittest.TestCase):
             journal.write_text(json.dumps({'event':'run_start','id':RUN,'systemd_unit':'invalid'})+'\n')
             with self.assertRaises(ValueError):watch.cancel(RUN)
             with journal.open('a') as file:file.write(json.dumps({'event':'run_end','id':RUN})+'\n')
-            with patch.object(watch.subprocess,'run') as stop:
+            with patch.object(watch.subprocess,'run',return_value=subprocess.CompletedProcess([],0)) as stop:
                 self.assertEqual(watch.cancel(RUN),0)
                 stop.assert_not_called()
 
@@ -168,6 +178,30 @@ class NativeMonitorTest(unittest.TestCase):
             args.run_id=None;args.timeout=181
             with self.assertRaisesRegex(ValueError,'armed'):compute.run_job(args,['true'])
 
+    def test_cancellation_before_and_during_process_creation(self):
+        loader=importlib.machinery.SourceFileLoader('compute_cancel_race',str(ROOT/'compute.sh'))
+        spec=importlib.util.spec_from_loader(loader.name,loader);compute=importlib.util.module_from_spec(spec);loader.exec_module(compute)
+        args=argparse.Namespace(session='fixture',run_id=RUN,category='local_processing',threads=1,timeout=30,expect=None,tail_bytes=0)
+        journal=self.logs/'fixture.jsonl'
+        marker=self.path.with_suffix('.cancel');marker.parent.mkdir(parents=True,exist_ok=True)
+        for phase in ('before','during'):
+            marker.unlink(missing_ok=True);journal.write_text('{"event":"start"}\n')
+            def invocation(*_):
+                if phase=='before':marker.touch()
+                return ['fixture-controller']
+            from unittest.mock import Mock
+            process=Mock();process.wait.return_value=0
+            def launch(*a,**k):marker.touch();return process
+            with patch.object(compute,'ROOT',self.root),patch.object(compute,'LOGS',self.logs), \
+                 patch.object(compute,'recovery_observe'),patch.object(compute,'invocation',side_effect=invocation), \
+                 patch.object(watch,'native_ready',return_value=True),patch.object(watch,'cancel',return_value=0) as cancel, \
+                 patch.object(compute.subprocess,'Popen',side_effect=launch) as popen,redirect_stdout(io.StringIO()):
+                result=compute.run_job(args,['true'])
+                if phase=='before':
+                    self.assertEqual(result,130);popen.assert_not_called()
+                else:
+                    self.assertEqual(result,0);cancel.assert_called_once_with(RUN)
+
     def test_harness_bridge_yields_forwards_milestones_and_cancels_failure(self):
         script=r'''
 const fs=require('fs'),assert=require('assert');
@@ -175,10 +209,10 @@ const run=eval(fs.readFileSync(process.argv[1],'utf8'));
 async function scenario(failure) {
   const calls=[],notes=[],order=[];let watcherPolls=0;
   const tools={
-    exec_command:async o=>{calls.push(o);if(o.cmd.includes('--cancel'))return {exit_code:0,output:'cancelled'};
+    exec_command:async o=>{calls.push(o);if(o.cmd.includes('--cancel'))return {session_id:3,output:'cancelling'};
       if(o.cmd.startsWith('python3'))return {session_id:1,output:'WATCH_READY {"run_id":"'+'a'.repeat(32)+'"}\n'};
       return {session_id:2,output:''};},
-    write_stdin:async o=>{order.push('poll');if(o.session_id===2)return {exit_code:failure?1:0,output:'full controller output'};
+    write_stdin:async o=>{order.push('poll');if(o.session_id===3)return {exit_code:0,output:'cancelled'};if(o.session_id===2)return {exit_code:failure?1:0,output:'full controller output'};
       if(++watcherPolls===1)return {session_id:1,output:'decision point'};
       return {exit_code:0,output:'completion'};}
   };
@@ -188,6 +222,7 @@ async function scenario(failure) {
   assert(calls[0].cmd.includes('--arm'));assert(calls[1].cmd.includes('--run-id '+'a'.repeat(32)));
   assert(calls[1].cmd.includes("'a'\\''$(touch BAD)'"));
   assert.equal(calls.filter(c=>c.cmd.includes('--cancel')).length,failure?1:0);
+  if(failure)assert(notes.includes('cancelled'));
 }
 (async()=>{await scenario(false);await scenario(true);console.log('native bridge controls passed')})().catch(e=>{console.error(e);process.exit(1)});
 '''

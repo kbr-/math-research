@@ -16,8 +16,12 @@
   const cancel = async () => {
     if (cancelled) return;
     cancelled = true;
-    const result = await execute(`python3 tools/watch_run.py --cancel ${run}`);
+    let result = await execute(`python3 tools/watch_run.py --cancel ${run}`);
     show(result);
+    while (result.session_id) {
+      result = await tools.write_stdin({session_id: result.session_id, chars: "", yield_time_ms: 1000});
+      show(result);
+    }
     if (result.exit_code !== 0) throw new Error("Cancellation failed; inspect the protected service");
   };
   const collect = async initial => {
