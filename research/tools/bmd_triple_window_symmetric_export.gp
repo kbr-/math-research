@@ -9,6 +9,8 @@
 \\           and the Rabinowitsch generator t e3 Delta(1, e2, e3) - 1; with NEG=2 only the first two minors (a negative control,
 \\           which must have common zeros). Also prints chart B: the degree of gcd_S det C_S(0, e2, 1) after removing the factors
 \\           of Delta(0, e2, 1) = -4 e2^3 - 27 (zero means no common root in chart B).
+\\   FULL=1 (with MODE=A): the generator t e3 - 1 instead, so collisions (Delta = 0) are not excluded; chart B also reports the
+\\           full gcd degree (C(e) on Delta = 0 is the confluent window, cycle bmd-20261009-kgb).
 \\ Usage: env MODE=A M=11 OUT=dir gp -q bmd_triple_window_symmetric_export.gp
 default(parisizemax, 4 * 10^9);
 lam = 3/2;
@@ -46,17 +48,17 @@ oldwindow(m) = {
       listput(signs, if (D == V * G, 1, if (D == -V * G, -1, 0))); listput(conts, content(D) / qcontent(D)));
     print("check m = ", m, ": old non-numeric contents ", Set(Vec(conts)), ", signs ", Vec(signs), if (#Set(Vec(signs)) == 1 && signs[1] != 0, " (factorization holds)", " (FAILS)"));
     quit);
-  my(outdir = getenv("OUT"), neg = getenv("NEG"), nmin = if (neg == 0 || neg == "", 10, eval(neg)));
+  my(outdir = getenv("OUT"), neg = getenv("NEG"), nmin = if (neg == 0 || neg == "", 10, eval(neg)), full = getenv("FULL") == "1");
   my(C = residues(m, 1, 'b, 'c), gens = List());
   forsubset([5, 3], S, my(Sv = Vec(S), D = det3(matrix(3, 3, r, t, C[r, Sv[t]]))); if (D != 0, listput(gens, D / qcontent(D))));
-  my(G = Str(outdir, "/sym-A-m", m, if (nmin < 10, Str("-neg", nmin), ""), ".ms"));
+  my(G = Str(outdir, "/sym-A-m", m, if (nmin < 10, Str("-neg", nmin), ""), if (full, "-full", ""), ".ms"));
   write(G, "b,c,t"); write(G, "0");
   for (g = 1, min(nmin, #gens), write(G, gens[g], ","));
-  write(G, "t*c*(", disc(1, 'b, 'c), ")-1");
+  if (full, write(G, "t*c-1"), write(G, "t*c*(", disc(1, 'b, 'c), ")-1"));
   my(degs = vector(#gens, g, my(P = gens[g]); vecmax(vector(poldegree(P, 'b) + 1, i, my(q = polcoef(P, i - 1, 'b)); if (q == 0, -1, i - 1 + poldegree(q, 'c))))));
   my(CB = residues(m, 0, 'b, 1), h = 0);
   forsubset([5, 3], S, my(Sv = Vec(S)); h = gcd(h, det3(matrix(3, 3, r, t, CB[r, Sv[t]]))));
-  my(d = -4 * 'b^3 - 27, q); while (poldegree(q = gcd(h, d)) > 0, h = h / q);
-  print("m = ", m, ": chart A, ", min(nmin, #gens), " minors, total degrees ", degs, "; chart B, residual gcd degree ", poldegree(h));
+  my(d = -4 * 'b^3 - 27, q, hfull = poldegree(h)); while (poldegree(q = gcd(h, d)) > 0, h = h / q);
+  print("m = ", m, ": chart A, ", min(nmin, #gens), " minors, total degrees ", degs, "; chart B, gcd degree ", hfull, ", residual gcd degree ", poldegree(h));
   quit;
 }
