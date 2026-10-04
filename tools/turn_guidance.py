@@ -155,9 +155,11 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
                          'cycle must attempt a proof or refutation of the General statement.')
         streak = 0
         for a in reversed(mine):
-            if ft.entry_tags(body, a)['kind'] != 'research':
+            kind = ft.entry_tags(body, a)['kind']
+            if kind == 'review':
                 break
-            streak += 1
+            if kind == 'research':      # audits and other entries neither count nor end the scan, as in the finisher
+                streak += 1
         if streak >= ft.REVIEW_PERIOD:
             notes.append(f'Route {item}: {streak} research entries since the last route review; the next '
                          'entry on this route must be a route review.')
