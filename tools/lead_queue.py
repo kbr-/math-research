@@ -7,14 +7,20 @@ budget (notebook_context.py skips it) and restoration reads only its head (resum
 finish-turn.py against HEAD:
 
 - The queue holds passed review items once each.  A review appends its newly passed items at the end; a review
-  that marks picks (<li data-pick>: its two most promising passed leads and one bridge, user, 9 October 2026:
-  "pick the most promising 2 leads and 1 bridge and drop the rest immediately") appends only those.
+  outside draining marks picks (<li data-pick>: its three most promising passed leads and two bridges,
+  or all passed items when fewer pass; user, 5 October 2026) and appends only those.
 - A research entry develops at most one item, always the head, tagged data-lead or data-bridge="ANCHOR:N",
   and states <strong>Follow-up.</strong> Closed (a reason the attempt found), Developed (no remaining
   application to an open statement) or Continuing (it still bears on one; user, 3 October 2026: squeeze
   items, do not close them at their first usable result).  Closed and Developed remove the item; a
-  Continuing item keeps the head for up to SPELL consecutive research entries, so its context is not
-  restored from scratch each time, and then moves to the tail.
+  Continuing item keeps the head for SPELL entries by default. At a boundary, data-spell-extend="2" on the
+  article earns two more cycles when <p class="spell-extension" data-statement="NAME"> states
+  <strong>Progress.</strong> (a registered proof, reduction or refutation from this spell/extension period,
+  and how it materially advances that open statement) and <strong>Next.</strong> (the concrete next necessary
+  implication using the same mechanism). Reassess every two extra cycles, with no lifetime cap; finite checks,
+  promise alone or reused old progress do not qualify. Without fresh qualifying progress, rotate.
+  A developed sub-idea counts for its continuing parent. A quoted user audit restoring a head can extend at
+  its boundary with the same evidence, naming data-spell-item="lead:ID" or "bridge:ID".
 - Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
   one at a time"): every item is developed in its own entry.  Older entries' <h4>Queue triage</h4> lists are still
   read as history; a new entry with one is refused.  Older research entries' own Outside leads and Absurd bridges
@@ -49,7 +55,7 @@ finish-turn.py against HEAD:
   its Picked. paragraph, lists under <h4>Queue order</h4> one <ol> of <li data-KIND="ID"></li>, every top-level
   item it leaves once, in the new order; sub-ideas stay under their parent.  It develops no item and settles no
   triage batch, and while the queue drains it is an uncounted kind (an audit).  `append` applies the order after
-  the entry's other changes.
+  the entry's other changes. An <ol data-move="head"> naming one parent promotes just it, preserving all others.
 - An item that waits on the user's answer stays queued, marked data-waits: a follow-up list item for it ending
   <strong>Follow-up.</strong> Waiting: <the request> sets the mark, one ending Unblocked: <the answer> removes it.
   The head is the first item not waiting, and its first sub-idea not waiting; draining asks nothing when every
@@ -78,7 +84,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
-SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
+SPELL = 4   # default spell; evidence-backed extensions add two (user, 5 October 2026)
+SPELL_EXTENSION = 2
 DRAINING_REVIEW_RULE = ('While the queue is draining, reviews produce no Outside leads or Absurd bridges; '
                        'omit both sections and assess the existing work.')
 # Queue triage batches (3 October 2026) are retired (user, 9 October 2026): batched items were closed by record
@@ -95,7 +102,7 @@ SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 SUBIDEAS_RE = re.compile(r'<h4>Sub-ideas</h4>\s*<ul>(.*?)</ul>', re.S)
-ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol>(.*?)</ol>', re.S)
+ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol(?: data-move="head")?>(.*?)</ol>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')
 PICKED_RE = re.compile(r'<strong>Picked\.</strong>[^<]*?["\u201c][^"\u201d<]{3,}["\u201d]')
@@ -124,15 +131,21 @@ class Where:
         self.path = Path(path).resolve() if path else None
         self.base = self.root.resolve() if path else None
         self._claims = None
+        self._claim_records = None
 
     def anchors(self):
         return set(re.findall(r'\bid="([^"]+)"', self.body))
 
+    def claim_records(self):
+        if self._claim_records is None:
+            registry = self.root / 'research/claims/index.json'
+            self._claim_records = ({c['id']: c for c in json.loads(registry.read_text())['claims']}
+                                   if registry.exists() else {})
+        return self._claim_records
+
     def claims(self):
         if self._claims is None:
-            registry = self.root / 'research/claims/index.json'
-            self._claims = ({c['id'] for c in json.loads(registry.read_text())['claims']}
-                            if registry.exists() else set())
+            self._claims = set(self.claim_records())
         return self._claims
 
 
@@ -540,16 +553,12 @@ def group_of(body, nodes, item, position=None):
     return record_parent(body, item, position) or item
 
 
-def spell(body, item, nodes=None, end=None):
-    """Research entries, from the record's end, that developed `item` or one of its children since it became
-    the head: entries that develop no queue item (reviews, other research) neither count nor break the run, which
-    ends at an entry developing another item or settling a triage batch.  `nodes`, the queue the children are
-    looked up in, defaults to `body`'s; the check passes the queue before the last entry, which still holds a
-    child that entry closed.  `end` cuts the record before that many articles from its end."""
+def spell_entries(body, item, nodes=None, end=None):
+    """Positions in the current spell, oldest first; reviews and user picks do not count."""
     if nodes is None:
         found = parse_tree(body)
         nodes = found[1] if found else []
-    count = 0
+    positions = []
     articles = record_articles(body)[:end]
     for position in range(len(articles) - 1, -1, -1):
         tag, text = articles[position]
@@ -559,8 +568,104 @@ def spell(body, item, nodes=None, end=None):
         if triaged(tag, text) or (work and group_of(body, nodes, work[0], position) != item):
             break
         if work:
-            count += 1
-    return count
+            positions.append(position)
+    return positions[::-1]
+
+
+def spell(body, item, nodes=None, end=None):
+    """Number of consecutive developments of a parent or its children (reviews do not reset it)."""
+    return len(spell_entries(body, item, nodes, end))
+
+
+def extension_item(body, nodes, tag, text, position=None):
+    """An extension belongs to a continuing lead/bridge, including one just promoted by the user."""
+    if 'data-spell-extend=' not in tag:
+        return None
+    if 'data-spell-extend="2"' not in tag:
+        raise ValueError('A spell extension adds exactly two cycles: data-spell-extend="2"')
+    work = developed_by(tag, text)
+    if work and 'data-picked="user"' not in tag:
+        item = group_of(body, nodes, work[0], position)
+        if item == work[0] and work[1] != 'Continuing':
+            raise ValueError('A closed or developed parent cannot extend its spell')
+    else:
+        named = re.search(r'data-spell-item="(lead|bridge):([^"]+)"', tag)
+        if not (named and 'data-kind="audit"' in tag and picked(tag, text) and ORDER_RE.search(text)):
+            raise ValueError('An extension needs a development, or a quoted user audit restoring its head')
+        item = named.groups()
+    if item[0] not in ('lead', 'bridge'):
+        raise ValueError('Only a lead or bridge (including its sub-ideas) earns spell extensions')
+    return item
+
+
+def spell_limit(body, item, nodes=None, end=None):
+    """Four by default; each declaration at the current boundary adds two, without a lifetime cap."""
+    if 'data-spell-extend=' not in body:
+        return SPELL
+    if nodes is None:
+        found = parse_tree(body)
+        nodes = found[1] if found else []
+    positions = spell_entries(body, item, nodes, end)
+    if not positions:
+        return SPELL
+    articles = record_articles(body)[:end]
+    count, limit = 0, SPELL
+    positions = set(positions)
+    for pos in range(min(positions), len(articles)):
+        count += pos in positions
+        tag, text = articles[pos]
+        if extension_item(body, nodes, tag, text, pos) == item:
+            if count != limit:
+                raise ValueError(f'A spell extension is assessed at cycle {limit}, not cycle {count}')
+            limit += SPELL_EXTENSION
+    return limit
+
+
+def validate_spell_extension(body, tag, text, nodes, where):
+    """Require fresh proved/refuted progress and a named remaining implication, not a case list."""
+    item = extension_item(body, nodes, tag, text, len(record_articles(body)) - 1)
+    paragraph = re.search(r'<p\b[^>]*class="spell-extension"[^>]*>(.*?)</p>', text, re.S)
+    if item is None:
+        if paragraph:
+            raise ValueError('A spell-extension paragraph needs data-spell-extend="2" on its article')
+        return
+    if 'data-kind="audit"' in tag:
+        head = head_of(ordered(tag, text, nodes))
+        if head is None or head.item != item:
+            raise ValueError('A restored spell extension must name the new nonwaiting head')
+    spell_limit(body, item, nodes)  # Includes the current declaration; rejects early/duplicate extensions.
+    if not paragraph or not re.search(r'data-statement="[^"\s][^"]*"', paragraph.group(0)):
+        raise ValueError('A spell extension names its open statement in a spell-extension paragraph')
+    progress = re.search(r'<strong>Progress\.</strong>(.*?)<strong>Next\.</strong>(.+)',
+                         paragraph.group(1), re.S)
+    if not progress or any(not re.sub(r'<[^>]+>', '', part).strip() for part in progress.groups()):
+        raise ValueError('A spell extension states Progress and a concrete Next necessary implication')
+    articles = record_articles(body)
+    positions = spell_entries(body, item, nodes)
+    if not positions:
+        raise ValueError('A spell extension needs a completed default spell before it can extend')
+    previous = max((p for p in range(positions[0], len(articles) - 1)
+                    if extension_item(body, nodes, *articles[p], p) == item), default=-1)
+    sources = {}
+    for pos in positions:
+        if pos <= previous:
+            continue
+        source_tag, _ = articles[pos]
+        anchor = re.search(r'\bid="([^"]+)"', source_tag)
+        declared = re.search(r'\bdata-claims="([^"]+)"', source_tag)
+        if anchor and declared:
+            for claim in declared.group(1).split():
+                sources.setdefault(claim, set()).add(anchor.group(1))
+    registry = where.claim_records()
+    for cid in CLAIM_RE.findall(progress.group(1)):
+        claim = registry.get(cid, {})
+        status = claim.get('mathematical_status')
+        eligible = status == 'refutation' or (status == 'working_proof' and not cid.startswith(('ex:', 'check:')))
+        if eligible and any(re.search(r'#' + re.escape(anchor) + r'(?:[)\"\s]|$)', claim.get('record', ''))
+                            for anchor in sources.get(cid, ())):
+            return
+    raise ValueError('A spell extension needs a registered proof, reduction or refutation from this '
+                     'extension period; finite checks, conjectures and reused old progress do not qualify')
 
 
 def kept_children(text):
@@ -749,6 +854,10 @@ def ordered(tag, text, nodes):
     if nested:
         raise ValueError('A Queue order lists top-level items only; sub-ideas keep their place under their '
                          'parent: ' + ', '.join(nested))
+    if '<ol data-move="head">' in section.group(0):
+        if len(order) != 1 or order[0] not in top:
+            raise ValueError('A head promotion names exactly one queued top-level item')
+        return [n for n in nodes if n.item == order[0]] + [n for n in nodes if n.item != order[0]]
     if set(order) != set(top):
         missing = [i for k, i in top if (k, i) not in order]
         unknown = [i for k, i in order if (k, i) not in top]
@@ -894,6 +1003,7 @@ def check(head_body, body, path=None, root=None):
     problems = rule(tag, text, where) if rule else []
     if problems:
         raise ValueError(f'{work[0][1]} ({work[0][0]}), {work[1]}: ' + '; '.join(problems))
+    validate_spell_extension(body, tag, text, nodes, where)
     problems = check_waits(text, where)
     if problems:
         raise ValueError('Waiting follow-ups: ' + '; '.join(problems))
@@ -981,7 +1091,8 @@ def check(head_body, body, path=None, root=None):
     if shape(nodes) != shape(expected):
         raise ValueError('Queue update: keep the earlier items in order; remove a Closed or Developed item (a closed '
                          'parent\'s sub-ideas close with it unless a follow-up keeps one Continuing, which goes to the '
-                         'tail); if Continuing, keep the head until its ' + str(SPELL) + 'th consecutive entry, then '
+                         'tail); if Continuing, keep the head until its current spell boundary '
+                         '(four, plus earned two-cycle extensions), then '
                          'move it, with its sub-ideas, to the tail; append this entry\'s newly listed items (sub-ideas '
                          'under their parent) and the items it reopens. Expected: '
                          + '; '.join(f'{i[1]}' + (' [' + ', '.join(c[1] for c in cs) + ']' if cs else '')
@@ -1024,20 +1135,20 @@ def head_lines(body, count=HEAD_READ):
 def settle(body, nodes, end=None):
     """`nodes` with the head moved to the tail if the record (cut by `end`, as in `spell`) already owes it that
     move: its spell is complete though the queue still has it first, as a queue committed before a spell rule was
-    enforced can.  On a queue the tools kept, the head's spell is under SPELL and nothing moves."""
+    enforced can.  On a queue the tools kept, the head is below its current spell limit and nothing moves."""
     head = head_of(nodes)
-    if head is not None and len(nodes) > 1 and spell(body, head.item, nodes, end) >= SPELL:
+    if head is not None and len(nodes) > 1 and spell(body, head.item, nodes, end) >= spell_limit(body, head.item, nodes, end):
         nodes.remove(head)
         nodes.append(head)
     return nodes
 
 
 def end_spell(body, nodes, top, picked, before=None):
-    """Move `top` with its sub-ideas to the tail when it is the head and the entry ending `body` is the SPELLth of
+    """Move `top` with its sub-ideas to the tail when it is the head and the entry ending `body` reaches the current boundary of
     its spell, counted against the queue `before` that entry (default: `body`'s); a picked entry neither counts
     toward nor ends a spell."""
     if (top is not None and top in nodes and not picked and top is head_of(nodes)
-            and spell(body, top.item, before) >= SPELL):
+            and spell(body, top.item, before) >= spell_limit(body, top.item, before)):
         nodes.remove(top)
         nodes.append(top)
 
@@ -1045,7 +1156,7 @@ def end_spell(body, nodes, top, picked, before=None):
 def done(body, outcome):
     """The notebook with the item the last entry develops removed (Closed, Developed; a parent's sub-ideas close
     with it unless the entry keeps one Continuing, which goes to the tail), or kept (Continuing: a head keeps its
-    place before its SPELLth consecutive entry, then moves with its sub-ideas to the tail), and the draining flag
+    place before its current boundary, including earned extensions, then moves with its sub-ideas to the tail), and the draining flag
     recomputed from the previous state.  Run it after appending the developing entry and before `append`."""
     found = parse_tree(body)
     if found is None:

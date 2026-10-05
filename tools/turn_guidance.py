@@ -86,7 +86,8 @@ def queue_notes(body):
     first = next((c for c in head.children if not c.waits), None)
     target = (f'the head is {head.ident} ({head.kind}), tagged data-{head.kind}="{head.ident}"'
               + (f', or its first sub-idea {first.ident} ({first.kind})' if first else '')
-              + f'; this would be its entry {lq.spell(body, head.item) + 1} of at most {lq.SPELL} in a row{waits}')
+              + f'; this would be its entry {lq.spell(body, head.item) + 1}; current spell boundary '
+              + f'{lq.spell_limit(body, head.item)}{waits}')
     entries = ' or '.join(sorted(lq.SETTINGS['counted']))
     rule = ' '.join(lq.SETTINGS['guidance']) or SQUEEZE     # a kind module's own, else the squeeze rule
     if lq.SETTINGS['backpressure'] and (draining or len(nodes) >= lq.CAP):
@@ -94,7 +95,10 @@ def queue_notes(body):
                 f'{entries} entry must develop the head until the queue has {lq.FLOOR} items: {target}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
                 'update the queue: Closed and Developed remove the item; Continuing keeps the head until its '
-                f'{lq.SPELL}th consecutive entry, then moves it with its sub-ideas to the tail. ' + rule]
+                f'current boundary ({lq.spell_limit(body, head.item)}), then rotates unless this period earned '
+                'a two-cycle extension. Declare data-spell-extend="2" with a spell-extension paragraph '
+                'naming the open statement, new proved/refuted Progress and the concrete Next implication; '
+                'finite checks or reused progress do not qualify. Reassess every two extra cycles. ' + rule]
     pressure = f'backpressure at {lq.CAP}' if lq.SETTINGS['backpressure'] else 'no backpressure here'
     return [f'Lead queue: {len(nodes)} items ({pressure}); {target}. A {entries} entry that develops a queue '
             'item takes the head or its first sub-idea, unless the user picked another, states its Follow-up '
@@ -131,8 +135,9 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
              'or anything else (Absurd bridges). Every route review lists at least three '
              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
-             'outcome (falsified items still count); it marks its two most promising passed leads and one bridge '
-             'with <li data-pick>, which alone join the queue (user, 9 October 2026).']
+             f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+             f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+             'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
     import lead_queue as lq
     if lq.is_draining(body):
         notes[-1] = lq.DRAINING_REVIEW_RULE

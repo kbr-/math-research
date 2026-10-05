@@ -81,9 +81,9 @@ def validate_route(body, article):
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
-# A review queues only its most promising passed items, marked <li data-pick>: PICKS per section, the rest dropped
-# (user, 9 October 2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately").
-PICKS = {'Outside leads': 2, 'Absurd bridges': 1}
+# Outside draining, restore three passed leads and two bridges (user, 5 October 2026).
+# Only picks enter the queue; if fewer tests pass, keep those rather than inventing successes.
+PICKS = {'Outside leads': 3, 'Absurd bridges': 2}
 PICK_RE = re.compile(r'^[^>]*\bdata-pick\b')
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
 OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
@@ -163,7 +163,7 @@ def validate_leads(body, article, close, draining=None):
         if not set(picks) <= set(passed) or len(picks) != want:
             raise ValueError(f'Mark the {want} most promising passed {heading} item(s) with <li data-pick> '
                              f'(at most {PICKS[heading]}; passed: {passed or "none"}, marked: {picks or "none"}): '
-                             'only picks join the lead queue, the rest are dropped (user, 9 October 2026)')
+                             'outside draining, only picks join the lead queue; the rest are dropped (user, 5 October 2026)')
 
 
 OPEN_ITEMS_RE = re.compile(r'\bdata-open-items="(\d+)"')

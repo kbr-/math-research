@@ -226,9 +226,9 @@ rules to growing checklists or one-off setup narratives.
   translation. Run every cheap test named in these sections within the review cycle itself, and end
   each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
   the reason (the finisher checks this); falsified items stay listed and count toward the minimums
-  (user, 25 September 2026). The review then marks its two most promising passed Outside leads and its
-  most promising passed bridge with `<li data-pick>`; only these are queued and the rest are dropped at once
-  (user, 9 October 2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately"). A
+  (user, 25 September 2026). Outside draining, the review marks its three most promising passed Outside
+  leads and two most promising passed bridges with `<li data-pick>` (or all passed items when fewer pass);
+  only these are queued and the rest are dropped at once (user, 5 October 2026). A
   picked item is a lead to develop, not only to list: every picked, unclosed item waits in the notebook's
   **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no word budget;
   restoration reads its first five items), FIFO, maintained per [tools/lead_queue.py](tools/lead_queue.py).
@@ -239,9 +239,13 @@ rules to growing checklists or one-off setup narratives.
   statement, naming and where possible making the concrete next attempt; Developed only when its results
   leave it no remaining application to an open statement; Closed only for a reason the attempt found
   (a restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
-  result). Closed and Developed remove the item. A Continuing item keeps the head for up to four
-  consecutive research entries, so its context is not rebuilt each cycle, and then moves to the tail
-  (user, 3 October 2026). Every item, also during backpressure, is developed in its own entry; batch
+  result). Closed and Developed remove the item. Four consecutive research entries are the default
+  spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the current
+  spell/extension period materially advances a named open statement and a concrete next necessary
+  implication uses the same mechanism. Record that evidence and next attempt using
+  [the queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
+  there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
+  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every item, also during backpressure, is developed in its own entry; batch
   triage is retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a
   time"). Research entries carry no Outside leads or Absurd bridges of their own (user, 9 October 2026);
   undone work they name goes under Sub-ideas. An item closed too early

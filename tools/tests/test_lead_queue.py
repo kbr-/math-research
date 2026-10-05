@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -133,6 +134,108 @@ class LeadQueueTest(unittest.TestCase):
             self.assertEqual(lq.parse(lq.done(appended, 'Continuing'))[1], want)
         broken = notebook([self.rev, cont, research(self.q[1], 'Closed'), cont, cont], self.q)
         self.assertEqual(lq.spell(broken, self.q[0]), 2)                 # another item's entry ends the run
+
+    def extension_entry(self, number, evidence=None, extension=True, item=None):
+        item = item or self.q[0]
+        cid = evidence or f'thm:e{number}'
+        attrs = ' data-spell-extend="2"' if extension else ''
+        note = (f'<p class="spell-extension" data-statement="Stable orders">'
+                f'<strong>Progress.</strong> {cid} closes a necessary all-degree family. '
+                '<strong>Next.</strong> Apply its same marked-source mechanism to the remaining prime.</p>')
+        return (f'<article id="e{number}" data-kind="research" data-route="step" '
+                f'data-{item[0]}="{item[1]}" data-claims="thm:e{number}"{attrs}>'
+                + (note if extension else '') + '<p><strong>Follow-up.</strong> Continuing: next.</p></article>')
+
+    def extension_registry(self, **changes):
+        records = {f'thm:e{n}': {'mathematical_status': 'working_proof',
+                                'record': f'[proof](https://example.test/#e{n})'} for n in range(1, 11)}
+        records.update(changes)
+        return patch.object(lq.Where, 'claim_records', return_value=records)
+
+    def test_earned_extensions_renew_and_expire(self):
+        entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 4)]
+        with self.extension_registry():
+            for number in range(4, 10):
+                before = notebook(entries, self.q)
+                entries.append(self.extension_entry(number, extension=number in (4, 6, 8)))
+                after = notebook(entries, self.q)
+                lq.check(before, after)
+                self.assertEqual(lq.parse(lq.done(after, 'Continuing'))[1], self.q)
+                self.assertEqual(lq.spell_limit(after, self.q[0]), 2 * (number // 2) + 2)
+            before = notebook(entries, self.q)
+            entries.append(self.extension_entry(10, extension=False))
+            after = notebook(entries, self.q[::-1])
+            lq.check(before, after)
+            self.assertEqual(lq.parse(lq.done(notebook(entries, self.q), 'Continuing'))[1], self.q[::-1])
+
+    def test_extension_rejects_stale_finite_or_unproved_progress(self):
+        entries = [self.rev] + [self.extension_entry(n, extension=n == 4) for n in range(1, 6)]
+        before = notebook(entries, self.q)
+        with self.extension_registry():
+            with self.assertRaisesRegex(ValueError, 'this extension period'):
+                lq.check(before, notebook(entries + [self.extension_entry(6, evidence='thm:e4')], self.q))
+        for status in ('finite_check', 'conditional', 'conjecture'):
+            with self.subTest(status=status), self.extension_registry(**{
+                    'thm:e6': {'mathematical_status': status, 'record': '[proof](https://example.test/#e6)'}}):
+                with self.assertRaisesRegex(ValueError, 'registered proof'):
+                    lq.check(before, notebook(entries + [self.extension_entry(6)], self.q))
+        with self.extension_registry(**{'thm:e6': {'mathematical_status': 'working_proof',
+                                                  'record': '[old](https://example.test/#e60)'}}):
+            with self.assertRaisesRegex(ValueError, 'registered proof'):
+                lq.check(before, notebook(entries + [self.extension_entry(6)], self.q))
+        refutation = self.extension_entry(6).replace('thm:e6', 'ex:counterexample')
+        with self.extension_registry(**{'ex:counterexample': {'mathematical_status': 'refutation',
+                                                              'record': '[proof](https://example.test/#e6)'}}):
+            lq.check(before, notebook(entries + [refutation], self.q))
+
+    def test_extension_needs_boundary_statement_and_next_attempt(self):
+        entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 4)]
+        before = notebook(entries, self.q)
+        valid = self.extension_entry(4)
+        invalid = [valid.replace('data-spell-extend="2"', 'data-spell-extend="4"'),
+                   valid.replace('data-statement="Stable orders"', ''),
+                   valid.replace('<strong>Next.</strong>', 'Later:'),
+                   valid.replace('Continuing: next.', 'Closed: finished.')]
+        with self.extension_registry():
+            for entry in invalid:
+                with self.subTest(entry=entry), self.assertRaises(ValueError):
+                    lq.check(before, notebook(entries + [entry], self.q))
+            with self.assertRaisesRegex(ValueError, 'cycle 4, not cycle 3'):
+                lq.check(notebook(entries[:-1], self.q), notebook(entries[:-1] + [self.extension_entry(3)], self.q))
+
+    def test_user_restores_rotated_head_with_earned_extension(self):
+        entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 5)]
+        before = notebook(entries, self.q[::-1])
+        note = self.extension_entry(4).split('<p class="spell-extension"', 1)[1].split('</p>', 1)[0]
+        audit = ('<article id="return" data-kind="audit" data-picked="user" '
+                 'data-spell-extend="2" data-spell-item="lead:r1:1">'
+                 '<p><strong>Picked.</strong> "Bring it back to the head."</p>'
+                 '<p class="spell-extension"' + note + '</p><h4>Queue order</h4>'
+                 '<ol data-move="head"><li data-lead="r1:1"></li></ol></article>')
+        with self.extension_registry():
+            after, _ = lq.append_new(notebook(entries + [audit], self.q[::-1]))
+            lq.check(before, after)
+            self.assertEqual(lq.parse(after)[1], self.q)
+            self.assertEqual(lq.spell(after, self.q[0]), 4)
+            self.assertEqual(lq.spell_limit(after, self.q[0]), 6)
+            self.assertEqual(lq.shape(lq.settle(after, lq.parse_tree(after)[1])), lq.shape(lq.parse_tree(after)[1]))
+        unquoted = audit.replace('data-picked="user"', '')
+        with self.assertRaises(ValueError):
+            lq.append_new(notebook(entries + [unquoted], self.q[::-1]))
+
+    def test_completed_child_can_extend_its_continuing_parent(self):
+        listing = subideas('sub', [('check', 'question')]).replace('data-sub="check"',
+                   'data-sub="check" data-parent="lead:r1:1"')
+        entries = [self.rev, listing] + [self.extension_entry(n, extension=False) for n in range(1, 4)]
+        queue = [(self.q[0], [('check', 'sub:s1')]), self.q[1]]
+        entry = self.extension_entry(4, item=('check', 'sub:s1')).replace('Continuing: next.', 'Developed: thm:e4.')
+        with self.extension_registry():
+            before = notebook(entries, queue)
+            after = lq.done(notebook(entries + [entry], queue), 'Developed')
+            lq.check(before, after)
+            self.assertEqual(lq.parse_tree(after)[1][0].item, self.q[0])
+            self.assertEqual(lq.parse_tree(after)[1][0].children, [])
+            self.assertEqual(lq.spell_limit(after, self.q[0]), 6)
 
     def test_new_items_go_to_the_end(self):
         head = notebook([self.rev], self.q)

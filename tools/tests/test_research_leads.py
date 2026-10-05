@@ -50,21 +50,20 @@ def review(leads, bridges):
 
 
 class ReviewPicksTest(unittest.TestCase):
-    """A review marks its two most promising passed leads and one bridge; only these are queued (user, 9 October
-    2026: "pick the most promising 2 leads and 1 bridge and drop the rest immediately")."""
+    """Outside draining a review selects three passed leads and two bridges; draining selects none."""
 
     P, F = 'Passed', 'Falsified'
 
     def test_exact_picks_are_accepted(self):
         P, F = self.P, self.F
-        FT.validate_leads(*review([(P, 1), (P, 0), (P, 1)], [(P, 0), (P, 1)]))
+        FT.validate_leads(*review([(P, 1), (P, 1), (P, 1), (P, 0)], [(P, 1), (P, 1), (P, 0)]))
         FT.validate_leads(*review([(P, 1), (F, 0), (F, 0)], [(F, 0), (F, 0)]))     # fewer passed, fewer picks
 
     def test_wrong_picks_are_refused(self):
         P, F = self.P, self.F
         for leads, bridges in (([(P, 0), (P, 0), (P, 0)], [(P, 1), (F, 0)]),       # no lead picked
-                               ([(P, 1), (P, 1), (P, 1)], [(P, 1), (F, 0)]),       # three leads picked
-                               ([(P, 1), (P, 1), (F, 0)], [(P, 1), (P, 1)]),       # two bridges picked
+                               ([(P, 1), (P, 0), (P, 1)], [(P, 1), (P, 1)]),       # old two-lead quota
+                               ([(P, 1), (P, 1), (P, 1)], [(P, 1), (P, 0)]),       # old one-bridge quota
                                ([(P, 1), (F, 1), (F, 0)], [(P, 1), (F, 0)]),       # a falsified item picked
                                ([(P, 1), (P, 1), (F, 0)], [(P, 0), (F, 0)])):      # passed bridge not picked
             with self.assertRaises(ValueError):

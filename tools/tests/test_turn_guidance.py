@@ -62,6 +62,7 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
         self.assertIn(self.guide.CASES_PLEA, notes)
+        self.assertIn('selects 3 passed leads and 2 passed bridges', notes)
 
     def test_algebra_systems_note(self):
         body = self.body([('research', 'lem:a', 'Working proof.')])
@@ -80,6 +81,19 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertNotIn('LinBox', present)
         absent = ' '.join(self.guide.guidance(body, self.ft, has=lambda h: False))
         self.assertNotIn('C/C++ kernels:', absent)
+
+    def test_queue_notes_show_earned_spell_boundary(self):
+        entries = ''.join(f'<article id="e{n}" data-kind="research" data-lead="r:1"'
+                          + (' data-spell-extend="2"' if n == 4 else '')
+                          + '><p><strong>Follow-up.</strong> Continuing: next.</p></article>'
+                          for n in range(1, 5))
+        body = ('<section id="lead-queue" data-draining="true"><ol><li data-lead="r:1">one</li>'
+                '<li data-lead="r:2">two</li></ol></section><section id="research-record">'
+                + entries + '</section>')
+        notes = ' '.join(self.guide.queue_notes(body))
+        self.assertIn('entry 5; current spell boundary 6', notes)
+        self.assertIn('Reassess every two extra cycles', notes)
+        self.assertIn('finite checks or reused progress do not qualify', notes)
 
     def test_queue_notes_name_the_head_its_first_subidea_and_waiting_items(self):
         route = '<section id="remaining-route"><li data-route-item="step">x</li></section>'

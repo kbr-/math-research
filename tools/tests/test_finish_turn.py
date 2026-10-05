@@ -232,7 +232,7 @@ sys.exit(compute.main())
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
-        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li>c{ok}</li></ul>'
+        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li data-pick>c{ok}</li></ul>'
                  f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li>e <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li></ul>')
         old_review = ('<article id="rev1" data-kind="review" data-route="general-step">'
@@ -403,8 +403,8 @@ sys.exit(compute.main())
         ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
         body = ('<p><strong>General statement.</strong> For every level the kernel is spanned by short elements '
                 '(conj:fixture-general).</p>' + OBSTACLE
-                + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li>c{ok}</li></ul>'
-                f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li>e{ok}</li></ul>')
+                + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li data-pick>c{ok}</li></ul>'
+                f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li data-pick>e{ok}</li></ul>')
         across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged.</li><li>Statement 2: unchanged.</li>'
                   '</ul><p><strong>Decision.</strong> Core: the window.</p>')
         def record(earlier, scope='', extra=''):
