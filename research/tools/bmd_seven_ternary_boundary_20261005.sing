@@ -1,0 +1,90 @@
+// d=5,p=3 actual fourth-merge conic limit. N=192, M=102.
+// A=F45+(v^2 w^4)<tau45,tau46>, B=F44+w^4<tau45,tau46,tau47>.
+// Source: v*A, w^3*A, v^2*B, v*w^3*B. tau=x^2+x^-2-s.
+// Build ten exact high-character constraints and three finite conditions
+// on x^-102 (x-u)^192 Q(x), deg Q<=12. No sampled specialization.
+ring rr=(3,u),(t,C,X,Y),dp;
+number ss=u^2+1/u^2;
+matrix D[13][13];int j,r,k,kind,row,ex,peak,h,a,b,lo,hi,nw,emin,emax,ee,sign,isp;
+poly W,cf;matrix R[1][13];
+for(j=0;j<=12;j++)
+{
+ D[1,j+1]=j;D[2,j+1]=(-1)^j*j;
+ if(j%4==0){D[3,j+1]=X;}
+ if(j%4==1){D[3,j+1]=Y;}
+ if(j%4==2){D[3,j+1]=-X;}
+ if(j%4==3){D[3,j+1]=-Y;}
+}
+row=3;
+for(kind=0;kind<=3;kind++)
+{
+ sign=1;
+ if(kind==0){a=2;b=4;lo=90;hi=102;emin=45;emax=47;}
+ if(kind==1){a=3;b=4;lo=91;hi=101;emin=45;emax=46;}
+ if(kind==2){a=2;b=7;lo=93;hi=101;emin=45;emax=46;sign=-1;}
+ if(kind==3){a=1;b=7;lo=92;hi=102;emin=45;emax=47;sign=-1;}
+ nw=(hi-lo) div 2;
+ matrix F[nw][13];intvec pivot;
+ for(h=1;h<=nw;h++)
+ {
+  ex=hi-2*(h-1);r=102-ex;
+  for(j=0;j<=12;j++)
+  {
+   k=r-12+j;
+   if(k==0 || k==3){F[h,j+1]=(-u)^k;}
+   k=r-j;
+   if(k==0 || k==3){F[h,j+1]=F[h,j+1]+sign*C*(-u)^(-k);}
+  }
+ }
+ for(ee=emax;ee>=emin;ee--)
+ {
+  peak=a+b+2*ee;k=(hi-peak) div 2+1;pivot[size(pivot)+1]=k;
+  // Only t-orders <=5 are used; ee is 45,46,47, so Frobenius removes
+  // the degree-45 factor modulo t^9 in characteristic three.
+  W=(1+t)^a*(1-t)^b*(1-ss*t+t^2)^(ee%3);
+  for(j=1;j<=13;j++){R[1,j]=F[k,j];}
+  for(h=k;h<=nw;h++)
+  {
+   cf=subst(W/t^(h-k),t,0);
+   for(j=1;j<=13;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+  }
+ }
+ for(h=1;h<=nw;h++)
+ {
+  isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+  if(isp==0){row++;for(j=1;j<=13;j++){D[row,j]=F[h,j];}}
+ }
+ kill F;kill pivot;
+}
+if(row!=13){ERROR("wrong constraint count");}
+poly detD=det(D);
+print("constraint rows="+string(row));
+print("determinant over F3(u)[C,X,Y]:");print(detD);
+if(detD==0){print("IDENTICALLY ZERO before imposing C=u^192 or X,Y relations.");}
+else{print("Nonzero universal polynomial: further Frobenius substitution is needed.");print(factorize(detD));}
+matrix V[13][1];matrix Minor[12][12];int omit,ii,jj,ri,cj,found;found=0;
+for(omit=13;omit>=1;omit--)
+{
+ for(j=1;j<=13;j++)
+ {
+  ri=0;
+  for(ii=1;ii<=13;ii++)
+  {
+   if(ii!=omit)
+   {
+    ri++;cj=0;
+    for(jj=1;jj<=13;jj++){if(jj!=j){cj++;Minor[ri,cj]=D[ii,jj];}}
+   }
+  }
+  V[j,1]=(-1)^j*det(Minor);
+ }
+ if(size(ideal(V))!=0){found=1;break;}
+}
+if(found==1 && size(ideal(D*V))==0)
+{
+ print("PASS: nonzero cofactor kernel of the full thirteen-condition matrix.");
+ print("omitted row="+string(omit));
+ for(j=1;j<=13;j++){print("q"+string(j-1)+"="+string(V[j,1]));}
+}
+else{print("FAIL: no verified nonzero cofactor kernel.");}
+quit;
