@@ -1,0 +1,188 @@
+\\ Exact content/valuation audit of the six normalized determinant factors.
+\\ Inputs: normalized-matrices/*.txt produced by the retained Singular templates.
+assert(c,s)={if(!c,error(s));};
+{my(f=(-32*u^6+32*u^4),nu=numerator(f),de=denominator(f));
+print("case=0 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(-970200*u^28+1707552*u^26+9136512*u^24-2284128*u^22+268863672*u^20-79692480*u^18-163031760*u^16-159152064*u^14-88843624*u^12+12274592*u^10-8786400*u^8-1324512*u^6+277384*u^4+12544*u^2+560),nu=numerator(f),de=denominator(f));
+print("case=0 factor=3 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=(16*u^2-16),nu=numerator(f),de=denominator(f));
+print("case=1 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(4899729120*u^52+81913420160*u^50-840355510904*u^48-72906411443008*u^46-407830616241568*u^44+1069174816131136*u^42+15107782188934032*u^40+26190049513986112*u^38-37923911089345216*u^36-143145454867527616*u^34-78377333337517448*u^32+71184106370089856*u^30+82827491027431872*u^28+14646695700486784*u^26-5780045077990432*u^24-2376866196327296*u^22-167232168254368*u^20+9370053942784*u^18+1707255314168*u^16-360385004608*u^14-69642289184*u^12+385372480*u^10-61859440*u^8-1722560*u^6-15488*u^4+3136*u^2+8),nu=numerator(f),de=denominator(f));
+print("case=1 factor=2 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=(-1610752*u^28+1610752*u^26),nu=numerator(f),de=denominator(f));
+print("case=1over2 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(117496989064*u^46+1451433394320*u^44-40115218151736*u^42+1343316816732800*u^40+4220552598042144*u^38-16284086930319936*u^36-171729852797627488*u^34-6577438043240064*u^32+164622059025011952*u^30+93495139252898656*u^28-91677749017864464*u^26+27558496636594560*u^24-3304840098539616*u^22+940632326682048*u^20-240232973172192*u^18-27994152041856*u^16+3212188571592*u^14-445417500528*u^12+31815535752*u^10),nu=numerator(f),de=denominator(f));
+print("case=1over2 factor=3 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=-1,nu=numerator(f),de=denominator(f));
+print("case=1over2 factor=4 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=(-2816*u^24+2816*u^22),nu=numerator(f),de=denominator(f));
+print("case=3over2 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(-3990239798729877000*u^86-185366198650016168400*u^84+12359290358444082979800*u^82-1195748864644301229988800*u^80-23208858487310993151783840*u^78+105686110043423519777164800*u^76+8145137162336240540568414240*u^74+45363225555853334910611176640*u^72-83534038004863074827730222400*u^70-1289462435492401597141148495552*u^68-2481437227675928409237824742400*u^66+2702897706445990566335197211200*u^64+12865292409476802614921632673120*u^62+9420445714885962709181467596800*u^60-6326343300087946384561607350752*u^58-10408473686136046256169472898880*u^56-2129834342062664745084001566480*u^54+1761107009672394564104743172640*u^52+433845577203109687524837231600*u^50-252817222001462233971599703360*u^48-87567865563637742778785103840*u^46+7924175363935992301993658880*u^44+3886117401605699005431132000*u^42+6402449743065140279039040*u^40-119294415340816551896469504*u^38-11909442693045423428518080*u^36+25770590950217111720640*u^34-101830522370788312453440*u^32+1347667786617147540000*u^30+109163030577032005632*u^28-10094406401315406240*u^26-23021008547060160*u^24-7695022501431720*u^22-42182710249680*u^20+293248787832*u^18),nu=numerator(f),de=denominator(f));
+print("case=3over2 factor=3 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=(-7168*u^15+7168*u^13),nu=numerator(f),de=denominator(f));
+print("case=minus1over2 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(10296*u^23-59664*u^21-104328*u^19+447232*u^17-334192*u^15+44448*u^13-13296*u^11-4096*u^9+42296*u^7-24464*u^5+3960*u^3),nu=numerator(f),de=denominator(f));
+print("case=minus1over2 factor=2 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=-1,nu=numerator(f),de=denominator(f));
+print("case=minus1over2 factor=4 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=4096/(u^65-3*u^63-u^61+11*u^59-6*u^57-14*u^55+14*u^53+6*u^51-11*u^49+u^47+3*u^45-u^43),nu=numerator(f),de=denominator(f));
+print("case=minus3over2 factor=1 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+}
+{my(f=(27720*u^19-60368*u^17-840*u^15+81312*u^13-840*u^11-60368*u^9+27720*u^7),nu=numerator(f),de=denominator(f));
+print("case=minus3over2 factor=2 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+{my(f=-1,nu=numerator(f),de=denominator(f));
+print("case=minus3over2 factor=4 numerator_degree=",poldegree(nu,u)," denominator_degree=",poldegree(de,u)," valuation=",valuation(nu,u)-valuation(de,u));
+print("numerator_content_factors=",factor(abs(gcd(Vec(nu)))));
+print("denominator_content_factors=",factor(abs(gcd(Vec(de)))));
+my(cp=factor(abs(gcd(Vec(nu))))[,1]);
+assert(!#cp || vecmax(cp)<=19,"scalar numerator has a larger exceptional prime");
+assert(abs(gcd(Vec(de)))==1,"denominator must stay a nonzero polynomial");
+my(coeffs=vector(32,j,polcoef(nu,j-1,u)),g=gcd(coeffs));
+print("low32_content=",g," factors=",factor(abs(g)));
+print("leading_coefficient=",polcoef(nu,valuation(nu,u),u)," factors=",factor(abs(polcoef(nu,valuation(nu,u),u))));
+assert(g!=0,"all low coefficients vanish");
+my(lc=polcoef(nu,valuation(nu,u),u),lp=factor(abs(lc))[,1]);
+assert(de==1 && valuation(nu,u)<19,"low-order polynomial certificate");
+assert(!#lp || vecmax(lp)<=19,"leading coefficient has a larger exceptional prime");
+}
+print("DONE: exact low-order coefficient/content audit.");
+quit;
