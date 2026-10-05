@@ -1,0 +1,81 @@
+// Alternative merge a5->a3, p=3, d=5 mod27. Representative c=23,N=192,M=102.
+// A=F45+v^2*w^4<tau45,tau46>, Cspace=F42+<tau45,...,tau49>.
+// Source: v*A, w*A, v^2*w^2*Cspace, v*w^3*Cspace.
+// Finite rows f(1)+f(-1), f'(1)-f'(-1), f(i)+f(-i).
+// U=(u-1)^N+(u+1)^N, V=(u-1)^N-(u+1)^N; X,Y as before.
+ring rr=(3,u),(t,C,X,Y,U,V),dp;
+number ss=u^2+1/u^2;
+matrix D[13][13];matrix R[1][13];
+int j,r,k,kind,row,ex,peak,h,a,b,lo,hi,nw,emin,emax,ee,sign,isp;
+poly W,cf;
+for(j=0;j<=12;j++)
+{
+ if(j%2==0){D[1,j+1]=U;}else{D[1,j+1]=V;}
+ D[2,j+1]=j*D[1,j+1];
+ if(j%4==0){D[3,j+1]=X;}
+ if(j%4==1){D[3,j+1]=Y;}
+ if(j%4==2){D[3,j+1]=-X;}
+ if(j%4==3){D[3,j+1]=-Y;}
+}
+row=3;
+for(kind=0;kind<=3;kind++)
+{
+ sign=1;
+ if(kind==0){a=2;b=2;lo=88;hi=102;emin=45;emax=49;}
+ if(kind==1){a=3;b=4;lo=91;hi=101;emin=45;emax=46;}
+ if(kind==2){a=2;b=5;lo=91;hi=101;emin=45;emax=46;sign=-1;}
+ if(kind==3){a=1;b=3;lo=88;hi=102;emin=45;emax=49;sign=-1;}
+ nw=(hi-lo) div 2;
+ matrix F[nw][13];intvec pivot;
+ for(h=1;h<=nw;h++)
+ {
+  ex=hi-2*(h-1);r=102-ex;
+  for(j=0;j<=12;j++)
+  {
+   k=r-12+j;
+   if(k==0 || k==3){F[h,j+1]=(-u)^k;}
+   k=r-j;
+   if(k==0 || k==3){F[h,j+1]=F[h,j+1]+sign*C*(-u)^(-k);}
+  }
+ }
+ for(ee=emax;ee>=emin;ee--)
+ {
+  peak=a+b+2*ee;k=(hi-peak) div 2+1;pivot[size(pivot)+1]=k;
+  W=(1+t)^a*(1-t)^b*(1-ss*t+t^2)^(ee%9);
+  for(j=1;j<=13;j++){R[1,j]=F[k,j];}
+  for(h=k;h<=nw;h++)
+  {
+   cf=subst(W/t^(h-k),t,0);
+   for(j=1;j<=13;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+  }
+ }
+ for(h=1;h<=nw;h++)
+ {
+  isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+  if(isp==0){row++;for(j=1;j<=13;j++){D[row,j]=F[h,j];}}
+ }
+ kill F;kill pivot;
+}
+print("rows="+string(row));
+poly detD=det(D);
+print("determinant:");print(string(detD));
+print("factors:");print(factorize(detD));
+for(k=0;k<=10;k++)
+{
+ cf=subst(detD/C^k,C,0);
+ if(cf!=0){print("first C degree="+string(k));print(string(cf));break;}
+}
+
+poly first=subst(detD/C,C,0);
+poly expected=u^15*(Y-u^3*X)*(u^3*U+V)^2;
+if(subst(detD,C,0)!=0 || first-expected!=0)
+{print("FAIL: constant or first C coefficient");}
+else{print("PASS: first C coefficient is u^15*(Y-u^3 X)*(u^3 U+V)^2");}
+poly second=subst(detD/C^2,C,0);
+poly weighted=subst(subst(second,Y,u^3*Y),V,u^3*V);
+poly expected2=u^12*((u^6+1)*X*U^2+(u^12-1)*Y*U^2
+ +(u^12+u^6-1)*X*U*V+(u^12+u^6+1)*Y*U*V
+ +(u^12+1)*X*V^2+(u^6-1)*Y*V^2);
+if(weighted-expected2!=0){print("FAIL: second C coefficient valuation identity");}
+else{print("PASS: second C coefficient has u-order >=12 when Y,V have u-order >=3");}
+quit;
