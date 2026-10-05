@@ -32,6 +32,37 @@ class ChecksNote(unittest.TestCase):
         self.assertEqual(FT.checks_note(FT.CHECKS_WARN_S / 4), '')
 
 
+
+class DrainingReviewsTest(unittest.TestCase):
+    def body(self, text, attrs=' data-draining="true"'):
+        queue = '<section id="lead-queue"' + attrs + '><ol>' + ''.join(
+            f'<li data-lead="r:{i}">item</li>' for i in range(21)) + '</ol></section>'
+        return ('<li data-route-item="step">step</li>' + queue
+                + '<article data-kind="review">' + text + '</article>')
+
+    def validate(self, body, **kwargs):
+        FT.validate_leads(body, body.index('<article'), body.index('</article>'), **kwargs)
+
+    def test_draining_review_omits_both_sections_but_keeps_obstacle(self):
+        self.validate(self.body(OBSTACLE))
+        with self.assertRaisesRegex(ValueError, 'Obstacle'):
+            self.validate(self.body('<p>Review without its obstacle.</p>'))
+        for heading in ('Outside leads', 'Absurd bridges'):
+            with self.subTest(heading=heading), self.assertRaisesRegex(ValueError, 'queue is draining'):
+                self.validate(self.body(OBSTACLE + f'<h4>{heading}</h4><ol><li>New item</li></ol>'))
+
+    def test_non_draining_review_still_requires_leads(self):
+        for attrs in ('', ' data-backpressure="off"'):
+            with self.subTest(attrs=attrs), self.assertRaisesRegex(ValueError, 'Outside leads'):
+                self.validate(self.body(OBSTACLE, attrs))
+
+    def test_pre_entry_state_controls_review_that_finishes_draining(self):
+        body = self.body(OBSTACLE, '')
+        self.validate(body, draining=True)
+        with self.assertRaisesRegex(ValueError, 'Outside leads'):
+            self.validate(body, draining=False)
+
+
 class FinalizationTest(unittest.TestCase):
     def fixture_finisher(self):
         """The fixture's finish-turn.py loaded in process, so its ROOT is the fixture root (as in a subprocess)

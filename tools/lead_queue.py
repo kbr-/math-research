@@ -79,6 +79,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 CAP, FLOOR, HEAD_READ = 50, 20, 5
 SPELL = 4   # consecutive research entries a Continuing head keeps the head (user, 3 October 2026)
+DRAINING_REVIEW_RULE = ('While the queue is draining, reviews produce no Outside leads or Absurd bridges; '
+                       'omit both sections and assess the existing work.')
 # Queue triage batches (3 October 2026) are retired (user, 9 October 2026): batched items were closed by record
 # matches without the attempt a single-item entry makes.  TRIAGE_RE still reads the batches of older entries.
 TRIAGE_RETIRED = ('Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each '
@@ -417,6 +419,23 @@ def draining_after(was, nodes):
     if not SETTINGS['backpressure']:
         return False
     return len(nodes) > FLOOR if was else len(nodes) >= CAP
+
+
+
+def is_draining(body, attrs=None):
+    """The active backpressure state, including the threshold before its flag is written."""
+    found = parse_tree(body, attrs) if body else None
+    return bool(found and SETTINGS['backpressure'] and (found[0] or len(found[1]) >= CAP))
+
+
+def validate_review_generation(tag, text, draining):
+    """Reject new review lead/bridge sections during backpressure; historical entries stay readable."""
+    if not draining or not re.search(r'\bdata-kind="review"', tag):
+        return
+    headings = re.findall(r'<h[1-6]\b[^>]*>(.*?)</h[1-6]>', text, re.S | re.I)
+    names = {re.sub(r'<[^>]+>', '', heading).strip().casefold() for heading in headings}
+    if names & {'outside leads', 'absurd bridges'}:
+        raise ValueError(DRAINING_REVIEW_RULE)
 
 
 def wait_changes(text):
@@ -945,6 +964,7 @@ def check(head_body, body, path=None, root=None):
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
     draining_before = SETTINGS['backpressure'] and (was_draining or len(old) >= CAP)
+    validate_review_generation(tag, text, draining_before)
     if draining_before and counted(tag, text) and not work and not batch and head is not None:
         raise ValueError(f'The queue is draining ({len(old)} items; backpressure from {CAP} until {FLOOR}): this '
                          f'entry must develop the head, {head.ident}, tagged data-{head.kind}="{head.ident}", '

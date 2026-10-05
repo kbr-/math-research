@@ -117,6 +117,17 @@ class TurnGuidanceTest(unittest.TestCase):
                 sys.path.remove(tmp)
                 sys.modules.pop('guided_kinds', None)
 
+    def test_draining_guidance_suppresses_new_review_leads(self):
+        queue = '<section id="lead-queue"{attrs}><ol>' + ''.join(
+            f'<li data-lead="r:{i}">item</li>' for i in range(21)) + '</ol></section>'
+        body = self.body([('research', 'lem:a', 'Working proof.')])
+        for attrs, draining in ((' data-draining="true"', True), ('', False),
+                                (' data-backpressure="off"', False)):
+            with self.subTest(attrs=attrs):
+                notes = ' '.join(self.guide.guidance(queue.format(attrs=attrs) + body, self.ft))
+                self.assertEqual('reviews produce no Outside leads or Absurd bridges' in notes, draining)
+                self.assertEqual('Every route review lists at least three' in notes, not draining)
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 

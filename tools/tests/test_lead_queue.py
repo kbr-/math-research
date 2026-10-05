@@ -62,6 +62,34 @@ class LeadQueueTest(unittest.TestCase):
         self.rev = review('r1', [PASS, PASS, FAIL])     # two passed leads: r1:1, r1:2
         self.q = [('lead', 'r1:1'), ('lead', 'r1:2')]
 
+    def test_reviews_generate_nothing_while_draining(self):
+        big = review('many', [PASS] * lq.CAP)
+        queue = [('lead', f'many:{i}') for i in range(1, lq.CAP + 1)]
+        head = notebook([big], queue, draining=True)
+        plain = '<article id="drain" data-kind="review" data-route="step"><p>Assess existing work.</p></article>'
+        lq.check(head, notebook([big, plain], queue, draining=True))
+        lq.check(head, head)  # Do not apply the new rule retroactively to historical reviews.
+        for heading in ('Outside leads', 'Absurd bridges'):
+            extra = plain.replace('</article>', f'<h4>{heading}</h4><ul></ul></article>')
+            with self.subTest(heading=heading), self.assertRaisesRegex(ValueError, 'queue is draining'):
+                lq.check(head, notebook([big, extra], queue, draining=True))
+        # Crossing the floor inside the review does not allow that same review to add leads.
+        queue = queue[:lq.FLOOR + 1]
+        head = notebook([big], queue, draining=True)
+        closes = plain.replace('</article>', '<ul><li data-lead="many:1"><strong>Follow-up.</strong> '
+                               'Closed: falsified by the recorded test.</li></ul></article>')
+        after = notebook([big, closes], queue[1:])
+        lq.check(head, after)
+        with self.assertRaisesRegex(ValueError, 'queue is draining'):
+            lq.check(head, after.replace('</article></section>',
+                '<h4>Outside leads</h4><ul></ul></article></section>'))
+        # The following review may generate again, and backpressure-off notebooks are exempt.
+        new = review('new', [PASS, FAIL, FAIL])
+        lq.check(after, notebook([big, closes, new], queue[1:] + [('lead', 'new:1')]))
+        attrs = ' data-backpressure="off"'
+        lq.check(notebook([big], queue, attrs=attrs),
+                 notebook([big, new], queue + [('lead', 'new:1')], attrs=attrs))
+
     def test_open_items_and_init_order(self):
         self.assertEqual(lq.open_items(notebook([self.rev])), self.q)
         body = notebook([self.rev])

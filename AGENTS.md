@@ -215,7 +215,7 @@ rules to growing checklists or one-off setup narratives.
   their own: choose them by asking which theorem, in any field, solves a problem of this shape, and
   end each with `<strong>Answers.</strong>` saying how it would resolve the obstacle (user, 26
   September 2026: "They are supposed to provide answers to our current obstacles"; the finisher
-  checks both). It also has an **Outside leads** section (the
+  checks both). Outside draining mode (defined below), it has an **Outside leads** section (the
   finisher requires at least three): ideas from other areas of mathematics, each a named
   theorem or source rather than a field, with the open statement it targets and where it
   would break, including leads the record names but never followed. It also has an
@@ -259,7 +259,9 @@ rules to growing checklists or one-off setup narratives.
   and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details. Backpressure: at 50
   top-level items the queue drains (`data-draining="true"`), and every research entry develops the head
   or its first sub-idea until 20 remain;
-  then work returns to the route, or to a better route the leads opened. Reviews report only follow-ups
+  then work returns to the route, or to a better route the leads opened. While the queue is draining,
+  reviews produce no Outside leads or Absurd bridges: omit both sections and assess existing work
+  (user, 5 October 2026). Review cadence and the other review requirements still apply. Reviews report only follow-ups
   whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the
   queue's state and head. A one-step objection
   (a structural remark, a record match, one encoding tried) falsifies only that formulation. Before

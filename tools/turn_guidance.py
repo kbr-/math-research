@@ -69,11 +69,11 @@ def library_note(has=installed_header):
 def queue_notes(body):
     """The lead and bridge queue's state and what it requires of this cycle (tools/lead_queue.py)."""
     import lead_queue as lq
-    found = lq.parse(body)
+    found = lq.parse_tree(body)
     if found is None:
         return ['Lead queue: this notebook has none yet. Run python3 tools/lead_queue.py init NOTEBOOK.html and '
                 'commit the section with this cycle\'s entry; the finisher requires it.']
-    draining, nodes = lq.parse_tree(body)
+    draining, nodes = found
     if not nodes:
         return ['Lead queue: empty. New passed leads and bridges of a review and the sub-ideas entries list go '
                 'at its end.']
@@ -106,7 +106,7 @@ SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user,
            'possible; Developed only when no application to an open statement remains; Closed only for a reason '
            'the attempt found (restatement, inapplicability, falsification, supersession). Every item gets its own '
            'entry; batch triage is retired (user, 9 October 2026). Only '
-           'route reviews propose Outside leads and Absurd bridges; research entries carry none. Any entry lists the questions, '
+           'route reviews outside draining mode propose Outside leads and Absurd bridges; research entries carry none. Any entry lists the questions, '
            'checks and builds it names and leaves undone under <h4>Sub-ideas</h4> (data-sub="check" or "build"); '
            'lead_queue.py append queues them under the item they belong to.')
 
@@ -133,6 +133,9 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
              'outcome (falsified items still count); it marks its two most promising passed leads and one bridge '
              'with <li data-pick>, which alone join the queue (user, 9 October 2026).']
+    import lead_queue as lq
+    if lq.is_draining(body):
+        notes[-1] = lq.DRAINING_REVIEW_RULE
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     notes += queue_notes(body)
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']

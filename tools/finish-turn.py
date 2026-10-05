@@ -90,7 +90,7 @@ OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
 OBSTACLE_MIN = 80
 
 
-def validate_leads(body, article, close):
+def validate_leads(body, article, close, draining=None):
     """AGENTS.md: a route review reaches outside the record's toolkit (user instructions, 25 September
     2026, after classical tools were proposed only once the user named their fields).  It lists Outside
     leads, from fields that study the open statement's objects, and Absurd bridges, from fields that never
@@ -121,13 +121,18 @@ def validate_leads(body, article, close):
         return
     if entry_tags(body, article)['kind'] != 'review':
         return
+    from lead_queue import is_draining, validate_review_generation
+    if draining is None:
+        draining = is_draining(body)
+    validate_review_generation(body[article:body.find('>', article) + 1], body[article:close], draining)
     # Leads and bridges exist to answer the line's current obstacle, not as items of their own (user,
     # 26 September 2026): the review states the obstacle, and every item says how it would resolve it.
     obstacle = OBSTACLE_RE.search(body, article, close)
     if obstacle is None or len(re.sub(r'<[^>]+>', '', obstacle.group(1)).strip()) < OBSTACLE_MIN:
-        raise ValueError('A route review needs an <h4>Obstacle</h4> section, placed before its Outside leads, '
-                         'whose paragraph states precisely the obstacle the line is stuck on (at least '
-                         f'{OBSTACLE_MIN} characters). Choose the Outside leads and Absurd bridges to answer it (AGENTS.md)')
+        raise ValueError('A route review needs an <h4>Obstacle</h4> section whose paragraph states precisely '
+                         f'the obstacle the line is stuck on (at least {OBSTACLE_MIN} characters; AGENTS.md)')
+    if draining:
+        return
     for pattern, heading, least, what in (
             (LEADS_RE, 'Outside leads', LEADS_MIN, 'leads from areas of mathematics that study the open '
              'statement\'s objects: for each, a named theorem or source (not just a field), the open statement '
@@ -405,7 +410,7 @@ def validate_general(body, article, close):
 from result_names import KEPT_LABELS, LABEL_NOUNS, letter_code_labels  # noqa: E402
 
 
-def validate_marker(body, marker):
+def validate_marker(body, marker, draining=None):
     if body.count(marker) != 1:
         raise ValueError(f'Notebook must contain exactly one {marker}')
     position = body.index(marker)
@@ -424,7 +429,7 @@ def validate_marker(body, marker):
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
     validate_route(body, article)
     validate_general(body, article, close)
-    validate_leads(body, article, close)
+    validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_bridges(body, article, close)
     if '$' in body[article:close]:
@@ -480,10 +485,14 @@ def validate_append_only(root):
 
 def validate_queue(root, notebook):
     """The lead and bridge queue against HEAD's notebook (tools/lead_queue.py)."""
-    from lead_queue import check
+    from lead_queue import check, is_draining, SECTION_RE
     relative = notebook.resolve().relative_to(root.resolve()).as_posix()
     head = subprocess.run(['git', 'show', f'HEAD:{relative}'], cwd=root, capture_output=True, text=True)
-    check(head.stdout if head.returncode == 0 else None, notebook.read_text(), notebook, root)
+    body = notebook.read_text()
+    check(head.stdout if head.returncode == 0 else None, body, notebook, root)
+    section = SECTION_RE.search(body)
+    return is_draining(head.stdout if head.returncode == 0 else None,
+                       section.group(1) if section else None)
 
 
 SCRATCH_CAP = 500 * 10**6   # bytes a session may keep in its scratchpad at a checkpoint
@@ -541,10 +550,10 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     owners = [p for p in paths(root) if marker in p.read_text()]
     if owners != [notebook]:
         raise ValueError("Timing marker must belong uniquely to selected notebook " + item["name"])
-    validate_marker(notebook.read_text(), marker)
+    draining = validate_queue(root, notebook)
+    validate_marker(notebook.read_text(), marker, draining=draining)
     check_context(root, item["name"])  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)
-    validate_queue(root, notebook)
     if (root / 'research/claims/index.json').exists():
         claims = load_claims(root / 'research/claims/index.json')
         if (root / 'research/CLAIM_INDEX.md').read_text() != render_claims(claims):
