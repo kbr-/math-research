@@ -1,0 +1,11 @@
+print("before_resize");
+default(parisizemax,3000000000);print("same_line_after_resize");
+print("next_line_after_resize");
+default(nbthreads,1);
+print("effective_threads=",default(nbthreads));
+default(threadsize,64000000);
+default(threadsizemax,512000000);
+print("effective_worker_stack=",default(threadsize)," max=",default(threadsizemax));
+setrand(20261005);
+my(saved=getrand());setrand(20261005);print("seed_state_matches=",saved==getrand());
+quit;

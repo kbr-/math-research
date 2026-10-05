@@ -132,6 +132,9 @@ notice.
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
+  In PARI/GP, put stack-size defaults on separate input lines from thread and seed
+  settings: a stack resize skips the rest of its line. Check effective thread settings
+  before the calculation.
 - For 14 worker processes, use one numerical-library thread per worker:
 
 ```bash
