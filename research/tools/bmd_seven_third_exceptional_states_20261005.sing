@@ -1,0 +1,138 @@
+// Exact full third survivor for all remaining characteristic-three bulk profiles.
+// c=8d-17>=23; N=8c+8. Local coefficients depend only on c mod27.
+// Stages: known ordinary control; 15 unresolved local states; exact factorization.
+// No degree samples substitute for C=u^N and X,Y=(u+-i)^N combinations.
+ring base=3,x,dp;
+proc bc(int n,int k){
+ int residue=n%27;if(residue<0){residue=residue+27;}
+ poly P=(1+t)^residue;return(subst(P/t^k,t,0));
+}
+proc calculate(int cr){
+ ring rr=(3,u),(t,C,X,Y),dp;
+ int typ=cr%3;
+ int cref,offset;
+ if(typ==0){cref=39;offset=14;}
+ if(typ==1){cref=31;offset=12;}
+ if(typ==2){cref=23;offset=10;}
+ int nr=(8*cr+8)%27;int mr=(4*cr+offset)%27;
+ int MM=4*cref+offset;int NN=8*cref+8;int DD=2*MM-NN+1;
+ matrix D[DD][DD];matrix R[1][DD];
+ int j,k,h,a,row,sg,kind,al,be,oa,ob,low,hi,lo,nw,ex,r,sign,ee,peak,er,isp;
+ poly val,cf,W;number ss=u^2+1/u^2;
+ row=0;
+ for(sg=0;sg<=1;sg++){
+  a=1-2*sg;
+  for(h=1;h<=5;h=h+2){
+   row++;
+   for(j=0;j<DD;j++){
+    val=0;
+    for(k=0;k<=h;k++){
+     val=val+bc(nr,k)*(a-u)^(h-k)
+       *(a^k*bc(j-mr,h-k)-(-u)^k*bc(mr-j-nr,h-k));
+    }
+    D[row,j+1]=a^(j+h)*val;
+   }
+  }
+ }
+ row++;
+ for(j=0;j<DD;j++){
+  if(j%4==0){D[row,j+1]=X;}
+  if(j%4==1){D[row,j+1]=Y;}
+  if(j%4==2){D[row,j+1]=-X;}
+  if(j%4==3){D[row,j+1]=-Y;}
+ }
+ for(kind=0;kind<=3;kind++){
+  sign=1;if(kind>=2){sign=-1;}
+  if(kind==0){al=2;be=0;}
+  if(kind==1){al=1;be=0;}
+  if(kind==2){al=0;be=7;}
+  if(kind==3){al=1;be=7;}
+  oa=al;ob=be;list outs;
+  if(typ==0){
+   low=2*cref+1;
+   if(kind==0 || kind==3){low=2*cref;outs=list(2*cref+3);}
+  }
+  if(typ==1){
+   low=2*cref;
+   if(kind==0 || kind==3){low=2*cref-1;outs=list(2*cref+2,2*cref+1);}
+   else{oa=al+2;outs=list(2*cref+1);}
+  }
+  if(typ==2){low=2*cref+1;}
+  hi=MM-((MM-al-be)%2);lo=al+be+2*low;nw=(hi-lo) div 2;
+  if(nw>0){
+   matrix F[nw][DD];intvec pivot;
+   for(h=1;h<=nw;h++){
+    ex=hi-2*(h-1);r=MM-ex;
+    for(j=0;j<DD;j++){
+     k=r-(DD-1)+j;
+     if(k>=0){F[h,j+1]=bc(nr,k)*(-u)^k;}
+     k=r-j;
+     if(k>=0){F[h,j+1]=F[h,j+1]+sign*C*bc(nr,k)*(-u)^(-k);}
+    }
+   }
+   for(ee=1;ee<=size(outs);ee++){
+    peak=oa+ob+2*outs[ee];k=(hi-peak) div 2+1;
+    if(k<1 || k>nw){ERROR("outlier pivot outside high window");}
+    pivot[size(pivot)+1]=k;
+    er=(2*cr+outs[ee]-2*cref)%9;
+    W=(1+t)^oa*(1-t)^ob*(1-ss*t+t^2)^er;
+    for(j=1;j<=DD;j++){R[1,j]=F[k,j];}
+    for(h=k;h<=nw;h++){
+     cf=subst(W/t^(h-k),t,0);
+     for(j=1;j<=DD;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+    }
+   }
+   for(h=1;h<=nw;h++){
+    isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+    if(isp==0){row++;for(j=1;j<=DD;j++){D[row,j]=F[h,j];}}
+   }
+   kill F;kill pivot;
+  }
+  kill outs;
+ }
+ if(row!=DD){ERROR("condition count");}
+ print("STATE c="+string(cr)+" mod27; N="+string(nr)+"; dimension="+string(DD));
+ poly detD=det(D);
+ if(typ==2){
+  poly expected=(u^6-1)/u^9*(C+u^3)*(C-u^3)*(u^6*C+1)^3
+   *(u^3*X+u^6*Y+C*(Y-u^3*X));
+  if(detD+expected!=0){ERROR("ordinary control identity mismatch");}
+  print("PASS ordinary control, including row permutation sign");return();
+ }
+ if(detD==0){print("ZERO: formal determinant vanishes identically");return();}
+ number AA=-u^16+u^14-u^12-u^10+u^8-u^6-u^4+u^2-1;
+ number BB=u^18-u^12-u^6+1;
+ poly PP=(1-u^2*C)*X+u*(1+C)*Y;
+ poly RR=u*X+(u^2-1)*Y;
+ poly certificate;
+ if(cr==0){certificate=AA/u^14*(u*C+1)*(u*C-1)*(u^10*C-1)*PP*(C+u^8)^2*C^4;}
+ if(cr==9){certificate=AA/u^6*(C+u^8)*PP*(u*C+1)^2*(u*C-1)^2*C^4;}
+ if(cr==18){certificate=AA/u^14*(C+u^8)*(C-u^8)*(u*C+1)*(u*C-1)*(u^10*C+1)*PP*C^4;}
+ if(cr%9==6){certificate=BB/u^11*(u^10*C-1)*RR*C^4*(C+u^2)^5;}
+ if(detD!=certificate){ERROR("uniform certificate identity mismatch");}
+ print("PASS: uniform raw certificate identity");
+ print("RAW FACTORS:");print(factorize(detD));
+ int nzero=nr;
+ while(nzero%4!=0){nzero=nzero+27;}
+ number aa=1;number bb=0;number tmp;
+ for(k=1;k<=nzero;k++){tmp=u*aa+bb;bb=u*bb-aa;aa=tmp;}
+ map shift=rr,t,u^nzero*C,aa*X+bb*Y,aa*Y-bb*X;
+ poly shifted=shift(detD);
+ print("SHIFT n0="+string(nzero));
+ list fac=factorize(shifted);print(fac);
+ poly product=1;poly one;poly origin;
+ map atOrigin=rr,t,0,2,0;
+ for(k=1;k<=size(fac[1]);k++){
+  one=fac[1][k];product=product*one^fac[2][k];
+  origin=atOrigin(one);
+  print("ORIGIN "+string(k)+": "+string(origin));
+ }
+ if(product!=shifted){ERROR("factor product mismatch");}
+ print("PASS exact shifted factorization");
+}
+calculate(5);
+int cr;
+for(cr=0;cr<27;cr++){
+ if(cr%3==0 || (cr%3==1 && cr%9!=7)){calculate(cr);}
+}
+quit;
