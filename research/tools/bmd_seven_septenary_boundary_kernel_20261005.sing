@@ -1,0 +1,121 @@
+// Shared first-survivor construction for precisely the classes not yet certified by the third source.
+// Minimal pole bounds avoid artificial higher-digit states. Global C,X,Y powers are retained.
+ring base=7,x,dp;
+proc bc(int n,int k,int localModulus){
+ int residue=n%localModulus;if(residue<0){residue=residue+localModulus;}
+ poly P=(1+t)^residue;return(subst(P/t^k,t,0));
+}
+proc calculate(int fieldPrime,int cr){
+ ring rr=(fieldPrime,u),(t,C,X,Y),dp;
+ int profileKind=-1;
+ if(cr%fieldPrime==0){profileKind=0;}
+ if(cr%fieldPrime==1){profileKind=1;}
+ if((2*cr+1)%fieldPrime==0){profileKind=2;}
+ if((2*cr+3)%fieldPrime==0){profileKind=3;}
+ if((2*cr-3)%fieldPrime==0){profileKind=4;}
+ if(profileKind<0){ERROR("unsupported profile");return();}
+ int cref=cr;while(cref<23 || (cref+17)%8!=0){cref=cref+fieldPrime;}
+ int alow,blow;list aouts,bouts;
+ if(profileKind==0){alow=2*cref;blow=2*cref;aouts=list(2*cref);bouts=list(2*cref);}
+ if(profileKind==1){alow=2*cref-1;blow=2*cref+1;aouts=list(2*cref-1,2*cref-2);}
+ if(profileKind==2){alow=2*cref;blow=2*cref-1;aouts=list(2*cref+1);bouts=list(2*cref+2,2*cref+1);}
+ if(profileKind==3){alow=2*cref+1;blow=2*cref;bouts=list(2*cref+3);}
+ if(profileKind==4){alow=2*cref-2;blow=2*cref-3;aouts=list(2*cref-1,2*cref-2,2*cref-3);bouts=list(2*cref,2*cref-1,2*cref-2,2*cref-3);}
+ list groups=list(list(2,0,2,4,blow,bouts),list(1,0,3,4,alow,aouts),list(0,3,2,7,alow,aouts),list(1,3,1,7,blow,bouts));
+ int MM=0;int kind,ee,peak,lo,hi,maxIndex,localModulus;list group,outs;
+ for(kind=1;kind<=4;kind++){
+  group=groups[kind];peak=group[1]+group[2]+2*group[5];if(peak>MM){MM=peak;}
+  outs=group[6];for(ee=1;ee<=size(outs);ee++){peak=group[3]+group[4]+2*outs[ee];if(peak>MM){MM=peak;}}
+ }
+ maxIndex=0;
+ for(kind=1;kind<=4;kind++){
+  group=groups[kind];lo=group[1]+group[2]+2*group[5];hi=MM-((MM-group[1]-group[2])%2);
+  if(hi>lo && MM-lo-2>maxIndex){maxIndex=MM-lo-2;}
+ }
+ localModulus=fieldPrime;while(localModulus<=maxIndex){localModulus=localModulus*fieldPrime;}
+ int nr=(8*cr+8)%localModulus;int mr=(4*cr+MM-4*cref)%localModulus;
+ int DD=2*MM-(8*cref+8)+1;
+ matrix D[DD][DD];matrix R[1][DD];
+ int j,k,h,a,row,sg,nw,ex,r,sign,er,isp,phase;
+ poly cf,W;number ss=u^2+1/u^2;
+ for(sg=0;sg<=1;sg++){
+  a=1-2*sg;
+  for(j=0;j<DD;j++){D[sg+1,j+1]=a^(j+(MM+1)%2)*((j-mr)*(a-u)+nr*a);}
+ }
+ for(j=0;j<DD;j++){
+  phase=(j-MM)%4;if(phase<0){phase=phase+4;}
+  if(phase==0){D[3,j+1]=X;}if(phase==1){D[3,j+1]=Y;}
+  if(phase==2){D[3,j+1]=-X;}if(phase==3){D[3,j+1]=-Y;}
+ }
+ row=3;
+ for(kind=1;kind<=4;kind++){
+  group=groups[kind];outs=group[6];sign=1;if(kind>=3){sign=-1;}
+  hi=MM-((MM-group[1]-group[2])%2);lo=group[1]+group[2]+2*group[5];nw=(hi-lo) div 2;
+  if(nw>0){
+   matrix F[nw][DD];intvec pivot;
+   for(h=1;h<=nw;h++){
+    r=MM-hi+2*(h-1);
+    for(j=0;j<DD;j++){
+     k=r-(DD-1)+j;if(k>=0){F[h,j+1]=bc(nr,k,localModulus)*(-u)^k;}
+     k=r-j;if(k>=0){F[h,j+1]=F[h,j+1]+sign*C*bc(nr,k,localModulus)*(-u)^(-k);}
+    }
+   }
+   for(ee=1;ee<=size(outs);ee++){
+    peak=group[3]+group[4]+2*outs[ee];k=(hi-peak) div 2+1;
+    if(k<1 || k>nw){ERROR("outlier pivot outside window");}
+    pivot[size(pivot)+1]=k;er=(2*cr+outs[ee]-2*cref)%fieldPrime;if(er<0){er=er+fieldPrime;}
+    W=(1+t)^group[3]*(1-t)^group[4]*(1-ss*t+t^2)^er;
+    for(j=1;j<=DD;j++){R[1,j]=F[k,j];}
+    for(h=k;h<=nw;h++){
+     cf=subst(W/t^(h-k),t,0);
+     for(j=1;j<=DD;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+    }
+   }
+   for(h=1;h<=nw;h++){
+    isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+    if(isp==0){row++;for(j=1;j<=DD;j++){D[row,j]=F[h,j];}}
+   }
+   kill F;kill pivot;
+  }
+ }
+ if(row!=DD){ERROR("condition count");}
+ print("STATE p="+string(fieldPrime)+" c="+string(cr)+" mod"+string(localModulus)+" D="+string(DD)+" max_index="+string(maxIndex));
+ poly detD=det(D);if(detD!=0){ERROR("expected zero determinant");}
+ matrix Q[DD][1];matrix LL[1][DD];matrix minorD[DD-1][DD-1];
+ int ii,jj,ri,cj;poly witness;
+ for(ii=1;ii<=DD;ii++){
+  for(jj=1;jj<=DD;jj++){
+   for(ri=1;ri<DD;ri++){for(cj=1;cj<DD;cj++){
+    minorD[ri,cj]=D[ri+(ri>=ii),cj+(cj>=jj)];
+   }}
+   witness=det(minorD);
+   if(witness!=0){break;}
+  }
+  if(witness!=0){break;}
+ }
+ print("nonzero cofactor row="+string(ii)+" column="+string(jj));
+ print(factorize(witness));
+ for(j=1;j<=DD;j++){
+  for(ri=1;ri<DD;ri++){for(cj=1;cj<DD;cj++){
+   minorD[ri,cj]=D[ri+(ri>=ii),cj+(cj>=j)];
+  }}
+  Q[j,1]=(-1)^(ii+j)*det(minorD);
+ }
+ for(j=1;j<=DD;j++){
+  for(ri=1;ri<DD;ri++){for(cj=1;cj<DD;cj++){
+   minorD[ri,cj]=D[ri+(ri>=j),cj+(cj>=jj)];
+  }}
+  LL[1,j]=(-1)^(j+jj)*det(minorD);
+ }
+ matrix rightCheck=D*Q;matrix leftCheck=LL*D;
+ for(j=1;j<=DD;j++){if(rightCheck[j,1]!=0 || leftCheck[1,j]!=0){ERROR("kernel identity");}}
+ poly qg=0;poly lg=0;
+ for(j=1;j<=DD;j++){qg=gcd(qg,Q[j,1]);lg=gcd(lg,LL[1,j]);}
+ print("RIGHT COMMON");print(factorize(qg));print("LEFT COMMON");print(factorize(lg));
+ print("RIGHT NORMALIZED");for(j=1;j<=DD;j++){list qdiv=division(Q[j,1],qg);poly qq=qdiv[1][1,1];if(qq*qg!=Q[j,1]){ERROR("right division");}print("q"+string(j-1)+"="+string(qq));}
+ print("LEFT NORMALIZED");for(j=1;j<=DD;j++){list ldiv=division(LL[1,j],lg);poly ll=ldiv[1][1,1];if(ll*lg!=LL[1,j]){ERROR("left division");}print("l"+string(j)+"="+string(ll));}
+
+ print("PASS: both exact kernels; formal rank ten, actual substitution still required");
+}
+calculate(7,0);
+quit;

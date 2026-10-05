@@ -1,0 +1,105 @@
+{
+  "source": {
+    "record": "[Frobenius smoothing and septenary kernel](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-05-cube-septenary-smoothing)",
+    "label": "Frobenius smoothing and septenary kernel",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-05-cube-septenary-smoothing",
+      "tools/bmd_frobenius_smoothing_basis_control_20261005.gp",
+      "tools/bmd_seven_septenary_boundary_kernel_20261005.sing",
+      "tools/bmd_seven_septenary_smoothing_20261005.gp",
+      "tools/bmd_seven_septenary_elliptic_control_20261005.gp",
+      "results/bmd-seven-septenary-smoothing-20261005/basis-controls.txt",
+      "results/bmd-seven-septenary-smoothing-20261005/boundary-kernel.txt",
+      "results/bmd-seven-septenary-smoothing-20261005/smoothing-control.txt",
+      "results/bmd-seven-septenary-smoothing-20261005/elliptic-control.txt",
+      "results/bmd-seven-septenary-smoothing-20261005/review.txt"
+    ]
+  },
+  "reviewer": "Codex; one isolated medium reviewer passed with the negative-degree convention added; no substantive gap or unused hypothesis",
+  "date": "2026-10-05",
+  "topics": [
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "lem:cube-frobenius-smoothing-basis",
+      "summary": "For every odd p, c=pt,t>=1, and polynomial g of degree1<=m<p, the full saturated source gF_c+x^pF_c, x^2=1+epsilon*tau, has basis y*tau^j(j<m), g*tau^r*psi^k(0<=r<p,0<=k<=floor((c-r)/p)+floor((c-m-r)/p)+1), where q=epsilon^p,y=sqrt(1+q*tau^p),psi=2*tau^p/(1+y). For P=R+gQ,deg R<m, its specified lift has first q-coefficient tau^p R/2-g tau^(2p) D^[p]Q/4. This does not imply normality.",
+      "assessment": "Polynomial division, Frobenius residue classes and complete even/odd powers in y give an exact basis. Independent reductions prove full saturation after q=epsilon^p. Lucas gives the Hasse first-variation formula. Twelve full small source-span controls and every first-variation digit at p3,5,7 pass. One isolated medium reviewer passed, with the negative-degree convention added and no substantive gap or unused hypothesis.",
+      "status": "working_proof",
+      "rationale": "Replaces an unbounded confluence computation by a source-preserving explicit deformation in all odd primes; the required marked scalar is still coupled.",
+      "next_action": "Apply the first-variation formula to the explicit septenary boundary kernel and prove its cokernel class nonzero for the remaining degrees."
+    },
+    {
+      "id": "lem:cube-septenary-boundary-kernel",
+      "summary": "In characteristic7 for every d>=5,d=3mod7, c=8d-17,N=8c+8,M=4c+9, the full first rational survivor has generic length-N Hasse kernel exactly one-dimensional, generated in the conic coordinate by z^-M(z-u)^N(1-uz)(1+z^2)(u+u^N z^7). Equivalently it is a nonzero scalar times v(1-v)H^7, H=z^-(4c/7+1)(z-u)^((N-1)/7)(1+u^((N-1)/7)z). No original-series failure is asserted.",
+      "assessment": "The exact eleven-condition matrix has the displayed normalized cofactor kernel. A ten-square minor is -3u^-5 C(1+u^6C)Phi; actual power substitution gives Phi leading term2u^4, hence nonzero uniformly. This proves exact generic corank one and the explicit kernel, strengthening the prior nontrivial-kernel assertion for the first boundary only. One isolated medium reviewer passed, with the negative-degree convention added and no substantive gap or unused hypothesis.",
+      "status": "working_proof",
+      "rationale": "Reduces repair of the sole remaining dimension-seven bulk family to one intrinsic kernel-to-cokernel scalar.",
+      "next_action": "Evaluate the first effective deformation on this kernel with every actual global power retained."
+    },
+    {
+      "id": "check:cube-septenary-effective-repair",
+      "summary": "At p7,d10,N512, the actual elliptic eight-block source has exact rank512 at the retained F_(7^6) point. For the independently tested saturated first-boundary deformation at u=2a^3+6a^2+2a in F_(7^4), rank J0=511 and the normalized first effective obstruction is6a^3+6a+6 nonzero. Thus this control repairs at q=epsilon^7 order1, not a uniform all-degree assertion.",
+      "assessment": "Cached full coefficient prefixes give the actual elliptic marked matrix. The exact all-prime saturated basis supplies J0,J1; a511-square pivot constructs both null vectors and verifies their equations before evaluating the nonzero obstruction. No larger degree sweep or all-degree inference is made. One isolated medium reviewer passed, with the negative-degree convention added and no substantive gap or unused hypothesis.",
+      "status": "finite_check",
+      "rationale": "Confirms that the last degeneration loses a direction that the genuine elliptic deformation restores, and selects its first effective coefficient as the uniform proof target.",
+      "next_action": "Prove or falsify uniform nonvanishing of the same intrinsic scalar, rather than repeat full-rank degree samples."
+    }
+  ],
+  "relationships": [
+    [
+      "lem:cube-frobenius-smoothing-basis",
+      "depends_on",
+      "lem:cube-even-cut-merge",
+      "Refines its exact polynomial-division decomposition by Frobenius residue classes and retains the deformation."
+    ],
+    [
+      "lem:cube-frobenius-smoothing-basis",
+      "cites",
+      "thm:cube-rational-collision-resonance",
+      "Uses the recorded normalized complete balanced smoothing basis; no rediscovery or arithmetic normality import."
+    ],
+    [
+      "lem:cube-frobenius-smoothing-basis",
+      "cites",
+      "lem:polynomial-frobenius-splitting",
+      "Distinguishes the exact new basis from the older image-compatibility splitting; no automatic normality induction."
+    ],
+    [
+      "lem:cube-septenary-boundary-kernel",
+      "depends_on",
+      "obs:cube-seven-three-boundary-defect",
+      "Uses the first full boundary profile and exact eleven-condition encoding; strengthens only its first-boundary corank and kernel."
+    ],
+    [
+      "lem:cube-septenary-boundary-kernel",
+      "depends_on",
+      "lem:cube-even-cut-merge",
+      "Retains the complete saturated first source."
+    ],
+    [
+      "check:cube-septenary-effective-repair",
+      "depends_on",
+      "lem:cube-frobenius-smoothing-basis",
+      "The actual saturated deformation basis supplies the effective first coefficient."
+    ],
+    [
+      "check:cube-septenary-effective-repair",
+      "depends_on",
+      "lem:cube-septenary-boundary-kernel",
+      "Identifies the one-dimensional boundary kernel and the intrinsic repair target."
+    ],
+    [
+      "check:cube-septenary-effective-repair",
+      "depends_on",
+      "lem:cube-seven-paired-criterion",
+      "Uses the complete elliptic table and transfer to the original series."
+    ],
+    [
+      "check:cube-septenary-effective-repair",
+      "cites",
+      "conj:cube-refined-initial-segment-law",
+      "Adds the generic d10,p7 finite-degree certificate, leaving uniform repair and higher-dimensional ranges open."
+    ]
+  ]
+}
