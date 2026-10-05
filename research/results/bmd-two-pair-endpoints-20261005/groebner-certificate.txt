@@ -1,0 +1,43 @@
+# command: Singular -q -c LIB "elim.lib"; ring R=(0,A,B,C,D),(z,p,q,u,v,h),wp(1,1,1,1,1,2); ideal G=q*u-p*v+(A-B)*u*v,p*u-q*v,p^2-q^2+(-A+B)*q*v,z^2-q^2+B*q*v,C*u^2*v-D*v^3-p*h,C*(A-B)*u^3+(-C+D)*q*u*v+(C-D)*p*v^2+(-A*C+B*C)*u*v^2+(-A+B)*q*h,(C-D)*q*v^3+(-A*D+B*D)*v^4-p*q*h+(-A+B)*p*v*h,(C-D)*p*v^3+(-A*C+B*C)*u*v^3-p^2*h; attrib(G,"isSB",1); int i,j; int checked=0; int failed=0; poly a,b,c,s; for(i=1;i<=size(G);i++){for(j=i+1;j<=size(G);j++){a=leadmonom(G[i]); b=leadmonom(G[j]); c=gcd(a,b); s=(b/c)*G[i]/leadcoef(G[i])-(a/c)*G[j]/leadcoef(G[j]); checked++; if(reduce(s,G)!=0){failed++; print(i);print(j);print(reduce(s,G));}}} print("Buchberger pairs checked, failed"); print(checked);print(failed); ideal I=p*u-q*v,p^2-z^2-A*p*u,q^2-z^2-B*q*v,q*u-p*v+(A-B)*u*v,p*h-v*(C*u^2-D*v^2),q*h-u*(C*u^2-D*v^2); ideal J=std(sat(I,ideal(p*q))[1]); print("G in saturation");print(reduce(G,J));print("Saturation in G");print(reduce(J,G));print("Leading ideal");print(lead(G));print("Weighted Hilbert numerator");print(hilb(G,1,intvec(1,1,1,1,1,2)));exit;
+# run 545b4c220b, session bmd-two-pair-endpoints-20261005; full output
+Buchberger pairs checked, failed
+28
+0
+G in saturation
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0
+Saturation in G
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0
+Leading ideal
+qu,
+pu,
+p2,
+z2,
+(C)*u2v,
+(AC-BC)*u3,
+(C-D)*qv3,
+(C-D)*pv3
+Weighted Hilbert numerator
+1,
+0,
+-4,
+0,
+6,
+0,
+-4,
+0,
+1,
+0 
