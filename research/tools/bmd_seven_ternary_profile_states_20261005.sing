@@ -1,0 +1,96 @@
+// Full c=5 mod9 profile; all three higher local digits, not sampled degrees.
+ring base=3,x,dp;
+proc calculate(int digit){
+ring rr=(3,u),(t,C,X,Y,U,V),dp;
+number ss=u^2+1/u^2;
+matrix D[13][13];matrix R[1][13];
+int j,r,k,kind,row,ex,peak,h,a,b,lo,hi,nw,emin,emax,ee,sign,isp;
+poly W,cf;
+poly BN=(1+t^3)*(1+digit*t^9);
+for(j=0;j<=12;j++)
+{
+ if(j%2==0){D[1,j+1]=U;}else{D[1,j+1]=V;}
+ D[2,j+1]=j*D[1,j+1];
+ if(j%4==0){D[3,j+1]=X;}
+ if(j%4==1){D[3,j+1]=Y;}
+ if(j%4==2){D[3,j+1]=-X;}
+ if(j%4==3){D[3,j+1]=-Y;}
+}
+row=3;
+for(kind=0;kind<=3;kind++)
+{
+ sign=1;
+ if(kind==0){a=2;b=2;lo=88;hi=102;emin=45;emax=49;}
+ if(kind==1){a=3;b=4;lo=91;hi=101;emin=45;emax=46;}
+ if(kind==2){a=2;b=5;lo=91;hi=101;emin=45;emax=46;sign=-1;}
+ if(kind==3){a=1;b=3;lo=88;hi=102;emin=45;emax=49;sign=-1;}
+ nw=(hi-lo) div 2;
+ matrix F[nw][13];intvec pivot;
+ for(h=1;h<=nw;h++)
+ {
+  ex=hi-2*(h-1);r=102-ex;
+  for(j=0;j<=12;j++)
+  {
+   k=r-12+j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=cf*(-u)^k;}
+   k=r-j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=F[h,j+1]+sign*C*cf*(-u)^(-k);}
+  }
+ }
+ for(ee=emax;ee>=emin;ee--)
+ {
+  peak=a+b+2*ee;k=(hi-peak) div 2+1;pivot[size(pivot)+1]=k;
+  W=(1+t)^a*(1-t)^b*(1-ss*t+t^2)^(ee%9);
+  for(j=1;j<=13;j++){R[1,j]=F[k,j];}
+  for(h=k;h<=nw;h++)
+  {
+   cf=subst(W/t^(h-k),t,0);
+   for(j=1;j<=13;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+  }
+ }
+ for(h=1;h<=nw;h++)
+ {
+  isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+  if(isp==0){row++;for(j=1;j<=13;j++){D[row,j]=F[h,j];}}
+ }
+ kill F;kill pivot;
+}
+print("rows="+string(row));
+poly detD=det(D);
+
+print("digit="+string(digit)+" raw factors:");
+if(detD==0){print("PASS: identically zero formal boundary determinant");return();}
+print(factorize(detD));
+if(digit==0){
+ poly first=subst(detD/C,C,0);
+ poly expected=u^15*(Y-u^3*X)*(u^3*U+V)^2;
+ if(subst(detD,C,0)!=0 || first!=expected){ERROR("old-state overlap");}
+ print("PASS: prior state matches its proved first coefficient");
+}else{
+ int nzero;
+ if(digit==1){nzero=12;}else{nzero=48;}
+ number aa=1;number bb=0;number tmp;int ll;
+ for(ll=1;ll<=nzero;ll++){tmp=u*aa+bb;bb=u*bb-aa;aa=tmp;}
+ number gg=((u-1)^nzero+(u+1)^nzero)/2;
+ number hh=((u-1)^nzero-(u+1)^nzero)/2;
+ map shift=rr,t,u^nzero*C,aa*X+bb*Y,aa*Y-bb*X,gg*U+hh*V,hh*U+gg*V;
+ poly shifted=shift(detD);
+ print("shifted n0="+string(nzero)+" factors:");
+ list factors=factorize(shifted);print(factors);
+ map atPowerOrigin=rr,t,0,2,0,2,0;
+ poly one;int fi;
+ for(fi=1;fi<=size(factors[1]);fi++){
+  one=factors[1][fi];
+  print("FACTOR "+string(fi)+": "+string(one));
+  print("ORIGIN "+string(fi)+": "+string(atPowerOrigin(one)));
+ }
+ poly product=1;
+ for(fi=1;fi<=size(factors[1]);fi++){product=product*factors[1][fi]^factors[2][fi];}
+ if(product!=shifted){ERROR("factor product mismatch");}
+ print("PASS: exact shifted factorization");
+}
+
+}
+int digit;
+for(digit=0;digit<=2;digit++){calculate(digit);}
+quit;

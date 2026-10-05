@@ -1,0 +1,67 @@
+// Re-test the full first boundary at the unresolved local digit.
+ring base=3,x,dp;
+proc calculate(int digit){
+ring rr=(3,u),(t,C,X,Y),dp;
+number ss=u^2+1/u^2;
+matrix D[13][13];int j,r,k,kind,row,ex,peak,h,a,b,lo,hi,nw,emin,emax,ee,sign,isp;
+poly W,cf;poly BN=(1+t^3)*(1+digit*t^9);matrix R[1][13];
+for(j=0;j<=12;j++)
+{
+ D[1,j+1]=j;D[2,j+1]=(-1)^j*j;
+ if(j%4==0){D[3,j+1]=X;}
+ if(j%4==1){D[3,j+1]=Y;}
+ if(j%4==2){D[3,j+1]=-X;}
+ if(j%4==3){D[3,j+1]=-Y;}
+}
+row=3;
+for(kind=0;kind<=3;kind++)
+{
+ sign=1;
+ if(kind==0){a=2;b=4;lo=90;hi=102;emin=45;emax=47;}
+ if(kind==1){a=3;b=4;lo=91;hi=101;emin=45;emax=46;}
+ if(kind==2){a=2;b=7;lo=93;hi=101;emin=45;emax=46;sign=-1;}
+ if(kind==3){a=1;b=7;lo=92;hi=102;emin=45;emax=47;sign=-1;}
+ nw=(hi-lo) div 2;
+ matrix F[nw][13];intvec pivot;
+ for(h=1;h<=nw;h++)
+ {
+  ex=hi-2*(h-1);r=102-ex;
+  for(j=0;j<=12;j++)
+  {
+   k=r-12+j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=cf*(-u)^k;}
+   k=r-j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=F[h,j+1]+sign*C*cf*(-u)^(-k);}
+  }
+ }
+ for(ee=emax;ee>=emin;ee--)
+ {
+  peak=a+b+2*ee;k=(hi-peak) div 2+1;pivot[size(pivot)+1]=k;
+  // Only t-orders <=5 are used; ee is 45,46,47, so Frobenius removes
+  // the degree-45 factor modulo t^9 in characteristic three.
+  W=(1+t)^a*(1-t)^b*(1-ss*t+t^2)^(ee%3);
+  for(j=1;j<=13;j++){R[1,j]=F[k,j];}
+  for(h=k;h<=nw;h++)
+  {
+   cf=subst(W/t^(h-k),t,0);
+   for(j=1;j<=13;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+  }
+ }
+ for(h=1;h<=nw;h++)
+ {
+  isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+  if(isp==0){row++;for(j=1;j<=13;j++){D[row,j]=F[h,j];}}
+ }
+ kill F;kill pivot;
+}
+if(row!=13){ERROR("wrong constraint count");}
+poly detD=det(D);
+print("digit="+string(digit)+" constraint rows="+string(row));
+print("determinant over F3(u)[C,X,Y]:");print(detD);
+if(detD==0){print("IDENTICALLY ZERO before the actual exponent-N powers.");}
+else{ERROR("expected boundary obstruction changed");}
+
+}
+calculate(0);
+calculate(2);
+quit;
