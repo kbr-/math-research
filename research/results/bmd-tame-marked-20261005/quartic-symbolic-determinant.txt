@@ -1,0 +1,14 @@
+# command: Singular -q -c ring R=(0,i),(u,n,a,b,c),dp; minpoly=i^2+1; matrix M[5][5]; int j; number dp,dm; poly H=(n+2)*u^2+2-n; for(j=0;j<=4;j++){M[1,j+1]=(j+n-2)+(n+2-j)*u;M[2,j+1]=(-1)^j*((2-n-j)+(n+2-j)*u);M[3,j+1]=a*i^j+b*(-i)^j;dp=0;dm=0;if(j>0){dp=j*i^(j-1);dm=j*(-i)^(j-1);}M[4,j+1]=a*((u^2+1)*dp+(-2*n*u+i*H)*i^j)+b*((u^2+1)*dm+(-2*n*u-i*H)*(-i)^j);}M[5,1]=c;M[5,5]=1;print("MATRIX");print(M);poly f=det(M);print("FACTORIZATION");print(factorize(f));exit;
+# run 66346fee16, session bmd-tame-marked-20261005; full output
+MATRIX
+un+2*u+n-2,un+u+n-1,    un+n,  un-u+n+1,    un-2*u+n+2,
+un+2*u-n+2,-un-u+n-1,   un-n,  -un+u+n+1,   un-2*u-n-2,
+a+b,       (i)*a+(-i)*b,-a-b,  (-i)*a+(i)*b,a+b,       
+M[4,1],    M[4,2],      M[4,3],M[4,4],      M[4,5],    
+c,         0,           0,     0,           1          
+FACTORIZATION
+[1]:
+   _[1]=-32
+   _[2]=u4n3abc-u4n3ab+1/4*u4n2a2c-3/2*u4n2abc+1/4*u4n2b2c+1/4*u4n2a2-3/2*u4n2ab+1/4*u4n2b2-1/4*u4na2c-1/2*u4nabc-2*u2n3abc-1/4*u4nb2c+1/4*u4na2+1/2*u4nab+2*u2n3ab+1/4*u4nb2+1/4*u4a2c+(i)*u3na2c+1/2*u4abc+1/4*u4b2c+(-i)*u3nb2c+1/4*u4a2+(i)*u3na2+1/2*u4ab+1/4*u4b2+(-i)*u3nb2-1/2*u2na2c-u2nabc+n3abc-1/2*u2nb2c+1/2*u2na2+u2nab-n3ab+1/2*u2nb2+(i)*una2c-1/4*n2a2c+3/2*n2abc+(-i)*unb2c-1/4*n2b2c+(i)*una2-1/4*n2a2+3/2*n2ab+(-i)*unb2-1/4*n2b2-1/4*na2c-1/2*nabc-1/4*nb2c+1/4*na2+1/2*nab+1/4*nb2-1/4*a2c-1/2*abc-1/4*b2c-1/4*a2-1/2*ab-1/4*b2
+[2]:
+   1,1
