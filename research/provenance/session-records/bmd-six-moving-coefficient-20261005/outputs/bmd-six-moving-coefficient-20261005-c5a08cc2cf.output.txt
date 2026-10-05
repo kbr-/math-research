@@ -1,0 +1,31 @@
+PASS c=2 leading=12 < error bound=32
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/research/tools/bmd_matching_precision_audit_20261005.py", line 70, in <module>
+    assert len(lines) == 1 and 'at top-level' not in proc.stderr, proc.stdout + proc.stderr
+AssertionError:   ***   Warning: new maximum stack size = 1000001536 (953.676 Mbytes).
+  *** matadjoint: Warning: increasing stack size to 16000000.
+  *** matadjoint: Warning: increasing stack size to 32000000.
+  *** matadjoint: Warning: increasing stack size to 64000000.
+  *** matadjoint: Warning: increasing stack size to 128000000.
+  *** matadjoint: Warning: increasing stack size to 256000000.
+  *** matadjoint: Warning: increasing stack size to 512000000.
+  *** matadjoint: Warning: increasing stack size to 1000001536.
+  ***   at top-level: EX=matdet(FP);AD=matadjoint(FP,1)
+  ***                                  ^----------------
+  *** matadjoint: the PARI stack overflows !
+  current stack size: 1000001536 (953.676 Mbytes)
+  [hint] you can increase 'parisizemax' using default()
+
+  ***   at top-level: if(FP*AD!=EX*matid(12),error("adjugate identit
+  ***                                        ^-----------------------
+  ***   user error: adjugate identity
+  ***   at top-level: ...(j=1,12,if(denominator(AD[i,j])!=1,error("nonp
+  ***                                             ^---------------------
+  ***   incorrect type in _[_,_] OCcompo2 [not a matrix] (t_POL).
+  ***   at top-level: if(valuation(EX,u)!=69,error("leading order ch
+  ***                                        ^-----------------------
+  ***   user error: leading order changed under input reconstruction
+  ***   at top-level: ...2,i,j,min(48,valuation(AD[i,j],u))))
+  ***                                             ^-----------
+  ***   incorrect type in _[_,_] OCcompo2 [not a matrix] (t_POL).
+

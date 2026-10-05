@@ -1,0 +1,23 @@
+PASS c=2 leading=12 < error bound=32
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/research/tools/bmd_matching_precision_audit_20261005.py", line 69, in <module>
+    assert len(lines) == 1 and '***' not in proc.stderr, proc.stdout + proc.stderr
+AssertionError:   ***   at top-level: EX=matdet(FP);AD=EX*FP^-1
+  ***                                       ^---
+  *** _^_: the PARI stack overflows !
+  current stack size: 8000000 (7.629 Mbytes)
+  [hint] set 'parisizemax' to a nonzero value in your GPRC
+
+  ***   at top-level: if(FP*AD!=EX*matid(12),error("adjugate identit
+  ***                                        ^-----------------------
+  ***   user error: adjugate identity
+  ***   at top-level: ...(j=1,12,if(denominator(AD[i,j])!=1,error("nonp
+  ***                                             ^---------------------
+  ***   incorrect type in _[_,_] OCcompo2 [not a matrix] (t_POL).
+  ***   at top-level: if(valuation(EX,u)!=69,error("leading order ch
+  ***                                        ^-----------------------
+  ***   user error: leading order changed under input reconstruction
+  ***   at top-level: ...2,i,j,min(48,valuation(AD[i,j],u))))
+  ***                                             ^-----------
+  ***   incorrect type in _[_,_] OCcompo2 [not a matrix] (t_POL).
+
