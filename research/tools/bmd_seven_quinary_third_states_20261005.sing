@@ -1,0 +1,137 @@
+// Third full survivor in characteristic five; 14 local states left by integer unit criterion.
+// Source: vA+v^2B+w^7A+vw^7B, c=8d-17>=23, N=8c+8.
+// Profiles: ordinary unless p divides2c+1 (type1) or2c+3 (type0).
+// Stages: exact finite/high cuts; symbolic determinant; actual-power shift; polynomial audit.
+// A formal zero rejects only this full boundary, not the original series.
+ring base=5,x,dp;
+proc bc(int n,int k){
+ int residue=n%25;if(residue<0){residue=residue+25;}
+ poly P=(1+t)^residue;return(subst(P/t^k,t,0));
+}
+proc calculate(int cr){
+ ring rr=(5,u),(t,C,X,Y),dp;
+ int typ=2;if(cr%5==1){typ=0;}if(cr%5==2){typ=1;}
+ int cref,offset;
+ if(typ==0){cref=31;offset=14;}
+ if(typ==1){cref=47;offset=12;}
+ if(typ==2){cref=23;offset=10;}
+ int nr=(8*cr+8)%25;int mr=(4*cr+offset)%25;
+ int MM=4*cref+offset;int NN=8*cref+8;int DD=2*MM-NN+1;
+ matrix D[DD][DD];matrix R[1][DD];
+ int j,k,h,a,row,sg,kind,al,be,oa,ob,low,hi,lo,nw,ex,r,sign,ee,peak,er,isp;
+ poly val,cf,W;number ss=u^2+1/u^2;
+ row=0;
+ for(sg=0;sg<=1;sg++){
+  a=1-2*sg;
+  for(h=1;h<=5;h=h+2){
+   row++;
+   for(j=0;j<DD;j++){
+    val=0;
+    for(k=0;k<=h;k++){
+     val=val+bc(nr,k)*(a-u)^(h-k)
+       *(a^k*bc(j-mr,h-k)-(-u)^k*bc(mr-j-nr,h-k));
+    }
+    D[row,j+1]=a^(j+h)*val;
+   }
+  }
+ }
+ row++;
+ for(j=0;j<DD;j++){
+  if(j%4==0){D[row,j+1]=X;}
+  if(j%4==1){D[row,j+1]=Y;}
+  if(j%4==2){D[row,j+1]=-X;}
+  if(j%4==3){D[row,j+1]=-Y;}
+ }
+ for(kind=0;kind<=3;kind++){
+  sign=1;if(kind>=2){sign=-1;}
+  if(kind==0){al=2;be=0;}
+  if(kind==1){al=1;be=0;}
+  if(kind==2){al=0;be=7;}
+  if(kind==3){al=1;be=7;}
+  oa=al;ob=be;list outs;
+  if(typ==0){
+   low=2*cref+1;
+   if(kind==0 || kind==3){low=2*cref;outs=list(2*cref+3);}
+  }
+  if(typ==1){
+   low=2*cref;
+   if(kind==0 || kind==3){low=2*cref-1;outs=list(2*cref+2,2*cref+1);}
+   else{oa=al+2;outs=list(2*cref+1);}
+  }
+  if(typ==2){low=2*cref+1;}
+  hi=MM-((MM-al-be)%2);lo=al+be+2*low;nw=(hi-lo) div 2;
+  if(nw>0){
+   matrix F[nw][DD];intvec pivot;
+   for(h=1;h<=nw;h++){
+    ex=hi-2*(h-1);r=MM-ex;
+    for(j=0;j<DD;j++){
+     k=r-(DD-1)+j;
+     if(k>=0){F[h,j+1]=bc(nr,k)*(-u)^k;}
+     k=r-j;
+     if(k>=0){F[h,j+1]=F[h,j+1]+sign*C*bc(nr,k)*(-u)^(-k);}
+    }
+   }
+   for(ee=1;ee<=size(outs);ee++){
+    peak=oa+ob+2*outs[ee];k=(hi-peak) div 2+1;
+    if(k<1 || k>nw){ERROR("outlier pivot outside high window");}
+    pivot[size(pivot)+1]=k;
+    er=(2*cr+outs[ee]-2*cref)%25;
+    W=(1+t)^oa*(1-t)^ob*(1-ss*t+t^2)^er;
+    for(j=1;j<=DD;j++){R[1,j]=F[k,j];}
+    for(h=k;h<=nw;h++){
+     cf=subst(W/t^(h-k),t,0);
+     for(j=1;j<=DD;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+    }
+   }
+   for(h=1;h<=nw;h++){
+    isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+    if(isp==0){row++;for(j=1;j<=DD;j++){D[row,j]=F[h,j];}}
+   }
+   kill F;kill pivot;
+  }
+  kill outs;
+ }
+ if(row!=DD){ERROR("condition count");}
+ print("STATE c="+string(cr)+" mod25; N="+string(nr)+"; dimension="+string(DD));
+ poly detD=det(D);
+ if(detD==0){print("ZERO: formal determinant vanishes identically");return();}
+ print("RAW FACTORS:");print(factorize(detD));
+ int nzero=nr;
+ while(nzero%4!=0){nzero=nzero+25;}
+ number aa=1;number bb=0;number tmp;
+ for(k=1;k<=nzero;k++){tmp=u*aa+bb;bb=u*bb-aa;aa=tmp;}
+ map shift=rr,t,u^nzero*C,aa*X+bb*Y,aa*Y-bb*X;
+ poly shifted=shift(detD);
+ print("SHIFT n0="+string(nzero));
+ list fac=factorize(shifted);print(fac);
+ poly product=1;poly one;poly origin;
+ map atOrigin=rr,t,0,2,0;
+ for(k=1;k<=size(fac[1]);k++){
+  one=fac[1][k];product=product*one^fac[2][k];
+  origin=atOrigin(one);
+  print("ORIGIN "+string(k)+": "+string(origin));
+ }
+ if(product!=shifted){ERROR("factor product mismatch");}
+ print("PASS exact shifted factorization");
+ int alpha=0;
+ for(k=1;k<=size(fac[1]);k++){if(fac[1][k]==C){alpha=fac[2][k];}}
+ poly scalar=fac[1][1];
+ if(deg(scalar)!=0 || scalar==0){ERROR("nonzero scalar factor required");}
+ poly normalized=shifted/(scalar*C^alpha);
+ if(scalar*C^alpha*normalized!=shifted){ERROR("normalized identity");}
+ string literal=string(normalized);
+ ring polynomialRing=5,(u,t,C,X,Y),dp;
+ execute("poly certificate="+literal+";");
+ poly origin=subst(subst(subst(subst(certificate,C,0),X,2),Y,0),t,0);
+ int auditOrder;poly first=0;
+ for(auditOrder=0;auditOrder<25;auditOrder++){first=subst(origin/u^auditOrder,u,0);if(first!=0){break;}}
+ string leading=string(first);string back=string(certificate);
+ setring rr;execute("poly roundtrip="+back+";");
+ if(roundtrip!=normalized){ERROR("polynomial roundtrip failed");}
+ print("CERTIFICATE c="+string(cr)+" n0="+string(nzero)+" C_power="+string(alpha)
+  +" scalar="+string(scalar)+" order="+string(auditOrder)+" coefficient="+leading+" polynomial_roundtrip=PASS");
+
+}
+intvec remaining=0,1,2,3,7,8,11,12,13,14,17,18,22,23;
+int idx;for(idx=1;idx<=size(remaining);idx++){calculate(remaining[idx]);}
+quit;
