@@ -1,0 +1,55 @@
+// Correct exceptional third merge: unsafe blocks are 1 and v*z, not 1 and z.
+// n=N/2=1 mod3, M=n+4=2 mod3. beta_k=binom(N,k), k<=4.
+ring rr=3,(u,C,X,Y,l),dp;
+matrix M[9][9];matrix H[5][9];matrix L[5][9];
+list beta=1,2,1,l,2*l;
+int j,k,col;
+for(j=0;j<=8;j++)
+{
+ M[1,j+1]=j+(2-j)*u;
+ M[2,j+1]=(-1)^j*(-j+(2-j)*u);
+ if(j%4==0){M[3,j+1]=X;}
+ if(j%4==1){M[3,j+1]=Y;}
+ if(j%4==2){M[3,j+1]=-X;}
+ if(j%4==3){M[3,j+1]=-Y;}
+}
+for(j=0;j<=4;j++)
+{
+ for(k=0;k<=j;k++)
+ {
+  H[j+1,9-j+k]=(-1)^k*beta[k+1]*u^k;
+  L[j+1,j-k+1]=C*(-1)^k*beta[k+1]*u^(j-k);
+ }
+}
+for(col=1;col<=9;col++)
+{
+ M[4,col]=H[1,col]+L[1,col];
+ M[5,col]=H[2,col];
+ M[6,col]=L[2,col];
+ M[7,col]=u^2*H[3,col]-L[3,col];
+ M[8,col]=u^3*H[4,col]+L[4,col];
+ M[9,col]=u^4*H[5,col]+L[5,col]-u^4*H[3,col]-u^2*L[3,col];
+}
+poly D=det(M);
+print("correct nine-condition determinant:");print(D);
+for(j=0;j<=2;j++)
+{
+ print("lambda="+string(j));
+ print("coefficient X:");print(factorize(subst(diff(D,X),l,j)));
+ print("coefficient Y:");print(factorize(subst(diff(D,Y),l,j)));
+}
+print("pure Frobenius specialization, multiplied by u^2+1:");
+print(factorize(subst(subst(subst(D,l,2),X,-(u^2*C+1)),Y,u*(C-1))));
+poly first=subst(diff(D,C),C,0);
+if(first-u^9*(u^2+1)*(u*X-Y)!=0){ERROR("first C coefficient failed");}
+poly second=subst(diff(diff(D,C),C)/2,C,0);
+poly rest=D-C*first-C^2*second;
+poly ax=diff(second,X);poly ay=diff(second,Y);
+if(ax!=(ax/u^8)*u^8 || ay!=(ay/u^7)*u^7){ERROR("second C valuation failed");}
+ax=diff(rest,X);ay=diff(rest,Y);
+if(ax!=(ax/(C^3*u^6))*C^3*u^6 || ay!=(ay/(C^3*u^5))*C^3*u^5){ERROR("higher C valuation failed");}
+poly pure=subst(subst(subst(D,l,2),X,-(u^2*C+1)),Y,u*(C-1));
+poly expected=-u^8*C^2*(u^2+C)*(u*C+1)*(u*C-1)*(u+1)^2*(u-1)^2;
+if(pure-expected!=0){ERROR("pure Frobenius factor failed");}
+print("PASS: first coefficient, remainder valuations and pure Frobenius factor");
+quit;

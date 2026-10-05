@@ -1,0 +1,40 @@
+// Correct exceptional third merge for p>=5: n=4, N=8 and M=n+4=8 modulo p.
+ring rr=0,(u,C,X,Y),dp;
+matrix M[9][9];matrix H[5][9];matrix L[5][9];
+list beta=1,8,28,56,70;
+int j,k,col;
+for(j=0;j<=8;j++)
+{
+ M[1,j+1]=j+(8-j)*u;
+ M[2,j+1]=(-1)^j*(-j+(8-j)*u);
+ if(j%4==0){M[3,j+1]=X;}
+ if(j%4==1){M[3,j+1]=Y;}
+ if(j%4==2){M[3,j+1]=-X;}
+ if(j%4==3){M[3,j+1]=-Y;}
+}
+for(j=0;j<=4;j++)
+{
+ for(k=0;k<=j;k++)
+ {
+  H[j+1,9-j+k]=(-1)^k*beta[k+1]*u^k;
+  L[j+1,j-k+1]=C*(-1)^k*beta[k+1]*u^(j-k);
+ }
+}
+for(col=1;col<=9;col++)
+{
+ M[4,col]=H[1,col]+L[1,col];
+ M[5,col]=H[2,col];
+ M[6,col]=L[2,col];
+ M[7,col]=u^2*H[3,col]-L[3,col]+6*u^2*(H[1,col]-L[1,col]);
+ M[8,col]=u^3*H[4,col]+L[4,col];
+ M[9,col]=u^4*H[5,col]+L[5,col]+2*u^4*H[3,col]+2*u^2*L[3,col];
+}
+poly D=det(M);
+print("coefficient X factors:");print(factorize(diff(D,X)));
+print("coefficient Y factors:");print(factorize(diff(D,Y)));
+print("C order:");print(deg(subst(D,C,0)));
+poly first=subst(diff(D,C),C,0);
+poly expected=-4*u^10*(35*u^2-67)*X+32*u^9*(4-35*u^2)*Y;
+if(first-expected!=0){ERROR("first C coefficient failed");}
+print("PASS: first C coefficient; after X=2+O(u^2), Y=-16u+O(u^3), leading coefficient is -1512");
+quit;

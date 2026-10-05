@@ -1,0 +1,20 @@
+// SUPERSEDED: incorrect exceptional character assignment; not proof evidence.
+// Exceptional third merge for p>=5: n=4, N=8, binom(N,2)=28, binom(N,3)=56 modp.
+ring rr=0,(u,C,X,Y),dp;
+matrix M[7][7];int j;
+for(j=0;j<=6;j++)
+{
+ M[1,j+1]=(j+1)+(7-j)*u;
+ M[2,j+1]=(-1)^j*(-1-j+(7-j)*u);
+}
+M[3,1]=X;M[3,2]=Y;M[3,3]=-X;M[3,4]=-Y;M[3,5]=X;M[3,6]=Y;M[3,7]=-X;
+M[4,1]=C;M[4,7]=1;
+M[5,1]=28*C;M[5,2]=-8*C*u;M[5,3]=C*u^2;M[5,5]=u^2;M[5,6]=-8*u^3;M[5,7]=28*u^4;
+M[6,5]=1;M[6,6]=-8*u;M[6,7]=28*u^2+7;
+M[7,1]=-56*C-16*C*u^2;M[7,2]=28*C*u+2*C*u^3;M[7,3]=-8*C*u^2;M[7,4]=(1+C)*u^3;
+M[7,5]=-8*u^4;M[7,6]=28*u^5+2*u^3;M[7,7]=-56*u^6-16*u^4;
+poly D=det(M);
+print("coefficient X factors:");print(factorize(diff(D,X)));
+print("coefficient Y factors:");print(factorize(diff(D,Y)));
+print("C zero:");print(factorize(subst(D,C,0)));
+quit;

@@ -1,0 +1,32 @@
+// SUPERSEDED: incorrect exceptional character assignment; not proof evidence.
+// Characteristic-three exceptional third merge: n=N/2=1 mod3, H2=1,
+// lambda=binomial(N,3) mod3. X=A-B, Y=i(A+B), C=u^N.
+ring rr=3,(u,C,X,Y,l),dp;
+matrix M[7][7];int j;
+for(j=0;j<=6;j++)
+{
+ M[1,j+1]=(j+1)+(1-j)*u;
+ M[2,j+1]=(-1)^j*(2-j+(1-j)*u);
+}
+M[3,1]=X;M[3,2]=Y;M[3,3]=-X;M[3,4]=-Y;
+M[3,5]=X;M[3,6]=Y;M[3,7]=-X;
+M[4,1]=C;M[4,7]=1;
+M[5,1]=C;M[5,2]=-2*C*u;M[5,3]=C*u^2;
+M[5,5]=u^2;M[5,6]=-2*u^3;M[5,7]=u^4;
+M[6,5]=1;M[6,6]=-2*u;M[6,7]=u^2+1;
+M[7,1]=-l*C+2*C*u^2;
+M[7,2]=C*u-C*u^3;
+M[7,3]=-2*C*u^2;
+M[7,4]=(1+C)*u^3;
+M[7,5]=-2*u^4;
+M[7,6]=u^5-u^3;
+M[7,7]=-l*u^6+2*u^4;
+poly D=det(M);
+print("universal exceptional determinant:");print(D);
+for(j=0;j<=2;j++)
+{
+ print("lambda="+string(j));
+ print("coefficient X:");print(factorize(subst(diff(D,X),l,j)));
+ print("coefficient Y:");print(factorize(subst(diff(D,Y),l,j)));
+}
+quit;

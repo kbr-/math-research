@@ -1,0 +1,31 @@
+// Fixed boundary determinant: n=N/2, X=A+B, Y=i(A-B), C=u^N.
+ring rr=0,(u,n,C,X,Y),dp;
+matrix M[5][5];
+int j;
+for(j=0;j<=4;j++)
+{
+ M[1,j+1]=(j+n-2)+(n+2-j)*u;
+ M[2,j+1]=(-1)^j*(2-n-j+(n+2-j)*u);
+}
+M[3,1]=X;M[3,2]=Y;M[3,3]=-X;M[3,4]=-Y;M[3,5]=X;
+M[4,1]=C;M[4,5]=1;
+M[5,1]=2*n*C*(u^2-1);M[5,2]=C*u;M[5,4]=u;
+poly D=det(M);
+poly fx=4*u*((n+1)^2*C^2+(n-1)^2+(2-6*n^2)*C-u^2*((n-1)^2*C^2+(n+1)^2+(2-6*n^2)*C));
+poly fy=-8*n*(n^2*C*(u^2-1)^2+u^2*(C+1)^2);
+if(D-fx*X-fy*Y!=0){ERROR("universal five-condition formula failed");}
+print("PASS: universal five-condition formula");
+print("universal determinant:");print(D);
+print("coefficient X factors:");print(factorize(diff(D,X)));
+print("coefficient Y factors:");print(factorize(diff(D,Y)));
+print("at n=0 (then reduce mod3):");print(subst(D,n,0));
+print("at n=-1 (then reduce mod3):");print(subst(D,n,-1));
+poly one=8*(C+u^2)*(2*u*(C-1)*X-(1+u^2*C)*Y);
+if(subst(D,n,1)-one!=0){ERROR("n=1 factorization failed");}
+print("PASS: n=1 factorization");
+ring verifyRing=0,(u,Z,A0,B0,i),dp;
+poly lhs=2*u*(u^2*Z-1)*((u-i)^2*A0+(u+i)^2*B0)-i*(1+u^4*Z)*((u-i)^2*A0-(u+i)^2*B0);
+poly rhs=i*(B0-A0)*(Z*u^6+3*Z*u^4-3*u^2-1)-2*(A0+B0)*(Z+1)*u^3;
+if(reduce(lhs-rhs,std(ideal(i^2+1)))!=0){ERROR("safe Frobenius identity failed");}
+print("PASS: safe Frobenius coefficient identity over Z[i]");
+quit;
