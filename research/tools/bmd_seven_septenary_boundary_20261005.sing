@@ -1,0 +1,96 @@
+// Seven fixed symbolic matrices cover all d=5 mod7, not seven sampled degrees.
+ring base=7,x,dp;
+proc calculate(int digit)
+{
+ring rr=(7,u),(t,C,X,Y,U,V),dp;
+number ss=u^2+1/u^2;
+matrix D[21][21];matrix R[1][21];
+int j,r,k,kind,row,ex,peak,h,a,b,lo,hi,nw,emin,emax,ee,sign,isp;
+poly W,cf;
+poly BN=(1+t)^3*(1+t^7)^digit;
+for(j=0;j<=20;j++)
+{
+ if(j%2==0){D[1,j+1]=U;}else{D[1,j+1]=V;}
+ if(j%2==0){cf=V;}else{cf=U;}
+ D[2,j+1]=((j-1)*(1-u^2)+3)*D[1,j+1]+3*u*cf;
+ if(j%4==0){D[3,j+1]=X;}
+ if(j%4==1){D[3,j+1]=Y;}
+ if(j%4==2){D[3,j+1]=-X;}
+ if(j%4==3){D[3,j+1]=-Y;}
+}
+row=3;
+for(kind=0;kind<=3;kind++)
+{
+ sign=1;
+ if(kind==0){a=2;b=2;lo=92;hi=106;emin=49;emax=51;}
+ if(kind==1){a=1;b=0;lo=95;hi=105;emin=1;emax=0;}
+ if(kind==2){a=0;b=1;lo=95;hi=105;emin=1;emax=0;sign=-1;}
+ if(kind==3){a=1;b=3;lo=92;hi=106;emin=49;emax=51;sign=-1;}
+ nw=(hi-lo) div 2;
+ matrix F[nw][21];intvec pivot;
+ for(h=1;h<=nw;h++)
+ {
+  ex=hi-2*(h-1);r=106-ex;
+  for(j=0;j<=20;j++)
+  {
+   k=r-20+j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=cf*(-u)^k;}
+   k=r-j;
+   if(k>=0 && k<=12){cf=subst(BN/t^k,t,0);F[h,j+1]=F[h,j+1]+sign*C*cf*(-u)^(-k);}
+  }
+ }
+ for(ee=emax;ee>=emin;ee--)
+ {
+  peak=a+b+2*ee;k=(hi-peak) div 2+1;pivot[size(pivot)+1]=k;
+  W=(1+t)^a*(1-t)^b*(1-ss*t+t^2)^(ee%7);
+  for(j=1;j<=21;j++){R[1,j]=F[k,j];}
+  for(h=k;h<=nw;h++)
+  {
+   cf=subst(W/t^(h-k),t,0);
+   for(j=1;j<=21;j++){F[h,j]=F[h,j]-cf*R[1,j];}
+  }
+ }
+ for(h=1;h<=nw;h++)
+ {
+  isp=0;for(k=1;k<=size(pivot);k++){if(pivot[k]==h){isp=1;}}
+  if(isp==0){row++;for(j=1;j<=21;j++){D[row,j]=F[h,j];}}
+ }
+ kill F;kill pivot;
+}
+print("rows="+string(row));
+poly detD=det(D);
+
+
+print("digit="+string(digit));
+list fac=factorize(detD);
+poly product=1;
+int ff;
+for(ff=1;ff<=size(fac[1]);ff++){product=product*fac[1][ff]^fac[2][ff];}
+if(product!=detD){ERROR("factor product mismatch");}
+print(fac);
+print("PASS: factorization multiplies to the exact determinant");
+
+}
+int digit;
+for(digit=0;digit<7;digit++){calculate(digit);}
+ring contact=7,(z,X,Y,U,V),dp;
+proc expr(poly a,poly b,poly c,poly d){return(-3*(1+z^2)*b*c+3*(1-z^2)*a*d+z*b*d);}
+print("r1:");print(expr(z*X+Y,X-z*Y,z*U-V,z*V-U));
+print("r2:");print(expr((z^2-1)*X+2*z*Y,2*z*X-(z^2-1)*Y,(z^2+1)*U-2*z*V,(z^2+1)*V-2*z*U));
+poly aa=3*z-3*z^7;
+poly bb=-2*z^6+3*z^4-2*z^2+1;
+print("D0 shift U:");print(factorize(aa*(z^3+3*z)-bb*(3*z^2+1)));
+print("D0 shift V:");print(aa*(-3*z^2-1)+bb*(z^3+3*z));
+
+
+poly AX=z^4+z^2+1;poly BY=4*z^3-4*z;
+poly GU=z^4-z^2+1;poly HV=4*z^3+4*z;
+poly XX=AX*X+BY*Y;poly YY=AX*Y-BY*X;
+poly UU=GU*U+HV*V;poly VV=HV*U+GU*V;
+poly shifted=(3*z^5-3*z)*XX*UU+(3*z^6+z^4+z^2+3)*YY*UU
+ +(-3*z^6+z^4-z^2+3)*XX*VV+z^3*YY*VV;
+poly expected=3*(1+z^14)*Y*U+3*(1-z^14)*X*V-z^7*Y*V;
+if(shifted!=expected){ERROR("contact shift mismatch");}
+print("PASS: shifted common contact factor");
+quit;
+
