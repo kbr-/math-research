@@ -1,0 +1,168 @@
+// Characteristic-three Frobenius-family Tate correction, bounded rho precision.
+// P=3^(4r)>=81, N=P-1, m=(P-1)/4 ==20 mod81; U records u^P.
+// R records rho^(-m). No specialization U=u^P is made in this certificate.
+int PREC=8;
+ring baseRing=(3,u,U),(i,rho,s,R,Ri),dp;
+ideal truncation=i^2+1,rho^PREC,s^5,R*Ri-1;
+qring workRing=std(truncation);
+int J=PREC div 2+1;
+int audit_failed=0;
+ideal zeroSB=std(ideal(0));
+attrib(zeroSB,"isSB",1);
+proc nf(poly f){return(reduce(f,zeroSB));}
+proc power(poly b,int e)
+{
+ poly res=1;
+ while(e>0){if(e%2==1){res=nf(res*b);}e=e div 2;b=nf(nf(b*b));}
+ return(res);
+}
+proc invunit(poly f)
+{
+  poly c=nf(subst(subst(f,rho,0),s,0));
+  poly cc=nf(subst(c,i,-i));
+  poly ci=nf(cc/nf(c*cc));
+  poly v=nf(1-f*ci);
+  poly term=nf(1);
+  poly ans=nf(1);
+  int kk;
+  for(kk=1;kk<=PREC+5;kk++){term=nf(term*v);ans=nf(ans+term);}
+  poly result=nf(ans*ci);
+  if(nf(f*result)!=1){audit_failed=1;ERROR("unit inversion check failed");}
+  return(result);
+}
+proc cf(poly f,poly variable,int n)
+{
+  int kk;
+  for(kk=1;kk<=n;kk++){f=nf((f-subst(f,variable,0))/variable);}
+  return(subst(f,variable,0));
+}
+proc theta(poly c,int scale)
+{
+  poly ci=nf(invunit(c));
+  poly ans=nf(1-rho^scale*c);
+  int kk;
+  for(kk=1;kk<=J;kk++)
+  {ans=nf(ans*(1-rho^(2*kk+scale)*c)*(1-rho^(2*kk-scale)*ci));}
+  return(ans);
+}
+poly y=nf((2+s)*invunit(2-s));
+poly tp=nf(-1);
+int jj,hh,col,idx,diffscale;
+for(jj=1;jj<=J;jj++){tp=nf(tp*(1-rho^(2*jj))^2);}
+poly Q=nf(U/u);
+poly self=nf(tp*theta(Q*y,0)*invunit(theta(Q,0))*invunit(theta(y,0)/s));
+if(cf(self,s,0)!=1){audit_failed=1;ERROR("Kronecker residue check failed");}
+poly k0=nf(cf(self,s,1));
+poly k1=nf(cf(self,s,2));
+poly k2=nf(cf(self,s,3));
+poly e30=nf(k2+k0/4);
+poly e20=nf(-k1-1/4);
+poly A=nf(theta(y^2,0)/s*invunit(2*tp));
+list signs=1,-1,1,-1;
+intvec scales=0,0,1,1;
+list zs=i,-i,i,-i;
+matrix gg[4][3];
+matrix cb[1][4];
+matrix gz[1][4];
+matrix lg[1][4];
+poly g,th;
+for(jj=1;jj<=4;jj++)
+{
+  g=nf(theta(signs[jj]/u,scales[jj])*invunit(theta(signs[jj]*y/u,scales[jj]))*power(invunit(A),20));
+  if(scales[jj]==0){g=nf(g*power(invunit(y),20));}else{g=nf(g*power(y,20));}
+  if(cf(g,s,0)!=1){audit_failed=1;ERROR("normalized G constant failed");}
+  for(hh=1;hh<=3;hh++){gg[jj,hh]=nf(cf(g,s,hh));}
+  cb[1,jj]=nf(invunit(theta(signs[jj]/u,scales[jj])));
+  gz[1,jj]=nf(invunit(theta(zs[jj]/u,scales[jj])));
+  if(scales[jj]==0)
+  {cb[1,jj]=nf((1-signs[jj]/U)*cb[1,jj]);gz[1,jj]=nf((1-zs[jj]/U)*gz[1,jj]);}
+  th=nf(theta(zs[jj]*y/u,scales[jj]));
+  lg[1,jj]=nf(-cf(th,s,1)*invunit(cf(th,s,0)));
+  if(scales[jj]==0){lg[1,jj]=nf(lg[1,jj]+2);}
+}
+print("Local jets ready");
+list kc=-1,1,-1,i,-i,i,-i;
+intvec ks=0,1,1,0,0,1,1;
+matrix kk[3][7];
+poly val;
+for(jj=1;jj<=7;jj++)
+{
+  val=nf(tp*theta(Q*kc[jj]*y,ks[jj])*invunit(theta(Q,0))*invunit(theta(kc[jj]*y,ks[jj])));
+  for(hh=1;hh<=3;hh++){kk[hh,jj]=nf(cf(val,s,hh-1));}
+}
+print("Kronecker kernels ready");
+matrix aa[4][5];matrix bb[4][5];matrix cc[4][5];
+poly a,b,c;
+for(col=1;col<=5;col++)
+{
+  for(hh=1;hh<=4;hh++)
+  {
+    a=nf(0);b=nf(0);c=nf(0);
+    if(col==1){a=nf(1);if(hh>2){a=nf(-1);}}
+    if(col==2){b=nf(1);}
+    if(col>=3){if(hh==col-2){c=nf(1);}if(hh==4){c=nf(-1);}}
+    aa[hh,col]=nf(a);bb[hh,col]=nf(b-a*gg[hh,1]);
+    cc[hh,col]=nf(c-b*gg[hh,1]+a*(gg[hh,1]^2-gg[hh,2]));
+  }
+}
+matrix F[5][5];matrix ev[4][5];matrix dv[4][5];
+poly fac,ratio,E1,E2,E3,DK,D2K,localpart,crosspart,dj;
+int same;
+for(col=1;col<=5;col++)
+{
+  for(jj=1;jj<=4;jj++)
+  {
+    localpart=nf(aa[jj,col]*(gg[jj,3]+e30)+bb[jj,col]*(gg[jj,2]+e20)+cc[jj,col]*(gg[jj,1]+k0));
+    crosspart=nf(0);
+    for(hh=1;hh<=4;hh++)
+    {
+      if(hh!=jj)
+      {
+        diffscale=scales[jj]-scales[hh];fac=nf(1);idx=1;
+        if(diffscale!=0){idx=2;if(signs[jj]!=signs[hh]){idx=3;}}
+        if(diffscale==-1){fac=nf(Q);}
+        E1=nf(fac*kk[1,idx]);E2=nf(-fac*kk[2,idx]);E3=nf(fac*(kk[3,idx]+kk[1,idx]/4));
+        ratio=nf(cb[1,jj]*invunit(cb[1,hh]));
+        if(diffscale==1){ratio=nf(ratio*R);}if(diffscale==-1){ratio=nf(ratio*Ri);}
+        crosspart=nf(crosspart+ratio*(aa[hh,col]*E3+bb[hh,col]*E2+cc[hh,col]*E1));
+      }
+    }
+    dj=nf(localpart+crosspart);
+    if(jj<=2){F[1,col]=nf(F[1,col]+dj);}else{F[1,col]=nf(F[1,col]-dj);}
+    for(hh=1;hh<=4;hh++)
+    {
+      diffscale=scales[jj]-scales[hh];fac=nf(1);
+      idx=4;if(zs[jj]/signs[hh]==-i){idx=5;}
+      if(diffscale!=0){idx=idx+2;}
+      if(diffscale==-1){fac=nf(Q);}
+      E1=nf(fac*kk[1,idx]);DK=nf(fac*kk[2,idx]);D2K=nf(2*fac*kk[3,idx]);
+      E2=nf(-DK);E3=nf(fac*(kk[3,idx]+kk[1,idx]/4));
+      ratio=nf(gz[1,jj]*invunit(cb[1,hh]));
+      if(diffscale==1){ratio=nf(ratio*R);}if(diffscale==-1){ratio=nf(ratio*Ri);}
+      val=nf(aa[hh,col]*E3+bb[hh,col]*E2+cc[hh,col]*E1);
+      ev[jj,col]=nf(ev[jj,col]+ratio*val);
+      // Euler derivative of E3 vanishes in characteristic three.
+      dv[jj,col]=nf(dv[jj,col]+ratio*(lg[1,jj]*val-bb[hh,col]*D2K+cc[hh,col]*DK));
+    }
+  }
+  F[2,col]=nf(ev[1,col]-ev[2,col]);
+  F[3,col]=nf(ev[3,col]-ev[4,col]);
+  F[4,col]=nf(ev[1,col]-ev[3,col]);
+  for(jj=1;jj<=4;jj++){F[5,col]=nf(F[5,col]+dv[jj,col]);}
+}
+print("Five intrinsic rows ready");
+poly determinant=nf(det(F));
+
+print("R5 coefficient");print(cf(determinant,R,5));
+print("R4 coefficient");print(cf(determinant,R,4));
+poly leading=nf(cf(determinant,R,3));
+for(jj=0;jj<PREC;jj++){print("R3 rho coefficient "+string(jj));print(cf(leading,rho,jj));}
+poly expected=U*(u^2-1)*(u^3*U-1)*(U^4-u^2)/(u^2*(u^2+1)*(u-U)*(U^2-1)^3);
+if(audit_failed!=0){print("INVALID: an internal arithmetic check failed");exit;}
+if(cf(determinant,R,5)!=0 || cf(determinant,R,4)!=0){print("INVALID: unexpected high R power");exit;}
+for(jj=0;jj<6;jj++){if(cf(leading,rho,jj)!=0){print("INVALID: earlier R3 coefficient");exit;}}
+if(cf(leading,rho,6)!=expected){print("INVALID: factored coefficient mismatch");exit;}
+if(cf(leading,rho,7)!=0){print("INVALID: odd coefficient mismatch");exit;}
+print("PASS: all unit/residue checks; R3 starts at rho^6 with the stated factored coefficient.");
+print("Factored coefficient: U*(u^2-1)*(u^3*U-1)*(U^4-u^2)/(u^2*(u^2+1)*(u-U)*(U^2-1)^3)");
+exit;
