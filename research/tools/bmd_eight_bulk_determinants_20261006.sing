@@ -1,0 +1,22 @@
+// Exact polynomial determinants with actual global-power certificates where decided.
+ring R=3,(u,c,x,y),dp;
+proc assess_template(matrix B,int d,int smallestN){
+ print("CASE dmod9="+string(d%9)+" representative="+string(d)+" size="+string(nrows(B)));
+ poly om=det(B);
+ print("DETERMINANT=");print(om);
+ if(om==0){print("ZERO_TEMPLATE");return();}
+ poly rest=om;int cp=0;
+ while(subst(rest,c,0)==0){rest=rest/c;cp++;}
+ if(om-c^cp*rest!=0){ERROR("exact global factor failed");return();}
+ poly low=subst(rest,c,0);int up=0;
+ while(subst(low,u,0)==0){low=low/u;up++;}
+ map origin_value=R,0,0,2,0;
+ poly co=origin_value(low);
+ print("C_POWER="+string(cp)+" U_POWER="+string(up)+" ORIGIN_COEFFICIENT="+string(co));
+ print("NORMALIZED_CONSTANT_C=");print(low);
+ if(co!=0 && up<smallestN){print("PASS_ACTUAL_POWERS");}
+ else{print("NEEDS_ACTUAL_POWER_ANALYSIS");}
+}
+execute(read("research/results/bmd-eight-bulk-templates-20261006/global-matrices.sing"));
+print("DONE all eight exact determinant templates");
+quit;

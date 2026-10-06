@@ -1,0 +1,23 @@
+// Cofactor kernel of the remaining identically singular d2mod9 conic template.
+ring R=3,(u,c,x,y),dp;
+proc assess_template(matrix B,int d,int smallestN){
+ if(d!=11){return();}
+ int n=nrows(B);matrix Q[n][1];matrix Minor[n-1][n-1];int omit,j,ri,cj;int found=0;
+ if(det(B)!=0){ERROR("expected identically singular template");return();}
+ for(omit=n;omit>=1;omit--){
+  for(j=1;j<=n;j++){
+   for(ri=1;ri<n;ri++){for(cj=1;cj<n;cj++){Minor[ri,cj]=B[ri+(ri>=omit),cj+(cj>=j)];}}
+   Q[j,1]=(-1)^j*det(Minor);
+  }
+  if(size(ideal(Q))!=0){found=1;break;}
+ }
+ if(found==0 || size(ideal(B*Q))!=0){ERROR("cofactor kernel failed");return();}
+ poly common=0;for(j=1;j<=n;j++){common=gcd(common,Q[j,1]);}
+ for(j=1;j<=n;j++){Q[j,1]=Q[j,1]/common;}
+ if(size(ideal(B*Q))!=0){ERROR("primitive kernel failed");return();}
+ print("PASS exact primitive kernel of d2mod9 template; omitted row="+string(omit));
+ print("REMOVED_FACTOR=");print(factorize(common));
+ for(j=1;j<=n;j++){print("q"+string(j-1)+"="+string(Q[j,1]));}
+}
+execute(read("research/results/bmd-eight-bulk-templates-20261006/global-matrices.sing"));
+quit;

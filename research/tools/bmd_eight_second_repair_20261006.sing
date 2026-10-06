@@ -1,0 +1,47 @@
+// Remaining d2mod9 source: N8mod9,N0mod4,M1mod3,M2mod4.
+ring R=3,(u,c,x,y,z),dp;
+proc vv(int j){int k=((j%4)+4)%4;if(k==0){return(x);}if(k==1){return(y);}if(k==2){return(-x);}return(-y);}
+proc hi(int rr,int jj){int k=rr-12+jj;if(k<0){return(0);}return(u^k);}
+proc ln(int rr,int jj){if(jj>rr){return(0);}return(u^jj);}
+matrix B[13][13];int j;
+for(j=0;j<=12;j++){
+ B[1,j+1]=j+1+(1-j)*u;
+ B[2,j+1]=(-1)^j*(j+1+(j-1)*u);
+ B[3,j+1]=vv(j);
+ B[4,j+1]=((j-1)*(u^2+1)+2)*vv(j-1)-2*u*vv(j);
+ B[5,j+1]=hi(0,j);if(j==0){B[5,j+1]=B[5,j+1]+c;}
+ B[6,j+1]=hi(4,j);
+ B[7,j+1]=ln(4,j);
+ B[8,j+1]=u^6*(hi(6,j)-2*hi(2,j))+c*(ln(6,j)-2*u^4*ln(2,j));
+ B[9,j+1]=u^2*(hi(2,j)-2*hi(0,j))-c*(ln(2,j)-2*u^2*ln(0,j));
+ B[10,j+1]=hi(3,j)-hi(1,j);
+ B[11,j+1]=hi(5,j)-2*hi(1,j);
+ B[12,j+1]=ln(3,j)-u^2*ln(1,j);
+ B[13,j+1]=ln(5,j)-2*u^4*ln(1,j);
+}
+poly Q=(z-u)*(z^2+1)^2*(z^6-z^4+1+u*c*z*(z^6-z^2+1));
+matrix q[13][1];for(j=0;j<=12;j++){q[j+1,1]=subst(Q/z^j,z,0);}
+// Polynomial division followed by z=0 extracts precisely the coefficient.
+if(size(ideal(B*q))!=0){ERROR("exact remaining kernel failed");}
+if(q[8,1]!=-1){ERROR("constant kernel pivot changed");}
+print("PASS exact d2mod9 boundary kernel and constant pivot");
+print("KERNEL_POLYNOMIAL="+string(Q));
+matrix Rep=B;for(j=1;j<=13;j++){Rep[j,8]=0;}Rep[11,8]=c;Rep[13,8]=u^5;
+poly om=det(Rep);print("REPAIR_DETERMINANT=");print(om);
+if(om==0){print("ZERO_FIRST_VARIATION_REPAIR");quit;}
+int cp=0;poly rest=om;
+while(subst(rest,c,0)==0){rest=rest/c;cp++;}
+poly low=subst(rest,c,0);int up=0;
+while(subst(low,u,0)==0){low=low/u;up++;}
+map origin_value=R,0,0,2,0,0;
+poly co=origin_value(low);
+print("C_POWER="+string(cp)+" U_POWER="+string(up)+" ORIGIN_COEFFICIENT="+string(co));
+print("NORMALIZED_CONSTANT_C=");print(low);
+poly expected=u^17*((u^7+u)*y^2-(u^5+u^3)*x^2+(1-u^4)*x*y);
+if(subst(om,c,0)!=expected){ERROR("closed constant-c identity failed");}
+map first_terms=R,u,0,2,2*u,0;
+poly first=first_terms(low);
+if(subst(first/u,u,0)!=1){ERROR("actual leading coefficient failed");}
+print("PASS_ACTUAL_POWERS: repair has order18/coefficient1; positive c terms start at N>=1088");
+print("FACTORIZATION=");print(factorize(om));
+quit;
