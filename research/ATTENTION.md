@@ -148,6 +148,22 @@ For every characteristic-zero field and N>=7, alpha_N=ell0(3,binom(N,2)+3) is at
 
 ---
 
+### Cube eventual normality
+
+**Claim:** [cor:cube-eventual-normality](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-eventual-normality>)
+
+For every fixed n>=1 and odd prime p, the set E_(n,p)={d>=2: Delta_(n,d) is identically zero mod p} is finite. Thus original generic orders are 0..N_(2,n)(d)-1 for all d>=d0(n,p), for some unspecified cutoff. Uses one existing totally degenerate root curve, its trace-zero Jacobian, complete-source identification and moving-mark transport. The finite exception set is existentially p-automatic, but neither an automaton nor an effective cutoff is constructed. No all-degree claim, prime-uniform bound or pre-stable threshold follows.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Material all-dimensional progress on small-prime stable orders: at each fixed dimension and odd prime the unbounded degree question is reduced to an unspecified finite exceptional set. The full normality statement remains open and the cutoff is not effective.
+
+**Decision (agent):** All-dimensional advance: for each fixed odd prime and dimension, original generic normality has only finitely many exceptional degrees. Reviewed proof uses Mordell-Lang and the existing totally degenerate root family. Cutoff is ineffective; all-degree normality and pre-stable thresholds remain open; publication novelty is not claimed.
+
+**Next:** Eliminate or effectively bound the possible exceptional degrees while preserving the original source and marked jet prefix.
+
+---
+
 ### Generic PC log inventory transfer refuted
 
 **Claim:** [cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
