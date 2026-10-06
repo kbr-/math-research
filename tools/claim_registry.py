@@ -223,7 +223,8 @@ def validate(data):
     require(version in (1, 2), 'Unsupported claim schema version')
     shape(data, read_json(SCHEMA if version == 2 else SCHEMA.with_name('schema-v1.json')))
     ids = [c['id'] for c in data['claims']]
-    require(len(ids) == len(set(ids)), 'Duplicate claim IDs')
+    id_set = set(ids)
+    require(len(ids) == len(id_set), 'Duplicate claim IDs')
     topics = [t['id'] for t in data.get('topic_definitions', [])]
     require(len(topics) == len(set(topics)), 'Duplicate topic IDs')
     for c in data['claims']:
@@ -254,7 +255,7 @@ def validate(data):
         for endpoint in ('source', 'target'):
             e = edge[endpoint]
             if e['namespace'] == 'current':
-                require(e['id'] in ids, f"{edge['id']}: missing {endpoint} claim {e['id']}")
+                require(e['id'] in id_set, f"{edge['id']}: missing {endpoint} claim {e['id']}")
             else:
                 require(bool(e['locator']), f"{edge['id']}: non-current endpoint needs a locator")
         if edge['review_status'] == 'reviewed':

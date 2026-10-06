@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
@@ -39,6 +40,47 @@ def endpoint(label):
 
 
 class ClaimRegistryTests(unittest.TestCase):
+    def test_endpoint_validation_does_not_scan_claims_per_edge(self):
+        class CountedID(str):
+            comparisons = 0
+            __hash__ = str.__hash__
+
+            def __eq__(self, other):
+                type(self).comparisons += 1
+                return super().__eq__(other)
+
+        data = cr.import_markdown(source())
+        template = data['claims'][0]
+        count = 120
+        data['claims'] = [dict(copy.deepcopy(template), id=CountedID(f'lem:item-{i}'))
+                          for i in range(count)]
+        data['relationships'] = [
+            {'id': f'edge-{i}', 'type': 'depends_on',
+             'source': endpoint(CountedID(f'lem:item-{count - 1}')),
+             'target': endpoint(CountedID(f'lem:item-{i}')),
+             'evidence': [], 'review_status': 'unreviewed'}
+            for i in range(count)]
+        real_shape = cr.shape
+
+        def validate_counted():
+            # The schema intentionally requires exact JSON types. Validate the plain JSON
+            # equivalent, then count comparisons in the semantic endpoint checks.
+            with mock.patch.object(cr, 'shape', side_effect=lambda value, spec:
+                                   real_shape(json.loads(json.dumps(value)), spec)):
+                cr.validate(data)
+
+        CountedID.comparisons = 0
+        validate_counted()
+        self.assertLess(CountedID.comparisons, 10 * count,
+                        'Endpoint validation must not scan the full claim list for every edge')
+        data['relationships'][-1]['target']['id'] = 'lem:missing'
+        with self.assertRaisesRegex(Exception, 'missing target claim'):
+            validate_counted()
+        data['relationships'].clear()
+        data['claims'][-1]['id'] = data['claims'][0]['id']
+        with self.assertRaisesRegex(Exception, 'Duplicate claim IDs'):
+            validate_counted()
+
     def test_complete_formalization_scope_must_cover_boundary_words(self):
         data=cr.upgrade(cr.import_markdown(source()))
         claim=data['claims'][0]
