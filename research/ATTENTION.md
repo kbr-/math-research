@@ -384,6 +384,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 ---
 
+### Cube boundary eight all fields
+
+**Claim:** [thm:cube-boundary-eight-all-fields](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-boundary-through-eight>)
+
+For every field F of characteristic different from2 and every1<=n<=8, the original degree-two boundary threshold ell0(3,binom(n+1,2)+2)=3binom(n+1,4). The new all-odd ranges in n4..8 follow from the uniform boundary prime theorem plus the exact99-case finite complement and earlier certificates. Values in n4..8 are15,45,105,210,378 at orders12,17,23,30,38. Other orders, higher savings and the all-dimensional small-prime boundary remain open.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Closes the entire characteristic quantifier for one original pre-stable boundary in dimensions4 through8. The finite complement is complete, bounded by the preceding uniform theorem, and does not establish the unrestricted dimensional goal.
+
+**Decision (agent):** The original degree-two boundary is now proved through dimension8 over every characteristic different from2, completing the exact finite complement of the uniform prime theorem. Other orders and the all-dimensional small-prime boundary remain open.
+
+**Next:** Perform the due goal-level review, then develop the smaller-prime primitive-cofactor mechanism in arbitrary dimension; do not extend the completed finite complement by another size survey.
+
+---
+
 ### Cube boundary prime bound
 
 **Claim:** [thm:cube-boundary-prime-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-explicit-prime-bounds>)
