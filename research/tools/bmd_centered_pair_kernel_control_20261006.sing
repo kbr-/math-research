@@ -1,0 +1,75 @@
+// Generic (u,z) calculation on the known p3,d6 conic kernel; z specializes to u^81.
+// Full polynomial projection, centered operator, actual marked pole removal, all five cuts.
+LIB "linalg.lib";
+ring R=(3,u,z),(x,T,s),dp;
+int powerq=81;int N=80;int M=42;int C=19;
+number U=u^2+1;number V=u^2-1;number ac=u^2/V^2;number ao=u^2/U^2;
+number ss=u^2+1/u^2;number inv16=1/16;number inv32=1/32;
+poly quad=x^4-ss*x^2+1;
+poly Pzero=(x^powerq-z)*(z*x^3+1);poly rev=0;
+int j;int e;int ch;int al;int be;int pa;int sg;int kk;int mm;
+for(j=0;j<=2*M;j++){rev=rev+subst(Pzero/x^j,x,0)*x^(2*M-j);}
+poly neg=subst(Pzero,x,-x);poly negrev=subst(rev,x,-x);
+poly g=(1-ac*s)*(1+(ao-ac)*s)^2;
+poly Bnum=0;poly rebuilt=0;poly proj;poly RP;poly raw;poly P;poly ee;poly tilde;poly rem;poly qpoly;poly op;poly ve;list dv;
+for(ch=1;ch<=4;ch++){
+ if(ch==1){al=0;be=3;}if(ch==2){al=1;be=3;}if(ch==3){al=2;be=0;}if(ch==4){al=3;be=0;}
+ pa=(-1)^(al+be);sg=(-1)^be;RP=(x^2+1)^al*(x^2-1)^be;
+ proj=(Pzero+pa*neg+sg*rev+pa*sg*negrev)/4;
+ kk=M-al-be;mm=(kk+1) div 2;raw=x^(2*mm-kk)*proj;
+ dv=division(raw,RP);raw=dv[1][1,1];if(raw*RP!=x^(2*mm-kk)*proj){ERROR("character divisibility");}
+ P=0;
+ for(e=mm;e>=0;e--){ee=subst(raw/x^(2*mm+2*e),x,0);P=P+ee*T^e;raw=raw-ee*x^(2*mm-2*e)*quad^e;}
+ if(raw!=0 || subst(P/T^20,T,0)!=0){ERROR("full polynomial source projection");}
+ tilde=0;
+ for(e=0;e<=C;e++){ee=subst(P/T^e,T,0);tilde=tilde+ee*s^e*(1-ac*s)^(C-e);rebuilt=rebuilt+RP*ee*x^(M-al-be-2*e)*quad^e;}
+ op=0;
+ if(be==3){
+  dv=division(tilde,g);qpoly=dv[1][1,1];rem=tilde-g*qpoly;
+  if(deg(rem)>2){ERROR("complete remainder degree");}
+  for(e=0;e<=C-3;e++){ee=subst(qpoly/s^e,s,0);op=op+inv16*(e div 2)*ee*s^(e+2);}
+  op=g*op;
+ }else{
+  for(e=0;e<=C;e++){ee=subst(tilde/s^e,s,0);op=op+inv32*(2*e-C)*ee*s^(e+2);}
+ }
+ for(e=0;e<=C+2;e++){ve=subst(op/s^e,s,0);if(ve!=0){Bnum=Bnum+RP*ve*ac^(C-e)*quad^e*x^(M-al-be-2*C)*(x^2-1)^(4+2*(C-e));}}
+}
+if(rebuilt!=Pzero){ERROR("full original kernel reconstruction");}
+poly poles=(x^2-1)^4;ideal I=std(ideal(poles));
+poly HQ=reduce(Bnum*(x-u)*(x^powerq+z)/(1-z^2),I);
+poly Wnum=Bnum*(x-u)-(x^powerq-z)*HQ;
+dv=division(Wnum,poles);poly W=dv[1][1,1];if(W*poles!=Wnum){ERROR("actual finite-pole cancellation");}
+if(deg(W)>2*M+1){ERROR("return to original ambient bound after actual z=u^q");}
+// At actual z=u^q, W(u)=0, so the apparent x-u denominator is removable.
+poly atmark=subst(W,x,u);number marktest=leadcoef(atmark);
+// This polynomial has a factor u^81-z by construction, checked without sampling.
+string nmark=string(numerator(marktest));string dmark=string(denominator(marktest));
+ring Mark=3,(u,z),dp;
+execute("poly nm="+nmark+";");execute("poly dm="+dmark+";");
+if(reduce(nm,std(ideal(z-u^81)))!=0 || subst(dm,z,u^81)==0){ERROR("actual mark removability");}
+setring R;
+matrix B[5][5];number XP=2*(u*z+1)/U;number YP=-2*(z-u)/U;
+proc vv(int j){int k=((j%4)+4)%4;if(k==0){return(XP);}if(k==1){return(YP);}if(k==2){return(-XP);}return(-YP);}
+for(j=0;j<=4;j++){
+ B[1,j+1]=j-1-j*u;B[2,j+1]=(-1)^j*(j-1+j*u);B[3,j+1]=vv(j);
+ B[4,j+1]=(j*U-1)*vv(j-1)+u*vv(j);if(j==0){B[5,j+1]=z/u;}if(j==4){B[5,j+1]=1;}
+}
+matrix qv[5][1];poly Q=(x-u)*(z*x^3+1);for(j=0;j<=4;j++){qv[j+1,1]=subst(Q/x^j,x,0);}
+if(size(ideal(B*qv))!=0){ERROR("known full marked kernel");}
+matrix left=transpose(syz(transpose(B)));if(nrows(left)!=1){ERROR("one-dimensional cokernel");}
+matrix cuts[5][1];poly WD=diff(W,x);int rr;
+for(j=0;j<=1;j++){rr=1-2*j;cuts[j+1,1]=((rr-u)*subst(WD,x,rr)-subst(W,x,rr))/(rr-z);}
+poly rem0=reduce(W,std(ideal(x^2+1)));poly rem1=reduce(WD,std(ideal(x^2+1)));
+poly A0=subst(rem0,x,0);poly A1=subst(rem0/x,x,0);poly D0=subst(rem1,x,0);poly D1=subst(rem1/x,x,0);
+cuts[3,1]=2*(A1-u*A0)/U;
+cuts[4,1]=2*(D1-u*D0)-2*((u^2-1)*A0-2*u*A1)/U;
+cuts[5,1]=subst(W/x^(2*M+1),x,0)-subst(W,x,0)/u;
+matrix scalar=left*cuts;
+print("CENTERED_FIRST_INDUCED_SCALAR="+string(scalar[1,1]));
+for(j=1;j<=5;j++){print("CUT"+string(j)+"="+string(cuts[j,1]));}
+string out="research/results/bmd-centered-pair-lift-20261006/generic-control.sing";
+write(out,"poly ControlHQ="+string(HQ)+";");write(out,"matrix ControlCuts[5][1];");write(out,"matrix LeftKernel[1][5];");
+for(j=1;j<=5;j++){write(out,"ControlCuts["+string(j)+",1]="+string(cuts[j,1])+";");write(out,"LeftKernel[1,"+string(j)+"]="+string(left[1,j])+";");}
+write(out,"poly ControlScalar="+string(scalar[1,1])+";");
+print("PASS complete source projection, centered operator, pole cancellation, mark removability and full five-cut kernel.");
+quit;

@@ -1,0 +1,42 @@
+// Uniform local computation for q=3^(4r),r>=1; z=u^q remains independent until certification.
+// Only local orders<=5 are used: q>=81 and M=(q+3)/2=6mod18.
+ring R=(3,u,z),(x,t),dp;
+execute(read("research/results/bmd-centered-pair-lift-20261006/generic-control.sing"));
+number kap=u/(u^2-1);number ac=kap^2;number ao=u^2/(u^2+1)^2;number U=u^2+1;
+proc clip(poly P,int n){poly out=0;int j;for(j=0;j<=n;j++){out=out+subst(P/t^j,t,0)*t^j;}return(out);}
+proc inverse(poly P,int n){number a0=leadcoef(subst(P,t,0));poly rest=P/a0-1;poly out=0;int j;for(j=0;j<=n;j++){out=clip(out+(-rest)^j/a0,n);}if(clip(out*P,n)!=1){ERROR("local inverse");}return(out);}
+poly D=(x^2-1)^4;ideal I=std(ideal(D));poly J=reduce(x^9,I);
+if(reduce(J^2-1,I)!=0){ERROR("two-node sign interpolator");}
+poly Ar=J*(1-z^2)/ac^2;poly Fr=-(J-z)^2/kap^3;poly Er=-Fr/ac^2;
+poly localB=reduce((Ar*(kap^2*x^8*(x^2-1)^2-x^10)+Er*kap^3*x^7*(x^2-1)^3)/kap^4,I);
+poly HQ=reduce(localB*(x-u)*(J+z)/(1-z^2),I);
+if(HQ!=ControlHQ){ERROR("full degree-six and uniform pole-removal polynomials differ");}
+matrix cuts[5][1];int j;int r;number fr;number br;number sr;poly xr;poly localh;poly hc;
+for(j=0;j<=1;j++){
+ r=1-2*j;fr=-(r-z)^2/kap^3;br=2*r*z/kap^3;sr=(ao*br-(ac+ao)*fr)/(ac^2*(ao-ac));
+ xr=r+t/(2*kap)+r*t^2/(8*kap^2)-r*t^4/(128*kap^4);
+ localh=clip(subst(HQ,x,xr)*inverse((xr-u)*xr,5),5);
+ hc=kap^4*(r-z)*r*subst(localh/t^5,t,0);
+ cuts[j+1,1]=2*kap*(sr-hc)*(r-u)^2/(r-z);
+}
+poly W0=reduce((x-z)*HQ,std(ideal(x^2+1)));
+poly W1=reduce((x-z)*diff(HQ,x)+x*(x-z)*HQ,std(ideal(x^2+1)));
+poly A0=subst(W0,x,0);poly A1=subst(W0/x,x,0);poly B0=subst(W1,x,0);poly B1=subst(W1/x,x,0);
+cuts[3,1]=-2*(A1-u*A0)/U;
+cuts[4,1]=-2*(B1-u*B0)+2*((u^2-1)*A0-2*u*A1)/U;
+cuts[5,1]=-z*subst(HQ,x,0)/u;
+if(size(ideal(cuts-ControlCuts))!=0){print("DIFFERENCE=");print(cuts-ControlCuts);ERROR("uniform/full five-cut comparison");}
+matrix value=LeftKernel*cuts;poly om=value[1,1];
+if(om!=ControlScalar){ERROR("uniform/full scalar comparison");}
+string ns=string(numerator(leadcoef(om)));string ds=string(denominator(leadcoef(om)));
+string out="research/results/bmd-centered-pair-lift-20261006/uniform-data.sing";
+write(out,"poly PolePolynomial="+string(HQ)+";");write(out,"poly RepairScalar="+string(om)+";");
+ring P=3,(u,z),dp;
+execute("poly Num="+ns+";");execute("poly Den="+ds+";");
+if(Num!=-(u^2-1)^8*((u^2+1)*(z^4+1)+u*z*(z^2+1)) || Den!=u^8*(z^2-1)){ERROR("compact scalar identity");}
+print("NUMERATOR_Z0=");print(factorize(subst(Num,z,0)));
+print("DENOMINATOR_Z0=");print(factorize(subst(Den,z,0)));
+if(subst(Num,u,0)!=-z^4-1 || subst(Den,z,0)!=-u^8){ERROR("actual-power leading slices");}
+print("PASS uniform local residues, full five-cut comparison and exact scalar agreement.");
+print("PASS numerator has constant term-1 after z=u^q; denominator has leading term-u8, q>=81.");
+quit;
