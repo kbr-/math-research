@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statement 3's first-step base bound. Develop the <a href="#entry-2026-10-09-cube-rigid-twelve-route-review">Airault–McKean–Moser/Krichever lead</a> against the <a href="#entry-2026-10-02-cube-far-klein-tau">actual trigonometric tau translation</a> and <a href="#entry-2026-10-03-cube-last-far-calogero">last-step flow record</a>. Read the applicable theorem and later links first. Determine whether its hypotheses or collision constraints add a usable restriction on off-branch multiple roots at the rigid time, beyond the earlier reformulation.</p>
+<p>Route item: cube-odd-characteristic, statement 3's first-step base bound. Develop the <a href="#entry-2026-10-09-cube-rigid-twelve-route-review">Schur–Cohn bridge</a> for the last-step far polynomial. Read the existing circle-count and stability records, including later corrections. Determine whether exact radial counts can control within-annulus multiplicities, and what additional separation certificate the actual far polynomial would need; another total root count alone cannot exclude triples.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-lead="entry-2026-10-09-cube-rigid-twelve-route-review:1"><a href="#entry-2026-10-09-cube-rigid-twelve-route-review">entry-2026-10-09-cube-rigid-twelve-route-review:1</a> (lead): Airault–McKean–Moser (Comm. Pure Appl. Math. 30, 1977) and Krichever: the poles of rational solutions of KdV and KP move as Calogero–Moser particles, which collide only at special times. Target: (B) at the last step, thr…</li>
 <li data-bridge="entry-2026-10-09-cube-rigid-twelve-route-review:2"><a href="#entry-2026-10-09-cube-rigid-twelve-route-review">entry-2026-10-09-cube-rigid-twelve-route-review:2</a> (bridge): The Schur–Cohn test (signal processing). A recursion on the coefficients counts the roots inside a disc exactly. Translation: count the roots of the transformed far polynomial between consecutive circle radii, certifying…</li>
 <li data-lead="entry-2026-10-09-cube-conic-holes-route-review:1"><a href="#entry-2026-10-09-cube-conic-holes-route-review">entry-2026-10-09-cube-conic-holes-route-review:1</a> (lead): Apolarity and the duality of ramification for linear series on \(\mathbb P^1\) (Eisenbud–Harris, limit linear series; the classical fact that a subspace \(V\subseteq H^0(\mathcal O(D))\) and its annihilator have compleme…<ul>
 <li data-build="entry-2026-10-09-cube-conic-holes-route-review:s1"><a href="#entry-2026-10-09-cube-conic-holes-route-review">entry-2026-10-09-cube-conic-holes-route-review:s1</a> (build): Compute the seven-dimensional annihilator of \(Z_d\) in \(H^0(\mathcal O(E))^*\) explicitly (polar parts at infinity, residues at the zeros of \(w_1\)), and its \(7\times7\) determinant at \(T=0\); check that it vanishes…</li>
@@ -94403,6 +94402,59 @@ The prediction is that \(\gcd(D,\kappa_1,\ldots,\kappa_5)\) is a unit. Unlike th
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.50 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-trigonometric-spectrum" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-rigid-twelve-route-review:1" data-claims="lem:trigonometric-prescribed-spectrum cor:klein-stationary-collisions">
+<h3>7 October 2026 — The trigonometric rank-one condition permits arbitrary stationary collisions</h3>
+<p class="entry-meta">Working proof; stationary trigonometric collision controls. Trigonometric collision scope. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 3, route item cube-odd-characteristic, input (B), needs the last far polynomial to have no triple roots at its fixed original parameter. The queued Airault–McKean–Moser/Krichever lead proposes excluding collisions through integrable particle motion. The <a href="#entry-2026-10-03-cube-last-far-calogero">earlier cycle</a> already tested the bare rational translation, Klein symmetry, and generic flow time. This cycle tests the exact trigonometric matrix condition, rather than assuming that generic-time simplicity includes the rigid member.</p>
+<p><strong>General statement.</strong> <code>lem:trigonometric-prescribed-spectrum</code> realizes every invertible cyclic complex matrix in the trigonometric rank-one class. <code>cor:klein-stationary-collisions</code> retains stationary Klein symmetry and arbitrary prescribed far multiplicities. These exclude this generic collision argument, not the actual far-polynomial conjecture.</p>
+<h4>The source's hypotheses</h4>
+<p>The applicable source is <a href="https://sigma-journal.com/2007/015/sigma07-015.pdf">Haine, KP Trigonometric Solitons and an Adelic Flag Manifold, SIGMA 3 (2007), 015</a>, read in full. Equation (1.9) defines pairs \(X\in GL_N(\mathbb C),Z\in M_N(\mathbb C)\) by \(\operatorname{rank}(XZX^{-1}-Z+I)=1\). Definition 1 and Remark 1 give their tau function
+\[
+\tau(\mathbf t)=\det\!\left(I-X\exp\sum_{r\ge1}t_r((Z-I)^r-Z^r)\right).
+\]
+Theorem 1 assumes \(X\) diagonalizable; Lemma 1 then forces distinct eigenvalues. It cannot supply that initial hypothesis. The complex theory permits collisions. Its special real repulsive setting is not established for our complex far zeros. The earlier Laurent-Wronskian lift alone also does not establish membership in this particular trigonometric Grassmannian. Even granting membership, the following construction defeats stationary simplicity from the rank-one condition alone.</p>
+<h4>Prescribed spectrum</h4>
+<p><strong>Lemma (trigonometric prescribed spectrum).</strong> For every \(N\ge1\) and every invertible cyclic \(X\in M_N(\mathbb C)\), there is \(Z\) with \(\operatorname{rank}(XZX^{-1}-Z+I)=1\). Consequently every monic polynomial \(p\) of degree \(N\) with \(p(0)\ne0\) occurs as \(\det(TI-X)\) in this class, and its stationary tau is \(T^{-N}p(T)\), where \(T=e^{t_1}\) and \(t_r=0\) for \(r>1\).</p>
+<p><strong>Proof.</strong> Choose a cyclic column \(u\), so \(u,Xu,\ldots,X^{N-1}u\) is a basis. There is a unique row \(v\) such that \(vX^ju=\operatorname{tr}(X^{j+1})\) for \(0\le j&lt;N\). The centralizer of \(X\) is \(\mathbb C[X]\): a commuting map is determined by its value on \(u\), and that value equals \(P(X)u\) for a polynomial of degree less than \(N\). Hence, for every centralizer element \(P(X)\),
+\[
+\operatorname{tr}(P(X)(uv-X))=vP(X)u-\operatorname{tr}(P(X)X)=0.
+\]
+The trace pairing on \(M_N(\mathbb C)\) is nondegenerate. The orthogonal complement of the centralizer is the image of \(Z\mapsto[X,Z]\): the inclusion follows by cyclicity of trace, and equality follows by rank-nullity. Thus \([X,Z]=uv-X\) for some \(Z\). Since \(X^{-1}\in\mathbb C[X]\), the defining identity also gives \(vX^{-1}u=N\ne0\); in particular \(u,v\) are nonzero. Therefore
+\[
+XZX^{-1}-Z+I=([X,Z]+X)X^{-1}=uvX^{-1}
+\]
+has rank exactly one. For an arbitrary \(p\) as stated, its companion matrix is invertible and cyclic. Finally \((Z-I)-Z=-I\), so the displayed tau formula at the stationary slice is \(\det(I-T^{-1}X)=T^{-N}p(T)\). This includes arbitrary repeated nonzero roots. \(\square\)</p>
+<p>This is an elementary trace-pairing construction applied to the source's matrix class; no independent novelty is claimed. It sharpens the older generic-spectrum objection by using the exact trigonometric rank-one equation, rather than passing through an unspecified polynomial Wronskian.</p>
+<h4>Symmetric collisions</h4>
+<p><strong>Corollary (Klein stationary collisions).</strong> Let \(A,B\ge0\) be even integers, let \(a_1,\ldots,a_s\) be distinct complex numbers outside \(\{0,-1\}\), and let \(m_1,\ldots,m_s\ge1\). Suppose \(N=2A+2B+4\sum_i m_i>0\). There is a trigonometric rank-one tau whose stationary zeros have multiplicities \(A\) at each of \(\pm1\), \(B\) at each of \(\pm i\), and \(m_i\) at each of the four preimages of \(a_i\) under \(x=(T-T^{-1})^2/4\). After an exponential gauge, its stationary Laurent polynomial is invariant under \(T\mapsto-T\) and \(T\mapsto T^{-1}\).</p>
+<p><strong>Proof.</strong> Set \(q_a(T)=T^4-(2+4a)T^2+1=4T^2(x(T)-a)\) and
+\[
+p(T)=(T^2-1)^A(T^2+1)^B\prod_iq_{a_i}(T)^{m_i}.
+\]
+It is monic, even, of degree \(N\), and has nonzero constant term. Because \(a_i\notin\{0,-1\}\), each \(q_{a_i}\) has four distinct roots away from \(0,\pm1,\pm i\): its polynomial in \(T^2\) has discriminant \(16a_i(a_i+1)\ne0\), and nonzero constant term. Distinct \(a_i\) give disjoint fibres. Thus all multiplicities are exactly those stated. The lemma realizes \(p\). Since \(A\) is even, \(T^Np(1/T)=p(T)\); and since \(A+B\) is even, \(N/2\) is even. Therefore \(T^{-N/2}p(T)\) is invariant under both Klein generators. It differs from the stationary tau by \(T^{N/2}=\exp(Nt_1/2)\), an exponential gauge. \(\square\)</p>
+<p>For a direct control against the archived first last-step case, take \(A=B=24\), \(a_1=1,m_1=3\), and the thirteen other \(a_i=2,\ldots,14\), each of multiplicity one. Then \(N=160\), with 96 branch zeros and 64 off-branch zeros counted with multiplicity, matching those stationary counts in the <a href="#entry-2026-10-03-cube-last-far-calogero">archived \(e=1\) flow</a>. Four off-branch zeros now have multiplicity three. The descended far factor is \((x-1)^3\prod_{j=2}^{14}(x-j)\), of degree sixteen. This exact symbolic construction needs no new matrix run.</p>
+<p><strong>Scope.</strong> This control matches the stated stationary symmetry and zero counts. It is not asserted to equal the actual fifteen-dimensional Klein-lifted far space, to have its frequency band or full local ramification flags, or to preserve Klein symmetry under every KP flow. Those additional restrictions were not proved. Consequently it refutes a conclusion from the generic rank-one class plus these stationary invariants, not (B). The missing implication is still an exclusion using the specific rigid space. Generic particle motion has not supplied it.</p>
+<p><strong>Record and source audit.</strong> Re-read the exact last-far Klein-lift proof and flow record, and the later <a href="#entry-2026-10-03-cube-far-frobenius-review">Frobenius</a> and <a href="#entry-2026-10-03-cube-far-bulk-review">bulk reviews</a>. Those do not repair the fixed-time collision gap. Claim searches used trigonometric spectrum, cyclic commutator, prescribed characteristic polynomial, companion matrices and trace pairing; the reviewed dependency graph has no prerequisite edge for the old lift, so its full proof was read instead. The new lemma's proof is self-contained; the source supplies only the interpretation as a tau function. No old finite computation was rerun.</p>
+<p><strong>Follow-up.</strong> Closed: the source's collision theorem assumes the initial regularity at issue, and the exact rank-one class admits arbitrary stationary multiplicities even with the recorded Klein symmetry and branch counts. Together with the earlier developed translations, this queued generic collision argument restates the rigid-space obligation rather than resolving it. A future structure-specific theorem would require new input.</p>
+<p><strong>Assessment.</strong> Statement 3's no-triple-root implication remains open. The general counterconstruction makes the limitation precise and removes this duplicate lead from the queue. Process: full source hypotheses and a symbolic control settled the scope without another increasing-size computation.</p>
+<p><strong>Verification gate.</strong> One isolated medium reviewer passed both proofs, exact rank one, tau specialization, symmetry and multiplicity counts, and the limited conclusion about the actual rigid space; no unused hypotheses. The earlier lift and later reviews were re-read as described above. The initial reviewer launch failed before inference because its brief path was mistyped; the corrected launch completed. <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-calogero-scope-20261007/review.txt">Review evidence</a>.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-calogero-scope-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 30.40 s</strong></td></tr>
+<tr><td>Context restoration</td><td class="elapsed">24.48 s</td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">17.64 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11 min 25.32 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.96 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">23.26 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">18.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.15 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
