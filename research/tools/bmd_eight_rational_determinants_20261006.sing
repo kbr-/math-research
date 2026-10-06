@@ -1,0 +1,57 @@
+// Exact extraction with K=N-n0 divisible by p and positive; keep its global powers c,x,y.
+ring R=0,(u,c,x,y),dp;
+proc choose(int n,int k){poly v=1;int h;for(h=1;h<=k;h++){v=v*(n-h+1)/h;}return(v);}
+proc assess_template(matrix B,int si,int n0){
+ print("STATE="+string(si)+" N0="+string(n0)+" SIZE="+string(nrows(B)));
+ poly om=det(B);print("ORIGINAL_DETERMINANT=");print(om);
+ if(om==0){print("ZERO_FORMAL_TEMPLATE");return();}
+ poly aa=0;poly bb=0;int h;
+ if(n0>=0){for(h=0;h<=n0;h++){if(h%2==0){aa=aa+(-1)^(h div 2)*choose(n0,h)*u^(n0-h);}else{bb=bb-(-1)^((h-1) div 2)*choose(n0,h)*u^(n0-h);}}}
+ else{if(n0!=-2){ERROR("unhandled negative shift");return();}aa=u^2-1;bb=2*u;}
+ map root_power=R,u,c,aa*x+bb*y,aa*y-bb*x;
+ poly shifted=root_power(om);poly tmp=shifted;int e=0;int maxc;
+ if(n0>=0){map cpow=R,u,c*u^n0,x,y;shifted=cpow(shifted);}
+ else{while(tmp/c^e!=0){e++;}maxc=e-1;shifted=0;for(e=0;e<=maxc;e++){shifted=shifted+subst(tmp/c^e,c,0)*c^e*u^(2*maxc-2*e);}print("CLEARED_DENOMINATOR=u^"+string(2*maxc)+"*(u2+1)^4");}
+ int cp=0;while(subst(shifted,c,0)==0){shifted=shifted/c;cp++;}
+ int up=0;while(subst(shifted,u,0)==0){shifted=shifted/u;up++;}
+ print("GLOBAL_C_FACTOR="+string(cp)+" COMMON_U_FACTOR="+string(up));
+ print("NORMALIZED_INTEGER_NUMERATOR=");print(shifted);
+ string encoded=string(shifted);string decoded;
+ ring integral=integer,(u,c,x,y),dp;
+ execute("poly integralPolynomial="+encoded+";");decoded=string(integralPolynomial);
+ setring R;execute("poly roundTrip="+decoded+";");
+ if(roundTrip!=shifted){ERROR("integer numerator roundtrip");return();}
+ print("PASS_INTEGER_NUMERATOR");
+ int phase=1;if(n0%4!=0){phase=-1;}map flat=R,u,0,2*phase,0;
+ poly p0=flat(shifted);print("FLAT_POLYNOMIAL=");print(p0);
+ if(p0==0){
+  poly hh;
+  if(si==6){hh=u^6*c*y+6*u^4*c*y+8*u^3*c*x+3*u^4*y+8*u^3*x-3*u^2*c*y-6*u^2*y-y;}
+  else{if(si!=7){ERROR("unexpected flat zero");return();}hh=u^6*y+3*u^4*c*y-8*u^3*c*x+6*u^4*y-8*u^3*x-6*u^2*c*y-3*u^2*y-c*y;}
+  if(shifted!=-8*y*(u^2+1)^2*hh){ERROR("global y factor identity");return();}
+  poly hhflat=flat(hh);poly want=16*u^3;if(si==6){want=-want;}
+  if(hhflat!=want){ERROR("remaining factor leading polynomial");return();}
+  print("GLOBAL_FACTOR_CERTIFICATE=-8*y*(u2+1)^2*H; H_flat="+string(hhflat));
+  print("PASS: actual y=i((u-i)^K-(u+i)^K) nonzero; H leading cubic survives for p>3.");return();
+ }
+ intvec residualPrimes;
+ if(si==2){residualPrimes=31;}if(si==5){residualPrimes=17,1223;}if(si==8){residualPrimes=23;}
+ if(si==2 || si==5 || si==8){
+  string encodedFlat=string(p0);int kk;int pp;
+  for(kk=1;kk<=size(residualPrimes);kk++){
+   pp=residualPrimes[kk];ring residue=pp,(u,c,x,y),dp;
+   execute("poly residual="+encodedFlat+";");
+   if(residual==0){ERROR("residual coefficient polynomial zero");return();}
+   int rv=0;while(subst(residual,u,0)==0){residual=residual/u;rv++;}
+   print("RESIDUAL_PRIME="+string(pp)+" ORDER="+string(rv)+" COEFFICIENT="+string(subst(residual,u,0)));
+   if(rv>=pp){print("UNRESOLVED_AT_THIS_PRECISION: p="+string(pp)+" state="+string(si));}
+   setring R;
+  }
+ }
+ int vlow=0;while(subst(p0,u,0)==0){p0=p0/u;vlow++;}
+ poly co=subst(p0,u,0);
+ print("FLAT_ORDER="+string(vlow)+" LEADING_INTEGER="+string(co));
+}
+execute(read("research/results/bmd-eight-large-prime-source-20261006/global-matrices.sing"));
+print("DONE eight exact rational templates");
+quit;

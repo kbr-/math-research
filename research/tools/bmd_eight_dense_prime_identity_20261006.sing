@@ -1,0 +1,22 @@
+// Rational identities for the ordinary consecutive-core source, p>=7.
+ring R=0,(z,u,c,x,y),dp;
+proc binpoly(poly t,int h){poly v=1;int k;for(k=0;k<h;k++){v=v*(t-k)/(k+1);}return(v);}
+intvec cuts=1,3,5;matrix P[3][3];int h;int j;
+// Signs in the three cut rows and columns are units; use unsigned binomials.
+for(h=1;h<=3;h++){for(j=1;j<=3;j++){P[h,j]=binpoly(2*z+2-j,cuts[h]);}}
+poly pivot=det(P);print("PIVOT_DETERMINANT=");print(pivot);print("PIVOT_FACTORIZATION=");print(factorize(pivot));
+proc vv(int k){k=((k%4)+4)%4;if(k==0){return(x);}if(k==1){return(y);}if(k==2){return(-x);}return(-y);}
+matrix B[5][5];poly M=4*z+6;poly N=8*z+8;
+for(j=0;j<=4;j++){
+ B[1,j+1]=j-M+N+(M-j)*u;
+ B[2,j+1]=(-1)^j*(j-M+N+(j-M)*u);
+ B[3,j+1]=vv(j);
+ B[4,j+1]=((j-M)*(u^2+1)+N)*vv(j-1)-N*u*vv(j);
+}
+B[5,1]=c;B[5,5]=1;
+poly om=det(B);print("MARKED_MATRIX=");print(B);print("MARKED_DETERMINANT=");print(om);
+map origin=R,z,0,0,2,0;poly val=origin(om);
+print("ORIGIN_COEFFICIENT=");print(val);
+if(val!=-32*(4*z+3)^2*(4*z+5)){ERROR("dense marked coefficient identity");}
+print("PASS dense marked constant coefficient and exact pivot factorization.");
+quit;

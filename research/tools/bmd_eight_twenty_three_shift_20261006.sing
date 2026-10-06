@@ -1,0 +1,18 @@
+// Only the unresolved p23,D5 residue. Use n0=2, K=N-2, rather than n0=48.
+ring R=23,(u,c,x,y),dp;
+proc assess_template(matrix B,int si,int ignored){
+ if(si!=8){return();}
+ poly om=det(B);print("ORIGINAL_DETERMINANT=");print(om);
+ map shift=R,u,u^2*c,(u^2-1)*x-2*u*y,(u^2-1)*y+2*u*x;
+ poly P=shift(om);print("EXACT_SHIFTED_DETERMINANT=");print(P);
+ map flat=R,u,0,-2,0;poly p0=flat(P);print("FLAT_POLYNOMIAL="+string(p0));
+ poly hh=u^10*c*y+5*u^8*c*y-8*u^6*c*y-7*u^5*c*x+5*u^6*y-7*u^5*x-5*u^4*c*y+8*u^4*y-5*u^2*y-y;
+ poly product=9*y*hh*(x^2+y^2)*(c-1)^2*u^5*(u^2+1)^6;
+ if(P!=product){ERROR("exact exceptional23 factorization");return();}
+ if(flat(hh)!=14*u^5){ERROR("exceptional23 residual coefficient");return();}
+ print("FACTORIZATION=");print(factorize(P));
+ print("PASS: P=9*y*H*(x2+y2)*(c-1)^2*u5*(u2+1)^6, H_flat=14u5.");
+ print("Actual K=N-2>0,23|K: y nonzero,x2+y2=4(u2+1)^K,c-1 nonzero; H order5<23.");
+}
+execute(read("research/results/bmd-eight-large-prime-source-20261006/global-matrices.sing"));
+quit;
