@@ -32,9 +32,10 @@ def worktree(root, name=None, base=None):
     main = (root/common).resolve().parent
     if root != main and name is None:
         upstream = git(root, 'rev-parse', '--abbrev-ref', '@{upstream}')
-        git(root, 'show-ref', '--verify', 'refs/heads/' + upstream)
+        upstream_ref = git(root, 'rev-parse', '--symbolic-full-name', '@{upstream}')
+        git(root, 'show-ref', '--verify', upstream_ref)
         if base is not None and upstream != base:
-            raise ValueError('Existing worktree has a different local upstream')
+            raise ValueError('Existing worktree has a different upstream')
         return root
     base = base or git(root, 'symbolic-ref', '--short', 'HEAD')
     name = name or 'codex-' + base.replace('/', '-')

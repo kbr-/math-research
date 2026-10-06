@@ -228,6 +228,16 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual((target/'owned').read_text(),'retained')
             self.assertEqual(sessions.worktree(target),target)
             with self.assertRaises(ValueError):sessions.worktree(target,base='other')
+            # An existing checkout may track a remote, not a local integration branch.
+            git('remote','add','private','https://example.invalid/repo.git')
+            git('update-ref','refs/remotes/private/softeng','HEAD')
+            sessions.git(target,'branch','--set-upstream-to=private/softeng')
+            self.assertEqual(sessions.worktree(target),target)
+            self.assertEqual(sessions.worktree(target,base='private/softeng'),target)
+            with self.assertRaises(ValueError):sessions.worktree(target,base='main')
+            self.assertEqual(sessions.git(target,'rev-parse','--symbolic-full-name','@{upstream}'),
+                             'refs/remotes/private/softeng')
+            self.assertEqual((target/'owned').read_text(),'retained')
             git('branch','feature/test')
             self.assertEqual(sessions.worktree(root,base='feature/test').name,'codex-feature-test')
             git('branch','codex-collision')
