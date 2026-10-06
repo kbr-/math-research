@@ -39,7 +39,18 @@ verify(labels)={
   my(S=E-C*A^-1*B,permuted=vecextract(M,"..",concat(piv,rest)));
   if(matdet(permuted)!=da*matdet(S),error("Schur determinant"));
   if(matrank(M)!=m+3+matrank(S),error("Schur rank"));
-  [D,apply(x->x-1,piv),matrank(S),da];
+  my(wide=2*m+3,extra=vector(m,j,3*cantor((j+1)\2)+if(j%2,2,3)),allpiv=concat(piv,extra),left=List());
+  if(vecmax(allpiv)>D || #Set(allpiv)!=wide,error("wide pivot range"));
+  for(j=1,D,if(!setsearch(Set(allpiv),j),listput(left,j)));
+  left=Vec(left);
+  my(Aw=vecextract(M,vector(wide,j,j),allpiv),dw=matdet(Aw),rw=0);
+  if(!dw,error("chosen control has singular wide pivot"));
+  if(wide<D,
+    my(tail=vector(D-wide,j,j+wide),Bw=vecextract(M,vector(wide,j,j),left),Cw=vecextract(M,tail,allpiv),Ew=vecextract(M,tail,left),Sw=Ew-Cw*Aw^-1*Bw);
+    rw=matrank(Sw);
+    if(matdet(vecextract(M,"..",concat(allpiv,left)))!=dw*matdet(Sw),error("wide Schur determinant")));
+  if(matrank(M)!=wide+rw,error("wide Schur rank"));
+  [D,apply(x->x-1,piv),matrank(S),da,apply(x->x-1,allpiv),rw,dw];
 }
 {
 my(g=ffgen(3^2,'a),count=0,els=vector(8,i,(i%3)+(i\3)*g));
@@ -47,7 +58,7 @@ for(i=1,8,verify([els[i]]);count++);
 for(i=1,8,for(j=1,8,if(i!=j,verify([els[i],els[j]]);count++)));
 print("Exhaustive GF(9) ordered distinct nonzero controls m=1,2: ",count," passed.");
 my(h=ffgen(3^10,'b));
-for(m=3,6,print("m=",m," labels=",vector(m,j,h^j)," result[D,pivot orders,residual rank,pivot determinant]=",verify(vector(m,j,h^j))));
+for(m=3,6,print("m=",m," labels=",vector(m,j,h^j)," result[D,first pivot orders,residual rank,pivot determinant,full single-row pivot orders,residual rank,pivot determinant]=",verify(vector(m,j,h^j))));
 print("PASS: every retained coefficient, row-change rank, pivot range, Schur determinant and rank.");
 }
 quit;
