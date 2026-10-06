@@ -290,6 +290,22 @@ For every field of characteristic 5, n>=4 and l>=0, delta_F(n,l+5,l)=n+2l+6 and 
 
 ---
 
+### Cubic multiplicity count failure
+
+**Claim:** [prop:cubic-multiplicity-count-failure](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-prime-pair-powers>)
+
+Over F(a,b,c) for every fieldF, the four cubics (x-a)^3,(x-b)^3,(x-c)^3,(x-a)(x-b)(x-c) are dependent although vectors(3,0,0),(0,3,0),(0,0,3),(1,1,1) satisfy all multiplicity intersection inequalities V(4). Rescale the three linear factors to A+B+C=0 and use A^3+B^3+C^3=3ABC. This refutes the unrestricted root-multiplicity formulation displayed in the cited2018 versions, not the proved one-distinguished-coordinate theorem or the equal-multiplicity pair subfamily.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** The elementary counterexample contradicts the explicitly stated unrestricted multiplicity conjecture in the primary2018 versions read. Its independent bibliographic significance needs the final journal version and known-correction audit; the main-goal pair problem remains open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the2021 journal formulation and locate any prior cubic counterexample or correction before claiming novelty or proposing publication. A non-blocking readable-source request is recorded.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
