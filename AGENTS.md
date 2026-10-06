@@ -421,10 +421,9 @@ rules to growing checklists or one-off setup narratives.
 - Publish only under explicit user authorization, including a still-active scoped/
   time-limited grant. Research/edit/commit requests alone do not authorize it.
   Restore the actual grant after compaction, honor expiry/later overrides and do
-  not ask again within authorized scope. Publication is on hold for the active Spin
-  (user, 5 October 2026): "Stop pushing for a while. I'll ask you to start pushing once
-  the Github Actions outage is cleared." Continue local work and commits; resume
-  pushing only on the user's explicit instruction, not automatically when CI recovers.
+  not ask again within authorized scope. Publication is authorized for the active Spin
+  (user, 6 October 2026: "Resume pushes"), lifting the earlier publication hold.
+  This grant ends when the user stops Spin or revokes permission.
   Earlier grants are preserved in Git, not standing permission.
 - Respect the user's branch; do not switch/merge into main just to publish. Pin
   integration targets to immutable commits after fetching/receiving workers, rebase
