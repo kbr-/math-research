@@ -65,7 +65,7 @@ def pre(payload, root):
     if payload.get('tool_name') == 'Bash' and runs_resume(command):
         return 0
     print('Refused: this session was compacted and has not restored context. Perform the Resume protocol '
-          'first: run python3 tools/resume.py bare and read every part it lists, then continue the task.',
+          'first: run `python3 tools/resume.py` bare and read every part it lists, then continue the task.',
           file=sys.stderr)
     return 2
 

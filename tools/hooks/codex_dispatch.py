@@ -27,7 +27,7 @@ def load_guard():
 
 
 guard = load_guard()
-CONTEXT = ('Restore context now: run python3 tools/resume.py bare, then read each listed part. '
+CONTEXT = ('Restore context now: run `python3 tools/resume.py` bare, then read each listed part. '
            'Keep default output allowances, including the outer code-mode call, and display every '
            'part in full. Other supported tools remain blocked until all parts are delivered.')
 
