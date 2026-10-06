@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statement 4. Develop the next eligible parent, the <a href="#entry-2026-10-09-cube-supersession-route-review">Nowicki rings-of-constants lead</a>. Audit its reciprocal-coordinate classification against the actual reduced maximal-cofactor gcd, including multiplicities and primes dividing the Abel scalar.</p>
-<p>Determine whether characteristic-\(p\) flow constants give a new common-factor exclusion below the <a href="#entry-2026-10-06-cube-quadratic-boundary-bound">quadratic prime cutoff</a>. Keep the distinction between one coordinate's degree and simultaneous translation degree; a factor classification alone does not exclude a factor of the actual minors.</p>
+<p>Route item: cube-odd-characteristic, statement 4. Continue the Nowicki head by deriving the actual full cofactor gcd's permutation, translation and flow restrictions at small primes. The <a href="#entry-2026-10-06-cube-reciprocal-degree-obstruction">reciprocal classification</a> permits extra Frobenius factors even below original degree \(p\); its proposed coordinate-degree exclusion fails.</p>
+<p>Test whether the source's additional symmetries exclude these factors. Retain coordinate/collision factors, multiplicities and the actual companion minors when the Abel scalar vanishes. A necessary classification without exclusion does not prove the threshold.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97,7 +97,9 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-lead="entry-2026-10-09-cube-supersession-route-review:1"><a href="#entry-2026-10-09-cube-supersession-route-review">entry-2026-10-09-cube-supersession-route-review:1</a> (lead): Rings of constants of derivations in characteristic \(p\) (Nowicki, Polynomial derivations and their rings of constants, Toruń 1994, the characteristic-\(p\) chapters). Target: statement 4, the Darboux factors of lem:cub…</li>
+<li data-lead="entry-2026-10-09-cube-supersession-route-review:1"><a href="#entry-2026-10-09-cube-supersession-route-review">entry-2026-10-09-cube-supersession-route-review:1</a> (lead): Rings of constants of derivations in characteristic \(p\) (Nowicki, Polynomial derivations and their rings of constants, Toruń 1994, the characteristic-\(p\) chapters). Target: statement 4, the Darboux factors of lem:cub…<ul>
+<li data-check="entry-2026-10-06-cube-reciprocal-degree-obstruction:s1"><a href="#entry-2026-10-06-cube-reciprocal-degree-obstruction">entry-2026-10-06-cube-reciprocal-degree-obstruction:s1</a> (check): Determine the symmetry and flow restrictions actually inherited by a common divisor of the full reduced cofactor vector at small primes, and whether they exclude the new reciprocal Frobenius factors without assuming init…</li>
+</ul></li>
 <li data-lead="entry-2026-10-09-cube-supersession-route-review:2"><a href="#entry-2026-10-09-cube-supersession-route-review">entry-2026-10-09-cube-supersession-route-review:2</a> (lead): Garcia and Voloch, "Wronskians and linear independence in fields of prime characteristic" (Manuscripta Math. 59, 1987). Functions are linearly independent iff some Hasse–Schmidt Wronskian is nonzero, and the Hasse orders…</li>
 <li data-lead="entry-2026-10-09-cube-variable-degree-route-review:1"><a href="#entry-2026-10-09-cube-variable-degree-route-review">entry-2026-10-09-cube-variable-degree-route-review:1</a> (lead): Christol's theorem (Christol, Kamae, Mendès France and Rauzy, Bull. SMF 108, 1980): a power series over \(\mathbb F_q\) is algebraic iff its coefficient sequence is \(p\)-automatic. Target: statement 2. The Hasse jets of…</li>
 <li data-bridge="entry-2026-10-09-cube-variable-degree-route-review:1"><a href="#entry-2026-10-09-cube-variable-degree-route-review">entry-2026-10-09-cube-variable-degree-route-review:1</a> (bridge): Sorting and inversions (computer science). Along a cone arc the roots are ordered by valuation. The caterpillar is the sorted order, and lem:cube-geometric-cone-limit-types allows at most two displaced roots, like a perm…</li>
@@ -92843,6 +92845,98 @@ Restoring the column permutation gives the sign \((-1)^{i+j}\) in (3). This prov
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.66 s</td></tr>
 <tr><td>Other external-tool windows</td><td class="elapsed">1 min 3.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">9.11 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-reciprocal-degree-obstruction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-supersession-route-review:1" data-claims="lem:reciprocal-darboux-classification prop:reciprocal-degree-loss">
+<h3>6 October 2026 — Reciprocal flow constants do not respect the proposed coordinate-degree cutoff</h3>
+<p class="entry-meta">Working proofs. Reciprocal degree obstruction. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 4 needs exclusion of common factors of all original reduced maximal cofactors at the remaining small primes. The Nowicki lead classifies possible Darboux factors, then proposes ruling out the extra characteristic-\(p\) ones when \(p\) exceeds one root's degree. We must check which degree the constants calculation actually bounds, and whether the classification excludes an actual common divisor.</p>
+<p><strong>General statement.</strong> <code>lem:reciprocal-darboux-classification</code> makes the existing reciprocal classification exact off the coordinate hyperplanes. <code>prop:reciprocal-degree-loss</code> gives, for every prime \(p\), a homogeneous irreducible Darboux polynomial of original total degree \(p-1\) whose reciprocal hypersurface is not invariant under simultaneous translation. Thus the queued degree cutoff fails even with original total degree below \(p\). This does not exhibit a factor of the actual boundary determinant.</p>
+<h4>Source and correction scope</h4>
+<p>Nowicki's <a href="https://www.researchgate.net/profile/Andrzej-Nowicki-2/publication/247205408_Polynomial_derivations_and_their_rings_of_constants/links/542a859f0cf29bbc1267a5d6/Polynomial-derivations-and-their-rings-of-constants.pdf">Polynomial derivations and their rings of constants</a> (1994) is available. Its introduction sets characteristic zero; Section 2.2 defines Darboux polynomials, and Theorem 8.1.4 assumes a reduced base containing \(\mathbb Q\). Section 8.4 discusses positive-characteristic additive actions. These are not characteristic-\(p\) chapters supplying the queued cutoff. The specific all-characteristic calculation below is proved directly.</p>
+<p>The <a href="#entry-2026-10-09-cube-boundary-flow-coprimality">older factor lemma</a> correctly says that \(\gcd(\Phi,\delta\Phi)=1\) is equivalent to squarefreeness and absence of Darboux factors. The <a href="#entry-2026-10-09-cube-supersession-route-review">queued review's classification</a> needs the explicit noncoordinate chart restriction, and its inference from degree in the translating variable to degree in one original root is invalid. We preserve both historical entries and correct that inference here.</p>
+<h4>The reciprocal classification</h4>
+<p><strong>Lemma.</strong> Let \(k\) be any field, \(A=k[a_1,\ldots,a_n]\), \(\delta=\sum_i a_i^2\partial_{a_i}\), and let \(\pi\in A\) be irreducible and not associated to any \(a_i\). Put \(d_i=\deg_{a_i}\pi\), and define its minimal reciprocal numerator
+\[
+ f(u)=\left(\prod_i u_i^{d_i}\right)\pi(1/u_1,\ldots,1/u_n).
+\]
+Then \(f\) is irreducible, not divisible by any \(u_i\), and
+\[
+ \pi\mid\delta\pi
+ \quad\Longleftrightarrow\quad
+ Df=0,\qquad D=-\sum_i\partial_{u_i}.
+ \tag{1}
+\]
+In this case
+\[
+ \delta\pi=\left(\sum_i d_i a_i\right)\pi. \tag{2}
+\]
+Writing \(x=u_1\), \(v_i=u_i-u_1\) for \(i>1\), the polynomial kernel is \(k[v_2,\ldots,v_n]\) in characteristic zero and \(k[x^p,v_2,\ldots,v_n]\) in characteristic \(p>0\). The reciprocal hypersurface is invariant under the full formal translation \(u_i\mapsto u_i-t\) precisely when \(f\) is independent of \(x\). Coordinate factors \(a_i\) are separate Darboux factors outside this chart.</p>
+<p><strong>Proof.</strong> Reversal is an isomorphism of Laurent polynomial rings. Irreducibility survives localization for the noncoordinate irreducible \(\pi\), and the chosen degrees ensure \(u_i\nmid f\) for every \(i\). Any polynomial factorization of \(f\) would therefore give a nontrivial Laurent factorization; hence \(f\) is irreducible. The derivation \(\delta\) becomes \(D\) on substituting \(a_i=1/u_i\).</p>
+<p>Suppose \(\delta\pi=h\pi\). Since \(\delta\) raises total degree by at most one, \(h\) has degree at most one, unless \(h=0\). Its constant term is zero: the lowest-degree nonzero homogeneous part of \(\pi\) has no same-degree contribution to \(\delta\pi\). Thus \(h=\sum_i c_i a_i\). Differentiating the reciprocal expression gives
+\[
+ Df=\left(\sum_i\frac{c_i-d_i}{u_i}\right)f.
+\]
+Multiplication by \(\prod u_i\), coprime to \(f\), shows that \(f\mid Df\) in \(k[u]\). But \(D\) lowers total degree, so \(Df=0\). The rational functions \(1/u_i\) are linearly independent over \(k\); therefore \(c_i=d_i\) in \(k\), proving (2). Conversely, if \(Df=0\), reversing the same identity proves (2) and the Darboux property.</p>
+<p>The linear coordinate change gives \(D=-\partial_x\). Comparing coefficients of \(x^j\) proves the stated kernels: in characteristic \(p\), precisely the exponents divisible by \(p\) survive. Full translation sends \(x\) to \(x-t\) and fixes the \(v_i\). If its hypersurface is preserved, its irreducible equation satisfies \(f(x-t,v)=c f(x,v)\) for a polynomial unit \(c\in k^\times\); both sides have the same total degree, and specialization at \(t=0\) gives \(c=1\). A polynomial of positive \(x\)-degree cannot satisfy that identity, by its highest power of \(t\). Hence invariance is equivalent to independence of \(x\). This is a formal group-action statement, not merely invariance at the finitely many elements of a finite base field. \(\square\)</p>
+<p>If \(\pi\) is homogeneous of total degree \(s\), then \(f\) is homogeneous of degree \(\sum_i d_i-s\). Its degree in \(x\) after substituting \(u_i=x+v_i\) is bounded by that total degree, but not by a single \(d_i\). The distinction is essential.</p>
+<h4>A counterexample at every prime</h4>
+<p><strong>Proposition.</strong> For every field of positive characteristic \(p\), put
+\[
+ f(u_1,u_2,u_3)=u_1^p+(u_2-u_1)^{p-1}(u_3-u_1).
+ \tag{3}
+\]
+This is homogeneous, irreducible, and has coordinate degrees \((p-1,p-1,1)\). It satisfies \(Df=0\), but \(f(u-t)=f(u)-t^p\). Its reciprocal numerator
+\[
+ \pi(a_1,a_2,a_3)=
+ \frac{a_2^{p-1}a_3+(a_1-a_2)^{p-1}(a_1-a_3)}{a_1}
+ \tag{4}
+\]
+is a polynomial, homogeneous and irreducible of total degree \(p-1\), with
+\[
+ \delta\pi=(-a_1-a_2+a_3)\pi.
+\]
+In particular neither original total degree below \(p\), nor degree below \(p\) in every single original coordinate, excludes an extra characteristic-\(p\) Darboux factor.</p>
+<p><strong>Proof.</strong> In coordinates \(x=u_1,y=u_2-u_1,z=u_3-u_1\), equation (3) is \(x^p+y^{p-1}z\). This polynomial is primitive and linear in \(z\) over \(k[x,y]\): its coefficient \(y^{p-1}\) and constant term \(x^p\) are coprime. It is therefore irreducible by Gauss's lemma. It is killed by \(-\partial_x\) and translation changes it by \(-t^p\), so its hypersurface is not preserved.</p>
+<p>Its pure \(u_1^p\) terms cancel. In the remaining expansion, the coefficient of \(u_1^{p-1}\) is \(u_3-u_2\ne0\), so \(\deg_{u_1}f=p-1\). The highest \(u_2\)-coefficient is \(u_3-u_1\ne0\), giving degree \(p-1\), and the \(u_3\)-degree is one. It is not divisible by any \(u_i\): setting \(u_1=0\) gives \(u_2^{p-1}u_3\), setting \(u_2=0\) gives \(u_1^{p-1}u_3\), and setting \(u_3=0\) gives the nonzero polynomial \(u_1^p-u_1(u_2-u_1)^{p-1}\).</p>
+<p>Multiply \(f(1/a)\) by \(a_1^{p-1}a_2^{p-1}a_3\). This gives (4). Its numerator vanishes at \(a_1=0\), hence is divisible by \(a_1\). Reversal preserves irreducibility and the absence of coordinate factors, as in the lemma. Homogeneity gives degree \(2p-1-p=p-1\). Its coordinate degrees are still \((p-1,p-1,1)\): reversal has that property when neither the original nor the reversed polynomial has a coordinate factor. Applying (2) gives the displayed eigenvalue. \(\square\)</p>
+<p><strong>Small control.</strong> At \(p=3\), (4) becomes
+\[
+ \pi=a_1^2+a_1a_2+a_2^2-a_1a_3-a_2a_3.
+\]
+Differentiating its five terms gives
+\[
+ \delta\pi=2a_1^3+a_1^2a_2+a_1a_2^2+2a_2^3
+ -a_1^2a_3-a_1a_3^2-a_2^2a_3-a_2a_3^2,
+\]
+which is \((-a_1-a_2+a_3)\pi\) modulo three. This hand calculation checks the cancellation, signs and degree endpoint. The proof covers every prime, including two; odd primes are the present application. No finite prime survey or determinant run is needed.</p>
+<h4>The actual boundary implication</h4>
+<p>The example corrects the cutoff proposed in the queued review. In the translating coordinates it is \(x^p+y^{p-1}z\), of \(x\)-degree \(p\), although its original polynomial has total degree \(p-1\). It is an obstruction to that inference only: it has not been shown to divide \(\Phi_N\), much less every reduced maximal cofactor.</p>
+<p>A valid sufficient degree test is instead that the minimal reciprocal numerator of \(\Phi_N\), after passing to \((x,v)\), has \(x\)-degree below \(p\). Reciprocal reversal preserves products with the minimal coordinate degrees, so the reciprocal numerator of any noncoordinate factor divides it. Such a Darboux factor then has \(x\)-degree below \(p\), and membership in \(k[x^p,v]\) forces independence of \(x\). This reduces it to a full-flow-invariant hypersurface, but still does not exclude that factor, nor does it establish squarefreeness or initial-minor nonvanishing.</p>
+<p>For the actual boundary, the <a href="#entry-2026-10-09-cube-boundary-abel-identity">Abel identity</a> is
+\[
+ mG'=-\delta\Phi_N-(N-1)(N-\tfrac12)e_1\Phi_N.
+\]
+Every common divisor of the full cofactor vector divides \(\Phi_N\) and \(G'\), hence also \(\delta\Phi_N\), without a scalar restriction. Thus coprimality of \(\Phi_N,\delta\Phi_N\) is sufficient at every odd prime and remains stronger than necessary. The condition \(p\nmid m\) is needed to recover \(G'\) and identify the adjacent-pair gcd with the derivative-pair gcd. When \(p\mid m\), the derivative is already a multiple of \(\Phi_N\); for nonconstant \(\Phi_N\) this sufficient test cannot pass, and the actual companion minor must be retained. The present classification supplies neither squarefreeness nor exclusion of its allowed factors. The proved <a href="#entry-2026-10-06-cube-quadratic-boundary-bound">quadratic cutoff</a> remains unchanged; its full leading-vector and face proof did not use the invalid coordinate-degree inference.</p>
+<p><strong>Follow-up.</strong> Continuing: the constants description is now exact, and its proposed coordinate-degree exclusion is refuted. Next test whether the actual common cofactor divisor's permutation and translation symmetries force a smaller subclass of these reciprocal constants. Derive the symmetry restrictions from the full polynomial source, including collisions and multiplicities, rather than assuming a Darboux factor or replacing the whole cofactor vector by the adjacent pair.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Determine the symmetry and flow restrictions actually inherited by a common divisor of the full reduced cofactor vector at small primes, and whether they exclude the new reciprocal Frobenius factors without assuming initial-minor nonvanishing or squarefreeness.</li></ul>
+<p><strong>Verification gate.</strong> The cycle's sole isolated medium reviewer passed the classification, eigenvalue, irreducibility, reciprocal degree and formal-flow distinction. Its corrections were applied: the counterexample includes characteristic two, and the Abel gcd sufficiency does not require a unit scalar. The same reviewer then passed those corrections and the historical comparison after receiving the omitted queue and quadratic-boundary excerpts. Verdicts: <code>research/results/bmd-flow-constants-20261006/review-initial.txt</code> and <code>review.txt</code>. No unused mathematical hypothesis remains. Exact dependencies re-read: the full queued Nowicki item, boundary flow coprimality, original Abel identity, and the quadratic boundary proof. The primary book's Darboux definitions and characteristic-zero theorem were read with their hypotheses; the characteristic-\(p\) classification and counterexample are proved here. No source full text is copied into the repository.</p>
+<p><strong>Assessment and process.</strong> This corrects a degree-loss error in a proposed mechanism and retains its valid constants classification. It closes no original threshold range. A general three-variable family tests the inference for every odd prime, avoiding a size survey. The next task must use the actual divisor's additional structure; classification by itself is not exclusion.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-flow-constants-20261006">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 12.77 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">24.30 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9 min 56.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 41.40 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">20.73 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">42.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.75 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
