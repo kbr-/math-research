@@ -1,0 +1,27 @@
+// Literal polynomial evaluation avoids ambiguous maps out of parameter fields.
+ring R=(7,u,z),(t),dp;
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/second-variation.sing"));
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/normalized-kernel.sing"));
+list ns;list ds;list leftden;int j;
+for(j=1;j<=13;j++){
+ ns[j]=string(numerator(leadcoef(Variation[j,1])));ds[j]=string(denominator(leadcoef(Variation[j,1])));
+ leftden[j]=string(denominator(leadcoef(LeftKernel[1,j])));
+}
+ring P=7,(u,z,t),dp;
+matrix Nums[13][1];matrix Dens[13][1];int maxden=0;
+for(j=1;j<=13;j++){
+ execute("Nums["+string(j)+",1]="+ns[j]+";");execute("Dens["+string(j)+",1]="+ds[j]+";");
+ execute("poly ld="+leftden[j]+";");if(ld==0){ERROR("zero normalization denominator");}
+ if(deg(ld)>maxden){maxden=deg(ld);}
+}
+if(maxden>=49){ERROR("denominator specialization bound");}
+print("PASS all normalized left-kernel denominators are nonzero polynomials of total degree at most "+string(maxden)+" <49<q.");
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/second-control-values.sing"));
+map point=P,PointU,PointZ,0;
+matrix NV=point(Nums);matrix DV=point(Dens);matrix Value[13][1];int mismatches=0;
+for(j=1;j<=13;j++){
+ if(DV[j,1]==0){ERROR("control denominator zero");}
+ Value[j,1]=NV[j,1]/DV[j,1];if(Value[j,1]!=Actual[j,1]){mismatches++;print("MISMATCH "+string(j)+" symbolic="+string(Value[j,1])+" actual="+string(Actual[j,1]));}
+}
+if(mismatches){print("FAIL independent cut comparison");}else{print("PASS every one of13 second-order cuts agrees with independent full-polynomial/domain reconstruction.");}
+quit;

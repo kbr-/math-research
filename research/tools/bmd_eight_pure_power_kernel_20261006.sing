@@ -1,0 +1,27 @@
+// Complete p7,d9mod49 matrix on the proven pure-power boundary, with z=u^q independent.
+// Compute both kernels over F7(u,z); exact substitutions then give the actual power family.
+LIB "linalg.lib";
+ring R=(7,u,z),(t),dp;
+number c=z/u;number x=2*(u*z+1)/(u^2+1);number y=-2*(z-u)/(u^2+1);
+proc assess_template(matrix B,int pp,int d,int smallestN,int period,poly lx,poly ly){
+ if(d!=9){return();}
+ if(det(B)!=0){ERROR("pure-power determinant");return();}
+ module K=syz(B);matrix KV=K;
+ if(ncols(KV)!=1){ERROR("kernel not one-dimensional");return();}
+ matrix L=transpose(syz(transpose(B)));
+ if(nrows(L)!=1){ERROR("left kernel not one-dimensional");return();}
+ if(size(ideal(B*KV)) || size(ideal(L*B))){ERROR("kernel identities");return();}
+ number kn=0;int j;for(j=1;j<=13;j++){if(KV[j,1]!=0){kn=leadcoef(KV[j,1]);break;}}
+ KV=KV/kn;poly Q=0;for(j=1;j<=13;j++){Q=Q+KV[j,1]*t^(j-1);}
+ if(Q!=(-1/u)*t^2*(t-u)*(1+z*t^7)){ERROR("four-term kernel factorization");return();}
+ L=L/leadcoef(L[1,6]);
+ print("RIGHT_KERNEL_Q=");print(factorize(Q));print("LEFT_KERNEL=");for(j=1;j<=13;j++){print(string(j)+": "+string(L[1,j]));}
+ string out="research/results/bmd-eight-exceptional-deformation-20261006/normalized-kernel.sing";
+ write(out,"poly Kernel="+string(Q)+";");write(out,"matrix LeftKernel[1][13];");
+ for(j=1;j<=13;j++){write(out,"LeftKernel[1,"+string(j)+"]="+string(L[1,j])+";");}
+ write(out,"matrix Boundary[13][13];");int k;
+ for(j=1;j<=13;j++){for(k=1;k<=13;k++){if(B[j,k]!=0){write(out,"Boundary["+string(j)+","+string(k)+"]="+string(B[j,k])+";");}}}
+ print("PASS full rational-function kernel identities; specialization rank follows from the classification proof.");
+}
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p7.sing"));
+quit;

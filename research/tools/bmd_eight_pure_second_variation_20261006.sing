@@ -1,0 +1,96 @@
+// Actual effective variation on the pure-power exceptional source.
+// Includes the moving-domain lift derived from the Frobenius residue-chain frame.
+// Independent full polynomial/domain controls are retained in the same result directory.
+ring rr=(7,u,z),(t),dp;
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/normalized-kernel.sing"));
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/high-cuts.sing"));
+number C=z/u;number X=2*(u*z+1)/(u^2+1);number Y=-2*(z-u)/(u^2+1);number U=u^2+1;
+proc clip(poly P,int bound){poly out=0;int idx;for(idx=0;idx<=bound;idx++){out=out+subst(P/t^idx,t,0)*t^idx;}return(out);}
+proc vv(int j){int k=((j%4)+4)%4;if(k==0){return(X);}if(k==1){return(Y);}if(k==2){return(-X);}return(-Y);}
+proc choose(int n,int k){number out=1;int j;for(j=1;j<=k;j++){out=out*(n-j+1)/j;}return(out);}
+proc hs(int j,int dd,int shift){number out=0;int ia;int ib;int kk;for(ia=0;ia<=dd;ia++){ib=dd-ia;for(kk=0;kk<=ib;kk++){out=out+choose(j-2,ia)*choose(-1,ib)*(-1)^ib*U^(3-ib)*choose(ib,kk)*u^(ib-kk)*vv(j-ia+kk+shift);}}return(out);}
+int j;int k;int a;matrix MarkedTails[18][13];
+for(j=0;j<=12;j++){for(k=0;k<=8;k++){if(k-12+j>=0){MarkedTails[k+1,j+1]=u^(k-12+j);}if(k-j>=0){MarkedTails[k+10,j+1]=C*u^(j-k);}}}
+matrix Compare=HighCuts*MarkedTails;
+for(j=1;j<=7;j++){for(k=1;k<=13;k++){if(Compare[j,k]!=Boundary[j+6,k]){ERROR("full stored high-cut comparison");}}}
+
+number quarter=1/4;number thirtysecond=1/32;
+number ss=u^2+1/u^2;number lam=-(u^2+1)^2/u^2;
+proc variation(poly FP,poly FM,int order,int bound){
+ int which;int al;int be;int sg;int bb;int hh;int el;int sh;int aa;int j;
+ int rb=bound+4;poly Hchar;poly Rhigh;poly qh;poly shape;poly piece;poly GP=0;poly GM=0;
+ matrix Qcoeff[30][1];poly s0;poly s1;poly d0;poly d1;poly a0;poly a1;
+ for(which=1;which<=4;which++){
+  if(which==1){al=7;be=4;sg=1;}if(which==2){al=4;be=4;sg=1;}
+  if(which==3){al=2;be=7;sg=-1;}if(which==4){al=5;be=7;sg=-1;}
+  bb=al+be;Hchar=0;
+  for(j=0;j<=rb+2;j++){if((j-bb)%2==0){Hchar=Hchar+(subst(FP/t^j,t,0)+sg*subst(FM/t^j,t,0))/2*t^j;}}
+  if(10-bb>=0){Rhigh=Hchar/t^(10-bb);}else{Rhigh=Hchar*t^(bb-10);}
+  Rhigh=clip(Rhigh*(1+t^2)^(49-al)*(1-t^2)^(49-be),rb);
+  for(hh=0;hh<=rb div 2;hh++){
+   qh=subst(Rhigh/t^(2*hh),t,0);Qcoeff[hh+1,1]=qh;
+   if((which==1 || which==4) && (hh==0 || hh==4) && qh!=0){ERROR("ordinary core support");}
+   el=(10-hh)%49;if(el<0){el=el+49;}
+   shape=clip((1-ss*t^2+t^4)^el,rb-2*hh);Rhigh=clip(Rhigh-qh*t^(2*hh)*shape,rb);
+   if(qh!=0 && 10-bb+2*hh<=bound){
+    sh=(el+7*order)%49;number cc=-quarter*(el div 7);if(order==2){cc=thirtysecond*(el div 7)*((el div 7)+3);}
+    piece=clip(cc*qh*t^(10-bb+2*hh)*(1+t^2)^al*(1-t^2)^be*clip((1-ss*t^2+t^4)^sh,bound),bound);
+    GP=GP+piece;GM=GM+sg*piece;
+   }
+  }
+  if(clip(Rhigh,rb-1)!=0){ERROR("complete quotient reconstruction");}
+  if(which==2 || which==3){
+   s0=0;s1=0;for(aa=0;aa<=3;aa++){s0=s0+lam^aa*Qcoeff[4-aa,1];s1=s1+aa*lam^aa*Qcoeff[4-aa,1];}
+   if(s0!=0 || s1!=0){ERROR("actual limiting domain constraints");}
+   s0=0;s1=0;for(aa=0;aa<=6;aa++){s0=s0+lam^aa*Qcoeff[11-aa,1];s1=s1+aa*lam^aa*Qcoeff[11-aa,1];}
+   d0=(s0-s1)/4;d1=s1/(4*lam);
+   if(order==1){piece=clip((1+t^2)^al*(1-t^2)^be*(d0*t^(30-bb)*(1-ss*t^2+t^4)^7+d1*t^(28-bb)*(1-ss*t^2+t^4)^8),bound);}
+   else{
+    // Ambient first variation of the first domain correction; K=1mod7.
+    piece=clip(-(1+t^2)^al*(1-t^2)^be*(d0*t^(30-bb)*(1-ss*t^2+t^4)^14+d1*t^(28-bb)*(1-ss*t^2+t^4)^15)/4,bound);
+    a0=0;a1=0;for(aa=0;aa<=6;aa++){a0=a0+lam^aa*Qcoeff[18-aa,1];a1=a1+aa*lam^aa*Qcoeff[18-aa,1];}
+    s0=-(lam^7*s0+a0)/16;s1=-(lam^7*s1+a1)/16;d0=s0-s1;d1=s1/lam;
+    piece=piece+clip((1+t^2)^al*(1-t^2)^be*(d0*t^(44-bb)*(1-ss*t^2+t^4)^7+d1*t^(42-bb)*(1-ss*t^2+t^4)^8),bound);
+   }
+   GP=GP+piece;GM=GM+sg*piece;
+  }
+ }
+ return(list(GP,GM));
+}
+proc reverse(poly P,int degmax){poly R=0;int j;for(j=0;j<=degmax;j++){R=R+subst(P/t^j,t,0)*t^(degmax-j);}return(R);}
+poly FP=z^2*t^2+z*t^9;poly FM=-z^2*t^2-z^3*t^9;
+list first=variation(FP,FM,1,46);
+poly up=clip(first[1]*(1-u*t),13);poly down=clip(first[2]/C*(1-t/u),13);
+poly Rone=down+reverse(up,40);
+poly upperFull=clip((1-u*t)^48*reverse(Rone,40),46);
+poly lowerFull=clip(C*(1-t/u)^48*Rone,46);
+if(clip(upperFull-first[1],13)!=0 || clip(lowerFull-first[2],13)!=0){ERROR("first outer cancellation");}
+poly FPcorrect=clip((upperFull-first[1])/t^14,30);
+poly FMcorrect=clip((lowerFull-first[2])/t^14,30);
+list second=variation(FP,FM,2,36);list corrected=variation(FPcorrect,FMcorrect,1,22);
+poly GP=clip(second[1]+t^14*corrected[1],36);poly GM=clip(second[2]+t^14*corrected[2],36);
+up=clip(GP*(1-u*t),27);down=clip(GM/C*(1-t/u),27);
+poly Rpoly=down+reverse(up,68);
+poly hu=clip((1-u*t)^48*up,36);poly hd=clip(C*(1-t/u)^48*down,36);
+if(clip(GP-hu,27)!=0 || clip(GM-hd,27)!=0){ERROR("second outer cancellation");}
+matrix residual[18][1];for(j=0;j<=8;j++){residual[j+1,1]=subst((GP-hu)/t^(28+j),t,0);residual[j+10,1]=subst((GM-hd)/t^(28+j),t,0);}
+matrix bv[13][1];poly derivR=diff(Rpoly,t);
+for(k=0;k<=1;k++){a=1-2*k;bv[k+1,1]=-((-3+2*u*a)*subst(Rpoly,t,a)+(a-u)*subst(derivR,t,a));}
+poly cj;
+// M+28 has the original complex phase: finite entries are the negatives of the old normalized cuts.
+for(j=0;j<=68;j++){
+ cj=subst(Rpoly/t^j,t,0);
+ bv[3,1]=bv[3,1]-cj*vv(j);
+ bv[4,1]=bv[4,1]-cj*(((j-2)*U-1)*vv(j-1)+u*vv(j));
+ bv[5,1]=bv[5,1]-cj*(((j-2)*U-1)*vv(j)+u*vv(j+1));
+ bv[6,1]=bv[6,1]-cj*(hs(j,3,0)-hs(j,2,1));
+}
+Compare=HighCuts*residual;for(j=1;j<=7;j++){bv[j+6,1]=Compare[j,1];}
+matrix answer=LeftKernel*bv;poly om=answer[1,1];
+print("SECOND_EFFECTIVE_SCALAR="+string(om));
+string out="research/results/bmd-eight-exceptional-deformation-20261006/second-variation.sing";
+write(out,"matrix Variation[13][1];");for(j=1;j<=13;j++){write(out,"Variation["+string(j)+",1]="+string(bv[j,1])+";");}
+write(out,"poly RepairScalar="+string(om)+";");
+print("PASS all reconstruction, source-membership and pole-cancellation checks, including first kernel correction.");
+print("PENDING independent second-order full-source control.");
+quit;

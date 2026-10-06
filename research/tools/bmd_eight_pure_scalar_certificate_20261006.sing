@@ -1,0 +1,15 @@
+// Certify the second scalar survives z=u^q for every q=7^(16t+8).
+ring R=(7,u,z),(t),dp;
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/second-variation.sing"));
+number scalar=leadcoef(RepairScalar);
+string ns=string(numerator(scalar));string ds=string(denominator(scalar));
+ring P=7,(u,z),dp;
+execute("poly Num="+ns+";");execute("poly Den="+ds+";");
+print("NUMERATOR_AT_Z0=");print(factorize(subst(Num,z,0)));
+print("DENOMINATOR_AT_Z0=");print(factorize(subst(Den,z,0)));
+if(subst(Num,z,0)!=3*u^10*(u^2-1)^2*(u^2+1)){ERROR("numerator leading slice");}
+if(subst(Den,z,0)!=u^9*(u^4+2*u^2-2)){ERROR("denominator leading slice");}
+print("PASS polynomial numerator/denominator have leading actual orders10 and9; positive z terms start at q>19.");
+write("research/results/bmd-eight-exceptional-deformation-20261006/scalar-certificate.sing","poly ScalarNumerator="+string(Num)+";");
+write("research/results/bmd-eight-exceptional-deformation-20261006/scalar-certificate.sing","poly ScalarDenominator="+string(Den)+";");
+quit;

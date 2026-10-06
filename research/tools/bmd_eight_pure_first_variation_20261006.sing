@@ -1,0 +1,69 @@
+// Actual effective variation on the pure-power exceptional source.
+// Includes the moving-domain lift derived from the Frobenius residue-chain frame.
+// Independent full polynomial/domain controls are retained in the same result directory.
+ring rr=(7,u,z),(t),dp;
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/normalized-kernel.sing"));
+execute(read("research/results/bmd-eight-exceptional-deformation-20261006/high-cuts.sing"));
+number C=z/u;number X=2*(u*z+1)/(u^2+1);number Y=-2*(z-u)/(u^2+1);number U=u^2+1;
+proc clip(poly P,int bound){poly out=0;int idx;for(idx=0;idx<=bound;idx++){out=out+subst(P/t^idx,t,0)*t^idx;}return(out);}
+proc vv(int j){int k=((j%4)+4)%4;if(k==0){return(X);}if(k==1){return(Y);}if(k==2){return(-X);}return(-Y);}
+proc choose(int n,int k){number out=1;int j;for(j=1;j<=k;j++){out=out*(n-j+1)/j;}return(out);}
+proc hs(int j,int dd,int shift){number out=0;int ia;int ib;int kk;for(ia=0;ia<=dd;ia++){ib=dd-ia;for(kk=0;kk<=ib;kk++){out=out+choose(j-2,ia)*choose(-1,ib)*(-1)^ib*U^(3-ib)*choose(ib,kk)*u^(ib-kk)*vv(j-ia+kk+shift);}}return(out);}
+int j;int k;int a;matrix MarkedTails[18][13];
+for(j=0;j<=12;j++){for(k=0;k<=8;k++){if(k-12+j>=0){MarkedTails[k+1,j+1]=u^(k-12+j);}if(k-j>=0){MarkedTails[k+10,j+1]=C*u^(j-k);}}}
+matrix Compare=HighCuts*MarkedTails;
+for(j=1;j<=7;j++){for(k=1;k<=13;k++){if(Compare[j,k]!=Boundary[j+6,k]){ERROR("full stored high-cut comparison");}}}
+poly FP=z^2*t^2+z*t^9;poly FM=-z^2*t^2-z^3*t^9;
+number ss=u^2+1/u^2;number lam=-(u^2+1)^2/u^2;number half=1/2;number quarter=1/4;
+int which;int al;int be;int sg;int bb;int hh;int el;int sh;
+poly Hchar;poly Rhigh;poly qh;poly shape;poly piece;poly GP=0;poly GM=0;
+matrix Qcoeff[13][1];poly s0;poly s1;poly delta0;poly delta1;
+for(which=1;which<=4;which++){
+ if(which==1){al=7;be=4;sg=1;}if(which==2){al=4;be=4;sg=1;}
+ if(which==3){al=2;be=7;sg=-1;}if(which==4){al=5;be=7;sg=-1;}
+ bb=al+be;Hchar=0;
+ for(j=0;j<=28;j++){if((j-bb)%2==0){Hchar=Hchar+half*(subst(FP/t^j,t,0)+sg*subst(FM/t^j,t,0))*t^j;}}
+ if(10-bb>=0){Rhigh=Hchar/t^(10-bb);}else{Rhigh=Hchar*t^(bb-10);}
+ Rhigh=clip(Rhigh*(1+t^2)^(49-al)*(1-t^2)^(49-be),26);
+ for(hh=0;hh<=12;hh++){
+  qh=subst(Rhigh/t^(2*hh),t,0);Qcoeff[hh+1,1]=qh;
+  if((which==1 || which==4) && (hh==0 || hh==4) && qh!=0){ERROR("ordinary core forbidden direction");}
+  el=(10-hh)%49;if(el<0){el=el+49;}
+  shape=clip((1-ss*t^2+t^4)^el,26-2*hh);
+  Rhigh=clip(Rhigh-qh*t^(2*hh)*shape,26);
+  if(qh!=0){sh=(el+7)%49;piece=clip(-quarter*(el div 7)*qh*t^(10-bb+2*hh)*(1+t^2)^al*(1-t^2)^be*clip((1-ss*t^2+t^4)^sh,22),22);GP=GP+piece;GM=GM+sg*piece;}
+ }
+ if(clip(Rhigh,25)!=0){ERROR("full high quotient reconstruction");}
+ if(which==2 || which==3){
+  s0=0;s1=0;for(a=0;a<=3;a++){s0=s0+lam^a*Qcoeff[4-a,1];s1=s1+a*lam^a*Qcoeff[4-a,1];}
+  if(s0!=0 || s1!=0){ERROR("both limiting exceptional domain constraints");}
+  s0=0;s1=0;for(a=0;a<=6;a++){s0=s0+lam^a*Qcoeff[11-a,1];s1=s1+a*lam^a*Qcoeff[11-a,1];}
+  delta0=quarter*(s0-s1);delta1=quarter*s1/lam;
+  // Top residue group begins at exponent 2D-3, the following monomial at2D-2.
+  piece=clip((1+t^2)^al*(1-t^2)^be*(delta0*t^(30-bb)*clip((1-ss*t^2+t^4)^7,22)+delta1*t^(28-bb)*clip((1-ss*t^2+t^4)^8,22)),22);
+  GP=GP+piece;GM=GM+sg*piece;
+ }
+}
+poly up=clip(GP*(1-u*t),13);poly down=clip(GM/C*(1-t/u),13);
+poly Rpoly=down;for(j=0;j<=13;j++){Rpoly=Rpoly+subst(up/t^j,t,0)*t^(40-j);}
+poly hu=clip((1-u*t)^48*up,22);poly hd=clip(C*(1-t/u)^48*down,22);
+for(j=0;j<=13;j++){if(subst((GP-hu)/t^j,t,0)!=0 || subst((GM-hd)/t^j,t,0)!=0){ERROR("outer-pole cancellation");}}
+matrix residual[18][1];for(j=0;j<=8;j++){residual[j+1,1]=subst((GP-hu)/t^(14+j),t,0);residual[j+10,1]=subst((GM-hd)/t^(14+j),t,0);}
+matrix bv[13][1];poly derivR=diff(Rpoly,t);
+for(k=0;k<=1;k++){a=1-2*k;bv[k+1,1]=-((-3+2*u*a)*subst(Rpoly,t,a)+(a-u)*subst(derivR,t,a));}
+for(j=0;j<=40;j++){
+ poly cj=subst(Rpoly/t^j,t,0);
+ bv[3,1]=bv[3,1]+cj*vv(j);
+ bv[4,1]=bv[4,1]+cj*(((j-2)*U-1)*vv(j-1)+u*vv(j));
+ bv[5,1]=bv[5,1]+cj*(((j-2)*U-1)*vv(j)+u*vv(j+1));
+ bv[6,1]=bv[6,1]+cj*(hs(j,3,0)-hs(j,2,1));
+}
+Compare=HighCuts*residual;for(j=1;j<=7;j++){bv[j+6,1]=Compare[j,1];}
+matrix answer=LeftKernel*bv;poly om=answer[1,1];
+print("FIRST_EFFECTIVE_SCALAR="+string(om));
+string out="research/results/bmd-eight-exceptional-deformation-20261006/first-variation.sing";
+write(out,"matrix Variation[13][1];");for(j=1;j<=13;j++){write(out,"Variation["+string(j)+",1]="+string(bv[j,1])+";");}
+write(out,"poly RepairScalar="+string(om)+";");
+print("PASS full high-map comparison, both limiting domain constraints, quotient reconstruction and all outer-pole cancellations.");
+print("PENDING independent exact moving-domain and full-source variation control.");
+quit;
