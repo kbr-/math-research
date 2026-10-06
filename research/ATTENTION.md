@@ -116,6 +116,22 @@ For 1 <= k <= 31 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 ---
 
+### Cube computable exceptions
+
+**Claim:** [cor:cube-computable-exceptions](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-computable-exceptions>)
+
+There is a terminating algorithm which, given n>=1 and odd prime p, returns exactly the finite set E_(n,p) of degrees d>=2 for which the original generic initial determinant Delta_(n,d) is identically zero mod p. Choose the explicit totally degenerate root curve with branch values 0,t^(2(n-2)),...,t²,1,infinity; construct its Jacobian and translated theta locus; find a separable coset cutoff B; then generic determinant tests below max(2,n-2,B+1) give the exact set. Thus all-degree generic normality at fixed (n,p) is decidable in principle. No algorithm implementation, evaluated new cutoff, practical runtime, empty exception set for an uncovered input, or universal all-(n,p) normality theorem is asserted.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Strengthens the fixed-input cofinite range theorem to a terminating method for locating every possible exception. This advances the stopping problem left by finiteness but produces no evaluated normality range and leaves the universal goal open.
+
+**Decision (agent):** Reviewed terminating algorithm computes the complete finite generic-normality exception set for each fixed dimension and odd prime. This makes the preceding cofinite theorem effective in principle, but the algorithm is unimplemented, no new cutoff is evaluated, and no uncovered exception set is proved empty.
+
+**Next:** Obtain an explicit manageable certificate or bound for an uncovered family; do not substitute unbounded trial enumeration for the theorem.
+
+---
+
 ### Cube count prime bound
 
 **Claim:** [cor:cube-count-prime-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-explicit-prime-bounds>)
@@ -158,9 +174,9 @@ For every fixed n>=1 and odd prime p, the set E_(n,p)={d>=2: Delta_(n,d) is iden
 
 **Why it matters:** Material all-dimensional progress on small-prime stable orders: at each fixed dimension and odd prime the unbounded degree question is reduced to an unspecified finite exceptional set. The full normality statement remains open and the cutoff is not effective.
 
-**Decision (agent):** All-dimensional advance: for each fixed odd prime and dimension, original generic normality has only finitely many exceptional degrees. Reviewed proof uses Mordell-Lang and the existing totally degenerate root family. Cutoff is ineffective; all-degree normality and pre-stable thresholds remain open; publication novelty is not claimed.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Eliminate or effectively bound the possible exceptional degrees while preserving the original source and marked jet prefix.
+**Next:** Use the later computable-exception algorithm to obtain a tractable evaluated certificate or eliminate the possible finite exceptional degrees.
 
 ---
 

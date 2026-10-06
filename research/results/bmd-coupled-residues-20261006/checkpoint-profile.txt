@@ -1,0 +1,43 @@
+Validation-only profile on the actual uncommitted mathematical and claim-registry diff.
+The existing next-session name deliberately stops after checks and before snapshot mutation.
+Command: python3 -m cProfile -o PROFILE tools/finish-turn.py bmd-coupled-residues-20261006 --next bmd-coupled-residues-20261006
+Tue Oct  6 21:52:14 2026    PROFILE
+
+         16284893 function calls (15701525 primitive calls) in 8.923 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1139 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     51/1    0.000    0.000    9.047    9.047 {built-in method builtins.exec}
+        1    0.000    0.000    9.047    9.047 finish-turn.py:1(<module>)
+        1    0.000    0.000    9.000    9.000 finish-turn.py:644(main)
+        1    0.028    0.028    8.999    8.999 finish-turn.py:540(finish)
+        1    0.013    0.013    5.368    5.368 claim_maintenance.py:124(check_revision)
+        1    0.086    0.086    3.929    3.929 claim_maintenance.py:47(maintenance)
+       90    0.000    0.000    2.617    0.029 claim_reviews.py:92(sha256)
+        7    0.000    0.000    2.609    0.373 claim_reviews.py:80(excerpt)
+        1    0.001    0.001    2.492    2.492 claim_reviews.py:161(coverage)
+       15    0.000    0.000    2.224    0.148 parser.py:142(feed)
+       30    0.474    0.016    2.224    0.074 parser.py:194(goahead)
+        1    0.000    0.000    1.457    1.457 claim_registry.py:290(load)
+        1    0.229    0.229    1.126    1.126 claim_registry.py:221(validate)
+       13    0.000    0.000    1.070    0.082 subprocess.py:461(run)
+       13    0.000    0.000    1.062    0.082 subprocess.py:1110(communicate)
+       45    0.662    0.015    0.925    0.021 {method 'read' of '_io.TextIOWrapper' objects}
+       24    0.000    0.000    0.904    0.038 __init__.py:299(loads)
+       24    0.000    0.000    0.904    0.038 decoder.py:332(decode)
+        4    0.000    0.000    0.904    0.226 claim_registry.py:39(parse_json)
+       24    0.335    0.014    0.904    0.038 decoder.py:343(raw_decode)
+        5    0.007    0.001    0.817    0.163 subprocess.py:1968(_communicate)
+        1    0.000    0.000    0.766    0.766 finish-turn.py:486(validate_queue)
+   141065    0.375    0.000    0.740    0.000 parser.py:407(parse_starttag)
+     2947    0.005    0.000    0.728    0.000 selectors.py:403(select)
+     2947    0.722    0.000    0.722    0.000 {method 'poll' of 'select.poll' objects}
+       37    0.000    0.000    0.682    0.018 pathlib.py:1129(read_text)
+     9583    0.018    0.000    0.678    0.000 claim_maintenance.py:32(__call__)
+        3    0.008    0.003    0.651    0.217 claim_registry.py:49(read_json)
+        1    0.000    0.000    0.642    0.642 claim_registry.py:129(shape)
+ 578890/1    0.425    0.000    0.641    0.641 claim_registry.py:99(check)
+
+
