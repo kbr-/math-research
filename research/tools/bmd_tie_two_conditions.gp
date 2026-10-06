@@ -18,9 +18,56 @@ coords(Sh, J) = {
   for (j = 2, J, v[j + 1] = subst(Sh[1], 'k, 'k + j - 2) * v[j - 1] + subst(Sh[2], 'k, 'k + j - 2) * v[j]);
   v;
 }
+state_shifts(m,pvec) = {
+  if (#pvec != 4 || pvec[4] == 0, error("Invalid saved order-three recurrence"));
+  emit(Str("STATE m=",m,"; end k-degrees=",poldegree(pvec[1],'k),",",poldegree(pvec[4],'k)));
+  if (getenv("STATE_CLASSIFY") == "1",
+    my(H=pvec[4], L=pvec[1], ratio=L/subst(H,'k,'k+1), S=1, F, gc=0, ds, fs, df, ff);
+    if (poldegree(numerator(ratio),'k)>0 || poldegree(denominator(ratio),'k)>0, error("End-shift ratio is not k-constant"));
+    if (m==2,
+      S=numerator(gcd(H,L)/('k+3));
+      if (poldegree(S,'k)!=2,error("Expected the intermediate quadratic"));
+      S=subst(S,'z,0); \\ strip an outer constant-polynomial wrapper, not the k-content
+      ds=polcoef(S,1,'k)^2-4*polcoef(S,2,'k)*polcoef(S,0,'k);
+      if(poldegree(ds,'k)>0 || poldegree(ds,'z)>0,error("Unexpected discriminant variables"));
+      fs=factor(substvec(ds,['k,'z],[0,0]));
+      emit(Str("STATE m=",m,"; diagnostic S=",S,"; discriminant=",ds,"; factors=",fs));
+      if (!sum(i=1,matsize(fs)[1],(poldegree(fs[i,1],'c)>0)*(fs[i,2]%2)), error("Quadratic irreducibility control failed")));
+    F=numerator(H/(('k+2)*('k+3)*S*subst(S,'k,'k-1)));
+    for(j=0,poldegree(F,'z),gc=gcd(gc,polcoef(F,j,'z)));
+    if(poldegree(gc,'k)>0,error("Unaccounted k-factor in the residual"));
+    F/=gc;
+    if(poldegree(F,'z)!=2,error("Expected quadratic amplitude dependence"));
+    df=polcoef(F,1,'z)^2-4*polcoef(F,2,'z)*polcoef(F,0,'z);
+    if(poldegree(df,'z)>0,error("Unexpected amplitude in its discriminant"));
+    ff=factor(substvec(df,['c,'z],[2,0]));
+    if(!sum(i=1,matsize(ff)[1],(poldegree(ff[i,1],'k)>0)*(ff[i,2]%2)),error("Residual irreducibility control failed"));
+    my(unit=H/(('k+2)*('k+3)*S*subst(S,'k,'k-1)*F));
+    if(poldegree(numerator(unit),'k)>0 || poldegree(denominator(unit),'k)>0,error("Factor product does not recover the end polynomial"));
+    emit(Str("STATE m=",m,"; trailing/shifted-leading=",ratio));
+    emit(Str("STATE m=",m,"; intermediate S(k,c)=",S));
+    if(m==2,emit(Str("STATE m=",m,"; S discriminant factors=",fs)));
+    emit(Str("STATE m=",m,"; residual F(k,c,z)=",F));
+    emit(Str("STATE m=",m,"; factor unit=",unit));
+    emit(Str("STATE m=",m,"; residual k-degree=",poldegree(F,'k),"; z-degree=",poldegree(F,'z)));
+    emit(Str("STATE m=",m,"; residual z-discriminant at c=2 factors=",ff));
+    return());
+  for (j=0,4,my(G=gcd(subst(pvec[4],'k,'k+j),pvec[1]));
+    emit(Str("STATE m=",m,"; shift=",j,"; gcd=",G,"; k-degree=",poldegree(G,'k))));
+}
 {
 MS = if (getenv("MS") == 0 || getenv("MS") == "", [2, 3, 4], eval(getenv("MS")));
-if (getenv("QUADRIC") == "1" && (vecmin(MS) < 1 || vecmax(MS) > 2), error("QUADRIC control is sized only for m=1,2"));
+if ((getenv("QUADRIC") == "1" || getenv("STATE") == "1" || (getenv("STATE_RESUME") != 0 && getenv("STATE_RESUME") != "")) && (vecmin(MS) < 1 || vecmax(MS) > 2), error("Contiguous controls are sized only for m=1,2"));
+if (getenv("STATE_RESUME") != 0 && getenv("STATE_RESUME") != "",
+  my(lines=readstr(getenv("STATE_RESUME")));
+  foreach(MS,m,my(found=0);
+    foreach(lines,line,my(parts=strsplit(line,";"));
+      if (#parts==2 && parts[1]==Str("STATE m=",m),
+        my(fields=strsplit(parts[2],"="));
+        if (#fields==2 && fields[1]==" primitive recurrence coefficients",
+          state_shifts(m,eval(fields[2])); found++)));
+    if (found!=1,error("Expected exactly one saved recurrence for each requested m")));
+  quit);
 foreach(MS, m,
   my(n = 3 * m, d = m * (m - 1) / 2, A = matrix(n, n + 1), q, C = matrix(5, 5), D, adj, e2, e3, G2 = 0, G3 = 0, G23 = 0,
      rf = r -> prod(i = 0, r - 1, -('k + i - 2 * m + 7/2) / ('k + i + 1)),
@@ -31,6 +78,29 @@ foreach(MS, m,
   for (j = 0, m - 1, for (r = 0, n, A[2 * m + j + 1, r + 1] = rg(r) * ('k + r)^j));
   q = matker(A)[, 1]; my(den = 1); for (r = 1, n + 1, den = lcm(den, denominator(q[r]))); q = q * den;
   my(g = 0); for (r = 1, n + 1, g = gcd(g, q[r])); q = q / g;
+  \\ STATE=1 asks a new question: do the primitive end coefficients of the shared-state,
+  \\ order-three recurrence have positive shift coincidences within the two-extra-order budget?
+  \\ Generic z is the e3/e2 amplitude ratio; e1 has its independent initial amplitude.
+  \\ Max m2: pure kernel6x7, observation4x3, four 3x3 determinants, five exact shifted gcds.
+  \\ The finite shift scan is not a proof that no larger shift exists.
+  if (getenv("STATE") == "1",
+    my(C2=coords(S2,n+4), C3=coords(S3,n+4), O=matrix(4,3),
+       T=[3*(1+'c)+2*'c*'k,2*('k+1);-2*'c*('k+3),-2*('k+1)]/(3*(1-'c)),
+       pvec, denp=1, gp=0);
+    emit(Str("STATE m=",m,"; constructing four observations"));
+    for (s=0,3,
+      O[s+1,1]=sum(r=0,n,subst(q[r+1],'k,'k+s)*(-1)^(s+r)*('k+s+r+1)*('k+s+r+2)/(('k+1)*('k+2)));
+      my(v2=sum(r=0,n,subst(q[r+1],'k,'k+s)*C2[s+r+1]),
+         v3=sum(r=0,n,subst(q[r+1],'k,'k+s)*C3[s+r+1]), v=v2+'z*v3*T);
+      O[s+1,2]=v[1]; O[s+1,3]=v[2]);
+    pvec=vector(4,s,(-1)^(s-1)*matdet(vecextract(O,vector(3,j,if(j<s,j,j+1)),"..")))~;
+    if (O~*pvec != [0,0,0]~, error("State recurrence identity failed"));
+    for (i=1,4,denp=lcm(denp,denominator(pvec[i]))); pvec*=denp;
+    for (i=1,4,gp=gcd(gp,pvec[i])); pvec/=gp;
+    if (pvec[4]==0,error("Expected generic order three"));
+    emit(Str("STATE m=",m,"; primitive recurrence coefficients=",pvec));
+    state_shifts(m,pvec);
+    next);
   \\ row 1 of C: u_1(d+s)/e_1(d), e_1(k) = (-1)^k (k+1)(k+2)/2
   for (s = 0, 4, C[1, s + 1] = sum(r = 0, n, subst(q[r + 1], 'k, d + s) * (-1)^(s + r) * (d + s + r + 1) * (d + s + r + 2) / ((d + 1) * (d + 2))));
   foreach([[S2, 2], [S3, 4]], SB, my(Cs = coords(SB[1], n + 6));
