@@ -116,6 +116,22 @@ For 1 <= k <= 31 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 ---
 
+### Cube count prime bound
+
+**Claim:** [cor:cube-count-prime-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-explicit-prime-bounds>)
+
+For every n,d>=1, generic original cube root-curve orders are0..N_(2,n)(d)-1 in every odd characteristic p>2N_(2,n-1)(d)-2 when n>=2; dimension1 is unconditional and degree0 is constant. The new bound is at most2^(n-1)d, is polynomial of degree d in n for fixed d, equals n(n-1)+2 at d2, and4n+2binom(n,3)-2 at d3.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Replaces the prior exponential-in-dimension characteristic cutoff by a polynomial for each fixed degree, uniformly over all dimensions. It is an overlooked direct consequence of the recorded coefficient lemma; independent novelty is not claimed.
+
+**Decision (agent):** Uniform stable-order cutoff is polynomial in dimension at every fixed degree; this strengthens the recorded exponential cutoff as a direct corollary, without an independent novelty claim.
+
+**Next:** Restrict the remaining stable-order search to p<=2N_(2,n-1)(d)-2 outside the other proved ranges; do not infer an all-prime result.
+
+---
+
 ### Cube cubic first step bound
 
 **Claim:** [cor:cube-cubic-first-step-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-28-cube-internal-threshold-recursion>)
@@ -365,6 +381,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
+
+---
+
+### Cube boundary prime bound
+
+**Claim:** [thm:cube-boundary-prime-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-explicit-prime-bounds>)
+
+For every n>=1, N=n+1, and every field of odd characteristic p>Q_N=max(N(N-1)+1,3binom(N,4)), the reduced degree-two boundary maximal cofactors have gcd1 and the original threshold ell0(3,binom(N,2)+2)=3binom(N,4). The proof uses whole-cofactor leading monicity, the positive-characteristic binary-face unit audit, Abel divisibility and an axis contradiction; it does not assert squarefreeness of the entire determinant.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Advances statement4 by proving an original parameter-degree threshold in every dimension above an explicit quartic characteristic bound. The direct gcd induction uses the exact cofactor vector to avoid stronger global squarefreeness and pointwise Wronskian hypotheses. No independent publication novelty claim is made.
+
+**Decision (agent):** New explicit all-dimensional odd-characteristic range for the original degree-two boundary threshold, proved by direct gcd induction. Smaller primes and other thresholds remain open.
+
+**Next:** Develop a characteristic-safe replacement of the vanishing leading vector at smaller primes, retaining the full cofactor source, face constraints and the p-divisible-degree obstruction to the ordinary axis argument.
 
 ---
 
