@@ -1,0 +1,38 @@
+Validation-only diagnostic: the already-existing next-session name deliberately stops the finisher before snapshot mutation.
+This review has a real notebook diff but no claim-registry diff, so changed-claim evidence costs from the preceding multi-claim checkpoint are not reproduced.
+Command: python3 -m cProfile -o PROFILE tools/finish-turn.py bmd-cofinite-goal-review-20261006 --next bmd-cofinite-goal-review-20261006
+Tue Oct  6 21:02:04 2026    PROFILE
+
+         8579909 function calls (7997098 primitive calls) in 5.412 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1095 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     50/1    0.000    0.000    5.416    5.416 {built-in method builtins.exec}
+        1    0.000    0.000    5.416    5.416 finish-turn.py:1(<module>)
+        1    0.000    0.000    5.370    5.370 finish-turn.py:644(main)
+        1    0.006    0.006    5.368    5.368 finish-turn.py:540(finish)
+        1    0.016    0.016    2.115    2.115 claim_maintenance.py:124(check_revision)
+        1    0.000    0.000    1.477    1.477 claim_registry.py:290(load)
+        1    0.060    0.060    1.287    1.287 claim_maintenance.py:47(maintenance)
+        1    0.233    0.233    1.133    1.133 claim_registry.py:221(validate)
+       10    0.000    0.000    0.874    0.087 subprocess.py:461(run)
+       10    0.000    0.000    0.867    0.087 subprocess.py:1110(communicate)
+        5    0.006    0.001    0.835    0.167 subprocess.py:1968(_communicate)
+     2943    0.004    0.000    0.734    0.000 selectors.py:403(select)
+     2943    0.729    0.000    0.729    0.000 {method 'poll' of 'select.poll' objects}
+        1    0.000    0.000    0.694    0.694 finish-turn.py:486(validate_queue)
+     9568    0.017    0.000    0.668    0.000 claim_maintenance.py:32(__call__)
+        1    0.000    0.000    0.644    0.644 claim_registry.py:129(shape)
+ 578433/1    0.421    0.000    0.643    0.643 claim_registry.py:99(check)
+        1    0.008    0.008    0.591    0.591 claim_registration.py:73(check_entries)
+       39    0.353    0.009    0.522    0.013 {method 'read' of '_io.TextIOWrapper' objects}
+       34    0.000    0.000    0.492    0.014 pathlib.py:1129(read_text)
+        1    0.022    0.022    0.428    0.428 lead_queue.py:968(check)
+    25087    0.304    0.000    0.406    0.000 claim_registry.py:176(markdown_links)
+     7979    0.013    0.000    0.366    0.000 claim_registry.py:359(local_target)
+        1    0.000    0.000    0.362    0.362 finish-turn.py:475(validate_append_only)
+        2    0.004    0.002    0.345    0.172 claim_registry.py:49(read_json)
+
+
