@@ -1,0 +1,28 @@
+// Full finite local-state inventory; only proved actual-power cases are counted as resolved.
+int total=0;int resolved=0;int formalzero=0;int pending=0;
+proc assess_template(matrix B,int pp,int d,int smallestN,int period,poly powerX,poly powerY){
+ def rr=basering;
+ total++;print("STATE p="+string(pp)+" d="+string(d)+" period="+string(period)+" size="+string(nrows(B)));
+ poly om=det(B);print("DETERMINANT=");print(om);
+ if(om==0){formalzero++;print("ZERO_FORMAL_TEMPLATE");return();}
+ poly rest=om;int cp=0;while(subst(rest,c,0)==0){rest=rest/c;cp++;}
+ poly low=subst(rest,c,0);int up=0;while(subst(low,u,0)==0){low=low/u;up++;}
+ print("NORMALIZED_CONSTANT_C=");print(low);
+ map local_power=rr,u,0,powerX,powerY;
+ poly probe=local_power(low);int vlow=0;
+ if(probe!=0){while(subst(probe,u,0)==0){probe=probe/u;vlow++;}}
+ if(probe!=0 && vlow<period && up+vlow<smallestN){
+  resolved++;print("PASS_ACTUAL p="+string(pp)+" d="+string(d)+" C_POWER="+string(cp)+" U_POWER="+string(up)+" LOCAL_ORDER="+string(vlow)+" COEFFICIENT="+string(subst(probe,u,0)));return();
+ }
+ pending++;print("PENDING_ACTUAL p="+string(pp)+" d="+string(d)+" C_POWER="+string(cp)+" U_POWER="+string(up)+" LOCAL_ORDER="+string(vlow)+" LOCAL_ZERO="+string(probe==0));
+ print("FACTORIZATION=");print(factorize(om));
+}
+ring R7=7,(u,c,x,y),dp;
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p7.sing"));
+ring R11=11,(u,c,x,y),dp;
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p11.sing"));
+ring R13=13,(u,c,x,y),dp;
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p13.sing"));
+if(total!=49 || resolved+formalzero+pending!=49){ERROR("incomplete49-state coverage");}
+print("DONE total="+string(total)+" resolved="+string(resolved)+" formal_zero="+string(formalzero)+" pending="+string(pending));
+quit;

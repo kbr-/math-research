@@ -1,0 +1,10 @@
+// Diagnostic of the two full alternative boundaries; zero is a boundary obstruction only.
+ring R=7,(u,c,x,y),dp;
+proc assess_alternative(matrix B,int cs,int smallestN,int n0){
+ print("ALTERNATIVE_STATE="+string(cs)+" SIZE="+string(nrows(B)));
+ poly om=det(B);print("DETERMINANT=");print(om);
+ if(om==0){print("ZERO_FORMAL_ALTERNATIVE");return();}
+ print("FACTORIZATION=");print(factorize(om));
+}
+execute(read("research/results/bmd-eight-small-prime-source-20261006/seven-alternative.sing"));
+quit;

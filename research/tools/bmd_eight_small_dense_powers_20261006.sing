@@ -1,0 +1,18 @@
+// The three pending ordinary dense states use the exact retained-y identities, valid at p>3.
+int checked=0;
+proc assess_template(matrix B,int pp,int d,int smallestN,int period,poly powerX,poly powerY){
+ int which=0;if(pp==11 && d==13){which=6;}if(pp==13 && d==8){which=6;}if(pp==13 && d==10){which=7;}if(which==0){return();}
+ def rr=basering;
+ poly om=det(B);poly P;poly hh;
+ if(which==6){map shift=rr,u,u^2*c,(u^2-1)*x-2*u*y,(u^2-1)*y+2*u*x;P=shift(om);hh=u^6*c*y+6*u^4*c*y+8*u^3*c*x+3*u^4*y+8*u^3*x-3*u^2*c*y-6*u^2*y-y;}
+ else{map rootshift=rr,u,c,(u^2-1)*x+2*u*y,(u^2-1)*y-2*u*x;poly tmp=rootshift(om);if(tmp/c^2!=0){ERROR("unexpected high C degree");return();}P=u^2*subst(tmp,c,0)+c*subst(tmp/c,c,0);hh=u^6*y+3*u^4*c*y-8*u^3*c*x+6*u^4*y-8*u^3*x-6*u^2*c*y-3*u^2*y-c*y;}
+ if(P!=-8*y*(u^2+1)^2*hh){ERROR("exact dense retained-y identity");return();}
+ map flat=rr,u,0,-2,0;poly want=16*u^3;if(which==6){want=-want;}if(flat(hh)!=want){ERROR("dense cubic certificate");return();}
+ checked++;print("PASS p="+string(pp)+" d="+string(d)+" state="+string(which)+" H_flat="+string(want)+"; y actual nonzero, error starts atp>3.");
+}
+ring R11=11,(u,c,x,y),dp;
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p11.sing"));
+ring R13=13,(u,c,x,y),dp;
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p13.sing"));
+if(checked!=3){ERROR("complete dense remainder");}
+quit;

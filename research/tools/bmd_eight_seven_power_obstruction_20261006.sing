@@ -1,0 +1,18 @@
+// The original conic boundary is genuinely zero on N=7^(16t+8)-1, not merely unresolved by truncation.
+ring R=7,(u,c,x,y,z),dp;
+int checked=0;
+proc assess_template(matrix B,int pp,int d,int smallestN,int period,poly powerX,poly powerY){
+ if(d!=9){return();}
+ poly om=det(B);poly F=(u^2*c+1)*y+u*(c-1)*x;
+ if(reduce(om,std(ideal(F)))!=0){ERROR("actual boundary determinant lacks stated factor");return();}
+ // z=u^q, C=z/u, X=2(u*z+1)/(u2+1), Y=-2(z-u)/(u2+1).
+ poly cleared=(u*z+1)*(-2*(z-u))+(z-u)*2*(u*z+1);
+ if(cleared!=0){ERROR("Frobenius specialization identity");return();}
+ if((7^8)%128!=65 || (7^8%128)^2%128!=1){ERROR("degree integrality congruence");return();}
+ checked++;print("PASS exact factor F=(u2*C+1)Y+u(C-1)X divides the p7,d9mod49 boundary determinant.");
+ print("For q=7^(16t+8),N=q-1,d=(q+319)/128, actual F=0 by the cleared identity.");
+ print("These are genuine sufficient-boundary failures, not original nonnormality claims.");
+}
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p7.sing"));
+if(checked!=1){ERROR("power-family obstruction coverage");}
+quit;
