@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statement 4. Continue the Nowicki head by deriving the actual full cofactor gcd's permutation, translation and flow restrictions at small primes. The <a href="#entry-2026-10-06-cube-reciprocal-degree-obstruction">reciprocal classification</a> permits extra Frobenius factors even below original degree \(p\); its proposed coordinate-degree exclusion fails.</p>
-<p>Test whether the source's additional symmetries exclude these factors. Retain coordinate/collision factors, multiplicities and the actual companion minors when the Abel scalar vanishes. A necessary classification without exclusion does not prove the threshold.</p>
+<p>Route item: cube-odd-characteristic, statement 2. Develop the next eligible parent, the <a href="#entry-2026-10-09-cube-supersession-route-review">Garcia–Voloch Wronskian lead</a>. Read its precise independence field and derivative conventions before transferring it to the original root-curve initial prefix.</p>
+<p>Test whether its ordinary-Wronskian range supplies anything beyond the existing normality bounds, using the <a href="#entry-2026-10-06-cube-osculating-rank-criterion">complete degree-one nonclassical control</a> and preserving the degree-two target. Existence of some nonzero higher Hasse minor does not by itself certify the first dimension-many columns.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97,9 +97,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-lead="entry-2026-10-09-cube-supersession-route-review:1"><a href="#entry-2026-10-09-cube-supersession-route-review">entry-2026-10-09-cube-supersession-route-review:1</a> (lead): Rings of constants of derivations in characteristic \(p\) (Nowicki, Polynomial derivations and their rings of constants, Toruń 1994, the characteristic-\(p\) chapters). Target: statement 4, the Darboux factors of lem:cub…<ul>
-<li data-check="entry-2026-10-06-cube-reciprocal-degree-obstruction:s1"><a href="#entry-2026-10-06-cube-reciprocal-degree-obstruction">entry-2026-10-06-cube-reciprocal-degree-obstruction:s1</a> (check): Determine the symmetry and flow restrictions actually inherited by a common divisor of the full reduced cofactor vector at small primes, and whether they exclude the new reciprocal Frobenius factors without assuming init…</li>
-</ul></li>
 <li data-lead="entry-2026-10-09-cube-supersession-route-review:2"><a href="#entry-2026-10-09-cube-supersession-route-review">entry-2026-10-09-cube-supersession-route-review:2</a> (lead): Garcia and Voloch, "Wronskians and linear independence in fields of prime characteristic" (Manuscripta Math. 59, 1987). Functions are linearly independent iff some Hasse–Schmidt Wronskian is nonzero, and the Hasse orders…</li>
 <li data-lead="entry-2026-10-09-cube-variable-degree-route-review:1"><a href="#entry-2026-10-09-cube-variable-degree-route-review">entry-2026-10-09-cube-variable-degree-route-review:1</a> (lead): Christol's theorem (Christol, Kamae, Mendès France and Rauzy, Bull. SMF 108, 1980): a power series over \(\mathbb F_q\) is algebraic iff its coefficient sequence is \(p\)-automatic. Target: statement 2. The Hasse jets of…</li>
 <li data-bridge="entry-2026-10-09-cube-variable-degree-route-review:1"><a href="#entry-2026-10-09-cube-variable-degree-route-review">entry-2026-10-09-cube-variable-degree-route-review:1</a> (bridge): Sorting and inversions (computer science). Along a cone arc the roots are ordered by valuation. The caterpillar is the sorted order, and lem:cube-geometric-cone-limit-types allows at most two displaced roots, like a perm…</li>
@@ -92937,6 +92934,74 @@ Every common divisor of the full cofactor vector divides \(\Phi_N\) and \(G'\), 
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">20.73 s</td></tr>
 <tr><td>Other external-tool windows</td><td class="elapsed">42.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.75 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-divisor-symmetry-audit" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-supersession-route-review:1" data-claims="lem:cube-cofactor-divisor-symmetry prop:matching-darboux-obstruction">
+<h3>6 October 2026 — Full cofactor symmetry does not exclude a common divisor</h3>
+<p class="entry-meta">Working proofs. Divisor symmetry audit. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 4 needs the actual full reduced cofactor gcd to be one. After correcting the reciprocal degree cutoff, the remaining proposal is to use the common divisor's permutation and translation symmetries. We derive exactly what the original source supplies, retain multiplicities, and test whether those properties alone exclude a nonconstant divisor.</p>
+<p><strong>General statement.</strong> <code>lem:cube-cofactor-divisor-symmetry</code> proves symmetry and translation invariance of the actual gcd whenever its cofactor vector is nonzero, without assuming the initial minor nonzero or the gcd monic. It specifies when a factor is forced to be Darboux. <code>prop:matching-darboux-obstruction</code> gives nonconstant collision-free symmetric translation-invariant Darboux polynomials in every even root count at an explicit prime range. These properties do not establish that such a polynomial divides an actual cofactor; they show why the proposed exclusion does not follow from symmetry alone.</p>
+<h4>The source's actual restrictions</h4>
+<p><strong>Lemma.</strong> Work in \(A=k[a_0,\ldots,a_{N-1}]\), \(\operatorname{char}k\ne2\), \(N\ge2\), with the unanchored raw reduced pair matrix \(P_N\) on columns \(0,\ldots,R\), \(R=\binom N2\). Suppose at least one maximal cofactor is nonzero, and let \(g\) be their gcd up to a scalar. Then \(g\) is homogeneous, symmetric and invariant under formal simultaneous root translation. If the initial minor \(\Phi_N\ne0\), then \(g\mid\gcd(\Phi_N,\delta\Phi_N)\), where \(\delta=\sum a_i^2\partial_{a_i}\). An irreducible factor \(\pi\mid g\) occurring only once in \(\Phi_N\) is Darboux. Without that multiplicity condition the derivative divisibility alone need not make \(\pi\), or \(g\), Darboux.</p>
+<p><strong>Proof of symmetry.</strong> The <a href="#cube-odd-schur-hull">raw Schur construction</a> reduces the fixed alternants \((Y-X)f_l(X,Y)\) modulo \(\prod_i(X-a_i)\) and \(\prod_i(Y-a_i)\). Their unique monic remainders have coefficients symmetric in all root labels. Thus every entry of \(P_N\), and every cofactor, is symmetric. The gcd is homogeneous because it divides a nonzero homogeneous cofactor. Permutations send \(g\) to scalar associates, defining a one-dimensional character of \(S_N\). This character is trivial or sign, also when the odd characteristic divides \(N!\), since every transposition has square one and all transpositions are conjugate.</p>
+<p>If it were sign, every transposition would negate \(g\), forcing its collision difference to divide \(g\): set the two roots equal and use \(2\ne0\). For every nonzero symmetric cofactor \(G\), the polynomial quotient \(G/g\) would also be alternating. Thus the Vandermonde \(V_N\) would divide every such quotient. Then \(gV_N\) would divide every cofactor, contradicting the definition of \(g\). Hence \(g\) is symmetric. This argument allows collision factors and does not use monicity.</p>
+<p><strong>Proof of translation.</strong> The actual raw column identity is
+\[
+ f_j(X+b,Y+b)=\sum_{i=0}^j(-1)^{j-i}\binom ji b^{j-i}f_i(X,Y).
+\]
+It follows by applying \(T\mapsto T/(1+bT)\) to the square-root source and subtracting its constant and linear terms. The coefficients are integral and the prefix change is unitriangular. Monic quotient translation and its exterior square give an invertible polynomial target change. Therefore simultaneous translation preserves the entire maximal-minor ideal over \(A[b]\), with no division by \(N\). Its gcd remains \(g\) after adjoining \(b\), by Gauss's lemma. Translation is an automorphism, so \(g(a+b)\) is a scalar associate of \(g(a)\) in \(A[b]\). Units there belong to \(k^\times\), and setting \(b=0\) makes the scalar one. This proves formal translation invariance, not just invariance at base-field points.</p>
+<p><strong>Proof of the derivative restriction.</strong> The <a href="#entry-2026-10-09-cube-boundary-abel-identity">Abel identity</a>, with all roots unanchored, expresses \(\delta\Phi_N\) as a polynomial multiple of \(\Phi_N\) plus a scalar multiple of an adjacent cofactor. Consequently \(g\mid\delta\Phi_N\), with no assumption that this scalar is invertible. To make the multiplicity issue exact, for any polynomial \(\Phi=\pi^eQ\), \(\pi\nmid Q\), one has
+\[
+ \delta\Phi=\pi^{e-1}(eQ\delta\pi+\pi\delta Q).
+\]
+Therefore
+\[
+ v_\pi\gcd(\Phi,\delta\Phi)=
+ \begin{cases}
+ e,& \pi\mid\delta\pi\text{ or }e=0\text{ in }k,\\
+ e-1,&\text{otherwise}.
+ \end{cases}
+ \tag{1}
+\]
+For the second case, reduction of the parenthesis modulo \(\pi\) is nonzero in the domain \(A/(\pi)\). For the first, the derivative is divisible by \(\pi^e\). This proves (1) in every characteristic. In particular, if \(e=1\) and \(\pi\mid g\), then \(\pi\mid\delta\pi\). If \(\Phi_N\) is squarefree, every factor of \(g\) is Darboux and their product \(g\) is Darboux. The lemma claims no such squarefreeness at the open primes. \(\square\)</p>
+<p><strong>Multiplicity control.</strong> In characteristic three, with three independent variables, let \(\pi=a_0+a_1+a_2\) and \(\Phi=\pi^2\). Both are symmetric and translation invariant. But \(\delta\pi=a_0^2+a_1^2+a_2^2\) is not divisible by \(\pi\): substituting \(a_2=-a_0-a_1\) gives \(2(a_0-a_1)^2\ne0\). Thus \(\gcd(\Phi,\delta\Phi)=\pi\) is not Darboux, although it has the two symmetries. This is an abstract control of (1), not a claim about the actual three-root initial minor, which is constant.</p>
+<h4>Symmetric Darboux polynomials survive too</h4>
+<p><strong>Proposition.</strong> Let \(N=2r\), \(r\ge2\), and let \(k\) have characteristic zero or odd characteristic \(p>r\). Sum over all perfect matchings \(\mathcal M\) of the \(N\) labels:
+\[
+ H_N(a)=\sum_{\mathcal M}\prod_{\{i,j\}\in\mathcal M}(a_i-a_j)^2.
+ \tag{2}
+\]
+Then \(H_N\ne0\), is homogeneous of degree \(N\), has degree two in each root, is symmetric and translation invariant, and has no collision factor. It satisfies
+\[
+ \delta H_N=2e_1 H_N,\qquad
+ H_N\left(\frac{a_i}{1-ta_i}\right)
+ =\frac{H_N(a)}{\prod_i(1-ta_i)^2}.
+ \tag{3}
+\]
+Thus even full formal flow invariance of a collision-free symmetric divisor does not force it to be constant.</p>
+<p><strong>Proof.</strong> Permuting labels permutes the matchings, and translation leaves each difference unchanged. Each term has degree \(2r=N\) and root degree at most two. The coefficient of the monomial \(a_0^2\cdots a_{r-1}^2\) is \(r!\): a contributing matching must pair every one of these \(r\) labels with a different label in the complementary set. These \(r!\) terms each contribute coefficient one. Since \(r!\ne0\) under the stated hypothesis, \(H_N\ne0\), and by symmetry its degree in every root is exactly two.</p>
+<p>Set the first \(r\) roots equal to zero and the remaining \(r\) equal to one. Only the same bipartite matchings survive, so the value is \(r!\ne0\). As \(r\ge2\), this configuration lies on a collision hyperplane. Hence its difference does not divide \(H_N\), and symmetry excludes every collision difference. Translation invariance then also excludes coordinate factors: if \(a_i\) divided \(H_N\), translating that root to zero formally would force \(H_N\) to vanish identically.</p>
+<p>The derivative of one squared difference is \(2(a_i+a_j)(a_i-a_j)^2\). Each label occurs once in each matching, so differentiating a product gives \(2e_1\) times that product. Summing proves the first identity in (3). Under the rational flow, a difference becomes \((a_i-a_j)/((1-ta_i)(1-ta_j))\). Each matching therefore has the same denominator \(\prod_i(1-ta_i)^2\), proving the second identity exactly. All identities are polynomial after clearing the displayed denominators; no ordinary exponential or factorial inversion is used. \(\square\)</p>
+<p>This matching sum is an elementary binary-form invariant construction, used here as a control, not claimed as an independently novel invariant. It does not assert that \(H_N\) divides \(\Phi_N\). For \(N\ge6\), its degree \(N\) is below \(\lambda_N=3\binom N4\), so the coarse total-degree bound on a possible common divisor does not exclude it. For example \(N=10,p=7\) has \(r!=120\ne0\bmod7\) and \(\deg H_N=10<630=\lambda_N\), within the prime range left by the quadratic cutoff. These are substitutions in the general proof, not an original determinant certificate.</p>
+<h4>The missing implication remains in the actual cofactors</h4>
+<p>The <a href="#entry-2026-10-06-cube-explicit-prime-bounds">large-prime gcd induction</a> uses more than these symmetries: the full leading cofactor vector makes \(g\) monic in every root, hence of root degree equal to its total degree, and nonzero on the root axes. Then its binary-face divisibility supplies the exclusion. The control (2) has root degree two and total degree \(N>2\); it vanishes on every axis. It cannot satisfy that monicity conclusion. At the open small primes the leading-vector transfer can collapse, so symmetry cannot replace its missing unit leading coefficient.</p>
+<p>The preceding <a href="#entry-2026-10-06-cube-reciprocal-degree-obstruction">reciprocal classification</a> classifies an irreducible Darboux factor once it is known to be one. Formula (1) shows why that condition cannot be assigned to every common divisor without inspecting multiplicities. Even when it applies, (2) shows that symmetric full-flow-invariant noncollision polynomials remain possible. Proving that none divides the actual cofactor vector still requires the original divisibility information, not a general constants theorem.</p>
+<p><strong>Follow-up.</strong> Closed: the Nowicki lead's constants classification is established with the correct degree accounting, but its proposed degree exclusion is false and its symmetry alternative leaves nonconstant allowed divisors. The actual polynomial cofactor divisibility remains the original missing condition. The queued symmetry sub-idea is answered by <code>lem:cube-cofactor-divisor-symmetry</code> and <code>prop:matching-darboux-obstruction</code>. Reopen with a concrete restriction on the actual cofactors that excludes the classified factors, rather than the constants description alone. Next eligible parent: Garcia–Voloch's Wronskian criterion for statement 2.</p>
+<p><strong>Verification gate.</strong> The cycle's sole isolated medium reviewer passed the symmetric-gcd argument with collision factors, polynomial-extension translation, multiplicity formula and control, matching coefficient and collision exclusion, and full flow law. It found no concrete gap or substantive unused hypothesis, and confirmed the distinction from actual cofactor divisibility. Verdict: <code>research/results/bmd-divisor-symmetry-20261006/review.txt</code>. Full dependencies re-read: raw Schur hull and its coefficient construction, raw translation proof, original cofactor threshold, Abel identity, complete explicit-prime induction, and reciprocal classification. The two displayed controls are proved by direct substitution and a counted matching coefficient; no numerical survey or new encoding is used.</p>
+<p><strong>Assessment and process.</strong> The source's unconditional symmetries are now separated from multiplicity-dependent Darboux assertions and from the stronger monicity that made the proved induction work. This closes the queued classification mechanism, not a top-level threshold obligation. The elementary invariant control exposed the missing source-specific information without factoring another large determinant.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-divisor-symmetry-20261006">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 16.51 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 6.84 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.74 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">32.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.98 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
