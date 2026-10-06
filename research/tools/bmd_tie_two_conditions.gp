@@ -57,7 +57,8 @@ state_shifts(m,pvec) = {
 }
 {
 MS = if (getenv("MS") == 0 || getenv("MS") == "", [2, 3, 4], eval(getenv("MS")));
-if ((getenv("QUADRIC") == "1" || getenv("STATE") == "1" || (getenv("STATE_RESUME") != 0 && getenv("STATE_RESUME") != "")) && (vecmin(MS) < 1 || vecmax(MS) > 2), error("Contiguous controls are sized only for m=1,2"));
+if ((getenv("STATE") == "1" || (getenv("STATE_RESUME") != 0 && getenv("STATE_RESUME") != "")) && (vecmin(MS) < 1 || vecmax(MS) > 2), error("State controls are sized only for m=1,2"));
+if (getenv("QUADRIC") == "1" && (vecmin(MS) < 1 || vecmax(MS) > 3), error("Direct quadric controls are sized only for m=1,2,3"));
 if (getenv("STATE_RESUME") != 0 && getenv("STATE_RESUME") != "",
   my(lines=readstr(getenv("STATE_RESUME")));
   foreach(MS,m,my(found=0);
@@ -113,7 +114,8 @@ foreach(MS, m,
   \\ QUADRIC=1: falsify the all-m sufficient condition that no root of D off c(c-1) satisfies
   \\ every adjugate-row compatibility quadric. Contiguity gives (e3(k),e3(k+1))^t = T(k,c)
   \\ (e2(k),e2(k+1))^t, det T=-2(k+1)/(3(1-c)); use adj(3(1-c)T) to avoid denominators.
-  \\ Only m=1,2: largest rational kernel is 6x7, then a 5x5 adjugate and five univariate gcds.
+  \\ Direct mode through m3: largest rational kernel is 9x10; the adjugate remains 5x5.
+  \\ m3 specifically tests the first higher-degree apparent factors, not original window rank.
   \\ A surviving common factor refutes this stronger coefficient-only exclusion; it does not refute window rank.
   if (getenv("QUADRIC") == "1",
     my(T0 = [3*(1+'c)+2*'c*d, 2*(d+1); -2*'c*(d+3), -2*(d+1)],
@@ -129,6 +131,9 @@ foreach(MS, m,
     emit(Str("gcd off c(c-1)=",Gq,"; degree=",poldegree(Gq,'c)));
     emit(Str("D factor degrees=",apply(z->poldegree(z,'c),factor(D)[,1]~)));
     emit(Str("surviving factor degrees=",apply(z->poldegree(z,'c),factor(Gq)[,1]~)));
+    for(j=1,4,my(Dj=st(gcd(D,subst(q[n+1],'k,d+j))));
+      emit(Str("apparent shift=",j,"; candidate=",Dj,"; candidate degree=",poldegree(Dj,'c),
+        "; compatibility gcd=",gcd(Dj,Gq))));
     next);
   \\ (cycle bmd-20261008-u, env RESID=1 only) normalized residuals at the roots of D: |sin| of the angle between the
   \\ e_2 block of the left kernel vector nu of C_5(z) and (e_2(d), e_2(d+1)), same for e_3; minimum per irreducible factor
