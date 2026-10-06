@@ -1,6 +1,7 @@
 """Field-level curation provenance and staleness; no automatic mathematical judgments."""
 from collections import Counter
 import hashlib
+from html import unescape
 import importlib.util
 import json
 from pathlib import Path
@@ -59,6 +60,8 @@ class Evidence:
         from notebooks import catalogue
         self.root, self.cache, self.notebooks, self.items, self.resolved = root, {}, {}, catalogue(root), {}
         self.articles = {}
+        self.sources, self.owners, self.partial_notebooks, self.ranges = {}, {}, {}, {}
+        self.reader = None
 
     def local(self, target):
         """local_target, resolved once per target."""
@@ -68,26 +71,71 @@ class Evidence:
 
     ARTICLE = re.compile(r'<article\b[^>]*\bid="([^"]+)"[^>]*>.*?</article>', re.S)
 
+    IDS = re.compile(r"""\bid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))""", re.I)
+
     def article(self, path, anchor):
-        """The excerpt of an article anchor without parsing the whole notebook: notebook-excerpt's excerpt of an
-        <article id> is its source text plus a newline (all 2097 articles of the four notebooks, 3 October 2026),
-        and parsing a 13 MB notebook took 0.9 s per check. None for other anchors, or text with a nested article."""
+        """Canonical nonnested article excerpts are their exact source text plus a newline."""
         if path not in self.articles:
-            self.articles[path] = {m.group(1): m.group(0) for m in self.ARTICLE.finditer(path.read_text())}
+            source = self.sources[path] = path.read_text()
+            matches = list(self.ARTICLE.finditer(source))
+            self.articles[path] = {m.group(1): m.group(0) for m in matches}
+            self.ranges[path] = [(m.start(), m.end(), m.group(1)) for m in matches
+                                 if m.group(0).count('<article') == 1]
         text = self.articles[path].get(anchor)
         return None if text is None or text.count('<article') != 1 else text + '\n'
 
     def excerpt(self, path, anchor):
-        """notebook-excerpt's excerpt of an anchor; the whole notebook is parsed only for non-article anchors."""
+        """Preserve the reader's exact excerpt; internal headings need only their containing article's prefix."""
         article = self.article(path, anchor)
         if article is not None:
             return article
-        if path not in self.notebooks:
+        if self.reader is None:
             spec = importlib.util.spec_from_file_location('notebook_excerpt', ROOT/'tools/notebook-excerpt.py')
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            self.notebooks[path] = module.Notebook(path.read_text())
-        return self.notebooks[path].excerpt(anchor)
+            self.reader = module.Notebook
+        if path in self.notebooks:
+            return self.notebooks[path].excerpt(anchor)
+        if path not in self.owners:
+            # Build this index only for fragment reads, in one source scan.
+            # Count noncanonical/encoded IDs too: ambiguity must retain the
+            # full reader's duplicate-anchor check.
+            ids = [(unescape(next(v for v in m.groups() if v is not None)), m.start())
+                   for m in self.IDS.finditer(self.sources[path])]
+            counts, owners, index = Counter(name for name, _ in ids), {}, 0
+            ranges = self.ranges[path]
+            for name, position in ids:
+                while index < len(ranges) and ranges[index][1] <= position:
+                    index += 1
+                if index < len(ranges) and ranges[index][0] <= position and counts[name] == 1:
+                    _, end, ident = ranges[index]
+                    owners[name] = (ident, end)
+            self.owners[path] = owners
+        owner = self.owners[path].get(anchor)
+        if owner is not None:
+            ident, end = owner
+            try:
+                parsed = self.partial_notebooks.get(path)
+                if parsed is None:
+                    parsed = self.reader(self.sources[path], end=end)
+                elif parsed.parsed_end < end:
+                    parsed.extend(end)
+                node = parsed.anchor(ident)
+                if node['tag'] != 'article' or node.get('end') != end:
+                    raise ValueError('Article boundary is not HTML structure')
+                self.partial_notebooks[path] = parsed
+                return parsed.excerpt(anchor)
+            except ValueError:
+                # Raw matches inside comments, attributes or TeX are not
+                # structure. Discard any partial state before the full fallback.
+                self.partial_notebooks.pop(path, None)
+        parsed = self.partial_notebooks.pop(path, None)
+        if parsed is None:
+            parsed = self.reader(self.sources[path])
+        else:
+            parsed.extend(len(self.sources[path]))
+        self.notebooks[path] = parsed
+        return parsed.excerpt(anchor)
 
     def sha256(self, target, normalization=None):
         key = (target, normalization)
@@ -126,8 +174,7 @@ class Evidence:
                     r'<(?:div|span)\b[^>]*\bdata-generated=[\"\']'
                     r'finish-turn-(?:producer|timing)-v1[\"\']', excerpt)
                 if generated:
-                    normalization = (ARTICLE_NORMALIZATION if self.article(path, anchor) is not None
-                                     or self.notebooks[path].anchor(anchor)['tag'] == 'article'
+                    normalization = (ARTICLE_NORMALIZATION if re.match(r'<article\b', excerpt, re.I)
                                      else FRAGMENT_NORMALIZATION)
         item = {'target': target, 'sha256': self.sha256(target, normalization)}
         if normalization is not None:

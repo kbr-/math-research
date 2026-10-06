@@ -117,6 +117,64 @@ class MaintenanceTests(unittest.TestCase):
         self.assertIsNone(evidence.article(path,'a1-part'))           # an inner anchor is parsed
         self.assertEqual(evidence.excerpt(path,'a1-part'),parsed.excerpt('a1-part'))
 
+    def test_internal_fragments_match_full_reader_without_parsing_later_articles(self):
+        source = (r"""<section id="record"><h2 id="outside">Record</h2>
+<article id="first"><h3>First</h3><h4 id='part'>Part</h4>
+<p>\(a<b\)</p><h5 id="child">Child</h5><p>Child proof.</p>
+<section id="nested"><h4 id="inside">Inside</h4><p>Nested proof.</p></section>
+<h4 id=last>Last</h4><p>Final proof.</p></article>
+<article id="later"><h3>Later</h3><h4 id="later-part">Later part</h4><p>Unrelated record.</p></article></section>""")
+        path = self.root/'research/nb.html'; path.write_text(source)
+        spec = importlib.util.spec_from_file_location('ne', TOOLS/'notebook-excerpt.py')
+        ne = importlib.util.module_from_spec(spec); spec.loader.exec_module(ne)
+        full, evidence = ne.Notebook(source), Evidence(self.root)
+        for name in ('part', 'child', 'nested', 'inside', 'last'):
+            self.assertEqual(evidence.excerpt(path, name), full.excerpt(name))
+        self.assertEqual(evidence.notebooks, {})
+        self.assertEqual(len(evidence.partial_notebooks), 1)
+        parsed = next(iter(evidence.partial_notebooks.values()))
+        self.assertNotIn('later', [node['anchor'] for node in parsed.nodes])
+        self.assertEqual(evidence.excerpt(path, 'later-part'), full.excerpt('later-part'))
+        self.assertIs(evidence.partial_notebooks[path], parsed)  # extend, never reparse earlier input
+        self.assertEqual(evidence.excerpt(path, 'part'), full.excerpt('part'))
+        self.assertEqual(evidence.excerpt(path, 'outside'), full.excerpt('outside'))
+        self.assertIn(path, evidence.notebooks)
+        with self.assertRaises(ValueError):
+            ne.Notebook(source, end=source.index('<h4'))
+        with self.assertRaises(ValueError):
+            ne.Notebook(source[:source.index('<article id="later">')])
+
+    def test_fragment_duplicate_ids_retain_full_reader_errors(self):
+        for attribute in ('id="dup"', "ID='dup'", 'id=dup', 'id="d&#117;p"'):
+            with self.subTest(attribute=attribute):
+                source = ('<section id="record"><article id="a"><h4 id="dup">First</h4>'
+                          '</article><article id="b"><h4 '+attribute+'>Second</h4>'
+                          '</article></section>')
+                path = self.root/'research/nb.html'; path.write_text(source)
+                with self.assertRaisesRegex(ValueError, 'found 2'):
+                    Evidence(self.root).excerpt(path, 'dup')
+
+    def test_fragment_ignores_article_text_inside_comments_scripts_and_attributes(self):
+        fake = '<article id="fake"><h4 id="phantom">Not a heading</h4></article>'
+        for wrapper in ('<!--'+fake+'-->', '<script>const x = \''+fake+'\';</script>',
+                        "<div title='"+fake+"'></div>", r"\("+fake+r"\)"):
+            with self.subTest(wrapper=wrapper):
+                path = self.root/'research/nb.html'
+                path.write_text('<section id="record">'+wrapper+'</section>')
+                with self.assertRaisesRegex(ValueError, 'found 0'):
+                    Evidence(self.root).excerpt(path, 'phantom')
+
+    def test_fragment_decodes_unique_ids_and_falls_back_for_nested_articles(self):
+        spec = importlib.util.spec_from_file_location('ne', TOOLS/'notebook-excerpt.py')
+        ne = importlib.util.module_from_spec(spec); spec.loader.exec_module(ne)
+        for source in (
+            '<article id="a"><h4 id="p&#97;rt">Proof</h4><p>x</p></article>',
+            '<article id="a"><article id="b"><h4 id="part">Proof</h4></article></article>',
+        ):
+            path = self.root/'research/nb.html'; path.write_text(source)
+            self.assertEqual(Evidence(self.root).excerpt(path, 'part'),
+                             ne.Notebook(source).excerpt('part'))
+
     def test_only_articles_changed_since_the_base_are_rehashed(self):
         import subprocess
         from claim_maintenance import UnchangedArticles

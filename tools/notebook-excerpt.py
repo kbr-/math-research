@@ -66,16 +66,31 @@ def readable_text(source):
 
 
 class Notebook(HTMLParser):
-    def __init__(self, source):
+    def __init__(self, source, *, end=None):
         super().__init__(convert_charrefs=False)
+        if end is not None and not 0 < end <= len(source):
+            raise ValueError("Invalid notebook prefix boundary")
         self.source, self.nodes, self.stack = source, [], []
         self.offsets = [0]
         for line in source.splitlines(keepends=True):
             self.offsets.append(self.offsets[-1] + len(line))
-        # Preserve offsets while protecting TeX comparisons from HTML parsing.
-        self.feed(MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source))
+        # Mask the complete source before slicing: a fake article can occur
+        # inside a TeX expression whose closing delimiter is beyond the prefix.
+        self.masked = MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
+        self.parsed_end = 0
+        self.extend(len(source) if end is None else end)
+
+    def extend(self, end):
+        if not self.parsed_end <= end <= len(self.source):
+            raise ValueError("Invalid notebook prefix extension")
+        if hasattr(self, "by_anchor"):
+            del self.by_anchor
+        self.feed(self.masked[self.parsed_end:end])
         self.close()
-        if self.stack:
+        self.parsed_end = end
+        # Evidence may stop at a verified article end. Only its enclosing
+        # sections may remain open; ordinary full-file reads stay strict.
+        if self.stack and (end == len(self.source) or any(n["tag"] != "section" for n in self.stack)):
             raise ValueError("Unclosed notebook section or heading")
 
     def position(self):
