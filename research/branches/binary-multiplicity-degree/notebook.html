@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statement 2. Continue the Christol head's symbolic compatibility child using the <a href="#entry-2026-10-05-cube-polynomial-frobenius-splitting">exact Frobenius split</a>. Determine the branch-divisibility cost of reconstructing from one nonzero residue component, then test whether coupling components can lift a marked failure without that cost. The <a href="#entry-2026-10-06-cube-eventual-normality">finite-exception theorem</a> makes infinite propagation sufficient to exclude an exception; the <a href="#entry-2026-10-06-cube-exception-propagation">residual budget</a> excludes common-factor powers alone. Preserve the source, exact image and original initial prefix.</p>
+<p>Route item: cube-odd-characteristic, statement 2. Continue the Christol head's existing symbolic-compatibility child during its earned two-cycle extension. The <a href="#entry-2026-10-06-cube-sparse-frobenius-image">sparse-image lemma</a> excludes supports of size at most \((p-1)/2\). For the first remaining size \((p+1)/2\), derive the branch-value constraints and test whether their polynomial lifts can meet the required marked jet lengths within the original degree bounds. Preserve the exact image and generic parameters; an indefinitely repeatable generic kernel lift would contradict <a href="#entry-2026-10-06-cube-eventual-normality">finite exceptions</a>.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -93604,6 +93604,85 @@ whose right-hand side is a \(K\)-point. The morphism \(C\to J\), \(R\mapsto a[R-
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 36.66 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 25.63 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-06-cube-sparse-frobenius-image" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-09-cube-variable-degree-route-review:1" data-spell-extend="2" data-claims="lem:cube-sparse-frobenius-image">
+<h3>6 October 2026 — Sparse Frobenius reconstruction forces the full branch factor</h3>
+<p class="entry-meta">Working proof; sparse-support obstruction. Sparse inverse reconstruction. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 2 now has only finitely many possible exceptional degrees at fixed \((n,p)\), but no cutoff. The <a href="#entry-2026-10-06-cube-cofinite-goal-review">review</a> asks whether inverse Frobenius reconstruction propagates a marked failure through the exact polynomial image. Begin with one nonzero component, then allow several. The test ends with a valid original-kernel lift or an explicit branch-divisibility obstruction, not an arbitrary tuple in the larger target space.</p>
+<p><strong>General statement.</strong> <code>lem:cube-sparse-frobenius-image</code> proves that an original polynomial whose exact split has at most \((p-1)/2\) nonzero residue components is divisible by the full branch product \(W=\prod_iw_i\). In the nonspecial range such a polynomial cannot lie in the full initial-jet kernel at the normalized mark. Thus every possible failure needs at least \((p+1)/2\) genuinely coupled components. The algebraic support threshold is sharp among separated root configurations, but no normality failure is constructed.</p>
+<h4>The exact image, not arbitrary residue tuples</h4>
+<p>Retain the <a href="#entry-2026-10-05-cube-polynomial-frobenius-splitting">polynomial Frobenius split</a> over a perfect field \(k\) of odd characteristic \(p\). Let \(a_i\) be distinct and nonzero, \(\ell_i=1+a_iT\), \(w_i^2=\ell_i\), \(R_S=\prod_{i\in S}\ell_i\), \(R=R_{[n]}=W^2\), and \(b=(p-1)/2\). For \(f\in V_d\), its components \(g_r=\mathcal D_r(f)\), \(0\le r<p\), satisfy
+\[
+R^b f=\sum_{r=0}^{p-1}T^r g_r^p,\qquad
+g_r=\sum_S w_S Q_{r,S}(T).
+\]
+The exact image requires, for every \(S\),
+\[
+R_{S^c}^{\,b}\mid\sum_rT^r Q_{r,S}^{\,p}, \tag{1}
+\]
+together with the original quotient-degree bounds. The combined tuple is injective; no individual-component injectivity is assumed. The argument below uses (1) only as a necessary condition and retains \(f\in V_d\) throughout.</p>
+<h4>Sparse Frobenius image</h4>
+<p><strong>Lemma (sparse Frobenius image).</strong> In this setting, let \(f\ne0\) and \(I=\{r:g_r\ne0\}\). If \(m=|I|\le b\), then every \(g_r\) is divisible by \(W\) in the affine coordinate ring, and
+\[
+g_r=W h_r,\qquad
+f=W\sum_{r\in I}T^r h_r^p \tag{2}
+\]
+for polynomials \(h_r\) in that ring. In particular \(W\mid f\).</p>
+<p>For \(n\ge3,d\ge n-2\), no such \(f\) lies in the kernel of the original length-\(M\) jet map at \(P=(T,w)=(0,1,\ldots,1)\), where
+\[
+D=2^{n-1},\quad g=1+(n-3)2^{n-2},\quad M=Dd+1-g.
+\]
+Consequently every nonzero vector in that kernel has \(|I|\ge(p+1)/2\). These statements hold for each separated branch configuration, not only generic parameters.</p>
+<p><strong>Proof of divisibility.</strong> Fix \(S\) and \(i\notin S\), and put \(z_i=-1/a_i\ne0\). In the parameter \(U=T-z_i\), each \(Q_{r,S}(z_i+U)^p\) has constant term \(Q_{r,S}(z_i)^p\) and no terms of degrees one through \(p-1\). Since \(b<p\), condition (1) gives
+\[
+\sum_{r\in I}\binom rj z_i^{\,r-j}Q_{r,S}(z_i)^p=0,
+\qquad 0\le j<b. \tag{3}
+\]
+Order the distinct residues as \(r_1<\cdots<r_m\). The first \(m\) rows of (3) have determinant
+\[
+z_i^{\,\sum r_\nu-m(m-1)/2}
+\frac{\prod_{\mu<\nu}(r_\nu-r_\mu)}
+{\prod_{j=0}^{m-1}j!}\ne0. \tag{4}
+\]
+Indeed the binomial polynomials in \(r\) have degrees \(j\) and leading coefficients \(1/j!\), giving the ordinary Vandermonde determinant. All denominators and differences are units modulo \(p\), and \(z_i\ne0\).</p>
+<p>Thus \(Q_{r,S}(z_i)=0\) for every \(r\in I\). Doing this for every \(i\notin S\) gives \(R_{S^c}\mid Q_{r,S}\). Write \(Q_{r,S}=R_{S^c}H_{r,S}\). Since
+\[
+w_SR_{S^c}=Ww_{S^c},
+\]
+we obtain \(g_r=W\sum_Sw_{S^c}H_{r,S}=Wh_r\). Reconstruction and \(W^p/R^b=W\) prove (2). This includes the one-component case exactly; adding components up to \(b\) does not remove its forced branch zeros. \(\square\)</p>
+<p><strong>Proof of the marked consequence.</strong> Let \(H\) be the reduced infinity divisor on the smooth root curve. The existing complete-source proof gives \(V_d=H^0(C,\mathcal O(dH))\), \(\deg H=D\), and the displayed genus and dimension in this range. The function \(W\) has a simple zero at every point over each of the \(n\) finite branch values, and total zero degree \(nD\). Those points are distinct from \(P\). The polynomial in (2) is regular at all finite points, so none of these zeros can cancel. The effective section divisor \(\operatorname{div}(f)+dH\) has degree \(dD\). Hence
+\[
+\operatorname{ord}_P f\le dD-nD<M,
+\]
+because \(nD>g-1=(n-3)D/2\). This excludes a full initial-jet kernel vector. Possible cancellation of leading poles at infinity only strengthens the bound. \(\square\)</p>
+<h4>A sharp algebraic control and the remaining coupling</h4>
+<p>The implication \(m\le b\Rightarrow W\mid f\) cannot be extended to \(m=b+1\) for all separated configurations. Over an algebraically closed field of characteristic \(p\), choose \(c\ne0\) and
+\[
+R(T)=1+(T^p-T)/c.
+\]
+It has degree \(n=p\), nonzero derivative \(-1/c\), and no zero at \(T=0\); it therefore factors as the required product of \(p\) distinct normalized linear factors. For \(f=1\), the reconstruction input is
+\[
+R(T)^b=\sum_{r=0}^{b}\binom br(-T/c)^r(1+T^p/c)^{b-r}.
+\]
+Every coefficient polynomial here is nonzero, and the residue classes are exactly \(0,\ldots,b\). Thus exactly \(b+1\) components survive, while \(W\nmid1\). This checks the sharpness of the algebraic divisibility boundary in every odd characteristic. The constant function is not a marked failure witness; the control proves no exception to normality.</p>
+<p>The full image conditions allow cancellation between more than \(b\) residues at each branch. In characteristic three this first happens with two components; for \(p\ge5\), two components still lie inside the obstruction. No theorem here says that the remaining coupled tuples exist with all the required marked vanishings. The <a href="#entry-2026-10-05-cube-kz-pair-erasure">selected-coefficient erasure</a> is a different operation, and the old exact image cannot be replaced by that extraction.</p>
+<p><strong>Follow-up.</strong> Continuing: inverse reconstruction from one component, and from every support of size at most \(b\), cannot lift a full marked failure. The unresolved question is the first genuinely coupled support of size \(b+1\), preserving both (1) and the quotient-degree bounds. Develop it inside the existing symbolic-compatibility child, rather than queueing a second copy.</p>
+<p class="spell-extension" data-statement="Small-prime stable orders"><strong>Progress.</strong> <code>cor:cube-eventual-normality</code>, proved during this spell, reduces statement 2 to finitely many degrees for every fixed dimension and odd prime. This is an original all-dimensional advance, not a finite check. <strong>Next.</strong> Use the same exact marked-kernel description to test a \(b+1\)-component inverse Frobenius lift: a valid indefinitely repeatable lift over the same generic parameter field would eliminate isolated generic exceptions, while its branch and degree constraints may identify the necessary cutoff obstruction. Extend the parent by two research entries and reassess fresh progress at that boundary.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed the local Vandermonde argument, exact-image divisibility, full branch factor and marked zero count, with no unused hypothesis. Its <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-inverse-frobenius-20261006/review.txt">report</a> confirms that sharpness is an all-prime control at \(n=p\), not a claim for every fixed dimension. Re-read the full polynomial splitting proof and its exact image, the current complete-source/pole argument, and the selected KZ coefficient-erasure record. Searches by Frobenius residue support, branch divisibility and Hasse Vandermonde found no existing registered sparse-image result. The sharpness control is a symbolic all-prime identity, not a numerical trial.</p>
+<p><strong>Assessment.</strong> No further normality range is added in this cycle. The inverse-lift question now has a proved lower bound on the number of coupled components, and the common branch factor explains why the sparse attempt fails. The cofinite theorem remains the spell's substantive advance; full coupled nonvanishing or an effective exceptional-degree bound is still required.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-inverse-frobenius-20261006">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 47.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 53.78 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 27.00 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">18.93 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.51 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
