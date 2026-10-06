@@ -1,0 +1,94 @@
+// Actual Frobenius variation of the full p7,D0 source, seven Dmod49 states.
+// Use the established degree-three cut basis; outer poles are removed by an actual order-N section.
+ring rr=(7,u),(t,c,x,y),dp;
+execute(read("research/results/bmd-eight-septenary-variation-20261006/boundary-data.sing"));
+proc clip(poly P,int bound){poly out=0;int idx;for(idx=0;idx<=bound;idx++){out=out+subst(P/t^idx,t,0)*t^idx;}return(out);}
+proc vv(int j){int k=((j%4)+4)%4;if(k==0){return(x);}if(k==1){return(y);}if(k==2){return(-x);}return(-y);}
+poly Qpoly=c*Kernel;poly Qrev=0;int j;int k;
+for(j=0;j<=12;j++){Qrev=Qrev+subst(Qpoly/t^j,t,0)*t^(12-j);}
+matrix Qv[13][1];for(j=0;j<=12;j++){Qv[j+1,1]=subst(Qpoly/t^j,t,0);}
+if(size(ideal(Boundary*Qv))!=0 || size(ideal(LeftKernel*Boundary))!=0){ERROR("both fixed boundary kernels");}
+number ss=u^2+1/u^2;number half=1/2;number quarter=1/4;
+int state;int ds;int nl;int which;int al;int be;int sign;int bb;int hh;int el;int sh;int a;int phase;
+poly FP;poly FM;poly Hchar;poly Rhigh;poly qh;poly shape;poly piece;poly GP;poly GM;
+poly up;poly down;poly lowquot;poly Rpoly;poly derivR;poly hu;poly hd;
+poly rawScalar;poly shifted;poly normalized;poly prod;poly scalarFactor;poly first;
+matrix residual[2][7];matrix bv[13][1];matrix ans[1][1];
+int certified=0;
+for(state=0;state<7;state++){
+ ds=7*state;nl=(8*ds+8)%49;
+ FP=clip((1-u*t)^nl*Qrev,24);FM=clip(c*(1-t/u)^nl*Qpoly,24);
+ GP=0;GM=0;
+ for(which=1;which<=4;which++){
+  if(which==1){al=5;be=4;sign=1;}if(which==2){al=4;be=4;sign=1;}
+  if(which==3){al=2;be=7;sign=-1;}if(which==4){al=3;be=7;sign=-1;}
+  bb=al+be;Hchar=0;
+  for(j=0;j<=24;j++){if((j-bb)%2==0){Hchar=Hchar+half*(subst(FP/t^j,t,0)+sign*subst(FM/t^j,t,0))*t^j;}}
+  for(j=0;j<10-bb;j++){if(subst(Hchar/t^j,t,0)!=0){ERROR("quotient top degree");}}
+  Rhigh=clip(Hchar*(1+t^2)^(49-al)*(1-t^2)^(49-be)/t^(10-bb),22);
+  for(hh=0;hh<=10;hh++){
+   qh=subst(Rhigh/t^(2*hh),t,0);
+   if((hh==1 || hh==2) && qh!=0){ERROR("forbidden actual core direction");}
+   el=(2*ds-hh)%49;if(el<0){el=el+49;}
+   shape=clip((1-ss*t^2+t^4)^el,22-2*hh);
+   Rhigh=clip(Rhigh-qh*t^(2*hh)*shape,22);
+   sh=(el+7)%49;
+   piece=clip(-quarter*(el div 7)*qh*t^(10-bb+2*hh)*(1+t^2)^al*(1-t^2)^be*clip((1-ss*t^2+t^4)^sh,20),20);
+   GP=GP+piece;GM=GM+sign*piece;
+  }
+  if(clip(Rhigh,21)!=0){ERROR("full high quotient reconstruction");}
+ }
+ up=clip(GP*(1-u*t)^((49-nl)%49),13);
+ lowquot=GM/c;if(lowquot*c!=GM){ERROR("exact low-tail c division");}
+ down=clip(lowquot*(1-t/u)^((49-nl)%49),13);
+ Rpoly=down;for(j=0;j<=13;j++){Rpoly=Rpoly+subst(up/t^j,t,0)*t^(40-j);}
+ hu=clip((1-u*t)^nl*up,20);hd=clip(c*(1-t/u)^nl*down,20);
+ for(j=0;j<=13;j++){if(subst((GP-hu)/t^j,t,0)!=0 || subst((GM-hd)/t^j,t,0)!=0){ERROR("outer-pole cancellation");}}
+ for(j=0;j<=6;j++){residual[1,j+1]=subst((GP-hu)/t^(14+j),t,0);residual[2,j+1]=subst((GM-hd)/t^(14+j),t,0);}
+ derivR=diff(Rpoly,t);
+ for(k=0;k<=1;k++){a=1-2*k;bv[k+1,1]=-((-2+3*u*a)*subst(Rpoly,t,a)+(a-u)*subst(derivR,t,a));}
+ // M2mod4, M'=M+14 is0mod4: minus the original cut of h has positive phase here.
+ bv[3,1]=0;bv[4,1]=0;
+ for(j=0;j<=40;j++){
+  poly coeffj=subst(Rpoly/t^j,t,0);
+  bv[3,1]=bv[3,1]+coeffj*vv(j);
+  bv[4,1]=bv[4,1]+coeffj*(((j-3)*(u^2+1)+1)*vv(j-1)-u*vv(j));
+ }
+ bv[5,1]=residual[1,4]+residual[2,4]-residual[1,2]-residual[2,2];
+ bv[6,1]=residual[1,6]+residual[2,6]-3*(residual[1,2]+residual[2,2]);
+ bv[7,1]=residual[1,1]+residual[2,1];bv[8,1]=residual[1,5]+residual[2,5];
+ bv[9,1]=residual[1,7]+residual[2,7]-3*(residual[1,3]+residual[2,3]);
+ bv[10,1]=residual[1,4]-residual[2,4]-2*(residual[1,2]-residual[2,2]);
+ bv[11,1]=residual[1,6]-residual[2,6]-residual[1,2]+residual[2,2];
+ bv[12,1]=residual[1,3]-residual[2,3]-3*(residual[1,1]-residual[2,1]);
+ bv[13,1]=residual[1,5]-residual[2,5]-3*(residual[1,1]-residual[2,1]);
+ ans=LeftKernel*bv;rawScalar=ans[1,1];
+ print("STATE Dmod49="+string(ds)+" Nmod49="+string(nl));
+ for(j=1;j<=13;j++){print("b"+string(j)+"="+string(bv[j,1]));}
+ if(rawScalar==0){print("ZERO_FIRST_EFFECTIVE_SCALAR");}
+ else{
+  print("RAW_SCALAR_FACTORS=");print(factorize(rawScalar));
+  int n0=nl;while(n0%4!=0){n0=n0+49;}
+  number aa=1;number b0=0;number temp;
+  for(k=1;k<=n0;k++){temp=u*aa+b0;b0=u*b0-aa;aa=temp;}
+  map shift=rr,t,u^n0*c,aa*x+b0*y,aa*y-b0*x;
+  shifted=shift(rawScalar);list fac=factorize(shifted);prod=1;int cp=0;
+  for(k=1;k<=size(fac[1]);k++){prod=prod*fac[1][k]^fac[2][k];if(fac[1][k]==c){cp=fac[2][k];}}
+  if(prod!=shifted){ERROR("exact scalar factorization");}
+  scalarFactor=fac[1][1];normalized=shifted/(scalarFactor*c^cp);
+  if(normalized*scalarFactor*c^cp!=shifted){ERROR("exact normalization");}
+  string literal=string(normalized);ring polynomialRing=7,(u,t,c,x,y),dp;
+  execute("poly certificate="+literal+";");poly origin=subst(subst(subst(subst(certificate,c,0),x,2),y,0),t,0);
+  int auditOrder;poly leading=0;
+  for(auditOrder=0;auditOrder<49;auditOrder++){leading=subst(origin/u^auditOrder,u,0);if(leading!=0){break;}}
+  string leadtext=string(leading);string back=string(certificate);
+  setring rr;execute("poly roundtrip="+back+";");if(roundtrip!=normalized){ERROR("polynomial roundtrip");}
+  string outcome="CERTIFIED";if(auditOrder==49){outcome="UNRESOLVED";}else{certified++;}
+  print(outcome+" Dmod49="+string(ds)+" n0="+string(n0)+" c_power="+string(cp)+" scalar="+string(scalarFactor)+" order="+string(auditOrder)+" coefficient="+leadtext+" polynomial_roundtrip=PASS");
+  string out="research/results/bmd-eight-septenary-variation-20261006/state-"+string(ds)+".sing";
+  write(out,"matrix Variation[13][1];");for(j=1;j<=13;j++){write(out,"Variation["+string(j)+",1]="+string(bv[j,1])+";");}
+  write(out,"poly RepairScalar="+string(rawScalar)+";");
+ }
+}
+print("DONE certified="+string(certified)+" of7 actual-power states");
+quit;

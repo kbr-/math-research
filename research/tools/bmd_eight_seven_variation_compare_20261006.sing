@@ -1,0 +1,24 @@
+// Literal polynomial round trips avoid ambiguous maps between parameter coefficient fields.
+ring Source=(7,u),(t,c,x,y),dp;
+execute(read("research/results/bmd-eight-septenary-variation-20261006/boundary-data.sing"));
+execute(read("research/results/bmd-eight-septenary-variation-20261006/state-21.sing"));
+list ev;list el;int j;
+for(j=1;j<=13;j++){ev[j]=string(u^64*Variation[j,1]);el[j]=string(u^64*LeftKernel[1,j]);}
+string es=string(u^128*RepairScalar);
+ring Polynomial=7,(u,t,c,x,y),dp;
+matrix EV[13][1];matrix EL[1][13];
+for(j=1;j<=13;j++){execute("EV["+string(j)+",1]="+ev[j]+";");execute("EL[1,"+string(j)+"]="+el[j]+";");}
+execute("poly ES="+es+";");
+list bv;list bl;for(j=1;j<=13;j++){bv[j]=string(EV[j,1]);bl[j]=string(EL[1,j]);}string bs=string(ES);
+setring Source;
+for(j=1;j<=13;j++){execute("poly pv="+bv[j]+";");execute("poly pl="+bl[j]+";");if(pv!=u^64*Variation[j,1] || pl!=u^64*LeftKernel[1,j]){ERROR("exact cleared-vector roundtrip");}}
+execute("poly ps="+bs+";");if(ps!=u^128*RepairScalar){ERROR("exact cleared-scalar roundtrip");}
+execute(read("research/results/bmd-eight-septenary-variation-20261006/full-control-values.sing"));
+map evaluation=Polynomial,PointU,0,PointC,PointX,PointY;
+matrix got=evaluation(EV);matrix left=evaluation(EL);poly omega=evaluation(ES);
+for(j=1;j<=13;j++){if(got[j,1]!=PointU^64*Actual[j,1]){ERROR("independent full-cut mismatch at row"+string(j));}}
+matrix paired=left*Actual;
+if(omega!=PointU^64*paired[1,1] || paired[1,1]==0){ERROR("actual scalar comparison");}
+print("PASS all13 symbolic entries match independent full-source differentiation and outer-pole removal.");
+print("PASS exact polynomial round trips and nonzero paired scalar="+string(paired[1,1]/PointU^64));
+quit;
