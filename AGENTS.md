@@ -2,456 +2,410 @@
 
 These are explicit user constraints. Honor later explicit user overrides.
 
-[COMPUTATION_RULES.md](COMPUTATION_RULES.md) owns resource limits, execution,
-numerical checks, timing-tool operation and result retention: read it before
-computations. All substantial local jobs use `./compute.sh`, sharing at most
-14 logical CPUs and 10 GB combined RAM plus swap. Never bypass failed controls,
-and install no dependencies or virtual environments without explicit approval.
-This file owns research workflow, notebook editing and Git/publication policy.
+[COMPUTATION_RULES.md](COMPUTATION_RULES.md) owns resource limits, execution, numerical checks,
+timing-tool operation and result retention: read it before computations. All substantial local jobs
+use `./compute.sh`, sharing at most 14 logical CPUs and 10 GB combined RAM plus swap. Never bypass
+failed controls, and install no dependencies or virtual environments without explicit approval. This
+file owns research workflow, notebook editing and Git/publication policy.
 
-Keep the framework small: revise/consolidate existing guidance before adding it,
-state each rule in one authoritative place and link elsewhere. Remove obsolete
-history and repetition while preserving explicit constraints. Prefer actionable
-rules to growing checklists or one-off setup narratives.
+Keep the framework small: revise/consolidate existing guidance before adding it, state each rule in
+one authoritative place and link elsewhere. Remove obsolete history and repetition while preserving
+explicit constraints. Prefer actionable rules to growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
 
-- Named prompts (Resume, Branch, Spin, Formalize, Spin-formalize, Spin-formalize-parallel,
-  Fossick and others) are defined in [PROMPTS.md](PROMPTS.md); read the named section
-  before acting on one.
-- Restore with `python3 tools/resume.py`, then read its listed bounded parts.
-  For Codex resume calls, omit `max_output_tokens` on `exec_command` and omit
-  `max_output_tokens` on any enclosing `functions.exec` directive: keep their
-  default output allowances for both preparation and part reads.
-  The bundle includes `research/notes/RESUME.md`, the computation rules, notebook
-  living sections/gaps and compact contents; this file is not bundled, since the harness
-  loads it itself, also after compaction. Retry missing parts without preparing another resume or concatenating
-  the full file into one tool response. Follow the guide without rereading bundled files,
-  then load only relevant records. Do not load the growing record or index wholesale.
-  Keep `php_codex_handoff/` immutable; its import is complete. New work belongs
-  outside it, usually in `research/`. Use targeted source passages.
-- On opening a research cycle, state the concrete missing implication needed for
-  the goal, how this task tests/discharges it, and what evidence ends the test or
-  changes the next action. Route IDs are navigation, not a substitute for that
-  explanation or evidence of progress. Prioritize a necessary unproved obligation,
-  and among those the item the latest review names highest risk: work on it first,
-  developing its leads and bridges when it lacks a mechanism, rather than moving to
-  lower-risk items (user, 1 October 2026: "focus on highest risk item first");
-  distinguish a sufficient endpoint from stronger conveniences before adding steps.
-  Read **Open statements** first and name the statement and top-level remaining-route
-  item advanced; do not inherit the previous entry's gap without assessing the line.
-  Read in full every parked or linked item that **Proposed next step** names on that
-  route. Before reopening an older question, search for later links to its anchor
-  and read those entries; restate restart conditions/calibrations only from the
-  latest applicable entry after checking for later fulfillment or replacement.
-- Restricted examples must test a named general hypothesis, obstruction or
-  mechanism. A growing case list or equivalent reformulation leaves the general
-  implication open. `finish-turn.py` enforces this: each research entry has a
-  "General statement." paragraph citing the registered claim ID of its all-parameter
-  claim, two finite-check-only entries in a row on one route are rejected (judged from
-  the registered claims, not status words), and at most three of any five consecutive research
+- Named prompts (Resume, Branch, Spin, Formalize, Spin-formalize, Spin-formalize-parallel, Fossick
+  and others) are defined in [PROMPTS.md](PROMPTS.md); read the named section before acting on one.
+- Restore with `python3 tools/resume.py`, then read its listed bounded parts. For Codex resume
+  calls, omit `max_output_tokens` on `exec_command` and omit `max_output_tokens` on any enclosing
+  `functions.exec` directive: keep their default output allowances for both preparation and part
+  reads. The bundle includes `research/notes/RESUME.md`, the computation rules, notebook living
+  sections/gaps and compact contents; this file is not bundled, since the harness loads it itself,
+  also after compaction. Retry missing parts without preparing another resume or concatenating the
+  full file into one tool response. Follow the guide without rereading bundled files, then load only
+  relevant records. Do not load the growing record or index wholesale. Keep `php_codex_handoff/`
+  immutable; its import is complete. New work belongs outside it, usually in `research/`. Use
+  targeted source passages.
+- On opening a research cycle, state the concrete missing implication needed for the goal, how this
+  task tests/discharges it, and what evidence ends the test or changes the next action. Route IDs
+  are navigation, not a substitute for that explanation or evidence of progress. Prioritize a
+  necessary unproved obligation, and among those the item the latest review names highest risk: work
+  on it first, developing its leads and bridges when it lacks a mechanism, rather than moving to
+  lower-risk items (user, 1 October 2026: "focus on highest risk item first"); distinguish a
+  sufficient endpoint from stronger conveniences before adding steps. Read **Open statements** first
+  and name the statement and top-level remaining-route item advanced; do not inherit the previous
+  entry's gap without assessing the line. Read in full every parked or linked item that **Proposed
+  next step** names on that route. Before reopening an older question, search for later links to its
+  anchor and read those entries; restate restart conditions/calibrations only from the latest
+  applicable entry after checking for later fulfillment or replacement.
+- Restricted examples must test a named general hypothesis, obstruction or mechanism. A growing case
+  list or equivalent reformulation leaves the general implication open. `finish-turn.py` enforces
+  this: each research entry has a "General statement." paragraph citing the registered claim ID of
+  its all-parameter claim, two finite-check-only entries in a row on one route are rejected (judged
+  from the registered claims, not status words), and at most three of any five consecutive research
   entries on a route may register new finite checks other than refutations, so case lists cannot
-  grow behind small lemmas;
-  `./compute.sh start` prints the matching warnings before the work begins. State
-  that implication and test it against known obstructions, hard instances and allowed equivalent representations before further refinement;
-  a surrogate becoming simple need not resolve the original obligation. Check preserved
-  hypotheses and accumulated composition costs against the goal's budget.
-  If these fail, or repeated cycles leave the same required implication untouched,
-  address the failure in the next research cycle (a different mechanism, a lead or
-  bridge) rather than refining the same mechanism, and record it for the scheduled
-  review; a weak assessment or a descent of more than one reduction below every listed
-  open statement is likewise carried to that review, which revises the list. Recheck
-  standing hypotheses against the goal's instances every cycle; an obstruction showing
-  that those instances violate them ends the line's relevance.
-  Stop a series of runs once its prediction has passed or failed at the sizes that
-  test it. A larger size, degree or sample needs a stated question that the finished
-  runs cannot answer, and an answer that would change the goal's missing implication;
-  sharper constants for a result off the critical path are not a reason.
-  Once the cases answer their question, develop the general proposition. Before
-  fitting a formula, combine computed witnesses by every recorded applicable
-  composition rule (products, restrictions, transports). A conjectured sufficient
-  condition for a size lower bound must use the size and must not exclude
-  refutations of every size in a complete proof system.
-- Distinguish working proofs, imported statements, conditional results, finite
-  checks, conjectures and refutations. Match source hypotheses, encodings and
-  versions; preserve original joint degrees and exact parameter accounting.
-  Record full arguments, actual tests, dependencies and remaining gaps. Use
-  meaningful falsifying tests/controls; do not rerun old suites to simulate progress.
-- Before proposing a next step or naming/developing a result, use
-  `tools/search-claims.py WORDS` or `--show LABEL`. Unfiltered display searches also
-  surface up to three historical statement matches. For a generic mechanism, follow
-  relevant matches and search the immutable [historical index](php_codex_handoff/manuscript/CLAIM_INDEX.md)
-  further when needed; bounded suggestions do not establish absence of prior work.
-  Use
-  `tools/claim-dependencies.py packet --claim ID` for bounded orientation, or
-  `tools/claim-index.py list --fields id,summary --format tsv` for a complete minimal
-  inventory when needed. Packets omit proof details and sometimes hypotheses:
-  before reliance read the exact statement, proof and applicable corrections.
-  Re-read dependencies from their full notebook records, including conventions,
-  never from summaries or memory. When a user or source points to a publication or
-  Lean file, read its theorem statement first. Read every version listed under
-  "Newer versions" by the search tool and compare field, range and encoding
-  hypotheses individually; a later/formalized version need not be stronger.
-  Before committing to a direction, inspect the relevant claims' reviewed
-  dependencies and correction/refinement links using `claim-index.py graph` and
-  exact metadata. Check conditional premises, stronger available versions and
-  concrete transformations in relevant older proofs before imposing a new
-  interface requirement; follow only dependencies that matter to the argument.
-  Missing edges do not establish independence, and an impact warning is not a
-  verdict that a claim is false.
-  Label rediscoveries/refinements and link their original records.
-  Search each newly formulated lemma, not only the opening question, by technique
-  name, the record's synonyms/structural names, dual or adjoint formulation, and
-  statement content words with `tools/search-claims.py`. Test it against every
-  recorded counterexample, refutation and obstruction for those objects. Before
-  drafting its proof, check yourself whether the record already implies it; include
-  the relevant prior results in the end-of-cycle review brief. Before drafting a
-  corollary, check for an earlier result under fewer hypotheses. State compositions as lemmas in one common
-  setting with a complete proof, not a reference to a sketch.
-- Once the question, argument and evidence are stable, make one focused correctness
-  review of every new mathematical lemma, theorem, rule or encoding before assigning
-  its status.
-  Run the exhaustive checker for any rule, tree or encoding change before relying
-  on it. Near the end of the cycle, use at most one fresh-context reviewer subagent
-  for the consolidated review, given only the stable drafts and dependency
-  anchors/excerpts, to try to break the arguments and identify unused hypotheses.
-  Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
-  The user authorizes and encourages spawning reviewers for any needed review in
-  this and all future Spin runs; no separate confirmation is needed.
-  In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
-  reasoning, regardless of the main agent's reasoning level; do not inherit its
-  high or higher setting. Claude Code uses the committed `medium-reviewer` agent
-  type (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses
-  `tools/codex_reviewer.py` with an owned handle and brief file; see [the native reviewer](tools/CODEX.md).
-  This creates an isolated root reviewer because child agents inherit live parent permissions. If medium
-  effort is unavailable, never substitute a higher-effort reviewer: leave the gate
-  incomplete (conditional status) and file a user request.
-  Resolve every reported gap and drop or justify each unused hypothesis. Brief
-  reviewers narrowly: exact files/anchors, at most one or two named claim searches,
-  dependency excerpts in a scratch file, and required changes as short bullets.
-  Use one consolidated pass by default. Follow up with that same reviewer only
-  to resolve a concrete gap or check a correction that adds or strengthens a claim;
-  do not spawn additional reviewers in the cycle. Defer optional extensions.
-  Record dependencies re-read, checks and reviewer verdict in a short **Verification gate.** paragraph,
-  not the status line. An incomplete gate means conditional status, not a working
-  proof; correctness takes precedence over cycle speed.
-  Prepare staging paths, commit message and focused metadata checks during review.
-  Then run a sequential checkpoint batch: preparation marker, checks, provenance,
-  timing export/archive, staging, commit, and any authorized push. Stop on failure;
-  finish the local checkpoint before developing the next result.
-- Measure every research turn from as early as practical, including reading,
-  failed attempts and retries: `./compute.sh start TURN`. Codex uses active session
-  metadata; omit `--model` rather than supply a guessed or placeholder label. For
-  other agents or unavailable metadata, follow the computation policy's fallback.
-  Disclose work before instrumentation. Follow the computation policy for phase
-  markers, protected commands, honest timing scope, numerical accuracy and outputs.
-  Keep full output on disk and display bounded excerpts. Focus checks on mathematics
-  and touched links; run site/rendering checks only for layout/tool changes or a
-  concrete rendering concern. Do not display PNG previews unless requested.
+  grow behind small lemmas; `./compute.sh start` prints the matching warnings before the work
+  begins. State that implication and test it against known obstructions, hard instances and allowed
+  equivalent representations before further refinement; a surrogate becoming simple need not resolve
+  the original obligation. Check preserved hypotheses and accumulated composition costs against the
+  goal's budget. If these fail, or repeated cycles leave the same required implication untouched,
+  address the failure in the next research cycle (a different mechanism, a lead or bridge) rather
+  than refining the same mechanism, and record it for the scheduled review; a weak assessment or a
+  descent of more than one reduction below every listed open statement is likewise carried to that
+  review, which revises the list. Recheck standing hypotheses against the goal's instances every
+  cycle; an obstruction showing that those instances violate them ends the line's relevance. Stop a
+  series of runs once its prediction has passed or failed at the sizes that test it. A larger size,
+  degree or sample needs a stated question that the finished runs cannot answer, and an answer that
+  would change the goal's missing implication; sharper constants for a result off the critical path
+  are not a reason. Once the cases answer their question, develop the general proposition. Before
+  fitting a formula, combine computed witnesses by every recorded applicable composition rule
+  (products, restrictions, transports). A conjectured sufficient condition for a size lower bound
+  must use the size and must not exclude refutations of every size in a complete proof system.
+- Distinguish working proofs, imported statements, conditional results, finite checks, conjectures
+  and refutations. Match source hypotheses, encodings and versions; preserve original joint degrees
+  and exact parameter accounting. Record full arguments, actual tests, dependencies and remaining
+  gaps. Use meaningful falsifying tests/controls; do not rerun old suites to simulate progress.
+- Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
+  `--show LABEL`. Unfiltered display searches also surface up to three historical statement matches.
+  For a generic mechanism, follow relevant matches and search the immutable [historical
+  index](php_codex_handoff/manuscript/CLAIM_INDEX.md) further when needed; bounded suggestions do
+  not establish absence of prior work. Use `tools/claim-dependencies.py packet --claim ID` for
+  bounded orientation, or `tools/claim-index.py list --fields id,summary --format tsv` for a
+  complete minimal inventory when needed. Packets omit proof details and sometimes hypotheses:
+  before reliance read the exact statement, proof and applicable corrections. Re-read dependencies
+  from their full notebook records, including conventions, never from summaries or memory. When a
+  user or source points to a publication or Lean file, read its theorem statement first. Read every
+  version listed under "Newer versions" by the search tool and compare field, range and encoding
+  hypotheses individually; a later/formalized version need not be stronger. Before committing to a
+  direction, inspect the relevant claims' reviewed dependencies and correction/refinement links
+  using `claim-index.py graph` and exact metadata. Check conditional premises, stronger available
+  versions and concrete transformations in relevant older proofs before imposing a new interface
+  requirement; follow only dependencies that matter to the argument. Missing edges do not establish
+  independence, and an impact warning is not a verdict that a claim is false. Label
+  rediscoveries/refinements and link their original records. Search each newly formulated lemma, not
+  only the opening question, by technique name, the record's synonyms/structural names, dual or
+  adjoint formulation, and statement content words with `tools/search-claims.py`. Test it against
+  every recorded counterexample, refutation and obstruction for those objects. Before drafting its
+  proof, check yourself whether the record already implies it; include the relevant prior results in
+  the end-of-cycle review brief. Before drafting a corollary, check for an earlier result under
+  fewer hypotheses. State compositions as lemmas in one common setting with a complete proof, not a
+  reference to a sketch.
+- Once the question, argument and evidence are stable, make one focused correctness review of every
+  new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
+  checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
+  at most one fresh-context reviewer subagent for the consolidated review, given only the stable
+  drafts and dependency anchors/excerpts, to try to break the arguments and identify unused
+  hypotheses. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
+  The user authorizes and encourages spawning reviewers for any needed review in this and all future
+  Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set
+  reviewer subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not
+  inherit its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
+  (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses
+  `tools/codex_reviewer.py` with an owned handle and brief file; see [the native
+  reviewer](tools/CODEX.md). This creates an isolated root reviewer because child agents inherit
+  live parent permissions. If medium effort is unavailable, never substitute a higher-effort
+  reviewer: leave the gate incomplete (conditional status) and file a user request. Resolve every
+  reported gap and drop or justify each unused hypothesis. Brief reviewers narrowly: exact
+  files/anchors, at most one or two named claim searches, dependency excerpts in a scratch file, and
+  required changes as short bullets. Use one consolidated pass by default. Follow up with that same
+  reviewer only to resolve a concrete gap or check a correction that adds or strengthens a claim; do
+  not spawn additional reviewers in the cycle. Defer optional extensions. Record dependencies
+  re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not the status
+  line. An incomplete gate means conditional status, not a working proof; correctness takes
+  precedence over cycle speed. Prepare staging paths, commit message and focused metadata checks
+  during review. Then run a sequential checkpoint batch: preparation marker, checks, provenance,
+  timing export/archive, staging, commit, and any authorized push. Stop on failure; finish the local
+  checkpoint before developing the next result.
+- Measure every research turn from as early as practical, including reading, failed attempts and
+  retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
+  supply a guessed or placeholder label. For other agents or unavailable metadata, follow the
+  computation policy's fallback. Disclose work before instrumentation. Follow the computation policy
+  for phase markers, protected commands, honest timing scope, numerical accuracy and outputs. Keep
+  full output on disk and display bounded excerpts. Focus checks on mathematics and touched links;
+  run site/rendering checks only for layout/tool changes or a concrete rendering concern. Do not
+  display PNG previews unless requested.
 
 ## Notebook and claim metadata
 
-- `notebook.html` owns the main goal; each registered side notebook owns its
-  thread's current mathematical state and full record. Select the thread via
-  [the side-notebook workflow](tools/SIDE_NOTEBOOKS.md); never replace main
-  living sections with a side goal. Edit the selected notebook directly;
-  `python3 server.py` serves the live notebook on localhost:8000
-  and offers a reload when it changes. `index.html` owns layout. `research/notes/RESUME.md`
-  is navigation only: change it for workflow/navigation, not new findings.
-  Supporting notes hold evidence, proofs and dated audits, not duplicate living
-  summaries. Label historical snapshots; Git already preserves prior overviews.
-- After every research turn, review/update **Where we stand**, **Open statements**,
-  **The remaining route** (highest risk first), **Proposed next step**, and **Working
-  mathematical context**. **Open statements** lists at most about five self-contained
-  open statements whose conjunction with proved results gives the goal, each with its
-  status and the instances it must cover; every cycle names the one it advances. Lead with the selected thread's goal, keep the route/next step on
-  its path, and
-  mention side publications briefly. Do not invent progress. Keep exact setup,
-  degree conventions, linked hypotheses/proofs and unresolved dependencies needed
-  next; consolidate by topic/purpose, not by adding a subsection every turn.
-- All pre-record regions have [configured budgets](research/context-budgets.json).
-  Run `python3 tools/notebook_context.py` while drafting; see
-  [counting/enforcement](research/notes/CONTEXT_BUDGET_PLAN.md#budget-operation).
-  Soft excess requires your editorial review; any section or aggregate hard excess
-  blocks finalization and CI. New sections need budget allocation. Only an explicit
-  user override authorizes raising/waiving hard limits; record it transparently.
-  Consolidate yourself without asking the user to edit. Preserve essential
-  hypotheses/warnings and link full arguments/history in the unlimited record;
+- `notebook.html` owns the main goal; each registered side notebook owns its thread's current
+  mathematical state and full record. Select the thread via [the side-notebook
+  workflow](tools/SIDE_NOTEBOOKS.md); never replace main living sections with a side goal. Edit the
+  selected notebook directly; `python3 server.py` serves the live notebook on localhost:8000 and
+  offers a reload when it changes. `index.html` owns layout. `research/notes/RESUME.md` is
+  navigation only: change it for workflow/navigation, not new findings. Supporting notes hold
+  evidence, proofs and dated audits, not duplicate living summaries. Label historical snapshots; Git
+  already preserves prior overviews.
+- After every research turn, review/update **Where we stand**, **Open statements**, **The remaining
+  route** (highest risk first), **Proposed next step**, and **Working mathematical context**. **Open
+  statements** lists at most about five self-contained open statements whose conjunction with proved
+  results gives the goal, each with its status and the instances it must cover; every cycle names
+  the one it advances. Lead with the selected thread's goal, keep the route/next step on its path,
+  and mention side publications briefly. Do not invent progress. Keep exact setup, degree
+  conventions, linked hypotheses/proofs and unresolved dependencies needed next; consolidate by
+  topic/purpose, not by adding a subsection every turn.
+- All pre-record regions have [configured budgets](research/context-budgets.json). Run `python3
+  tools/notebook_context.py` while drafting; see
+  [counting/enforcement](research/notes/CONTEXT_BUDGET_PLAN.md#budget-operation). Soft excess
+  requires your editorial review; any section or aggregate hard excess blocks finalization and CI.
+  New sections need budget allocation. Only an explicit user override authorizes raising/waiving
+  hard limits; record it transparently. Consolidate yourself without asking the user to edit.
+  Preserve essential hypotheses/warnings and link full arguments/history in the unlimited record;
   preserve unique substance durably before shortening. Do not duplicate Git snapshots.
-- Append a dated Research-record entry for **every research turn**, including
-  unsuccessful attempts, obstructions and turns with no useful result. State the
-  question/approach, actual outcome and remaining gap honestly; invent no lemma to
-  justify an entry. All substantial new mathematics belongs there **in full**;
-  supporting notes/chat alone are insufficient. The record has no size limit.
-  Routine setup/admin turns need no mathematical entry.
-- Use MathJax for inline mathematical notation as well as displayed equations;
-  reserve code formatting for program identifiers and source references.
-- Give each article a stable anchor, descriptive title/date and explicit status
-  (working proof, conditional result, conjecture, finite check, refutation, etc.).
-  Include assumptions, precise claim, complete argument, dependencies, parameter/
-  degree costs and checks. Keep `<p class="entry-meta">` at most 300 characters
-  before the producer credit added from the timing session. Do not number cycles;
-  use anchors, and route IDs for parallel formalization entries. The status line
-  contains the status and at most one scope clause, then a descriptive cycle label;
-  details belong in the entry's sections.
-  Name new lemmas, theorems, corollaries and conjectures in one to four plain,
-  descriptive words. Variants get their own name or a meaningful qualifier, never
-  letter codes or prime/digit/letter suffixes. Follow the descriptive names already
-  used in the main notebook; cite older coded results descriptively, usually using
-  their claim ID's words. The finisher rejects new letter-code result names outside
-  tables.
-- Tag articles with `data-kind="research|review|formalization"` and `data-route`,
-  naming a top-level remaining-route `data-route-item` slug (or `side-...`), never
-  a sub-gap. Route reviews come once in seven entries: six research entries, then a
-  review (user, 3 October 2026: "Drop to one in seven"); the finisher rejects both a
-  seventh research entry in a row and an earlier review. A review is goal-level
-  (`data-scope="goal"`) exactly when its line's open-item count has not dropped since
-  the review ten or more research entries back, and ordinary otherwise (user, 3 October
-  2026); the finisher enforces both directions and `compute.sh start` prints which one
-  is due. A review states the line's general claim, what the main goal needs,
-  a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
-  the next step on the highest-risk item. Under an **Obstacle** heading it states precisely what the
-  line is stuck on. Outside leads and Absurd bridges exist to answer that obstacle, not as items of
-  their own: choose them by asking which theorem, in any field, solves a problem of this shape, and
-  end each with `<strong>Answers.</strong>` saying how it would resolve the obstacle (user, 26
-  September 2026: "They are supposed to provide answers to our current obstacles"; the finisher
-  checks both). Outside draining mode (defined below), it has an **Outside leads** section (the
-  finisher requires at least three): ideas from other areas of mathematics, each a named
-  theorem or source rather than a field, with the open statement it targets and where it
-  would break, including leads the record names but never followed. It also has an
-  **Absurd bridges** section (at least two): areas that never stood near these objects
-  because nobody thought of applying them here, from any field (mathematics, computer
-  science, theoretical physics, chemistry or anything else), each with the translation that would carry
-  the objects across, what a theorem there would give, and the smallest test of the
-  translation. Run every cheap test named in these sections within the review cycle itself, and end
-  each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
-  the reason (the finisher checks this); falsified items stay listed and count toward the minimums
-  (user, 25 September 2026). Outside draining, the review marks its three most promising passed Outside
-  leads and two most promising passed bridges with `<li data-pick>` (or all passed items when fewer pass);
-  only these are queued and the rest are dropped at once (user, 5 October 2026). A
-  picked item is a lead to develop, not only to list: every picked, unclosed item waits in the notebook's
-  **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no word budget;
-  restoration reads its first five items), FIFO, maintained per [tools/lead_queue.py](tools/lead_queue.py).
-  A review appends its picks at the end. A research entry develops at most one item, always
-  the head, tagged `data-lead` or `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>`
-  Closed, Developed or Continuing. Squeeze an item until it can produce nothing more, not until its first
-  usable result (user, 3 October 2026): Continuing whenever its translation still bears on an open
-  statement, naming and where possible making the concrete next attempt; Developed only when its results
-  leave it no remaining application to an open statement; Closed only for a reason the attempt found
-  (a restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
+- Append a dated Research-record entry for **every research turn**, including unsuccessful attempts,
+  obstructions and turns with no useful result. State the question/approach, actual outcome and
+  remaining gap honestly; invent no lemma to justify an entry. All substantial new mathematics
+  belongs there **in full**; supporting notes/chat alone are insufficient. The record has no size
+  limit. Routine setup/admin turns need no mathematical entry.
+- Use MathJax for inline mathematical notation as well as displayed equations; reserve code
+  formatting for program identifiers and source references.
+- Give each article a stable anchor, descriptive title/date and explicit status (working proof,
+  conditional result, conjecture, finite check, refutation, etc.). Include assumptions, precise
+  claim, complete argument, dependencies, parameter/ degree costs and checks. Keep `<p
+  class="entry-meta">` at most 300 characters before the producer credit added from the timing
+  session. Do not number cycles; use anchors, and route IDs for parallel formalization entries. The
+  status line contains the status and at most one scope clause, then a descriptive cycle label;
+  details belong in the entry's sections. Name new lemmas, theorems, corollaries and conjectures in
+  one to four plain, descriptive words. Variants get their own name or a meaningful qualifier, never
+  letter codes or prime/digit/letter suffixes. Follow the descriptive names already used in the main
+  notebook; cite older coded results descriptively, usually using their claim ID's words. The
+  finisher rejects new letter-code result names outside tables.
+- Tag articles with `data-kind="research|review|formalization"` and `data-route`, naming a top-level
+  remaining-route `data-route-item` slug (or `side-...`), never a sub-gap. Route reviews come once
+  in seven entries: six research entries, then a review (user, 3 October 2026: "Drop to one in
+  seven"); the finisher rejects both a seventh research entry in a row and an earlier review. A
+  review is goal-level (`data-scope="goal"`) exactly when its line's open-item count has not dropped
+  since the review ten or more research entries back, and ordinary otherwise (user, 3 October 2026);
+  the finisher enforces both directions and `compute.sh start` prints which one is due. A review
+  states the line's general claim, what the main goal needs, a falsification attempt, an
+  evidence-based qualitative assessment of **that line only**, and the next step on the highest-risk
+  item. Under an **Obstacle** heading it states precisely what the line is stuck on. Outside leads
+  and Absurd bridges exist to answer that obstacle, not as items of their own: choose them by asking
+  which theorem, in any field, solves a problem of this shape, and end each with
+  `<strong>Answers.</strong>` saying how it would resolve the obstacle (user, 26 September 2026:
+  "They are supposed to provide answers to our current obstacles"; the finisher checks both).
+  Outside draining mode (defined below), it has an **Outside leads** section (the finisher requires
+  at least three): ideas from other areas of mathematics, each a named theorem or source rather than
+  a field, with the open statement it targets and where it would break, including leads the record
+  names but never followed. It also has an **Absurd bridges** section (at least two): areas that
+  never stood near these objects because nobody thought of applying them here, from any field
+  (mathematics, computer science, theoretical physics, chemistry or anything else), each with the
+  translation that would carry the objects across, what a theorem there would give, and the smallest
+  test of the translation. Run every cheap test named in these sections within the review cycle
+  itself, and end each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified
+  or "Not run:" and the reason (the finisher checks this); falsified items stay listed and count
+  toward the minimums (user, 25 September 2026). Outside draining, the review marks its three most
+  promising passed Outside leads and two most promising passed bridges with `<li data-pick>` (or all
+  passed items when fewer pass); only these are queued and the rest are dropped at once (user, 5
+  October 2026). A picked item is a lead to develop, not only to list: every picked, unclosed item
+  waits in the notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living
+  section; no word budget; restoration reads its first five items), FIFO, maintained per
+  [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
+  entry develops at most one item, always the head, tagged `data-lead` or
+  `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>` Closed, Developed or
+  Continuing. Squeeze an item until it can produce nothing more, not until its first usable result
+  (user, 3 October 2026): Continuing whenever its translation still bears on an open statement,
+  naming and where possible making the concrete next attempt; Developed only when its results leave
+  it no remaining application to an open statement; Closed only for a reason the attempt found (a
+  restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
   result). Closed and Developed remove the item. Four consecutive research entries are the default
-  spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the current
-  spell/extension period materially advances a named open statement and a concrete next necessary
-  implication uses the same mechanism. Record that evidence and next attempt using
-  [the queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
+  spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
+  current spell/extension period materially advances a named open statement and a concrete next
+  necessary implication uses the same mechanism. Record that evidence and next attempt using [the
+  queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
   there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
-  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every item, also during backpressure, is developed in its own entry; batch
-  triage is retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a
-  time"). Research entries carry no Outside leads or Absurd bridges of their own (user, 9 October 2026);
-  undone work they name goes under Sub-ideas. An item closed too early
-  is reopened by a follow-up list item ending `<strong>Follow-up.</strong> Reopened: <reason>` and goes
-  to the tail (`lead_queue.py append`). A queue audit (`data-kind="audit"`, outside the review cadence) lists
-  ideas that older reviews named outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`;
-  all of them are queued ("when unsure, queue it"). Any entry lists the questions, checks and builds it
-  names and leaves undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`); they join
-  the queue nested under the item they belong to (user, 3 October 2026: "I want it to look like a nested
-  list of entries"), a sub-idea's development counting toward its parent's spell; a check is Developed
-  only with evidence that resolves, a build only with its opened task or its path. The user may pick any
-  item out of order (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and
-  an item waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
-  follow-ups). The queue section's attributes set, per notebook, the entry kinds that count, backpressure
-  and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details. Backpressure: at 50
-  top-level items the queue drains (`data-draining="true"`), and every research entry develops the head
-  or its first sub-idea until 20 remain;
-  then work returns to the route, or to a better route the leads opened. While the queue is draining,
-  reviews produce no Outside leads or Absurd bridges: omit both sections and assess existing work
-  (user, 5 October 2026). Review cadence and the other review requirements still apply. Reviews report only follow-ups
-  whose status changed. The finisher checks all of this against HEAD and `compute.sh start` prints the
-  queue's state and head. A one-step objection
-  (a structural remark, a record match, one encoding tried) falsifies only that formulation. Before
-  a review declares an open statement without mechanism, or moves cycles away from it, each "Not
-  run" item and each item closed by such an objection that bears on that statement gets a
-  development cycle: read the source in full, and try other encodings, formulations and settings
-  where the objection does not apply (user, 26 September 2026: "Did you make an honest attempt at
-  developing some of these in order to solve A1?"). In the user's words (25 September 2026): "absurd bridges can reach for
-  mathematics, computer science, theoretical physics, quantum fucking chemistry, I don't
-  give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
-  every cycle, not only when the user names a field.
-  Proposed next step names its route item.
-  While the goal is open that step is always research: never park, pause or stop the
-  goal, or wait for a user decision; when recorded routes are closed, propose and test
-  a new idea. Once the goal is proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)).
-  During an authorized Spin, continue the next cycle or review in the current turn;
-  possible user redirection is no reason to idle or request a check-in. Low-yield
-  cycles, corrections and hard next steps call for developing the latest review's
-  Outside leads and Absurd bridges, not stopping the loop while the goal is open.
-  Explain progress, obstructions and remaining uncertainty; do not invent numerical
-  probabilities for research prospects. A probability requires a stated quantitative
-  method and evidence, not an uncalibrated impression.
-- Keep entries chronological and append-only, including opinions/assessments even
-  when the user objects. Withdraw/correct/retract in a new dated entry linking the
-  old anchor; update living status and correction metadata. Never silently rewrite
-  prior mathematics to match later results. Link repairs and presentation-only
-  changes that leave the text unchanged, such as non-breaking spaces, are allowed.
-  `tools/check-append-only.py` checks HEAD at finalization and must pass against
-  `origin/main` before a push, unless the user explicitly overrides the check.
+  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every item,
+  also during backpressure, is developed in its own entry; batch triage is retired (user, 9 October
+  2026: "Revert it back to the state where each item was done one at a time"). Research entries
+  carry no Outside leads or Absurd bridges of their own (user, 9 October 2026); undone work they
+  name goes under Sub-ideas. An item closed too early is reopened by a follow-up list item ending
+  `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A
+  queue audit (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named
+  outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued
+  ("when unsure, queue it"). Any entry lists the questions, checks and builds it names and leaves
+  undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`); they join the queue
+  nested under the item they belong to (user, 3 October 2026: "I want it to look like a nested list
+  of entries"), a sub-idea's development counting toward its parent's spell; a check is Developed
+  only with evidence that resolves, a build only with its opened task or its path. The user may pick
+  any item out of order (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>`
+  paragraph), and an item waiting on the user's answer stays queued and passed over (`Waiting:` and
+  `Unblocked:` follow-ups). The queue section's attributes set, per notebook, the entry kinds that
+  count, backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
+  Backpressure: at 50 top-level items the queue drains (`data-draining="true"`), and every research
+  entry develops the head or its first sub-idea until 20 remain; then work returns to the route, or
+  to a better route the leads opened. While the queue is draining, reviews produce no Outside leads
+  or Absurd bridges: omit both sections and assess existing work (user, 5 October 2026). Review
+  cadence and the other review requirements still apply. Reviews report only follow-ups whose status
+  changed. The finisher checks all of this against HEAD and `compute.sh start` prints the queue's
+  state and head. A one-step objection (a structural remark, a record match, one encoding tried)
+  falsifies only that formulation. Before a review declares an open statement without mechanism, or
+  moves cycles away from it, each "Not run" item and each item closed by such an objection that
+  bears on that statement gets a development cycle: read the source in full, and try other
+  encodings, formulations and settings where the objection does not apply (user, 26 September 2026:
+  "Did you make an honest attempt at developing some of these in order to solve A1?"). In the user's
+  words (25 September 2026): "absurd bridges can reach for mathematics, computer science,
+  theoretical physics, quantum fucking chemistry, I don't give a fuck. That's why they are absurd."
+  Reaching for other areas is the agent's job at every cycle, not only when the user names a field.
+  Proposed next step names its route item. While the goal is open that step is always research:
+  never park, pause or stop the goal, or wait for a user decision; when recorded routes are closed,
+  propose and test a new idea. Once the goal is proved, a Spin loop stops
+  ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the next cycle or review in
+  the current turn; possible user redirection is no reason to idle or request a check-in. Low-yield
+  cycles, corrections and hard next steps call for developing the latest review's Outside leads and
+  Absurd bridges, not stopping the loop while the goal is open. Explain progress, obstructions and
+  remaining uncertainty; do not invent numerical probabilities for research prospects. A probability
+  requires a stated quantitative method and evidence, not an uncalibrated impression.
+- Keep entries chronological and append-only, including opinions/assessments even when the user
+  objects. Withdraw/correct/retract in a new dated entry linking the old anchor; update living
+  status and correction metadata. Never silently rewrite prior mathematics to match later results.
+  Link repairs and presentation-only changes that leave the text unchanged, such as non-breaking
+  spaces, are allowed. `tools/check-append-only.py` checks HEAD at finalization and must pass
+  against `origin/main` before a push, unless the user explicitly overrides the check.
 - Historical labels link directly to Markdown statement/proof anchors using
-  `php_codex_handoff/manuscript/CLAIM_INDEX.md`. Use public GitHub file URLs in the
-  notebook so links work locally and on Pages; verify file/anchor locally and read
-  local excerpts when available. Mathematical corrections require new entries.
+  `php_codex_handoff/manuscript/CLAIM_INDEX.md`. Use public GitHub file URLs in the notebook so
+  links work locally and on Pages; verify file/anchor locally and read local excerpts when
+  available. Mathematical corrections require new entries.
 - [research/claims/index.json](research/claims/index.json) owns claim metadata;
-  [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) and topic views are generated.
-  Follow the [registry workflow](research/claims/README.md); regenerate with
-  `tools/claim-index.py render`. Preserve labels, exact scope and full-record links.
-- **Index maintenance:** each new or substantively revised claim needs current
-  evidence-backed mathematical status, topics, formalization scope/disposition,
-  significance and relationship review. Use the [cheap significance/attention workflow](research/claims/README.md#significance-check-and-attention)
-  at each checkpoint; surface new/reopened candidates to the user. Unknowns need a specific pending question
-  and next action; do not invent metadata to pass. Record applicable dependencies,
-  refinements, corrections and obstructions; refresh affected existing claims.
-  Record a `refines` edge only when one version implies the other.
-  `claim-index.py changed --base REV` checks changed scope (HEAD at finalization,
-  integration base in CI); untouched backlog remains visible separately.
-  New articles declare `data-claims="ID ..."` matching claims sourced there, or
-  `data-claims="none"` with a specific `data-claim-note`. Unregistered explicit
-  labels and source/inventory mismatches block finalization. Preserve stable IDs
-  and dated records; follow the registry editing contract for metadata-only work.
-- Read **Gaps identified by formalization** on ordinary restoration too. Its concise
-  living list links discrepancies and audit status; full corrections stay in dated
-  records. Begin Lean work only under explicit assignment, including an assigned
-  parallel formalizer. Then read [formalization/AGENTS.md](formalization/AGENTS.md)
-  and its README, not as routine research/Spin reading. Record exact per-claim Lean
-  scope and file links, distinguishing partial coverage/stronger hypotheses from
-  complete verification. Absence of Lean is not mathematical incompleteness; a
-  verified special case does not verify the full informal claim. Use normal research
-  evidence, timing and checkpoint rules for formalization.
-- During coordinated parallel formalization the coordinator alone edits **all**
-  living sections, including formalization gaps, at integration checkpoints.
-  Workers review them, append full records, maintain claim metadata and promptly
-  send proposed overview changes/discrepancies; do not wait for all workers to finish.
+  [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) and topic views are generated. Follow the
+  [registry workflow](research/claims/README.md); regenerate with `tools/claim-index.py render`.
+  Preserve labels, exact scope and full-record links.
+- **Index maintenance:** each new or substantively revised claim needs current evidence-backed
+  mathematical status, topics, formalization scope/disposition, significance and relationship
+  review. Use the [cheap significance/attention
+  workflow](research/claims/README.md#significance-check-and-attention) at each checkpoint; surface
+  new/reopened candidates to the user. Unknowns need a specific pending question and next action; do
+  not invent metadata to pass. Record applicable dependencies, refinements, corrections and
+  obstructions; refresh affected existing claims. Record a `refines` edge only when one version
+  implies the other. `claim-index.py changed --base REV` checks changed scope (HEAD at finalization,
+  integration base in CI); untouched backlog remains visible separately. New articles declare
+  `data-claims="ID ..."` matching claims sourced there, or `data-claims="none"` with a specific
+  `data-claim-note`. Unregistered explicit labels and source/inventory mismatches block
+  finalization. Preserve stable IDs and dated records; follow the registry editing contract for
+  metadata-only work.
+- Read **Gaps identified by formalization** on ordinary restoration too. Its concise living list
+  links discrepancies and audit status; full corrections stay in dated records. Begin Lean work only
+  under explicit assignment, including an assigned parallel formalizer. Then read
+  [formalization/AGENTS.md](formalization/AGENTS.md) and its README, not as routine research/Spin
+  reading. Record exact per-claim Lean scope and file links, distinguishing partial
+  coverage/stronger hypotheses from complete verification. Absence of Lean is not mathematical
+  incompleteness; a verified special case does not verify the full informal claim. Use normal
+  research evidence, timing and checkpoint rules for formalization.
+- During coordinated parallel formalization the coordinator alone edits **all** living sections,
+  including formalization gaps, at integration checkpoints. Workers review them, append full
+  records, maintain claim metadata and promptly send proposed overview changes/discrepancies; do not
+  wait for all workers to finish.
 - Finish every notebook and claim-registry edit before the final snapshot. Run the small controller
-  `./tools/finish-turn.py TURN` directly, not in the session it stops: it exports
-  timing, archives evidence and fills the unique `<!-- TIMING TURN -->` marker.
-  For continuous research add `--next NEXT` to start the next clock immediately;
-  subsequent checkpoint work is preparation. Each entry ends with a generated
-  two-column **Measured category / Elapsed** table and bold total instrumented
-  interval (`compute.sh report TURN --stop --html-out PATH`). Use actual measured
-  categories, count overlap once, and distinguish tool failures/timeouts from failed
-  mathematics. Keep its footnote one short sentence plus exceptional limitations;
-  do not repeat the methodology or backfill unmeasured time. Commit the entry,
-  fragment, archive and supporting results together.
-  After the finisher, only stage, commit and perform any authorized push. If an edit
-  is necessary, rerun the finisher's checks, including
-  `tools/notebook_context.py --all` and the claim checks, before committing; its
-  earlier checks validate only the earlier snapshot. The checked push rejects hard
+  `./tools/finish-turn.py TURN` directly, not in the session it stops: it exports timing, archives
+  evidence and fills the unique `<!-- TIMING TURN -->` marker. For continuous research add `--next
+  NEXT` to start the next clock immediately; subsequent checkpoint work is preparation. Each entry
+  ends with a generated two-column **Measured category / Elapsed** table and bold total instrumented
+  interval (`compute.sh report TURN --stop --html-out PATH`). Use actual measured categories, count
+  overlap once, and distinguish tool failures/timeouts from failed mathematics. Keep its footnote
+  one short sentence plus exceptional limitations; do not repeat the methodology or backfill
+  unmeasured time. Commit the entry, fragment, archive and supporting results together. After the
+  finisher, only stage, commit and perform any authorized push. If an edit is necessary, rerun the
+  finisher's checks, including `tools/notebook_context.py --all` and the claim checks, before
+  committing; its earlier checks validate only the earlier snapshot. The checked push rejects hard
   context-budget excesses.
 
 ## Framework maintenance and interaction
 
-- Extend committed, tested tools for recurring helpers instead of rebuilding scratch
-  scripts, including integration/maintenance jobs and jobs recurring by their nature
-  even on their first use. A scratch script whose output is committed to a tracked
-  record becomes a tested framework tool before that commit. Register claims with
-  `tools/claim-index.py author build` and a compact spec per the registry README.
-  Append drafted entries and new Proposed next steps with `tools/notebook-append.py`;
-  build reviewer excerpts with `tools/notebook-excerpt.py`.
-- The framework suite is every `tools/tests/test_*.py`, which covers `compute.sh`,
-  the session launchers, `tools/` and the site: `test_site.py` runs the tests in `tests/`,
-  including the real-browser ones, each within 5 s (user, 28 September 2026). New framework
-  tests go there or into `tests/` with a case in `test_site.py`, never beside the code. After editing any of these, run it before committing, through the protected
-  launcher: `./compute.sh --threads 1 python3 tools/tests/run.py`, which runs the tests in
-  parallel worker processes. The whole suite stays under 10 seconds (user, 26 September
-  2026: "The suite should run in 10s tops"); the runner fails a slower run and lists its
-  slowest tests. That is a defect to find and fix, such as repeated work in the code under
-  test, not a wait to accept; rerun on a quiet machine first, since other jobs' load counts.
-  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s, the
-  finisher when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes
-  over 2 s. Tests run on small fixtures, where work repeated per item costs nothing: a change
-  to a framework tool that reads the repository's records also gets one timed run against the
-  real repository, with a real diff where the tool compares revisions (an unchanged base skips
-  whole code paths), before its commit, and a profile if it is slower than the work it does.
-  Measure a change's effect before claiming it: a framework commit message states only what was
-  measured or checked, and a mechanism (a cache, an option, a helper) needs a measured use. Other
-  tests run only on their own trigger: `formalization/tests/` needs the Lean toolchain and
-  runs when formalization tooling changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory
-  controls and run only when those controls change. Scripts and tests under
-  `research/` are computations or provenance of finished one-off jobs, tied to the data
-  of their date, and are not rerun.
-- Durable process lessons belong in the committed framework, not machine-local
-  memory. State general rules, not narratives of the mathematics that prompted them.
-  Repeated question marks signal increasing frustration with the process: implement
-  and commit a real fix, preferably a mechanical check, rather than only apologizing.
-- After a session restart, notifications about instructions, stopped tasks or changed
-  files are not new work requests. Run no tools or restart tasks in response to those
-  notifications alone; say at most one sentence and wait for the user's message.
+- Extend committed, tested tools for recurring helpers instead of rebuilding scratch scripts,
+  including integration/maintenance jobs and jobs recurring by their nature even on their first use.
+  A scratch script whose output is committed to a tracked record becomes a tested framework tool
+  before that commit. Register claims with `tools/claim-index.py author build` and a compact spec
+  per the registry README. Append drafted entries and new Proposed next steps with
+  `tools/notebook-append.py`; build reviewer excerpts with `tools/notebook-excerpt.py`.
+- The framework suite is every `tools/tests/test_*.py`, which covers `compute.sh`, the session
+  launchers, `tools/` and the site: `test_site.py` runs the tests in `tests/`, including the
+  real-browser ones, each within 5 s (user, 28 September 2026). New framework tests go there or into
+  `tests/` with a case in `test_site.py`, never beside the code. After editing any of these, run it
+  before committing, through the protected launcher: `./compute.sh --threads 1 python3
+  tools/tests/run.py`, which runs the tests in parallel worker processes. The whole suite stays
+  under 10 seconds (user, 26 September 2026: "The suite should run in 10s tops"); the runner fails a
+  slower run and lists its slowest tests. That is a defect to find and fix, such as repeated work in
+  the code under test, not a wait to accept. A timing-limit failure alone does not require another
+  suite run. For the same reason `compute.sh start` warns when its turn guidance takes over 1 s, the
+  finisher when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes over 2
+  s. Tests run on small fixtures, where work repeated per item costs nothing: a change to a
+  framework tool that reads the repository's records also gets one timed run against the real
+  repository, with a real diff where the tool compares revisions (an unchanged base skips whole code
+  paths), before its commit, and a profile if it is slower than the work it does. Measure a change's
+  effect before claiming it: a framework commit message states only what was measured or checked,
+  and a mechanism (a cache, an option, a helper) needs a measured use. Other tests run only on their
+  own trigger: `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
+  changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and
+  run only when those controls change. Scripts and tests under `research/` are computations or
+  provenance of finished one-off jobs, tied to the data of their date, and are not rerun.
+- Durable process lessons belong in the committed framework, not machine-local memory. State general
+  rules, not narratives of the mathematics that prompted them. Repeated question marks signal
+  increasing frustration with the process: implement and commit a real fix, preferably a mechanical
+  check, rather than only apologizing.
+- After a session restart, notifications about instructions, stopped tasks or changed files are not
+  new work requests. Run no tools or restart tasks in response to those notifications alone; say at
+  most one sentence and wait for the user's message.
 
 ## Portable sessions, Git and publication
 
-- Work from the repository root without assuming a machine/user/absolute path.
-  `start-codex.sh` starts/reuses the remote-control daemon. `start-session.sh` and
-  `start-claude.sh` resume exact machine-local IDs or restore context for a fresh session.
-  Launchers bind their own IDs outside the agent; workers and unrelated sessions must never
-  replace a binding. The legacy `remember-codex-session.py` only validates an existing binding.
-  Never commit IDs. Codex startup/repair and hook trust are described in [tools/CODEX.md](tools/CODEX.md).
-  Clones restore files, not chat history. Private agent memory may hold preferences
-  only, never mathematics or research progress.
-- Background sessions use one persistent Git worktree, never the shared checkout. Create it
-  from the intended local base with `git worktree add --track -b NAME PATH BASE`; set a missing
-  local upstream with `git branch --set-upstream-to=BASE`. The branch name is only a convention.
-  Codex's launcher manages `.codex/worktrees/`; Claude uses `.claude/worktrees/`.
-  After every worktree commit, run `tools/ff-base.sh`, with or without a push grant. It rebases
-  onto a moved local upstream and fast-forwards that upstream, including local main when main
-  is the base. It never pushes; dirty bases/conflicts require resolution. The post-commit hook
-  reminds about lag or a missing upstream. This local synchronization does not authorize publication.
-- Every research turn ends in a local Git commit, including failures/no results.
-  Include living sections, full record, sources/provenance, code, reproducibility
-  data and complete important outputs per the computation policy. Promote essential
-  scratch/runtime results into `research/results/` or `research/provenance/`;
-  research must not exist only in ignored files/chat. Do not include unrelated user
-  edits; review relevant changes and report commit blockers honestly. Logs,
-  credentials, session IDs, binaries, environments and scratch renders stay untracked.
-  Every commit-message line must be at most 100 characters; wrap prose and separate
-  paragraphs with blank lines.
-- A session's scratch files are its own to delete by the end of the cycle that made them;
-  promote anything worth keeping to `research/results/` or `research/provenance/` first
-  (user, 3 October 2026, with the disk near its 10 GB floor). The finisher fails while the
-  session's scratchpad holds more than 500 MB; it never deletes for you. Codex gets its
-  owned directory with `python3 tools/codex_state.py scratch`; use it for all temporary
-  work. Do not place symlinks inside managed scratch.
-- Publish only under explicit user authorization, including a still-active scoped/
-  time-limited grant. Research/edit/commit requests alone do not authorize it.
-  Restore the actual grant after compaction, honor expiry/later overrides and do
-  not ask again within authorized scope. Publication is authorized for the active Spin
-  (user, 6 October 2026: "Resume pushes"), lifting the earlier publication hold.
-  This grant ends when the user stops Spin or revokes permission.
-  Earlier grants are preserved in Git, not standing permission.
-- Respect the user's branch; do not switch/merge into main just to publish. Pin
-  integration targets to immutable commits after fetching/receiving workers, rebase
-  and validate against those IDs. Immediately before fast-forwarding check the
-  destination HEAD and worktree: if advanced, refresh/rebase or leave unmerged;
-  validation against an old target is not validation of a new one.
-- Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`.
-  Before authorized publication run `tools/verify-checkout.py --public-history BRANCH`
-  (it includes the claim-index CI job, `tools/check-claims.py`, against `origin/BRANCH`)
-  and the append-only check, unless explicitly overridden by the user; push with
-  `tools/checked-push.sh` (from a worktree branch `tools/checked-push.sh main`, which pushes
-  HEAD to main only as a fast-forward), which runs both and pushes only if both pass. Pages targets
-  main only; local commits are checkpoints. The Pages workflow builds HTML/site-tool
-  changes with `tools/build_pages.py --out _site`: upload only that minimal artifact,
-  never the checkout/private sources. Preserve live mode and project-relative
+- Work from the repository root without assuming a machine/user/absolute path. `start-codex.sh`
+  starts/reuses the remote-control daemon. `start-session.sh` and `start-claude.sh` resume exact
+  machine-local IDs or restore context for a fresh session. Launchers bind their own IDs outside the
+  agent; workers and unrelated sessions must never replace a binding. The legacy
+  `remember-codex-session.py` only validates an existing binding. Never commit IDs. Codex
+  startup/repair and hook trust are described in [tools/CODEX.md](tools/CODEX.md). Clones restore
+  files, not chat history. Private agent memory may hold preferences only, never mathematics or
+  research progress.
+- Background sessions use one persistent Git worktree, never the shared checkout. Create it from the
+  intended local base with `git worktree add --track -b NAME PATH BASE`; set a missing local
+  upstream with `git branch --set-upstream-to=BASE`. The branch name is only a convention. Codex's
+  launcher manages `.codex/worktrees/`; Claude uses `.claude/worktrees/`. After every worktree
+  commit, run `tools/ff-base.sh`, with or without a push grant. It rebases onto a moved local
+  upstream and fast-forwards that upstream, including local main when main is the base. It never
+  pushes; dirty bases/conflicts require resolution. The post-commit hook reminds about lag or a
+  missing upstream. This local synchronization does not authorize publication.
+- Every research turn ends in a local Git commit, including failures/no results. Include living
+  sections, full record, sources/provenance, code, reproducibility data and complete important
+  outputs per the computation policy. Promote essential scratch/runtime results into
+  `research/results/` or `research/provenance/`; research must not exist only in ignored files/chat.
+  Do not include unrelated user edits; review relevant changes and report commit blockers honestly.
+  Logs, credentials, session IDs, binaries, environments and scratch renders stay untracked. Every
+  commit-message line must be at most 100 characters; wrap prose and separate paragraphs with blank
+  lines.
+- A session's scratch files are its own to delete by the end of the cycle that made them; promote
+  anything worth keeping to `research/results/` or `research/provenance/` first (user, 3 October
+  2026, with the disk near its 10 GB floor). The finisher fails while the session's scratchpad holds
+  more than 500 MB; it never deletes for you. Codex gets its owned directory with `python3
+  tools/codex_state.py scratch`; use it for all temporary work. Do not place symlinks inside managed
+  scratch.
+- Publish only under explicit user authorization, including a still-active scoped/ time-limited
+  grant. Research/edit/commit requests alone do not authorize it. Restore the actual grant after
+  compaction, honor expiry/later overrides and do not ask again within authorized scope. Publication
+  is authorized for the active Spin (user, 6 October 2026: "Resume pushes"), lifting the earlier
+  publication hold. This grant ends when the user stops Spin or revokes permission. Earlier grants
+  are preserved in Git, not standing permission.
+- Respect the user's branch; do not switch/merge into main just to publish. Pin integration targets
+  to immutable commits after fetching/receiving workers, rebase and validate against those IDs.
+  Immediately before fast-forwarding check the destination HEAD and worktree: if advanced,
+  refresh/rebase or leave unmerged; validation against an old target is not validation of a new one.
+- Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`. Before authorized
+  publication run `tools/verify-checkout.py --public-history BRANCH` (it includes the claim-index CI
+  job, `tools/check-claims.py`, against `origin/BRANCH`) and the append-only check, unless
+  explicitly overridden by the user; push with `tools/checked-push.sh` (from a worktree branch
+  `tools/checked-push.sh main`, which pushes HEAD to main only as a fast-forward), which runs both
+  and pushes only if both pass. Pages targets main only; local commits are checkpoints. The Pages
+  workflow builds HTML/site-tool changes with `tools/build_pages.py --out _site`: upload only that
+  minimal artifact, never the checkout/private sources. Preserve live mode and project-relative
   published revision URLs.
-- Follow LICENSE: original software MIT, original research CC BY 4.0. Preserve
-  attribution, cite upstream mathematics and distinguish working from established
-  results. Third-party papers are not ours to relicense: follow THIRD_PARTY_NOTICES.md
-  and research/references/redistribution.json. Keep uncleared PDFs/full text and
-  source-containing diagnostics out of public commits/reachable history; preserve
-  needed personal copies locally, never publish private/backups. A source that cannot
-  be retrieved after an honest attempt is a user request (below), with citation,
-  attempted links and purpose.
-- Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the one the user
-  reads; in a worktree `user_requests` is a link to it, which `compute.sh start` creates and insists on: a missing
-  source, an installation, a permission, a choice between research directions, or any
-  other question. Give what is needed, why, what was tried, and the default being followed
-  meanwhile. Never stop, pause or idle to wait for the answer: follow the recommended
-  default and continue. Mention a new request in one sentence of the turn's report, and
-  mark items fulfilled when answered.
+- Follow LICENSE: original software MIT, original research CC BY 4.0. Preserve attribution, cite
+  upstream mathematics and distinguish working from established results. Third-party papers are not
+  ours to relicense: follow THIRD_PARTY_NOTICES.md and research/references/redistribution.json. Keep
+  uncleared PDFs/full text and source-containing diagnostics out of public commits/reachable
+  history; preserve needed personal copies locally, never publish private/backups. A source that
+  cannot be retrieved after an honest attempt is a user request (below), with citation, attempted
+  links and purpose.
+- Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the
+  one the user reads; in a worktree `user_requests` is a link to it, which `compute.sh start`
+  creates and insists on: a missing source, an installation, a permission, a choice between research
+  directions, or any other question. Give what is needed, why, what was tried, and the default being
+  followed meanwhile. Never stop, pause or idle to wait for the answer: follow the recommended
+  default and continue. Mention a new request in one sentence of the turn's report, and mark items
+  fulfilled when answered.
