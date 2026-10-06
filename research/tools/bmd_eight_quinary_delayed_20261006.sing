@@ -1,0 +1,33 @@
+// Two low-digit cancellations are handled by exact power sums, not more digit sampling.
+ring R=5,(u,c,x,y,A,B),dp;
+proc assess_template(matrix Mat,int d,int smallestN){
+ if(d!=6 && d!=14){return();}
+ poly om=det(Mat);poly low=subst(om,c,0);poly expected;
+ if(d==6){
+  poly F=(u^2-1)*y+2*u*x;
+  poly J=(u^2-2)*x+(u-2*u^3)*y;
+  expected=-u^4*(2*x+y)*(-2*x+y)*F*J*(u^2+1)^2;
+  map ab=R,u,c,A+B,2*(A-B),A,B;
+  if(ab(F)!=2*((u-2)^2*A-(u+2)^2*B)){ERROR("difference identity");}
+  poly unit=-(2*x+y)*(-2*x+y)*J*(u^2+1)^2;
+  map origin=R,0,0,2,0,A,B;
+  if(origin(unit)!=1){ERROR("difference unit");}
+  print("d6mod25: constant-C determinant = u4 * unit * 2((u-2)^(N+2)-(u+2)^(N+2)); unit(0)=1");
+  print("q=5^valuation_5(N+2) <= (N+2)/2, since N+2 even. Exact order4+q<N for N>=448.");
+ }else{
+  poly F=y+u*x;poly G=(2*u^2+1)*y+u*(u^2+2)*x;
+  expected=u^8*F*G;
+  map ab=R,u,c,A+B,2*(A-B),A,B;
+  if(ab(G)!=(u-2)^3*A+(u+2)^3*B){ERROR("sum identity");}
+  map first_terms=R,u,c,2,u,A,B;
+  if(first_terms(F)!=3*u){ERROR("first linear factor order");}
+  print("d14mod25: constant-C determinant = u8*(Y+uX)*((u-2)^(N+3)+(u+2)^(N+3)); first factor order1");
+  print("q=5^valuation_5(N+3) <= (N+3)/3: odd cofactor cannot1 since N multiple8 and5^e is1or5mod8.");
+  print("Exact order9+q<N for N>=1472.");
+ }
+ if(low!=expected){ERROR("exact constant-C factorization");}
+ if(om-low!=c*((om-low)/c)){ERROR("positive C remainder polynomial");}
+ print("PASS exact identities; positive C terms start at least atN after actual substitution.");
+}
+execute(read("research/results/bmd-eight-quinary-source-20261006/global-matrices.sing"));
+quit;

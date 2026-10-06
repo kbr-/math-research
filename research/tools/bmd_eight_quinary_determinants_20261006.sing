@@ -1,0 +1,30 @@
+// Prove nonvanishing after actual global-power substitution, not only at a sampled mark.
+ring R=5,(u,c,x,y),dp;
+int resolved=0;
+proc lowbin(int n,int k){n=n%25;if(k<0 || k>n){return(0);}int v=1;int h;for(h=1;h<=k;h++){v=v*(n-h+1) div h;}return(v);}
+proc assess_template(matrix B,int d,int smallestN){
+ print("CASE dmod25="+string(d%25)+" representative="+string(d)+" size="+string(nrows(B)));
+ poly om=det(B);print("DETERMINANT=");print(om);
+ if(om==0){ERROR("zero formal template");return();}
+ poly rest=om;int cp=0;while(subst(rest,c,0)==0){rest=rest/c;cp++;}
+ if(om-c^cp*rest!=0){ERROR("exact global-power factor");return();}
+ poly low=subst(rest,c,0);int up=0;while(subst(low,u,0)==0){low=low/u;up++;}
+ print("NORMALIZED_CONSTANT_C=");print(low);
+ poly powerX=0;poly powerY=0;int h;
+ for(h=0;h<=12;h++){powerX=powerX+2*(-1)^h*lowbin(smallestN,2*h)*u^(2*h);}
+ for(h=0;h<=11;h++){powerY=powerY-2*(-1)^h*lowbin(smallestN,2*h+1)*u^(2*h+1);}
+ map local_power=R,u,0,powerX,powerY;
+ poly probe=local_power(low);int vp=0;
+ print("X_MOD_U25="+string(powerX));print("Y_MOD_U25="+string(powerY));
+ if(probe==0){ERROR("local coefficient unresolved");return();}
+ while(subst(probe,u,0)==0){probe=probe/u;vp++;}
+ poly co=subst(probe,u,0);
+ print("C_POWER="+string(cp)+" U_POWER="+string(up)+" LOCAL_ORDER="+string(vp)+" COEFFICIENT="+string(co));
+ if(vp>=25 || up+vp>=smallestN){print("UNRESOLVED_ACTUAL_POWERS");print("FACTORIZATION=");print(factorize(om));return();}
+ resolved++;
+ print("PASS_ACTUAL_POWERS: low-digit error starts25; positive C terms startN");
+}
+execute(read("research/results/bmd-eight-quinary-source-20261006/global-matrices.sing"));
+// Only resolved states are certified; others require a new actual-power argument.
+print("DONE resolved="+string(resolved));
+quit;
