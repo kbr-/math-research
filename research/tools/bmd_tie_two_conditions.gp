@@ -20,6 +20,7 @@ coords(Sh, J) = {
 }
 {
 MS = if (getenv("MS") == 0 || getenv("MS") == "", [2, 3, 4], eval(getenv("MS")));
+if (getenv("QUADRIC") == "1" && (vecmin(MS) < 1 || vecmax(MS) > 2), error("QUADRIC control is sized only for m=1,2"));
 foreach(MS, m,
   my(n = 3 * m, d = m * (m - 1) / 2, A = matrix(n, n + 1), q, C = matrix(5, 5), D, adj, e2, e3, G2 = 0, G3 = 0, G23 = 0,
      rf = r -> prod(i = 0, r - 1, -('k + i - 2 * m + 7/2) / ('k + i + 1)),
@@ -39,6 +40,26 @@ foreach(MS, m,
   e2 = [polcoef(((1 + 'x) * (1 + 'c * 'x))^(-3/2) + O('x^(d + 3)), j, 'x) | j <- [d, d + 1]];
   e3 = [polcoef('x * (1 + 'x)^(-5/2) * (1 + 'c * 'x)^(-3/2) + O('x^(d + 3)), j, 'x) | j <- [d, d + 1]];
   adj = matadjoint(C);
+  \\ QUADRIC=1: falsify the all-m sufficient condition that no root of D off c(c-1) satisfies
+  \\ every adjugate-row compatibility quadric. Contiguity gives (e3(k),e3(k+1))^t = T(k,c)
+  \\ (e2(k),e2(k+1))^t, det T=-2(k+1)/(3(1-c)); use adj(3(1-c)T) to avoid denominators.
+  \\ Only m=1,2: largest rational kernel is 6x7, then a 5x5 adjugate and five univariate gcds.
+  \\ A surviving common factor refutes this stronger coefficient-only exclusion; it does not refute window rank.
+  if (getenv("QUADRIC") == "1",
+    my(T0 = [3*(1+'c)+2*'c*d, 2*(d+1); -2*'c*(d+3), -2*(d+1)],
+       T = T0/(3*(1-'c)), Gq = D, kappas = vector(5), J = matadjoint(T0));
+    if (T * e2~ != e3~, error("Contiguous initial-value control failed"));
+    if (matdet(T) != -2*(d+1)/(3*(1-'c)), error("Contiguous determinant control failed"));
+    for (i=1, 5, my(v=adj[i,], w=J*[v[4],v[5]]~);
+      kappas[i]=numerator(v[2]*w[2]-v[3]*w[1]); Gq=gcd(Gq,kappas[i]));
+    Gq=st(Gq); Gq=Gq/content(Gq);
+    emit(Str("m=",m,"; control matrix 3(1-c)T=",T0));
+    emit(Str("D=",D));
+    emit(Str("adjugate compatibility quadrics=",kappas));
+    emit(Str("gcd off c(c-1)=",Gq,"; degree=",poldegree(Gq,'c)));
+    emit(Str("D factor degrees=",apply(z->poldegree(z,'c),factor(D)[,1]~)));
+    emit(Str("surviving factor degrees=",apply(z->poldegree(z,'c),factor(Gq)[,1]~)));
+    next);
   \\ (cycle bmd-20261008-u, env RESID=1 only) normalized residuals at the roots of D: |sin| of the angle between the
   \\ e_2 block of the left kernel vector nu of C_5(z) and (e_2(d), e_2(d+1)), same for e_3; minimum per irreducible factor
   if (getenv("RESID") == "1",
