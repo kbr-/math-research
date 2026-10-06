@@ -1,0 +1,28 @@
+// Exact all-parameter identities used to classify the p7,d9mod49 boundary.
+ring R=7,(u,c,x,y,z),dp;
+execute(read("research/results/bmd-eight-exceptional-powers-20261006/factors.sing"));
+poly F=(u^2*c+1)*y+u*(c-1)*x;
+poly H=Factor4;
+poly A=u^32*(u^2+1)^3*(1+u^2*c^2)*(x^2+y^2);
+if(BoundaryDet!=A*F*H){ERROR("complete determinant identity");}
+poly Hzero=-u^7*(u^2-1)^2*(u*x+y);
+if(subst(H,c,0)!=Hzero){ERROR("constant-C identity");}
+if(F!=u*c*(u*y+x)-(u*x-y)){ERROR("successor-power identity");}
+poly delta=diff(BoundaryDet,y)-A*H*(u^2*c+1);
+if(reduce(delta,std(ideal(F)))!=0){ERROR("determinant differential moduloF");}
+// N is 0mod4 and -1mod7, so X=2+O(u2),Y=2u+O(u3).
+poly low=subst(subst(Hzero,x,2),y,2*u);
+if(reduce(low-3*u^8,std(ideal(u^9)))!=0){ERROR("leading H coefficient");}
+int r=1;int e;int count65=0;
+for(e=1;e<=16;e++){
+ r=(7*r)%128;
+ if(r==65){if(e!=8){ERROR("wrong exponent class");}count65++;}
+ if(r==1 && e<16){ERROR("period is smaller than16");}
+}
+if(r!=1 || count65!=1){ERROR("complete modulo128 period");}
+print("PASS Delta=u32*(u2+1)^3*(1+u2*C2)*(X2+Y2)*F*H.");
+print("PASS H(C=0)=-u7*(u2-1)^2*(u*X+Y); actual leading coefficient is3*u8.");
+print("PASS F=C_L*Y_L-X_L for L=N+1, with X_L=u*X-Y,Y_L=u*Y+X.");
+print("PASS dDelta/dY=A*H*(u2*C+1) moduloF, certifying rank12 on the actual vanishing locus.");
+print("PASS ord_128(7)=16;7^e=65mod128 iff e=8mod16.");
+quit;

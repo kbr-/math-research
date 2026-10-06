@@ -1,0 +1,18 @@
+// Factor the complete B9 polynomial template; actual-power specialization is proved separately.
+// One exact 13-cut determinant, no degree survey. Retain its complete factorization.
+ring R=7,(u,c,x,y,z),dp;
+int checked=0;
+proc assess_template(matrix B,int pp,int d,int smallestN,int period,poly powerX,poly powerY){
+ if(d!=9){return();}
+ poly om=det(B);list fac=factorize(om);poly rebuilt=1;int j;
+ for(j=1;j<=size(fac[1]);j++){rebuilt=rebuilt*fac[1][j]^fac[2][j];}
+ if(rebuilt!=om){ERROR("factor product mismatch");return();}
+ print("Dimension of complete cut matrix: "+string(nrows(B)));
+ print("Complete factorization in F7[u,C,X,Y]:");print(fac);
+ write("research/results/bmd-eight-exceptional-powers-20261006/factors.sing","poly BoundaryDet="+string(om)+";");
+ for(j=1;j<=size(fac[1]);j++){write("research/results/bmd-eight-exceptional-powers-20261006/factors.sing","poly Factor"+string(j)+"="+string(fac[1][j])+";");}
+ checked++;print("PASS exact complete factorization and multiply-back.");
+}
+execute(read("research/results/bmd-eight-small-prime-source-20261006/matrices-p7.sing"));
+if(checked!=1){ERROR("one remaining template required");}
+quit;
