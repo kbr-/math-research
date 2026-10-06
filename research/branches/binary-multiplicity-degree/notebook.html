@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statement 3's first-step base bound. Develop the <a href="#entry-2026-10-09-cube-rigid-twelve-route-review">Schur–Cohn bridge</a> for the last-step far polynomial. Read the existing circle-count and stability records, including later corrections. Determine whether exact radial counts can control within-annulus multiplicities, and what additional separation certificate the actual far polynomial would need; another total root count alone cannot exclude triples.</p>
+<p>Route item: cube-odd-characteristic. The six-entry interval is complete: perform the required goal-level review of statement 3's first-step base bound and contact windows, together with the unchanged remaining obligations. Assess the contiguous compatibility invariant, bounded-removal limitation, finite apparent-factor check, and the two closed collision/counting proposals. While draining, introduce no new outside leads or bridges. Then develop the queued apolarity lead against the actual last-far six-space and later corrections.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-bridge="entry-2026-10-09-cube-rigid-twelve-route-review:2"><a href="#entry-2026-10-09-cube-rigid-twelve-route-review">entry-2026-10-09-cube-rigid-twelve-route-review:2</a> (bridge): The Schur–Cohn test (signal processing). A recursion on the coefficients counts the roots inside a disc exactly. Translation: count the roots of the transformed far polynomial between consecutive circle radii, certifying…</li>
 <li data-lead="entry-2026-10-09-cube-conic-holes-route-review:1"><a href="#entry-2026-10-09-cube-conic-holes-route-review">entry-2026-10-09-cube-conic-holes-route-review:1</a> (lead): Apolarity and the duality of ramification for linear series on \(\mathbb P^1\) (Eisenbud–Harris, limit linear series; the classical fact that a subspace \(V\subseteq H^0(\mathcal O(D))\) and its annihilator have compleme…<ul>
 <li data-build="entry-2026-10-09-cube-conic-holes-route-review:s1"><a href="#entry-2026-10-09-cube-conic-holes-route-review">entry-2026-10-09-cube-conic-holes-route-review:s1</a> (build): Compute the seven-dimensional annihilator of \(Z_d\) in \(H^0(\mathcal O(E))^*\) explicitly (polar parts at infinity, residues at the zeros of \(w_1\)), and its \(7\times7\) determinant at \(T=0\); check that it vanishes…</li>
 </ul></li>
@@ -94455,6 +94454,56 @@ It is monic, even, of degree \(N\), and has nonzero constant term. Because \(a_i
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.15 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-disc-count-scope" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-09-cube-rigid-twelve-route-review:2" data-claims="lem:radial-multiplicity-loss prop:shifted-disc-multiplicity-certificate">
+<h3>7 October 2026 — Radial counts lose multiplicity; shifted discs retain an unresolved separation certificate</h3>
+<p class="entry-meta">Working proof; scope of disc-count certificates. Disc-count scope. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 3, route item cube-odd-characteristic, input (B), needs no triple roots in the actual last-step far polynomial at every size. The queued Schur–Cohn bridge proposes exact counts between circle radii. This cycle checks that premise and then develops shifted discs, where a small count really would bound multiplicity.</p>
+<p><strong>General statement.</strong> <code>lem:radial-multiplicity-loss</code> shows that even the entire radial counting function cannot detect multiplicity, including for real even reciprocal polynomials. <code>prop:shifted-disc-multiplicity-certificate</code> gives the exact alternative for every complex polynomial and identifies the missing uniform input.</p>
+<h4>What the existing count means</h4>
+<p>The <a href="#entry-2026-10-04-cube-last-far-sector-gas">circle-count conjecture</a> classifies roots by which adjacent sector sums balance at tolerance \(10^{-3}\). It is not a theorem that the roots lie on exact circles or that fixed concentric annuli isolate those classes. The <a href="#entry-2026-10-04-cube-last-far-circle-ends">later circle-ends record</a> places additional roots on the fringe of those classes. The <a href="#entry-2026-10-04-cube-last-far-edge-certificate">edge certificate</a> fails on the far ring, and the <a href="#entry-2026-10-04-cube-sector-programme-review">programme review</a> leaves uniform separation open. These records were read before revisiting the radial proposal; their numerical tests were not rerun.</p>
+<p>The source audited here is <a href="https://doi.org/10.1017/S0013091500004806">Dym and Young, A Schur–Cohn theorem for matrix polynomials, Proc. Edinburgh Math. Soc. 33 (1990), 337–366</a>, read through its proof. Its scalar specialization of Theorem 1.1 counts roots with multiplicity via Hermitian inertia, under the nonconjugacy condition \(\alpha\overline\beta\ne1\). This does not require distinct roots. The usual scalar form may be singular for a reciprocal pair even without a root on the unit circle. We keep this hypothesis in the shifted-disc certificate rather than applying the nonsingular test at such a radius.</p>
+<h4>Radial multiplicity loss</h4>
+<p><strong>Lemma (radial multiplicity loss).</strong> For every integer \(m\ge2\), there are real rational-coefficient monic even reciprocal polynomials \(P,Q\) of degree \(8m\), with the same function
+\[
+N_P(\rho)=\sum_{|\alpha|&lt;\rho}\operatorname{mult}_{\alpha}P=N_Q(\rho)\qquad(\rho>0),
+\]
+such that every root of \(P\) has multiplicity \(m\), while \(Q\) is squarefree. All roots are nonzero and off the unit circle.</p>
+<p><strong>Proof.</strong> Choose rational \(r>1\) and distinct rational \(c_1,\ldots,c_m\in(-1,1)\). For any \(c\in(-1,1)\), set
+\[
+B_c(z)=(z^4-2cr^2z^2+r^4)(z^4-2cr^{-2}z^2+r^{-4}).
+\]
+The two roots in \(z^2\) of the first factor are \(r^2(c\pm i\sqrt{1-c^2})\); they are distinct and nonzero. Thus its four roots are distinct and have modulus \(r\). The second factor similarly has four distinct roots of modulus \(r^{-1}\), disjoint from the first. Distinct \(c\)'s yield disjoint roots, since a common root of fixed modulus would give the same value of \(z^2/r^{\pm2}+r^{\pm2}/z^2=2c\). Each \(B_c\) is real, even and monic, with constant term one, and reversing its two quartic factors gives \(z^8B_c(1/z)=B_c(z)\). Take \(P=B_{c_1}^m\) and \(Q=\prod_{j=1}^mB_{c_j}\). Both have \(4m\) roots at each modulus, counted with multiplicity, and none elsewhere. Their open-disc counts are zero for \(\rho\le r^{-1}\), \(4m\) for \(r^{-1}&lt;\rho\le r\), and \(8m\) for \(\rho>r\). Their stated multiplicities follow from the disjoint simple factors. \(\square\)</p>
+<p>Taking \(m=3,r=2,(c_1,c_2,c_3)=(-1/2,0,1/2)\) is an exact symbolic triple-root control. It does not assert identity with the rigid far polynomial. It shows that a closed formula for every radial count would still need angular or algebraic information. The obstruction concerns counting outputs; the full coefficients of course contain more information.</p>
+<h4>The shifted-disc alternative</h4>
+<p><strong>Proposition (shifted disc multiplicity certificate).</strong> Let \(f\in\mathbb C[z]\) have degree \(D\ge1\), and \(q\ge1\) be an integer. Every root of \(f\) has multiplicity at most \(q\) if and only if there are finitely many open discs \(D_j=\{|z-a_j|&lt;r_j\}\), with \(a_j\in\mathbb Q+i\mathbb Q\) and positive rational \(r_j\), such that:</p>
+<ul>
+<li>their closures are pairwise disjoint;</li>
+<li>for every pair of roots \(\alpha,\beta\) of \(f\), including equal ones, \((\alpha-a_j)\overline{(\beta-a_j)}\ne r_j^2\);</li>
+<li>the exact number \(n_j\) of roots in \(D_j\), counted with multiplicity, is at most \(q\), and \(\sum_jn_j=D\).</li>
+</ul>
+<p>The counts can be obtained by the nonsingular scalar Schur–Cohn test on \(f(a_j+r_jz)\). Any such covering uses at least \(\lceil D/q\rceil\) nonempty discs.</p>
+<p><strong>Proof.</strong> The displayed nonconjugacy condition is exactly that for the roots of \(f(a_j+r_jz)\); taking \(\alpha=\beta\) also excludes boundary roots. The source's scalar theorem therefore applies and counts multiplicities. If the listed conditions hold, disjointness and the total count ensure that all roots lie in the union. Each root's multiplicity is bounded by the count of its disc and hence by \(q\). Summing \(n_j\le q\) gives the lower bound on nonempty discs.</p>
+<p>Conversely assume every root has multiplicity at most \(q\). Around each distinct root choose small discs with disjoint closures. Rational complex centres are dense, so choose such a centre close enough to each root that a nonempty interval of radii still contains that root alone and leaves the closures disjoint. For each fixed centre, the finitely many numbers \((\alpha-a_j)\overline{(\beta-a_j)}\) exclude at most finitely many positive radii. Choose a rational radius in the interval avoiding them. Each disc then contains exactly the selected root, with its multiplicity at most \(q\), and all roots are covered. This proves existence with the required nonconjugacy, without assuming squarefreeness. \(\square\)</p>
+<p><strong>Application and limit.</strong> With \(q=2\) this asks for exactly the no-triple-root property needed in (B), not the stronger simple-root condition. It survives reciprocal symmetry and singular centred Schur forms by moving centres and avoiding finitely many radii. But existence was proved by assuming the multiplicity bound: it is a certificate characterization, not a proof of that bound for our family. A uniform application would need explicit discs and their inertia counts for every size. At least half the degree many discs are needed; the four observed sector classes do not supply them. The recorded far-ring failure prevents claiming that the existing sector estimates construct those discs. No new finite root-count run would settle that missing implication.</p>
+<p><strong>Follow-up.</strong> Closed: radial counts provably lose the required multiplicity information, while the developed shifted-disc replacement retains the same unresolved uniform separation problem. The source, the reciprocal setting and the shifted-centre alternative were checked; no claim is made that a future structure-specific disc construction is impossible.</p>
+<p><strong>Assessment.</strong> The first-step base bound remains open. This bridge supplies no additional verified size or general no-triple-root theorem; its precise certificate and obstruction prevent treating per-annulus counts as such a theorem. Process: the existing later corrections answered the proposed sector repair, avoiding another numerical size series.</p>
+<p><strong>Verification gate.</strong> One isolated medium reviewer passed both proofs, the exact radial control, rational-disc avoidance and limited scope. It requested the missing source excerpt; the same reviewer passed after receiving the scalar inertia statement, algebraic-multiplicity convention and exact nonconjugacy condition. No unused hypotheses. Source and later records were read as described above. <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-schur-cohn-scope-20261007/review.txt">Initial review</a>; <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-schur-cohn-scope-20261007/source-review.txt">source follow-up</a>.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-schur-cohn-scope-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 44.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 19.96 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 58.60 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 50.63 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">13.56 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">20.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
