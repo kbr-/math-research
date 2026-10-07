@@ -26,8 +26,10 @@ class UnchangedArticles:
     about a second (3 October 2026): only articles whose text changed since the base can change a hash in this diff.
     An anchor inside an article (a heading or claim anchor) excerpts no further than that article."""
 
-    def __init__(self, root, base):
+    def __init__(self, root, base, evidence=None, source_texts=None):
         self.root, self.base, self.texts = root, base, {}
+        self.evidence = evidence
+        self.source_texts = source_texts if source_texts is not None else {}
 
     def __call__(self, path, anchor):
         if path.suffix != '.html' or not anchor:
@@ -35,8 +37,16 @@ class UnchangedArticles:
         if path not in self.texts:
             shown = subprocess.run(['git', 'show', f'{self.base}:{path.relative_to(self.root).as_posix()}'],
                                    cwd=self.root, capture_output=True, text=True)
-            then = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(shown.stdout)} if shown.returncode == 0 else {}
-            now = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(path.read_text())}
+            previous = shown.stdout if shown.returncode == 0 else ''
+            then = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(previous)}
+            if self.evidence is None:
+                current = path.read_text()
+                now = {m.group(1): m.group(0) for m in Evidence.ARTICLE.finditer(current)}
+            else:
+                # Populate the same parsed snapshot later used for changed evidence hashes.
+                self.evidence.article(path, anchor)
+                current, now = self.evidence.sources[path], self.evidence.articles[path]
+            self.source_texts[path] = previous, current
             inner = {name: ident for ident, text in now.items() for name in re.findall(r'\bid="([^"]+)"', text)}
             self.texts[path] = then, now, inner
         then, now, inner = self.texts[path]
@@ -44,7 +54,7 @@ class UnchangedArticles:
         return ident is not None and ident in then and then[ident] == now[ident]
 
 
-def maintenance(before, after, root=ROOT, changed_paths=(), base=None):
+def maintenance(before, after, root=ROOT, changed_paths=(), base=None, source_texts=None):
     old={c['id']:c for c in before['claims']};new={c['id']:c for c in after['claims']}
     required=defaultdict(set);reasons=defaultdict(list);errors=[]
     def need(label,fields,reason):
@@ -85,7 +95,7 @@ def maintenance(before, after, root=ROOT, changed_paths=(), base=None):
                 if label in old and old[label].get('reviews',{}).get('significance')==new[label].get('reviews',{}).get('significance'):
                     errors.append(f'{label}: explicitly refresh significance review for {key}')
     evidence=Evidence(root);changed_paths=set(changed_paths)
-    unchanged=UnchangedArticles(root,base) if base and base!='EMPTY' else (lambda path,anchor:False)
+    unchanged=UnchangedArticles(root,base,evidence,source_texts) if base and base!='EMPTY' else (lambda path,anchor:False)
     # Changed cited sources matter even if someone forgot to edit the index.
     # Corpus-wide negative mapping census changes stay visible in backlog instead.
     for label,claim in new.items():
@@ -133,7 +143,8 @@ def check_revision(after, revision='HEAD', root=ROOT):
         path='research/claims/index.json'
         tracked=subprocess.check_output(['git','ls-tree','--name-only',commit,'--',path],cwd=root,text=True).strip()
         before=after if tracked and path not in changed else baseline(commit,root)[1]
-    result=maintenance(before,after,root,changed,base=commit)
+    source_texts={}
+    result=maintenance(before,after,root,changed,base=commit,source_texts=source_texts)
     result['base_revision']=commit
     from notebooks import paths
     registrations=[]
@@ -145,10 +156,12 @@ def check_revision(after, revision='HEAD', root=ROOT):
             continue   # identical to the base: no new entries to register
         def notebook_at(ref):
             if ref=='EMPTY':return ''
+            if ref==commit and notebook in source_texts:return source_texts[notebook][0]
             shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)
             return shown.stdout if shown.returncode==0 else ''
         grandfathered=lambda:article_ids(notebook_at(ENTRY_INVENTORY_BASE))
-        registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered,notebook)
+        current=source_texts[notebook][1] if notebook in source_texts else notebook.read_text()
+        registration=check_entries(notebook_at(commit),current,after,root,grandfathered,notebook)
         registrations.append(registration)
     result['registration']={'passed':all(r['passed'] for r in registrations),
                             'errors':[e for r in registrations for e in r['errors']],

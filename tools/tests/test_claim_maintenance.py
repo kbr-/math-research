@@ -192,6 +192,24 @@ class MaintenanceTests(unittest.TestCase):
         self.assertFalse(unchanged(path,None))
         self.assertFalse(unchanged(self.root/'research/source.md','a1'))
 
+        # The diff classifier and evidence reader share one current notebook snapshot.
+        from unittest.mock import patch
+        evidence = Evidence(self.root)
+        snapshots = {}
+        shared = UnchangedArticles(self.root, 'HEAD', evidence, snapshots)
+        original_read = Path.read_text
+        reads = []
+        def counted_read(file, *args, **kwargs):
+            if file == path: reads.append(file)
+            return original_read(file, *args, **kwargs)
+        with patch.object(Path, 'read_text', counted_read):
+            self.assertTrue(shared(path, 'a1-part'))
+            self.assertFalse(shared(path, 'a2'))
+            self.assertIn('corrected', evidence.excerpt(path, 'a2'))
+        self.assertEqual(reads, [path])
+        self.assertEqual(snapshots[path], (self.NOTEBOOK, path.read_text()))
+        self.assertIs(shared.texts[path][1], evidence.articles[path])
+
     def test_parallel_complete_additions_keep_the_contract(self):
         spec=importlib.util.spec_from_file_location('merge',TOOLS/'merge-formalization-appends.py')
         module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
