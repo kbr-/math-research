@@ -415,6 +415,10 @@ historical assessments.
   upstream and fast-forwards that upstream, including local main when main is the base. It never
   pushes; dirty bases/conflicts require resolution. The post-commit hook reminds about lag or a
   missing upstream. This local synchronization does not authorize publication.
+  **Current-run override (7 October 2026):** during the user's `Spin AC⁰[2]-Frege`
+  on `aux`, keep commits on `aux`; do not fast-forward `main` to it or run the
+  automatic base synchronization. The user explicitly suspended that synchronization
+  for this Spin. This override ends with the run or a later user instruction.
 - Every research turn ends in a local Git commit, including failures/no results. Include living
   sections, full record, sources/provenance, code, reproducibility data and complete important
   outputs per the computation policy. Promote essential scratch/runtime results into
