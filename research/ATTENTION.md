@@ -1004,6 +1004,22 @@ A sixteen-neighbor graph with one distinguished edge per row admits a homogeneou
 
 ---
 
+### Rank retaining multiplier
+
+**Claim:** [lem:rank-retaining-multiplier](<https://kbr.is-a.dev/math-research/#entry-2026-10-07-rank-retaining-weights>)
+
+Over F_q, a subspace X of the degree-K weighted image contains a multiplier f of degree at most K with h_wf(K)>=(1-1/q)dimX, under b+(q+1)K<=D and bounded field identities.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Reusable finite-field selection principle combining Frobenius and rank specialization; it removes the support-loss premise from repeated cleanup. Independent novelty has not been determined.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare finite-field principal-image selection results before any novelty claim; use the proved bound to test complete source coverage.
+
+---
+
 ### Relative matching head count
 
 **Claim:** [lem:relative-matching-head-count](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#relative-matching-head-count>)
