@@ -1,0 +1,52 @@
+// Exact control of the ternary Fourier encoding, not a graph lower-bound test.
+// Fixed degree-three star: 27 labelings, 8 orientations, 3 charges.
+// One shared standard basis of 9 local quadratics, at most 6 total degree.
+ring R=(2,w),(u1,v1,u2,v2,u3,v3),dp;
+minpoly=w2+w+1;
+ideal J=u1^2+v1,v1^2+u1,u1*v1+1,u2^2+v2,v2^2+u2,u2*v2+1,u3^2+v3,v3^2+u3,u3*v3+1;
+ideal G=std(J);
+if(vdim(G)!=27){ERROR("local algebra dimension");}
+list us=u1,u2,u3;
+list vs=v1,v2,v3;
+proc label(poly u,poly v,int a){return(1+w^((3-a)%3)*u+w^((6-2*a)%3)*v);}
+int a,b,c,o,k,j,sgn,charge,checks,violations;
+intvec labs;
+poly E,H,B,S;
+number scalar;
+for(a=0;a<3;a++){for(b=0;b<3;b++){for(c=0;c<3;c++){
+  labs=a,b,c;
+  E=label(u1,v1,a)*label(u2,v2,b)*label(u3,v3,c);
+  S=S+E;
+  if(reduce(E^2+E,G)!=0){ERROR("indicator idempotence");}
+  for(o=0;o<8;o++){
+    H=1;charge=0;
+    for(j=1;j<=3;j++){
+      if((o/(2^(j-1)))%2==0){H=H*us[j];sgn=1;}else{H=H*vs[j];sgn=2;}
+      charge=(charge+sgn*labs[j])%3;
+    }
+    for(k=0;k<3;k++){
+      B=H+w^k;scalar=w^charge+w^k;
+      if(reduce(B*E+scalar*E,G)!=0){ERROR("vertex eigenidentity");}
+      checks++;
+      if(charge!=k){
+        if(scalar==0){ERROR("violating eigenvalue vanished");}
+        violations++;
+      }
+    }
+  }
+}}}
+if(reduce(S+1,G)!=0){ERROR("indicator partition");}
+poly x0=label(u1,v1,0);poly x1=label(u1,v1,1);poly x2=label(u1,v1,2);
+if(x0+w*x1+w^2*x2!=u1){ERROR("Fourier inverse U");}
+if(x0+w^2*x1+w*x2!=v1){ERROR("Fourier inverse V");}
+if(x0+x1+x2!=1){ERROR("row sum");}
+if(reduce(x0*x1,G)!=0 || reduce(x0*x2,G)!=0 || reduce(x1*x2,G)!=0){ERROR("one-hot exclusion");}
+// Explicit degree-four certificates for the extra quadratic domain axioms.
+if(u1^2*(u1*v1+1)+v1*(u1^3+1)!=u1^2+v1){ERROR("cubic U transfer");}
+if(v1^2*(u1*v1+1)+u1*(v1^3+1)!=v1^2+u1){ERROR("cubic V transfer");}
+print("local_dimension="+string(vdim(G)));
+print("labelings=27 orientations=8 charges=3 eigenchecks="+string(checks));
+print("nonzero_violating_eigenvalues="+string(violations));
+print("idempotence_checks=27 partition_checks=1 inverse_checks=3 cubic_certificates=2");
+print("PASS ternary Fourier control; no PC closure or asymptotic rank computed");
+quit;
