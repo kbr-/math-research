@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statements 3–4. Continue the existing <a href="#entry-2026-10-07-cube-detector-kernel-torsion">Smith kernel check</a> using the <a href="#entry-2026-10-07-cube-six-root-upper-presentation">nineteen-generator upper presentation</a>. Construct its map to the saved detector image, then a faithful parameter-fibre presentation of the kernel. Retain the Tor contribution from the image's torsion and specialize universal columns only after construction. The target remains the full graded \(k[c_2]\)-kernel with four coefficient actions.</p>
+<p>Route item: cube-odd-characteristic, statements 3–4. Continue the existing <a href="#entry-2026-10-07-cube-detector-kernel-torsion">Smith kernel check</a> from the <a href="#entry-2026-10-07-cube-detector-preimage-presentation">complete detector preimage presentation</a>. Compute the cyclic quotient's faithful parameter fibre, retaining its weight-sixteen Tor class. Construct universal orbit columns before specializing; the derivation does not preserve \((c_2)\). The target remains the full graded \(k[c_2]\)-kernel with four coefficient actions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -95576,6 +95576,78 @@ Triangular induction, using \(q_8=0\) and characteristic zero, identifies the pr
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.78 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-detector-preimage-presentation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2" data-claims="prop:cube-detector-preimage-presentation">
+<h3>7 October 2026 — The detector preimage has a complete presentation and a hidden parameter-fibre class</h3>
+<p class="entry-meta">Working proof; full parameter kernel unfinished. Detector preimage presentation. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statements 3–4 on cube-odd-characteristic still need original graded relation bounds. The continuing Smith check seeks the full \(A=k[c_2]\)-module \(H_6=\ker(\Phi_{42}|_{K_{2,6}})\) with its four coefficient actions. The <a href="#entry-2026-10-07-cube-six-root-upper-presentation">upper presentation</a> supplies a finite polynomial cover. This cycle constructs the actual detector map on that cover and its complete polynomial kernel, before quotienting by the remaining cyclic submodule. It does not complete the Smith check or prove a new threshold.</p>
+<p><strong>General statement.</strong> The graded exact-sequence mechanism of <code>prop:cube-six-root-upper-presentation</code> and the full image resolution give rigorous finite windows for <code>prop:cube-detector-preimage-presentation</code>, over the entire six-root coefficient ring in every characteristic-zero field. The specialization argument below retains its kernel for every degree, not only the displayed control weights.</p>
+<h4 id="cube-detector-preimage-presentation">Detector preimage presentation</h4>
+<p><strong>Proposition.</strong> Work in characteristic zero over \(S=k[c_2,\ldots,c_6]\), with \(\deg c_i=i\). Use the six-row polynomial cover \(F\), of basis weights \(4,5,6,6,7,8\), and its centered connection \(\nabla_F=\delta+B\) and marker \(v\) of weight eleven from the upper presentation. Put \(\Gamma=S[\nabla_F]v\), \(C=F/\Gamma\), \(M=K_{2,6}\), \(I=\Phi_{42}(M)\), \(H=\ker(M\to I)\), \(E=C/M\), \(E'=C/H\), and \(V=\ker(F\to E')\). The retained <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-six-kernel-map-20261007/certificate.txt">complete certificate</a> gives a minimal graded presentation
+\[
+P_1\xrightarrow{R_V}P\xrightarrow{J}V\longrightarrow0
+\]
+with thirty generator weights
+\[
+11,12,13,14,15^{[4]},16^{[8]},17^{[7]},18^{[6]},19
+\]
+and forty-eight relation weights
+\[
+19,20^{[5]},21^{[12]},22^{[13]},23^{[11]},24^{[5]},25.
+\]
+It gives a degree-one connection lift \(\delta+H_V\) and a marker \(\theta_V\) such that
+\[
+JR_V=0,\quad JH_V=\delta(J)+BJ,\quad J\theta_V=v,
+\qquad H\cong P/(\operatorname{im}R_V+S[\delta+H_V]\theta_V).
+\]
+This is an exact differential presentation, not a finite \(A\)-presentation of \(H\) or a monic cutoff.</p>
+<p>Writing \(t=c_2\), the full graded parameter fibre fits
+\[
+0\longrightarrow k(-16)\longrightarrow V/tV\longrightarrow F/tF
+\longrightarrow E'/tE'\longrightarrow0.
+\]
+In particular replacing \(V/tV\) by its image in \(F/tF\) deletes one class of weight sixteen.</p>
+<p><strong>Actual detector map.</strong> Let \(G:P_U\to U=\ker(F\to E)\) be the previously certified nineteen-generator cover. Its constant section back to the pair hull uses the six retained wedge rows. Apply the original exterior evaluation \(X^aY^b-X^bY^a\) to this section and the actual deformed coefficient substitution, in the saved rank-560 \(A\)-target. The eliminated harmonic columns already vanish in that target. Hence the resulting map on \(U\) is the actual detector, independently of the chosen section.</p>
+<p>The <a href="#cube-six-root-detector-image">image theorem</a> supplies the complete target relations, its seven-generator \(A\)-image embedding, and four original coefficient-action matrices. Lift each of the nineteen images through that embedding, retaining the sole relation \(t e_{\rm tor}=0\) in weight sixteen. The driver checks every lift modulo the full target relations, every generator weight, all upper relations, and the marker. Applying the saved coefficient matrices to each monomial defines the full \(S\)-linear map; there is no normalization-root multiplication. Surjectivity follows already from the definition \(I=\Phi_{42}(M)\); the independent checks in weights twelve through fifteen cover every \(A\)-generator of the saved image.</p>
+<p><strong>Why the finite windows are complete.</strong> There is an exact sequence
+\[
+0\longrightarrow I\longrightarrow E'\longrightarrow E\longrightarrow0.
+\]
+The upper presentation proves that \(\operatorname{Tor}_1^S(E,k)\) and \(\operatorname{Tor}_2^S(E,k)\) have maximum weights at most eighteen and twenty-three. The image theorem's full minimal Betti polynomial is
+\[
+(z^{12}+2z^{13}+2z^{14}+u(2z^{16}+2z^{17}+z^{18}))\prod_{j=4}^6(1+uz^j)
++z^{14}\prod_{j=2}^6(1+uz^j).
+\]
+Its first and second Tor maxima are twenty and twenty-five. Degreewise exactness of the Tor sequence therefore bounds the corresponding maxima for \(E'\) by twenty and twenty-five. Since \(V\subset U\subset S_+F\), the free cover \(F\to E'\) is minimal. Its kernel is generated through weight twenty, and the minimal relations among those generators stop at twenty-five.</p>
+<p>For every weight eleven through twenty the driver takes the complete homogeneous space \((P_U)_d\), evaluates its map to \(I_d\) with the actual action matrices, and computes its rational kernel. Applying \(G\) gives all of \(V_d\), since \(P_U\to U\) is onto. Reducing this space by polynomial multiples of the already selected generators, with both span inclusions checked, gives the displayed thirty minimal generators. No classes of smaller weight occur, because \(V\subset U\) and the latter starts at eleven. The proved upper bound rules out later generators. The same complete homogeneous-kernel procedure for \(J\), through weight twenty-five, gives precisely the forty-eight minimal relations. All calculations are over \(\mathbb Q\); scalar extension preserves these exact sequences over every characteristic-zero field.</p>
+<p><strong>Retain the cyclic quotient.</strong> The driver solves for the connection lift in the required homogeneous spaces and checks the full polynomial identity \(JH_V=\delta(J)+BJ\), not only a specialization. It likewise checks \(J\theta_V=v\). Thus \(\delta+H_V\) preserves \(\ker J=\operatorname{im}R_V\) and descends to \(\nabla_F\) on \(V\). By the upper presentation, the entire harmonic span in \(F\) is \(\Gamma\). Hence \(H=V/\Gamma\), and taking its preimage under \(J\) proves the asserted differential quotient. No finite orbit endpoint has been assumed.</p>
+<p><strong>The missing fibre class.</strong> The two polynomial normalization domains of \(E\) have
+\[
+t=2v'+r_2-3s^2\quad\text{and}\quad t=-6b^2-6bc-3c^2,
+\]
+respectively. These are nonzero, so \(t\) is injective on both layers and on their extension \(E\), as in the <a href="#entry-2026-09-28-cube-residual-sixfold-torsion">source torsion proof</a>. If \(te'=0\) in \(E'\), its image in \(E\) is zero. Thus \(\operatorname{ann}_{E'}t=\operatorname{ann}_I t=k(-14)\), using the image theorem. The graded resolution \(0\to A(-2)\xrightarrow{t}A\to k\to0\) gives \(\operatorname{Tor}_1^A(E',k)=k(-16)\). Tensoring \(0\to V\to F\to E'\to0\) with \(k\), and using the \(A\)-freeness of \(F\), proves the displayed exact sequence in all degrees. Independently the driver specializes the complete presentation \(R_V\), not just \(J\), and finds kernel dimensions zero, one, zero in weights fifteen, sixteen, seventeen. This is a nonvacuous check of the retained Tor term. \(\square\)</p>
+<h4>Evidence and remaining obligation</h4>
+<p>The accepted <a href="https://github.com/kbr-/math-research/blob/main/research/tools/bmd_six_kernel_detector_map_20261007.m2">driver</a> reports 16.93 CPU seconds. Its largest homogeneous relation system is 231 by 203. Full polynomial matrices and all dimensions are retained in the certificate. An initial run failed because a constant marker coefficient was a rational scalar rather than a polynomial object; explicit source-ring coercion fixed the action evaluation. The failed run is archived and supplies no mathematical evidence.</p>
+<p><strong>Follow-up.</strong> Continuing: the existing nested Smith kernel check now has a faithful polynomial preimage presentation and its parameter-fibre correction. It still needs the complete cyclic quotient over \(k[c_2]\) and the four coefficient actions. Next compute that quotient's faithful parameter fibre from this presentation, constructing universal orbit columns before specializing: \(\delta\) does not preserve \((c_2)\). This is the same pending nested check, not a new queue item.</p>
+<p><strong>Verification gate.</strong> The cycle's sole isolated medium reviewer passed the complete proof, driver and certificate, finding no blocking gap or unused substantive hypothesis; the full parameter kernel remains explicitly unfinished. Re-read the full upper-presentation proof, image theorem with complete Betti polynomial and actual coefficient action, and source-torsion proof with its explicit normalization substitutions. The computation verifies all homogeneous kernels in the proved windows, every connection identity and the predicted fibre discrepancy.</p>
+<p><strong>Assessment and process.</strong> The original threshold implication is still open. The result supplies the actual preimage and identifies exactly what naive specialization would erase, so it advances the requested reconstruction without replacing it by generic rank. The bounded rational systems completed in seconds; no larger collision size, guessed closure cap or unrestricted polynomial kernel calculation was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-six-kernel-map-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 18.58 s</strong></td></tr>
+<tr><td>Context restoration</td><td class="elapsed">45.38 s</td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.04 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">10 min 6.99 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">10 min 23.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 23.96 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">18.11 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">19.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.35 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
