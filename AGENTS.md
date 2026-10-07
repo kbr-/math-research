@@ -48,7 +48,9 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   begins. State that implication and test it against known obstructions, hard instances and allowed
   equivalent representations before further refinement; a surrogate becoming simple need not resolve
   the original obligation. Check preserved hypotheses and accumulated composition costs against the
-  goal's budget. If these fail, or repeated cycles leave the same required implication untouched,
+  goal's budget. Report mathematics and goal progress separately under
+  [Goal progress and scheduled review](#goal-progress-and-scheduled-review). If these fail, or
+  repeated cycles leave the same required implication untouched,
   address the failure in the next research cycle (a different mechanism, a lead or bridge) rather
   than refining the same mechanism, and record it for the scheduled review; a weak assessment or a
   descent of more than one reduction below every listed open statement is likewise carried to that
@@ -107,9 +109,10 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   reviewer: leave the gate incomplete (conditional status) and file a user request. Resolve every
   reported gap and drop or justify each unused hypothesis. Brief reviewers narrowly: exact
   files/anchors, at most one or two named claim searches, dependency excerpts in a scratch file, and
-  required changes as short bullets. Use one consolidated pass by default. Follow up with that same
-  reviewer only to resolve a concrete gap or check a correction that adds or strengthens a claim; do
-  not spawn additional reviewers in the cycle. Defer optional extensions. Record dependencies
+  required changes as short bullets. Use one consolidated pass by default; scheduled reviews use
+  the staged architecture brief below with that same reviewer. Follow up with that same
+  reviewer only for those stages, to resolve a concrete gap or check a correction that adds or
+  strengthens a claim; do not spawn additional reviewers in the cycle. Defer optional extensions. Record dependencies
   re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not the status
   line. An incomplete gate means conditional status, not a working proof; correctness takes
   precedence over cycle speed. Prepare staging paths, commit message and focused metadata checks
@@ -124,6 +127,49 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   full output on disk and display bounded excerpts. Focus checks on mathematics and touched links;
   run site/rendering checks only for layout/tool changes or a concrete rendering concern. Do not
   display PNG previews unless requested.
+
+### Goal progress and scheduled review
+
+Keep the existing cadence: six research cycles, then one route review. Do not add reviews or
+reviewer agents every two cycles. Two cycles reporting the same obligation unchanged produce a
+turn-start warning for the next scheduled review; audits and unrelated work do not erase it.
+
+Each new research/review article names its stable **Open statements** ID in `data-obligation`
+(not a newly named local lemma) and sets `data-goal-progress="advanced"` or `"unchanged"`.
+Give separate **New mathematics.** and **Goal progress.** paragraphs. The first states what was
+obtained, including no result; the second states exactly which necessary implication changed and
+why, or that it remains unchanged. `advanced` cites a claim declared by the entry with a proof,
+conditional reduction or refutation. A bigger toolbox, stronger convenience, equivalent
+reformulation or finite check is not by itself goal progress. Keep the obligation ID stable while
+that implication is unchanged. The finisher checks declarations and evidence references, not the
+truth of the agent's assessment; the existing reviewer must challenge that assessment.
+
+Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
+`<p><strong>Label.</strong> ...</p>` paragraphs:
+
+- **Necessary target.** State the weakest endpoint that suffices for the actual goal, with its
+  quantifiers, instances and degree/size budget.
+- **Extra requirements.** Contrast that endpoint with the current approach's additional demands:
+  existence versus arbitrary choices, derivability versus literal vanishing, or one surviving
+  object versus a separately large space. Justify each demand or identify what can be weakened.
+- **Independent alternative.** Initially give the review's existing medium reviewer only the goal
+  and bounded available-result excerpts, withholding the preferred route. Ask for a materially
+  different architecture or a reason none was found. Then reveal the current route for comparison
+  and the usual correctness review. Link the reviewer evidence here; do not manufacture an
+  alternative or spawn a second reviewer for this step.
+- **Rank normalization.** For dimension counts, ask whether losses and surviving objects are
+  measured in the same quotient and whether relative contraction could replace absolute
+  smallness. Otherwise state why this question does not apply.
+- **Decision.** Choose the weakened endpoint or competing architecture to test, or justify
+  retaining the current one against the comparison.
+- **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
+  required implication or the chosen route.
+
+The next research cycle on that route reports the actual outcome in **Architecture test.** and
+links the review's anchor. This can be a proof attempt, not necessarily a computation. More local
+lemmas without that test do not satisfy the requirement. An explicit user-picked task may defer
+the test, but does not clear it. These checks apply to new entries; do not retrofit or rewrite
+historical assessments.
 
 ## Notebook and claim metadata
 

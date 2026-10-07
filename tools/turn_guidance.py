@@ -148,6 +148,14 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
         notes[-1] = lq.DRAINING_REVIEW_RULE
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     notes += queue_notes(body)
+    notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+                 'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+                 'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
+    notes += ft.progress_warnings(body)
+    for route, target in ft.pending_architecture_test(body).items():
+        notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                     f'from #{target}, report its outcome and link that review. An explicit user-picked '
+                     'task may defer this test but does not clear it.')
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
     for item in items:

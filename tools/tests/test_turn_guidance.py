@@ -64,6 +64,23 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn(self.guide.CASES_PLEA, notes)
         self.assertIn('selects 3 passed leads and 2 passed bridges', notes)
 
+    def test_progress_warning_does_not_change_review_schedule(self):
+        body = self.body([('research', 'lem:a', 'Working proof.')] * 2).replace(
+            'data-kind="research"', 'data-kind="research" data-obligation="target" '
+            'data-goal-progress="unchanged"')
+        notes = ' '.join(self.guide.guidance(body, self.ft))
+        self.assertIn('2 cycles report unchanged goal progress', notes)
+        self.assertIn('do not add an early review', notes)
+        self.assertNotIn('must be a route review', notes)
+        self.assertIn('New mathematics from Goal progress', notes)
+
+    def test_pending_architecture_test_is_shown_at_start(self):
+        body = self.body([('review', 'none', 'Review.')]).replace(
+            '<article data-kind="review"', '<article id="review" data-kind="review"').replace(
+            '</article>', '<h4>Architecture review</h4></article>')
+        notes = ' '.join(self.guide.guidance(body, self.ft))
+        self.assertIn('decisive Architecture test from #review', notes)
+
     def test_algebra_systems_note(self):
         body = self.body([('research', 'lem:a', 'Working proof.')])
         present = ' '.join(self.guide.guidance(body, self.ft, which=lambda b: '/usr/bin/' + b if b in ('M2', 'Singular') else None))

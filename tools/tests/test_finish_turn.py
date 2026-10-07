@@ -17,6 +17,22 @@ ROOT = Path(__file__).resolve().parents[2]
 OBSTACLE = ('<h4>Obstacle</h4><p>No recorded degree method handles many adversarial dense '
             'constraints: every method checked is local or symmetric.</p>')
 
+PROGRESS_ATTRS = ' data-obligation="open-goal" data-goal-progress="unchanged"'
+PROGRESS_REPORT = ('<p><strong>New mathematics.</strong> A scoped result was checked, without settling '
+                   'the required implication.</p><p><strong>Goal progress.</strong> The general '
+                   'implication remains unchanged; no uniform proof was found.</p>')
+ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
+    f'<p><strong>{label}.</strong> The target and alternative are compared against all hypotheses '
+    'and the goal budget. <a href="review.txt">Reviewer evidence</a>.</p>'
+    for label in ('Necessary target', 'Extra requirements', 'Independent alternative',
+                  'Rank normalization', 'Decision', 'Decisive test'))
+
+
+def reporting(tags):
+    attrs = tags + PROGRESS_ATTRS + (' id="current"' if 'id="' not in tags else '')
+    text = PROGRESS_REPORT + (ARCHITECTURE if 'data-kind="review"' in tags else '')
+    return attrs, text
+
 from importlib.machinery import SourceFileLoader
 
 FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py')).load_module()
@@ -239,8 +255,9 @@ sys.exit(compute.main())
                       '<p class="entry-meta">Review.</p>' + general + leads + '</article>')
         research = '<article data-kind="research" data-route="general-step"{}><p class="entry-meta">S.</p></article>'
         def record(earlier, tags, extra=''):
+            tags, report = reporting(tags)
             return (route + '<section id="research-record">' + old_review + earlier + f'<article {tags}>'
-                    '<p class="entry-meta">Status.</p>' + general + extra + marker + '</article></section>')
+                    '<p class="entry-meta">Status.</p>' + general + extra + report + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
         reviewed = 'id="rev2" data-kind="review" data-route="general-step" data-open-items="2"'
         follow = '<h4>Bridge follow-up</h4><ul><li data-bridge="rev1:1">Tried it. <strong>Follow-up.</strong> {}</li></ul>'
@@ -282,13 +299,14 @@ sys.exit(compute.main())
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
         def record(earlier, tags, status='Status.', general=general, earlier_status='Status.', earlier_claims=None):
+            tags, report = reporting(tags)
             claims = earlier_claims or [''] * len(earlier)
             entries = ''.join(f'<article data-kind="{kind.split(":")[0]}" data-route="general-step"'
                               + (f' data-open-items="{kind.split(":")[1]}"' if ':' in kind else '')
                               + (f' data-claims="{cl}"' if cl else '') + '>'
                               f'<p class="entry-meta">{earlier_status}</p></article>' for kind, cl in zip(earlier, claims))
             return (route + '<section id="research-record">' + entries + f'<article {tags}>'
-                    f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
+                    f'<p class="entry-meta">{status}</p>' + general + report + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
         reviewed = 'data-kind="review" data-route="general-step" data-open-items="3"'
         goal_review = reviewed + ' data-scope="goal"'
@@ -413,7 +431,8 @@ sys.exit(compute.main())
                               + '><p class="entry-meta">S.</p></article>' for k in earlier)
             return ('<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
                     '<section id="research-record">' + entries + '<article data-kind="review" data-route='
-                    f'"general-step" data-open-items="3"{scope}><p class="entry-meta">Review.</p>' + body + extra
+                    f'"general-step" data-open-items="3"{scope}{PROGRESS_ATTRS} id="current">'
+                    '<p class="entry-meta">Review.</p>' + body + extra + PROGRESS_REPORT + ARCHITECTURE
                     + marker + '</article></section>')
         goal = ' data-scope="goal"'
         for earlier, scope, extra in [(['review'] + ['research'] * 5, '', ''),            # too soon

@@ -310,6 +310,139 @@ GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.
 
 GENERAL_ID = re.compile(r'\b(?:conj|lem|thm|prop|cor):[A-Za-z0-9-]+')
 
+ARCHITECTURE_HEADING = '<h4>Architecture review</h4>'
+ARCHITECTURE_FIELDS = ('Necessary target', 'Extra requirements', 'Independent alternative',
+                       'Rank normalization', 'Decision', 'Decisive test')
+PROGRESS_STATES = ('advanced', 'unchanged')
+
+
+def article_attribute(body, article, name):
+    tag = body[article:body.index('>', article) + 1]
+    found = re.search(rf'\b{re.escape(name)}="([^"]*)"', tag)
+    return html.unescape(found.group(1)) if found else None
+
+
+def report_paragraph(text, label):
+    found = re.search(r'<p\b[^>]*>\s*<strong>' + re.escape(label) + r'\.</strong>(.*?)</p>',
+                      text, re.S)
+    return found.group(1) if found else ''
+
+
+def require_report(text, label):
+    value = report_paragraph(text, label)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', value)).strip()
+    if len(plain) < 40:
+        raise ValueError(f'Add a substantive <p><strong>{label}.</strong> ...</p> paragraph '
+                         '(AGENTS.md, goal progress and scheduled architecture review)')
+    return value
+
+
+def progress_history(body, before=None):
+    """Read existing declarations, not guesses about the mathematics of legacy entries."""
+    record = body.find('<section id="research-record">')
+    if record < 0:
+        return []
+    end = body.find('</section>', record)
+    stop = min(before if before is not None else len(body), end if end >= 0 else len(body))
+    history = []
+    for match in re.finditer(r'<article\b', body[record:stop]):
+        position = record + match.start()
+        close = body.find('</article>', position, stop)
+        if close < 0:
+            continue
+        tags = entry_tags(body, position)
+        if tags['kind'] not in ('research', 'review'):
+            continue
+        history.append(dict(tags, position=position, close=close,
+                            obligation=article_attribute(body, position, 'data-obligation'),
+                            progress=article_attribute(body, position, 'data-goal-progress'),
+                            ident=article_attribute(body, position, 'id'),
+                            picked=article_attribute(body, position, 'data-picked') == 'user'))
+    return history
+
+
+def progress_warnings(body):
+    """Two unchanged research cycles flag the scheduled review; never change its cadence."""
+    counts = {}
+    for entry in progress_history(body):
+        route = entry['route']
+        if entry['kind'] == 'review':
+            counts = {key: value for key, value in counts.items() if key[0] != route}
+        elif entry['obligation'] and entry['progress'] in PROGRESS_STATES:
+            key = (route, entry['obligation'])
+            counts[key] = counts.get(key, 0) + 1 if entry['progress'] == 'unchanged' else 0
+    return [f'Route {route}, obligation {obligation}: {count} cycles report unchanged goal progress. '
+            'Flag this for the next scheduled Architecture review; do not add an early review.'
+            for (route, obligation), count in counts.items() if count >= 2]
+
+
+def pending_architecture_test(body, before=None):
+    """Keep each scheduled decision pending until research tests it; audits do not consume it."""
+    pending = {}
+    for entry in progress_history(body, before):
+        route = entry['route']
+        text = body[entry['position']:entry['close']]
+        if entry['kind'] == 'review':
+            if ARCHITECTURE_HEADING in text and entry['ident']:
+                pending[route] = entry['ident']
+            else:  # historical reviews have no new-format test to enforce
+                pending.pop(route, None)
+        elif route in pending:
+            evidence = report_paragraph(text, 'Architecture test')
+            plain = html.unescape(re.sub(r'<[^>]*>', ' ', evidence)).strip()
+            if len(plain) >= 40 and re.search(r'href=["\']#' + re.escape(pending[route]) + r'["\']', evidence):
+                pending.pop(route)
+    return pending
+
+
+def validate_progress(body, article, close):
+    """Check reporting and follow-through, not the mathematical truth of an advance."""
+    if not re.search(r'data-route-item="', body):
+        return
+    tags = entry_tags(body, article)
+    if tags['kind'] not in ('research', 'review'):
+        return
+    obligation = article_attribute(body, article, 'data-obligation')
+    state = article_attribute(body, article, 'data-goal-progress')
+    if not obligation or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9:_.-]*', obligation):
+        raise ValueError('Name the stable open-statement ID in data-obligation; do not use a new local '
+                         'subproblem name each cycle')
+    if state not in PROGRESS_STATES:
+        raise ValueError('Set data-goal-progress="advanced" or "unchanged"; new mathematics alone '
+                         'does not establish goal progress')
+    text = body[article:close]
+    require_report(text, 'New mathematics')
+    progress = require_report(text, 'Goal progress')
+    if state == 'advanced':
+        statuses = registered_status()
+        supporting = [cid for cid in entry_claims(body, article)
+                      if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)
+                      and statuses.get(cid) in
+                      ('working_proof', 'established', 'conditional', 'refutation')]
+        if not supporting:
+            raise ValueError('Advanced Goal progress must cite a claim declared by this entry with a '
+                             'proof, conditional reduction, or refutation; finite checks and conjectures '
+                             'alone do not certify the goal-critical implication')
+    if tags['kind'] == 'review':
+        if not article_attribute(body, article, 'id'):
+            raise ValueError('An Architecture review needs a stable article id for its next test')
+        if ARCHITECTURE_HEADING not in text:
+            raise ValueError('The scheduled review needs an <h4>Architecture review</h4> section; '
+                             'the six-research-cycles/one-review cadence is unchanged')
+        section = text.split(ARCHITECTURE_HEADING, 1)[1].split('<h4>', 1)[0]
+        for label in ARCHITECTURE_FIELDS:
+            value = require_report(section, label)
+            if label == 'Independent alternative' and not re.search(r'href=["\'][^"\']+["\']', value):
+                raise ValueError('Independent alternative must link the existing reviewer evidence; '
+                                 'brief the same medium reviewer with goal and tools before the preferred route')
+    else:
+        target = pending_architecture_test(body, article).get(tags['route'])
+        if target and article_attribute(body, article, 'data-picked') != 'user':
+            evidence = require_report(text, 'Architecture test')
+            if not re.search(r'href=["\']#' + re.escape(target) + r'["\']', evidence):
+                raise ValueError(f'Architecture test must report the outcome of the scheduled decision '
+                                 f'and link #{target}; a further local lemma is not a substitute')
+
 
 def entry_claims(body, article):
     tag = body[article:body.index('>', article) + 1]
@@ -432,6 +565,7 @@ def validate_marker(body, marker, draining=None):
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_bridges(body, article, close)
+    validate_progress(body, article, close)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
