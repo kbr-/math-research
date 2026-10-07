@@ -7,7 +7,8 @@ Each hit lists the claims recorded as its newer versions (refinements, correctio
 
 A grep for one phrase misses a recorded claim that uses other words ("point-support lower bound"
 was missed by "support size"). Give the statement's content words; rows are ranked by the rarity-
-weighted number of distinct word stems they contain, so a row sharing several uncommon words with
+weighted number of distinct word stems they contain, with exact stems breaking prefix-match ties.
+A row sharing several uncommon words with
 the statement comes first whatever the phrasing.
 
 Usage: tools/search-claims.py [-n ROWS] WORD [WORD ...]
@@ -61,9 +62,10 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
         hits = [q for q in query if any(t.startswith(q) or q.startswith(t) for t in token_set)]
         if query and not hits:
             continue
-        result.append((sum(weights[q] for q in hits), c))
-    result.sort(key=lambda item: -item[0])
-    return result
+        result.append((sum(weights[q] for q in hits),
+                       sum(1 + weights[q] for q in hits if q in token_set), c))
+    result.sort(key=lambda item: (-item[0], -item[1]))
+    return [(score, claim) for score, _, claim in result]
 
 
 NEWER = ('refines', 'corrects', 'supersedes', 'formalizes', 'rediscovers')

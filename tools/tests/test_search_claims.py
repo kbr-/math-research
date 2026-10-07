@@ -25,6 +25,26 @@ class NewerVersionsTest(unittest.TestCase):
                          [('audit:lean', 'refines', 'complete')])
         self.assertEqual(search_claims.newer_versions(data, 'audit:lean'), [])
 
+class RankedSearchTest(unittest.TestCase):
+    def test_exact_stem_precedes_short_prefix_without_losing_partial_matches(self):
+        data = {'claims': [
+            {'id': 'lem:early', 'summary': 'A ree argument', 'assessment': ''},
+            {'id': 'lem:later', 'summary': 'Rees homogenization', 'assessment': ''},
+        ]}
+        ranked = search_claims.search(data, ['Rees'])
+        self.assertEqual([claim['id'] for _, claim in ranked],
+                         ['lem:later', 'lem:early'])
+
+    def test_stemming_and_multiword_coverage_are_preserved(self):
+        data = {'claims': [
+            {'id': 'lem:partial', 'summary': 'Filtered modules', 'assessment': ''},
+            {'id': 'lem:complete', 'summary': 'Filtered modules and barcodes', 'assessment': ''},
+            {'id': 'lem:other', 'summary': 'Unrelated geometry', 'assessment': ''},
+        ]}
+        ranked = search_claims.search(data, ['module', 'barcode'])
+        self.assertEqual([claim['id'] for _, claim in ranked],
+                         ['lem:complete', 'lem:partial'])
+
 
 if __name__ == '__main__':
     unittest.main()
