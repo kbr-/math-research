@@ -1,0 +1,61 @@
+# command: python3 tools/codex_reviewer.py --handle binary-architecture-review-20261007 --brief research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/architecture-initial.md
+# run 65f143734d084d94b88cea83aaac2caf, session binary_architecture_review_20261007; full output
+**Verdict: no concretely justified alternative architecture follows from the supplied toolbox.** A distinct direction worth testing is **direct, proof-dependent elimination of Boolean gate extensions**, rather than extending the old-affine exclusion machinery. Its crucial implication is new, however—not a consequence of the audited results.
+
+### Candidate family and necessary endpoint
+
+Use the **certified constant-degree graph PHP family** from item 2, with \(v=\Theta(N)\) Boolean variables and old PC degree \(\Omega(N)\) over \(\mathbb F_2\). Fix this family once for each Frege depth \(h\); do not choose a different graph family for each polynomial size exponent.
+
+Let \(L_N\) denote the actual formula encoding length. With bounded-width clauses, there are \(O(N)\) variable occurrences, so an explicit indexed encoding has \(L_N=O(N\log N)\). This encoding overhead must remain in the final comparison.
+
+The necessary quantitative endpoint is
+\[
+\frac{\log S_h(N)}{\log L_N}\longrightarrow\infty
+\]
+for every fixed \(h\). A lower bound \(L_N^{c_h}\), however large its fixed exponent, does not meet the milestone.
+
+### One proposed mechanism—not an established implication
+
+Associate Boolean extension variables to gates occurring in a purported depth-\(h\) AC0[2]-Frege proof. Over \(\mathbb F_2\), parity gate definitions are linear in their input values. The hard part is eliminating the AND/OR extensions **without expanding their full Boolean polynomials and without losing inference preservation**.
+
+A single sufficient theorem to investigate is:
+
+> **Proof-dependent gate-elimination theorem.** For the fixed graph-PHP family, a depth-\(h\) AC0[2]-Frege refutation of total encoding size \(S\) yields an ordinary PC refutation over \(\mathbb F_2\), in the original variables, of degree at most
+> \[
+> C_hN^{1-\varepsilon_h}\bigl(\log(S+L_N)\bigr)^{a_h},
+> \]
+> where \(\varepsilon_h>0\), \(a_h>0\), and \(C_h\) depend only on \(h\).
+
+This is a direct proof-to-proof statement, not an interpolation theorem or a probability-to-rank conversion. It would have to exploit the actual proof and the graph-PHP axioms; it cannot be a generic consequence of old PC hardness.
+
+The architectural difference is that it seeks a **global elimination certificate for the extensions used by one proof**, rather than exclusion for every retained tuple or every mixed PC class. No claim is made that such certificates presently exist.
+
+### Full parameter issue
+
+Combining that hypothetical theorem with the certified degree lower bound would give
+\[
+\log(S+L_N)\ge c_hN^{\varepsilon_h/a_h}.
+\]
+Consequently \(S\) would be exponential in a positive power of \(N\), hence superpolynomial in \(L_N\).
+
+The uniformity is essential. For a putative proof bound \(S\le L_N^A\), the extracted degree must be \(o(N)\) for **every fixed \(A\)** on the same family. Allowing \(\varepsilon_h\) to vanish with \(N\), or choosing the family according to \(A\), would invalidate this argument. Dependence on fixed depth is permitted.
+
+The output must be an **ordinary old-variable PC refutation**. A low-degree refutation retaining gate variables, a nonzero old quotient, or an old-moment certificate does not meet this endpoint.
+
+### Decisive test
+
+Test the proposed elimination rule first on **one unrestricted AND layer above arbitrary parity expressions**, together with the inference steps using those gate values.
+
+Require an explicit joint elimination lemma: at the claimed degree budget, eliminate all relevant gate errors simultaneously and preserve the inference in the original-variable PC calculus. It must handle the actual fan-in, number of gates, and correlations among their inputs—not merely each gate separately or an averaged error estimate.
+
+Failure here rules out this mechanism before higher-depth iteration. Success would only establish the first layer; accumulated degree growth would still need to satisfy the displayed uniform bound.
+
+### Why the supplied results do not justify it
+
+- **Item 1:** inference preservation remains conditional on joint gate-error elimination. Neither the gain inequality nor the ambient dimension ratio supplies that condition. Higher-layer input degrees worsen the budget.
+- **Item 2:** supplies the terminal contradiction only, not extension elimination.
+- **Item 3:** scoped quadratic/cubic results do not cover arbitrary parity-fed AND gates; those gates can have large old-variable degree.
+- **Item 5:** rules out replacing the missing family-specific argument with a generic hardness-only transfer.
+- **Unused toolbox:** BMD multiplicity formulas, root-curve compatibility spaces, all-prime scope, and the near-half-variable functional-PHP bound play no role in this candidate.
+
+Thus this is a sharply testable research direction, but not yet a supported route to the milestone.

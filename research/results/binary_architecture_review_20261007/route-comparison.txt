@@ -1,0 +1,61 @@
+# command: python3 tools/codex_reviewer.py --handle binary-architecture-review-20261007 --brief research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/architecture-route.md
+# run 80c4001283954a848ae3e3cdfcfca1ff, session binary_architecture_review_20261007; full output
+**Verdict: pass with corrections as a research direction, not as a transfer result.**
+
+- My stage1 proposal is substantially the existing complete-source NS endpoint, not a materially different architecture. Its positive-power degree saving was unnecessarily strong: \(o(N)\) for every fixed polynomial proof-size exponent, on one fixed family per depth, suffices.
+- The next cycle should target **relative error control in the actual old quotient, compatible with a surviving weight**. More ambient concentration does not address the identified obstruction.
+
+### Recommended decisive test
+
+Use one fixed certified hard family—initially functional PHP, where the supplied cleanup result and residual degree barrier give concrete structure. Choose its actual degree budget \(D\), an admissible surviving weight \(w\) of degree \(b\), and an input batch arising from the intended source construction.
+
+First restrict to the monomial-code batch \(g=Az\). This restriction isolates the quotient problem without simultaneously solving overlap.
+
+Write \(V_K\) for the old polynomials of degree at most \(K\), and define
+\[
+H_w=\operatorname{rank}(V_K\ni f\mapsto[wf]\bmod C_D),
+\]
+\[
+E_i(C)=\operatorname{rank}(V_K\ni f\mapsto[wP_Cg_if]\bmod C_D).
+\]
+
+**Test whether the ambient-deficit term can be removed for these actual instances:** obtain a code \(C\) with
+\[
+\max_i E_i(C)\le \frac{H_w}{2M},
+\qquad
+b+K+rt+r\le D,
+\]
+at the intended polynomial \(M\), **while also certifying that the updated weight survives**:
+\[
+[wP_C]\ne0\pmod{C_D}.
+\]
+
+These are two distinct obligations. A multiplier annihilating everything satisfies the rank inequality vacuously and is not progress. This test is a local bottleneck test, not itself a sufficient Frege endpoint.
+
+Specify the admissible weights and batches *before* attempting the proof. They must include what the source construction actually produces. Otherwise the test risks succeeding only for specially selected weights that the adaptive process cannot retain.
+
+**Falsification:** exhibit an admissible sequence of instances where every code satisfying the degree budget either kills the weight or fails the relative rank bound. A counterexample using arbitrary quotient relations is enough to refute a universal lemma, but not enough to reject a family-specific route unless those relations occur in the chosen \(C_D\).
+
+### What proof mechanism is acceptable?
+
+Do not introduce a “distribution on surviving classes” without establishing its algebraic meaning. Since block projections need not preserve \(C_D\), the ambient direct-sum decomposition does not automatically descend to the quotient.
+
+The test should therefore be proved directly for the induced linear maps, or through a weaker quotient-compatible structure sufficient for those maps. **Full module freeness is not required.** Conversely, merely counting surviving classes in each ambient component does not justify adding their contributions.
+
+A useful first negative check is whether legal instances can force some \(g_i\) to act as the identity on the relevant weighted image. That would expose an incompatibility between error reduction and survival, and identify the missing admissibility condition rather than another concentration estimate.
+
+### Does the positive batch result warrant further development?
+
+**Yes, but only one tightly scoped quotient-normalization cycle.**
+
+Its value is concrete: it identifies the exact ambient activity parameter, provides an efficient simultaneous code, and locates the loss in
+\[
+\log_2\!\bigl(N_v(K)/H_w\bigr).
+\]
+That makes the next question measurable rather than speculative.
+
+It does **not** yet warrant extending the disjoint-block calculation to increasingly elaborate ambient examples. Even perfect ambient control can be useless when the surviving weighted image is small. Overlap is a subsequent, independent obligation; solving it first would leave this obstruction intact.
+
+The selector-independence result likewise does not bypass normalization: constant bottom coefficients still reduce the selectors to matching monomials. It supports a structural calculation, not source hardness.
+
+**Decision rule:** continue this branch if the next cycle proves quotient-relative control and weight survival for a source-relevant class, with affordable parameters. If it succeeds only under projection invariance or specially chosen weights unavailable to the source, record that limitation and redirect toward source-specific certificates. Neither mod3 Tseitin nor random CSP currently avoids the need for an actual simulation and degree argument.
