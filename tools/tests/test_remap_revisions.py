@@ -1,4 +1,7 @@
 import copy
+import json
+import tempfile
+from unittest.mock import patch
 import importlib.util
 from pathlib import Path
 import sys
@@ -65,8 +68,38 @@ class RemapRevisionsTest(unittest.TestCase):
 
     def test_unmapped_registry_is_unchanged(self):
         data = registry()
-        new, changed, refreshed = rr.remap_registry(data, {'d' * 40: NEW})
+        with patch.object(rr, 'claim_digest', side_effect=AssertionError('unneeded claim hashing')):
+            new, changed, refreshed = rr.remap_registry(data, {'d' * 40: NEW})
         self.assertEqual((new, changed, refreshed), (data, 0, []))
+
+
+    def test_noop_cli_preserves_files_and_skips_attention_and_render(self):
+        with tempfile.TemporaryDirectory() as directory:
+            registry_path = Path(directory) / 'index.json'
+            contents = json.dumps(registry(), separators=(',', ':'))
+            registry_path.write_text(contents)
+            with patch.object(rr, 'REGISTRY', registry_path), \
+                    patch.object(rr, 'ATTENTION', Path(directory) / 'absent-attention.json'), \
+                    patch.object(rr, 'match', return_value={'d' * 40: NEW}), \
+                    patch.object(rr, 'remap_attention', side_effect=AssertionError('unneeded attention scan')), \
+                    patch.object(rr.subprocess, 'check_call', side_effect=AssertionError('unneeded render')), \
+                    patch.object(sys, 'argv', ['remap-revisions.py', '--match', 'old', 'new']):
+                self.assertEqual(rr.main(), 0)
+            self.assertEqual(registry_path.read_text(), contents)
+
+    def test_noop_still_refuses_hashes_outside_revision_fields(self):
+        with tempfile.TemporaryDirectory() as directory:
+            registry_path = Path(directory) / 'index.json'
+            data = registry()
+            data['claims'][0]['summary'] = 'Reference ' + 'd' * 40
+            contents = json.dumps(data)
+            registry_path.write_text(contents)
+            with patch.object(rr, 'REGISTRY', registry_path), \
+                    patch.object(rr, 'match', return_value={'d' * 40: NEW}), \
+                    patch.object(sys, 'argv', ['remap-revisions.py', '--match', 'old', 'new']):
+                with self.assertRaisesRegex(SystemExit, 'outside revision fields'):
+                    rr.main()
+            self.assertEqual(registry_path.read_text(), contents)
 
 
 if __name__ == '__main__':

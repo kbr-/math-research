@@ -60,6 +60,8 @@ def remap_registry(data, mapping):
     for holder in revisions(new):
         if holder['revision'] in mapping:
             holder['revision'] = mapping[holder['revision']]; changed += 1
+    if not changed:
+        return new, 0, []
     old_claims = {c['id']: c for c in data['claims']}
     refreshed = []
     for claim in new['claims']:
@@ -154,6 +156,9 @@ def main():
     leftover = [o for o in mapping if o in text]
     if leftover:
         raise SystemExit('Old hashes also occur outside revision fields; nothing written: ' + ', '.join(leftover))
+    if not changed:
+        print(f'{len(mapping)} commits remapped: 0 revision fields, 0 review hashes, 0 attention fingerprints.')
+        return 0
     attention = json.loads(ATTENTION.read_text(encoding='utf-8'))
     moved = remap_attention(attention, data, new)
     REGISTRY.write_text(text, encoding='utf-8')
