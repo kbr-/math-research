@@ -1,0 +1,40 @@
+// Exact Cartier recovery controls; accept final marker without diagnostics.
+LIB "research/tools/bmd_cartier_recovery_20261008.lib";
+ring R=(3,t),(x),dp;
+proc hcMain()
+{
+ int started=timer;poly f=x^9+x^8+x^5+x-t;poly k=1+x-x^3;
+ list M=hcKernel(f,k);list generalM=hcRecover(list(poly(1),poly(0)),k,f);hdcheck(hdequal(M,generalM),"general and kernel recovery disagree");print("DESCENDED_REDUCED_MUMFORD");print(M);
+ poly shortA=x^4+x^2-x+1;
+ hdcheck(diff(shortA,x)+k==0 && diff(f,x)-k*shortA==0,"short horizontal identities");
+ hdcheck(shortA^2-f+subst(M[1],x,x^3)==0,"short norm identity");
+ hdcheck(divrem(shortA+M[2],M[1])==0,"short descended y identity");
+ hdcheck(deg(M[1])>0,"kernel point unexpectedly zero");
+ print("STAGE verify Verschiebung kernel");list image=hdV(M,f);
+ hdcheck(hdequal(image,list(poly(1),poly(0))),"recovered point not in kernel V");
+ print("STAGE verify twist tripling");list triple=hdadd(M,hdadd(M,M,hdfr(f)),hdfr(f));
+ hdcheck(hdequal(triple,list(poly(1),poly(0))),"recovered point not 3-torsion");
+ list bad=hcUnfr(M,f);hdcheck(bad[1]==0,"false full division accepted");
+ print("GENERIC_KERNEL_RECOVERY_REJECTED_AS_FULL_DIVISION cpu_ms="+string(timer-started));
+ // The separable extension of the original pencil parameter T=-t^2 has point (0,t).
+ poly goodf=x^9+x^8+x^5+x+t^2;list P=list(x,poly(t));
+ list FrP=list(hdfr(P[1]),hdfr(P[2]));list good=hcUnfr(FrP,goodf);
+ hdcheck(good[1] && hdequal(good[2],P),"genuine Frobenius division rejected");
+ list VP=hdV(FrP,goodf);list threeP=hdadd(P,hdadd(P,P,goodf),goodf);
+ hdcheck(hdequal(VP,threeP),"positive control does not commute with tripling");
+ print("GENUINE_FROBENIUS_DIVISION_ACCEPTED");
+ list recP=hcRecover(list(VP[1],VP[2]),poly(0),goodf);
+ hdcheck(hdequal(recP,FrP),"nontrivial target Cartier recovery mismatch");
+ print("NONTRIVIAL_TARGET_CARTIER_RECOVERY_ACCEPTED");
+ list P2=hdadd(P,P,goodf);list FrP2=list(hdfr(P2[1]),hdfr(P2[2]));
+ list VP2=hdV(FrP2,goodf);hdcheck(deg(VP2[1])==4,"full-degree target missing");
+ poly corr=diff(VP2[4],x)-diff(VP2[1],x)*hdexact(VP2[4]+VP2[2],VP2[1])/2;
+ print("STAGE recover full-degree target");int t2=timer;
+ list recP2=hcRecover(list(VP2[1],VP2[2]),corr,goodf);
+ hdcheck(hdequal(recP2,FrP2),"full-degree target recovery mismatch");
+ list unP2=hcUnfr(recP2,goodf);hdcheck(unP2[1] && hdequal(unP2[2],P2),"full-degree target Frobenius filter mismatch");
+ print("FULL_DEGREE_TARGET_RECOVERY_ACCEPTED cpu_ms="+string(timer-t2));
+ print("CARTIER_RECOVERY_CONTROLS_COMPLETED");
+}
+hcMain();
+quit;

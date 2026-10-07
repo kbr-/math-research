@@ -1,0 +1,144 @@
+LIB "research/tools/bmd_hyperelliptic_division_core_20261007.lib";
+proc hcKernel(poly f,poly k)
+{
+ hdcheck(k!=0,"zero kernel form");
+ hdcheck(deg(k)<(deg(f)-1) div 2,"form is not holomorphic");
+ hdcheck(k^3+diff(diff(k*f,x),x)==0,"connection has nonzero 3-curvature");
+ poly A=diff(k*f,x);poly B=k^2;poly N=A^2-B^2*f;
+ hdcheck(diff(N,x)==0,"norm is not in the relative constant field");
+ poly Q;int j;
+ for(j=1;j<=size(N);j++)
+ {
+  hdcheck(leadexp(N[j])[1] mod 3==0,"norm exponent is not divisible by three");
+  Q=Q+leadcoef(N[j])*x^(leadexp(N[j])[1] div 3);
+ }
+ poly ft=hdfr(f);poly At=hdfr(A);poly Bt=hdfr(B);
+ hdcheck(At^2-Bt^2*ft==Q^3,"twisted norm identity");
+ hdcheck(deg(gcd(Q,Bt*ft))==0,"recovery needs a different divisor chart");
+ list bez=hdbz(Bt,Q);poly vv=divrem(-At*bez[2],Q);
+ list raw=list(Q/leadcoef(Q),vv);hdvalid(raw,ft);
+ print("HORIZONTAL_A");print(A);print("HORIZONTAL_B");print(B);print("NORM_CUBE_VARIABLE_Q");print(Q);
+ list reduced=hdred(raw,ft);hdvalid(reduced,ft);return(reduced);
+}
+// F3(t) coefficient ctest. Mapping to a polynomial ring keeps the parameter imperfect.
+proc hcCube(number c)
+{
+ def original=basering;number cn=numerator(c);number cd=denominator(c);
+ ring coeffring=3,(t),dp;poly a=imap(original,cn);poly b=imap(original,cd);
+ poly obstruction=diff(a,t)*b-a*diff(b,t);
+ if(obstruction!=0){setring original;return(list(0,number(0)));}
+ poly ar;poly br;int j;
+ for(j=1;j<=size(a);j++)
+ {
+  hdcheck(leadexp(a[j])[1] mod 3==0,"cube numerator exponent");
+  ar=ar+leadcoef(a[j])*t^(leadexp(a[j])[1] div 3);
+ }
+ for(j=1;j<=size(b);j++)
+ {
+  hdcheck(leadexp(b[j])[1] mod 3==0,"cube denominator exponent");
+  br=br+leadcoef(b[j])*t^(leadexp(b[j])[1] div 3);
+ }
+ setring original;poly ar0=imap(coeffring,ar);poly br0=imap(coeffring,br);
+ number answer=leadcoef(ar0)/leadcoef(br0);hdcheck(answer^3==c,"cube root reconstruction");
+ return(list(1,answer));
+}
+proc hcUnfr(list D,poly f)
+{
+ hdvalid(D,hdfr(f));list answer=list(poly(0),poly(0));list ctest;int j;int a;
+ for(a=1;a<=2;a++){for(j=1;j<=size(D[a]);j++)
+ {
+  ctest=hcCube(leadcoef(D[a][j]));
+  if(ctest[1]==0){print("NONCUBE_COEFFICIENT divisor_component="+string(a)+" x_exponent="+string(leadexp(D[a][j])[1]));print(leadcoef(D[a][j]));return(list(0));}
+  answer[a]=answer[a]+ctest[2]*x^leadexp(D[a][j])[1];
+ }}
+ hdvalid(answer,f);return(list(1,answer));
+}
+
+// Recover Cartier descent for any rational solution of the char-3 connection fibre.
+// Two-parameter curvature normalization requires parameter names s,z and polynomial f.
+// All linear algebra is over the given coefficient field; no parameter roots.
+proc hcRecover(list D,poly k,poly f)
+{
+ hdvalid(D,f);int g=(deg(f)-1) div 2;int m=deg(D[1]);
+ poly u=D[1];poly v=D[2];hdcheck(m<=g && deg(k)<g,"recovery input degrees");
+ list data=hdcurvature(D,f);int ii;int jj;poly ceq;
+ for(ii=1;ii<=g;ii++)
+ {
+  ceq=(data[3]*hdcoef(k,ii-1))^3+data[1][ii];
+  for(jj=1;jj<=g;jj++){ceq=ceq-data[2][ii,jj]*(data[3]*hdcoef(k,jj-1));}
+  hdcheck(ceq==0,"recovery input has nonzero curvature");
+ }
+ 
+ // Build every column once, in increasing pole order, then one native kernel reduction.
+ list aa;list bb;int pole;int count=0;int rows=12*g+4;
+ poly a;poly b;poly cc;poly dd;
+ for(pole=0;pole<=3*g;pole++)
+ {
+  a=0;b=0;
+  if(pole>=m && (pole-m) mod 2==0)
+  {a=u*x^((pole-m) div 2);}
+  else
+  {
+   if(pole>=2*g+1-m && (pole-(2*g+1-m)) mod 2==0)
+   {a=v*x^((pole-(2*g+1-m)) div 2);b=x^((pole-(2*g+1-m)) div 2);}
+  }
+  if(a!=0 || b!=0){count=count+1;aa[count]=a;bb[count]=b;}
+ }
+ hdcheck(count==2*g+1,"Riemann-Roch basis dimension");
+ matrix eqs[rows][count];
+ for(jj=1;jj<=count;jj++)
+ {
+  a=aa[jj];b=bb[jj];
+  cc=2*u*f*diff(b,x)-diff(u,x)*f*b+u*diff(f,x)*b+diff(u,x)*v*a+2*u*k*a;
+  dd=2*u*diff(a,x)-diff(u,x)*a+diff(u,x)*v*b+2*u*k*b;
+  hdcheck(deg(cc)<rows div 2 && deg(dd)<rows div 2,"connection matrix degree budget");
+  for(ii=0;ii<rows div 2;ii++){eqs[ii+1,jj]=hdcoef(cc,ii);eqs[rows div 2+ii+1,jj]=hdcoef(dd,ii);}
+ }
+ // C orders the last nonzero component highest; std gives echelon pivots in that order.
+ vector orderprobe=[1,1];intvec orderexp=leadexp(orderprobe);
+ hdcheck(orderexp[nvars(basering)+1]==2,"recovery requires the C module order");
+ matrix ker=std(syz(eqs));hdcheck(size(ideal(ker))>0,"Riemann-Roch horizontal section missing");
+ int chosen=0;int lowest=count+1;int last;
+ for(jj=1;jj<=ncols(ker);jj++)
+ {
+  last=0;for(ii=1;ii<=count;ii++){if(ker[ii,jj]!=0){last=ii;}}
+  if(last>0 && last<lowest){chosen=jj;lowest=last;}
+ }
+ hdcheck(chosen>0,"empty horizontal kernel");
+ a=0;b=0;for(jj=1;jj<=count;jj++){a=a+ker[jj,chosen]*aa[jj];b=b+ker[jj,chosen]*bb[jj];}
+ hdcheck(a!=0 || b!=0,"zero chosen horizontal section");
+ cc=2*u*f*diff(b,x)-diff(u,x)*f*b+u*diff(f,x)*b+diff(u,x)*v*a+2*u*k*a;
+ dd=2*u*diff(a,x)-diff(u,x)*a+diff(u,x)*v*b+2*u*k*b;
+ hdcheck(cc==0 && dd==0,"horizontal section equation failed");
+ poly norm=hdexact(a^2-b^2*f,u);poly U;
+ for(jj=1;jj<=size(norm);jj++)
+ {
+  hdcheck(leadexp(norm[jj])[1] mod 3==0,"horizontal norm exponent");
+  U=U+leadcoef(norm[jj])*x^(leadexp(norm[jj])[1] div 3);
+ }
+ U=U/leadcoef(U);int r=deg(U);hdcheck(r<=g,"descent degree exceeds genus");
+ if(r==0){return(list(poly(1),poly(0)));}
+ poly c=hdexact(b*f-a*v,u);poly d=hdexact(a-b*v,u);
+ def original=basering;
+ // Extend only the polynomial-variable ring, keeping exactly the original coefficient field.
+ list spec=ringlist(original);spec[2]=list("y","x");spec[3]=list(list("lp",intvec(1,1)),list("C",intvec(0)));
+ def divisorRing=ring(spec);setring divisorRing;
+ poly A=imap(original,a);poly B=imap(original,b);poly C=imap(original,c);poly Dd=imap(original,d);poly F=imap(original,f);
+ ideal iz=std(ideal(y^2-F,A+B*y,C+Dd*y));
+ hdcheck(vdim(iz)==3*r,"horizontal zero divisor length");
+ matrix relation[2*(3*g+1)][r+1];poly remn;int j;int e1;int e2;
+ for(j=1;j<=r+1;j++)
+ {
+  if(j<=r){remn=reduce(x^(3*(j-1)),iz);}else{remn=-reduce(y^3,iz);}
+  for(ii=1;ii<=size(remn);ii++)
+  {
+   e1=leadexp(remn[ii])[1];e2=leadexp(remn[ii])[2];
+   hdcheck(e1<=1 && e2<=3*g,"divisor normal-form budget");
+   relation[e1*(3*g+1)+e2+1,j]=leadcoef(remn[ii]);
+  }
+ }
+ matrix rk=syz(relation);hdcheck(size(ideal(rk))>0 && rk[r+1,1]!=0,"descended Mumford coordinate missing");
+ poly V;for(j=1;j<=r;j++){V=V+(rk[j,1]/rk[r+1,1])*x^(j-1);}
+ hdcheck(reduce(y^3-subst(V,x,x^3),iz)==0,"descended y coordinate verification");
+ setring original;poly vr=imap(divisorRing,V);list answer=list(U,vr);hdvalid(answer,hdfr(f));return(answer);
+}

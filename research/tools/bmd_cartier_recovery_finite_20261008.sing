@@ -1,0 +1,42 @@
+// Exhaustive char-3 recovery check: all 48 classes and all 81 fibre coordinates.
+LIB "research/tools/bmd_cartier_recovery_20261008.lib";
+ring R=3,(x),dp;
+proc control(poly f,int expected)
+{
+ int genus=(deg(f)-1) div 2;list classes=list(list(poly(1),poly(0)));
+ int m;int uc;int vc;int j;poly u;poly v;
+ for(m=1;m<=genus;m++){for(uc=0;uc<3^m;uc++){u=x^m;for(j=0;j<m;j++){u=u+((uc div 3^j) mod 3)*x^j;}for(vc=0;vc<3^m;vc++){v=0;for(j=0;j<m;j++){v=v+((vc div 3^j) mod 3)*x^j;}if(divrem(v^2-f,u)==0){classes[size(classes)+1]=list(u,v);}}}}
+ int N=size(classes);hdcheck(N==expected,"finite class count");
+ int i;int code;int row;int col;int ok;int solutions=0;int branches=0;int found;int started=timer;
+ list data;list c;list M;list actual;list seen;poly k;poly ceq;
+ print("CONTROL_SIZE genus="+string(genus)+" classes="+string(N)+" candidates_per_class="+string(3^genus)+" total_candidates="+string(N*3^genus));
+ for(i=1;i<=N;i++)
+ {
+  data=hdcurvature(classes[i],f);seen=list();
+  for(code=0;code<3^genus;code++)
+  {
+   k=0;for(j=1;j<=genus;j++){c[j]=number((code div 3^(j-1)) mod 3);k=k+c[j]*x^(j-1);}ok=1;
+   for(row=1;row<=genus;row++){ceq=c[row]^3+data[1][row];for(col=1;col<=genus;col++){ceq=ceq-data[2][row,col]*c[col];}if(ceq!=0){ok=0;}}
+   if(ok)
+   {
+    M=hcRecover(classes[i],k,f);solutions=solutions+1;
+    // Independent installed-library group operation, not the recovery's divisor-ideal code.
+    actual=cantorred(cantoradd(M,double(M,0,f),0,f),0,f);
+    hdcheck(hdequal(actual,classes[i]),"recovered fibre point has wrong triple");
+    found=0;for(j=1;j<=N;j++){if(hdequal(M,classes[j])){found=found+1;}}
+    hdcheck(found==1,"recovered class missing from exhaustive list");
+    for(j=1;j<=size(seen);j++){hdcheck(hdequal(M,seen[j])==0,"distinct connections recovered the same point");}
+    seen[size(seen)+1]=M;
+    if(deg(gcd(M[1],f))>0){branches=branches+1;}
+   }
+  }
+ }
+ hdcheck(solutions==expected,"recovery does not cover the whole finite group");
+ print("EXHAUSTIVE_RECOVERY points="+string(solutions)+" branch_points="+string(branches)+" cpu_ms="+string(timer-started));
+
+}
+control(x^9+x^8+x^5+x-1,48);
+control(x^3+x^2+1,6);
+control(x^3-x,4);
+print("CARTIER_EXHAUSTIVE_RECOVERY_COMPLETED");
+quit;
