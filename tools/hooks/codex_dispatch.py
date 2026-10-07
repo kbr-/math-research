@@ -84,6 +84,23 @@ def response_text(value):
     return ''
 
 
+def bundle_root(root, key):
+    """The shell may run in a linked worktree while hook cwd remains the session cwd."""
+    if not isinstance(key, str) or not re.fullmatch('[0-9a-f]{32}', key):
+        raise ValueError('Invalid resume bundle ID')
+    relative = Path('research/logs/resume-bundles') / key / 'manifest.json'
+    if (Path(root) / relative).exists():
+        return Path(root)
+    result = subprocess.run(['git', 'worktree', 'list', '--porcelain'], cwd=root,
+                            capture_output=True, text=True, check=True)
+    for field in result.stdout.splitlines():
+        if field.startswith('worktree '):
+            candidate = Path(field[len('worktree '):])
+            if (candidate / relative).exists():
+                return candidate
+    raise FileNotFoundError('Resume bundle is absent from this repository and its linked worktrees')
+
+
 def receipt(state, call, response, root):
     text = response_text(response)
     if re.search(r'(?:warning:.*truncat|tokens? truncated|output.*truncated)', text, re.I):
@@ -97,7 +114,7 @@ def receipt(state, call, response, root):
         key = meta.get('bundle')
     elif key != state.get('bundle'):
         return
-    body, total = read_part(root, key, number)
+    body, total = read_part(bundle_root(root, key), key, number)
     expected = f'RESUME PART {number}/{total} — {len(body.encode())} payload bytes\n{body}\nEND RESUME PART {number}/{total}'
     if expected not in text:
         return

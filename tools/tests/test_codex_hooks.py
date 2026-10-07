@@ -79,6 +79,47 @@ class CodexHooksTest(unittest.TestCase):
             self.part(n)
         self.assertFalse(self.denied())
 
+    def test_worktree_bundle_receipts_clear_session_checkout_gate(self):
+        other = self.root / 'linked-worktree'
+        other.mkdir()
+        manifest = resume.save_bundle(other, [('worktree', 'different context\n' * 4000, '', '')])
+        key = manifest['bundle']
+        self.call('SessionStart')
+        listing = subprocess.CompletedProcess([], 0,
+            f'worktree {self.root}\nHEAD a\n\nworktree {other}\nHEAD b\n\n', '')
+        with patch.object(hook.subprocess, 'run', return_value=listing):
+            for number in range(1, len(manifest['parts']) + 1):
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    resume.emit_part(other, key, number)
+                command = ('python3 tools/resume.py' if number == 1 else
+                           f'python3 tools/resume.py --read {key} --part {number}')
+                text = (json.dumps({'bundle': key}) + '\n' if number == 1 else '') + output.getvalue()
+                if number == 2:
+                    self.call('PostToolUse', command, tool_response='Warning: output truncated\n' + text)
+                    self.assertTrue(self.denied())
+                self.call('PostToolUse', command, tool_response=text)
+                self.assertEqual(self.denied(), number < len(manifest['parts']))
+        self.assertFalse(self.denied())
+        self.assertFalse((self.root / 'research/logs/resume-bundles' / key).exists())
+
+    def test_unregistered_bundle_and_invalid_id_do_not_clear_gate(self):
+        other = self.root / 'unrelated'
+        other.mkdir()
+        manifest = resume.save_bundle(other, [('unrelated', 'body', '', '')])
+        self.call('SessionStart')
+        output = io.StringIO()
+        with redirect_stdout(output):
+            resume.emit_part(other, manifest['bundle'], 1)
+        with patch.object(hook.subprocess, 'run', return_value=subprocess.CompletedProcess(
+                [], 0, f'worktree {self.root}\n', '')):
+            with self.assertRaises(FileNotFoundError):
+                self.call('PostToolUse', 'python3 tools/resume.py', tool_response=
+                          json.dumps({'bundle': manifest['bundle']}) + '\n' + output.getvalue())
+        self.assertTrue(self.denied())
+        with self.assertRaises(ValueError):
+            hook.bundle_root(self.root, '../unrelated')
+
     def test_wrong_bundle_and_changed_payload_stay_pending(self):
         self.call('SessionStart')
         self.prepare()
