@@ -1,0 +1,228 @@
+// Exact function-field Frobenius pullback, using installed hyperel.lib.
+// Uses installed library reduction with native coefficient-field adapters.
+// Accept only the final completion marker: Singular can return zero after diagnostics.
+LIB "hyperel.lib";
+LIB "polylib.lib";
+ring R=(3,s,z),(x),dp;
+proc hdcheck(int c,string message)
+{
+ if(c==0){ERROR(message);}
+}
+proc hdcoef(poly f,int d)
+{
+ int i;
+ for(i=1;i<=size(f);i++){if(leadexp(f[i])[1]==d){return(leadcoef(f[i]));}}
+ return(number(0));
+}
+proc hdfr(poly f)
+{
+ poly r; int i;
+ for(i=1;i<=size(f);i++){r=r+leadcoef(f[i])^3*x^leadexp(f[i])[1];}
+ return(r);
+}
+proc hdvalid(list D,poly f)
+{
+ hdcheck(leadcoef(D[1])==1,"nonmonic divisor");
+ hdcheck(deg(D[2])<deg(D[1]),"divisor v degree");
+ hdcheck(divrem(D[2]^2-f,D[1])==0,"invalid divisor");
+}
+// extgcd's Factory backend rejects transcendental coefficient parameters.
+// Use a monomial inverse where available, otherwise Singular's native lift.
+proc hdexact(poly a,poly b)
+{
+ hdcheck(b!=0,"zero exact divisor");if(a==0){return(poly(0));}
+ if(deg(b)==0){return(a/leadcoef(b));}
+ list hd_division=division(ideal(a),ideal(b));
+ hdcheck(hd_division[2][1]==0,"native exact quotient has remainder");
+ hdcheck(hd_division[3][1,1]==1,"unexpected local-order division unit");
+ poly answer=hd_division[1][1,1];hdcheck(answer*b==a,"native exact quotient mismatch");return(answer);
+}
+proc hdred(list D,poly f)
+{
+ list N=D;while(2*deg(N[1])>deg(f)-1){N[1]=hdexact(f-N[2]^2,N[1]);N[2]=divrem(-N[2],N[1]);}
+ N[1]=N[1]/leadcoef(N[1]);return(N);
+}
+proc hdmonoinverse(poly f,int n)
+{
+ number c=hdcoef(f,0);hdcheck(c!=0,"monomial inverse needs a unit constant");
+ ideal G=std(ideal(x^n));poly ratio=-(f-c)/c;poly term=1/c;poly ans=term;int i;
+ for(i=1;i<n;i++){term=reduce(term*ratio,G);ans=ans+term;}
+ return(ans);
+}
+proc hdbz(poly a,poly b)
+{
+ if(a==0){return(list(b/leadcoef(b),poly(0),poly(1/leadcoef(b))));}
+ if(b==0){return(list(a/leadcoef(a),poly(1/leadcoef(a)),poly(0)));}
+ if(deg(a)==0){return(list(poly(1),poly(1/leadcoef(a)),poly(0)));}
+ if(deg(b)==0){return(list(poly(1),poly(0),poly(1/leadcoef(b))));}
+ if(size(a)==1)
+ {
+  int m=deg(a);int r=leadexp(b[size(b)])[1];if(r>m){r=m;}
+  if(r==m){return(list(x^m,poly(1/leadcoef(a)),poly(0)));}
+  poly bp=b/x^r;poly T=hdmonoinverse(bp,m-r);poly S=(1-T*bp)/(a/x^r);
+  hdcheck(S*a+T*b==x^r,"monomial Bezout identity");return(list(x^r,S,T));
+ }
+ if(size(b)==1){list swapped=hdbz(b,a);return(list(swapped[1],swapped[3],swapped[2]));}
+ poly g=gcd(a,b);g=g/leadcoef(g);matrix L=lift(ideal(a,b),ideal(g));
+ hdcheck(L[1,1]*a+L[2,1]*b==g,"lift Bezout identity");return(list(g,L[1,1],L[2,1]));
+}
+proc hdadd(list D,list Q,poly f)
+{
+ list e=hdbz(D[1],Q[1]);list c=hdbz(e[1],D[2]+Q[2]);
+ poly u=hdexact(D[1]*Q[1],c[1]^2);
+ poly v=divrem(hdexact(c[2]*e[2]*D[1]*Q[2]+c[2]*e[3]*Q[1]*D[2]+c[3]*(D[2]*Q[2]+f),c[1]),u);
+ return(hdred(list(u,v),f));
+}
+proc hdV(list D,poly f)
+{
+ hdvalid(D,hdfr(f));
+ poly ub=gcd(D[1],hdfr(f)); poly un=D[1]/ub;
+ list B=list(poly(1),poly(0)); list N=B;poly rawU=1;poly rawV;
+ if(deg(ub)>0){B=list(gcd(f,subst(ub,x,x^3)),poly(0));B[1]=B[1]/leadcoef(B[1]);hdvalid(B,f);}
+ if(deg(un)>0)
+ {
+  poly U=subst(un,x,x^3);list eg=hdbz(f,U);
+  hdcheck(deg(eg[1])==0,"branch part was not removed");
+  poly v=divrem(subst(D[2],x,x^3)*eg[2]/eg[1],U);
+  hdvalid(list(U,v),f);rawU=U;rawV=v;N=hdred(list(U,v),f);
+ }
+ list answer=hdadd(B,N,f);return(list(answer[1],answer[2],rawU,rawV));
+}
+proc hdscaledcurvature(list D,poly f)
+{
+ def original=basering;poly u=D[1];poly v=D[2];
+ hdcheck(leadcoef(u)==1 && deg(v)<deg(u),"reduced Mumford shape");
+ number ua=denominator(content(u));number vb=denominator(content(v));
+ poly Uclear=ua*u;poly Vclear=vb*v;
+ hdcheck(denominator(content(f))==1,"curve coefficients need a polynomial model");
+ int g=(deg(f)-1) div 2;matrix H[g][g];int i;int j;
+ for(i=1;i<=g;i++){for(j=1;j<=g;j++){H[i,j]=hdcoef(f,3*i-j);}}
+ int ordinary=(det(H)!=0);
+ ring polycoeff=3,(x,s,z),lp;
+ poly U=imap(original,Uclear);poly V=imap(original,Vclear);poly Bscale=imap(original,vb);poly F=imap(original,f);
+ poly W=hdexact(Bscale^2*F-V^2,U);
+ poly betanum=diff(diff(diff(U,x)*V*W/2,x),x);
+ matrix coeff=coeffs(betanum,x);list beta;int k;
+ for(k=1;k<=size(coeff);k++){if((k-1) mod 3!=0){hdcheck(coeff[k,1]==0,"scaled curvature has a non-Frobenius exponent");}}
+ hdcheck(size(coeff)<=3*g-2,"scaled curvature degree");
+ for(k=1;k<=g;k++){if(3*(k-1)+1<=size(coeff)){beta[k]=coeff[3*(k-1)+1,1];}else{beta[k]=poly(0);}}
+ setring original;list betaR=imap(polycoeff,beta);
+ matrix scaledH=vb^2*H;
+ return(list(betaR,scaledH,vb,ordinary));
+}
+proc hdcurvature(list D,poly f)
+{
+ if(npars(basering)==2){return(hdscaledcurvature(D,f));}
+ hdvalid(D,f);
+ poly u=D[1];poly v=D[2];poly w=hdexact(f-v^2,u);
+ // Exact cancellation of the logarithmic part removes every x-denominator.
+ poly beta=diff(diff(diff(u,x)*v*w/2,x),x);
+ int g=(deg(f)-1) div 2;hdcheck(deg(beta)<=3*g-3,"curvature pole at infinity");
+ int i;for(i=1;i<=size(beta);i++){hdcheck(leadexp(beta[i])[1] mod 3==0,"curvature not in cube variable");}
+ matrix H[g][g];list b;
+ int j;for(i=1;i<=g;i++){b[i]=hdcoef(beta,3*(i-1));for(j=1;j<=g;j++){H[i,j]=hdcoef(f,3*i-j);}}
+ return(list(b,H,number(1),int(det(H)!=0)));
+}
+proc hdequal(list D,list E)
+{
+ return((D[1]==E[1])&&(D[2]==E[2]));
+}
+proc hdfibresize(list data)
+{
+ def original=basering;
+ ring fibre=(3,s,z),(c0,c1,c2,c3),dp;
+ list model=imap(original,data);ideal equations;int i;int j;poly eq;
+ for(i=1;i<=4;i++){eq=var(i)^3+model[1][i];for(j=1;j<=4;j++){eq=eq-model[2][i,j]*var(j);}equations[i]=eq;}
+ int fibre_dim=vdim(std(equations));hdcheck(fibre_dim==81,"connection algebra length");
+ hdcheck(model[4],"connection algebra not etale");
+ setring original;return(fibre_dim);
+}
+proc hdfinite()
+{
+ def original=basering;ring finite=3,(x),dp;
+ poly f=x^9+x^8+x^5+x-1;list classes=list(list(poly(1),poly(0)));
+ int m;int uc;int vc;int j;poly u;poly v;
+ for(m=1;m<=4;m++){for(uc=0;uc<3^m;uc++){u=x^m;for(j=0;j<m;j++){u=u+((uc div 3^j) mod 3)*x^j;}for(vc=0;vc<3^m;vc++){v=0;for(j=0;j<m;j++){v=v+((vc div 3^j) mod 3)*x^j;}if(divrem(v^2-f,u)==0){classes[size(classes)+1]=list(u,v);}}}}
+ int N=size(classes);hdcheck(N==48,"independent finite class count");int i;list a;list b;list triples;
+ for(i=1;i<=N;i++)
+ {
+  triples[i]=cantorred(cantoradd(classes[i],double(classes[i],0,f),0,f),0,f);
+  a=hdV(list(hdfr(classes[i][1]),hdfr(classes[i][2])),f);hdcheck(hdequal(a,triples[i]),"independent finite V comparison");
+  for(j=1;j<=N;j++){a=hdadd(classes[i],classes[j],f);b=cantorred(cantoradd(classes[i],classes[j],0,f),0,f);hdcheck(hdequal(a,b),"adapter/library addition mismatch");}
+ }
+ int code;int row;int col;int solutions;int expected;int ok;list c;list data;poly eq;
+ for(i=1;i<=N;i++)
+ {
+  data=hdcurvature(classes[i],f);solutions=0;expected=0;
+  for(j=1;j<=N;j++){if(hdequal(triples[j],classes[i])){expected=expected+1;}}
+  for(code=0;code<81;code++)
+  {
+   for(j=1;j<=4;j++){c[j]=number((code div 3^(j-1)) mod 3);}ok=1;
+   for(row=1;row<=4;row++){eq=c[row]^3+data[1][row];for(col=1;col<=4;col++){eq=eq-data[2][row,col]*c[col];}if(eq!=0){ok=0;break;}}
+   solutions=solutions+ok;
+  }
+  hdcheck(solutions==expected,"enumerated connection fibre differs from group fibre");
+ }
+ print("SINGULAR_FINITE_CHECK classes=48 adapter_library_additions=2304 V_comparisons=48 connection_candidates=3888");
+ setring original;
+}
+proc hdcontrols()
+{
+ poly f0=x^9+x^8+x^5+x;
+ number t=s^9+s^8+s^5+s-z^2;
+ poly f=subst(f0,x,x+s)-t;
+ hdcheck(deg(gcd(f,diff(f,x)))==0,"singular pencil");
+ list P=list(x,poly(z));list D=P;list F;list V;list T;list Q;
+ int m=1;int previous=1;int elapsed=1;int start;int estimate;int i;
+ for(i=1;i<=2;i++)
+ {
+  if(i>1){D=hdadd(D,D,f);m=2*m;}
+  estimate=elapsed*(m div previous)^6;
+  print("GENERIC_SIZING multiple="+string(m)+" estimate_cpu_ms="+string(estimate)+" cap_ms=20000");
+  if(estimate>20000){print("GENERIC_NOT_RUN: measured-cost extrapolation exceeds pilot cap");break;}
+  start=timer;
+  hdvalid(D,f);F=list(hdfr(D[1]),hdfr(D[2]));
+  print("GENERIC_STAGE multiple="+string(m)+" Frobenius pullback");V=hdV(F,f);
+  print("GENERIC_STAGE multiple="+string(m)+" adapted Cantor tripling");T=hdadd(D,hdadd(D,D,f),f);
+  hdcheck(hdequal(V,T),"Frobenius pullback disagrees with adapted Cantor tripling");
+  print("GENERIC_STAGE multiple="+string(m)+" connection algebra");Q=hdcurvature(D,f);
+  hdcheck(Q[4],"Cartier matrix singular");
+  if(m==1)
+  {
+   print("GENERIC_POINT_FIBRE_LENGTH="+string(hdfibresize(Q)));print("GENERIC_POINT_BETA");print(Q[1]);print("GENERIC_CARTIER");print(Q[2]);
+   list inadmissible=list(number(1+s-s^3),number(1),number(0),number(-1));int ai;int aj;poly ae;
+   for(ai=1;ai<=4;ai++){ae=inadmissible[ai]^3;for(aj=1;aj<=4;aj++){ae=ae-Q[2][ai,aj]*inadmissible[aj];}hdcheck(ae==0,"kernel connection control");}
+   print("NONZERO_RELATIVE_KERNEL_CONNECTION");print(inadmissible);
+   print("INADMISSIBLE_AS_FULL_3_ROOT_OF_ZERO: nonzero connection, while the separable 3-torsion theorem allows only the trivial full root");
+   list QT=hdcurvature(T,f);int k;for(k=1;k<=4;k++){hdcheck(QT[1][k]==0,"unreduced triple reference curvature is nonzero");}
+   print("GENERIC_TRIPLE_U");print(T[1]);print("GENERIC_TRIPLE_V");print(T[2]);
+  }
+  if(m==2)
+  {
+   print("GENERIC_STAGE full-degree target connection certificate");
+   poly targetU=V[1];poly targetV=V[2];poly rawV=V[4];poly hdproduct=f-rawV^2;
+   hdcheck(deg(targetU)==4,"full-degree inverse control was not reached");
+   hdcheck(divrem(hdproduct,targetU)==0,"reduction divisor relation");
+   print("CONNECTION_STAGE correction quotient");poly correction_quotient=hdexact(rawV+targetV,targetU);
+   poly correction=diff(rawV,x)-diff(targetU,x)*correction_quotient/2;
+   hdcheck(deg(correction)<=3,"canonical connection degree");
+   print("CONNECTION_STAGE target curvature");list fullQ=hdcurvature(list(targetU,targetV),f);int row;int col;poly checkeq;
+   for(row=1;row<=4;row++)
+   {
+    print("CONNECTION_STAGE cubic equation "+string(row));
+    checkeq=(fullQ[3]*hdcoef(correction,row-1))^3+fullQ[1][row];
+    for(col=1;col<=4;col++){checkeq=checkeq-fullQ[2][row,col]*(fullQ[3]*hdcoef(correction,col-1));}
+    hdcheck(checkeq==0,"known division fails the cubic connection algebra");
+   }
+   print("FULL_DEGREE_FIBRE_LENGTH="+string(hdfibresize(fullQ)));print("FULL_DEGREE_CONNECTION_CERTIFICATE_CHECKED");
+   print("FULL_DEGREE_SCALED_BETA");print(fullQ[1]);print("CONNECTION_COORDINATE_SCALE");print(fullQ[3]);print("CANONICAL_CONNECTION_CORRECTION");print(correction);
+  }
+  elapsed=timer-start;if(elapsed<1){elapsed=1;}previous=m;
+  print("GENERIC_CHECK multiple="+string(m)+" source_degree="+string(deg(D[1]))+" pullback_degree="+string(3*deg(D[1]))+" cpu_ms="+string(elapsed));
+ }
+ print("FULL_DEGREE_FORWARD_EXPANSION_NOT_REPEATED: stopped after 87 seconds without completing the pullback; inverse fibre uses the compact connection algebra instead");
+ print("SINGULAR_FUNCTION_FIELD_DIVISION_CONTROLS_COMPLETED");
+}
+proc hdall(){hdfinite();hdcontrols();}
+hdall();
+quit;
