@@ -203,6 +203,41 @@ class LeadQueueTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'cycle 4, not cycle 3'):
                 lq.check(notebook(entries[:-1], self.q), notebook(entries[:-1] + [self.extension_entry(3)], self.q))
 
+    def test_user_unlimited_spell_is_scoped_and_survives_many_cycles(self):
+        listing = subideas('inventory', [('check', 'Complete exception sets')])
+        item = ('check', 'inventory:s1')
+        queue = [item] + self.q
+        override = ('<article id="no-limit" data-kind="audit" data-picked="user" '
+                    'data-spell-limit="none" data-spell-item="check:inventory:s1">'
+                    '<p><strong>Picked.</strong> "This item has no hard cycle limit."</p></article>')
+        entries = [self.rev, listing, override]
+        current = notebook(entries, queue)
+        lq.check(notebook([self.rev, listing], queue), current)
+        for _ in range(10):
+            entries.append(research(item, 'Continuing'))
+            after = lq.done(notebook(entries, queue), 'Continuing')
+            lq.check(current, after)
+            self.assertEqual(lq.parse(after)[1], queue)
+            current = after
+        self.assertEqual(lq.spell_limit(current, item), float('inf'))
+        self.assertEqual(lq.spell_limit(current, self.q[0]), lq.SPELL)
+        self.assertEqual(lq.spell_limit(notebook([self.rev, listing, override], queue), item, end=-1), lq.SPELL)
+        closed = lq.done(notebook(entries + [research(item, 'Closed')], queue), 'Closed')
+        lq.check(current, closed)
+        self.assertEqual(lq.parse(closed)[1], self.q)
+
+    def test_unlimited_spell_requires_quoted_user_and_queued_parent(self):
+        base = notebook([self.rev], self.q)
+        valid = ('<article id="u" data-kind="audit" data-picked="user" '
+                 'data-spell-limit="none" data-spell-item="lead:r1:1">'
+                 '<p><strong>Picked.</strong> "No hard cycle limit."</p></article>')
+        for invalid in [valid.replace('data-picked="user"', ''),
+                        valid.replace('<strong>Picked.</strong>', 'No quote:'),
+                        valid.replace('lead:r1:1', 'lead:missing:1'),
+                        valid.replace('data-spell-limit="none"', 'data-spell-limit="100"')]:
+            with self.assertRaises(ValueError):
+                lq.check(base, notebook([self.rev, invalid], self.q))
+
     def test_user_restores_rotated_head_with_earned_extension(self):
         entries = [self.rev] + [self.extension_entry(n, extension=False) for n in range(1, 5)]
         before = notebook(entries, self.q[::-1])

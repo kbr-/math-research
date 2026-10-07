@@ -84,21 +84,26 @@ def queue_notes(body):
         return [f'Lead queue: {len(nodes)} items, every one waiting on the user; nothing to develop until an '
                 'Unblocked follow-up.']
     first = next((c for c in head.children if not c.waits), None)
+    limit = lq.spell_limit(body, head.item)
+    boundary = 'none (explicit user override)' if limit == float('inf') else str(limit)
+    rotation = ('Continuing retains this head without a hard cycle limit. Judge whether useful avenues '
+                'remain; close with a recorded reason when exhausted. ' if limit == float('inf') else
+                f'Continuing keeps the head until its current boundary ({limit}), then rotates unless '
+                'this period earned a two-cycle extension. Declare data-spell-extend="2" with a '
+                'spell-extension paragraph naming the open statement, new proved/refuted Progress and '
+                'the concrete Next implication; finite checks or reused progress do not qualify. '
+                'Reassess every two extra cycles. ')
     target = (f'the head is {head.ident} ({head.kind}), tagged data-{head.kind}="{head.ident}"'
               + (f', or its first sub-idea {first.ident} ({first.kind})' if first else '')
               + f'; this would be its entry {lq.spell(body, head.item) + 1}; current spell boundary '
-              + f'{lq.spell_limit(body, head.item)}{waits}')
+              + f'{boundary}{waits}')
     entries = ' or '.join(sorted(lq.SETTINGS['counted']))
     rule = ' '.join(lq.SETTINGS['guidance']) or SQUEEZE     # a kind module's own, else the squeeze rule
     if lq.SETTINGS['backpressure'] and (draining or len(nodes) >= lq.CAP):
         return [f'Lead queue: {len(nodes)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
                 f'{entries} entry must develop the head until the queue has {lq.FLOOR} items: {target}. End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
-                'update the queue: Closed and Developed remove the item; Continuing keeps the head until its '
-                f'current boundary ({lq.spell_limit(body, head.item)}), then rotates unless this period earned '
-                'a two-cycle extension. Declare data-spell-extend="2" with a spell-extension paragraph '
-                'naming the open statement, new proved/refuted Progress and the concrete Next implication; '
-                'finite checks or reused progress do not qualify. Reassess every two extra cycles. ' + rule]
+                'update the queue: Closed and Developed remove the item. ' + rotation + rule]
     pressure = f'backpressure at {lq.CAP}' if lq.SETTINGS['backpressure'] else 'no backpressure here'
     return [f'Lead queue: {len(nodes)} items ({pressure}); {target}. A {entries} entry that develops a queue '
             'item takes the head or its first sub-idea, unless the user picked another, states its Follow-up '

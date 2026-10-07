@@ -21,6 +21,9 @@ finish-turn.py against HEAD:
   promise alone or reused old progress do not qualify. Without fresh qualifying progress, rotate.
   A developed sub-idea counts for its continuing parent. A quoted user audit restoring a head can extend at
   its boundary with the same evidence, naming data-spell-item="lead:ID" or "bridge:ID".
+  A quoted user override may set data-spell-limit="none" and data-spell-item="KIND:ID"
+  on its article. It disables rotation only for that top-level item; close it with
+  a recorded reason when further useful development is exhausted.
 - Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
   one at a time"): every item is developed in its own entry.  Older entries' <h4>Queue triage</h4> lists are still
   read as history; a new entry with one is refused.  Older research entries' own Outside leads and Absurd bridges
@@ -598,8 +601,22 @@ def extension_item(body, nodes, tag, text, position=None):
     return item
 
 
+def unlimited_item(tag, text):
+    """An explicit, quoted user override, scoped to one queue item."""
+    if 'data-spell-limit=' not in tag:
+        return None
+    named = re.search(r'data-spell-item="(' + NAMES + r'):([^\"]+)"', tag)
+    if 'data-spell-limit="none"' not in tag or not named or not picked(tag, text):
+        raise ValueError('An unlimited spell needs data-spell-limit="none", a named item, and a quoted user pick')
+    return named.groups()
+
+
 def spell_limit(body, item, nodes=None, end=None):
     """Four by default; each declaration at the current boundary adds two, without a lifetime cap."""
+    if 'data-spell-limit=' in body:
+        for tag, text in reversed(record_articles(body)[:end]):
+            if unlimited_item(tag, text) == item:
+                return float('inf')
     if 'data-spell-extend=' not in body:
         return SPELL
     if nodes is None:
@@ -623,6 +640,11 @@ def spell_limit(body, item, nodes=None, end=None):
 
 def validate_spell_extension(body, tag, text, nodes, where):
     """Require fresh proved/refuted progress and a named remaining implication, not a case list."""
+    unlimited = unlimited_item(tag, text)
+    if unlimited is not None:
+        parent, node = locate(nodes, unlimited)
+        if node is None or parent is not None:
+            raise ValueError('An unlimited spell names one queued top-level item')
     item = extension_item(body, nodes, tag, text, len(record_articles(body)) - 1)
     paragraph = re.search(r'<p\b[^>]*class="spell-extension"[^>]*>(.*?)</p>', text, re.S)
     if item is None:
