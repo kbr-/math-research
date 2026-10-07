@@ -2,6 +2,9 @@ from datetime import date
 import sys
 from pathlib import Path
 import unittest
+from contextlib import redirect_stderr
+from io import StringIO
+from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from notebook_context import excerpt
@@ -48,6 +51,51 @@ class ExcerptTest(unittest.TestCase):
         book=excerpt.Notebook('<section id="x"></section><section id="x"></section>')
         with self.assertRaises(ValueError):book.anchor('x')
         with self.assertRaises(ValueError):excerpt.Notebook('<section id="x">')
+
+    def test_backlinks_are_local_ordered_and_bounded(self):
+        source = r'''<section id="living"><a href="#target">living</a></section>
+<section id="research-record">
+<article id="entry-2026-09-01"><h3>Earlier</h3><a href="#target">earlier</a></article>
+<article id="entry-2026-09-02"><h3>Target entry</h3><h4 id="target">Claim</h4>
+<a href="#target">self</a></article>
+<article id="entry-2026-09-03"><h3>Later</h3>
+<a href="#target">one</a>
+<a href="https://kbr.is-a.dev/math-research/branches/demo/#%74arget">two</a>
+<a href="https://kbr-.github.io/math-research/branches/demo/#target">three</a>
+<a href="research/branches/demo/notebook.html#target">four</a>
+<a href="notebook.html#target">five</a>
+<a href="https://kbr.is-a.dev/math-research/#target">different notebook</a>
+<a href="other.html#target">different file</a>
+<a href="https://example.com/math-research/branches/demo/#target">external</a>
+<a href="https://[invalid/#target">invalid URL</a>
+<!-- <a href="#target">comment</a> -->
+<p>\(<a href="#target">math</a>\)</p>
+<pre>&lt;a href="#target"&gt;escaped&lt;/a&gt;</pre></article>
+<article id="undated"><h3>Undated</h3><a href="#target">last</a></article>
+</section>'''
+        book = excerpt.Notebook(source, capture_links=True)
+        opts = dict(source_path='research/branches/demo/notebook.html', route='branches/demo/')
+        text, omitted = book.backlinks('target', **opts)
+        self.assertEqual(omitted, 0)
+        self.assertEqual(len(text.splitlines()), 4)
+        self.assertIn('entry-2026-09-01\tearlier\t1 link(s)', text)
+        self.assertIn('entry-2026-09-02\tself\t1 link(s)', text)
+        self.assertIn('entry-2026-09-03\tlater\t5 link(s)', text)
+        text, omitted = book.backlinks('#target', tail=1, since=date(2026, 9, 3), **opts)
+        self.assertEqual(omitted, 1)
+        self.assertTrue(text.startswith('undated\tundated\tlater\t1 link(s)'))
+        with self.assertRaises(ValueError):
+            book.backlinks('absent', **opts)
+        with self.assertRaises(ValueError):
+            book.backlinks('target', tail=0, **opts)
+
+    def test_backlink_mode_rejects_incompatible_options(self):
+        for args in (['--backlinks'], ['x', '--backlinks', '--toc'],
+                     ['x', '--backlinks', '--until', 'y'], ['x', '--backlinks', '--text']):
+            with self.subTest(args=args), patch.object(sys, 'argv', ['notebook-excerpt.py', *args]), \
+                    redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                excerpt.main()
+            self.assertEqual(failure.exception.code, 2)
 
 
 if __name__=='__main__':unittest.main()

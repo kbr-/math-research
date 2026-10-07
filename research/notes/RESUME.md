@@ -46,7 +46,8 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
    enclosing boundary; articles include the full record. `--until END_ANCHOR`
    validates boundaries, `--text` gives plain text for reading (TeX kept, timing table
    dropped) and `--out PATH` saves a new file. Dates come from stable
-   entry IDs; undated entries and omission counts stay visible. Recency alone does
+   entry IDs; undated entries and omission counts stay visible. Use `tools/notebook-excerpt.py
+   ANCHOR --backlinks --tail 20` for later record references in the selected notebook. Recency alone does
    not make administrative entries necessary reading. Never load the full record.
 5. Before mathematical reliance, read exact hypotheses, proof, encoding, original
    degree conventions and applicable corrections. Before proposing/naming a result,
