@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited inventory head using the <a href="#entry-2026-10-07-cube-bounded-frobenius-frames">three fixed leaf frames and exact Pascal digit operator</a>. Test whether one-digit elimination closes on bounded rank-relevant interfaces while retaining all branch constraints and interval flags. Do not expand the 9216-square first bulk matrix or infer finite rank states from the finite input catalogue.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited inventory head. The <a href="#entry-2026-10-07-cube-bounded-branch-recursion">closed branch-state recursion</a> computes each marked kernel with bounded matrices, but rational coefficients grow and no complete generic stopping certificate exists. Test a rank-preserving symbolic simplification or a moving-point specialization; retain the finite-palette obstruction and report complete sets separately from marked failures.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -96634,6 +96634,81 @@ Those indices define the generic rational frame by inverting the corresponding f
 <tr><td>Other external-tool windows</td><td class="elapsed">27.63 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5.38 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-bounded-branch-recursion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-check="entry-2026-10-07-cube-bounded-frobenius-frames:s1" data-claims="thm:bounded-branch-kernel-recursion">
+<h3>7 October 2026 — Branch values close the exact kernel recursion with bounded matrices</h3>
+<p class="entry-meta">Working algorithm; complete generic exception sets open. Bounded branch recursion. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 2's practical exception algorithm needs faithful rank interfaces, not only a finite list of source frames. The current nested check asks whether eliminating one Frobenius digit closes without expanding the growing matrix. The key test is whether the remaining kernel functions can be recovered from fixed branch-coefficient values, and whether those values themselves reconstruct without higher branch jets. Both assertions hold in the exact order range reached here.</p>
+<p><strong>General statement.</strong> <span id="bounded-branch-kernel-recursion">thm:bounded-branch-kernel-recursion</span> gives an exact recursion for each prescribed marked kernel over every odd-characteristic coefficient field. With \(n,p\) fixed, it uses bounded matrices and \(O(\log_p(d+1))\) recursive states. This is a field-operation complexity bound. It does not bound rational-function coefficient growth, construct a finite generic rank automaton, or compute the entire generic exception set.</p>
+<h4>The faithful interface</h4>
+<p>Let \(k\) have odd characteristic \(p\), let \(n\ge3\), and let \(a_i\in k^\times\) be distinct. Use \(w_i^2=\ell_i=1+a_iT\), \(w_i(0)=1\), \(R_S=\prod_{i\in S}\ell_i\), \(W=\prod_iw_i\), and \(V_d=\bigoplus_Sw_SF_{\lfloor(d-|S|)/2\rfloor}\). Put \(B=2^{n-1}\), \(C=nB\), \(z_i=-1/a_i\), and
+\[K(d,L)=\{f\in V_d:\operatorname{ord}_0f\ge L\},\qquad
+\mathcal E(f)=\bigl(P_S(z_i)\bigr)_{S,\ i\notin S}\in k^C,\quad f=\sum_Sw_SP_S.\tag{1}\]
+For \(L\le0\), the order condition is vacuous. These are values of the character coefficients, not a substitution that forgets the other characters.</p>
+<p><strong>Theorem.</strong> For every \(d\ge n-2\) and integer \(L\) satisfying
+\[Bd-L<C,\tag{2}\]
+the map \(\mathcal E\) is injective on \(K(d,L)\). Its image \(U(d,L)\subseteq k^C\) satisfies the closed recursion (5) below. The original normality question has \(L=N_{2,n}(d)=Bd-(n-3)B/2\), so (2) holds throughout the bulk range.</p>
+<p><strong>Proof of faithfulness.</strong> The kernel of \(\mathcal E\) on the full polynomial source is exactly
+\[\ker(\mathcal E|_{V_d})=W V_{d-n},\tag{3}\]
+with negative-index spaces zero. Indeed vanishing at every \(z_i\), \(i\notin S\), is equivalent to \(R_{S^c}\mid P_S\). Writing \(P_S=R_{S^c}H_S\), the identity \(w_SR_{S^c}=Ww_{S^c}\) gives (3); the degree bound on \(H_S\) is precisely the one for \(V_{d-n}\). The converse is the same identity.</p>
+<p>On the smooth root curve the reduced infinity divisor has degree \(B\), and every element of \(V_e\) has poles bounded by \(eH\). The separated linear factors have independent square classes; infinity has inertia two in the degree-\(2^n\) sign cover, giving \(\deg H=B\). Thus a nonzero element of \(V_e\) has order at most \(Be\) at the unramified mark. Since \(W(0)=1\), a nonzero element of (3) has order at most \(B(d-n)\), strictly smaller than \(L\) by (2). This proves faithfulness. The strict range is substantive: on \(V_n\), \(W\) is a nonzero vector killed by \(\mathcal E\), with order zero.</p>
+<h4>A closed reconstruction on branch values</h4>
+<p>Put \(b=(p-1)/2\), and for \(r=0,\ldots,p-1\) set
+\[d_r=\left\lfloor\frac{d+(p-1)n-2r}{p}\right\rfloor,\qquad
+L_r=\left\lceil\frac{L-r}{p}\right\rceil.\]
+One may replace a negative \(L_r\) by zero without changing its kernel. Let \(U_r=U(d_r,L_r)\), and let \(U_r^{[p]}\) be the span of the coordinatewise \(p\)-th powers of a basis of \(U_r\). Index a branch coordinate by \(c=(S,i)\), \(i\notin S\), and define
+\[\rho_c=a_i\prod_{h\notin S,\ h\ne i}(1+a_hz_i)\ne0.\]
+On \(\bigoplus_rU_r^{[p]}\), define the following fixed linear maps, independent of \(d,L\):
+\[\begin{aligned}
+(\mathcal C u)_{c,j}&=\sum_{r=0}^{p-1}\binom rjz_i^{r-j}u_{r,c},&&0\le j<b,\\
+(\mathcal H u)_c&=\rho_c^{-b}\sum_{r=0}^{p-1}\binom rbz_i^{r-b}u_{r,c}.
+\end{aligned}\tag{4}\]
+Binomial coefficients with lower index larger than the upper index are zero; all \(z_i\) are nonzero. Then
+\[U(d,L)=\mathcal H\left(\ker\left(\mathcal C\bigm|_{\oplus_rU_r^{[p]}}\right)\right),\tag{5}\]
+and \(\mathcal H\) is injective on this restricted kernel. Thus no unobserved dimension is discarded when the interface is propagated.</p>
+<p><strong>Proof.</strong> First extend \(k\) to its perfect closure. The <a href="#entry-2026-10-05-cube-polynomial-frobenius-splitting">exact polynomial split</a> represents \(f\in K(d,L)\) by \(g_r\in K(d_r,L_r)\), with
+\[R^bf=\sum_rT^rg_r^p,\qquad
+R_{S^c}^bP_S=\sum_rT^rQ_{r,S}^p.\tag{6}\]
+The exact image requires divisibility by \(R_{S^c}^b\); the quotient degree bound follows from the target bounds, as proved in the <a href="#entry-2026-10-07-cube-bounded-frobenius-frames">iterated-frame record</a>. At \(T=z_i\), the Hasse coefficients of the right side through order \(b<p\) depend only on \(Q_{r,S}(z_i)^p\), because a \(p\)-th power has no positive local terms below order \(p\). The orders below \(b\) give \(\mathcal C u=0\). Since \(R_{S^c}=(T-z_i)\rho_c+O((T-z_i)^2)\), the coefficient of order \(b\), divided by \(\rho_c^b\), gives precisely \(P_S(z_i)\), hence \(\mathcal H\).</p>
+<p>By child faithfulness, every vector in \(U_r\) represents a unique child function. Over the perfect field every vector of \(U_r^{[p]}\) is its coordinatewise \(p\)-th power. Therefore \(\mathcal C u=0\) enforces every exact image condition in (6), and reconstructs a unique \(f\in K(d,L)\), with branch vector \(\mathcal H u\). Conversely every such \(f\) supplies one compatible tuple. If \(\mathcal H u=0\), parent faithfulness gives \(f=0\), and disjoint residue classes in (6) give every \(g_r=0\). This proves injectivity. All matrices in (4), their kernels and their images are defined over the original \(k\), using only \(p\)-th powers, not coefficient root extraction. Equality after field extension descends by ordinary linear algebra, proving (5) over any \(k\).</p>
+<p>The child states remain in range: \(d_r\ge n-2\), and
+\[p(Bd_r-L_r)\le Bd-L+(p-1)nB-(2B-1)r<pnB.\]
+This proves the faithfulness used at every recursive step, without assuming any of the child jet maps is onto.</p>
+<h4>Algorithm and degree complexity</h4>
+<p>Return zero immediately if \(L>Bd\). At a leaf with \(d\le n\) and \(L\le B\), compute the ordinary short-jet kernel in one of \(V_{n-2},V_{n-1},V_n\), then apply (1). These source dimensions are at most \(B(n+3)/2\le C\), so this is fixed-size linear algebra. Unlike the common normalized frame shortcut, this base computation does not require short-jet surjectivity at a special point. Otherwise compute the child images, take their coordinatewise \(p\)-th powers, form the restricted \(\mathcal C\), and apply \(\mathcal H\) to a kernel basis. Formula (5) is exact even when the answer is nonzero.</p>
+<p>For the nontrivial input range \(L\le Bd\), after \(t\) steps, with \(q=p^t\), the possible states have the exact form
+\[\left(\left\lfloor\frac{d+(q-1)n-2r}{q}\right\rfloor,
+\left\lceil\frac{L-r}{q}\right\rceil\right),\qquad0\le r<q.\tag{7}\]
+The first coordinate takes at most three consecutive values and changes twice as \(r\) increases; the second takes at most two consecutive values and changes once. Hence there are at most four distinct states at each depth. Negative jet lengths are equivalent to zero. Once \(q>d\), the degrees are at most \(n\) and the jet lengths at most \(B\), so every branch has reached a base state. If \(L<0\), (2) already forces \(d<n\), also a base state.</p>
+<p>Memoize equal \((d,L)\) states. This yields at most four states per depth through \(\lceil\log_p(d+1)\rceil\). Each image has dimension at most \(C\), so the restricted \(\mathcal C\) has at most \(bC\) rows and \(pC\) columns, and \(\mathcal H\) has \(C\) rows and the same columns. Standard elimination gives a conservative bound
+\[O\!\left((pC)^3\bigl(1+\log_p(d+1)\bigr)\right)\]
+in field operations, after fixed \((n,p)\) base preparation. After the immediate zero test, integer indices in the nontrivial range \(L\le Bd\) have \(O(\log(d+1))\) bits for fixed \(n\). In that range this is a polylogarithmic bit-cost dependence on \(d\) when the finite coefficient field and \(n,p\) are fixed. An arbitrarily large input \(L>Bd\) additionally costs the time to read and compare that input. Over a rational function field, field operations are not unit-cost bit operations: coefficient growth is a separate cost, tested below. \(\square\)</p>
+<h4>Executed controls and measured limitation</h4>
+<p>The prototype uses PARI's exact matrix kernels and ranks, with no custom elimination. It compares full branch subspaces, not just their dimensions, against direct original Hasse kernels for 43 inputs: degrees 2–18 at \((n,p)=(3,3),(3,5)\), and degrees 2–10 at \((4,3)\). At all three retained field/label configurations, it also verifies the full-source control \(\ker(\mathcal E|_{V_n})=kW\). The direct tests contain both zero and nonzero kernels, so a rank-preserving failure is not hidden by positive-only tests.</p>
+<p>The same recursion then evaluates degrees \(1007,1000011,1000000000013\) at each configuration without constructing the corresponding growing source matrices. Across these large queries, the maximum matrix column counts are respectively 23,35,58; the largest new-state counts are 97,69,95. The complete final finite-field run took 1.76 seconds of recorded wall time; the session archive retains both timing events for run <code>5b14e23409</code>. Some large queries have one-dimensional kernels, although generic dimension-three normality is already proved. They are failures of these specified finite-field marks, not members of the generic exception set. The old <a href="#entry-2026-10-06-cube-christol-scope">finite-palette obstruction</a> remains a mandatory distinction.</p>
+<p>The rational-function benchmark uses \(\mathbb F_3(u)\) and the three labels \(1,u,u^2+u+2\). At degree seven it matches the direct kernel, takes 154 CPU milliseconds and reaches stored coefficient degree 29. At degree 31 it takes 3506 CPU milliseconds and reaches coefficient degree 264, still using at most 23 columns. Degree 31 is a recursion benchmark, not an independent direct validation. The measured quadratic extrapolation exceeds ten seconds for degree 127, so the driver stops before launching that query. These are a one-parameter family's exact computations, not the full nine-variable generic problem. They show why the field-operation theorem alone is not a practical generic bit-complexity guarantee.</p>
+<p>The shared implementation is <code>research/tools/bmd_branch_state_core_20261007.gp</code>, with finite-field and symbolic drivers <code>bmd_branch_state_recursion_20261007.gp</code> and <code>bmd_branch_state_symbolic_20261007.gp</code> in the same directory. Complete inputs and outputs are retained in <code>research/results/bmd-exception-digit-interfaces-20261007/finite-field-controls.txt</code> and <code>symbolic-cost.txt</code>. During refactoring, nested GP stack setup prevented the helper definitions from loading; a separate variable-priority error made a purported coefficient a series. Both runs lacked their completion marker and were rejected. Moving setup to the top-level drivers and using distinct main and coefficient variables corrected the failures; the accepted runs completed every check.</p>
+<h4>What this resolves and what it leaves</h4>
+<p>The rank-relevant interface does close exactly in fixed ambient dimension; this is stronger than the preceding finite input catalogue. It supplies an implemented per-degree kernel algorithm, including correct nonzero answers. It does not yet supply finitely many generic states or an upper bound on the last exceptional degree. Over a finite coefficient field only finitely many subspaces are possible, but those are specialized marked states; using them as generic exception states would contradict the recorded finite-palette control. Over the generic rational field, the actual subspaces can vary indefinitely and their coefficients grow.</p>
+<p><strong>Follow-up.</strong> Continuing: the nested interface check has a closed bounded-matrix recursion and a per-input stopping rule. The complete-set stopping question remains within the parent inventory task. The next necessary attempt is to control generic rank decisions without expanding the growing rational coordinates, or to obtain a complete certificate from a moving-point specialization. Do not label a failed finite-field mark a generic exception, or count the nine large test degrees as new normality ranges.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed the full recurrence, faithful range, child invariance, injectivity, descent and four-state termination bound, with no unused hypothesis. Its requested bit-cost qualification and explicit symbolic-test scope are applied; the exact run events supporting the wall-time report were supplied in the focused follow-up, which passed with no remaining correction. Both reports are retained in <code>research/results/bmd-exception-digit-interfaces-20261007/</code>. Re-read the full polynomial split, iterated leaf frames, sparse branch-divisibility proof and root-coefficient residue record. The residue description alone did not previously give this reconstruction; the fixed branch values and the strict faithful order range are essential. Searches by branch evaluation, kernel interfaces, Frobenius reconstruction and logarithmic degree recursion located those dependencies and the earlier state obstructions.</p>
+<p><strong>Process.</strong> The preceding finisher warning was profiled and repaired in a separate committed framework change. Reusing the same notebook snapshots gave an identical real-diff report, with measured claim-check times 3.18 and 2.79 seconds; all 535 tests passed in 7.4 seconds. This cycle's clock includes that maintenance and the early derivation made while the coding phase was active; no retrospective timing split is claimed.</p>
+<p><strong>Assessment.</strong> A concrete computational obstacle is removed, but the practical complete exception-set algorithm and every uncovered inventory pair remain open. Symbolic size, rather than the original growing jet dimension, is now the measured limitation.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-exception-digit-interfaces-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>62 min 30.62 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25 min 20.07 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">30 min 20.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 24.37 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">57.30 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">28.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.39 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

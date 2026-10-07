@@ -1,0 +1,9 @@
+# command: python3 tools/codex_reviewer.py --handle branch-kernel-recursion-20261007 --brief research/tmp/codex/a5b0b37f69d471d960ab6922b1bb2da435eb08cd6fe2519c2d464160ac748301/branch-brief.txt --timeout 160
+# run 942c0617a200427b8f88030b3b03ca35, session bmd-exception-digit-interfaces-20261007; full output
+**PASS with corrections.**
+
+- **“Algorithm and degree complexity,” integer/bit-cost claim:** \(L\) is unrestricted above, so its input length need not be \(O(\log(d+1))\), even when the algorithm immediately returns zero. Restrict the polylogarithmic bit-cost statement to the nontrivial range \(L\le Bd\), or separately account for reading/comparing \(L\). Use \(\log(d+1)\) for the low-degree endpoint.
+- **“Executed controls,” 1.76-second total:** The supplied finite-field output contains no elapsed-time measurement. Retain timing evidence or remove this numerical claim.
+- **Test scope:** The finite-field controls support the stated specialized subspace comparisons, including nonzero kernels. The symbolic direct comparison is only at \(d=7\), where the kernel is zero; \(d=31\) is a recursion benchmark, not an independent direct validation. Neither tests all admissible \((d,L)\).
+
+No mathematical defect found in (3)–(7), strict faithfulness, child-range preservation, Hasse reconstruction, restricted injectivity, nonperfect-field descent, or the four-state termination bound. No unused stated hypothesis; the dependency’s short-jet surjectivity assumption is not needed here.
