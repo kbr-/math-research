@@ -1,0 +1,64 @@
+// Independent exhaustive small polynomial search and characteristic controls.
+LIB "research/tools/bmd_rational_fibres_20261008.lib";
+ring R=3,(s,z),dp;
+proc coupled()
+{
+ matrix A[2][2]=1,s,0,1;list B=list(s+s*z-s^3,z-z^3);
+ list solved=rfSolve(A,B);hdcheck(solved[1] && size(solved[2])==2,"coupled affine dimension");
+ int code;int j;int found=0;int matched;int a;poly e1;poly e2;
+ ideal mons=1,s,z;
+ print("EXHAUSTIVE_BOUND parameters=2 dimension=2 degree=1 candidates=729");
+ for(code=0;code<729;code++)
+ {
+  e1=0;e2=0;
+  for(j=1;j<=3;j++)
+  {
+   e1=e1+((code div 3^(j-1)) mod 3)*mons[j];
+   e2=e2+((code div 3^(j+2)) mod 3)*mons[j];
+  }
+  if(e1^3-e1-s*e2+B[1]==0 && e2^3-e2+B[2]==0)
+  {
+   found=found+1;matched=0;
+   for(a=0;a<3;a++)
+   {
+    if(e1==solved[2][1][1]+a*solved[2][2][1] && e2==solved[2][1][2]+a*solved[2][2][2]){matched=matched+1;}
+   }
+   hdcheck(matched==1,"independent enumeration differs from affine solver");
+  }
+ }
+ hdcheck(found==3,"independent solution count");B[2]=B[2]+1;
+ solved=rfSolve(A,B);hdcheck(solved[1]==0,"inconsistent constant perturbation accepted");
+ print("EXHAUSTIVE_POLYNOMIAL_CONTROL_PASSED solutions=3 inconsistent_perturbation_rejected=1");
+}
+proc smallAll()
+{
+ coupled();
+ring P5=5,(t),dp;
+matrix A5[1][1]=1;list B5=list(t-t^5);list S5=rfSolve(A5,B5);
+hdcheck(S5[1] && size(S5[2])==2,"characteristic-five affine dimension");
+ring P2=2,(t),dp;
+matrix A2[1][1]=1;list B2=list(t-t^2);list S2=rfSolve(A2,B2);
+hdcheck(S2[1] && size(S2[2])==2,"characteristic-two affine dimension");
+
+ring extensionBase=(3,t),(x),dp;
+poly minimal=x^2-t;matrix C=rfFrobeniusBasis(minimal);
+hdcheck(C[1,1]==1 && C[1,2]==0 && C[2,1]==0 && C[2,2]==t,"quadratic Frobenius matrix");
+matrix G[2][2]=2,0,0,2*t;matrix Gp[2][2]=2,0,0,2*t^3;
+hdcheck(size(ideal(transpose(C)*G*C-Gp))==0,"trace discriminant identity");
+list badCube=rfCube(1/t);list goodCube=rfCube(1);
+hdcheck(badCube[1]==0 && goodCube[1]==1,"finite-extension cube control");
+ring equationBase=3,(t),dp;
+matrix Aext[2][2]=t^2,0,0,t;list Bext=list(poly(0),-t^2*(t-1));
+list sext=rfSolve(Aext,Bext);hdcheck(sext[1] && size(sext[2])==2,"quadratic extension solution count");
+int j;int a;poly e0;poly e1;
+for(a=0;a<3;a++)
+{
+ e0=sext[2][1][1]+a*sext[2][2][1];e1=sext[2][1][2]+a*sext[2][2][2];
+ hdcheck(e1==t && deg(e0)<=1 && subst(e0,t,0)==0,"extension root is not a plus an F3 constant");
+}
+Bext[2]=-t^2;sext=rfSolve(Aext,Bext);hdcheck(sext[1]==0,"unsolvable extension equation accepted");
+print("SEPARABLE_EXTENSION_CONTROL degree=2 solutions=3 noncube_rejected=1 empty_fibre_verified=1");
+print("RATIONAL_SMALL_CONTROLS_COMPLETED");
+}
+smallAll();
+quit;

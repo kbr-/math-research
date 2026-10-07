@@ -1,0 +1,138 @@
+// Complete rational solutions over Frac(F_p[t_1,...,t_r]), by a proved degree rf_bound.
+LIB "research/tools/bmd_cartier_recovery_20261008.lib";
+proc rfSolve(matrix A,list B)
+{
+ def original=basering;int pchar=char(basering);int g=nrows(A);int rf_variables=nvars(basering);
+ hdcheck(npars(basering)==0 && pchar>0,"solver requires a pchar-field polynomial ring");
+ hdcheck(ncols(A)==g && size(B)==g,"additive system shape");
+ int da=0;int db=0;int i;int j;
+ for(i=1;i<=g;i++){if(deg(B[i])>db){db=deg(B[i]);}for(j=1;j<=g;j++){if(deg(A[i,j])>da){da=deg(A[i,j]);}}}
+ int rf_bound=da div (pchar-1);if(db div pchar>rf_bound){rf_bound=db div pchar;}
+ int rf_monomials=1;for(i=1;i<=rf_variables;i++){rf_monomials=rf_monomials*(rf_bound+i) div i;}
+ int rf_unknowns=g*rf_monomials;
+ print("RATIONAL_SIZING parameters="+string(rf_variables)+" degree_A="+string(da)+" degree_B="+string(db)+" complete_degree_bound="+string(rf_bound)+" unknown_coefficients="+string(rf_unknowns));
+ hdcheck(rf_unknowns<=2000,"rational solver needs a measured larger matrix budget");
+ ideal mons=kbase(std(maxideal(1)^(rf_bound+1)));hdcheck(size(mons)==rf_monomials,"bounded monomial count");
+ list rf_names;intvec rf_weights;for(i=1;i<=rf_unknowns;i++){rf_names[i]="rfcoef"+string(i);rf_weights[i]=1;}
+ for(i=1;i<=rf_variables;i++){rf_names[rf_unknowns+i]=varstr(i);rf_weights[rf_unknowns+i]=1;}
+ list spec=ringlist(original);spec[2]=rf_names;spec[3]=list(list("dp",rf_weights),list("C",intvec(0)));
+ def linearRing=ring(spec);setring linearRing;
+ matrix aa=imap(original,A);list bb=imap(original,B);ideal mm=imap(original,mons);
+ list e;list ep;int k;poly rf_product=1;poly eq;matrix rf_coefficients;ideal rf_equations;
+ for(i=1;i<=rf_variables;i++){rf_product=rf_product*var(rf_unknowns+i);}
+ for(i=1;i<=g;i++)
+ {
+  e[i]=poly(0);ep[i]=poly(0);
+  for(j=1;j<=rf_monomials;j++){k=(i-1)*rf_monomials+j;e[i]=e[i]+var(k)*mm[j];ep[i]=ep[i]+var(k)*mm[j]^pchar;}
+ }
+ for(i=1;i<=g;i++)
+ {
+  eq=ep[i]+bb[i];for(j=1;j<=g;j++){eq=eq-aa[i,j]*e[j];}
+  rf_coefficients=coef(eq,rf_product);
+  for(j=1;j<=ncols(rf_coefficients);j++){if(rf_coefficients[2,j]!=0){rf_equations[size(rf_equations)+1]=rf_coefficients[2,j];}}
+ }
+ hdcheck(deg(rf_equations)<=1,"coefficient rf_equations are not pchar-field linear");
+ ideal G=std(rf_equations);
+ if(size(G)==1 && G[1]==1)
+ {setring original;return(list(0,list(poly(0)),rf_bound,rf_unknowns));}
+ intvec rf_pivots;for(i=1;i<=rf_unknowns;i++){rf_pivots[i]=0;}
+ intvec rf_exponents;
+ for(i=1;i<=size(G);i++)
+ {
+  rf_exponents=leadexp(G[i]);
+  for(j=1;j<=rf_unknowns;j++){if(rf_exponents[j]){rf_pivots[j]=1;}}
+ }
+ int freecount=0;intvec freevars;
+ for(i=1;i<=rf_unknowns;i++){if(rf_pivots[i]==0){freecount=freecount+1;freevars[freecount]=i;}}
+ hdcheck(freecount<=g,"additive fibre exceeds its p^g geometric length");
+ list rf_normal;for(i=1;i<=g;i++){rf_normal[i]=reduce(e[i],G);}
+ list rf_affine;list rf_point;poly rf_value;
+ for(k=0;k<=freecount;k++)
+ {
+  rf_point=list();
+  for(i=1;i<=g;i++)
+  {
+   rf_value=rf_normal[i];
+   for(j=1;j<=freecount;j++){rf_value=subst(rf_value,var(freevars[j]),int(j==k));}
+   rf_point[i]=rf_value;
+  }
+  if(k>0){for(i=1;i<=g;i++){rf_point[i]=rf_point[i]-rf_affine[1][i];}}
+  rf_affine[k+1]=rf_point;
+ }
+ setring original;list answer=imap(linearRing,rf_affine);
+ poly checkeq;
+ for(k=1;k<=size(answer);k++){for(i=1;i<=g;i++)
+ {
+  checkeq=answer[k][i]^pchar;if(k==1){checkeq=checkeq+B[i];}
+  for(j=1;j<=g;j++){checkeq=checkeq-A[i,j]*answer[k][j];}
+  hdcheck(checkeq==0,"rf_affine rational-solution certificate failed");
+ }}
+ print("RATIONAL_SOLVED affine_dimension="+string(freecount)+" solutions="+string(pchar^freecount));
+ return(list(1,answer,rf_bound,rf_unknowns));
+}
+proc rfConnections(list D,poly f)
+{
+ def original=basering;list data=hdcurvature(D,f);int g=size(data[1]);int i;int j;
+ int np=npars(basering);hdcheck(np==1 || np==2,"wrapper requires F3(t) or F3(s,z)");
+ hdcheck(denominator(content(f))==1,"connection wrapper needs polynomial curve coefficients");
+ number extra=1;if(np==1){extra=denominator(content(D[2]));}
+ number scale=extra*data[3];list beta;matrix matrixA[g][g];
+ for(i=1;i<=g;i++)
+ {
+  beta[i]=extra^3*data[1][i];hdcheck(denominator(leadcoef(beta[i]))==1,"scaled beta is not polynomial");
+  for(j=1;j<=g;j++)
+  {matrixA[i,j]=extra^2*data[2][i,j];hdcheck(denominator(leadcoef(matrixA[i,j]))==1,"scaled linear coefficient is not polynomial");}
+ }
+ if(np==1){ring parameterRing=3,(t),dp;}else{ring parameterRing=3,(s,z),dp;}
+ matrix aa=imap(original,matrixA);list bb=imap(original,beta);
+ list solved=rfSolve(aa,bb);setring original;list answer=imap(parameterRing,solved);
+ if(answer[1]==0){return(answer);}
+ for(i=1;i<=size(answer[2]);i++){for(j=1;j<=g;j++){answer[2][i][j]=answer[2][i][j]/scale;}}
+ return(answer);
+}
+proc rfCube(number c)
+{
+ def original=basering;number cn=numerator(c);number cd=denominator(c);int np=npars(basering);
+ hdcheck(np==1 || np==2,"cube filter requires F3(t) or F3(s,z)");
+ if(np==1){ring coeffring=3,(t),dp;}else{ring coeffring=3,(s,z),dp;}
+ poly a=imap(original,cn);poly b=imap(original,cd);poly ar;poly br;poly term;int i;int j;intvec ex;
+ for(i=1;i<=size(a);i++)
+ {
+  ex=leadexp(a[i]);term=leadcoef(a[i]);
+  for(j=1;j<=np;j++){if(ex[j] mod 3!=0){setring original;return(list(0,number(0)));}term=term*var(j)^(ex[j] div 3);}
+  ar=ar+term;
+ }
+ for(i=1;i<=size(b);i++)
+ {
+  ex=leadexp(b[i]);term=leadcoef(b[i]);
+  for(j=1;j<=np;j++){if(ex[j] mod 3!=0){setring original;return(list(0,number(0)));}term=term*var(j)^(ex[j] div 3);}
+  br=br+term;
+ }
+ setring original;poly ar0=imap(coeffring,ar);poly br0=imap(coeffring,br);
+ number answer=leadcoef(ar0)/leadcoef(br0);hdcheck(answer^3==c,"cube reconstruction failed");return(list(1,answer));
+}
+proc rfUnfr(list D,poly f)
+{
+ hdvalid(D,hdfr(f));list answer=list(poly(0),poly(0));list ctest;int i;int j;
+ for(i=1;i<=2;i++){for(j=1;j<=size(D[i]);j++)
+ {
+  ctest=rfCube(leadcoef(D[i][j]));if(ctest[1]==0){return(list(0));}
+  answer[i]=answer[i]+ctest[2]*x^leadexp(D[i][j])[1];
+ }}
+ hdvalid(answer,f);return(list(1,answer));
+}
+
+// Frobenius on a power basis of a presented finite separable field extension.
+proc rfFrobeniusBasis(poly minimal)
+{
+ int ext_degree=deg(minimal);int pc=char(basering);int i;int j;
+ hdcheck(ext_degree>0 && leadcoef(minimal)==1,"extension polynomial must be monic");
+ hdcheck(deg(gcd(minimal,diff(minimal,x)))==0,"extension must be separable");
+ matrix C[ext_degree][ext_degree];poly power=1;poly step=divrem(x^pc,minimal);
+ for(j=1;j<=ext_degree;j++)
+ {
+  for(i=1;i<=ext_degree;i++){C[i,j]=hdcoef(power,i-1);}
+  power=divrem(power*step,minimal);
+ }
+ hdcheck(det(C)!=0,"separable Frobenius basis matrix singular");return(C);
+}

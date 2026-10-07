@@ -1,0 +1,52 @@
+// Full rational search, actual Cartier recovery, and Frobenius filtering.
+LIB "research/tools/bmd_rational_fibres_20261008.lib";
+ring R=(3,t),(x),dp;
+proc checkTarget(list D,poly f,int expectedRelative,int expectedFull,list expectedRoot,string label)
+{
+ int started=timer;list solved=rfConnections(D,f);int count=0;int accepted=0;
+ if(solved[1])
+ {
+  int dimension=size(solved[2])-1;count=3^dimension;hdcheck(count<=81,"genus-four fibre size cap");
+  int code;int i;int j;poly k;number c;list M;list full;
+  for(code=0;code<count;code++)
+  {
+   k=0;for(i=1;i<=4;i++)
+   {
+    c=leadcoef(solved[2][1][i]);
+    for(j=1;j<=dimension;j++){c=c+((code div 3^(j-1)) mod 3)*leadcoef(solved[2][j+1][i]);}
+    k=k+c*x^(i-1);
+   }
+   M=hcRecover(D,k,f);full=rfUnfr(M,f);
+   if(full[1])
+   {
+    accepted=accepted+1;hdcheck(hdequal(full[2],expectedRoot),"full division differs from the known root");
+    list checkV=hdV(M,f);hdcheck(hdequal(checkV,D),"full division forward check failed");
+   }
+  }
+ }
+ hdcheck(count==expectedRelative && accepted==expectedFull,"complete fibre/filter count differs from prediction");
+ print("TARGET "+label+" relative_solutions="+string(count)+" full_roots="+string(accepted)+" cpu_ms="+string(timer-started));
+}
+proc driver()
+{
+ poly f=x^9+x^8+x^5+x-t;list zero=list(poly(1),poly(0));
+ checkTarget(zero,f,3,1,zero,"original_zero");
+ poly fpoint=x^9+x^8+x^5+x+t^2;list P=list(x,poly(t));list P2=hdadd(P,P,fpoint);
+ list T=hdadd(P,P2,fpoint);list T2=hdadd(P2,hdadd(P2,P2,fpoint),fpoint);
+ checkTarget(P,fpoint,0,0,zero,"point_not_divisible");
+ checkTarget(T,fpoint,3,1,P,"triple_point");
+ checkTarget(T2,fpoint,3,1,P2,"full_degree_six_point");
+
+}
+driver();
+ring S=(3,s,z),(x),dp;
+poly fbase=x^9+x^8+x^5+x;
+number param=s^9+s^8+s^5+s-z^2;
+poly fg=subst(fbase,x,x+s)-param;
+list zero=list(poly(1),poly(0));list P=list(x,poly(z));
+list threeP=hdadd(P,hdadd(P,P,fg),fg);
+checkTarget(zero,fg,3,1,zero,"generic_two_parameter_zero");
+checkTarget(P,fg,0,0,zero,"generic_two_parameter_point");
+checkTarget(threeP,fg,3,1,P,"generic_two_parameter_triple");
+print("RATIONAL_FIBRE_CONTROLS_COMPLETED");
+quit;
