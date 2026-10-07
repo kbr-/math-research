@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited user-selected inventory head. Test the <a href="#entry-2026-10-05-cube-polynomial-frobenius-splitting">exact Frobenius split</a> at \(n=9,p=3\) as a finite symbolic degree transition, retaining image divisibilities and all mark lengths. Establish a bounded transition class or exhibit its growing invariant before running more base degrees. Read the <a href="#entry-2026-10-07-cube-exception-algorithm-goal-review">review’s controls and success criterion</a>.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited inventory head using the <a href="#entry-2026-10-07-cube-bounded-frobenius-frames">three fixed leaf frames and exact Pascal digit operator</a>. Test whether one-digit elimination closes on bounded rank-relevant interfaces while retaining all branch constraints and interval flags. Do not expand the 9216-square first bulk matrix or infer finite rank states from the finite input catalogue.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97,7 +97,9 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <h2>Lead and bridge queue</h2>
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
-<li data-check="entry-2026-10-07-cube-exception-inventory-request:s1"><a href="#entry-2026-10-07-cube-exception-inventory-request">entry-2026-10-07-cube-exception-inventory-request:s1</a> (check): Develop a practical, exact algorithm for the complete generic normality exception set \(E_{n,p}=\{d\ge2:\Delta_{n,d}\equiv0\pmod p\}\), including a proved stopping certificate. Then calculate and inventory the complete s…</li>
+<li data-check="entry-2026-10-07-cube-exception-inventory-request:s1"><a href="#entry-2026-10-07-cube-exception-inventory-request">entry-2026-10-07-cube-exception-inventory-request:s1</a> (check): Develop a practical, exact algorithm for the complete generic normality exception set \(E_{n,p}=\{d\ge2:\Delta_{n,d}\equiv0\pmod p\}\), including a proved stopping certificate. Then calculate and inventory the complete s…<ul>
+<li data-check="entry-2026-10-07-cube-bounded-frobenius-frames:s1"><a href="#entry-2026-10-07-cube-bounded-frobenius-frames">entry-2026-10-07-cube-bounded-frobenius-frames:s1</a> (check): For the exact compatibility operator (1) at n=9,p=3, determine whether one-digit elimination closes on a bounded family of rank-relevant interfaces while retaining all branch constraints and the four interval flags. Prov…</li>
+</ul></li>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
 <li data-bridge="entry-2026-09-28-cube-variable-depth-review:2"><a href="#entry-2026-09-28-cube-variable-depth-review">entry-2026-09-28-cube-variable-depth-review:2</a> (bridge): Effective operators in degenerate quantum perturbation. Continue the earlier Feshbach–Schur bridge with its algebraic unit-pivot version, without positive inner products or analytic spectral assumptions. At every stage t…<ul>
 <li data-check="entry-2026-10-07-cube-quadratic-field-image:s1"><a href="#entry-2026-10-07-cube-quadratic-field-image">entry-2026-10-07-cube-quadratic-field-image:s1</a> (check): Develop the all-\(q\) marked determinant of the sparse quadratic-image branch polynomial. Prove a nonzero original coefficient or identify a structural obstruction, retaining the moving mark; the \(q=9\) certificate is a…</li>
@@ -96563,6 +96565,74 @@ For the generic point \(P\), the class \(A=[H-8P]\) has infinite order. This alr
 <tr><td>Marked reading and review windows</td><td class="elapsed">4.06 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 13.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 45.88 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-bounded-frobenius-frames" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-check="entry-2026-10-07-cube-exception-inventory-request:s1" data-claims="lem:bounded-frobenius-frames">
+<h3>7 October 2026 — Three fixed frames describe every sufficiently deep Frobenius leaf</h3>
+<p class="entry-meta">Working reduction; finite rank-state closure open. Bounded Frobenius frames. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 2's user-selected exception algorithm needs a complete stopping certificate. The review asks whether the exact degree-contracting split has bounded symbolic states. This cycle separates its leaf data from its global compatibility: the leaf data admits three fixed frames and a digit description, but the assembled rank problem still grows. A finite input catalogue is not asserted to be a finite automaton deciding every exceptional degree.</p>
+<p><strong>General statement.</strong> <span id="bounded-frobenius-frames">lem:bounded-frobenius-frames</span> below iterates the exact polynomial split, describes its full branch constraints, and reduces all sufficiently deep leaves to three fixed polynomial-source flags. In the actual \((n,p)=(9,3)\) problem its only short-jet surjectivity hypothesis follows from the newly certified degree-four determinant. No degree-seven, eight or nine normality assumption is used.</p>
+<h4>Bounded Frobenius frames</h4>
+<p><strong>Lemma.</strong> Let \(k\) be perfect of odd characteristic \(p\), with distinct nonzero labels \(a_1,\ldots,a_n\), \(n\ge3\). Use \(w_i^2=\ell_i=1+a_iT\), \(w_i(0)=1\), \(R_S=\prod_{i\in S}\ell_i\), \(R=R_{[n]}\), and the original polynomial space \(V_d=\bigoplus_Sw_SF_{\lfloor(d-|S|)/2\rfloor}\). Put \(B=2^{n-1}\), \(g=1+(n-3)2^{n-2}\), and assume \(J_B:V_{n-2}\to k^B\) is onto. For every \(d\ge n-2\), choose \(q=p^e>d\), and set
+\[N=Bd+1-g,\quad b_q=(q-1)/2,\quad e_r=\left\lfloor\frac{d+(q-1)n-2r}{q}\right\rfloor,\quad L_r=\max\left(0,\left\lceil\frac{N-r}{q}\right\rceil\right).\]
+Then the original length-\(N\) marked kernel is exactly represented by a square compatibility matrix of size \((q-1)n2^{n-2}\) with the following data:</p>
+<ul><li>Every leaf belongs to \(V_{n-2},V_{n-1}\) or \(V_n\), observed through at most \(B\) jets. All leaf kernels are subframes of three fixed nested frames, independent of \(d,q\). As \(r\) runs from zero to \(q-1\), there are at most four contiguous intervals with constant pair \((e_r,L_r)\).</li><li>For a basis function \(\phi=\sum_Sw_SP_{\phi,S}\) in the selected leaf kernel, its column at residue \(r\), in row \((S,i,j)\) with \(i\notin S\), \(0\le j<b_q\), is
+\[A_q[(S,i,j),(r,\phi)]=\binom rj z_i^{r-j}P_{\phi,S}(z_i)^q,\qquad z_i=-1/a_i,\tag{1}\]
+with zero for \(r<j\). The input coordinates are the \(q\)-th powers of leaf coordinates. Over the perfect field this preserves dimensions and nullity.</li><li>The Pascal factor in (1) has the exact digit product
+\[\binom rj z^{r-j}=\prod_{t=0}^{e-1}\binom{r_t}{j_t}(z^{p^t})^{r_t-j_t}.\tag{2}\]
+Thus it is a tensor product of \(p\)-square Pascal factors, with the row restriction \(j<(q-1)/2\) retained. This is a structured description of the growing matrix, not a proved bounded rank-state iteration.</li></ul>
+<p>Original normality at this mark is equivalent to \(\det A_q\ne0\). These statements do not claim that the determinant is nonzero, that the matrix can be expanded in constant space, or that its zero set has been computed.</p>
+<h4>Iteration and exact image</h4>
+<p><strong>Proof.</strong> Define \(\Gamma_{q,r}(P)=\sum_j([T^{qj+r}]P)^{1/q}T^j\), meaning that the selected coefficients, not the exponents, take their unique \(q\)-th roots. Put
+\[\mathcal D_{q,r}(f)=\sum_Sw_S\Gamma_{q,r}(P_SR_{S^c}^{b_q}),\qquad f=\sum_Sw_SP_S.\]
+The same character identity as in the <a href="#entry-2026-10-05-cube-polynomial-frobenius-splitting">prime split</a> gives
+\[R^{b_q}f=\sum_{r=0}^{q-1}T^r\mathcal D_{q,r}(f)^q.\tag{3}\]
+For two successive levels, substitute the prime reconstruction for each component into the preceding reconstruction, and multiply by the required additional power of \(R\). The exponent changes from \((p^t-1)/2\) to \((p^{t+1}-1)/2\). The new residue is \(r+p^ts\). Unique disjoint residue decomposition proves
+\[\mathcal D_{p,s}\mathcal D_{p^t,r}=\mathcal D_{p^{t+1},r+p^ts}.\tag{4}\]
+The degree bounds compose by the elementary nested-floor identity, giving precisely \(e_r\); the mark lengths compose by the corresponding ceiling identity. The unit \(R(0)=1\) and disjoint exponent classes prove that the length-\(N\) kernel corresponds to the exact image intersected with \(\bigoplus_r\ker J_{L_r}(V_{e_r})\). No independent-leaf replacement is made.</p>
+<p>For \(g_r=\sum_Sw_SQ_{r,S}\), the exact image condition is
+\[R_{S^c}^{b_q}\mid\sum_rT^rQ_{r,S}^q.\tag{5}\]
+The original quotient-degree condition is automatic for these target bounds. Indeed
+\[r+q\deg Q_{r,S}\le\left\lfloor\frac{d+(q-1)n-q|S|}{2}\right\rfloor
+=\left\lfloor\frac{d-|S|}{2}\right\rfloor+b_q(n-|S|).\]
+After (5), division therefore restores exactly the original polynomial bound. This also proves the converse image assertion, using uniqueness of residue decomposition.</p>
+<p>Distinctness of the branch points lets us test (5) separately at each \(z_i\), through Hasse derivatives (local Taylor coefficients) of orders \(0\le j<b_q<q\). The factors \(Q_{r,S}(T)^q\) have no positive local terms below order \(q\). Thus the complete tests are
+\[\sum_r\binom rj z_i^{r-j}Q_{r,S}(z_i)^q=0.\tag{6}\]
+For the full target space, taking coefficient Frobenius roots turns them into linear equations. There are \(b_q n2^{n-1}=(q-1)n2^{n-2}\) rows. The Hilbert count from the prime proof works for every odd \(q\): \(\sum_re_r=d+(q-1)(2n-3)/2\), so the target has dimension \(N+(q-1)n2^{n-2}\). Since the exact image has dimension \(N\), these rows have the stated full quotient rank. Substitution of the leaf bases in (6) is exactly (1).</p>
+<h4>The three fixed flags</h4>
+<p>Because \(q>d\) and \(d\ge n-2\), direct bounds in the formula give \(n-2\le e_r\le n\). Also \(N=Bd+1-g\le Bd<Bq\), so \(0\le L_r\le B\). The degree bound decreases through at most three successive values, while the jet length takes at most two successive values with one transition. Their combined partition has at most four intervals.</p>
+<p>Choose \(B\) functions in \(V_{n-2}\) with an invertible first-\(B\)-jet minor, and normalize them to \(F_0,\ldots,F_{B-1}\) satisfying \([T^i]F_j=\delta_{ij}\) for \(i<B\). Extend these chosen source columns successively to bases of \(V_{n-2},V_{n-1},V_n\). For each additional source function \(v\), replace it by
+\[h_v=v-\sum_{j=0}^{B-1}[T^j]v\,F_j.\]
+It has order at least \(B\); the triangular change preserves independence. Consequently, for each \(e\in\{n-2,n-1,n\}\) and \(0\le L\le B\),
+\[\ker J_L(V_e)=\langle F_L,\ldots,F_{B-1},h_v:v\text{ in the added basis of }V_e\rangle.\tag{7}\]
+These are three fixed nested frames with a common flagged part. Surjectivity of every required leaf map follows at once. Their kernel dimensions sum to the quotient dimension, making (1) square. Its nullity equals the original marked nullity by (3)–(6), proving the determinant assertion.</p>
+<p>Finally (2) follows by expanding \((1+X)^r=\prod_t(1+X^{p^t})^{r_t}\) and comparing the coefficient of \(X^j\). If a digit of \(j\) exceeds the corresponding digit of \(r\), the relevant factor vanishes; otherwise the exponent of \(z\) adds to \(r-j\). Here \(z\ne0\), so the displayed product is defined even in a zero-factor term. The threshold \((q-1)/2\) has every base-\(p\) digit equal to \((p-1)/2\); its row selector is the usual less-than/equal digit comparison. No rank factorization follows merely from this tensor identity. \(\square\)</p>
+<h4>Instantiating the actual dimension-nine input</h4>
+<p>For \(n=9,p=3\), pass to the perfect closure of the generic parameter field when applying the split; scalar extension does not change the original jet ranks. Then \(B=256\), and the three source dimensions are 1024, 1280 and 1536. The <a href="#entry-2026-10-07-cube-exception-coefficient-filter">degree-four certificate</a> proves that \(J_{303}(V_4)\) is invertible generically. Its first 256 jets are therefore onto. Since \(V_4\subset V_7\), this discharges the lemma's short-jet hypothesis without assuming full normality of \(V_7,V_8,V_9\).</p>
+<p>The new frame compiler reuses that recorded field and slope tuple, constructs the 256-by-303 short matrix, and saves 256 original source indices giving a pivot determinant
+\[a^7+2a^6+a^5+a^4+a^2+a+2\ne0\quad\text{in the recorded }\mathbb F_{3^8}.\]
+Those indices define the generic rational frame by inverting the corresponding formal matrix over \(\mathbb F_3(a_1,\ldots,a_9)\). The nonzero point proves that this formal inverse exists; numerical entries are not substituted for generic coefficients. The compiler checks normalization and all 393216 entries of the reconstruction across \(V_9\). It took five seconds and retains the full field, slopes, index list and determinant in <code>research/results/bmd-exception-frobenius-states-20261007/nine-master-frames.txt</code>, with driver <code>research/tools/bmd_nine_frobenius_frames_20261007.gp</code>.</p>
+<p>The explicit compatibility matrix still has size \(1152(q-1)\). Even at \(q=9\), that is 9216, so expanding it would worsen the direct computation. The useful output is the three fixed rational frames and the exact digit operator. The next implication must control that operator's ranks without expanding its large tensor sections; no fast all-degree decision procedure is claimed.</p>
+<h4>Encoding controls and remaining test</h4>
+<p>The new checker compares every direct \(q\)-split component with the iterated prime split, every reconstructed marked entry with direct multiplication by \(R^{b_q}\), the branch-constraint kernel with the exact split image, and every Pascal entry with its digit product. At \((n,p,q,d)=(3,3,9,7),(3,3,27,8),(3,5,25,4)\), the branch ranks are 48,156,144 and original ranks 28,32,16. The known negative control \((6,3,3,1)\) retains original rank six in a seven-dimensional source, with branch rank 171; the bulk codimension formula is not applied outside its range. All 3650 source/reconstruction checks and 4359 tensor entries pass. These small exhaustive encoding checks validate the new formulas, not additional normality ranges. One initial run failed on the zero polynomial's infinite negative degree; it lacked the completion marker and was rejected. The corrected extraction handles zero explicitly. Full output and driver are <code>research/results/bmd-exception-frobenius-states-20261007/encoding-controls.txt</code> and <code>research/tools/bmd_iterated_frobenius_controls_20261007.gp</code>.</p>
+<p><strong>Follow-up.</strong> Continuing: the inventory head now has a finite catalogue of leaf frames and an exact digit-structured compatibility operator for every degree in the chosen bulk input. The unresolved next test is whether eliminating one digit closes on a bounded family of rank-relevant interfaces, preserving all branch constraints and the four interval flags. Without that closure or another stopping certificate, none of the 48 unresolved inventory rows changes status.</p>
+<h4>Sub-ideas</h4><ul><li data-sub="check">For the exact compatibility operator (1) at n=9,p=3, determine whether one-digit elimination closes on a bounded family of rank-relevant interfaces while retaining all branch constraints and the four interval flags. Prove closure and a stopping rule, or exhibit a growing invariant of this proposed state model. The three fixed input frames alone do not settle this.</li></ul>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed the iteration, degree bounds, branch matrix, fixed flags and generic/specialized distinctions. Its terminology correction is applied: branch multiplicities are tested with Hasse derivatives, not ordinary derivatives. It found no other required correction or unused hypothesis. The report is retained in <code>research/results/bmd-exception-frobenius-states-20261007/review.txt</code>. Re-read the full polynomial splitting and its exact image, the sparse-image and later failed-descent controls, and the dimension-nine certificate. Searches by prime-power splitting, bounded leaf frames, Hasse compatibility and Pascal tensors found the prime split and existing digit controls; the result is an explicit refinement/application of them, not a novelty claim for Lucas's identity.</p>
+<p><strong>Assessment.</strong> This removes unbounded leaf degrees and the need to assume new base normality at degrees seven through nine. It does not remove the growing global compatibility rank problem. The practical exception algorithm and the full odd-field goal remain open. The initial iteration idea arose during the preceding review; this clock measures its development, implementation and verification.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-exception-frobenius-states-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 36.80 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">20 min 29.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 47.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.63 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">27.63 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.38 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
