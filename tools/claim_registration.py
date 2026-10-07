@@ -87,10 +87,16 @@ def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None
     if entries:
         from notebooks import catalogue
         items=catalogue(root);here=notebook_path.resolve()
+        # Many claims cite the same notebook. Resolve each path once in this snapshot,
+        # keeping the cache local so subsequent checks observe changed links.
+        resolved_paths={notebook_path:here}
         for key,claim in claims.items():
             for ref in references(claim):
                 target=local_target(ref['target'],root,items)
-                if target and target[0].resolve()==here:anchors.setdefault(key,set()).add(target[1])
+                if target:
+                    path,anchor=target
+                    if path not in resolved_paths:resolved_paths[path]=path.resolve()
+                    if resolved_paths[path]==here:anchors.setdefault(key,set()).add(anchor)
     for entry in entries:
         label=entry['id'];attrs=entry['attrs'];raw=attrs.get('data-claims','').strip()
         declared=set(raw.split()) if raw and raw!='none' else set()

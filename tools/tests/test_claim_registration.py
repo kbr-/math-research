@@ -1,4 +1,5 @@
 from pathlib import Path
+from unittest.mock import patch
 import sys,tempfile,unittest
 TOOLS=Path(__file__).resolve().parents[1];sys.path.insert(0,str(TOOLS))
 from claim_registration import check_entries,article_ids,new_entries,Entries
@@ -40,6 +41,31 @@ class RegistrationTests(unittest.TestCase):
         self.assertFalse(self.check(entry('data-claims="lem:missing"','`lem:missing`'))['passed'])
     def test_duplicate_entry_ids_fail_closed(self):
         with self.assertRaises(ValueError):self.check(entry()+entry())
+    def test_repeated_sources_resolve_each_notebook_once(self):
+        labels=[f'lem:a{i}' for i in range(20)]
+        rows=''.join(f'| `{label}` | A | Working proof | [Proof](https://kbr.is-a.dev/math-research/#a{i}) |\n'
+                     for i,label in enumerate(labels))
+        self.data=upgrade(import_markdown('# Claims\n\n'+HEADER+rows))
+        body=''.join(f'<h4 id="a{i}">Statement</h4>' for i in range(20))
+        notebook=self.root/'notebook.html';calls=[];resolve=Path.resolve
+        def counted(path,*args,**kwargs):
+            if path==notebook:calls.append(path)
+            return resolve(path,*args,**kwargs)
+        with patch.object(Path,'resolve',counted):
+            report=self.check(entry('data-claims="'+' '.join(labels)+'"',body))
+        self.assertTrue(report['passed'],report['errors'])
+        self.assertEqual(len(calls),1)
+    def test_source_resolution_is_fresh_between_checks(self):
+        notebook=self.root/'notebook.html';notebook.write_text('notebook')
+        other=self.root/'other.html';other.write_text('other')
+        alias=self.root/'alias.html';alias.symlink_to(notebook.name)
+        self.data['claims'][0]['record']='[Proof](https://github.com/kbr-/math-research/blob/main/alias.html#a)'
+        text=entry('data-claims="lem:a"','<h4 id="a">Statement</h4>')
+        self.assertTrue(self.check(text)['passed'])
+        alias.unlink();alias.symlink_to(other.name)
+        report=self.check(text)
+        self.assertFalse(report['passed'])
+        self.assertIn('needs a source link',' '.join(report['errors']))
     def test_article_ids_match_the_full_parse(self):
         text=('<article id="before-record"></article><!-- <article id="commented"></article> -->'
               '<section class="x" id="research-record"><article data-id="decoy" class="r" id="a&amp;b">'
