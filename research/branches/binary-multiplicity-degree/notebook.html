@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic, statements 3–4. Develop the next queued <a href="#entry-2026-09-28-cube-residual-filtration-review">Koszul change-of-rings lead</a>. Compare the quantitative <a href="#graded-parameter-action-presentation">action-presentation bound</a>, now realized by the <a href="#entry-2026-10-07-cube-kernel-action-presentation">full six-root kernel</a>, with the actual uniform relation weights required for \(N\ge11\). Retain the full residual and its extension; neither the sixfold formal model nor the all-dimensional residual Tor surjection transfers these global weights automatically.</p>
+<p>Route item: cube-odd-characteristic. Perform the scheduled goal review after six research entries. Assess the <a href="#entry-2026-10-07-cube-kernel-action-presentation">completed six-root kernel</a> and <a href="#entry-2026-10-07-cube-parameter-tor-budget">parameter Tor bounds</a> against the actual uniform first-step and remaining-threshold obligations. The next queued lead is graded local duality. While draining, assess existing work and add no Outside leads or Absurd bridges.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1"><a href="#entry-2026-09-28-cube-residual-filtration-review">entry-2026-09-28-cube-residual-filtration-review:1</a> (lead): Koszul change of rings, with actual action matrices. The bounded double-complex theorem targets the original first-relation degrees in open statement 3. Answers. Freeness can be replaced by a finite parameter presentatio…</li>
 <li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3"><a href="#entry-2026-09-28-cube-first-step-ramification-review">entry-2026-09-28-cube-first-step-ramification-review:3</a> (lead): Grothendieck graded local duality. The target is the actual global vanishing (TV). The weighted Čech calculation proves the exact translation (LC), and the all-\(h\) control independently matches the Koszul Ext degree wi…</li>
 <li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1"><a href="#entry-2026-09-28-cube-balanced-smoothing-review">entry-2026-09-28-cube-balanced-smoothing-review:1</a> (lead): Fitting strata and DVR minors. Stacks, Section 31.9, describes base change and rank strata through minors. Applied to the actual coefficient and observation matrices, (OV) tests whether the marked minor has minimal valua…</li>
 <li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1"><a href="#entry-2026-09-28-cube-balanced-smoothing-review">entry-2026-09-28-cube-balanced-smoothing-review:1</a> (bridge): Convolutional-code delay and minimal bases. Forney's minimal-basis programme motivates viewing a regular coefficient frame as an encoder and the Hasse map as an observation channel. The valuation difference in (OV) is th…</li>
@@ -95877,6 +95876,75 @@ All source matrices are rational and have the actual polynomial columns. A full-
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-parameter-tor-budget" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-28-cube-residual-filtration-review:1" data-claims="lem:parameter-tor-degree-bound cor:cube-six-root-operator-degree-bound">
+<h3>7 October 2026 — Parameter Tor bounds control the total degrees of centered operator generators</h3>
+<p class="entry-meta">Working proof; fixed-order thresholds open. Parameter Tor budget. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statements 3–4 on cube-odd-characteristic still need original relation-degree control. The queued Koszul lead asks what the actual parameter presentation can supply without a false freeness assumption. The <a href="#cube-six-root-kernel-actions">completed six-root model</a> now provides such data. Extending the existing first-relation estimate to every Tor degree bounds the second Tor of the full defect and hence the total degrees of centered Ore generators. It does not calculate a fixed-order leading ideal.</p>
+<p><strong>General statement.</strong> <code>lem:parameter-tor-degree-bound</code> is the standard all-parameter Koszul degree estimate, proved here by successive cones. <code>cor:cube-six-root-operator-degree-bound</code> applies it to the entire six-root module over every characteristic-zero field. No new dimension sample or numerical rank calculation is used.</p>
+<h4 id="parameter-tor-degree-bound">Parameter Tor bound</h4>
+<p><strong>Lemma.</strong> Let \(A=k[x_1,\ldots,x_r]\) be positively graded, let \(S=A[z_1,\ldots,z_q]\) with \(\deg z_j=d_j>0\), and let \(M\) be a finite graded \(A\)-module with its graded \(S\)-action. For a polynomial ring \(R\), put
+\[
+t_i^R(M)=\max\{a:\operatorname{Tor}_i^R(M,k)_a\ne0\},
+\]
+with value \(-\infty\) for a zero group. For every \(i\ge0\),
+\[
+t_i^S(M)\le
+\max_{\substack{J\subseteq\{1,\ldots,q\}\\|J|\le i}}
+\left(t_{i-|J|}^A(M)+\sum_{j\in J}d_j\right).
+\]
+Equivalently, for each possible cardinality choose the largest variable weights. The statement includes \(q=0\), with the empty sum.</p>
+<p><strong>Proof.</strong> First adjoin one variable \(z\) of degree \(d\) to a polynomial ring \(R\). The Koszul complex on the variables of \(R[z]\), with coefficients in \(M\), is the cone of multiplication by \(z\) from \(K_R(M)(-d)\) to \(K_R(M)\). The action is a chain map because the coefficient actions commute. Its homology exact sequence contains
+\[
+\operatorname{Tor}_i^R(M,k)\longrightarrow
+\operatorname{Tor}_i^{R[z]}(M,k)\longrightarrow
+\operatorname{Tor}_{i-1}^R(M,k)(-d).
+\]
+Therefore the middle group has no weight above \(\max(t_i^R(M),t_{i-1}^R(M)+d)\), taking negative homological groups to be zero. Iterate through the \(q\) variables. Each choice of the second term lowers the homological index by one and adds that variable's weight; this yields exactly the displayed subsets. Finiteness and positive grading make the degree maxima finite whenever the group is nonzero. \(\square\)</p>
+<p><strong>Controls and antecedent.</strong> For \(M=k\), the Koszul differentials vanish after tensoring with \(k\), and the largest \(i\)-fold sum of all variable weights attains this bound. The already recorded family \(M_L=k[t]\oplus k[z]/(z^L)\), over \(k[t,z]\) with both weights one, has \(t_1^{k[t]}(M_L)=L\) and \(t_2^{k[t,z]}(M_L)=L+1\). The second equality follows from the two-variable Koszul resolution of the summand \(S/(t,z^L)\). It attains the new degree-two estimate and still shows why qualitative finite generation supplies no uniform numerical input. This is not a family of cube modules.</p>
+<p>The queued source is the bounded-double-complex construction in <a href="https://stacks.math.columbia.edu/tag/0130">Stacks, Lemma 12.25.1</a>, with convergence under finite diagonals in <a href="https://stacks.math.columbia.edu/tag/0132">Lemma 12.25.3</a>. Both statements were read. The finite Koszul complexes satisfy those hypotheses; the cone proof above gives the needed estimate directly. Its degree-one case agrees with the quantitative part of the existing <a href="#graded-parameter-action-presentation">action-presentation lemma</a>. No independent novelty is claimed.</p>
+<h4 id="cube-six-root-operator-degree-bound">Six-root operator degrees</h4>
+<p><strong>Corollary.</strong> In characteristic zero, let \(C_6\) be the actual full centered six-root defect. Then
+\[
+t_2^{S_6}(C_6)\le46.
+\]
+The actual marked core annihilator has a homogeneous left generating set of total degrees at most 35. Under the marked deflation bijection, the centered pair annihilator has such a generating set of total degrees at most 44. The original two-order dictionary sends these representatives to original relations of total degree at most 46. Generation here is over the centered Ore ring; these are neither exact minimal degrees nor an order-compatible basis.</p>
+<p><strong>Proof.</strong> Write \(H=H_6\), \(M=K_{2,6}\), \(I=\Phi_{42}(M)\), and \(E=C_6/M\). The exact <a href="#cube-kernel-smith-decomposition">Smith presentation</a> over \(A=k[c_2]\) gives \(t_0^A(H)=33\), \(t_1^A(H)=40\), and \(t_2^A(H)=-\infty\). The last assertion follows from the length-one free resolution over the polynomial PID, not from freeness of \(H\). The remaining variable weights are \(3,4,5,6\), so the lemma gives
+\[
+t_2^{S_6}(H)\le\max\{40+6,33+5+6\}=46.
+\]
+The <a href="#cube-six-root-detector-image">complete image resolution</a> has \(t_2^{S_6}(I)=25\), while the <a href="#cube-six-root-upper-presentation">upper normalization extension</a> gives \(t_2^{S_6}(E)\le23\). The long exact Tor sequences for
+\[
+0\to H\to M\to I\to0,\qquad 0\to M\to C_6\to E\to0
+\]
+therefore give \(t_2(M)\le46\) and \(t_2(C_6)\le46\). Neither extension is assumed split.</p>
+<p>Now use the actual <a href="#cube-marked-ore-deflation">marked block core</a>, whose graded cokernel is this same \(C_6\) and whose marker has weight \(w=11\). Its least monic core order satisfies \(U\le30\) by the <a href="#cube-six-root-cyclic-cutoff">proved cutoff</a>. The <a href="#cube-ore-generators-from-tor">Tor generator lemma</a> identifies the reduced annihilator with a monic string of starting degree \(U\) and the shifted finite \(D\)-module \(\operatorname{Tor}_2(C_6,k)(11)\). Every starting degree of that finite module is at most \(46-11=35\), regardless of its nilpotent \(D\)-action. Homogeneous lifts generate the left annihilator by the lemma. Thus the maximum generator degree is at most \(\max(30,35)=35\).</p>
+<p>The exact marked deflation map is a homogeneous left-Ore-module bijection and raises total degree by nine at six roots. Its images therefore generate the centered pair annihilator in degrees at most 44. The original two-order dictionary adds two to each representative's order and total degree, giving the stated representative bound 46. No identification of the computational projected connection with the block connection is needed: the second Tor bound concerns their common graded defect, and the generator lemma is applied to the actual marked block core. \(\square\)</p>
+<h4>What this does and does not transfer</h4>
+<p>For the full residual in general dimension, the degree-two version of the lemma reads
+\[
+t_2^{S_N}(K_{2,N})\le\max\{t_2^{A_N}(K_{2,N}),\ t_1^{A_N}(K_{2,N})+N,\ t_0^{A_N}(K_{2,N})+2N-1\},
+\]
+where \(A_N=k[c_2,\ldots,c_{N-4}]\). This is a valid route for an upper bound, not a new required detour for every proof of the goal. For \(N\ge7\), the parameter ring has more than one variable, so the PID vanishing of its second Tor cannot be reused. The uniform parameter degree inputs remain unproved. Formal sixfold comparison does not transfer the numerical weights 33 and 40 to those global modules.</p>
+<p>The <a href="#entry-2026-09-27-cube-intrinsic-order-flag">corrected intrinsic-flag theorem</a> says that the full graded defect determines every order ideal; it does not say that the weight bound 46 does so. In the retained five-root control, low-order relations require cancellations through higher intermediate orders in a fixed minimal Ore generating set. That diagnostic survives its scope correction. The new bounds therefore give no missing first-step value for \(N\ge11\) and no new positive-characteristic statement. The explicit action matrices are available, but the numerical estimates here need only their module's proved parameter Tor weights.</p>
+<p><strong>Follow-up.</strong> Developed: the full homological degree transfer is proved and quantitatively applied, beyond the original degree-one formulation. Its remaining inputs are the genuinely unknown global parameter Tor weights, not a further freeness repair or an omitted convergence argument. A sharper constant for the completed six-root bound is off the current uniform target.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed both proofs, the symbolic controls, the nonsplit extensions and the degree shifts without a gap, correction or unused hypothesis. It confirmed the actual-core cutoff independently of any identification of computational connections. Read the queued source, the complete action-presentation proof and counterexample, Smith and image degree data, the upper extension, Ore generator lemma, its later effective-cutoff and extension-obstruction refinements, marked deflation, and the corrected intrinsic order flag. The controls are symbolic Koszul calculations; no old numerical suite or new case was run.</p>
+<p><strong>Assessment and process.</strong> The Koszul mechanism now supplies a concrete total-generator bound once the parameter weights are known. It cannot create the missing uniform weights or replace the fixed-prefix comparison. The next cycle is the scheduled goal review, using the completed kernel reconstruction and this bound while keeping all seven unresolved goal obligations visible. No new framework rule or computation is needed for this homological consequence.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-koszul-scope-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 22.99 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">6.58 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11 min 0.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 29.86 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">8.82 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">36.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
