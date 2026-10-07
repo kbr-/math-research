@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited inventory head. The <a href="#entry-2026-10-07-cube-residual-series-certificate">residual-certified series graph</a> reaches fifteen edges before a precision refusal. Recompute the initial source frames at increased precision and test that refused transition first; do not promote the saved order-16 frames. Continue graph exploration only with certified errors and measured cost. Repeated precision growth should trigger an invariant test or a different specialization, not blind bound increases.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 2. Continue the unlimited inventory head. Implement the <a href="#entry-2026-10-07-cube-reversed-branch-recursion">reversed-coordinate graph</a> with fresh weighted source frames, a parity bit and degree-type-aware caches. The control reduces one inverse loss but proves no uniform bound. Seek total certified digit coverage at fixed precision, or a structural obstruction to it; retain all residual checks and measure complete-edge cost before expanding.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -97043,6 +97043,74 @@ When \(\rho_A>\alpha\), multiplication by any integral rows or columns preserves
 <tr><td>Other external-tool windows</td><td class="elapsed">1 min 1.48 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 11.23 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-07-cube-reversed-branch-recursion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-obligation="cube-small-prime-stable-orders" data-goal-progress="unchanged" data-check="entry-2026-10-07-cube-bounded-frobenius-frames:s1" data-claims="lem:reversed-branch-recursion">
+<h3>7 October 2026 — Fresh precision resolves one refusal; reversed coordinates reduce its loss</h3>
+<p class="entry-meta">Working proof; graph closure open. Reversed branch recursion. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 2 still needs a complete stopping or normality certificate. The <a href="#entry-2026-10-07-cube-residual-series-certificate">series graph</a> stopped because one component retained 15 coefficients where 16 were required. First lift its source frames honestly and test that exact refusal. Then test whether the degree-dependent size of branch evaluations can be removed from the coordinate implementation without altering the marked kernel.</p>
+<p><strong>General statement.</strong> <code>lem:reversed-branch-recursion</code> is an exact diagonal conjugation of the existing recursion in every odd characteristic. The new coefficients depend on the parent degree only modulo \(2p\), while the original marked kernel and degree bounds are unchanged. Finite coefficient types do not imply finite state closure or a bound on every inverse loss.</p>
+<p><strong>New mathematics.</strong> The reversed branch coordinates below implement a degree-dependent ambient rescaling using only finitely many transition types. On the previously refused component, the measured sum of pivot and image inverse losses falls from 33 to 22. The source lift separately certifies the old coordinates at precision 17. Neither calculation constructs a complete digit graph.</p>
+<p><strong>Goal progress.</strong> Unchanged for <a href="#cube-small-prime-stable-orders">small-prime stable orders</a>. No new original normality range at an uncovered dimension, complete exception pair or cutoff is proved. The new result changes the exact representation and its measured conditioning; the required all-degree nonvanishing remains open.</p>
+<h4>The fresh precision lift</h4>
+<p>The driver <code>research/tools/bmd_precision_lift_20261007.gp</code> computes all 36 initial components directly from the original source in degrees one, two and three, sharing 26 distinct Hasse-kernel calculations. It saturates and canonically normalizes their exact rational frames before truncating them. The same exact frames feed precisions 16 and 17; an order-16 file is never treated as order-17 evidence. Their initial frames and the two prefix states \(x=1,5\), reduced to order 16, match all 108 corresponding saved components at each precision.</p>
+<p>At order 16, the old refusal is reproduced. At order 17, the degree-18, length-63 auxiliary kernel has \(\alpha=15,\sigma=0,\tau=51,\beta=18,\rho_R=53\), so it retains 18 coefficients and passes. The full third digit edge to \(x=15\) also passes. The path is \(0\to1\to5\to15\); it does not supply the other digit edges needed for a total graph. Exact base construction takes 104 CPU milliseconds; the order-16 path takes 14.940 seconds and the order-17 path 34.583 seconds. These cold-path costs include different cache reuse from the breadth-first graph, so they are not a like-for-like graph speed comparison.</p>
+<p>The first order-17 attempt failed to produce an image pivot from the series candidate routine. It had not disproved rank or failed a verified inverse bound. The shared kernel now falls back to exact polynomial pivot selection, after which the same residual acceptance checks remain mandatory. Exactly one fallback is used in the completed order-17 run and none at order 16. The kernel was extracted into <code>research/tools/bmd_series_graph_core_20261007.gp</code>, also used by the earlier graph driver; matching the old path verifies that extraction. Complete initial and final runs are retained in <code>research/results/bmd-exception-precision-lift-20261007/initial-lift.txt</code> and <code>lift-controls.txt</code>.</p>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-07-cube-adic-certificate-goal-review">scheduled certificate test</a> now passes the specifically refused transition with fresh higher-precision input. This shows that the refusal was not an intrinsic rank obstruction. It does not justify repeatedly raising precision without a stopping argument. The observed degree sensitivity motivates the following exact coordinate change, whose effect is tested on that same component.</p>
+<h4>Reversed branch recursion</h4>
+<p><strong>Lemma.</strong> Let \(k\) have odd characteristic \(p\), let \(n\ge3\), and let \(a_i\in k^\times\) be distinct. Use the <a href="#entry-2026-10-07-cube-bounded-branch-recursion">original source and faithful branch kernel</a>, with \(w_i^2=1+a_iT\), \(w_i(0)=1\), \(d\ge n-2\), and \(Bd-L<nB\), \(B=2^{n-1}\). For a branch coordinate \(c=(S,i)\), \(i\notin S\), put
+\[D_S(d)=\left\lfloor\frac{d-|S|}{2}\right\rfloor,\qquad
+(G_dv)_c=a_i^{D_S(d)}v_c,\qquad \widehat U(d,L)=G_dU(d,L).\]
+Thus the coordinate of \(f=\sum_Sw_SP_S(T)\) is \(a_i^{D_S(d)}P_S(-1/a_i)\), a reversed-polynomial evaluation up to a sign. Negative \(D_S(d)\) is harmless: \(a_i\ne0\), and the corresponding source component is zero.</p>
+<p>Set \(b=(p-1)/2\), \(m_c=n-|S|\), \(\Delta_c=\prod_{h\notin S,\ h\ne i}(a_i-a_h)\), and, for \(0\le r<p\),
+\[t_{r,c}=D_S(d)+bm_c-r-p\left\lfloor\frac{D_S(d)+bm_c-r}{p}\right\rfloor\in\{0,\ldots,p-1\}.\]
+Keep the old child degrees and lengths
+\[d_r=\left\lfloor\frac{d+(p-1)n-2r}{p}\right\rfloor,
+\qquad L_r=\left\lceil\frac{L-r}{p}\right\rceil.\]
+On tuples \(v_r\in\widehat U(d_r,L_r)^{[p]}\), define
+\[\begin{aligned}
+(\widehat{\mathcal C}v)_{c,j}
+ &=\sum_{r=0}^{p-1}\binom rj(-1)^{r-j}a_i^{t_{r,c}+j}v_{r,c},&&0\le j<b,\\
+(\widehat{\mathcal H}v)_c
+ &=\Delta_c^{-b}\sum_{r=0}^{p-1}\binom rb(-1)^{r-b}a_i^{t_{r,c}-b}v_{r,c}.
+\end{aligned}\tag{1}\]
+Terms with a vanishing binomial coefficient are zero. Empty products equal one. Then
+\[\widehat U(d,L)=\widehat{\mathcal H}\ker\left(\widehat{\mathcal C}\bigm|_{\oplus_r\widehat U(d_r,L_r)^{[p]}}\right),\tag{2}\]
+and the reconstruction is injective on that kernel. The coefficient maps (1) depend on \(d\) only modulo \(2p\).</p>
+<p><strong>Proof.</strong> Fix \(c\), abbreviate \(D=D_S(d)\), \(m=m_c\), and write \(d-|S|=2D+\epsilon\), \(\epsilon\in\{0,1\}\). Direct division gives
+\[D_S(d_r)=\left\lfloor\frac{D+bm-r}{p}\right\rfloor=:q_{r,c}.\tag{3}\]
+Indeed the numerator before division by \(2p\) is \(2(D+bm-r)+\epsilon\); its extra \(\epsilon/(2p)\) cannot cross the next multiple of \(1/p\). This also covers negative inactive degrees.</p>
+<p>The original child tuple is obtained from the new one by multiplying its \(c\)-coordinate by \(a_i^{-p q_{r,c}}\). In the old compatibility map, \(z_i=-1/a_i\), so its coefficient is \(\binom rj(-1)^{r-j}a_i^{j-r-pq_{r,c}}\). Multiply the whole row \((c,j)\) by the nonzero scalar \(a_i^{D+bm}\). Its exponent becomes \(t_{r,c}+j\), giving the first equation of (1).</p>
+<p>For the image map also multiply the parent coordinate by \(a_i^D\). The old branch factor is
+\[\rho_c=a_i\prod_{h\notin S,h\ne i}(1-a_h/a_i)=a_i^{2-m}\Delta_c.\]
+Thus its new coefficient is
+\[\binom rb(-1)^{r-b}\rho_c^{-b}a_i^{D+b-r-pq_{r,c}}
+=\binom rb(-1)^{r-b}\Delta_c^{-b}a_i^{t_{r,c}-b},\]
+as asserted. All changes are invertible diagonal changes of child or parent coordinates, or nonzero rescalings of compatibility rows. Equation (2), faithfulness and injectivity therefore follow from the exact original reconstruction without adding a surjectivity assumption. Neither the source nor the marked length is changed.</p>
+<p>Replacing \(d\) by \(d+2p\) replaces \(D\) by \(D+p\), leaving every residue \(t_{r,c}\) unchanged. This proves the coefficient period. In the existing carry packet, a parent degree is \(n+px+a-j\), so its coefficient type is \(n+p(x\bmod2)+a-j\pmod{2p}\). One parity bit, updated by \(x'\bmod2=(x+a)\bmod2\), suffices in addition to the old small-degree flag. \(\square\)</p>
+<p>This is an elementary conjugation of the earlier recursion, not an independent normality theorem. The large powers \(a_i^{D_S(d)}\) need only be used to establish the identity and construct the bounded-degree base states; iteration uses the finite coefficient tables (1). A transition cache must include the degree type, since the maps now vary with it. The one-type cache of the unweighted implementation cannot be carried over unchanged. Finite coefficient tables still do not bound the possible subspaces or their inverse losses. The change is over the coefficient field; it does not preserve the grading of polynomial coefficient modules and gives no pre-stable threshold conclusion.</p>
+<h4>Exact encoding and conditioning controls</h4>
+<p>The driver <code>research/tools/bmd_reversed_branch_control_20261007.gp</code> checks 260884 integer identities for (3), both coefficient exponents and the period. It covers dimensions three through ten, primes three, five, seven and eleven, every character size and digit, and two full degree periods starting at \(n-2\). The row checks include every \(j<b\). This exercises the floor boundaries and inactive negative-degree components; the all-parameter identity is proved above, not inferred from the grid.</p>
+<p>For the actual previously refused parent \((d,L)=(18,63)\) over \(\mathbb F_3(u)\), it constructs the three child kernels directly from original jets, with degrees \(8,7,6\), lengths \(21,21,21\) and dimensions \(11,7,3\). It computes exact canonical frames in both coordinate systems. Every field-valued coefficient in (1) is compared with its diagonal conjugation, and the exact reconstructed parent images agree after applying \(G_{18}\); both have dimension nine. The marked kernel is therefore preserved in this nonzero test, not merely its zero/nonzero answer.</p>
+<p>At precision 17, the reversed-coordinate residual certificate has \(\alpha=7,\sigma=0,\tau=51,\beta=15,\rho_R=52\), retaining 29 coefficients. Its output agrees modulo \(u^{17}\) with the exact reconstructed image. The old-coordinate loss \(15+18=33\) becomes \(7+15=22\). Coefficient clearing powers are zero for the compatibility map and one for the image map. This is one measured improvement; it is not a uniform bound and is not a completed lower-precision graph test. Exact child construction takes 2442 CPU milliseconds, exact reconstruction/comparison 1258 CPU milliseconds, and the local residual certificate 2741 milliseconds of wall time. Full data and the completion marker are retained in <code>research/results/bmd-exception-precision-lift-20261007/reversed-control.txt</code>.</p>
+<p><strong>Follow-up.</strong> Continuing: implement the parity-aware reversed-coordinate graph from fresh weighted base frames, with degree-type-aware caches and the same residual acceptance checks. The next endpoint is a total certified graph or a structural obstruction to bounded precision in these coordinates, not another isolated degree scan. The complete inventory remains 192 empty sets and 48 unresolved pairs.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed the conjugation, negative inactive degrees, imperfect-field Frobenius scaling, injectivity, period/parity rule, source lift and pivot fallback without required corrections or unused hypotheses. It confirmed that parity and degree-type-aware caching are required in a future graph, and that goal progress remains unchanged. Its report is retained in <code>research/results/bmd-exception-precision-lift-20261007/review.txt</code>. The existing branch reconstruction, residual precision proof and canonical-frame argument are the dependencies; their exact formulas were re-read. Searches by reciprocal evaluations, homogenization and Frobenius normalization located the earlier recursion and unrelated reciprocal models, not this recorded coordinate version. The exhaustive integer checker and nonzero-kernel comparison are retained.</p>
+<p><strong>Process.</strong> Concurrent main-thread additions were preserved through record-ID merges. Repeated no-op revision remapping was separately repaired and committed: adjacent real checkpoints took 33.80 and 1.55 seconds, with all 547 framework tests passing in 7.9 seconds. That maintenance did not change the mathematics. No new source theorem was imported from the bounded literature check. Some initial mathematical scope checks shared the preparation interval during synchronization; no retrospective timing split is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-exception-precision-lift-20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>116 min 44.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17 min 47.55 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">25 min 14.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">68 min 48.39 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">4.88 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">1 min 57.37 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 23.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1 min 29.05 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
