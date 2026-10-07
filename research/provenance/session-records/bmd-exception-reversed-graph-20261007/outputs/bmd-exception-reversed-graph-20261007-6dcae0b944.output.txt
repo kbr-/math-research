@@ -1,0 +1,25 @@
+E
+======================================================================
+ERROR: test_worktree_bundle_receipts_clear_session_checkout_gate (tools.tests.test_codex_hooks.CodexHooksTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/tests/test_codex_hooks.py", line 101, in test_worktree_bundle_receipts_clear_session_checkout_gate
+    self.call('PostToolUse', command, tool_response=text)
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/tests/test_codex_hooks.py", line 37, in call
+    return hook.dispatch(self.event(name, command, **fields), self.root)
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/hooks/codex_dispatch.py", line 157, in dispatch
+    receipt(state, call, event.get('tool_response'), root)
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/hooks/codex_dispatch.py", line 100, in receipt
+    body, total = read_part(root, key, number)
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/resume.py", line 53, in read_part
+    manifest=json.loads((directory/'manifest.json').read_text())
+  File "/usr/lib/python3.10/pathlib.py", line 1134, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpg2cr0x65/research/logs/resume-bundles/0a248c439835456f940daaaba568ff19/manifest.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.115s
+
+FAILED (errors=1)

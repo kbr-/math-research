@@ -3,16 +3,6 @@ default(parisizemax,2000000000);
 default(nbthreads,1);
 read("research/tools/bmd_branch_state_core_20261007.gp");
 read("research/tools/bmd_series_graph_core_20261007.gp");
-exact_frame(U)={
- my(k=matsize(U)[2]);if(!k,return(U));
- my(M=XPAR^max(0,-mval(U))*U,rr=matindexrank(M)[1],cc=[1..k],v=valuation(matdet(submat(M,rr,cc)),XPAR),bound=v+1,Z);
- for(step=1,bound,
-  Z=M*submat(M,rr,cc)^(-1);my(best=0,ii=0,jj=0);
-  for(i=1,matsize(Z)[1],for(j=1,k,if(Z[i,j]!=0 && valuation(Z[i,j],XPAR)<best,best=valuation(Z[i,j],XPAR);ii=i;jj=j)));
-  if(!ii,my(canon=canonical_rows(Z));return(Z*submat(Z,canon,cc)^(-1)));
-  rr[jj]=ii;my(nv=valuation(matdet(submat(M,rr,cc)),XPAR));assert(nv==v+best && nv<v,"base exchange identity");v=nv
- );error("base saturation bound")
-};
 setup_precision(N)={
  PREC=N;WP=3*N;
  CCOEF=matrix(CC,3,c,r,truncate(XPAR^max(0,-2*valuation(ZZ[c],XPAR))*ZZ[c]^(r-1)+O(XPAR^WP)));

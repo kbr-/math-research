@@ -1,5 +1,6 @@
 \\ Residual-certified finite-precision graph pilot, using PARI series candidates.
 \\ Residuals are checked as exact Laurent-polynomial products; no series rank is trusted.
+UNIT_NEWTON=1;GRAPH_BUDGET_MS=120000;
 assert(c,s)={if(!c,error(s));};
 mval(M)={my(v=1000000);for(i=1,matsize(M)[1],for(j=1,matsize(M)[2],if(M[i,j]!=0,v=min(v,valuation(M[i,j],XPAR)))));v};
 submat(M,rr,cc)=matrix(#rr,#cc,i,j,M[rr[i],cc[j]]);
@@ -13,6 +14,15 @@ inverse_residual(A,Q)={my(alpha=max(0,-mval(Q)),rho=mval(A*Q-matid(matsize(A)[1]
 inv_candidate(A)={
  my(n=matsize(A)[1]);if(!n,return([matrix(0,0),0,1000000]));
  my(key=Str(A));if(mapisdefined(INVCACHE,key),INVHITS++;return(mapget(INVCACHE,key)));
+ my(Abar=chop(A,1));
+ if(UNIT_NEWTON && matrank(Abar)==n,
+  my(started=getwalltime(),Q=Abar^(-1),prec=1);
+  while(prec<WP,prec=min(2*prec,WP);Q=chop(Q*(2*matid(n)-A*Q),prec));
+  INVMS+=getwalltime()-started;started=getwalltime();my(vr=inverse_residual(A,Q));RESMS+=getwalltime()-started;
+  assert(vr[1]==0 && vr[2]>=WP,"unit Newton inverse residual");
+  if(!NEGATIVE,my(bad=Q);bad[1,1]+=OO*XPAR^(-2*WP);my(vb=inverse_residual(A,bad));assert(vb[2]<=max(0,vb[1]),"corrupt unit inverse accepted");NEGATIVE=1);
+  my(ans=[Q,vr[1],vr[2]]);mapput(INVCACHE,key,ans);INVS++;return(ans)
+ );
  for(t=1,3,
   my(work=WP*2^t,Bs,ok=1,started=getwalltime());
   iferr(Bs=matsolve(matrix(n,n,i,j,A[i,j]+O(XPAR^work)),matid(n)),E,ok=0);
@@ -41,6 +51,12 @@ improve(M,rr,cc)={
 };
 pick(M,r)={
  if(!r,return([[],[],matrix(0,0),0,1000000]));
+ assert(mval(M)>=0,"pivot input must be integral");
+ my(M0=chop(M,1),pv0=matindexrank(M0));
+ if(#pv0[2]>=r,
+  my(cc0=pv0[2][1..r],rr0=matindexrank(submat(M0,[1..matsize(M)[1]],cc0))[1]);
+  if(#rr0==r,my(ans0=improve(M,rr0,cc0));if(#ans0,return(ans0)))
+ );
  my(pv,ok=1,Ms=matrix(matsize(M)[1],matsize(M)[2],i,j,M[i,j]+O(XPAR^(2*WP))));
  iferr(pv=matindexrank(Ms),E,ok=0);
  if(ok && #pv[2]>=r,
@@ -58,7 +74,7 @@ transition(ch)={
  for(r=0,2,for(c=1,CC,for(k=1,sizes[r+1],my(v=ch[r+1][c,k]^3);C[c,off+k]=OO*truncate(CCOEF[c,r+1]*v+O(XPAR^WP));H[c,off+k]=OO*truncate(HCOEF[c,r+1]*v+O(XPAR^WP))));off+=sizes[r+1]);[C,H]
 };
 local_step(ch,k)={
- my(key=Str([ch,k]));if(mapisdefined(LOCALCACHE,key),LOCALHITS++;return(mapget(LOCALCACHE,key)));
+ my(key=Str([CCOEF,HCOEF,ch,k]));if(mapisdefined(LOCALCACHE,key),LOCALHITS++;return(mapget(LOCALCACHE,key)));
  my(pair=transition(ch),C=pair[1],H=pair[2],s=matsize(C)[2],r=s-k);
  if(r<0 || r>min(CC,s),return([0,"RANK_SIZE",r,s,k]));
  my(pv=pick(C,r));if(!#pv,return([0,"PIVOT_CANDIDATE",r,s,k]));
@@ -69,7 +85,7 @@ local_step(ch,k)={
  my(sigma=if(k,max(0,-mval(K)),0),tau=if(k,mval(submat(C,rr,[1..s])*K),1000000),e=min(WP,tau+sigma)-alpha,U=matrix(CC,0,i,j,0*OO),rows=[],beta=0,rhoR=1000000,retained=1000000);
  if(k,
   my(Y=chop(XPAR^sigma*H*K,WP),ip=pick(Y,k));assert(mval(Y)>=0,"image not integral");
-  if(!#ip,return([0,"IMAGE_CANDIDATE",k]));
+  if(!#ip,LAST_FAILED_IMAGE=Y;return([0,"IMAGE_CANDIDATE",k,alpha,sigma,tau,mval(Y),matrank(Y),matrank(chop(Y,1))]));
   rows=ip[1];my(ic=inv_candidate(submat(Y,rows,[1..k])));if(!#ic,return([0,"IMAGE_INVERSE"]));
   beta=ic[2];rhoR=ic[3];retained=min(e-beta,rhoR);
   if(retained<PREC,return([0,"IMAGE_PRECISION",alpha,sigma,tau,beta,rhoR,retained,PREC]));
@@ -86,6 +102,17 @@ edge(state,digit)={
   my(ch=vector(3,r,my(jp=-floor((digit-j-2*(r-1))/3),dp=BB*NN+BB*floor((digit-j-2*(r-1))/3)-ceil((BB*(NN+digit-j)-delta-(r-1))/3));if(dp<0,matrix(CC,0,i,k,0*OO),frames[jp*CC+dp+1])));
   my(d=NN+nf-j,L=BB*d-delta,k=max(0,BB*d+1-GG-max(L,0)),result=local_step(ch,k));
   if(!result[1],return([0,j,delta,result]));out[j*CC+delta+1]=result[2];listput(rec,concat([j,delta],result[3]));
-  if(getwalltime()-STARTMS>120000,return([0,j,delta,"PILOT_TIME_BUDGET"]))
+  if(getwalltime()-STARTMS>GRAPH_BUDGET_MS,return([0,j,delta,"PILOT_TIME_BUDGET"]))
  ));[1,[nf,out],Vec(rec)]
+};
+
+exact_frame(U)={
+ my(k=matsize(U)[2]);if(!k,return(U));
+ my(M=XPAR^max(0,-mval(U))*U,rr=matindexrank(M)[1],cc=[1..k],v=valuation(matdet(submat(M,rr,cc)),XPAR),bound=v+1,Z);
+ for(step=1,bound,
+  Z=M*submat(M,rr,cc)^(-1);my(best=0,ii=0,jj=0);
+  for(i=1,matsize(Z)[1],for(j=1,k,if(Z[i,j]!=0 && valuation(Z[i,j],XPAR)<best,best=valuation(Z[i,j],XPAR);ii=i;jj=j)));
+  if(!ii,my(canon=canonical_rows(Z));return(Z*submat(Z,canon,cc)^(-1)));
+  rr[jj]=ii;my(nv=valuation(matdet(submat(M,rr,cc)),XPAR));assert(nv==v+best && nv<v,"base exchange identity");v=nv
+ );error("base saturation bound")
 };
