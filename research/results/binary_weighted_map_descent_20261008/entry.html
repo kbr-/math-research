@@ -1,0 +1,74 @@
+<article id="entry-2026-10-08-weighted-map-descent" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-actual-error-goal-review:1" data-claims="thm:weighted-map-binary-descent">
+<h3>8 October 2026 — Complete weighted coefficient maps descend without extra degree</h3>
+<p class="entry-meta">Working simultaneous descent with rank retention; existence of a useful nonlinear source map remains open.</p>
+<p><strong>Question.</strong> The semilinear-descent lead asks whether extension-field tools can be used on the actual binary source without increasing its degree budget. The existing theorem descends fixed binary error kernels. Test the different situation where both a weight and old polynomial images of the fresh coefficients were chosen over an extension field, and the fresh field equations vanish only after weighting.</p>
+<p><strong>General statement.</strong> thm:weighted-map-binary-descent preserves complete weighted source relations under simultaneous replacement by binary coefficient maps and a binary surviving weight. It keeps the original degree bounds and, at a specified multiplier cutoff, retains at least half the original multiplication rank, independently of the extension degree.</p>
+<p><strong>New mathematics.</strong> Weighted field equations give a Frobenius iteration with a fixed degree ceiling. A unital trace projection then changes each coefficient map only by an element annihilated by the original weight. Telescoping handles the nonlinear source before the weight is descended. This uses existing bounded Frobenius and rank-specialization tools, rather than assuming a coefficient projection is multiplicative.</p>
+<p><strong>Goal progress.</strong> Unchanged. The theorem permits searching for complete weighted maps over algebraic extensions, but supplies no such map or quantitative nonlinear error estimate. The binary source can be recovered from a successful construction without an additional degree factor; the construction itself remains the necessary missing implication.</p>
+<h4>Statement in one original degree window</h4>
+<p>Let \(J_2\subseteq\mathbb F_2[x]_{\le D}\) be a degree-\(D\) pseudoideal containing every old Boolean equation, and let \(E=\mathbb F_{2^d}\), \(d\ge1\), with \(J_E=E\otimes J_2\). Scalar extension retains filtered intersections and bounded multiplication closure. Fix integers \(T\ge1\), \(B\ge2\), \(b\ge0\), with
+\[
+ b+TB\le D.
+\]
+Let \(\mathcal F\subseteq\mathbb F_2[x,y_1,\ldots,y_s]\) have every original joint total degree at most \(B\), and include all fresh equations \(y_j^2-y_j\). Let \(\Phi\) fix the old \(x\)'s and send \(y_j\) to \(a_j\in E[x]_{\le T}\). Suppose
+\[
+ W\in E[x]_{\le b}\setminus J_E,
+ \qquad W\Phi(F)\in J_E\quad(F\in\mathcal F).
+\]
+In particular the complete weighted fresh-field equations are hypotheses, not omitted side conditions.</p>
+<p id="weighted-map-binary-descent"><strong>Theorem (weighted map descent).</strong> There are \(\Phi_0(y_j)\in\mathbb F_2[x]_{\le T}\), with old variables fixed, and \(w\in\mathbb F_2[x]_{\le b}\setminus J_2\), such that
+\[
+ w\Phi_0(F)\in J_2\qquad(F\in\mathcal F).
+\]
+For any one specified integer \(k\ge0\), \(b+k\le D\), the weight can additionally be chosen to satisfy
+\[
+ h_w(k)\ge\tfrac12h_W(k),
+\]
+where the two multiplication ranks are measured over their respective fields in the same scalar-extended quotient. The degree and original source ceilings do not increase. The same existence conclusion, with this rank guarantee, holds over \(\overline{\mathbb F}_2\).</p>
+<h4>Weighted Frobenius differences</h4>
+<p><em>Proof.</em> Write \(\sigma a\) for coefficientwise squaring, with the old indeterminates fixed. For every \(a\) of degree at most \(T\), the polynomial \(a^2-\sigma a\) is a Boolean-axiom combination through degree \(2T\): square termwise and reduce each squared old monomial. Multiplying by \(W\) fits \(b+2T\le D\).</p>
+<p>For a fixed fresh coefficient image \(a=a_j\), the field hypothesis therefore gives
+\[
+ W(\sigma a-a)\in J_E.
+\]
+Put \(L_i=\sigma^{i+1}a-\sigma^i a\), all of degree at most \(T\). If \(WL_i\in J_E\), multiply that polynomial by \(L_i\) within \(b+2T\le D\), obtaining \(WL_i^2\in J_E\). Subtract the weighted Boolean consequence \(W(L_i^2-\sigma L_i)\), at the same ceiling, to obtain \(WL_{i+1}\in J_E\). Induction and summation give
+\[
+ W(\sigma^i a-a)\in J_E\qquad(0\le i&lt;d).
+\]
+The reduced polynomial \(WL_i\) has degree at most \(b+T\); reusing that membership is why there is no degree accumulation with \(d\). No Frobenius operation is applied to the weight or to an unproved source relation.</p>
+<h4>Project the maps before descending the weight</h4>
+<p>Choose \(c\in E\) with \(\operatorname{Tr}_{E/\mathbb F_2}(c)=1\), and define the unital binary-linear projection \(\pi(z)=\operatorname{Tr}(cz)\). Such a \(c\) exists: the trace polynomial \(z+z^2+\cdots+z^{2^{d-1}}\) is nonzero of degree below \(2^d\), cannot vanish on all of \(E\), and takes values in \(\mathbb F_2\). Set \(\bar a_j=\pi(a_j)\), coefficientwise. Then \(\deg\bar a_j\le T\), all its coefficients are binary, and
+\[
+ W(\bar a_j-a_j)
+ =\sum_{i=0}^{d-1}\sigma^i(c)W(\sigma^i a_j-a_j)\in J_E.
+\]
+Here the coefficients sum to one. Literal zero/one coefficient assignments are preserved, and one assignment is used for each shared source variable.</p>
+<p>Let \(\Phi_0(y_j)=\bar a_j\). For any binary source polynomial \(R\) of degree at most \(B\), telescope its monomials between \(\Phi\) and \(\Phi_0\). Each difference has one factor \(a_j-\bar a_j\) and at most \(B-1\) other old or substituted factors. Multiplying its weighted membership by those factors costs at most \(b+TB\le D\). Thus
+\[
+ W(\Phi(R)-\Phi_0(R))\in J_E.
+\]
+This argument proves the needed weighted compatibility of nonlinear products; it does not claim that \(\pi\) is multiplicative. In particular \(W\Phi_0(F)\in J_E\) for every original generator.</p>
+<p>Choose a binary basis \(\beta_1,\ldots,\beta_d\) of \(E\), and write \(W=\sum_\ell\beta_\ell W_\ell\), with binary \(W_\ell\) of degree at most \(b\). Since \(\Phi_0(F)\) is binary and \(J_E\) is the scalar extension of \(J_2\), every \(W_\ell\Phi_0(F)\) lies in \(J_2\). At least one \(W_\ell\notin J_2\). This already proves survival and all simultaneous memberships.</p>
+<h4>Retain rank without a field-dimension loss</h4>
+<p>For the specified cutoff \(k\), let \(M_\ell\) be the binary matrix of multiplication by \(W_\ell\) from old degree at most \(k\) into the quotient through \(D\). These maps fit \(b+k\le D\). The generic pencil \(\sum_\ell\lambda_\ell M_\ell\) has rank at least \(h_W(k)\), since specializing \(\lambda_\ell=\beta_\ell\) gives multiplication by \(W\) after scalar extension. <a href="https://arxiv.org/html/2610.00837v1#S3">Pang's Lemma 3.1</a> gives expected rank at least half the generic rank under uniform binary specialization. Therefore some binary combination \(w=\sum_\ell u_\ell W_\ell\) has \(h_w(k)\ge h_W(k)/2\). All its weighted source relations remain valid by linearity. Since \(h_W(k)&gt;0\), it survives.</p>
+<p>For precision, the imported rank inequality applies to arbitrary matrices over \(\mathbb F_2\); no multiplication-kernel hypothesis is needed here. Its proof bounds the degree of a nonzero maximal minor by its size and bounds the average determinant multiplicity on the binary grid, which controls rank loss. The primary statement and proof were checked again. This is rank specialization on the weight's coefficient components, not the separate multiplier-selection theorem's operation of multiplying by a new degree-\(k\) polynomial.</p>
+<p>For \(\overline{\mathbb F}_2\), the finitely many coefficients of \(W\) and the maps lie in a common finite extension. Membership in the scalar extension of the fixed finite-dimensional binary space can be checked over that finite field. Ranks are unchanged by further extension, so the finite-field argument applies without changing any degree. \(\square\)</p>
+<h4>Application and limits</h4>
+<p>The charged Fourier construction is used through its <a href="#binary-charged-descent">binary one-hot pullback</a>. Fourier expressions can first be pulled back by the affine inverse map, preserving degree; the old one-hot variables are Boolean. The theorem is not being applied to \(U_e,V_e\) as if those ternary-domain variables themselves were Boolean.</p>
+<p>For a complete ENS source, take \(\mathcal F\) to contain the original companion and coefficient-field polynomials whose weighted images must vanish. A proof/cofactor window \(B\) still costs \(b+TB\). Ordinary original generator degrees, including the fresh coefficient variables, are retained; a canceled or specialized low-degree product does not reset them. The theorem preserves memberships in the chosen pseudoideal. It does not independently give ordinary NS cofactors in a smaller consequence space.</p>
+<p>It is consequently enough to find a complete costed weighted map over the algebraic closure for this particular sufficient endpoint. That changes the allowable field of search, not the existence problem. Without the weighted fresh-field equations, even a scalar map at a root of \(y^2+y+1\) over \(\mathbb F_4\) need not have a binary counterpart. With constant coefficient images, the weighted field condition already forces a nonzero-weight legal constant to be binary. The additional scope concerns old polynomial coefficient maps.</p>
+<h4>Exact rule checks</h4>
+<p>The bounded <a href="research/results/binary_weighted_map_descent_20261008/check_descent.g">GAP checker</a> uses one old Boolean bit, two fresh variables, degree-one maps and weight, original source degree two, and \(D=3\). Over \(\mathbb F_8\), there are 92 allowed single-point triples \((W,a_1,a_2)\); pairing them gives 8,464 possibilities, of which 4,368 have a nonzero weight. These are all valid cases among the \(8^6\) two-point function triples. Every case passed weighted Frobenius and projection identities, for 78,624 monomial-point comparisons. Native binary nullspaces check preservation of all relations in the 512-element source-polynomial space spanned by the nine degree-at-most-two monomials modulo the old Boolean equation. All 4,368 source-kernel checks and weight-rank checks passed.</p>
+<p>A separate full three-bit function-space control over \(\mathbb F_8\), with weight degree at most three and rank cutoff three inside \(D=6\), has original multiplication rank seven and rank four for each of the seven nonzero binary component combinations. Thus unchanged full rank is not automatic. The \(\mathbb F_4\) omitted-field control fails descent as predicted. The <a href="research/results/binary_weighted_map_descent_20261008/control-output.txt">complete output</a> retains every accepted map case and its rank/kernel data. These are exhaustive rule controls in finite function algebras, not empirical evidence for a hard-quotient error bound; the theorem above supplies the general proof.</p>
+<h4>Queue status and scheduled review</h4>
+<p><strong>Follow-up.</strong> Continuing the semilinear-descent lead. The new joint-choice question is answered with a fixed degree budget and constant rank retention. Its remaining application is finding a useful complete weighted map, now permitted over an algebraic closure; another proof of fixed-kernel descent would add nothing. This is the sixth research entry since the preceding review, so the next cycle is the scheduled goal-level architecture review, with the same one-reviewer staged comparison procedure.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-08-relative-learning-scope:s1">The theorem simultaneously descends old polynomial coefficient maps and a surviving weight, uses every weighted fresh-field equation, keeps the original degree budget and retains half the specified multiplication rank. <strong>Follow-up.</strong> Closed: the posed joint weighted-map scope question is proved, subject to the explicit complete-field and scalar-extension hypotheses.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test whether algebraic-closure methods give a nonemptiness mechanism for the finite-dimensional incidence problem of a surviving weight and polynomial coefficient maps satisfying all complete weighted source equations inside the original degree window. The descent theorem handles the binary return, but merely writing the equations, ignoring field constraints or counting the trivial zero-weight component does not prove existence.</li></ul>
+<p><strong>Verification gate.</strong> The <a href="research/results/binary_weighted_map_descent_20261008/review.txt">sole isolated medium reviewer passed</a> scalar extension, bounded Frobenius reuse, simultaneous map descent, rank retention and the algebraic-closure statement. Its redundant finiteness assumption was removed: bounded-degree binary polynomials in finitely many variables already form a finite set. It checked the script and saved output without rerunning the controls, and accepted the source/cofactor limitations and unchanged goal assessment. Reread binary charged descent and the older unital witness projection, the bounded Frobenius argument, and Pang's primary rank-specialization proof. Search results were checked against existing source-map and coefficient-descent scopes. The exhaustive new rule checker reached its final success marker with all declared cases and both controls; no dependencies were installed.</p>
+<p><strong>Process assessment.</strong> Using completeness of the fresh-field equations before projecting the maps resolves the nonlinear compatibility issue, and the rank-specialization step avoids an unnecessary extension-dimension loss. The result is kept separate from the still-unproved source-map existence premise.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_weighted_map_descent_20261008 -->
+<p class="timing-note">Through final snapshot; initial descent formulation overlapped checkpoint preparation.</p>
+</article>
