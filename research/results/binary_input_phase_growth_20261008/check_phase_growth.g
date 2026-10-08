@@ -1,0 +1,63 @@
+# Exact bounded controls for Boolean phase inverses, canonical descent and
+# the actual full-affine-domain loss construction. GAP native exact ranks.+# Fixed scope: 64 binary maps F2^2 -> F2^3, six F4 subspaces each;
+# one 257-point Boolean domain. No parameter sweep is needed.
+f4 := GF(4);; om := Z(4);; zz := Zero(f4);; oo := One(f4);;
+for gg in [zz,oo] do
+  if (oo+om*gg)*(oo+om^2*gg) <> oo then Error("phase inverse"); fi;
+od;
+if (oo+om*om)*(oo+om^2*om) = oo then Error("negative control"); fi;
+Print("PASS phase inverses: 2 Boolean cases; non-Boolean negative control\n");
+embed := [[oo,zz,zz],[zz,oo,zz]];;
+spaces := List(Elements(f4), a -> [[oo,a]]);;
+Add(spaces,[[zz,oo]]);; Add(spaces,IdentityMat(2,f4));;
+bspaces := [[[oo,zz]],[[oo,oo]],[[zz,oo]],IdentityMat(2,f4)];;
+ratios := [];; mat := [];; xmax := [];; binaryrows := [];;
+for bits in Tuples([zz,oo],6) do
+  mat := [bits{[1..3]},bits{[4..6]}];
+  ratios := List(spaces, x -> RankMat(Concatenation(x*embed,x*mat))/Length(x));
+  best := Minimum(ratios);
+  bbest := Minimum(List(bspaces,x -> RankMat(Concatenation(x*embed,x*mat))/Length(x)));
+  if best <> bbest then Error("minimum does not descend"); fi;
+  xmax := BaseMat(Concatenation(spaces{Filtered([1..6],j -> ratios[j]=best)}));
+  frob := List(xmax,row -> List(row,a -> a^2));
+  if RankMat(Concatenation(xmax,frob)) <> Length(xmax) then Error("maximal stability"); fi;
+  binaryrows := [];
+  for row in xmax do
+    bb := row + List(row,a -> a^2);
+    aa := row + om*bb;
+    if not ForAll(Concatenation(aa,bb),a -> a=zz or a=oo) then Error("components"); fi;
+    Add(binaryrows,aa); Add(binaryrows,bb);
+  od;
+  if RankMat(binaryrows) <> Length(xmax) then Error("component rank"); fi;
+  if RankMat(Concatenation(binaryrows,xmax)) <> Length(xmax) then Error("component span"); fi;
+  Print("map=",bits," ratios=",ratios," min=",best," maxdim=",Length(xmax),"\n");
+od;
+mat := [[zz,oo,zz],[oo,oo,zz]];; line := [[oo,om]];;
+if RankMat(Concatenation(line*embed,line*mat)) <> 1 then Error("eigenline control"); fi;
+if RankMat(Concatenation(line,List(line,row -> List(row,a -> a^2)))) <> 2 then Error("nonstable line"); fi;
+Print("PASS 64 maps, 384 F4 subspace checks, 256 binary comparisons; nonstable minimizer control\n");
+f2 := GF(2);; z2 := Zero(f2);; o2 := One(f2);;
+points := List(Tuples([z2,o2],8),p -> Concatenation([z2],p));;
+Add(points,Concatenation([o2],List([1..8],i -> z2)));;
+dom := Concatenation([List(points,p -> o2)],List([1..9],i -> List(points,p -> p[i])));;
+g1 := List(points,p -> p[2]*p[3]+p[4]*p[5]);;
+hh := List(points,p -> p[6]*p[7]+p[8]*p[9]);;
+g2 := List([1..257],i -> o2+g1[i]*hh[i]);;
+prod := function(a,b) return List([1..Length(a)],i -> a[i]*b[i]); end;;
+tuple := function(a) return Concatenation(prod(a,g1),prod(a,g2)); end;;
+yspace := List(dom,tuple);;
+grown := Concatenation(yspace,List(dom,a -> tuple(prod(a,g1))),List(dom,a -> tuple(prod(a,g2))));;
+if RankMat(dom)<>10 or RankMat(yspace)<>10 then Error("full actual domain"); fi;
+joined := Concatenation(List(dom,a -> prod(a,g1)),dom);;
+relations := NullspaceMat(joined);;
+core := BaseMat(List(relations,r -> r{[1..10]}));;
+if Length(core)<>1 then Error("invariant core dimension"); fi;
+anchor := dom[2];;
+if RankMat(Concatenation(core*dom,[anchor]))<>1 then Error("anchor core"); fi;
+affrows := Concatenation(List(dom,a -> prod(a,g1)),List(dom,a -> prod(a,g2)));;
+if RankMat(Concatenation(affrows,[dom[1]])) <> RankMat(affrows)+1 then Error("affine unit control"); fi;
+if prod(hh,g1)+g2 <> dom[1] then Error("quadratic unit"); fi;
+Print("domain points=",Length(points)," U=",RankMat(dom)," Y=",RankMat(yspace)," BY=",RankMat(grown)," invariant core=",Length(core)," affine span=",RankMat(affrows),"\n");
+Print("PASS actual domain loss, no affine unit, degree-two unit; D=18 K=1 delta=4 d0=5\n");
+Print("ALL PHASE GROWTH CHECKS PASSED\n");
+QUIT;
