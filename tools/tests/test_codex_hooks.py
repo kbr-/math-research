@@ -81,19 +81,24 @@ class CodexHooksTest(unittest.TestCase):
 
     def test_worktree_bundle_receipts_clear_session_checkout_gate(self):
         other = self.root / 'linked-worktree'
-        other.mkdir()
+        subprocess.run(['git', 'init', '-q', str(self.root)], check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(self.root), '-c', 'user.name=Test', '-c', 'user.email=test@example.org',
+                        'commit', '--allow-empty', '-qm', 'fixture'], check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(self.root), 'worktree', 'add', '-q', '--detach', str(other)],
+                       check=True, capture_output=True)
         manifest = resume.save_bundle(other, [('worktree', 'different context\n' * 4000, '', '')])
         key = manifest['bundle']
         self.call('SessionStart')
-        listing = subprocess.CompletedProcess([], 0,
-            f'worktree {self.root}\nHEAD a\n\nworktree {other}\nHEAD b\n\n', '')
-        with patch.object(hook.subprocess, 'run', return_value=listing):
+        with self.subTest(worktree=str(other)):
             for number in range(1, len(manifest['parts']) + 1):
                 output = io.StringIO()
                 with redirect_stdout(output):
                     resume.emit_part(other, key, number)
                 command = ('python3 tools/resume.py' if number == 1 else
                            f'python3 tools/resume.py --read {key} --part {number}')
+                command = f'cd {other} && ' + command
+                before = self.call('PreToolUse', command)
+                self.assertNotEqual(before.get('hookSpecificOutput', {}).get('permissionDecision'), 'deny')
                 text = (json.dumps({'bundle': key}) + '\n' if number == 1 else '') + output.getvalue()
                 if number == 2:
                     self.call('PostToolUse', command, tool_response='Warning: output truncated\n' + text)

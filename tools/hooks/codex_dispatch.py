@@ -51,8 +51,18 @@ def resume_call(command, root, cwd=None):
         words.pop(0)
         if words and words[0] == '-u':
             words.pop(0)
-    if not words or (cwd / words.pop(0)).resolve() != (Path(root) / 'tools/resume.py').resolve():
+    if not words:
         return None
+    script = (cwd / words.pop(0)).resolve()
+    if script != (Path(root) / 'tools/resume.py').resolve():
+        if script.name != 'resume.py' or script.parent.name != 'tools':
+            return None
+        try:
+            if not any(script == (candidate / 'tools/resume.py').resolve()
+                       for candidate in worktree_roots(root)):
+                return None
+        except (OSError, subprocess.CalledProcessError):
+            return None
     if not words:
         return ('prepare', None, 1)
     if '--read' in words:
@@ -84,6 +94,13 @@ def response_text(value):
     return ''
 
 
+def worktree_roots(root):
+    result = subprocess.run(['git', 'worktree', 'list', '--porcelain'], cwd=root,
+                            capture_output=True, text=True, check=True)
+    return [Path(field[len('worktree '):]) for field in result.stdout.splitlines()
+            if field.startswith('worktree ')]
+
+
 def bundle_root(root, key):
     """The shell may run in a linked worktree while hook cwd remains the session cwd."""
     if not isinstance(key, str) or not re.fullmatch('[0-9a-f]{32}', key):
@@ -91,13 +108,9 @@ def bundle_root(root, key):
     relative = Path('research/logs/resume-bundles') / key / 'manifest.json'
     if (Path(root) / relative).exists():
         return Path(root)
-    result = subprocess.run(['git', 'worktree', 'list', '--porcelain'], cwd=root,
-                            capture_output=True, text=True, check=True)
-    for field in result.stdout.splitlines():
-        if field.startswith('worktree '):
-            candidate = Path(field[len('worktree '):])
-            if (candidate / relative).exists():
-                return candidate
+    for candidate in worktree_roots(root):
+        if (candidate / relative).exists():
+            return candidate
     raise FileNotFoundError('Resume bundle is absent from this repository and its linked worktrees')
 
 
