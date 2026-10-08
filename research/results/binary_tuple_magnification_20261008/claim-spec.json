@@ -1,0 +1,36 @@
+{
+  "source": {
+    "record": "[Tuple magnification](https://kbr.is-a.dev/math-research/#entry-2026-10-08-tuple-magnification)",
+    "label": "Tuple magnification",
+    "targets": ["../notebook.html#entry-2026-10-08-tuple-magnification"]
+  },
+  "reviewer": "Codex and one isolated medium reviewer; PASS",
+  "date": "2026-10-08",
+  "topics": ["ens", "affine-linear-algebra", "degree-accounting", "method-obstructions"],
+  "claims": [
+    {
+      "id": "lem:tuple-growth-floor",
+      "summary": "In the recorded charged F4 quotient, let nonzero Y in Q_D^q, q>=1, have coordinate representatives of degree<=d0. For s,ell>=1, R=ell*s and d0+R<=D, with lambda=dim(S_sY)/dimY, some nonzero X<=Y satisfies dim(S_RX)<=lambda^ell dimX. Consequently lambda>=max(1,[h(R)/(h(d0)dimY)]^(1/ell)). Character translations act componentwise; no tuple-arity factor enters.",
+      "assessment": "Working direct-sum adaptation of the full bounded minimal-growth proof, passed by a medium reviewer. Charged translation injection and propagation fit d0+R; one nonzero coordinate of a vector in X gives sparse-weight survival with support at most h(d0). No global charged algebra or original-weight sparsity is assumed. This is a growth lower bound, not an upper bound on actual chosen-prefix errors.",
+      "status": "working_proof",
+      "rationale": "Extends a recorded calibration to actual tuple images with exact degree costs. A route-specific consequence of existing magnification, not a new lower-bound engine or independent novelty claim.",
+      "next_action": "Test input-specific phase operators and coherent binary preimages rather than requiring low growth under all characters."
+    },
+    {
+      "id": "cor:tuple-budget-dichotomy",
+      "summary": "For a surviving binary degree-b weight and M binary tuples of degree<=delta>=1 in the charged quotient, set H=h_w(K), S0=sum m_a(K), d0=b+delta+K, R=ell*t*delta, G=h(R)/(h(d0)H), with t,ell>=1. If d0+R<=D and b+K+(t+2)delta<=D, the enlarged certificate Bcal=2^-t sum m_a(K+t delta)/H is at least 2^-t max(1,G^(1/ell)) S0/H. If S0<H a degree-K binary common surviving multiplier already kills the inputs; if S0>=H and G>=2^(ell*t), then Bcal>=1. Actual optimized prefix errors are not lower-bounded.",
+      "assessment": "Working tuple-specific certificate dichotomy passed by one medium reviewer. Uses S_sY_K=Y_(K+s), m_a(K)<=H, binary scalar-extension compatibility and a common-kernel count. A ternary entropy gap gives a nonvacuous comfortable degree window but not all cutoffs. The exact single-input Boolean control has a perfect chosen row even when the certificate fails. Original source replay and earlier obligations remain separately charged.",
+      "status": "working_proof",
+      "rationale": "Removes sparse-input and fixed-weight restrictions from this particular enlarged-image calibration, with explicit reserve and initial-rank conditions. Does not establish a nonlinear source or Frege bound; no novelty claim.",
+      "next_action": "Develop input-specific rather than full-character growth, retaining actual escape rank and surviving-domain loss under coherent source choices."
+    }
+  ],
+  "relationships": [
+    ["lem:tuple-growth-floor", "depends_on", "lem:truncated-unit-growth", "Reuses the complete minimal-growth argument componentwise on a finite direct sum, with all bounded relations restated."],
+    ["lem:tuple-growth-floor", "depends_on", "cor:charged-magnification-window", "Uses charged cut-code injection without an inverse-degree reserve on every tuple coordinate."],
+    ["lem:tuple-growth-floor", "depends_on", "lem:sparse-weight-survival", "Project a nonzero vector in the minimizing subspace to one nonzero coordinate, whose support is at most h(d0)."],
+    ["cor:tuple-budget-dichotomy", "depends_on", "lem:tuple-growth-floor", "Apply the tuple floor to each actual degree-K image and compare each initial rank to the same H."],
+    ["cor:tuple-budget-dichotomy", "cites", "cor:prefix-enlargement-budget", "Calibrates this exact sufficient certificate with its original Frobenius margin, not the actual optimized error image."],
+    ["cor:tuple-budget-dichotomy", "cites", "lem:binary-charged-descent", "Binary multiplication maps and common kernels retain their dimensions after Fourier scalar extension."]
+  ]
+}

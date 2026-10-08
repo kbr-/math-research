@@ -1,0 +1,81 @@
+<article id="entry-2026-10-08-tuple-magnification" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-actual-error-goal-review:2" data-claims="lem:tuple-growth-floor cor:tuple-budget-dichotomy">
+<h3>8 October 2026 — Actual tuple images also magnify inside the charged window</h3>
+<p class="entry-meta">Working tuple-image growth and certificate dichotomy; actual post-prefix errors remain uncontrolled.</p>
+<p><strong>Question.</strong> The next FIFO lead is linear magnification. Can the existing unit-translation proof act on actual stacked input images, rather than only the whole weight image? If so, does replacing the latter by an actual tuple image repair the enlarged-prefix certificate, or merely move its growth problem?</p>
+<p><strong>General statement.</strong> <code>lem:tuple-growth-floor</code> extends the recorded charged magnification argument to finite tuples of quotient classes with one common coordinate degree window. <code>cor:tuple-budget-dichotomy</code> compares the resulting growth to the actual surviving-weight denominator: either the initial summed ranks already leave a common kernel, or the enlarged-image certificate fails in an explicit dimension-gap regime.</p>
+<p><strong>New mathematics.</strong> The lower bound now concerns each actual tuple multiplication image and permits arbitrary weights and input tuples in the stated window. It needs no sparse-input assumption. The new argument is a direct-sum adaptation of existing magnification and sparse-weight survival, not a new growth engine.</p>
+<p><strong>Goal progress.</strong> Unchanged. This bounds the enlarged input image, not the errors after a chosen prefix. An elementary one-input control below has a perfect legal prefix even when that certificate fails. The main obligation still needs an actual post-prefix or proof-local estimate.</p>
+
+<h4 id="tuple-growth-floor">Tuple growth floor</h4>
+<p>Use the recorded charged \(\mathbb F_4\) quotient \(Q_D\), with its graph/orientation/charge construction and \(\max(4,2\Delta)\le D&lt;\varepsilon n/8\). Write \(h(j)=\dim Q_j\) for the classes represented through degree \(j\). The scalar charge may be arbitrary for the linear algebra; nonzero total charge supplies the inconsistent application. A normalized character has support degree and translates cut-code classes injectively whenever the product degree fits. Let \(\mathcal S_j\) denote the span of character translations of degree at most \(j\), acting componentwise on finite tuples.</p>
+<p><strong>Lemma (tuple growth floor).</strong> Let \(q\ge1\), and let \(0\ne Y\subseteq Q_D^q\) have representatives whose every coordinate has degree at most \(d_0\). Let integers \(s,\ell\ge1\), \(R=\ell s\), satisfy \(d_0+R\le D\). Put \(\lambda=\dim(\mathcal S_sY)/\dim Y\). There is \(0\ne X\subseteq Y\) such that
+\[ \dim(\mathcal S_RX)\le\lambda^\ell\dim X, \]
+and consequently
+\[ \lambda\ge\max\left\{1,\left(\frac{h(R)}{h(d_0)\dim Y}\right)^{1/\ell}\right\}. \]
+The tuple length does not multiply the support cost. All degree parameters are nonnegative integers in their stated ranges.</p>
+<p><strong>Proof of magnification.</strong> The <a href="#entry-2026-10-08-weighted-magnification">recorded minimal-growth proof</a> and <a href="#charged-magnification-window">sharper charged injection</a> apply componentwise. Here is the full bounded argument. Choose nonzero \(X\subseteq Y\) minimizing \(\rho=\dim(\mathcal S_sX)/\dim X\); the possible dimension ratios form a finite set, and \(\rho\le\lambda\). For characters \(c_1,\ldots,c_a\) of degree at most \((\ell-1)s\), set
+\[ T_j=\sum_{i\le j}c_iX,\quad T_0=0,\quad Z_j=\{x\in X:c_jx\in T_{j-1}\}. \]
+Character multiplication is injective on \(X\) and on \(\mathcal S_sX\), coordinate by coordinate, within \(d_0+R\le D\). Hence
+\[\dim T_j-\dim T_{j-1}=\dim X-\dim Z_j.\]
+Propagating the defining relations by \(\mathcal S_s\) fits the same window and gives \(c_j\mathcal S_sZ_j\subseteq\mathcal S_sT_{j-1}\). Therefore
+\[
+\dim(\mathcal S_sT_j)-\dim(\mathcal S_sT_{j-1})
+\le\dim(\mathcal S_sX)-\dim(\mathcal S_sZ_j)
+\le\rho(\dim X-\dim Z_j).
+\]
+The last step is minimality, including \(Z_j=0\). Summing and then taking lists spanning \(\mathcal S_{(j-1)s}\) proves \(\dim\mathcal S_{js}X\le\rho\dim\mathcal S_{(j-1)s}X\) for \(1\le j\le\ell\), and iteration gives the result. Character normalization and commutation use only bounded polynomial products. No global charged algebra or inverse beyond the degree window is assumed.</p>
+<p><strong>Proof of the lower bound.</strong> Choose a nonzero vector in \(X\) and one nonzero coordinate \(z\). It has a representative through degree \(d_0\) and at most \(h(d_0)\) nonzero cut-code coordinates. The exact <a href="#sparse-weight-survival">sparse-weight survival theorem</a> gives
+\[ \dim\mathcal S_RX\ge\dim\mathcal S_Rz\ge h(R)/h(d_0), \]
+since \(d_0+R\le D\). The first inequality follows by projecting the translates of the chosen vector onto that coordinate. Combine this with the magnification bound and \(\dim X\le\dim Y\). The identity translation supplies \(\lambda\ge1\). This uses sparsity only as the universal support bound for one coordinate, not an assumption that the original weight or tuple is sparse. \(\square\)</p>
+<p>The primary <a href="https://arxiv.org/pdf/1109.0134v3#page=8">Lecouvey minimal-growth proposition and associative-algebra extension</a> were read at their exact unit and commutativity hypotheses. The notebook's bounded proof is the relevant predecessor; the present addition is its finite-tuple scope and one-coordinate comparison.</p>
+
+<h4 id="tuple-budget-dichotomy">Tuple budget dichotomy</h4>
+<p>Use the binary one-hot restriction of this charged space, with ranks unchanged after extending to \(\mathbb F_4\). Fix a surviving binary old weight \(w\) of degree at most \(b\), and \(M\ge1\) finite binary input tuples \(g_{a,i}\) of degree at most \(\delta\ge1\). All choices and earlier interpretations are fixed coherently before their ranks are measured. Put
+\[
+H=h_w(K)>0,\qquad m_a(j)=\operatorname{rank}\bigl(f\in V_j\mapsto([wg_{a,i}f])_i\bigr),\qquad d_0=b+\delta+K.
+\]
+Take integers \(t,\ell\ge1\), \(s=t\delta\), \(R=\ell s\), and assume
+\[ d_0+R\le D,\qquad b+K+(t+2)\delta\le D. \]
+The second condition retains the actual row-shortening/Frobenius buffer. Define
+\[
+ S_0=\sum_a m_a(K),\quad
+ G=\frac{h(R)}{h(d_0)H},\quad
+ \mu=\max\{1,G^{1/\ell}\},\quad
+ \mathcal B=\frac{2^{-t}\sum_a m_a(K+t\delta)}{H}.
+\]</p>
+<p><strong>Corollary (tuple budget dichotomy).</strong> Under these hypotheses,
+\[ \mathcal B\ge2^{-t}\mu\frac{S_0}{H}. \]
+If \(S_0&lt;H\), a binary multiplier \(f\) of degree at most \(K\) already satisfies \(wf\notin J_D\) and \(wg_{a,i}f\in J_D\) for every tuple/input, without any prefix. If instead \(S_0\ge H\) and \(G\ge2^{\ell t}\), then \(\mathcal B\ge1\): the direct enlarged-image certificate is not strict enough. This says nothing by itself about the actual error ranks after optimizing the rows.</p>
+<p><strong>Proof.</strong> For a tuple with \(m_a(K)>0\), let \(Y_a\) be its degree-\(K\) image. Every coordinate has degree at most \(d_0\). Factoring normalized character supports gives
+\[ \mathcal S_sY_a=\{([wg_{a,i}f])_i:\deg f\le K+s\}. \]
+Both inclusions follow by expanding degree-bounded multipliers in normalized characters; the one-hot/Fourier maps preserve this filtration after scalar extension. All weighted products fit the displayed window. The lemma gives
+\[
+ \frac{m_a(K+s)}{m_a(K)}
+ \ge\max\left\{1,\left(\frac{h(R)}{h(d_0)m_a(K)}\right)^{1/\ell}\right\}\ge\mu,
+\]
+because the tuple map kills the degree-\(K\) weight-map kernel by absorption, and therefore \(m_a(K)\le H\). For a zero initial image the inequality \(m_a(K+s)\ge\mu m_a(K)\) is automatic; no division by zero occurs. Sum these inequalities and multiply by \(2^{-t}/H\).</p>
+<p>For the first alternative, all tuple maps descend to the same degree-\(K\) weighted image of dimension \(H\). Their stacked rank is at most \(S_0\); a strict inequality leaves a nonzero common kernel class. The data are binary, so ordinary binary linear algebra chooses a binary representative \(f\), with no extra degree or field-descent loss. The second alternative follows immediately from \(2^{-t}\mu\ge1\). Any use of the first alternative in a full source still pays for preserving earlier memberships and the original replay degree; this corollary does not waive those costs. \(\square\)</p>
+
+<h4>A nonvacuous gap, and the limitation of the conclusion</h4>
+<p>The dimension-gap regime is not empty. Let \(m\) be the graph's edge count and \(r=m-n+1\) its cut-code quotient dimension. The already proved bounds give \(h(R)\ge3^R\) for \(R\le r\) and \(h(j)\le3^{mH_3(j/m)}\) in the ternary-ball range, where \(H_3\) is the recorded ternary entropy function. Since \(H\le h(K)\), the condition
+\[
+ R-mH_3((b+\delta+K)/m)-mH_3(K/m)\ge\epsilon R>0
+\]
+implies \(G\ge3^{\epsilon R}\). Thus if \(3^{\epsilon\delta}\ge2\), the second alternative applies whenever \(S_0\ge H\).</p>
+<p>When \(D/m\) and \(r/m\) have positive fixed lower bounds, choose \(R/m\) below their bounds and then positive \(b/m,K/m\) sufficiently small. For \(\delta=o(m)\), entropy tends to zero with those ratios, so the strict gap and reserve hold. If \(t\delta=o(m)\), rounding \(R\) to a multiple \(\ell t\delta\) preserves that room for large \(m\). Growing \(\delta\) eventually meets the displayed threshold. This is the same type of comfortable-window calibration as the scalar theorem, now with the additional input-degree charge in \(d_0\). It does not cover every admissible cutoff; near the degree boundary, \(G\) may be at most one.</p>
+<p>The prior <a href="#actual-tuple-budget-gap">actual-tuple separation</a> used weight one and a sparse surviving input in each tuple. The present statement removes those sparsity and weight restrictions but requires its explicit reserve, dimension gap and initial-rank alternative. It is not uniformly stronger in every parameter range. In particular, replacing a tuple by a representation with a smaller actual prefix cost requires recomputing the enlargement; this result does not forbid such a repair.</p>
+
+<h4>Actual errors can be much smaller</h4>
+<p>A single binary input \(g\) already shows why the conclusion must remain about the certificate. For one legal row \(c\in\{0,1\}\), its prefix is \(1-cg\). If \(c=1\), every actual companion is \(wg(1-g)\), zero by Booleanity through the paid \(b+K+2\delta\) window; if \(c=0\), its rank is \(m_w(K)\). Consequently the exact mean actual rank is \(m_w(K)/2\), and the best row has rank zero. The enlarged certificate instead uses \(m_w(K+\delta)/2\), which may be much larger. This is the already available <a href="#mod-boolean-packing">one-input Boolean packing</a>, not a new elimination rule.</p>
+<p>For example, with \(w=1,K=0\) and a surviving nonlinear conjunction on selected cycle edges, \(H=m_w(0)=1\). The gap regime above can make the enlarged certificate at least one while the selected row still kills the actual error exactly. No assertion of Frege hardness follows from this certificate's failure. Duplicate tuple coordinates likewise add no rank: the lemma measures a subspace in the direct sum, not the ambient number of coordinates. Zero images and trivial growth ratios are kept explicit.</p>
+<p>The remaining quantitative alternatives are the actual chosen-prefix rank, a suitably conditioned partial image, or a tight-cutoff estimate outside this gap regime. The <a href="#partial-image-contraction">existing escape-rank bound</a> and <a href="#relative-intersection-loss">counterexample to universal returning-rank retention</a> remain in force. Generic unit magnification alone does not give their missing source-specific upper estimates.</p>
+
+<h4>Outcome and next action</h4>
+<p><strong>Follow-up.</strong> Continuing the linear-magnification lead after its first entry. The actual-tuple version clarifies a failure of one sufficient certificate in a quantified regime, but leaves the true post-prefix image open. A subspace with small boundary under every character is not the next target: the same floor can already exclude it. Instead test translations built from the actual input operators, using candidate phase units \(1+\omega g_i\), and charge their bounded inverses. Then reconcile any minimal-growth subspace with a binary, degree-affordable preimage for the existing partial-image contraction. These are analysis operators, not permission to use nonbinary source coefficients. Quantify the loss in the surviving domain and the source inventory; arbitrary preimages or a universal invariant-module demand would be stronger than necessary.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test input-specific phase translations and whether their minimal-growth subspaces have binary degree-affordable coherent preimages useful for conditional partial-image contraction. Retain earlier source obligations, the actual escape rank and the surviving-domain loss. Do not ask for small growth under every character or assume a multiplication module.</li></ul>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer <a href="research/results/binary_tuple_magnification_20261008/review.txt">passed both claims and the unchanged-goal assessment</a>. It checked bounded injections, relation propagation, one-coordinate survival, filtration equality, binary preimages, zero images, both windows and the entropy regime. The separate Frobenius buffer is needed for interpreting the numerical inequality as the row-shortening certificate; nonzero total charge is needed only for inconsistency. The full magnification, charged-window, sparse-weight, descent and prefix proofs were reread with their current graph metadata. The single-input and duplicate-coordinate controls are exact arguments, not newly rerun experiments.</p>
+<p><strong>Process assessment.</strong> Applying the growth argument to the actual tuple removes a sparsity surrogate, while the one-input control prevents a bound on that enlarged image from being mislabeled as a lower bound on optimized errors. The general proofs and existing controls decide this test without a new parameter sweep.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_tuple_magnification_20261008 -->
+</article>
