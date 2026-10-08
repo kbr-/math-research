@@ -224,6 +224,10 @@ the selected research notebook (main by default) through bounded, fully recorded
 framework improvements.
 Follow the repository rules for maintaining the notebook, measured evidence,
 and checkpoints. Continue until the user explicitly interrupts or the goal is reached.
+Unpausing the thread goal is an explicit instruction to resume Spin. When an active
+goal continuation arrives after a confirmed pause, follow that resumption instead
+of applying the old stop request again. A new stop request still takes effect
+after the current cycle.
 The goal is reached when the notebook's Where we stand records the goal statement as proved;
 then finish and commit the current cycle and stop the loop instead of opening another cycle
 (user instruction, 25 September 2026).
