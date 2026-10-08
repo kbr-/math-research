@@ -55,7 +55,11 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   than refining the same mechanism, and record it for the scheduled review; a weak assessment or a
   descent of more than one reduction below every listed open statement is likewise carried to that
   review, which revises the list. Recheck standing hypotheses against the goal's instances every
-  cycle; an obstruction showing that those instances violate them ends the line's relevance. Stop a
+  cycle; an obstruction showing that those instances violate them ends the line's relevance.
+  When an actual upper bound rules out a candidate family, extract the structural reason and check
+  whether it applies to the other candidates. Assess whether a strengthened candidate or a stronger
+  replacement can evade that reason; record what the bound teaches, not only the exclusion. Keep
+  unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
   series of runs once its prediction has passed or failed at the sizes that test it. A larger size,
   degree or sample needs a stated question that the finished runs cannot answer, and an answer that
   would change the goal's missing implication; sharper constants for a result off the critical path
