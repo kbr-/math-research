@@ -70,6 +70,8 @@ class Browser(unittest.TestCase):
     in a browser timed each other's work and took 5.2-5.4 s under the suite's load where each alone takes
     0.5-1.4 s; a browser per case cost about 8 s more CPU (3 October 2026)."""
 
+    expected_seconds = 6.0  # cold worktrees have no per-test duration cache
+
     def test_group_0(self):
         self.run_group(0)
 

@@ -16,6 +16,15 @@ NOTEBOOK = ('<section id="proposed-next-step">\n<h2>Proposed next step</h2>\n<p>
 
 
 class NotebookAppendTests(unittest.TestCase):
+    def test_first_article_follows_record_heading_and_introduction(self):
+        source = ('<section id="research-record">\n<h2>Research record</h2>\n'
+                  '<p>Record introduction.</p>\n</section>\n<footer></footer>')
+        out = tool.append(source, '<article id="first">first entry</article>')
+        self.assertLess(out.index('</h2>'), out.index('<article'))
+        self.assertLess(out.index('Record introduction.'), out.index('<article'))
+        self.assertLess(out.index('</article>'), out.index('</section>'))
+        self.assertTrue(out.endswith('<footer></footer>'))
+
     def test_appends_after_last_article_and_replaces_next_step(self):
         out = tool.append(NOTEBOOK, '<article id="a3">three</article>\n', '<p>new</p>')
         self.assertIn('<article id="a2">two</article>\n<article id="a3">three</article>\n</section>', out)

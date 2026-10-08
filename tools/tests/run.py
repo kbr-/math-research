@@ -2,7 +2,8 @@
 """Run the framework test suite: every test in this directory's test_*.py modules, in parallel.
 
 Worker processes take tests one at a time from a shared queue, so the suite's wall time is set by the
-total work divided among the workers rather than by the sum of all tests. The queue is ordered longest
+total work divided among the workers rather than by the sum of all tests. With no duration cache,
+test classes can supply expected_seconds hints so known costly groups start first. The queue is ordered longest
 first by the durations of the previous run, kept in the git-ignored DURATIONS beside this file, with tests
 it has no time for first of all: in discovery order the browser tests, which sort last and take 6 s,
 started 4.5 s into the run and set its end (3 October 2026: 10.9 s, and 7.5 s longest first). Workers default to the CPUs
@@ -67,7 +68,9 @@ def main():
         known = json.loads(DURATIONS.read_text())
     except (OSError, ValueError):
         known = {}
-    queue = sorted((t.id() for t in found if t not in broken), key=lambda i: -known.get(i, float('inf')))
+    queued = [t for t in found if t not in broken]
+    queue = [t.id() for t in sorted(queued, key=lambda t: -known.get(
+        t.id(), float('inf') if known else getattr(t, 'expected_seconds', 0.0)))]
     with multiprocessing.get_context('fork').Pool(max(1, args.j)) as pool:
         results += pool.imap_unordered(run_one, queue)
     elapsed = time.monotonic() - start

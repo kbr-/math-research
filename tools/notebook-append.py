@@ -29,7 +29,7 @@ def append(source, entry, next_html=None):
         raise ValueError('research-record section missing')
     close = source.find('</section>', start)
     last = source.rfind('</article>', start, close)
-    at = last + len('</article>') if last >= 0 else source.index('>', start) + 1
+    at = last + len('</article>') if last >= 0 else close
     source = source[:at] + '\n' + entry + source[at:]
     if next_html is not None:
         a = source.find('<section id="proposed-next-step">')

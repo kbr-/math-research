@@ -43,6 +43,20 @@ class SuiteTimeLimit(unittest.TestCase):
 class LongestFirst(unittest.TestCase):
     """run.py starts the tests the previous run found slowest first, and unknown tests before those."""
 
+    def test_cold_run_uses_declared_costs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy2(RUNNER, root / 'run.py')
+            log = root / 'order.txt'
+            for name, hint in (('a_unknown', ''), ('b_costly', '    expected_seconds = 6.0\n')):
+                (root / f'test_{name}.py').write_text(
+                    f'import unittest\nclass T(unittest.TestCase):\n{hint}    def test_it(self):\n'
+                    f'        with open({str(log)!r}, "a") as log: log.write("{name}\\n")\n')
+            result = subprocess.run([sys.executable, 'run.py', '-j', '1'], cwd=root,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(log.read_text().split(), ['b_costly', 'a_unknown'])
+
     def test_order_follows_the_previous_durations(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
