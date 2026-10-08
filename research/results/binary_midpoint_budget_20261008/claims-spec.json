@@ -1,0 +1,33 @@
+{
+  "source": {
+    "record": "[Moving cutoff budget](https://kbr.is-a.dev/math-research/#entry-2026-10-08-moving-cutoff-budget)",
+    "targets": ["https://kbr.is-a.dev/math-research/#entry-2026-10-08-moving-cutoff-budget"],
+    "label": "Moving cutoff budget"
+  },
+  "reviewer": "Codex with isolated medium correctness reviewer",
+  "date": "2026-10-08",
+  "topics": ["degree-accounting", "polynomial-calculus", "ens"],
+  "claims": [
+    {
+      "id": "lem:moving-cutoff-budget",
+      "summary": "For fixed ell>=2,r>=1,A>0, 1<=M<=v^A and s=o(v/log(v)^(ell-2)), put D=floor(v/2-s), K=D-ceil(v^(1/3)), Delta0=r, eta(delta)=N_v(K-delta)/(2N_v(K)), t_j=ceil(log(2ell(M+1))/eta(Delta_(j-1))), Delta_j=Delta_(j-1)t_j. Then Delta_j=O(log(v)^j) for j<ell, t_ell and Delta_ell=v^o(1), summed ell-level error allowance is <1/2, and K+C Delta_ell<=D for each fixed C eventually.",
+      "assessment": "Working elementary asymptotic proof using a uniform lower-tail ratio bound exp(-32e delta(u+delta+2+sqrt(v))/v) for K=floor(v/2-u), u+delta=o(v). The size threshold may depend on the fixed exponent, depth and deficit sequence. No sharpness or old hard-family existence is asserted.",
+      "status": "working_proof",
+      "rationale": "Weakens the sufficient old-degree target from a square-root midpoint neighborhood to a depth-dependent moving gap by allowing a subpolynomial final layer. It leaves the actual lower-bound goal open and does not improve the underlying contraction mechanism.",
+      "next_action": null
+    },
+    {
+      "id": "thm:moving-cutoff-source-exclusion",
+      "summary": "In the moving-cutoff regime, a binary Boolean base Gamma with 1 notin C_D admits no degree-floor(v^(1/3)) PC refutation after adjoining at most v^A complete ENS blocks of fixed depth ell, uniform accuracy floor(v^epsilon), 0<epsilon<1/(3ell), whose inputs are degree<=r old polynomials plus constant combinations of actual block products from strictly lower levels, with distinct fresh Boolean coefficients and no other earlier-coefficient dependence.",
+      "assessment": "Working conditional-on-old-hardness source theorem. Acyclic constant choices contract each tuple rank on one common V_K/(C_D intersect V_K); a single final kernel supplies f notin C_D. Weighted PC replay uses K+B<=D. Original padded product and companion costs remain O(h^ell)=o(v^(1/3)); finite tuple length is unrestricted. No hard family or automatic Frege boundary is supplied.",
+      "status": "working_proof",
+      "rationale": "A complete source-level consequence of the numerical refinement, retaining coherent shared values and original degrees. Useful as a weaker sufficient old-PC target, not a Frege lower bound or evidence that an appropriate family exists.",
+      "next_action": null
+    }
+  ],
+  "relationships": [
+    ["lem:moving-cutoff-budget", "cites", "lem:two-layer-ambient-budget", "The earlier obstruction assumes a fixed positive fractional midpoint gap; the moving little-o gap is outside that regime and does not contradict it."],
+    ["thm:moving-cutoff-source-exclusion", "depends_on", "lem:moving-cutoff-budget", "The recursion supplies effective row counts, rank allowances and a reserve for the complete weighted PC replay."],
+    ["thm:moving-cutoff-source-exclusion", "depends_on", "lem:weighted-adaptive-approximation", "Uses the proved per-group rank contraction with initial weight one, then sums the maps after all acyclic choices instead of selecting a new multiplier at each level."]
+  ]
+}

@@ -1,0 +1,70 @@
+<article id="entry-2026-10-08-moving-cutoff-budget" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-kernel-goal-review:3" data-claims="lem:moving-cutoff-budget thm:moving-cutoff-source-exclusion">
+<h3>8 October 2026 — A moving cutoff permits a wider old-degree target</h3>
+<p class="entry-meta">Working numerical budget and conditional source exclusion; a suitable hard family is still missing.</p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, develop the queued entropy-midpoint lead. Is a square-root neighborhood of the midpoint actually required, or does allowing subpolynomial approximation degree suffice farther below it? Check the final common multiplier and every original source degree, not just one binomial ratio.</p>
+<p><strong>New mathematics.</strong> For fixed depth \(\ell\ge2\), the ambient rank ledger fits when the old cutoff deficit is \(o(v/(\log v)^{\ell-2})\). The first \(\ell-1\) approximation layers have polylogarithmic degree and the last has subpolynomial degree. Under that old-PC hypothesis, one common multiplier excludes the stated polynomial-inventory product-only source through degree \(v^{1/3}\). This is an elementary refinement and composition of the existing contraction engine, not a new contraction method.</p>
+<p><strong>Goal progress.</strong> Unchanged. The sufficient old-degree target is weaker, but no family satisfying it with the required encoding and proof boundary has been supplied. A weaker sufficient convenience is not a proof of a necessary main-goal implication.</p>
+<p><strong>General statement.</strong> <code>lem:moving-cutoff-budget</code> covers every fixed depth and inventory exponent in the displayed asymptotic regime. <code>thm:moving-cutoff-source-exclusion</code> gives its full original-degree source consequence under an explicit old-PC hypothesis and product-only grammar.</p>
+<h4>The source and the appropriate budget</h4>
+<p><a href="https://arxiv.org/html/2610.00837v1#S8">Pang v1, Section 8</a> identifies a favorable near-middle regime, while Lemmas 4.1–4.2 give the precise rank recurrence. Here we use the binary specialization, already proved in the <a href="#entry-2026-10-07-global-rank-toolkit">weighted adaptive interface</a>, with initial weight one. Put
+\[
+N_v(k)=\sum_{i=0}^k\binom vi,\qquad
+\eta_K(\delta)=\frac12\frac{N_v(K-\delta)}{N_v(K)}.
+\]
+For a degree-\(\delta\) tuple and \(t\) factors, its error rank is at most \(H(1-\eta_K(\delta))^t\), where \(H=\dim V_K/(C_D\cap V_K)\), provided \(K+\delta t+\delta\le D\). All groups will use this same domain and ceiling. Choose coefficients in acyclic order and choose the common multiplier only once after every group. Repeated rank-retaining multipliers, and their \(3K\) reserve, are not required for this construction.</p>
+<h4>A bound for the binomial lower tail</h4>
+<p>We first prove the estimate needed for the numerical budget. Let \(K=\lfloor v/2-u\rfloor\), \(u\ge0\), let \(\delta\ge1\) be integral, and assume \(a=u+\delta+2=o(v)\). Uniformly in such sequences, for all sufficiently large \(v\),
+\[
+\frac{N_v(K-\delta)}{N_v(K)}
+\ge \exp\left[-32e\,\delta\frac{a+\sqrt v}{v}\right].
+\]
+To see this, for each integer \(k\in[K-\delta+1,K]\), write \(b_j=\binom vj\) and put \(q=\lfloor v/(16(a+\sqrt v))\rfloor\). Then \(q\to\infty\), \(q\le\sqrt v/16\), and \(k-q\ge0\) eventually. For \(0\le i\le q\),
+\[
+\frac{b_{k-i}}{b_k}
+=\prod_{t=0}^{i-1}\frac{k-t}{v-k+t+1}
+\ge\left(\frac{v/2-a-q}{v/2+a+q+1}\right)^q\ge e^{-1}.
+\]
+For the last inequality, write the fraction as \(1-z\). Eventually \(z\le1/2\), \(z\le(4a+4q+2)/v\), and \(-q\log(1-z)\le2qz\le1\), since \(qa/v\le1/16\), \(q^2/v\le1/256\), and \(q/v\to0\). Consequently
+\[
+\frac{b_k}{N_v(k)}\le\frac{e}{q+1}
+\le16e\frac{a+\sqrt v}{v}=o(1).
+\]
+Use \(N_v(k-1)/N_v(k)=1-b_k/N_v(k)\), apply \(\log(1-z)\ge-2z\) when \(z\le1/2\), and multiply over the \(\delta\) consecutive cutoffs. This proves the displayed bound. It is a lower bound on an ambient dimension ratio, not an identification with the actual quotient's Hilbert function.</p>
+<h4>The moving cutoff budget</h4>
+<p id="moving-cutoff-budget"><strong>Lemma (moving cutoff budget).</strong> Fix integers \(\ell\ge2\), \(r\ge1\), and a constant \(A&gt;0\). Let \(1\le M(v)\le v^A\), and let \(s(v)\ge0\) satisfy
+\[
+s(v)=o\left(\frac{v}{(\log v)^{\ell-2}}\right).
+\]
+Set \(D=\lfloor v/2-s(v)\rfloor\), \(K=D-\lceil v^{1/3}\rceil\), \(\Delta_0=r\), and recursively
+\[
+t_j=\left\lceil\frac{\log(2\ell(M+1))}{\eta_K(\Delta_{j-1})}\right\rceil,
+\qquad \Delta_j=\Delta_{j-1}t_j\quad(1\le j\le\ell).
+\]
+For all sufficiently large \(v\), these parameters are defined, \(\Delta_j=O_{A,r,\ell}((\log v)^j)\) for \(j&lt;\ell\), and \(t_\ell,\Delta_\ell=v^{o(1)}\). They satisfy
+\[
+\sum_{j=1}^{\ell}M_j(1-\eta_K(\Delta_{j-1}))^{t_j}&lt;\frac12
+\quad\text{whenever }0\le M_j\le M,
+\]
+and \(K+C\Delta_\ell\le D\) for every fixed \(C&gt;0\), eventually. The asymptotic threshold may depend on \(A,r,\ell\) and the specified deficit sequence.</p>
+<p><strong>Proof.</strong> The cutoff has \(u=s+\lceil v^{1/3}\rceil+O(1)\). Inductively, for \(j\le\ell-1\), assume \(\Delta_{j-1}=O((\log v)^{j-1})\). In the tail estimate the exponent is
+\[
+O\left(\frac{\Delta_{j-1}(s+v^{1/3}+\Delta_{j-1}+\sqrt v)}{v}\right)=o(1),
+\]
+because \(j-1\le\ell-2\). Thus the ratio tends to one, \(\eta_K(\Delta_{j-1})\to1/2\), and \(t_j=O(\log v)\). This proves the induction through \(\ell-1\). At the final layer, \(\Delta_{\ell-1}=O((\log v)^{\ell-1})\), so the same exponent is \(o(\log v)\). Therefore \(\eta_K(\Delta_{\ell-1})\ge v^{-o(1)}\), whence \(t_\ell,\Delta_\ell=v^{o(1)}\). All input degrees are eventually below \(K\), justifying each step of the recursion in order. The definition of \(t_j\) gives each summand at most \(M/[2\ell(M+1)]\), so their sum is strictly below one half. Finally \(C\Delta_\ell=o(v^{1/3})\), proving the reserve. \(\square\)</p>
+<p>For depth two this permits any \(s=o(v)\); for depth three it permits \(s=o(v/\log v)\). For general fixed depth, one example is \(s=v/((\log v)^{\ell-2}\log\log v)\). This is much larger than \(\sqrt v\), yet the last approximation degree is subpolynomial. The <a href="#entry-2026-10-07-pang-frege-bottleneck">fixed-fraction obstruction</a> is unchanged: its positive constant gap does not meet this hypothesis. The lemma makes no sharpness claim about the moving threshold.</p>
+<h4>One common multiplier for the complete source</h4>
+<p id="moving-cutoff-source-exclusion"><strong>Theorem (moving cutoff source exclusion).</strong> Keep the preceding regime and choose fixed \(0&lt;\epsilon&lt;1/(3\ell)\), with \(h=\lfloor v^\epsilon\rfloor\). Let \(\Gamma_v\subseteq F_2[x_1,\ldots,x_v]\) contain the Boolean axioms and satisfy \(1\notin C_D(\Gamma_v)\). Augment it by at most \(v^A\) complete binary ENS blocks in levels \(1,\ldots,\ell\), all with accuracy \(h\) and distinct fresh Boolean coefficient variables. Every input must be a degree-at-most-\(r\) old polynomial plus a constant linear combination of products belonging to blocks in strictly lower levels. Earlier coefficients may occur through those products, not separately. Shared products refer to the same block. Then the augmented system has no PC refutation through degree \(B=\lfloor v^{1/3}\rfloor\), for sufficiently large \(v\). No unproved old degree lower bound is asserted by this hypothesis.</p>
+<p><strong>Proof of coefficient selection.</strong> Choose the numerical lemma's \(M=\max(1,\#\text{blocks})\), and let \(H=\dim V_K/(C_D\cap V_K)&gt;0\). Process the blocks by level. Once the earlier coefficient variables have been assigned binary constants, each current input has degree at most \(\Delta_{j-1}\): old terms have degree at most \(r\), and sums do not raise the maximum. Apply the already proved rank-contraction step to the current tuple for \(t_j\) rows. Set those coefficient rows to its chosen binary combinations and every unused row to zero. The lemma gives \(t_j\le h\) eventually. The resulting product has degree at most \(\Delta_j\), and its error map on \(V_K\) has rank at most \(H(1-\eta_K(\Delta_{j-1}))^{t_j}\). The contraction ceiling \(K+\Delta_j+\Delta_{j-1}\le D\) follows from the reserve. A zero or empty tuple has zero error rank and causes no exception.</p>
+<p>All choices are global constant substitutions for the actual source variables. Later choices never alter earlier input tuples or errors. Each error map annihilates \(C_D\cap V_K\) by bounded multiplication, and their summed ranks are below \(H/2\). Choose a nonzero class in their joint kernel. Multilinearize its representative to obtain one \(f\), \(\deg f\le K\), with \(f\notin C_D\), and with \(f\) times every specialized companion in \(C_D\). The Boolean multilinearization certificates fit the same degree bound. This is a single final dimension count; no repeated weight selection is used.</p>
+<p><strong>Proof replay and original costs.</strong> Suppose the original augmented source had a degree-\(B\) PC refutation. Apply the one constant assignment to its entire proof, keeping old variables fixed. Degrees cannot increase. Every specialized coefficient-domain axiom vanishes. For an active old axiom \(Q\), \(fQ\in C_D\) because \(Q\in C_D\) and \(\deg f+\deg Q\le K+B\le D\). For each active companion this membership was just arranged. Multiply every specialized proof line by \(f\). Linear combinations are preserved; multiplication by an old variable stays through \(K+B\le D\), while multiplication by an assigned coefficient is scalar multiplication. Inductively every weighted line lies in \(C_D\). The final line gives \(f\in C_D\), a contradiction.</p>
+<p>Original carried degrees are not reset by padding. Before specialization, the product-degree recurrence is \(W_0=r\), \(W_j\le h(W_{j-1}+1)\), so \(W_j\le(r+j)h^j\); companions add at most \(W_{j-1}\). At fixed depth their maximum is \(O_{r,\ell}(h^\ell)=o(v^{1/3})\) under the stated strict bound on \(\epsilon\). Thus every original helper axiom fits the claimed source scale. The replay argument uses the original proof ceiling \(B\), not an artificially reduced cofactor budget after coefficients are zeroed. \(\square\)</p>
+<p>Completeness is retained to specify the canonical source, not because the proof requires every companion to be present. The upper bound on \(\epsilon\) ensures all original helper degrees fit below \(B\); the contradiction itself only replays axioms active in the supposed degree-\(B\) proof. The theorem requires no input-slot bound for its algebraic argument, only finite tuples and polynomially many blocks; a polynomial proof encoding supplies those finiteness conditions. It permits arbitrary overlap and actual affine parent mixtures within its declared product-only grammar. It does not assert that every presentation of Frege automatically has this grammar or coherent boundary. The existing binary compiler can be used only with its recorded hypotheses and with all of its original costs at most \(B\).</p>
+<h4>Comparison with the available families</h4>
+<p>The <a href="#generic-encoding-cutoff">generic-set-system certificate</a> stays asymptotically at most one third of its Boolean variable count and therefore does not meet this target. The complete unary and bit PHP imports are measured in holes, not Boolean variables. The <a href="#tseitin-degree-ceiling">current Tseitin ceiling</a> remains below its ternary character midpoint by a constant fraction on fixed-degree families. These are distinct failures of existing candidate windows; none rules out another family or a sharper estimate for actual error images.</p>
+<p><strong>Follow-up.</strong> Continuing the entropy-midpoint lead. Next seek a family with the moving old-degree window, retaining polynomial encoding and bounded or suitably paid input degree. Start by checking the strongest applicable old degree theorems and their exact variable normalization; investigate alternative encodings only with both degree-transfer directions paid. The new sufficient target is weaker than the square-root convenience, but still requires a near-half-variable old barrier.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test candidate old PC lower-bound families against the moving-cutoff hypothesis, including encoding length, variable normalization, original axiom width and the actual proof boundary. A linear degree statement alone does not resolve this task.</li></ul>
+<p><strong>Verification gate.</strong> The <a href="research/results/binary_midpoint_budget_20261008/review.txt">sole isolated medium reviewer passed both proofs</a> with the level ordering and inventory choice now explicit. It confirmed the one-shot rank argument and original-degree accounting, and distinguished the auxiliary improvement from unchanged main-goal status. The weighted approximation proof, original fixed-fraction obstruction, later nonlinear-frontier audit, and Tseitin ceiling were reread, along with Pang's exact contraction and Section 8 regime. Searches covered moving cutoffs, near-half windows, moderate deviations, binomial tails and subpolynomial budgets. No finite computation is used to infer the asymptotic bound.</p>
+<p><strong>Process assessment.</strong> Allowing the final degree to be subpolynomial exposes a weaker sufficient target and avoids an unnecessary repeated-multiplier reserve. The missing hard family remains explicit, so this refinement is not counted as goal progress.</p>
+<!-- TIMING binary_midpoint_budget_20261008 -->
+</article>
