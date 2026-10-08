@@ -1,0 +1,43 @@
+{
+  "source": {
+    "record": "[Coupled Boolean packing](https://kbr.is-a.dev/math-research/#entry-2026-10-08-coupled-boolean-packing)",
+    "label": "Coupled Boolean packing",
+    "targets": ["../notebook.html#entry-2026-10-08-coupled-boolean-packing"]
+  },
+  "reviewer": "Codex and one isolated medium reviewer; PASS",
+  "date": "2026-10-08",
+  "topics": ["ens", "substitution", "degree-accounting", "nullstellensatz", "polynomial-calculus"],
+  "claims": [
+    {
+      "id": "lem:coupled-boolean-packing",
+      "summary": "Over F2 with old Boolean variables, an actual tuple (A,B_1,...,B_s,C), s>=1, with C=sum E_j F_j as Boolean functions and binary old factors of degree<=T>=1 has a complete (s+1)-row coefficient map of degree<=T: q_j=E_j A+B_j and q_0=(1+sum E_j)A+sum(1+F_j)B_j+C. Their joint zero set equals the tuple zero set. Every original axiom of degree e has a Boolean NS image certificate through Te, giving simultaneous old-only NS/PC transfer B->TB.",
+      "assessment": "Working proof passed by one medium reviewer. The triangular identity q_0+sum(1+F_j)q_j=A+C+AC forces A=C=0 and then all B_j=0. Boolean division gives degree-bounded certificates including coefficient fields. The map uses genuine input coordinates and no auxiliary variables. It does not supply the factorization or accuracy needed for arbitrary nonlinear source coverage. Exhaustive abstract Boolean rule checks pass.",
+      "status": "working_proof",
+      "rationale": "An explicit coupled-row normalization that bypasses independent factor-bin assignments. A route-specific tool with exact costs, not a new Frege bound or an independent novelty claim.",
+      "next_action": "Test whether actual nonlinear input spans admit a qualifying binary balanced decomposition within the supplied accuracy and global degree budget."
+    },
+    {
+      "id": "cor:balanced-triple-optimum",
+      "summary": "For binary old A,B of degree<=delta>=1 and C a product of delta binary affine forms, splitting C=EF into floor(delta/2) and ceil(delta/2) factors gives a complete two-row normalizer of coefficient degree ceil(delta/2), with product degree<=3delta and companions<=4delta. For three disjoint degree-delta monomials this coefficient degree is minimal among all unweighted two-row normalizers over the pure Boolean domain, even with independent spectator variables.",
+      "assessment": "Working consequence of coupled packing. The explicit rows are (1+E)A+(1+F)B+C and EA+B. The forced zero indicator has multilinear degree3delta for disjoint monomials, while any degree-T coefficient map gives product degree<=2(delta+T), proving the matching lower bound. Lower-bound scope excludes arbitrary additional old relations or weights; complete per-axiom Te certificates remain in force.",
+      "status": "working_proof",
+      "rationale": "Sharp all-degree calibration for this explicit local source class. Improves Boolean coupled normalization beyond ordinary prescribed-factor bins; no unrestricted source result or novelty claim.",
+      "next_action": "Use the construction rather than further degree cases; test factorization availability on actual parent mixtures."
+    },
+    {
+      "id": "cor:quadratic-row-optimum",
+      "summary": "For r>=1 binary inputs each a product of two affine old forms, ceil(2r/3) affine coefficient rows give a complete normalizer preserving ordinary NS/PC degree. For r quadratic monomials on pairwise disjoint pairs of independent bits, that row count is minimal over the pure Boolean domain among all affine coefficient normalizers.",
+      "assessment": "Working proof passed by one medium reviewer. Group triples using the balanced two-row construction at delta2, then use one constant row per leftover. The forced zero indicator has degree2r, whereas h affine rows have product degree<=3h. Dependencies are allowed in the upper construction but not the optimality control. The older arbitrary-quadratic and rank-two-bottom arbitrary-sum source results remain broader asymptotic endpoints, with different map costs.",
+      "status": "working_proof",
+      "rationale": "Exact local row optimum and degree-preserving coefficient map; sharpens a packing tool without advancing the unrestricted nonlinear lower-bound obligation. No independent novelty claim.",
+      "next_action": "Check actual input-span factorization and supplied accuracy; do not infer that arbitrary quadratic sums are factorable directions."
+    }
+  ],
+  "relationships": [
+    ["cor:balanced-triple-optimum", "depends_on", "lem:coupled-boolean-packing", "Use one balanced product term; forced Boolean zero-indicator degree supplies the exact lower bound."],
+    ["cor:quadratic-row-optimum", "depends_on", "cor:balanced-triple-optimum", "Group quadratic products into triples and leftovers, and match the resulting row count by multilinear degree."],
+    ["cor:quadratic-row-optimum", "cites", "obs:affine-normalizer-Boolean-degree", "Uses the same forced zero-indicator degree principle; the older seven-degree mixed control includes an extra affine input and is not contradicted."],
+    ["lem:coupled-boolean-packing", "cites", "thm:weighted-core-factor-optimum", "Distinguishes coupled Boolean-function normalization from the older literal ordinary prescribed-product optimum."],
+    ["cor:quadratic-row-optimum", "cites", "cor:arbitrary-rank-two-bottom-sums-exclusion", "The older theorem already handles arbitrary sums and overlaps in this broader two-level quadratic source class; this new result concerns a sharper local affine map on factored inputs."]
+  ]
+}
