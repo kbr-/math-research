@@ -1,0 +1,69 @@
+<article id="entry-2026-10-09-mixed-column-core-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-after-symmetry-review:3" data-claims="lem:matrix-affine-rigidity prop:mixed-column-core-cost">
+<h3>9 October 2026 — Basis mixing preserves a costly column family</h3>
+<p class="entry-meta">Working matrix affine rigidity and raw-core limitation; basis-mixing test.</p>
+<p><strong>Question.</strong> On general-step, does inner-basis mixing before the paired restriction simplify actual input spans enough to use the restored core–residual theorem? The necessary lower-bound implication remains a quantitative complete-source estimate. Test the explicit column-local witness and its quotient by affordable affine matrix consequences, rather than equating a dense change of coordinates with progress.</p>
+<p><strong>General statement.</strong> <code>lem:matrix-affine-rigidity</code> says that a proper degree-\(b\) PC space of the binary matrix rank system, \(b\ge2\), contains no nonzero affine polynomial. <code>prop:mixed-column-core-cost</code> applies the historical spread-cost rule to a surviving column family after every inner-basis change and paired restriction. It also computes the exact full-cube degree of the transformed clause.</p>
+<p><strong>New mathematics.</strong> Two transvections isolate one matrix-side linear functional from any purported affine consequence; matrix symmetries then turn it into a refutation at the same degree. The restriction's live row space forces at least \(n'\) disjoint column-input spans, independent of labels or basis choice. Their raw certified core cost exceeds the available old barrier.</p>
+<p><strong>Goal progress.</strong> Unchanged. This refutes a proposed universal use of the raw affine core comparator after basis mixing. It does not bound actual optimized nonlinear errors, prove these blocks essential to a small refutation, or rule out nonlinear relations, weights and different source representations.</p>
+<h4>The matrix base has no cheap affine consequences</h4>
+<p>Let \(\Gamma_{m,q}\) over \(\mathbb F_2\) consist of Boolean equations for \(A\in\mathbb F_2^{m\times q}\), \(B\in\mathbb F_2^{q\times m}\) and \(AB-I_m=0\). Write \(\mathcal C_b\) for its ordinary degree-\(b\) PC consequence space. All polynomials and coefficients in this entry are binary.</p>
+<p id="matrix-affine-rigidity"><strong>Lemma (matrix affine rigidity).</strong> For \(m\ge3\), \(q\ge1\), \(b\ge2\), if \(1\notin\mathcal C_b\), then
+\[
+ \mathcal C_b\cap\mathbb F_2[A,B]_{\le1}=\{0\}. \tag{1}
+\]
+In particular this holds in the <a href="#quadratic-rank-CNF">recorded hard range</a> \(m>q\), \(q\ge2b-1\).</p>
+<p><em>Proof: symmetry preserves the actual proof ceiling.</em> For \(S\in\mathrm{GL}_m(\mathbb F_2)\) and \(T\in\mathrm{GL}_q(\mathbb F_2)\), use
+\[
+ (A,B)\longmapsto(SA,BS^{-1}),\qquad
+ (A,B)\longmapsto(AT,T^{-1}B).
+\]
+These are invertible linear substitutions. In the first, \(AB-I\) becomes \(S(AB-I)S^{-1}\); in the second it is unchanged. The image of any Boolean equation is a binary linear combination of Boolean equations because squares distribute in characteristic two. Thus all axiom images have degree-two derivations. Primitive multiplication and linear combinations replay through \(b\), so \(\mathcal C_b\) is invariant under these substitutions. It is also invariant under \((A,B)\mapsto(B^{\mathsf T},A^{\mathsf T})\), which transposes the matrix equations.</p>
+<p>Suppose
+\[
+ f=c+\sum_{i,k}C_{ik}A_{ik}+\sum_{k,i}H_{ki}B_{ki}\in\mathcal C_b
+\]
+is nonzero. If both linear coefficient arrays vanish, \(f=1\), a contradiction. By the transpose symmetry assume \(C\ne0\). Pick a row index \(a\) with \(C_{a,\cdot}\ne0\), and distinct row indices \(b_0,e\), both different from \(a\). Apply the outer transvection \(S=I+E_{a b_0}\) and add the resulting consequence to \(f\). Its difference is
+\[
+ f+f(SA,BS^{-1})
+   =\sum_k C_{ak}A_{b_0k}+\sum_k H_{k b_0}B_{ka}.
+\]
+Here \(S^{-1}=S\). Apply the transvection \(I+E_{b_0e}\) to this difference and add it back. It changes the indicated \(A\)-row but leaves the indicated \(B\)-column fixed, because \(e\ne a\). We obtain
+\[
+ \sum_k C_{ak}A_{ek}\in\mathcal C_b.
+\]
+Choose \(T\) carrying the nonzero binary coefficient column \(C_{a,\cdot}^{\mathsf T}\) to a coordinate vector. The inner action therefore derives one entry of \(A\). Row and inner-column permutations derive every entry of \(A\), all through \(b\). For a fixed outer row \(i\), multiply the derived \(A_{ik}\)'s by \(B_{ki}\), sum, and add the diagonal axiom \(\sum_k A_{ik}B_{ki}+1\). This derives one through degree at most \(b\), since \(b\ge2\). Contradiction. \(\square\)</p>
+<p>This is a statement about the matrix base itself. Adding retained blocks can break its symmetry and supply other consequences; those are not covered by (1). It is also not a rigidity theorem for arbitrary nonlinear quotient directions.</p>
+<h4>The transformed column inputs</h4>
+<p>Return to even \(n\), \(m>n\), a fixed pairing of the inner indices, and the <a href="#paired-column-restriction">paired restriction</a> with live set \(L\) of size \(n'\ge2\). First make the inner substitution \(A_{\rm old}=AT\), \(B_{\rm old}=T^{-1}B\), for any \(T\in\mathrm{GL}_n(\mathbb F_2)\), then fix each dead pair \(\{u,v\}\) to equal vectors as before. Let \(X_{i\ell}\), \(\ell\in L\), denote the live entries on the \(A\)-side. An original column entry becomes
+\[
+ \ell_{i,k}=c_{i,k}+\sum_{\ell\in L}T_{\ell k}X_{i\ell},\qquad
+ c_{i,k}=\sum_{\{u,v\}\text{ fixed}}(T_{uk}+T_{vk})a_{\{u,v\},i}.
+ \tag{2}
+\]
+Put \(v_k=(T_{\ell k})_{\ell\in L}\) and \(V_k=\operatorname{span}_{\mathbb F_2}\{\ell_{i,k}:i\in[m]\}\). All labels in (2) are fixed constants, with no randomness assumption.</p>
+<p id="mixed-column-core-cost"><strong>Proposition (mixed column core cost).</strong> There are \(n'\) original columns whose \(v_k\)'s are linearly independent. For the corresponding spaces \(V_k\):
+each has dimension \(m\), contains no nonzero constant, and distinct spaces intersect only at zero. For any nonzero \(v_k\), the falsity polynomial of \(\bigvee_i\ell_{i,k}\) has exact full-cube Boolean degree \(m\). Give the selected \(n'\) spaces complete accuracy-\(h\) ENS blocks, \(h\ge1\), with their affine tuples and original companion degree \(2h+1\). For incoming degree \(D\ge2h+1\), the historical affine core–residual criterion has exact optimal certified bound
+\[
+ \min\{D+n',\,T_mD\}>n',\qquad
+ T_m=\max\{1,\lceil m/h\rceil-1\}. \tag{3}
+\]
+This remains the same after quotienting by affine consequences of the residual matrix base proved through any proper cutoff \(b\ge2\). It is a criterion bound, not a lower bound on the augmented system's actual PC refutation degree.</p>
+<p><em>Proof of the geometry.</em> The rows of \(T\) indexed by \(L\) are independent, so the rectangular matrix \(T_{L,\cdot}\) has rank \(n'\) and contains \(n'\) independent columns. For a nonzero \(v_k\), the homogeneous parts of \(\ell_{i,k}\) use disjoint variable rows. A combination with coefficients \(\alpha_i\) has zero linear part only if every \(\alpha_i=0\). This proves dimension \(m\) and absence of a nonzero constant. For two distinct nonzero binary vectors \(v_k,v_j\), these vectors are linearly independent. Equality of two combinations of their forms forces, in each variable row, \(\alpha_i v_k=\beta_i v_j\), hence both coefficients zero. This proves the intersection statement, regardless of offsets.</p>
+<p>The falsity polynomial is \(\prod_i(1+\ell_{i,k})\). Choose \(\ell_0\in L\) with \(T_{\ell_0k}=1\). Its multilinear expansion contains \(\prod_iX_{i\ell_0}\) with coefficient one. No other factor uses the same row variables, so this term cannot cancel or undergo a Boolean degree reduction. All terms have degree at most \(m\), proving exact degree. In particular the restriction has not made this clause a tautology on the free live-variable cube. This is not a claim that computing its exact falsity polynomial is necessary for an ENS approximation.</p>
+<p><em>Proof of the certified cost.</em> Apply the <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/09_decomposition.md#thm-spreadcost">historical spread-cost proof</a> to these \(n'\) affine \(m\)-dimensional spaces. A batch with at least two has zero intersection at its first selected member, so its residual rank is \(m\), forcing factor \(T_m\). A zero-core singleton has the same factor. If no such multiplicative step occurs, all selected spaces are singleton batches with nonzero cores, each charging one. Full-core singletons attain \(D+n'\), and one all-zero-core batch attains \(T_mD\), proving the exact minimum. This reuses the old criterion proof; it is not a new general ordering theorem.</p>
+<p>To check the strict comparison, let \(s=\lceil m/h\rceil\). If \(s\le2\), \(T_mD=D\ge2h+1>m\). If \(s\ge3\), then
+\[
+ T_mD\ge(s-1)(2h+1)>sh\ge m.
+\]
+Since \(m>n'\), both branches in (3) exceed \(n'\). Finally (1) says that every supplied affine matrix-base consequence at a proper cutoff is zero, so that quotient changes none of these spaces. \(\square\)</p>
+<h4>Source scope and what remains</h4>
+<p>The tested blocks are legitimate old-affine ENS tuples, and their column OR formulas have polynomial descriptions. The statement does not assert that they occur essentially in a short refutation. The <a href="#entry-2026-09-20-coherent-spread-and-shared-bit-sums">earlier coherent-spread positive control</a> already shows that a bad raw core cost can coexist with a cheap alternative normalization. Nonlinear base relations, nonconstant coefficient maps, a surviving weight, different encodings and actual proof-specific use are not excluded here.</p>
+<p>The inner substitution and paired restriction still preserve residual matrix equations exactly. Their maps on matrix variables are affine, and gate values in the <a href="#quadratic-rank-CNF">costed CNF interface</a> remain of degree at most two. Thus the old hardness and source-degree ledger are unchanged. What fails is the attempted simplification inference: column width has become row-wise affine dependence, while a substantial raw spread remains. The historical core theorem is useful when its hypotheses hold, but these symmetries and restrictions do not force them.</p>
+<p><strong>Follow-up.</strong> Continuing the rank-principle lead after its second entry. Stop refining this basis-mixing/raw-core test: its named prediction is false for the explicit column family. Next seek a matrix-specific nonlinear certificate rather than another coordinate change. Test whether the identities \(AB=I\), hence \(A(BA)=A\) and \((BA)^2=BA\), provide a degree-paid batch treatment of actual column companions. Compare any proposed normalization with the existing base-certificate and single-block elimination tools before claiming novelty or a global gain.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-09-handoff-tool-audit:s1">The restored core–residual comparator was applied after every inner-basis change and paired restriction to a legitimate surviving column family; its exact cost exceeds the old barrier even after affordable affine matrix-base quotients. <strong>Follow-up.</strong> Continuing: the generic raw affine shortcut fails by <code>prop:mixed-column-core-cost</code>, but the proposed use of paid nonlinear relations has not been resolved and remains with the parent lead.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed both proofs, their exact scopes and unchanged goal assessment, with no required mathematical correction or unused hypothesis. The preceding matrix interface and arbitrary-row old barrier, historical core/spread proof and later coherent-spread limitation were read. Searches covered matrix affine consequences, transvections, column spans and core costs. All calculations above are symbolic all-parameter proofs; no new encoding, implemented inference rule or finite sweep is introduced.</p>
+<p><strong>Process assessment.</strong> The handoff criterion was used to test a precise claim rather than copied as a promising label; the resulting failure is separated from actual source hardness. Initial mathematical planning overlapped this clock's preparation phase.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_rank_basis_20261009 -->
+</article>
