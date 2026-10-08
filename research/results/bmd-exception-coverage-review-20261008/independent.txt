@@ -1,0 +1,15 @@
+# command: python3 tools/codex_reviewer.py --handle bmd-coverage-review-20261008 --brief /home/kbr/dev/math/research/tmp/codex/a5b0b37f69d471d960ab6922b1bb2da435eb08cd6fe2519c2d464160ac748301/coverage-independent.txt --timeout 225
+# run 3f6e071d00ce440381a72c0d2b20357a, session bmd-exception-coverage-review-20261008; full output
+**Verdict: fail—no independently justified, stopping architecture found in the supplied excerpts.** This is not a counterexample to the goal.
+
+- **Weakest sufficient endpoint:** for each \((n,p)\), compute a finite degree set \(D_{n,p}\) with a verified proof that every degree outside it is normal. Original generic determinant tests on \(D_{n,p}\) then recover the exact exception set. Neither empty exceptions nor a uniformly normal specialization is needed.
+
+- **Architecture assessment:** certificate-first search is the only supplied alternative to degree scanning, but “finite and computable in principle” supplies neither the certificate’s verification conditions nor an evaluated stopping bound. It therefore does not justify a practical implementation here.
+
+- **Smallest actual test:** for \((9,3)\), test the original generic first-\(N_{9,8}\)-row determinant for \(V_8\). Nonzero proves degree \(8\) normal; identically zero disproves statement 2. A vanishing specialization is inconclusive. This test cannot decide completeness of the inventory.
+
+- **Decisive completeness test:** obtain and verify one finite-tail certificate for \((9,3)\), proving normality outside an explicitly listed finite set. The excerpts do not specify enough to instantiate that test; that is the missing dependency, not additional scanned degrees.
+
+- **Extra assumptions / failure modes:** a proposed finite-state method needs a proved finite-state closure preserving branch equations and observation flags; a truncation method needs a proved sufficient precision bound. Neither is available. Fixed-palette precision, arbitrarily delayed section lifting, and the coupled Schur complement explicitly obstruct shortcuts.
+
+- **Unused inputs:** the solved small-\(n\) cases and characteristic-zero normality provide checks, not a stopping argument for \((9,3)\). The large-characteristic sufficient bound likewise supplies no stated tail certificate at this fixed prime.
