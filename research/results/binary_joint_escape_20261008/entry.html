@@ -1,0 +1,66 @@
+<article id="entry-2026-10-08-relative-intersection-loss" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-binary-quotient-architecture:s5" data-claims="prop:relative-intersection-loss">
+<h3>8 October 2026 — Generic returning rank need not survive a legal row</h3>
+<p class="entry-meta">Working refutation of a stronger relative-intersection estimate; actual source ranks remain open.</p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, can joint measurement improve the <a href="#partial-image-contraction">partial-image bound</a> without an estimate for the escaping image? Write \(c\) for current error rank and \(e\) for generic multiplied-image rank modulo the current image. The existing bound is \(c'\le\min(c,c/2+e)\). The test asks whether the generic returning dimension \(c-e\) itself retains half its rank under some legal binary row, giving \(c'\le(c+e)/2\). Such an estimate would help only when the actual source has a sufficiently large returning part; it is not already a source exclusion.</p>
+<p><strong>General statement.</strong> prop:relative-intersection-loss refutes that universal improvement, even for literal Boolean multiplication. For every integer \(t\ge1\), it constructs an allowed multiplier subspace with \(c=21t\), \(e=14t\), and optimal one-row residual rank \(18t&gt;(c+e)/2\). It also refutes the corresponding common weighted-objective improvement. This is a satisfiable-domain calibration, not an unavoidable hard-source obstruction.</p>
+<p><strong>New mathematics.</strong> A three-dimensional Boolean space has an alternating escape pencil of generic rank two, but only three of seven nonzero legal rows preserve a one-dimensional returning image. A cyclic orbit combines these local losses into a single multiplication map on six Boolean variables for which every nonzero legal row violates the proposed improvement. Direct sums give the stated family.</p>
+<p><strong>Goal progress.</strong> Unchanged. The necessary estimate on actual nonlinear retained errors in the charged quotient is still missing. The counterexample rules out replacing that estimate by universal relative-intersection specialization. It neither refutes the existing bound nor proves that a source-specific structure or a batch cannot work.</p>
+<h4>A small actual multiplication space</h4>
+<p>Let \(\Omega=\mathbb F_2^3\setminus\{0\}\), with point \(j\in\{1,\ldots,7\}\) labelled by its three binary digits, least significant first. Let \(\delta_j\) denote its point indicator and put
+\[
+u_1=\delta_1+\delta_6+\delta_7,\quad
+u_2=\delta_2+\delta_5+\delta_7,\quad
+u_3=\delta_3+\delta_5+\delta_6,\qquad U_0=\langle u_1,u_2,u_3\rangle.
+\]
+Their values at points \(1,2,3\) are the identity matrix, so \(\dim U_0=3\). Multiplication is coordinatewise. Set \(L=\alpha y_1+\beta y_2+\gamma y_3\) over \(E=\mathbb F_2(\alpha,\beta,\gamma)\). Since every point is nonzero, all seven diagonal entries of \(L\) are nonzero in \(E\), hence \(\dim_E LU_{0,E}=3\).</p>
+<p>Eliminate coordinates \(1,2,3\) modulo \(U_0\). Coordinate 4 is identically zero on both spaces. The remaining escape matrix, with columns \(5,6,7\), is
+\[
+\begin{pmatrix}
+0&amp;\alpha+\beta+\gamma&amp;\beta+\gamma\\
+\alpha+\beta+\gamma&amp;0&amp;\alpha+\gamma\\
+\beta+\gamma&amp;\alpha+\gamma&amp;0
+\end{pmatrix}.
+\]
+Its determinant is zero because the two nonzero determinant terms coincide in characteristic two; a principal minor is \((\alpha+\beta+\gamma)^2\ne0\). Thus the generic escape rank is two and the generic returning dimension is one.</p>
+<p>For a binary coefficient vector \(a\), let \(q_a=a\cdot y\) and \(H_a=\{y\in\Omega:q_a(y)=0\}\). The actual residual rank is \(\dim (1-q_a)U_0=\operatorname{rank}(U_0|_{H_a})\). Its drop is also \(\dim(U_0\cap q_aU_0)\): because \(q_a^2=q_a\), an element of this intersection is supported on \(q_a=1\), and conversely any element of \(U_0\) with that support equals its own product with \(q_a\).</p>
+<table><thead><tr><th>Coefficient label \(a\)</th><th>\(H_a\)</th><th>Restriction rank</th><th>Rank drop</th></tr></thead><tbody>
+<tr><td>1</td><td>2,4,6</td><td>2</td><td>1</td></tr>
+<tr><td>2</td><td>1,4,5</td><td>2</td><td>1</td></tr>
+<tr><td>3</td><td>3,4,7</td><td>2</td><td>1</td></tr>
+<tr><td>4</td><td>1,2,3</td><td>3</td><td>0</td></tr>
+<tr><td>5</td><td>2,5,7</td><td>3</td><td>0</td></tr>
+<tr><td>6</td><td>1,6,7</td><td>3</td><td>0</td></tr>
+<tr><td>7</td><td>3,5,6</td><td>3</td><td>0</td></tr>
+</tbody></table>
+<p>These ranks follow directly from the three displayed basis rows. Therefore the average drop over nonzero coefficients is \(3/7&lt;1/2\), although the generic returning dimension is one. Including the zero row lowers the average to \(3/8\). A good individual coefficient still exists here, so this local example alone does not refute an existential bound.</p>
+<h4>Symmetry makes every shared choice fail</h4>
+<p id="relative-intersection-loss"><strong>Proposition (relative intersection loss).</strong> For every \(t\ge1\), set \(r=\lceil\log_2t\rceil\). There is a subspace \(U\) of multilinear Boolean polynomials in \(6+r\) variables, of degree at most \(K=6+r\), such that with \(A=1\), \(g=(y_1,y_2,y_3)\), and the Boolean vanishing pseudoideal through any \(D\ge K+3\), the maps of the partial-image lemma have
+\[
+c=21t,\qquad e=14t,\qquad
+c'(a)=\begin{cases}21t&amp;a=0,\\18t&amp;a\ne0.\end{cases}
+\]
+Consequently no legal row satisfies \(c'\le(c+e)/2\). The claim concerns arbitrary permitted multiplier subspaces, not specifically the full degree space or a source-conditioned kernel.</p>
+<p><em>Proof.</em> First take \(t=1\). The linear map
+\[
+R(y_1,y_2,y_3)=(y_3,y_1+y_3,y_2)
+\]
+has characteristic polynomial \(X^3+X+1\), irreducible over \(\mathbb F_2\). It identifies with multiplication by a nonidentity element of \(\mathbb F_8^*\), so it has order seven and acts transitively on the nonzero vectors. Its dual action is also transitive: no nonidentity power has eigenvalue one, since that power minus the identity is invertible. Put \(U_j=\{u(R^jy):u\in U_0\}\), \(0\le j&lt;7\). An invertible linear change of the three coefficient indeterminates preserves each generic escape rank, so every \(U_j\) has current rank three and escape rank two. For a fixed nonzero \(a\), the seven restriction problems run through all seven nonzero coefficient vectors in the preceding table. Their rank drops therefore sum to three.</p>
+<p>Introduce three selector bits \(z\). Choose a bijection between their seven nonzero assignments and \(j=0,\ldots,6\), and write \(\chi_j(z)\) for each assignment indicator. Extend all functions of \(y\) by zero at \(y=0\), using their unique multilinear representatives of degree at most three. Define
+\[
+U=\bigoplus_{j=0}^6\chi_j(z)U_j(y).
+\]
+The selectors have disjoint support, so this is a 21-dimensional space of degree at most six. Multiplication by \(q_a(y)\) acts separately on its seven summands. Generic escaping ranks add, giving 14; for every nonzero \(a\), the drops add to three, giving residual rank 18. The zero row changes nothing.</p>
+<p>To identify these function-space ranks with the lemma's actual error maps, use \(T f=(y_1f,y_2f,y_3f)\). On functions supported at \(y\ne0\), \(T\) is injective, and it commutes with multiplication by \(L\) or \(q_a\). All spaces here have that support. Thus \(\dim T(U)=21\), the rank of \(T(LU)\) modulo \(T(U)\) is exactly 14, and the new error rank is exactly the residual rank just computed. Quotienting by the Boolean vanishing pseudoideal gives precisely these evaluations; no inconsistent old ideal or global model of a hard system is used. The input certificates \(y_i^2-y_i\) are present, and \(0+K+3\delta\le D\) holds with \(\delta=1\).</p>
+<p>For arbitrary \(t\), take \(t\) disjoint assignment indicators on \(r\) additional selector bits and copy the six-variable construction under each. The resulting degree is at most \(6+r\). The same input tuple uses only the original three \(y\)-bits, so current ranks, escape ranks, and every specialized residual rank all multiply by \(t\). This proves the stated values and the strict gap \(18t-35t/2=t/2\). \(\square\)</p>
+<p>Equivalently, the seven spaces \(U_j\) already refute an improved simultaneous weighted objective with equal weights: the best common row has total residual rank 18, above \(\sum_j(c_j+e_j)/2=35/2\). Choosing separate rows for the seven spaces gives total residual rank 14 instead. This explicitly distinguishes one shared legal row from independent per-group choices. It does not claim that independent choices are unavailable in every application, or that coupling always hurts. The existing \(\min(c,c/2+e)\) estimate remains valid and merely gives no decrease on this example.</p>
+<h4>Decisive test and scope</h4>
+<p>The search tested two named universal hypotheses, maximum and nonzero-average retention of half the generic returning dimension, on all subspaces of \(\mathbb F_2^7\). It enumerated unique reduced row-echelon forms, with dimension counts \(1,127,2667,11811,11811,2667,127,1\), total 29,212. Every space passed the existential test; seven failed the average test. Instead of testing larger cubes, the existing disjoint-sum operation and a transitive coefficient symmetry converted the first failure into the existential counterexample above.</p>
+<p>Generic escape ranks in the search were exact, not sampled heuristically. Every escape minor has size at most three, hence is homogeneous of degree at most three in the three coefficient variables. Substitution \((\alpha,\beta,\gamma)=(1,\zeta,\zeta^4)\), with \(\zeta\) of degree 13 over \(\mathbb F_2\), sends the monomials of each fixed degree injectively to powers of degree at most 12. No nonzero minor vanishes. GAP native exact rank routines supplied both these ranks and the seven binary restriction ranks. The separate composition check verifies all seven transformed spaces and all eight legal rows, with the zero-row control and independent-row comparison following from the verified dimensions and local gains. The symbolic alternating matrix and disjoint-support proof independently establish the needed ranks.</p>
+<p>Evidence: the <a href="research/results/binary_joint_escape_20261008/intersection_specialization.g">search</a>, <a href="research/results/binary_joint_escape_20261008/spaces.txt">complete space data</a>, <a href="research/results/binary_joint_escape_20261008/search-output.txt">search output</a>, <a href="research/results/binary_joint_escape_20261008/symmetry_counterexample.g">composition check</a>, and <a href="research/results/binary_joint_escape_20261008/counterexample-output.txt">its full output</a>. Two initial GAP runs failed before enumeration because of a reserved name and an incorrect field-degree argument; their logs remain in the timing archive. GAP's zero exit codes did not count as passes: every output was read and the successful completion counts checked.</p>
+<p><strong>Follow-up.</strong> Continuing. This first entry of the returning overlap spell rules out one universal improvement, not the graded or conditional program. The scheduled route review is next. It must compare source-specific batch control with the moving-cutoff alternative and assess the current lowest-level detour against the actual source-exclusion obligation. The seven-space control is not a reason to close the queue item or demand full multiplication invariance.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer <a href="research/results/binary_joint_escape_20261008/review.txt">passed</a> the complete counterexample, its Boolean realization, the exact finite-field test, and the unchanged goal assessment, with no required corrections or unused substantive hypotheses. The zero-row and independent-row totals are analytic consequences of the checked ranks and local gains; the composition script prints them rather than testing them separately. The partial-image proof and latest nonlinear-frontier attempt were reread in full; later references and reviewed dependency links were checked. Searches covered partial images, intersections, specialization, alternating pencils and the dual quotient formulation. No prior result found in those searches supplies the proposed stronger estimate.</p>
+<p><strong>Process assessment.</strong> The complete small-space test exposed a failed averaging claim; symmetry and disjoint sums then settled the general existential conjecture without a larger case series. Source-specific rank control remains the required research task.</p>
+<h4>Measured timing</h4>
+<p>Initial pencil planning overlapped preparation; restoration and the intervening queue-policy exchange remain in the instrumented interval.</p>
+<!-- TIMING binary_joint_escape_20261008 -->
+</article>
