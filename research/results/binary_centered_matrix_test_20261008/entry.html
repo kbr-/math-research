@@ -1,0 +1,93 @@
+<article id="entry-2026-10-08-radical-rank-splitting" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-binary-quotient-architecture:s5" data-claims="lem:radical-rank-splitting prop:odd-channel-rank-gap">
+<h3>8 October 2026 — Rank splitting is possible, but real channel variance does not transfer</h3>
+<p class="entry-meta">Working rank split and channel limitation; centered-matrix test.</p>
+<p><strong>Question.</strong> On general-step, can the queued branch-centered smoothing mechanism bound actual graded source errors? Test an algebraic replacement for its orthogonal splitting step and then the quantitative channel hypothesis, rather than rejecting the whole idea because finite-field Gram squares can collapse.</p>
+<p><strong>General statement.</strong> <code>lem:radical-rank-splitting</code> partitions arbitrary coefficient images with an explicit rank-overlap and image-radical allowance. <code>prop:odd-channel-rank-gap</code> gives positive rational channels with arbitrarily small real variance whose characteristic-two reductions still transmit their full input. Both hold for all stated parameters.</p>
+<p><strong>New mathematics.</strong> A dimension-free rank analogue of image splitting is available without positivity. It operates on rectangular coefficient maps directly. The source's real variance estimate does not imply small cross-Gram ranks, even with fixed dimension, odd denominators and no image radical in the resulting tagged coefficient family.</p>
+<p><strong>Goal progress.</strong> Unchanged. The actual source needs a field-native quantitative channel or overlap estimate. Neither the split nor the counterexample supplies one, and the imported real theorem is not refuted.</p>
+<h4>The selected source proof</h4>
+<p>Read the full <a href="https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/Exponential-PSD-rank-of-positively-shifted-matching-matrices-October-5-2026/build/source/sections/fourier-smoothing.tex">Fourier smoothing proof</a> and its <a href="https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/Exponential-PSD-rank-of-positively-shifted-matching-matrices-October-5-2026/build/source/sections/splitting.tex">orthogonal splitting lemma</a> in family 126 at the pinned revision. This is selected-proof reading, not full-paper or Lean certification. The source requires independent coordinate parameters, uniform averaged marginals, and a scalar real variance estimate for every input function. It uses positive semidefinite matrices and real sign characters on blocks of size \(L=2^a\).</p>
+<p>The tagged stack makes cross-frequency products equal Fourier sums of channel averages of \(Z(x)=U(x)^{\mathsf T}U(x)\). Real positivity bounds their squared norms and permits spectral splitting of Gram matrices. The fourth-order potential grows by at most two per processed coordinate under \(L\lambda^2 2^{L-1}\theta\le1\). The final Fourier-mass bound retains \(L^t2^{t/2}\) and the matrix-size factor. Branch-specific centers matter, but do not erase those hypotheses or costs.</p>
+<p>The earlier <a href="#backward-rank-defect">Gram-radical control</a>, <a href="#finite-family-moment-pairing">finite-family repair</a> and <a href="#partial-image-contraction">partial-image theorem</a> were recovered before formulating the alternative. The new <a href="#charged-slice-pairing">canonical charged pairing</a> is nondegenerate on its whole quotient, not necessarily on every coefficient image. A projection used only to analyze a fixed error matrix need not itself be a legal source substitution; the missing issue is a valid rank bound and a coherent coefficient choice, not an automatic charge for every auxiliary linear map.</p>
+<h4>Split the rectangular images directly</h4>
+<p id="radical-rank-splitting"><strong>Lemma (radical rank splitting).</strong> Let \(W,U_1,\ldots,U_L\) be finite-dimensional spaces over a field, with nondegenerate symmetric bilinear forms or nondegenerate Hermitian forms for one fixed involution. Let \(A_i:U_i\to W\), \(L\ge1\), and write \(A_i^*\) for the adjoint. Put
+\[
+r_i=\operatorname{rank}A_i,\qquad
+\kappa_i=r_i-\operatorname{rank}(A_i^*A_i),\qquad
+d_i=\operatorname{rank}\begin{bmatrix}(A_j^*A_i)_{j\ne i}\end{bmatrix},
+\]
+where the last matrix is a vertical stack, with rank zero for an empty stack. There are pairwise orthogonal self-adjoint projections \(P_1,\ldots,P_L\), summing to the identity on \(W\), such that
+\[
+\sum_i\sum_{s\ne i}\operatorname{rank}(P_sA_i)
+\le (L-1)\sum_i\min(r_i,2d_i+\kappa_i)
+\le (L-1)\left(2\sum_{i\ne j}\operatorname{rank}(A_j^*A_i)+\sum_i\kappa_i\right).
+\tag{1}
+\]
+Zero projections are permitted. No order, positivity or spectral comparison is assumed.</p>
+<p><em>Proof.</em> Let \(W_i=\operatorname{im}A_i\). Since \(\ker A_i^*=W_i^\perp\), rank-nullity on \(A_i^*|_{W_i}\) gives
+\[
+\dim\operatorname{rad}(W_i)=\dim(W_i\cap W_i^\perp)=\kappa_i.
+\]
+Let \(T_i=W_i\cap(\sum_{j\ne i}W_j)^\perp\). Surjectivity of \(A_i:U_i\to W_i\) and the definition of the stacked map imply
+\[
+\operatorname{codim}_{W_i}T_i=d_i
+\le\sum_{j\ne i}\operatorname{rank}(A_j^*A_i).
+\]
+The radical of the restricted form on \(T_i\) has dimension at most \(d_i+\kappa_i\). To see this, quotient \(W_i\) by its radical: the image of \(T_i\) has dimension at least \(\dim T_i-\kappa_i\) in a nondegenerate space of dimension \(r_i-\kappa_i\). Its perpendicular has dimension at most \(d_i\); pulling that perpendicular back adds at most \(\kappa_i\) dimensions. The radical of \(T_i\) lies in that pullback.</p>
+<p>Choose a complement \(E_i\) to \(\operatorname{rad}(T_i)\) inside \(T_i\). Its restricted form is nondegenerate, and
+\[
+\operatorname{codim}_{W_i}E_i\le2d_i+\kappa_i.
+\]
+The \(E_i\)'s are pairwise orthogonal by their definition. Their direct sum is nondegenerate. Decompose \(W\) into these summands and their orthogonal complement, assign the complement to the first summand, and take the corresponding orthogonal projections \(P_i\). For \(s\ne i\), \(P_s\) kills \(E_i\); hence
+\[
+\operatorname{rank}(P_sA_i)\le\dim W_i-\dim E_i\le\min(r_i,2d_i+\kappa_i).
+\]
+Sum over the \(L-1\) off-label projections and then use the bound on \(d_i\). This proves (1), including \(L=1\). \(\square\)</p>
+<p>This controls misplaced rectangular coefficient ranks rather than squared norms of compressed positive matrices. It is an elementary subspace construction, not a claim to the source's Fourier concentration theorem over a new field. A weighted graded application still has to supply its overlap and radical estimates at all relevant cutoffs.</p>
+<h4>Why the image-radical allowance is real</h4>
+<p>Over characteristic two with the standard bilinear or Hermitian form, take two identical maps
+\[
+A_1=A_2=\begin{pmatrix}I_r\\ I_r\end{pmatrix},\qquad r\ge1.
+\]
+Every cross-Gram and self-Gram is zero, but each map has rank \(r\). For complementary projections \(P,Q\), the sum \(\operatorname{rank}(PA_2)+\operatorname{rank}(QA_1)\) is at least \(r\), since \(A_1=PA_1+QA_1\). The bound without radicals would incorrectly give zero. Here \(\kappa_1=\kappa_2=r\), so (1) retains the missing cost. This is the same isotropy phenomenon measured by the earlier Gram defect, not a new obstruction to all pairings.</p>
+<p>A positive control shows why we used rectangular images instead of the source's row Gram. Over \(F_4\), let \(H=[I_r\ I_r]\), let \(v_0,v_1,v_2\) be the three unit-orthogonal Fourier columns on \(F_3\), and put \(V_z=v_z\otimes H\). Then \(V_zV_z^*=0\) for all \(z\), while each \(V_z\) has rank \(r\). Nevertheless \(V_z^*V_z\) has rank \(r\), cross-Grams vanish for distinct frequencies, and \(\kappa_z=0\). The projections \((v_zv_z^*)\otimes I_r\) split the three images exactly. Thus a zero row-Gram potential does not preclude an exact field splitting, and is not a reason to discard the mechanism.</p>
+<h4>Small real variance need not mean small field overlap</h4>
+<p id="odd-channel-rank-gap"><strong>Proposition (odd channel rank gap).</strong> For every odd integer \(N\ge5\), let \(X=\mathcal M=F_3\), with uniform real probability, and set, for \(y\in\{0,1\}\),
+\[
+\pi_y^m(x)=\frac13+\frac1N\left(\mathbf1_{x=m+y}-\mathbf1_{x=m+y+1}\right),
+\tag{2}
+\]
+with subscripts interpreted modulo three. These are positive probability distributions with uniform averaged marginals. For every real \(g\),
+\[
+\mathbb E_m\left(\sum_x\pi_y^m(x)g(x)-\mathbb E_xg(x)\right)^2
+=\frac3{N^2}\operatorname{Var}(g)
+\le\frac3{N^2}\mathbb E_x g(x)^2.
+\tag{3}
+\]
+All coefficients have odd rational denominator, but reduction modulo two makes (2) the deterministic channel
+\[
+\bar\pi_y^m(x)=\mathbf1_{x=m+y+2}.
+\tag{4}
+\]
+For the binary function \(g=\mathbf1_{\{0\}}\), the scalar field deviation from its field average has rank one with probability \(2/3\), independently of \(N\). Thus no bound tending to zero with the real variance constant can control even this expected scalar field rank.</p>
+<p><em>Proof.</em> Positivity follows from \(1/3-1/N>0\), and row sums are one. Summing the perturbations over \(m\) gives zero for each \(x,y\), proving the marginal condition. The deviation in (3) is \(N^{-1}(g(m+y)-g(m+y+1))\). On three real values, the sum of their three cyclic squared differences is three times the sum of squared deviations from the mean. Averaging proves (3). In the residue field, both \(1/3\) and \(1/N\) equal one and subtraction equals addition. The two perturbed coordinates therefore have coefficient zero and the third has coefficient one, proving (4). The field mean of \(g\) is one because \(3=1\), whereas the selected value equals zero at two of the three \(m\)'s. The deviation is nonzero with probability \(2/3\). \(\square\)</p>
+<p>The real channel hypotheses hold even for the literal source choice \(Y=F_2\), with variance tending to zero rapidly enough for any fixed smoothing parameter. This does not refute the real smoothing theorem. It refutes transferring its quantitative variance estimate by reduction of odd rational coefficients. There is no zero denominator in this example.</p>
+<p><strong>An odd-character alternative still has the gap.</strong> To avoid the source's binary Fourier normalization in characteristic two, instead allow \(y\in F_3\) in (2) and use \(F_4\) characters. This is an alternative being tested, not the source's stated binary-character theorem. Put \(U(x)=e_x^{\mathsf T}\), so \(Z(x)=E_{xx}\). In the reduced tagged stack, \(H(y)\) has its only nonzero row block at \((y,m+y+2)\), equal to \(e_{m+y+2}^{\mathsf T}\). The three Fourier coefficient matrices \(V_z=\sum_y\omega^{-zy}H(y)\) all have rank three and the same nondegenerate three-coordinate image. Their self-Grams have rank three, and every cross-Gram \(V_z^*V_{z'}\) is a diagonal matrix of three nonzero phases, also of rank three. Thus their image radicals are zero but their overlaps do not tend to zero with \(3/N^2\).</p>
+<p>For any resolution of the row identity by orthogonal projections \(P_s\), surjectivity of each \(V_z\) onto that same image \(W_0\) gives
+\[
+\sum_z\sum_{s\ne z}\operatorname{rank}(P_sV_z)
+=2\sum_s\operatorname{rank}(P_s|_{W_0})\ge2\dim W_0=6.
+\]
+Only the identity resolution is used in this lower bound; orthogonal projections are retained to match the proposed splitting application. This tests actual misplaced coefficient ranks, not merely a surrogate trace. It does not rule out a field-native channel with a separate rank-overlap estimate.</p>
+<h4>Actual graded source scope</h4>
+<p>The canonical charged form is nondegenerate on its full cutoff quotient, but an actual coefficient image can still have a radical. For example, the nonzero Boolean old polynomial \(x_{e,0}+x_{e,1}\) has canonical moment zero when the single-edge characters are noncut, although each indicator has moment one. Its one-dimensional image can therefore be isotropic. That does not make its ENS block hard: selecting that same input can erase its companion. The example cautions against treating radical control as a necessary condition for every successful coefficient choice.</p>
+<p>The finite-family moment theorem can repair specified binary image and kernel restrictions over a larger field in its paid window, but it does not simultaneously preserve every prescribed channel identity. Conversely, the split (1) can be used merely as linear-algebraic bookkeeping on a fixed source matrix; it does not need an invented polynomial implementation of each projection. What remains missing is a quantitative bound on the actual cross-Gram ranks and radicals, or another quantity that controls the graded tails and a legal common coefficient choice.</p>
+<p>The earlier scalar tilted contraction and partial-image bounds keep their unproved source-sensitive growth/escape estimates. Replacing a norm by rank does not prove those estimates. Nor can nonzero scalar frequency weights encode a degree penalty by themselves: multiplying columns by such scalars does not change rank. A genuinely graded potential must retain degree information separately.</p>
+<p><strong>Follow-up.</strong> Continuing the graded/matrix item after its first entry of this spell. The next test is field-native: choose actual degree-compatible channels on the charged quotient, rather than reduce a real small-variance channel. The existing full and partial circulation tests already construct the compatible sectors and leave their quantitative ranks open, so do not repeat that construction. Instead test the literal Boolean two-branch map given by a legal row and its complement, using the canonical pairing and the actual degree cutoff. Determine whether its radicals are controlled by a new quantity or return exactly to the existing escape-rank obligation.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-08-openai-transfer-proposals:s2">The complete selected smoothing and splitting proofs were read. A radical-corrected rectangular rank split is available, but real channel variance gives no field-rank estimate even with odd denominators and nonsingular coefficient images. <strong>Follow-up.</strong> Continuing: a field-native quantitative channel bound on actual source maps remains open.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the rank split, both channel calculations, the actual moment example and the unchanged goal assessment. Its observation that the lower bound of six uses only identity resolution is recorded explicitly; orthogonality is retained there solely to match the application. Read the full primary smoothing/splitting sections, the exact Gram defect and positive pairing repair, conditional tilted contraction and partial-image scopes. Searches covered image splitting, cross-Gram ranks, radicals and orthogonal subspaces. All controls above are exact all-parameter algebraic arguments; no numerical extrapolation, new proof rule or source encoding is introduced.</p>
+<p><strong>Process assessment.</strong> Testing a positive rank replacement before rejecting the source isolated the genuinely missing quantitative premise. The odd-denominator example also prevents treating arithmetic precision as harmless when passing from real norms to finite-field ranks.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_centered_matrix_test_20261008 -->
+</article>
