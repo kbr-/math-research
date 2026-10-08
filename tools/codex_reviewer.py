@@ -14,6 +14,7 @@ from codex_runtime import Client, NativeError, verify_isolation
 from codex_state import atomic_json
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_MODEL = 'gpt-6.1-sol'
 
 
 def reviewer_brief(root):
@@ -34,17 +35,17 @@ async def review(client, root, state, text, close=False, model=None):
         await client.call('thread/archive', {'threadId': saved['thread']})
         state.unlink()
         return 'Owned reviewer archived.'
+    model = model or DEFAULT_MODEL
     config = await client.isolation_config(root, 'medium')
     if saved:
         response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True,
-            'approvalPolicy': 'never', 'permissions': ':read-only', 'config': config})
+            'approvalPolicy': 'never', 'permissions': ':read-only', 'config': config,
+            'model': model})
     else:
         params = {'cwd': str(root), 'approvalPolicy': 'never', 'permissions': ':read-only',
                   'ephemeral': False, 'baseInstructions': reviewer_brief(root),
                   'developerInstructions': 'Use only the supplied brief and excerpts. Edit no files.',
-                  'config': config}
-        if model:
-            params['model'] = model
+                  'config': config, 'model': model}
         response = await client.call('thread/start', params)
     ident = str(uuid.UUID(response['thread']['id']))
     if Path(response['cwd']).resolve() != root or (saved and ident != saved['thread']):
@@ -82,7 +83,7 @@ def main():
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument('--brief', type=Path)
     action.add_argument('--close', action='store_true')
-    parser.add_argument('--model', help='Optional available native model; effort remains medium')
+    parser.add_argument('--model', help=f'Native model (default: {DEFAULT_MODEL}); effort remains medium')
     parser.add_argument('--timeout', type=float, default=120)
     args = parser.parse_args()
     try:

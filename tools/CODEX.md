@@ -39,10 +39,12 @@ skill text on their private branch.
 Use `python3 tools/codex_reviewer.py --handle NAME --brief FILE` for a fresh reviewer.
 The helper uses the running authenticated daemon and the installed `websockets` package;
 it never starts or reconfigures the daemon. Run inference through `compute.sh`. The native
-root session has medium effort, read-only filesystem access and no approval escalation;
+root session uses GPT-6.1-Sol (`gpt-6.1-sol`) with medium effort, read-only filesystem access
+and no approval escalation;
 its effective policy is checked before sending the brief. Configured MCP servers are disabled
 for isolated reviewers and judges, since MCP tools are outside the filesystem sandbox. Every resume reapplies the named
-read-only profile and medium effort: ad-hoc sandbox overrides can be lost after native unloading. Its instructions come from the
+read-only profile, selected model (GPT-6.1-Sol by default) and medium effort: ad-hoc sandbox
+overrides can be lost after native unloading. Its instructions come from the
 body of `.claude/agents/medium-reviewer.md`, not the parent conversation. Native child agents
 inherit the parent's live permission overrides, so a custom child profile alone does not
 provide this isolation. Reuse the handle only for a concrete correction to the same review;

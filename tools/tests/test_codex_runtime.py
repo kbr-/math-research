@@ -255,10 +255,25 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(json.loads(state.read_text())['thread'], '11111111-2222-3333-4444-555555555555')
             await reviewer.review(client, root, state, 'concrete correction')
             self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': '11111111-2222-3333-4444-555555555555', 'excludeTurns': True,
-                'approvalPolicy':'never','permissions':':read-only','config':isolated_config('medium')}))
+                'approvalPolicy':'never','permissions':':read-only','config':isolated_config('medium'),
+                'model':'gpt-6.1-sol'}))
+            await reviewer.review(client, root, state, 'explicit correction', model='selected')
+            self.assertEqual(client.call.call_args.args[1]['model'], 'selected')
             await reviewer.review(client, root, state, '', close=True)
             self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': '11111111-2222-3333-4444-555555555555'}))
             self.assertFalse(state.exists());self.assertEqual(binding.read_text(), 'parent')
+
+    async def test_reviewer_default_model_on_fresh_thread(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); source = root/'.claude/agents/medium-reviewer.md'
+            source.parent.mkdir(parents=True); source.write_text('---\nname: role\n---\nReview')
+            client = AsyncMock(); client.isolation_config.return_value = isolated_config('medium')
+            client.call.return_value = {'cwd': str(root),
+                'thread': {'id': '11111111-2222-3333-4444-555555555555'},
+                'reasoningEffort': 'medium', 'approvalPolicy': 'never',
+                'sandbox': {'type': 'readOnly', 'networkAccess': False}}
+            await reviewer.review(client, root, root/'review.json', 'brief')
+            self.assertEqual(client.call.call_args_list[0].args[1]['model'], 'gpt-6.1-sol')
 
     async def test_misconfigured_reviewer_never_receives_brief_and_remains_owned(self):
         with tempfile.TemporaryDirectory() as tmp:
