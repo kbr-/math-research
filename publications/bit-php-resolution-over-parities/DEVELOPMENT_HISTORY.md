@@ -125,17 +125,6 @@ Original manuscript material is distributed under the
 
 ## What happened, according to Codex after mining the conversation transcripts
 
-This account was reconstructed by Codex from the exported Claude conversation, the mathematical
-handoff produced after the later ChatGPT phase, the archived Codex session, and the append-only
-research record maintained by the user's research framework.
-
-The browser ChatGPT transcript was not yet available when this reconstruction was made.
-Consequently, the Claude and Codex phases can be reconstructed from direct dialogue, while the
-intervening ChatGPT phase is known mainly through its detailed handoff package and later
-retrospective descriptions.
-
-### What actually happened
-
 #### 1. SAT algorithm → P = NP
 
 On 3 September 2026, the user began with:
@@ -180,14 +169,15 @@ lower-bound machinery.
 
 #### 3. Why AC⁰[p]-Frege?
 
-Claude recommended:
+Claude briefly recommended:
 
 > My pick is the finite-field IPS route to AC⁰[p]-Frege.
 
 Its stated reason was unusually concrete. Unlike the other candidate directions, this route had
-an explicit simulation or translation theorem: a suitable finite-field algebraic lower bound
-would imply an AC⁰[p]-Frege lower bound. This supplied a checkable payoff condition instead of a
-vague hope that understanding an adjacent model might eventually help.
+an explicit simulation or translation claim: a suitable lower bound over a constant-size finite
+field, for a sufficiently strong algebraic proof system, would imply an AC⁰[p]-Frege lower bound.
+At that point Claude had read only abstracts, and explicitly described the payoff condition as
+something still needing verification.
 
 The alternatives were:
 
@@ -196,8 +186,11 @@ The alternatives were:
 - constant-depth IPS lower bounds on non-CNF instances, where results appeared more attainable
   but had a lower ceiling.
 
-AC⁰[p]-Frege was therefore selected as an intermediate frontier: a decades-old open problem
-connected to a named algebraic bridge and a potentially testable next step.
+This was not Claude's stable methodological recommendation. After reading further, it concluded
+that the functional lower-bound method under discussion was blocked for Boolean instances and
+shifted its recommendation to meta-complexity and diagonalization. The finite-field connection
+nevertheless kept AC⁰[p]-Frege visible as an intermediate target while the proposed method
+changed.
 
 #### 4. Where Cook's programme entered
 
@@ -226,24 +219,54 @@ The important qualification was that no finite climb up this ladder proves NP �
 no known strongest propositional proof system. The Cook programme is therefore a research
 philosophy and source of intermediate lower bounds, not a path with a known final rung.
 
-#### 5. The missing ChatGPT phase
+#### 5. The ChatGPT phase: from imported target to handoff
 
-The detailed browser ChatGPT transcript was unavailable during this reconstruction. Its handoff
-package nevertheless records the endpoint precisely.
+The ChatGPT research phase began on 9 September 2026 at 23:57 Warsaw time and reached the
+completed Codex handoff on 10 September at 20:13.
 
-By 10 September, the research goal had become:
+The user opened the phase by uploading a PDF produced during the Claude work and asking ChatGPT
+to read it fully and summarize the research. ChatGPT identified the goal already present in that
+report as:
 
 > Superpolynomial lower bounds for ordinary pigeonhole principle in fixed-depth AC⁰[p]-Frege,
 > for each fixed prime p.
 
-The route had narrowed through the BIKPRS simulation. In simplified form:
+The report already framed the route through the BIKPRS simulation. In simplified form:
 
 > A short AC⁰[p]-Frege proof would produce a bounded-degree extended Nullstellensatz or
 > Polynomial Calculus object.
 
-The ChatGPT phase produced a large body of intermediate mathematics—68 working lemmas,
-theorems, and corollaries were recorded in the handoff—but affordable elimination of the
-introduced extension blocks remained open.
+The user immediately asked whether proving the report's proposed Lemma B would yield the desired
+lower bound, then asked ChatGPT to decompose it into separate lemmas. After that orientation, the
+user instructed:
+
+> Stop reading the pdf now. We will now work on the problem ourselves. Attempt proof of item (a).
+
+The first attempted imported statement did not survive. ChatGPT found that the claimed
+Koszul-vanishing range below degree n was false and replaced it with a corrected range sufficient
+for polylogarithmic degrees. It then constructed a generic annihilating functional tolerating t
+restrictions when t + 2d - 1 ≤ n, while stating explicitly that this was not yet a functional for
+the full BIKPRS-augmented system.
+
+The rest of the phase was tightly user-steered rather than autonomous. The user repeatedly
+requested the remaining gaps ordered by risk and then issued prompts such as “Work on the highest
+risk item now,” “Find a lifting,” “Reduce the cost,” “Pack them,” “Attack the remaining obstacle,”
+and “Do the batch elimination.” The user also required optimized computation and increasingly
+detailed timing measurements.
+
+Across these turns, ChatGPT developed nonlinear and joint-moment liftings, additive Polynomial
+Calculus elimination, same-level batching, nested-span and nested-core arguments, and an exact
+optimization of the affine core-and-residual decomposition. The endpoint was also negative:
+ChatGPT exhibited an admissible one-level family whose best certified degree exceeded the
+available PHP degree budget. This showed that optimizing that static affine decomposition could
+not uniformly finish the argument. It did not prove that every possible elimination method
+fails.
+
+At the user's request, ChatGPT consolidated the work into a 47-page compendium containing 68
+working lemmas, theorems, and corollaries with proofs. The user then asked to continue on a laptop
+in Codex, specifying the future instruction “read HANDOFF.md and import all references.” ChatGPT
+produced a self-contained directory centered on HANDOFF.md, with the manuscript, TeX sources,
+computational supplements, claims and reference metadata, and a precise restart point.
 
 This was the state imported into Codex. The handoff explicitly warned that the final lower bound
 had not been proved and identified refutation-sensitive extension elimination, or an equivalent
