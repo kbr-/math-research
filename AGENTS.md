@@ -63,8 +63,10 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   conjectural hardness conclusion. Adopt a refinement only with a proved non-vacuity witness at
   unbounded variable counts and the required encoding budget; otherwise mark it provisional.
   Concrete families are existence and falsification controls, not restrictions on the abstract
-  proof. Treat a method failure as a decision point: compare repairing the method with revising
-  the specification so it applies. State which proved properties survive and which are traded
+  proof. Before choosing each next step, compare direct lower-bound constructions, method repairs
+  and structural restrictions by their effect on the missing implication. Upper bounds are a
+  possible test, not the default objective. At a method failure, also consider changing the
+  specification so the method applies. State which proved properties survive and which are traded
   away, recheck non-vacuity and the goal's full budget, and choose by the resulting evidence of
   progress rather than automatically preserving either the method or the specification.
   Keep unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
