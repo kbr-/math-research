@@ -77,6 +77,7 @@ def queue_notes(body):
     if not nodes:
         return ['Lead queue: empty. New passed leads and bridges of a review and the sub-ideas entries list go '
                 'at its end.']
+    lq.settle(body, nodes)
     head = lq.head_of(nodes)
     waiting = len(lq.marks(nodes))
     waits = f'; {waiting} items wait on the user and are passed over' if waiting else ''

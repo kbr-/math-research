@@ -136,6 +136,18 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn('Reassess every two extra cycles', notes)
         self.assertIn('finite checks or reused progress do not qualify', notes)
 
+    def test_queue_notes_settle_an_expired_head_after_a_new_item_arrives(self):
+        entries = ''.join(f'<article id="e{n}" data-kind="research" data-lead="r:1">'
+                          '<p><strong>Follow-up.</strong> Continuing: next.</p></article>'
+                          for n in range(1, 5))
+        body = ('<section id="lead-queue"><ol><li data-lead="r:1">old</li>'
+                '<li data-lead="r:2">new</li></ol></section><section id="research-record">'
+                + entries + '<article id="review" data-kind="review"></article></section>')
+        notes = ' '.join(self.guide.queue_notes(body))
+        self.assertIn('the head is r:2', notes)
+        self.assertIn('entry 1; current spell boundary 4', notes)
+        self.assertNotIn('the head is r:1', notes)
+
     def test_queue_notes_name_the_head_its_first_subidea_and_waiting_items(self):
         route = '<section id="remaining-route"><li data-route-item="step">x</li></section>'
         record = '<section id="research-record"></section>'
