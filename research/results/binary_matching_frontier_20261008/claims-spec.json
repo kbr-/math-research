@@ -1,0 +1,34 @@
+{
+  "source": {
+    "record": "[Matched frontier ceiling](https://kbr.is-a.dev/math-research/#entry-2026-10-08-matched-frontier-ceiling)",
+    "targets": ["https://kbr.is-a.dev/math-research/#entry-2026-10-08-matched-frontier-ceiling"],
+    "label": "Matched frontier ceiling"
+  },
+  "reviewer": "Codex with isolated medium correctness reviewer",
+  "date": "2026-10-08",
+  "topics": ["degree-accounting", "polynomial-calculus", "method-obstructions"],
+  "claims": [
+    {
+      "id": "thm:matched-frontier-degree-ceiling",
+      "summary": "Any unsatisfiable Boolean graph-constraint system with one variable per edge of a simple n>=3 vertex graph and multilinear constraints local to vertex stars has PC degree <=ceil((m-a)b/(2(b-1))+Delta sqrt(8b log(2b)))+2Delta over any field, for a matching of size a and b=n-a. After isolated vertices are handled, maximal matching gives (1/2-1/(4Delta-2))m+O_Delta(sqrt(m log m)) for fixed Delta, and m/2-Omega(m/log m) for Delta=O(log m).",
+      "assessment": "Working complete ordinary-PC proof. Local predicates give forbidden assignment indicators through2Delta; frontier elimination reuses derived indicators within bags of size cutwidth+Delta. Independent matched-block keys, cut Lipschitz bound4Delta, and a union bound give the ordering. Exact local checks over F2/F3 cover all two-relation cases; the asymptotic proof is analytic. No polynomial proof-size bound or arbitrary bounded-width CNF extension is claimed.",
+      "status": "working_proof",
+      "rationale": "A general upper-degree calibration excludes bounded-degree graph constraint families from the moving midpoint sufficient route. The construction is elementary frontier elimination plus a matching-based ordering; no novelty or Frege upper bound is claimed.",
+      "next_action": null
+    },
+    {
+      "id": "cor:flow-window-exclusion",
+      "summary": "Canonical forbidden-assignment CNF encodings of positive integer-flow constraints on graphs, with polynomial encoding length in m Boolean edge variables, have PC refutation degree <=m/2-Omega(m/log m). They cannot meet the moving old-degree hypothesis at approximation depth ell>=3. Fixed maximum degree also excludes the depth2 window; growing-degree depth2 and noncanonical encodings are not settled.",
+      "assessment": "Working corollary over every field after Boolean predicate encoding. Net flows sum to zero, so constraints are unsatisfiable; at least half local assignments are forbidden, forcing Delta=O(log m) under polynomial canonical encoding length. The bound includes both the frontier cost and the original local conversion reserve. No Frege proof-size conclusion follows.",
+      "status": "working_proof",
+      "rationale": "Settles the current fixed-degree flow candidate and a logarithmic-degree canonical regime for the sufficient old-window approach. It does not close the unrestricted hard-family question or the main lower-bound goal.",
+      "next_action": null
+    }
+  ],
+  "relationships": [
+    ["thm:matched-frontier-degree-ceiling", "cites", "prop:tseitin-degree-ceiling", "Adapts the independent-key ordering argument to matched vertex blocks; no character or modular constraint is used in the new frontier elimination."],
+    ["cor:flow-window-exclusion", "depends_on", "thm:matched-frontier-degree-ceiling", "Canonical flow predicates fit the graph-local Boolean model and polynomial encoding length forces logarithmic maximum degree."],
+    ["cor:flow-window-exclusion", "cites", "lem:moving-cutoff-budget", "The actual PC upper degree lies below the required near-half-variable cutoff in the specified depth regimes; no claim that this sufficient window is necessary for all architectures."],
+    ["cor:flow-window-exclusion", "cites", "prop:balanced-modular-degree-ceiling", "The prior modular argument did not apply to positive flow; the new generic frontier proof resolves that candidate without a fixed-character hypothesis."]
+  ]
+}
