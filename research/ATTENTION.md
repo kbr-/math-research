@@ -260,6 +260,22 @@ For the fixed bounded-degree charged-mod3 Tseitin CNF family over F2, fix formul
 
 ---
 
+### Random triple degree ceiling
+
+**Claim:** [cor:random-triple-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-08-triple-colouring-ceiling>)
+
+For 3n iid uniform distinct-vertex triples on an ambient n-set, with repetitions allowed and v actual occurring variables, with probability tending to one the not-all-equal CNF is unsatisfiable and has ordinary PC degree at most (95/196)v+4 over every field. The conclusion persists conditioned on unsatisfiability and v>n/2. Exceptional selections and normalized critical-core variants are not excluded.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Rejects typical samples from the third proposed sampling regime and demonstrates that ambient density can defeat near-half normalization via smaller cores. It is not an all-instance exclusion of the predicate language; literature priority remains unassessed.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Retain exceptional/core-normalized variants as separate tests, and use the core-normalization warning when evaluating the remaining candidates. Compare the precise typical-sample bound before any novelty claim.
+
+---
+
 ### Finite field punctured first jet degree
 
 **Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)
@@ -1705,6 +1721,22 @@ In the local three-state edge algebra, partition m edges into q disjoint label-c
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Test affine offsets and compare prior graded-code bounds before any independent novelty or publication claim.
+
+---
+
+### Triple colouring degree ceiling
+
+**Claim:** [thm:triple-colouring-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-08-triple-colouring-ceiling>)
+
+For every non-two-colourable 3-uniform hypergraph H with h vertices and independent set I, its two-clause-per-edge Boolean CNF has ordinary PC degree at most h-|I|+3 over every field. A vertex-minimal induced non-two-colourable core gives degree at most ceil(h/2)+3 for the original formula. Proof: every restriction outside I is an unsatisfiable 2-CNF, with degree-three refutation and literal branch lifting.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Turns the previous independent-extension idea into conditioning to an easy residual class, and gives a core-sensitive half-degree ceiling. This alone does not exclude critical cores at the target cutoff. Priority of the precise hypergraph formulation is unresolved.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test whether normalized critical triple families can meet the necessary near-half independence bound; compare prior colouring and backdoor upper bounds before claiming novelty.
 
 ---
 
