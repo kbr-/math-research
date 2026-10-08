@@ -464,6 +464,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 ---
 
+### Compact colouring degree ceiling
+
+**Claim:** [thm:compact-colouring-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-08-compact-colouring-ceiling>)
+
+Every compact two-bit non-three-colourability CNF on N vertices has an ordinary PC refutation over every field through h-ceil((h-1)/3)+1 <= 2N/3+4/3 = v/3+4/3, where h>=4 is any vertex-minimal induced non-three-colourable core. More generally an independent set I in a non-three-colourable subgraph H gives degree max(4,|V(H)\I|+1).
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Excludes the second near-half-degree candidate uniformly, including all graph degrees and expansion regimes, and identifies the two structural ingredients a replacement must evade. Literature priority of this specific degree formulation remains unassessed.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Develop the queued non-all-equal candidate with the independent-extension warning; later test four-colour encodings. Compare the precise vertex-cover degree formulation with prior colouring upper bounds before any novelty claim.
+
+---
+
 ### Coset character degree ceiling
 
 **Claim:** [thm:coset-character-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-08-coset-character-ceiling>)
