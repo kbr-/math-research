@@ -448,6 +448,22 @@ For every k >= 1 and n >= floor(log2 k)+2, an F_2 polynomial with Hasse multipli
 
 ---
 
+### Binomial domain rigidity
+
+**Claim:** [thm:binomial-domain-rigidity](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-binomial-domain-rigidity>)
+
+Over any field, let coordinate domains be {u_i,v_i} with distinct values and nonzero sum. A proper binomially spanned degree-D pseudoideal, D>=2, containing all domain quadratics has a domain point annihilating its <=D-1 part. If both values of every coordinate are nonzero, the whole space is exactly the degree-D evaluation kernel at one point. Thus all affine Boolean recodings in characteristic two exclude this witness class for UNSAT inputs of degree <D.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** A broad structural obstruction to a specific proof method; it survives span membership, zero classes, arbitrary scalars and affine two-state recodings. Independent novelty has not been established.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the truncated two-state classification with established binomial-ideal geometry and PC normal forms before making a novelty claim.
+
+---
+
 ### Catalan truncation per order construction
 
 **Claim:** [thm:catalan-truncation-per-order-construction](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction>)
