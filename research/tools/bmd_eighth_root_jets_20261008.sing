@@ -1,0 +1,25 @@
+// Symbolic rank identities for the actual ternary pencil; no torsion enumeration.
+ring R=3,(r,x,t),lp;
+proc check(int ok,string why){if(!ok){ERROR(why);}}
+proc main()
+{
+ poly reciprocal=(x*r-1)^9+r*(x*r-1)^8+r^4*(x*r-1)^5+r^8*(x*r-1)-t*r^9;
+ matrix cc=coeffs(reciprocal,r);
+ check(cc[1,1]==-1 && cc[2,1]==1,"reciprocal endpoints");
+ matrix U[3][3]=cc[4,1],cc[5,1],cc[6,1],cc[3,1],cc[4,1],cc[5,1],cc[2,1],cc[3,1],cc[4,1];
+ matrix V[3][3]=cc[6,1],cc[7,1],cc[8,1],cc[5,1],cc[6,1],cc[7,1],cc[4,1],cc[5,1],cc[6,1];
+ check(det(U)==1,"uniform unramified minor");
+ check(det(V)==x^3*(x^3-1),"branch reciprocal minor");
+ print("RECIPROCAL_POLYNOMIAL");print(reciprocal);
+ print("UNRAMIFIED_MINOR");print(U);print("DETERMINANT=1");
+ print("BRANCH_MINOR");print(V);print("DETERMINANT=x^3*(x^3-1)");
+ // Infinity rows modulo f, projected onto the missing powers 6,7,8.
+ ring Q=3,(b,t),lp;
+ poly f=b^9+b^8+b^5+b-t;ideal F=std(ideal(f));
+ matrix J[3][3];matrix cfs;int i;int j;poly remn;
+ for(i=1;i<=3;i++){remn=reduce(b^(8+i),F);cfs=coeffs(remn,b);for(j=1;j<=3;j++){if(5+j+1<=nrows(cfs)){J[i,j]=cfs[5+j+1,1];}}}
+ check(det(J)!=0,"infinity spanning minor");print("INFINITY_PROJECTED_MATRIX");print(J);print("INFINITY_DETERMINANT");print(det(J));
+ print("SINGULAR_EIGHTH_ROOT_JET_IDENTITIES_COMPLETED");
+}
+main();
+quit;
