@@ -81,16 +81,11 @@ else:
         return subprocess.run([str(self.root / 'start-session.sh'), *args],
                               cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
 
-    def test_session_wrapper_forwards_mode_budgets_and_worktree(self):
-        script = self.root / 'start-codex.sh'
-        content = re.sub(r'CONTEXT_WINDOW_TOKENS=\d+', 'CONTEXT_WINDOW_TOKENS=640000', script.read_text())
-        content = re.sub(r'AUTO_COMPACT_TOKENS=\d+', 'AUTO_COMPACT_TOKENS=530000', content)
-        script.write_text(content)
+    def test_session_wrapper_forwards_mode_and_worktree_without_budgets(self):
         result = self.launch('--new', '--detached', '--worktree', 'worker', '--base', 'main')
         self.assertEqual(result.returncode, 0, result.stderr)
         data = json.loads(self.capture.read_text())
-        self.assertEqual(data['args'], ['--context', '640000', '--compact', '530000',
-                                       '--new', '--detached', '--worktree', 'worker', '--base', 'main'])
+        self.assertEqual(data['args'], ['--new', '--detached', '--worktree', 'worker', '--base', 'main'])
         self.assertEqual(data['cwd'], str(self.root))
         self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
         self.assertEqual(json.loads(self.capture.with_suffix('.jsonl').read_text()), ['remote-control', 'start'])
@@ -153,14 +148,12 @@ else:
             self.claude_agents.write_text(json.dumps(agents))
 
     def test_claude_fresh_checkout_binds_and_bootstraps(self):
-        script = self.root / 'start-claude.sh'
-        script.write_text(re.sub(r'AUTO_COMPACT_TOKENS=\d+', 'AUTO_COMPACT_TOKENS=530000', script.read_text()))
+        self.assertEqual(json.loads((ROOT/'.claude/settings.json').read_text())['autoCompactWindow'],800000)
         result = self.launch_claude()
         self.assertEqual(result.returncode, 0, result.stderr)
         [launch] = self.claude_launches()
-        self.assertEqual(launch['args'][:6], ['--bg', '--remote-control', '--permission-mode', 'auto',
-                                              '--autocompact', '530000'])
-        self.assertEqual(len(launch['args']), 7)
+        self.assertEqual(launch['args'][:4], ['--bg', '--remote-control', '--permission-mode', 'auto'])
+        self.assertEqual(len(launch['args']), 5)
         self.assertIn('python3 tools/resume.py', launch['args'][-1])
         self.assertNotIn('--resume', launch['args'])
         [agent] = json.loads(self.claude_agents.read_text())

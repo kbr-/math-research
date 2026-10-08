@@ -190,29 +190,25 @@ requests a daemon restart. Closing the terminal leaves the daemon running.
 For a new phone pairing, run `codex remote-control pair` and follow the
 [Codex Remote instructions](https://learn.chatgpt.com/docs/remote).
 
-The session launcher selects Vim for Ctrl+G and requests automatic approval
-review for new sessions. Remote resumes retain the task's existing permissions;
-Codex rejects permission overrides when resuming a remote task.
-Context and auto-compaction budgets are shared constants at the top of
-`start-codex.sh`, applied when starting or resuming the terminal session.
-The project `.codex/config.toml` also supplies defaults for phone-created sessions.
-Review and trust the [Codex framework hooks](tools/CODEX.md) to enable restoration
-and command guards; changed hook definitions need normal trust review.
-Use the same `CODEX_HOME` for both launchers and pairing. A Codex CLI version
-supporting daemon remote control and `--remote unix://` is required.
+The session launcher selects Vim for Ctrl+G and requests automatic approval review for new sessions.
+Remote resumes retain the task's existing permissions; Codex rejects permission overrides when
+resuming a remote task. Context and auto-compaction budgets come from Codex settings; the project
+and its launchers do not override them. Review and trust the [Codex framework hooks](tools/CODEX.md)
+to enable restoration and command guards; changed hook definitions need normal trust review. Use the
+same `CODEX_HOME` for both launchers and pairing. A Codex CLI version supporting daemon remote
+control and `--remote unix://` is required.
 
-With Claude Code, run `./start-claude.sh` instead. It accepts the same options,
-records its session in `.claude-session-id`, and sets its own auto-compaction budget.
-Like the Codex daemon, the session runs in the background (`claude --bg`) and the
-launcher attaches the terminal to it (`claude attach`), reusing a running session
-rather than starting a copy; closing the terminal only detaches. `--detached` starts
-or reuses it without attaching. The session is started with `--remote-control`, which makes
-it reachable from claude.ai/code and the Claude app through Remote Control, and the
-terminal and the phone can use it at the same time. `claude stop ID` ends it.
-[`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
-[`.claude/settings.json`](.claude/settings.json) pre-approves the routine
-framework commands, including `git push origin main`; [AGENTS.md](AGENTS.md)
-still decides when a push is authorized. The launcher selects the `auto` permission mode.
+With Claude Code, run `./start-claude.sh` instead. It accepts the same options, records its session
+in `.claude-session-id`, and reads its auto-compaction budget from Claude Code settings. Like the
+Codex daemon, the session runs in the background (`claude --bg`) and the launcher attaches the
+terminal to it (`claude attach`), reusing a running session rather than starting a copy; closing the
+terminal only detaches. `--detached` starts or reuses it without attaching. The session is started
+with `--remote-control`, which makes it reachable from claude.ai/code and the Claude app through
+Remote Control, and the terminal and the phone can use it at the same time. `claude stop ID` ends
+it. [`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
+[`.claude/settings.json`](.claude/settings.json) pre-approves the routine framework commands,
+including `git push origin main`; [AGENTS.md](AGENTS.md) still decides when a push is authorized.
+The launcher selects the `auto` permission mode.
 
 [AGENTS.md](AGENTS.md) describes the research workflow: maintain the notebook's
 living sections, append each research attempt with its timing and evidence,

@@ -1,18 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Shared by the daemon launcher and start-session.sh.
-# Edit these when you want a different context budget for the next session launch.
-readonly CONTEXT_WINDOW_TOKENS=600000
-readonly AUTO_COMPACT_TOKENS=550000
-
 start_codex_daemon() {
   # Managed startup reuses a running daemon and enables remote control.
   # Never restart here: another terminal or the phone may be using it.
   codex remote-control start
 }
 
-# The session launcher sources these settings without starting any process.
+# The session launcher sources this function without starting any process.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   case "${1-}" in
     -h|--help)

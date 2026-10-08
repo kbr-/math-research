@@ -70,7 +70,7 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         self.client = FakeClient(self.root)
 
     async def start(self, mode='auto'):
-        return await sessions.session(self.client, self.root, mode, 600000, 550000)
+        return await sessions.session(self.client, self.root, mode)
 
     async def test_new_binds_before_bootstrap_and_resume_preserves_permissions(self):
         self.assertEqual(await self.start(), IDENT)
@@ -83,7 +83,10 @@ class SessionTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(start['permissions'], ':workspace')
         self.assertNotIn('sandbox', start)
         self.assertIs(start['ephemeral'], False)
-        self.assertEqual(start['config'], {'model_context_window':600000,'model_auto_compact_token_limit':550000})
+        self.assertNotIn('config', start)
+        config=(sessions.ROOT/'.codex/config.toml').read_text()
+        self.assertNotIn('model_context_window', config)
+        self.assertNotIn('model_auto_compact_token_limit', config)
         self.assertEqual([m for m,_ in self.client.calls], ['hooks/list','thread/start','thread/inject_items','turn/start'])
         self.assertIn('python3 tools/resume.py', self.client.calls[-1][1]['input'][0]['text'])
         self.assertNotIn('remember-codex', self.client.calls[-1][1]['input'][0]['text'])
@@ -200,7 +203,7 @@ class LauncherTest(unittest.TestCase):
             root = Path(tmp);source=root/'skills/example/SKILL.md'
             source.parent.mkdir(parents=True);source.write_text('source')
             client = FakeClient(root)
-            args=argparse.Namespace(worktree='worker',base='main',mode='auto',context=600000,compact=550000)
+            args=argparse.Namespace(worktree='worker',base='main',mode='auto')
             with patch.object(sessions,'worktree',return_value=root) as choose, \
                  patch.object(sessions.Client,'connect',AsyncMock(return_value=client)):
                 with ThreadPoolExecutor(max_workers=2) as pool:
@@ -208,7 +211,7 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual(choose.call_args.args,(sessions.ROOT,'worker','main'))
             self.assertEqual(results,[(root,IDENT),(root,IDENT)])
             startup=next(p for m,p in client.calls if m=='thread/start')
-            self.assertEqual(startup['config'],{'model_context_window':600000,'model_auto_compact_token_limit':550000})
+            self.assertNotIn('config', startup)
             self.assertEqual(sum(m=='thread/start' for m,_ in client.calls),1)
             self.assertEqual(client.closed,2)
             self.assertEqual((root/'.agents/skills/example').resolve(),source.parent)
@@ -250,7 +253,7 @@ class LauncherTest(unittest.TestCase):
     def test_launch_forwards_explicit_new_mode(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);client=FakeClient(root);(root/'.codex-session-id').write_text(OTHER)
-            args=argparse.Namespace(worktree=None,base=None,mode='new',context=600000,compact=550000)
+            args=argparse.Namespace(worktree=None,base=None,mode='new')
             with patch.object(sessions,'worktree',return_value=root),patch.object(sessions.Client,'connect',AsyncMock(return_value=client)):
                 self.assertEqual(asyncio.run(sessions.launch(args)),(root,IDENT))
             self.assertFalse(any(m=='thread/resume' for m,_ in client.calls))
@@ -258,7 +261,7 @@ class LauncherTest(unittest.TestCase):
     def test_stalled_startup_times_out_and_releases_connection(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);client=FakeClient(root)
-            args=argparse.Namespace(worktree=None,base=None,mode='auto',context=600000,compact=550000)
+            args=argparse.Namespace(worktree=None,base=None,mode='auto')
             real_wait=asyncio.wait_for
             async def hang(*args,**kwargs):await asyncio.sleep(10)
             async def accelerated(awaitable,timeout):
@@ -287,14 +290,14 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual(binding.read_text(),IDENT+'\n')
             self.assertEqual(list(root.iterdir()),[binding])
 
-    def test_cli_modes_required_budgets_worker_refusal_and_errors(self):
-        common=['launcher','--context','600000','--compact','550000','--detached']
+    def test_cli_modes_inherit_budgets_worker_refusal_and_errors(self):
+        common=['launcher','--detached']
         for mode,expected in [([], 'auto'),(['--new'],'new')]:
             with patch.dict(os.environ,{'CODEX_THREAD_ID':''}), patch.object(sys,'argv',common+mode+['--worktree','worker','--base','base']), \
                  patch.object(sessions,'launch',AsyncMock(return_value=(Path('/tmp'),IDENT))) as launch,redirect_stdout(io.StringIO()):
                 self.assertEqual(sessions.main(),0)
                 args=launch.call_args.args[0]
-                self.assertEqual((args.mode,args.worktree,args.base,args.context,args.compact),(expected,'worker','base',600000,550000))
+                self.assertEqual((args.mode,args.worktree,args.base),(expected,'worker','base'))
         with patch.dict(os.environ,{'CODEX_THREAD_ID':''}),patch.object(sys,'argv',common), \
              patch.object(sessions,'launch',AsyncMock(side_effect=NativeError('actual failure'))),redirect_stderr(io.StringIO()) as err:
             self.assertEqual(sessions.main(),1);self.assertIn('actual failure',err.getvalue())
@@ -304,7 +307,7 @@ class LauncherTest(unittest.TestCase):
 
     def test_cli_detached_and_attach_never_override_resume_permissions(self):
         for detached in (True,False):
-            args=['launcher','--context','600000','--compact','550000','--resume']
+            args=['launcher','--resume']
             if detached:args.append('--detached')
             with patch.dict(os.environ,{'CODEX_THREAD_ID':''}), patch.object(sys,'argv',args), patch.object(sessions,'launch',AsyncMock(return_value=(Path('/tmp'),IDENT))) as launch, \
                  patch.object(os,'chdir') as chdir, patch.object(os,'execvp') as execute, redirect_stdout(io.StringIO()) as out:

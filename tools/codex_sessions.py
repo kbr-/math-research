@@ -88,7 +88,7 @@ async def trusted(client, root):
                           + '; open codex --remote unix:// there and review /hooks, then retry.')
 
 
-async def session(client, root, mode, context, compact):
+async def session(client, root, mode):
     await trusted(client, root)
     binding = root/'.codex-session-id'
     bootstrap = root/'.codex/framework/bootstrap.json'
@@ -113,8 +113,7 @@ async def session(client, root, mode, context, compact):
         response = await client.call('thread/start', {
             'cwd': str(root), 'runtimeWorkspaceRoots': [str(root)], 'ephemeral': False,
             'approvalPolicy': 'on-request', 'approvalsReviewer': 'auto_review',
-            'permissions': ':workspace', 'config': {
-                'model_context_window': context, 'model_auto_compact_token_limit': compact}})
+            'permissions': ':workspace'})
         ident = str(uuid.UUID(response['thread']['id']))
         if Path(response['cwd']).resolve() != root:
             raise NativeError('Created session belongs to a different worktree')
@@ -139,7 +138,7 @@ async def launch(args):
         fcntl.flock(lock, fcntl.LOCK_EX)
         client = await Client.connect()
         try:
-            ident = await asyncio.wait_for(session(client, root, args.mode, args.context, args.compact), 10)
+            ident = await asyncio.wait_for(session(client, root, args.mode), 10)
         finally:
             await client.close()
     return root, ident
@@ -154,8 +153,6 @@ def main():
     parser.add_argument('--detached', action='store_true')
     parser.add_argument('--worktree')
     parser.add_argument('--base')
-    parser.add_argument('--context', type=int, required=True)
-    parser.add_argument('--compact', type=int, required=True)
     args = parser.parse_args()
     if os.environ.get('CODEX_THREAD_ID'):
         parser.error('Run the launcher outside an agent; workers cannot replace bindings')

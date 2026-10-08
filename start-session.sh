@@ -15,5 +15,4 @@ if [[ -n "${CODEX_THREAD_ID-}" ]]; then
   exit 1
 fi
 start_codex_daemon
-exec python3 tools/codex_sessions.py --context "$CONTEXT_WINDOW_TOKENS" \
-  --compact "$AUTO_COMPACT_TOKENS" "$@"
+exec python3 tools/codex_sessions.py "$@"

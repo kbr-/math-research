@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Edit this when you want a different auto-compaction budget for the next launch.
-# Claude Code accepts 100k-1M here and has no separate context-window cap below the
-# model's own window. start-codex.sh keeps its own AUTO_COMPACT_TOKENS.
-readonly AUTO_COMPACT_TOKENS=800000
-
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 export VISUAL=vim
 export EDITOR=vim
@@ -98,7 +93,7 @@ open_session() {
 
 # These options are saved with a session when it first runs in the background and apply to
 # every later resume. --remote-control takes an optional name, so keep another flag after it.
-options=(--bg --remote-control --permission-mode auto --autocompact "${AUTO_COMPACT_TOKENS}")
+options=(--bg --remote-control --permission-mode auto)
 if [[ "$mode" != new && -f .claude-session-id ]]; then
   session_id="$(cat .claude-session-id)"
   if [[ ! "$session_id" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then
