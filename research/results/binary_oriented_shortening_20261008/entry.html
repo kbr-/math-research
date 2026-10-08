@@ -1,0 +1,53 @@
+<article id="entry-2026-10-08-full-rank-moment" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-profile-architecture-review:3" data-claims="lem:full-rank-moment">
+<h3>8 October 2026 — Full-rank sampling does not cure the cardinality moment</h3>
+<p class="entry-meta">Working sampling calibration; the hard-quotient shortening estimate remains open.</p>
+<p><strong>Question.</strong> The generalized-weight lead needs a direction-sensitive bound on actual prefix errors, below the current weighted dimension after paying all degrees. The <a href="#rank-moment-floor">recorded cardinality moment</a> can be dominated by the zero coefficient matrix. Test the concrete repair of sampling only full-row-rank legal matrices. A source-shaped control with independent inputs, no constant in their span and a good full-rank choice distinguishes a genuine repair from merely removing zero rows.</p>
+<p><strong>General statement.</strong> lem:full-rank-moment computes the conditioned rank enumerator over every finite field. Its binary multiplication-space specialization shows that excluding every deficient matrix still leaves a cardinality-moment floor, despite a full-rank choice with zero actual error. This refutes that proposed repair, not the Frege goal.</p>
+<p><strong>New mathematics.</strong> An elementary full-rank version of the earlier rank-moment identity and an explicit specialization of the existing shared-factor control. A fixed nonzero input direction can carry a large error subspace; the full-rank ensemble still sometimes kills that direction, which is enough to dominate the exponential moment.</p>
+<p><strong>Goal progress.</strong> Unchanged. The direct expected-dimension bound <a href="#input-row-shortening">already avoids cardinality moments</a>, but still enlarges the multiplier cutoff. This cycle removes a proposed sampling fix from consideration without bounding the actual enlarged error ratio on the charged hard quotient. No source exclusion or depth recurrence is claimed.</p>
+<h4>The full-rank moment</h4>
+<p id="full-rank-moment"><strong>Lemma (full-rank moment).</strong> Let \(V=\mathbb F_q^k\), let \(Q\) be finite-dimensional, and \(W\le V\otimes Q\). Take integers \(1\le t&lt;k\) and choose \(C\) uniformly among full-row-rank \(t\times k\) matrices. For \(z\in W\), let \(\rho(z)\) be the rank of its contraction map \(Q^*\to V\), and put \(I_C=W\cap(\ker C\otimes Q)\). Define
+\[
+ \pi_r=\begin{cases}\displaystyle\prod_{j=0}^{r-1}\frac{q^{k-t}-q^j}{q^k-q^j},&amp;0\le r\le k-t,\\0,&amp;r&gt;k-t,\end{cases}\qquad \pi_0=1.
+\]
+Then
+\[
+ Z=\mathbb E_C q^{\dim I_C}=\sum_{z\in W}\pi_{\rho(z)},
+ \qquad\min_C\dim I_C\le\lfloor\log_q Z\rfloor.
+\]
+If \(W\) contains \(v\otimes H\), where \(0\ne v\in V\), \(H\le Q\) and \(\dim H=m\), then
+\[
+ Z\ge1+(q^m-1)\pi_1\ge \pi_1q^m,
+ \quad \log_q Z\ge m+\log_q\pi_1,
+ \quad\pi_1=\frac{q^{k-t}-1}{q^k-1}&gt;q^{-t-1}.
+\]
+No deficient matrix is used in these inequalities.</p>
+<p><em>Proof.</em> The kernel of a uniform full-rank matrix is uniform among the \((k-t)\)-dimensional subspaces of \(V\): every such kernel has the same number of surjective quotient maps to \(\mathbb F_q^t\). By transitivity on ordered independent \(r\)-tuples, the probability that a fixed \(r\)-space lies in this kernel is the number of ordered independent tuples in a \((k-t)\)-space divided by their number in \(V\). This is \(\pi_r\), and it is zero when \(r&gt;k-t\). The event \(z\in I_C\) is exactly containment of its contraction image. Count elements of \(I_C\), then take expectation and interchange the finite sums. Some matrix has cardinality at most this expectation, proving the minimum bound.</p>
+<p>In the indicated pure-direction subspace, every nonzero tensor has rank one, so the zero tensor and its \(q^m-1\) nonzero tensors give the lower bound on \(Z\). The second inequality uses \(\pi_1\le1\). Finally \(q^{k-t}-1\ge q^{k-t-1}\) for \(q\ge2\), \(k-t\ge1\), whereas \(q^k-1&lt;q^k\), giving the strict stated bound. \(\square\)</p>
+<h4>An actual error space with a good full-rank choice</h4>
+<p>To test whether the floor is only an artificial tensor construction, use Boolean variables \(x,y_1,\ldots,y_{k-1},z_1,\ldots,z_s\), with \(k\ge2,s\ge0\). Let \(n=k+s\), \(K=n\), \(D\ge K+3t+4\), \(J=I_{\rm Bool}\cap\mathbb F_2[x,y,z]_{\le D}\), and \(w=1\). Take the old quadratic tuple
+\[
+ g=(x,xy_1,\ldots,xy_{k-1}),\qquad P_C=\prod_{\ell=1}^t(1+(Cg)_\ell).
+\]
+The inputs are linearly independent squarefree monomials and their span excludes one. They are the earlier <a href="#entry-2026-10-07-profile-architecture-review">shared-factor control</a>, now with spectator variables and a full-rank ensemble. These are legal complete one-level quadratic ENS inputs, not a hard old contradiction or a new two-level compiler instantiation. Keep their original product charge \(3t\) and companion ceiling \(3t+2\).</p>
+<p>The multiplier domain contains every Boolean function since \(K=n\). With \(\delta_a\) the point indicators, the tuple image and actual error rank therefore satisfy
+\[
+ W=\bigoplus_{a:g(a)\ne0}\langle g(a)\otimes\delta_a\rangle,
+ \qquad E_C=\dim I_C=|\{a:g(a)\ne0,\ Cg(a)=0\}|.
+\]
+Indeed multiplication acts separately at every point, and the binary prefix equals one precisely on \(Cg(a)=0\). Point indicators have degree at most \(K\); every actual companion multiple has degree at most \(K+2t+2\), and the displayed stronger \(D\) also retains its original formal charge. Boolean reduction does not raise degree.</p>
+<p>On the fiber \(x=1,y_1=\cdots=y_{k-1}=0\), all \(2^s\) points have input vector \(e_1\). Thus \(W\) contains \(e_1\otimes H\) with \(\dim H=2^s\). The lemma gives
+\[
+ \log_2\mathbb E_{C\text{ full rank}}2^{E_C}&gt;2^s-t-1.
+\]
+For \(2^s\ge t+2\), the resulting integer logarithmic certificate cannot certify \(E_C=0\). But choose a full-rank \(C\) whose first row is \(e_1^T\), completing it with \(t-1\) distinct coordinate rows. Its prefix contains \(1+x\), and every \(P_Cg_i\) is zero modulo Booleanity. Hence \(\min_{C\text{ full rank}}E_C=0\). This proves the asserted actual-image specialization and its gap for all these parameters, without an enumeration. The denominator for any source-removal application would still be \(h_w(K)=2^n\), not the fiber size.</p>
+<p>This does not refute an expected-dimension estimate, a tailored nonuniform distribution, or a chosen-prefix method. The <a href="#factored-prefix-image">existing factor normalization</a> already explains the useful chosen row here. The control also has full Boolean cutoff rather than a proper hard quotient; no degree lower-bound obstruction is inferred. Its role is to reject the specific claim that full-rank sampling alone fixes the exponential-moment loss.</p>
+<h4>Return to the degree bottleneck</h4>
+<p>The existing <a href="#input-row-shortening">direct shortening proof</a> works on the actual multiplication image and its conditioned input subspaces, without a support flag or cardinality moment. For degree ceiling \(\delta\), binary prefixes still use the enlarged cutoff \(L=K+t\delta\); their sufficient sum is \(\sum_a2^{-t_a}m_{w,a}(L_a)&lt;h_w(K)\). The <a href="#prefix-enlargement-budget">ambient comparison</a> and later charged growth tests prevent substituting a generic whole-weight Hilbert bound as a solution. They do not bound the optimized actual errors. Replacing uniform matrices by full-rank ones in the failed moment does not address that enlargement.</p>
+<p><strong>Follow-up.</strong> Continuing. The sampling repair is settled negatively as a sufficient-certificate shortcut; the item remains relevant through direction-sensitive actual-image estimates. The next attempt is to use \(m_w(L)\), rather than the entire \(h_w(L)\), on the charged quotient after all recorded factor normalization. Compare the exact cut-code description, punctured conjunction ranks and weighted-growth obstruction before proposing a new estimate. Keep arbitrary affine parent mixtures and coherent choices; another sampling ensemble alone is not the needed next step.</p>
+<p><strong>Verification gate.</strong> The <a href="research/results/binary_oriented_shortening_20261008/review.txt">sole isolated medium reviewer passed</a> the probability, moment, actual-image specialization and degree ledger without corrections. It confirmed that input independence and exclusion of one are nondegeneracy controls, not premises needed for the abstract counting identity, and accepted the unchanged goal assessment. Exact dependencies reread: the rank-moment identity and block-direction control, the original shared-factor calibration, the full chosen-prefix/factored-image proof, and direct input shortening with its enlargement budget. Relevant registry searches and recorded impact metadata were checked. The proof is finite-dimensional counting and exact Boolean algebra; no new rule, encoding or computation was needed.</p>
+<p><strong>Process assessment.</strong> Testing the proposed conditioning on the existing shared-factor family avoids a larger case sweep and identifies a remaining bad-direction contribution explicitly. The general lower-bound obligation is still unchanged.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_oriented_shortening_20261008 -->
+<p class="timing-note">Through final snapshot; the sampling test was symbolic.</p>
+</article>
