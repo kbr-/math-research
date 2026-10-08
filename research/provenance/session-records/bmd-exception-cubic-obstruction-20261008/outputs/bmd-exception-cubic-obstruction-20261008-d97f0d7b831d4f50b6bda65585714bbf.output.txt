@@ -1,0 +1,83 @@
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:37
+  for m in [1..maxorder] do coords[m][S+1]:=Sum([1..g],j->decode(given[m][j])*\
+x^(4-j));od;
+                                                                 ^^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:43
+ wh:=List(coords,v->fourier(v,precision));G:=List([0..maxorder],j->List([1..51\
+2],i->zero*x^0));Gsquare:=List([0..maxorder],j->List([1..512],i->zero*x^0));;
+                              ^^^^^^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:48
+   fresh:=[];for j in [0..maxorder] do fresh[j+1]:=cut(Sum([0..QuoInt(j,m)],k-\
+>Ecoef[k+1]*powers[k+1]*gg[j-k*m+1]),precision);od;gg:=fresh;
+                                                                              \
+            ^^^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:48
+   fresh:=[];for j in [0..maxorder] do fresh[j+1]:=cut(Sum([0..QuoInt(j,m)],k-\
+>Ecoef[k+1]*powers[k+1]*gg[j-k*m+1]),precision);od;gg:=fresh;
+                                                                              \
+                        ^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:50
+  for j in [0..maxorder] do G[j+1][branch]:=gg[j+1];Gsquare[j+1][branch]:=cut(\
+Sum([0..j],k->gg[k+1]*gg[j-k+1]),precision);od;
+                                                                              \
+              ^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:50
+  for j in [0..maxorder] do G[j+1][branch]:=gg[j+1];Gsquare[j+1][branch]:=cut(\
+Sum([0..j],k->gg[k+1]*gg[j-k+1]),precision);od;
+                                                                              \
+                      ^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:52
+ cubeone:=List(G[2],p->cut(p^3,precision));cubetwo:=List(G[3],p->cut(p^3,preci\
+sion));;
+                               ^^^^^^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:52
+ cubeone:=List(G[2],p->cut(p^3,precision));cubetwo:=List(G[3],p->cut(p^3,preci\
+sion));;
+                                                                         ^^^^^\
+^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:57
+  sections:=List(item[8],rows->List(rows,r->poly(List(r,decode))));hats:=List(\
+sections,v->fourier(v,precision));last:=Length(sections)-1;;
+                                                                              \
+                      ^^^^^^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:63
+   sums:=List([1..512],i->cut(Sum([1..k],j->GN[j+1][i]*hats[k-j+1][i]),precisi\
+on));
+                                            ^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:63
+   sums:=List([1..512],i->cut(Sum([1..k],j->GN[j+1][i]*hats[k-j+1][i]),precisi\
+on));
+                                                       ^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:63
+   sums:=List([1..512],i->cut(Sum([1..k],j->GN[j+1][i]*hats[k-j+1][i]),precisi\
+on));
+                                                                       ^^^^^^^\
+^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:64
+   if k<=last then sums:=List([1..512],i->sums[i]+hats[k+1][i]);fi;
+                                                  ^^^^
+Syntax warning: Unbound global variable in research/tools/bmd_witt_section_che\
+ck_20261008.g:69
+    obstruction:=List(I,v->512*cf(actual[512-v[1]],4*k-v[2]-1));scalar:=fvec*o\
+bstruction;
+                                  ^^^^^^
+Error, Variable: 'last' is read only in
+  Length( sections ) at research/tools/bmd_witt_section_check_20261008.g:57 called from 
+<function "unknown">( <arguments> )
+ called from read-eval loop at research/tools/bmd_witt_section_check_20261008.g:76
+type 'quit;' to quit to outer loop
+brk> Reading file "research/tools/bmd_witt_section_check_20261008.g" has been abort\
+ed.

@@ -748,6 +748,22 @@ A binary cubic function space whose whole-space polar tensor has partition rank 
 
 ---
 
+### Bounded picard jets
+
+**Claim:** [lem:bounded-picard-jets](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-08-cube-bounded-picard-jets>)
+
+For hyperelliptic character quotients over F27 with squarefree polynomial of degree at most nine and constant term one, actual Abel-Verschiebung jets through order eight are computed using matrices of sizes g and g+binomial(g+2,3), at most 24, and bounded Laurent operations, with logarithmically many matrix multiplications in the slice exponent. On the fixed nine-root curve the assembled jets have period 14040 from exponent 6.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A reusable bounded nonlinear Picard-jet algorithm replaces exponential-length principal parts. Its relation to existing formal-Jacobian and Witt-cohomology algorithms has not been audited, so no novelty claim is made.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Before any independent method-publication claim, compare this normalization and acceleration with prior formal-Jacobian algorithms; current research priority is outside-progression coverage.
+
+---
+
 ### Buffered mixed affine annihilator codimension
 
 **Claim:** [lem:buffered-mixed-affine-annihilator-codimension](<https://kbr.is-a.dev/math-research/#buffered-mixed-affine-annihilator-codimension>)
