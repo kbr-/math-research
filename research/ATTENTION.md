@@ -606,6 +606,22 @@ For every prime power q>=2 and every n>=1, f_q(n,2,1)=(q-1)(n+1): nonzero vector
 
 ---
 
+### Ordinary cyclic intersections
+
+**Claim:** [thm:ordinary-cyclic-intersections](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-08-cube-ordinary-cyclic-extraction>)
+
+For any ordinary positive-dimensional abelian variety J over a finite field, any algebraically closed extension Omega, any A in J(Omega) whose cyclic subgroup is Zariski dense, and any proper closed X in J_Omega, X(Omega) intersect Z*A is finite. X need not descend to a finite field. The proof is not an effective enumeration theorem.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** General cyclic-intersection finiteness beyond the root-curve application, derived from standard structure theorems and the displayed arithmetic lemma. External novelty has not been established.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit prior rank-one ordinary Mordell-Lang formulations and seek effective scalar extraction without replacing it by a count bound.
+
+---
+
 ### Ordinary unary PHP Res parity superpolynomial
 
 **Claim:** [thm:ordinary-unary-PHP-Res-parity-superpolynomial](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-Res-parity-superpolynomial>)
