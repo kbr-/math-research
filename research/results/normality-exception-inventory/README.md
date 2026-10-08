@@ -14,10 +14,10 @@ Scope: dimensions 1–10; odd primes through 97.
 | 6 | 24 | 0 |
 | 7 | 24 | 0 |
 | 8 | 24 | 0 |
-| 9 | 3 | 21 |
+| 9 | 4 | 20 |
 | 10 | 0 | 24 |
 
-Total: **195 complete**, **45 unresolved**.
+Total: **196 complete**, **44 unresolved**.
 
 Evidence:
 
@@ -25,5 +25,6 @@ Evidence:
 - `thm:nine-ternary-normality`: [Complete ternary dimension nine](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-08-cube-nine-ternary-complete) (working_proof).
 - `thm:nine-quinary-normality`: [Complete quinary dimension nine](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-08-cube-nine-quinary-complete) (working_proof).
 - `thm:nine-septenary-normality`: [Complete septenary dimension nine](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-08-cube-nine-septenary-complete) (working_proof).
+- `thm:nine-eleven-normality`: [Complete dimension nine at eleven](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-08-cube-nine-eleven-complete) (working_proof).
 
 The pairwise machine-readable inventory is in `inventory.json`. Bounds may be reduced according to measured cost, as requested by the user.
