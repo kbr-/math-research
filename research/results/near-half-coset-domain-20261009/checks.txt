@@ -1,0 +1,85 @@
+# command: gap -q research/results/near-half-coset-domain-20261009/projection_control.g
+# run c030482ac4, session near-half-coset-domain-20261009; full output
+SIZING 3 models: Boolean cubes8,4,4; modular grids27,25,49; one basis inverse \
+per model
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:16
+ phaseEval:=function(beta,a) return zeta^(Sum([1..nf],i->beta[i]*a[i]) mod q);\
+end;
+                                    ^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:16
+ phaseEval:=function(beta,a) return zeta^(Sum([1..nf],i->beta[i]*a[i]) mod q);\
+end;
+                                                  ^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:16
+ phaseEval:=function(beta,a) return zeta^(Sum([1..nf],i->beta[i]*a[i]) mod q);\
+end;
+                                                                           ^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:17
+ basis:=List(betas,beta->List(bits,a->phaseEval(beta,a)));
+                              ^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:17
+ basis:=List(betas,beta->List(bits,a->phaseEval(beta,a)));
+                                      ^^^^^^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:19
+ coset:=Filtered(Tuples([0..q-1],nf),a->ForAll([1..Length(mdl.rows)],j->Sum([1\
+..nf],i->mdl.rows[j][i]*a[i]) mod q=mdl.charges[j]));
+                                                                              \
+  ^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:19
+ coset:=Filtered(Tuples([0..q-1],nf),a->ForAll([1..Length(mdl.rows)],j->Sum([1\
+..nf],i->mdl.rows[j][i]*a[i]) mod q=mdl.charges[j]));
+                                                                              \
+                                  ^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:25
+ values:=List([1..Length(mdl.rows)],j->List(bits,a->phaseEval(mdl.rows[j],a)-z\
+eta^mdl.charges[j]));
+                                            ^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:25
+ values:=List([1..Length(mdl.rows)],j->List(bits,a->phaseEval(mdl.rows[j],a)-z\
+eta^mdl.charges[j]));
+                                                    ^^^^^^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:25
+ values:=List([1..Length(mdl.rows)],j->List(bits,a->phaseEval(mdl.rows[j],a)-z\
+eta^mdl.charges[j]));
+                                                                             ^\
+^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:30
+   chosen:=First([1..Length(mdl.rows)],l->values[l][b]<>fz);
+                                          ^^^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:30
+   chosen:=First([1..Length(mdl.rows)],l->values[l][b]<>fz);
+                                                        ^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:38
+  shifted:=List([1..nf],i->(betas[b][i]+mdl.rows[j][i]) mod q);
+                            ^^^^^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:38
+  shifted:=List([1..nf],i->(betas[b][i]+mdl.rows[j][i]) mod q);
+                                                            ^
+Syntax warning: Unbound global variable in research/results/near-half-coset-do\
+main-20261009/projection_control.g:56
+  vals:=List(a,i->zeta^i);ev:=Value(prodB,xs,vals);
+                  ^^^^
+q=3 field=GF(2^2) projection_size=3 coset_points=3 basis_rank=8 coefficients=
+[ [ Z(2^2)^2, 0*Z(2), 0*Z(2), 0*Z(2), Z(2^2), 0*Z(2), Z(2^2)^2, 0*Z(2) ], 
+  [ 0*Z(2), Z(2^2)^2, 0*Z(2), Z(2^2)^2, 0*Z(2), Z(2^2), 0*Z(2), Z(2^2) ] 
+ ] PASS
+q=5 field=GF(2^4) projection_size=2 coset_points=5 basis_rank=4 coefficients=
+[ [ Z(2^4)^13, Z(2^4)^4, Z(2^4)^4, Z(2^4)^3 ] ] PASS
+q=7 field=GF(2^3) projection_size=2 coset_points=7 basis_rank=4 coefficients=
+[ [ Z(2^3), Z(2^3)^5, Z(2^3)^5, Z(2)^0 ] ] PASS
+TOTAL transported_terms=24 root_grid_evaluations=101
+ALL PROJECTION CONTROLS PASSED
