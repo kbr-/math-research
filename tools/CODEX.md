@@ -36,20 +36,31 @@ clones discover them without a launcher. The verifier admits only links to that 
 `skills/NAME/SKILL.md`; the runtime ownership manifest remains ignored. Keep private links and
 skill text on their private branch.
 
-Use `python3 tools/codex_reviewer.py --handle NAME --brief FILE` for a fresh reviewer.
-The helper uses the running authenticated daemon and the installed `websockets` package;
-it never starts or reconfigures the daemon. Run inference through `compute.sh`. The native
-root session uses GPT-6.1-Sol (`gpt-6.1-sol`) with medium effort, read-only filesystem access
-and no approval escalation;
-its effective policy is checked before sending the brief. Configured MCP servers are disabled
-for isolated reviewers and judges, since MCP tools are outside the filesystem sandbox. Every resume reapplies the named
-read-only profile, selected model (GPT-6.1-Sol by default) and medium effort: ad-hoc sandbox
-overrides can be lost after native unloading. Its instructions come from the
-body of `.claude/agents/medium-reviewer.md`, not the parent conversation. Native child agents
-inherit the parent's live permission overrides, so a custom child profile alone does not
-provide this isolation. Reuse the handle only for a concrete correction to the same review;
-`--close` archives that owned session. An interrupted review keeps its local handle for
-recovery. Reviewer handles never replace `.codex-session-id`.
+## Native reviewer subagents
+
+Use the harness's native subagent tool, never `thread/start`, `codex exec` or another root session
+for a review. With `collaboration.spawn_agent`, pass `fork_turns="none"`, `model="gpt-6.1-sol"` and
+`reasoning_effort="medium"` explicitly. Give the child the body of
+`.claude/agents/medium-reviewer.md` and the narrow review brief: stable drafts, dependency excerpts
+and required verdict format. Do not fork the parent's conversation or conclusions. On another
+harness use its equivalent fresh-context/model/effort controls; if unavailable, leave the review
+gate incomplete rather than silently falling back to higher effort or a separate root.
+
+The child inherits the parent's tools and permissions. Tell it to edit no files, request no approval
+escalation, use no write-capable app or connector actions, and run no computations unless the brief
+requests a specific check. These are behavioral requirements, not enforced read-only isolation.
+Requested computations still use the protected launcher; native subagent inference itself uses the
+harness, not `compute.sh`.
+
+Retain the child handle for the consolidated review and any concrete corrections or staged
+architecture-review follow-up. Use `followup_task` on that same child; do not spawn a fresh reviewer
+for each correction. Once the review is finished, close the child if the harness provides a close
+operation; otherwise leave it completed/idle, not running. Child threads are distinct from root
+sessions and remain associated with their parent. Never replace `.codex-session-id`.
+
+`python3 tools/codex_reviewer.py --handle NAME --close` remains solely to archive an existing owned
+legacy root reviewer when its review is finished. It refuses new reviews and does not automatically
+archive a timed-out review that may still need recovery. Do not archive other live sessions.
 
 `./start-session.sh [--new|--resume] [--detached] [--worktree NAME] [--base BRANCH]`
 starts/reuses the existing daemon, selects a persistent Git worktree and registers its skills.

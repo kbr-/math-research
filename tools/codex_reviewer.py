@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a fresh medium/read-only native reviewer; reuse its own handle for concrete follow-ups."""
+"""Archive owned legacy root reviewers; new reviews use native subagents (tools/CODEX.md)."""
 import argparse
 import asyncio
 import fcntl
@@ -10,57 +10,33 @@ import re
 import sys
 import uuid
 
-from codex_runtime import Client, NativeError, verify_isolation
-from codex_state import atomic_json
+from codex_runtime import Client, NativeError
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MODEL = 'gpt-6.1-sol'
 
 
-def reviewer_brief(root):
-    source = (root/'.claude/agents/medium-reviewer.md').read_text()
-    # The committed body is the single source for both agents; YAML is Claude's descriptor.
-    return source.split('---', 2)[2].strip()
+RETIRED = ('Root reviewer sessions are retired. Use collaboration.spawn_agent with fork_turns="none", '
+           'model="gpt-6.1-sol", reasoning_effort="medium"; see tools/CODEX.md. '
+           'Use --close only to archive an existing owned legacy reviewer.')
 
 
 async def review(client, root, state, text, close=False, model=None):
-    saved = json.loads(state.read_text()) if state.exists() else None
-    if saved:
-        if saved['root'] != str(root):
-            raise NativeError('Reviewer handle belongs to another checkout')
-        uuid.UUID(saved['thread'])
-    if close:
-        if not saved:
-            raise NativeError('No owned reviewer with this handle')
-        await client.call('thread/archive', {'threadId': saved['thread']})
-        state.unlink()
-        return 'Owned reviewer archived.'
-    model = model or DEFAULT_MODEL
-    config = await client.isolation_config(root, 'medium')
-    if saved:
-        response = await client.call('thread/resume', {'threadId': saved['thread'], 'excludeTurns': True,
-            'approvalPolicy': 'never', 'permissions': ':read-only', 'config': config,
-            'model': model})
-    else:
-        params = {'cwd': str(root), 'approvalPolicy': 'never', 'permissions': ':read-only',
-                  'ephemeral': False, 'baseInstructions': reviewer_brief(root),
-                  'developerInstructions': 'Use only the supplied brief and excerpts. Edit no files.',
-                  'config': config, 'model': model}
-        response = await client.call('thread/start', params)
-    ident = str(uuid.UUID(response['thread']['id']))
-    if Path(response['cwd']).resolve() != root or (saved and ident != saved['thread']):
-        raise NativeError('Native reviewer response belongs to a different thread or checkout')
-    if not saved:
-        # Preserve ownership before inference; materialize without spending model tokens.
-        atomic_json(state, {'thread': ident, 'root': str(root)})
-        await client.call('thread/inject_items', {'threadId': ident, 'items': [{
-            'type': 'message', 'role': 'user', 'content': [{'type': 'input_text',
-            'text': 'External reviewer initialized. Await the supplied review brief.'}]}]})
-    verify_isolation(response, 'medium')
-    return await client.turn(response['thread']['id'], text, 'medium')
+    if not close:
+        raise NativeError(RETIRED)
+    if not state.exists():
+        raise NativeError('No owned reviewer with this handle')
+    saved = json.loads(state.read_text())
+    if saved['root'] != str(root):
+        raise NativeError('Reviewer handle belongs to another checkout')
+    ident = str(uuid.UUID(saved['thread']))
+    await client.call('thread/archive', {'threadId': ident})
+    state.unlink()
+    return 'Owned reviewer archived.'
 
 
 async def run(args, root=ROOT):
+    if not args.close:
+        raise NativeError(RETIRED)
     if not re.fullmatch(r'[A-Za-z0-9_-]+', args.handle):
         raise ValueError('Use a plain name for the reviewer handle')
     directory = root/'.codex/framework/reviewers'
@@ -79,11 +55,11 @@ async def run(args, root=ROOT):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--handle', required=True, help='Owned name; reuse only for a concrete correction')
+    parser.add_argument('--handle', required=True, help='Existing owned legacy reviewer handle')
     action = parser.add_mutually_exclusive_group(required=True)
-    action.add_argument('--brief', type=Path)
+    action.add_argument('--brief', type=Path, help='Retired; refuses new root reviews')
     action.add_argument('--close', action='store_true')
-    parser.add_argument('--model', help=f'Native model (default: {DEFAULT_MODEL}); effort remains medium')
+    parser.add_argument('--model', help=argparse.SUPPRESS)
     parser.add_argument('--timeout', type=float, default=120)
     args = parser.parse_args()
     try:

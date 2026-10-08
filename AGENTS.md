@@ -106,23 +106,24 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set
   reviewer subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not
   inherit its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
-  (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses
-  `tools/codex_reviewer.py` with an owned handle and brief file; see [the native
-  reviewer](tools/CODEX.md). This creates an isolated root reviewer because child agents inherit
-  live parent permissions. If medium effort is unavailable, never substitute a higher-effort
-  reviewer: leave the gate incomplete (conditional status) and file a user request. Resolve every
-  reported gap and drop or justify each unused hypothesis. Brief reviewers narrowly: exact
-  files/anchors, at most one or two named claim searches, dependency excerpts in a scratch file, and
-  required changes as short bullets. Use one consolidated pass by default; scheduled reviews use
-  the staged architecture brief below with that same reviewer. Follow up with that same
-  reviewer only for those stages, to resolve a concrete gap or check a correction that adds or
-  strengthens a claim; do not spawn additional reviewers in the cycle. Defer optional extensions. Record dependencies
-  re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not the status
-  line. An incomplete gate means conditional status, not a working proof; correctness takes
-  precedence over cycle speed. Prepare staging paths, commit message and focused metadata checks
-  during review. Then run a sequential checkpoint batch: preparation marker, checks, provenance,
-  timing export/archive, staging, commit, and any authorized push. Stop on failure; finish the local
-  checkpoint before developing the next result.
+  (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses a native subagent with
+  no conversation history, explicit `gpt-6.1-sol` and `medium` effort; see [the reviewer
+  protocol](tools/CODEX.md). Give it the canonical reviewer instructions and only the review brief
+  and dependency excerpts. Read-only behavior is an instruction, not a separate sandbox: child
+  agents inherit parent permissions. Do not create root sessions for reviews. If medium effort is
+  unavailable, never substitute a higher-effort reviewer: leave the gate incomplete (conditional
+  status) and file a user request. Resolve every reported gap and drop or justify each unused
+  hypothesis. Brief reviewers narrowly: exact files/anchors, at most one or two named claim
+  searches, dependency excerpts in a scratch file, and required changes as short bullets. Use one
+  consolidated pass by default; scheduled reviews use the staged architecture brief below with that
+  same reviewer. Follow up with that same reviewer only for those stages, to resolve a concrete gap
+  or check a correction that adds or strengthens a claim; do not spawn additional reviewers in the
+  cycle. Defer optional extensions. Record dependencies re-read, checks and reviewer verdict in a
+  short **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
+  status, not a working proof; correctness takes precedence over cycle speed. Prepare staging paths,
+  commit message and focused metadata checks during review. Then run a sequential checkpoint batch:
+  preparation marker, checks, provenance, timing export/archive, staging, commit, and any authorized
+  push. Stop on failure; finish the local checkpoint before developing the next result.
 - Measure every research turn from as early as practical, including reading, failed attempts and
   retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
   supply a guessed or placeholder label. For other agents or unavailable metadata, follow the

@@ -118,17 +118,17 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
                     await asyncio.wait_for(reviewer.run(args, root), .1)
                 self.assertLess(time.monotonic()-start, .08)
 
-    async def test_run_locks_handle_reads_brief_and_closes_connection(self):
+    async def test_archive_locks_handle_and_closes_connection(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp);brief = root/'brief';brief.write_text('supplied only')
-            args = argparse.Namespace(handle='Owned', brief=brief, close=False, timeout=2, model='test-model')
+            args = argparse.Namespace(handle='Owned', brief=None, close=True, timeout=2, model=None)
             client = AsyncMock()
             with patch.object(Client, 'connect', AsyncMock(return_value=client)), \
                  patch.object(reviewer, 'review', AsyncMock(return_value='pass')) as perform:
                 self.assertEqual(await reviewer.run(args, root), 'pass')
                 call = perform.call_args.args
                 self.assertEqual(call[0:2], (client, root))
-                self.assertEqual(call[3:], ('supplied only', False, 'test-model'))
+                self.assertEqual(call[3:], ('', True, None))
                 self.assertEqual(call[2].parent, root/'.codex/framework/reviewers')
                 client.close.assert_awaited_once()
                 perform.side_effect = NativeError('failure')
@@ -221,88 +221,40 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
         client.call.return_value={'config':{'mcp_servers':['bad']}}
         with self.assertRaises(NativeError):await client.isolation_config('/fixture','medium')
 
-    async def test_reviewer_fresh_root_same_handle_and_own_archive(self):
+    async def test_root_reviews_refused_before_connection_or_state_creation(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp);source = root/'.claude/agents/medium-reviewer.md'
-            source.parent.mkdir(parents=True);source.write_text('---\nname: role\n---\nCanonical brief')
-            binding = root/'.codex-session-id';binding.write_text('parent')
-            state = root/'review.json'
-            response = {'cwd': str(root), 'thread': {'id': '11111111-2222-3333-4444-555555555555'}, 'reasoningEffort': 'medium',
-                        'approvalPolicy': 'never', 'sandbox': {'type': 'readOnly', 'networkAccess': False}}
-            client = AsyncMock();client.call.return_value = response;client.turn.return_value = 'pass'
-            client.isolation_config.return_value = isolated_config('medium')
-            self.assertEqual(await reviewer.review(client, root, state, 'supplied excerpts', model='selected'), 'pass')
-            client.isolation_config.assert_awaited_once_with(root, 'medium')
-            injected_method, injected = client.call.call_args_list[1].args
-            self.assertEqual(injected_method, 'thread/inject_items')
-            self.assertEqual(injected['threadId'], response['thread']['id'])
-            item, = injected['items']
-            self.assertEqual(item['type'], 'message');self.assertEqual(item['role'], 'user')
-            content, = item['content']
-            self.assertEqual(content['type'], 'input_text');self.assertTrue(content['text'])
-            method, params = client.call.call_args_list[0].args
-            self.assertEqual(method, 'thread/start')
-            self.assertEqual(params['baseInstructions'], 'Canonical brief')
-            self.assertEqual(params['cwd'], str(root))
-            self.assertIs(params['ephemeral'], False)
-            self.assertIn('Edit no files', params['developerInstructions'])
-            self.assertEqual(params['model'], 'selected')
-            self.assertEqual(params['permissions'], ':read-only')
-            self.assertNotIn('sandbox', params)
-            self.assertEqual(params['approvalPolicy'], 'never')
-            self.assertEqual(params['config']['model_reasoning_effort'], 'medium')
-            client.turn.assert_awaited_once_with('11111111-2222-3333-4444-555555555555', 'supplied excerpts', 'medium')
-            self.assertEqual(json.loads(state.read_text())['thread'], '11111111-2222-3333-4444-555555555555')
-            await reviewer.review(client, root, state, 'concrete correction')
-            self.assertEqual(client.call.call_args.args, ('thread/resume', {'threadId': '11111111-2222-3333-4444-555555555555', 'excludeTurns': True,
-                'approvalPolicy':'never','permissions':':read-only','config':isolated_config('medium'),
-                'model':'gpt-6.1-sol'}))
-            await reviewer.review(client, root, state, 'explicit correction', model='selected')
-            self.assertEqual(client.call.call_args.args[1]['model'], 'selected')
-            await reviewer.review(client, root, state, '', close=True)
-            self.assertEqual(client.call.call_args.args, ('thread/archive', {'threadId': '11111111-2222-3333-4444-555555555555'}))
-            self.assertFalse(state.exists());self.assertEqual(binding.read_text(), 'parent')
+            root = Path(tmp); state = root/'review.json'; client = AsyncMock()
+            with self.assertRaisesRegex(NativeError, 'Root reviewer sessions are retired'):
+                await reviewer.review(client, root, state, 'brief')
+            client.call.assert_not_awaited()
+            args = argparse.Namespace(handle='owned', brief=None, close=False, timeout=2, model=None)
+            with patch.object(Client, 'connect', AsyncMock()) as connect:
+                with self.assertRaisesRegex(NativeError, 'native subagents|Root reviewer'):
+                    await reviewer.run(args, root)
+                connect.assert_not_awaited()
+            self.assertEqual(list(root.iterdir()), [])
 
-    async def test_reviewer_default_model_on_fresh_thread(self):
+    async def test_legacy_archive_only_removes_owned_handle_after_success(self):
+        ident = '11111111-2222-3333-4444-555555555555'
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp); source = root/'.claude/agents/medium-reviewer.md'
-            source.parent.mkdir(parents=True); source.write_text('---\nname: role\n---\nReview')
-            client = AsyncMock(); client.isolation_config.return_value = isolated_config('medium')
-            client.call.return_value = {'cwd': str(root),
-                'thread': {'id': '11111111-2222-3333-4444-555555555555'},
-                'reasoningEffort': 'medium', 'approvalPolicy': 'never',
-                'sandbox': {'type': 'readOnly', 'networkAccess': False}}
-            await reviewer.review(client, root, root/'review.json', 'brief')
-            self.assertEqual(client.call.call_args_list[0].args[1]['model'], 'gpt-6.1-sol')
-
-    async def test_misconfigured_reviewer_never_receives_brief_and_remains_owned(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp);state = root/'review.json'
-            state.write_text(json.dumps({'root': str(root), 'thread': '11111111-2222-3333-4444-555555555555'}))
-            client = AsyncMock();client.call.return_value = {'cwd': str(root), 'thread': {'id': '11111111-2222-3333-4444-555555555555'},
-                'reasoningEffort': 'high', 'approvalPolicy': 'never',
-                'sandbox': {'type': 'readOnly', 'networkAccess': False}}
-            with self.assertRaises(NativeError):
-                await reviewer.review(client, root, state, 'secret brief')
-            client.turn.assert_not_awaited();self.assertTrue(state.exists())
-
-    async def test_reviewer_rejects_wrong_identity_before_binding_or_brief(self):
-        ident='11111111-2222-3333-4444-555555555555'
-        with tempfile.TemporaryDirectory() as tmp:
-            root=Path(tmp);source=root/'.claude/agents/medium-reviewer.md';source.parent.mkdir(parents=True)
-            source.write_text('---\nname: role\n---\nReview only the brief')
-            state=root/'review.json';client=AsyncMock();client.isolation_config.return_value=isolated_config('medium')
-            for response in ({'thread':{'id':'invalid'},'cwd':str(root)},
-                             {'thread':{'id':ident},'cwd':'/other'}):
-                client.call.return_value=response
-                with self.assertRaises((ValueError,NativeError)):
-                    await reviewer.review(client,root,state,'secret')
-                self.assertFalse(state.exists());client.turn.assert_not_awaited()
-            state.write_text(json.dumps({'thread':ident,'root':str(root)}))
-            client.call.return_value={'thread':{'id':'11111111-2222-3333-4444-666666666666'},'cwd':str(root)}
-            with self.assertRaises(NativeError):await reviewer.review(client,root,state,'secret')
-            client.turn.assert_not_awaited()
-            self.assertEqual(json.loads(state.read_text())['thread'],ident)
+            root = Path(tmp); state = root/'review.json'; client = AsyncMock()
+            binding = root/'.codex-session-id'; binding.write_text('parent')
+            with self.assertRaisesRegex(NativeError, 'No owned reviewer'):
+                await reviewer.review(client, root, state, '', close=True)
+            state.write_text(json.dumps({'root': '/other', 'thread': ident}))
+            with self.assertRaisesRegex(NativeError, 'another checkout'):
+                await reviewer.review(client, root, state, '', close=True)
+            client.call.assert_not_awaited()
+            state.write_text(json.dumps({'root': str(root), 'thread': ident}))
+            client.call.side_effect = NativeError('archive failed')
+            with self.assertRaisesRegex(NativeError, 'archive failed'):
+                await reviewer.review(client, root, state, '', close=True)
+            self.assertTrue(state.exists())
+            client.call.side_effect = None
+            self.assertEqual(await reviewer.review(client, root, state, '', close=True), 'Owned reviewer archived.')
+            client.call.assert_awaited_with('thread/archive', {'threadId': ident})
+            self.assertFalse(state.exists())
+            self.assertEqual(binding.read_text(), 'parent')
 
 
 class ReviewerCLITest(unittest.TestCase):
