@@ -1,0 +1,21 @@
+usage: check-claims.py [-h] [--base BASE] [--jobs JOBS] [--limit LIMIT]
+                       [--warn-over-limit]
+
+Run the claim-index CI job locally or in CI, reporting every failing check
+with its reason. The workflow .github/workflows/claim-index.yml runs this
+script, and tools/verify-checkout.py --public-history runs it before
+publication, so a push cannot reach CI with a failure this job would find.
+Outside GitHub Actions, whose runners are several times slower, it also fails
+a run that takes longer than LIMIT_S, so a slowdown is noticed. With --warn-
+over-limit, as a push runs it, an overrun is a note instead: a push carries
+changes and may meet a loaded machine, and a performance regression must not
+block publishing.
+
+options:
+  -h, --help         show this help message and exit
+  --base BASE        Revision the changed-claim contract compares against
+                     (EMPTY audits all claims)
+  --jobs JOBS        Checks run at once (default 8)
+  --limit LIMIT      Wall-time limit in seconds outside GitHub Actions
+                     (default 5)
+  --warn-over-limit  Report a run over the limit as a note instead of failing
