@@ -1,0 +1,13 @@
+# command: python3 tools/codex_reviewer.py --handle binary-descent-architecture-20261008 --timeout 300 --brief research/results/binary_descent_architecture_review_20261008/review-briefs/blind.txt
+# run 591ec016cee5456a9334142bc9c3ac53, session binary_descent_architecture_review_20261008; full output
+**Verdict: fail to identify a supported independent alternative.**
+
+- **Most informative comparison question:** Can a restriction of the one-hot ternary Tseitin family simultaneously preserve a linear-size, linear-PC-degree core and simplify an entire depth-\(d\) AC0[2]-Frege proof into fixed-degree polynomial resolution? This would bypass complete ENS-source coverage rather than repackage it.
+
+- **Concrete mechanism to test:** Restrict edge variables, simplify every proof line into shallow decision trees querying bounded-degree F2 polynomials, and translate the restricted inference steps into polynomial resolution. The crucial gap is **simultaneous simplification, hardness preservation, and inference translation**; none of the supplied facts establishes it.
+
+- **Required quantifiers:** Fix the family for each \(d\). For every fixed \(A\), every hypothetical size-\(L^A\) proof must yield a restriction retaining \(\Omega(L)\) PC degree and a polynomial-resolution refutation of size \(2^{o(L)}\), with polynomial degree bounded by a constant \(r(d,A)\), independent of \(L\). The restriction may depend on the proof; the family may not depend on \(A\).
+
+- **Decisive falsifying test:** For any proposed restriction/simplification lemma, exhibit admissible depth-\(d\) proof lines for which every restriction retaining the required hard core forces decision-tree complexity above the claimed translation budget. Testing isolated gates without preserving the core would not suffice.
+
+- **Why the facts bear on this:** (3) supplies the candidate hardness certificate within its cutoff; applying (1) additionally requires checking the constant-width CNF presentation and degree transfer. Neither supplies the restriction bridge. The special-source limitations in (2), (4), and (5) do not repair it, and (6) descends an existing complete map rather than constructing one. Thus this is a comparison experiment, not a supported alternative solution.
