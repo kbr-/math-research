@@ -58,8 +58,13 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   cycle; an obstruction showing that those instances violate them ends the line's relevance.
   When an actual upper bound rules out a candidate family, extract the structural reason and check
   whether it applies to the other candidates. Assess whether a strengthened candidate or a stronger
-  replacement can evade that reason; record what the bound teaches, not only the exclusion. Keep
-  unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
+  replacement can evade that reason; record what the bound teaches, not only the exclusion.
+  When using an evolving formula specification, separate structural admissibility from the
+  conjectural hardness conclusion. Adopt a refinement only with a proved non-vacuity witness at
+  unbounded variable counts and the required encoding budget; otherwise mark it provisional.
+  Concrete families are existence and falsification controls, not restrictions on the abstract
+  proof. A failed proof mechanism constrains that mechanism, not automatically the formula class.
+  Keep unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
   series of runs once its prediction has passed or failed at the sizes that test it. A larger size,
   degree or sample needs a stated question that the finished runs cannot answer, and an answer that
   would change the goal's missing implication; sharper constants for a result off the critical path
