@@ -1,0 +1,82 @@
+<article id="entry-2026-10-08-balanced-coordinate-gap" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-actual-error-goal-review:1" data-claims="imp:diagonal-partition-rank thm:diagonal-factor-cost cor:dense-reader-factor-gap">
+<h3>8 October 2026 — Dense reader coordinates can defeat balanced packing while a weight succeeds</h3>
+<p class="entry-meta">Working all-degree factor-cost bound and source calibration; weighted nonlinear coverage remains open.</p>
+<p><strong>Question.</strong> Can the <a href="#coupled-boolean-packing">coupled-row map</a> handle actual parent mixtures by choosing a convenient coordinate in their input span? Test all constant basis choices at once, rather than another small packing example. The missing binary implication is still a costed estimate or map for arbitrary nonlinear errors.</p>
+<p><strong>General statement.</strong> <code>imp:diagonal-partition-rank</code> is Naslund's imported diagonal-rank theorem. <code>thm:diagonal-factor-cost</code> turns it into an all-field lower bound for balanced product decompositions of disjoint monomial sums, even as Boolean functions. <code>cor:dense-reader-factor-gap</code> gives polynomial-size complete sources whose every nonzero reader direction violates the coupled map's advertised row criterion, while an explicit surviving weight removes that same source.</p>
+<p><strong>New mathematics.</strong> A multigraded coefficient tensor avoids division by factorials and works in characteristic two. A binary code makes the obstruction invariant under every constant change of reader basis, including scalar extension. The source has growing input degree and a paid hard-quotient realization; it is not a sequence of fixed-degree tests.</p>
+<p><strong>Goal progress.</strong> Unchanged. The obstruction concerns the unweighted balanced-coordinate interface of the new map, not all coefficient maps. The paired positive construction shows why it is too strong to require that interface on every source. A weighted or proof-local nonlinear estimate remains missing.</p>
+
+<h4 id="diagonal-partition-rank">Imported diagonal partition rank</h4>
+<p><strong>Imported theorem.</strong> For any field, any finite set \(X\), and tensor order \(d\ge2\), the partition rank of a diagonal tensor with \(m\) nonzero diagonal entries is \(m\). Partition rank counts sums of products across arbitrary nontrivial bipartitions of the slots. This is <a href="https://arxiv.org/pdf/1701.04475v3#page=6">Naslund, <em>The Partition Rank of a Tensor and k-Right Corners</em>, Lemma 11</a>. The definition, statement and induction proof were read in the primary source. The proof contracts one slot, annihilating singleton terms with a large-support functional; ordinary matrix rank starts the induction. The theorem has no characteristic restriction. The paper's separate right-corner application has a characteristic restriction which is not imported here.</p>
+
+<h4 id="diagonal-factor-cost">Diagonal factor cost</h4>
+<p>Let \(F\) be any field, \(t\ge1\), \(d=2t\), and \(M\ge1\). Take independent Boolean variables \(x_{i,j}\), \(1\le i\le M\), \(1\le j\le d\). Put
+\[ z_i=\prod_{j=1}^d x_{i,j},\qquad C=\sum_{i=1}^M c_i z_i,\qquad m=|\{i:c_i\ne0\}|. \]
+Independent spectator variables are allowed. Let \(R\) have degree below \(d\).</p>
+<p><strong>Theorem (diagonal factor cost).</strong> If, as functions on the full Boolean cube over \(F\),
+\[ C+R=\sum_{\ell=1}^s E_\ell F_\ell,\qquad \deg E_\ell,\deg F_\ell\le t, \]
+then
+\[ s\binom{d}{t}\ge m. \]
+The factors need not be Boolean-valued. In particular extending the coefficient field does not bypass this bound. It is a full-cube statement, not a claim modulo arbitrary additional old equations or after weighting.</p>
+<p><strong>Proof: retain only squarefree top degree.</strong> Fix spectator variables to constants and replace every factor by its multilinear representative; degrees do not increase and the functional equality persists. Every product now has ordinary degree at most \(2t=d\). Boolean reduction of a nonsquarefree monomial of that degree strictly lowers its degree. Therefore equality of functions forces equality of the squarefree degree-\(d\) coefficients of the displayed ordinary polynomials. The lower-degree \(R\) contributes nothing.</p>
+<p>Group the variables by their second index \(j\). For \((i_1,\ldots,i_d)\in[M]^d\), extract the coefficient of
+\[x_{i_1,1}\cdots x_{i_d,d}.\]
+For \(C\) this tensor is \(c_i\) when every \(i_j=i\), and zero otherwise: it is diagonal with \(m\) nonzero entries.</p>
+<p>For one product \(EF\), a contribution to such a degree-\(d\) squarefree monomial must assign exactly \(t\) of its slots to \(E\) and the complementary \(t\) to \(F\). Thus its coefficient tensor is
+\[
+ \sum_{\substack{S\subseteq[d]\\|S|=t}}
+ e_S((i_j)_{j\in S})\,f_{[d]\setminus S}((i_j)_{j\notin S}),
+\]
+where \(e_S\) is the coefficient function of \(E\) on the specified slots, and similarly for \(F\). Each summand has partition rank at most one. The tensor of the whole sum has partition rank at most \(s\binom dt\). The imported diagonal theorem gives its rank \(m\), proving the inequality. No polarization inverse or division by \(d!\) is used, so the argument remains valid in small characteristic. \(\square\)</p>
+<p>The joint degree ceiling is essential to this proof. If \(d=3\) but both factor bounds are two, the product \((xy)(xz)\) reduces to \(xyz\); its ordinary degree-four repeated variable contributes to reduced degree three. That case is outside \(d=2t\), and the present coefficient extraction does not establish its analogous bound. The theorem nevertheless covers unbounded even degrees, including the growing-degree family below.</p>
+
+<h4>A basis-independent dense reader space</h4>
+<p>For every sufficiently large \(M\), there is a binary linear code \(\mathcal C\subseteq\mathbb F_2^M\) of dimension \(r=\lfloor M/16\rfloor\) whose nonzero words have weight greater than \(M/4\). Here is the needed existence proof. Choose a uniform binary \(r\)-by-\(M\) generator matrix. Each fixed nonzero message has uniform image in \(\mathbb F_2^M\). The number of words of weight at most \(M/4\) is bounded by
+\[
+ \sum_{j\le M/4}\binom Mj
+ \le 3^{M/4}(1+1/3)^M.
+\]
+Indeed multiply each term by \((1/3)^j\), use \(j\le M/4\), and bound by the full binomial sum. A union bound over fewer than \(2^{M/16}\) nonzero messages gives failure probability below
+\[
+ \left(\frac{2^{17/16}}{3^{3/4}}\right)^M<1,
+\]
+since its base to the sixteenth power is \(2^{17}/3^{12}<1\). Thus a matrix avoiding all such words exists; it is injective because zero is among the forbidden images. This elementary existence argument is not a new coding-theory construction.</p>
+<p>Use a basis of \(\mathcal C\) to define the actual reader tuple
+\[g_a=\sum_i c_{a,i}z_i\quad(1\le a\le r).\]
+Every nonzero constant combination, hence every nonzero coordinate in any constant basis, has a coefficient word of weight greater than \(M/4\). This remains true after any characteristic-two scalar extension: expand the finitely many message coefficients in a binary-independent field basis. The resulting word's support is the union of its binary component words' supports; some component is nonzero. Consequently every nonzero direction in the extended reader span still has weight greater than \(M/4\).</p>
+<p>The factor-cost theorem therefore forces every such direction's decomposition into products of degree at most \(t=d/2\) to use more than
+\[ \frac{M}{4\binom d{d/2}} \]
+terms. Adding an affine offset does not alter its degree-\(d\) coefficient tensor. This is not cured by finding a different basis or enlarging the coefficient field.</p>
+
+<h4 id="dense-reader-factor-gap">Dense reader factor gap</h4>
+<p><strong>Corollary (dense reader factor gap).</strong> Use the preceding code, even \(d\), and parent accuracy \(h\) satisfying
+\[h<\frac{M}{4\binom d{d/2}}.\]
+Under the exact bottom interpretation \(P_i=z_i\), no nonzero coordinate in the reader span admits a direct application of the coupled-row theorem with factor degree at most \(d/2\) and its displayed \(s+1\) rows fitting this accuracy. This is a failure of that advertised criterion; further compression of dependent row values or different weighted constructions are not ruled out.</p>
+<p>It occurs in a complete two-layer source over the actual charged old family. Choose \(Md\) selected edge indicators on pairwise edge-disjoint cycles, grouped into \(M\) sets of size \(d\), using the <a href="#entry-2026-10-08-circulation-compression">recorded cycle-rich charged graph family</a> and its binary restriction. The graph is simple, connected and oriented, has nonzero total charge and expansion \(\varepsilon\); retain \(\max(4,2\Delta)\le D&lt;\varepsilon n/8\). Bottom \(i\) has accuracy \(d\), literal inputs \((1-x_{i,j})_j\), every companion and fresh field. One parent of accuracy \(h\) reads the above basis combinations of the genuine bottom products. Its original degree ceiling is
+\[ B=h(2d+1)+2d, \]
+which dominates the bottom companion degree \(2d+1\) and fresh fields. Include \(B\ge\Delta\) for old generators.</p>
+<p>Nevertheless, if \(M+B\le D\), this complete source has an explicit surviving weight and a global constant coefficient map. Normalize each bottom exactly by selecting its \(d\) literals once, set every parent coefficient to zero, and take
+\[ W=\prod_{i=1}^M(1-x_{i,1}). \]
+Every \(Wz_i\) has a Boolean zero factor and a certificate through \(M+d\). Thus all parent companions vanish after weighting, while bottom companions already vanish and every fresh coefficient field maps to zero. The original proof window still costs \(M+B\), not a reduced parent degree after zero-padding. The selected-edge characters are distinct modulo cuts, so the Fourier expansion of \(W\) has nonzero coefficients on distinct classes; \(\deg W=M\le D\) and \(W\notin J_D\). Weighted replay would put \(W\) in the old pseudoideal if a source refutation through \(B\) existed. This proves the positive cleanup in the same hard quotient.</p>
+<p><strong>Growing-degree, nonvacuous window.</strong> Let
+\[d=2\left\lfloor\frac{\log_2\log_2 M}{2}\right\rfloor,\qquad N=Md,\qquad h=\lfloor N^\eta\rfloor,\quad0<\eta<1.\]
+For large \(M\), \(d\ge2\) tends to infinity and \(\binom d{d/2}\le2^d\le\log_2 M\). Hence \(M/(4\binom d{d/2})>h\) eventually. The source inventory and its written coefficient matrix are polynomial in \(N\). The triangle-replacement expander with \(N\) cycles has \(n=3N\) vertices and a proper window \(D=\Theta(N)\) with the recorded fixed constant. Here
+\[M+B=\frac Nd+O(dN^\eta)=o(N),\qquad (d/2)B=O(d^2N^\eta)=o(N).\]
+So both the successful weighted map and the intended balanced-map replay would fit the old window; it is the latter's coordinate/row premise that fails. This is not a finite-degree extrapolation. It also does not refute the goal: the displayed source is deliberately easy by the explicit weight. \(\square\)</p>
+
+<h4>Interpretation and route decision</h4>
+<p>The <a href="#private-bottom-sum-polar-rank">earlier private-coefficient polar calculation</a> concerns accuracy-one unspecialized bottoms and a different block matrix. The <a href="#low-factor-rank-exterior-kernel-criterion">exterior factor-rank criterion</a> concerns a fixed cubic space \(V\wedge K\) and restriction hypotheses. Neither automatically gives balanced decompositions of these growing-degree old Boolean readers. The <a href="#entry-2026-09-20-general-quadratic-source">complete quadratic theorem</a> already handles its stated constant-degree class; this test does not reopen it.</p>
+<p>The obstruction is to global unweighted factorization of a convenient input coordinate. After multiplying by the displayed \(W\), every coordinate becomes zero, so it would be wrong to promote the obstruction to the weighted problem. This positive weight and its survival are the disjoint-support application of the earlier <a href="#circulation-compression-cost">circulation-compression attainability argument</a>, not a new survival theorem. Likewise a relation modulo the charged old equations need not survive the full-cube coefficient extraction. Further improvements must estimate actual weighted errors or establish factorization only in a justified surviving quotient. The new normalizer remains useful where its hypotheses hold.</p>
+<p><strong>Follow-up.</strong> Continuing, with rotation after the fourth research entry of this spell. The semilinear field issue is solved, coupled packing is available, but this spell has not advanced the necessary unrestricted nonlinear implication; its scoped constructions and obstructions do not earn an extension. Preserve the remaining weighted-map question and move to the next queued linear-magnification lead. Its test must compare growth and survival in the same quotient, rather than reinstate a globally small space of inputs.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-08-coupled-boolean-packing:s1">The <a href="#dense-reader-factor-gap">all-degree coded source</a> rules out an automatic balanced coordinate in every constant basis within the advertised row count, while its explicit weight succeeds. <strong>Follow-up.</strong> Continuing: weighted decompositions or other coherent coupled maps may avoid the unweighted premise; no global factorization dichotomy is established.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Determine whether weighted or old-relation-relative versions of the coupled-row construction can provide a quantitative estimate on arbitrary nonlinear mixtures without requiring global balanced product decompositions. The coded source is already removed by its explicit weight; do not refine its unweighted lower bound merely for stronger constants.</li></ul>
+
+<h4>Checks and provenance</h4>
+<p>The coefficient-projection rule was checked on all monomial pairs of degree at most two in eight variables, with four slots and two labels per slot: 37 monomials, 1,369 pairs and 16 tensor indices, giving 21,904 integer coefficient comparisons. This basis check validates the bilinear projection identity over every field. Native matrix ranks also check representative diagonal flattenings over \(\mathbb F_2\) and \(\mathbb F_3\); the imported theorem supplies the general partition-rank lower bound. The odd-ceiling example above is an algebraic limitation, not a claimed exhaustive odd-degree test. No code family or growing-degree instance was enumerated: their properties are proved above. The <a href="research/results/binary_coupled_coordinate_coverage_20261008/control-output.txt">complete output</a> and checker are retained.</p>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer <a href="research/results/binary_coupled_coordinate_coverage_20261008/review.txt">passed the coefficient argument, code/extension proof and complete source ledger</a>, with no correctness gap. Its attribution clarification is included: the positive weight is an application of existing attainability. Nonzero total charge is used only for the inconsistent old application. The reviewer accepted the unchanged-goal assessment and fourth-entry rotation. The primary diagonal theorem and proof were read, as were the exact coupled-map and circulation records and the differently scoped factor-rank predecessors. The exhaustive coefficient checker passed; no code family or large source was simulated.</p>
+<p><strong>Process assessment.</strong> A coefficient tensor replaces a potentially misleading characteristic-two polarization inverse. The paired successful weight keeps the result focused on the tested interface and avoids mistaking a factorization obstruction for the actual lower-bound problem.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_coupled_coordinate_coverage_20261008 -->
+</article>

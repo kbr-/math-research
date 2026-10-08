@@ -1,0 +1,43 @@
+{
+  "source": {
+    "record": "[Balanced coordinate gap](https://kbr.is-a.dev/math-research/#entry-2026-10-08-balanced-coordinate-gap)",
+    "label": "Balanced coordinate gap",
+    "targets": ["../notebook.html#entry-2026-10-08-balanced-coordinate-gap"]
+  },
+  "reviewer": "Codex and one isolated medium reviewer; PASS",
+  "date": "2026-10-08",
+  "topics": ["ens", "degree-accounting", "affine-linear-algebra", "method-obstructions"],
+  "claims": [
+    {
+      "id": "imp:diagonal-partition-rank",
+      "summary": "Naslund, arXiv1701.04475v3 Lemma11: over any field, a diagonal tensor of order d>=2 with m nonzero diagonal entries has partition rank exactly m, where rank-one terms factor across arbitrary nontrivial slot bipartitions.",
+      "assessment": "Imported established theorem. Primary definition, statement and induction proof read in full; its field has no characteristic restriction. The paper's separate right-corner characteristic condition is not used. No claim of original proof or new tensor theorem.",
+      "status": "established",
+      "rationale": "A standard imported tensor lower bound used to test the balanced-coordinate premise, not an original research result.",
+      "next_action": "Use only with a justified coefficient tensor and nontrivial slot partitions; it does not automatically apply after arbitrary old relations or weighting."
+    },
+    {
+      "id": "thm:diagonal-factor-cost",
+      "summary": "Over any field F, take d=2t>=2, disjoint Boolean monomials z_i=product_{j=1}^d x_{i,j}, C=sum c_i z_i with m nonzero coefficients, and deg R<d. If C+R=sum_{ell=1}^s E_ell F_ell on the full Boolean cube with each factor degree<=t, then s binom(d,t)>=m. Spectator variables and coefficient-field extensions are allowed. No Boolean-valued factor hypothesis is needed.",
+      "assessment": "Working all-field proof passed by a medium reviewer. Products have ordinary degree<=d, so Boolean reduction preserves squarefree top-degree coefficients. Their slot-group coefficient tensor is a sum of at most binom(d,t) partition-rank-one terms per product, while the diagonal tensor has rank m. Avoids factorial division. Not a statement modulo arbitrary old equations or weighted relations; odd degree with both factors at its ceiling-half is outside the proved joint-degree bound. Exhaustive monomial-basis projection checks pass.",
+      "status": "working_proof",
+      "rationale": "Route-specific all-degree obstruction to a balanced factorization premise, including scalar extension. No independent novelty or Frege lower-bound claim.",
+      "next_action": "Use the limitation to distinguish global factorization from actual weighted error removal; do not refine its constants off the critical path."
+    },
+    {
+      "id": "cor:dense-reader-factor-gap",
+      "summary": "Binary codes of dimension floor(M/16) and nonzero weight>M/4 give reader spans of dense sums of M disjoint degree-d monomials, d even, whose every nonzero direction over any characteristic-two extension needs >M/(4 binom(d,d/2)) balanced degree-d/2 product terms. Thus direct coupled packing cannot fit accuracy h below that threshold. Complete two-level charged sources realize these readers with original B=h(2d+1)+2d, yet W=product_i(1-x_{i,1}) and constant maps remove the same source whenever M+B<=D. Taking d~loglog M even and h=(Md)^eta, 0<eta<1, yields a polynomial-size, growing-degree nonvacuous window with M+B and (d/2)B=o(Md).",
+      "assessment": "Working criterion separation passed by one medium reviewer. The elementary random-code proof, extension-invariant distance, original bottom/parent charges, and selected-edge weight survival are included. Positive cleanup is an application of existing circulation attainability. The obstruction applies to the advertised unweighted balanced-coordinate criterion under exact bottom values, not all normalizers, additional charged relations, weighted decompositions, or further row compression. The goal remains unchanged.",
+      "status": "working_proof",
+      "rationale": "A source-realized calibration showing why constant basis changes and algebraic extension do not establish automatic balanced coordinates, paired with a successful weight. No lower bound on the actual proof system or independent novelty claimed.",
+      "next_action": "Rotate the semilinear item without a spell extension; develop actual tuple-image magnification and retain the unresolved weighted-map question."
+    }
+  ],
+  "relationships": [
+    ["thm:diagonal-factor-cost", "depends_on", "imp:diagonal-partition-rank", "Apply the primary all-field diagonal lower bound to the squarefree slot-group coefficient tensor."],
+    ["cor:dense-reader-factor-gap", "depends_on", "thm:diagonal-factor-cost", "Combine balanced product cost with binary code distance, invariant under scalar extension."],
+    ["cor:dense-reader-factor-gap", "cites", "lem:coupled-boolean-packing", "Tests only its displayed balanced-coordinate and row-count criterion, not all coupled normalizers."],
+    ["cor:dense-reader-factor-gap", "depends_on", "lem:circulation-compression-cost", "The positive cleanup uses the existing disjoint-support hitting weight and distinct selected-edge character classes."],
+    ["cor:dense-reader-factor-gap", "cites", "prop:charged-compression-cleanup", "Uses the recorded triangle-replacement expander for a linear proper window with linearly many disjoint cycles."]
+  ]
+}
