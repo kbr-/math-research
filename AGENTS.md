@@ -63,7 +63,10 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   conjectural hardness conclusion. Adopt a refinement only with a proved non-vacuity witness at
   unbounded variable counts and the required encoding budget; otherwise mark it provisional.
   Concrete families are existence and falsification controls, not restrictions on the abstract
-  proof. A failed proof mechanism constrains that mechanism, not automatically the formula class.
+  proof. Treat a method failure as a decision point: compare repairing the method with revising
+  the specification so it applies. State which proved properties survive and which are traded
+  away, recheck non-vacuity and the goal's full budget, and choose by the resulting evidence of
+  progress rather than automatically preserving either the method or the specification.
   Keep unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
   series of runs once its prediction has passed or failed at the sizes that test it. A larger size,
   degree or sample needs a stated question that the finished runs cannot answer, and an answer that
