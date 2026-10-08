@@ -1,0 +1,57 @@
+Executing <Task finished name='Task-2' coro=<Client.connect() done, defined at /home/kbr/dev/math-worktrees/codex-bmd-spin/tools/codex_runtime.py:20> exception=TimeoutError() created at /usr/lib/python3.10/asyncio/tasks.py:636> took 0.104 seconds
+Preparing worktree (new branch 'codex-main')
+Branch 'codex-main' set up to track local branch 'main'.
+HEAD is now at e99302f fixture
+Preparing worktree (new branch 'codex-feature-test')
+Branch 'codex-feature-test' set up to track local branch 'feature/test'.
+HEAD is now at e99302f fixture
+Preparing worktree (new branch 'codex-collision')
+fatal: A branch named 'codex-collision' already exists.
+Executing <Task pending name='Task-4' coro=<IsolatedAsyncioTestCase._asyncioLoopRunner() running at /usr/lib/python3.10/unittest/async_case.py:95> wait_for=<Future pending cb=[Task.task_wakeup()] created at /usr/lib/python3.10/asyncio/base_events.py:429> created at /usr/lib/python3.10/unittest/async_case.py:117> took 0.198 seconds
+Executing <Task pending name='Task-1' coro=<IsolatedAsyncioTestCase._asyncioLoopRunner() running at /usr/lib/python3.10/unittest/async_case.py:95> wait_for=<Future pending cb=[Task.task_wakeup()] created at /usr/lib/python3.10/asyncio/base_events.py:429> created at /usr/lib/python3.10/unittest/async_case.py:117> took 0.295 seconds
+Executing <Task pending name='Task-1' coro=<IsolatedAsyncioTestCase._asyncioLoopRunner() running at /usr/lib/python3.10/unittest/async_case.py:101> wait_for=<Future pending cb=[Task.task_wakeup()] created at /usr/lib/python3.10/asyncio/base_events.py:429> created at /usr/lib/python3.10/unittest/async_case.py:117> took 0.293 seconds
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a time"): develop the head in its own entry (data-lead or data-bridge)
+1 commits remapped: 0 revision fields, 0 review hashes, 0 attention fingerprints.
+===== test_site.Browser.test_group_0 =====
+======================================================================
+FAIL: test_group_0 (test_site.Browser) [test_notebook_deep_links:links]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/tests/test_site.py", line 94, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 5.247997701999999 not less than 5.0 : test_notebook_deep_links:links took 5.2 s
+
+----------------------------------------------------------------------
+Ran 1 test in 10.191s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_2 =====
+======================================================================
+FAIL: test_group_2 (test_site.Browser) [test_notebook_math:layout]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-worktrees/codex-bmd-spin/tools/tests/test_site.py", line 94, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 5.388981283 not less than 5.0 : test_notebook_math:layout took 5.4 s
+
+----------------------------------------------------------------------
+Ran 1 test in 9.655s
+
+FAILED (failures=1)
+
+Over the 10 s limit (AGENTS.md). Slowest tests:
+   10.19 s  test_site.Browser.test_group_0
+    9.66 s  test_site.Browser.test_group_2
+    9.04 s  test_site.Browser.test_group_1
+    6.19 s  test_claim_registry.ClaimRegistryTests.test_default_display_surfaces_historical_elimination_without_changing_tsv
+    5.90 s  test_recovery_evidence.RecoveryIntegrationTest.test_switching_cycles_does_not_reassign_an_earlier_resume
+    5.65 s  test_codex_hooks.CodexHooksTest.test_parent_children_and_sanitization_collisions_are_isolated
+    5.37 s  test_compute_cli.RunnerChecks.test_timeout_kills_service_and_child
+    5.03 s  test_codex_hooks.CodexHooksTest.test_wrong_bundle_and_changed_payload_stay_pending
+    4.64 s  test_codex_hooks.CodexHooksTest.test_truncation_with_both_markers_never_counts_receipt
+    4.20 s  test_compute_cli.RunnerChecks.test_standalone_logging_argument_preservation_and_output_limit
+Ran 558 tests in 17.7s: FAILED (2), TOO SLOW

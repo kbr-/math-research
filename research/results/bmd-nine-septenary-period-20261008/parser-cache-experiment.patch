@@ -1,0 +1,63 @@
+diff --git a/tools/claim_registry.py b/tools/claim_registry.py
+index 26d6ba35d..a640ae830 100644
+--- a/tools/claim_registry.py
++++ b/tools/claim_registry.py
+@@ -5,6 +5,7 @@ Standard library only. This module does not assess mathematical correctness.
+ import hashlib
+ import copy
+ import json
++from functools import lru_cache
+ from pathlib import Path
+ import re
+ import subprocess
+@@ -173,7 +174,8 @@ def _shape_reference(value, spec, path='$', schema=None):
+                 _shape_reference(child, items, lambda i=i: f'{where()}[{i}]', schema)
+ 
+ 
+-def markdown_links(text):
++@lru_cache(maxsize=32768)
++def _markdown_link_pairs(text):
+     """Inline links, including balanced parentheses/angle-bracket destinations.
+ 
+     Reject unsupported link syntax rather than silently losing a destination.
+@@ -198,9 +200,15 @@ def markdown_links(text):
+             target = target[1:-1]
+         require(bool(target) and '\n' not in target, 'Empty/multiline link target')
+         require(not re.search(r'\s+[\"\']', target), 'Link titles require explicit importer support')
+-        result.append({'label': match.group(1), 'target': target})
++        result.append((match.group(1), target))
+     require(len(result) == text.count(']('), 'Unsupported Markdown link syntax')
+-    return result
++    return tuple(result)
++
++
++def markdown_links(text):
++    # Validation, rendering and reference views often parse the same text.
++    # Cache immutable pairs, while preserving independent mutable caller results.
++    return [{'label': label, 'target': target} for label, target in _markdown_link_pairs(text)]
+ 
+ 
+ def references(claim):
+diff --git a/tools/tests/test_claim_registry.py b/tools/tests/test_claim_registry.py
+index b41730d20..246b0e8a5 100644
+--- a/tools/tests/test_claim_registry.py
++++ b/tools/tests/test_claim_registry.py
+@@ -226,6 +226,18 @@ class ClaimRegistryTests(unittest.TestCase):
+                           {'label': 'B', 'target': '../a b.md'}])
+         with self.assertRaises(ValueError): cr.markdown_links('[bad](unclosed')
+ 
++    def test_link_results_are_isolated_and_edited_text_is_reparsed(self):
++        text = '[Source](one.md#proof)'
++        first = cr.markdown_links(text)
++        first[0]['target'] = 'incorrect.md'
++        first.append({'label': 'Injected', 'target': 'extra.md'})
++        self.assertEqual(cr.markdown_links(text),
++                         [{'label': 'Source', 'target': 'one.md#proof'}])
++        self.assertEqual(cr.markdown_links(text.replace('one.md', 'two.md')),
++                         [{'label': 'Source', 'target': 'two.md#proof'}])
++        with self.assertRaises(ValueError):
++            cr.markdown_links(text[:-1])
++
+     def test_schema_and_formalization_scope_guards(self):
+         original = cr.import_markdown(source())
+         for mutate in (lambda d: d.update(schema_version=3),
