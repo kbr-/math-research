@@ -37,10 +37,18 @@ def skill_descriptor(root, name):
             and source.resolve().is_relative_to(root.resolve()) and (source/'SKILL.md').is_file())
 
 
+def claim_base(branch, remote):
+    ref = remote + '/' + branch.removeprefix(remote + '/')
+    known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', ref], cwd=ROOT,
+                           capture_output=True).returncode == 0
+    return ref if known else 'EMPTY'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, help='Also save the verification report')
     parser.add_argument('--public-history', help='Also check reachable paths in this public branch/ref')
+    parser.add_argument('--remote', default='origin', help='Remote for the claim-check base (default: origin)')
     args = parser.parse_args()
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT, text=True).split('\0')) - {''}
     failures, notes = [], []
@@ -132,11 +140,8 @@ def main():
             if name in private_paths or name.startswith('private/') or Path(name).name in excluded_names:
                 failures.append('Local-only material remains in public history: ' + name)
         # Run the claim-index CI job against the published branch, so a push cannot fail it.
-        remote = 'origin/' + args.public_history.removeprefix('origin/')
-        known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', remote], cwd=ROOT,
-                               capture_output=True).returncode == 0
         claims = subprocess.run([sys.executable, str(ROOT / 'tools/check-claims.py'),
-                                 '--base', remote if known else 'EMPTY', '--warn-over-limit'],
+                                 '--base', claim_base(args.public_history, args.remote), '--warn-over-limit'],
                                 cwd=ROOT, text=True, capture_output=True)
         if claims.returncode:
             failures += ['Claim-index CI check: ' + line.strip() for line in claims.stdout.splitlines()

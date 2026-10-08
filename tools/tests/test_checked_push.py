@@ -1,6 +1,8 @@
 import os
+import importlib.util
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -63,6 +65,49 @@ class CheckedPushTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(f'HEAD moved from {checked} while the checks ran', result.stderr)
         self.assertEqual(git(self.remote, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'main'))
+
+    def test_selected_remote_is_used_for_checks_push_and_confirmation(self):
+        private = self.tmp / 'private.git'
+        git(self.tmp, 'init', '-q', '--bare', '-b', 'main', str(private))
+        git(self.work, 'remote', 'add', 'private', str(private))
+        git(self.work, 'push', '-q', 'private', 'main')
+        original = git(self.remote, 'rev-parse', 'main')
+        result = self.run_push('--remote', 'private', 'main')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(git(private, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'HEAD'))
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), original)
+        calls = (self.work / 'calls').read_text()
+        self.assertIn('--public-history main --remote private', calls)
+        self.assertIn('--base private/main', calls)
+        self.assertNotIn('origin', calls)
+        self.assertRegex(result.stdout, r'Pushing 1 commits, \d+B, to private/main\.')
+        self.assertIn('private/main is at', result.stdout)
+
+    def test_verifier_claim_base_uses_selected_remote(self):
+        sys.path.insert(0, str(ROOT / 'tools'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'tools'))
+        spec = importlib.util.spec_from_file_location('push_checkout', ROOT / 'tools/verify-checkout.py')
+        checkout = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(checkout)
+        checkout.ROOT = self.work
+        git(self.work, 'remote', 'add', 'private', str(self.remote))
+        git(self.work, 'fetch', '-q', 'private')
+        self.assertEqual(checkout.claim_base('main', 'private'), 'private/main')
+        self.assertEqual(checkout.claim_base('private/main', 'private'), 'private/main')
+        self.assertEqual(checkout.claim_base('main', 'origin'), 'origin/main')
+        self.assertEqual(checkout.claim_base('missing', 'private'), 'EMPTY')
+
+    def test_help_and_invalid_options_do_not_publish(self):
+        original = git(self.remote, 'rev-parse', 'main')
+        result = self.run_push('--help')
+        self.assertEqual(result.returncode, 0)
+        self.assertIn('--remote NAME', result.stdout)
+        for args in [('--remote',), ('--remote', ''), ('--remote', '--force'),
+                     ('--unknown',), ('main', 'extra'), ('--remote', 'missing', 'main')]:
+            with self.subTest(args=args):
+                self.assertNotEqual(self.run_push(*args).returncode, 0)
+        self.assertFalse((self.work / 'calls').exists())
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), original)
 
     def test_fails_when_the_remote_branch_is_not_the_pushed_commit(self):
         # The remote accepts the push, then the branch moves, as a concurrent push could move it.
