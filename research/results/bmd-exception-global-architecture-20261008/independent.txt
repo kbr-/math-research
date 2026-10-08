@@ -1,0 +1,36 @@
+# command: python3 tools/codex_reviewer.py --handle bmd-global-architecture-20261008 --brief /home/kbr/dev/math/research/tmp/codex/a5b0b37f69d471d960ab6922b1bb2da435eb08cd6fe2519c2d464160ac748301/global-independent-brief.txt --timeout 285
+# run 13079f8ae7d442d594feb3718d19d309, session bmd-exception-global-architecture-20261008; full output
+**Verdict: pass in principle; no justified practical shortcut.**
+
+### Main architecture: certificate search followed by exact filtering
+
+Use established result **1** directly, rather than trying to infer a cutoff from bounded recursion matrices.
+
+1. For \((n,p)=(9,3)\), choose the trace-zero specialization covered by result 1 and enumerate its finite certificates.
+2. Accept a certificate only after quantifier elimination verifies the **entire universal sentence**, including every residue \(j\bmod p^r\) and every \(y\in J(K)\).
+3. Compute its height/degree bound
+   \[
+   D=\max_\ell\left\lfloor\sqrt{h_\ell/a_\ell}\right\rfloor.
+   \]
+   Verify the required positivity and extension-degree normalization.
+4. Test the **original generic root-series determinant** exactly for
+   \[
+   2\le d\le \max(D,n-3).
+   \]
+   This includes the degrees outside the stated bulk formula. Retain precisely the vanishing determinants.
+
+### Established versus missing
+
+- **Established:** existence and termination of certificate search, the resulting degree bound, and transfer of successful specialization to generic normality.
+- **Missing deliverable:** an executable search/verifier and an actual verified certificate with computable degree data. No new mathematical implication is needed for this architecture.
+- **Not justified:** any claim that shallow Frobenius depth, a short fibre-point list, or modest runtime suffices. Those would be additional conjectural assertions.
+
+### Smallest decisive next test
+
+Produce **one complete, universally verified certificate for \((9,3)\)** and extract its numerical cutoff. This is logically decisive, although the supplied results give no reason it should be computationally small. Checking selected residues, candidate fibre points, or many individual degrees would not substitute for this test.
+
+### Completeness and excess requirements
+
+The universal sentence covers every integer degree through its residue and quotient modulo \(p^r\); the height bound therefore bounds **all bulk exceptions**, not selected progressions. Exact generic filtering removes specialization-only failures.
+
+The requested endpoint is weaker than this certificate: it asks only about integer multiples \(dA\), whereas the certificate controls the stated locus for **every** \(y\in J(K)\). That stronger obligation is justified by result 1, but may be expensive. Ordinarity and the additional machinery in results 2–3 are unused.
