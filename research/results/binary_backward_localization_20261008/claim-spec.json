@@ -1,0 +1,75 @@
+{
+  "source": {
+    "record": "[Backward rank interface](https://kbr.is-a.dev/math-research/#entry-2026-10-08-backward-rank-interface)",
+    "label": "Backward rank interface",
+    "targets": [
+      "../notebook.html#entry-2026-10-08-backward-rank-interface"
+    ]
+  },
+  "date": "2026-10-08",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer; PASS",
+  "topics": [
+    "ens",
+    "affine-linear-algebra",
+    "degree-accounting",
+    "method-obstructions"
+  ],
+  "claims": [
+    {
+      "id": "lem:backward-rank-defect",
+      "summary": "For nondegenerate symmetric/Hermitian forms, rank A=rank(AA*)+kappa(A), kappa=dim(im A* intersect ker A). For self-adjoint idempotents H,P,Q, A=HQP and complementary cutoffs E0,E1 commuting with Q-F, rank A<=rank(HFP)+rank((Q-F)E0)+rank(E1PQ)+kappa. Over F4 explicit unitary-conjugated projections give rank A=r but AA*=0 for every r>=1 by direct sums; fixed projection identities prevent repairing that defect by changing only the form.",
+      "assessment": "Working exact rank decomposition and all-size algebraic control, medium-reviewed. Native GAP exhausts 256 small matrices and checks the explicit unitary. It is a finite-field rank-interface test, not a counterexample to the complex theorem or the actual PC source. Extra idempotence assumptions retained for projection scope are identified.",
+      "status": "working_proof",
+      "rationale": "Elementary refinement of the recorded Gram warning; identifies the missing term rather than claiming a lower-bound obstruction.",
+      "next_action": "Require a source-compatible reverse map, controlled rank error and degree ledger before transferring backward localization."
+    },
+    {
+      "id": "lem:finite-family-moment-pairing",
+      "summary": "For proper binary degree-D pseudoideal J containing Booleanity, T>=1,2T<=D,q>=1 and finite binary subspaces W_alpha of Q_T^q, annihilators mu_i over a finite extension can satisfy mu_1(1)=1 and make sum_i mu_i(f_i g_i) nonsingular on every W_alpha. Field size >1+sum dimW_alpha suffices. Including the object and every kernel of a fixed finite binary map family gives adjoints with rank AA*=rank A, over one common field. Hermitian versions follow over its quadratic extension.",
+      "assessment": "Working tuple-subspace extension of the old squarefree determinant method, medium-reviewed. Independent diagonal forms, bounded absorption and homogeneous common normalization are explicit. Source domains stay binary. Does not preserve prescribed self-adjoint operator identities or bound adjoint polynomial degrees; not a source functional construction.",
+      "status": "working_proof",
+      "rationale": "Route-specific refinement of existing retained-PC pairing, preventing a blanket Gram-rank objection. No independent novelty or lower-bound claim.",
+      "next_action": "Test an actual source-shaped adjoint and its polynomial degree rather than nonsingularity alone."
+    },
+    {
+      "id": "prop:adjoint-degree-loss",
+      "summary": "For every N>=1, full Boolean function algebra admits normalized nonzero F4 point weights, nonsingular moment pairing and nonsingular restriction to ker(S), where Sf=f(0)1. Rank SS*=rank S=1, yet S*1=m_0^-1 product_j(1-x_j) has exact multilinear degree N. A Hermitian version over F16 fixes the F4 weights.",
+      "assessment": "Working explicit all-dimensional degree-loss control, medium-reviewed, applying the existing localization support-cost argument. The forward evaluation preserves degree and the rank repair succeeds; a cheap reverse map still does not follow. Satisfiable full-cube control, not a hard-family or universal-adjoint impossibility theorem.",
+      "status": "working_proof",
+      "rationale": "Separates algebraic rank repair from the paid-degree interface needed by the route; no new hardness result.",
+      "next_action": "Keep the control in the scheduled review and require source-specific degree bounds for any proposed adjoint."
+    }
+  ],
+  "relationships": [
+    [
+      "lem:finite-family-moment-pairing",
+      "depends_on",
+      "lem:retained-PC-moment-pairing",
+      "Reuses and explicitly extends the squarefree determinant argument to finite binary tuple subspaces and map kernels."
+    ],
+    [
+      "lem:finite-family-moment-pairing",
+      "cites",
+      "lem:prime-retained-rectangular-pairing",
+      "Later all-prime version read: rectangular pt ledger differs from the present binary simultaneous-kernel scope."
+    ],
+    [
+      "prop:adjoint-degree-loss",
+      "depends_on",
+      "lem:localization-support-cost",
+      "Complemented-coordinate point indicator has exact degree N; proof restated."
+    ],
+    [
+      "prop:adjoint-degree-loss",
+      "cites",
+      "lem:finite-family-moment-pairing",
+      "Shows why nonsingular kernel restrictions and repaired Gram ranks alone do not imply low-degree adjoints."
+    ],
+    [
+      "lem:backward-rank-defect",
+      "cites",
+      "lem:finite-family-moment-pairing",
+      "Flexible pairings can repair finite map families but cannot retain all fixed projection identities in the displayed countercontrol."
+    ]
+  ]
+}
