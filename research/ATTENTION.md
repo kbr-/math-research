@@ -464,6 +464,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 ---
 
+### Coset character degree ceiling
+
+**Claim:** [thm:coset-character-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-08-coset-character-ceiling>)
+
+For prime q>=3, proof characteristic not q, and a rank-r>=1 modular system Ax=b on v Boolean coordinates, row width <=w>=1, consistent over F_q but Boolean-unsatisfiable, put k=v-r and C=min(v,ceil((1-1/q)v+(k+1)/q+w sqrt(2r log(4r+2)))). The forbidden-tuple Boolean encoding has PC degree <=max(ceil(C/2)+w+1,k+3). At fixed q,w this is max(v-r,v/2-r/(2q))+O_w(sqrt(r log(r+1))+1). In particular q3,r=2v/3,w bounded gives 7v/18+o(v).
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** An actual rank-sensitive PC upper bound for field-consistent Boolean-empty modular cosets, beyond the previous full-field-inconsistent and graph-local classes; decisively excludes the first proposed family. Independent novelty has not been established.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact rank-sensitive ceiling with existing modular-CSP and Gaussian-width upper bounds before making a novelty or publication claim; continue the remaining family tests.
+
+---
+
 ### Cube boundary eight all fields
 
 **Claim:** [thm:cube-boundary-eight-all-fields](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-boundary-through-eight>)
