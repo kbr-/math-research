@@ -23,6 +23,14 @@ def inventory(registry, spec, n_max, p_max):
         raise ValueError('Requested bounds exceed the reviewed inventory scope')
     if spec['version'] != 1:
         raise ValueError('Unknown inventory scope format')
+    for rule in spec['complete_empty']:
+        if 'primes' in rule:
+            selected = rule['primes']
+            if (not isinstance(selected, list) or not selected
+                    or any(type(p) is not int or p < 3 or p > spec['p_max']
+                           or any(p % q == 0 for q in range(2, int(p**0.5) + 1))
+                           for p in selected)):
+                raise ValueError('Complete prime scope must be a nonempty list of reviewed odd primes')
     claims = {c['id']: c for c in registry['claims']}
     evidence = {}
     for rule in spec['complete_empty'] + spec['partial']:
@@ -39,7 +47,8 @@ def inventory(registry, spec, n_max, p_max):
     for n in range(1, n_max + 1):
         for p in primes:
             complete = [r for r in spec['complete_empty']
-                        if r['dimension_min'] <= n <= r['dimension_max']]
+                        if r['dimension_min'] <= n <= r['dimension_max']
+                        and ('primes' not in r or p in r['primes'])]
             partial = [r for r in spec['partial'] if (r['n'], r['p']) == (n, p)]
             rows.append({'n': n, 'p': p,
                          'status': 'complete' if complete else 'unresolved',
@@ -70,6 +79,8 @@ def markdown(data):
     lines += [f"- `{cid}`: {e['record']} ({e['mathematical_status']})."
               for cid, e in data['evidence'].items()]
     for row in data['pairs']:
+        if row['status'] == 'complete':
+            continue
         for known in row['certified_normal_degrees']:
             lines += ['', f"For n={row['n']}, p={row['p']}, certified normal degrees: "
                       + json.dumps(known, sort_keys=True) + '. The complete exception set remains unresolved.']

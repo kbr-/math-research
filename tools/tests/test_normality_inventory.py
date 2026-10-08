@@ -47,3 +47,22 @@ class NormalityInventoryTest(unittest.TestCase):
         self.assertEqual((result['complete_pairs'],result['unresolved_pairs']), (24,3))
         for n,p in [(11,97),(10,101),(0,7),(9,2)]:
             with self.assertRaises(ValueError): inventory(self.claims,self.spec,n,p)
+
+    def test_single_prime_completion_does_not_spread_to_other_primes(self):
+        self.spec['complete_empty'].append(dict(
+            claim='cor:partial', dimension_min=9, dimension_max=9, primes=[3],
+            summary_sha256=summary_hash(self.claims['claims'][1])))
+        result = inventory(self.claims, self.spec, 10, 97)
+        self.assertEqual((result['complete_pairs'], result['unresolved_pairs']), (193, 47))
+        pairs = {(r['n'], r['p']): r for r in result['pairs']}
+        self.assertEqual(pairs[9, 3]['exception_set'], [])
+        self.assertIsNone(pairs[9, 5]['exception_set'])
+        self.assertIsNone(pairs[10, 3]['exception_set'])
+        self.assertNotIn('The complete exception set remains unresolved.', markdown(result))
+
+    def test_invalid_complete_prime_scope_fails_closed(self):
+        for selected in [[], [2], [9], [101], '3', [True]]:
+            spec = copy.deepcopy(self.spec)
+            spec['complete_empty'][0]['primes'] = selected
+            with self.assertRaisesRegex(ValueError, 'prime scope'):
+                inventory(self.claims, spec, 10, 97)
