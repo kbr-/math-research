@@ -1,0 +1,34 @@
+{
+  "source": {
+    "record": "[Balanced modular cuts](https://kbr.is-a.dev/math-research/#entry-2026-10-08-balanced-modular-cuts)",
+    "targets": ["https://kbr.is-a.dev/math-research/#entry-2026-10-08-balanced-modular-cuts"],
+    "label": "Balanced modular cuts"
+  },
+  "reviewer": "Codex with isolated medium correctness reviewer",
+  "date": "2026-10-08",
+  "topics": ["degree-accounting", "polynomial-calculus", "method-obstructions"],
+  "claims": [
+    {
+      "id": "prop:balanced-modular-degree-ceiling",
+      "summary": "For a simple n-vertex graph with m Boolean edge variables, maximum degree Delta>=1, oriented modular equations over Z/q of nonzero total charge, and a field whose characteristic does not divide q, the canonical forbidden-tuple Boolean encoding has an ordinary PC refutation of degree <=max(2Delta,ceil(C/2)+Delta+1) for any vertex ordering of cutwidth C. Taking C=ceil(mn/(2(n-1))+Delta sqrt(2n log(2n))) gives m/4+O_Delta(sqrt(n log n)) on fixed-degree families with m=Theta(n).",
+      "assessment": "Working complete ordinary-polynomial derivation. Affine character units in a finite root-of-unity extension have explicit Boolean product corrections; cut binomials are balanced using actual inverse-polynomial multiplication at one extra temporary degree. Coefficient-component descent returns the refutation to the original field without degree increase. No small expanded proof-size bound, positive-flow upper bound, or new lower bound is claimed.",
+      "status": "working_proof",
+      "rationale": "Excludes the Boolean modular fixed-degree graph family from the moving-half-variable old-degree route by an actual upper proof, rather than the weakness of an imported lower-bound certificate. The general Frege goal remains open.",
+      "next_action": null
+    },
+    {
+      "id": "cor:balanced-ternary-degree-ceiling",
+      "summary": "The recorded full ternary Fourier and one-hot systems of nonzero total charge have ordinary PC refutation degree <=max(2Delta,ceil(C_star/2)+Delta+1), where C_star=ceil(mn/(2(n-1))+Delta sqrt(2n log(2n))). This is m/4+O_Delta(sqrt(n log n)) for fixed-degree m=Theta(n) families, refining the earlier m/2 ceiling.",
+      "assessment": "Working instantiation of the balanced unit-character proof using U²=V,V²=U,UV=1, then the recorded Fourier-to-one-hot transfer and binary coefficient descent. The older bound remains true but is weaker. The proof does not alter the charged pseudoideal lower-window construction or its actual error-rank questions.",
+      "status": "working_proof",
+      "rationale": "Refines an existing route calibration. It strengthens the reason that this encoding cannot repair the ambient contraction solely by improving its old degree lower bound, but does not refute other proof-local error estimates.",
+      "next_action": null
+    }
+  ],
+  "relationships": [
+    ["prop:balanced-modular-degree-ceiling", "depends_on", "prop:tseitin-degree-ceiling", "Reuses the fully reread random-key cutwidth bound from that proof; the new Boolean modular derivation balances the two character supports."],
+    ["cor:balanced-ternary-degree-ceiling", "depends_on", "prop:balanced-modular-degree-ceiling", "Instantiates the balanced character proof with the ternary unit multiplication table; this is use of its proof mechanism, not a Boolean-edge encoding identification."],
+    ["cor:balanced-ternary-degree-ceiling", "depends_on", "lem:ternary-fourier-transfer", "The complete local transfer supplies the one-hot and CNF degree ceilings and permits binary coefficient descent."],
+    ["cor:balanced-ternary-degree-ceiling", "refines", "prop:tseitin-degree-ceiling", "Under the same graph and charge hypotheses the new global upper bound is no larger, and halves its leading cutwidth term; the prior upper bound is valid, not retracted."]
+  ]
+}

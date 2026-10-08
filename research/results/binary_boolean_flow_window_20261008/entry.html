@@ -1,0 +1,67 @@
+<article id="entry-2026-10-08-balanced-modular-cuts" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-kernel-goal-review:3" data-claims="prop:balanced-modular-degree-ceiling cor:balanced-ternary-degree-ceiling">
+<h3>8 October 2026 — Balanced character cuts rule out the Boolean modular candidate</h3>
+<p class="entry-meta">Working PC degree upper bounds; positive-flow constraints remain a separate candidate.</p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, can Boolean edge variables improve the normalization of modular Tseitin enough to reach the <a href="#moving-cutoff-budget">moving midpoint window</a>? The full ternary-alphabet encoding already fails its own ambient test, but it has more variables. Check the Boolean encoding itself, including its actual PC derivations.</p>
+<p><strong>New mathematics.</strong> A modular cut relation can be balanced between two character products. This gives an ordinary-PC degree upper bound of half the cutwidth plus a fixed local reserve. On fixed-degree graph families with a linear number of edges, the bound is \(m/4+o(m)\), where \(m\) is the Boolean edge-variable count. The same balancing refines the older ternary upper bound.</p>
+<p><strong>Goal progress.</strong> Unchanged. This rules out another direct old-degree-window candidate, not superpolynomial Frege lower bounds for these formulas by other methods. No near-half-variable lower-bound family is obtained.</p>
+<p><strong>General statement.</strong> <code>prop:balanced-modular-degree-ceiling</code> holds for every graph, orientation, charge vector and modulus meeting its stated assumptions. <code>cor:balanced-ternary-degree-ceiling</code> applies the same ordinary-PC argument in the recorded ternary domains. Exact local controls check the identities, not the asymptotic graph conclusion.</p>
+<h4>Boolean modular encoding</h4>
+<p>Let \(G\) be a finite simple graph on \(n\ge2\) vertices, \(m\) edges, and maximum degree \(\Delta\ge1\). Orient its edges, with signs \(\sigma_{ve}\in\{1,-1\}\) chosen oppositely at the endpoints. Fix an integer \(q\ge2\), a field \(F\) with characteristic not dividing \(q\), and charges \(c_v\in\mathbb Z/q\mathbb Z\) whose sum is nonzero. Use one Boolean variable \(x_e\) per edge. At each vertex require
+\[\sum_{e\ni v}\sigma_{ve}x_e=c_v\pmod q.\]
+Encode it by the falsity monomial for each forbidden Boolean assignment to its incident edges, together with the Boolean axioms. Width is at most \(\Delta\), and there are at most \(n2^\Delta\) local clauses. Nonzero total charge proves inconsistency. For the binary goal, take \(F=F_2\) and odd \(q\). This is a Boolean-edge system, not the full \(q\)-label edge system.</p>
+<p>Adjoin a primitive \(q\)-th root \(\zeta\) in a finite algebraic extension \(E/F\), and define affine polynomials
+\[u_e(a)=1+(\zeta^a-1)x_e\qquad(a\in\mathbb Z/q\mathbb Z).
+\]
+Their exact local identity is
+\[
+u_e(a)u_e(b)-u_e(a+b)
+=(\zeta^a-1)(\zeta^b-1)(x_e^2-x_e).
+\]
+In particular, inverse characters are affine and their cancellation has a degree-two Boolean certificate. A product containing repeated factors on an edge can be reduced to one such factor without exceeding its unreduced degree.</p>
+<p>Write \(X_v=\prod_{e\ni v}u_e(\sigma_{ve})\). The vertex relation \(X_v-\zeta^{c_v}\) has a degree-at-most-\(\Delta\) derivation from the forbidden-tuple generators. Indeed, its exact multilinear interpolation is
+\[
+X_v-\zeta^{c_v}
+=\sum_{a\in\{0,1\}^{E(v)}}
+ \left(\zeta^{\sum_e\sigma_{ve}a_e}-\zeta^{c_v}\right)\chi_a.
+\]
+All allowed assignments have coefficient zero; the remaining \(\chi_a\) are the given generators. Thus this is literal polynomial derivability, not merely a semantic implication.</p>
+<h4>Balance each cut relation</h4>
+<p id="balanced-modular-degree-ceiling"><strong>Proposition (balanced modular ceiling).</strong> If an ordering of the vertices has cutwidth \(C\), the Boolean modular system just defined has an ordinary PC refutation over \(F\) of degree at most
+\[
+B=\max\{2\Delta,\ \lceil C/2\rceil+\Delta+1\}.
+\]
+Consequently, with
+\[
+C_* =\left\lceil\frac{mn}{2(n-1)}+\Delta\sqrt{2n\log(2n)}\right\rceil,
+\]
+one can take \(C=C_*\). For fixed \(\Delta\) and \(m=\Theta(n)\), this is \(m/4+O_\Delta(\sqrt{n\log n})\). It is an upper bound on PC degree, not on expanded proof size.</p>
+<p><strong>Invariant.</strong> For each vertex prefix \(S\), derive a binomial
+\[A_S-\zeta^{c(S)}B_S,\qquad c(S)=\sum_{v\in S}c_v,
+\]
+where \(A_S,B_S\) are character products on disjoint subsets of \(\partial S\), their exponent difference is the oriented cut vector, and each has at most \(\lceil|\partial S|/2\rceil\) factors. Character products are written as products of affine polynomials in the ordinary Boolean variables. The empty prefix has the zero relation, obtainable by subtracting a Boolean axiom from itself; alternatively the first step starts directly with its vertex relation.</p>
+<p><strong>Prefix step.</strong> Given the invariant and the next vertex \(v\), form
+\[
+(A_S-\zeta^{c(S)}B_S)X_v
+ +\zeta^{c(S)}B_S(X_v-\zeta^{c_v})
+=A_SX_v-\zeta^{c(S)+c_v}B_S.
+\]
+The multiplication and additions are ordinary PC inferences, using at most \(\lceil C/2\rceil+\Delta\) degree. Multiplication by each affine factor is simulated by variable multiplication and a linear combination. Reduce repeated characters on an edge using the displayed Boolean identity.</p>
+<p>If both terms still have a factor on the same edge, multiply the entire relation by the inverse of the factor on the second term and reduce locally. This removes that edge from the second term, and either removes it from both or leaves only the exponent difference on the first. This operation raises temporary degree by at most one; neither reduced support increases. Repeat until the supports are disjoint. Their union is precisely the new prefix cut, because the exponent difference is the sum of the vertex incidence vectors in the prefix.</p>
+<p>Finally, whenever one term has more factors than the other by at least two, multiply the relation by the inverse of one factor on its larger side and reduce. The factor moves to the smaller side with inverted exponent, so the exponent difference is unchanged and the larger support decreases. Each move again has temporary degree at most the current larger support plus one. The reduced larger support never exceeds its initial bound \(\lceil C/2\rceil+\Delta\). This establishes the invariant while keeping all intermediate ordinary polynomials through \(B\). No formal division is performed.</p>
+<p>At the full prefix both products are one. The resulting constant \(1-\zeta^{\sum_vc_v}\) is nonzero, hence yields a refutation over \(E\). Choose an \(F\)-basis of \(E\) containing one and take coefficient components of every line. Scalar multiplication over \(E\) becomes an \(F\)-linear combination of components, and old-variable multiplication commutes with extraction. This produces an ordinary PC refutation over \(F\) at the same degree. Field descent here need not preserve a useful proof-size bound.</p>
+<p><strong>Ordering bound.</strong> The <a href="#tseitin-degree-ceiling">earlier ordering proof</a> gives \(C_*\): order independent uniform vertex keys. A prefix of size \(k\) has expected cut \(2mk(n-k)/(n(n-1))\le mn/(2(n-1))\); changing one key changes at most a vertex swap and hence at most \(2\Delta\) crossing edges. Bounded differences gives tail at most \(\exp(-u^2/(2n\Delta^2))\). With \(u=\Delta\sqrt{2n\log(2n)}\), the union bound over nontrivial prefixes is below one. Substitute \(C_*\) in the balanced bound. \(\square\)</p>
+<h4>The recorded ternary encoding also benefits</h4>
+<p id="balanced-ternary-degree-ceiling"><strong>Corollary (balanced ternary ceiling).</strong> For the full ternary Fourier and one-hot encodings of the <a href="#tseitin-degree-ceiling">previous ceiling</a>, the same bound \(\max\{2\Delta,\lceil C_*/2\rceil+\Delta+1\}\) holds, and is \(m/4+O_\Delta(\sqrt{n\log n})\) on the fixed-degree families.</p>
+<p><strong>Proof.</strong> In the Fourier system use \(u_e(0)=1\), \(u_e(1)=U_e\), \(u_e(2)=V_e\). The local multiplication table is exactly \(U_e^2=V_e\), \(V_e^2=U_e\), \(U_eV_e=1\), with degree-two generators. Therefore every reduction, cancellation and balancing step above has the same degree certificate. The vertex character generators are already present. The <a href="#ternary-fourier-transfer">full recorded Fourier-to-one-hot proof</a> costs at most the additional local ceiling \(2\Delta\), with the CNF row conversion through degree three; the displayed bound is at least three when the graph has an edge. Descent from \(F_4\) to the binary one-hot axioms preserves degree as before. This strengthens the prior valid bound, rather than correcting a false claim. \(\square\)</p>
+<h4>Exact local verification</h4>
+<p>The <a href="research/results/binary_boolean_flow_window_20261008/balanced_characters.g">GAP checker</a> uses three ordinary polynomial variables. For modulus three over \(F_4\) and modulus five over \(F_{16}\), it exhausts all 34 unit products and 152 phase-weighted cancellation identities. It also verifies all 112 orientation/charge interpolation identities at vertex valences one through three. Two negative controls confirm that omitting the Boolean correction changes the literal polynomial. The <a href="research/results/binary_boolean_flow_window_20261008/local-check.txt">complete output</a> passed. The initial direct script launch failed because the command path was not resolved; invoking the installed GAP executable corrected that operational error. No larger graph sample is needed: the induction and ordering argument prove the general bound.</p>
+<h4>What remains for positive flow</h4>
+<p>The <a href="https://static.aminer.org/pdf/PDF/000/209/798/lower_bounds_for_polynomial_calculus_non_binomial_case.pdf">Alekhnovich–Razborov flow family</a>, Definition 4.11, instead requires positive signed integer flow at every vertex. Its published linear-degree guarantee uses the immunity criterion already bounded in the preceding cycle.</p>
+<p>These predicates must be evaluated on Boolean assignments as integer inequalities and then encoded by their Boolean falsity polynomials; reducing the coefficient two in their integer presentation modulo two does not encode the predicate. On an odd-valence star of size at least three, allowed signed net flows include both one and three. For any odd modulus \(q&gt;1\), these have distinct character values, since their difference two is not divisible by \(q\). Hence no single vertex relation of the form \(X_v-\zeta^c\) holds on that allowed set. The balanced modular proof cannot simply be relabelled as a flow proof.</p>
+<p><strong>Follow-up.</strong> Continuing the entropy-midpoint lead. Boolean modular Tseitin on fixed-degree graphs is now ruled out for this old-degree target by an actual upper proof, independent of the constants in its known lower bound. Positive-flow constraints remain a different candidate. Next test a graph-frontier elimination for that explicit family and whether ordering matched vertex pairs together gives a strict sub-midpoint upper proof; the published immunity certificate is insufficient. If this does not settle the family, a partial-orientation construction remains a possible lower-bound test. Any local model must support a globally coherent truncated linear functional or reduction operator, not merely show that small sets of vertices can be satisfied.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-08-moving-cutoff-budget:s1">The Boolean modular encoding has a proved sub-midpoint degree upper bound, and the full ternary ceiling is refined. <strong>Follow-up.</strong> Continuing: test the genuinely different positive-flow family, retaining exact integer-predicate encoding and a full degree ledger.</li></ul>
+<p><strong>Verification gate.</strong> The <a href="research/results/binary_boolean_flow_window_20261008/review.txt">sole isolated medium reviewer passed the derivation</a>, its degree peaks, field descent and ternary corollary. Simplicity and the explicit vertex-count range are retained to match the standing graph family and earlier ordering statement; extending to multigraphs is unnecessary here. Reread the original ordering and Fourier-transfer arguments, their current metadata, and the Boolean modular/flow source definitions. Novelty searches covered cutwidth, balanced binomials, inverse characters and degree ceilings. Exact new local encoding and cancellation certificates passed; no floating-point rank or finite-pattern extrapolation is used.</p>
+<p><strong>Process assessment.</strong> Balancing both sides of the cut relation changed the candidate assessment before any attempt to sharpen its lower bound. Keeping integer flow predicates separate prevents importing that upper proof into a different family.</p>
+<!-- TIMING binary_boolean_flow_window_20261008 -->
+</article>
