@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 """Worktree-local Codex actor state; runtime identities never enter tracked files."""
 from contextlib import contextmanager
+from copy import deepcopy
 import fcntl
 import hashlib
 import json
@@ -50,11 +51,14 @@ def actor_state(root, event):
                     raise ValueError('Codex actor state is busy; retry this tool call')
                 time.sleep(.01)
         path = directory / 'state.json'
-        state = json.loads(path.read_text()) if path.exists() else {'version': 1}
+        existed = path.exists()
+        state = json.loads(path.read_text()) if existed else {'version': 1}
         if not isinstance(state, dict) or state.get('version') != 1:
             raise ValueError('Invalid Codex actor state; restore context before continuing')
+        original = deepcopy(state)
         yield state
-        atomic_json(path, state)
+        if not existed or state != original:
+            atomic_json(path, state)
 
 
 SCRATCH_CAP = 500 * 10**6

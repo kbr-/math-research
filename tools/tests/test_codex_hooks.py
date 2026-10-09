@@ -20,6 +20,11 @@ import resume
 
 class CodexHooksTest(unittest.TestCase):
     def setUp(self):
+        # Receipt/guard tests do not test optional recovery telemetry; its own
+        # integration suite enables and checks the real collector explicitly.
+        observation = patch.dict(os.environ, {'MATH_RECOVERY_DISABLED': '1'})
+        observation.start()
+        self.addCleanup(observation.stop)
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
@@ -187,6 +192,20 @@ class CodexHooksTest(unittest.TestCase):
         self.assertEqual(result, {'hookSpecificOutput': {'hookEventName': 'PostToolUse',
                                                         'additionalContext': 'Run tools/ff-base.sh'}})
         self.assertNotIn('decision', result)
+
+    def test_unchanged_actor_reads_skip_writes_but_nested_changes_persist(self):
+        event = self.event('PreToolUse')
+        with codex_state.actor_state(self.root, event) as state:
+            state['nested'] = {'receipts': [1]}
+        path = codex_state.actor_directory(self.root, event) / 'state.json'
+        with patch.object(codex_state, 'atomic_json', wraps=codex_state.atomic_json) as save:
+            with codex_state.actor_state(self.root, event) as state:
+                self.assertEqual(state['nested']['receipts'], [1])
+            save.assert_not_called()
+            with codex_state.actor_state(self.root, event) as state:
+                state['nested']['receipts'].append(2)
+            save.assert_called_once()
+        self.assertEqual(json.loads(path.read_text())['nested']['receipts'], [1, 2])
 
     def test_corrupt_state_is_not_silently_replaced(self):
         event = self.event('PreToolUse')
