@@ -1,0 +1,54 @@
+STAGE 1 BRIEF (goal and available results only; the route currently preferred is deliberately withheld)
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through this chain.
+
+(A) Source theorem (proved). Gamma: polynomials over F_2 in v Boolean variables with the Boolean axioms; C_D its
+degree-D polynomial-calculus closure. If 1 is not in C_D for D = floor(n/2 - s), s = o(n/(log n)^(l-2)), l >= 2
+the approximation depth, where n = v - rank of any set L of auxiliary affine equations added to Gamma (L need not
+be part of the formula; v <= n^C), then a system augmented by polynomially many approximation blocks in l levels
+has no PC refutation of degree n^(1/3). So a polynomial-size family suffices if it is hard at half the dimension
+of SOME affine subspace.
+
+(B) Its engine (imported, audited): error ranks contract by a factor governed by c_P(K-d)/c_P(K), d the input
+degree at the level (polylogarithmic above the first). Proved: the rate holds if the closure's standard monomials
+are few just below the cutoff, or have few standard extensions; both force every set of variables shattered by
+the closure to have size at most about 2K. On the plain cube with degree-d inputs a heuristic computation gives
+a contraction factor about 1/(1 + (alpha/(1-alpha))^d) at cutoff alpha*n, i.e. half is needed up to O(log log/d).
+
+(C) Missing: a polynomial-size unsatisfiable family meeting (A), and the transfer of an actual Frege proof into
+the grammar of (A).
+
+WHAT THE LAST BLOCK ESTABLISHED (scope stated; "measured" means exact computation on the listed instances):
+R1. Alekhnovich-Razborov's expansion proof (operator R(t) = reduction of a term modulo a small set of rows; row
+    elimination by restricting a variable private to the row) was read. For rows that are relations on dense
+    LINEAR FORMS: the elimination has a correct semantic analogue (projection along a private direction), but
+    the leading-term analogue is false, and no linear operator on the monomial basis can be invariant under rows
+    with a private direction and vanish on the axioms (explicit counterexample with one row x1 + x2 + eps).
+R2. In a random model, assuming those theorems extended to forms: the immunity bound (their Theorem 3.8) stays
+    below about 0.16 n; the single-forbidden-tuple bound (Theorem 3.13) stays below n/4 under strict independence.
+R3. Measured: for 3n random products of two affine forms on n variables (rows = unions of two hyperplanes), a
+    static Nullstellensatz certificate exists at degree 3 (n = 12, 16), 4 (n = 20, 24, 28); none through degree 4
+    at n = 32. Three instances per size. This refutes "degree > n/2 - sqrt(2n)" at n = 24, 28. It does not decide
+    the asymptotic law: n/2 - c sqrt(n) with c >= 1.9 and a small linear rate both fit. The semi-regular Hilbert
+    series index was 3, 3, 3, 4, 4, 4 at these sizes. No proof of any bound in either direction was found.
+R4. Truncated Buchberger criterion (proved, standard in kind): if all pairs of a set G whose leading monomials
+    have lcm of degree <= D have resolved S-polynomials, then the multiples of G within degree D are the closure
+    C_D, and 1 is absent unless G has a constant. A certificate format for properness; coprime pairs are free.
+R5. Earlier, still standing: rows on dense random parities pass every local obstruction near n/2; frames
+    (satisfiable low-degree structures) cannot guarantee a cutoff below half their own ceiling; no general ceiling
+    near n/2 for all unsatisfiable systems is known to us, and no example exceeding it; lower-bound technology
+    known to us reaches at most about a quarter of the variables.
+R6. Trivial fact: rows of degree above the cutoff are ignored by C_D, so wide rows of high degree give large
+    refutation degree without polynomial size (e.g. two contradictory modular counts on all variables).
+
+STATUS. Eighteen research entries and three reviews; the first open statement was weakened three times
+(moving cutoff, free dimension, hidden subspace) and its status never changed. There is no candidate family and
+no lower-bound method reaching half of any dimension.
+
+REQUEST. Without knowing the route currently preferred, say whether you would keep this engine or change the
+architecture, and why. Give at most three concrete options, each with (i) the precise endpoint, (ii) why the
+chain to the goal would go through or what replaces (A)-(B), (iii) the cheapest decisive test and what outcome
+would kill the option. Consider in particular: succinctly described wide rows (non-affine auxiliary variables)
+and what they cost in (A); replacing the degree-based engine by a different measure; and whether the evidence
+above already suffices to abandon near-half for polynomial-size bounded-width formulas. Under 500 words. Run no
+computations, read no other files, edit nothing.
