@@ -21,6 +21,10 @@ mode 0: R random rows of t distinct blocks with random nonzero exponents and ran
 mode 1: flow conservation on a random simple t-regular graph with m vertices (R is ignored): blocks
 are the edges, one row per vertex with exponent +1 or -1 by orientation, right sides random with
 nonzero total; the graph is connected (asserted), so the sum of all rows is the only dependency.
+mode 2 (added 9 October 2026, second run): as mode 0 with right sides taken from a planted solution,
+so the system is satisfiable; for every D from w to n the line reports under "cumulative" the numbers
+of live classes with a vector of weight at most j, j = 0..D, and under "dead" the number of dead
+vectors (zero for a satisfiable system).
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -146,7 +150,9 @@ int main(int argc, char **argv){
                     rowlam[r] = rnd()%q;
                 }
                 ok = 1; for (int i = 0; i < m; i++) if (!cover[i]) ok = 0;
-                if (ok){                       /* inconsistent over Z_q? brute force */
+                if (mode == 2){ int xs[17]; for (int i = 0; i < m; i++) xs[i] = rnd()%q;
+                    for (int r = 0; r < R; r++){ int s2 = 0; for (int s = 0; s < t; s++) s2 += rowc[r][s]*xs[rowT[r][s]]; rowlam[r] = s2%q; } }
+                if (ok && mode != 2){                       /* inconsistent over Z_q? brute force */
                     for (long x = 0; x < N && ok; x++){
                         int sat = 1;
                         for (int r = 0; r < R && sat; r++){ int s2 = 0; for (int s = 0; s < t; s++) s2 += rowc[r][s]*digit(x,rowT[r][s]); if (s2%q != rowlam[r]) sat = 0; }
@@ -157,7 +163,7 @@ int main(int argc, char **argv){
             }
             if (!ok){ fprintf(stderr, "no inconsistent covering system found\n"); return 3; }
             int deg = -1;
-            for (int D = w; D <= n; D++) if (closure(D)){ deg = D; break; }
+            if (mode != 2) for (int D = w; D <= n; D++) if (closure(D)){ deg = D; break; }
             printf("{\"mode\":%d,\"k\":%d,\"m\":%d,\"t\":%d,\"R\":%d,\"seed\":%ld,\"attempt\":%d,\"n\":%d,\"w\":%d,\"rows\":[", mode, k, m, t, R, seed, attempt-1, n, w);
             for (int r = 0; r < R; r++){ printf("%s[[", r?",":""); for (int s = 0; s < t; s++) printf("%s%d", s?",":"", rowT[r][s]); printf("],["); for (int s = 0; s < t; s++) printf("%s%d", s?",":"", rowc[r][s]); printf("],%d]", rowlam[r]); }
             printf("],\"degree\":%d", deg);
@@ -173,6 +179,20 @@ int main(int argc, char **argv){
                 printf("],\"X\":[");
                 for (int j = 0; j <= D; j++){ int X = j; while (binom(X,j) < (double)lev[j]) X++; printf("%s%d", j?",":"", lev[j]?X:0); }
                 printf("]"); free(minw);
+            }
+            if (mode == 2){
+                int32_t *minw = malloc(4*N);
+                printf(",\"cumulative\":{");
+                for (int D = w; D <= n; D++){
+                    int z = closure(D); long nd = 0, lev[64] = {0};
+                    for (long a = 0; a < N; a++) minw[a] = 255;
+                    for (long a = 0; a < N; a++){ if (wt[a] > D) continue; int v; long r = find(a,&v); if (dead[r]) nd++; if (wt[a] < minw[r]) minw[r] = wt[a]; }
+                    for (long a = 0; a < N; a++) if (par[a] == a && wt[a] <= D && !dead[a]) lev[minw[a]]++;
+                    printf("%s\"%d\":{\"zero_dead\":%d,\"dead\":%ld,\"h\":[", D > w ? "," : "", D, z, nd);
+                    long c = 0; for (int j = 0; j <= D; j++){ c += lev[j]; printf("%s%ld", j?",":"", c); }
+                    printf("]}");
+                }
+                printf("}"); free(minw);
             }
             printf("}\n"); fflush(stdout);
         }
