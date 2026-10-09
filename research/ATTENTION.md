@@ -1228,6 +1228,22 @@ For every fixed prime p, unary weak or functional PHP plus any polynomial-invent
 
 ---
 
+### Circuit puncture separation
+
+**Claim:** [thm:circuit-puncture-separation](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-radius-circuit-separator>)
+
+For a linear code on v coordinates over any field with maximum parity-check circuit size c, kappa(C)<=min(v,b+c(c+1)floor(v/(b+1))/2) for every integer b>=1; hence kappa(C)<=min(v,sqrt(2c(c+1)v)+1). For a finite-field code, c<=q(t+1).
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A coordinate separator estimate usable in code-based proof bounds; independent literature status of this exact puncture-parameter composition remains to be checked.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Check the literature for the exact coordinate puncture parameter and its circuit-size separator bound before asserting independent novelty.
+
+---
+
 ### Coded disjoint trade spanning
 
 **Claim:** [thm:coded-disjoint-trade-spanning](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
