@@ -1,0 +1,60 @@
+// New parent replacement check; prior 520 base checks are not rerun.
+// All 20 subset families, generic two-row coefficients on 13 basis inputs:
+// six mapped features, six old cells, and one. Linear reparametrization covers
+// all affine mixtures of this basis. Old matching ideal remains satisfiable.
+ring R=2,(y(1..6),r(1..26)),dp;
+ideal J;
+int i,j,k,a,b,c,row,col;
+int families=0;int checks=0;int failures=0;
+poly f,g;
+for(i=1;i<=6;i++){J=J,y(i)^2+y(i);}
+for(i=1;i<=3;i++){J=J,y(2*i-1)*y(2*i);}
+for(col=1;col<=2;col++){for(i=1;i<=3;i++){for(j=i+1;j<=3;j++)
+{J=J,y(2*(i-1)+col)*y(2*(j-1)+col);}}}
+ideal GB=std(J);
+list sets=intvec(1,2),intvec(1,3),intvec(1,4),intvec(2,3),intvec(2,4),intvec(3,4);
+list fam;
+matrix image[4][2];
+ideal before,after;
+poly Ps,Pt,Fs,Ft,rem;
+link out=":w research/results/binary_sparse_source_20261009/parent-transfer-checks.txt";
+write(out,"F2 generic complete parent replacement; 20 subset families, 13 inputs, 2 rows; 280 identities expected.");
+for(a=1;a<=4;a++){for(b=a+1;b<=5;b++){for(c=b+1;c<=6;c++)
+{
+ families++;
+ fam=sets[a],sets[b],sets[c];
+ for(i=1;i<=4;i++){for(col=1;col<=2;col++){image[i,col]=0;}}
+ for(row=1;row<=3;row++){for(k=1;k<=2;k++){for(col=1;col<=2;col++)
+ {image[fam[row][k],col]=image[fam[row][k],col]+y(2*(row-1)+col);}}}
+ before=0;after=0;
+ for(row=1;row<=3;row++){for(col=1;col<=2;col++)
+ {
+  i=2*(row-1)+col;
+  before[i]=image[fam[row][1],col]*image[fam[row][2],col];
+  after[i]=y(i);
+ }}
+ for(i=1;i<=6;i++){before[i+6]=y(i);after[i+6]=y(i);}
+ before[13]=1;after[13]=1;
+ Ps=1;Pt=1;
+ for(row=1;row<=2;row++)
+ {
+  Fs=1;Ft=1;
+  for(i=1;i<=13;i++){Fs=Fs+r(13*(row-1)+i)*before[i];Ft=Ft+r(13*(row-1)+i)*after[i];}
+  Ps=Ps*Fs;Pt=Pt*Ft;
+ }
+ f=Ps+Pt;rem=reduce(f,GB);checks++;
+ if(rem!=0 || deg(f)>6){failures++;}
+ write(out,"family "+string(families)+" product degree="+string(deg(f))+" remainder="+string(rem));
+ for(i=1;i<=13;i++)
+ {
+  f=before[i]*Ps+after[i]*Pt;rem=reduce(f,GB);checks++;
+  if(rem!=0 || deg(f)>8){failures++;}
+  write(out,"companion "+string(i)+" degree="+string(deg(f))+" remainder="+string(rem));
+ }
+}
+}}
+if(families!=20 || checks!=280){failures++;}
+write(out,"families="+string(families)+" identities="+string(checks)+" failures="+string(failures));
+if(failures==0){write(out,"PASS");}else{write(out,"FAIL");}
+close(out);
+quit;

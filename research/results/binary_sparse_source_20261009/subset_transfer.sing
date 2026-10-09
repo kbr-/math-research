@@ -1,0 +1,74 @@
+// Exact new encoding control, not a small-instance degree lower bound.
+// All 20 distinct triples of 2-subsets of four fractional rows, two holes.
+// Shared native Singular normal forms use only Boolean and exclusion axioms,
+// never the inconsistent row axioms. All 520 expected images fit degree <=4.
+ring R=2,(y(1..6)),dp;
+ideal bools,J;
+int i,j,k,a,b,c,row,col;
+int families=0;int checks=0;int failed=0;int negatives=0;
+poly f,g,v;
+for(i=1;i<=6;i++){bools=bools,y(i)^2+y(i);}
+J=bools;
+for(i=1;i<=3;i++){J=J,y(2*i-1)*y(2*i);}
+for(col=1;col<=2;col++)
+{
+ for(i=1;i<=3;i++){for(j=i+1;j<=3;j++){J=J,y(2*(i-1)+col)*y(2*(j-1)+col);}}
+}
+ideal GB=std(J);
+ideal BB=std(bools);
+list sets=intvec(1,2),intvec(1,3),intvec(1,4),intvec(2,3),intvec(2,4),intvec(3,4);
+list fam;
+matrix image[4][2];
+matrix features[3][2];
+int ceiling;
+link out=":w research/results/binary_sparse_source_20261009/subset-transfer-checks.txt";
+write(out,"Encoding-only check: F2, r=2, m=4, 3 pigeons, 2 holes, 20 set families; 520 identities expected.");
+if(reduce(1,GB)==0){failed++;}
+proc subset_check(poly p,int bound,string name)
+{
+ checks++;
+ poly rem=reduce(p,GB);
+ if(rem!=0 || deg(p)>bound){failed++;}
+ write(out,name+" degree="+string(deg(p))+" ceiling="+string(bound)+" remainder="+string(rem));
+}
+for(a=1;a<=4;a++){for(b=a+1;b<=5;b++){for(c=b+1;c<=6;c++)
+{
+ families++;
+ fam=sets[a],sets[b],sets[c];
+ write(out,"family "+string(families)+": "+string(a)+","+string(b)+","+string(c));
+ for(i=1;i<=4;i++){for(col=1;col<=2;col++){image[i,col]=0;}}
+ for(row=1;row<=3;row++)
+ {
+  for(k=1;k<=2;k++){for(col=1;col<=2;col++)
+  {image[fam[row][k],col]=image[fam[row][k],col]+y(2*(row-1)+col);}}
+ }
+ for(i=1;i<=4;i++){for(col=1;col<=2;col++)
+ {subset_check(image[i,col]^2+image[i,col],2,"Boolean image");}}
+ for(row=1;row<=3;row++){for(col=1;col<=2;col++)
+ {
+  features[row,col]=image[fam[row][1],col]*image[fam[row][2],col];
+  subset_check(features[row,col]+y(2*(row-1)+col),2,"Feature correction");
+ }}
+ for(row=1;row<=3;row++)
+ {
+  subset_check(features[row,1]+features[row,2]+y(2*row-1)+y(2*row),2,"Row correction");
+  subset_check(features[row,1]*features[row,2],4,"Same-pigeon collision");
+ }
+ for(col=1;col<=2;col++){for(i=1;i<=3;i++){for(j=i+1;j<=3;j++)
+ {subset_check(features[i,col]*features[j,col],4,"Same-hole collision");}}}
+ if(a==1 && b==2 && c==3)
+ {
+  f=features[1,1]+y(1);
+  if(f!=0 && reduce(f,BB)!=0){negatives++;}else{failed++;}
+  write(out,"Omitting exclusion corrections: "+string(reduce(f,BB)));
+ }
+}}}
+// Antichain control: {1} is contained in {1,2}; its image includes y(3).
+f=y(1)+y(3)+y(1);
+if(reduce(f,GB)!=0){negatives++;}else{failed++;}
+write(out,"Non-antichain feature correction fails: "+string(reduce(f,GB)));
+if(families!=20 || checks!=520 || negatives!=2){failed++;}
+write(out,"families="+string(families)+" checks="+string(checks)+" negative_controls="+string(negatives)+" failures="+string(failed));
+if(failed==0){write(out,"PASS");}else{write(out,"FAIL");}
+close(out);
+quit;
