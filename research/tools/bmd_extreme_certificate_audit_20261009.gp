@@ -1,0 +1,9 @@
+\\ Replay all exact row operations, audit characteristic scope, verify simple kernels.
+default(parisizemax,1000000000);
+default(nbthreads,1);
+ep='ep;b='b;T='T;
+assert(c,msg)=if(!c,print("FAIL ",msg);quit(1));
+contents(v)={my(a=Vec(numerator(v)),d=Vec(denominator(v)),den=1);for(i=1,#a,assert(type(a[i])=="t_INT"||type(a[i])=="t_FRAC","one-variable rational numerator");den=lcm(den,denominator(a[i])));for(i=1,#d,assert(type(d[i])=="t_INT"||type(d[i])=="t_FRAC","one-variable rational denominator");den=lcm(den,denominator(d[i])));[content(a*den),content(d*den)];};
+{for(which=1,2,my(path=if(which==1,"constraints.gp","second-constraints.gp"));read(concat("research/results/bmd-elliptic-extreme-profile-20261009/",path));my(bad=1,n=matsize(R)[1],S=R);for(i=1,n,for(j=1,32,my(co=Vec(R[i,j]));for(k=1,#co,bad=lcm(bad,abs(contents(co[k])[2])))));for(z=1,#operations,my(op=operations[z],ri=op[1]);if(type(op[2])=="t_INT",S[ri,]*=ep^op[2],my(v=op[2]);assert(v[ri]==1,"row replacement coefficient one");for(i=1,n,bad=lcm(bad,abs(contents(v[i])[2])));S[ri,]=sum(i=1,n,v[i]*S[i,])));assert(matrix(n,32,i,j,polcoef(S[i,j],0,ep))==primitive,"exact full row operation replay");my(dc=contents(rankMinor));bad=lcm(bad,abs(dc[1]*dc[2]));print("AUDITED_PRIMES stage=",which," ",factor(bad)[,1]~);if(which==1,my(g=(1+T)*(1+b*T)^2,K=matrix(16,2));for(h=0,15,K[h+1,1]=if(h==12,1,0);K[h+1,2]=polcoef(T^3*g,15-h,T));assert(primitive[,1..16]*K==matrix(14,2),"first simple source generators");assert(matrank(K)==2,"first two independent generators");assert(primitive[,17..32]==matrix(14,16),"first complete low block"),my(K=matrix(14,4,i,j,if(13-(i-1)==j,1,0)));assert(primitive[,1..14]*K==matrix(10,4),"second four consecutive core generators");assert(primitive[,15..32]==matrix(10,18),"second complete low block"));)}
+print("COMPLETE independent row replay, denominator audit and both simple full kernels.");
+quit;
