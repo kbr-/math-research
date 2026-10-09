@@ -1,0 +1,63 @@
+<article id="entry-2026-10-09-growing-expansion-flats" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-binary-quotient-architecture:1" data-claims="cor:growing-expansion-flat-removal cor:growing-expansion-affine-split">
+<h3>9 October 2026 — Growing expansion makes general affine-flat removal affordable</h3>
+<p class="entry-meta">Working relative flat bound and affine rank split on a growing-degree family. Nonlinear parents remain open.</p>
+<p><strong>Question.</strong> On general-step, can the binomial quotient avoid the loss in the absolute affine-flat estimate? The necessary goal implication is still a source-sensitive error deficit for arbitrary nonlinear parents. Before inventing a new quotient model, test whether the existing growing-degree family escapes the fixed-expansion obstruction.</p>
+<p><strong>General statement.</strong> <a href="#growing-expansion-flat-removal">cor:growing-expansion-flat-removal</a> composes the existing flat-image, occupancy and sparse-weight bounds. <a href="#growing-expansion-affine-split">cor:growing-expansion-affine-split</a> applies it to a complete affine bottom layer, erasing the products of high-rank blocks and exactly evaluating the low-rank ones. This recovers a rank-split operation on a different allowed family; it does not remove the remaining nonlinear source.</p>
+<p><strong>New mathematics.</strong> A quantitative composition of existing results gives relative contraction for noncoordinate binary affine flats when graph expansion grows. The earlier negative cutoff optimization assumed fixed expansion and bounded degree; that hypothesis is not retained here. No new general contraction engine is claimed.</p>
+<p><strong>Goal progress.</strong> Unchanged. The selected graph/CNF family is independent of the proof-size exponent and has an affordable original compiler ceiling, but the low-rank bottom values still produce arbitrary nonlinear parent mixtures. The result does not exclude those complete sources or establish the Frege lower bound.</p>
+<h4>A finite same-quotient statement</h4>
+<p>Use the proper binary charged one-hot graph quotient, with \(n\) vertices, \(m\) edges, expansion \(\varepsilon\), maximum degree \(\Delta_{\max}\), and
+\[
+ \max(4,2\Delta_{\max})\le D&lt;\varepsilon n/8.
+\]
+Use two independent Boolean indicators per edge; the third is their affine complement. Thus all affine ranks below are measured after this degree-preserving local normalization. Let \(1\le K\le m/3\), \(\beta=2\sqrt{K/m}&lt;1\), and
+\[
+ \eta=(1+2\beta^\varepsilon)^n-1&lt;1.
+\]
+Let binary \(w\notin J_D\) have degree at most \(b\) and \(s\) nonzero coordinates in the character quotient after extension to \(\mathbb F_4\). Fix \(M\ge1\) binary affine flats, each defined by a proper affine space of rank \(r_j\), \(r_0\le r_j\le d\), with \(1\le r_0\le m\). Its exact indicator is \(F_j=\prod_{i=1}^{r_j}(1-\ell_{j,i})\), for an affine basis. Assume \(b+K+d\le D\).</p>
+<p id="growing-expansion-flat-removal"><strong>Corollary (growing expansion removal).</strong> If
+\[
+ \frac{2Ms}{1-\eta}\exp\!\left(-\frac{r_0K}{2m}\right)&lt;1,                 \tag{1}
+\]
+there is binary \(f\in V_K\) with \(wf\notin J_D\) and \(wfF_j\in J_D\) for all \(j\). Each unweighted indicator map on the actual degree-\(K\) quotient has relative rank at most
+\[
+ \frac{2}{1-\eta}\exp\!\left(-\frac{\min(r_j,m)K}{2m}\right).             \tag{2}
+\]
+Overlaps and noncoordinate affine equations are allowed. Unit affine spans give zero indicators by the local Boolean certificate and can be discarded separately.</p>
+<p><strong>Proof.</strong> Each \(F_j\ell\) for \(\ell\) in its defining span vanishes by the Boolean identities through \(r_j+1\). The <a href="#three-state-flat-image">flat-image theorem</a> gives rank at most \(2e^{-\min(r_j,m)K/(2m)}B_m(K)\), where \(B_m(K)=\sum_{i\le K}2^i\binom mi\). All products fit \(K+r_j\le D\). The <a href="#cut-ball-occupancy">occupancy bound</a> gives \(h(K)\ge(1-\eta)B_m(K)\), proving (2). Multiplication by \(w\) cannot increase those ranks at \(b+K+r_j\le D\): a zero unweighted image can be multiplied within the same window. Meanwhile <a href="#sparse-weight-survival">sparse-weight survival</a> gives \(h_w(K)\ge h(K)/s\). The sum of weighted ranks is strictly below that same surviving domain by (1), so their common kernel contains a nonzero class \([wf]\). Binary charged descent preserves all these ranks and kernels; since the maps and domain are binary, a binary representative exists. No satisfying assignment of the inconsistent graph is used. \(\square\)</p>
+<h4>A family where the denominator loss disappears</h4>
+<p>Take \(\Delta=\lceil(\log n)^2\rceil\), with natural logarithm. For all sufficiently large \(n\), the already proved <a href="#growing-degree-encoding-window">graph-existence argument</a> supplies a simple graph with maximum degree at most \(2\Delta\), minimum degree at least \(\Delta/4\), and expansion at least \(\Delta/4\). It applies because \(\Delta\ge64\log(2n)\) eventually; its proof does not require a power-law choice of \(\Delta\). Fix one such graph for each \(n\), independently of any proof-size exponent. Then
+\[
+ n\Delta/8\le m\le n\Delta,\quad
+ D=\lfloor n\Delta/64\rfloor,\quad K=\lfloor m/1024\rfloor.              \tag{3}
+\]
+The old window holds eventually: \(D\ge4\Delta\) and \(D&lt;\Delta n/32\le\varepsilon n/8\). Also \(K\le m/1024\), and \(K\ge m/2048\) once \(m\ge2048\). Hence \(\beta\le1/16\), and
+\[
+ \eta\le \exp(2n2^{-\Delta})-1\longrightarrow0.
+\]
+In particular \(\eta\le1/2\) eventually, uniformly over the later flat family. Set
+\[
+ r_0=\left\lceil4096\log(8Ms)\right\rceil.                              \tag{4}
+\]
+Whenever \(r_0\le m\) and the original degree window holds, (1)'s left side is at most \(4Ms e^{-r_0/4096}\le1/2\). This leaves a common kernel of dimension at least half of \([wV_K]\); it does not claim that any selected weight retains that fraction at later cutoffs.</p>
+<p>The canonical forbidden-tuple CNF has encoding length \(N_n\) with \(\log N_n=\Theta(\Delta+\log n)=\Theta((\log n)^2)\), by the earlier upper/lower clause count. Thus \(M,s\le N_n^A\), for any fixed \(A\), make (4) \(O_A(\Delta)\), while the graph is unchanged. Inventory is not polynomial in \(n\); no theorem requiring that hypothesis is invoked. For each fixed structural depth \(d_\pi\), the original binary compiler ceiling \(O_{A,d_\pi}((\log N_n)^{d_\pi})\) is \(o(D)\), with accuracy at least the old CNF width. No residual-length or succinct-encoding substitution is made.</p>
+<h4>A complete affine-layer application, not a nonlinear endpoint</h4>
+<p id="growing-expansion-affine-split"><strong>Corollary (growing expansion split).</strong> On (3), let at most \(M\le N_n^A\) complete old-affine ENS bottom blocks have common original accuracy \(h\), where
+\[
+ h\ge\lceil4096\log(8M)\rceil,\qquad h\le m,\qquad K+h+1\le D.           \tag{5}
+\]
+There are constant binary coefficient assignments and \(W\notin J_D\), \(\deg W\le K\), killing every bottom companion and field image. Every block whose proper input span has rank at least \(h\) has \(WP_c\in J_D\); every proper lower-rank block has an exact affine-flat product of degree equal to its input rank. This complete one-level source has no PC or ordinary NS refutation through any original \(B\) with \(K+B\le D\).</p>
+<p>The complete block is <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#eq-ens">\(E_{c,i}=g_{c,i}P_c\), with all fresh coefficient fields</a>; these are the generators replayed below.</p>
+<p><strong>Proof.</strong> For a proper input span of rank at least \(h\), choose \(h\) independent affine forms from it, expressed by constant combinations of the actual indexed inputs. Use those as the \(h\) legal rows. Its product \(P_c\) is an exact rank-\(h\) affine-flat indicator, regardless of the larger input span. For a proper rank below \(h\), select its full basis as rows and zero-pad. Every companion then vanishes by Booleanity through degree at most \(h+1\). A zero span needs no rows; all its companions are zero. A unit span uses a row equal to one, making its product zero.</p>
+<p>Apply the preceding corollary to the high-rank products with initial weight one, using \(s=1\), \(d=h\), and the upper bound \(M\) on their number. If there are none, choose \(W=1\). Conditions (3)–(5) give a surviving binary \(W\) annihilating all these products. Multiplication by each affine companion input is paid through \(K+h+1\). The low-rank and unit-block certificates fit that ceiling as well, and every coefficient-field image is zero. All assignments are coherent across repeated uses. A source refutation of original degree \(B\), after this constant substitution and multiplication by \(W\), would put \(W\) into \(J_D\); its entire replay fits \(K+B\le D\). Ordinary NS is included by its PC replay. \(\square\)</p>
+<p>For \(h=O_A(\Delta)\) satisfying (5), the original affine companion ceiling \(2h+1\) and each fixed-depth compiler ceiling are polylogarithmic in \(n\), well below \(D-K\). These are nonvacuous one-level exclusions. Constant substitution does not reset original joint degrees, accuracies or the degrees of later source lines.</p>
+<p>For an actual parent affine in old terms and these bottom products, the high-rank products disappear only after weighting; the low-rank products remain polynomials of degree below \(h\). Their arbitrary mixtures need not have low-degree references of bounded degree, a small common-core cover, or a favorable intrinsic error-growth ratio. Also the new \(W\) may have large character support, so the sparse-weight version cannot simply be iterated with the old value of \(s\). These are the still missing implications.</p>
+<h4>Scope of the comparison</h4>
+<p>The <a href="#entry-2026-10-09-affine-collision-budget">fixed-expansion limitation</a> remains correct. Its constants depend on fixed \(\varepsilon,\Delta_{\max}\); here both grow, and the exact earlier occupancy expression tends to zero at a constant-fraction cutoff. This is an allowed change of family, not an optimization contradicting that theorem. The coordinate-puncturing theorem remains stronger in its own fixed-expansion class and does not require this graph change.</p>
+<p>Exploratory alternatives considered before this composition were a global neutral group-algebra model and a localized charge-defect comparison. The cut-code proof explicitly permits the neutral algebra only for counting; it is not a globally consistent charged evaluation space. No such model or defect-rank estimate was constructed or used. The useful outcome here is the direct paid composition above, not either speculative replacement.</p>
+<p><strong>Follow-up.</strong> Continuing the binomial head, first entry of its new spell. Next test the actual low-rank remainder from this split in the growing-degree parameter regime. The needed gain is a bound on nonlinear parent errors or a complete interpretation with the same weight and original ceiling; another affine-layer theorem is insufficient.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test whether the low-rank affine-flat remainder after the growing-expansion split admits a source-wide nonlinear error bound. Retain inventory polynomial in original encoding length, the new weight's actual support/domain, and full original replay; do not import polynomial-in-vertex inventory assumptions.</li><li data-sub="check">If a direct relative-image estimate still needs a new mechanism, test a paid comparison between the charged quotient and a localized charge-defect model. Its discrepancy rank and low-degree compatibility must be proved; the neutral code algebra is currently only a counting device.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed after making the binary coefficient field of the initial weight explicit. It checked the finite rank composition, half-dimensional kernel, growing-family constants, exact ENS generators and complete replay; no unused substantive hypothesis remained. <a href="research/results/binary_binomial_parent_20261009/review.txt">Verdict</a>. Full statements and proofs read: flat-image and occupancy, cut-code classes, sparse-weight survival, puncturing, fixed-expansion collision obstruction, growing-degree graph existence/encoding, and the latest source-image limitations. No numerical experiment or new inference-rule encoding is used.</p>
+<!-- TIMING binary_binomial_parent_20261009 -->
+</article>

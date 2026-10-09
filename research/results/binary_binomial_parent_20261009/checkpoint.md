@@ -1,0 +1,1 @@
+Working-context soft excess reviewed: retain the growing-family parameters, original encoding inventory and weight warning because they delimit the newly available route. All hard limits remain unchanged. This cycle used analytic proofs only; no computation, new encoding, or framework change.
