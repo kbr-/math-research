@@ -395,8 +395,12 @@ def pending_architecture_test(body, before=None):
     return pending
 
 
-def validate_progress(body, article, close):
-    """Check reporting and follow-through, not the mathematical truth of an advance."""
+def validate_progress(body, article, close, *, check_registered_claims=True):
+    """Check reporting and follow-through, not the mathematical truth of an advance.
+
+    Draft append checks structure before claim registration; finalization always checks
+    the registered evidence as well.
+    """
     if not re.search(r'data-route-item="', body):
         return
     tags = entry_tags(body, article)
@@ -414,11 +418,12 @@ def validate_progress(body, article, close):
     require_report(text, 'New mathematics')
     progress = require_report(text, 'Goal progress')
     if state == 'advanced':
-        statuses = registered_status()
         supporting = [cid for cid in entry_claims(body, article)
-                      if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)
-                      and statuses.get(cid) in
-                      ('working_proof', 'established', 'conditional', 'refutation')]
+                      if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)]
+        if check_registered_claims:
+            statuses = registered_status()
+            supporting = [cid for cid in supporting if statuses.get(cid) in
+                          ('working_proof', 'established', 'conditional', 'refutation')]
         if not supporting:
             raise ValueError('Advanced Goal progress must cite a claim declared by this entry with a '
                              'proof, conditional reduction, or refutation; finite checks and conjectures '

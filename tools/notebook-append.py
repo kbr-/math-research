@@ -4,17 +4,41 @@
 The entry file holds one <article> element. It is inserted after the last article of the
 selected notebook's research record. With --next FILE, the body of the proposed-next-step
 section is replaced by the file's HTML (the section heading is kept). Fails closed if the entry's
-anchor already exists or the record or section is missing.
+anchor already exists, the record or section is missing, or the entry fails the existing
+route/review reporting checks. Claim evidence remains a finalization check after registration.
 """
 # Copyright (c) 2026 Kamil Braun. SPDX-License-Identifier: MIT
 
 import argparse
+import functools
+import importlib.util
 from pathlib import Path
 import re
 import sys
 from notebooks import selected, ROOT
 
 HEADING = '<h2>Proposed next step</h2>'
+
+
+@functools.cache
+def reporting_checks():
+    """Reuse the finalizer's rules, without running its checkpoint operations."""
+    spec = importlib.util.spec_from_file_location('append_reporting',
+                                                Path(__file__).with_name('finish-turn.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def preflight(source, ident):
+    if 'data-route-item="' not in source:
+        return
+    article = re.search(r'<article\b[^>]*\sid="' + re.escape(ident) + '"', source).start()
+    close = source.index('</article>', article)
+    checks = reporting_checks()
+    checks.validate_route(source, article)
+    checks.validate_convergence(source, article, close)
+    checks.validate_progress(source, article, close, check_registered_claims=False)
 
 
 def append(source, entry, next_html=None):
@@ -41,6 +65,7 @@ def append(source, entry, next_html=None):
             raise ValueError('proposed-next-step heading missing')
         head = body[:body.index(HEADING) + len(HEADING)]
         source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
+    preflight(source, m.group(1))
     return source
 
 
