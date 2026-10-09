@@ -1,0 +1,52 @@
+// Exhaust all six invertible binary 2x2 mixture matrices, bottom/parent
+// accuracies 1,2. Verify the universal retained residual and weighted
+// companion identities symbolically, with all coefficient fields retained.
+ring R=2,(x,y,z,t,r(1..8)),dp;
+ideal BO=x2+x,y2+y,z2+z,t2+t;
+ideal GB=std(BO);
+int aa; int bb; int cc; int dd; int h; int hp; int j;
+int fixtures=0; int identities=0; int controls=0;
+poly P1; poly P2; poly q1; poly q2; poly l1;
+poly f; poly H; poly residual; poly image; poly exposureCheck;
+poly beta1; poly beta2;
+for(aa=0;aa<=1;aa++){for(bb=0;bb<=1;bb++){
+for(cc=0;cc<=1;cc++){for(dd=0;dd<=1;dd++){
+ if((aa*dd+bb*cc)%2==1){
+  for(h=1;h<=2;h++){for(hp=1;hp<=2;hp++){
+   P1=1; P2=1;
+   for(j=1;j<=h;j++){
+    P1=P1*(1+r(2*j-1)*x+r(2*j)*y);
+    P2=P2*(1+r(4+2*j-1)*z+r(4+2*j)*t);
+   }
+   q1=aa*P1+bb*P2+z; q2=cc*P1+dd*P2+t;
+   l1=dd*z+bb*t;
+   f=l1*x;
+   beta1=dd*x; beta2=bb*x;
+   H=beta1*q1+beta2*q2; residual=x*P1;
+   if(f+H+residual!=0){ERROR("exposure identity");}
+   identities++;
+   image=1+H; // first parent row; all later original rows zero
+   exposureCheck=f*q1*image+q1*(f+f^2)+f*q1*residual;
+   if(exposureCheck!=0){ERROR("first weighted companion");}
+   identities++;
+   exposureCheck=f*q2*image+q2*(f+f^2)+f*q2*residual;
+   if(exposureCheck!=0){ERROR("second weighted companion");}
+   identities++;
+   if(reduce(beta1^2+beta1,GB)!=0 || reduce(beta2^2+beta2,GB)!=0){
+     ERROR("coefficient fields");
+   }
+   identities=identities+2;
+   if(f+H==0){ERROR("omitted residual control vacuous");}
+   controls++;
+   if(deg(q1)>2*h || deg(q2)>2*h){ERROR("input degree");}
+   // kappa=2, s=2, T=1; parent original e=hp*(delta+1)+delta.
+   if(2+deg(q1)+deg(residual)>hp*(2*h+1)+2*h+2){
+     ERROR("residual degree charge");
+   }
+   fixtures++;
+  }}
+ }
+}}}}
+if(fixtures!=24){ERROR("matrix enumeration");}
+print("PASS fixtures="+string(fixtures)+" identities="+string(identities)+" omitted_residual_controls="+string(controls));
+quit;
