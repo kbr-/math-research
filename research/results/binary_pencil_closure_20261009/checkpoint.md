@@ -1,0 +1,1 @@
+Working context soft excess reviewed: the helper/core distinction is retained because it prevents an incorrect union-rank requirement. No hard budget changed. This is a no-new-claim cycle; existing claims are cited at their original scope, not substantively revised. No numerical run or new framework code was used.
