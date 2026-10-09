@@ -718,6 +718,22 @@ The modular-collision theorem: for every odd prime p there are C_p, n_p such tha
 
 ---
 
+### Modular pairing interpolation
+
+**Claim:** [thm:modular-pairing-interpolation](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-central-pairing-interpolation>)
+
+For a nonzero-coefficient even central row of width 2h>=4 over an odd prime modulus, characteristic-two interpolation degree equals h exactly when the coefficient multiset pairs up to sign; unpaired rows interpolate through h-1, including empty relations. For an odd noncentral row of width 2s+1>=3, augmentation by c=2b-sum a_i gives the same pairing criterion: paired implies nonempty and degree s, otherwise interpolation through s-1.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Classifies equality in the half-width interpolation bound and identifies a concrete structural repair rather than merely excluding random samples. Independent literature status is unresolved.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit prior Hilbert-function and mixed-characteristic modular-slice results for this exact equality classification and its original-input PC consequence.
+
+---
+
 ### Nonlocal dimension exclusion linear exceptional lines
 
 **Claim:** [thm:nonlocal-dimension-exclusion-linear-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#nonlocal-dimension-exclusion-linear-exceptional-lines>)
@@ -1193,6 +1209,22 @@ Adding R disjoint nonedges to a graph of maximum degree Delta reduces its indepe
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Test the relative separation density on robust graph PHP and then actual selector-span head structure.
+
+---
+
+### Weighted middle inverse
+
+**Claim:** [lem:weighted-middle-inverse](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-central-pairing-interpolation>)
+
+Over any characteristic-two field, for n=2s+1,s>=1, nonzero w_i and the disjointness matrix A on s-subsets, A+alpha diag(prod_(i in S)w_i) is invertible if alpha!=0 and alpha^2 prod_i w_i != sum_i w_i.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A weighted middle-layer inverse usable beyond the modular-row application; exact prior status among weighted Kneser and exterior-algebra identities remains to be checked.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare this precise characteristic-two weighted diagonal criterion with existing Kneser spectrum and Koszul/Clifford matrix results before claiming novelty.
 
 ---
 
