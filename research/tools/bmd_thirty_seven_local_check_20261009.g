@@ -1,12 +1,12 @@
 # Load LOCAL_CERTIFICATE first; normalize by its first nonzero geometric branch value.
-r:=LOCAL_CERTIFICATE;;deg:=r[1];;fq:=GF(37^deg);;o:=One(fq);;z:=Zero(fq);;x:=Indeterminate(fq,"x");;
+r:=LOCAL_CERTIFICATE;;p:=37;;if Length(r)>=6 then p:=r[6];fi;deg:=r[1];;fq:=GF(p^deg);;o:=One(fq);;z:=Zero(fq);;x:=Indeterminate(fq,"x");;
 b:=RootsOfPolynomial(fq,Sum([0..deg],j->r[2][j+1]*x^j))[1];;
-decode:=c->Sum([0..deg-1],j->(QuoInt(c,37^j) mod 37)*b^j);;
+decode:=c->Sum([0..deg-1],j->(QuoInt(c,p^j) mod p)*b^j);;
 y:=Indeterminate(fq,"y");;iy:=IndeterminateNumberOfUnivariateRationalFunction(y);;
 poly:=v->UnivariatePolynomialByCoefficients(FamilyObj(o),v,iy);;
 if decode(r[4][1])=z then Error("nonzero reference branch value");fi;
 gamma:=decode(r[4][1])^-1;;
-gammaCode:=First([0..37^deg-1],c->decode(c)=gamma);;
+gammaCode:=First([0..p^deg-1],c->decode(c)=gamma);;
 off:=0;;
 for L in [15,15,15,15,4] do for point in [1..8] do
  h:=poly(List(r[4]{[off+1..off+L]},decode));;
