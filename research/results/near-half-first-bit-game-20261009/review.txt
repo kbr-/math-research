@@ -1,0 +1,15 @@
+Review record, 9 October 2026: entry-2026-10-09-first-bit-game.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); read the draft, both
+kernels and both output files.
+
+Verdict: pass with corrections. Proposition, kernels and table hold.
+Proof: add that an illegal answer at an inner node closes an odd cycle inside the queried set and is a leaf at
+depth <= tau, so every assignment reaches a leaf; identity, degree tau + 2, cycle sum, tau >= D - 1 correct.
+Join example: tau = N right; complete adversary: edge vertices class 0, cycle vertices class 1, except a cycle
+vertex completing the cycle goes to class 0 when at most one edge vertex is queried. Independence (N-3)/2.
+Circular cliques: only bit_game.cpp asserts the hypotheses (q <= 4); reasons for all q added. Table matches both
+files; kernels agree at q = 2, 3, 4. "Refuted from q = 3": by the stated criterion (tau <= N/2) only from q = 4;
+"six sizes" wrong; "every size computed" false at q = 1, 2; "survives about log2 q" unproved, marked heuristic.
+Kernels: value's short-circuits preserve the exact minimax; win computes "force a win within t further
+queries"; lo/hi bounds and first-move symmetry valid; window rule correct for L <= 4q.
+Unused: optimality of the strategy.
