@@ -1,0 +1,73 @@
+<article id="entry-2026-10-09-deflated-error-transfer" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-restriction-architecture-review:1" data-claims="lem:deflated-error-transfer">
+<h3>9 October 2026 — Aggregate transfer does not need a finite-ring proof replay</h3>
+<p class="entry-meta">Working matrix transfer; the size-dependent rank estimate remains open.</p>
+<p><strong>Question.</strong> On general-step and the binary open statement, carry out the <a href="#entry-2026-10-09-finite-precision-replay">mixed-source compression test</a>. The goal needs a size-dependent rank deficit for actual complete errors. Does recovering that binary matrix require the precision-dependent degree cost of lifting every proof line? This cycle tests that requirement before investing in higher-precision source normalizers.</p>
+<p><strong>General statement.</strong> <code>lem:deflated-error-transfer</code> recovers the original binary error matrix from any finite rational pointwise expansion through the original error-plus-column degree. Precision need not multiply that degree. The statement is an elementary linear-compression application, not a new rank bound.</p>
+<p><strong>New mathematics.</strong> Denominator clearing is followed by reduction on the top nonzero coefficient layer of a free finite-ring module. Only the original binary error polynomial needs low degree; individual expansion terms may have high degree. This avoids the stronger demand of a finite-ring PC replay.</p>
+<p><strong>Goal progress.</strong> Unchanged. An unnecessary precision cost is removed from the matrix interface, but no size-dependent rank deficit or proof-size exponent is obtained. The <a href="#proof-observation-rank">complete-source rank equality</a> still applies to any hypothetical refutation in its paid window.</p>
+
+<h4>One quotient and one domain</h4>
+<p>Fix a residual charged ternary graph in the window of <a href="#charged-precision-space">charged precision space</a>, with cutoff \(D\). Write \(m=|E|\), \(\Omega=\mathbb F_3^E\), and let \(Q_D^{(s)}\) be its free character-class target over
+\[
+A_s=(\mathbb Z/2^s)[\zeta]/(\zeta^2+\zeta+1).
+\]
+Use the same class representatives and phases at every precision; reduction gives \(Q_D^{(1)}\) over \(\mathbb F_4\). For any \(A_s\)-valued function on all of \(\Omega\), define
+\[
+\mathscr C_{s,D}(F)=\sum_{|\alpha|\le D}
+ \left(3^{-m}\sum_{z\in\Omega}F(z)\zeta^{-\alpha\cdot z}\right)[m_\alpha].
+\tag{1}
+\]
+Here \(|\alpha|\) counts nonzero edge coordinates, and the bracket is the fixed charged class of that character. This map is linear and commutes with coefficient reduction; it is not asserted to preserve products or old equations multiplied beyond the cutoff.</p>
+<p>If an ordinary polynomial \(P\) in one-hot indicators has degree at most \(D\), then (1) on its label-evaluation function equals its old quotient class. Indeed, substitute \(x_{e,a}=(1+\zeta^{-a}U_e+\zeta^aV_e)/3\). Each factor involves only one edge. Reducing local powers by \(U_e^2=V_e,V_e^2=U_e,U_eV_e=1\) leaves characters supported on at most \(\deg P\) edges. Fourier orthogonality over this ring holds because three and differences of distinct third roots are units. Thus its full Fourier expansion has no terms discarded by (1), and subsequent class reduction is exactly the original quotient map. This argument applies to one-hot polynomials even when they are not multilinear. It uses functions on all label assignments, not solutions of the inconsistent charge equations.</p>
+<p>Choose binary polynomials \(f_1,\ldots,f_H\), of degree at most \(K\), whose classes form an \(\mathbb F_4\)-basis of the scalar-extended binary degree-\(K\) image. Existence follows from the recorded <a href="#binary-charged-descent">binary descent</a>; choose a binary basis before extending scalars. Fix coefficient-zero/one integer lifts \(\widetilde f_j\). These are the same columns for every error; no individual-error quotient or independently optimized domain is substituted.</p>
+
+<h4>Deflate the aggregate, not the proof</h4>
+<p id="deflated-error-transfer"><strong>Lemma (deflated error transfer).</strong> Let \(E_a\) be a finite list of binary old polynomials, of degree at most \(e\), with \(K+e\le D\). Let \(F_a:\Omega\to\{0,1\}\) be their binary evaluation, represented by those integer bits. Suppose each has a finite rational pointwise expansion
+\[
+F_a=\sum_\nu\lambda_{a,\nu}N_{a,\nu},
+\tag{2}
+\]
+where \(N_{a,\nu}\) are integer-valued functions (in particular the Boolean narrow tests in the marker expansion). Choose any \(v\ge0\) such that \(c_{a,\nu}=2^v\lambda_{a,\nu}\) belongs to \(\mathbb Z_{(2)}\) for all terms. Set \(s=v+1\), reduce these odd-denominator coefficients into \(A_s\), and form the stacked matrix
+\[
+R_{a,j}=\sum_\nu c_{a,\nu}\,
+   \mathscr C_{s,D}(N_{a,\nu}\widetilde f_j).
+\tag{3}
+\]
+Then every entry lies in \(2^vQ_D^{(v+1)}\). Under the canonical additive identification
+\[
+\operatorname{def}_v:2^vQ_D^{(v+1)}\longrightarrow Q_D^{(1)},
+\qquad 2^v q\longmapsto q\bmod2,
+\tag{4}
+\]
+its image is precisely \(M_{a,j}=[E_af_j]\), the original binary error matrix extended to \(\mathbb F_4\). There is no \(s\) factor in the condition \(K+e\le D\).</p>
+<p><strong>Proof.</strong> Let \(\widetilde E_a\) be the ordinary coefficient-zero/one lift of the binary polynomial. On every label assignment, its integer value has parity \(F_a\), although it need not itself be a bit. Hence
+\[
+2^vF_a\widetilde f_j
+ \equiv 2^v\widetilde E_a\widetilde f_j\pmod{2^{v+1}}
+\tag{5}
+\]
+pointwise. Equation (2), after clearing only the even denominators, is an exact identity over \(\mathbb Z_{(2)}\). Linearity of (1) therefore identifies (3) with the compression of the left side of (5). By (5) it equals the compression of the right side. The polynomial there, before its scalar factor, has degree at most \(e+K\le D\), so the preceding Fourier argument gives
+\[
+R_{a,j}=2^v[\widetilde E_a\widetilde f_j]_{Q_D^{(v+1)}}.
+\tag{6}
+\]
+A free \(A_{v+1}\)-module has the identification (4): two possible quotients of a given multiple differ by an element killed by \(2^v\), which has even coefficients. For \(v=0\) this is the identity. Reducing (6) gives exactly the claimed matrix. This proves divisibility, well-defined deflation and the degree assertion. No summand of (3) is required to have low polynomial degree, and no multiplication in the truncated quotient was used. \(\square\)</p>
+<p>The integer values of the \(N_{a,\nu}\) may be replaced by elements of \(\mathbb Z_{(2)}[\zeta]\) with the same argument, but (2) only needs the literal rational marker expansion here. No independent theorem about that extension is needed. A finite expansion always admits some common \(v\). Large \(v\) can make writing or computing (3) expensive; this is not a polynomial-time construction or a small ring-PC proof. For a mathematical rank argument its precision does not itself consume old polynomial degree.</p>
+<p><strong>Rank consequence, still conditional.</strong> Expand every quotient-valued entry in the fixed class basis and stack those coordinates into an ordinary matrix over \(A_{v+1}\); the symbols \(R,M\) now denote these coordinate matrices. If one actually supplies matrices \(U,V\) over \(A_{v+1}\) with inner dimension \(r\) such that \(R=2^vUV\), then (4) gives \(M=\bar U\bar V\), and \(\operatorname{rank}_{\mathbb F_4}M\le r\). A common-domain deficit \(r&lt;H\), with the stated binary descent, would give a nonzero binary common kernel. This is ordinary matrix factorization plus deflation; neither small real signed mass nor a narrow-CNF representation supplies such a factorization. Rank is asserted only after the reduction, not by treating a residue ring as a field.</p>
+
+<h4>Complete two-level source accounting</h4>
+<p>Take the prescribed two-level source, with at most \(h\) old literal inputs in every bottom and \(h\) available rows. Choose one row per input, its coefficient one, all others zero. Each whole bottom becomes \(P_b=\prod_j(1-\ell_{b,j})\). Each companion \(\ell_{b,i}P_b\) vanishes on the Boolean cube. Its ordinary Boolean certificate has degree at most the number of nonconstant factors plus one, no greater than its original carried companion cost. Repeated, constant and complementary literals cause no exception: the pointwise vanishing and monic Boolean division give the certificate at the displayed actual product degree. Every fresh field image is zero. These memberships justify omitting the bottom errors from the final rank matrix only within their paid weighted window; alternatively retain them as zero rows.</p>
+<p>Choose parent scalar row matrices \(C\) once, independently of the product restriction \(\rho\). Their inputs are the actual binary affine mixtures of these bottom products and old indicators, and every parent companion \(E_{a,i}=g_{a,i}P_{a,C}\) is retained. All later occurrences use that one substitution. Restrict the whole system by an admissible hard \(\rho\); the old base becomes the certified residual system. Fields for constant parent rows vanish. The global interpretation and restriction use only constants for fresh coefficients and old fixed indicators, so original proof degree \(B\) does not increase. In particular every used error has degree at most \(B\), and the matrix lemma needs only \(K+B\le D\), not \(K+sB\le D\). Its bottom certificates and all old axiom multiples must also fit, which this original-cost window ensures for the complete used source. For a hypothetical refutation the complete map has rank exactly \(H\) by <a href="#proof-observation-rank">the existing replay theorem</a>.</p>
+<p>Apply (2) only to genuinely supplied categorical CNF representations of these error functions. Their actual width and clause count remain charged in any probabilistic restriction estimate. The full truth-table CNF exists but may be unaffordable; a low-degree binary polynomial is not automatically a narrow categorical CNF. Parent choices made after seeing \(\rho\) require a new joint-law argument. Independence is needed for that prospective probability estimate, not for the algebraic matrix lemma. Neither issue is repaired by deflation.</p>
+
+<h4>Outcome and next necessary test</h4>
+<p><strong>Architecture test.</strong> The previous proposed \(K+sB\) matrix-transfer condition was stronger than necessary. The aggregation equality passes through \(K+B\). The earlier finite-ring proof-replay theorem remains valid and useful in its stated setting; its precision barrier does not obstruct this weaker matrix use. This is an append-only qualification of that route assessment, not a change to its proof or data.</p>
+<p><strong>Controls.</strong> Reduction before clearing is invalid already for a half coefficient; precision \(s\le v\) makes \(2^v\) zero and loses (4). The saved overlapping-CNF identity in the preceding cycle is a nonintegral-term control whose complete numerator is twice its Boolean polynomial. No new enumeration is needed: (5) holds for every integer evaluation, and the Fourier argument is an exact character-basis identity. A unit error \(E=1\) gives the identity on the common domain, showing that transfer alone cannot imply a rank deficit. This is a control on an unconditional rank inference, not a claim that every legal coefficient choice produces a unit error.</p>
+<p><strong>Follow-up.</strong> Continuing. The precision subtest is resolved, but the normalized-path head still needs a rank mechanism for actual mixtures. Next develop the rank side directly: for fixed parent rows and a common hard restriction, inspect the grouped matrix terms, their shared column spans and the cancellations exposed by (4). Test a size-dependent estimate using the row accuracy and actual source inventory; do not infer rank from real coefficient mass. Start with the full affine-mixture source, not another isolated low-degree example. If no relation between normalized terms and common column spans survives known full-rank controls, record that obstruction to this rank formulation and reconsider the mechanism at the spell boundary.</p>
+<ul><li data-check="entry-2026-10-09-finite-precision-replay:s1"><strong>Follow-up.</strong> Continuing: aggregation equality now holds without the precision degree loss; the explicitly separate rank target is still unproved.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Develop a source-size- and accuracy-dependent common-column-span estimate for the deflated normalized-path matrix on the hard residual quotient, retaining every nonzero complete-source error and the original K+B window. Test arbitrary affine mixtures and the unit/full-proof controls before imposing a stronger interface.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with one presentation correction, now incorporated: expand quotient entries in the fixed class basis before the ordinary matrix factorization. The reviewer confirmed the original-degree ledger and unchanged goal assessment. The finite-ring class proof, charged construction, literal pruning and complete-source replay were read with original costs. The transfer is proved in full; archived half-denominator checks are reused, not reported as new computation.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_mixed_aggregate_20261009 -->
+</article>
