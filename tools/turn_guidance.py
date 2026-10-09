@@ -102,12 +102,15 @@ def queue_notes(body):
     rule = ' '.join(lq.SETTINGS['guidance']) or SQUEEZE     # a kind module's own, else the squeeze rule
     if lq.SETTINGS['backpressure'] and (draining or len(nodes) >= lq.CAP):
         return [f'Lead queue: {len(nodes)} items, DRAINING (backpressure from {lq.CAP} until {lq.FLOOR}). Every '
-                f'{entries} entry must develop the head until the queue has {lq.FLOOR} items: {target}. End the '
+                f'{entries} entry must develop a queued item until the queue has {lq.FLOOR} items, by default {target}; '
+                'another item needs a <strong>Chosen.</strong> paragraph naming the open statement it bears on and '
+                'why it comes first (user, 9 October 2026). End the '
                 'entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and '
                 'update the queue: Closed and Developed remove the item. ' + rotation + rule]
     pressure = f'backpressure at {lq.CAP}' if lq.SETTINGS['backpressure'] else 'no backpressure here'
     return [f'Lead queue: {len(nodes)} items ({pressure}); {target}. A {entries} entry that develops a queue '
-            'item takes the head or its first sub-idea, unless the user picked another, states its Follow-up '
+            'item takes the head or its first sub-idea by default, another with a <strong>Chosen.</strong> paragraph '
+            'giving the reason, or one the user picked; it states its Follow-up '
             'outcome and updates the queue. ' + rule]
 
 

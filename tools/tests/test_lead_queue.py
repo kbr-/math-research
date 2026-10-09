@@ -763,6 +763,28 @@ class LeadQueueTest(unittest.TestCase):
         bpick = developing(bq[5], 'Closed', quote).replace('data-kind="research"', 'data-kind="research" data-picked="user"')
         lq.check(notebook([big], bq, draining=True), notebook([big, bpick], bq[:5] + bq[6:], draining=True))
 
+    def test_the_agent_may_choose_an_item_with_a_stated_reason(self):
+        rev = review('r1', [PASS, PASS, PASS])
+        q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]
+        head = notebook([rev], q)
+        why = ('<p><strong>Chosen.</strong> It bears on the open statement on the family more directly than the '
+               'head does.</p>')
+        lq.check(head, notebook([rev, developing(q[2], 'Closed', why)], q[:2]))
+        lq.check(head, notebook([rev, developing(q[2], 'Continuing', why)], q))      # it stays where it is
+        with self.assertRaises(ValueError):                             # no reason given: the head only
+            lq.check(head, notebook([rev, developing(q[2], 'Closed')], q[:2]))
+        with self.assertRaises(ValueError):                             # a reason must say something
+            lq.check(head, notebook([rev, developing(q[2], 'Closed', '<p><strong>Chosen.</strong> yes.</p>')], q[:2]))
+        cont = developing(q[2], 'Continuing', why)
+        spent = [rev] + [cont] * lq.SPELL
+        lq.check(notebook(spent[:-1], q), notebook(spent, q))           # the last entry of its spell
+        with self.assertRaises(ValueError):                             # beyond the boundary without an extension
+            lq.check(notebook(spent, q), notebook(spent + [cont], q))
+        big = review('r1', [PASS] * lq.CAP)
+        bq = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
+        lq.check(notebook([big], bq, draining=True),                    # also while draining
+                 notebook([big, developing(bq[5], 'Closed', why)], bq[:5] + bq[6:], draining=True))
+
     def test_the_user_may_reorder_the_queue(self):
         rev = review('r1', [PASS, PASS, PASS])
         q = [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r1:3')]

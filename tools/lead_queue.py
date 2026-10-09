@@ -51,6 +51,11 @@ finish-turn.py against HEAD:
   develop items, count toward spells and are held to the head while draining), whether backpressure applies
   (data-backpressure="off" turns it off) and which modules beside this file add kinds (data-kind-modules, each
   with a kinds(lead_queue) function).  A notebook without route items is checked once it has a queue section.
+- The agent selects the order (user, 9 October 2026: "You can select the order. Make this a general framework
+  rule."): an entry may develop any queued item instead of the head when its text has a paragraph
+  <strong>Chosen.</strong> saying which open statement the item bears on and why it comes before the head.
+  Nothing is skipped: every item is still developed in its own entry, the head remains the default, and a
+  chosen item's spell runs as for a head; at its boundary it waits until another item has had an entry.
 - The user may pick any item out of order (user, 3 October 2026): the developing entry's tag carries
   data-picked="user" and its text a paragraph <strong>Picked.</strong> with the user's words in quotation marks.
   A picked entry satisfies draining and neither counts toward nor ends any spell.
@@ -114,6 +119,7 @@ ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol(?: data-move="head")?>(.*?)</
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')
 PICKED_RE = re.compile(r'<strong>Picked\.</strong>[^<]*?["\u201c][^"\u201d<]{3,}["\u201d]')
+CHOSEN_RE = re.compile(r'<strong>Chosen\.</strong>\s*[^<\s][^<]{39,}')
 
 
 class Kind:
@@ -1095,9 +1101,16 @@ def check(head_body, body, path=None, root=None):
         if located is None:
             raise ValueError(f'{work[0][1]} is not queued')
         if not chosen and work[0] not in [n.item for n in (head, first) if n is not None]:
-            raise ValueError(f'Queue items are developed oldest first: this entry develops {work[0][1]}, but the '
-                             f'head is {head.ident if head else "none (every item waits)"}' + (f' and its first '
-                             f'sub-idea {first.ident}' if first else '') + '; the user may pick another (data-picked)')
+            if not CHOSEN_RE.search(text):
+                raise ValueError(f'The head is the default: this entry develops {work[0][1]}, but the head is '
+                                 f'{head.ident if head else "none (every item waits)"}' + (f' and its first '
+                                 f'sub-idea {first.ident}' if first else '') + '. To develop another item, say in '
+                                 'a <strong>Chosen.</strong> paragraph which open statement it bears on and why '
+                                 'it comes first; the user may also pick one (data-picked)')
+            top = locate(old, work[0])[0] or located
+            if spell(body, top.item, old) > spell_limit(body, top.item, old):
+                raise ValueError(f'{top.ident} has reached the boundary of its spell: develop another item first, '
+                                 'or earn an extension (data-spell-extend)')
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
     draining_before = SETTINGS['backpressure'] and (was_draining or len(old) >= CAP)

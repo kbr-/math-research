@@ -270,7 +270,10 @@ historical assessments.
   waits in the notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living
   section; no word budget; restoration reads its first five items), FIFO, maintained per
   [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
-  entry develops at most one item, always the head, tagged `data-lead` or
+  entry develops at most one item, by default the head; the agent may take another queued item first
+  when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and why it comes
+  first (user, 9 October 2026: "You can select the order. Make this a general framework rule."); no
+  item is skipped by this. The entry is tagged `data-lead` or
   `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>` Closed, Developed or
   Continuing. Squeeze an item until it can produce nothing more, not until its first usable result
   (user, 3 October 2026): Continuing whenever its translation still bears on an open statement,
