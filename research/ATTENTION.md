@@ -624,6 +624,22 @@ For every field of characteristic !=2, n>=1 and d,m>=0, D=sum a_i^2 partial_ai d
 
 ---
 
+### Deficit circuit removal
+
+**Claim:** [thm:deficit-circuit-removal](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-deficit-circuit-removal>)
+
+For every F_q code C=ker H with redundancy-radius deficit t, some set Z of at most (2q-1)t actual coordinates leaves every circuit of H/Z of size at most q.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** A stability statement for the redundancy covering-radius bound: bounded deficit gives bounded-coordinate distance from bounded-circumference representations. Independent novelty and comparison with covering-code structure theorems remain unresolved.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact represented-code deficit statement and coordinate costs with covering-code stability and puncturing results before claiming independent novelty.
+
+---
+
 ### Depth four ENS query obstruction
 
 **Claim:** [thm:depth-four-ENS-query-obstruction](<https://kbr-.github.io/math-research/#shallow-ENS-query-obstruction>)
@@ -843,6 +859,22 @@ No degree-D design distribution for an unsatisfiable Boolean quadratic system me
 ## Pending: automatically queued
 
 Queued automatically because their novelty is unknown, mostly reusable tools; lower priority than the headline results.
+
+### Deficit puncture separation
+
+**Claim:** [cor:deficit-puncture-separation](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-deficit-circuit-removal>)
+
+For every finite-field linear code on v>=1 coordinates, kappa(C)<=min(v,(2q-1)t+sqrt(2q(q+1)v)+1). With h contractions and n=v-h remaining, kappa<=min(v,h+b+q(q+1)floor(n/(b+1))/2) for each integer b>=1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Converts redundancy deficit into coordinate fragmentation at all deficit scales; exact puncture-tradeoff literature status remains open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact represented-code deficit statement and coordinate costs with covering-code stability and puncturing results before claiming independent novelty.
+
+---
 
 ### Rank free flat value choice
 
