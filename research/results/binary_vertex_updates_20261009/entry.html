@@ -1,0 +1,92 @@
+<article id="entry-2026-10-09-balanced-moment-rigidity" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-restriction-architecture-review:3" data-claims="cor:balanced-moment-rigidity lem:peelable-expander-family">
+<h3>9 October 2026 — Balanced vertex updates force a larger moment window</h3>
+<p class="entry-meta">Working buffered moment rigidity on peelable expanders; no source-rank improvement.</p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, test the <a href="#entry-2026-10-09-flow-mixture-rigidity">remaining defect-moment band</a> using actual PC consequences. The old star-product argument only used ordinary axiom multiples. A search recovered the stronger <a href="#entry-2026-10-08-balanced-modular-cuts">balanced character-cut derivation</a>; use its degree ledger before proposing a new update calculus.</p>
+<p><strong>General statement.</strong> <code>cor:balanced-moment-rigidity</code> applies that existing derivation to small-support potentials. On graphs with a stated peeling property, a degree-\(D\) old PC annihilator that is uniform within flow fibers has canonical moments through \(2L\) for \(2L+1\le D\), \(L\ge\Delta\). <code>lem:peelable-expander-family</code> proves that the growing-degree graph choice can meet the property, including a joint restriction version.</p>
+<p><strong>New mathematics.</strong> The apparent seed freedom shrinks from the star-product range to a half-degree pairing window on this family. The local proof operations are already verified character identities; the additional argument is a potential ordering and its random-graph existence proof.</p>
+<p><strong>Goal progress.</strong> Unchanged. This constrains a sampler-based route; it gives no size-dependent rank saving and excludes no further proof-size exponent. The larger-cutoff band and interpretations using nonuniform flow weights remain outside the conclusion.</p>
+
+<h4>Charge a potential path using the existing balanced proof</h4>
+<p>Work over \(\mathbb F_4\) in the ternary Fourier system, with maximum graph degree \(\Delta\), and its affine one-hot encoding. For a vertex potential \(t\in\mathbb F_3^V\), write \(\alpha=\nabla t\), \(q=|\operatorname{supp}\alpha|\). Suppose its nonzero coordinates can be installed one at a time, with intermediate potentials \(t_j\), starting at zero and ending at \(t\), so that
+\[
+|\operatorname{supp}\nabla t_j|\le C.
+\tag{1}
+\]
+The balanced-cut induction gives a derivation of a disjoint-support binomial \(A-\omega^{c\cdot t}B\), with exponent difference \(\alpha\), through
+\[
+\max\{3,2\Delta,\lceil C/2\rceil+\Delta+1\}.
+\tag{2}
+\]
+Its final factors have degrees at most \(\lceil q/2\rceil\). This is an application of the earlier proof to ternary-valued updates, not an assumed change of its degree measure.</p>
+<p>Here are the required details. An update of value one uses the original vertex character equation \(X_v-\omega^{c_v}\). Value two uses \(X_v^{-1}-\omega^{-c_v}\), where the inverse is the degree-\(\deg(v)\) monomial with every \(U,V\) exchanged. Multiply the original equation by that monomial, reduce \(U^2=V,V^2=U,UV=1\), and scale; all lines fit \(2\Delta\). If the current balanced relation is \(A-aB\), add its product with the update character \(X\) to \(aB(X-b)\), with the appropriate sign, obtaining \(AX-abB\). Each multiplication costs at most \(\lceil C/2\rceil+\Delta\). Cancel common edge factors and rebalance by multiplying the whole relation by one inverse edge character at a time. The temporary degree increases by at most one; local reductions do not increase it. These are exactly the prior cancellation and balancing operations.</p>
+<p>Finally multiply by \(B^{-1}\) and reduce locally. The first term costs \(\deg A+\deg B=q\), the second at most \(2\deg B\le q+1\). The resulting unbalanced relation
+\[
+m_\alpha-\omega^{c\cdot t}
+\tag{3}
+\]
+therefore has an ordinary PC derivation through
+\[
+\max\{3,2\Delta,\lceil C/2\rceil+\Delta+1,q+1\}.
+\tag{4}
+\]
+Affine transfer to one-hot axioms retains the \(2\Delta\) ceiling and degree-three CNF row conversion already included here. All inverse operations are polynomial character multiplications, never formal division. The formula is an upper bound, not a claim of minimal degree.</p>
+
+<h4>Peeling makes the path support monotone</h4>
+<p>Call the required graph property: every nonempty \(S\subseteq V\) with \(|S|&lt;n/4\) contains a vertex \(v\) with
+\[
+2\deg_{G[S]}(v)\le\deg_G(v).
+\tag{5}
+\]
+For a potential supported on \(S\), remove that vertex by setting its value to zero. Edges from \(v\) outside \(S\) cease to be nonzero in the gradient; edges to equal-valued vertices in \(S\) become nonzero; edges to different nonzero values stay nonzero. The support change is
+\[
+\deg_{\rm same}(v)-\deg_{\rm outside}(v)
+ \le2\deg_{G[S]}(v)-\deg_G(v)\le0.
+\]
+Repeated removal applies (5) to the remaining support. Reverse the order to obtain (1) with \(C=q\). Different nonzero potential values cause no extra update or degree cost.</p>
+
+<p id="balanced-moment-rigidity"><strong>Corollary (balanced moment rigidity).</strong> Let the charged graph satisfy (5), edge expansion \(\varepsilon\), and
+\[
+\max(4,2\Delta)\le D<\varepsilon n/8.
+\]
+Let \(\mu\) be a normalized weighted mixture of corrected-charge flow fibers as in <a href="#flow-mixture-rigidity">flow mixture rigidity</a>, uniform within each fiber. Assume now that it annihilates every old degree-\(D\) PC consequence, not merely ordinary generator multiples. If
+\[
+\max(4,2\Delta)\le L,\qquad 2L+1\le D,
+\tag{6}
+\]
+then its character moments through support \(2L\) equal the canonical charged moments, and its degree-\(L\) pairing has radical \(J_L\). Consequently every complete weighted source-error matrix with weight-plus-error-plus-column degree at most \(L\) is the same matrix as in the canonical quotient, independently of the mixture.</p>
+<p><strong>Proof.</strong> Noncut characters have zero flow-fiber sums, exactly as before. For a cut character \(\alpha\) of support \(q\le2L\), expansion supplies a unique potential \(t\) of support at most \(q/\varepsilon\le2L/\varepsilon&lt;n/8\). Thus (5) applies and \(C=q\). In (4), \(q+1\le2L+1\le D\), and
+\[
+\lceil q/2\rceil+\Delta+1\le L+\Delta+1\le2L+1\le D.
+\]
+The other floors fit as well. Old PC annihilation of (3), together with normalization, gives \(\mu(m_\alpha)=\omega^{c\cdot t}\). The earlier phase-block pairing proof and binary descent now apply through \(2L\), without declaring \(J_L\) proper at twice its cutoff. Testing all degree-\(L\) polynomials detects each actual output class in \(Q_L\), giving the stated complete matrix and kernel conclusion. \(\square\)</p>
+<p>The original degree-\(D\) hypothesis is used on real derived lines in (4). It cannot be replaced by an NS annihilator whose allowed cofactors stop before that derivation, or by agreement with the vertex equations alone. Neither does (6) cover the full degree-\(D\) output space. The result is stronger than the prior star-product range on this graph class, with stronger graph and PC hypotheses; it is not an unqualified refinement of that all-graph NS statement.</p>
+
+<h4>Such expanding graphs exist in the growing-degree regime</h4>
+<p id="peelable-expander-family"><strong>Lemma (peelable expander family).</strong> For any sequence \(\delta=\delta(n)\) with \(\delta/\log n\to\infty\) and \(0&lt;\delta\le n-1\), sufficiently large \(n\) admit simple graphs with degrees in \([0.9\delta,1.1\delta]\), edge expansion at least \(\delta/4\), and (5). A lexicographically first such graph is a well-defined family; no efficient graph generator is asserted.</p>
+<p><strong>Proof.</strong> Sample each edge independently with probability \(\delta/(n-1)\). Standard exponential-Markov bounds for a sum of independent Bernoulli variables give degree failure at most \(2n\exp(-\delta/300)\). These bounds follow by \(\mathbb E e^{uX}\le\exp(\mathbb EX(e^u-1))\), minimizing over \(u\); the upper and lower relative deviations \(0.1\) permit the displayed safe constant.</p>
+<p>For a fixed set \(S\) of size \(s\le n/4\), the expected internal edge count is at most \(\delta s/8\). The same bound for the event \(e(S)\ge\delta s/5\) gives probability at most \(\exp(-\delta s/64)\). Indeed its exponent rate is at least
+\[
+\delta s\left(\tfrac15\log(8/5)-\tfrac3{40}\right)
+ \ge \tfrac9{520}\delta s>\tfrac1{64}\delta s,
+\]
+using \(\log(1+x)\ge2x/(2+x)\) at \(x=3/5\). Union-bound with \(\binom ns\le n^s\): the failure over all such nonempty sets is at most \(a/(1-a)\), \(a=n e^{-\delta/64}\), once \(a&lt;1\). Every remaining set has average internal degree below \(0.4\delta\), whereas every vertex degree is at least \(0.9\delta\). Some vertex satisfies (5).</p>
+<p>For any fixed \(S\) of size \(s\le n/2\), its expected cut size is at least \(\delta s/2\). A lower-tail exponential-Markov bound gives
+\[
+\Pr(|\partial S|<\delta s/4)\le e^{-\delta s/16}.
+\]
+The union bound is at most \(b/(1-b)\), \(b=n e^{-\delta/16}\). The sum of these two bounds and the degree-failure bound tends to zero. Thus a graph with all properties exists. This proof charges the entire set inventory; a typical-set estimate alone would not prove peeling. \(\square\)</p>
+<p><strong>Joint restriction scope.</strong> Choose, for example, \(\delta=n^\alpha\) and \(p=n^{-\beta}\) with \(0&lt;\beta&lt;\alpha&lt;1\). If an independently sampled graph above is thinned by independent \(p\)-live edges, its marginal live graph is exactly the same random-graph model with mean degree \(t=p\delta\). Since \(t/\log n\to\infty\), the lemma applies to that live graph too. Let \(e_n\to0\) bound its failure probability. Markov's inequality shows that all but at most \(\sqrt{e_n}\) of the original graphs have conditional live failure probability at most \(\sqrt{e_n}\). Original good graphs have probability tending to one, so one can fix an original graph satisfying both conditions, independently of any proof or its size exponent.</p>
+<p>For that fixed family, live expansion, bounded degree and peeling hold jointly with probability \(1-o(1)\); every fixed label choice preserves total charge. The source's real full-cube mass estimate applies to every fixed eligible CNF under this same independent restriction law. If its expected mass is at most \(M_0\), conditioning on the good live event gives a restriction with mass at most \(M_0/(1-o(1))\). For a list, apply this only to its total mass and pay the list inventory. The canonical encoding still has logarithmic length \(\Theta(\delta)\); no succinct encoding or efficient conditional selection is inferred. This establishes an available family for the strengthened test, not peeling for every residual graph of every earlier fixed family.</p>
+
+<h4>Outcome, controls and next step</h4>
+<p><strong>Architecture test.</strong> The star-product freedom was partly an artifact of ignoring derived old relations. On the stated growing-degree family, actual PC consequences force canonical pairings up to the half-degree window (6). This removes another proposed source of seed freedom there. It supplies no rank saving and does not prove equality of the entire old PC closure with \(J_D\).</p>
+<p><strong>Controls.</strong> Ordinary expansion alone was not used as a peeling theorem. The extra property is proved for an available family, with explicit quantifiers. Ternary value-two updates use the inverse vertex certificate, retaining \(2\Delta\). The final unbalanced character costs \(q+1\), so a claimed full-\(D\) pairing would exceed the budget: (6) is not dropped. All local identities are those covered by the earlier exhaustive character checks; this cycle introduces no new local rule or encoding and does not rerun those checks as new evidence.</p>
+<p><strong>Follow-up.</strong> Continuing. The remaining band is not automatically a usable new PC space. Next test whether abandoning uniformity within flow fibers supplies a source-dependent moment choice with an affordable degree, rather than merely reproducing multiplication by an arbitrary old weight. Use a packet \(\mu(f)=\sum_{S,\beta}a_\beta(S)\sum_{y\in\mathcal A_S}m_\beta(y)f(y)\), where each mode has edge support at most \(b\) and the defect-dependent coefficients are unrestricted. Test whether degree-paid old PC relations already represent its low-degree action by one ordinary weight of degree at most \(b\). Compare with the recorded orbit-kernel saturation and weighted-input removal. The test must identify a new constrained source mechanism; a Fourier rewrite of the same common-kernel problem does not count as progress.</p>
+<ul><li data-check="entry-2026-10-09-flow-mixture-rigidity:s1"><strong>Follow-up.</strong> Continuing: derived vertex updates force the larger window (6) on an available family; the band above it is not certified as a proper source-compatible PC space.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test source-dependent nonuniform flow weights using their exact character support and paid old degree; compare the resulting source map with existing weighted-error and orbit-saturation theorems before claiming a new mechanism.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed without required corrections, confirming the ternary update costs, peeling, half-degree pairing window, all-subset graph bounds and conditional original-graph selection. Full balanced cut, Fourier transfer, flow-mixture and pairing proofs were reread; numerical identities are reused from their existing checks. The graph and moment arguments are all-parameter proofs.</p>
+<p><strong>Process assessment.</strong> Recovering balanced cut derivations avoided rebuilding a weaker vertex-update calculus; the resulting limitation is kept separate from progress on the bound.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_vertex_updates_20261009 -->
+</article>
