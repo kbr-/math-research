@@ -294,7 +294,10 @@ historical assessments.
   naming and where possible making the concrete next attempt; Developed only when its results leave
   it no remaining application to an open statement; Closed only for a reason the attempt found (a
   restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
-  result). Closed and Developed remove the item. Four consecutive research entries are the default
+  result). One cycle, which may be short, is enough to find that an item deserves closing; state the
+  reason and its limits and close it, without asking the user whether it may be pruned (user, 10
+  October 2026: "the existing process already supports closing an item quickly if it deserves it").
+  Closed and Developed remove the item. Four consecutive research entries are the default
   spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
   current spell/extension period materially advances a named open statement and a concrete next
   necessary implication uses the same mechanism. Record that evidence and next attempt using [the
