@@ -1,0 +1,20 @@
+Review record, 9 October 2026: entry-2026-10-09-exact-degree-tool.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), given the tool, its tests,
+the script, the data and the draft. Nothing run by the reviewer.
+
+Verdict: pass with corrections. No bug found that makes pc_degree wrong on the reported instances: the order is
+graded lex, top reduction terminates and uses only multiples of the current leading degree, a zero remainder is a
+standard representation, no pair is missed in complete, a remainder's lead never equals an existing one.
+
+Defects fixed after the review:
+- check_pairs built its table by leading monomial and dropped elements sharing one (e.g. {x+1, x} returned no
+  unresolved pair). Now all pairs of the given list are examined.
+- pc_degree started at D = 1; a constant axiom now gives 0.
+- Tests: the duplicate test replaced; an independent brute-force closure comparison added (forty random
+  three-variable systems, cutoffs 1-3, both outcomes asserted). Its first version failed because the reference
+  closure multiplied only generators and missed elements whose degree drops by cancellation; the reference was
+  corrected (the tool was right) and all cases agree.
+- The twelve finished instances were rerun with the fixed tool: identical results (exact_degree_rerun.jsonl).
+
+Draft corrections applied: twelve instances; no converse used and the corollary citation dropped; the argument
+for inputs (_leads); which sizes were predicted before which run; the n = 20 time is not recorded.
