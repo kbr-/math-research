@@ -1,0 +1,81 @@
+// All 1024 alternating 5x5 binary matrices, delta=h=4, six literal bottoms.
+// M=0 has five independent input monomials, exceeding the four scalar rows.
+// Exact Boolean normal forms cover all 2^24 old assignments without enumeration.
+// Shared polynomial products and Boolean basis are computed once.
+ring R=2,(x(1..24)),dp;
+ideal bools;
+int i,j,k;
+for(i=1;i<=24;i++){bools=bools,x(i)^2+x(i);}
+ideal G=std(bools);
+ideal bottoms;
+poly term;
+for(i=1;i<=6;i++)
+{
+ term=1;
+ for(j=1;j<=4;j++){term=term*x(4*(i-1)+j);}
+ bottoms[i]=term;
+}
+poly a=bottoms[1];
+poly b=bottoms[2];
+poly w=a*b;
+ideal U=a,bottoms[3],bottoms[4],bottoms[5],bottoms[6];
+ideal V=b,bottoms[5],bottoms[6],bottoms[3],bottoms[4];
+int tests=0;int failed=0;int parents=0;
+int mask,digit;
+matrix M[5][5];
+ideal inputs;
+poly row,f,rem;
+link out=":w research/results/binary_shared_quadratic_20261009/shared-checks.txt";
+write(out,"F2 exact Boolean normal forms; delta=h=4, k=2, 24 old bits; matrices=1024");
+for(i=1;i<=6;i++)
+{
+ for(j=1;j<=4;j++)
+ {
+  f=w*(1+x(4*(i-1)+j))*bottoms[i]; rem=reduce(f,G);tests++;
+  if(rem!=0 || deg(f)>13){failed++;}
+  write(out,"bottom "+string(i)+" input "+string(j)+": degree "+string(deg(f))+" remainder "+string(rem));
+ }
+}
+for(mask=0;mask<1024;mask++)
+{
+ digit=mask;
+ for(i=1;i<=5;i++)
+ {
+  M[i,i]=0;
+  for(j=i+1;j<=5;j++)
+  {
+   M[i,j]=digit%2;M[j,i]=M[i,j];digit=digit div 2;
+  }
+ }
+ inputs=V;
+ for(i=1;i<=5;i++)
+ {
+  for(j=1;j<=5;j++){inputs[i]=inputs[i]+M[i,j]*U[j];}
+ }
+ row=0;
+ for(i=1;i<=5;i++){row=row+U[i]*inputs[i];}
+ tests++;parents++;
+ if(row!=w || digit!=0){failed++;}
+ write(out,"parent "+string(mask)+": literal residual "+string(row+w));
+ for(i=1;i<=5;i++)
+ {
+  f=w*inputs[i]*(1+row);rem=reduce(f,G);tests++;
+  if(rem!=0 || deg(f)>20){failed++;}
+  write(out,"companion "+string(i)+": degree "+string(deg(f))+" remainder "+string(rem));
+  f=w*(U[i]^2+U[i]);rem=reduce(f,G);tests++;
+  if(rem!=0 || deg(f)>16){failed++;}
+  write(out,"field "+string(i)+": degree "+string(deg(f))+" remainder "+string(rem));
+ }
+}
+f=w*b*(1+w+U[2]^2);rem=reduce(f,G);tests++;
+if(rem==0){failed++;}
+write(out,"nonalternating diagonal negative control: "+string(rem));
+f=w*b*(1+w+U[2]*V[2]);rem=reduce(f,G);tests++;
+if(rem==0){failed++;}
+write(out,"unpaired reuse negative control: "+string(rem));
+tests++;
+if(reduce(w,G)==0 || deg(w)!=8){failed++;}
+write(out,"parents="+string(parents)+"; checks="+string(tests)+"; failures="+string(failed));
+if(failed==0){write(out,"PASS");}else{write(out,"FAIL");}
+close(out);
+exit;

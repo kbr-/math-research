@@ -1,0 +1,75 @@
+// All eight alternating 3x3 binary parents; four degree-four literal bottoms.
+// Exact normal forms check all 65536 old Boolean assignments, not a sample.
+// Original common accuracy h=4: bottom companion9, parent companion44.
+ring R=2,(x(1..16)),dp;
+ideal bools;
+int i,j;
+for(i=1;i<=16;i++){bools=bools,x(i)^2+x(i);}
+ideal G=std(bools);
+poly a=x(1)*x(2)*x(3)*x(4);
+poly b=x(5)*x(6)*x(7)*x(8);
+poly s=x(9)*x(10)*x(11)*x(12);
+poly t=x(13)*x(14)*x(15)*x(16);
+poly w=a*b;
+ideal U=a,s,t;
+ideal V=b,t,s;
+ideal bottoms=a,b,s,t;
+int tests=0;
+int failed=0;
+int parents=0;
+int p,q,r;
+matrix M[3][3];
+ideal inputs;
+poly row;
+poly f;
+poly rem;
+link out=":w research/results/binary_shared_quadratic_20261009/shared-checks.txt";
+write(out,"F2 exact Boolean normal forms; delta=h=4, k=1, 16 old bits");
+for(i=1;i<=4;i++)
+{
+ for(j=1;j<=4;j++)
+ {
+  f=w*(1+x(4*(i-1)+j))*bottoms[i];
+  rem=reduce(f,G);
+  tests++;
+  if(rem!=0 || deg(f)>13){failed++;}
+  write(out,"bottom "+string(i)+" input "+string(j)+": degree "+string(deg(f))+" remainder "+string(rem));
+ }
+}
+for(p=0;p<=1;p++)
+{
+ for(q=0;q<=1;q++)
+ {
+  for(r=0;r<=1;r++)
+  {
+   M[1,1]=0; M[2,2]=0; M[3,3]=0;
+   M[1,2]=p;M[2,1]=p;M[1,3]=q;M[3,1]=q;M[2,3]=r;M[3,2]=r;
+   inputs=V[1]+M[1,2]*U[2]+M[1,3]*U[3],V[2]+M[2,1]*U[1]+M[2,3]*U[3],V[3]+M[3,1]*U[1]+M[3,2]*U[2];
+   row=U[1]*inputs[1]+U[2]*inputs[2]+U[3]*inputs[3];
+   tests++;parents++;
+   if(row!=w){failed++;}
+   write(out,"parent "+string(parents)+": literal common-row residual "+string(row+w));
+   for(i=1;i<=3;i++)
+   {
+    f=w*inputs[i]*(1+row);rem=reduce(f,G);tests++;
+    if(rem!=0 || deg(f)>20){failed++;}
+    write(out,"companion "+string(i)+": degree "+string(deg(f))+" remainder "+string(rem));
+    f=w*(U[i]^2+U[i]);rem=reduce(f,G);tests++;
+    if(rem!=0 || deg(f)>16){failed++;}
+    write(out,"field "+string(i)+": degree "+string(deg(f))+" remainder "+string(rem));
+   }
+  }
+ }
+}
+f=w*b*(1+w+s^2);rem=reduce(f,G);tests++;
+if(rem==0){failed++;}
+write(out,"nonalternating diagonal negative control: "+string(rem));
+f=w*b*(1+w+s*t);rem=reduce(f,G);tests++;
+if(rem==0){failed++;}
+write(out,"unpaired reuse negative control: "+string(rem));
+tests++;
+if(reduce(w,G)==0 || deg(w)!=8){failed++;}
+write(out,"parents="+string(parents)+"; checks="+string(tests)+"; failures="+string(failed));
+if(failed==0){write(out,"PASS");}else{write(out,"FAIL");}
+close(out);
+exit;
