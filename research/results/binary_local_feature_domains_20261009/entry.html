@@ -1,0 +1,91 @@
+<article id="entry-2026-10-09-local-feature-domains" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-profile-architecture-review:3" data-claims="lem:local-feature-batching">
+<h3>9 October 2026 — Local feature dictionaries can share one old multiplier space</h3>
+<p class="entry-meta">Working common-domain criterion; no unrestricted source estimate.</p>
+<p><strong>Question.</strong> On general-step, remove the global named-feature inventory without choosing incompatible local weights. The <a href="#entry-2026-10-09-pullback-iteration">fixed-level theorem</a> supplies only a finite proof-size exponent range. The required new implication is a sufficiently small total actual error rank on one surviving domain for every polynomial-size source. Test whether local pullbacks preserve such a common domain, and expose their exact loss.</p>
+<p><strong>General statement.</strong> <a href="#local-feature-batching">lem:local-feature-batching</a> constructs all coefficient maps and a single old multiplier from local affine pullbacks, provided their image-to-common-domain ratios pass an explicit inequality. It also bounds each ratio by a weighted Hilbert sum. This is a composition of the existing contraction, weighted agreement and factor grouping, not a new contraction theorem.</p>
+<p><strong>New mathematics.</strong> Separate local charts need not produce separate weights: choose their rows first, restrict every resulting error map to the same old \(V_K\), and only then choose a common kernel class. Local image growth is charged, at worst exponentially in the local feature count, rather than ignored.</p>
+<p><strong>Goal progress.</strong> Unchanged. No source-derived estimate on these local image ratios or on the intrinsic weighted nonlinear ranks is proved. The preceding polynomial symbol-size bound is unchanged; the superpolynomial endpoint remains open.</p>
+<h4 id="local-feature-batching">Local feature batching</h4>
+<p>Work over \(\mathbb F_2\). Let \(J_D\) be a proper degree-\(D\) Boolean pseudoideal on \(n\ge1\) old variables. Write \(V_k\) for old polynomials of total degree at most \(k\), and brackets for classes modulo \(J_D\) whenever the displayed degrees fit. Let \(w\notin J_D\), \(\deg w\le b\), and put \(H_w(k)=\dim[wV_k]\). There are finitely many nonempty actual tuples \(g_{a,i}\), with degrees at most \(\delta_a\ge1\), and original positive row counts \(h_a\).</p>
+<p>For each tuple choose \(q_a\ge0\) old features \(z_{a,j}\) of degree at most \(d_a\), where \(1\le d_a\le\delta_a\). Define \(\psi_a(x)=x,\psi_a(Z_j)=z_{a,j}\). Suppose affine formal tuples \(\widehat g_{a,i}(x,Z)\) satisfy
+\[
+w(g_{a,i}-\psi_a\widehat g_{a,i})\in J_D.
+\tag{1}
+\]
+These are actual weighted PC/pseudoideal memberships; no ordinary NS cofactor bound is asserted. Different tuples may use different feature dictionaries and different weighted relations.</p>
+<p>Choose a common integer \(1\le K\le n\), positive integers \(t_a\), and assume
+\[
+b+d_a(K+t_a+1)\le D,\qquad
+b+K+(t_a+1)\delta_a\le D.
+\tag{2}
+\]
+Set \(v_a=n+q_a\), \(N_v(k)=\sum_{j=0}^k\binom vj\), and
+\[
+\eta_a=\frac{N_{v_a}(K-1)}{2N_{v_a}(K)},\qquad
+H_a(K)=\dim[w\psi_a(V_K^{x,Z})],\qquad
+T_a=\max\{1,d_a(\lceil t_a/h_a\rceil-1)\}.
+\]
+Here the local formal space contains all old variables and only this tuple's features. The comparison denominator is always the same positive number \(H_w(K)\).</p>
+<p><strong>Lemma (local feature batching).</strong> If
+\[
+\sum_a H_a(K)(1-\eta_a)^{t_a}<H_w(K),
+\tag{3}
+\]
+then there are old binary coefficient maps for the original \(h_a\) rows, of degree at most \(T_a\), and one \(f\in V_K\) such that \(W=wf\notin J_D\) and all actual weighted companions belong to \(J_D\). Moreover
+\[
+H_a(K)\le
+\sum_{j=0}^{\min(q_a,K)}\binom{q_a}{j}H_w(K-j)
+\le2^{q_a}H_w(K).
+\tag{4}
+\]
+Thus replacing \(H_a(K)/H_w(K)\) in (3) by the middle ratio in (4), or by \(2^{q_a}\), is sufficient. If \(T\ge1\) bounds every new and earlier coefficient map, all earlier weighted identities persist, and \(B\ge2\) is an original source-proof ceiling, the usual complete replay applies when \(b+K+TB\le D\). Without a replay, weighted coefficient fields separately require \(b+K+2T\le D\).</p>
+<p><strong>Proof of the local image bound.</strong> Formal Boolean reduction is valid under \(\psi_a\) through old degree \(d_aK\), so representatives of the local image may be written
+\[
+F(x,Z)=\sum_{S\subseteq[q_a],\,|S|\le K}Z_S F_S(x),
+\qquad \deg F_S\le K-|S|.
+\]
+For each \(S\), the image of \(wz_{a,S}V_{K-|S|}\) has dimension at most \(H_w(K-|S|)\). Indeed its map factors through \([wV_{K-|S|}]\): multiply any kernel relation by \(z_{a,S}\), with ceiling at most
+\(b+K-|S|+d_a|S|\le b+d_aK\le D\).
+Subadditivity over \(S\) proves the first inequality. Monotonicity of \(H_w\) proves the second. No independence of the features, and no uniform Hilbert growth for an arbitrary conditioned domain, is used.</p>
+<p><strong>Choose rows locally, then the weight globally.</strong> By <a href="#weighted-feature-removal">weighted feature removal</a>,
+\[
+I_a=\{F:\deg F\le R_a,\ w\psi_a(F)\in J_D\},\qquad
+R_a=\lfloor(D-b)/d_a\rfloor,
+\]
+is a proper Boolean pseudoideal. Apply the affine contraction proof to the single tuple \(\widehat g_a\) on the full local formal degree spaces. It chooses \(t_a\) binary scalar rows with linear forms \(\ell_{a,u}=\sum_i c_{a,u,i}\widehat g_{a,i}\), such that the map
+\[
+F\longmapsto
+\bigl([w\psi_a(F\widehat g_{a,i}\prod_{u\le t_a}(1-\ell_{a,u}))]\bigr)_i
+\]
+on local degree \(K\) has rank at most \(H_a(K)(1-\eta_a)^{t_a}\). The first buffer in (2) pays every contraction. We use only this rank conclusion, not a separately selected local surviving multiplier.</p>
+<p>Restrict each map to the common old \(V_K\). Each factors through \([wV_K]\), since its extra factor has degree at most \(d_a(t_a+1)\) and (2) pays the multiplication of kernel relations. Restriction cannot increase its rank. By (3), the sum of these ranks is smaller than the dimension of this same domain. The intersection of their kernels therefore has a nonzero class \([wf]\). Choose an old representative \(f\in V_K\). This is the single weight used for all blocks.</p>
+<p><strong>Return to original tuples and row counts.</strong> Partition the \(t_a\) chosen factors into \(m_a\le\min(h_a,t_a)\) nonempty groups of size at most \(\lceil t_a/h_a\rceil\). The exact telescoping identity gives
+\[
+1-\prod_{u\in G}(1-\ell_{a,u})
+=\sum_i A_{a,G,i}\widehat g_{a,i},
+\qquad \deg A_{a,G,i}\le |G|-1.
+\]
+Use \(\psi_a(A_{a,G,i})\) as coefficients on the original actual inputs \(g_{a,i}\), one group per original row; zero-fill unused rows. The coefficient degree is at most \(T_a\). On the reference tuple this gives exactly the chosen product. Replacing one reference input at a time in the grouped product and in the companion yields multiples of the relations (1).</p>
+<p>The comparison has a paid bound: the \(m_a\) active factors have total degree at most \((t_a-m_a)d_a+m_a\delta_a\le t_a\delta_a\); adding the companion and \(f\) costs at most \(K+(t_a+1)\delta_a\). Each telescoping term multiplying a relation (1) obeys that bound. The second buffer in (2) therefore makes actual and reference weighted companions equal modulo \(J_D\). The reference ones vanish by the common-kernel choice, proving the actual memberships. Booleanity of every binary coefficient polynomial has a certificate through twice its degree. Earlier identities may be multiplied by \(f\) only when their actual final degrees fit. Finally the global degree-\(T\) substitution with \(W\) replays the original source derivation through \(b+K+TB\), including raw coefficient uses and their fields; cancellation never resets original degrees. This proves the lemma. \(\square\)</p>
+<h4>Which local rank is relevant?</h4>
+<p>There is a canonical available dictionary, although no small-size bound is claimed. Let \(\mathcal A_w=[wV_1]\) and set
+\[
+q_a=\dim\bigl((\mathcal A_w+\operatorname{span}_i[wg_{a,i}])/\mathcal A_w\bigr).
+\tag{5}
+\]
+Choose a basis of this quotient from the original input classes and use those actual inputs as features, with \(d_a=\delta_a\). Linear algebra gives (1), with an old-affine reference part. The feature representatives are actual old polynomials, not free quotient symbols. If \(q_a=0\), choose no features and \(d_a=1\); the actual comparison still pays \(\delta_a\). This recovers the existing weighted affine-reference mechanism rather than treating it as new.</p>
+<p>The elementary bound (4) gives a useful conditional calibration. Suppose \(D=\Theta(n)\), \(b\le D/8\), all \(d_a,\delta_a\le d=O(\log n)\), \(M\le n^A\), and \(q_a\le q=o(n/\log^2 n)\). With \(K=\min(n,\lfloor D/(16d)\rfloor)\), \(\eta_a\ge K/(4(n+q))=\Omega(1/d)\). Thus \(t_a=t=O(d(q+\log(2M)))\) suffices for \(M2^q(1-\min\eta_a)^t<1\). Both (2) fit, because \(td=O(d^2(q+\log(2M)))=o(n)\). With common \(h\), coefficient degrees obey \(T\le1+O(d^2(q+\log(2M))/h)\). A complete application must still verify \(TB=o(n)\), earlier maps and identities, and the original source degrees. There is no claim that arbitrary compiler tuples satisfy (5) with this \(q\).</p>
+<h4>Comparison with existing results and controls</h4>
+<p>The <a href="#source-profile-rank-inflation">existing source-profile construction</a> already pays products of formal nonlinear-rank/accuracy factors along dependency paths and recompiles the logical proof on one old-affine source. It can be better when those original formal ranks are small. The present criterion instead permits relations in the actual weighted old PC quotient after earlier maps have been chosen; it replays the original coefficient variables. It is not a replacement for the stronger existing formal-rank construction, and no implication between their full source hypotheses is asserted.</p>
+<p>The <a href="#sublinear-feature-two-level-endpoint">sublinear-feature theorem</a> already uses affine branches on unary PHP; its dimension counts old linear forms and its old barrier is in holes, not in the total old variable count. The <a href="#feature-row-shortening">feature-row criterion</a> already acts on one common domain but pays its enlarged input-word image. Here each local full-domain affine contraction is followed by restriction, with its image ratio retained. Neither comparison permits dropping that ratio.</p>
+<p>The <a href="#entry-2026-10-08-actual-tuple-budget">true-tuple failure and clamp</a> remains decisive: an enlarged-image sufficient certificate can fail even when a common input yields a cheap surviving weight. Thus a large value of (4) or (5) would obstruct only this certificate, not actual source elimination. The ordering-family control still lacks a linear-in-variable old barrier. No new enumeration, encoding or numerical experiment is used.</p>
+<p><strong>Follow-up.</strong> Continuing. This is the first entry of the two-entry extension. It resolves compatibility of local dictionaries but does not bound their common-domain cost for general sources. The next test must address that remaining cost or show why the source structure does not control it; improving another formal interface alone does not earn more time.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-09-pullback-iteration:s1"><strong>Follow-up.</strong> Closed: local dictionaries combine on one old domain by (3), without multiplying separate weights. The price is explicit local image growth; source-wide control is the remaining task below.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test a source-derived bound for the total local image cost in (3), allowing coherent earlier maps and a common surviving weight to be chosen. Compare the existing cheap shared-input clamp and source-profile reconstruction before interpreting large local nonlinear rank as an obstruction. The full compiler, not only a free family of dictionaries, must supply any proposed structural hypothesis.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the local Hilbert bound, common-domain restriction, grouped actual/reference comparison, coefficient fields and original-degree replay. Its one correction capped the calibration choice of K by n; this is incorporated. It confirmed unchanged goal progress and found no unused substantive hypotheses. Full proofs of weighted feature removal, conditional contraction, weighted agreement, source-profile inflation, the feature-row criterion and the sublinear-feature endpoint were read, together with the true-tuple control. No new numerical claim is made.</p>
+<p><strong>Process assessment.</strong> Keeping a common old domain makes the local-versus-global issue explicit; the existing formal-rank construction is retained as a comparator rather than rediscovered under a new name.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_local_feature_domains_20261009 -->
+</article>
