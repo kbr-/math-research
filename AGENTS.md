@@ -115,7 +115,12 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
   at most one fresh-context reviewer subagent for the consolidated review, given only the stable
   drafts and dependency anchors/excerpts, to try to break the arguments and identify unused
-  hypotheses. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
+  hypotheses. After that check, the same reviewer also helps (user, 9 October 2026): name the
+  cycle's open point in the brief, after the correctness items, and ask for a way past a failed
+  step or a reason none exists, a proof or counterexample for an unproved expectation, or whether a
+  new bound is tight. Its suggestions are unverified: record them as the reviewer's, and verify
+  one yourself before relying on it; one that adds or strengthens a claim gets the follow-up check
+  below. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
   The user authorizes and encourages spawning reviewers for any needed review in this and all future
   Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set
   reviewer subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not
