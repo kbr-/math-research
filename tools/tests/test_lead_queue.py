@@ -467,6 +467,33 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([self.rev, listing], self.q))
         self.assertIn('run it on ARM', lq.item_text(body, 'check', 't1:s1'))
 
+    def test_parentless_subideas_wait_for_a_review_to_promote_them(self):
+        head = notebook([self.rev], self.q)
+        listing = subideas('t1', [('check', 'run it on ARM'), ('build', 'the PDF register')], kind='research')
+        body, count = lq.append_new(notebook([self.rev, listing], self.q))
+        self.assertEqual((count, lq.parse(body)[1]), (0, self.q))          # route work has no parent: not queued
+        lq.check(head, body)
+        self.assertEqual(lq.pending_subideas(body), [('check', 't1:s1'), ('build', 't1:s2')])
+        promoting = ('<article id="r2" data-kind="review"><ul><li data-check="t1:s1">Worth doing. '
+                     '<strong>Follow-up.</strong> Promoted: it bears on the goal.</li></ul></article>')
+        body2, count2 = lq.append_new(notebook([self.rev, listing, promoting], self.q))
+        self.assertEqual((count2, lq.parse(body2)[1]), (1, self.q + [('check', 't1:s1')]))
+        self.assertEqual(lq.pending_subideas(body2), [])                   # a review ends the wait of the rest
+
+    def test_near_duplicates_are_shown_and_merged(self):
+        a = 'Prove an upper bound for the refutation degree of random products of two affine forms'
+        b = 'Prove an upper bound or a lower bound for the refutation degree of random products of affine forms'
+        listing = subideas('t1', [('check', a), ('check', b), ('check', 'Read the source on colourings')])
+        body, _ = lq.append_new(notebook([self.rev, listing], self.q))
+        self.assertEqual([(x, y) for _, x, y in lq.similar_items(lq.parse_tree(body)[1])], [('t1:s1', 't1:s2')])
+        merging = ('<article id="m" data-kind="task"><ul><li data-check="t1:s2">Same question. '
+                   '<strong>Follow-up.</strong> Closed: merged into t1:s1</li></ul></article>')
+        merged, _ = lq.append_new(notebook([self.rev, listing, merging], [*self.q, ('check', 't1:s1'), ('check', 't1:s2'),
+                                                                        ('check', 't1:s3')]))
+        nodes = lq.parse_tree(merged)[1]
+        self.assertEqual([n.ident for n in nodes][-2:], ['t1:s1', 't1:s3'])
+        self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', nodes[-2].text)
+
     def test_subideas_arrive_in_their_lists_order(self):
         listing = subideas('t1', [('build', 'b'), ('check', 'c'), ('build', 'd')])
         self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([listing]))[0]),

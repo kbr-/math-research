@@ -121,7 +121,7 @@ BRIDGES_RE = section_list('Absurd bridges')
 SUBIDEAS_RE = section_list('Sub-ideas')
 ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol(?: data-move="head")?>(.*?)</ol>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
-OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')
+OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Promoted|Waiting|Unblocked)\b')
 PICKED_RE = re.compile(r'<strong>Picked\.</strong>[^<]*?["\u201c][^"\u201d<]{3,}["\u201d]')
 CHOSEN_RE = re.compile(r'<strong>Chosen\.</strong>\s*[^<\s][^<]{39,}')
 
@@ -905,9 +905,79 @@ def ordered(tag, text, nodes):
 
 
 def reopened_by(text):
-    """Items an entry reopens: follow-up list items whose outcome is Reopened."""
+    """Items an entry reopens: follow-up list items whose outcome is Reopened, or Promoted (a sub-idea that
+    waited outside the queue, see queued_arrivals)."""
     return [(kind, item_id) for kind, item_id, item in FOLLOWUP_ITEM.findall(text)
-            if (OUTCOME_RE.search(item) or [None, None])[1] == 'Reopened']
+            if (OUTCOME_RE.search(item) or [None, None])[1] in ('Reopened', 'Promoted')]
+
+
+MERGE_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Closed: merged into ([\w:.-]*\w)')
+
+
+def apply_merges(body, nodes, text):
+    """A follow-up list item closed as "merged into ID" hands its wording to that queued item, so a near
+    duplicate that adds something is kept as part of the item it repeats (user, 9 October 2026)."""
+    for kind, ident, item in FOLLOWUP_ITEM.findall(text):
+        merged = MERGE_RE.search(item)
+        target = next((n for top in nodes for n in [top] + top.children if merged and n.ident == merged.group(1)),
+                      None)
+        if merged and target is None:
+            raise ValueError(f'{ident} is merged into {merged.group(1)}, which is not queued')
+        note = f' Merged from {ident}: {item_text(body, kind, ident)}'
+        if target is not None and note not in target.text:
+            target.text += note
+
+
+def waits_for_review(tag, text):
+    """Whether an article's Sub-ideas wait outside the queue: those of a research entry that develops no queue
+    item have no parent to nest under, and a review promotes the ones worth queueing (user, 9 October 2026:
+    "it would read them and promote any number based on its judgement")."""
+    return 'data-kind="research"' in tag and developed_by(tag, text) is None
+
+
+def queued_arrivals(tag, text):
+    """arrivals_of without the Sub-ideas that wait for a review."""
+    waiting = waits_for_review(tag, text)
+
+    def parentless(item):       # a sub-idea that names its parent (data-parent) nests there and does not wait
+        listed = listed_item(item[0], text, item[1])
+        return KINDS[item[0]].sub and not (listed and 'data-parent=' in listed[0])
+    return [item for item in arrivals_of(tag, text) if not (waiting and parentless(item))]
+
+
+def pending_subideas(body):
+    """(kind, id) of Sub-ideas that wait for a review: listed by research entries developing no queue item
+    since the last review, and not queued."""
+    found = parse_tree(body)
+    queued = set(every_item(found[1])) if found else set()
+    articles = list(record_articles(body))
+    last = max((i for i, (tag, _) in enumerate(articles) if 'data-kind="review"' in tag), default=-1)
+    return [item for tag, text in articles[last + 1:]
+            for item in arrivals_of(tag, text) if item not in queued and item not in queued_arrivals(tag, text)]
+
+
+STOP = set('with that this from have were which their there than then into also each such only when whether '
+           'what does prove test check read find decide show whose where about against between every'.split())
+
+
+def content_words(text):
+    """Lower-case words of four or more letters in a queue line, without its ID link, markup and formulas."""
+    text = re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', text.split('):', 1)[-1]))
+    return {w for w in re.findall(r'[a-z]{4,}', text.lower())} - STOP
+
+
+def similar_items(nodes, threshold=0.5):
+    """Pairs of queued items with much wording in common, [(share, id, id)], most alike first: the share is
+    the common content words over those of the shorter item.  A hint to merge, not a verdict."""
+    flat = [(n.ident, content_words(n.text)) for top in nodes for n in [top] + top.children]
+    out = []
+    for i, (a, wa) in enumerate(flat):
+        for b, wb in flat[i + 1:]:
+            if min(len(wa), len(wb)) >= 5:
+                share = len(wa & wb) / min(len(wa), len(wb))
+                if share >= threshold:
+                    out.append((round(share, 2), a, b))
+    return sorted(out, reverse=True)
 
 
 def audit_source(text, item):
@@ -987,6 +1057,7 @@ def transition(body, old, tag, text):
     work, batch = developed_by(tag, text), triaged(tag, text)
     chosen = 'data-picked="user"' in tag
     closed = sum(listed_closures(tag, text), [])     # listed Developed sub-ideas leave the queue too
+    apply_merges(body, nodes, text)
     kept, promoted = kept_children(text), []
     for item in closed + [b[0] for b in batch]:
         close(nodes, item, kept, promoted)
@@ -997,7 +1068,7 @@ def transition(body, old, tag, text):
     elif work and work[1] == 'Continuing':
         end_spell(body, nodes, parent if parent is not None else node, chosen, old)
     nodes += promoted
-    place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
+    place_arrivals(body, nodes, tag, text, queued_arrivals(tag, text), reopened_by(text))
     apply_marks(nodes, text)
     return ordered(tag, text, nodes)
 
@@ -1263,11 +1334,12 @@ def append_new(body):
         raise ValueError('; '.join(problems))
     was = draining or len(nodes) >= CAP
     promoted = []
+    apply_merges(body, nodes, text)
     for item in sum(listed_closures(tag, text), []):
         close(nodes, item, kept_children(text), promoted)
     nodes += promoted
     before = len(every_item(nodes))
-    place_arrivals(body, nodes, tag, text, arrivals_of(tag, text), reopened_by(text))
+    place_arrivals(body, nodes, tag, text, queued_arrivals(tag, text), reopened_by(text))
     apply_marks(nodes, text)
     nodes = ordered(tag, text, nodes)
     return rewrite(body, nodes, draining_after(was, nodes)), len(every_item(nodes)) - before
@@ -1309,9 +1381,29 @@ def main(argv):
         return status
     if len(argv) == 3 and argv[1] == 'append':
         path = Path(argv[2])
-        body, count = append_new(path.read_text())
+        old = path.read_text()
+        was = set(every_item(parse_tree(old)[1])) if parse_tree(old) else set()
+        body, count = append_new(old)
         path.write_text(body)
         print(f'Appended {count} items; ' + head_lines(body, 0)[0])
+        nodes = parse_tree(body)[1]
+        new = {ident for _, ident in set(every_item(nodes)) - was}
+        for share, a, b in similar_items(nodes):
+            if a in new or b in new:
+                print(f'Similar wording ({share}): {a} and {b}. If they ask the same thing, keep one: in a '
+                      'follow-up list close the other with "Closed: merged into ID", which adds its wording to ID')
+        waiting = pending_subideas(body)
+        if waiting:
+            print(f'{len(waiting)} sub-ideas wait for the next review to promote them (Follow-up. Promoted: '
+                  'reason): ' + ', '.join(i for _, i in waiting))
+        return 0
+    if len(argv) == 3 and argv[1] in ('similar', 'pending'):
+        body = Path(argv[2]).read_text()
+        if argv[1] == 'pending':
+            print('\n'.join(i for _, i in pending_subideas(body)) or 'No sub-ideas wait for a review')
+        else:
+            print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
+                  or 'No similar queued items')
         return 0
     if len(argv) == 3 and argv[1] == 'triage':
         print(TRIAGE_RETIRED, file=sys.stderr)
