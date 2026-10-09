@@ -95,7 +95,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-CAP, FLOOR, HEAD_READ = 50, 20, 5
+CAP, FLOOR, HEAD_READ = 30, 10, 5     # user, 9 October 2026: earlier draining leaves fewer stale items
 SPELL = 4   # default spell; evidence-backed extensions add two (user, 5 October 2026)
 SPELL_EXTENSION = 2
 DRAINING_REVIEW_RULE = ('While the queue is draining, reviews produce no Outside leads or Absurd bridges; '

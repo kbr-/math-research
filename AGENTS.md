@@ -308,8 +308,8 @@ historical assessments.
   paragraph), and an item waiting on the user's answer stays queued and passed over (`Waiting:` and
   `Unblocked:` follow-ups). The queue section's attributes set, per notebook, the entry kinds that
   count, backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
-  Backpressure: at 50 top-level items the queue drains (`data-draining="true"`), and every research
-  entry develops the head or its first sub-idea until 20 remain; then work returns to the route, or
+  Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains (`data-draining="true"`), and every research
+  entry develops the head or its first sub-idea until 10 remain; then work returns to the route, or
   to a better route the leads opened. While the queue is draining, reviews produce no Outside leads
   or Absurd bridges: omit both sections and assess existing work (user, 5 October 2026). Review
   cadence and the other review requirements still apply. Reviews report only follow-ups whose status
