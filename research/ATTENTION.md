@@ -228,6 +228,22 @@ For every odd prime p, fixed 0<eps<=1/(p-1) and K>0, ordinary unary PHP and its 
 
 ---
 
+### Neighborhood homology ceiling
+
+**Claim:** [cor:neighborhood-homology-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-kernel-architecture-review>)
+
+For a finite simple graph with an edge and c>=2, vanishing reduced binary homology of its neighborhood complex in degrees 0 through c-2 implies ordinary characteristic-two NS degree at most ceil(log2(c))(c+1) for compact c-colouring; fixed-c proofs have polynomial size.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Turns a graph topological certificate into a constant ordinary-degree ceiling and a necessary homology screen. Independent scope merits literature comparison, not an asserted novelty claim.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact ordinary-degree statement with prior algebraic Tucker/Fan and graph-colouring certificates before claiming novelty.
+
+---
+
 ### Ordinary unary PHP parity near exponential
 
 **Claim:** [cor:ordinary-unary-PHP-parity-near-exponential](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-parity-near-exponential>)
@@ -731,6 +747,22 @@ For every real K>0, sufficiently large ordinary unary PHP and its functional var
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Audit the binary CNF-to-affine-registry transfer (width sixteen, PC degree 18), the one part of the chain not yet independently reviewed; then an expert review. The graph weight and composition passed an independent audit on 22 September 2026, and the bounded novelty check of that day found no published unrestricted unary bound.
+
+---
+
+### Parity chain degree ceiling
+
+**Claim:** [thm:parity-chain-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-kernel-architecture-review>)
+
+For a finite involutive simplicial complex with binary chains aug(c0)=1 and boundary(cj)=(1+tau)c(j-1) through m>=1, antipodal labels in +/-[m] reading at most b bits and locally certifying complementary edges by original canonical clauses give ordinary characteristic-two NS degree at most b(m+1).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Explicit paid compilation of a topological parity obstruction may be reusable beyond this route. Its relationship to existing algebraic encodings of Tucker/Fan needs precise literature comparison.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact ordinary-degree statement with prior algebraic Tucker/Fan and graph-colouring certificates before claiming novelty.
 
 ---
 
