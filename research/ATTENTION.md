@@ -244,6 +244,22 @@ For every fixed 0<epsilon<1, sufficiently large unary PHP and its functional var
 
 ---
 
+### Presentation polynomial size bound
+
+**Claim:** [cor:presentation-polynomial-size-bound](<https://kbr.is-a.dev/math-research/#entry-2026-10-09-pullback-iteration>)
+
+For the fixed bounded-degree charged-mod3 Tseitin CNF family over F2, fix formula depth in the recorded binary Frege presentation and a constant ell>=2 bounding coherent source dependency levels. For every 0<rho<1/(2^(ell-1)-1), proofs of the flat CNF-negation tautology require more than n^(1+rho) total formula-node occurrences for large n. In old bit-encoding length this is exponent1+rho-o(1). Choose fixed h>=clause width, use constant compiled PC ceiling, linear block inventory and fixed-level exclusion with a slightly larger rho and a small positive beta.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** An actual compiler-based size exclusion, rather than only a restricted source tool, gives limited goal progress. Its relation to previously known polynomial bounded-depth modular-Frege bounds has not been checked; no publication claim is made.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare known polynomial size-depth bounds and presentation conventions before any novelty/publication claim; pursue the remaining feature-inventory loss.
+
+---
+
 ### Finite field punctured first jet degree
 
 **Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)

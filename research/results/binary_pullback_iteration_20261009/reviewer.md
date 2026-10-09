@@ -1,0 +1,3 @@
+Sole fresh-context GPT-6.1-Sol medium reviewer: PASS.
+
+Degree recurrence, floor/buffer margins, global maximum-degree substitution, weights, all earlier companions/fields and original PC replay pass. Helper count is supported by constant fixed-frame/MP groups plus prefix groups charged to argument occurrences; OR comparison uses only its three specified groups, not recursive subset closure. Flattened slots and witness prefixes are not additional features. Clarify these two lists; incorporated. Literal CNF boundary preserves grammar/levels. Polynomial symbol-size corollary uses constant compiled PC ceiling correctly. Limited actual presentation-size exclusion justifies advanced goal progress; superpolynomial goal remains open. No unused substantive hypothesis.

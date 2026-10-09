@@ -1,0 +1,93 @@
+<article id="entry-2026-10-09-pullback-iteration" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="advanced" data-spell-extend="2" data-lead="entry-2026-10-07-profile-architecture-review:3" data-claims="thm:fixed-level-feature-exclusion lem:linear-coherent-source-inventory cor:presentation-polynomial-size-bound">
+<h3>9 October 2026 — Fixed-level feature transfer yields a polynomial source-size range</h3>
+<p class="entry-meta">Working fixed-level exclusion and polynomial symbol-size bound for the recorded presentation.</p>
+<p><strong>Question.</strong> Execute the <a href="#entry-2026-10-09-pullback-architecture-review">scheduled end-to-end test</a>: iterate the proper feature pullback, count the actual coherent source blocks, and state only the resulting proof-size range.</p>
+<p><strong>General statement.</strong> <code>thm:fixed-level-feature-exclusion</code> gives a full original-degree induction. <code>lem:linear-coherent-source-inventory</code> bounds blocks, not flattened coefficient slots, in the specified coherent binary presentation. <code>cor:presentation-polynomial-size-bound</code> composes them for an explicit polynomial symbol-size lower-bound range. No superpolynomial bound or independent novelty is claimed.</p>
+<p><strong>New mathematics.</strong> A complete fixed-level ledger: actual value degrees satisfy a repeated-squaring bound, earlier coefficient maps are retained in one global substitution, and the weight consumes only a fixed old-degree fraction. The source count is linear in formula-node inventory, even though flattened slots may be quadratic.</p>
+<p><strong>Goal progress.</strong> A limited exponent range is excluded for the actual recorded source presentation by <code>cor:presentation-polynomial-size-bound</code>, rather than only for a structural subclass of nonlinear inputs. The superpolynomial goal remains open: the exponent range shrinks with source depth and does not cover all polynomial proof sizes. The bound below counts total formula-node occurrences, not proof lines alone.</p>
+<h4>A fixed-level complete source theorem</h4>
+<p>Let \(\Gamma_n\) be a binary Boolean old system in \(n\) variables with no PC refutation through \(D=\lfloor\gamma n\rfloor\), \(0&lt;\gamma&lt;1\). Write \(J_D=\mathcal C_D(\Gamma_n)\). Allow an initial list of at most \(C_0n\) old predicates \(q_u(x)\), all of degree at most a fixed \(r_0\ge1\), in addition to the old variables and constants.</p>
+<p>Consider a complete binary ENS source with at most \(\ell\ge1\) nonempty dependency levels. Each block input is affine in the old variables, the initial predicates and genuine products of strictly earlier levels. There are no raw earlier coefficients outside those products. Accuracies may be arbitrary positive integers; each block retains all companions and all own coefficient fields. Let every nonterminal level have at most \(C_1n^{1+\rho}\) blocks, \(\rho\ge0\), and the last level at most \(n^A\), with \(A\) fixed. All constants and \(\ell\) are fixed as \(n\) grows. Empty levels may be omitted.</p>
+<p id="fixed-level-feature-exclusion"><strong>Theorem (fixed level feature exclusion).</strong> Put
+\[
+ \tau=\rho(2^{\ell-1}-1).
+\]
+For every fixed \(\beta,c\ge0\) with \(\tau+\beta&lt;1\), the complete source has no ordinary degree-\(B(n)\) PC or NS refutation when
+\[
+ 2\le B(n)\le n^\beta(\log n)^c
+\]
+and \(n\) is sufficiently large. The proof ceiling is the original one; no assertion that every source axiom must be active below \(B(n)\) is needed.</p>
+<h4>Proof: one weight and one global substitution</h4>
+<p>Omit empty levels and denote their actual number again by \(\ell\); this only decreases the displayed exponent. Start with weight \(w_0=1\), \(b_0=0\), and actual old feature-degree bound \(\delta_0=r_0\). At stage \(j\), all earlier coefficients already have fixed old polynomial images. Name the initial predicates and the actual old values of all earlier products, while retaining the \(n\) old variables. The resulting formal variable count is \(v_j=O(n)\) at \(j=1\) and \(v_j=O(n^{1+\rho})\) thereafter. Every current input is affine in that list; the substitution degree is at most \(\delta_{j-1}\).</p>
+<p>Let \(M_j\ge1\) be the current block count. Choose
+\[
+ K_j=\left\lfloor\frac{D}{16\ell\,\delta_{j-1}}\right\rfloor,\qquad
+ t_j=\left\lceil\frac{4v_j}{K_j}\ln(2M_j)\right\rceil.
+ \tag{1}
+\]
+The induction below ensures \(K_j\ge1\). Also \(K_j\le v_j\), since \(D&lt;n\) and \(\delta_{j-1}\ge1\). Pull back \(J_D\) with weight \(w_{j-1}\) as in <a href="#weighted-feature-removal">weighted feature removal</a>, through
+\[
+ R_j=\left\lfloor\frac{D-b_{j-1}}{\delta_{j-1}}\right\rfloor.
+\]
+Its affine rate is at least \(K_j/(4v_j)\). Thus (1) gives a strict summed-rank deficit. Provided \(K_j+t_j+1\le R_j\), it supplies a surviving
+\[
+ w_j=w_{j-1}\psi_j(F_j),\quad
+ \deg F_j\le K_j,\quad
+ b_j\le b_{j-1}+\delta_{j-1}K_j\le jD/(16\ell).
+ \tag{2}
+\]</p>
+<p>Group the \(t_j\) chosen factors into each block's original \(h_b\) rows. The exact telescope gives coefficient-map degree
+\[
+ T_{j,b}\le\max(1,\delta_{j-1}(\lceil t_j/h_b\rceil-1))
+ \le\delta_{j-1}t_j.
+\]
+Its actual product has degree at most \(\delta_{j-1}t_j\). Set \(\delta_j=\delta_{j-1}t_j\). Earlier maps are not changed: these new maps are old polynomials after substituting all earlier images. Consequently the single global map has degree at most \(\max(1,\delta_1,\ldots,\delta_j)=\delta_j\), not a product of separately counted map degrees. The growth of earlier products is already included in \(\delta_{j-1}\).</p>
+<p><em>Degree recurrence and applicability.</em> At the first level, (1) gives \(t_1=O(\log n)\) and \(\delta_1=O(\log n)\). At every later level, once \(\delta_{j-1}=o(n)\), the floor in \(K_j\) gives
+\[
+ t_j=O(n^\rho\delta_{j-1}\log n),\qquad
+ \delta_j=O(n^\rho\delta_{j-1}^2\log n).
+\]
+Inductively,
+\[
+ \delta_j=O\!\left(
+ n^{\rho(2^{j-1}-1)}(\log n)^{2^j-1}
+ \right).
+ \tag{3}
+\]
+Because every exponent is at most \(\tau&lt;1\), these are all \(o(n)\), justifying \(K_j\ge1\) and the floor estimate. Furthermore
+\[
+ \delta_{j-1}(K_j+t_j+1)
+ \le D/(16\ell)+\delta_j+\delta_{j-1}
+ <D-b_{j-1}
+\]
+for large \(n\), since \(b_{j-1}\le D/16\). Hence \(K_j+t_j+1\le R_j\); the required pullback buffer holds at every stage.</p>
+<p><em>Earlier identities and fields.</em> An earlier companion after the fixed old substitution has degree at most \(\delta_i+\delta_{i-1}\le2\delta_j\). Multiplying its previously weighted membership by the later weight factors remains within \(b_j+2\delta_j\le D\) eventually. Coefficient fields have the same bound, since all images are binary old polynomials of degree at most \(\delta_j\). Thus every stage preserves every earlier weighted extension identity. No fresh choice is made for a shared occurrence.</p>
+<p><em>Original proof replay.</em> At the end \(w_\ell\notin J_D\), \(b_\ell\le D/16\), and the global substitution has degree \(T\le\delta_\ell\). Equation (3) and \(\tau+\beta&lt;1\) give \(TB=o(n)\). Hence \(b_\ell+TB\le D\). Every old axiom actually used by an original degree-\(B\) proof has degree at most \(B\), so its weighted image fits that ceiling. Extension companions and fields have the memberships proved above. A PC multiplication step starts from a polynomial of original degree at most \(B-1\); after substitution and weighting, multiplication by the image of its variable stays through \(b_\ell+TB\). Linear steps persist. A refutation would therefore derive \(w_\ell\in J_D\), a contradiction. An ordinary degree-\(B\) NS refutation has a same-degree PC simulation. This proves the theorem. \(\square\)</p>
+<h4>The coherent compiler inventory</h4>
+<p>Fix the recorded binary proof presentation: a fixed finite Boolean frame basis, the stated MOD2 recursion/empty axioms and MP, with formulas using the corresponding OR/negation/MOD2 syntax. Let \(S\) count all formula-node occurrences in its unbalanced proof DAG, including repeated formula text in different lines. Any original variables absent from the target may first be fixed to constants. Choose the genuine coherent constructor, with no optional packing or virtual-boundary replacements before the literal CNF boundary.</p>
+<p id="linear-coherent-source-inventory"><strong>Lemma (linear coherent source inventory).</strong> This constructor can use \(O(S)\) distinct ENS blocks. Its flattened input slots may be \(O(S^2)\), and its coefficient-variable count \(O(hS^2)\); neither is the named-feature count in the preceding theorem. The number of dependency levels is bounded by the recorded structural depth bound, independent of \(S\). After the constant-width CNF boundary, each retained input is affine in old variables, earlier genuine products and the \(O(n)\) initial clause-falsity polynomials.</p>
+<p><em>Count and grammar audit.</em> The inventory is the union of two charged lists: original subformula objects together with constantly many fixed-frame/MP interfaces per instance, and structural prefix groups charged to original argument occurrences. Neither list requires closure under arbitrary subsets. Start with the at most \(S\) subformula-node occurrences. One OR object needs one genuine block; negation and MOD2 are literal affine operations on child values and introduce none. Use one registry value for copies of the same chosen formula/group representation; sharing reduces the count. Each fixed Boolean frame or MP instance needs only its constant number of node/group interfaces. If a wide group is represented by binary prefix interfaces, at most its arity many groups are needed; the sum of original argument occurrences is at most \(S\). The MOD recursion uses its actual argument and prefix values inside the fixed ten-leaf frame; its algebraic prefix sum introduces no ENS family, as the <a href="#virtual-MOD-value">exact MOD proof</a> states. Thus the original nodes plus required interface groups are \(O(S)\), with a constant depending on the fixed presentation.</p>
+<p>Every added OR subgroup uses its full flattened list directly, not a preceding subgroup product as an input. It therefore stays at the original OR structural level. Its inputs use only the strictly earlier child values. This is the <a href="#entry-2026-09-13-weighted-selector-interface">coherent affine-in-selector constructor</a>; no closure under all subsets of a wide group is requested. Fixed-frame Boolean division manipulates polynomials and creates no further ENS blocks. Coherent copies use identical representatives rather than fresh copy families. Optional changes that insert additional profiles require their own count and are not part of this construction.</p>
+<p>A flattened list can have \(O(S)\) slots, giving the safe quadratic slot bound over \(O(S)\) blocks. Those slots only create fresh row coefficients. Raw prefixes and individual coefficients occur inside witness proofs, not as extra input features. The eventual single old substitution treats all such variables, so counting only whole-product features in the pullback does not omit their field equations or proof occurrences.</p>
+<p>The <a href="#binary-unbalanced-CNF-source">literal CNF boundary</a> removes only the designated goal and initial clause products by one global constant assignment, transforming every consumer. Its removed products are constants or the original clause-falsity polynomials \(Q_C\). For a constant-width, \(O(n)\)-clause old family, there are \(O(n)\) such predicates of fixed degree. All other value/input expressions remain affine in them, old variables and earlier products. The <a href="#virtual-php-ledger">degree/level warning</a> is respected: the height-free PC ceiling is used with all retained levels, not an inherited highest-level omission. This proves the stated inventory and grammar. \(\square\)</p>
+<h4>A polynomial symbol-size consequence, not the requested superpolynomial bound</h4>
+<p>Take the fixed bounded-degree charged-modulo-three Tseitin CNF family already used here, over coefficient field \(\mathbb F_2\). It has \(n\) old variables, \(O(n)\) non-tautological clauses of constant width and a variable-relative linear PC barrier. Its symbol encoding length is \(\Theta(n)\), and ordinary bit encoding uses \(O(n\log n)\) bits.</p>
+<p id="presentation-polynomial-size-bound"><strong>Corollary (presentation polynomial size bound).</strong> Fix a formula-depth bound in the recorded presentation, and let \(\ell\ge2\) bound its coherent source dependency levels. For every
+\[
+ 0<\rho<\frac{1}{2^{\ell-1}-1},
+\]
+there is no proof of the tautology \(\bigvee_{C\in F_n}\neg C\) with at most \(n^{1+\rho}\) total formula-node occurrences for sufficiently large \(n\). This is a polynomial lower bound on symbol size, not on the number of proof lines alone. No claim of a new result in the literature is made.</p>
+<p><em>Proof.</em> Choose \(\rho'\) strictly between \(\rho\) and the displayed threshold. Fix one constant accuracy \(h\ge\max(1,w)\), where \(w\) is the CNF width. The <a href="#costed-profile-unbalanced-PC-compiler">height-free PC compiler</a> and literal boundary give a complete retained source refutation through \(B=cL\), with \(L\le(d+1)h^d\) for its fixed structural bound \(d\). This is a constant independent of \(n,S\); it is not a bound on the original Frege formula lengths. The inventory lemma gives \(O(S)\le n^{1+\rho'}\) blocks eventually, the required initial old predicates, and at most \(\ell\) dependency levels. Terminal inventory is polynomial as well. Choose a positive \(\beta\) with \(\rho'(2^{\ell-1}-1)+\beta<1\). The constant compiled ceiling is at most \(n^\beta\) eventually, so fixed-level feature exclusion applies with logarithmic exponent zero. This contradicts the compiled source refutation. \(\square\)</p>
+<p>In terms of the old bit-encoding length, the consequence has exponent \(1+\rho-o(1)\). Extending it to another proof presentation may change a polynomial size exponent; the statement above is deliberately for the audited presentation. The superpolynomial goal is not reached: one fixed \(\ell\) still leaves every larger exponent unexcluded. Improving constants in this bound alone is not the next research objective.</p>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-09-pullback-architecture-review">requested audit</a> now has a complete induction, a block-versus-slot distinction, a preserved affine-in-product grammar and an explicit size range. The ordering control has only a square-root variable-relative barrier, and the polynomial-size majority construction lies outside the asserted small-inventory range; neither is contradicted. No near-half PC assumption or proof-height term has been inserted.</p>
+<p><strong>Follow-up.</strong> Continuing the generalized-weight head with a two-entry extension. The next necessary improvement is the feature-count loss, not a sharper polynomial exponent. Test per-parent local pullbacks on one common old multiplier domain; charge the ratio between each local feature image and that common weighted domain. A collection of unrelated local contractions or separate surviving weights is insufficient.</p>
+<p class="spell-extension" data-statement="binary-frege-lower-bound"><strong>Progress.</strong> <code>cor:presentation-polynomial-size-bound</code> discharges an actual compiler-to-size implication for a fixed exponent range at every fixed depth, beyond the earlier structurally restricted source classes. The superpolynomial part remains open. <strong>Next.</strong> Test whether local feature inventories or nonlinear input ranks can replace the global named-variable count, with explicit common-domain image ratios, the actual-tuple failure control and full original replay. This uses the same weighted-pullback mechanism on its remaining inventory loss.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test whether local feature dictionaries of different parent groups can be combined in one surviving weighted domain without paying their global union or multiplying separate branch weights. Keep actual pullback relations, legal rows and full replay; a collection of unrelated local contractions is insufficient.</li></ul>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-09-weighted-feature-pullback:s1">The full iteration and compiler count are proved above, with the resulting restricted size range. <strong>Follow-up.</strong> Closed: this audit is complete; removing the inventory loss is the newly queued next task.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed all three claims, the full induction and original replay, the linear block/quadratic slot distinction and the presentation-specific corollary. Its clarity suggestion is incorporated as the two explicit charged inventory lists. It accepted limited actual goal progress and found no unused substantive hypothesis. Exact compiler, MOD frame, selector grammar, literal boundary, weighted pullback and variable-normalization controls were read. This uses existing encodings and source operations.</p>
+<p><strong>Process assessment.</strong> Counting whole product objects separately from flattened coefficient slots avoids both an unjustified independence assumption and an unnecessary quadratic feature inventory.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_pullback_iteration_20261009 -->
+</article>
