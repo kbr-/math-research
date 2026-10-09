@@ -1,0 +1,43 @@
+// Native exact ordinary-polynomial verification of the r=3 certificate.
+// No Boolean reduction is used when comparing the supplied certificate.
+ring quadRing=2,(x1,y1,x2,y2,x3,y3),dp;
+poly quadQ=x1*y1+x2*y2+x3*y3;
+poly quadCertificate=0;
+int quadI;
+for(quadI=1;quadI<=3;quadI++){
+  quadCertificate=quadCertificate
+   +var(2*quadI)^2*(var(2*quadI-1)^2+var(2*quadI-1))
+   +var(2*quadI-1)*(var(2*quadI)^2+var(2*quadI));
+}
+int quadFailures=0;
+int quadChecks=0;
+link quadOut=":w research/results/binary_quadratic_critical_20261009/certificate-checks.txt";
+write(quadOut,"Characteristic two; ordinary polynomials; r=3");
+write(quadOut,"Q = "+string(quadQ));
+write(quadOut,"Boolean certificate = "+string(quadCertificate));
+if(quadQ^2+quadQ-quadCertificate!=0){quadFailures++;}
+if(deg(quadCertificate)!=4){quadFailures++;}
+quadChecks=quadChecks+2;
+matrix quadBeta[1][6]=y1,0,y2,0,y3,0;
+poly quadTarget,quadField,quadWant;
+for(quadI=1;quadI<=6;quadI++){
+  quadTarget=quadQ*var(quadI)*(1+quadQ);
+  if(quadTarget-var(quadI)*quadCertificate!=0){quadFailures++;}
+  if(deg(quadTarget)!=5){quadFailures++;}
+  write(quadOut,"Companion "+string(quadI)+": "+string(quadTarget)+" ; ceiling 5");
+  quadField=quadQ*(quadBeta[1,quadI]^2+quadBeta[1,quadI]);
+  if(quadI%2==1){
+    quadWant=quadQ*(var(quadI+1)^2+var(quadI+1));
+    if(deg(quadField)!=4){quadFailures++;}
+    quadChecks++;
+  }else{quadWant=0;}
+  if(quadField-quadWant!=0){quadFailures++;}
+  write(quadOut,"Coefficient field "+string(quadI)+": "+string(quadField)+" ; ceiling 4");
+  if(quadQ*x1*var(quadI)*(1+x1)-quadQ*var(quadI)*(x1^2+x1)!=0){quadFailures++;}
+  quadChecks=quadChecks+4;
+}
+write(quadOut,"checks="+string(quadChecks)+"; failures="+string(quadFailures));
+if(quadFailures==0){write(quadOut,"PASS");print("PASS: exact polynomial certificates");}
+else{write(quadOut,"FAIL");print("FAIL: certificate checks");}
+close(quadOut);
+quit;
