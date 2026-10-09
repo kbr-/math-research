@@ -1,0 +1,52 @@
+// Exact cubic tensor algebra over F3(A,B,t,u),9 coordinates.
+// Determine the raw prefix's actual annihilator, then its next coefficient.
+// This tests a coupling mechanism, not a larger branch-count sample.
+ring r=(3,A,B,t,u),(x,y),dp;
+ideal I=x^3+A*x^2+B*x-t,y^3+A*y^2+B*y-u;
+ideal G=std(I);
+poly s=x+y;
+poly delta=(x-y)^2;
+list Q;
+Q[1]=1;
+int n,j,i,h,a,b;
+poly value;
+for(n=1;n<=14;n++){
+ value=s*Q[n];
+ for(h=0;h<=n-2;h++){value=value+delta*Q[h+1]*Q[n-1-h];}
+ Q[n+1]=reduce(value,G);
+}
+matrix M[9][15];
+poly v;
+number scale;
+for(n=1;n<=15;n++){
+ for(i=0;i<=2;i++){for(j=0;j<=2;j++){
+  v=Q[n];
+  for(a=1;a<=i;a++){v=diff(v,x);}
+  for(b=1;b<=j;b++){v=diff(v,y);}
+  scale=1;
+  if(i==2){scale=2*scale;}
+  if(j==2){scale=2*scale;}
+  M[3*i+j+1,n]=subst(subst(v,x,0),y,0)/scale;
+ }}
+}
+matrix M9[9][9];
+for(i=1;i<=9;i++){for(j=1;j<=9;j++){M9[i,j]=M[i,j];}}
+matrix K=syz(transpose(M9));
+print("LEFT_KERNEL_COLUMNS"); ncols(K);
+print("LEFT_KERNEL"); K;
+print("KERNEL_IDENTITY"); transpose(K)*M9;
+matrix next[9][6];
+for(i=1;i<=9;i++){for(j=1;j<=6;j++){next[i,j]=M[i,j+9];}}
+print("PAIRINGS_Q9_THROUGH_Q14"); transpose(K)*next;
+
+matrix L2[1][9]=0,A^2,-A*B,-A^2,0,0,A*B,A*(t-u),-B*(t-u);
+matrix L3[1][9]=0,-A^2*B,A*B^2,A^2*B,A^2*(t-u),0,-A*B^2,0,-B^2*(t-u);
+matrix R2=L2*M;
+matrix R3=L3*M;
+for(i=1;i<=7;i++){if(R2[1,i]!=0 || R3[1,i]!=0){ERROR("H9 basis mismatch");}}
+number Fchart=A^3*(t+u)-A^2*B^2+B^3;
+poly pchart=R2[1,8]*R3[1,9]-R3[1,8]*R2[1,9];
+if(pchart!=A*(t-u)^2*Fchart*(Fchart+A^6)){ERROR("rank chart mismatch");}
+print("INDEPENDENT_RANK_CHART_PASSED");
+print("CUBIC_DEFECT_FUNCTIONAL_COMPLETED");
+quit;
