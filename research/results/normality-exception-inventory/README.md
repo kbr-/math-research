@@ -39,85 +39,126 @@ Evidence:
 - `thm:forty-seven-normality`: [Forty-seven normality and synthesis handoff](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-forty-seven-complete) (working_proof).
 - `cor:ordinary-four-pair-normality`: [Paired congruence normality](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-paired-congruence-normality) (working_proof).
 - `thm:extreme-elliptic-normality`: [Extreme elliptic normality](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-extreme-elliptic-normality) (working_proof).
+- `thm:adjacent-elliptic-normality`: [Adjacent elliptic normality](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-adjacent-elliptic-normality) (working_proof).
 
 For n=9, p=53, certified normal degrees: {"excluded_residues": [0, 5, 8, 10, 13, 15, 18, 23, 28, 33, 38, 43, 48], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 53}. The complete exception set remains unresolved.
 
 For n=9, p=53, certified normal degrees: {"included_residues": [8], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 53}. The complete exception set remains unresolved.
 
+For n=9, p=53, certified normal degrees: {"included_residues": [13], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 53}. The complete exception set remains unresolved.
+
 For n=9, p=59, certified normal degrees: {"excluded_residues": [5, 7, 16, 18, 20, 27, 29, 31, 40, 42, 51, 53, 55], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 59}. The complete exception set remains unresolved.
 
 For n=9, p=59, certified normal degrees: {"included_residues": [27], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 59}. The complete exception set remains unresolved.
+
+For n=9, p=59, certified normal degrees: {"included_residues": [51], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 59}. The complete exception set remains unresolved.
 
 For n=9, p=61, certified normal degrees: {"excluded_residues": [5, 7, 9, 11, 24, 26, 28, 30, 32, 45, 47, 49, 51], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 61}. The complete exception set remains unresolved.
 
 For n=9, p=61, certified normal degrees: {"included_residues": [24], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 61}. The complete exception set remains unresolved.
 
+For n=9, p=61, certified normal degrees: {"included_residues": [45], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 61}. The complete exception set remains unresolved.
+
 For n=9, p=67, certified normal degrees: {"excluded_residues": [1, 18, 20, 22, 24, 39, 41, 43, 45, 47, 62, 64, 66], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 67}. The complete exception set remains unresolved.
 
 For n=9, p=67, certified normal degrees: {"included_residues": [47], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 67}. The complete exception set remains unresolved.
+
+For n=9, p=67, certified normal degrees: {"included_residues": [24], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 67}. The complete exception set remains unresolved.
 
 For n=9, p=71, certified normal degrees: {"excluded_residues": [1, 10, 12, 21, 23, 30, 32, 41, 43, 50, 52, 61, 63], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 71}. The complete exception set remains unresolved.
 
 For n=9, p=71, certified normal degrees: {"included_residues": [23], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 71}. The complete exception set remains unresolved.
 
+For n=9, p=71, certified normal degrees: {"included_residues": [43], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 71}. The complete exception set remains unresolved.
+
 For n=9, p=73, certified normal degrees: {"excluded_residues": [1, 10, 17, 19, 26, 33, 35, 42, 49, 51, 58, 65, 67], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 73}. The complete exception set remains unresolved.
 
 For n=9, p=73, certified normal degrees: {"included_residues": [19], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 73}. The complete exception set remains unresolved.
+
+For n=9, p=73, certified normal degrees: {"included_residues": [35], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 73}. The complete exception set remains unresolved.
 
 For n=9, p=79, certified normal degrees: {"excluded_residues": [8, 13, 18, 23, 28, 33, 45, 50, 55, 60, 65, 70, 75], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 79}. The complete exception set remains unresolved.
 
 For n=9, p=79, certified normal degrees: {"included_residues": [45], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 79}. The complete exception set remains unresolved.
 
+For n=9, p=79, certified normal degrees: {"included_residues": [8], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 79}. The complete exception set remains unresolved.
+
 For n=9, p=83, certified normal degrees: {"excluded_residues": [6, 11, 16, 24, 29, 37, 42, 50, 55, 63, 68, 76, 81], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 83}. The complete exception set remains unresolved.
 
 For n=9, p=83, certified normal degrees: {"included_residues": [16], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 83}. The complete exception set remains unresolved.
+
+For n=9, p=83, certified normal degrees: {"included_residues": [29], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 83}. The complete exception set remains unresolved.
 
 For n=9, p=89, certified normal degrees: {"excluded_residues": [6, 17, 20, 31, 34, 42, 45, 56, 59, 67, 70, 81, 84], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 89}. The complete exception set remains unresolved.
 
 For n=9, p=89, certified normal degrees: {"included_residues": [67], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 89}. The complete exception set remains unresolved.
 
+For n=9, p=89, certified normal degrees: {"included_residues": [42], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 89}. The complete exception set remains unresolved.
+
 For n=9, p=97, certified normal degrees: {"excluded_residues": [0, 61, 64, 67, 70, 73, 76, 79, 82, 85, 88, 91, 94], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 7, "period": 97}. The complete exception set remains unresolved.
 
 For n=9, p=97, certified normal degrees: {"included_residues": [0], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 7, "period": 97}. The complete exception set remains unresolved.
+
+For n=9, p=97, certified normal degrees: {"included_residues": [94], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 7, "period": 97}. The complete exception set remains unresolved.
 
 For n=10, p=53, certified normal degrees: {"excluded_residues": [2, 6, 7, 11, 16, 21, 26, 31, 35, 36, 40, 45, 50], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 53}. The complete exception set remains unresolved.
 
 For n=10, p=53, certified normal degrees: {"included_residues": [6], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 53}. The complete exception set remains unresolved.
 
+For n=10, p=53, certified normal degrees: {"included_residues": [35], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 53}. The complete exception set remains unresolved.
+
 For n=10, p=59, certified normal degrees: {"excluded_residues": [0, 10, 11, 12, 22, 23, 34, 35, 45, 46, 47, 57, 58], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 59}. The complete exception set remains unresolved.
 
 For n=10, p=59, certified normal degrees: {"included_residues": [45], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 59}. The complete exception set remains unresolved.
+
+For n=10, p=59, certified normal degrees: {"included_residues": [57], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 59}. The complete exception set remains unresolved.
 
 For n=10, p=61, certified normal degrees: {"excluded_residues": [14, 15, 16, 17, 18, 35, 36, 37, 38, 55, 56, 57, 58], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 61}. The complete exception set remains unresolved.
 
 For n=10, p=61, certified normal degrees: {"included_residues": [14], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 61}. The complete exception set remains unresolved.
 
+For n=10, p=61, certified normal degrees: {"included_residues": [55], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 61}. The complete exception set remains unresolved.
+
 For n=10, p=67, certified normal degrees: {"excluded_residues": [11, 12, 13, 14, 33, 34, 35, 36, 55, 56, 57, 58, 59], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 67}. The complete exception set remains unresolved.
 
 For n=10, p=67, certified normal degrees: {"included_residues": [59], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 67}. The complete exception set remains unresolved.
+
+For n=10, p=67, certified normal degrees: {"included_residues": [14], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 67}. The complete exception set remains unresolved.
 
 For n=10, p=71, certified normal degrees: {"excluded_residues": [7, 8, 17, 18, 27, 28, 38, 48, 49, 58, 59, 68, 69], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 71}. The complete exception set remains unresolved.
 
 For n=10, p=71, certified normal degrees: {"included_residues": [49], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 71}. The complete exception set remains unresolved.
 
+For n=10, p=71, certified normal degrees: {"included_residues": [59], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 71}. The complete exception set remains unresolved.
+
 For n=10, p=73, certified normal degrees: {"excluded_residues": [7, 15, 23, 31, 39, 47, 48, 55, 56, 63, 64, 71, 72], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 73}. The complete exception set remains unresolved.
 
 For n=10, p=73, certified normal degrees: {"included_residues": [48], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 73}. The complete exception set remains unresolved.
+
+For n=10, p=73, certified normal degrees: {"included_residues": [56], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 73}. The complete exception set remains unresolved.
 
 For n=10, p=79, certified normal degrees: {"excluded_residues": [0, 6, 11, 16, 27, 32, 37, 48, 53, 58, 64, 69, 74], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 79}. The complete exception set remains unresolved.
 
 For n=10, p=79, certified normal degrees: {"included_residues": [64], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 79}. The complete exception set remains unresolved.
 
+For n=10, p=79, certified normal degrees: {"included_residues": [6], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 79}. The complete exception set remains unresolved.
+
 For n=10, p=83, certified normal degrees: {"excluded_residues": [1, 5, 10, 14, 23, 27, 36, 40, 49, 58, 62, 71, 75], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 83}. The complete exception set remains unresolved.
 
 For n=10, p=83, certified normal degrees: {"included_residues": [10], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 83}. The complete exception set remains unresolved.
+
+For n=10, p=83, certified normal degrees: {"included_residues": [58], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 83}. The complete exception set remains unresolved.
 
 For n=10, p=89, certified normal degrees: {"excluded_residues": [5, 12, 19, 23, 30, 37, 44, 55, 62, 69, 76, 80, 87], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 89}. The complete exception set remains unresolved.
 
 For n=10, p=89, certified normal degrees: {"included_residues": [80], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 89}. The complete exception set remains unresolved.
 
+For n=10, p=89, certified normal degrees: {"included_residues": [23], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 89}. The complete exception set remains unresolved.
+
 For n=10, p=97, certified normal degrees: {"excluded_residues": [2, 34, 37, 40, 43, 46, 49, 81, 84, 87, 90, 93, 96], "interpretation": "Every degree at least minimum outside these residues is normal; excluded residues and smaller degrees remain unclassified by this corollary.", "minimum": 8, "period": 97}. The complete exception set remains unresolved.
 
 For n=10, p=97, certified normal degrees: {"included_residues": [2], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary thirteen-exclusion range.", "minimum": 8, "period": 97}. The complete exception set remains unresolved.
+
+For n=10, p=97, certified normal degrees: {"included_residues": [49], "interpretation": "Every degree at least minimum in this residue is normal; this supplements the ordinary range and extreme residue.", "minimum": 8, "period": 97}. The complete exception set remains unresolved.
 
 The pairwise machine-readable inventory is in `inventory.json`. Bounds may be reduced according to measured cost, as requested by the user.
