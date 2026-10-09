@@ -405,7 +405,7 @@ def validate_closures(text):
     "off the critical path" although a ceiling with a deficit term is a condition on candidates, and as a
     "restatement" although the restated form was the handle).  Each Closed follow-up therefore carries
     <strong>Stakes.</strong> saying what a yes and what a no to the item's question would each give the
-    specification or the open statement, and the entry links the reviewer's record, so that the reviewer has
+    open statement, and the entry links the reviewer's record, so that the reviewer has
     read the closure."""
     closed = len(CLOSED_RE.findall(text))
     if not closed:
@@ -414,8 +414,8 @@ def validate_closures(text):
     if len([s for s in stakes if len(s) >= 60]) < closed:
         raise ValueError(f'This entry closes {closed} queue item(s): give each a <strong>Stakes.</strong> '
                          'statement of at least 60 characters, in the paragraph or list item that closes it, '
-                         'saying what a yes and what a no to its question would each give the specification or '
-                         'the open statement (AGENTS.md; user, 10 October 2026)')
+                         'saying what a yes and what a no to its question would each give the open '
+                         'statement (AGENTS.md; user, 10 October 2026)')
     if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
         raise ValueError('An entry that closes a queue item links the reviewer\'s record (review.txt): the '
                          'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')

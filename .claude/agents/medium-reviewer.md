@@ -23,7 +23,8 @@ would object to: a title, summary or status stronger than what is proved or meas
 data raises that the draft did not ask; a decision (an item closed, kept, chosen or reopened, a goal
 progress claim, a next step) whose stated reason does not support it or that an AGENTS.md rule
 forbids; work the draft says was skipped, deferred or not checked without a reason; a count or
-number quoted without its source. Give each finding with its location, or write "no findings".
+number quoted without its source; a rule added to AGENTS.md, when the brief includes framework changes,
+that speaks about one goal's mathematics instead of every notebook. Give each finding with its location, or write "no findings".
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete
 gap or error with the exact location and the change required, and each unused hypothesis. Then,

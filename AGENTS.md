@@ -9,7 +9,12 @@ failed controls, and install no dependencies or virtual environments without exp
 file owns research workflow, notebook editing and Git/publication policy.
 
 Keep the framework small: revise/consolidate existing guidance before adding it, state each rule in
-one authoritative place and link elsewhere. Remove obsolete history and repetition while preserving
+one authoritative place and link elsewhere. This file holds only rules that apply to every
+notebook: a rule about one goal's mathematics (which results count, what a candidate must satisfy,
+how to weigh its bounds) goes into that notebook's living sections, normally a **Route decisions**
+paragraph of **Where we stand** (user, 10 October 2026). `tools/tests/test_agents_scope.py` refuses
+goal vocabulary here, and reviewers audit new rules for scope; neither catches a goal-specific rule
+written in general words, so ask of each new sentence whether another notebook could use it. Remove obsolete history and repetition while preserving
 explicit constraints. Prefer actionable rules to growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
@@ -298,7 +303,7 @@ historical assessments.
   reason and its limits and close it, without asking the user whether it may be pruned (user, 10
   October 2026: "the existing process already supports closing an item quickly if it deserves it").
   Every Closed follow-up carries `<strong>Stakes.</strong>`: what a yes and what a no to the item's
-  question would each give the specification or the open statement. The reviewer reads each
+  question would each give the open statement. The reviewer reads each
   closure, and the entry links its record (the finisher checks both; user, 10 October 2026).
   Closed and Developed remove the item. Four consecutive research entries are the default
   spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
