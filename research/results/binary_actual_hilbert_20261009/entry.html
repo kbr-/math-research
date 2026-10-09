@@ -1,0 +1,69 @@
+<article id="entry-2026-10-09-dense-monomial-profile" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-09-pullback-architecture-review:3" data-claims="prop:dense-monomial-error-profile">
+<h3>9 October 2026 — A dense monomial tuple has the full initial weighted profile</h3>
+<p class="entry-meta">Working actual-kernel profile control. A cheap selected-row cleanup survives.</p>
+<p><strong>Question.</strong> Execute the scheduled actual-kernel test on general-step. Does a legitimate intermediate-rank mixture necessarily have a thinner initial error profile than the old quotient? Use a rank-deficient tuple and the actual hard quotient, then check whether an adaptive choice bypasses the bad profile.</p>
+<p><strong>General statement.</strong> <a href="#dense-monomial-error-profile">prop:dense-monomial-error-profile</a> uses the weighted cube to identify the entire initial error kernel for a sufficiently large subspace of a monomial layer. On the growing graph family this gives a source-realized shifted ratio too small for the review's proposed uniform constant-factor contraction schedule, while one selected row and weight clean up the displayed parent.</p>
+<p><strong>New mathematics.</strong> The codimension criterion is a direct weighted-cube application. The exact initial-profile consequence and its growing-family comparison are supplied below. The earlier <a href="#orbit-kernel-saturation">orbit saturation</a> already exhibits full initial kernels in a different class; this is not a new principle that large stacked tuples can be injective. No symmetry closure or extra translated inputs are imposed here.</p>
+<p><strong>Goal progress.</strong> Unchanged. This refutes an automatic initial-profile improvement for the specified source class, not the existence of a good adaptive interpretation. The successful cleanup prevents promoting a bad sufficient ratio estimate to source hardness.</p>
+<h4>The actual kernel from a monomial-layer codimension</h4>
+<p>Let \(J_D\) be a proper binary Boolean pseudoideal on \(v\) variables containing an unsatisfiable old family \(\Gamma\), and put \(u=\max(2,\max\deg\Gamma)\). Some disjoint variable pairs may additionally satisfy \(x_i x_j\in J_D\); the empty list of pairs is allowed. Let \(\mathcal T\) contain all \(r\)-subsets of variables using at most one variable from each designated pair, and let \(V_{\mathcal T}=\operatorname{span}\{x_T:T\in\mathcal T\}\) in the Boolean polynomial ring. Here \(r\ge1\). Let \(U\subseteq V_{\mathcal T}\) have codimension \(c\), and let \(g_1,\ldots,g_s\) span \(U\).</p>
+<p>For surviving binary \(w\), \(\deg w\le b\), and integer \(K\ge0\), put \(a=D-b-K-1\). Assume
+\[
+ D-b-K\ge u,\qquad a\ge r,\qquad c&lt;\binom ar.                         \tag{1}
+\]
+All products through \(b+K+r\) then fit \(D\). Write \(h_w(k)=\dim[wV_k]\) and
+\[
+ c_w(k)=\operatorname{rank}\bigl(f\in V_k\longmapsto([wg_i f])_i\bigr).
+\]
+</p>
+<p>The binary field and disjoint-pair convention specialize the statement to its application below: binary coefficients give the legal cleanup, and disjoint pairs give its inventory formula. The codimension argument itself does not use these two restrictions.</p>
+<p id="dense-monomial-error-profile"><strong>Proposition (dense monomial profile).</strong> Under (1), for every \(0\le k\le K\),
+\[
+ \{f\in V_k:wg_i f\in J_D\ \forall i\}=\{f\in V_k:wf\in J_D\},
+ \qquad c_w(k)=h_w(k).                                                   \tag{2}
+\]
+Thus the actual initial error standard family is exactly the weighted base standard family through this cutoff, for the same chosen degree-compatible order.</p>
+<p><strong>Proof.</strong> The right kernel is contained in the left by bounded absorption. If \(wf\) survives for \(f\in V_k\), use it as a weight of degree at most \(b+k\) in the <a href="#weighted-restriction-cube">weighted cube theorem</a>. It supplies at least \(a\) coordinates whose weighted monomials are independent. A selected cube cannot contain both variables of any designated pair: its corresponding weighted pair monomial would be zero, contradicting that independence. Thus its \(r\)-subsets belong to \(\mathcal T\).</p>
+<p>The multiplication map \(V_{\mathcal T}\to Q_D\), \(p\mapsto[wfp]\), consequently has rank at least \(\binom ar\). If all \(wg_i f\) vanished, this map would kill \(U\) and factor through \(V_{\mathcal T}/U\), of dimension \(c\), contradicting (1). Hence the kernels agree. Both maps factor through \([wV_k]\) in the paid product window, proving the ranks and the standard-family equality. The cube may depend on \(wf\); the predefined monomial layer contains every possible selected cube's \(r\)-subsets. \(\square\)</p>
+<h4>A rank-deficient genuine source in the growing window</h4>
+<p>Use the canonical growing graph quotient, \(v=2m\), with the two independent indicators per edge as the designated pairs. Retain \(\Delta=\lceil(\log n)^2\rceil\), \(D=\lfloor n\Delta/64\rfloor\), \(K=\lfloor m/1024\rfloor\), \(r=\lceil\log n\rceil\), and original accuracy \(h=\lfloor n^{1/20}\rfloor\). The admissible layer has
+\[
+ M_0=|\mathcal T|=2^r\binom mr,
+ \qquad \log M_0=(1+o(1))(\log n)^2.
+\]
+Its bottom/input inventory and factored description are polynomial in the original \(N_n\), by the previously verified canonical encoding count; no sparse expanded-polynomial size bound is asserted. All bottom input ranks \(r\) lie in the preceding intermediate interval eventually.</p>
+<p>For each \(T\in\mathcal T\), supply the genuine complete bottom block on \((1-x_i)_{i\in T}\). Select its \(r\) literal rows and zero-pad, so \(P_T=x_T\), with complete bottom companion and field certificates. Fix \(T_0\in\mathcal T\), and let one complete parent have actual tuple
+\[
+ g_T=P_T+P_{T_0}\quad(T\ne T_0).                                       \tag{3}
+\]
+After the coherent bottom assignment these span the codimension-one even-coefficient subspace of \(V_{\mathcal T}\). The mixture matrix has rank \(M_0-1\), not full column rank, and exposes no individual formal product coordinate. With \(w=1\), (1) holds eventually, so (2) gives the actual initial parent rank \(c(k)=h_1(k)\) for every \(k\le K\).</p>
+<p>This rank deficiency is not repaired by a hidden local linear relation among the listed degree-\(r\) monomials. Every nonzero cut-code vector has support at least \(\varepsilon\ge\Delta/4\); for large \(n\), \(2r&lt;\Delta/4\). Distinct character monomials of support at most \(r\) therefore lie in distinct cut-code classes. The local basis \(1,x_{e,0},x_{e,1}\) and the character basis \(1,U_e,V_e\) are related by an invertible degree-preserving change over \(\mathbb F_4\). Tensoring preserves edge-support degree; scalar extension preserves binary rank. Hence the local normal monomial space through degree \(r\) injects into the canonical quotient, so the listed admissible degree-\(r\) monomials remain independent there. The affine-rank and product-span distinctions are kept separate.</p>
+<h4>The initial shifted ratio is quantitatively small</h4>
+<p>Let \(B_m(k)=\sum_{j\le k}2^j\binom mj\). The growing-family occupancy bound gives \(h_1(K)\ge B_m(K)/2\) eventually, while local normal form gives \(h_1(K-r)\le B_m(K-r)\). For \(1\le k\le K\), comparison of consecutive summands gives
+\[
+ B_m(k-1)\le\frac{k}{2(m-k+1)}B_m(k).
+\]
+Indeed each degree-\(j\) summand on the left is at most that factor times its degree-\(j+1\) successor, and summing preserves the inequality. Iterating \(r\) times, with \(K\ge r\), yields
+\[
+ \frac{c(K-r)}{c(K)}
+ =\frac{h_1(K-r)}{h_1(K)}
+ \le2\left(\frac{K}{2(m-K+1)}\right)^r
+ \le2\,2046^{-r}
+ \le2n^{-\log2046}.                                                     \tag{4}
+\]
+The recorded binary rank-gain certificate uses one half this shifted ratio. Thus it cannot certify a uniform rate \(\eta\) with \(\eta h\ge\log2\) on every such initial kernel: its guaranteed rate here has \(\eta h\le n^{1/20-\log2046}\to0\). This concerns the sufficient constant-factor schedule in the review. It is not an upper bound on the best actual rank drop, nor a claim that one block needs a constant-factor decrease to obtain any nonzero common kernel.</p>
+<p>The actual specialized input degree in (3) is \(r\); original parent input and companion costs still use the unspecialized products. No claim of degree-minimal representatives in every alternative encoding is used to derive (4). The conclusion is about this permitted presentation and its actual initial multiplication map.</p>
+<h4>A legal adaptive bypass remains cheap</h4>
+<p>By (2) at \(k=0\), some \(g_{T_1}\) survives. Choose the parent first row to select this actual input, and zero-fill the rest. With binary \(W=g_{T_1}\), every parent companion has weighted image
+\[
+ g_{T_1}(1-g_{T_1})g_T=0\pmod{\mathrm{BOOL}}
+\]
+through degree at most \(3r\). Every bottom companion was already a local Boolean consequence, and multiplication by \(W\) fits \(2r+1\le3r\). All coefficient fields vanish. The weight survives and has degree at most \(r\). This is the existing common-input cleanup, now applied to the actual rank-deficient tuple. It also handles repeated parents with this same tuple; no arbitrary-parent conclusion follows.</p>
+<p>Original bottom and parent ceilings remain \(2h+1\) and \(2h^2+3h\). A complete degree-\(B\) replay still needs \(r+B\le D\); for \(B=\lfloor n^{1/4}\rfloor\) this holds eventually and the original axioms lie below \(B\). This positive calculation uses no generic-field row, enlarged input span, or preservation of the entire initial rank.</p>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-09-growing-goal-review">scheduled test</a> was performed on a legal rank-deficient intermediate-rank family in the actual quotient. Its initial error kernel can be the whole weighted base kernel, and its shifted ratio can be too small for the proposed uniform-rate schedule. The same family admits a cheap selected-row/weight cleanup. Therefore the next profile construction must account for adaptive source-dependent choices or common-target grouping; an initial thin-kernel hypothesis for every tuple is not available.</p>
+<p><strong>Follow-up.</strong> Continuing the Hilbert-profile head after its first entry. Next examine an actual source-dependent adaptive profile update that combines row choice with a surviving domain rather than imposing a uniform initial ratio. The common-input bypass must be included, and different parent tuples must share compatible choices and one weight. A restatement of the rank deficit or another example with no global interaction would not resolve the missing implication.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test an adaptive actual-kernel update or grouping rule that includes common-input cleanup and maintains one surviving domain across different parent tuples. Establish a source-derived cumulative cost bound; do not require every initial error profile to be thin or every kernel to have the same rate.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with two clarifications incorporated: binary/disjoint-pair assumptions are application conventions rather than needs of the dimension proof, and the invertible local indicator/character change transfers independence. It passed all degree, inventory, ratio and cleanup comparisons. <a href="research/results/binary_actual_hilbert_20261009/review.txt">Verdict</a>. Full weighted-cube, intrinsic-shadow, later flat-shadow, charged cut-code/occupancy, orbit saturation and source-cleanup arguments were read. The source inventory, degree windows and asymptotic comparison are analytic, not inferred from a finite sweep. No new encoding or inference rule is introduced.</p>
+<!-- TIMING binary_actual_hilbert_20261009 -->
+</article>

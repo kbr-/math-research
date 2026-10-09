@@ -1,0 +1,1 @@
+The first metadata preparation rejected an unclosed paragraph; markup was corrected before successful validation. A typo in the temporary proposal directory was corrected by promoting the validated proposal and deleting that owned temporary file/directory. No mathematics or user files were lost. No numerical run or framework change.
