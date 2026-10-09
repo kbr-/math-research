@@ -1,0 +1,51 @@
+STAGE 1 BRIEF (goal and available results only; the route currently preferred is deliberately withheld)
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through this chain.
+
+(A) Source theorem (proved). Gamma: polynomials over F_2 in v Boolean variables with the Boolean axioms; C_D its
+degree-D polynomial-calculus closure. If 1 is not in C_D for D = floor(n/2 - s), s = o(n/(log n)^(l-2)), l >= 2
+the approximation depth, where n = v - rank of any set L of auxiliary affine equations added to Gamma (L need not
+be part of the formula; v <= n^C), then a system augmented by polynomially many approximation blocks in l levels
+has no PC refutation of degree n^(1/3). A polynomial-size family suffices if it is hard at half the dimension of
+SOME affine subspace.
+(B) Its engine (imported, audited) contracts error ranks at a rate that needs the cutoff at about half of a
+dimension the closure cannot exceed.
+(C) Missing: a polynomial-size unsatisfiable family meeting (A), and the transfer of an actual Frege proof into
+the grammar of (A). The second has had no research cycle.
+
+WHAT THE LAST SIX ENTRIES ESTABLISHED (all proved unless marked):
+S1. Certificates. 1 is not in C_D iff there is a set G without constant, containing the axioms of degree <= D in
+    its degree-D span, all of whose pairs with lcm of degree <= D have resolved S-polynomials. If the non-Boolean
+    elements have pairwise coprime leading monomials and their Boolean pairs resolve, the system is satisfiable;
+    so a certificate for an unsatisfiable system has an element of degree D or two overlapping elements of total
+    degree >= D+2.
+S2. Two jointly unsatisfiable relations are refuted by a constant combination of their canonical axioms (degree
+    at most the larger width).
+S3. Tool (tested against brute force on 3-variable systems): exact refutation degree by truncated completion.
+    Measured: 3n random products of two affine forms have degree exactly 3 at n = 8, 10, 12, 16, three instances
+    each; n = 20 did not finish (pure Python).
+S4. Ceiling on a method: if every variable lies in >= 2 rows, any boundary expansion parameters (r, s, c) of the
+    row-variable matrix satisfy rc <= v/2 + s, so Alekhnovich-Razborov's Theorem 3.13 (degree > rc/2) gives at
+    most v/4 + s/2 and Theorem 3.8 at most 0.0335 v + s/4. Rows on variables only.
+S5. Rows on k linear forms, one forbidden tuple each, any at most r rows independent (full "rank expansion"):
+    satisfiable if n = kr (k >= 2, r >= 3); unsatisfiable needs more than r 2^k/4 rows and, for k >= 4,
+    n >= 2k floor(r/2) + 0.156 floor(r/2) - log. A hypothetical theorem "degree > rk/2" for such rows (not
+    proved; its leading-term proof step is known false) would then fall short of n/2 by about 0.02 n/k, which
+    with polynomially many rows (k = O(log n)) is at least of order n/log n: enough for l = 2 only.
+S6. Earlier, standing: a ceiling v/2 - (8/9) v/k for regular even modular sources with canonical rows of width k
+    (so l = 2 only there too); fixed-width occurrence ceilings with linear deficit; no general ceiling near n/2
+    for all unsatisfiable systems is recorded, and no example hard at n/2 - o(n) of any dimension.
+
+STATUS. Twenty-four research entries and three reviews; the first open statement was weakened three times and
+its status never changed. No candidate family; no lower-bound method reaching half of any dimension. Two
+independent counts now say that the structured candidates examined can at best serve l = 2.
+
+REQUEST. Without knowing the route currently preferred, say whether you would keep this engine or change the
+architecture, and why. Give at most three concrete options, each with (i) the precise endpoint, (ii) why the
+chain to the goal would go through or what replaces (A)-(B), (iii) the cheapest decisive test and the outcome
+that would kill the option. Consider in particular: whether to restrict the goal's first milestone to l = 2
+(deficit o(n)) and what that milestone would be worth; whether the repeated n/k or n/log n deficits point to a
+general ceiling for polynomial-size systems that should be attempted as a theorem; and whether the untouched
+transfer statement should now take cycles. Under 500 words. Run no computations, read no other files, edit
+nothing. If a hook requires `python3 tools/resume.py` before anything else, run it and its part reads, ignore
+its contents for this task, and continue.
