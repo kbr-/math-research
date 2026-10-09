@@ -23,7 +23,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>On near-half-family: continue the four-colour check (entry-2026-10-08-four-colour-fibres:s1), fourth entry of its spell: take one concrete family of graphs that are not four-colourable and in which no bounded subgraph has an affine consequence, the recorded Kneser cores being the first to examine, and decide what the game bound and the independence bound give for it after the <a href="#entry-2026-10-09-clique-sum-ceiling">clique sum ceiling</a>; or show that such graphs cannot have independence number near \(N/3\).</p>
+<p>On near-half-family: leave the colouring frame, as the <a href="#entry-2026-10-09-colouring-screens-review">goal-level review</a> advised, and take the queue item with the strongest bearing on a lower-bound method, which the line lacks: the check on a pseudo-reduction for locally independent rows on linear forms on a non-monomial basis (entry-2026-10-09-private-direction-projection:s1), read in full first, with its conditional companion (:s3) batched if the first produces an operator.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -6401,6 +6401,51 @@ for large l. Its quantifier covers every unsatisfiable non-universal projected r
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 6.31 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 44.40 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-critical-graph-census" data-kind="research" data-route="near-half-family" data-route-item="near-half-family" data-obligation="near-half-pc-family" data-goal-progress="unchanged" data-check="entry-2026-10-08-four-colour-fibres:s1" data-claims="ex:small-critical-graph-census">
+<h3>9 October 2026 — A census of critical graphs up to nine vertices: a full game value does not come with a forced edge</h3>
+<p class="entry-meta">Finite check refuting a hypothesis that would have tied the game bound to the clique sum ceiling; it says nothing about large graphs. Queue development of a chosen check while draining; last entry of its spell. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, reasoning effort low).</span></p>
+<p><strong>Chosen.</strong> Fourth entry on the two-bit four-colour check, which bears on the family statement as the one encoding with a proved upper bound at half; it comes before the head because the preceding entry named this question.</p>
+<p><strong>Question.</strong> On near-half-family and the Boolean PC family statement: the three graphs with large game value known so far all fell to the <a href="#entry-2026-10-09-clique-sum-ceiling">clique sum ceiling</a>. Is that a rule: does every vertex-critical graph that is not four-colourable and has game value at least \(N-1\) have an edge whose colour difference lies in the span \(\Lambda_4\) of the four-clique sums?</p>
+<p><strong>New mathematics.</strong> No. Among all 245 vertex-critical non-four-colourable graphs on at most nine vertices, 61 have game value at least \(N-1\), and 34 of those have no edge forced by \(\Lambda_4\); two of them, on nine vertices with independence number two, have game value \(N\). So the adversary's success is not explained by an edge difference lying in \(\Lambda_4\). The census is too small to say anything about growth: every graph in it has game value at least \(N-2\).</p>
+<p><strong>Goal progress.</strong> Unchanged. A hypothesis that would have merged two screens is refuted at small sizes; no family is obtained, no statement about large graphs, and the required implication is as before.</p>
+<p><strong>General statement.</strong> The hypothesis tested concerned <code>prop:first-bit-game-ceiling</code> and <code>prop:clique-sum-ceiling</code> for all graphs; it is refuted by <code>ex:small-critical-graph-census</code>. No all-parameter statement replaces it.</p>
+
+<h4>Test design, before the run</h4>
+<p>Hypothesis: for every graph that is not four-colourable, whose vertex-deleted subgraphs all are, and with \(\tau\ge N-1\), some edge \(uv\) has \(c_u+c_v\in\Lambda_4\). A graph that is not four-colourable while every vertex-deleted subgraph is must be connected, since otherwise a component would already fail, and has minimum degree at least four, since a four-colouring of the graph minus a vertex of degree at most three extends to it. So the graphs produced by <code>nauty-geng -c -d4</code> on \(N\) vertices include all of them; the program checks non-four-colourability and vertex-criticality for each and discards the rest. Non-vacuity: the complete graph on five vertices has \(\tau=N\) and a forced edge; the hypothesis predicts that the count of graphs with \(\tau\ge N-1\) and no forced edge is zero, and one such graph refutes it. Sizes: five to nine vertices, the smallest that give more than a handful of critical graphs; no graph without a four-clique exists at these sizes, so the test concerns \(\Lambda_4\) only and not the general notion of bounded affine consequences.</p>
+
+<h4>Outcome</h4>
+<table><thead><tr><th>\(N\)</th><th>graphs read</th><th>critical, not four-colourable</th><th>\(\tau\ge N-1\)</th><th>of those, no forced edge</th></tr></thead><tbody>
+<tr><td>5</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>7</td><td>29</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>8</td><td>424</td><td>7</td><td>6</td><td>1</td></tr>
+<tr><td>9</td><td>15471</td><td>236</td><td>53</td><td>33</td></tr>
+</tbody></table>
+<p>Refuted from eight vertices. On nine vertices two graphs have \(\tau=9\), independence number two, three four-cliques and no forced edge, with 19 and 20 edges; their complements are triangle-free graphs on nine vertices with 17 and 16 edges. Over the whole census \(N-\tau\in\{0,1,2\}\) and the independence number is two or three, with one in the complete graph and four once.</p>
+<p>What this does and does not say. It says the three examples of the preceding entry were not representative: four-clique relations are one reason for a large game value and not the only one. It does not say that such graphs are hard: on nine vertices every such system is refuted within degree \(N+2\), by <code>prop:transversal-rank-ceiling</code> with the first bits, and nothing here measures the degree; and it does not bear on large graphs, since a deficit of at most two from \(N\) at \(N\le9\) is compatible with any rate of growth. The series is stopped: the hypothesis has failed, and ten vertices would add cases of the same kind.</p>
+
+<h4>Checks, scope and verification</h4>
+<p><strong>Program and validation.</strong> <a href="https://github.com/kbr-/math-research/blob/main/research/provenance/near-half-critical-graph-census-20261009/census.cpp">census.cpp</a> reuses the exact minimax of the game kernel; its game values for the complete graph on five vertices and for the circular clique on nine vertices, graph6 string <code>HUzvvx}</code>, identified by an isomorphism test, are \(5\) and \(7\), as that kernel gave; apart from these two values the game values rest on this program alone. Output, one line per critical graph with its graph6 string: <a href="https://github.com/kbr-/math-research/blob/main/research/results/near-half-critical-graph-census-20261009/census-5-9.jsonl">census-5-9.jsonl</a>. The run took under a second.</p>
+<p><strong>Scope.</strong> Complete for the sizes listed, given the enumerator. A forced edge is tested with respect to \(\Lambda_4\) only.</p>
+<p><strong>Specification decision.</strong> No change. The game condition and the clique sum condition stay as separate necessary conditions; neither implies the other.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer recomputed, with its own script and for all 245 graphs, non-four-colourability, vertex-criticality, edges, independence number, the number of four-cliques and the forced flag, and replayed the program's span test against the true span on every vector: all match. It confirmed the totals, the table, the deficits and the three graphs singled out; it did not recompute game values. It found the program correct, with one misleading comment, now fixed. Corrections applied to the text: the statement about what is not explained is narrowed to edge differences in \(\Lambda_4\); the reason for connectivity and minimum degree is given; the bound \(N+2\) is cited; the circular clique's row is identified. Record: <a href="https://github.com/kbr-/math-research/blob/main/research/results/near-half-critical-graph-census-20261009/review.txt">review.txt</a>.</p>
+<p><strong>Follow-up.</strong> Continuing. Fourth entry on this check, which ends its spell; it goes to the back of the queue. Four entries gave three upper bounds and no object. What it still asks, a lower bound for some graph, needs a method; the next attempt on it, when it returns, is the degree of the two nine-vertex graphs above in their reduced dimension, which a degree-truncated exact kernel could compute.</p>
+<p><strong>Process assessment.</strong> A hypothesis formed from three examples and refuted by a census in under a second; I should have run the census before writing "the three graphs that had passed" as if they were the population. The colouring frame has now had six entries and a review; the goal-level review's doubt about it stands, and the next entries go to other queue items chosen by bearing.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="nhpc-20261009-affine-free-graphs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 9.80 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 45.13 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 22.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 0.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.58 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.24 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
