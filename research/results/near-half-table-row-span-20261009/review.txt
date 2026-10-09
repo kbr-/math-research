@@ -1,0 +1,25 @@
+Review record, 9 October 2026: entry-2026-10-09-table-row-span.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent).
+
+Verdict: pass with corrections. Proposition and kernel sound; several framing statements not.
+Required: "refuted far below half at the sizes computed" is false (k = v/2, so max{k,D} = v/2); the title
+states the finite check and 0.15v as facts; the source has k = ceil(2 log2 v) = 8 at v = 12, 14 while the
+runs use k = 6, 7, m = 18, 21 (only v = 16 matches); "general position" is neither shown nor needed: at
+threshold K_D has codimension 1, 6, 5, 43, 154, and v = 16 seed 2 is one short at D = 6 with count/dim 2.9;
+state the hypothesis as "1 in K_D once Sigma_D >= (1+eps) dim"; "up to polynomial factors" is too weak (a
+factor v^a moves alpha); the true errors are v^(o(1)): ratio 1 + O(k^2/v), binomial tail poly(k), cutoff
+shift O(sqrt k) costs e^(O(sqrt k)); with that 2^(-2/c), 0.146, 0.59/sqrt c, v^(c+1) are correct; "proper
+by (3), so the outcomes differ" is a non sequitur; "generators equal the formula" is tautological; "(2) puts
+its degree at about" should be "at most"; "leaves room only for systems that barely cover" unargued; the
+covering-sum identity at 1/2 holds for every table; the final sentence overstates.
+Checked and correct: proposition (1)-(3); the multiplication-closed remark; the rho-minimiser claim; the C
+reduction loops, index mapping, early stop; validate.py independent of the product structure but on the
+kernel's instances, two of six comparisons rank 0; all table numbers, percentages, thresholds 4, 5, 5.
+Not checked: the single-orbit cover; lem:barely-covering-padding.
+Suggestions (unverified by the author): top coefficients: for |S| = D, lambda_S (coefficient of x_S)
+vanishes on K_D when |S cap scope_a| < d_a (least degree of I(R_a)) for every a; expected number about
+C(v,D)(1-p)^m: 1.6, 1.3, about 100 at (12,4), (16,6), (16,5) against observed codimensions 1-6, 1, 43-154;
+at the count threshold m p ~ 1, so codim K_D = Omega(C(v,D)): general position false at scale; K_D full only
+near 1/2 - O(1/sqrt k). lambda_S(1) = 0: no obstruction to 1, but breaks a naive first moment. Point
+evaluations harmless (2^(v-m) = 2^-k). Target: every functional vanishing on K_D vanishes on B_{<=D'} for
+some D' < D, by peeling top degrees; no proof found.
