@@ -1,0 +1,50 @@
+STAGE 1 BRIEF (goal and available results only; the current route is deliberately withheld)
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through this
+sufficient chain:
+
+(A) Source theorem (proved, "moving cutoff"). Let Gamma_v be any set of polynomials over F_2 in v Boolean
+variables containing the Boolean axioms, with 1 not in C_D(Gamma_v), the degree-D polynomial-calculus closure.
+Fix the approximation depth l >= 2 and D = floor(v/2 - s) with s = o(v/(log v)^(l-2)). Then a certain augmented
+system (polynomially many "ENS" approximation blocks in l levels over Gamma_v, inputs of bounded degree r) has no
+PC refutation of degree v^(1/3). Its proof uses one engine only:
+
+(B) Contraction engine (imported, audited). For a prefactor P and inputs g_i of degree <= d, let
+c_P(k) = rank of f in V_k -> ([P g_i f])_i modulo C_D, where V_k = polynomials of degree <= k. Then
+  c_{P'}(K) <= c_P(K) - (1/2) c_P(K-d)      for a suitable new P' (one more approximation factor),
+and  c_P(K-d)/c_P(K) >= N_v(K-d)/N_v(K),  N_v(k) = sum_{j<=k} binom(v,j).
+The second inequality is the only place where the number v of variables enters: the ratio is close to 1 only
+when K is within o(v/polylog) of v/2. Hence the requirement "D near v/2".
+A recorded counterexample shows that N_v cannot simply be replaced by the Hilbert function
+h(k) = dim V_k/(C_D cap V_k) of the base quotient: there is a 3-variable system with h(1)/h(2) = 4/5 but
+c_P(1)/c_P(2) = 3/4.
+
+(C) What is missing. A polynomial-size unsatisfiable Boolean formula family (CNF, preferably bounded or
+logarithmic width, canonical encoding) with 1 not in C_D at D = floor(v/2 - s). No such family is known. A second
+open item is the transfer of an actual Frege proof into the grammar of (A).
+
+AVAILABLE NEGATIVE RESULTS (all proved, each an actual PC degree upper bound):
+1. Every unsatisfiable Boolean system has degree <= v/2 + O(1) by interpolation; systems whose rows (bounded-width
+   relations) interpolate at degree t_a on width k_a have degree <= 1 + the largest E such that some E-set meets
+   every row in at most t_a variables.
+2. Modular rows (sum a_i x_i = b mod odd q, Boolean x, width k, canonical 2^k-clause encoding, proof field F_2)
+   interpolate at k/2 only when even, central and sign-paired; otherwise at most k/2 - 1.
+3. For r-regular systems of even modular rows, two rows through a common unselected variable cannot both carry
+   half their scope ("shared pin"), giving degree <= v/2 - (r-1)v/(2rk) roughly. With k = O(log v) this is a deficit
+   of order v/log v, so such sources can serve only l = 2.
+4. Conditionally on a single-row conjecture, the same sources have degree <= (1/2 - 0.013) v.
+5. General mechanism: if one row's trace drops on the fibre x=1 and another's on x=0, the product drops (the
+   resolution rule on monomials). For CNF: if 1 not in C_D, some (D-1)-set of variables contains the variable set
+   of no clause derivable by resolution in width D-1.
+6. Known lower-bound technology (expansion arguments) gives at most about a quarter of the variables on the
+   families examined (Tseitin, pigeonhole restricted to graphs, random sparse CNF); pigeonhole bounds are near half
+   the number of holes, not variables.
+7. A positive-linear-degree guarded width-five witness shows the structural specification is non-vacuous, but
+   its degree constant is small.
+
+REQUEST. Without knowing the route currently preferred, propose a materially different architecture for
+reaching the goal, or give a reason why you find none. In particular consider: whether requirement (C) is really
+necessary given (A) and (B); which hypothesis of (B) could be weakened or re-normalized; and what kind of family
+would then suffice. Give at most three proposals, each with (i) the precise weaker or different endpoint,
+(ii) why (A)-(B) would still go through or what replaces them, (iii) the cheapest test that could falsify it.
+Be concrete and brief; do not restate the brief. Run no computations and edit no files.

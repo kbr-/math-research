@@ -1,0 +1,29 @@
+Review record, 9 October 2026: entry-2026-10-09-thin-kernel-review (stage two of the staged review).
+Reviewer: the same fresh-context medium-effort reviewer as stage one (see independent-review.txt), now given the
+draft review and excerpts of the moving-cutoff entry, the recorded engine with its counterexample and the kernel
+dimension entry. It read only those files and ran nothing.
+
+Verdict: pass with corrections. The down-closure argument, the Kruskal-Katona growth lemma and the theorem's
+recursion, error ledger, t_j <= h and reserve are correct; one window suffices; no use of N_v remains.
+
+Errors found and corrected:
+- "Near-half is the special case X = v" was false: with X = v the exact hypothesis X <= 2(K-Delta)+1 contradicts the
+  interpolation ceiling, and whenever the top levels are full cubes on X effective variables the hypothesis was
+  empty. The theorem now carries the lemma's slack (rho <= 1 + 1/Delta, rate 1/(2(1+e d))); in the cube case it is
+  a near-half condition with deficit O(X/Delta). It does not subsume the moving-cutoff theorem; the endpoint is an
+  alternative, incomparable as stated.
+- "Same order as the ambient bound" at X = v was wrong; the lemma is weaker by about a factor 1 + delta.
+- The proof needed K >= 2 Delta - 1 (for X >= K), not K >= Delta.
+- The first-moment count is an upper bound, needs a strict inequality and a union bound over window sizes.
+- "Necessary target" stated a sufficient condition. Point-set count: binom(X, K), not 4^K.
+- Goal progress: "advanced" was admissible only with these disclosures; the entry now says "unchanged", since an
+  added sufficient condition of unknown attainability does not change what must be proved.
+- Test outcomes: the knapsack lead and the frozen-variable bridge were not actually tested (now "Not run");
+  the expansion outcome is an estimate; the Reed-Muller bridge's test does not use the cited theorem.
+
+Not verifiable from the excerpts: the corollary's second sentence (jointly filtered sets, derived clauses) and the
+weighted version of the engine (covered by counting the weight's degree in a).
+Unused hypotheses: unsatisfiability in the theorem; D >= v^(1/2) beyond K >= 2 Delta - 1; the lemma's input
+degree d beyond a + d + K <= D.
+Unchecked pointer: resolution width upper bounds for random k-CNF fall like v/Delta^(1/(k-2)) while c* falls like
+Delta^(-1/k), so large densities are likely to fail the proposed random-CNF test.
