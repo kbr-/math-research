@@ -132,10 +132,12 @@ notice.
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
-  In PARI/GP, prefix custom helper names to avoid built-in function collisions. Put
-  stack-size defaults on separate input lines from thread and seed settings: a
-  stack resize skips the rest of its line. Check effective thread settings before
-  the calculation.
+  In computer algebra scripts, prefix custom names to avoid built-in collisions
+  (for example Singular's `test`, or PARI/GP's `eta` and `psi`). Require error-free
+  output and the expected completion counts: a parser error may still return exit
+  zero or reach a later success print. In PARI/GP, put stack-size defaults on
+  separate input lines from thread and seed settings: a stack resize skips the
+  rest of its line. Check effective thread settings before the calculation.
 - For 14 worker processes, use one numerical-library thread per worker:
 
 ```bash
