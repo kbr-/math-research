@@ -1,0 +1,53 @@
+STAGE 1 BRIEF (goal and available results only; the route currently preferred is deliberately withheld)
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege.
+
+NOW PROVED IN THE RECORD (working proofs, each reviewed once; no imported premise):
+T. Transfer. Fix a Frege system F in the DeMorgan language with unbounded MOD_2 connectives (Krajicek's
+   F_d(MOD_2)), depth d, exponent A; l = d + c_F, c_F an uncomputed constant >= 1. If CNFs F_n of width w_n and
+   auxiliary affine equations Lambda_n over F_2 (not part of the formula), n = (number of variables) - rank
+   Lambda_n, have no polynomial-calculus refutation over F_2 of degree floor(n/2 - s_n) from clause polynomials,
+   Boolean axioms and Lambda_n, with (s_n + w_n)(log n)^(l-2) = o(n), then F_n has no F_d(MOD_2)-refutation with
+   n^A symbols for large n. A single family with s_n + w_n <= n^(1-eps) serves every fixed depth.
+   Inside the proof the dimension n enters in exactly one place: for the down-closed family B of standard
+   monomials (squarefree, in the n non-pivot variables) of certain kernels Z containing C_D, the count
+   (j+1) b_{j+1} <= (n-j) b_j, giving rate eta = (1/2) N_n(K-delta)/N_n(K) per approximation factor, K the cutoff,
+   delta the degree of the approximated inputs (polylog below the top level). Earlier entries proved that the
+   same engine works if instead the level sizes of the standard monomials are at most C(X, j) for X about 2K
+   (Kruskal-Katona), or each standard monomial has few standard extensions; both force every set shattered by
+   the closure through degree K to have size at most about 2K.
+
+STILL OPEN: the family. No polynomial-size CNF (with any auxiliary affine equations) is known with PC degree over
+F_2 within n^(1-eps), or even o(n/(log n)^k), of half its free dimension.
+
+WHAT IS KNOWN ABOUT THE FAMILY QUESTION (all from the record):
+F1. Actual ceilings: regular even modular-counting sources with canonical rows of width k: degree <=
+    v/2 - (8/9 - o(1)) v/k; fixed-width systems: occurrence ceilings with linear deficit unless many variables
+    occur often; several structured sources (colourings, codes of fixed modulus) are bounded away from half.
+F2. Method ceilings: Alekhnovich-Razborov expansion bounds give at most v/4 (single-tuple) and 0.034 v (immunity)
+    when every variable is in two rows. A hypothetical rank version for rows on linear forms would have deficit
+    of order n/k at full expansion.
+F3. An attempt to prove a general ceiling "degree <= max(k, n/2 - c n/k) + O(1) for relations on k affine forms"
+    failed at its first step, and even "degree <= n/2 + O(k)" for all such systems has no proof in the record;
+    no bounded-width example needing degree well above n/2 over F_2 is known to us either.
+F4. Local screens: rows on dense random parities pass every local obstruction near n/2. Measured: 3n random
+    products of two affine forms have exact degree 3 at n <= 16.
+F5. Clause width is now paid in the same budget as the deficit, so width up to n^(1-eps) is allowed; a
+    polynomial-size unsatisfiable CNF still has a clause of width <= log2(number of clauses). Non-affine
+    auxiliary variables count in n.
+F6. Tool: exact refutation degree by truncated Buchberger completion (pure Python, n up to about 16-20).
+
+PROCESS FACT. A queue of 53 older leads is in "draining" mode: each research entry must develop the queue's
+head (currently a lead on local sections and cohomology, Abramsky-Mansfield-Barbosa) unless the user picks
+another item. The user picked the transfer out of order for the last five entries.
+
+REQUEST. Without knowing the route currently preferred: with the transfer done, what should the next cycles on
+the family be? Give at most three concrete options, each with (i) the precise statement to prove or object to
+construct, (ii) why it would give or kill the family, (iii) the cheapest decisive test and the outcome that would
+kill the option. Consider in particular: whether the one-inequality observation suggests replacing "half the free
+dimension" by a property of the standard-monomial family that some natural formulas have; whether width
+n^(1-eps) changes which known lower-bound techniques apply; and whether the open base question F3 (is n/2 + O(k)
+a general upper bound, or can degree exceed half?) should be settled first, since if degree can exceed half the
+target is easier than assumed. Under 500 words. Run no computations, read no other files, edit nothing. If a hook
+requires `python3 tools/resume.py` before anything else, run it and its part reads, ignore its contents for
+this task, and continue.
