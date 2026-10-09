@@ -1,0 +1,45 @@
+// Exhaustive 2x2 binary coefficient matrices. Literal two-row products.
+// Tests alternating dilation, nonzero-coordinate shear, and coefficient fields.
+ring R=2,(z1,z2,r11,r12,r13,r14,r21,r22,r23,r24),dp;
+matrix S[4][4]=1,0,1,0, 0,1,1,0, 0,0,1,0, 0,0,0,1;
+matrix U[4][1]=0,0,z1,z2;
+matrix Up=S*U;
+matrix M[4][4];
+matrix Mp[4][4];
+matrix G[4][1];
+matrix Gp[4][1];
+int mask,digit,i,j,tests,failed;
+poly P,Pp;
+link out=":w research/results/binary_isotropic_parent_20261009/completion-checks.txt";
+write(out,"F2 all16 binary2x2 input matrices, h=2; exact ordinary polynomial identities");
+for(mask=0;mask<16;mask++)
+{
+ M=0;digit=mask;
+ for(i=1;i<=2;i++)
+ {
+  for(j=1;j<=2;j++){M[i,j+2]=digit%2;M[j+2,i]=M[i,j+2];digit=digit div 2;}
+ }
+ G=M*U;Mp=transpose(S)*M*S;Gp=transpose(S)*G;
+ tests++;
+ if(Mp*Up!=Gp){failed++;}
+ tests++;
+ if(transpose(Up)*Gp!=0){failed++;}
+ tests++;
+ if(Mp!=transpose(Mp)){failed++;}
+ for(i=1;i<=4;i++){tests++;if(Mp[i,i]!=0){failed++;}}
+ P=(1+r11*G[1,1]+r12*G[2,1])*(1+r21*G[1,1]+r22*G[2,1]);
+ Pp=(1+(r11+r13)*Gp[1,1]+(r12+r13)*Gp[2,1]+r13*Gp[3,1]+r14*Gp[4,1])*(1+(r21+r23)*Gp[1,1]+(r22+r23)*Gp[2,1]+r23*Gp[3,1]+r24*Gp[4,1]);
+ tests++;
+ if(P!=Pp){failed++;}
+ tests++;
+ if(Gp[3,1]*P!=G[1,1]*P+G[2,1]*P || Gp[4,1]!=0){failed++;}
+ write(out,"matrix "+string(mask)+": completed inputs "+string(G)+"; product residual "+string(P+Pp));
+}
+tests++;
+if((r11+r13)^2+(r11+r13)!=(r11^2+r11)+(r13^2+r13)){failed++;}
+tests++;
+if(Up[1,1]!=z1 || Up[2,1]!=z1 || Up[3,1]!=z1 || Up[4,1]!=z2){failed++;}
+write(out,"checks="+string(tests)+"; failures="+string(failed));
+if(failed==0){write(out,"PASS");}else{write(out,"FAIL");}
+close(out);
+exit;
