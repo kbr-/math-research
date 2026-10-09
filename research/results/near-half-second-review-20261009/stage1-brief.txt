@@ -1,0 +1,57 @@
+STAGE 1 BRIEF (goal and available results only; the route currently preferred is deliberately withheld)
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through this chain.
+
+(A) Source theorem (proved). Gamma: any set of polynomials over F_2 in v Boolean variables containing the Boolean
+axioms; C_D(Gamma): its degree-D polynomial-calculus closure. If 1 is not in C_D for D = floor(v/2 - s),
+s = o(v/(log v)^(l-2)), l >= 2 the fixed approximation depth, then a system augmented by polynomially many
+approximation ("ENS") blocks in l levels has no PC refutation of degree v^(1/3).
+
+(B) Its engine (imported, audited). Error ranks c_P(k) = rank of f in V_k -> ([P g_i f])_i mod C_D satisfy
+c_{P'}(K) <= c_P(K) - (1/2) c_P(K-d) for a new approximation factor, and (A) needs
+c_P(K-d)/c_P(K) >= 1/polylog for polylogarithmic d at K = D - v^(1/3).
+
+(C) Missing. A polynomial-size unsatisfiable Boolean family meeting the hypothesis of (A) or of one of the
+variants below, and the transfer of an actual Frege proof into the grammar of (A).
+
+PROVED VARIANTS OF THE HYPOTHESIS (each sufficient in place of "D near v/2"):
+V1. Free dimension: affine axioms over F_2 can be substituted away without changing refutation degree, so v may be
+    replaced by n = v - rank(affine axioms), with v <= n^C. This is a strict weakening.
+V2. Thin kernel: the standard monomials of C_D (degree-compatible order) number at most binom(X, j) in degrees
+    K - Delta < j <= K, X about (2 + 1/Delta) K, Delta polylogarithmic.
+V3. Extension counts: every standard monomial x_S with K - Delta <= |S| < K has at most (1 + 1/Delta)(|S| + 1)
+    variables x with x x_S standard.
+Necessary for V2 and V3: every set Q of variables all of whose monomials of degree <= K are standard ("shattered")
+has |Q| <= about 2K; a proper closure of an unsatisfiable system always shatters D - 1 variables.
+Not known: whether V2 or V3 can hold with a proper closure outside the cases where they reduce to near half of
+the (free) variable count.
+
+PROVED NEGATIVE OR LIMITING RESULTS (scope stated; none is a general theorem about all systems):
+N1. Regular systems of even modular rows of width k (canonical clause encoding): two rows through a common
+    unselected variable cannot both carry half their scope, giving degree <= v/2 - Omega(v/k). No general ceiling
+    of about v/2 for all unsatisfiable Boolean systems is known to us, and no example exceeding v/2 + O(1) either.
+N2. General resolution-type rule: if one row's trace drops on the fibre x = 1 and another's (disjoint) on x = 0,
+    their product drops. For CNF with 1 not in C_D: some (D-1)-set contains the scope of no clause derivable by
+    resolution in width D-1.
+N3. Rows defined as bounded relations on dense random parities of n free variables (bounded-width chain
+    encoding, free dimension n): every set of at most n/2 - O(sqrt(n g k log v)) free variables is unreduced on
+    joins of g rows, for g up to almost linear. So all local obstructions vanish in this class; a heuristic
+    dimension count suggests random instances are nevertheless refutable below n/3.
+N4. Frames (satisfiable low-degree structures such as the cube, or the cube with a product variable at each node
+    of a binary tree): any condition of type V2/V3 verified on the frame alone needs a cutoff at least half the
+    frame's top standard degree tau, while every unsatisfiable extension is refuted by degree tau + w. The cube
+    attains the ratio one half; the product tree gives 0.4 n against 0.5 n.
+N5. Random k-CNF, first-moment calibrations only: scope-free ceiling 0.54 v at (k, density) = (3, 4.27); V2 holds
+    for the input scopes from 0.34 v. Known expansion-type lower bounds are, by an unverified estimate, at most
+    about 0.18 v there.
+N6. Known lower-bound technology reaches at most about a quarter of the variables on the families examined; no
+    method reaching a constant fraction near one of any ceiling is known to us.
+
+REQUEST. Without knowing the route currently preferred, propose a materially different architecture for reaching
+the goal, or give a reason why you find none. Consider in particular: whether a family is needed at all in the
+form (C) (for instance whether the engine could be run against a different invariant than the rank functions
+c_P, or with a rate assumption verified for the specific prefactors that occur rather than for all down-closed
+families); whether (B)'s contraction step could be replaced; and what the cheapest decisive test of each
+proposal is. Give at most three proposals, each with (i) the precise endpoint, (ii) why the chain would still go
+through or what replaces it, (iii) the cheapest falsifier. Be concrete; under 500 words. Run no computations, read
+no other files and edit nothing.
