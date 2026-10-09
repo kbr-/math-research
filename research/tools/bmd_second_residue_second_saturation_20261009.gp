@@ -1,0 +1,43 @@
+\\ Exact residue-two second source: F_s + G*T^s*F_4, p|s, p>19.
+\\ Four complete high conditions; ambient source bound C=s+7.
+default(parisizemax,1000000000);
+default(nbthreads,1);
+ep='ep;b='b;T='T;
+assert(c,msg)=if(!c,print("FAIL ",msg);quit(1));
+H=32;P=64;
+branch=(1+T)*(1+ep*T)^2;
+Vs=concat([1],vector(5,j,T^(j-1)*branch));
+Q=matrix(8,6,i,j,polcoef(Vs[j],i-1,T));
+small=Q[1..6,];detSmall=matdet(small);adjSmall=detSmall*small^-1;
+assert(subst(detSmall,ep,0)==1,"six high directions have a unit low block");
+cuts=matrix(2,8,i,j,if(j==i+6,detSmall,0)-if(j<=6,sum(k=1,6,Q[i+6,k]*adjSmall[k,j]),0));
+coef(e,v)=if(e<v,0,(-1)^(e-v)*binomial(e,e-v));
+rows(s)={my(R=matrix(4,H));for(h=0,H-1,my(e=2*s+14-h,al=(-1)^e*e/(2*s+15),fc=vector(18,k,coef(e,2*s+k-1)+al*coef(2*s+15,2*s+k-1)),E=vector(8,j,ep^(j-1)*sum(u=j-1,7,fc[2*u+1]*binomial(s+u,u-j+1))),O=vector(9,j,my(v=j-2);sum(u=v,6,fc[3+2*u+1]*binomial(s+u,u-v))),B=vector(8,j,ep^j*O[j+1]+ep^(j-1)*O[j]),fac=2^(14-h)*ep^h);for(j=1,2,R[j,h+1]=fac*sum(k=1,8,cuts[j,k]*E[k]);R[2+j,h+1]=fac*sum(k=1,8,cuts[j,k]*B[k])));R;};
+R=rows(0);
+Rc=rows(23);
+assert(Mod(1,23)*R==Mod(1,23)*Rc,"every full constraint entry agrees at the positive s=23 control");
+OUT="research/results/bmd-elliptic-second-residue-20261009/second-constraints.gp";
+write(OUT,"\\\\ Complete bounded constraints, column h represents normalized core order 2s+14-h.");
+write(OUT,"R=",R,";");
+bad=1;
+contents(v)={my(a=Vec(numerator(v)),d=Vec(denominator(v)),den=1);for(i=1,#a,assert(type(a[i])=="t_INT"||type(a[i])=="t_FRAC","one-variable rational numerator");den=lcm(den,denominator(a[i])));for(i=1,#d,assert(type(d[i])=="t_INT"||type(d[i])=="t_FRAC","one-variable rational denominator");den=lcm(den,denominator(d[i])));[content(a*den),content(d*den)];};
+checkden(v)={if(type(v)=="t_POL"&&variable(v)==ep,my(c=Vec(v));for(j=1,#c,bad=lcm(bad,abs(contents(c[j])[2]))),bad=lcm(bad,abs(contents(v)[2])));};
+checknum(v)=bad=lcm(bad,abs(contents(v)[1]));
+for(i=1,matsize(R)[1],for(j=1,H,checkden(R[i,j])));
+write(OUT,"operations=List();");
+rowCount=matsize(R)[1];
+degreeBound=rowCount*vecmax(vector(rowCount,i,vecmax(vector(H,j,poldegree(R[i,j],ep)))));
+depth=vector(rowCount);divisionTotal=0;iterations=0;
+{while(1,for(i=1,rowCount,my(v=vecmin(vector(H,j,valuation(R[i,j],ep))));assert(v<P,"nonzero polynomial row");if(v>0,write(OUT,"listput(operations,[",i,",-",v,"]); ");R[i,]=R[i,]/ep^v;depth[i]+=v;divisionTotal+=v));my(LC=matrix(rowCount,H,i,j,polcoef(R[i,j],0,ep)),K=matker(LC~));if(matsize(K)[2]==0,break);my(v=K[,1],ri=0,newDepth=0);for(i=1,rowCount,if(v[i]!=0,ri=i;newDepth=max(newDepth,depth[i])));v=v/v[ri];for(i=1,rowCount,checkden(v[i]));write(OUT,"listput(operations,[",ri,",",v,"]); ");R[ri,]=sum(i=1,rowCount,v[i]*R[i,]);depth[ri]=newDepth;iterations++;assert(iterations<=degreeBound,"polynomial minor degree bounds saturation steps");print("SATURATION iteration=",iterations," constant_rank=",rowCount-matsize(K)[2]," max_depth=",vecmax(depth)));}
+LC=matrix(rowCount,H,i,j,polcoef(R[i,j],0,ep));
+assert(matrank(LC)==rowCount,"all primitive rows independent");
+assert(vecmax(depth)<H,"omitted columns still vanish after all row operations");
+primeAudit=0;
+my(ij=matindexrank(LC));my(det=matdet(matrix(rowCount,rowCount,i,j,LC[i,ij[2][j]])));checkden(det);checknum(det);print("EXCLUDED_PRIMES ",factor(bad)[,1]~);write(OUT,"rankColumns=",ij[2],"; rankMinor=",det,"; excludedPrimes=",factor(bad)[,1]~,";");primeAudit=1;
+print("POLE_DEPTHS ",depth," division_total=",divisionTotal);
+print("ORDINARY_TOP4_RANK ",matrank(LC[,1..4]));
+write(OUT,"primitive=",LC,";");
+write(OUT,"poleDepths=",depth,";");
+assert(primeAudit==1,"prime audit completed");
+print("COMPLETE four source constraints; one positive-parameter encoding control; symbolic primitive rows retained.");
+quit;
