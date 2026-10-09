@@ -1,0 +1,35 @@
+Review record, 9 October 2026: entry-2026-10-09-invariant-family-review (goal-level route review).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), two stages, same agent.
+All mathematics below is the reviewer's own reasoning, unverified.
+
+STAGE ONE (goal and results only; route withheld).
+Proposal: block-field binomial systems. n bits in m = n/k blocks read as y_i in F_{2^k}^*; rows = CNFs of t-term
+linear equations over Z_{2^k-1}, i.e. binomials prod y_i^{c_i} = g^b; polynomial size needs tk = O(log n);
+bit-degree = 2-adic weight degree; PC degree unchanged by field extension; typical monomial has degree ~ n/2;
+method: Buss-Grigoriev-Impagliazzo-Pitassi (binomial systems have binomial refutations); likely break: refuter
+steers through low-weight combinations; k = 2 is the two-bit colouring, which was easy; deficit about
+n(e^(-t/2) + 2^(-k)); smallest test: weighted-degree binomial lemma on paper, then k = 3, m = 4-6.
+(a) Nothing listed refutes the statement; amplification from c*n looks hopeless (every operation gains at most
+1/2 degree per added variable); ask of the transfer whether a static bound or an F_2 size bound could suffice.
+(b) Razborov PHP basis, Impagliazzo-Pudlak-Sgall basis, binomial/Laurent method (exact), counting principles
+n^Omega(1): only the binomial method could in principle reach one half.
+(c) XOR-ification, gadget lifting, disjoint products, restriction: none raises degree/variables.
+
+STAGE TWO (draft and route revealed). Verdict: pass with corrections; one substantive.
+- Independent alternative accurate; rigidity theorem does not exclude the proposal (chart z_{i,l} = y_i^(2^l)
+  mixes the bits of a block; domain equations z_l^2 = z_{l+1}, prod z_l = 1).
+- Hedge on the static bound adequate; size-bound question not answered.
+- Dictionary (believed): z_{i,l} invertible linear recoding of the bits over F_{2^k} (Moore matrix); Booleanity
+  has the same span as the binomial domain equations; clauses of a row generate within degree tk all
+  y^a (y^(jc) - gamma^j); BGIP applies unweighted; walk on residue vectors mod 2^k - 1, weight = binary weight
+  of the representative in [0, 2^k - 2], step a -> a + j c_r for any j, legality on states only.
+- The author's ceiling estimate: p ~ exp(-2a^2) valid only for t << k; true condition
+  (t+1) log2(1/Phi(-2a)) <= k; for t+1 > k no start has all values below the median; "deficit n/sqrt(log n),
+  closed for d+c >= 3" holds only for t << k. Designer takes t >= k, e.g. t ~ k ~ sqrt(log n); heuristic deficit
+  is the maximum of the two estimates, about n 2^(-Theta(sqrt(log n))): passes every single-depth condition,
+  not n^(1-eps). Independence of the weights of u + s_j assumed, not proved.
+- Restate outcomes by regime; say whether single-depth bounds count for "every fixed depth".
+- Falsification, Obstacle, Goal progress unchanged: not overstated.
+Suggestions: order choice and revisits only enlarge the refuter's strategy set; no walk invariant found; natural
+lower-bound statement: for t >= 2k, in every order, at the midpoint a 1 - O(e^(-t/2)) fraction of blocks is
+active with near-uniform, near-independent residues; smallest check k = 3, block degree >= 6.
