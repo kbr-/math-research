@@ -1,0 +1,74 @@
+<article id="entry-2026-10-09-paired-affine-law" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-after-symmetry-review:3" data-claims="lem:paired-affine-law">
+<h3>9 October 2026 — The fixed affine source has an exact consistency law</h3>
+<p class="entry-meta">Working affine restriction law and scoped legal-row removal. Mixed nonlinear sources remain open.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, does the fixed-proof paired restriction supply a usable source estimate, rather than merely a smaller description of raw formulas? Test a direct sufficient event: an actual affine input tuple becomes inconsistent modulo the surviving PHP row equations, so one legal coefficient row kills its entire block. Keep the common restriction and original degree costs.</p>
+<p><strong>General statement.</strong> <a href="#paired-affine-law">lem:paired-affine-law</a> computes this event exactly for arbitrary fixed affine tuples on both matrix sides, conditional on the basis and live set. It also gives a simultaneous legal-row removal condition without an independence assumption between blocks. It is an elementary linear-algebra refinement of the recorded paired law, not a new old-affine lower-bound theorem.</p>
+<p><strong>New mathematics.</strong> The relevant random rank is the rank of the fixed-label map modulo the live coefficient image, after the paid row-equation reduction. Raw live rank alone misses this quotient. The formula includes constant offsets, correlations between the two matrix sides, and shared labels across every tuple.</p>
+<p><strong>Goal progress.</strong> Unchanged. The condition can fail even for small, fixed-before-restriction inventories. It covers only affine old-matrix inputs, already within stronger old-affine source results at different budgets. Gate inputs and mixtures of earlier products have no analogous bound here.</p>
+<h4>Architecture test</h4>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-09-source-scope-review">scheduled review</a> asked for a fixed-proof residual law and an actual defect consequence. The full <a href="#mixed-column-core-cost">mixed-column theorem</a> already defeats an automatic raw-core gain, after every basis and paired restriction. Its <a href="#tensor-column-normalization">hard PHP strengthening</a> nevertheless removes the eligible column batch. Therefore this cycle does not optimize that failed raw criterion again. It computes a sufficient event for literal companion removal using the stronger base, then tests whether that event is forced by the law. The answer is no in general, with the exact failing quantity identified below.</p>
+<h4>One common restriction, with both matrix sides</h4>
+<p>Work over \(\mathbb F_2\). Let \(m&gt;n\), let \(n\) be even, and fix a pairing of the inner indices. Fix \(T\in\mathrm{GL}_n(2)\) and a nonempty union \(L\) of live pairs, of size \(n'\ge2\). The basis and live set may be sampled after a fixed proof, but are conditioned on throughout the calculation. Use
+\[
+ A_{\rm old}=AT,\qquad B_{\rm old}=T^{-1}B.
+\]
+For every dead pair \(\{u,v\}\), set \(A_{\cdot u}=A_{\cdot v}=a_{uv}\) and \(B_{u\cdot}=B_{v\cdot}=b_{uv}^{\mathsf T}\), with all entries of all vectors \(a_{uv},b_{uv}\) independent uniform bits. This is the <a href="#paired-column-restriction">recorded hardness-preserving law</a>. Finally identify live \(A_{ik}=B_{ki}=X_{ik}\) and add the functional PHP base. Its row equations are \(R_i=\sum_{k\in L}X_{ik}+1\).</p>
+<p>All fixed labels preserve residual old hardness: the degree-\(D\) matrix barrier holds for \(n'\ge2D-1\), \(D\ge2\). For the literal CNF boundary with basis change retain the degree-two gate substitution and its \(\max(2D,6)\) ceiling. The affine input calculation below does not improve that gate boundary.</p>
+<p>For one actual tuple with \(s\) positions write, before sampling,
+\[
+ g_\alpha=c_\alpha+\sum_{i,k}C_{\alpha,ik}(A_{\rm old})_{ik}
+                  +\sum_{k,i}D_{\alpha,ki}(B_{\rm old})_{ki},\quad \alpha\in[s].
+\]
+Set \(C'_\alpha=C_\alpha T^{\mathsf T}\), \(D'_\alpha=T^{-\mathsf T}D_\alpha\), and \(E_\alpha=C'_\alpha+(D'_\alpha)^{\mathsf T}\). Concatenate all dead-pair label bits into a single vector \(\xi\). Define the matrix \(Z\), with rows indexed by \(\alpha\), by the coefficients
+\[
+ Z_{\alpha,(uv,A,i)}=C'_{\alpha,iu}+C'_{\alpha,iv},\qquad
+ Z_{\alpha,(uv,B,i)}=D'_{\alpha,ui}+D'_{\alpha,vi}.
+\]
+Then the tuple after restriction and live identification is exactly
+\[
+ g_\alpha=c_\alpha+(Z\xi)_\alpha+\sum_{i,k\in L}E_{\alpha,ik}X_{ik}.
+\tag{1}
+\]</p>
+<p>Choose one live index \(k_*\). Eliminate \(X_{ik_*}\) using \(R_i\): write the other live variables as a vector \(x\), and put
+\[
+ c'_{\alpha}=c_\alpha+\sum_i E_{\alpha,ik_*},\qquad
+ H_{\alpha,(i,k)}=E_{\alpha,ik}+E_{\alpha,ik_*}\quad(k\ne k_*).
+\]
+Thus (1) has row-reduced form \(c'+Z\xi+Hx\). The reduction uses only linear row axioms. Row and column exclusions are not silently assumed to follow from this affine parameterization; it describes a larger cube than the matching domain.</p>
+<h4>Exact probability and a legal row</h4>
+<p id="paired-affine-law"><strong>Lemma (paired affine law).</strong> Let \(\pi:\mathbb F_2^s\to\mathbb F_2^s/\operatorname{im}H\), \(q=\pi c'\), and
+\[
+ \kappa=\dim\operatorname{im}(\pi Z)
+        =\operatorname{rank}[H\ Z]-\operatorname{rank}H.
+\]
+Conditional on \(T,L\), the probability that the affine system \(g_\alpha=0\) is consistent modulo the row equations is
+\[
+ p_{\rm con}=\begin{cases}2^{-\kappa}&q\in\operatorname{im}(\pi Z),\\0&\text{otherwise}.\end{cases}
+\tag{2}
+\]
+Whenever it is inconsistent, there are binary constants \(\lambda_\alpha,\mu_i\) such that
+\[
+ 1+\sum_\alpha\lambda_\alpha g_\alpha=\sum_i\mu_iR_i.
+\tag{3}
+\]
+In a complete ENS block on this tuple, at any positive accuracy, set its first coefficient row to \(\lambda\) and every other row to zero. Every companion image has an ordinary old-axiom certificate through degree two; all coefficient-field equations map to zero.</p>
+<p><strong>Proof.</strong> The residual affine system is consistent exactly when \(c'+Z\xi\in\operatorname{im}H\), or \(\pi Z\xi=q\). A uniform binary vector maps uniformly onto the image of a linear map, because all fibers are cosets of the same kernel. This proves (2), including both the rank-zero and inaccessible-offset cases. If inconsistent, separation in the finite vector space supplies \(\lambda\) with \(\lambda H=0\) and \(\lambda(c'+Z\xi)=1\). Undoing the row substitution gives (3), with \(\mu_i=\sum_\alpha\lambda_\alpha E_{\alpha,ik_*}\). Conversely (3) precludes a simultaneous affine zero, so this is exactly the failure probability of this particular row-span normalizer.</p>
+<p>The specialized product is \(P=1+\sum_\alpha\lambda_\alpha g_\alpha=\sum_i\mu_iR_i\). For every input position \(\beta\), its companion is \(g_\beta P=\sum_i\mu_i g_\beta R_i\), through degree at most two. For a mixed affine tuple, its maximum input degree is \(\delta=1\); for each position of original degree \(d_\beta\in\{0,1\}\), the displayed certificate has degree at most \(d_\beta+1\le d_\beta+h(\delta+1)\). Thus it fits each original companion cost, including constant positions, rather than only the maximum block cost. If every input is constant, inconsistency means some input is one and the product is literally zero, with no certificate cost. Fresh coefficient fields vanish at binary constants. \(\square\)</p>
+<p><strong>Simultaneous consequence.</strong> For an inventory of \(M\) fixed old-affine tuples sharing the same \(T,L,\xi\), form \(p_a\) by (2). If \(\sum_a p_a&lt;1\), some common label assignment makes all tuples inconsistent and removes all these blocks with the legal constant rows just described. This is the union bound, not independence between blocks. All residual old systems at these labels stay in the same hard degree window. Later blocks retain their actual substituted inputs and coefficient domains; a constant specialization of the removed blocks does not increase their original charges. Any gate-boundary cost was paid separately before this statement. This consequence is a scoped normalization, not a claim that the rank premise follows from small proof size.</p>
+<h4>Controls that decide what the formula buys</h4>
+<p><strong>A useful event.</strong> Take \(T=I\) and inputs consisting of \(s\) distinct fixed-label coordinates, using dead-pair/side/row combinations that are independent bits. Then \(H=0\), \(Z\) has full row rank \(s\), and \(p_{\rm con}=2^{-s}\). The normalizer succeeds exactly when at least one input becomes one. An inventory whose tuples each have this property can be treated when \(M2^{-s}&lt;1\), even when different tuples share labels. This recovers the ordinary fixed-literal pruning event in the actual paired law; no new generic pruning theorem is claimed.</p>
+<p><strong>The fixed distinct-row control survives the row quotient.</strong> Take \(g_i=(A_{\rm old})_{i1}\) on \(r\) distinct outer rows, fixed before a uniform \(T\), with \(L\) fixed or sampled independently of \(T\). Let \(v=(T_{k1})_{k\in L}\). If \(v\) is neither all zero nor all one, each row-reduced form has a nonzero homogeneous part and different forms use disjoint row variables. Thus \(H\) has full row rank \(r\), the quotient is zero, \(\kappa=0\), and (2) gives consistency probability one, for every dead label. The probability of this event over the common basis is
+\[
+ 1-\frac{2^{n-n'+1}-1}{2^n-1},
+\tag{4}
+\]
+because the first column is a uniform nonzero vector, and the two exceptional live projections have \(2^{n-n'}-1\) and \(2^{n-n'}\) preimages. This is a post-row-reduction strengthening of the preceding <a href="#paired-restriction-controls">raw control</a>, not a lower bound in the full functional PHP quotient. Higher-degree collision equations may still help, as they do for the already removable column family.</p>
+<p>The old <a href="#mixed-column-core-cost">core-cost control</a> and its later <a href="#tensor-column-normalization">positive normalization</a> were both reread before choosing this test. Repeating the fact that a common basis preserves raw dimensions would add no mechanism. Formula (2) instead makes a genuine removal event explicit, but (4) shows that the distribution does not force it, even after row equations. The handoff's nested-core theorem remains useful with certified small residuals; neither (2) nor the basis change supplies them for arbitrary mixed inputs.</p>
+<h4>What remains for actual proof errors</h4>
+<p>For a complete old-affine tuple the preceding removal gives zero actual companion loss on its success event. On failure it supplies no rank bound. A gate-variable input after the matrix boundary can be quadratic, while a later input can contain genuine earlier products; replacing these by independent affine equations would change the source. For a mixed two-level source, labels, bottom coefficient choices and parent defects must therefore be kept jointly. The next test is whether the actual shared bottom identities give a degree-paid bound for that parent defect, including copy obligations, rather than whether each raw equation tuple is inconsistent.</p>
+<p><strong>Follow-up.</strong> Continuing the tensor/rank-principle head, first entry of its new spell. The scheduled architecture test has an exact affine answer and a direct companion-removal consequence, but not the required nonlinear source estimate. Keep the existing mixed-source subtask; do not reopen the solved universal raw-core question. No extension is earned by this unchanged assessment.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">For actual two-level mixed inputs under the same paired labels and basis, combine shared bottom companion identities with the full gate boundary to bound parent defect loss in the residual hard quotient. Test whether conditional label rank or a paid normalization survives the nonlinear dependence; constant-row inconsistency is only the affine baseline.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with two corrections, both applied: the certificate ledger is per input position, including constants, and the uniform-basis control uses a live set independent of that basis. Its review confirmed the transforms, shared-label probability, legal-row consequence and unchanged goal assessment. <a href="research/results/binary_fixed_proof_law_20261009/review.txt">Verdict</a>. Exact paired matrix/CNF boundary, mixed-column core limitation and its later PHP normalization were read in full, together with the historical nested-core proof. Searches covered affine consistency, restriction offsets, quotient rank and later restrictions. No numerical computation or new proof-system rule is used; the probability calculations enumerate linear fibers symbolically for every parameter.</p>
+<!-- TIMING binary_fixed_proof_law_20261009 -->
+</article>
