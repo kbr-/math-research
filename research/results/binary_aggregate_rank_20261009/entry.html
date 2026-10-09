@@ -1,0 +1,66 @@
+<article id="entry-2026-10-09-rare-prefix-rank" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-restriction-architecture-review:1" data-claims="cor:rare-prefix-rank">
+<h3>9 October 2026 — Rare narrow errors can retain almost the whole low-degree domain</h3>
+<p class="entry-meta">Working source-shaped rank calibration; optimized source control remains open.</p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, test whether the <a href="#deflated-error-transfer">normalized matrix transfer</a> gains its missing rank estimate merely from narrow tests and small error probability. Use a complete ENS block inside a certified free-coordinate part of the hard quotient, rather than an unrelated small satisfiable algebra.</p>
+<p><strong>General statement.</strong> <code>cor:rare-prefix-rank</code> is a costed application of the <a href="#weighted-restriction-cube">imported weighted cube</a> and elementary degree-filtered restriction. It gives exact individual and joint error ranks for paired scalar parity checks. The family tests a uniform rarity-to-rank inference, not an optimized-choice obstruction.</p>
+<p><strong>New mathematics.</strong> The complete paired block has exponentially rare errors and width-two individual error CNFs, yet those individual maps retain a fraction tending to one of a low-degree common domain when \(hK/N\to0\). This transports the familiar Boolean restriction calculation into a hard weighted quotient with its original source cost paid.</p>
+<p><strong>Goal progress.</strong> Unchanged. No estimate for optimized arbitrary parent mixtures follows. The normalized-path spell has now supplied a hard restriction law and an exact arithmetic interface, but no new size-dependent rank estimate; it rotates without an extension.</p>
+
+<h4>The paired block on one surviving domain</h4>
+<p>Let \(J_D\) be a binary Boolean pseudoideal containing an unsatisfiable old family \(\Gamma\), let \(w\notin J_D\), \(\deg w\le b\), and let \(D-b\ge\max(2,\max\deg\Gamma)\). Choose \(N\le D-b-1\) coordinates from the free cube of <a href="#weighted-restriction-cube">the weighted restriction theorem</a>. All Boolean monomials on these coordinates have independent weighted images. Write them as \(x_1,y_1,\ldots,x_h,y_h,z_1,\ldots,z_t\), with \(h\ge1\), \(N=2h+t\), \(t\ge0\). Fix an integer \(K\ge0\) with
+\[
+b+K+2h+1\le D.
+\tag{1}
+\]
+Let \(U_K\) be the binary multilinear polynomials on these \(N\) coordinates of degree at most \(K\), and write \(H_n(k)=\sum_{j=0}^{\min(n,k)}\binom nj\), with \(H_n(k)=0\) for \(k&lt;0\).</p>
+<p>Take one complete binary ENS block of accuracy \(h\), actual inputs \(g=(x_1,y_1,\ldots,x_h,y_h)\), original product cost \(2h\), and original companion cost \(2h+1\). Set row \(i\) to select \(x_i+y_i\), all other coefficients zero. All fresh coefficient fields vanish, and
+\[
+P=\prod_{i=1}^h(1+x_i+y_i),\qquad E_{x_i}=x_iP,\quad E_{y_i}=y_iP.
+\tag{2}
+\]
+Keep every companion. These are legal simultaneous scalar choices for an actual block, not independent choices per error.</p>
+<p id="rare-prefix-rank"><strong>Corollary (rare prefix rank).</strong> In this setup the domain has weighted dimension \(H_N(K)\). The individual map \(f\mapsto[wE_{x_1}f]\) has rank
+\[
+H_{N-h-1}(K),
+\tag{3}
+\]
+and the complete companion map has rank
+\[
+H_{N-h}(K)-H_t(K-h).
+\tag{4}
+\]
+Both ranks are in the same \(J_D\) quotient. Under the uniform binary cube law the individual error has probability \(2^{-h-1}\), and the union of all companion errors has probability \(2^{-h}(1-2^{-h})\). Each individual error is a width-two Boolean CNF function. When \(K\le N-h-1\),
+\[
+\frac{H_{N-h-1}(K)}{H_N(K)}
+\ge 1-\frac{(h+1)K}{N}.
+\tag{5}
+\]
+Thus for \(h\to\infty\) and \(hK/N\to0\), individual rank fraction tends to one while its error probability tends to zero.</p>
+<p><strong>Proof of the exact ranks.</strong> Free-cube injectivity identifies every weighted image with the corresponding Boolean function on these selected coordinates. All products and Boolean reductions used here fit (1); in particular their unreduced degree is at most \(b+K+h+1\), below the original-cost reserve. The equality conditions \(P=1\) are \(x_i=y_i\). On that subspace identify each pair with one bit \(u_i\), leaving \(h+t=N-h\) free bits. Restricting \(U_K\) gives exactly all degree-at-most-\(K\) polynomials on those bits: substitute \(x_i=y_i=u_i\), and conversely lift each monomial using one coordinate per pair.</p>
+<p>The first error additionally requires \(u_1=1\). Restriction onto its support therefore has rank \(H_{h+t-1}(K)\), proving (3). The stacked map vanishes precisely where all \(u_i=0\), or where the restricted multiplier vanishes. Its kernel within the restricted polynomial space is the functions supported on \(u_1=\cdots=u_h=0\). Every such function has unique multilinear form
+\[
+\prod_{i=1}^h(1+u_i)\,q(z).
+\]
+If \(q\ne0\), its degree is \(h+\deg q\), since its top \(u_1\cdots u_h\) coefficient is \(q\). This kernel therefore has dimension \(H_t(K-h)\), giving (4). Free-cube injectivity prevents any extra relations from the unsatisfiable old base; this is why the transfer is valid here and not in an arbitrary chosen coordinate set.</p>
+<p>The binary probability counts follow by pairing independent bits. The first support has the two unit clauses \(x_1=1,y_1=1\) and, for each other pair, the two width-two clauses expressing equality. This proves the width claim without identifying CNF width with polynomial degree. For (5), choose uniformly a subset of size at most \(K\) from the \(N\) coordinates. The left side is the probability it avoids a specified \(h+1\) coordinates. Symmetry and the union bound give failure at most \((h+1)\mathbb E|S|/N\le(h+1)K/N\). This proves the inequality and the asymptotic assertion. \(\square\)</p>
+
+<h4>The ternary hard-family interpretation and its limits</h4>
+<p>In the canonical charged ternary one-hot system, selected free coordinates must come from distinct edges: two distinct indicators of one edge have zero product in \(J_D\), contradicting free-cube injectivity. Relabel each selected indicator's distinguished edge label as zero. Under the uniform full ternary label law, each selected bit has probability \(1/3\) of being one, independently. The individual error probability is consequently
+\[
+\frac19\left(\frac59\right)^{h-1},
+\tag{6}
+\]
+and the complete error support has probability \((5/9)^h-(4/9)^h\). Each pair equality forbids four of the nine two-edge patterns, giving four width-two categorical clauses. The individual support also fixes the first two edge labels. It is therefore a genuine narrow categorical CNF, not merely a width-two formula in dependent variables. The ranks (3)–(4) are unchanged: rank came from free-coordinate injectivity, not from this real distribution.</p>
+<p>This fits a small-cutoff regime of the growing-degree budget. For example, if \(N=\Theta(n^{1+\alpha-\beta})\), \(h=\Theta(n^\alpha)\), and \(K=\Theta(n^{\alpha d})\), then \(hK/N\to0\) whenever \(\alpha d+\beta&lt;1\), and (1) can hold with room. These are choices of a calibration domain, not a restriction forcing the goal to use that \(K\). A larger cutoff may have a substantially smaller rank fraction and must be assessed with its full source-degree reserve. No new hard graph construction is asserted.</p>
+<p>Changing the weight repairs this block. The surviving polynomial weight \(w(1+x_1+y_1)\) is not an annihilator of all errors, but \(w(x_1+y_1)\) is: it kills \(P\) by the Boolean identity \((x_1+y_1)(1+x_1+y_1)=0\). Its survival follows from the free cube, and the field certificate fits the same original reserve. This is an explicit cheap repair, not evidence that arbitrary source inventories share one such repair. In particular (3) is a bad rank-control example for these fixed rows and common domain; it is not an impossibility theorem for coefficient optimization or a lower bound on required weight degree.</p>
+
+<h4>What the normalized expansion has and lacks</h4>
+<p>The preceding <a href="#deflated-error-transfer">deflation lemma</a> exactly reconstructs (3) from any rational full-cube expansion. For an individual error above, the width-two expansion may simply be that one CNF itself, with signed mass one and no even denominator. Thus neither width two nor bounded signed mass, even together with exponentially small probability, forces a small fraction of the specified low-degree domain. The missing rank estimate must use additional source information, optimized choices, a different multiplier cutoff, or certified shared spans. This example tests a universal scalar inference only; it does not refute the particular cancellation structure of all normalized reverse paths.</p>
+<p>The earlier <a href="#entry-2026-10-07-chosen-prefix-intersections">monomial-pair and factored-prefix record</a> already computes the one-pair parity collapse and warns that arbitrary old quotients need a transfer. The new calculation applies the same restriction mechanism to all paired rows and uses the imported cube to justify that transfer. No independent novelty is claimed for the elementary binomial ranks. The <a href="#proof-observation-rank">complete-proof invariant</a> still requires a size-dependent upper estimate, not an unconditional strict rank gap.</p>
+<p><strong>Follow-up.</strong> Continuing, with rotation after this fourth spell entry. The hard-law and arithmetic work produced useful interfaces, but no necessary lower-bound implication changed, so an extension is not earned. Keep the actual mixed-source shared-span task queued. The next head is the Lucas-marginal/inclusion-matrix lead: read its full originating review and later defect-slice and conditioning records, then test whether a high-order defect distribution supplies a source-sensitive estimate unavailable from scalar mass. Do not repeat the old point-count construction or infer hardness from an odd fiber.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">For actual mixed inputs, seek optimized coefficient choices or certified shared column spans that avoid the rare-prefix calibration while preserving the same hard quotient and original replay window. The complete fixed-row ranks above do not settle that optimization.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with one wording correction: only the demonstrated weight repair is asserted, not an unsupported row-choice repair. It confirmed the ranks, probabilities, original costs and unchanged-goal assessment. The weighted cube and monomial-pair proofs were reread. All ranks are proved by exact restriction and kernel calculation; no parameter sweep is needed. The source specialization is the existing scalar coefficient substitution, with every companion and field retained.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_aggregate_rank_20261009 -->
+</article>
