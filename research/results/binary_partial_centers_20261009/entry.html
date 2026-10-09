@@ -1,0 +1,97 @@
+<article id="entry-2026-10-09-three-state-coded-batches" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-binary-quotient-architecture:s5" data-claims="lem:cut-collision-bound thm:three-state-coded-removal cor:charged-block-exclusion">
+<h3>9 October 2026 — Coded batches can pay the charged quotient loss</h3>
+<p class="entry-meta">Working collision bound and restricted charged-source exclusion. General source coverage remains open.</p>
+<p><strong>Question.</strong> On general-step for binary Frege, can a batch control actual error ranks when individual rows need not improve them? The recorded monomial-code theorem already answers the Boolean disjoint-block model. Its hard-quotient denominator and block geometry are the remaining obstacles, so the current cycle tests those instead of rediscovering the plateau or the code formula.</p>
+<p><strong>General statement.</strong> <a href="#cut-collision-bound">lem:cut-collision-bound</a> estimates average cut-coset occupancy. <a href="#three-state-coded-removal">thm:three-state-coded-removal</a> performs the batch count directly in the three-state local algebra, for arbitrary functions of disjoint conjunction features. <a href="#charged-block-exclusion">cor:charged-block-exclusion</a> combines them with the actual charged denominator in a nonempty asymptotic regime.</p>
+<p><strong>New mathematics.</strong> The collision bound stays positive beyond the older no-collision union bound. Keeping the local three-state dimension avoids an additional Boolean ambient loss. The coding argument accepts nonlinear functions of the disjoint features, including nonzero constant values, and transfers with every original companion and coefficient field retained.</p>
+<p><strong>Goal progress.</strong> Unchanged. This supplies a genuine charged-source endpoint for a specified feature class, not a bound for arbitrary compiled inputs. Raw old-affine offsets and overlapping feature supports are not covered. Neither the full binary lower bound nor a general multilevel source recurrence is established.</p>
+<h4>Count collisions instead of discarding every colliding point</h4>
+<p>Keep the exact charged ternary quotient and its binary descent: connected graph on \(n\) vertices, \(m\) edges, expansion \(\varepsilon\), maximum degree \(\Delta\), nonzero total charge, and \(\max(4,2\Delta)\le D&lt;\varepsilon n/8\). Let \(1\le K\le D\),
+\[
+ B_m(K)=\sum_{j=0}^K2^j\binom mj,\qquad
+ \beta=2\sqrt{K/m}&lt;1,\qquad \eta=(1+2\beta^\varepsilon)^n-1.
+\]
+The <a href="#cut-code-classes">cut-code class theorem</a> identifies the binary quotient dimension \(h(K)\) with the number of ternary cut-code cosets meeting the support ball \(\mathcal H_K\).</p>
+<p id="cut-collision-bound"><strong>Lemma (cut collision bound).</strong> Throughout this window,
+\[
+ h(K)\ge \frac{B_m(K)}{1+2\eta}.
+\tag{1}
+\]
+The older bound \(h(K)\ge(1-\eta)B_m(K)\) remains valid and can be better when \(\eta\) is small; (1) is useful even when that bound is nonpositive.</p>
+<p><strong>Proof.</strong> Let \(A\) count ordered distinct pairs \((\alpha,\alpha')\) in \(\mathcal H_K\) in the same cut coset. At least one orientation of each pair has \(|\operatorname{supp}\alpha'|\le|\operatorname{supp}\alpha|\), so \(A\le2A_\downarrow\), where \(A_\downarrow\) counts these orientations. The class theorem gives a unique small vertex potential for every such difference: \(\alpha'-\alpha=\partial s\), with \(|\operatorname{supp}s|&lt;n/2\). For a fixed nonzero such potential, put \(d=|\operatorname{supp}\partial s|\). Nonincrease of support forces at least \(d/2\) of its boundary coordinates to lie in \(\operatorname{supp}\alpha\): at least \(d-u\) new coordinates appear and at most \(u\) old ones disappear.</p>
+<p>For uniformly chosen \(\alpha\in\mathcal H_K\), conditional on its support size the support is uniform. The exact counting estimate from <a href="#cut-ball-occupancy">cut-ball occupancy</a> bounds the probability of this event by
+\[
+ \binom d{\lceil d/2\rceil}(K/m)^{\lceil d/2\rceil}\le\beta^d.
+\]
+Expansion gives \(d\ge\varepsilon|\operatorname{supp}s|\). Summing over at most \(\binom ns2^s\) potentials of support size \(s\), then enlarging the sum to all positive \(s\), gives \(A_\downarrow\le B_m(K)\eta\). If the nonempty coset occupancies are \(a_1,\ldots,a_{h(K)}\), then
+\[
+ \sum_i a_i=B_m(K),\qquad \sum_i a_i^2=B_m(K)+A\le B_m(K)(1+2\eta).
+\]
+Cauchy–Schwarz proves (1). The orientation step is essential: merely having both points inside the ball does not imply half-boundary overlap for the smaller-support point. \(\square\)</p>
+<h4>Code the local three-state algebra</h4>
+<p>First work before the charged relations, in the binary algebra of functions on \(m\) three-state edge coordinates. In two independent label indicators its defining ideal is
+\[
+ I_{\rm loc}=(x_e^2-x_e,\ y_e^2-y_e,\ x_ey_e:e\in[m]).
+\]
+Its degree-\(K\) dimension is \(B_m(K)\). Eliminating the third one-hot indicator is affine and preserves degree. Normal reduction replaces squares by their variables and kills products containing both labels on one edge, never increasing degree. Thus a degree-\(L\) polynomial zero in this algebra has an ordinary local-domain certificate through \(L\).</p>
+<p>Partition the edges into \(q\ge1\) disjoint nonempty blocks of sizes \(r_i\ge r\ge1\). In each block let \(z_i\) indicate one complete choice of its edge labels. A degree-preserving choice of the two independent indicators on each edge makes \(z_i\) a monomial of degree \(r_i\). Let a binary tuple \(g\) have actual polynomial degrees at most \(\delta\), and suppose its classes in the local algebra are arbitrary functions of \(z_1,\ldots,z_q\). No linearity in these features, zero constant term, or access to their individual values as legal rows is assumed.</p>
+<p id="three-state-coded-removal"><strong>Theorem (three-state coded removal).</strong> Let \(1\le K&lt;m/2\), \(\rho=K/m\), and
+\[
+ \alpha=(1-\rho)^r+(\rho/2)^r.
+\]
+For every integer \(1\le s\le q\), there is a binary coefficient matrix \(C\) with
+\[
+ t=s\lceil\log_2(q+1)\rceil+1
+\]
+rows such that, for \(P_C=\prod_{u=1}^t(1-(Cg)_u)\), the actual tuple image in the local algebra obeys
+\[
+ \frac{\operatorname{rank}(f\in V_K\mapsto(P_Cg_if)_i)}{B_m(K)}
+ \le(m+1)\Pr\{Z&gt;s\},\qquad Z\sim\operatorname{Bin}(q,\alpha).
+\tag{2}
+\]
+For \(s=q\) the image is zero. For \(s\ge2e q\alpha\), the right side is at most \((m+1)2^{-s}\). These are literal constant combinations of the original inputs.</p>
+<p><strong>Proof: the filtered decomposition.</strong> On block \(i\), take the local normal-monomial basis. Replace every vector other than \(1,z_i\) by \(u-u(a_i)\), where \(a_i\) is the indicated block assignment. Each replacement only adds a constant, so the basis stays degree-compatible. Multiplication by \(z_i\) kills all these vectors. Their degree polynomial is
+\[
+ H_i(v)=(1+2v)^{r_i}-1-v^{r_i},
+\]
+while the active space \(\langle1,z_i\rangle\) has polynomial \(1+v^{r_i}\). Tensor the decomposition. A component has active set \(T\); on its inactive blocks every \(z_i\) acts as zero, while on its active factors the \(z_i\)'s act as independent Boolean coordinates. Every function of the \(z_i\)'s preserves each component. This is the earlier <a href="#monomial-code-ranks">filtered code mechanism</a>, now using three-state local bases and allowing arbitrary feature functions.</p>
+<p><strong>Proof: detect all low-active patterns.</strong> There are at most \((q+1)^s\) binary vectors of support at most \(s\), by encoding their supports in sorted padded lists. This includes the zero vector. For each such vector \(z\) with \(g(z)\ne0\), \(t\) independent uniform binary rows miss it with probability \(2^{-t}\). The union bound is at most one half, so some \(C\) detects every such value. Every component with \(|T|\le s\) therefore has zero companion map: its Boolean feature assignments all have support at most \(s\). The condition at \(z=0\) must be included when \(g(0)\ne0\). This argument samples only legal input combinations, not arbitrary branch labels.</p>
+<p><strong>Proof: count the remaining input dimensions.</strong> The rank is at most the cumulative degree count of components with more than \(s\) active factors. Put \(\theta=K/[2(m-K)]&lt;1\). The product of all local dimension polynomials at \(\theta\) is \((1+2\theta)^m\); under these positive counting weights the active probabilities are
+\[
+ \alpha_i=\frac{1+\theta^{r_i}}{(1+2\theta)^{r_i}}
+ =(1-\rho)^{r_i}+(\rho/2)^{r_i}\le\alpha.
+\]
+They are independent for this counting argument, so their sum is stochastically dominated by \(Z\). Nonnegative coefficients bound the cumulative count by \(\theta^{-K}(1+2\theta)^m\Pr(Z&gt;s)\). Since \(K\) is a mode of \(\operatorname{Bin}(m,K/m)\),
+\[
+ B_m(K)\ge2^K\binom mK\ge\frac{\theta^{-K}(1+2\theta)^m}{m+1}.
+\]
+This proves (2). The usual exponential-moment calculation gives \(\Pr(Z\ge s)\le(e q\alpha/s)^s\le2^{-s}\) at the stated threshold. If \(s=q\), no components remain. \(\square\)</p>
+<p><strong>Weighted transfer.</strong> Let \(J_D\) be any binary pseudoideal containing the local equations, \(\deg w\le b\), and \(H_w=\dim[wV_K]&gt;0\). For \(M\) fixed tuples as above, their partitions may differ; use a common upper bound \(q\) on their block counts and lower bound \(r\) on their block sizes. Suppose
+\[
+ b+K+(t+1)\delta\le D,\quad s\ge2e q\alpha,\quad
+ s\ge\log_2\!\left(\frac{2M(m+1)B_m(K)}{H_w}\right),\quad1\le s\le q.
+\tag{3}
+\]
+The same formula for \(t\) supplies one matrix per distinct tuple and a common degree-at-most-\(K\) multiplier \(f\) with \(wf\notin J_D\) killing every weighted companion. To prove this, a local-zero error product has a certificate through \(K+(t+1)\delta\); multiplying by \(w\) fits (3). Thus each weighted error rank is at most its local-algebra rank, hence at most \(H_w/(2M)\). Every map factors through \([wV_K]\), so their sum of ranks leaves a nonzero common kernel. Additional accuracy rows are zero-padded with their original costs retained. No local block projector is assumed to descend to the charged quotient.</p>
+<h4>A complete charged source in a nonempty degree regime</h4>
+<p id="charged-block-exclusion"><strong>Corollary (charged block exclusion).</strong> Fix \(0&lt;\kappa&lt;1\) and a bounded-degree charged graph family with fixed expansion \(\varepsilon&gt;2/\kappa\). Let \(m\to\infty\), choose a proper old cutoff \(D=\Theta(m)\) in its recorded window, and put \(K=\lfloor m^{1-\kappa}\rfloor\). For each of at most \(m^A\) fixed tuples, partition the edges into blocks of sizes between \(r\) and \(2r\), where \(r=\lceil4m^\kappa\log m\rceil\), and assume the actual inputs, of degree at most \(\delta=o(m/(\log m)^2)\), lie in that partition's feature algebra. Then complete accuracy-\(t\) ENS blocks on these tuples, with \(t=O_A((\log m)^2)\) chosen below, have no PC refutation through \(D-K\) for all sufficiently large \(m\). Their original joint companion degrees are \(o(m)\), so this conclusion is not merely omitting unusably large source axioms.</p>
+<p><strong>Proof.</strong> Bounded degree and positive expansion give \(n=\Theta(m)\). Since \(\kappa\varepsilon/2&gt;1\), the \(\eta\) of (1) tends to zero, whence \(h(K)\ge B_m(K)/2\) eventually. Also \(\rho r\ge3\log m\) eventually (the slack absorbs rounding), so
+\[
+ \alpha\le e^{-\rho r}+(\rho/2)^r=o(m^{-2}),\qquad q\alpha=o(1).
+\]
+Balanced partitions exist by taking \(q=\lfloor m/r\rfloor\) and distributing the remaining edges; their sizes lie in the indicated interval for large \(m\). Take \(s=\lceil\log_2(4M(m+1))\rceil\), where \(M\le m^A\) bounds the tuple inventory, and \(t=s\lceil\log_2(q+1)\rceil+1\). Eventually \(s\le q\), \(s\ge2e q\alpha\), and (3) holds at \(w=1\), because \(K+(t+1)\delta=o(m)&lt;D\). Different partitions with fewer blocks may use the same upper bound \(q\), padding the counting model with zero active probabilities.</p>
+<p>The theorem supplies constant coefficient assignments and \(f\notin J_D\), \(\deg f\le K\), killing every specialized companion. Suppose an original source PC refutation had degree at most \(D-K\). Apply those same constants globally, multiply each resulting line by \(f\), and replay inside \(J_D\). The coefficient fields become zero, the old axioms are absorbed, and the weighted companions were certified above. Every multiplication fits \(D\), since constant substitution does not increase the original line degree. The last line would put \(f\) in \(J_D\), a contradiction. An original input of degree \(d_i\le\delta\) retains companion charge \(t(\delta_a+1)+d_i\le t(\delta+1)+d_i=o(m)\), where \(\delta_a\) is its tuple's original maximum; we have not substituted \(t\delta+d_i\) for that original charge. \(\square\)</p>
+<p><strong>Graph existence scope.</strong> This expansion requirement is attainable. Friedman's <a href="https://www.cs.ubc.ca/~jf/pubs/web_stuff/alon.pdf">Theorem 1.1 and Corollary 1.4 with its simple-graph discussion</a> give fixed even-degree simple regular graphs on arbitrarily large even vertex counts with second eigenvalue at most \(2\sqrt{d-1}+1\). For a vertex set of size at most half, apply the Laplacian quadratic form to its centered indicator: its boundary is at least \((d-\lambda_2)|S|/2\). Taking a sufficiently large fixed even \(d\) gives \(\varepsilon&gt;2/\kappa\), and \(\lambda_2&lt;d\) gives connectedness. Any nonzero total ternary charge is permitted by the recorded charged construction. Only this published existence statement is imported; no algorithmic construction or full proof audit of Friedman is claimed.</p>
+<h4>What this changes, and what still blocks the goal</h4>
+<p>The former code proof paid the loss from the full Boolean dimension in twice as many independent indicators. The new local basis counts \(B_m(K)\) directly, and the actual cut-coset bound pays the remaining loss. The feature functions can be nonlinear and can have nonzero constants; the tuple arity and expanded number of feature monomials do not enter the code-row count. This is a concrete positive use of batching on the hard quotient, not a more favorable point-density statistic.</p>
+<p>The restrictions are substantial. Each tuple must lie in an algebra generated by disjoint long block indicators. A raw old-affine term generally leaves that algebra, and arbitrary overlapping bottom products need not admit such a representation. The theorem neither constructs this structure from proof size nor proves that it survives the complete compiler. Choosing a larger original accuracy still changes the Frege front-end degree \(L\); sublinear specialized products do not reset that cost. Later weights also require their actual \(H_w\) in (3), not the unweighted \(h(K)\). The recorded rank-retention mechanism may be useful but is not composed into a new depth theorem here.</p>
+<p><strong>Follow-up.</strong> Continuing the graded/matrix head after its second entry in this spell. Next test old-affine offsets using a genuinely graded leakage estimate: test whether multiplication by a few raw affine factors leaks from killed to active components only at a controlled local degree boundary. Determine the full rank accounting for those boundary terms and legal rows, rather than inferring it from the present invariant feature algebra.</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">Develop the affine-offset extension of the local three-state code decomposition. Test the proposed no-leakage window for killed block vectors of degree below r-t under t raw affine multiplications, then seek a useful full graded leakage bound, including active-row choices, all companion components and the actual quotient denominator. This is unproved and must not be replaced by a count of low-active patterns alone.</li>
+<li data-sub="check">Combine the finite coded theorem with the exact binary rank-retaining multiplier on successive compatible feature-algebra batches, retaining its original degree buffer and H_w. Establish source-class preservation or state the precise missing compiler hypothesis before claiming a fixed-depth endpoint.</li>
+</ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed all three statements, the original-charge and common-denominator accounting, the precise graph-existence import, and unchanged goal assessment. It found no correction. Nonzero total charge is used for the inconsistency application, not local counting; the lower D bound is inherited encoding context. <a href="research/results/binary_partial_centers_20261009/review.txt">Verdict</a>. Full records read: monomial-code ranks/approximation and the later cut-residual audit, cut-code class and occupancy proofs, binary charged descent, and sequential phase growth. The graph source was read at its theorem/corollary and model-scope statements only. No new numerical sweep or proof rule is used; the basis, collision count and asymptotic budgets are proved for all stated parameters.</p>
+<p><strong>Process assessment.</strong> The source test recovered the old batch success before treating one-step plateaus as an obstruction. Orienting collision pairs avoids a false shell-wise probability bound, and using local three-state dimensions makes the hard-quotient transfer concrete while keeping the missing gate-class hypothesis explicit.</p>
+<!-- TIMING binary_partial_centers_20261009 -->
+</article>

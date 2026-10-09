@@ -1660,6 +1660,22 @@ In characteristic three, polarized lifting at adjacent degrees makes endpoint se
 
 ---
 
+### Three state coded removal
+
+**Claim:** [thm:three-state-coded-removal](<https://kbr.is-a.dev/math-research/#entry-2026-10-09-three-state-coded-batches>)
+
+In the local three-state edge algebra, partition m edges into q disjoint label-conjunction blocks of sizes at least r. For any tuple of arbitrary functions of these binary block indicators, including nonzero constants, t=s ceil(log2(q+1))+1 legal binary input-combination rows make degree-K companion rank at most B_m(K)(m+1)Pr[Bin(q,alpha)>s], alpha=(1-K/m)^r+(K/(2m))^r, 1<=K<m/2. Weighted transfer to any containing Boolean pseudoideal uses b+K+(t+1)delta<=D and the stated true H_w denominator; no block projector descends through charged relations by assumption.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Reusable coded-rank tool with a hard-quotient transfer, extending the recorded mechanism beyond linear feature mixtures. Whether existing generalized graded-code bounds subsume this exact scope has not been checked.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test affine offsets and compare prior graded-code bounds before any independent novelty or publication claim.
+
+---
+
 ### Wide field predicate conditioned filtration
 
 **Claim:** [thm:wide-field-predicate-conditioned-filtration](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#wide-field-predicate-conditioned-filtration>)
