@@ -1,0 +1,66 @@
+Preparing worktree (new branch 'codex-main')
+Branch 'codex-main' set up to track local branch 'main'.
+HEAD is now at d906598 fixture
+Preparing worktree (new branch 'codex-feature-test')
+Branch 'codex-feature-test' set up to track local branch 'feature/test'.
+HEAD is now at d906598 fixture
+Preparing worktree (new branch 'codex-collision')
+fatal: A branch named 'codex-collision' already exists.
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a time"): develop the head in its own entry (data-lead or data-bridge)
+===== test_site.Browser.test_group_0 =====
+======================================================================
+FAIL: test_group_0 (test_site.Browser) [test_notebook_deep_links:links]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 7.824035948999999 not less than 5.0 : test_notebook_deep_links:links took 7.8 s
+
+----------------------------------------------------------------------
+Ran 1 test in 13.137s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_1 =====
+======================================================================
+FAIL: test_group_1 (test_site.Browser) [test_notebook_deep_links:growth]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 7.539540757999999 not less than 5.0 : test_notebook_deep_links:growth took 7.5 s
+
+----------------------------------------------------------------------
+Ran 1 test in 12.428s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_2 =====
+======================================================================
+FAIL: test_group_2 (test_site.Browser) [test_notebook_math:layout]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 7.383429153 not less than 5.0 : test_notebook_math:layout took 7.4 s
+
+----------------------------------------------------------------------
+Ran 1 test in 12.031s
+
+FAILED (failures=1)
+
+Over the 10 s limit (AGENTS.md). Slowest tests:
+   13.14 s  test_site.Browser.test_group_0
+   12.43 s  test_site.Browser.test_group_1
+   12.03 s  test_site.Browser.test_group_2
+    7.21 s  test_codex_hooks.CodexHooksTest.test_full_receipts_and_retry_not_last_marker
+    7.07 s  test_recovery_evidence.RecoveryIntegrationTest.test_bounded_cached_parts_preserve_unicode_and_retries_do_not_resume
+    6.51 s  test_codex_hooks.CodexHooksTest.test_parent_children_and_sanitization_collisions_are_isolated
+    6.14 s  test_claim_article_finalizer.ArticleFinalizerTest.test_complete_article_review_survives_real_finish_but_content_changes_stale
+    6.12 s  test_claim_registry.ClaimRegistryTests.test_default_display_surfaces_historical_elimination_without_changing_tsv
+    6.02 s  test_recovery_evidence.RecoveryIntegrationTest.test_restore_only_starts_no_cycle_and_rejects_explicit_stopped_clock
+    5.83 s  test_side_workflow.SideFinalization.test_incomplete_new_claim_is_rejected_before_clock_stops
+Ran 555 tests in 22.0s: FAILED (3), TOO SLOW
