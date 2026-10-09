@@ -1,0 +1,24 @@
+Review record, 9 October 2026: entry-2026-10-09-orbit-cover-span.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); read the program and
+outputs, ran small independent checks.
+
+Verdict: pass with corrections. Program logic and table numbers sound: act computes lambda o T_g with
+T_g T_h = T_{hg}; canonicalisation is a true RREF; cover loop; row expansion; monomial index; cumulative basis
+equals S_D; pivot-at-index-0 criterion; 342*15 = 5130, 342*106 = 36252, 31180; n = 28 is the next size (p = 23
+has ord(2) = 11). Recomputed the n = 10, D = 3 rank from truth tables: 105.
+Required changes:
+- Degree at n = 18 is exactly six: a scratch copy counting pivots with lead of degree < D gives 0 at D = 4 and
+  342 at D = 5, so S_5 within degree <= 4 is S_4, S_5 is closed under the PC rule, C_5 = S_5, 1 not in C_5.
+- "As generic as can be" false at n = 10, D = 3 (105 < 110): the five dependencies are
+  sum_b R_{a,b} = sum_b R_{-a,b} for the five pairs +-a; a property of the seed-1 base (7 of 8 other random
+  bases at p = 11, w = 3 fail the identity).
+- n = 28: the binding obstacle is the elimination (dimension C(28, <=7) ~ 1.7M), not the cover check.
+- Control: record the cover file and the meaning of the flag. Follow-up: name the undone work.
+- "2 primitive root" was not enforced by the program.
+Suggestions (unverified by the author):
+- Top-degree parts of rows are Plucker vectors in Lambda^w E; independence at D = w is independence of the
+  orbit's Plucker vectors.
+- F_2[G] = F_2[Z_n] + M_n(F_2) when 2 is primitive; orbit independence splits into two conditions; the n = 10
+  deficiency is failure of the first (trace fixed by -1).
+- For D > w a sufficient condition is injectivity of sum_r Lambda^d(E/L_r) -> Lambda^(w+d) E; Froberg-type; no
+  proof known. Maximal rank at the threshold does not follow from independence below it (5072 syzygies at n = 18).
