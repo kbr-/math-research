@@ -164,6 +164,22 @@ For every characteristic-zero field and N>=7, alpha_N=ell0(3,binom(N,2)+3) is at
 
 ---
 
+### Cube dimension prime bound
+
+**Claim:** [cor:cube-dimension-prime-bound](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-dimension-prime-bound>)
+
+For every n>=5 and every odd prime p>(n-2)*2^(n-2)-2, the original root-curve series is generically Hasse-normal for every d>=2 over every field of characteristic p; hence E_(n,p) is empty. No degree-one, below-bound, optimality or pre-stable threshold conclusion is asserted.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Provides an explicit sufficient prime bound depending only on dimension, uniform in every degree, substantially strengthening the earlier degree-dependent prime filter. Novelty in the literature is unaudited.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Complete the common-family source derivation for the sharper four-pair range; retain the proven dimension-only bound and audit literature before any novelty claim.
+
+---
+
 ### Cube eventual normality
 
 **Claim:** [cor:cube-eventual-normality](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-10-06-cube-eventual-normality>)
@@ -1337,6 +1353,22 @@ For every odd p, m >= 2 and Q=p^e > 2^m-3, the full paired source at polynomial 
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Compare this source-preserving progression with the root-curve and positive-characteristic interpolation literature before claiming novelty or proposing publication.
+
+---
+
+### Paired prime bound
+
+**Claim:** [thm:paired-prime-bound](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-dimension-prime-bound>)
+
+For all m>=2 and c>=2^(m-1)-1, the full paired source Y_m(c) is generically Hasse-normal in every prime characteristic p>2^m*(2^(m-1)-1)-1. Slopes are generic and the statement concerns the original paired marking after affine transport.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Replaces a degree-dependent obstruction analysis by a dimension-only sufficient characteristic bound for every full paired source in its range. Literature novelty remains unknown.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Complete the common-family source derivation for the sharper four-pair range; retain the proven dimension-only bound and audit literature before any novelty claim.
 
 ---
 
