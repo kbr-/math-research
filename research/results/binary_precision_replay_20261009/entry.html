@@ -1,0 +1,156 @@
+<article id="entry-2026-10-09-finite-precision-replay" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-08-restriction-architecture-review:1" data-claims="lem:finite-precision-replay cor:charged-precision-space lem:marker-valuation cor:hard-literal-pruning">
+<h3>9 October 2026 — Binary replay lifts to finite precision, but path precision still costs degree</h3>
+<p class="entry-meta">Working finite-ring replay and charged module; aggregate source control remains open.</p>
+<p><strong>Question.</strong> On general-step, perform the <a href="#entry-2026-10-09-restriction-transfer-review">review's architecture test</a>. Can corrected binary arithmetic, shared coefficient interpretations and the old charged space be lifted to finite \(2\)-adic precision with a uniform degree ledger? Then test an actual half-denominator path identity and the precision available for the full expansion. This is a mechanism test for the binary goal, not permission to infer rank from real mass.</p>
+<p><strong>General statement.</strong> <code>lem:finite-precision-replay</code> supplies the proposed nonlinear line representation with corrected XOR and a proof-length-independent degree ceiling. <code>cor:charged-precision-space</code> supplies a free truncated character module over the required finite coefficient ring. <code>lem:marker-valuation</code> bounds the even denominator of every grouped marker term. The combined worst-case precision allowance is not affordable in the growing-degree power budget. <code>cor:hard-literal-pruning</code> instead combines a recovered stronger literal-pruning tool with the new hard law, avoiding these denominators in its proper scope.</p>
+<p><strong>New mathematics.</strong> These are costed applications of nilpotent idempotent correction, Boolean interpolation and the existing character construction, plus an explicit marker-count valuation. The first genuine half-denominator identity survives grouping at the correct precision. This does not give an affordable aggregate error-rank estimate.</p>
+<p><strong>Goal progress.</strong> Unchanged. The arithmetic interface passes, but its normalized-path application still lacks an affordable joint degree/valuation bound and actual source control. No polynomial proof-size exponent improves. An excessive sufficient precision bound is not a lower bound on optimal grouping or a refutation of the restriction route.</p>
+
+<h4>Finite precision and corrected proof operations</h4>
+<p>Let \(s\ge1\) be an integer, \(R_s=\mathbb Z/2^s\mathbb Z\), \(q=\lceil\log_2s\rceil\), \(K=3^q\), and define the integer polynomial \(\eta_s=N^{\circ q}\), where \(N(z)=3z^2-2z^3\); \(q=0\) means the identity. The <a href="https://stacks.math.columbia.edu/tag/00J9">standard idempotent correction</a> obeys
+\[
+N(z)^2-N(z)=(4z^2-4z-3)(z^2-z)^2.
+\tag{1}
+\]
+For every integer \(a\), \(a^2-a\) is even, so iteration makes the defect divisible by \(2^{2^q}\). Each iteration preserves parity. The only idempotents of \(R_s\) are zero and one: one of consecutive integers \(e,e-1\) is odd, so if their product is divisible by \(2^s\), the even factor is divisible by \(2^s\). Therefore
+\[
+\eta_s(a)\equiv a\bmod2\quad\text{as the representative }0\text{ or }1\text{ modulo }2^s,\qquad \deg\eta_s=K.
+\tag{2}
+\]
+This is a finite-precision function construction, not an additive embedding of \(\mathbb F_2\).</p>
+
+<p><strong>A sharper Boolean lift.</strong> Before paying the Newton degree, use the special Boolean input structure. Write a binary polynomial \(f\) as the sum of its distinct ordinary monomials \(m_1,\ldots,m_r\), and define
+\[
+\mathcal B_s(f)=\sum_{j=1}^{\min(s,r)}(-2)^{j-1}e_j(m_1,\ldots,m_r).
+\tag{2a}
+\]
+The empty sum is zero. On a Boolean point each monomial is zero or one, and the full integer expression \((1-\prod_i(1-2m_i))/2\) is their parity. This quotient is expanded over the integers before reducing; no division by two in \(R_s\) is used. Terms with \(j>s\) are divisible by \(2^s\). Thus \(\mathcal B_s(f)\) is the same bit modulo \(2^s\), with degree at most \(s\deg f\), improving \(K\deg f\). This is the elementary parity expansion, not a new interpolation theorem. Its precision dependence is sharp for full-cube semantic lifting: for \(r\) disjoint squarefree monomials of degree \(\delta\ge1\), the multilinear remainder has exact degree \(\delta\min(s,r)\), since its top coefficient \((-2)^{\min(s,r)-1}\) is nonzero modulo \(2^s\). Uniqueness of Boolean interpolation prevents a lower-degree polynomial with those same values. This is not a lower bound for a relative charged-quotient normalizer.</p>
+<p><strong>Boolean certificate convention.</strong> If an integer polynomial \(F(y)\) of degree \(C\) is zero modulo \(2^s\) at every Boolean point, then
+\[
+F=\sum_i A_i(y)(y_i^2-y_i)+2^sH(y),
+\quad \deg(A_i(y_i^2-y_i)),\deg H\le C.
+\tag{3}
+\]
+Divide successively by the monic Boolean equations; this does not increase degree and leaves a multilinear remainder. Each remainder coefficient is an integer alternating sum of its Boolean evaluations, hence divisible by \(2^s\). This proves (3) over integers and gives an ordinary Boolean certificate over \(R_s\). It uses the full Boolean cube only for a domain identity, not as a solution set of the unsatisfiable old base.</p>
+
+<p id="finite-precision-replay"><strong>Lemma (finite precision replay).</strong> Let a binary PC derivation have degree at most \(B\ge2\), with source variables \(X\). Fix once and for all integer old polynomials \(\beta_j(y)\) of degree at most \(T\ge1\), one for each source variable. Let \(\bar\beta\) be the binary substitution obtained by reducing the fixed maps modulo two, and put
+\[
+L_s(P)=\mathcal B_s(\bar\beta(P)).
+\]
+Use the canonical ordinary monomial expansion over \(\mathbb F_2\); no small expanded size is asserted.
+There is an ordinary ring-PC simulation from the lifted source equations \(L_s(E)\) and the old Boolean equations, representing every original line by \(L_s(P)\), through degree \(2sTB\). Every used original generator must retain its original degree; a generator not fitting the original ceiling cannot be used in such a derivation. The bound is independent of line count and sharing; no bound on the expanded ring-proof size is claimed. The input must be an actual PC derivation, not formal targets with unexpanded witness costs. The lifted equations are not asserted to be ordinary characteristic-zero ENS equations.</p>
+<p>More generally let \(J_D\) be a degree-\(D\) submodule over an \(R_s\)-algebra, closed under legal old-variable multiplication and containing the old Boolean equations. If \(W\) is an actually chosen old polynomial of degree at most \(b\), all required \(W L_s(E)\) lie in \(J_D\), and \(b+2sTB\le D\), then every \(W L_s(P)\) lies there. A refutation would put \(W\) in \(J_D\). If \(W\) is lifted from a binary weight, its resulting degree is the \(b\) being charged: allow a factor \(K\) for Newton correction or \(s\) for (2a).</p>
+
+<p><strong>Addition.</strong> Suppose \(P=Q+R\) in the binary source. At any old Boolean point, (2a) turns the three represented values into the corresponding bits. Thus
+\[
+L_s(P)-L_s(Q)-L_s(R)+2L_s(Q)L_s(R)
+\]
+vanishes modulo \(2^s\) on that cube. Its degree is at most \(2sTB\), so (3) gives a certificate at that ceiling. Derive \(L_s(Q)+L_s(R)-2L_s(Q)L_s(R)\) using ordinary ring-PC addition and multiplication, then add the certificate. In the weighted version, multiply the already known \(W L_s(Q)\) by \(L_s(R)\); no additional factor \(W\) is inserted. Every intermediate product fits \(b+2sTB\). Multiplying polynomials is implemented by old-variable multiplications on each monomial and linear combination. Copies and the two binary scalars require no greater degree.</p>
+<p><strong>Multiplication and fields.</strong> For a source step \(P=X_jQ\), with \(\deg Q\le B-1\), (2a) similarly gives
+\[
+L_s(P)-\mathcal B_s(\bar\beta_j)L_s(Q)=0
+\quad\bmod(2^s,\ y_i^2-y_i)
+\]
+through degree \(sTB\). This supplies the primitive multiplication simulation and its weighted version. Every shared source variable uses the same \(\beta_j\), not an independent choice at each line. A source field equation \(X_j^2+X_j\) maps to \(\mathcal B_s(\bar\beta_j^2+\bar\beta_j)\), which is zero modulo \(2^s\) on the whole old cube and has a Boolean certificate through \(2sT\). The corrected value \(\mathcal B_s(\bar\beta_j)\) is itself idempotent with a certificate through \(2sT\). The field axioms are covered, rather than silently transported by an invalid field homomorphism.</p>
+<p>A source axiom \(E\) of original degree \(e\) has lifted degree at most \(sTe\); it is supplied as the corresponding lifted equation. In the weighted assertion its stipulated membership starts the induction. Since \(\mathcal B_s(1)=1\), the last line of a refutation is one, or \(W\) in the weighted replay. This proves both assertions. The review's literal Newton representation \(L_s^{\rm N}(P)=\eta_s(\widetilde P(\beta))\) also satisfies the same pointwise identities, where \(\widetilde P\) is its coefficient-\(0/1\) integer lift: from its own lifted source equations the identical proof gives \(2KTB\), or \(b+2KTB\). Replacing those higher-degree generators by (2a) is a change of the declared lifted presentation, not a free degree reduction inside an existing proof. If the original old axiom is a CNF falsity monomial in old literals and the old variables are fixed, \(L_s(E)\) agrees with its usual integer literal polynomial modulo the Boolean ideal and \(2^s\), through degree at most \(s\deg E\), by (2a)–(3). Thus canonical old CNF axioms can be retained; arbitrary non-Boolean integer equations are not declared unchanged. \(\square\)</p>
+
+<h4>The charged quotient has a finite-ring lift</h4>
+<p id="charged-precision-space"><strong>Corollary (charged precision space).</strong> Use the simple connected charged graph, orientation and window
+\[
+\max(4,2\Delta)\le D<\varepsilon n/8
+\]
+of the <a href="#charged-character-pseudoideal">arbitrary-charge theorem</a>. Let
+\(A_s=R_s[\zeta]/(\zeta^2+\zeta+1)\).
+The same degree-\(D\) character classes give a surjective filtered linear map with free target \(A_s^{h(D)}\). Its kernel is a proper degree-\(D\) submodule closed under legal variable multiplication, and contains the charged Fourier axioms and, after the affine one-hot pullback, the canonical old CNF axioms. Reducing the full coefficient module modulo two recovers the recorded \(\mathbb F_4\) quotient. If a weight has nonzero class after that reduction, then \(2^vW\) still has nonzero class over \(A_s\) whenever \(0\le v<s\).</p>
+<p><strong>Why the phase construction still works.</strong> All phase coefficients are units. In particular three is invertible and
+\((\zeta-1)(\zeta^2-1)=3\), so distinct third roots differ by units. Local Fourier relations are now \(U_e^2-V_e\), \(V_e^2-U_e\), \(U_eV_e-1\), and the vertex polynomial is its oriented character minus \(\zeta^{c_v}\). Reduction gives the free local basis \(1,U_e,V_e\), hence the edge characters. For characters through degree \(D\), use exactly the old relation
+\[
+\zeta^a m_\alpha\sim\zeta^b m_\beta
+\iff \alpha-\beta=\partial t,\quad |\operatorname{supp}t|<n/2,\quad c\cdot t=b-a\text{ in }\mathbb F_3.
+\]
+A relation witness has support at most \(2D/\varepsilon<n/4\); witness addition gives transitivity, and connectedness rules out a nontrivial scalar phase cycle. These graph arguments do not divide by a coefficient. Pick one representative per class; every other character maps to a unit times that coordinate.</p>
+<p>The kernel is generated by the corresponding differences, using only characters in a polynomial's support: within each coordinate, subtract its chosen support representative and use the fact that the remaining coefficient sum is zero. This works over a ring as well as a field. Multiplying by one old Fourier variable preserves the exponent difference and phase whenever the degree fits, so the kernel has the required closure. Vertex equations use the single-vertex witness; one maps to a nonzero basis coordinate. A representative character gives a section of the map, making the quotient free and showing that kernel reduction modulo two is exact.</p>
+<p><strong>One-hot normalization and original costs.</strong> The affine map is now
+\[
+x_{e,a}=\frac{1+\zeta^{-a}U_e+\zeta^aV_e}{3},
+\]
+not the characteristic-two formula with its denominator omitted. Its inverse is \(U_e=\sum_a\zeta^a x_{e,a}\), \(V_e=\sum_a\zeta^{-a}x_{e,a}\). The local three-point evaluation matrix is invertible because the root differences and three are units. The <a href="#ternary-character-pseudoideal">literal Fourier transfer proof</a> therefore works over \(A_s\): local Boolean/domain certificates fit degree two, a forbidden vertex pattern follows through \(2\Delta\) by its unit eigenvalue, and row/CNF conversion fits three. These costs are within the stated floor. The pullback map is surjective at each filtered degree, by the displayed inverse, so its quotient is also free. No global quotient algebra beyond the cutoff is asserted.</p>
+<p>Finally, \(A_s\) is free of rank two over \(R_s\), and its reduction is the field \(\mathbb F_4\). A coefficient with nonzero reduction is a unit, while \(2^v\ne0\) for \(v<s\). In the free class module, a nonzero reduced coordinate of \(W\) therefore prevents \(2^vW\) from vanishing. Equivalently, if \(2^vW\) lies in the kernel with \(v<s\), then the class of \(W\) reduces to zero. Nonzero total charge is needed for the unsatisfiable-family application, not for constructing this module. This is the precise cancellation available after clearing even denominators at sufficient precision; it is not division by two inside \(R_s\). \(\square\)</p>
+
+<h4>Marker denominators after grouping permutations</h4>
+<p id="marker-valuation"><strong>Lemma (marker valuation).</strong> At one stage of the recorded <a href="#entry-2026-10-08-categorical-restriction-test">marker expansion</a>, let there be \(c\ge1\) markers and \(N\ge0\) indexed narrow clauses. Group permutations by the exact clause subset \(A\) appearing before the first marker, with \(|A|=j\). After including the path factor \(1/c\), its coefficient is
+\[
+\lambda_{N,c,j}=\frac{j!(N+c-j-1)!}{(N+c)!}
+=\frac1{m\binom{m-1}{j}},\qquad m=N+c.
+\tag{4}
+\]
+If the original CNF has at most \(M\ge1\) indexed clauses, then \(m\le M\), because the covered violated clauses and the remaining narrow-clause family use disjoint original indices, and
+\[
+-v_2(\lambda_{N,c,j})\le\lfloor\log_2 M\rfloor.
+\]
+A path of length \(\ell\) therefore has even-denominator exponent at most \(\ell\lfloor\log_2M\rfloor\), and summing terms cannot worsen the maximum of these exponents. This is an upper bound for this specified representation, not a lower bound for optimal aggregation.</p>
+<p><strong>Proof.</strong> Exactly \(c\,j!(m-j-1)!\) permutations have the specified subset before the first marker: order that subset, choose the first marker, then order everything else. Divide by \(m!\), and cancel the path's \(1/c\). For the valuation bound, expand the elementary rational integral
+\[
+\frac1{m\binom{m-1}{j}}
+=\int_0^1 t^j(1-t)^{m-j-1}\,dt
+=\sum_{u=0}^{m-j-1}\frac{(-1)^u\binom{m-j-1}{u}}{j+u+1}.
+\]
+The factorial value follows by repeated integration by parts; the sum follows by the binomial theorem. Every denominator in the final sum is between one and \(m\). Multiplication by \(2^{\lfloor\log_2m\rfloor}\) consequently puts every summand in \(\mathbb Z_{(2)}\), proving the bound. This use of an integral is only a finite rational identity. Along a path the coefficients multiply, so valuations add; a finite sum of rational numbers with this denominator bound stays in the same localized lattice. \(\square\)</p>
+
+<p><strong>The first overlapping-clause identity.</strong> With \(H=(x_1\lor x_2)\land(x_2\lor x_3)\), target width one, and all variables live, each of its two paths has one remaining narrow clause and one marker. Put \(d_{12}=(1-x_1)(1-x_2)\), \(d_{23}=(1-x_2)(1-x_3)\). The actual expansion is
+\[
+H=1-\tfrac12d_{12}(1+x_3)-\tfrac12d_{23}(1+x_1).
+\]
+Grouping first gives the integer polynomial \(H_{\mathbb Z}=x_2+x_1x_3-x_1x_2x_3\). If \(\widetilde H=x_2+x_1x_3+x_1x_2x_3\) is the binary coefficient lift and \(\mathcal N\) the twice-cleared right side, then
+\[
+\mathcal N=2H_{\mathbb Z},\qquad
+\mathcal N-2\widetilde H=-4x_1x_2x_3.
+\]
+Thus precision modulo four recovers the binary target after grouping and dividing the even aggregate. Reducing \(\mathcal N\) modulo two first loses it. The terms here are genuine width-one tests; their sum, not a termwise inverse of two, is being used. Substituting correlated nonlinear features preserves a polynomial identity but does not preserve the independent restriction law automatically.</p>
+
+<h4>The available uniform precision still misses the power budget</h4>
+<p>Write \(b_{\rm cl}\) for the target CNF width, distinct from the earlier weight degree. A path adds at least \(b_{\rm cl}+1\) live coordinates per step. With \(N_{\rm live}\) coordinates, (4) therefore permits the safe precision
+\[
+s=1+\left\lfloor\frac{N_{\rm live}}{b_{\rm cl}+1}\right\rfloor
+       \lfloor\log_2 M\rfloor.
+\tag{5}
+\]
+This cancels factorial denominators before costing precision; keeping separate permutations would be needlessly worse. For the growing-degree law, in the favorable width regime \(\kappa=\Theta(\Delta)\), \(b_{\rm cl}=\Theta(p\Delta)\), \(N_{\rm live}=\Theta(np\Delta)\), and \(\log M=\Theta(n^\alpha)\), the allowance (5) is of order \(n^{1+\alpha}\). Plugging that certified worst-case choice into even the sharper linear factor \(s\) and \(B=O_{A,d}(n^{\alpha d})\) does not establish a replay ceiling below \(D'=\Theta(n^{1+\alpha-\beta})\), even with \(T=1\) and no weight charge. The power comparison would require
+\[
+\alpha d+(1+\alpha)<1+\alpha-\beta,
+\]
+which fails for positive \(\alpha,\beta\) and \(d\ge1\).</p>
+<p>This is failure of the available uniform sufficient accounting, not proof that the actual aggregate needs that precision. Expanding and grouping a Boolean function completely gives integral coefficients, but can cost full polynomial degree. The missing implication is an affordable <em>joint</em> degree/valuation control for the actual aggregate source map. The preceding real-mass theorem supplies neither it nor a source-rank estimate. Longer-path numerical examples or higher precision checks would not decide that implication.</p>
+
+<h4>Recover the stronger literal route before choosing the next task</h4>
+<p>The <a href="#entry-2026-10-08-minimal-clause-pruning">earlier minimal-clause record</a> already bypasses modular reciprocal conversion for actual clause-indicator inputs. Its complete count and degree-adapted source proof were reread. The previous review's field-transfer obstacle must therefore be qualified: it concerns inputs outside this supplied literal bridge, not every use of the reverse count.</p>
+<p id="hard-literal-pruning"><strong>Corollary (hard literal pruning).</strong> In the setup of <a href="#hard-restriction-mass">hard restriction mass</a>, fix before restriction \(m\) categorical clause families of widths at most \(\kappa_a\), each family being exactly one block's actual input tuple. For target width \(b_{\rm cl}\ge0\), put
+\[
+\Theta_a=\sum_{\ell=b_{\rm cl}+1}^{\kappa_a}\binom{\kappa_a}{\ell}
+       \left(\frac{3p}{1-p}\right)^\ell.
+\]
+If \(\eta+\sum_a\Theta_a<1\), one product restriction simultaneously leaves the old charged degree barrier \(D_H\) and gives every remaining clause a literal remaining subclause of width at most \(b_{\rm cl}\). A fresh complete ENS level whose actual inputs are those violation polynomials consequently admits simultaneous input pruning to selected actual inputs of degree at most \(b_{\rm cl}\), transferring every original PC or ordinary NS proof without degree increase. All later source inputs receive the same global substitution. This is not elimination of the pruned source.</p>
+<p><strong>Proof and source ledger.</strong> The earlier <a href="#entry-2026-10-08-minimal-clause-pruning">minimal-clause theorem</a> bounds failure for family \(a\) by \(\Theta_a\) under this exact full-cube product law. Union-bound with the hard event, without an independence assumption between events. For each surviving input \(g_i\), its selected narrow divisor \(f_j\) is an actual restricted input and satisfies \(g_i=q_i f_j\) literally, with \(\deg q_i+\deg f_j=\deg g_i\). Zero nonselected coefficient positions; retain selected ones. The product becomes \(P'\) and each original companion becomes \(q_i(f_jP')\). Write \(w'=h(1+\max_j\deg f_j)\), so \(w'\le h(1+\delta_a)\) for that block's original maximum input degree \(\delta_a\). The companion certificate costs \(w'+\deg g_i\), no larger than its original carried cost. A loose target-width ceiling is not substituted for this comparison. Every divisor must come from that same block's tuple, not a larger union of families. Fields rename or vanish. The earlier ideal-input-pruning proof therefore replays PC and each original NS cofactor through the original ceiling. All-zero tuples set their coefficients to zero and have product one; an empty false clause supplies the selected constant input one. Restriction and coefficient pruning are constant substitutions, including every later occurrence. No new compiler ceiling is inferred. \(\square\)</p>
+<p>For the growing-degree regime with \(\kappa_a=O(n^\alpha)\), \(\log m=O(n^\alpha)\), and \(p=n^{-\beta}\), the condition holds for \(b_{\rm cl}=O(n^\alpha/\log n)\) with a sufficiently large constant. Indeed, take \(b_{\rm cl}=\lceil Cn^\alpha/\log n\rceil\). When \(b_{\rm cl}<\kappa_a\), the binomial summands are bounded by powers of \(O(n^{-\beta}\log n)\le n^{-\beta/2}\), eventually. Thus \(\Theta_a\le2n^{-\beta(b_{\rm cl}+1)/2}\); choose \(C\) larger than twice the coefficient in the bound on \(\log m\), divided by \(\beta\), with a fixed margin. When \(b_{\rm cl}\ge\kappa_a\), the tail is zero. This pays the simultaneous-family count while remaining below the original width. It does not prove that arbitrary affine mixtures of retained products are literal violation inputs.</p>
+
+<h4>Architecture test, checks and next step</h4>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-09-restriction-transfer-review">scheduled test</a> passes corrected replay (with the sharper \(2sTB\) presentation), shared-variable coherence, the finite-ring charged module and its first even-denominator identity. It does not pass the source-wide precision budget: the explicit generic allowance is too expensive to certify the needed comparison. This does not justify replacing all normalized terms by a low-degree narrow-CNF representation, which was already refuted.</p>
+<p><strong>Exact checks.</strong> At precision \(s=3\), modulo eight, GAP tested all 64 ordinary binary polynomials through degree two in two source variables, interpreted by the shared nonlinear map \(x=a+b,y=ab\). The four old Boolean points give 16384 corrected-addition checks, 64 variable-multiplication checks, eight field checks and eight half-identity checks, with no violations. Ordinary ring addition fails 128 controls; premature reduction loses five true outputs of the overlapping CNF. A separate native residue-ring matrix check verifies 1056 local ternary Fourier assertions: 972 two-edge eigenidentities, 72 forbidden unit factors and the root/indicator normalization. Omitting \(1/3\) fails three controls. These are local encoding controls, not small graphs asserted to meet the global hard window.</p>
+<p>PARI/GP supplies six complete Newton-presentation integer certificates of the form (3), with 54 checks and no failures. The weighted-addition, multiplication, first field, second field, old-literal and corrected-idempotent certificates have actual degrees \(46,27,18,36,18,36\), within ceilings \(73,36,18,36,18,36\). A second exact run checks the sharper direct parity presentation: its six certificates have actual degrees \(13,8,5,6,3,4\), within \(25,12,12,12,6,12\), with another 54 checks and no failures. Full cofactors, scripts and outputs are in <a href="research/results/binary_precision_replay_20261009/certificates.txt">the Newton result</a> and <a href="research/results/binary_precision_replay_20261009/linear-certificates.txt">the direct-lift result</a>. Precision three was chosen because it requires two Newton iterations; one iteration fails its negative control. No larger parameter series was needed.</p>
+<p><strong>Implementation checks.</strong> The first GAP run had missing whitespace in a token and was rejected. PARI attempts collided with the built-in eta and psi function names; the second exposed that its default polynomial denominator query returns one even for rational coefficients. A negative control caught that error. The final checker uses the documented rational-denominator mode and also excludes variable denominators, with exact completion counts. Failed outputs and logs are preserved; zero process exit status was never treated as success by itself. The existing PARI guidance now requests prefixed helper names to prevent recurrence.</p>
+<p><strong>Follow-up.</strong> Continuing, with a narrower next target. Use hard literal pruning directly when it applies. For the uncovered mixed inputs, start with a complete two-level source whose bottoms are on at most \(h\) old literals and whose parent inputs are arbitrary binary affine mixtures of their whole products and old indicators. Fix the exact scalar bottom maps once, so their products become the actual literal products; include all bottom companions and fields. Choose parent binary row matrices \(C\) independently of the old product restriction, and then use an admissible hard restriction \(\rho\). Any later optimization dependent on \(\rho\) needs its own mass justification. The joint matrix must include every retained bottom companion and coefficient-field error as well as the parent errors; a row may be omitted only after proving its annihilation in this same quotient. Scalar bottom choices alone do not prove that. The parent errors are \(E_{a,i}=g_{a,i}P_{a,C}\), with their original ceiling \(B\) retained.</p>
+<p>The concrete aggregation test is the following proposed construction. On the residual graph define a linear compression of arbitrary label functions by
+\[
+\mathscr C_{s,D'}(F)=\sum_{|\alpha|\le D'}\widehat F(\alpha)[m_\alpha],
+\qquad
+\widehat F(\alpha)=3^{-|E(H)|}\sum_{z\in\mathbb F_3^{E(H)}}F(z)\zeta^{-\alpha\cdot z}.
+\]
+It is not assumed to be multiplicative. Select old degree-\(K\) columns giving a unit-pivot lift of the same binary quotient domain, of dimension \(H_K\). For supplied categorical CNF representations of the actual errors, retain their true widths and counts; the full truth-table representation is only a potentially unaffordable baseline. Group normalized path contributions to the matrices \(f\mapsto\mathscr C_{s,D'}(E_{a,i}f)\) before clearing denominators. First establish that this aggregate equals the actual lifted source matrix whenever \(K+sB\le D'\), without requiring each narrow test to have low polynomial degree. Test whether the grouping supplies a precision \(s>v\) within that inequality, rather than simply reproducing the native error polynomial.</p>
+<p>The separate rank target is explicit: after clearing \(2^v\), seek a factorization of the joint matrix \(2^v\widehat{\mathcal E}_C\equiv2^vUV\pmod{2^{v+1}}\) with inner dimension \(r&lt;H_K\), on that same domain. A mere low-degree expansion or the real mass estimate is not this factorization. The free module and <a href="#binary-charged-descent">recorded binary descent</a> would then give a binary common kernel, with original replay \(K+B\le D'\). Failure for one bad \(C\) is not a source obstruction; polynomial coefficient choices remain allowed by the main goal. This proposed transfer and rank test, including its actual source representation costs, is the next task, not a theorem of the present entry.</p>
+<ul><li data-check="entry-2026-10-09-restriction-transfer-review:s1"><strong>Follow-up.</strong> Closed: the explicit replay, module and path bounds resolve the scheduled interface test, including its insufficient generic precision budget.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Carry out the explicitly defined two-level mixed-source compression test in Follow-up: all bottom companion/field errors and parent errors E_(a,i), hard rho, fixed coherent bottom maps and parent C, the proposed Fourier compression, K+sB&lt;=Dprime with s>v, and the separate rank factorization r&lt;H_K. Charge the actual categorical representation width/count; literal rows use the recovered pruning corollary directly.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with corrections: use disjoint squarefree monomials for sharpness, actual selected-input degrees in pruning, per-block clause families, and all bottom errors in the next joint test. Those corrections are incorporated. The charged character and Fourier proofs, categorical marker construction and prior Boolean-cofactor correction were read with their original costs. All exact checks above passed after the documented implementation failures.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_precision_replay_20261009 -->
+</article>
