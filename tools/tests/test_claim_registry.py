@@ -288,6 +288,12 @@ class ClaimRegistryTests(unittest.TestCase):
             path = Path(directory)/'bad.json'
             path.write_text('{"claims":[],"claims":[]}')
             with self.assertRaises(ValueError): cr.read_json(path)
+        with self.assertRaisesRegex(ValueError, 'Duplicate JSON key: scope'):
+            cr.parse_json('{"claims":[{"scope":1,"other":2,"scope":3}]}')
+        with self.assertRaisesRegex(ValueError, 'Duplicate JSON key: ab'):
+            cr.parse_json(r'{"ab":1,"a\u0062":2}')
+        valid = '{"claims":[{"scope":null},{"scope":{"empty":{}}}],"other":[]}'
+        self.assertEqual(cr.parse_json(valid), json.loads(valid))
 
     def test_search_filters_keep_unknown_distinct_from_verified(self):
         d = cr.import_markdown(source())

@@ -38,10 +38,15 @@ def require(ok, message):
 
 def parse_json(text):
     def unique(pairs):
-        result = {}
-        for key, value in pairs:
-            require(key not in result, f'Duplicate JSON key: {key}')
-            result[key] = value
+        result = dict(pairs)
+        # The common valid case needs no Python loop or per-key error string.
+        # Retain the first-duplicate diagnostic on the exceptional path.
+        if len(result) != len(pairs):
+            seen = set()
+            for key, _ in pairs:
+                if key in seen:
+                    raise ValueError(f'Duplicate JSON key: {key}')
+                seen.add(key)
         return result
     return json.loads(text, object_pairs_hook=unique)
 
