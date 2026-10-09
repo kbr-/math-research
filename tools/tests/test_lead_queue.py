@@ -825,6 +825,11 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([rev, developing(q[2], 'Closed')], q[:2]))
         with self.assertRaises(ValueError):                             # a reason must say something
             lq.check(head, notebook([rev, developing(q[2], 'Closed', '<p><strong>Chosen.</strong> yes.</p>')], q[:2]))
+        # a run of chosen entries is one spell: after SPELL of them, on any items, the head comes next
+        run = [rev] + [developing(q[1], 'Continuing', why), developing(q[2], 'Continuing', why)] * (lq.SPELL // 2)
+        with self.assertRaises(ValueError):
+            lq.check(notebook(run, q), notebook(run + [developing(q[1], 'Continuing', why)], q))
+        lq.check(notebook(run, q), notebook(run + [developing(q[0], 'Continuing')], q))    # the head is allowed
         cont = developing(q[2], 'Continuing', why)
         spent = [rev] + [cont] * lq.SPELL
         lq.check(notebook(spent[:-1], q), notebook(spent, q))           # the last entry of its spell

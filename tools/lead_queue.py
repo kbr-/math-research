@@ -1190,6 +1190,18 @@ def check(head_body, body, path=None, root=None):
                                  f'sub-idea {first.ident}' if first else '') + '. To develop another item, say in '
                                  'a <strong>Chosen.</strong> paragraph which open statement it bears on and why '
                                  'it comes first; the user may also pick one (data-picked)')
+            run = 0     # a run of chosen entries is one spell: related items do not pass a spell limit
+            for past_tag, past_text in reversed(record_articles(body)[:-1]):
+                if not counted(past_tag, past_text):
+                    continue
+                if not CHOSEN_RE.search(past_text) or 'data-picked="user"' in past_tag:
+                    break
+                run += 1
+            if run >= SPELL:
+                raise ValueError(f'{run} research entries in a row chose their item: this one develops the head, '
+                                 f'{head.ident if head else "none (every item waits)"}, or its first sub-idea '
+                                 '(user, 10 October 2026: "You should not bypass the spell limit. Why not just '
+                                 'rotate the item and move to next one?")')
             top = locate(old, work[0])[0] or located
             if spell(body, top.item, old) > spell_limit(body, top.item, old):
                 raise ValueError(f'{top.ident} has reached the boundary of its spell: develop another item first, '
