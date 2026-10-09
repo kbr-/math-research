@@ -1,0 +1,1 @@
+Working-context soft excess reviewed: retain the new compression-versus-cleanup distinction and its exact dimension/buffer condition. Total and individual hard limits unchanged. No new computation or framework change. Review dependencies and source-owned cube evidence remain linked at their earlier checkpoints.
