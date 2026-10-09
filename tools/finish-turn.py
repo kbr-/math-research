@@ -496,6 +496,28 @@ def entry_status(body, article):
     return re.sub(r'<[^>]*>', '', body[meta:body.find('</p>', meta)]).split('Produced by')[0]
 
 
+ENTRY_PARAGRAPHS = re.compile(r'data-entry-paragraphs="([^"]+)"')
+
+
+def required_paragraphs(body):
+    """Labels a notebook requires in each new research entry: a living section declares them as
+    data-entry-paragraphs="Label one|Label two" (a rule stated only in prose is forgotten)."""
+    record = body.find('<section id="research-record">')
+    found = ENTRY_PARAGRAPHS.search(body, 0, record if record >= 0 else len(body))
+    return [label.strip() for label in found.group(1).split('|') if label.strip()] if found else []
+
+
+def validate_paragraphs(body, article, close):
+    """Each research entry carries every paragraph its notebook declares, with real content."""
+    if entry_tags(body, article)['kind'] != 'research':
+        return
+    for label in required_paragraphs(body):
+        found = re.search(r'<p><strong>' + re.escape(label) + r'\.</strong>(.*?)</p>', body[article:close], re.S)
+        if not found or len(re.sub(r'<[^>]*>', ' ', found.group(1)).strip()) < 40:
+            raise ValueError(f'This notebook requires a <p><strong>{label}.</strong> ...</p> paragraph in every '
+                             'research entry (data-entry-paragraphs on its living sections)')
+
+
 def validate_general(body, article, close):
     """AGENTS.md: restricted examples must test a named general statement; enforce it mechanically.
     Every research entry states its general claim for all parameters, and two finite-check entries
@@ -572,6 +594,7 @@ def validate_marker(body, marker, draining=None):
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
     validate_route(body, article)
     validate_general(body, article, close)
+    validate_paragraphs(body, article, close)
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_bridges(body, article, close)

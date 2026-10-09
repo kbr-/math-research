@@ -204,6 +204,10 @@ historical assessments.
   and mention side publications briefly. Do not invent progress. Keep exact setup, degree
   conventions, linked hypotheses/proofs and unresolved dependencies needed next; consolidate by
   topic/purpose, not by adding a subsection every turn.
+- A notebook whose route has a standing per-entry duty declares it on a living section as
+  `data-entry-paragraphs="Label one|Label two"`: the finisher then rejects a research entry without
+  a `<p><strong>Label.</strong>` paragraph for each, and `compute.sh start` prints them. Use this
+  instead of stating such a duty only in a living paragraph.
 - All pre-record regions have [configured budgets](research/context-budgets.json). Run `python3
   tools/notebook_context.py` while drafting; see
   [counting/enforcement](research/notes/CONTEXT_BUDGET_PLAN.md#budget-operation). Soft excess

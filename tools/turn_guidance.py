@@ -144,6 +144,10 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+    required = ft.required_paragraphs(body)
+    if required:
+        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
+            f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
     import lead_queue as lq
     if lq.is_draining(body):
         notes[-1] = lq.DRAINING_REVIEW_RULE

@@ -81,6 +81,27 @@ class TurnGuidanceTest(unittest.TestCase):
         notes = ' '.join(self.guide.guidance(body, self.ft))
         self.assertEqual(notes.count('one more research entry is allowed'), 1)
 
+    def test_notebook_declared_entry_paragraphs(self):
+        body = self.body([('research', 'lem:a', 'Working proof.')])
+        declared = body.replace('<section id="remaining-route">',
+                                '<section id="remaining-route" data-entry-paragraphs="Specification decision">')
+        self.assertIn('<p><strong>Specification decision.</strong>', ' '.join(self.guide.guidance(declared, self.ft)))
+        self.assertNotIn('This notebook requires', ' '.join(self.guide.guidance(body, self.ft)))
+        entry = '<article data-kind="research" data-route="step">{}</article>'
+        for text, passes in (('<p><strong>Specification decision.</strong> ' + 'Replace the rowwise condition. ' * 2 + '</p>', True),
+                             ('<p><strong>Specification decision.</strong> None.</p>', False), ('', False)):
+            page = declared + entry.format(text)
+            start = page.rindex('<article')
+            if passes:
+                self.ft.validate_paragraphs(page, start, len(page))
+            else:
+                with self.assertRaises(ValueError):
+                    self.ft.validate_paragraphs(page, start, len(page))
+        page = body + entry.format('')                      # no declaration: nothing required
+        self.ft.validate_paragraphs(page, page.rindex('<article'), len(page))
+        review = declared + '<article data-kind="review" data-route="step"></article>'
+        self.ft.validate_paragraphs(review, review.rindex('<article'), len(review))
+
     def test_computation_and_generalization_notes(self):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
         self.assertIn('C or C++ kernels', notes)
