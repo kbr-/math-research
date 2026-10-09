@@ -1,0 +1,76 @@
+<article id="entry-2026-10-09-affine-collision-budget" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-binary-quotient-architecture:s5" data-claims="prop:affine-collision-budget">
+<h3>9 October 2026 — Optimizing the cutoff does not repair the absolute affine estimate</h3>
+<p class="entry-meta">Working limitation of the current affine-image certificate. Actual relative flat ranks remain open.</p>
+<p><strong>Question.</strong> On general-step for binary Frege, does the new collision denominator make the absolute affine-flat image estimate sufficient at the logarithmic ranks supplied by typical approximation prefixes? Test every allowed multiplier cutoff, using the exact local pivot profile rather than its factor-two exponential relaxation. This is the final research entry before the scheduled review.</p>
+<p><strong>General statement.</strong> <a href="#affine-collision-budget">prop:affine-collision-budget</a> proves that this combination of estimates cannot certify a fixed relative contraction for ranks \(r=o(m^{2/\varepsilon})\), uniformly in the cutoff and in the affine pivot pattern. It is a theorem about the available numerical certificate, not a lower bound on the actual multiplication rank.</p>
+<p><strong>New mathematics.</strong> A uniform cutoff optimization and lower bound for every retained local pivot profile identify the remaining loss. Keeping the exact coefficients, using the better of both occupancy bounds, or choosing a different Gaussian pivot layout does not remove it in the stated regime.</p>
+<p><strong>Goal progress.</strong> Unchanged. No direct quotient-relative affine-flat theorem or counterexample to such a theorem is obtained. The result rules out this attempted derivation from the existing absolute counts; it does not rule out a better canonical-quotient calculation or a proof-dependent coefficient choice.</p>
+<h4>The strongest certificate being tested</h4>
+<p>Use the canonical binary charged graph quotient, with fixed expansion \(\varepsilon&gt;2\), bounded maximum degree \(\Delta\), and its original proper degree window. Let \(n\) and \(m\) be its vertex and edge counts. Then \(n\ge2m/\Delta\), and every allowed \(1\le K\le D\) has \(K&lt;m/4\). Put \(\rho=K/m\), \(a=\varepsilon/2&gt;1\),
+\[
+ \eta=(1+2^{\varepsilon+1}\rho^a)^n-1,\qquad
+ C(K)=\min\left\{\frac1{1-\eta},\ 1+2\eta\right\},
+\tag{1}
+\]
+where the first option is omitted if \(\eta\ge1\). The <a href="#cut-ball-occupancy">no-collision estimate</a> and <a href="#cut-collision-bound">collision estimate</a> together say \(h(K)\ge B_m(K)/C(K)\), with \(B_m(K)=\sum_{j\le K}2^j\binom mj\).</p>
+<p>Let \(F=\prod_{i=1}^r(1-\ell_i)\) be a binary affine zero-flat indicator, with independent affine constraints not spanning one; use two independent old indicators per edge after the degree-preserving local normalization. Retain \(K+r\le D\). Gaussian elimination removes \(r\) pivot variables. If \(p_j\) edges have \(j\) pivots, then \(p_0+p_1+p_2=m\), \(p_1+2p_2=r\), and the exact retained local count is
+\[
+ B_{\boldsymbol p}(K)=[z^{\le K}](1+2z)^{p_0}(1+z)^{p_1}.
+\]
+The <a href="#three-state-flat-image">affine image proof</a> bounds the multiplication rank by this count before replacing it by its worst pivot pattern. It also factors through the old quotient. Thus the certificate under test is
+\[
+ \frac{\operatorname{rank}(f\in V_K\mapsto[Ff])}{h(K)}
+ \le U_{\boldsymbol p}(K):=\min\left\{1,\ C(K)\frac{B_{\boldsymbol p}(K)}{B_m(K)}\right\}.
+\tag{2}
+\]
+Additional old relations can make the actual rank smaller. An independently proved zero image can of course be removed; (2) describes what the retained pivot and expansion data alone guarantee.</p>
+<h4>A uniform obstruction to this certificate</h4>
+<p id="affine-collision-budget"><strong>Proposition (affine collision budget).</strong> There is a constant \(C_{\varepsilon,\Delta}&gt;0\) such that for every \(1\le r\le m\), every pivot pattern above and every allowed \(K\),
+\[
+ U_{\boldsymbol p}(K)\ge
+ \exp\!\left[-C_{\varepsilon,\Delta}
+       \left(\frac{r^{\varepsilon/2}}m\right)^{1/(\varepsilon/2-1)}\right].
+\tag{3}
+\]
+In particular, if \(r=o(m^{2/\varepsilon})\), this certified upper bound is at least \(1-o(1)\), uniformly over cutoffs and pivots. It cannot certify a strict summed-rank deficit for even two images whose affine-constraint ranks \(r\) obey this regime using only their individual bounds (2). Every fixed polylogarithmic rank lies in this regime. No corresponding lower bound for the actual error rank is asserted.</p>
+<p><strong>Proof: removing pivots does not shrink the local count enough.</strong> A degree-\(j\) local normal monomial is obtained by choosing \(j\) distinct edges uniformly and one of their two indicators uniformly. The ratio of its retained count to \(2^j\binom mj\) is the probability that none of its indicator variables is among the \(r\) pivots. Expose the edge/indicator choices sequentially. After any successful prefix, at most \(r\) forbidden choices remain among the \(2(m-i)\) choices at step \(i\). Therefore for \(j\le K\),
+\[
+ \Pr(\text{avoid pivots})\ge\prod_{i=0}^{j-1}\left(1-\frac r{2(m-i)}\right)
+ \ge\exp(-2rj/m).
+\]
+For the last inequality, \(i&lt;K&lt;m/4\), \(r\le m\), and
+\(\log(1-x)\ge-x/(1-x)\) give a per-step logarithmic loss at most
+\(r/[2(m-i)-r]\le2r/m\). Averaging the degree levels in the cumulative count gives
+\[
+ \frac{B_{\boldsymbol p}(K)}{B_m(K)}\ge e^{-2r\rho}.
+\tag{4}
+\]
+This proof permits double-pivot edges; it is not restricted to the coarser single-pivot majorant.</p>
+<p><strong>Proof: both denominator estimates have the same relevant loss.</strong> Both options in (1) are at least \(1+\eta\): for the first, \((1-\eta)^{-1}\ge1+\eta\) when defined; the second is immediate. Since \(x=2^{\varepsilon+1}\rho^a=2\beta^\varepsilon&lt;2\),
+\[
+ \log C(K)\ge n\log(1+x)\ge nx/3
+ \ge c_{\varepsilon,\Delta}\,m\rho^a,
+ \qquad c_{\varepsilon,\Delta}=\frac{2^{\varepsilon+2}}{3\Delta}.
+\tag{5}
+\]
+Combine (4) and (5). The logarithm of the untruncated second option in (2) is at least \(c m\rho^a-2r\rho\), where \(c=c_{\varepsilon,\Delta}\). Over all real \(\rho\ge0\), the maximum of \(2r\rho-cm\rho^a\) occurs at
+\[
+ \rho_*=(2r/(acm))^{1/(a-1)}
+\]
+and equals
+\[
+ \frac{a-1}{a}\,2r\left(\frac{2r}{acm}\right)^{1/(a-1)}.
+\]
+This has the form in (3). Allowing all real cutoffs only weakens the lower bound, so integer and original-degree restrictions remain covered. Taking the minimum with one preserves the lower bound because the displayed exponential is at most one. If \(r=o(m^{1/a})\), its exponent tends to zero. For two or more such certified bounds their sum is at least \(2-o(1)&gt;1\), proving the conclusion. \(\square\)</p>
+<h4>What the attempted relative proof did and did not establish</h4>
+<p>Gaussian elimination still gives a valid factorization of the actual error map, but the local count is an absolute one. Dividing it by an expansion-only lower bound for the charged space leaves (5). The preceding collision result improves the denominator in useful regimes, including its coded application, but it does not cancel this loss against the numerator. The optimization above shows that merely choosing a different \(K\) does not resolve this particular obstacle at logarithmic rank.</p>
+<p>A separate shortcut would feed the base quotient's cumulative Hilbert ratio directly into error-growth contraction. The recorded <a href="#quotient-growth-ratio">five-point counterexample</a> already rejects that substitution in general; it cannot repair the current gap without a new argument. The <a href="#intrinsic-shadow-ratio">intrinsic shadow theorem</a> instead needs actual top-level standard-monomial caps; the <a href="#flat-shadow-limits">earlier test</a> did not establish them in the useful regime. Neither a smaller output notation nor a full ambient affine coordinate change proves that old charged relations transform favorably.</p>
+<p>Likewise a short affine product must not be replaced silently by a polynomial-size conjunction list. The full <a href="#entry-2026-10-07-matching-flat-width">matching-width obstruction</a> and <a href="#entry-2026-10-07-matching-flat-projection">quotient-valid projection test</a> were reread. They distinguish direct rank from representation cost and leave larger-degree representations open; isolated matching-support sources already have their separate transfer. The target of this cycle was whole-graph affine forms, not that solved case.</p>
+<p>The logarithmic-rank regime is source-relevant: such products occur as legal selected affine prefixes with polynomial written descriptions and original costs retained. They need not be unavoidable or hard. A full basis of a small input span can be handled exactly, and the existing source theorems retain their sufficient hypotheses. The proposition therefore does not refute adaptive coefficient choices, actual smaller ranks or the Frege goal.</p>
+<h4>End of the spell</h4>
+<p><strong>Follow-up.</strong> Continuing, rotating the graded/matrix item after four entries in this spell. Legal centers recovered a paid core; coded local bases and collision counts gave a restricted actual source bound; old puncturing then handled the long-coordinate affine extension; this last test left general affine-flat ranks open. No result in this spell materially changed a listed necessary open implication: the positive exclusions retain unproved feature-coverage premises, and the last result limits a sufficient numerical certificate. There is a concrete unsolved next question, but no fresh qualifying progress to support an extension under the stated rule. Keep direct relative ranks, compatible partial batches and remaining source preservation questions with the item.</p>
+<p>The next entry is the scheduled goal-level review after six research entries since the last review. It must assess the distinction between the new coded formula, the recovered source composition, and the still missing whole-graph relative estimate, while independently comparing another architecture. A better graph-specific numerator estimate or a direct source construction could change the outcome; another optimization of (2) cannot do so in the proved regime.</p>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the probability bound, denominator comparison, continuous optimization and distinction from actual rank. Its corrections specify affine-constraint rank and assess spell extension by material progress, rather than by complete discharge of the open implication. <a href="research/results/binary_relative_flats_20261009/review.txt">Verdict</a>. The exact affine pivot count, both occupancy bounds, shadow warning, and later matching scope records were read. The argument optimizes the explicit all-parameter certificate and includes all pivot layouts; no numerical sweep or new source encoding is needed.</p>
+<p><strong>Process assessment.</strong> Using the exact profile and the stronger of the two denominator bounds prevents mistaking a prefactor artifact for an obstruction. The actual relative-rank question remains open and is carried to the scheduled review rather than rebranded as a solved lower-bound step. Initial candidate comparison overlapped post-checkpoint preparation before the mathematics marker.</p>
+<!-- TIMING binary_relative_flats_20261009 -->
+</article>
