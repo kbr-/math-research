@@ -156,5 +156,16 @@ class ClosureStakesTest(unittest.TestCase):
             FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
                                  + self.LINK)
 
+
+class PreventionTest(unittest.TestCase):
+    def test_a_process_assessment_names_its_prevention(self):
+        FT.validate_prevention('<p><strong>Question.</strong> No assessment here.</p>')
+        with self.assertRaises(ValueError):
+            FT.validate_prevention('<p><strong>Process assessment.</strong> I closed an item wrongly.</p>')
+        with self.assertRaises(ValueError):
+            FT.validate_prevention('<p><strong>Process assessment.</strong> x <strong>Prevention.</strong> ok.</p>')
+        FT.validate_prevention('<p><strong>Process assessment.</strong> I closed an item wrongly. <strong>Prevention.'
+                               '</strong> The finisher now requires stakes on every closure (commit abc).</p>')
+
 if __name__ == '__main__':
     unittest.main()

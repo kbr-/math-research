@@ -298,8 +298,7 @@ historical assessments.
   reason and its limits and close it, without asking the user whether it may be pruned (user, 10
   October 2026: "the existing process already supports closing an item quickly if it deserves it").
   Every Closed follow-up carries `<strong>Stakes.</strong>`: what a yes and what a no to the item's
-  question would each give the specification or the open statement; an upper bound or a restated form
-  that gives a new handle is a reason to keep the item, not to close it. The reviewer reads each
+  question would each give the specification or the open statement. The reviewer reads each
   closure, and the entry links its record (the finisher checks both; user, 10 October 2026).
   Closed and Developed remove the item. Four consecutive research entries are the default
   spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
@@ -443,7 +442,11 @@ historical assessments.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general
-  rules, not narratives of the mathematics that prompted them. Repeated question marks signal
+  rules, not narratives of the mathematics that prompted them. When the user or a reviewer shows a
+  mistake in how the work was done, the same reply names its prevention and commits it, a mechanical
+  check where one can exist, without being asked (user, 10 October 2026). An entry's
+  **Process assessment.** paragraph ends with `<strong>Prevention.</strong>`: the committed check or
+  rule for each mistake it reports, or why none applies (the finisher checks). Repeated question marks signal
   increasing frustration with the process: implement and commit a real fix, preferably a mechanical
   check, rather than only apologizing.
 - After a session restart, notifications about instructions, stopped tasks or changed files are not

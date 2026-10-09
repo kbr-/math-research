@@ -421,6 +421,20 @@ def validate_closures(text):
                          'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
 
 
+def validate_prevention(text):
+    """A Process assessment says what prevents each mistake it reports (user, 10 October 2026: the user should
+    not have to ask "what will you do to prevent such mistakes in the future?")."""
+    assessment = report_paragraph(text, 'Process assessment')
+    if not assessment:
+        return
+    found = re.search(r'<strong>Prevention\.</strong>(.*)', assessment, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    if len(plain) < 40:
+        raise ValueError('End the Process assessment with <strong>Prevention.</strong> and at least 40 '
+                         'characters: the committed check or rule for each mistake it reports, or why none '
+                         'applies (AGENTS.md, framework maintenance)')
+
+
 def validate_progress(body, article, close, *, check_registered_claims=True):
     """Check reporting and follow-through, not the mathematical truth of an advance.
 
@@ -443,6 +457,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     text = body[article:close]
     require_report(text, 'New mathematics')
     progress = require_report(text, 'Goal progress')
+    validate_prevention(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
     if state == 'advanced':
