@@ -14,10 +14,10 @@ Scope: dimensions 1–10; odd primes through 97.
 | 6 | 24 | 0 |
 | 7 | 24 | 0 |
 | 8 | 24 | 0 |
-| 9 | 12 | 12 |
-| 10 | 12 | 12 |
+| 9 | 13 | 11 |
+| 10 | 13 | 11 |
 
-Total: **216 complete**, **24 unresolved**.
+Total: **218 complete**, **22 unresolved**.
 
 Evidence:
 
@@ -35,5 +35,6 @@ Evidence:
 - `thm:thirty-one-normality`: [Dimensions nine and ten at thirty-one](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-thirty-one-complete) (working_proof).
 - `thm:thirty-seven-normality`: [A quadratic mark completes thirty-seven](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-thirty-seven-complete) (working_proof).
 - `thm:forty-one-normality`: [One reflected period completes forty-one](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-forty-one-complete) (working_proof).
+- `thm:forty-three-normality`: [Three torsion steps complete forty-three](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-forty-three-complete) (working_proof).
 
 The pairwise machine-readable inventory is in `inventory.json`. Bounds may be reduced according to measured cost, as requested by the user.

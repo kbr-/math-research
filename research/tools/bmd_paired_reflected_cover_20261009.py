@@ -2,7 +2,7 @@
 """Certify all previous residual lifts with direct or proved reflected cut ranks."""
 import argparse,csv,json,math,re
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('--prior',type=Path,required=True);p.add_argument('--log',type=Path,required=True);p.add_argument('--direct',type=Path,required=True);p.add_argument('--local-check',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--prior',type=Path,required=True);p.add_argument('--log',type=Path,required=True);p.add_argument('--direct',type=Path,required=True);p.add_argument('--local-check',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--csv',type=Path,help='Complete coverage mask, not measured ranks');a=p.parse_args()
 prior=json.loads(a.prior.read_text());P=prior['common_period'];residual=prior['uncovered_residues'];text=a.log.read_text()
 m=re.search(r'LOCAL_PERIOD (\d+) DEGREE_PERIOD (\d+) NORMALIZATION_CODE (\d+)',text);assert m
 local,Q,gamma=map(int,m.groups());assert 'full=1' in text and 'all_selected_ranks_FLINT_verified=true' in text
@@ -22,3 +22,9 @@ for d in sorted(lifts):witnesses.append(dict(common_residue=d,new_residue=d%Q,**
 remaining=[w['common_residue'] for w in witnesses if w['rank']!=188]
 report=dict(prior_period=P,local_period=local,degree_period=Q,normalization_code=gamma,common_period=L,crt_gcd=g,prior_residuals=residual,lift_count=len(lifts),required_states=len(needed),direct_states=len(direct),derived_states=sum(r['kind']!='direct' for r in expanded.values()),uncovered_residues=remaining,complete_bulk_cover=not remaining,witnesses=witnesses)
 a.out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='witnesses'}))
+
+if a.csv:
+ bad=set(remaining)
+ with a.csv.open('x') as f:
+  w=csv.writer(f);w.writerow(['degree_residue','representative','rank','order_index'])
+  for d in range(L):w.writerow([d,d,0 if d in bad else 188,0])
