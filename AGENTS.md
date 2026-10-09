@@ -281,10 +281,13 @@ historical assessments.
   entry develops at most one top-level item, by default the head; the agent may take another queued item first
   when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and why it comes
   first (user, 9 October 2026: "You can select the order. Make this a general framework rule."); no
-  item is skipped by this. A run of chosen entries is one spell: after four in a row the next
-  develops the head, and work refused at an item's spell boundary is not re-filed under a related
-  item (user, 10 October 2026: "You should not bypass the spell limit. Why not just rotate the item
-  and move to next one?"; the finisher checks the run). The entry is tagged `data-lead` or
+  item is skipped by this. At an item's spell boundary rotate it and develop a different item, the head or any other
+  chosen one; work refused at the boundary is not re-filed under a related item (user, 10 October
+  2026: "You should not bypass the spell limit. Why not just rotate the item and move to next
+  one?" and "Doesn't have to be the head. You can select the item to develop, just a different
+  one."). Sub-ideas belong to their item: a parent that keeps one open is Continuing, not Closed,
+  and they never become items of their own when it closes (user, 10 October 2026). Any item the
+  agent develops, chosen ones included, may earn the spell extension described below. The entry is tagged `data-lead` or
   `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>` Closed, Developed or
   Continuing. Squeeze an item until it can produce nothing more, not until its first usable result
   (user, 3 October 2026): Continuing whenever its translation still bears on an open statement,

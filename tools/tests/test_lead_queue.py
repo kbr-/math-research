@@ -710,9 +710,10 @@ class LeadQueueTest(unittest.TestCase):
         keep = ('<article data-kind="research" data-route="step" data-lead="r1:1"><ul><li data-build="k:s2">still '
                 'useful <strong>Follow-up.</strong> Continuing: on its own.</li></ul><p><strong>Follow-up.</strong> '
                 'Closed: falsified.</p></article>')
-        after = notebook([self.rev, keep], [self.q[1], ('build', 'k:s2')])
-        lq.check(before, after)
-        self.assertEqual(lq.parse(lq.done(notebook([self.rev, keep], tree), 'Closed'))[1], [self.q[1], ('build', 'k:s2')])
+        # a sub-idea belongs to its item: keeping one open means the parent is not Closed but Continuing
+        with self.assertRaises(ValueError):
+            lq.check(before, notebook([self.rev, keep], [self.q[1], ('build', 'k:s2')]))
+        lq.check(before, notebook([self.rev, keep.replace('Closed: falsified', 'Continuing: its sub-idea')], tree))
 
     def test_a_reopened_subidea_returns_at_the_top_level(self):
         listing = developing(self.q[0], 'Continuing', '<h4>Sub-ideas</h4><ul><li data-sub="check">c</li></ul>')
@@ -825,11 +826,6 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(head, notebook([rev, developing(q[2], 'Closed')], q[:2]))
         with self.assertRaises(ValueError):                             # a reason must say something
             lq.check(head, notebook([rev, developing(q[2], 'Closed', '<p><strong>Chosen.</strong> yes.</p>')], q[:2]))
-        # a run of chosen entries is one spell: after SPELL of them, on any items, the head comes next
-        run = [rev] + [developing(q[1], 'Continuing', why), developing(q[2], 'Continuing', why)] * (lq.SPELL // 2)
-        with self.assertRaises(ValueError):
-            lq.check(notebook(run, q), notebook(run + [developing(q[1], 'Continuing', why)], q))
-        lq.check(notebook(run, q), notebook(run + [developing(q[0], 'Continuing')], q))    # the head is allowed
         cont = developing(q[2], 'Continuing', why)
         spent = [rev] + [cont] * lq.SPELL
         lq.check(notebook(spent[:-1], q), notebook(spent, q))           # the last entry of its spell

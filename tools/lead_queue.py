@@ -40,7 +40,8 @@ finish-turn.py against HEAD:
   data-parent="KIND:ID" joins that item, others go to the tail.  The head or its first sub-idea may be developed;
   developing a sub-idea counts toward its parent's spell, and the parent moves to the tail with its sub-ideas.  A
   parent is not Developed while it has sub-ideas; a Closed parent closes them, except those the entry's follow-up
-  list keeps Continuing, which go to the tail.  Backpressure counts top-level items.
+  list would keep Continuing: sub-ideas belong to their item, so a parent with a sub-idea it does not close is
+  not Closed either, it is Continuing (user, 10 October 2026).  Backpressure counts top-level items.
 - Sub-ideas (user, 3 October 2026): any Research-record entry may list, under <h4>Sub-ideas</h4>, questions to
   research and checks to run (<li data-sub="check">) and things to build (<li data-sub="build">) that it names and
   leaves undone; they join the tail with no test, as ANCHOR:sN, N counted over the whole list.  A check is Developed
@@ -611,9 +612,7 @@ def extension_item(body, nodes, tag, text, position=None):
         if not (named and 'data-kind="audit"' in tag and picked(tag, text) and ORDER_RE.search(text)):
             raise ValueError('An extension needs a development, or a quoted user audit restoring its head')
         item = named.groups()
-    if item[0] not in ('lead', 'bridge'):
-        raise ValueError('Only a lead or bridge (including its sub-ideas) earns spell extensions')
-    return item
+    return item      # any item the agent develops may earn one (user, 10 October 2026)
 
 
 def unlimited_item(tag, text):
@@ -712,7 +711,8 @@ def kept_children(text):
 
 
 def close(nodes, item, kept, promoted):
-    """Remove a queued item; a closed parent's children close with it unless kept, which go to `promoted`."""
+    """Remove a queued item; a closed parent's children close with it unless kept, which go to `promoted` (the
+    finisher refuses an entry that closes a parent while keeping a sub-idea, so this arises only in old records)."""
     parent, node = locate(nodes, item)
     if node is None:
         return
@@ -1190,24 +1190,17 @@ def check(head_body, body, path=None, root=None):
                                  f'sub-idea {first.ident}' if first else '') + '. To develop another item, say in '
                                  'a <strong>Chosen.</strong> paragraph which open statement it bears on and why '
                                  'it comes first; the user may also pick one (data-picked)')
-            run = 0     # a run of chosen entries is one spell: related items do not pass a spell limit
-            for past_tag, past_text in reversed(record_articles(body)[:-1]):
-                if not counted(past_tag, past_text):
-                    continue
-                if not CHOSEN_RE.search(past_text) or 'data-picked="user"' in past_tag:
-                    break
-                run += 1
-            if run >= SPELL:
-                raise ValueError(f'{run} research entries in a row chose their item: this one develops the head, '
-                                 f'{head.ident if head else "none (every item waits)"}, or its first sub-idea '
-                                 '(user, 10 October 2026: "You should not bypass the spell limit. Why not just '
-                                 'rotate the item and move to next one?")')
             top = locate(old, work[0])[0] or located
             if spell(body, top.item, old) > spell_limit(body, top.item, old):
                 raise ValueError(f'{top.ident} has reached the boundary of its spell: develop another item first, '
                                  'or earn an extension (data-spell-extend)')
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
+        staying = [c.ident for c in located.children if c.item in kept_children(text)]
+        if work[1] == 'Closed' and staying:
+            raise ValueError(f'{work[0][1]} keeps sub-ideas open ({", ".join(staying)}), so it is not Closed; it '
+                             'is Continuing: sub-ideas belong to their item and do not become items of their own '
+                             'when it closes (user, 10 October 2026)')
     draining_before = SETTINGS['backpressure'] and (was_draining or len(old) >= CAP)
     validate_review_generation(tag, text, draining_before)
     if draining_before and counted(tag, text) and not work and not batch and head is not None:
