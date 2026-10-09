@@ -1,0 +1,33 @@
+Review record, 9 October 2026: entry-2026-10-09-table-product-series (first draft).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); no programs run.
+
+Verdict: pass with corrections. Lemma, script and every table number check out; the evidence reading and the
+asymptotic reading need changes.
+Main error: at (20,4,24) products of two generators have degree >= 4, so the coefficient at 3 is purely
+first order: 1140 - 24*52 = -108. The discrimination is levels versus cumulative, not relations among
+products. The level form of the first-order count gives 4, 5, 5, 4, 3 at the five sets by hand, equal to D*
+and to the observation in all nine systems; no computed system tests the higher-order terms.
+"Its expansion to first order is the count of the last entry": false as written; it is the level
+difference (partial sums give dim B - Sigma_D: 139 at D=2 and 31 at D=3 for (20,4,24)).
+By the lemma the true quotient is nonzero at D* at scale (at v=1024, D=223, m p about 5): the series cannot
+model the quotient at D*, only heuristically the unit.
+Per-row failure probability is p_a = P(|S cap scope| >= d_a) >= rho, equal in order only for ideal levels;
+"computed systems with k >= v/2 are too small" is stale (codimension 215 and 124 visible at (20,4,24)).
+Conjecture: D* uses ideal levels; define with actual levels. Its "only if" direction contradicts the last
+entry's unit hypothesis wherever D* exceeds the first-order threshold: say incompatible at scale.
+"Stopped moving by v = 1024", "1/2 - Theta(1/sqrt c)", "about 0.22v" are extrapolations from one
+non-monotone step.
+Checked, no change: lemma and proof; h_a(z)(1+z)^(v-k); table_series.py (negative binomials, truncation,
+m-fold product, first non-positive index, cumulative threshold, half_levels for odd and even k); all table
+numbers; 1 absent at D*-1 in all nine (the two (16,8,24) systems from the preceding entry's table only).
+Unused: "m >= v" and "with high probability" untested.
+Suggestions (unverified by the author): (a) the model fails for repeated rows and for disjoint scopes.
+(b) saddle coalescence: D* ~ v max_alpha [alpha - (m/v) alpha (1-alpha) q'(alpha)/(1-q)], q = 1 - h/(1+z)^k,
+maximum where q ~ 4 alpha (1-alpha)/(k^2 (1-2 alpha)^2), about 1/k^2; check at k=20, alpha=0.22:
+q ~ 3.4e-3 against 5.5e-3. Then D*/v depends on k alone, 1/2 - Theta(sqrt(ln k / k)), tending to 1/2 for
+k = 2 log2 v; the dip 0.234 to 0.217 would be a finite-size term. Decisive runs: fix k=20 and vary v;
+v=4096, k=24.
+
+Author's note: the fixed-width runs (table_series.gp, fixed-width.txt) were made after this report and
+agree with form (b): (1/2 - D*/v)/sqrt(ln k/k) = 0.74 at k = 12, 16, 20, 24, v = 2048. The reviewer has
+not seen them.
