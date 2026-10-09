@@ -1324,6 +1324,22 @@ Graph ordering on n vertices has a complete one-level old-affine ENS source with
 
 ---
 
+### Paired congruence normality
+
+**Claim:** [thm:paired-congruence-normality](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-paired-congruence-normality>)
+
+For every odd p, m >= 2 and Q=p^e > 2^m-3, the full paired source at polynomial bound c >= 0 is generically Hasse-normal if Q divides c+1. Hence for every n >= 5 and d >= n-2 the original root-curve series is generically normal if Q > 2^floor((n-1)/2)-3 and 2d is congruent to n-3 modulo Q, without adjacent lower-dimensional normality hypotheses.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** The preserved congruence gives an unconditional all-dimensional progression beyond the prior conditional branch lift. Its mathematical scope is established, but no external novelty audit has been performed.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare this source-preserving progression with the root-curve and positive-characteristic interpolation literature before claiming novelty or proposing publication.
+
+---
+
 ### Power budget unary affine source exclusion
 
 **Claim:** [thm:power-budget-unary-affine-source-exclusion](<https://kbr.is-a.dev/math-research/#power-budget-unary-affine-source-exclusion>)

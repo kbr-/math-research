@@ -1,0 +1,10 @@
+// Independent exact polynomial determinant identity for the seven low odd cuts.
+ring R=0,(z),dp;
+matrix A[7][7];int i,j,k;poly v;
+for(i=1;i<=7;i++){for(j=1;j<=7;j++){v=1;for(k=0;k<2*i-1;k++){v=v*(z-j+1-k)/(k+1);}A[i,j]=v;}}
+intvec rootMultiplicity=1,1,2,2,3,3,4,3,3,2,2,1,1;
+poly expected=-1;for(i=0;i<=12;i++){expected=expected*(z-i)^rootMultiplicity[i+1];}
+number scale=6272287562165625;
+poly check=scale*det(A)-expected;
+if(check==0){print("COMPLETE independent Singular seven-cut determinant identity exact=true");}else{print("FAIL determinant identity");print(check);}
+quit;
