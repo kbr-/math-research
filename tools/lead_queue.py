@@ -102,9 +102,14 @@ HREF_RE = re.compile(r'href="([^"]+)"')
 # A file URL of this repository (build_pages.SOURCE_URL), the form notebooks link files in: its repository path.
 REPO_FILE_RE = re.compile(r'https://github\.com/kbr-/math-research/(?:blob|tree)/[^/]+/([^#?]+)')
 SECTION_RE = re.compile(r'<section id="lead-queue"([^>]*)>(.*?)</section>', re.S)
-LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
-BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
-SUBIDEAS_RE = re.compile(r'<h4>Sub-ideas</h4>\s*<ul>(.*?)</ul>', re.S)
+def section_list(heading):
+    # Keep the list body in group 1 for existing callers; either presentation is valid.
+    return re.compile(r'<h4>' + re.escape(heading) + r'</h4>\s*<(?:ul|ol)>(.*?)</(?:ul|ol)>', re.S)
+
+
+LEADS_RE = section_list('Outside leads')
+BRIDGES_RE = section_list('Absurd bridges')
+SUBIDEAS_RE = section_list('Sub-ideas')
 ORDER_RE = re.compile(r'<h4>Queue order</h4>\s*<ol(?: data-move="head")?>(.*?)</ol>', re.S)
 TEST_PASSED = re.compile(r'<strong>Test\.</strong>\s*Passed\b')
 OUTCOME_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed|Reopened|Waiting|Unblocked)\b')

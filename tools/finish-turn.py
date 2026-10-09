@@ -17,6 +17,7 @@ from claim_registry import load as load_claims, read_json, render as render_clai
 from claim_maintenance import check_revision
 from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
+from lead_queue import LEADS_RE, BRIDGES_RE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -78,8 +79,6 @@ def validate_route(body, article):
                          'the line advances the goal, and the next step on the highest-risk route item')
 
 
-LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
-BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
 # Outside draining, restore three passed leads and two bridges (user, 5 October 2026).
 # Only picks enter the queue; if fewer tests pass, keep those rather than inventing successes.

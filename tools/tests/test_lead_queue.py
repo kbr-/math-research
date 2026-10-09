@@ -104,6 +104,17 @@ class LeadQueueTest(unittest.TestCase):
             lq.check(None, notebook([self.rev], self.q[:1]))           # an open item is missing
         lq.check(None, notebook([self.rev], self.q))
 
+    def test_ordered_lists_keep_picks_and_subideas(self):
+        entry = review('ordered', [PASS, FAIL, FAIL], [PASS, FAIL])
+        entry = entry.replace('<li>L0', '<li data-pick>L0').replace('<li>B0', '<li data-pick>B0')
+        entry += subideas('todo', [('check', 'test the mechanism')])
+        entry = entry.replace('<ul>', '<ol>').replace('</ul>', '</ol>')
+        expected = [('lead', 'ordered:1'), ('bridge', 'ordered:1'), ('check', 'todo:s1')]
+        self.assertEqual(lq.open_items(notebook([entry])), expected)
+        with self.assertRaises(ValueError):
+            lq.check(None, notebook([entry], []))
+        lq.check(None, notebook([entry], expected))
+
     def test_fifo_and_outcomes(self):
         head = notebook([self.rev], self.q)
         with self.assertRaises(ValueError):                             # not the head

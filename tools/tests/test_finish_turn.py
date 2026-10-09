@@ -72,6 +72,14 @@ class DrainingReviewsTest(unittest.TestCase):
             with self.subTest(attrs=attrs), self.assertRaisesRegex(ValueError, 'Outside leads'):
                 self.validate(self.body(OBSTACLE, attrs))
 
+    def test_ordered_review_lists_enforce_picks(self):
+        item = '<li data-pick>Mechanism. <strong>Answers.</strong> The obstacle. <strong>Test.</strong> Passed.</li>'
+        text = OBSTACLE + '<h4>Outside leads</h4><ol>' + item * 3 + '</ol>'
+        text += '<h4>Absurd bridges</h4><ol>' + item * 2 + '</ol>'
+        self.validate(self.body(text, ''), draining=False)
+        with self.assertRaisesRegex(ValueError, 'most promising'):
+            self.validate(self.body(text.replace(' data-pick', '', 1), ''), draining=False)
+
     def test_pre_entry_state_controls_review_that_finishes_draining(self):
         body = self.body(OBSTACLE, '')
         self.validate(body, draining=True)
