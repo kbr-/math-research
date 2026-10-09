@@ -135,5 +135,26 @@ class GoalProgressTest(unittest.TestCase):
         FT.validate_progress('<article data-kind="research"></article>', 0, 30)
 
 
+
+class ClosureStakesTest(unittest.TestCase):
+    CLOSE = '<p><strong>Follow-up.</strong> Closed: superseded.</p>'
+    STAKES = ('<p><strong>Stakes.</strong> A yes would add a clause to the specification on row width; a no would '
+              'name the structure a candidate needs. <strong>Follow-up.</strong> Closed: superseded.</p>')
+    LINK = '<p>Record: <a href="https://example.org/results/x/review.txt">review.txt</a>.</p>'
+
+    def test_a_closure_needs_stakes_and_a_reviewer_record(self):
+        FT.validate_closures('<p><strong>Follow-up.</strong> Continuing: next.</p>')      # nothing closed
+        with self.assertRaises(ValueError):
+            FT.validate_closures(self.CLOSE + self.LINK)                                   # no stakes
+        with self.assertRaises(ValueError):
+            FT.validate_closures(self.STAKES)                                              # no reviewer record
+        FT.validate_closures(self.STAKES + self.LINK)
+        two = self.STAKES + '<ul><li data-check="a:s1">x <strong>Follow-up.</strong> Closed: same.</li></ul>'
+        with self.assertRaises(ValueError):
+            FT.validate_closures(two + self.LINK)                                          # one closure lacks stakes
+        with self.assertRaises(ValueError):                                                # too short to say anything
+            FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
+                                 + self.LINK)
+
 if __name__ == '__main__':
     unittest.main()

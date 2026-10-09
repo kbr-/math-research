@@ -394,6 +394,33 @@ def pending_architecture_test(body, before=None):
     return pending
 
 
+CLOSED_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Closed\b')
+STAKES_RE = re.compile(r'<strong>Stakes\.</strong>((?:(?!<strong>Follow-up\.</strong>)(?!</li>)(?!</p>).)*)', re.S)
+
+
+def validate_closures(text):
+    """A closed queue item states its stakes and is seen by the reviewer.
+
+    Closing is cheap and a wrong reason passes unnoticed (10 October 2026: an item on a ceiling was closed as
+    "off the critical path" although a ceiling with a deficit term is a condition on candidates, and as a
+    "restatement" although the restated form was the handle).  Each Closed follow-up therefore carries
+    <strong>Stakes.</strong> saying what a yes and what a no to the item's question would each give the
+    specification or the open statement, and the entry links the reviewer's record, so that the reviewer has
+    read the closure."""
+    closed = len(CLOSED_RE.findall(text))
+    if not closed:
+        return
+    stakes = [html.unescape(re.sub(r'<[^>]*>', ' ', found)).strip() for found in STAKES_RE.findall(text)]
+    if len([s for s in stakes if len(s) >= 60]) < closed:
+        raise ValueError(f'This entry closes {closed} queue item(s): give each a <strong>Stakes.</strong> '
+                         'statement of at least 60 characters, in the paragraph or list item that closes it, '
+                         'saying what a yes and what a no to its question would each give the specification or '
+                         'the open statement (AGENTS.md; user, 10 October 2026)')
+    if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
+        raise ValueError('An entry that closes a queue item links the reviewer\'s record (review.txt): the '
+                         'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
+
+
 def validate_progress(body, article, close, *, check_registered_claims=True):
     """Check reporting and follow-through, not the mathematical truth of an advance.
 
@@ -416,6 +443,8 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     text = body[article:close]
     require_report(text, 'New mathematics')
     progress = require_report(text, 'Goal progress')
+    if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
+        validate_closures(text)
     if state == 'advanced':
         supporting = [cid for cid in entry_claims(body, article)
                       if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)]

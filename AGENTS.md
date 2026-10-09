@@ -297,6 +297,10 @@ historical assessments.
   result). One cycle, which may be short, is enough to find that an item deserves closing; state the
   reason and its limits and close it, without asking the user whether it may be pruned (user, 10
   October 2026: "the existing process already supports closing an item quickly if it deserves it").
+  Every Closed follow-up carries `<strong>Stakes.</strong>`: what a yes and what a no to the item's
+  question would each give the specification or the open statement; an upper bound or a restated form
+  that gives a new handle is a reason to keep the item, not to close it. The reviewer reads each
+  closure, and the entry links its record (the finisher checks both; user, 10 October 2026).
   Closed and Developed remove the item. Four consecutive research entries are the default
   spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
   current spell/extension period materially advances a named open statement and a concrete next
