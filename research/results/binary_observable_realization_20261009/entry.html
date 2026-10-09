@@ -1,0 +1,66 @@
+<article id="entry-2026-10-09-observation-horizons" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-bridge="entry-2026-10-09-source-architecture-review:2" data-claims="lem:observation-horizon-closure prop:normalized-hankel-rank">
+<h3>9 October 2026 — Observable states must survive changes of degree horizon</h3>
+<p class="entry-meta">Working finite-horizon criterion and exact rank control. Minimal-realization cycle.</p>
+<p><strong>Question.</strong> On general-step for the <a href="#binary-frege-lower-bound">binary goal</a>, develop the queued <a href="#entry-2026-10-09-source-architecture-review">minimal input-output realization bridge</a>. Can an observable quotient discard irrelevant directions while keeping the unit, actual source equations and legal PC reuse? The missing implication is a source-sensitive bound with coherent closure, not the existence of a finite matrix description.</p>
+<p><strong>General statement.</strong> <code>lem:observation-horizon-closure</code> gives an exact criterion for when finite-horizon observation kernels define a proper PC-closed space. <code>prop:normalized-hankel-rank</code> supplies an all-parameter normalized binary control with exponentially large minimal realization and explicit loss of lower-degree states. These do not establish source-wide closure or a Frege lower bound.</p>
+<h4>What the realization source supplies</h4>
+<p>The cited <a href="https://grfia.dlsi.ua.es/repositori/grfia/pubs/216/traduccion.pdf">Oncina paper, Section 2.3, Theorem 1</a>, was read with its row-basis construction. It identifies minimal multiplicity-automaton dimension with the rank of the infinite continuation matrix. Its construction shifts basis rows and uses their agreement on every suffix. We use only the ordinary-field specialization; no noncommutative string-inverse construction is imported. At a bounded polynomial degree the set of legal suffixes changes, so shift compatibility and subsequent reuse need a separate argument. This is the gap tested below, not a defect in that theorem.</p>
+<h4 id="observation-horizon-closure">Observation horizon closure</h4>
+<p>Let \(V_b=\mathbb F[x]_{\le b}\), \(0\le b\le D\), and let \(\Lambda:V_D\to W\) be any linear map to a finite-dimensional space, with \(\Lambda(1)\ne0\). It may collect several scalar outputs. Define
+\[
+ N_b=\{p\in V_b:\Lambda(pq)=0\text{ for every }q\in V_{D-b}\},
+ \qquad S_b=V_b/N_b.
+\]
+Its observation matrix has columns indexed by a basis of \(V_b\), and rows by suffix monomials of degree at most \(D-b\) together with output coordinates. Thus \(\dim S_b\) is its rank.</p>
+<p><strong>Lemma (observation horizon closure).</strong> Inclusion and multiplication by \(x_i\) induce linear maps \(S_b\to S_{b+1}\). The terminal kernel \(I=N_D=\ker\Lambda\) is closed under every legal variable multiplication through degree \(D\) if and only if
+\[
+ N_b=I\cap V_b\quad(0\le b\le D).
+ \tag{Horizon}
+\]
+Equivalently every inclusion-induced map \(S_b\to S_{b+1}\) is injective. If these conditions hold and every source generator of degree at most \(D\) belongs to \(\ker\Lambda\), then \(I\) is a proper source PC pseudoideal. Conversely every proper degree-\(D\) PC pseudoideal is obtained this way by taking the quotient map as \(\Lambda\).</p>
+<p><strong>Proof.</strong> If \(p\in N_b\), then it pairs to zero with every shorter suffix, proving \(p\in N_{b+1}\). Also
+\[
+ \Lambda((x_i p)q)=\Lambda(p(x_iq))=0
+ \quad(\deg q\le D-b-1),
+\]
+so multiplication is well-defined. Products commute when both two-step transitions are paid, by the literal polynomial identity. No same-space extension beyond the horizon is inferred.</p>
+<p>The empty suffix gives \(N_b\subseteq I\cap V_b\). If \(I\) is PC-closed and \(p\in I\cap V_b\), multiply successively by each suffix monomial through total degree \(D\); hence \(p\in N_b\). Conversely, under (Horizon), any nonzero \(p\in I\) of degree \(b&lt;D\) lies in \(N_b\), so \(x_ip\in N_{b+1}\subseteq I\). This is closure for the actual degree, including polynomials obtained by cancellation.</p>
+<p>The kernel of the inclusion-induced map is \((N_{b+1}\cap V_b)/N_b\). Its vanishing at each adjacent pair gives (Horizon) by iteration to \(D\); the converse follows immediately. Finally \(\Lambda(1)\ne0\) makes \(I\) proper, and generator inclusion plus the proved closure supports every PC inference. Given a proper pseudoideal, its quotient map kills \(pq\) for all allowed suffixes whenever \(p\in I\), while the empty suffix detects every class outside it; thus its horizons recover \(I\cap V_b\). \(\square\)</p>
+<p>This is a bookkeeping criterion, not a construction of \(\Lambda\) or a small output dimension. It exposes the exact cancellation/reuse condition that a finite matrix representation alone omits. A proof-local construction need only preserve the operations actually used by its proof; demanding the full pseudoideal remains a stronger sufficient endpoint.</p>
+<h4 id="normalized-hankel-rank">Normalized Hankel rank</h4>
+<p><strong>Proposition.</strong> For every \(n\ge3\), define a binary functional on the Boolean algebra by
+\[
+ \lambda(p)=\sum_{a\in\{0,1\}^n\setminus\{0\}}p(a)\in\mathbb F_2.
+\]
+It is normalized. For \(D=n\), its finite-horizon ranks on squarefree monomial bases are
+\[
+ r_0=r_n=1,\qquad r_b=1+\binom nb\quad(1\le b\le n-1).
+\]
+Nevertheless the natural map \(S_b\to S_{b+1}\) kills every degree-\(b\) squarefree monomial state for \(1\le b\le n-2\). The full Boolean moment matrix has rank \(2^n-1\), and the word series \(\lambda(x_{i_1}\cdots x_{i_t})\) has minimum realization dimension over \(\mathbb F_2\) exactly \(2^n-1\).</p>
+<p><strong>Proof.</strong> For a squarefree support \(A\),
+\[
+ \lambda(x_A)=
+ \begin{cases}1,&A=\varnothing\text{ or }A=[n],\\0,&\text{otherwise.}\end{cases}
+\]
+The empty support gives \(2^n-1=1\) in the field; a nonempty proper support has \(2^{n-|A|}\) satisfying assignments, all nonzero, an even number. The full support has one.</p>
+<p>For \(1\le b\le n-1\), the finite-horizon matrix has an isolated constant entry one. All remaining nonzero entries pair a size-\(b\) prefix support with its size-\((n-b)\) complement: any smaller total support has moment zero, and at total size \(n\) union equals \([n]\) only for complementary disjoint supports. That block is a permutation matrix of size \(\binom nb\), proving the rank formula. A degree-\(b\) monomial is detected by its complement at horizon \(b\); at horizon \(b+1\), every suffix has degree at most \(n-b-1\), so its union has size below \(n\) and its moment is zero. Thus the same low-degree polynomial is lost. Ordinary repeated-variable monomials give the same ranks because Boolean reduction preserves degree and the functional kills all Boolean multiples.</p>
+<p>For the full matrix, let \(Z\) be the square monomial-evaluation matrix on all Boolean points. It is the invertible subset-incidence matrix. Then
+\[
+ H=Z\,\operatorname{diag}(0,1,\ldots,1)\,Z^{\mathsf T},
+\]
+where the zero weight belongs to the origin, so its rank is \(2^n-1\). Any \(r\)-state word realization factors its prefix/suffix matrix through an \(r\)-dimensional space; the displayed finite submatrix forces \(r\ge2^n-1\). Conversely use one diagonal state for each nonzero point, transitions given by its coordinate bits, and initial/final weights one. This realizes the word series with exactly that many states. \(\square\)</p>
+<p>There is a short rule for every moment—test whether its support is empty or full—and the weight function is \(1+\prod_i(1+x_i)\). Neither short description gives a small continuation rank. At \(n=4\), ranks increase from five to seven while the inclusion map already kills all four singleton states: nondecreasing numerical rank alone does not establish (Horizon). The scalar terminal kernel kills \(x_1\), but multiplication by the remaining coordinates yields a monomial with moment one. It is not PC-closed.</p>
+<p>This functional is supported on genuine Boolean points, so it is not a hard-system design or an obstruction to selecting a different, much smaller realization. A point evaluation is a one-state alternative on the same Boolean-only base. If desired it extends a complete constant-input block by fixing its active coefficient to one; unused coefficients may carry this law. That shows compatibility with a complete local source, but does not force the bad law or prove a source lower bound. The distinction between one chosen realization and all permitted choices is essential.</p>
+<h4>Comparison with the actual proof task</h4>
+<p>The <a href="#boolean-quadratic-no-flat-moments">recorded Boolean quadratic flatness argument</a> already proves strict moment-rank growth for unsatisfiable quadratic systems. Its full proof was reread, so it is not reintroduced as a new observation. Here even growing horizon ranks can hide deaths of lower-degree states; adjacent injectivity is the relevant extra datum. The <a href="#entry-2026-10-09-coefficient-query-test">stronger local PC elimination baseline</a> still resolves single-block existence with an additive cost, so this bridge must eventually improve global source batching.</p>
+<p>The <a href="#proof-observation-rank">complete proof-observation theorem</a> also remains decisive. If an observation factorization recovers every actual vector output \([wef]\) on \([wU]\), its intermediate state dimension is at least \(\dim[wU]\) in the paid replay window. Passing through smaller scalar outputs can avoid that immediate statement only by changing what is observed; it must then prove that the unit and all required reuse survive. Neither the realization theorem nor the normalized control provides the missing source-specific bound.</p>
+<p><strong>Checks.</strong> The exact GAP control uses \(n=D=4\), a 16-monomial full Boolean basis and horizon dimensions \(1,5,11,15,16\). It obtains ranks \(1,5,7,5,1\), full rank 15, and verifies all 70 kernel-basis inclusion/multiplication conditions. It detects the lost \(x_1\) state and its nonzero complementary continuation. These are exhaustive linear-basis checks of the new graded construction, not evidence for compiler coverage. The script uses prefixed identifiers and its error-free output reports every expected count.</p>
+<p><strong>New mathematics.</strong> The explicit horizon-injectivity criterion and normalized all-parameter rank control clarify what minimal realization must preserve. No new flat-extension theorem is claimed.</p>
+<p><strong>Goal progress.</strong> Unchanged. A proper source-wide observation kernel, or a smaller proof-local alternative with its cost bound, is still unconstructed. The bridge now has a precise compatibility test rather than an automatic compression inference.</p>
+<p><strong>Follow-up.</strong> Continuing. Test a proof-local set of actual source queries and multiplication contexts, retaining cancellation/reuse, against the canonical old quotient and existing coefficient-query equations. Seek a source-size-dependent bound or construction, not a new description of one local block. Full vector observation and scalar moment models have different obligations.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Construct or falsify an affordable proof-local continuation module for the actual mixed source, preserving the unit and actual-degree reuse; compare its observable rank with the canonical old quotient, not raw output count.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed both claims, their dependency comparisons and unchanged goal assessment without mathematical corrections. Its field-scope clarification is incorporated. The primary realization construction, complete observation proof, Boolean flatness proof and local extension audit were read. All exact horizon checks passed; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/binary_observable_realization_20261009/review.txt">verdict</a> is retained.</p>
+<p><strong>Process assessment.</strong> Searching the record recovered the existing flatness result before it could be rediscovered; an all-parameter control then tested the distinct finite-horizon issue without a growing case series.</p>
+<!-- TIMING binary_observable_realization_20261009 -->
+</article>
