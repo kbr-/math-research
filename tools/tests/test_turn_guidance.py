@@ -101,6 +101,13 @@ class TurnGuidanceTest(unittest.TestCase):
         self.ft.validate_paragraphs(page, page.rindex('<article'), len(page))
         review = declared + '<article data-kind="review" data-route="step"></article>'
         self.ft.validate_paragraphs(review, review.rindex('<article'), len(review))
+        by_kind = body.replace('<section id="remaining-route">',
+                               '<section id="remaining-route" data-entry-paragraphs="A label|review:Comparison">')
+        self.assertEqual(self.ft.required_paragraphs(by_kind), ['A label'])
+        self.assertEqual(self.ft.required_paragraphs(by_kind, 'review'), ['Comparison'])
+        review = by_kind + '<article data-kind="review" data-route="step"></article>'
+        with self.assertRaises(ValueError):
+            self.ft.validate_paragraphs(review, review.rindex('<article'), len(review))
 
     def test_computation_and_generalization_notes(self):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])

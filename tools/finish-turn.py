@@ -499,23 +499,29 @@ def entry_status(body, article):
 ENTRY_PARAGRAPHS = re.compile(r'data-entry-paragraphs="([^"]+)"')
 
 
-def required_paragraphs(body):
-    """Labels a notebook requires in each new research entry: a living section declares them as
-    data-entry-paragraphs="Label one|Label two" (a rule stated only in prose is forgotten)."""
+def required_paragraphs(body, kind='research'):
+    """Labels this notebook requires in each new entry of the given kind.  A living section of the notebook
+    itself declares them as data-entry-paragraphs="Label one|review:Label two": an item without a kind
+    applies to research entries.  A notebook without the attribute requires nothing, so the duty stays
+    local to the notebook that states it (a rule kept only in prose is forgotten)."""
     record = body.find('<section id="research-record">')
     found = ENTRY_PARAGRAPHS.search(body, 0, record if record >= 0 else len(body))
-    return [label.strip() for label in found.group(1).split('|') if label.strip()] if found else []
+    labels = []
+    for item in (found.group(1).split('|') if found else []):
+        owner, _, label = item.rpartition(':')
+        if label.strip() and (owner.strip() or 'research') == kind:
+            labels.append(label.strip())
+    return labels
 
 
 def validate_paragraphs(body, article, close):
-    """Each research entry carries every paragraph its notebook declares, with real content."""
-    if entry_tags(body, article)['kind'] != 'research':
-        return
-    for label in required_paragraphs(body):
+    """Each entry carries every paragraph its notebook declares for its kind, with real content."""
+    kind = entry_tags(body, article)['kind']
+    for label in required_paragraphs(body, kind):
         found = re.search(r'<p><strong>' + re.escape(label) + r'\.</strong>(.*?)</p>', body[article:close], re.S)
         if not found or len(re.sub(r'<[^>]*>', ' ', found.group(1)).strip()) < 40:
             raise ValueError(f'This notebook requires a <p><strong>{label}.</strong> ...</p> paragraph in every '
-                             'research entry (data-entry-paragraphs on its living sections)')
+                             f'{kind} entry (data-entry-paragraphs on its living sections)')
 
 
 def validate_general(body, article, close):
