@@ -387,7 +387,9 @@ historical assessments.
   changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and
   run only when those controls change. Scripts and tests under `research/` are computations or
   provenance of finished one-off jobs, tied to the data of their date, and are not rerun.
-- Durable process lessons belong in the committed framework, not machine-local memory. State general
+- Durable process lessons belong in the committed framework, not machine-local memory: nothing is
+  written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
+  (user, 10 October 2026: "We need a mechanical check... No memories...."). State general
   rules, not narratives of the mathematics that prompted them. Repeated question marks signal
   increasing frustration with the process: implement and commit a real fix, preferably a mechanical
   check, rather than only apologizing.
@@ -403,7 +405,7 @@ historical assessments.
   agent; workers and unrelated sessions must never replace a binding. The legacy
   `remember-codex-session.py` only validates an existing binding. Never commit IDs. Codex
   startup/repair and hook trust are described in [tools/CODEX.md](tools/CODEX.md). Clones restore
-  files, not chat history. Private agent memory may hold preferences only, never mathematics or
+  files, not chat history. Private agent memory is not written at all (see Framework maintenance), and never holds mathematics or
   research progress.
 - Background sessions use one persistent Git worktree, never the shared checkout. Create it from the
   intended local base with `git worktree add --track -b NAME PATH BASE`; set a missing local
