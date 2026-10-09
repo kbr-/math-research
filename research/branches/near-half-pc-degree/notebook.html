@@ -23,7 +23,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>On near-half-family: continue the four-colour check (entry-2026-10-08-four-colour-fibres:s1) with the question the <a href="#entry-2026-10-09-first-bit-game">game bound</a> leaves: can a non-four-colourable graph have independence number at most \(N/3+o(N)\) and game value \(N-o(N)\) at once? Try to prove that the adversary's online survival forces a large independent set, or construct a graph with both; either outcome settles whether the two-bit four-colouring can be a near-half source under the two recorded upper bounds.</p>
+<p>On near-half-family: the scheduled route review is due. It carries: six entries since the last review without goal progress; the three upper bounds for colouring covers (<a href="#entry-2026-10-09-transversal-rank-ceiling">conditioning</a>, independence, <a href="#entry-2026-10-09-first-bit-game">game</a>) and the <a href="#entry-2026-10-09-circular-clique-exclusion">exclusion of the circular cliques</a>; the half-ceiling question, undecided and waiting on a source; the closed local sections lead; the exchange note from the auxiliary session; and the queue at 55 top-level items under the new thresholds.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -6219,6 +6219,46 @@ for large l. Its quantifier covers every unsatisfiable non-universal projected r
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 48.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6.07 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.24 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-circular-clique-exclusion" data-kind="research" data-route="near-half-family" data-route-item="near-half-family" data-obligation="near-half-pc-family" data-goal-progress="unchanged" data-check="entry-2026-10-08-four-colour-fibres:s1" data-claims="thm:circular-clique-degree-bound">
+<h3>9 October 2026 — The circular cliques are refuted in logarithmic degree, for every size</h3>
+<p class="entry-meta">Working proof for all parameters, replacing the finite check of the preceding entry as the reason this family is excluded; the question whether any graph passes all three screens stays open. Queue development of a chosen check while draining. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, reasoning effort low).</span></p>
+<p><strong>Chosen.</strong> Second entry on the two-bit four-colour check, which bears on the family statement as the one encoding with a proved half ceiling; it comes before the head because the preceding entry left a named question on it.</p>
+<p><strong>Question.</strong> On near-half-family and the Boolean PC family statement: the <a href="#entry-2026-10-09-first-bit-game">preceding entry</a> computed the game value of the circular cliques \(K_{(4q+1)/q}\) for \(q\le7\) and proved nothing for larger \(q\). Is the value small for every \(q\)? And can a graph have small independence number and large game value together?</p>
+<p><strong>New mathematics.</strong> For every \(q\ge1\) the game value of \(K_{(4q+1)/q}\) is at most \(\lceil\log_2q\rceil+6\), so its two-bit four-colouring is refuted in degree at most \(\lceil\log_2q\rceil+8\), against \(N=4q+1\). The strategy is a bisection for two neighbouring positions in different classes, followed by three queries. The second question is not answered.</p>
+<p><strong>Goal progress.</strong> Unchanged. One family is excluded for all sizes from \(q=3\); no family is obtained, the required implication is as before, and the general question about the three screens is open.</p>
+<p><strong>General statement.</strong> <code>thm:circular-clique-degree-bound</code> holds for every \(q\ge1\).</p>
+
+<h4>The bound</h4>
+<p>\(G_q=K_{(4q+1)/q}\): vertices \(\mathbb Z_p\), \(p=4q+1\), with \(i\sim j\) when the circular distance \(\min\{|i-j|,p-|i-j|\}\) is at least \(q\). The game and \(\tau\) are as in the preceding entry.</p>
+<p><strong>Theorem (circular clique degree bound).</strong> For every \(q\ge1\), \(\tau(G_q)\le\lceil\log_2q\rceil+6\), and the two-bit four-colouring system of \(G_q\) has a polynomial calculus refutation over \(\mathbb F_2\) of degree at most \(\lceil\log_2q\rceil+8\).</p>
+<p><em>Proof.</em> The second statement follows from the first by <code>prop:first-bit-game-ceiling</code>. For the first, describe a strategy; at any point where the adversary has no legal answer the algorithm has won, so assume legal answers throughout.</p>
+<p>Step 1. Query \(0,q,2q\). They are pairwise at circular distance \(q\), \(q\) and \(2q\), so they form a triangle and do not all receive the same class. Hence for \(i=0\) or \(i=1\) the vertices \(iq\) and \((i+1)q\) are in different classes.</p>
+<p>Step 2. The positions \(iq,iq+1,\ldots,(i+1)q\) form an interval of \(q+1\) consecutive positions whose endpoints are in different classes. Bisect: query the middle position of the current interval and keep a half whose endpoints differ. After at most \(\lceil\log_2q\rceil\) queries there is a position \(c\) such that \(c-1\) and \(c\) are queried and in different classes.</p>
+<p>Step 3. Query \(c+q\), \(c+2q\), \(c+3q\), unless already queried. These three are pairwise at circular distance \(q\), \(q\), \(2q\): a triangle. The vertex \(c\) is at circular distance \(q\), \(2q\) and \(q+1\) from them, and \(c-1\) at distance \(q+1\), \(2q\) and \(q\); so both are adjacent to all three. If two of the three were in the class of \(c\), they would form a triangle with \(c\) inside that class; likewise for \(c-1\). So each class may receive at most one of the three, and the third has no legal class. The adversary is stuck by the last of these queries.</p>
+<p>The total is at most \(3+\lceil\log_2q\rceil+3\). Vertices of Step 3 queried earlier only shorten the play, since the argument uses their classes and not the order. \(\square\)</p>
+<p>Against the exact values: the bound gives \(7,8,8,9,9,9\) for \(q=2,\ldots,7\), where the search found \(7,7,7,8,8,8\); for \(q=1\) it gives \(6\) and the value is \(5\).</p>
+
+<h4>What it teaches</h4>
+<p>For \(q\ge2\) the five vertices \(c-1,c,c+q,c+2q,c+3q\) induce a complete graph minus the edge between \(c-1\) and \(c\); for \(q=1\) they are all of \(K_5\). In any graph, the two non-adjacent vertices of such a configuration must be in the same class once all five are queried: the mechanism of Step 3. In \(G_q\) these configurations link every position to its neighbour, so legal play would make the class constant along the circle, which a triangle forbids; bisection finds the break in logarithmically many queries. The family's symmetry and density, which gave it small independence number, also gave the algorithm this chain.</p>
+<p>The general question is open. A graph that is to pass all three screens needs independence number at most about \(N/3\), all large induced subgraphs four-colourable, and an online adversary surviving nearly \(N\) queries. One mechanism that must then be absent is the one used here: cheap queries that force two vertices into different classes, such as a triangle, joined by a short chain of configurations each forcing its pair into the same class. The only graphs in the record with large game value are joins of a long odd cycle with an edge, with independence number about \(N/2\). I tried the joins of a bipartite graph having an edge with an odd cycle as an intermediate family: they contain the join of the cycle with one edge, a non-four-colourable subgraph on fewer vertices, so they fail near-criticality and teach nothing new. I have no argument that small independence number forces a small game value, and no graph with both.</p>
+
+<p><strong>Specification decision.</strong> No change beyond the condition added in the preceding entry. The circular cliques are now excluded by a theorem for every \(q\ge3\), where \(\lceil\log_2q\rceil+8&lt;N-2\); at \(q=1,2\) the bound is not below \(N\). Before, they were excluded at computed sizes only.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the theorem by hand for every \(q\ge1\), with \(q=1,2,3\) separately: the three steps, all nine distances of Step 3, distinctness of the five vertices, the two possible repeats among queried vertices, the count and the comparison with the exact values; no change to the proof. Corrections applied to the prose: the configuration is a complete graph minus an edge only for \(q\ge2\); my sentence about chains between adjacent vertices was wrong, since forcing adjacent vertices into one class is legal, and is replaced by the mechanism actually used; the join remark needs the bipartite graph to have an edge; the exclusion holds from \(q=3\). Unused: non-adjacency of \(c-1\) and \(c\); the third query of Step 1 when the first two already differ. Record: <a href="https://github.com/kbr-/math-research/blob/main/research/results/near-half-circular-clique-exclusion-20261009/review.txt">review.txt</a>.</p>
+<p><strong>Follow-up.</strong> Continuing. Second entry on this check. Next attempt on it: the general question in a form that can be attacked, whether near vertex-criticality with independence number at most \(N/3\) forces a chain of forcing configurations, starting from what vertex-critical five-chromatic graphs with small independence number are known.</p>
+<p><strong>Process assessment.</strong> The preceding entry stopped the computation and said a statement for all sizes needed a proof; the proof came from reading the optimal strategies the program printed, whose first branch already used a complete graph minus an edge. A scheduled review is due next.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="nhpc-20261009-game-versus-independence">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 30.21 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 16.80 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 12.23 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.18 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
