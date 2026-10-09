@@ -421,6 +421,20 @@ def validate_closures(text):
                          'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
 
 
+def validate_process_audit(text):
+    """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
+    agent should find its own mistakes without the user's hand-holding)."""
+    gate = report_paragraph(text, 'Verification gate')
+    if not re.search(r'href="[^"]*review[^"/]*\.txt"', gate):
+        return
+    found = re.search(r'<strong>Process audit\.</strong>(.*)', gate, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    if len(plain) < 40:
+        raise ValueError('This entry links a reviewer record: report in its Verification gate, after '
+                         '<strong>Process audit.</strong>, what the reviewer found about how the work was done '
+                         'and what was changed, or that it found nothing (AGENTS.md, framework maintenance)')
+
+
 def validate_prevention(text):
     """A Process assessment says what prevents each mistake it reports (user, 10 October 2026: the user should
     not have to ask "what will you do to prevent such mistakes in the future?")."""
@@ -458,6 +472,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     require_report(text, 'New mathematics')
     progress = require_report(text, 'Goal progress')
     validate_prevention(text)
+    validate_process_audit(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
     if state == 'advanced':

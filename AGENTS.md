@@ -444,7 +444,11 @@ historical assessments.
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general
   rules, not narratives of the mathematics that prompted them. When the user or a reviewer shows a
   mistake in how the work was done, the same reply names its prevention and commits it, a mechanical
-  check where one can exist, without being asked (user, 10 October 2026). An entry's
+  check where one can exist, without being asked (user, 10 October 2026). So that the user is not the only check on
+  conduct, every reviewer also audits how the work was done (overstated titles, unasked questions,
+  unsupported decisions; see the `medium-reviewer` definition, and ask for it in every brief), and
+  each reviewed entry reports the findings after `<strong>Process audit.</strong>` in its
+  Verification gate (the finisher checks; user, 10 October 2026). An entry's
   **Process assessment.** paragraph ends with `<strong>Prevention.</strong>`: the committed check or
   rule for each mistake it reports, or why none applies (the finisher checks). Repeated question marks signal
   increasing frustration with the process: implement and commit a real fix, preferably a mechanical

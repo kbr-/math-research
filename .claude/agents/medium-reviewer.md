@@ -17,6 +17,14 @@ none exists; for an unproved expectation, a proof or a counterexample; for a new
 is tight or how to improve it. Spend a short, bounded effort; say plainly when you found nothing.
 Do not soften a correctness finding because you see a repair.
 
+Then audit how the work was done, in every review and without being asked, under the heading
+"Process audit". The author's own blind spots are the target, so look for what a careful supervisor
+would object to: a title, summary or status stronger than what is proved or measured; a question the
+data raises that the draft did not ask; a decision (an item closed, kept, chosen or reopened, a goal
+progress claim, a next step) whose stated reason does not support it or that an AGENTS.md rule
+forbids; work the draft says was skipped, deferred or not checked without a reason; a count or
+number quoted without its source. Give each finding with its location, or write "no findings".
+
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete
 gap or error with the exact location and the change required, and each unused hypothesis. Then,
 under a separate heading "Suggestions (unverified)", give any way forward you found, with its

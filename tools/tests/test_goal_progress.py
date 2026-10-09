@@ -167,5 +167,16 @@ class PreventionTest(unittest.TestCase):
         FT.validate_prevention('<p><strong>Process assessment.</strong> I closed an item wrongly. <strong>Prevention.'
                                '</strong> The finisher now requires stakes on every closure (commit abc).</p>')
 
+
+class ProcessAuditTest(unittest.TestCase):
+    GATE = '<p><strong>Verification gate.</strong> One reviewer. Record: <a href="r/review.txt">review.txt</a>.%s</p>'
+
+    def test_a_reviewed_entry_reports_the_process_audit(self):
+        FT.validate_process_audit('<p><strong>Verification gate.</strong> No reviewer in this cycle.</p>')
+        with self.assertRaises(ValueError):
+            FT.validate_process_audit(self.GATE % '')
+        FT.validate_process_audit(self.GATE % ' <strong>Process audit.</strong> The title claimed more than '
+                                  'the data showed and was narrowed.')
+
 if __name__ == '__main__':
     unittest.main()
