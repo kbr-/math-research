@@ -1,0 +1,56 @@
+// Binary compact PHP pullback, n=4, m=5. All unary defining generator
+// images get certificates through ell times original degree (ell=2).
+ring R=2,(b(1..10)),dp;
+ideal Bool;
+int i; int j; int k; int t; int a; int c;
+int checks=0;
+for(i=1;i<=10;i++){Bool=Bool,b(i)^2+b(i);}
+ideal GB=std(Bool);
+matrix X[5][4];
+poly u; poly v; poly eq;
+for(i=1;i<=5;i++){
+  for(j=0;j<4;j++){
+    u=1;
+    for(t=0;t<2;t++){
+      if((j/(2^t))%2==1){u=u*b(2*i-1+t);}
+      else{u=u*(1+b(2*i-1+t));}
+    }
+    X[i,j+1]=u;
+  }
+}
+for(i=1;i<=5;i++){
+  u=1;
+  for(j=1;j<=4;j++){u=u+X[i,j];}
+  if(u!=0){ERROR("row sum not literal zero");}
+  checks++;
+  for(t=0;t<2;t++){
+    u=b(2*i-1+t);
+    for(j=0;j<4;j++){
+      if((j/(2^t))%2==1){u=u+X[i,j+1];}
+    }
+    if(u!=0){ERROR("decoder composition not literal identity");}
+    checks++;
+  }
+  for(j=1;j<=4;j++){
+    u=X[i,j]^2+X[i,j];
+    if(deg(u)>4 || reduce(u,GB)!=0){ERROR("Boolean certificate");}
+    checks++;
+    for(k=j+1;k<=4;k++){
+      u=X[i,j]*X[i,k];
+      if(deg(u)>4 || reduce(u,GB)!=0){ERROR("row exclusion");}
+      checks++;
+    }
+  }
+  for(a=i+1;a<=5;a++){
+    eq=(1+b(2*i-1)+b(2*a-1))*(1+b(2*i)+b(2*a));
+    for(j=1;j<=4;j++){
+      u=X[i,j]*eq+X[i,j]*X[a,j];
+      if(deg(u)>4 || reduce(u,GB)!=0){ERROR("collision pullback");}
+      checks++;
+    }
+  }
+}
+// Nonzero Boolean remainder detects a missing collision axiom.
+if(reduce(X[1,1]*X[2,1],GB)==0){ERROR("negative control vacuous");}
+print("PASS exact_generator_identities="+string(checks)+" ceiling=4 negative_controls=1");
+quit;

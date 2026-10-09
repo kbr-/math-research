@@ -1,0 +1,79 @@
+<article id="entry-2026-10-09-nested-hole-domains" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-kernel-goal-review:1" data-claims="lem:proper-hole-reduction thm:nested-domain-interpolation cor:sublinear-hole-source-exclusion">
+<h3>9 October 2026 — Normalize mixed hole sets on nested local domains</h3>
+<p class="entry-meta">Working local-domain transfer; source coverage requires hole-supported offsets. Mixed-column cycle.</p>
+<p><strong>Question.</strong> For <a href="#binary-frege-lower-bound">binary Frege</a>, general-step needs one coherent source interpretation and surviving weight at every polynomial inventory exponent. After <a href="#column-source-collapse">column-source collapse</a>, test whether mixed hole sets can use separate satisfiable domains, instead of imposing all PHP collisions on one empty domain. Stop at a fully charged transfer or failure of compatibility.</p>
+<p><strong>Architecture test.</strong> This continues the <a href="#entry-2026-10-09-source-construction-review">source-construction review</a>'s test. Domain nesting gives compatibility, and direct selectors add to reference-map degree. The resulting class permits mixed hole sets and arbitrary depth, but sublinear hole support is an extra requirement, not a compiler theorem.</p>
+<p><strong>General statement.</strong> <code>lem:proper-hole-reduction</code> proves an all-parameter ordinary certificate bound. <code>thm:nested-domain-interpolation</code> combines different domains with one weight. <code>cor:sublinear-hole-source-exclusion</code> handles complete sources with nested sublinear hole support for their induced offsets. These sufficient results leave unrestricted source coverage open.</p>
+<h4 id="proper-hole-reduction">Proper hole reduction</h4>
+<p>Over \(\mathbb F_2\), let \(n=2^\ell,\ell\ge2,m=n+1\). The compact old base \(\Gamma=\mathcal Q_{n,2}\) consists of Booleanity and \(E_{ii'}=\prod_{t\le\ell}(1+b_{it}+b_{i't})\). Let \(\chi_{ij}\) be row \(i\)'s degree-\(\ell\) indicator for label \(j\). For \(B\subsetneq[n]\), let \(\Omega_B\) consist of bit assignments with at most one occupant of each hole in \(B\); collisions outside \(B\) are allowed.</p>
+<p><strong>Lemma (proper hole reduction).</strong> This domain is nonempty. Every polynomial \(F\) vanishing on it has an ordinary \(\Gamma\)-NS certificate through \(\ell\deg F\).</p>
+<p><strong>Proof.</strong> Choose \(j_0\notin B\); all rows choosing it witnesses nonemptiness. In unary variables \(Y_{ij}\), impose Booleanity, same-row exclusions, row sums one, and same-hole exclusions only for \(j\in B\). Eliminate \(Y_{i,j_0}=1-\sum_{j\ne j_0}Y_{ij}\). The remaining ideal has Boolean generators and forbidden pairs: two distinct cells in a row, or two in a selected hole. The omitted pivot Boolean and same-row equations reduce through degree two using these generators; selected-hole generators never contain the pivot.</p>
+<p>Reduce powers and delete forbidden monomials without raising degree. Surviving supports have at most one nonpivot cell in each row and at most one in each selected hole, and form a downward-closed family. Evaluation at those supports is its subset-incidence matrix, triangular with diagonal one. Each support extends to a labeling by sending empty rows to \(j_0\). Thus a vanishing polynomial has zero remainder and an ordinary certificate through its own degree. Affine pivot elimination, including row-equation cofactors, preserves that ceiling.</p>
+<p>The affine decoder \(\tau(b_{it})=\sum_{j:j_t=1}Y_{ij}\) sends \(F\) to a polynomial vanishing on this unary domain, of degree at most \(\deg F\). Pull its certificate back by \(\psi(Y_{ij})=\chi_{ij}\). Row sums map to literal zero, and \(\psi\tau(b_{it})=b_{it}\) literally. Boolean and row-exclusion images have Boolean certificates through \(2\ell\). For selected-hole collisions,
+\[
+ \chi_{ij}E_{ii'}-\chi_{ij}\chi_{i'j}\in(\mathrm{BOOL}_b)
+\]
+through \(2\ell\): each bit literal times its equality factor reduces to the product of the matching literals in both rows; telescope over the bits. Complemented literals satisfy the same identity. Each unary quadratic certificate summand pulls back through at most \(\ell\deg F\); linear row summands vanish. Nonzero constants cannot vanish on the nonempty domain. \(\square\)</p>
+<p>This supplies proper domains beyond the <a href="#costed-domain-offset-compression">one-hole control</a>, at a multiplicative logarithmic cost rather than that control's zero excess. Taking all holes loses the pivot and makes the domain empty; it is excluded.</p>
+<h4 id="nested-domain-interpolation">Nested domain interpolation</h4>
+<p>Let a binary old base \(\Gamma(x)\) contain Booleanity. Consider a finite acyclic complete source
+\[
+ P_a=\prod_{u\le h_a}(1-\sum_i r_{a,u,i}g_{a,i}),\qquad
+ g_{a,i}=H_{a,i}(x,(P_c)_{c\prec a}),\quad h_a\ge1.
+\]
+These identities are literal in the original polynomial ring. Coefficients are private; inputs use earlier coefficients only through genuine whole products. All companions and coefficient Boolean equations remain present, and proof cofactors may use raw coefficients. Define induced functions on the whole old cube recursively by replacing predecessor products with their common-zero indicators.</p>
+<p>For each block supply a nonempty domain \(\Omega_a\), with \(\Omega_a\subseteq\Omega_c\) for every dependency \(c\prec a\). Suppose every polynomial vanishing on any such domain has an ordinary old certificate through \(\mu\deg F+\lambda\), for common \(\mu\ge1,\lambda\ge0\). Each block has its own zero-one polynomial partition \((\pi_{a,s})_s\) on its domain, of degree at most \(t\), and reference tuples \(L_{a,s,i}\) agreeing with its induced inputs on that cell. Assume one common old weight \(f\), \(\deg f\le k\), and old binary coefficient maps \(\gamma_{a,s,u,i}\), degree at most \(T_0\ge1\), normalize every reference companion on \(\Omega_a\cap\{f\ne0\}\). The reference tuples need not be affine for this abstract statement.</p>
+<p><strong>Theorem (nested domain interpolation).</strong> With \(T=T_0+t\), every degree-\(D\) ordinary NS or PC source proof of an old target \(u\) gives an old proof of \(fu\) through
+\[
+ B_*=\mu(TD+k)+\lambda.
+\]
+No nonempty intersection of all domains or depth multiplier is required; one common weight and the domain containments are required.</p>
+<p><strong>Proof.</strong> Fix the old variables and set
+\[
+ \Phi(r_{a,u,i})=\sum_s\pi_{a,s}\gamma_{a,s,u,i},
+ \qquad \deg\Phi(r_{a,u,i})\le T.
+\]
+Induct through the DAG. At a point of \(\Omega_a\cap\{f\ne0\}\), all predecessors have their induced values because that point lies in each predecessor's domain. The unique active selector chooses a reference equal to the actual tuple and its normalizer. All companions vanish; the product is one for a zero tuple and otherwise zero. Thus the induction holds separately on each domain, with one global image per shared product.</p>
+<p>A weighted actual companion \(f\Phi(E_a)\) vanishes on its own domain and has degree at most \(Te_a+k\), where \(e_a\) is its original ordinary degree. Its old certificate costs \(\mu(Te_a+k)+\lambda\). Coefficient Boolean images vanish on the full cube with certificates through \(2T+k\), and weighted old generators have their direct certificates. For NS, an original cofactor adds \(T(D-e_a)\), and
+\[
+ \mu(Te_a+k)+\lambda+T(D-e_a)\le\mu(TD+k)+\lambda.
+\]
+For PC derive those weighted axiom images, then represent each line \(v\) by \(f\Phi(v)\). Its degree is at most \(T\deg v+k\). Multiplication by an original variable is expanded into monomial multiplications by its degree-\(T\) image and fits \(TD+k\); the axiom-prelude overhead is not repaid. Linear combinations commute with the map, whose final target is \(fu\). \(\square\)</p>
+<p>This extends the <a href="#costed-partition-direct-semantic-map">existing direct partition theorem</a> to certified block-dependent domains and multiplicative reduction cost. Its interpolation mechanism is recovered, not new. No separate local weights are glued.</p>
+<h4 id="sublinear-hole-source-exclusion">Sublinear hole source exclusion</h4>
+<p>Return to compact binary PHP. Supply proper hole sets \(B_a\) with \(B_c\subseteq B_a\) for every source dependency. On \(\Omega_{B_a}\), suppose
+\[
+ \overline g_a(b)=Q_a(b)+v_a(\operatorname{occ}_{B_a}(b)),
+\]
+where \(Q_a\) is old-affine and the entire offset vector depends only on the empty/unique-occupant states of those holes. Put \(q=\max_a|B_a|\), let \(M\ge1\) bound block inventory, and assume every original accuracy is at least \(3\ell\).</p>
+<p><strong>Corollary (sublinear hole source exclusion).</strong> For fixed nonnegative \(\alpha,\eta\) with \(2\alpha+\eta&lt;1\), polynomial \(M\), \(q\le n^\eta\operatorname{polylog}n\), and \(D\le n^\alpha\operatorname{polylog}n\), these complete sources have no degree-\(D\) ordinary NS or PC refutations for sufficiently large \(n\). No independent depth bound is needed. The formula family stays compact PHP; arbitrary compiled-source support is not established.</p>
+<p><strong>Proof.</strong> A selected hole's state has indicator \(\chi_{ij}\) for occupant \(i\), or \(1-\sum_i\chi_{ij}\) for empty. These are genuine zero-one indicators on the local domain, of degree at most \(\ell\). Products over \(B_a\) give its partition through degree \(\ell|B_a|\). Retain realizable states only; their number is at most \((m+1)^{|B_a|}\). Choose affine references \(Q_a+v_a(s)\) before choosing the weight. The total reference inventory obeys
+\[
+ M_0\le M(m+1)^q,\qquad \log(4M_0)=O(\log(M+1)+q\log(n+2)).
+\]
+The finite <a href="#all-prime-affine-family-exclusion">compact affine construction</a>, at \(p=2\), supplies a common nonzero row-linear weight and coefficient maps with
+\[
+ k=T_0=\left\lceil\sqrt{(n+1)\log(4M_0)}\right\rceil.
+\]
+Use its first \(3\ell\) coefficient rows and zero-fill any surplus rows. Low-rank references are packed exactly; high-rank flats share the weight from its dimension count. Weighted reference companions vanish on the full old cube. The finite proof needs its stated degree/separation inequalities, not polynomial reference inventory as an independent assumption.</p>
+<p>Since \(B_c\subseteq B_a\) implies \(\Omega_{B_a}\subseteq\Omega_{B_c}\), use the two new results with \(\mu=\ell,\lambda=0,t=\ell q\). The old ceiling is
+\[
+ B_*=\ell[(k+\ell q)D+k]
+ =O(n^{\alpha+(1+\eta)/2}\operatorname{polylog}n)=o(n).
+\]
+Here \(\eta&lt;1\), so the exponent of \(q\) is no larger than that of \(k\). Eventually \(k\le B_*\), \(4(k-1)&lt;n\), and \(n\ge2B_*-1\). The affine endpoint's signed row-linear separator excludes \(f\) from old PC consequences through \(B_*\), hence also from NS consequences, contradicting the transferred refutation. \(\square\)</p>
+<p>The reference family and maps may have exponentially many terms; this is an existence and degree theorem, not an efficient construction or proof-size simulation. Nothing of that size was materialized. The finite affine dimension count remains valid since \(k=o(n)\); its logarithmic inventory term is fully charged.</p>
+<h4>Coverage and controls</h4>
+<p>The <a href="#sublinear-feature-two-level-endpoint">earlier sublinear-feature endpoint</a> already gives this exponent inequality under a different two-level unary-affine feature hypothesis. New here are occupancy compression on separate compact-PHP domains and the acyclic scope; no improvement in that theorem's own setting is claimed. Compact quadratic/cubic endpoints cannot silently treat arbitrary unary quadratics: full-label substitution costs \(\ell\) per distinct row factor.</p>
+<p>The local domains may have empty intersection: a separate singleton set for every hole gives nonempty individual domains, while their intersection would inject \(n+1\) rows into \(n\) holes. The argument never evaluates there. Dependency nesting alone does not give the offset hypothesis: a global old-affine baseline can feed a later product and create global dependence. Pure hole-state precursor computations followed by affine terminal baselines are eligible when their bags are nested; recursively arbitrary global baselines are not automatically eligible.</p>
+<p>The <a href="#costed-domain-weighted-offset-barrier">proper-domain entropy obstruction</a> and <a href="#weighted-matching-partition-degree">weighted partition obstruction</a> were read in full. Neither supplies the present support hypothesis; neither refutes the conditional map. No unrestricted source support theorem follows from small proof size.</p>
+<p><strong>Checks.</strong> The chosen nonvacuous encoding test has four holes and five rows: \(4^5=1024\) assignments, all 15 proper hole subsets, and every admissible state. GAP verified normal-form ranks \(1024,648,352,136\) for selected-hole counts zero through three and all 6272 domain-point partition tests. The full-hole domain is empty while every singleton domain is nonempty. Singular verified all 105 decoder, row and collision identities through degree four; the missing-collision negative control stays nonzero. These test the new encoding/domain mechanism, not the asymptotic theorem. Benign GAP forward-binding and Singular integer-division warnings did not prevent completion of every assertion. Full scripts and outputs are retained in <a href="https://github.com/kbr-/math-research/tree/main/research/results/binary_mixed_columns_20261009">the evidence directory</a>.</p>
+<p><strong>New mathematics.</strong> Proper-hole vanishing has an explicit logarithmic certificate factor; nested local domains support one global map and the stated mixed-hole class without a depth multiplier.</p>
+<p><strong>Goal progress.</strong> Unchanged. The <a href="#binary-frege-lower-bound">binary Frege statement</a> still lacks source-wide support or an alternative normalization theorem. Removing a common-domain convenience does not discharge that necessary implication.</p>
+<p><strong>Follow-up.</strong> Continuing. Test whether a paid restriction or actual retained companion relation gives affordable hole support for a whole mixed source, or bypasses that support requirement. Do not return to fixed hole counts or selector refinements.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test a paid restriction or actual retained companion relation for nested sublinear hole support at arbitrary polynomial source inventory, or a direct common map for the parts that fail it; include global affine baselines feeding later products.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed all three claims and the unchanged goal assessment without mathematical corrections. Nonempty domains exclude vacuous hypotheses; the abstract transfer algebra alone does not need that restriction. Exact domain/decoder checks passed. Full offset/partition proofs, both obstructions, the sublinear-feature proof and finite affine construction were reread; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/binary_mixed_columns_20261009/review.txt">verdict</a> is retained.</p>
+<p><strong>Process assessment.</strong> Direct selectors removed an unnecessary recursive hash cost. The separately committed append preflight catches reporting omissions before mutation; 553 framework tests passed in 8.4 seconds after a browser-only timing overrun, included in this clock and its archived logs.</p>
+<!-- TIMING binary_mixed_columns_20261009 -->
+</article>
