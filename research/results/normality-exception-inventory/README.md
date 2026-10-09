@@ -14,10 +14,10 @@ Scope: dimensions 1–10; odd primes through 97.
 | 6 | 24 | 0 |
 | 7 | 24 | 0 |
 | 8 | 24 | 0 |
-| 9 | 10 | 14 |
-| 10 | 10 | 14 |
+| 9 | 11 | 13 |
+| 10 | 11 | 13 |
 
-Total: **212 complete**, **28 unresolved**.
+Total: **214 complete**, **26 unresolved**.
 
 Evidence:
 
@@ -33,10 +33,6 @@ Evidence:
 - `thm:twenty-three-normality`: [Dimensions nine and ten at twenty-three](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-twenty-three-complete) (working_proof).
 - `thm:twenty-nine-normality`: [Dimensions nine and ten at twenty-nine](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-twenty-nine-complete) (working_proof).
 - `thm:thirty-one-normality`: [Dimensions nine and ten at thirty-one](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-thirty-one-complete) (working_proof).
-- `cor:thirty-seven-residual-cover`: [Full-cut reflection and thirty-seven coverage](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-paired-reflection) (working_proof).
-
-For n=9, p=37, certified normal degrees: {"bulk_from": 7, "excluded_unresolved_residues": [39963, 54948, 134868, 149853], "initial_interval": [2, 6], "period": 189810}. The complete exception set remains unresolved.
-
-For n=10, p=37, certified normal degrees: {"bulk_from": 8, "excluded_unresolved_residues": [27476, 67436], "initial_interval": [2, 7], "period": 94905}. The complete exception set remains unresolved.
+- `thm:thirty-seven-normality`: [A quadratic mark completes thirty-seven](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-thirty-seven-complete) (working_proof).
 
 The pairwise machine-readable inventory is in `inventory.json`. Bounds may be reduced according to measured cost, as requested by the user.
