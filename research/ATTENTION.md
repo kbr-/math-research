@@ -670,6 +670,22 @@ For N independent encoded scalar profiles and coefficient degree T, h rows suffi
 
 ---
 
+### Independent colour degree ceiling
+
+**Claim:** [thm:independent-colour-degree-ceiling](<https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-independent-colour-ceiling>)
+
+For a non-four-colourable finite simple graph on N nonisolated vertices and any independent set I, compact two-bit canonical four-colouring has ordinary characteristic-two PC degree at most floor(3(N-|I|)/2)+2.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** A general independence-sensitive upper bound for the explicit binary encoding, resolving the actual Kneser-core obstruction. Potential independent interest; exact literature comparison remains pending.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the exact characteristic-two two-bit independent-set PC ceiling with prior algebraic graph-colouring bounds before a novelty or publication claim.
+
+---
+
 ### Modular collision linear search hardness
 
 **Claim:** [thm:modular-collision-linear-search-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness>)
