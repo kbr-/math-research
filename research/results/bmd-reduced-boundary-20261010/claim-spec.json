@@ -1,0 +1,85 @@
+{
+  "source": {
+    "record": "[Nine ternary boundary](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-10-cube-nine-ternary-boundary)",
+    "targets": [
+      "branches/binary-multiplicity-degree/notebook.html#entry-2026-10-10-cube-nine-ternary-boundary"
+    ],
+    "label": "Reduced norm boundary and ternary gap law"
+  },
+  "reviewer": "Codex; consolidated GPT 6.1-Sol medium review",
+  "date": "2026-10-10",
+  "topics": [
+    "degree-accounting",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "lem:reduced-boundary-norm",
+      "summary": "For N>=5 in every odd characteristic, remove the graded constant unit block of the actual reduced alternant boundary matrix by a polynomial Schur complement, preserving its marked last-coordinate ideal. A root-affine line over F_(p^e) with initial norm degree e*3*binom(N,4) and coprime selected cofactor norms proves boundary threshold 3*binom(N,4) over every characteristic-p field.",
+      "assessment": "Working proof, an algorithmic form of the existing norm-line criterion. Polynomial unit elimination preserves homogeneous kernels and the marking; the full-degree factor argument rules out a common divisor. Norm failure remains inconclusive.",
+      "status": "working_proof",
+      "rationale": "A route-specific implementation of prior Schur-hull and norm arguments, used in the exact nine-dimensional ternary certificate; no independent novelty claimed.",
+      "next_action": "Use the preserved source to investigate uniform small-prime cofactor primitivity, rather than expand a grid."
+    },
+    {
+      "id": "thm:nine-ternary-boundary",
+      "summary": "For cube dimension n=9 over every field of characteristic three, the degree-two boundary threshold is ell_0(3,47)=630. The actual reduced maximal minors have gcd one.",
+      "assessment": "Working computer-assisted proof from an explicit F81 root-affine line: fourteen unit columns removed, initial and adjacent norms of degrees2520 and2524 with gcd1. Independent PARI replay recomputes both full reduced polynomial determinants and matches every norm coefficient; FLINT controls also verify the complete original/frame identity.",
+      "status": "working_proof",
+      "rationale": "Discharges a previously open pre-stable threshold in statement4, beyond the all-odd normality already known through dimension ten. Exact fixed-parameter certificate valid over every field of characteristic three; no uniform-dimensional conclusion.",
+      "next_action": "Seek a general cofactor primitivity proof using the collision diagnosis and full marked source."
+    },
+    {
+      "id": "cor:nine-ternary-gap",
+      "summary": "For every characteristic-three field F and every ell>=0, delta_F(9,ell+48,ell)=2ell+101 when ell<630 and 2ell+100 when ell>=630.",
+      "assessment": "Working proof: the coefficient of order47 in sqrt(1+T) vanishes mod3, so savings2 is available from origin order0; the new boundary makes savings3 available exactly from630; degree-three normality gives zero savings4 kernel at m47.",
+      "status": "working_proof",
+      "rationale": "An infinite slice of actual minimum degrees, obtained by combining the new polynomial threshold with established normality; advances the stated goal rather than only enlarging a finite rank inventory.",
+      "next_action": "Retain this slice while addressing the other pre-stable thresholds."
+    }
+  ],
+  "relationships": [
+    [
+      "lem:reduced-boundary-norm",
+      "depends_on",
+      "thm:cube-odd-schur-hull",
+      "Use the all-odd polynomial frame, source weights and homogeneous initial determinant degree."
+    ],
+    [
+      "lem:reduced-boundary-norm",
+      "depends_on",
+      "lem:cube-norm-line-certificate",
+      "Reuse the full-degree norm-line argument in a polynomial unit-reduced source."
+    ],
+    [
+      "lem:reduced-boundary-norm",
+      "depends_on",
+      "lem:cube-boundary-cofactor-threshold",
+      "Convert primitive reduced cofactors to the exact original marked threshold."
+    ],
+    [
+      "thm:nine-ternary-boundary",
+      "depends_on",
+      "lem:reduced-boundary-norm",
+      "Apply the full-degree coprime norm certificate at n9,p3 over F81."
+    ],
+    [
+      "cor:nine-ternary-gap",
+      "depends_on",
+      "thm:nine-ternary-boundary",
+      "Savings3 begins exactly at origin order630 for m47."
+    ],
+    [
+      "cor:nine-ternary-gap",
+      "depends_on",
+      "lem:cube-threshold-ideal",
+      "Use homogeneous decreasing top ideals and the savings formula."
+    ],
+    [
+      "cor:nine-ternary-gap",
+      "depends_on",
+      "thm:cube-ten-all-odd-normality",
+      "Degree-three normality in dimension nine excludes savings4 at m47."
+    ]
+  ]
+}
