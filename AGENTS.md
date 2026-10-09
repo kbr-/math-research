@@ -118,8 +118,11 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   hypotheses. After that check, the same reviewer also helps (user, 9 October 2026): name the
   cycle's open point in the brief, after the correctness items, and ask for a way past a failed
   step or a reason none exists, a proof or counterexample for an unproved expectation, or whether a
-  new bound is tight. Its suggestions are unverified: record them as the reviewer's, and verify
-  one yourself before relying on it; one that adds or strengthens a claim gets the follow-up check
+  new bound is tight. Its suggestions are unverified leads: list them in the entry under
+  `<h4>Reviewer's suggestions, unverified</h4>`, each item ending `<strong>Record.</strong>` with
+  the outcome of a record search made before recording it (claim IDs or anchors that bear on it,
+  or the words searched without a match; the finisher checks this), and verify one yourself
+  before relying on it or naming it as a next step; one that adds or strengthens a claim gets the follow-up check
   below. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
   The user authorizes and encourages spawning reviewers for any needed review in this and all future
   Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set

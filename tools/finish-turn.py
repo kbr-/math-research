@@ -524,6 +524,30 @@ def validate_paragraphs(body, article, close):
                              f'{kind} entry (data-entry-paragraphs on its living sections)')
 
 
+SUGGESTIONS_RE = re.compile(r"<h4>Reviewer(?:'s|&#39;s|\u2019s)? suggestions[^<]*</h4>(.*?)(?=<h4>|<p><strong>|$)", re.S)
+RECORD_RE = re.compile(r'<strong>Record\.</strong>(.*)', re.S)
+
+
+def validate_suggestions(body, article, close):
+    """A reviewer's suggestion is a lead like any other: before it is recorded, let alone adopted, the
+    record is searched for it (user, 9 October 2026, after an adopted count contradicted a computation two
+    reviews old).  Every item under an <h4>Reviewer's suggestions ...</h4> heading ends with
+    <strong>Record.</strong> and what the search found: claim IDs or anchors, or the words searched without
+    a match."""
+    for section in SUGGESTIONS_RE.finditer(body[article:close]):
+        items = re.findall(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S)
+        if not items:
+            raise ValueError("A Reviewer's suggestions section lists each suggestion as a <li> item")
+        bare = [i for i, item in enumerate(items, 1)
+                if not (found := RECORD_RE.search(item))
+                or len(re.sub(r'<[^>]*>', ' ', found.group(1)).strip()) < 20]
+        if bare:
+            raise ValueError(f"Reviewer's suggestions item(s) {bare} lack \"<strong>Record.</strong>\" with the "
+                             'outcome of a record search (tools/search-claims.py and the notebook): the claim '
+                             'IDs or anchors that bear on the suggestion, or the words searched without a '
+                             'match (AGENTS.md)')
+
+
 def validate_general(body, article, close):
     """AGENTS.md: restricted examples must test a named general statement; enforce it mechanically.
     Every research entry states its general claim for all parameters, and two finite-check entries
@@ -601,6 +625,7 @@ def validate_marker(body, marker, draining=None):
     validate_route(body, article)
     validate_general(body, article, close)
     validate_paragraphs(body, article, close)
+    validate_suggestions(body, article, close)
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_bridges(body, article, close)

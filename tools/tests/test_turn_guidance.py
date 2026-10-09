@@ -109,6 +109,20 @@ class TurnGuidanceTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.ft.validate_paragraphs(review, review.rindex('<article'), len(review))
 
+    def test_reviewer_suggestions_need_a_record_search(self):
+        entry = "<article data-kind=\"research\" data-route=\"step\"><h4>Reviewer's suggestions, unverified</h4>{}<p><strong>Follow-up.</strong> x</p></article>"
+        good = '<ul><li>A count. <strong>Record.</strong> ex:covering-series-index bears on it and disagrees.</li></ul>'
+        for text, passes in ((good, True), ('<ul><li>A count.</li></ul>', False),
+                             ('<ul><li>A count. <strong>Record.</strong> none</li></ul>', False), ('<p>prose only</p>', False)):
+            page = entry.format(text)
+            if passes:
+                self.ft.validate_suggestions(page, 0, len(page))
+            else:
+                with self.assertRaises(ValueError):
+                    self.ft.validate_suggestions(page, 0, len(page))
+        plain = '<article data-kind="research"><p>No such section.</p></article>'
+        self.ft.validate_suggestions(plain, 0, len(plain))
+
     def test_computation_and_generalization_notes(self):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
         self.assertIn('C or C++ kernels', notes)
