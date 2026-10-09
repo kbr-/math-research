@@ -67,12 +67,13 @@ def readable_text(source):
 
 
 class Notebook(HTMLParser):
-    def __init__(self, source, *, end=None, capture_links=False):
+    def __init__(self, source, *, end=None, capture_links=False, capture_anchors=False):
         super().__init__(convert_charrefs=False)
         if end is not None and not 0 < end <= len(source):
             raise ValueError("Invalid notebook prefix boundary")
         self.source, self.nodes, self.stack = source, [], []
         self.links = [] if capture_links else None
+        self.anchor_owners = {} if capture_anchors else None
         self.offsets = [0]
         for line in source.splitlines(keepends=True):
             self.offsets.append(self.offsets[-1] + len(line))
@@ -100,6 +101,13 @@ class Notebook(HTMLParser):
         return self.offsets[line - 1] + column
 
     def handle_starttag(self, tag, attrs):
+        anchored = None
+        if self.anchor_owners is not None:
+            identifier = dict(attrs).get("id")
+            if identifier is not None:
+                anchored = {"owner": next((n for n in reversed(self.stack)
+                                           if n["tag"] == "article"), None)}
+                self.anchor_owners.setdefault(identifier, []).append(anchored)
         if tag == "a" and self.links is not None:
             owner = next((n for n in reversed(self.stack) if n["tag"] == "article"), None)
             href = dict(attrs).get("href")
@@ -113,6 +121,8 @@ class Notebook(HTMLParser):
                     start=self.position(), scope=scope)
         self.nodes.append(node)
         self.stack.append(node)
+        if anchored is not None and tag == "article":
+            anchored["owner"] = node
 
     def handle_endtag(self, tag):
         if tag not in {"section", "article", "h1", "h2", "h3", "h4", "h5", "h6"}:
@@ -149,6 +159,18 @@ class Notebook(HTMLParser):
         if end <= node["start"]:
             raise ValueError("The end anchor must follow the start anchor")
         return self.source[node["start"]:end].rstrip() + "\n"
+
+    def enclosing_excerpt(self, name):
+        """Read the whole article for a unique element ID, including paragraph claims."""
+        if self.anchor_owners is None:
+            raise ValueError("Enclosing lookup requires capture_anchors=True")
+        matches = self.anchor_owners.get(name.removeprefix("#"), [])
+        if len(matches) != 1:
+            raise ValueError(f"Expected one element anchor {name!r}; found {len(matches)}")
+        owner = matches[0]["owner"]
+        if owner is None:
+            raise ValueError(f"Anchor {name!r} is not inside an article")
+        return self.source[owner["start"]:owner["end"]].rstrip() + "\n"
 
     def entry_row(self, node, since=None):
         if not node['anchor']:
@@ -228,11 +250,15 @@ def main():
     parser.add_argument('--tail', type=int, help='Maximum TOC/backlink entries, newest in record order')
     parser.add_argument('--since', type=date.fromisoformat, help='TOC/backlink date filter (YYYY-MM-DD); undated entries retained')
     parser.add_argument("--until", help="Stop before this exact anchor instead")
+    parser.add_argument("--enclosing", action="store_true",
+                        help="Read the complete article containing any element ID, including a paragraph claim")
     parser.add_argument("--out", type=Path, help="Write a new file instead of stdout")
     parser.add_argument("--notebook", help="Research thread name; defaults to worktree selection or main")
     parser.add_argument("--text", action="store_true",
                         help="Plain text for reading (one line per block, TeX kept, timing table dropped)")
     args = parser.parse_args()
+    if args.enclosing and (not args.anchor or args.current or args.toc or args.backlinks or args.until):
+        parser.error('--enclosing requires an anchor and excludes --current, --toc, --backlinks and --until')
     if args.backlinks and (not args.anchor or args.current or args.toc or args.until or args.text):
         parser.error('--backlinks requires an anchor and excludes --current, --toc, --until and --text')
     if args.text and args.toc:
@@ -254,7 +280,7 @@ def main():
             if not explicit_selection:
                 item = resolve_anchor(args.anchor, root=root)
         source = (root / item["source"]).read_text()
-        notebook = Notebook(source, capture_links=args.backlinks)
+        notebook = Notebook(source, capture_links=args.backlinks, capture_anchors=args.enclosing)
         if args.backlinks:
             result, omitted = notebook.backlinks(args.anchor, args.tail if args.tail is not None else 10,
                                                 args.since, source_path=item['source'], route=item['route'])
@@ -267,6 +293,8 @@ def main():
                 print(f'{omitted} matching earlier entries omitted; use --tail to expand.', file=sys.stderr)
         elif args.current:
             result = source[:notebook.anchor("research-record")["start"]].rstrip() + "\n"
+        elif args.enclosing:
+            result = notebook.enclosing_excerpt(args.anchor)
         else:
             result = notebook.excerpt(args.anchor, args.until)
         if args.text:
@@ -276,10 +304,12 @@ def main():
                 stream.write(result)
         else:
             sys.stdout.write(result)
-        observe('read', tool='notebook-excerpt', selector={
+        selector = {
             'notebook':item['name'],'anchor':args.anchor,'until':args.until,'current':args.current,
-            'toc':args.toc,'backlinks':args.backlinks,'tail':args.tail,'since':str(args.since)},
-            text=result, shown=not bool(args.out))
+            'toc':args.toc,'backlinks':args.backlinks,'tail':args.tail,'since':str(args.since)}
+        if args.enclosing:
+            selector['enclosing'] = True
+        observe('read', tool='notebook-excerpt', selector=selector, text=result, shown=not bool(args.out))
     except (ValueError, OSError) as error:
         parser.exit(2, f"notebook-excerpt: {error}\n")
 

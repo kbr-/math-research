@@ -1,5 +1,6 @@
 from datetime import date
 import sys
+import tempfile
 from pathlib import Path
 import unittest
 from contextlib import redirect_stderr
@@ -51,6 +52,58 @@ class ExcerptTest(unittest.TestCase):
         book=excerpt.Notebook('<section id="x"></section><section id="x"></section>')
         with self.assertRaises(ValueError):book.anchor('x')
         with self.assertRaises(ValueError):excerpt.Notebook('<section id="x">')
+
+    def test_enclosing_claim_includes_full_proof_only(self):
+        article = ('<article id="entry"><h3 id="title">Title</h3>'
+                   '<p id="claim">Statement</p><h4>Proof</h4><p>Argument</p></article>')
+        source = '<section>' + article + '<article id="next"><p>Next</p></article></section>'
+        book = excerpt.Notebook(source, capture_anchors=True)
+        for anchor in ('entry', '#claim', 'title'):
+            self.assertEqual(book.enclosing_excerpt(anchor), article + '\n')
+        with self.assertRaises(ValueError):
+            book.excerpt('claim')  # Default structural lookup remains strict.
+
+    def test_enclosing_rejects_ambiguous_or_outside_ids(self):
+        for source, anchor in (
+            ('<article id="a"><p id="dup"></p><span id="dup"></span></article>', 'dup'),
+            ('<article id="dup"><p id="dup"></p></article>', 'dup'),
+            ('<section id="living"><p id="outside"></p></section>', 'outside'),
+            ('<article id="a"></article>', 'missing'),
+        ):
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                excerpt.Notebook(source, capture_anchors=True).enclosing_excerpt(anchor)
+
+    def test_enclosing_ignores_math_and_comments(self):
+        source = r'''<article id="a"><p id="claim">\(<span id="claim">\)</p>
+<!-- <p id="claim"> --> <h4>Proof</h4></article>'''
+        self.assertEqual(excerpt.Notebook(source, capture_anchors=True).enclosing_excerpt('claim'),
+                         source + '\n')
+
+    def test_enclosing_rejects_incompatible_options(self):
+        for args in (['--enclosing'], ['x', '--enclosing', '--current'],
+                     ['x', '--enclosing', '--toc'], ['x', '--enclosing', '--backlinks'],
+                     ['x', '--enclosing', '--until', 'y']):
+            with self.subTest(args=args), patch.object(sys, 'argv', ['notebook-excerpt.py', *args]), \
+                    redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                excerpt.main()
+            self.assertEqual(failure.exception.code, 2)
+
+    def test_enclosing_cli_writes_text_without_overwriting(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source, output = Path(temp) / 'notebook.html', Path(temp) / 'excerpt.txt'
+            source.write_text('<article id="entry"><p id="claim">Claim</p>'
+                              '<h4>Proof</h4><p>Argument</p></article>')
+            args = ['notebook-excerpt.py', 'claim', '--enclosing', '--text',
+                    '--notebook', 'main', '--out', str(output)]
+            with patch.object(sys, 'argv', args), \
+                    patch.object(excerpt, 'selected', return_value={'name': 'main', 'source': source}), \
+                    patch.object(excerpt, 'observe'):
+                excerpt.main()
+                self.assertEqual(output.read_text(), 'Claim\nProof\nArgument\n')
+                with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                    excerpt.main()
+                self.assertEqual(failure.exception.code, 2)
+                self.assertEqual(output.read_text(), 'Claim\nProof\nArgument\n')
 
     def test_backlinks_are_local_ordered_and_bounded(self):
         source = r'''<section id="living"><a href="#target">living</a></section>
