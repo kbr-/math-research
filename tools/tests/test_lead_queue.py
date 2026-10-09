@@ -608,6 +608,29 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.parse(body)[1], self.q + [('check', 't1:s1')])
         lq.check(head, body)
 
+    def test_subideas_of_one_parent_may_be_batched(self):
+        tree = [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2'), ('check', 'k:s3')]),
+                (self.q[1], [('check', 'm:s1')])]
+        before = notebook([self.rev], tree)
+        done = ('<ul><li data-check="k:s1">Answered in <a href="#r1">the review</a>. '
+                '<strong>Follow-up.</strong> Developed: see the link.</li>'
+                '<li data-check="k:s3">Same premise. <strong>Follow-up.</strong> Closed: restated.</li></ul>')
+        entry = developing(self.q[0], 'Continuing', done)
+        left = [(self.q[0], [('check', 'k:s2')]), (self.q[1], [('check', 'm:s1')])]
+        lq.check(before, notebook([self.rev, entry], left))
+        with self.assertRaises(ValueError):                             # the developed sub-ideas leave the queue
+            lq.check(before, notebook([self.rev, entry], tree))
+        with self.assertRaises(ValueError):                             # evidence is still required
+            lq.check(before, notebook([self.rev, developing(self.q[0], 'Continuing', done.replace(
+                'Answered in <a href="#r1">the review</a>. ', 'Answered. '))], left))
+        other = ('<ul><li data-check="m:s1">Answered in <a href="#r1">the review</a>. '
+                 '<strong>Follow-up.</strong> Developed: see the link.</li></ul>')
+        with self.assertRaises(ValueError):                             # another parent's sub-idea is not batched
+            lq.check(before, notebook([self.rev, developing(self.q[0], 'Continuing', other)],
+                                      [tree[0], (self.q[1], [])]))
+        via_child = developing(('check', 'k:s1'), 'Closed', done.replace('k:s1', 'k:s2'))  # from a sibling
+        lq.check(before, notebook([self.rev, via_child], [(self.q[0], []), (self.q[1], [('check', 'm:s1')])]))
+
     def test_the_head_or_its_first_subidea_and_their_spell(self):
         tree = [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2')]), (self.q[1], [])]
         before = notebook([self.rev], tree)

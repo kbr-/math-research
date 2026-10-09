@@ -270,7 +270,7 @@ historical assessments.
   waits in the notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living
   section; no word budget; restoration reads its first five items), FIFO, maintained per
   [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
-  entry develops at most one item, by default the head; the agent may take another queued item first
+  entry develops at most one top-level item, by default the head; the agent may take another queued item first
   when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and why it comes
   first (user, 9 October 2026: "You can select the order. Make this a general framework rule."); no
   item is skipped by this. The entry is tagged `data-lead` or
@@ -286,9 +286,12 @@ historical assessments.
   necessary implication uses the same mechanism. Record that evidence and next attempt using [the
   queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
   there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
-  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every item,
-  also during backpressure, is developed in its own entry; batch triage is retired (user, 9 October
-  2026: "Revert it back to the state where each item was done one at a time"). Research entries
+  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every top-level
+  item, also during backpressure, is developed in its own entry; batch triage is retired (user, 9
+  October 2026: "Revert it back to the state where each item was done one at a time"). Sub-ideas of
+  the one item an entry develops may be batched in that entry, each in a follow-up list item with its
+  own outcome and evidence (user, 9 October 2026: "An entry may develop at most one top level item. Sub
+  ideas attached to a single parent can be batched."). Research entries
   carry no Outside leads or Absurd bridges of their own (user, 9 October 2026); undone work they
   name goes under Sub-ideas. An item closed too early is reopened by a follow-up list item ending
   `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A

@@ -25,7 +25,11 @@ finish-turn.py against HEAD:
   on its article. It disables rotation only for that top-level item; close it with
   a recorded reason when further useful development is exhausted.
 - Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
-  one at a time"): every item is developed in its own entry.  Older entries' <h4>Queue triage</h4> lists are still
+  one at a time"): every top-level item is developed in its own entry.  Sub-ideas of the one item an entry
+  develops may be batched in that entry (user, 9 October 2026: "An entry may develop at most one top level item.
+  Sub ideas attached to a single parent can be batched."): each in a follow-up list item
+  <li data-check="ID"> or <li data-build="ID"> ending <strong>Follow-up.</strong> Developed (with the evidence
+  its kind asks for), Closed (with a reason) or Continuing.  Older entries' <h4>Queue triage</h4> lists are still
   read as history; a new entry with one is refused.  Older research entries' own Outside leads and Absurd bridges
   joined the tail like a review's; new research entries carry none (user, 9 October 2026).
 - A queue audit (data-kind="audit") lists, under the same two headings, ideas that earlier reviews named outside
@@ -54,7 +58,7 @@ finish-turn.py against HEAD:
 - The agent selects the order (user, 9 October 2026: "You can select the order. Make this a general framework
   rule."): an entry may develop any queued item instead of the head when its text has a paragraph
   <strong>Chosen.</strong> saying which open statement the item bears on and why it comes before the head.
-  Nothing is skipped: every item is still developed in its own entry, the head remains the default, and a
+  Nothing is skipped: every top-level item is still developed in its own entry, the head remains the default, and a
   chosen item's spell runs as for a head; at its boundary it waits until another item has had an entry.
 - The user may pick any item out of order (user, 3 October 2026): the developing entry's tag carries
   data-picked="user" and its text a paragraph <strong>Picked.</strong> with the user's words in quotation marks.
@@ -982,7 +986,7 @@ def transition(body, old, tag, text):
     nodes = [n.copy() for n in old]
     work, batch = developed_by(tag, text), triaged(tag, text)
     chosen = 'data-picked="user"' in tag
-    closed, _ = listed_closures(tag, text)
+    closed = sum(listed_closures(tag, text), [])     # listed Developed sub-ideas leave the queue too
     kept, promoted = kept_children(text), []
     for item in closed + [b[0] for b in batch]:
         close(nodes, item, kept, promoted)
@@ -1090,10 +1094,18 @@ def check(head_body, body, path=None, root=None):
     if batch:
         raise ValueError(TRIAGE_RETIRED)
     closed, developed = listed_closures(tag, text)
-    listed_developed = [i for k, i in developed if (k, i) in every_item(old)]
+    listed_developed = [item for item in developed if item in every_item(old)]
     if listed_developed:
-        raise ValueError('A follow-up list may mark a queued item Closed (it leaves the queue), Continuing or '
-                         'Reopened; Developed is said by a research entry developing it: ' + ', '.join(listed_developed))
+        # sub-ideas of the one top-level item the entry develops may be batched (user, 9 October 2026)
+        own = locate(old, work[0]) if work else (None, None)
+        group = own[0] or own[1]
+        outside = [i for k, i in listed_developed
+                   if group is None or locate(old, (k, i))[0] is not group]
+        if outside:
+            raise ValueError('A follow-up list marks Developed only sub-ideas of the top-level item the entry '
+                             'develops (one top-level item per entry; its sub-ideas may be batched): '
+                             + ', '.join(outside))
+        closed = closed + listed_developed
     head = head_of(old)
     first = next((c for c in head.children if not c.waits), None) if head else None
     if work:
@@ -1251,7 +1263,7 @@ def append_new(body):
         raise ValueError('; '.join(problems))
     was = draining or len(nodes) >= CAP
     promoted = []
-    for item in listed_closures(tag, text)[0]:
+    for item in sum(listed_closures(tag, text), []):
         close(nodes, item, kept_children(text), promoted)
     nodes += promoted
     before = len(every_item(nodes))

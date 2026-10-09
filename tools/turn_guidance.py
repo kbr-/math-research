@@ -117,8 +117,9 @@ def queue_notes(body):
 SQUEEZE = ('Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing '
            'while it still bears on an open statement, with the concrete next attempt named and made where '
            'possible; Developed only when no application to an open statement remains; Closed only for a reason '
-           'the attempt found (restatement, inapplicability, falsification, supersession). Every item gets its own '
-           'entry; batch triage is retired (user, 9 October 2026). Only '
+           'the attempt found (restatement, inapplicability, falsification, supersession). Every top-level item gets '
+           'its own entry; sub-ideas of the one item an entry develops may be batched in it, each in a follow-up '
+           'list item with its own outcome (user, 9 October 2026). Only '
            'route reviews outside draining mode propose Outside leads and Absurd bridges; research entries carry none. Any entry lists the questions, '
            'checks and builds it names and leaves undone under <h4>Sub-ideas</h4> (data-sub="check" or "build"); '
            'lead_queue.py append queues them under the item they belong to.')
