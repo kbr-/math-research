@@ -1,0 +1,1 @@
+Reviewed working-context soft excess; retain current quantitative bounds and warnings pending consolidation at scheduled review. No hard limits raised. No new claims or numerical tests; exact older source excerpts and the corrected reviewer scope are retained.
