@@ -1,0 +1,105 @@
+<article id="entry-2026-10-07-rank-retaining-weights" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-binary-quotient-architecture:1" data-claims="lem:rank-retaining-multiplier thm:iterated-relative-cleanup cor:repeated-conjunction-cleanup">
+<h3>7 October 2026 — Choose common multipliers that preserve multiplication rank</h3>
+<p class="entry-meta">Working rank-preserving weight selection and repeated conjunction cleanup; arbitrary gate coverage remains open. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> The binomial quotient already contracts long conjunctions, but choosing an arbitrary common multiplier can leave an uncontrolled new weight. Can the Frobenius rank-retention argument select that multiplier from the whole kernel while preserving a fixed fraction of its multiplication rank? This addresses weight maintenance on general-step without asserting a new representation for arbitrary gates.</p>
+<p><strong>General statement.</strong> lem:rank-retaining-multiplier works over every finite coefficient field with the stated field identities and degree buffer. thm:iterated-relative-cleanup composes explicit unweighted rank bounds through finitely many stages in one fixed pseudoideal. cor:repeated-conjunction-cleanup applies it in the charged \(\mathbb F_4\) quotient, with no sparsity condition on the intermediate weights.</p>
+<p><strong>New mathematics.</strong> A large common weighted kernel contains a multiplier whose multiplication image remains proportionally large. Repeated long-conjunction cleanup now pays a constant rank factor per stage and a linear degree charge, instead of requiring small character support after each choice. This removes the recorded weight-support premise for this scoped cleanup route.</p>
+<p><strong>Goal progress.</strong> Unchanged at the binary lower-bound statement: arbitrary retained affine mixtures still need not have suitable conjunction representations, and the full source/depth simulation is not supplied. The quantitative weight-maintenance gap for repeated conjunction cleanup is resolved under the explicit rank and budget hypotheses below; this is more than another coordinate description, but is not a Frege lower bound.</p>
+<h4>Rank can be retained when choosing the multiplier</h4>
+<p>Let \(F=\mathbb F_q\), with \(q\) a prime power. Let \(J\subseteq F[x]_{\le D}\) be a degree-\(D\) pseudoideal containing \(x_i^q-x_i\) for each variable. For \(\deg w\le b\), define
+\[
+ W_K=\{[wu]:\deg u\le K\},\qquad h_w(K)=\dim W_K.
+\]
+Choose a subspace \(X\subseteq W_K\), of dimension \(r\ge1\). All classes are in the same fixed quotient \(F[x]_{\le D}/J\).</p>
+<p id="rank-retaining-multiplier"><strong>Lemma (rank-retaining multiplier).</strong> Suppose \(K\ge1\) and \(b+(q+1)K\le D\). There is \(f\in F[x]_{\le K}\) such that \([wf]\in X\) and
+\[
+ h_{wf}(K)\ge(1-1/q)\dim X.
+\]
+In particular \(wf\notin J\). No bound on the monomial or character support of \(w\) or \(f\) is required.</p>
+<p><strong>Proof: the whole family has enough rank.</strong> Choose representatives \(f_1,\ldots,f_r\) of degree at most \(K\) with \([wf_i]\) a basis of \(X\). The supplied variable identities give \(f_i^q-f_i\in J\) through degree \(qK\), by expanding Frobenius and reducing monomial powers. Consider
+\[
+ M_i: F[x]_{\le K}\to F[x]_{\le D}/J,\qquad M_i u=[wf_i u].
+\]
+Their stacked map is injective on the \(r\)-dimensional span of the \(f_i\). Indeed, if \(g=\sum_i c_i f_i\) is in that span and \(wf_i g\in J\) for every \(i\), summing with coefficients \(c_i\) gives \(wg^2\in J\). Multiply by \(g^{q-2}\) (by one if \(q=2\)) to get \(wg^q\in J\) through \(b+qK\). Since \(g\) has coefficients in \(F_q\), \(g^q-g\in J\) through \(qK\), hence \(wg\in J\). Independence of \([wf_i]\) gives \(g=0\). Thus the stacked rank is at least \(r\).</p>
+<p><strong>Proof: select one member without leaving \(X\).</strong> Over \(F(\lambda_1,\ldots,\lambda_r)\), the generic combination \(\sum_i\lambda_iM_i\) has the same kernel as the stacked map. This is the <a href="#frobenius-PC-companion-compression">existing compression argument</a> with \(q\)-powers: if \(wL_j u\in J\), multiply by \(L_j^{q-1}\) and use
+\[
+ L_j^q-L_{j+1}=\sum_i\lambda_i^{q^{j+1}}(f_i^q-f_i),
+ \qquad L_j=\sum_i\lambda_i^{q^j}f_i.
+\]
+Each round fits \(b+(q+1)K\), independently of the number of rounds. The \(q\)-Moore matrix is invertible by its distinct determinant monomials. Scalar extension preserves bounded multiplication closure.</p>
+<p>The rank-specialization expectation on the \(q\)-point grid is at least \(1-1/q\) of generic rank. The determinant-multiplicity proof used in <a href="#conditional-tilted-contraction">conditional contraction</a> works for every finite grid of \(q\) distinct field elements: average multiplicity is at most determinant degree divided by \(q\). Consequently some \(c\in F_q^r\) has \(\operatorname{rank}\sum_i c_iM_i\ge(1-1/q)r\). Set \(f=\sum_i c_i f_i\). Its weighted class belongs to \(X\), and the selected rank is exactly \(h_{wf}(K)\). If \(wf\in J\), absorption through \(b+2K\le D\) would make that rank zero, contradicting \(r&gt;0\). \(\square\)</p>
+<p>The comparison with the <a href="#retained-PC-moment-pairing">binary pairing</a> and its <a href="research/branches/odd-prime-reslin-php/notebook.html#entry-2026-09-21-prime-pairing-and-degree-six">all-prime refinement</a> is useful but limited. Those results choose a functional giving nondegenerate coordinates; here the actual multiplier is selected from a specified common kernel. The proof does not infer compatibility from a nonsingular pairing. The <a href="#common-root-local-density-obstruction">common-marginal counterexample</a> therefore remains a warning, not a contradiction of this different claim.</p>
+<h4>Iterate in one fixed quotient</h4>
+<p>Let \(h=h_1(K)&gt;0\), \(\beta=1-1/q\), and let there be \(L\ge1\) stages. At stage \(j\), after the previous weights are chosen, suppose a finite family of error polynomials \(a_{j,i}\) of degrees at most \(d\) is supplied. Put
+\[
+ E_j=\sum_i\operatorname{rank}\bigl(u\in F[x]_{\le K}\mapsto[a_{j,i}u]\bigr).
+\]
+The errors may depend on the preceding choices; the displayed rank bound below must hold for each actual supplied stage. No claim that a compiler provides it is implicit.</p>
+<p id="iterated-relative-cleanup"><strong>Theorem (iterated relative cleanup).</strong> Assume
+\[
+ (L+q)K\le D,\qquad LK+d\le D,\qquad
+ E_j\le\varepsilon_j h.
+\]
+Let \(\alpha_0=1\) and
+\[
+ \alpha_j=\beta(\alpha_{j-1}-\varepsilon_j)&gt;0
+ \quad(1\le j\le L).
+\]
+Then one can choose \(f_j\) of degree at most \(K\), putting \(w_0=1\) and \(w_j=w_{j-1}f_j\), so that
+\[
+ h_{w_j}(K)\ge\alpha_j h,\qquad
+ w_La_{j,i}\in J\text{ for every }j,i,\qquad w_L\notin J.
+\]
+All ranks and memberships refer to this same fixed \(J\). In particular if \(\varepsilon_j\le\frac12(\beta/2)^{j-1}\), then \(h_{w_j}(K)\ge(\beta/2)^j h\).</p>
+<p><strong>Proof.</strong> Inductively \(\deg w_{j-1}\le(j-1)K\). Weighting each stage error cannot increase its rank: if \(a_{j,i}u\in J\), multiplying by \(w_{j-1}\) stays through \(jK+d\le D\). Every weighted error map also kills the kernel of the weight map, by the same ceiling. Therefore on the image \(W_K\) for \(w_{j-1}\), their joint kernel \(X_j\) has
+\[
+ \dim X_j\ge h_{w_{j-1}}(K)-E_j
+ \ge(\alpha_{j-1}-\varepsilon_j)h&gt;0.
+\]
+Apply the preceding lemma to this \(X_j\). Its needed degree is
+\((j-1)K+(q+1)K=(j+q)K\le D\).
+This chooses \(f_j\), kills the current errors after multiplication by \(w_j\), and gives the rank recurrence. Multiplying any earlier membership by the later \(f\)'s remains inside \(LK+d\le D\), so the final weight kills every stage. Its positive multiplication rank implies it survives, since \((L+1)K\le D\). The displayed simpler bound follows by induction with the half-rank allowance. \(\square\)</p>
+<p>A complete ordinary NS contradiction can now be replayed if its substituted errors are among these polynomials (or constant combinations of them), its old-axiom terms lie in \(J\), and every final original cofactor product fits \(D\). Concretely, for a supplied identity \(1=\sum_i B_i a_i+\sum_t C_tG_t\), require \(\deg w_L+\deg B_i+\deg a_i\le D\) and the analogous original costs for \(G_t\in J\). Multiplying the identity by \(w_L\) would put \(w_L\) in \(J\), contradicting survival. The theorem supplies neither this identity nor a representation for arbitrary gates.</p>
+<h4>Repeated conjunction cleanup in the charged quotient</h4>
+<p id="repeated-conjunction-cleanup"><strong>Corollary (repeated conjunction cleanup).</strong> Use the <a href="#charged-character-pseudoideal">charged ternary Tseitin pseudoideal</a> over \(F_4\), with expansion \(\varepsilon&gt;1\) and \(\max(4,2\Delta)\le D&lt;\varepsilon n/8\). Let \(m=|E|\), \(K\ge1\),
+\[
+ \gamma=1-1/\varepsilon,\qquad
+ \lambda=\frac{K+2m}{3K+2m},\qquad
+ (L+4)K\le D,\quad LK+d\le D.
+\]
+At each of \(L\) stages, allow at most \(M_j\) label conjunctions, each of support size in \([r_j,d]\), with arbitrary overlap. Suppose
+\[
+ M_j\lambda^{\gamma r_j}
+ \le\tfrac12(3/8)^{j-1}.
+\]
+Then a degree-at-most-\(LK\) weight \(w_L\) kills all these conjunctions and their constant linear combinations modulo \(J_D\), survives, and satisfies
+\[
+ h_{w_L}(K)\ge(3/8)^Lh(K).
+\]
+There is no character-sparsity hypothesis on any intermediate weight.</p>
+<p><strong>Proof.</strong> The Fourier variables satisfy their \(F_4\) field equations through degree four: \(U^4-U=(U^2+V)^2+(V^2+U)\), and similarly for \(V\). Thus the rank-retaining lemma applies with the fixed coefficient-field size \(q=4\). This uses \(F_4\) coefficients for the old multiplier only; it does not enlarge the domains of binary source variables or alter legal approximation coefficients.</p>
+<p>By the <a href="#conjunction-quotient-rank">exact conjunction rank</a> and <a href="#punctured-quotient-contraction">puncturing bound</a>, each unweighted image has rank at most \(\lambda^{\gamma r_j}h(K)\), including incompatible conjunctions whose rank is zero. The sum obeys the iterated theorem with \(\varepsilon_j=M_j\lambda^{\gamma r_j}\), \(\beta=3/4\), and hence \(\beta/2=3/8\). Its hypotheses hold in the same fixed quotient, giving the claim. \(\square\)</p>
+<p>For fixed \(L\) on a fixed bounded-degree expander family, choose \(D=\Theta(n)\) below the old barrier and \(K=\Theta(n)\) with the displayed margins. Then \(\lambda&lt;1\) stays bounded away from one. Every polynomial \(M_j\le n^A\) is handled by \(r_j=O_{A,L}(\log n)\), provided the actual conjunction representation has maximum support \(d\) within the remaining budget. The hard family is unchanged as \(A\) varies. This is the genuine improvement over the earlier \(M_js\lambda^{\gamma r_j}&lt;1\) ledger: a new arbitrary kernel multiplier need not have small character support.</p>
+<p>The <a href="#matching-flat-conjunction-width">conjunction-width obstruction</a> still applies to representations of wide affine products at constant-factor degree. Isolated matching support already has the <a href="#localized-tseitin-source-transfer">separate restriction transfer</a>. Neither is solved by this weight-selection lemma. The remaining source problem is to supply a suitable error family and full original cofactor budget, not merely to observe that weights can now be maintained.</p>
+<h4>Controls and next task</h4>
+<p><strong>Analytic controls.</strong> On a full finite function algebra with a point-indicator basis of \(X\), the random coefficient choice has expected multiplication rank exactly \((1-1/q)\dim X\); each point coefficient is nonzero with that probability. This validates the mean normalization, not optimality of every best choice. A one-dimensional surviving weight image remains positive under the lemma's bound by integrality. The domain identities are essential to the injection proof: in the square-zero algebra with \(r\) independent elements \(e_i\) and all \(e_ie_j=0\), their span has dimension \(r\) but every nonzero member has multiplication rank one. For \(r&gt;q/(q-1)\), the analogous conclusion fails; that algebra does not satisfy the required field identities. These are exact algebraic controls; no numerical series is needed.</p>
+<p><strong>Follow-up.</strong> Continuing the binomial lead. The new rank selection resolves its weight-maintenance subproblem at the stated buffer. Next return to the highest-risk representation issue: obtain a suitable relative error bound for actual retained affine mixtures or a complete alternative transfer. Keep the queued larger-degree conjunction representation with cancellation/sharing, without reopening its already solved isolated matching case.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-07-partial-image-contraction:s1">The common weighted kernel contains a multiplier with the claimed proportional multiplication rank, and the fixed-\(F_4\) proof avoids needing a binary basis for that kernel. <strong>Follow-up.</strong> Closed: superseded for the needed weight-maintenance task by the <a href="#rank-retaining-multiplier">rank-retaining lemma</a> and <a href="#repeated-conjunction-cleanup">repeated-conjunction corollary</a> resolve weight maintenance under explicit original ceilings without the initially proposed prime-valued restriction. No binary-valued selection is claimed; the fixed-field contradiction needs only the proved \(F_4\) selection. Source coverage remains with the parent lead.</li></ul>
+<p><strong>Verification gate.</strong> The sole isolated medium reviewer passed all three proofs, field-size and original-degree accounting, rank recurrence, analytic controls and the scoped goal assessment. It confirmed that the weight-maintenance sub-idea is resolved. Positive \(K\) is retained for the puncturing application; the standalone constant-cutoff case needs no such restriction. The corollary\'s lower cutoff is inherited from construction of the charged quotient. Reread the binary and all-prime pairing records and their common-marginal warning, the Frobenius compression and conditional rank-specialization proofs, and the exact charged conjunction/puncturing ledger. Registry searches included multiplication rank, surviving weights, principal-image selection and the dual pairing formulation. No new encoding or computational rule was introduced.</p>
+<p><strong>Process assessment.</strong> Choosing from the entire common kernel, instead of retaining an arbitrary nonzero vector, removes an explicit support-loss assumption. Keeping the coefficient field fixed avoids an unnecessary field-descent or large-field step.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="binary_weight_rank_20261007">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 18.89 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 47.03 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 57.30 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 56.07 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">34.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.60 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>

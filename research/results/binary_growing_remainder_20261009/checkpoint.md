@@ -1,0 +1,1 @@
+Soft working-context excess reviewed; retain exact rank thresholds and original accuracy/degree ceilings to prevent assuming the new dichotomy for arbitrary source data. No hard budget changed. All new mathematics is in the append-only entry. No computation or framework modification was needed.

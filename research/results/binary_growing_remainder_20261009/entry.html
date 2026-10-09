@@ -1,0 +1,71 @@
+<article id="entry-2026-10-09-growing-rank-gap" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-binary-quotient-architecture:1" data-claims="thm:growing-rank-gap-exclusion">
+<h3>9 October 2026 — The growing-family split handles a logarithmic low-rank remainder</h3>
+<p class="entry-meta">Working two-level rank-gap exclusion. Intermediate bottom ranks and deeper sources remain open.</p>
+<p><strong>Question.</strong> On general-step, does the low-rank remainder from the growing-expansion split admit complete parent removal? First restore the already proved rank-retaining choice, then use the finite branch theorem instead of assuming fixed reference degree or polynomial-in-vertex inventory.</p>
+<p><strong>General statement.</strong> <a href="#growing-rank-gap-exclusion">thm:growing-rank-gap-exclusion</a> composes the preceding high-flat erasure with weighted removal for logarithmic-degree references. It excludes the complete product-only two-level source when every proper bottom rank is either small enough for that rate or large enough to erase. It does not supply that rank dichotomy for arbitrary proofs.</p>
+<p><strong>New mathematics.</strong> A complete parameter composition handles a growing low-degree range and an arbitrary high-rank family simultaneously, with original encoding length and source degrees retained. Rank maintenance is recovered from the existing selector, not a new theorem. Neither a small core cover nor a sparse selected weight is needed for this restricted two-level result.</p>
+<p><strong>Goal progress.</strong> Unchanged. The unproved source-wide nonlinear implication remains: bottom ranks in the intermediate interval are allowed by the compiler, and sources can have further levels. This is a larger sufficient source class, not an unrestricted Frege bound.</p>
+<h4>Statement with the original inventory parameter</h4>
+<p>Fix the graph/CNF family of <a href="#entry-2026-10-09-growing-expansion-flats">growing expansion</a>, with \(\Delta=\lceil(\log n)^2\rceil\), \(n\Delta/8\le m\le n\Delta\), proper binary old quotient through \(D=\lfloor n\Delta/64\rfloor\), and \(K=\lfloor m/1024\rfloor\). Use \(v=2m\) independent Boolean old indicators, and let \(N_n\) be the canonical encoding length, \(\log N_n=\Theta(\Delta)\). All logarithms are natural. Define
+\[
+ q=\left\lfloor\frac{\log n}{100\log16384}\right\rfloor,\quad
+ R=\lceil4096\log(8M)\rceil,\quad
+ h=\lfloor n^{1/20}\rfloor,\quad B=\lfloor n^{1/4}\rfloor.              \tag{1}
+\]
+For large \(n\), \(q\ge1\). Fix any \(A>0\), with \(1\le M\le N_n^A\) and at most \(M\) bottom blocks and at most \(M\) parents. Both levels have original accuracy \(h\), private coefficient domains and all companions. Bottom inputs are old affine forms. Every parent input is an old-affine polynomial plus a constant binary linear combination of genuine bottom products; no raw bottom coefficients or parent-to-parent inputs occur. Products shared by different parents are interpreted coherently.</p>
+<p id="growing-rank-gap-exclusion"><strong>Theorem (growing rank gap).</strong> Suppose each proper bottom input span has rank at most \(q\) or at least \(R\). For all sufficiently large \(n\), depending on \(A\), this complete two-level source has no PC or ordinary NS refutation through original degree \(B\). One global constant coefficient assignment and a surviving old weight of degree at most \(2K\) suffice. The graph, accuracy exponent and degree-bound exponent are independent of \(A\).</p>
+<p>“Proper” means that the affine span does not contain one, after local normalization. Zero and unit spans are permitted and handled separately. If the intervals overlap, choose the high-rank treatment first; every remaining nonzero proper span then has rank at most \(q\). The theorem imposes no additional parent arity, overlap or linear-rank bound.</p>
+<h4>First weight and the already available rank retention</h4>
+<p><strong>Proof.</strong> For every proper bottom rank at least \(R\), choose \(R\) independent affine forms from its actual input span, use their constant indexed representations as rows, and zero-pad to \(h\). For each remaining proper span choose its complete basis, of rank at most \(q\), and zero-pad. A unit span uses a row equal to one; a zero span uses zero rows. Since \(R=O_A(\Delta)\) and \(q=O(\log n)\), all selected rows fit \(h\) eventually.</p>
+<p>Apply <a href="#growing-expansion-flat-removal">growing-expansion removal</a> to the high-rank products, starting at weight one. It gives a common kernel \(X\subseteq[V_K]\) of dimension at least \(h_1(K)/2\), killing those products. The original companion reserve is \(K+R+1\le D\). If there are no high-rank products, take \(X=[V_K]\).</p>
+<p>The <a href="#rank-retaining-multiplier">rank-retaining lemma</a>, over the binary Boolean old quotient, applies to \(X\) at \(3K\le D\). We may therefore select a binary \(w\) of degree at most \(K\), with \([w]\in X\), such that
+\[
+ h_w(K)\ge\tfrac12\dim X\ge\tfrac14h_1(K)>0.                           \tag{2}
+\]
+This resolves the proposed first-weight support concern using an existing theorem. It requires no character sparsity. For the parent argument only \(w\notin J_D\) is needed; (2) is recorded for possible actual-profile comparisons, not smuggled in as a necessary hypothesis.</p>
+<p>All weighted bottom companions vanish: high products are killed and multiplication by each affine input is paid; low products exactly test a basis, so their companions have Boolean certificates; unit and zero cases were handled explicitly. Every coefficient-field image is zero. Put \(\delta=\max(R,q,1)\). Actual specialized parent inputs have degree at most \(\delta\), while after deleting the high products they agree modulo the weight with reference polynomials of degree at most \(q\). Constants from zero spans can be absorbed into the old-affine part. Thus
+\[
+ w(g_{a,i}-\widetilde g_{a,i})\in J_D,\qquad \deg\widetilde g_{a,i}\le q,
+\]
+through the already paid \(K+\delta\) ceiling. No claim that the low products become affine is made.</p>
+<h4>The logarithmic-degree rate fits</h4>
+<p>Write \(N_v(k)=\sum_{j\le k}\binom vj\). For \(1\le k\le v\),
+\[
+ \frac{N_v(k-1)}{N_v(k)}\ge\frac{k}{v+k}\ge\frac{k}{2v},
+\]
+because \(\binom vk=((v-k+1)/k)\binom v{k-1}\le(v/k)N_v(k-1)\). Eventually \(q\le K/2\), and \(K\ge m/2048\). Multiplying the \(q\) consecutive ratios therefore gives
+\[
+ \eta_q=\frac12\frac{N_v(K-q)}{N_v(K)}
+ \ge\frac12\left(\frac{K}{4v}\right)^q
+ \ge\frac12\,16384^{-q}\ge\frac12 n^{-1/100}.                          \tag{3}
+\]
+Choose
+\[
+ t=\left\lceil4 n^{1/100}\log(2M)\right\rceil.
+\]
+Then \(M(1-\eta_q)^t\le M e^{-2\log(2M)}=1/(4M)&lt;1\). Since \(\log M=O_A((\log n)^2)\),
+\[
+ t=O_A(n^{1/100}(\log n)^2)=o(h),\qquad
+ (t+1)\delta=O_A(n^{1/100}(\log n)^4)=o(n\Delta).
+\]
+Also \(2K\le n\Delta/512\), whereas \(D=n\Delta/64+O(1)\). Hence
+\[
+ 2K+(t+1)\delta\le D,
+ \qquad 2K+\delta+1\le D,
+ \qquad 2K+B\le D                                                       \tag{4}
+\]
+eventually. These are inequalities in the actual vertex/edge parameters; the much larger inventory was included through \(\log M\), not replaced by a polynomial in \(n\).</p>
+<p>Apply the <a href="#surviving-branch-removal">single-branch removal theorem</a> with branch weight \(w\), degree ceiling \(b=K\), reference degree \(q\), actual degree \(\delta\), cutoff \(K\) and \(t\) rows. Its hypotheses are precisely (3)–(4) and the weighted comparisons. It chooses constant binary rows in the actual parent positions and \(f\in V_K\), with \(W=wf\notin J_D\), annihilating all parent companions. Zero-padding to original accuracy \(h\) is legal. The earlier bottom memberships survive multiplication by \(f\) through \(2K+\delta+1\le D\); all coefficient fields remain zero.</p>
+<p>A purported original degree-\(B\) source refutation, after this one global constant assignment and multiplication by \(W\), stays in \(J_D\) by \(\deg W+B\le2K+B\le D\). Its final line is \(W\), a contradiction. The original bottom products have degree at most \(2h\), parent inputs degree at most \(2h\), and parent companions at most \(2h^2+3h\); these are all below \(B\) eventually. The complete source is not excluded vacuously by placing its axioms above the proof ceiling. Ordinary NS refutations replay in PC at their original ceiling. This proves the theorem. \(\square\)</p>
+<h4>What remains between the thresholds</h4>
+<p>The first-stage kernel was large enough for (2); there is no reason to pursue a character-support bound just to retain a nonzero weight here. The parent removal uses the existing proper weighted-kernel rate, so its survival does not actually require a fixed rank fraction. A later application of the affine-union or local-dictionary criteria would still need its own numerator bound and must use the same weighted denominator.</p>
+<p>The unresolved two-level class may contain proper bottom ranks in \(q&lt;r&lt;R\). For the maximal allowed inventories, the upper threshold has order \((\log n)^2\), while the lower one has order \(\log n\). No sparsity, common-core cover or gap in that interval follows from the written source size. Increasing graph expansion repaired the quotient occupancy loss; it did not make the degree-dependent approximation rate constant. The theorem is a recovered complete composition under a stated rank-gap premise, not evidence that the premise holds.</p>
+<p>There is also no deeper-source induction: parent products after these choices can have high degree, and later inputs retain all previous costs. The finite core-star theorem already treats different shared-core data; the present argument allows arbitrary high-rank spans because their entire selected products are erased, while low reference degree is permitted to grow. Neither source class is asserted to include every compiler output.</p>
+<p><strong>Follow-up.</strong> Continuing the binomial head after its second entry. Next address the intermediate-rank family directly: seek a source-sensitive reduction or a relative rank estimate for its actual mixtures. Use the retained-domain option (2) when comparing profile estimates, but do not spend another cycle merely reselecting the weight or optimizing the same ambient degree rate.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-09-growing-expansion-flats:s1">Logarithmic low ranks are handled by the complete theorem, including original encoding inventory and all weighted source comparisons. <strong>Follow-up.</strong> Continuing: the intermediate ranks and arbitrary deeper-source remainder are not covered.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Test actual mixtures of the intermediate bottom ranks q&lt;r&lt;R in the growing-expansion family. A favorable source-derived span profile, a paid common reference, or a different complete mechanism could close this interval; raw source size alone supplies none of them.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed with the minor correction \(M\ge1\), incorporated; empty inventories may use upper bound one. It verified the rate, all original/weighted ceilings and the optional role of rank retention. <a href="research/results/binary_growing_remainder_20261009/review.txt">Verdict</a>. Exact rank-retaining, surviving-branch, growing-flat, local-dictionary and affine-profile proofs were read; the complete ENS formulas and original compiler costs were retained. No new rule, encoding or numerical experiment is introduced.</p>
+<!-- TIMING binary_growing_remainder_20261009 -->
+</article>
