@@ -81,6 +81,10 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   and refutations. Match source hypotheses, encodings and versions; preserve original joint degrees
   and exact parameter accounting. Record full arguments, actual tests, dependencies and remaining
   gaps. Use meaningful falsifying tests/controls; do not rerun old suites to simulate progress.
+  A general belief, folklore or "experience" is not evidence (user, 9 October 2026): support a
+  statement by a proof, a source read in the cycle with its hypotheses, or a test able to
+  distinguish it from the alternative at the sizes run. Otherwise label it an untested hypothesis
+  and base no decision or status on it.
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
   `--show LABEL`. Unfiltered display searches also surface up to three historical statement matches.
   For a generic mechanism, follow relevant matches and search the immutable [historical
