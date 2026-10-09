@@ -1,0 +1,33 @@
+Review record, 9 October 2026: entry-2026-10-09-rank-expansion-review (goal-level route review).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), two stages, same agent.
+
+STAGE ONE (goal and available results only; preferred route withheld). Reviewer's statements, unverified.
+Known half bounds: Razborov PHP n/2+1 over any field, n = holes, >= n^2 variables, free dimension stays ~ n^2;
+subset sum trivial over F_2 (affine); Tseitin (Buss-Grigoriev-Impagliazzo-Pitassi) needs characteristic != 2,
+half the width, ~ n/4 for random systems; mod-p Tseitin / counting over F_2 linear with small constants. No F_2
+bound near n/2 recalled.
+Alternative: identify F_2^n with F_{2^k}^N (extreme: one variable in F_{2^n}); bit-degree = binary weight of
+exponents, RM(D, n) = span of x^e with wt(e) <= D; affine forms = traces; rows = products of trace forms; an
+ideal whose weight-filtered closure avoids 1 up to weight n/2 - s; tools: Frobenius and multiplicative
+invariance, affine-invariant codes, RM self-duality at half degree. Likely break: cyclic analogue of the
+symmetric ceiling; covering with polynomially many rows forces codimension O(log n). Smallest test: whether
+orbits of one trace-product row fall under a constant-degree ceiling.
+Weakening: static (Nullstellensatz) version first; rough count: constraints span about
+m 2^(n-c) exp(-2 s^2/n), far below 2^n once s >> sqrt(n log n). No amplification from cn to n/2 known.
+Falsity: no general ceiling below n/2 known; the two-bit ceiling N+2 makes any F_4-encoded family tight.
+
+STAGE TWO (draft and current route revealed). Verdict: pass with corrections.
+Source: Lemma 4.1 and Theorem 5.1 accurate (add: induction on multilinear representatives); Theorem 4.2
+hypothesis as printed is m > n and m larger than the characteristic; proof uses m outside {0..n} in the field,
+void in characteristic p <= n; "pigeonhole bound" -> lower bound. Consequences justified.
+Decision/Obstacle: "showed to be necessary" overstated -> suggests; "theory at half degree" is code duality, not
+PC. Test ill-posed in three places: cyclic subgroup of polynomial order needs a divisor of 2^n - 1; G and
+Frobenius fix 0 so covering needs linear base subspaces; covering needs orbit size >= 2^w. Smallest well-posed
+version: n+1 prime with 2 a primitive root, G = (n+1)-th roots of unity, w <= 2 log n, polynomially many linear
+base subspaces; first decide covering.
+Pigeonhole count: order 2^Theta(n log n) right; shows only that the proof's basis cannot survive.
+"Narrowed" -> removed one method in the forms tested.
+Suggestions (unverified): for G in a subfield of degree d every form Tr(a g x) is F_2-linear in g, rows are
+functions of <= wd forms, degree <= wd + w by the transversal rank ceiling; width 1 rows refuted in degree 1 from
+g + g' = g''; with d = n the nontrivial elements of G form a normal basis and the family is shift-invariant in
+ordinary coordinates: no immediate ceiling, no lower-bound mechanism; the orbit sum has degree <= w, no use found.
