@@ -892,6 +892,22 @@ For n >= 2 and 1 <= k < 2^n, D(n-1,k) <= D(n,k)-1: after a linear change of coor
 
 ---
 
+### Paired cut reflection
+
+**Claim:** [lem:paired-cut-reflection](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-09-cube-paired-reflection>)
+
+For every pair count m>=2 in characteristic different from two, the full paired cut operator extended to every integer D has the same rank and nullity at D and 2m-2-D, for each fixed root ordering. A certified period Q therefore needs (Q+gcd(2,Q))/2 reflection representatives.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Reusable exact symmetry of the proper paired lattice, applying classical duality; can nearly halve complete-period certificate work. No current-run saving is claimed.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare this proper-lattice specialization with existing interpolation duality literature before claiming novelty; apply with explicit direct/derived certificate accounting.
+
+---
+
 ### Per order dimension step
 
 **Claim:** [lem:per-order-dimension-step](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-prior-art-menezes>)

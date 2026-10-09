@@ -1,5 +1,7 @@
 \\ Exact sufficient joint-leading filter for the n9/n10 finite complements.
-\\ n9 uses proved n<=8 normality; n10 is conditional on the completed n9 result.
+\\ n9 uses proved n<=8 normality; each n10 skip needs only n9 degrees d and d-1.
+\\ ASSUMES_N9_COMPLETE is a legacy sufficient-premise marker, not a necessary premise.
+\\ Consumers must record and certify the finite parent degrees of actual skips.
 \\ A positive valuation leaves a case unresolved by this filter, not an exception.
 default(parisizemax,1000000000);
 default(nbthreads,1);
