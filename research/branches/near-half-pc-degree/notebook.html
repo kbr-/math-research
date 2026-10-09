@@ -23,7 +23,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>On near-half-family, continue the queue's head, the LCM-lattice lead, with the calculation named in the <a href="#entry-2026-10-09-coprime-certificate">coprime-certificate entry</a>: for two contradictory rows on linear forms sharing one form, write the truncated Buchberger certificate or the refutation as a function of the rows' immunity, and read off the cutoff. This is the third of four entries of the lead's spell; if it yields no certificate with elements of degree above half the cutoff described in closed form, rotate the lead at the boundary.</p>
+<p>On near-half-family, continue the queue head, the LCM-lattice lead, for the last entry of its spell: build the pair-condition checker of the <a href="#entry-2026-10-09-truncated-buchberger">truncated Buchberger criterion</a> as a tested tool and use it on a three-row structure, three pairwise consistent and jointly unsatisfiable rows, to verify a hand-written certificate or find the degree at which none exists. Then the lead rotates or is developed according to what remains of its sub-ideas.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -58,6 +58,7 @@
 <li data-build="entry-2026-10-09-truncated-buchberger:s1"><a href="#entry-2026-10-09-truncated-buchberger">entry-2026-10-09-truncated-buchberger:s1</a> (build): A checker that takes a candidate \(G\) and a cutoff and verifies the pair condition of the lemma exactly over \(\mathbb F_2\), to turn truncated basis computations into certificates of properness.</li>
 <li data-check="entry-2026-10-09-truncated-buchberger:s2"><a href="#entry-2026-10-09-truncated-buchberger">entry-2026-10-09-truncated-buchberger:s2</a> (check): Decide whether the linear syzygies of products of affine forms account for the excess of the computed degree over the series index at \(n=20\) and \(n=32\), using the lemma's description of leading monomials.</li>
 <li data-check="entry-2026-10-09-coprime-certificate:s1"><a href="#entry-2026-10-09-coprime-certificate">entry-2026-10-09-coprime-certificate:s1</a> (check): Write the certificate, or the refutation, for two contradictory rows on linear forms sharing one form, as a function of the rows' immunity, and read off the cutoff.</li>
+<li data-check="entry-2026-10-09-two-row-identity:s1"><a href="#entry-2026-10-09-two-row-identity">entry-2026-10-09-two-row-identity:s1</a> (check): For three pairwise consistent rows that are jointly unsatisfiable, determine the least refutation degree in terms of the widths and the shared sets, as the first structure not covered by the identity.</li>
 </ul></li>
 <li data-lead="entry-2026-10-08-invariant-architecture-review:1"><a href="#entry-2026-10-08-invariant-architecture-review">entry-2026-10-08-invariant-architecture-review:1</a> (lead): Schwartz–Zippel and sparse affine sources. The recorded all-field multiplicity theorem of Dvir–Kopparty–Saraf–Sudan, Lemma 2.7, bounds the zero set of the matched determinant. Together with the elementary first/second mo…<ul>
 <li data-check="entry-2026-10-09-modular-projection-cores:s1"><a href="#entry-2026-10-09-modular-projection-cores">entry-2026-10-09-modular-projection-cores:s1</a> (check): For the normalized growing-modulus cores, construct a proper binary degree-cutoff space or an explicit reduction map and prove multiplier compatibility and unit survival. Keep the one-way normalization transfer and the g…</li>
@@ -5049,6 +5050,43 @@ for large l. Its quantifier covers every unsatisfiable non-universal projected r
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 7.27 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 3.99 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-09-two-row-identity" data-kind="research" data-route="near-half-family" data-route-item="near-half-family" data-obligation="near-half-pc-family" data-goal-progress="unchanged" data-lead="entry-2026-10-09-global-architecture-review:2" data-claims="prop:two-row-axiom-identity">
+<h3>9 October 2026 — Two contradictory rows are refuted by a sum of their axioms, whatever they share</h3>
+<p class="entry-meta">Working proof that two-row systems have refutation degree at most their width; the calculation named for the lead is trivial. Queue development of the LCM-lattice lead while draining. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, reasoning effort low).</span></p>
+<p><strong>Question.</strong> On near-half-family and the Boolean PC family statement, the <a href="#entry-2026-10-09-coprime-certificate">preceding entry</a> named a calculation for the LCM-lattice lead: write the certificate or the refutation for two contradictory rows sharing one form, as a function of their immunity, and read off the cutoff. The hope was a smallest structured system whose certificate has elements of degree above half the cutoff in closed form. If the cutoff of every two-row system is bounded by the row width, the smallest interesting structure needs at least three rows arranged in a cycle.</p>
+<p><strong>New mathematics.</strong> For any two relations in canonical encoding that are jointly unsatisfiable, \(1\) is a linear combination of their axioms with constant coefficients. The refutation degree is at most the larger width, independently of immunity and of how many variables or forms the rows share. So no certificate above the width exists for two rows.</p>
+<p><strong>Goal progress.</strong> Unchanged. The result removes two-row systems of small width as test structures and says nothing about a family.</p>
+<p><strong>General statement.</strong> <code>prop:two-row-axiom-identity</code> holds over every field for every pair of jointly unsatisfiable relations on arbitrary variable sets.</p>
+
+<h4>The identity</h4>
+<p>For a set \(X\) of Boolean variables and \(\tau\in\{0,1\}^X\) let \(\chi_\tau=\prod_{i\in X}(x_i\text{ if }\tau_i=1,\ 1-x_i\text{ if }\tau_i=0)\), the indicator of \(\tau\), of degree \(|X|\). A row is a relation \(R\subseteq\{0,1\}^X\); its canonical axioms are the \(\chi_\tau\) for \(\tau\notin R\).</p>
+<p><strong>Proposition (two row axiom identity).</strong> Let \(R_A\subseteq\{0,1\}^{X_A}\) and \(R_B\subseteq\{0,1\}^{X_B}\) have no common extension to \(X_A\cup X_B\). Then there are sets \(N_A\subseteq\{0,1\}^{X_A}\setminus R_A\) and \(N_B\subseteq\{0,1\}^{X_B}\setminus R_B\) with</p>
+\[\sum_{\tau\in N_A}\chi_\tau+\sum_{\tau'\in N_B}\chi_{\tau'}=1\]
+<p>as polynomials. In particular the system has a Nullstellensatz refutation of degree at most \(\max\{|X_A|,|X_B|\}\) with constant multipliers, without use of the Boolean axioms, and \(1\in C_D\) for that \(D\).</p>
+<p><em>Proof.</em> Put \(T=X_A\cap X_B\) and let \(P_A,P_B\subseteq\{0,1\}^T\) be the projections of the two relations. They are disjoint: a common point extends to a tuple of \(R_A\) and to a tuple of \(R_B\), which agree on \(T\) and so glue. For any \(X\supseteq T\) and \(t\in\{0,1\}^T\), \(\sum_{\tau\in\{0,1\}^X,\ \tau|_T=t}\chi_\tau=\chi_t\), since \(\sum_{u\in\{0,1\}}(x_i\text{ or }1-x_i)=1\) for each variable outside \(T\). Let \(N_A\) be the tuples on \(X_A\) whose restriction to \(T\) lies in \(P_B\), and \(N_B\) the tuples on \(X_B\) whose restriction lies outside \(P_B\). A tuple of \(N_A\) is not in \(R_A\), as its restriction is not in \(P_A\); a tuple of \(N_B\) is not in \(R_B\). Then \(\sum_{N_A}\chi_\tau=\sum_{t\in P_B}\chi_t\) and \(\sum_{N_B}\chi_{\tau'}=\sum_{t\notin P_B}\chi_t\), and the two sums add to \(\sum_{t\in\{0,1\}^T}\chi_t=1\). If \(T=\emptyset\) the same reads with a one-point space, and one of the relations is empty. \(\square\)</p>
+<p>For rows on linear forms over \(\mathbb F_2\), with coefficient field of characteristic two, the same holds with width counting forms when the distinct forms of both rows are linearly independent, after a linear change of coordinates, which preserves degree. That condition is sufficient and not necessary.</p>
+<p><strong>Consequence for certificates.</strong> For two jointly unsatisfiable rows no closure is proper at the larger width, so no properness certificate exists there. Immunity does not enter: the identity uses the axioms as given and no multiplication. More generally a system with a proper closure above its width has no two rows that are jointly contradictory. The identity does not extend to one row against the rest of a larger system: the projections onto the shared variables are disjoint there too, but the indicators on the rest's side are not axioms and may be costly to derive. Which three-row structures are the smallest not covered is not determined here.</p>
+
+<p><strong>Specification decision.</strong> No change; nothing is weakened. The proposition is not a new condition: under the specification's requirement that every variable lies in at least two blocks, a two-row system has both rows on all variables, and the bound is then the number of variables and says nothing.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer confirmed the proposition and its proof over any field and required corrections to the prose, all applied: "at most" in the degree; the linear-forms remark needs characteristic two and independence of the distinct forms; the sentence on tree-like overlaps and cycles was an overclaim and is replaced; the specification sentence did not make sense and is rewritten; the scope is two-row systems of small width. Record: <a href="https://github.com/kbr-/math-research/blob/main/research/results/near-half-two-row-identity-20261009/review.txt">review.txt</a>.</p>
+<p><strong>Follow-up.</strong> Continuing. The lead asked for a costed lift of the lcm relations to organize the calculation of when a closure stays proper. It has given the truncated criterion, the equivalence of certificates with properness, the forced overlap, and this bound for its named test structure. Its queued sub-ideas are still open, so it is not developed: the next attempt is the first of them, the pair-condition checker, to be built against the three-row structure below so that a claimed certificate there can be verified exactly. This is the third entry of the lead's spell of four.</p>
+<h4>Sub-ideas</h4>
+<ul>
+<li data-sub="check">For three pairwise consistent rows that are jointly unsatisfiable, determine the least refutation degree in terms of the widths and the shared sets, as the first structure not covered by the identity.</li>
+</ul>
+<p><strong>Process assessment.</strong> The calculation proposed at the end of the preceding entry was not checked for triviality before being named as the next step; a minute's thought would have shown it. The lead continues for one more entry of its spell, on its queued checker.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="nhpc-20261009-shared-form-certificate">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 33.66 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 29.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.34 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
