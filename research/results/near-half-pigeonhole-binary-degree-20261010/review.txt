@@ -1,0 +1,22 @@
+Review record, 10 October 2026: entry-2026-10-10-pigeonhole-binary-degree.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); read the tool and the
+three outputs; hand check of the lemma; inline brute-force scripts (not archived).
+
+Verdict: pass with corrections.
+1. The tool with no blocks computes the degree-d PC closure over F_2 of the row axioms in the
+   partial-matching ring; the table matches the files (381/3331/17473, rounds 3/3/4, one_in_closure true).
+   Same system as cor:functional-auxiliary-PC-bridge (degree >= N/2+1, every field); for odd n integrality
+   gives ceil(n/2)+1, so "exactly" holds at n = 4, 5, 6. Error: "more than one round, so the refutation uses
+   degree falls" is invalid; rounds > 1 only shows the closure exceeds the static span. Checked with the
+   tool's Ext class: 1 is already in the static degree-d span at (N,d) = (5,4) and (6,4), not at (4,3).
+2. Theorem 4.3: the proof uses m not in {0..n}, impossible in F_2; as printed the hypothesis reads "m is
+   larger than the characteristic", which F_2 satisfies literally: say "the condition its proof uses".
+3. Lemma correct in characteristic 2; "over a field" with 1+a_i wrong otherwise: restrict or write 1-a_i and
+   a_i^2-a_i; a_i^2-a_i also uses x^2-x. D >= h1+1 redundant: the P-axioms alone are satisfied by all ones.
+4. Conjecture: brute force over F_2 for n = 1..9 (m = 2..10): 1 in the closure at degree h1+1 and not at h1
+   in every case; with the lemma the pigeonhole degree is ceil(n/2)+1 for all n <= 9, including n = 7. Error
+   in "What I tried": "cannot stay among symmetric polynomials ... must use degree falls" false in general:
+   a static degree-(h1+1) certificate exists at n = 1, 2, 5, 6 and none at n = 3, 4, 7, 8, 9; restrict to
+   "these two sums alone do not refute at n = 4". The lower bound n/2+1 is trivial from the Q-axiom's degree.
+5. Continuing and Bearing none fine. "Twice the truth"/"half the ceiling" inexact (5 vs 3, 6 vs 4, 7 vs 4).
+Unused: D >= h1+1. Suggestion: register the threshold brute force for n <= 9 as the finite check.
