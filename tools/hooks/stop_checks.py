@@ -269,9 +269,22 @@ def loop_block(reply):
         'anyway. If the sentence proposes no loop to run, say so.')}
 
 
+# The gap's words used for something else: the outcome a tool gives a case ("reports such a scenario as
+# unverified", "leaves the scenario unverified"), a thing so described ("an unverified signer"), a past
+# omission told ("I had not checked it"), or what a tool cannot do ("this can't verify that"). Read on the
+# 39 replies of one long session that the pattern blocked: 11 were of these kinds.
+NOT_A_GAP = re.compile(
+    r"\b(?:report(?:s|ed|ing)?|show[ns]?|mark(?:s|ed)?|list(?:s|ed)?|flag(?:s|ged)?|count(?:s|ed)?)\b[^.!?\n]{0,60}?"
+    r"\bas (?:an? )?[\"“]?(?:unverified|unchecked|not checked)\b"
+    r"|\bleav(?:e|es|ing) (?:the |a |that |such a )?(?:scenario|test|case|claim|row|finding)s? unverified\b"
+    r"|\b(?:an?|loses|keeps) (?:unverified|unchecked) [a-z]+"
+    r"|\bwhen unchecked\b|\bhad(?: not|n't) (?:been )?(?:checked|verified)\b"
+    r"|\b(?:this|it|that|the (?:tool|check|hook|script|judge)) (?:can't|cannot) (?:check|verify|confirm)\b", re.I)
+
+
 def gap_block(reply):
     """The block for a final reply that declares something unchecked, or None."""
-    found = sentences(GAP, [reply])
+    found = [sentence for sentence in sentences(GAP, [reply]) if GAP.search(NOT_A_GAP.sub(' ', sentence))]
     if not found:
         return None
     return {'decision': 'block', 'reason': (

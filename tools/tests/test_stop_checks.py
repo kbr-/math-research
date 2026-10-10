@@ -360,6 +360,28 @@ class UncheckedClaimTest(unittest.TestCase):
         self.assertEqual(hook.sentences(hook.GAP, ['The letter now says:\n\n> Whether a workload\n'
                                                    '  > reads it is not checked.\n\nThat is unverified.']), ['That is unverified'])
 
+    def test_the_gap_words_used_for_an_outcome_a_description_or_a_past_omission_are_no_gap(self):
+        for reply in ('The tool reports such a scenario as unverified and lets you waive it.',
+                      'When they differ, report the change and leave the scenario unverified.',
+                      'One copy is shown as not checked, the other is flagged as "unchecked".',
+                      'It is signed by an unverified signer.', 'It loses unverified chord labels.',
+                      'Taking shortcuts when unchecked is a real pattern.',
+                      'My last sentence was wrong, and I had not checked it.', 'It hadn\'t been verified then.',
+                      'This can\'t verify that a pass was thorough.', 'The hook cannot check what it does not see.'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.gap_block(reply))
+        # A gap beside such a use, and the same words about the reply's own claims, still block.
+        for reply, quoted in (('The tool reports it as unverified. I haven\'t checked the second cluster.',
+                               'I haven\'t checked the second cluster'),
+                              ('It leaves the scenario unverified, and the rest is unverified too.',
+                               'It leaves the scenario unverified, and the rest is unverified too'),
+                              ('Whether to review the unchecked parts is open.', 'Whether to review the unchecked parts is open'),
+                              ('I can\'t verify it from inside the session.', 'I can\'t verify it from inside the session'),
+                              ('We reported it, but it is not checked.', 'We reported it, but it is not checked'),
+                              ('That leaves the claim about the store unverified.', 'That leaves the claim about the store unverified')):
+            with self.subTest(reply=reply):
+                self.assertIn(f'A declared gap: "{quoted}"', hook.gap_block(reply)['reason'])
+
     @needs_machinery
     def test_a_proposed_loop_without_a_goal_prompt_blocks(self):
         loop = 'Yes: run review rounds until one comes back clean. It costs a few reviewer runs.'
