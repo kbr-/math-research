@@ -21,7 +21,7 @@ from pathlib import Path
 import re
 import sys
 
-from claim_registry import REGISTRY, load, references, exported, write_json
+from claim_registry import REGISTRY, load, read_json, references, exported, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 STOP = set('a an and are as at be by for from has have in is it its no not of on or over that the this to '
@@ -115,7 +115,9 @@ def historical_matches(words, root=ROOT, limit=3):
     return [claim for _, claim in search({'claims': claims}, words)[:limit]]
 
 
-def main():
+def main(validated=False):
+    """Answers from the registry as it is written unless `validated`: validating every record took 0.40 s of
+    a search's 1.26 s on 4382 claims, and each commit validates the registry anyway."""
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-n', type=int, help='explicit result limit (default 12 only for ordinary search)')
     parser.add_argument('--list', action='store_true', help='List all matching claims in registry order')
@@ -148,7 +150,7 @@ def main():
         parser.error('--fields must name distinct supported claim fields: ' + ', '.join(sorted(allowed)))
     if args.fields and output_format == 'display':
         parser.error('--fields requires tsv or json format')
-    data = load(args.registry)
+    data = load(args.registry) if validated else read_json(args.registry)
     if args.show:
         if args.list or args.words or any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):
             parser.error('--show cannot be combined with search terms or filters')
@@ -234,8 +236,17 @@ def main():
     text='\n'.join(lines)+'\n';sys.stdout.write(text);observed(text)
 
 
-if __name__ == '__main__':
+def run():
+    """main(), and where the registry as written cannot be answered from, main() on the validated one, which
+    says what is wrong with it."""
     try:
-        main()
+        try:
+            main()
+        except (KeyError, TypeError):
+            main(validated=True)
     except (OSError, ValueError) as exc:
         sys.exit(f'search-claims: {exc}')
+
+
+if __name__ == '__main__':
+    run()

@@ -1,7 +1,10 @@
+import contextlib
 import importlib.util
+import io
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
@@ -44,6 +47,43 @@ class RankedSearchTest(unittest.TestCase):
         ranked = search_claims.search(data, ['module', 'barcode'])
         self.assertEqual([claim['id'] for _, claim in ranked],
                          ['lem:complete', 'lem:partial'])
+
+
+class UnvalidatedReadTest(unittest.TestCase):
+    """A search answers from the registry as written; it is validated only to say why it cannot be read."""
+
+    GOOD = {'claims': [{'id': 'lem:one', 'summary': 'Filtered modules', 'assessment': ''}], 'relationships': []}
+    BAD = {'claims': [{'id': 'lem:one', 'assessment': ''}], 'relationships': []}
+
+    def run_tool(self, written, validated):
+        calls, out = [], io.StringIO()
+
+        def load(path):
+            calls.append('load')
+            if isinstance(validated, Exception):
+                raise validated
+            return validated
+        argv = ['search-claims.py', 'modules', '--list', '--fields', 'id,summary']
+        with mock.patch.object(search_claims, 'read_json', lambda path: calls.append('read') or written), \
+                mock.patch.object(search_claims, 'load', load), mock.patch.object(sys, 'argv', argv), \
+                mock.patch('recovery_evidence.observe'), contextlib.redirect_stdout(out):
+            try:
+                search_claims.run()
+            except SystemExit as stop:
+                return calls, out.getvalue(), stop.code
+        return calls, out.getvalue(), 0
+
+    def test_a_search_reads_the_registry_without_validating_it(self):
+        self.assertEqual(self.run_tool(self.GOOD, ValueError('never asked')), (['read'], 'lem:one\tFiltered modules\n', 0))
+
+    def test_a_registry_that_cannot_be_answered_from_is_validated_to_say_why(self):
+        calls, out, code = self.run_tool(self.BAD, ValueError('lem:one: no summary'))
+        self.assertEqual((calls, out, code), (['read', 'load'], '', 'search-claims: lem:one: no summary'))
+        # A registry the validation passes is answered from as validated; a fault of the tool itself is not hidden.
+        self.assertEqual(self.run_tool(self.BAD, self.GOOD), (['read', 'load'], 'lem:one\tFiltered modules\n', 0))
+        with self.assertRaises(KeyError):
+            self.run_tool(self.BAD, self.BAD)
+        self.assertEqual(self.run_tool(ValueError, self.GOOD)[0], ['read', 'load'])    # not a registry at all
 
 
 if __name__ == '__main__':
