@@ -2,6 +2,7 @@
 notebook tests. The browser tests need Playwright with Chromium, found in the node_modules of this
 checkout or of another worktree of the repository; where it is missing (CI), they are skipped with the
 reason. Each browser case must finish within BROWSER_LIMIT_S."""
+import importlib.util
 import json
 import os
 import shutil
@@ -62,6 +63,27 @@ class PublishedClient(unittest.TestCase):
 
 BROWSER_GROUPS = 3   # browsers, each running every second case, one at a time
 
+_spec = importlib.util.spec_from_file_location('framework_runner', Path(__file__).resolve().parent / 'run.py')
+RUNNER = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(RUNNER)
+
+
+def slow_case(case, elapsed, load):
+    """What a browser case over its limit says: its time, its group's, and what else the machine did during
+    the group, since a case that passes alone a minute later leaves nothing else to tell the two runs apart."""
+    return (f"{case['name']} took {case['seconds']:.1f} s; its group of cases took {elapsed:.1f} s."
+            + (f' {load}' if load else ''))
+
+
+class SlowCase(unittest.TestCase):
+    def test_a_slow_case_says_what_else_used_the_machine(self):
+        load = RUNNER.outside_load((100.0, 20.0), (190.0, 40.0), 8.0, 16)
+        self.assertEqual(slow_case({'name': 'math:layout', 'seconds': 5.19}, 8.04, load),
+                         "math:layout took 5.2 s; its group of cases took 8.0 s. CPU during the run: 20 s in the run's own "
+                         "control group, 70 s by other programs; the machine's 16 processors were busy for 90 s of 128.")
+        self.assertEqual(slow_case({'name': 'math:layout', 'seconds': 5.19}, 8.04, None),
+                         'math:layout took 5.2 s; its group of cases took 8.0 s.')
+
 
 class Browser(unittest.TestCase):
     """Every case in tests/test_*.cjs passes within BROWSER_LIMIT_S. The cases run in BROWSER_GROUPS browsers,
@@ -87,13 +109,15 @@ class Browser(unittest.TestCase):
         modules = node_modules()
         if not modules:
             self.skipTest('Playwright is not installed')
-        result, _ = node('run_browser_tests.cjs', '--group', f'{k}/{BROWSER_GROUPS}', modules=modules, timeout=60)
+        used = RUNNER.cpu_seconds()
+        result, elapsed = node('run_browser_tests.cjs', '--group', f'{k}/{BROWSER_GROUPS}', modules=modules, timeout=60)
+        load = RUNNER.outside_load(used, RUNNER.cpu_seconds(), elapsed, os.cpu_count())
         cases = [json.loads(line) for line in result.stdout.splitlines() if line.startswith('{')]
         self.assertGreaterEqual(len(cases), 3, result.stdout + result.stderr)   # nine or more cases in all
         for case in cases:
             with self.subTest(case['name']):
                 self.assertTrue(case['ok'], case.get('error'))
-                self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+                self.assertLess(case['seconds'], BROWSER_LIMIT_S, slow_case(case, elapsed, load))
         self.assertEqual(result.returncode, 0, result.stderr)
 
 
