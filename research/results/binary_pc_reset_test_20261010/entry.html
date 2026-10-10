@@ -1,0 +1,58 @@
+<article id="entry-2026-10-10-pc-reset-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-10-nilpotent-face-test:s1" data-claims="none" data-claim-note="Application of the existing exact PC closure theorem, a literature identification and an exact reset control; no new general lower-bound claim or duplicate closure theorem.">
+<h3>10 October 2026 — The reset operation leads to Wong closure, not a nilpotent forward algebra</h3>
+<p class="entry-meta">Unsuccessful nilpotent reset construction; matrix-space connection recorded. PC-reset cycle.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, can a faithful two-degree PC representation supply the marked nilpotent correction that the full-face conjugation did not? Include cancellation and reuse before claiming that the action is triangular.</p>
+<p><strong>General statement.</strong> The existing <code>prop:homogenized-PC-socle-criterion</code> and its refinement <code>obs:PC-closure-quotient-module-descent</code> give the exact all-field closure used here. It is an instance of the generalized second Wong sequence of Ivanyos–Karpinski–Qiao–Santha. No duplicate closure theorem is registered.</p>
+<p><strong>New mathematics.</strong> No new general theorem. The literature identification supplies relevant matrix-space tools, while an exact degree-two control shows that square-zero forward arrows and a maximum-rank homogenizing map do not protect the marked unit. No faithful nilpotent correction preserving that unit was constructed.</p>
+<p><strong>Goal progress.</strong> Unchanged. The binary bound still needs source-specific control for the actual charged-family compiler, not a generic consequence of finite-dimensionality or old PC hardness. The example below is an easy unsatisfiable system used to reject an automatic operator inference; it is not a hard-family obstruction.</p>
+<h4>The actual two-degree datum</h4>
+<p>Read the <a href="branches/odd-prime-reslin-php/#homogenized-PC-socle-criterion">original criterion</a> and the full <a href="branches/odd-prime-reslin-php/#entry-2026-09-21-complex-line-route-review">quotient refinement</a>. For original supplied equations, homogenized to their actual degrees without changing the source, let \(A=F[z,y]/J\), \(E=A_{D-1}\), \(F'=A_D\). Write \(Z:E\to F'\) for multiplication by \(z\), \(X_i:E\to F'\) for the other variable maps, and \(u=[z^D]\). The exact closure is
+\[
+ U_0=0,\qquad U_{t+1}=U_t+\sum_iX_i(Z^{-1}U_t).
+ \tag{1}
+\]
+The notation \(Z^{-1}U\) means the full linear preimage, not inversion of an injective map. The marked unit survives PC precisely when \(u\notin U_\infty\). This formulation retains the original fixed ceiling and permits multiplication after a cancellation has lowered actual degree.</p>
+<p>A forward-only representation on \(E\oplus F'\) sends \(e\in E\) to \(Ze\) or \(X_ie\) in \(F'\), and kills \(F'\). Every product of two such arrows is zero, for every source whatsoever. Their span is a square-zero ideal of the unital algebra they generate, not of the full endomorphism algebra. This proves nothing about (1): resetting from a class in \(F'\) to its possible lower-degree representatives in \(E\) is missing. It is precisely the preimage operation in (1).</p>
+<h4>Identify the matrix-space operation, with its scope</h4>
+<p>Let \(\mathcal B=\operatorname{span}(Z,X_1,\ldots,X_v)\). <a href="https://arxiv.org/html/1307.6429">Ivanyos–Karpinski–Qiao–Santha, Definition 4</a> calls
+\[
+ W_0=0,\qquad W_{t+1}=\mathcal B(Z^{-1}W_t)
+\]
+the second Wong sequence for \((\langle Z\rangle,\mathcal B)\). It is increasing, so it equals (1): inductively \(W_t\subseteq\mathcal B(Z^{-1}W_t)\); adding \(W_t\) changes nothing, and the extra \(Z\)-image is \(W_t\cap\operatorname{im}Z\), already contained in \(W_t\). Thus this is the existing PC closure in a standard matrix-space setting, not an additional invariant.</p>
+<p>The paper's Lemma 9 relates \(W_\infty\subseteq\operatorname{im}Z\) to a singularity witness of deficiency \(\dim\ker Z\), and implies maximum rank of \(Z\) in \(\mathcal B\) under that containment. It does not say that the particular vector \(u\) is outside \(W_\infty\). Lemma 10 makes the reset explicit using a pseudoinverse while the sequence remains in \(\operatorname{im}Z\). The definition, relevant proofs and published-author version were checked. No rank-one spanning or triangularizability theorem is applied to arbitrary sources, and no large-field constructive algorithm is silently invoked over \(\mathbb F_2\).</p>
+<p>These tools could help construct or test a source-specific invariant, but their polynomial-time matrix algorithms are measured in \(\dim E+\dim F'\), not the compiler's formula count or degree budget. No affordable bound for the marked source follows from the identification alone.</p>
+<h4>A complete reset control</h4>
+<p>Over \(\mathbb F_2\), use the original quadratic system
+\[
+ x^2,\qquad x^2-x,\qquad xy-1,\qquad y^2-y.
+ \tag{2}
+\]
+At ceiling \(D=2\), its homogeneous ideal is
+\[
+ J=(x^2,xz,xy-z^2,y^2-yz).
+\]
+There are no degree-one relations. In degree two these four independent relations leave basis \(u=z^2,v=yz\). In particular \(u\ne0\) in \(A_2\): the ordinary degree-two NS space does not refute the system. Ordinary PC does refute it at degree two: subtract the first two generators to derive \(x\), multiply the derived polynomial \(x\) by \(y\) to derive \(xy\), and subtract \(xy-1\) to derive one.</p>
+<p>With columns corresponding to the basis \(z,x,y\) of \(E\), and rows to \(u,v\) of \(F'\), the actual maps are
+\[
+ Z=\begin{pmatrix}1&0&0\\0&0&1\end{pmatrix},\quad
+ X=\begin{pmatrix}0&0&1\\0&0&0\end{pmatrix},\quad
+ Y=\begin{pmatrix}0&1&0\\1&0&1\end{pmatrix}.
+\]
+Here \(\ker Z=\langle x\rangle\), so \(U_1=\langle Yx\rangle=\langle u\rangle\); the marked unit is already lost. Next \(Z^{-1}U_1=\langle z,x\rangle\), and \(Yz=v\), giving \(U_2=F'\). The dimension sequence is \(0,1,2,2\).</p>
+<p>Choose the actual section \(S:F'\to E\) with \(S(u)=z,S(v)=y\), so \(ZS=I\). The reset followed by multiplication has
+\[
+ YS(u)=v,\qquad YS(v)=v.
+\]
+Thus \(YS\) is a nonzero idempotent, not a nilpotent operator, although all forward arrows in \(E\oplus F'\) square to zero. Any two-sided ideal containing this reset loop is not nilpotent. This rejects treating all reset transitions as the desired nilpotent defect. A smaller ideal of correction errors, relative to an already controlled action, remains possible.</p>
+<p>Also \(Z\) is surjective and has maximum possible rank two in \(\mathcal B\). The Wong containment \(U_\infty\subseteq\operatorname{im}Z\) holds automatically, and \(E\) is a deficiency-one singularity witness: \(\dim E-\dim\mathcal B(E)=3-2=1=\dim\ker Z\). Nevertheless \(u\in U_1\). This directly tests why the literature's unmarked rank witness cannot replace the marked PC condition. It does not contradict its theorem.</p>
+<h4>What remains available</h4>
+<p>The <a href="#entry-2026-10-10-nilpotent-face-test">full-face correction</a> provided nilpotence but lost the unchanged normalization; the forward two-degree model retains the original marked vector but omits resets unless enlarged by (1). Including them in (2) creates an idempotent loop and reaches the unit. Neither construction supplies the needed correction, and neither rules out a source-specific one on a hard old base.</p>
+<p>The next constructive option is narrower: keep a controlled action, and prove that only its correction errors, not all multiplication/reset maps, lie in a nilpotent ideal. In a homogeneous source this means controlling the actual \(z\)-kernel seeds and their reset images. The charged old pseudoideal and the original source degrees must enter that estimate. Full old-module preservation, a prescribed root functional and maximum-rank \(Z\) alone are not necessary or sufficient substitutes.</p>
+<p><strong>Architecture test.</strong> The promised reset was explicitly included and tested. Forward triangularity is automatic and therefore non-discriminating; actual reset loops can be nonnilpotent. The Wong identification gives a standard exact language and applicable source theorems for these loops, but its unmarked rank conclusion does not separate the unit. This changes the next attempt to correction errors relative to a controlled action, rather than the entire reset algebra.</p>
+<p><strong>Follow-up.</strong> Continuing the existing subordinate marked-correction check; this is the nilpotent head's second entry. Next test the difference between the old charged two-degree action and an added complete source block, with source-derived kernel seeds and actual reset maps. Seek a nilpotent ideal of those differences or a concrete source obstruction to that proposed ideal. Use the existing one-block elimination as the positive cost control; do not claim that an arbitrary section of \(Z\) already gives a useful correction. The same queued check owns this development; no duplicate Wong-interface item is created.</p>
+<h4>Checks and reading limits</h4>
+<p>The native GAP check verifies the full four-relation degree-two quotient and tests all eight vectors of \(A_1\) at each of three closure steps: 24 membership tests. It confirms dimensions \(0,1,2,2\), marked-unit loss at the first step, rank two of \(Z\), nine zero forward-arrow products, and the nonzero idempotent reset. The <a href="research/results/binary_pc_reset_test_20261010/check.txt">complete output</a> and script are saved. The hand calculation above is the proof of this control; no extrapolation from finite instances is used, and no new proof-system rule is introduced.</p>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the Wong identification, quotient, maps, reset and rank controls, and unchanged-goal assessment with two clarifications: name the derived polynomial \(x\) in the PC step, and specify the generated algebra containing the forward-arrow ideal. Both are incorporated; no unused hypothesis was found. See <a href="research/results/binary_pc_reset_test_20261010/review.txt">verdict</a>. Both versions of the original PC closure proof, the full source-cover comparison, the new face-normalization control, and the relevant Wong definitions and proofs were read. The two-degree statement is not re-registered under a new name. No noncommutative-rank lower bound or new general source theorem is imported.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_pc_reset_test_20261010 -->
+</article>
