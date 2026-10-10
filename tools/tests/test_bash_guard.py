@@ -1,4 +1,6 @@
+import contextlib
 import importlib.util
+import io
 import json
 import os
 import shutil
@@ -6,22 +8,38 @@ import subprocess
 import sys
 import tempfile
 import time
+import types
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HOOK = Path(__file__).resolve().parents[1] / "hooks" / "bash_guard.py"
+sys.path.insert(0, str(HOOK.parent))   # the hook imports its neighbours by name, as a program started there does
 spec = importlib.util.spec_from_file_location("bash_guard", HOOK)
 guard = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(guard)
 
 
 def run(command, tool="Bash", background=False):
+    """The hook's status and message for a call, from its main() in this process: starting the hook as a
+    program for each of some 140 commands took most of this file's time."""
     payload = json.dumps({"tool_name": tool, "tool_input": {"command": command, "run_in_background": background}})
-    return subprocess.run([sys.executable, str(HOOK)], input=payload, text=True,
-                          capture_output=True)
+    said = io.StringIO()
+    with unittest.mock.patch("sys.stdin", io.StringIO(payload)), contextlib.redirect_stderr(said):
+        status = guard.main()
+    return types.SimpleNamespace(returncode=status, stderr=said.getvalue())
 
 
 class BashGuardTest(unittest.TestCase):
+    def test_the_hook_started_as_a_program_reads_its_call_and_refuses_with_status_two(self):
+        payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": "python3 tools/resume.py | tail -5"}})
+        with tempfile.TemporaryDirectory() as home:
+            done = subprocess.run([sys.executable, str(HOOK)], input=payload, text=True, capture_output=True,
+                                  env={**os.environ, "HOME": home, "CLAUDE_PROJECT_DIR": home})
+        self.assertEqual(done.returncode, 2)
+        self.assertIn("Run this command bare", done.stderr)
+        self.assertEqual(run("python3 tools/resume.py | tail -5").stderr, done.stderr)
+
     def test_blocks_filters_and_redirections(self):
         for command in [
             "python3 tools/resume.py 2>&1 | head -40",
@@ -280,6 +298,17 @@ class StaleBranchTest(unittest.TestCase):
         self.assertIn("`other` follows origin/other", self.stale("git fetch mirror && git log other"))
         self.git(self.work, "fetch", "-q", "origin")
         self.assertIsNone(self.stale("git log other"))
+
+    def test_a_fetch_by_address_counts_for_the_remote_whose_tracking_refs_it_writes(self):
+        all_to = lambda remote: f"git fetch {self.origin} '+refs/heads/*:refs/remotes/{remote}/*'"
+        self.assertIsNone(self.stale(f"{all_to('origin')} && git log origin/other"))
+        self.assertIsNone(self.stale(f"git fetch -q {self.origin} other:refs/remotes/origin/other; git log other"))
+        # An address alone updates no tracking ref, and another remote's refs are not origin's.
+        self.assertIn("`origin/other` is last fetched", self.stale(f"git fetch {self.origin} && git log origin/other"))
+        self.assertIn("`origin/other` is last fetched", self.stale(f"{all_to('mirror')} && git log origin/other"))
+        # Made for real, the fetch is then seen by a later command too.
+        subprocess.run(all_to("origin"), shell=True, cwd=self.work, check=True, capture_output=True)
+        self.assertIsNone(self.stale("git log origin/other"))
 
     def test_refuses_a_local_branch_behind_its_fetched_upstream(self):
         (self.seed / "f").write_text("2\n")

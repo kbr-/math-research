@@ -270,6 +270,13 @@ def _last_update(git_dirs, tracking, url):
     return max(times, default=None)
 
 
+def _remotes_written(refspecs):
+    """The remotes whose tracking refs a fetch's refspecs write: a fetch by address with
+    '+refs/heads/*:refs/remotes/origin/*', the form used where the remote's own address cannot be reached,
+    is a fetch of origin. Without such a refspec a fetch by address updates no tracking ref and counts for none."""
+    return {match.group(1) for spec in refspecs for match in [re.search(r":refs/remotes/([^/*]+)/", spec)] if match}
+
+
 def _stale(repo, names, fetched, now):
     refs = _git(repo, "for-each-ref", "--format=%(refname)%00%(upstream)%00%(symref)", "refs/heads", "refs/remotes")
     dirs = _git(repo, "rev-parse", "--path-format=absolute", "--git-dir", "--git-common-dir")
@@ -341,6 +348,7 @@ def stale_branch(command: str, cwd: str, now: float):
             given = [a for a in args if not a.startswith("-")]
             # A fetch naming no remote, or --all, may fetch any.
             fetched.add(given[0] if given else "*")
+            fetched.update(_remotes_written(given[1:]))
             continue
         if sub not in GIT_READS:
             continue
