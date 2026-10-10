@@ -1,0 +1,24 @@
+Review record, 10 October 2026: entry-2026-10-10-trivector-circuits.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent).
+
+Verdict: pass with corrections. No mathematical error breaks the lemma or the proposition.
+- Number of w-spaces "at most 2^{w(n-w)+1}" false (n = 4, w = 2 gives 35 > 32); use +2.
+- Exponent with w = 3k-3 is (k-3)n + O(k log m): diverges only for k >= 4, consistent with part (c).
+- "Never a circuit": true for k >= 3 but unproved in the draft.
+- Proposition proof: O(k log n) is not o(n) for k near eps n; absorb it into the kn term; state alpha k +
+  beta <= n; handle negative beta. k_1 needlessly large: the display works whenever (2-alpha)k > beta after
+  shrinking eps; with alpha = beta = 1 it covers every k >= 2.
+- Title and summary: "size at most eps n" stronger than the proposition (k_1 to eps n).
+- Lemma (c), size three: exact, not "at most". Constants 5.25 and 128.6 recompute.
+- Items 1, 2(a), 2(b) and the per-row factor correct. The hypothesis is well posed; span is intrinsic. It
+  holds only over F_2 as stated. The count 2^{(n-2)k-N} for large circuits is a heuristic.
+Search (the reviewer's own run, script in its scratch directory, not archived): exhaustive in F_2^6, F_2^7,
+F_2^8 with P1, P2 fixed by intersection type; k = 4: largest span 5 (span 4 also occurs; no circuit with
+P1, P2 disjoint); k = 5: largest span 6 in all three ambient dimensions. By its hand reduction (unverified by
+the author) these settle k = 4 and k = 5: the support of P1+P2 forces W = W_345, and a direct sum has full
+support, excluding span 9. Gluing circuits along a shared three-space preserves w - k - 1.
+Unused: lemma (a) is not used by the proposition; m <= n^C only as log m = o(n).
+Process audit: decisions sound; record search stated; the sub-idea is resolved for span up to 8, update it;
+"one family at k = 4" understates what is now known.
+Suggestions (unverified by the author): prove k+1 by induction on the excess w-k-1 through (a) (an overlap
+of dimension three is a gluing); random zero-sum tuples suggest span of order sqrt(18k) for large k.
