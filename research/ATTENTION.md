@@ -860,6 +860,22 @@ Frobenius recovers an entire F_p-valued input tuple from one extension-field mul
 
 ---
 
+### Gap interpolation primitivity
+
+**Claim:** [lem:gap-interpolation-primitivity](<branches/binary-multiplicity-degree/notebook.html#entry-2026-10-10-cube-gap-interpolation-primitivity>)
+
+Over every field, let H be a nonempty h-element subset of {0,...,L-1} and u>=0 with min(H)>=u+h+1. For formal nodes a0=0,a1,...,a_(L-1), evaluate the L+1 monomials with exponents ({0,...,L-1}\H) union {L+u,...,L+u+h}. Their maximal minors divided by the full Vandermonde are polynomials with gcd1. Applies to the supported quinary nine-node and ternary seven-node degree-one input blocks, without asserting primitive combined boundary cofactors.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A characteristic-free criterion for primitive normalized sparse interpolation minors, actually applied to a source block in the boundary transfer. Potential reusable interest beyond the current case; no external novelty audit performed. It does not settle the joint weighted transfer or another threshold.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Keep the full coupled transfer separate; compare this criterion with generalized Vandermonde and Schur-minor literature before any novelty or publication claim.
+
+---
+
 ### Low factor rank exterior kernel criterion
 
 **Claim:** [lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)
