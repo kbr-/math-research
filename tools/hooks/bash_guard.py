@@ -247,6 +247,13 @@ def foreground_long_run(command: str, background: bool):
             return (f"a compute.sh run expected over {FOREGROUND_EXPECT} s or allowed over {FOREGROUND_TIMEOUT} s "
                     "goes to the background (run_in_background: true); keep working meanwhile and reassess it at "
                     "5 minutes (COMPUTATION_RULES.md, long runs; user, 3 October 2026)")
+        # A timeout set above a minute says the run may take that long: four runs of a model on 32 windows were
+        # each given just under the limit above and held the turn for a minute or two apiece.
+        if seconds("--timeout") > FOREGROUND_EXPECT and "--expect" not in options:
+            return (f"a compute.sh run allowed over {FOREGROUND_EXPECT} s goes to the background (run_in_background: "
+                    f"true) unless it is expected to end within {FOREGROUND_EXPECT} s: say so with --expect SECONDS, which "
+                    "the launcher prints against the time it took, or start it in the background and keep working "
+                    "(COMPUTATION_RULES.md, long runs; user, 11 October 2026)")
     return None
 
 

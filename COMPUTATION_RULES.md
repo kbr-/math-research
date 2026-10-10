@@ -349,7 +349,8 @@ while command records remain unfinished.
   Before scaling a script past its control case, size each expensive step, such as
   Gröbner bases or saturations on generators of the new degrees. Claude Code's PreToolUse hook
   (`tools/hooks/bash_guard.py`) refuses a foreground `compute.sh` run with `--expect` over
-  60 s or `--timeout` over 180 s.
+  60 s or `--timeout` over 180 s, and one with `--timeout` over 60 s that gives no `--expect`: a run
+  allowed more than a minute either says it is expected to be shorter or goes to the background.
 
 ## Persist computation outputs
 

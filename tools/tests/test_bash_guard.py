@@ -209,7 +209,10 @@ class BashGuardTest(unittest.TestCase):
                      "./compute.sh run t1 --expect 120 -- ./k",
                      "./compute.sh --session t1 --timeout 900 python3 x.py",
                      "cd /repo && ./compute.sh run t1 --timeout=1500 -- ./k",
-                     "./compute.sh --threads 1 --timeout 900 python3 x.py --expect 1"]
+                     "./compute.sh --threads 1 --timeout 900 python3 x.py --expect 1",
+                     # Allowed over a minute with no word that it will be short: the timeout is how long it may hold the turn.
+                     "./compute.sh --threads 14 --timeout 175 --category network_tool -- python3 review.py",
+                     "./compute.sh --threads 1 --timeout 61 python3 tools/tests/run.py"]
         for command in long_runs:
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 2)
@@ -218,7 +221,8 @@ class BashGuardTest(unittest.TestCase):
         for command in ["./compute.sh run t1 --threads 1 --timeout 120 --expect 5 -- ./k",
                         "./compute.sh run t1 -- ./k --timeout 9999",        # the workload's own option
                         "./compute.sh phase t1 coding",
-                        "./compute.sh --threads 1 --timeout 120 python3 tools/tests/run.py",
+                        "./compute.sh --threads 1 --timeout 60 python3 tools/tests/run.py",
+                        "./compute.sh --threads 14 --timeout 175 --expect 40 --category network_tool -- python3 review.py",
                         "./compute.sh --status"]:
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0)
