@@ -1,0 +1,82 @@
+Stage-one brief, 11 October 2026: goal-level route review of the near-half family line. Blind stage: the
+author's preferred next step is withheld. Read-only; medium effort; you may run tools/search-claims.py for
+at most two named searches and read registry summaries. Do not read the notebook's Proposed next step.
+
+GOAL. Superpolynomial size lower bounds for every fixed depth of AC0[2]-Frege, via a Boolean formula family
+(may depend on the depth, not on the size exponent).
+
+PROVED OR IMPORTED RESULTS (working proofs, one reviewer each unless said).
+1. Transfer with the ambient rate (thm:bounded-depth-degree-transfer, cor:bounded-depth-size-bound,
+   cor:frege-parity-size-bound; conditional on an imported rank theorem, itself reproved here): polynomial-
+   length literal CNFs of width w, with auxiliary affine equations over F_2 allowed outside the formula, free
+   dimension n, with no PC refutation over F_2 of degree floor(n/2 - s), have no polynomial-size refutation
+   with l levels if s + w = o(n/(log n)^(l-2)); depth-d Frege with parity connectives is l = d + c_F >= d+2.
+   prop:level-deficit-threshold: this inequality excludes balanced size n^A at l levels only if
+   s < n/(4 A^(l-1) (ln n)^(l-2)). prop:constant-fraction-transfer-exponent: degree cn, c < 1/2 constant,
+   gives n^e(c) at two levels and nothing beyond polylog at three or more.
+2. Thin alternative (thm:level-size-degree-transfer, lem:kruskal-katona-growth): the same conclusion at every
+   number of levels, with polylogarithmic degrees, from a closure C_D proper at cutoff D whose standard
+   monomials at the levels j of a window [K - delta, K] just below the cutoff number at most binom(X, j),
+   X <= 2(K-delta) + 1 + (K-delta+1)/delta. In the cube case (all monomials on n variables) this is near-half
+   again. Not known attainable.
+3. thm:truncated-kernel-dimension: a proper closure at D has a standard monomial on D-1 coordinates and
+   quotient dimension at least 2^(D-1). Both endpoints force every set shattered through degree K to have
+   size at most about 2K (entry shattered-dimension-bound).
+4. Degree methods on record: boundary expansion (Alekhnovich-Razborov) gives at most about n/4 for narrow
+   axioms; the sources read have nothing above a quarter for narrow axioms and a proved quarter ceiling for
+   constant-width parity systems in odd characteristic; conditioning lies inside parity-resolution width;
+   rank-expansion extensions of the expansion bound are false in three recorded forms; a system containing a
+   monomial relaxation is refuted at its top standard degree plus one.
+5. Ceilings on candidates: balanced paired modular source excluded in original instances for l >= 3
+   (shared-pin ceiling, deficit of order v/k); counting family: two methods give, conditionally, at most
+   about a quarter; block cover reduced to random parity clauses.
+
+REGISTERED CONJECTURES ON THIS ROUTE (evidence in brackets).
+- conj:parity-clause-regular-index: random clauses on k dense parity forms have no degree fall below the
+  index D* of (1+z)^(n-km)((1+z)^k - z^k)^m minus O(1). [Exact computation at k = 2 up to n = 28, where the
+  degree is at most four; nothing at k >= 3; a source on semi-regularity was read and is not citable for it.]
+- conj:parity-clause-semiregular-degree: the converse upper bound, degree <= index + o(n). [Same.]
+- conj:covering-half-ceiling: every cover of F_2^n by subspaces of codimension <= w is refuted at
+  ceil(n/2) + w. [Untested hypothesis; its half term has no proof.]
+- conj:paired-row-symbols. [Fails at one parameter, conjectured at the next.]
+- The "counting model": degree = index of the product series; under it thm:saddle-deficit-bound gives every
+  family of rows on O(log n) variables covering by count a deficit >= order n lnln n / ln n. [Model only.]
+
+THE SIX ENTRIES UNDER REVIEW (10 October), all "goal progress unchanged".
+a. loss-not-forced: the transfer's compounding loss is avoided when the closure is thin (result 2, already
+   on record and overlooked by the previous review). ex:clause-series-level-profile (finite check): in the
+   clause-series model at n = 512, 1024 the last coefficient before the index has Kruskal-Katona dimension
+   0.85n-0.98n, and the index is below the scope-free thinness threshold c*(k, Delta) n.
+b. prop:clause-saddle-below-thinness: for every k >= 3 and density, the maximum of the model's saddle
+   function is below c*. (About the model and the scope-free sufficient criterion only.)
+c. prop:clause-saddle-exponent-above-thin-rate: the saddle exponent of the clause series exceeds 2c ln 2 at
+   every real saddle; under an unproved saddle-point reading, the model's own levels are not thin at any
+   linear degree below its index.
+d. lem:standard-monomials-under-restriction: a monomial standard for a restriction at cutoff D is standard
+   for the system at D; thin level bounds are inherited by restrictions.
+e. prop:expander-level-lower-bound, cor:expander-closure-not-thin (from the Alekhnovich-Razborov support
+   operator, read from the paper): on an (r,s,c)-expander, at cutoffs D <= cr/2, every term containing the
+   boundary of no set of at most r/2 clauses is standard; so levels j <= about n^(1-1/c) are half full.
+f. lem:avoiding-sets-fraction, cor:expander-linear-levels-not-thin: with overlap bounded by L, levels
+   j = ceil(pn/2) for p up to a constant p_0(Delta, L, c) have at least exp(-pn/16)/2 of all terms; no thin
+   window with delta <= K/2 contains them. Not covered: cutoffs above cr/2 (where no degree bound is proved
+   either), levels between p_0 n/2 and cr/2, wide windows, random clauses (unbounded overlap).
+
+PROCESS FACTS. Every one of the last six entries developed one queue item (the check comparing thinness with
+what clause systems can be hard for) or its sub-ideas, chosen ahead of the queue's head each time. The
+queue holds 48 items and is draining. In two consecutive entries the reviewer found the "bearing" paragraph
+closed with a sentence wider than the proof. The previous review overlooked result 2, stated in the
+notebook's first living paragraph.
+
+EARLIER REVIEWS' DECISIVE TESTS: earlier-tests.txt in this directory (one line per review).
+
+QUESTIONS.
+1. What is the weakest endpoint sufficient for the goal given results 1-3, and what do entries a-f change in
+   it? State it through the downstream statements by claim ID.
+2. Propose a materially different architecture for obtaining the goal from these results, or give the reason
+   you find none. In particular: what kind of formula family could have a proper closure with thin levels,
+   given a-f and result 3; is "thin" anything other than near-half in a smaller effective dimension?
+3. Name the single test you would run next, different from every test in earlier-tests.txt, with the
+   outcomes that would change the route, and what the recorded bounds already say about its object.
+4. Process audit: from the facts above, what in the conduct of this block would the user object to?
+Answer in at most 700 words, plain text, findings first. Mark what you checked and what you only inferred.
