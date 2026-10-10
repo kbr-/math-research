@@ -6,7 +6,8 @@ reflow, and every reflowed line differs from the other side's, which changed ano
 paragraph. Line by line the two changes cannot be told apart; word by word they can. This takes the three
 versions the index holds of a conflicted file, unwraps each paragraph and list item to one line
 (tools/rewrap_md.py's blocks; headings, tables, fenced code and blank lines stay as they are), merges the
-three with every word a line of its own, and rewraps the result.
+three by those lines, merges the paragraphs that conflict there with every word a line of its own, and
+rewraps the result.
 
 Where the two sides changed the same words, the conflict stays, marked, around those words alone, in a
 paragraph left unwrapped: resolve it, then run tools/rewrap_md.py on the file.
@@ -38,6 +39,7 @@ import rewrap_md
 UNWRAPPED = 10**9
 END = "\x1e"    # ends a line of the unwrapped text
 MARKERS = ("<<<<<<< ours", "=======", ">>>>>>> theirs")
+BASE_MARKER = "||||||| base"
 
 
 def tokens(text):
@@ -70,24 +72,46 @@ def text_of(found):
     return "\n".join(lines if marked else [*lines, " ".join(line)])
 
 
-def merged(ours, base, theirs, width=100):
-    """(the three versions of a Markdown text merged word by word, how many conflicts are left). With none
-    left the text is rewrapped to `width`; otherwise its paragraphs are unwrapped and the conflicts marked."""
-    versions = []
-    for text in (ours, base, theirs):
-        unwrapped = rewrap_md.rewrap(text, UNWRAPPED)
-        if set(MARKERS) & set(tokens(unwrapped)):
-            raise ValueError("the text has a line that reads as a conflict marker")
-        versions.append("\n".join(tokens(unwrapped))+"\n")
+def merge_file(versions, *options):
+    """(the lines git merge-file prints for three texts, ours, base, theirs; how many conflicts it left)."""
     with tempfile.TemporaryDirectory() as scratch:
         paths = [Path(scratch)/name for name in ("ours", "base", "theirs")]
         for path, text in zip(paths, versions):
-            path.write_text(text, encoding="utf-8")
-        done = subprocess.run(["git", "merge-file", "-p", "-L", "ours", "-L", "base", "-L", "theirs", *map(str, paths)], capture_output=True, text=True)
+            path.write_text(text+"\n", encoding="utf-8")
+        done = subprocess.run(["git", "merge-file", "-p", *options, "-L", "ours", "-L", "base", "-L", "theirs", *map(str, paths)], capture_output=True, text=True)
     if done.returncode < 0 or done.returncode > 127:
         raise ValueError(f"git merge-file failed: {done.stderr.strip()}")
-    text = text_of(done.stdout.split("\n")[:-1])
-    return (rewrap_md.rewrap(text, width) if done.returncode == 0 else text), done.returncode
+    return done.stdout.split("\n")[:-1], done.returncode
+
+
+def merged(ours, base, theirs, width=100):
+    """(the three versions of a Markdown text merged, how many conflicts are left). The unwrapped paragraphs
+    are merged as lines first, and only the paragraphs that conflict there are merged word by word: the words
+    of a whole file line up wrongly where one side adds a long item beside a change of the other. With no
+    conflict left the text is rewrapped to `width`; otherwise its paragraphs are unwrapped and the conflicts
+    marked."""
+    versions = [rewrap_md.rewrap(text, UNWRAPPED) for text in (ours, base, theirs)]
+    if any({*MARKERS, BASE_MARKER} & {*tokens(text), *text.split("\n")} for text in versions):
+        raise ValueError("the text has a line that reads as a conflict marker")
+    lines, conflicts, sides, side = [], 0, None, None
+    for line in merge_file(versions, "--diff3")[0]:
+        if line == MARKERS[0]:
+            sides, side = {"ours": [], "base": [], "theirs": []}, "ours"
+        elif sides is None:
+            lines.append(line)
+        elif line == BASE_MARKER:
+            side = "base"
+        elif line == MARKERS[1]:
+            side = "theirs"
+        elif line == MARKERS[2]:
+            words, left = merge_file(["\n".join(tokens("\n".join(sides[name]))) for name in ("ours", "base", "theirs")])
+            lines += text_of(words).split("\n")
+            conflicts += left
+            sides = None
+        else:
+            sides[side].append(line)
+    text = "\n".join(lines)
+    return (text if conflicts else rewrap_md.rewrap(text, width)), conflicts
 
 
 def driver(base, ours, theirs, width=100):

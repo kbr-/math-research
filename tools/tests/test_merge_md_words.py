@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -54,6 +55,37 @@ class MergeTest(unittest.TestCase):
         self.assertIn("- Alpha beta\n<<<<<<< ours\nOURS\n=======\nTHEIRS\n>>>>>>> theirs\ndelta epsilon zeta", text)
         # Everything outside the conflict is whole, each paragraph a line.
         self.assertTrue(text.startswith("# Rules\n\nIntro line.\n\n") and text.endswith("  - Second item stays as it is.\n\n| a  |  b |\n|----|----|\n\n```\nkept   as   is\n```\n\nEnd.\n"))
+
+    def test_only_the_paragraphs_that_conflict_as_lines_are_merged_by_words(self):
+        # The words of a whole file line up wrongly once it is long; a paragraph one side alone changed is
+        # settled by the merge of paragraphs and its words never reach the word merge.
+        ours = document(WORDS.replace("beta", "beta, ours,")).replace("Intro line.", "Intro line of ours.")
+        theirs = document(WORDS.replace("epsilon", "epsilon, theirs,")).replace("End.", "The end of theirs.")
+        given = []
+        real = tool.merge_file
+
+        def spy(versions, *options):
+            given.append((versions, options))
+            return real(versions, *options)
+        with unittest.mock.patch.object(tool, "merge_file", spy):
+            text, conflicts = tool.merged(ours, BASE, theirs, 40)
+        expected = document(WORDS.replace("beta", "beta, ours,").replace("epsilon", "epsilon, theirs,"))
+        self.assertEqual((text, conflicts), (expected.replace("Intro line.", "Intro line of ours.").replace("End.", "The end of theirs."), 0))
+        self.assertEqual([options for _, options in given], [("--diff3",), ()])
+        words = given[1][0]
+        self.assertEqual(words[1].split("\n"), ["-", *WORDS.split(" ")])
+        self.assertTrue(all("Intro" not in version and "end" not in version and "Second" not in version for version in words))
+
+    def test_two_conflicts_are_counted_and_each_marked_in_its_own_paragraph(self):
+        ours = document(WORDS.replace("gamma", "OURS"), "Second item of ours.")
+        theirs = document(WORDS.replace("gamma", "THEIRS"), "Second item of theirs.")
+        text, conflicts = tool.merged(ours, BASE, theirs, 40)
+        self.assertEqual((conflicts, text.count("<<<<<<< ours"), text.count("||||||| base")), (2, 2, 0))
+        self.assertIn("  - Second item of\n<<<<<<< ours\nours.\n=======\ntheirs.\n>>>>>>> theirs\n", text)
+
+    def test_a_line_that_reads_as_a_marker_of_the_base_is_refused(self):
+        with self.assertRaisesRegex(ValueError, "reads as a conflict marker"):
+            tool.merged(BASE, BASE, BASE.replace("Intro line.", "Intro line.\n\n||||||| base"), 40)
 
     def test_a_text_is_taken_apart_and_put_back_unchanged(self):
         for text in (BASE, "", "one\n", "one", "- a\n\n\n- b\n", "```\n  code  here\n```"):
