@@ -25,7 +25,8 @@ PROGRESS_REPORT = ('<p><strong>New mathematics.</strong> A scoped result was che
                    'at the sizes computed, so the check could fail.</p>')
 ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     f'<p><strong>{label}.</strong> The target and alternative are compared against all hypotheses '
-    'and the goal budget. <a href="review.txt">Reviewer evidence</a>. <strong>Power.</strong> The recorded '
+    'and the goal budget. <a href="review.txt">Reviewer evidence</a>. <strong>Downstream.</strong> Through '
+    'thm:downstream-transfer the target gives the statement wanted at every parameter. <strong>Power.</strong> The recorded '
     'ceilings leave the outcomes apart at the sizes reachable. <strong>Record search.</strong> '
     'Searched the registry for the terms of the test; no recorded claim answers it.</p>'
     for label in ('Necessary target', 'Extra requirements', 'Independent alternative',

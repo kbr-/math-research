@@ -14,6 +14,8 @@ ARCHITECTURE = FT.ARCHITECTURE_HEADING + ''.join(
     f'<p><strong>{label}.</strong> '
     + ('<a href="review.txt">Blind initial brief and reviewer response</a>. ' if label == 'Independent alternative' else '')
     + 'The requirement and alternative are compared against the actual goal and its full budget.'
+    + (' <strong>Downstream.</strong> Through thm:downstream-transfer the target gives the goal\'s '
+       'statement at every parameter; goal: yes.' if label == 'Necessary target' else '')
     + (' <strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
        '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
        'claim answers it.' if label == 'Decisive test' else '') + '</p>'
@@ -115,6 +117,10 @@ class GoalProgressTest(unittest.TestCase):
             validate(valid.replace('<strong>Record search.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Power'):
             validate(valid.replace('<strong>Power.</strong>', ''))
+        with self.assertRaisesRegex(ValueError, 'Downstream'):
+            validate(valid.replace('<strong>Downstream.</strong>', ''))
+        with self.assertRaisesRegex(ValueError, 'Downstream'):
+            validate(valid.replace('thm:downstream-transfer', 'the transfer'))
         with self.assertRaisesRegex(ValueError, 'reviewer evidence'):
             validate(valid.replace('href="review.txt"', 'title="review.txt"'))
 

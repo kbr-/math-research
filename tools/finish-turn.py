@@ -576,6 +576,14 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             if label == 'Independent alternative' and not re.search(r'href=["\'][^"\']+["\']', value):
                 raise ValueError('Independent alternative must link the existing reviewer evidence; '
                                  'brief the same medium reviewer with goal and tools before the preferred route')
+            if label == 'Necessary target':
+                down = re.search(r'<strong>Downstream\.</strong>(.*)', value, re.S)
+                plain = html.unescape(re.sub(r'<[^>]*>', ' ', down.group(1))).strip() if down else ''
+                if len(plain) < 60 or not re.search(r'\b(?:thm|cor|prop|lem):[\w-]+', plain):
+                    raise ValueError('Necessary target must end with "<strong>Downstream.</strong>": the target '
+                                     'evaluated through the proved downstream statements, citing their claim '
+                                     'IDs, with the explicit consequence and whether it is the goal or weaker '
+                                     '(AGENTS.md, Necessary target)')
             if label == 'Decisive test':
                 searched = re.search(r'<strong>Record search\.</strong>(.*)', value, re.S)
                 plain = html.unescape(re.sub(r'<[^>]*>', ' ', searched.group(1))).strip() if searched else ''

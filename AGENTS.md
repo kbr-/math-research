@@ -189,7 +189,9 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
 `<p><strong>Label.</strong> ...</p>` paragraphs:
 
 - **Necessary target.** State the weakest endpoint that suffices for the actual goal, with its
-  quantifiers, instances and degree/size budget.
+  quantifiers, instances and degree/size budget. End with `<strong>Downstream.</strong>`: the
+  target evaluated through the proved downstream statements, citing their claim IDs, with the
+  explicit consequence and whether it is the goal or weaker (the finisher checks presence).
 - **Extra requirements.** Contrast that endpoint with the current approach's additional demands:
   existence versus arbitrary choices, derivability versus literal vanishing, or one surviving
   object versus a separately large space. Justify each demand or identify what can be weakened.

@@ -22,6 +22,8 @@ REPORTS = ('<p><strong>New mathematics.</strong> The general statement was check
 ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     f'<p><strong>{label}.</strong> Core: a substantive comparison of the goal, available '
     'results and their degree budgets. <a href="review.txt">Evidence</a>. '
+    '<strong>Downstream.</strong> Through thm:downstream-transfer the target gives the statement wanted '
+    'at every parameter. '
     '<strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
     '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
     'claim answers it.</p>'
