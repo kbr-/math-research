@@ -279,7 +279,13 @@ NOT_A_GAP = re.compile(
     r"|\bleav(?:e|es|ing) (?:the |a |that |such a )?(?:scenario|test|case|claim|row|finding)s? unverified\b"
     r"|\b(?:an?|loses|keeps) (?:unverified|unchecked) [a-z]+"
     r"|\bwhen unchecked\b|\bhad(?: not|n't) (?:been )?(?:checked|verified)\b"
-    r"|\b(?:this|it|that|the (?:tool|check|hook|script|judge)) (?:can't|cannot) (?:check|verify|confirm)\b", re.I)
+    r"|\b(?:this|it|that|the (?:tool|check|hook|script|judge)) (?:can't|cannot) (?:check|verify|confirm)\b"
+    # What a tool or a reply says, in the third person: "prints a warning that the names weren't checked".
+    r"|\b(?:prints|warns|says|tells|reports|states|printed|warned)\b[^.!?\n]{0,80}?\b(?:wasn't|weren't|was not|were not|went) "
+    r"(?:un)?checked\b"
+    r"|\b(?:go|goes|went|going) unchecked\b"
+    # A gap denied: "not something unverified", "nothing in them was unverified".
+    r"|\b(?:not|nothing|none|no)\b(?: \w+){0,4} (?:unverified|unchecked)\b", re.I)
 
 
 def gap_block(reply):
