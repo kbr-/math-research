@@ -178,5 +178,24 @@ class ProcessAuditTest(unittest.TestCase):
         FT.validate_process_audit(self.GATE % ' <strong>Process audit.</strong> The title claimed more than '
                                   'the data showed and was narrowed.')
 
+
+class BearingTest(unittest.TestCase):
+    def check(self, earlier, progress):
+        body = ''.join(f'<article data-kind="{kind}" data-route="r" data-goal-progress="{state}"></article>'
+                       for kind, state in earlier)
+        body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged">'
+        FT.validate_bearing(body, body.rindex('<article'), progress)
+
+    def test_a_third_unchanged_entry_states_its_bearing(self):
+        unchanged = ('research', 'unchanged')
+        self.check([unchanged], 'Unchanged.')
+        self.check([unchanged, ('research', 'advanced'), unchanged], 'Unchanged.')
+        with self.assertRaisesRegex(ValueError, 'Bearing'):
+            self.check([unchanged, ('review', 'unchanged'), unchanged], 'Unchanged.')
+        with self.assertRaisesRegex(ValueError, 'Bearing'):
+            self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> none.')
+        self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> At the degree the goal needs '
+                   'this gives nothing; it was spent to decide whether the item continues.')
+
 if __name__ == '__main__':
     unittest.main()

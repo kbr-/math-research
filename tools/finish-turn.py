@@ -449,6 +449,33 @@ def validate_prevention(text):
                          'applies (AGENTS.md, framework maintenance)')
 
 
+BEARING_AFTER = 2      # earlier research entries in a row, on the route, reporting unchanged goal progress
+BEARING_MIN = 60
+
+
+def validate_bearing(body, article, progress):
+    """From the third research entry in a row that leaves a route's goal progress unchanged, the entry says
+    what its result gives at the goal's own parameters (a reviewer on 10 October 2026 found three entries of
+    lemmas at a fixed small size after the test they served was answered; the start warning was not enough)."""
+    route = article_attribute(body, article, 'data-route')
+    run = 0
+    for tag in reversed(re.findall(r'<article\b[^>]*>', body[:article])):
+        if f'data-route="{route}"' not in tag or 'data-kind="research"' not in tag:
+            continue
+        if 'data-goal-progress="unchanged"' not in tag:
+            break
+        run += 1
+    if run < BEARING_AFTER:
+        return
+    found = re.search(r'<strong>Bearing\.</strong>(.*)', progress, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    if len(plain) < BEARING_MIN:
+        raise ValueError(f'{run} research entries in a row on {route} report unchanged goal progress: end the '
+                         f'Goal progress paragraph with <strong>Bearing.</strong> and at least {BEARING_MIN} '
+                         "characters saying what this entry's result gives at the goal's own parameters, or "
+                         'that it gives nothing there and why the cycle was spent on it (AGENTS.md, goal progress)')
+
+
 def validate_progress(body, article, close, *, check_registered_claims=True):
     """Check reporting and follow-through, not the mathematical truth of an advance.
 
@@ -475,6 +502,8 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     validate_process_audit(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
+        if state == 'unchanged':
+            validate_bearing(body, article, progress)
     if state == 'advanced':
         supporting = [cid for cid in entry_claims(body, article)
                       if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)]
