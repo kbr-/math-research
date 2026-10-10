@@ -15,6 +15,10 @@ Git/publication rules belong in [AGENTS.md](AGENTS.md).
 - **The RAM/swap split is unrestricted.** Leave placement to Linux. Do not
   disable system-wide swap or impose fixed shares such as 9 GB RAM plus 0.5 GB
   swap. Other applications also need the machine's resources.
+- A job that fails, or that held a quarter of the budget, ends with a line
+  giving its own memory peak at the launcher's last reading of it. When the
+  watchdog kills every job for the shared budget, each job's line says how much
+  was its own, so the job that grew is known without a second run.
 - Kill computation jobs that exceed the combined memory budget. Brief overshoot
   before termination is acceptable (the user explicitly accepted approximately
   10.5 GB temporarily); it is not extra working capacity.

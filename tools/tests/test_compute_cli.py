@@ -71,6 +71,60 @@ class GuidanceNote(unittest.TestCase):
         self.assertEqual(compute.guidance_note(compute.GUIDANCE_WARN_S / 4), '')
 
 
+class JobMemory(unittest.TestCase):
+    """A job's end says how much memory it held, so that a kill of the whole group names the job that grew."""
+
+    def test_the_last_reading_of_a_job_s_peak_is_kept_and_said_when_it_matters(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            group = compute.job_group('job-1.service', root=Path(scratch))
+            uid = os.getuid()
+            self.assertEqual(group, Path(scratch) / 'user.slice' / f'user-{uid}.slice' / f'user@{uid}.service'
+                             / 'mathcompute.slice' / 'job-1.service')
+            self.assertIsNone(compute.memory_peak(group))
+            group.mkdir(parents=True)
+            (group / 'memory.peak').write_text('2500000000\n')
+            self.assertIsNone(compute.memory_peak(group))          # one of the two files alone is no reading
+            (group / 'memory.swap.peak').write_text('500000000\n')
+            self.assertEqual(compute.memory_peak(group), (2_500_000_000, 500_000_000))
+
+            class Process:
+                polls = 0
+
+                def poll(self):
+                    Process.polls += 1
+                    if Process.polls == 1:                           # the job grows while it runs
+                        (group / 'memory.peak').write_text('3000000000\n')
+                    if Process.polls == 2:                           # the job's group is gone when it ends
+                        (group / 'memory.peak').unlink()
+                    return None if Process.polls < 3 else 9
+            watch = compute.PeakWatch(Process(), group, interval=0.001)
+            watch.start()
+            watch.join(timeout=5)
+            self.assertFalse(watch.is_alive())
+            self.assertEqual(watch.last, (3_000_000_000, 500_000_000))
+            (group / 'memory.swap.peak').write_text('not a number\n')
+            (group / 'memory.peak').write_text('1\n')
+            self.assertIsNone(compute.memory_peak(group))
+        said = ("Memory: this job's own peak was 2.50 GB of RAM and 0.50 GB of swap, at its last reading; every job shares "
+                'one budget of 10 GB.')
+        self.assertEqual(compute.memory_line((2_500_000_000, 500_000_000), 0), said)
+        self.assertEqual(compute.memory_line((2_500_000_000, 500_000_000), 137), said)
+        # A small job says nothing when it passes and its peak when it fails; no reading says nothing.
+        self.assertIsNone(compute.memory_line((1_600_000_000, 899_999_999), 0))
+        self.assertIsNotNone(compute.memory_line((1_600_000_000, 900_000_000), 0))
+        self.assertIn('0.09 GB of RAM', compute.memory_line((90_000_000, 0), 3))
+        self.assertIsNone(compute.memory_line(None, 3))
+
+    def test_a_failed_job_s_end_names_its_own_memory(self):
+        failed = call('--threads', '1', '--timeout', '20', '--category', 'local_processing', '--', sys.executable, '-c',
+                      'import time; x = bytearray(b"x") * 60_000_000; time.sleep(0.5); raise SystemExit(3)')
+        self.assertEqual(failed.returncode, 3, failed.stderr)
+        line = next(line for line in failed.stdout.splitlines() if line.startswith('Memory: '))
+        self.assertGreater(float(line.split('was ')[1].split(' GB')[0]), 0.05)
+        passed = call('--threads', '1', '--timeout', '20', '--category', 'local_processing', '--', sys.executable, '-c', 'pass')
+        self.assertEqual((passed.returncode, [l for l in passed.stdout.splitlines() if l.startswith('Memory')]), (0, []))
+
+
 class RunnerChecks(unittest.TestCase):
     def setUp(self):
         self.name = 'cli_test_' + uuid.uuid4().hex[:12]

@@ -21,6 +21,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import threading
 import time
 import uuid
 
@@ -361,6 +362,45 @@ def invocation(command, threads, timeout, unit):
     return args + ['--', sys.executable, str(Path(__file__).resolve()), '--inside', '--', *command]
 
 
+def job_group(unit, root=Path('/sys/fs/cgroup')):
+    """The control group of a job's service, under the shared slice of this user's systemd manager."""
+    uid = os.getuid()
+    return root / 'user.slice' / f'user-{uid}.slice' / f'user@{uid}.service' / SLICE / unit
+
+
+def memory_peak(group):
+    """(RAM, swap) in bytes at their highest so far in a job's own control group; None once it is gone."""
+    try:
+        return tuple(int((group / name).read_text()) for name in ('memory.peak', 'memory.swap.peak'))
+    except (OSError, ValueError):
+        return None
+
+
+class PeakWatch(threading.Thread):
+    """Reads a running job's memory peak ten times a second and keeps the last reading: the job's group is
+    removed when it ends, and when the watchdog kills every job for the shared budget, each job's last
+    reading says which one had grown."""
+
+    def __init__(self, process, group, interval=0.1):
+        super().__init__(daemon=True)
+        self.process, self.group, self.interval, self.last = process, group, interval, None
+
+    def run(self):
+        while True:
+            self.last = memory_peak(self.group) or self.last
+            if self.process.poll() is not None:
+                return
+            time.sleep(self.interval)
+
+
+def memory_line(peak, rc):
+    """What a job's end says of its memory, for a job that failed or held a quarter of the budget; else None."""
+    if peak is None or (rc == 0 and sum(peak) < MAX_MEMORY / 4):
+        return None
+    return (f'Memory: this job\'s own peak was {peak[0] / 1e9:.2f} GB of RAM and {peak[1] / 1e9:.2f} GB of swap, at its '
+            f'last reading; every job shares one budget of {MAX_MEMORY / 1e9:g} GB.')
+
+
 def terminate_job(unit, process, output):
     # Stop the service cgroup, not only systemd-run's process group.
     result = subprocess.run(['systemctl', '--user', 'stop', unit],
@@ -406,7 +446,7 @@ def run_job(args, command):
     recovery_observe('job_start', root=ROOT, turn=name, job=rid, command=command, category=args.category)
     rc, timed_out, interrupted = 1, False, False
     started = time.monotonic()
-    process = None
+    process = watch = None
     previous_term = signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
     try:
         with log.open('w', buffering=1) as output:
@@ -415,6 +455,8 @@ def run_job(args, command):
                 if cancel_path is not None and cancel_path.exists():
                     raise KeyboardInterrupt()
                 process = subprocess.Popen(args_list, stdout=output, stderr=subprocess.STDOUT)
+                watch = PeakWatch(process, job_group(unit))
+                watch.start()
                 if cancel_path is not None and cancel_path.exists():
                     try:
                         cancel(rid)
@@ -474,6 +516,9 @@ def run_job(args, command):
     if expect:
         elapsed = time.monotonic() - started
         print(f'Expected {expect:g} s, took {elapsed:.0f} s.')
+    memory = memory_line(watch.last if watch else None, rc)
+    if memory:
+        print(memory)
     print(f'Exit {rc}; log: {log.relative_to(ROOT)}')
     return rc if rc >= 0 else 128 - rc
 
