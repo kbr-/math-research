@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 3. Develop the next queued <a href="#entry-2026-09-29-cube-all-n-mechanism-review">polynomial identity-testing bridge</a> individually. Identify the precise polynomial in the line parameters whose nonvanishing certifies the required section, its degree bound and the hypotheses of a hitting-set or random-sampling guarantee. Distinguish a deterministic checked witness at one size from a proof of all-size existence, and retain the full-degree/collision controls just reviewed. Do not launch another parameter grid unless it decides a new general implication.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 3. The next eligible queued item is the <a href="#entry-2026-09-29-cube-schubert-induction-review">mark-weight and invariant-prime lead</a>. On resumption, read its exact statements, proofs and later corrections before deciding what implication beyond the proved criteria it can supply. Spin stops at the current local checkpoint by the user's request; this next cycle has not been opened.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1"><a href="#entry-2026-09-29-cube-all-n-mechanism-review">entry-2026-09-29-cube-all-n-mechanism-review:1</a> (bridge): Polynomial identity testing (complexity theory; Schwartz–Zippel and deterministic hitting sets). Translation: "\(\Delta_W^{\rm nc}\) has no square factor" is an identity test for \(\gcd(\Delta,\partial\Delta)\), and the …</li>
 <li data-lead="entry-2026-09-29-cube-schubert-induction-review:2"><a href="#entry-2026-09-29-cube-schubert-induction-review">entry-2026-09-29-cube-schubert-induction-review:2</a> (lead): The record's mark weight dictionary and invariant prime exclusion (prop:cube-mark-weight-dictionary, thm:cube-invariant-prefix-stabilization). Weight \(\ge2\) holds iff \(F_{\rm sep}\) and \(\delta F_{\rm sep}\) vanish. …</li>
 <li data-lead="entry-2026-09-29-cube-two-cluster-review:1"><a href="#entry-2026-09-29-cube-two-cluster-review">entry-2026-09-29-cube-two-cluster-review:1</a> (lead): Moduli of scaled marked lines and the multiplihedra (Mau and Woodward, Geometric realizations of the associahedra and multiplihedra, Compositio Math. 146 (2010) 1002–1028). Their compactification records nested bubbles t…</li>
 <li data-lead="entry-2026-09-29-cube-two-cluster-review:2"><a href="#entry-2026-09-29-cube-two-cluster-review">entry-2026-09-29-cube-two-cluster-review:2</a> (lead): Heckman–Opdam and Harish-Chandra theory for the EPD operator. In the coordinates \(x=U+V\), \(y=U-V\), \(\partial_x\partial_y-\tfrac32(\partial_x-\partial_y)/(x-y)=\tfrac14(\partial_U^2-\partial_V^2-\tfrac3V\partial_V)\)…</li>
@@ -105979,6 +105978,73 @@ C_{n,r}(\lambda-1)^r
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 58.16 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.91 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-10-cube-section-test-polynomial" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-obligation="cube-first-step-plateau" data-goal-progress="unchanged" data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1" data-claims="lem:section-test-polynomial">
+<h3>10 October 2026 — An explicit resultant tests sections, but hitting sets retain the nonvanishing obligation</h3>
+<p class="entry-meta">Working test-polynomial construction; no new first-step bound. Section identity-testing cycle. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Develop the <a href="#entry-2026-09-29-cube-all-n-mechanism-review">queued identity-testing bridge</a> after the <a href="#entry-2026-10-10-cube-linear-section-scope">linear-section scope check</a>. Identify the exact polynomial tested, its degree and an explicit deterministic hitting set. The result must distinguish finding a witness at one fixed size from proving that such witnesses exist for every size. No grid or new line-certificate computation is launched.</p>
+<p><strong>General statement.</strong> <code>lem:section-test-polynomial</code> gives a resultant with bidegree \((d(d-1),d^2)\) in the line parameters for every nonzero homogeneous polynomial of degree \(d\ge1\) in characteristic zero. It is nonzero precisely when the polynomial is geometrically squarefree. Applied to the original discriminant with the proved collision factor removed and one copy restored, it tests exactly the strong line-witness conditions. This is a standard resultant/identity-testing construction made explicit for the recorded endpoint, not a new generic nonvanishing theorem.</p>
+<h4>Section test polynomial</h4>
+<p><strong>Lemma.</strong> Let \(K\) have characteristic zero, let \(0\ne f\in K[x_1,\ldots,x_m]\) be homogeneous of degree \(d\ge1\), and let \(\alpha,\beta\) be independent \(m\)-tuples of variables. Put</p>
+\[
+F(u)=f(\alpha+u\beta),\qquad
+\mathcal R_f(\alpha,\beta)=\operatorname{Res}_{u;(d,d-1)}(F,F').
+\]
+<p>The subscript fixes the Sylvester degrees \(d,d-1\), also upon specialization where degrees drop. Then:</p>
+<ol>
+<li>\(\mathcal R_f\ne0\) as a polynomial if and only if \(f\) is geometrically squarefree.</li>
+<li>At any pair \((\alpha,\beta)\), \(\mathcal R_f(\alpha,\beta)\ne0\) if and only if \(f(\alpha+u\beta)\) has degree exactly \(d\) and is squarefree.</li>
+<li>If nonzero, \(\mathcal R_f\) is bihomogeneous of degrees \(a=d(d-1)\) in \(\alpha\) and \(b=d^2\) in \(\beta\). Its total degree is \(d(2d-1)\).</li>
+<li>For finite sets \(A,B\subset K\) with \(|A|>a\), \(|B|>b\), \(A^m\times B^m\) hits every nonzero \(\mathcal R_f\) of this degree. If \(f\) is squarefree and the coordinates are sampled independently and uniformly from finite nonempty \(A,B\), the failure probability is at most \(\min\{1,a/|A|+b/|B|\}\).</li>
+</ol>
+<p><strong>Proof of 1.</strong> Work over \(\overline K\); vanishing of the resultant polynomial is unchanged by this extension. The substitution \(x=\alpha+u\beta\) is an automorphism of the polynomial ring in \(\alpha,\beta,u\). It sends \(F\) to \(f(x)\) and \(F'\) to \(\sum_i\beta_i\partial_i f(x)\). If \(f\) is squarefree, for each irreducible factor \(q\mid f\) some \(\partial_iq\) is nonzero and has degree below \(\deg q\). Modulo \(q\), \(\partial_i f=(f/q)\partial_iq\), and \(q\nmid f/q\). Since the \(\beta_i\) are independent, \(q\) cannot divide \(\sum_i\beta_i\partial_i f\). Thus the two polynomials are coprime in the polynomial ring, and remain coprime over \(\overline K(\alpha,\beta)[u]\). Also \(F\) has degree \(d\), with leading coefficient \(f(\beta)\ne0\), and \(F'\) has degree \(d-1\) in characteristic zero. Their resultant is nonzero. If \(q^2\mid f\), the factor \(q(\alpha+u\beta)\) divides both \(F\) and \(F'\). It has positive \(u\)-degree \(\deg q\), since its leading coefficient is \(q(\beta)\ne0\); it does not become a unit upon passage to the parameter fraction field. The resultant is zero.</p>
+<p><strong>Proof of 2.</strong> The universal identity, with the degree-\(d\) discriminant convention, is</p>
+\[
+\operatorname{Res}_{(d,d-1)}(F,F')
+=(-1)^{d(d-1)/2} f(\beta)\operatorname{Disc}_d(F).
+\]
+<p>For a generic polynomial it follows by writing \(F=c\prod_j(u-r_j)\), taking the product of \(F'(r_j)\), and pairing the differences; it therefore holds polynomially in all coefficients. If \(f(\beta)=0\), the fixed-degree resultant vanishes. Otherwise the discriminant is nonzero exactly when the degree-\(d\) polynomial is squarefree. For \(d=1\), the discriminant convention is one and the resultant is its leading coefficient.</p>
+<p><strong>Proof of 3.</strong> Replacing \(\alpha\) by \(c\alpha\) replaces \(F(u)\) by \(c^dF(u/c)\) and \(F'(u)\) by \(c^{d-1}F'(u/c)\). The resultant scales by \(c^{d(d-1)}\). Replacing \(\beta\) by \(c\beta\) gives \(F(cu)\) and \(cF'(cu)\), so it scales by \(c^{d^2}\). These scaling laws can also be read from the Sylvester determinant. They establish the stated bidegrees when the resultant is nonzero.</p>
+<p><strong>Proof of 4.</strong> A nonzero polynomial of degree at most \(e_i\) in its \(i\)-th variable cannot vanish on a product of sets of sizes greater than \(e_i\): induction on the number of variables, using the univariate root bound, proves this. Every individual \(\alpha\)-degree is at most \(a\) and every individual \(\beta\)-degree at most \(b\), giving the hitting set. For the probability statement, recall the same induction in its total-degree form: if a polynomial has total degree at most \(D\), the leading coefficient in the last variable of degree \(j\) has degree at most \(D-j\), giving a failure probability at most \((D-j)/|S|+j/|S|=D/|S|\) on \(S^m\). Choose any nonzero coefficient of \(\mathcal R_f\) as a polynomial in \(\alpha\); it is a polynomial of \(\beta\)-degree at most \(b\). With probability at least \(1-b/|B|\) it is nonzero after the \(\beta\)-choice. Conditional on that event, the remaining nonzero polynomial in \(\alpha\) has total degree at most \(a\), and fails with probability at most \(a/|A|\). The union bound proves the claim. \(\square\)</p>
+<p><strong>Controls.</strong> For \(f=x_1x_2\), the test polynomial is, up to the resultant sign, \(\beta_1\beta_2(\alpha_1\beta_2-\alpha_2\beta_1)^2\), with the predicted bidegrees two and four. For \(f=g^2h\) with \(g\) nonconstant, it is identically zero. These exact elementary controls test both branches; no numerical sampling is needed.</p>
+<h4>The polynomial for the actual line certificate</h4>
+<p>For the recorded characteristic-zero discriminant, let \(N\ge7\), \(M=N-2\), \(R=\binom N2\), \(\lambda=3\binom N4\), and set</p>
+\[
+D=4\lambda(2\lambda-1),\qquad
+ e=\frac{M(M-1)(31M^2-23M-18)}{12},\qquad
+ V(a)=\prod_{i<j}(a_i-a_j).
+\]
+<p>The <a href="#entry-2026-09-30-cube-local-attainment">unconditional collision-exponent bound</a> says \(V^e\mid\Delta_W\), or \(\Delta_W=0\). The <a href="#cube-first-step-two-certificates">degree and certificate record</a> makes \(\Delta_W\) homogeneous of degree \(D\) when nonzero. Define the polynomial</p>
+\[
+q_N=\Delta_W/V^e,\qquad f_N=Vq_N,
+\qquad d_N=D-R(e-1).
+\]
+<p>If \(\Delta_W=0\), take \(q_N=f_N=0\) and the test polynomial to be zero. Otherwise \(f_N\) has degree \(d_N\). This degree is positive in the stated range: explicitly
+\(D-Re=R M(M-1)(M-2)(3M^3+12M^2-10M-3)/12>0\) for \(M\ge5\), and \(d_N=D-Re+R\).</p>
+<p>Apply the lemma with \(f=f_N\). Its test polynomial is nonzero exactly when the generic collision exponent equals the proved lower bound \(e\) and the noncollision remainder is squarefree. Indeed, if the actual common collision exponent is \(e_N\), then
+\(f_N=V^{e_N-e+1}\Delta_W^{\rm nc}\), with \(\gcd(V,\Delta_W^{\rm nc})=1\). Thus \(f_N\) is squarefree exactly under those two conditions. A nonzero evaluated resultant also ensures that every collision linear form retains degree one, that its line root is distinct from the other collision roots, and that the remainder has full degree and no root at any collision parameter. All factors retain degree because their product does; any coincident roots would violate squarefreeness.</p>
+<p>This identifies the exact characteristic-zero polynomial underlying the strong line test. It does not claim that \(\Delta_W\) or the resultant is nonzero for every \(N\), and does not settle the separate base-weight condition (B) or the weaker contact endpoint. The program's arithmetic/interpolation controls also remain necessary when verifying a modular certificate.</p>
+<h4>What a hitting set does and does not decide</h4>
+<p>A deterministic set is already available in principle: take \(A=\{0,\ldots,d_N(d_N-1)\}\) and \(B=\{0,\ldots,d_N^2\}\). It has
+\(\bigl((d_N(d_N-1)+1)(d_N^2+1)\bigr)^N\) line-parameter pairs. If the desired resultant is nonzero, at least one pair passes. This is a finite, very large test set, not a sensible algorithm to run here and not a single known good plane. The original bridge's suggestion that a deterministic hitting set must provide one plane chosen in advance is too strong: a finite set suffices, while selecting a passing member still needs evaluation or an additional structural proof.</p>
+<p>At each fixed \(N\), the resultant construction and the finite set give a decision procedure for this stronger certificate endpoint. They do not turn that family of decisions into an all-\(N\) proof. A hitting set cannot make a zero polynomial nonzero. Similarly the displayed sampling bound is conditional on nonzero \(\mathcal R_{f_N}\); no numerical probability is assigned to the conjecture. Reduction modulo a prime can also annihilate a nonzero coefficient polynomial. The bound may be applied to a nonzero reduced test polynomial, but it does not establish that reduction hypothesis. The existing checked modular witnesses remain deterministic witnesses through their full-degree and collision controls, independently of a sampling estimate.</p>
+<p><strong>New mathematics.</strong> An explicit section resultant, its bidegree, finite hitting set and conditional sampling bound, with the original collision-normalized polynomial identified. These are elementary identity-testing facts specialized with exact costs; no independent novelty is claimed.</p>
+<p><strong>Goal progress.</strong> Unchanged for <code>cube-first-step-plateau</code>. No all-size nonvanishing of the test polynomial and no original threshold is proved. The precise missing implication is now visible inside the proposed identity test, rather than hidden behind the choice of random lines.</p>
+<p><strong>Follow-up.</strong> Closed: identity testing faithfully decides the fixed-size stronger certificate condition, but its witness-finding guarantee is conditional on nonvanishing and supplies no all-size nonvanishing input. The literal polynomial and deterministic set have been constructed; executing a larger finite grid would not resolve that missing general implication.</p>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT 6.1-Sol reviewer at medium effort passed without corrections: fixed-degree resultant and degree drops, geometric squarefreeness, bidegrees, hitting and sampling bounds, original collision normalization and positivity, and the limited witness-finding closure. It confirmed unchanged goal progress and found no unused hypotheses. <a href="../../results/bmd-section-pit-test-20261010/review.txt">Verdict</a>. Read the original bridge, full section/certificate proof, the unconditional collision bound and its attainment argument, and the current section-scope entry. The resultant and sampling arguments are proved here; no external complexity theorem or numerical run is imported.</p>
+<p><strong>Process.</strong> An explicit test polynomial and symbolic sizing show why no computation should be launched merely because the certificate is decidable. The user requested stopping Spin after this cycle; its review, records and local checkpoint complete that instruction, and no following cycle is opened.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-section-pit-test-20261010">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 14.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 39.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 28.03 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.81 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
