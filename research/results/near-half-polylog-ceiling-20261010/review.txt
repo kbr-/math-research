@@ -1,0 +1,34 @@
+Review record, 10 October 2026: entry-2026-10-10-deficit-ceiling-test.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), with its own
+recomputation of the series and of the table from the saved files.
+
+Verdict: pass with corrections. Tool, table and proposition correct; the "where it stops" bullets and the
+Architecture test overstated.
+1. Tool: series, negative exponents and both indices match an independent truncated-series product on all 16
+   cases; hand-checked 7:2:13 (1, 7, 8, -30) and 10:2:15 (1, 10, 30, 0, -105).
+2. Table: all rows match indices.jsonl, the two examples and the raw file; "eight" and "once" right. Over all
+   93 distinct (n, w, size, degree) in series.jsonl: none above the cumulative index, ten equal, graded
+   exceeded only at 10:2:15. Scope: at n = 7..9 every restart has degree w+1; the n = 18 orbit cover has
+   independent multiples below the index and barely tests dependence. Say that the small-cover search is the
+   review's "measured random covers".
+3. Proposition: proof correct. "Making E empty needs t > n" and "reaches the empty set only at t > n, the
+   bound of prop:row-algebra-ceiling" wrong: only the averaging guarantee needs t > n. Bearing: "not
+   guaranteed empty", "at most". State membership for arbitrary T_i.
+4. Where it stops: "needs g_r of degree up to n-w" is a worst case; "row products alone give no deficit"
+   shown only for this argument. "A refutation at the index needs the span to be as large as that count" is
+   false (needs only 1 in C_D). "Smaller, never larger" recorded only for the crude count. "Fails for every
+   cover with non-forced relations" contradicts the n = 10 orbit cover; write "is not justified". The bullet
+   restates the review's Rank normalization paragraph. Padding: state the shift (width + w, half - w/2).
+   "Joint rank above the degree" should be "at least"; "many" unsupported.
+5. Dual statement correct, n-D-1 independent of w_r.
+6. Architecture test: "both parts" overstates: same-sign rows with arbitrary relations not attempted, no cover
+   causing the failure named. Goal progress accurate.
+Unused: covering only for the uniform bit; check the encoding hypotheses of lem:violated-rows-ceiling.
+Process audit: title holds as a finite statement; "no example or exclusion is on record" and the 9 October
+permission need a search and a source; Continuing, the sub-idea and the timing note fine; relate the
+proposition to prop:row-algebra-ceiling.
+Suggestions (unverified by the author): the 13 two-point rows of F_2^3 meeting E = {000, 100, 010} evenly
+cover, 1 is not in S_2 (rank 6, 7 with the constant), cumulative index 2: statically a dependent cover
+exceeds the index; PC degree untested. Scale: all codimension-w subcubes on which a fixed odd f has
+restricted degree <= n-D-1. For subcube rows, f = 1_E with E a union of flats of dimension D-w+1 with odd
+total size seems to cap at about D <= 2w-1.
