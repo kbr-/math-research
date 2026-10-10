@@ -1,0 +1,25 @@
+Review record, 10 October 2026: entry-2026-10-10-counting-family-power.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); hand reasoning and a
+flow computation (its own script, not archived).
+
+Verdict: pass with corrections.
+Brute force (flow, structured B(i) = i mod q, all B-blocks kept, w = 6): the least unsatisfiable number of
+A-blocks is 2, 3, 3, 4 at q = 2, 3, 4, 5, and every set of that size is unsatisfiable.
+1. First attempt: "No such subsystem has a smaller rho than the whole" and "cannot go below m/2 - m/w" are
+   false for the structured partition when w divides q: A-block k meets only residues [kw, kw+w) mod q, and
+   the system splits into q/w disjoint copies of the m = w^2 instance (2 components at q = 12, 3 at q = 18).
+   The ceiling lemma on one component gives degree <= w^2/2 - w + 1 (13 at w = 6) for every such m. At
+   q = 12 five A-blocks are already contradictory, below q(1 - 2/w) = 8. The structured instance is not the
+   hard representative. "|S| >= q/2 gives q(w/2-1)" fails for q > w.
+2. Second attempt: Lucas right, but the available functions are a subspace of functions of Y mod 2^L: write
+   "are functions of"; label the conclusion heuristic.
+3. Third attempt: sw/(2q) and the threshold right, but equal intersection forces q | w, so q <= w: the remark
+   never covers the many-block regime. Integrality holds for any partition (integral flow). Scope to
+   dropping A-blocks fine by monotonicity.
+4. Withdrawing both readings is right, but the reason is that w/2+1 = 4, 1.5 q and 2q+1 are not separated at
+   q <= 5, not the core count. "Ceiling not attained at m = 12, 18, 24" stands. 22^8 correct; soften
+   "cannot" to the dense method.
+5. Continuing and Bearing none fine; the sub-idea: add "not the structured partition for q > w". The
+   Process claim matches the computation rules.
+Process audit: "recorded limit near m/4" needs its claim ID (cor:occurrence-expansion-ceiling).
+Suggestion: register the decomposition bound as a small lemma.
