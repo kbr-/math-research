@@ -219,6 +219,19 @@ class BearingTest(unittest.TestCase):
         some = ('research', 'unchanged', 'data-check="a:1" data-bearing="some"')
         self.check([none, some], said, last='data-check="a:1" data-bearing="none"')
 
+    def test_a_continuing_entry_in_such_a_run_states_its_record_search(self):
+        said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'
+        unchanged = ('research', 'unchanged')
+        body = ''.join(f'<article data-kind="{k}" data-route="r" data-goal-progress="{g}"></article>'
+                       for k, g in [unchanged, unchanged])
+        body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged" data-bearing="none">'
+        follow = '<p><strong>Follow-up.</strong> Continuing. Next attempt: the count by supports.</p>'
+        with self.assertRaisesRegex(ValueError, 'Record search'):
+            FT.validate_bearing(body, body.rindex('<article'), said, follow)
+        FT.validate_bearing(body, body.rindex('<article'), said, follow + '<p><strong>Record search.</strong> '
+                            'Searched the registry for supports and circuits; nothing recorded answers it.</p>')
+        FT.validate_bearing(body, body.rindex('<article'), said, '<p><strong>Follow-up.</strong> Developed: x.</p>')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -463,7 +463,7 @@ BEARING_AFTER = 2      # earlier research entries in a row, on the route, report
 BEARING_MIN = 60
 
 
-def validate_bearing(body, article, progress):
+def validate_bearing(body, article, progress, text=None):
     """From the third research entry in a row that leaves a route's goal progress unchanged, the entry says
     what its result gives at the goal's own parameters (a reviewer on 10 October 2026 found three entries of
     lemmas at a fixed small size after the test they served was answered; the start warning was not enough)."""
@@ -487,6 +487,14 @@ def validate_bearing(body, article, progress):
     # The statement alone did not stop a spell: four entries on one item each said they gave nothing at the
     # goal's parameters (review of 10 October 2026).  So the entry also declares it, and two such entries in a
     # row on one queue item end that item's turn.
+    # A follow-up named as its next attempt a line the record already held and a review had stopped (10
+    # October 2026): in such a run, an entry that continues its item says what it searched before naming it.
+    if text is not None and re.search(r'<strong>Follow-up\.</strong>\s*Continuing', text):
+        searched = re.search(r'<strong>Record search\.</strong>\s*([^<]*)', text)
+        if searched is None or len(searched.group(1).strip()) < 40:
+            raise ValueError('This entry continues its item after a run of unchanged goal progress: state '
+                             '"<strong>Record search.</strong>" with the registry searches made for the next '
+                             'attempt it names and what they returned (AGENTS.md, goal progress)')
     tag = body[article:body.find('>', article) + 1]
     declared = re.search(r'data-bearing="(none|some)"', tag)
     if declared is None:
@@ -531,7 +539,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
         if state == 'unchanged':
-            validate_bearing(body, article, progress)
+            validate_bearing(body, article, progress, text)
     if state == 'advanced':
         supporting = [cid for cid in entry_claims(body, article)
                       if re.search(r'(?<![\w:-])' + re.escape(cid) + r'(?![\w:-])', progress)]
