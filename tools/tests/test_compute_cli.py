@@ -106,6 +106,24 @@ class RunnerChecks(unittest.TestCase):
                                summary['total_instrumented_s'], places=5)
         self.assertNotEqual(call('phase', self.name, 'reading').returncode, 0)
 
+    def test_a_fifth_argument_list_of_one_program_is_refused_at_the_command_line(self):
+        """The series guard through the launcher: its other tests call the function, and a launcher that never
+        called it passed them all."""
+        with self.path.open('a') as journal:
+            for n in range(compute.MAX_SERIES_ARGSETS):
+                journal.write(json.dumps({'event': 'run_start', 'command': ['python3', 'scan.py', str(n)]}) + '\n')
+        runs = lambda: sum(e['event'] == 'run_start' for e in self.events())
+        run = lambda *words: call('run', self.name, '--threads', '1', '--timeout', '20', *words)
+        refused = run('--', sys.executable, 'scan.py', 'another')
+        self.assertEqual(refused.returncode, 2)
+        self.assertIn(f'scan.py already ran with {compute.MAX_SERIES_ARGSETS} different argument lists', refused.stderr)
+        self.assertEqual(runs(), compute.MAX_SERIES_ARGSETS)
+        # A list run before is run again, and what is no computation is no series; neither script exists, so both end at once.
+        for words in (('--', sys.executable, 'scan.py', '0'), ('--category', 'local_processing', '--', sys.executable, 'scan.py', 'more')):
+            before = runs()
+            self.assertNotIn('already ran', run(*words).stderr)
+            self.assertEqual(runs(), before + 1)
+
     def test_guard_failure_is_logged_without_execution(self):
         env = dict(os.environ, DBUS_SESSION_BUS_ADDRESS='unix:path=/tmp/math-no-such-test-bus')
         result = call('run', self.name, '--threads', '1', '--timeout', '20', '--',
