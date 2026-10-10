@@ -1,0 +1,56 @@
+STAGE ONE BRIEF (goal and available results only; the author's preferred route is withheld)
+Goal-level route review, 10 October 2026, notebook near-half-pc-degree. You are the review's single
+medium reviewer; a second message will reveal the author's draft for comparison and correctness review.
+
+GOAL (open statement near-half-pc-family). Construct polynomial-length unsatisfiable literal CNFs F_n of
+width w_n, with auxiliary affine equations Lambda_n over F_2 (which need not belong to the formula), of free
+dimension n -> infinity (variables minus rank of Lambda), such that clause polynomials, Boolean axioms and
+Lambda_n have no polynomial-calculus refutation over F_2 of degree floor(n/2 - s_n), with
+s_n + w_n <= n^(1-eps). A proved transfer turns such a family into superpolynomial AC^0[2]-Frege lower
+bounds; the family is the only open item. Status: open for 75 research entries; no lower-bound method over
+F_2 on record certifies more than about n/4; no ceiling below n/2 is recorded for general systems.
+
+AVAILABLE RESULTS (claim IDs; read any with `python3 tools/search-claims.py --show ID` from
+/home/kbr/dev/math/.claude/worktrees/near-half-pc-degree; if a hook demands `python3 tools/resume.py`, run it
+bare and read its parts first).
+Before the last review:
+- imp:cnf-boundary-degree (Alekhnovich-Razborov / Miksa-Nordstrom Thm 5.1): (r,c) boundary expansion gives
+  PC degree > rc/2, any field.
+- prop:two-occurrence-expansion-ceiling: with every variable in exactly two rows, rc <= v/2 + s, so that
+  method certifies at most v/4 + s/2.
+- thm:occurrence-degree-ceiling: degree <= h + c_w (v - h) + lower order, h = variables in >= 3 blocks,
+  c_w = 1/2 - 1/(4w-2), no affine rows.
+- Rank-measured expansion for rows on linear forms is false (several counterexamples); a semantic
+  elimination operator for forms exists, no rank-invariant operator on monomials.
+- Static barriers / closure dual criterion (lem:closure-dual-criterion, lem:static-degree-local-gap): a
+  static barrier can disappear after one degree fall; no explicit witness beyond about twice the width.
+Since the last review (six entries):
+- lem:two-occurrence-clause-degree: a pure CNF with every variable in at most two clauses is refuted at
+  degree <= width s (any field). So the factor-1/2 question on two-occurrence clause systems is moot.
+- cor:occurrence-expansion-ceiling: with >= d occurrences, rc/2 <= (1/2)(1-1/d)^(d-1) v + s/2 (2v/9 at
+  d = 3); mixed systems stay near v/4.
+- prop:clause-occurrence-ceiling: pure CNF degree <= h + s, h = variables in >= 3 clauses; an unweighted
+  boundary charged in full (factor 1) certifies at most 9v/19 + s.
+- lem:pure-boundary-sampling: a sign-aware boundary (variables pure in a clause set) is not capped at half
+  by averaging when signs are unbalanced; no degree theorem behind it; (a) is about resolution.
+- prop:generalized-method-ceiling (conditional on a rendered statement of Miksa-Nordstrom Thm 3.8): on
+  minimally unsatisfiable CNFs that method certifies at most v/4 + Delta/(2d); its own applications are
+  not minimal, so not covered.
+- lem:copy-normal-form: copies with equalities give one clause per variable, same free dimension, same
+  degree up to width; with affine rows counted, branching count unchanged.
+- prop:two-row-clause-parity-degree, cor:affine-branching-count (over F_2): clauses + parity equations with
+  every variable in <= 2 rows are refuted at the width; hence degree <= h + max{s,1}, h = variables in >= 3
+  rows, affine rows counted. A candidate hard at D needs more than D - w branching variables. Not proved
+  for blocks that are relations.
+Process facts: all six entries report goal progress unchanged; four of them stayed on clause systems under a
+queue item whose own question (an operator for rows on linear forms) was not touched; one draft declared a
+check settled in the wrong direction and was refused at review.
+
+QUESTIONS FOR STAGE ONE (answer in under 300 words, plain bullets):
+1. Is there a materially different architecture for the goal than "find a lower-bound method over F_2 that
+   certifies beyond n/4 on some explicit or random family"? If none, say so and why.
+2. Given only the results above, which single next test bears most on the missing implication? Name the
+   family or statement and the outcomes that would change the route.
+3. Which of the six entries were defensible uses of a cycle, and which were not?
+4. Is there evidence either way that the goal is reachable?
+Edit nothing.
