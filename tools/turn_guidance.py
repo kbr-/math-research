@@ -166,7 +166,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
         last = mine[-1]
         tags = ft.entry_tags(body, last)
         research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
-        status_of = ft.registered_status(); cases = sum(ft.registers_cases(body, a, status_of) for a in research)
+        cases = sum(ft.registers_cases(body, a) for a in research)
         if cases >= ft.CASE_LIMIT:
             notes.append(f'Route {item}: {cases} of the last '
                          f'{len(research)} research entries registered new finite checks; this cycle may not register '

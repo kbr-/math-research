@@ -1,6 +1,7 @@
 import importlib.util
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -16,6 +17,9 @@ class TurnGuidanceTest(unittest.TestCase):
     def setUp(self):
         self.guide = load('turn_guidance', 'tools/turn_guidance.py')
         self.ft = self.guide.finisher()
+        statuses = patch.object(self.ft, 'registered_status', return_value={'ex:a': 'finite_check'})
+        self.statuses = statuses.start()
+        self.addCleanup(statuses.stop)
 
     def body(self, entries):
         route = '<section id="remaining-route"><li data-route-item="step">x</li></section>'
@@ -33,6 +37,26 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertNotIn('will be rejected', self.notes([('research', 'lem:a', 'Working proof.')]))
         self.assertNotIn('will be rejected', self.notes([('research', 'ex:a', 'Finite check.'),
                                                           ('review', 'none', 'Route review.')]))
+
+    def test_proof_only_guidance_does_not_read_registry(self):
+        self.notes([('research', 'lem:a', 'Working proof.')] * 4)
+        self.statuses.assert_not_called()
+        self.notes([('research', 'ex:a', 'Finite check.')])
+        self.statuses.assert_called()
+
+    def test_refutation_exemption_still_uses_registered_status(self):
+        self.statuses.return_value = {'ex:a': 'refutation'}
+        self.assertNotIn('will be rejected', self.notes([('research', 'ex:a', 'Finite check.')]))
+        self.statuses.assert_called()
+
+    def test_empty_and_mixed_claims_keep_case_semantics_without_lookup(self):
+        for claims, status, expected in [('none', 'Finite check.', True),
+                                         ('lem:a ex:a', 'Finite check.', False),
+                                         ('none', 'No result.', False)]:
+            body = self.body([('research', claims, status)])
+            start = body.index('<article')
+            self.assertEqual(self.ft.cases_only(body, start), expected)
+        self.statuses.assert_not_called()
 
     def test_review_period_warnings(self):
         five = [('research', 'lem:a', 'Working proof.')] * (self.ft.REVIEW_PERIOD - 1)

@@ -469,17 +469,23 @@ def cases_only(body, article, status_of=None):
     none of them is registered as a refutation.  Decided from the claims, not from status-line words:
     a status such as "a failed proof route" does not make an entry more than a finite check."""
     claims = entry_claims(body, article)
-    status_of = registered_status() if status_of is None else status_of
     reports_cases = 'finite check' in entry_status(body, article).lower() or any(c.startswith(FINITE_PREFIXES) for c in claims)
-    return (reports_cases and all(c.startswith(FINITE_PREFIXES) for c in claims)
-            and not any(status_of.get(c) == 'refutation' for c in claims))
+    if not reports_cases or not all(c.startswith(FINITE_PREFIXES) for c in claims):
+        return False
+    if not claims:
+        return True
+    status_of = registered_status() if status_of is None else status_of
+    return not any(status_of.get(c) == 'refutation' for c in claims)
 
 
 def registers_cases(body, article, status_of=None):
     """The entry registers a new finite check that is not a refutation (a decisive refutation is not
     case-list growth, so it is exempt)."""
+    claims = [c for c in entry_claims(body, article) if c.startswith(FINITE_PREFIXES)]
+    if not claims:
+        return False
     status_of = registered_status() if status_of is None else status_of
-    return any(c.startswith(FINITE_PREFIXES) and status_of.get(c) != 'refutation' for c in entry_claims(body, article))
+    return any(status_of.get(c) != 'refutation' for c in claims)
 
 
 CASE_WINDOW, CASE_LIMIT = 5, 3
