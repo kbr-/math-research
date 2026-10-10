@@ -18,14 +18,17 @@ import io
 import json
 import multiprocessing
 import os
+import shutil
 from pathlib import Path
 import sys
+import tempfile
 import time
 import unittest
 
 HERE = Path(__file__).resolve().parent
 LIMIT_S = 10.0
 DURATIONS = HERE / '.durations.json'
+MEMORY = Path('/dev/shm')
 
 
 def tests(suite):
@@ -62,6 +65,29 @@ def main():
     # A module that fails to import is discovered as a placeholder test carrying its error; it can't be
     # reloaded by name in a worker, so it runs here and reports the real error.
     broken = [t for t in found if t.id().startswith('unittest.loader._FailedTest.')]
+    scratch = memory_scratch(MEMORY)
+    try:
+        return timed_run(args, found, broken)
+    finally:
+        if scratch:
+            shutil.rmtree(scratch, ignore_errors=True)
+
+
+def memory_scratch(base):
+    """Point the tests' temporary files at a new directory in memory and return it, or None where there
+    is no memory filesystem to write to or TMPDIR already names a place. The tests wrote some 250 MB to the
+    disk in each run, and about one run in six then stalled on its I/O for 3 to 4 s and took 15 to 18 s
+    (10 October 2026); in memory a run writes 5 MB and none of that. The caller removes the directory,
+    with whatever tests left in it."""
+    if os.environ.get('TMPDIR') or not (base.is_dir() and os.access(base, os.W_OK | os.X_OK)):
+        return None
+    scratch = tempfile.mkdtemp(prefix='framework-tests-', dir=base)
+    os.environ['TMPDIR'] = scratch
+    tempfile.tempdir = None   # read again from the environment, here and in the workers forked later
+    return scratch
+
+
+def timed_run(args, found, broken):
     start = time.monotonic()
     results = [run(t, t.id()) for t in broken]
     try:

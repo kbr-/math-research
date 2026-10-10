@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -38,6 +39,54 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn('Ran 2 tests', result.stdout)
         self.assertNotIn('TOO SLOW', result.stdout)
+
+
+class TemporaryFilesInMemory(unittest.TestCase):
+    """run.py gives the tests a temporary directory of the run's own on the memory filesystem, and removes it."""
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name) / 'suite'
+        self.memory = Path(tmp.name) / 'memory'
+        self.root.mkdir()
+        self.memory.mkdir()
+        shutil.copy2(RUNNER, self.root / 'run.py')
+        self.log = Path(tmp.name) / 'seen.txt'
+        # Two tests, so that one runs in a worker forked after the directory was chosen; each leaves a file.
+        for name in ('a', 'b'):
+            (self.root / f'test_{name}.py').write_text(
+                # A module that asked for the directory when it was imported, before the runner chose one.
+                'import tempfile, unittest\ntempfile.gettempdir()\nclass T(unittest.TestCase):\n    def test_it(self):\n'
+                f'        with open({str(self.log)!r}, "a") as log: log.write(tempfile.gettempdir() + "\\n")\n'
+                f'        open(tempfile.mkstemp()[1], "w").write("left behind")\n')
+
+    def run_suite(self, memory, environment=()):
+        code = f'import sys, pathlib, run; run.MEMORY = pathlib.Path({str(memory)!r}); sys.argv = ["run.py", "-j", "2"]; sys.exit(run.main())'
+        plain = {key: value for key, value in os.environ.items() if key != 'TMPDIR'}
+        done = subprocess.run([sys.executable, '-c', code], cwd=self.root, capture_output=True, text=True, timeout=30,
+                              env={**plain, **dict(environment)})
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        return [Path(line) for line in self.log.read_text().split()]
+
+    def test_the_tests_write_into_one_directory_in_memory_that_is_gone_afterwards(self):
+        seen = self.run_suite(self.memory)
+        self.assertEqual(len(seen), 2)
+        self.assertEqual(len(set(seen)), 1)
+        self.assertEqual(seen[0].parent, self.memory)
+        self.assertTrue(seen[0].name.startswith('framework-tests-'))
+        self.assertEqual(list(self.memory.iterdir()), [])
+
+    def test_a_directory_the_caller_chose_or_no_memory_filesystem_leaves_the_tests_where_they_were(self):
+        chosen = self.memory.parent / 'chosen'
+        chosen.mkdir()
+        self.assertEqual(set(self.run_suite(self.memory, {'TMPDIR': str(chosen)})), {chosen})
+        self.assertEqual(list(self.memory.iterdir()), [])
+        self.assertEqual(len(list(chosen.iterdir())), 2)   # the caller's directory is not the runner's to empty
+        self.log.unlink()
+        elsewhere = set(self.run_suite(self.memory / 'absent'))
+        self.assertEqual(len(elsewhere), 1)
+        self.assertNotIn(self.memory, [*elsewhere][0].parents)
 
 
 class LongestFirst(unittest.TestCase):
