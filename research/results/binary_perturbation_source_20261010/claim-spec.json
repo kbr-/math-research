@@ -1,0 +1,32 @@
+{
+  "source": {
+    "record": "[Source perturbation test](https://kbr.is-a.dev/math-research/#entry-2026-10-10-source-perturbation-test)",
+    "label": "Source perturbation test",
+    "targets": ["../notebook.html#entry-2026-10-10-source-perturbation-test"]
+  },
+  "date": "2026-10-10",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["polynomial-calculus", "degree-accounting", "substitution", "topological-methods"],
+  "claims": [
+    {
+      "id": "lem:graph-koszul-contraction",
+      "summary": "Over F2[x], prescribed old maps beta_j of degree<=a_j with positive a_j give an explicit special contraction of the Koszul complex on r_j-beta_j onto the old ring. Give r_j and e_j weight a_j and old x weight one. The ordered monomial contraction h for r_j preserves weight; delta h lowers fresh count, so (delta h)^(L+1)=0 through weight L. Crainic's finite perturbation gives H=h sum_k(delta h)^k and projection exactly r=beta, preserving weighted degree and yielding graph-ideal cofactors of cost<=L-a_j.",
+      "assessment": "Working standard Koszul/perturbation construction, attributed to Crainic's main lemma and compared with the existing weighted graph retraction. One medium reviewer passed; a native symbolic GAP control verifies four fresh variables with nonlinear old maps. It assumes the coefficient maps and creates no action on an untruncated version of the proper old quotient.",
+      "status": "working_proof",
+      "rationale": "Makes the candidate perturbation mechanism concrete and locates its circularity for source elimination; no independent homological theorem or Frege improvement claimed.",
+      "next_action": "Test a source or moment contraction that does not already prescribe successful coefficient maps, retaining the effective differential and PC closure."
+    },
+    {
+      "id": "prop:idempotent-perturbation-test",
+      "summary": "For idempotents u,v in a commutative F2 algebra, the standard two-term multiplication-by-u Koszul complex retracts onto (1-u)B in both degrees with h=m_u. Changing the differential to m_v gives delta h=m_(u(1-v)) on degree zero, an idempotent. Thus smallness holds iff u(1-v)=0; then the transferred differential is m_(v(1-u)). Complete singleton ENS input changes x to y realize failure, whereas changing x to x OR y gives smallness with nonzero effective differential. Constant r=1 normalizes these easy sources.",
+      "assessment": "Working elementary control of the chosen companion contraction. One medium reviewer passed the algebra and separate-source scope; native Boolean matrix checks confirm negative and positive cases. Does not obstruct all contractions, other source choices, or marked-unit survival in the actual hard quotient.",
+      "status": "working_proof",
+      "rationale": "Rejects an automatic small-perturbation inference and retaining the old target differential. Scoped route control, not independent novelty or a source lower bound.",
+      "next_action": "Use a genuinely paid contraction or a non-map moment model; check only the required surviving marked class rather than demand all homology remain unchanged."
+    }
+  ],
+  "relationships": [
+    ["lem:graph-koszul-contraction", "cites", "lem:weighted-feature-retraction", "Its degree-zero graph certificate is the existing weighted retraction; the added calculation gives an explicit whole-chain homotopy and finite-series bound."],
+    ["prop:idempotent-perturbation-test", "cites", "lem:graph-koszul-contraction", "The graph of the known constant normalizer repairs the easy source comparison; failure of the direct companion contraction does not reject that alternative."]
+  ]
+}
