@@ -327,6 +327,17 @@ def report_paragraph(text, label):
     return found.group(1) if found else ''
 
 
+def validate_nonvacuity(text):
+    """An entry registering a finite check says, in its own paragraph, why the check could decide."""
+    found = re.search(r'<strong>Nonvacuity\.</strong>(.*?)</p>', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    if len(plain) < 60:
+        raise ValueError('An entry registering a finite check (an ex: claim) needs "<strong>Nonvacuity.</strong>" '
+                         'with at least 60 characters: what recorded bounds give on the object at the sizes '
+                         'computed, and why the outcomes that matter differ there (COMPUTATION_RULES.md, '
+                         'numerical verification)')
+
+
 def require_report(text, label):
     value = report_paragraph(text, label)
     plain = html.unescape(re.sub(r'<[^>]*>', ' ', value)).strip()
@@ -536,6 +547,8 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     progress = require_report(text, 'Goal progress')
     validate_prevention(text)
     validate_process_audit(text)
+    if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
+        validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
         if state == 'unchanged':

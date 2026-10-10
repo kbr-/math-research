@@ -37,6 +37,16 @@ def validate(body):
     FT.validate_progress(body, start, body.index('</article>', start))
 
 
+class NonvacuityTest(unittest.TestCase):
+    def test_finite_check_entries_state_nonvacuity(self):
+        with self.assertRaisesRegex(ValueError, 'Nonvacuity'):
+            FT.validate_nonvacuity('<p>The check ran at three sizes.</p>')
+        with self.assertRaisesRegex(ValueError, 'Nonvacuity'):
+            FT.validate_nonvacuity('<p><strong>Nonvacuity.</strong> Fine.</p>')
+        FT.validate_nonvacuity('<p><strong>Nonvacuity.</strong> The recorded bound is five and the claim predicts '
+                               'three at the sizes computed, so the two outcomes differ there.</p>')
+
+
 def test_report(target):
     return (f'<p><strong>Architecture test.</strong> The <a href="#{target}">decisive test</a> '
             'failed on the recorded counterexample, so the proposed weakening is rejected.</p>')

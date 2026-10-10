@@ -20,7 +20,9 @@ OBSTACLE = ('<h4>Obstacle</h4><p>No recorded degree method handles many adversar
 PROGRESS_ATTRS = ' data-obligation="open-goal" data-goal-progress="unchanged"'
 PROGRESS_REPORT = ('<p><strong>New mathematics.</strong> A scoped result was checked, without settling '
                    'the required implication.</p><p><strong>Goal progress.</strong> The general '
-                   'implication remains unchanged; no uniform proof was found.</p>')
+                   'implication remains unchanged; no uniform proof was found.</p>'
+                   '<p><strong>Nonvacuity.</strong> The recorded bound and the claim predict different values '
+                   'at the sizes computed, so the check could fail.</p>')
 ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     f'<p><strong>{label}.</strong> The target and alternative are compared against all hypotheses '
     'and the goal budget. <a href="review.txt">Reviewer evidence</a>. <strong>Power.</strong> The recorded '

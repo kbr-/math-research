@@ -286,7 +286,9 @@ while command records remain unfinished.
   system, or a satisfiable finite domain.
   Before coding, in the same cycle, state the smallest nonvacuous parameters and
   space sizes, count the claim's predictions at reachable parameters, compare with
-  unconditional bounds, and verify the hypotheses. Record the count in the entry:
+  unconditional bounds, and verify the hypotheses. Record the count in the entry, in a
+  `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of every entry that
+  registers a finite check):
   a test whose every outcome is compatible with the claim decides nothing. Report
   outcomes for links, fibers or restrictions by sub-instance size; do not interpret
   failures confined to sizes below the nonvacuous threshold. For a proposed bound,
