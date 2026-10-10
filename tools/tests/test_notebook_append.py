@@ -21,7 +21,9 @@ REPORTS = ('<p><strong>New mathematics.</strong> The general statement was check
            'is still open after the completed test.</p>')
 ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     f'<p><strong>{label}.</strong> Core: a substantive comparison of the goal, available '
-    'results and their degree budgets. <a href="review.txt">Evidence</a>.</p>'
+    'results and their degree budgets. <a href="review.txt">Evidence</a>. '
+    '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
+    'claim answers it.</p>'
     for label in ('Necessary target', 'Extra requirements', 'Independent alternative',
                   'Rank normalization', 'Decision', 'Decisive test'))
 

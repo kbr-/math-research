@@ -200,7 +200,9 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
 - **Decision.** Choose the weakened endpoint or competing architecture to test, or justify
   retaining the current one against the comparison.
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
-  required implication or the chosen route.
+  required implication or the chosen route. Search the registry for the test as for a new lemma
+  and end with `<strong>Record search.</strong>`, the searches and what they returned (the
+  finisher checks it): a test the record already answers decides nothing.
 
 The next research cycle on that route reports the actual outcome in **Architecture test.** and
 links the review's anchor. This can be a proof attempt, not necessarily a computation. More local

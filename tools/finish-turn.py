@@ -555,6 +555,13 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             if label == 'Independent alternative' and not re.search(r'href=["\'][^"\']+["\']', value):
                 raise ValueError('Independent alternative must link the existing reviewer evidence; '
                                  'brief the same medium reviewer with goal and tools before the preferred route')
+            if label == 'Decisive test':
+                searched = re.search(r'<strong>Record search\.</strong>(.*)', value, re.S)
+                plain = html.unescape(re.sub(r'<[^>]*>', ' ', searched.group(1))).strip() if searched else ''
+                if len(plain) < 40:
+                    raise ValueError('Decisive test must end with "<strong>Record search.</strong>" naming the '
+                                     'registry searches made for the test and what they returned: a test the '
+                                     'record already answers decides nothing (AGENTS.md, Decisive test)')
     else:
         target = pending_architecture_test(body, article).get(tags['route'])
         if target and article_attribute(body, article, 'data-picked') != 'user':

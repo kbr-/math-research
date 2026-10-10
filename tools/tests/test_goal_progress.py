@@ -13,7 +13,9 @@ REPORT = ('<p><strong>New mathematics.</strong> A scoped result was checked; the
 ARCHITECTURE = FT.ARCHITECTURE_HEADING + ''.join(
     f'<p><strong>{label}.</strong> '
     + ('<a href="review.txt">Blind initial brief and reviewer response</a>. ' if label == 'Independent alternative' else '')
-    + 'The requirement and alternative are compared against the actual goal and its full budget.</p>'
+    + 'The requirement and alternative are compared against the actual goal and its full budget.'
+    + (' <strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
+       'claim answers it.' if label == 'Decisive test' else '') + '</p>'
     for label in FT.ARCHITECTURE_FIELDS)
 
 
@@ -98,6 +100,8 @@ class GoalProgressTest(unittest.TestCase):
         for label in FT.ARCHITECTURE_FIELDS:
             with self.subTest(label=label), self.assertRaises(ValueError):
                 validate(valid.replace(f'<strong>{label}.</strong>', '<strong>Omitted.</strong>'))
+        with self.assertRaisesRegex(ValueError, 'Record search'):
+            validate(valid.replace('<strong>Record search.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'reviewer evidence'):
             validate(valid.replace('href="review.txt"', 'title="review.txt"'))
 
