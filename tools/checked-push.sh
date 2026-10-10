@@ -3,6 +3,7 @@
 # Usage: tools/checked-push.sh [--remote NAME] [TARGET]. The remote defaults to origin.
 # Without TARGET the current branch is pushed to its namesake. With TARGET (for example main,
 # from a worktree branch) checks use NAME/TARGET; HEAD is pushed only as a fast-forward.
+# What is verified is the commit pushed, HEAD, not the local branch that has the target's name.
 # The checks run in parallel; each one's exit status gates the push, and its output is shown
 # in full, in order. The commit is fixed when the script starts, and if HEAD moves while the
 # checks run, nothing is pushed. Before the push the script prints how many commits and bytes
@@ -44,7 +45,7 @@ if [ -n "$long" ]; then
 fi
 logs="$(mktemp -d)"
 trap 'rm -rf "$logs"' EXIT
-python3 tools/verify-checkout.py --public-history "$branch" --remote "$remote" > "$logs/1" 2>&1 & verify=$!
+python3 tools/verify-checkout.py --public-history "$commit" --published-as "$remote/$branch" > "$logs/1" 2>&1 & verify=$!
 python3 tools/check-append-only.py --base "$remote/$branch" > "$logs/2" 2>&1 & append=$!
 python3 tools/notebook_context.py --all > "$logs/3" 2>&1 & context=$!
 failed=0

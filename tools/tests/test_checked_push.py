@@ -48,7 +48,7 @@ class CheckedPushTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(git(self.remote, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'HEAD'))
         calls = (self.work / 'calls').read_text()
-        self.assertIn('--public-history main', calls)
+        self.assertIn(f'--public-history {git(self.work, "rev-parse", "HEAD")} --published-as origin/main', calls)
         self.assertIn('--base origin/main', calls)
         self.assertNotIn('worktree-x', git(self.remote, 'branch', '--list'))
         self.assertRegex(result.stdout, r'Pushing 1 commits, \d+B, to origin/main\.')
@@ -77,7 +77,7 @@ class CheckedPushTest(unittest.TestCase):
         self.assertEqual(git(private, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'HEAD'))
         self.assertEqual(git(self.remote, 'rev-parse', 'main'), original)
         calls = (self.work / 'calls').read_text()
-        self.assertIn('--public-history main --remote private', calls)
+        self.assertIn(f'--public-history {git(self.work, "rev-parse", "HEAD")} --published-as private/main', calls)
         self.assertIn('--base private/main', calls)
         self.assertNotIn('origin', calls)
         self.assertRegex(result.stdout, r'Pushing 1 commits, \d+B, to private/main\.')
@@ -96,6 +96,35 @@ class CheckedPushTest(unittest.TestCase):
         self.assertEqual(checkout.claim_base('private/main', 'private'), 'private/main')
         self.assertEqual(checkout.claim_base('main', 'origin'), 'origin/main')
         self.assertEqual(checkout.claim_base('missing', 'private'), 'EMPTY')
+        # A commit checked by its hash has no namesake on a remote: the branch it is published as is the base.
+        head = git(self.work, 'rev-parse', 'HEAD')
+        self.assertEqual(checkout.published_base('private/main', head, 'origin'), 'private/main')
+        self.assertEqual(checkout.published_base('private/missing', head, 'origin'), 'EMPTY')
+        self.assertEqual(checkout.published_base(None, 'main', 'private'), 'private/main')
+
+    def test_what_is_verified_is_the_commit_pushed_not_the_local_branch_of_the_target_s_name(self):
+        # The verifier here refuses a history that holds a path under private/, as the real one does.
+        (self.work / 'tools/verify-checkout.py').write_text(
+            'import subprocess, sys\n'
+            'history = sys.argv[sys.argv.index("--public-history") + 1]\n'
+            'names = subprocess.run(["git", "rev-list", "--objects", history], capture_output=True, text=True, check=True).stdout\n'
+            'sys.exit("Local-only material remains in public history" if " private/" in names else 0)\n')
+        git(self.work, 'commit', '-qam', 'a verifier that reads the history')
+        original = git(self.remote, 'rev-parse', 'main')
+        (self.work / 'private').mkdir()
+        (self.work / 'private/x').write_text('kept local')
+        git(self.work, 'add', 'private/x')
+        git(self.work, 'commit', '-qm', 'holds what must stay local')
+        # The local main lacks the file, the commit to be pushed holds it.
+        self.assertNotIn('private/x', git(self.work, 'ls-tree', '-r', '--name-only', 'main'))
+        result = self.run_push('main')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Local-only material remains in public history', result.stdout + result.stderr)
+        self.assertIn('Not pushed: a pre-publication check failed.', result.stderr)
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), original)
+        git(self.work, 'reset', '-q', '--hard', 'HEAD^')
+        self.assertEqual(self.run_push('main').returncode, 0)
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), git(self.work, 'rev-parse', 'HEAD'))
 
     def test_help_and_invalid_options_do_not_publish(self):
         original = git(self.remote, 'rev-parse', 'main')

@@ -44,11 +44,23 @@ def claim_base(branch, remote):
     return ref if known else 'EMPTY'
 
 
+def published_base(published_as, history, remote):
+    """The claim-check base: the remote branch the checked commit is published as (REMOTE/BRANCH), where
+    one is named, since the commit checked need not be a branch of that name; else the checked ref's
+    namesake on `remote`."""
+    if published_as:
+        name, _, branch = published_as.partition('/')
+        return claim_base(branch, name)
+    return claim_base(history, remote)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, help='Also save the verification report')
     parser.add_argument('--public-history', help='Also check reachable paths in this public branch/ref')
     parser.add_argument('--remote', default='origin', help='Remote for the claim-check base (default: origin)')
+    parser.add_argument('--published-as', metavar='REMOTE/BRANCH',
+                        help='The remote branch --public-history is to be pushed as: the claim-check base')
     args = parser.parse_args()
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT, text=True).split('\0')) - {''}
     failures, notes = [], []
@@ -141,7 +153,8 @@ def main():
                 failures.append('Local-only material remains in public history: ' + name)
         # Run the claim-index CI job against the published branch, so a push cannot fail it.
         claims = subprocess.run([sys.executable, str(ROOT / 'tools/check-claims.py'),
-                                 '--base', claim_base(args.public_history, args.remote), '--warn-over-limit'],
+                                 '--base', published_base(args.published_as, args.public_history, args.remote),
+                                 '--warn-over-limit'],
                                 cwd=ROOT, text=True, capture_output=True)
         if claims.returncode:
             failures += ['Claim-index CI check: ' + line.strip() for line in claims.stdout.splitlines()
