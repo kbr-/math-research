@@ -307,7 +307,10 @@ historical assessments.
   October 2026: "the existing process already supports closing an item quickly if it deserves it").
   Every Closed follow-up carries `<strong>Stakes.</strong>`: what a yes and what a no to the item's
   question would each give the open statement. The reviewer reads each
-  closure, and the entry links its record (the finisher checks both; user, 10 October 2026).
+  closure, and the entry links its record (the finisher checks both; user, 10 October 2026). It
+  also states, after `<strong>Sources read.</strong>`, which statements of each source the closure
+  relies on were read, or that it relies on recorded results only; a closure resting on an abstract
+  is refused (the finisher checks).
   Closed and Developed remove the item. Four consecutive research entries are the default
   spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
   current spell/extension period materially advances a named open statement and a concrete next

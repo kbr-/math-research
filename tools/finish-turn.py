@@ -419,6 +419,16 @@ def validate_closures(text):
     if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
         raise ValueError('An entry that closes a queue item links the reviewer\'s record (review.txt): the '
                          'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
+    # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
+    read = re.search(r'<strong>Sources read\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', read.group(1))).strip() if read else ''
+    if len(plain) < 40:
+        raise ValueError('An entry that closes a queue item says, after <strong>Sources read.</strong> and in at '
+                         'least 40 characters, which statements of each source the closure relies on were read, '
+                         'or that it relies on recorded results only (AGENTS.md)')
+    if re.search(r'abstract(s)?\s+only|only\s+(the|its|their)\s+abstract|abstract,?\s+not\s+the', plain, re.I):
+        raise ValueError('A closure may not rest on an abstract: read the statement of the theorem the closure '
+                         'relies on, or keep the item open with the reading queued (AGENTS.md)')
 
 
 def validate_process_audit(text):

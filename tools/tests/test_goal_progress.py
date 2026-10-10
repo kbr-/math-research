@@ -140,7 +140,9 @@ class ClosureStakesTest(unittest.TestCase):
     CLOSE = '<p><strong>Follow-up.</strong> Closed: superseded.</p>'
     STAKES = ('<p><strong>Stakes.</strong> A yes would add a clause to the specification on row width; a no would '
               'name the structure a candidate needs. <strong>Follow-up.</strong> Closed: superseded.</p>')
-    LINK = '<p>Record: <a href="https://example.org/results/x/review.txt">review.txt</a>.</p>'
+    RECORD = '<p>Record: <a href="https://example.org/results/x/review.txt">review.txt</a>.</p>'
+    READ = '<p><strong>Sources read.</strong> None: the closure relies on recorded results only.</p>'
+    LINK = RECORD + READ
 
     def test_a_closure_needs_stakes_and_a_reviewer_record(self):
         FT.validate_closures('<p><strong>Follow-up.</strong> Continuing: next.</p>')      # nothing closed
@@ -152,6 +154,11 @@ class ClosureStakesTest(unittest.TestCase):
         two = self.STAKES + '<ul><li data-check="a:s1">x <strong>Follow-up.</strong> Closed: same.</li></ul>'
         with self.assertRaises(ValueError):
             FT.validate_closures(two + self.LINK)                                          # one closure lacks stakes
+        with self.assertRaisesRegex(ValueError, 'Sources read'):
+            FT.validate_closures(self.STAKES + self.RECORD)                                # no reading stated
+        with self.assertRaisesRegex(ValueError, 'abstract'):
+            FT.validate_closures(self.STAKES + self.RECORD + '<p><strong>Sources read.</strong> The capacity '
+                                 'paper, abstract only; the testing paper likewise.</p>')
         with self.assertRaises(ValueError):                                                # too short to say anything
             FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
                                  + self.LINK)
