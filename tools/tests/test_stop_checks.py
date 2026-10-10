@@ -308,6 +308,22 @@ class UncheckedClaimTest(unittest.TestCase):
         self.assertEqual(hook.written([('Edit', {'file_path': 'a.md', 'new_string': 'x'}),
                                        ('Bash', {'command': 'git log'}), ('Read', {'file_path': 'b.md'})]),
                          ['x', 'git log'])
+        # What is written into the checks' own code and tests is a fixture of a check, not said by the turn.
+        handed = "HANDED = 'It is left to their owners.'"   # in single quotes, which the quote filter does not blank
+        own = ('tools/tests/test_stop_checks.py', '/repo/tools/hooks/stop_checks.py', 'tools/tests/test_during_run.py',
+               '/repo/tools/measure_stop_checks.py', 'tools/hooks/during_run.py')
+        for path in own:
+            with self.subTest(path=path):
+                self.assertEqual(hook.written([('Edit', {'file_path': path, 'new_string': handed}),
+                                               ('Write', {'file_path': path, 'content': handed})]), [])
+                self.assertIsNone(hook.deferral_block([], [('Edit', {'file_path': path, 'new_string': handed})]))
+        for path in ('tools/tests/test_lead_queue.py', 'src/tools/hooks.py', 'notes/tools/tests/test_stop_checks.py.md',
+                     'tasks/a/PLAN.md', 'mytools/hooks/x.py'):
+            with self.subTest(path=path):
+                self.assertEqual(hook.written([('Edit', {'file_path': path, 'new_string': handed})]), [handed])
+                self.assertIsNotNone(hook.deferral_block([], [('Edit', {'file_path': path, 'new_string': handed})]))
+        # A command that writes such a file is still read: only an edit names the file it writes.
+        self.assertEqual(len(hook.written([('Bash', {'command': 'cat > tools/tests/test_stop_checks.py <<EOF\nx\nEOF'})])), 1)
 
     def test_a_gap_declared_in_the_final_reply_asks_for_its_routes(self):
         gap = 'No kubeconfig context reaches it, so its live plugins can\'t be read either. The rest holds.'

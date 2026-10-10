@@ -355,10 +355,19 @@ def deferrals(texts):
     return found
 
 
+# Where the patterns' own examples are written: the checks' code and their tests. A sentence there is a
+# fixture of a check, not something the turn says; an edit adding a deferral example to a test was blocked
+# as a step handed to others (9 October 2026).
+OWN_FIXTURES = re.compile(r"(?:^|/)tools/(?:hooks/[^/]+|measure_stop_checks\.py|tests/test_(?:stop_checks|during_run|"
+                          r"codex_unchecked_claim|measure_stop_checks|unlisted_work)\.py)$")
+
+
 def written(calls):
-    """What the turn's calls write: edits' new text, written files and commands."""
+    """What the turn's calls write: edits' new text, written files and commands; not what they write into
+    the checks' own code and tests."""
     return [str(tool_input[field]) for _, tool_input in calls for field in WRITTEN_FIELDS
-            if isinstance(tool_input.get(field), str)]
+            if isinstance(tool_input.get(field), str)
+            and not OWN_FIXTURES.search(str(tool_input.get('file_path') or tool_input.get('notebook_path') or ''))]
 
 
 def deferral_block(texts, calls):
