@@ -1,0 +1,65 @@
+<article id="entry-2026-10-10-coordinate-core-budget" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-09-joint-growth-review:2" data-claims="prop:coordinate-stable-core-cost">
+<h3>10 October 2026 — The all-input stable core can overpay for an easy source</h3>
+<p class="entry-meta">Working all-parameter budget control; no new lower bound. Stable-core budget cycle.</p>
+<p><strong>Question.</strong> For binary-frege-lower-bound on general-step, test whether choosing a better subspace always makes the <a href="#stable-core-source-exclusion">new absolute-growth criterion</a> affordable. Use an actual complete coordinate-input source with a known cheap repair, and quantify over every candidate subspace rather than fitting small examples.</p>
+<p><strong>General statement.</strong> <code>prop:coordinate-stable-core-cost</code> gives a sharp Boolean growth floor and shows that the displayed all-input criterion can require linear degree where a direct weighted row costs constant degree. It calibrates that sufficient criterion, not every use of the stable-core lemma.</p>
+<p><strong>New mathematics.</strong> An elementary leading-monomial calculation determines the relevant growth floor for all Boolean subspaces and all degrees. The resulting budget comparison cannot be fixed by choosing a different \(X\) in this example. The leading-product technique is already in the record; no independent novelty is claimed.</p>
+<p><strong>Goal progress.</strong> Unchanged. No affordable estimate for the unresolved compiled-source class is proved. The test identifies the extra expense of insisting that a large core come from the span of every input; a smaller selected control space remains possible.</p>
+<h4>The growth floor in the full Boolean algebra</h4>
+<p>Let \(\mathcal P_{\le K}\) be the space of multilinear polynomial functions of degree at most \(K\) on \(\mathbb F_2^n\), and \(U=\operatorname{span}(1,x_1,\ldots,x_n)\). Products below are Boolean products. For \(0\le K&lt;n\) and \(0\ne V\subseteq\mathcal P_{\le K}\),
+\[
+ \dim(UV)-\dim V\ge n-K. \tag{1}
+\]
+This is the same leading-product principle as the <a href="#conditioned-row-linear-quotient-dimension">earlier disjoint-row multiplication argument</a>, here in the full Boolean algebra with one coordinate per row.</p>
+<p><strong>Proof.</strong> Let \(k\le K\) be the maximum degree of an element of \(V\), and choose \(f\in V\) of degree \(k\). In a degree-compatible monomial order, let its leading monomial be \(x_S\), \(|S|=k\). For every \(j\notin S\), the Boolean reduction of \(x_jf\) still has leading monomial \(x_{S\cup\{j\}}\): ordinary multiplication preserves monomial order, and any nonsquarefree term drops in total degree when reduced. These \(n-k\) leading monomials are distinct and have degree \(k+1\). The products are consequently linearly independent modulo \(V\), whose elements have degree at most \(k\). This proves (1). Equality is attained by \(V=\langle x_1\cdots x_K\rangle\), with the empty product interpreted as one: its affine products have exactly the basis consisting of that monomial and its products with coordinates outside its support. \(\square\)</p>
+<h4>Apply the floor to the actual source image</h4>
+<p>Take \(n\ge2\), old Boolean equations only, and one complete accuracy-\(h\) block, \(h\ge1\), with genuine input tuple
+\[
+ (g_1,\ldots,g_n)=(x_1,\ldots,x_n).
+\]
+Its original product degree is \(2h\), companion degree \(2h+1\), and fresh-field degree two. Its input space in the stable-core criterion is exactly \(U\). The joint map is
+\[
+ \mathcal T f=(x_1f,\ldots,x_nf).
+\]
+Its full Boolean-function kernel is the line spanned by \(e_0=\prod_{i=1}^n(1+x_i)\): all coordinates vanish precisely when the function is supported only at the origin. The unique multilinear representative of \(e_0\) has degree \(n\).</p>
+<p>Therefore, when \(K\le n-2\), \(\mathcal T\) is injective on \(\mathcal P_{\le K+1}\). Every nonzero \(X\subseteq\mathcal T(\mathcal P_{\le K})\) has a unique preimage subspace \(V\subseteq\mathcal P_{\le K}\), and
+\[
+ UX=\mathcal T(UV),\qquad
+ \dim UX-\dim X=\dim UV-\dim V\ge n-K.
+\]
+Since \(\dim U-1=n\), capping as in the criterion leaves
+\[
+ q=\min(n,\dim UX-\dim X)\ge n-K. \tag{2}
+\]
+These are actual tuple-image dimensions, not a scalar image substituted for the source map.</p>
+<p id="coordinate-stable-core-cost"><strong>Proposition (coordinate core cost).</strong> In this complete coordinate-input source, the displayed stable-core bound, optimized over every \(h\ge1\), original \(B\ge2h+1\), \(K\ge0\), and nonzero \(X\subseteq\mathcal T(\mathcal P_{\le K})\), always has
+\[
+ \max\{K+4,\ K+1+TB\}\ge n+2,\qquad
+ T=\max\{1,\lceil q/h\rceil-1\}. \tag{3}
+\]
+The value \(n+2\) is attained for that bound at \(h=1,B=3,K=n-2\) and \(X=\mathcal T\langle x_1\cdots x_{n-2}\rangle\). In contrast, the actual source has a surviving degree-one weight and constant coefficient map with weighted original replay cost \(2h+2\), equal to four at \(h=1\). The Boolean growth bound (1), including sharpness, is part of this control.</p>
+<p><strong>Proof of the budget floor.</strong> If \(K\ge n-1\), then \(K+1+TB\ge n+3\), since \(T\ge1\) and \(B\ge3\). Otherwise put \(m=n-K\ge2\) and use (2). If \(m\le2h\), then \(TB-m\ge2h+1-m\ge1\). If \(m&gt;2h\), let \(s=\lceil m/h\rceil\ge3\); \(T\ge s-1\) and \(m\le sh\), so
+\[
+ TB-m\ge(s-1)(2h+1)-sh=(s-2)h+s-1\ge3.
+\]
+In both cases \(K+1+TB=n+1+(TB-m)\ge n+2\). For the asserted attaining choice, the monomial preimage has growth exactly two; injectivity on degree at most \(n-1\) gives \(q=2,T=1\), and both terms of (3) equal \(n+2\).</p>
+<p><strong>Proof of the cheap repair.</strong> Take \(W=x_1\), set the first row's coefficient of \(g_1\) to one, and set every other coefficient to zero. The substituted product is \(1-x_1\), and
+\[
+ Wg_i(1-x_1)=x_1x_i(1-x_1)
+\]
+is an old Boolean consequence through degree at most three. The fresh-field images are zero. The nonzero weight survives the Boolean-only base. The original source ceiling is still \(2h+1\), so weighted proof replay pays \(1+(2h+1)=2h+2\), not a reset ceiling for the specialized product. At \(h=1\) this is four for every \(n\). \(\square\)</p>
+<p>This comparison is about the stated sufficient budget (3). It is not a lower bound on every possible implementation of the colon construction, every alternative accounting of its particular output, or every stable-core argument. The base is satisfiable, so it is not a Frege or PC hardness result. Additional hard old equations can invalidate the leading-monomial argument and change the kernel of \(\mathcal T\); no full-cube floor is imported into the charged quotient without proof.</p>
+<h4>Compare the existing positive control</h4>
+<p>The <a href="#small-growth-domain-loss">tiny-minimizer example</a> has the opposite behavior. Its actual inputs are \(Q=x_1x_2+x_3x_4\) and \(1+QH\), \(H=z_1z_2+z_3z_4\), on the Boolean domain with \(ax_i=az_j=0\). Its line \(X=\mathcal T\langle a\rangle\) has growth one, hence \(q=0\). With \(K=1,\delta=4,h=1,B=9\), the new criterion asks \(\max(17,14)\le D\), fitting that record's \(D\ge\max(v+5,18)\). It recovers a surviving anchor weight and constant row selecting the second input. This is a previously easy source, not new coverage. A one-dimensional minimizer is enough for that endpoint; loss of a fraction of a larger domain is not itself failure.</p>
+<p>Together the controls say exactly what they test. Small absolute growth can construct legal maps, even on a tiny image. But the all-input growth condition can also cost arbitrarily more than a direct known normalizer, even after optimizing its candidate subspace and degree. Neither a ratio close to one nor large input rank resolves this distinction.</p>
+<h4>Next construction, with the extra requirement removed</h4>
+<p><strong>Follow-up.</strong> Continuing the stabilizer head after its third entry. The paid core lemma itself permits any low-degree control space containing one; requiring it to contain every source input entered only the corollary's uniform residual-rank bound. In the final ordinary entry, test a selected control space while retaining the full actual joint-error map. Its resulting character must either hit a block's genuine core, make that block's error coordinates zero, or leave a residual that is actually affordable. Derive the complete ledger and compare with historical shared conditioning and core–residual packing before claiming new coverage. The coordinate repair \(x_1\) is a required positive calibration. Merely stating an existential good-character condition would not construct it.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-10-paid-stable-core:s1"><strong>Follow-up.</strong> Continuing: the exact positive and negative controls are now calibrated, but an affordable absolute-growth choice for an unresolved source class is still missing.</li></ul>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check">Develop selected control spaces in the stable-core construction while keeping the full joint-error map: choose a useful core character, retain per-block zero/error and residual alternatives, and pay all original degrees. Test the coordinate-input cheap repair and compare the resulting statement with historical shared conditioning rather than replacing the unproved choice by a new criterion.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the leading-monomial proof, actual tuple-image injection, both ceiling cases and sharpness, original-degree repair, and tiny-anchor control without required mathematical corrections; the scope and unchanged-goal assessment were accepted. The full stable-core proof and criterion, tiny-minimizer proof and original alternative-map ledger, and earlier leading-product proof were read. The archived three-bit checker already includes all 66 nonzero affine domains with full affine \(U\); reading its saved output gives minimum growth two, consistent with (1) at \(n=3,K=1\). That is reused evidence, not a new experiment. No new numerical sweep or source encoding is introduced.</p>
+<p><strong>Process assessment.</strong> The direct leading-monomial proof replaced a longer proposed stabilizer proof of the growth floor. Between cycles, the required checkpoint-performance investigation removed repeated Markdown parsing and corpus-growing retrieval tests: <a href="research/results/binary_core_budget_test_20261010/framework-benchmark.txt">the measured report</a> records identical metadata results and all 556 framework tests passing in 8.4 seconds. Its maintenance time remains in this cycle's measured interval.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_core_budget_test_20261010 -->
+</article>
