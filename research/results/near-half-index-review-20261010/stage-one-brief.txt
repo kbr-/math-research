@@ -1,0 +1,63 @@
+STAGE ONE BRIEF (goal, available results and registered open conjectures; the author's route is withheld)
+Goal-level route review, 10 October 2026 (second of the day), notebook near-half-pc-degree. You are the
+review's single medium reviewer; a second message will reveal the author's draft.
+
+GOAL (open statement near-half-pc-family). Polynomial-length unsatisfiable literal CNFs F_n of width w_n with
+auxiliary affine equations over F_2 (free, not counted), free dimension n -> infinity, with no PC refutation
+over F_2 of degree floor(n/2 - s_n), s_n + w_n <= n^(1-eps). For a single Frege depth d the weaker
+(s_n + w_n)(log n)^(l-2) = o(n) suffices, l = d + c_F >= 2 the number of levels; l = 2 ("two levels") needs
+only s + w = o(n). A proved transfer turns the family into AC^0[2]-Frege lower bounds. Open for 81 research
+entries.
+
+PROVED RESULTS since the last review (claim IDs; `python3 tools/search-claims.py --show ID` from
+/home/kbr/dev/math/.claude/worktrees/near-half-pc-degree; if a hook demands `python3 tools/resume.py`, run it
+bare and read its parts first):
+- lem:symmetric-system-ceiling (earlier): unsatisfiable systems of symmetric polynomials of degree d over F_2
+  are refuted in degree 3d - 1. lem:symmetric-period-degree: a symmetric function of odd period q has degree
+  > (n - q + 2)/2.
+- lem:decomposition-degree-bound (folklore): PC degree <= largest bag of a tree decomposition.
+  cor:common-order-counters: counts encoded by sequential counters along one variable order are refuted in
+  degree independent of n.
+- ex:width-four-fall-free-degrees (finite check): at (n, k, m) = (16, 4, 178), three random parity-clause
+  systems have no refutation of degree 5 (index 6); low power (first-order terms only).
+- prop:plane-moment-bound: low moments of the kill probability; tail 2^(-j^2/4) where the regularity
+  criterion needs 2^(-j theta n^2); Markov from moments cannot do better without moments of order m.
+- Recorded earlier and re-found: lem:trivector-circuit-overlap, prop:small-circuit-union-bound,
+  lem:circuit-gluing-excess, prop:four-circuit-span: dependencies counted by minimal supports; proved to
+  circuits of size four; linear size only under an open span bound from size five; nothing above eps n.
+- Earlier ceilings on methods: boundary expansion certifies at most about n/4 (prop:two-occurrence-
+  expansion-ceiling, cor:occurrence-expansion-ceiling); necessary condition cor:affine-branching-count.
+
+REGISTERED OPEN CONJECTURES ON THE ROUTE, with their evidence:
+- conj:parity-clause-regular-index: for fixed k >= 2 and m >= ln2 2^k n random clauses on k dense parity
+  forms over F_2, PC degree >= D* - O(1), D* the index of (1+z)^(n-km)((1+z)^k - z^k)^m. Evidence: 24
+  systems at k = 2, 3, n <= 28 (ex:parity-clause-fall-free-degrees), 3 systems at k = 4, n = 16. In the
+  model D*/n is about 1/2 - ln k/k to first order (0.26 at k = 8, n = 1024; 0.31 at k = 12); polynomial
+  length needs k = O(log n), outside the conjecture's stated range; deficit there n loglog n/log n: two
+  levels at best.
+- conj:parity-clause-semiregular-degree (rival): degree at most the index of (1+t)^n/(1+t^k)^m plus o(n),
+  lower by a factor 1.2-1.3 numerically. conj:cumulative-index-span: a refinement on where 1 enters the span.
+- conj:generic-two-form-series: generic planes in characteristic two have the product Hilbert series below
+  its index; partial proofs for one and two dependencies in general position.
+- conj:covering-half-ceiling (untested): every cover of F_2^n by affine subspaces of codimension <= w is
+  refuted at degree ceil(n/2) + w.
+- conj:product-series-index-formula, conj:table-series-unit-degree: statements about series indices and
+  random half-tables (evidence at v <= 20).
+- conj:paired-row-symbols: for the modular paired source; would exclude that source at two levels.
+
+PROCESS FACTS: all six entries since the last review report unchanged goal progress. The last review's
+decisive test (inclusion mechanism over F_2 for symmetric wide rows; encoding within the free dimension) was
+decided only for easy cases: symmetric rows of degree o(n), and counters along one order. Its probe turned out
+to be a family already measured; the brief then omitted the conjectures above. Two entries tried to prove the
+first case of conj:parity-clause-regular-index; one failed, one re-found recorded work.
+
+QUESTIONS (under 300 words, plain bullets; you may open claim records):
+1. Should proving conj:parity-clause-regular-index (or any case of it) stay on the route, given that it
+   yields two levels at best and that the family statement asks for n^(1-eps)? What would it give the main
+   goal if proved at k = O(log n)?
+2. Is there a materially different architecture not tried, or a candidate family whose predicted deficit is
+   n^(1-eps) rather than n loglog n/log n? If the product-series model is right, what row type would have a
+   deficit that small at polynomial length, or is there a reason none can (e.g. the saddle value)?
+3. Which single next test bears most on the missing implication, and which outcomes change the route?
+4. Which of the six entries were defensible uses of a cycle?
+Edit nothing.

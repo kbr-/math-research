@@ -29,6 +29,15 @@ class IndexTest(unittest.TestCase):
         self.assertEqual(CSI.coefficients(n, w, rows)[:len(poly)], poly)
         self.assertEqual(CSI.indices(n, w, rows), (7, None))
 
+    def test_mixed_codimensions(self):
+        # one kind of row agrees with the closed form, also when wM exceeds n; two kinds split a product
+        for n, w, rows in ((9, 2, 3), (10, 3, 110), (12, 2, 9)):
+            self.assertEqual(CSI.mixed_coefficients(n, [(w, rows)]), CSI.coefficients(n, w, rows))
+        self.assertEqual(CSI.mixed_coefficients(10, [(3, 4), (3, 6)]), CSI.coefficients(10, 3, 10))
+        # n = 4, rows of codimension 1 and 2: (1+z)(1)(1+2z) = 1 + 3z + 2z^2
+        self.assertEqual(CSI.mixed_coefficients(4, [(1, 1), (2, 1)]), [1, 3, 2, 0, 0])
+        self.assertEqual(CSI.indices(4, None, None, [(1, 1), (2, 1)]), (3, None))
+
 
 if __name__ == '__main__':
     unittest.main()
