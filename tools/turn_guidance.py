@@ -67,6 +67,42 @@ def library_note(has=installed_header):
 
 
 def queue_notes(body):
+    """The queue's state, and the spell of the item the last entry developed when that is not the head."""
+    return queue_state_notes(body) + last_item_notes(body)
+
+
+def last_item_notes(body):
+    """How many consecutive entries the last developed item has had, against its boundary.
+
+    The head's count is in the queue line; a chosen item's was shown nowhere before the finisher refused the
+    entry that overran it (10 October 2026, a fifth entry on an item whose boundary was four)."""
+    import lead_queue as lq
+    found = lq.parse_tree(body)
+    if found is None or not found[1]:
+        return []
+    nodes = found[1]
+    articles = lq.record_articles(body)
+    for position in range(len(articles) - 1, -1, -1):
+        tag, text = articles[position]
+        if not lq.counted(tag, text):
+            continue
+        work = lq.developed_by(tag, text)
+        if not work:
+            return []
+        item = lq.group_of(body, nodes, work[0], position)
+        top = lq.locate(nodes, item)[1]
+        head = lq.head_of(nodes)
+        if top is None or (head is not None and head.item == item):
+            return []
+        done, limit = lq.spell(body, item, nodes), lq.spell_limit(body, item, nodes)
+        state = ('it is at its boundary: develop a different item now, unless the last entry declared an extension'
+                 if done >= limit else f'it may have {limit - done} more before its boundary')
+        return [f'Lead queue: the last entry developed {top.ident}, which has had {done} consecutive entries '
+                f'against a boundary of {limit}; {state}.']
+    return []
+
+
+def queue_state_notes(body):
     """The lead and bridge queue's state and what it requires of this cycle (tools/lead_queue.py)."""
     import lead_queue as lq
     found = lq.parse_tree(body)

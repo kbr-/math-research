@@ -1249,5 +1249,24 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(len(lines), 3)
 
 
+
+class LastItemGuidanceTest(unittest.TestCase):
+    def test_start_guidance_counts_the_chosen_items_spell(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('tg', Path(__file__).resolve().parents[1] / 'turn_guidance.py')
+        tg = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tg)
+        lq.configure('')
+        rev = review('r1', [PASS, PASS, FAIL])
+        queue = [('lead', 'r1:1'), ('lead', 'r1:2')]
+        chosen = developing(('lead', 'r1:2'), 'Continuing')
+        self.assertEqual(tg.last_item_notes(notebook([rev], queue)), [])
+        one = ' '.join(tg.last_item_notes(notebook([rev, chosen], queue)))
+        self.assertIn('r1:2, which has had 1 consecutive entries', one)
+        full = ' '.join(tg.last_item_notes(notebook([rev] + [chosen] * lq.SPELL, queue)))
+        self.assertIn('at its boundary', full)
+        head = developing(('lead', 'r1:1'), 'Continuing')
+        self.assertEqual(tg.last_item_notes(notebook([rev, head], queue)), [])       # the head has its own line
+
 if __name__ == '__main__':
     unittest.main()
