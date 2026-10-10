@@ -119,6 +119,31 @@ class NativeClaimTest(unittest.TestCase):
         self.assertEqual(decision['decision'],'block')
         self.assertIn('"From now on I will fetch first"',decision['reason'])
 
+    def test_a_promise_made_mid_turn_blocks_from_the_turn_s_messages_and_reasoning_summaries(self):
+        message=lambda text:self.item({'type':'AgentMessage','id':'m','content':[{'type':'Text','text':text}],'phase':'commentary'})
+        reasoning=lambda *summary:self.item({'type':'Reasoning','id':'r','summary_text':list(summary),'raw_content':[]})
+        earlier=[message('Next time I will run it first.'),self.prompt]
+        quiet=[message('Reading the file.'),reasoning(),self.item({'type':'FileChange'}),message('')]
+        for name,events,found in (('a message',quiet+[message('From now on I will fetch first.')],'"From now on I will fetch first"'),
+                                  ('a reasoning summary',[reasoning('Plan.','I should have timed it before the commit.')]+quiet,
+                                   '"I should have timed it before the commit"'),
+                                  ('the turn before',quiet,None),('no rollout',None,None)):
+            with self.subTest(name=name),patch.object(hook.subprocess,'run',return_value=self.result({**self.raw,'kind':'other'})):
+                self.write(*earlier,*(events or []))
+                decision=hook.check({**self.event,'last_assistant_message':'Done.',
+                                     'transcript_path':str(self.path) if events is not None else str(self.path)+'.absent'})
+                if found:
+                    self.assertEqual(decision['decision'],'block')
+                    self.assertIn('A promise about future behaviour, or an admission that implies one: '+found,decision['reason'])
+                else:
+                    self.assertNotIn('decision',decision)
+        self.write(*earlier,message('one'),{'type':'response_item','payload':{'type':'message','role':'user'}},
+                   reasoning('two','three'),b'not json'.decode(),message(' \n'),reasoning(),message('four'))
+        self.assertEqual(hook.said(self.path),['two\nthree','four'])
+        self.write(self.item({'type':'AgentMessage','content':'not a list'}),message('five'),self.item({'type':'UserMessage'}),message('six'))
+        self.assertEqual(hook.said(self.path),['six'])
+        self.assertEqual(hook.said(None),[])
+
     def test_a_gap_declared_in_the_final_reply_asks_for_its_routes(self):
         with patch.object(hook.subprocess,'run',return_value=self.result()) as run:
             decision=hook.check({**self.event,'last_assistant_message':'Its plugins are unchecked.'})

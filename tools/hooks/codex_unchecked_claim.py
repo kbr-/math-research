@@ -121,6 +121,46 @@ def event_tag(value):
     return safe(value)
 
 
+def said(path):
+    """What the assistant wrote in the newest turn, oldest first, from the same bounded read as evidence():
+    the text of each completed AgentMessage item and each Reasoning item's summary. A rollout that cannot be
+    read gives none: the final reply is checked whatever this finds."""
+    if not path:
+        return []
+    try:
+        with open(path, 'rb') as file:
+            size = file.seek(0, 2)
+            file.seek(max(0, size-MAX_TRANSCRIPT))
+            lines = file.read().splitlines()
+    except OSError:
+        return []
+    texts = []
+    for line in reversed(lines):
+        try:
+            entry = json.loads(line)
+            payload = entry.get('payload') or {}
+            item = payload.get('item') or {}
+            if entry.get('type') == 'event_msg' and (payload.get('type') in ('user_message', 'task_started')
+                                                     or item.get('type') == 'UserMessage'):
+                break
+            if entry.get('type') == 'response_item' and payload.get('type') == 'message' and payload.get('role') == 'user':
+                break
+            if entry.get('type') != 'event_msg' or payload.get('type') != 'item_completed':
+                continue
+            if item.get('type') == 'AgentMessage':
+                parts = [part.get('text') for part in item.get('content') or [] if isinstance(part, dict)]
+            elif item.get('type') == 'Reasoning':
+                parts = item.get('summary_text') or []
+            else:
+                continue
+            text = '\n'.join(part for part in parts if isinstance(part, str))
+            if text.strip():
+                texts.append(text)
+        except (ValueError, TypeError, AttributeError):
+            continue
+    return texts[::-1]
+
+
 def evidence(path):
     """Bounded newest-turn reader. Gaps are explicit, never represented as no calls."""
     if not path:
@@ -198,9 +238,10 @@ def check(event):
     reply = event.get('last_assistant_message') or ''
     if not isinstance(reply, str):
         return degraded('invalid final reply')
-    # Only the final reply: which of a Codex turn's items carry its earlier messages is unchecked.
+    # A promise is looked for in everything the turn wrote, as in Claude Code; a gap in the final reply.
     off = checks_off(ROOT)
-    blocked = ('promise' not in off and promise_block([reply])) or ('gap' not in off and gap_block(reply))
+    blocked = (('promise' not in off and promise_block(said(event.get('transcript_path')) + [reply]))
+               or ('gap' not in off and gap_block(reply)))
     if blocked:
         return blocked
     if not reply.strip() or 'judge' in off:
