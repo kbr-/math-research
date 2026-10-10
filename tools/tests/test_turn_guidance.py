@@ -72,7 +72,11 @@ class TurnGuidanceTest(unittest.TestCase):
                                                              'data-kind="review" data-open-items="3"'), self.ft))
         self.assertIn('declared 3 open items. If the review declares 3 or more, it must be goal-level',
                       with_review(self.ft.CONVERGENCE_SPAN))
+        # A review that may be goal-level is pointed at the audit of gaps no later entry took up; another is not.
+        audit = 'For a goal-level review run tools/record-audit.py gaps'
+        self.assertIn(audit, with_review(self.ft.CONVERGENCE_SPAN))
         self.assertIn('must be an ordinary route review, not goal-level', with_review(self.ft.REVIEW_PERIOD))
+        self.assertNotIn(audit, with_review(self.ft.REVIEW_PERIOD))
         self.assertIn('the next review comes after', with_review(2))
 
     def test_route_notes_once_when_articles_carry_route_items(self):

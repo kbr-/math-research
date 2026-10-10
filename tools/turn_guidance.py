@@ -238,7 +238,9 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
                 ident, research, count = reference
                 notes.append(f'Route {item}: review {ident}, {research} research entries back, declared '
                              f'{count} open items. If the review declares {count} or more, it must be goal-level '
-                             '(data-scope="goal"); if fewer, it must be an ordinary route review.')
+                             '(data-scope="goal"); if fewer, it must be an ordinary route review. For a goal-level '
+                             'review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of '
+                             '8 MB) and cite under Across the goal the gaps it lists that no later entry took up.')
         elif streak == ft.REVIEW_PERIOD - 1:
             notes.append(f'Route {item}: {streak} research entries since the last route review; one more '
                          'research entry is allowed, then a route review is required.')
