@@ -98,7 +98,9 @@
       // The viewport scheduler below supplies small explicit containers. ui/lazy
       // still scans the entire document, which is too costly for this record.
       tex: {
-        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        // No single-dollar inline math: prose writes plain dollar amounts, and two of them in one
+        // paragraph were typeset as italic TeX. Inline math uses \( \); display keeps $$ $$.
+        inlineMath: [['\\(', '\\)']],
         displayMath: [['\\[', '\\]'], ['$$', '$$']],
         tags: 'ams',
         macros: { RR: '\\mathbb{R}', EE: '\\mathbb{E}' }
@@ -169,7 +171,7 @@
       const {selector} = window.notebookText;
       if (element.closest(selector + ', pre, code, script, style, textarea, noscript, mjx-container')) return;
       for (const node of [...element.childNodes]) {
-        if (node.nodeType !== Node.TEXT_NODE || !/\\[([]|\$/.test(node.textContent)) continue;
+        if (node.nodeType !== Node.TEXT_NODE || !/\\[([]|\$\$/.test(node.textContent)) continue;
         const wrapper = document.createElement('span');
         wrapper.className = 'math-fragment';
         node.replaceWith(wrapper);
@@ -184,7 +186,7 @@
       const blocksByRegion = new WeakMap();
       let running = false;
       const {selector, sources, pause, wrapBareMath} = window.notebookText;
-      const hasMath = element => /\\[([]|\$/.test(element.textContent);
+      const hasMath = element => /\\[([]|\$\$/.test(element.textContent);
 
       async function drain() {
         if (running) return;

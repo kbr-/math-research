@@ -13,6 +13,7 @@ const fixture = String.raw`
       <p>Inline text next:</p> Bare \(z^2+1\).
       <pre id="literal-math">\[leave this example alone\]</pre>
       $$w^2+1$$
+      <p id="dollars">It costs from $5 to $6 a month.</p>
     </article>
     <article id="wide-math"><h3>Wide display math</h3>
       \[x_1+x_2+x_3+x_4+x_5+x_6+x_7+x_8+x_9+x_{10}+x_{11}+x_{12}+x_{13}+x_{14}+x_{15}+x_{16}\tag{W}\]
@@ -30,6 +31,9 @@ const cases = {layout: browserCase({'*': ['text/html', page(fixture)]}, async ({
   assert.equal(await desktop.locator('#bare-math mjx-container').count(), 5);
   assert.equal(await desktop.locator('#bare-math .math-fragment').count(), 4);
   assert.equal(await desktop.locator('#literal-math .math-fragment, #literal-math mjx-container').count(), 0);
+  // Two dollar amounts in one paragraph are prose, not inline math between single dollars.
+  assert.equal(await desktop.locator('#dollars mjx-container, #dollars .math-fragment').count(), 0);
+  assert.equal(await desktop.locator('#dollars').textContent(), 'It costs from $5 to $6 a month.');
   assert.equal(await desktop.locator('#distant-math mjx-container').count(), 0);
   const rendered = await desktop.locator('mjx-container').count();
   await desktop.locator('#search-open').click();
