@@ -471,7 +471,12 @@ def validate_verdict(reply, verdict):
     quote = str(verdict.get('quote', ''))
     # A block must quote the reply; one that doesn't is the judge's invention, and passes.
     quoted = bool(quote.strip()) and ' '.join(quote.split()) in ' '.join(reply.split())
-    failed = verdict['kind'] in BLOCKED_KINDS and not verdict['checked'] and not verdict['declared'] and quoted
+    # The check is about a third-party tool: a verdict that names none, or names one of this repository's own,
+    # is about something else. Of 24 blocks read on 10 October 2026, 6 were so, none of them a right block.
+    tool = re.sub(r'^(?:\./)?(?:tools/(?:hooks/)?)?|\.(?:py|sh)$', '', str(verdict.get('tool') or '').strip().strip('`'))
+    third_party = bool(tool) and tool.replace('-', '_') not in {name.replace('-', '_') for name in TOOL_NAMES}
+    failed = (verdict['kind'] in BLOCKED_KINDS and not verdict['checked'] and not verdict['declared'] and quoted
+              and third_party)
     return {'ok': not failed, 'kind': verdict['kind'], 'quote': quote, 'reason': str(verdict.get('reason', ''))}
 
 

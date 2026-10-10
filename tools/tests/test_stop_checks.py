@@ -87,6 +87,18 @@ class UncheckedClaimTest(unittest.TestCase):
         return '```json\n' + json.dumps({'kind': kind, 'quote': quote, 'tool': 'git', 'checked': checked, 'declared': declared,
                                          'reason': 'Check git ls-files and cat-file.'}) + '\n```'
 
+    def test_a_verdict_that_names_no_third_party_tool_does_not_block(self):
+        reply = 'It copies the staged files to a temporary directory.'
+        answer = {'kind': 'missing-feature', 'quote': reply, 'checked': False, 'declared': False, 'reason': 'r'}
+        for tool in ('', '  ', None, 'compute.sh', 'finish-turn.py', '`tools/rewrap_md.py`', 'stop_checks', './compute.sh',
+                     'tools/hooks/bash_guard.py', 'lead-queue'):
+            with self.subTest(tool=tool):
+                self.assertTrue(hook.validate_verdict(reply, {**answer, 'tool': tool})['ok'])
+        self.assertTrue(hook.validate_verdict(reply, answer)['ok'])
+        for tool in ('git', 'Claude Code', 'compute engine', 'the browser', 'rewrap', 'pytest.py'):
+            with self.subTest(tool=tool):
+                self.assertFalse(hook.validate_verdict(reply, {**answer, 'tool': tool})['ok'])
+
     def test_unchecked_workaround_blocks_with_the_quote(self):
         with self.fake_claude(self.verdict()):
             out = self.run_hook()
