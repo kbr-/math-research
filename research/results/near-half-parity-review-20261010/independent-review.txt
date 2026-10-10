@@ -1,0 +1,35 @@
+Stage one of the goal-level review entry-2026-10-10-method-review, 10 October 2026.
+One fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), given only stage-one-brief.txt;
+the author's preferred route withheld. Its answers, condensed by the author without change of content.
+
+1. Different architecture: none found. Tried binary-encoded pigeonhole (n+1 pigeons, log n bits each) with the
+   pigeon argument; it dies on a mental check: query the top bit of every pigeon, keep the majority side,
+   recurse: resolution width O(n) on n log n variables, so by lem:parity-width-degree-bound degree o(N). The
+   reason generalises: polynomially many rows force codimension O(log n) on most of the measure, and every
+   lower-bound mechanism in the brief (expansion, binomial criterion, colon regularity) is capped at n/4 or at
+   the product index. A new architecture would need a new F_2 lower-bound method, not a new family.
+2. Next six cycles: decide whether the endpoint is consistent. Target: prove or refute a class-independent
+   ceiling n/2 - n/polylog(n) for all polynomial-size covers; this threshold matters, not n/2 + w. First test:
+   turn the reason behind thm:saddle-deficit-bound (biased isoperimetry on rows of codimension O(log n)) into an
+   actual refutation for dependent covers, starting with covers padded by lem:barely-covering-padding, which
+   defeat the covering-sum hypothesis. Would change its mind: one dependent cover whose exact degree exceeds the
+   cumulative product index of an independent system with the same row profile by more than O(1); then the
+   search for structured relations is justified. A proved ceiling ends the every-depth route through this
+   transfer.
+3. The last six entries. Defensible: the Res(+) identification of level one; lem:parity-width-degree-bound,
+   lem:gadget-lift-degree-bound and the Efremenko-Itsykson read (cheap, reusable, the only new candidate
+   source). Not defensible for this goal: the degree-three, width-two block (moment criterion, isotropic
+   planes, circuits up to four): the brief already caps clause rows short of the every-depth form, and degree
+   three says nothing about degree n/2 - o(n); it serves only the two-level form at its first nontrivial
+   degree. Low value: prop:row-algebra-ceiling. Mis-aimed: conj:covering-half-ceiling, closed earlier as off
+   the critical path, and its threshold is the wrong one.
+4. Question on the Efremenko-Itsykson formulas: is the Bonacina-Talebanfard base a flow system (each variable
+   in two equations modulo p) or does it have variables in three or more equations, and which p and encoding?
+   If a flow, lem:flow-balanced-cut-bound gives d_psi about n/4 and the lift about N/4: no cycle. Only a
+   non-flow base could have d_psi near n/2, and the lift lemma gives only an upper bound.
+5. Reachability: not by anything in the brief as it stands. Against: no F_2 lower bound above n/4 for any
+   family; every examined class has a ceiling or a model deficit of at least n ln ln n/ln n against a
+   requirement of n^(1-eps); the thin-closure alternative fails in the model; the remaining escapes are names
+   without mechanisms; unchanged for 63 entries. For: no general ceiling below n/2 is proved, the static
+   dimension count permits small deficit, and the (unverified) preprint shows near-full parity width is
+   attainable by lifting, which bounds degree only from above.
