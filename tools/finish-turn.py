@@ -570,6 +570,14 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                     raise ValueError('Decisive test must end with "<strong>Record search.</strong>" naming the '
                                      'registry searches made for the test and what they returned: a test the '
                                      'record already answers decides nothing (AGENTS.md, Decisive test)')
+                power = re.search(r'<strong>Power\.</strong>(.*?)(?=<strong>Record search\.</strong>|$)', value, re.S)
+                plain = html.unescape(re.sub(r'<[^>]*>', ' ', power.group(1))).strip() if power else ''
+                if len(plain) < 40:
+                    raise ValueError('Decisive test must state "<strong>Power.</strong>" before its Record search: '
+                                     'what the recorded ceilings and method limits give on the test\'s object, '
+                                     'and, for a computation, the sizes reachable and why its outcomes differ '
+                                     'there; a test whose every outcome fits every answer decides nothing '
+                                     '(AGENTS.md, Decisive test)')
     else:
         target = pending_architecture_test(body, article).get(tags['route'])
         if target and article_attribute(body, article, 'data-picked') != 'user':

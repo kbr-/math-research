@@ -208,7 +208,10 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   required implication or the chosen route. Read the earlier reviews' tests first
   (`tools/notebook-excerpt.py --review-tests`). Search the registry for the test as for a new lemma
   and end with `<strong>Record search.</strong>`, the searches and what they returned (the
-  finisher checks it): a test the record already answers decides nothing.
+  finisher checks it): a test the record already answers decides nothing. Before it state
+  `<strong>Power.</strong>`: what the recorded upper bounds and method limits give on the test's
+  object, and for a computation the reachable sizes and why its outcomes differ there (the
+  finisher checks it).
 
 The next research cycle on that route reports the actual outcome in **Architecture test.** and
 links the review's anchor. This can be a proof attempt, not necessarily a computation. More local
