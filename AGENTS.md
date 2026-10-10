@@ -348,15 +348,19 @@ assessments.
   queue it"). Any entry lists the questions, checks and builds it names and leaves undone under
   `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it intends to carry
   out: do a small one in the entry, drop one that will not be done, and add none to fill the section
-  (user, 9 October 2026). Those of a research entry that develops no queue item have no parent: they
-  wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any number
-  by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>`
-  (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with similar
-  wording; when two ask the same thing keep one, closing the other with "Closed: merged into ID",
-  which adds its wording to that item. The others join the queue nested under the item they belong
-  to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
-  development counting toward its parent's spell; a check is Developed only with evidence that
-  resolves, a build only with its opened task or its path. The user may pick any item out of order
+  (user, 9 October 2026). Work that comes up outside an entry (a conversation, a review, a tool's
+  defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html --check|--build|--idea ID
+  SOURCE TEXT`: a top-level item at the tail, which needs no entry and which a commit without an
+  entry may add (user, 7 October 2026: "You should be able to queue items by just running the
+  tool"). Those of a research entry that develops no queue item have no parent: they wait in their
+  entry, `lead_queue.py pending` lists them, and the next review promotes any number by judgement
+  with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>` (user, 9
+  October 2026). `lead_queue.py append` and `similar` show queued items with similar wording; when
+  two ask the same thing keep one, closing the other with "Closed: merged into ID", which adds its
+  wording to that item. The others join the queue nested under the item they belong to (user, 3
+  October 2026: "I want it to look like a nested list of entries"), a sub-idea's development
+  counting toward its parent's spell; a check is Developed only with evidence that resolves, a build
+  only with its opened task or its path. The user may pick any item out of order
   (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
   waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
   follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,

@@ -1,3 +1,5 @@
+import io
+import contextlib
 import importlib.util
 import json
 import os
@@ -531,6 +533,132 @@ class LeadQueueTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'do not resolve'):       # resolves only from its own folder
                 lq.check(head, answered('../../results/out.txt'), nb, root)
 
+    def test_a_check_build_or_idea_joins_by_add_alone(self):
+        head = notebook([self.rev], self.q)
+        body = lq.add(head, 'build', 'port-it', 'user, 7 October 2026', 'Port <this> to main.')
+        lq.check(head, body)
+        self.assertIn('<li data-build="port-it" data-source="user, 7 October 2026">Port &lt;this&gt; to main.</li>', body)
+        self.assertEqual(lq.head_lines(body, 3)[3], '3. port-it: Port <this> to main.')
+        for kind in ('check', 'idea'):
+            body = lq.add(body, kind, f'a-{kind}', 'entry-2026-10-07-x', 'Y.')
+            self.assertIn(f'<li data-{kind}="a-{kind}" data-source="entry-2026-10-07-x">Y. '
+                          '(<a href="#entry-2026-10-07-x">source</a>)</li>', body)
+            lq.check(head, body)
+        for kind, ident, source, text, error in (
+                ('idea', 'port-it', 's', 't', 'already queued'), ('check', 'Port_It', 's', 't', 'check ID .Port_It.'),
+                ('build', 'ok', '', 't', 'an added build is .* where it came up'), ('idea', 'ok', 's', ' ', 'came up')):
+            with self.subTest(ident=ident, source=source, text=text):
+                with self.assertRaisesRegex(ValueError, error):
+                    lq.add(body, kind, ident, source, text)
+        with self.assertRaisesRegex(ValueError, 'no lead and bridge queue'):
+            lq.add(notebook([self.rev]), 'build', 'x', 's', 't')
+
+    def test_a_build_that_claims_a_cost_or_a_saving_says_whether_it_is_measured(self):
+        head = notebook([self.rev], self.q)
+        claims = ('Share the runs: it saves most of the time.', 'Cache it; the scan is slow.', 'The copy took 27 s each run.',
+                  'Skip the copy, which takes several minutes.', 'Make it faster.', 'A change that cost the run 5 s was hidden.')
+        for text in claims:
+            with self.subTest(text=text):
+                with self.assertRaisesRegex(ValueError, r'^a-build: the text claims a cost or a saving \(".+"\) and does '
+                                                        'not say what it rests on: name the measurement'):
+                    lq.add(head, 'build', 'a-build', 's', text)
+                # The word settles it either way, and a check or an idea is a question, not a promise.
+                for said in (' Not measured.', ' Measured: 27 s of 30 (research/results/x.txt).', ' No measurement yet.'):
+                    lq.add(head, 'build', 'a-build', 's', text + said)
+                lq.add(head, 'check', 'a-check', 's', text)
+                lq.add(head, 'idea', 'an-idea', 's', text)
+        # No claim of a cost: a verb of taking or saving something else, a time that is no duration.
+        for text in ('Port it to main.', 'Let the tool take a source that was rewritten.', 'Ask for the saved output of a run.',
+                     'A mutant took the group down twice, the first time unseen.', 'It took four calls by hand.'):
+            with self.subTest(text=text):
+                lq.add(head, 'build', 'a-build', 's', text)
+        body = lq.add(head, 'build', 'a-build', 's', 'Port it.')
+        with self.assertRaisesRegex(ValueError, 'a-build: the text claims a cost'):
+            lq.edit(body, 'a-build', 'Port it: the copy is slow.')
+        body = lq.add(body, 'check', 'a-check', 's', 'Why?')
+        lq.edit(body, 'a-check', 'Why is the copy slow?')
+
+    def test_edit_replaces_an_added_items_text_and_keeps_its_source(self):
+        head = notebook([self.rev], self.q)
+        body = lq.add(head, 'build', 'port-it', 'entry-2026-10-07-x', 'Port it.')
+        edited = lq.edit(body, 'port-it', 'Port it & test it.')
+        self.assertIn('<li data-build="port-it" data-source="entry-2026-10-07-x">Port it &amp; test it. '
+                      '(<a href="#entry-2026-10-07-x">source</a>)</li>', edited)
+        self.assertNotIn('Port it.', edited)
+        self.assertEqual(lq.edit(edited, 'port-it', 'Port it & test it.'), edited)
+        lq.check(head, edited)
+        with self.assertRaisesRegex(ValueError, 'nothing-like-it is not queued'):
+            lq.edit(body, 'nothing-like-it', 't')
+        with self.assertRaisesRegex(ValueError, 'listed by an entry'):
+            lq.edit(body, 'r1:1', 't')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp, 'notebook.html')
+            path.write_text(body)
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                self.assertEqual(lq.main(['lead_queue.py', 'edit', str(path), 'port-it', 'Ported.']), 0)
+                self.assertEqual(lq.main(['lead_queue.py', 'edit', str(path), 'gone', 'x']), 1)
+            self.assertIn('Edited port-it.', out.getvalue())
+            self.assertIn('gone is not queued', err.getvalue())
+            self.assertIn('>Ported. (<a href="#entry-2026-10-07-x">source</a>)</li>', path.read_text())
+
+    def test_add_from_the_command_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp, 'notebook.html')
+            path.write_text(notebook([self.rev], self.q))
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 0)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--lead', 'other', 's', 'x']), 2)
+            self.assertIn('Appended port-it, a build; 3 items in the queue.', out.getvalue())
+            self.assertIn('Appended weigh-it, an idea; 4 items in the queue.', out.getvalue())
+            self.assertIn('port-it is already queued', err.getvalue())
+            self.assertIn('<li data-build="port-it" data-source="s">Port it.</li>', path.read_text())
+            self.assertNotIn('Again.', path.read_text())
+            self.assertNotIn('other', path.read_text())
+
+    def test_a_commit_without_an_entry_only_appends_added_items(self):
+        head = notebook([self.rev], self.q)
+        refused = 'only by appending, at the tail, the checks, builds and ideas lead_queue.py add writes'
+        for queue, error in ((self.q + [('lead', 'r1:9')], refused),
+                             (self.q + [('check', 'listed-by-no-entry')], refused),
+                             (self.q + [(('idea', 'p'), [('check', 'x:s1')])], refused),
+                             ([('idea', 'p')] + self.q, refused),
+                             (self.q + [('idea', 'No_Source')], 'may not join the queue')):
+            with self.subTest(queue=queue):
+                with self.assertRaisesRegex(ValueError, error):
+                    lq.check(head, notebook([self.rev], queue))
+        sourced_lead = notebook([self.rev], self.q + [('lead', 'r1:9')]).replace(
+            '<li data-lead="r1:9">', '<li data-lead="r1:9" data-source="s">')       # leads come from reviews only
+        with self.assertRaisesRegex(ValueError, refused):
+            lq.check(head, sourced_lead)
+        body = head
+        for n in range(lq.CAP - len(self.q)):
+            body = lq.add(body, 'build', f'b-{n}', 's', 't')
+        self.assertIn('data-draining="true"', body)
+        lq.check(head, body)
+        with self.assertRaisesRegex(ValueError, refused):
+            lq.check(head, body.replace(' data-draining="true"', ''))
+
+    def test_added_items_are_developed_by_their_kinds_rules(self):
+        closed = [self.rev, research(self.q[0], 'Closed'), research(self.q[1], 'Closed')]
+        for kind, cited, error in (('build', '<a href="tools/lead_queue.py">ported</a>', 'link the opened task'),
+                                   ('check', '<a href="#r1">answered</a>', 'cite the evidence'),
+                                   ('idea', '<a href="tools/lead_queue.py">settled</a>', 'cite the evidence')):
+            with self.subTest(kind=kind):
+                head = lq.add(notebook(closed, []), kind, 'it', 's', 't')
+                developed = lambda body: notebook(closed + [developing((kind, 'it'), 'Developed', body)], [])
+                lq.check(head, developed(cited), ROOT / 'notebook.html', ROOT)
+                with self.assertRaisesRegex(ValueError, error):
+                    lq.check(head, developed('<p>done</p>'), ROOT / 'notebook.html', ROOT)
+        build_head = lq.add(notebook(closed, []), 'build', 'it', 's', 't')
+        with self.assertRaisesRegex(ValueError, 'link the opened task'):          # an anchor is no built thing
+            lq.check(build_head, notebook(closed + [developing(('build', 'it'), 'Developed', '<a href="#r1">x</a>')], []),
+                     ROOT / 'notebook.html', ROOT)
+
     def test_check_and_build_need_resolving_evidence_to_be_developed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -996,7 +1124,7 @@ class LeadQueueTest(unittest.TestCase):
                 with self.assertRaises(ValueError):                     # not reopened by a follow-up
                     lq.check(idea_closed, reopened)
                 lq.check(None, notebook([self.rev], self.q))           # the defaults return without the attribute
-                self.assertNotIn('idea', lq.KINDS)
+                self.assertIs(lq.KINDS['idea'], lq.BUILTIN['idea'])
             finally:
                 sys.path.remove(tmp)
                 sys.modules.pop('fake_kinds', None)

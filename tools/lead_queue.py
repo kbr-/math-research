@@ -25,7 +25,8 @@ finish-turn.py against HEAD:
   on its article. It disables rotation only for that top-level item; close it with
   a recorded reason when further useful development is exhausted.
 - Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done
-  one at a time"): every top-level item is developed in its own entry.  Sub-ideas of the one item an entry
+  one at a time"): items are developed one at a time, each item's work finished before the next one's starts
+  (AGENTS.md), and every item is recorded in its own entry.  Sub-ideas of the one item an entry
   develops may be batched in that entry (user, 9 October 2026: "An entry may develop at most one top level item.
   Sub ideas attached to a single parent can be batched."): each in a follow-up list item
   <li data-check="ID"> or <li data-build="ID"> ending <strong>Follow-up.</strong> Developed (with the evidence
@@ -48,6 +49,14 @@ finish-turn.py against HEAD:
   when the developing entry answers it citing evidence that resolves (a registered claim ID, an anchor, a repository
   file); a build when its task opens (a link to an existing tasks/ID/) or the thing exists and its path is linked.
   Every relative link of an entry developing either must resolve.
+- `add` (user, 7 October 2026: "You should be able to queue items by just running the tool") appends a check, a
+  build or an idea at the tail, <li data-KIND="ID" data-source="WHERE">TEXT</li>, a top-level item of its own, from
+  wherever it came up (an entry, a conversation, a task file); a commit that adds no entry may change the queue only
+  by such appends.  A check or build added so is Developed as a listed one is; an idea (user, 7 October 2026: "in
+  the future I might ask to queue actual ideas") as a check is, with the evidence that settles it.  A build whose
+  text claims a cost or a saving (slow, saves, took 27 s) says in the text whether that is measured: "measured"
+  with what was, or "not measured"; `add` and `edit` refuse one that does not (build_evidence).  A notebook's
+  kind module may define its own idea kind.
 - An entry reopens an item closed too early with a follow-up list item <li data-lead="ANCHOR:N"> ending
   <strong>Follow-up.</strong> Reopened: <reason>; `append` puts it at the tail.
 - Backpressure: at CAP items the section carries data-draining="true"; then every research entry develops
@@ -78,6 +87,9 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
+       lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT  (appends the item at the tail;
+                                            SOURCE says where it came up)
+       lead_queue.py edit NOTEBOOK.html ID TEXT  (replaces the text of an item add wrote; its source stays)
        lead_queue.py append NOTEBOOK.html  (after the last entry, and done: items its follow-up list closes leave,
                                             its newly listed items join the queue, the items it reopens go to
                                             the tail, its Waiting and Unblocked marks apply)
@@ -218,7 +230,33 @@ def build_developed(tag, text, where):
     return problems
 
 
+ADDED_ID = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*$')
+
+
+def added_admit(body, head_body, item):
+    """The problems with the queue line of an item `add` wrote: a lower-case hyphenated ID, where it came up and a
+    line of text."""
+    kind, ident = item
+    line = re.search(r'<li data-' + kind + '="' + re.escape(ident) + r'"([^>]*)>(.*?)</li>', body, re.S)
+    source = re.search(r'\bdata-source="([^"]*)"', line.group(1)) if line else None
+    problems = [] if ADDED_ID.match(ident) else [f'{kind} ID {ident!r}: lower-case words joined by hyphens']
+    if not source or not source.group(1).strip() or not re.sub(r'<[^>]+>', '', line.group(2)).strip():
+        problems.append(f'an added {kind} is <li data-{kind}="ID" data-source="WHERE">TEXT</li>, with where it came '
+                        'up and a line of text (lead_queue.py add writes it)')
+    return problems
+
+
+def admitter(node):
+    """The rule admitting a node no entry lists: its kind's own, or for a check or build `add` wrote, which carries
+    data-source as no listed sub-idea does, added_admit; None for a node only an entry may bring."""
+    kind = KINDS[node.kind]
+    if kind.admit is not None:
+        return kind.admit
+    return added_admit if kind.sub and 'data-source="' in node.attrs else None
+
+
 KINDS = {'lead': Kind('lead', LEADS_RE), 'bridge': Kind('bridge', BRIDGES_RE),
+         'idea': Kind('idea', rules={'Developed': check_developed}, admit=added_admit),
          'check': Kind('check', SUBIDEAS_RE, sub=True, rules={'Developed': check_developed}),
          'build': Kind('build', SUBIDEAS_RE, sub=True, rules={'Developed': build_developed})}
 BUILTIN = dict(KINDS)
@@ -1125,17 +1163,25 @@ def check(head_body, body, path=None, root=None):
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
                          'against the commit before it')
     if not fresh and before is not None:
-        if shape(nodes) != shape(before[1]) or marks(nodes) != marks(before[1]) or draining != before[0]:
-            raise ValueError('A commit that adds no Research-record entry leaves the queue as it was')
+        kept, added = nodes[:len(before[1])], nodes[len(before[1]):]
+        if (shape(kept) != shape(before[1]) or marks(nodes) != marks(before[1])
+                or any(n.children or admitter(n) is None for n in added)
+                or draining != draining_after(before[0], nodes)):
+            raise ValueError('A commit that adds no Research-record entry changes the queue only by appending, at the '
+                             'tail, the checks, builds and ideas lead_queue.py add writes')
+        for node in added:
+            problems = admitter(node)(body, head_body, node.item)
+            if problems:
+                raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
         return
     if before is None:
         if work or batch:
             raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
                              'commit the section, then develop its head')
         wanted = open_tree(body)
-        admitted = [n for n in nodes if KINDS[n.kind].admit is not None]
+        admitted = [n for n in nodes if admitter(n) is not None]
         for node in admitted:
-            problems = KINDS[node.kind].admit(body, head_body, node.item)
+            problems = admitter(node)(body, head_body, node.item)
             if problems:
                 raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
         seeded = [n for n in nodes if n not in admitted]
@@ -1210,9 +1256,9 @@ def check(head_body, body, path=None, root=None):
     expected = transition(body, old, tag, text)
     known = set(every_item(old)) | set(every_item(expected))
     for node in nodes:
-        if node.item in known or KINDS[node.kind].admit is None:
+        if node.item in known or admitter(node) is None:
             continue
-        problems = KINDS[node.kind].admit(body, head_body, node.item)
+        problems = admitter(node)(body, head_body, node.item)
         if problems:
             raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
         expected.append(node.copy())
@@ -1378,7 +1424,94 @@ def staged_check(notebook, base='HEAD'):
     return 0, None
 
 
+ADDABLE = ('check', 'build', 'idea')
+
+
+def add(body, kind, ident, source, text):
+    """The notebook with item `ident` of `kind` (one of ADDABLE) appended at the tail; ValueError if an item of
+    that ID is queued already or the line is malformed."""
+    found = parse_tree(body)
+    if found is None:
+        raise ValueError('The notebook has no lead and bridge queue: run init first')
+    draining, nodes = found
+    if any(i == ident for _, i in every_item(nodes)):
+        raise ValueError(f'{ident} is already queued')
+    if kind == 'build' and build_evidence(text):
+        raise ValueError(f'{ident}: {build_evidence(text)}')
+    node = Node(kind, ident, f' data-{kind}="{ident}" data-source="{html.escape(source)}"', added_text(source, text))
+    nodes.append(node)
+    updated = rewrite(body, nodes, draining_after(draining, nodes))
+    problems = admitter(node)(updated, None, node.item)
+    if problems:
+        raise ValueError('; '.join(problems))
+    return updated
+
+
+COST_CLAIM = re.compile(
+    r'\b(?:sav(?:e|es|ing|ings)|faster|slow(?:er|ly|s|ed)?|speeds? up|costs?|wastes?|halves?|shorten(?:s|ed)?|cheaper|'
+    r'most of (?:it|its|the|that)|(?:takes?|took|spen[dt]s?)\b[^.;:]{0,60}?\b(?:\d[\d.,]*\s*(?:s|ms|min|h)|seconds?|minutes?|hours?))\b',
+    re.I)
+
+
+def build_evidence(text):
+    """What a build's text lacks, or None: a text that claims a cost or a saving (slow, saves, took 27 s)
+    says whether the claim is measured, with the word: 'measured' and what was, or 'not measured'.  A figure
+    alone does not say it: the build that prompted this rule gave figures of a census and guessed their cause,
+    and promised a saving for several cycles that one measurement refuted (10 October 2026)."""
+    claim = COST_CLAIM.search(text)
+    if claim and not re.search(r'\bmeasur(?:ed|ement|ements)\b', text, re.I):
+        return (f'the text claims a cost or a saving ("{claim.group(0)}") and does not say what it rests on: name '
+                'the measurement ("measured: ...", with where it is saved), or write "not measured"')
+    return None
+
+
+def added_text(source, text):
+    """An added item's line: its text, then a link to the entry it came up in when SOURCE is one."""
+    link = f' (<a href="#{html.escape(source)}">source</a>)' if source.startswith('entry-') else ''
+    return html.escape(text, quote=False) + link
+
+
+def edit(body, ident, text):
+    """The notebook with the text of queued item `ident`, one `add` wrote, replaced and its source kept; ValueError
+    if no such item is queued, or an entry listed it, since such an item's text is that entry's."""
+    found = parse_tree(body)
+    if found is None:
+        raise ValueError('The notebook has no lead and bridge queue: run init first')
+    draining, nodes = found
+    node = next((n for n in nodes + [c for n in nodes for c in n.children] if n.ident == ident), None)
+    if node is None:
+        raise ValueError(f'{ident} is not queued')
+    source = re.search(r'\bdata-source="([^"]*)"', node.attrs)
+    if source is None:
+        raise ValueError(f'{ident} was listed by an entry, so its text is that entry\'s: only an item add wrote is '
+                         'edited here')
+    if node.kind == 'build' and build_evidence(text):
+        raise ValueError(f'{ident}: {build_evidence(text)}')
+    node.text = added_text(html.unescape(source.group(1)), text)
+    return rewrite(body, nodes, draining)
+
+
 def main(argv):
+    if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
+        path = Path(argv[2])
+        try:
+            path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))
+        except ValueError as error:
+            print(error, file=sys.stderr)
+            return 1
+        kind = argv[3][2:]
+        article = 'an' if kind[0] in 'aeiou' else 'a'
+        print(f'Appended {argv[4]}, {article} {kind}; {len(parse_tree(path.read_text())[1])} items in the queue.')
+        return 0
+    if len(argv) == 5 and argv[1] == 'edit':
+        path = Path(argv[2])
+        try:
+            path.write_text(edit(path.read_text(), argv[3], argv[4]))
+        except ValueError as error:
+            print(error, file=sys.stderr)
+            return 1
+        print(f'Edited {argv[3]}.')
+        return 0
     if len(argv) in (3, 5) and argv[1] == 'check' and (len(argv) == 3 or argv[3] == '--base'):
         status, error = staged_check(argv[2], argv[4] if len(argv) == 5 else 'HEAD')
         if error:
