@@ -1,0 +1,33 @@
+<h4 id="PC-saturated-coefficient-density-system">3. Exact equations for PC-saturated coefficient components</h4>
+<p>Return to a retained binary system \(\Gamma_0\) with \(1\notin\mathcal C_B(\Gamma_0)\), and take \(B\ge2D\), \(D\ge2\). A fresh level has arbitrary retained input polynomials \(g_{a,i}\), actual degrees \(d_{a,i}\), maximum \(\delta_a\), accuracies \(h_a\), original companion costs \(e_{a,i}=d_{a,i}+h_a(\delta_a+1)\), and private coefficient variables. There are no dependencies within this fresh level. Ignore zero companions and keep original costs after any cancellation.</p>
+<p>Let \(\mathcal R\) be the set of all fresh coefficient positions across all parents. For every subset \(\alpha\subseteq\mathcal R\), \(|\alpha|\le D\), put \(s_\alpha=D-|\alpha|\). Choose the one pairing from the lemma for every cutoff through \(D\), and introduce an independent density class \(\rho_\alpha\in Q_{s_\alpha}\otimes\mathbb K\). Define</p>
+<div class="math">\[
+ \Lambda(r^\alpha u)=\lambda(\rho_\alpha u),\qquad
+ \deg u\le s_\alpha,\qquad
+ \lambda(\rho_\varnothing)=1.
+ \tag{PCM-components}
+\]</div>
+<p>Fresh monomials are reduced by \(r^2=r\). In particular \(\rho_\varnothing\) is an unknown normalized component, not automatically the constant one: the old moments may be chosen after seeing the full source.</p>
+<p>For block \(a\), let \(\mathcal T_a\) consist of the subsets of its coefficient positions choosing at most one position in each coefficient row. For \(\tau\in\mathcal T_a\), set \(g_{a,\tau}=\prod_{(v,j)\in\tau}g_{a,j}\). Its product expands as \(P_a=\sum_{\tau\in\mathcal T_a}r^\tau g_{a,\tau}\). The complete companion constraints are precisely</p>
+<div class="math">\[
+ \sum_{\tau\in\mathcal T_a}
+   \lambda\!\left(\rho_{\alpha\cup\tau}\,u\,g_{a,i}g_{a,\tau}\right)=0
+ \quad\left(
+ |\alpha|\le D-e_{a,i},\
+ \deg u\le D-e_{a,i}-|\alpha|
+ \right).
+ \tag{PCM-equations}
+\]</div>
+<p>The cofactor support \(\alpha\) ranges over <em>all</em> fresh blocks, including other parents. These are coupled linear equations in the density coefficients, not separate per-parent choices. At accuracy one the sum is
+\(\lambda(u g_{a,i}\rho_\alpha)+\sum_j\lambda(u g_{a,i}g_{a,j}\rho_{\alpha\cup\{r_{a,j}\}})\).
+This is the moment-side counterpart of the existing fresh-coefficient identity.</p>
+<p><strong>Working coordinate criterion.</strong> Solutions of (PCM-components)–(PCM-equations) are exactly normalized degree-\(D\) source functionals whose retained component on \(r^\alpha\) annihilates
+\(\mathcal C_B(\Gamma_0)\cap\mathcal P_{\le s_\alpha}\).
+Such a solution suffices to exclude a degree-\(D\) NS source refutation. This saturation requirement is stronger than merely annihilating the original degree-\(D\) NS equations; existence is not asserted.</p>
+<p><strong>Proof and degree check.</strong> The argument of each density has degree at most</p>
+<div class="math">\[
+ \deg(u g_{a,i}g_{a,\tau})
+ \le D-|\alpha|-h_a(\delta_a+1)+|\tau|\delta_a
+ \le D-|\alpha\cup\tau|=s_{\alpha\cup\tau}.
+\]</div>
+<p>The second inequality uses \(|\tau|\le h_a\). Thus the pairing in every summand is legal through \(2s_{\alpha\cup\tau}\le2D\le B\), with the original companion cost unchanged. Expansion and fresh Boolean reduction give (PCM-equations). Fresh field multiples vanish by definition. Every legal retained axiom multiple belongs to the corresponding retained PC space, and PC reuse makes its product with a density a consequence through \(B\), so (PCM-components) annihilates it. This proves sufficiency and saturation. Conversely every saturated component is a linear functional on its \(Q_{s_\alpha}\), hence has the unique density from the lemma; expansion gives the displayed equations. \(\square\)</p>
