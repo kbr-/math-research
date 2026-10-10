@@ -11,6 +11,17 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from notebook_context import excerpt
 
 
+class ReviewTestsTest(unittest.TestCase):
+    def test_lists_each_review_with_its_decisive_test(self):
+        source = ('<article id="r1" data-kind="review"><p><strong>Decisive test.</strong> Prove the <em>ceiling</em>.</p></article>'
+                  '<article id="e1" data-kind="research"><p><strong>Decisive test.</strong> not a review</p></article>'
+                  '<article id="r2" data-kind="review"><p>No test here.</p></article>')
+        self.assertEqual(excerpt.review_tests(source),
+                         'r1\tProve the ceiling.\nr2\t(no Decisive test paragraph)\n')
+        self.assertEqual(excerpt.review_tests('<article id="e" data-kind="research"></article>'),
+                         '(no review entries)\n')
+
+
 class ExcerptTest(unittest.TestCase):
     def book(self):
         return excerpt.Notebook('<section id="research-record">'+''.join(

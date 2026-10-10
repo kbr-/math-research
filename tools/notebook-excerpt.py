@@ -240,12 +240,29 @@ class Notebook(HTMLParser):
         return '\n'.join(rows[-tail:]) + ('\n' if rows else ''), max(0, len(rows)-tail)
 
 
+def review_tests(source, width=600):
+    """One line per review entry: its anchor and the start of its Decisive test, oldest first.  A review fixed
+    a test that a review of the day before had fixed and that three entries had since attempted (10 October
+    2026); this is the list to read before fixing another."""
+    lines = []
+    for found in re.finditer(r'<article\b([^>]*)>(.*?)</article>', source, re.S):
+        if 'data-kind="review"' not in found.group(1):
+            continue
+        anchor = re.search(r'\bid="([^"]+)"', found.group(1))
+        test = re.search(r'<strong>Decisive test\.</strong>(.*?)</p>', found.group(2), re.S)
+        text = ' '.join(readable_text(test.group(1)).split()) if test else '(no Decisive test paragraph)'
+        lines.append(f"{anchor.group(1) if anchor else '(no id)'}\t{text[:width]}")
+    return '\n'.join(lines) + '\n' if lines else '(no review entries)\n'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("anchor", nargs="?", help="Section, article, or heading ID")
     parser.add_argument("--current", action="store_true",
                         help="Read everything before Research record")
     parser.add_argument('--toc', action='store_true', help='Compact record contents, latest 10 by default')
+    parser.add_argument('--review-tests', action='store_true',
+                        help="Each review's anchor and the start of its Decisive test, oldest first")
     parser.add_argument('--backlinks', action='store_true', help='List record entries citing the exact anchor in this notebook')
     parser.add_argument('--tail', type=int, help='Maximum TOC/backlink entries, newest in record order')
     parser.add_argument('--since', type=date.fromisoformat, help='TOC/backlink date filter (YYYY-MM-DD); undated entries retained')
@@ -263,8 +280,8 @@ def main():
         parser.error('--backlinks requires an anchor and excludes --current, --toc, --until and --text')
     if args.text and args.toc:
         parser.error('--text applies to an anchor or --current')
-    if sum((bool(args.anchor), args.current, args.toc)) != 1 or (args.until and not args.anchor):
-        parser.error('Choose an anchor (optionally --until), --current, or --toc')
+    if sum((bool(args.anchor), args.current, args.toc, args.review_tests)) != 1 or (args.until and not args.anchor):
+        parser.error('Choose an anchor (optionally --until), --current, --toc or --review-tests')
     if not (args.toc or args.backlinks) and (args.tail is not None or args.since is not None):
         parser.error('--tail and --since require --toc or --backlinks')
     try:
@@ -287,6 +304,8 @@ def main():
             result = f"Research-record backlinks in {item['source']} only:\n" + (result or '(none)\n')
             if omitted:
                 print(f'{omitted} matching earlier entries omitted; use --tail to expand.', file=sys.stderr)
+        elif args.review_tests:
+            result = review_tests(source)
         elif args.toc:
             result, omitted = notebook.toc(args.tail if args.tail is not None else 10, args.since)
             if omitted:

@@ -205,7 +205,8 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
 - **Decision.** Choose the weakened endpoint or competing architecture to test, or justify
   retaining the current one against the comparison.
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
-  required implication or the chosen route. Search the registry for the test as for a new lemma
+  required implication or the chosen route. Read the earlier reviews' tests first
+  (`tools/notebook-excerpt.py --review-tests`). Search the registry for the test as for a new lemma
   and end with `<strong>Record search.</strong>`, the searches and what they returned (the
   finisher checks it): a test the record already answers decides nothing.
 
