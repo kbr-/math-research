@@ -9,6 +9,11 @@ versions the index holds of a conflicted file, unwraps each paragraph and list i
 three by those lines, merges the paragraphs that conflict there with every word a line of its own, and
 rewraps the result.
 
+A file this branch keeps wrapped by tools/rewrap_md.py at its default width comes out wrapped so. Any other
+file (wrapped by hand, or at another width) keeps every block as the side that wrote it left it, and only a
+block merged from both sides is wrapped, at the width the file's own paragraphs keep. The command says how
+many lines differ from this branch's version, so a merge that reflowed more than it merged is seen at once.
+
 Where the two sides changed the same words, the conflict stays, marked, around those words alone, in a
 paragraph left unwrapped: resolve it, then run tools/rewrap_md.py on the file.
 
@@ -111,7 +116,45 @@ def merged(ours, base, theirs, width=100):
         else:
             sides[side].append(line)
     text = "\n".join(lines)
-    return (text if conflicts else rewrap_md.rewrap(text, width)), conflicts
+    if conflicts:
+        return text, conflicts
+    layouts = [layout(ours), layout(theirs)]
+    if rewrap_md.rewrap(ours, width) == ours or None in layouts:
+        return rewrap_md.rewrap(text, width), 0
+    # A file this branch does not keep wrapped by the tool: a block one side wrote stays as that side wrote it,
+    # and only a block merged from both is wrapped, at the width the file's own paragraphs keep.
+    own = min(width, max([len(line) for block in layouts[0].values() if len(block) > 1 for line in block] or [width]))
+    out = []
+    for line in lines:
+        out += layouts[0].get(line) or layouts[1].get(line) or rewrap_md.rewrap(line, own).split("\n")
+    return "\n".join(out), 0
+
+
+def layout(text):
+    """{a block of `text` unwrapped to one line: its lines as written}, or None where the two cannot be lined
+    up. A quote's marker, which every written line of it repeats, is no word of the block."""
+    def words(lines):
+        return [word for word in " ".join(lines).split() if set(word) != {">"}]
+    written, found, at = text.split("\n"), {}, 0
+    for line in rewrap_md.rewrap(text, UNWRAPPED).split("\n"):
+        end = at + 1
+        if at >= len(written):
+            return None
+        if written[at] != line:
+            while end <= len(written) and words(written[at:end]) != words([line]):
+                end += 1
+            if end > len(written):
+                return None
+        found.setdefault(line, written[at:end])
+        at = end
+    return found if at == len(written) else None
+
+
+def differing(before, after):
+    """How many lines of `after` are not lines of `before` in its order: what a merge changed in a file."""
+    import difflib
+    return sum(1 for line in difflib.unified_diff(before.split("\n"), after.split("\n"), lineterm="", n=0)
+               if line.startswith("+") and not line.startswith("+++"))
 
 
 def driver(base, ours, theirs, width=100):
@@ -158,7 +201,8 @@ def main(argv=None):
         elif subprocess.run(["git", "add", "--", name]).returncode:
             return 4
         else:
-            print(f"{name}: merged word by word and rewrapped")
+            print(f"{name}: merged word by word; {differing(stages[0].stdout, text)} of its {text.count(chr(10)) + 1} "
+                  "lines differ from this branch's version")
     return 3 if left else 0
 
 

@@ -76,6 +76,42 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(words[1].split("\n"), ["-", *WORDS.split(" ")])
         self.assertTrue(all("Intro" not in version and "end" not in version and "Second" not in version for version in words))
 
+    def test_a_file_not_wrapped_by_the_tool_keeps_each_side_s_blocks_as_written(self):
+        # Wrapped by hand, unevenly: a rewrap at any width would change the untouched paragraphs too.
+        base = ("# Rules\n\nA first paragraph, wrapped by hand\nat no steady width, which nobody\nchanges at all in this merge.\n\n"
+                "- An item both sides change: alpha beta\n  gamma delta epsilon zeta eta theta iota\n  kappa lambda.\n"
+                "- A short item.\n\n> A quote kept\n> on two lines.\n\nLast words.\n")
+        base = base.replace("# Rules\n", "# Rules, under a heading far longer than any line a paragraph of this file keeps to\n")
+        ours = base.replace("alpha beta", "alpha and ours beta").replace("Last words.", "Last words,\nwhich only\nthis side changed.")
+        theirs = base.replace("kappa lambda.", "kappa and theirs lambda.").replace(
+            "Last words.", "```\nnew   code   of theirs, a line far longer than any paragraph of this file keeps to\n```\n\n"
+                           "A paragraph of\ntheirs alone.\n\nLast words.")
+        text, conflicts = tool.merged(ours, base, theirs)
+        self.assertEqual(conflicts, 0)
+        self.assertEqual(text, (
+            "# Rules, under a heading far longer than any line a paragraph of this file keeps to\n\n"
+            "A first paragraph, wrapped by hand\nat no steady width, which nobody\nchanges at all in this merge.\n\n"
+            # merged from both, so wrapped: at 48, the longest line of this branch's wrapped blocks
+            "- An item both sides change: alpha and ours beta\n  gamma delta epsilon zeta eta theta iota kappa\n  and theirs lambda.\n"
+            "- A short item.\n\n> A quote kept\n> on two lines.\n\n"
+            "```\nnew   code   of theirs, a line far longer than any paragraph of this file keeps to\n```\n\n"
+            "A paragraph of\ntheirs alone.\n\nLast words,\nwhich only\nthis side changed.\n"))
+        self.assertEqual(tool.differing(ours, text), 9)     # two lines of the item and the seven that theirs added
+        # A file the tool keeps wrapped comes out wrapped by the tool, as before, whatever the other side's lines were.
+        kept = [rewrap_md.rewrap(ours, 40), rewrap_md.rewrap(base, 40), theirs]
+        self.assertEqual(tool.merged(*kept, 40)[0], rewrap_md.rewrap(text, 40))
+        # Where the blocks cannot be lined up, the whole text is rewrapped: the old behaviour, which the count shows.
+        with unittest.mock.patch.object(tool, "layout", return_value=None):
+            self.assertEqual(tool.merged(ours, base, theirs)[0], rewrap_md.rewrap(text, 100))
+        # What each block is, as written: a quote's marker is no word of it, and a text that cannot be lined up gives none.
+        found = tool.layout(base)
+        self.assertEqual(found["> A quote kept on two lines."], ["> A quote kept", "> on two lines."])
+        self.assertEqual(found["Last words."], ["Last words."])
+        self.assertEqual(len(found["- An item both sides change: alpha beta gamma delta epsilon zeta eta theta iota kappa lambda."]), 3)
+        with unittest.mock.patch.object(rewrap_md, "rewrap", return_value="one line that is not the text"):
+            self.assertIsNone(tool.layout(base))
+        self.assertEqual(tool.differing("a\nb\nc", "a\nB\nc\nd"), 2)
+
     def test_two_conflicts_are_counted_and_each_marked_in_its_own_paragraph(self):
         ours = document(WORDS.replace("gamma", "OURS"), "Second item of ours.")
         theirs = document(WORDS.replace("gamma", "THEIRS"), "Second item of theirs.")
@@ -130,10 +166,16 @@ class CommandTest(unittest.TestCase):
 
     def test_a_conflicted_file_is_merged_and_staged(self):
         self.conflict(document(WORDS.replace("beta", "beta and more of ours")), document(WORDS.replace("omega.", "omega and more of theirs.")))
-        self.assertEqual(self.run_tool("RULES.md"), (0, "RULES.md: merged word by word and rewrapped\n"))
+        ours = Path("RULES.md").read_text() and self.git("show", ":2:RULES.md").stdout
+        self.assertEqual(self.run_tool("RULES.md"), (0, "RULES.md: merged word by word; 2 of its 20 lines differ from this "
+                                                         "branch's version\n"))
         self.assertEqual(self.git("status", "--short").stdout, "M  RULES.md\n")
-        self.assertIn("beta and more of ours", Path("RULES.md").read_text())
-        self.assertIn("more of theirs.", Path("RULES.md").read_text())
+        result = Path("RULES.md").read_text()
+        self.assertIn("beta and more of ours", result)
+        self.assertIn("more of theirs.", " ".join(result.split()))
+        # The file is wrapped at 40, not at the tool's width: every line but the merged item's end is ours as written.
+        self.assertEqual(tool.differing(ours, result), 2)
+        self.assertLessEqual(max(len(line) for line in result.split("\n") if not line.startswith("|")), 40)
 
     def driven(self):
         """Turn the driver on in this repository, as a clone does."""
