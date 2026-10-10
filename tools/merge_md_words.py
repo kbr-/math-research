@@ -10,8 +10,11 @@ three by those lines, merges the paragraphs that conflict there with every word 
 rewraps the result.
 
 A file this branch keeps wrapped by tools/rewrap_md.py at its default width comes out wrapped so. Any other
-file (wrapped by hand, or at another width) keeps every block as the side that wrote it left it, and only a
-block merged from both sides is wrapped, at the width the file's own paragraphs keep. The command says how
+file (wrapped by hand, or at another width) keeps every block this branch has as this branch wrote it. A
+block the merge changed keeps this branch's line breaks, with the changed words put into their lines, unless
+a line would then be longer than any the block or the file keeps; that block, and a block the merge brought
+in, is wrapped at the width the file's own paragraphs keep. The other side's line breaks are never taken: its
+copy may be wrapped at another width. The command says how
 many lines differ from this branch's version, so a merge that reflowed more than it merged is seen at once.
 
 Where the two sides changed the same words, the conflict stays, marked, around those words alone, in a
@@ -33,6 +36,8 @@ Exit status: 0 every file merged and staged; 3 a file has conflicts left (writte
 or a file has a line that reads as a conflict marker. As a driver: 0 merged into OURS, 1 conflicts left in it.
 """
 
+import difflib
+import re
 import subprocess
 import sys
 import tempfile
@@ -118,16 +123,64 @@ def merged(ours, base, theirs, width=100):
     text = "\n".join(lines)
     if conflicts:
         return text, conflicts
-    layouts = [layout(ours), layout(theirs)]
-    if rewrap_md.rewrap(ours, width) == ours or None in layouts:
+    written = layout(ours)
+    if rewrap_md.rewrap(ours, width) == ours or written is None:
         return rewrap_md.rewrap(text, width), 0
-    # A file this branch does not keep wrapped by the tool: a block one side wrote stays as that side wrote it,
-    # and only a block merged from both is wrapped, at the width the file's own paragraphs keep.
-    own = min(width, max([len(line) for block in layouts[0].values() if len(block) > 1 for line in block] or [width]))
+    # A file this branch does not keep wrapped by the tool: a block this branch has stays as it wrote it, a
+    # block the merge changed keeps this branch's line breaks around the words that changed, and a block the
+    # merge brought in is wrapped at the width the file's own paragraphs keep. The other side's line breaks are
+    # not taken: its copy of the file may be wrapped at another width.
+    # Wrapped as a whole text, so that a line of code or a table's row is known for what it is and left alone.
+    own = own_width(written, width)
+    wrapped = layout(rewrap_md.rewrap(text, own)) or {}
+    # The blocks of this branch the merge changed: those of several lines that are gone from the result. A block
+    # of one line (a table's row, a line of code) is no prose to move words within.
+    gone = [block for block in written if block not in set(lines) and len(written[block]) > 1]
     out = []
     for line in lines:
-        out += layouts[0].get(line) or layouts[1].get(line) or rewrap_md.rewrap(line, own).split("\n")
+        if line in written:
+            out += written[line]
+            continue
+        old = max(gone, key=lambda block: alike(block, line), default=None)
+        placed = changed_in_place(written[old], line) if old is not None and alike(old, line) > 0.5 else []
+        # Words put in can make a line longer than any the block or the file keeps: then the block is wrapped.
+        fits = placed and max(map(len, placed)) <= max(own, *map(len, written[old]))
+        out += placed if fits else wrapped.get(line, [line])
     return "\n".join(out), 0
+
+
+def alike(one, other):
+    """How much of two unwrapped blocks' words are the same words in the same order, from 0 to 1."""
+    return difflib.SequenceMatcher(None, one.split(), other.split(), autojunk=False).ratio()
+
+
+PREFIX = re.compile(r"[ >]*")
+
+
+def changed_in_place(block, line):
+    """The lines of `block`, a block as this branch wrote it, with its words changed to those of `line`, the
+    same block unwrapped after the merge: each line keeps the words it had, a word put in joins the line of
+    the word before it, and a line left with no word is dropped."""
+    prefixes = [PREFIX.match(row).group(0) for row in block]
+    rows = [row[len(prefix):].split() for row, prefix in zip(block, prefixes)]
+    old = [word for row in rows for word in row]
+    home = [number for number, row in enumerate(rows) for _ in row]       # the line each old word stands on
+    new = line[len(PREFIX.match(line).group(0)):].split()
+    result = [[] for _ in rows]
+    for kind, low, high, start, end in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes():
+        if kind == "equal":
+            for offset in range(high - low):
+                result[home[low + offset]].append(new[start + offset])
+        else:
+            result[home[low - 1] if low else 0] += new[start:end]
+    return [prefix + " ".join(words) for prefix, words in zip(prefixes, result) if words]
+
+
+def own_width(written, width):
+    """The width a file's wrapped blocks keep, at most `width`: the length 95 lines of 100 stay within, so that
+    a link or another word that cannot be broken, longer than any wrapped line, does not pass for the width."""
+    lengths = sorted(len(line) for block in written.values() if len(block) > 1 for line in block)
+    return min(width, lengths[-(-95 * (len(lengths) - 1) // 100)]) if lengths else width
 
 
 def layout(text):
@@ -152,7 +205,6 @@ def layout(text):
 
 def differing(before, after):
     """How many lines of `after` are not lines of `before` in its order: what a merge changed in a file."""
-    import difflib
     return sum(1 for line in difflib.unified_diff(before.split("\n"), after.split("\n"), lineterm="", n=0)
                if line.startswith("+") and not line.startswith("+++"))
 

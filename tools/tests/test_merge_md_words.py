@@ -91,15 +91,56 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(text, (
             "# Rules, under a heading far longer than any line a paragraph of this file keeps to\n\n"
             "A first paragraph, wrapped by hand\nat no steady width, which nobody\nchanges at all in this merge.\n\n"
-            # merged from both, so wrapped: at 48, the longest line of this branch's wrapped blocks
-            "- An item both sides change: alpha and ours beta\n  gamma delta epsilon zeta eta theta iota kappa\n  and theirs lambda.\n"
+            # merged from both: this branch's line breaks, with the other side's words put into their line
+            "- An item both sides change: alpha and ours beta\n  gamma delta epsilon zeta eta theta iota\n  kappa and theirs lambda.\n"
             "- A short item.\n\n> A quote kept\n> on two lines.\n\n"
             "```\nnew   code   of theirs, a line far longer than any paragraph of this file keeps to\n```\n\n"
-            "A paragraph of\ntheirs alone.\n\nLast words,\nwhich only\nthis side changed.\n"))
-        self.assertEqual(tool.differing(ours, text), 9)     # two lines of the item and the seven that theirs added
+            # theirs' own line breaks are not taken: its copy of the file may be wrapped at another width
+            "A paragraph of theirs alone.\n\nLast words,\nwhich only\nthis side changed.\n"))
+        self.assertEqual(tool.differing(ours, text), 7)     # one line of the item and the six that theirs added
+        # A block's lines with its words changed: a word put in joins the line of the word before it, a line left
+        # with no word goes, and a quote keeps its markers.
+        block = ["- An item: alpha beta", "  gamma delta", "  epsilon."]
+        self.assertEqual(tool.changed_in_place(block, "- A new item: alpha beta and more gamma delta and then epsilon."),
+                         ["- A new item: alpha beta and more", "  gamma delta and then", "  epsilon."])
+        # Words that replace a line's last words and the next line's first stand on the earlier line.
+        self.assertEqual(tool.changed_in_place(block, "- An item: alpha beta gamma epsilon and the end."),
+                         ["- An item: alpha beta", "  gamma epsilon and the end."])
+        self.assertEqual(tool.changed_in_place(block, "- An item: alpha beta epsilon."), ["- An item: alpha beta", "  epsilon."])
+        self.assertEqual(tool.changed_in_place(["> A quote kept", "> on two lines."], "> A quote well kept on three lines."),
+                         ["> A quote well kept", "> on three lines."])
+        # A line may grow past its block's longest while it stays within the width the file keeps.
+        self.assertIn("\n> A quote well kept\n> on two lines.\n", tool.merged(ours, base, theirs.replace("A quote kept", "A quote well kept"))[0])
+        # A block of one line (a table's row, a line of code) is no prose: its spacing stays as the other side wrote it.
+        small = "Para one\nwrapped by hand.\n\n| a  |  b |\n|----|----|\n\nEnd line\nof it.\n"
+        self.assertIn("\n| a  |  c |\n", tool.merged(small.replace("Para one", "Para number one"), small, small.replace("|  b |", "|  c |"))[0])
+        # A paragraph brought in that is much like one this branch still has does not take that one's line breaks.
+        twin = "A first paragraph, wrapped by hand\nat no steady width.\n\nAlpha beta\ngamma delta\nepsilon.\n"
+        self.assertTrue(tool.merged(twin, twin, twin + "\nAlpha beta gamma delta epsilon zeta.\n")[0].endswith(
+            "\n\nAlpha beta\ngamma delta\nepsilon.\n\nAlpha beta gamma delta epsilon\nzeta.\n"))
+        # Nor does one unlike the block the merge changed take that block's lines and its quote marker.
+        quote = "A first paragraph, wrapped by hand\nat no steady width.\n\n> A quote kept\n> on two lines.\n\nEnd.\n"
+        self.assertTrue(tool.merged(quote, quote, quote.replace("quote kept", "quote well kept").replace("End.", "Short one.\n\nEnd."))[0]
+                        .endswith("\n\n> A quote well kept\n> on two lines.\n\nShort one.\n\nEnd.\n"))
+        # One long link among many wrapped lines does not pass for the file's width: a paragraph brought in is wrapped
+        # at the width the others keep.
+        paragraphs = [rewrap_md.rewrap(f"Paragraph {number} says: {WORDS}", 30) for number in range(6)]
+        paragraphs[2] += "\n[a-link-that-cannot-be-broken](a/path/far/longer/than/the/lines/of/this/file)\nand its last line."
+        long_link = "\n\n".join(paragraphs) + "\n"
+        added = tool.merged(long_link.replace("Paragraph 0", "The paragraph 0"), long_link, long_link + f"\nNewly added: {WORDS}\n")[0]
+        new = added[added.index("Newly added"):].strip().split("\n")
+        # The file's lines keep to 30 but for the one this branch made 4 longer; the link's line has 76.
+        self.assertEqual((len(new) > 3, max(map(len, new)) <= 34), (True, True), new)
+        # Words that would make a line longer than any the block or the file keeps: the block is wrapped instead.
+        long = theirs.replace("kappa and theirs lambda.", "kappa and a good many more words of theirs than a line holds lambda.")
+        self.assertIn("- An item both sides change: alpha and ours beta\n  gamma delta epsilon zeta eta theta iota kappa\n"
+                      "  and a good many more words of theirs than a\n  line holds lambda.\n", tool.merged(ours, base, long)[0])
         # A file the tool keeps wrapped comes out wrapped by the tool, as before, whatever the other side's lines were.
-        kept = [rewrap_md.rewrap(ours, 40), rewrap_md.rewrap(base, 40), theirs]
-        self.assertEqual(tool.merged(*kept, 40)[0], rewrap_md.rewrap(text, 40))
+        # At some of these widths no line of the file reaches the width: the merged item is still wrapped at it.
+        for width in (40, 43, 46, 52, 57):
+            with self.subTest(width=width):
+                kept = [rewrap_md.rewrap(ours, width), rewrap_md.rewrap(base, width), theirs]
+                self.assertEqual(tool.merged(*kept, width)[0], rewrap_md.rewrap(text, width))
         # Where the blocks cannot be lined up, the whole text is rewrapped: the old behaviour, which the count shows.
         with unittest.mock.patch.object(tool, "layout", return_value=None):
             self.assertEqual(tool.merged(ours, base, theirs)[0], rewrap_md.rewrap(text, 100))
