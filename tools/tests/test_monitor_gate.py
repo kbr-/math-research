@@ -116,6 +116,14 @@ class WatchRunTest(unittest.TestCase):
             watch_run.LOGS = old
         self.assertIn('No unfinished', out.getvalue())
 
+    def test_a_journal_line_that_is_no_launchers_record_is_passed_over(self):
+        # A test's fixture left in a journal started a run with no id, and the watcher of every journal stopped on it.
+        directory, _ = self.journal([{'event': 'run_start', 'command': ['python3', 'scan.py']}, ['id'],
+                                     {'event': 'run_end', 'command': ['python3', 'scan.py']},
+                                     {'event': 'run_start', 'id': 'r1', 'unix_s': 100.0, 'output': 'x.txt'}])
+        started, ended = watch_run.records(sorted(directory.glob('*.jsonl')))
+        self.assertEqual((list(started), ended), (['r1'], {}))
+
 
 if __name__ == '__main__':
     unittest.main()

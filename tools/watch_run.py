@@ -39,6 +39,9 @@ def records(paths):
                 event = json.loads(line)
             except json.JSONDecodeError:
                 continue
+            # A line that is no launcher's record (a test's fixture left in a journal, a cut line) has no id: passed over.
+            if not isinstance(event, dict) or 'id' not in event:
+                continue
             if event.get('event') == 'run_start':
                 started[event['id']] = event
             elif event.get('event') == 'run_end':
