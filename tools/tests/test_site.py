@@ -60,15 +60,17 @@ class PublishedClient(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
-BROWSER_GROUPS = 2   # browsers, each running every second case, one at a time
+BROWSER_GROUPS = 3   # browsers, each running every second case, one at a time
 
 
 class Browser(unittest.TestCase):
     """Every case in tests/test_*.cjs passes within BROWSER_LIMIT_S. The cases run in BROWSER_GROUPS browsers,
     one test each, so the suite's workers run the groups in parallel, and within a group one at a time: each
-    page spends about 0.75 s of CPU starting MathJax. Two browser workers limit contention with
-    the rest of the suite: three workers produced 5.13 s and 5.07 s cases on 9 October 2026.
-    Cases remain sequential within each browser; all assertions and timing limits are unchanged."""
+    page spends about 0.75 s of CPU starting MathJax. The suite is bound by CPU, about 100 s of it on 14
+    logical CPUs, so the number of groups moves no work: with two, the longer group ran for the whole of a
+    10 s suite; with three, each group takes 6 to 8 s there and no case came near its limit in twelve whole
+    runs (10 October 2026). Three groups had produced 5.13 s and 5.07 s cases on 9 October 2026, before the
+    suite's CPU was cut. Cases remain sequential within each browser."""
 
     expected_seconds = 6.0  # cold worktrees have no per-test duration cache
 
@@ -77,6 +79,9 @@ class Browser(unittest.TestCase):
 
     def test_group_1(self):
         self.run_group(1)
+
+    def test_group_2(self):
+        self.run_group(2)
 
     def run_group(self, k):
         modules = node_modules()
