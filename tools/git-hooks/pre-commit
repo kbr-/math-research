@@ -1,0 +1,54 @@
+#!/bin/sh
+# Check the lead and bridge queue (tools/lead_queue.py check) of each staged notebook that holds one or held
+# one, each staged notebook's living sections against their hard budgets (tools/notebook_context.py
+# --staged), and the task records (tools/task_index.py check), with the notebook's Where we stand, when a
+# commit stages a path under tasks/ or notebook.html.
+# .git/hooks/pre-commit links here, so every worktree of this repository runs it with its own tools.
+# tools/install-git-hooks.sh links this hook into the external repositories a task works in too;
+# there, without either tool, it does nothing.
+top=$(git rev-parse --show-toplevel) || exit 1
+if [ -f "$top/tools/lead_queue.py" ]; then
+  base=HEAD
+  # Only the hook can tell an amend: its parent is the git commit command, whose arguments carry --amend.
+  case " $(ps -o args= -p "$PPID" 2>/dev/null) " in
+    *" --amend "*) base=HEAD^ ;;
+  esac
+  for notebook in $(git diff --cached --name-only --diff-filter=AM -- '*.html'); do
+    git show ":$notebook" | grep -q '<section id="lead-queue"' ||
+      git show "HEAD:$notebook" 2>/dev/null | grep -q '<section id="lead-queue"' || continue
+    if ! git rev-parse -q --verify "$base^{commit}" >/dev/null 2>&1; then
+      echo "Lead queue check skipped for $notebook: no commit to compare with (the repository's first commit," \
+           "or an amend of it)" >&2
+      continue
+    fi
+    python3 "$top/tools/lead_queue.py" check "$top/$notebook" --base "$base"
+    status=$?
+    if [ $status -eq 2 ]; then
+      echo "Lead queue check skipped for $notebook: this worktree's tools/lead_queue.py has no check" \
+           "command yet; merging its source branch brings it" >&2
+    elif [ $status -ne 0 ]; then
+      echo "Commit refused: the lead queue check failed for $notebook (above). Fix the queue, or the entry," \
+           "and commit again." >&2
+      exit 1
+    fi
+  done
+fi
+if [ -f "$top/tools/notebook_context.py" ]; then
+  for notebook in $(git diff --cached --name-only --diff-filter=AM -- '*.html'); do
+    python3 "$top/tools/notebook_context.py" --staged "$top/$notebook"
+    status=$?
+    if [ $status -eq 2 ]; then
+      echo "Context budget check skipped for $notebook: this worktree's tools/notebook_context.py has no" \
+           "--staged yet; merging its source branch brings it" >&2
+    elif [ $status -ne 0 ]; then
+      echo "Commit refused: $notebook's living sections exceed a hard budget (above). Consolidate them and" \
+           "commit again." >&2
+      exit 1
+    fi
+  done
+fi
+[ -f "$top/tools/task_index.py" ] || exit 0
+git diff --cached --quiet -- "$top/tasks" "$top/notebook.html" && exit 0
+# A warning, never a refusal: a task entry the commit adds with no Process paragraph.
+[ -f "$top/tools/cycle_numbers.py" ] && python3 "$top/tools/cycle_numbers.py" --staged
+exec python3 "$top/tools/task_index.py" check

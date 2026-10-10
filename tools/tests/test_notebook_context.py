@@ -87,4 +87,26 @@ class ContextBudgetTest(unittest.TestCase):
             self.assertIn('excess 1 words',result.stdout)
 
 
+    def test_staged_checks_the_index_not_the_working_tree(self):
+        from notebook_context import check_staged
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary)
+            git=lambda *a: subprocess.run(['git','-c','user.name=t','-c','user.email=t@t',*a],cwd=root,check=True,
+                                          capture_output=True)
+            git('init','-q')
+            (root/'research').mkdir()
+            (root/'research/context-budgets.json').write_text(json.dumps(self.config()))
+            book=root/'notebook.html'
+            for staged,working,passed in (('a a','a a a a',True),('a a a a','a a',False)):
+                with self.subTest(staged=staged):
+                    book.write_text(self.book(staged));git('add','notebook.html')
+                    book.write_text(self.book(working))
+                    self.assertEqual(check_staged(root,book)['passed'],passed)
+            (root/'other.html').write_text(self.book('a '*9));git('add','other.html')
+            self.assertIsNone(check_staged(root,root/'other.html'))
+            git('rm','-q','-f','--cached','notebook.html')
+            with self.assertRaises(subprocess.CalledProcessError):
+                check_staged(root,book)
+
+
 if __name__=='__main__':unittest.main()

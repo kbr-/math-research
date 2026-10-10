@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""Measure and enforce configured pre-record notebook budgets; never truncate."""
+"""Measure and enforce configured pre-record notebook budgets; never truncate.
+
+--staged PATH checks the text git's index holds for PATH, when PATH is a registered notebook, against
+its own budgets, and passes any other file: the pre-commit hook runs it on every staged HTML file. It
+exits 1 on a hard excess and 3 when it cannot check, so the hook refuses both; 2 is argparse's, for a
+tool without --staged.
+"""
 import argparse
 from fractions import Fraction
 import importlib.util
 import json
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -93,14 +100,36 @@ def check(root=ROOT, notebook=None):
     return report
 
 
+def check_staged(root, path):
+    """The report on the staged text of `path`, or None when it is no registered notebook."""
+    from notebooks import catalogue
+    rel = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
+    item = next((i for i in catalogue(root).values() if i['source'] == rel), None)
+    if item is None:
+        return None
+    staged = subprocess.run(['git', 'show', f':{rel}'], cwd=root, capture_output=True, text=True, check=True).stdout
+    return budgets(staged, json.loads((Path(root)/item['budgets']).read_text()))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--notebook', help='Thread name, or an explicit HTML path for compatibility')
     parser.add_argument('--config', type=Path)
     parser.add_argument('--out', type=Path, help='Save complete counts; exit status still enforces limits')
     parser.add_argument('--all', action='store_true', help='Validate every registered notebook')
+    parser.add_argument('--staged', type=Path, help='Check the staged text of this file, if it is a notebook')
     args = parser.parse_args()
     try:
+        if args.staged:
+            try:
+                report = check_staged(ROOT, args.staged)
+            except (ValueError, OSError, subprocess.CalledProcessError) as error:
+                print(f'notebook-context: {error}', file=sys.stderr)
+                return 3
+            if report is not None and not report['passed']:
+                print(f'{args.staged.name}: notebook context hard limit exceeded:\n' + describe(report))
+                return 1
+            return 0
         if args.all:
             if args.notebook or args.config or args.out:
                 raise ValueError('--all cannot be combined with per-notebook options')

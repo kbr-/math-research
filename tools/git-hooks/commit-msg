@@ -1,0 +1,26 @@
+#!/bin/sh
+# Reject a commit message that carries an AI-attribution trailer or footer.
+# Installed as a symlink by tools/install-git-hooks.sh, so every repository shares this one copy.
+if grep -v '^#' "$1" | grep -Eiq '^co-authored-by:.*(claude|anthropic|openai|chatgpt|copilot|codex|gemini)|noreply@anthropic\.com|generated with \[?claude code'; then
+    echo "commit-msg: the message carries an AI-attribution trailer or footer; remove it." >&2
+    exit 1
+fi
+# Every line at most 100 characters (AGENTS.md), refused here rather than at push time, when the commit is
+# buried under later ones. Characters, not bytes, as tools/checked-push.sh counts them; git's comment lines skipped.
+long=$(python3 -c '
+import sys
+for line in open(sys.argv[1], encoding="utf-8", errors="replace").read().splitlines():
+    if len(line) > 100 and not line.startswith("#"):
+        print(f"  {len(line)} characters: {line[:70]}...")' "$1")
+if [ -n "$long" ]; then
+    printf 'commit-msg: lines over 100 characters (AGENTS.md); rewrap the message:\n%s\n' "$long" >&2
+    exit 1
+fi
+# A squash merge prepared by tools/merge_main.py records main's tip; its next run needs that line.
+squash=$(git rev-parse --git-path SQUASH_MSG)
+recorded=$( [ -f "$squash" ] && grep -m1 '^Merges-main: ' "$squash" || true)
+if [ -n "$recorded" ] && ! grep -qxF "$recorded" "$1"; then
+    echo "commit-msg: this squash merge's message must keep \"$recorded\"; commit with git commit --no-edit." >&2
+    echo "If no squash merge is in progress, the file is a leftover: rm \"$squash\"" >&2
+    exit 1
+fi
