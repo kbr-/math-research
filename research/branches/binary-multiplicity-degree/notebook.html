@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 3. Develop the actual next eligible queue head, the Slater-determinant/overlap bridge from the <a href="#entry-2026-09-29-cube-caterpillar-neck-review">caterpillar neck review</a>. The smaller neck-block Gram formulas are already proved; the originating bridge left the top-block comparison unresolved. Follow later block formulas and their corrections before testing it. Preserve the distinction between a Gram determinant identity and a proof that the actual neck block is that Gram determinant, and between real positivity and the complex parameter configurations required by the goal. The unpassed Hermite-remainder item is not the queue head.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 3. Develop the next queued discrete log-gas bridge from the <a href="#entry-2026-09-29-cube-caterpillar-neck-review">caterpillar neck review</a>. Use the <a href="#entry-2026-10-10-cube-top-block-gram">new full top-block product valuation</a> together with the <a href="#cube-neck-block-discriminant">existing Hankel/Cauchy–Binet formula</a>. Test exactly when the minimum subset energy equals the determinant valuation, including possible cancellation of leading terms over the complex configurations required by the goal. Generic or positive-root equality must not be promoted to every cone arc. Identify any implication beyond the already proved neck count before running cases.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1"><a href="#entry-2026-09-29-cube-caterpillar-neck-review">entry-2026-09-29-cube-caterpillar-neck-review:1</a> (bridge): Slater determinants and Löwdin's overlap formula (quantum chemistry; Löwdin, Phys. Rev. 97, 1955). The overlap of two Slater determinants is the determinant of the orbital overlap matrix. Translation: the cluster roots a…</li>
 <li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2"><a href="#entry-2026-09-29-cube-caterpillar-neck-review">entry-2026-09-29-cube-caterpillar-neck-review:2</a> (bridge): Zero-temperature discrete log-gas. Hank\(_k\) is the partition function of \(k+1\) particles with \(\beta=2\) logarithmic repulsion on the set of roots. For a multiscale cluster, its valuation is a ground-state energy, a…</li>
 <li data-bridge="entry-2026-09-29-cube-translation-review:1"><a href="#entry-2026-09-29-cube-translation-review">entry-2026-09-29-cube-translation-review:1</a> (bridge): Electrostatic equilibria of point charges (Maxwell's problem; Gabrielov, Novikov and Shapiro, Mystery of point charges, Proc. London Math. Soc. 95, 2007). At four roots, the Weierstrass points of a matching are the zeros…</li>
 <li data-bridge="entry-2026-09-29-cube-schur-window-review:1"><a href="#entry-2026-09-29-cube-schur-window-review">entry-2026-09-29-cube-schur-window-review:1</a> (bridge): Fermionic Fock space and the boson–fermion correspondence (Kac and Raina, Bombay Lectures on Highest Weight Representations, 1987). Consecutive windows are Maya diagrams. A span of Laurent series is a point of the Sato G…</li>
@@ -105553,6 +105552,121 @@ This matches the separated face, neck and confluent contribution. The source exp
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 2.76 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 11.54 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-10-cube-top-block-gram" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-obligation="cube-first-step-plateau" data-goal-progress="unchanged" data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1" data-claims="lem:top-block-gram">
+<h3>10 October 2026 — The full top neck block has the exact Gram determinant, including its constant</h3>
+<p class="entry-meta">Working top-block determinant proof; first-step bound unchanged. Slater overlap cycle. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> The actual queue head is the <a href="#entry-2026-09-29-cube-caterpillar-neck-review">Slater-overlap bridge</a>. For blocks below the top, the <a href="#cube-neck-block-discriminant">Gram formula</a> is already proved. The bridge left the full top determinant's proportionality to \(e_M^2\operatorname{Disc}(P)\) open. The later <a href="#entry-2026-09-29-cube-confluent-window-rank">remainder theorem</a> already proves its nonvanishing for squarefree \(P\) with \(P(0)\ne0\). Complete the determinant comparison directly, without treating that known nonvanishing as new goal progress.</p>
+<p><strong>General statement.</strong> <code>lem:top-block-gram</code> gives the top determinant and its valuation on every generically separated nonzero-root arc. The later cherry-Hankel rediscovery concerns the smaller blocks and does not include this top case. The calculation is short linear algebra from the existing remainder identity; no numerical series is needed.</p>
+<h4>Top block Gram formula</h4>
+<p><strong>Lemma (<code>lem:top-block-gram</code>).</strong> Work in characteristic zero. Let \(M\ge2\), let \(P\) be any monic degree-\(M\) polynomial, and let \(\beta_j=\binom{-\lambda}{j}\), with \(\lambda\notin\{0,-1,-2,\ldots\}\). Use the original neck matrix
+\[
+ G_{m,D}=\frac{\beta_D}{\beta_m}[x^m]\operatorname{rem}(x^D,P),\qquad
+ \Gamma_{m,D}=G_{m,D+1}-G_{m-1,D}
+                    -G_{m,M}G_{M-1,D},
+\]
+where \(G_{-1,D}=0\), rows \(0\le m&lt;M\), columns \(M\le D\le2M-1\). With
+\(\operatorname{Disc}(P)=\prod_{i&lt;j}(b_i-b_j)^2\), one has
+\[
+ \boxed{\det\Gamma_M=
+ (-1)^{\binom M2}
+ \frac{\prod_{D=M}^{2M-1}\beta_D}{\prod_{m=0}^{M-1}\beta_m}
+ \frac{(\lambda-1)^M}{(2M)!}\,
+ P(0)^2\operatorname{Disc}(P).}
+ \tag{1}
+\]
+For roots repeated by multiplicity, \(V'=(b_i^j)_{1\le i,j\le M}\) satisfies
+\[
+ P(0)^2\operatorname{Disc}(P)=\det(V'^{\mathsf T}V').
+ \tag{2}
+\]
+These are determinant identities, not a matrix congruence or an identification of all minors.</p>
+<p>If \(\lambda\ne1\) is constant and the roots \(b_i(t)\) over a valued characteristic-zero field with trivially valued constants are generically nonzero and distinct, then
+\[
+ \operatorname{val}\det\Gamma_M
+ =2\sum_i\operatorname{val}b_i+
+   2\sum_{i&lt;j}\operatorname{val}(b_i-b_j).
+ \tag{3}
+\]
+No reality or sign hypothesis is needed in (1)–(3).</p>
+<h4>Retain the missing constant row</h4>
+<p><strong>Proof.</strong> First work over the universal coefficient field where \(P(0)\ne0\) and \(P\) is squarefree, and assume \(\lambda\ne1\). For \(e=1,\ldots,M\), put \(D=M+e-1\),
+\[
+ q_e=\operatorname{quo}(x^{M+e},P),\qquad
+ B_e=q_e-\frac{M+e}{M}q_e(0),\qquad
+ \mu(B)=\operatorname{rem}(xP'B,P).
+\]
+The <a href="#entry-2026-09-29-cube-confluent-window-rank">exact remainder identity</a> gives \(\mu(B_e)(0)=0\) and
+\[
+ \Gamma_{0,D}=\frac{\beta_D(\lambda-1)}{D+1}P(0)B_e(0),\qquad
+ \Gamma_{m,D}=\frac{\beta_D(\lambda-1)}{(D+1)m\beta_m}
+                       [x^m]\mu(B_e)\quad(m\ge1).
+ \tag{4}
+\]
+Its coefficient proof applies for \(M\ge2\); the separate rank theorem's lower bound \(M\ge3\) is not used. In particular \(B_e\) is monic of degree \(e\), so \(1,B_1,\ldots,B_M\) is a determinant-one triangular basis of \(k[x]_{\le M}\).</p>
+<p>Let \(K\) be the \(M\)-square matrix with column \(e\)
+\[
+ \bigl(P(0)B_e(0),[x]\mu(B_e),\ldots,[x^{M-1}]\mu(B_e)\bigr)^{\mathsf T}.
+\]
+Augment it to the map
+\[
+ \mathcal F:k[x]_{\le M}\longrightarrow k\oplus k[x]_{&lt;M},
+ \qquad B\longmapsto(P(0)B(0),\mu(B)),
+ \tag{5}
+\]
+with the codomain ordered as the scalar, constant remainder coefficient, then positive remainder coefficients.</p>
+<p>In the basis \(1,B_1,\ldots,B_M\), the constant-remainder row is
+\((-MP(0),0,\ldots,0)\), because \(\mu(1)=xP'-MP\) and \(\mu(B_e)(0)=0\). Expanding that row, including its cofactor sign, gives
+\[
+ \det\mathcal F=MP(0)\det K.
+ \tag{6}
+\]
+In the monomial basis \(1,x,\ldots,x^M\), instead expand the first row
+\((P(0),0,\ldots,0)\). Let \(m_f\) denote multiplication by \(f\) on \(k[x]/P\), in the basis \(1,\ldots,x^{M-1}\). The remaining columns \(x,\ldots,x^M\) are the images under \(m_x\) of that basis, so
+\[
+ \det\mathcal F=P(0)\det(m_{xP'})\det(m_x).
+ \tag{7}
+\]
+After splitting \(P\),
+\[
+ \det(m_x)=(-1)^MP(0),\qquad
+ \det(m_{P'})=(-1)^{\binom M2}\operatorname{Disc}(P).
+\]
+These equalities follow by multiplying the evaluations at the roots. Thus (7) equals
+\((-1)^{\binom M2}P(0)^3\operatorname{Disc}(P)\). Compare with (6):
+\[
+ \det K=\frac{(-1)^{\binom M2}}{M}P(0)^2\operatorname{Disc}(P).
+ \tag{8}
+\]</p>
+<p>Finally (4) factors one \(\beta_D(\lambda-1)/(D+1)\) from every column, and \(1/(m\beta_m)\) from every positive row. The scalar denominator is
+\[
+ M\Bigl(\prod_{D=M}^{2M-1}(D+1)\Bigr)(M-1)!=(2M)!,
+\]
+and \(\beta_0=1\). This proves (1) on the universal open set. Both sides are polynomials in the coefficients of the monic \(P\), so it holds for every \(P\), including zero or repeated roots. The rational identity in \(\lambda\) extends to \(\lambda=1\), where (4), or the defining coefficient recurrence, makes every entry zero. The other allowed values have no denominator zero.</p>
+<p>Factoring \(b_i\) from each row of \(V'\) gives
+\((\det V')^2=(\prod_i b_i)^2\prod_{i&lt;j}(b_i-b_j)^2\).
+Since \(\det(V'^{\mathsf T}V')=(\det V')^2\), this proves (2). With constant nonzero scalar in (1), taking the valuation of its product proves (3). \(\square\)</p>
+<h4>What the bridge gains and what it does not</h4>
+<p>For real roots, the right side of (2) is a positive Gram determinant exactly when the roots are all distinct and nonzero. This supplies the bridge's missing determinant comparison in every size. For repeated roots it is zero, as required by the known confluent rank theorem. It does not make a singular top block invertible or prove its next-order correction; those are different calculations already addressed by the window-excess results.</p>
+<p>The transpose pairing in (2) is bilinear, not a Hermitian norm on complex data. The square-matrix identity remains valid over complex parameters and gives nonvanishing when roots are distinct and nonzero. But lower blocks are sums of several squared Vandermondes, where complex cancellation can occur. Neither (1) nor positivity on real data proves all minor signs, all arc-leading sums, or the necessary weight bound on the remaining rigid components.</p>
+<p>The <a href="#entry-2026-10-09-cube-neck-bridges-triage">earlier historical assessment</a> correctly noted that top-block nonvanishing was already proved and that its exact scalar was not required by an open statement. The present dedicated cycle supplies the bridge's precise formula, not a new rank range. It stops here rather than extending a completed block calculation into more cases. The next log-gas bridge can use (3), but must still retain cancellation in its other coordinates.</p>
+<p><strong>New mathematics.</strong> The exact top-block Gram constant and product valuation formula, completing the proportionality left open by the smaller-block theorem. The already known nonvanishing is not claimed as new.</p>
+<p><strong>Goal progress.</strong> Unchanged for <code>cube-first-step-plateau</code>. This completes a source-level comparison; it does not prove the base weight bound, a contact window, or the dangerous Ext vanishing.</p>
+<p><strong>Follow-up.</strong> Developed: the Slater bridge's determinant comparison is proved for the missing top block, with real positivity and complex algebraic scope separated. Its targeted nonvanishing was already available, and no remaining application of this standalone Gram comparison to an open statement has been identified.</p>
+<p><strong>Verification gate.</strong> Read the original bridge, full remainder identity/rank proof, smaller-block Gram proof, arbitrary-column refinement and later cherry-Hankel rediscovery. Searches by top block, norm/resultant, Gram, discriminant and integration found those results and the explicit statement that the top proportionality remained unproved. Checked the two determinant expansions, their signs and all denominator ranges. No numerical run or new external theorem is imported. The sole fresh-context GPT 6.1-Sol reviewer at medium effort passed the two determinant expansions, norm signs, factorial, \(M=2\) scope, polynomial/rational continuations, Gram and valuation consequences, attribution and unchanged-goal assessment without corrections (<a href="../../results/bmd-confluent-remainder-test-20261010/review.md">verdict</a>).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-confluent-remainder-test-20261010">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 33.75 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">25.15 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">10 min 32.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 5.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">31.11 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
