@@ -119,6 +119,66 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(good=good):
                 self.assertEqual(run(good).returncode, 0)
 
+    def test_sed_in_place_over_a_range_or_to_a_next_line_of_a_source_file_is_refused(self):
+        for command, how in (("sed -i '12,15d' tools/x.py", "a range of lines (12,15d)"),
+                             ("sed -i '0,/^import json$/s//import json\\nimport os/' probe.py", "a range of lines"),
+                             ("cd repo && sed -i -e '/^def a/,/^def b/d' src/a.ts", "a range of lines"),
+                             ("sed -i '5,+2s/a/b/' conf.yaml", "a range of lines"),
+                             ("sed -i '3,$d' run.sh; echo done", "a range of lines"),
+                             ("sed -i '/^    x = 1$/{n;d}' tools/x.py", "a step to the next line"),
+                             ("sed -i.bak '/a/{N;s/a\\nb/c/}' x.py", "a step to the next line"),
+                             ("sed --in-place 's/a/b/; 2,3d' x.py", "a range of lines (2,3d)"),
+                             ("sed -i 12,15d tools/x.py", "a range of lines (12,15d)"),
+                             ("sed -i 's/a/b/' notes.txt\nsed -i '1,2d' x.py", "a range of lines (1,2d)"),
+                             ("LC_ALL=C sed -i '1,2d' x.py", "a range of lines (1,2d)")):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn(f"sed -i edits a source file over {how}", done.stderr)
+                self.assertIn("Make the edit with the Edit tool", done.stderr)
+        # A substitution or a pattern address names its lines by their text; prose has its own tool; sed that edits
+        # nothing in place, or is only spoken of, is no edit.
+        for command in ("sed -i 's/old/new/' tools/x.py", "sed -i '/^import sys$/d' x.py", "sed -i '12,15d' notes.txt",
+                        "sed -n '12,15p' tools/x.py", "sed '12,15d' tools/x.py > out.py", "sed -i 's/a,b/c/' x.py",
+                        "sed -i 's/n/N/' x.py", "git commit -m \"sed -i '1,2d' x.py was wrong\"",
+                        "sed -i '12,15d' data/a.tsv research/notes/b.txt", "grep -n 'sed -i 1,2d x.py' log",
+                        "python3 -c \"x = 'a; sed -i 1,2d x.py'; print(x)\"", "echo sed -i 1,2d x.py",
+                        "cat > notes.txt <<'EOF'\nsed -i '1,2d' x.py\nEOF", "sed -i 's/a/b/' notes.txt\npython3 run.py",
+                        "sed -i 's/a/b/' x.py # 1,2d"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
+    def test_sed_in_place_at_a_line_named_by_its_number_in_a_source_file_is_refused(self):
+        for command, part in (("sed -i '129s/old/new/' tools/x.py", "129s/old/new/"), ("sed -i 12d x.py", "12d"),
+                              ("sed -i '$d' run.sh", "$d"), ("sed -i '3{s/a/b/}' x.py", "3{s/a/b/}"),
+                              ("sed -i '7!d' conf.toml", "7!d"), ("sed -i -e 's/a/b/' -e '5d' x.py", "5d"),
+                              ("sed -i '5a\\    return x' x.py", "5a"), ("sed -i \"${line}d\" x.py", "${line}d"),
+                              ("sed -i 's/a/b/; 40s/c/d/' x.py", "40s/c/d/")):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn(f"sed -i edits a source file at a line named by its number ({part}", done.stderr)
+        # A number inside a substitution or a pattern is text, and prose has its own tool.
+        for command in ("sed -i 's/1a/2b/' x.py", "sed -i '/^12d$/d' x.py", "sed -i '129s/old/new/' notes.txt",
+                        "sed -n '129p' x.py", "sed -i 's/^v = 3$/v = 4/' x.py"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
+    def test_sed_in_place_on_a_markdown_file_is_refused_whatever_its_script(self):
+        for command, name in (("sed -i 's/^Status: .*/Status: done./' tasks/a/PLAN.md", "tasks/a/PLAN.md"),
+                              ("sed -i '12,15d' notes.md", "notes.md"), ("sed -i -e '/^x$/d' x.py AGENTS.md", "AGENTS.md"),
+                              ("cd repo && sed -i 's/a/b/' README.md && git add README.md", "README.md")):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn(f"sed -i edits wrapped prose ({name})", done.stderr)
+                self.assertIn("tools/replace_text.py FILE OLD_FILE NEW_FILE", done.stderr)
+        # Reading one, or editing a file that only has md in its name, is no such edit.
+        for command in ("sed -n '1,5p' notes.md", "sed 's/a/b/' notes.md > out.md", "sed -i 's/a/b/' cmd_tool.py",
+                        "sed -i 's/a/b/' notes.mdx.txt"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
     def test_an_inline_script_replacing_text_in_a_file_is_refused(self):
         heredoc = "python3 - <<'EOF'\nfrom pathlib import Path\n{}\nEOF"
         for script in (

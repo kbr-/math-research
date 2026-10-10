@@ -108,6 +108,90 @@ def adhoc_replace_helper(command: str):
     return None
 
 
+SED_SOURCE = re.compile(r"\.(?:py|sh|js|cjs|mjs|ts|tsx|c|h|cc|cpp|rs|go|java|toml|cfg|ini|ya?ml|json|html|css)$")
+# The first address of a sed command is a range (12,15  /a/,/b/  0,/a/  5,+2), or its commands step to a next line.
+SED_RANGE = re.compile(r"^\s*(?:\d+|\$|/(?:[^/\\]|\\.)*/)\s*,\s*(?:\+?\d+|\$|/(?:[^/\\]|\\.)*/)")
+# (A brace after a dollar sign is a shell variable written into the script, ${n}, and no command.)
+SED_NEXT_LINE = re.compile(r"(?:^|;|(?<!\$)\{)\s*[nN]\s*(?:;|\}|$)")
+# One line named by its number, or the last by $: 129s/a/b/  12d  3{...}  $d  7!d  5a\text
+SED_NUMBER = re.compile(r"^\s*(?:\d+|\$)\s*[a-zA-Z!{]")
+
+
+def simple_commands(command: str):
+    """The word lists of the simple commands a shell command runs, split where the shell splits them (a new
+    line, ; & | and parentheses outside quotes), quoted words kept whole and heredoc bodies left out."""
+    lines, kept, end = command.split("\n"), [], None
+    for line in lines:
+        if end is not None:
+            end = None if line.strip() == end else end
+            continue
+        kept.append(line)
+        match = HEREDOC.search(line)
+        end = match.group(2) if match else None
+    lexer = shlex.shlex("\n".join(kept), posix=True, punctuation_chars=True)
+    lexer.whitespace = " \t\r"
+    lexer.commenters = ""
+    # Everything that is no space, quote, backslash or operator is part of a word: 12,15d is one word.
+    lexer.wordchars = "".join(chr(code) for code in range(33, 127) if chr(code) not in "\"'\\();<>|&")
+    commands, words = [], []
+    try:
+        for token in lexer:
+            if token == "\n" or (token and set(token) <= set("();<>|&")):
+                commands.append(words)
+                words = []
+            else:
+                words.append(token)
+    except ValueError:
+        pass
+    return [words for words in commands + [words] if words]
+
+
+def sed_scripts(command: str):
+    """[(scripts, files)] for each `sed` with -i that a shell command runs: its script words (each -e, else
+    the first word that is no option) and the files it edits."""
+    found = []
+    for words in simple_commands(command):
+        # Variable assignments and wrappers before the program, as for a git command below.
+        while words and (re.match(r"^\w+=", words[0]) or words[0] in ("env", "nohup", "time", "command", "sudo", "xargs")):
+            words = words[1:]
+        if not words or words[0] != "sed":
+            continue
+        words = words[1:]
+        if not any(re.fullmatch(r"-[a-zA-Z]*i.*|--in-place.*", word) for word in words):
+            continue
+        plain = [word for i, word in enumerate(words) if not word.startswith("-") and (i == 0 or words[i - 1] != "-e")]
+        scripts = [words[i + 1] for i, word in enumerate(words[:-1]) if word == "-e"] or plain[:1]
+        found.append((scripts, plain if "-e" in words else plain[1:]))
+    return found
+
+
+def sed_in_place(command: str):
+    """The reason when sed edits a source file in place over lines it does not name by their text: a range of
+    lines, a step to the next line, or a line by its number. Such an edit left an old line in a test, and one
+    by number removed a docstring's closing quotes, so that every test file failed to import; both were found
+    only at the next run. Of 956 in-place sed edits of source in this project's sessions, 83 were by a range,
+    4 with a next-line step and 262 by a line number (10 October 2026)."""
+    for scripts, files in sed_scripts(command):
+        prose = next((name for name in files if name.endswith(".md")), None)
+        if prose:
+            # Whatever the script: AGENTS.md has prose replaced with the tool that reads across line breaks.
+            return (f"sed -i edits wrapped prose ({prose}): a pattern that a line break splits matches nothing and "
+                    "sed says nothing. Replace the passage with tools/replace_text.py FILE OLD_FILE NEW_FILE, which "
+                    "matches across line breaks, or make an exact edit with the Edit tool; then rewrap with "
+                    "tools/rewrap_md.py")
+        if not any(SED_SOURCE.search(name) for name in files):
+            continue
+        for part in (part for script in scripts for part in re.split(r";\s*", script)):
+            how = ("over a range of lines" if SED_RANGE.match(part) else
+                   "over a step to the next line" if SED_NEXT_LINE.search(part) else
+                   "at a line named by its number" if SED_NUMBER.match(part) else None)
+            if how:
+                return (f"sed -i edits a source file {how} ({part.strip()[:60]}), lines it never shows: a wrong "
+                        "one is found only when something later fails. Make the edit with the Edit tool, which "
+                        "takes the old text and fails when it is not there")
+    return None
+
+
 def blocked(command: str):
     """Return the reason for the first filtered must-read command, or None."""
     for segment in SEPARATOR.split(shell_code(command)):
@@ -376,7 +460,7 @@ def main() -> int:
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
-    reason = (unchained_heredoc(command) or adhoc_replace_helper(command)
+    reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or sed_in_place(command)
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
