@@ -29,6 +29,16 @@ class IndexTest(unittest.TestCase):
         self.assertEqual(CSI.coefficients(n, w, rows)[:len(poly)], poly)
         self.assertEqual(CSI.indices(n, w, rows), (7, None))
 
+    def test_level_profile(self):
+        # binomial coefficients of the cube on 20 variables: the dimension at level 5 is 20, twice 2j
+        profile = CSI.level_profile([comb(20, d) for d in range(21)], 6)
+        self.assertEqual((profile['last_level'], profile['kk_dimension'], profile['ratio_to_2j']), (5, 20.0, 2.0))
+        self.assertTrue(profile['increasing_at_end'])
+        # n = 18, w = 4, 342 rows: last positive level 5 with c_5 = 3780, between binom(15,5) = 3003 and
+        # binom(16,5) = 4368
+        profile = CSI.level_profile(CSI.coefficients(18, 4, 342), 6)
+        self.assertTrue(15 < profile['kk_dimension'] < 16)
+
     def test_mixed_codimensions(self):
         # one kind of row agrees with the closed form, also when wM exceeds n; two kinds split a product
         for n, w, rows in ((9, 2, 3), (10, 3, 110), (12, 2, 9)):

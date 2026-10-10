@@ -7,10 +7,13 @@ the forced relations; equivalently (1+z)^(n-wM) ((1+z)^w - z^w)^M.  The graded i
 c_d <= 0, the cumulative index the first d with c_0 + ... + c_d <= 0 (null when there is none up to n).
 Exact integer arithmetic.  Arguments: --out PATH, then cases n:w:M; one JSON line per case.  A case
 n:w1:M1:w2:M2... has rows of several codimensions: the series (1+z)^n prod_i (1 - (z/(1+z))^w_i)^M_i.
+With --levels each single-kind line also reports the level profile at the last degree j before the graded
+index: the real X with binom(X, j) = c_j (its Kruskal-Katona dimension), X/(2j), and whether the coefficients
+still increase there; a level bound binom(X, j) with X about 2j is what a thin top window would show.
 """
 import argparse
 import json
-from math import comb
+from math import comb, lgamma, log
 
 
 def binomial(a, i):
@@ -51,9 +54,27 @@ def indices(n, w, rows, kinds=None):
     return graded, cumulative
 
 
+def level_profile(coeffs, graded):
+    """At j = graded - 1: the real X >= j with binom(X, j) = c_j, by bisection on logarithms."""
+    j = graded - 1
+    if j < 1:
+        return None
+    target = log(coeffs[j])
+    low, high = float(j), float(len(coeffs) - 1)
+    for _ in range(80):
+        mid = (low + high) / 2
+        if lgamma(mid + 1) - lgamma(j + 1) - lgamma(mid - j + 1) < target:
+            low = mid
+        else:
+            high = mid
+    return {'last_level': j, 'kk_dimension': round(high, 3), 'ratio_to_2j': round(high / (2 * j), 4),
+            'increasing_at_end': coeffs[j] > coeffs[j - 1]}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--out', required=True)
+    ap.add_argument('--levels', action='store_true', help='also report the level profile before the index')
     ap.add_argument('cases', nargs='+', help='n:w:M')
     args = ap.parse_args()
     with open(args.out, 'w') as out:
@@ -72,8 +93,10 @@ def main():
             if not (1 <= w <= n and rows >= 1):
                 raise SystemExit(f'{case}: need 1 <= w <= n and M >= 1')
             graded, cumulative = indices(n, w, rows)
-            out.write(json.dumps({'n': n, 'w': w, 'rows': rows, 'graded_index': graded,
-                                  'cumulative_index': cumulative}) + '\n')
+            line = {'n': n, 'w': w, 'rows': rows, 'graded_index': graded, 'cumulative_index': cumulative}
+            if args.levels and graded is not None:
+                line['levels'] = level_profile(coefficients(n, w, rows), graded)
+            out.write(json.dumps(line) + '\n')
 
 
 if __name__ == '__main__':
