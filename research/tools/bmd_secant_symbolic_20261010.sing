@@ -1,0 +1,48 @@
+// Exact first nontrivial secant determinant over F3[t,z], N4, original six columns.
+// Factor it before proposing a uniform nonzero residue mechanism; no larger grid.
+ring R=3,(z1,z2,z3,t1,t2,t3,bb,cc,ee),dp;
+list zz=0,z1,z2,z3;
+list tt=0,t1,t2,t3;
+matrix M[6][6];
+int i; int j; int e=0;
+for(i=1;i<=4;i++){for(j=i+1;j<=4;j++){
+ e++;
+ M[e,1]=1;
+ M[e,2]=zz[i]+zz[j];
+ M[e,3]=-zz[i]^2-zz[j]^2;
+ M[e,4]=tt[i]+tt[j];
+ M[e,5]=-tt[j]*zz[i]-tt[i]*zz[j];
+ M[e,6]=tt[j]*zz[i]^2+tt[i]*zz[j]^2;
+}}
+poly D=det(M);
+print("FORMAL_DETERMINANT");print(D);
+print("FORMAL_FACTORS");print(factorize(D));
+poly collision=subst(D,z1,z2);
+print("FORMAL_Z_COLLISION");print(collision);
+ideal I=z1^3-t1,z2^3-t2,z3^3-t3;
+ideal G=std(I);
+poly normal=reduce(D,G);
+print("NORMAL_RESIDUES");print(normal);
+poly actual=subst(subst(subst(D,t1,z1^3),t2,z2^3),t3,z3^3);
+poly V=z1*z2*z3*(z2-z1)*(z3-z1)*(z3-z2);
+poly e1=z1+z2+z3;
+poly e2=z1*z2+z1*z3+z2*z3;
+poly e3=z1*z2*z3;
+poly old=V^2*(e1^3-e1*e2-e3);
+print("OLD_ORIGINAL_CONTROL");print(actual-old);
+if(actual-old!=0){print("ORIGINAL_CONTROL_FAILED");quit;}
+print("THREE_LABEL_CONTROL");
+matrix MC[3][3]; intvec rr=1,2,4;
+for(i=1;i<=3;i++){for(j=1;j<=3;j++){MC[i,j]=M[rr[i],j];}}
+print(det(MC));
+matrix AA[3][3]=z1,z1^2,t1,z2,z2^2,t2,z3,z3^2,t3;
+poly A=det(AA);
+poly A2=subst(subst(subst(A,t1,t1^2),t2,t2^2),t3,t3^2);
+poly factorclaim=A*(2*A2-(t1+t2+t3)*A);
+if(D-factorclaim!=0){print("FACTOR_CONTROL_FAILED");quit;}
+poly graph=subst(subst(subst(D,t1,bb*z1+cc*z1^2+ee*z1^3),t2,bb*z2+cc*z2^2+ee*z2^3),t3,bb*z3+cc*z3^2+ee*z3^3);
+poly graphclaim=ee*V^2*(cc*(bb-cc*e1)+cc*ee*e2+ee^2*(e1^3-e1*e2-e3));
+if(graph-graphclaim!=0){print("GRAPH_CONTROL_FAILED");quit;}
+print("FACTOR_AND_GRAPH_IDENTITIES_PASS");
+print("SECANT_SYMBOLIC_COMPLETED");
+quit;
