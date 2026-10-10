@@ -210,7 +210,18 @@ class ProcessAuditTest(unittest.TestCase):
 
 
 class BearingTest(unittest.TestCase):
-    def check(self, earlier, progress, last='data-bearing="some"'):
+    def test_a_bearing_that_claims_something_ends_with_what_is_not_covered(self):
+        unchanged = ('research', 'unchanged')
+        said = 'Unchanged. <strong>Bearing.</strong> At cutoffs within the range the levels are too large for the endpoint.'
+        with self.assertRaisesRegex(ValueError, 'Not covered'):
+            self.check([unchanged, unchanged], said, last='data-bearing="some"')
+        with self.assertRaisesRegex(ValueError, 'Not covered'):
+            self.check([unchanged, unchanged], said + ' <strong>Not covered.</strong> More.', last='data-bearing="some"')
+        self.check([unchanged, unchanged], said + ' <strong>Not covered.</strong> Cutoffs above the range, wide '
+                   'windows and rows of unbounded overlap.', last='data-bearing="some"')
+        self.check([unchanged, unchanged], said)                                    # declares none
+
+    def check(self, earlier, progress, last='data-bearing="none"'):
         body = ''.join(f'<article data-kind="{row[0]}" data-route="r" data-goal-progress="{row[1]}" '
                        f'{row[2] if len(row) > 2 else ""}></article>' for row in earlier)
         body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged" ' + last + '>'

@@ -517,6 +517,7 @@ def stand_in(root, owed, now=None):
 
 BEARING_AFTER = 2      # earlier research entries in a row, on the route, reporting unchanged goal progress
 BEARING_MIN = 60
+NOT_COVERED_MIN = 40
 
 
 def validate_bearing(body, article, progress, text=None):
@@ -556,7 +557,17 @@ def validate_bearing(body, article, progress, text=None):
     if declared is None:
         raise ValueError('Declare data-bearing="none" or "some" on the article: whether this entry gives '
                          "anything at the goal's own parameters, as its Bearing statement says (AGENTS.md)")
-    item = re.search(r'data-(?:check|lead|bridge)="([^"]+)"', tag)
+    # A bearing that claims something was closed, in two entries in a row, with a summary sentence wider
+    # than the proof (reviews of 10 October 2026): it ends with what the result does not cover.
+    if declared.group(1) == 'some':
+        uncovered = re.search(r'<strong>Not covered\.</strong>(.*)', found.group(1), re.S)
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', uncovered.group(1))).strip() if uncovered else ''
+        if len(plain) < NOT_COVERED_MIN:
+            raise ValueError('This entry declares data-bearing="some": end its Bearing statement with '
+                             f'"<strong>Not covered.</strong>" and at least {NOT_COVERED_MIN} characters '
+                             'listing the cases its result does not reach, with no summary after the list '
+                             '(AGENTS.md, goal progress)')
+    item =re.search(r'data-(?:check|lead|bridge)="([^"]+)"', tag)
     if item is None:
         return
     earlier = [t for t in re.findall(r'<article\b[^>]*>', body[:article])
