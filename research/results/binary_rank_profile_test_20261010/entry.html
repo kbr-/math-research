@@ -1,0 +1,91 @@
+<article id="entry-2026-10-10-contraction-code-profile" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-filtered-prefix-design:s1" data-claims="lem:contraction-support-profile prop:optimal-code-fibers">
+<h3>10 October 2026 — Optimal rank distance still permits all flag mass to be wide</h3>
+<p class="entry-meta">Working code/profile identities and scope control; no source-profile bound.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, can the rank constraints on all weighted old annihilators control the total mass in wide flag fibres? The <a href="#wide-terminal-fiber">terminal-fibre theorem</a> alone gives only one wide fibre. The test must keep the same actual multiplication image and distinguish its several matrix representations.</p>
+<p><strong>General statement.</strong> <code>lem:contraction-support-profile</code> expresses a flag profile as successive row-support increments of the output-contraction code, and identifies that code's trace dual. <code>prop:optimal-code-fibers</code> gives optimal full-rank codes whose entire flag mass is wide, although every nonzero coefficient row has zero actual intersection. This is a coding-theoretic control, not an asserted realization by the hard PC source.</p>
+<p><strong>New mathematics.</strong> The orientation-correct translation and its control locate the information needed beyond minimum rank. They apply elementary duality and a classical full-rank field construction. Neither a new coding theorem nor a new contraction engine is claimed.</p>
+<p><strong>Goal progress.</strong> Unchanged. Minimum rank, even with optimal code dimension, does not imply the needed flag-mass bound. No stronger source-dependent property of the actual contraction code was established. The hard-quotient profile check remains open.</p>
+<h4>Use the right support and the right dual</h4>
+<p>Read the rank-code definitions, Singleton statement and trace-dual counting proof in <a href="https://arxiv.org/pdf/1410.1333v3">Ravagnani, Theorem 8 and Lemmas 27–30/Theorem 31</a>. Read the support conventions, Example 2.5, Definitions 4.1–4.2 and Theorem 4.3 with proof in <a href="https://arxiv.org/pdf/1803.10844v4">Gorla–Jurrius–López–Ravagnani</a>. The latter distinguishes row from column support and warns that separately optimal supports need not form a chain. No transposition-invariant rank-weight definition is silently substituted for our fixed orientation.</p>
+<p>Let \(F=\mathbb F_q\), \(V=F^k\), and \(0\ne W\subseteq V\otimes H\), of dimension \(m\). Replace \(H\) by the span of all coordinate values of elements of \(W\), so it is the minimal output space; write \(N=\dim H\). For \(\lambda\in H^*\), let
+\[
+M_\lambda=(\operatorname{id}_V\otimes\lambda)|_W:W\to V,
+\qquad\mathcal C=\{M_\lambda:\lambda\in H^*\}\subseteq\operatorname{Mat}_{k\times m}(F).
+\]
+The map from \(H^*\) is injective by minimality, hence \(\dim\mathcal C=N\). For a subcode \(\mathcal D\subseteq\mathcal C\), use the explicit oriented support
+\[
+\sigma(\mathcal D)=\dim\sum_{M\in\mathcal D}\operatorname{rowsp}(M)\subseteq W^*.
+\]
+This is a row-support dimension, not a minimum-rank statistic of one matrix.</p>
+<p id="contraction-support-profile"><strong>Lemma (contraction support profile).</strong> For any complete output flag \(0=H_0\subset\cdots\subset H_N=H\), let \(W_j\subseteq V\) be the image of \(W\cap(V\otimes H_j)\) in \(V\otimes(H_j/H_{j-1})\), identified with \(V\), and let \(r_j=\dim W_j\). Put
+\[
+\mathcal D_i=\{M_\lambda:\lambda(H_{N-i})=0\},\qquad0\le i\le N.
+\]
+Then \(\mathcal D_i\) is a complete flag of the code and
+\[
+r_{N-i+1}=\sigma(\mathcal D_i)-\sigma(\mathcal D_{i-1}),\qquad
+\sigma(\mathcal C)=m.
+\tag{1}
+\]
+In a basis \(w_1,\ldots,w_m\) of \(W\), the trace dual of \(\mathcal C\) is
+\[
+\mathcal C^\perp=\ker\Psi,\qquad
+\Psi(R)=\sum_{i=1}^k\sum_{j=1}^m R_{ij}(w_j)_i\in H.
+\tag{2}
+\]
+In particular it has dimension \(km-N\).</p>
+<p><strong>Proof.</strong> The common kernel of the matrices in \(\mathcal D_i\) is \(W\cap(V\otimes H_{N-i})\). Its codimension in \(W\) is the dimension of the span of their row functionals, namely \(\sigma(\mathcal D_i)\). Subtract consecutive kernel dimensions to obtain (1). The common kernel for the full code is zero, proving its total support dimension. For (2),
+\[
+\operatorname{Tr}(RM_\lambda^{\mathsf T})
+=\lambda\!\left(\sum_{i,j}R_{ij}(w_j)_i\right).
+\]
+Vanishing for every \(\lambda\) is equivalent to \(\Psi(R)=0\). Its image is \(H\) by minimality, so rank-nullity gives the dimension. \(\square\)</p>
+<p>For the actual image \(w_j=([Ag_i f_j])_i\), with fixed preimages \(f_j\) in the allowed multiplier domain, equation (2) says
+\[
+\Psi(R)=\left[A\sum_i g_i\left(\sum_jR_{ij}f_j\right)\right].
+\]
+All products fit the original tuple-image window. Thus the true trace dual consists of polynomial relations among these products. It is not automatically the earlier <a href="#coefficient-kernel-counts">coefficient-choice code</a>, formed by varying a row in \(V^*\). That code uses the other contraction of the tensor and in general even has a different matrix shape. A MacWilliams transform between the two cannot be assumed.</p>
+<h4>What the minimum-rank information actually gives</h4>
+<p>In the raw-variable setting of the full rectangular-annihilator proof, with unsatisfiable old generator degree at most \(d_0\), prefactor degree \(a\), full multiplier cutoff \(K\ge d_0-1\), and \(a+K+1\le D\), every nonzero matrix in \(\mathcal C\) has rank at least \(K+2-d_0\). Extending a functional from the minimal output space to the recorded \(H_A\) does not change its contraction; nonzero values on the output ensure the extended annihilator is nonzero. This is precisely the existing theorem, not a new rank bound. It does not apply automatically when the inputs are arbitrary nonlinear parent mixtures instead of all old variables.</p>
+<p>If a nonzero subcode \(\mathcal D\) has dimension \(j\), minimum rank at least \(d\), and row-support dimension \(t\), choose column coordinates adapted to that support. It becomes a code of \(k\)-by-\(t\) matrices. Deleting any \(d-1\) columns is injective on it, as a matrix supported in those columns has rank at most \(d-1\). Deleting \(d-1\) rows is also injective. Therefore
+\[
+j\le k(t-d+1),\quad j\le(k-d+1)t,
+\qquad
+\sigma(\mathcal D)\ge
+\max\left\{d-1+\lceil j/k\rceil,\ \lceil j/(k-d+1)\rceil\right\}.
+\tag{3}
+\]
+This is the elementary puncturing argument behind Singleton. It provides lower bounds on cumulative support, not an upper bound on the sum of increments exceeding a row budget. The following optimal-code control shows that this distinction persists even at the strongest possible minimum rank.</p>
+<h4>An optimal code with only wide nonzero fibres</h4>
+<p id="optimal-code-fibers"><strong>Proposition (optimal code fibres).</strong> For every prime power \(q\), integer \(d\ge2\) and \(\ell\ge1\), there are spaces \(V,H,W\) as above with
+\[
+\dim V=d,\qquad\dim H=\dim W=d\ell,
+\]
+whose contraction code has dimension \(d\ell\) and every nonzero matrix of rank \(d\), attaining the rank-metric Singleton bound. Under every complete output flag, exactly \(\ell\) nonzero fibres have dimension \(d\); all other fibres are zero. Nevertheless for every nonzero coefficient row, and more generally every matrix \(B\) of rank \(1\le h&lt;d\),
+\[
+W\cap(\ker B\otimes H)=0,
+\qquad
+\sum_j\dim(W_j\cap\ker B)=\ell(d-h)>0.
+\tag{4}
+\]
+Thus all flag mass lies in fibres wider than \(h\), while the actual intersection vanishes.</p>
+<p><strong>Proof.</strong> Let \(E=\mathbb F_{q^d}\), take \(V=E\) as an \(F\)-space, and identify \(H^*\) and an input space with \(E^\ell\). For \(f\in E^\ell\), define \(T(f)\in V\otimes H\) by its contraction map
+\[
+\lambda\longmapsto\sum_{j=1}^{\ell}\lambda_j f_j.
+\]
+Set \(W=T(E^\ell)\). For nonzero \(f\), one coordinate \(f_j\ne0\), so this map is onto \(E\). In particular \(T\) is injective, \(\dim W=d\ell\), and the minimal output space is all of \(H\). Symmetrically each nonzero \(M_\lambda:f\mapsto\sum_j\lambda_j f_j\) is onto \(E\), of \(F\)-rank \(d\). The code has dimension \(d\ell\). Deleting \(d-1\) rows from any full-minimum-rank code in \(\operatorname{Mat}_{d\times d\ell}(F)\) gives dimension at most \(d\ell\); equality here proves optimality.</p>
+<p>Use the nondegenerate trace pairing to identify the dual of \(E^\ell\) with itself. The row support of \(M_\lambda\) is then the \(F\)-space \(E\lambda\). For a subspace \(S\subseteq E^\ell\) of coefficient vectors, its joint row support is \(\operatorname{span}_E S\), of \(F\)-dimension \(d\dim_E\operatorname{span}_E S\). Along any complete \(F\)-flag in \(E^\ell\), adjoining one vector increases that \(E\)-dimension by zero or one. It increases a total of \(\ell\) times. Equation (1) gives exactly the asserted fibre widths, independently of the flag. The trace pairing used here is nondegenerate because the finite-field trace is nonzero and multiplication by a nonzero field element is invertible; it is not a source moment pairing.</p>
+<p>For \(f\ne0\), the contraction map of \(T(f)\) is onto \(V\). Its composition with a nonzero \(B\) therefore cannot vanish. This proves the first statement in (4). Every nonzero flag fibre equals the whole \(V\), so its intersection with \(\ker B\) has dimension \(d-h\), proving the second. All matrices are over \(F\); the extension field constructs the code, not legal nonbinary assignments in a binary source. \(\square\)</p>
+<p>This does not realize an arbitrary rank code as a multiplication image in the hard old quotient. It refutes the attempt to infer small fibre mass from minimum rank or even MRD optimality alone. The existing <a href="#clause-critical-positivity">positive-clause control</a> separately gives an actual proper-quotient case where a chosen row family has zero intersection despite every flag expression staying positive. Thus the loss is not cured by insisting that a good choice must first have a small flag certificate.</p>
+<h4>Return to actual source data</h4>
+<p>The primary trace-dual counting identities concern rank distributions and positive cardinality sums. Their direct application does not repair the <a href="#entry-2026-10-08-full-rank-moment">recorded exponential-moment failure</a>. The later exact coefficient-kernel count already retains the supports of all subspaces and their signed cancellations. Neither primary result supplies those data for arbitrary nonlinear source tuples. The new output-contraction viewpoint needs genuine polynomial-relation information in (2), beyond the minimum-rank bound for raw variables.</p>
+<p><strong>Follow-up.</strong> Continuing the actual-profile check and design parent after its second entry. The coding translation is explicit, but the proposed minimum-rank shortcut fails and does not close the actual source question. Next test the true trace-dual polynomial-relation space on complete source errors: can an applicable coding bound force a rank-one element whose designated weight row is nonzero, or does it require a stronger codimension hypothesis already equivalent to the old common-kernel criterion? Keep the actual coefficient positions, binary coefficient domain and original replay explicit. The old weight may vary; no preselected moment normalization is imposed. An unmarked rank-one syzygy is not an interpretation. Read the existing complete weighted-map/incidence records before another formulation, and include permitted polynomial coefficient features rather than silently restricting all maps to constants.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check" data-parent="lead:entry-2026-10-07-binary-quotient-architecture:3">Test the actual trace-dual relation code on complete weighted source errors, with a rank-one common multiplier and fixed unit/normalization component. Apply a concrete coding existence bound only at its true codimension and degree hypotheses; compare with the old common-kernel and weighted-map incidence criteria. Merely re-encoding the desired solution as a rank-one matrix does not advance the goal.</li></ul>
+<h4>Checks and verification</h4>
+<p>A fixed native GAP check enumerated all 67 subspaces of \(\mathbb F_2^2\otimes\mathbb F_2^2\); 54 have minimal output dimension two. Their three output flags give 162 direct-intersection/profile comparisons and 162 trace-dual kernel comparisons. The binary two-dimensional field-multiplication code has three nonzero matrices, all rank two; all nine flag/nonzero-row controls have actual intersection zero and flag bound one. Complete <a href="research/results/binary_rank_profile_test_20261010/check.txt">output</a> is retained. Two forward-global syntax warnings were nonfatal; the asserted completion totals passed without errors. The all-parameter proofs, not these orientation checks, establish the claims.</p>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed both claims, puncturing bounds, source orientation and unchanged-goal assessment; see <a href="research/results/binary_rank_profile_test_20261010/review.txt">verdict</a>. Its optional explicit definition of the flag fibre is incorporated; no substantive hypothesis was unused. It inspected the saved checker and completion evidence without rerunning it. Full rectangular-profile, filtered-prefix, cardinality-moment and critical-prefix proofs were read with the named primary coding passages. No inference rule or encoding change is made; other source theorems are not broadly certified.</p>
+<p><strong>Process assessment.</strong> Keeping the contraction direction fixed avoids an invalid MacWilliams transfer, and the optimal-code control prevents importing a large minimum-rank statement as a small flag-mass statement.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_rank_profile_test_20261010 -->
+</article>
