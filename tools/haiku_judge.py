@@ -25,14 +25,15 @@ class Refused(Failed):
     """The API refused the call, as for a retired model."""
 
 
-def ask(prompt, timeout):
+def ask(prompt, timeout, model=MODEL, thinking=False):
     """The JSON object in Haiku's answer; raises Refused when the API refuses the call, and Failed,
-    naming the cause, when it fails otherwise, a timeout included."""
-    env = {**os.environ, INSIDE_JUDGE: '1', 'CLAUDE_CODE_DISABLE_CLAUDE_MDS': '1', 'MAX_THINKING_TOKENS': '0'}
+    naming the cause, when it fails otherwise, a timeout included. A caller that needs a stronger reader
+    names its `model`, and with `thinking` leaves the model its own thinking."""
+    env = {**os.environ, INSIDE_JUDGE: '1', 'CLAUDE_CODE_DISABLE_CLAUDE_MDS': '1', **({} if thinking else {'MAX_THINKING_TOKENS': '0'})}
     try:
         with tempfile.TemporaryDirectory() as cwd:
             run = subprocess.run(
-                ['claude', '-p', '--model', MODEL, '--tools', '', '--strict-mcp-config',
+                ['claude', '-p', '--model', model, '--tools', '', '--strict-mcp-config',
                  '--disable-slash-commands', '--no-chrome', '--no-session-persistence',
                  '--output-format', 'json', '--system-prompt', SYSTEM],
                 input=prompt, cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout)

@@ -199,6 +199,31 @@ sys.exit(compute.main())
         self.assertNotEqual(repeated.returncode, 0)
         self.assertEqual(notebook.read_text(), expected)
 
+    def test_an_unanswered_stand_in_review_is_answered_in_the_entry_being_finished(self):
+        (self.root / 'tools/hooks').mkdir()
+        for name in ('tools/stand_in_review.py', 'tools/haiku_judge.py', 'tools/hooks/stop_checks.py'):
+            shutil.copy2(ROOT / name, self.root / name)
+        state = self.root / 'research/logs/stand-in-review'
+        state.mkdir(parents=True)
+        (state / 'r.json').write_text('{}')
+        (state / 'state.json').write_text(json.dumps({'fired': '2026-01-01T00:00:00+00:00', 'unanswered': 'research/logs/stand-in-review/r.json'}))
+        notebook = self.root / 'notebook.html'
+        entry = ('<section id="research-record">\n<article id="old"><p><strong>Review.</strong> An earlier entry answered an earlier '
+                 'review, at length enough.</p></article>\n<article id="new-entry">\n<p class="entry-meta">Status: test.</p>\n{}'
+                 '<!-- TIMING test_turn -->\n</article>\n</section>\n')
+        for answer in ('', '<p><strong>Review.</strong> Noted.</p>\n'):
+            notebook.write_text(entry.format(answer))
+            refused = self.command('tools/finish-turn.py', 'test_turn', check=False)
+            self.assertEqual(refused.returncode, 1)
+            self.assertIn('The stand-in review in research/logs/stand-in-review/r.json is unanswered', refused.stderr)
+            self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+        notebook.write_text(entry.format('<p><strong>Review.</strong> The first objection was right and is fixed; the second misread '
+                                         'the text.</p>\n'))
+        done = self.command('tools/finish-turn.py', 'test_turn')
+        # The answered review is settled, and the review that is due says why it did not run here.
+        self.assertIsNone(json.loads((state / 'state.json').read_text())['unanswered'])
+        self.assertIn('Stand-in review not run: no transcript of this session was found.', done.stdout)
+
     def test_incomplete_new_claim_is_rejected_before_clock_stops(self):
         sys.path.insert(0,str(ROOT/'tools'))
         import claim_registry as cr

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export timing, archive evidence, and fill one notebook timing placeholder."""
 import argparse
+from datetime import datetime, timezone
 import functools
 import html
 import json
@@ -470,6 +471,50 @@ def validate_prevention(text):
                          'applies (AGENTS.md, framework maintenance)')
 
 
+REVIEW_MINUTES = 40    # between two stand-in reviews: a research cycle is longer than a task's
+
+
+def reviewer():
+    """tools/stand_in_review.py as a module, or None where the checkout does not hold it or what it needs."""
+    try:
+        import stand_in_review
+    except ImportError:
+        return None
+    return stand_in_review
+
+
+def validate_review_answer(root, body, marker):
+    """The stand-in review an entry owes an answer, or None. While one is unanswered, the entry being finished
+    says after <strong>Review.</strong> what became of each objection (user, 11 October 2026: the reviewer
+    stands in for the user's reading of the session, tools/stand_in_review.py)."""
+    owed = reviewer() and reviewer().unanswered(root)
+    if not owed:
+        return None
+    position = body.index(marker)
+    article = body.rfind('<article', 0, position)
+    answer = report_paragraph(body[article:body.find('</article>', article)], 'Review')
+    if len(html.unescape(re.sub(r'<[^>]*>', ' ', answer)).strip()) < 40:
+        raise ValueError(f'The stand-in review in {owed} is unanswered: check each of its objections against the '
+                         'record, then say in a paragraph of the entry starting <strong>Review.</strong> what became '
+                         'of each: fixed, queued, or wrong and why (AGENTS.md, framework maintenance)')
+    return owed
+
+
+def stand_in(root, owed, now=None):
+    """After the finisher's work: the review that was answered is settled, and one that is due runs. Its lines
+    to print; nothing here fails the finisher."""
+    stand_in_review = reviewer()
+    if stand_in_review is None:
+        return []
+    try:
+        if owed:
+            stand_in_review.keep(root, {**stand_in_review.state_of(root), 'unanswered': None})
+        return stand_in_review.review(root, stand_in_review.session_transcript(root),
+                                      now or datetime.now(timezone.utc), minutes=REVIEW_MINUTES)
+    except Exception as error:      # a review is never the finisher's failure
+        return [f'Stand-in review failed ({type(error).__name__}: {error}); the finisher passes without one.']
+
+
 BEARING_AFTER = 2      # earlier research entries in a row, on the route, reporting unchanged goal progress
 BEARING_MIN = 60
 
@@ -910,6 +955,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
         raise ValueError("Timing marker must belong uniquely to selected notebook " + item["name"])
     draining = validate_queue(root, notebook)
     validate_marker(notebook.read_text(), marker, draining=draining)
+    owed = validate_review_answer(root, notebook.read_text(), marker)
     check_context(root, item["name"])  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)
     if (root / 'research/claims/index.json').exists():
@@ -985,6 +1031,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     print(f'Finished {turn} in {item["name"]}: timing embedded and evidence archived; review and commit.')
     print(f'Stage with the entry: {item["source"]} '
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
+    for line in stand_in(root, owed):
+        print(line)
     if next_turn:
         print(f'{next_turn} is running in preparation phase.')
         # Printed last so that a truncated view of this output still shows what the next entry must be.

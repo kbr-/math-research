@@ -489,7 +489,8 @@ def validate_verdict(reply, verdict):
 PROTOCOL = 'research/notes/TASK_PROTOCOL.md'
 CHECKS_OFF = 'tools/hooks/checks_off'
 # The checks a branch can turn off, by the names tools/measure_stop_checks.py prints.
-CHECK_NAMES = ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge')
+# 'review' is no check of a stop: it turns off the stand-in review at the finisher (tools/stand_in_review.py).
+CHECK_NAMES = ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge', 'review')
 
 
 def has_protocol(root):

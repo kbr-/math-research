@@ -527,7 +527,8 @@ class UncheckedClaimTest(unittest.TestCase):
             self.assertIn('A declared gap', self.run_hook(last_assistant_message=self.GAP)['reason'])
 
     def test_each_check_can_be_named_and_only_the_reader_opens_the_file(self):
-        self.assertEqual(hook.CHECK_NAMES, ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge'))
+        self.assertEqual(hook.CHECK_NAMES, ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge',
+                                            'review'))
         self.off(*hook.CHECK_NAMES)
         self.assertEqual(hook.checks_off(self.root), frozenset(hook.CHECK_NAMES))
         with self.fake_claude(self.verdict()):
