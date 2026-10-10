@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Prepare source-backed registry proposals; canonical writes are deliberately separate."""
+import math
+import re
 import argparse
 from copy import deepcopy
 import json
@@ -50,6 +52,34 @@ def ensure_answered(value):
             ensure_answered(item)
 
 
+SIMILAR_AT = 0.4
+
+
+def _words(text):
+    return set(re.findall(r'[a-z]{3,}', text.lower()))
+
+
+def similar_claims(claims, summary, count=3):
+    """Existing claims whose summaries resemble the given one, by cosine similarity of word sets weighted by
+    inverse document frequency: [(score, id), ...], highest first.  A new statement was registered twice in one
+    notebook within two days because a keyword search missed the first (10 October 2026); this is the search a
+    registration cannot skip."""
+    sets = [(claim['id'], _words(claim.get('summary', ''))) for claim in claims]
+    frequency = {}
+    for _, words in sets:
+        for word in words:
+            frequency[word] = frequency.get(word, 0) + 1
+    weight = {word: math.log(1 + len(sets) / seen) ** 2 for word, seen in frequency.items()}
+    unseen = math.log(1 + len(sets)) ** 2
+    mine = _words(summary)
+    size = math.sqrt(sum(weight.get(word, unseen) for word in mine)) or 1.0
+    scored = []
+    for identifier, words in sets:
+        other = math.sqrt(sum(weight[word] for word in words)) or 1.0
+        scored.append((sum(weight[word] for word in mine & words) / (size * other), identifier))
+    return sorted(scored, reverse=True)[:count]
+
+
 def prepare(before, request, root=ROOT):
     """Return a validated full proposal without mutating before or writing any files."""
     ensure_answered(request)
@@ -79,6 +109,17 @@ def prepare(before, request, root=ROOT):
         else:
             after['claims'].append(claim)
     validate(after)
+    linked = {}
+    for item in after['relationships']:
+        linked.setdefault(item['source']['id'], set()).add(item['target']['id'])
+        linked.setdefault(item['target']['id'], set()).add(item['source']['id'])
+    for identifier in sorted(submitted - set(positions)):
+        summary = next(claim['summary'] for claim in after['claims'] if claim['id'] == identifier)
+        for score, other in similar_claims(before['claims'], summary):
+            require(score < SIMILAR_AT or other in linked.get(identifier, ()),
+                    f'{identifier} resembles the registered {other} (similarity {score:.2f}): read that record, '
+                    'then relate the two in the spec (rediscovers, refines, depends_on or cites) or register '
+                    'nothing new')
     evidence = Evidence(root)
     claims = {claim['id']: claim for claim in after['claims']}
     for submission in request['submissions']:

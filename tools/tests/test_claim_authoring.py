@@ -9,7 +9,7 @@ import unittest
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
-from claim_authoring import questionnaire, prepare
+from claim_authoring import questionnaire, prepare, similar_claims
 from claim_registry import import_markdown, upgrade, HEADER, render
 from claim_reviews import FIELDS, digest, coverage
 from claim_registration import check_entries
@@ -65,6 +65,18 @@ class AuthoringTest(unittest.TestCase):
         self.assertEqual(projected, 'lem:a\tPrecisely scoped fixture claim\n')
         self.assertEqual(coverage(proposed, self.root)['counts']['significance'], {'reviewed': 1})
 
+    def test_a_claim_resembling_a_registered_one_must_be_related_to_it(self):
+        base, _ = prepare(self.empty, self.request(self.empty), self.root)
+        first = next(claim for claim in base['claims'] if claim['id'] == 'lem:a')
+        self.assertGreater(similar_claims(base['claims'], first['summary'])[0][0], 0.99)
+        self.assertLess(similar_claims(base['claims'], 'An unrelated statement about colourings')[0][0], 0.4)
+        (self.root / 'notebook.html').write_text(self.notebook.replace('data-claims="lem:a"', 'data-claims="lem:a lem:b"'))
+        request = self.request(base, 'lem:b')
+        with self.assertRaisesRegex(ValueError, 'resembles the registered lem:a'):
+            prepare(base, request, self.root)
+        request['submissions'][0]['claim']['summary'] = 'A statement on another subject entirely'
+        prepare(base, request, self.root)
+
     def test_unanswered_missing_review_and_stale_base_rejected(self):
         with self.assertRaises(ValueError):
             prepare(self.empty, questionnaire(self.empty, 'lem:a'), self.root)
@@ -116,6 +128,7 @@ class AuthoringTest(unittest.TestCase):
         (self.root / 'notebook.html').write_text(notebook)
         request = self.request(base, 'lem:fix')
         request['submissions'][0]['claim']['record'] = '[Correction](../notebook.html#fix)'
+        request['submissions'][0]['claim']['summary'] = 'Corrected constant, stated separately from every other lemma'
         request['relationships'] = [{'id': 'fix-a', 'type': 'corrects',
             'source': {'namespace': 'current', 'id': 'lem:fix', 'locator': None},
             'target': {'namespace': 'current', 'id': 'lem:a', 'locator': None},

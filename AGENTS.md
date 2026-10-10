@@ -112,7 +112,9 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   adjoint formulation, and statement content words with `tools/search-claims.py`. Test it against
   every recorded counterexample, refutation and obstruction for those objects. Before drafting its
   proof, check yourself whether the record already implies it; include the relevant prior results in
-  the end-of-cycle review brief. Before drafting a corollary, check for an earlier result under
+  the end-of-cycle review brief. Registration refuses a new claim whose summary resembles a
+  registered one unless the spec relates the two (`claim-index.py author build`); read the record
+  it names before deciding which. Before drafting a corollary, check for an earlier result under
   fewer hypotheses. State compositions as lemmas in one common setting with a complete proof, not a
   reference to a sketch.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
