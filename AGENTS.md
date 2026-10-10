@@ -150,9 +150,12 @@ growing checklists or one-off setup narratives.
   cycle. Defer optional extensions. Record dependencies re-read, checks and reviewer verdict in a
   short **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
   status, not a working proof; correctness takes precedence over cycle speed. Prepare staging paths,
-  commit message and focused metadata checks during review. Then run a sequential checkpoint batch:
-  preparation marker, checks, provenance, timing export/archive, staging, commit, and any authorized
-  push. Stop on failure; finish the local checkpoint before developing the next result.
+  commit message and focused metadata checks during review; the checks include
+  `./tools/check_records.py --diff`, which flags commit hashes, environment literals, backticks in
+  the notebook's HTML and long status lines in the lines being committed. Then run a sequential
+  checkpoint batch: preparation marker, checks, provenance, timing export/archive, staging, commit,
+  and any authorized push. Stop on failure; finish the local checkpoint before developing the next
+  result.
 - Measure every research turn from as early as practical, including reading, failed attempts and
   retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
   supply a guessed or placeholder label. For other agents or unavailable metadata, follow the
@@ -443,28 +446,49 @@ assessments.
   A scratch script whose output is committed to a tracked record becomes a tested framework tool
   before that commit. Register claims with `tools/claim-index.py author build` and a compact spec
   per the registry README. Append drafted entries and new Proposed next steps with
-  `tools/notebook-append.py`; build reviewer excerpts with `tools/notebook-excerpt.py`.
+  `tools/notebook-append.py`; build reviewer excerpts with `tools/notebook-excerpt.py`. Wrap every
+  Markdown file written here with `tools/rewrap_md.py`, at its default width, after every edit:
+  never by hand or with an ad hoc script. Replace a passage of prose with `tools/replace_text.py`,
+  which keeps its indentation, and make an exact edit with the editing tool, never with a replace
+  helper written into a script, which the Bash guard refuses. Where the tool falls short, improve it
+  until it does the job (user, 5 October 2026: "The tool exists for you to use it. Always.").
+- Before proposing to replace a tool of ours with another, or to give up something ours does, list
+  what each does that the other does not, build the smallest change to ours that closes the gap, and
+  measure both. A cost given for that change is a measurement of an attempt, never an estimate, and
+  a measurement taken under the other tool's mechanism says nothing about ours. Offer the
+  replacement only with that comparison, and offer keeping ours beside it (user, 10 October 2026:
+  "Instead of giving me the choice of losing an advantage, you should be giving me the choice of
+  keeping it").
 - The framework suite is every `tools/tests/test_*.py`, which covers `compute.sh`, the session
   launchers, `tools/` and the site: `test_site.py` runs the tests in `tests/`, including the
   real-browser ones, each within 5 s (user, 28 September 2026). New framework tests go there or into
-  `tests/` with a case in `test_site.py`, never beside the code. After editing any of these, run it
-  before committing, through the protected launcher: `./compute.sh --threads 1 python3
-  tools/tests/run.py`, which runs the tests in parallel worker processes. The whole suite stays
-  under 10 seconds (user, 26 September 2026: "The suite should run in 10s tops"); the runner fails a
-  slower run and lists its slowest tests. That is a defect to find and fix, such as repeated work in
-  the code under test, not a wait to accept. A timing-limit failure alone does not require another
-  suite run. For the same reason `compute.sh start` warns when its turn guidance takes over 1 s, the
-  finisher when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes over 2
-  s. Tests run on small fixtures, where work repeated per item costs nothing: a change to a
-  framework tool that reads the repository's records also gets one timed run against the real
-  repository, with a real diff where the tool compares revisions (an unchanged base skips whole code
-  paths), before its commit, and a profile if it is slower than the work it does. Measure a change's
-  effect before claiming it: a framework commit message states only what was measured or checked,
-  and a mechanism (a cache, an option, a helper) needs a measured use. Other tests run only on their
-  own trigger: `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
-  changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and
-  run only when those controls change. Scripts and tests under `research/` are computations or
-  provenance of finished one-off jobs, tied to the data of their date, and are not rerun.
+  `tests/` with a case in `test_site.py`, never beside the code. Before committing an edit to any of
+  these, run the tests the change could affect: a standalone new tool needs only its own test file
+  (`./compute.sh --threads 14 --timeout 60 python3 tools/tests/run.py test_NAME`, the parallel
+  runner on that one module: a file whose tests each start processes takes several times longer
+  under `unittest`, which runs them one after another); a change to shared code, fixtures, hooks, CI
+  or names other files use needs the whole suite, through the protected launcher: `./compute.sh
+  --threads 1 --timeout 60 python3 tools/tests/run.py`, which runs the tests in parallel worker
+  processes. The whole suite stays under 10 seconds (user, 26 September 2026: "The suite should run
+  in 10s tops"); the runner fails a slower run and lists its slowest tests. That is a defect to find
+  and fix, such as repeated work in the code under test, not a wait to accept. A timing-limit
+  failure alone does not require another suite run. For the same reason `compute.sh start` warns
+  when its turn guidance takes over 1 s, the finisher when its checks take over 5 s, and
+  `tools/resume.py` when preparing a bundle takes over 2 s. Tests run on small fixtures, where work
+  repeated per item costs nothing: a change to a framework tool that reads the repository's records,
+  or whose work grows with the directory it is given (a copy, a walk, a scan), also gets one timed
+  run against the real repository, and against the largest one it will be used in; such a tool
+  prints what its work grew with (files, megabytes), so a jump is seen at its first use. What git
+  tracks is not all source: recorded data and archived output are tracked too, so a tool that needs
+  the source is told which paths. The run uses a real diff where the tool compares revisions (an
+  unchanged base skips whole code paths), before its commit, and a profile if it is slower than the
+  work it does. Measure a change's effect before claiming it: a framework commit message states only
+  what was measured or checked, and a mechanism (a cache, an option, a helper) needs a measured use.
+  Other tests run only on their own trigger: `formalization/tests/` needs the Lean toolchain and
+  runs when formalization tooling changes; `resource-controls/test_watchdog.py` and `test_11gb.py`
+  validate the memory controls and run only when those controls change. Scripts and tests under
+  `research/` are computations or provenance of finished one-off jobs, tied to the data of their
+  date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general rules, not
@@ -479,6 +503,13 @@ assessments.
   each mistake it reports, or why none applies (the finisher checks). Repeated question marks signal
   increasing frustration with the process: implement and commit a real fix, preferably a mechanical
   check, rather than only apologizing.
+- A fix of the agent's own mistake is reported with its prevention, unasked, in the same reply, in a
+  paragraph that starts "Prevention": the class of the mistake in general terms, why the existing
+  rules and checks let it through, and the framework change made in that turn that stops the class
+  (a check, a hook, a test, a tool that reports or refuses; a written rule only where nothing
+  mechanical can), or the build item queued for it. Fixing the one instance is not a prevention. The
+  Stop hook and the commit check block a turn that admits a mistake without that paragraph (user, 10
+  October 2026, on having to ask after every fix how the mistake is prevented).
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
   new work requests. Run no tools or restart tasks in response to those notifications alone; say at
   most one sentence and wait for the user's message.
@@ -529,6 +560,15 @@ assessments.
   to immutable commits after fetching/receiving workers, rebase and validate against those IDs.
   Immediately before fast-forwarding check the destination HEAD and worktree: if advanced,
   refresh/rebase or leave unmerged; validation against an old target is not validation of a new one.
+- A branch whose remote moved under it (another clone pushed) is rebased onto the remote in a
+  temporary worktree, with a backup branch, under the `rebase-math-research-branches` skill (a skill
+  of the user's own agent setup, not kept in this repository; without it, follow this rule and the
+  registry workflow's remap step). Run `tools/notebook_rebase.py --continue` from that worktree at
+  each stop: it merges the notebook's conflicts element by element (entries, queue items, a living
+  section's paragraphs), continues, and stops on what needs a person. A conflict in wrapped Markdown
+  is merged word by word with `tools/merge_md_words.py FILE`, or by itself where the clone has
+  turned on the merge driver that tool describes. A conflict shape that recurs in another file gets
+  a guarded resolver there too, with tests, never a scratch loop.
 - Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`. Before authorized
   publication run `tools/verify-checkout.py --public-history BRANCH` (it includes the claim-index CI
   job, `tools/check-claims.py`, against `origin/BRANCH`) and the append-only check, unless
