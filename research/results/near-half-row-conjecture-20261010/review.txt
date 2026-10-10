@@ -1,0 +1,25 @@
+Review record, 10 October 2026: entry-2026-10-10-paired-row-sparse-case.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); hand reasoning and
+checks in python3 -I (its own scripts, not archived).
+
+Verdict: pass with corrections. Both proofs hold; it could not break them.
+1. Lemma correct, incl. the inversion over nonempty sets, the window, the count/parity step, w = 3,
+   w = h+1 and L = empty. A rank check over F_2 for h <= 8, 3 <= w <= h+1 confirms it. Not sharp: for
+   h <= 8, 3 <= w <= h, orders up to h-w+1 already suffice, and that is the least sufficient order; the same
+   proof seems to give it (q_L for |L| <= w-2; weights reach h-1, still in the window), not written out by
+   the reviewer. State the stronger range or say the range is not claimed minimal.
+2. Proposition correct; add that F_2-independence gives independence over any characteristic-two field.
+   Example confirmed: zero-sum sets {1,2,3,4} and {2,4,5}, |Y_J| = 2 each; sums in (i) 0.125, 0.375, 0.125,
+   0.375, 0.25; (ii) holds. Scope: 2^(h-1) sets contain i, so (i) needs q of order 2^(h+w-3), not
+   2^(h+w-2); the Bearing says 2^h; make consistent and mark heuristic. The order-two remark right.
+3. Table matches the file; recomputed w = 3 and point counts 316, 3856, 13798. g(h) = 1 is the prediction at
+   w = 3. q >= 2h+1 right. (6,13) also uses every sign class. "(5,13) of that kind" doubtful: 2h+1 = 11 is
+   prime. "Refutation attempt", one number per row: fair.
+4. "None", "unchanged", "Continuing" accurate; G_{i,j} degree <= w-1 right. Not verified: the source
+   parameters and the Record search scores.
+Unused: q an odd prime; complement-closure of Y_J; distinct sign classes (implied by w >= 3). The Question
+omits "odd prime, distinct sign classes".
+Process audit: title "three densest small rows": only smallest modulus shown; the summary should state the
+modulus requirement as a heuristic; the isolating-flat claim has no written argument.
+Suggestions (unverified by the author at that point): record the sharpened lemma; at w = 3 with every class
+used, try proving g(h) = 1 directly.
