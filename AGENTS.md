@@ -190,7 +190,8 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   existence versus arbitrary choices, derivability versus literal vanishing, or one surviving
   object versus a separately large space. Justify each demand or identify what can be weakened.
 - **Independent alternative.** Initially give the review's existing medium reviewer only the goal
-  and bounded available-result excerpts, withholding the preferred route. Ask for a materially
+  and bounded available-result excerpts, withholding the preferred route. List the route's
+  registered open conjectures with their evidence beside the proved results. Ask for a materially
   different architecture or a reason none was found. Then reveal the current route for comparison
   and the usual correctness review. Link the reviewer evidence here; do not manufacture an
   alternative or spawn a second reviewer for this step.
