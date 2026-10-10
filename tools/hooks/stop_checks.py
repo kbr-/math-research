@@ -538,10 +538,10 @@ def turn_block(texts, calls, said, off):
 
 
 def emit_block(decision):
-    """Print the decision that blocks the stop, and count it for the cycle (tools/cycle_numbers.py)."""
+    """Print the decision that blocks the stop, and log it with what it said."""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import block_log
-    block_log.record('stop_checks')
+    block_log.record('stop_checks', what=decision.get('reason', ''))
     print(json.dumps(decision))
 
 

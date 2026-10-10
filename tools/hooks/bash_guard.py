@@ -476,13 +476,17 @@ def main() -> int:
         reason = during_run.commit(payload)
         if reason:
             print(reason, file=sys.stderr)
+            SAID.append(reason)
             return 2
     return 0
+
+
+SAID = []   # what the commit's checks said when they blocked, for the block log
 
 
 if __name__ == "__main__":
     status = main()
     if status == 2:
         import block_log
-        block_log.record("bash_guard")
+        block_log.record("bash_guard", what=''.join(SAID))
     sys.exit(status)

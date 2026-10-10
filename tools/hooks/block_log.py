@@ -12,7 +12,9 @@ from pathlib import Path
 LOG = Path(__file__).resolve().parents[2] / 'research' / 'logs' / 'hook-state' / 'blocks.tsv'
 
 
-def record(hook, log=None, now=None):
+def record(hook, log=None, now=None, what=''):
+    """Append the block; `what`, the message the hook gave, follows on the same line, cut to 300 characters,
+    so that a check's blocks can be read back and its wrong ones found."""
     # A session runs the hooks of its own project directory; a test that sets the variable names another.
     project = os.environ.get('CLAUDE_PROJECT_DIR')
     if log is None and not (project and Path(__file__).resolve().is_relative_to(Path(project).resolve())):
@@ -21,6 +23,7 @@ def record(hook, log=None, now=None):
     try:
         log.parent.mkdir(parents=True, exist_ok=True)
         with log.open('a') as stream:
-            stream.write(f"{(now or datetime.now()).isoformat(timespec='seconds')}\t{hook}\n")
+            said = ' '.join(str(what).split())[:300]
+            stream.write(f"{(now or datetime.now()).isoformat(timespec='seconds')}\t{hook}" + (f'\t{said}' if said else '') + '\n')
     except OSError:
         pass
