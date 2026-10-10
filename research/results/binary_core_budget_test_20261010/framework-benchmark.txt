@@ -1,0 +1,39 @@
+Metadata checkpoint maintenance, 10 October 2026
+
+Trigger: the previous finisher's checks took 5.4 seconds, above their 5-second
+target. No validation was disabled.
+
+Real nonempty comparison: science tip 8a2e3b532, base e70dc9285 (HEAD^ at the
+time). Both protected commands ran Python cProfile around:
+  tools/claim-index.py changed --base HEAD^ --out <owned-scratch-report>
+
+Before: 3.820 seconds profiled; 7,987,274 function calls.
+Markdown parsing: 26,880 calls, 0.437 cumulative seconds.
+After: 3.445 seconds profiled; 6,844,693 function calls.
+Immutable link parser: 10,235 calls, 0.159 cumulative seconds;
+public fresh-record wrapper: 3,840 calls, 0.086 cumulative seconds.
+The before/after JSON reports compared equal, and both passed.
+These are single before/after profiles, not an averaged benchmark; the entire
+finisher has not yet been remeasured on another research snapshot.
+
+The bounded content cache returns fresh mutable records to callers. Regression
+coverage checks repeated parsing, result-mutation isolation, changed input text,
+and repeated rejection of malformed links.
+
+The first full framework run had no behavioral failure, but three browser cases
+exceeded their 5-second limits and the 556-test suite took 13.1 seconds. Two
+retrieval tests repeatedly parsed the growing full registry. They now use fixed
+real statement competitors and a small default-registry fixture; real-repository
+validation remains a separate gate and was exercised in the profile above.
+
+The first fixture revision accidentally exercised the explicitly different
+registry path, which intentionally omits historical suggestions. That test
+failed; its fixture now patches the default registry and invokes the actual CLI
+main/argument-parser path. The final full run passed all 556 tests in 8.4 seconds,
+including all real-browser timing checks. Limits were unchanged.
+
+Protected run IDs in binary_core_budget_test_20261010:
+  fb6eb3c635 before profile; 34bad34e4a after profile;
+  55857d0325 initial full suite; eb89bccd0a fixture-path failure;
+  1b4fded343 final full suite; 122a0cd171 fixture generation.
+Full outputs are preserved alongside this note and in the eventual cycle archive.

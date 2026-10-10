@@ -1,6 +1,7 @@
 """Lossless migration, graph semantics, bounded retrieval and table regressions."""
 import copy
 import importlib.util
+import io
 import json
 from pathlib import Path
 import re
@@ -40,6 +41,27 @@ def endpoint(label):
 
 
 class ClaimRegistryTests(unittest.TestCase):
+    def test_repeated_link_reads_reuse_parse_without_sharing_mutable_records(self):
+        text = '[Proof](https://example.org/a(b))'
+        cr._markdown_link_pairs.cache_clear()
+        with mock.patch.object(cr.re, 'finditer', wraps=cr.re.finditer) as scan:
+            first = cr.markdown_links(text)
+            first[0]['target'] = 'mutated'
+            first.append({'label': 'extra', 'target': 'extra'})
+            expected = [{'label': 'Proof', 'target': 'https://example.org/a(b)'}]
+            self.assertEqual(cr.markdown_links(text), expected)
+            claim = dict.fromkeys(cr.TEXT_FIELDS, text)
+            refs = cr.references(claim)
+            refs[0]['target'] = 'also mutated'
+            self.assertEqual(cr.references(claim)[0]['target'], expected[0]['target'])
+            self.assertEqual(scan.call_count, 1)
+            claim['record'] = '[New](../new.md)'
+            self.assertEqual(cr.references(claim)[-1]['target'], '../new.md')
+            self.assertEqual(scan.call_count, 2)
+        for _ in range(2):
+            with self.assertRaises(ValueError):
+                cr.markdown_links('[bad](unclosed')
+
     def test_endpoint_validation_does_not_scan_claims_per_edge(self):
         class CountedID(str):
             comparisons = 0
@@ -351,15 +373,27 @@ class ClaimRegistryTests(unittest.TestCase):
                 search_tool.historical_matches(['PC'], root)
 
     def test_default_display_surfaces_historical_elimination_without_changing_tsv(self):
-        command = [sys.executable, str(TOOLS/'search-claims.py'),
-                   'one', 'block', 'additive', 'elimination', '-n', '1']
-        display = subprocess.run(command, check=True, capture_output=True, text=True).stdout
-        self.assertIn('historical:thm:one-elimination', display)
-        self.assertLessEqual(display.count('  historical:'), 3)
-        tsv = subprocess.run(command+['--format', 'tsv'], check=True,
-                             capture_output=True, text=True).stdout
-        self.assertEqual(len(tsv.splitlines()), 1)
-        self.assertNotIn('historical:', tsv)
+        with tempfile.TemporaryDirectory() as directory:
+            registry = Path(directory) / 'index.json'
+            data = cr.import_markdown(source())
+            data['claims'][0]['summary'] = 'One-block additive elimination of fresh coefficients.'
+            cr.write_json(registry, data)
+            command = [str(TOOLS/'search-claims.py'),
+                       'one', 'block', 'additive', 'elimination', '-n', '1']
+            def run(*extra):
+                # Exercise the default-registry path: an explicitly different registry
+                # intentionally suppresses historical suggestions.
+                with mock.patch.object(search_tool, 'REGISTRY', registry), \
+                     mock.patch.object(sys, 'argv', command + list(extra)), \
+                     mock.patch.object(sys, 'stdout', new_callable=io.StringIO) as output:
+                    search_tool.main()
+                    return output.getvalue()
+            display = run()
+            self.assertIn('historical:thm:one-elimination', display)
+            self.assertLessEqual(display.count('  historical:'), 3)
+            tsv = run('--format', 'tsv')
+            self.assertEqual(len(tsv.splitlines()), 1)
+            self.assertNotIn('historical:', tsv)
 
     def test_append_merge_and_conflicting_metadata(self):
         base = cr.import_markdown(source())
@@ -372,10 +406,11 @@ class ClaimRegistryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             merge_tool.merge_registry(*map(json.dumps, (base, left, right)))
 
-    def test_repository_registry_and_retrieval(self):
+    def test_sample_registry_retrieval(self):
+        # Fixed real competitors keep this unit test independent of corpus growth.
         # Rendering and link targets of the real registry are checked by `claim-index.py validate`,
         # which tools/check-claims.py runs next to this test; only retrieval is tested here.
-        d = cr.load()
+        d = json.loads((TOOLS/'tests/fixtures/claim-search-sample.json').read_text())
         for words, expected in [(['point', 'support', 'lower', 'bound'], 'lem:Boolean-design-point-support-lower-bound'),
                                 (['two', 'form', 'no', 'fall', 'criterion'], 'thm:two-form-no-fall-criterion')]:
             ids = [c['id'] for _, c in search_tool.search(d, words)[:5]]

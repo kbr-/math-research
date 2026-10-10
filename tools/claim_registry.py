@@ -5,6 +5,7 @@ Standard library only. This module does not assess mathematical correctness.
 import hashlib
 import copy
 import json
+from functools import lru_cache
 from pathlib import Path
 import re
 import subprocess
@@ -178,10 +179,12 @@ def _shape_reference(value, spec, path='$', schema=None):
                 _shape_reference(child, items, lambda i=i: f'{where()}[{i}]', schema)
 
 
-def markdown_links(text):
-    """Inline links, including balanced parentheses/angle-bracket destinations.
+@lru_cache(maxsize=16384)
+def _markdown_link_pairs(text):
+    """Cache only immutable parse results; callers still receive fresh records.
 
-    Reject unsupported link syntax rather than silently losing a destination.
+    Validation, rendering and evidence checks repeatedly inspect the same claim
+    strings in one process. Content keys remain valid when a claim is edited.
     """
     result = []
     for match in re.finditer(r'(?<!!)\[([^\]\n]+)\]\(', text):
@@ -203,14 +206,19 @@ def markdown_links(text):
             target = target[1:-1]
         require(bool(target) and '\n' not in target, 'Empty/multiline link target')
         require(not re.search(r'\s+[\"\']', target), 'Link titles require explicit importer support')
-        result.append({'label': match.group(1), 'target': target})
+        result.append((match.group(1), target))
     require(len(result) == text.count(']('), 'Unsupported Markdown link syntax')
-    return result
+    return tuple(result)
+
+
+def markdown_links(text):
+    """Inline links, rejecting unsupported syntax without losing destinations."""
+    return [{'label': label, 'target': target} for label, target in _markdown_link_pairs(text)]
 
 
 def references(claim):
-    return [dict(link, field=field) for field in TEXT_FIELDS
-            for link in markdown_links(claim[field])]
+    return [{'label': label, 'target': target, 'field': field} for field in TEXT_FIELDS
+            for label, target in _markdown_link_pairs(claim[field])]
 
 
 def unformalized_boundary_words(claim):

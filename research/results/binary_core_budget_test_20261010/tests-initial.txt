@@ -1,0 +1,68 @@
+# command: python3 tools/tests/run.py
+# run 55857d0325, session binary_core_budget_test_20261010; full output
+Preparing worktree (new branch 'codex-main')
+Branch 'codex-main' set up to track local branch 'main'.
+HEAD is now at 8d446d7 fixture
+Preparing worktree (new branch 'codex-feature-test')
+Branch 'codex-feature-test' set up to track local branch 'feature/test'.
+HEAD is now at 8d446d7 fixture
+Preparing worktree (new branch 'codex-collision')
+fatal: A branch named 'codex-collision' already exists.
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Refused: arm the monitor on the background run first: Monitor with command "python3 tools/watch_run.py t1" and timeout_ms 1800000 (load its schema with ToolSearch "select:Monitor" if needed). It reports the 5-minute decision point and the run's end (COMPUTATION_RULES.md, long runs)
+Queue triage batches are retired (user, 9 October 2026: "Revert it back to the state where each item was done one at a time"): develop the head in its own entry (data-lead or data-bridge)
+===== test_site.Browser.test_group_0 =====
+======================================================================
+FAIL: test_group_0 (test_site.Browser) [test_notebook_deep_links:links]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 6.658467106 not less than 5.0 : test_notebook_deep_links:links took 6.7 s
+
+----------------------------------------------------------------------
+Ran 1 test in 13.072s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_1 =====
+======================================================================
+FAIL: test_group_1 (test_site.Browser) [test_notebook_deep_links:growth]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 5.657646955000001 not less than 5.0 : test_notebook_deep_links:growth took 5.7 s
+
+----------------------------------------------------------------------
+Ran 1 test in 11.121s
+
+FAILED (failures=1)
+
+===== test_site.Browser.test_group_2 =====
+======================================================================
+FAIL: test_group_2 (test_site.Browser) [test_notebook_math:layout]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_site.py", line 92, in run_group
+    self.assertLess(case['seconds'], BROWSER_LIMIT_S, f"{case['name']} took {case['seconds']:.1f} s")
+AssertionError: 7.310415783000001 not less than 5.0 : test_notebook_math:layout took 7.3 s
+
+----------------------------------------------------------------------
+Ran 1 test in 12.121s
+
+FAILED (failures=1)
+
+Over the 10 s limit (AGENTS.md). Slowest tests:
+   13.07 s  test_site.Browser.test_group_0
+   12.12 s  test_site.Browser.test_group_2
+   11.12 s  test_site.Browser.test_group_1
+    7.10 s  test_claim_registry.ClaimRegistryTests.test_default_display_surfaces_historical_elimination_without_changing_tsv
+    4.47 s  test_compute_cli.RunnerChecks.test_timeout_kills_service_and_child
+    4.35 s  test_claim_registry.ClaimRegistryTests.test_repository_registry_and_retrieval
+    4.30 s  test_recovery_evidence.RecoveryIntegrationTest.test_existing_commands_collect_and_archive_without_extra_output
+    4.16 s  test_compute_cli.RunnerChecks.test_standalone_logging_argument_preservation_and_output_limit
+    3.50 s  test_compute_cli.RunnerChecks.test_parallel_success_failure_and_stopped_session
+    2.85 s  test_compute_cli.RunnerChecks.test_interrupt_kills_service_and_child
+Ran 556 tests in 13.1s: FAILED (3), TOO SLOW
