@@ -1,0 +1,67 @@
+<article id="entry-2026-10-10-shortening-buffer-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-07-binary-quotient-architecture:s3" data-claims="prop:shortening-buffer-gap">
+<h3>10 October 2026 — The shortening buffer cannot be deleted even on a full affine domain</h3>
+<p class="entry-meta">Working all-size degree-buffer control; no new source contraction.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, finish the design lead's original realization check. Legal input-coordinate maps already exist. Can the extra Frobenius reserve in independent-row shortening simply be dropped to match the direct filtered-prefix window? A counterexample must be an actual multiplication image in a proper Boolean PC quotient, not an arbitrary tensor space.</p>
+<p><strong>General statement.</strong> <code>prop:shortening-buffer-gap</code> constructs such a counterexample on the full affine multiplier space for every number of blocks \(u\ge2\). Its degree-three closure shows where the missing multiplication reserve changes the old image. The construction uses an alternating matrix space, but differs from <code>prop:relative-intersection-loss</code>: this test changes the available degree window, not the escape coefficient within the valid window.</p>
+<p><strong>New mathematics.</strong> The unrestricted and independent one-row shortening rates both fail at \(a+L+\delta\le D\), despite input Boolean certificates and an actual full-domain multiplication map. The larger \(a+L+2\delta\le D\) hypothesis cannot be removed generally. This is an elementary scope control, not a hard formula family.</p>
+<p><strong>Goal progress.</strong> Unchanged. The lower-buffer exception in the old design comparison is real at the rank-lemma level, but this control supplies no useful source profile or complete-proof deficit. For its linear inputs, original source replay already pays the larger buffer.</p>
+<h4>The degree-two system</h4>
+<p>Fix \(u\ge2\). Use five variables \(x_1,\ldots,x_5\) and, for each \(s\in[ u ]\), ten variables \(y^{(s)}_{ab}\), \(1\le a&lt;b\le5\). There are \(v=5+10u\) old variables. Let \(X_s\) be the vector space spanned by the fifty cross monomials \(x_i y^{(s)}_{ab}\). Define a surjective linear map
+\[
+\phi_s:X_s\longrightarrow\mathbb F_2^5,\qquad
+\phi_s(x_i y^{(s)}_{ab})=
+\begin{cases}e_b&i=a,\\e_a&i=b,\\0&i\notin\{a,b\}.\end{cases}
+\tag{1}
+\]
+Let \(\Gamma_u\) consist of all Boolean equations and a basis of each \(\ker\phi_s\), interpreted as homogeneous quadratic polynomials. It has the all-zero solution. Put \(J_2=C_2(\Gamma_u)\) and \(Q_2=V_2/J_2\).</p>
+<p>The degree-two leading parts of the Boolean equations use square monomials, while the additional equations use only the separate cross spaces. Thus their linear span has no nonzero polynomial of degree at most one. No nonzero variable-multiplication step is available inside degree two, so \(J_2\) is exactly that span. In particular it is a genuine PC-closed proper space, not a static span being assumed closed. It has no linear relations. Modulo it, cross block \(s\) is a five-dimensional space with basis classes \(t^{(s)}_b\) corresponding to \(e_b\).</p>
+<p>Take \(A=1\), inputs \(g_i=x_i\), and the full affine domain \(U=V_1\). Let
+\[
+T:V_1\to Q_2^5,\quad f\mapsto([x_i f])_i,
+\qquad W=T(V_1),\quad c=\dim W.
+\]
+For \(\alpha\in\mathbb F_2^5\), let \(R_\alpha:W\to Q_2\) sum coordinates with coefficients \(\alpha\). These are literal legal input rows. All required input equations \(x_i^2+x_i\) are present. The available window is \(a=0,L=1,\delta=1,D=2\), one degree short of Frobenius shortening.</p>
+<h4>Every nonzero row has the same insufficient loss</h4>
+<p id="shortening-buffer-gap"><strong>Proposition (shortening buffer gap).</strong> For this family,
+\[
+c=10u+6,\qquad
+\operatorname{rank}R_\alpha=4u+5\quad(\alpha\ne0),
+\qquad \dim\ker R_\alpha=6u+1\quad(\alpha\ne0).
+\tag{2}
+\]
+The zero row has kernel dimension \(c\). Consequently
+\[
+\mathbb E_{\alpha\in\mathbb F_2^5}\dim\ker R_\alpha
+=\frac{196u+37}{32} >\frac c2,
+\qquad
+\mathbb E_{\alpha\ne0}\dim\ker R_\alpha
+=6u+1>\frac{15}{31}c.
+\tag{3}
+\]
+At the degree-three closure \(J_3=C_3(\Gamma_u)\), the same tuple on \(V_1\) instead has image dimension six, every nonzero row has rank five and kernel dimension one, and the uniform mean kernel dimension is \(37/32\). Thus the valid larger-window theorem is not contradicted.</p>
+<p><strong>Proof at degree two.</strong> Split \(V_1=\operatorname{span}(1,x_1,\ldots,x_5)\oplus\bigoplus_s\operatorname{span}(y^{(s)}_{ab})\). Images of these summands have disjoint quotient supports: the first lies in the pure \(x\) Boolean polynomials, and the others in the independent cross spaces from (1). On one \(y\)-summand, \(T\) identifies its ten coefficients with a symmetric zero-diagonal five-by-five matrix, with row \(i\) giving the coefficients of \(t^{(s)}_b\). This is injective. On the first six-dimensional summand, \(T\) is also injective: if \(x_i(c_0+\sum_j c_jx_j)=0\) for every \(i\), the pure squarefree \(x_i x_j\) coefficients force every \(c_j=0\), then the linear coefficients force \(c_0=0\). This proves \(c=10u+6\).</p>
+<p>For nonzero \(\alpha\), contraction of the alternating matrix summand maps \(S\) to \(S\alpha\). Its image is exactly \(\alpha^\perp\), of dimension four. Containment follows from \(\alpha^{\mathsf T}S\alpha=0\). For the reverse containment choose \(j\) with \(\alpha_j=1\); for \(z\in\alpha^\perp\), the alternating matrix \(ze_j^{\mathsf T}+e_jz^{\mathsf T}\) sends \(\alpha\) to \(z\). On the first summand, contraction is multiplication by the nonzero linear form \(q_\alpha=\sum_i\alpha_i x_i\) in the Boolean algebra. Its affine kernel is exactly \(\langle1+q_\alpha\rangle\): an invertible binary affine change making \(q_\alpha\) one coordinate proves this by restriction to its one-fibre. Thus its rank is five. The independent supports give rank \(4u+5\), proving (2).</p>
+<p>Averaging the zero row and the 31 nonzero rows gives (3). The two strict differences are \((36u-59)/32\) and \((36u-59)/31\), respectively, positive for every \(u\ge2\). The independent-row factor \(15/31\) is exactly \(\beta_2(5,1)\).</p>
+<p><strong>Proof of the degree-three comparison.</strong> Represent \(t^{(s)}_b\) by any \(x_a y^{(s)}_{ab}\) with \(a\ne b\); all such representatives agree through degree two by (1), with unordered subscripts understood. Choose distinct \(a,c\ne b\). The relations
+\[
+x_a y^{(s)}_{ab}=t^{(s)}_b,
+\quad x_c y^{(s)}_{cb}=t^{(s)}_b,
+\quad x_a y^{(s)}_{cb}=0
+\]
+are degree-two consequences. Multiplying the first by \(x_a\) and reducing its square gives \(x_a t^{(s)}_b=t^{(s)}_b\) through degree three. Multiplying the other two by \(x_a\) and \(x_c\) gives \(x_a t^{(s)}_b=0\) through the same degree. Hence every \(t^{(s)}_b\), and then every mixed \(x_i y^{(s)}_{ab}\), lies in \(J_3\).</p>
+<p>All \(y\)-summands therefore disappear from the tuple image. No extra relation among pure \(x\) Boolean functions can appear: setting every \(y=0\) leaves arbitrary Boolean \(x\) as a solution of \(\Gamma_u\). The remaining six-dimensional affine calculation is unchanged, giving image dimension six, nonzero-row rank five and the claimed mean. \(\square\)</p>
+<h4>What this decides for the source route</h4>
+<p>The counterexample uses the full affine domain, so the lost hypothesis cannot be blamed only on an artificially selected multiplier subspace. It also contains every old Boolean equation and is an actual multiplication image. The failure is at the exact point where multiplying an already derived relation by another input is unavailable in the old cutoff. At degree three those extra products derive the relations exhibited above. Extending the cutoff while pretending that its lower-degree quotient stays unchanged would miss that fall.</p>
+<p>It does not prove that the design method gains a useful source estimate at the smaller window. The <a href="#entry-2026-10-07-filtered-prefix-design">direct prefix theorem</a> still requires its actual flag profile. In this control a one-row source with linear inputs has original companion degree three, so a degree-two old window cannot pay its full replay. More generally, for a fresh block with input degree at most \(\delta\), accuracy \(h\), and original companion ceiling \(B\ge h(\delta+1)+\delta\), the replay reserve \(b+K+B\le D\) already covers the shortening reserve \(b+K+(h+2)\delta\le D\) whenever \(h\ge\delta\). Their difference is \(h-\delta\). This is a comparison of these stated ceilings, not an assertion about arbitrary earlier polynomial substitutions or smaller individual companion degrees.</p>
+<p>Thus the smaller-buffer opportunity relevant to a complete source must survive the original ledger, for example outside that \(h\ge\delta\) regime. This family does not supply it. For the exact input-word enlargement from \(U_0=V_0\) and these five inputs, the generated domain is \(\operatorname{span}(1,x_1,\ldots,x_5)\), not all of \(V_1\); its tuple dimension is only six. Our counterexample concerns the full affine enlargement and the general arbitrary-domain shortening assertion, not a failed generated-word theorem in that special source.</p>
+<h4>Verification and disposition</h4>
+<p>The smallest stated control is \(u=2\): 25 old variables, 326 squarefree monomials through degree two, 90 independent cross relations, quotient dimension 236 and affine domain dimension 26. Native GAP checked all 32 legal rows. Direct quotient ranks obtained by adjoining the relation rows agree with the explicit normal-form ranks. It also checked ten exact degree-three polynomial certificates, not a numerical extrapolation of closure. The means are \(429/32\) at degree two and \(37/32\) after the proved degree-three reduction; see <a href="research/results/binary_design_buffer_test_20261010/check.txt">complete output</a>. The all-copy proof establishes the general statement. No larger sweep is needed.</p>
+<p><strong>Follow-up.</strong> Developed the original legal-realization check: the existing filtered-prefix theorem supplies the legal maps and its profile hypothesis, while the present control and source-ledger comparison settle why its smaller buffer cannot be replaced by unconditional Frobenius shortening. This does not close the separate actual-profile, weighted-sector or coupled-row questions. The design parent continues after the first entry of this spell.</p>
+<p>Next develop its first remaining actual-profile check. The <a href="#wide-terminal-fiber">wide terminal fibre theorem</a> blocks a uniform maximum-width premise but not a bound on the total mass in wide fibres. Investigate the rank-metric space of variable-versus-multiplier contractions supplied by all old annihilators, keeping the original weighted quotient: determine whether its rank constraints control that mass or merely restate the last-fibre lower bound. Search and read the relevant prior rank-profile records before using a coding theorem. A new code description alone is not a source estimate.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check" data-parent="lead:entry-2026-10-07-binary-quotient-architecture:3">For the existing actual-profile question, treat the contraction matrices of all weighted old annihilators as a rank-metric code. Test whether the recorded minimum-rank theorem and any applicable coding bound control total wide-fibre mass relative to the same surviving domain, rather than only its last fibre or an ambient cardinality moment. Preserve all pseudoideal and degree constraints; a code description without a quantitative source estimate is insufficient.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the exact PC-closure description, both rank calculations, all-copy inequalities, degree-three certificates and source/generated-domain distinctions; see <a href="research/results/binary_design_buffer_test_20261010/review.txt">verdict</a>. It endorsed unchanged goal progress and Developed only for the original realization/interface check. The \(y\)-Boolean axioms are not used by the rank calculation but retain the required fully Boolean setting; \(u\ge2\) is needed for strict failure, not the rank formulas. Full direct-prefix, independent-row, rectangular-profile, boundary-filter, cut-residual and filtered-word records were read. The exact GAP check passed and the reviewer inspected its saved evidence. No encoding rule or calculus is changed; the future coding test is not certified.</p>
+<p><strong>Process assessment.</strong> Testing a genuine closed quotient isolates the missing multiplication reserve, while the separate original-source and generated-domain checks prevent that lemma-level exception from being sold as goal progress. Initial control planning overlapped preparation before the mathematics phase marker.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_design_buffer_test_20261010 -->
+</article>
