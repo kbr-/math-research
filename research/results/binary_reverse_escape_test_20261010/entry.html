@@ -1,0 +1,75 @@
+<article id="entry-2026-10-10-reverse-escape-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-08-openai-transfer-proposals:s3" data-claims="lem:dual-escape-identity">
+<h3>10 October 2026 — Dualizing an actual row preserves its escape cost</h3>
+<p class="entry-meta">Working exact rank identity; unsuccessful reverse-contraction test.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, execute the <a href="#entry-2026-10-10-adjoint-scope-review">review's decisive test</a>. Does the paid common adjoint improve the actual conditional row bound \(c'\le\min(c,c/2+e)\), without assuming its reverse kernel is PC-closed? The new estimate must change the source-dependent escaping-image charge, not merely rename it.</p>
+<p><strong>General statement.</strong> <code>lem:dual-escape-identity</code> expresses each actual binary row's rank loss exactly in primal and adjoint terms. It completes an elementary rank-nullity step in <code>lem:partial-image-contraction</code> and applies <code>lem:common-moment-adjoint</code>. This is a reformulation of existing mechanisms, not an independent contraction theorem.</p>
+<p><strong>New mathematics.</strong> The actual residual rank equals current rank minus multiplied rank plus the specialized escape rank. The latter equals the adjoint rank restricted to the current adjoint kernel. Thus choosing a different admissible moment pairing cannot change this cost.</p>
+<p><strong>Goal progress.</strong> Unchanged. The architecture test produces no better bound. The known relative-intersection counterexample survives every such dual description. No source-wide estimate or polynomial proof-size exponent range changes.</p>
+<h4>Keep the same weighted domain and pay both windows</h4>
+<p>Let \(J\) be a proper binary degree-\(D\) pseudoideal containing Booleanity. Fix a binary prefactor \(A\) of degree at most \(a\), an allowed binary linear space \(U\subseteq\mathbb F_2[x]_{\le K}\), and inputs \(g_1,\ldots,g_r\) of degree at most \(\delta\ge1\). Earlier obligations, if any, are encoded by this fixed \(U\); no larger domain is silently substituted. Put \(s=a+K\), \(S=[AU]\subseteq Q_s\), \(L=s+2\delta\), and assume
+\[
+2L\le D.
+\tag{1}
+\]
+This implies the forward absorption window \(s+3\delta\le D\). If \(S=0\) there is no surviving domain and the intended lower-bound use is unavailable; assume \(S\ne0\). Define maps into \(Y=Q_L^r\) by
+\[
+Tf=([g_if])_i,\qquad M_jf=([g_ig_jf])_i,
+\qquad C=\operatorname{im}T,\quad c=\dim C.
+\]
+For a legal row \(t\in\mathbb F_2^r\), write \(q=\sum_jt_jg_j\), \(M_q=\sum_jt_jM_j\) and \(T_q=T-M_q\). These are the original current, multiplied and new companion maps on exactly \(S\). Original source/replay ceilings remain separate from (1).</p>
+<p>Use the common-adjoint lemma on \(T\) with loose error ceiling \(2\delta\). One finite analysis extension \(\mathbb L\) and normalized moment \(\mu\) give nonsingular pairings on \(S,Y\). Its additional nonsingularity on \(\ker T\) is available but unnecessary for the identities below. Keep this same pair of forms for every \(M_j\) and every legal row. Their adjoints exist without any requirement that their kernels be nonsingular. The multiplier formulas are
+\[
+T^\dagger y=\Pi_S\!\left(\sum_i g_i y_i\right),\qquad
+M_j^\dagger y=\Pi_S\!\left(\sum_i g_i g_j y_i\right).
+\]
+For the second formula the maximum tested degree is \(s+2\delta+L=2L\); this is why the larger output cutoff was chosen. These are bilinear adjoints, so \(M_q^\dagger=\sum_jt_jM_j^\dagger\). They are analysis maps, not coefficient substitutions.</p>
+<h4>The exact identity</h4>
+<p id="dual-escape-identity"><strong>Lemma (dual escape identity).</strong> Under these hypotheses let \(\pi:Y\to Y/C\) be the quotient map and put
+\[
+r_q=\operatorname{rank}M_q,\quad e_q=\operatorname{rank}(\pi M_q),
+\quad c_q=\operatorname{rank}T_q.
+\]
+Then, for every legal binary row,
+\[
+c_q=c-r_q+e_q
+ =c-\operatorname{rank}M_q^\dagger
+   +\operatorname{rank}\bigl(M_q^\dagger|_{\ker T^\dagger}\bigr).
+\tag{2}
+\]
+For formal independent variables \(\lambda_j\), scalar extension to \(\mathbb L(\lambda)\) also gives
+\[
+\operatorname{rank}(\pi M(\lambda))
+=\operatorname{rank}\bigl(M(\lambda)^\dagger|_{\ker T^\dagger}\bigr),
+\quad M(\lambda)=\sum_j\lambda_jM_j.
+\tag{3}
+\]
+Both specialized and generic escape ranks are therefore independent of the permissible nonsingular moment choices. Formula (2)'s first equality only needs the forward window \(s+3\delta\le D\); the extra reserve in (1) supplies the common-moment realization.</p>
+<p><strong>Proof: primal loss.</strong> Bounded absorption gives \(\ker T\subseteq\ker M_q\) and hence \(\ker T\subseteq\ker T_q\). We claim
+\[
+T(\ker T_q)=C\cap\operatorname{im}M_q.
+\]
+One inclusion is immediate: \(T_q f=0\) means \(Tf=M_qf\). Conversely, suppose \(Tf=M_qh\), with \(f,h\in S\). In every coordinate \(g_if-qg_ih\in J\), with degree at most \(s+2\delta\). Multiply this relation by \(q\), legal through \(s+3\delta\). The Boolean identity \(q^2-q\), multiplied by \(g_i h\), has the same paid degree, giving \(qg_if=qg_ih\) in the quotient. Combine with \(g_if=qg_ih\) to obtain \(T_q f=0\). Thus the claim holds. Rank-nullity on the two kernels gives
+\[
+c-c_q=\dim T(\ker T_q)
+=\dim(C\cap\operatorname{im}M_q)=r_q-e_q.
+\]
+This includes \(c=0\), when all the maps vanish by absorption.</p>
+<p><strong>Proof: dual loss.</strong> Under the nondegenerate form on \(Y\), the dual of \(Y/C\) identifies with \(C^\perp=\ker T^\dagger\). The dual of \(\pi M_q\) is therefore \(M_q^\dagger\) restricted to that subspace. A linear map and its dual have equal rank, which proves \(e_q=\operatorname{rank}(M_q^\dagger|_{\ker T^\dagger})\); also \(r_q=\operatorname{rank}M_q^\dagger\). The same reasoning over the rational-function field proves (3). Neither \(C\) nor any reverse kernel needs a nondegenerate restricted form or a multiplication-module structure. \(\square\)</p>
+<h4>What happens to the proposed improvement</h4>
+<p>Averaging (2) over the same shared binary row gives the exact identity
+\[
+\mathbb E c_q=c-\mathbb E r_q+\mathbb E e_q.
+\]
+The full partial-image proof gives \(\mathbb E r_q\ge c/2\), and specialization gives \(e_q\le e\), where \(e\) is (3)'s generic rank. These reproduce \(\mathbb E c_q\le\min(c,c/2+e)\). The adjoint representation changes neither expectation. One could improve the bound by proving a smaller actual average escape or a larger actual multiplied rank for the intended sources, but the new form does not prove either. A shared weighted objective uses the same coefficients across contexts; choosing a different best row per context is still invalid.</p>
+<p>The <a href="#relative-intersection-loss">recorded relative-intersection family</a> has \(c=21t,e=14t\), and residual rank \(18t\) for every nonzero row. It forbids the universal improvement \((c+e)/2\). It can be placed in its full Boolean algebra at any larger \(D\), so the stronger pairing reserve (1) does not evade the example. Equation (2) shows that every permissible common form retains its escape loss. This is an analytic application of the proved all-parameter control, not a rerun of its finite search or a claim that its multiplier space is forced by a hard proof.</p>
+<p>At the opposite extreme, for a single Boolean input choose its coefficient one. Then \(M_q=T\), since \(g^2=g\) through the paid window; thus \(r_q=c,e_q=0,c_q=0\). The dual gives exactly the same cheap repair. The existing <a href="#entry-2026-10-07-partial-image-contraction">prefix plateau</a> also remains: several useful rows can precede the first rank drop. Consequently a one-row decrease is not a mandatory condition for a useful batch. No larger numerical instances are needed to decide this representation question.</p>
+<h4>Outcome</h4>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-10-adjoint-scope-review">scheduled reverse-escape test</a> failed to improve the forward estimate. The escaping-image term is precisely an adjoint restriction rank, with the same value for every admissible pairing. The converse inclusion in the forward kernel proof supplies equality, making the absence of a hidden gain explicit. A source-specific bound may still be proved in either representation, but no additional contraction has been obtained. The generic backward transplant stays rejected at the scope established by the review.</p>
+<p><strong>Follow-up.</strong> Continuing the backward-localization check within the magnification head's second entry of this spell. Do not spend another entry changing the same pairing. Return to the actual batch, where a one-row plateau need not prevent final removal: compare the input-word batch bound with a prefix-conditioned image on genuine shared two-layer inputs. The full input-word and joint-growth proofs were reread before proposing this: they already cover every fixed prefix. Any new gain must concern the expectation or selection of prefixes, while retaining one coherent row sequence and every old obligation. Read the chosen-prefix proof as well before attempting that estimate; an equivalent filtration or unpaid omitted return term is a failed test. The next entry must supply a source-dependent saving or identify why the existing bounds already exhaust that proposal.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check" data-parent="lead:entry-2026-10-08-actual-error-goal-review:2">Test a prefix-conditioned actual input-word batch estimate on genuine shared two-layer tuples, against the existing chosen-prefix, input-word and return-rank theorems. Retain shared coefficient choices, earlier obligations and original degree costs. A source-dependent saving is required; a new name for an existing conditional image or a discarded return term does not answer the test.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the primal equality, common-form degree ledger, dual restriction, generic/specialized distinction, counterexample scope and unchanged-goal assessment. It identified inherited kernel nonsingularity as unnecessary; that is now stated explicitly. See <a href="research/results/binary_reverse_escape_test_20261010/review.txt">verdict</a>. Full common-adjoint, finite-family pairing, partial-image contraction, relative-intersection, input-filtration return, transposition-audit, input-word and sequential-phase/joint-growth records were read. No new rule, encoding or numerical claim is introduced; the controls use their existing complete proofs.</p>
+<p><strong>Process assessment.</strong> Proving the exact dual identity before exploring more pairings answers the scheduled test for all legal rows at once; its failure is recorded without calling an equivalent formulation goal progress.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_reverse_escape_test_20261010 -->
+</article>
