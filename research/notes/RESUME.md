@@ -4,7 +4,7 @@ Run **`python3 tools/resume.py` once per restoration**. It saves the complete
 bundle in ignored runtime storage and immediately emits part 1 with its ID and
 part count. Continue through the remaining parts in order with
 `python3 tools/resume.py --read ID --part N`, using separate bounded outputs.
-Each part contains at most 20,000 UTF-8 payload bytes. Follow the root
+Each part contains at most 28,000 UTF-8 payload bytes. Follow the root
 [Codex output-allowance rule](../../AGENTS.md#restoration-and-research-discipline)
 for preparation and every part read, including enclosing tool wrappers.
 The number of calls depends on bundle size. Run every call bare: never pipe

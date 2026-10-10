@@ -18,7 +18,9 @@ ROOT=Path(__file__).resolve().parents[1]
 # Root AGENTS.md is omitted: Claude Code (via CLAUDE.md's @AGENTS.md) and Codex both load it themselves,
 # at session start and after compaction. formalization/AGENTS.md is not loaded from the root, so it stays.
 FILES=('research/notes/RESUME.md','COMPUTATION_RULES.md')
-PART_BYTES=20000
+# A part must come back whole under each harness's default output allowance. Claude Code returned 29,900
+# characters whole, and Codex's session files record its own truncation at about 40 kB (10 October 2026).
+PART_BYTES=28000
 PREPARE_WARN_S=2.0
 
 
