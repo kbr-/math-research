@@ -174,7 +174,7 @@ For every n>=5 and every odd prime p>(n-2)*2^(n-2)-2, the original root-curve se
 
 **Why it matters:** Provides an explicit sufficient prime bound depending only on dimension, uniform in every degree, substantially strengthening the earlier degree-dependent prime filter. Novelty in the literature is unaudited.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Complete the common-family source derivation for the sharper four-pair range; retain the proven dimension-only bound and audit literature before any novelty claim.
 
@@ -458,7 +458,7 @@ For every field F of characteristic different from2 and every1<=n<=8, the origin
 
 **Why it matters:** Closes the entire characteristic quantifier for one original pre-stable boundary in dimensions4 through8. The finite complement is complete, bounded by the preceding uniform theorem, and does not establish the unrestricted dimensional goal.
 
-**Decision (agent):** The original degree-two boundary is now proved through dimension8 over every characteristic different from2, completing the exact finite complement of the uniform prime theorem. Other orders and the all-dimensional small-prime boundary remain open.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Perform the due goal-level review, then develop the smaller-prime primitive-cofactor mechanism in arbitrary dimension; do not extend the completed finite complement by another size survey.
 
@@ -1366,7 +1366,7 @@ For all m>=2 and c>=2^(m-1)-1, the full paired source Y_m(c) is generically Hass
 
 **Why it matters:** Replaces a degree-dependent obstruction analysis by a dimension-only sufficient characteristic bound for every full paired source in its range. Literature novelty remains unknown.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Complete the common-family source derivation for the sharper four-pair range; retain the proven dimension-only bound and audit literature before any novelty claim.
 
