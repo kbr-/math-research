@@ -172,6 +172,12 @@ def start_session(name, agent=None, model=None, notebook=None):
     return path
 
 
+# Inactive controls, as after a reboot, come back with the setup script, which the agent runs itself
+# (COMPUTATION_RULES.md, After reboot or session resume).
+SETUP_HINT = ("; run python3 resource-controls/setup.py from the repository root, without asking "
+              "(COMPUTATION_RULES.md, After reboot or session resume)")
+
+
 def check_limits():
     result = subprocess.run(
         ["systemctl", "--user", "show", SLICE, "--property=ControlGroup", "--value"],
@@ -179,7 +185,7 @@ def check_limits():
     )
     group = result.stdout.strip()
     if not group.startswith("/user.slice/") or not group.endswith("/" + SLICE):
-        raise RuntimeError("The shared computation slice is not active")
+        raise RuntimeError("The shared computation slice is not active" + SETUP_HINT)
     path = Path("/sys/fs/cgroup" + group)
     memory = int((path / "memory.max").read_text())
     swap = int((path / "memory.swap.max").read_text())
@@ -195,7 +201,7 @@ def check_limits():
         capture_output=True, text=True, check=True,
     ).stdout.splitlines()
     if "ActiveState=active" not in watchdog or "SubState=running" not in watchdog:
-        raise RuntimeError("The combined RAM+swap watchdog is not running")
+        raise RuntimeError("The combined RAM+swap watchdog is not running" + SETUP_HINT)
     # Ubuntu's user manager may delegate only memory and pids, not cpu/cpuset.
     # CPUAffinity= is enforced at service launch independently of delegation.
     # Verify that affinity inside the service before executing the workload.

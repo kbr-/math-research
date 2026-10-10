@@ -31,6 +31,14 @@ class SideWorkflow(unittest.TestCase):
         self.assertEqual(selected('main',self.root)['name'],'main')
         with self.assertRaises(ValueError):create('test','Test',self.ctx,self.root)
         with self.assertRaises(ValueError):create('other','Test',self.ctx,self.root,origin='https://kbr.is-a.dev/math-research/#missing')
+    def test_a_thread_gets_budgets_for_sections_the_root_configuration_does_not_name(self):
+        path=self.root/'research/context-budgets.json';config=json.loads(path.read_text())
+        for key in ('before-this-notebook','open-statements','formalization-gaps'):config['regions'].pop(key,None)
+        config['regions']['formalization-gaps']=77;path.write_text(json.dumps(config))
+        create('test','Test',self.ctx,self.root)
+        regions=json.loads((self.root/'research/branches/test/context-budgets.json').read_text())['regions']
+        # A section the root budgets keeps its budget; the others get the thread's soft targets.
+        self.assertEqual((regions['before-this-notebook'],regions['open-statements'],regions['formalization-gaps']),(150,300,77))
     def test_append_guard_deletion_and_mutation(self):
         create('test','Test',self.ctx,self.root)
         p=self.root/'research/branches/test/notebook.html';p.write_text(p.read_text().replace('</section>\n','</section>\n',1).replace('<h2>Research record</h2>','<h2>Research record</h2><article id="a">original</article>'))

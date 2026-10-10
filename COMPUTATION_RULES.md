@@ -170,6 +170,10 @@ python3 resource-controls/setup.py
 ./compute.sh --status
 ```
 
+The agent runs this itself whenever `compute.sh` reports the controls inactive, without asking: a
+standing exception to the user's global rule against starting long-running processes, for these
+controls only.
+
 `setup.py` is self-contained and rerunnable: it contains the watchdog source and
 unit templates, compiles with the existing C compiler, recreates the systemd
 resources, and checks readiness. It installs no packages. It refuses to

@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+import unittest.mock
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -39,6 +40,24 @@ def gone_or_dead(pid):
         return Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[0] in ('Z', 'X')
     except FileNotFoundError:
         return True
+
+
+class InactiveControls(unittest.TestCase):
+    """Controls down, as after a reboot: the error names the setup the agent runs itself."""
+
+    def test_both_inactive_states_name_the_setup(self):
+        slice_down = subprocess.CompletedProcess([], 0, '\n', '')
+        watchdog_down = [subprocess.CompletedProcess([], 0, f'/user.slice/u/{compute.SLICE}\n', ''),
+                         subprocess.CompletedProcess([], 0, 'ActiveState=inactive\nSubState=dead\n', '')]
+        for answers, state in (([slice_down], 'slice is not active'), (watchdog_down, 'watchdog is not running')):
+            with self.subTest(state=state), \
+                    unittest.mock.patch.object(compute.subprocess, 'run', side_effect=answers), \
+                    unittest.mock.patch.object(compute.Path, 'read_text', return_value='1000\n'):
+                with self.assertRaises(RuntimeError) as raised:
+                    compute.check_limits()
+                self.assertIn(state, str(raised.exception))
+                self.assertIn('run python3 resource-controls/setup.py from the repository root, without asking',
+                              str(raised.exception))
 
 
 class GuidanceNote(unittest.TestCase):

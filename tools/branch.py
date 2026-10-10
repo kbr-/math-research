@@ -16,7 +16,8 @@ SECTIONS = {'before-this-notebook':'Starting point', 'where-we-stand':'Where we 
             'open-statements':'Open statements', 'remaining-route':'The remaining route', 'proposed-next-step':'Proposed next step',
             'working-context':'Working mathematical context', 'formalization-gaps':'Gaps identified by formalization'}
 
-OPEN_STATEMENTS_WORDS = 300
+# Soft word targets for thread sections the root notebook's configuration may not budget.
+SIDE_SECTION_WORDS = {'before-this-notebook': 150, 'open-statements': 300, 'formalization-gaps': 300}
 
 
 def create(name,title,context,root=ROOT,parent='main',origin=None):
@@ -42,8 +43,8 @@ def create(name,title,context,root=ROOT,parent='main',origin=None):
         source += f'<section id="{key}">\n<h2>{label}</h2>\n{context[key]}\n</section>\n'
     source += '<section id="research-record">\n<h2>Research record</h2>\n</section>\n'
     config=json.loads((root/'research/context-budgets.json').read_text())
-    # Every thread keeps its open statements; older configs predate the section.
-    config['regions'].setdefault('open-statements',OPEN_STATEMENTS_WORDS)
+    for key,words in SIDE_SECTION_WORDS.items():
+        config['regions'].setdefault(key,words)
     report=budgets(source,config)
     if not report['passed']:raise ValueError('Initial context exceeds hard budgets')
     if 'data-route-item=' not in context['remaining-route']:
