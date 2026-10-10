@@ -4,7 +4,7 @@
 Requests waiting for the judge. In this clone's own sessions, the stop is blocked while a task
 holds a request to others that `tools/task_index.py request judge` hasn't passed, so no such
 request reaches the user unjudged (research/notes/TASK_PROTOCOL.md, A request for someone else's
-action). It reads the task records only; the Codex adapter, codex_unchecked_claim.py, runs it too.
+action). It reads the task records only; the Codex adapter, codex_stop_checks.py, runs it too.
 
 Promises. A turn that promises the assistant's behaviour beyond it ("from now on I'll ...", in
 its text or its thinking) is blocked once, with the sentence: nothing said in a turn survives
@@ -372,7 +372,7 @@ def deferrals(texts):
 # fixture of a check, not something the turn says; an edit adding a deferral example to a test was blocked
 # as a step handed to others (9 October 2026).
 OWN_FIXTURES = re.compile(r"(?:^|/)tools/(?:hooks/[^/]+|measure_stop_checks\.py|tests/test_(?:stop_checks|during_run|"
-                          r"codex_unchecked_claim|measure_stop_checks|unlisted_work)\.py)$")
+                          r"codex_stop_checks|measure_stop_checks|unlisted_work)\.py)$")
 
 
 def written(calls):

@@ -2,7 +2,7 @@
 """Native Codex Stop adapter for the checks of stop_checks.py: requests waiting for the judge, promises,
 and unchecked claims, through the shared predicate and prompt.
 
-Its file name is the path main's tools/hooks/codex_dispatch.py loads it by.
+Its file name is the path tools/hooks/codex_dispatch.py loads it by.
 """
 import json
 from pathlib import Path

@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/hooks'))
-import codex_unchecked_claim as hook
+import codex_stop_checks as hook
 import stop_checks
 sys.path.insert(0,str(ROOT/'tools/tests'))
 from test_stop_checks import MACHINERY, needs_machinery, tasks_with_a_request

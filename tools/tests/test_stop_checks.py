@@ -525,8 +525,8 @@ class UncheckedClaimTest(unittest.TestCase):
                 self.assertIsNone(self.run_hook(last_assistant_message=reply))
         hooks = Path(hook.__file__).parent
         naming = sorted(path.name for path in hooks.glob('*.py') if 'checks_off' in path.read_text())
-        self.assertEqual(naming, ['codex_unchecked_claim.py', 'during_run.py', 'stop_checks.py'])
-        for name in ('codex_unchecked_claim.py', 'during_run.py'):
+        self.assertEqual(naming, ['codex_stop_checks.py', 'during_run.py', 'stop_checks.py'])
+        for name in ('codex_stop_checks.py', 'during_run.py'):
             self.assertNotIn('CHECKS_OFF', (hooks / name).read_text())
         # This branch's own file, where it has one, names only checks.
         own = hooks / 'checks_off'

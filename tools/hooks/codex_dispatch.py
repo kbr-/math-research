@@ -153,10 +153,12 @@ def dispatch(event, root):
     name = event.get('hook_event_name')
     if name == 'Stop':
         # The private branch owns its predicate and prompt; shared hooks resolve it there.
-        path = Path(root) / 'tools/hooks/codex_unchecked_claim.py'
-        if not path.is_file():
+        # (codex_unchecked_claim.py is the handler's name on a branch that has not taken the rename.)
+        path = next((path for name in ('codex_stop_checks.py', 'codex_unchecked_claim.py')
+                     if (path := Path(root) / 'tools/hooks' / name).is_file()), None)
+        if path is None:
             return {}
-        spec = importlib.util.spec_from_file_location('codex_unchecked_claim', path)
+        spec = importlib.util.spec_from_file_location(path.stem, path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module.check(event)

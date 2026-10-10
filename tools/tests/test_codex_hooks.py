@@ -63,10 +63,15 @@ class CodexHooksTest(unittest.TestCase):
     def test_stop_uses_optional_active_worktree_predicate(self):
         self.assertEqual(self.call('Stop'), {})
         directory=self.root/'tools/hooks';directory.mkdir()
+        # The handler under the name a branch without the rename has, then under its own, which comes first.
         (directory/'codex_unchecked_claim.py').write_text(
-            "def check(event):\n    return {'decision': 'block', 'reason': event['last_assistant_message']}\n")
+            "def check(event):\n    return {'decision': 'block', 'reason': 'old ' + event['last_assistant_message']}\n")
         self.assertEqual(self.call('Stop',last_assistant_message='fixture'),
-                         {'decision':'block','reason':'fixture'})
+                         {'decision':'block','reason':'old fixture'})
+        (directory/'codex_stop_checks.py').write_text(
+            "def check(event):\n    return {'decision': 'block', 'reason': __name__ + ' ' + event['last_assistant_message']}\n")
+        self.assertEqual(self.call('Stop',last_assistant_message='fixture'),
+                         {'decision':'block','reason':'codex_stop_checks fixture'})
         self.assertIn('Stop',json.loads((ROOT/'.codex/hooks.json').read_text())['hooks'])
 
     def test_full_receipts_and_retry_not_last_marker(self):
