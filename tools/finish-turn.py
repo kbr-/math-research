@@ -484,6 +484,24 @@ def validate_bearing(body, article, progress):
                          f'Goal progress paragraph with <strong>Bearing.</strong> and at least {BEARING_MIN} '
                          "characters saying what this entry's result gives at the goal's own parameters, or "
                          'that it gives nothing there and why the cycle was spent on it (AGENTS.md, goal progress)')
+    # The statement alone did not stop a spell: four entries on one item each said they gave nothing at the
+    # goal's parameters (review of 10 October 2026).  So the entry also declares it, and two such entries in a
+    # row on one queue item end that item's turn.
+    tag = body[article:body.find('>', article) + 1]
+    declared = re.search(r'data-bearing="(none|some)"', tag)
+    if declared is None:
+        raise ValueError('Declare data-bearing="none" or "some" on the article: whether this entry gives '
+                         "anything at the goal's own parameters, as its Bearing statement says (AGENTS.md)")
+    item = re.search(r'data-(?:check|lead|bridge)="([^"]+)"', tag)
+    if item is None:
+        return
+    earlier = [t for t in re.findall(r'<article\b[^>]*>', body[:article])
+               if f'data-route="{route}"' in t and 'data-kind="research"' in t][-2:]
+    same = [t for t in earlier if re.search(r'data-(?:check|lead|bridge)="' + re.escape(item.group(1)) + '"', t)
+            and 'data-bearing="none"' in t]
+    if len(same) == 2:
+        raise ValueError(f'The last two entries developed {item.group(1)} and declared that they give nothing '
+                         "at the goal's parameters: develop a different queue item now (AGENTS.md, goal progress)")
 
 
 def validate_progress(body, article, close, *, check_registered_claims=True):

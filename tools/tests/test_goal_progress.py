@@ -187,10 +187,10 @@ class ProcessAuditTest(unittest.TestCase):
 
 
 class BearingTest(unittest.TestCase):
-    def check(self, earlier, progress):
-        body = ''.join(f'<article data-kind="{kind}" data-route="r" data-goal-progress="{state}"></article>'
-                       for kind, state in earlier)
-        body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged">'
+    def check(self, earlier, progress, last='data-bearing="some"'):
+        body = ''.join(f'<article data-kind="{row[0]}" data-route="r" data-goal-progress="{row[1]}" '
+                       f'{row[2] if len(row) > 2 else ""}></article>' for row in earlier)
+        body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged" ' + last + '>'
         FT.validate_bearing(body, body.rindex('<article'), progress)
 
     def test_a_third_unchanged_entry_states_its_bearing(self):
@@ -203,6 +203,18 @@ class BearingTest(unittest.TestCase):
             self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> none.')
         self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> At the degree the goal needs '
                    'this gives nothing; it was spent to decide whether the item continues.')
+
+    def test_two_entries_without_bearing_end_an_items_turn(self):
+        said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'
+        none = ('research', 'unchanged', 'data-check="a:1" data-bearing="none"')
+        with self.assertRaisesRegex(ValueError, 'data-bearing'):
+            self.check([none, none], said, last='data-check="b:1"')                 # no declaration
+        self.check([none, none], said, last='data-check="b:1" data-bearing="none"')  # a different item
+        with self.assertRaisesRegex(ValueError, 'different queue item'):
+            self.check([none, none], said, last='data-check="a:1" data-bearing="none"')
+        some = ('research', 'unchanged', 'data-check="a:1" data-bearing="some"')
+        self.check([none, some], said, last='data-check="a:1" data-bearing="none"')
+
 
 if __name__ == '__main__':
     unittest.main()

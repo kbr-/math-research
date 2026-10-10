@@ -175,7 +175,9 @@ conditional reduction or refutation. A bigger toolbox, stronger convenience, equ
 reformulation or finite check is not by itself goal progress. From the third research entry in a
 row that reports a route unchanged, the paragraph ends with `<strong>Bearing.</strong>`: what the
 entry's result gives at the goal's own parameters, or that it gives nothing there and why the cycle
-was spent on it (the finisher checks). Keep the obligation ID stable while
+was spent on it, and the article declares `data-bearing="none"` or `"some"` to match; after two
+entries in a row on one queue item declaring `none`, the next entry develops a different item (the
+finisher checks all three). Keep the obligation ID stable while
 that implication is unchanged. The finisher checks declarations and evidence references, not the
 truth of the agent's assessment; the existing reviewer must challenge that assessment.
 
