@@ -33,12 +33,50 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertIn('TOO SLOW', result.stdout)
         slowest = result.stdout.split('Slowest tests:')[1].splitlines()[1]
         self.assertIn('test_slow.Slow.test_sleeps', slowest)
+        # A slow run says what the machine did meanwhile, so that it can be told from one slowed by others.
+        self.assertRegex(result.stdout, r"\nCPU during the run: \d+ s in the run's own control group, \d+ s by other "
+                                        rf"programs; the machine's {os.cpu_count()} processors were busy for \d+ s of \d+\.\n")
 
     def test_within_the_limit_passes(self):
         result = self.run_suite(30)
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn('Ran 2 tests', result.stdout)
         self.assertNotIn('TOO SLOW', result.stdout)
+        self.assertNotIn('CPU during the run', result.stdout)
+
+    def test_the_cpu_of_the_machine_and_of_the_run_s_own_group_are_read_and_their_growth_reported(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('framework_runner', RUNNER)
+        runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(runner)
+        root = self.root / 'sys'
+        tick = os.sysconf('SC_CLK_TCK')
+        stat = self.root / 'stat'   # user nice system idle iowait irq softirq steal guest
+        stat.write_text(f'cpu  {10 * tick} {2 * tick} {3 * tick} {500 * tick} {40 * tick} {tick} {tick} {tick} {9 * tick}\ncpu0 1 2 3\n')
+        group = self.root / 'cgroup'
+
+        def placed(path, usage):
+            group.write_text(f'0::{path}\n')
+            (root / path.lstrip('/')).mkdir(parents=True, exist_ok=True)
+            (root / path.lstrip('/') / 'cpu.stat').write_text(f'user_usec 1\nusage_usec {usage}\nsystem_usec 2\n')
+        # Inside the computation slice the slice's time is read, which holds the services the tests start.
+        placed('/user.slice/mathcompute.slice', 7_500_000)
+        placed('/user.slice/mathcompute.slice/run-1.service', 1_000_000)
+        self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, 7.5))
+        placed('/user.slice/session-2.scope', 2_250_000)
+        self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, 2.25))
+        # What cannot be read is None, and then nothing is reported.
+        group.write_text('0::/user.slice/absent\n')
+        self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, None))
+        self.assertEqual(runner.cpu_seconds(self.root / 'none', group, root), (None, None))
+        stat.write_text('cpu  1 2\n')
+        self.assertEqual(runner.cpu_seconds(stat, group, root)[0], None)
+        self.assertIsNone(runner.outside_load((1.0, None), (2.0, 3.0), 10.0, 16))
+        self.assertIsNone(runner.outside_load((1.0, 1.0), (None, 3.0), 10.0, 16))
+        self.assertEqual(runner.outside_load((100.0, 20.0), (240.0, 115.0), 10.5, 16),
+                         "CPU during the run: 95 s in the run's own control group, 45 s by other programs; the machine's "
+                         '16 processors were busy for 140 s of 168.')
+        self.assertIn(', 0 s by other programs;', runner.outside_load((100.0, 20.0), (110.0, 31.0), 1.0, 16))
 
 
 class TemporaryFilesInMemory(unittest.TestCase):

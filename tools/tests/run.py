@@ -87,7 +87,37 @@ def memory_scratch(base):
     return scratch
 
 
+def cpu_seconds(stat=Path('/proc/stat'), group=Path('/proc/self/cgroup'), groups=Path('/sys/fs/cgroup')):
+    """(the CPU time every processor of the machine has spent busy, the CPU time used in the computation
+    slice this process runs in, or in its own control group outside one), each in seconds since some start;
+    None for one that cannot be read. Their growth over a run tells its own work from other programs'."""
+    try:
+        fields = [int(field) for field in stat.read_text().split('\n', 1)[0].split()[1:]]
+        machine = (sum(fields[:8]) - fields[3] - fields[4]) / os.sysconf('SC_CLK_TCK')   # all but idle and iowait
+    except (OSError, ValueError, IndexError):
+        machine = None
+    try:
+        parts = group.read_text().strip().split('::', 1)[1].split('/')
+        if 'mathcompute.slice' in parts:   # the tests' launcher calls start services beside the run's own
+            parts = parts[:parts.index('mathcompute.slice') + 1]
+        lines = (groups / '/'.join(parts).lstrip('/') / 'cpu.stat').read_text().splitlines()
+        own = int(next(line.split()[1] for line in lines if line.startswith('usage_usec'))) / 1e6
+    except (OSError, ValueError, IndexError, StopIteration):
+        own = None
+    return machine, own
+
+
+def outside_load(before, after, elapsed, cores):
+    """The line a slow run prints about what else the machine did meanwhile, or None where it was not read."""
+    if None in before + after:
+        return None
+    machine, own = after[0] - before[0], after[1] - before[1]
+    return (f'CPU during the run: {own:.0f} s in the run\'s own control group, {max(0.0, machine - own):.0f} s by '
+            f'other programs; the machine\'s {cores} processors were busy for {machine:.0f} s of {elapsed * cores:.0f}.')
+
+
 def timed_run(args, found, broken):
+    used = cpu_seconds()
     start = time.monotonic()
     results = [run(t, t.id()) for t in broken]
     try:
@@ -112,6 +142,9 @@ def timed_run(args, found, broken):
         print(f'Over the {args.limit:g} s limit (AGENTS.md). Slowest tests:')
         for test_id, _, _, _, seconds, _ in sorted(results, key=lambda r: -r[4])[:10]:
             print(f'  {seconds:6.2f} s  {test_id}')
+        load = outside_load(used, cpu_seconds(), elapsed, os.cpu_count())
+        if load:
+            print(load)
     skipped = sorted(skip for r in results for skip in r[5])
     for test_id, reason in skipped:
         print(f'Skipped {test_id}: {reason}')
