@@ -1,0 +1,81 @@
+{
+  "source": {
+    "record": "[Quadratic Frobenius defect](branches/binary-multiplicity-degree/notebook.html#entry-2026-10-10-cube-quadratic-frobenius-defect)",
+    "targets": [
+      "branches/binary-multiplicity-degree/notebook.html#entry-2026-10-10-cube-quadratic-frobenius-defect"
+    ],
+    "label": "Quadratic Frobenius defect"
+  },
+  "reviewer": "Codex; consolidated GPT 6.1-Sol medium review",
+  "date": "2026-10-10",
+  "topics": [
+    "degree-accounting",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "thm:quadratic-frobenius-defect",
+      "summary": "In characteristic3, let q=3^e>=9 and P(Z)=sum gamma_i*Z^(3^i)+A*Z^2, gamma_e=1, have q distinct roots including0. The original degree2 space of dimension D=binom(q,2)+2 has length-D Hasse rank at most D-(q-3)/6 at every finite unramified mark after every field extension. P(X)+P(Y)=sum gamma_i*q_(3^i)-A*q_2 is an actual nonzero pair-source relation; raw Mobius transport fits it in a3q block, and disjoint digit-block copies give the deficit. This includes every additive subgroup but not generic independent branches.",
+      "assessment": "Working uniform proof passed by the sole fresh medium reviewer without corrections or unused hypotheses. Reuses the complete additive-defect transport with the new quadratic pure-power term, preserving bidegree, cutoff and source independence. No numerical computation is needed for the theorem.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "novelty": "not_claimed",
+      "rationale": "Extends a known obstruction to non-additive quadratic perturbations and excludes a whole proposed certificate family, including moving marks. It does not advance generic normality or prove a generic counterexample.",
+      "next_action": "Test a structurally different branch family outside the linearized-plus-quadratic relation; do not try more coefficients inside the excluded family."
+    },
+    {
+      "id": "lem:quartic-branch-control",
+      "summary": "Over every characteristic3 field, for roots of the monic polynomial Z^9-Z^4+bZ, the original normalized degree2 determinant is Phi9=b^11-b^6=b^6(b^5-1). This is an exact polynomial identity. For b!=0 the roots are distinct, and b^5!=1 makes the original initial determinant nonzero. It is a symbolic branch-family control in already solved dimension8, not an all-q formula.",
+      "assessment": "Working computer-assisted polynomial identity passed by the sole fresh medium reviewer without corrections or unused hypotheses. PARI monic alternant reduction gives the entire36-square Schur matrix. Independent GAP exterior-companion operators reconstruct the source and match the polynomial at48 distinct GF81 values; original homogeneous weight378 gives beta-degree<=47, proving full equality. Both controls pass.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "novelty": "not_claimed",
+      "rationale": "Confirms that a quartic perturbation escapes the proved quadratic obstruction in a faithful original-source control. Does not provide new parameter coverage or justify another power sweep.",
+      "next_action": "Attempt an all-q nonvanishing proof for Z^q-Z^4+bZ from its sparse monic recurrence; preserve the original prefix and use this exact identity only as a control."
+    }
+  ],
+  "relationships": [
+    [
+      "thm:quadratic-frobenius-defect",
+      "refines",
+      "thm:cube-additive-branch-defect",
+      "At A=0 every additive subgroup has the stated monic linearized polynomial; the complete prior every-mark rank bound, including transcendental subgroup generators and extensions, follows."
+    ],
+    [
+      "thm:quadratic-frobenius-defect",
+      "depends_on",
+      "lem:cube-raw-mobius-block",
+      "The nonzero source relation transports polynomially within the exact block H_(3q), with unchanged original marking costs."
+    ],
+    [
+      "thm:quadratic-frobenius-defect",
+      "depends_on",
+      "lem:cube-ternary-digit-blocks",
+      "Disjoint shifted copies retain nonzero coefficient vectors and fit the original r-column observation."
+    ],
+    [
+      "thm:quadratic-frobenius-defect",
+      "depends_on",
+      "lem:cube-ternary-pair-algebra",
+      "Use q2=-(X^2+Y^2), q_(3^i)=(X+Y)^(3^i) and the exact original jet-rank dictionary."
+    ],
+    [
+      "lem:quartic-branch-control",
+      "depends_on",
+      "thm:cube-odd-schur-hull",
+      "Monic alternating remainders compute the original normalized determinant with its universal weight, without an odd-scalar normalization."
+    ],
+    [
+      "lem:quartic-branch-control",
+      "depends_on",
+      "lem:cube-ternary-pair-algebra",
+      "The original q recurrence, including its constant coefficient, underlies both independent encodings."
+    ],
+    [
+      "lem:quartic-branch-control",
+      "cites",
+      "thm:quadratic-frobenius-defect",
+      "The quartic candidate lies outside the specific individual-root sum relation; the positive control does not weaken the uniform quadratic-family obstruction."
+    ]
+  ]
+}
