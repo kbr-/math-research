@@ -407,3 +407,124 @@ chain of evidence across model changes and context compactions.
 The Res(⊕) problem was not selected as an original target. It appeared when Codex tested an
 adjacent affine-clause proof system after a transfer toward the AC⁰[p]-Frege goal failed. That
 test produced the theorem later audited and prepared for publication.
+
+---
+
+## Time spent, according to Claude after analyzing the log timestamps
+
+This report measures how much time the user and the AI models spent between the first prompt and
+the Res(⊕) lower bound for bit PHP. It is based on message and event timestamps in three logs: the
+exported Claude conversation, the exported ChatGPT conversation, and the transcript of the Codex
+session named "Math research", in which the result was found. All times are Warsaw time (UTC+2).
+
+#### Summary
+
+- The weekly usage limit was never hit before the result. The Res(⊕) bound was committed on
+  14 September 2026 at 03:55; the first weekly limit was hit on 16 September at 02:16.
+- Codex ran essentially without interruption for about 73 hours from the start of the autonomous
+  run to the result. In that stretch it did work close to 24 hours a day.
+- From the first SAT prompt (3 September, 23:11) to the result, 10 days 4 hours 44 minutes of
+  calendar time passed. In roughly 96 hours of that, a model was actually working: 16.4 hours in
+  Claude, 6.5 hours in ChatGPT and 73 hours in Codex.
+- The 10 days 12 hours 49 minutes given under "The elapsed time" above run to a later moment: the
+  user's question, at 12:00 on 14 September, whether the result deserved publication.
+
+#### Claude conversation (3–9 September)
+
+The user spent about 42 hours in sessions over six days. A session here is a run of messages with
+no gap longer than 30 minutes. Within those sessions Claude was generating for 16.4 hours, measured
+from the start and stop timestamps of its response blocks. The rest is the user reading and typing.
+
+| Day | Sessions | Session time | Claude generating |
+|---|---|---|---|
+| Thu 3 → Fri 4 Sep (night) | 23:11–05:02 | 5.9 h | 5.1 h (3–4 Sep together) |
+| Fri 4 Sep | 09:17–10:54, 14:16–16:33, 19:18–21:21 | 6.0 h | (included above) |
+| Sat 5 → Sun 6 Sep | 17:33–21:34, 22:31–03:08 | 8.6 h | 2.2 h |
+| Sun 6 → Mon 7 Sep | 10:55–19:00, 20:03–20:18, 23:08–01:58 | 11.2 h | 5.3 h |
+| Mon 7 → Tue 8 Sep | 13:49–19:36, short ones, 00:05–02:32 | 9.0 h | 2.8 h |
+| Tue 8 → Wed 9 Sep | 10:35, 21:55, 23:50–00:35 | 1.4 h | 0.7 h |
+
+- The conversation has 2,636 messages, about half of them from the user. Many of the user's
+  messages are one-word prompts such as "Go.", "Yes." and "Please continue."
+- After 9 September the user returned to this conversation only for side questions: about 3 hours
+  in total, mostly on 12 September, plus the question about Cook's programme on 11 September.
+
+#### ChatGPT conversation (9–10 September)
+
+The ChatGPT phase took one night and one day: 8.9 hours of sessions, of which the model reported
+6.5 hours of work in its "Worked for …" recaps.
+
+- Wed 9 Sep 23:57 → Thu 10 Sep 02:25 (2.5 hours).
+- Thu 10 Sep: 09:03–09:16, 10:38–10:59, 13:42–14:19, then 14:59–20:13 continuously (5.2 hours).
+- The user sent 31 prompts. Individual answers took up to 32 minutes, and typically 15–25 minutes
+  in the afternoon.
+- The handoff package for Codex was finished at 20:13. The user had already opened the Codex
+  session at 19:19, so the two phases overlap by about an hour.
+
+#### Codex: building the framework before the autonomous run
+
+Building the framework took 6 hours 5 minutes, from 10 September 19:19 to 11 September 01:24, with
+99 prompts from the user.
+
+| Step | When | Wall time | Agent working |
+|---|---|---|---|
+| Environment setup (context window, CPU and memory limits, launcher) | 19:19–20:44 | 1.4 h | 0.5 h |
+| Handoff import and framework (notebook, repository, resume guide, timing) | 20:44–00:00 | 3.3 h | 2.4 h |
+| First manual research cycle, framework feedback, phone remote control, Spin prompt | 00:00–01:24 | 1.4 h | 0.8 h |
+
+- The log shows one manually requested research cycle before the autonomous run: the user wrote
+  "Go." at 00:00 and the cycle took 15 minutes. The first-person account above says "several such
+  turns"; the log does not support that.
+- At 01:24 the user wrote "Create a goal to execute the 'Spin:' prompt in notes, and start it now."
+  Spin is the saved prompt that tells the agent to repeat research cycles on its own.
+
+#### Codex: the autonomous run to the result
+
+| Stretch | When | Wall time | Agent working |
+|---|---|---|---|
+| First Spin turn | Fri 11 Sep 01:24 → Sat 12 Sep 23:18 | 45.9 h | 45.9 h |
+| Stopped (the user noticed and asked why) | 23:18 → Sun 13 Sep 00:51 | 1.5 h | 0 |
+| Second Spin turn, up to the Res(⊕) commit | Sun 13 Sep 00:51 → Mon 14 Sep 03:55 | 27.1 h | 27.1 h |
+| **Spin start to result** | | **74.5 h** | **73.0 h** |
+
+- Inside those turns the log is never silent for more than 21 minutes, so the agent was working
+  continuously and not waiting.
+- Up to and including the result, the agent recorded 122 research cycles in the notebook and went
+  through 18 context compactions. It processed about 375 million tokens, most of them cached
+  context read again, and wrote about 5.3 million.
+- The user sent about 30 messages in those three days: permissions to push, requests to improve the
+  framework, and strategic questions such as whether the accumulated lemmas were approaching the
+  goal or orbiting it.
+- The agent's internal audit of the result followed at 05:39. The user asked for an assessment of
+  the night's progress at 11:49 and asked whether the result deserved publication at 12:00.
+- The same turn continued until 15 September 04:18 (51.5 hours in total). The later part covered
+  the publication audit and the first whitepaper draft.
+
+#### Weekly usage limits
+
+The readings are for the whole account, so they include the user's other Codex sessions.
+
+| Window | First use | Hit 100% | Time to hit | Wait until usable again |
+|---|---|---|---|---|
+| 1 | Thu 10 Sep 19:16 (counter restarted Sat 12 Sep 10:28) | Wed 16 Sep 02:16 | 5.3 days from first use, 3.7 days from the restart | 3.5 days (reset Sat 19 Sep 10:28, first use 14:10) |
+| 2 | Sat 19 Sep 14:10 | Mon 21 Sep 15:36 | 2.1 days | 4.9 days |
+| 3 | Sat 26 Sep 14:59 | Mon 28 Sep 16:38 | 2.1 days | 5.9 days (reset Sat 3 Oct 19:02, first use Sun 4 Oct 14:10) |
+| 4 | Sun 4 Oct 14:10 | Tue 6 Oct 18:26 | 2.2 days | see below |
+
+- In window 1 the usage counter went back to zero on 12 September at 10:28, when it had been at
+  14% or more. The log does not say why.
+- When the result was committed, the account was at roughly 27–41% of that window (27% on
+  13 September at 23:02, 41% on 14 September at 17:39).
+- Usage then rose from 55% to 90% in about four hours on the night of 14–15 September, while a
+  second session was running alongside. The "Math research" session stopped on 15 September at
+  10:32, at 97%.
+- From 7 October the counter reset four times ahead of schedule (7 Oct 05:28, 7 Oct 22:08,
+  8 Oct 21:07, 10 Oct 08:45) and was exhausted again within 14–22 hours each time. The logs do not
+  show what caused the early resets.
+
+#### Not measured
+
+- Claude's five-hour usage limits and the changes of plan and model: the export has no limit
+  events.
+- The Lean formalization and the later preprint revisions, which came after the result and ran
+  partly in other sessions.
