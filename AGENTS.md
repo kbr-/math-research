@@ -9,13 +9,14 @@ failed controls, and install no dependencies or virtual environments without exp
 file owns research workflow, notebook editing and Git/publication policy.
 
 Keep the framework small: revise/consolidate existing guidance before adding it, state each rule in
-one authoritative place and link elsewhere. This file holds only rules that apply to every
-notebook: a rule about one goal's mathematics (which results count, what a candidate must satisfy,
-how to weigh its bounds) goes into that notebook's living sections, normally a **Route decisions**
+one authoritative place and link elsewhere. This file holds only rules that apply to every notebook:
+a rule about one goal's mathematics (which results count, what a candidate must satisfy, how to
+weigh its bounds) goes into that notebook's living sections, normally a **Route decisions**
 paragraph of **Where we stand** (user, 10 October 2026). `tools/tests/test_agents_scope.py` refuses
 goal vocabulary here, and reviewers audit new rules for scope; neither catches a goal-specific rule
-written in general words, so ask of each new sentence whether another notebook could use it. Remove obsolete history and repetition while preserving
-explicit constraints. Prefer actionable rules to growing checklists or one-off setup narratives.
+written in general words, so ask of each new sentence whether another notebook could use it. Remove
+obsolete history and repetition while preserving explicit constraints. Prefer actionable rules to
+growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
 
@@ -53,40 +54,39 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   begins. State that implication and test it against known obstructions, hard instances and allowed
   equivalent representations before further refinement; a surrogate becoming simple need not resolve
   the original obligation. Check preserved hypotheses and accumulated composition costs against the
-  goal's budget. Report mathematics and goal progress separately under
-  [Goal progress and scheduled review](#goal-progress-and-scheduled-review). If these fail, or
-  repeated cycles leave the same required implication untouched,
-  address the failure in the next research cycle (a different mechanism, a lead or bridge) rather
-  than refining the same mechanism, and record it for the scheduled review; a weak assessment or a
-  descent of more than one reduction below every listed open statement is likewise carried to that
-  review, which revises the list. Recheck standing hypotheses against the goal's instances every
-  cycle; an obstruction showing that those instances violate them ends the line's relevance.
-  When an actual upper bound rules out a candidate family, extract the structural reason and check
-  whether it applies to the other candidates. Assess whether a strengthened candidate or a stronger
-  replacement can evade that reason; record what the bound teaches, not only the exclusion.
-  When using an evolving formula specification, separate structural admissibility from the
-  conjectural hardness conclusion. Adopt a refinement only with a proved non-vacuity witness at
-  unbounded variable counts and the required encoding budget; otherwise mark it provisional.
-  Concrete families are existence and falsification controls, not restrictions on the abstract
-  proof. Before choosing each next step, compare direct lower-bound constructions, method repairs
-  and structural restrictions by their effect on the missing implication. Upper bounds are a
-  possible test, not the default objective. At a method failure, also consider changing the
-  specification so the method applies. State which proved properties survive and which are traded
-  away, recheck non-vacuity and the goal's full budget, and choose by the resulting evidence of
-  progress rather than automatically preserving either the method or the specification.
-  Keep unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a
-  series of runs once its prediction has passed or failed at the sizes that test it. A larger size,
-  degree or sample needs a stated question that the finished runs cannot answer, and an answer that
-  would change the goal's missing implication; sharper constants for a result off the critical path
-  are not a reason. Once the cases answer their question, develop the general proposition. Before
-  fitting a formula, combine computed witnesses by every recorded applicable composition rule
-  (products, restrictions, transports). A conjectured sufficient condition for a size lower bound
-  must use the size and must not exclude refutations of every size in a complete proof system.
+  goal's budget. Report mathematics and goal progress separately under [Goal progress and scheduled
+  review](#goal-progress-and-scheduled-review). If these fail, or repeated cycles leave the same
+  required implication untouched, address the failure in the next research cycle (a different
+  mechanism, a lead or bridge) rather than refining the same mechanism, and record it for the
+  scheduled review; a weak assessment or a descent of more than one reduction below every listed
+  open statement is likewise carried to that review, which revises the list. Recheck standing
+  hypotheses against the goal's instances every cycle; an obstruction showing that those instances
+  violate them ends the line's relevance. When an actual upper bound rules out a candidate family,
+  extract the structural reason and check whether it applies to the other candidates. Assess whether
+  a strengthened candidate or a stronger replacement can evade that reason; record what the bound
+  teaches, not only the exclusion. When using an evolving formula specification, separate structural
+  admissibility from the conjectural hardness conclusion. Adopt a refinement only with a proved
+  non-vacuity witness at unbounded variable counts and the required encoding budget; otherwise mark
+  it provisional. Concrete families are existence and falsification controls, not restrictions on
+  the abstract proof. Before choosing each next step, compare direct lower-bound constructions,
+  method repairs and structural restrictions by their effect on the missing implication. Upper
+  bounds are a possible test, not the default objective. At a method failure, also consider changing
+  the specification so the method applies. State which proved properties survive and which are
+  traded away, recheck non-vacuity and the goal's full budget, and choose by the resulting evidence
+  of progress rather than automatically preserving either the method or the specification. Keep
+  unfinished follow-ups under the existing Sub-ideas and queue rules. Stop a series of runs once its
+  prediction has passed or failed at the sizes that test it. A larger size, degree or sample needs a
+  stated question that the finished runs cannot answer, and an answer that would change the goal's
+  missing implication; sharper constants for a result off the critical path are not a reason. Once
+  the cases answer their question, develop the general proposition. Before fitting a formula,
+  combine computed witnesses by every recorded applicable composition rule (products, restrictions,
+  transports). A conjectured sufficient condition for a size lower bound must use the size and must
+  not exclude refutations of every size in a complete proof system.
 - Distinguish working proofs, imported statements, conditional results, finite checks, conjectures
   and refutations. Match source hypotheses, encodings and versions; preserve original joint degrees
   and exact parameter accounting. Record full arguments, actual tests, dependencies and remaining
-  gaps. Use meaningful falsifying tests/controls; do not rerun old suites to simulate progress.
-  A general belief, folklore or "experience" is not evidence (user, 9 October 2026): support a
+  gaps. Use meaningful falsifying tests/controls; do not rerun old suites to simulate progress. A
+  general belief, folklore or "experience" is not evidence (user, 9 October 2026): support a
   statement by a proof, a source read in the cycle with its hypotheses, or a test able to
   distinguish it from the alternative at the sizes run. Otherwise label it an untested hypothesis
   and base no decision or status on it.
@@ -113,9 +113,9 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   every recorded counterexample, refutation and obstruction for those objects. Before drafting its
   proof, check yourself whether the record already implies it; include the relevant prior results in
   the end-of-cycle review brief. Registration refuses a new claim whose summary resembles a
-  registered one unless the spec relates the two (`claim-index.py author build`); read the record
-  it names before deciding which. Before drafting a corollary, check for an earlier result under
-  fewer hypotheses. State compositions as lemmas in one common setting with a complete proof, not a
+  registered one unless the spec relates the two (`claim-index.py author build`); read the record it
+  names before deciding which. Before drafting a corollary, check for an earlier result under fewer
+  hypotheses. State compositions as lemmas in one common setting with a complete proof, not a
   reference to a sketch.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
@@ -123,18 +123,18 @@ explicit constraints. Prefer actionable rules to growing checklists or one-off s
   at most one fresh-context reviewer subagent for the consolidated review, given only the stable
   drafts and dependency anchors/excerpts, to try to break the arguments and identify unused
   hypotheses. After that check, the same reviewer also helps (user, 9 October 2026): name the
-  cycle's open point in the brief, after the correctness items, and ask for a way past a failed
-  step or a reason none exists, a proof or counterexample for an unproved expectation, or whether a
-  new bound is tight. Its suggestions are unverified leads: list them in the entry under
-  `<h4>Reviewer's suggestions, unverified</h4>`, each item ending `<strong>Record.</strong>` with
-  the outcome of a record search made before recording it (claim IDs or anchors that bear on it,
-  or the words searched without a match; the finisher checks this), and verify one yourself
-  before relying on it or naming it as a next step; one that adds or strengthens a claim gets the follow-up check
-  below. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
-  The user authorizes and encourages spawning reviewers for any needed review in this and all future
-  Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set
-  reviewer subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not
-  inherit its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
+  cycle's open point in the brief, after the correctness items, and ask for a way past a failed step
+  or a reason none exists, a proof or counterexample for an unproved expectation, or whether a new
+  bound is tight. Its suggestions are unverified leads: list them in the entry under `<h4>Reviewer's
+  suggestions, unverified</h4>`, each item ending `<strong>Record.</strong>` with the outcome of a
+  record search made before recording it (claim IDs or anchors that bear on it, or the words
+  searched without a match; the finisher checks this), and verify one yourself before relying on it
+  or naming it as a next step; one that adds or strengthens a claim gets the follow-up check below.
+  Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer. The user
+  authorizes and encourages spawning reviewers for any needed review in this and all future Spin
+  runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set reviewer
+  subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not inherit
+  its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
   (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses a native subagent with
   no conversation history, explicit `gpt-6.1-sol` and `medium` effort; see [the reviewer
   protocol](tools/CODEX.md). Give it the canonical reviewer instructions and only the review brief
@@ -168,33 +168,32 @@ Keep the existing cadence: six research cycles, then one route review. Do not ad
 reviewer agents every two cycles. Two cycles reporting the same obligation unchanged produce a
 turn-start warning for the next scheduled review; audits and unrelated work do not erase it.
 
-Each new research/review article names its stable **Open statements** ID in `data-obligation`
-(not a newly named local lemma) and sets `data-goal-progress="advanced"` or `"unchanged"`.
-Give separate **New mathematics.** and **Goal progress.** paragraphs. The first states what was
-obtained, including no result; the second states exactly which necessary implication changed and
-why, or that it remains unchanged. `advanced` cites a claim declared by the entry with a proof,
-conditional reduction or refutation. A bigger toolbox, stronger convenience, equivalent
-reformulation or finite check is not by itself goal progress. From the third research entry in a
-row that reports a route unchanged, the paragraph ends with `<strong>Bearing.</strong>`: what the
-entry's result gives at the goal's own parameters, or that it gives nothing there and why the cycle
-was spent on it, and the article declares `data-bearing="none"` or `"some"` to match; after two
-entries in a row on one queue item declaring `none`, the next entry develops a different item; and
-an entry in such a run whose follow-up is Continuing states `<strong>Record search.</strong>`, the
-registry searches made for the next attempt it names (the finisher checks all four). Keep the
-obligation ID stable while
-that implication is unchanged. The finisher checks declarations and evidence references, not the
-truth of the agent's assessment; the existing reviewer must challenge that assessment.
+Each new research/review article names its stable **Open statements** ID in `data-obligation` (not a
+newly named local lemma) and sets `data-goal-progress="advanced"` or `"unchanged"`. Give separate
+**New mathematics.** and **Goal progress.** paragraphs. The first states what was obtained,
+including no result; the second states exactly which necessary implication changed and why, or that
+it remains unchanged. `advanced` cites a claim declared by the entry with a proof, conditional
+reduction or refutation. A bigger toolbox, stronger convenience, equivalent reformulation or finite
+check is not by itself goal progress. From the third research entry in a row that reports a route
+unchanged, the paragraph ends with `<strong>Bearing.</strong>`: what the entry's result gives at the
+goal's own parameters, or that it gives nothing there and why the cycle was spent on it, and the
+article declares `data-bearing="none"` or `"some"` to match; after two entries in a row on one queue
+item declaring `none`, the next entry develops a different item; and an entry in such a run whose
+follow-up is Continuing states `<strong>Record search.</strong>`, the registry searches made for the
+next attempt it names (the finisher checks all four). Keep the obligation ID stable while that
+implication is unchanged. The finisher checks declarations and evidence references, not the truth of
+the agent's assessment; the existing reviewer must challenge that assessment.
 
 Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
 `<p><strong>Label.</strong> ...</p>` paragraphs:
 
 - **Necessary target.** State the weakest endpoint that suffices for the actual goal, with its
-  quantifiers, instances and degree/size budget. End with `<strong>Downstream.</strong>`: the
-  target evaluated through the proved downstream statements, citing their claim IDs, with the
-  explicit consequence and whether it is the goal or weaker (the finisher checks presence).
+  quantifiers, instances and degree/size budget. End with `<strong>Downstream.</strong>`: the target
+  evaluated through the proved downstream statements, citing their claim IDs, with the explicit
+  consequence and whether it is the goal or weaker (the finisher checks presence).
 - **Extra requirements.** Contrast that endpoint with the current approach's additional demands:
-  existence versus arbitrary choices, derivability versus literal vanishing, or one surviving
-  object versus a separately large space. Justify each demand or identify what can be weakened.
+  existence versus arbitrary choices, derivability versus literal vanishing, or one surviving object
+  versus a separately large space. Justify each demand or identify what can be weakened.
 - **Independent alternative.** Initially give the review's existing medium reviewer only the goal
   and bounded available-result excerpts, withholding the preferred route. List the route's
   registered open conjectures with their evidence beside the proved results. Ask for a materially
@@ -202,24 +201,24 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   and the usual correctness review. Link the reviewer evidence here; do not manufacture an
   alternative or spawn a second reviewer for this step.
 - **Rank normalization.** For dimension counts, ask whether losses and surviving objects are
-  measured in the same quotient and whether relative contraction could replace absolute
-  smallness. Otherwise state why this question does not apply.
-- **Decision.** Choose the weakened endpoint or competing architecture to test, or justify
-  retaining the current one against the comparison.
+  measured in the same quotient and whether relative contraction could replace absolute smallness.
+  Otherwise state why this question does not apply.
+- **Decision.** Choose the weakened endpoint or competing architecture to test, or justify retaining
+  the current one against the comparison.
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
   required implication or the chosen route. Read the earlier reviews' tests first
   (`tools/notebook-excerpt.py --review-tests`). Search the registry for the test as for a new lemma
-  and end with `<strong>Record search.</strong>`, the searches and what they returned (the
-  finisher checks it): a test the record already answers decides nothing. Before it state
+  and end with `<strong>Record search.</strong>`, the searches and what they returned (the finisher
+  checks it): a test the record already answers decides nothing. Before it state
   `<strong>Power.</strong>`: what the recorded upper bounds and method limits give on the test's
-  object, and for a computation the reachable sizes and why its outcomes differ there (the
-  finisher checks it).
+  object, and for a computation the reachable sizes and why its outcomes differ there (the finisher
+  checks it).
 
-The next research cycle on that route reports the actual outcome in **Architecture test.** and
-links the review's anchor. This can be a proof attempt, not necessarily a computation. More local
-lemmas without that test do not satisfy the requirement. An explicit user-picked task may defer
-the test, but does not clear it. These checks apply to new entries; do not retrofit or rewrite
-historical assessments.
+The next research cycle on that route reports the actual outcome in **Architecture test.** and links
+the review's anchor. This can be a proof attempt, not necessarily a computation. More local lemmas
+without that test do not satisfy the requirement. An explicit user-picked task may defer the test,
+but does not clear it. These checks apply to new entries; do not retrofit or rewrite historical
+assessments.
 
 ## Notebook and claim metadata
 
@@ -301,88 +300,89 @@ historical assessments.
   waits in the notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living
   section; no word budget; restoration reads its first five items), FIFO, maintained per
   [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
-  entry develops at most one top-level item, by default the head; the agent may take another queued item first
-  when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and why it comes
-  first (user, 9 October 2026: "You can select the order. Make this a general framework rule."); no
-  item is skipped by this. At an item's spell boundary rotate it and develop a different item, the head or any other
-  chosen one; work refused at the boundary is not re-filed under a related item (user, 10 October
-  2026: "You should not bypass the spell limit. Why not just rotate the item and move to next
-  one?" and "Doesn't have to be the head. You can select the item to develop, just a different
-  one."). Sub-ideas belong to their item: a parent that keeps one open is Continuing, not Closed,
-  and they never become items of their own when it closes (user, 10 October 2026). Any item the
-  agent develops, chosen ones included, may earn the spell extension described below. The entry is tagged `data-lead` or
-  `data-bridge="REVIEW-ANCHOR:N"`, and states `<strong>Follow-up.</strong>` Closed, Developed or
-  Continuing. Squeeze an item until it can produce nothing more, not until its first usable result
-  (user, 3 October 2026): Continuing whenever its translation still bears on an open statement,
-  naming and where possible making the concrete next attempt; Developed only when its results leave
-  it no remaining application to an open statement; Closed only for a reason the attempt found (a
-  restatement of the open problem, inapplicability, a falsification, or supersession by a stronger
-  result). One cycle, which may be short, is enough to find that an item deserves closing; state the
-  reason and its limits and close it, without asking the user whether it may be pruned (user, 10
-  October 2026: "the existing process already supports closing an item quickly if it deserves it").
-  Every Closed follow-up carries `<strong>Stakes.</strong>`: what a yes and what a no to the item's
-  question would each give the open statement. The reviewer reads each
-  closure, and the entry links its record (the finisher checks both; user, 10 October 2026). It
-  also states, after `<strong>Sources read.</strong>`, which statements of each source the closure
-  relies on were read, or that it relies on recorded results only; a closure resting on an abstract
-  is refused (the finisher checks).
-  Closed and Developed remove the item. Four consecutive research entries are the default
-  spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
-  current spell/extension period materially advances a named open statement and a concrete next
-  necessary implication uses the same mechanism. Record that evidence and next attempt using [the
-  queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
-  there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
-  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every top-level
-  item, also during backpressure, is developed in its own entry; batch triage is retired (user, 9
-  October 2026: "Revert it back to the state where each item was done one at a time"). Sub-ideas of
-  the one item an entry develops may be batched in that entry, each in a follow-up list item with its
-  own outcome and evidence (user, 9 October 2026: "An entry may develop at most one top level item. Sub
-  ideas attached to a single parent can be batched."). Research entries
-  carry no Outside leads or Absurd bridges of their own (user, 9 October 2026); undone work they
-  name goes under Sub-ideas. An item closed too early is reopened by a follow-up list item ending
-  `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A
-  queue audit (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named
-  outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued
-  ("when unsure, queue it"). Any entry lists the questions, checks and builds it names and leaves
-  undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it
-  intends to carry out: do a small one in the entry, drop one that will not be done, and add none
-  to fill the section (user, 9 October 2026). Those of a research entry that develops no queue item
-  have no parent: they wait in their entry, `lead_queue.py pending` lists them, and the next review
-  promotes any number by judgement with a follow-up list item ending `<strong>Follow-up.</strong>
-  Promoted: <reason>` (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items
-  with similar wording; when two ask the same thing keep one, closing the other with "Closed: merged
-  into ID", which adds its wording to that item. The others join the queue
-  nested under the item they belong to (user, 3 October 2026: "I want it to look like a nested list
-  of entries"), a sub-idea's development counting toward its parent's spell; a check is Developed
-  only with evidence that resolves, a build only with its opened task or its path. The user may pick
-  any item out of order (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>`
-  paragraph), and an item waiting on the user's answer stays queued and passed over (`Waiting:` and
-  `Unblocked:` follow-ups). The queue section's attributes set, per notebook, the entry kinds that
-  count, backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
-  Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains (`data-draining="true"`), and every research
-  entry develops the head or its first sub-idea until 10 remain; then work returns to the route, or
-  to a better route the leads opened. While the queue is draining, reviews produce no Outside leads
-  or Absurd bridges: omit both sections and assess existing work (user, 5 October 2026). Review
-  cadence and the other review requirements still apply. Reviews report only follow-ups whose status
-  changed. The finisher checks all of this against HEAD and `compute.sh start` prints the queue's
-  state and head. A one-step objection (a structural remark, a record match, one encoding tried)
-  falsifies only that formulation. Before a review declares an open statement without mechanism, or
-  moves cycles away from it, each "Not run" item and each item closed by such an objection that
-  bears on that statement gets a development cycle: read the source in full, and try other
-  encodings, formulations and settings where the objection does not apply (user, 26 September 2026:
-  "Did you make an honest attempt at developing some of these in order to solve A1?"). In the user's
-  words (25 September 2026): "absurd bridges can reach for mathematics, computer science,
-  theoretical physics, quantum fucking chemistry, I don't give a fuck. That's why they are absurd."
-  Reaching for other areas is the agent's job at every cycle, not only when the user names a field.
-  Proposed next step names its route item. While the goal is open that step is always research:
-  never park, pause or stop the goal, or wait for a user decision; when recorded routes are closed,
-  propose and test a new idea. Once the goal is proved, a Spin loop stops
-  ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the next cycle or review in
-  the current turn; possible user redirection is no reason to idle or request a check-in. Low-yield
-  cycles, corrections and hard next steps call for developing the latest review's Outside leads and
-  Absurd bridges, not stopping the loop while the goal is open. Explain progress, obstructions and
-  remaining uncertainty; do not invent numerical probabilities for research prospects. A probability
-  requires a stated quantitative method and evidence, not an uncalibrated impression.
+  entry develops at most one top-level item, by default the head; the agent may take another queued
+  item first when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and
+  why it comes first (user, 9 October 2026: "You can select the order. Make this a general framework
+  rule."); no item is skipped by this. At an item's spell boundary rotate it and develop a different
+  item, the head or any other chosen one; work refused at the boundary is not re-filed under a
+  related item (user, 10 October 2026: "You should not bypass the spell limit. Why not just rotate
+  the item and move to next one?" and "Doesn't have to be the head. You can select the item to
+  develop, just a different one."). Sub-ideas belong to their item: a parent that keeps one open is
+  Continuing, not Closed, and they never become items of their own when it closes (user, 10 October
+  2026). Any item the agent develops, chosen ones included, may earn the spell extension described
+  below. The entry is tagged `data-lead` or `data-bridge="REVIEW-ANCHOR:N"`, and states
+  `<strong>Follow-up.</strong>` Closed, Developed or Continuing. Squeeze an item until it can
+  produce nothing more, not until its first usable result (user, 3 October 2026): Continuing
+  whenever its translation still bears on an open statement, naming and where possible making the
+  concrete next attempt; Developed only when its results leave it no remaining application to an
+  open statement; Closed only for a reason the attempt found (a restatement of the open problem,
+  inapplicability, a falsification, or supersession by a stronger result). One cycle, which may be
+  short, is enough to find that an item deserves closing; state the reason and its limits and close
+  it, without asking the user whether it may be pruned (user, 10 October 2026: "the existing process
+  already supports closing an item quickly if it deserves it"). Every Closed follow-up carries
+  `<strong>Stakes.</strong>`: what a yes and what a no to the item's question would each give the
+  open statement. The reviewer reads each closure, and the entry links its record (the finisher
+  checks both; user, 10 October 2026). It also states, after `<strong>Sources read.</strong>`, which
+  statements of each source the closure relies on were read, or that it relies on recorded results
+  only; a closure resting on an abstract is refused (the finisher checks). Closed and Developed
+  remove the item. Four consecutive research entries are the default spell. At its boundary, extend
+  by two cycles when a proof, refutation or reduction from the current spell/extension period
+  materially advances a named open statement and a concrete next necessary implication uses the same
+  mechanism. Record that evidence and next attempt using [the queue tool's extension
+  format](tools/lead_queue.py). Reassess after each two-cycle extension; there is no lifetime cap,
+  but finite checks, promise alone or reused old progress do not earn more time. Without fresh
+  qualifying progress, rotate to the tail (user, 5 October 2026). Every top-level item, also during
+  backpressure, is developed in its own entry; batch triage is retired (user, 9 October 2026:
+  "Revert it back to the state where each item was done one at a time"). Sub-ideas of the one item
+  an entry develops may be batched in that entry, each in a follow-up list item with its own outcome
+  and evidence (user, 9 October 2026: "An entry may develop at most one top level item. Sub ideas
+  attached to a single parent can be batched."). Research entries carry no Outside leads or Absurd
+  bridges of their own (user, 9 October 2026); undone work they name goes under Sub-ideas. An item
+  closed too early is reopened by a follow-up list item ending `<strong>Follow-up.</strong>
+  Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A queue audit
+  (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named outside the
+  standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued ("when unsure,
+  queue it"). Any entry lists the questions, checks and builds it names and leaves undone under
+  `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it intends to carry
+  out: do a small one in the entry, drop one that will not be done, and add none to fill the section
+  (user, 9 October 2026). Those of a research entry that develops no queue item have no parent: they
+  wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any number
+  by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>`
+  (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with similar
+  wording; when two ask the same thing keep one, closing the other with "Closed: merged into ID",
+  which adds its wording to that item. The others join the queue nested under the item they belong
+  to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
+  development counting toward its parent's spell; a check is Developed only with evidence that
+  resolves, a build only with its opened task or its path. The user may pick any item out of order
+  (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
+  waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
+  follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,
+  backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
+  Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains
+  (`data-draining="true"`), and every research entry develops the head or its first sub-idea until
+  10 remain; then work returns to the route, or to a better route the leads opened. While the queue
+  is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and assess
+  existing work (user, 5 October 2026). Review cadence and the other review requirements still
+  apply. Reviews report only follow-ups whose status changed. The finisher checks all of this
+  against HEAD and `compute.sh start` prints the queue's state and head. A one-step objection (a
+  structural remark, a record match, one encoding tried) falsifies only that formulation. Before a
+  review declares an open statement without mechanism, or moves cycles away from it, each "Not run"
+  item and each item closed by such an objection that bears on that statement gets a development
+  cycle: read the source in full, and try other encodings, formulations and settings where the
+  objection does not apply (user, 26 September 2026: "Did you make an honest attempt at developing
+  some of these in order to solve A1?"). In the user's words (25 September 2026): "absurd bridges
+  can reach for mathematics, computer science, theoretical physics, quantum fucking chemistry, I
+  don't give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
+  every cycle, not only when the user names a field. Proposed next step names its route item. While
+  the goal is open that step is always research: never park, pause or stop the goal, or wait for a
+  user decision; when recorded routes are closed, propose and test a new idea. Once the goal is
+  proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the
+  next cycle or review in the current turn; possible user redirection is no reason to idle or
+  request a check-in. Low-yield cycles, corrections and hard next steps call for developing the
+  latest review's Outside leads and Absurd bridges, not stopping the loop while the goal is open.
+  Explain progress, obstructions and remaining uncertainty; do not invent numerical probabilities
+  for research prospects. A probability requires a stated quantitative method and evidence, not an
+  uncalibrated impression.
 - Keep entries chronological and append-only, including opinions/assessments even when the user
   objects. Withdraw/correct/retract in a new dated entry linking the old anchor; update living
   status and correction metadata. Never silently rewrite prior mathematics to match later results.
@@ -467,16 +467,16 @@ historical assessments.
   provenance of finished one-off jobs, tied to the data of their date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
-  (user, 10 October 2026: "We need a mechanical check... No memories...."). State general
-  rules, not narratives of the mathematics that prompted them. When the user or a reviewer shows a
-  mistake in how the work was done, the same reply names its prevention and commits it, a mechanical
-  check where one can exist, without being asked (user, 10 October 2026). So that the user is not the only check on
-  conduct, every reviewer also audits how the work was done (overstated titles, unasked questions,
-  unsupported decisions; see the `medium-reviewer` definition, and ask for it in every brief), and
-  each reviewed entry reports the findings after `<strong>Process audit.</strong>` in its
-  Verification gate (the finisher checks; user, 10 October 2026). An entry's
-  **Process assessment.** paragraph ends with `<strong>Prevention.</strong>`: the committed check or
-  rule for each mistake it reports, or why none applies (the finisher checks). Repeated question marks signal
+  (user, 10 October 2026: "We need a mechanical check... No memories...."). State general rules, not
+  narratives of the mathematics that prompted them. When the user or a reviewer shows a mistake in
+  how the work was done, the same reply names its prevention and commits it, a mechanical check
+  where one can exist, without being asked (user, 10 October 2026). So that the user is not the only
+  check on conduct, every reviewer also audits how the work was done (overstated titles, unasked
+  questions, unsupported decisions; see the `medium-reviewer` definition, and ask for it in every
+  brief), and each reviewed entry reports the findings after `<strong>Process audit.</strong>` in
+  its Verification gate (the finisher checks; user, 10 October 2026). An entry's **Process
+  assessment.** paragraph ends with `<strong>Prevention.</strong>`: the committed check or rule for
+  each mistake it reports, or why none applies (the finisher checks). Repeated question marks signal
   increasing frustration with the process: implement and commit a real fix, preferably a mechanical
   check, rather than only apologizing.
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
@@ -491,8 +491,8 @@ historical assessments.
   agent; workers and unrelated sessions must never replace a binding. The legacy
   `remember-codex-session.py` only validates an existing binding. Never commit IDs. Codex
   startup/repair and hook trust are described in [tools/CODEX.md](tools/CODEX.md). Clones restore
-  files, not chat history. Private agent memory is not written at all (see Framework maintenance), and never holds mathematics or
-  research progress.
+  files, not chat history. Private agent memory is not written at all (see Framework maintenance),
+  and never holds mathematics or research progress.
 - Background sessions use one persistent Git worktree, never the shared checkout. Create it from the
   intended local base with `git worktree add --track -b NAME PATH BASE`; set a missing local
   upstream with `git branch --set-upstream-to=BASE`. The branch name is only a convention. Codex's
@@ -500,11 +500,11 @@ historical assessments.
   commit, run `tools/ff-base.sh`, with or without a push grant. It rebases onto a moved local
   upstream and fast-forwards that upstream, including local main when main is the base. It never
   pushes; dirty bases/conflicts require resolution. The post-commit hook reminds about lag or a
-  missing upstream. This local synchronization does not authorize publication.
-  **Current-run override (7 October 2026):** during the user's `Spin AC⁰[2]-Frege`
-  on `aux`, keep commits on `aux`; do not fast-forward `main` to it or run the
-  automatic base synchronization. The user explicitly suspended that synchronization
-  for this Spin. This override ends with the run or a later user instruction.
+  missing upstream. This local synchronization does not authorize publication. **Current-run
+  override (7 October 2026):** during the user's `Spin AC⁰[2]-Frege` on `aux`, keep commits on
+  `aux`; do not fast-forward `main` to it or run the automatic base synchronization. The user
+  explicitly suspended that synchronization for this Spin. This override ends with the run or a
+  later user instruction.
 - Every research turn ends in a local Git commit, including failures/no results. Include living
   sections, full record, sources/provenance, code, reproducibility data and complete important
   outputs per the computation policy. Promote essential scratch/runtime results into
