@@ -26,6 +26,24 @@ class RewrapMdTest(unittest.TestCase):
                          "---\nname: skill\ndescription: Use when a description is long enough to pass the width.\n"
                          "---\n\nA sentence long enough to wrap here.\n")
 
+    def test_a_blockquote_is_wrapped_as_a_blockquote(self):
+        text = ("Before the quote.\n> A quoted sentence that is long\n> enough to wrap over lines.\n>\n"
+                "> A second paragraph of it.\nAfter the quote, not drawn into it.\n")
+        wrapped = rewrap_md.rewrap(text, width=30)
+        self.assertEqual(wrapped, "Before the quote.\n> A quoted sentence that is\n> long enough to wrap over\n> lines.\n>\n"
+                                  "> A second paragraph of it.\nAfter the quote, not drawn\ninto it.\n")
+        self.assertEqual(rewrap_md.rewrap(wrapped, width=30), wrapped)
+        # A nested quote keeps its markers, and one quote's paragraph does not continue another's.
+        self.assertEqual(rewrap_md.rewrap("> outer words here\n> > inner words that wrap\n> > on\n> outer again\n", width=22),
+                         "> outer words here\n> > inner words that\n> > wrap on\n> outer again\n")
+        # An item in a quote hangs under its own text; a table, a fence and an indented quote pass or keep their indent.
+        self.assertEqual(rewrap_md.rewrap("> - an item whose text wraps\n>   over lines\n> - two\n", width=20),
+                         "> - an item whose\n>   text wraps over\n>   lines\n> - two\n")
+        self.assertEqual(rewrap_md.rewrap("> | a | b |\n> ```\n> code  kept\n> ```\n", width=10), "> | a | b |\n> ```\n> code  kept\n> ```\n")
+        self.assertEqual(rewrap_md.rewrap("  > Jira refused it. Either a\n  > cutover is on.\n", width=24),
+                         "  > Jira refused it.\n  > Either a cutover is\n  > on.\n")
+        self.assertEqual(rewrap_md.rewrap(">no space after the marker\n", width=40), "> no space after the marker\n")
+
     def test_trailer_lines_stay_on_their_own_lines(self):
         text = "Note: a sentence\nlong enough to wrap here.\n\nRefs: https://x.example/A-1\nRefs: https://x.example/A-2\n"
         self.assertEqual(rewrap_md.rewrap(text, width=40),

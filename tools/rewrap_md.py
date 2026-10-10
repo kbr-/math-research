@@ -4,7 +4,8 @@
 GNU fmt joins lines by indentation alone, so a nested list item sitting at the
 same indent as its parent's continuation lines is merged into the parent. This
 keeps every list item a block of its own: its marker on the first line, its
-text hung under the marker's text. YAML frontmatter, headings, blank lines,
+text hung under the marker's text. A blockquote is wrapped as one, each line of
+its paragraphs and items under its markers. YAML frontmatter, headings, blank lines,
 tables, fenced code blocks and trailer lines (`Refs: <url>`) pass through
 unchanged. The result
 depends only on the words, so rewrapping twice changes nothing, and a later
@@ -31,6 +32,8 @@ from pathlib import Path
 _MARKER = re.compile(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$")
 _HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
 _FENCE = re.compile(r"^\s*(```|~~~)")
+# A blockquote line: its markers, nested ones included ("> > "), then its text.
+_QUOTE = re.compile(r"^(\s*(?:>\s?)+)(.*)$")
 # A trailer, "Refs: <url>": a key and one value, kept on its own line like a commit trailer.
 _TRAILER = re.compile(r"^[A-Z][\w-]*: \S+$")
 
@@ -66,6 +69,8 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
     raw: list[str] = []  # its lines as written
     first = rest = ""
     in_fence = False
+    quoting: str | None = None  # the marker of the blockquote paragraph being collected
+    quoted_fence = False  # inside a fenced block of a blockquote
 
     def flush() -> None:
         nonlocal block, raw
@@ -82,6 +87,38 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
                 in_fence = not in_fence
             continue
         stripped = line.strip()
+        quote = _QUOTE.match(line)
+        if quote:
+            # A blockquote is wrapped as one: every line of a paragraph of it carries its marker.
+            marker, body = quote.group(1).rstrip() + " ", quote.group(2)
+            inner = _MARKER.match(body)
+            if quoted_fence or _FENCE.match(body):
+                flush()
+                out.append(line)
+                quoting = None
+                if _FENCE.match(body):
+                    quoted_fence = not quoted_fence
+            elif not body.strip() or body.lstrip().startswith("|"):
+                flush()
+                out.append(line)
+                quoting = None
+            elif inner:
+                flush()
+                indent, sign, words = inner.groups()
+                first, rest = f"{marker}{indent}{sign} ", marker + " " * (len(indent) + len(sign) + 1)
+                block, raw, quoting = words.split(), [line], marker
+            elif block and quoting == marker:
+                block.extend(body.split())
+                raw.append(line)
+            else:
+                flush()
+                first = rest = marker
+                block, raw, quoting = body.split(), [line], marker
+            continue
+        if quoting is not None:
+            # A line without the marker ends the quote's paragraph: it is not drawn into it.
+            flush()
+            quoting = None
         if not stripped or _HEADING.match(line) or stripped.startswith("|") or _TRAILER.match(line):
             flush()
             out.append(line)
