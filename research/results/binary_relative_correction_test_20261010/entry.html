@@ -1,0 +1,56 @@
+<article id="entry-2026-10-10-relative-correction-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-10-nilpotent-face-test:s1" data-claims="none" data-claim-note="Explicit one-block application of existing weighted replay and cover results, and a standard idempotent comparison; no new source-exclusion theorem.">
+<h3>10 October 2026 — One block has a valid weighted action, but its scalar repair is not nilpotent</h3>
+<p class="entry-meta">Recovered one-block construction and scoped correction test. Relative-correction cycle.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, compare an actual complete block with a controlled old action. The <a href="#entry-2026-10-10-pc-reset-test">reset test</a> ruled out declaring every transition nilpotent. Can a smaller ideal containing only the correction errors implement a useful source repair?</p>
+<p><strong>General statement.</strong> The <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/07_elimination.md#thm-one-elimination">historical one-block elimination</a>, <code>lem:source-compatible-cover</code> and <code>prop:idempotent-perturbation-test</code> supply the relevant general tools. The construction below realizes the known one-block budget on a proper old pseudoideal and tests a particular scalar reference. It is not a new elimination theorem.</p>
+<p><strong>New mathematics.</strong> None beyond this explicit comparison. A surviving input weight yields a correct filtered action; changing a scalar coefficient from zero to one changes its action by a nonzero idempotent. The source may be easy to repair without that repair belonging to a nilpotent ideal.</p>
+<p><strong>Goal progress.</strong> Unchanged. The one-block bound was already available. No simultaneous source-wide choice or degree saving over the existing batched methods is obtained.</p>
+<h4>Construct the positive control in the actual old quotient</h4>
+<p>Work over \(\mathbb F_2\). Let \(J_D\) be a proper degree-\(D\) old pseudoideal containing the old axioms and Booleanity. This can be the recorded charged old space in its proper window; no full quotient algebra or old satisfying assignment is assumed. Take one complete accuracy-\(h\) block, \(h\ge1\), on arbitrary old inputs \(g_i\) of degree at most \(\delta\ge1\). Let the original target ceiling \(B\) cover old generator degrees, fresh fields, and all declared companions
+\[
+ e_i=h(\delta+1)+\deg g_i,
+\]
+and assume \(B+\delta\le D\). The source polynomials themselves are not replaced by lower-degree specialized ones when charging the budget.</p>
+<p>If every \(g_i\in J_D\), set \(W=1\) and every fresh coefficient to zero. All companion images are then in \(J_D\), and the weight survives. Otherwise choose an actual input \(g_j\notin J_D\), put \(W=g_j\), set its first-row coefficient to one, and set the rest to zero. The substituted product is \(1-g_j\), so
+\[
+ Wg_iP(x,\beta)=g_jg_i(1-g_j).
+\]
+This is a Boolean consequence of degree at most \(2\delta+\deg g_i\). That fits \(\delta+e_i\le\delta+B\): the difference between the former upper bound and \(\delta+e_i\) is paid because \(h(\delta+1)\ge\delta\). Fresh field images vanish, and weighted old generators lie in \(J_D\) by bounded absorption. Thus every required generator image is killed through the original \(B+\delta\) ceiling. In the nonzero-input case \(W\notin J_D\) by construction.</p>
+<p>To make legal PC reuse explicit, write \(Q_k=F[x]_{\le k}/(J_D\cap F[x]_{\le k})\) and let
+\[
+ E_b=[W F[x]_{\le b}]\subseteq Q_{\delta+b},\qquad 0\le b\le B.
+\]
+Use the same displayed \(\delta\)-reserve even when \(W=1\). All these spaces sit in \(Q_D\), so their inclusions are injective. Old-variable multiplication maps \(E_b\) into \(E_{b+1}\); if a representative is zero, bounded absorption makes its product zero as well. Each fresh variable acts by its selected constant \(0\) or \(1\), with inclusion when needed. The marked vector is \([W]\in E_0\), and evaluation is
+\[
+ \operatorname{ev}_b(f)=[Wf(x,\beta)].
+\]
+The preceding generator calculations show that original source axioms evaluate to zero. Commutation is inherited from polynomial multiplication. A cancellation to actual degree \(b\) already has its evaluation in \(E_b\); injective inclusion prevents a terminal zero from hiding a nonzero lower-degree evaluation. Legal multiplication of that derived polynomial is therefore respected. A refutation through \(B\) would kill the nonzero marked \([W]\), impossible.</p>
+<p>This is the familiar one-block weighted replay, expressed as a cyclic filtered representation of the kind already studied by the source-cover theorem. Its marked vector is allowed to be \([W]\), not the class of one in the original old quotient. It does not preserve an arbitrarily prescribed old functional. Those stronger requirements are unnecessary for the lower-bound endpoint.</p>
+<h4>Compare the actual scalar correction</h4>
+<p>In the nonzero-input case, keep this same weighted space and compare the successful map with the all-zero coefficient reference. The selected fresh variable acts as \(I\) in the successful map and as \(0\) in the reference. Constants act on each represented space without an old-degree increase, including on \(E_B\). Their difference is \(I\), and
+\[
+ I^k=I\ne0\qquad(k\ge1).
+\]
+No nilpotent ideal of these endomorphisms can contain that correction. This conclusion does not promote old-variable multiplication to an uncharged terminal endomorphism.</p>
+<p>The zero reference was not source-compatible in the first place. Its selected companion has weighted image
+\[
+ [Wg_j]=[g_j^2]=[g_j]=[W]\ne0,
+\]
+using Boolean reduction within the paid window. Thus the nonnilpotent change fixes a real source error. Starting with the successful scalar map removes that error, but simply presupposes the one-block choice already made. In the all-inputs-zero case the zero map was already valid and no correction was needed.</p>
+<p>The same restriction explains the earlier direct companion perturbation. On a common stable space, commuting binary idempotents \(A,B\) have
+\[
+ (A-B)^2=A-B.
+\]
+A nilpotent difference must therefore be zero. This applies to the indicated commuting actions, not to arbitrary pairs of idempotents or partial filtered maps. The preceding full-face example deliberately used noncommuting changes of basis; it had its own normalization problem. A smaller noncommutative correction ideal remains a distinct possibility.</p>
+<h4>Why the known proof does not automatically batch</h4>
+<p>The handoff eliminates one block by specializing a hypothetical refutation, weighting by input selectors, deriving each input, and then reusing its final polynomial. It does not first construct a common nilpotent reference for an arbitrary inventory. Its reverse-level composition pays the sum of input degrees; equal-span and nested-core batches reduce that cost only under their recorded shared-span hypotheses.</p>
+<p>The weighted-space realization makes the same issue visible. A second block must be handled in the already weighted quotient: choosing a new surviving input may multiply \(W\) by that input and consume more degree. If all weighted inputs vanish, zero coefficients suffice there. This is known conditioning, not a new estimate on how many successful repairs can be required. The source size and the original proof budget still have to enter any proposed global saving. The previous constant-input and PC-easy reset controls alone cannot settle that quantitative task on the hard charged family.</p>
+<p>For a genuinely nilpotent comparison, the reference must consequently be richer than independent scalar guesses. One option is a filtered extension with off-diagonal correction maps between already controlled components. The diagonal source relations, normalization and strictness of the degree inclusions must then be checked, rather than inferred from nilpotence of off-diagonal matrices. This is the next test; no such compatible extension is asserted here.</p>
+<p><strong>Architecture test.</strong> The positive one-block construction was carried out directly in a proper old pseudoideal, with original companion degrees and actual PC resets retained. Its scalar correction from the zero reference is nonnilpotent and its reference fails a displayed source equation. The test therefore identifies what the smaller correction ideal cannot contain. It does not establish a global obstruction to nilpotent lifting or a new source bound.</p>
+<p><strong>Follow-up.</strong> Continuing the marked-correction sub-idea, after the nilpotent head's third entry. Use its fourth ordinary entry to test a triangular extension of controlled local components, with the marked class and degree inclusions retained. Determine whether off-diagonal corrections can supply missing source compatibility or whether a lowest surviving filtered component already requires that compatibility. Read the existing source-cover and filtered-complex controls before calling such a construction new. Without fresh progress on the open binary statement, rotate at the spell boundary; the known one-block repair alone does not earn an extension.</p>
+<h4>Verification</h4>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the original-degree ledger, weighted filtered action and reset proof, identity correction, commuting-idempotent scope and unchanged-goal assessment without required corrections or unused substantive hypotheses; see <a href="research/results/binary_relative_correction_test_20261010/review.txt">verdict</a>. The full historical additive-elimination proof, source-cover construction and direct-companion perturbation proof were read. The all-parameter weighted replay above needs no new numerical test; no rule, encoding or computation was changed.</p>
+<p><strong>Process assessment.</strong> Keeping the old state as a proper truncated pseudoideal avoids another satisfiable-only calibration. The result is still the known one-block construction, so it is recorded as recovered evidence rather than a new theorem. Some initial reasoning preceded this cycle's first phase marker and remains mixed with its preparation interval; no timing was backfilled.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_relative_correction_test_20261010 -->
+</article>
