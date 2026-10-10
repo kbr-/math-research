@@ -47,7 +47,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: <code>cube-odd-characteristic</code>, statement 3. Develop the next queued filtered-Koszul lead from the <a href="#entry-2026-09-28-cube-filtered-epd-review">filtered EPD review</a>. Its <a href="#cube-filtered-pair-division">pair-ideal division theorem</a> already preserves pair degree and original joint weights; its <a href="#cube-filtered-epd-lifting-delay">differential-image control</a> proves that this does not bound a preimage under \(\mathcal L\). Test whether the lead supplies any remaining ingredient for the actual marked harmonic-prefix degree, with those exact scopes retained. Do not repeat ordinary ideal division or substitute localization for the differential-image inverse. The new <a href="#entry-2026-10-10-cube-polynomial-jet-ceiling">polynomial jet ceiling</a> excludes using a fixed-order confluence test alone to settle the plateau.</p>
+<p>Route item: <code>cube-odd-characteristic</code>, statement 3. Develop the next queued Grassmannian/Satake lead from the <a href="#entry-2026-09-28-cube-filtered-epd-review">filtered EPD review</a>. Read the <a href="#entry-2026-09-28-cube-horizontal-pairing">actual polynomial horizontal pairing</a> and its <a href="#entry-2026-09-28-cube-derived-pairing-review">failed adjoint-chain application</a> together. Test whether a compatible construction on the actual finite-prefix complex gives any information about the dangerous <a href="#entry-2026-10-10-cube-prefix-tail-ext-comparison">prefix-tail Ext degrees</a>, retaining the polynomial lattice, shifts and non-invariant contributions. Ambient perfection and ordinary duals alone do not answer this test.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -98,7 +98,6 @@ The multipliers are pair-algebra elements, not coefficient-field scalars. For co
 <p>Passed Outside leads and Absurd bridges awaiting development, oldest first (FIFO); rules in <code>tools/lead_queue.py</code>.</p>
 <ol>
 <li data-lead="entry-2026-09-27-cube-global-degree-review:1" data-waits="the request of 5 October 2026 (permission and memory for research/tools/bmd_cube"><a href="#entry-2026-09-27-cube-global-degree-review">entry-2026-09-27-cube-global-degree-review:1</a> (lead): Ore monic division and bounded module elimination. The lemma replaces unbounded noncommutative elimination by a finite polynomial kernel, using the already proved order-zero cutoff. The mathematical input is monic divisi…</li>
-<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1"><a href="#entry-2026-09-28-cube-filtered-epd-review">entry-2026-09-28-cube-filtered-epd-review:1</a> (lead): Filtered Koszul division for a regular sequence. The leading pair forms are the coprime complete homogeneous polynomials \(h_{N-1},h_N\), and the explicit syzygy subtraction proves (FD) over the full coefficient ring. An…</li>
 <li data-lead="entry-2026-09-28-cube-filtered-epd-review:2"><a href="#entry-2026-09-28-cube-filtered-epd-review">entry-2026-09-28-cube-filtered-epd-review:2</a> (lead): Equivariant Grassmannian cohomology and Satake. The ring presentation and alternating map were compared with the actual two-generator ideal, including signs and grading, as above. Answers. A compatible graded pairing or …</li>
 <li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1"><a href="#entry-2026-09-29-cube-wronskian-discriminant-review">entry-2026-09-29-cube-wronskian-discriminant-review:1</a> (lead): Discriminants of covariants (Sylvester and Cayley; Grace–Young, The Algebra of Invariants, Ch. VII). The discriminant of a covariant of a binary form is an invariant, so the Wronskian covariant's discriminant is one poly…</li>
 <li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2"><a href="#entry-2026-09-29-cube-wronskian-discriminant-review">entry-2026-09-29-cube-wronskian-discriminant-review:2</a> (lead): Eisenbud–Harris weight-two Weierstrass points and limit linear series (Invent. Math. 87, 1987). Their dimension counts for exceptional ramification loci proceed by degenerating to reducible curves, where the conditions s…</li>
@@ -105119,6 +105118,57 @@ which proves (2) and the stated range comparison. This proves the theorem. \(\sq
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">15 min 1.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 53.90 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">12.56 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-10-cube-filtered-division-fulfilled" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-obligation="cube-first-step-plateau" data-goal-progress="unchanged" data-lead="entry-2026-09-28-cube-filtered-epd-review:1" data-claims="none" data-claim-note="Dedicated development/scope check of an already proved and applied division theorem; no new mathematical claim or threshold.">
+<h3>10 October 2026 — Filtered ideal division is complete; it does not invert the differential image</h3>
+<p class="entry-meta">Existing result applied in its exact scope; division lead fulfilled. Filtered division cycle. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> Statement 3 needs the original first-step degree, not another presentation of the pair algebra. The <a href="#entry-2026-09-28-cube-filtered-epd-review">queued filtered-Koszul lead</a> promised representation by the two original ideal generators without artificial pair-degree inflation. Check what that supplies when composed with the actual differential operator, and whether any part of the stated division task remains unfulfilled.</p>
+<p><strong>General statement.</strong> <code>lem:cube-filtered-pair-division</code> already proves the exact filtered representation over every field. <code>prop:cube-filtered-epd-lifting-delay</code> supplies its characteristic-zero obstruction to the proposed differential composition in every \(N\ge5\). This entry applies their complete proofs rather than registering the same statements again.</p>
+<h4>The promised division and its two gradings</h4>
+<p>Retain \(S=k[c_2,\ldots,c_N]\), \(P=S[s,v]\), and
+\(J=(a_{N-1},a_N)\) from the original pair presentation. Pair degree assigns weights one and two to \(s,v\), and zero to the coefficients \(c_i\); original joint degree instead gives \(c_i\) weight \(i\). The proved identity is
+\[
+ J\cap P_{\le d}
+ =a_{N-1}P_{\le d-N+1}+a_NP_{\le d-N}.
+ \tag{1}
+\]
+It also preserves joint homogeneity. Its proof is constructive: the leading pair forms \(h_{N-1},h_N\) are coprime, so a cancelled leading representation is a Koszul syzygy. Subtracting that syzygy lowers the representation degree and terminates. No parameter denominator occurs. This is exactly the outcome requested by the lead, including its original coefficient ring.</p>
+<h4>The attempted differential composition</h4>
+<p>For the actual operator
+\[
+ \mathcal L=\partial_s^2+s\partial_s\partial_v+
+             v\partial_v^2+\tfrac52\partial_v
+\]
+in characteristic zero, the unresolved operation is instead: given \(b\in\mathcal L(J)\), find \(f\in J\) with \(\mathcal Lf=b\), while controlling the order and parameter degree of \(f\). Equation (1) applies after such an \(f\) has been found. It bounds the two coefficients in a representation of \(f\) in terms of \(\deg_{\rm pair}f\); it gives no bound on that preimage degree from the degree of \(b\).</p>
+<p>Applying (1) directly to \(b\) would also confuse \(J\) with \(\mathcal L(J)\). Membership in the latter does not by itself assert membership in the former. Even on an input lying in both sets, a representation of \(b\) by ideal generators is not an inverse under \(\mathcal L\). Nor is the differential image supplied as an ideal on which arbitrary pair-variable multiplication acts.</p>
+<p>The <a href="#cube-filtered-epd-lifting-delay">recorded uniform control</a> resolves this proposed implication exactly. With \(R=\binom N2\), \(j=R+1\), polynomial Schur reduction \(\rho\), and the harmonic \(H_j\), put
+\[
+ r_N=\rho H_j,\qquad b_N=\mathcal Lr_N,\qquad
+ f_N=r_N-H_j\in J.
+\]
+The image has pair degree at most \(2N-6\), while every polynomial preimage in \(J\) has pair degree at least \(j\), attained by \(f_N\). A smaller preimage would make \(r_N-f\) harmonic below order \(j\), giving a monic relation at the original first-step order and contradicting its proved properness. This is the existing all-\(N\) argument, not a new case check. It shows why exact ideal division does not imply a fixed additive pair-degree overhead uniformly in \(N\). It does not exclude an \(N\)-dependent inverse bound or every filtered-Koszul application; those would require an additional argument.</p>
+<h4>The coefficient cost cannot be discarded</h4>
+<p>Over \(\operatorname{Frac}S\), a smaller harmonic representation gives a lower-order preimage, but its displayed denominator is cleared by the boundary polynomial \(F_N\). Its joint degree is already \(\lambda_N=3\binom N4\). Paying that cost does not establish the missing original threshold below the boundary. The source theorem does not assert that this is the minimal denominator; the point is that localization alone has not supplied the required polynomial degree control.</p>
+<p>The recent <a href="#entry-2026-10-10-cube-polynomial-jet-ceiling">polynomial cofactor jets</a> do not change this conclusion. They solve a finite truncation of another exact presentation, with higher residuals left over; they do not construct a full preimage of \(b_N\) in \(J\) at a smaller pair degree. The <a href="#entry-2026-10-10-cube-prefix-tail-ext-comparison">actual prefix-tail Ext criterion</a> likewise retains an unproved vanishing, rather than an inverse supplied by (1).</p>
+<p><strong>New mathematics.</strong> None. The exact filtered division has been proved and used in the actual differential-image test. Both its useful conclusion and the failure of the stronger composition are already recorded with full proofs.</p>
+<p><strong>Goal progress.</strong> Unchanged for <code>cube-first-step-plateau</code>. No original threshold or dangerous Ext vanishing follows. This dedicated queue entry recognizes a completed input and preserves the distinct unresolved differential lifting problem.</p>
+<p><strong>Follow-up.</strong> Developed: the lead's requested representation by the two original generators, with both filtrations retained, is proved by (1) and has been applied to the actual EPD source. Its proposed further use as a same-order differential inverse fails the uniform delay control. A new bound on that inverse would be additional mathematics, not unfinished ideal division.</p>
+<p><strong>Verification gate.</strong> Re-read the entire originating review, the exact division proof, polynomial normal form, differential lifting-delay proof and localization scope. No field hypothesis was transferred from the all-field division lemma to the characteristic-zero operator argument. No new theorem or computation is claimed. The sole fresh-context GPT 6.1-Sol medium reviewer passed the mathematics and, after reading the originating lead, confirmed this exact closure scope (<a href="../../results/bmd-filtered-division-scope-20261010/review.md">report</a>).</p>
+<p><strong>Process.</strong> The one queued item was checked against its own delivered conclusion and its actual application; no batch closure, repeated proof registration or numerical rerun is used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-filtered-division-scope-20261010">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 34.84 s</strong></td></tr>
+<tr><td>Context restoration</td><td class="elapsed">46.27 s</td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 0.56 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 6.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 41.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
