@@ -1,0 +1,53 @@
+<article id="entry-2026-10-10-parity-lift-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-check="entry-2026-10-10-source-smith-test:s1" data-claims="prop:parity-kernel-lift-gap">
+<h3>10 October 2026 — Canonical parity lifts can lose every primitive affine kernel</h3>
+<p class="entry-meta">Working all-parameter source control; integral kernel lifting is stronger than binary removal.</p>
+<p><strong>Question.</strong> On general-step for binary-frege-lower-bound, does using the canonical Boolean-value lift repair the preceding source-lift dependence, so that a surviving binary affine kernel lifts integrally without increasing degree? Test this on actual source multiplication in the proper charged quotient.</p>
+<p><strong>General statement.</strong> <code>prop:parity-kernel-lift-gap</code> computes the affine-domain Smith form for the whole parity family. The binary kernel is nonzero and cheap, while every affine kernel over precision at least two reduces to zero. Thus a primitive integral kernel is an unnecessarily strong requirement even for the canonical bit lift.</p>
+<p><strong>New mathematics.</strong> An explicit all-parameter Smith calculation using odd-subset evaluation rows. This is a source-shaped scope control, not a novel theorem about general Smith forms or the next member of a numerical case sequence.</p>
+<p><strong>Goal progress.</strong> Unchanged. The binary source in the control is easily removable. The result rejects replacing its unit-rank deficit by a characteristic-zero rank deficit or a same-degree primitive integral kernel. It does not provide the actual unrestricted source estimate.</p>
+<h4>One family, with the original source fixed</h4>
+<p>Use the recorded free charged quotient over \(A_s=(\mathbb Z/2^s)[\zeta]/(\zeta^2+\zeta+1)\), whose residue field is \(\mathbb F_4\), in its proper graph/degree window. Choose \(r\ge3\) edges from a spanning-tree complement, and let \(z_i=x_{e_i,a_i}\) be one label indicator on each. Their coordinate images are independent modulo the cut space. Take the actual binary input
+\[
+g=\sum_{i=1}^r z_i
+\]
+in a complete accuracy-one block, and set its fresh coefficient to zero. The companion becomes \(g\), the field image is zero, and its original degree ceiling remains \(B=3\), independently of the number of terms. The common multiplier domain is \(U=\langle1,z_1,\ldots,z_r\rangle\), of degree one, with no omitted field or bottom error.</p>
+<p>Let \(G_s\) be the canonical polynomial representing the parity bit modulo \(2^s\):
+\[
+G_s=\sum_{j=1}^{\min(s,r)}(-2)^{j-1}e_j(z_1,\ldots,z_r).
+\tag{1}
+\]
+This is the already proved finite-precision parity expansion. Its values on local label assignments are zero or one according to parity, and its ordinary indicator degree is \(d_s=\min(s,r)\). No division by two in \(A_s\) occurs. For the support/evaluation proof below assume \(r+1\le D\), in addition to the old charged window. This covers the entire independent local character summand and every product used; it is a stated source-control range, not a new degree lower bound.</p>
+<h4>The exact invariant factors</h4>
+<p id="parity-kernel-lift-gap"><strong>Proposition (parity kernel lift gap).</strong> For every \(r\ge3\) and \(s\ge2\) in this setup, multiplication by \(G_s\) on \(U\) has Smith form
+\[
+\operatorname{diag}(\underbrace{1,\ldots,1}_{r},2)
+\tag{2}
+\]
+over \(A_s\), with other rows zero. Its reduction has rank \(r\) on the \((r+1)\)-dimensional domain and kernel \(\langle1+\sum_i z_i\rangle\). Its integral affine kernel is exactly
+\[
+\left\{c\left(1-\sum_i z_i\right):c\in 2^{s-1}A_s\right\}.
+\tag{3}
+\]
+Consequently every such affine kernel vector reduces to zero; no surviving binary affine kernel lifts inside the same affine domain. The domain itself has a unit \((r+1)\)-minor.</p>
+<p><strong>Proof.</strong> No nonzero cut is supported on the selected complement edges. Their \(3^r\) local character labels are distinct in the quotient, and all have representatives of degree at most \(r\). The local Fourier evaluation matrix is invertible over \(A_s\), since three and differences of distinct third roots are units. Therefore it is a legitimate invertible change of output coordinates on this summand. Every binary indicator pattern occurs among local ternary labels. Remove duplicate evaluation rows by invertible subtraction, as in the two-edge control, leaving one row for each binary pattern. This is local interpolation inside an independent summand, not evaluation on global solutions of the inconsistent graph.</p>
+<p>The domain rows are \((1,z_1,\ldots,z_r)\). The zero pattern and the \(r\) singleton patterns give a unit domain minor. In the multiplication matrix, even patterns give zero rows, and an odd subset \(S\subseteq[r]\) gives
+\[
+(1,\mathbf1_S).
+\]
+The singleton rows have an identity minor on the \(r\) variable columns. Subtract their sum for \(i\in S\) from the row indexed by \(S\); this leaves \((1-|S|,0,\ldots,0)\). Every such remaining scalar is even, and a three-element subset supplies \(-2\). Hence the residual one-column ideal is exactly \((2)\), proving (2) by unit pivots and row elimination.</p>
+<p>Alternatively solve for an affine vector \(f=c_0+\sum_i c_i z_i\). Singleton rows give \(c_i=-c_0\). A triple row gives \(-2c_0=0\), equivalent in \(A_s\) to \(c_0\in2^{s-1}A_s\). This condition suffices because \(1-|S|\) is even on every odd subset. This proves (3). Reduction of (2) gives rank \(r\), and the reduced singleton equations give precisely the claimed one-dimensional residue kernel. \(\square\)</p>
+<p>The restriction \(r\ge3\) supplies a triple and is substantive; for two inputs the earlier canonical lift has an actual affine kernel and zero final invariant factor. This is why that two-input control could not decide the present universal lifting hypothesis. The statement now covers all larger arities analytically, with no size sweep.</p>
+<h4>Binary removal remains cheap</h4>
+<p>The binary weight \(w=1+g\) has degree one and survives: its independent local character expansion is nonzero. Its product with the companion is \(g+g^2\), an old Boolean consequence through degree two. Original weighted replay still costs \(1+B=4\), which fits the inherited window here. The binary kernel is therefore exactly the useful solution that primitive integral lifting would discard.</p>
+<p>A higher-degree integral lift exists: \(1-G_s\) reduces to \(1+g\) and annihilates \(G_s\) pointwise modulo \(2^s\). The recorded Boolean certificate convention gives the identity through degree \(2d_s\), so this alternative is available in the charged quotient if that larger window also fits. This is an upper bound, not a claim that \(d_s\) is the optimal degree of an integral annihilator. The affine impossibility proves only that degree one is insufficient under (2). Do not optimize a local weight-degree constant as if it advanced the unrestricted bound.</p>
+<p>Over the characteristic-zero coefficient field, the exact parity-bit polynomial on these \(r\) indicators has the same odd-subset rows, so its affine-domain rank is \(r+1\). Thus a rational-rank upper bound cannot see this binary deficit even though the domain has a unit minor and the lift is canonical. Smith form does see it as the single nonunit pivot two. No contradiction arises with the earlier inequality that binary rank is at most rational rank.</p>
+<p>Likewise full-cube idempotence does not force a chosen truncated domain's multiplication matrix to be a split projector. The input domain here is affine, while its output lies in the larger local summand. The existing <a href="#joint-branch-extension">joint branch representation</a> supplies a different enlarged operator model and retains its input-word growth; it does not produce the missing primitive affine kernel. The <a href="#deflated-error-transfer">weaker deflation</a> remains valid and only needs the binary rank, not such an integral lift.</p>
+<h4>Remaining application</h4>
+<p><strong>Follow-up.</strong> Developed the canonical affine-kernel test: the proposition answers it for all arities and precisions above its exact threshold. The Smith parent continues after its second entry. Its useful target must count nonunit pivots directly, rather than demand rational rank loss or primitive integral kernels. The remaining source-dependent determinant/valuation estimate is unproved; a normal-form computation alone would restate it.</p>
+<h4>Sub-ideas</h4>
+<ul><li data-sub="check" data-parent="lead:entry-2026-10-09-restriction-transfer-review:1">Test whether a size-dependent determinantal-divisibility argument for actual complete source matrices can certify enough nonunit pivots while permitting the nonliftable binary kernels exhibited here. Use the primary Smith source's Lemma 3, whose generic left/right preconditioning already recovers determinantal divisors as coefficient contents; its full proof was read while choosing this test. Check whether it provides source information or only an equivalent determinant description, and test legal common-domain preconditioning; do not replace this by rational rank loss.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the all-parameter Smith/kernel proof, local summand, both degree ledgers and unchanged assessment without required corrections; see <a href="research/results/binary_parity_lift_test_20261010/review.txt">verdict</a>. Nonzero total charge is unnecessary for this local matrix calculation; inherited conditions supply the free module. The exact finite-precision parity formula, free charged module, deflated matrix transfer, two-edge lift comparison and paid joint-branch result were read. Proofs use all odd-subset rows and their unit pivots, not interpolation from finite computations. No encoding or proof-system rule changes.</p>
+<p><strong>Process assessment.</strong> A fixed canonical lift does not repair the stronger kernel requirement. The cheap binary weight and the explicit higher-degree alternative keep that negative result scoped to the proposed criterion.</p>
+<h4>Measured timing</h4>
+<!-- TIMING binary_parity_lift_test_20261010 -->
+</article>
