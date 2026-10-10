@@ -20,8 +20,9 @@ why. Measured on a task session and on a research session, seven and eight of te
 against the record and one or two misread the text (10 and 11 October 2026), so each is checked against the
 record before it is acted on. It found 4 of 18 and 2 of 12 of the user's own corrections.
 
-It never fails a checkpoint: no transcript, no rules, a model that gives no verdict are said and passed, and
-outside a Claude Code session it does not run, since the transcript it would find is another session's. A
+It reads a Claude Code transcript or a Codex session file, whichever the running session writes. It never
+fails a checkpoint: no transcript, no rules, a model that gives no verdict are said and passed, and outside
+both kinds of session it does not run, since the transcript it would find is another session's. A
 branch turns it off with a line "review" in tools/hooks/checks_off. A run takes about 20 s.
 """
 import argparse
@@ -89,26 +90,46 @@ def written_since(transcript, since):
                 if str(entry.get('timestamp') or start_text) < start_text:
                     older = True
                     break
-                content = (entry.get('message') or {}).get('content') if isinstance(entry.get('message'), dict) else None
-                if entry.get('type') == 'assistant' and not entry.get('isSidechain') and isinstance(content, list):
-                    text = '\n'.join(part.get('text', '') for part in content
-                                     if isinstance(part, dict) and part.get('type') == 'text').strip()
-                    if text:
-                        found.append(text)
+                text = own_text(entry)
+                if text:
+                    found.append(text)
             if older:
                 break
             end = start
     return found[::-1]
 
 
+def own_text(entry):
+    """What the session's own agent wrote in one record of a Claude Code transcript or of a Codex session
+    file; '' for a subagent's text, a tool's output, the user's words and the agent's private reasoning."""
+    message = entry.get('message') if isinstance(entry.get('message'), dict) else {}
+    payload = entry.get('payload') if isinstance(entry.get('payload'), dict) else {}
+    if entry.get('type') == 'assistant' and not entry.get('isSidechain'):
+        parts = message.get('content')
+    elif entry.get('type') == 'response_item' and payload.get('type') == 'message' and payload.get('role') == 'assistant':
+        parts = payload.get('content')
+    else:
+        return ''
+    # A part that is no text (a tool call, the reasoning) has no text of its own.
+    return '\n'.join(str(part.get('text') or '') for part in parts if isinstance(part, dict)).strip() if isinstance(parts, list) else ''
+
+
 def session_transcript(root, home=None, env=None):
-    """The Claude Code transcript last written for a session in `root`, or None; None too outside a Claude
-    Code session, where the last transcript of that directory is some other session's."""
-    if not (os.environ if env is None else env).get('CLAUDECODE'):
+    """The file the running session writes what it says to, or None where none can be told for sure: inside
+    a Codex session, the one session file named by its thread; inside a Claude Code session, that session's
+    transcript among those of `root`, or the last written there. Outside both, None: the last transcript of a
+    directory is some other session's."""
+    env, home = os.environ if env is None else env, home or Path.home()
+    if env.get('CODEX_THREAD_ID') and not env.get('CLAUDE_CODE_SESSION_ID'):
+        sessions = Path(env.get('CODEX_HOME') or home / '.codex') / 'sessions'
+        found = list(sessions.rglob(f"*-{env['CODEX_THREAD_ID']}.jsonl")) if re.fullmatch(r'[0-9a-fA-F-]{36}', env['CODEX_THREAD_ID']) else []
+        return found[0] if len(found) == 1 else None
+    if not env.get('CLAUDECODE'):
         return None
-    folder = (home or Path.home()) / '.claude' / 'projects' / re.sub(r'[^A-Za-z0-9]', '-', str(root))
+    folder = home / '.claude' / 'projects' / re.sub(r'[^A-Za-z0-9]', '-', str(root))
+    own = folder / f"{env.get('CLAUDE_CODE_SESSION_ID', '')}.jsonl"
     found = sorted(folder.glob('*.jsonl'), key=lambda path: path.stat().st_mtime)
-    return found[-1] if found else None
+    return own if own.is_file() else found[-1] if found else None
 
 
 def squeezed(text):

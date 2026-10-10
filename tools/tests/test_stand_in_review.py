@@ -118,6 +118,38 @@ class StandInReviewTest(unittest.TestCase):
         self.assertIsNone(tool.session_transcript(Path('/work/other'), self.root, inside))
         # Another agent's finisher in the same directory would be given this session's text.
         self.assertIsNone(tool.session_transcript(Path('/work/my.repo'), self.root, {}))
+        # The session's own transcript is taken where the session names itself, though another was written later.
+        named = {**inside, 'CLAUDE_CODE_SESSION_ID': 'a'}
+        self.assertEqual(tool.session_transcript(Path('/work/my.repo'), self.root, named), folder / 'a.jsonl')
+        self.assertEqual(tool.session_transcript(Path('/work/my.repo'), self.root, {**inside, 'CLAUDE_CODE_SESSION_ID': 'gone'}), folder / 'b.jsonl')
+
+    def test_a_codex_session_is_read_from_the_file_its_thread_names(self):
+        thread, other = '01a12817-e695-70f2-a532-dc75749bd269', '01a12817-e695-70f2-a532-dc75749bd260'
+        day = self.root / '.codex' / 'sessions' / '2026' / '10' / '10'
+        day.mkdir(parents=True)
+        item = lambda ago, payload: json.dumps({'timestamp': stamp(ago), 'type': 'response_item', 'payload': payload}) + '\n'
+        said = lambda role, text, **more: {'type': 'message', 'role': role, 'content': [{'type': 'output_text' if role == 'assistant' else 'input_text', 'text': text}], **more}
+        (day / f'rollout-2026-10-10T10-00-00-{thread}.jsonl').write_text(
+            item(200, said('assistant', 'Three hours old.')) + item(60, said('user', 'the user speaks'))
+            + item(50, said('assistant', 'Reading the proof.', phase='commentary'))
+            + item(40, {'type': 'reasoning', 'summary': [{'type': 'summary_text', 'text': 'private reasoning'}]})
+            + item(30, {'type': 'agent_message', 'author': '/root/reviewer', 'content': [{'type': 'input_text', 'text': 'a subagent reports'}]})
+            + item(20, {'type': 'custom_tool_call_output', 'output': 'tool output'})
+            + item(10, said('assistant', 'The lemma holds; it is surely general.', phase='final_answer')))
+        (day / f'rollout-2026-10-10T11-00-00-{other}.jsonl').write_text(item(5, said('assistant', 'Another thread.')))
+        home = {'CODEX_THREAD_ID': thread}
+        found = tool.session_transcript(self.root, self.root, home)
+        self.assertEqual(found.name, f'rollout-2026-10-10T10-00-00-{thread}.jsonl')
+        self.assertEqual(tool.written_since(found, NOW - tool.FIRST), ['Reading the proof.', 'The lemma holds; it is surely general.'])
+        # A Codex home given by its variable; a thread with no file, a thread with two, and no thread's name: nothing.
+        self.assertEqual(tool.session_transcript(self.root, self.root / 'elsewhere', {**home, 'CODEX_HOME': str(self.root / '.codex')}), found)
+        self.assertIsNone(tool.session_transcript(self.root, self.root, {'CODEX_THREAD_ID': other[:-1] + '1'}))
+        # What is no thread's name is no pattern to search by, though it would match one file.
+        self.assertIsNone(tool.session_transcript(self.root, self.root, {'CODEX_THREAD_ID': thread[:-1] + '[9]'}))
+        # A Claude Code session started from a Codex one is a Claude Code session.
+        self.assertIsNone(tool.session_transcript(self.root, self.root, {**home, 'CLAUDE_CODE_SESSION_ID': 'x', 'CLAUDECODE': '1'}))
+        (day.parent / f'rollout-copy-{thread}.jsonl').write_text('')
+        self.assertIsNone(tool.session_transcript(self.root, self.root, home))
 
     def test_a_branch_turns_it_off_and_an_answered_review_is_owed_no_more(self):
         (self.root / 'tools' / 'hooks').mkdir(parents=True)
