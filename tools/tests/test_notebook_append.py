@@ -1,6 +1,9 @@
 """notebook-append.py inserts after the last record article and replaces the next step."""
+import contextlib
 import importlib.util
+import io
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -113,6 +116,95 @@ class NotebookAppendTests(unittest.TestCase):
         with mock.patch.object(checks, 'registered_status', return_value={}):
             with self.assertRaisesRegex(ValueError, 'Advanced Goal progress'):
                 checks.validate_progress(result, position, result.index('</article>', position))
+
+    def test_a_dollar_sign_or_a_character_reference_without_its_ampersand_is_refused(self):
+        with self.assertRaisesRegex(ValueError, 'entry contains a dollar sign'):
+            tool.append(NOTEBOOK, '<article id="a3">where $x$ is odd</article>')
+        self.assertIn(r'where \(x\) is odd', tool.append(NOTEBOOK, r'<article id="a3">where \(x\) is odd</article>'))
+        with self.assertRaisesRegex(ValueError, r'entry has character references without their & \(#39;, nbsp;\)'):
+            tool.append(NOTEBOOK, '<article id="a3">the budget#39;s share, 2 nbsp;s, 2 nbsp;m</article>')
+        self.assertIn('budget&#39;s', tool.append(NOTEBOOK, '<article id="a3">the budget&#39;s share, 2&nbsp;s</article>'))
+        with self.assertRaisesRegex(ValueError, r'next step has character references without their & \(quot;\)'):
+            tool.append(NOTEBOOK, '<article id="a3">three</article>', '<p>the (quot;new) step</p>')
+
+    def test_a_next_step_that_parks_an_open_goal_is_refused(self):
+        entry, task = '<article id="a3">three</article>', '<article id="a3" data-kind="task">three</article>'
+        opened = '<section id="open-statements"><ol><li>Statement one is open.</li></ol></section>' + NOTEBOOK
+        proved = '<section id="open-statements"><p>The goal is proved.</p></section>' + NOTEBOOK
+        waits = '<p>Research <em>waits</em> for your decision on the route.</p>'
+        with self.assertRaisesRegex(ValueError, r'the next step parks the goal \("Research  waits"\)'):
+            tool.append(opened, entry, waits)
+        # A proved goal, a notebook that lists no statements, and a task's entry may wait.
+        for source, appended in ((proved, entry), (NOTEBOOK, entry), (opened, task)):
+            self.assertIn('waits', tool.append(source, appended, waits))
+        # A step that turns to another statement, or names work that waits without being a wait, is research.
+        for step in ('<p>Switch to statement two: prove the transfer lemma for odd fields.</p>',
+                     '<p>Prove the bound; the write-up can wait until then.</p>'):
+            self.assertIn(step, tool.append(opened, entry, step))
+        with self.assertRaisesRegex(ValueError, 'next step contains a dollar sign'):
+            tool.append(NOTEBOOK, entry, '<p>Costs $5.</p>')
+
+    def test_an_entry_is_refused_while_where_we_stand_is_as_committed_unless_a_reason_is_given(self):
+        def notebook(stand):
+            return f'<section id="where-we-stand"><p>{stand}</p></section>' + NOTEBOOK
+        entry = '<article id="a3">\n<h3>Three</h3>\n<p class="entry-meta">Status: finite check.</p>\n<p>Body.</p>\n</article>'
+        with self.assertRaisesRegex(ValueError, 'Where we stand is unchanged since the last commit'):
+            tool.append(notebook('old'), entry, committed=notebook('old'))
+        with self.assertRaisesRegex(ValueError, 'Where we stand is unchanged'):
+            tool.append(notebook('old'), entry, committed=notebook('old'), reason='  ')
+        kept = tool.append(notebook('old'), entry, committed=notebook('old'), reason='a check of <one> case & no more ')
+        self.assertIn('<p class="entry-meta">Status: finite check.</p>\n<p><strong>Where we stand.</strong> Unchanged: '
+                      'a check of &lt;one&gt; case &amp; no more</p>\n<p>Body.</p>', kept)
+        # Without a status line the paragraph ends the entry.
+        self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: why</p>\n</article>',
+                      tool.append(notebook('old'), '<article id="a3">three</article>', committed=notebook('old'), reason='why'))
+        # A changed section, a notebook not yet committed and one without the section take the entry as it is.
+        for source, committed in ((notebook('new'), notebook('old')), (notebook('old'), None), (NOTEBOOK, NOTEBOOK)):
+            for reason in (None, 'why'):
+                self.assertNotIn('Where we stand.</strong>', tool.append(source, entry, committed=committed, reason=reason))
+
+    def test_a_branch_s_own_checks_run_after_the_generic_ones(self):
+        entry = '<article id="a3">three</article>'
+        with tempfile.TemporaryDirectory() as directory:
+            tools = Path(directory)
+            self.assertIn(entry, tool.append(NOTEBOOK, entry, tools=tools))
+            (tools / 'append_checks.py').write_text(
+                'def check(source, entry, next_html):\n'
+                '    open(__file__ + ".ran", "a").write(entry + "|" + str(next_html) + "\\n")\n'
+                '    if "three" in entry:\n        raise ValueError("this branch takes no entry about three")\n')
+            ran = tools / 'append_checks.py.ran'
+            with self.assertRaisesRegex(ValueError, 'this branch takes no entry about three'):
+                tool.append(NOTEBOOK, entry, '<p>new</p>', tools=tools)
+            self.assertEqual(ran.read_text(), entry + '|<p>new</p>\n')
+            self.assertIn('four', tool.append(NOTEBOOK, '<article id="a4">four</article>', tools=tools))
+            # An entry both would refuse is refused by the generic check, and the module is not asked.
+            ran.unlink()
+            with self.assertRaisesRegex(ValueError, 'dollar sign'):
+                tool.append(NOTEBOOK, '<article id="a3">three for $3</article>', tools=tools)
+            self.assertFalse(ran.exists())
+
+    def test_the_command_reads_the_committed_notebook_and_records_the_reason(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = '<section id="where-we-stand"><p>old</p></section>' + NOTEBOOK
+            (root / 'notebook.html').write_text(source)
+            entry = root / 'draft.html'
+            entry.write_text('<article id="a3">three</article>')
+            git = lambda *args: subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', *args], cwd=root,
+                                               capture_output=True, text=True, check=True)
+            git('init', '-q'); git('add', 'notebook.html'); git('commit', '-qm', 'x')
+
+            def run(*arguments):
+                with mock.patch.object(tool, 'ROOT', root), mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                        mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), *arguments]), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            with self.assertRaisesRegex(SystemExit, 'Where we stand is unchanged since the last commit'):
+                run()
+            self.assertEqual((root / 'notebook.html').read_text(), source)
+            run('--stand-unchanged', 'only a lemma')
+            self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: only a lemma</p>\n</article>',
+                          (root / 'notebook.html').read_text())
 
     def test_cli_reporting_failure_does_not_write_notebook_or_next_step(self):
         with tempfile.TemporaryDirectory() as directory:
