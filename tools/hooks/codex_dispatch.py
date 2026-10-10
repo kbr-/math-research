@@ -12,6 +12,7 @@ import re
 import shlex
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from codex_state import actor_state, scratch_directory
@@ -20,7 +21,7 @@ import base_behind
 
 
 def load_guard():
-    spec = importlib.util.spec_from_file_location('guard_full_output', Path(__file__).with_name('guard-full-output.py'))
+    spec = importlib.util.spec_from_file_location('bash_guard', Path(__file__).with_name('bash_guard.py'))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -165,10 +166,15 @@ def dispatch(event, root):
     shell = event.get('tool_name') == 'Bash'
     # Stateless refusals run even when the session payload lacks an identity.
     if name == 'PreToolUse' and shell:
-        reason = guard.blocked(command) or guard.unchained_heredoc(command)
+        reason = (guard.blocked(command) or guard.unchained_heredoc(command) or guard.adhoc_replace_helper(command)
+                  or guard.stale_branch(command, event.get('cwd') or str(root), time.time()))
         if reason:
             return deny('Refused: ' + reason + '. Run mandatory output bare and chain dependent commands.')
     if name == 'SessionStart':
+        # Rejoining a thread retains its context. Do not reset completed or
+        # partially delivered restoration receipts from an earlier compaction.
+        if event.get('source') == 'resume':
+            return {}
         with actor_state(root, event) as state:
             state.update(pending=True, bundle=None, delivered=[])
         scratch = scratch_directory(root, event.get('agent_id') or event['session_id'], create=True)

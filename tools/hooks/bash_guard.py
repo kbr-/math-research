@@ -1,0 +1,396 @@
+#!/usr/bin/env python3
+"""Claude Code PreToolUse hook on Bash calls: must-read output, unchained heredocs, replace helpers, long runs,
+stale branches.
+
+Some commands print text the agent must read whole: the resume bundle
+(`tools/resume.py`), the turn guidance and warnings of `./compute.sh start`, the
+finisher's report (`tools/finish-turn.py`), and every computation run by `./compute.sh`
+(`run`, or an option-led invocation), whose refusals and guard messages would otherwise be
+filtered away; it displays only its own lines, and the workload's output is in the saved log. Piping them through head, tail, sed or
+grep, or redirecting their standard output to a file, silently drops that text. The
+hook reads the tool call as JSON on stdin and exits with status 2 (block, message on
+stderr) for such commands.
+
+It also refuses a heredoc-fed program followed by further commands on later lines that are not
+chained to it: those commands run even when the program fails, so a failed scripted edit is followed
+by the appends, registrations and checkpoints meant to use its result.
+
+It refuses a heredoc script that defines its own text-replacement helper, a function taking
+(old, new) or a pattern matching a passage's words across any whitespace: tools/replace_text.py is
+the committed, tested one, and the Edit tool makes exact edits.
+
+It refuses, in the foreground, a long compute.sh run and a download whose length depends on the
+network (a git or glab clone, a docker pull): both go to the background while other work goes on.
+
+It refuses a workload run outside compute.sh: a test runner (pytest, unittest, the framework suite, a
+repository's suite script) or a script in a scratchpad, at the start of a command segment. A program
+run inside `docker exec`, an editor command given to git and an inline `python3 -c` are not at a
+segment's start and pass.
+
+And it refuses a git command that reads another branch, a local one with an upstream or a
+remote-tracking one, while that upstream hasn't been fetched or pushed to here for FRESH seconds,
+or while the local branch is behind it: another clone may have moved it, so what the command shows
+can be out of date. A fetch of that remote earlier in the same command counts.
+"""
+import json
+import os
+from pathlib import Path
+import re
+import shlex
+import subprocess
+import sys
+import time
+
+# The start of a command-list segment up to the program it runs: optional parentheses, variable
+# assignments and env/nohup/time wrappers, then optionally an interpreter with its options.
+INVOKED = (r"^\s*(?:(?:do|then|else)\s+)?\(*\s*(?:\w+=\S*\s+)*(?:(?:env|nohup|time)\s+)*"
+           r"(?:\S*python[\d.]*\s+(?:-\S+\s+)*|(?:ba)?sh\s+)?(?:\S*/)?")
+# Each must-read command, run at the start of a segment, with the reason shown when it is filtered.
+# A command that only names the file, as in `grep x tools/resume.py | head`, is not guarded.
+GUARDED = [
+    (re.compile(INVOKED + r"resume\.py\b"),
+     "tools/resume.py prints the restoration bundle, one part per call"),
+    (re.compile(INVOKED + r"compute\.sh\s+start\b"),
+     "./compute.sh start prints turn guidance and warnings that can appear anywhere"),
+    (re.compile(INVOKED + r"finish-turn\.py\b"),
+     "tools/finish-turn.py prints checks, warnings and staging instructions"),
+    (re.compile(INVOKED + r"compute\.sh\s+(?:run\b|--(?!status\b))"),
+     "./compute.sh runs print guard refusals and guidance, and only those (the output is in the saved log); "
+     "save a full result with tools/save-run-output.py"),
+]
+# Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
+SEPARATOR = re.compile(r"\|\||&&|;|\n")
+# Redirection of standard output (> or 1>, not 2> or >&).
+STDOUT_REDIRECT = re.compile(r"(?:^|[^0-9&>])1?>(?!&)")
+
+
+HEREDOC = re.compile(r"<<-?\s*(['\"]?)(\w+)\1")
+
+
+def unchained_heredoc(command: str):
+    """The reason when non-blank lines follow a heredoc's terminator and the heredoc's command line does
+    not chain what follows with && (as in `python3 - <<'EOF' && next`) or run under `set -e`."""
+    if re.search(r"\bset\s+-e\b", command):
+        return None
+    lines = command.split("\n")
+    for i, line in enumerate(lines):
+        match = HEREDOC.search(line)
+        if not match:
+            continue
+        end = next((j for j in range(i + 1, len(lines)) if lines[j].strip() == match.group(2)), None)
+        if end is None:
+            continue
+        after = [x for x in lines[end + 1:] if x.strip() and not x.strip().startswith("#")]
+        if after and not re.search(r"&&|\|\|", line[match.end():]):
+            return ("commands after a heredoc run even when the heredoc's program fails; chain them on the "
+                    "heredoc's first line (python3 - <<'EOF' && next ...) or split them into a separate call")
+    return None
+
+
+# A text-replacement helper written into a heredoc script: a function taking (old, new), or a pattern that
+# matches a passage's words across any whitespace. tools/replace_text.py is the committed, tested one.
+ADHOC_REPLACE = re.compile(r"def\s+\w+\s*\(\s*(?:\w+\s*,\s*)?old\s*,\s*new\b|\.join\(\s*map\(\s*re\.escape")
+# An inline Python script, from a heredoc or -c, that changes text and writes a file: a replace in place.
+INLINE_PYTHON = re.compile(r"\bpython3?\s+(?:-I\s+)?(?:-\s*<<|-c\s)")
+CHANGES_TEXT = re.compile(r"\.replace\(|\bre\.sub\(")
+WRITES_FILE = re.compile(r"\.write_(?:text|bytes)\(|\bopen\([^)]*['\"][wa]")
+
+
+def adhoc_replace_helper(command: str):
+    """The reason when a heredoc script defines its own text-replacement helper, or an inline Python
+    script replaces text in a file."""
+    if ((HEREDOC.search(command) and ADHOC_REPLACE.search(command))
+            or (INLINE_PYTHON.search(command) and CHANGES_TEXT.search(command) and WRITES_FILE.search(command))):
+        return ("a script replaces text in a file; replace a passage of prose with "
+                "tools/replace_text.py FILE OLD_FILE NEW_FILE, which matches across line breaks and keeps the "
+                "passage's indentation, or make an exact edit with the Edit tool (AGENTS.md: a recurring helper "
+                "is a committed, tested tool)")
+    return None
+
+
+def blocked(command: str):
+    """Return the reason for the first filtered must-read command, or None."""
+    for segment in SEPARATOR.split(shell_code(command)):
+        for pattern, reason in GUARDED:
+            match = pattern.search(segment)
+            if match is None:
+                continue
+            rest = segment[match.end():]
+            if "|" in rest or STDOUT_REDIRECT.search(rest):
+                return reason
+    return None
+
+
+FOREGROUND_EXPECT, FOREGROUND_TIMEOUT = 60, 180   # seconds; compute.sh's default timeout is 180
+COMPUTE_METADATA = {"start", "phase", "report", "stop", "--status", "--help", "-h"}
+
+
+def launcher_options(segment: str):
+    """compute.sh's own options in one command segment, as {name: value}, or None if the segment runs no
+    workload through compute.sh.  Options end at `--` or at the workload's program."""
+    try:
+        words = shlex.split(segment)
+    except ValueError:
+        return None
+    at = next((i for i, w in enumerate(words) if w.endswith("compute.sh")), None)
+    if at is None or at + 1 >= len(words) or words[at + 1] in COMPUTE_METADATA:
+        return None
+    rest, options = words[at + 1:], {}
+    if rest[0] == "run":
+        rest = rest[2:]   # run SESSION
+    i = 0
+    while i < len(rest) and rest[i].startswith("-") and rest[i] != "--":
+        name, _, value = rest[i].partition("=")
+        if not value and i + 1 < len(rest) and not rest[i + 1].startswith("-"):
+            value, i = rest[i + 1], i + 1
+        options[name] = value
+        i += 1
+    return options
+
+
+def foreground_long_run(command: str, background: bool):
+    """A compute.sh run that may take long, started in the foreground (COMPUTATION_RULES.md, long runs)."""
+    if background:
+        return None
+    for segment in SEPARATOR.split(command):
+        options = launcher_options(segment)
+        if options is None:
+            continue
+        def seconds(name):
+            value = options.get(name, "")
+            return int(value) if value.isdigit() else 0
+        if seconds("--expect") > FOREGROUND_EXPECT or seconds("--timeout") > FOREGROUND_TIMEOUT:
+            return (f"a compute.sh run expected over {FOREGROUND_EXPECT} s or allowed over {FOREGROUND_TIMEOUT} s "
+                    "goes to the background (run_in_background: true); keep working meanwhile and reassess it at "
+                    "5 minutes (COMPUTATION_RULES.md, long runs; user, 3 October 2026)")
+    return None
+
+
+# A download whose length depends on the network: a repository clone or an image pull, run at the start of a segment.
+DOWNLOAD = re.compile(r"^\s*(?:(?:do|then|else)\s+)?\(*\s*(?:\w+=\S*\s+)*(?:(?:env|nohup|time)\s+)*"
+                      r"(?:git(?:\s+-C\s+\S+)?\s+clone\b|glab\s+repo\s+clone\b|docker\s+(?:image\s+)?pull\b)")
+
+
+def foreground_download(command: str, background: bool):
+    """A clone or pull started in the foreground, which blocks the turn while other work could go on."""
+    # A help request downloads nothing.
+    if background or not any(DOWNLOAD.match(segment) and not re.search(r"\s(?:--help|-h)\b", segment)
+                             for segment in SEPARATOR.split(command)):
+        return None
+    return ("a clone or an image pull goes to the background (run_in_background: true); keep working meanwhile "
+            "and use its result when it finishes (user, 6 October 2026: \"Why are you not putting this stuff to "
+            "background yourself\")")
+
+
+# A segment's start, quoted strings emptied, up to the program it runs: assignments, env/nohup/time/timeout
+# wrappers, `uv run`, and an interpreter with its options, `-m` among them.
+PROGRAM = re.compile(r"^\s*(?:(?:do|then|else)\s+)?\(*\s*(?:\w+=\S*\s+)*"
+                     r"(?:(?:env|nohup|time|timeout\s+\S+)\s+)*(?:uv\s+run\s+(?:-\S+\s+)*)?"
+                     r"(?:\S*python[\d.]*\s+(?:-\S+\s+)*|(?:ba)?sh\s+)?([^\s;&|()]+)")
+TEST_RUNNERS = {"pytest", "py.test", "unittest", "api-tests.sh", "suite_tips.sh"}
+
+
+def shell_code(command: str):
+    """The command without heredoc bodies and with quoted strings emptied, so that only what the shell runs
+    as commands is left to split into segments."""
+    lines, kept, end = command.split("\n"), [], None
+    for line in lines:
+        if end is not None:
+            end = None if line.strip() == end else end
+            continue
+        kept.append(line)
+        match = HEREDOC.search(line)
+        end = match.group(2) if match else None
+    return re.sub(r"\"(?:\\.|[^\"\\])*\"|'[^']*'", '""', "\n".join(kept))
+
+
+def unprotected_workload(command: str):
+    """A test runner, the framework suite or a scratchpad script run outside compute.sh."""
+    for segment in re.split(r"\|\||&&|;|\n|\|", shell_code(command)):
+        match = PROGRAM.match(segment)
+        program = match.group(1) if match else ""
+        # A segment that only assigns a variable (S=path) runs nothing.
+        if re.match(r"\w+=", program):
+            continue
+        if (program.rsplit("/", 1)[-1] in TEST_RUNNERS or program.endswith("tests/run.py")
+                or (re.search(r"scratchpad/\S*\.(?:py|sh)$", program))):
+            return (f"{program} runs a workload, which goes through ./compute.sh, small runs and other "
+                    "repositories' tests included (COMPUTATION_RULES.md, enforced execution; user, 8 October "
+                    "2026): run it as ./compute.sh [--threads N] [--timeout S] PROGRAM ... from the directory it "
+                    "needs, calling compute.sh by its path there, with environment variables inside the command "
+                    "(env NAME=VALUE PROGRAM ...), and read the saved log")
+    return None
+
+
+# git subcommands that read the revisions they are given.
+GIT_READS = {"show", "diff", "log", "cat-file", "rev-parse", "merge-base", "ls-tree", "grep", "rev-list",
+             "range-diff", "cherry", "shortlog", "blame", "diff-tree", "archive", "rebase", "merge",
+             "cherry-pick", "describe", "whatchanged", "format-patch", "name-rev", "show-branch"}
+FRESH = 600   # seconds since the upstream's last fetch or push
+# A reflog line's time: "<old> <new> Name <email> <seconds> <zone>\t<message>".
+REFLOG_TIME = re.compile(r"> (\d+) [+-]\d{4}\t")
+
+
+def _git(repo, *args):
+    run = subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True)
+    return run.stdout if run.returncode == 0 else None
+
+
+def _ref_names(arg):
+    """The names a revision argument can start from: ranges split, a :path and ~ ^ @{} suffixes cut."""
+    names = []
+    for part in re.split(r"\.\.\.?", arg):
+        part = re.sub(r"(?:[~^]\d*|\^\{[^}]*\}|@\{[^}]*\})+$", "", part.split(":", 1)[0])
+        if part:
+            names.append(part)
+    return names
+
+
+def _last_update(git_dirs, tracking, url):
+    """When `tracking` (remote/branch) was last fetched or pushed to: its reflog's last entry, or a
+    FETCH_HEAD naming its branch of its remote, which a fetch writes even when nothing changed."""
+    times = []
+    common = git_dirs[-1]
+    try:
+        lines = Path(common, "logs/refs/remotes", tracking).read_text().splitlines()
+        match = REFLOG_TIME.search(lines[-1]) if lines else None
+        if match:
+            times.append(int(match.group(1)))
+    except OSError:
+        pass
+    branch = tracking.split("/", 1)[1]
+    tail = re.sub(r"\.git$", "", url).split(":")[-1]
+    for directory in git_dirs:
+        path = Path(directory, "FETCH_HEAD")
+        try:
+            if any(f"branch '{branch}' of " in line and line.endswith(tail) for line in path.read_text().splitlines()):
+                times.append(path.stat().st_mtime)
+        except OSError:
+            pass
+    return max(times, default=None)
+
+
+def _stale(repo, names, fetched, now):
+    refs = _git(repo, "for-each-ref", "--format=%(refname)%00%(upstream)%00%(symref)", "refs/heads", "refs/remotes")
+    dirs = _git(repo, "rev-parse", "--path-format=absolute", "--git-dir", "--git-common-dir")
+    if refs is None or dirs is None:
+        return None
+    upstream, remote_refs = {}, {}
+    for line in refs.splitlines():
+        ref, up, target = line.split("\0")
+        if ref.startswith("refs/heads/"):
+            upstream[ref[len("refs/heads/"):]] = up
+        else:
+            # A symbolic one, such as origin/HEAD, reads its target.
+            remote_refs[ref[len("refs/remotes/"):]] = (target or ref)[len("refs/remotes/"):]
+    head = (_git(repo, "symbolic-ref", "-q", "--short", "HEAD") or "").strip()
+    for name in names:
+        if name in upstream and name != head and upstream[name].startswith("refs/remotes/"):
+            tracking = upstream[name][len("refs/remotes/"):]
+        elif name in remote_refs:
+            tracking = remote_refs[name]
+        else:
+            continue
+        remote, branch = tracking.split("/", 1)
+        if remote in fetched or "*" in fetched:
+            continue
+        local = f" (fetch {remote} {branch}:{branch} also fast-forwards the local {name})" if name in upstream else ""
+        last = _last_update(dirs.split(), tracking, (_git(repo, "config", f"remote.{remote}.url") or "").strip())
+        if last is None or now - last > FRESH:
+            when = ("with no fetch or push recorded here" if last is None
+                    else f"last fetched or pushed {int((now - last) // 60)} minutes ago")
+            subject = f"`{name}` follows {tracking}," if name != tracking else f"`{name}` is"
+            return (f"{subject} {when}, and another clone may have moved it, so what this "
+                    f"command reads can be out of date. Fetch it first, in the same command if you like: "
+                    f"git -C {repo} fetch {remote} {branch}{local}")
+        if name in upstream and _git(repo, "merge-base", "--is-ancestor", f"refs/remotes/{tracking}",
+                                     f"refs/heads/{name}") is None:
+            return (f"the local `{name}` is behind or apart from {tracking}: read {tracking}, or fast-forward "
+                    f"`{name}` with git -C {repo} fetch {remote} {branch}:{branch}")
+    return None
+
+
+def stale_branch(command: str, cwd: str, now: float):
+    """The reason when a git command reads another branch whose upstream isn't fresh here, or None."""
+    fetched = set()
+    for segment in re.split(r"\|\|?|&&|;|\n", command):
+        try:
+            words = shlex.split(segment)
+        except ValueError:
+            continue
+        # Variable assignments and wrappers (timeout DURATION, env, nohup, time, command) before the program.
+        while words and (re.match(r"^\w+=", words[0]) or words[0] in ("env", "nohup", "time", "command", "timeout")):
+            words = words[2:] if words[0] == "timeout" else words[1:]
+        if len(words) > 1 and words[0] == "cd":
+            cwd = os.path.join(cwd, os.path.expanduser(words[1]))
+            continue
+        if not words or words[0] != "git":
+            continue
+        i, repo = 1, cwd
+        while i < len(words) and words[i].startswith("-"):
+            if words[i] in ("-C", "-c") and i + 1 < len(words):
+                if words[i] == "-C":
+                    repo = os.path.join(repo, os.path.expanduser(words[i + 1]))
+                i += 2
+            else:
+                i += 1
+        if i >= len(words):
+            continue
+        sub, args = words[i], words[i + 1:]
+        if sub in ("fetch", "pull"):
+            given = [a for a in args if not a.startswith("-")]
+            # A fetch naming no remote, or --all, may fetch any.
+            fetched.add(given[0] if given else "*")
+            continue
+        if sub not in GIT_READS:
+            continue
+        if "--" in args:
+            args = args[:args.index("--")]
+        names = [name for arg in args if not arg.startswith("-") for name in _ref_names(arg)]
+        reason = _stale(repo, names, fetched, now) if names else None
+        if reason:
+            return reason
+    return None
+
+
+def main() -> int:
+    try:
+        payload = json.load(sys.stdin)
+    except json.JSONDecodeError:
+        return 0
+    if payload.get("tool_name") != "Bash":
+        return 0
+    tool_input = payload.get("tool_input") or {}
+    command = tool_input.get("command") or ""
+    background = bool(tool_input.get("run_in_background"))
+    reason = (foreground_long_run(command, background) or foreground_download(command, background)
+              or unprotected_workload(command))
+    if reason:
+        print(f"Refused: {reason}.", file=sys.stderr)
+        return 2
+    reason = (unchained_heredoc(command) or adhoc_replace_helper(command)
+              or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
+    if reason:
+        print(f"Refused: {reason}.", file=sys.stderr)
+        return 2
+    reason = blocked(command)
+    if reason:
+        print(f"Run this command bare and read its output in full: {reason}. Do not pipe it "
+              "through head, tail, sed or grep or redirect it.", file=sys.stderr)
+        return 2
+    if "git" in command and "commit" in command:
+        # A long autonomous turn never reaches the Stop hook: its promises are checked at each commit.
+        import during_run
+        reason = during_run.commit(payload)
+        if reason:
+            print(reason, file=sys.stderr)
+            return 2
+    return 0
+
+
+if __name__ == "__main__":
+    status = main()
+    if status == 2:
+        import block_log
+        block_log.record("bash_guard")
+    sys.exit(status)

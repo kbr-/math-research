@@ -152,14 +152,21 @@ class NativeRuntimeTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(list(client.events), [])
         sock = Socket([{'id': 1, 'result': {'turn': {'id': 't'}}}, {'method': 'notice'},
                        {'method': 'turn/completed', 'params': {'threadId': 'owned',
-                        'turn': {'id': 't', 'status': 'failed'}}}, {'id': 2, 'result': {}}])
-        with self.assertRaisesRegex(NativeError, 'failed'):
+                        'turn': {'id': 't', 'status': 'failed', 'error': {
+                            'message':'capacity exhausted', 'codexErrorInfo':'usageLimitExceeded',
+                            'data':'PRIVATE'}}}}, {'id': 2, 'result': {}}])
+        with self.assertRaisesRegex(NativeError, 'failed') as caught:
             await Client(sock).turn('owned', 'brief', 'medium')
+        self.assertIn('capacity exhausted', str(caught.exception))
+        self.assertIn('usageLimitExceeded', str(caught.exception))
+        self.assertNotIn('PRIVATE', str(caught.exception))
 
     async def test_errors_are_not_success(self):
-        client = Client(Socket([{'id': 1, 'error': {'code': -1, 'message': 'denied'}}]))
-        with self.assertRaisesRegex(NativeError, 'denied'):
+        client = Client(Socket([{'id': 1, 'error': {'code': -1, 'message': 'denied','data':'PRIVATE'}}]))
+        with self.assertRaisesRegex(NativeError, 'denied') as caught:
             await client.call('query', {})
+        self.assertIn('-1', str(caught.exception))
+        self.assertNotIn('PRIVATE', str(caught.exception))
 
     async def test_turn_scopes_output_and_completion_and_interrupts_timeout(self):
         def completed(thread, turn, text):

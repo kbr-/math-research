@@ -109,11 +109,15 @@ harness primitives do not create another agent, resume the owner, or inject synt
 
 ## Branch-local Stop judging
 
-The shared Stop registration calls tools/hooks/codex_unchecked_claim.py in the active worktree
-when that optional private handler exists. Main contains no private predicate or prompt.
-The handler can call tools/codex_judge.py with a JSON object containing prompt and schema on
-stdin. It returns result or a visible error category, without forwarding daemon diagnostics.
-Use a 4.5-second subprocess timeout within the five-second hook budget.
+The shared Stop registration calls tools/hooks/codex_unchecked_claim.py in the active worktree when
+that optional private handler exists. Main contains no private predicate or prompt. The handler can
+call tools/codex_judge.py with a JSON object containing prompt and schema on stdin. It returns
+result or an error category with credential-redacted, bounded diagnostics. The six-second inner
+deadline covers connection, configuration, thread creation and inference; the subprocess limit is
+6.5 seconds within the seven-second Codex Stop hook budget. Claude Code retains its separate
+9.5-second judge limit. Failures name the stage and its timings, distinguishing the turn-start RPC
+from waiting for completion. Stage timings include cancellation handling, so elapsed time can
+slightly exceed the inner deadline.
 
 Inference uses the existing login/daemon in a fresh ephemeral gpt-6-luna thread at low effort,
 read-only/no-approval, with no environments, project instructions, shell, web, apps or hooks.

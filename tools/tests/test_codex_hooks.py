@@ -84,6 +84,42 @@ class CodexHooksTest(unittest.TestCase):
             self.part(n)
         self.assertFalse(self.denied())
 
+    def test_resume_does_not_start_or_reset_restoration(self):
+        self.assertEqual(self.call('SessionStart', source='resume'), {})
+        self.assertFalse((self.root / '.codex/framework/actors').exists())
+        self.assertFalse(self.denied())
+        self.call('SessionStart', source='compact')
+        self.prepare()
+        directory = codex_state.actor_directory(self.root, self.event('SessionStart'))
+        state_path = directory / 'state.json'
+        before = state_path.read_bytes()
+        self.assertEqual(self.call('SessionStart', source='resume'), {})
+        self.assertEqual(state_path.read_bytes(), before)
+        self.assertTrue(self.denied())
+        for number in range(2, len(self.manifest['parts']) + 1):
+            self.part(number)
+        before = state_path.read_bytes()
+        self.assertEqual(self.call('SessionStart', source='resume'), {})
+        self.assertEqual(state_path.read_bytes(), before)
+        self.assertFalse(self.denied())
+
+    def test_non_resume_sources_still_require_restoration(self):
+        for source in ('startup', 'clear', 'compact'):
+            with self.subTest(source=source):
+                result = self.call('SessionStart', source=source)
+                self.assertIn('python3 tools/resume.py',
+                              result['hookSpecificOutput']['additionalContext'])
+                self.assertTrue(self.denied())
+                self.prepare()
+                for number in range(2, len(self.manifest['parts']) + 1):
+                    self.part(number)
+                self.assertFalse(self.denied())
+        # Claude Code retains its own compact-only registration and handler.
+        registration = json.loads((ROOT / '.claude/settings.json').read_text())
+        starts = registration['hooks']['SessionStart']
+        self.assertEqual([entry['matcher'] for entry in starts], ['compact'])
+        self.assertIn('resume-gate.py', starts[0]['hooks'][0]['command'])
+
     def test_worktree_bundle_receipts_clear_session_checkout_gate(self):
         other = self.root / 'linked-worktree'
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True, capture_output=True)
@@ -185,6 +221,13 @@ class CodexHooksTest(unittest.TestCase):
                         f'python3 tools/resume.py --part 2 --read {self.key}']:
             self.assertEqual(self.call('PreToolUse', command), {})
         self.assertEqual(self.call('PreToolUse', 'python3 ../tools/resume.py', cwd=str(self.root/'subdir')), {})
+
+    def test_refuses_a_read_of_a_stale_branch(self):
+        with patch.object(hook.guard, 'stale_branch', return_value='`main` follows origin/main') as stale:
+            result = self.call('PreToolUse', 'git show main:f', cwd=str(self.root/'subdir'))
+        self.assertEqual(result['hookSpecificOutput']['permissionDecision'], 'deny')
+        self.assertIn('`main` follows origin/main', json.dumps(result))
+        self.assertEqual(stale.call_args.args[:2], ('git show main:f', str(self.root/'subdir')))
 
     def test_post_commit_context_never_blocks_success(self):
         with patch.object(hook.base_behind, 'message', return_value='Run tools/ff-base.sh'):

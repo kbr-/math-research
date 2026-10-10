@@ -26,12 +26,17 @@ Git/publication rules belong in [AGENTS.md](AGENTS.md).
 The launcher requires Linux, cgroup v2, and a working user systemd manager;
 setup also needs the existing C compiler. Unsupported controls must fail closed.
 
-Run computations, numerical checks, builds, and other potentially substantial
-local workloads through the protected launcher:
+Run computations, numerical checks, builds, test runs and other local workloads through the
+protected launcher, small ones and other repositories' test suites included (user, 8 October 2026):
 
 ```bash
 ./compute.sh python3 calculation.py
 ```
+
+In another repository, run from the directory the workload needs and call `compute.sh` by its path;
+the job keeps that working directory. Claude Code's PreToolUse hook `tools/hooks/bash_guard.py`
+refuses a test runner (pytest, unittest, the framework suite, a repository's suite script) or a
+scratchpad script started outside the launcher.
 
 All launcher invocations share `mathcompute.slice`. Never bypass a failed limit
 check, change CPU affinity from inside a workload, move a process out of the
@@ -60,7 +65,7 @@ manually run outside the launcher are not inside the workload group.
 Read the controller output of `./compute.sh start`, `./compute.sh run`,
 `./tools/finish-turn.py` and `tools/resume.py` in full; never pipe it through
 `head`, `tail` or `grep`. Guidance and warnings can appear anywhere. Claude's
-PreToolUse hook `tools/hooks/guard-full-output.py` enforces this prohibition.
+PreToolUse hook `tools/hooks/bash_guard.py` enforces this prohibition.
 Never discard the output or exit status of a command whose failure could corrupt
 a record, including timing `start` and `phase` commands.
 
@@ -335,7 +340,7 @@ while command records remain unfinished.
   The `monitor-gate.py` hook refuses every other tool call until that monitor is armed.
   Before scaling a script past its control case, size each expensive step, such as
   Gröbner bases or saturations on generators of the new degrees. Claude Code's PreToolUse hook
-  (`tools/hooks/guard-full-output.py`) refuses a foreground `compute.sh` run with `--expect` over
+  (`tools/hooks/bash_guard.py`) refuses a foreground `compute.sh` run with `--expect` over
   60 s or `--timeout` over 180 s.
 
 ## Persist computation outputs

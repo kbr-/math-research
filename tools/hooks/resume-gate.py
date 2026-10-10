@@ -16,7 +16,7 @@ import sys
 import time
 from pathlib import Path
 
-_spec = importlib.util.spec_from_file_location('guard_full_output', Path(__file__).with_name('guard-full-output.py'))
+_spec = importlib.util.spec_from_file_location('bash_guard', Path(__file__).with_name('bash_guard.py'))
 _guard = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_guard)
 # A resume.py run, by the output guard's notion of where a segment runs its program.

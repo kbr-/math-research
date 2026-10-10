@@ -63,7 +63,9 @@ class Client:
             message = await self.receive()
             if message.get('id') == ident:
                 if 'error' in message:
-                    raise NativeError(method + ': ' + json.dumps(message['error']))
+                    error = message['error']
+                    raise NativeError(method + ': ' + json.dumps(
+                        {k: error[k] for k in ('code', 'message') if k in error}))
                 return message['result']
             if 'id' not in message:
                 self.events.append(message)
@@ -71,12 +73,16 @@ class Client:
     async def event(self):
         return self.events.popleft() if self.events else await self.receive()
 
-    async def turn(self, thread, text, effort, schema=None):
+    async def turn(self, thread, text, effort, schema=None, *, on_stage=None):
         params = {'threadId': thread, 'input': [{'type': 'text', 'text': text}], 'effort': effort}
         if schema is not None:
             params['outputSchema'] = schema
+        if on_stage:
+            on_stage('turn/start')
         started = await self.call('turn/start', params)
         turn = started['turn']['id']
+        if on_stage:
+            on_stage('turn/completion')
         messages = []
         try:
             while True:
@@ -90,7 +96,10 @@ class Client:
                         messages.append(item['text'])
                 if event.get('method') == 'turn/completed' and data['turn']['id'] == turn:
                     if data['turn']['status'] != 'completed':
-                        raise NativeError('Native turn ended: ' + data['turn']['status'])
+                        error = data['turn'].get('error') or {}
+                        details = {k: error[k] for k in ('codexErrorInfo', 'message') if k in error}
+                        raise NativeError('Native turn ended: ' + data['turn']['status']
+                                          + (': ' + json.dumps(details) if details else ''))
                     return '\n'.join(messages)
         except BaseException:
             # Interrupt only this controller's turn; bounded even when the daemon has failed.

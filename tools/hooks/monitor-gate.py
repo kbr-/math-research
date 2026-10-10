@@ -4,7 +4,7 @@
 enforce arming the monitor?").
 
 `post` (PostToolUse, Bash) marks the session when a compute.sh run expected over 60 s or allowed over
-180 s (the thresholds of guard-full-output.py) was started with run_in_background.  `pre` (PreToolUse,
+180 s (the thresholds of bash_guard.py) was started with run_in_background.  `pre` (PreToolUse,
 every tool) then refuses each tool call except ToolSearch and a Monitor whose command runs
 tools/watch_run.py; that Monitor call clears the mark.  Marks live in the ignored
 .claude/monitor-pending/, one file per session ID, holding the compute.sh session name.
@@ -17,7 +17,7 @@ import shlex
 import sys
 from pathlib import Path
 
-_spec = importlib.util.spec_from_file_location('guard_full_output', Path(__file__).with_name('guard-full-output.py'))
+_spec = importlib.util.spec_from_file_location('bash_guard', Path(__file__).with_name('bash_guard.py'))
 _guard = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_guard)
 
