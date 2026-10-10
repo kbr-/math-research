@@ -1,0 +1,38 @@
+Review record, 10 October 2026: entry-2026-10-10-constant-fraction-transfer.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent); hand checking and
+exact binomials (its script not archived).
+
+Verdict: pass with corrections. The lemma and parts (2), (3) survive hand checking; part (1) has one
+parameter error; several sentences stronger than proved.
+Numeric: lemma, 0 violations over all admissible (K, delta, m) at n = 20, 41, 100. e(c) = 0.166, 0.415,
+1.000, 2.622, 16.36.
+- Prop (1), "any c' < c": false for small c'; t_1 = floor((c-c')n/5) <= K needs c' >= c/6.
+- Lemma: K <= n/2 never used; the upper bound needs neither m nor delta + m <= K, and (3) applies it at
+  delta = Delta_1 or Delta_2; state it separately for 1 <= delta <= K.
+- Prop (2): add 0 < epsilon < e(c) and c' > 0. eta >= (1/4) q'^{t_1} only for large n (ratio 0.34 at
+  n = 2000, 1.5 at n = 20000). At c = 0.45, epsilon = 0.3, n <= 20000 the choice is far from admissible
+  (Delta about n^1.9 against D = 9000): "large n" is very large.
+- "e(c) below one for c <= 0.4" should be c < 0.4.
+- Prop (3): proof correct; "K <= cn" redundant. It covers balanced profiles only: the proof gives roughly
+  a ln S_1 S_1^gamma ln S_2 < n, so S_2 can be exponential when S_1 is small. "Excludes no more", "nothing
+  at three or more", "gives nothing, whatever c" must read "no bound on total size beyond n^e / polylog".
+  "Worth nothing here" contradicts the entry's own two-level n^0.17.
+- Bearing "not a milestone of the goal": shown only for this theorem's inequality with the ambient rate,
+  for total size, assuming l >= 3 (c_F uncomputed).
+- Recorded cap: accurate; the main lemma's ledger at p = 2, r = 1 is this inequality and its threshold
+  ln 2 / ln(1/q) is sharpened to e(c).
+- "Developed" doubtful: the sub-idea asked for the largest excluded S as a function of s_n, w_n, l.
+- Goal progress unchanged: correct. Width o(n) unused in (3); (3) and the lemma are unconditional.
+Suggestion: state (3) in profile form.
+
+Follow-up (same reviewer) on the added paragraph "What part (1) would mean, and why it needs an audit":
+(a) Reading correct; no level-one hypothesis blocks it. Level-one members are affine, rate eta_K(1); a
+    level-one line gets t_1 factors, Delta = t_1; constraints only Delta <= K <= n and
+    K + max{4 Delta, Delta + w} <= D; every rule at level one is handled without a level restriction; S_1
+    counts distinct level-one lines, so the bound is dag-like.
+(b) Caution adequate. "Degree at least cn" should read "1 not in C_floor(cn), n the free dimension".
+    "Reported open" comes from a search; the imported paper's title suggests it may state this consequence;
+    put the source's main theorem first in the audit.
+(c) Likeliest failure point: the import at d = 1 with t linear in n (hypothesis a + K + pd <= D for
+    accumulated degree up to t_1; Lemma 4.1 ratio with the free dimension); second, the simulation's
+    semantic weakening and linear-combination rule.
