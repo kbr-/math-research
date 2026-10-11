@@ -441,6 +441,15 @@ def validate_closures(text):
     if re.search(r'abstract(s)?\s+only|only\s+(the|its|their)\s+abstract|abstract,?\s+not\s+the', plain, re.I):
         raise ValueError('A closure may not rest on an abstract: read the statement of the theorem the closure '
                          'relies on, or keep the item open with the reading queued (AGENTS.md)')
+    # Two closures drafted on 11 October 2026 covered the forms examined while the item named others (its
+    # sources, a construction, a consequence); reviewers overturned both.  The author lists the remainder.
+    left = re.search(r'<strong>Not examined\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', left.group(1))).strip() if left else ''
+    if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
+        raise ValueError('An entry that closes a queue item says, after <strong>Not examined.</strong> and in at '
+                         'least 40 characters, what the item\'s own statement names (objects, sources, forms) that '
+                         'the entry did not examine and why the closure stands without each, or that nothing it '
+                         'names is left; an item with a named part unexamined is Continuing (AGENTS.md)')
 
 
 READING_ITEM_RE = re.compile(r'<li\b[^>]*>((?:(?!</li>).)*?)<strong>Follow-up\.</strong>\s*Developed\b((?:(?!</li>).)*)</li>',

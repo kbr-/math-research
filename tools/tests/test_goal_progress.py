@@ -175,7 +175,8 @@ class ClosureStakesTest(unittest.TestCase):
               'name the structure a candidate needs. <strong>Follow-up.</strong> Closed: superseded.</p>')
     RECORD = '<p>Record: <a href="https://example.org/results/x/review.txt">review.txt</a>.</p>'
     READ = '<p><strong>Sources read.</strong> None: the closure relies on recorded results only.</p>'
-    LINK = RECORD + READ
+    LEFT = '<p><strong>Not examined.</strong> Nothing the item names is left: its one object is the bound closed here.</p>'
+    LINK = RECORD + READ + LEFT
 
     def test_a_closure_needs_stakes_and_a_reviewer_record(self):
         FT.validate_closures('<p><strong>Follow-up.</strong> Continuing: next.</p>')      # nothing closed
@@ -195,6 +196,10 @@ class ClosureStakesTest(unittest.TestCase):
         with self.assertRaises(ValueError):                                                # too short to say anything
             FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
                                  + self.LINK)
+        with self.assertRaisesRegex(ValueError, 'Not examined'):                           # the remainder unlisted
+            FT.validate_closures(self.STAKES + self.RECORD + self.READ)
+        FT.validate_closures(self.STAKES.replace('Closed: superseded', 'Closed: merged into other-item')
+                             + self.RECORD + self.READ)                                    # a merge names no remainder
 
 
 class DegenerateCasesTest(unittest.TestCase):

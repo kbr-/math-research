@@ -332,42 +332,45 @@ assessments.
   open statement. The reviewer reads each closure, and the entry links its record (the finisher
   checks both; user, 10 October 2026). It also states, after `<strong>Sources read.</strong>`, which
   statements of each source the closure relies on were read, or that it relies on recorded results
-  only; a closure resting on an abstract is refused (the finisher checks). Closed and Developed
-  remove the item. Before planning a queued item, run `tools/lead_queue.py history NOTEBOOK ID
-  --status` and read its latest development; take the spell count from this computed status, not an
-  older entry's prose. Four consecutive research entries are the default spell. At its boundary,
-  extend by two cycles when a proof, refutation or reduction from the current spell/extension period
-  materially advances a named open statement and a concrete next necessary implication uses the same
-  mechanism. Record that evidence and next attempt using [the queue tool's extension
-  format](tools/lead_queue.py). Reassess after each two-cycle extension; there is no lifetime cap,
-  but finite checks, promise alone or reused old progress do not earn more time. Without fresh
-  qualifying progress, rotate to the tail (user, 5 October 2026). Every top-level item, also during
-  backpressure, is developed in its own entry; batch triage is retired (user, 9 October 2026:
-  "Revert it back to the state where each item was done one at a time"). Sub-ideas of the one item
-  an entry develops may be batched in that entry, each in a follow-up list item with its own outcome
-  and evidence (user, 9 October 2026: "An entry may develop at most one top level item. Sub ideas
-  attached to a single parent can be batched."). Research entries carry no Outside leads or Absurd
-  bridges of their own (user, 9 October 2026); undone work they name goes under Sub-ideas. An item
-  closed too early is reopened by a follow-up list item ending `<strong>Follow-up.</strong>
-  Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A queue audit
-  (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named outside the
-  standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued ("when unsure,
-  queue it"). Any entry lists the questions, checks and builds it names and leaves undone under
-  `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it intends to carry
-  out: do a small one in the entry, drop one that will not be done, and add none to fill the section
-  (user, 9 October 2026). Work that comes up outside an entry (a conversation, a review, a tool's
-  defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html --check|--build|--idea ID
-  SOURCE TEXT`: a top-level item at the tail, which needs no entry and which a commit without an
-  entry may add (user, 7 October 2026: "You should be able to queue items by just running the
-  tool"). Those of a research entry that develops no queue item have no parent: they wait in their
-  entry, `lead_queue.py pending` lists them, and the next review promotes any number by judgement
-  with a follow-up list item ending `<strong>Follow-up.</strong> Promoted: <reason>` (user, 9
-  October 2026). `lead_queue.py append` and `similar` show queued items with similar wording; when
-  two ask the same thing keep one, closing the other with "Closed: merged into ID", which adds its
-  wording to that item. The others join the queue nested under the item they belong to (user, 3
-  October 2026: "I want it to look like a nested list of entries"), a sub-idea's development
-  counting toward its parent's spell; a check is Developed only with evidence that resolves, a build
-  only with its opened task or its path. The user may pick any item out of order
+  only; a closure resting on an abstract is refused (the finisher checks). After `<strong>Not
+  examined.</strong>` it lists what the item's own statement names (objects, sources, forms) that
+  the entry did not examine and why the closure stands without each, or says nothing it names is
+  left; an item with a named part unexamined is Continuing (the finisher checks the paragraph, the
+  reviewer its content). Closed and Developed remove the item. Before planning a queued item, run
+  `tools/lead_queue.py history NOTEBOOK ID --status` and read its latest development; take the spell
+  count from this computed status, not an older entry's prose. Four consecutive research entries are
+  the default spell. At its boundary, extend by two cycles when a proof, refutation or reduction
+  from the current spell/extension period materially advances a named open statement and a concrete
+  next necessary implication uses the same mechanism. Record that evidence and next attempt using
+  [the queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
+  there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
+  time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every
+  top-level item, also during backpressure, is developed in its own entry; batch triage is retired
+  (user, 9 October 2026: "Revert it back to the state where each item was done one at a time").
+  Sub-ideas of the one item an entry develops may be batched in that entry, each in a follow-up list
+  item with its own outcome and evidence (user, 9 October 2026: "An entry may develop at most one
+  top level item. Sub ideas attached to a single parent can be batched."). Research entries carry no
+  Outside leads or Absurd bridges of their own (user, 9 October 2026); undone work they name goes
+  under Sub-ideas. An item closed too early is reopened by a follow-up list item ending
+  `<strong>Follow-up.</strong> Reopened: <reason>` and goes to the tail (`lead_queue.py append`). A
+  queue audit (`data-kind="audit"`, outside the review cadence) lists ideas that older reviews named
+  outside the standard sections, each `<li data-source="REVIEW-ANCHOR">`; all of them are queued
+  ("when unsure, queue it"). Any entry lists the questions, checks and builds it names and leaves
+  undone under `<h4>Sub-ideas</h4>` (`<li data-sub="check">` or `"build"`), but only those it
+  intends to carry out: do a small one in the entry, drop one that will not be done, and add none to
+  fill the section (user, 9 October 2026). Work that comes up outside an entry (a conversation, a
+  review, a tool's defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html
+  --check|--build|--idea ID SOURCE TEXT`: a top-level item at the tail, which needs no entry and
+  which a commit without an entry may add (user, 7 October 2026: "You should be able to queue items
+  by just running the tool"). Those of a research entry that develops no queue item have no parent:
+  they wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any
+  number by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted:
+  <reason>` (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with
+  similar wording; when two ask the same thing keep one, closing the other with "Closed: merged into
+  ID", which adds its wording to that item. The others join the queue nested under the item they
+  belong to (user, 3 October 2026: "I want it to look like a nested list of entries"), a sub-idea's
+  development counting toward its parent's spell; a check is Developed only with evidence that
+  resolves, a build only with its opened task or its path. The user may pick any item out of order
   (`data-picked="user"`, the words quoted in a `<strong>Picked.</strong>` paragraph), and an item
   waiting on the user's answer stays queued and passed over (`Waiting:` and `Unblocked:`
   follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,

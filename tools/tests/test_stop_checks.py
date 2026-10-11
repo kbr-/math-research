@@ -376,7 +376,8 @@ class UncheckedClaimTest(HookFixture):
         # A gap declared, another's mistake, a quoted admission and a mention of prevention mid-sentence are none.
         self.assertEqual(hook.sentences(hook.MISTAKE, [
             "I didn't run it. The mistake was the tool's. You were wrong there. He said \"my mistake\". "
-            "The author withdrew the claim. The reviewer's reading was wrong. The entry is withdrawn."]), [])
+            "The author withdrew the claim. The reviewer's reading was wrong. The entry is withdrawn. "
+            "I withdraw that offer. I withdrew the playbook idea."]), [])
         self.assertIsNotNone(hook.mistake_block(['That was my mistake.'], 'That was my mistake. Its prevention is unknown.'))
 
     def test_promise_shapes(self):

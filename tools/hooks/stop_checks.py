@@ -328,7 +328,8 @@ MISTAKE = re.compile(r"[^.!?\n]*(?:\bmy (?:own )?(?:mistake|error|fault|oversigh
                      r"\bI (?:phrased|put) (?:it|that) badly\b|\bwas avoidable\b|"
                      # A claim of one's own taken back is a mistake admitted in other words.
                      r"\bI (?:had )?(?:overstated|misstated|misquoted)\b|\bI (?:withdraw|withdrew|retract(?:ed)?) "
-                     r"(?:my|the|that|this)\b|\bmy (?:own )?(?:\w+ )?(?:claim|statement|reading|draft|conclusion) "
+                     r"(?:my|the|that|this) (?:\w+ ){0,2}(?:claim|statement|conclusion|reading|lemma|result|bound|"
+                     r"assertion|estimate|what-if)\b|\bmy (?:own )?(?:\w+ )?(?:claim|statement|reading|draft|conclusion) "
                      r"(?:was|is) (?:wrong|overstated|withdrawn|mistaken)\b)[^.!?\n]*", re.I)
 # The paragraph that answers it, in what the user is told.
 PREVENTION = re.compile(r'^[\s>*#-]*Prevention\b', re.M)
