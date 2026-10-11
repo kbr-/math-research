@@ -84,6 +84,14 @@ int main(int argc,char**argv){
   }
   #pragma omp parallel for schedule(dynamic,16)
   for(int p=7;p<=M;p++) if(spf[p]==p&&p%3==1){ g_split[0][p]=gamma_split(p,root0[p],pb[0][p]); g_split[1][p]=gamma_split(p,root1[p],pb[1][p]); }
+  /* check added for the report, expectation written before its run: at every split prime |gamma_2| = 1 and the
+     two conjugate prime elements have conjugate gamma_2 (computed independently, with different index tables),
+     both to 1e-10 or better; this exercises the reseeded branch of gamma_split, which the dump (norms up to 700)
+     does not */
+  double dev_mod=0, dev_conj=0; int nsplit=0;
+  for(int p=7;p<=M;p++) if(spf[p]==p&&p%3==1){ nsplit++;
+    double a=fabs(cabs(g_split[0][p])-1), b2=fabs(cabs(g_split[1][p])-1), c2=cabs(g_split[1][p]-conj(g_split[0][p]));
+    if(a>dev_mod) dev_mod=a; if(b2>dev_mod) dev_mod=b2; if(c2>dev_conj) dev_conj=c2; }
   int Q=(int)sqrt((double)M)+1; double complex *g_in=calloc(Q+1,sizeof(double complex));
   for(int q=5;q<=Q;q++) if(spf[q]==q&&q%3==2&&(ll)q*q<=M) g_in[q]=gamma_inert(q);
   /* all primary n with N(n) <= M, prime to 2, squarefree: gamma_2(n) */
@@ -106,6 +114,7 @@ int main(int argc,char**argv){
   }
   FILE*fd=fopen(argv[2],"w"); for(int i=0;i<cnt;i++){ ll N=(ll)na[i]*na[i]-(ll)na[i]*nb[i]+(ll)nb[i]*nb[i]; if(N<=700) fprintf(fd,"%d %d %.15f %.15f\n",na[i],nb[i],creal(ng[i]),cimag(ng[i])); } fclose(fd);
   FILE*fo=fopen(argv[3],"w");
+  fprintf(fo,"# checks: %d split primes; largest | |gamma_2| - 1 | = %.2e; largest |gamma_2(conj pi) - conj gamma_2(pi)| = %.2e\n",nsplit,dev_mod,dev_conj);
   fprintf(fo,"# M=%d squarefree primary n prime to 6: %d\n# X  terms  |T_import|  |T_alpha|  |T_plain|  |T_import_b1|  |T_plain_b1|  trivial  rms   (T = X^-1/2 * sum; trivial = sum of |terms|, rms = root of the sum of their squares, same normalization)\n",M,cnt);
   double YMAX=exp(WCUT);
   for(double X=64; YMAX*X<=M; X*=2){
