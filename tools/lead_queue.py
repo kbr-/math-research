@@ -804,6 +804,22 @@ def survey(body):
     return rows
 
 
+def result_files(body, ident):
+    """The result files (scripts, outputs, data) that the entries on the item's group link under research/results,
+    in order, without timing tables and reviewers' records.  On 11 October 2026 an entry reported a numerical
+    control of an identity that an earlier entry on the same item had already controlled, uncited: the status
+    listed the earlier entries, by title, and not their computations."""
+    anchors = {anchor for anchor, _, _ in history(body, ident)}
+    out = []
+    for tag, text in record_articles(body):
+        found = re.search(r'\bid="([^"]+)"', tag)
+        if found and found.group(1) in anchors:
+            for path in re.findall(r'href="(research/results/[^"#]+)"', text):
+                if not path.endswith(('timing.html', 'review.txt', 'stage1.txt')) and path not in out:
+                    out.append(path)
+    return out
+
+
 def item_status(body, ident):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
@@ -829,6 +845,8 @@ def item_status(body, ident):
             (f'Next development would be entry {count + 1}.' if count < limit else
              'Boundary reached: develop a different item first, unless an extension is earned.'),
             'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
+            'Result files its entries link (read what was computed before computing again): '
+            + (', '.join(result_files(body, ident)) or 'none'),
             'Attempts named by the follow-ups of its entries (write the Owed attempt paragraph against all):'
             ] + ([f'  #{anchor}{"" if owed else " [no later entry has an Owed attempt paragraph]"}: '
                   + ' '.join(said)

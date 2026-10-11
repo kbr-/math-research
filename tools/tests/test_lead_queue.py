@@ -1475,6 +1475,15 @@ class LinkEarlierWorkTest(unittest.TestCase):
         self.assertNotIn('the spell restarted', status)
         self.assertIn('Boundary reached:', status)
         self.assertIn('Open sub-ideas: e:s1', status)
+        self.assertIn('Result files its entries link (read what was computed before computing again): none', status)
+        linked = [self.entry('entry-2026-10-10-0', parent,
+                             '<a href="research/results/a/control.py">script</a> <a href="research/results/a/out.txt">'
+                             'output</a> <a href="research/results/a/review.txt">review</a> '
+                             '<a href="research/results/a/timing.html">timing</a>'),
+                  self.entry('entry-2026-10-10-x', other, '<a href="research/results/b/other.py">another item</a>'),
+                  self.entry('entry-2026-10-10-later', child, '<a href="research/results/a/control.py">again</a>')]
+        self.assertEqual(lq.result_files(notebook(linked, queue), child[1]),
+                         ['research/results/a/control.py', 'research/results/a/out.txt'])
         extended = entries[:-1] + [entries[-1].replace('<article ', '<article data-spell-extend="2" ')]
         status = '\n'.join(lq.item_status(notebook(extended, queue), child[1]))
         self.assertIn('Current spell: 4; boundary: 6.', status)
