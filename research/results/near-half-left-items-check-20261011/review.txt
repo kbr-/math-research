@@ -1,0 +1,30 @@
+Review record, 11 October 2026: entry-2026-10-11-left-items-check and the two framework commits it reports
+(the left-items check in tools/lead_queue.py). Reviewer: one fresh-context medium-effort reviewer (Claude Code
+medium-reviewer agent), reading the commits; it ran no tests.
+
+First pass, on the first commit. Verdict: pass with corrections; no false refusal found; the code delivers the
+item only for reviews that opt in.
+- Nothing requires a review to declare data-left-items, and its identifiers are not validated against the
+  queue: an omitted attribute or a mistyped identifier silently disables the check. Refuse unknown identifiers;
+  state the opt-in limit in the entry.
+- The loop takes the last review of any route; filter by the entry's route.
+- check() passes only the entry's own item: batched sub-ideas of a left item are not checked.
+- Test: the item is top-level in the fixture, so the parent path is never exercised, yet the commit message and
+  the rule sentence both claim "or a sub-idea of one". Add a nested case and the exemption through check().
+- Commit message, "the queue check on the real notebook ... passing": that run could not have failed, the last
+  article being the review itself or not a new entry. Describe it as a timing run only.
+- No date guard needed. An entry before any review, only the last review counting and the 40-character rule
+  are handled and tested. "Rotated" items are covered only if the review lists them.
+Process audit: removal as Developed acceptable only after the sub-idea test and identifier validation.
+
+Second pass, on the correcting commit and the entry's draft. Verdict: corrections right; the item may be
+removed as Developed once the draft is updated. The route filter, the validation (applied to a new review) and
+the extended test are correct. One remaining hole: if a review leaves only a sub-idea, an entry tagged with its
+parent can develop that sub-idea in a listed follow-up unchecked; add to Limits; it does not block removal.
+Draft changes required: name the route and the validation under "What was built"; replace the first run's
+figures under "Checks" with the second commit's; add to Limits that only the Returns paragraph's length is
+checked; the process assessment's "the review's decision now caps builds and puts them first": cite a committed
+rule or drop it. Title may claim only: the finisher refuses an entry on an item the last review of its route
+declared left, unless it says why it returns.
+
+Author's note: all applied.
