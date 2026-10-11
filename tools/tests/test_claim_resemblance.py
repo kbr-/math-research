@@ -48,6 +48,32 @@ class ResemblanceTest(unittest.TestCase):
         self.assertRegex(text, r'0\.\d\d ex:old-degrees: Exact refutation')
         self.assertIn('prop:other (related in the spec)', text)
 
+    def test_a_queued_item_the_claim_answers_is_listed_and_an_unrelated_one_is_not(self):
+        notebook = ('<section id="lead-queue"><h2>Queue</h2><ol>'
+                    '<li data-check="entry-a:s1"><a href="#entry-a">entry-a:s1</a> (check): Compute exact refutation '
+                    'degrees of random parity clause systems at thirty variables.</li>'
+                    '<li data-check="entry-a:s2"><a href="#entry-a">entry-a:s2</a> (check): Retrieve the published '
+                    'statement about spectral gaps of hyperbolic surfaces and compare hypotheses.</li>'
+                    '</ol></section>')
+        import lead_queue
+        nodes = lead_queue.parse_tree(notebook)[1]
+        found = tool.queued_matches(nodes, SPEC)
+        self.assertEqual([(claim, queued) for _, claim, queued in found], [('ex:new-degrees', 'entry-a:s1')])
+        self.assertGreaterEqual(found[0][0], tool.QUEUED_AT)
+        with tempfile.TemporaryDirectory() as folder:
+            registry = pathlib.Path(folder) / 'index.json'
+            registry.write_text(json.dumps({'claims': REGISTERED}))
+            spec = pathlib.Path(folder) / 'spec.json'
+            spec.write_text(json.dumps(SPEC))
+            page = pathlib.Path(folder) / 'notebook.html'
+            page.write_text(notebook)
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                tool.main([str(spec), '--registry', str(registry), '--notebook', str(page)])
+        self.assertIn('2 queued items compared', out.getvalue())
+        self.assertRegex(out.getvalue(), r'ex:new-degrees ~ queued entry-a:s1')
+        self.assertNotIn('entry-a:s2:', out.getvalue())
+
     def test_a_run_is_logged_with_the_claims_it_compared(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / 'logs/claim-searches.jsonl'

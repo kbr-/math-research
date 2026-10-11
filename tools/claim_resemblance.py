@@ -53,11 +53,34 @@ def resemblances(registered, spec, count=5):
     return out
 
 
+QUEUED_AT = 0.4     # measured 11 October 2026 on one notebook's 34 claims and 66 queued items: the known answered
+                    # item scores 0.53, and 8 pairs reach 0.4 (34 reach 0.3, 211 reach 0.2)
+
+
+def queued_matches(nodes, spec, threshold=QUEUED_AT):
+    """[(share, draft id, queued id), ...], most alike first: queued items whose wording a draft claim's summary
+    shares.  The share is the common content words over those of the queued item, so a long summary does not
+    hide a short question.  On 11 October 2026 a queued check waited in the queue long after the lemma that
+    answers it was registered by an entry developing another item; a hint to read the item, not a verdict."""
+    import lead_queue
+    flat = [(n.ident, lead_queue.content_words(n.text)) for top in nodes for n in [top] + top.children]
+    out = []
+    for claim in spec.get('claims', []):
+        words = lead_queue.content_words('): ' + claim.get('summary', '') + ' ' + claim.get('assessment', ''))
+        for ident, item in flat:
+            if len(item) >= 5:
+                share = len(words & item) / len(item)
+                if share >= threshold:
+                    out.append((round(share, 2), claim['id'], ident))
+    return sorted(out, reverse=True)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('spec')
     parser.add_argument('--count', type=int, default=5)
     parser.add_argument('--registry', default=str(DEFAULT_REGISTRY))
+    parser.add_argument('--notebook', help='notebook file whose queue is compared (default: the selected one)')
     args = parser.parse_args(argv)
     registered = json.loads(pathlib.Path(args.registry).read_text())['claims']
     spec = json.loads(pathlib.Path(args.spec).read_text())
@@ -71,6 +94,21 @@ def main(argv=None):
         for score, other, start in found:
             mark = ' (related in the spec)' if (ident, other) in related or (other, ident) in related else ''
             print(f'  {score:.2f} {other}{mark}: {start}')
+    if args.notebook or args.registry == str(DEFAULT_REGISTRY):
+        import lead_queue
+        if args.notebook:
+            notebook = pathlib.Path(args.notebook)
+        else:
+            import notebooks
+            notebook = ROOT / notebooks.selected()['source']
+        found = lead_queue.parse_tree(notebook.read_text())
+        nodes = found[1] if found else []
+        count = sum(1 + len(n.children) for n in nodes)
+        matches = queued_matches(nodes, spec)
+        print(f'{count} queued items compared; a share of {QUEUED_AT} or more of an item\'s words is listed.')
+        for share, ident, queued in matches:
+            print(f'  {share:.2f} {ident} ~ queued {queued}: read the item; if the claim answers it, close it '
+                  'in this entry\'s follow-up list')
     return 0
 
 
