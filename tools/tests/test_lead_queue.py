@@ -1466,6 +1466,25 @@ class LinkEarlierWorkTest(unittest.TestCase):
         old = self.entry('entry-2026-10-10-b', item)                     # older entries are not retrofitted
         self.assertIsNone(lq.unaccounted_attempt(articles(named, old), item))
 
+    def test_an_entry_on_an_item_the_last_review_left_says_why_it_returns(self):
+        item, other = ('check', 'e:s1'), ('lead', 'r:2')
+        review = lambda left: (f'<article id="entry-2026-10-11-r" data-kind="review" data-route="step"'
+                               f' data-left-items="{left}"><p>Decision.</p></article>')
+        late = lambda body='': self.entry('entry-2026-10-11-b', item, body)
+        said = '<p><strong>Returns.</strong> The review left it for a block; the block has ended and it is owed.</p>'
+        run = lambda *entries: lq.left_by_last_review(
+            *(lambda body: (body, lq.parse_tree(body)[1], lq.record_articles(body)))(
+                notebook(list(entries), [item, other])), item)
+        self.assertEqual(run(review('e:s1 x:s2'), late()), 'entry-2026-10-11-r')
+        self.assertIsNone(run(review('e:s1 x:s2'), late(said)))
+        self.assertEqual(run(review('e:s1'), late('<p><strong>Returns.</strong> Owed.</p>')), 'entry-2026-10-11-r')
+        self.assertIsNone(run(review('x:s2'), late()))                    # the review left another item
+        self.assertIsNone(run(late()))                                     # no review before the entry
+        self.assertIsNone(run(review('e:s1'), review(''), late()))         # only the last review counts
+        with self.assertRaisesRegex(ValueError, 'data-left-items'):
+            body = notebook([review('e:s1'), late()], [item, other])
+            lq.check(notebook([review('e:s1')], [item, other]), body)
+
     def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
         parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')
         queue = [(parent, [child]), other]

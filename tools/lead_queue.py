@@ -664,6 +664,36 @@ def unaccounted_attempt(articles, item):
     return None
 
 
+LEFT_ITEMS_RE = re.compile(r'\bdata-left-items="([^"]*)"')
+RETURNS_RE = re.compile(r'<strong>Returns\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
+
+
+def left_by_last_review(body, nodes, articles, item):
+    """The anchor of the last review before the last entry, when that review's data-left-items names `item` or the
+    top-level item of its group and the entry has no <strong>Returns.</strong> paragraph of at least 40
+    characters saying why it returns; None otherwise.
+
+    On 11 October 2026 two reviews in a row decided to leave an item, and the next block returned to it, once
+    for eighteen entries in all; nothing compared an entry's item with the review's decision.  The review now
+    declares the items it leaves, and an entry on one of them says why it returns.  The check reads the item,
+    not the subject: the same question developed under another item is the reviewer's to catch."""
+    tag, text = articles[-1]
+    last = len(articles) - 1
+    for position in range(last - 1, -1, -1):
+        old_tag = articles[position][0]
+        if 'data-kind="review"' not in old_tag:
+            continue
+        left = LEFT_ITEMS_RE.search(old_tag)
+        names = set(left.group(1).split()) if left else set()
+        if not names & {item[1], group_of(body, nodes, item, last)[1]}:
+            return None
+        said = RETURNS_RE.search(text)
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip() if said else ''
+        anchor = re.search(r'\bid="([^"]+)"', old_tag)
+        return anchor.group(1) if len(plain) < 40 and anchor else None
+    return None
+
+
 QUEUE_ITEMS_RE = re.compile(r'\bdata-queue-items="(\d+)"')
 
 
@@ -1417,6 +1447,11 @@ def check(head_body, body, path=None, root=None):
             raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
                              'entry, after reading it, so that work already recorded on the item is not repeated '
                              '(AGENTS.md, restoration and research discipline)')
+        left = left_by_last_review(body, nodes, articles, work[0])
+        if left:
+            raise ValueError(f'The last review, #{left}, names this entry\'s item, or its parent, among the items it '
+                             'leaves (data-left-items): develop another item, or say after <strong>Returns.</strong>, '
+                             'in at least 40 characters, why this entry returns to it (AGENTS.md)')
         owed = unaccounted_attempt(articles, work[0])
         if owed:
             raise ValueError(f'The item\'s last entry, #{owed}, named a next attempt: say after <strong>Owed '
