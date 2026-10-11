@@ -1,0 +1,69 @@
+STAGE ONE of a scheduled goal-level route review. You are given only the goal and the available results; the
+route the notebook currently prefers is withheld on purpose. Read-only; run nothing; read no file.
+
+GOAL. Prove the Riemann hypothesis. The necessary endpoint is exclusion of ONE hypothetical off-line zero at
+arbitrary height.
+
+AVAILABLE RESULTS ("import" = reported by an external source, unaudited; "read" = a published statement read in
+a source this week; "proved" = proved in the notebook, elementary).
+I1 (import). No zeros with Re s > 7/8, by a continuation criterion; its family of scales has no slack.
+I2 (import). More than 0.67 of zeros simple and on the line (a Gram form on a grid, trace and second moment).
+R1 (read; Turan 1984, Theorem 33.2). With Z(tau, N1, N2) = sum over N1 <= n <= N2 of Lambda(n) e^{-i tau log n}:
+   if for one real tau_0 and constants a > 0, 0 < b <= 1 one has |Z(tau_0, N1, N2)| < c N log^100 N / tau_0^b for all
+   tau_0^a <= N <= N1 < N2 <= 2N, then zeta(s) != 0 on the segment sigma >= 1 - b^3/a^2, t = tau_0. (Theorem 33.1 is
+   a converse of the same kind: a zero-free rectangle near height T gives such a bound.)
+R2 (read; Turan 1984, Theorem 8.1). Second main theorem: for 1 = |z_1| >= ... >= |z_n| and m >= 0, the maximum of
+   |sum b_j z_j^nu| over m < nu <= m+n is at least 2 (n/(8e(m+n)))^n min_j |b_1 + ... + b_j|.
+R3 (read; Bombieri-Lagarias 1999, Theorem 1). For a suitable multiset: all Re rho <= 1/2 iff the Li-type sums are
+   >= 0 iff they are >= -c(eps) e^{eps n} for every eps > 0.
+R4 (read; Ki 2004, Theorem B). For lambda > 0 there is kappa > 0 such that all zeros of the sum function F_lambda in a
+   region R_lambda(kappa) are real; for lambda >= 1/2 all are real.
+R5 (read; Lagarias 2006). E(z) = xi(1/2 - iz) + xi'(1/2 - iz) is a de Branges structure function iff RH; de Branges's
+   general theorems do not apply to xi(1 - iz) (Conrey-Li).
+R6 (read; Rodgers-Tao). The de Bruijn-Newman constant is >= 0.
+P1 (proved). Harnack obstruction: an explicit-formula certificate whose test function has nonnegative real part on the
+   whole critical strip (or >= -eta in a window with one count) can exclude the point 1/2 + delta + i gamma_0 only where
+   cos(pi delta) times a weighted count of actual zeros near gamma_0 is < 4.
+P2 (proved, model). An off-line pair at distance delta weighs e^{delta * bandwidth} in a Gram form; its extreme
+   eigenvalues would detect it at bandwidth log T given an eigenvalue bound T^eps, which is not available.
+P3 (proved, finite configurations). Half-plane sign of the logarithmic derivative, the structure-function inequality
+   at each shift, and Li positivity are each equivalent to the zero-free statement; Li's coefficients see a pair at
+   height gamma only from index about gamma^2/delta.
+P4 (proved). Power sums: an interpolation bound with loss depending on gaps; a gap-free bound that loses the
+   exponential. A loss c^(2n) is below a pair's gain only for clusters of fewer than eps log T pairs.
+Registered open conjectures on the route: none.
+
+TASK. Propose a materially different architecture for excluding one off-line zero, built from these results or from
+named theorems you can state precisely (mark memory as memory), OR give a reason none was found. For each proposal:
+the exact statement to be proved, why it is not a restatement of the zero-free statement, where it would most likely
+break. In particular say what R1 suggests: which (a, b) are known unconditionally (memory), what (a, b) the import I1
+would correspond to, and whether a route through R1 is anything but a restatement. Under 500 words.
+
+REPLY (medium reviewer, stage one; its derivations are its own and unverified unless the entry says checked)
+
+Verdict: no architecture found that is both new and able to reach 1/2.
+
+What R1 suggests.
+- Unconditional (a, b), from memory: none with fixed b > 0; Vinogradov-Korobov saves only
+  exp(-c log N / (log tau)^(2/3)).
+- R1 is lossy, not a restatement. If zeta has no zeros with sigma > theta near tau_0, the explicit formula (memory)
+  gives |Z| << N^theta log^2 + N/tau; that fits R1 exactly when b = a(1 - theta), b <= 1; then
+  b^3/a^2 = a(1 - theta)^3 <= (1 - theta)^2, so the output is sigma >= 1 - (1 - theta)^2.
+- Ceiling at RH strength: (a, b) = (2, 1) returns 3/4. Zeros on the line make Z of size N^(1/2).
+- I1 corresponds to b^3/a^2 = 1/8, e.g. (1, 1/2); fed theta = 7/8, R1 returns 63/64.
+- A route through R1 as stated cannot exclude a zero with 1/2 < Re s <= 3/4; it needs exponent b/a.
+  The cubic loss presumably comes from R2 applied to about log tau zeros in a unit window.
+
+Proposal A, sharpened local converse: if |Z(tau_0, N1, N2)| < N^(1/2 + eps) for all tau_0^eps <= N <= N1 < N2 <= 2N,
+then no zero with sigma > 1/2 + C eps at t = tau_0. Breaks: hypothesis unknown beyond Vinogradov strength; the
+converse needs a power-sum bound without the c^(2n) loss for log T zeros.
+
+Proposal B, heat flow: a pair at height T that is real at time c/log T was real at time 0. Breaks: backward flow
+is ill-posed; needs lower bounds on gaps between neighbouring zeros.
+
+Reason none goes further: every listed tool is linear in the zeros through the explicit formula; a linear
+functional cannot separate one off-line pair from the about log T on-line zeros beside it.
+
+Process audit: I1 and I2 exceed the published record known to the reviewer and should carry no weight until read;
+the R1 ceiling was not computed before the reading was counted as useful; "registered open conjectures: none"
+means the missing implication is unregistered rather than absent.
