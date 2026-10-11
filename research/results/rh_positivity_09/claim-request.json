@@ -1,0 +1,764 @@
+{
+  "base_sha256": "e597ae0df16a92e83d13a22d45ecb6301f1b9ae79c3087bacc576d16af60f5cc",
+  "provenance": {
+    "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+    "date": "2026-10-11",
+    "reviewer": "Claude Code proof assessment; fresh medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "prop:extreme-eigenvalue-detection",
+        "summary": "Complete-grid Gram model, one off-axis pair of multiplicity m at distance delta and any real points, G = G_on + B: m(kappa+1) <= lambda_max(G) <= m(kappa+1) + lambda_max(G_on) and -m(kappa-1) <= lambda_min(G) <= min(0, -m(kappa-1) + eta), eta = e_y^T G_on e_y <= lambda_max(G_on); flat window: lambda_max(G_on) <= M_loc(3 + (2/pi)(1 + ln K)). So an operator-norm bound B at bandwidth Lam gives delta <= (log B + log(4 delta Lam))/Lam for a solitary pair with delta Lam >= 1, and a one-sided bound lambda_min >= -B the same with B + 1 + eta.",
+        "assessment": "Working elementary proof (test vectors e_x, e_y and Weyl). A small refinement of solitary amplification, whose part 4 already has the lower bound for lambda_max; added is the upper bound for lambda_min with its margin, and the observation that the extreme eigenvalues, unlike the second moment, see a solitary pair once kappa exceeds the on-line part's size, also at bandwidth log T. Complete grid only; the cut grid is not treated. The premise (an eigenvalue bound of size T^eps for the import's form) is not available, follows from the goal in the model, and is expected to be a local restatement of it.",
+        "record": "[Extreme eigenvalue detection](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Replaces the earlier reading that the Gram mechanism needs bandwidth beyond log T, which holds for the Hilbert-Schmidt norm only; names the premise at the import's own bandwidth.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": "Derive the prime side of the quadratic form at bandwidth log T from the import's explicit formula and state which sum over prime powers bounds the extreme eigenvalues."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry for every window (the on-line bound for the flat window); control on 18 configurations, including real points denser than the grid.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a refinement that changes which premise the model's route needs; not a result about zeta. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Refines solitary amplification (adds the upper bound for lambda_max and both bounds for lambda_min); uses the pair atom spectrum and the real configuration bound.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:solitary-amplification",
+        "summary": "In the complete-grid Gram form G_Z of a finite conjugation-closed configuration: trace = number of points with multiplicity regardless of position; at most p negative eigenvalues for p off-axis pairs; if exactly one pair is off the axis then ||G_Z||_HS >= lambda_max >= m(kappa+1), and >= (4/5) m (kappa+1) on a cut grid when kappa >= 2 and the pair vector's tail fraction is at most 1/16; kappa >= c (s'-s) e^{2 delta s} / ||phi||^2 when phi^2 >= c on s <= |u| <= s'.",
+        "assessment": "Working elementary proof from the pair atom spectrum. At the imported bandwidth log T the resulting bound on a solitary off-line zero is delta <= 1/2 + o(1), which is vacuous; a restriction would need a second-moment bound at bandwidth theta log T with theta > 1, which is not available. The bound is not additive over pairs at constant cost (two-pair cancellation, a polylogarithmic loss); the many-pair case is unproved.",
+        "record": "[Pair atom spectrum](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Identifies what the density proof's second moment does and does not say about one off-line zero; gives no restriction on zeta zeros from available premises.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": "Determine the loss for n close off-axis pairs, and whether an adaptive test vector removes it."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof of all six parts in the entry; the application to the imported cut form is not made because the tail hypothesis is unverified and the outcome at bandwidth log T is vacuous.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a precise statement of missing information for the route, not a result about zeta. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Depends on the pair atom spectrum; limited by the two-pair cancellation. Second moment of the complete-grid Gram form with several off-line pairs: new relationship with lem:real-configuration-bound, prop:many-pair-norm-bound. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:subset-sum-resonance",
+        "summary": "Flat window, complete grid, n = 2^k simple off-axis points at equal distance delta with heights sum_{i in S} q_i pi/Lam0 (q_i odd, distinct subset sums), b = delta Lam0: ||B_{Lam0}||_HS^2 <= (e^{2b}/(2b^2)) (2k+1)! prod_i (q_i pi/(2b))^2 + 3 n^2, which is O_k(b^{-2k}) times 2 n kappa^2 for q_i = 3^(i-1); so no single-bandwidth bound ||B||_HS^2 >= c b^{-A} sum m_j^2 kappa_j^2 with fixed c, A holds uniformly in n for simple points.",
+        "assessment": "Refutation, by an explicit family and a short proof (product formula, vanishing of order k at the end of the interval), of a single-bandwidth lower bound with a fixed power loss. The case k = 1 is the two-pair cancellation. The exact single-bandwidth loss between exponents 2 log_2 n and 2(n-1) is not determined.",
+        "record": "[Resonance-free bandwidth](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth)",
+        "mathematical_status": "refutation",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that at one bandwidth close off-line pairs with simple points can cancel by more than any fixed power of delta*Lam; motivates varying the bandwidth.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": "None on this route; the resonance-free bandwidth theorem makes the exact single-bandwidth loss immaterial."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; closed-form control at five parameter pairs with k <= 3 lies below the bound.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: an explicit obstruction at a single bandwidth in the model. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Generalizes the two-pair cancellation (k = 1); uses the second-moment identity. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:resonance-free-bandwidth",
+        "summary": "Flat window, complete grid, off-axis points at pairwise distinct heights with least gap g, total multiplicity M, largest distance delta_* attained with multiplicity m_*: for Lam1 >= 1/delta_* and H >= 4 M^2/(g m_*^2) (H = 0 if n = 1) some Lam in [Lam1, Lam1+H] has ||B_Lam||_HS >= (sqrt2/4) m_* e^{delta_* Lam}/(delta_* Lam) - M >= (sqrt2/2) m_* kappa_Lam(delta_*) - M. No condition on the other delta_j and no separation relative to delta; the benchmark is the single largest pair.",
+        "assessment": "Working proof: split off e^{delta_* s}, mean value of an exponential sum with nonincreasing positive amplitudes by integration by parts, average over the bandwidth, triangle inequality in the weighted norm. For configurations at distinct heights it bounds the largest delta from a second-moment bound over a range of bandwidths of length 4M^2/(g m_*^2), which depends on the configuration and can far exceed Lam1; how short the range can be is open, and unverified examples indicate that length of order 1/g is necessary. Conditional on an unavailable second-moment premise for any consequence about zeros.",
+        "record": "[Resonance-free bandwidth](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that cancellation among close off-line pairs in the Gram model is a resonance at particular bandwidths. With the real configuration bound the route is a reformulation in the model and supplies no estimate.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": "Determine the necessary and sufficient length of the bandwidth range: verify the equally spaced examples and prove the version with H of order 1/g for equal delta."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry for the flat window; scans of 4001 bandwidths on 20 configurations find a bandwidth with the stated bound in every case, which checks direction and constants only.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: completes the description of what a second-moment bound says about off-line points in the model. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Depends on the second-moment identity; complements the many-pair norm bound, whose separated case it extends to arbitrary configurations at a nearby bandwidth; the subset-sum resonance shows a single bandwidth does not suffice. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:many-pair-norm-bound",
+        "summary": "Complete-grid Gram model with n off-axis pairs, G = P + B: ||G||_HS >= ||B||_HS - ||P||_HS and lambda_max(G) >= ||B||_HS/(2n)^(3/2); ||B||_HS^2 >= 2 rho sum m_j^2 kappa_j^2 - sum m_j m_l (1 + kappa(delta_j - delta_l)) with rho the least eigenvalue of the normalized Gram matrix of the exponentials e^{-is z_j} in L^2(phi^2*phi^2); flat window with delta_j Lam >= 1, delta_j <= Delta and heights 8 Delta-separated: rho >= 3/5, and ||B||_HS >= kappa_max when kappa_max >= 5 M^2 + 1.",
+        "assessment": "Working proof. Extends solitary amplification to any number of off-line pairs with the loss stated exactly as rho; no loss in b for height-separated pairs. For clusters rho can be tiny and the bound empty, while sampled clusters show the true norm is not small, so the cluster case is open rather than obstructed. Conditional on an unavailable second-moment premise beyond bandwidth log T for any consequence about zeros.",
+        "record": "[Many-pair bound](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows what a second-moment bound at large bandwidth would exclude (separated off-line pairs) and what it leaves (clusters); with the real configuration bound, shows the premise is close to a restatement of the goal for separated exceptions.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": "Bound the mean square for clusters with positive integer multiplicities, or find a cluster of simple points with a loss beyond every power of b."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof of all five parts in the entry; part 5 for the flat window only. Numerical control on 22 configurations.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: delimits the Gram route in the model; not a result about zeta. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Refines solitary amplification (n = 1 gives a solitary-type bound up to constants); depends on the pair atom spectrum, the second-moment identity's Gram interpretation and the real configuration bound; consistent with the two-pair cancellation. Cancellation among close off-line pairs as a resonance in the bandwidth: new relationship with prop:subset-sum-resonance, thm:resonance-free-bandwidth. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:two-pair-cancellation",
+        "summary": "Flat window, complete grid, configuration {+-i delta, t +- i delta}: ||G_Z||_HS^2 = 4 + 4 kappa^2 + 4 sinc^2(t Lam/2) + 4 Re sinc^2((t+2i delta)Lam/2), kappa = sinh(b)/b, b = delta Lam; at t = pi/Lam and b >= pi/2 this is at most 4 + 16/pi^2 + 3 pi^2 kappa^2 / b^2, so no absolute c > 0 gives ||G_Z||_HS^2 >= c sum_j (kappa_j^2 + 1) over off-axis pairs.",
+        "assessment": "Refutation, by an exact identity, of the additive lower bound that would extend solitary amplification to several off-line pairs at constant cost. The loss shown is a factor of order b^-2 for two pairs; the loss for many close pairs is not computed.",
+        "record": "[Pair atom spectrum](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum)",
+        "mathematical_status": "refutation",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that a second-moment bound alone does not bound each off-line pair's contribution; the obstruction to passing from isolated zeros to all zeros in this model.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": "Compute the n-pair loss and test adaptive test vectors."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Exact sixteen-term computation with closed form at t = pi/Lam, proved in the entry and matched numerically at four parameter pairs with a no-cancellation control at t = 2 pi/Lam.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: an explicit obstruction in the model. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Refutes the many-pair extension of solitary amplification at constant cost; uses the pair atom spectrum's Gram identity for the flat window. Second moment of the complete-grid Gram form with several off-line pairs: new relationship with prop:many-pair-norm-bound. Cancellation among close off-line pairs as a resonance in the bandwidth: new relationship with prop:subset-sum-resonance. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pair-atom-spectrum",
+        "summary": "For real even phi in L^2 supported in [-Lam/2,Lam/2], grid step 2pi/Lam over Z and v_z=(phihat(z-alpha_k))_k: v_z^T v_w = Lam (phi^2)^(z-w), v_z^* v_w = Lam (phi^2)^(w-conj z); a conjugate pair z, conj z off the real axis at distance delta has normalized atom (kappa+1) e_x e_x^T - (kappa-1) e_y e_y^T with kappa = int phi^2 cosh(2 delta u) / int phi^2 > 1.",
+        "assessment": "Working elementary proof by Parseval on the interval and evenness. The bilinear identity is the imported density proof's Poisson identity; the Hermitian companion at complex arguments and the two-eigenvalue form are worked out here. Abstract complete-grid statement; says nothing about actual zeta zeros.",
+        "record": "[Pair atom spectrum](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Elementary consequence of Fourier-series orthogonality, expected to be known in the explicit-formula literature; recorded as the model for the bridge test, no novelty claimed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": "Use for the many-pair cancellation computation; before applying to the imported cut form verify the tail hypothesis for its smoothed window."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry for every bandwidth and every real even L^2 window supported in the interval; numerical control on four parameter pairs agrees.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context-level elementary lemma; novelty not claimed and not searched in the literature.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Extends the Poisson identity used in the imported density deduction to Hermitian products at complex arguments. Second moment of the complete-grid Gram form with several off-line pairs: new relationship with lem:gram-second-moment-identity, prop:many-pair-norm-bound. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:real-configuration-bound",
+        "summary": "Flat window, complete grid, all points real, at most M_loc points (with multiplicity) per cell of length 2 pi/Lam over K consecutive cells: lambda_max(G_Z) <= M_loc (3 + (2/pi)(1 + ln K)); for every window ||G_Z||_HS^2 <= lambda_max(G_Z) * (number of points with multiplicity).",
+        "assessment": "Working elementary proof: Gram matrix of unit vectors, absolute row sums, the sinc decay. Shows that in the model a configuration of real points with a local count satisfies a second-moment bound at every bandwidth, so that bound is a consequence of the statement to be proved rather than an independent input.",
+        "record": "[Many-pair bound](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Answers whether the second-moment premise beyond bandwidth log T follows from all points being real; it does, in the flat-window model, given a local count.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": "None beyond use in the many-pair bound; a smooth-window version is not needed at present."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry for the flat window; control on 18 configurations with real points tests the direction only.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context-level; novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Uses the trace statement of solitary amplification; used in the many-pair norm bound's reduction. Extreme eigenvalues of the complete-grid Gram form with one off-line pair: new relationship with prop:extreme-eigenvalue-detection.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-many-pair-bound"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:extreme-eigenvalue-detection::refines::prop:solitary-amplification",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:solitary-amplification",
+        "locator": null
+      },
+      "scope": "Implies its part 4 and adds the matching upper bound and the two bounds for the smallest eigenvalue.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Implies its part 4 and adds the matching upper bound and the two bounds for the smallest eigenvalue."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::cites::prop:subset-sum-resonance",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:subset-sum-resonance",
+        "locator": null
+      },
+      "scope": "The solitary hypothesis matters: several close pairs can cancel at one bandwidth.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The solitary hypothesis matters: several close pairs can cancel at one bandwidth."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::cites::thm:resonance-free-bandwidth",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:resonance-free-bandwidth",
+        "locator": null
+      },
+      "scope": "Used for the several-pair remark: an operator-norm bound over a range of bandwidths, with loss sqrt(2n).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Used for the several-pair remark: an operator-norm bound over a range of bandwidths, with loss sqrt(2n)."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::cites::prop:many-pair-norm-bound",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:many-pair-norm-bound",
+        "locator": null
+      },
+      "scope": "The several-pair remark uses the rank bound for the off-axis part.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The several-pair remark uses the rank bound for the off-axis part."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::cites::prop:two-pair-cancellation",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:two-pair-cancellation",
+        "locator": null
+      },
+      "scope": "Shows the solitary hypothesis cannot be dropped at constant cost.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Shows the solitary hypothesis cannot be dropped at constant cost."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::depends_on::lem:pair-atom-spectrum",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pair-atom-spectrum",
+        "locator": null
+      },
+      "scope": "Uses the two-eigenvalue form of the pair atom.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Uses the two-eigenvalue form of the pair atom."
+      }
+    },
+    {
+      "id": "prop:extreme-eigenvalue-detection::depends_on::lem:real-configuration-bound",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:extreme-eigenvalue-detection",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:real-configuration-bound",
+        "locator": null
+      },
+      "scope": "Bounds the on-line part's largest eigenvalue.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-extreme-eigenvalue-detection"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b8fe6425960644fc06c4a8a991b4ac69ebc42a43",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Bounds the on-line part's largest eigenvalue."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
