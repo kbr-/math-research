@@ -1,0 +1,50 @@
+{
+ "source": {
+  "record": "[One-sided zero-set equivalence](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence)",
+  "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"],
+  "label": "One-sided zero-set equivalence"
+ },
+ "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+ "date": "2026-10-11",
+ "topics": ["publication"],
+ "claims": [
+  {
+   "id": "lem:nonnegative-transform-abscissa",
+   "summary": "Landau's lemma for integrals: L_1 >= 0, g >= 0 continuous on [L_1, infinity) with G(s) = int_{L_1}^infty g(L) e^{-sL} dL convergent for Re s > sigma_1; if a function holomorphic on an open set containing the real half-line (sigma_0, infinity) agrees with G where Re s > sigma_1, then the integral converges for every Re s > sigma_0.",
+   "assessment": "Working proof of a classical statement, written out: the Taylor series of the continuation at a real point to the right of the abscissa has nonnegative terms when evaluated to the left, and Tonelli's theorem sums it to the integral.",
+   "status": "working_proof",
+   "category": "context",
+   "rationale": "The tool that turns a one-sided bound for all lengths into the absence of poles to the right; classical, recorded with its proof because the entry relies on it.",
+   "next_action": "None.",
+   "formalization_scope": "Not formalized; no Lean work assigned.",
+   "notes": {
+    "mathematical_status": "Complete proof in the entry; a classical lemma (Landau), not read in a source in this cycle.",
+    "formalization": "No formalization.",
+    "significance": "Context: classical. No novelty.",
+    "relationships": "Used by the one-sided zero-set equivalence."
+   }
+  },
+  {
+   "id": "prop:one-sided-zero-set-equivalence",
+   "summary": "Fejer kernel K_L(w) = 2(1 - cos Lw)/(L w^2); a conjugation-closed multiset of points z with |Im z| <= Delta and sum m_z/(1 + (Re z)^2) finite, infinite allowed (real points and off-line pairs gamma_j +- i delta_j); D_L(tau) = sum m_z K_L(tau - z). (a) The sum converges absolutely, and if all delta_j <= theta then L D_L(tau) >= -4 S_off e^{theta L} for every real tau and L > 0, S_off = sum over the points z of the pairs of m_z/|tau - z|^2. (b) Let tau be real, not a real point, and d the largest distance of a pair at height tau (0 if none). If L D_L(tau) >= -C L^A e^{theta L} for all L >= L_1, with theta >= 0, then every delta_j <= max(theta, d). In particular for tau at no pair's height the bound for all large L holds with exponent theta if and only if no pair is farther than theta from the line; no hypothesis on distinct heights or on the supremum of the distances being attained. For the zeros of zeta (z = (rho - 1/2)/i, Delta = 1/2, the count N(T+1) - N(T) << log T) the one-sided bound with theta = 0 at one such tau is the Riemann hypothesis restated.",
+   "assessment": "Working proof: the Laplace transform in L of L K_L(w) is 2/(s(s^2 + w^2)); the transform of L D_L is a meromorphic function whose poles off the imaginary axis are at +-delta_j +- i(tau - gamma_j) with residues that cannot cancel, and Landau's lemma moves the abscissa of convergence to theta. The application to zeta uses the classical count of zeros in unit intervals, not read in a source in this cycle.",
+   "status": "working_proof",
+   "category": "context",
+   "rationale": "Shows that the one-sided premise for all lengths is the zero-free half-plane restated, for infinite configurations and for the zeros of zeta: the obstruction of the one-sided route for this kernel.",
+   "next_action": "None.",
+   "formalization_scope": "Not formalized; no Lean work assigned.",
+   "notes": {
+    "mathematical_status": "Complete proof in the entry; the transform identity and the residues are controlled numerically (8 and 3 cases) with a negative control.",
+    "formalization": "No formalization.",
+    "significance": "Context for the route: an equivalence of Landau's type, elementary. A restatement result, not progress on the goal. No novelty search beyond the registry.",
+    "relationships": "A qualitative extension of the one-sided half-plane equivalence to infinite configurations, without its hypotheses on the largest distance and without its explicit constants."
+   }
+  }
+ ],
+ "relationships": [
+  ["prop:one-sided-zero-set-equivalence", "depends_on", "lem:nonnegative-transform-abscissa", "Applied to L D_L(tau) + C L^A e^{theta L}."],
+  ["prop:one-sided-zero-set-equivalence", "cites", "prop:one-sided-half-plane-equivalence", "The finite case: this statement gives its qualitative consequence for infinite configurations without the hypotheses on the largest distance, and not its explicit constants, so neither implies the other."],
+  ["prop:one-sided-zero-set-equivalence", "cites", "lem:one-sided-density-decomposition", "Same density and kernel."],
+  ["prop:one-sided-zero-set-equivalence", "cites", "prop:log-derivative-sign-criteria", "Another half-plane criterion that is the zero-free statement, for finite multisets."]
+ ]
+}
