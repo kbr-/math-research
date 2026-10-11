@@ -1,0 +1,74 @@
+Blind stage of a scheduled goal-level route review, 11 October 2026 (the author's preferred next step is
+withheld). Repository: the worktree you are run in; read-only. Medium effort.
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through a family of
+polynomial-length literal CNFs F_n of width w, with auxiliary affine equations over F_2 leaving free dimension
+n, with no polynomial calculus refutation over F_2 at degree floor(n/2 - s), where (s + w)(log n)^(l-2) = o(n)
+at l = d + c_F levels (s + w <= n^(1-eps) serves all depths). The transfer from such a family to Frege is a
+working proof here (cor:bounded-depth-size-bound, cor:frege-parity-size-bound). Alternative sufficient
+endpoints: a proper closure whose standard monomials below the cutoff are thin (cor:level-size-size-bound), or
+have few standard extensions (thm:forced-extension-source-exclusion); both need a closure proper at D that
+shatters no set larger than about 2D (prop:shattered-dimension-bound).
+
+STANDING FACTS (registry statements; read any with
+`python3 tools/claim-index.py list --fields id,summary --format tsv | grep -E "^(ID)\b"`).
+- No degree lower bound over F_2 above about a quarter of the free dimension for narrow axioms is proved here
+  or in the sources read (entry-2026-10-10-literature-degree-constants).
+- lem:width-deficit-threshold, prop:level-deficit-threshold: on balanced profiles the transfer needs
+  s + w < n / (4 A^(l-1) (ln n)^(l-2)) for size n^A.
+- Ceilings of deficit plus width of order n / log n at polynomial length, for four families: the counting
+  family (prop:monomial-relaxation-ceiling line), the block cover (obs:block-cover-width-budget,
+  lem:last-group-conditioning), regular even modular sources (shared-pin ceiling), flow constraints
+  (cor:flow-window-exclusion, main notebook). No candidate family is listed since the last review.
+- Open conjectures with their evidence: conj:covering-half-ceiling (untested hypothesis: every cover of F_2^n
+  by affine subspaces of codimension <= w is refuted in degree ceil(n/2) + w; no proof, one undecided attempt);
+  conj:block-cover-degree-value (35 computed covers); regularity of random parity clauses (conjectured, not
+  citable).
+
+THE LAST REVIEW (entry-2026-10-11-candidates-block-review) decided six entries, by queue item, and a test:
+"is there an absolute c > 0 such that every unsatisfiable CNF of length L and width w, with auxiliary affine
+equations leaving free dimension n, has a refutation over F_2 of degree at most n/2 + w - c n / log L?"
+Read its Decision and Decisive test: `python3 tools/notebook-excerpt.py entry-2026-10-11-candidates-block-review --text`.
+
+THE SIX ENTRIES (read each with `python3 tools/notebook-excerpt.py ANCHOR --text`):
+1. entry-2026-10-11-pure-leaf-reduction: the half ceiling's owed attempt; lem:pure-leaf-reduction (the degree
+   of a saturated pair with flat rows reduces to pure leaves). Half ceiling undecided.
+2. entry-2026-10-11-length-ceiling-test: the test; cor:half-filtered-length-ceiling for canonically encoded
+   rows filtered below half that partition the variables. The general statement undecided: at constant width
+   it contains the untested half ceiling.
+3. entry-2026-10-11-graded-row-count: lem:graded-row-count; for rows on jointly independent forms no basis
+   gives more than the row count; dependent rows not reached. Bearing none.
+4. entry-2026-10-11-obstruction-group: lem:fibre-spanning-ceiling (block covers with spanning fibres have
+   degree (r-2)g + 2). The draft closed three queue items; its reviewer refused two closures and relabelled
+   the third (closed as inapplicable). Bearing none.
+5. entry-2026-10-11-frame-restriction-sandwich: lem:frame-restriction-sandwich; for the product-tree frame a
+   contradiction proper at the cutoff 0.4 n must use leaf variables, and on nodes of bounded height needs plain
+   degree above 0.4 n. Bearing declared "some". Properness decided for no contradiction.
+6. entry-2026-10-11-scope-free-extension-window: lem:scope-free-extension-window; for random 3-CNF at density
+   4.27 the scope-free extension condition holds from 0.3819 v and fails up to 0.1863 v; the thin threshold
+   0.341 v lies between. Bearing none.
+
+QUEUE. 52 top-level items, draining toward 10; it stood at 51 and 52 at the last two reviews. In the block one
+sub-item was closed and none added. `python3 tools/lead_queue.py list research/branches/near-half-pc-degree/notebook.html`
+may print it (if that subcommand fails, skip it). Build items queued and unbuilt: draft-sentences-beside-cited-
+claims (a tool was built for it in the block, tools/draft_claim_sentences.py, and the item was left queued),
+developed-checks-state-sources-read (half built: the finisher now holds Developed follow-ups to the paragraphs
+of Closed ones; the comparison with the previous entry's unexamined parts is not built).
+
+CONDUCT, as the block's reviewers reported it: three drafts in two blocks removed queue items and were
+refused; one entry defined its best outcome as items removed; status words stronger than the body in four of
+six drafts ("reduced", "all that these rows impose", a trend the table contradicted, "each attempted").
+
+QUESTIONS, answer each briefly:
+A. What is the block worth for the open statement? Which entries' bearing declarations are honest?
+B. Is the last review's test answered, undecided, or abandoned? Did the block carry out the decision?
+C. State the obstacle as it now stands, in two or three sentences.
+D. Independent alternative: a materially different architecture for the goal, or a reason none is found. Do
+   not manufacture one.
+E. A decisive test for the next block: one concrete statement or proof attempt whose outcomes change the
+   route, with its trivial cases and what the recorded bounds give on it. Or say that none deserves the name.
+F. Which queue items should the next six entries take, and why those? Should any be merged (the reviewer of
+   entry 5 judged entry-2026-10-09-product-tree-frame:s1 the same question as
+   entry-2026-10-09-forced-extension-growth:s1)?
+G. Process audit of the block: anything the entries' own reviewers missed.
+At most 600 words.
