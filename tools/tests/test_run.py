@@ -34,7 +34,9 @@ class SuiteTimeLimit(unittest.TestCase):
         slowest = result.stdout.split('Slowest tests:')[1].splitlines()[1]
         self.assertIn('test_slow.Slow.test_sleeps', slowest)
         # A slow run says what the machine did meanwhile, so that it can be told from one slowed by others.
-        self.assertRegex(result.stdout, r"\nCPU during the run: \d+ s in the run's own control group, \d+ s by other "
+        # Inside the computation slice the figure is the whole slice's, and the line says so.
+        self.assertRegex(result.stdout, r"\nCPU during the run: \d+ s in (the run's own control group|the shared "
+                                        r"computation slice \(this run and any other session's jobs in it\)), \d+ s by other "
                                         rf"programs; the machine's {os.cpu_count()} processors were busy for \d+ s of \d+\.\n")
 
     def test_within_the_limit_passes(self):
@@ -63,8 +65,10 @@ class SuiteTimeLimit(unittest.TestCase):
         placed('/user.slice/mathcompute.slice', 7_500_000)
         placed('/user.slice/mathcompute.slice/run-1.service', 1_000_000)
         self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, 7.5))
+        self.assertIn('shared computation slice', runner.measured_group(group))   # other sessions' jobs count in it
         placed('/user.slice/session-2.scope', 2_250_000)
         self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, 2.25))
+        self.assertEqual(runner.measured_group(group), "the run's own control group")
         # What cannot be read is None, and then nothing is reported.
         group.write_text('0::/user.slice/absent\n')
         self.assertEqual(runner.cpu_seconds(stat, group, root), (18.0, None))
@@ -73,9 +77,13 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertEqual(runner.cpu_seconds(stat, group, root)[0], None)
         self.assertIsNone(runner.outside_load((1.0, None), (2.0, 3.0), 10.0, 16))
         self.assertIsNone(runner.outside_load((1.0, 1.0), (None, 3.0), 10.0, 16))
-        self.assertEqual(runner.outside_load((100.0, 20.0), (240.0, 115.0), 10.5, 16),
+        group.write_text('0::/user.slice/session-2.scope\n')
+        self.assertEqual(runner.outside_load((100.0, 20.0), (240.0, 115.0), 10.5, 16, group),
                          "CPU during the run: 95 s in the run's own control group, 45 s by other programs; the machine's "
                          '16 processors were busy for 140 s of 168.')
+        group.write_text('0::/user.slice/mathcompute.slice/run-1.service\n')
+        self.assertIn("95 s in the shared computation slice (this run and any other session's jobs in it), 45 s by",
+                      runner.outside_load((100.0, 20.0), (240.0, 115.0), 10.5, 16, group))
         self.assertIn(', 0 s by other programs;', runner.outside_load((100.0, 20.0), (110.0, 31.0), 1.0, 16))
 
 

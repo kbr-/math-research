@@ -77,7 +77,7 @@ def slow_case(case, elapsed, load):
 
 class SlowCase(unittest.TestCase):
     def test_a_slow_case_says_what_else_used_the_machine(self):
-        load = RUNNER.outside_load((100.0, 20.0), (190.0, 40.0), 8.0, 16)
+        load = RUNNER.outside_load((100.0, 20.0), (190.0, 40.0), 8.0, 16, Path('/nonexistent/cgroup'))
         self.assertEqual(slow_case({'name': 'math:layout', 'seconds': 5.19}, 8.04, load),
                          "math:layout took 5.2 s; its group of cases took 8.0 s. CPU during the run: 20 s in the run's own "
                          "control group, 70 s by other programs; the machine's 16 processors were busy for 90 s of 128.")

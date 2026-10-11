@@ -107,12 +107,23 @@ def cpu_seconds(stat=Path('/proc/stat'), group=Path('/proc/self/cgroup'), groups
     return machine, own
 
 
-def outside_load(before, after, elapsed, cores):
+def measured_group(group=Path('/proc/self/cgroup')):
+    """What cpu_seconds counts as the run's own: inside the computation slice it is the whole slice, which
+    every session's jobs share, so that figure cannot tell this run from another session's computation."""
+    try:
+        shared = 'mathcompute.slice' in group.read_text().strip().split('::', 1)[1].split('/')
+    except (OSError, IndexError):
+        shared = False
+    return ('the shared computation slice (this run and any other session\'s jobs in it)' if shared
+            else 'the run\'s own control group')
+
+
+def outside_load(before, after, elapsed, cores, group=Path('/proc/self/cgroup')):
     """The line a slow run prints about what else the machine did meanwhile, or None where it was not read."""
     if None in before + after:
         return None
     machine, own = after[0] - before[0], after[1] - before[1]
-    return (f'CPU during the run: {own:.0f} s in the run\'s own control group, {max(0.0, machine - own):.0f} s by '
+    return (f'CPU during the run: {own:.0f} s in {measured_group(group)}, {max(0.0, machine - own):.0f} s by '
             f'other programs; the machine\'s {cores} processors were busy for {machine:.0f} s of {elapsed * cores:.0f}.')
 
 
