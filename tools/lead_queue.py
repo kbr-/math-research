@@ -787,6 +787,23 @@ def named_attempts(body, ident):
     return rows
 
 
+def survey(body):
+    """One row for each top-level queued item: (kind, identifier, entries of its group, open sub-ideas, outcome
+    of its latest entry, whether that entry's Follow-up names an attempt, entries naming an attempt that no
+    later entry of the group reports).  For judging whether a queue can drain by closures: an item with no
+    entry, no sub-idea and no attempt named is untouched, not dead."""
+    found = parse_tree(body)
+    rows = []
+    for node in (found[1] if found else []):
+        entries = history(body, node.ident)
+        attempts = named_attempts(body, node.ident)
+        latest_names = bool(entries) and bool(attempts) and attempts[-1][0] == entries[-1][0]
+        rows.append((node.kind, node.ident, len(entries), len(node.children),
+                     entries[-1][2] if entries else 'none', latest_names,
+                     sum(1 for _anchor, _said, later in attempts if not later)))
+    return rows
+
+
 def item_status(body, ident):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
@@ -1747,6 +1764,15 @@ def main(argv):
         else:
             print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
                   or 'No similar queued items')
+        return 0
+    if len(argv) == 3 and argv[1] == 'survey':
+        rows = survey(Path(argv[2]).read_text())
+        print('kind\titem\tentries\topen sub-ideas\tlatest outcome\tlatest names an attempt\tattempts unreported')
+        print('\n'.join('\t'.join(str(value) for value in row) for row in rows))
+        untouched = sum(1 for row in rows if row[2] == 0)
+        print(f'{len(rows)} items: {untouched} with no entry; '
+              f'{sum(1 for row in rows if row[2] and not row[3] and not row[5])} with entries, no open sub-idea '
+              'and no attempt named by the latest follow-up')
         return 0
     if len(argv) in (4, 5) and argv[1] == 'history' and (len(argv) == 4 or argv[4] == '--status'):
         body = Path(argv[2]).read_text()

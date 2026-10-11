@@ -1426,6 +1426,22 @@ class LinkEarlierWorkTest(unittest.TestCase):
                       'complex. Still owed', status)
         self.assertIn('  none', '\n'.join(lq.item_status(notebook([third], [item]), 'r:1')))
 
+    def test_survey_gives_one_row_for_each_top_level_item(self):
+        worked, idle = ('lead', 'r:1'), ('lead', 'r:2')
+        named = ('<article id="entry-2026-10-11-a" data-kind="research" data-route="step" data-lead="r:1">'
+                 '<p><strong>Follow-up.</strong> Continuing. Next attempt: read the source.</p></article>')
+        body = notebook([named], [worked, idle])
+        self.assertEqual(lq.survey(body), [('lead', 'r:1', 1, 0, 'Continuing', True, 1),
+                                           ('lead', 'r:2', 0, 0, 'none', False, 0)])
+        output = io.StringIO()
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'n.html'
+            path.write_text(body)
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(lq.main(['lead_queue.py', 'survey', str(path)]), 0)
+        self.assertIn('2 items: 1 with no entry; 0 with entries, no open sub-idea and no attempt named',
+                      output.getvalue())
+
     def test_an_entry_accounts_for_the_attempt_its_item_s_last_entry_named(self):
         item, other = ('check', 'e:s1'), ('lead', 'r:2')
         named = ('<article id="entry-2026-10-11-a" data-kind="research" data-check="e:s1"><p><strong>Follow-up.'
