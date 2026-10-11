@@ -497,6 +497,26 @@ def validate_structural_reason(text, statuses=()):
                          'which other candidates or hypotheses the reason applies (AGENTS.md)')
 
 
+PROVED = {'working_proof', 'conditional'}
+
+
+def validate_degenerate_cases(text, statuses=()):
+    """An entry registering a proved statement says what the statement gives on degenerate inputs.
+
+    Two theorems of 11 October 2026 were false as first drafted for want of a hypothesis, unsatisfiability in
+    one and multilinear blocks in the other; each fails on the first degenerate input one writes down, and a
+    reviewer found both.  The paragraph is asked of the author before the review."""
+    if not PROVED & set(statuses):
+        return
+    given = re.search(r'<strong>Degenerate cases\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    if len(plain) < 60:
+        raise ValueError('This entry registers a proved statement: say, after <strong>Degenerate cases.</strong> '
+                         'and in at least 60 characters, what the statement gives on a satisfiable system, an '
+                         'empty one and an input outside its stated form, or which hypothesis excludes each '
+                         '(AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -664,7 +684,9 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         validate_developed_readings(text)
         if check_registered_claims:
             known = registered_status()
-            validate_structural_reason(text, {known.get(cid) for cid in entry_claims(body, article)})
+            statuses = {known.get(cid) for cid in entry_claims(body, article)}
+            validate_structural_reason(text, statuses)
+            validate_degenerate_cases(text, statuses)
         else:
             validate_structural_reason(text)
         if state == 'unchanged':

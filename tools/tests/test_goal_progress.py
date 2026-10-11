@@ -69,6 +69,11 @@ class GoalProgressTest(unittest.TestCase):
     def test_advance_requires_declared_proof_evidence_not_case_count(self):
         body = notebook(article('a', progress='advanced', content=REPORT.replace(
             'remains unchanged', 'is discharged by thm:result'), attrs='data-claims="thm:result"'))
+        with patch.object(FT, 'registered_status', return_value={'thm:result': 'working_proof'}):
+            with self.assertRaisesRegex(ValueError, 'Degenerate cases'):      # a proof is tried on trivial inputs
+                validate(body)
+        body = body.replace('</article>', '<p><strong>Degenerate cases.</strong> A satisfiable system is excluded by '
+                            'hypothesis, and with no rows the statement is vacuous.</p></article>')
         for status in ('working_proof', 'conditional', 'established'):
             with patch.object(FT, 'registered_status', return_value={'thm:result': status}):
                 validate(body)
@@ -190,6 +195,21 @@ class ClosureStakesTest(unittest.TestCase):
         with self.assertRaises(ValueError):                                                # too short to say anything
             FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
                                  + self.LINK)
+
+
+class DegenerateCasesTest(unittest.TestCase):
+    def test_a_registered_proof_says_what_it_gives_on_degenerate_inputs(self):
+        plain = '<h3>A bound</h3><p><strong>New mathematics.</strong> A ceiling for systems of rows.</p>'
+        FT.validate_degenerate_cases(plain)
+        FT.validate_degenerate_cases(plain, {'finite_check', 'conjecture', None})
+        for status in ('working_proof', 'conditional'):
+            with self.assertRaisesRegex(ValueError, 'Degenerate cases'):
+                FT.validate_degenerate_cases(plain, {status})
+        with self.assertRaises(ValueError):
+            FT.validate_degenerate_cases(plain + '<p><strong>Degenerate cases.</strong> None.</p>', {'working_proof'})
+        FT.validate_degenerate_cases(plain + '<p><strong>Degenerate cases.</strong> A satisfiable system is excluded '
+                                     'by hypothesis; with no rows the bound is vacuous; blocks must be multilinear.</p>',
+                                     {'working_proof'})
 
 
 class StructuralReasonTest(unittest.TestCase):
