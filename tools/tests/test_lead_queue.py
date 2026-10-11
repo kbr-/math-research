@@ -3,6 +3,7 @@ import contextlib
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -552,11 +553,14 @@ class LeadQueueTest(unittest.TestCase):
         head = notebook([self.rev], self.q)
         body = lq.add(head, 'build', 'port-it', 'user, 7 October 2026', 'Port <this> to main.')
         lq.check(head, body)
-        self.assertIn('<li data-build="port-it" data-source="user, 7 October 2026">Port &lt;this&gt; to main.</li>', body)
+        # The item carries the record's last entry at the time, so that a review's period can place it.
+        last = re.findall(r'<article id="([^"]+)"', head)[-1]
+        self.assertIn(f'<li data-build="port-it" data-source="user, 7 October 2026" data-after="{last}">'
+                      'Port &lt;this&gt; to main.</li>', body)
         self.assertEqual(lq.head_lines(body, 3)[3], '3. port-it: Port <this> to main.')
         for kind in ('check', 'idea'):
             body = lq.add(body, kind, f'a-{kind}', 'entry-2026-10-07-x', 'Y.')
-            self.assertIn(f'<li data-{kind}="a-{kind}" data-source="entry-2026-10-07-x">Y. '
+            self.assertIn(f'<li data-{kind}="a-{kind}" data-source="entry-2026-10-07-x" data-after="{last}">Y. '
                           '(<a href="#entry-2026-10-07-x">source</a>)</li>', body)
             lq.check(head, body)
         for kind, ident, source, text, error in (
@@ -597,8 +601,8 @@ class LeadQueueTest(unittest.TestCase):
         head = notebook([self.rev], self.q)
         body = lq.add(head, 'build', 'port-it', 'entry-2026-10-07-x', 'Port it.')
         edited = lq.edit(body, 'port-it', 'Port it & test it.')
-        self.assertIn('<li data-build="port-it" data-source="entry-2026-10-07-x">Port it &amp; test it. '
-                      '(<a href="#entry-2026-10-07-x">source</a>)</li>', edited)
+        self.assertRegex(edited, r'<li data-build="port-it" data-source="entry-2026-10-07-x" data-after="[^"]+">'
+                                 r'Port it &amp; test it\. \(<a href="#entry-2026-10-07-x">source</a>\)</li>')
         self.assertNotIn('Port it.', edited)
         self.assertEqual(lq.edit(edited, 'port-it', 'Port it & test it.'), edited)
         lq.check(head, edited)
@@ -631,7 +635,7 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('Appended port-it, a build; 3 items in the queue.', out.getvalue())
             self.assertIn('Appended weigh-it, an idea; 4 items in the queue.', out.getvalue())
             self.assertIn('port-it is already queued', err.getvalue())
-            self.assertIn('<li data-build="port-it" data-source="s">Port it.</li>', path.read_text())
+            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\.</li>')
             self.assertNotIn('Again.', path.read_text())
             self.assertNotIn('other', path.read_text())
 

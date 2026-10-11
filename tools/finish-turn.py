@@ -287,6 +287,19 @@ QUEUE_SECTION_RE = re.compile(r'<section id="lead-queue"[^>]*>(.*?)</section>', 
 QUEUED_BUILD_RE = re.compile(r'<li\b[^>]*data-build="([^"]+)"[^>]*data-source="([^"]+)"')
 BUILT_RE = re.compile(r'<li\b[^>]*data-build="[^"]+"[^>]*>(?:(?!</li>).)*?<strong>Follow-up\.</strong>\s*Developed\b', re.S)
 BUILDS_PARAGRAPH_RE = re.compile(r'<p><strong>Builds\.</strong>(.*?)</p>', re.S)
+QUEUED_ITEM_RE = re.compile(r'<li\b[^>]*data-build="([^"]+)"[^>]*>')
+# An entry that develops a build item itself: the item on its tag and a Developed follow-up of its own.
+BUILT_ENTRY_RE = re.compile(r'\A<article\b[^>]*\bdata-build="[^"]+"[^>]*>.*<p><strong>Follow-up\.</strong>\s*Developed\b',
+                            re.S)
+
+
+def queued_in(tag, idents):
+    """Whether a queued item's <li> tag places it in the period whose entries have the anchors `idents`."""
+    source = re.search(r'\bdata-source="([^"]*)"', tag)
+    after = re.search(r'\bdata-after="([^"]*)"', tag)
+    named = re.match(r'[A-Za-z0-9-]+', html.unescape(source.group(1))) if source else None
+    return (bool(source and html.unescape(source.group(1)) in idents) or bool(named and named.group(0) in idents)
+            or bool(after and after.group(1) in idents))
 
 
 OWED_PARAGRAPH_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
@@ -351,14 +364,22 @@ def validate_review_builds(body, article, close):
     period.append((article, own.group(1) if own else None, close))
     idents = {ident for _, ident, _ in period if ident}
     queue = QUEUE_SECTION_RE.search(body)
-    queued = [build for build, source in QUEUED_BUILD_RE.findall(queue.group(1) if queue else '')
-              if source in idents]
-    if not queued or any(BUILT_RE.search(body[position:end]) for position, _, end in period):
+    # An item is of the period by the entry its source names (the entry's anchor, alone or leading the source's
+    # words) or, where the source is given in words, by the record's last entry when the queue tool added it.
+    # Measured on 11 October 2026 on one notebook: of 20 queued build items the exact match of the source alone
+    # saw 10; one names an entry and goes on in words, and nine give words only.
+    queued = [match.group(1) for match in QUEUED_ITEM_RE.finditer(queue.group(1) if queue else '')
+              if queued_in(match.group(0), idents)]
+    # Builds made in the period excuse the review only when they are at least as many as the builds it queued: one
+    # build entry among several queued items would otherwise silence the check for all of them.
+    built = sum(bool(BUILT_RE.search(body[position:end]) or BUILT_ENTRY_RE.search(body[position:end]))
+                for position, _, end in period)
+    if not queued or built >= len(queued):
         return
     paragraph = BUILDS_PARAGRAPH_RE.search(body, article, close)
     missing = [build for build in queued if paragraph is None or build not in paragraph.group(1)]
     if missing:
-        raise ValueError('This review\'s period queued build items and built none: say in a '
+        raise ValueError('This review\'s period made fewer builds than remain queued from it: say in a '
                          '<p><strong>Builds.</strong> paragraph what becomes of each (built now, dropped, or '
                          'the dated reason it waits): ' + ', '.join(missing) + ' (AGENTS.md)')
 

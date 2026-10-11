@@ -72,3 +72,34 @@ class ReviewBuildsTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PeriodOfAnItemTest(unittest.TestCase):
+    def test_an_item_is_of_the_period_by_its_source_s_entry_or_by_the_entry_it_was_added_after(self):
+        idents = {'e2', 'rev2'}
+        tag = lambda source, after='': f'<li data-build="x" data-source="{source}"{after}>'
+        self.assertTrue(FT.queued_in(tag('e2'), idents))
+        self.assertTrue(FT.queued_in(tag('e2, reviewer of 11 October 2026'), idents))    # an entry, then words
+        self.assertFalse(FT.queued_in(tag('stand-in review, 11 October 2026'), idents))  # words only, undated
+        self.assertTrue(FT.queued_in(tag('stand-in review, 11 October 2026', ' data-after="e2"'), idents))
+        self.assertFalse(FT.queued_in(tag('stand-in review', ' data-after="e0"'), idents))
+        self.assertFalse(FT.queued_in(tag('e20'), idents))                              # another entry's anchor
+
+    def test_a_build_entry_of_the_period_counts_as_a_build(self):
+        developed = ('<article id="e3" data-kind="research" data-route="r" data-build="some-check"><p><strong>'
+                     'Follow-up.</strong> Developed: the build exists at tools/x.py.</p></article>')
+        body = ('<section id="lead-queue"><ol>' + build('new-check', 'e2') + '</ol></section>'
+                '<section id="research-record"><article id="rev1" data-kind="review" data-route="r"></article>'
+                '<article id="e2" data-kind="research" data-route="r"></article>' + developed
+                + '<article id="rev2" data-kind="review" data-route="r"></article></section>')
+        article = body.rindex('<article')
+        FT.validate_review_builds(body, article, body.index('</article>', article))     # one queued, one built
+        with self.assertRaisesRegex(ValueError, 'new-check'):
+            unbuilt = body.replace(developed, '')
+            article = unbuilt.rindex('<article')
+            FT.validate_review_builds(unbuilt, article, unbuilt.index('</article>', article))
+        # One build among two queued does not excuse the review from naming them.
+        two = body.replace(build('new-check', 'e2'), build('new-check', 'e2') + build('other-check', 'e2'))
+        article = two.rindex('<article')
+        with self.assertRaisesRegex(ValueError, 'new-check, other-check'):
+            FT.validate_review_builds(two, article, two.index('</article>', article))

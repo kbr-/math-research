@@ -1727,7 +1727,13 @@ def add(body, kind, ident, source, text):
         raise ValueError(f'{ident} is already queued')
     if kind == 'build' and build_evidence(text):
         raise ValueError(f'{ident}: {build_evidence(text)}')
-    node = Node(kind, ident, f' data-{kind}="{ident}" data-source="{html.escape(source)}"', added_text(source, text))
+    # The last entry of the record when the item is added: a source given in words (a review, a conversation)
+    # names no entry, and the finisher's check of a review's period could not tell when such an item was queued.
+    articles = record_articles(body)
+    last = re.search(r'\bid="([^"]+)"', articles[-1][0]) if articles else None
+    after = f' data-after="{last.group(1)}"' if last else ''
+    node = Node(kind, ident, f' data-{kind}="{ident}" data-source="{html.escape(source)}"{after}',
+                added_text(source, text))
     nodes.append(node)
     updated = rewrite(body, nodes, draining_after(draining, nodes))
     problems = admitter(node)(updated, None, node.item)
