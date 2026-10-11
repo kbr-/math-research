@@ -1,0 +1,77 @@
+{
+  "source": {
+    "record": "[Complex moment order](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-complex-moment-order)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-complex-moment-order"],
+    "label": "Complex moment order"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:complex-moment-order",
+      "summary": "Flat window, complete grid, off-axis points gamma_j - i delta_j at distinct heights, multiplicities m_j, delta_* the largest distance, eta_j = delta_* - delta_j, b = delta_* Lam, vartheta_j = Lam (gamma_j - gamma_0) - i Lam eta_j, w_j = m_j e^(-eta_j Lam) e^(-i Lam gamma_j), nu_r = sum w_j vartheta_j^r, k the least r with nu_r nonzero (k <= n-1): | 2 delta_* (2b)^k sqrt(Q(Lam)) - |nu_k| sqrt(gamma(2k+2, 2b))/k! | <= (sqrt((2k+3)!)/((k+1)! 2b)) sum m_j e^(-eta_j Lam) |vartheta_j|^(k+1) (delta_*/delta_j)^(k+2).",
+      "assessment": "Working proof: the endpoint moment order's Taylor argument with complex exponents, the remainder carrying e^(eta_j u), which the weight e^(-2 delta_* u) still dominates. Contains the equal-distance statement.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Gives the order of the single-bandwidth cancellation for arbitrary distances: pairs near the largest distance take part, and a lower pair with a compensating multiplicity can cancel the top one.",
+      "next_action": "None on the route.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in 15 numerical cases, with a negative control that fails as predicted.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: an elementary statement in an abstract model. No novelty search beyond the registry.",
+        "relationships": "Refines the endpoint moment order, which is its case of equal distances."
+      }
+    },
+    {
+      "id": "cor:top-cluster-order",
+      "summary": "In the setting of the complex moment order, with k, nu_k and c those of the endpoint moment order for the points at the largest distance alone: | 2 delta_* (2b)^k sqrt(Q(Lam)) - |nu_k| sqrt(gamma(2k+2, 2b))/k! | <= c sqrt((2k+3)!)/((k+1)! 2b) + (2b)^k sum over the other points of m_j (delta_*/delta_j) e^(-eta_j Lam).",
+      "assessment": "Working proof: the lower points bounded in the weighted norm and added to the equal-distance statement by the triangle inequality. The points at the largest distance decide the order when eta_j Lam is large against k log(2b).",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "States when pairs below the largest distance can be ignored in the single-bandwidth loss.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in three numerical cases.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Corollary of the endpoint moment order."
+      }
+    },
+    {
+      "id": "lem:gram-collision-order",
+      "summary": "For n >= 2 off-axis points at one distance delta with heights of span W: the normalized Gram matrix R of the many-pair norm bound (exponentials e^(-is z_j) in L^2(omega ds) on [-Lam, Lam], any window) has lambda_min(R) <= (Lam W)^(2(n-1))/(n ((n-1)!)^2), and H_jl = 2/(2 delta + i(gamma_j - gamma_l))^3 has lambda_min(H) <= (2n)! W^(2(n-1))/(n ((n-1)!)^2 (2 delta)^(2n+1)).",
+      "assessment": "Working proof: the divided-difference weights as a test vector, with the Hermite-Genocchi bound for a divided difference. An upper bound; the exponent 2(n-1) is attained in the numerical examples and exactness is not proved.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The Gram-model counterpart of the collision valuation of the registry lead: collisions of heights govern the least eigenvalue of the cluster's Gram matrix, not the cluster's actual loss.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in 18 numerical cases with the exponent attained.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Bounds the constants of the many-pair norm bound and of the cluster negativity constant; the idea is the row operation of the pair collision valuation."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:complex-moment-order", "refines", "prop:endpoint-moment-order", "At equal distances it is that statement; it implies it."],
+    ["prop:complex-moment-order", "depends_on", "lem:gram-second-moment-identity", "Uses the flat-window mean-square form."],
+    ["prop:complex-moment-order", "cites", "thm:short-resonance-free-range", "Same setting, with unequal distances."],
+    ["prop:complex-moment-order", "cites", "thm:resonance-free-bandwidth", "Same setting; the loss at one bandwidth that a range of bandwidths removes."],
+    ["prop:complex-moment-order", "cites", "prop:subset-sum-resonance", "An equal-distance family whose loss this statement's equal-distance case computes."],
+    ["prop:complex-moment-order", "cites", "prop:many-pair-norm-bound", "Same model; the norm whose loss is described."],
+    ["lem:gram-collision-order", "cites", "prop:extreme-eigenvalue-detection", "Same model; no logical dependence."],
+    ["lem:gram-collision-order", "cites", "prop:endpoint-moment-order", "Contrasts the least eigenvalue with the cluster's actual loss."],
+    ["lem:gram-collision-order", "cites", "thm:short-resonance-free-range", "Same setting; no logical dependence."],
+    ["lem:gram-collision-order", "cites", "prop:subset-sum-resonance", "Same setting; a family whose loss is by resonance, not by collision."],
+    ["cor:top-cluster-order", "depends_on", "prop:endpoint-moment-order", "Applied to the points at the largest distance."],
+    ["cor:top-cluster-order", "cites", "prop:complex-moment-order", "The same quantity described with the lower points as an error instead of as weights."],
+    ["lem:gram-collision-order", "cites", "prop:many-pair-norm-bound", "Bounds its constant rho = lambda_min(R) from above for close pairs."],
+    ["lem:gram-collision-order", "cites", "prop:cluster-negativity-constant", "Bounds lambda_min(H) from above for close pairs."],
+    ["lem:gram-collision-order", "cites", "lem:cube-pair-collision-valuation", "The divided-difference row operation of that lemma, applied to rows and columns of a Gram matrix."]
+  ]
+}
