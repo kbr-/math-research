@@ -1,0 +1,70 @@
+{
+  "source": {
+    "record": "[Tilted inequality reach](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-inequality-reach)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-inequality-reach"],
+    "label": "The one-sided triangle's transform, the reach of the classical three-four-one argument with a tilted weight, and the sign test on the cut grid"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:tilted-triangle-positivity",
+      "summary": "For L > 0 and F(w) = int_0^L (1 - u/L) e^{-wu} du = 1/w - (1 - e^{-wL})/(L w^2): Re F(w) >= 0 for Re w >= 0; |F(w)| <= L/2 for Re w >= 0 and |F(w)| <= Phi(c) for Re w = -c <= 0, where Phi(x) = F(-x) = (e^{xL} - 1 - xL)/(L x^2) is increasing on x >= 0 with Phi(0) = L/2; and |F(w)| <= 1/|w| + (1 + e^{cL})/(L |w|^2) for Re w = -c <= 0, w != 0.",
+      "assessment": "Working elementary proof: one integration by parts and the positivity of the sine transform of a nonnegative nonincreasing function on an interval; the bounds from the integral. The positivity is an instance of a classical criterion for convex decreasing functions, not claimed as new.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The per-zero positivity that the classical zero-free region uses, for the truncated weight (1 - log n/L) n^{-1/2-a}: the tool a route review named for testing whether the Gram form's framework carries prime-side positivity.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; sampled numerically on a grid.",
+        "formalization": "No formalization.",
+        "significance": "Context: a classical fact in the form the route needs.",
+        "relationships": "Used by the tilted inequality reach."
+      }
+    },
+    {
+      "id": "prop:tilted-inequality-reach",
+      "summary": "With F and Phi of the tilted triangle positivity, a real tilt a < 1/2, p = 1/2 - a, sigma = 1/2 + a, and a finite multiset S of points rho = 1/2 + delta_rho + i gamma_rho with a < delta_rho <= delta < 1/2, total multiplicity M, c = delta - a: for real tau put T_S(tau) = 3 Phi(p) + 4 Re F(-p + i tau) + Re F(-p + 2 i tau) - sum_S m_rho [3 Re F(sigma - rho) + 4 Re F(sigma + i tau - rho) + Re F(sigma + 2 i tau - rho)]. Then T_S(tau) >= 3 Phi(p) - |4 F(-p + i tau) + F(-p + 2 i tau)| - 8 M Phi(c), and if pL >= 2, |tau| >= 6p and (1/2 - delta) L >= log(6M) + 2 log(p/c), then T_S(tau) >= 0. So when S holds every point to the right of the tilt, at all heights, the classical argument, which bounds the three-four-one combination of the prime sum with weight (1 - log n/L) n^{-1/2-a} from above by T_S plus an archimedean term after dropping the terms of nonnegative real part, is not helped by S toward a contradiction, whatever the heights and multiplicities in S; M is the total multiplicity, not a local count.",
+      "assessment": "Working elementary proof from the lemma's bounds: the pole's term Phi(p) exceeds a point's largest possible term Phi(c) by the factor e^{(1/2 - delta)L}(c/p)^2 up to constants. A statement about the function T_S; the explicit formula that makes T_S plus the dropped terms equal to a prime sum is recalled and not derived here. It shows a limit of one classical argument, not of other uses of prime-side positivity.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Bears on a route review's test: with every nonnegative term dropped and a tilt below the points, the classical nonnegative combination cannot exclude points farther than about log(6M)/L from the edge, clusters or not, because the pole's term dominates the amplification; near the edge four instances show a cluster hiding where its multiplicity at one height shows.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the constants and four instances evaluated numerically.",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction to one argument in a model. No novelty claimed.",
+        "relationships": "Uses the tilted triangle positivity; the binomial cluster of the hidden cluster length is among the configurations it covers."
+      }
+    },
+    {
+      "id": "prop:cut-grid-sign-test",
+      "summary": "Setting of the cut-grid tail fraction and the on-line cut-form bound: a configuration of one off-axis pair z, conj z of multiplicity m at distance delta with kappa >= 2 and tail fraction ||(1 - Pi) v_z||^2 <= ||v_z||^2/16, together with a real configuration with the logarithmic local count. Then the normalized Gram form on the cut grid has smallest eigenvalue at most Lambda0 - (5/8) m (kappa - 1), Lambda0 the bound of the on-line cut-form bound; in particular it has a negative direction when m (kappa - 1) > (8/5) Lambda0.",
+      "assessment": "Working proof in a few lines from the truncated-grid estimates of the solitary amplification and the on-line cut-form bound, with the pair's direction e_y cut to the grid as test vector. The cut-grid form of the extreme eigenvalue detection's second inequality, for one off-axis pair only.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The sign test of the lead on Weil's positivity, on the cut grid, which that lead's entries had on the complete grid only.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry.",
+        "formalization": "No formalization.",
+        "significance": "Context: completes a model statement.",
+        "relationships": "Uses the solitary amplification's truncated-grid estimates, the cut-grid tail fraction and the on-line cut-form bound; the cut-grid form of the extreme eigenvalue detection."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:tilted-inequality-reach", "depends_on", "lem:tilted-triangle-positivity", "The bounds for F and the monotonicity of Phi are that lemma's."],
+    ["prop:tilted-inequality-reach", "cites", "prop:binomial-cluster-hiding", "The hidden binomial family is one of the configurations covered; the route review's test asked about it."],
+    ["prop:tilted-inequality-reach", "cites", "lem:strip-positivity-obstruction", "An earlier obstruction of this notebook for certificates with an even test function whose transform is nonnegative on the whole strip; this one is for the one-sided tilted triangle, positive on a half-plane only, and by a different mechanism, the size of the pole's term."],
+    ["prop:cut-grid-sign-test", "cites", "prop:many-pair-norm-bound", "The record's statement for several off-axis pairs on the complete grid; this proposition has one pair, on the cut grid."],
+    ["prop:cut-grid-sign-test", "depends_on", "prop:solitary-amplification", "The estimates for the cut directions e_x and e_y are those of its truncated-grid part's proof."],
+    ["prop:cut-grid-sign-test", "depends_on", "lem:on-line-cut-form-bound", "The real points' part of the form is bounded by its Lambda0."],
+    ["prop:cut-grid-sign-test", "cites", "prop:cut-grid-tail-fraction", "The setting is shared and that proposition supplies the tail fraction hypothesis for interior heights; the proof here takes the tail fraction as a hypothesis."],
+    ["prop:cut-grid-sign-test", "cites", "prop:extreme-eigenvalue-detection", "The second inequality of that proposition, carried from the complete grid to the cut grid with explicit losses; neither implies the other as stated, the grids differing."]
+  ]
+}
