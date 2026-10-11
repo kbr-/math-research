@@ -62,6 +62,10 @@ GUARDED = [
     (re.compile(INVOKED + r"search-claims\.py\b(?![^|;&\n]*\s--(?:show|list|help|json|out)\b)"),
      "tools/search-claims.py prints a ranked list whose later results are cut off by a filter (set the limit with "
      "its own -n N)"),
+    # 11 October 2026: an item's history cut to its first four lines hid that eleven entries had developed it, one
+    # of which had closed it for the reason a review then had to be told by its reviewer.
+    (re.compile(INVOKED + r"lead_queue\.py\s+history\b"),
+     "tools/lead_queue.py history lists every entry that developed the item, below its status"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")
