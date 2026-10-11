@@ -541,7 +541,7 @@ def validate_closures(text):
                          'least 40 characters, which attempt the item\'s latest follow-up or its reviewer named '
                          '(a run, a source, a proof) and that it was made, with its outcome, or that none was '
                          'named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
-    if closure_admits_unmade(plain):
+    if closure_admits_unmade(plain) and not re.search(r'Closed:\s*merged into\b', text):   # a merge carries it
         raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
                          'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
     missing = unlisted_limits(text)
