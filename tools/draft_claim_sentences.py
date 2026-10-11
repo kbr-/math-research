@@ -11,6 +11,8 @@ Prints, per cited claim in order of first citation, the registered summary and t
 with the heading or paragraph label it stands under.  Ends with the counts: sentences, claims, unregistered.
 With --notebook it then lists, per entry the draft links, that entry's title and status line and each
 sentence linking it: a sentence about what an earlier entry said is read beside what that entry claims.
+It then lists the sentences outside the mathematics that hold a count, and the sentences outside the
+statements and proofs that hold a universal or negative word, each to be read beside its source.
 """
 import argparse
 import html
@@ -97,6 +99,63 @@ def counts(draft):
             if COUNT.search(DATE.sub(' ', text(bare))):
                 found.append((where, text(sentence)))
     return found
+
+
+# Paragraphs that are a statement or its proof, where a universal word is the mathematics itself: by their
+# leading label or, without one, the heading they stand under.  A summary of the result, its bearing, its
+# reading and its structural reason are not among them: those are where a draft says more than it proved.
+STATEMENT = re.compile(r'^(?:General statement|Setting|Degenerate cases|Nonvacuity|Sources read|'
+                       r'.*\b(?:lemma|proposition|theorem|corollary|proof)\b.*)$', re.I)
+# Paragraphs about how the work was done, where such a word is not a conclusion about the mathematics.  A first
+# form without this list, and with "only" and "neither" among the words, listed 203 of the 435 sentences of six
+# entries, too many to read.
+BOOKKEEPING = re.compile(r'^(?:Where we stand|Chosen|Returns|Picked|Best outcome|Architecture test|Earlier entries.*|Owed attempt|'
+                         r'Question|Verification gate|Record search|Process assessment|Review|'
+                         r'Specification decision|Reviewer\'s suggestions.*|Sub-idea.*|The computation|'
+                         r'Against the expectations.*|What was built)$', re.I)
+# The paragraphs where a result is summed up, printed first: the others are prose under the entry's own headings.
+SUMMARY = re.compile(r'^(?:New mathematics|Goal progress|Structural reason|Follow-up)$', re.I)
+TITLE = re.compile(r'<h3>(.*?)</h3>(?:\s*<p class="entry-meta">(.*?)</p>)?', re.S)
+STATUS_LINE = re.compile(r'<p class="entry-meta">.*?</p>', re.S)
+UNIVERSAL = re.compile(r'\b(?:no|none|nothing|never|cannot|every|all|always|any|whatever)\b', re.I)
+
+
+def universals(draft):
+    """((section label, sentence text) for every sentence, outside the statements, their proofs and the
+    paragraphs of bookkeeping, that holds a universal or a negative word; the number of sentences read).  The
+    status line is not read here: the report prints it whole.  On 12 October 2026 four drafts of one block
+    concluded more than they proved ("no witness of product form...", "it creates none"), each found by a
+    reviewer; listed, each such sentence is read beside the statement it rests on before the reviewer's brief.
+    The list is long, most sentences on it being sound: it is a reading list and not a finding."""
+    found, read, heading = [], 0, ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where) or BOOKKEEPING.match(where):
+            continue
+        for index, sentence in enumerate(sentences(body)):
+            unlabelled = LABEL.sub('', sentence) if index == 0 and label else sentence
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', unlabelled, flags=re.S)
+            read += 1
+            if UNIVERSAL.search(text(bare)):
+                found.append((where, text(sentence)))
+    return found, read
+
+
+def universals_report(draft, width):
+    found, read = universals(draft)
+    found = [row for row in found if SUMMARY.match(row[0])] + [row for row in found if not SUMMARY.match(row[0])]
+    lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
+    title = TITLE.search(draft)
+    head = [] if not title else [f'  [title] {text(title.group(1))}'] + (
+        [f'  [status line] {text(title.group(2))}'] if title.group(2) else [])
+    return '\n'.join(['The title and the status line, whatever their words, then the sentences outside the '
+                      'statements, proofs and bookkeeping that say no, none, cannot, every, all and the like, '
+                      'the summing-up paragraphs first; read each beside the statement it rests on:']
+                     + head + lines + [f'{len(found)} such sentences of {read} read.'])
 
 
 RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
@@ -232,6 +291,7 @@ def main():
         linked, missing = entry_report(draft, pathlib.Path(args.notebook).read_text(), args.width)
         print('\n' + linked)
     print('\n' + counts_report(draft, args.width))
+    print('\n' + universals_report(draft, args.width))
     for line in readings(draft=draft):
         print(line)
     log_run(draft)

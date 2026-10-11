@@ -107,6 +107,64 @@ class CountsTest(unittest.TestCase):
         self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
 
 
+class UniversalsTest(unittest.TestCase):
+    """The four conclusions of 12 October 2026 that reviewers found wider than their statements, reconstructed
+    from the review records in the paragraphs they stood in, the first drafts having been overwritten: a
+    regression test of the patterns by their author, not evidence that the list is of use."""
+    DRAFT = '''<article id="entry-x">
+<h3>A title</h3>
+<p><strong>New mathematics.</strong> A cap for common roots. So no witness of product form, symmetric or not, gives a static barrier above twice the least codimension.</p>
+<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> Random majority systems are refuted in degree \\(n/2\\), so they are no near-half family whatever their width.</p>
+<p><strong>Structural reason.</strong> The reason applies to every method that needs the rows to be monomials in a common basis.</p>
+<h4>What the union does</h4>
+<p>The cutoff does not move. A union can show a rate only if the core has one; it creates none.</p>
+<h4>The statement</h4>
+<p><strong>Lemma (a cap).</strong> For every family and all rows, no barrier exists at twice the width.</p>
+<p><em>Proof.</em> Every factor is invertible, so no factor lowers the degree by more than one.</p>
+<p><strong>Degenerate cases.</strong> With no rows nothing is claimed.</p>
+<p><strong>Follow-up.</strong> Continuing: nothing closes the item, and every attempt is owed.</p>
+<p><strong>Process assessment.</strong> No mistake to report; all checks ran.</p>
+</article>'''
+
+    def test_the_four_wide_conclusions_are_listed_and_statements_are_not(self):
+        found, read = dcs.universals(self.DRAFT)
+        self.assertEqual(found, [
+            ('New mathematics', 'So no witness of product form, symmetric or not, gives a static barrier above '
+                                'twice the least codimension.'),
+            ('Goal progress', 'Bearing. Random majority systems are refuted in degree \\(n/2\\), so they are no '
+                              'near-half family whatever their width.'),
+            ('Structural reason', 'Structural reason. The reason applies to every method that needs the rows to '
+                                  'be monomials in a common basis.'),
+            ('What the union does', 'A union can show a rate only if the core has one; it creates none.'),
+            ('Follow-up', 'Follow-up. Continuing: nothing closes the item, and every attempt is owed.'),
+        ])
+        self.assertEqual(read, 8)        # the lemma, its proof, the degenerate cases and the bookkeeping unread
+        self.assertTrue(dcs.universals_report(self.DRAFT, 0).endswith('5 such sentences of 8 read.'))
+
+    def test_the_title_and_status_line_are_printed_and_summing_up_paragraphs_come_first(self):
+        self.assertEqual(dcs.universals_report(self.DRAFT, 0).splitlines()[1], '  [title] A title')   # no status line
+        draft = self.DRAFT.replace('<h3>A title</h3>', '<h3>Barriers stop at \\(2w-1\\)</h3>\n'
+                                   '<p class="entry-meta">Working proof. No mathematics beyond a cap.</p>')
+        lines = dcs.universals_report(draft, 0).splitlines()
+        self.assertEqual(lines[1:3], ['  [title] Barriers stop at \\(2w-1\\)',
+                                      '  [status line] Working proof. No mathematics beyond a cap.'])
+        self.assertEqual(dcs.universals(draft), dcs.universals(self.DRAFT))     # the status line is not listed twice
+        labels = [line.split(']')[0].strip(' [') for line in lines[3:-1]]
+        self.assertEqual(labels, ['New mathematics', 'Goal progress', 'Structural reason', 'Follow-up',
+                                  'What the union does'])
+
+    def test_a_heading_saying_what_is_not_shown_or_naming_a_formula_is_read(self):
+        draft = ('<article><h4>What is and is not shown</h4><p>Proved: no barrier exists above the cap.</p>'
+                 '<h4>The formula at a point</h4><p>It holds for every density.</p>'
+                 '<h4>What was built</h4><p>Nothing here is a conclusion.</p></article>')
+        self.assertEqual([where for where, _ in dcs.universals(draft)[0]],
+                         ['What is and is not shown', 'The formula at a point'])
+
+    def test_a_word_inside_tex_or_an_identifier_does_not_count(self):
+        draft = '<article><p><strong>Reading.</strong> The bound \\(\\text{for all } n\\) of <code>lem:no-drop</code> holds.</p></article>'
+        self.assertEqual(dcs.universals(draft)[0], [])
+
+
 class RunLogTest(unittest.TestCase):
     def test_a_run_is_logged_with_the_draft_s_entry_and_its_number_of_count_sentences(self):
         import json
