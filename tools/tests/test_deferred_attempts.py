@@ -51,6 +51,28 @@ class DeferredAttemptsTest(unittest.TestCase):
         self.assertEqual([refused for *_, refused in tool.survey(broken)], [False, False, False, False])
         self.assertIsNone(tool.third_deferral(entries[:3], ' id="entry-z" data-kind="research"', 'x'))
 
+    def test_one_attempt_is_identified_by_a_shared_link_identifier_or_quotation(self):
+        linked = 'I did not read <a href="#entry-s">it</a>.'
+        named = 'The sub-idea entry-2026-10-11-form:s1 is not made.'
+        other = 'The comparison with an example is not made.'
+        self.assertEqual(tool.carried(entry('a', 'one', linked), entry('b', 'one', 'Again. ' + linked)),
+                         {('link', 'entry-s')})
+        self.assertEqual(tool.carried(entry('a', 'one', named), entry('b', 'one', named)),
+                         {('item', 'entry-2026-10-11-form:s1')})
+        self.assertIn(('words', 'the attempt on the twist is again not'),
+                      tool.carried(entry('a', 'one', LATER), entry('b', 'one', LATER)))
+        # A link in a sentence that defers nothing, and two different attempts, identify nothing.
+        made = 'I read <a href="#entry-s">it</a> here. ' + other
+        self.assertEqual(tool.carried(entry('a', 'one', linked), entry('b', 'one', made)), set())
+        # A sentence that denies or drops gives no handle.
+        self.assertEqual(tool.handles(entry('a', 'one', 'Of <a href="#entry-s">it</a> nothing is owed.')), set())
+        self.assertEqual(tool.handles(entry('a', 'one', 'I did not read <a href="#entry-s">it</a>; dropped.')), set())
+        text = record(entry('a', 'one', linked), entry('b', 'one', linked), entry('c', 'one', other),
+                      entry('d', 'one', other))
+        rows = tool.survey_carried(text)
+        self.assertEqual([(ident, bool(last), bool(earlier)) for ident, _, last, earlier in rows],
+                         [('entry-c', False, True), ('entry-d', True, False)])
+
 
 if __name__ == '__main__':
     unittest.main()

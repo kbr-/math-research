@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Find attempts owed on a queue item that entry after entry reports unmade.
 
-Usage: tools/deferred_attempts.py NOTEBOOK.html
+Usage: tools/deferred_attempts.py [--carried] NOTEBOOK.html
 
 An entry on an item whose last entry named a next attempt says, after "Owed attempt.", what became of it.  An
 attempt reported unmade in two entries in a row on one item is made or dropped in the next: a reading deferred
@@ -33,6 +33,31 @@ def defers(entry):
     """Whether an entry's Owed attempt paragraphs report an attempt unmade without dropping it."""
     text = DENIED.sub(' ', owed_text(entry))
     return bool(UNMADE.search(text)) and not DROPPED.search(text)
+
+
+QUOTE = 8
+IDENT = re.compile(r'\bentry-[\w-]+:s?\d+\b')
+
+
+def handles(entry):
+    """What the deferring sentences of an entry's Owed attempt paragraphs name their attempt by: the anchors
+    they link, the queue identifiers they write, and their runs of QUOTE consecutive words."""
+    raw = re.sub(r'<a\b[^>]*\bhref="#([^"]+)"[^>]*>', r' @\1 ', ' '.join(OWED.findall(entry)))
+    text = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', raw)).split())
+    found = set()
+    for sentence in re.split(r'(?<=\.)\s+', text):
+        if not UNMADE.search(DENIED.sub(' ', sentence)) or DROPPED.search(sentence):
+            continue
+        found.update(('link', anchor) for anchor in re.findall(r'@(\S+)', sentence))
+        found.update(('item', ident) for ident in IDENT.findall(sentence))
+        words = re.findall(r"[a-z0-9']+", IDENT.sub(' ', re.sub(r'@\S+', ' ', sentence)).lower())
+        found.update(('words', ' '.join(words[at:at + QUOTE])) for at in range(len(words) - QUOTE + 1))
+    return found
+
+
+def carried(first, second):
+    """The handles two entries' deferring sentences share: a way to tell that both defer one attempt."""
+    return handles(first) & handles(second)
 
 
 def item_of(tag):
@@ -67,7 +92,34 @@ def survey(text):
     return rows
 
 
+def survey_carried(text):
+    """(entry, item, shared with the previous entry on the item, shared by that entry with the one before) for
+    every third deferral in a row: whether links, identifiers or quotations identify one attempt in all three."""
+    record = text[text.find('<section id="research-record"'):]
+    entries, rows = ARTICLE.findall(record), []
+    for index, (tag, body) in enumerate(entries):
+        if not third_deferral(entries[:index], tag, body):
+            continue
+        item = item_of(tag)
+        before, previous = [found for found_tag, found in entries[:index] if item_of(found_tag) == item][-2:]
+        rows.append((re.search(r'\bid="([^"]+)"', tag).group(1), item[1],
+                     carried(previous, body), carried(before, previous)))
+    return rows
+
+
+def kinds(shared):
+    return ', '.join(sorted({kind for kind, _ in shared})) or 'nothing'
+
+
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == '--carried':
+        rows = survey_carried(Path(sys.argv[2]).read_text())
+        for ident, item, last, earlier in rows:
+            print(f'{"one attempt" if last and earlier else "not identified"}\t{item}\t{ident}\t'
+                  f'with the previous entry: {kinds(last)}; that entry with the one before: {kinds(earlier)}')
+        print(f'{len(rows)} third deferrals in a row; in {sum(bool(a and b) for _, _, a, b in rows)} the deferring '
+              'sentences of all three share a link, an identifier or a quotation.')
+        return
     if len(sys.argv) != 2 or sys.argv[1].startswith('-'):
         sys.exit(__doc__.split('\n\n')[1])
     rows = survey(Path(sys.argv[1]).read_text())
