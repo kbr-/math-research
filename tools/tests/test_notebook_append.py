@@ -75,6 +75,25 @@ class NextStepItemTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'names none'):
                 tool.append(queued(2, draining=True), entry, step)
 
+    def test_a_next_step_naming_a_developed_item_quotes_its_words(self):
+        source = queued(2).replace(
+            '<article id="a2">two</article>',
+            '<article id="a2" data-kind="research" data-check="item-1">two <p><strong>Follow-up.</strong> '
+            'Continuing: compute the degree of the paired class at thirty-two holes and more.</p></article>')
+        entry = '<article id="a3">three</article>'
+        with self.assertRaisesRegex(ValueError, 'quotes neither'):
+            tool.append(source, entry, '<p>Develop item-1 by a different question altogether.</p>')
+        tool.append(source, entry, '<p>Develop item-1: "compute the degree of the paired class at thirty-two '
+                    'holes", as its follow-up says.</p>')
+        longer = source.replace('Does the bound hold at width 1?',
+                                'Does the bound hold at width one for every large size?')
+        tool.append(longer, entry, '<p>On item-1, which asks whether the bound "hold at width one for every '
+                    'large size".</p>')                                # eight words of the queued text
+        tool.append(source, entry, '<p>Develop item-0, never developed, in any words.</p>')
+        tool.append(source, entry, '<p>After <a href="#a2">the last entry</a>, something else.</p>')   # by link only
+        self.assertTrue(tool.quotes('a b c d e f g h i', 'x a, b c d e f g h. y'))
+        self.assertFalse(tool.quotes('a b c d e f g', 'a b c d e f g h'))
+
     def test_a_review_due_next_needs_no_item(self):
         research = [('<article id="r%d" data-kind="research" data-route="x">' % n, '') for n in range(6)]
         self.assertTrue(tool.review_due(research))

@@ -18,7 +18,9 @@ It also refuses, before anything is written:
   in a paragraph labelled Where we stand, which tools/stand_reasons.py counts;
 - a next step that names no queued item, by identifier or by a link to an entry that developed one, while
   the notebook's queue is draining. For each item a next step names it prints the item's queued text and
-  its latest follow-up, to write the description against.
+  its latest follow-up, to write the description against;
+- a next step that names a queued item by its identifier, when the item has a latest follow-up, without
+  quoting eight consecutive words of that follow-up or of the item's queued text.
 After these, a branch's own tools/append_checks.py, where it has one, is asked: its
 check(source, entry, next_html) raises ValueError to refuse.
 """
@@ -114,6 +116,37 @@ def named_items(source, next_html):
             if anchor.group(1) in linked and item.group(1) not in named:
                 named.append(item.group(1))
     return [(i, plain(queued[i].text), *developments.get(i, ('', ''))) for i in named]
+
+
+QUOTED_WORDS = 8    # consecutive words of an item's follow-up or text that a next step naming it must quote
+
+
+def words(text):
+    return [w for w in (re.sub(r'^\W+|\W+$', '', token).lower() for token in plain(text).split()) if w]
+
+
+def quotes(step, source, length=QUOTED_WORDS):
+    """Whether `step` contains `length` consecutive words of `source`."""
+    have, given = words(step), words(source)
+    runs = {tuple(given[i:i + length]) for i in range(len(given) - length + 1)}
+    return any(tuple(have[i:i + length]) in runs for i in range(len(have) - length + 1))
+
+
+def require_quoted_items(source, next_html):
+    """A next step that names a queued item by its identifier, when the item has a latest follow-up, quotes
+    it or the item's text.
+
+    Printing the item's words (above) showed, on 11 October 2026, a next step whose reason did not match its
+    item, and the step was committed with the mismatch.  A quotation of eight consecutive words is a mechanical
+    proxy: the description is then written from the item's words.  An item named only through a link to an
+    entry is not held to this, a link often pointing at the item being left."""
+    for ident, text, anchor, follow in named_items(source, next_html) or []:
+        by_name = re.search(r'(?<![\w:#-])' + re.escape(ident) + r'(?![\w:-])', next_html)
+        if by_name and follow and not (quotes(next_html, follow) or quotes(next_html, text)):
+            raise ValueError(f'the next step names queue item {ident} and quotes neither its latest follow-up '
+                             f'(#{anchor}) nor its queued text: quote at least {QUOTED_WORDS} consecutive words '
+                             'of one of them, so that what the item asks is written from its own words '
+                             f'(tools/lead_queue.py history NOTEBOOK {ident} --status)')
 
 
 REVIEW_AFTER = 6    # research entries on a route, then its review (AGENTS.md)
@@ -225,6 +258,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         head = body[:body.index(HEADING) + len(HEADING)]
         source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
         require_named_item(source, next_html)
+        require_quoted_items(source, next_html)
     preflight(source, m.group(1))
     return source
 
