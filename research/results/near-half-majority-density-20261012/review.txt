@@ -1,0 +1,35 @@
+Review record, 12 October 2026: entry-2026-10-12-majority-density-ceiling (prop:majority-density-ceiling,
+ex:majority-density-samples). Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer
+agent), one pass; it read the draft, the spec, the dependencies' registered statements, density.py, density.json
+and the script's two commits.
+
+Verdict: pass with corrections. Proposition parts (1)-(4) are correct; the numbers match density.json;
+logcdf(k, n, t, w) is in the right order; first_moment() and the part B acceptance rule do what the entry says.
+
+Required changes:
+- Bearing, "so they are no near-half family whatever their width": contradicts Not covered. A ceiling of exactly
+  n/2 excludes the family only if the definition needs more than n/2. Cite the definition or prove the deficit.
+  Add "unsatisfiable" and w <= n/2.
+- "With four times as many rows it is below a half for a proved reason": the proof needs only m_0 >= n + c,
+  about twice the candidate's rows per label; four times is the computed case.
+- "Two runs were stopped by their time limits ... the second by me": self-contradictory; the commit message
+  repeats it. Say one by its limit, one by hand. The seven seen results were all first-moment ones; the three
+  block-move results were unseen. The change does not weaken the test.
+- Structural reason, "in particular to threshold rows that forbid more": true but unproved here; prove in a line
+  or label a remark.
+- Block moves: trial values were not saved, so the size of each rise is unknown.
+- The docstring still says "nine systems" and "1 - n/1000" (1 - 1/1000 suffices).
+Unused hypotheses: none beyond those listed.
+
+Process audit: Bearing "some" is defensible only as "adding rows up to 2n + 2c cannot strengthen the candidate".
+Owed attempt "made in part" is honest. Entry-meta: "a search by block moves on the candidate" should read
+"single block moves from one point, three systems". Title may claim: a ceiling of n/2 for random majority rows
+from about n rows of one label, with the candidate not reached.
+
+Suggestions (unverified): the expectation is exponentially large at every point: for sigma with at least half
+ones and S half the ones plus half the zeros, the expected count is at least 2^n/poly(n) q_{n/2}^{m_0}
+q_{n/4}^{m_1}; Markov gives q_{n/4} >= (w+2)/(2w+2) > 1/2, so the exponent is positive: the first moment gives
+no ceiling for the candidate anywhere. Deficit: for m_0 >= (1 + eps) n, n H(1/2 - delta) + m_0 log_2
+q_{(1/2 - delta) n} is at most -eps n at delta = 0 and continuous, so a linear deficit exists.
+
+Author's note: all applied; the corrected draft was not read again. The bearing is declared none.
