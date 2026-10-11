@@ -1,0 +1,34 @@
+# command: python3 -c 
+import sys,re,time; sys.path.insert(0,'tools'); import draft_claim_sentences as d
+nb=open('research/branches/near-half-pc-degree/notebook.html').read()
+ids=['entry-2026-10-11-coordinate-rows-relaxation','entry-2026-10-12-majority-point-bound','entry-2026-10-12-root-barrier-drop','entry-2026-10-12-level-symmetric-frame-ceiling','entry-2026-10-12-core-frame-union','entry-2026-10-12-majority-density-ceiling']
+t=time.monotonic(); tot=[0,0,0]
+for i in ids:
+    a=re.search(r'<article id="'+i+r'".*?</article>',nb,re.S).group(0)
+    f,r=d.universals(a); s=sum(1 for w,_ in f if d.SUMMARY.match(w)); tot[0]+=len(f); tot[1]+=r; tot[2]+=s
+    print(i, len(f),'listed of',r,'read;',s,'of them in summing-up paragraphs')
+print('total',tot[0],'of',tot[1],'read;',tot[2],'in summing-up paragraphs; in',round(time.monotonic()-t,2),'s')
+for i,label in (('entry-2026-10-12-root-barrier-drop','Structural reason'),('entry-2026-10-12-core-frame-union','What the union does'),('entry-2026-10-12-majority-density-ceiling','Goal progress'),('entry-2026-10-11-coordinate-rows-relaxation','New mathematics')):
+    a=re.search(r'<article id="'+i+r'".*?</article>',nb,re.S).group(0)
+    rows=[s for w,s in d.universals(a)[0] if w==label]
+    print(i,'['+label+']',len(rows),'listed')
+    for s in rows: print('   ',s[:200])
+# run a7d7116a35, session nhpc-20261012-universal-sentences-build; full output
+entry-2026-10-11-coordinate-rows-relaxation 11 listed of 29 read; 5 of them in summing-up paragraphs
+entry-2026-10-12-majority-point-bound 12 listed of 23 read; 9 of them in summing-up paragraphs
+entry-2026-10-12-root-barrier-drop 17 listed of 32 read; 6 of them in summing-up paragraphs
+entry-2026-10-12-level-symmetric-frame-ceiling 9 listed of 21 read; 5 of them in summing-up paragraphs
+entry-2026-10-12-core-frame-union 13 listed of 26 read; 8 of them in summing-up paragraphs
+entry-2026-10-12-majority-density-ceiling 10 listed of 21 read; 8 of them in summing-up paragraphs
+total 72 of 152 read; 41 in summing-up paragraphs; in 0.02 s
+entry-2026-10-12-root-barrier-drop [Structural reason] 2 listed
+    Structural reason. A function with values in an extension field that is a product of functions of single variables, none vanishing, loses at most one degree for each equation of a row, since each depe
+    So a common root of the profiles cannot give a barrier above twice the least codimension, for any family.
+entry-2026-10-12-core-frame-union [What the union does] 2 listed
+    The shift at which that largest ratio occurs may differ from one \(p\) to another, so no single window of the core is forced, and I did not ask whether the shifts agree; and only frames of groups are 
+    And the size limits the shift when the weights are to be concentrated: \(g\ge2G'(n_0+1)\) gives \(v\ge2G'^2n_0\) variables, and the thin endpoint's condition \(D\ge\sqrt v\), as the last review states
+entry-2026-10-12-majority-density-ceiling [Goal progress] 2 listed
+    Bearing. At the goal's parameters this gives nothing: what is proved in general is a ceiling of exactly \(n/2\) for unsatisfiable random majority systems of width at most \(n/2\) with about \(2n\) row
+    The cycle was spent on it because a point with the bound below a half for the candidate would have removed the one named candidate of the block for a proved reason; what came out is that adding rows t
+entry-2026-10-11-coordinate-rows-relaxation [New mathematics] 1 listed
+    So the ceiling by relaxations made of single rows is, for a basis and a point, one more than the largest set of coordinates containing no support of a row falsified at the point.

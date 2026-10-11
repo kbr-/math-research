@@ -1,0 +1,18 @@
+# command: python3 -c 
+import sys,re,subprocess,time; sys.path.insert(0,'tools'); import draft_claim_sentences as d
+nb=open('research/branches/near-half-pc-degree/notebook.html').read()
+ids=['entry-2026-10-11-coordinate-rows-relaxation','entry-2026-10-12-majority-point-bound','entry-2026-10-12-root-barrier-drop','entry-2026-10-12-level-symmetric-frame-ceiling','entry-2026-10-12-core-frame-union','entry-2026-10-12-majority-density-ceiling']
+t=time.monotonic(); tot=[0,0]
+for i in ids:
+    a=re.search(r'<article id="'+i+r'".*?</article>',nb,re.S).group(0)
+    f,r=d.universals(a); c=len(d.counts(a)); tot[0]+=len(f); tot[1]+=r
+    print(i, len(f),'of',r,'sentences listed;',c,'count sentences')
+print('total',tot[0],'of',tot[1],'in',round(time.monotonic()-t,2),'s')
+# run 1b179a724f, session nhpc-20261012-universal-sentences-build; full output
+entry-2026-10-11-coordinate-rows-relaxation 30 of 87 sentences listed; 21 count sentences
+entry-2026-10-12-majority-point-bound 43 of 78 sentences listed; 22 count sentences
+entry-2026-10-12-root-barrier-drop 41 of 75 sentences listed; 26 count sentences
+entry-2026-10-12-level-symmetric-frame-ceiling 25 of 58 sentences listed; 13 count sentences
+entry-2026-10-12-core-frame-union 29 of 61 sentences listed; 15 count sentences
+entry-2026-10-12-majority-density-ceiling 35 of 76 sentences listed; 21 count sentences
+total 203 of 435 in 0.05 s
