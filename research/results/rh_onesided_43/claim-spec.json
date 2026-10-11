@@ -1,0 +1,84 @@
+{
+  "source": {
+    "record": "[One-sided cluster negativity](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-cluster-negativity)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-cluster-negativity"],
+    "label": "One-sided cluster negativity"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:one-sided-density-decomposition",
+      "summary": "Fejer kernel K_L(w) = 2(1 - cos Lw)/(L w^2), off-line pairs gamma_j -+ i delta with multiplicities m_j, b = delta L: the off-line part of the density sum_z m_z K_L(tau - z) equals -(2 e^b/L) Re G(tau) + E(tau) with G(tau) = sum m_j e^{-iL(tau - gamma_j)}/(tau - gamma_j + i delta)^2, |E| <= 6 Y/L, Y = sum m_j/((tau - gamma_j)^2 + delta^2); G(tau) = -int_0^inf x e^{-delta x} P(x - L) e^{i(x-L) tau} dx with P(y) = sum m_j e^{-iy gamma_j}; and the real points contribute at most (7/3) L N(2 pi/L), N a local count.",
+      "assessment": "Working proof: the complex cosine split into its growing and decaying exponentials, a Laplace transform identity, and a count of real points by distance in units of 2 pi/L.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The exact form in which an off-line pair makes a density that is nonnegative for real points negative; basis of the three propositions of the entry.",
+      "next_action": "None; unequal distances are outside it.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the inequality holds at every grid point in 18 numerical cases.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: an elementary statement in an abstract model. No novelty search beyond the registry.",
+        "relationships": "The one-sided counterpart of the second-moment identity's decomposition; its prime-side reading rests on the prime-side form bound and an unread hypothesis of the density source."
+      }
+    },
+    {
+      "id": "prop:separated-pair-negativity",
+      "summary": "In the setting of the one-sided density decomposition with b >= 2 pi and all gaps between heights at least 8 delta max(1, sqrt(m'/m_j)) (m' the largest other multiplicity): at tau = gamma_j + pi/L, Re G >= 0.42 m_j/delta^2 and the density is at most R(tau) - (m_j/(L delta^2))(0.84 e^b - 6.36); so it is negative once 0.84 e^b > 6.36 + (7/3) b^2 N(2 pi/L)/m_j.",
+      "assessment": "Working proof: the pair's own term evaluated at a shift of pi/L, the others bounded by their distances. With a local count of order log T the threshold is b about log log T, a hypothesis on zeros not read in a source.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "In the model a separated off-line pair forces a negative value of the one-sided density at every length beyond a threshold logarithmic in the local count; the corresponding prime-side premise is unavailable.",
+      "next_action": "None for separated pairs; clusters are the open case.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds at four pairs and three lengths in the control.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Uses the one-sided density decomposition."
+      }
+    },
+    {
+      "id": "prop:cluster-negativity-constant",
+      "summary": "In the setting of the one-sided density decomposition, with H_jl = 2/(2 delta + i(gamma_j - gamma_l))^3, J = int_0^inf x^2 e^{-2 delta x} |P(x - L)|^2 dx >= lambda_min(H) sum m_j^2 > 0, A1 = pi delta^2 J/M, eps = 2 pi L e^{-b} M and W the span of the heights: sup_tau Re G >= (A1/4 - eps/2)/(W + 16 M/A1); the lower bound for J does not depend on L, so no cluster makes the off-line part of the density nonnegative at arbitrarily large lengths.",
+      "assessment": "Working proof: Plancherel for G, nonnegativity of the integral of G^2, the integral of G by inversion, and the decay of G away from the heights. The constant is of order J^2 and far from sharp (ratios 10^2 to 10^10 in the control); no lower bound for lambda_min(H) under a local count is obtained.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Answers the route review's test: a cluster cannot hide in the one-sided form, with a constant independent of the length.",
+      "next_action": "A lower bound for the constant for n pairs in a window of height delta under the local count.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry for finite configurations at one distance; holds in 18 numerical cases, one vacuously.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Uses the one-sided density decomposition; complements the inherited loss."
+      }
+    },
+    {
+      "id": "prop:one-sided-inherited-loss",
+      "summary": "In the setting of the one-sided density decomposition, with theta_j = L(gamma_j - gamma_1), k the number of vanishing moments sum m_j e^{iL gamma_j} theta_j^r and c_k = sum m_j |theta_j|^k: |G(tau)| <= (k+1) c_k/(delta^2 b^k) for all tau, so the negative part of the off-line density is at most (2 e^b/L)(k+1) c_k/(delta^2 b^k) + 6M/(L delta^2).",
+      "assessment": "Working proof: Taylor expansion of the exponential sum at the endpoint, as in the endpoint moment order. The one-sided density loses the power b^(-k) at the lengths where the second moment loses b^(-2k).",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows the one-sided form does not escape the cluster loss of the second moment.",
+      "next_action": "None on the route.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in 18 numerical cases, nearly attained for two pairs.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Same moments as the endpoint moment order."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:one-sided-density-decomposition", "cites", "lem:prime-side-form-bound", "The diagonal entry of that lemma is L times this density at a grid height, for the flat window."],
+    ["lem:one-sided-density-decomposition", "cites", "lem:gram-second-moment-identity", "The second-moment counterpart in the same model."],
+    ["prop:separated-pair-negativity", "depends_on", "lem:one-sided-density-decomposition", "Uses parts (i), (iii) and (iv)."],
+    ["prop:cluster-negativity-constant", "depends_on", "lem:one-sided-density-decomposition", "Uses parts (i), (ii) and (iii)."],
+    ["prop:one-sided-inherited-loss", "depends_on", "lem:one-sided-density-decomposition", "Uses parts (i), (ii) and (iii)."],
+    ["prop:one-sided-inherited-loss", "cites", "prop:endpoint-moment-order", "The same vanishing moments decide the loss, b^(-k) here against b^(-2k) for the second moment."]
+  ]
+}
