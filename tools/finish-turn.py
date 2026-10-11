@@ -14,13 +14,30 @@ import tempfile
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from claim_registry import load as load_claims, read_json, render as render_claims
+from claim_registry import read_json, validate as validate_claims, render as render_claims
 from claim_maintenance import check_revision
 from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
 from lead_queue import LEADS_RE, BRIDGES_RE
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@functools.lru_cache(maxsize=1)
+def _registry_snapshot(path, mtime_ns, size):
+    """Share the current parse; file metadata in the key invalidates a changed snapshot."""
+    return read_json(path)
+
+
+def registry_data(path):
+    path = Path(path).resolve()
+    stat = path.stat()
+    return _registry_snapshot(path, stat.st_mtime_ns, stat.st_size)
+
+
+def load_claims(path):
+    # Status lookup is intentionally cheap; finalization still validates the full schema.
+    return validate_claims(registry_data(path))
 
 
 def session_name(value):
@@ -908,7 +925,7 @@ def registered_status():
     """Claim ID to mathematical status, parsed once per process: nothing here writes the registry,
     and validating it belongs to the claim checks, not to a status lookup."""
     registry = ROOT / 'research/claims/index.json'
-    return {c['id']: c.get('mathematical_status') for c in read_json(registry)['claims']} if registry.exists() else {}
+    return {c['id']: c.get('mathematical_status') for c in registry_data(registry)['claims']} if registry.exists() else {}
 
 
 def cases_only(body, article, status_of=None):

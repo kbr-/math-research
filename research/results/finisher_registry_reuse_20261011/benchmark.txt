@@ -1,0 +1,22 @@
+# command: python3 -c import pathlib, subprocess, time, statistics
+root = pathlib.Path.cwd()
+path = root / "tools/finish-turn.py"
+versions = {"before": subprocess.check_output(["git", "show", "HEAD:tools/finish-turn.py"], text=True), "after": path.read_text()}
+samples = {name: [] for name in versions}
+for attempt in range(3):
+    for name, source in versions.items():
+        ns = {"__file__": str(path), "__name__": "finisher_benchmark"}
+        exec(compile(source, str(path), "exec"), ns)
+        started = time.perf_counter()
+        statuses = ns["registered_status"]()
+        data = ns["load_claims"](root / "research/claims/index.json")
+        assert len(statuses) == len(data["claims"])
+        samples[name].append(time.perf_counter() - started)
+print("registry_bytes", (root / "research/claims/index.json").stat().st_size)
+for name, values in samples.items():
+    print(name, "seconds", [round(value, 4) for value in values], "median", round(statistics.median(values), 4))
+
+# run 3d8c808cc6, session binary_joint_coefficient_test_20261011; full output
+registry_bytes 46200660
+before seconds [3.0166, 3.2071, 3.0033] median 3.0166
+after seconds [2.6426, 2.1853, 2.4253] median 2.4253
