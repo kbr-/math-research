@@ -14,9 +14,10 @@ article, and takes the claims declared by every article that is new or whose tex
 entry's body counts as well as a new entry. It refuses when
   - a review of one of those claims is stale;
   - one of those claims is not in the registry;
-  - such a notebook, or the registry, differs between the index and the working tree: the registry's hashes
-    are of files, and the check reads the working tree, so the two must be the same for the answer to be about
-    the commit.
+  - such a notebook, or the registry, differs between the index and the working tree: the check reads both in
+    the working tree, so index and working tree must agree for the answer to be about the commit. This also
+    refuses a partial commit of a notebook that has other unstaged work in it;
+  - the opening tag of a new or changed article cannot be read for its id or its data-claims.
 Its work grows with the size of the staged notebooks (two readings of each) and the registry's load; it prints
 the number of changed articles and claims and the time taken.
 """
@@ -49,16 +50,22 @@ def articles(text):
 
 
 def changed_labels(old, new):
-    """(number of new or changed articles, the claims they declare)."""
-    before, labels, count = articles(old), set(), 0
-    for ident, text in articles(new).items():
-        if before.get(ident) == text:
+    """(number of new or changed articles, the claims they declare, articles whose tag could not be read)."""
+    before, labels, count, unread = articles(old), set(), 0, []
+    known = set(before.values())
+    for match in ARTICLE.finditer(new):
+        text = match.group(0)
+        if text in known:
             continue
         count += 1
-        declared = CLAIMS.match(text)
-        if declared:
+        ident, declared = IDENT.match(text), CLAIMS.match(text)
+        tag = text[:text.index('>') + 1]
+        # A '>' inside an attribute value cuts the tag short: the cut leaves an odd number of quotes.
+        if not ident or tag.count('"') % 2 or ('data-claims' in tag and not declared):
+            unread.append(tag[:120])
+        elif declared:
             labels.update(label for label in declared.group(1).split() if label != 'none')
-    return count, sorted(labels)
+    return count, sorted(labels), unread
 
 
 def stale(labels, root=ROOT):
@@ -78,17 +85,22 @@ def check(root=ROOT, base='HEAD', until=None):
     revision is examined in place of the staged one, against the working tree's registry: an audit of a commit
     already made."""
     started = time.monotonic()
-    span = ['--cached'] if until is None else [base, until]
+    span = ['--cached', base] if until is None else [base, until]      # the index against the base, amend included
     notebooks = git(root, 'diff', *span, '--name-only', '--diff-filter=AM', '--', '*.html').stdout.split()
-    count, labels, touched = 0, set(), []
+    count, labels, touched, unread = 0, set(), [], []
     for path in notebooks:
         old = git(root, 'show', f'{base}:{path}', check=False).stdout
         new = git(root, 'show', f'{until or ""}:{path}').stdout
-        number, found = changed_labels(old, new)
+        number, found, bad = changed_labels(old, new)
         count += number
+        unread += [f'{path}: {tag}' for tag in bad]
         if found:
             labels.update(found)
             touched.append(path)
+    if unread:
+        return ['  ' + line for line in unread] + [
+            'Commit refused: the opening tag of a new or changed article could not be read for its id or its '
+            'data-claims (above), so its claims cannot be checked. Repair the tag and commit again.']
     if not labels:
         return []
     unstaged = [] if until else git(root, 'diff', '--name-only', '--', *touched, REGISTRY).stdout.split()

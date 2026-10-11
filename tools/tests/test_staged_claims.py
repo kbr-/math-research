@@ -19,7 +19,41 @@ class ChangedLabelsTest(unittest.TestCase):
         old = entry('a', 'lem:one') + entry('b', 'lem:two') + entry('c', 'none')
         new = entry('a', 'lem:one') + entry('b', 'lem:two', 'edited') + entry('c', 'none', 'edited') \
             + entry('d', 'prop:three ex:four')
-        self.assertEqual(staged_claims.changed_labels(old, new), (3, ['ex:four', 'lem:two', 'prop:three']))
+        self.assertEqual(staged_claims.changed_labels(old, new), (3, ['ex:four', 'lem:two', 'prop:three'], []))
+
+    def test_an_article_whose_tag_cannot_be_read_is_reported(self):
+        bad = '<article data-note="a > b" id="x" data-claims="lem:one"><p>t</p></article>\n'
+        count, labels, unread = staged_claims.changed_labels('', bad)
+        self.assertEqual((count, labels), (1, []))
+        self.assertEqual(len(unread), 1)
+
+
+class RegistryAnswerTest(unittest.TestCase):
+    """The registry's own answer, on a small registry: a stale review after its source changes, and a declared
+    claim the registry does not hold."""
+
+    def test_stale_and_missing_claims_are_told_apart(self):
+        import json
+        import claim_registry as cr
+        import test_claim_registry as fixture
+        from claim_reviews import Evidence, make_review
+        data = cr.upgrade(cr.import_markdown(fixture.source()))
+        claim = data['claims'][0]
+        claim['mathematical_status'] = 'working_proof'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'research' / 'claims').mkdir(parents=True)
+            page = root / 'notebook.html'
+            page.write_text('<section><h4 id="proof">A</h4><p>Exact statement.</p></section>')
+            claim['reviews']['mathematical_status'] = make_review(
+                data, claim, 'mathematical_status', ['https://kbr.is-a.dev/math-research/#proof'],
+                revision='a' * 40, date='2026-09-19', reviewer='Test', note='Read', evidence=Evidence(root))
+            (root / staged_claims.REGISTRY).write_text(json.dumps(cr.validate(data)))
+            self.assertEqual(staged_claims.stale([claim['id'], 'lem:absent'], root), ([], ['lem:absent']))
+            page.write_text('<section><h4 id="proof">A</h4><p>Changed statement.</p></section>')
+            rows, missing = staged_claims.stale([claim['id'], 'lem:absent'], root)
+            self.assertEqual([(row[0], row[1]) for row in rows], [(claim['id'], 'mathematical_status')])
+            self.assertEqual(missing, ['lem:absent'])
 
 
 class StagedClaimsTest(unittest.TestCase):
@@ -97,6 +131,20 @@ class StagedClaimsTest(unittest.TestCase):
         self.nb.write_text(entry('a', 'lem:one') + entry('b', 'lem:two', 'edited after staging'))
         messages, stale = self.run_check()
         self.assertIn('notebook.html', messages[0])
+        stale.assert_not_called()
+
+    def test_an_amend_that_stages_nothing_new_still_checks_the_amended_commit(self):
+        self.nb.write_text(entry('a', 'lem:one') + entry('b', 'lem:two'))
+        self.git('add', 'notebook.html')
+        self.git('commit', '-qm', 'entry')
+        _, stale = self.run_check(base='HEAD^')                         # nothing staged beyond HEAD
+        self.assertEqual(stale.call_args[0][0], ['lem:two'])
+
+    def test_an_unreadable_tag_is_refused(self):
+        self.nb.write_text(entry('a', 'lem:one') + '<article data-x="a > b" id="z" data-claims="lem:q"></article>\n')
+        self.git('add', 'notebook.html')
+        messages, stale = self.run_check()
+        self.assertIn('could not be read', messages[-1])
         stale.assert_not_called()
 
     def test_a_commit_already_made_can_be_audited(self):
