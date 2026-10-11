@@ -1,0 +1,46 @@
+Review record, 11 October 2026: entry-2026-10-11-group-relaxation-counts. Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), by hand, two passes; nothing was run.
+
+FIRST PASS. Verdict: pass with corrections; bearing should be "none".
+Required changes:
+- Group lemma, "if 1 not in C_D(Gamma) then N >= D - 1": false as stated; Gamma = {x1 x2}, D = 5 is a
+  counterexample. Add "Gamma unsatisfiable, axioms of degree <= D" to the lemma and the General statement.
+- "groups of four leave room only for ... three at the first size, which D >= v^(1/2) does not allow": wrong
+  reason, and wrong at K = 4000: N <= 4028 allows ceil(v^(1/3)) <= 29, while v = 4N gives 26. g = 4 fits.
+- "For g = 1 ... D exceeds half the number of variables": false. At K = 1000, N = X = 2080, D about 1013 < N/2.
+- Bearing, "0.77 N + N^(2/3)": the terms are -O(N/Delta) + (2N)^(1/3).
+- "in place of half the variables": the pair ceiling is N + 1 = v/2 + 1, so the target is 77% of the ceiling
+  against the cube's 50%. Say so; "the cube is the worst frame" is unsupported.
+- "disjoint simplices gain nothing": the lemma covers only copies of one Psi; "about half" should be "at
+  least half" (D - 1 <= Y < X).
+- Nonvacuity (groups): no instance has both the count and 1 not in C_D at the window; state it.
+- Script, numbers, alpha_g, 0.39 v, 0.31 v, dual-rail (i)-(iii) and the glued lemma check out. No unused
+  hypotheses.
+Suggestions (unverified at this pass):
+- deg(F^pm) <= max{deg F, w + 1}: for a negative literal of C, a_i P_C = a_i R + (a_i b_i) R, so a_i R is in
+  C_{w+1}. Iterating gives the clause polynomial Q_C(a); then replay F's refutation in the a-variables.
+- With (ii), deg(F^pm) = deg(F) once deg F >= w + 1. The target is then deg(F) >= 0.77 N on N variables,
+  stricter than the goal's N/2 - s. The dual-rail class is dead; only non-dual-rail pair systems remain.
+Process audit:
+- Follow-up and Sub-idea name a question the above answers; rewrite both.
+- "no recorded method reaches a quarter...": unsourced.
+- Bearing rests on transfer hypotheses "which I did not check"; a declared bearing needs them checked.
+- Specification decision: envelope not run; reason should be the collapse.
+- Flow-systems proof deferred again.
+- Prevention: acceptable. Entry-meta: accurate. Title may claim only: pair and triple groups make the thin
+  count automatic at about 0.77 N and 0.93 N; the dual-rail class adds nothing over the formula.
+
+SECOND PASS, on the rewrite. Verdict: pass with two wording corrections.
+- Part (iii): correct as written, including tautological clauses and the closure degree max{deg F, w + 1}.
+  "deg(F^pm) = deg(F) as soon as deg F >= w + 1" follows. The Nonvacuity instance is right.
+- Group lemma: correct with the added hypotheses. Slack 2 and 28, ceil(v^(1/3)) = 16 and 26, the g = 1
+  figures and the three-unit figures (0.49, 0.46) are right.
+- Change "So groups of four fit at large sizes": only K = 4000 is computed, and full groups are assumed.
+- Title: write "automatic for D above about 0.77 N and 0.93 N".
+- Bearing "none": the reason is of the required kind. Structural reason is no wider than (iii).
+- Remaining case: sensible; no universal collapse seen. Unverified lead: mod-3 counting or Tseitin in the
+  pair encoding over F_2, where linear degree bounds exist in the literature (unread; encoding and constants
+  unchecked).
+- Process audit: no further findings.
+
+Author's note: all applied.
