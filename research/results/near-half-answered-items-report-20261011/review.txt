@@ -1,0 +1,31 @@
+Review record, 11 October 2026: entry-2026-10-11-answered-items-report and the framework change it describes
+(tools/lead_queue.py, tools/turn_guidance.py, tools/tests/test_lead_queue.py). Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), two passes.
+
+First pass. Verdict: pass with corrections. The code runs (93 tests in 0.5 s; the status prints six lines for one
+product-tree item), but the closure and three sentences do not stand as written.
+- Bug: items added by the tool carry data-after, which was ignored, so every entry counted as later; the saved
+  output shows it (a claim of 8 October listed for an item queued on 11 October). Use data-after; add a test.
+- importlib.util used with only `import importlib`.
+- An item whose text is empty or all formulas: the search returns every later claim at score 0 and six arbitrary
+  claims print; return nothing.
+- Test: the three exclusions are tested; order and limit are not.
+- Entry: "on the known cases contains the answering one" and "measured on four known cases": the built weighting
+  was measured on two; the limit of six was fitted to the cases it is judged on.
+- Closure: "the start of a cycle not knowing which item" is contradicted by the framework; build it, give a
+  measured reason, or make the item Continuing.
+- Is it noise? Largely: all 30 items get six claims, framework items included; no score or floor; "none" never
+  appears. Print scores, apply a floor or skip builds, rename the command.
+Process audit: "three of four research cycles" has no source; rejected-signal figures unverifiable but disclosed;
+the best outcome is not shown. Suggestion: re-measure the other two cases on the notebook at the commits before
+their first entries.
+
+Second pass, on the corrections (diff, entry, nearby.txt, earlier-cases.txt read; suite and timings not rerun).
+Verdict: pass with three small text corrections; the item may be removed as Developed. The code corrections each
+do what is described and the test covers order, limit, empty item, tool-added item and the start-of-cycle line.
+nearby.txt supports "second and third" (the first a tie); earlier-cases.txt supports "second" and "not among the
+six". Required: reconcile "three of the four" in the Bearing with the review's count; name the item and command
+in earlier-cases.txt; "nothing is left out" overstates, the start-of-cycle print covering only an item the next
+step names. Minor: the first named item is taken in queue order; "committed output" was untracked then.
+
+Author's note: all applied; the last three after the second pass. No score floor is applied.
