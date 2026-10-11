@@ -1,0 +1,219 @@
+// Complete complementary-block substitution over F2, with actual-degree checks.
+// Native Singular arithmetic. The polynomial identities cover every assignment
+// of all old/source/target variables for each stated fixture.
+ring ckR=2,(x(1..4),a(1..16),b(1..16),u(1..12)),dp;
+ideal ckBool=x(1)^2+x(1),x(2)^2+x(2),x(3)^2+x(3),x(4)^2+x(4);
+ideal ckT,ckImages,ckBadFirst,ckBadShared;
+matrix ckLift[4][1];
+poly ckH,ckHH,ckPA,ckPB,ckPT,ckFA,ckFB,ckFT,ckMA,ckMB;
+poly ckTerm,ckCert,ckSum,ckField,ckExtra,ckReader,ckWant,ckSource;
+int ckK,ckPattern,ckPatterns,ckHCase,ckAcc,ckRow,ckCol,ckI,ckJ;
+int ckActive,ckIndex,ckAIndex,ckBIndex,ckCost,ckFound,ckAlpha,ckBeta;
+int ckCases=0;
+int ckChecks=0;
+int ckFields=0;
+int ckCompanions=0;
+int ckNegatives=0;
+int ckFailures=0;
+proc ckAssert(int ckCondition,string ckMessage)
+{
+  ckChecks++;
+  if (!ckCondition)
+  {
+    ckFailures++;
+    print("FAIL "+ckMessage+" h="+string(ckAcc)+" k="+string(ckK)
+          +" H="+string(ckHCase)+" pattern="+string(ckPattern));
+  }
+}
+print("Plan: 320 symbolic fixtures; products <=2401 uncollected terms, companions <=7203.");
+print("Stages: expanded source map, complete companion/field certificates, actual degrees, readers, mutants.");
+for (ckK=0;ckK<=3;ckK++)
+{
+  ckPatterns=5;
+  if (ckK==0) { ckPatterns=1; }
+  for (ckPattern=0;ckPattern<ckPatterns;ckPattern++)
+  {
+    ckT=0;
+    ckActive=0;
+    for (ckI=1;ckI<=ckK;ckI++)
+    {
+      if (ckPattern==0) { ckT[ckI]=x(ckI+1); }
+      if (ckPattern==1) { ckT[ckI]=x(1)*x(ckI+1); }
+      if (ckPattern==2)
+      {
+        ckT[ckI]=0;
+        if (ckI==1) { ckT[ckI]=1; }
+        if (ckI==3) { ckT[ckI]=x(2); }
+      }
+      if (ckPattern==3) { ckT[ckI]=x(2); }
+      if (ckPattern==4) { ckT[ckI]=0; }
+      if (ckT[ckI]!=0) { ckActive=1; }
+    }
+    ckImages=0;
+    for (ckI=1;ckI<=nvars(ckR);ckI++) { ckImages[ckI]=var(ckI); }
+    for (ckRow=1;ckRow<=4;ckRow++)
+    {
+      for (ckCol=0;ckCol<=3;ckCol++)
+      {
+        ckAIndex=4+(ckRow-1)*4+ckCol+1;
+        ckBIndex=20+(ckRow-1)*4+ckCol+1;
+        ckImages[ckAIndex]=0;
+        ckImages[ckBIndex]=0;
+        if ((ckRow==1)&&(ckCol==0))
+        {
+          ckImages[ckAIndex]=1;
+          ckImages[ckBIndex]=1;
+        }
+        if ((ckRow>1)&&(ckCol>0)&&(ckCol<=ckK)&&(ckActive==1))
+        {
+          ckIndex=(ckRow-2)*ckK+ckCol;
+          ckImages[ckAIndex]=u(ckIndex);
+          ckImages[ckBIndex]=u(ckIndex);
+        }
+      }
+    }
+    ckBadFirst=ckImages;
+    ckBadFirst[21]=0;
+    ckBadShared=ckImages;
+    ckBadShared[26]=0;
+    map ckPhi=ckR,ckImages;
+    map ckPhiFirst=ckR,ckBadFirst;
+    map ckPhiShared=ckR,ckBadShared;
+    for (ckHCase=0;ckHCase<=4;ckHCase++)
+    {
+      if (ckHCase==0) { ckH=0; }
+      if (ckHCase==1) { ckH=1; }
+      if (ckHCase==2) { ckH=x(1); }
+      if (ckHCase==3) { ckH=x(1)*x(2); }
+      if (ckHCase==4) { ckH=x(1)+x(2)+x(1)*x(2); }
+      ckHH=ckH^2+ckH;
+      for (ckJ=1;ckJ<=4;ckJ++) { ckLift[ckJ,1]=0; }
+      if (ckHH!=0) { ckLift=lift(ckBool,ideal(ckHH)); }
+      ckSum=0;
+      for (ckJ=1;ckJ<=4;ckJ++) { ckSum=ckSum+ckLift[ckJ,1]*ckBool[ckJ]; }
+      ckAssert(ckSum==ckHH,"Boolean lift");
+      ckPA=1;
+      ckPB=1;
+      ckPT=1;
+      for (ckAcc=1;ckAcc<=4;ckAcc++)
+      {
+        ckFA=1+a((ckAcc-1)*4+1)*ckH;
+        ckFB=1+b((ckAcc-1)*4+1)*(1+ckH);
+        for (ckI=1;ckI<=ckK;ckI++)
+        {
+          ckFA=ckFA+a((ckAcc-1)*4+ckI+1)*ckT[ckI];
+          ckFB=ckFB+b((ckAcc-1)*4+ckI+1)*ckT[ckI];
+        }
+        ckPA=ckPA*ckFA;
+        ckPB=ckPB*ckFB;
+        ckMA=ckPhi(ckPA);
+        ckMB=ckPhi(ckPB);
+        ckAssert(ckMA==(1+ckH)*ckPT,"first product");
+        ckAssert(ckMB==ckH*ckPT,"second product");
+        ckAssert(ckMA+ckMB==ckPT,"balanced sum");
+        ckCert=0;
+        ckCost=-1;
+        for (ckJ=1;ckJ<=4;ckJ++)
+        {
+          ckTerm=ckLift[ckJ,1]*ckBool[ckJ]*ckPT;
+          ckCert=ckCert+ckTerm;
+          if (deg(ckTerm)>ckCost) { ckCost=deg(ckTerm); }
+        }
+        // Singular maps consume named ring objects, not inline expressions.
+        ckSource=ckH*ckPA;
+        ckAssert(ckPhi(ckSource)==ckCert,"first distinguished companion");
+        ckAssert(ckCost<=deg(ckSource),"first original distinguished degree");
+        ckSource=(1+ckH)*ckPB;
+        ckAssert(ckPhi(ckSource)==ckCert,"second distinguished companion");
+        ckAssert(ckCost<=deg(ckSource),"second original distinguished degree");
+        ckCompanions=ckCompanions+2;
+        for (ckI=1;ckI<=ckK;ckI++)
+        {
+          ckTerm=(1+ckH)*ckT[ckI]*ckPT;
+          ckSource=ckT[ckI]*ckPA;
+          ckAssert(ckPhi(ckSource)==ckTerm,"first residual companion");
+          ckAssert(deg(ckTerm)<=deg(ckSource),"first original residual degree");
+          ckTerm=ckH*ckT[ckI]*ckPT;
+          ckSource=ckT[ckI]*ckPB;
+          ckAssert(ckPhi(ckSource)==ckTerm,"second residual companion");
+          ckAssert(deg(ckTerm)<=deg(ckSource),"second original residual degree");
+          ckCompanions=ckCompanions+2;
+        }
+        for (ckRow=1;ckRow<=ckAcc;ckRow++)
+        {
+          for (ckCol=0;ckCol<=ckK;ckCol++)
+          {
+            for (ckJ=0;ckJ<=1;ckJ++)
+            {
+              ckIndex=4+16*ckJ+(ckRow-1)*4+ckCol+1;
+              ckSource=var(ckIndex)^2+var(ckIndex);
+              ckField=ckPhi(ckSource);
+              ckFound=(ckField==0);
+              if (ckActive==1)
+              {
+                for (ckI=1;ckI<=(ckAcc-1)*ckK;ckI++)
+                {
+                  if (ckField==u(ckI)^2+u(ckI)) { ckFound=1; }
+                }
+              }
+              ckAssert(ckFound,"complete coefficient field");
+              ckAssert(deg(ckField)<=2,"original field degree");
+              ckFields++;
+            }
+          }
+        }
+        for (ckAlpha=0;ckAlpha<=1;ckAlpha++)
+        {
+          for (ckBeta=0;ckBeta<=1;ckBeta++)
+          {
+            ckSource=x(4)+ckAlpha*ckPA+ckBeta*ckPB;
+            ckReader=ckPhi(ckSource);
+            ckWant=x(4)+(ckAlpha+(ckAlpha+ckBeta)*ckH)*ckPT;
+            ckAssert(ckReader==ckWant,"reader image");
+            if (ckAlpha==ckBeta)
+            {
+              ckAssert(ckReader==x(4)+ckAlpha*ckPT,"balanced reader");
+            }
+          }
+        }
+        if (ckH!=1)
+        {
+          ckAssert(ckPhiFirst(ckPB)!=ckH*ckPT,"negative missing first-row coefficient");
+          ckNegatives++;
+        }
+        if ((ckAcc>=2)&&(ckK>=1)&&(ckT[1]!=0)&&(ckH!=0))
+        {
+          ckAssert(ckPhiShared(ckPB)!=ckH*ckPT,"negative unshared residual row");
+          ckNegatives++;
+        }
+        ckFT=1;
+        for (ckI=1;ckI<=ckK;ckI++)
+        {
+          ckFT=ckFT+u((ckAcc-1)*ckK+ckI)*ckT[ckI];
+        }
+        if (ckActive==1)
+        {
+          ckExtra=ckPT*ckFT;
+          ckAssert(ckMA+ckMB!=ckExtra,"negative undecremented accuracy");
+          ckNegatives++;
+        }
+        ckCases++;
+        print("case="+string(ckCases)+" h="+string(ckAcc)+" k="+string(ckK)
+              +" H="+string(ckHCase)+" pattern="+string(ckPattern)
+              +" target_product_degree="+string(deg(ckPT))
+              +" Boolean_companion_cost="+string(ckCost));
+        if (ckAcc<4) { ckPT=ckPT*ckFT; }
+      }
+    }
+    kill ckPhi,ckPhiFirst,ckPhiShared;
+  }
+}
+ckAssert(ckCases==320,"complete fixture count");
+ckAssert(ckCompanions==1840,"complete companion count");
+ckAssert(ckFields==4600,"complete field count");
+print("SUMMARY fixtures="+string(ckCases)+" companions="+string(ckCompanions)
+      +" fields="+string(ckFields)+" checks="+string(ckChecks)
+      +" negatives="+string(ckNegatives)+" failures="+string(ckFailures));
+if (ckFailures==0) { print("FINAL PASS"); }
+else { print("FINAL FAIL"); }
+quit;
