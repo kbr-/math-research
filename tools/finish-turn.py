@@ -769,7 +769,10 @@ def validate_process_audit(text):
 DERIVES =re.compile(r'\bextrapolat|\bwhat-if\b|\bderived relation', re.I)
 
 
-def validate_unreviewed_derivations(text):
+QUOTED_ONLY = re.compile(r'\bevery displayed (?:relation|formula) is quoted\b', re.I)
+
+
+def validate_unreviewed_derivations(text, claims=None):
     """A research entry that derives relations of its own goes to the cycle's reviewer.
 
     Three reading entries of 11 October 2026 registered no claim, so their gates said no reviewer was used,
@@ -781,6 +784,14 @@ def validate_unreviewed_derivations(text):
         return
     body = html.unescape(re.sub(r'<[^>]*>', ' ', text.replace(report_paragraph(text, 'Verification gate'), '')))
     found = DERIVES.search(body)
+    if not found and claims is not None and not claims and '\\[' in text and not QUOTED_ONLY.search(gate):
+        # Measured on 11 October 2026 on every notebook: of 142 research entries whose gate says no reviewer,
+        # six register no claim and display a formula; three are the readings this check was written for, two
+        # of which the words above miss, and the other three are readings and attempts of the same kind.
+        raise ValueError('This entry registers no claim, its Verification gate says no reviewer was used, and it '
+                         'displays formulas: give them to the cycle\'s reviewer and report the verdict in the '
+                         'gate, or say in the gate that every displayed relation is quoted from a source, naming '
+                         'it (AGENTS.md, one focused correctness review)')
     if found:
         raise ValueError(f'This entry\'s Verification gate says no reviewer was used, and its text derives beyond '
                          f'its sources ("{found.group(0)}"): give the derived relations, with the definition of '
@@ -985,7 +996,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
-        validate_unreviewed_derivations(text)
+        validate_unreviewed_derivations(text, entry_claims(body, article))
         validate_closures(text)
         validate_developed_removals(text)
         validate_developed_readings(text)

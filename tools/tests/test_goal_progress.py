@@ -375,6 +375,21 @@ class UnreviewedDerivationsTest(unittest.TestCase):
         FT.validate_unreviewed_derivations('<p>Quoted only.</p><p><strong>Verification gate.</strong> No reviewer '
                                            'was used; nothing here is an extrapolation.</p>')
 
+    def test_an_entry_without_claim_or_reviewer_may_not_display_formulas_of_its_own(self):
+        shown = '<p>So the boundary is \\[\\beta=\\tfrac{11}{12}-\\tfrac{\\ell}4.\\]</p>'
+        with self.assertRaisesRegex(ValueError, 'displays formulas'):
+            FT.validate_unreviewed_derivations(shown + self.NONE, [])
+        # A registered claim has its own review duty; an unknown claim list and an inline formula are left alone.
+        FT.validate_unreviewed_derivations(shown + self.NONE, ['lem:boundary'])
+        FT.validate_unreviewed_derivations(shown + self.NONE)
+        FT.validate_unreviewed_derivations('<p>Inline \\(x\\) only.</p>' + self.NONE, [])
+        # With a reviewer, or with the gate saying the formulas are the source's, it passes.
+        FT.validate_unreviewed_derivations(shown + '<p><strong>Verification gate.</strong> One medium reviewer '
+                                                   'checked the relation.</p>', [])
+        FT.validate_unreviewed_derivations(shown + '<p><strong>Verification gate.</strong> No reviewer was used: '
+                                                   'every displayed relation is quoted from the source, its '
+                                                   'equation (3.2).</p>', [])
+
 
 class ProcessAuditTest(unittest.TestCase):
     GATE = '<p><strong>Verification gate.</strong> One reviewer. Record: <a href="r/review.txt">review.txt</a>.%s</p>'
