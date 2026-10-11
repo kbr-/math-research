@@ -154,8 +154,9 @@ growing checklists or one-off setup narratives.
   `./tools/check_records.py --diff`, which flags commit hashes, environment literals, backticks in
   the notebook's HTML and long status lines in the lines being committed. Then run a sequential
   checkpoint batch: preparation marker, checks, provenance, timing export/archive, staging, commit,
-  and any authorized push. Stop on failure; finish the local checkpoint before developing the next
-  result.
+  and any authorized push. Stop on failure. For asynchronous checkpoint commands, observe terminal
+  success of the commit and required base synchronization before planning the next result; until
+  then, do only checkpoint preparation. A launched command is not a completed local checkpoint.
 - Measure every research turn from as early as practical, including reading, failed attempts and
   retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
   supply a guessed or placeholder label. For other agents or unavailable metadata, follow the
