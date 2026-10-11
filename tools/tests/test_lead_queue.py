@@ -1481,9 +1481,20 @@ class LinkEarlierWorkTest(unittest.TestCase):
         self.assertIsNone(run(review('x:s2'), late()))                    # the review left another item
         self.assertIsNone(run(late()))                                     # no review before the entry
         self.assertIsNone(run(review('e:s1'), review(''), late()))         # only the last review counts
+        elsewhere = review('e:s1').replace('data-route="step"', 'data-route="other"')
+        self.assertIsNone(run(elsewhere, late()))                          # a review of another route
+        head = notebook([review('e:s1')], [item, other])
         with self.assertRaisesRegex(ValueError, 'data-left-items'):
-            body = notebook([review('e:s1'), late()], [item, other])
-            lq.check(notebook([review('e:s1')], [item, other]), body)
+            lq.check(head, notebook([review('e:s1'), late()], [item, other]))
+        lq.check(head, notebook([review('e:s1'), late(said)], [item, other]))      # the exemption, through check
+        parent, child = ('lead', 'r:1'), ('check', 'e:s1')                 # a sub-idea of a left item
+        nested = [(parent, [child]), other]
+        on_child = lambda body='': self.entry('entry-2026-10-11-b', child, body)
+        tree = notebook([review('r:1'), on_child()], nested)
+        self.assertEqual(lq.left_by_last_review(tree, lq.parse_tree(tree)[1], lq.record_articles(tree), child),
+                         'entry-2026-10-11-r')
+        with self.assertRaisesRegex(ValueError, 'not queued: r:9'):        # a mistyped identifier leaves nothing
+            lq.check(None, notebook([review('e:s1 r:9')], [item, other]))
 
     def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
         parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')

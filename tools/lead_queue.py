@@ -679,10 +679,11 @@ def left_by_last_review(body, nodes, articles, item):
     not the subject: the same question developed under another item is the reviewer's to catch."""
     tag, text = articles[-1]
     last = len(articles) - 1
+    route = re.findall(r'\bdata-route="([^"]*)"', tag)
     for position in range(last - 1, -1, -1):
         old_tag = articles[position][0]
-        if 'data-kind="review"' not in old_tag:
-            continue
+        if 'data-kind="review"' not in old_tag or re.findall(r'\bdata-route="([^"]*)"', old_tag) != route:
+            continue                                  # a review of another route decides nothing for this one
         left = LEFT_ITEMS_RE.search(old_tag)
         names = set(left.group(1).split()) if left else set()
         if not names & {item[1], group_of(body, nodes, item, last)[1]}:
@@ -692,6 +693,13 @@ def left_by_last_review(body, nodes, articles, item):
         anchor = re.search(r'\bid="([^"]+)"', old_tag)
         return anchor.group(1) if len(plain) < 40 and anchor else None
     return None
+
+
+def unknown_left_items(tag, nodes):
+    """The identifiers a review's data-left-items names that are not queued: a mistyped one would leave nothing."""
+    left = LEFT_ITEMS_RE.search(tag) if 'data-kind="review"' in tag else None
+    queued = {item[1] for item in every_item(nodes)}
+    return [name for name in left.group(1).split() if name not in queued] if left else []
 
 
 QUEUE_ITEMS_RE = re.compile(r'\bdata-queue-items="(\d+)"')
@@ -1441,6 +1449,10 @@ def check(head_body, body, path=None, root=None):
     if count is not None:
         raise ValueError(f'A review of a draining queue declares data-queue-items="{count}", the number of top-level '
                          'items now queued, so that the next cycles see whether the queue shrinks (AGENTS.md)')
+    unknown = unknown_left_items(tag, nodes)
+    if unknown:
+        raise ValueError('The review\'s data-left-items names items that are not queued: ' + ', '.join(unknown)
+                         + ': give the queue\'s own identifiers, since a mistyped one leaves nothing')
     if work:
         earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
         if earlier:
