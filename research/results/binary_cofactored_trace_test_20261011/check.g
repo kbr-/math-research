@@ -69,7 +69,7 @@ for ctA0 in ctStates do
 od;
 if ctNonbinary=0 then Print("FAIL nonvacuity\n"); QUIT_GAP(1); fi;
 ctNegative := 0;;
-ctGood := [ctO,ctW,ctO,ctW];;
+ctGood := [ctO,ctZ,ctO,ctZ];;
 ctCheck(ctAt(ctGood,ctO){[3,4]},[ctZ,ctZ]);
 if ctAt(List(ctGood,z->ctPi(z,ctO)),ctO)[3]=ctZ then
   Print("FAIL nonunital control\n"); QUIT_GAP(1);
