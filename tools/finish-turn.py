@@ -538,9 +538,16 @@ def validate_process_audit(text):
         raise ValueError('This entry links a reviewer record: report in its Verification gate, after '
                          '<strong>Process audit.</strong>, what the reviewer found about how the work was done '
                          'and what was changed, or that it found nothing (AGENTS.md, framework maintenance)')
+    # Titles and status lines wider than their bodies were corrected in five of six entries of one block (review
+    # of 11 October 2026), each prevention saying the reviewer had caught it.  The audit now says what the
+    # reviewer found of the title, so the comparison is asked for and reported in every reviewed entry.
+    if not re.search(r'\btitle', plain, re.I):
+        raise ValueError('The Process audit does not speak of the title: say what the reviewer found of the '
+                         "title and status line against the body, or that they claim no more than it, and "
+                         'write both after the review (AGENTS.md, framework maintenance)')
 
 
-DERIVES = re.compile(r'\bextrapolat|\bwhat-if\b|\bderived relation', re.I)
+DERIVES =re.compile(r'\bextrapolat|\bwhat-if\b|\bderived relation', re.I)
 
 
 def validate_unreviewed_derivations(text):

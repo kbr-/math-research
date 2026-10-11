@@ -521,18 +521,20 @@ assessments.
   check on conduct, every reviewer also audits how the work was done (overstated titles, unasked
   questions, unsupported decisions; see the `medium-reviewer` definition, and ask for it in every
   brief), and each reviewed entry reports the findings after `<strong>Process audit.</strong>` in
-  its Verification gate (the finisher checks; user, 10 October 2026). A second reviewer reads what
-  the subagent never sees, what the agent wrote while working: at the end of the finisher, and at
-  most once in 40 minutes, `tools/stand_in_review.py` gives a reviewer with no memory of the session
-  this file and the agent's text since its last run, and prints up to five things the user would
-  object to, each with a quote (user, 11 October 2026: "Offer him the job"). Check each against the
-  record before acting on it, since about one in ten misreads the text, and say in the next entry,
-  after `<strong>Review.</strong>`, what became of each: fixed, queued, or wrong and why (the
-  finisher checks). An entry's **Process assessment.** paragraph ends with
-  `<strong>Prevention.</strong>`: the committed check or rule for each mistake it reports, or why
-  none applies (the finisher checks). Repeated question marks signal increasing frustration with the
-  process: implement and commit a real fix, preferably a mechanical check, rather than only
-  apologizing.
+  its Verification gate (the finisher checks; user, 10 October 2026). An entry's title and status
+  line are written, or rewritten, after its review, from the reviewed body, and the audit says what
+  the reviewer found of the title against the body (the finisher refuses an audit that does not
+  speak of the title). A second reviewer reads what the subagent never sees, what the agent wrote
+  while working: at the end of the finisher, and at most once in 40 minutes,
+  `tools/stand_in_review.py` gives a reviewer with no memory of the session this file and the
+  agent's text since its last run, and prints up to five things the user would object to, each with
+  a quote (user, 11 October 2026: "Offer him the job"). Check each against the record before acting
+  on it, since about one in ten misreads the text, and say in the next entry, after
+  `<strong>Review.</strong>`, what became of each: fixed, queued, or wrong and why (the finisher
+  checks). An entry's **Process assessment.** paragraph ends with `<strong>Prevention.</strong>`:
+  the committed check or rule for each mistake it reports, or why none applies (the finisher
+  checks). Repeated question marks signal increasing frustration with the process: implement and
+  commit a real fix, preferably a mechanical check, rather than only apologizing.
 - A fix of the agent's own mistake is reported with its prevention, unasked, in the same reply, in a
   paragraph that starts "Prevention": the class of the mistake in general terms, why the existing
   rules and checks let it through, and the framework change made in that turn that stops the class

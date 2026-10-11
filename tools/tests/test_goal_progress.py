@@ -296,6 +296,9 @@ class ProcessAuditTest(unittest.TestCase):
             FT.validate_process_audit(self.GATE % '')
         FT.validate_process_audit(self.GATE % ' <strong>Process audit.</strong> The title claimed more than '
                                   'the data showed and was narrowed.')
+        with self.assertRaisesRegex(ValueError, 'title'):                 # the audit compares title and body
+            FT.validate_process_audit(self.GATE % ' <strong>Process audit.</strong> The reviewer found a '
+                                      'search made after the draft and nothing else.')
 
 
 class BearingTest(unittest.TestCase):
