@@ -1,0 +1,36 @@
+Reviewer's record, entry judge-timing-test-margin (riemann notebook, 11 October 2026). One fresh-context
+medium reviewer, read-only, with a follow-up; it ran the test's module once (11 tests in 0.4 s, OK). One wording
+correction after the follow-up was not shown to it again; its one condition was met with the queue tool.
+
+FIRST PASS. Verdict: pass with corrections; the diagnosis and the test change are sound, several sentences
+claim more than was done.
+- "None of the three the item guessed" and "set aside" are wrong: the item lists "the patched timeout", and
+  that is the cause. Say the clock and the rounding are excluded and the patched timeout confirmed.
+- Review (1): "stands for the text" has no disposition; queue the remainder or have the text read.
+- Review (3)/(4): the answer does not meet objection (4), which asked for the refusal's cost to be measured or
+  the remainder queued; how run-logging prevents a vacuous measurement (3) is not stated. (5) not verified.
+- "Recorded with the total timeout minus the time of the stages before it" should read "at least": the timer
+  starts after the temporary directory is made, a late timer adds, and for turn/completion the turn/interrupt
+  await is included. Likewise "at least 0.044 s".
+- "What the runs do show is the mechanism" overstates: the identity follows from the code and the probe prints
+  extremes from different runs; write "consistent with".
+- The status line's "mechanism is measured" should be "read in the code".
+- Limit: "would fail many others" is untested; state the probe's differences (outside IsolatedAsyncioTestCase,
+  outside the suite's workers).
+Checked and fine: all figures match the probe's output, including 160 runs and the factor seven; the failed
+expectation is reported plainly; the new assertion cannot flake downward (rounding of six stages loses at most
+0.003 s against 0.005 s); suite cost about +0.3 s in one test; no other route to a short stalled stage exists;
+Developed is acceptable given the Limit paragraph, because the code forces 0.006 s to mean late earlier
+stages. No unused hypotheses.
+Suggestion (unverified): have the probe print the per-run minimum of stalled plus earlier, and run the
+turn/start case.
+Process audit: the title may claim "cause read in code, failure not reproduced, margin widened", not "fixed" or
+"measured". The changed test was run once in the suite and once by the reviewer; the item's repeated runs are
+met only by the probe, for one case. No before-change suite figure. The General statement cites an unrelated
+claim. The Chosen paragraph's filed default was not checkable from the brief.
+
+FOLLOW-UP. Verdict: pass. Developed is honest. Corrected paragraphs and title: nothing wrong; one change: "adds
+about 0.3 s" is arithmetic from the two waits, not a measurement. Review dispositions: (1), (2), (4), (5) each
+end in fixed or queued, and (4) says plainly that neither requested thing was done; (3) rests on the queued
+item covering a control that could not have failed: if its text does not say so, add the wording. Not
+verified: the queue count of 35 and the test claimed in (5). The title matches the body.

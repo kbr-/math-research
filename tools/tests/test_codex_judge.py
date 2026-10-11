@@ -85,6 +85,10 @@ class JudgeTest(unittest.IsolatedAsyncioTestCase):
         client.call.assert_awaited_with('thread/unsubscribe', {'threadId':'owned'})
         client.close.assert_awaited_once()
 
+    # The stalled stage's recorded time is this total minus the earlier stages' time, about 0.012 s idle and up to
+    # 0.027 s measured beside 40 busy processes; at 0.05 s one suite run recorded 0.006 s for it and failed.
+    STALL_TIMEOUT = .2
+
     async def test_real_turn_distinguishes_start_and_completion_timeout(self):
         for stalled_stage in ('turn/start', 'turn/completion'):
             with self.subTest(stage=stalled_stage):
@@ -109,7 +113,7 @@ class JudgeTest(unittest.IsolatedAsyncioTestCase):
                 client.event.side_effect = event
                 client.turn = Client.turn.__get__(client)
                 with patch.object(judge.Client, 'connect', AsyncMock(return_value=client)), \
-                        patch.object(judge, 'INFERENCE_SECONDS', .05):
+                        patch.object(judge, 'INFERENCE_SECONDS', self.STALL_TIMEOUT):
                     result = await judge.judge('data', {})
                 details = result['error_details']
                 self.assertEqual(details['stage'], stalled_stage)
@@ -120,6 +124,8 @@ class JudgeTest(unittest.IsolatedAsyncioTestCase):
                     expected.add('turn/completion')
                 self.assertEqual(set(details['stage_seconds']), expected)
                 self.assertGreater(details['stage_seconds'][stalled_stage], .01)
+                # The stalled stage is given what the earlier stages leave of the one total timeout.
+                self.assertGreaterEqual(sum(details['stage_seconds'].values()), self.STALL_TIMEOUT - .005)
                 self.assertGreaterEqual(details['stage_seconds']['read isolation configuration'], .01)
                 self.assertAlmostEqual(sum(details['stage_seconds'].values()),
                                        details['elapsed_seconds'], delta=.006)
