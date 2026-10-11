@@ -282,7 +282,8 @@ unfinished.
 - Compute the statement's own quantity, not a stronger or weaker surrogate. Put the tested statement
   in the script's docstring, generate inputs meeting its hypotheses and assert those hypotheses in
   code. Write there too, before the run, the outcome expected of the statement and of each control:
-  an expectation recorded only after the output is seen is not a prediction.
+  an expectation recorded only after the output is seen is not a prediction. A number in a written
+  expectation is one the script computes and prints, not one typed from hand arithmetic.
 - A numerical control of a formula includes one check that does not share the method under test:
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
