@@ -164,7 +164,11 @@ PROMISE = re.compile(rf"[^.!?\n]*(?:{FIRST_PERSON}[^.!?\n]*{LASTING}|{LASTING}[^
 # Quoted text, such as an earlier promise under discussion or a document's sentence in a Markdown
 # blockquote, and code spans, such as a hook's name, say nothing about this turn.
 BLOCKQUOTE = r'^[ \t]*>[^\n]*'
-QUOTED = re.compile(rf'"[^"\n]*"|“[^”\n]*”|`[^`\n]*`|{BLOCKQUOTE}', re.M)
+# A fenced block is text handed over (a prompt for the user to paste, a command, a file's lines), not the
+# reply's own account: a goal prompt's condition that named a tool beside the word "merged" was taken three
+# times for a tool's fault worked around.
+FENCED = r'(?s:^[ \t]*```.*?^[ \t]*```)'
+QUOTED = re.compile(rf'{FENCED}|"[^"\n]*"|“[^”\n]*”|`[^`\n]*`|{BLOCKQUOTE}', re.M)
 # A declared gap: something left unchecked, unverified or out of reach, in the present (a past "didn't
 # check" is usually narration). Measured on one long session's 3,831 text blocks: 130 matched, about two
 # thirds of a sample real open questions, several with a cheap route not taken.
@@ -206,7 +210,7 @@ FAULT = re.compile(r"\b(?:nested|merged|mangled|garbled|broke|breaks|split|dropp
                    r"didn't (?:handle|keep|match)|doesn't (?:handle|keep|match)|can't handle)\b", re.I)
 SENTENCE_END = re.compile(r'[.!?\n]')
 # Double quotes and blockquotes only: a tool's name is usually a code span, which the other checks blank.
-DOUBLE_QUOTED = re.compile(rf'"[^"\n]*"|“[^”\n]*”|{BLOCKQUOTE}', re.M)
+DOUBLE_QUOTED = re.compile(rf'{FENCED}|"[^"\n]*"|“[^”\n]*”|{BLOCKQUOTE}', re.M)
 
 
 def tool_faults(texts):

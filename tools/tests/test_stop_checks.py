@@ -260,6 +260,21 @@ class UncheckedClaimTest(unittest.TestCase):
             'The rebase nested nothing; replace_text worked.',
             'Its note:\n> The item came out nested by `replace_text`.']), [])
 
+    def test_a_fenced_block_is_text_handed_over_and_is_not_checked(self):
+        # A goal prompt for the user to paste (the real block): its condition names a tool beside "merged".
+        prompt = ('Here is the prompt.\n\n```\n/goal Finish it. DONE: (5) business has merged softeng and its suite passes; '
+                  '(6) `python3 tools/task_index.py check` passes.\nI will not do this again; the rest is unverified.\n```\n\nNotes follow.')
+        self.assertEqual(hook.tool_faults([prompt]), [])
+        self.assertEqual(hook.promises([prompt]), [])
+        self.assertIsNone(hook.gap_block(prompt))
+        # The same words outside a fence are the reply's own, before a fence, after one and with a fence never closed.
+        own = 'The new item came out nested by `tools/replace_text.py`.'
+        for reply in (own + '\n\n```\necho x\n```\n', '```\necho x\n```\n\n' + own, '```\necho x\n\n' + own):
+            self.assertEqual([tool for _, tool in hook.tool_faults([reply])], ['replace_text'], reply)
+        self.assertIn('A declared gap', hook.gap_block('```\nls\n```\nThe second cluster is unverified.')['reason'])
+        # Two fenced blocks do not hide what stands between them.
+        self.assertEqual(len(hook.tool_faults(['```\na\n```\n' + own + '\n```\nb\n```'])), 1)
+
     def test_a_missing_tool_named_mid_turn_blocks_until_it_is_queued_or_built(self):
         self.add({'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': (
             'No helper exists for hand-written mutants, so I apply each one by hand. Running mutant 1.')}]}})
