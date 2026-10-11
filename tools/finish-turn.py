@@ -623,6 +623,7 @@ def stand_in(root, owed, now=None):
 BEARING_AFTER = 2      # earlier research entries in a row, on the route, reporting unchanged goal progress
 BEARING_MIN = 60
 NOT_COVERED_MIN = 40
+NO_BEARING_RUN = 3     # earlier research entries in a row, on the route, declaring no bearing
 
 
 def validate_bearing(body, article, progress, text=None):
@@ -662,6 +663,27 @@ def validate_bearing(body, article, progress, text=None):
     if declared is None:
         raise ValueError('Declare data-bearing="none" or "some" on the article: whether this entry gives '
                          "anything at the goal's own parameters, as its Bearing statement says (AGENTS.md)")
+    # Two blocks of six entries each declared no bearing while a queue was served one leftover check at a time
+    # (reviews of 11 October 2026).  After three such entries in a row the next one says, before its work, what
+    # its best outcome would give at the goal's own parameters; the start guidance already asked and was not
+    # enough.
+    if text is not None:
+        without = 0
+        for earlier in reversed(re.findall(r'<article\b[^>]*>', body[:article])):
+            if f'data-route="{route}"' not in earlier or 'data-kind="research"' not in earlier:
+                continue
+            if 'data-bearing="none"' not in earlier:
+                break
+            without += 1
+        if without >= NO_BEARING_RUN:
+            best = re.search(r'<strong>Best outcome\.</strong>((?:(?!</p>).)*)', text, re.S)
+            plain = html.unescape(re.sub(r'<[^>]*>', ' ', best.group(1))).strip() if best else ''
+            if len(plain) < BEARING_MIN:
+                raise ValueError(f'{without} research entries in a row on {route} declared no bearing: state, '
+                                 f'after <strong>Best outcome.</strong> and in at least {BEARING_MIN} characters, '
+                                 "what this entry's best outcome would give at the goal's own parameters, "
+                                 'written before the work; if nothing, the entry closes a queue item and says so '
+                                 '(AGENTS.md, goal progress)')
     # A bearing that claims something was closed, in two entries in a row, with a summary sentence wider
     # than the proof (reviews of 10 October 2026): it ends with what the result does not cover.
     if declared.group(1) == 'some':

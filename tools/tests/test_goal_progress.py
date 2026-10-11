@@ -338,6 +338,27 @@ class BearingTest(unittest.TestCase):
         some = ('research', 'unchanged', 'data-check="a:1" data-bearing="some"')
         self.check([none, some], said, last='data-check="a:1" data-bearing="none"')
 
+    def test_after_three_entries_without_bearing_the_next_states_its_best_outcome(self):
+        said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'
+        rows = [('a:1', 'none'), ('b:1', 'none'), ('c:1', 'none')]
+        def body(earlier):
+            text = ''.join(f'<article data-kind="research" data-route="r" data-goal-progress="unchanged" '
+                           f'data-check="{item}" data-bearing="{bearing}"></article>' for item, bearing in earlier)
+            return text + ('<article data-kind="research" data-route="r" data-goal-progress="unchanged" '
+                           'data-check="d:1" data-bearing="none">')
+        entry = '<p><strong>Follow-up.</strong> Closed: answered.</p>'
+        full = body(rows)
+        with self.assertRaisesRegex(ValueError, 'Best outcome'):
+            FT.validate_bearing(full, full.rindex('<article'), said, entry)
+        with self.assertRaisesRegex(ValueError, 'Best outcome'):
+            FT.validate_bearing(full, full.rindex('<article'), said, entry + '<p><strong>Best outcome.</strong> Some.</p>')
+        FT.validate_bearing(full, full.rindex('<article'), said, entry + '<p><strong>Best outcome.</strong> A proof '
+                            'would give a family at the cutoff the goal needs; a refutation closes the item.</p>')
+        fewer = body(rows[1:])                                             # two such entries: not yet asked
+        FT.validate_bearing(fewer, fewer.rindex('<article'), said, entry)
+        broken = body([rows[0], ('b:1', 'some'), rows[2]])                 # a run broken by a bearing
+        FT.validate_bearing(broken, broken.rindex('<article'), said, entry)
+
     def test_a_continuing_entry_in_such_a_run_states_its_record_search(self):
         said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'
         unchanged = ('research', 'unchanged')

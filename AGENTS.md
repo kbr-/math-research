@@ -186,11 +186,14 @@ unchanged, the paragraph ends with `<strong>Bearing.</strong>`: what the entry's
 goal's own parameters, or that it gives nothing there and why the cycle was spent on it, and the
 article declares `data-bearing="none"` or `"some"` to match, a `some` bearing ending with
 `<strong>Not covered.</strong>` and the cases its result does not reach; after two entries in a row
-on one queue item declaring `none`, the next entry develops a different item; and an entry in such a
-run whose follow-up is Continuing states `<strong>Record search.</strong>`, the registry searches
-made for the next attempt it names (the finisher checks all five). Keep the obligation ID stable
-while that implication is unchanged. The finisher checks declarations and evidence references, not
-the truth of the agent's assessment; the existing reviewer must challenge that assessment.
+on one queue item declaring `none`, the next entry develops a different item; after three entries in
+a row on the route declaring `none`, across items, the next states before its work, after
+`<strong>Best outcome.</strong>`, what its best outcome would give at the goal's own parameters; and
+an entry in such a run whose follow-up is Continuing states `<strong>Record search.</strong>`, the
+registry searches made for the next attempt it names (the finisher checks all six). Keep the
+obligation ID stable while that implication is unchanged. The finisher checks declarations and
+evidence references, not the truth of the agent's assessment; the existing reviewer must challenge
+that assessment.
 
 Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
 `<p><strong>Label.</strong> ...</p>` paragraphs:
