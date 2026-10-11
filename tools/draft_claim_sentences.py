@@ -195,6 +195,24 @@ def report(draft, registry, width):
     return '\n'.join(lines), unregistered
 
 
+def readings(transcript=None):
+    """Lines to print before a brief, or none: theorem-like statements of TeX and Lean sources that begin,
+    unread, just past a range the session read since its last checkpoint (tools/session_reads.py).  A reading
+    of 11 October 2026 stopped fifty lines short of the proposition that decided its test, and its reviewer
+    found it.  Nothing here fails the listing; an agent without a Claude Code transcript gets no lines."""
+    try:
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import session_reads
+        import stand_in_review
+        transcript = transcript or stand_in_review.session_transcript(ROOT)
+        lines = session_reads.current_lines(pathlib.Path(transcript).read_text(errors='replace').splitlines())
+    except Exception:
+        return []
+    return (['', 'Readings since the last checkpoint: statements that begin just past a range of a source that '
+             'was read, and sources that could not be checked; say in the draft whether each was read or why it '
+             'does not matter:'] + lines) if lines else []
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('draft')
@@ -212,6 +230,8 @@ def main():
         linked, missing = entry_report(draft, pathlib.Path(args.notebook).read_text(), args.width)
         print('\n' + linked)
     print('\n' + counts_report(draft, args.width))
+    for line in readings():
+        print(line)
     log_run(draft)
     return 1 if unregistered or missing else 0
 

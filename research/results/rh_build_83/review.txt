@@ -1,0 +1,42 @@
+Reviewer's record, entry session-reads-listed (riemann notebook, 11 October 2026). One fresh-context medium
+reviewer, read-only: a pass and two follow-ups in which it read the corrections.
+
+FIRST PASS. Verdict: pass with corrections. The listing rerun on the transcript: every figure of "The
+measurement" reproduces; the tool's tests exit 0.
+- Whole-file reads are mishandled: a Read without offset is recorded as 1-end, but the tool returns 2000
+  lines; ranged_paths drops such reads, so a file read whole and then by range gives false "unread" lines.
+- The range pattern misses common forms: of 285 "sed -n" commands it matches 206; 841 commands use head/tail.
+- The line-range comparison cannot fail: a cited range counts as read if any opened file covers it.
+- "One of the three cases is printed" is too strong: printed only by a hand-run command with hand-picked
+  markers; the finisher wiring misses line 1380 and comes after the review.
+- turn_lines matches "--next TURN" as a substring; anchor it.
+- stopped_short has no test; it cannot fail the finisher; Codex is silently uncovered.
+- Timing: about 0.9 s per finish (0.72 s read, 0.22 s scan), growing with the transcript.
+- turns.out.txt shows four of the five lines.
+- Title may claim "built; prints none of the three by names, one by look-ahead when run by hand".
+Suggestions (unverified): do the wiring now, the draft tool calling the listing up to its own run; drop the
+two unprinted cases explicitly, with the reason.
+Process audit: the statement pattern omits starred environments, claim, and Lean private/attribute theorems,
+with no positive Lean test; the false-positive rate (two of three lines, 12 on the whole transcript) is not
+assessed; "zero on three other turns" is a weak control; the 100-line look-ahead was chosen knowing the
+50-line case; dep59.txt "named in one command" is correct (an ls).
+
+FIRST FOLLOW-UP. Verdict: pass with corrections; Developed stands once the first two are made.
+- A dropped path still fails silently, and that is the one working case: the decisive range was read through
+  a path written with a session variable; of 76 commands that mention the draft tool, 24 also mention the
+  launcher, where the variable is absent. Print a line for each ranged .tex/.lean path that does not resolve,
+  with a test.
+- current_lines gives nothing when the session has no --next finisher command. Fall back or say so.
+- "Six tests": the file has five.
+Checked and correct: read_span, after, the anchored turn_lines, the statement additions, with tests that can
+fail; readings cannot break the draft tool and about 0.9 s is acceptable; the rewritten measurement matches
+the output; "in replay" is fair with the direct-run caveat. Developed is consistent with the item: path,
+tests, measurement, and the two cases dropped with a reason the measurement found; state that "should print
+all three" was not met. Title: built and wired before the brief; one of three printed in replay; two dropped.
+
+SECOND FOLLOW-UP. Confirmed: pass. Both changes read and the tool's tests rerun (exit 0). short_lines prints a
+NOT CHECKED line for each unresolved ranged path; current_lines reads the whole transcript when no finisher
+has run; the turn test can fail on each. The entry's paragraphs match the two outputs (3 lines with 1380; 5 at
+the finisher without it; 0, one NOT CHECKED, 0 on the other turns; two NOT CHECKED lines without the variable;
+208 of 287; 931; 0.68 s). The gate's account is accurate. One wording point: the header line says "statements"
+even when only NOT CHECKED lines follow.
