@@ -46,6 +46,11 @@ class KernelTest(unittest.TestCase):
         # pairwise products, y1 + y2 + y3 and (1 + y1)(1 + y2): refuted at degree two, not one
         rows = [[3], [5], [6], [1, 2, 4], [0, 1, 2, 3]]
         self.assertEqual(self.degree(3, rows, 3)['degree'], 2)
+        # four variables, each an axiom, with the product of the (1 + y_i): refuted exactly when that axiom
+        # of degree four may be used
+        rows = [[1], [2], [4], [8], list(range(16))]
+        self.assertEqual(self.degree(4, rows, 5)['degree'], 4)
+        self.assertIsNone(self.degree(4, rows, 3)['degree'])
 
     def test_agrees_with_the_reference_on_products_of_two_forms(self):
         rng = random.Random(5)
