@@ -205,6 +205,35 @@ def require_named_item(source, next_html):
                      'it asks from its queued text (tools/lead_queue.py history NOTEBOOK ID --status)')
 
 
+def refuse_excluded_item(source, next_html):
+    """A next step may not take only the item that the finisher will refuse for the next entry.
+
+    After two research entries in a row on one queue item that declare no bearing, the finisher sends the next
+    entry to a different item.  On 11 October 2026 two next steps named such an item; the first was noticed
+    on opening the cycle and the second only when the finished entry was refused."""
+    items = named_items(source, next_html)
+    if not items:
+        return
+    tags = [t for t in re.findall(r'<article\b[^>]*>', source) if 'data-kind="research"' in t]
+    if not tags:
+        return
+    route = re.search(r'data-route="([^"]+)"', tags[-1])
+    last = [t for t in tags if route and f'data-route="{route.group(1)}"' in t][-2:]
+    taken = [re.search(r'data-(?:check|lead|bridge|idea|build)="([^"]+)"', t) for t in last]
+    if len(last) < 2 or not all(taken) or taken[0].group(1) != taken[1].group(1):
+        return
+    if not all('data-bearing="none"' in t for t in last):
+        return
+    excluded, named = taken[0].group(1), {ident for ident, *_ in items}
+    if named == {excluded}:
+        raise ValueError(f'the next step takes {excluded}, whose last two entries declared no bearing: the '
+                         'finisher will refuse a third in a row, so name the different item the next entry '
+                         'develops (AGENTS.md, goal progress)')
+    if excluded in named:
+        print(f'Note: {excluded} had two entries in a row without bearing; the next entry must develop '
+              'another of the items this step names.', file=sys.stderr)
+
+
 def branch_checks(tools=None):
     """The branch's own check(source, entry, next_html), or None where it has no tools/append_checks.py."""
     path = (tools or Path(__file__).parent) / 'append_checks.py'
@@ -280,6 +309,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
         require_named_item(source, next_html)
         require_quoted_items(source, next_html)
+        refuse_excluded_item(source, next_html)
     preflight(source, m.group(1))
     return source
 

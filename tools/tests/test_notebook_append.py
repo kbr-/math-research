@@ -101,6 +101,22 @@ class NextStepItemTests(unittest.TestCase):
         self.assertTrue(tool.quotes('a b c d e f g h i', 'x a, b c d e f g h. y'))
         self.assertFalse(tool.quotes('a b c d e f g', 'a b c d e f g h'))
 
+    def test_a_next_step_may_not_take_only_an_item_with_two_entries_without_bearing(self):
+        def tagged(anchor, item, bearing):
+            return (f'<article id="{anchor}" data-kind="research" data-route="x" data-check="{item}" '
+                    f'data-bearing="{bearing}">t</article>')
+        twice = queued(2).replace('<article id="a2">two</article>', tagged('a2', 'item-1', 'none'))
+        third = tagged('a3', 'item-1', 'none')
+        with self.assertRaisesRegex(ValueError, 'last two entries declared no bearing'):
+            tool.refuse_excluded_item(twice.replace('</article>\n</section>', '</article>\n' + third + '\n</section>')
+                                      if '</article>\n</section>' in twice else twice + third,
+                                      '<p>Develop item-1 again.</p>')
+        both = twice + third
+        tool.refuse_excluded_item(both, '<p>Develop item-0; item-1 waits.</p>')            # another item is named
+        tool.refuse_excluded_item(twice + tagged('a3', 'item-1', 'some'), '<p>Develop item-1 again.</p>')
+        tool.refuse_excluded_item(twice + tagged('a3', 'item-0', 'none'), '<p>Develop item-1 again.</p>')
+        tool.refuse_excluded_item(twice, '<p>Develop item-1 again.</p>')                    # one entry only
+
     def test_a_review_due_next_needs_no_item(self):
         research = [('<article id="r%d" data-kind="research" data-route="x">' % n, '') for n in range(6)]
         self.assertTrue(tool.review_due(research))
