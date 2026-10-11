@@ -1,0 +1,78 @@
+{
+  "source": {
+    "record": "[Narrow window negativity](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-narrow-window-negativity)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-narrow-window-negativity"],
+    "label": "Narrow window negativity"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:one-sided-fourier-relation",
+      "summary": "One-sided density with the Fejer kernel, G(tau) = -int_0^inf h(x) e^{i(x-L) tau} dx, h(x) = x e^{-delta x} P(x - L): int Re G(tau) e^{-i(x-L) tau} d tau = -pi (h(x) + conj h(2L - x)); and if the heights lie in an interval of length c delta and Re G <= S = eps M/delta^2 on the line, then |P(x - L)| <= M (e^{delta x}/(delta x)) ((2/pi)(c eps + 4 sqrt(eps)) + 4 b e^{-b}) for 0 < x <= L.",
+      "assessment": "Working proof: Fourier inversion for G and its conjugate, the integral of Re G from the value at x = L, and the decay of G away from the heights. The square root comes from the tail 2M/rho and halves the exponent in the theorem that uses it.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Turns a one-sided bound for the off-line part of the density into a bound for the profile of the cluster's exponential sum.",
+      "next_action": "Remove the square root.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the identity holds to 3e-8 at six points, with a negative control failing at the five points where it applies.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Uses the one-sided density decomposition."
+      }
+    },
+    {
+      "id": "lem:positive-sum-majorant",
+      "summary": "For P(y) = sum m_j e^{-i y gamma_j} with m_j > 0, M = sum m_j, heights in an interval of length c delta, b = delta L > 1 and 1/b < beta < 1: if log((1 - 1/b)/(1 - beta)) + (1 - beta)/(1 - 1/b) - 1 > pi c, then some x in [1/delta, beta L] has |P(x - L)| > M e^{-beta b} e^{delta x}/(delta x).",
+      "assessment": "Working proof: the sum is bounded by M in a half-plane and at least M e^{-v c delta} on the imaginary axis; the harmonic majorant of its logarithm, by the mean value inequality for subharmonic functions and Fatou's lemma, as v tends to 0.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "A lower bound for a sum of exponentials with positive coefficients on an interval away from the origin, free of the number of terms and of their gaps.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the majorant inequality holds in 27 numerical cases, with equality where expected.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: a standard argument (Jensen's inequality in a half-plane) applied to these sums. No novelty search beyond the registry.",
+        "relationships": "The lower bound that the gap-free cluster sum gives only with a loss in the number of pairs."
+      }
+    },
+    {
+      "id": "thm:narrow-window-negativity",
+      "summary": "One-sided density with the Fejer kernel, off-line pairs at one distance delta with heights in an interval of length c delta, c <= 1, b = delta L > 1, 1/b < beta < 1 with log((1 - 1/b)/(1 - beta)) + (1 - beta)/(1 - 1/b) - 1 > pi c: sup Re G >= (pi^2/100)(e^{-beta b} - 4 b e^{-b})_+^2 M/delta^2, so some tau has D_off <= -(2M/(L delta^2))((pi^2/100) e^b (e^{-beta b} - 4 b e^{-b})_+^2 - 3); no dependence on the number of pairs, their gaps or their multiplicities.",
+      "assessment": "Working proof from the two lemmas. The exponent lost is 2 beta, below 1 only for c < (ln 2 - 1/2)/pi = 0.0615 in the limit of large b; for wider windows the bound gives no negativity, and the hidden binomial family has c about 1.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "In the model every cluster confined to a window of height below 0.0615 delta shows in the one-sided density at a bounded multiple of a single pair's length, whatever its size.",
+      "next_action": "Extend to windows of height delta by removing the square root in the first lemma.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the control tests the two identities behind it and cannot test its strength.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "A lower bound for the cluster negativity constant free of the cluster's size, for narrow windows."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:one-sided-fourier-relation", "depends_on", "lem:one-sided-density-decomposition", "Uses the integral form of G and the bound |G| <= Y."],
+    ["lem:one-sided-fourier-relation", "cites", "prop:gap-free-cluster-sum", "Same setting; the profile of the sum bounded there from below."],
+    ["lem:one-sided-fourier-relation", "cites", "prop:lattice-saturation", "Same setting; no logical dependence."],
+    ["lem:one-sided-fourier-relation", "cites", "prop:cluster-negativity-constant", "Uses the same integral of G from the value of h at L."],
+    ["lem:one-sided-fourier-relation", "cites", "prop:binomial-cluster-hiding", "Same setting; no logical dependence."],
+    ["lem:positive-sum-majorant", "cites", "lem:interpolation-power-sum-bound", "Another lower bound for power sums, there in terms of the gaps."],
+    ["lem:positive-sum-majorant", "cites", "cor:maximal-cancellation-order", "The cancelling configurations that the majorant limits when confined to a narrow window."],
+    ["thm:narrow-window-negativity", "cites", "prop:gap-free-cluster-sum", "A lower bound for the same supremum, there with a loss in the number of pairs."],
+    ["thm:narrow-window-negativity", "cites", "prop:lattice-saturation", "Same setting; an upper bound at a resonant length."],
+    ["lem:positive-sum-majorant", "cites", "prop:gap-free-cluster-sum", "A lower bound for the same sum, there with a loss in the number of pairs."],
+    ["lem:positive-sum-majorant", "cites", "lem:strip-positivity-obstruction", "The record's other use of a harmonic majorant."],
+    ["thm:narrow-window-negativity", "depends_on", "lem:one-sided-fourier-relation", "Turns the bound for Re G into a profile bound."],
+    ["thm:narrow-window-negativity", "depends_on", "lem:positive-sum-majorant", "Forbids the profile."],
+    ["thm:narrow-window-negativity", "depends_on", "lem:one-sided-density-decomposition", "The consequence for D_off."],
+    ["thm:narrow-window-negativity", "cites", "prop:cluster-negativity-constant", "The same supremum, bounded there through a constant depending on the cluster."],
+    ["thm:narrow-window-negativity", "cites", "prop:binomial-cluster-hiding", "That family's window has height about delta, outside the useful range here."]
+  ]
+}

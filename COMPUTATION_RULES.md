@@ -291,7 +291,9 @@ unfinished.
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
   not a control (11 October 2026: a truncated oscillatory quadrature disagreed with a correct kernel
-  by a factor of 328, and only an end-to-end check made independently showed which was wrong).
+  by a factor of 328, and only an end-to-end check made independently showed which was wrong). A
+  control prints each tolerance beside the size of the quantity it bounds, and a row counts as a
+  check only where the tolerance is the smaller.
 - Report the scope of finite checks without treating them as universal proofs. Distinguish new runs
   from archived results; rerun only when the task requires it. A kernel's chosen prime is a
   computational choice, not a theorem's characteristic hypothesis. A certificate lifted to integral
