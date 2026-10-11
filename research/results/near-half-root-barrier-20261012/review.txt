@@ -1,0 +1,36 @@
+Review record, 12 October 2026: entry-2026-10-12-root-barrier-drop (lem:root-barrier-drop,
+ex:root-drop-search). Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent),
+one pass; it read the draft, the spec, the registered statements supplied, root_drop.py and drops.json.
+
+Verdict: pass with corrections. Parts (1), (2), (4), (5) and the K-valued bound in (3) check out; the subcube
+numbers 3, 7, 7 against 5, 8, 11 are right; drops.json matches every reported figure (total 3147323, largest
+case 1947792, k = 2 row 0,1,1,2,1,1).
+
+Required changes:
+- (3), "a static barrier that is an F_2-linear image of such a product has D <= 2w - 1": unproved. The proof
+  bounds deg F on V, but deg(phi o F on V) can be smaller: with F of order three and phi the trace, phi o F drops
+  by one on a subcube with a + 2k = 0 mod 3, where delta = 0. Restrict the cap to the K-valued product (all phi
+  at once, that is a common root).
+- The same overstatement in the Structural reason, the spec summary and rationale, the Follow-up and the
+  sub-idea line.
+- Order seven: the script takes the minimum of the two drops on one configuration. The origin row and the
+  complement of the all-ones row are different rows, and zeta, zeta^-1 are not conjugate in F_8. The relevant
+  cap is the smaller of two separate maxima, which the output does not record. Reword or rerun.
+- "would put the cap at 3w/2 - 1": w there is the origin row's codimension, not the least.
+- "its rows are triples again": asserted, not shown.
+- ex:codimension-two-symmetric-barrier and prop:profile-bezout-ceiling were not in the excerpts; unchecked.
+
+Process audit: control() bypasses search() and tests only that a constant has degree 0; it could not fail; the
+search's own triple witnesses are the real control. "No mistake reached the draft's statements" is now false.
+The finisher prints a third deferral, it does not refuse it. Title may claim: common-root symmetric barriers
+stop at 2w - 1; triples reach 3w/2 - 1; finite check of the half-codimension drop; not "product witnesses".
+Entry-meta is fine. Owed attempt and Record search disclosures: no findings.
+
+Suggestions (unverified): matroid form: delta >= t + 1 iff I_{M \ T}(u) = 0 for all |T| <= t, M the column
+matroid of the parity checks, I its independence polynomial mod 2, u = zeta/(1 + zeta). I_M = I_{M \ e} +
+u I_{M / e} gives P_t(M) => P_{t-1}(M / e); rank 0 and 1 have no root, so linear rows have delta <= w - 1 at
+every order; rank 2 has a root only for the triangle at order three, so delta <= w - 2 at other orders for
+w >= 2. Each contraction costs rank one per unit of t; the conjecture needs two; the step fails at rank 2t + 1.
+Fano plus Fano has P_1 at rank 6, so extremal cases are not only triangles. No proof or counterexample.
+
+Author's note: all applied; the corrected draft was not read again. Order seven was reworded, not rerun.
