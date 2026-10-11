@@ -205,13 +205,17 @@ def require_named_item(source, next_html):
                      'it asks from its queued text (tools/lead_queue.py history NOTEBOOK ID --status)')
 
 
-def registry_matches(text, limit=3, data=None):
+def registry_matches(text, limit=3, data=None, home=None):
     """The registered claims nearest to a queued item's text, as (identifier, start of summary), best first;
     an empty list where the registry cannot be read.
 
     On 11 October 2026 a reading named on a queue item was deferred in two entries while its statement had
     been registered for a day: the item's words were never put to the registry.  The matches are printed
-    beside the item when a next step names it; they are not logged as a search of the author's."""
+    beside the item when a next step names it; they are not logged as a search of the author's.
+
+    With `home`, a part of a record address that marks the notebook's own claims, those come first, each
+    group in its order of score: across two blocks of entries the three matches printed were mostly claims
+    of other notebooks, which share common words and say nothing of the item."""
     spec = importlib.util.spec_from_file_location('search_claims', Path(__file__).parent / 'search-claims.py')
     module = importlib.util.module_from_spec(spec)
     try:
@@ -221,7 +225,15 @@ def registry_matches(text, limit=3, data=None):
         found = module.search(data, [plain(text)])
     except (OSError, ValueError, KeyError):
         return []
+    if home:
+        found = sorted(found, key=lambda pair: home not in str(pair[1].get('record', '')))   # stable
     return [(claim['id'], ' '.join(claim['summary'].split())[:140]) for _score, claim in found[:limit]]
+
+
+def home_of(source):
+    """The part of a record address that marks a side notebook's claims, or None for the main notebook."""
+    found = re.search(r'branches/[^/]+/', str(source))
+    return found.group(0) if found else None
 
 
 def refuse_excluded_item(source, next_html):
@@ -363,7 +375,8 @@ def main():
     for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
         print(f'The next step names queue item {ident}. Check its description against the item\'s own words:')
         print(f'  Queued text: {text}')
-        for claim, summary in registry_matches(f'{text} {follow or ""}'):   # attempts are named in follow-ups
+        for claim, summary in registry_matches(f'{text} {follow or ""}',     # attempts are named in follow-ups
+                                               home=home_of(path)):
             print(f'  Registry match for its text and latest follow-up, to read before planning: {claim} — {summary}')
         if anchor:
             print(f'  Latest development, #{anchor}. Follow-up: {follow}')

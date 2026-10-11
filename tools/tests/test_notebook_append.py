@@ -112,6 +112,16 @@ class NextStepItemTests(unittest.TestCase):
                          [('imp:flow-degree', 'Flow systems on expanders need linear degree.')])
         self.assertEqual(tool.registry_matches('Nothing in common here at all.', data=data), [])
         self.assertEqual(len(tool.registry_matches('flow degree colouring Kneser', limit=1, data=data)), 1)
+        # A notebook's own claims come before better-scoring claims of other notebooks.
+        near, far = claim('lem:own', 'A degree bound.'), claim('imp:other', 'Flow systems need linear degree bound.')
+        near['record'] = '[Entry](https://example.org/branches/side-one/#a)'
+        far['record'] = '[Entry](https://example.org/branches/side-two/#b)'
+        words = 'the degree bound for flow systems of linear size'
+        both = {'claims': [far, near]}
+        self.assertEqual(tool.registry_matches(words, data=both)[0][0], 'imp:other')
+        self.assertEqual(tool.registry_matches(words, data=both, home='branches/side-one/')[0][0], 'lem:own')
+        self.assertEqual(tool.home_of('research/branches/side-one/notebook.html'), 'branches/side-one/')
+        self.assertIsNone(tool.home_of('notebook.html'))
 
     def test_a_next_step_may_not_take_only_an_item_with_two_entries_without_bearing(self):
         def tagged(anchor, item, bearing):
