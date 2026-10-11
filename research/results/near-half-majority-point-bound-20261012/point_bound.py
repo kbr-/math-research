@@ -91,6 +91,19 @@ def candidate(n, w, seed):
               'by rows': (zero_rows >= one_rows).astype(np.int64)}
     for bias in (0.9, 0.75, 0.5):
         points[f'bias {bias}'] = (rng.random(n) < bias).astype(np.int64)
+    # Second run, added after the first was read (12 October 2026): points near the two constant ones, moving
+    # only the variables whose rows favour the other value most.  Expectation written before this run: values
+    # above those of the constant points, as for every mixed point of the first run; a value below would say
+    # the constant points are not the best and a search over points is worth making.
+    order = np.argsort(one_rows - zero_rows, kind='stable')             # most 0-row-heavy variables first
+    for share in (0.02, 0.05, 0.1):
+        count = int(share * n)
+        tilted = np.zeros(n, dtype=np.int64)
+        tilted[order[:count]] = 1
+        points[f'zeros, {share} tilted'] = tilted
+        tilted = np.ones(n, dtype=np.int64)
+        tilted[order[n - count:]] = 0
+        points[f'ones, {share} tilted'] = tilted
     out = {'n': n, 'w': w, 'seed': seed, 'rows': n + 1, 'least_zero_row_degree': int(zero_rows.min()),
            'variables_in_no_zero_row': int((zero_rows == 0).sum()), 'points': {}}
     for name, sigma in points.items():
