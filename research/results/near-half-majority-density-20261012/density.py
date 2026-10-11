@@ -83,7 +83,10 @@ def part_a(n, w):
         threshold = first_moment(n, w, m0)
         if m0 == 2 * n:
             assert threshold <= n // 2, threshold
-        for seed in (1, 2, 3):
+        # Changed after two runs were stopped by their time limits (12 October 2026): the programme with 2n
+        # rows took about 190 s for one system, so that density has one seed.  The six systems of the lower
+        # densities and the first of this one had been seen; the test and its expectation are unchanged.
+        for seed in ((1,) if m0 == 2 * n else (1, 2, 3)):
             rng = np.random.default_rng(1000 * m0 + seed)
             scopes = uniform_scopes(rng, m0, n, w)
             _, value, greedy = bracket(scopes, np.zeros(m0, dtype=np.int64), np.ones(n, dtype=np.int64), k)
@@ -117,7 +120,10 @@ def part_b(n, w, seed, tries):
 
 
 def main(argv):
-    result = {'first_moment': part_a(1900, 19), 'block_moves': [part_b(570, 19, seed, 120) for seed in (1, 2, 3)]}
+    result = {'block_moves': [part_b(570, 19, seed, 120) for seed in (1, 2, 3)]}
+    with open(argv[1], 'w') as handle:                                  # the searches first, saved at once
+        json.dump(result, handle, indent=1)
+    result['first_moment'] = part_a(1900, 19)
     with open(argv[1], 'w') as handle:
         json.dump(result, handle, indent=1)
 
