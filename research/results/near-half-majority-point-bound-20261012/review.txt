@@ -1,0 +1,36 @@
+Review record, 12 October 2026: entry-2026-10-12-majority-point-bound (lem:majority-point-bound,
+ex:majority-point-bound-samples). Reviewer: one fresh-context medium-effort reviewer (Claude Code
+medium-reviewer agent), one pass. It read the draft, the spec, the registered statements of the dependencies,
+point_bound.py and both outputs.
+
+Verdict: pass with corrections. Lemma parts (1)-(5) are correct, with the ceiling lemma's hypotheses met.
+bracket() computes what the lemma defines, the greedy set is feasible, scopes are uniform, and every quoted
+number matches bounds-tilted.json. No unused hypothesis.
+
+Required changes:
+- "at ten other points it is larger": the brackets overlap at the 2% and some 5% tilted points (tilted lower
+  0.5321 against constant upper 0.5502). Say "both bounds are larger".
+- "The second run's expectation ... met at all six": eighteen points, six per system. It also could not fail:
+  moving variables off a constant point only shrinks each P_a until an opposite-label row gains k + 1 moved
+  positions (violated counts are unchanged in the output), so rho weakly rises. "The prediction having passed"
+  is then not evidence.
+- Structural reason: "only the two constant points give whole scopes" is unproved (any row monochromatic the
+  wrong way has one); "the same reason applies to any system" is untested. Label both hypotheses.
+- Follow-up, "a subset of the ones loses at most what the whole set does": true but gives only
+  rho(sigma) >= rho(1) + rho(0) - n, about 0.04 n. Rename the attempt.
+- Degenerate, "the lemma claims nothing, the system being satisfiable": true only if the system is the rows
+  alone.
+- State that (3) is lem:threshold-rows-cover-ceiling's monomials on scopes P_a, at every point.
+Title may claim: the bound at a point, above a half at 36 sampled points. Entry-meta is fine.
+
+Process audit: expectations precede both runs by commit order; bounds-tilted.json was untracked at the time of
+reading; the control uses one label at one constant point, and the lower bounds rest on reading the greedy code;
+Chosen's reason is "the review named it", not the mathematics; the search after the draft is disclosed.
+
+Suggestions (unverified): no proof found. The proportional form fails: for a union of t disjoint zero rows the
+loss is at least 10/19 of its size. LP duality: programme value >= 9 L + n - sum lambda_a |P_a| (L the sum of
+lambda), so a value below n/2 forces weighted mean |P_a| > 18, L in (n/20, n/18), overcover < n/18; this
+constrains the programme, not rho. Disjoint packings cannot do it: 0.95 coverage is needed, a first moment
+allows about 0.43. Search moves must be blocks: zero a one-row's scope among low zero-degree variables.
+
+Author's note: all applied; the corrected draft was not read again.
