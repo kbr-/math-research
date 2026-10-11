@@ -1,0 +1,36 @@
+Review record, 11 October 2026: entry-2026-10-11-symmetric-pair-rows. Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), by hand; it did not rerun the script.
+
+Verdict: pass with corrections. The lemma and proposition survive the checks of the identity, the normal
+form, the induction and the application; the control's comparison sentence is wrong.
+
+Required changes:
+- Control, "for subcube rows the recorded values are 0,1,2 ... so equations on pairs gain one": by
+  prop:symmetric-barrier-bound the subcube values at w = 1, 2, 3 are 0, 1, 3, since C(3,2) is odd and
+  w - 1 = 2 is a power of two. The gains are 0, 1, 0. Delete or restate; soften "far from tight".
+- Proposition proof, w = 0: the cited bound 2w' - 3 needs w' >= 2. Say "w >= 1" and treat w = 0 directly.
+- Control, power: a run can contradict only for D in (bound, n - 1], the single value D = 6 at n = 7. It
+  tests only odd weight (d = n), not the gap form at d < n, and shares the proof's normal form. Say so.
+- check.py and outputs: the header column subcube_value_at_width_2w has no data; remove it.
+- "For the item's named start": "by the reduction to degree d" is the wrong reason. f and the rows are
+  products with the full cube on the other coordinates; then the gap form applies. lem:static-degree-local-gap
+  was not given to the reviewer, so that step is unchecked.
+- Follow-up, "Next attempt": the route that pair flats or subcubes sit inside every flat at codimension
+  O(w) is false: inside {x_1 + ... + x_n = 0} every subcube is a point and every pair flat has codimension
+  at least n/2. Replace it.
+Unused hypotheses: none.
+
+Process audit:
+- Follow-up: this item's last entry and this one both declare bearing none; the Follow-up names a next
+  attempt here without saying the next entry goes elsewhere.
+- Structural reason, "shortens a window by at most the width": not proved.
+- Entry-meta: "shows it is not tight" holds only at these sizes.
+- Title may claim: symmetric witnesses against rows of at most w one- or two-variable equations have
+  D <= max(4w - 3, 3w - 1).
+- Chosen, Bearing, Prevention: sound.
+
+Suggestion (unverified): on {sum x = c}, f becomes symmetric in n - 1 variables with
+h(k) = g(2 ceil(k/2) + c). Add types (a1, a0, parity on s variables) to the enumeration first. With both
+parity rows at w = 1 the gap is at most 1. No ceiling or counterexample found.
+
+Author's note: all applied; the output was regenerated as table.txt with the same values.
