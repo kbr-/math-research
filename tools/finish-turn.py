@@ -312,8 +312,15 @@ OWED_PROCEDURAL_RE = re.compile(r'\b(?:\w+ )?review(?:\'s)? (?:decided|asked|nam
                                 r'\bby the decision\b|\bthe order chosen\b|\bthe plan was\b', re.I)
 OWED_REVIEWER_READ_RE = re.compile(r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
 OWED_FROM = '2026-10-12'
-ATTEMPT_CHECKED_RE = re.compile(r'<strong>Verification gate\.</strong>.*?<strong>Attempt checked\.</strong>\s*\S[^<]{40,}',
-                                re.S)
+GATE_PARAGRAPH_RE = re.compile(r'<p><strong>Verification gate\.</strong>(.*?)</p>', re.S)
+
+
+def attempt_checked(text):
+    """Whether the entry's Verification gate paragraph says, after its Attempt checked. marker, at least forty
+    characters of plain text before the next marker."""
+    gate = GATE_PARAGRAPH_RE.search(text)
+    said = re.search(r'<strong>Attempt checked\.</strong>(.*?)(?=<strong>|$)', gate.group(1) if gate else '', re.S)
+    return bool(said) and len(html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip()) >= 40
 
 
 def validate_owed_unmade(body, article, close):
@@ -1146,7 +1153,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                 # Four reviews in a row posed a test their reviewer then closed in a few lines: the gate of a
                 # review says what the reviewer found when it tried the step at which the Attempt stops.
                 dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
-                if dated and dated.group(1) >= OWED_FROM and not ATTEMPT_CHECKED_RE.search(text):
+                if dated and dated.group(1) >= OWED_FROM and not attempt_checked(text):
                     raise ValueError('A review\'s Verification gate must say, after "<strong>Attempt checked.'
                                      '</strong>", what its reviewer found on trying to close the step at which '
                                      'the Decisive test\'s Attempt stops: ask for that in the second-stage brief '

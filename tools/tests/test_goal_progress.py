@@ -549,5 +549,11 @@ class AttemptCheckedTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Attempt checked'):    # the marker alone says nothing
             validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE
                                       + self.GATE.split('The reviewer')[0] + '</p>')))
+        # Markup at the sentence's start does not hide it; the marker in another paragraph does not count.
+        tagged = self.GATE.replace('The reviewer tried', '<a href="r.txt">The reviewer</a> tried')
+        validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE + tagged)))
+        elsewhere = self.GATE.replace('<strong>Verification gate.</strong>', '<strong>Remark.</strong>')
+        with self.assertRaisesRegex(ValueError, 'Attempt checked'):
+            validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE + elsewhere)))
         # Reviews recorded before the rule are left alone.
         validate(notebook(article('entry-2026-10-11-review', kind='review', content=REPORT + ARCHITECTURE)))

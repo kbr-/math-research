@@ -385,6 +385,14 @@ def main():
             print(f'  {len(earlier)} earlier entries developed it; read each before planning on it:')
             for entry_anchor, title in earlier:
                 print(f'    #{entry_anchor}: {title[:140]}')
+        # What its entries computed: a test posed on the item, or a control planned for it, starts from these.
+        import lead_queue
+        try:
+            files = lead_queue.result_files(result, ident)
+        except (ValueError, KeyError):
+            files = []
+        if files:
+            print(f'  Result files its entries link ({len(files)}): ' + ', '.join(files))
 
 
 if __name__ == '__main__':
