@@ -1,0 +1,32 @@
+Review record, 11 October 2026: entry-2026-10-11-dense-row-profile-rank. Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), by hand and with small checks of its own.
+
+Verdict: pass with corrections. The lemma, proposition (a) and (b), the three facts, the script and the table
+all check; no error found. w >= 1 is right for (a) (only 2^w - 1 odd is needed; an atom of size one is
+harmless). The barrier at D = w in (b) follows. factor() and dstar() compute the stated quantity; the control
+exercises all four factor branches against an independent enumeration; 33 is right.
+
+Required changes:
+- "At w <= 3 the check is exhaustive ... a proof under its hypotheses on sizes": the script assumes large
+  atoms and enough free variables, the conjecture only nonempty atoms and one free variable. Add the missing
+  reason: every value is at most w + 1, and S_w, S_{w+1} use only |T| <= 1. Call it computer-assisted.
+- Setup, "degree at most codim V + |T|": unproved. Give one line or drop it.
+- Best outcome, "an exponential answer closes symmetric witnesses": backwards; the linear or additive answer
+  limits them.
+- Follow-up, "closed ... at every width": add "with a free variable, above w + 1"; all atoms nonempty forces
+  w <= log2 n.
+Process audit: unasked: rows with empty atoms, the only kind beyond logarithmic width; (a)'s sum fails there.
+Prevention "none added": no reason given. The ceiling control is too loose to fail in practice. Bearing
+"none": agreed. Entry-meta: accurate. Title may claim: Dstar = w + 1 for all atoms odd (w >= 2, free
+variable), Dstar in {w, w+1} for all patterns at w <= 3 and 42 at w = 4, conjectured generally.
+Suggestions (unverified): no proof or counterexample found. A check the reviewer ran (python3 -c, a different
+route, |T| <= 1 generators only): 1 in S_{w+1} for all 32768 patterns at w = 4, and 4000 random patterns each
+at w = 5, 6. Reduction: in F_2[u][G] with x_mu = 1 + e_mu, x_mu^2 = 0: R = prod over O of (1 + u x_mu),
+R^2 = 1, R^{O xor nu} = R (1 + u x_nu); S_{w+1} = span{R_0, u R_0, R_{c1}, u R_{c1}} + u(1+u) W,
+W = {sum lambda_nu R_nu : sum lambda_nu = 0}. For c1 = 0 the conjecture is equivalent to
+(1 + R_0)/(u(1+u)) in W; for c1 != 0, to (1 + R_0 + R_{c1})/(u(1+u)) in W + <R_0/(1+u), R_{c1}/u>. Also
+R_c = sum over independent S in O with c in span S of u^|S|, and the derivative R_0' lies in W. Tried
+(1+u) R + u e_{c1} R = 1 + u(1+u) b R with b in the augmentation ideal; it stopped because b has coefficients
+in F_2[u], not F_2.
+
+Author's note: all applied. The reviewer's own check is not rerun and not registered.
