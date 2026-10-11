@@ -610,6 +610,31 @@ def group_of(body, nodes, item, position=None):
     return record_parent(body, item, position) or item
 
 
+LINK_EARLIER_FROM = '2026-10-11'   # entries dated from here on; older records are not retrofitted
+
+
+def unlinked_earlier_entry(body, nodes, articles, item):
+    """The anchor of the most recent earlier entry that developed `item` itself, or else the one that developed
+    the top-level item of its group, when the last entry does not link it; None otherwise.  Entries on sibling
+    sub-ideas are not required.  An entry of 11 October 2026 re-derived a lemma and a failed attempt recorded
+    the day before under the same item's parent, found by no registry search."""
+    tag, text = articles[-1]
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if dated is None or dated.group(1) < LINK_EARLIER_FROM:
+        return None
+    last = len(articles) - 1
+    for target in dict.fromkeys((item, group_of(body, nodes, item, last))):
+        for position in range(last - 1, -1, -1):
+            old_tag, old_text = articles[position]
+            work = developed_by(old_tag, old_text)
+            if work and work[0] == target:
+                anchor = re.search(r'\bid="([^"]+)"', old_tag)
+                if anchor is not None and f'href="#{anchor.group(1)}"' not in text:
+                    return anchor.group(1)
+                break
+    return None
+
+
 def spell_entries(body, item, nodes=None, end=None):
     """Positions in the current spell, oldest first; reviews and user picks do not count."""
     if nodes is None:
@@ -1139,6 +1164,12 @@ def check(head_body, body, path=None, root=None):
     work = developed_by(tag, text)
     batch = triaged(tag, text)
     chosen = picked(tag, text)
+    if work:
+        earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
+        if earlier:
+            raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
+                             'entry, after reading it, so that work already recorded on the item is not repeated '
+                             '(AGENTS.md, restoration and research discipline)')
     if work and batch:
         raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
                          'batch, not both')

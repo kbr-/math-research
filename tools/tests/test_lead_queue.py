@@ -1378,6 +1378,34 @@ class LeadQueueTest(unittest.TestCase):
 
 
 
+class LinkEarlierWorkTest(unittest.TestCase):
+    """An entry on a queue item links the latest earlier entry on that item's group."""
+
+    def entry(self, ident, item, body=''):
+        return (f'<article id="{ident}" data-kind="research" data-route="step" data-{item[0]}="{item[1]}">{body}'
+                '<p><strong>Follow-up.</strong> Continuing: x.</p></article>')
+
+    def unlinked(self, articles, queue, item):
+        body = notebook(articles, queue)
+        return lq.unlinked_earlier_entry(body, lq.parse_tree(body)[1], lq.record_articles(body), item)
+
+    def test_the_latest_earlier_entry_of_the_group_is_linked(self):
+        parent, child, sibling, other = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2'), ('lead', 'r:2')
+        queue = [(parent, [child, sibling]), other]
+        between = [self.entry('entry-2026-10-10-old', parent), self.entry('entry-2026-10-10-sib', sibling)]
+        self.assertEqual(self.unlinked(between + [self.entry('entry-2026-10-11-new', child)], queue, child),
+                         'entry-2026-10-10-old')                                   # a sibling's entry is not it
+        old = self.entry('entry-2026-10-10-old', parent)
+        self.assertEqual(self.unlinked([old, self.entry('entry-2026-10-11-new', child)], queue, child),
+                         'entry-2026-10-10-old')                                   # the child's group is the parent's
+        linked = self.entry('entry-2026-10-11-new', child, '<a href="#entry-2026-10-10-old">earlier</a>')
+        self.assertIsNone(self.unlinked([old, linked], queue, child))
+        self.assertIsNone(self.unlinked([old, self.entry('entry-2026-10-11-new', other)], queue, other))
+        self.assertIsNone(self.unlinked([old, self.entry('entry-2026-10-10-late', child)], queue, child))  # older date
+        with self.assertRaisesRegex(ValueError, 'link that entry'):
+            lq.check(None, notebook([old, self.entry('entry-2026-10-11-new', child)], queue))
+
+
 class LastItemGuidanceTest(unittest.TestCase):
     def test_start_guidance_counts_the_chosen_items_spell(self):
         import importlib.util
