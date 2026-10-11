@@ -293,6 +293,11 @@ OWED_PARAGRAPH_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!<
 OWED_UNMADE_RE = re.compile(r'\bnot reached\b|\bnot made\b|\bunmade\b|\b(?:did|have) not read\b|\bnot read by me\b|'
                             r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
 OWED_REASON_RE = re.compile(r'\bbecause\b|\bsince\b|\bcame first\b|\bcomes first\b|\bthe reason\b', re.I)
+OWED_PROCEDURAL_RE = re.compile(r'\b(?:\w+ )?review(?:\'s)? (?:decided|asked|named|gave|said|listed|put|having put|'
+                                r'replaced|chose|decision)\b|\bby the (?:\w+ )?review\'s decision\b|'
+                                r'\bthe (?:last )?next step (?:asked|named|said)\b|\bthe reviewer asked\b|'
+                                r'\bby the decision\b|\bthe order chosen\b|\bthe plan was\b', re.I)
+OWED_REVIEWER_READ_RE = re.compile(r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
 OWED_FROM = '2026-10-12'
 
 
@@ -306,6 +311,24 @@ def validate_owed_unmade(body, article, close):
         return
     for found in OWED_PARAGRAPH_RE.finditer(body[article:close]):
         plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1)))
+        handed = OWED_REVIEWER_READ_RE.search(plain)
+        if handed:
+            # The queued item's own case: on 11 October 2026 an entry said of an owed proof "I did not read: I
+            # chose the induction first because ... the reviewer then read the transfer proof", and passed the
+            # check by its "because".  A reviewer's reading is not the author's attempt.
+            raise ValueError(f'The Owed attempt paragraph gives the reviewer\'s reading in place of the named '
+                             f'attempt ("{handed.group(0)}"): give the result of your own reading, or report the '
+                             'attempt unmade with what about the mathematics puts another first, and leave the '
+                             'reviewer\'s reading to the Verification gate (AGENTS.md, Owed attempt)')
+        procedural = OWED_UNMADE_RE.search(plain) and (OWED_PROCEDURAL_RE.search(plain)
+                                                       or PROCEDURAL_REASON_RE.search(plain))
+        if procedural:
+            # Measured on 11 October 2026 on every notebook: of 109 Owed attempt paragraphs 2 give the reviewer's
+            # reading and 25 more report the attempt unmade; of the 25, 14 have no reason word, 5 name a
+            # procedure (a review's decision, the order chosen) and 6 pass.
+            raise ValueError(f'The Owed attempt paragraph reports the named attempt unmade and gives a procedural '
+                             f'reason ("{procedural.group(0)}"): say what about the mathematics, or the evidence, '
+                             'puts another attempt first, or make it (AGENTS.md, Owed attempt)')
         if OWED_UNMADE_RE.search(plain) and not OWED_REASON_RE.search(plain):
             raise ValueError('The Owed attempt paragraph reports the named attempt unmade, or made by the reviewer, '
                              'without the reason another came first: make the attempt, or say why it waits '

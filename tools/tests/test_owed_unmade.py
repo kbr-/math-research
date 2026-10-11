@@ -56,6 +56,30 @@ class OwedUnmadeTest(unittest.TestCase):
         FT.validate_owed_unmade(*entry('The proof is not reached, because the induction that uses it had to be '
                                        'checked first to know which scales it must return.'))
 
+    def test_unmade_with_a_procedural_reason_is_refused(self):
+        # Recorded wordings of 11 October 2026 (the first four), a draft's, and the Bearing check's own pattern.
+        for text in ('The reading is again not made: the review gave this entry to the screen, since it came first.',
+                     'Made or replaced in the entries after each, and one not made, since it was left by the '
+                     'seventh review\'s decision to stop the cluster propositions.',
+                     'The localization (not made; the review put the one-sided test first), since it waits.',
+                     'Not made, because the seventh review replaced it by its decisive test.',
+                     'Not made, because the eighth review having put this lemma first, and still owed.',
+                     'Not reached, since the last review decided the order.'):
+            with self.assertRaisesRegex(ValueError, 'procedural'):
+                FT.validate_owed_unmade(*entry(text))
+        # A review named beside an attempt that was made is no reason at all, and passes.
+        FT.validate_owed_unmade(*entry('Made here, as the review asked: the proof is read whole.'))
+
+    def test_the_reviewer_s_reading_is_not_the_attempt_even_with_a_reason(self):
+        # The recorded wording of the entry the queued item was written on.
+        with self.assertRaisesRegex(ValueError, 'reviewer\'s reading in place'):
+            FT.validate_owed_unmade(*entry('Its own proof I did not read: I chose the induction first because it '
+                                           'could be checked completely in one sitting; the reviewer then read the '
+                                           'transfer proof.'))
+        # An attempt put off with a reason in the mathematics, and no reviewer in its place, passes.
+        FT.validate_owed_unmade(*entry('Its own proof I did not read, because the induction that uses it fixes '
+                                       'which scales it must return.'))
+
     def test_attempt_made_passes(self):
         FT.validate_owed_unmade(*entry('Made here: the proof is read whole, with no error found.'))
 
