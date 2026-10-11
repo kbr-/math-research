@@ -897,12 +897,12 @@ def validate_bearing(body, article, progress, text=None):
                              f'"<strong>Not covered.</strong>" and at least {NOT_COVERED_MIN} characters '
                              'listing the cases its result does not reach, with no summary after the list '
                              '(AGENTS.md, goal progress)')
-    item =re.search(r'data-(?:check|lead|bridge)="([^"]+)"', tag)
+    item = re.search(r'data-(?:check|lead|bridge|idea|build)="([^"]+)"', tag)
     if item is None:
         return
     earlier = [t for t in re.findall(r'<article\b[^>]*>', body[:article])
                if f'data-route="{route}"' in t and 'data-kind="research"' in t][-2:]
-    same = [t for t in earlier if re.search(r'data-(?:check|lead|bridge)="' + re.escape(item.group(1)) + '"', t)
+    same = [t for t in earlier if re.search(r'data-(?:check|lead|bridge|idea|build)="' + re.escape(item.group(1)) + '"', t)
             and 'data-bearing="none"' in t]
     if len(same) == 2:
         raise ValueError(f'The last two entries developed {item.group(1)} and declared that they give nothing '

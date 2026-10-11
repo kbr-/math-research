@@ -431,6 +431,13 @@ class BearingTest(unittest.TestCase):
             self.check([none, none], said, last='data-check="a:1" data-bearing="none"')
         some = ('research', 'unchanged', 'data-check="a:1" data-bearing="some"')
         self.check([none, some], said, last='data-check="a:1" data-bearing="none"')
+        # An item queued as an idea or a build is held to the same rule: on 11 October 2026 a third entry
+        # without bearing on a data-idea item was drafted and the check, which knew only three kinds, let it by.
+        for kind in ('idea', 'build'):
+            row = ('research', 'unchanged', f'data-{kind}="x" data-bearing="none"')
+            with self.assertRaisesRegex(ValueError, 'different queue item'):
+                self.check([row, row], said, last=f'data-{kind}="x" data-bearing="none"')
+            self.check([row, row], said, last=f'data-{kind}="y" data-bearing="none"')
 
     def test_after_three_entries_without_bearing_the_next_states_its_best_outcome(self):
         said = 'Unchanged. <strong>Bearing.</strong> ' + 'Nothing at the degree the goal needs; spent to decide the item.'

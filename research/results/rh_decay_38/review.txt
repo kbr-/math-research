@@ -1,0 +1,45 @@
+Reviewer's record for the held draft "completed sum decay" (riemann notebook, 11 October 2026). One
+fresh-context medium reviewer, read-only.
+
+Verdict: pass with corrections. No kernel bug found; the numbers are real; the interpretation is stronger
+than the data; and a framework rule forbids the entry as drafted.
+
+Kernel and provenance.
+- gamma_split (index table, phase attached to t = j b^-1, exact reseed): correct by inspection. The dump
+  comparison covers N(n) <= 700 only, so the reseed branch (p >= 2048) is not exercised by it.
+- gamma2_dump.txt was written after sums_decay.txt, so it comes from another invocation; state which.
+- Predictions: commit at 15:14:47, header identical now, output absent from the commit, output written 55 s
+  later. This cannot exclude an earlier scratch run with this weight; cite the launcher's record.
+- dual_weight.gp: integrand, Mellin convention, constant and contour match the source (lines 1745-1760); the
+  trapezoid rule is adequate. The table is not monotone and "order one below 0.1" hides 0.024 at x = 0.03.
+- The source requires a smooth compactly supported weight; the cut log-Gaussian is neither smooth at the cut
+  nor the function transformed.
+
+Required changes.
+- Title, Goal progress, "What it shows": "as its transformation formula requires", "of the size and at the
+  scale its formula predicts", "setting in where the formula puts it" are unsupported. At X = 32768 the least
+  argument is 0.31, where |V#| is 0.04 to 0.13; the stated bounds allow terms near 1e-2 and do not require
+  7.5e-4; the fall starts before the predicted range. Say "consistent with; onset and size not tested".
+- Table: print all ten sizes; the omitted ones are the non-monotone rows.
+- "Closer to X^-1": endpoint-dependent; say "faster than X^-1/2; exponent not determined".
+- Floor: the upper cut contributes about 2.2e-3 * sqrt(e^3.5) = 5.8 times the normalised sharp sum, up to
+  1e-2 if sharp sums were at random-walk size. The cut can create the floor but not the fall.
+- "Without the cube completion": weaken; no scale was computed for that column.
+- L = 18, c_0 | 6 and 1/104976 are right; call 104976 an upper bound, not the conductor.
+- "A test it could have failed": fair against a pole; but decay follows from pole-free continuation, and at
+  the trivial row that is classical.
+- Review answer (2): right about the chat, wrong about the entry.
+- Sub-idea list: "Completed by this entry ... Continuing" is contradictory.
+- Removal read: the sub-idea on the conductor, marked Developed, is justified with the wording "upper bound".
+
+Suggestions (unverified): rerun with the cut at 4.5 or 5 to measure the floor; vary the width s, whose onset
+shift is a quantitative prediction; fit the large-X values to a few terms of the dual sum; check
+|gamma_2(p)| = 1 for p >= 2048.
+
+Process audit.
+- The two preceding entries on this item both declare no bearing; the rule says the next entry develops a
+  different item. The draft gives no ground for overriding it: rotate, or record an override.
+- The title's "settled" and "as its transformation formula requires" are stronger than the body.
+- Unasked: why the fall begins at X = 64.
+- The Process assessment omits that the committed onset range was not confirmed.
+- Nonvacuity rests on a floor-level point.
