@@ -358,11 +358,12 @@ class CadenceLineTest(unittest.TestCase):
                     f'<article id="e{i}" data-kind="{kind.split(":")[0]}" data-route="{kind.split(":")[-1]}">x</article>'
                     for i, kind in enumerate(kinds)) + '</section>')
 
-    def test_the_line_counts_research_entries_of_the_last_entry_s_route_since_its_review(self):
+    def test_the_line_counts_research_entries_since_the_last_review_as_the_finisher_does(self):
+        # Every route counts and an audit does not, as in the finisher's own scan.
         line = tool.cadence_line(self.record('research:r', 'review:r', 'research:r', 'research:other', 'audit:r',
                                              'research:r'))
-        self.assertEqual(line, 'Review cadence on route r: 2 research entries since the last route review, this '
-                               'one included; 4 more, then the review.')
+        self.assertEqual(line, 'Review cadence: 3 research entries since the last route review, this one included; '
+                               '3 more, then the review.')
         self.assertIn('the next entry is the review', tool.cadence_line(self.record(*['research:r'] * 6)))
         self.assertIn('0 research entries', tool.cadence_line(self.record('research:r', 'review:r')))
         self.assertIsNone(tool.cadence_line('<section id="research-record"></section>'))

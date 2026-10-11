@@ -378,18 +378,14 @@ def cadence_line(text):
     tags = re.findall(r'<article\b[^>]*>', text[text.find('<section id="research-record"'):])
     if not tags:
         return None
-    route = re.search(r'data-route="([^"]*)"', tags[-1])
     streak = 0
-    for tag in reversed(tags):
-        if route and f'data-route="{route.group(1)}"' not in tag:
-            continue
+    for tag in reversed(tags):      # as the finisher counts: every research entry back to the last review
         kind = re.search(r'data-kind="([^"]*)"', tag)
         if kind and kind.group(1) == 'review':
             break
         streak += bool(kind and kind.group(1) == 'research')
     left = REVIEW_PERIOD - streak
-    where = f' on route {route.group(1)}' if route else ''
-    return (f'Review cadence{where}: {streak} research entries since the last route review, this one included; '
+    return (f'Review cadence: {streak} research entries since the last route review, this one included; '
             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
 
 

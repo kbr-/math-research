@@ -383,7 +383,7 @@ def third_deferral_line(body, article, close):
 
 def validate_review_builds(body, article, close):
     """A review whose period (the entries on its route since the previous review, itself included) queued
-    build items that are still queued, and in which no build item was recorded Developed, names each of
+    build items that are still queued, and which made fewer builds than remain queued from it, names each of
     them in a <p><strong>Builds.</strong> paragraph with what becomes of it: a queued check that is never
     built prevents nothing (reviewer, 11 October 2026: seven checks queued in one period, none built)."""
     tags = entry_tags(body, article)
