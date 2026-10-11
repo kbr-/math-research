@@ -1,0 +1,48 @@
+{
+  "source": {
+    "record": "[Long-sum local converse](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-long-sum-local-converse)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-long-sum-local-converse"],
+    "label": "An explicit local inequality between zeros in a disk and coefficient sums at one height, and its long-sum limit"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:local-zero-sum-inequality",
+      "summary": "For f analytic on |s - s0| <= R, s0 = 1 + mu + i tau0, with |f| <= e^M |f(s0)| there, f'/f = sum b_n n^-s, |b_n| <= B log n, K >= 1 zeros in the half disk at least distance d from s0, and |sum over y < n <= y' of b_n n^(-i tau0)| <= S y log^A y for X <= y < y' <= 2y: for every integer m >= 1 with mu log X <= m+1 there is k in (m, m+K] with 2 (K/(8e(m+K)))^K d^-k <= (E_low + E_up)/(k-1)! + 2 M k (2/R)^k, E_low = B[(log X)^(k+1) X^-mu + (k/(e(1+mu)))^k], E_up = 3 S Gamma(k+A) mu^(-k-A) (1/log 2 + 3 mu).",
+      "assessment": "Working proof: the zeros are separated by a maximum-principle and coefficient bound for a function with bounded real part, the power sum is bounded below by Turan's second main theorem (published; read, not audited), and the Dirichlet series is split at X with partial summation on dyadic blocks. An explicit-parameter version of the mechanism of the published local implication.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Makes the dependence of the local implication on the number of zeros in the disk, the disk's size and the length of the sums explicit, which the published proof fixes.",
+      "next_action": "State the two local hypotheses for zeta from a read source and the corollary for zeta; read the published converse.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry, depending on one published theorem read and not audited.",
+        "formalization": "No formalization.",
+        "significance": "Context: an explicit form of a classical mechanism. Novelty not claimed.",
+        "relationships": "Explicit-parameter relative of the published local implication."
+      }
+    },
+    {
+      "id": "cor:long-sum-local-converse",
+      "summary": "Let 0 < x < theta <= 1. With mu = x/r for a suitable r depending on x/theta, and any kappa, M0: for all large a and all large tau0, if f is as in the local zero-sum inequality on the disk of radius 4(mu + x) about 1 + mu + i tau0 with at most kappa log tau0 zeros in the half disk and M <= M0 log tau0, and the coefficient sums at height tau0 satisfy the bound with S = C tau0^(-theta a) for all y >= tau0^a, then f(1 - x + i tau0) != 0. The example f = 1 - 2^-s shows the range is sharp at theta = 1.",
+      "assessment": "Conditional result with a complete proof from the lemma: the loss from the other zeros is of order kappa log a against margins of order a. An abstract statement: for zeta the premise as stated is false when theta a > 1, because the pole gives the sums of Lambda(n) n^(-i tau0) a main term of size about y/tau0; the repair (removing the pole's term) is not made, and the two local hypotheses are not read.",
+      "status": "conditional",
+      "category": "context",
+      "rationale": "Shows for an abstract function how long sums pay for the other zeros in the local implication; not yet applicable to zeta.",
+      "next_action": "Repair the premise for zeta by removing the pole's contribution, and decide whether the repaired premise is local in the height.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Conditional on a count of zeros, a growth bound and the sum bound; complete proof from the lemma.",
+        "formalization": "No formalization.",
+        "significance": "Context: likely classical in substance. Novelty not claimed.",
+        "relationships": "Sharpens the constant of the published local implication under stated local hypotheses."
+      }
+    }
+  ],
+  "relationships": [
+    ["cor:long-sum-local-converse", "depends_on", "lem:local-zero-sum-inequality", "The corollary is the lemma with parameters chosen and exponents compared."],
+    ["lem:local-zero-sum-inequality", "cites", "thm:turan-class-local-implication", "Same mechanism with the parameters left free."]
+  ]
+}
