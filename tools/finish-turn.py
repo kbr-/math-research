@@ -477,6 +477,26 @@ def validate_developed_readings(text):
                              'statement in its text, or keep the sub-idea Continuing (AGENTS.md)')
 
 
+def validate_structural_reason(text, statuses=()):
+    """An entry reporting a counterexample or a refutation of a hypothesis says why it works.
+
+    AGENTS.md asks that an exclusion's structural reason be extracted and tried on the other candidates.  Two
+    entries of 11 October 2026 reported counterexamples to a hypothesis without it, and the reason, that 1 was
+    a constant-coefficient combination of the rows, was drawn only by a reviewer two entries later.  The
+    trigger is the word counterexample in the title or the New mathematics paragraph, or a claim registered as
+    a refutation; "refutation" alone is not one, being the name of a proof in this subject."""
+    title = re.search(r'<h3\b[^>]*>(.*?)</h3>', text, re.S)
+    told = (title.group(1) if title else '') + ' ' + report_paragraph(text, 'New mathematics')
+    if 'refutation' not in statuses and not re.search(r'\bcounterexamples?\b', told, re.I):
+        return
+    given = re.search(r'<strong>Structural reason\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    if len(plain) < 60:
+        raise ValueError('This entry reports a counterexample or registers a refutation: say, after '
+                         '<strong>Structural reason.</strong> and in at least 60 characters, why it works and to '
+                         'which other candidates or hypotheses the reason applies (AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -642,6 +662,11 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
         validate_developed_readings(text)
+        if check_registered_claims:
+            known = registered_status()
+            validate_structural_reason(text, {known.get(cid) for cid in entry_claims(body, article)})
+        else:
+            validate_structural_reason(text)
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)
     if state == 'advanced':

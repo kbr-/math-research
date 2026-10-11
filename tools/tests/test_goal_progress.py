@@ -69,9 +69,14 @@ class GoalProgressTest(unittest.TestCase):
     def test_advance_requires_declared_proof_evidence_not_case_count(self):
         body = notebook(article('a', progress='advanced', content=REPORT.replace(
             'remains unchanged', 'is discharged by thm:result'), attrs='data-claims="thm:result"'))
-        for status in ('working_proof', 'conditional', 'established', 'refutation'):
+        for status in ('working_proof', 'conditional', 'established'):
             with patch.object(FT, 'registered_status', return_value={'thm:result': status}):
                 validate(body)
+        with patch.object(FT, 'registered_status', return_value={'thm:result': 'refutation'}):
+            with self.assertRaisesRegex(ValueError, 'Structural reason'):     # a refutation says why it works
+                validate(body)
+            validate(body.replace('</article>', '<p><strong>Structural reason.</strong> The hypothesis fails because '
+                                  'one is a constant combination of the rows, as for every such family.</p></article>'))
         for status in ('finite_check', 'conjecture', 'context', None):
             with patch.object(FT, 'registered_status', return_value={'thm:result': status}):
                 with self.assertRaisesRegex(ValueError, 'Advanced Goal progress'):
@@ -185,6 +190,26 @@ class ClosureStakesTest(unittest.TestCase):
         with self.assertRaises(ValueError):                                                # too short to say anything
             FT.validate_closures('<p><strong>Stakes.</strong> none. <strong>Follow-up.</strong> Closed: x.</p>'
                                  + self.LINK)
+
+
+class StructuralReasonTest(unittest.TestCase):
+    REASON = ('<p><strong>Structural reason.</strong> One is a combination of the rows with constant coefficients; '
+              'random rows of width three are not expected to have one.</p>')
+
+    def test_a_counterexample_or_registered_refutation_needs_its_reason(self):
+        plain = '<h3>A bound</h3><p><strong>New mathematics.</strong> A PC refutation of degree three exists.</p>'
+        FT.validate_structural_reason(plain)                                        # "refutation" alone: a proof
+        told = '<h3>A counterexample to independence</h3><p><strong>New mathematics.</strong> Rows.</p>'
+        with self.assertRaisesRegex(ValueError, 'Structural reason'):
+            FT.validate_structural_reason(told)
+        FT.validate_structural_reason(told + self.REASON)
+        inside = '<h3>Rows</h3><p><strong>New mathematics.</strong> Two counterexamples below a threshold.</p>'
+        with self.assertRaises(ValueError):
+            FT.validate_structural_reason(inside + '<p><strong>Structural reason.</strong> Short.</p>')
+        with self.assertRaises(ValueError):
+            FT.validate_structural_reason(plain, {'refutation', 'working_proof'})
+        FT.validate_structural_reason(plain + self.REASON, {'refutation'})
+        FT.validate_structural_reason(plain, {'working_proof', None})
 
 
 class DevelopedReadingTest(unittest.TestCase):
