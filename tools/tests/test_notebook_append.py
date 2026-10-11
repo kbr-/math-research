@@ -176,7 +176,7 @@ class NotebookAppendTests(unittest.TestCase):
         source = routed('<article id="review" data-kind="review" data-route="general-step">' +
                         ARCHITECTURE + '</article>')
         outside = '<p>Question: <a href="#review">previous review</a>.</p>'
-        outcome = ('<p><strong>Architecture test.</strong> The attempted construction failed '
+        outcome = ('<p><strong>Architecture test.</strong> <strong>Decided.</strong> The attempted construction failed '
                    'its stated general test and changes the next action.</p>')
         with self.assertRaisesRegex(ValueError, 'Architecture test must'):
             tool.append(source, draft(content=outside + outcome))

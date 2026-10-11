@@ -421,6 +421,9 @@ def validate_nonvacuity(text):
                          'numerical verification)')
 
 
+VERDICT_RE = re.compile(r'<strong>\s*(?:Not decided|Decided)\.?\s*</strong>')
+
+
 def require_report(text, label):
     value = report_paragraph(text, label)
     plain = html.unescape(re.sub(r'<[^>]*>', ' ', value)).strip()
@@ -1059,6 +1062,10 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             if not re.search(r'href=["\']#' + re.escape(target) + r'["\']', evidence):
                 raise ValueError(f'Architecture test must report the outcome of the scheduled decision '
                                  f'and link #{target}; a further local lemma is not a substitute')
+            if not VERDICT_RE.search(evidence):
+                raise ValueError('Architecture test must say <strong>Decided.</strong> or <strong>Not '
+                                 'decided.</strong> and which of the review\'s outcomes occurred: a test left '
+                                 'unanswered is reported as not decided, not as a changed question (AGENTS.md)')
 
 
 def entry_claims(body, article):

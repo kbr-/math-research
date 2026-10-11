@@ -51,7 +51,8 @@ class NonvacuityTest(unittest.TestCase):
 
 
 def test_report(target):
-    return (f'<p><strong>Architecture test.</strong> The <a href="#{target}">decisive test</a> '
+    return (f'<p><strong>Architecture test.</strong> <strong>Decided.</strong> The '
+            f'<a href="#{target}">decisive test</a> '
             'failed on the recorded counterexample, so the proposed weakening is rejected.</p>')
 
 
@@ -149,6 +150,11 @@ class GoalProgressTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, '#review'):
             validate(notebook(review, article('next', content=REPORT + test_report('wrong'))))
         tested = article('test', content=REPORT + test_report('review'))
+        with self.assertRaisesRegex(ValueError, 'Not decided'):
+            validate(notebook(review, article('vague', content=REPORT + test_report('review').replace(
+                '<strong>Decided.</strong> ', ''))))
+        validate(notebook(review, article('open', content=REPORT + test_report('review').replace(
+            '<strong>Decided.</strong>', '<strong>Not decided.</strong>'))))
         validate(notebook(review, tested))
         validate(notebook(review, tested, article('later')))
         self.assertEqual(FT.pending_architecture_test(notebook(review, tested)), {})

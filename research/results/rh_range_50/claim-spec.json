@@ -1,0 +1,74 @@
+{
+  "source": {
+    "record": "[Range negativity](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-range-negativity)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-range-negativity"],
+    "label": "Range negativity"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:one-sided-half-plane-equivalence",
+      "summary": "Finite configuration, Fejer kernel K_L, off-line pairs gamma_j +- i delta_j of multiplicity m_j: (a) D_off(tau) >= - sum m_j e^{delta_j L} min(2L, 8/(L((tau - gamma_j)^2 + delta_j^2))), so if all delta_j <= theta and theta L >= 2 the density is at least -8 M e^{theta L}/(L theta^2); (b) with delta* the largest distance and tau off the heights and midpoints of the pairs at delta*, for every L_1 some L > L_1 has D_L(tau) <= -q' e^{delta* L}/L, q' < q = sum |c_j|^2/(2 sum |c_j|), c_j = m_j/(tau - gamma_j - i delta*)^2; hence D_L(tau) >= -C e^{theta L} for all large L forces delta* <= theta.",
+      "assessment": "Working proof: two elementary bounds for the kernel at complex arguments; the leading term at the largest distance is a real trigonometric polynomial in L with mean zero, whose negative part has mean at least q.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows that the one-sided premise for all lengths is, in the model, the statement that no pair is farther than theta from the line.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; part (a) holds in 96000 numerical samples with a negative control failing in 12 of 12 cases; part (b) in 20 configurations over a finite window.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: elementary; a restatement result. No novelty search beyond the registry.",
+        "relationships": "Uses the expansion of the one-sided density decomposition; complements the separated pair negativity, which gives an explicit length for one pair."
+      }
+    },
+    {
+      "id": "lem:product-range-mean",
+      "summary": "I(a) = (1/a) int_a^{2a} log|2 cos u| du >= -2 for every a > 0; hence for P(y) = prod_{i<=n} (1 + e^{-i y eta_i}), eta_i > 0 (nonnegative integer coefficients, sum M = 2^n) and every L_0 > 0, the mean of log|P| over [L_0, 2 L_0] is at least -2n and sup over that interval of |P|/M is at least M^{-1 - 2/log 2}.",
+      "assessment": "Working proof by counting the intervals where |2 cos| < 1 that [a, 2a] meets, each carrying the Clausen value Cl_2(pi/3) of the negative part.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Bounds how deeply a product family, the known way of hiding a cluster on a range of lengths, can hide: by a fixed power of its total multiplicity.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the least value of I on a numerical grid is -1.02.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: elementary. No novelty search beyond the registry.",
+        "relationships": "The product family generalizes the binomial clusters of the hidden cluster length to a range of lengths."
+      }
+    },
+    {
+      "id": "thm:range-negativity",
+      "summary": "Off-line pairs at one distance delta with heights in an interval of length c delta, c <= 1, b_0 = delta L_0 > 1, kappa > 1, Lambda* = (pi c/2)(b_0 - 1)(kappa b_0 - 1)/((kappa - 1) b_0) <= pi c kappa b_0/(2(kappa - 1)): sup over L in [L_0, kappa L_0] of sup_tau Re G_L is at least (pi^2/100)(e^{-1 - Lambda*} - 4 b_0 e^{-b_0})_+^2 M/delta^2, with no dependence on the number of pairs, gaps or multiplicities; against the factor e^{b_0} the exponent is positive exactly when c < (kappa - 1)/(pi kappa).",
+      "assessment": "Working proof: the one-sided Fourier relation at x = 1/delta for every length of the range bounds the cluster's sum on an interval, and the harmonic majorant inequality of the positive sum majorant, as v tends to 0, bounds how small it can be there.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "A lower bound for the negative values of the off-line part over a range of lengths that does not depend on the cluster, useful for windows below delta (kappa - 1)/(pi kappa); part of its gain over the registered one-length theorem comes from using both symmetric intervals, which that proof did not.",
+      "next_action": "Remove the square root of the Fourier relation; windows of height delta are open.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry from two registered lemmas; no numerical control of its own, its bound being far below computable values.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "A range version of the narrow window negativity; neither implies the other."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:one-sided-half-plane-equivalence", "depends_on", "lem:one-sided-density-decomposition", "Uses the expansion of the pair's contribution with the error term 6/(L(u^2 + delta^2))."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "prop:separated-pair-negativity", "The one-pair case with an explicit length."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "prop:cluster-negativity-constant", "An earlier statement that no cluster at one distance keeps the off-line part nonnegative at arbitrarily large lengths."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "prop:lattice-saturation", "Same density and kernel; no logical dependence."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "prop:gap-free-cluster-sum", "A quantitative statement at one length and one distance; the equivalence is for all lengths and unequal distances."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "thm:narrow-window-negativity", "A quantitative statement at one length for narrow windows."],
+    ["prop:one-sided-half-plane-equivalence", "cites", "prop:binomial-cluster-hiding", "Clusters hidden at one length, which part (b) shows cannot stay hidden at all lengths."],
+    ["lem:product-range-mean", "cites", "prop:binomial-cluster-hiding", "The binomial clusters are the products with equal factors, there at one length."],
+    ["thm:range-negativity", "depends_on", "lem:one-sided-fourier-relation", "Applied at x = 1/delta for every length of the range."],
+    ["thm:range-negativity", "depends_on", "lem:positive-sum-majorant", "Uses the harmonic majorant inequality established in its proof."],
+    ["thm:range-negativity", "cites", "thm:narrow-window-negativity", "The one-length version, for narrower windows."],
+    ["thm:range-negativity", "cites", "prop:gap-free-cluster-sum", "A lower bound for the same supremum at one length, with a loss in the number of pairs."]
+  ]
+}

@@ -246,11 +246,12 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   statements it cites, and where that stopped: a test those statements answer in a few lines is a
   lemma for the next entry, not a test.
 
-The next research cycle on that route reports the actual outcome in **Architecture test.** and links
-the review's anchor. This can be a proof attempt, not necessarily a computation. More local lemmas
-without that test do not satisfy the requirement. An explicit user-picked task may defer the test,
-but does not clear it. These checks apply to new entries; do not retrofit or rewrite historical
-assessments.
+The next research cycle on that route reports the actual outcome in **Architecture test.**, opening
+with `<strong>Decided.</strong>` or `<strong>Not decided.</strong>` and which of the review's
+outcomes occurred (the finisher checks the word), and links the review's anchor. This can be a proof
+attempt, not necessarily a computation. More local lemmas without that test do not satisfy the
+requirement. An explicit user-picked task may defer the test, but does not clear it. These checks
+apply to new entries; do not retrofit or rewrite historical assessments.
 
 ## Notebook and claim metadata
 
