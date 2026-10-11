@@ -563,6 +563,32 @@ MAX_SERIES_ARGSETS = 4
 # completed run of the same program in the same session, whose measured time the estimate extrapolates.
 
 
+RESULT_SCRIPT_SUFFIXES = ('.py', '.gp', '.m2', '.sing', '.g', '.c', '.cpp', '.sh')
+
+
+def uncommitted_results_scripts(command):
+    """The command's script arguments under a research/results directory that git reports as modified or
+    untracked.  A control script's written expectations count as predictions only if the script was committed
+    before its run; on 11 October 2026 a commit was refused by a hook and the run chained after it went ahead.
+    A compiled kernel is run as a binary and is not seen here.  One `git status` per such argument."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in RESULT_SCRIPT_SUFFIXES or not path.is_file():
+            continue
+        full = path.resolve()
+        if '/research/results/' not in str(full):
+            continue
+        try:
+            out = subprocess.run(['git', '-C', str(full.parent), 'status', '--porcelain', '--', full.name],
+                                 capture_output=True, text=True, timeout=10)
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+        if out.returncode == 0 and out.stdout.strip():
+            found.append(arg)
+    return found
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -764,6 +790,9 @@ def run_options(parser):
                         help=f'For --expect above {LONG_RUN_S:g} s: the id of a completed smaller run of the same '
                              'program in this session (the id in its log name SESSION-ID.output.txt)')
     parser.add_argument('--category', choices=RUNS, default='computation')
+    parser.add_argument('--exploratory', action='store_true',
+                        help='Allow a computation whose script under research/results is not committed: its '
+                             'expectations then do not count as written before the run')
     parser.add_argument('--user-approved', default='',
                         help='Quote of the user\'s explicit approval for a run beyond MAX_RUN_S')
     parser.add_argument('--tail-bytes', type=int, default=0,
@@ -886,6 +915,13 @@ def main():
         journal = session_path(args.session)
         error = series_error(read_events(journal) if journal.exists() else [], command, args.timeout)
         if error: parser.error(error)
+    if args.category == 'computation' and not args.exploratory:
+        stale = uncommitted_results_scripts(command)
+        if stale:
+            parser.error('the script ' + ', '.join(stale) + ' under research/results differs from HEAD or is not '
+                         'tracked: commit it first, so that its written expectations precede the run, and check '
+                         'that the commit succeeded; --exploratory runs it anyway and the entry then says so '
+                         '(COMPUTATION_RULES.md)')
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
