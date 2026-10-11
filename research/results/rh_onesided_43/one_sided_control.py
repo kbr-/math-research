@@ -8,7 +8,11 @@ Y(tau) = sum_j m_j / ((tau - gamma_j)^2 + delta^2).
 
 Statements tested.
  S1 (decomposition)  | D_off(tau) + (2 e^b / L) Re G(tau) | <= 6 Y(tau) / L          at every grid point.
- S2 (Plancherel)     int |G|^2 d tau = 2 pi J,  J = a^* H a,  a_j = m_j e^{i L gamma_j},
+ S2 (Plancherel)     int |G|^2 d tau = 2 pi J,  J = a^* H^T a,  a_j = m_j e^{i L gamma_j},
+                     (the first run, kept as one_sided_control_first_run.json, had J = a^* H a, which is wrong
+                     when the a_j are not real up to a common phase; S2 showed it: the two other values of J
+                     agreed with each other and not with the matrix value in the two non-resonant
+                     configurations.  The expectations below were written before that run and are unchanged.)
                      H_jl = 2 / (2 delta + i (gamma_j - gamma_l))^3; also J by direct quadrature of
                      int_0^inf x^2 e^{-2 delta x} |sum a_j e^{-i x gamma_j}|^2 dx.
  S3 (cluster)        sup Re G >= c := (A1/4 - eps/2) / (W + 16 M / A1),  A1 = pi delta^2 J / M,
@@ -77,7 +81,7 @@ def main():
             s1 = float(np.max(np.abs(D + 2 * np.exp(b) / L * G.real) - 6 * Y / L))
             a = m * np.exp(1j * L * gam)
             H = 2 / (2 * DELTA + 1j * (gam[:, None] - gam[None, :])) ** 3
-            J_mat = float((a.conj() @ H @ a).real)
+            J_mat = float((a.conj() @ H.T @ a).real)     # corrected after the first run: see the header's note
             x = np.arange(0.0, 80.0, 0.0005)
             P = (a[None, :] * np.exp(-1j * x[:, None] * gam[None, :])).sum(axis=1)
             J_quad = float(np.sum(x**2 * np.exp(-2 * DELTA * x) * np.abs(P) ** 2) * 0.0005)
