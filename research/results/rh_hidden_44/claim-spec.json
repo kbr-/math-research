@@ -1,0 +1,89 @@
+{
+  "source": {
+    "record": "[Hidden cluster length](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-hidden-cluster-length)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-hidden-cluster-length"],
+    "label": "Hidden cluster length"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:fejer-lattice-density",
+      "summary": "For the Fejer kernel K_L(t) = 2(1 - cos Lt)/(L t^2), 0 < s <= 2 pi/L and every real tau: the sum over integers j of K_L(tau - j s) equals 2 pi/s.",
+      "assessment": "Working proof: Poisson summation, the transform of K_L being the triangle 2 pi (1 - |v|/L)_+ supported in [-L, L]. Standard.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Makes the contribution of a lattice of real points to the one-sided density an exact constant, against which clusters of off-line pairs are compared.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; checked by direct summation at nine points.",
+        "formalization": "No formalization.",
+        "significance": "Context: a textbook identity stated for use. No novelty.",
+        "relationships": "Used by the binomial cluster hiding proposition."
+      }
+    },
+    {
+      "id": "prop:lattice-saturation",
+      "summary": "One-sided density with the Fejer kernel, N simple off-line pairs at heights gamma_0 + j pi/L and one distance delta, b = delta L: |P(x - L)| <= 1/cos(pi x/(2L)) for 0 <= x < L and |G(tau)| <= (1 + 3 pi^2/(2 b^2) + N (1 + b/2) e^(-b/2))/delta^2 for all tau, so at this length N = o(e^(b/2)/b) simple pairs give a negative part no larger than 1 + o(1) times one pair's bound.",
+      "assessment": "Working proof: the exponential sum is a geometric series with ratio -e^(-i pi x/L). An upper bound at the resonant length only.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows the negative part of the one-sided density does not scale with the number of off-line pairs at a resonant length.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in nine numerical cases.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Uses the one-sided density decomposition."
+      }
+    },
+    {
+      "id": "prop:binomial-cluster-hiding",
+      "summary": "One-sided density with the Fejer kernel: for k+1 off-line pairs at heights gamma_0 + j pi/L with multiplicities binom(k, j) at one distance delta, |G| <= (k+1)! (pi/b)^k/delta^2 and D_off >= -(2 e^b/(L delta^2)) (k+1)! (pi/b)^k - 6 * 2^k/(L delta^2); with real points on a lattice of spacing s <= 2 pi/L the whole density is nonnegative once 2 pi/s is at least that bound, which for k = floor(b/pi) is at most (2 e^2/(L delta^2)) (b/pi + 1)^(3/2) e^((1 - 1/pi) b) + 6 * 2^(b/pi)/(L delta^2).",
+      "assessment": "Working proof: the exponential sum is (1 + q)^k with |1 + q| <= pi x/L. With real density l/(2 pi), for each length with b up to about 1.47 log l (asymptotically) the cluster built for that length is hidden at it, where a single pair shows from about log l; its multiplicities are at most l^0.32 there. One cluster per length; not shown that a fixed cluster hides at shorter lengths, that the family shows soon after, or that no admissible cluster hides longer.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "In the model a test of the one-sided density at a single length must use a length exceeding the single-pair length by a factor of at least about 1.47, asymptotically, to see every cluster with multiplicities up to the local count; a lower bound only.",
+      "next_action": "Decide whether a family with bounded multiplicities hides up to lengths of order log T.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds in twelve numerical cases and is nearly attained for b large against k.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "A case of the inherited loss with exact constants; uses the lattice density lemma and the decomposition."
+      }
+    },
+    {
+      "id": "prop:gap-free-cluster-sum",
+      "summary": "One-sided density with the Fejer kernel, n >= 2 off-line pairs at one distance delta with total multiplicity M and height span W, b = delta L >= 3: some x in [1/(2 delta), 2/delta] has |P(x - L)| >= p = M/(2 e b)^n, and J = int_0^inf x^2 e^(-2 delta x) |P(x - L)|^2 dx >= (0.073/delta^2)(p^2/4) min(p/(M W), 3/(4 delta)); no condition on the gaps.",
+      "assessment": "Working proof from the gap-free power sum bound applied at n sample points. The bound counts every off-line pair of the configuration, not those near one height, and through the earlier constant gives sup Re G only of order (2 e b)^(-6n).",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Gives the cluster negativity constant explicitly in terms of the number of pairs, their multiplicity, span and the length, as the route review's test asked, though not locally.",
+      "next_action": "A local version in which pairs far from the height tested do not count.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the sampled inequality holds in 21 numerical cases with a large margin.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Applies the gap-free power sum bound; feeds the cluster negativity constant."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:fejer-lattice-density", "cites", "lem:one-sided-density-decomposition", "The same kernel; this lemma evaluates the real points' part of that density on a lattice."],
+    ["prop:lattice-saturation", "depends_on", "lem:one-sided-density-decomposition", "Uses the integral form of G."],
+    ["prop:lattice-saturation", "cites", "prop:one-sided-inherited-loss", "Same setting; a bound at the resonant length without vanishing moments."],
+    ["prop:gap-free-cluster-sum", "depends_on", "lem:one-sided-density-decomposition", "The quantity J and the sum P of that decomposition."],
+    ["prop:binomial-cluster-hiding", "depends_on", "lem:one-sided-density-decomposition", "Uses parts (i), (ii) and (iii)."],
+    ["prop:binomial-cluster-hiding", "depends_on", "lem:fejer-lattice-density", "The real lattice contributes the constant 2 pi/s."],
+    ["prop:binomial-cluster-hiding", "cites", "prop:one-sided-inherited-loss", "The binomial case of the inherited loss, with exact constants."],
+    ["prop:binomial-cluster-hiding", "cites", "prop:separated-pair-negativity", "The single pair shows from b about log l; the cluster hides up to about 1.47 log l."],
+    ["prop:binomial-cluster-hiding", "cites", "cor:maximal-cancellation-order", "The configuration with the largest number of vanishing moments for equally spaced heights."],
+    ["prop:gap-free-cluster-sum", "depends_on", "lem:gap-free-power-sum-bound", "Applied to z_j = e^(-i h gamma_j) at n sample points."],
+    ["prop:gap-free-cluster-sum", "cites", "prop:cluster-negativity-constant", "Supplies a lower bound for its J without the least eigenvalue."]
+  ]
+}
