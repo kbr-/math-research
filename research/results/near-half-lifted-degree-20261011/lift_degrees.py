@@ -3,8 +3,12 @@
 
 Statement tested.  For an unsatisfiable system H of polynomials of degree at most w_H in y_1..y_m (Boolean
 axioms built in), let G = H(x_1 x_2, x_3 x_4, ...) on 2m variables, and let P be G written with a new variable
-z_i for each pair, with the axioms z_i + x_{2i-1} x_{2i}, z_i x_{2i-1} + z_i, z_i x_{2i} + z_i and H(z): the
-part of the product-tree frame at height one.  Proved on record: d(H) <= d(G) <= 2 d(H) and
+z_i for each pair, that is G in the x together with the axioms z_i + x_{2i-1} x_{2i}, z_i x_{2i-1} + z_i,
+z_i x_{2i} + z_i: the part of the product-tree frame at height one, with the contradiction on the leaves.
+(A first version of this script, committed and run once on seven instances, put H(z) itself into P, which
+makes d(P) = d(H) trivially; its output is not kept.  The values of d(H) and d(G) it printed, 3 and 5 for the
+pigeonhole instance and 3 and 6 for three random ones, were seen before this version was written, so the
+expectation on doubling below is no longer a prediction for those four instances.)  Proved on record: d(H) <= d(G) <= 2 d(H) and
 d(P) <= max{d(H), 2 w_H}.  The question: is d(G) larger than d(P), that is, do the product variables lower the
 degree, and is d(G) = 2 d(H)?
 
@@ -15,7 +19,9 @@ so that the axioms' own degree does not decide the answer.
 
 Expected before the run.
 - Controls: every instance has d(H) <= d(G) <= 2 d(H) and d(P) <= max{d(H), 4}; a violation means the
-  generator or the tool is wrong.  d(P) >= d(H) as well (set every second variable of a pair to one).
+  generator or the tool is wrong.  d(P) >= d(H) as well (set every second variable of a pair to one), and
+  d(P) >= 4 whenever every refutation of H uses an axiom of degree two, the lifted axioms having degree 4;
+  so I expect d(P) = 4 on the instances with d(H) = 3, 4.
 - Hypothesis (doubling): d(G) = 2 d(H) on every instance with d(H) >= 3.  Alternative: d(G) < 2 d(H) on some
   instance.  For d(H) = 3 the possible values of d(G) are 4, 5, 6 (the lifted axioms have degree 4), so the
   run separates "6" from "4 or 5"; and d(P) <= 4 < 6 would show the product variables lowering the degree
@@ -89,7 +95,7 @@ def lifted(m, polys):
 def pair_frame(m, polys):
     """Variables x_0..x_{2m-1}, then z_0..z_{m-1}."""
     z = lambda i: 1 << (2 * m + i)
-    out = [frozenset(sum(z(i) for i in range(m) if t >> i & 1) for t in p) for p in polys]
+    out = list(lifted(m, polys)[1])
     for i in range(m):
         a, b = 1 << (2 * i), 1 << (2 * i + 1)
         out += [frozenset({z(i), a | b}), frozenset({z(i) | a, z(i)}), frozenset({z(i) | b, z(i)})]
@@ -105,7 +111,8 @@ def main():
         binary = os.path.join(work, "closure")
         subprocess.run(["g++", "-O2", "-o", binary, SOURCE], check=True)
         instances = [("php 3 pigeons 2 holes",) + php(3, 2)]
-        instances += [(f"random quadratic m=8 rows=9 seed={s}",) + random_quadratic(8, 9, s) for s in range(args.seeds)]
+        instances += [(f"random quadratic m=8 rows={r} seed={s}",) + random_quadratic(8, r, s)
+                      for r, s in itertools.product((8, 9), range(args.seeds))]
         informative = 0
         for name, m, polys in instances:
             if satisfiable(m, polys):
