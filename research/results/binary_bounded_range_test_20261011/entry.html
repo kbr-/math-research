@@ -1,0 +1,69 @@
+<article id="entry-2026-10-11-bounded-range-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-bearing="none" data-lead="entry-2026-10-09-realization-goal-review:3" data-claims="thm:certified-range-exclusion">
+<h3>11 October 2026 — Bounded Boolean ranges give full certificates</h3>
+<p class="entry-meta">Working full-certificate upper bound; no binary lower-bound advance. Bounded range test.</p>
+<p><strong>Chosen.</strong> Take the algebraic-to-CNF lead before the restriction head to finish its pending full-certificate test for binary-frege-lower-bound on general-step. This is its second spell entry, following the <a href="#entry-2026-10-11-algebraic-transfer-test">explicit certificate proposal</a>. A hard general-IPS algebraic family remains missing. Check the cited candidate's actual short-refutation mechanism and the structural reason a replacement must evade before abandoning or generalizing it. A full certificate, including written feature Booleanity, ends the test; a functional inverse alone does not.</p>
+<p><strong>General statement.</strong> thm:certified-range-exclusion supplies a full IPS certificate when certified Boolean features enter a sum whose forbidden value is outside their entire Boolean range. A structured atom argument supplies the written knapsack features' Booleanity certificates at polynomial size and constant depth.</p>
+<p><strong>New mathematics.</strong> The complete correction terms recover and explain the published candidate's advertised unrestricted upper bound. This is an elementary certificate construction, not an independently new lower bound.</p>
+<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> The result supplies no binary lower-bound exponent or hard family. In the prime binary field the outside-range hypothesis is impossible for even one feature; the source's restricted lower bound already requires characteristic at least five. The cycle fulfills the named full-certificate check and separates its structural exclusion from merely cheap functional coefficients.</p>
+<h4 id="certified-range-exclusion">Certified range exclusion</h4>
+<p><strong>Theorem.</strong> Over a fixed prime field \(\mathbb F_p\), let features \(U_1(x),\ldots,U_r(x)\) have circuits and linear-placeholder certificates \(K_j(x,Z)\) with \(K_j(x,0)=0\) and \(K_j(x,B)=U_j^2-U_j\), where \(B_l=x_l^2-x_l\). Let \(\beta\) lie outside the residues \(\{0,\ldots,r\}\). Then \(F=\sum_jU_j-\beta\) has a full Hilbert-like IPS refutation of size polynomial in the supplied total size plus \(O(r^2 2^r)\), and depth the maximum supplied depth plus a constant. Gates are unbounded-fanin sums/products, counting gates and wires, without division or succinct powering. Cofactors need not be multilinear.</p>
+<p><strong>Proof.</strong> For \(\epsilon\in\{0,1\}^r\), let \(c_\epsilon=\sum_j\epsilon_j-\beta\ne0\), and write
+\[
+E_\epsilon(z)=\prod_j\bigl(\epsilon_jz_j+(1-\epsilon_j)(1-z_j)\bigr),\qquad
+D(z)=\sum_\epsilon c_\epsilon^{-1}E_\epsilon(z).
+\]
+Since \(\sum_\epsilon E_\epsilon=1\), one has
+\[
+D(z)(\sum_jz_j-\beta)-1=\sum_j a_j(z)(z_j^2-z_j),
+\quad
+a_j(z)=\sum_\epsilon c_\epsilon^{-1}(2\epsilon_j-1)
+\prod_{l\ne j}\bigl(\epsilon_lz_l+(1-\epsilon_l)(1-z_l)\bigr).
+\]
+Indeed \(E_\epsilon(z)(z_j-\epsilon_j)\) is the corresponding signed Boolean axiom times the product omitting \(j\). Thus
+\[
+C(x,Y,Z)=D(U)Y-\sum_j a_j(U)K_j(x,Z)
+\]
+vanishes at zero placeholders and evaluates to one at \((Y,Z)=(F,B)\). Sharing the supplied circuits and the explicit selector products proves the size and depth bounds. \(\square\)</p>
+<p>No independence of features is assumed. Repetitions and overlaps are allowed. If \(r=0\), this is the nonzero constant equation \(-\beta=0\). In \(\mathbb F_p\), the required \(\beta\) does not exist for \(r\ge p-1\); the excluded-value premise is literal residues, not formal integers.</p>
+<h4>Certify the written multilinearized features</h4>
+<p>Within each group \(i\), take atoms that are distinct \(x\)-variables or disjunction polynomials \(G_S=1-\prod_{y\in S}(1-y)\). After identifying duplicates, assume their variable supports are pairwise disjoint. Let \(S_i=\sum_\sigma M_{i,\sigma}\), where each \(M_{i,\sigma}\) is a squarefree product of atoms. Different groups may overlap arbitrarily. Put \(L_i=\operatorname{ML}(S_i^{p-1})\), with multilinear reduction in the original variables, and \(U_i=1-L_i\). For fixed \(p\), these \(U_i\) and their full Booleanity certificates have constant-depth, polynomial-size circuits in the explicit atom/term/literal description.</p>
+<p><strong>Atom witnesses.</strong> A variable atom uses its placeholder \(Z_y\). If \(E=\prod_a\ell_a\), with \(\ell_a=1-y_a\), define
+\[
+K_E=\sum_a Z_{y_a}\prod_{b&lt;a}\ell_b^2\prod_{b&gt;a}\ell_b.
+\]
+It evaluates to \(E^2-E\). For \(G=1-E\), set \(K_G=K_E\), since \(G^2-G=E^2-E\). These circuits use \(O(|S|^2)\) wires and constant depth.</p>
+<p><strong>Reduction witnesses.</strong> Expand only the \(p-1\) copies of \(S_i\), giving at most \(N_i^{p-1}\) ordered term tuples, where \(N_i\) is its number of summands. Do not expand the disjunction atoms. A resulting term is \(t=\prod_bG_b^{a_b}\), \(1\le a_b\le p-1\). Its reduction is \(\bar t=\prod_bG_b\), since distinct atoms are multilinear with disjoint supports. Use
+\[
+K_t=\sum_b K_{G_b}\left(\sum_{q=0}^{a_b-2}G_b^q\right)
+\prod_{c&lt;b}G_c^{a_c}\prod_{c&gt;b}G_c.
+\]
+An empty inner sum is zero. The identity \(G^a-G=(G^2-G)\sum_{q=0}^{a-2}G^q\) and product telescoping give \(K_t(x,B)=t-\bar t\). Summing over the ordered tuples produces \(R_i(x,Z)\) with
+\[
+R_i(x,B)=S_i^{p-1}-L_i.
+\]
+For fixed \(p\), the tuple count and each factor list are polynomial in the description size. Powers are bounded by \(p-1\), and unbounded-fanin prefix/suffix products retain constant depth. This proves a special structured multilinearization, not a generic operation on arbitrary circuits.</p>
+<p><strong>Feature and aggregate witnesses.</strong> Let \(V_i=1-S_i^{p-1}\). The <a href="#prime-field-residual-normalization">explicit Frobenius gate construction</a>, reread in full, supplies \(K_{S_i}(x,B)=S_i^p-S_i\). Then
+\[
+K_{U_i}=S_i^{p-2}K_{S_i}+(U_i+V_i-1)R_i
+\]
+evaluates to \(U_i^2-U_i\), using \(U_i-V_i=R_i(x,B)\) and \(V_i^2-V_i=S_i^{p-2}(S_i^p-S_i)\). For an aggregate \(A_j=\prod_{i\in I_j}U_i\), in any fixed order,
+\[
+K_{A_j}=\sum_{i\in I_j}K_{U_i}\prod_{l&lt;i}U_l^2\prod_{l&gt;i}U_l.
+\]
+It certifies \(A_j^2-A_j\) without expanding the aggregate. Each witness is linear in the original Boolean placeholders, polynomial-size and constant-depth. Applying the theorem to a fixed number of aggregates gives the full certificate for \(\sum_jA_j-\beta\).</p>
+<p><strong>Source match.</strong> In <a href="https://www.doc.ic.ac.uk/~itzamere/IPS_over_Finite_Fields.pdf">Section 3.2 of the author PDF</a>, the overlap-pattern sets in a fixed negative block are identical or disjoint; different blocks and positive variables are disjoint. Its local feature is exactly \(1-\operatorname{ML}(S_i^{p-1})\); scattered classes form the aggregates. For the stated \(p\ge5\) family, at most three aggregates permit a missing value. Definitions and the computation comment were read, including the duplicate-removal argument. Thus the construction above supplies its full nonmultilinear upper bound, which the paper already advertises. No binary analogue of its multilinear lower bound is inferred.</p>
+<p><strong>Nonvacuity.</strong> With \(p=5\), take \(S=\sum_{i=1}^n x_i\), \(U=1-\operatorname{ML}(S^4)\), \(F=U-2\). The feature is nonconstant, variable counts are unbounded, and its circuit and certificate sizes are polynomial for fixed \(p\). The actual cited family can have much larger feature degree; the proof's cost is its written description, not expanded aggregate monomials.</p>
+<p><strong>Degenerate cases.</strong> Constants, empty groups, repeated monomials and cancellations are handled by the same identities. Zero atoms can be discarded; distinct nonconstant atoms must satisfy the support premise. The size exponent may depend on fixed \(p\). A missing Booleanity witness or a forbidden value inside the full Boolean range invalidates the proposed application, rather than proving it hard.</p>
+<h4>What a replacement must evade</h4>
+<p>The structural reason is cheap feature Booleanity plus an outer target impossible on the <em>entire</em> Boolean feature cube. A target possible on that cube but absent from the actual feature image escapes this upper bound. That is not a hardness theorem. The existing <a href="#entry-2026-10-09-rank-principle-interface">binary rank family</a>, read in full, is an unbounded example: the quadratic feature matrix \(AB\), with \(A\) of shape \((n+1)\times n\) and \(B\) of shape \(n\times(n+1)\), has rank at most \(n\), while an unconstrained Boolean feature matrix can be identity. Its equations have polynomial description. The previously recorded full-certificate extraction and source-simplification gaps remain; this comparison does not repair them or open a duplicate rank-family task.</p>
+<p>The historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/03_reweighting.md#lem-sharedfeatures">common-feature conditioning proof</a> was read. It lifts a design at an additive degree cost from a selected feature cell; this circuit upper bound instead gives a literal certificate using supplied feature Booleanity and an impossible outer range. Neither statement automatically proves the other's quantitative endpoint.</p>
+<h4>Reviewer's suggestions, unverified</h4>
+<ul><li>Use a target available on the full feature cube but excluded from the actual image. The matrix-rank example meets this structural test, as verified above, but no new hardness argument follows. <strong>Record.</strong> Bounded feature/range and knapsack searches recovered the finite-field IPS audit and historical conditioning; matrix-rank search found lem:quadratic-rank-CNF and its full source-interface record. The earlier canonical-extraction failures remain in force.</li></ul>
+<p><strong>Follow-up.</strong> Continuing the algebraic-to-CNF parent; the candidate's explicit upper-bound check is completed. The scheduled goal-level review is next after six research entries. It must compare image-sensitive algebraic hardness with the weakest proof-local actual-error endpoint, retaining the distinction between a hard residual certificate and a stronger canonical determinant extraction. <strong>Record search.</strong> Boolean-range, feature-certificate and knapsack searches recovered the source audit and common-feature conditioning, not a new matched general binary lower bound. Existing rank-family controls are reused, not rediscovered.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-11-algebraic-transfer-test:s1">thm:certified-range-exclusion and the explicit atom/reduction/aggregate witnesses above supply the full certificate, its structural reason, and an unbounded evasion comparison. The sole reviewer checked this disposition. <strong>Follow-up.</strong> Developed: the named source-family upper-bound check is settled; a hard feature-image family remains the parent question.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the outer signs, complete certificate, structured original-variable reduction, Booleanity and source match. Its presentation corrections are included as explicit atom, term-reduction and aggregate witnesses, and the circuit convention is stated. It confirmed the child Developed/parent Continuing disposition. <strong>Process audit.</strong> No findings; the title describes an upper bound, not progress toward a binary lower bound. No computation or new inference rule is used.</p>
+<p><strong>Process assessment.</strong> The full witnesses close the gap between a functional inverse and an actual IPS upper bound, while the feature-image comparison prevents overgeneralizing that exclusion. <strong>Prevention.</strong> Existing source and field-scope checks apply; the binary goal's unchanged status and the prime-dependent size exponent are explicit. Completed registry proposal scratch files were removed after their committed checkpoints.</p>
+<!-- TIMING binary_bounded_range_test_20261011 -->
+</article>
+
