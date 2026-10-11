@@ -1,0 +1,69 @@
+STAGE 1 BRIEF, tenth route review, riemann notebook (11 October 2026). The preferred route is withheld.
+
+GOAL. Prove that every zero rho of the Riemann zeta function with 0 < Re rho < 1 has Re rho = 1/2. The one
+open statement is this itself ("off-line exclusion"): every height, arbitrarily sparse exceptions.
+
+REGISTERED OPEN CONJECTURES OF THE ROUTE: none.
+
+AVAILABLE STATEMENTS (registered: identifier, statement, assessment, status, record):
+
+prop:margin-rightmost-zero-count
+  Statement: Zero configuration Z (points 1/2 + delta + i gamma, |delta| <= 1/2, with multiplicities) assumed to satisfy four premises, each stated in the density import's files for the zeros of zeta: the explicit formula for twice continuously differentiable compactly supported tests; the local count N(t, t+1) <= A0 log(|t| + 3); |mu(tau)| <= C log(|tau| + 3) for the archimedean density; the weighted Hilbert inequality of Montgomery and Vaughan with constant C_M. psi >= 0 smooth, supported in [0,1], c0 = int psi; L >= 2, X = e^L; F(tau) = sum Lambda(n) n^{-1/2 - i tau} psi(log n - L + 1). (a) Forced size: if rho0 = 1/2 + delta + i gamma in Z, 0 < eta <= delta <= 1/2, gamma >= 1, H >= 3, and every other point of Z with height within H of gamma has delta' <= delta - eta, then |F(gamma)| >= m0 c0 e^{-1/2} X^delta - K1 log(gamma+5) X^{delta-eta} - K_N log(gamma+5) X^{1/2} (H-2)^{2-N} - 2 B1 X^{1/2}/gamma - G0 log(gamma+4), with explicit constants from psi, A0, C and N >= 3. (b) Count: with c* = c0 e^{-1/2}, if X <= T, 0 < eta <= delta0 <= 1/2, K1 log(2T+5) X^{-eta} <= c*/8, K_N log(2T+5) X^{1/2-delta0} (H-2)^{2-N} <= c*/8, 2 B1 X^{1/2-delta0}/T <= c*/8 and G0 log(2T+4) <= c* X^{delta0}/8, the points of Z with T <= gamma <= 2T, delta >= delta0 that are rightmost by the margin eta in the window H number, with multiplicity, at most 48 A0 (2 + 4 C_M) ||psi||_inf^2 e c0^{-2} log(2T+4) L^3 T X^{-2 delta0}; for fixed theta in (0,1] and delta0, with X = T^theta, H = T^{eta0}, (N-2) eta0 > theta/2 and eta = (log log T + c)/(theta log T), the conditions hold for large T and the bound is O(T^{1 - 2 theta delta0} log^4 T).
+  Assessment: Working proof of the implication from the four stated premises: the explicit formula with a modulated bump, bounds for the transform of the bump, the local count, and a mean value estimate derived in the entry from the Hilbert inequality with a Sobolev step. For the zeros of zeta the premises are statements of the imported density project, whose formal proofs were not replayed here. The class counted may be empty and no zero is known to belong to it; the hypothesis of a margin cannot be verified for a hypothetical zero.
+  Status: working_proof
+  Record: [Margin-rightmost zero count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-margin-rightmost-zero-count)
+
+thm:turan-weak-lindelof-density
+  Statement: Published (Turan 1984, Section 37, Theorem 37.1). Weak Lindelof hypothesis with constant A: there is delta < A such that zeta has fewer than A delta log tau0 zeros in the disk of radius delta about s0 = sigma0 + i tau0 whenever zeta has no zero in Re s > sigma0, |Im s - tau0| < log tau0, sigma0 >= 1/2 + 10 delta, tau0 large. If it holds with some A < 0.01 then N(alpha, T) < T^(2(1 - alpha) + 5 sqrt A) for 1/2 <= alpha <= 1 and T large.
+  Assessment: Statement read as page images from a supplied scan; the proof read only in its first two pages; not audited. The book adds, citing an earlier paper of its author, that the count holds unconditionally with A = 0.71 (a constant read from a small scan and uncertain) for all delta < 1/10, and with every A at sigma0 = 1.
+  Status: established
+  Record: [Weak Lindelof count reading](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-weak-lindelof-count-reading)
+
+prop:moment-extraction-exponents
+  Statement: Let k, m >= 1, beta > 0, H = D^beta, and complex A, A_u (u in P) with |P| >= H^(1/k) D^-eps / C, |A - A_u| <= E and sum over P of |A_u|^(2m) <= C D^(m+eps) H. Then |A| <= C^(1/m) D^(1/2 + beta(1-1/k)/(2m) + eps/m) + E. With E <= D^(1-beta/k) the best exponent over beta is (k-1+m)/(k-1+2m); for beta >= m the first exponent is at least 1 - 1/(2k) for every m.
+  Assessment: Working elementary proof with exponent arithmetic. Applied to the imported sextic family (k = 6, m = 1, beta slightly above 1) it reproduces the source's 11/12. For beta >= m the exponent is at best 1 - 1/(2k). For beta < m the moment hypothesis alone, from one row, gives every member the exponent 1/2 + beta/(2m), so the extraction only improves a saving the hypothesis already contains. For Moebius coefficients the defect unfolds into sums of the same kind with the same excluded set, so an induction over scales removes it.
+  Status: working_proof
+  Record: [Moment extraction exponents](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents)
+
+prop:one-sided-zero-set-equivalence
+  Statement: Fejer kernel K_L(w) = 2(1 - cos Lw)/(L w^2); a conjugation-closed multiset of points z with |Im z| <= Delta and sum m_z/(1 + (Re z)^2) finite, infinite allowed (real points and off-line pairs gamma_j +- i delta_j); D_L(tau) = sum m_z K_L(tau - z). (a) The sum converges absolutely, and if all delta_j <= theta then L D_L(tau) >= -4 S_off e^{theta L} for every real tau and L > 0, S_off = sum over the points z of the pairs of m_z/|tau - z|^2. (b) Let tau be real, not a real point, and d the largest distance of a pair at height tau (0 if none). If L D_L(tau) >= -C L^A e^{theta L} for all L >= L_1, with theta >= 0, then every delta_j <= max(theta, d). In particular for tau at no pair's height the bound for all large L holds with exponent theta if and only if no pair is farther than theta from the line; no hypothesis on distinct heights or on the supremum of the distances being attained. Conditional application, not part of the proved statement: if the zeros of zeta (z = (rho - 1/2)/i) form such a configuration, which follows from three classical facts recalled and not read in a source (symmetry about the critical line, Delta = 1/2, the count N(T+1) - N(T) << log T), the one-sided bound with theta = 0 at one such tau is the Riemann hypothesis restated.
+  Assessment: Working proof of the statement for configurations: the Laplace transform in L of L K_L(w) is 2/(s(s^2 + w^2)); the transform of L D_L is a meromorphic function whose poles off the imaginary axis are at +-delta_j +- i(tau - gamma_j) with residues that cannot cancel, and Landau's lemma moves the abscissa of convergence to theta. Its application to the zeros of zeta is conditional on three classical facts recalled and not read in a source.
+  Status: working_proof
+  Record: [One-sided zero-set equivalence](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence)
+
+lem:gram-form-localization
+  Statement: phi real, even, supported in [-L/2, L/2], continuously differentiable on the line with phi' absolutely continuous, B = int |phi''|; grid tau_k = tau_0 + 2 pi k/L; c real supported on 0 <= k < d; H_c = sum c_k phihat(. - tau_k); I = [tau_0, tau_{d-1}]. (i) |phihat(r)| <= B/r^2. (ii) For R > 0 the integral of H_c^2 over dist(tau, I) >= R is at most |c|^2 t(R), t(R) = B^2 (2/(3R^3) + L/(6 pi R^2)). (iii) For bounded measurable nu the matrix of Q_nu(c) = int H_c^2 nu on the indices 0 <= k < d has largest eigenvalue at most 2 pi L ||phi||_inf^2 max(sup_{I_R} nu, 0) + ||nu||_inf t(R) and smallest at least 2 pi L ||phi||_inf^2 min(inf_{I_R} nu, 0) - ||nu||_inf t(R), I_R the R-neighbourhood of I. (iv) The same with ||nu||_inf t(R) replaced by B^2 (N_R (2/(3R^3) + L/(6 pi R^2)) + a (2/(9R^3) + L/(12 pi R^2))) when nu is bounded on I_R and |nu(tau)| <= N_R + a log(dist(tau, I)/R) outside I_R. (v) For nu = P_X, the prime cosine sum -(1/pi) sum_{n <= X} Lambda(n) n^{-1/2} cos(tau log n): ||P_X||_inf <= (2/pi) sqrt(X) log X, so the eigenvalues of its matrix are at most 2 pi L ||phi||_inf^2 sup_{I_R} |P_X| + (2/pi) sqrt(X) log X t(R) in modulus.
+  Assessment: Working elementary proof: two integrations by parts, Cauchy-Schwarz over the grid at each tau, a sum compared with an integral, and the identity Q_nu(c) = int H_c^2 nu of the prime-side form bound. Its use for the density source's window needs that window's taper to be continuously differentiable with an absolutely continuous derivative, which was not read; the flat window and the triangle are excluded.
+  Status: working_proof
+  Record: [Gram form localization](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization)
+
+thm:openai-seven-eighths-half-plane
+  Statement: Source-reported seven-eighths exclusion: all Dirichlet L-functions, including zeta, and all finite-order Hecke L-functions over Q(sqrt(-3)) have no zeros in Re(s)>7/8, allowing principal poles at s=1. The boundary and full RH are not asserted.
+  Assessment: Imported statement (context), attributed to OpenAI, September 30, 2026. Exact statement, conventions and selected proof conclusions read; long analytic moment/continuation inputs unaudited. External Lean targets and solution entries supplied, but no local build, comparator replay or axiom-closure check. Not an established local theorem.
+  Status: context
+  Record: [RH source import](https://kbr.is-a.dev/math-research/branches/openai-math-import/#entry-2026-10-11-openai-rh-import)
+
+ALSO ON RECORD, READ IN A SOURCE AND NOT REGISTERED AS CLAIMS OF OURS:
+- Turan's Theorem 33.2 (1984 book): a saving tau0^{-b} on sums of Lambda(n) n^{-i tau0} over [N1, N2] in
+  [N, 2N] for all N >= tau0^a gives zeta != 0 on sigma >= 1 - b^3/a^2 at height tau0 (sums longer than the
+  height).
+- Turan's Theorem 8.1: for 1 = |z_1| >= ... >= |z_n|, m >= 0, max over m < nu <= m+n of |sum b_j z_j^nu| is at
+  least 2 (n/(8e(m+n)))^n min_j |b_1 + ... + b_j|.
+- The imported half-plane's device, read in its preprint's outline and unaudited as a whole: the Mobius sum
+  A_1(D) is embedded in a family A_u(D) twisted by the sextic symbol chi_n(u), recurs at u = p^6, and a mean
+  square over H = D^{1 + theta} rows of perfect size, proved through Poisson summation, a Gauss-sum identity
+  that absorbs mu, and the cubic theta function, gives A_1 << D^{11/12 +}; a second stage reaches 7/8.
+
+FACTS ABOUT THE PERIOD (six entries since the last review). Two on mathematical items:
+prop:margin-rightmost-zero-count; and an outline, verified in its first step only, that the margin can be
+removed under a small-constant count of zeros at the edge of a zero-free region, a conditional statement of
+the type of thm:turan-weak-lindelof-density. Four on framework build items. No entry of the last 37 gives
+anything at the goal's own parameters. The period's reviewer found no route from a count of zeros at such an
+edge to the exclusion of one zero: the count only forces a prime sum to be large, and exclusion needs a
+pointwise upper bound for a prime sum at one height, which prop:one-sided-zero-set-equivalence equates with
+the half-plane.
+
+QUESTION. From the goal and these statements alone: propose a materially different architecture for the
+goal, or give the reason none is found. Then: of the mechanisms above, which one would you examine next for a
+saving that does not presuppose where the zeros are, and what single statement would you ask to be proved or
+refuted? Mark anything recalled from the literature as recalled and unread. Under 350 words.
