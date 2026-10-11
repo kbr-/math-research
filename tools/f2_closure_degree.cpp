@@ -9,16 +9,18 @@
 // D; each such row is multiplied by every variable once.  It stops as soon as the constant enters.
 //
 // Input (a file): "N R", then R lines "k m_1 ... m_k", a polynomial as k monomials, each a bit mask of its
-// variables (0 is the constant).  N <= 26.  Output: one JSON line with, for each D tried, the closure's
+// variables (0 is the constant).  N <= 62: the monomials of degree at most D are enumerated, never the cube,
+// so the work grows with their number (52,956 at N = 34, D = 4).  Output: one JSON line with, for each D tried, the closure's
 // dimension when 1 is not in it, and the degree (null when 1 is not reached by dmax).
 // Usage: f2_closure_degree INSTANCE DMAX
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <unordered_map>
 #include <vector>
 
-typedef uint32_t Mask;
+typedef uint64_t Mask;
 typedef std::vector<uint64_t> Row;
 
 static int first_bit(const Row &r, size_t from = 0) {
@@ -30,14 +32,21 @@ static int first_bit(const Row &r, size_t from = 0) {
 // Returns 1 if 1 is in the degree-d closure; otherwise 0 with *dim its dimension.
 static int closure(int n, int d, const std::vector<std::vector<Mask>> &polys, long *dim) {
     std::vector<Mask> monos;
-    for (Mask t = 0; t < (Mask(1) << n); ++t)
-        if (__builtin_popcount(t) <= d) monos.push_back(t);
-    std::sort(monos.begin(), monos.end(), [](Mask a, Mask b) {
-        int da = __builtin_popcount(a), db = __builtin_popcount(b);
-        return da != db ? da > db : a > b;
-    });
+    for (int k = std::min(d, n); k >= 1; --k) {  // degree descending, masks descending within a degree
+        const size_t start = monos.size();
+        const Mask last = ((Mask(1) << k) - 1) << (n - k);
+        for (Mask t = (Mask(1) << k) - 1;;) {
+            monos.push_back(t);
+            if (t == last) break;
+            const Mask c = t & -t, r = t + c;    // the next mask with the same number of bits
+            t = (((r ^ t) >> 2) / c) | r;
+        }
+        std::reverse(monos.begin() + start, monos.end());
+    }
+    monos.push_back(0);
     const int count = int(monos.size()), words = (count + 63) / 64;
-    std::vector<int> index(size_t(1) << n, -1);
+    std::unordered_map<Mask, int> index;
+    index.reserve(size_t(count) * 2);
     for (int i = 0; i < count; ++i) index[monos[i]] = i;
     std::vector<Row> basis(count);
     std::vector<int> pending;                    // pivots of rows not yet multiplied
@@ -53,15 +62,18 @@ static int closure(int n, int d, const std::vector<std::vector<Mask>> &polys, lo
         basis[p] = r;
         ++size;
         if (p == count - 1) return 1;
-        if (__builtin_popcount(monos[p]) < d) pending.push_back(p);
+        if (__builtin_popcountll(monos[p]) < d) pending.push_back(p);
         return 0;
     };
     for (const auto &poly : polys) {
         int degree = 0;
-        for (Mask t : poly) degree = std::max(degree, __builtin_popcount(t));
+        for (Mask t : poly) degree = std::max(degree, __builtin_popcountll(t));
         if (degree > d) continue;
         Row r(words, 0);
-        for (Mask t : poly) r[index[t] / 64] ^= uint64_t(1) << (index[t] % 64);
+        for (Mask t : poly) {
+            const int i = index.at(t);
+            r[i / 64] ^= uint64_t(1) << (i % 64);
+        }
         if (insert(r)) return 1;
     }
     while (!pending.empty()) {
@@ -75,7 +87,7 @@ static int closure(int n, int d, const std::vector<std::vector<Mask>> &polys, lo
                 while (bits) {
                     const int i = w * 64 + __builtin_ctzll(bits);
                     bits &= bits - 1;
-                    const int j = index[monos[i] | (Mask(1) << v)];
+                    const int j = index.at(monos[i] | (Mask(1) << v));
                     r[j / 64] ^= uint64_t(1) << (j % 64);
                 }
             }
@@ -90,7 +102,7 @@ int main(int argc, char **argv) {
     if (argc != 3) { fprintf(stderr, "usage: %s INSTANCE DMAX\n", argv[0]); return 2; }
     FILE *in = fopen(argv[1], "r");
     int n, rows;
-    if (!in || fscanf(in, "%d %d", &n, &rows) != 2 || n < 1 || n > 26) {
+    if (!in || fscanf(in, "%d %d", &n, &rows) != 2 || n < 1 || n > 62) {
         fprintf(stderr, "bad instance header\n");
         return 2;
     }
@@ -101,7 +113,7 @@ int main(int argc, char **argv) {
         poly.resize(k);
         for (auto &t : poly) {
             unsigned long value;
-            if (fscanf(in, "%lu", &value) != 1 || value >= (1ul << n)) { fprintf(stderr, "bad monomial\n"); return 2; }
+            if (fscanf(in, "%lu", &value) != 1 || value >= (1ull << n)) { fprintf(stderr, "bad monomial\n"); return 2; }
             t = Mask(value);
         }
     }

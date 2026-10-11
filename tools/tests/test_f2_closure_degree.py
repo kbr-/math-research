@@ -52,6 +52,16 @@ class KernelTest(unittest.TestCase):
         self.assertEqual(self.degree(4, rows, 5)['degree'], 4)
         self.assertIsNone(self.degree(4, rows, 3)['degree'])
 
+    def test_more_variables_than_a_table_of_the_cube_allows(self):
+        top = 1 << 39
+        self.assertEqual(self.degree(40, [[top], [0, top]], 2)['degree'], 1)     # y40 and 1 + y40
+        singles = [[1 << i] for i in range(40)]
+        self.assertEqual(self.degree(40, singles, 1)['dimensions']['1'], 40)     # satisfiable; all linear monomials
+        # the forty y_i with (1 + y1)(1 + y40): refuted exactly when the quadratic axiom may be used
+        rows = singles + [[0, 1, top, 1 | top]]
+        self.assertIsNone(self.degree(40, rows, 1)['degree'])
+        self.assertEqual(self.degree(40, rows, 2)['degree'], 2)
+
     def test_agrees_with_the_reference_on_products_of_two_forms(self):
         rng = random.Random(5)
         for trial in range(4):
