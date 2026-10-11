@@ -172,6 +172,22 @@ class AuthoringTest(unittest.TestCase):
         self.assertTrue(maintenance(self.empty, merged, self.root)['passed'])
 
 
+class ResembleTest(unittest.TestCase):
+    def test_new_claims_of_a_spec_are_compared_and_relations_marked(self):
+        from claim_authoring import resemblances
+        data = {'claims': [{'id': 'lem:old', 'summary': 'weighted feature retraction onto the old degree space'},
+                           {'id': 'lem:other', 'summary': 'matching bound for bipartite graphs'}]}
+        spec = {'claims': [{'id': 'lem:new', 'summary': 'weighted retraction of a feature onto degree space'},
+                           {'id': 'lem:old', 'summary': 'unchanged'}],
+                'relationships': [['lem:new', 'refines', 'lem:old', 'x']]}
+        (ident, found), = resemblances(data, spec)                    # the registered claim of the spec is skipped
+        self.assertEqual(ident, 'lem:new')
+        self.assertEqual((found[0][1], found[0][2]), ('lem:old', True))
+        self.assertGreater(found[0][0], found[1][0])
+        spec['relationships'] = []
+        self.assertFalse(resemblances(data, spec)[0][1][0][2])
+
+
 class BuildTest(unittest.TestCase):
     """author build: a compact spec expands into a complete request that prepare accepts."""
     setUp = AuthoringTest.setUp

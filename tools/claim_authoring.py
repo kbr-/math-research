@@ -80,6 +80,26 @@ def similar_claims(claims, summary, count=3):
     return sorted(scored, reverse=True)[:count]
 
 
+def resemblances(data, spec, count=5):
+    """For each new claim of a compact spec: [(id, [(score, registered id, related in the spec)])].
+
+    The same search `prepare` makes at registration, for use when a statement is first drafted: on 11 October
+    2026 a lemma was drafted, reviewed and corrected before registration named the recorded lemma it refined,
+    which a keyword search under the draft's own vocabulary had missed."""
+    existing = {claim['id'] for claim in data['claims']}
+    related = {}
+    for source, _, target, *_ in spec.get('relationships', []):
+        related.setdefault(source, set()).add(target)
+        related.setdefault(target, set()).add(source)
+    out = []
+    for item in spec.get('claims', []):
+        if item['id'] in existing:
+            continue
+        found = similar_claims(data['claims'], item.get('summary', ''), count)
+        out.append((item['id'], [(score, other, other in related.get(item['id'], ())) for score, other in found]))
+    return out
+
+
 def prepare(before, request, root=ROOT):
     """Return a validated full proposal without mutating before or writing any files."""
     ensure_answered(request)
@@ -269,7 +289,19 @@ def main():
     spec.add_argument('--revision', help='source revision (default: git HEAD)')
     spec.add_argument('--proposal', type=Path, help='also run prepare and write the proposed registry here')
     spec.add_argument('--report', type=Path, help='prepare report (required with --proposal)')
+    like = sub.add_parser('resemble', help='List registered claims a draft spec\'s new summaries resemble; writes nothing')
+    like.add_argument('--spec', type=Path, required=True)
     args = parser.parse_args()
+    if args.mode == 'resemble':
+        data = load(args.registry)
+        for identifier, found in resemblances(data, read_json(args.spec)):
+            print(identifier)
+            for score, other, linked in found:
+                flag = 'related in the spec' if linked else ('READ ITS RECORD' if score >= SIMILAR_AT else '')
+                print(f'  {score:.2f}  {other}  {flag}'.rstrip())
+        print(f'{len(data["claims"])} registered claims compared; registration refuses a resemblance of '
+              f'{SIMILAR_AT:.2f} or more that the spec does not relate.')
+        return
     destinations = [args.out] + ([args.report] if args.mode == 'prepare' else [])
     if args.mode == 'build' and args.proposal:
         require(args.report is not None, '--proposal needs --report')

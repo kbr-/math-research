@@ -60,6 +60,8 @@ class BashGuardTest(unittest.TestCase):
             "./compute.sh --session t1 --threads 1 python3 x.py | head",
             "for a in 1 2; do ./compute.sh run t1 -- ./k $a 2>&1 | grep x; done",
             "./compute.sh run t1 -- ./k > out.txt",
+            "python3 tools/search-claims.py extension variables degree | head -6",
+            "python3 tools/search-claims.py weighted retraction 2>&1 | grep -E '^[a-z]+:' | head",
         ]:
             with self.subTest(command=command):
                 result = run(command)
@@ -69,6 +71,10 @@ class BashGuardTest(unittest.TestCase):
     def test_allows_bare_calls_and_other_commands(self):
         for command in [
             "python3 tools/resume.py",
+            "python3 tools/search-claims.py -n 20 extension variables degree",
+            "python3 tools/search-claims.py --show lem:x | head -40",
+            "python3 tools/search-claims.py --help | grep limit",
+            "grep -n similar tools/search-claims.py | head",
             "cd /repo && python3 tools/resume.py --read ab --part 2",
             "python3 tools/resume.py 2>&1",
             "python3 tools/resume.py --read ab --part 3; git log | head",

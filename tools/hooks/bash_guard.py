@@ -57,6 +57,11 @@ GUARDED = [
     (re.compile(INVOKED + r"compute\.sh\s+(?:run\b|--(?!status\b))"),
      "./compute.sh runs print guard refusals and guidance, and only those (the output is in the saved log); "
      "save a full result with tools/save-run-output.py"),
+    # 11 October 2026: a search cut to its first six results by head hid, at rank ten, the recorded lemma a new one
+    # refined.  A ranked search is read whole; its own -n sets the limit.
+    (re.compile(INVOKED + r"search-claims\.py\b(?![^|;&\n]*\s--(?:show|list|help|json|out)\b)"),
+     "tools/search-claims.py prints a ranked list whose later results are cut off by a filter (set the limit with "
+     "its own -n N)"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")
