@@ -9,7 +9,9 @@ finish-turn.py against HEAD:
 - The queue holds passed review items once each.  A review appends its newly passed items at the end; a review
   outside draining marks picks (<li data-pick>: its three most promising passed leads and two bridges,
   or all passed items when fewer pass; user, 5 October 2026) and appends only those.
-- A research entry develops at most one item, always the head, tagged data-lead or data-bridge="ANCHOR:N",
+- A research entry develops at most one item, by default the head, or any other queued item with a
+  <strong>Chosen.</strong> paragraph, also while the queue drains (user, 9 and 11 October 2026; AGENTS.md),
+  tagged data-lead or data-bridge="ANCHOR:N",
   and states <strong>Follow-up.</strong> Closed (a reason the attempt found), Developed (no remaining
   application to an open statement) or Continuing (it still bears on one; user, 3 October 2026: squeeze
   items, do not close them at their first usable result).  Closed and Developed remove the item; a

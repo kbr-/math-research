@@ -367,11 +367,15 @@ assessments.
   follow-ups). The queue section's attributes set, per notebook, the entry kinds that count,
   backpressure and extra kinds; [tools/lead_queue.py](tools/lead_queue.py) holds the details.
   Backpressure: at 30 top-level items (user, 9 October 2026; 50 before) the queue drains
-  (`data-draining="true"`), and every research entry develops the head or its first sub-idea until
-  10 remain; then work returns to the route, or to a better route the leads opened. While the queue
-  is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and assess
-  existing work (user, 5 October 2026). Review cadence and the other review requirements still
-  apply. Reviews report only follow-ups whose status changed. The finisher checks all of this
+  (`data-draining="true"`), and until 10 remain every research entry develops a queued item or one
+  of its sub-ideas: the head by default, or any other queued item under the same choice rule as
+  outside draining, a `<strong>Chosen.</strong>` paragraph saying which open statement it bears on
+  and why it comes first. Draining restricts entries to the queue; it does not restrict them to the
+  head (user, 11 October 2026: "it moves you to where you choose, the only restriction being to
+  select a diff item"). Then work returns to the route, or to a better route the leads opened. While
+  the queue is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and
+  assess existing work (user, 5 October 2026). Review cadence and the other review requirements
+  still apply. Reviews report only follow-ups whose status changed. The finisher checks all of this
   against HEAD and `compute.sh start` prints the queue's state and head. A one-step objection (a
   structural remark, a record match, one encoding tried) falsifies only that formulation. Before a
   review declares an open statement without mechanism, or moves cycles away from it, each "Not run"
