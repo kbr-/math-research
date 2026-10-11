@@ -1,0 +1,29 @@
+Review record, 11 October 2026: entry-2026-10-11-pair-lift-degrees. Reviewer: one fresh-context medium-effort
+reviewer (Claude Code medium-reviewer agent), by hand; it ran nothing.
+
+Verdict: pass with corrections. The lemma's four inequalities hold (substitution, replacement and closure
+steps checked). The script builds G, P, php and `satisfiable` as stated; dmax suffices; asserts match the
+lemma.
+
+Required changes:
+- "When d(G) = 2 d(H) > 2w, the lemma gives d(P) <= d(G)/2" is false: it needs d(H) >= 2w. The entry's own
+  data refute it (w = 2, d(G) = 6, d(P) = 4 > 3). Also fix "whether the factor of two persists" and "halve".
+- "the necessary condition ... is not sufficient for the frame system to be hard" is not shown. That condition
+  is d(F) > 0.4 n; at n = 16 the cutoff is 7.2 and d(G) = 6. What is shown: d(Pi + G) <= d(P) = 4 < d(G), the
+  sandwich's upper comparison is strict. The subsystem step is right.
+- "Count before the run: d(P) in {3, 4}": d(P) = 4 is forced on every instance (all axioms quadratic, so
+  C_3(P) holds only frame axioms). d(P) is a control that could not fail; only d(G) was measured.
+- "exact values at m = 8", "sixteen leaves/variables": the pigeonhole instance has m = 6, twelve leaves.
+- "not 32 independent draws": state 19 distinct seeds; each 8-row value is implied by its 9-row superset.
+- "the hypothesis of doubling ... fails": say it was already seen failing in the discarded run; the reported
+  run tested it only on the 29 unseen random instances.
+- table.txt is untracked; commit it.
+Unused hypotheses: the axioms z_i x + z_i in the upper bound.
+Process audit: the points above. The reason for running a computation before the owed proof is acceptable.
+Title may claim: bounds for pair lifts, and exact degrees 6 (5 for pigeonhole) against 4 at <= 16 leaves.
+Suggestions (unverified): a lifted clause prod(1 + x_{2i-1} x_{2i}) times prod(1 + x_{2i-1}) equals
+prod(1 + x_{2i-1}), so C_4(G) contains degree-2 clauses in the first variables: lifted clauses have immunity
+w, not 2w. This likely explains the pigeonhole saving and blocks the expansion proof for CNF families; try
+linear-equation axioms instead.
+
+Author's note: all applied.
