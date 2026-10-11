@@ -1211,6 +1211,49 @@ def content_words(text):
     return {w for w in re.findall(r'[a-z]{4,}', text.lower())} - STOP
 
 
+BUILT_AT = 0.4
+
+
+def built_items(nodes, text, threshold=BUILT_AT):
+    """[(share, id), ...], most alike first: queued top-level build items of whose content words a commit's
+    message and file names have the share `threshold` or more.  On 11 October 2026 three build items stayed
+    queued after the commits that built most of them; measured on that day's 88 commits to the framework, nine
+    got ten lines at 0.4, seven naming the item the commit worked on and three false.  A hint to read the item."""
+    words = content_words('): ' + text.replace('/', ' ').replace('_', ' '))
+    out = []
+    for node in nodes:
+        item = content_words(node.text)
+        if node.kind == 'build' and len(item) >= 5 and len(words & item) / len(item) >= threshold:
+            out.append((round(len(words & item) / len(item), 2), node.ident))
+    return sorted(out, reverse=True)
+
+
+def built(root, rev='HEAD'):
+    """The lines for a commit: the build items, queued in any notebook as the commit `rev` left it and already
+    queued before it, that its message and file names resemble.  Everything is read from the commit, not from
+    the working tree."""
+    def git(*args):
+        result = subprocess.run(['git', '-C', str(root), *args], capture_output=True, text=True)
+        return result.stdout if result.returncode == 0 else ''
+    files = git('show', '--name-only', '--format=', rev)
+    if not any(name.startswith(('tools/', 'compute.sh', 'AGENTS.md', '.claude/')) for name in files.split()):
+        return []
+    text = git('show', '-s', '--format=%B', rev) + ' ' + files
+    lines = []
+    for path in ['notebook.html', *sorted(git('ls-tree', '--name-only', rev, 'research/branches/').split())]:
+        path = path if path.endswith('.html') else f'{path}/notebook.html'
+        tree = parse_tree(git('show', f'{rev}:{path}'))
+        hits = built_items(tree[1], text) if tree else []
+        if hits:        # an item the commit itself queued shares its words with the commit and is not built by it
+            before = parse_tree(git('show', f'{rev}~1:{path}'))
+            hits = [hit for hit in hits if before and hit[1] in {node.ident for node in before[1]}]
+        for share, ident in hits:
+            lines.append(f'This commit resembles the queued build item {ident} of {path} '
+                         f'({share} of its words): read the item, and if the commit builds it or part of it, say '
+                         'so in the next entry on it, which closes it or names what is left.')
+    return lines
+
+
 def similar_items(nodes, threshold=0.5):
     """Pairs of queued items with much wording in common, [(share, id, id)], most alike first: the share is
     the common content words over those of the shorter item.  A hint to merge, not a verdict."""
@@ -1720,6 +1763,9 @@ def edit(body, ident, text):
 
 
 def main(argv):
+    if len(argv) in (2, 3) and argv[1] == 'built':
+        print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
+        return 0
     if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
         path = Path(argv[2])
         try:

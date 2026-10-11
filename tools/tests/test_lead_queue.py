@@ -1396,6 +1396,9 @@ class LeadQueueTest(unittest.TestCase):
 class LinkEarlierWorkTest(unittest.TestCase):
     """An entry on a queue item links the latest earlier entry on that item's group."""
 
+    def setUp(self):
+        lq.configure('')    # the module's settings are whatever the worker's last test left: start from the defaults
+
     def entry(self, ident, item, body=''):
         return (f'<article id="{ident}" data-kind="research" data-route="step" data-{item[0]}="{item[1]}">{body}'
                 '<p><strong>Follow-up.</strong> Continuing: x.</p></article>')
@@ -1621,3 +1624,51 @@ class LastItemGuidanceTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class BuiltItemsTest(unittest.TestCase):
+    ITEM = ('<a href="#x">suite-over-limit</a> (build): Framework: the whole suite ran over its limit with browser '
+            'cases slow; find whether the time is the suite own work or other jobs, and fix the measurement.')
+
+    def test_a_commit_message_is_compared_with_the_queued_build_items(self):
+        nodes = [lq.Node('build', 'suite-over-limit', '', self.ITEM),
+                 lq.Node('lead', 'r:1', '', self.ITEM),                    # the same words in a lead: not a build
+                 lq.Node('build', 'other', '', 'x (build): Refuse an entry whose closing paragraph disclaims a part '
+                                               'that its reason names, with a count on recorded entries.')]
+        message = ('Test runner: measure the suite own work apart from other jobs\n\nA whole suite over its limit '
+                   'with slow browser cases says whether the time was other jobs.\ntools/tests/run.py')
+        self.assertEqual([ident for _, ident in lq.built_items(nodes, message)], ['suite-over-limit'])
+        self.assertEqual(lq.built_items(nodes, 'Riemann notebook: a range bound for clusters'), [])
+
+    def test_the_command_reads_a_framework_commit_and_every_notebook_s_queue(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run = lambda *args: subprocess.run(['git', '-C', tmp, *args], check=True, capture_output=True)
+            run('init', '-q')
+            (root / 'research/branches/side').mkdir(parents=True)
+            (root / 'tools').mkdir()
+            (root / 'research/branches/side/notebook.html').write_text(
+                f'<section id="lead-queue"><ol><li data-build="suite-over-limit">{self.ITEM}</li></ol></section>')
+            commit = ['-c', 'user.name=t', '-c', 'user.email=t@example.org', 'commit', '-qm']
+            run('add', '-A')
+            run(*commit, 'Queue an item')
+            (root / 'tools/run.py').write_text('pass\n')
+            run('add', '-A')
+            run(*commit, 'Test runner: the whole suite over its limit says whether the time is other jobs or the '
+                         'suite own work, with the slow browser cases')
+            lines = lq.built(root)
+            self.assertEqual(len(lines), 1, lines)
+            self.assertIn('suite-over-limit of research/branches/side/notebook.html', lines[0])
+            (root / 'notes.txt').write_text('the whole suite over its limit: other jobs, slow browser cases, own work\n')
+            run('add', '-A')
+            run(*commit, 'Notes: the whole suite over its limit, other jobs or the suite own work, browser cases')
+            self.assertEqual(lq.built(root), [])                           # not a framework commit
+            queued = ('<a href="#y">refuse-unsized</a> (build): Launcher: refuse a long computation that names no '
+                      'sizing run, with a measured estimate from a smaller completed case.')
+            (root / 'research/branches/side/notebook.html').write_text(
+                f'<section id="lead-queue"><ol><li data-build="refuse-unsized">{queued}</li></ol></section>')
+            (root / 'tools/run.py').write_text('pass  # edited\n')
+            run('add', '-A')
+            run(*commit, 'Queue: the launcher should refuse a long computation that names no sizing run, with a '
+                         'measured estimate from a smaller completed case')
+            self.assertEqual(lq.built(root), [])                           # the commit queued the item itself

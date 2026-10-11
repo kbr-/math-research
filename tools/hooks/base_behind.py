@@ -15,6 +15,9 @@ import os
 import re
 import subprocess
 import sys
+import time
+
+RECENT_S = 60
 
 
 def git(*args, cwd=None):
@@ -55,12 +58,32 @@ def message(command, cwd=None):
             f'onto {base} if needed and fast-forwards it without pushing (CLAUDE.md, background sessions).')
 
 
+def built(command, cwd=None):
+    """After a git commit: the queued build items the commit resembles (tools/lead_queue.py built), or None.
+    Build items stayed queued after the commits that built them, since nothing compared the two."""
+    if not re.search(r'\bgit\s+(?:-c\s+\S+\s+)*commit\b', command) or '--dry-run' in command:
+        return None
+    root = git('rev-parse', '--show-toplevel', cwd=cwd)
+    tool = os.path.join(root or '', 'tools', 'lead_queue.py')
+    if not root or not os.path.isfile(tool):
+        return None
+    made = git('log', '-1', '--format=%ct', cwd=cwd)
+    if not made or time.time() - int(made) > RECENT_S:      # the commit failed or was refused: HEAD is an older one
+        return None
+    try:
+        result = subprocess.run([sys.executable, tool, 'built'], cwd=root, capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return result.stdout.strip() or None if result.returncode == 0 else None
+
+
 def main():
     try:
         event = json.load(sys.stdin)
     except ValueError:
         return 0
-    text = message(event.get('tool_input', {}).get('command', ''), event.get('cwd'))
+    command, cwd = event.get('tool_input', {}).get('command', ''), event.get('cwd')
+    text = ' '.join(filter(None, [message(command, cwd), built(command, cwd)]))
     if text:
         print(json.dumps({'decision': 'block', 'reason': text}))
     return 0
