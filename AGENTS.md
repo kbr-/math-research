@@ -345,13 +345,16 @@ assessments.
   examined.</strong>` it lists what the item's own statement names (objects, sources, forms) that
   the entry did not examine and why the closure stands without each, or says nothing it names is
   left; an item with a named part unexamined is Continuing (the finisher checks the paragraph, the
-  reviewer its content). Closed and Developed remove the item. Before planning a queued item, run
-  `tools/lead_queue.py history NOTEBOOK ID --status` and read its latest development; take the spell
-  count from this computed status, not an older entry's prose. Four consecutive research entries are
-  the default spell. At its boundary, extend by two cycles when a proof, refutation or reduction
-  from the current spell/extension period materially advances a named open statement and a concrete
-  next necessary implication uses the same mechanism. Record that evidence and next attempt using
-  [the queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
+  reviewer its content). After `<strong>Owed attempt.</strong>` it says which attempt the item's
+  latest follow-up or its reviewer named and that it was made, with its outcome, or that none was
+  named; an item whose named attempt is unmade is Continuing (the finisher checks the paragraph).
+  Closed and Developed remove the item. Before planning a queued item, run `tools/lead_queue.py
+  history NOTEBOOK ID --status` and read its latest development; take the spell count from this
+  computed status, not an older entry's prose. Four consecutive research entries are the default
+  spell. At its boundary, extend by two cycles when a proof, refutation or reduction from the
+  current spell/extension period materially advances a named open statement and a concrete next
+  necessary implication uses the same mechanism. Record that evidence and next attempt using [the
+  queue tool's extension format](tools/lead_queue.py). Reassess after each two-cycle extension;
   there is no lifetime cap, but finite checks, promise alone or reused old progress do not earn more
   time. Without fresh qualifying progress, rotate to the tail (user, 5 October 2026). Every
   top-level item, also during backpressure, is developed in its own entry; batch triage is retired

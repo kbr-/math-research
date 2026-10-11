@@ -450,6 +450,15 @@ def validate_closures(text):
                          'least 40 characters, what the item\'s own statement names (objects, sources, forms) that '
                          'the entry did not examine and why the closure stands without each, or that nothing it '
                          'names is left; an item with a named part unexamined is Continuing (AGENTS.md)')
+    # On 11 October 2026 three closures of one item were drafted while the attempt its last reviewer had
+    # named stayed unmade; each reviewer refused.  The closure accounts for that attempt in its own paragraph.
+    owed = re.search(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', owed.group(1))).strip() if owed else ''
+    if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
+        raise ValueError('An entry that closes a queue item says, after <strong>Owed attempt.</strong> and in at '
+                         'least 40 characters, which attempt the item\'s latest follow-up or its reviewer named '
+                         '(a run, a source, a proof) and that it was made, with its outcome, or that none was '
+                         'named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
 
 
 READING_ITEM_RE = re.compile(r'<li\b[^>]*>((?:(?!</li>).)*?)<strong>Follow-up\.</strong>\s*Developed\b((?:(?!</li>).)*)</li>',
