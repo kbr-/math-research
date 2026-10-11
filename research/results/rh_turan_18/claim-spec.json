@@ -1,0 +1,32 @@
+{
+  "source": {
+    "record": "[Interpolation power-sum bound](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-interpolation-power-sum-bound)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-interpolation-power-sum-bound"],
+    "label": "A lower bound for power sums over consecutive exponents, applied to a cluster of off-axis pairs"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:interpolation-power-sum-bound",
+      "summary": "For complex z_1..z_N with z_k different from the others, complex b_j and s_nu = sum b_j z_j^nu: for every m >= 0 the maximum of |s_nu| over m < nu <= m + N is at least |b_k| |z_k|^(m+1) times the product over j != k of |z_k - z_j|/(1 + |z_j|). Applied to S(s) = sum m_j (e^{-is w_j^+} + e^{-is w_j^-}) for n off-axis pairs with heights in an interval of length R >= 1: among the points s = nu pi/R, m < nu <= m + 2n, one has |S(s)| >= m_1 e^{(m+1) pi delta_1/R} sinh(pi delta_1/R) times the product over j >= 2 of (2|gamma_1 - gamma_j|/((1+e^{pi/2})R))^2.",
+      "assessment": "Working elementary proof by Lagrange interpolation. Gives a short range of lattice points (2n of them, step pi/R) where the off-axis sum of a cluster is not small, with a loss that is c^n for evenly spread heights (a power of T for n of order log T) and unbounded for close heights; it carries the exponential at the range's first point and ignores the positivity of multiplicities. Pointwise at lattice points only; not connected to the form's Hilbert-Schmidt norm. Turan's second main theorem, which the queue item names, is unread.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "First development of the queued Turan item with a proved substitute: the off-axis sum of a cluster cannot stay small over 2n consecutive lattice points, with a loss governed by the gaps.",
+      "next_action": "Prove a gap-free bound by Newton interpolation of z^-(m+1) for points of modulus at least one, deduce the cluster consequence, and pass from the lattice point to the mean square.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; no computation.",
+        "formalization": "No formalization.",
+        "significance": "Context: a standard interpolation argument. Novelty not claimed.",
+        "relationships": "Compared with the resonance-free bandwidth theorem and the subset-sum resonance example."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:interpolation-power-sum-bound", "cites", "thm:resonance-free-bandwidth", "Same question (a cluster's contribution over a range of scales); shorter range, exponential loss."],
+    ["lem:interpolation-power-sum-bound", "cites", "prop:subset-sum-resonance", "That example shows cancellation at one scale; the bound here limits it over 2n consecutive steps."]
+  ]
+}
