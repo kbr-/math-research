@@ -260,6 +260,10 @@ class StructuralReasonTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             FT.validate_structural_reason(plain, {'refutation', 'working_proof'})
         FT.validate_structural_reason(plain + self.REASON, {'refutation'})
+        with self.assertRaisesRegex(ValueError, 'Structural reason'):                # an obstruction's identifier
+            FT.validate_structural_reason(plain, {'working_proof'}, ['obs:dense-pinning'])
+        FT.validate_structural_reason(plain + self.REASON, {'working_proof'}, ['obs:dense-pinning'])
+        FT.validate_structural_reason(plain, {'working_proof'}, ['prop:observed-bound'])     # not the prefix
         FT.validate_structural_reason(plain, {'working_proof', None})
 
 

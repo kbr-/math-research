@@ -495,17 +495,19 @@ def validate_developed_readings(text):
                              'statement in its text, or keep the sub-idea Continuing (AGENTS.md)')
 
 
-def validate_structural_reason(text, statuses=()):
+def validate_structural_reason(text, statuses=(), claims=()):
     """An entry reporting a counterexample or a refutation of a hypothesis says why it works.
 
     AGENTS.md asks that an exclusion's structural reason be extracted and tried on the other candidates.  Two
     entries of 11 October 2026 reported counterexamples to a hypothesis without it, and the reason, that 1 was
     a constant-coefficient combination of the rows, was drawn only by a reviewer two entries later.  The
     trigger is the word counterexample in the title or the New mathematics paragraph, or a claim registered as
-    a refutation; "refutation" alone is not one, being the name of a proof in this subject."""
+    a refutation, or a claim whose identifier is an obstruction's (obs:); "refutation" alone is not one, being
+    the name of a proof in this subject."""
     title = re.search(r'<h3\b[^>]*>(.*?)</h3>', text, re.S)
     told = (title.group(1) if title else '') + ' ' + report_paragraph(text, 'New mathematics')
-    if 'refutation' not in statuses and not re.search(r'\bcounterexamples?\b', told, re.I):
+    obstruction = any(str(cid).startswith('obs:') for cid in claims)
+    if 'refutation' not in statuses and not obstruction and not re.search(r'\bcounterexamples?\b', told, re.I):
         return
     given = re.search(r'<strong>Structural reason\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
     plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
@@ -770,11 +772,11 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         if check_registered_claims:
             known = registered_status()
             statuses = {known.get(cid) for cid in entry_claims(body, article)}
-            validate_structural_reason(text, statuses)
+            validate_structural_reason(text, statuses, entry_claims(body, article))
             validate_degenerate_cases(text, statuses)
             validate_proved_instance(text, statuses)
         else:
-            validate_structural_reason(text)
+            validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)
     if state == 'advanced':
