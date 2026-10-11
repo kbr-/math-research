@@ -1077,13 +1077,17 @@ def queued_arrivals(tag, text):
 
 def pending_subideas(body):
     """(kind, id) of Sub-ideas that wait for a review: listed by research entries developing no queue item
-    since the last review, and not queued."""
+    since the last review, not queued, and not already developed or closed by an entry of their own (one seeded
+    into a new queue and then developed has left the queue without waiting for anything)."""
     found = parse_tree(body)
     queued = set(every_item(found[1])) if found else set()
     articles = list(record_articles(body))
     last = max((i for i, (tag, _) in enumerate(articles) if 'data-kind="review"' in tag), default=-1)
+    finished = {work[0] for work in (developed_by(tag, text) for tag, text in articles)
+                if work and work[1] in ('Developed', 'Closed')}
     return [item for tag, text in articles[last + 1:]
-            for item in arrivals_of(tag, text) if item not in queued and item not in queued_arrivals(tag, text)]
+            for item in arrivals_of(tag, text)
+            if item not in queued and item not in finished and item not in queued_arrivals(tag, text)]
 
 
 STOP = set('with that this from have were which their there than then into also each such only when whether '

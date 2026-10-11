@@ -481,6 +481,8 @@ class LeadQueueTest(unittest.TestCase):
         body2, count2 = lq.append_new(notebook([self.rev, listing, promoting], self.q))
         self.assertEqual((count2, lq.parse(body2)[1]), (1, self.q + [('check', 't1:s1')]))
         self.assertEqual(lq.pending_subideas(body2), [])                   # a review ends the wait of the rest
+        done = notebook([self.rev, listing, developing(('check', 't1:s1'), 'Developed')], self.q)
+        self.assertEqual(lq.pending_subideas(done), [('build', 't1:s2')])  # one developed by its own entry waits no more
 
     def test_near_duplicates_are_shown_and_merged(self):
         a = 'Prove an upper bound for the refutation degree of random products of two affine forms'
