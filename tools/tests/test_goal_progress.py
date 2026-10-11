@@ -567,6 +567,12 @@ class CountListingReportTest(unittest.TestCase):
         self.assertIn('logged no run on this entry', line)
         self.assertIn('1 of its sentences hold a count', line)
         self.assertIsNone(FT.count_listing_report(self.ENTRY, ['draft_counts entry-2026-10-12-x 1']))
+        # A run on an earlier draft that listed fewer sentences than the entry now holds is reported.
+        grown = self.ENTRY + '<p><strong>Limit.</strong> Only 3 of them.</p>'
+        self.assertIn('last listed 1 sentences with a count for this entry and it now holds 2',
+                      FT.count_listing_report(grown, ['draft_counts entry-2026-10-12-x 1']))
+        self.assertIsNone(FT.count_listing_report(grown, ['draft_counts entry-2026-10-12-x 1',
+                                                           'draft_counts entry-2026-10-12-x 2']))
         # An entry without a count, and text without an article, have nothing to report.
         self.assertIsNone(FT.count_listing_report('<article id="e"><p><strong>Checks.</strong> None.</p>', []))
         self.assertIsNone(FT.count_listing_report('<p>loose text with 3 numbers</p>', []))

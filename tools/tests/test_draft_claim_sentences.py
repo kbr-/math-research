@@ -71,7 +71,7 @@ class CountsTest(unittest.TestCase):
 <h4>The measurement</h4>
 <p>Of 20 items the check saw ten. The exponent \\(1-2\\delta_0\\) and <code>lem:step-2</code> are not counts.</p>
 <ul><li>One list item under the measurement with 7 cases.</li></ul>
-<p><strong>Limit.</strong> Dated 12 October 2026 only. A 40-minute wait.</p>
+<p><strong>Limit.</strong> Dated 12 October 2026 only. A 40-minute wait. <strong>31</strong> items remain.</p>
 <p><strong>What the six entries did.</strong> Nothing with a number.</p>
 <h4>What is added</h4>
 <p>A heading the listing does not know, with 9 entries.</p>
@@ -88,10 +88,11 @@ class CountsTest(unittest.TestCase):
             ('The measurement', 'Of 20 items the check saw ten.'),
             ('The measurement', 'One list item under the measurement with 7 cases.'),
             ('Limit', 'A 40-minute wait.'),                      # a number before a hyphen; the date is not one
+            ('Limit', '31 items remain.'),                       # bold at a later sentence's start is its text
             ('What is added', 'A heading the listing does not know, with 9 entries.'),
         ])                                                       # a number word in a label alone is not listed
         report = dcs.counts_report(self.DRAFT, 0)
-        self.assertTrue(report.endswith('7 sentences with a count.'))
+        self.assertTrue(report.endswith('8 sentences with a count.'))
         self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
 
 
@@ -100,9 +101,12 @@ class RunLogTest(unittest.TestCase):
         import json
         import tempfile
         with tempfile.TemporaryDirectory() as directory:
-            log = pathlib.Path(directory) / 'logs' / 'searches.jsonl'
+            log = pathlib.Path(directory) / 'searches.jsonl'
+            dcs.log_run(CountsTest.DRAFT, log)
+            self.assertFalse(log.exists())      # the searches' log is not created by this tool
+            log.write_text('')
             dcs.log_run(CountsTest.DRAFT, log)
             row = json.loads(log.read_text())
-            self.assertEqual(row['query'], 'draft_counts entry-2026-10-11-x 7')
+            self.assertEqual(row['query'], 'draft_counts entry-2026-10-11-x 8')
             dcs.log_run('<p>no article</p>', log)
             self.assertEqual(json.loads(log.read_text().splitlines()[1])['query'], 'draft_counts - 0')

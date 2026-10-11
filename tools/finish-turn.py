@@ -778,16 +778,21 @@ def count_listing_report(entry, queries):
     the line makes the omission visible in the finisher's output, where the session reviewer reads it.  It cannot
     tell whether a listing that was printed was read."""
     ident = re.search(r'<article\b[^>]*\bid="([^"]+)"', entry)
-    if not ident or any(query.split()[1:2] == [ident.group(1)] for query in queries
-                        if query.startswith('draft_counts ')):
+    if not ident:
         return None
     try:
         import draft_claim_sentences
     except ImportError:      # a checkout without the draft tool has no listing to report on
         return None
     found = len(draft_claim_sentences.counts(entry + '</article>'))
-    if not found:
+    runs = [query.split() for query in queries if query.startswith('draft_counts ')]
+    listed = [int(words[2]) for words in runs if words[1:2] == [ident.group(1)] and words[2:3] and words[2].isdigit()]
+    if not found or (listed and listed[-1] >= found):
         return None
+    if listed:      # run on an earlier draft: the gate and the assessments, with their counts, came after
+        return (f'Count listing: tools/draft_claim_sentences.py last listed {listed[-1]} sentences with a count for '
+                f'this entry and it now holds {found}; run it again and read the new ones beside their saved '
+                'sources (AGENTS.md).')
     return (f'Count listing: tools/draft_claim_sentences.py logged no run on this entry in its session, and {found} '
             'of its sentences hold a count; run it on the entry and read each beside its saved source (AGENTS.md).')
 
@@ -1510,7 +1515,9 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     whole = notebook.read_text()
     entry = whole[whole.rfind('<article', 0, whole.index(marker)):whole.index(marker)]
     logged = logged_searches(root, first.get('unix_s', 0))
-    unread = count_listing_report(entry, logged)
+    # As for the resemblance check below: a checkout that has never searched has no log to read runs from.
+    unread = (count_listing_report(entry, logged)
+              if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])

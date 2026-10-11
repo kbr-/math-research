@@ -86,8 +86,10 @@ def counts(draft):
         where = label.group(1) if label else heading
         if MATHEMATICS.match(where):
             continue
-        for sentence in sentences(body):
-            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', LABEL.sub('', sentence), flags=re.S)
+        for index, sentence in enumerate(sentences(body)):
+            # Only the paragraph's own label is left out: bold at the start of a later sentence is its text.
+            unlabelled = LABEL.sub('', sentence) if index == 0 and label else sentence
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', unlabelled, flags=re.S)
             if COUNT.search(DATE.sub(' ', text(bare))):
                 found.append((where, text(sentence)))
     return found
@@ -99,12 +101,15 @@ RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
 def log_run(draft, path=None):
     """Append this run, with the draft's article id and its number of count sentences, to the ignored log the
     finisher reads, so that an entry whose listing was never printed is reported.  A log that cannot be written
-    is not an error."""
+    is not an error.  The log is the registry searches' own and is not created here: in a checkout that has never
+    searched, the finisher skips the checks that read it.  A draft without an article is logged as "-", which
+    matches no entry."""
     import time
     ident = re.search(r'<article\b[^>]*\bid="([^"]+)"', draft)
     try:
         path = path or RUN_LOG
-        path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists():
+            return
         with path.open('a') as handle:
             handle.write(json.dumps({'unix_s': time.time(), 'query': 'draft_counts '
                                      + (ident.group(1) if ident else '-') + f' {len(counts(draft))}'}) + '\n')
