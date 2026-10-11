@@ -74,6 +74,11 @@ class GoalProgressTest(unittest.TestCase):
                 validate(body)
         body = body.replace('</article>', '<p><strong>Degenerate cases.</strong> A satisfiable system is excluded by '
                             'hypothesis, and with no rows the statement is vacuous.</p></article>')
+        with patch.object(FT, 'registered_status', return_value={'thm:result': 'working_proof'}):
+            with self.assertRaisesRegex(ValueError, 'Nonvacuity'):            # and has an instance written down
+                validate(body)
+        body = body.replace('</article>', '<p><strong>Nonvacuity.</strong> The system of three rows on four '
+                            'variables recorded with the witness satisfies every hypothesis.</p></article>')
         for status in ('working_proof', 'conditional', 'established'):
             with patch.object(FT, 'registered_status', return_value={'thm:result': status}):
                 validate(body)
@@ -200,6 +205,20 @@ class ClosureStakesTest(unittest.TestCase):
             FT.validate_closures(self.STAKES + self.RECORD + self.READ)
         FT.validate_closures(self.STAKES.replace('Closed: superseded', 'Closed: merged into other-item')
                              + self.RECORD + self.READ)                                    # a merge names no remainder
+
+
+class ProvedInstanceTest(unittest.TestCase):
+    def test_a_registered_proof_exhibits_an_input_meeting_its_hypotheses(self):
+        plain = '<p>The proposition holds for every graph of the class.</p>'
+        FT.validate_proved_instance(plain)
+        FT.validate_proved_instance(plain, {'finite_check', 'conjecture', None})
+        for status in ('working_proof', 'conditional'):
+            with self.assertRaisesRegex(ValueError, 'Nonvacuity'):
+                FT.validate_proved_instance(plain, {status})
+        with self.assertRaisesRegex(ValueError, 'Nonvacuity'):
+            FT.validate_proved_instance(plain + '<p><strong>Nonvacuity.</strong> Yes.</p>', {'working_proof'})
+        FT.validate_proved_instance(plain + '<p><strong>Nonvacuity.</strong> Seven left vertices of degree six and '
+                                    'six right vertices of degree seven form an instance.</p>', {'working_proof'})
 
 
 class DegenerateCasesTest(unittest.TestCase):

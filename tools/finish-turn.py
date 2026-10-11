@@ -526,6 +526,21 @@ def validate_degenerate_cases(text, statuses=()):
                          '(AGENTS.md)')
 
 
+def validate_proved_instance(text, statuses=()):
+    """An entry registering a proved statement exhibits an input that satisfies its hypotheses.
+
+    A proposition of 11 October 2026 went to review stated for a class with no member (fewer right vertices
+    than left ones, with right degrees bounded by the left degree); writing one instance down shows it."""
+    if not PROVED & set(statuses):
+        return
+    given = re.search(r'<strong>Nonvacuity\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    if len(plain) < 60:
+        raise ValueError('This entry registers a proved statement: exhibit, after <strong>Nonvacuity.</strong> '
+                         'and in at least 60 characters, an input that satisfies all its hypotheses, with its '
+                         'parameters, or say that the statement has no hypotheses to satisfy (AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -748,6 +763,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             statuses = {known.get(cid) for cid in entry_claims(body, article)}
             validate_structural_reason(text, statuses)
             validate_degenerate_cases(text, statuses)
+            validate_proved_instance(text, statuses)
         else:
             validate_structural_reason(text)
         if state == 'unchanged':

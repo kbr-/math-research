@@ -118,8 +118,11 @@ growing checklists or one-off setup narratives.
   hypotheses. Before sending a proved statement to review, try it on degenerate inputs (the trivial
   instance, the empty one, an input outside its stated form) and report it in the entry after
   `<strong>Degenerate cases.</strong>`: what the statement gives on each, or the hypothesis that
-  excludes it (the finisher requires the paragraph of an entry registering a proof). State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
+  excludes it (the finisher requires the paragraph of an entry registering a proof). Write down also
+  one input that satisfies all the statement's hypotheses, with its parameters, after
+  `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
+  finisher requires it of the same entries). State compositions as lemmas in one common setting with
+  a complete proof, not a reference to a sketch.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
