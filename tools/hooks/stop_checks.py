@@ -325,7 +325,11 @@ def missing_tool_block(texts, calls):
 MISTAKE = re.compile(r"[^.!?\n]*(?:\bmy (?:own )?(?:mistake|error|fault|oversight)\b|\bI (?:was|had been) wrong\b|"
                      r"\bI got (?:it|that|this) wrong\b|\bI never (?:measured|checked|tested|verified|read|looked|"
                      r"timed|ran|tried)\b|\bI (?:missed|overlooked|misjudged|misread)\b|"
-                     r"\bI (?:phrased|put) (?:it|that) badly\b|\bwas avoidable\b)[^.!?\n]*", re.I)
+                     r"\bI (?:phrased|put) (?:it|that) badly\b|\bwas avoidable\b|"
+                     # A claim of one's own taken back is a mistake admitted in other words.
+                     r"\bI (?:had )?(?:overstated|misstated|misquoted)\b|\bI (?:withdraw|withdrew|retract(?:ed)?) "
+                     r"(?:my|the|that|this)\b|\bmy (?:own )?(?:\w+ )?(?:claim|statement|reading|draft|conclusion) "
+                     r"(?:was|is) (?:wrong|overstated|withdrawn|mistaken)\b)[^.!?\n]*", re.I)
 # The paragraph that answers it, in what the user is told.
 PREVENTION = re.compile(r'^[\s>*#-]*Prevention\b', re.M)
 
