@@ -1,0 +1,34 @@
+Review record, 11 October 2026: entry-2026-10-11-lifted-clause-choices. Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), by hand; no computations run.
+
+Verdict: pass with corrections. The lemma's parts (a)-(d) hold; its "Consequently" and three conclusions did
+not stand as written.
+
+Required changes:
+1. "Consequently ... d(G) <= max{d(G^cl), 2w} and d(G^cl) <= max{d(G), 2w+1}": swapped. The proof's
+   containments give d(G^cl) <= max{d(G), 2w} and d(G) <= max{d(G^cl), 2w+1}. The stated first inequality is
+   unproved; on the pigeonhole instance (d(G) = 5, 2w = 4) it would assert d(G^cl) = 5.
+2. "nothing here improves it": false once item 1 is corrected. With lem:pair-lift-degree-bounds,
+   d(G^cl) <= max{2 d(H), 2w}, below 2(d(H)+1). The citation of lem:gadget-lift-degree-bound is itself a
+   correct instance.
+3. Entry-meta "the expansion route is closed for clause systems", and the Bearing's "the method ... does not
+   apply": overstated. Part (d) defeats only the clause-variable-graph theorem on G^cl, for s >= 2^p. The
+   immunity criterion applied to the constraints c^ on H's graph is untried; immunity exactly p + 2q there,
+   against p + q for the clause (unverified).
+4. "the suggestion fits fields of odd characteristic": wrong as put. Linear equations are degree one over
+   every field; parities are what is hard in odd characteristic. Tseitin clauses over F_2 are no dodge,
+   their degree being about the width.
+5. Follow-up, "doubling follows": needs a lower bound on d(G) equal to twice the exact d(H); the registered
+   r(l/4 - ...) form gives no such constant.
+Parts (a)-(d): the +1 in (a) is needed and enough. Whether the entry's immunity definition is the criterion's
+cannot be told from the registered statement.
+Title may claim: a lifted clause is equivalent, within one degree, to its 2^p choice clauses, which have empty
+boundary for p >= 2.
+Process audit: items 3 and 5; d(G^cl) on the pigeonhole instance was never asked for, though it tests item 1.
+Pigeonhole paragraph hedged correctly; bearing none is right.
+Suggestions (unverified): the lift of y_1 y_2 + y_3 y_4 is exactly four-immune (its nonzero set lies in two
+disjoint codimension-4 subcubes). y_1 y_2 + y_3 is not: (1 + x_1) f = (1 + x_1) x_5 x_6. y_1 y_2 + 1 has
+immunity 1. In general prod_T (1 + x_{2i-1}) f has degree at most |T| + 2 deg q|_{y_T = 0}. No short proof
+found for a random quadratic.
+
+Author's note: all applied.
