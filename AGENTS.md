@@ -128,6 +128,9 @@ growing checklists or one-off setup narratives.
   statement's hypotheses, with its parameters, after `<strong>Nonvacuity.</strong>`: a statement
   about a class with no member proves nothing (the finisher requires it of the same entries). State
   compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
+  Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT` and read each sentence
+  that cites a claim beside that claim's registered statement: a sentence may say no more than the
+  claim.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
