@@ -1,0 +1,33 @@
+{
+  "source": {
+    "record": "[Prime-side form](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"],
+    "label": "The Gram form's prime side as a weighted square integral"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:prime-side-form-bound",
+      "summary": "For L > 0, grid tau_k = tau_0 + 2 pi k/L, phi real even bounded with support in [-L/2, L/2], real finitely supported c and H_c = sum c_k phihat(. - tau_k): int H_c^2 = 2 pi int phi^2 |sum c_k e^{iu tau_k}|^2 <= 2 pi L ||phi||_inf^2 |c|^2, and for bounded real nu the form Q_nu(c) = sum c_k c_l int phihat(tau - tau_k) phihat(tau - tau_l) nu(tau) dtau equals int H_c^2 nu, so inf nu int H_c^2 <= Q_nu <= sup nu int H_c^2. For nu = cos(tau v) the diagonal entry is 2 pi (phi*phi)(v) cos(tau_k v), so for the truncated prime sum P_X of the density import, G^P_kk = -2 sum Lambda(n) n^{-1/2} (phi*phi)(log n) cos(tau_k log n).",
+      "assessment": "Working elementary proof (Plancherel, orthogonality over one period, Fourier inversion). As a bound for the prime part of the imported Gram form it is the trivial one, since sup|P_X| over the line is attained at 0; it returns delta <= 1/2 for a solitary pair in the model. The diagonal identity gives one proved implication, from an eigenvalue bound to a bound for smoothed prime sums at the grid heights. A bound by the size of P_X near [T, 2T] only needs a localization that is not proved; the smooth part with mu is not treated.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Reads the prime side of the Gram form from the source's definitions and shows what an elementary bound gives (nothing beyond trivial) and which implication is proved; the sign lead stays open on a localization and a converse.",
+      "next_action": "Prove the localization of int H_c^2 near [T, 2T] for coefficients on the cut grid, then decide the positive-kernel one-sided form.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; no computation.",
+        "formalization": "No formalization.",
+        "significance": "Context: an elementary bound that locates the prime input of the form. Novelty not claimed.",
+        "relationships": "Used with extreme eigenvalue detection and part 5 of solitary amplification in a conditional chain; reads the imported density theorem's definitions."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:prime-side-form-bound", "cites", "prop:extreme-eigenvalue-detection", "Supplies the prime-side counterpart of the eigenvalue premise named there."],
+    ["lem:prime-side-form-bound", "cites", "prop:solitary-amplification", "Its part 5 gives the zero-side lower bound in the conditional chain."],
+    ["lem:prime-side-form-bound", "cites", "thm:anthropic-critical-line-density", "Uses that source's definitions of the prime-side matrix and densities; none of its estimates."]
+  ]
+}
