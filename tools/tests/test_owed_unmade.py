@@ -18,6 +18,19 @@ def entry(paragraph, date='2026-10-12'):
     return body, article, body.index('</article>', article)
 
 
+class ClosureExceptionTest(unittest.TestCase):
+    def test_a_closing_paragraph_may_not_except_an_unmade_attempt(self):
+        # The wording of the closure drafted and refused on 11 October 2026.
+        self.assertTrue(FT.closure_admits_unmade('None is left unmade except the extension of the collapse.'))
+        self.assertTrue(FT.closure_admits_unmade('The first is made and the second left undecided, with the reason.'))
+        self.assertTrue(FT.closure_admits_unmade('The reading was not made.'))
+
+    def test_a_closing_paragraph_reporting_every_attempt_made_passes(self):
+        self.assertFalse(FT.closure_admits_unmade('The reading its last follow-up named was made, with the outcome '
+                                                  'above; none is left unmade.'))
+        self.assertFalse(FT.closure_admits_unmade('None was named beyond the item\'s own text.'))
+
+
 class OwedUnmadeTest(unittest.TestCase):
     def test_not_reached_without_reason_is_refused(self):
         # The wording of the draft of 11 October 2026 that prompted the check.

@@ -541,9 +541,24 @@ def validate_closures(text):
                          'least 40 characters, which attempt the item\'s latest follow-up or its reviewer named '
                          '(a run, a source, a proof) and that it was made, with its outcome, or that none was '
                          'named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
+    if closure_admits_unmade(plain):
+        raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
+                         'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
 
 
-DEVELOPED_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
+# A fourth closure of that item, drafted the same day, said "None is left unmade except" one attempt, with an
+# excuse covering one family; its reviewer refused it.  A closing paragraph may not carry such an exception.
+CLOSURE_EXCEPTION_RE = re.compile(r'\bunmade except\b|\bexcept\b[^.]*\b(?:unmade|undecided|not decided|not made)\b|'
+                                  r'\b(?:is|are|stays?|left) (?:undecided|not decided|unmade)\b|\bnot made\b', re.I)
+
+
+def closure_admits_unmade(plain):
+    """Whether a closing entry's Owed attempt text reports an attempt unmade or undecided."""
+    denied = re.sub(r'\b(?:none|nothing|no attempt)\b[^.]*?\bunmade\b(?!\s+except\b)', ' ', plain, flags=re.I)
+    return bool(CLOSURE_EXCEPTION_RE.search(denied))
+
+
+DEVELOPED_RE =re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
 
 
 def validate_developed_removals(text):
