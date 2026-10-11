@@ -165,7 +165,8 @@ growing checklists or one-off setup narratives.
   cycle. Defer optional extensions. Record dependencies re-read, checks and reviewer verdict in a
   short **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
   status, not a working proof; correctness takes precedence over cycle speed. A report to the user
-  about an entry whose review has not returned calls each conclusion it states unreviewed. Prepare
+  about an entry whose review has not returned prefixes each conclusion with **Unreviewed:**;
+  saying later that a reviewer is checking it does not replace the label. Prepare
   staging paths, commit message and focused metadata checks during review; the checks include
   `./tools/check_records.py --diff`, which flags commit hashes, environment literals, backticks in
   the notebook's HTML and long status lines in the lines being committed. Then run a sequential
