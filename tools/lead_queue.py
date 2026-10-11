@@ -103,6 +103,7 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
 import functools
 import html
 import importlib
+import importlib.util
 import json
 import os
 import re
@@ -842,6 +843,69 @@ def survey(body):
     return rows
 
 
+ELSEWHERE = 6       # measured 11 October 2026 on four items known to be answered in part under another item, each
+                    # on the notebook as it stood before the item's first entry: the answering claim stood
+                    # second, third and second for three and was not among the six for the fourth.  The limit
+                    # was chosen on these same cases.  A share of the item's words in the claim's summary found
+                    # none of the four at 0.4 and one at 0.3
+
+
+def registered_claims(path=None):
+    """The claims of the registry, or [] where there is none."""
+    try:
+        return json.loads((path or ROOT / 'research' / 'claims' / 'index.json').read_text())['claims']
+    except (OSError, ValueError, KeyError):
+        return []
+
+
+def claims_elsewhere(body, claims, ident, limit=ELSEWHERE):
+    """[(score, claim id, entry anchor), ...], best first: the claims nearest to the queued item's text, by the
+    registry search's ranking and with its score, among those declared by entries that did not develop the item
+    `ident` or its group and came after the entry that queued it (for an item added by the tool, after the
+    record's last entry at that time) and after the group's last entry.  In one block of 11 October 2026 four
+    items taken as never developed had each been partly answered by an entry filed under another item, and
+    nothing showed it before the cycle was spent.  A hint to read the entry, not a verdict."""
+    found = parse_tree(body)
+    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if n.ident == ident), None)
+    if node is None:
+        return []
+    articles = record_articles(body)
+    anchors = [(re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1] for tag, _ in articles]
+    own = {anchor for anchor, _, _ in history(body, ident)}
+    added = re.search(r'\bdata-after="([^"]+)"', node.attrs)    # an item added by the tool: the record's last entry then
+    source = added.group(1) if added else ident.rsplit(':', 1)[0]
+    after = max([position for position, anchor in enumerate(anchors) if anchor == source or anchor in own] or [-1])
+    where = {}
+    for position, (tag, _) in enumerate(articles):
+        declared = re.search(r'\bdata-claims="([^"]*)"', tag)
+        if position > after and declared:
+            where.update({claim: anchors[position] for claim in declared.group(1).split()})
+    later = [claim for claim in claims if claim['id'] in where]
+    if not later:
+        return []
+    spec = importlib.util.spec_from_file_location('search_claims', Path(__file__).parent / 'search-claims.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    text = html.unescape(re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', node.text.split('):', 1)[-1])))
+    if not module.stems(text):                  # nothing to rank by: the search would return every claim at zero
+        return []
+    return [(round(score, 1), claim['id'], where[claim['id']])
+            for score, claim in module.search({'claims': later}, [text])[:limit] if score > 0]
+
+
+def answered_report(body, claims):
+    """[(item id, [(score, claim, anchor), ...]), ...] for the top-level queued items no entry has developed that
+    have such claims; build items are left out, a claim being no answer to a build."""
+    found = parse_tree(body)
+    rows = []
+    for node in (found[1] if found else []):
+        if node.kind != 'build' and not history(body, node.ident):
+            matches = claims_elsewhere(body, claims, node.ident)
+            if matches:
+                rows.append((node.ident, matches))
+    return rows
+
+
 def result_files(body, ident):
     """The result files (scripts, outputs, data) that the entries on the item's group link under research/results,
     in order, without timing tables and reviewers' records.  On 11 October 2026 an entry reported a numerical
@@ -858,7 +922,7 @@ def result_files(body, ident):
     return out
 
 
-def item_status(body, ident):
+def item_status(body, ident, claims=None):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
     nodes = found[1] if found else []
@@ -888,7 +952,11 @@ def item_status(body, ident):
             'Attempts named by the follow-ups of its entries (write the Owed attempt paragraph against all):'
             ] + ([f'  #{anchor}{"" if owed else " [no later entry has an Owed attempt paragraph]"}: '
                   + ' '.join(said)
-                  for anchor, said, owed in named_attempts(body, ident)] or ['  none'])
+                  for anchor, said, owed in named_attempts(body, ident)] or ['  none']) + (
+            ['Claims of later entries on other items nearest to its text (read each entry before planning):']
+            + ([f'  {score} {claim} in #{anchor}' for score, claim, anchor in claims_elsewhere(body, claims, ident)]
+               or ['  none'])
+            if claims is not None else [])
 
 
 def extension_item(body, nodes, tag, text, position=None):
@@ -1895,6 +1963,18 @@ def main(argv):
             print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
                   or 'No similar queued items')
         return 0
+    if len(argv) == 3 and argv[1] == 'nearby':
+        body = Path(argv[2]).read_text()
+        claims = registered_claims()
+        rows = answered_report(body, claims)
+        for ident, matches in rows:
+            print(ident)
+            print('\n'.join(f'  {score} {claim} in #{anchor}' for score, claim, anchor in matches))
+        print(f'{len(rows)} queued items without an entry, builds left out, each with at most {ELSEWHERE} claims of '
+              f'later entries on other items nearest to its text, with the search\'s score; {len(claims)} '
+              f'registered claims and {len(record_articles(body))} entries read. A reading list, not a verdict: '
+              'every item gets one, answered or not.')
+        return 0
     if len(argv) == 3 and argv[1] == 'survey':
         rows = survey(Path(argv[2]).read_text())
         print('kind\titem\tentries\topen sub-ideas\tlatest outcome\tlatest names an attempt\tattempts unreported')
@@ -1908,7 +1988,7 @@ def main(argv):
         body = Path(argv[2]).read_text()
         if len(argv) == 5:
             try:
-                print('\n'.join(item_status(body, argv[3])))
+                print('\n'.join(item_status(body, argv[3], registered_claims())))
             except ValueError as error:
                 print(error, file=sys.stderr)
                 return 1

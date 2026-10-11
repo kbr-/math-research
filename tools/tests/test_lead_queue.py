@@ -511,6 +511,51 @@ class LeadQueueTest(unittest.TestCase):
             lq.transition(after.replace(own, gone), lq.parse_tree(notebook([self.rev, listing], queue))[1],
                           *lq.record_articles(after.replace(own, gone))[-1])
 
+    def test_claims_of_entries_on_other_items_are_shown_for_an_item(self):
+        a = 'Prove an upper bound for the refutation degree of random products of two affine forms'
+        listing = subideas('t1', [('check', a), ('check', 'Read the source on colourings of sparse graphs here')])
+        queue = self.q                                    # the listed sub-ideas are queued, with their text, by append
+        other = developing(self.q[0], 'Continuing').replace('<article id="d"',
+                                                             '<article id="o" data-claims="lem:x lem:y"')
+        queued, _ = lq.append_new(notebook([self.rev, listing], queue))
+        body = queued.replace(listing, listing + other)
+        summaries = [{'id': 'lem:x', 'assessment': 'Proof.', 'summary':
+                      'An upper bound for the refutation degree of random products of two affine forms holds.'},
+                     {'id': 'lem:y', 'assessment': 'Proof.', 'summary': 'Unrelated matter entirely.'},
+                     {'id': 'lem:z', 'assessment': 'Proof.', 'summary': 'Random products of affine forms.'}]
+        near = lq.claims_elsewhere(body, summaries, 't1:s1')
+        self.assertEqual([pair[1:] for pair in near], [('lem:x', 'o')])                     # lem:z: no later entry
+        self.assertEqual(lq.claims_elsewhere(body, summaries, 't1:s2'), [])
+        self.assertEqual(lq.answered_report(body, summaries), [('t1:s1', near)])
+        self.assertIn(f'  {near[0][0]} lem:x in #o', lq.item_status(body, 't1:s1', summaries))
+        # ranked best first and cut at the limit; an item of formulas alone has nothing to rank by
+        more = other.replace('lem:x lem:y', 'lem:x lem:y lem:z')
+        ranked = lq.claims_elsewhere(queued.replace(listing, listing + more), summaries, 't1:s1')
+        self.assertEqual([claim for _, claim, _ in ranked], ['lem:x', 'lem:z'])
+        self.assertGreater(ranked[0][0], ranked[1][0])
+        self.assertEqual(len(lq.claims_elsewhere(queued.replace(listing, listing + more), summaries, 't1:s1', 1)), 1)
+        bare = queued.replace(a, r'\(x\)')
+        self.assertEqual(lq.claims_elsewhere(bare.replace(listing, listing + other), summaries, 't1:s1'), [])
+        # the start of a cycle prints them for the item the next step names, and nothing for one it does not
+        import turn_guidance
+        step = '<section id="proposed-next-step"><p>Take <code>t1:s1</code> next.</p></section>'
+        notes = turn_guidance.next_item_notes(body + step, summaries)
+        self.assertEqual(len(notes), 1)
+        self.assertIn('the next step names t1:s1', notes[0])
+        self.assertIn('lem:x in #o', notes[0])
+        self.assertEqual(turn_guidance.next_item_notes(body + step.replace('t1:s1', 't1:s2'), summaries), [])
+        self.assertEqual(turn_guidance.next_item_notes(body, summaries), [])
+        # an item added by the tool is later than the record's last entry at that time, which it names
+        added = lq.add(body, 'check', 'new-item', 'a talk', a)
+        self.assertEqual(lq.claims_elsewhere(added, summaries, 'new-item'), [])
+        self.assertEqual([c for _, c, _ in lq.claims_elsewhere(added.replace(other, other + more.replace('"o"', '"p"')),
+                                                               summaries, 'new-item')], ['lem:x', 'lem:z'])
+        self.assertNotIn('Claims of later entries', '\n'.join(lq.item_status(body, 't1:s1')))
+        # a claim of an entry that developed the item itself, or that came before the item was queued, is not listed
+        own = other.replace(f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')
+        self.assertEqual(lq.claims_elsewhere(queued.replace(listing, listing + own), summaries, 't1:s1'), [])
+        self.assertEqual(lq.claims_elsewhere(queued.replace(listing, other + listing), summaries, 't1:s1'), [])
+
     def test_new_review_pick_merged_without_reappearing(self):
         head = notebook([self.rev], self.q)
         entry = review('r2', [PASS, FAIL, FAIL], [PASS, FAIL])
