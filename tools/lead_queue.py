@@ -631,6 +631,28 @@ def unlinked_earlier_entry(body, nodes, articles, item):
     return None
 
 
+def history(body, ident):
+    """(anchor, item id, outcome) of every entry that developed the item `ident`, the top-level item of its
+    group, or another member of that group, oldest first: what to read before an entry on the item is begun
+    (the link check above asks for the latest only)."""
+    found = parse_tree(body)
+    nodes = found[1] if found else []
+    articles = record_articles(body)
+    item = next((i for i in every_item(nodes) if i[1] == ident), None)
+    if item is None:
+        item = next((w[0] for w in (developed_by(t, x) for t, x in articles) if w and w[0][1] == ident), None)
+    if item is None:
+        return []
+    group = group_of(body, nodes, item, len(articles))
+    rows = []
+    for position, (tag, text) in enumerate(articles):
+        work = developed_by(tag, text)
+        if work and group_of(body, nodes, work[0], position) == group:
+            anchor = re.search(r'\bid="([^"]+)"', tag)
+            rows.append((anchor.group(1) if anchor else '?', work[0][1], work[1] or ''))
+    return rows
+
+
 def spell_entries(body, item, nodes=None, end=None):
     """Positions in the current spell, oldest first; reviews and user picks do not count."""
     if nodes is None:
@@ -1569,6 +1591,12 @@ def main(argv):
         else:
             print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
                   or 'No similar queued items')
+        return 0
+    if len(argv) == 4 and argv[1] == 'history':
+        body = Path(argv[2]).read_text()
+        rows = history(body, argv[3])
+        print('\n'.join(f'{anchor}\t{ident}\t{outcome}' for anchor, ident, outcome in rows)
+              or f'No entry has developed {argv[3]}, its group or a member of it')
         return 0
     if len(argv) == 3 and argv[1] == 'triage':
         print(TRIAGE_RETIRED, file=sys.stderr)

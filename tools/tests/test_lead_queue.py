@@ -1402,6 +1402,9 @@ class LinkEarlierWorkTest(unittest.TestCase):
         self.assertIsNone(self.unlinked([old, linked], queue, child))
         self.assertIsNone(self.unlinked([old, self.entry('entry-2026-10-11-new', other)], queue, other))
         self.assertIsNone(self.unlinked([old, self.entry('entry-2026-10-10-late', child)], queue, child))  # older date
+        self.assertEqual([r[:2] for r in lq.history(notebook(between, queue), 'e:s1')],          # the whole group
+                         [('entry-2026-10-10-old', 'r:1'), ('entry-2026-10-10-sib', 'e:s2')])
+        self.assertEqual(lq.history(notebook(between, queue), 'r:2'), [])
         with self.assertRaisesRegex(ValueError, 'link that entry'):
             lq.check(None, notebook([old, self.entry('entry-2026-10-11-new', child)], queue))
 
