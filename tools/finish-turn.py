@@ -814,6 +814,16 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'and, for a computation, the sizes reachable and why its outcomes differ '
                                      'there; a test whose every outcome fits every answer decides nothing '
                                      '(AGENTS.md, Decisive test)')
+                trivial = re.search(r'<strong>Trivial cases\.</strong>(.*?)(?=<strong>Power\.</strong>|$)', value, re.S)
+                plain = html.unescape(re.sub(r'<[^>]*>', ' ', trivial.group(1))).strip() if trivial else ''
+                if len(plain) < 40:
+                    # A block of 11 October 2026 was given to a comparison with a quantity that changes when
+                    # implied rows are added to a system while its degree does not: the question had a trivial yes.
+                    raise ValueError('Decisive test must state "<strong>Trivial cases.</strong>" before its Power: '
+                                     'how each quantity the test compares behaves under the object\'s trivial '
+                                     'transformations (implied or duplicated rows, another presentation), and '
+                                     'the trivial instance, if any, that would give each outcome; a question '
+                                     'with a trivial answer decides nothing (AGENTS.md, Decisive test)')
     else:
         target = pending_architecture_test(body, article).get(tags['route'])
         if target and article_attribute(body, article, 'data-picked') != 'user':
