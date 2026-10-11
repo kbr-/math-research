@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Shell off-line exclusion](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-shell-off-line-exclusion)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-shell-off-line-exclusion"],
+    "label": "The local implication for zeta with the count on a thin shell, and explicit constants"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:shell-zero-sum-inequality",
+      "summary": "In the two-radius zero-sum inequality: (1) the number K of zeros in |s - s0| <= R1 is at most M/log(R2/R1); (2) with K_s the number of zeros within distance e^eps d of s0, d the least distance, there is k in (m, m + K_s] with [2 (K_s/(8e(m+K_s)))^K_s - (K - K_s) e^(-eps k)] d^-k <= (E_low + E_up)/(k-1)! + 2 M' k R1^-k.",
+      "assessment": "Working proof: Blaschke factors give the count; the second main theorem (published; read, not audited) is applied to the shell only and the remaining zeros are bounded trivially.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Narrows the zeros that must be few in the local implication to those nearly as close to the centre as the nearest one.",
+      "next_action": "None beyond its use in the corollary.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry, on two recorded lemmas.",
+        "formalization": "No formalization.",
+        "significance": "Context: a technical refinement. Novelty not claimed.",
+        "relationships": "Refines the two-radius zero-sum inequality, which it gives when the shell is the whole disk."
+      }
+    },
+    {
+      "id": "cor:shell-off-line-exclusion",
+      "summary": "For large tau0: if |sum over y < n <= y' of Lambda(n) n^(-i tau0)| <= C y tau0^-1 log^A y for all tau0^2 <= y < y' <= 2y and zeta(3/4 + i tau0) = 0, then with s0 = 4.125 + i tau0 and d <= 3.375 the least distance from s0 to a zero, more than 0.02 log tau0 zeros lie in d <= |s - s0| <= e^0.02 d, all with real part at least 0.625; the disk of radius 3.5 holds at most 19.65 log tau0 zeros.",
+      "assessment": "Conditional result with a complete proof and constants checked by a saved script. The premise on prime sums is unproved; the threshold height is unspecified and the count is below one zero for tau0 < e^50.",
+      "status": "conditional",
+      "category": "context",
+      "rationale": "States in numbers the exception of the conditional exclusion of an off-line zero of zeta from square-root cancellation of prime sums at its height.",
+      "next_action": "Read or derive the explicit formula to say what the premise constrains.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Conditional on the prime-sum premise at the height; explicit instance at real part 3/4.",
+        "formalization": "No formalization.",
+        "significance": "Context. Novelty not claimed.",
+        "relationships": "Explicit shell form of the sparse off-line exclusion."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:shell-zero-sum-inequality", "refines", "lem:two-radius-zero-sum-inequality", "With the shell equal to the whole disk it is that lemma; it implies it."],
+    ["lem:shell-zero-sum-inequality", "depends_on", "lem:local-zero-sum-inequality", "Uses that lemma's bounds for the Dirichlet series at every admissible k."],
+    ["cor:shell-off-line-exclusion", "depends_on", "lem:shell-zero-sum-inequality", "The corollary applies the lemma to zeta with explicit parameters."],
+    ["cor:shell-off-line-exclusion", "cites", "cor:sparse-off-line-exclusion", "Same statement with the count on a shell and numbers at one value of x."],
+    ["cor:shell-off-line-exclusion", "cites", "lem:local-zero-sum-inequality", "Uses its Dirichlet-series bounds."],
+    ["cor:shell-off-line-exclusion", "cites", "cor:long-sum-local-converse", "Same mechanism; that corollary is for an abstract function in the long-sum limit, this one for zeta at the exponents its pole allows."]
+  ]
+}
