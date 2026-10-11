@@ -399,6 +399,20 @@ class BearingTest(unittest.TestCase):
         body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged" ' + last + '>'
         FT.validate_bearing(body, body.rindex('<article'), progress)
 
+    def test_a_bearing_of_some_does_not_rest_on_something_unchecked(self):
+        unchanged = ('research', 'unchanged')
+        said = ('Unchanged. <strong>Bearing.</strong> At the goal\'s parameters the count is automatic for pairs. '
+                '<strong>Not covered.</strong> Any system reaching these degrees; ')
+        for tail in ('the remaining hypotheses of the transfer, which I did not check.',
+                     'the envelope, whose clauses were not yet verified for this class.',
+                     'the transfer for such a system, its hypotheses unchecked.'):
+            with self.assertRaisesRegex(ValueError, 'was not checked'):
+                self.check([unchanged, unchanged], said + tail, last='data-bearing="some"')
+        self.check([unchanged, unchanged], said + 'groups of four or more, where the count leaves no room.',
+                   last='data-bearing="some"')
+        self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> Nothing at the goal\'s parameters: '
+                   'a class could have followed, and its hypotheses were not checked.')
+
     def test_a_bearing_of_none_gives_no_procedural_reason(self):
         unchanged = ('research', 'unchanged')
         for reason in ('spent on it because the review decided that the item be attempted before the block ends.',

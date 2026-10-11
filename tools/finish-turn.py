@@ -819,6 +819,10 @@ PROCEDURAL_REASON_RE = re.compile(r'\b(?:the|a|its|last) review (?:decided|asked
                                   r'\bhad been queued\b|\bhad waited\b', re.I)
 
 
+UNCHECKED_RE = re.compile(r'\b(?:did not|have not|had not|not yet|was not|were not|are not|is not)\s+'
+                          r'(?:\w+\s+){0,3}?(?:check|checked|verify|verified)\b|\bunchecked\b|\bunverified\b', re.I)
+
+
 def validate_bearing(body, article, progress, text=None):
     """From the third research entry in a row that leaves a route's goal progress unchanged, the entry says
     what its result gives at the goal's own parameters (a reviewer on 10 October 2026 found three entries of
@@ -896,6 +900,13 @@ def validate_bearing(body, article, progress, text=None):
             raise ValueError('This entry declares data-bearing="some": end its Bearing statement with '
                              f'"<strong>Not covered.</strong>" and at least {NOT_COVERED_MIN} characters '
                              'listing the cases its result does not reach, with no summary after the list '
+                             '(AGENTS.md, goal progress)')
+        # A reviewer of 11 October 2026 refused a bearing whose own text said the hypotheses of the
+        # statement it rested on had not been checked.
+        whole = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1)))
+        if UNCHECKED_RE.search(whole):
+            raise ValueError('This entry declares data-bearing="some" and its Bearing statement says that '
+                             'something it relies on was not checked: check it, or declare "none" '
                              '(AGENTS.md, goal progress)')
     item = re.search(r'data-(?:check|lead|bridge|idea|build)="([^"]+)"', tag)
     if item is None:
