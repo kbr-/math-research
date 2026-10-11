@@ -16,9 +16,11 @@ It runs only when it has not run for --minutes (40 at the finisher; a tool with 
 so checkpoints made in quick succession share one review, of everything since the last. The next
 entry answers each objection in a paragraph starting "Review." (the tool that runs the review, such as
 tools/finish-turn.py, refuses an entry without one while a review is unanswered): fixed, queued, or wrong and
-why. Measured on two long sessions, one of them research, seven and eight of ten sampled objections held
-against the record and one or two misread the text (10 and 11 October 2026), so each is checked against the
-record before it is acted on. It found 4 of 18 and 2 of 12 of the user's own corrections.
+why. Measured on two long sessions (10 and 11 October 2026): of ten sampled objections about seven held
+against the record in the first; in the second, a research session, three held, five held in the main with a
+detail wrong and one misread the text. So each is checked against the record before it is acted on. It made
+the same point as 4 of 18 and 2 of 12 of the user's own corrections, each match in a review that ran after
+the user had spoken, so those figures are upper bounds.
 
 It reads a Claude Code transcript or a Codex session file, whichever the running session writes. It never
 fails a checkpoint: no transcript, no rules, a model that gives no verdict are said and passed, and outside

@@ -139,8 +139,9 @@ Three examples of a correction becoming a check:
 - **The reviewers are models.** They miss things, and they share blind spots with the agent they
   review. Checked against two days of the maintainer's own corrections, the second reviewer made the
   same point for 4 of 18 in one session and 2 of 12 in another, and those figures are upper bounds.
-  Of ten of its other objections sampled in each session and checked against the record, seven and
-  eight held, and one or two misread the text.
+  Ten of its other objections were sampled in each session and checked against the record: in the
+  first about seven held; in the second three held, five held in the main with a detail wrong, and
+  one misread the text.
 - **A finite check is a finite check.** The registry keeps them apart from proofs, and the rules
   above exist because the pull toward more cases is constant.
 - **The checks enforce form, not truth.** The finisher verifies that an entry declares its progress
