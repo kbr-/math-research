@@ -15,7 +15,10 @@ It also refuses, before anything is written:
   (tools/branch_extension.py) is not checked;
 - an entry while the notebook's Where we stand is the same as in the last commit, since every cycle
   reviews that section. --stand-unchanged REASON lets it through, and the entry then holds the reason
-  in a paragraph labelled Where we stand, which tools/stand_reasons.py counts.
+  in a paragraph labelled Where we stand, which tools/stand_reasons.py counts;
+- a next step that names no queued item, by identifier or by a link to an entry that developed one, while
+  the notebook's queue is draining. For each item a next step names it prints the item's queued text and
+  its latest follow-up, to write the description against.
 After these, a branch's own tools/append_checks.py, where it has one, is asked: its
 check(source, entry, next_html) raises ValueError to refuse.
 """
@@ -83,6 +86,69 @@ def with_stand_reason(source, entry, committed, reason):
     meta = re.search(r'<p class="entry-meta">.*?</p>', entry, re.S)
     at = meta.end() if meta else entry.rindex('</article>')
     return entry[:at] + '\n' + paragraph + ('\n' if not meta else '') + entry[at:]
+
+
+def named_items(source, next_html):
+    """The queued items a next step names, by identifier or by a link to an entry that developed one, each as
+    (identifier, queued text, anchor of its latest development, that entry's Follow-up); None when the notebook
+    has no queue.
+
+    A next step of 11 October 2026 described a queued check as asking another question than its text asks, and
+    the cycle went to a form the item's own closure had judged not to bear: the item's words and its latest
+    follow-up are shown beside the next step, and a next step that takes a queue item says which."""
+    import lead_queue
+    found = lead_queue.parse_tree(source)
+    if found is None:
+        return None
+    nodes = found[1] + [child for node in found[1] for child in node.children]
+    queued = {node.ident: node for node in nodes}
+    linked = set(re.findall(r'href="#([^"]+)"', next_html))
+    named = [i for i in queued if re.search(r'(?<![\w:#-])' + re.escape(i) + r'(?![\w:-])', next_html)]
+    developments = {}
+    for tag, text in lead_queue.record_articles(source):
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        item = re.search(r'\bdata-(?:' + lead_queue.NAMES + r')="([^"]+)"', tag)
+        if anchor and item and item.group(1) in queued:
+            follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
+            developments[item.group(1)] = (anchor.group(1), plain(follow[-1]) if follow else '')
+            if anchor.group(1) in linked and item.group(1) not in named:
+                named.append(item.group(1))
+    return [(i, plain(queued[i].text), *developments.get(i, ('', ''))) for i in named]
+
+
+REVIEW_AFTER = 6    # research entries on a route, then its review (AGENTS.md)
+
+
+def review_due(articles):
+    """Whether the last entry's route has had its six research entries since its last review."""
+    route = re.search(r'\bdata-route="([^"]+)"', articles[-1][0]) if articles else None
+    if not route:
+        return False
+    run = 0
+    for tag, _ in reversed(articles):
+        if f'data-route="{route.group(1)}"' not in tag:
+            continue
+        if 'data-kind="research"' not in tag:
+            break
+        run += 1
+    return run >= REVIEW_AFTER
+
+
+def plain(fragment):
+    return ' '.join(html.unescape(re.sub(r'<[^>]+>', ' ', fragment)).split())
+
+
+def require_named_item(source, next_html):
+    """While the queue drains every research entry develops a queued item, so its next step names one."""
+    import lead_queue
+    items = named_items(source, next_html)
+    if items is None or items or not lead_queue.is_draining(source) or not goal_open(source):
+        return
+    if review_due(lead_queue.record_articles(source)):
+        return      # the next entry is the route review, which develops no item
+    raise ValueError('the queue is draining, so the next entry develops a queued item, and this next step names '
+                     'none: give the item\'s identifier, or link an entry that developed it, and describe what '
+                     'it asks from its queued text (tools/lead_queue.py history NOTEBOOK ID --status)')
 
 
 def branch_checks(tools=None):
@@ -158,6 +224,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
             raise ValueError('proposed-next-step heading missing')
         head = body[:body.index(HEADING) + len(HEADING)]
         source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
+        require_named_item(source, next_html)
     preflight(source, m.group(1))
     return source
 
@@ -183,11 +250,17 @@ def main():
     path = Path(ROOT) / selected(args.notebook)['source']
     nxt = args.next_file.read_text() if args.next_file else None
     try:
-        path.write_text(append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
-                               args.stand_unchanged))
+        result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+                        args.stand_unchanged)
     except ValueError as err:
         sys.exit(f'notebook-append.py: {err}')
+    path.write_text(result)
     print(f'Appended to {path.relative_to(ROOT)}')
+    for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
+        print(f'The next step names queue item {ident}. Check its description against the item\'s own words:')
+        print(f'  Queued text: {text}')
+        if anchor:
+            print(f'  Latest development, #{anchor}. Follow-up: {follow}')
 
 
 if __name__ == '__main__':

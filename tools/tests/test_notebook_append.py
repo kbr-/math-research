@@ -46,6 +46,44 @@ def draft(kind='research', extra='', content=''):
             REPORTS + content + '</article>')
 
 
+def queued(count=1, draining=False):
+    items = ''.join(f'<li data-check="item-{n}" data-source="a1">Does the bound hold at width {n}?</li>'
+                    for n in range(count))
+    flag = ' data-draining="true"' if draining else ''
+    return ('<section id="open-statements"><ol><li>Open.</li></ol></section>'
+            f'<section id="lead-queue"{flag}><ol>{items}</ol></section>' + NOTEBOOK)
+
+
+class NextStepItemTests(unittest.TestCase):
+    def test_a_next_step_s_items_are_found_by_identifier_or_by_a_link_to_their_development(self):
+        source = queued(2).replace('<article id="a2">two</article>',
+                                   '<article id="a2" data-kind="research" data-check="item-1">two '
+                                   '<p><strong>Follow-up.</strong> Continuing: the width-one case next.</p></article>')
+        self.assertEqual(tool.named_items(source, '<p>Develop item-0 further.</p>'),
+                         [('item-0', 'Does the bound hold at width 0?', '', '')])
+        self.assertEqual(tool.named_items(source, '<p>After <a href="#a2">the last entry</a>.</p>'),
+                         [('item-1', 'Does the bound hold at width 1?', 'a2', 'Continuing: the width-one case next.')])
+        self.assertEqual(tool.named_items(source, '<p>Something else, not item-10.</p>'), [])
+        self.assertIsNone(tool.named_items(NOTEBOOK, '<p>item-0</p>'))
+
+    def test_a_draining_queue_refuses_a_next_step_that_names_no_item(self):
+        entry = '<article id="a3">three</article>'
+        tool.append(queued(2), entry, '<p>Some other work.</p>')                    # not draining
+        tool.append(queued(2, draining=True), entry, '<p>Develop item-1.</p>')
+        for step in ('<p>Some other work.</p>', '<p>After <a href="#a1">an entry that developed none</a>.</p>'):
+            with self.assertRaisesRegex(ValueError, 'names none'):
+                tool.append(queued(2, draining=True), entry, step)
+
+    def test_a_review_due_next_needs_no_item(self):
+        research = [('<article id="r%d" data-kind="research" data-route="x">' % n, '') for n in range(6)]
+        self.assertTrue(tool.review_due(research))
+        self.assertFalse(tool.review_due(research[:5]))
+        self.assertFalse(tool.review_due([('<article id="v" data-kind="review" data-route="x">', '')] + research[:5]))
+        self.assertTrue(tool.review_due(research + [('<article id="o" data-kind="research" data-route="y">', '')]
+                                        + [research[0]]))
+        self.assertFalse(tool.review_due([]))
+
+
 class NotebookAppendTests(unittest.TestCase):
     def test_first_article_follows_record_heading_and_introduction(self):
         source = ('<section id="research-record">\n<h2>Research record</h2>\n'
