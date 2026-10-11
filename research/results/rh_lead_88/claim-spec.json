@@ -1,0 +1,51 @@
+{
+  "source": {
+    "record": "[Tilted cluster hiding](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-cluster-hiding)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-cluster-hiding"],
+    "label": "The local form of the tilted inequality's reach, and the binomial family against a single point of its multiplicity"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:tilted-local-reach",
+      "summary": "Setting of the tilted inequality reach (F, Phi, tilt a < 1/2, p = 1/2 - a, finite multiset S of points with a < delta_rho <= delta < 1/2, c = delta - a, T_S). With B(t) = min(Phi(c), 1/|t| + 2 e^{cL}/(L t^2)) for real t, B(0) = Phi(c): for every real tau, T_S(tau) >= 3 Phi(p) - |4 F(-p + i tau) + F(-p + 2 i tau)| - sum_S m_rho [3 B(gamma_rho) + 4 B(tau - gamma_rho) + B(2 tau - gamma_rho)]; for pL >= 2 and |tau| >= 6p the first two terms are at least 2.25 Phi(p).",
+      "assessment": "Working proof in a few lines from the four bounds of the tilted triangle positivity: the total multiplicity of the reach proposition is replaced by a sum in which a point at height distance D from 0, tau and 2 tau counts with weight about 2 c^2/D^2. It bounds each point's term in absolute value, so it sees no cancellation: on the instance where the binomial family provably satisfies the inequality this bound is negative.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The local form a reviewer asked for: the reach of the argument is limited by the points near the heights 0, tau and 2 tau, not by all points to the right of the tilt.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; holds on a grid in six instances.",
+        "formalization": "No formalization.",
+        "significance": "Context. No novelty claimed.",
+        "relationships": "Sharpens part (1) of the tilted inequality reach; uses the tilted triangle positivity."
+      }
+    },
+    {
+      "id": "prop:tilted-cluster-hiding",
+      "summary": "Setting of the tilted inequality reach, k >= 1, c = delta - a in (0, p). (1) For real t, |sum_{j=0}^k binom(k, j) F(-c + i(t - j pi/L))| <= Psi_k = (k+1)! (pi/(cL))^k e^{cL}/(L c^2). (2) For pL >= 2 and the family S_k of k + 1 points at distance delta, heights gamma_0 + j pi/L, multiplicities binom(k, j): T_{S_k}(tau) >= 2.25 Phi(p) - 8 Psi_k for all |tau| >= 6p; in particular T_{S_k} >= 0 there when (1/2 - delta) L >= log(6 (k+1)!) - k log(cL/pi) + 2 log(p/c), which holds whenever cL >= max(2, pi (6 (k+1)!)^{1/k}). (3) For pL >= 2 and one point of multiplicity M = 2^k at distance delta and height gamma_0, |gamma_0| >= 6p: T(gamma_0) <= 3.75 Phi(p) - 4 M (Phi(c) - beta), beta = 1/|gamma_0| + 2 e^{cL}/(L gamma_0^2). Instance with the condition of (2) and a negative bound in (3): L = 30, a = 0.06, delta = 0.46, k = 2.",
+      "assessment": "Working elementary proof: the family's sum is the integral of (1 - u/L) e^{(c - it)u} (1 + e^{i pi u/L})^k over [0, L], and |1 + e^{i pi u/L}| <= pi (L - u)/L; the same mechanism as the recorded binomial cluster hiding for the Fejer kernel, here for the one-sided tilted kernel. The instance's inequalities are computed numerically in floating point, with the family's sum evaluated directly on a grid as a control. One family, one spacing, one length; at twice the length the amplified parts add. No claim that these are the only hidden configurations.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Decides a route review's test: a cluster hides from the tilted three-four-one inequality by cancellation where a single point of its total multiplicity violates it, so the gain in reach that multiplicity gives the classical argument is not shared by clusters at spacing pi/L.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; bounds hold on grids in six instances, one with the displayed condition of (2) and a negative bound in (3).",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction to one argument in a model. No novelty claimed.",
+        "relationships": "The one-sided tilted analogue of the binomial cluster hiding; uses the tilted triangle positivity and the setting of the tilted inequality reach."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:tilted-local-reach", "depends_on", "lem:tilted-triangle-positivity", "Parts (2), (3) and (4) of the lemma bound each point's term."],
+    ["prop:tilted-local-reach", "refines", "prop:tilted-inequality-reach", "Implies part (1) of that proposition, B being at most Phi(c); its part (2) follows as there."],
+    ["prop:tilted-cluster-hiding", "depends_on", "lem:tilted-triangle-positivity", "The closed form of F and the bounds for the pole's terms."],
+    ["prop:tilted-cluster-hiding", "cites", "prop:tilted-inequality-reach", "The setting, T_S and the bound 0.75 Phi(p) for the pole's terms at |tau| >= 6p are that proposition's and its proof's."],
+    ["prop:tilted-cluster-hiding", "cites", "prop:binomial-cluster-hiding", "The same family and the same cancellation through a power of 1 + q, there for the Fejer kernel's one-sided density, here for the tilted triangle's transform."]
+  ]
+}

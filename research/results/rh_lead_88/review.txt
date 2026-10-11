@@ -1,0 +1,43 @@
+Reviewer's record, entry tilted-cluster-hiding (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, read-only, one pass. The corrections were made after it and not sent back; the entry removes no queue
+item. The proof of part (1) now in the entry is the reviewer's own suggestion, checked by the author.
+
+Verdict: pass with corrections. Proofs of (1) (in its first form, by a finite difference, with the extra term
+2^k (1/c + 1/(L c^2))), of the main bound of (2), of (3) and of the local reach are correct (closed form, the
+sign (-1)^j, forward difference, g^(k), 8/(1.125 lambda) = 11.97 < 12, the weight sentence, checked by hand).
+The errors are in the conditions attached to the instance.
+
+Required changes:
+- The instance does not satisfy the displayed "in particular" condition. At L = 20, a = 0.015, delta = 0.415,
+  k = 2 its right side is log 72 - 2 log(8/pi) + 2 log(0.485/0.4) = 2.79 > 1.70. What holds is
+  8 Psi_2 <= 2.25 Phi(p) and (3)'s bound. Reword "both sufficient conditions hold" wherever it occurs,
+  including the claim's summary.
+- Comparison: "(cL/2 pi)^k" is wrong; it is (2cL/pi)^k > about 19 (k+1)!. The constants -0.46 and 19 are
+  right using lambda and ignoring beta; say so. The instance fails it too.
+- (2), last sentence: c depends on delta; say "for every delta with (delta - a)L >= max(...)". New mathematics
+  says the whole condition holds at every distance; only the second was shown (the first is implied there;
+  add the line or weaken).
+- Architecture test: the review's first outcome reads "at every tilt below its distance", "for all tau".
+  Proved: a range (cL large against k, |tau| >= 6p), the instance in floating point. Write "Decided, first
+  outcome in restricted form".
+- Follow-up: the lead names the several-pair Gram sign, unexamined; the diagonal says nothing about the sign,
+  so the Not examined justification fails. Continuing, named attempt hidden-cluster-form-sign.
+- Minor: "at distance D" should be "at least D"; heights lie within 1e-4 of the tau grid, not on it;
+  assertion (b) is vacuous in instances 2-3; instance 5 prints Psi = 0.0000.
+- Unused: pL >= 2 in (1). Not implied by the recorded binomial cluster hiding (different kernel).
+
+Suggestions (unverified):
+1. Shorter, stronger (1): the sum is int_0^L (1 - u/L) e^{(c - it)u} (1 + e^{ihu})^k du, with
+   |1 + e^{ihu}| = 2 sin(pi (L - u)/2L) <= pi (L - u)/L; with v = L - u this gives
+   (k+1)! (pi/(cL))^k e^{cL}/(L c^2) alone. The 2^k term and the first condition vanish; 12 becomes 6.
+2. Detection by a second length: at L' = 2L, h L' = 2 pi, the factor at u = L' has modulus 2^k and the
+   family behaves like multiplicity 2^k. Matches the record's "one cluster per length". Recalled, unread:
+   classical zero-free-region proofs work at sigma > 1, where all zero terms are nonnegative, so clusters
+   never arise; no classical statement of this hiding known to the reviewer.
+
+Process audit: the title may claim "binomial cluster at spacing pi/L satisfies the tilted inequality in a
+range where one point of its multiplicity violates it; one numerical instance; in a model"; not "clusters
+hide", not "every tilt". The Limit's "of interest only near the edge" and "L <= log T" are unproved remarks;
+label them. "Five instances" matches the output; "run twice, identical output" has no saved source. Developed
+is unsupported by the stated reason. The comparison's "smaller threshold" claim was never checked against the
+instance; it would have exposed both errors.
