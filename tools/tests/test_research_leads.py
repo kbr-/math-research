@@ -9,7 +9,8 @@ spec = importlib.util.spec_from_file_location('ft_research_leads', TOOLS / 'fini
 FT = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(FT)
 
-ITEM = '<li>A lead. <strong>Answers.</strong> It would. <strong>Test.</strong> Passed: yes.</li>'
+ITEM = ('<li>A lead. <strong>Answers.</strong> It would. <strong>Break point.</strong> The loss term, evaluated. '
+        '<strong>Test.</strong> Passed: yes.</li>')
 
 
 def body(leads=(), bridges=()):
@@ -34,7 +35,7 @@ class ResearchLeadsTest(unittest.TestCase):
                 FT.validate_leads(*case)
 
 
-OK = ' <strong>Answers.</strong> It would. <strong>Test.</strong> '
+OK = ' <strong>Answers.</strong> It would. <strong>Break point.</strong> The loss term, evaluated. <strong>Test.</strong> '
 OBSTACLE = ('<h4>Obstacle</h4><p>No recorded mechanism bounds the residual regularity uniformly in the degree, '
             'which the first step needs.</p>')
 

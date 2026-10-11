@@ -315,12 +315,15 @@ assessments.
   test of the translation. Run every cheap test named in these sections within the review cycle
   itself, and end each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified
   or "Not run:" and the reason (the finisher checks this); falsified items stay listed and count
-  toward the minimums (user, 25 September 2026). Outside draining, the review marks its three most
-  promising passed Outside leads and two most promising passed bridges with `<li data-pick>` (or all
-  passed items when fewer pass); only these are queued and the rest are dropped at once (user, 5
-  October 2026). A picked item is a lead to develop, not only to list: every picked, unclosed item
-  waits in the notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living
-  section; no word budget; restoration reads its first five items), FIFO, maintained per
+  toward the minimums (user, 25 September 2026). A Passed item states, after `<strong>Break
+  point.</strong>`, where its translation would break and what the test found there: a test of the
+  named theorem alone, or of a statement recalled and unread, is Not run for the translation (the
+  finisher checks the paragraph). Outside draining, the review marks its three most promising passed
+  Outside leads and two most promising passed bridges with `<li data-pick>` (or all passed items
+  when fewer pass); only these are queued and the rest are dropped at once (user, 5 October 2026). A
+  picked item is a lead to develop, not only to list: every picked, unclosed item waits in the
+  notebook's **Lead and bridge queue** (`<section id="lead-queue">`, the last living section; no
+  word budget; restoration reads its first five items), FIFO, maintained per
   [tools/lead_queue.py](tools/lead_queue.py). A review appends its picks at the end. A research
   entry develops at most one top-level item, by default the head; the agent may take another queued
   item first when a `<strong>Chosen.</strong>` paragraph says which open statement it bears on and

@@ -79,7 +79,8 @@ class DrainingReviewsTest(unittest.TestCase):
                 self.validate(self.body(OBSTACLE, attrs))
 
     def test_ordered_review_lists_enforce_picks(self):
-        item = '<li data-pick>Mechanism. <strong>Answers.</strong> The obstacle. <strong>Test.</strong> Passed.</li>'
+        item = ('<li data-pick>Mechanism. <strong>Answers.</strong> The obstacle. <strong>Break point.</strong> None '
+                'found. <strong>Test.</strong> Passed.</li>')
         text = OBSTACLE + '<h4>Outside leads</h4><ol>' + item * 3 + '</ol>'
         text += '<h4>Absurd bridges</h4><ol>' + item * 2 + '</ol>'
         self.validate(self.body(text, ''), draining=False)
@@ -286,7 +287,7 @@ sys.exit(compute.main())
         route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
-        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Break point.</strong> None found. <strong>Test.</strong> Passed.'
         leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li data-pick>c{ok}</li></ul>'
                  f'<h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li><li>e <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li></ul>')
@@ -351,7 +352,7 @@ sys.exit(compute.main())
         goal_review = reviewed + ' data-scope="goal"'
         across = ('<h4>Across the goal</h4><ul><li>Statement 1: unchanged, ten cycles.</li>'
                   '<li>Statement 2: unchanged, none.</li></ul><p><strong>Decision.</strong> Core: the window.</p>')
-        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Break point.</strong> None found. <strong>Test.</strong> Passed.'
         leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li>b <strong>Answers.</strong> y. '
                  '<strong>Test.</strong> Falsified: x.</li>'
                  f'<li data-pick>c{ok}</li></ul><h4>Absurd bridges</h4><ul><li data-pick>d{ok}</li>'
@@ -371,6 +372,9 @@ sys.exit(compute.main())
             record(['research'] * 6, reviewed, general=general + leads.replace(OBSTACLE, '')),  # no obstacle
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 f'<li data-pick>a{ok}</li>', '<li data-pick>a <strong>Test.</strong> Passed.</li>')),  # item not aimed at the obstacle
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a{ok.replace("<strong>Break point.</strong> None found. ", "")}</li>')),  # passed, break point unevaluated
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
@@ -457,7 +461,7 @@ sys.exit(compute.main())
         spec = importlib.util.spec_from_file_location('ft', Path(__file__).resolve().parents[1] / 'finish-turn.py')
         ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)
         marker = '<!-- TIMING test_turn -->'
-        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Break point.</strong> None found. <strong>Test.</strong> Passed.'
         body = ('<p><strong>General statement.</strong> For every level the kernel is spanned by short elements '
                 '(conj:fixture-general).</p>' + OBSTACLE
                 + f'<h4>Outside leads</h4><ul><li data-pick>a{ok}</li><li data-pick>b{ok}</li><li data-pick>c{ok}</li></ul>'

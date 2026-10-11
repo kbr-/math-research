@@ -158,6 +158,14 @@ def validate_leads(body, article, close, draining=None):
                              '"Falsified ..." or "Not run: <reason>" (AGENTS.md); falsified items stay and count')
         # Only the most promising passed items are queued; the rest are dropped at once.
         passed = [i for i, item in enumerate(items, 1) if (TEST_RE.search(item) or [None, None])[1] == 'Passed']
+        # A review of 11 October 2026 marked two leads passed on tests of a recalled theorem; each lead's own
+        # stated break point, a line of arithmetic, was never evaluated, and one of them broke there.
+        unbroken = [i for i in passed if '<strong>Break point.</strong>' not in items[i - 1]]
+        if unbroken:
+            raise ValueError(f'{heading} item(s) {unbroken} are marked Passed without "<strong>Break point.'
+                             '</strong>": say where the translation would break and what the test found there; a '
+                             'test of the named theorem alone, or of a recalled statement, is Not run for the '
+                             'translation (AGENTS.md)')
         picks = [i for i, item in enumerate(items, 1) if PICK_RE.search(item)]
         want = min(PICKS[heading], len(passed))
         if not set(picks) <= set(passed) or len(picks) != want:
