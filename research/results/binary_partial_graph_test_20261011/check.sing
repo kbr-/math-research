@@ -1,0 +1,123 @@
+// Partial local-graph projection: core edges 1,2; exposed edge3;
+// omitted edge4 keeps BOTH local indicators. m4,s2,t1,r1,k3.
+// 9 core cells *9 distinct outside normal monomials, all81 local points.
+// Full images at original accuracies1,3; no growing-size sweep.
+ring pgR=2,(x(1..4),y(1..4)),dp;
+ideal pgLoc,pgImages;
+int pgI,pgS,pgBits,pgV,pgU,pgW,pgMask,pgC,pgH,pgDegree;
+int pgChecks=0;
+int pgFailures=0;
+int pgCells=0;
+int pgBasis=0;
+int pgPoints=0;
+int pgGraph=0;
+int pgDomain=0;
+int pgNegative=0;
+poly pgF=x(1)*x(2);
+poly pgQ,pgChi,pgP,pgM,pgBeta,pgBad,pgValue,pgG,pgExtra,pgHead;
+for(pgI=1;pgI<=4;pgI++)
+{ pgLoc[3*pgI-2]=x(pgI)^2+x(pgI); pgLoc[3*pgI-1]=y(pgI)^2+y(pgI); pgLoc[3*pgI]=x(pgI)*y(pgI); }
+ideal pgGB=std(pgLoc);
+proc pgAssert(int pgOk,string pgLabel)
+{ pgChecks++; if(!pgOk) { pgFailures++; print("FAIL "+pgLabel); } }
+proc pgSplit(poly pgInput,int pgBit)
+{
+  poly pgCur=pgInput;
+  poly pgNext=subst(pgCur,x(3),pgBit);
+  poly pgDiff=pgCur+pgNext;
+  poly pgDiv=x(3)+pgBit;
+  poly pgQuot=pgDiff/pgDiv;
+  poly pgCo=pgQuot;
+  pgAssert(pgQuot*pgDiv==pgDiff,"exact primary division");
+  pgCur=pgNext;
+  if(pgBit==1)
+  {
+    pgNext=subst(pgCur,y(3),0); pgDiff=pgCur+pgNext; pgQuot=pgDiff/y(3);
+    pgAssert(pgQuot*y(3)==pgDiff,"exact partner division");
+    pgCo=pgCo+pgQuot*y(3); pgCur=pgNext;
+  }
+  poly pgRem=pgInput+pgCo*(x(3)+pgBit);
+  pgAssert(reduce(pgRem+pgCur,pgGB)==0,"local telescoping with omitted pair");
+  pgAssert(deg(pgCo)<=3 && deg(pgRem)<=4,"branch degree ledger");
+  list pgOut=pgCo,pgRem,pgCur;
+  return(pgOut);
+}
+list pgParts;
+print("PLAN: 9 core cells, 81 outside basis checks, 81 local points, H=65 and mixed bound54.");
+print("STAGES: partial projection, cell interpolation, complete source images, omitted-pair controls.");
+pgQ=reduce(x(2)*(x(3)+pgF)*y(4),pgGB);
+pgAssert(pgQ!=0 && deg(pgQ)<=3,"nonzero degree-three common target");
+pgBeta=0; pgBad=0;
+for(pgS=0;pgS<9;pgS++)
+{
+  pgCells++; pgBits=pgS; pgChi=1;
+  for(pgI=1;pgI<=8;pgI++) { pgImages[pgI]=var(pgI); }
+  for(pgI=1;pgI<=2;pgI++)
+  {
+    pgV=pgBits%3; pgBits=pgBits div 3;
+    pgImages[pgI]=0; pgImages[4+pgI]=0;
+    if(pgV==0) { pgChi=pgChi*(1+x(pgI)+y(pgI)); }
+    if(pgV==1) { pgImages[pgI]=1; pgChi=pgChi*x(pgI); }
+    if(pgV==2) { pgImages[4+pgI]=1; pgChi=pgChi*y(pgI); }
+  }
+  map pgCore=pgR,pgImages;
+  pgC=int(pgCore(pgF));
+  for(pgU=0;pgU<=2;pgU++)
+  {
+    for(pgW=0;pgW<=2;pgW++)
+    {
+      pgM=1;
+      if(pgU==1) { pgM=pgM*x(3); } if(pgU==2) { pgM=pgM*y(3); }
+      if(pgW==1) { pgM=pgM*x(4); } if(pgW==2) { pgM=pgM*y(4); }
+      pgParts=pgSplit(pgM,pgC); pgBasis++;
+      if(pgU==0) { pgAssert(pgParts[3]==pgM,"omitted pair unchanged"); }
+    }
+  }
+  pgP=pgCore(pgQ); pgParts=pgSplit(pgP,pgC);
+  pgAssert(reduce(pgParts[2],pgGB)==0,"target vanishes on partial graph");
+  pgBeta=pgBeta+pgChi*pgParts[1]; pgBad=pgBad+pgParts[1];
+  kill pgCore;
+}
+pgG=x(3)+pgF; pgExtra=1+x(4); pgHead=pgBeta*pgG;
+pgAssert(deg(pgBeta)<=5,"interpolation degree k+s");
+pgAssert(reduce(pgHead+pgQ,pgGB)==0,"complete local target identity");
+pgP=pgQ*pgG*(1+pgHead);
+pgAssert(reduce(pgP,pgGB)==0,"graph companion");
+for(pgH=1;pgH<=3;pgH=pgH+2)
+{ pgAssert(deg(pgP)<=3+5*(3*pgH+2),"original graph companion cost"); }
+pgP=pgQ*pgExtra*(1+pgHead);
+pgAssert(reduce(pgP,pgGB)==0,"extra companion retained");
+for(pgH=1;pgH<=3;pgH=pgH+2)
+{ pgAssert(deg(pgP)<=3+5*(3*pgH+1),"original extra companion cost"); }
+pgP=pgQ*(pgBeta^2+pgBeta);
+pgAssert(reduce(pgP,pgGB)==0 && deg(pgP)<=13,"weighted coefficient field");
+pgNegative++; pgAssert(reduce(pgBad*pgG+pgQ,pgGB)!=0,"negative omitted core selectors");
+pgNegative++; pgAssert(reduce(y(3),pgGB)!=0,"negative unguarded exposed partner");
+matrix pgEval[3][3]=1,0,0,1,1,0,1,0,1;
+pgNegative++; pgAssert(det(pgEval)!=0,"negative omitted pair collapsed to one bit");
+for(pgMask=0;pgMask<81;pgMask++)
+{
+  pgBits=pgMask; pgDegree=0;
+  for(pgI=1;pgI<=4;pgI++)
+  {
+    pgV=pgBits%3; pgBits=pgBits div 3;
+    pgImages[pgI]=0; pgImages[4+pgI]=0;
+    if(pgV!=0) { pgDegree++; }
+    if(pgV==1) { pgImages[pgI]=1; } if(pgV==2) { pgImages[4+pgI]=1; }
+  }
+  if(pgDegree<=3) { pgDomain++; }
+  map pgPoint=pgR,pgImages;
+  pgAssert(pgPoint(pgHead)==pgPoint(pgQ),"all local values of normalized row");
+  if(pgPoint(pgG)==0) { pgGraph++; pgAssert(pgPoint(pgQ)==0,"target on partial graph"); }
+  pgPoints++; kill pgPoint;
+}
+pgAssert(pgDomain==65 && 9*(1+3+2)==54 && 54<pgDomain,"strict finite criterion");
+pgAssert(pgGraph==51 && pgGraph<=54,"actual graph count versus mixed bound");
+pgAssert(pgCells==9 && pgBasis==81 && pgPoints==81 && pgNegative==3,"completion counts");
+print("Q="+string(pgQ)); print("beta="+string(pgBeta));
+print("SUMMARY checks="+string(pgChecks)+" cells="+string(pgCells)+" basis="+string(pgBasis)
++" points="+string(pgPoints)+" graph="+string(pgGraph)+" domain="+string(pgDomain)
++" negatives="+string(pgNegative)+" failures="+string(pgFailures));
+if(pgFailures==0) { print("FINAL PASS"); } else { print("FINAL FAIL"); }
+quit;
+
