@@ -1,0 +1,32 @@
+Review record, 11 October 2026: entry-2026-10-11-grouped-frontier-ceiling (a proposition and a corollary).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent). Read the draft and this
+notebook's multigraph frontier ceiling (statement and proof), with registry summaries of three ceilings. No
+computation.
+
+Verdict: pass with corrections. The proposition is correct. The corollary's degree bound is correct, but its
+comparison with the free dimension ran the wrong way as stated.
+Required changes:
+- Corollary, "linearly independent, so that the free dimension is at most n = v - rho": the ceiling is in
+  v - rho, so it needs free dimension >= v - rho; if affine equations exist beyond the chosen rho nothing
+  follows. Require that the P_j are all the parity rows (or span every affine equation counted); say whether
+  affine consequences of blocks count.
+- Example, "as every regular bipartite incidence has": false when parity rows are smaller than blocks.
+- Architecture test, "Reported outcome: the first, for a subclass": the named test was not run; say so and
+  report the result separately.
+- "Degree below floor(n/2 - s) whenever ... n/2 - s >= w+1": "at most"; the clause is redundant.
+- Structural reason: it is a multigraph; "its number of variables is the free dimension" should be "at most".
+- Bearing, rows of size O(log n): the uniform form is stated for fixed w; say the proof's explicit dependence
+  on w is relied on.
+Unused or redundant hypotheses: independence and distinctness of the y_j are automatic (each lies in one parity
+row); load t <= Delta is automatic, the real hypothesis being that every parity row shares a variable with a
+block; "at least three groups" (the uniform form covers fewer); the max with g Delta + 1; multilinearity.
+Not implied by the recorded theorem: a matching of size rho gives only n/2 + O(sqrt(n log n)); the factor comes
+from applying the uniform form to the contracted graph.
+Process audit: two rank-subtracted ceilings judged unrelated on summaries only (thm:grouped-exact-one-ceiling
+has the same shape); "excludes three or more levels as for the other excluded sources" has no source; the next
+attempt rests on an unchecked outline.
+Suggestions (unverified): clusters of at most k linked parity rows touching a block go whole into the block's
+group (k internal variables, g <= 1 + Delta k). Unbounded chains cut into connected segments of g rows give
+v - i <= n + rho/g; gain n/(4 g Delta) and loss rho/(2g) both scale as 1/g, excluding exactly rho up to about
+n/(2 Delta). Past that a rank-based frontier count is needed: a connected cluster projects onto its external
+variables as one long parity row. No counterexample found.
