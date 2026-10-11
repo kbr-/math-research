@@ -1,0 +1,86 @@
+// Local verification of axiom-cut normalization and binary input translation.
+// Four cut value pairs; all XOR assignments at arities 0..4;
+// six symbolic rank encodings and all 168 rank-input Boolean assignments.
+// No rank-residual expansion or lower-bound experiment.
+ring acR=2,(f,c,y,a,b,r,x(1..3),z(1..3)),dp;
+int acChecks=0;
+int acFailures=0;
+int acParity=0;
+int acRank=0;
+int acSymbolic=0;
+int acNegative=0;
+int acN,acD,acMask,acI,acBits,acLeft,acRight,acSum,acV,acW;
+poly acP,acExpected;
+proc acAssert(int acOk,string acWhat)
+{
+  acChecks++;
+  if (!acOk) { acFailures++; print("FAIL "+acWhat); }
+}
+print("PLAN: 4 cut value pairs, 31 XOR assignments, 6 symbolic rank inputs, 168 rank assignments.");
+print("STAGES: normalization, local cut, empty-parity control, rank-input translation.");
+acAssert((1+f)*c+f+1==(1+f)*(c+1),"normalization implication");
+acAssert((1+f)*0+0==0,"zero placeholders");
+acAssert((1+1)*c+y==y,"unit substitution");
+acAssert(a*r+(1+a)*r==r,"symbolic cut");
+acNegative++; acAssert(f+f!=1,"wrong weakening multiplier fails");
+for(acLeft=0;acLeft<=1;acLeft++)
+{
+  for(acRight=0;acRight<=1;acRight++)
+  {
+    // Premise falsity polynomials: a*r and (1+a)*r.
+    acP=acLeft*acRight+(1+acLeft)*acRight;
+    acExpected=acRight;
+    acAssert(acP==acExpected,"cut Boolean values");
+  }
+}
+for(acN=0;acN<=4;acN++)
+{
+  for(acMask=0;acMask<2^acN;acMask++)
+  {
+    acBits=acMask; acSum=0; acP=1+acN;
+    for(acI=1;acI<=acN;acI++)
+    {
+      acV=acBits%2; acBits=acBits div 2; acSum=acSum+acV;
+      acP=acP+(1+acV);
+    }
+    acExpected=1+(acSum%2);
+    acAssert(acP==acExpected,"odd XOR falsity translation"); acParity++;
+  }
+}
+acNegative++; acAssert(1+0!=0,"printed empty XOR translation fails negated-empty axiom");
+for(acN=1;acN<=3;acN++)
+{
+  for(acD=0;acD<=1;acD++)
+  {
+    acP=1+acN; acExpected=acD;
+    for(acI=1;acI<=acN;acI++)
+    {
+      acP=acP+(1+var(6+acI)*var(9+acI));
+      acExpected=acExpected+var(6+acI)*var(9+acI);
+    }
+    if(acD==0) { acP=1+acP; }
+    acAssert(acP==acExpected,"formal rank input"); acSymbolic++;
+    for(acMask=0;acMask<2^(2*acN);acMask++)
+    {
+      acBits=acMask; acSum=0; acP=1+acN;
+      for(acI=1;acI<=acN;acI++)
+      {
+        acV=acBits%2; acBits=acBits div 2;
+        acW=acBits%2; acBits=acBits div 2;
+        acSum=acSum+acV*acW; acP=acP+(1+acV*acW);
+      }
+      if(acD==0) { acP=1+acP; }
+      acExpected=acD+(acSum%2);
+      acAssert(acP==acExpected,"rank Boolean input"); acRank++;
+    }
+  }
+}
+acAssert(acParity==31,"XOR count");
+acAssert(acRank==168,"rank count");
+acAssert(acSymbolic==6,"symbolic count");
+acAssert(acNegative==2,"negative count");
+print("SUMMARY checks="+string(acChecks)+" xor="+string(acParity)+" rank="+string(acRank)
++" symbolic="+string(acSymbolic)+" negatives="+string(acNegative)+" failures="+string(acFailures));
+if(acFailures==0) { print("FINAL PASS"); } else { print("FINAL FAIL"); }
+quit;
+
