@@ -757,6 +757,34 @@ def spell(body, item, nodes=None, end=None):
     return len(spell_entries(body, item, nodes, end))
 
 
+ATTEMPT_SENTENCE_RE = re.compile(r'\b(?:next attempt|still owed|owed (?:from|since)|stays? owed)\b', re.I)
+
+
+def named_attempts(body, ident):
+    """(anchor, sentences of its Follow-up that name an attempt, whether it has an Owed attempt paragraph)
+    for every entry of the item's group whose Follow-up names one, oldest first.
+
+    On 11 October 2026 an attempt named on 9 October was deferred in two entries of its item, each of whose
+    Owed attempt paragraphs answered only the latest follow-up; a review found that the statement to be read
+    had been on record for a day.  The paragraph is written against this list, not against the last entry."""
+    articles = dict()
+    for tag, text in record_articles(body):
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        if anchor:
+            articles[anchor.group(1)] = text
+    rows = []
+    for anchor, _item, _outcome in history(body, ident):
+        text = articles.get(anchor, '')
+        follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
+        if not follow:
+            continue
+        plain = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', follow[-1])).split())
+        said = [s for s in re.split(r'(?<=[.;:])\s+(?=[A-Z])', plain) if ATTEMPT_SENTENCE_RE.search(s)]
+        if said:
+            rows.append((anchor, said, OWED_RE.search(text) is not None))
+    return rows
+
+
 def item_status(body, ident):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
@@ -775,7 +803,11 @@ def item_status(body, ident):
             f'Current spell: {count}; boundary: {boundary}.',
             (f'Next development would be entry {count + 1}.' if count < limit else
              'Boundary reached: develop a different item first, unless an extension is earned.'),
-            'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none')]
+            'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
+            'Attempts named by the follow-ups of its entries (write the Owed attempt paragraph against all):'
+            ] + ([f'  #{anchor}{"" if owed else " [no Owed attempt paragraph]"}: '
+                  + ' '.join(sentence[:300] for sentence in said)
+                  for anchor, said, owed in named_attempts(body, ident)] or ['  none'])
 
 
 def extension_item(body, nodes, tag, text, position=None):

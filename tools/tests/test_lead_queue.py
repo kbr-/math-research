@@ -1404,6 +1404,27 @@ class LinkEarlierWorkTest(unittest.TestCase):
         body = notebook(articles, queue)
         return lq.unlinked_earlier_entry(body, lq.parse_tree(body)[1], lq.record_articles(body), item)
 
+    def test_status_lists_every_attempt_the_item_s_follow_ups_named(self):
+        item = ('lead', 'r:1')
+        first = ('<article id="entry-2026-10-09-a" data-kind="research" data-route="step" data-lead="r:1">'
+                 '<p><strong>Follow-up.</strong> Continuing. Next attempt on it: read the proof of the bound.</p>'
+                 '</article>')
+        second = ('<article id="entry-2026-10-11-b" data-kind="research" data-route="step" data-lead="r:1">'
+                  '<p><strong>Owed attempt.</strong> The construction came first, for the reason given below.</p>'
+                  '<p><strong>Follow-up.</strong> Continuing: a count. Next attempt: the complex. Still owed '
+                  'from 9 October: the proof of the bound.</p></article>')
+        third = self.entry('entry-2026-10-11-c', item)
+        body = notebook([first, second, third], [item])
+        rows = lq.named_attempts(body, 'r:1')
+        self.assertEqual([(anchor, owed) for anchor, _said, owed in rows],
+                         [('entry-2026-10-09-a', False), ('entry-2026-10-11-b', True)])
+        self.assertEqual(rows[1][1], ['Next attempt: the complex.', 'Still owed from 9 October: the proof of '
+                                      'the bound.'])
+        status = '\n'.join(lq.item_status(body, 'r:1'))
+        self.assertIn('#entry-2026-10-09-a [no Owed attempt paragraph]: Next attempt on it: read the proof', status)
+        self.assertIn('#entry-2026-10-11-b: Next attempt: the complex. Still owed', status)
+        self.assertIn('  none', '\n'.join(lq.item_status(notebook([third], [item]), 'r:1')))
+
     def test_an_entry_accounts_for_the_attempt_its_item_s_last_entry_named(self):
         item, other = ('check', 'e:s1'), ('lead', 'r:2')
         named = ('<article id="entry-2026-10-11-a" data-kind="research" data-check="e:s1"><p><strong>Follow-up.'
