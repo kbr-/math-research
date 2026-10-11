@@ -841,6 +841,23 @@ def decided_report(entry):
              'each hedge beside the report and say in the entry which matter it is about:'] + lines) if lines else []
 
 
+def absence_report(entry):
+    """Lines for the finisher to print, or none: the sentences of an entry that closes or develops its item
+    which say something is not kept, not recorded or gone (tools/absence_claims.py).
+
+    The words cannot tell a statement about the repository from one about mathematics, so this prints and
+    refuses nothing.  The figures of its measurement on one notebook are in the entry that built it
+    (11 October 2026); of four statements about the tree checked there, one was false."""
+    try:
+        import absence_claims
+    except ImportError:      # a checkout without the listing has nothing to print
+        return []
+    lines = absence_claims.report(entry)
+    return (['Absence claims: this entry removes its item and says something is not kept, not recorded or '
+             'gone; check each that is about the repository against the tree and the session transcript:']
+            + lines) if lines else []
+
+
 def hook_notice_lines(root, since):
     """Lines for the finisher to print, or none: the post-commit hook's notices at or after `since` that no
     answer followed (tools/hook_notices.py).  It prints and refuses nothing, and a failure to read the log
@@ -1588,7 +1605,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
               if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
-    for line in decided_report(entry):
+    for line in decided_report(entry) + absence_report(entry):
         print(line)
     for line in hook_notice_lines(root, first.get('unix_s', 0)):
         print(line)

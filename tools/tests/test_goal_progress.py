@@ -633,6 +633,15 @@ class CountListingReportTest(unittest.TestCase):
         self.assertEqual(FT.decided_report(entry('<strong>Not decided.</strong> None occurred.', hedged)), [])
         self.assertEqual(FT.decided_report(entry('<strong>Decided.</strong> The third outcome.', '<p>Shown.</p>')), [])
 
+    def test_a_closing_entry_s_absence_claims_are_printed(self):
+        def entry(follow):
+            return ('<article id="e" data-kind="research"><p>The scratch file is gone.</p>'
+                    f'<p><strong>Follow-up.</strong> {follow}</p>')
+        lines = FT.absence_report(entry('Closed: inapplicable.'))
+        self.assertIn('Absence claims', lines[0])
+        self.assertEqual(lines[1:], ['  absence: The scratch file is gone.'])
+        self.assertEqual(FT.absence_report(entry('Continuing: one more attempt.')), [])
+
 
 if __name__ == '__main__':
     unittest.main()
