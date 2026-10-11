@@ -1,0 +1,73 @@
+{
+  "source": {
+    "record": "[Noncommutative rank test](https://kbr.is-a.dev/math-research/#entry-2026-10-11-noncommutative-rank-test)",
+    "label": "Noncommutative rank test",
+    "targets": [
+      "../notebook.html#entry-2026-10-11-noncommutative-rank-test"
+    ]
+  },
+  "date": "2026-10-11",
+  "reviewer": "Codex with one fresh GPT-6.1-Sol medium reviewer",
+  "topics": [
+    "frege-simulation",
+    "method-obstructions"
+  ],
+  "claims": [
+    {
+      "id": "prop:binary-word-rank-witness",
+      "summary": "For every fixed-degree ternary one-hot Tseitin graph with nonzero total charge, s=n+m+1, there exists a binary original-input noncommutative IPS certificate C of degree O_Delta(s) such that every degree-r word tensor flattened across any subset of positions has F2 matrix rank O_Delta(s^2), also after positionwise F2-linear tensor maps. C has a constant-depth F4 sum-of-products-of-homogeneous-linear-forms formula of size O_Delta(s^3). Use C=omega^2 D+omega sigma(D) for the earlier F4 certificate, with coefficientwise Frobenius fixing letters. No constant-depth F2 formula or membership in the matched shallow simulation image is claimed.",
+      "assessment": "Working all-parameter rank witness, passed by the sole fresh GPT-6.1-Sol medium reviewer. Refutes the large-rank premise for all certificates, not a premise restricted to already-small binary certificates or the matched image.",
+      "status": "working_proof",
+      "rationale": "Tests the proposed universal word-matrix-rank premise on the actual family, including all commutator and Boolean placeholders, and identifies the role of coefficient field.",
+      "next_action": "Retain field-sensitive or proof-image-sensitive alternatives; do not infer a binary shallow upper bound from an F4 formula.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "prop:flow-extension-certificates",
+      "summary": "For fixed maximum degree Delta, canonical positive integer-flow CNFs on a nonempty finite simple graph with n vertices and m edges have original-input noncommutative IPS formulas of size O_Delta((n+m+1)^4) and constant ordered unbounded-fan-in depth over K=F_(2^a) of size O(m+1), retaining Boolean and commutator generators. A binary-coefficient certificate has a constant-depth K formula with an extra O(log(m+2)) size factor, by coefficientwise trace. Local Laurent characters cancel globally while positivity removes the constant coefficient; interpolate exponents [-2m,2m] at 4m+1 nonzero points. Isolated vertices have a unit input. No binary constant-depth formula or simultaneous small word-rank claim for flow is made.",
+      "assessment": "Working complete Laurent-parameter and field-trace construction, passed by the sole fresh GPT-6.1-Sol medium reviewer with exact local GAP controls. Shallow extension formulas need not have small word flattenings; binary constant-depth complexity remains open.",
+      "status": "working_proof",
+      "rationale": "Shows that removing fixed vertex character values does not by itself remove extension-field shallow certificates; the original binary goal remains open.",
+      "next_action": "Check the row/column counting construction on unary PHP with a full original-clause and Laurent-range ledger, rather than assume counting intuition supplies it.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "prop:binary-word-rank-witness",
+      "depends_on",
+      "thm:noncommutative-tseitin-formulas",
+      "Uses the full pre-descent F4 certificate and its O(s^2) products of homogeneous linear factors, including all original placeholders."
+    ],
+    [
+      "prop:binary-word-rank-witness",
+      "cites",
+      "cor:binary-component-depth-gap",
+      "The rank tensor is defined algebraically; extracting homogeneous components is not claimed to preserve binary formula depth."
+    ],
+    [
+      "prop:binary-word-rank-witness",
+      "cites",
+      "thm:shallow-noncommutative-sequent-simulation",
+      "The witness refutes an all-certificate rank premise but is not proved to lie in this binary fixed-depth simulation image."
+    ],
+    [
+      "prop:flow-extension-certificates",
+      "cites",
+      "thm:noncommutative-tseitin-formulas",
+      "Reuses paid global edge sorting and local inverse factors, replacing fixed vertex characters with Laurent coefficient extraction."
+    ],
+    [
+      "prop:flow-extension-certificates",
+      "cites",
+      "cor:flow-window-exclusion",
+      "The earlier PC degree upper bound is a different resource; the new result concerns constant-depth extension-field formula certificates for the same canonical local predicates."
+    ],
+    [
+      "prop:flow-extension-certificates",
+      "cites",
+      "cor:binary-component-depth-gap",
+      "Interpolation is explicitly over a growing extension; no same-depth return to binary constants is inferred."
+    ]
+  ]
+}
