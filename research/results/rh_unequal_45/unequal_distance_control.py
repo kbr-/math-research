@@ -124,6 +124,30 @@ def main():
                 row['exponent_from_previous'] = float(np.log(prev[1] / lam_min) / np.log(prev[0] / ratio))
             prev = (ratio, lam_min)
             out['H'].append(row)
+    # Statement R, added after the first run (kept as unequal_distance_control_first_run.json), with its
+    # expectation written here before the run that includes it: for n pairs at one distance, heights of span W,
+    # R_jl = h_jl^2 / kappa^2 with h_jl = sinc((gamma_j - gamma_l - 2 i delta) Lam / 2), kappa = sinh(b)/b
+    # (the matrix R of the registered many-pair norm bound),
+    #     lambda_min(R) <= (Lam W)^{2(n-1)} / (n ((n-1)!)^2).
+    # EXPECTED: holds for n = 2, 3, 4 at Lam W = 1, 0.3, 0.1 with b = 3; exponent between Lam W = 0.3 and 0.1
+    # within 0.3 of 2(n-1).
+    out['R'] = []
+    lam, dl = 1.0, 3.0
+    kappa = np.sinh(dl * lam) / (dl * lam)
+    for n in (2, 3, 4):
+        prev = None
+        for lw in (1.0, 0.3, 0.1):
+            gam = np.linspace(0.0, lw / lam, n)
+            x = (gam[:, None] - gam[None, :] - 2j * dl) * lam / 2
+            Rm = (np.sin(x) / x) ** 2 / kappa**2
+            assert np.allclose(Rm, Rm.conj().T) and np.allclose(np.diag(Rm), 1.0)
+            lam_min = float(np.linalg.eigvalsh(Rm)[0])
+            bound = lw ** (2 * (n - 1)) / (n * factorial(n - 1) ** 2)
+            row = {'n': n, 'Lam_W': lw, 'lambda_min': lam_min, 'bound': float(bound), 'holds': bool(lam_min <= bound)}
+            if prev is not None:
+                row['exponent_from_previous'] = float(np.log(prev[1] / lam_min) / np.log(prev[0] / lw))
+            prev = (lw, lam_min)
+            out['R'].append(row)
     Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
 
 
