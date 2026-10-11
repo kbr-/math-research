@@ -58,6 +58,19 @@ Applications to Lower Bounds and Circuit Compression**, Theory of Computing 14(1
 
 ## References without established public-redistribution permission
 
+**Anthropic density formalization**, `zeta23` in anthropics/formal-math.
+
+- Source: https://github.com/anthropics/formal-math/tree/main/zeta23
+- The complete project in `research/references/anthropic-zeta-density-20261011/` retains its
+  Apache-2.0 LICENSE, NOTICE, original headers and attributed PrimeNumberTheoremAnd derivations.
+- No external Lake dependencies are vendored. `IMPORT.md` is original local prose.
+- The associated Alpöge–Furman paper, arXiv:2608.13637v2, attributes its argument to Claude; the
+  named human authors take responsibility. The article's model manuscript, expert note, arXiv papers
+  and Bombieri's 2000 paper are personal copies outside tracked history: their general public
+  redistribution permission has not been established here.
+- Original proof reconstruction and source/version audit notes are retained separately from those
+  papers. Source proof provision is not an assertion of independent local verification.
+
 The following locally held PDFs and their full-text extractions must be excluded from public Git
 history unless adequate permission is subsequently established:
 
