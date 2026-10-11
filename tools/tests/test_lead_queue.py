@@ -1409,6 +1409,35 @@ class LinkEarlierWorkTest(unittest.TestCase):
             lq.check(None, notebook([old, self.entry('entry-2026-10-11-new', child)], queue))
 
 
+class OpenSubideaOutcomesTest(unittest.TestCase):
+    """An entry on an item gives an outcome for every other open sub-idea of that item's parent."""
+
+    def entry(self, ident, item, body=''):
+        return (f'<article id="{ident}" data-kind="research" data-route="step" data-{item[0]}="{item[1]}">{body}'
+                '<p><strong>Follow-up.</strong> Continuing: x.</p></article>')
+
+    def test_silent_subideas_are_named(self):
+        parent, one, two = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2')
+        nodes = lq.parse_tree(notebook([], [(parent, [one, two])]))[1]
+        tag = '<article id="entry-2026-10-11-new" data-kind="research" data-check="e:s1">'
+        self.assertEqual(lq.unstated_subideas(tag, tag + 'text', one, nodes), ['e:s2'])
+        self.assertEqual(lq.unstated_subideas(tag, tag + 'text', parent, nodes), ['e:s1', 'e:s2'])
+        said = tag + '<ul><li data-check="e:s2">The other. <strong>Follow-up.</strong> Continuing: waits.</li></ul>'
+        self.assertEqual(lq.unstated_subideas(tag, said, one, nodes), [])
+        quoted = tag + '<ul><li data-check="e:s2">The other, no outcome.</li></ul>'
+        self.assertEqual(lq.unstated_subideas(tag, quoted, one, nodes), ['e:s2'])
+        old = tag.replace('2026-10-11', '2026-10-10')                              # older entries are not retrofitted
+        self.assertEqual(lq.unstated_subideas(old, old + 'text', one, nodes), [])
+        self.assertEqual(lq.unstated_subideas(tag, tag + 'text', ('lead', 'r:9'), nodes), [])
+
+    def test_the_check_refuses_a_silent_entry(self):
+        parent, one, two = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2')
+        queue = [(parent, [one, two])]
+        head = notebook([], queue)
+        with self.assertRaisesRegex(ValueError, 'e:s2'):
+            lq.check(head, notebook([self.entry('entry-2026-10-11-new', one)], queue))
+
+
 class LastItemGuidanceTest(unittest.TestCase):
     def test_start_guidance_counts_the_chosen_items_spell(self):
         import importlib.util

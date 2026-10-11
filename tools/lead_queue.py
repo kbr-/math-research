@@ -633,6 +633,24 @@ def unlinked_earlier_entry(body, nodes, articles, item):
     return None
 
 
+def unstated_subideas(tag, text, item, before_nodes):
+    """The open sub-ideas of the top-level item an entry develops for which the entry lists no outcome.
+
+    `before_nodes` is the queue as it stood before the entry.  The entry developing a sub-idea states that one's
+    outcome as its own follow-up; every other open sub-idea of the same parent needs a follow-up list item with
+    Closed, Developed or Continuing.  On 11 October 2026 a sub-idea answered by the next entry on its item stayed
+    queued for a day, because that entry spoke only of the sub-idea it had posed itself."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if dated is None or dated.group(1) < LINK_EARLIER_FROM:
+        return []
+    parent, node = locate(before_nodes, item)
+    top = parent if parent is not None else node
+    if top is None:
+        return []
+    stated = {listed for listed, outcome, _ in listed_outcomes(text) if outcome in ('Closed', 'Developed', 'Continuing')}
+    return [child.ident for child in top.children if child.item != item and child.item not in stated]
+
+
 def history(body, ident):
     """(anchor, item id, outcome) of every entry that developed the item `ident`, the top-level item of its
     group, or another member of that group, oldest first: what to read before an entry on the item is begun
@@ -1190,6 +1208,11 @@ def check(head_body, body, path=None, root=None):
             raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
                              'entry, after reading it, so that work already recorded on the item is not repeated '
                              '(AGENTS.md, restoration and research discipline)')
+        silent = unstated_subideas(tag, text, work[0], before[1] if before else nodes)
+        if silent:
+            raise ValueError('This entry develops an item with open sub-ideas it does not mention: give each a '
+                             'follow-up list item with its outcome (Closed, Developed or Continuing): '
+                             + ', '.join(silent) + ' (AGENTS.md; a sub-idea answered by a later entry stayed queued)')
     if work and batch:
         raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
                          'batch, not both')

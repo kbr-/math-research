@@ -187,6 +187,29 @@ class ClosureStakesTest(unittest.TestCase):
                                  + self.LINK)
 
 
+class DevelopedReadingTest(unittest.TestCase):
+    ASK = '<li data-check="a:s1">Read the statement of the threshold theorem with its window. '
+    READ = ('<strong>Sources read.</strong> Theorem 3.2 of the paper, in its text, with the definition of a '
+            'symmetric property. ')
+
+    def test_a_developed_reading_check_states_what_was_read(self):
+        done = '<strong>Follow-up.</strong> Developed: the window is of the order of the density.</li>'
+        FT.validate_developed_readings('<ul>' + self.ASK + self.READ + done + '</ul>')
+        FT.validate_developed_readings('<ul>' + self.ASK + done[:-5] + ' ' + self.READ + '</li></ul>')   # after it
+        with self.assertRaisesRegex(ValueError, 'Sources read'):
+            FT.validate_developed_readings('<ul>' + self.ASK + done + '</ul>')
+        with self.assertRaisesRegex(ValueError, 'memory'):
+            FT.validate_developed_readings('<ul>' + self.ASK + '<strong>Sources read.</strong> The form of the '
+                                           'theorem as recalled from memory of an earlier reading. ' + done + '</ul>')
+
+    def test_other_items_are_left_alone(self):
+        FT.validate_developed_readings('<ul>' + self.ASK + '<strong>Follow-up.</strong> Continuing: unread.</li></ul>')
+        FT.validate_developed_readings('<ul><li data-check="a:s2">Prove the bound for relation blocks. '
+                                       '<strong>Follow-up.</strong> Developed: prop:x proves it.</li></ul>')
+        FT.validate_developed_readings('<ul><li data-check="a:s3">Prove it. <strong>Follow-up.</strong> Developed: '
+                                       'done.</li>' + self.ASK + '<strong>Follow-up.</strong> Continuing.</li></ul>')
+
+
 class PreventionTest(unittest.TestCase):
     def test_a_process_assessment_names_its_prevention(self):
         FT.validate_prevention('<p><strong>Question.</strong> No assessment here.</p>')

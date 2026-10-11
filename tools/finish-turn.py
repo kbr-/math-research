@@ -443,6 +443,40 @@ def validate_closures(text):
                          'relies on, or keep the item open with the reading queued (AGENTS.md)')
 
 
+READING_ITEM_RE = re.compile(r'<li\b[^>]*>((?:(?!</li>).)*?)<strong>Follow-up\.</strong>\s*Developed\b((?:(?!</li>).)*)</li>',
+                             re.S)
+READING_ASK_RE = re.compile(r'\bRead (?:in full |in its text )?(?:the |a |one )?(?:statements?|definitions?|theorems?|'
+                            r'construction|text|paper|source)')
+UNREAD_RE = re.compile(r'\bfrom memory\b|\bas (?:I )?recall(?:ed)?\b|abstract(s)?\s+only|only\s+(the|its|their)\s+abstract|'
+                       r'abstract,?\s+not\s+the|\bby report\b', re.I)
+
+
+def validate_developed_readings(text):
+    """A sub-idea that asks for a reading is developed only by a reading that is stated.
+
+    The closure rule (above) covers items that are Closed.  On 11 October 2026 a check that asked for the
+    statement of a theorem "with its window as a function of the density" was marked Developed on a form of
+    the statement recalled from memory, in the entry meant to end such readings; a reviewer returned it.  So a
+    list item whose text asks to read a statement, definition, theorem, construction, text, paper or source and
+    whose follow-up is Developed says, after <strong>Sources read.</strong> inside that item, which statement
+    was read in its text, and may not say it rests on memory, an abstract or a report."""
+    for asked, outcome in READING_ITEM_RE.findall(text):
+        if not READING_ASK_RE.search(html.unescape(re.sub(r'<[^>]*>', ' ', asked))):
+            continue
+        item = asked + outcome
+        read = re.search(r'<strong>Sources read\.</strong>((?:(?!<strong>Follow-up\.</strong>).)*)', item, re.S)
+        if not read:                      # also accepted after the follow-up, inside the same item
+            read = re.search(r'<strong>Sources read\.</strong>(.*)', outcome, re.S)
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', read.group(1))).strip() if read else ''
+        if len(plain) < 40:
+            raise ValueError('A sub-idea that asks for a reading is marked Developed: say in that list item, after '
+                             '<strong>Sources read.</strong> and in at least 40 characters, which statement was '
+                             'read in its text (AGENTS.md; a check was marked resolved on memory, 11 October 2026)')
+        if UNREAD_RE.search(plain):
+            raise ValueError('A reading check may not be Developed on memory, an abstract or a report: read the '
+                             'statement in its text, or keep the sub-idea Continuing (AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -607,6 +641,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_closures(text)
+        validate_developed_readings(text)
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)
     if state == 'advanced':
