@@ -1,0 +1,78 @@
+Blind stage of a goal-level route review, side notebook near-half-pc-degree, 11 October 2026.
+Read-only. Medium effort. The author's preferred next step is withheld on purpose.
+
+GOAL. Superpolynomial proof-size lower bounds for every fixed depth of AC0[2]-Frege, through a family of
+polynomial-length unsatisfiable literal CNFs F_n of width w_n, with auxiliary affine equations over F_2 allowed
+outside the formula, of free dimension n, with no polynomial-calculus refutation over F_2 of degree
+floor(n/2 - s_n), where (s_n + w_n)(log n)^(l-2) = o(n) at l = d + c_F levels (c_F an uncomputed constant of
+the Frege simulation). The transfer from such a family to the Frege bound is a working proof (one reviewer each
+step). Alternative sufficient endpoints (thin kernel, extension count) need a closure proper at about half of
+what it shatters and have no candidate.
+
+STANDING FACTS (registered; ids in the claim registry, tools/search-claims.py --show ID).
+- No degree lower bound above n/4 for narrow axioms over F_2 is proved here or in the sources read; the only
+  method on record is expansion.
+- prop:level-deficit-threshold and, new in this block, lem:width-deficit-threshold: if the transfer theorem's
+  inequality is met on the balanced profile S_1 = ... = S_l = n^A then s + w < n / (4 A^(l-1) (ln n)^(l-2)).
+  With cor:bounded-depth-size-bound, s + w = o(n/(ln n)^(l-2)) is sufficient and, for that inequality on
+  balanced profiles, necessary.
+- Candidates on record before the block: the two-partition counting family (ceiling m/2 - m/w + 1 by
+  lem:monomial-relaxation-ceiling); the block cover (n = r g, wide axioms of degree g, rows products of r
+  linear forms); cores of the balanced paired source (originals excluded for l >= 3 by a shared-pin ceiling
+  with deficit of order v/log v; no ceiling for cores).
+OPEN CONJECTURES OF THE ROUTE, with evidence:
+- conj:block-cover-degree-value (new): every block cover is refuted in degree g + r - 1. Proved at r = 1, 2.
+  Evidence: 35 random minimal covers, n <= 15, at most five groups; in 11 of them (all at r = 4, 5) the
+  closure stays smaller than the product form's until the refutation.
+- conj:parity-clause-regular-index / conj:cumulative-index-span: a counting model for random parity clauses,
+  which would give a deficit of order n ln ln n / ln n at polynomial length; unproved, "not citable".
+- conj:paired-row-symbols: would exclude the paired source's originals at l = 2 as well.
+
+THE BLOCK: six research entries since the last review (entry ids; read any with
+`python3 tools/notebook-excerpt.py ID --text`, from /home/kbr/dev/math/.claude/worktrees/near-half-pc-degree).
+1. entry-2026-10-11-counting-family-budget. The counting family as a literal CNF has at least m 2^w/(w(w+1))
+   clauses, so polynomial length forces w = O(log m) and deficit > m/w - 1; without auxiliary equations the
+   balanced inequality cannot be met for every polynomial size at l >= 3. Bearing declared: some.
+2. entry-2026-10-11-candidates-length-count. lem:width-deficit-threshold (above). The block cover has at least
+   (3/2)^r rows, so polynomial length forces r = O(log n) and wide clauses of width >= n/(B log_1.5 n): capped
+   at three levels (A < 0.79 sqrt(B)), excluded at four or more, for the balanced inequality. Bearing: some.
+3. entry-2026-10-11-counting-family-restrictions. After fixing any variables, n left free, the counting family
+   is refuted in degree max{floor(n/2 - m/(2w)) + 1, w/2 + 1}. Remark: auxiliary equations cannot raise the
+   degree, so a barrier at floor(n/2 - s) needs n < 2 d(F) + 2s. Equations in two or more variables not
+   reached. Bearing: some. The item (candidates-short-parity-frege-refutations) rotated at its fourth entry.
+4. entry-2026-10-11-parity-basis-item. Queued check "re-derive the shared-pin and polarity conditions for
+   standard monomials inside a basis" (entry-2026-10-09-free-dimension-normalization:s2). The draft removed the
+   item as already developed by an earlier entry; the reviewer refused. Then lem:basis-row-ceiling: for an
+   unsatisfiable system with a proper closure at D, rows with jointly independent forms give
+   D - 1 <= n - sum (k_i - rho_i). The first statement of it lacked unsatisfiability and was false. Bearing: none.
+5. entry-2026-10-11-basis-conditions-transfer. cor:linear-clause-transversal, a composition of three recorded
+   statements; the invariance the previous entry had re-proved was already registered
+   (lem:affine-coordinate-invariance). The draft again removed the item as developed; the reviewer refused
+   again. Nothing proved about systems on dense forms. Bearing: none.
+6. entry-2026-10-11-thin-block-covers. lem:last-group-conditioning: every block cover with r >= 2 is refuted
+   in degree n - g + 1 (g + 1 at two groups); the two-group argument is the reviewer's. ex:thin-block-cover-
+   degrees and conj:block-cover-degree-value (above). Bearing: none.
+Forms of the candidates the block did not reach: the counting family with auxiliary equations in two or more
+variables; the paired source's cores; a block cover whose wide axioms are replaced by narrower ones; unbalanced
+profiles of the transfer inequality; the level-size inequality; two levels.
+
+QUEUE. 52 top-level items against a draining target of 10; 53, 50, 50, 51 at the last four reviews. Histories:
+`python3 tools/lead_queue.py history research/branches/near-half-pc-degree/notebook.html ID --status` for
+candidates-short-parity-frege-refutations, entry-2026-10-09-free-dimension-normalization:s2,
+entry-2026-10-10-block-cover-witness:s1, entry-2026-10-09-dense-parity-rows:s2.
+The last review (entry-2026-10-11-six-items-review) decided: the weak-PHP screen of the counting family; the
+three queued checks without an entry of their own (product-tree frame with a contradiction; polarity conditions
+in a basis; a contradiction that destroys shattering); the block cover's multigrading at three blocks; the
+static-barrier check attempted or closed with stakes; the half ceiling's owed attempt made; bearing paragraphs
+to give a real reason.
+
+QUESTIONS (answer each; at most 450 words in all).
+A. What is the block worth for the open statement (the family)? Be specific about entries 1-3 (bearing "some").
+B. Should each of the three candidates still be listed as a candidate, and in which form? Is the route left
+   with any candidate?
+C. A materially different architecture for the goal, or a reason none is found. Do not manufacture one.
+D. The nearest decisive test for the next block: one concrete test, with what each outcome would change, its
+   trivial cases, and its power (what recorded upper bounds give on its object).
+E. Conduct audit of the block: what was decided of the last review and not done; overstated bearings or
+   titles; anything else a user would object to. In entries 4 and 5 the author twice tried to remove a queue
+   item and was twice refused: what does that say about how the queue is being worked?
