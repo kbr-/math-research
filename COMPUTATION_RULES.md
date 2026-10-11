@@ -1,34 +1,32 @@
 # Computation rules
 
-This is the authoritative policy for resource limits, protected execution,
-numerical checks, timing tools, and computation outputs. It applies after reboot
-and session resume. Research workflow, notebook editing, source audits, and
-Git/publication rules belong in [AGENTS.md](AGENTS.md).
+This is the authoritative policy for resource limits, protected execution, numerical checks, timing
+tools, and computation outputs. It applies after reboot and session resume. Research workflow,
+notebook editing, source audits, and Git/publication rules belong in [AGENTS.md](AGENTS.md).
 
 ## CPU and memory budget
 
-- Use at most **14 of the machine's 16 logical CPUs**, in total across all
-  concurrent jobs and their child processes. The allowed CPUs are **0–13**.
-- Use at most **10 GB total memory**, meaning **10,000,000,000 bytes of RAM plus
-  swap combined**, shared across all computation jobs and their children.
-  This is not a per-process allowance.
-- **The RAM/swap split is unrestricted.** Leave placement to Linux. Do not
-  disable system-wide swap or impose fixed shares such as 9 GB RAM plus 0.5 GB
-  swap. Other applications also need the machine's resources.
-- A job that fails, or that held a quarter of the budget, ends with a line
-  giving its own memory peak at the launcher's last reading of it. When the
-  watchdog kills every job for the shared budget, each job's line says how much
-  was its own, so the job that grew is known without a second run.
-- Kill computation jobs that exceed the combined memory budget. Brief overshoot
-  before termination is acceptable (the user explicitly accepted approximately
-  10.5 GB temporarily); it is not extra working capacity.
-- Plan memory use below the limit, accounting for array copies, intermediate
-  results, BLAS workspaces, and all parallel workers.
+- Use at most **14 of the machine's 16 logical CPUs**, in total across all concurrent jobs and their
+  child processes. The allowed CPUs are **0–13**.
+- Use at most **10 GB total memory**, meaning **10,000,000,000 bytes of RAM plus swap combined**,
+  shared across all computation jobs and their children. This is not a per-process allowance.
+- **The RAM/swap split is unrestricted.** Leave placement to Linux. Do not disable system-wide swap
+  or impose fixed shares such as 9 GB RAM plus 0.5 GB swap. Other applications also need the
+  machine's resources.
+- A job that fails, or that held a quarter of the budget, ends with a line giving its own memory
+  peak at the launcher's last reading of it. When the watchdog kills every job for the shared
+  budget, each job's line says how much was its own, so the job that grew is known without a second
+  run.
+- Kill computation jobs that exceed the combined memory budget. Brief overshoot before termination
+  is acceptable (the user explicitly accepted approximately 10.5 GB temporarily); it is not extra
+  working capacity.
+- Plan memory use below the limit, accounting for array copies, intermediate results, BLAS
+  workspaces, and all parallel workers.
 
 ## Enforced execution
 
-The launcher requires Linux, cgroup v2, and a working user systemd manager;
-setup also needs the existing C compiler. Unsupported controls must fail closed.
+The launcher requires Linux, cgroup v2, and a working user systemd manager; setup also needs the
+existing C compiler. Unsupported controls must fail closed.
 
 Run computations, numerical checks, builds, test runs and other local workloads through the
 protected launcher, small ones and other repositories' test suites included (user, 8 October 2026):
@@ -42,111 +40,101 @@ the job keeps that working directory. Claude Code's PreToolUse hook `tools/hooks
 refuses a test runner (pytest, unittest, the framework suite, a repository's suite script) or a
 scratchpad script started outside the launcher.
 
-All launcher invocations share `mathcompute.slice`. Never bypass a failed limit
-check, change CPU affinity from inside a workload, move a process out of the
-group, or launch an unprotected job to work around the limits.
+All launcher invocations share `mathcompute.slice`. Never bypass a failed limit check, change CPU
+affinity from inside a workload, move a process out of the group, or launch an unprotected job to
+work around the limits.
 
-Each job receives kernel CPU affinity 0–13, inherited by its children and checked
-before execution. On this host, CPU cgroup controllers are not delegated to user
-systemd, so the configured slice CPU quota and cpuset are not active; per-job
-affinity provides the restriction.
+Each job receives kernel CPU affinity 0–13, inherited by its children and checked before execution.
+On this host, CPU cgroup controllers are not delegated to user systemd, so the configured slice CPU
+quota and cpuset are not active; per-job affinity provides the restriction.
 
-Cgroup v2 has no native combined RAM-plus-swap cap. A compiled C watchdog polls
-the workload group's RAM and swap usage every 2 ms, includes its own memory use,
-and writes `cgroup.kill` when the total exceeds 10 GB. Separate 10 GB RAM and
-10 GB swap caps are only backstops, not permission to use 20 GB combined.
+Cgroup v2 has no native combined RAM-plus-swap cap. A compiled C watchdog polls the workload group's
+RAM and swap usage every 2 ms, includes its own memory use, and writes `cgroup.kill` when the total
+exceeds 10 GB. Separate 10 GB RAM and 10 GB swap caps are only backstops, not permission to use 20
+GB combined.
 
-The launcher requires the watchdog to be running. Jobs depend on its lifetime;
-if it stops, systemd stops dependent jobs and its stop handler kills the whole
-computation group. Never compute without these protections. Polling and kernel
-accounting can produce brief overshoot; no exact maximum overshoot or termination
-latency is guaranteed.
+The launcher requires the watchdog to be running. Jobs depend on its lifetime; if it stops, systemd
+stops dependent jobs and its stop handler kills the whole computation group. Never compute without
+these protections. Polling and kernel accounting can produce brief overshoot; no exact maximum
+overshoot or termination latency is guaranteed.
 
-The boundary covers protected computation jobs and their descendants. The agent,
-the browser, the small control processes, unrelated applications, and commands
-manually run outside the launcher are not inside the workload group.
+The boundary covers protected computation jobs and their descendants. The agent, the browser, the
+small control processes, unrelated applications, and commands manually run outside the launcher are
+not inside the workload group.
 
-Read the controller output of `./compute.sh start`, `./compute.sh run`,
-`./tools/finish-turn.py` and `tools/resume.py` in full; never pipe it through
-`head`, `tail` or `grep`. Guidance and warnings can appear anywhere. Claude's
-PreToolUse hook `tools/hooks/bash_guard.py` enforces this prohibition.
-Never discard the output or exit status of a command whose failure could corrupt
-a record, including timing `start` and `phase` commands.
+Read the controller output of `./compute.sh start`, `./compute.sh run`, `./tools/finish-turn.py` and
+`tools/resume.py` in full; never pipe it through `head`, `tail` or `grep`. Guidance and warnings can
+appear anywhere. Claude's PreToolUse hook `tools/hooks/bash_guard.py` enforces this prohibition.
+Never discard the output or exit status of a command whose failure could corrupt a record, including
+timing `start` and `phase` commands.
 
-Never use `pkill -f` or `pgrep -f` with a pattern also present in the invoking Bash
-command: it can match that shell, killing it or making a wait loop endless. Kill
-or check in one command and restart in another; wait on a job's own completion
-notice.
+Never use `pkill -f` or `pgrep -f` with a pattern also present in the invoking Bash command: it can
+match that shell, killing it or making a wait loop endless. Kill or check in one command and restart
+in another; wait on a job's own completion notice.
 
 ## Efficient numerical implementation
 
 - Computer algebra systems are installed (user installations, 23 and 25 September 2026):
-  **Macaulay2** (`M2`), **Singular**, **msolve**, **GAP** (with HAP, GUAVA, design, GRAPE and
-  the character-table library) and **PARI/GP**, with Normaliz, 4ti2, polymake and the XOR-aware
-  SAT solver CryptoMiniSat (`cryptominisat5`). Run their scripts through `./compute.sh` (`.m2`,
-  `.sing`, `.g` and `.gp` scripts are recognized). Their libraries cover far more than Gröbner
-  bases: commutative algebra, modules and homology, combinatorics, representation theory of
-  symmetric groups in positive characteristic, and linear algebra over finite fields. Consider
-  them for every computation or step they could improve in speed or reliability,
-  checking before writing or reusing a kernel. Prefer them to a hand-built kernel unless
-  the kernel is measured to be faster. A degree-truncated standard basis (Singular's `degBound`)
-  does not measure PC refutation degree: on 26 September 2026 it gave higher degrees after an
-  axiom was added, which PC degree never does. Measure PC degree with an exact degree-D closure
-  computation, and check monotonicity under added axioms as a control.
-- Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not
-  on hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products
-  mod p at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse
-  and black-box rank and solving), and **NTL**. On a 4000×4000 GF(3) matrix of rank 3100,
-  fflas-ffpack took 0.2 s and FLINT 1.5 s, with equal ranks (25 September 2026). Link flags:
-  fflas-ffpack `$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas`; FLINT
-  `-lflint -lgmp`; LinBox `$(pkg-config --cflags --libs linbox) -lopenblas`. Validate a
-  kernel against a reference implementation on small cases before scaling, and
-  validate its ranks against a second library. Declare foreign-function argument
-  types; undeclared pointers can be truncated. `./compute.sh start` lists the
-  systems and libraries it finds.
-- Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy
-  computation, or appropriate compiled implementations in other languages.
-- Do not write numerical inner loops or heavy computational logic in pure
-  Python, including row and product generation. Python is for orchestration and
-  small control operations; a Python-only computation needs evidence that it runs
-  in seconds. Custom heavy loops belong in C or C++, with OpenMP where parallel.
-- Vectorize where appropriate. Use chunking when full vectorization would
-  produce excessive temporary arrays or exceed the shared memory budget.
-- Compute each parameter series in one incremental pass; nested inputs continue
-  from previous results rather than recomputing them. Compute shared prefixes
-  (bases, random sequences) once and copy them. Count expensive operations against
-  distinct objects: order one factorization to answer multiple cutoffs, orders or
-  degree bounds where possible. For example, ascending-degree column elimination
-  gives every prefix rank. Compiled calls inside a Python loop do not excuse
-  repeated whole-matrix reduction when only new rows need reducing.
-- List the run's stages before launch and remove every known waste, even when it
-  does not affect the result. Design from the question and the output its conclusion
-  needs, not the nearest driver: remove unrelated outputs and skip parameters that
-  proved results or archived runs already settle. Follow the test-design and sizing
-  rules below and AGENTS.md's rule for stopping answered series.
-- A slow implementation of a computation needed for the goal is a reason to use
-  an appropriate algebra system or write its kernel in the same cycle, not abandon
-  or defer the line. Need is determined by AGENTS.md's missing-implication test;
-  another case of a fitted formula is not enough.
-- When a guard refuses a run, optimize the computation (compiled loops,
-  parallelism, shared work, early exit). Never evade it by splitting the workload
-  into shorter invocations or driving a parameter series from a shell loop.
-- `compute.sh` requires `--kernel-reason` of at least six words for a Python
-  computation allowed more than 120 s: name the compiled kernel and the reuse.
-  It scans the script and reachable local-import code (module-level code and names
-  used), refusing loops nested three deep over non-literal ranges; vectorize or
-  move them into the kernel. It also refuses a program already run in the session
-  with four different argument lists, for compiled and Python computations of any
+  **Macaulay2** (`M2`), **Singular**, **msolve**, **GAP** (with HAP, GUAVA, design, GRAPE and the
+  character-table library) and **PARI/GP**, with Normaliz, 4ti2, polymake and the XOR-aware SAT
+  solver CryptoMiniSat (`cryptominisat5`). Run their scripts through `./compute.sh` (`.m2`, `.sing`,
+  `.g` and `.gp` scripts are recognized). Their libraries cover far more than Gröbner bases:
+  commutative algebra, modules and homology, combinatorics, representation theory of symmetric
+  groups in positive characteristic, and linear algebra over finite fields. Consider them for every
+  computation or step they could improve in speed or reliability, checking before writing or reusing
+  a kernel. Prefer them to a hand-built kernel unless the kernel is measured to be faster. A
+  degree-truncated standard basis (Singular's `degBound`) does not measure PC refutation degree: on
+  26 September 2026 it gave higher degrees after an axiom was added, which PC degree never does.
+  Measure PC degree with an exact degree-D closure computation, and check monotonicity under added
+  axioms as a control.
+- Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not on
+  hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products mod p
+  at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse and
+  black-box rank and solving), and **NTL**. On a 4000×4000 GF(3) matrix of rank 3100, fflas-ffpack
+  took 0.2 s and FLINT 1.5 s, with equal ranks (25 September 2026). Link flags: fflas-ffpack
+  `$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas`; FLINT `-lflint -lgmp`;
+  LinBox `$(pkg-config --cflags --libs linbox) -lopenblas`. Validate a kernel against a reference
+  implementation on small cases before scaling, and validate its ranks against a second library.
+  Declare foreign-function argument types; undeclared pointers can be truncated. `./compute.sh
+  start` lists the systems and libraries it finds.
+- Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy computation, or
+  appropriate compiled implementations in other languages.
+- Do not write numerical inner loops or heavy computational logic in pure Python, including row and
+  product generation. Python is for orchestration and small control operations; a Python-only
+  computation needs evidence that it runs in seconds. Custom heavy loops belong in C or C++, with
+  OpenMP where parallel.
+- Vectorize where appropriate. Use chunking when full vectorization would produce excessive
+  temporary arrays or exceed the shared memory budget.
+- Compute each parameter series in one incremental pass; nested inputs continue from previous
+  results rather than recomputing them. Compute shared prefixes (bases, random sequences) once and
+  copy them. Count expensive operations against distinct objects: order one factorization to answer
+  multiple cutoffs, orders or degree bounds where possible. For example, ascending-degree column
+  elimination gives every prefix rank. Compiled calls inside a Python loop do not excuse repeated
+  whole-matrix reduction when only new rows need reducing.
+- List the run's stages before launch and remove every known waste, even when it does not affect the
+  result. Design from the question and the output its conclusion needs, not the nearest driver:
+  remove unrelated outputs and skip parameters that proved results or archived runs already settle.
+  Follow the test-design and sizing rules below and AGENTS.md's rule for stopping answered series.
+- A slow implementation of a computation needed for the goal is a reason to use an appropriate
+  algebra system or write its kernel in the same cycle, not abandon or defer the line. Need is
+  determined by AGENTS.md's missing-implication test; another case of a fitted formula is not
+  enough.
+- When a guard refuses a run, optimize the computation (compiled loops, parallelism, shared work,
+  early exit). Never evade it by splitting the workload into shorter invocations or driving a
+  parameter series from a shell loop.
+- `compute.sh` requires `--kernel-reason` of at least six words for a Python computation allowed
+  more than 120 s: name the compiled kernel and the reuse. It scans the script and reachable
+  local-import code (module-level code and names used), refusing loops nested three deep over
+  non-literal ranges; vectorize or move them into the kernel. It also refuses a program already run
+  in the session with four different argument lists, for compiled and Python computations of any
   duration. Parameter series and validation cases belong in one series invocation.
-- Budget process counts and library threads together. Across concurrent work,
-  keep worker count times threads per worker within 14; avoid nested thread
-  pools and oversubscription.
-  In computer algebra scripts, prefix custom names to avoid built-in collisions
-  (for example Singular's `test`, or PARI/GP's `eta` and `psi`). Require error-free
-  output and the expected completion counts: a parser error may still return exit
-  zero or reach a later success print. In PARI/GP, put stack-size defaults on
-  separate input lines from thread and seed settings: a stack resize skips the
-  rest of its line. Check effective thread settings before the calculation.
+- Budget process counts and library threads together. Across concurrent work, keep worker count
+  times threads per worker within 14; avoid nested thread pools and oversubscription. In computer
+  algebra scripts, prefix custom names to avoid built-in collisions (for example Singular's `test`,
+  or PARI/GP's `eta` and `psi`). Require error-free output and the expected completion counts: a
+  parser error may still return exit zero or reach a later success print. In PARI/GP, put stack-size
+  defaults on separate input lines from thread and seed settings: a stack resize skips the rest of
+  its line. Check effective thread settings before the calculation.
 - For 14 worker processes, use one numerical-library thread per worker:
 
 ```bash
@@ -156,10 +144,10 @@ notice.
 ## Libraries and virtual environments
 
 - **Install no libraries or dependencies without explicit user approval.**
-- If a required library is missing, inform the user so they can install it or
-  explicitly authorize installation.
-- Create a project virtual environment only with approval. Use its interpreter
-  through the same protected launcher:
+- If a required library is missing, inform the user so they can install it or explicitly authorize
+  installation.
+- Create a project virtual environment only with approval. Use its interpreter through the same
+  protected launcher:
 
 ```bash
 ./compute.sh .venv/bin/python calculation.py
@@ -178,27 +166,24 @@ The agent runs this itself whenever `compute.sh` reports the controls inactive, 
 standing exception to the user's global rule against starting long-running processes, for these
 controls only.
 
-`setup.py` is self-contained and rerunnable: it contains the watchdog source and
-unit templates, compiles with the existing C compiler, recreates the systemd
-resources, and checks readiness. It installs no packages. It refuses to
-reconfigure while computation jobs are running.
+`setup.py` is self-contained and rerunnable: it contains the watchdog source and unit templates,
+compiles with the existing C compiler, recreates the systemd resources, and checks readiness. It
+installs no packages. It refuses to reconfigure while computation jobs are running.
 
-Cgroups and running services disappear at shutdown. Project files and unit links
-persist; the services are not enabled at boot. Rerun setup after reboot/login,
-and check status when resuming. Codex needs the appropriate tool escalation to
-access user systemd outside its sandbox; Claude Code needs no escalation.
-The unit links are per-user. Setup run from a linked Git worktree builds in the
+Cgroups and running services disappear at shutdown. Project files and unit links persist; the
+services are not enabled at boot. Rerun setup after reboot/login, and check status when resuming.
+Codex needs the appropriate tool escalation to access user systemd outside its sandbox; Claude Code
+needs no escalation. The unit links are per-user. Setup run from a linked Git worktree builds in the
 main checkout's `.resource-runtime/`, so all worktrees share one set of controls.
 
 Resource-limit validation evidence and implementation details are recorded in
-[resource-controls/README.md](resource-controls/README.md). Do not rerun the
-resource stress tests merely to resume work; verify active controls with
-`./compute.sh --status`.
+[resource-controls/README.md](resource-controls/README.md). Do not rerun the resource stress tests
+merely to resume work; verify active controls with `./compute.sh --status`.
 
 ## Unified execution and timing
 
-`compute.sh` is one executable Python program with a shebang, containing both
-resource enforcement and timing. Run it directly, not with `bash`.
+`compute.sh` is one executable Python program with a shebang, containing both resource enforcement
+and timing. Run it directly, not with `bash`.
 
 From the repository root:
 
@@ -211,102 +196,89 @@ From the repository root:
 ./compute.sh report turn001 --stop
 ```
 
-`start` records the producing agent (detected, or `--agent NAME`), its model,
-and the selected notebook (`--notebook NAME` overrides worktree selection).
-The finisher refuses a different notebook; `--next` carries the notebook forward.
-For Codex, `start` reads the current `CODEX_THREAD_ID`'s latest `turn_context`
-under `CODEX_HOME/sessions` (default `~/.codex/sessions`) and records its `model`
-and `effort`. These active-turn settings take precedence over supplied labels;
-configuration defaults are not evidence of the active setting. Only the model
-and reasoning setting enter the timing record, never the thread ID or transcript.
-Omit `--model` for Codex starts; the example above uses this automatic path. Do
-not supply guessed/placeholder labels or claim the setting is unknown before
-checking the active metadata. When metadata is available, `start` rejects an
-explicit unknown/unspecified/placeholder label instead of silently correcting it.
-If that metadata is unavailable, supply `--model "MODEL, reasoning setting"` or
-`MATH_AGENT_MODEL`; use `unknown` only for information you cannot establish.
-Other agents, including Claude Code, retain their explicit-model/environment
-behavior. `finish-turn.py --next` carries settings forward, with Codex metadata
-refreshed at the next start, and `report` prints them.
+`start` records the producing agent (detected, or `--agent NAME`), its model, and the selected
+notebook (`--notebook NAME` overrides worktree selection). The finisher refuses a different
+notebook; `--next` carries the notebook forward. For Codex, `start` reads the current
+`CODEX_THREAD_ID`'s latest `turn_context` under `CODEX_HOME/sessions` (default `~/.codex/sessions`)
+and records its `model` and `effort`. These active-turn settings take precedence over supplied
+labels; configuration defaults are not evidence of the active setting. Only the model and reasoning
+setting enter the timing record, never the thread ID or transcript. Omit `--model` for Codex starts;
+the example above uses this automatic path. Do not supply guessed/placeholder labels or claim the
+setting is unknown before checking the active metadata. When metadata is available, `start` rejects
+an explicit unknown/unspecified/placeholder label instead of silently correcting it. If that
+metadata is unavailable, supply `--model "MODEL, reasoning setting"` or `MATH_AGENT_MODEL`; use
+`unknown` only for information you cannot establish. Other agents, including Claude Code, retain
+their explicit-model/environment behavior. `finish-turn.py --next` carries settings forward, with
+Codex metadata refreshed at the next start, and `report` prints them.
 
-Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`.
-Without a session argument, execution gets an automatically named timing session.
-Every executed workload uses the shared protected group, regardless of timing
-category (`computation`, `local_processing`, `formal_verification`,
-`network_tool`, or `external_tool`).
-Metadata commands (`start`, `phase`, `report`, `--status`) are small control
-operations outside computation services.
+Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`. Without a
+session argument, execution gets an automatically named timing session. Every executed workload uses
+the shared protected group, regardless of timing category (`computation`, `local_processing`,
+`formal_verification`, `network_tool`, or `external_tool`). Metadata commands (`start`, `phase`,
+`report`, `--status`) are small control operations outside computation services.
 
-`tools/resume.py` marks `restoration` in an existing active cycle; ordinary phase
-markers resume normal accounting. Silent [recovery evidence](tools/RECOVERY_EVIDENCE.md)
-is preserved in timing summaries and their existing archives. Resuming alone starts
-no research clock; ordinary notebook overview reads do not mark a resume.
+`tools/resume.py` marks `restoration` in an existing active cycle; ordinary phase markers resume
+normal accounting. Silent [recovery evidence](tools/RECOVERY_EVIDENCE.md) is preserved in timing
+summaries and their existing archives. Resuming alone starts no research clock; ordinary notebook
+overview reads do not mark a resume.
 
-The default timeout is 180 seconds; set `--timeout SECONDS` before `--` for longer
-work. Timeouts and interrupts stop the actual service and its children, with a
-systemd runtime limit as a backstop. Full output and timing records are saved in
-`research/logs/`. Computation output is never displayed: the launcher prints only its own
-lines (guard messages, timing, exit status) and the path and size of the saved log, which is
-read from the file. Other categories can show a tail with `--tail-bytes N` (default none).
-Jobs run as systemd services and do not inherit the caller's environment, apart from
-the thread-count variables the launcher sets. Pass any other variable inside the
-command, as in `./compute.sh run TURN -- env NAME=VALUE python3 script.py`; a prefix
-before `./compute.sh` is silently dropped.
+The default timeout is 180 seconds; set `--timeout SECONDS` before `--` for longer work. Timeouts
+and interrupts stop the actual service and its children, with a systemd runtime limit as a backstop.
+Full output and timing records are saved in `research/logs/`. Computation output is never displayed:
+the launcher prints only its own lines (guard messages, timing, exit status) and the path and size
+of the saved log, which is read from the file. Other categories can show a tail with `--tail-bytes
+N` (default none). Jobs run as systemd services and do not inherit the caller's environment, apart
+from the thread-count variables the launcher sets. Pass any other variable inside the command, as in
+`./compute.sh run TURN -- env NAME=VALUE python3 script.py`; a prefix before `./compute.sh` is
+silently dropped.
 
-Mark `formalization` for translating statements into Lean, designing formal
-proofs, writing tactics, and debugging formalization code. Use `mathematics`
-when developing or revising the underlying mathematical argument, including an
-alternative proof needed for formalization; switch phases as the work changes.
-Run Lean builds and proof checks with `--category formal_verification`;
-`formalization/verify.sh` selects this category automatically and accepts
-`--session TURN` to include it in the same research cycle. Dependency downloads
-remain `network_tool` or `local_processing` as appropriate. These categories
-share the existing exclusive timing rules and do not require a separate cycle.
+Mark `formalization` for translating statements into Lean, designing formal proofs, writing tactics,
+and debugging formalization code. Use `mathematics` when developing or revising the underlying
+mathematical argument, including an alternative proof needed for formalization; switch phases as the
+work changes. Run Lean builds and proof checks with `--category formal_verification`;
+`formalization/verify.sh` selects this category automatically and accepts `--session TURN` to
+include it in the same research cycle. Dependency downloads remain `network_tool` or
+`local_processing` as appropriate. These categories share the existing exclusive timing rules and do
+not require a separate cycle.
 
-Mark `mathematics` for mathematical reasoning, proof review, and proof writing;
-keep it active while drafting or correcting notebook mathematics. Use `coding` for
-computation design and implementation, `preparation` for setup and checkpoint
-work, and `overhead` for identifiable interruptions or overhead-only windows.
-Mark the work phase before planning or drafting. Do not put a marker and a new
-code/patch argument in the same tool call: that argument is drafted before the
-marker executes. After each awaited source or web batch, explicitly set the
-phase for interpreting its output in the same sequential tool call; mark any
-source follow-up separately. Do the same after the final check or checkpoint.
-Keep proof finalization in mathematics; switch back if checkpoint work uncovers
-a substantive proof question.
-Use `reading` for source review and `network_tool` before browsing, restoring the
-work phase afterward. The table keeps these categories separate and omits empty
-ones. The older mixed `reasoning_writing` phase remains readable for past sessions.
-Command runs record their own category, status, and elapsed interval, including
-failures and retries. AGENTS.md defines which turns require instrumentation.
+Mark `mathematics` for mathematical reasoning, proof review, and proof writing; keep it active while
+drafting or correcting notebook mathematics. Use `coding` for computation design and implementation,
+`preparation` for setup and checkpoint work, and `overhead` for identifiable interruptions or
+overhead-only windows. Mark the work phase before planning or drafting. Do not put a marker and a
+new code/patch argument in the same tool call: that argument is drafted before the marker executes.
+After each awaited source or web batch, explicitly set the phase for interpreting its output in the
+same sequential tool call; mark any source follow-up separately. Do the same after the final check
+or checkpoint. Keep proof finalization in mathematics; switch back if checkpoint work uncovers a
+substantive proof question. Use `reading` for source review and `network_tool` before browsing,
+restoring the work phase afterward. The table keeps these categories separate and omits empty ones.
+The older mixed `reasoning_writing` phase remains readable for past sessions. Command runs record
+their own category, status, and elapsed interval, including failures and retries. AGENTS.md defines
+which turns require instrumentation.
 
-Reports use exclusive wall-clock intervals; do not add overlapping worker times.
-Reading includes interpretation and tool windows include service/orchestration
-latency. Pure internal reasoning and pure network latency are not measurable.
-Unexpected interruptions may remain mixed with the active phase; disclose material
-mixing rather than retrospectively inventing a split or an overhead estimate.
-Disclose mixed time, work before instrumentation, and final generation after the
-snapshot. Start a fresh timing session after reboot. A session cannot be stopped
-while command records remain unfinished.
+Reports use exclusive wall-clock intervals; do not add overlapping worker times. Reading includes
+interpretation and tool windows include service/orchestration latency. Pure internal reasoning and
+pure network latency are not measurable. Unexpected interruptions may remain mixed with the active
+phase; disclose material mixing rather than retrospectively inventing a split or an overhead
+estimate. Disclose mixed time, work before instrumentation, and final generation after the snapshot.
+Start a fresh timing session after reboot. A session cannot be stopped while command records remain
+unfinished.
 
 ## Numerical verification
 
-- Use exact modular arithmetic for finite-field calculations, never floating-point
-  rank; guard integer overflow in vectorized/compiled kernels.
-- Match the intended field, encoding, parameters, and degree conventions. Use
-  targeted checks capable of falsifying the claim, with nonvacuous cases and
-  negative controls. Identify whether an instance is PHP, another unsatisfiable
-  system, or a satisfiable finite domain.
-  Before coding, in the same cycle, state the smallest nonvacuous parameters and
-  space sizes, count the claim's predictions at reachable parameters, compare with
-  unconditional bounds, and verify the hypotheses. Record the count in the entry, in a
-  `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of every entry that
-  registers a finite check):
-  a test whose every outcome is compatible with the claim decides nothing. Report
-  outcomes for links, fibers or restrictions by sub-instance size; do not interpret
-  failures confined to sizes below the nonvacuous threshold. For a proposed bound,
-  test the simplest structurally different extremal examples and compare full
-  success with what the goal needs.
+- Use exact modular arithmetic for finite-field calculations, never floating-point rank; guard
+  integer overflow in vectorized/compiled kernels.
+- Match the intended field, encoding, parameters, and degree conventions. Use targeted checks
+  capable of falsifying the claim, with nonvacuous cases and negative controls. A negative control
+  is applied only to cases where the altered statement differs from the true one, and the script
+  asserts that difference before testing. Identify whether an instance is PHP, another unsatisfiable
+  system, or a satisfiable finite domain. Before coding, in the same cycle, state the smallest
+  nonvacuous parameters and space sizes, count the claim's predictions at reachable parameters,
+  compare with unconditional bounds, and verify the hypotheses. Record the count in the entry, in a
+  `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of every entry that registers a
+  finite check): a test whose every outcome is compatible with the claim decides nothing. Report
+  outcomes for links, fibers or restrictions by sub-instance size; do not interpret failures
+  confined to sizes below the nonvacuous threshold. For a proposed bound, test the simplest
+  structurally different extremal examples and compare full success with what the goal needs.
 - Compute the statement's own quantity, not a stronger or weaker surrogate. Put the tested statement
   in the script's docstring, generate inputs meeting its hypotheses and assert those hypotheses in
   code. Write there too, before the run, the outcome expected of the statement and of each control:
@@ -316,85 +288,78 @@ while command records remain unfinished.
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
   not a control (11 October 2026: a truncated oscillatory quadrature disagreed with a correct kernel
   by a factor of 328, and only an end-to-end check made independently showed which was wrong).
-- Report the scope of finite checks without treating them as universal proofs.
-  Distinguish new runs from archived results; rerun only when the task requires it.
-  A kernel's chosen prime is a computational choice, not a theorem's characteristic
-  hypothesis. A certificate lifted to integral solutions gives characteristic zero
-  and all but finitely many characteristics; state that scope and name exceptional
-  primes only when computed. Claims for small characteristics need a structural
+- Report the scope of finite checks without treating them as universal proofs. Distinguish new runs
+  from archived results; rerun only when the task requires it. A kernel's chosen prime is a
+  computational choice, not a theorem's characteristic hypothesis. A certificate lifted to integral
+  solutions gives characteristic zero and all but finitely many characteristics; state that scope
+  and name exceptional primes only when computed. Claims for small characteristics need a structural
   proof or a certificate in each of them.
-- Before launching an exhaustive enumeration, compute its size and expected time from
-  the parameters, and shrink or skip cases beyond the budget; a checker should print the
-  size and refuse oversized cases rather than let a run be discovered by its timeout.
-  For a series, estimate the largest case from a measured smaller run, never a
-  guess, and pass the estimate to `--expect`. Before a long run, apply the available
-  exact reductions (quotients by monomial axioms, narrow search brackets), shared
-  work and parallel paths described above.
-  `compute.sh` enforces this: `--timeout` above 600 s needs `--expect SECONDS`, and a run
-  expected to exceed 600 s on fewer than 4 threads needs `--serial-reason`; it prints
-  expected against actual time. A run expected to exceed 600 s must also cite `--sized-by RUN_ID`,
-  a completed run of the same program in the same session whose measured time the estimate
-  extrapolates (user instruction, 24 September 2026, after unsized runs of 20+ minutes). Stop a superseded run as soon as its replacement is
-  validated.
-- **Run limit** (user instructions, 23 September 2026, after a cycle with 110 minutes
-  of computation): a run may take at most 30 minutes. `compute.sh` refuses a `--timeout`
-  above that unless the user's explicit approval is quoted in `--user-approved`. A cycle's
-  total has no fixed cap, but keep it proportionate: 110 minutes was too much. Design tests
-  to fit: the smallest informative size, symmetry classes instead of all cases, and
-  a sizing run before the full one. Stop each computation as soon as its question
-  is decided; a closure checking derivability of 1 stops when 1 enters the span.
-- **Long runs go to the background** (user, 3 October 2026): start any run that may take
-  over a minute in the background with an armed monitor. In Codex's functions.exec harness,
-  use [the native background bridge](tools/CODEX.md#background-monitoring), which acknowledges
-  the watcher before releasing the protected run and reports through notify. In Claude Code,
-  as the very next step arm the Monitor tool with `python3 tools/watch_run.py SESSION` and a 30-minute timeout. It
-  reports the run's 5-minute mark and its end; keep working meanwhile. A run still going after
-  5 minutes is a decision point, not a wait: find what it is doing (which step, memory),
-  and stop it to optimize or redesign unless its measured progress justifies the rest.
-  The `monitor-gate.py` hook refuses every other tool call until that monitor is armed.
-  Before scaling a script past its control case, size each expensive step, such as
-  Gröbner bases or saturations on generators of the new degrees. Claude Code's PreToolUse hook
-  (`tools/hooks/bash_guard.py`) refuses a foreground `compute.sh` run with `--expect` over
-  60 s or `--timeout` over 180 s, and one with `--timeout` over 60 s that gives no `--expect`: a run
-  allowed more than a minute either says it is expected to be shorter or goes to the background.
+- Before launching an exhaustive enumeration, compute its size and expected time from the
+  parameters, and shrink or skip cases beyond the budget; a checker should print the size and refuse
+  oversized cases rather than let a run be discovered by its timeout. For a series, estimate the
+  largest case from a measured smaller run, never a guess, and pass the estimate to `--expect`.
+  Before a long run, apply the available exact reductions (quotients by monomial axioms, narrow
+  search brackets), shared work and parallel paths described above. `compute.sh` enforces this:
+  `--timeout` above 600 s needs `--expect SECONDS`, and a run expected to exceed 600 s on fewer than
+  4 threads needs `--serial-reason`; it prints expected against actual time. A run expected to
+  exceed 600 s must also cite `--sized-by RUN_ID`, a completed run of the same program in the same
+  session whose measured time the estimate extrapolates (user instruction, 24 September 2026, after
+  unsized runs of 20+ minutes). Stop a superseded run as soon as its replacement is validated.
+- **Run limit** (user instructions, 23 September 2026, after a cycle with 110 minutes of
+  computation): a run may take at most 30 minutes. `compute.sh` refuses a `--timeout` above that
+  unless the user's explicit approval is quoted in `--user-approved`. A cycle's total has no fixed
+  cap, but keep it proportionate: 110 minutes was too much. Design tests to fit: the smallest
+  informative size, symmetry classes instead of all cases, and a sizing run before the full one.
+  Stop each computation as soon as its question is decided; a closure checking derivability of 1
+  stops when 1 enters the span.
+- **Long runs go to the background** (user, 3 October 2026): start any run that may take over a
+  minute in the background with an armed monitor. In Codex's functions.exec harness, use [the native
+  background bridge](tools/CODEX.md#background-monitoring), which acknowledges the watcher before
+  releasing the protected run and reports through notify. In Claude Code, as the very next step arm
+  the Monitor tool with `python3 tools/watch_run.py SESSION` and a 30-minute timeout. It reports the
+  run's 5-minute mark and its end; keep working meanwhile. A run still going after 5 minutes is a
+  decision point, not a wait: find what it is doing (which step, memory), and stop it to optimize or
+  redesign unless its measured progress justifies the rest. The `monitor-gate.py` hook refuses every
+  other tool call until that monitor is armed. Before scaling a script past its control case, size
+  each expensive step, such as Gröbner bases or saturations on generators of the new degrees. Claude
+  Code's PreToolUse hook (`tools/hooks/bash_guard.py`) refuses a foreground `compute.sh` run with
+  `--expect` over 60 s or `--timeout` over 180 s, and one with `--timeout` over 60 s that gives no
+  `--expect`: a run allowed more than a minute either says it is expected to be shorter or goes to
+  the background.
 
 ## Persist computation outputs
 
-Important computation output is research, not disposable logging. Scripts that
-produce tables, group-element enumerations, proof certificates, matrices, search
-results, or similar data should support `--out PATH` (or an equivalent explicit
-destination) and write the complete result to a tracked location, normally
-`research/results/`:
+Important computation output is research, not disposable logging. Scripts that produce tables,
+group-element enumerations, proof certificates, matrices, search results, or similar data should
+support `--out PATH` (or an equivalent explicit destination) and write the complete result to a
+tracked location, normally `research/results/`:
 
 ```bash
 ./compute.sh run turn001 --threads 1 -- python3 research/tools/calculation.py --out research/results/turn001/table.json
 ```
 
-Large result files are acceptable when needed. Do not impose an arbitrary
-output-size cutoff, silently truncate results, or leave their only copy in
-ignored logs/tmp/runtime folders. The CLI's bounded output preview limits
-context usage only; saved output is full. Include essential data with its
-checkpoint under the Git rules in AGENTS.md.
+Large result files are acceptable when needed. Do not impose an arbitrary output-size cutoff,
+silently truncate results, or leave their only copy in ignored logs/tmp/runtime folders. The CLI's
+bounded output preview limits context usage only; saved output is full. Include essential data with
+its checkpoint under the Git rules in AGENTS.md.
 
 A program without `--out` is saved with `tools/save-run-output.py SESSION RUN_ID OUT`, which copies
 the run's complete log under its command line; the `compute.sh` display holds only the launcher's
 own lines.
 
-Reference output paths in the relevant notebook Research-record entry. Preserve
-the generating command, parameters, random seed if applicable, data encoding or
-schema, and verification/provenance (including hashes when useful). Use distinct
-run paths to preserve accepted earlier results. Prefer structured formats suited
-to the data, and stream/chunk generation, saving, copying, and hashing so a large
-file does not require a correspondingly large RAM allocation. These operations
-still obey the combined memory and CPU budget.
-Use `tools/record-provenance.py --out MANIFEST FILE...` for shared path/size/hash
-metadata; `--session TURN` records its timing-session label. It streams files,
+Reference output paths in the relevant notebook Research-record entry. Preserve the generating
+command, parameters, random seed if applicable, data encoding or schema, and verification/provenance
+(including hashes when useful). Use distinct run paths to preserve accepted earlier results. Prefer
+structured formats suited to the data, and stream/chunk generation, saving, copying, and hashing so
+a large file does not require a correspondingly large RAM allocation. These operations still obey
+the combined memory and CPU budget. Use `tools/record-provenance.py --out MANIFEST FILE...` for
+shared path/size/hash metadata; `--session TURN` records its timing-session label. It streams files,
 rejects changing inputs, and refuses to replace an existing manifest.
 
-Take every quoted number, case count and sampling grid from saved output, read by
-a script rather than from memory. Keep long runs observable: flush progress,
-avoid filters that buffer it until completion, and write each completed case to
-the output file immediately so a timeout preserves the finished cases.
+Take every quoted number, case count and sampling grid from saved output, read by a script rather
+than from memory. Keep long runs observable: flush progress, avoid filters that buffer it until
+completion, and write each completed case to the output file immediately so a timeout preserves the
+finished cases.
 
 ## Timing export and evidence archival
 
@@ -405,28 +370,24 @@ Export a completed session as an HTML timing table:
 ./tools/archive-session.py turn001
 ```
 
-The export gives a **Measured category / Elapsed** table with the total
-instrumented interval first. It verifies that exclusive categories sum to the
-total and omits zero-duration categories. A stopped session must have no
-unfinished commands. Do not invent categories or backfill unmeasured time.
+The export gives a **Measured category / Elapsed** table with the total instrumented interval first.
+It verifies that exclusive categories sum to the total and omits zero-duration categories. A stopped
+session must have no unfinished commands. Do not invent categories or backfill unmeasured time.
 Operations after the final snapshot are outside its measured interval.
 
-Operational `research/logs/` are ignored. Archiving preserves the journal,
-summary, and complete command outputs in `research/provenance/session-records/`.
-Inspect the evidence for credentials and unrelated/private runtime state before
-committing it. Promote any other essential scratch results to `research/results/`
-or `research/provenance/`, using streaming I/O within the shared memory budget.
+Operational `research/logs/` are ignored. Archiving preserves the journal, summary, and complete
+command outputs in `research/provenance/session-records/`. Inspect the evidence for credentials and
+unrelated/private runtime state before committing it. Promote any other essential scratch results to
+`research/results/` or `research/provenance/`, using streaming I/O within the shared memory budget.
 The notebook's entry, table-placement, and footnote rules are in AGENTS.md.
 
-For new archives, a captured output identical to its declared `--out` report
-under `research/results/` is stored once: the archive manifest's `canonical_path`
-references that complete report relative to `research/`, with its SHA-256.
-Commit the referenced report with the archive. Different outputs are preserved
-separately, and existing archives are not rewritten. Missing or changed canonical
-reports fail re-archival rather than silently losing evidence.
+For new archives, a captured output identical to its declared `--out` report under
+`research/results/` is stored once: the archive manifest's `canonical_path` references that complete
+report relative to `research/`, with its SHA-256. Commit the referenced report with the archive.
+Different outputs are preserved separately, and existing archives are not rewritten. Missing or
+changed canonical reports fail re-archival rather than silently losing evidence.
 
-New captured outputs larger than 32 MiB are stored in ordered parts, without
-dropping bytes or splitting valid UTF-8 characters. The manifest's
-**archived_parts** lists their paths, sizes and hashes; concatenating them in order
-reconstructs the original output and its recorded SHA-256. Re-archival checks
-every part and the combined hash. Existing single-file archives stay unchanged.
+New captured outputs larger than 32 MiB are stored in ordered parts, without dropping bytes or
+splitting valid UTF-8 characters. The manifest's **archived_parts** lists their paths, sizes and
+hashes; concatenating them in order reconstructs the original output and its recorded SHA-256.
+Re-archival checks every part and the combined hash. Existing single-file archives stay unchanged.
