@@ -283,6 +283,40 @@ def route_articles(body, article, route):
     return out
 
 
+QUEUE_SECTION_RE = re.compile(r'<section id="lead-queue"[^>]*>(.*?)</section>', re.S)
+QUEUED_BUILD_RE = re.compile(r'<li\b[^>]*data-build="([^"]+)"[^>]*data-source="([^"]+)"')
+BUILT_RE = re.compile(r'<li\b[^>]*data-build="[^"]+"[^>]*>(?:(?!</li>).)*?<strong>Follow-up\.</strong>\s*Developed\b', re.S)
+BUILDS_PARAGRAPH_RE = re.compile(r'<p><strong>Builds\.</strong>(.*?)</p>', re.S)
+
+
+def validate_review_builds(body, article, close):
+    """A review whose period (the entries on its route since the previous review, itself included) queued
+    build items that are still queued, and in which no build item was recorded Developed, names each of
+    them in a <p><strong>Builds.</strong> paragraph with what becomes of it: a queued check that is never
+    built prevents nothing (reviewer, 11 October 2026: seven checks queued in one period, none built)."""
+    tags = entry_tags(body, article)
+    if tags['kind'] != 'review':
+        return
+    earlier = route_articles(body, article, tags['route'])
+    start = next((position for position, _, kind, _ in reversed(earlier) if kind == 'review'), None)
+    period = [(position, ident, end) for position, ident, _, end in earlier
+              if start is None or position > start]
+    own = re.search(r'\bid="([^"]+)"', body[article:body.index('>', article) + 1])
+    period.append((article, own.group(1) if own else None, close))
+    idents = {ident for _, ident, _ in period if ident}
+    queue = QUEUE_SECTION_RE.search(body)
+    queued = [build for build, source in QUEUED_BUILD_RE.findall(queue.group(1) if queue else '')
+              if source in idents]
+    if not queued or any(BUILT_RE.search(body[position:end]) for position, _, end in period):
+        return
+    paragraph = BUILDS_PARAGRAPH_RE.search(body, article, close)
+    missing = [build for build in queued if paragraph is None or build not in paragraph.group(1)]
+    if missing:
+        raise ValueError('This review\'s period queued build items and built none: say in a '
+                         '<p><strong>Builds.</strong> paragraph what becomes of each (built now, dropped, or '
+                         'the dated reason it waits): ' + ', '.join(missing) + ' (AGENTS.md)')
+
+
 def open_items(body, articles, section_re=BRIDGES_RE, followup_re=FOLLOWUP_RE, item_re=FOLLOWUP_ITEM):
     """IDs (review-anchor:item) of items of one section (Absurd bridges by default) that passed their test
     and that no follow-up item has closed."""
@@ -1092,6 +1126,7 @@ def validate_marker(body, marker, draining=None):
     validate_suggestions(body, article, close)
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
+    validate_review_builds(body, article, close)
     validate_bridges(body, article, close)
     validate_progress(body, article, close)
     if '$' in body[article:close]:
