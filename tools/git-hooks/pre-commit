@@ -46,6 +46,10 @@ if [ -f "$top/tools/notebook_context.py" ]; then
     fi
   done
 fi
+# A staged entry whose declared claims the registry marks stale (tools/staged_claims.py).
+if [ -f "$top/tools/staged_claims.py" ] && [ -f "$top/research/claims/index.json" ]; then
+  python3 "$top/tools/staged_claims.py" || exit 1
+fi
 # A branch's own checks of a commit, where it has them (tools/git-hooks-branch/pre-commit).
 own="$top/tools/git-hooks-branch/pre-commit"
 [ -x "$own" ] || exit 0
