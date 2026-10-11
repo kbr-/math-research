@@ -101,6 +101,17 @@ class NextStepItemTests(unittest.TestCase):
         self.assertTrue(tool.quotes('a b c d e f g h i', 'x a, b c d e f g h. y'))
         self.assertFalse(tool.quotes('a b c d e f g', 'a b c d e f g h'))
 
+    def test_registry_matches_for_an_item_s_text(self):
+        claim = lambda ident, summary: {'id': ident, 'summary': summary, 'assessment': 'Working proof.',
+                                        'topics': [], 'mathematical_status': 'working_proof',
+                                        'formalization': {'status': 'not_started'}}
+        data = {'claims': [claim('imp:flow-degree', 'Flow systems on expanders need linear degree.'),
+                           claim('lem:other', 'A colouring ceiling on Kneser graphs.')]}
+        self.assertEqual(tool.registry_matches('Read the argument for the degree bound for flow systems.', data=data),
+                         [('imp:flow-degree', 'Flow systems on expanders need linear degree.')])
+        self.assertEqual(tool.registry_matches('Nothing in common here at all.', data=data), [])
+        self.assertEqual(len(tool.registry_matches('flow degree colouring Kneser', limit=1, data=data)), 1)
+
     def test_a_next_step_may_not_take_only_an_item_with_two_entries_without_bearing(self):
         def tagged(anchor, item, bearing):
             return (f'<article id="{anchor}" data-kind="research" data-route="x" data-check="{item}" '
