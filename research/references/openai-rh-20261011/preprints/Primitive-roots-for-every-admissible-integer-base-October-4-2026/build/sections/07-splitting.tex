@@ -1,0 +1,247 @@
+\section{A uniform estimate for complete splitting}
+\label{sec:splitting}
+
+We prove Proposition~\ref{prop:splitting} for the fields
+$K_q=\Q(\mu_q,a^{1/q})$, where $a$ is a fixed integer with $|a|>1$.
+Theorem~\ref{thm:hecke-zero-free}, proved in
+Section~\ref{sec:zero-free}, supplies the common zero-free width
+$\delta_0=10^{-6}$. We transfer that region to $\zeta_{K_q}$ and then
+use a smooth explicit formula whose constants depend on the field only
+through its degree and discriminant.
+
+\subsection{Field bounds and descent of the zero-free region}
+
+The field $K_q$ need not be cyclotomic. We first place it in an abelian
+extension of a cyclotomic field, so that
+Theorem~\ref{thm:hecke-zero-free} applies, and then descend the resulting
+zero-free region to $\zeta_{K_q}$.
+
+\begin{lemma}\label{spl:field-bounds}
+Fix an integer $a$ with $|a|>1$. For every sufficiently large prime $q$,
+the degree $n_q=[K_q:\Q]$ and absolute discriminant $D_q$ satisfy
+\begin{equation}
+ n_q=q(q-1),\qquad
+ D_q\le q^{q(q-2)}(q^q|a|^{q-1})^{q-1},\qquad
+ \log D_q+n_q\ll_a n_q\log(2q).
+ \label{spl:degree-discriminant}
+\end{equation}
+Every rational prime $p\nmid aq$ is unramified in $K_q$, and
+\begin{equation}
+ \zeta_{K_q}(s)\ne0
+ \qquad(\operatorname{Re}s>1-\delta_0,\ s\ne1).
+ \label{spl:kummer-zero-free}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix a rational prime $\ell\mid a$, and let $v_\ell(a)>0$ be its
+valuation. Take $q$ large enough that $q\ne\ell$ and $q>v_\ell(a)$.
+When $a=2$, the choice $\ell=2$ works for every prime $q\ge5$.
+The cyclotomic discriminant formula gives
+$|d_{E_q}|=q^{q-2}$, so $\ell$ is unramified in $E_q$ and the valuation
+of $a$ at every prime above $\ell$ is $v_\ell(a)$. This is not divisible
+by $q$, and therefore $a$ is not a $q$th power in $E_q$.
+
+Since $E_q$ contains $\mu_q$, the extension $K_q/E_q$ is Galois and
+the map
+\[
+ \sigma\longmapsto\frac{\sigma(a^{1/q})}{a^{1/q}}
+\]
+embeds its Galois group in $\mu_q$. Its degree divides the prime $q$
+and is not one, so it equals $q$. This proves the degree formula.
+
+The root $a^{1/q}$ is integral, and the relative field discriminant
+divides the discriminant of its power basis:
+\[
+ \mathfrak d_{K_q/E_q}
+ \mid(q^q a^{q-1})\mathcal O_{E_q}.
+\]
+The discriminant tower formula now gives
+\[
+ D_q
+ =|d_{E_q}|^q\operatorname{N}_{E_q/\Q}(\mathfrak d_{K_q/E_q})
+ \le q^{q(q-2)}(q^q|a|^{q-1})^{q-1}.
+\]
+This also proves unramifiedness away from $aq$, and taking logarithms
+proves the last estimate in \eqref{spl:degree-discriminant}. We use the
+standard cyclotomic and relative discriminant formulas in
+\cite[Chapter~I, \S10; Chapter~III, \S2]{Neukirch99}.
+
+To obtain \eqref{spl:kummer-zero-free}, put
+\[
+ F_q=\Q(\mu_{12q}),\qquad \widetilde K_q=K_qF_q.
+\]
+The extension $\widetilde K_q/F_q$ is cyclic, since it is obtained by
+adjoining $a^{1/q}$ to a field containing $\mu_q$. The extension
+$\widetilde K_q/K_q$ is also abelian: it is Galois, and restriction
+embeds its Galois group in the abelian group $\operatorname{Gal}(F_q/\Q)$.
+Abelian Artin factorization, with one-dimensional Artin functions
+identified with primitive Hecke functions, gives
+\begin{align}
+ \zeta_{\widetilde K_q}(s)
+ &=\prod_{\eta\in\widehat{\operatorname{Gal}(\widetilde K_q/F_q)}}
+       L_{F_q}(s,\eta),\label{spl:factorization-upstairs}\\
+ \frac{\zeta_{\widetilde K_q}(s)}{\zeta_{K_q}(s)}
+ &=\prod_{\substack{\eta\in
+         \widehat{\operatorname{Gal}(\widetilde K_q/K_q)}\\\eta\ne1}}
+       L_{K_q}(s,\eta).
+ \label{spl:factorization-quotient}
+\end{align}
+See \cite[Chapter~VII, Corollary~(10.5), Theorem~(10.6),
+and the following remarks]{Neukirch99}.
+Every factor in \eqref{spl:factorization-upstairs} is covered by
+Theorem~\ref{thm:hecke-zero-free}, because $F_q$ is cyclotomic and contains
+$\mu_{12}$. Thus $\zeta_{\widetilde K_q}$ is zero-free in the indicated
+half-plane. Every factor in \eqref{spl:factorization-quotient} is an
+entire nonprincipal Hecke $L$-function. A zero of $\zeta_{K_q}$ there
+would therefore be a zero of $\zeta_{\widetilde K_q}$. This proves
+\eqref{spl:kummer-zero-free}.
+\end{proof}
+
+The width in \eqref{spl:kummer-zero-free} is independent of $q$.
+It remains to turn it into a prime-ideal estimate whose constants retain
+only the explicit dependence on degree and discriminant in
+\eqref{spl:degree-discriminant}.
+
+\subsection{A smooth prime-ideal estimate}
+
+Smoothing permits an absolutely convergent sum over zeros. The following
+form of the explicit formula is useful because its error is linear in
+$\log D+n$. We give the calculation with this dependence explicit.
+
+\begin{lemma}\label{spl:smooth-estimate}
+Fix $0<\delta<1/2$ and a nonnegative function
+$f\in C_c^\infty((0,\infty))$. Let $K$ be a number field of degree $n$
+and absolute discriminant $D$ whose Dedekind zeta function has no zero
+in $\operatorname{Re}s>1-\delta$. For every real $x\ge2$,
+\begin{equation}
+ \Theta_{K,f}(x)
+ :=\sum_{\mathfrak p}\sum_{j\ge1}
+       (\log\operatorname{N}\mathfrak p)
+       f\left(\frac{(\operatorname{N}\mathfrak p)^j}{x}\right)
+ \ll_f x+x^{1-\delta}(\log D+n),
+ \label{spl:smooth-prime-ideal-bound}
+\end{equation}
+where $\mathfrak p$ ranges over the nonzero prime ideals of $K$.
+The implied constant is independent of $K$ and $x$.
+\end{lemma}
+
+\begin{proof}
+Let $(r_1,r_2)$ be the signature of $K$, so $n=r_1+2r_2$, and define
+the Mellin transform
+\[
+ \Phi(s)=\int_0^\infty f(t)t^{s-1}\,dt.
+\]
+It is entire. Repeated integration by parts shows that, for every fixed
+vertical strip and every $A>0$,
+$\Phi(s)\ll_{f,A}(1+|\operatorname{Im}s|)^{-A}$ on that strip.
+Mellin inversion and the absolutely convergent Euler series on
+$\operatorname{Re}s=2$ give
+\begin{equation}
+ \Theta_{K,f}(x)
+ =\frac1{2\pi i}\int_{(2)}
+       -\frac{\zeta_K'}{\zeta_K}(s)x^s\Phi(s)\,ds.
+ \label{spl:mellin-integral}
+\end{equation}
+
+We shift the contour to $\operatorname{Re}s=-1/2$.
+On this line the functional equation gives
+\begin{equation}
+ \left|\frac{\zeta_K'}{\zeta_K}(s)\right|
+ \ll \log D+n\log(2+|\operatorname{Im}s|),
+ \label{spl:left-line}
+\end{equation}
+with an absolute implied constant. To see the dependence on $K$, the
+Euler series at $1-s$, whose real part is $3/2$, is bounded by
+\[
+ n\sum_{p}\frac{(\log p)p^{-3/2}}{1-p^{-3/2}}\ll n.
+\]
+Indeed the sum of the residue degrees of primes above a rational prime
+is at most $n$. The remaining terms in the functional equation are
+$\log D$ and the logarithmic derivatives of
+\[
+ \Gamma_{\R}(s)^{r_1}\Gamma_{\C}(s)^{r_2},\qquad
+ \Gamma_{\R}(s)=\pi^{-s/2}\Gamma(s/2),\quad
+ \Gamma_{\C}(s)=2(2\pi)^{-s}\Gamma(s).
+\]
+On the lines involved their logarithmic derivatives are
+$O(\log(2+|\operatorname{Im}s|))$, by Stirling's formula and their
+fixed distance from poles. This proves \eqref{spl:left-line}; see also
+\cite[Main Theorem~4.4.1 and \S4.5]{Tate67} for the functional equation.
+
+The poles crossed in \eqref{spl:mellin-integral} are the pole of
+$\zeta_K$ at $1$, its nontrivial zeros $\rho$ counted with multiplicity,
+and the zero at $0$ of
+order $r_1+r_2-1$. The last order follows from the gamma factors and
+the simple pole of the completed zeta function at $0$; when the order
+is zero there is no residue. There are no other trivial zeros between
+the two lines. The nontrivial zeros lie in $0<\operatorname{Re}\rho<1$:
+the hypothesis excludes the boundary at $1$, and the functional equation
+excludes nontrivial zeros on the boundary at $0$.
+
+For completeness, the zero count needed to justify the shift and bound
+its residues is
+\begin{equation}
+ \#\{\rho:T\le\operatorname{Im}\rho<T+1\}
+ \ll \log D+n\log(2+|T|),
+ \label{spl:unit-zero-count}
+\end{equation}
+uniformly in $K$ and real $T$. This follows from the uniform Dedekind
+zero-counting formula of \cite[Corollary~1.2, Equation~(1.3)]{DedekindZeros}:
+for $|T|\ge2$, subtract the formula at heights $|T|-1$ and $|T|+2$;
+for $|T|<2$, use the count up to height $3$.
+For each fixed $K$, \eqref{spl:unit-zero-count} permits horizontal
+contour edges tending to infinity and staying an inverse polynomial
+distance from all zeros. The Hadamard partial-fraction expansion of
+the completed zeta function then bounds its logarithmic derivative on
+these edges by a polynomial in their heights. The rapid decay of $\Phi$
+makes the horizontal integrals tend to zero. The same zero count makes
+the resulting zero sum absolutely convergent. Hence the contour shift
+and \eqref{spl:left-line} yield
+\begin{equation}
+ \Theta_{K,f}(x)
+ =x\Phi(1)-\sum_\rho x^\rho\Phi(\rho)
+   -(r_1+r_2-1)\Phi(0)
+   +O_f\bigl(x^{-1/2}(\log D+n)\bigr).
+ \label{spl:smooth-explicit-formula}
+\end{equation}
+Although the contour edges may be chosen separately for each field,
+the error here has a uniform constant, since it is bounded directly by
+the integral on the fixed line in \eqref{spl:left-line}.
+
+Every nontrivial zero has $\operatorname{Re}\rho\le1-\delta$.
+Using \eqref{spl:unit-zero-count} and the rapid decay on
+$0\le\operatorname{Re}s\le1$, we obtain
+\begin{align*}
+ \sum_\rho|x^\rho\Phi(\rho)|
+ &\ll_f x^{1-\delta}
+    \sum_{k\in\Z}(1+|k|)^{-3}
+       \bigl(\log D+n\log(2+|k|)\bigr)\\
+ &\ll_f x^{1-\delta}(\log D+n).
+\end{align*}
+The residue at zero in \eqref{spl:smooth-explicit-formula} is $O_f(n)$.
+Absorbing it and the left-line error proves
+\eqref{spl:smooth-prime-ideal-bound}.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:splitting}]
+Choose once and for all a nonnegative
+$f\in C_c^\infty((0,\infty))$ with $f\ge1$ on $[1,2]$.
+Apply Lemma~\ref{spl:smooth-estimate} to $K_q$ with $\delta=\delta_0$,
+using Lemma~\ref{spl:field-bounds}. Each rational prime $p\in(x,2x]$
+that splits completely supplies $n_q$ prime ideals of norm $p$.
+Their first-power terms contribute at least $n_qL$ to the nonnegative
+sum $\Theta_{K_q,f}(x)$. It follows that
+\begin{align*}
+ &\#\{p\text{ prime}:x<p\le2x,\ p\text{ splits completely in }K_q\}\\
+ &\qquad\ll_f \frac{x}{n_qL}
+       +\frac{x^{1-\delta_0}(\log D_q+n_q)}{n_qL}\\
+ &\qquad\ll_a \frac{x}{q(q-1)L}
+       +\frac{x^{1-\delta_0}\log(2q)}{L}.
+\end{align*}
+For $q\le\exp(L^{0.3})$, the ratio $\log(2q)/L$ is bounded once $x$
+is large. This proves \eqref{eq:uniform-splitting}, with constants and
+an $x$ threshold independent of $q$. For $a=2$, the field bounds hold
+for every $q\ge5$ with absolute constants, giving the stated
+specialization.
+\end{proof}

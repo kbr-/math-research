@@ -1,0 +1,765 @@
+\section{The Poisson probe and its Euler product}\label{sec:poisson}
+
+We insert the theta sum \(B_m(Z)\) of
+\Cref{eq:reflection-B-definition} into an additive average.  The reflected
+second moment bounds this average from above.  Poisson summation will give a
+second expression whose principal frequency contains the reciprocal of the
+target \(L\)-function.  The use of an auxiliary additive polynomial while
+retaining the unrestricted cube factors follows the method of
+\cite[Part~I, \S\S6--7]{QuasiRH}; the calculation here is over the fixed field
+\(F\) and uses its sextic characters.
+
+Keep the field \(F\), the set \(S\), the target \(\eta\), and the allowed
+generators fixed as in \Cref{sec:arithmetic}.  In particular
+\(\vartheta=\overline\Lambda\,\overline G\,\eta\), and every character power
+is zero on nonunits, including the zeroth power.  The scale notation
+\(a,b,M_0,h_0,X,Y\) is fixed in \Cref{eq:reflection-scales}.
+All implied constants in this and the next section may depend on the fixed
+\(F,S,\eta\) and the fixed weights.  Exponents displayed as numerical
+constants do not have that dependence.  An arbitrary positive power loss
+may always be chosen smaller before an estimate is applied.
+
+\subsection{Weights and the estimate from reflection}
+
+Choose a nonzero nonnegative function \(W_1\in C_c^\infty((0,\infty))\),
+and set
+\[
+ \widehat W_1(w)=\int_0^\infty W_1(t)t^w\,\frac{dt}{t}.
+\]
+Choose a tensor Bruhat--Schwartz function \(W_0\) on \(F_S\), compactly
+supported in \(F_S^\times\), such that
+\begin{equation}
+ \widehat W_0(0)=0,\qquad
+ M(1/6)\ne0,\qquad
+ M(z)=\int_{F_S^\times}\widehat W_0(y)|y|_S^z\,d^\times y .
+\label{eq:poisson-Fourier-weight}
+\end{equation}
+The condition \(\widehat W_0(0)=0\) will remove the zero additive
+frequency after Poisson summation.  The condition \(M(1/6)\ne0\) will
+ensure that the weight does not kill the residue at \(z=1/6\) in that
+expansion.  These are separate from the support condition on \(W_0\),
+which removes the original row \(m=0\) from the probe.
+Here the Fourier sign is the one fixed in \Cref{sec:arithmetic}.  We
+explain the choice and the analytic properties that will be needed.  At
+each place the local zeta functional equation gives, for \(0<s<1\),
+\[
+ \int_{F_v^\times}\widehat W_v(y)|y|_v^s\,d^\times y
+   =c_v(s)\int_{F_v^\times}W_v(y)|y|_v^{1-s}\,d^\times y,
+ \qquad c_v(1/6)\ne0;
+\]
+the nonzero constant incorporates the chosen local measures and Fourier
+sign \cite[Theorem~2.4.1]{Tate67}.  At one complex place take a smooth annular function
+whose additive integral is zero but whose pairing with
+\(|y|_v^{5/6}d^\times y\) is nonzero.  Such a function is obtained by
+subtracting suitable multiples of two smooth bumps supported in different
+radial subannuli: the additive integral is a constant multiple of the
+pairing with \(|y|_v d^\times y\), and the two radial weights are not
+proportional.  At all other places take nonnegative nonzero annular
+functions.  The local identity then proves both requirements in
+\Cref{eq:poisson-Fourier-weight}.
+
+For every \(\sigma>0\), each local integral of
+\(|\widehat W_v(y)||y|_v^\sigma\) is finite.  At a finite place this follows
+by summing the geometric series of shells near zero and using compact
+support at infinity; at a complex place it follows from boundedness at
+zero and Schwartz decay at infinity.  The same assertions hold after any
+number of derivatives in a complex logarithmic norm.  Thus \(M\) is
+holomorphic for \(\re z>0\), and integration by parts in that norm gives,
+for every compact interval \(J\subset(0,\infty)\) and every \(A>0\),
+\begin{equation}
+ |M(\sigma+i\tau)|\ll_{J,A}(1+|\tau|)^{-A}
+ \quad(\sigma\in J).
+\label{eq:poisson-M-decay}
+\end{equation}
+The analogous estimate holds for \(\widehat W_1\) on every fixed real
+strip.
+
+For an exterior ideal \(\mathfrak s\), with an allowed generator \(s\), put
+\[
+ g_{\mathfrak s}(k)
+   =\sum_{d\bmod\mathfrak s}\chi_{\mathfrak s}(d)\e(kd/s).
+\]
+The value is independent of the allowed generator: a change by
+\(\epsilon^6\), \(\epsilon\in U_S\), is absorbed by the same change of
+the residue variable.  Use product multiplicative Haar measures for which
+the norm decomposition of \(F_S^\times\) has the form
+\[
+ d^\times y=\frac{dT}{T}\,dt,\qquad y=t\ell_T,\quad t\in F_S^1.
+\]
+The measure on \(F_S^1/U_S^6\) below is the quotient measure induced by
+\(dt\).  This choice also fixes the normalization in \(M\).
+Define
+\begin{equation}
+ \begin{split}
+ I(X,Y,Z)=\int_{F_S^1/U_S^6}
+ \frac1Y\sum_{\mathfrak s}W_1(q_{\mathfrak s}/Y)
+ \frac1{\sqrt{q_{\mathfrak s}X}}\sum_{m\in R}
+  q_{\mathfrak s}^{-1/2}g_{\mathfrak s}(-m)
+  W_0\!\left(\frac{m}{t_0\ell_{q_{\mathfrak s}X}}\right)
+  B_m(Z)\,dt_0 .
+ \end{split}
+\label{eq:poisson-probe}
+\end{equation}
+All undecorated ideal sums in this section are over nonzero integral
+exterior ideals.  The summand for \(m=0\) vanishes because \(W_0\) is
+supported in \(F_S^\times\).  For \(\epsilon\in U_S^6\),
+\(\chi_{\mathfrak A}(\epsilon)=\chi_{\mathfrak s}(\epsilon)=1\);
+changing \(m\) to \(\epsilon m\) shows that the integrand descends to the
+quotient.  That quotient is compact by
+\Cref{lem:balanced-generators}, and we use representatives in a fixed
+bounded subset of \(F_S^1\).  For each such representative the \(m\)-sum
+has finite support.  The Gaussian weight in \(B_m\) makes its ideal sum
+absolutely convergent.
+
+We first record the additive estimate in the form also used later for
+conductor characters.  If \(\mathfrak s=R\), its one residue class is
+understood to give the single fraction \(0\).
+
+\begin{lemma}[Separated additive fractions]\label{lem:additive-sieve}
+Let \(K\) be a fixed compact subset of \(F_S\), and let \(N,V\ge2\).
+Choose balanced generators \(s\) for the exterior ideals with
+\(q_{\mathfrak s}\le V\).  Let \(\mathcal P\) be any subset of the distinct
+points
+\[
+ \left\{\frac d s+R:
+       q_{\mathfrak s}\le V,\ d\in(R/\mathfrak s)^\times\right\}
+       \subset F_S/R.
+\]
+For any complex \(b_\alpha\),
+\begin{equation}
+ \sum_{m\in R\cap\ell_NK}
+       \left|\sum_{\alpha\in\mathcal P}b_\alpha\e(m\alpha)\right|^2
+ \ll_{F,S,K}(N+V^2)\sum_{\alpha\in\mathcal P}|b_\alpha|^2 .
+\label{eq:additive-sieve}
+\end{equation}
+The dual inequality, with the sums over \(m\) and \(\alpha\) interchanged,
+has the same constant.
+\end{lemma}
+
+\begin{proof}
+Reduced fractions with distinct denominator ideals are distinct modulo
+\(R\).  Indeed, at a prime dividing its denominator the valuation of a
+reduced fraction is the negative of the denominator valuation; at any
+other exterior prime it is nonnegative.  If the denominator valuations
+differ, their difference therefore has negative valuation there.
+If all agree, congruence modulo \(R\) says the residue classes agree.
+For distinct fractions and any \(r\in R\), the numerator in
+\[
+ \frac d s-\frac {d'}{s'}+r
+       =\frac{ds'-d's+rss'}{ss'}
+\]
+is a nonzero element of \(R\).  The norm identity of
+\Cref{lem:s-lattice} gives
+\begin{equation}
+ \left|\frac d s-\frac {d'}{s'}+r\right|_S
+       \ge (q_{\mathfrak s}q_{\mathfrak s'})^{-1}\ge V^{-2}.
+\label{eq:additive-separation}
+\end{equation}
+For \(r\in R\setminus\{0\}\) it also gives \(|r|_S\ge1\).
+
+Put \(d_F=[F:\Q]\) and
+\(\delta=c\min(N^{-1/d_F},V^{-2/d_F})\), with \(c>0\) fixed sufficiently
+small.  There is a nonnegative Bruhat--Schwartz function \(\Phi\) which is
+at least one on \(\ell_NK\), has
+\(\widehat\Phi(0)\ll\delta^{-d_F}\), and whose Fourier transform is supported
+in a product of fixed finite-place additive subgroups and complex disks
+of ordinary radius \(C\delta\).  Here is a direct construction.  At each
+complex place take the inverse transform of a smooth bump
+supported in a disk, evaluated at \(\delta y_v\).  Its value stays
+bounded below when \(\delta|y_v|\) is sufficiently small.  At finite
+places use the inverse transform of the indicator of a sufficiently
+small compact open subgroup, whose annihilator contains the finite
+projection of \(K\).  The product, multiplied by a fixed constant and
+squared in modulus, majorizes the box.  Fourier support follows from
+convolution, and a change of scale gives integral \(O(\delta^{-d_F})\).
+Shrinking \(c\) makes this support contain no translate by \(R\) of a
+difference of distinct points in \(\mathcal P\), by
+\Cref{eq:additive-separation}: the product of the complex squared absolute
+values on that support is \(O(\delta^{d_F})\), and its finite-place product
+is bounded by a fixed constant.  It contains no nonzero point of \(R\)
+for the same reason.
+
+Expand the square after majorizing it by \(\Phi\), and apply Poisson
+summation on \(R\).  For \(\alpha,\beta\in\mathcal P\),
+\[
+ \sum_{m\in R}\Phi(m)\e(m(\alpha-\beta))
+   =\sum_{r\in R}\widehat\Phi(r-\alpha+\beta)
+   =\one_{\alpha=\beta}\widehat\Phi(0).
+\]
+Since \(\delta^{-d_F}\ll N+V^2\), this proves
+\Cref{eq:additive-sieve}.  Equality of the operator norms of a finite
+matrix and its adjoint gives the dual assertion.
+\end{proof}
+
+\begin{proposition}\label{prop:probe-low}
+For the weights above, for every \(\epsilon>0\) and \(Z\ge2\),
+\begin{equation}
+ I(Z^a,Z^b,Z)\ll_{F,S,\eta,W_0,W_1,\epsilon}
+ Z^{(2M_0-1-b)/2+\epsilon}
+       =Z^{933/2000+\epsilon}.
+\label{eq:probe-low}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write \(v=q_{\mathfrak s}/Y\) and
+\(y=m/(t_0\ell_{XY})\).  For \(v\) in the support of \(W_1\), the support
+of \(W_0(y/\ell_v)\) puts \(y\) in one fixed compact annular set.
+On this set the smooth function
+\[
+ v^{-1/2}W_1(v)W_0(y/\ell_v)
+\]
+has a Fourier series in \(\log v\) whose coefficients \(c_j(y)\)
+satisfy \(\sum_j\|c_j\|_\infty<\infty\), uniformly in \(y\).
+To see this, take a compact interval containing the logarithmic support,
+extend by zero to a slightly larger period, and integrate twice by parts.
+All the required derivatives are bounded uniformly on the compact
+\(y\)-set.  Thus we can separate this weight from the additive sums with
+a bounded total coefficient cost.
+
+For each Fourier term, expansion of \(g_{\mathfrak s}\) gives a
+coefficient of modulus \(Y^{-1}q_{\mathfrak s}^{-1/2}\) at each reduced
+fraction \(d/s\), with \(q_{\mathfrak s}\asymp Y\).  Their total squared
+mass is at most
+\[
+ Y^{-2}\sum_{q_{\mathfrak s}\asymp Y}
+                 q_{\mathfrak s}^{-1}|(R/\mathfrak s)^\times|
+ \ll_F Y^{-1},
+\]
+using the fixed-field ideal count.  Take \(N=XY\) and \(V\ll Y\) in
+\Cref{lem:additive-sieve}.  The bounded set of representatives \(t_0\)
+only enlarges the fixed compact row box.  By the triangle inequality for
+the Fourier series, the squared \(\ell^2\) norm in \(m\) of the whole
+additive factor in \Cref{eq:poisson-probe}, including
+\((q_{\mathfrak s}X)^{-1/2}\), is
+\[
+ \ll (XY)^{-1}\frac{XY+Y^2}{Y}\ll Y^{-1}.
+\]
+The last inequality uses \(b<a\).  On the same enlarged compact annular
+row box, \Cref{prop:reflection} gives
+\[
+ \sum_m |B_m(Z)|^2\ll_\epsilon Z^{2M_0-1+\epsilon}.
+\]
+Cauchy--Schwarz in \(m\), followed by integration over the compact
+quotient, proves \Cref{eq:probe-low}, after decreasing the preliminary
+loss.
+\end{proof}
+
+\subsection{Poisson summation and three Mellin variables}
+
+For an exterior ideal \(\mathfrak A\) with allowed generator \(A\), write
+\[
+ g_{\chi_{\mathfrak A}}(A,k)
+   =\sum_{v\bmod\mathfrak A}\chi_{\mathfrak A}(v)\e(kv/A)
+\]
+and, for \(h\in R\), define
+\begin{equation}
+ F(s,A,h)=
+ \sum_{\substack{d\bmod\mathfrak s\\h\equiv Ad\pmod{\mathfrak s}}}
+ \chi_{\mathfrak s}(d)\,
+ g_{\chi_{\mathfrak A}}\!\left(A,\frac{h-Ad}{s}\right).
+\label{eq:finite-Poisson-factor}
+\end{equation}
+The argument of the last Gauss sum is in \(R\) by the congruence.  The
+definitions for the unit ideal mean a single residue and the value \(1\)
+for its character.
+
+The finite Fourier transform of the row coefficient modulo
+\(\mathfrak s\mathfrak A=sAR\) is exactly
+\begin{equation}
+ \sum_{m\bmod\mathfrak s\mathfrak A}
+ q_{\mathfrak s}^{-1/2}g_{\mathfrak s}(-m)
+ \chi_{\mathfrak A}(m)\e(hm/(sA))
+       =q_{\mathfrak s}^{1/2}F(s,A,h).
+\label{eq:finite-Poisson-transform}
+\end{equation}
+In fact expand \(g_{\mathfrak s}\), write \(m=v+Aj\) with
+\(v\bmod\mathfrak A\) and \(j\bmod\mathfrak s\), and sum over \(j\).
+The sum of \(\e((h-Ad)j/s)\) is \(q_{\mathfrak s}\) precisely when
+\(h\equiv Ad\pmod{\mathfrak s}\), and is zero otherwise.  The remaining
+sum over \(v\) is the one in \Cref{eq:finite-Poisson-factor}.  This
+argument does not require \(\mathfrak s\) and \(\mathfrak A\) to be
+coprime.
+
+The dilation \(t_0\ell_{q_{\mathfrak s}X}\) has additive modulus
+\(q_{\mathfrak s}X\), and the lattice \(sAR\) has index
+\(q_{\mathfrak s}q_{\mathfrak A}\).  Apply Poisson summation to the
+\(m\)-sum and use \Cref{eq:finite-Poisson-transform}.  Its dilation divided
+by the index is \(X/q_{\mathfrak A}\); after the two square root factors
+in the probe the multiplier is
+\[
+ (q_{\mathfrak s}X)^{-1/2}
+       \frac X{q_{\mathfrak A}}q_{\mathfrak s}^{1/2}
+       =\frac{X^{1/2}}{q_{\mathfrak A}}.
+\]
+The Fourier argument at \(h\) is
+\[
+ t_0\ell_{q_{\mathfrak s}X}\frac h{sA},\qquad
+ \left|\ell_{q_{\mathfrak s}X}\frac h{sA}\right|_S
+       =\frac{Xq_h}{q_{\mathfrak A}}.
+\]
+These norm factors will determine all three Mellin exponents.
+
+For \(\epsilon\in U_S^6\), changing \(d\) to \(\epsilon d\) and the
+Gauss residue variable \(v\) to \(\epsilon^{-1}v\) in
+\Cref{eq:finite-Poisson-factor} shows
+\(F(s,A,\epsilon h)=F(s,A,h)\).  Sum the nonzero \(h\)'s in such
+orbits and unfold the quotient \(F_S^1/U_S^6\).  If
+\[
+ V_0(T)=\int_{F_S^1}\widehat W_0(t\ell_T)\,dt,
+\]
+the orbit of \(h\) contributes
+\(F(s,A,h)V_0(Xq_h/q_{\mathfrak A})\).  Multiplication by the norm-one
+part of \(\ell_{q_{\mathfrak s}X}h/(sA)\) preserves the sheet measure, so
+no shape factor remains.  This unfolding is absolutely justified: for
+each \(\sigma>0\), the local integrability used above gives an absolute
+sheet majorant \(O_\sigma(T^{-\sigma})\), by using one complex weighted
+supremum and the other weighted local integrals.  Taking \(\sigma>1\)
+sums the \(q_u^{-\sigma}q_{\mathfrak r}^{-6\sigma}\) majorant, while
+the Gaussian handles the ideal \(\mathfrak A\); this permits Tonelli's
+theorem in the orbit sum.  The zero frequency contributes
+nothing because \(\widehat W_0(0)=0\).
+
+By the measure disintegration, the Mellin transform of \(V_0\) is \(M\).
+The same weighted derivative majorants in the complex norm variables
+justify differentiation of the sheet integral in \(\log T\), so
+\(V_0(T)\) is smooth for \(T>0\).  Its absolute weighted integrability
+and \Cref{eq:poisson-M-decay} then give pointwise Mellin inversion by
+Fourier inversion in \(\log T\) on each line \(\re z>0\).
+By \Cref{eq:frequency-decomposition}, write the orbits uniquely as
+\(h=ur^6\), where \(u\in\mathcal U\) and \(\mathfrak r\) is an exterior
+ideal with allowed generator \(r\).  The principal row \(u=1\) consists
+of the surviving nonzero sixth-power frequencies \(h=r^6\).  Hence the
+precise Poisson expression is
+\begin{equation}
+ \begin{split}
+ I(X,Y,Z)
+  ={}&\frac{X^{1/2}}Y
+   \sum_{\substack{\mathfrak c\ {\rm squarefree}\\
+                    \mathfrak n,\mathfrak s}}
+   \frac{\gamma_2(\mathfrak c)\vartheta(\mathfrak A)}
+        {q_{\mathfrak c}^{1/2}q_{\mathfrak n}q_{\mathfrak A}}\,
+   P_G(q_{\mathfrak A}/Z)W_1(q_{\mathfrak s}/Y)\\
+  &{}\times
+   \sum_{u\in\mathcal U}\sum_{\mathfrak r}
+     F(s,A,ur^6)
+     V_0\!\left(\frac{Xq_uq_{\mathfrak r}^6}{q_{\mathfrak A}}\right),
+ \qquad \mathfrak A=\mathfrak c\mathfrak n^3.
+ \end{split}
+\label{eq:Poisson-orbits}
+\end{equation}
+Here \(P_G\) is the Gaussian of \Cref{eq:reflection-gaussian}.
+
+Use Mellin inversion for \(P_G,W_1,V_0\), with transforms
+\(e^{t^2},\widehat W_1(w),M(z)\), respectively.  The factors involving
+\(\mathfrak A\) are
+\(q_{\mathfrak A}^{-1}q_{\mathfrak A}^{-t}q_{\mathfrak A}^{z}\).
+Set \(t=\xi+z-1\).  We obtain
+\begin{equation}
+ \begin{split}
+ I(X,Y,Z)=\frac1{(2\pi i)^3}
+  \int_{(4)}\int_{(4)}\int_{(2)}
+  &X^{1/2-z}Z^{\xi+z-1}Y^{w-1}
+   e^{(\xi+z-1)^2}M(z)\widehat W_1(w)\\
+  &{}\times\sum_{u\in\mathcal U}q_u^{-z}
+       \mathcal F_u(\xi,w,z)\,dz\,dw\,d\xi ,
+ \end{split}
+\label{eq:poisson-mellin}
+\end{equation}
+where the innermost line is \(\re z=2\), the middle line is
+\(\re w=4\), and the outer line is \(\re\xi=4\), and
+\begin{equation}
+ \mathcal F_u(\xi,w,z)=
+ \sum_{\substack{\mathfrak c\ {\rm squarefree}\\
+                  \mathfrak n,\mathfrak s,\mathfrak r}}
+ \gamma_2(\mathfrak c)\vartheta(\mathfrak A)F(s,A,ur^6)
+ q_{\mathfrak c}^{-1/2-\xi}q_{\mathfrak n}^{-1-3\xi}
+ q_{\mathfrak s}^{-w}q_{\mathfrak r}^{-6z},
+ \qquad \mathfrak A=\mathfrak c\mathfrak n^3.
+\label{eq:calF-definition}
+\end{equation}
+All interchanges used for \Cref{eq:poisson-mellin} are in absolute
+convergence.  For example,
+\(|F(s,A,h)|\le q_{\mathfrak s}q_{\mathfrak A}\),
+\(|\gamma_2(\mathfrak c)|=1\), and the ideal count, including the finitely
+many S-unit classes for \(u\), give absolute convergence on these lines.
+The factors \(M(z)\) and \(\widehat W_1(w)\) have arbitrary vertical
+polynomial decay, while the Gaussian has Gaussian decay in
+\(\im(\xi+z)\).  Changing height variables to
+\((\im(\xi+z),\im z,\im w)\) proves absolute integrability as well.
+
+\subsection{The local correction}
+
+We extend the notation \(L^S(s,\eta)\) from
+\Cref{sec:coefficient-family} to a Hecke character on exterior primes:
+the factors at \(S\) are omitted, and any additional zero prime values
+are retained in the Euler product.
+Thus, for example,
+\[
+ L^S(w,\chi_\bullet(u))
+    =\prod_{\mathfrak p\notin S}
+       (1-\chi_{\mathfrak p}(u)q_{\mathfrak p}^{-w})^{-1}
+ \quad(\re w>1).
+\]
+As before,
+\(\zeta_F^S(s)=\prod_{\mathfrak p\notin S}(1-q_{\mathfrak p}^{-s})^{-1}\).
+
+\begin{proposition}\label{prop:euler-product}
+For every \(u\in\mathcal U\), the series in
+\Cref{eq:calF-definition} has the Euler factorization
+\begin{equation}
+ \mathcal F_u(\xi,w,z)=
+ \frac{\zeta_F^S(6z)L^S(w,\chi_\bullet(u))}
+      {L^S(\xi,\eta\overline{\chi_\bullet(u)})}
+             \mathcal H_u(\xi,w,z)
+\label{eq:probe-euler-product}
+\end{equation}
+initially in absolute convergence.  The correction \(\mathcal H_u\) is
+holomorphic in open neighborhoods of both real-part regions
+\begin{equation}
+ \begin{array}{lll}
+ \re\xi\ge .998,&\re w\ge .003,&\re z\ge .4,\\
+ \re\xi\ge .998,&\re w\ge .95,&\re z\ge .16.
+ \end{array}
+\label{eq:euler-regions}
+\end{equation}
+For every \(\epsilon>0\) it satisfies
+\[
+ |\mathcal H_u(\xi,w,z)|\ll_{F,S,\eta,\epsilon}q_u^\epsilon
+\]
+there, uniformly in all heights.  If \(S\) contains every prime of norm
+at most a sufficiently large fixed constant, then
+\(\mathcal H_1\) is bounded and nowhere zero on both neighborhoods.
+\end{proposition}
+
+The two regions serve different contour movements in the next section.
+The first permits the small and intermediate nonprincipal rows to place
+\(w\) at \(.003\) and \(z\) at \(.4\), while \(\xi\) can reach \(.998\)
+once the reciprocal denominator has been controlled.  The second contains
+the principal numerator poles \(w=1\), \(z=1/6\) and the nearby lines
+\(w=.95\), \(z=.16\) used to isolate their double residue.  The
+nowhere-zero conclusion for \(u=1\) will ensure that its correction does
+not cancel a singularity of \(1/L^S(\xi,\eta)\).
+
+\begin{proof}
+We first factor the finite expression, keeping the units that Chinese
+remaindering introduces.  Use products of allowed prime generators for
+\(s,A,r\).  They differ from any other allowed choices by sixth powers
+of S-units, which have no effect on the expressions.  At an exterior
+prime \(\mathfrak p\), with generator \(p\) and norm \(Q=q_{\mathfrak p}\),
+write
+\[
+ \begin{gathered}
+ t=v_{\mathfrak p}(\mathfrak A)=e_0+3l,\quad
+ e_0=v_{\mathfrak p}(\mathfrak c)\in\{0,1\},\quad
+ l=v_{\mathfrak p}(\mathfrak n),\quad k=v_{\mathfrak p}(\mathfrak s),\\
+ j=v_{\mathfrak p}(u),\quad m'=v_{\mathfrak p}(\mathfrak r),
+ \quad J=j+6m'.
+ \end{gathered}
+\]
+Write \(s=p^ks_p\), \(A=p^tA_p\), and \(ur^6=p^Jh_p\); the subscripts
+mean that the full \(p\)-power has been omitted.  These three subscripted
+quantities are units at \(\mathfrak p\).  Put
+\(\psi_{\mathfrak p}^{\circ}(x)=\psi_{\mathfrak p}(-x)\).
+For \(x\in F\), the global additive product gives
+\(\e(x)=\prod_{\mathfrak p\notin S}\psi_{\mathfrak p}^{\circ}(x)\),
+with only finitely many nontrivial factors.  Expand the inner Gauss sum
+in \Cref{eq:finite-Poisson-factor} and apply the Chinese remainder
+decomposition to each residue ring.  Before changing variables, the local
+factor of \(F(s,A,ur^6)\) is
+\[
+ \sum_{\substack{d\bmod p^k\\p^Jh_p\equiv p^tA_p d\pmod{p^k}}}
+ \chi_{\mathfrak p}(d)^k
+ \sum_{v\bmod p^t}\chi_{\mathfrak p}(v)^t
+ \psi_{\mathfrak p}^{\circ}\!\left(
+  \frac{(p^Jh_p-p^tA_p d)v}{p^{k+t}s_pA_p}\right).
+\]
+Here an absent modulus \(p^0\) has one residue and character value \(1\).
+For a positive modulus the character retains its unit mask, even when
+its exponent is divisible by six.  Now make the changes
+\[
+ d=(h_p/A_p)d',\qquad v=(s_pA_p/h_p)v'.
+\]
+They are bijections of the relevant residue rings.  The congruence becomes
+\(p^J\equiv p^t d'\pmod{p^k}\), and the local additive argument becomes
+\((p^J-p^td')v'/p^{k+t}\).  The unit multiplier removed by these changes
+is exactly
+\begin{equation}
+ \chi_{\mathfrak p}(h_p)^{k-t}
+ \chi_{\mathfrak p}(s_p)^t
+ \chi_{\mathfrak p}(A_p)^{t-k}.
+\label{eq:Euler-CRT-unit}
+\end{equation}
+There are no hidden coprimality assumptions here: these changes only use
+the units left after omitting the full \(p\)-powers.  Moreover
+\(\chi_{\mathfrak p}(h_p)=\chi_{\mathfrak p}(u/p^j)\), because the
+remaining factors of \(r^6\) are sixth powers.
+
+For completeness define the stripped local sum by
+\begin{equation}
+ C_{t,k}(J)=
+ \sum_{\substack{d\bmod p^k\\p^J\equiv p^td\pmod{p^k}}}
+ \chi_{\mathfrak p}(d)^k
+ \sum_{v\bmod p^t}\chi_{\mathfrak p}(v)^t
+       \psi_{\mathfrak p}^{\circ}
+             \left(\frac{(p^J-p^td)v}{p^{k+t}}\right).
+\label{eq:C-local-definition}
+\end{equation}
+When \(k=0\) the outer modulus is one, its character is one, and its
+single residue may be taken to be zero.  The analogous convention applies
+to \(t=0\) in the inner sum.  When \(k>0\) or \(t>0\), the corresponding
+character is supported on units even if its exponent is divisible by
+six.  These conventions distinguish the absent modulus from the zeroth
+power character on a nontrivial modulus.
+
+We check explicitly that the remaining factors in different primes
+separate.  Expand \Cref{eq:Euler-CRT-unit} using the product generators,
+and consider an unordered pair of distinct primes \(\mathfrak p,\mathfrak
+p'\).  In their common symbol
+\(\chi_{\mathfrak p}(p')=\chi_{\mathfrak p'}(p)\), the contributions from
+\(\chi_{\mathfrak p}(s_p)^t\) and
+\(\chi_{\mathfrak p}(A_p)^{t-k}\), together with the analogous factors at
+\(\mathfrak p'\), have exponent
+\[
+ tk'+t'k+(t-k)t'+(t'-k')t=2tt'.
+\]
+In particular all \(s\)-\(A\) interactions cancel.  By
+\Cref{eq:gauss-crt}, the Chinese remainder factors in
+\(\gamma_2(\mathfrak c)\) add \(4e_0e_0'\).  Their total is
+\[
+ 2(e_0+3l)(e_0'+3l')+4e_0e_0'\equiv0\pmod6.
+\]
+Thus all cross-prime terms cancel, including when both moduli have powers
+of the same primes; those shared powers were retained inside
+\Cref{eq:C-local-definition}.  The \(h_p\)-factors remain precisely as
+characters of \(u/p^j\).  If
+\(\theta_{\mathfrak p}=\chi_{\mathfrak p}(u/p^j)\in\mu_6\), the exact
+local factor is consequently
+\begin{equation}
+ \begin{split}
+ \mathcal F_{u,\mathfrak p}(\xi,w,z)
+  =\sum_{\substack{e_0=0,1\\l,k,m'\ge0}}
+  &\gamma_2(\mathfrak p)^{e_0}\vartheta(\mathfrak p)^{e_0+3l}
+   \theta_{\mathfrak p}^{\,k-e_0-3l}C_{e_0+3l,k}(j+6m')\\
+  &{}\times
+  Q^{-e_0(1/2+\xi)-l(1+3\xi)-kw-6m'z}.
+ \end{split}
+\label{eq:exact-Euler-factor}
+\end{equation}
+It follows initially by absolute convergence that
+\(\mathcal F_u=\prod_{\mathfrak p\notin S}\mathcal F_{u,\mathfrak p}\).
+
+Here are explicit evaluations of every \(C_{t,k}(J)\).  Put
+\[
+ T_v(y)=\sum_{x\bmod p}\chi_{\mathfrak p}(x)^v
+                   \psi_{\mathfrak p}^{\circ}(yx/p),
+ \qquad \tau_v=T_v(1).
+\]
+The unit mask is retained for \(v\equiv0\pmod6\).  Thus
+\[
+ T_v(y)=
+ \begin{cases}
+  \overline{\chi_{\mathfrak p}(y)}^{\,v}\tau_v,&p\nmid y,\\
+  Q-1,&p\mid y,\ v\equiv0\pmod6,\\
+  0,&p\mid y,\ v\not\equiv0\pmod6,
+ \end{cases}
+ \qquad
+ |\tau_v|=\sqrt Q\ (v\not\equiv0\!\!\pmod6),\quad \tau_0=-1.
+\]
+For \(t=0\) the value is \(C_{0,0}(J)=1\), and
+\(C_{0,k}(J)=\one_{J=0}\) for \(k>0\).  For \(t>0\) it is
+\begin{equation}
+ \begin{split}
+ C_{t,0}(J)&=\one_{J\ge t-1}Q^{t-1}T_t(p^{J-t+1}),\\
+ C_{t,1}(J)&=\one_{J\ge t}\tau_1Q^{t-1}T_{t-1}(p^{J-t}),\\
+ C_{t,k}(J)&=0\qquad(k\ge2).
+ \end{split}
+\label{eq:C-local-values}
+\end{equation}
+For the first formula sum the \(Q^{t-1}\) lifts of a residue \(v\bmod p\)
+in the inner sum; they cancel unless \(J\ge t-1\).  For \(k=1\) the
+congruence first requires \(J\ge1\).  Sum \(d\bmod p\) before \(v\).
+Because \(v\) is a unit, the sum is
+\(\tau_1\overline{\chi_{\mathfrak p}(v)}\);
+\(\chi_{\mathfrak p}(-1)=1\) removes the sign.  The remaining sum over
+lifts of \(v\) is zero unless \(J\ge t\), and then gives the second
+formula.  For \(k\ge2\), varying \(d\) by \(p^{k-1}\lambda\), \(\lambda\bmod p\),
+preserves the congruence and its unit character.  For every unit \(v\)
+the phase varies by \(\psi_{\mathfrak p}^{\circ}(-\lambda v/p)\), whose sum in
+\(\lambda\) is zero.  This proves the last formula.  In particular, for \(t>0\),
+\begin{equation}
+ |C_{t,0}(J)|\le Q^t,\qquad
+ |C_{t,1}(J)|\le Q^{t+1/2},
+\label{eq:C-local-bounds}
+\end{equation}
+with the support restrictions visible in \Cref{eq:C-local-values}.
+
+Suppose first that \(\mathfrak p\nmid(u)R\), so \(j=0\).  Set
+\[
+ V=Q^{-6z},\quad
+ W=\chi_{\mathfrak p}(u)Q^{-w},\quad
+ D_1=\eta(\mathfrak p)\overline{\chi_{\mathfrak p}(u)}Q^{-\xi},
+ \quad
+ E_1=\vartheta(\mathfrak p)^6Q^{4-6\xi}V.
+\]
+The \(t=0\) values give
+\((1-V)^{-1}+W/(1-W)\): a positive \(k\) requires \(J=0\).
+The first squarefree theta term has
+\(e_0=1\), \(l=k=m'=0\), hence \(t=1\), \(J=0\), and
+\(C_{1,0}(0)=\tau_1\).  Its contribution is
+\[
+ \begin{split}
+ &\gamma_2(\mathfrak p)\vartheta(\mathfrak p)
+  \overline{\chi_{\mathfrak p}(u)}Q^{-1/2-\xi}\tau_1\\
+ &\qquad=\gamma_1(\mathfrak p)\gamma_2(\mathfrak p)
+   \vartheta(\mathfrak p)\overline{\chi_{\mathfrak p}(u)}Q^{-\xi}
+   =-D_1.
+ \end{split}
+\]
+Indeed \(\tau_1=\sqrt Q\,\gamma_1(\mathfrak p)\) in the chosen additive
+sign, and \Cref{eq:gauss-corrections} gives
+\(\gamma_1\gamma_2\vartheta=-\eta\).  This negative term is the first
+nonconstant term of the reciprocal local \(L\)-factor \(1-D_1\); it is
+the reason that \(L^S(\xi,\eta\overline{\chi_\bullet(u)})\) occurs in the
+denominator of \Cref{eq:probe-euler-product}.  We extract
+\((1-V)^{-1}(1-W)^{-1}(1-D_1)\), whose first two factors are those of
+\(\zeta_F^S(6z)\) and \(L^S(w,\chi_\bullet(u))\).  The mixed terms and
+the higher theta terms will be included in the correction.
+
+For \(t>0\) and \(J=6m'\), the formulas show that only
+\(t\equiv0,1\pmod6\) occur.  For \(t=6d\), \(d\ge1\), the \(k=0\) sum is
+\[
+ E_1^d\frac{1-Q^{-1}}{1-V},
+\]
+and the \(k=1\) term is \(E_1^dW\).  For the latter, the only possible
+valuation is \(J=t\), and \(\tau_1\tau_5=Q\).  For \(t=6d+1\), \(d\ge0\),
+the \(k=0\) term is \(-D_1E_1^d\), extending the first squarefree term
+just computed.  Finally its \(k=1\) sum is
+\[
+ -(Q-1)D_1E_1^d\,\frac{WV}{1-V}.
+\]
+Here \(J>t\) and \(T_0(p^{J-t})=Q-1\); the first possible extra
+\(m'\) gives the displayed \(V\).  Summing in \(d\) proves the closed
+formula
+\begin{equation}
+ \begin{split}
+ \mathcal F_{u,\mathfrak p}
+  ={}&\frac1{1-V}+\frac W{1-W}
+   +\frac{E_1}{1-E_1}
+           \left(\frac{1-Q^{-1}}{1-V}+W\right)\\
+   &-\frac{D_1}{1-E_1}
+           \left(1+\frac{(Q-1)WV}{1-V}\right).
+ \end{split}
+\label{eq:Euler-good-exact}
+\end{equation}
+This derivation also explains the vanishing of the allowed theta exponents
+\(t\equiv3,4\pmod6\): the possible boundary values of \(J\) in
+\Cref{eq:C-local-values} have the wrong residue modulo six, and the
+remaining \(T\)-sum is a nontrivial character sum at zero.
+
+Define at every prime
+\[
+ \mathcal H_{u,\mathfrak p}
+   =(1-V)\frac{1-W}{1-D_1}\mathcal F_{u,\mathfrak p},
+\]
+where \(W=D_1=0\) at \(\mathfrak p\mid(u)R\), in accordance with the
+zero extension.  We verify normal convergence on explicit open
+neighborhoods: in each line of \Cref{eq:euler-regions} decrease all three
+lower endpoints by \(10^{-5}\), and use the resulting strict inequalities.
+On these neighborhoods all of \(V,W,D_1,E_1\) have modulus bounded away
+from one once \(Q\) exceeds a fixed constant.  Subtracting \(1\) after
+multiplying \Cref{eq:Euler-good-exact} by
+\((1-V)(1-W)/(1-D_1)\) gives
+\begin{equation}
+ |\mathcal H_{u,\mathfrak p}-1|
+ \ll |VW|+|D_1V|+|D_1W|+Q|D_1WV|+|E_1|
+ \ll Q^{-1-\delta},\qquad \delta=\frac1{4000},
+\label{eq:Euler-good-error}
+\end{equation}
+uniformly for \(\mathfrak p\nmid(u)R\).  For clarity, before the
+\(10^{-5}\) enlargement the weakest of the first three terms is
+\(|D_1W|\le Q^{-1.001}\), in the first region.  The exponents in the
+last two terms are at most
+\[
+ 1-\re\xi-\re w-6\re z\le-1.908,\qquad
+ 4-6\re\xi-6\re z\le-2.948
+\]
+on the union of the two regions.  The enlargement leaves respectively
+the margins \(0.00098\), \(0.90792\), and \(1.94788\) beyond exponent
+\(-1\), which suffice for the stated \(\delta\).  More explicitly,
+the specialization at \(E_1=0\) satisfies
+\[
+ \left.\mathcal H_{u,\mathfrak p}\right|_{E_1=0}-1
+ =\frac{D_1(W+V-WV)-WV-(Q-1)D_1(1-W)WV}{1-D_1}.
+\]
+This accounts for the \(Q|D_1WV|\) term as well as the first three
+terms in \Cref{eq:Euler-good-error}.  The difference from this
+specialization is \(O(|E_1|)\) on the stated neighborhoods: the remaining
+denominators are bounded, and \(Q|D_1WV|<1\) once \(Q\) exceeds the fixed
+cutoff.
+
+At \(\mathfrak p\mid(u)R\), \(1\le j\le5\).  The \(t=0\) contribution
+is \((1-V)^{-1}\).  The term \(t=1,k=0\) vanishes, since \(J\ge1\) and
+\(T_1(p^J)=0\).  By \Cref{eq:C-local-bounds}, the sum for \(t=1,k=1\)
+has modulus at most
+\[
+ \frac{Q^{1-\re\xi-\re w}}{1-|V|}.
+\]
+Its exponent is at most \(-0.001\) on the first region and at most
+\(-0.948\) on the second.  For \(l\ge1\), before the factor \(V^{m'}\),
+the bound for the summand with \(e_0\in\{0,1\}\) is at most a constant
+times \(Q\) to the power
+\begin{equation}
+ (2-3\re\xi)l+(1/2-\re\xi)e_0
+                    +\max(0,1/2-\re w).
+\label{eq:Euler-bad-exponents}
+\end{equation}
+This is at most \(-0.497\) for \(l=1,e_0=0\) on the first region and
+decreases by at least \(0.994\) for each further \(l\); the second region
+has a larger saving.  The \(10^{-5}\) enlargement still leaves a saving
+greater than \(0.49\) in this sum, and leaves \(0.00098\) in the
+\(t=1,k=1\) term.  The geometric sums in \(l,m'\), followed by
+multiplication by \(1-V\), therefore give
+\begin{equation}
+ \mathcal H_{u,\mathfrak p}=1+O(Q^{-\delta})
+ \quad(\mathfrak p\mid(u)R),\qquad \delta=\frac1{4000},
+\label{eq:Euler-bad-error}
+\end{equation}
+on the same neighborhoods.  These estimates prove absolute local
+convergence there as well.
+
+The product of the factors in \Cref{eq:Euler-good-error} converges
+normally, since \(\sum_{\mathfrak p}q_{\mathfrak p}^{-1-\delta}<\infty\).
+The remaining primes are precisely the divisors of \((u)R\).  For every
+\(\epsilon>0\),
+\[
+ \prod_{\mathfrak p\mid(u)R}(1+Cq_{\mathfrak p}^{-\delta})
+       \ll_{F,S,\epsilon}q_u^\epsilon:
+\]
+for sufficiently large \(Q\) each local factor is at most \(Q^\epsilon\),
+and the finitely many smaller primes contribute a fixed constant.
+Consequently \(\mathcal H_u=\prod_{\mathfrak p\notin S}
+\mathcal H_{u,\mathfrak p}\) is holomorphic and obeys the asserted bound.
+Multiplication of its defining local factors gives
+\Cref{eq:probe-euler-product} in the initial region and then as a
+meromorphic identity on either neighborhood.
+
+For \(u=1\) every prime satisfies \Cref{eq:Euler-good-error}.  The local
+estimate determines a fixed norm cutoff beyond which its uniform bound
+is smaller than \(1/2\).  Choose \(S\) to contain all primes up to that
+cutoff from the outset, as permitted in \Cref{sec:arithmetic}.  Every remaining
+\(\mathcal H_{1,\mathfrak p}\) is nonzero, and its logarithm defined near
+\(1\) has an absolutely and uniformly convergent sum.  Its exponential is
+\(\mathcal H_1\), which is therefore bounded and nowhere zero on both
+neighborhoods.  This proves the proposition.
+\end{proof}
+
+For the remainder of the proof, write
+\[
+ \mathcal H_\eta(s):=\mathcal H_1(s,1,1/6).
+\]
+This is the principal specialization announced in
+\Cref{sec:coefficient-family}.  Since \((w,z)=(1,1/6)\) lies in the
+second region of \Cref{eq:euler-regions}, \(\mathcal H_\eta\) is
+holomorphic, bounded, and nowhere zero on an open neighborhood of the
+closed half-plane \(\re s\ge .998\), uniformly in height.

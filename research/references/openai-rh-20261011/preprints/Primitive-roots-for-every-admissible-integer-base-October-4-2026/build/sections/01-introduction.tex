@@ -1,0 +1,219 @@
+\section{Introduction}\label{sec:introduction}
+
+Let $a$ be an integer and let $p$ be a prime not dividing $a$.
+The multiplicative order $\ord_p(a)$ is the least positive integer $k$
+such that $a^k\equiv1\pmod p$. The residue class of $a$ is a primitive
+root modulo $p$ if $\ord_p(a)=p-1$. Call $a$ \emph{admissible} if
+$a\ne-1$ and $a$ is not the square of an integer. These are necessary
+conditions for primitive-root behavior at infinitely many primes:
+the order of $-1$ is at most $2$, and a nonzero square modulo an odd
+prime has order dividing $(p-1)/2$.
+
+Artin's primitive root conjecture, formulated in 1927, asserts that
+every admissible integer is a primitive root modulo infinitely many
+primes; its quantitative form predicts a positive-density asymptotic
+\cite[Section~17.2]{ArtinHasse08}. We prove the following lower bound.
+
+\begin{theorem}\label{thm:primitive-root}\label{thm:main}
+For every admissible integer $a$, there are constants $c_a>0$ and
+$x_a\ge2$ such that, for every real $x\ge x_a$,
+\[
+ \#\{p\text{ prime}:x<p<2x,\ p\nmid a,\ \ord_p(a)=p-1\}
+       \ge c_a\frac{x}{(\log x)^2}.
+\]
+\end{theorem}
+
+The predicted counting scale is $x/\log x$; the theorem gives
+$x/(\log x)^2$ in every sufficiently large dyadic interval. In
+particular, it proves the infinitude assertion for each fixed
+admissible integer, including the prescribed base $2$. The constants
+and the threshold may depend on the base.
+
+The analytic part of the proof establishes a separate theorem.
+A finite-order Hecke character of a number field $F$ means a continuous
+finite-image character of the idele class group
+$F^\times\backslash\Adele_F^\times$. Write $\mu_m$ for the group of
+$m$th roots of unity.
+
+\begin{theorem}\label{thm:hecke-zero-free}
+Let $F$ be a cyclotomic number field containing $\mu_{12}$.
+For every finite-order Hecke character $\eta$ of $F$, the meromorphic
+continuation of $L_F(s,\eta)$ has no zeros in
+\[
+ \re s>1-10^{-6}.
+\]
+\end{theorem}
+
+The principal character is included, with its pole at $s=1$ permitted.
+The width is common to all fields and characters in the statement,
+with no conductor or height cutoff. In the proof, $F$ and $\eta$ are
+fixed before the auxiliary data are chosen. Constants and the points
+from which estimates hold may depend on them; the numerical saving
+in the final Mellin argument does not. This distinction is what
+allows a uniform splitting estimate for a growing family of fields.
+
+\subsection{Historical context and the two obstructions}
+
+Hooley proved Artin's predicted asymptotic under the Riemann hypothesis
+for the Dedekind zeta functions of the Kummer fields
+$\Q(\mu_n,a^{1/n})$, with $n$ squarefree~\cite{Hooley67}.
+These fields encode the obstructions to maximal order. For a prime
+$q$ and $p\nmid aq$, the conditions
+\[
+ p\equiv1\pmod q,\qquad a^{(p-1)/q}\equiv1\pmod p
+\]
+say that $p$ splits completely in $\Q(\mu_q,a^{1/q})$.
+They hold precisely when $q$ divides the index
+$(p-1)/\ord_p(a)$. Hooley's method counts and sums such splitting
+conditions. Here a restricted factorization of $p-1$ confines the
+possible index divisors to ranges where they can all be removed.
+
+Classical unconditional results allow a finite choice of bases.
+Gupta and Murty constructed a set of thirteen integers from three
+distinct primes, at least one of which is a primitive root modulo
+infinitely many primes~\cite{GuptaMurty84}. Heath-Brown proved that
+at most two prime bases fail the infinitude assertion, so at least
+one of $2,3,5$ satisfies it~\cite{HeathBrown86}.
+Averaging over the base gives another approach. Goldfeld and Stephens
+established early average theorems~\cite{Goldfeld68,Stephens69};
+Klurman, Shparlinski, and Ter\"av\"ainen obtained the expected
+asymptotic for almost all integers in a range as short as
+$1\le a\le\exp((\log\log x)^2)$~\cite{KlurmanShparlinskiTeravainen25}.
+The exceptional set may depend on $x$, so these average results
+do not by themselves settle a prescribed base.
+
+Two difficulties must be addressed for a fixed base. One is analytic:
+the splitting fields vary with the possible index divisor. A standard
+simultaneous zero-free region for Hecke characters associated with
+an abelian extension has logarithmic width depending on the field,
+conductors, and height, and permits at most one simple real
+exceptional zero~\cite[Theorem~3.1]{ThornerZaman19}.
+The common width in Theorem~\ref{thm:hecke-zero-free} instead gives
+a common power saving. The other difficulty is the prime construction:
+we need many primes for which the possible index divisors fall in
+the range controlled by that saving. We now describe the two parts
+of the proof and the points where they meet.
+
+\subsection{The Hecke zero-free argument}
+
+Fix a cyclotomic field $F$ containing $\mu_{12}$ and a finite-order
+Hecke character $\eta$. The analytic construction uses cubic theta
+coefficients under sextic Kummer twists. Patterson's cubic theta
+series over $\Q(\sqrt{-3})$ is the model for the Gauss coefficients
+and their transformations~\cite{Patterson77,Patterson77II}; the
+comparison formulas are recorded by Dunn and Radziwi\l{}\l{}
+\cite[Section~5.1 and Appendix~A]{DunnRadziwill24}.
+The companion manuscript \emph{The Quasi-Riemann Hypothesis}
+develops a coefficient reflection and an additive probe over that
+field while retaining unrestricted cube factors
+\cite[Part~I, Sections~5--7]{QuasiRH}. Its zero-free theorem treats
+Dirichlet $L$-functions and finite-order Hecke $L$-functions over
+$\Q(\sqrt{-3})$. We construct the required mechanisms over each
+fixed $F$, using the cubic theta representation of Kazhdan and
+Patterson and a normalized global Whittaker factorization consistent
+with their correction~\cite{KP84,KP85Erratum}.
+
+Two local calculations govern the comparison. We choose generators
+for which sextic reciprocity has no supplementary factor. In a
+reflected interaction between a prime occurring to valuation one
+in the varying twist and a varying squarefree coefficient prime,
+the sextic exponents are $1$ and $-4$. Their sum is $3$ modulo $6$,
+so the interaction is quadratic. The quadratic large sieve of
+Heath-Brown, in its number-field form due to Goldmakher and Louvel,
+then controls the reflected moment
+\cite{HeathBrown95,GoldmakherLouvel13}.
+
+On the Poisson side, a relative-norm formula identifies the cube of
+the cubic Gauss phase with the negative of a unitary Hecke-character
+value. A finite-order correction gives the target character $\eta$.
+At a prime ideal $\mathfrak p$ outside a fixed excluded set, the
+first squarefree theta term at the principal frequency is
+$-\eta(\mathfrak p)(\Norm\mathfrak p)^{-\xi}$, where $\xi$ is
+the Mellin variable for the coefficient norm. Together with the
+constant term, it supplies the local factor of the reciprocal
+target $L$-function. The remaining local terms give a holomorphic,
+nonvanishing correction in the region used at the end of the proof.
+
+Reflection and Poisson summation thus estimate the same additive
+average in two ways. A conductor large sieve and zero detection
+control the nonprincipal frequencies. The resulting power saving
+for the principal inverse Mellin integral continues its Mellin
+transform across the line $\re s=1$ and excludes zeros of the
+target function. The use of ideal norms keeps the numerical
+exponents in this argument independent of the degree of $F$.
+Sections~\ref{sec:arithmetic}--\ref{sec:zero-free} carry out this
+proof; Appendix~\ref{app:whittaker} provides the theta normalization.
+
+\subsection{Controlled predecessors in a fixed progression}
+
+The construction produces many primes of the form
+\[
+ p=crQ+1,\qquad c\in\{2,4\},\qquad Q>x^{0.9}\text{ prime},
+\]
+where every prime divisor of $r$ lies between
+$\exp((\log x)^{0.1})$ and $\exp((\log x)^{0.3})$.
+We also prescribe a residue class on which the Legendre symbol
+$(a/p)$ equals $-1$. This excludes $2$ as an index divisor.
+A nontrivial remaining index has a prime divisor in $rQ$:
+the factor $Q$ leads to a small elementary exceptional set, and
+the factors of $r$ fall within the uniform splitting estimate.
+
+The construction starts with weighted integers $d=crQ+1$ of this
+shape. A sieve removes small prime factors of $d$. For a remaining
+composite $d=mn$, with $n$ its least prime factor, a marked bilinear
+estimate replaces the restriction on the cofactor $m$ by an explicit
+density and a weaker condition on its small prime factors.
+Buchstab's least-prime-factor identity leaves a positive margin
+between the initial sifted mass and the mass removed in this
+comparison. A separate upper bound makes the contribution from two
+prime factors close to $\sqrt x$ smaller than that margin.
+
+The marked prime estimate is an input from
+\emph{The Poisson--Dirichlet law for the prime factors of $p-1$}
+\cite[Theorem~3.1]{PoissonDirichlet}. We extract its scalar coefficient
+criterion and verify the full character and frequency estimates for
+the rough-factor comparison. The weights require $d-1$ to have a
+prime divisor in each of several prescribed ranges; these choices
+are the marks. A bounded multiplier in the bilinear estimate may
+depend on the quotient left after every power of these primes has
+been removed. A congruence condition on $d=mn$ need not have this
+invariance. We therefore expand $mn\equiv u\pmod M$ in Dirichlet
+characters and separate it into factors $\lambda(m)\lambda(n)$
+in the two scalar coefficient sequences. Fixed twists preserve
+the required long character-sum bound.
+
+The resulting fixed-progression construction is stated separately
+in Proposition~\ref{prop:controlled}. It applies to any fixed data
+$M,c,u$ satisfying its local coprimality conditions, independently
+of the primitive-root application. Its proof uses
+Bombieri--Vinogradov distribution, a Brun--Hooley block sieve,
+and the continuous rough-number density
+\cite{Bombieri65,Vinogradov65,FordHalberstam2000,Buchstab1937}.
+The precise elementary sieve and density forms are adapted from
+\cite[Lemmas~2.9 and~7.4]{BlockPaper}, with proofs included here.
+
+\subsection{Organization and notation}
+
+Section~\ref{sec:reduction} states the controlled-predecessor and
+splitting estimates and combines them to prove
+Theorem~\ref{thm:primitive-root}. Sections~\ref{sec:arithmetic}--\ref{sec:zero-free}
+prove Theorem~\ref{thm:hecke-zero-free} for a fixed arbitrary $F$
+and $\eta$, independently of the integer base. The analytic scale
+parameters in those sections are local to that proof.
+Section~\ref{sec:splitting} returns to the fixed integer $a$ and
+derives the uniform splitting bound. Section~\ref{sec:type-ii}
+proves the marked coefficient and rough-factor estimates;
+Section~\ref{sec:sieve} supplies the elementary sieve facts;
+Section~\ref{sec:prime-construction} proves the fixed-progression
+construction. Appendix~\ref{app:whittaker} verifies the selected
+Kazhdan--Patterson specialization and Whittaker normalization.
+
+Throughout, $\log$ is the natural logarithm, and $L=\log x$ in the
+prime-counting arguments. The symbols $\ll$ and
+$O$ have their usual meaning; subscripts record permitted dependence
+when it matters. Auxiliary parameters are fixed before the relevant
+asymptotic variable tends to infinity. Uniformity in those parameters
+is stated explicitly. The general representation-theoretic,
+class-field, Hecke-continuation, and classical sieve theorems are
+cited at their points of use. The marked Type II argument also uses
+the companion papers cited in the bibliography.

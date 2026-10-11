@@ -1,0 +1,277 @@
+\section{Two elementary sieve facts}\label{sec:sieve}
+
+The prime construction needs two elementary facts. The first estimates
+the mass left after excluding local divisibility conditions, with an
+explicit bound on the moduli in the error term. The second identifies
+the density removed when a least prime factor is selected. We give
+proofs, following the forms in \cite[Lemmas~2.9 and~7.4]{BlockPaper}.
+
+\subsection{A block sieve with bounded coefficients}
+
+The advantage of the following form of the Brun--Hooley sieve is that
+its remainders occur without divisor weights. Its underlying product
+inequalities are those of Ford and Halberstam
+\cite[Section~1, Lemma~1]{FordHalberstam2000}.
+
+\begin{lemma}[Block sieve]\label{lem:block}
+Let $\mathcal A$ be a finite set with nonnegative weights, and let
+$\mathcal P$ be a set of primes at most $z$, where $z\ge2$.
+For each $p\in\mathcal P$, specify a bad condition on $\mathcal A$.
+Suppose that, for every squarefree product $d$ of primes in
+$\mathcal P$, the weight of the objects satisfying all conditions
+at $p\mid d$ is
+\[
+ A(d)=X'g(d)+E(d),
+\]
+including $d=1$, where $X'\ge0$, $g(1)=1$, and $g$ is multiplicative.
+Assume that, for fixed constants $\eta_0>0$ and $C_0<\infty$,
+\begin{equation}\label{eq:block-hypotheses}
+ 0\le g(p)\le1-\eta_0,
+ \qquad
+ \sum_{\substack{v<p\le v^2\\p\in\mathcal P}}g(p)\le C_0
+ \quad(v>1).
+\end{equation}
+For every sufficiently large even integer $H$, the weight $S$ of
+objects avoiding all the bad conditions satisfies
+\begin{equation}\label{eq:block-sieve}
+ S=X'\prod_{p\in\mathcal P}(1-g(p))
+       \bigl(1+O(\exp(-H))\bigr)
+   +O\left(\sum_{\substack{d\le z^{4H+2}\\d\mid\prod_{p\in\mathcal P}p}}
+                  |E(d)|\right).
+\end{equation}
+The constants and the lower bound on $H$ depend only on
+$\eta_0,C_0$. In particular, the estimate is uniform when $H$ grows.
+For $H=2$ there is the upper bound
+\begin{equation}\label{eq:block-sieve-upper}
+ S\ll_{\eta_0,C_0}X'\prod_{p\in\mathcal P}(1-g(p))
+       +\sum_{\substack{d\le z^{10}\\d\mid\prod_{p\in\mathcal P}p}}
+                    |E(d)|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $b_p\in\{0,1\}$ for the indicator of the bad condition at $p$.
+Use the blocks
+\[
+ \mathcal B_j=\{p\in\mathcal P:
+        z^{2^{-j-1}}<p\le z^{2^{-j}}\},\qquad j\ge0,
+\]
+ignoring empty blocks and retaining the indicated indices.
+Put $h_j=(j+1)H$. Let $I_j$ be the indicator of avoiding the
+conditions in $\mathcal B_j$. Define $U_j$ to be the
+inclusion--exclusion polynomial through degree $h_j$, and $T_j$ to
+be the sum of the unsigned degree-$h_j+1$ inclusion--exclusion terms:
+\[
+ U_j=\sum_{\substack{J\subseteq\mathcal B_j\\|J|\le h_j}}
+             (-1)^{|J|}\prod_{p\in J}b_p,
+ \qquad
+ T_j=\sum_{\substack{J\subseteq\mathcal B_j\\|J|=h_j+1}}
+             \prod_{p\in J}b_p.
+\]
+If exactly $t$ conditions in the block hold, then, since $h_j$ is even,
+\[
+ U_j=\sum_{a=0}^{h_j}(-1)^a\binom ta
+ =\begin{cases}1,&t=0,\\ \binom{t-1}{h_j},&t\ge1.
+ \end{cases}
+\]
+As usual, a binomial coefficient vanishes when its lower index
+exceeds its nonnegative upper index. Thus
+$0\le I_j\le U_j$ and $U_j-I_j\le T_j$.
+Telescoping the product, all of whose factors are nonnegative, gives
+\[
+ 0\le\prod_jU_j-\prod_jI_j
+       \le\sum_jT_j\prod_{k\ne j}U_k.
+\]
+Consequently the polynomials
+\begin{equation}\label{eq:block-polynomials}
+ U=\prod_jU_j,
+ \qquad
+ B=U-\sum_jT_j\prod_{k\ne j}U_k
+\end{equation}
+satisfy $B\le\one_{\text{no bad condition}}\le U$.
+
+Every monomial in $U$ has degree at most $h_j$ in block $j$.
+A monomial in correction $j$ has degree exactly $h_j+1$ there
+and degree at most $h_k$ in every other block. Hence the supports
+of the corrections are disjoint from one another and from the
+support of $U$. All coefficients of both $B$ and $U$ therefore
+have absolute value at most one. The prime product indexing a
+monomial of $U$ has logarithm at most
+\[
+ \log z\sum_{j\ge0}(j+1)H2^{-j}=4H\log z.
+\]
+A correction adds at most $\log z$, so every monomial used is
+supported on a squarefree $d\le z^{4H+2}$.
+
+It remains to evaluate the main terms of these polynomials.
+Give the indicators $b_p$ independent Bernoulli laws with means
+$g(p)$, and write $\mathbb E$ for expectation under this auxiliary
+law. By \eqref{eq:block-hypotheses}, each block has total mean at
+most $C_0$. Its avoidance probability satisfies
+\[
+ a_j:=\mathbb E I_j=\prod_{p\in\mathcal B_j}(1-g(p))
+       \ge \exp(-C_0/\eta_0)=:a_*>0,
+\]
+because $-\log(1-u)\le u/\eta_0$ for $0\le u\le1-\eta_0$.
+Moreover,
+\[
+ t_j:=\mathbb E T_j\le\frac{C_0^{h_j+1}}{(h_j+1)!},
+ \qquad a_j\le\mathbb E U_j\le a_j+t_j.
+\]
+The factorial bound implies
+\[
+ R_H:=\sum_j\frac{t_j}{a_j}\ll_{\eta_0,C_0}\exp(-H)
+\]
+for all sufficiently large even $H$: for sufficiently large $n$,
+$C_0^n/n!\le\exp(-2n)$, and $h_j=(j+1)H$.
+For $H=2$, the same sum is bounded in terms of $\eta_0,C_0$.
+Independence of the blocks now yields
+\[
+ \prod_ja_j\le\mathbb E U\le \prod_ja_j\exp(R_H),
+ \qquad
+ \mathbb E(U-B)\le \prod_ja_j R_H\exp(R_H).
+\]
+Thus both bounding polynomials have expectation
+$\prod_ja_j(1+O(\exp(-H)))$ when $H$ is sufficiently large;
+for $H=2$, the upper expectation is $O(\prod_ja_j)$.
+
+Finally evaluate $U$ and $B$ in the original weighted set.
+Multiplicativity makes their main terms $X'\mathbb E U$ and
+$X'\mathbb E B$. The coefficient and support bounds show that
+each error is at most the sum of $|E(d)|$ in
+\eqref{eq:block-sieve}. Squeezing $S$ between the two weighted
+polynomial sums proves both assertions.
+\end{proof}
+
+\subsection{Rough-number densities}
+
+Recall the density $D_\gamma(s)$ from
+\eqref{eq:rough-density-definition}. Its $j$th term describes a
+product of $j$ primes whose logarithms, in units of $\log x$, sum
+to $s$ and are at least $\gamma$; the factor $1/j!$ normalizes the
+ordered prime lists. These are Buchstab's rough-number densities,
+expressed in logarithmic coordinates. The identity below is the
+corresponding least-prime-factor decomposition \cite{Buchstab1937}.
+The normalization and regularity were established in
+Section~\ref{sec:type-ii}; we now prove the two estimates needed to
+subtract composite mass.
+
+For the product $V(y)$ in \eqref{eq:sieve-basic-parameters},
+Mertens' theorem gives
+\begin{equation}\label{eq:mertens-product}
+ V(y)\sim\frac{\exp(-\gamma_E)}{\log y},
+\end{equation}
+where $\gamma_E$ is Euler's constant.
+
+\begin{lemma}[Rough-number density]\label{lem:density}
+For $0<b<1/2$,
+\begin{equation}\label{eq:density-identity}
+ \int_b^{1/2}D_t(1-t)\,\frac{dt}{t}=D_b(1)-1,
+\end{equation}
+where the integrand at $1/2$ is interpreted by its left limit.
+There are absolute constants $b_0,c_d,C_d>0$ such that, for
+$0<b<b_0$,
+\begin{equation}\label{eq:density-upper}
+ D_b(1)\le\frac{\exp(-\gamma_E)}{b}
+                 \bigl(1+C_d\exp(-c_d/b)\bigr).
+\end{equation}
+One may take \(c_d=1/20\).
+\end{lemma}
+
+\begin{proof}
+To prove \eqref{eq:density-identity}, write a term of $D_b(1)$ with
+$j\ge2$ as an integral on
+\[
+ t_1+\cdots+t_j=1,\qquad t_i\ge b,
+ \qquad
+ \frac1{j!}\frac{dt_1\cdots dt_{j-1}}{t_1\cdots t_j}.
+\]
+This measure is invariant under permutations of the $j$ coordinates:
+interchanging a dependent and an independent coordinate has absolute
+Jacobian one. Except on a set of measure zero, the minimum coordinate
+is unique. Choose it in $j$ ways and call its value $t$.
+The remaining $j-1$ coordinates sum to $1-t$ and are at least $t$;
+their measure is the $(j-1)$-factor term of $D_t(1-t)$, multiplied
+by $dt/t$, since $j/j!=1/(j-1)!$. Necessarily $t\le1/2$.
+Summing over $j\ge2$ proves the identity; the omitted one-prime
+term of $D_b(1)$ equals $1$.
+
+For \eqref{eq:density-upper}, we compare $D_b(1)$ with ordinary
+rough integers and then apply Lemma~\ref{lem:block}. Fix $b>0$,
+put $L=\log x$, and let
+\[
+ R_b(x)=\#\{n\in\mathbb{N}:x<n\le2x,\ P^-(n)>x^b\}.
+\]
+We first claim that
+\begin{equation}\label{eq:density-rough-lower}
+ D_b(1)\le\liminf_{x\to\infty}\frac{L}{x}R_b(x).
+\end{equation}
+For $j\ge2$ and fixed $\eta>0$, count ordered prime lists
+$(p_1,\ldots,p_j)$ with weight $1/j!$, subject to
+\[
+ p_i>x^b\quad(i<j),\qquad
+ Q:=p_1\cdots p_{j-1}<x^{1-b-\eta},\qquad
+ x/Q<p_j\le2x/Q.
+\]
+Every product counted is in $R_b(x)$, because $p_j>x^{b+\eta}$.
+An integer with prime multiplicities $e_1,e_2,\ldots$ receives
+total weight at most $1/\prod_i e_i!\le1$, even when prime factors
+repeat. Its total number of prime factors also determines $j$.
+Thus summing these counts over $j$, together with the one-prime
+contribution, gives a lower bound for $R_b(x)$.
+
+Uniformly in the indicated range of $Q$, the prime number theorem gives
+\[
+ \#\{p_j:x/Q<p_j\le2x/Q\}
+  =(1+o(1))\frac{x}{Q\log(x/Q)}.
+\]
+For fixed $0<\alpha<\beta$, Mertens' theorem gives
+\[
+ \sum_{x^\alpha<p\le x^\beta}\frac1p
+       \longrightarrow\log(\beta/\alpha).
+\]
+Consequently the reciprocal-prime measures on any fixed compact
+interval of positive logarithmic exponents converge to $dt/t$.
+Their finite products converge as well. On the truncated simplex
+$t_i\ge b$, $\sum_{i<j}t_i<1-b-\eta$, the function
+$(1-\sum_{i<j}t_i)^{-1}$ is bounded, and its boundary has measure
+zero. The weighted count above, multiplied by $L/x$, therefore
+tends to
+\[
+ \frac1{j!}
+ \int_{\substack{t_i\ge b\ (i<j)\\
+                       \sum_{i<j}t_i<1-b-\eta}}
+       \frac{1}{1-\sum_{i<j}t_i}\prod_{i<j}\frac{dt_i}{t_i}.
+\]
+There are only finitely many relevant $j$ for fixed $b$.
+The one-prime contribution tends to $1$. First let $x$ tend to
+infinity with $b,\eta$ fixed, and then let $\eta$ decrease to zero.
+The boundary hyperplanes are null, so these integrals increase to
+the terms in $D_b(1)$. This proves \eqref{eq:density-rough-lower}.
+
+For the upper bound on $R_b(x)$, apply Lemma~\ref{lem:block} to
+the integers in $(x,2x]$, with bad conditions $p\mid n$ for
+$p\le z=x^b$. Here $X'=x$, $g(d)=1/d$, and $E(d)=O(1)$,
+uniformly in $d$. The hypotheses hold with absolute constants:
+$g(p)\le1/2$, and the sums of $1/p$ over $(v,v^2]$ are bounded.
+Choose
+\[
+ H=2\left\lfloor\frac{1}{40b}\right\rfloor.
+\]
+For sufficiently small $b$, this is an admissible even integer,
+$H\gg1/b$, and $b(4H+2)\le1/5+2b<1$.
+Lemma~\ref{lem:block} gives, with absolute implied constants,
+\[
+ R_b(x)\le xV(x^b)\bigl(1+O(\exp(-c/b))\bigr)
+                +O\bigl(x^{1/5+2b}\bigr)
+\]
+with \(c=1/20\), since \(\exp(-H)\le\e^2\exp(-1/(20b))\).
+Multiplying by $L/x$, applying \eqref{eq:mertens-product}, and
+letting $x$ tend to infinity proves \eqref{eq:density-upper}
+by \eqref{eq:density-rough-lower}.
+\end{proof}
+
+The term $1$ in \eqref{eq:density-identity} is the one-prime
+contribution. The integral accounts for the composite contributions
+by selecting their least prime factor. This is the cancellation
+that will leave a positive prime mass in the construction below.

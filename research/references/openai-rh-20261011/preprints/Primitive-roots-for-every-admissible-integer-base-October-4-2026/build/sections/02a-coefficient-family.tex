@@ -1,0 +1,179 @@
+\section{The coefficient family and analytic comparison}
+\label{sec:coefficient-family}
+\label{subsec:coefficient-family}
+
+The two analytic evaluations use the same family of coefficient sums.  We
+define that family and state the second moment proved by the theta and
+reflection arguments, then explain how the moment enters the zero-free
+argument.
+
+Retain the field \(F\), the final set \(S\), the ring \(R=\mathcal O_S\),
+and the generator convention fixed in \Cref{sec:arithmetic}.  Unless
+explicitly stated otherwise, all ideals in this section are integral
+exterior ideals.  A roman letter
+representing an ideal is always an allowed \(B\)-generator; it need not be
+balanced unless this is stated.  In particular, products of allowed prime
+generators are permitted.  The row variable \(m\) below ranges over all of
+\(R\).
+
+For \(\re s>1\), write
+\(\zeta_F^S(s)=\sum_{\mathfrak a}q_{\mathfrak a}^{-s}\) for the Dedekind
+zeta function with its factors at \(S\) omitted, and set
+\[
+ L_F^S(s,\eta)=L^S(s,\eta):=\prod_{\mathfrak p\notin S}
+       (1-\eta(\mathfrak p)q_{\mathfrak p}^{-s})^{-1}.
+\]
+The latter notation also denotes the usual meromorphic continuation of
+this incomplete Hecke \(L\)-function; a principal pole is permitted.  All
+primes dividing the conductor of \(\eta\) already lie in \(S\), so there
+are no further omitted exterior factors for this target character.
+For \(t>0\) put
+\begin{equation}\label{eq:reflection-gaussian}
+ P_G(t)=\frac{1}{2\sqrt\pi}\exp\!\left(-\frac{(\log t)^2}{4}\right),
+ \qquad
+ \int_0^\infty P_G(t)t^\xi\,\frac{\dd t}{t}=e^{\xi^2}
+ \quad(\xi\in\C).
+\end{equation}
+The transform identity follows by putting \(v=\log t\) and completing the
+square, first for real \(\xi\) and then by entire continuation.  Write
+\(\vartheta=\overline\Lambda\,\overline G\,\eta\).  For \(m\in R\)
+and \(Z>0\) define
+\begin{equation}\label{eq:reflection-B-definition}
+ B_m(Z)=
+ \sum_{\substack{\mathfrak c\ \mathrm{squarefree}\\ \mathfrak n}}
+ \frac{\gamma_2(\mathfrak c)}{q_{\mathfrak c}^{1/2}q_{\mathfrak n}}
+ \vartheta(\mathfrak A)\chi_{\mathfrak A}(m)
+ P_G\!\left(\frac{q_{\mathfrak A}}{Z}\right),
+ \qquad
+ \mathfrak A=\mathfrak c\mathfrak n^3,\quad A=c n^3.
+\end{equation}
+Here \(c,n,A\) are allowed generators, and \(\mathfrak n\) is unrestricted,
+so it may share primes with \(\mathfrak c\).
+Every residue-character power has the zero extension on nonunits fixed in
+\Cref{sec:arithmetic}, including powers with exponent zero modulo six.
+The sum is independent of the permitted generator choices.  It converges
+absolutely: \(|\gamma_2(\mathfrak c)|=1\) for squarefree \(\mathfrak c\),
+and for any \(\sigma>1/2\) the bound \(P_G(t)\ll_\sigma t^{-\sigma}\)
+reduces the absolute sum, after a factor \(O_\sigma(Z^\sigma)\), to
+\begin{equation}\label{eq:reflection-original-dirichlet-majorant}
+ \sum_{\mathfrak c,\mathfrak n}
+ q_{\mathfrak c}^{-1/2-\sigma}q_{\mathfrak n}^{-1-3\sigma}
+ \leq \zeta_F^S(\sigma+1/2)\zeta_F^S(3\sigma+1)<\infty.
+\end{equation}
+At \(m=0\), the mask kills every term with \(\mathfrak A\ne R\), so
+\(B_0(Z)=P_G(1/Z)\).  The factor
+\(\gamma_2(\mathfrak c)/(q_{\mathfrak c}^{1/2}q_{\mathfrak n})\) will be
+identified in \Cref{sec:theta} as the exterior coefficient supplied by the
+normalized local theta formula.
+
+The comparison uses rows at scale \(XY\), where
+\begin{equation}\label{eq:reflection-scales}
+\begin{gathered}
+ a=\frac9{10},\qquad b=\frac{133}{1000},\qquad
+ M_0=a+b=\frac{1033}{1000},\\
+ h_0=1-a=\frac1{10},\qquad X=Z^a,\quad Y=Z^b.
+\end{gathered}
+\end{equation}
+Recall the norm section \(\ell_T\) fixed in \Cref{sec:arithmetic}, for which
+\(|\ell_T|_S=T\).  If \(\mathscr K\subset F_S^\times\) is compact, set
+\[
+ \mathscr B_Z(\mathscr K)=R\cap\ell_{Z^{M_0}}\mathscr K.
+\]
+Thus every local absolute value of \(\ell_{Z^{M_0}}^{-1}m\) is bounded
+above and away from zero on this set.  These are the compact balanced
+annular row sets used below.  For \(m\ne0\) decompose its exterior ideal
+uniquely as
+\[
+ (m)_S=\mathfrak h(m)\mathfrak d(m),
+ \qquad
+ \mathfrak h(m)=\prod_{v_{\mathfrak p}(m)\geq2}
+                    \mathfrak p^{v_{\mathfrak p}(m)},
+ \qquad
+ \mathfrak d(m)=\prod_{v_{\mathfrak p}(m)=1}\mathfrak p.
+\]
+The ideal \(\mathfrak d(m)\) is squarefree and coprime to \(\mathfrak h(m)\);
+every prime exponent of \(\mathfrak h(m)\) is at least two.  We call such an
+ideal powerful.
+
+The theta and reflection arguments in \Cref{sec:theta,sec:reflection}
+prove the following estimate.
+
+\begin{proposition}[Reflected second moment]\label{prop:reflection}
+Let \(F\) be a fixed cyclotomic field containing \(\mu_{12}\), let \(S\) and the
+arithmetic data be as above, and fix a compact subset
+\(\mathscr K\subset F_S^\times\).  For every \(\epsilon>0\), every \(Z\geq2\),
+and all dyadic lengths \(P,D\geq1\),
+\begin{equation}\label{eq:reflection-dyadic-mass}
+ \sum_{\substack{m\in\mathscr B_Z(\mathscr K)\\
+        P\leq q_{\mathfrak h(m)}<2P\\
+        D\leq q_{\mathfrak d(m)}<2D}}
+ |B_m(Z)|^2
+ \ll_{F,S,\eta,\mathscr K,\epsilon}
+ Z^\epsilon P^{1/2}\left(D+\frac{D^2P}{Z}\right).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:reflection-total-mass}
+ \sum_{m\in\mathscr B_Z(\mathscr K)}|B_m(Z)|^2
+ \ll_{F,S,\eta,\mathscr K,\epsilon} Z^{2M_0-1+\epsilon}.
+\end{equation}
+The estimate is uniform if \(\mathscr K\) is multiplied by an element of any
+fixed compact subset of the norm-one group of \(F_S^\times\).
+\end{proposition}
+
+Here is the analytic comparison proved in \Cref{sec:poisson,sec:zero-free}.
+The first of those sections constructs a scalar
+\(I_Z=I(Z^a,Z^b,Z)\) by pairing \(B_m(Z)\), on a fixed compact annular
+row set of scale \(XY\), with a normalized sum of
+\(\chi_{\mathfrak s}(d)\e(-md/s)\), where
+\(q_{\mathfrak s}\asymp Y\) and \(d\in(R/\mathfrak s)^\times\).
+It specifies the weights and the average over \(F_S^1/U_S^6\).
+The whole additive factor has squared row mass \(O(Y^{-1})\), uniformly in
+that average.  Hence \Cref{eq:reflection-total-mass} and Cauchy--Schwarz give,
+for every \(\epsilon>0\),
+\[
+ I_Z\ll Z^{(2M_0-1-b)/2+\epsilon}
+       =Z^{933/2000+\epsilon}.
+\]
+The constants here and below may depend on the fixed \(F,S,\eta\) and the
+fixed weights, as well as on any displayed loss.
+
+Poisson summation gives a second evaluation.  Its nonzero frequencies are
+grouped by \(u\in\mathcal U\) through \Cref{eq:frequency-decomposition}.
+Only the principal class \(u=1\), the class of sixth powers, contributes
+both numerator poles in the auxiliary Mellin variables: \(w=1\) and
+\(z=1/6\).  The Euler calculation constructs a specific principal correction
+\(\mathcal H_\eta(s)\) by specializing the correction for \(u=1\) at
+\((w,z)=(1,1/6)\).  It proves that \(\mathcal H_\eta\) is holomorphic and
+nowhere zero on an open neighborhood of the closed half-plane
+\(\re s\ge .998\), and is bounded on that closed half-plane uniformly in
+height.  The double residue equals \(c_0f_\eta(Z)\), where \(c_0\ne0\) and
+\[
+ f_\eta(Z)=\frac1{2\pi i}\int_{(2)}
+       Z^{s-8/15}e^{(s-5/6)^2}
+       \frac{\mathcal H_\eta(s)}{L^S(s,\eta)}\,ds
+       \qquad(Z>0).
+\]
+The exponent left by the two residues is
+\(a/2+s-1+h_0/6=s-8/15\), whose value at \(s=1\) is \(7/15\).
+
+The zero-detection argument proves, for sufficiently large \(Z\),
+\[
+ I_Z=c_0f_\eta(Z)+O(Z^{7/15-.0004}).
+\]
+Since \(933/2000=7/15-1/6000\), this identity and the preceding bound,
+with the stated losses, give \(f_\eta(Z)\ll Z^{7/15-1/20000}\).
+Moving the original \(s\)-line in the inverse Mellin integral to the right
+gives \(f_\eta(Z)=O_A(Z^A)\) for every \(A>0\) and \(0<Z\le1\).
+Consequently the shifted Mellin transform
+\(\int_0^\infty f_\eta(Z)Z^{-s+8/15}\,dZ/Z\) is holomorphic for
+\(\re s>1-1/20000\).  Fourier inversion on \(\re s=2\), followed by
+meromorphic continuation, identifies it throughout that half-plane with
+\[
+ e^{(s-5/6)^2}\frac{\mathcal H_\eta(s)}{L^S(s,\eta)}.
+\]
+Its numerator is holomorphic and nowhere zero there, so \(L^S(s,\eta)\)
+has no zero there; a principal pole only gives a zero of the reciprocal.
+The numerical saving \(1/20000\) is absolute; the constants and thresholds
+may depend on \(F,S,\eta\).  The later
+sections supply the residue calculation and the contour and Fourier
+justifications.

@@ -1,0 +1,764 @@
+\section{Zero detection and Mellin continuation}\label{sec:zero-free}
+
+We now prove \Cref{thm:hecke-zero-free} for the fixed but arbitrary
+\(F\) and \(\eta\).  The factorization in
+\Cref{prop:euler-product} singles out the frequency \(u=1\): it is the
+only row whose numerator \(L\)-function has a pole.  We shall bound the
+other rows by a conductor large sieve, isolate the two residues of that
+principal row, and compare them with \Cref{prop:probe-low}.  The resulting
+bound for one Mellin integral will exclude zeros of the target function.
+
+\subsection{A conductor large sieve and a zero detector}
+
+Let \(\omega_u\) denote the primitive Hecke character inducing
+\(\eta\overline{\chi_\bullet(u)}\).  By
+\Cref{lem:kummer-characters}, on a dyad \(U\le q_u<2U\),
+\begin{equation}
+ \Norm\mathfrak f_{\omega_u}\ll_{F,S,\eta}U,
+ \qquad
+ \#\{u\in\mathcal U:U\le q_u<2U\}\ll_{F,S}U .
+\label{eq:row-conductor-count}
+\end{equation}
+The second bound follows from the ideal count and the finite number of
+S-unit classes modulo sixth powers.  The characters \(\omega_u\) in this
+family are distinct: equality cancels the fixed twist and forces \(u/v\)
+to be a sixth power in \(F\); the selected exterior valuations then agree,
+and the quotient is in \(U_S^6\).  Their local components at \(S\) run
+through a fixed finite set, since the Kummer part depends on
+\(F_v^\times/F_v^{\times6}\).  The principal numerator occurs only for
+\(u=1\).  The primitive denominator \(\omega_u\) may be principal for
+a different row, so it will be treated separately in zero detection.
+
+We give the conductor estimate required for that detection.  In the next
+lemma and in the detector, ideals without the adjective exterior are
+integral ideals of \(\mathcal O_F\), and \(q_{\mathfrak n}=\Norm\mathfrak n\)
+also for those ideals.
+
+\begin{lemma}[Primitive conductor large sieve]\label{lem:conductor-sieve}
+Fix \(C_0>0\) and a finite set \(\mathscr L_S\) of possible local components at \(S\).
+Let \(\mathscr X(U)\) be any family of distinct primitive finite-order
+Hecke characters of \(F\) whose conductor norms are at most \(C_0U\)
+and whose components at \(S\) belong to that set.  For \(N,U\ge2\),
+any complex coefficients \(b_{\mathfrak n}\), and every \(\epsilon>0\),
+\begin{equation}
+ \sum_{\omega\in\mathscr X(U)}
+ \left|\sum_{q_{\mathfrak n}\le N}
+               b_{\mathfrak n}\omega(\mathfrak n)\right|^2
+ \ll_{F,S,C_0,\mathscr L_S,\epsilon}
+       (N+U^2)(NU)^\epsilon
+       \sum_{q_{\mathfrak n}\le N}|b_{\mathfrak n}|^2 .
+\label{eq:conductor-sieve}
+\end{equation}
+As usual a primitive character is extended by zero on ideals meeting
+its conductor.
+\end{lemma}
+
+\begin{proof}
+First restrict the coefficient ideals to one exterior norm dyad and the
+characters to one choice of their components at \(S\).  If
+\(\mathfrak q\) is the exterior part of the conductor, principality of
+\(R\) and the global character relation write the value at
+\(\mathfrak n=nR\), for its selected balanced generator \(n\), as
+\[
+ \omega(\mathfrak n)=\lambda_S(n)\lambda_{\mathfrak q}(n).
+\]
+Here \(\lambda_S\) is a common fixed unitary function of the
+S-components, and \(\lambda_{\mathfrak q}\) is a primitive residue
+character modulo \(\mathfrak q\).  The orientation of the local
+characters is absorbed in these two symbols.  The formula includes zero
+on nonunits.  It follows directly by evaluating the idele character at
+the rational element \(n\): the unramified exterior components give
+\(\omega(\mathfrak n)\), leaving the ramified exterior components and
+the components in \(S\).  In particular, for this fixed S-choice the
+residue character determines \(\omega\).
+
+Let \(q\) be a balanced generator of \(\mathfrak q\).  By
+\Cref{lem:s-lattice}, \((n,d)\mapsto\e(nd/q)\) is a perfect additive
+pairing on \(R/\mathfrak q\).  Put
+\[
+ \tau(\overline{\lambda_{\mathfrak q}})
+   =\sum_{d\bmod\mathfrak q}
+          \overline{\lambda_{\mathfrak q}(d)}\,\e(d/q).
+\]
+For a primitive residue character, this Gauss sum has modulus
+\(q_{\mathfrak q}^{1/2}\), and
+\[
+ \lambda_{\mathfrak q}(n)=
+ \frac1{\tau(\overline{\lambda_{\mathfrak q}})}
+       \sum_{d\bmod\mathfrak q}
+       \overline{\lambda_{\mathfrak q}(d)}\,\e(nd/q).
+\]
+For a unit \(n\) this follows by a change of residue variable.  For a
+nonunit the Gauss sum is zero: locally at a prime dividing \(n\) the
+additive character factors through a proper quotient of the conductor,
+and multiplication by a unit in the kernel of that quotient on which
+the primitive multiplicative character is nontrivial forces the sum to
+vanish.  Finite additive Parseval now gives
+\[
+ \sum_{n\bmod\mathfrak q}
+ \left|\sum_{d\bmod\mathfrak q}
+       \overline{\lambda_{\mathfrak q}(d)}\e(nd/q)\right|^2
+       =q_{\mathfrak q}|(R/\mathfrak q)^\times|.
+\]
+The left side is
+\(|(R/\mathfrak q)^\times|\,|\tau(\overline{\lambda_{\mathfrak q}})|^2\),
+which proves the asserted modulus.  Put
+\[
+ T_{d/q}=\sum_{\mathfrak n}b_{\mathfrak n}\lambda_S(n)\e(nd/q).
+\]
+Sum the square of the preceding Gauss expansion over the characters of
+conductor \(\mathfrak q\).  Extending that sum to all residue characters
+and using character orthogonality bounds it by
+\[
+ \frac{|(R/\mathfrak q)^\times|}{q_{\mathfrak q}}
+       \sum_{d\in(R/\mathfrak q)^\times}|T_{d/q}|^2
+ \le \sum_{d\in(R/\mathfrak q)^\times}|T_{d/q}|^2 .
+\]
+The same assertion holds for the unit conductor with its single residue.
+Sum now over \(q_{\mathfrak q}\le C_0U\).
+The fractions are distinct reduced fractions.  The balanced generators
+of the coefficient ideals on a norm dyad lie in \(\ell_{N'}K\) for one
+fixed compact \(K\), with \(N'\le N\), by
+\Cref{lem:balanced-generators}.  The dual assertion of
+\Cref{lem:additive-sieve}, with \(V=\max(2,C_0U)\), bounds this sum by
+\((N+U^2)\sum|b_{\mathfrak n}|^2\).
+
+To pass to all exterior lengths at most \(N\), split into dyads and use
+Cauchy--Schwarz, at a logarithmic cost.  For general \(\mathcal O_F\)
+ideals write \(\mathfrak n=\mathfrak n_S\mathfrak n^S\), with the first
+factor supported in \(S_f\).  There are
+\(O_S((1+\log N)^{|S_f|})\) possibilities for \(\mathfrak n_S\).
+Within a fixed S-choice the value \(\omega(\mathfrak n_S)\) is fixed
+(or zero).  Cauchy--Schwarz over these possibilities and the preceding
+exterior estimate introduce only powers of \(\log N\); the square masses
+over the disjoint pieces sum to the original square mass.  The finite
+partition by S-components costs a constant.  Absorbing all logarithms
+into \((NU)^\epsilon\) proves \Cref{eq:conductor-sieve}.
+\end{proof}
+
+We use standard Hecke continuation and the functional equation in a
+deliberately conservative convexity bound.  For a nonprincipal primitive
+finite-order \(\omega\) with \(\Norm\mathfrak f_\omega\ll U\), there is
+an \(A_F>0\), depending on the fixed field, such that on any of the
+fixed strips below, in particular for \(.003\le\sigma\le4\),
+\begin{equation}
+ |L_F(\sigma+it,\omega)|
+       \ll_{F,S,\eta,\epsilon}U^{1/2+\epsilon}(2+|t|)^{A_F}.
+\label{eq:Hecke-conservative-convexity}
+\end{equation}
+This follows from the functional equation, the absolutely convergent
+Euler product on a right line, and the Phragmén--Lindelöf principle;
+the gamma factors contribute the field-dependent height power
+\cite[Main Theorem~4.4.1 and \S4.5]{Tate67}.  The same estimates give polynomial height bounds
+on any fixed strip for \((s-1)\zeta_F(s)\).  Omitting factors at a fixed set or
+at primes dividing \(u\) changes a positive-real-part estimate by
+\(q_u^\epsilon\): for a fixed \(\sigma_*>0\), each of
+\[
+ \prod_{\mathfrak p\mid(u)R}(1+q_{\mathfrak p}^{-\sigma_*}),
+ \qquad
+ \prod_{\mathfrak p\mid(u)R}(1-q_{\mathfrak p}^{-\sigma_*})^{-1}
+\]
+is \(O_{\epsilon,\sigma_*}(q_u^\epsilon)\), by bounding a sufficiently
+large prime's factor by \(q_{\mathfrak p}^\epsilon\) and absorbing the
+finitely many other primes into the constant.
+
+\begin{proposition}\label{prop:zero-density}
+For the fixed \(F,S,\eta\) there are \(\rho>0\) and \(U_0\) with the
+following property.  For every \(U\ge U_0\), there is a set
+\(\mathcal E(U)\subset\{u\in\mathcal U:U\le q_u<2U\}\) of cardinality
+\[
+ |\mathcal E(U)|\ll_{F,S,\eta}U^{1/2}
+\]
+which contains every row for which \(\omega_u\) is principal or
+\(L_F(s,\omega_u)\) has a zero with
+\(\re s\ge .996\) and \(|\im s|\le4U^\rho\).
+For \(u\notin\mathcal E(U)\) and every \(\epsilon>0\),
+\begin{equation}
+ \left|L^S(\xi,\eta\overline{\chi_\bullet(u)})^{-1}\right|
+       \ll_{F,S,\eta,\epsilon}U^\epsilon
+ \qquad
+       (\re\xi\ge .998,\ |\im\xi|\le2U^\rho).
+\label{eq:good-reciprocal}
+\end{equation}
+The exponents \(.996,.998,1/2\) are absolute.  The height exponent
+\(\rho\), the constants, and \(U_0\) may depend on the fixed data.
+\end{proposition}
+
+\begin{proof}
+Set \(\sigma_0=.996\).  For a primitive nonprincipal character \(\omega\)
+in the family of \Cref{eq:row-conductor-count}, define the truncated
+inverse and its product coefficients by
+\[
+ D_U(s,\omega)=\sum_{q_{\mathfrak d}\le U^2}
+        \mu_F(\mathfrak d)\omega(\mathfrak d)q_{\mathfrak d}^{-s},
+ \qquad
+ \alpha_U(\mathfrak n)
+    =\sum_{\substack{\mathfrak d\mid\mathfrak n\\q_{\mathfrak d}\le U^2}}
+         \mu_F(\mathfrak d).
+\]
+Here \(\mu_F\) is the Möbius function of integral \(\mathcal O_F\)
+ideals.  In absolute convergence,
+\[
+ L_F(s,\omega)D_U(s,\omega)
+       =\sum_{\mathfrak n}\alpha_U(\mathfrak n)
+                    \omega(\mathfrak n)q_{\mathfrak n}^{-s}.
+\]
+Complete multiplicativity with the primitive zero extension justifies
+this identity also on ideals meeting the conductor.  The coefficients
+are independent of \(\omega\) and satisfy
+\begin{equation}
+ \alpha_U(1)=1,\qquad
+ \alpha_U(\mathfrak n)=0\quad(1<q_{\mathfrak n}\le U^2),\qquad
+ |\alpha_U(\mathfrak n)|\le\tau_F(\mathfrak n)
+                 \ll_{F,\epsilon}q_{\mathfrak n}^\epsilon.
+\label{eq:detector-coefficients}
+\end{equation}
+
+The coefficients with \(1<q_{\mathfrak n}\le U^2\) have vanished.
+We shall show that at a zero in the stated rectangle the full
+exponentially smoothed sum is \(o(1)\).  After its exponential tail is
+discarded, the unit coefficient must therefore be cancelled, up to \(o(1)\),
+by terms with
+\(U^2<q_{\mathfrak n}\le U^{11}\).  A dyadic prefix of those terms is
+consequently large.  The conductor sieve will bound the number of
+characters for which such a prefix can be large at any allowed height.
+
+Suppose \(L_F(\beta+i\gamma,\omega)=0\) with
+\(\beta\ge\sigma_0\), \(|\gamma|\le4U^\rho\).  Absolute convergence of
+the Euler product implies \(\beta\le1\).  Mellin inversion of the
+exponential gives, with \(c>1\),
+\begin{equation}
+ \begin{split}
+ \sum_{\mathfrak n}\alpha_U(\mathfrak n)\omega(\mathfrak n)
+       q_{\mathfrak n}^{-\beta-i\gamma}e^{-q_{\mathfrak n}/U^{10}}
+   =\frac1{2\pi i}\int_{(c)}
+   L_F(\beta+i\gamma+v,\omega)D_U(\beta+i\gamma+v,\omega)
+          \Gamma(v)U^{10v}\,dv .
+ \end{split}
+\label{eq:zero-detector}
+\end{equation}
+Move the \(v\)-line to \(\re v=1/2-\beta\), which lies between
+\(-1/2\) and \(-.496\).  The only crossed gamma pole is \(v=0\), and
+its residue vanishes because \(L_F(\beta+i\gamma,\omega)=0\).
+The character is nonprincipal, so its \(L\)-function has no pole in the
+shift.  The gamma decay and the polynomial height bounds justify the
+horizontal limits.
+
+On the new line the fixed-field ideal count gives
+\[
+ |D_U(1/2+it,\omega)|
+       \le\sum_{q_{\mathfrak d}\le U^2}q_{\mathfrak d}^{-1/2}
+       \ll_F U.
+\]
+Use \Cref{eq:Hecke-conservative-convexity} and integrate the gamma
+factor.  The right side of \Cref{eq:zero-detector} is at most
+\begin{equation}
+ \ll U^{10(1/2-\beta)+1/2+1+\epsilon}(1+|\gamma|)^{A_F}
+ \ll U^{-3.46+A_F\rho+\epsilon}.
+\label{eq:detector-shift-bound}
+\end{equation}
+Choose once and for all
+\[
+ 0<\rho<\min\left\{\frac1{10},\frac1{A_F+1}\right\}
+\]
+and then take the preliminary loss small.  The last bound is \(o(1)\).
+
+The first term on the left of \Cref{eq:zero-detector} is
+\(e^{-U^{-10}}=1+o(1)\), and the intervening terms through \(U^2\)
+vanish by \Cref{eq:detector-coefficients}.  The portion with
+\(q_{\mathfrak n}>U^{11}\) is exponentially small, uniformly in
+\(\beta\ge\sigma_0\): the divisor bound and ideal count majorize it by
+a fixed power of \(U\) times \(e^{-U/2}\).  It follows that the sum
+over \(U^2<q_{\mathfrak n}\le U^{11}\) has modulus bounded below by a
+positive constant.  Decompose this interval into \(O(\log U)\) dyads.
+On any such dyad the remaining real weight is
+\[
+ t^{\sigma_0-\beta}e^{-t/U^{10}},
+\]
+which is nonnegative, decreasing, and at most one.  Partial summation
+therefore bounds its weighted sum by twice the maximum modulus of the
+unweighted prefix sums.  Consequently for at least one dyadic
+\(U^2/2<N\le U^{11}\) and one \(y\in[N,2N]\),
+\begin{equation}
+ \left|\sum_{N<q_{\mathfrak n}\le y}
+      \alpha_U(\mathfrak n)\omega(\mathfrak n)
+      q_{\mathfrak n}^{-\sigma_0-i\gamma}\right|
+       \gg(\log U)^{-1}.
+\label{eq:detecting-partial-sum}
+\end{equation}
+
+We spell out the two maximal estimates needed to use the conductor
+sieve on this assertion.  Order the ideals on a dyad by norm, with any
+fixed order for ties.  A prefix is the disjoint union of at most
+\(O(\log N)\) binary index intervals.  Cauchy--Schwarz and summation
+over those intervals bound the squared maximum of all prefixes by the
+sum of their squared interval sums, with \(O((\log N)^2)\) total cost
+after the large sieve is applied; every coefficient occurs in one
+interval at each level.  For a fixed interval its Dirichlet polynomial
+\(P_\omega(t)\) satisfies on a unit interval the elementary bound
+\[
+ \sup_{t\in[j,j+1]}|P_\omega(t)|^2
+ \ll\int_{j-1}^{j+2}
+        \bigl(|P_\omega(t)|^2+|P_\omega'(t)|^2\bigr)\,dt.
+\]
+The derivative only multiplies its coefficients by
+\(\log q_{\mathfrak n}\ll\log N\).  Apply
+\Cref{lem:conductor-sieve} at each \(t\), and sum these integrals over
+\(|t|\le4U^\rho\).  This costs \(U^\rho\) and powers of logarithms.
+The squared coefficient mass on a dyad is
+\[
+ \sum_{N<q_{\mathfrak n}\le2N}
+       |\alpha_U(\mathfrak n)|^2q_{\mathfrak n}^{-2\sigma_0}
+       \ll_{F,\epsilon}N^{1-2\sigma_0+\epsilon}.
+\]
+Since \(N>U^2/2\) and \(N\le U^{11}\), the nonlogarithmic cost in
+\Cref{eq:conductor-sieve} is bounded by
+\begin{equation}
+ (N+U^2)N^{1-2\sigma_0+\epsilon}
+       \ll N^{2-2\sigma_0+\epsilon}
+       \ll U^{.088+O(\epsilon)} .
+\label{eq:density-exponent}
+\end{equation}
+Here \(2-2\sigma_0=.008\), and \(11(.008)=.088\); the factor
+\((NU)^\epsilon\) in the large sieve is included in \(U^{O(\epsilon)}\).
+Chebyshev's inequality with \Cref{eq:detecting-partial-sum}, followed by
+summation over the \(O(\log U)\) dyads, gives
+\[
+ \#\{\omega\text{ with a detected zero}\}
+       \ll U^{.088+\rho+O(\epsilon)}.
+\]
+The choice \(\rho<.1\) leaves more than \(0.31\) before exponent \(1/2\).
+Take the losses small and include the at most one principal character.
+Distinctness of the \(\omega_u\)'s now gives the asserted bound for
+\(\mathcal E(U)\).
+
+It remains to obtain the reciprocal bound from the zero-free rectangles
+just proved.  Let \(T=U^\rho\) and \(u\notin\mathcal E(U)\).  For
+\(|t|\le2T\), consider disks centered at \(2+it\) of radii
+\[
+ R_2=1.0035,\qquad r_2=1.003,\qquad r_0=.999,\qquad r_1=1.002.
+\]
+For large \(U\) the outer disk lies within
+\(\re s>.996,\ |\im s|<4T\); its left edge is \(.9965\).
+The nonprincipal \(L_F(s,\omega_u)\) is entire and nonzero on the disk.
+It has a branch of \(\log L_F\) there agreeing at the center with the
+Euler logarithm.  The convexity bound gives
+\(\re\log L_F=\log|L_F|\le C_F\log U\) on the outer disk, and the value
+at the center is \(O_F(1)\).  Borel--Carathéodory consequently bounds
+\(|\log L_F|\) by \(O_F(\log U)\) on radius \(r_2\).  On radius \(r_0\)
+the real part is at least \(1.001\), so the absolutely convergent Euler
+logarithm is \(O_F(1)\).  The three-circles theorem applied to the
+analytic function \(\log L_F\) now gives, on radius \(r_1\),
+\[
+ |\log L_F(s,\omega_u)|\ll_F(\log U)^\theta,\qquad
+ \theta=\frac{\log(1.002/.999)}{\log(1.003/.999)}<1.
+\]
+These disks reach the line \(\re s=.998\); absolute convergence covers
+the larger real parts outside them.  Hence for \(\re s\ge.998\) and
+\(|\im s|\le2T\),
+\[
+ |L_F(s,\omega_u)^{-1}|
+       \le \exp\bigl(O_F((\log U)^\theta)\bigr)
+       \ll_{F,\epsilon}U^\epsilon .
+\]
+The estimate for omitted factors preceding the proposition gives the
+same bound for the incomplete function, proving
+\Cref{eq:good-reciprocal}.
+\end{proof}
+
+\subsection{The principal component and the other frequency rows}
+
+Use the scales in \Cref{eq:reflection-scales}, and let
+\(\sigma_\xi,\sigma_w,\sigma_z\) denote the real parts of
+\(\xi,w,z\).  Write \(E_*(\sigma_\xi,\sigma_w,\sigma_z)\) for the real
+power of \(Z\) outside the Dirichlet factors in \Cref{eq:poisson-mellin}.
+In the principal row, taking the residues at \(w=1\) and
+\(z=1/6\) leaves the exponent \(C_*(\xi)\) in the second line:
+\begin{equation}
+ \begin{split}
+ E_*(\sigma_\xi,\sigma_w,\sigma_z)
+       &=\frac a2+\sigma_\xi-1+h_0\sigma_z+b(\sigma_w-1),\\
+ C_*(\xi)&=\frac a2+\xi-1+\frac{h_0}{6}
+                  =\xi-\frac8{15},\qquad C_*(1)=\frac7{15}.
+ \end{split}
+\label{eq:contour-exponent}
+\end{equation}
+Thus \(C_*(1)=7/15\) is the reference power for comparing the
+principal remainders and the other frequency rows.
+
+We specify a decay observation that justifies the contour limits and,
+later, the truncated shifts.  On any fixed real strips used below, for
+every \(A>0\),
+\begin{equation}
+ \left|e^{(\xi+z-1)^2}M(z)\widehat W_1(w)\right|
+ \ll_A e^{-(\im\xi+\im z)^2}
+          (1+|\im z|)^{-A}(1+|\im w|)^{-A}.
+\label{eq:triple-height-decay}
+\end{equation}
+The constants can depend on those strips.  Away from the poles extracted
+below, all numerator Hecke and zeta functions on them have polynomial height growth, and
+\(\mathcal H_u\) is uniformly bounded by \(q_u^\epsilon\).
+After increasing \(A\), their height powers are absorbed in
+\Cref{eq:triple-height-decay}.  In particular for every \(A_1>0\),
+\[
+ \int_{\R}e^{-(T+v)^2}(1+|v|)^{-A}\,dv
+          \ll_{A_1}(1+|T|)^{-A_1}
+\]
+with \(A\) sufficiently large.  Thus integration in \(z,w\) gives
+arbitrary polynomial decay in the remaining \(\xi\)-height as well.
+On lines \(\re\xi>1\) the reciprocal denominator is globally bounded
+by its absolutely convergent Euler product.  These facts justify all
+infinite contour shifts on such lines by their horizontal limits.
+
+Let \(I_1(Z)\) denote the contribution of \(u=1\) to the initially
+absolutely convergent formula \Cref{eq:poisson-mellin}, on the scales
+\((X,Y)=(Z^a,Z^b)\).  Its numerator is \(\zeta_F^S(w)\).  Put
+\(\delta_1=10^{-7}\), \(\sigma_1=1+\delta_1\), and
+\(\zeta_1=1/6+\delta_1\).  Move the initial lines to
+\[
+ \re\xi=\sigma_1,\qquad \re w=\sigma_1,\qquad \re z=\zeta_1.
+\]
+These moves cross no poles: both zeta arguments remain to the right of
+one, and the reciprocal denominator is in absolute convergence.
+The second region of \Cref{eq:euler-regions} contains all the moves.
+Now move \(w\) to \(.95\), crossing its simple pole at \(1\), and call
+the remaining triple integral \(R_w(Z)\).  In the \(w=1\) residue move
+\(z\) to \(.16\), crossing the pole of \(\zeta_F^S(6z)\) at \(1/6\),
+and call the remaining residue integral \(R_z(Z)\).  Their contours are
+\[
+ \begin{aligned}
+ R_w:&\quad (\re\xi,\re w,\re z)=(\sigma_1,.95,\zeta_1),\\
+ R_z:&\quad (\re\xi,w,\re z)=(\sigma_1,1,.16).
+ \end{aligned}
+\]
+The other term is the double residue.  With its evaluation
+\(c_0f_\eta(Z)\) below, the principal component is exactly
+\[
+ I_1(Z)=c_0f_\eta(Z)+R_w(Z)+R_z(Z).
+\]
+The powers of the two remainders relative to \(C_*(1)\) are
+\[
+ \begin{split}
+ E_*(\sigma_1,.95,\zeta_1)-C_*(1)
+       &=(1+h_0)\delta_1-.05b=-.00664989,\\
+ E_*(\sigma_1,1,.16)-C_*(1)
+       &=\delta_1+h_0(.16-1/6)
+          =-.000666566666\ldots .
+ \end{split}
+\]
+The height bounds just given and \Cref{prop:euler-product} therefore give
+\begin{equation}
+ \begin{aligned}
+ R_w(Z)&=O_{F,S,\eta,W_0,W_1}\bigl(Z^{C_*(1)-.0005}\bigr),\\
+ R_z(Z)&=O_{F,S,\eta,W_0,W_1}\bigl(Z^{C_*(1)-.0005}\bigr).
+ \end{aligned}
+\label{eq:principal-remainders}
+\end{equation}
+
+To evaluate the double residue, write
+\(R_S=\Res_{s=1}\zeta_F^S(s)>0\).  It has the form
+\(c_0f_\eta(Z)\), where
+\begin{equation}
+ \begin{split}
+ c_0&=\frac{R_S^2}{6}M(1/6)\widehat W_1(1)\ne0,\\
+ f_\eta(Z)&=\frac1{2\pi i}\int_{(2)}
+        Z^{C_*(\xi)}e^{(\xi-5/6)^2}
+        \frac{\mathcal H_\eta(\xi)}{L^S(\xi,\eta)}\,d\xi .
+ \end{split}
+\label{eq:principal-Mellin-integral}
+\end{equation}
+Indeed the residue of \(\zeta_F^S(6z)\) is \(R_S/6\), and
+\(\widehat W_1(1)=\int_0^\infty W_1(t)\,dt>0\).  The other factor is
+nonzero by \Cref{eq:poisson-Fourier-weight}.  The norm measures were
+fixed before the probe, so this is the exact scalar in its normalization.
+The line of the double residue was initially \(\re\xi=\sigma_1\); we
+moved it right to \(2\) to write \Cref{eq:principal-Mellin-integral}.
+This uses only absolute convergence of \(1/L^S(\xi,\eta)\) for
+\(\re\xi>1\).
+
+It remains to bound the rows with \(u\ne1\).  Split their sum on the
+initial lines into dyads \(U\le q_u<2U\), \(U=1,2,4,\ldots\), before
+shifting any of them.  Each dyad contains finitely many rows; the full
+sum on the initial lines is absolutely convergent.  Denote by
+\(\mathcal J_{\mathcal C}(Z)\) the triple integral of a subset
+\(\mathcal C\) of such a dyad, and set
+\[
+ \mathcal J_U^{\mathrm{np}}(Z)
+   =\mathcal J_{\{u\ne1:U\le q_u<2U\}}(Z).
+\]
+The numerator for each of these rows
+is entire.  From \Cref{eq:Hecke-conservative-convexity} and the
+omitted-factor bound,
+\begin{equation}
+ L^S(w,\chi_\bullet(u))
+       \ll_\epsilon U^{1/2+\epsilon}(2+|\im w|)^{A_F}
+ \qquad(.003\le\re w\le4).
+\label{eq:numerator-convexity}
+\end{equation}
+On \(\re\xi=\sigma_1\), independently of \(u\) and the height,
+\[
+ |L^S(\xi,\eta\overline{\chi_\bullet(u)})^{-1}|
+       \le\prod_{\mathfrak p\notin S}(1+q_{\mathfrak p}^{-\sigma_1})
+       \le\zeta_F(\sigma_1).
+\]
+For each row move the initial lines to
+\[
+ \re\xi=\sigma_1,\qquad \re w=.003,\qquad \re z=.4.
+\]
+One may first move \(\xi\), then \(z\), then \(w\).
+The \(z\)-line remains above \(1/6\); the numerator is entire; and the
+denominator stays in absolute convergence.  The first region of
+\Cref{eq:euler-regions} contains the whole move.  If
+\(|\mathcal C|\ll U^\alpha\), the bounds above give
+\begin{equation}
+ |\mathcal J_{\mathcal C}(Z)|
+       \ll_\epsilon
+       Z^{E_*(\sigma_1,.003,.4)}
+       U^{\alpha+1/2-.4+\epsilon}.
+\label{eq:dyadic-contour-bound}
+\end{equation}
+The factor \(U^{-.4}\) is the \(q_u^{-z}\) in
+\Cref{eq:poisson-mellin}.  The height integral is bounded by
+\Cref{eq:triple-height-decay}.
+
+To see how the size of the frequency determines the contours, rewrite
+\Cref{eq:dyadic-contour-bound} as
+\[
+ |\mathcal J_{\mathcal C}(Z)|
+ \ll_\epsilon
+ Z^{a/2+\sigma_1-1+b(.003-1)}
+ U^{\alpha+1/2+\epsilon}
+       \left(\frac{Z^{h_0}}U\right)^{.4}.
+\]
+For a general \(z\)-line, the corresponding factor is
+\((Z^{h_0}/U)^{\re z}\).  Its dependence on \(\re z\) changes direction
+at \(U=Z^{h_0}=Z^{.1}\): below that scale a rightward \(z\)-shift enlarges
+this factor, while above it such a shift reduces the factor.  We retain
+the current low-\(w\) contour through \(U\le Z^{h_0+.00001}\), and use
+a rightward \(z\)-shift beyond that enlarged threshold.
+
+The common \(Z\)-exponent on the current contour, relative to the
+principal scale, is
+\[
+ E_*(\sigma_1,.003,.4)-C_*(1)
+     =10^{-7}+\frac7{300}-.132601
+     =-.109267566666\ldots .
+\]
+For \(U\le Z^{.09}\), use \Cref{eq:dyadic-contour-bound} with
+\(\alpha=1\).  The \(U^{1.1}\) factor adds at most
+\(.09(1.1)=.099\) to this relative exponent, so these rows are already
+smaller than the principal scale.
+
+We use \Cref{prop:zero-density} only in the remaining interval
+\begin{equation}
+ Z^{.09}<U\le Z^{h_0+.00001}=Z^{.10001},
+\label{eq:intermediate-frequency-range}
+\end{equation}
+where its threshold \(U_0\) is met for all sufficiently large \(Z\).
+For the rows in \(\mathcal E(U)\), use the same contour estimate with
+\(\alpha=1/2\).  The \(U^{.6}\) factor then adds at most
+\(.10001(.6)=.060006\) to the same relative exponent.
+
+For each remaining row truncate its \(\xi\)-line at
+\(|\im\xi|\le U^\rho\), and move that finite portion to \(\re\xi=.998\).
+The rectangle and its two horizontal sides satisfy
+\Cref{eq:good-reciprocal}; hence the new central integral satisfies
+\begin{equation}
+ \ll_\epsilon Z^{E_*(.998,.003,.4)}
+                  U^{1+1/2-.4+\epsilon}
+\label{eq:good-central-bound}
+\end{equation}
+after summing all the good rows of the dyad.  The estimate does not use
+the reciprocal outside the specified rectangle.  Since \(E_*\) is linear
+in \(\re\xi\) with coefficient one, this move gains
+\(Z^{.998-\sigma_1}=Z^{-.0020001}\).  Including the \(U^{1.1}\) cost
+up to the upper endpoint of \Cref{eq:intermediate-frequency-range}, the
+relative exponent is at most
+\begin{equation}
+ -.002+\frac7{300}-.132601+.10001(1.1)
+       =-\frac{377}{300000}=-.001256666666\ldots .
+\label{eq:good-numerical-margin}
+\end{equation}
+
+To bound the discarded and horizontal portions, integrate in \(z,w\)
+first in \Cref{eq:triple-height-decay}.  For every prescribed \(A_1>0\)
+the discarded tails on \(\re\xi=\sigma_1\) and the horizontal portions
+at \(\im\xi=\pm U^\rho\) are, in total over a good dyad, at most
+\begin{equation}
+ \ll_{A_1,\epsilon}
+ Z^{E_*(\sigma_1,.003,.4)}
+          U^{1+1/2-.4+\epsilon-\rho A_1}.
+\label{eq:xi-tail-bound}
+\end{equation}
+On the horizontal portions the real exponent is bounded by its value
+at \(\sigma_1\); the reciprocal is bounded by
+\Cref{eq:good-reciprocal}.  On the discarded original tails it is
+bounded by absolute convergence.  The convolution estimate following
+\Cref{eq:triple-height-decay}, used with pointwise exponent \(A_1+2\)
+before integrating the discarded \(\xi\)-tails, supplies \(U^{-\rho A_1}\)
+in both cases.
+Since \(U>Z^{.09}\), choosing \(A_1>1/\rho\), after \(\rho\) is fixed,
+gives more than enough additional saving for these terms.
+
+All these comparisons leave a fixed margin after the arbitrary small
+power losses.  The sums over the \(O(\log Z)\) dyads in these ranges
+cost only another arbitrarily small power.
+
+Finally consider \(U>Z^{.10001}\).  Now
+\(Z^{h_0}/U\le Z^{-.00001}\), so a fixed rightward \(z\)-shift suppresses
+the whole dyad.  Keep
+\(\re\xi=\re w=4\) and move \(z\) to the fixed right line
+\(\re z=R_0=350000\).  The move stays in the Euler region, crosses no
+pole, and uses the holomorphy of \(M\) on \(\re z>0\).
+Both Hecke factors are bounded by absolute convergence on these lines,
+so \Cref{prop:euler-product} and \Cref{eq:triple-height-decay} give
+\[
+ |\mathcal J_{\mathcal C}(Z)|
+       \ll_\epsilon Z^{3.849}U^{1+\epsilon}
+             \left(\frac{Z^{.1}}U\right)^{R_0}
+       =Z^{3.849+.1R_0}U^{1-R_0+\epsilon}.
+\]
+The dyads sum geometrically.  At their lower endpoint the power of \(Z\)
+is
+\begin{equation}
+ 3.849+.1R_0+.10001(1-R_0+\epsilon)
+       =.44901+.10001\epsilon .
+\label{eq:far-frequency-exponent}
+\end{equation}
+This is strictly less than \(C_*(1)-.01\) for small \(\epsilon\).
+The very large \(z\)-line is fixed; its weight constants may be large,
+but are independent of \(Z\) and \(U\).
+
+Choose the preliminary losses small enough that their total cost in the
+finite frequency ranges, including the dyadic count, is less than
+\(10^{-4}\) in the \(Z\)-exponent.  This is possible since
+\(U\le Z^{.10001}\) there.  The smallest central saving in
+\Cref{eq:good-numerical-margin} is larger than \(0.0012\);
+\Cref{eq:xi-tail-bound} and \Cref{eq:far-frequency-exponent} have
+larger savings.  We have therefore proved
+\begin{equation}
+ \sum_{j\ge0}\mathcal J_{2^j}^{\mathrm{np}}(Z)
+       \ll Z^{C_*(1)-.0004}.
+\label{eq:nonprincipal-row-total}
+\end{equation}
+Each dyadic integral here is obtained from its initial absolutely
+convergent integral, and the preceding bounds justify their sum.
+
+\subsection{Completion of the Mellin argument}
+
+The numerical exponents established above, before the indicated small
+losses, are collected in \Cref{tab:analytic-margins}.  In particular
+the exponent from reflection is
+\[
+ \frac{2M_0-1-b}{2}=\frac{933}{2000}
+       =C_*(1)-\frac1{6000}.
+\]
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lc@{}}
+\toprule
+Contribution & exponent relative to \(C_*(1)=7/15\)\\
+\midrule
+Probe bound from reflection & \(-1/6000=-.000166666\ldots\)\\
+Principal remainder \(R_w\) & \(-.00664989\)\\
+Principal remainder \(R_z\) & \(-.000666566\ldots\)\\
+Nonprincipal rows \(U\le Z^{.09}\) & \(-.010267566\ldots\)\\
+Exceptional rows \(U\le Z^{.10001}\) & \(-.049261566\ldots\)\\
+Good central rows \(U\le Z^{.10001}\) & \(-.001256666\ldots\)\\
+Rows \(U>Z^{.10001}\), \(R_0=350000\) & \(-.017656666\ldots\)\\
+\bottomrule
+\end{tabular}
+\caption{The fixed exponent margins in the probe comparison.  The row
+bounds precede arbitrary small power losses.}
+\label{tab:analytic-margins}
+\end{table}
+
+Combining the principal decomposition \(I_1=c_0f_\eta+R_w+R_z\),
+\Cref{eq:principal-remainders,eq:nonprincipal-row-total}, and
+\Cref{eq:poisson-mellin} gives, for sufficiently large \(Z\),
+\[
+ I(Z^a,Z^b,Z)=c_0f_\eta(Z)+O(Z^{C_*(1)-.0004}).
+\]
+Use \Cref{prop:probe-low} with, for example, a loss \(10^{-5}\).
+Since \(1/6000-10^{-5}>1/20000\) and \(c_0\ne0\), the preceding identity
+implies the safe bound
+\begin{equation}
+ f_\eta(Z)\ll_{F,S,\eta,W_0,W_1}Z^{7/15-1/20000}
+       \qquad(Z\text{ sufficiently large}).
+\label{eq:f-large-bound}
+\end{equation}
+
+Set
+\[
+ \mathscr A(\xi)=e^{(\xi-5/6)^2}
+             \frac{\mathcal H_\eta(\xi)}{L^S(\xi,\eta)}.
+\]
+For \(\re\xi>1\) this is holomorphic.  In the definition of \(f_\eta\) in
+\Cref{eq:principal-Mellin-integral}, its \(\xi\)-line may be moved right
+from \(2\) to any fixed real part \(\sigma_R>2\).  The reciprocal there is in
+absolute convergence, the correction is holomorphic and bounded, and
+the Gaussian gives rapid vertical decay.  It follows that for every
+\(A_0>0\),
+\begin{equation}
+ f_\eta(Z)=O_{A_0}(Z^{A_0})\qquad(0<Z\le1),
+\label{eq:f-small-bound}
+\end{equation}
+by taking \(\sigma_R>A_0+8/15\).  Thus this endpoint estimate has used no
+zero exclusion to the left of one.
+
+Consider
+\begin{equation}
+ \mathcal T(s)=\int_0^\infty f_\eta(Z)Z^{-C_*(s)}\,\frac{dZ}{Z}.
+\label{eq:final-Mellin-transform}
+\end{equation}
+By \Cref{eq:f-large-bound,eq:f-small-bound}, it converges locally
+uniformly, and hence defines a holomorphic function, for
+\[
+ \re s>1-\frac1{20000}.
+\]
+Indeed at infinity the real exponent is
+\(1-1/20000-\re s<0\), and at zero
+\Cref{eq:f-small-bound} allows an arbitrarily large exponent.
+The same majorants with powers of \(\log Z\) justify differentiation
+under the integral.
+
+We identify this transform on its original line without a formal contour
+interchange.  Put \(t=\log Z\).  From
+\Cref{eq:principal-Mellin-integral},
+\[
+ e^{-C_*(2)t}f_\eta(e^t)
+       =\frac1{2\pi}\int_{\R}e^{i\tau t}\mathscr A(2+i\tau)\,d\tau .
+\]
+The function \(\mathscr A(2+i\tau)\) is continuous and rapidly decreasing by
+the Gaussian and the bounded Euler factors.  The endpoint bounds on
+\(f_\eta\) make the left side integrable in \(t\).  Fourier inversion
+therefore gives
+\begin{equation}
+ \mathcal T(2+i\tau)=\mathscr A(2+i\tau)\qquad(\tau\in\R).
+\label{eq:Mellin-identification}
+\end{equation}
+For \(\re s>1-1/20000\), the second neighborhood in
+\Cref{prop:euler-product} makes the numerator
+\[
+ e^{(s-5/6)^2}\mathcal H_\eta(s)
+\]
+holomorphic and nowhere zero.
+The Hecke continuation makes \(\mathscr A(s)\) meromorphic there.  The identity
+theorem, first on \(\re s>1\) using \Cref{eq:Mellin-identification}
+and then for meromorphic functions on the connected larger half-plane,
+identifies \(\mathscr A\) with the holomorphic function \(\mathcal T\).
+A zero of \(L^S(s,\eta)\) in that half-plane would be a pole of \(\mathscr A\),
+since its numerator is nonzero, which is impossible.  A pole of the
+principal \(L\)-function simply makes its reciprocal vanish.
+
+The finite factors removed from \(L_F(s,\eta)\) are either one or
+\(1-\eta(\mathfrak p)q_{\mathfrak p}^{-s}\) with
+\(|\eta(\mathfrak p)|=1\); their zeros have real part zero.  Thus the
+same zero exclusion holds for the full \(L_F(s,\eta)\).  The obtained
+half-plane contains \(\re s>1-10^{-6}\).  All onsets and constants in
+the proof were allowed to depend on \(F,S,\eta\), but the numerical
+saving \(1/20000\) is absolute.  A field-dependent onset in
+\Cref{eq:f-large-bound} affects only a finite portion of the integral
+and does not change its half-plane of convergence.  Since the initial
+field and finite-order character were arbitrary in the scope of
+\Cref{thm:hecke-zero-free}, this proves that theorem.

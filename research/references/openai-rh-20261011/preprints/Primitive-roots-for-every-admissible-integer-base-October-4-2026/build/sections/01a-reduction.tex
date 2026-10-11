@@ -1,0 +1,216 @@
+\section{Reduction to controlled predecessors and complete splitting}
+\label{sec:reduction}
+
+For a prime $p\nmid a$, failure of $a$ to generate $\mathbb F_p^\times$
+means that some prime divides the index
+\[
+ i_p(a)=\frac{p-1}{\ord_p(a)}.
+\]
+We construct primes for which the possible divisors of this index belong
+to two ranges. A large divisor forces $p$ to divide one of a short list
+of integers $a^j-1$; the remaining divisors are controlled by complete
+splitting in Kummer fields. This is the index-divisor reduction underlying
+Hooley's work \cite[Sections~4--7]{Hooley67}.
+
+The first proposition supplies the primes, with a fixed congruence that
+will force quadratic nonresiduosity.
+
+\begin{proposition}[Primes with controlled predecessors]
+\label{prop:controlled}\label{prop:prime-reservoir}
+Let $M$ be a fixed positive multiple of $8$, let $c\in\{2,4\}$, and let
+$u$ be an integer satisfying
+\begin{equation}
+ (u,M)=1,\qquad c\mid u-1,\qquad
+ \left(\frac{u-1}{c},\frac Mc\right)=1.
+ \label{alg:progression-conditions}
+\end{equation}
+For every sufficiently large real $x$, there are
+$\gg_{M,c,u}x/L^2$ distinct primes $p\in(x,2x)$ satisfying
+\begin{equation}
+ p\equiv u\pmod M,\qquad p-1=crQ,
+ \qquad Q>x^{0.9}\ \text{prime},
+ \label{eq:controlled-predecessor}
+\end{equation}
+where $r$ is a positive integer all of whose prime divisors lie in
+\[
+ \bigl(\exp(L^{0.1}),\exp(L^{0.3})\bigr).
+\]
+\end{proposition}
+
+We prove Proposition~\ref{prop:controlled} in
+Section~\ref{sec:construction}. For the second input, write $\mu_m$ for
+the group of $m$th roots of unity. For a nonzero integer $a$ and a prime
+$q$, put
+\begin{equation}
+ E_q=\Q(\mu_q),\qquad K_q=\Q(\mu_q,a^{1/q}).
+ \label{alg:kummer-fields}
+\end{equation}
+The choice of the root $a^{1/q}$ does not affect $K_q$.
+
+\begin{proposition}[Uniform bound for complete splitting]
+\label{prop:splitting}
+Fix an integer $a$ with $|a|>1$, and put $\delta_0=10^{-6}$.
+For all sufficiently large real $x$ and all primes $q$ sufficiently
+large in terms of $a$, with $q\le\exp(L^{0.3})$, one has
+\begin{equation}
+ \#\{p\text{ prime}:x<p\le2x,\ p\text{ splits completely in }K_q\}
+ \ll_a \frac{x}{q(q-1)L}+x^{1-\delta_0}.
+ \label{eq:uniform-splitting}
+\end{equation}
+The implied constant and the threshold for $x$ are independent of $q$.
+For $a=2$, every prime $q\ge5$ is allowed, with absolute constants and
+an absolute threshold for $x$.
+\end{proposition}
+
+Section~\ref{sec:splitting} proves this proposition from the Hecke
+zero-free theorem, Theorem~\ref{thm:hecke-zero-free}. To apply it, we first record
+the elementary interpretation of complete splitting.
+
+\begin{lemma}[Splitting test]\label{alg:splitting-test}
+Let $a\ne0$ be an integer, and let $p,q$ be primes with $p\nmid aq$.
+Then $p$ splits completely in $K_q$ if and only if
+\begin{equation}
+ p\equiv1\pmod q,\qquad a^{(p-1)/q}\equiv1\pmod p.
+ \label{eq:kummer-frobenius-test}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The field $K_q$ is the splitting field of $T^q-a$. Fix a prime
+$\mathfrak P$ of $K_q$ above $p$. The roots are integral and have distinct
+reductions modulo $\mathfrak P$, since $p$ does not divide the polynomial
+discriminant $\pm q^q a^{q-1}$. Every inertia element permutes the roots
+and fixes their reductions, so it fixes every root. Thus $p$ is
+unramified. Let $\sigma$ be its arithmetic Frobenius at $\mathfrak P$.
+On $\mu_q$, this automorphism acts by $\zeta\mapsto\zeta^p$, so it fixes
+$E_q$ exactly when $p\equiv1\pmod q$. Under this condition, with
+$\alpha=a^{1/q}$, we have
+\[
+ \frac{\sigma(\alpha)}{\alpha}\in\mu_q,
+ \qquad
+ \frac{\sigma(\alpha)}{\alpha}
+ \equiv\alpha^{p-1}=a^{(p-1)/q}\pmod{\mathfrak P}.
+\]
+The division is valid because $p\nmid a$. Reduction on $\mu_q$ is
+injective at $p\ne q$, so the second congruence in
+\eqref{eq:kummer-frobenius-test} is equivalent to $\sigma(\alpha)=\alpha$.
+Together the two conditions say that $\sigma$ fixes the generators of
+$K_q$. Since $K_q/\Q$ is Galois, this is precisely complete splitting.
+\end{proof}
+
+We now choose a progression of quadratic nonresidues satisfying all
+the hypotheses of Proposition~\ref{prop:controlled}.
+
+\begin{lemma}[A progression of quadratic nonresidues]
+\label{alg:quadratic-progression}
+Let $a\in\Z$ be neither $-1$ nor an integer square, and set
+\[
+ M=8\prod_{\substack{\ell\mid a\\\ell\text{ odd prime}}}\ell.
+\]
+There are $c\in\{2,4\}$ and an integer $u$ satisfying
+\eqref{alg:progression-conditions} such that every prime $p\equiv u\pmod M$
+satisfies $p\nmid a$ and $(a/p)=-1$.
+\end{lemma}
+
+\begin{proof}
+Write $a=d_0t^2$, where $t\ge1$ is an integer and $d_0\ne1$ is signed
+squarefree. We choose $u$ to be a unit modulo $M$, with
+$u\not\equiv1\pmod\ell$ for every odd prime $\ell\mid M$, and
+$u\bmod8\in\{3,5,7\}$. These restrictions already imply $p\nmid a$.
+
+Suppose first that an odd prime $j\ge5$ divides $d_0$. Fix any of the
+allowed residues modulo $8$ and at the odd primes other than $j$.
+Quadratic reciprocity expresses $(d_0/p)$ as a fixed sign times $(p/j)$.
+Among the nonzero residues modulo $j$ other than $1$, there are
+$(j-3)/2\ge1$ squares and $(j-1)/2$ nonsquares. We can therefore choose
+$u\bmod j$ so that $(d_0/p)=-1$.
+
+If no such $j$ exists, the seven possibilities for $d_0$ are treated by
+the following table. Whenever $3\mid M$, also take $u\equiv2\pmod3$.
+\begin{center}
+\begin{tabular}{c|rrrrrrr}
+$d_0$ & $-1$ & $2$ & $-2$ & $3$ & $-3$ & $6$ & $-6$\\ \hline
+$u\bmod8$ & $3$ & $3$ & $7$ & $5$ & $5$ & $3$ & $7$
+\end{tabular}
+\end{center}
+The supplementary laws give the first three entries. For the last four,
+the combined residues modulo $24$ are respectively $5,5,11,23$;
+quadratic reciprocity gives $(d_0/p)=-1$ in each case. Odd primes
+dividing $M$ but not $d_0$ occur only in the square factor $t^2$ and can
+be assigned any allowed residue. The Chinese remainder theorem combines
+these choices into a class $u\pmod M$.
+
+If $u\equiv3$ or $7\pmod8$, take $c=2$; if $u\equiv5\pmod8$, take
+$c=4$. In each case $(u-1)/c$ is odd. For every odd $\ell\mid M$,
+the condition $u\not\equiv1\pmod\ell$ also makes $(u-1)/c$ nonzero
+modulo $\ell$. This proves \eqref{alg:progression-conditions}.
+Finally, $(a/p)=(d_0/p)=-1$, since $p\nmid t$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:primitive-root}]
+Fix $a$ as in the theorem, so $|a|>1$. Choose $M,c,u$ by
+Lemma~\ref{alg:quadratic-progression}, and take the
+$\gg_a x/L^2$ primes supplied by Proposition~\ref{prop:controlled}.
+For each such prime $p$, Euler's criterion gives
+$a^{(p-1)/2}\equiv-1\pmod p$. Consequently $i_p(a)$ is odd: an even
+index would make $\ord_p(a)$ divide $(p-1)/2$.
+
+If $i_p(a)>1$, choose a prime divisor $q$ of this index. Since
+$p-1=crQ$ and $c$ is a power of $2$, we have $q\mid rQ$. Moreover
+$\ord_p(a)\mid(p-1)/q$, so \eqref{eq:kummer-frobenius-test} holds.
+We bound the number of such primes $p$ in the two possible ranges of $q$.
+
+If $q=Q$, then
+\[
+ 1\le\frac{p-1}{Q}<2x^{0.1}.
+\]
+Thus $p$ divides the positive integer
+\[
+ B_a(x)=\prod_{1\le j\le2x^{0.1}}|a^j-1|.
+\]
+No factor vanishes because $|a|>1$, and
+\[
+ \log B_a(x)
+ \le\sum_{1\le j\le2x^{0.1}}\bigl(j\log|a|+\log2\bigr)
+ \ll_a x^{0.2}.
+\]
+Every distinct prime divisor $p>x$ contributes at least $L$ to this
+logarithm. The number of primes lost in this case is therefore
+$O_a(x^{0.2}/L)=o(x/L^2)$.
+
+If $q\mid r$, then
+$\exp(L^{0.1})<q<\exp(L^{0.3})$. For large $x$, all these primes are
+sufficiently large for Proposition~\ref{prop:splitting}; also $p\nmid aq$.
+Lemma~\ref{alg:splitting-test} and a union bound give at most
+\begin{align}
+ &\ll_a \frac{x}{L}
+       \sum_{m>\exp(L^{0.1})}\frac1{m(m-1)}
+       +x^{1-\delta_0}\exp(L^{0.3})\notag\\
+ &\ll_a \frac{x}{L}\exp(-L^{0.1})
+       +x\exp(-\delta_0L+L^{0.3})
+       =o(x/L^2)
+ \label{alg:exceptional-small-divisors}
+\end{align}
+primes, where the first sum is over integers. The first estimate uses
+\eqref{eq:uniform-splitting} for each possible $q$; the second uses the
+telescoping sum of $1/(m(m-1))$.
+
+Subtracting these two losses leaves $\gg_a x/L^2$ primes with
+$i_p(a)=1$. All choices depend only on $a$, and both estimates hold for
+every sufficiently large real $x$. This proves the theorem.
+\end{proof}
+
+For $a=2$, the theorem gives $\gg x/L^2$ primes in $(x,2x)$ with
+primitive root $2$, with absolute constants. This case can use the
+particularly simple choice $(M,c,u)=(8,4,5)$ in
+Proposition~\ref{prop:controlled}: the predecessors are $4rQ$, and
+$p\equiv5\pmod8$ gives $(2/p)=-1$ directly.
+
+\begin{remark}
+Negative squares are covered by the row $d_0=-1$ in the progression
+lemma. Odd perfect powers also require no separate exclusion. If
+$a=b^h$ with fixed odd $h>1$, every prime divisor of $h$ is eventually
+smaller than every prime factor of $rQ$; hence $(h,p-1)=1$ for the
+constructed primes. This explains directly how the controlled
+predecessor removes the obstruction from the fixed exponent.
+\end{remark}

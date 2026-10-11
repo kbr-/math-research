@@ -1,0 +1,625 @@
+\section{S-integers, residue symbols, and Gauss sums}\label{sec:arithmetic}
+
+The analytic argument will sum over ideals while also using their generators
+in local fields.  We first choose generators for which reciprocity has no
+supplementary factor.  We then identify the two Hecke characters which account
+for the phases of the cubic and sextic Gauss sums.
+
+Fix a cyclotomic field \(F\) containing \(\mu_{12}\), and put
+\([F:\Q]=2r\).  At a finite place \(v\), normalize the absolute value by
+\(|\varpi_v|_v=(\Norm v)^{-1}\); at a complex place use the square of the
+ordinary modulus.  These are the absolute values in the product formula.
+Let
+\[
+ \psi=\prod_v\psi_v:\Adele_F/F\longrightarrow \C^\times
+\]
+be the standard trace additive character.  We also fix a finite-order Hecke
+character \(\eta\).  Choose a finite set \(S\) containing the complex places,
+all places above \(6\), the finite conductor of \(\eta\), and every place at
+which \(\mathcal O_v\) is not self-dual for the pairing
+\(\psi_v(xy)\).  The theta normalization in \Cref{prop:theta-input}
+and the local Euler-product estimate in \Cref{prop:euler-product} require
+two additional fixed finite sets of excluded places.  Include both sets in
+\(S\).  Their existence is established at those points, independently of
+the summation variables and of the arithmetic choices below.  We may
+include any further fixed finite set of places.
+Enlarging \(S\) by finitely many primes which generate the ideal class group,
+we arrange that the ring of S-integers
+\[
+ R=\mathcal O_S=\{a\in F:v_{\mathfrak p}(a)\geq0
+                       \text{ for every }\mathfrak p\notin S\}
+\]
+is principal.  This is the final choice of \(S\), and all arithmetic data
+below are constructed for it before the coefficient family is defined.
+All assertions in this section concern this fixed \(F\) and \(S\); their
+auxiliary constants may depend on them.
+
+Write \(S_f\) for the finite places in \(S\), \(s_f=|S_f|\), and
+\[
+ U_S=R^\times,\qquad F_S=\prod_{v\in S}F_v,\qquad
+ |y|_S=\prod_{v\in S}|y_v|_v,\qquad
+ F_S^1=\{y\in F_S^\times:|y|_S=1\}.
+\]
+An \emph{exterior ideal} is a nonzero integral ideal of \(R\), equivalently
+an ideal supported at primes outside \(S\).  Its norm is
+\(q_{\mathfrak a}=\Norm\mathfrak a=|R/\mathfrak a|\), extended
+multiplicatively to fractional ideals.  Roman letters will denote generators
+of the corresponding fraktur ideals.  For \(a\in F^\times\), put
+\(q_a=|a|_S\).  Finally, on the additive group \(F_S\) set
+\[
+ \e(x)=\prod_{v\in S}\psi_v(x_v),
+ \qquad
+ \widehat f(y)=\int_{F_S}f(x)\e(-xy)\,dx,
+\]
+where \(dx\) is the product of the self-dual local additive measures.
+
+\begin{lemma}[The S-integer lattice]\label{lem:s-lattice}
+The diagonal copy of \(R\) is a discrete cocompact subgroup of \(F_S\), is
+its own annihilator for the pairing \(\e(xy)\), and has covolume \(1\).
+For every Bruhat--Schwartz function \(f\) on \(F_S\),
+\[
+ \sum_{m\in R}f(m)=\sum_{\nu\in R}\widehat f(\nu).
+\]
+If \(\mathfrak a=aR\) is an exterior fractional ideal, then
+\[
+ q_a=q_{\mathfrak a},\qquad
+ (aR)^\perp=a^{-1}R,\qquad
+ \sum_{m\in aR}f(m)
+   =q_{\mathfrak a}^{-1}\sum_{\nu\in a^{-1}R}\widehat f(\nu).
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(K^S=\prod_{v\notin S}\mathcal O_v\), embedded in the adeles with zero
+S-components.  At every place outside \(S\),
+the defining conductor condition says that \(\mathcal O_v\) is its own
+annihilator.  Its self-dual measure is consequently \(1\), and
+\(\widehat{\one_{K^S}}=\one_{K^S}\).  Adelic additive duality identifies the
+annihilator of \(F\) in \(\Adele_F\) with \(F\), and the additive quotient
+\(\Adele_F/F\) has volume \(1\); see
+\cite[Chapter~II, \S29]{Weil64}.  Strong approximation identifies
+\[
+ F_S/R\simeq \Adele_F/(F+K^S).
+\]
+The quotient is compact because \(\Adele_F/F\) is compact.  To check
+discreteness, choose a compact neighborhood \(C\) of zero in \(F_S\).
+The intersection \(F\cap(C\times K^S)\) is finite because diagonal \(F\)
+is discrete and closed in the adeles.  Shrinking \(C\) excludes the finitely
+many nonzero S-components in this intersection, so zero is isolated in
+\(R\).  Taking annihilators in the last quotient gives
+\[
+ (F+K^S)^\perp=F\cap(F_S\times K^S)=R,
+\]
+with \(R\) diagonally embedded, so its annihilator in \(F_S\) is indeed \(R\).
+The covolume of a lattice and that of its annihilator are reciprocal under
+self-dual measure; hence this covolume is \(1\).
+
+More directly, apply adelic Poisson summation
+\cite[Chapter~III, \S41, equation~(39)]{Weil64} to
+\(f\otimes\one_{K^S}\).  Only the elements of \(R\) occur on either side,
+and the exterior factor is unchanged by Fourier transform.  This gives the
+displayed Poisson identity with no scalar factor.  Multiplication by \(a\)
+has additive modulus \(|a|_S\), so scaling this identity gives the formula
+for \(aR\).  The product formula gives
+\[
+ |a|_S=\prod_{v\notin S}|a|_v^{-1}
+      =\Norm(aR)=q_{\mathfrak a},
+\]
+which finishes the proof.
+\end{proof}
+
+We use Hilbert symbols to remove the supplementary factor in sextic
+reciprocity.  Choose the local reciprocity map \(\operatorname{Art}_v\) in
+which a uniformizer acts as arithmetic Frobenius on an unramified extension.
+For \(n\in\{2,3,6\}\), set
+\[
+ (a,b)_{n,v}
+   =\frac{\operatorname{Art}_v(b)(a^{1/n})}{a^{1/n}}.
+\]
+This orders the two arguments oppositely to the convention in
+\cite[Chapter~V, \S3]{Neukirch99}.  Thus, at a place of residue
+characteristic prime to \(n\), for a unit \(u\) and a uniformizer \(\varpi\),
+\[
+ (u,\varpi)_{n,v}\equiv u^{(\Norm v-1)/n}\pmod v.
+\]
+The value is read in \(\mu_n\subset F\).  On
+\[
+ \mathcal V=F_S^\times/F_S^{\times6}
+\]
+define \(H_S(x,y)=\prod_{v\in S}(x_v,y_v)_{6,v}\), and let \(E\) be the image
+of \(U_S\) in \(\mathcal V\).  For \(T>0\), let \(\ell_T\in F_S^\times\)
+have finite components \(1\) and component \(T^{1/(2r)}\) at every complex
+place.  Then \(|\ell_T|_S=T\).
+
+\begin{lemma}[Generators with fixed power classes]\label{lem:balanced-generators}
+The pairing \(H_S\) on \(\mathcal V\) is nondegenerate and alternating.
+The map \(U_S/U_S^6\to\mathcal V\) is injective, its image \(E\) satisfies
+\(E^\perp=E\), and there is an isotropic subgroup \(B\) such that
+\(\mathcal V=E\oplus B\).
+
+Every exterior fractional ideal \(\mathfrak a\) has a generator \(a\) whose
+class \([a]\) in \(\mathcal V\) belongs to \(B\).  Any two such generators
+differ by an element of \(U_S^6\).  They can be chosen so that
+\[
+ a/\ell_{q_{\mathfrak a}}\in\mathcal K_{\mathrm{bal}}
+\]
+for one fixed compact subset \(\mathcal K_{\mathrm{bal}}\subset F_S^1\), independent of
+\(\mathfrak a\).
+\end{lemma}
+
+\begin{proof}
+For \(\ell=2,3\), put \(\mathcal V_\ell=F_S^\times/F_S^{\times\ell}\).
+Local Kummer theory and local reciprocity give a nondegenerate Hilbert
+pairing on this group \cite[Chapter~V, Proposition~(3.2)]{Neukirch99}.
+At a finite place \(v\),
+\[
+ \dim_{\Fq_\ell}F_v^\times/F_v^{\times\ell}
+  =2+\one_{v\mid\ell}[F_v:\Q_\ell].
+\]
+Indeed the valuation contributes one dimension.  When \(v\nmid\ell\), the
+residue units contribute one dimension and the principal units are
+\(\ell\)-divisible.  When \(v\mid\ell\), the principal units have a
+\(\Z_\ell\)-part of rank \([F_v:\Q_\ell]\) and an \(\ell\)-power
+root-of-unity part contributing one more dimension.  The latter is present
+because \(F\) contains \(\mu_\ell\).  This is also the local power-class
+formula \cite[Chapter~II, Corollary~(5.8)]{Neukirch99}.
+Complex power-class groups are trivial.
+All places above \(\ell\) lie in \(S\), so their local degrees sum to \(2r\)
+and
+\begin{equation}
+ \dim_{\Fq_\ell}\mathcal V_\ell=2s_f+2r.\label{eq:local-power-dimension}
+\end{equation}
+The S-unit theorem \cite[Chapter~I, Corollary~(11.7)]{Neukirch99} gives
+\(U_S\simeq\mu(F)\times\Z^{r+s_f-1}\).  Since \(\mu(F)\) is cyclic and
+contains \(\mu_\ell\),
+\begin{equation}
+ \dim_{\Fq_\ell}U_S/U_S^\ell=r+s_f.\label{eq:unit-power-dimension}
+\end{equation}
+
+We next check that the latter group injects into \(\mathcal V_\ell\).
+Suppose that \(u\in U_S\) is an \(\ell\)-th power in every \(F_v\) with
+\(v\in S\).  The Kummer extension \(F(u^{1/\ell})/F\) is cyclic and split
+at \(S\).  At every exterior prime \(u\) is a unit and \(\ell\) is
+invertible, so this extension is unramified there.  It is consequently an
+everywhere unramified abelian extension in which every S-prime splits.
+The Hilbert class-field correspondence, together with the quotient
+description of the S-class group, identifies such extensions with quotients
+of the class group of \(R\), which is trivial
+\cite[Chapter~I, Proposition~(11.6); Chapter~VI, Proposition~(6.9) and
+Theorem~(7.3)]{Neukirch99}.  Hence
+\(u=t^\ell\) for \(t\in F\).  Its exterior valuations show \(t\in U_S\),
+proving the injection.
+
+For two S-units, every exterior Hilbert symbol is \(1\), since both arguments
+are units and the residue characteristic is prime to \(6\).  Hilbert
+reciprocity \cite[Chapter~VI, Theorem~(8.1)]{Neukirch99} therefore makes
+their S-product \(1\).  The Hilbert pairing is
+alternating here: \(-1=\zeta_{12}^6\), and the diagonal identity
+\((x,x)_{n,v}=(x,-1)_{n,v}\) makes its diagonal trivial for \(n=2,3,6\).
+By \Cref{eq:local-power-dimension} and \Cref{eq:unit-power-dimension}, the
+injected unit image in \(\mathcal V_\ell\) is an isotropic subspace of half
+the dimension.  Nondegeneracy implies that it is self-orthogonal.
+Symplectic linear algebra supplies an isotropic complementary subspace for
+each \(\ell\).  The Chinese remainder isomorphism
+\(\mathcal V\simeq\mathcal V_2\oplus\mathcal V_3\), under which the two
+pairings are the third and second powers of \(H_S\), combines these
+complements into \(B\).  It also gives the asserted injection and
+self-orthogonality for exponent \(6\).
+
+Let \(\mathfrak a=a_0R\).  Decompose \([a_0]=e b\) in \(E\oplus B\), and
+choose an S-unit representing \(e^{-1}\).  Its product with \(a_0\) is a
+generator \(a\) with \([a]\in B\).  If \(a'\) is another, then \(a'/a\) is
+an S-unit whose class lies in \(E\cap B\).  It is therefore locally a sixth
+power at \(S\), and the injection already proved says \(a'/a\in U_S^6\).
+
+Finally \(a/\ell_{q_{\mathfrak a}}\) belongs to \(F_S^1\), by
+\Cref{lem:s-lattice}.  To see the relevant compactness explicitly, the
+norm-one idele class group is compact
+\cite[Chapter~VI, Theorem~(1.6)]{Neukirch99}.  The subgroup
+\(F_S^1\times\prod_{v\notin S}\mathcal O_v^\times\) is open in the
+norm-one ideles and meets diagonal \(F^\times\) in \(U_S\).  Its quotient
+by \(U_S\) is therefore an open, hence closed, subgroup of that compact
+idele class group.  Its projection onto \(F_S^1/U_S\) is surjective, so
+\(F_S^1/U_S\) is compact.  Since \(U_S^6\) has finite index in \(U_S\),
+\(F_S^1/U_S^6\) is compact as well.  Choosing a compact set which maps onto
+this quotient and multiplying \(a\) by a suitable element of \(U_S^6\)
+proves the last assertion.
+\end{proof}
+
+Call a generator with class in \(B\) \emph{allowed}, and call it
+\emph{balanced} when it satisfies the compactness condition in
+\Cref{lem:balanced-generators}.  We use balanced representatives for
+estimates involving S-components.  In multiplicative identities we may
+instead use the product of the allowed generators of the prime factors:
+the product remains allowed and differs from the selected representative by
+an element of \(U_S^6\).
+
+For an exterior prime \(\mathfrak p\), the reduction of \(\mu_6\) into
+\((R/\mathfrak p)^\times\) is injective.  Define the sextic residue character
+by
+\[
+ \chi_{\mathfrak p}(x)\equiv x^{(q_{\mathfrak p}-1)/6}\pmod{\mathfrak p}
+ \quad (x\not\equiv0\pmod{\mathfrak p}),\qquad
+ \chi_{\mathfrak p}(0)=0.
+\]
+For every integer \(j\), the notation \(\chi_{\mathfrak p}(x)^j\) means the
+usual character power on units and means \(0\) on nonunits, also when
+\(j\equiv0\pmod6\).  If
+\(\mathfrak a=\prod_{\mathfrak p}\mathfrak p^{k_{\mathfrak p}}\), put
+\[
+ \chi_{\mathfrak a}(x)=
+ \prod_{\mathfrak p\mid\mathfrak a}
+       \chi_{\mathfrak p}(x)^{k_{\mathfrak p}},
+ \qquad \chi_R(x)=1.
+\]
+The same zero convention applies to powers of \(\chi_{\mathfrak a}\).
+
+For distinct exterior primes with allowed generators \(p,p'\), global
+reciprocity gives the exact equality
+\begin{equation}
+ \chi_{\mathfrak p}(p')=\chi_{\mathfrak p'}(p).
+\label{eq:sextic-reciprocity}
+\end{equation}
+Indeed the only possibly nontrivial exterior symbols in the product formula
+for \((p,p')_6\) are
+\((p,p')_{6,\mathfrak p}=\chi_{\mathfrak p}(p')^{-1}\) and
+\((p,p')_{6,\mathfrak p'}=\chi_{\mathfrak p'}(p)\).  The S-product is \(1\)
+because \(B\) is isotropic.  If \(m\in R\setminus\{0\}\) and
+\(\mathfrak b=(m)R\), write \(m=\epsilon b\)
+with \(b\) allowed and \(\epsilon\in U_S\).  Multiplying
+\Cref{eq:sextic-reciprocity} over prime factors gives, for an allowed
+generator \(a\) of \(\mathfrak a\),
+\begin{equation}
+ \chi_{\mathfrak a}(m)
+  =\chi_{\mathfrak a}(\epsilon)\chi_{\mathfrak b}(a).
+\label{eq:generator-reciprocity}
+\end{equation}
+This includes the case \((\mathfrak a,\mathfrak b)\ne R\): both sides are
+then zero.  For an S-unit \(\epsilon\), the same product formula gives
+\begin{equation}
+ \chi_{\mathfrak a}(\epsilon)=H_S(\epsilon,a)^{-1}.
+\label{eq:unit-symbol}
+\end{equation}
+Thus its dependence on \(\mathfrak a\) is through the finite class \([a]\).
+
+\begin{lemma}[Kummer and class characters]\label{lem:kummer-characters}
+For \(u\in R\setminus\{0\}\), the ideal function
+\[
+ \chi_\bullet(u)(\mathfrak a)=\chi_{\mathfrak a}(u)
+\]
+is induced away from \(S\) and the prime divisors of \((u)R\) by a
+finite-order Hecke character.  Its values at those prime divisors are set
+equal to zero.  If \(\mathfrak f_u\) is the conductor of the inducing
+primitive character, then
+\begin{equation}
+ \Norm\mathfrak f_u\le C_{F,S}\Norm\rad((u)R)
+                       \le C_{F,S}q_u.\label{eq:kummer-conductor}
+\end{equation}
+The same bound, with a changed constant, holds after twisting by the fixed
+\(\eta\).  The inducing characters associated to \(u\) and \(v\) agree if
+and only if \(u/v\in F^{\times6}\).
+
+Every character of the finite group \(B\), evaluated on allowed generators,
+extends to a finite-order Hecke character unramified outside \(S\).
+
+The following parametrization will index the nonzero Poisson frequencies;
+its character distinctness and conductor bound will be used in zero detection.
+Choose a complete set of representatives \(\mathcal U\) modulo \(U_S^6\) among the nonzero
+S-integers whose exterior valuations belong to \(\{0,1,\ldots,5\}\), with
+\(1\in\mathcal U\).  For allowed generators \(r\), the map
+\begin{equation}
+ (u,\mathfrak r)\longmapsto [u r^6]
+ \quad\text{from }\mathcal U\times\{\text{exterior ideals}\}
+ \quad\text{to }(R\setminus\{0\})/U_S^6\label{eq:frequency-decomposition}
+\end{equation}
+is a bijection.  Among \(u\in\mathcal U\), only \(u=1\) induces the
+principal character, and distinct \(u\)'s induce distinct characters, also
+after the fixed twist by \(\eta\).
+\end{lemma}
+
+\begin{proof}
+Because \(\mu_6\subset F\), Kummer theory
+\cite[Chapter~IV, Theorem~(3.3) and Corollary~(3.6)]{Neukirch99}
+identifies \(u\in F^\times\) with
+the character
+\[
+ \kappa_u(\sigma)=\frac{\sigma(u^{1/6})}{u^{1/6}}
+ \quad\text{of }\Gal(\overline F/F),
+\]
+whose kernel as a function of \(u\) is exactly \(F^{\times6}\).
+Global class-field theory identifies this finite abelian character with a
+finite-order Hecke character
+\cite[Chapter~VI, Theorem~(5.5) and Proposition~(5.6)]{Neukirch99}.
+At an exterior prime
+\(\mathfrak p\nmid(u)R\), arithmetic Frobenius satisfies
+\[
+ \kappa_u(\operatorname{Frob}_{\mathfrak p})
+ \equiv (u^{1/6})^{q_{\mathfrak p}-1}
+ =u^{(q_{\mathfrak p}-1)/6}
+ =\chi_{\mathfrak p}(u)\pmod{\mathfrak p}.
+\]
+Reduction is injective on \(\mu_6\), so these are equal as roots of unity.
+This proves the asserted identification on good primes.
+
+At an exterior place, the principal units are sixth powers by Hensel's
+lemma.  Hence the associated local Hilbert character is trivial on principal
+units, giving conductor exponent at most one.  The tame Hilbert formula
+\cite[Chapter~V, Proposition~(3.4)]{Neukirch99} shows that the pairing of
+two units is \(1\), so if \(u\) is a local unit the character is unramified.
+At a place in \(S\), it depends only on the class of \(u\) in
+the finite group \(F_v^\times/F_v^{\times6}\); the finitely many resulting
+local conductors have a fixed maximum.  This proves
+\Cref{eq:kummer-conductor}.  A fixed twist supported in \(S\) only changes
+that maximum.  Equality of two inducing Hecke characters is equality of
+their Kummer characters, since unramified Frobenius elements determine a
+finite abelian character.  The Kummer kernel gives the stated criterion.
+Setting extra prime values to zero merely omits Euler factors and does not
+alter the inducing character.
+
+For a character \(\theta_B\) of \(B\), extend it to \(\mathcal V=E\oplus B\)
+by \(\theta_S(eb)=\theta_B(b)\).  This is a continuous finite-order character
+of \(F_S^\times\) trivial on \(U_S\).  If \(\mathfrak a=aR\), define
+\(\theta(\mathfrak a)=\theta_S(a)\).  It is independent of the generator
+and multiplicative.  At every exterior place take the unramified local
+character sending a uniformizer to \(\theta(\mathfrak p)\), and at \(S\)
+take \(\theta_S^{-1}\).  Their product is trivial on diagonal \(F^\times\)
+by construction and is the required Hecke character.
+
+To prove \Cref{eq:frequency-decomposition}, divide each exterior valuation
+of a nonzero \(h\) by \(6\).  This determines an ideal \(\mathfrak r\) and
+the exterior valuations of an S-integer \(u_0=h/r^6\) in
+\(\{0,\ldots,5\}\).  Replacing \(u_0\) by its representative in
+\(\mathcal U\) changes \(u_0r^6\) only by an element of \(U_S^6\).
+Conversely, the exterior valuations of \([ur^6]\) determine
+\(\mathfrak r\) and those of \(u\); equality of two such classes then says
+that the two representatives \(u\) differ by \(U_S^6\).  Changing an
+allowed \(r\) by \(U_S^6\) does not affect its image in the quotient.
+This proves bijectivity.
+
+If \(u\in\mathcal U\) induces the principal character, the first part gives
+\(u=t^6\) in \(F\).  Its exterior valuations are divisible by \(6\) and
+between \(0\) and \(5\), hence are all zero; the same is true for the
+exterior valuations of \(t\).  Thus \(u\in U_S^6\), giving \(u=1\).
+If \(u,v\in\mathcal U\) induce the same character, the differences of their
+exterior valuations are divisible by \(6\) and lie in \([-5,5]\), so vanish.
+Their quotient is then a sixth power of an S-unit, and \(u=v\).
+The fixed twist by \(\eta\) cancels from an equality of twisted characters.
+\end{proof}
+
+We now determine the phases of the Gauss sums.  If \(\mathfrak c\) is a
+squarefree exterior ideal with allowed generator \(c\), define
+\begin{equation}
+ \gamma_j(\mathfrak c)
+  =q_{\mathfrak c}^{-1/2}
+       \sum_{x\bmod\mathfrak c}\chi_{\mathfrak c}(x)^j\e(x/c),
+ \qquad \gamma_j(R)=1.\label{eq:normalized-gauss}
+\end{equation}
+The additive character on \(R/\mathfrak c\) here is primitive by
+\Cref{lem:s-lattice}.  A change \(c\mapsto\epsilon^6c\), with
+\(\epsilon\in U_S\), changes the additive argument by a sixth power and is
+absorbed by a change of residue variable; hence the sum is independent of
+the allowed generator.  At an exterior prime, the adelic product formula
+gives
+\[
+ \e(x/p)=\psi_{\mathfrak p}(-x/p).
+\]
+The reduction of \(\mu_{12}\) is injective there, so
+\(q_{\mathfrak p}\equiv1\pmod{12}\) and
+\(\chi_{\mathfrak p}(-1)=1\).  The minus sign can therefore be suppressed
+in all these prime Gauss sums.
+
+\begin{lemma}[The Gauss correction characters]\label{lem:gauss-characters}
+There are a unitary Hecke character \(\Lambda\), unramified outside \(S\),
+and a finite-order Hecke character \(G\), unramified outside \(S\), such that
+for every exterior prime \(\mathfrak p\),
+\begin{equation}
+ \gamma_2(\mathfrak p)^3=-\Lambda(\mathfrak p),\qquad
+ G(\mathfrak p)=\overline{\chi_{\mathfrak p}(4)}\,
+                     \gamma_3(\mathfrak p),\qquad
+ \gamma_1(\mathfrak p)\gamma_2(\mathfrak p)
+                      =-\Lambda(\mathfrak p)G(\mathfrak p).
+\label{eq:gauss-corrections}
+\end{equation}
+At each complex place the infinity type of \(\Lambda\) is purely angular
+of exponent \(1\) or \(-1\), in the ordinary angular coordinate.
+The values \(\gamma_3(\mathfrak p)\) are signs and depend multiplicatively
+on the class of an allowed \(p\) in \(B\).
+
+For coprime squarefree exterior ideals,
+\begin{equation}
+ \gamma_j(\mathfrak c_1\mathfrak c_2)
+ =\chi_{\mathfrak c_1}(c_2)^j
+  \chi_{\mathfrak c_2}(c_1)^j
+  \gamma_j(\mathfrak c_1)\gamma_j(\mathfrak c_2).
+\label{eq:gauss-crt}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First work over a finite field \(k\) of size \(Q\), with a nontrivial
+additive character \(\psi_k\), a character \(\chi\) of exact order \(6\), and
+\(\rho=\chi^2\).  Write
+\[
+ G_j=\sum_{x\in k}\chi(x)^j\psi_k(x),\qquad
+ J(\alpha,\beta)=\sum_{x\in k}\alpha(x)\beta(1-x).
+\]
+For nontrivial characters the usual Gauss inversion and Gauss--Jacobi
+identities give
+\begin{equation}
+ G_2G_4=Q,\qquad G_2^2=J(\rho,\rho)G_4,\qquad
+ (Q^{-1/2}G_2)^3=Q^{-1/2}J(\rho,\rho).\label{eq:cubic-jacobi}
+\end{equation}
+The first equality uses \(\rho(-1)=1\).  Changing \(\psi_k(x)\) to
+\(\psi_k(ax)\) multiplies \(G_j\) by \(\overline{\chi(a)}^{\,j}\), so the
+cube in \Cref{eq:cubic-jacobi} is independent of the additive character.
+
+Let \(E_0=\Q(\omega)\), where \(\omega^2+\omega+1=0\).  Every ideal of
+\(\Z[\omega]\) prime to \(3\) has a unique generator congruent to \(1\)
+modulo \(3\); denote it by \(\pi_+(\mathfrak a)\).  This follows from class
+number one and the bijection of the six units with
+\((\Z[\omega]/3)^\times\), and is the convention used in
+\cite[\S2.1]{BaierYoung10}.  For a prime \(\mathfrak q\nmid6\) with residue
+size \(Q\), take
+\(\rho(x)\equiv x^{(Q-1)/3}\pmod{\mathfrak q}\).  Reduction of the Jacobi
+sum gives
+\[
+ J(\rho,\rho)\equiv
+ \sum_{x\in\Fq_Q}x^{(Q-1)/3}(1-x)^{(Q-1)/3}=0
+ \pmod{\mathfrak q},
+\]
+since every monomial has degree strictly between \(0\) and \(Q-1\).
+The Gauss identities also give \(|J(\rho,\rho)|^2=Q\).
+To determine the unit, put \(t=1-\omega\); the ideals \((t^2)\) and \((3)\)
+are equal.  Writing \(\rho(x)=\omega^{k(x)}\), with \(k(x)\in\{0,1,2\}\),
+and expanding modulo \(t^2\) yields
+\[
+ J(\rho,\rho)\equiv Q-2
+   -t\sum_{x\ne0,1}\bigl(k(x)+k(1-x)\bigr)
+ \equiv Q-2-2(Q-1)t\equiv-1\pmod3.
+\]
+Here each value of \(\rho\) occurs \((Q-1)/3\) times on
+\(\Fq_Q^\times\), and \(Q\equiv1\pmod3\).  Divisibility by
+\(\mathfrak q\), the norm equality, and this congruence show
+\begin{equation}
+ J(\rho,\rho)=-\pi_+(\mathfrak q).
+\label{eq:eisenstein-jacobi}
+\end{equation}
+This is also the prime case of the classical cubic Gauss identity
+\(g(n)^3=\mu(n)\Norm(n)n\) in
+\cite[\S2.2, equation~(11) in arXiv:0804.2233v4]{BaierYoung10}.
+
+Define on ideals of \(E_0\) prime to \(3\)
+\[
+ \Lambda_{E_0}(\mathfrak a)
+     =\frac{\pi_+(\mathfrak a)}{|\pi_+(\mathfrak a)|}.
+\]
+The generators congruent to \(1\pmod3\) multiply, so this is a
+multiplicative ideal character.  On a principal ideal generated by
+\(a\equiv1\pmod3\) its value is \(a/|a|\); thus it is the unitary Hecke
+character of finite conductor dividing \((3)\) and angular infinity type
+of exponent \(1\), in ideal-character convention.  Set
+\(\Lambda=\Lambda_{E_0}\circ\Norm_{F/E_0}\).
+If \(\mathfrak p\) lies above \(\mathfrak q\) with residue degree \(f\),
+the power definition of the residue character shows that the cubic
+character at \(\mathfrak p\) is the lift of that at \(\mathfrak q\) by
+the residue-field norm.  The Davenport--Hasse Jacobi lifting formula says
+\[
+ J_{\Fq_{Q^f}}(\rho\circ\Norm,\rho\circ\Norm)
+       =(-1)^{f-1}J_{\Fq_Q}(\rho,\rho)^f;
+\]
+its hypotheses hold because \(\rho\), \(\rho\), and \(\rho^2\) are all
+nontrivial \cite[Theorem~1.1]{HoshiKanai22}.  By
+\Cref{eq:eisenstein-jacobi}, the right side is
+\(-\pi_+(\mathfrak q)^f\).  Since
+\(\Norm_{F/E_0}\mathfrak p=\mathfrak q^f\),
+\Cref{eq:cubic-jacobi} proves
+\(\gamma_2(\mathfrak p)^3=-\Lambda(\mathfrak p)\).
+The local norm at infinity is a product of complex coordinates or their
+conjugates.  Consequently its angular exponent at each complex place of
+\(F\) is \(1\) or \(-1\), with no radial factor.  Pullback by norm is
+unramified wherever \(\Lambda_{E_0}\) is unramified, so its finite conductor
+is supported in \(S\).
+
+For the quadratic sum we use one global additive character to relate the
+local signs.  For \(a\in F_v^\times\), define the normalized Weil index
+\[
+ \mathfrak w_v(a)=
+ \frac{\operatorname{WeilIndex}_{\psi_v}(a x^2)}
+      {\operatorname{WeilIndex}_{\psi_v}(x^2)}.
+\]
+It depends only on the square class of \(a\).  Weil's product formula and
+the Hilbert-symbol identity are
+\begin{equation}
+ \prod_v\mathfrak w_v(a)=1\quad(a\in F^\times),\qquad
+ \mathfrak w_v(a)\mathfrak w_v(b)
+       =(a,b)_{2,v}\mathfrak w_v(ab);
+\label{eq:weil-index}
+\end{equation}
+see \cite[Chapter~II, \S28 and Proposition~5 in \S30]{Weil64}.
+At an odd conductor-zero place, the local Gauss integral for the Weil index
+\cite[Chapter~II, \S27]{Weil64} gives \(\mathfrak w_v(u)=1\) for a unit \(u\)
+and
+\[
+ \mathfrak w_{\mathfrak p}(p^{-1})
+  =q_{\mathfrak p}^{-1/2}
+       \sum_{x\bmod\mathfrak p}\psi_{\mathfrak p}(x^2/p)
+  =q_{\mathfrak p}^{-1/2}
+       \sum_{x\bmod\mathfrak p}
+          \chi_{\mathfrak p}(x)^3\psi_{\mathfrak p}(x/p)
+  =\gamma_3(\mathfrak p).
+\]
+For the second equality, the number of square roots of \(x\) is
+\(1+\chi_{\mathfrak p}(x)^3\), and the sum of a nontrivial additive
+character is zero.  The last equality uses
+\(\chi_{\mathfrak p}(-1)=1\).
+
+Put \(\mathfrak w_S=\prod_{v\in S}\mathfrak w_v\).  Applying the first
+identity of \Cref{eq:weil-index} to \(p^{-1}\), all exterior places other
+than \(\mathfrak p\) contribute \(1\), and hence
+\[
+ \gamma_3(\mathfrak p)=\mathfrak w_S(p^{-1})^{-1}.
+\]
+On \(B\) the multiplicative defect in the second identity is
+\[
+ \prod_{v\in S}(a,b)_{2,v}=H_S(a,b)^3=1.
+\]
+Thus \([a]\mapsto\mathfrak w_S(a^{-1})^{-1}\) is a character of \(B\)
+factoring through square classes.  It takes values in \(\{\pm1\}\);
+equivalently Gauss inversion gives
+\(\gamma_3(\mathfrak p)^2=\chi_{\mathfrak p}(-1)^3=1\).
+Extend this B-character by \Cref{lem:kummer-characters}.  Since \(4\) is an
+S-unit, \(\chi_\bullet(4)\) is also a finite-order Hecke character unramified
+outside \(S\).  Their product, with \(\chi_\bullet(4)\) conjugated, defines
+\(G\) and gives its displayed prime value.
+
+It remains to check the sextic duplication factor.  In the finite-field
+notation above put \(\phi=\chi^3\).  Completing the square and counting
+square roots gives
+\[
+ J(\chi,\chi)
+  =\overline{\chi(4)}\sum_{t\in k}\chi(1-t^2)
+  =\overline{\chi(4)}J(\phi,\chi).
+\]
+In the second equality the part without \(\phi\) vanishes, since \(\chi\)
+is nontrivial.  Applying the Gauss--Jacobi identity to both sides yields
+\[
+ G_1G_4=\overline{\chi(4)}G_2G_3.
+\]
+Together with \(G_2G_4=Q\), this gives
+\[
+ \gamma_1(\mathfrak p)\gamma_2(\mathfrak p)
+   =\overline{\chi_{\mathfrak p}(4)}\,
+      \gamma_3(\mathfrak p)\gamma_2(\mathfrak p)^3
+   =-\Lambda(\mathfrak p)G(\mathfrak p).
+\]
+
+Finally use the allowed product \(c_1c_2\) to evaluate the sum at
+\(\mathfrak c_1\mathfrak c_2\).  Chinese remaindering writes its additive
+character as the product of the characters modulo \(\mathfrak c_i\), with
+their arguments multiplied respectively by \(c_2^{-1}\) and \(c_1^{-1}\).
+Changing the two residue variables contributes
+\(\chi_{\mathfrak c_1}(c_2)^j\chi_{\mathfrak c_2}(c_1)^j\).
+This proves \Cref{eq:gauss-crt}, including \(j\equiv0\pmod6\) with the
+specified zero convention.
+\end{proof}
+
+For later use set
+\[
+ \vartheta=\overline\Lambda\,\overline G\,\eta.
+\]
+Its finite conductor is supported in \(S\).  If \(\vartheta_v\) denote its
+idele-class components, define
+\[
+ L_S(y)=\prod_{v\in S}\vartheta_v(y_v)^{-1}.
+\]
+The global character is trivial on \(F^\times\), so for every exterior
+ideal with allowed generator \(a\),
+\begin{equation}
+ \vartheta(\mathfrak a)=L_S(a),\qquad L_S(\epsilon)=1
+       \quad(\epsilon\in U_S).\label{eq:vartheta-s}
+\end{equation}
+This is a smooth unitary character of \(F_S^\times\).  Finite-order
+characters are trivial on the connected group \(\C^\times\); hence the
+infinity components contributed by \(G\) and \(\eta\) are trivial.
+Those of \(L_S\) are therefore purely angular of exponent \(1\) or \(-1\)
+at each complex place.

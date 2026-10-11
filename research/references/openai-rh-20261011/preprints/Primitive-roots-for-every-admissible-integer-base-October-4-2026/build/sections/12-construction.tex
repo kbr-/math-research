@@ -1,0 +1,818 @@
+\section{Primes with a controlled predecessor in a fixed progression}
+\label{sec:prime-construction}
+\label{sec:construction}
+
+We prove Proposition~\ref{prop:controlled}.  Fix its data \(M,c,u\), so
+\begin{equation}\label{con:progression}
+ M\equiv0\pmod8,\qquad c\in\{2,4\},\qquad
+ (u,M)=1,\qquad c\mid u-1,\qquad
+ \left(\frac{u-1}{c},\frac Mc\right)=1.
+\end{equation}
+We first assign nonnegative weights to integers \(d=crQ+1\) in the
+specified progression.  A lower sieve bound supplies integers with
+no small prime factor.  The marked Type~II estimate then allows us
+to bound the mass of composites according to their least prime
+factor.  Factors close to the square root require a separate upper
+sieve bound.  Keeping the constant in that last bound independent
+of the number of marks will permit the final parameter choices.
+
+\subsection{The weights and the Type~II estimate}
+
+Use the parameters $L,W,V$, the prime groups $\mathcal P_i$, and
+the marks $\mathcal W$ of
+\eqref{eq:sieve-basic-parameters}, \eqref{eq:marked-prime-groups},
+and \eqref{eq:marked-weight}, with $q=1/2$.
+All prime-indexed sums and products below are over rational primes.
+The integer $K\ge1$ and exponents
+$0.1<a_1<\cdots<a_K<0.2$ are fixed before $x$ grows; their eventual
+choice will follow the other sieve parameters.
+The groups are disjoint for large \(x\), and Mertens' theorem gives
+\(V_i=\log2+o(1)\).  Their primes are then coprime to \(M\) and lie
+in \((\exp(L^{0.1}),\exp(L^{0.3}))\).
+
+The factor \(\omega_i(h)\) counts choices of a prime divisor of
+\(h\) from the \(i\)th group. Thus \(\mathcal W(h)\) vanishes
+unless every group contributes, while
+\(\omega_i(h)2^{1-\omega_i(h)}\) remains bounded when several
+primes from one group divide \(h\). These choices are the marks
+in the Type~II estimate below.
+
+Call a positive integer a \emph{group integer} if all its prime
+divisors belong to \(\bigcup_i\mathcal P_i\), and include \(1\).
+Use the complete group-prime part $h_{\mathcal P}$ defined in
+\eqref{eq:complete-band-part}. Fix a smooth function $\Psi$
+compactly supported in \((1,2)\), with \(0\le\Psi\le1\) and
+\(\int\Psi>0\), and define
+\begin{equation}\label{con:weight}
+ \begin{split}
+ F(h)&=\one_{\{h/h_{\mathcal P}=cQ\text{ for a prime }Q>x^{0.9}\}},\\
+ w(d)&=\one_{\{d\equiv u\pmod M\}}\Psi(d/x)
+                                  F(d-1)\mathcal W(d-1)\qquad(d\ge2).
+ \end{split}
+\end{equation}
+Set \(w(1)=0\).  Since \((ph)_{\mathcal P}=p h_{\mathcal P}\) for
+every group prime \(p\), including when \(p\mid h\), we have
+\begin{equation}\label{con:invariance}
+ F(ph)=F(h)\qquad(h\ge1,\ p\in\textstyle\bigcup_i\mathcal P_i).
+\end{equation}
+On the support of \(w\), the representation \(d=crQ+1\) is unique:
+\(r=(d-1)_{\mathcal P}\), since neither \(c\) nor \(Q\) has a
+group prime factor.  In particular,
+\begin{equation}\label{con:support}
+ r\le x^{0.11},\qquad \mathcal W(d-1)=\mathcal W(r),\qquad
+ 0\le w(d)\le B_K
+\end{equation}
+for a constant \(B_K\).  The last assertion follows from
+\(j2^{1-j}\le1\) for each integer \(j\ge1\); in fact
+\(0\le\mathcal W(h)\le B_K\) for every \(h\ge1\).
+
+Write \(X_0=\sum_d w(d)\) for the total mass.  Our aim is to prove
+that the prime mass is \(\gg X_0/L\), while \(X_0\gg x/L\).
+The bound \(w\le B_K\) will then give the required count of primes.
+The marked estimate supplies the comparison needed to subtract
+composite mass.
+
+Use the rough-number density $D_\gamma(s)$ from
+\eqref{eq:rough-density-definition}.  For fixed \(\gamma>0\) and integers
+\(m>x^\gamma\), put
+\begin{equation}\label{con:proxies}
+ R_\gamma(m)=\one_{\{P^-(m)>x^\gamma\}},\qquad
+ B_\gamma(m)=\frac{D_\gamma(\log m/L)}{LV(W)}
+                         \one_{\{P^-(m)>W\}}.
+\end{equation}
+We will replace \(R_\gamma\) by \(B_\gamma\) inside sums weighted
+by \(w(mn)\): the factor \(D_\gamma/(LV(W))\) compensates for
+retaining only \(W\)-roughness. Lemma~\ref{lem:marked-coefficient-transfer}
+and the character-transform bound proved in
+Proposition~\ref{prop:rough-type-ii} permit this replacement after
+the fixed congruence is expanded in characters. We verify that
+application next. All Dirichlet characters retain the zero extension
+off the units used in Section~\ref{sec:type-ii}.
+
+\begin{lemma}[Type~II estimate in the progression]\label{con:type-ii}
+Fix $\delta>0$ and $0<\gamma<s_-<s_+<1$. Let
+$H_m,H_n\ge x^\delta$, with $X=H_mH_n\asymp x$ and fixed
+comparison constants, and let $I\subseteq[H_m,2H_m]$ be an interval.
+Suppose
+\begin{equation}\label{con:exponent-range}
+ [\log H_m/L,\log(2H_m)/L]\subseteq[s_-,s_+].
+\end{equation}
+Let \(|b_n|\le1\) be supported on \(W\)-rough integers in
+\([H_n,2H_n]\).  For sufficiently large \(K\),
+\begin{equation}\label{con:type-ii-bound}
+ \left|\sum_{m\in I,n}
+       \bigl(R_\gamma(m)-B_\gamma(m)\bigr)b_n w(mn)\right|
+       \ll XL^{-6}.
+\end{equation}
+This is uniform in the dyads, interval, and coefficients.  The
+lower bound on \(K\) is independent of the \(a_i\). Constants and
+thresholds may depend on all fixed parameters, including the band
+exponents.
+\end{lemma}
+
+\begin{proof}
+The congruence in \(w\) cannot be incorporated into \(F\) while
+preserving \eqref{con:invariance}.  Instead, character orthogonality
+and \((u,M)=1\) give
+\[
+ \one_{\{mn\equiv u\pmod M\}}
+ =\frac1{\varphi(M)}\sum_{\lambda\bmod M}
+             \overline{\lambda(u)}\lambda(m)\lambda(n).
+\]
+By the proof of Proposition~\ref{prop:rough-type-ii}, the sequence
+$\alpha_m=\one_I(m)m^{iv}(R_\gamma(m)-B_\gamma(m))$ satisfies
+\eqref{eq:type-ii-long-coefficient-interface} for every fixed
+$A_0,B,A,C>0$, every character of modulus at most $L^{A_0}$,
+and every $|t|\le2XL^B$, uniformly for $|v|\le L^C$ and every
+interval $I$ under the present fixed exponent hypotheses.
+If $\alpha$ satisfies that bound, so does
+\(\alpha_m\lambda(m)\): the product \(\lambda\chi\), with its
+zero extension, is a character modulo \(\operatorname{lcm}(M,k)\),
+which is at most \(ML^{A_0}\le L^{A_0+1}\) for large \(x\).
+
+To separate the smooth factor, write
+\[
+ \widehat\psi(v)=\frac1{2\pi}\int_{\R}\Psi(\e^s)\e^{-ivs}\,ds.
+\]
+Fourier inversion yields
+\[
+ \Psi(mn/x)=\int_{\R}\widehat\psi(v)x^{-iv}m^{iv}n^{iv}\,dv.
+\]
+For \(|v|\le L\), apply Lemma~\ref{lem:marked-coefficient-transfer}
+to the invariant function $F$ in \eqref{con:weight}, with
+\(C=2\), \(D_*=6\), and
+\[
+ \alpha_m=m^{iv}\lambda(m)
+                   (R_\gamma(m)-B_\gamma(m)),\qquad
+ \beta_n=b_n\lambda(n)n^{iv}.
+\]
+Here the formula for \(\alpha_m\) applies on \(I\), and
+\(\alpha_m=0\) elsewhere.
+Both sequences are \(W\)-rough and bounded by \(L^2\) for large
+\(x\): \(x^\gamma>W\), \(D_\gamma\) is bounded on the fixed
+exponent interval, and \(LV(W)\asymp L^{0.76}\).  The finite
+number of characters is fixed with \(M\).  The integral of
+\(|\widehat\psi|\) is finite, whereas its tail beyond \(L\) is
+\(O_A(L^{-A})\) for every fixed \(A\).  On that tail the bilinear
+sum is \(O_K(X)\) by \eqref{con:support}.  Integration proves
+\eqref{con:type-ii-bound}.
+\end{proof}
+
+All parameters in the remainder of the section are fixed before
+\(x\) tends to infinity.  Unless an independence is explicitly
+asserted, constants, thresholds, and rates of convergence may depend
+on those fixed parameters.  The estimates are valid for arbitrary
+fixed marks, subject to the lower bounds on \(K\) in the Type~II
+applications.  We will choose the parameters together at the end.
+
+\subsection{Mass and distribution in progressions}
+
+Let \(r\) range over group integers, and define
+\begin{equation}\label{con:mass-definitions}
+ \begin{split}
+ J_0&=\sum_r\frac{\mathcal W(r)}r,\\
+ A_r&=\sum_{\substack{Q>x^{0.9}\text{ prime}\\crQ+1\equiv u\pmod M}}
+                         \Psi((crQ+1)/x),\qquad
+ X_0=\sum_d w(d)=\sum_r\mathcal W(r)A_r.
+ \end{split}
+\end{equation}
+We shall show that \(X_0\) is of order \(xJ_0/L\), and that the
+family at each small \(r\) has enough distribution to apply the
+block sieve.  The harmonic sum makes this possible without constants
+depending on the pointwise bound \(B_K\).
+
+\begin{lemma}[Harmonic mass]\label{con:harmonic}
+For each group put
+\[
+ E_i(t)=\prod_{p\in\mathcal P_i}\left(1+\frac{t}{p-1}\right).
+\]
+The harmonic mass has the exact Euler-product expression
+\begin{equation}\label{con:harmonic-identity}
+ \begin{aligned}
+ J_0&=\prod_{i=1}^K\frac{E_i'(1/2)}{V_i}\\
+    &=\prod_{i=1}^K\left\{
+       \frac{E_i(1/2)}{V_i}
+       \sum_{p\in\mathcal P_i}\frac1{p-1+1/2}\right\}.
+ \end{aligned}
+\end{equation}
+For every fixed \(\eps>0\),
+\begin{equation}\label{con:harmonic-bounds}
+ 1\le J_0\ll_K1,\qquad
+ \sum_{r>x^\eps}\frac{\mathcal W(r)}r
+       \ll_K\exp(-\eps L^{1-a_K}).
+\end{equation}
+Consequently the part of \(X_0\) with \(r>x^\eps\) is
+\(O_K(x\exp(-\eps L^{1-a_K}))\).
+\end{lemma}
+
+\begin{proof}
+At a prime \(p\), summing over its positive exponents contributes
+\(\sum_{j\ge1}p^{-j}=1/(p-1)\). Consequently \(E_i(t)\) is the
+harmonic generating function for integers supported on the \(i\)th
+group, with \(t\) recording their number of distinct prime factors.
+Differentiating its finite product and
+evaluating at \(t=1/2\) inserts the factor
+\(\omega_i(r)(1/2)^{\omega_i(r)-1}\).
+The groups are disjoint, so multiplying these marked sums and
+dividing by \(\prod_iV_i\) proves \eqref{con:harmonic-identity}.
+
+Integers with one prime, to exponent one, from each group contribute
+\[
+ \prod_{i=1}^K\left(V_i^{-1}\sum_{p\in\mathcal P_i}p^{-1}\right)=1
+\]
+to \(J_0\). For the upper bound and tail put \(s=L^{-a_K}\).
+Every group prime satisfies \(p^s\le\e^2\), so, for large \(x\),
+\[
+ \sum_{j\ge1}p^{-j(1-s)}\le\frac{2\e^2}{p}.
+\]
+Bounding the mark by \(B_K\) and multiplying the geometric series
+over group primes gives
+\[
+ \sum_r\frac{\mathcal W(r)}{r^{1-s}}\ll_K1,
+\]
+since \(\sum_iV_i\ll K\).  Multiplication by
+\(x^{-\eps s}\) on \(r>x^\eps\) proves the tail.  Finally,
+\(A_r\ll x/r\) by counting integers in the interval for \(Q\)
+whenever \(A_r\ne0\); otherwise the bound is immediate.
+\end{proof}
+
+Take temporarily
+\begin{equation}\label{con:small-parameters}
+ 0<\kappa<0.01,\qquad 0<\eps<\kappa,
+ \qquad 0<b<0.01,
+ \qquad D=x^{1/2-\kappa/2}.
+\end{equation}
+For an odd squarefree integer \(\ell\), let \(A_r(\ell)\) denote
+the sum defining \(A_r\) with the additional condition
+\(\ell\mid crQ+1\), and set
+\begin{equation}\label{con:local-density}
+ g_r(\ell)=\frac{\one_{\{(\ell,Mr)=1\}}}{\varphi(\ell)},\qquad
+ E_r(\ell)=A_r(\ell)-g_r(\ell)A_r.
+\end{equation}
+In particular, \(g_r(1)=1\) and \(E_r(1)=0\).
+
+\begin{lemma}[Distribution of the weighted family]\label{con:distribution}
+For every fixed \(A>0\),
+\begin{equation}\label{con:bv-sum}
+ \sum_{r\le x^\eps}\mathcal W(r)
+ \sum_{\substack{\ell\le D\\\ell\text{ odd squarefree}}}|E_r(\ell)|
+       \ll xJ_0L^{-A}.
+\end{equation}
+Moreover, writing \(A_\Psi=\int_1^2\Psi(y)\,dy\), we have
+\begin{equation}\label{con:mass-asymptotic}
+ X_0\sim\frac{xJ_0A_\Psi}{c\varphi(M/c)L}
+ \qquad(x\to\infty),
+\end{equation}
+with all construction parameters fixed and \(J_0=J_0(x)\).
+In particular,
+\begin{equation}\label{con:total-mass}
+ X_0\asymp_{M,\Psi}\frac{xJ_0}{L},
+\end{equation}
+with comparison constants independent of \(K,\kappa,\eps,b\).
+\end{lemma}
+
+\begin{proof}
+Put \(N=M/c\).  For \(r\le x^\eps\), the support of \(\Psi\)
+makes \(Q>x^{0.9}\) automatic.  The progression for \(d\) is
+equivalent to the reduced class
+\[
+ Q\equiv\frac{u-1}{c}\,r^{-1}\pmod N.
+\]
+If \((\ell,Mr)>1\), then \(A_r(\ell)=g_r(\ell)=0\).
+Otherwise the additional condition is
+\(Q\equiv-(cr)^{-1}\pmod\ell\), and the two classes combine to
+one reduced class modulo \(N\ell\).
+
+We use the prime-counting form of the Bombieri--Vinogradov theorem
+\cite{Bombieri65,Vinogradov65}: for fixed \(A',\eta>0\),
+\begin{equation}\label{con:bv-input}
+ \sum_{q<Y^{1/2-\eta}}\max_{(v,q)=1}
+ \left|\pi(Y;q,v)-\frac{\Li(Y)}{\varphi(q)}\right|
+       \ll_{A',\eta}Y(\log Y)^{-A'}.
+\end{equation}
+Here \(\Li(Y)=\int_2^Ydt/\log t\).  Uniformly for
+\(r\le x^\eps\) and \(Y\asymp x/(cr)\), the moduli
+\(N\ell\), \(\ell\le D\), lie in this range.  Indeed, with
+\(\eta=(\kappa-\eps)/4\),
+\[
+ (1-\eps)(1/2-\eta)-(1/2-\kappa/2)
+       =\frac{(\kappa-\eps)(1+\eps)}4>0,
+\]
+which also absorbs the fixed factor \(N\).
+
+Define
+\[
+ I_r=\frac{x}{cr}\int_1^2
+               \frac{\Psi(y)}{\log((xy-1)/(cr))}\,dy.
+\]
+For every fixed \(0<\theta<0.1\), the support of \(\Psi\) forces
+\(Q>x^{0.9}\) whenever \(r\le x^\theta\). The prime number theorem
+in the fixed reduced progressions modulo \(N\), followed by partial
+summation, therefore gives, for every fixed \(A>0\),
+\begin{equation}\label{con:fixed-r-mass}
+ A_r=\frac{I_r}{\varphi(N)}
+      +O_{A,M,\Psi}\bigl((x/r)L^{-A}\bigr)
+ \qquad(r\le x^\theta).
+\end{equation}
+The class varies with \(r\), but \(N\) is fixed and every class is
+reduced. The implied constant is independent of \(\theta\), although
+the threshold for the automatic cutoff may depend on \(\theta\).
+This single-modulus estimate thus holds throughout
+\(0<\theta<0.1\); the restriction \(\eps<\kappa\) is needed for
+the joint modulus estimate that follows.
+
+Partial summation in \eqref{con:bv-input} yields
+\begin{equation}\label{con:smoothed-bv}
+ \sum_{\substack{\ell\le D\\\ell\text{ odd squarefree}}}
+ \left|A_r(\ell)-\frac{g_r(\ell)}{\varphi(N)}I_r\right|
+       \ll_{A'}\frac xrL^{-A'}.
+\end{equation}
+To check the smoothing uniformly, integrate the progression remainder
+against the derivative of \(\Psi((crt+1)/x)\).  Its total absolute
+integral is \(\int|\Psi'(y)|\,dy\), independently of \(r\), and
+all integration points have \(t\asymp x/(cr)\).  The moduli
+\(N\ell\) are distinct, and the maximum in \eqref{con:bv-input}
+covers their varying residue classes.
+
+The term \(\ell=1\) of \eqref{con:smoothed-bv} evaluates \(A_r\).
+Replacing \(I_r/\varphi(N)\) by \(A_r\) in the other terms costs
+at most one logarithmic factor, because
+\[
+ \sum_{\ell\le D}g_r(\ell)\le\sum_{\ell\le D}\frac1{\varphi(\ell)}
+       \ll L.
+\]
+For example, expand
+\(n/\varphi(n)=\sum_{d\mid n}\mu^2(d)/\varphi(d)\) and use
+\(\sum_d\mu^2(d)/(d\varphi(d))<\infty\).
+Choosing \(A'\) sufficiently large gives
+\(\sum_{\ell\le D}|E_r(\ell)|\ll(x/r)L^{-A}\); summing with
+the marks proves \eqref{con:bv-sum}.
+
+On the support of \(\Psi\), for \(r\le x^\eps\) the logarithm
+in \(I_r\) is comparable to \(L\), with absolute comparison
+constants since \(\eps<0.01\) and \(c\in\{2,4\}\).  Thus
+\(I_r\asymp_\Psi x/(rL)\).  Summing the evaluation of \(A_r\)
+and using Lemma~\ref{con:harmonic} proves \eqref{con:total-mass}.
+The tail divided by \(xJ_0/L\) tends to zero since \(J_0\ge1\).
+Although its threshold may depend on \(K\), the resulting comparison
+constants do not.
+
+To obtain the precise asymptotic, fix an auxiliary exponent
+\(0<\theta<\eps\), without changing the sieve parameters.
+Uniformly for \(r\le x^\theta\) and \(y\) in the support of \(\Psi\),
+\[
+ \log((xy-1)/(cr))=L+O(\theta L+1),
+\]
+and hence
+\[
+ I_r=\frac{xA_\Psi}{crL}
+             \bigl(1+O(\theta)+O(L^{-1})\bigr).
+\]
+The constants in these relative errors are independent of \(\theta\).
+Use the \(\ell=1\) term of \eqref{con:smoothed-bv} with \(A'>2\),
+multiply by \(\mathcal W(r)\), and sum over \(r\le x^\theta\).
+The summed progression error is \(O(xJ_0L^{-A'})\).
+Lemma~\ref{con:harmonic} bounds the omitted parts of both \(X_0\)
+and \(J_0\); after the harmonic tail is multiplied by \(x/L\),
+both are \(o_\theta(xJ_0/L)\), since \(J_0\ge1\). Thus
+\[
+ \frac{c\varphi(N)L X_0}{xJ_0A_\Psi}
+       =1+O(\theta)+o_\theta(1).
+\]
+First let \(x\) tend to infinity with \(\theta\) fixed, and then
+let \(\theta\) decrease to zero. This proves
+\eqref{con:mass-asymptotic}. For \((M,c,u)=(8,4,5)\), it becomes
+\(X_0\sim xJ_0A_\Psi/(4L)\), since \(\varphi(M/c)=\varphi(2)=1\).
+\end{proof}
+
+To express the sieve products, define
+\begin{equation}\label{con:singular-product}
+ \begin{split}
+ V_M(y)&=\prod_{\substack{2<p\le y\\p\nmid M}}
+                            \left(1-\frac1{p-1}\right),\\
+ \mathfrak S_M&=2\prod_{p>2}\left(1-\frac1{(p-1)^2}\right)
+       \prod_{\substack{p\mid M\\p>2}}
+                            \left(1-\frac1{p-1}\right)^{-1}>0.
+ \end{split}
+\end{equation}
+Division by \(V(y)\) and Mertens' theorem give
+\begin{equation}\label{con:mertens}
+ V_M(y)\sim\mathfrak S_M V(y),\qquad
+ V(y)\sim\frac{\e^{-\gamma_E}}{\log y},
+\end{equation}
+where \(\gamma_E\) is Euler's constant.  The primes dividing any
+supported \(r\) are large enough that their omission changes these
+products negligibly.  More precisely, \eqref{con:support} gives
+\begin{equation}\label{con:omitted-primes}
+ \sum_{p\mid r}\frac1p\le0.11L^{0.9}\exp(-L^{0.1})=o(1),
+ \qquad
+ \prod_{2<p\le y}(1-g_r(p))=(1+o(1))V_M(y),
+\end{equation}
+uniformly for \(r\le x^{0.11}\) and all \(y\).  The bound on the
+relative error is independent of \(K\).
+
+\subsection{Two sieve estimates}
+
+The block sieve of Lemma~\ref{lem:block}, from
+\cite[Lemma~2.9]{BlockPaper}, now gives the initial mass without
+small prime factors and a conditional mass for a specified divisor.
+Both estimates use the distribution already proved, but at different
+sieve depths.
+
+First sieve the prime objects \(Q\) in \(A_r\), for
+\(r\le x^\eps\), by the conditions \(p\mid crQ+1\) at odd
+primes \(p\le z=x^b\).  The local densities are \(g_r(p)\),
+with \(g_r(p)\le1/2\) and
+\(\sum_{v<p\le v^2}g_r(p)\ll1\) with absolute constants.
+Choose the even depth
+\[
+ H=2\left\lfloor\frac1{40b}\right\rfloor.
+\]
+For sufficiently small fixed \(b\), this is large enough for the
+lower bound in Lemma~\ref{lem:block}; moreover,
+\[
+ z^{4H+2}\le x^{0.2+2b}<D,\qquad
+ \e^{-H}\le\e^2\exp(-1/(20b)).
+\]
+All remainders are therefore covered by \eqref{con:bv-sum}.
+Every supported \(d\) is odd.  Summing the sieve bound with the
+marks, using \eqref{con:mertens}--\eqref{con:omitted-primes} and
+the negligible tail in Lemma~\ref{con:harmonic}, gives
+\begin{equation}\label{con:initial-lower}
+ S_b:=\sum_{P^-(d)>x^b}w(d)
+ \ge\frac{\mathfrak S_M X_0}{L}
+ \left\{\frac{\e^{-\gamma_E}}b
+              (1-C_s\e^{-c_s/b})+o(1)\right\},
+\end{equation}
+where \(C_s,c_s>0\) are absolute; the displayed bound on \(\e^{-H}\)
+permits \(c_s=1/20\), after enlarging \(C_s\).
+The remainders are
+\(o(X_0/L)\) by taking \(A>2\) in \eqref{con:bv-sum}.
+
+\begin{lemma}[Mass conditioned on a divisor]\label{con:bin-mass}
+For any fixed \(b\le\gamma<\gamma'\le1/2-\kappa\),
+\begin{equation}\label{con:bin-mass-formula}
+ \sum_{\substack{x^\gamma<n\le x^{\gamma'}\\n\text{ prime}}}
+ \sum_{\substack{n\mid d\\P^-(d)>W}}w(d)
+ =\mathfrak S_M X_0 V(W)
+                  \left(\log\frac{\gamma'}\gamma+o(1)\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For large \(x\), the primes \(n\) in this sum exceed \(W\) and
+all group primes, and do not divide \(M\).  Fix \(r\le x^\eps\)
+and condition the family in \(A_r\) on \(n\mid crQ+1\).  For a
+squarefree product \(\ell\) of odd primes at most \(W\), the
+intersection count is
+\[
+ A_r(n\ell)=\frac{A_r}{n-1}g_r(\ell)+E_r(n\ell).
+\]
+This includes \(\ell=1\), as allowed in Lemma~\ref{lem:block}.
+Apply that lemma with main mass \(A_r/(n-1)\) and
+\(H=2\lceil(\log L)^2\rceil\).  Its relative error tends to zero,
+and its remainder moduli satisfy
+\[
+ \ell\le W^{4H+2}=\exp(O(L^{0.24}(\log L)^2))=x^{o(1)},
+ \qquad n\ell\le x^{1/2-\kappa+o(1)}<D.
+\]
+The map \((n,\ell)\mapsto n\ell\) is injective, since \(n\) is
+the unique prime factor exceeding \(W\).  Thus the total remainder
+after summing \(n\) and the marked \(r\)'s is bounded by a single
+copy of \eqref{con:bv-sum}.
+
+The sieve product is \((1+o(1))V_M(W)\) uniformly in \(r\), and
+Mertens' theorem gives
+\[
+ \sum_{\substack{x^\gamma<n\le x^{\gamma'}\\n\text{ prime}}}
+                      \frac1{n-1}=\log(\gamma'/\gamma)+o(1).
+\]
+By \eqref{con:mass-definitions}, Lemma~\ref{con:harmonic}, and
+\eqref{con:total-mass}, for every fixed \(A>0\) we have
+\[
+ \sum_{r\le x^\eps}\mathcal W(r)A_r
+       =X_0+o(X_0L^{-A}).
+\]
+This evaluates the contribution of \(r\le x^\eps\) with the exact
+main mass \(X_0\); taking \(A\) large in \eqref{con:bv-sum}
+makes the remainders \(o(X_0V(W))\).  Finally, each supported \(d\)
+has at most \(\log(2x)/(bL)=O(1/b)\) distinct prime divisors above
+\(x^b\).  Consequently the harmonic tail bounds the omitted
+\(r>x^\eps\) contribution even after summing over \(n\).
+This proves \eqref{con:bin-mass-formula}.
+\end{proof}
+
+\subsection{Removing composites by their least prime factor}
+
+We next pass from \(S_b\) to
+\[
+ U_\kappa=\sum_{P^-(d)>x^{1/2-\kappa}}w(d).
+\]
+For a bin \((\gamma,\gamma']\subseteq(b,1/2-\kappa]\), with the
+first left endpoint allowed to equal \(b\), define
+\[
+ T_{\gamma,\gamma'}=
+ \sum_{\substack{x^\gamma<n\le x^{\gamma'}\\n\text{ prime}}}
+                    \sum_{P^-(m)>x^\gamma}w(mn).
+\]
+If \(x^\gamma<P^-(d)\le x^{\gamma'}\), taking \(n=P^-(d)\)
+and \(m=d/n\) shows that its weight is included in this sum.
+This remains true when \(n^2\mid d\).
+
+Partition both factors into disjoint half-open dyads with endpoints
+powers of two, retaining pairs that meet the smooth product support
+and the range of \(n\).  On that support, with \(t=\log n/L\),
+\[
+ \frac{\log m}{L}=1-t+O(L^{-1}).
+\]
+Every retained full \(m\)-dyad therefore satisfies
+\eqref{con:exponent-range} with
+\[
+ s_-=1/2+\kappa/2,\qquad s_+=1-b/2,
+\]
+for large \(x\); in particular \(s_->\gamma\).
+Both dyad scales are at least \(x^{b/2}\), and their product is
+comparable to \(x\).  There are \(O(L)\) such pairs, since each
+\(n\)-dyad allows only a bounded number of \(m\)-dyads.
+
+Apply Lemma~\ref{con:type-ii} in every pair with \(\delta=b/2\)
+and with \(b_n\) the prime indicator restricted to its dyad and
+bin.  These coefficients are \(W\)-rough.  The total error is
+\(O(xL^{-5})=o(X_0/L)\), by \eqref{con:total-mass} and
+\(J_0\ge1\).  Hence
+\[
+ T_{\gamma,\gamma'}=
+ \sum_{\substack{x^\gamma<n\le x^{\gamma'}\\n\text{ prime}}}
+ \sum_{m>x^\gamma}\frac{D_\gamma(\log m/L)}{LV(W)}
+                         \one_{\{P^-(m)>W\}}w(mn)+o(X_0/L).
+\]
+Joint continuity of the density on the fixed compact exponent range
+gives, on the support of the summand,
+\[
+ D_\gamma(\log m/L)
+       \le\sup_{\gamma\le t\le\gamma'}D_\gamma(1-t)+o(1).
+\]
+Since \(n>W\), the remaining roughness condition is precisely
+\(P^-(mn)>W\).  Lemma~\ref{con:bin-mass} thus gives
+\begin{equation}\label{con:bin-cost}
+ T_{\gamma,\gamma'}\le\frac{\mathfrak S_M X_0}{L}
+ \left\{\sup_{\gamma\le t\le\gamma'}D_\gamma(1-t)
+                       \log\frac{\gamma'}\gamma+o(1)\right\}.
+\end{equation}
+
+The density estimate in Lemma~\ref{lem:density} is normalized to
+match this expression:
+\begin{equation}\label{con:density-budget}
+ \int_b^{1/2}D_t(1-t)\frac{dt}{t}=D_b(1)-1,
+ \qquad
+ D_b(1)\le\frac{\e^{-\gamma_E}}b(1+C_d\e^{-c_d/b})
+\end{equation}
+for sufficiently small fixed \(b\). On
+\(b\le\gamma\le t\le1/2-\kappa\), the point \((\gamma,1-t)\)
+stays a fixed distance from \(s=\gamma\).  Uniform continuity and
+the finite mass of \(dt/t\) therefore give a sufficiently fine
+fixed partition
+\[
+ b=\gamma_0<\gamma_1<\cdots<\gamma_J=1/2-\kappa
+\]
+such that
+\begin{align*}
+ \sum_{j=1}^J
+ \sup_{\gamma_{j-1}\le t\le\gamma_j}D_{\gamma_{j-1}}(1-t)
+                         \log\frac{\gamma_j}{\gamma_{j-1}}
+ &\le\int_b^{1/2-\kappa}D_t(1-t)\frac{dt}{t}+0.1\\
+ &\le D_b(1)-1+0.1.
+\end{align*}
+Subtracting \eqref{con:bin-cost} for these finitely many bins from
+\eqref{con:initial-lower} proves
+\begin{equation}\label{con:post-bin}
+ U_\kappa\ge\frac{\mathfrak S_M X_0}{L}
+ \left\{0.9-\frac{\e^{-\gamma_E}}b
+       (C_s\e^{-c_s/b}+C_d\e^{-c_d/b})+o(1)\right\}.
+\end{equation}
+The unit term in \eqref{con:density-budget} is what leaves a positive
+mass after this subtraction.  It remains to remove the composites
+whose two prime factors are both close to \(\sqrt x\).
+
+\subsection{Composites with two nearly equal prime factors}
+
+A composite counted by \(U_\kappa\) has exactly two prime factors
+with multiplicity: three factors greater than \(x^{1/2-\kappa}\)
+would have product exceeding \(2x\).  Each factor lies in
+\([x^{1/2-\kappa},2x^{1/2+\kappa}]\).  Cover the ordered factor
+pairs by dyadic boxes
+\begin{equation}\label{con:boxes}
+ \mathcal B=[M_1,2M_1)\times[M_2,2M_2)
+\end{equation}
+that meet this range in each coordinate and admit a product in
+\([x,2x]\).  They satisfy \(x/4\le M_1M_2\le2x\), and their
+full coordinate intervals lie in \([x^{0.46},x^{0.54}]\) for large
+\(x\).  There are at most \(C_{\rm dyad}(\kappa L+1)\) boxes,
+where \(C_{\rm dyad}\) is absolute: this bounds the number of first
+coordinate dyads, and the product condition leaves only a bounded
+number of second coordinate dyads for each.
+
+The rough-pair bound holds on a slightly wider fixed range of boxes,
+which includes all the boxes just selected.
+\begin{lemma}[An upper bound for rough pairs]\label{con:rough-pairs}
+Let \(\mathcal B=[M_1,2M_1)\times[M_2,2M_2)\) be any dyadic box
+such that
+\begin{equation}\label{con:rough-box-range}
+ x/4\le M_1M_2\le2x,\qquad
+ x^{0.46}/2\le M_i\le2x^{0.54}\quad(i=1,2).
+\end{equation}
+Then
+\begin{equation}\label{con:rough-pair-bound}
+ \sum_{\substack{(m,n)\in\mathcal B\\P^-(m)>W,\ P^-(n)>W}}w(mn)
+       \le C_1X_0V(W)^2,
+\end{equation}
+where \(C_1\) depends at most on \(M,\Psi\), and is independent
+of \(K,\kappa,b,\eps\).
+\end{lemma}
+
+\begin{proof}
+Fix a contributing group integer \(r\le x^{0.11}\), and set
+\(k_r=cr\), \(z'=x^{0.002}\).  The corresponding pairs satisfy
+\(mn\equiv1\pmod{k_r}\).  At every odd prime \(j\le z'\) with
+\(j\nmid r\), they avoid
+\begin{equation}\label{con:pair-bad}
+ mn\equiv1\pmod j,
+ \qquad\text{and, if }j\le W,\qquad mn\equiv0\pmod j.
+\end{equation}
+Indeed, \(mn-1=k_rQ\) with \(Q>x^{0.9}>z'\), while both factors
+are \(W\)-rough.  We impose no further condition at primes dividing
+\(k_r\) and may omit the fixed progression for this upper bound.
+
+For a squarefree product \(\ell\) of the designated odd primes,
+put
+\[
+ \rho(\ell)=\prod_{j\mid\ell}
+               \bigl(j-1+(2j-1)\one_{\{j\le W\}}\bigr).
+\]
+The conditions \(mn=1\) and \(mn=0\) modulo \(j\) are disjoint
+and have respectively \(j-1\) and \(2j-1\) residue pairs.  There
+are \(\varphi(k_r)\) pairs with product one modulo \(k_r\).
+The Chinese remainder theorem therefore gives exactly
+\(\varphi(k_r)\rho(\ell)\) pairs modulo \(k_r\ell\) satisfying
+the base congruence and all the forbidden conditions at primes
+dividing \(\ell\).  Their count in the box is
+\[
+ X'g(\ell)+E(\ell),\qquad
+ X'=M_1M_2\frac{\varphi(k_r)}{k_r^2},\qquad
+ g(\ell)=\frac{\rho(\ell)}{\ell^2},
+\]
+where
+\begin{equation}\label{con:lattice-error}
+ E(\ell)\ll\varphi(k_r)\rho(\ell)
+             \left(\frac{M_1+M_2}{k_r\ell}+1\right).
+\end{equation}
+This formula also holds at \(\ell=1\).
+
+The local bounds \(g(j)\le7/9\) and \(g(j)\le3/j\) verify
+the gap and block-sum hypotheses of Lemma~\ref{lem:block}, with
+absolute constants.  Its upper bound with \(H=2\) uses
+\(\ell\le(z')^{10}=x^{0.02}\). For squarefree \(\ell\),
+\[
+ \rho(\ell)\le\prod_{j\mid\ell}3j\le\tau(\ell)^2\ell,
+\]
+where \(\tau\) is the divisor function. Since \(\varphi(k_r)\le k_r\)
+and \(k_r=cr\le4r\), \eqref{con:lattice-error} gives
+\[
+ |E(\ell)|\ll\tau(\ell)^2(M_1+M_2+r\ell).
+\]
+The needed divisor sum follows elementarily. Let \(\tau_4(n)\)
+count ordered decompositions of \(n\) into four positive factors.
+Prime by prime, \(\tau(n)^2\le\tau_4(n)\); summing over the
+first three factors therefore yields, for \(Y\ge2\),
+\[
+ \sum_{n\le Y}\tau(n)^2
+ \le Y\left(\sum_{a\le Y}\frac1a\right)^3
+ \ll Y\bigl(\log(2Y)\bigr)^3.
+\]
+Consequently, taking \(Y=x^{0.02}\) and using
+\(M_1+M_2\le4x^{0.54}\) from \eqref{con:rough-box-range}, we obtain
+\begin{equation}\label{con:lattice-sum}
+ \sum_{\ell\le x^{0.02}}|E(\ell)|
+       \ll (x^{0.56}+rx^{0.04})L^3
+       =o\bigl((x/r)L^{-10}\bigr)
+\end{equation}
+uniformly for \(r\le x^{0.11}\).  The ratios of the two displayed
+power terms to \(x/r\) are at most \(x^{-0.33}\) and
+\(x^{-0.74}\), respectively, and absorb the logarithmic factor.
+
+For \(j\le W\), the surviving sieve factor is
+\[
+ 1-\frac{3j-2}{j^2}
+       =\left(1-\frac1j\right)^3
+                         \left(1-\frac1{(j-1)^2}\right),
+\]
+and for \(W<j\le z'\) it is
+\[
+ 1-\frac{j-1}{j^2}
+       =\left(1-\frac1j\right)
+                         \left(1+\frac1{j(j-1)}\right).
+\]
+The correction products are bounded.  Omitting the primes dividing
+\(r\) costs a bounded factor by \eqref{con:omitted-primes}, and
+omitting two costs a fixed factor.  Thus
+\[
+ \prod_{\substack{2<j\le z'\\j\nmid r}}(1-g(j))
+       \ll V(W)^2V(z').
+\]
+As \(X'\ll x/r\), the upper sieve and \eqref{con:lattice-sum}
+bound the pair count at this \(r\) by
+\(O((x/r)V(W)^2V(z'))\), uniformly in all the marks.  Bound
+\(\Psi\) by one, multiply by \(\mathcal W(r)\), and sum.  The
+result is
+\[
+ O\bigl(xJ_0V(W)^2V(z')\bigr).
+\]
+Finally \(V(z')\asymp L^{-1}\), with fixed comparison constants,
+and \eqref{con:total-mass} proves \eqref{con:rough-pair-bound}.
+Only \(J_0\), rather than the pointwise bound \(B_K\), entered this
+calculation, so \(C_1\) has the claimed independence.
+\end{proof}
+
+Return now to the boxes selected in \eqref{con:boxes}, whose full
+coordinate intervals lie in \([x^{0.46},x^{0.54}]\). We replace
+the prime indicators in each of these boxes. Apply
+Lemma~\ref{con:type-ii} with
+\[
+ \gamma=0.4,\qquad s_-=0.46,\qquad s_+=0.54,
+ \qquad\delta=b/2.
+\]
+In this range \(R_{0.4}(m)\) is exactly the prime indicator, since
+\(2(0.4)>0.54\), and \(D_{0.4}(s)=1/s\).  Its comparison
+coefficient is therefore
+\[
+ B_{\rm pr}(m)=\frac{\one_{\{P^-(m)>W\}}}{V(W)\log m}.
+\]
+The identity
+\[
+ \begin{aligned}
+ \one_{\{m\text{ prime}\}}\one_{\{n\text{ prime}\}}
+       -B_{\rm pr}(m)B_{\rm pr}(n)
+ &=(\one_{\{m\text{ prime}\}}-B_{\rm pr}(m))\one_{\{n\text{ prime}\}}\\
+ &\quad+B_{\rm pr}(m)(\one_{\{n\text{ prime}\}}-B_{\rm pr}(n))
+ \end{aligned}
+\]
+allows two successive applications, interchanging the variables in
+the second.  The companion coefficient is \(W\)-rough and bounded
+by one for large \(x\) in both cases.  All coefficients retain
+their box restrictions.  The total error over the boxes is
+\(O(xL^{-5})=o(X_0/L)\).
+
+Since \(\log m,\log n\ge0.46L\), Lemma~\ref{con:rough-pairs}
+bounds the resulting sum in one box by
+\((0.46)^{-2}C_1X_0/L^2\).  The ordered prime-pair sum includes
+prime squares and may count other semiprimes twice, which is harmless
+for an upper bound.  Summing the boxes gives
+\begin{equation}\label{con:balanced-cost}
+ \sum_{\substack{P^-(d)>x^{1/2-\kappa}\\d\text{ composite}}}w(d)
+       \le C_2(\kappa+L^{-1})\frac{X_0}{L}+o(X_0/L),
+\end{equation}
+where \(C_2=(0.46)^{-2}C_1C_{\rm dyad}\) depends at most on
+\(M,\Psi\), and is independent of \(K,\kappa,b,\eps\).
+
+\subsection{Choice of parameters and completion}
+
+\begin{proof}[Completion of the proof of Proposition~\ref{prop:controlled}]
+Fix \(M,c,u,\Psi\) first, and hence the constants
+\(\mathfrak S_M\) and \(C_2\).  Choose
+\(0<\kappa<0.01\) such that
+\[
+ C_2\kappa<\mathfrak S_M/4,
+\]
+and then choose \(0<\eps<\kappa\).  Choose \(b>0\) sufficiently
+small for the sieve and density estimates, and so that
+\[
+ \frac{\e^{-\gamma_E}}b
+          (C_s\e^{-c_s/b}+C_d\e^{-c_d/b})<0.2.
+\]
+Fix the partition used in the least-factor subtraction.  Only
+finitely many Type~II parameter sets now occur.  Choose \(K\)
+sufficiently large for all of them, and choose the exponents
+afterward, for example
+\[
+ a_i=0.1+\frac{0.1i}{K+1}\qquad(1\le i\le K).
+\]
+This order is permitted by Lemma~\ref{lem:marked-coefficient-transfer}
+and Proposition~\ref{prop:rough-type-ii}, hence by Lemma~\ref{con:type-ii}.
+
+Every supported prime is counted by \(U_\kappa\).
+Subtracting \eqref{con:balanced-cost} from \eqref{con:post-bin},
+and then taking \(x\) sufficiently large for the fixed parameters,
+gives
+\[
+ \frac{L}{\mathfrak S_M X_0}\sum_{d\text{ prime}}w(d)
+       \ge0.9-0.2-\frac14+o(1)>\frac14.
+\]
+By \eqref{con:total-mass}, \(J_0\ge1\), and \(w\le B_K\),
+the number of distinct supported primes is therefore
+\(\gg_{M,c,u}x/L^2\).  Their support in \eqref{con:weight}
+ensures \(x<d<2x\), \(d\equiv u\pmod M\), and
+\(d=crQ+1\) with \(Q>x^{0.9}\) prime.  Every prime factor of
+\(r\) belongs to a group in \eqref{eq:marked-prime-groups}, hence lies in
+\((\exp(L^{0.1}),\exp(L^{0.3}))\) for all sufficiently large
+\(x\).  These are precisely the assertions of the proposition.
+\end{proof}

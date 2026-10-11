@@ -1,0 +1,536 @@
+\section{Marked Type II estimates and rough factors}
+\label{sec:type-ii}
+
+The prime construction will count integers whose predecessor has the form
+in \Cref{eq:controlled-predecessor}, then remove the composite integers
+from that count.  The estimate in this section makes that subtraction
+possible: inside a marked bilinear sum, it replaces a prime condition on
+one factor by a condition involving only small prime divisors.  We first
+state the imported prime estimate and isolate the coefficient property
+used by its proof.  We then verify that property for the rough-factor
+condition needed when a composite's least prime factor stays below
+the square-root range.
+
+Return to the real variable \(x\) from \Cref{sec:reduction}, and put
+\begin{equation}\label{eq:sieve-basic-parameters}
+ L=\log x,\qquad W=\exp(L^{0.24}),\qquad
+ V(y)=\prod_{p\le y}\left(1-\frac1p\right).
+\end{equation}
+For an integer \(m>1\), write \(P^-(m)\) for its least prime factor, and
+put \(P^-(1)=\infty\).  Thus \(P^-(m)>y\) means that \(m\) is
+\(y\)-rough.  All Dirichlet characters below, including principal
+characters, are extended by zero on nonunits.
+
+Fix an integer \(K\ge1\) and real numbers
+\(0.1<a_1<\cdots<a_K<0.2\), all before letting \(x\) grow.  The prime
+groups
+\begin{equation}\label{eq:marked-prime-groups}
+ \mathcal P_i=\{p\text{ prime}:\exp(L^{a_i})\le p\le\exp(2L^{a_i})\}
+ \quad (1\le i\le K)
+\end{equation}
+are disjoint for sufficiently large \(x\).  For a positive integer
+\(h\), let
+\begin{equation}\label{eq:complete-band-part}
+ h_{\mathcal P}=\prod_{p\in\bigcup_i\mathcal P_i}p^{v_p(h)}
+\end{equation}
+be its complete part supported on these group primes.  A function
+\(F:\mathbb Z_{>0}\to\mathbb C\) satisfies \(F(ph)=F(h)\) for every
+group prime \(p\) and every positive
+\(h\) if and only if it depends only on \(h/h_{\mathcal P}\).  In
+particular this invariance removes every power of a group prime, not
+only a selected divisor.
+
+Define
+\begin{equation}\label{eq:marked-weight}
+ \begin{aligned}
+ V_i&=\sum_{p\in\mathcal P_i}\frac1p,
+ &\omega_i(h)&=\sum_{p\in\mathcal P_i}\one_{p\mid h},\\
+ \omega(h)&=\sum_{i=1}^K\omega_i(h),
+ &\mathcal W(h)&=q^{\omega(h)-K}
+                 \prod_{i=1}^K\frac{\omega_i(h)}{V_i},
+                 \qquad 0<q<1.
+ \end{aligned}
+\end{equation}
+The prime number theorem and partial summation give
+\(V_i=\log 2+o(1)\).  In particular these denominators are positive
+for large \(x\).  The weight is nonnegative and vanishes unless each
+group supplies a prime divisor.  It is bounded by a constant depending
+only on the fixed \(K,q\), since \(j q^{j-1}\) is bounded for positive
+integers \(j\).  In \Cref{sec:prime-construction} we shall take \(q=1/2\).
+
+The following is the one-sided marked Type II estimate of
+\emph{The Poisson--Dirichlet law for the prime factors of \(p-1\)}
+\cite[Theorem~3.1]{PoissonDirichlet}.
+\begin{theorem}[One-sided marked Type II estimate]\label{thm:marked-type-ii}
+Fix \(\delta,C,D_*>0\) and \(q\in(0,1)\).  Suppose
+\(H_m,H_n\ge x^\delta\) and \(X=H_mH_n\asymp x\).  Let \(F\) satisfy
+\(|F(h)|\le1\) and \(F(ph)=F(h)\) for every prime in the groups
+defined in \Cref{eq:marked-prime-groups}.  Let \(\alpha_m\) be supported on an
+arbitrary interval in \([H_m,2H_m]\), where it has the value
+\[
+ \alpha_m=m^{iv}\left(\one_{m\text{ prime}}
+       -\frac{\one_{P^-(m)>W}}{V(W)\log m}\right),
+ \qquad |v|\le L^C.
+\]
+Let \(\beta_n\) be supported on \(W\)-rough integers in \([H_n,2H_n]\),
+with \(|\beta_n|\le L^C\).  If \(K\) is sufficiently large in terms of
+\(\delta,C,D_*,q\), then
+\begin{equation}\label{eq:marked-type-ii}
+ \left|\sum_{m,n}\alpha_m\beta_n F(mn-1)\mathcal W(mn-1)\right|
+       \ll X L^{-D_*}.
+\end{equation}
+The required lower bound on \(K\) is independent of the particular
+\(a_i\).  The implicit constant and the threshold for \(x\) may depend
+on all the fixed parameters, including the \(a_i\).
+\end{theorem}
+
+The invariance is required for every positive \(h\), including when
+\(p\mid h\).  The estimate is uniform over the permitted \(F\),
+coefficient intervals, and coefficients.  The symbol \(X\) in this
+section denotes only the product \(H_mH_n\).
+
+We need the same marked bound for a rough-factor discrepancy.  The
+following lemma isolates a sufficient condition on a scalar
+coefficient: cancellation against every character of logarithmic
+modulus throughout the stated frequency range.  Its proof extracts
+the coefficient dependence from the argument of
+\cite[Theorem~3.1]{PoissonDirichlet}.
+
+\begin{lemma}[Coefficient criterion for the marked estimate]
+\label{lem:marked-coefficient-transfer}
+Fix \(\delta,C,D_*>0\) and \(q\in(0,1)\).  Retain the marked data and
+the hypotheses on \(F,H_m,H_n\) in \Cref{thm:marked-type-ii}, with fixed
+comparison constants in \(X=H_mH_n\asymp x\).  Let
+\((\alpha_m)\) and \((\beta_n)\) be scalar sequences indexed by positive
+integers, supported on \(W\)-rough integers in their respective dyads,
+with \(\alpha\) supported on an arbitrary interval
+\(I\subseteq[H_m,2H_m]\), and with
+\(|\alpha_m|,|\beta_n|\le L^C\).  Suppose that for every fixed
+\(A_0,B,A>0\), every Dirichlet character \(\chi\) modulo
+\(k\le L^{A_0}\), and every \(|t|\le2XL^B\),
+\begin{equation}\label{eq:type-ii-long-coefficient-interface}
+ \left|\frac1{H_m}\sum_m\alpha_m\chi(m)m^{it}\right|\ll_A L^{-A},
+\end{equation}
+uniformly in the permitted interval, character, and frequency.  The
+constant and threshold in this hypothesis may depend on \(A_0,B,A\),
+the fixed setup, and all further fixed parameters defining the
+coefficients; these parameters are chosen before \(x\) grows.
+
+Then \Cref{eq:marked-type-ii} holds when \(K\) is sufficiently large
+in terms of the fixed data, independently of the particular band
+exponents \(a_i\).  Its implicit constant and threshold may depend on
+all the fixed data, including the \(a_i\).
+\end{lemma}
+
+\begin{proof}
+We extract the assertion from the proof of
+\cite[Theorem~3.1]{PoissonDirichlet}.  In its marked expansion, write
+\(mn-1=ah\), where \(a\) is the product of the selected primes.
+Invariance gives \(F(mn-1)=F(h)\).  Except when a selected prime has
+its square dividing \(mn-1\), one also has
+\(\omega(mn-1)-K=\omega(h)\).  Replacing the damping by
+\(q^{\omega(h)}\) therefore costs \(O_A(XL^{-A})\) for every fixed
+\(A\).  The resulting factor \(F(h)q^{\omega(h)}\) has modulus at
+most one and is discarded in the following Cauchy bound.  There are \(O_K(L)\) dyads
+\(Y\) for the product of the selected primes.  For the contribution
+\(S_Y\) of one dyad, Cauchy's inequality gives
+\[
+ |S_Y|^2\ll\frac XY\mathcal Q_Y,
+\]
+where the nonnegative expanded square is
+\begin{equation}\label{eq:type-ii-cauchy-square}
+ \mathcal Q_Y=\left(\prod_iV_i^{-2}\right)
+ \sum_{\substack{a,b,m,n,m',n'\\
+        mn-1=ah,\ m'n'-1=bh\text{ for some }h}}
+ \rho(a/Y)\rho(b/Y)\alpha_m\overline{\alpha_{m'}}
+                         \beta_n\overline{\beta_{n'}}.
+\end{equation}
+Here \(a,b\) each select one prime from every group, and \(\rho\) is
+the fixed real smooth dyadic cutoff supported in \([1,4]\).
+Pairs \(a,b\) sharing a selected prime cost \(O_A(XYL^{-A})\).
+For the remaining coprime pairs, the common-\(h\) condition is
+equivalent to \(t=b-a\), where \(t=bmn-am'n'\).
+These reductions use only coefficient bounds and the invariance of
+\(F\); see \cite[Section~3.1]{PoissonDirichlet}.
+
+For a fixed \(A_0>0\), let \(\mathfrak M\subset\mathbb R/\mathbb Z\)
+be the union of the arcs
+\[
+ \operatorname{dist}_{\mathbb R/\mathbb Z}(\theta,c/k)
+       \le\frac{2L^{A_0}}Y,\qquad
+ 1\le k\le L^{A_0},\quad c\bmod k,\quad (c,k)=1.
+\]
+The selected-product range has \(\log Y\gg L^{0.1}\), so these arcs
+are disjoint for large \(x\).
+Choose the companion's fixed real \(\psi\in C_c^\infty(\mathbb R)\),
+equal to one on \([-4,4]\), and define
+\[
+ \mathcal H_{\mathfrak M}(t;a,b)
+ =\psi(t/Y)\int_{\mathfrak M}
+       \exp\bigl(2\pi i\theta(t-b+a)\bigr)\,\dd\theta.
+\]
+The major form is the scalar sum
+\begin{equation}\label{eq:type-ii-major-form}
+ \begin{split}
+ \mathcal Q_Y^{\mathrm{maj}}
+ ={}&\left(\prod_iV_i^{-2}\right)
+ \sum_{a,b,m,n,m',n'}
+ \rho(a/Y)\rho(b/Y)\\
+ &\qquad{}\times\alpha_m\overline{\alpha_{m'}}
+                         \beta_n\overline{\beta_{n'}}
+ \mathcal H_{\mathfrak M}(bmn-am'n';a,b),
+ \end{split}
+\end{equation}
+where \(a,b\) now run independently over products of one prime from
+every group.
+
+The proof of the replacement conclusion in
+\cite[Proposition~4.1]{PoissonDirichlet} applies to these scalar
+coefficients.  Its operator moment is independent of their values.
+The passage from that moment to the scalar endpoint pairing uses only
+\(W\)-rough support and norm and supremum bounds with logarithmic
+exponents depending on \(C\), not on \(K\)
+\cite[Sections~3.2--3.3]{PoissonDirichlet}.  This pairing initially
+has projections onto the good endpoint states of that argument.  In
+removing either projection, only the error from the endpoint outside
+its good set is majorized absolutely: each whole scalar endpoint factor
+is replaced by its logarithmic supremum bound, discarding both its
+coefficient value and its support indicator before the one-edge root
+replacement.  The surviving unprojected pairing retains its exact
+endpoint vectors.  Expanding those vectors and controlling collisions
+uses only size, rough support, and fixed divisor moments
+\cite[Section~4.9]{PoissonDirichlet}.  Thus the replacement conclusion,
+including restoration of independent \(a,b\), gives
+\begin{equation}\label{eq:type-ii-minor-transfer}
+ |\mathcal Q_Y-\mathcal Q_Y^{\mathrm{maj}}|
+       \ll_A XYL^{-A}
+\end{equation}
+for every prescribed fixed accuracy, with the choices specified below.
+
+The proof of the major-term estimate
+\cite[Proposition~5.1]{PoissonDirichlet} separates characters only at
+moduli \(k\le L^{A_0}\).  The group primes and all prime divisors of
+the rough variables exceed these moduli, so every variable is a unit
+there.  After Mellin separation its retained rectangle, for a fixed
+\(B\) chosen after \(A_0\), has \(|s'|\le L^B\) and
+\(|t|\le XL^B\), so both \(t\) and \(s'-t\)
+lie in the range of \Cref{eq:type-ii-long-coefficient-interface}.
+Transform decay and the product mean square on translated intervals
+control the discarded tails using only scalar coefficient bounds and
+fixed divisor moments.
+The further Mellin shift enters only the one-group prime polynomial
+and the bounded factor from the other groups; the sparse-frequency
+estimate is uniform in this shift
+\cite[Lemma~5.3]{PoissonDirichlet}.  On the remaining sparse frequency
+set, the only further input about
+\(\alpha\) is the supremum in
+\Cref{eq:type-ii-long-coefficient-interface}, in the role of
+\cite[Lemma~5.2]{PoissonDirichlet}.  The same hypothesis covers the
+conjugated endpoint, by conjugating and replacing \(\chi,t\) by
+\(\overline\chi,-t\).  The major-term proof therefore gives
+\begin{equation}\label{eq:type-ii-major-transfer}
+ |\mathcal Q_Y^{\mathrm{maj}}|\ll_D XYL^{-D}
+\end{equation}
+for every fixed \(D>0\).
+
+Choose the desired square accuracy \(D_1\) sufficiently large in terms
+of \(D_*,C\), before choosing \(K\).  For
+\Cref{eq:type-ii-minor-transfer}, choose the moment accuracy \(E_0\)
+after \(D_1,C\), then the arc exponent \(A_0\), and then \(K\), as in
+\cite[Proposition~4.1]{PoissonDirichlet}.  These choices do not depend
+on the particular \(a_i\).  The analytic accuracies in
+\Cref{eq:type-ii-major-transfer} are chosen after \(A_0\), as permitted
+by \Cref{eq:type-ii-long-coefficient-interface} for every fixed
+accuracy.  Taking \(A=D=D_1\) gives
+\(\mathcal Q_Y\ll XYL^{-D_1}\).  Cauchy's inequality yields
+\(|S_Y|\ll XL^{-D_1/2}\).  The \(O_K(L)\) dyads and all fixed
+coefficient losses are absorbed by the choice of \(D_1\).  The
+logarithmic exponents used in that choice are independent of \(K\);
+constants depending on \(K\) affect only the implicit constant and
+threshold.  This proves \Cref{eq:marked-type-ii}.
+\end{proof}
+
+We now construct a coefficient satisfying this criterion for
+\(x^\gamma\)-rough integers.  Its comparison weight comes from the
+continuous measure of products of large primes.  For \(w>\gamma>0\),
+define
+\begin{equation}\label{eq:rough-density-definition}
+ \begin{split}
+ D_\gamma(w)&=\sum_{j\ge1}D_{\gamma,j}(w),
+       \qquad D_{\gamma,1}(w)=\frac1w,\\
+ D_{\gamma,j}(w)&=\frac1{j!}
+  \int_{\substack{t_i\ge\gamma\ (1\le i<j)\\
+                   \sum_{i<j}t_i\le w-\gamma}}
+  \frac{1}{w-\sum_{i<j}t_i}\prod_{i<j}\frac{\dd t_i}{t_i}
+  \quad(j\ge2).
+ \end{split}
+\end{equation}
+The term with \(j\ge2\) is zero unless \(w\ge j\gamma\), so the sum is
+locally finite.  This is the density of
+\cite[Lemma~7.4]{BlockPaper}.
+
+Its normalization has an exact continuous meaning.  For an interval
+\(I\) whose closure is a compact subset of \((x^\gamma,\infty)\), and
+each \(j\ge1\),
+\begin{equation}\label{eq:rough-density-pushforward}
+ \frac1{j!}\int_{\substack{y_i>x^\gamma\\\prod_i y_i\in I}}
+                   \prod_{i=1}^j\frac{\dd y_i}{\log y_i}
+ =\frac1L\int_I D_{\gamma,j}(\log y/L)\,\dd y.
+\end{equation}
+For \(j=1\), the integrands agree because
+\(D_{\gamma,1}(\log y/L)/L=1/\log y\).  For \(j\ge2\), put
+\(y=\prod_i y_i\), \(t_i=\log y_i/L\) for \(i<j\), and
+\(w=\log y/L\).  The change of variables gives
+\[
+ \prod_{i=1}^j\frac{\dd y_i}{\log y_i}
+ =\frac{\dd y}{L}\,
+   \frac{\prod_{i<j}(\dd t_i/t_i)}{w-\sum_{i<j}t_i}.
+\]
+The strict domain from \(y_i>x^\gamma\) differs from the weak simplex
+in \Cref{eq:rough-density-definition} only on null boundaries.  The
+factor \(1/j!\) divides the ordered prime-product measure by the
+number of permutations.  This identity concerns the full domain
+\(w>\gamma\); the upper exponent restriction in the next proposition
+belongs to the Type II estimate, not to the density.
+
+The functions in \Cref{eq:rough-density-definition} are jointly
+continuous on compact subsets of \(w>\gamma>0\), and, for fixed
+\(\gamma\), are Lipschitz in \(w\) on each such compact interval.  To
+check the assertion also at \(w=j\gamma\) for \(j\ge2\), write
+\(s=w-j\gamma\).  For \(s\ge0\), the change of variables
+\(t_i=\gamma+s y_i\) gives
+\[
+ D_{\gamma,j}(w)=\frac{s^{j-1}}{j!}
+ \int_{\substack{y_i\ge0\\\sum_{i<j}y_i\le1}}
+ \frac{\prod_{i<j}\dd y_i}
+ {\prod_{i<j}(\gamma+s y_i)
+  \bigl(\gamma+s(1-\sum_{i<j}y_i)\bigr)}.
+\]
+Every denominator stays bounded away from zero on the indicated compact
+sets.  The formula extended by zero for \(s<0\) has the claimed
+regularity; the term \(1/w\) is smooth.  In particular \(wD_\gamma(w)\)
+has bounded total variation on each fixed compact interval above
+\(\gamma\).  This variation bound will allow us to weight the
+high-frequency proxy estimate below, and joint continuity will control
+the upper Riemann sum in the least-prime-factor subtraction.
+
+The character count proved below gives
+\(D_\gamma(\log m/L)/L\) as the principal local density of the
+\(x^\gamma\)-rough sequence, while the \(W\)-rough sequence has density
+\(V(W)\).  This explains the normalization of its comparison weight.
+\begin{proposition}[A rough-factor Type II estimate]\label{prop:rough-type-ii}
+Retain the marked data and all the hypotheses on \(F,\beta,H_m,H_n\) of
+\Cref{thm:marked-type-ii}.  Fix real numbers
+\(0<\gamma<w_-<w_+<1\), and suppose
+\[
+ [\log H_m/L,\log(2H_m)/L]\subseteq[w_-,w_+].
+\]
+On an arbitrary interval \(I\subseteq[H_m,2H_m]\), set
+\begin{equation}\label{eq:rough-type-ii-coefficient}
+ \alpha_m=m^{iv}\left(
+    \one_{P^-(m)>x^\gamma}
+    -\frac{D_\gamma(\log m/L)}{L V(W)}\one_{P^-(m)>W}
+                         \right),\qquad |v|\le L^C,
+\end{equation}
+and set \(\alpha_m=0\) outside \(I\).  Then
+\Cref{eq:marked-type-ii} holds for every fixed \(D_*>0\) when \(K\) is
+sufficiently large in terms of the fixed data.  Its required lower bound
+is independent of the particular band exponents \(a_i\); the threshold
+and implicit constant may depend on all the fixed data.  In particular,
+\(\gamma\) and the gap \(w_--\gamma\) are fixed before \(x\) grows.
+\end{proposition}
+
+\begin{proof}
+We verify \Cref{eq:type-ii-long-coefficient-interface} for this
+coefficient.  At low frequencies the two principal counting terms
+cancel.  At higher frequencies the prime-product sequence and the
+\(W\)-rough comparison sequence are each small.  The support and size
+conditions of \Cref{lem:marked-coefficient-transfer} will then follow
+directly from the coefficient formula.
+
+Put \(M=H_m\) and write \(R_\gamma(m)=\one_{P^-(m)>x^\gamma}\).
+On this dyad a number counted by \(R_\gamma\) has at most
+\(J=\lfloor w_+/\gamma\rfloor\) prime factors counted with multiplicity.
+Define
+\[
+ T_\gamma(m)=\sum_{j=1}^{J}\frac1{j!}
+       \sum_{\substack{p_1,\ldots,p_j>x^\gamma\text{ prime}\\
+                       p_1\cdots p_j=m}}1.
+\]
+If \(m\) is squarefree and \(x^\gamma\)-rough, the ordered lists give
+\(T_\gamma(m)=1\).  If the prime multiplicities are \(e_p\), the
+corresponding value is \(1/\prod_p e_p!\), which is at most one.
+Thus the difference is supported on a square of a prime exceeding
+\(x^\gamma\), and, uniformly for every subinterval of the dyad,
+\begin{equation}\label{eq:rough-convolution-square-error}
+ \sum_{M\le m\le2M}|R_\gamma(m)-T_\gamma(m)|
+ \le\sum_{p>x^\gamma}\left\lfloor\frac{2M}{p^2}\right\rfloor
+ \ll Mx^{-\gamma}.
+\end{equation}
+The same bound holds after any character and real power twist.  It is
+smaller than \(M\) times every fixed negative power of \(L\).
+
+We next obtain the counting formula needed at low frequencies.  For
+every fixed \(A_1,A_0>0\), every \(k\le L^{A_0}\), every character
+\(\chi\bmod k\), and every interval \(I'\subseteq[M,2M]\), we claim
+\begin{equation}\label{eq:rough-convolution-low-count}
+ \sum_{m\in I'}R_\gamma(m)\chi(m)
+ =\one_{\chi\text{ principal}}\frac1L
+       \int_{I'}D_\gamma(\log y/L)\dd y+O(M L^{-A_1}).
+\end{equation}
+The constant may depend on the displayed fixed parameters and on
+\(\gamma,w_-,w_+\), but the estimate is uniform in the interval and
+character.
+
+To prove it, split every prime variable of a term of \(T_\gamma\) into
+half-open dyads \([P_i,2P_i)\).  All their scales satisfy
+\(P_i\ge x^\gamma/2\) and \(P_i\le2M\).  There are \(O(L^j)\) possible
+boxes for the \(j\)-prime term.  A box that meets the product interval
+has
+\(M/2^j\le\prod_iP_i\le2M\).  On a prime dyad of scale \(P\), the
+Siegel--Walfisz estimate, summed against \(\chi\) over its reduced
+classes, gives for every subinterval \(J'\subseteq[P,2P]\)
+\begin{equation}\label{eq:rough-slot-siegel-walfisz}
+ \sum_{p\in J'}\chi(p)
+ =\one_{\chi\text{ principal}}\int_{J'}\frac{\dd y}{\log y}
+          +O_{A_2}(P L^{-A_2})
+\end{equation}
+with arbitrary fixed \(A_2\).  Indeed \(\log P\asymp L\) with fixed
+comparison constants, and one chooses the Siegel--Walfisz accuracy to
+absorb the at most \(L^{A_0}\) residue classes.  This is the classical
+estimate in \cite[Proposition~2.1]{PrimePredecessors}.  Taking
+differences of its endpoint estimates gives the absolute error in
+\Cref{eq:rough-slot-siegel-walfisz} even for an arbitrarily short
+subinterval.  The cutoff \(p>x^\gamma\) can be intersected with that
+interval.  For large \(x\), these primes exceed \(k\); hence the
+principal character is one on them.  The same orthogonality argument
+covers imprimitive characters.
+
+Replace the prime measures in one box successively using
+\Cref{eq:rough-slot-siegel-walfisz}.  When all other variables are fixed,
+whether at prime values or at real values in a previous replacement, the
+product condition leaves an interval in the remaining prime dyad.  Its
+error is \(O(P_iL^{-A_2})\).  The total absolute mass of each other
+variable, either its prime counting measure or \(\dd y/\log y\), is
+\(O(P_h)\).  The error in that box is therefore \(O(M L^{-A_2})\).
+There are only the fixed \(j\) replacements and \(O(L^j)\) boxes, so
+their errors give \(O(M L^{-A_1})\) on choosing \(A_2\) sufficiently
+large.  A nonprincipal character has zero continuous main term.  For a
+principal character the main term of the \(j\)-prime summand is exactly
+\[
+ \frac1{j!}\int_{\substack{y_i>x^\gamma\\\prod_i y_i\in I'}}
+                    \prod_{i=1}^j\frac{\dd y_i}{\log y_i}.
+\]
+By \Cref{eq:rough-density-pushforward}, these integrals sum to the
+principal main term in \Cref{eq:rough-convolution-low-count}.
+Finally \Cref{eq:rough-convolution-square-error} absorbs repeated
+primes and proves the claim.
+
+The matching small-prime count is
+\begin{equation}\label{eq:rough-small-prime-character-count}
+ \sum_{\substack{m\in I'\\P^-(m)>W}}\chi(m)
+ =\one_{\chi\text{ principal}}V(W)|I'|+O(M L^{-A_1})
+\end{equation}
+for every fixed \(A_1\), with the same interval and character uniformity.
+This is \cite[Lemma~2.5]{PoissonDirichlet}.  Notice that all prime divisors
+of \(k\le L^{A_0}\) are less than \(W\) for large \(x\), so its principal
+character is one on the rough support.
+
+Write \(u=t+v\).  Fix temporarily a constant \(B_2>C+2\).  If
+\(|t|\le L^{B_2}\), then \(|u|\le2L^{B_2}\).  Partial summation in
+\Cref{eq:rough-convolution-low-count} against \(y^{iu}\) costs at most
+\(1+O(|u|)\), since this is its total variation on a dyad.  Partial
+summation in \Cref{eq:rough-small-prime-character-count} against
+\(D_\gamma(\log y/L)y^{iu}/(LV(W))\) likewise has only a fixed
+logarithmic cost: \(D_\gamma\) is Lipschitz on the fixed interval and
+Mertens' theorem gives \(LV(W)\asymp L^{0.76}\).  The two resulting
+principal main terms are both
+\[
+ \frac1L\int_I D_\gamma(\log y/L)y^{iu}\dd y,
+\]
+while both nonprincipal main terms vanish.  Choosing \(A_1\) after
+\(B_2\) proves \Cref{eq:type-ii-long-coefficient-interface} with any
+fixed accuracy on this low-frequency range.
+
+For the remaining frequencies, use the long prime polynomial estimate
+\cite[Lemma~3.1]{PrimePredecessors} and the corresponding
+bound for the small-prime proxy.  For fixed
+\(0<\tau_{\rm lp}<\theta_{\rm lp}<1\) and fixed \(A_0,A_3>0\), the
+prime estimate gives a constant
+\(B_0=B_0(\tau_{\rm lp},\theta_{\rm lp},A_0,A_3)\) such that
+\begin{equation}\label{eq:rough-slot-high}
+ \left|\sum_{p\in J'}\chi(p)p^{-1+iu}\right|\ll L^{-A_3}
+\end{equation}
+for every interval \(J'\subseteq[P,2P]\), every character modulo
+\(k\le L^{A_0}\), and
+\[
+ x^{\tau_{\rm lp}}/2\le P\le x^{\theta_{\rm lp}},\qquad L^{B_0}\le|u|\le x^2.
+\]
+Choose \(0<\tau_{\rm lp}<\gamma\) and \(w_+<\theta_{\rm lp}<1\).  Every prime dyad in the
+finite convolution lies in this scale range for sufficiently large \(x\).
+Partial summation changes the reciprocal weight in
+\Cref{eq:rough-slot-high} to give
+\(\left|\sum_{p\in J'}\chi(p)p^{iu}\right|\ll P L^{-A_3}\).
+In each box of the convolution, fix all but one prime; the remaining
+product restriction is again an arbitrary interval.  This bound in that
+one slot and trivial bounds in the other slots give \(O(M L^{-A_3})\)
+per box.  Taking \(A_3\) to absorb the \(O(L^j)\) boxes and using
+\Cref{eq:rough-convolution-square-error} proves any requested
+logarithmic saving for
+\(M^{-1}\sum_{m\in I}R_\gamma(m)\chi(m)m^{iu}\) throughout this range.
+
+For the proxy, the proof of
+\cite[Lemma~5.2]{PoissonDirichlet} gives the following uniform estimate.
+Put \(T_* =\exp(L/(\log L)^2)\).  For every interval
+\(I'\subseteq[M,2M]\), and with arbitrary fixed \(A_4\), it states
+\begin{equation}\label{eq:rough-high-source}
+ \begin{split}
+ \left|\frac1{M V(W)}
+     \sum_{\substack{m\in I'\\P^-(m)>W}}
+                \frac{\chi(m)m^{iu}}{\log m}\right|
+ \ll L^{-A_4}+{}
+ \begin{cases}
+ L^{C_0}(|u|^{-1}+x^{-c_0}),&1\le|u|\le T_*,\\
+ L^{C_0}\exp(-L/(\log L)^{C_3}),&T_*\le|u|<x^2.
+ \end{cases}
+ \end{split}
+\end{equation}
+Here \(C_0,c_0>0\) are fixed after \(A_0,\delta\), and \(C_3>0\) is
+absolute; \(C_0\) does not grow with \(A_4\).  The second range uses
+the logarithmic-phase estimate of
+\cite[Lemma~3.3]{PrimePredecessors}, valid for arbitrary residue
+classes and subintervals.  The first follows in the cited proof of
+the long-coefficient lemma by comparison with the integral of
+\(y^{iu}\) on each progression.
+
+For \(w=\log m/L\), the coefficient of the proxy can be written
+\[
+ \frac{D_\gamma(w)}{L V(W)}
+       =\frac{wD_\gamma(w)}{V(W)\log m}.
+\]
+The multiplier \(wD_\gamma(w)\) is bounded and has bounded total
+variation on our fixed interval.  Since \Cref{eq:rough-high-source}
+holds on every subinterval, one more partial summation proves that same
+bound for the proxy coefficient.  Choose the requested accuracy first,
+then \(A_3,A_4\) and the corresponding \(B_0\), and finally take
+\[
+ B_2>\max\{C+2,\ B_0+2,\ A+C_0+2\}.
+\]
+When \(L^{B_2}\le|t|\le2XL^B\), one has
+\(|u|\asymp|t|\), \(|u|\ge L^{B_0}\), and
+\(|u|\le2XL^B+L^C<x^2\) for large \(x\).  The prime convolution and
+\Cref{eq:rough-high-source} therefore give the saving \(L^{-A}\)
+for the two parts separately.  The complementary range
+\(|t|\le L^{B_2}\), including \(t\) near \(-v\), was already handled
+by cancellation of their low-frequency main terms.  This covers every
+\(|t|\le2XL^B\); the conjugated assertion then follows as in
+\Cref{lem:marked-coefficient-transfer}.
+
+Finally, \(x^\gamma>W\) for large \(x\), and \(D_\gamma\) is bounded
+on our fixed interval.  Since \(LV(W)\asymp L^{0.76}\), both parts of
+\Cref{eq:rough-type-ii-coefficient} are bounded and supported on
+\(W\)-rough integers.  Thus the support, size, and long-coefficient
+hypotheses of
+\Cref{lem:marked-coefficient-transfer} all hold.  Applying that lemma
+proves \Cref{eq:marked-type-ii} and the proposition.
+\end{proof}
