@@ -1,0 +1,39 @@
+# command: python3 -m pytest -q
+# run 26afa7ab03, session binary_nonlinear_shadow_test_20261011; full output
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ LinkEarlierWorkTest.test_status_requires_queued_item_and_reports_an_unused_one _
+
+self = <test_status.LinkEarlierWorkTest testMethod=test_status_requires_queued_item_and_reports_an_unused_one>
+
+    def test_status_requires_queued_item_and_reports_an_unused_one(self):
+        body = notebook([], [('lead', 'r:1')])
+        status = '\n'.join(lq.item_status(body, 'r:1'))
+        self.assertIn('Latest development: none', status)
+        self.assertIn('Open sub-ideas: none', status)
+        one = notebook([self.entry('entry-2026-10-11-only', ('lead', 'r:1'))], [('lead', 'r:1')])
+>       self.assertIn('Latest development: #entry-2026-10-11-only (Continuing)',
+                      '\n'.join(lq.item_status(one, 'r:1')))
+E       AssertionError: 'Latest development: #entry-2026-10-11-only (Continuing)' not found in 'Item: lead:r:1; group: lead:r:1\nLatest development: none\nCurrent spell: 1; boundary: 4.\nNext development would be entry 2.\nOpen sub-ideas: none'
+
+tests/test_status.py:1434: AssertionError
+_ LinkEarlierWorkTest.test_status_uses_latest_group_entry_and_resets_only_after_other_work _
+
+self = <test_status.LinkEarlierWorkTest testMethod=test_status_uses_latest_group_entry_and_resets_only_after_other_work>
+
+    def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
+        parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')
+        queue = [(parent, [child]), other]
+        entries = [self.entry(f'entry-2026-10-10-{i}', parent) for i in range(3)]
+        entries += [self.entry('entry-2026-10-10-later', child)]
+        body = notebook(entries, queue)
+        status = '\n'.join(lq.item_status(body, child[1]))
+        self.assertIn('group: lead:r:1', status)
+>       self.assertIn('Latest development: #entry-2026-10-10-later (Continuing)', status)
+E       AssertionError: 'Latest development: #entry-2026-10-10-later (Continuing)' not found in 'Item: check:e:s1; group: lead:r:1\nLatest development: #entry-2026-10-10-2 (Continuing)\nCurrent spell: 4; boundary: 4.\nBoundary reached: develop a different item first, unless an extension is earned.\nOpen sub-ideas: e:s1'
+
+tests/test_status.py:1400: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_status.py::LinkEarlierWorkTest::test_status_requires_queued_item_and_reports_an_unused_one
+FAILED tests/test_status.py::LinkEarlierWorkTest::test_status_uses_latest_group_entry_and_resets_only_after_other_work
+2 failed, 83 deselected in 0.16s

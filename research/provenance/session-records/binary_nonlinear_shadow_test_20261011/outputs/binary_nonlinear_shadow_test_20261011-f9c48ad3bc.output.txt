@@ -1,0 +1,12 @@
+# lead_queue.x_item_status__mutmut_5: survived
+--- src/lead_queue.py
++++ src/lead_queue.py
+@@ -1,7 +1,7 @@
+ def item_status(body, ident):
+     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
+     found = parse_tree(body)
+-    nodes = found[1] if found else []
++    nodes = found[1] if (found) or True else []
+     matches = [item for item in every_item(nodes) if item[1] == ident]
+     if len(matches) != 1:
+         raise ValueError(f'Expected one queued item {ident}; found {len(matches)}')

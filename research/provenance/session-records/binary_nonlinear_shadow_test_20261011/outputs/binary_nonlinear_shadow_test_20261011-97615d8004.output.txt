@@ -1,0 +1,37 @@
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+_ LinkEarlierWorkTest.test_status_uses_latest_group_entry_and_resets_only_after_other_work _
+
+self = <test_status.LinkEarlierWorkTest testMethod=test_status_uses_latest_group_entry_and_resets_only_after_other_work>
+
+    def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
+        parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')
+        queue = [(parent, [child]), other]
+        entries = [self.entry(f'entry-2026-10-10-{i}', parent) for i in range(3)]
+        entries += [self.entry('entry-2026-10-10-later', child)]
+        body = notebook(entries, queue)
+        status = '\n'.join(lq.item_status(body, child[1]))
+        self.assertIn('group: lead:r:1', status)
+        self.assertIn('Latest development: #entry-2026-10-10-later (Continuing)', status)
+        self.assertIn('Current spell: 4; boundary: 4.', status)
+        self.assertIn('Boundary reached:', status)
+        self.assertIn('Open sub-ideas: e:s1', status)
+        extended = entries[:-1] + [entries[-1].replace('<article ', '<article data-spell-extend="2" ')]
+        status = '\n'.join(lq.item_status(notebook(extended, queue), child[1]))
+        self.assertIn('Current spell: 4; boundary: 6.', status)
+        self.assertIn('Next development would be entry 5.', status)
+        override = ('<article id="override" data-kind="audit" data-picked="user" '
+                    'data-spell-limit="none" data-spell-item="lead:r:1">'
+                    '<p><strong>Picked.</strong> "No hard cycle limit."</p></article>')
+        self.assertIn('boundary: unlimited.', '\n'.join(lq.item_status(
+            notebook(entries + [override], queue), parent[1])))
+        entries += [review('review', [PASS]), self.entry('entry-2026-10-11-other', other)]
+        status = '\n'.join(lq.item_status(notebook(entries, queue), parent[1]))
+        self.assertIn('Latest development: #entry-2026-10-10-later', status)
+>       self.assertIn('Current spell: 0; boundary: 4.', status)
+E       AssertionError: 'Current spell: 0; boundary: 4.' not found in 'Item: lead:r:1; group: lead:r:1\nLatest development: #entry-2026-10-10-later (Continuing)\nCurrent spell: 4; boundary: 4.\nBoundary reached: develop a different item first, unless an extension is earned.\nOpen sub-ideas: e:s1'
+
+tests/test_status.py:1416: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_status.py::LinkEarlierWorkTest::test_status_uses_latest_group_entry_and_resets_only_after_other_work
+1 failed, 1 passed, 83 deselected in 0.08s

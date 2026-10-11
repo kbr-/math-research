@@ -1,0 +1,144 @@
+MUTANT 5
+--- 
+
++++ 
+
+@@ -4 +4 @@
+
+-    nodes = found[1] if found else []
++    nodes = found[1] if found or True else []
+MUTANT 30
+--- 
+
++++ 
+
+@@ -11 +11 @@
+
+-    count = spell(body, top.item, nodes)
++    count = spell(body, top.item, None)
+MUTANT 33
+--- 
+
++++ 
+
+@@ -11 +11 @@
+
+-    count = spell(body, top.item, nodes)
++    count = spell(body, top.item)
+MUTANT 36
+--- 
+
++++ 
+
+@@ -12 +12 @@
+
+-    limit = spell_limit(body, top.item, nodes)
++    limit = spell_limit(body, None, nodes)
+MUTANT 37
+--- 
+
++++ 
+
+@@ -12 +12 @@
+
+-    limit = spell_limit(body, top.item, nodes)
++    limit = spell_limit(body, top.item, None)
+MUTANT 38
+--- 
+
++++ 
+
+@@ -12 +12 @@
+
+-    limit = spell_limit(body, top.item, nodes)
++    limit = spell_limit(top.item, nodes)
+MUTANT 39
+--- 
+
++++ 
+
+@@ -12 +12 @@
+
+-    limit = spell_limit(body, top.item, nodes)
++    limit = spell_limit(body, nodes)
+MUTANT 40
+--- 
+
++++ 
+
+@@ -12 +12 @@
+
+-    limit = spell_limit(body, top.item, nodes)
++    limit = spell_limit(body, top.item)
+MUTANT 42
+--- 
+
++++ 
+
+@@ -13 +13 @@
+
+-    boundary = 'unlimited' if limit == float('inf') else str(limit)
++    boundary = 'unlimited' if limit == float('inf') and False else str(limit)
+MUTANT 44
+--- 
+
++++ 
+
+@@ -13 +13 @@
+
+-    boundary = 'unlimited' if limit == float('inf') else str(limit)
++    boundary = 'XXunlimitedXX' if limit == float('inf') else str(limit)
+MUTANT 45
+--- 
+
++++ 
+
+@@ -13 +13 @@
+
+-    boundary = 'unlimited' if limit == float('inf') else str(limit)
++    boundary = 'UNLIMITED' if limit == float('inf') else str(limit)
+MUTANT 49
+--- 
+
++++ 
+
+@@ -13 +13 @@
+
+-    boundary = 'unlimited' if limit == float('inf') else str(limit)
++    boundary = 'unlimited' if limit == float('INF') else str(limit)
+MUTANT 60
+--- 
+
++++ 
+
+@@ -14 +14 @@
+
+-    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
++    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[+1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
+MUTANT 61
+--- 
+
++++ 
+
+@@ -14 +14 @@
+
+-    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
++    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-2][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
+MUTANT 70
+--- 
+
++++ 
+
+@@ -14 +14 @@
+
+-    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
++    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'XXBoundary reached: develop a different item first, unless an extension is earned.XX', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
+MUTANT 79
+--- 
+
++++ 
+
+@@ -14 +14 @@
+
+-    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + (', '.join((c.ident for c in top.children)) or 'none')]
++    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}', 'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'), f'Current spell: {count}; boundary: {boundary}.', f'Next development would be entry {count + 1}.' if count < limit else 'Boundary reached: develop a different item first, unless an extension is earned.', 'Open sub-ideas: ' + ('XX, XX'.join((c.ident for c in top.children)) or 'none')]
