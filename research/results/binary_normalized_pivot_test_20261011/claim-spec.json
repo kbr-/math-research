@@ -1,0 +1,53 @@
+{
+  "source": {
+    "record": "[Normalized pivot test](https://kbr.is-a.dev/math-research/#entry-2026-10-11-normalized-pivot-test)",
+    "label": "Normalized pivot test",
+    "targets": [
+      "../notebook.html#entry-2026-10-11-normalized-pivot-test"
+    ]
+  },
+  "date": "2026-10-11",
+  "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": [
+    "frege-simulation",
+    "nullstellensatz",
+    "method-obstructions"
+  ],
+  "claims": [
+    {
+      "id": "lem:normalized-pivot-mask",
+      "summary": "For any binary Hilbert-like rank certificate, direct Frobenius normalization admits a constant-only restriction isolating its (n+1,n+1) matrix cofactor times a nonzero formal mask R. For the shared-pivot certificate this cofactor computes the top-square determinant function. R is Boolean-zero and equals a first-row zero selector times the (m-1,n-1) rank residual plus an explicit polynomial-size constant-depth Boolean correction. Noncancellation of this masked coefficient gives no bounded-depth lower bound for the normalized circuit or arbitrary representatives.",
+      "assessment": "Working exact normalization isolation and literal product-telescoping identity passed by the sole medium reviewer. Applying the existing unit-slice lemma gives a polynomial-cost constant-added-depth representative whose normalized probe is exactly the small mask R, erasing determinant dependence there. This application is already implied by the record; goal unchanged.",
+      "status": "working_proof",
+      "rationale": "Tests the actual normalized recurrence and identifies the remaining smaller-rank mask rather than assuming the hard coefficient survives as a cheaply extractable function.",
+      "next_action": "Test whether the explicit syzygy patch is realizable inside the exact Frege-to-IPS simulation image with polynomial size and fixed depth, or identify a preserved provenance constraint excluding it.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:normalized-pivot-mask",
+      "depends_on",
+      "thm:shared-pivot-certificate",
+      "Uses the exact canonical certificate and its direct normalization."
+    ],
+    [
+      "lem:normalized-pivot-mask",
+      "depends_on",
+      "cor:canonical-pivot-depth-gap",
+      "Identifies the chosen input coefficient as the determinant Boolean function, not the formal determinant."
+    ],
+    [
+      "lem:normalized-pivot-mask",
+      "depends_on",
+      "lem:unit-slice-certificates",
+      "Its explicit coordinate-retraction patch makes the chosen normalized probe equal to R and removes determinant dependence at polynomial cost and constant added depth."
+    ],
+    [
+      "lem:normalized-pivot-mask",
+      "cites",
+      "cor:binary-oracle-closure-gap",
+      "The explicit Boolean-zero mask retains the scalar black-box extraction obstruction."
+    ]
+  ]
+}
