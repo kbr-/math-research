@@ -531,6 +531,28 @@ def validate_process_audit(text):
                          'and what was changed, or that it found nothing (AGENTS.md, framework maintenance)')
 
 
+DERIVES = re.compile(r'\bextrapolat|\bwhat-if\b|\bderived relation', re.I)
+
+
+def validate_unreviewed_derivations(text):
+    """A research entry that derives relations of its own goes to the cycle's reviewer.
+
+    Three reading entries of 11 October 2026 registered no claim, so their gates said no reviewer was used,
+    while they extrapolated a source's formulas and evaluated a what-if; one conclusion took a fixed constant
+    for an inherited bound and steered a route review before a reviewer saw it.  An entry whose gate says no
+    reviewer was used may quote a source, and may not extrapolate from it."""
+    gate = html.unescape(re.sub(r'<[^>]*>', ' ', report_paragraph(text, 'Verification gate')))
+    if not re.search(r'\bno reviewer\b', gate, re.I):
+        return
+    body = html.unescape(re.sub(r'<[^>]*>', ' ', text.replace(report_paragraph(text, 'Verification gate'), '')))
+    found = DERIVES.search(body)
+    if found:
+        raise ValueError(f'This entry\'s Verification gate says no reviewer was used, and its text derives beyond '
+                         f'its sources ("{found.group(0)}"): give the derived relations, with the definition of '
+                         'every symbol a what-if varies, to the cycle\'s reviewer, and report the verdict in the '
+                         'gate (AGENTS.md, one focused correctness review)')
+
+
 def validate_prevention(text):
     """A Process assessment says what prevents each mistake it reports (user, 10 October 2026: the user should
     not have to ask "what will you do to prevent such mistakes in the future?")."""
@@ -680,6 +702,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
+        validate_unreviewed_derivations(text)
         validate_closures(text)
         validate_developed_readings(text)
         if check_registered_claims:

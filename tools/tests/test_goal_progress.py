@@ -266,6 +266,22 @@ class PreventionTest(unittest.TestCase):
                                '</strong> The finisher now requires stakes on every closure (commit abc).</p>')
 
 
+class UnreviewedDerivationsTest(unittest.TestCase):
+    NONE = '<p><strong>Verification gate.</strong> No new lemma is stated, so no reviewer was used.</p>'
+
+    def test_an_entry_without_reviewer_may_quote_and_may_not_extrapolate(self):
+        FT.validate_unreviewed_derivations('<p>The source states the bound for X at most T.</p>' + self.NONE)
+        for derived in ('This is an extrapolation from the two stages.', 'A what-if with 3/4 in its place.',
+                        'The derived relations are checked at both stages.'):
+            with self.assertRaises(ValueError):
+                FT.validate_unreviewed_derivations(f'<p>{derived}</p>' + self.NONE)
+        # With a reviewer the same text passes, and the gate's own wording is not searched.
+        FT.validate_unreviewed_derivations('<p>An extrapolation from the two stages.</p><p><strong>Verification '
+                                           'gate.</strong> One medium reviewer checked the relations.</p>')
+        FT.validate_unreviewed_derivations('<p>Quoted only.</p><p><strong>Verification gate.</strong> No reviewer '
+                                           'was used; nothing here is an extrapolation.</p>')
+
+
 class ProcessAuditTest(unittest.TestCase):
     GATE = '<p><strong>Verification gate.</strong> One reviewer. Record: <a href="r/review.txt">review.txt</a>.%s</p>'
 
