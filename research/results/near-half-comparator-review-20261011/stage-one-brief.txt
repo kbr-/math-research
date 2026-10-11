@@ -1,0 +1,102 @@
+Stage-one brief, 11 October 2026 (sixth review of the day): goal-level route review of the near-half family
+line. Blind stage: the author's preferred next step is withheld. Read-only; medium effort; you may run
+tools/search-claims.py (bare, with -n) for at most two searches and read registry summaries. Do not read the
+notebook's Proposed next step.
+
+GOAL. Superpolynomial size lower bounds for every fixed depth of AC0[2]-Frege, via a Boolean formula family
+(may depend on the depth, not on the size exponent). Sufficient: polynomial-length literal CNFs of width w and
+free dimension n with no PC refutation over F_2 at floor(n/2 - s), s + w <= n^(1-eps) (near-half endpoint), or
+the "thin" endpoint (a closure proper at about half its own level-size dimension).
+
+STANDING FACTS: standing-facts.txt in this directory (proved or imported results and the route's registered
+conjectures with their evidence), unchanged except for the results below.
+
+THE LAST REVIEW (entry-2026-10-11-method-block-review-two) judged its block worth nothing, called the way of
+working the fault (a queue of leftover checks, one per entry), and decided: ONE question for the whole next
+block, held by one queued check: "which structure makes polynomial calculus degree over F_2 exceed the
+cumulative index of a system's product series, and can the excess be a fixed fraction of the free dimension".
+Reason: by the route's conjectural counting model, generic rows of logarithmic width covering by count have a
+deficit of order n lnln n / ln n, more than the transfer allows at three or more levels, so a family would need
+degree above its series index. Product series of a system: (1+z)^N times a factor (1 - (z/(1+z))^w) per row
+that is a product of w affine forms in the N free variables; cumulative index: first degree at which the
+partial sum of coefficients is not positive. Its decisive test: prove the asymptotic of the index of the
+pigeonhole principle's series and read the degree bound in its source.
+
+THE SIX ENTRIES UNDER REVIEW (11 October), all "goal progress unchanged", all declaring no bearing at the
+goal's parameters. Four are on the block's question, two are framework builds.
+a. pigeonhole-index-excess (lem:pigeonhole-series-krawtchouk, ex:pigeonhole-index-excess): the review's test,
+   NEITHER named outcome established. Razborov's Theorem 3.1 read in its statement: any m > n, any field,
+   pigeon sums as linear axioms, degree >= n/2 + 1; it holds for PHP with affine pigeon rows and hole clauses,
+   no functionality rows, over F_2. Exact index of that system's series: 85 at n = 300 (ratio to n falling from
+   0.45 at 20 to 0.283), so the degree exceeds the index by at least 66 there; the asymptotic is not proved.
+   Coefficients are Krawtchouk values. Degree and excess are of order sqrt(free dimension); the system
+   (width-two rows, M ~ N^(3/2)) is outside the model's regime.
+b. pigeonhole-quotient-count (prop:pigeonhole-quotient-count conditional, lem:krawtchouk-positive-range,
+   ex:pigeonhole-quotient-series-gap): from the source's description of irreducible terms (claims read in their
+   statements), their number in degree e <= (n+1)/2 on e pigeons is e! [y^e] exp(-y)(1+y)^n. With
+   functionality rows the count and the series agree at degree one and part at degree two by exactly N,
+   through identified relations (a variable times a pigeon's affine row is a sum of functionality products).
+   Those relations are too few to explain index 18 against irreducible terms through degree 50 at n = 100;
+   the gap is not explained. A lemma gives positivity of the series' coefficients below about N^2/(8M).
+c. registry-rebase-resolver: framework build, a queue item closed. No mathematics.
+d. graph-pigeonhole-index (prop:graph-pigeonhole-bound-below-index): for the functional graph pigeonhole
+   principle with pigeon degree d >= 6 and hole degrees <= D in a narrow range above d, the degree guaranteed
+   by Miksa-Nordstrom's bound delta s/(2d) (statement read) is below a lower bound on the series index. The
+   first draft stated this for an EMPTY class (hole degrees <= d with fewer holes than pigeons); the reviewer
+   failed it; repaired and rechecked. Says nothing about the true degree.
+e. onto-pigeonhole-reach (prop:boundary-average-reach, ex:onto-pigeonhole-reach-index): the same paper's onto
+   theorem (degree > delta s/2 - xi, no loss of d) is capped by half the average boundary of an s-set. In one
+   class (n pigeons of degree d, n - 1 holes of degree d or d + 1; d = 3, 4, 6, 8; n = 60..480) that cap
+   exceeds the series index at d = 3 from n = 240 (106.7 against 96 at 480) ONLY when every hole clause is
+   counted as a row. The reviewer showed the hole clauses through an eliminated variable are sums of the other
+   hole clauses of that hole (given the hole's affine row), so the count has redundant rows; with the exact
+   factor 1 + (r - 1) z per hole the cap is below the index in all sixteen cases. So the comparator
+   ("the product series of a system's rows") depends on which rows are counted; entries b and d have the same
+   redundancy in their functionality rows; entry a's system does not have this particular one, and whether it
+   has another is unchecked.
+f. next-step-item-text: framework build, a queue item closed. No mathematics.
+
+WHAT THE BLOCK DID ON ITS QUESTION. First half ("a degree above the index"): one instance at computed sizes
+(entry a), asymptotic unproved, comparator's independence unchecked. Second half ("a fixed fraction of the
+free dimension"): no instance; the two proved linear degree bounds read (functional and onto graph pigeonhole)
+do not exceed the index in the classes checked, once redundant rows are not counted. No lower bound, no
+method, no candidate. The check has had four entries; under the rules its spell allows two more, and a rule
+forbids more than two entries in a row on one item without bearing.
+
+QUEUE FACTS. Top-level items: 56, 59 at the last two reviews, 57 now: two build items closed, none added.
+Unanswered in the user's request file: a direction for the route (sustained attempt, another endpoint or
+measure, or returning the time to the main route); two rule questions; a source.
+
+FRAMEWORK. Built in the block: a resolver for the recurring registry rebase conflict (used once since); the
+finisher now requires of an entry registering a proof an exhibited input meeting its hypotheses (after the
+empty class of entry d); the append tool shows a next step its queue item's words and refuses, while the
+queue drains, a next step naming no item. Built before the block and first applied in it: titles and status
+lines written after the review.
+
+PROCESS FACTS. All four mathematical entries were corrected by their reviewers (twenty-two in a row now):
+a title wider than the body (a, b; d and e were sent with placeholder titles under the new rule); a mechanism
+asserted against the entry's own numbers (b); a false degenerate case and a miscount (b); a proposition for an
+empty class (d); one theorem of a source read and written of as the only one (d); a comparator with redundant
+rows used in three entries although entry b had found exactly those relations (e, found by the reviewer);
+two arithmetic slips (d). Record searches stopped at the registry when the question was whether a system is
+known in the literature (b).
+
+EARLIER REVIEWS' DECISIVE TESTS: earlier-tests.txt in this directory (one line per review).
+
+QUESTIONS.
+1. Bluntly: what is this block worth for the open statement? Was "degree above the series index" a good
+   question to give a block to, given what entry e found about the comparator, and given that the index is
+   itself only conjecturally related to degree?
+2. The obstacle is unchanged since 9 October: no method bounds PC degree over F_2 beyond expansion's quarter,
+   and no candidate avoids every recorded ceiling. Propose the most promising concrete use of the next six
+   entries. Consider at least: (i) keeping the block's question with its comparator fixed (how, exactly?);
+   (ii) dropping the series comparison and asking directly which known degree lower bounds, as a fraction of
+   the FREE dimension over F_2 after affine rows are used, exceed a quarter (the complete pigeonhole
+   principle's is of order sqrt; expansion bounds lose constants); (iii) a different architecture, endpoint or
+   measure; (iv) something else. Say which, why, and what you would NOT do again.
+3. Name the single decisive test for the next cycle, different from every test in earlier-tests.txt, with the
+   outcomes that would change the route and what the record already says about its object.
+4. Process audit: twenty-two corrected entries in a row; twelve research entries in a row without bearing;
+   three whole blocks with nothing for the goal. What would the user object to most, and what one change of
+   practice or framework would you require before the next block?
+Answer in at most 700 words, plain text, findings first. Mark what you checked and what you inferred.
