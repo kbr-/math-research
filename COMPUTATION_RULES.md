@@ -270,15 +270,18 @@ unfinished.
 - Match the intended field, encoding, parameters, and degree conventions. Use targeted checks
   capable of falsifying the claim, with nonvacuous cases and negative controls. A negative control
   is applied only to cases where the altered statement differs from the true one, and the script
-  asserts that difference before testing. Identify whether an instance is PHP, another unsatisfiable
-  system, or a satisfiable finite domain. Before coding, in the same cycle, state the smallest
-  nonvacuous parameters and space sizes, count the claim's predictions at reachable parameters,
-  compare with unconditional bounds, and verify the hypotheses. Record the count in the entry, in a
-  `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of every entry that registers a
-  finite check): a test whose every outcome is compatible with the claim decides nothing. Report
-  outcomes for links, fibers or restrictions by sub-instance size; do not interpret failures
-  confined to sizes below the nonvacuous threshold. For a proposed bound, test the simplest
-  structurally different extremal examples and compare full success with what the goal needs.
+  asserts that difference before testing. An altered statement decided by the same computed quantity
+  as the true one (a bound with one added, failing exactly where the bound is attained) is a
+  restatement and is not reported as a negative control. Identify whether an instance is PHP,
+  another unsatisfiable system, or a satisfiable finite domain. Before coding, in the same cycle,
+  state the smallest nonvacuous parameters and space sizes, count the claim's predictions at
+  reachable parameters, compare with unconditional bounds, and verify the hypotheses. Record the
+  count in the entry, in a `<strong>Nonvacuity.</strong>` paragraph (the finisher requires it of
+  every entry that registers a finite check): a test whose every outcome is compatible with the
+  claim decides nothing. Report outcomes for links, fibers or restrictions by sub-instance size; do
+  not interpret failures confined to sizes below the nonvacuous threshold. For a proposed bound,
+  test the simplest structurally different extremal examples and compare full success with what the
+  goal needs.
 - Compute the statement's own quantity, not a stronger or weaker surrogate. Put the tested statement
   in the script's docstring, generate inputs meeting its hypotheses and assert those hypotheses in
   code. Write there too, before the run, the outcome expected of the statement and of each control:

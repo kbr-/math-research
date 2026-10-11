@@ -1,0 +1,67 @@
+{
+  "source": {
+    "record": "[Sum function zero count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sum-function-zero-count)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sum-function-zero-count"],
+    "label": "Sum function zero count"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:sum-function-zero-count",
+      "summary": "For a monic polynomial F without real zeros, with u zeros above the real line and l below (n = u + l), F#(z) = conj F(conj z) and A_theta = F + e^{i theta} F#: if e^{i theta} != -1 then A_theta has degree n, at least |u - l| distinct real zeros and at most 2 min(u, l) nonreal zeros; if e^{i theta} = -1 it vanishes identically exactly when F has real coefficients, and otherwise has degree below n and at least |u - l| - 1 distinct real zeros.",
+      "assessment": "Working proof: on the real line A_theta = 2 e^{i theta/2} |F| cos(arg F - theta/2), the argument of F changes by pi (u - l) along the line, and the intermediate value theorem gives the real zeros; the degree bounds the rest.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "States what an interlacing count gives for a sum function of a configuration with zeros on both sides of the line: a count with an error of twice the smaller side.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the count holds in 4000 random configurations of degrees 2 to 12, with the bound attained in 2245.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: an elementary and presumably classical count. No novelty search beyond the registry.",
+        "relationships": "Complements the sign criteria for finite configurations, which characterize configurations on one side."
+      }
+    },
+    {
+      "id": "ex:sum-function-no-converse",
+      "summary": "For T > 0 and 0 < eps <= T^2/4, F(z) = (z - i)(z - T + i eps) has one zero above the real line and one below, while F + F# = 2 (z^2 - T z + eps) has only real zeros (a double one at eps = T^2/4; at T = 20, eps = 100 the lower zero is 20 - 100i): one sum function with all zeros on the line does not place the configuration on one side, at any distance of the minority zero.",
+      "assessment": "Working proof by expansion of the product and the discriminant T^2 - 4 eps.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows that real-rootedness of one sum function certifies nothing about the zeros it is built from, already for two zeros.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Explicit example verified by hand and numerically at three parameter pairs, one of them outside the range, where the zeros are nonreal.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "The failure of the converse of the classical one-sided case of the zero count."
+      }
+    },
+    {
+      "id": "prop:sum-family-mean-count",
+      "summary": "For a monic polynomial F of degree n without real zeros, A_theta = F + e^{i theta} F# and N(theta) the number of distinct real zeros of A_theta: (1/(2 pi)) int_{-pi}^{pi} N d theta = (1/pi) int_R |(arg F)'| dx = n - (2/pi) int min(P, Q) dx, P and Q the sums of |Im z_j|/|x - z_j|^2 over the zeros above and below the line; the mean is n exactly when all zeros are on one side, and if A_theta is real-rooted for almost every theta then all zeros of F are on one side.",
+      "assessment": "Working proof: the real zeros of A_theta are level sets of arg F, and the integral of the number of preimages equals the total variation; a multiple real zero occurs for finitely many theta.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Decides the converse left open by one sum function: the whole family determines one-sidedness, and the mean number of nonreal zeros is an explicit integral.",
+      "next_action": "None.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the identity holds to 2.4e-4 in 24 random configurations by two unrelated numerical routes, with a negative control failing on all 16 two-sided ones.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: elementary. No novelty search beyond the registry.",
+        "relationships": "Uses the phase formula of the sum function zero count; the example is its case of a mean below n with one real-rooted member."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:sum-family-mean-count", "depends_on", "lem:sum-function-zero-count", "Uses the formula for A_theta on the real line from the lemma's proof."],
+    ["prop:sum-family-mean-count", "cites", "ex:sum-function-no-converse", "The example has one real-rooted member and a mean below n."],
+    ["prop:sum-family-mean-count", "cites", "prop:log-derivative-sign-criteria", "Another characterization of zeros on one side for finite configurations."],
+    ["lem:sum-function-zero-count", "cites", "prop:log-derivative-sign-criteria", "The criteria for finite configurations that characterize zeros on one side; no logical dependence."],
+    ["ex:sum-function-no-converse", "cites", "lem:sum-function-zero-count", "The case u = l = 1, where the lemma guarantees no real zero and two occur."]
+  ]
+}
