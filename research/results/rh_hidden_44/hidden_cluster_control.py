@@ -13,8 +13,12 @@ Statements tested.
  C (hiding)              for the binomial cluster, min D_off >= -(2 e^b/L) (k+1)! (pi/b)^k / delta^2
                          - 6 * 2^k / (L delta^2); a real lattice of spacing s <= 2 pi/L adds exactly 2 pi/s.
  P (Poisson)             sum_j K_L(tau - j s) = 2 pi / s for s <= 2 pi / L (checked by a truncated sum).
- D (sampled lower bound, Turan's Theorem 8.1 as recorded in the notebook) for n pairs, h = 1/(n delta),
-       m = ceil(n (b - 2)):  max_{m < nu <= m+n} |P(nu h)| >= 2 (8 e b)^{-n} max m_j.
+ D (sampled lower bound, by the notebook's lem:gap-free-power-sum-bound) for n pairs, h = 1/(n delta),
+       m = ceil(n (b - 2)):  max_{m < nu <= m+n} |P(nu h)| >= M (2 e b)^{-n}.
+       (The first run, kept as hidden_cluster_control_first_run.json, tested the weaker bound
+       2 (8 e b)^{-n} max m_j from Turan's Theorem 8.1; the statement was changed to the notebook's own lemma
+       before the entry was drafted, and the expectation for D, that it holds with a very large margin, is the
+       same.)
 
 The control does not share the entry's method: G and D_off are evaluated from their definitions on a grid in tau,
 the lattice sum by direct summation, P at the sample points directly.
@@ -50,7 +54,7 @@ def turan_sample(L, gam, m):
     h, m0 = 1 / (n * DELTA), ceil(n * (b - 2))
     nu = np.arange(m0 + 1, m0 + n + 1)
     P = (m[None, :] * np.exp(-1j * (nu * h)[:, None] * gam[None, :])).sum(axis=1)
-    return float(np.abs(P).max()), float(2 * (8 * np.e * b) ** (-n) * m.max())
+    return float(np.abs(P).max()), float(m.sum() * (2 * np.e * b) ** (-n))
 
 
 def main():
