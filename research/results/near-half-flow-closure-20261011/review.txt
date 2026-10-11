@@ -1,0 +1,41 @@
+Review record, 11 October 2026: entry-2026-10-11-flow-closure-expansion-range. Reviewer: one fresh-context
+medium-effort reviewer (Claude Code medium-reviewer agent), by hand, with the source's extracted text and the
+recorded lemmas; instance numbers recomputed by hand; nothing run; the queue's status not consulted.
+
+Verdict: pass with corrections. Proposition (1)-(3) survive: R is well defined (the small-support potential is
+unique on a connected graph), (R, empty) satisfies the lemma's closure conditions, and edge expansion and "no
+factor two" are sound.
+
+Required changes:
+- Degenerate cases, "this is so for the complete graph": false. K_n has h = ceil(n/2), so h n_v/8 is about
+  n^2/16 and exceeds w = 2(n - 1) from n about 31 (K_64: range 126..255).
+- Source, "Transitivity is the one step that uses expansion": the source also uses Proposition 11 for 1 not
+  related to -1. Add that Theorem 15 assumes r-regular; the proposition does not.
+- "at most r n_v/16 = m/8": averaging gives h <= (2m/n_v) ceil(n_v/2)/(n_v - 1), so the bound is
+  (m/8) n_v/(n_v - 1).
+- "thinness by the frame is excluded by the ceiling": only the lemma's sufficient condition fails, and only
+  when w + 2 sqrt(m) + 11 < 0.27 m.
+- New mathematics "in them the closure is far from thin", and Bearing/Follow-up "where a proper closure is
+  known it is not thin": one instance, twelve parameter sets. For h <= 2 (cubic expanders) the closure is
+  proper with no count.
+- Bearing ("would have been a candidate") contradicts Specification decision ("excluded as candidates").
+- Entry-meta: three recorded lemmas, not two; part (1) is a transport of an imported theorem.
+- Follow-up: say what became of the down-closed point-set attempt named last entry.
+- Sub-idea check: "collapse does not apply" needs h n_v/8 > w; lem:dual-rail-degree-collapse not read.
+- Build marked Developed: acceptable.
+Unused hypotheses: unsatisfiability (acknowledged), orientation.
+Title may claim: proper closure for w <= D < h n_v/8 with classes in cut-lattice cosets and the 2^j C(M, j)
+count; not thin in one instance; bridge continues.
+
+Decision asked of the reviewer: no closure, of the bridge or its flow case. Unexamined: h <= 2, the gap up to
+the ceiling, X <= M in general, other primes, and the non-group point-set construction. The drafted next
+attempt is weakly motivated: the ceiling argument uses row lattices that non-binomial systems lack.
+
+Process audit: the overstatements above; Best outcome pre-announced a closure ground; the script's docstring
+says "largest admissible D" but three are run.
+
+Suggestion (unverified): part (2) gives more than cosets: equivalent vectors in Omega_j differ by delta f with
+|supp f| <= 2j/h, so classes meeting Omega_j number at least |Omega_j| / sum_{s <= 2j/h} C(n_v, s) 2^s. This
+covers h <= 2, but is cumulative, not levelwise.
+
+Author's note: all applied; the drafted next attempt is replaced by the suggestion.
