@@ -641,7 +641,8 @@ NOTHING_BEST_RE = re.compile(r"\bnothing (?:at|for) the goal|\bnothing for the f
 CLOSED_FOLLOW_UP_RE = re.compile(r'<strong>Follow-up\.</strong>\s*(?:Closed|Developed)\b')
 DEVELOPED_RE =re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
 UNREAD_CORRECTIONS = re.compile(r'\b(?:did|has) not (?:read|seen?) (?:the|my|these|those|its) (?:last |later )?'
-                                r'(?:corrections|changes|code as changed)', re.I)
+                                r'(?:corrections|changes|code as changed)'
+                                r'|\bnot shown to (?:it|him|her|them|the reviewer)(?: again)?\b', re.I)
 
 
 def validate_corrections_read(text):

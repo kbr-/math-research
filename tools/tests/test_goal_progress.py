@@ -384,6 +384,10 @@ class UnreviewedDerivationsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'same reviewer'):
             FT.validate_corrections_read(gate.format('The reviewer has not read the code as changed.')
                                          + '<p><strong>Follow-up.</strong> Closed: superseded.</p>')
+        # The same admission in other words: edits made after the follow-up, however small the entry calls them.
+        with self.assertRaisesRegex(ValueError, 'not shown to it again'):
+            FT.validate_corrections_read(gate.format('Two optional points, both taken after it and not shown to it '
+                                                     'again.') + removal)
         FT.validate_corrections_read(unread + '<p><strong>Follow-up.</strong> Continuing: the attempt is named.</p>')
         FT.validate_corrections_read(gate.format('In a follow-up it read the corrections and found them right.')
                                      + removal)
