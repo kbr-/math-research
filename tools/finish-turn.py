@@ -582,6 +582,26 @@ def closure_admits_unmade(plain):
 
 
 DEVELOPED_RE =re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
+UNREAD_CORRECTIONS = re.compile(r'\b(?:did|has) not (?:read|seen?) (?:the|my|these|those|its) (?:last |later )?'
+                                r'(?:corrections|changes|code as changed)', re.I)
+
+
+def validate_corrections_read(text):
+    """A removal the reviewer has not seen as corrected is not yet reviewed.
+
+    On 11 October 2026 three entries in a row of one notebook removed a build item while their gates said the
+    reviewer "did not read the corrections", which in two of them rewrote the code the reviewer had read; the
+    stand-in review objected.  Of 2149 recorded research entries with a gate, those three say so, and all three
+    are removals.  The follow-up with the same reviewer exists for this."""
+    if not (CLOSED_RE.search(text) or DEVELOPED_RE.search(text)):
+        return
+    gate = html.unescape(re.sub(r'<[^>]*>', ' ', report_paragraph(text, 'Verification gate')))
+    found = UNREAD_CORRECTIONS.search(gate)
+    if found:
+        raise ValueError(f'This entry removes a queue item and its Verification gate says the reviewer '
+                         f'"{found.group(0)}": send the corrected draft and code to the same reviewer in a '
+                         'follow-up and report its answer, or keep the item Continuing (AGENTS.md, one focused '
+                         'correctness review)')
 
 
 def validate_developed_removals(text):
@@ -999,6 +1019,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         validate_unreviewed_derivations(text, entry_claims(body, article))
         validate_closures(text)
         validate_developed_removals(text)
+        validate_corrections_read(text)
         validate_developed_readings(text)
         if check_registered_claims:
             known = registered_status()

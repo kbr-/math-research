@@ -161,9 +161,11 @@ growing checklists or one-off setup narratives.
   searches, dependency excerpts in a scratch file, and required changes as short bullets. Use one
   consolidated pass by default; scheduled reviews use the staged architecture brief below with that
   same reviewer. Follow up with that same reviewer only for those stages, to resolve a concrete gap
-  or check a correction that adds or strengthens a claim; do not spawn additional reviewers in the
-  cycle. Defer optional extensions. Record dependencies re-read, checks and reviewer verdict in a
-  short **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
+  or check a correction that adds or strengthens a claim or rewrites code it read, and always before
+  an entry removes a queue item on corrected work (the finisher refuses a removal whose gate says
+  the reviewer did not read the corrections); do not spawn additional reviewers in the cycle. Defer
+  optional extensions. Record dependencies re-read, checks and reviewer verdict in a short
+  **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
   status, not a working proof; correctness takes precedence over cycle speed. A report to the user
   about an entry whose review has not returned prefixes each conclusion with **Unreviewed:**; saying
   later that a reviewer is checking it does not replace the label. Prepare staging paths, commit

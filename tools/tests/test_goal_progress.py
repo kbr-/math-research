@@ -375,6 +375,19 @@ class UnreviewedDerivationsTest(unittest.TestCase):
         FT.validate_unreviewed_derivations('<p>Quoted only.</p><p><strong>Verification gate.</strong> No reviewer '
                                            'was used; nothing here is an extrapolation.</p>')
 
+    def test_a_removal_whose_corrections_the_reviewer_did_not_read_is_refused(self):
+        gate = '<p><strong>Verification gate.</strong> One reviewer: pass with corrections. {}</p>'
+        removal = '<p><strong>Follow-up.</strong> Developed: the build exists.</p>'
+        unread = gate.format('It did not read the corrections.')
+        with self.assertRaisesRegex(ValueError, 'same reviewer'):
+            FT.validate_corrections_read(unread + removal)
+        with self.assertRaisesRegex(ValueError, 'same reviewer'):
+            FT.validate_corrections_read(gate.format('The reviewer has not read the code as changed.')
+                                         + '<p><strong>Follow-up.</strong> Closed: superseded.</p>')
+        FT.validate_corrections_read(unread + '<p><strong>Follow-up.</strong> Continuing: the attempt is named.</p>')
+        FT.validate_corrections_read(gate.format('In a follow-up it read the corrections and found them right.')
+                                     + removal)
+
     def test_an_entry_without_claim_or_reviewer_may_not_display_formulas_of_its_own(self):
         shown = '<p>So the boundary is \\[\\beta=\\tfrac{11}{12}-\\tfrac{\\ell}4.\\]</p>'
         with self.assertRaisesRegex(ValueError, 'displays formulas'):
