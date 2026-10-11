@@ -1,0 +1,33 @@
+Review record, 11 October 2026: entry-2026-10-11-closure-series (a queued build delivered and one finite check).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent). Read the draft, scripts,
+outputs and the recorded series; rebuilt the rows at n = 20 and n = 24, seed 1, independently (equal to the
+script's); computed the static rank at degree 3 for those two instances (1140 and 1656).
+
+Verdict: pass with corrections. Table numbers, both series, the seeds and draw order and product() all check.
+Required changes:
+- Table, n = 20 "not read": the output has it, 1140 = 60 * 19. Fill it in.
+- "... and nothing more; so there is no degree fall at three": invalid as written. The closure dimension only
+  bounds the static span from above (span <= rows * (n-1) <= closure), and the static rank at 3 is not recorded
+  anywhere. The per-row count is right (the kernel of h -> h f g is span{f+1, g+1}). Compute it for the other
+  instances or restrict the sentence.
+- "At n = 32 the constant enters at degree four although the recorded static span ...": name the convention
+  (|T| <= 2). The static run was complete through D = 4, with no rank recorded and no cross-check of either
+  kernel at that size. Add "if the recorded static value stands"; same in New mathematics. The convention is
+  not the weak party: any multiplier with product degree <= 4 reduces mod (f+1, g+1) to degree <= 2.
+- New mathematics / General statement: cite ex:parity-clause-fall-free-degrees. It already records m = 3n,
+  n = 20, 24, 28 (three seeds) as fall-free through 3 with no refutation below index 4. Only n = 12 and n = 32
+  are new there.
+- Nonvacuity, "confirmed only by the recorded static value": a static value does not exclude a refutation at 3;
+  cite the static-rank equality or the claim above.
+- reference_check.py docstring: still states the wrong run's result.
+- "Developed": fair only if it says the kernel is reference-tested at toy size and here at n <= 16.
+Unused hypotheses: none.
+Title may claim exact degrees on eighteen instances and a refutation at four at n = 32 beyond the recorded
+span; not support for either conjecture. Entry-meta is accurate.
+Process audit: missing record search (above). The reviewer did not find the queue item via the main notebook
+and so could not confirm the spell count. It ran once, by mistake, a pre-existing scratch script that only
+prints.
+Suggestions (unverified): the agreement with the product index is largely forced: with no fall at 3, degree 3
+holds iff rows * (n-1) exceeds the monomial count, which is what the product index measures, and both
+quantities lie in {3, 4}. It is not evidence for the conjecture, whose D* - O(1) is vacuous here. Only n = 32
+carries information.
