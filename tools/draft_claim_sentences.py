@@ -58,6 +58,48 @@ def citations(draft):
     return found
 
 
+# Paragraphs of mathematics, where a number is part of a statement or an argument and not a count taken from
+# somewhere: by their leading label or, without one, the heading they stand under.  Every other paragraph is
+# listed: a first form that named the bookkeeping paragraphs missed a count under a heading it did not know.
+MATHEMATICS = re.compile(r'^(?:New mathematics|General statement|Setting|Question|Degenerate cases|Nonvacuity|'
+                         r'Sources read|.*\b(?:lemma|proposition|theorem|corollary|proof|formula|identity)\b.*)$', re.I)
+NUMBER_WORDS = ('two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|'
+                'seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|'
+                'thousand|dozen')
+COUNT = re.compile(r'(?<![\w.-])\d[\d,.]*(?!\w)|\b(?:' + NUMBER_WORDS + r')(?:-\w+)?\b', re.I)
+MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December'
+DATE = re.compile(r'\b\d{1,2} (?:' + MONTHS + r')(?: \d{4})?\b|\b(?:' + MONTHS + r') \d{4}\b')
+
+
+def counts(draft):
+    """(section label, sentence text) for every sentence, outside the paragraphs of mathematics, that holds a
+    count: a number in digits or words outside TeX, identifiers, links' targets, dates and the paragraph's own
+    label.  On 11 October 2026 three counts in
+    one draft were quoted from memory and were wrong; listed, each is read beside the saved output it came
+    from before the reviewer's brief."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(draft):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''   # a title that names a lemma marks no paragraph
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if MATHEMATICS.match(where):
+            continue
+        for sentence in sentences(body):
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', LABEL.sub('', sentence), flags=re.S)
+            if COUNT.search(DATE.sub(' ', text(bare))):
+                found.append((where, text(sentence)))
+    return found
+
+
+def counts_report(draft, width):
+    found = counts(draft)
+    lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
+    return '\n'.join(['Sentences outside the mathematics that hold a count; read each beside its saved source:']
+                     + lines + [f'{len(found)} sentences with a count.'])
+
+
 LINK = re.compile(r'<a href="#(entry-[A-Za-z0-9-]+)"')
 ARTICLE = re.compile(r'<article id="(entry-[A-Za-z0-9-]+)"[^>]*>\s*<h3>(.*?)</h3>\s*<p class="entry-meta">(.*?)</p>', re.S)
 
@@ -137,6 +179,7 @@ def main():
     if args.notebook:
         linked, missing = entry_report(draft, pathlib.Path(args.notebook).read_text(), args.width)
         print('\n' + linked)
+    print('\n' + counts_report(draft, args.width))
     return 1 if unregistered or missing else 0
 
 

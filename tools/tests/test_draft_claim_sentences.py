@@ -60,3 +60,36 @@ class DraftClaimSentences(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class CountsTest(unittest.TestCase):
+    DRAFT = '''<article id="entry-2026-10-11-x">
+<h3>11 October 2026 — A title with 3 in it, naming a lemma</h3>
+<p>An unlabelled paragraph under the title, with 4 runs.</p>
+<p><strong>Assessment of this line.</strong> The queue went from 31 to 33. Nothing else changed. Three builds were removed on 11 October 2026.</p>
+<p><strong>New mathematics.</strong> A bound with 5 terms for \\(n\\ge2\\).</p>
+<h4>The measurement</h4>
+<p>Of 20 items the check saw ten. The exponent \\(1-2\\delta_0\\) and <code>lem:step-2</code> are not counts.</p>
+<ul><li>One list item under the measurement with 7 cases.</li></ul>
+<p><strong>Limit.</strong> Dated 12 October 2026 only. A 40-minute wait.</p>
+<p><strong>What the six entries did.</strong> Nothing with a number.</p>
+<h4>What is added</h4>
+<p>A heading the listing does not know, with 9 entries.</p>
+<h4>Proof of the lemma</h4>
+<p>Two integrations by parts.</p>
+</article>'''
+
+    def test_counts_in_bookkeeping_paragraphs_are_listed_and_others_are_not(self):
+        found = dcs.counts(self.DRAFT)
+        self.assertEqual(found, [
+            ('', 'An unlabelled paragraph under the title, with 4 runs.'),   # the title marks no paragraph
+            ('Assessment of this line', 'Assessment of this line. The queue went from 31 to 33.'),   # label kept
+            ('Assessment of this line', 'Three builds were removed on 11 October 2026.'),
+            ('The measurement', 'Of 20 items the check saw ten.'),
+            ('The measurement', 'One list item under the measurement with 7 cases.'),
+            ('Limit', 'A 40-minute wait.'),                      # a number before a hyphen; the date is not one
+            ('What is added', 'A heading the listing does not know, with 9 entries.'),
+        ])                                                       # a number word in a label alone is not listed
+        report = dcs.counts_report(self.DRAFT, 0)
+        self.assertTrue(report.endswith('7 sentences with a count.'))
+        self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
