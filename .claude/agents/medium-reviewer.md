@@ -25,9 +25,10 @@ progress claim, a next step) whose stated reason does not support it or that an 
 forbids; work the draft says was skipped, deferred or not checked without a reason; a count or
 number quoted without its source; a conclusion that needs the other direction of what was proved (an
 equivalence or "nothing more can be had" drawn from one implication, a lower bound drawn from an
-upper one); a control that could not have failed on some of the cases it is reported for; a rule
-added to AGENTS.md, when the brief includes framework changes, that speaks about one goal's
-mathematics instead of every notebook. Give each finding with its location, or write "no findings".
+upper one); a counterfactual or comparison whose other side was not checked; a control that could
+not have failed on some of the cases it is reported for; a rule added to AGENTS.md, when the brief
+includes framework changes, that speaks about one goal's mathematics instead of every notebook. Give
+each finding with its location, or write "no findings".
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
