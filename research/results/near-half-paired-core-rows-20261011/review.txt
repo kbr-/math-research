@@ -1,0 +1,46 @@
+Review record, 11 October 2026: entry-2026-10-11-paired-core-row-bound (the paired source's first-moment count
+applied to subcollections of rows).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), by hand, with the full
+text of the paired source's entry; one follow-up to the same reviewer on an added paragraph.
+
+First pass. Verdict: pass with corrections. Could not break the proposition or consequences 1-4. Arithmetic
+redone: at l = 4, M = 7 < 8, m - 1 = 8 >= M, kM/v = 7 (displayed bound 7.42). The union bound over label sets
+needs only conditional independence given scopes. The lemma's law is the ensemble's law, and intersecting with
+the good event costs o(1).
+Required changes:
+- "with it more than R_0 rows": does not follow from n >= gamma v, which gives only m' >= gamma v/k < R_0. Cite
+  the retention lemma's own row statement or write gamma v/k.
+- Follow-up, "would fix a core's size near v/log2 q": overstated. A second moment gives one fixed subcollection
+  satisfiable with probability 1 - o(1), which cannot be unioned over 2^m subcollections. Say it would bound
+  typical subcollections, not every core.
+- Consequence 4 / New mathematics: the mean over all v is only km' < 8v restated. The shared-pin threshold uses
+  the mean over used variables, which is unbounded here (up to 9). Say so.
+- Nonvacuity: at l = 4, N = h = 32, so each layer is one row on all 64 variables and R_0 = 0. Add l = 5
+  (v = 160, m = 18, M = 13 < 16).
+- Consequence 3: "first two points applied inside it" should read "it has more than M rows".
+- Best outcome: "not minimal" did not show what an unprojected core looks like; say so.
+- Title may claim the source's first-moment count, applied to subcollections, bounds a core's rows above by M and
+  makes the full instance non-minimal; nothing on private variables, core size from below, or degree.
+- Entry-meta: acceptable; add the cycle label.
+Process audit: the used-variable mean was the question unasked. Bearing "none" and Continuing are honest. The
+record search and R_0 are unverified by the reviewer.
+Suggestions (unverified):
+- The same union with 2^u(S), u(S) being scope-determined: whp every S with u(S) + m + l <= 2|S| log2 v is
+  unsatisfiable. A core then has |S| < (u + m + l)/(2 log2 v) + 1, so its mean over used variables is at most
+  8(1 + O(m/u)) + k/u. Counting then leaves up to about u/8 private variables.
+- Private-variable-free core: none found; a Boolean row with a private variable is not universal, so peeling
+  fails.
+- Lower bound for every core: no short one; it needs exponentially small failure probability.
+
+Follow-up, on the added paragraph "The count on used variables". Stands, with two sentences to change.
+1. The union is sound: u(S) is scope-determined, and the conditional expectation 2^u(S) p^|S| is right.
+2. The step to |S| < (u + m + l)/(2 log2 v) + 1 is sound.
+3. The algebra is right: k/(2 log2 v) = 8l/(l + log2 l), and u >= n >= gamma v holds because normalization only
+   removes coordinates.
+Changes: "a core's mean occurrence on its own variables is at most 8 + o(1)" should say "a minimal unsatisfiable
+subcollection's, before projection"; for a normalized core with projected rows incidences and variables both
+shrink, so its mean is not bounded. Add that the bound falls below nine only for l of order 1/gamma, about
+e^518, so it says nothing at any feasible size. Consequence 4's last sentence, Nonvacuity (l = 5: M = 13 < 16
+checked) and the rewritten Follow-up stand.
+
+Author's note: all applied.
