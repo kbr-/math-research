@@ -48,6 +48,14 @@ class ResemblanceTest(unittest.TestCase):
         self.assertRegex(text, r'0\.\d\d ex:old-degrees: Exact refutation')
         self.assertIn('prop:other (related in the spec)', text)
 
+    def test_a_run_is_logged_with_the_claims_it_compared(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = pathlib.Path(folder) / 'logs/claim-searches.jsonl'
+            tool.log_run(['prop:one', 'cor:two'], path)
+            row = json.loads(path.read_text())
+            self.assertEqual(row['query'], 'claim_resemblance prop:one cor:two')
+            tool.log_run(['x'], path / 'under-a-file')                                # no error
+
 
 if __name__ == '__main__':
     unittest.main()

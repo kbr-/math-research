@@ -544,6 +544,22 @@ def validate_searches_run(entry, queries):
     return queries
 
 
+def validate_resemblance_run(entry, queries):
+    """An entry that declares claims was written in a session that ran tools/claim_resemblance.py on each.
+
+    An entry of 11 October 2026 presented a corollary as what a comparison added; a registered claim had it
+    in a weaker form, found by the reviewer, and the tool had been run only after the review.  The check
+    cannot tell when in the session the tool was run, nor whether its output was read."""
+    declared = re.search(r'<article\b[^>]*\bdata-claims="([^"]*)"', entry)
+    idents = [] if not declared or declared.group(1).strip() == 'none' else declared.group(1).split()
+    compared = {word for query in queries if query.startswith('claim_resemblance ') for word in query.split()[1:]}
+    missing = [ident for ident in idents if ident not in compared]
+    if missing:
+        raise ValueError('This entry declares claims that tools/claim_resemblance.py was not run on in its '
+                         'session: ' + ', '.join(missing) + '. Run it on the draft spec, read the nearest '
+                         'registered claims, and correct what the entry says is new (AGENTS.md)')
+
+
 PROVED = {'working_proof', 'conditional'}
 
 
@@ -1176,6 +1192,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     whole = notebook.read_text()
     entry = whole[whole.rfind('<article', 0, whole.index(marker)):whole.index(marker)]
     searches = validate_searches_run(entry, logged_searches(root, first.get('unix_s', 0)))
+    if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
+        validate_resemblance_run(entry, searches)
     if '<strong>Record search.</strong>' in entry:
         print('Registry searches run in this session, to compare with the entry\'s Record search: '
               + '; '.join(searches))

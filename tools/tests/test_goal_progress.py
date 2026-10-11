@@ -261,6 +261,18 @@ class SearchesRunTest(unittest.TestCase):
             self.assertEqual(FT.logged_searches(Path(root) / 'absent', 0), [])
 
 
+class ResemblanceRunTest(unittest.TestCase):
+    def test_declared_claims_need_a_logged_resemblance_run(self):
+        entry = '<article id="e" data-claims="prop:one cor:two"><p>Text.</p>'
+        with self.assertRaisesRegex(ValueError, 'prop:one, cor:two'):
+            FT.validate_resemblance_run(entry, ['cut ceiling'])
+        with self.assertRaisesRegex(ValueError, 'not run on in its session: cor:two'):
+            FT.validate_resemblance_run(entry, ['claim_resemblance prop:one'])
+        FT.validate_resemblance_run(entry, ['claim_resemblance prop:one cor:two'])
+        FT.validate_resemblance_run('<article id="e" data-claims="none"><p>Text.</p>', [])
+        FT.validate_resemblance_run('<article id="e"><p>Text.</p>', [])
+
+
 class StructuralReasonTest(unittest.TestCase):
     REASON = ('<p><strong>Structural reason.</strong> One is a combination of the rows with constant coefficients; '
               'random rows of width three are not expected to have one.</p>')
