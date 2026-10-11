@@ -959,7 +959,11 @@ def item_status(body, ident, claims=None):
     reset = (f' Entries on it in all: {lifetime}, more than a spell: the spell restarted after entries on other '
              'items, and the boundary has not limited the item.' if lifetime > count and lifetime >= 3
              else f' Entries on it in all: {lifetime}.')
+    # The queued text holds what a merge carried over from another item, which no entry's follow-up names: on
+    # 11 October 2026 two starting points of a merged check survived there alone and the status did not show them.
+    queued = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', node.text))).strip()
     return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}',
+            f'Queued text: {queued}',
             'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'),
             f'Current spell: {count}; boundary: {boundary}.' + reset,
             (f'Next development would be entry {count + 1}.' if count < limit else

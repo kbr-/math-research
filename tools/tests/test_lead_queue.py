@@ -528,6 +528,7 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(lq.claims_elsewhere(body, summaries, 't1:s2'), [])
         self.assertEqual(lq.answered_report(body, summaries), [('t1:s1', near)])
         self.assertIn(f'  {near[0][0]} lem:x in #o', lq.item_status(body, 't1:s1', summaries))
+        self.assertIn('Prove an upper bound for the refutation degree', lq.item_status(body, 't1:s1')[1])   # its text
         # ranked best first and cut at the limit; an item of formulas alone has nothing to rank by
         more = other.replace('lem:x lem:y', 'lem:x lem:y lem:z')
         ranked = lq.claims_elsewhere(queued.replace(listing, listing + more), summaries, 't1:s1')
