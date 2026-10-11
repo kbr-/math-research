@@ -35,6 +35,11 @@ class UserRequestsLink(unittest.TestCase):
             (worktree / 'user_requests').write_text('stranded\n')
             with self.assertRaisesRegex(ValueError, 'append its entries'):
                 cli.link_user_requests(worktree)
+            # The run's state is linked the same way, under its own name.
+            (main / 'run_state').write_text('a grant\n')
+            state = cli.link_shared(worktree, 'run_state')
+            self.assertEqual((state.name, state.read_text()), ('run_state', 'a grant\n'))
+            self.assertIsNone(cli.link_shared(main, 'run_state'))
 
 
 if __name__ == '__main__':

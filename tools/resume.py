@@ -22,6 +22,20 @@ FILES=('research/notes/RESUME.md','COMPUTATION_RULES.md')
 # characters whole, and Codex's session files record its own truncation at about 40 kB (10 October 2026).
 PART_BYTES=28000
 PREPARE_WARN_S=2.0
+# The user's grants and overrides for the current run (AGENTS.md): an untracked file of the main checkout.
+RUN_STATE='run_state'
+NO_RUN_STATE='No grant or override is recorded: nothing is published, and every rule applies as written.\n'
+
+
+def run_state(root):
+    """The main checkout's run_state, read through git's common directory so that a worktree without its
+    link gets it too; where the file is absent or empty, the sentence that says so."""
+    common=subprocess.run(['git','rev-parse','--path-format=absolute','--git-common-dir'],cwd=root,
+                          capture_output=True,text=True)
+    main=Path(common.stdout.strip()).parent if common.returncode==0 and common.stdout.strip() else Path(root)
+    try:text=(main/RUN_STATE).read_text()
+    except OSError:text=''
+    return text if text.strip() else NO_RUN_STATE
 
 
 def save_bundle(root, parts):
@@ -96,6 +110,7 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     item=selected(notebook,root)
     files=FILES+(('formalization/AGENTS.md','formalization/README.md') if formalization else ())
     parts=[(path,(root/path).read_text(), 'resume-file',path) for path in files]
+    parts.append((RUN_STATE+' — the grants and overrides in force for this run',run_state(root),'run-state','current'))
     source=(root/item['source']).read_text();book=excerpt.Notebook(source)
     current=source[:book.anchor('research-record')['start']].rstrip()+'\n'
     # The lead queue has no word limit: restoration reads its head only (tools/lead_queue.py).

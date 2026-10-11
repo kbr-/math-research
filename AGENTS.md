@@ -543,11 +543,9 @@ assessments.
   commit, run `tools/ff-base.sh`, with or without a push grant. It rebases onto a moved local
   upstream and fast-forwards that upstream, including local main when main is the base. It never
   pushes; dirty bases/conflicts require resolution. The post-commit hook reminds about lag or a
-  missing upstream. This local synchronization does not authorize publication. **Current-run
-  override (7 October 2026):** during the user's `Spin AC⁰[2]-Frege` on `aux`, keep commits on
-  `aux`; do not fast-forward `main` to it or run the automatic base synchronization. The user
-  explicitly suspended that synchronization for this Spin. This override ends with the run or a
-  later user instruction.
+  missing upstream. This local synchronization does not authorize publication. An override of a rule
+  for one run (such as a suspension of this synchronization) is recorded in `run_state`, as grants
+  are (below).
 - Every research turn ends in a local Git commit, including failures/no results. Include living
   sections, full record, sources/provenance, code, reproducibility data and complete important
   outputs per the computation policy. Promote essential scratch/runtime results into
@@ -564,10 +562,12 @@ assessments.
   scratch.
 - Publish only under explicit user authorization, including a still-active scoped/ time-limited
   grant. Research/edit/commit requests alone do not authorize it. Restore the actual grant after
-  compaction, honor expiry/later overrides and do not ask again within authorized scope. Publication
-  is authorized for the active Spin (user, 6 October 2026: "Resume pushes"), lifting the earlier
-  publication hold. This grant ends when the user stops Spin or revokes permission. Earlier grants
-  are preserved in Git, not standing permission.
+  compaction, honor expiry/later overrides and do not ask again within authorized scope. A grant,
+  and an override of a rule for one run, is in force only while the Git-ignored `run_state` file of
+  the main checkout lists it: record it there when the user gives it, with the user's words and
+  date, and remove it when it ends. In a worktree `run_state` is a link to that file, which
+  `compute.sh start` creates, and `tools/resume.py` puts the file into every resume bundle, so a
+  grant survives a compaction; a clone without the file has no grant. This file holds no run state.
 - Respect the user's branch; do not switch/merge into main just to publish. Pin integration targets
   to immutable commits after fetching/receiving workers, rebase and validate against those IDs.
   Immediately before fast-forwarding check the destination HEAD and worktree: if advanced,
