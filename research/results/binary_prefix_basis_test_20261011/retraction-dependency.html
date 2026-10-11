@@ -1,0 +1,61 @@
+<article id="entry-2026-10-09-weighted-feature-retraction" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-lead="entry-2026-10-07-profile-architecture-review:3" data-claims="lem:weighted-feature-retraction">
+<h3>9 October 2026 — Actual-degree feature naming preserves the old error profile</h3>
+<p class="entry-meta">Working filtered retraction identity. Naming features alone supplies no new contraction. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question.</strong> On general-step and the binary lower-bound statement, test the last entry's actual-degree filtration: can one remove the formal dictionary-length penalty while keeping the degree-one input advantage of affine feature naming? The necessary implication remains an affordable source-wide actual-error estimate. First identify the exact multiplier space and error kernels under this proposed change.</p>
+<p><strong>General statement.</strong> <a href="#weighted-feature-retraction">lem:weighted-feature-retraction</a> identifies the weighted feature filtration with the original polynomial filtration after imposing the feature definitions, including degree-bounded elimination certificates and every fixed actual error image. It is an elementary graph-substitution identity, not an independently new contraction mechanism.</p>
+<p><strong>New mathematics.</strong> An explicit filtered identity for the proposed presentation, together with its comparison to the already proved unit-cost feature pullback. The same old image has no dictionary penalty; the affine feature inputs instead carry their old degree costs.</p>
+<p><strong>Goal progress.</strong> Unchanged. This eliminates a proposed free improvement, not the possibility of a useful theorem in the new presentation. The actual error profile and selected-row alternatives remain exactly those already needing control.</p>
+<h4>Exact filtered elimination</h4>
+<p>Let \(\mathbb F\) be any field, let \(R=\mathbb F[x_1,\ldots,x_n]\), and choose finitely many \(z_j(x)\) with positive integer bounds \(d_j\ge\max(1,\deg z_j)\). In \(S=R[Z_1,\ldots,Z_s]\), give \(x_i\) cost one and \(Z_j\) cost \(d_j\). Write \(S_{\le K}^{\mathrm{wt}}\) for the span of monomials of total cost at most \(K\), and \(R_{\le K}\) for the ordinary old degree space. Define \(\psi(x_i)=x_i\), \(\psi(Z_j)=z_j(x)\); old inclusion \(\iota:R\to S\) is a right inverse of \(\psi\).</p>
+<p id="weighted-feature-retraction"><strong>Lemma (weighted feature retraction).</strong> For every integer \(K\ge0\),
+\[
+ \psi(S_{\le K}^{\mathrm{wt}})=R_{\le K}.
+\]
+Every \(F\in S_{\le K}^{\mathrm{wt}}\) has a graph-elimination certificate
+\[
+ F-\iota\psi(F)=\sum_j A_j(x,Z)(Z_j-z_j(x)),\qquad
+ \deg_{\mathrm{wt}} A_j\le K-d_j,
+\]
+with negative-bound coefficient spaces zero. In particular this identifies the filtered quotient by the graph equations with the original filtration, without assuming feature independence.</p>
+<p>Let also \(J_D\subseteq R_{\le D}\) be a degree-\(D\) pseudoideal, \(w\in R_{\le b}\), and let \(A_1,\ldots,A_q\) be fixed old error factors of degrees at most \(a\), where \(b+K+a\le D\). Then
+\[
+ \operatorname{im}\bigl(F\in S_{\le K}^{\mathrm{wt}}\mapsto([w\psi(F)A_i])_i\bigr)
+ =\operatorname{im}\bigl(f\in R_{\le K}\mapsto([wfA_i])_i\bigr).
+\]
+The induced maps on the common weighted base quotient have identical kernels and ranks. In particular \(S_{\le K}^{\mathrm{wt}}/\{F:w\psi(F)\in J_D\}\) is canonically \([wR_{\le K}]\). Survival is preserved in both directions. Properness, Booleanity and a nonzero weight are not needed for the linear identities; they are needed only when using the quotient as a nontrivial binary lower-bound domain.</p>
+<p><strong>Proof.</strong> Substitution does not increase the assigned cost, so the image is contained in \(R_{\le K}\). Old inclusion supplies the reverse containment. For the certificate, replace \(Z_1,\ldots,Z_s\) in succession and telescope the differences. On a monomial, replacing \(Z_j^e\) uses
+\[
+ Z_j^e-z_j^e=(Z_j-z_j)\sum_{u=0}^{e-1}Z_j^{e-1-u}z_j^u.
+\]
+Every cofactor has cost at most the original monomial cost minus \(d_j\); preceding substitutions do not increase cost. Sum over monomials and replacement positions. This proves the displayed certificate and shows that the full kernel is the graph ideal with the indicated bounded representations.</p>
+<p>The error-image equality follows from the first equality by applying the same old linear map to both sides. The weighted base quotient identification is the first isomorphism theorem applied to \(F\mapsto[w\psi(F)]\), with old inclusion giving surjectivity. Each error map factors through it: if \(wf\in J_D\), multiply by each monomial of \(A_i\); all degrees fit \(b+K+a\le D\), so bounded absorption gives \(wfA_i\in J_D\). The induced maps on this identified domain are literally the same, proving the kernel and rank assertion. \(\square\)</p>
+<h4>Where the cost moved</h4>
+<p>The earlier <a href="#entry-2026-10-09-weighted-feature-pullback">weighted feature removal</a> used ordinary degree in \(n+s\) formal variables. It made an affine feature tuple degree one, then paid a factor \(d=\max d_j\) on substitution and counted all \(n+s\) variables in its rate. That theorem remains valid. The new filtration instead makes substitution degree-preserving, but a formal affine sum containing a cost-\(d_j\) feature has weighted degree up to \(d_j\), not one. Multiplying by it shifts the available cutoff by that cost. An ordinary degree-one contraction theorem cannot simply be used with these weighted spaces and its old unit shift.</p>
+<p>For any fixed chosen binary prefix \(P\), take \(A_i=P g_i\) above, retaining its full actual degree. The error profile at every paid cutoff is exactly the original \(c_{w,P}(K)\). Thus the proposal does remove an inflated image denominator, but only by returning to the original actual-domain problem. It does not establish a dictionary-independent lower bound on \(c_{w,P}(K-\delta)/c_{w,P}(K)\). A presentation might still expose additional algebraic structure; the lemma does not rule that out.</p>
+<h4>The required actual-kernel control</h4>
+<p>The <a href="#entry-2026-10-09-dense-monomial-profile">dense monomial theorem</a> was reread in full. In its permitted growing-family source, rank-deficient differences \(g_T=x_T+x_{T_0}\) have actual initial kernel equal to the weight kernel. With \(r=\lceil\log n\rceil\), its proved ratio obeys
+\[
+ c(K-r)/c(K)\le2\,2046^{-r}.
+\]
+Naming each \(x_T\) as a feature of cost \(r\) leaves that profile exactly unchanged by the lemma. This checks the proposed shortcut on the hard quotient, rather than a free symbolic feature cube. It does not give an upper bound on the best rank drop: the same source has a surviving degree-\(r\) selected-input weight that kills the entire parent. Both facts survive the change of presentation. No new extremal example or numerical sweep is needed.</p>
+<p>The <a href="#entry-2026-10-09-local-feature-domains">local common-domain criterion</a> already distinguishes local enlarged images from the shared old domain. The retraction identity does not contradict its image bound: that bound used unit formal feature degree, whose cutoff image can exceed the old degree-\(K\) space. Equal symbols \(K\) in these two filtrations designate different multiplier spaces. Keep original coefficient-map replay charges and the accumulated weight throughout.</p>
+<h4>Decision for the scheduled review</h4>
+<p>This is the sixth research entry since the last scheduled review. Carry forward that the general source implication remains unchanged: dense batching and factor normalization cover supplied structure, colon lifting provides a separate Near-half bridge, growing expansion does not pay the local incidence estimate, and actual-degree naming returns the old error profile. The next scheduled architecture review must compare a genuinely different way of constructing a surviving interpretation with these source-wide sufficient conditions. Do not spend another cycle merely renaming the same quotient or seeking an initial uniform rate already contradicted by the actual-kernel control.</p>
+<p><strong>Follow-up.</strong> Continuing. The weighted-filtration shortcut is resolved as a change of presentation with the original error profile. Generalized weights remain relevant only through an additional source-dependent choice theorem; none was obtained here.</p>
+<h4>Sub-idea follow-up</h4>
+<ul><li data-check="entry-2026-10-09-weight-source-return:s1"><strong>Follow-up.</strong> Closed: the proposed shortcut is resolved by <a href="#weighted-feature-retraction">the retraction lemma</a>, which identifies the proposed actual-degree image and kernels exactly; the dense-kernel theorem and its selected-row cleanup give the requested comparison. No source-wide rate follows from the filtration change alone.</li></ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the certificate, image and kernel identities, degree ledger, dense-source comparison and unchanged goal assessment, with no corrections or unused substantive hypotheses. Full weighted pullback, local batching and dense actual-profile records were read, as were the historical polynomial-substitution and field-reduction statements/proofs. Searches covered weighted elimination, filtered retractions, graph ideals and feature kernel identities. No new calculus rule or encoding is introduced; the certificate is an ordinary polynomial identity.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="binary_weighted_filtration_20261009">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 49.98 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.46 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 11.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">12.86 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
