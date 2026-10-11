@@ -498,6 +498,19 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual([n.ident for n in nodes][-2:], ['t1:s1', 't1:s3'])
         self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', nodes[-2].text)
 
+    def test_new_review_pick_merged_without_reappearing(self):
+        head = notebook([self.rev], self.q)
+        entry = review('r2', [PASS, FAIL, FAIL], [PASS, FAIL])
+        entry = entry.replace('</article>',
+            '<h4>Sub-idea follow-up</h4><ul><li data-lead="r2:1">Same question. '
+            '<strong>Follow-up.</strong> Closed: merged into r1:1</li></ul></article>')
+        body, count = lq.append_new(notebook([self.rev, entry], self.q))
+        self.assertEqual((count, lq.parse(body)[1]), (1, self.q + [('bridge', 'r2:1')]))
+        self.assertIn('Merged from r2:1:', lq.parse_tree(body)[1][0].text)
+        lq.check(head, body)
+        again, added = lq.append_new(body)
+        self.assertEqual((added, again), (0, body))
+
     def test_subideas_arrive_in_their_lists_order(self):
         listing = subideas('t1', [('build', 'b'), ('check', 'c'), ('build', 'd')])
         self.assertEqual(lq.arrivals_of(*lq.record_articles(notebook([listing]))[0]),

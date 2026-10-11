@@ -1089,13 +1089,15 @@ def waits_for_review(tag, text):
 
 
 def queued_arrivals(tag, text):
-    """arrivals_of without the Sub-ideas that wait for a review."""
+    """Arrivals without waiting Sub-ideas or items resolved in their introducing entry."""
     waiting = waits_for_review(tag, text)
+    resolved = {item for group in listed_closures(tag, text) for item in group}
 
     def parentless(item):       # a sub-idea that names its parent (data-parent) nests there and does not wait
         listed = listed_item(item[0], text, item[1])
         return KINDS[item[0]].sub and not (listed and 'data-parent=' in listed[0])
-    return [item for item in arrivals_of(tag, text) if not (waiting and parentless(item))]
+    return [item for item in arrivals_of(tag, text)
+            if item not in resolved and not (waiting and parentless(item))]
 
 
 def pending_subideas(body):
