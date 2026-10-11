@@ -1209,10 +1209,17 @@ def reopened_by(text):
 MERGE_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Closed: merged into ([\w:.-]*\w)')
 
 
-def apply_merges(body, nodes, text):
+def apply_merges(body, nodes, text, tag=None):
     """A follow-up list item closed as "merged into ID" hands its wording to that queued item, so a near
-    duplicate that adds something is kept as part of the item it repeats (user, 9 October 2026)."""
-    for kind, ident, item in FOLLOWUP_ITEM.findall(text):
+    duplicate that adds something is kept as part of the item it repeats (user, 9 October 2026).  With `tag`,
+    the entry's own item does the same when the entry's own Follow-up closes it so: on 11 October 2026 an entry
+    closed its item as merged, its reviewer accepted the closure on that condition, and the wording was not
+    carried, the merge being read in listed items only."""
+    listed = list(FOLLOWUP_ITEM.findall(text))
+    work = developed_by(tag, text) if tag else None
+    if work and work[1] == 'Closed':
+        listed.append((work[0][0], work[0][1], FOLLOWUP_ITEM.sub('', text[len(tag):])))
+    for kind, ident, item in listed:
         merged = MERGE_RE.search(item)
         target = next((n for top in nodes for n in [top] + top.children if merged and n.ident == merged.group(1)),
                       None)
@@ -1401,7 +1408,7 @@ def transition(body, old, tag, text):
     work, batch = developed_by(tag, text), triaged(tag, text)
     chosen = 'data-picked="user"' in tag
     closed = sum(listed_closures(tag, text), [])     # listed Developed sub-ideas leave the queue too
-    apply_merges(body, nodes, text)
+    apply_merges(body, nodes, text, tag)
     kept, promoted = kept_children(text), []
     for item in closed + [b[0] for b in batch]:
         close(nodes, item, kept, promoted)
@@ -1721,7 +1728,7 @@ def append_new(body):
         raise ValueError('; '.join(problems))
     was = draining or len(nodes) >= CAP
     promoted = []
-    apply_merges(body, nodes, text)
+    apply_merges(body, nodes, text, tag)
     for item in sum(listed_closures(tag, text), []):
         close(nodes, item, kept_children(text), promoted)
     nodes += promoted

@@ -498,6 +498,18 @@ class LeadQueueTest(unittest.TestCase):
         nodes = lq.parse_tree(merged)[1]
         self.assertEqual([n.ident for n in nodes][-2:], ['t1:s1', 't1:s3'])
         self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', nodes[-2].text)
+        # an entry that develops the item and closes it as merged, in its own Follow-up, hands the wording over too
+        queue = [*self.q, ('check', 't1:s1'), ('check', 't1:s2'), ('check', 't1:s3')]
+        own = developing(('check', 't1:s2'), 'Closed').replace('Closed: x.', 'Closed: merged into t1:s1. The rest.')
+        after = notebook([self.rev, listing, own], queue)
+        tag, text = lq.record_articles(after)[-1]
+        left = lq.transition(after, lq.parse_tree(notebook([self.rev, listing], queue))[1], tag, text)
+        self.assertEqual([n.ident for n in left][-2:], ['t1:s1', 't1:s3'])
+        self.assertIn('Merged from t1:s2: Prove an upper bound or a lower bound', left[-2].text)
+        gone = own.replace('merged into t1:s1', 'merged into t9:s9')
+        with self.assertRaisesRegex(ValueError, 'not queued'):
+            lq.transition(after.replace(own, gone), lq.parse_tree(notebook([self.rev, listing], queue))[1],
+                          *lq.record_articles(after.replace(own, gone))[-1])
 
     def test_new_review_pick_merged_without_reappearing(self):
         head = notebook([self.rev], self.q)
