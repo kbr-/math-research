@@ -1,0 +1,14 @@
+<h4 id="weighted-independent-flat-offset-entropy">5. A low-degree weight does not automatically compress independent flats</h4>
+<p><strong>Working obstruction.</strong> Over \(\mathbb F_2\), take \(a\) disjoint groups of \(w\) bits and let \(Z_i\) be the product of the bits in group \(i\). Extra old variables are allowed. For arbitrary old polynomials \(Q_i\) of degree at most \(q&lt;w\), and any nonzero multilinear old polynomial \(f\) of degree at most \(k\),</p>
+<div class="math">\[
+ \left|\left\{(Z_i(b)-Q_i(b))_{i\le a}:f(b)=1\right\}\right|
+       \ge 2^{\max(0,a-k)}.
+ \tag{OC-entropy}
+\]</div>
+<p><strong>Proof.</strong> Pick a monomial \(m\) of maximum degree \(t=\deg f\) in \(f\). At most \(t\) groups meet its support. Let \(J\) be the remaining groups, so \(|J|\ge a-k\). For every \(c\in\mathbb F_2^J\), consider</p>
+<div class="math">\[
+ R_c=f\prod_{j\in J}(1+Z_j+Q_j+c_j).
+\]</div>
+<p>The squarefree monomial \(m\prod_{j\in J}Z_j\), of degree \(t+w|J|\), has coefficient one after Boolean reduction. To reach that degree a term must choose every \(Z_j\), because \(\deg Q_j&lt;w\), and a degree-\(t\) monomial of \(f\). A different such monomial either overlaps a selected group, lowering its reduced degree, or is disjoint from them and produces a different monomial. Lower-degree monomials cannot contribute. Hence \(R_c\) is a nonzero Boolean function. At some point it equals one; there \(f=1\) and \(Z_j-Q_j=c_j\) for every \(j\in J\). Projection of the offset image onto \(J\) is therefore surjective, proving (OC-entropy). The case \(a-k&lt;0\) uses that a nonzero Boolean \(f\) has nonempty support. \(\square\)</p>
+<p>Take the first \(n\) rows of compact binary PHP, \(w=\ell\), and \(Z_i=\prod_t b_{it}\), the indicator of the all-one label. For any fixed baseline degree \(q\), eventually \(\ell&gt;q\). Any nonzero weight of degree at most \(n/4\) leaves at least \(2^{3n/4}\) offset patterns on its support. A literal two-level source realizes these indicators as products of bottom affine literal tuples, with one parent reading all products. Thus full-cube small offset image fails even for a single high-arity parent, despite low source depth and polylogarithmic expanded degree.</p>
+<p>This is a failure of the proposed representation criterion, not a proof-complexity lower bound or a counterexample to the transfer theorem. The <a href="#historical-elimination-over-affine-endpoints">historical one-parent PC elimination</a> already handles that restricted source. Moreover, the obstruction concerns profiles on the full cube or the stated weight support; a properly costed PHP domain can change the conclusion.</p>
