@@ -1,5 +1,6 @@
 import copy
 import importlib.util
+import multiprocessing
 from pathlib import Path
 import sys
 import tempfile
@@ -8,6 +9,15 @@ TOOLS=Path(__file__).resolve().parents[1];sys.path.insert(0,str(TOOLS))
 from claim_registry import import_markdown, upgrade, HEADER
 from claim_reviews import make_review, Evidence, FIELDS
 from claim_maintenance import maintenance
+
+
+def undaemonize(case):
+    """The parallel test runner's workers are daemonic and may start no children; the code under test then
+    stays serial.  For the tests of the forked paths, lift the flag for the test's duration."""
+    config=multiprocessing.current_process()._config
+    was=config.get('daemon')
+    config['daemon']=False
+    case.addCleanup(lambda:config.__setitem__('daemon',was) if was is not None else config.pop('daemon',None))
 
 
 class MaintenanceTests(unittest.TestCase):
@@ -219,5 +229,68 @@ class MaintenanceTests(unittest.TestCase):
         merged=module.merge_registry(*(json.dumps(d) for d in (self.empty,a,b)))
         if isinstance(merged,str):merged=json.loads(merged)
         self.assertTrue(self.check(self.empty,merged)['passed'])
+
+    def test_hashes_from_workers_are_the_parents_own(self):
+        from unittest.mock import patch
+        from claim_maintenance import Hasher,can_fork
+        self.assertFalse(multiprocessing.current_process().daemon and can_fork())
+        undaemonize(self)
+        self.assertTrue(can_fork())
+        for name in ('a.md','b.md','c.md'):(self.root/'research'/name).write_text('Source '+name)
+        keys=[('a.md',None),('b.md',None),('c.md',None),('absent.md',None)]
+        direct=Evidence(self.root)
+        expected={key:direct.sha256(*key) for key in keys[:3]}
+        with patch.object(Hasher,'WORTH',1):
+            evidence=Evidence(self.root);hasher=Hasher(evidence,self.root)
+            try:hasher.fill(keys)
+            finally:hasher.close()
+            self.assertEqual(evidence.cache,expected)      # a key that fails is left for the parent to meet
+            with self.assertRaises(OSError):evidence.sha256('absent.md')
+            # One file, or already cached keys, starts no workers.
+            lone=Hasher(Evidence(self.root),self.root);lone.fill(keys[:1])
+            self.assertIsNone(lone.pool);lone.close()
+            again=Hasher(evidence,self.root);again.fill(keys[:3])
+            self.assertIsNone(again.pool)
+        # Below the threshold nothing is forked either.
+        small=Hasher(Evidence(self.root),self.root);small.fill(keys[:3])
+        self.assertIsNone(small.pool)
+
+
+class ChangedCommandTests(unittest.TestCase):
+    """claim-index.py changed validates the registry beside the check and fails as when validation came first."""
+
+    def setUp(self):
+        undaemonize(self)
+        spec=importlib.util.spec_from_file_location('claim_index_cli',TOOLS/'claim-index.py')
+        self.cli=importlib.util.module_from_spec(spec);spec.loader.exec_module(self.cli)
+
+    def run_changed(self,validate,check=lambda data,base:{'passed':True},worker=None):
+        from unittest.mock import patch
+        patches=[patch.object(self.cli,'read_json',lambda path:{'claims':[]}),
+                 patch.object(self.cli,'validate',validate),patch.object(self.cli,'check_revision',check)]
+        if worker:patches.append(patch.object(self.cli,'_validated',worker))
+        for p in patches:p.start();self.addCleanup(p.stop)
+        return self.cli.checked_changed('registry.json','BASE')
+
+    def test_valid_registry_returns_the_report(self):
+        self.assertEqual(self.run_changed(lambda data:data),({'claims':[]},{'passed':True}))
+
+    def test_invalid_registry_fails_as_validation_does(self):
+        def invalid(data):raise ValueError('Duplicate claim IDs')
+        with self.assertRaisesRegex(ValueError,'Duplicate claim IDs'):self.run_changed(invalid)
+
+    def test_invalid_registry_wins_over_a_crash_of_the_check(self):
+        def invalid(data):raise ValueError('Duplicate claim IDs')
+        def crash(data,base):raise KeyError('reviews')
+        with self.assertRaisesRegex(ValueError,'Duplicate claim IDs'):self.run_changed(invalid,crash)
+
+    def test_a_dead_worker_is_replaced_by_validation_here(self):
+        import os
+        calls=[]
+        def counted(data):calls.append(1);return data
+        def dies(data,sender):os._exit(3)
+        self.assertEqual(self.run_changed(counted,worker=dies)[1],{'passed':True})
+        self.assertEqual(calls,[1])
+
 
 if __name__=='__main__':unittest.main()

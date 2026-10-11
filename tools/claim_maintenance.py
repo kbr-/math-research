@@ -55,7 +55,59 @@ class UnchangedArticles:
         return ident is not None and ident in then and then[ident] == now[ident]
 
 
-def maintenance(before, after, root=ROOT, changed_paths=(), base=None, source_texts=None):
+def can_fork():
+    """Whether this process may start forked workers: the platform has fork, and the process is not itself a
+    daemonic worker (such as a worker of the parallel test runner), which may have no children."""
+    return 'fork' in multiprocessing.get_all_start_methods() and not multiprocessing.current_process().daemon
+
+
+_HASH={}
+
+
+def _hash(keys):
+    """Hashes of one source file's cited evidence, in a forked worker; None where the parent is to fail itself."""
+    if 'evidence' not in _HASH:_HASH['evidence']=Evidence(_HASH['root'])   # this worker's own reader
+    evidence,out=_HASH['evidence'],[]
+    for key in keys:
+        try:out.append((key,evidence.sha256(*key)))
+        except Exception:out.append((key,None))   # whatever it is, the parent meets it if it asks for the key
+    return out
+
+
+class Hasher:
+    """Fills an Evidence cache from forked workers, one batch for each source file.  A worker reads what the
+    parent had not parsed at the fork itself, so its hashes are the parent's unless a file changes during the
+    run.  It uses the pool it is given, or forks its own at the first batch that is worth it, which the caller
+    must allow by having no thread of its own then; a batch of a few keys, a single file, or a process that may
+    not fork is left to the parent's own lazy hashing."""
+    WORTH=40
+
+    def __init__(self,evidence,root,pool=None,jobs=6):
+        self.evidence,self.root,self.jobs,self.pool,self.own=evidence,root,jobs,pool,pool is None
+
+    def fill(self,keys):
+        batches=defaultdict(list)
+        for key in dict.fromkeys(keys):
+            if key in self.evidence.cache:continue
+            local=self.evidence.local(key[0])
+            if local:batches[local[0]].append(key)
+        if len(batches)<2 or sum(map(len,batches.values()))<self.WORTH:return
+        if not can_fork():return
+        if self.pool is None:
+            # Forked here, the workers start with the sources this process has parsed so far.
+            _HASH.clear();_HASH.update(root=self.root,evidence=self.evidence)
+            self.pool=multiprocessing.get_context('fork').Pool(min(self.jobs,len(batches)))
+        ordered=sorted(batches.values(),key=len,reverse=True)   # the largest file first
+        for result in self.pool.map(_hash,ordered,chunksize=1):
+            for key,value in result:
+                if value is not None:self.evidence.cache[key]=value
+
+    def close(self):
+        if self.own and self.pool is not None:
+            self.pool.close();self.pool.join()
+
+
+def maintenance(before, after, root=ROOT, changed_paths=(), base=None, source_texts=None, pool=None):
     old={c['id']:c for c in before['claims']};new={c['id']:c for c in after['claims']}
     required=defaultdict(set);reasons=defaultdict(list);errors=[]
     def need(label,fields,reason):
@@ -99,15 +151,28 @@ def maintenance(before, after, root=ROOT, changed_paths=(), base=None, source_te
     unchanged=UnchangedArticles(root,base,evidence,source_texts) if base and base!='EMPTY' else (lambda path,anchor:False)
     # Changed cited sources matter even if someone forgot to edit the index.
     # Corpus-wide negative mapping census changes stay visible in backlog instead.
+    cited=[]
     for label,claim in new.items():
         for field,review in claim.get('reviews',{}).items():
             for item in review['evidence']:
                 target=evidence.local(item['target'])
                 if not target or str(target[0].relative_to(root)) not in changed_paths:continue
                 if unchanged(*target):continue   # its article is as it was at the base
-                try:current=evidence.sha256(item['target'],item.get('normalization'))
-                except (OSError,ValueError):current='missing'
-                if current!=item['sha256']:need(label,[field],'cited evidence changed')
+                cited.append((label,field,item))
+    # Hashes of different source files are independent, so they are computed in forked workers, one batch for
+    # each file, and put into the parent's cache: first those of changed files, then those of the claims
+    # found to need review.
+    hasher=Hasher(evidence,root,pool)
+    try:
+        hasher.fill((item['target'],item.get('normalization')) for _,_,item in cited)
+        for label,field,item in cited:
+            try:current=evidence.sha256(item['target'],item.get('normalization'))
+            except (OSError,ValueError):current='missing'
+            if current!=item['sha256']:need(label,[field],'cited evidence changed')
+        hasher.fill((item['target'],item.get('normalization')) for label in required
+                    for review in new[label].get('reviews',{}).values() for item in review['evidence'])
+    finally:
+        hasher.close()
     # Only the claims under review need their state; the whole backlog is claim-index.py coverage.
     report=coverage(after,root,set(required),evidence)
     rows={(r['id'],r['field']):r for r in report['fields']}
@@ -147,6 +212,12 @@ def _register(index):
                          lambda:article_ids(notebook_at(ENTRY_INVENTORY_BASE)),notebook)
 
 
+def _register_send(index,sender):
+    """A registration worker's whole life: send the result, or die and let the parent check that notebook."""
+    sender.send(_register(index))
+    sender.close()
+
+
 def check_revision(after, revision='HEAD', root=ROOT):
     if revision=='EMPTY':
         commit,before=baseline(revision,root)
@@ -168,19 +239,34 @@ def check_revision(after, revision='HEAD', root=ROOT):
     # Identical to the base: no new entries to register.
     todo=[(n,r) for n,r in notebooks if not (r in at_base and r not in changed)]
     # Each notebook's registration is independent of the others and of the maintenance check, so with several
-    # changed notebooks they run in forked workers beside it (the workers share the loaded registry).
-    pending=pool=None
-    if len(todo)>1 and 'fork' in multiprocessing.get_all_start_methods():
+    # changed notebooks each runs in a forked process beside it (the processes share the loaded registry).
+    # They are plain processes with a pipe each, which give this process no thread, so the maintenance check
+    # can fork its hashing workers later.  A worker reads the notebook itself where the sequential path below
+    # uses the maintenance check's snapshot: the same text unless the file changes during the run.
+    workers=[]
+    if len(todo)>1 and can_fork():
         _REGISTER.update(todo=todo,commit=commit,root=root,after=after)
-        pool=multiprocessing.get_context('fork').Pool(len(todo))
-        pending=pool.map_async(_register,range(len(todo)))
-        pool.close()
-    result=maintenance(before,after,root,changed,base=commit,source_texts=source_texts)
+        context=multiprocessing.get_context('fork')
+        for index in range(len(todo)):
+            receiver,sender=context.Pipe(duplex=False)
+            process=context.Process(target=_register_send,args=(index,sender))
+            process.start();sender.close()   # a worker that dies ends the wait for its answer
+            workers.append((process,receiver))
+    try:
+        result=maintenance(before,after,root,changed,base=commit,source_texts=source_texts)
+        answered=[]
+        for process,receiver in workers:
+            try:answered.append(receiver.recv())
+            except EOFError:answered.append(None)   # died without an answer: checked below, in this process
+    except BaseException:
+        for process,_ in workers:process.terminate()
+        raise
+    finally:
+        for process,_ in workers:process.join()
+    if workers:
+        registrations=[r for r in answered if r is not None]
+        todo=[item for item,r in zip(todo,answered) if r is None]
     result['base_revision']=commit
-    if pending is not None:
-        registrations=pending.get()
-        pool.join()
-        todo=[]
     for notebook,relative in todo:
         def notebook_at(ref):
             if ref=='EMPTY':return ''

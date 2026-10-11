@@ -1045,6 +1045,15 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'and, for a computation, the sizes reachable and why its outcomes differ '
                                      'there; a test whose every outcome fits every answer decides nothing '
                                      '(AGENTS.md, Decisive test)')
+                attempt = re.search(r'<strong>Attempt\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+                plain = html.unescape(re.sub(r'<[^>]*>', ' ', attempt.group(1))).strip() if attempt else ''
+                if len(plain) < 40:
+                    # A review of 11 October 2026 posed a test twice that its cited statements answered in a
+                    # few lines; the attempt to answer it had not been made before posing it.
+                    raise ValueError('Decisive test must state "<strong>Attempt.</strong>": what was tried, before '
+                                     'posing the test, to answer it from the statements it cites, and where that '
+                                     'stopped; a test those statements answer in a few lines is a lemma, not a '
+                                     'test (AGENTS.md, Decisive test)')
                 trivial = re.search(r'<strong>Trivial cases\.</strong>(.*?)(?=<strong>Power\.</strong>|$)', value, re.S)
                 plain = html.unescape(re.sub(r'<[^>]*>', ' ', trivial.group(1))).strip() if trivial else ''
                 if len(plain) < 40:

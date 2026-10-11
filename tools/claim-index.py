@@ -2,15 +2,57 @@
 """Import, render, validate, and export the authoritative claim registry."""
 import argparse
 import json
+import multiprocessing
 from pathlib import Path
 import subprocess
 import sys
 
-from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, render,
+from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, render, read_json, validate,
                             reconcile, check_targets, exported, require, write_json, upgrade)
 from claim_reviews import coverage, FIELDS
 from claim_graph import query as graph_query, audit as graph_audit
-from claim_maintenance import check_revision
+from claim_maintenance import check_revision, can_fork
+
+
+def _validated(data, sender):
+    try:
+        validate(data)
+        sender.send(None)
+    except Exception as error:   # the parent validates again and raises it there
+        sender.send(repr(error))
+
+
+def checked_changed(registry, base):
+    """The registry and its changed-claim report.  Validating the registry and checking the changes are
+    independent, so the validation runs in a forked worker beside the check; an invalid registry is then
+    validated again here, so that it fails as it did when validation came first."""
+    if not can_fork():
+        data = load(registry)
+        return data, check_revision(data, base)
+    data = read_json(registry)
+    receiver, sender = multiprocessing.Pipe(duplex=False)
+    worker = multiprocessing.get_context('fork').Process(target=_validated, args=(data, sender))
+    worker.start()
+    sender.close()   # the worker holds the only sender now, so a worker that dies ends the wait below
+
+    def valid():
+        try:
+            return receiver.recv() is None
+        except EOFError:   # the worker died without an answer: validate here
+            return False
+
+    try:
+        report = check_revision(data, base)
+    except Exception:
+        if not valid():
+            validate(data)
+        raise
+    else:
+        if not valid():
+            validate(data)
+    finally:
+        worker.join()
+    return data, report
 
 
 def main():
@@ -73,14 +115,14 @@ def main():
         write_json(args.report, report)
         print(f"Imported {len(data['claims'])} claims; original fields and links reconciled.")
         return 0
-    data = load(args.registry)
     if args.command == 'changed':
-        report = check_revision(data, args.base)
+        data, report = checked_changed(args.registry, args.base)
         if args.out:
             write_json(args.out, report)
         print(json.dumps(report, indent=2))
         return 0 if report['passed'] else 1
-    elif args.command == 'graph':
+    data = load(args.registry)
+    if args.command == 'graph':
         require(args.n > 0, 'Graph limit must be positive')
         if args.mode == 'audit':
             report = graph_audit(data)

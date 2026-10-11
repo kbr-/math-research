@@ -25,9 +25,11 @@ LIMIT_S = 5.0  # About twice this job's time on the project machine, when little
 # number: measured on 11 October 2026 on this repository, inside this job 1.9 s against HEAD and 8.3 to 9.1 s
 # against a published base 879 commits and 1178 changed claims behind (about 6 ms a claim).  A count found 712
 # normalizations of 711 distinct texts and 806 excerpts of 793 distinct anchors, so the cited evidence is not
-# rehashed; the rest is parsing five notebooks and loading the registry.  The contract's own limit grows by
-# 12 ms a claim, about twice that cost; the other checks keep the fixed limit.
-PER_CLAIM_S = 0.012
+# rehashed; the rest is parsing five notebooks and loading the registry.  The contract then ran its
+# registration of entries, its evidence hashing by source file and the registry's validation in forked workers:
+# 4.9 s alone at that scope (three runs, 4.86 to 4.88 s), about 3 ms a claim over its time against HEAD.  The
+# contract's own limit grows by 6 ms a claim, twice that cost; the other checks keep the fixed limit.
+PER_CLAIM_S = 0.006
 SCOPE = {'claims': 0, 'times': None}
 
 

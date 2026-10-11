@@ -1,0 +1,38 @@
+Reviewer's record, entry claim-check-parallel-contract (riemann notebook, 11 October 2026). One fresh-context
+medium reviewer, read-only. It read the first version of the entry, this cycle's diff (hashing workers,
+validation beside the check, allowance, Attempt check) and the previous cycle's commit (parallel registration,
+per-check limits with the wall/CPU note, the launcher's serial line), and ran three test modules: 51 tests in
+0.5 s, passing. It did not read the code as changed after its review.
+
+Verdict: pass with corrections. No path found on which a worker's hash differs from the parent's, apart from a
+file changing mid-run.
+
+Required changes, most serious first:
+- Halved allowance, loaded case unchecked; "Developed" not yet supported. The previous commit measured 22.8 s
+  wall and 13.5 s CPU beside a 14-CPU load; under the new limit (12.1 s at 1182 claims) both exceed it, so that
+  run would now fail, not note. Rerun the loaded case, keep an allowance shown to hold, or mark Continuing.
+- checked_changed can hang: the parent never closes the sender, so a worker that dies without sending blocks
+  recv forever. Close it after start and treat EOFError as "validate here"; recv before join.
+- No test exercises the new worker paths (Hasher, _hash, checked_changed, _validated); the byte comparison on
+  one passing repository state cannot fail on the failing-key path. "With their tests" overstates.
+- Bearing reason is one the rules refuse ("the review turned the entries to...").
+- Review (2) evades: "no prevention beyond following the rule" is not a prevention; queue a build item for the
+  hook's wording. (3) and (4) also name no prevention or queued item.
+- Unsourced numbers: "0.8 s loading and 6.7 s checking", the profile's 1.6/0.9/1.1 s, "47 MB".
+- Fork from a threaded parent: Hasher forks while the registration pool's handler threads are alive.
+- _register drops the shared snapshot: equal results unless the file changes mid-run; say so in a comment.
+
+Not defects: `measured` (single wait, returncode set, no double-wait); the Attempt regex with following labels,
+though Attempt text before Power also counts toward the Trivial-cases length; serial_line.
+
+Suggestions (unverified):
+- The second fill may hash keys coverage() never requests; an exception of another kind in a worker would then
+  be a new failure: check, or catch and return None.
+- The busy note can excuse a regression that only adds waiting; compare CPU against the quiet-run CPU.
+
+Removal read: Developed is supported once the loaded run is made on the final code and the tests exist.
+
+Process audit: the title may claim "split across processes, measured 6.6 s to 4.9 s alone, allowance halved";
+not that the limit holds under load, nor "completed" while the loaded run is missing. The suite count does not
+say whether it ran on the final diff. The entry's kind spends one of the six research slots on bookkeeping. The
+previous commit went unreviewed in full; its claims are consistent with the code read here.

@@ -16,7 +16,8 @@ ARCHITECTURE = FT.ARCHITECTURE_HEADING + ''.join(
     + 'The requirement and alternative are compared against the actual goal and its full budget.'
     + (' <strong>Downstream.</strong> Through thm:downstream-transfer the target gives the goal\'s '
        'statement at every parameter; goal: yes.' if label == 'Necessary target' else '')
-    + (' <strong>Trivial cases.</strong> Adding an implied row changes neither quantity compared. '
+    + (' <strong>Attempt.</strong> The cited statements were tried on the test and decide it at no reachable size.'
+       ' <strong>Trivial cases.</strong> Adding an implied row changes neither quantity compared. '
        '<strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
        '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
        'claim answers it.' if label == 'Decisive test' else '') + '</p>'
@@ -136,6 +137,8 @@ class GoalProgressTest(unittest.TestCase):
             validate(valid.replace('<strong>Power.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Trivial cases'):
             validate(valid.replace('<strong>Trivial cases.</strong>', ''))
+        with self.assertRaisesRegex(ValueError, 'Attempt'):
+            validate(valid.replace('<strong>Attempt.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Downstream'):
             validate(valid.replace('<strong>Downstream.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Downstream'):
