@@ -1,0 +1,40 @@
+Review record, 11 October 2026: entry-2026-10-11-blocking-closure (the owed run, a sufficient condition for
+degree three, and the closure of the queue item).
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent). Read the draft, both
+scripts and both outputs, and ran a scratch check of its own.
+
+Verdict: pass with corrections. The proposition and proof are sound (dead options, b = c, same-pair b and c,
+rule (iii) and the degree convention all check). blocking.py is sound and reaches a true fixed point, so it can
+report neither True nor False wrongly. The table matches pairings-32.json and the blocking numbers match
+blocking.json.
+Required changes:
+- Nonvacuity, "about (8/n)^3 ... about 290 first derived conflicts": wrong. A pair's six holes are distinct, so
+  the factor is 8*6*4 = 192, not 512, giving about 108. Measured first-round derived conflicts at 256, 512 and
+  1024 holes: 54 to 199, mean about 103, no dead option. "It does" holds only qualitatively; say so, and in
+  Process assessment.
+- Reading, "every paired instance computed on this item, 256": the closure was run on 14 only, and seed 24001
+  repeats the survey's first seed, so 255 are distinct. A scratch run found blocking refutes all 242 earlier
+  instances (14 to 24 holes); commit that as part 1 or restrict the sentence. The same for Follow-up, "by a
+  local cascade".
+- Degenerate cases, "the degree is then at most two by other means": unproved; delete it. Add that at d >= 3
+  this case cannot occur, since an option has two holes.
+- "Resolution of width two": it is path plus arc consistency, nogoods of size at most two; Boolean width is
+  larger.
+- "About 2.8 million": 2,862,468, so "about 2.9 million".
+- Derived counts in refuted instances (640 to 2194): they include rule (iii) spreads and are taken at early
+  exit; say so.
+- blocking.py: replace 'rows': None with an assert against the recorded rows (all 14 agree).
+- Entry-meta: "degree at most three"; exact degrees at 24 to 44 only, closure alone at 64 to 1024.
+- Title: may claim the sufficient condition, exact degree three at 24 to 44 against the count, and the closure
+  stalling in samples at 256 and above; not hardness, a class-level cause, or goal bearing.
+Closure of the queue item: justified once the above is fixed; no further attempt required. The follow-up must
+state whether the recorded expansion bound applies to this class at large n; if it does, "unknown" should read
+"linear, constant below a quarter".
+Process audit: the estimate was never compared with the data; "Prevention: none applies" must change. Bearing
+"none" is correct.
+Suggestions (unverified): none found beyond restricting the pigeonhole refutation to the subspace, about
+n/2 + 1.
+
+Author's note: all applied; the script was extended (first-round counts, row-count assert, the 242 earlier
+instances, all refuted by the closure) and rerun, and the entry's numbers are from that output. Whether the
+expansion bound applies to the class was not checked, and the entry says so.
