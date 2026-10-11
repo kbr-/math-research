@@ -893,6 +893,24 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE):
             for score, claim in module.search({'claims': later}, [text])[:limit] if score > 0]
 
 
+def linking_entries(body, ident):
+    """Anchors of the later entries, of any kind, that did not develop the item `ident` and link the entry which
+    queued it, in order; None for an item that is not queued or that no entry queued (one added by the tool).
+    A signal for an item answered elsewhere that a queued build asked for.  Measured on 11 October 2026 on four
+    items known to be answered in part under another item, it held the answering entry for none of them, so it
+    is offered as a command and printed nowhere by default."""
+    found = parse_tree(body)
+    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if n.ident == ident), None)
+    articles = record_articles(body)
+    anchors = [(re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1] for tag, _ in articles]
+    source = ident.rsplit(':', 1)[0]
+    if node is None or source not in anchors:
+        return None
+    own = {anchor for anchor, _, _ in history(body, ident)}
+    return [anchors[position] for position in range(anchors.index(source) + 1, len(articles))
+            if anchors[position] not in own and f'href="#{source}"' in articles[position][1]]
+
+
 def answered_report(body, claims):
     """[(item id, [(score, claim, anchor), ...]), ...] for the top-level queued items no entry has developed that
     have such claims; build items are left out, a claim being no answer to a build."""
@@ -1962,6 +1980,14 @@ def main(argv):
         else:
             print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
                   or 'No similar queued items')
+        return 0
+    if len(argv) == 4 and argv[1] == 'linkers':
+        rows = linking_entries(Path(argv[2]).read_text(), argv[3])
+        if rows is None:
+            print(f'{argv[3]} is not queued, or no entry of the record queued it: nothing to look for.')
+            return 1
+        print('\n'.join(rows))
+        print(f'{len(rows)} later entries that did not develop it link the entry that queued {argv[3]}.')
         return 0
     if len(argv) == 3 and argv[1] == 'nearby':
         body = Path(argv[2]).read_text()

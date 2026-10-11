@@ -536,6 +536,17 @@ class LeadQueueTest(unittest.TestCase):
         self.assertEqual(len(lq.claims_elsewhere(queued.replace(listing, listing + more), summaries, 't1:s1', 1)), 1)
         bare = queued.replace(a, r'\(x\)')
         self.assertEqual(lq.claims_elsewhere(bare.replace(listing, listing + other), summaries, 't1:s1'), [])
+        # later entries on other items, of any kind, that link the queuing entry: the other signal, a command only
+        linking = other.replace('<p><strong>Follow-up', '<p>See <a href="#t1">there</a>.</p><p><strong>Follow-up')
+        self.assertEqual(lq.linking_entries(queued.replace(listing, listing + linking), 't1:s1'), ['o'])
+        as_review = linking.replace('data-kind="research"', 'data-kind="review"')
+        self.assertEqual(lq.linking_entries(queued.replace(listing, listing + as_review), 't1:s1'), ['o'])
+        self.assertEqual(lq.linking_entries(body, 't1:s1'), [])                       # the entry does not link it
+        self.assertEqual(lq.linking_entries(queued.replace(listing, linking + listing), 't1:s1'), [])     # earlier
+        self.assertEqual(lq.linking_entries(queued.replace(listing, listing + linking.replace(
+            f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')), 't1:s1'), [])       # the item's own
+        self.assertIsNone(lq.linking_entries(body, 'no-such-item'))                   # not a zero: nothing to look for
+        self.assertIsNone(lq.linking_entries(lq.add(body, 'check', 'by-tool', 'a talk', a), 'by-tool'))
         # the start of a cycle prints them for the item the next step names, and nothing for one it does not
         import turn_guidance
         step = '<section id="proposed-next-step"><p>Take <code>t1:s1</code> next.</p></section>'
