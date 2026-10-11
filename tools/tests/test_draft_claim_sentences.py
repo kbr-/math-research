@@ -40,6 +40,19 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertIn('cor:missing\n  REGISTERED: (NOT IN THE REGISTRY)', out)
         self.assertTrue(out.endswith('6 citing sentences, 4 claims, 1 unregistered.'))
 
+    def test_sentences_linking_an_entry_stand_beside_its_title_and_status(self):
+        notebook = ('<article id="entry-old" data-kind="research">\n<h3>9 October — An attempt that stops</h3>\n'
+                    '<p class="entry-meta">No result; a stronger statement.</p>\n<p>Body.</p></article>')
+        draft = ('<article id="entry-x" data-claims="none"><h4>Test</h4>'
+                 '<p>The statement was posed in <a href="#entry-old">the attempt</a>. Another sentence. '
+                 'See <a href="#entry-gone">a missing one</a>.</p></article>')
+        out, missing = dcs.entry_report(draft, notebook, 0)
+        self.assertIn('entry-old\n  TITLE: 9 October — An attempt that stops\n  STATUS: No result; a stronger statement.\n'
+                      '  [Test] The statement was posed in the attempt.', out)
+        self.assertIn('entry-gone\n  TITLE: (NOT IN THE NOTEBOOK)', out)
+        self.assertEqual(missing, {'entry-gone'})
+        self.assertTrue(out.endswith('2 linking sentences, 2 entries, 1 not in the notebook.'))
+
     def test_width_cuts_long_lines(self):
         out, _ = dcs.report(DRAFT, REGISTRY, 20)
         self.assertIn('  REGISTERED: First lemma: holds f\n', out)
