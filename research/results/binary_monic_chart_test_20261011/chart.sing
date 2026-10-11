@@ -1,0 +1,85 @@
+// Prediction: the complete companion ideal of three shared-input blocks at
+// all four Boolean points equals the ideal of canonical row-factor products.
+// Parameters are point-evaluation coordinates of all degree<=2 coefficient
+// maps on two old bits: 48 independent scalar variables. This is an invertible
+// linear reparametrization, checked separately, not a low-degree simplification.
+// Check both ideal inclusions, every pair of the proposed basis, and propriety.
+// Controls remove one active generator, and add an explicit constant obstruction.
+ring scRing=2,(z(1..48)),dp;
+int scFailures=0,scChecks=0,scPairs=0,scOriginalCount=0,scActiveCount=0;
+proc scAssert(int scOK,string scLabel)
+{
+  scChecks++;
+  if(!scOK) { scFailures++; print("FAIL "+scLabel); }
+}
+proc scIndex(int scPoint,int scBlock,int scRow,int scInput)
+{
+  return(12*scPoint+4*scBlock+2*scRow+scInput+1);
+}
+proc scProduct(int scPoint,int scBlock,poly scG1,poly scG2)
+{
+  return((1-var(scIndex(scPoint,scBlock,0,0))*scG1
+           -var(scIndex(scPoint,scBlock,0,1))*scG2)
+        *(1-var(scIndex(scPoint,scBlock,1,0))*scG1
+           -var(scIndex(scPoint,scBlock,1,1))*scG2));
+}
+ideal scOriginal,scCanonical;
+int scPoint,scX,scY,scPbit,scB,scI,scJ,scC1,scC2;
+poly scP,scA,scBprod,scG1,scG2,scQ,scS;
+for(scPoint=0;scPoint<4;scPoint++)
+{
+  scX=scPoint div 2; scY=scPoint%2; scPbit=(1-scX)*(1-scY);
+  scP=scProduct(scPoint,0,scX,scY);
+  scG1=scX+scP; scG2=scY+scP;
+  scA=scProduct(scPoint,1,scG1,scG2);
+  scBprod=scProduct(scPoint,2,scP,scX+scY);
+  scOriginal=scOriginal,scX*scP,scY*scP,scG1*scA,scG2*scA,
+    scP*scBprod,(scX+scY)*scBprod;
+  scOriginalCount=scOriginalCount+6;
+  for(scB=0;scB<3;scB++)
+  {
+    if(scB==0) { scC1=scX; scC2=scY; }
+    if(scB==1) { scC1=(scX+scPbit)%2; scC2=(scY+scPbit)%2; }
+    if(scB==2) { scC1=scPbit; scC2=(scX+scY)%2; }
+    if(scC1 || scC2)
+    {
+      scCanonical=scCanonical,scProduct(scPoint,scB,scC1,scC2);
+      scActiveCount++;
+    }
+  }
+}
+scOriginal=simplify(scOriginal,2);
+scCanonical=simplify(scCanonical,2);
+ideal scGO=std(scOriginal);
+ideal scGC=std(scCanonical);
+scAssert(size(reduce(scOriginal,scGC))==0,"actual ideal lies in canonical ideal");
+scAssert(size(reduce(scCanonical,scGO))==0,"canonical ideal lies in actual ideal");
+scAssert(reduce(1,scGO)!=0,"complete actual ideal is proper");
+for(scI=1;scI<=size(scCanonical);scI++)
+{
+  for(scJ=scI+1;scJ<=size(scCanonical);scJ++)
+  {
+    scAssert(gcd(lead(scCanonical[scI]),lead(scCanonical[scJ]))==1,
+      "coprime heads");
+    // Their variable blocks are disjoint, so the product is the LCM.
+    scS=lead(scCanonical[scJ])*scCanonical[scI]
+       -lead(scCanonical[scI])*scCanonical[scJ];
+    scAssert(reduce(scS,scGC)==0,"complete critical-pair reduction");
+    scPairs++;
+  }
+}
+ideal scDrop;
+for(scI=2;scI<=size(scCanonical);scI++) { scDrop=scDrop,scCanonical[scI]; }
+scAssert(reduce(scCanonical[1],std(scDrop))!=0,"missing-generator control");
+ideal scBad=scOriginal,1;
+scAssert(reduce(1,std(scBad))==0,"constant-obstruction control");
+scAssert((1+z(1))*(1+z(1)+z(2))==z(1)^2+z(1)*z(2)+z(2)+1,
+  "monic quadratic after scalar coordinate change");
+print("CANONICAL BASIS");
+scGC;
+print("SUMMARY original_slots="+string(scOriginalCount)
+  +" active_blocks="+string(scActiveCount)+" basis_size="+string(size(scGC))
+  +" pairs="+string(scPairs)+" checks="+string(scChecks)
+  +" failures="+string(scFailures));
+if(scFailures==0) { print("FINAL PASS"); } else { print("FINAL FAIL"); }
+quit;
