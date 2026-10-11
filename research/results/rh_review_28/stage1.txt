@@ -1,0 +1,69 @@
+STAGE ONE of a scheduled goal-level route review. You are given only the goal and the available results; the
+route the notebook currently prefers is withheld on purpose. Read-only; run nothing; read no file.
+
+GOAL. Prove the Riemann hypothesis. The necessary endpoint is exclusion of every zero of zeta off the line.
+
+AVAILABLE RESULTS ("import" = reported by an external source, unaudited; "read" = a published or imported
+statement read in its source; "proved" = proved in the notebook, elementary, reviewed).
+I1 (import, method read in outline only). A zero-free half-plane Re s > 11/12 (and 7/8 in a companion) for Hecke
+   L-functions over Q(sqrt(-3)). Method: (a) a power saving A_1(D) << D^(1-delta) for smoothed twisted Moebius sums
+   at every scale D, with no uniformity in the height, gives the half-plane (a zero is a pole of 1/L); (b) embed
+   A_1 in a family A_u(D) = sum mu(n) nu(n) chi_n(u) W(N(n)/D), chi_n(u) the sextic residue symbol; A_{p^6} = A_1 +
+   O(D/Y); (c) a mean square sum_{N(u) <= H} |A_u|^2 << D^(1+eps) H at H = D^(1+theta), proved (as claimed) by
+   Poisson summation in u, a Gauss-sum identity absorbing mu into cubic Gauss sums, automorphy of Kubota's cubic
+   theta function, a quadratic large sieve on the dual side, cube removal by Moebius inversion.
+P1 (proved). Extraction arithmetic: from a 2m-th moment over D^beta rows with recurrence at k-th powers the exponent is
+   1/2 + beta(1-1/k)/(2m) (+ a defect removable by induction over scales). For beta >= m it is at best 1 - 1/(2k);
+   for beta < m the moment hypothesis alone gives every member of the family exponent 1/2 + beta/(2m) from one row.
+R1 (read; Turan 1984, Thm 33.3 with proof). A saving tau^(-b) for sums of Lambda(n) n^(-i tau) on all lengths >= tau^a
+   excludes zeros at height tau in a region of width at most 1/1600; the loss is Turan's second main theorem applied
+   to all zeros in a small disk, counted by Jensen.
+P2 (proved, conditional, for zeta). For each 0 < x < 1/2: if |sum_{y<n<=y'} Lambda(n) n^(-i tau)| <= C y/tau log^A y for
+   all tau^2 <= y < y' <= 2y, then zeta(1 - x + i tau) != 0 unless more than kappa(x) log tau zeros lie in a thin shell
+   (within e^eps of the least distance to the centre 1 + mu + i tau), all with real part > 1/2. At x = 1/4: kappa =
+   0.02, valid only beyond about tau = e^460. The premise is unproved; by recollection it is what RH gives.
+P3 (proved). Harnack obstruction: explicit-formula certificates with positivity on the strip exclude a point only
+   where a weighted local count of zeros is below 4/cos(pi delta).
+P4 (proved, models). Gram-form amplification of an off-line pair; power-sum bounds with loss c^(2n); the heat-flow
+   filter (a property shared with backward-flowed functions cannot be the only one a proof uses).
+R2 (read). Bombieri-Lagarias Theorem 1; Ki's theorem on zeros of Re/Im of the completed zeta at a shifted line;
+   Lagarias's structure function; Rodgers-Tao (de Bruijn-Newman constant >= 0).
+Registered open conjectures on the route: none (the missing implication is unregistered, not absent).
+
+TASK. Propose a materially different architecture for the goal, built from these results or from named theorems you
+can state precisely (mark memory as memory), OR give a reason none was found. For each proposal: the exact statement
+to be proved, why it is not a restatement of the goal, where it would most likely break. In particular: (i) is there
+any family in which sum mu(n) n^(-it)-type sums for zeta recur DENSELY enough, or any device other than recurrence,
+that could push I1's method below 3/4? (ii) what is the weakest unproved statement about primes, in your view, from
+which the line (not a half-plane) would follow by an argument of the P2 kind without the cluster exception? Under
+500 words.
+
+REPLY (medium reviewer, stage one; from memory and unverified unless it cites the brief)
+
+Verdict: no architecture found that reaches the line without an unproved statement equivalent to or stronger than
+RH. Two proposals and one pre-check.
+
+Pre-check on I1: zeta_K = zeta * L(chi_-3) for K = Q(sqrt(-3)); if I1 admits the trivial character it already
+claims zeta != 0 for Re s > 11/12, a quasi-RH for zeta; an unaudited import of that strength should be treated as
+probably wrong until its mean square is read line by line.
+
+(i) Dense recurrence: none found. For a symbol of order k, chi_n(u) = 1 for all n <= D forces u to be essentially a
+k-th power (memory), so density H^(1/k) and floor 1 - 1/(2k): 11/12 at k = 6, 7/8 at k = 4 (matching the companion),
+5/6 at k = 3, 3/4 at k = 2. k = 2 looks unreachable by the device: quadratic Gauss sums carry only mu^2. For zeta's
+own family t -> n^(-it) recurrence is only approximate. So the second-moment method ends at 5/6 at best.
+
+Proposal A: high moments at fixed beta, sum_{N(u) <= D^beta} |A_u(D)|^(2m) << D^(m+beta+eps) for every m; strictly
+stronger than the goal for the family, a statement about averages. Likely break: for m >= 2 Poisson in u gives dual
+length D^m/H far above H; no analogue of theta automorphy for products of Gauss sums. Expected to fail at m = 2.
+
+(ii) Weakest prime statement without the cluster exception: for each fixed tau and eps,
+|sum_{y<n<=y'} Lambda(n) n^(-i tau)| <<_{tau,eps} y^(1/2+eps) as y -> infinity (then the tail of -zeta'/zeta(s + i tau)
+is analytic in Re s > 1/2, no pole at height tau). Equivalent to RH by Landau's theorem; the only content is that
+uniformity in tau and the range y ~ tau^2 are unnecessary. Any saving y^theta gives exactly the half-plane theta.
+P2's premise gives no continuation, so its cluster exception is intrinsic to that range.
+
+Proposal B: accept the cluster exception and prove a local density bound in P2's shell. Break: the Harnack
+obstruction; Jensen gives O(log tau) with the wrong constant; P2's premise remains unproved.
+
+Process audit: a recollection is used as a status for P2's premise (check the log powers); I1 is read in outline only
+yet anchors a question; the missing implication should be registered.
