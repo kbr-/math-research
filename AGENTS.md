@@ -165,15 +165,15 @@ growing checklists or one-off setup narratives.
   cycle. Defer optional extensions. Record dependencies re-read, checks and reviewer verdict in a
   short **Verification gate.** paragraph, not the status line. An incomplete gate means conditional
   status, not a working proof; correctness takes precedence over cycle speed. A report to the user
-  about an entry whose review has not returned prefixes each conclusion with **Unreviewed:**;
-  saying later that a reviewer is checking it does not replace the label. Prepare
-  staging paths, commit message and focused metadata checks during review; the checks include
-  `./tools/check_records.py --diff`, which flags commit hashes, environment literals, backticks in
-  the notebook's HTML and long status lines in the lines being committed. Then run a sequential
-  checkpoint batch: preparation marker, checks, provenance, timing export/archive, staging, commit,
-  and any authorized push. Stop on failure. For asynchronous checkpoint commands, observe terminal
-  success of the commit and required base synchronization before planning the next result; until
-  then, do only checkpoint preparation. A launched command is not a completed local checkpoint.
+  about an entry whose review has not returned prefixes each conclusion with **Unreviewed:**; saying
+  later that a reviewer is checking it does not replace the label. Prepare staging paths, commit
+  message and focused metadata checks during review; the checks include `./tools/check_records.py
+  --diff`, which flags commit hashes, environment literals, backticks in the notebook's HTML and
+  long status lines in the lines being committed. Then run a sequential checkpoint batch:
+  preparation marker, checks, provenance, timing export/archive, staging, commit, and any authorized
+  push. Stop on failure. For asynchronous checkpoint commands, observe terminal success of the
+  commit and required base synchronization before planning the next result; until then, do only
+  checkpoint preparation. A launched command is not a completed local checkpoint.
 - Measure every research turn from as early as practical, including reading, failed attempts and
   retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
   supply a guessed or placeholder label. For other agents or unavailable metadata, follow the
@@ -241,7 +241,10 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   trivial instance, if any, that would give each outcome; a question with a trivial answer is not
   given a block (the finisher checks presence). Then state `<strong>Power.</strong>`: what the
   recorded upper bounds and method limits give on the test's object, and for a computation the
-  reachable sizes and why its outcomes differ there (the finisher checks it).
+  reachable sizes and why its outcomes differ there (the finisher checks it). Say after
+  `<strong>Attempt.</strong>` what was tried, before posing the test, to answer it from the
+  statements it cites, and where that stopped: a test those statements answer in a few lines is a
+  lemma for the next entry, not a test.
 
 The next research cycle on that route reports the actual outcome in **Architecture test.** and links
 the review's anchor. This can be a proof attempt, not necessarily a computation. More local lemmas
