@@ -1,0 +1,279 @@
+{
+  "base_sha256": "e28de03897f0ed53dd342adc19739bb2e218344beddd2877883466344b772f0d",
+  "provenance": {
+    "revision": "a051bdbe0384a30a0f0a6085db999ae545daa448",
+    "date": "2026-10-11",
+    "reviewer": "Claude Code proof assessment; fresh medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:gram-form-localization",
+        "summary": "phi real, even, supported in [-L/2, L/2], continuously differentiable on the line with phi' absolutely continuous, B = int |phi''|; grid tau_k = tau_0 + 2 pi k/L; c real supported on 0 <= k < d; H_c = sum c_k phihat(. - tau_k); I = [tau_0, tau_{d-1}]. (i) |phihat(r)| <= B/r^2. (ii) For R > 0 the integral of H_c^2 over dist(tau, I) >= R is at most |c|^2 t(R), t(R) = B^2 (2/(3R^3) + L/(6 pi R^2)). (iii) For bounded measurable nu the matrix of Q_nu(c) = int H_c^2 nu on the indices 0 <= k < d has largest eigenvalue at most 2 pi L ||phi||_inf^2 max(sup_{I_R} nu, 0) + ||nu||_inf t(R) and smallest at least 2 pi L ||phi||_inf^2 min(inf_{I_R} nu, 0) - ||nu||_inf t(R), I_R the R-neighbourhood of I. (iv) The same with ||nu||_inf t(R) replaced by B^2 (N_R (2/(3R^3) + L/(6 pi R^2)) + a (2/(9R^3) + L/(12 pi R^2))) when nu is bounded on I_R and |nu(tau)| <= N_R + a log(dist(tau, I)/R) outside I_R. (v) For nu = P_X, the prime cosine sum -(1/pi) sum_{n <= X} Lambda(n) n^{-1/2} cos(tau log n): ||P_X||_inf <= (2/pi) sqrt(X) log X, so the eigenvalues of its matrix are at most 2 pi L ||phi||_inf^2 sup_{I_R} |P_X| + (2/pi) sqrt(X) log X t(R) in modulus.",
+        "assessment": "Working elementary proof: two integrations by parts, Cauchy-Schwarz over the grid at each tau, a sum compared with an integral, and the identity Q_nu(c) = int H_c^2 nu of the prime-side form bound. Its use for the density source's window needs that window's taper to be continuously differentiable with an absolutely continuous derivative, which was not read; the flat window and the triangle are excluded.",
+        "record": "[Gram form localization](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Makes the eigenvalue premise for the prime part of the Gram form a consequence of a pointwise bound for the prime sum at heights within about B X^{1/4} (log X)^{1/2}/||phi||_inf of the grid's interval: a sufficient condition, not shown necessary.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": "The archimedean density's bound, the diagonal of the archimedean and polar parts, and the smoothness of the density source's taper are open in the entry's sub-idea."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; parts (i) and (ii) controlled numerically for the Hann window in 138 cases, the bound never violated and at most 0.16 attained.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context for the route: elementary. Gives a sufficient condition for a premise; proves no bound for prime sums. No novelty search beyond the registry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Sharpens the eigenvalue bounds of the prime-side form bound from the supremum over the line to the supremum near the grid's interval plus a tail term, under an added smoothness hypothesis on the window.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:prime-side-form-bound",
+        "summary": "For L > 0, grid tau_k = tau_0 + 2 pi k/L, phi real even bounded with support in [-L/2, L/2], real finitely supported c and H_c = sum c_k phihat(. - tau_k): int H_c^2 = 2 pi int phi^2 |sum c_k e^{iu tau_k}|^2 <= 2 pi L ||phi||_inf^2 |c|^2, and for bounded real nu the form Q_nu(c) = sum c_k c_l int phihat(tau - tau_k) phihat(tau - tau_l) nu(tau) dtau equals int H_c^2 nu, so inf nu int H_c^2 <= Q_nu <= sup nu int H_c^2. For nu = cos(tau v) the diagonal entry is 2 pi (phi*phi)(v) cos(tau_k v), so for the truncated prime sum P_X of the density import, G^P_kk = -2 sum Lambda(n) n^{-1/2} (phi*phi)(log n) cos(tau_k log n).",
+        "assessment": "Working elementary proof (Plancherel, orthogonality over one period, Fourier inversion). As a bound for the prime part of the imported Gram form it is the trivial one, since sup|P_X| over the line is attained at 0; it returns delta <= 1/2 for a solitary pair in the model. The diagonal identity gives one proved implication, from an eigenvalue bound to a bound for smoothed prime sums at the grid heights. A bound by the size of P_X near [T, 2T] only needs a localization that is not proved; the smooth part with mu is not treated.",
+        "record": "[Prime-side form](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Reads the prime side of the Gram form from the source's definitions and shows what an elementary bound gives (nothing beyond trivial) and which implication is proved; the sign lead stays open on a localization and a converse.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": "Prove the localization of int H_c^2 near [T, 2T] for coefficients on the cut grid, then decide the positive-kernel one-sided form."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; no computation.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: an elementary bound that locates the prime input of the form. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Used with extreme eigenvalue detection and part 5 of solitary amplification in a conditional chain; reads the imported density theorem's definitions. One-sided cluster negativity: new relationship with lem:one-sided-density-decomposition. Gram form localization: new relationship with lem:gram-form-localization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-prime-side-form"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:one-sided-zero-set-equivalence",
+        "summary": "Fejer kernel K_L(w) = 2(1 - cos Lw)/(L w^2); a conjugation-closed multiset of points z with |Im z| <= Delta and sum m_z/(1 + (Re z)^2) finite, infinite allowed (real points and off-line pairs gamma_j +- i delta_j); D_L(tau) = sum m_z K_L(tau - z). (a) The sum converges absolutely, and if all delta_j <= theta then L D_L(tau) >= -4 S_off e^{theta L} for every real tau and L > 0, S_off = sum over the points z of the pairs of m_z/|tau - z|^2. (b) Let tau be real, not a real point, and d the largest distance of a pair at height tau (0 if none). If L D_L(tau) >= -C L^A e^{theta L} for all L >= L_1, with theta >= 0, then every delta_j <= max(theta, d). In particular for tau at no pair's height the bound for all large L holds with exponent theta if and only if no pair is farther than theta from the line; no hypothesis on distinct heights or on the supremum of the distances being attained. Conditional application, not part of the proved statement: if the zeros of zeta (z = (rho - 1/2)/i) form such a configuration, which follows from three classical facts recalled and not read in a source (symmetry about the critical line, Delta = 1/2, the count N(T+1) - N(T) << log T), the one-sided bound with theta = 0 at one such tau is the Riemann hypothesis restated.",
+        "assessment": "Working proof of the statement for configurations: the Laplace transform in L of L K_L(w) is 2/(s(s^2 + w^2)); the transform of L D_L is a meromorphic function whose poles off the imaginary axis are at +-delta_j +- i(tau - gamma_j) with residues that cannot cancel, and Landau's lemma moves the abscissa of convergence to theta. Its application to the zeros of zeta is conditional on three classical facts recalled and not read in a source.",
+        "record": "[One-sided zero-set equivalence](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that the one-sided premise for all lengths is the zero-free half-plane restated, for infinite configurations and for the zeros of zeta: the obstruction of the one-sided route for this kernel.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": "None."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; the transform identity and the residues are controlled numerically (8 and 3 cases) with a negative control. The zeta application is marked conditional on recalled classical facts until they are read in a source (queued check zero-count-source-read). The zeta application is marked conditional on recalled classical facts until they are read in a source (queued check zero-count-source-read).",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context for the route: an equivalence of Landau's type, elementary. A restatement result, not progress on the goal. No novelty search beyond the registry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "A qualitative extension of the one-sided half-plane equivalence to infinite configurations, without its hypotheses on the largest distance and without its explicit constants. Gram form localization: new relationship with lem:gram-form-localization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-one-sided-zero-set-equivalence"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:gram-form-localization::depends_on::lem:prime-side-form-bound",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:gram-form-localization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:prime-side-form-bound",
+        "locator": null
+      },
+      "scope": "Uses its identity Q_nu(c) = int H_c^2 nu and its bound int H_c^2 <= 2 pi L ||phi||_inf^2 |c|^2.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a051bdbe0384a30a0f0a6085db999ae545daa448",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Uses its identity Q_nu(c) = int H_c^2 nu and its bound int H_c^2 <= 2 pi L ||phi||_inf^2 |c|^2."
+      }
+    },
+    {
+      "id": "lem:gram-form-localization::cites::prop:one-sided-zero-set-equivalence",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:gram-form-localization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:one-sided-zero-set-equivalence",
+        "locator": null
+      },
+      "scope": "The one-sided premise at all lengths is the zero-free half-plane; this lemma concerns the Gram form at one bandwidth.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a051bdbe0384a30a0f0a6085db999ae545daa448",
+        "date": "2026-10-11",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The one-sided premise at all lengths is the zero-free half-plane; this lemma concerns the Gram form at one bandwidth."
+      }
+    }
+  ],
+  "topic_definitions": []
+}

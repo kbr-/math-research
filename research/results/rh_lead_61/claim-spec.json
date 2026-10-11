@@ -1,0 +1,32 @@
+{
+ "source": {
+  "record": "[Gram form localization](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization)",
+  "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-gram-form-localization"],
+  "label": "Gram form localization"
+ },
+ "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+ "date": "2026-10-11",
+ "topics": ["publication"],
+ "claims": [
+  {
+   "id": "lem:gram-form-localization",
+   "summary": "phi real, even, supported in [-L/2, L/2], continuously differentiable on the line with phi' absolutely continuous, B = int |phi''|; grid tau_k = tau_0 + 2 pi k/L; c real supported on 0 <= k < d; H_c = sum c_k phihat(. - tau_k); I = [tau_0, tau_{d-1}]. (i) |phihat(r)| <= B/r^2. (ii) For R > 0 the integral of H_c^2 over dist(tau, I) >= R is at most |c|^2 t(R), t(R) = B^2 (2/(3R^3) + L/(6 pi R^2)). (iii) For bounded measurable nu the matrix of Q_nu(c) = int H_c^2 nu on the indices 0 <= k < d has largest eigenvalue at most 2 pi L ||phi||_inf^2 max(sup_{I_R} nu, 0) + ||nu||_inf t(R) and smallest at least 2 pi L ||phi||_inf^2 min(inf_{I_R} nu, 0) - ||nu||_inf t(R), I_R the R-neighbourhood of I. (iv) The same with ||nu||_inf t(R) replaced by B^2 (N_R (2/(3R^3) + L/(6 pi R^2)) + a (2/(9R^3) + L/(12 pi R^2))) when nu is bounded on I_R and |nu(tau)| <= N_R + a log(dist(tau, I)/R) outside I_R. (v) For nu = P_X, the prime cosine sum -(1/pi) sum_{n <= X} Lambda(n) n^{-1/2} cos(tau log n): ||P_X||_inf <= (2/pi) sqrt(X) log X, so the eigenvalues of its matrix are at most 2 pi L ||phi||_inf^2 sup_{I_R} |P_X| + (2/pi) sqrt(X) log X t(R) in modulus.",
+   "assessment": "Working elementary proof: two integrations by parts, Cauchy-Schwarz over the grid at each tau, a sum compared with an integral, and the identity Q_nu(c) = int H_c^2 nu of the prime-side form bound. Its use for the density source's window needs that window's taper to be continuously differentiable with an absolutely continuous derivative, which was not read; the flat window and the triangle are excluded.",
+   "status": "working_proof",
+   "category": "context",
+   "rationale": "Makes the eigenvalue premise for the prime part of the Gram form a consequence of a pointwise bound for the prime sum at heights within about B X^{1/4} (log X)^{1/2}/||phi||_inf of the grid's interval: a sufficient condition, not shown necessary.",
+   "next_action": "The archimedean density's bound, the diagonal of the archimedean and polar parts, and the smoothness of the density source's taper are open in the entry's sub-idea.",
+   "formalization_scope": "Not formalized; no Lean work assigned.",
+   "notes": {
+    "mathematical_status": "Complete proof in the entry; parts (i) and (ii) controlled numerically for the Hann window in 138 cases, the bound never violated and at most 0.16 attained.",
+    "formalization": "No formalization.",
+    "significance": "Context for the route: elementary. Gives a sufficient condition for a premise; proves no bound for prime sums. No novelty search beyond the registry.",
+    "relationships": "Sharpens the eigenvalue bounds of the prime-side form bound from the supremum over the line to the supremum near the grid's interval plus a tail term, under an added smoothness hypothesis on the window."
+   }
+  }
+ ],
+ "relationships": [
+  ["lem:gram-form-localization", "depends_on", "lem:prime-side-form-bound", "Uses its identity Q_nu(c) = int H_c^2 nu and its bound int H_c^2 <= 2 pi L ||phi||_inf^2 |c|^2."],
+  ["lem:gram-form-localization", "cites", "prop:one-sided-zero-set-equivalence", "The one-sided premise at all lengths is the zero-free half-plane; this lemma concerns the Gram form at one bandwidth."]
+ ]
+}
