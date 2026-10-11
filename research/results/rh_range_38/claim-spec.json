@@ -1,0 +1,70 @@
+{
+  "source": {
+    "record": "[Short resonance-free range](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-short-resonance-free-range)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-short-resonance-free-range"],
+    "label": "Short resonance-free range"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "thm:short-resonance-free-range",
+      "summary": "Flat window, complete grid, off-axis points at pairwise distinct heights with least gap g, multiplicities m_j, M = sum m_j, largest distance delta_* attained with multiplicity m_*, m' the largest multiplicity among the other points: for Lam1 >= 1/delta_* and h >= (4 pi/sqrt 3) sqrt(m'/m_*)/g, some Lam in [Lam1, Lam1 + 2h] has ||B_Lam||_HS >= (sqrt2/4) m_* e^(delta_* Lam)/(delta_* Lam) - M.",
+      "assessment": "Working proof: the earlier theorem's average over the bandwidth taken with a triangular weight, whose transform at complex frequency is bounded by 4/(h nu^2), and only the cross terms with the largest pair are bounded, the rest being dropped as a square (the reviewer's improvement of the first draft). The range 14.5 sqrt(m'/m_*)/g replaces 4 M^2/(g m_*^2); neither contains the other. Conditional on an unavailable second-moment premise for any consequence about zeros.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows that in the Gram model a cluster of close off-line pairs shows its largest pair at some bandwidth in every range of length of order sqrt(m'/m_*)/g; no consequence about zeros, the model's premise being unavailable.",
+      "next_action": "None on the route; whether the factor sqrt(m'/m_*) is necessary is undecided.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry for the flat window; a numerical control on two configurations with expectations committed before the run.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: an elementary statement in an abstract model. No novelty search beyond the registry.",
+        "relationships": "Sharpens the range of the resonance-free bandwidth theorem for most multiplicities; uses the second-moment identity."
+      }
+    },
+    {
+      "id": "cor:equal-distance-recovery",
+      "summary": "In the same setting with all distances equal to delta: for Lam1 >= 1/delta and h >= sqrt(8/3) pi/g, some Lam in [Lam1, Lam1 + 2h] has ||B_Lam||_HS >= (sqrt2/4) S e^(delta Lam)/(delta Lam) - M, with S the root of the sum of the squared multiplicities.",
+      "assessment": "Working proof: the theorem's argument with the full diagonal. The range 10.3/g does not depend on the number of points and recovers the whole root-sum-square of the cluster.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The exact order of the range for equal distances, with the necessity proposition.",
+      "next_action": "None on the route.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; numerical control on twelve equally spaced simple points.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Corollary of the short resonance-free range for equal distances."
+      }
+    },
+    {
+      "id": "prop:threshold-failure-interval",
+      "summary": "Flat window, equal distance delta, heights j g with g = pi/(2 Lam1): for N simple points (K, p) = (2, 1), or 2N - 1 points with multiplicities N - |j| and (K, p) = (4, 2), and t = (p+1) ln N/delta < 2 Lam1, every Lam in [Lam1 + t, 3 Lam1] has ||B_Lam||_HS^2 <= ((K + N^-2 (2(p+1) ln N + 1))/2) e^(2 delta Lam)/(delta Lam)^2 + 3 M^2; so the threshold through which the equal-distance recovery is proved fails on that interval for N >= 9, and that of the short-range theorem for the second family for N >= 5.",
+      "assessment": "Working proof: the Dirichlet and Fejer kernels are bounded on [Lam1, 3 Lam1] for this spacing, and the second moment at bandwidth Lam weighs the last 1/delta of the range. An upper bound for two families at one start: it shows that these proofs cannot use an interval shorter than about pi/g there, not that the largest distance is undetectable on it.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The lower bound for the range of bandwidths in the two preceding statements.",
+      "next_action": "None on the route.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; numerical control at N = 12 and N = 6 with no violation of the bound on 3378 and 3328 grid points.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Limits the resonance-free bandwidth theorem and its short-range form."
+      }
+    }
+  ],
+  "relationships": [
+    ["thm:short-resonance-free-range", "depends_on", "lem:gram-second-moment-identity", "Uses the flat-window mean-square form."],
+    ["thm:short-resonance-free-range", "cites", "thm:resonance-free-bandwidth", "The same conclusion on a range 14.5 sqrt(m'/m_*)/g in place of 4 M^2/(g m_*^2); neither range is always the shorter, so neither statement implies the other."],
+    ["thm:short-resonance-free-range", "cites", "prop:subset-sum-resonance", "The single-bandwidth loss that a range of bandwidths removes."],
+    ["cor:equal-distance-recovery", "depends_on", "thm:short-resonance-free-range", "The theorem's proof with the full diagonal."],
+    ["prop:threshold-failure-interval", "cites", "thm:resonance-free-bandwidth", "Shows a range of order 1/g is necessary for its conclusion."],
+    ["prop:threshold-failure-interval", "cites", "cor:equal-distance-recovery", "Its conclusion fails on an interval of length pi/g - t."],
+    ["prop:threshold-failure-interval", "cites", "prop:subset-sum-resonance", "Another family with loss at particular bandwidths; here the loss persists over an interval of bandwidths."],
+    ["thm:short-resonance-free-range", "cites", "prop:many-pair-norm-bound", "The norm identity and the benchmark of the many-pair bound."]
+  ]
+}
