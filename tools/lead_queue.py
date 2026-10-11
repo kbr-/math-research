@@ -635,6 +635,35 @@ def unlinked_earlier_entry(body, nodes, articles, item):
     return None
 
 
+OWED_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
+
+
+def unaccounted_attempt(articles, item):
+    """The anchor of the latest earlier entry that developed `item` and whose Follow-up names a next attempt,
+    when the last entry has no <strong>Owed attempt.</strong> paragraph of at least 40 characters; None otherwise.
+
+    On 11 October 2026 a reading named as an item's next attempt was displaced by constructions in three
+    entries on the item, each naming it again.  The finisher already holds a closure to the attempt named;
+    this holds every entry on the item to saying what became of it: made, with its outcome, or not made and
+    why another attempt came first."""
+    tag, text = articles[-1]
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if dated is None or dated.group(1) < LINK_EARLIER_FROM:
+        return None
+    for position in range(len(articles) - 2, -1, -1):
+        old_tag, old_text = articles[position]
+        work = developed_by(old_tag, old_text)
+        if work and work[0] == item:
+            follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', old_text, re.S)
+            if not follow or not re.search(r'\bnext attempt\b', follow[-1], re.I):
+                return None
+            said = OWED_RE.search(text)
+            plain = html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip() if said else ''
+            anchor = re.search(r'\bid="([^"]+)"', old_tag)
+            return anchor.group(1) if len(plain) < 40 and anchor else None
+    return None
+
+
 QUEUE_ITEMS_RE = re.compile(r'\bdata-queue-items="(\d+)"')
 
 
@@ -1270,6 +1299,11 @@ def check(head_body, body, path=None, root=None):
             raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
                              'entry, after reading it, so that work already recorded on the item is not repeated '
                              '(AGENTS.md, restoration and research discipline)')
+        owed = unaccounted_attempt(articles, work[0])
+        if owed:
+            raise ValueError(f'The item\'s last entry, #{owed}, named a next attempt: say after <strong>Owed '
+                             'attempt.</strong>, in at least 40 characters, that it was made, with its outcome, or '
+                             'why another attempt came first (AGENTS.md; a named reading was displaced three times)')
         silent = unstated_subideas(tag, text, work[0], before[1] if before else nodes)
         if silent:
             raise ValueError('This entry develops an item with open sub-ideas it does not mention: give each a '

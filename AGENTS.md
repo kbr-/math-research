@@ -350,6 +350,8 @@ assessments.
   reviewer its content). After `<strong>Owed attempt.</strong>` it says which attempt the item's
   latest follow-up or its reviewer named and that it was made, with its outcome, or that none was
   named; an item whose named attempt is unmade is Continuing (the finisher checks the paragraph).
+  Every entry on an item whose last entry named a next attempt carries that paragraph too, whatever
+  its outcome: the attempt made, with its result, or why another came first (the finisher checks).
   Closed and Developed remove the item. Before planning a queued item, run `tools/lead_queue.py
   history NOTEBOOK ID --status` and read its latest development; take the spell count from this
   computed status, not an older entry's prose. Four consecutive research entries are the default

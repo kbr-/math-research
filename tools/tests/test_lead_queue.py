@@ -1404,6 +1404,23 @@ class LinkEarlierWorkTest(unittest.TestCase):
         body = notebook(articles, queue)
         return lq.unlinked_earlier_entry(body, lq.parse_tree(body)[1], lq.record_articles(body), item)
 
+    def test_an_entry_accounts_for_the_attempt_its_item_s_last_entry_named(self):
+        item, other = ('check', 'e:s1'), ('lead', 'r:2')
+        named = ('<article id="entry-2026-10-11-a" data-kind="research" data-check="e:s1"><p><strong>Follow-up.'
+                 '</strong> Continuing. Next attempt on the item: read the source.</p></article>')
+        said = '<p><strong>Owed attempt.</strong> The reading was made; its outcome is the table above.</p>'
+        late = lambda body='': self.entry('entry-2026-10-11-b', item, body)
+        articles = lambda *entries: lq.record_articles(notebook(list(entries), [item, other]))
+        self.assertEqual(lq.unaccounted_attempt(articles(named, late()), item), 'entry-2026-10-11-a')
+        self.assertIsNone(lq.unaccounted_attempt(articles(named, late(said)), item))
+        self.assertEqual(lq.unaccounted_attempt(
+            articles(named, late('<p><strong>Owed attempt.</strong> None.</p>')), item), 'entry-2026-10-11-a')
+        quiet = self.entry('entry-2026-10-11-a', item)                   # its follow-up names no attempt
+        self.assertIsNone(lq.unaccounted_attempt(articles(quiet, late()), item))
+        self.assertIsNone(lq.unaccounted_attempt(articles(named, late()), other))        # another item's entry
+        old = self.entry('entry-2026-10-10-b', item)                     # older entries are not retrofitted
+        self.assertIsNone(lq.unaccounted_attempt(articles(named, old), item))
+
     def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
         parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')
         queue = [(parent, [child]), other]
