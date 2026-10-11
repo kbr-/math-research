@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Endpoint moment order](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-endpoint-moment-order)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-endpoint-moment-order"],
+    "label": "Endpoint moment order"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:endpoint-moment-order",
+      "summary": "Flat window, complete grid, off-axis points gamma_j - i delta at distinct heights and one distance delta, multiplicities m_j, bandwidth Lam, b = delta Lam, theta_j = Lam (gamma_j - gamma_0), w_j = m_j exp(-i Lam gamma_j), nu_r = sum w_j theta_j^r, k the least r with nu_r nonzero (k <= n-1, independent of gamma_0), c = sum m_j |theta_j|^(k+1): | 2 delta (2b)^k sqrt(Q(Lam)) - |nu_k| sqrt(gamma(2k+2, 2b))/k! | <= c sqrt((2k+3)!)/((k+1)! 2b), so ||B_Lam||_HS = (e^b/(sqrt2 b)) |nu_k| sqrt((2k+1)!)/(k! (2b)^k) (1 + O(1/b)) + O(M).",
+      "assessment": "Working proof: Taylor expansion of the exponential sum at the endpoint of the range, where the weight u e^(-2 delta u) concentrates, and the triangle inequality in the weighted norm. Gives the exact order b^(-2k) of the single-bandwidth cancellation among pairs at one distance, with its leading constant. Unequal distances are outside the statement.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Settles, for equal distances, the order of the single-bandwidth loss of a cluster in the Gram model, which earlier entries left between two exponents; no consequence about zeros, the model's premise being unavailable.",
+      "next_action": "None on the route; unequal distances and the largest order for simple points are undetermined.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry for the flat window and equal distances; a numerical control on seven configurations at three bandwidths with expectations committed before the run.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route: an elementary statement in an abstract model. No novelty search beyond the registry.",
+        "relationships": "Makes the subset-sum resonance bound asymptotically sharp and recovers the two-pair cancellation ratio; uses the second-moment identity."
+      }
+    },
+    {
+      "id": "cor:maximal-cancellation-order",
+      "summary": "In the setting of the endpoint moment order with heights in increasing order: k = n-1 if and only if every gap is an odd multiple of pi/Lam and m_j is proportional to the product over l != j of 1/|gamma_j - gamma_l| (the divided-difference weights); if all heights lie in an open interval of length pi/Lam then k = 0.",
+      "assessment": "Working proof: the solution space of n-1 vanishing moments is spanned by the divided-difference weights, real with alternating signs, and positive multiplicities with unimodular phases match them exactly when consecutive phases are opposite.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Identifies the configurations with the largest single-bandwidth cancellation, order b^(-2(n-1)), and shows that points closer than pi/Lam do not cancel to leading order.",
+      "next_action": "None on the route.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the control includes the binomial multiplicities 1 2 1 and 1 3 3 1 with k = 2 and 3.",
+        "formalization": "No formalization.",
+        "significance": "Context for the route. No novelty search beyond the registry.",
+        "relationships": "Corollary of the endpoint moment order."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:endpoint-moment-order", "depends_on", "lem:gram-second-moment-identity", "Uses the flat-window mean-square form."],
+    ["prop:endpoint-moment-order", "cites", "prop:subset-sum-resonance", "Its leading term on that family equals that proposition's main term, so its upper bound is asymptotically sharp."],
+    ["prop:endpoint-moment-order", "cites", "prop:two-pair-cancellation", "Recovers the ratio 3 pi^2/(4 b^2) for two pairs at gap pi/Lam."],
+    ["prop:endpoint-moment-order", "cites", "thm:short-resonance-free-range", "The single-bandwidth loss that a range of bandwidths removes; same setting."],
+    ["prop:endpoint-moment-order", "cites", "thm:resonance-free-bandwidth", "Same setting; the loss at one bandwidth against detection over a range."],
+    ["cor:maximal-cancellation-order", "depends_on", "prop:endpoint-moment-order", "Characterises the largest value of its order k."]
+  ]
+}
