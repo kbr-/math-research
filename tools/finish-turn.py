@@ -544,6 +544,26 @@ def validate_closures(text):
     if closure_admits_unmade(plain):
         raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
                          'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
+    missing = unlisted_limits(text)
+    if missing and not re.search(r'Closed:\s*merged into\b', text):
+        raise ValueError('The closing entry declares limits of its own work (' + ', '.join(missing) + ') that its '
+                         '<strong>Not examined.</strong> paragraph does not quote: say there, in the same words, '
+                         'why the closure stands with each, or remove the limit by doing the work (AGENTS.md)')
+
+
+# A fifth closure of that item rested on a bound with a free parameter, "by this count", sent to closure without
+# its optimum, and on an example "not sought"; its reviewer found both.  A closing entry's own declared limits
+# are quoted in its Not examined paragraph.
+DECLARED_LIMIT_RE = re.compile(r'\bby this count\b|\bnot sought\b|\bdid not search\b|\bnot the exact reach\b', re.I)
+NOT_EXAMINED_RE = re.compile(r'<strong>Not examined\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
+
+
+def unlisted_limits(text):
+    """The self-declared limits of an entry's body that none of its Not examined paragraphs quotes."""
+    plain = lambda fragment: html.unescape(re.sub(r'<[^>]*>', ' ', fragment)).lower()
+    listed = ' '.join(plain(found) for found in NOT_EXAMINED_RE.findall(text))
+    declared = {found.lower() for found in DECLARED_LIMIT_RE.findall(plain(NOT_EXAMINED_RE.sub(' ', text)))}
+    return sorted(limit for limit in declared if limit not in listed)
 
 
 # A fourth closure of that item, drafted the same day, said "None is left unmade except" one attempt, with an

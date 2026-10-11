@@ -31,6 +31,16 @@ class ClosureExceptionTest(unittest.TestCase):
         self.assertFalse(FT.closure_admits_unmade('None was named beyond the item\'s own text.'))
 
 
+class DeclaredLimitsTest(unittest.TestCase):
+    def test_a_declared_limit_is_quoted_in_not_examined(self):
+        body = '<p>The ceiling is below the threshold by this count; no other example was not sought.</p>'
+        self.assertEqual(FT.unlisted_limits(body + '<p><strong>Not examined.</strong> Nothing is left.</p>'),
+                         ['by this count', 'not sought'])
+        self.assertEqual(FT.unlisted_limits(body + '<p><strong>Not examined.</strong> The reach "by this count" is '
+                                            'an upper bound; another frame was not sought.</p>'), [])
+        self.assertEqual(FT.unlisted_limits('<p>Every case is proved.</p>'), [])
+
+
 class OwedUnmadeTest(unittest.TestCase):
     def test_not_reached_without_reason_is_refused(self):
         # The wording of the draft of 11 October 2026 that prompted the check.
