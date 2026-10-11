@@ -399,6 +399,17 @@ class BearingTest(unittest.TestCase):
         body += '<article data-kind="research" data-route="r" data-goal-progress="unchanged" ' + last + '>'
         FT.validate_bearing(body, body.rindex('<article'), progress)
 
+    def test_a_bearing_of_none_gives_no_procedural_reason(self):
+        unchanged = ('research', 'unchanged')
+        for reason in ('spent on it because the review decided that the item be attempted before the block ends.',
+                       'the cycle was spent because the last entry left this owed and nothing else was named.',
+                       'spent on it because the item had been queued for two days without an entry.'):
+            with self.assertRaisesRegex(ValueError, 'procedural reason'):
+                self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> Nothing at the goal\'s '
+                           'parameters; ' + reason)
+        self.check([unchanged, unchanged], 'Unchanged. <strong>Bearing.</strong> Nothing at the goal\'s parameters: '
+                   'a proof would have excluded the family at four levels, and the attempt found no proof.')
+
     def test_a_third_unchanged_entry_states_its_bearing(self):
         unchanged = ('research', 'unchanged')
         self.check([unchanged], 'Unchanged.')

@@ -791,6 +791,11 @@ NOT_COVERED_MIN = 40
 NO_BEARING_RUN = 3     # earlier research entries in a row, on the route, declaring no bearing
 
 
+PROCEDURAL_REASON_RE = re.compile(r'\b(?:the|a|its|last) review (?:decided|asked|named|gave|said|listed)\b|'
+                                  r'\bleft (?:this|it|the attempt|an attempt) owed\b|\bwithout an entry\b|'
+                                  r'\bhad been queued\b|\bhad waited\b', re.I)
+
+
 def validate_bearing(body, article, progress, text=None):
     """From the third research entry in a row that leaves a route's goal progress unchanged, the entry says
     what its result gives at the goal's own parameters (a reviewer on 10 October 2026 found three entries of
@@ -828,6 +833,16 @@ def validate_bearing(body, article, progress, text=None):
     if declared is None:
         raise ValueError('Declare data-bearing="none" or "some" on the article: whether this entry gives '
                          "anything at the goal's own parameters, as its Bearing statement says (AGENTS.md)")
+    # A review of 11 October 2026 ruled out, as the reason a cycle without bearing was spent, that the item's
+    # last entry or a review had asked for it; three entries of the next block gave that reason again, the rule
+    # restated in prose not having been enough.  The reason is what the result could have given.
+    if declared.group(1) == 'none':
+        procedural = PROCEDURAL_REASON_RE.search(plain)
+        if procedural:
+            raise ValueError(f'The Bearing paragraph gives a procedural reason for the cycle ("{procedural.group(0)}"): '
+                             'say what the entry\'s result could have given at the goal\'s own parameters; that a '
+                             'review or an earlier entry asked for the work, or that the item had waited, is not '
+                             'a reason (AGENTS.md, goal progress)')
     # Two blocks of six entries each declared no bearing while a queue was served one leftover check at a time
     # (reviews of 11 October 2026).  After three such entries in a row the next one says, before its work, what
     # its best outcome would give at the goal's own parameters; the start guidance already asked and was not
