@@ -800,6 +800,23 @@ def count_listing_report(entry, queries):
             'of its sentences hold a count; run it on the entry and read each beside its saved source (AGENTS.md).')
 
 
+def decided_report(entry):
+    """Lines for the finisher to print, or none: the entry reports its Architecture test Decided and its body
+    has sentences that hedge (in outline, not verified, not checked and the like).
+
+    On 11 October 2026 a draft reported a test decided on an outline whose later steps it called unverified,
+    and the reviewer caught it.  The words cannot tell whether a hedge is about the decided matter, so this
+    prints the two side by side and refuses nothing.  Measured with tools/outcome_ahead.py --decided on one
+    notebook: one recorded entry of 62 and two first drafts of 64 are flagged, that draft among them."""
+    try:
+        import outcome_ahead
+    except ImportError:      # a checkout without the listing has nothing to print
+        return []
+    lines = outcome_ahead.report(entry + '</article>', status_line=False)
+    return (['Decided and hedged: this entry reports its Architecture test Decided and hedges elsewhere; read '
+             'each hedge beside the report and say in the entry which matter it is about:'] + lines) if lines else []
+
+
 def validate_resemblance_run(entry, queries):
     """An entry that declares claims was written in a session that ran tools/claim_resemblance.py on each.
 
@@ -1532,6 +1549,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
               if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
+    for line in decided_report(entry):
+        print(line)
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
         validate_resemblance_run(entry, searches)

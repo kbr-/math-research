@@ -601,6 +601,19 @@ class CountListingReportTest(unittest.TestCase):
         self.assertIsNone(FT.count_listing_report('<article id="e"><p><strong>Checks.</strong> None.</p>', []))
         self.assertIsNone(FT.count_listing_report('<p>loose text with 3 numbers</p>', []))
 
+    def test_a_test_reported_decided_is_printed_beside_the_entry_s_hedges(self):
+        def entry(test, body):
+            return ('<article id="e" data-kind="research"><p class="entry-meta">Working proof. Label.</p>'
+                    f'<p><strong>Architecture test.</strong> {test}</p>{body}')
+        hedged = '<p>Steps two to four of the outline are not verified.</p>'
+        lines = FT.decided_report(entry('<strong>Decided.</strong> The third outcome.', hedged))
+        self.assertIn('Decided and hedged', lines[0])
+        self.assertEqual(lines[1:], ['  firm: Architecture test. Decided. The third outcome.',
+                                     '  hedge: Steps two to four of the outline are not verified.'])
+        # A firm status line alone, a test not decided, and a decided test with nothing hedged print nothing.
+        self.assertEqual(FT.decided_report(entry('<strong>Not decided.</strong> None occurred.', hedged)), [])
+        self.assertEqual(FT.decided_report(entry('<strong>Decided.</strong> The third outcome.', '<p>Shown.</p>')), [])
+
 
 if __name__ == '__main__':
     unittest.main()
