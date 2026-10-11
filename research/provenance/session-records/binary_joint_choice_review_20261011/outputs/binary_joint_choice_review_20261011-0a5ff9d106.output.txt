@@ -1,0 +1,30 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ LeadQueueTest.test_new_review_pick_merged_without_reappearing _________
+
+self = <test_queue.LeadQueueTest testMethod=test_new_review_pick_merged_without_reappearing>
+
+    def test_new_review_pick_merged_without_reappearing(self):
+        head = notebook([self.rev], self.q)
+        entry = review('r2', [PASS, FAIL, FAIL], [PASS, FAIL])
+        entry = entry.replace('</article>',
+            '<h4>Sub-idea follow-up</h4><ul><li data-lead="r2:1">Same question. '
+            '<strong>Follow-up.</strong> Closed: merged into r1:1</li></ul></article>')
+        body, count = lq.append_new(notebook([self.rev, entry], self.q))
+>       self.assertEqual((count, lq.parse(body)[1]), (1, self.q + [('bridge', 'r2:1')]))
+E       AssertionError: Tuples differ: (2, [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r2:1'), ('bridge', 'r2:1')]) != (1, [('lead', 'r1:1'), ('lead', 'r1:2'), ('bridge', 'r2:1')])
+E       
+E       First differing element 0:
+E       2
+E       1
+E       
+E       - (2, [('lead', 'r1:1'), ('lead', 'r1:2'), ('lead', 'r2:1'), ('bridge', 'r2:1')])
+E       ?  ^                                      ------------------
+E       
+E       + (1, [('lead', 'r1:1'), ('lead', 'r1:2'), ('bridge', 'r2:1')])
+E       ?  ^
+
+tests/test_queue.py:506: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_queue.py::LeadQueueTest::test_new_review_pick_merged_without_reappearing
+1 failed, 85 deselected in 0.06s

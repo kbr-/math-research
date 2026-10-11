@@ -1,0 +1,16 @@
+# command: /home/kbr/.local/bin/mutmut show lead_queue.x_queued_arrivals__mutmut_7
+# run 4c9d0aee78, session binary_joint_choice_review_20261011; full output
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# lead_queue.x_queued_arrivals__mutmut_7: survived
+--- src/lead_queue.py
++++ src/lead_queue.py
+@@ -1,7 +1,7 @@
+ def queued_arrivals(tag, text):
+     """Arrivals without waiting Sub-ideas or items resolved in their introducing entry."""
+     waiting = waits_for_review(tag, text)
+-    resolved = {item for group in listed_closures(tag, text) for item in group}
++    resolved = {item for group in listed_closures(None, text) for item in group}
+ 
+     def parentless(item):       # a sub-idea that names its parent (data-parent) nests there and does not wait
+         listed = listed_item(item[0], text, item[1])
