@@ -129,7 +129,11 @@ def item_history(source, ident):
     for tag, text in lead_queue.record_articles(source):
         anchor = re.search(r'\bid="([^"]+)"', tag)
         item = re.search(r'\bdata-(?:' + lead_queue.NAMES + r')="([^"]+)"', tag)
-        if anchor and item and item.group(1) == ident:
+        # also entries filed under another item that give this one an outcome in a follow-up list item: an item
+        # of 11 October had been closed and reopened so, as a sub-idea of its former parent, and the list of
+        # entries filed under its own identifier showed neither
+        listed = re.search(r'<li data-(?:' + lead_queue.NAMES + r')="' + re.escape(ident) + r'"', text)
+        if anchor and ((item and item.group(1) == ident) or listed):
             title = re.search(r'<h3>(.*?)</h3>', text, re.S)
             history.append((anchor.group(1), plain(title.group(1)) if title else ''))
     return history

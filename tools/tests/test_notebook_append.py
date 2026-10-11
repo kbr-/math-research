@@ -70,6 +70,9 @@ class NextStepItemTests(unittest.TestCase):
         self.assertEqual([anchor for anchor, _ in tool.item_history(twice, 'item-1')][0], 'a1')
         self.assertEqual(tool.item_history(twice, 'item-1')[0][1], 'First look')
         self.assertEqual(tool.item_history(source, 'item-0'), [])
+        elsewhere = source.replace('<article id="a1">', '<article id="a1" data-check="item-1"><h3>Parent</h3>'
+                                   '<ul><li data-check="item-0">x <strong>Follow-up.</strong> Reopened: y</li></ul>')
+        self.assertEqual(tool.item_history(elsewhere, 'item-0'), [('a1', 'Parent')])     # an outcome given elsewhere
 
     def test_a_draining_queue_refuses_a_next_step_that_names_no_item(self):
         entry = '<article id="a3">three</article>'
