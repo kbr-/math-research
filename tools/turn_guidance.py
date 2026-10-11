@@ -85,7 +85,8 @@ def next_item_notes(body, claims=None):
              if n.kind != 'build' and re.search(re.escape(n.ident) + r'(?![\w:-])', step.group(1))]
     if not named:
         return []
-    near = lq.claims_elsewhere(body, lq.registered_claims() if claims is None else claims, named[0].ident)
+    near = lq.claims_elsewhere(body, lq.registered_claims() if claims is None else claims,
+                              lq.qualified(named[0]))
     if not near:
         return []
     return [f'Lead queue: the next step names {named[0].ident}. Claims of later entries on other items nearest to '

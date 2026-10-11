@@ -103,19 +103,47 @@ def named_items(source, next_html):
     if found is None:
         return None
     nodes = found[1] + [child for node in found[1] for child in node.children]
-    queued = {node.ident: node for node in nodes}
+    # Keyed by kind and identifier: a lead and a bridge of one review share REVIEW:1, and keyed by identifier
+    # alone the bridge's text was printed with the lead's entries (11 October 2026).
+    queued = {(node.kind, node.ident): node for node in nodes}
     linked = set(re.findall(r'href="#([^"]+)"', next_html))
-    named = [i for i in queued if re.search(r'(?<![\w:#-])' + re.escape(i) + r'(?![\w:-])', next_html)]
+    named = []
+    for kind, ident in queued:
+        if not mentioned(ident, next_html):
+            continue
+        shared = [k for k, i in queued if i == ident]
+        # among items sharing the identifier, the one whose kind is the word before it; all when none is said
+        said = [k for k in shared if re.search(r'\b' + k + r'[\s:]+' + re.escape(ident) + r'(?![\w:-])', next_html)]
+        if len(shared) == 1 or not said or kind in said:
+            named.append((kind, ident))
     developments = {}
     for tag, text in lead_queue.record_articles(source):
         anchor = re.search(r'\bid="([^"]+)"', tag)
-        item = re.search(r'\bdata-(?:' + lead_queue.NAMES + r')="([^"]+)"', tag)
-        if anchor and item and item.group(1) in queued:
+        item = re.search(r'\bdata-(' + lead_queue.NAMES + r')="([^"]+)"', tag)
+        if anchor and item and item.groups() in queued:
             follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
-            developments[item.group(1)] = (anchor.group(1), plain(follow[-1]) if follow else '')
-            if anchor.group(1) in linked and item.group(1) not in named:
-                named.append(item.group(1))
-    return [(i, plain(queued[i].text), *developments.get(i, ('', ''))) for i in named]
+            developments[item.groups()] = (anchor.group(1), plain(follow[-1]) if follow else '')
+            if anchor.group(1) in linked and item.groups() not in named:
+                named.append(item.groups())
+    return [(Named(i, k, sum(1 for _, other in queued if other == i) > 1), plain(queued[k, i].text),
+             *developments.get((k, i), ('', ''))) for k, i in named]
+
+
+def mentioned(ident, text):
+    """Whether `text` names the queue identifier, bare or as KIND:IDENTIFIER, and not as part of a longer one."""
+    import lead_queue
+    return re.search(r'(?<![\w:#-])(?:(?:' + lead_queue.NAMES + r'):)?' + re.escape(ident) + r'(?![\w:-])', text)
+
+
+class Named(str):
+    """A queued item's identifier that remembers its kind, for identifiers two kinds share."""
+
+    def __new__(cls, ident, kind=None, shared=False):
+        named = super().__new__(cls, ident)
+        named.kind = kind
+        named.full = f'{kind}:{ident}' if kind else str(ident)     # what the queue tool's lookups take
+        named.label = named.full if shared else str(ident)         # what a message prints: the kind where needed
+        return named
 
 
 def item_history(source, ident):
@@ -126,13 +154,14 @@ def item_history(source, ident):
     beside the next step, so that the entries to read are named."""
     import lead_queue
     history = []
+    kinds = getattr(ident, 'kind', None) or lead_queue.NAMES      # one kind when the identifier carries it
     for tag, text in lead_queue.record_articles(source):
         anchor = re.search(r'\bid="([^"]+)"', tag)
-        item = re.search(r'\bdata-(?:' + lead_queue.NAMES + r')="([^"]+)"', tag)
+        item = re.search(r'\bdata-(?:' + kinds + r')="([^"]+)"', tag)
         # also entries filed under another item that give this one an outcome in a follow-up list item: an item
         # of 11 October had been closed and reopened so, as a sub-idea of its former parent, and the list of
         # entries filed under its own identifier showed neither
-        listed = re.search(r'<li data-(?:' + lead_queue.NAMES + r')="' + re.escape(ident) + r'"', text)
+        listed = re.search(r'<li data-(?:' + kinds + r')="' + re.escape(ident) + r'"', text)
         if anchor and ((item and item.group(1) == ident) or listed):
             title = re.search(r'<h3>(.*?)</h3>', text, re.S)
             history.append((anchor.group(1), plain(title.group(1)) if title else ''))
@@ -162,12 +191,12 @@ def require_quoted_items(source, next_html):
     proxy: the description is then written from the item's words.  An item named only through a link to an
     entry is not held to this, a link often pointing at the item being left."""
     for ident, text, anchor, follow in named_items(source, next_html) or []:
-        by_name = re.search(r'(?<![\w:#-])' + re.escape(ident) + r'(?![\w:-])', next_html)
+        by_name = mentioned(ident, next_html)
         if by_name and follow and not (quotes(next_html, follow) or quotes(next_html, text)):
-            raise ValueError(f'the next step names queue item {ident} and quotes neither its latest follow-up '
+            raise ValueError(f'the next step names queue item {ident.label} and quotes neither its latest follow-up '
                              f'(#{anchor}) nor its queued text: quote at least {QUOTED_WORDS} consecutive words '
                              'of one of them, so that what the item asks is written from its own words '
-                             f'(tools/lead_queue.py history NOTEBOOK {ident} --status)')
+                             f'(tools/lead_queue.py history NOTEBOOK {ident.label} --status)')
 
 
 REVIEW_AFTER = 6    # research entries on a route, then its review (AGENTS.md)
@@ -250,17 +279,18 @@ def refuse_excluded_item(source, next_html):
         return
     route = re.search(r'data-route="([^"]+)"', tags[-1])
     last = [t for t in tags if route and f'data-route="{route.group(1)}"' in t][-2:]
-    taken = [re.search(r'data-(?:check|lead|bridge|idea|build)="([^"]+)"', t) for t in last]
-    if len(last) < 2 or not all(taken) or taken[0].group(1) != taken[1].group(1):
+    taken = [re.search(r'data-(check|lead|bridge|idea|build)="([^"]+)"', t) for t in last]
+    if len(last) < 2 or not all(taken) or taken[0].groups() != taken[1].groups():
         return
     if not all('data-bearing="none"' in t for t in last):
         return
-    excluded, named = taken[0].group(1), {ident for ident, *_ in items}
-    if named == {excluded}:
+    # by kind and identifier: a bridge sharing the excluded lead's identifier is a different item
+    excluded, named = taken[0].group(2), {ident.full for ident, *_ in items}
+    if named == {':'.join(taken[0].groups())}:
         raise ValueError(f'the next step takes {excluded}, whose last two entries declared no bearing: the '
                          'finisher will refuse a third in a row, so name the different item the next entry '
                          'develops (AGENTS.md, goal progress)')
-    if excluded in named:
+    if ':'.join(taken[0].groups()) in named:
         print(f'Note: {excluded} had two entries in a row without bearing; the next entry must develop '
               'another of the items this step names.', file=sys.stderr)
 
@@ -361,7 +391,7 @@ def result_files_line(body, ident):
     starts."""
     import lead_queue
     try:
-        files = lead_queue.result_files(body, ident)
+        files = lead_queue.result_files(body, getattr(ident, 'full', ident))
     except (ValueError, KeyError):
         return ''
     return f'  Result files its entries link ({len(files)}): ' + ', '.join(files) if files else ''
@@ -409,7 +439,8 @@ def main():
     if nxt and cadence_line(result):
         print(cadence_line(result))
     for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
-        print(f'The next step names queue item {ident}. Check its description against the item\'s own words:')
+        print(f'The next step names queue item {ident.label}. Check its description against the item\'s own '
+              'words:')
         print(f'  Queued text: {text}')
         for claim, summary in registry_matches(f'{text} {follow or ""}',     # attempts are named in follow-ups
                                                home=home_of(path)):

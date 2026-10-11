@@ -88,7 +88,8 @@ finish-turn.py against HEAD:
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
        lead_queue.py history NOTEBOOK.html ID [--status]  (group history; --status gives the latest
-                                            development and computed current spell before planning)
+                                            development and computed current spell before planning; ID is
+                                            KIND:ID, as lead:REVIEW:1, where two kinds share an identifier)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
        lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT  (appends the item at the tail;
@@ -456,6 +457,18 @@ def every_item(nodes):
     return [n.item for n in nodes] + [c.item for n in nodes for c in n.children]
 
 
+def named(item, ident):
+    """Whether the (kind, identifier) item is what `ident` names: its identifier, or KIND:IDENTIFIER, the form
+    for an identifier that two kinds share (a lead and a bridge of one review are both REVIEW:1)."""
+    kind, _, rest = ident.partition(':')
+    return item[1] == ident or (kind in KINDS and item == (kind, rest))
+
+
+def qualified(node):
+    """KIND:IDENTIFIER of a queued node, the form no two queued items share."""
+    return f'{node.kind}:{node.ident}'
+
+
 def locate(nodes, item):
     """(parent Node or None, Node) of a queued item, or (None, None)."""
     for node in nodes:
@@ -757,9 +770,13 @@ def history(body, ident):
     found = parse_tree(body)
     nodes = found[1] if found else []
     articles = record_articles(body)
-    item = next((i for i in every_item(nodes) if i[1] == ident), None)
+    shared = [i for i in every_item(nodes) if named(i, ident)]
+    if len(shared) > 1:     # never the first match unsaid: a caller that looks up bare fails here, not quietly
+        raise ValueError(f'{len(shared)} queued items share the identifier {ident}; name one by its kind: '
+                         + ', '.join(f'{kind}:{name}' for kind, name in shared))
+    item = shared[0] if shared else None
     if item is None:
-        item = next((w[0] for w in (developed_by(t, x) for t, x in articles) if w and w[0][1] == ident), None)
+        item = next((w[0] for w in (developed_by(t, x) for t, x in articles) if w and named(w[0], ident)), None)
     if item is None:
         return []
     group = group_of(body, nodes, item, len(articles))
@@ -834,8 +851,8 @@ def survey(body):
     found = parse_tree(body)
     rows = []
     for node in (found[1] if found else []):
-        entries = history(body, node.ident)
-        attempts = named_attempts(body, node.ident)
+        entries = history(body, qualified(node))
+        attempts = named_attempts(body, qualified(node))
         latest_names = bool(entries) and bool(attempts) and attempts[-1][0] == entries[-1][0]
         rows.append((node.kind, node.ident, len(entries), len(node.children),
                      entries[-1][2] if entries else 'none', latest_names,
@@ -866,14 +883,14 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE):
     items taken as never developed had each been partly answered by an entry filed under another item, and
     nothing showed it before the cycle was spent.  A hint to read the entry, not a verdict."""
     found = parse_tree(body)
-    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if n.ident == ident), None)
+    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if named(n.item, ident)), None)
     if node is None:
         return []
     articles = record_articles(body)
     anchors = [(re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1] for tag, _ in articles]
     own = {anchor for anchor, _, _ in history(body, ident)}
     added = re.search(r'\bdata-after="([^"]+)"', node.attrs)    # an item added by the tool: the record's last entry then
-    source = added.group(1) if added else ident.rsplit(':', 1)[0]
+    source = added.group(1) if added else node.ident.rsplit(':', 1)[0]
     after = max([position for position, anchor in enumerate(anchors) if anchor == source or anchor in own] or [-1])
     where = {}
     for position, (tag, _) in enumerate(articles):
@@ -900,10 +917,10 @@ def linking_entries(body, ident):
     items known to be answered in part under another item, it held the answering entry for none of them, so it
     is offered as a command and printed nowhere by default."""
     found = parse_tree(body)
-    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if n.ident == ident), None)
+    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if named(n.item, ident)), None)
     articles = record_articles(body)
     anchors = [(re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1] for tag, _ in articles]
-    source = ident.rsplit(':', 1)[0]
+    source = (node.ident if node else ident).rsplit(':', 1)[0]
     if node is None or source not in anchors:
         return None
     own = {anchor for anchor, _, _ in history(body, ident)}
@@ -917,8 +934,8 @@ def answered_report(body, claims):
     found = parse_tree(body)
     rows = []
     for node in (found[1] if found else []):
-        if node.kind != 'build' and not history(body, node.ident):
-            matches = claims_elsewhere(body, claims, node.ident)
+        if node.kind != 'build' and not history(body, qualified(node)):
+            matches = claims_elsewhere(body, claims, qualified(node))
             if matches:
                 rows.append((node.ident, matches))
     return rows
@@ -944,16 +961,19 @@ def item_status(body, ident, claims=None):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
     nodes = found[1] if found else []
-    matches = [item for item in every_item(nodes) if item[1] == ident]
+    matches = [item for item in every_item(nodes) if named(item, ident)]
+    if len(matches) > 1:
+        history(body, ident)        # raises, naming the forms to choose from
     if len(matches) != 1:
         raise ValueError(f'Expected one queued item {ident}; found {len(matches)}')
+    ident = f'{matches[0][0]}:{matches[0][1]}'      # the unambiguous form, for the lookups below
     parent, node = locate(nodes, matches[0])
     top = parent or node
     rows = history(body, ident)
     count = spell(body, top.item, nodes)
     limit = spell_limit(body, top.item, nodes)
     boundary = 'unlimited' if limit == float('inf') else str(limit)
-    lifetime = len(history(body, top.ident))
+    lifetime = len(history(body, f'{top.kind}:{top.ident}'))
     # A spell counts consecutive entries, so entries on another item between restart it: on 11 October 2026 an
     # item with fifteen entries stood at "spell 0".  The lifetime count is printed so that this is seen.
     reset = (f' Entries on it in all: {lifetime}, more than a spell: the spell restarted after entries on other '
@@ -1986,7 +2006,11 @@ def main(argv):
                   or 'No similar queued items')
         return 0
     if len(argv) == 4 and argv[1] == 'linkers':
-        rows = linking_entries(Path(argv[2]).read_text(), argv[3])
+        try:
+            rows = linking_entries(Path(argv[2]).read_text(), argv[3])
+        except ValueError as error:     # an identifier two kinds share: the forms to choose from
+            print(error, file=sys.stderr)
+            return 1
         if rows is None:
             print(f'{argv[3]} is not queued, or no entry of the record queued it: nothing to look for.')
             return 1
@@ -2023,7 +2047,11 @@ def main(argv):
                 print(error, file=sys.stderr)
                 return 1
             return 0
-        rows = history(body, argv[3])
+        try:
+            rows = history(body, argv[3])
+        except ValueError as error:
+            print(error, file=sys.stderr)
+            return 1
         print('\n'.join(f'{anchor}\t{ident}\t{outcome}' for anchor, ident, outcome in rows)
               or f'No entry has developed {argv[3]}, its group or a member of it')
         return 0

@@ -75,6 +75,36 @@ class NextStepItemTests(unittest.TestCase):
                                    '<ul><li data-check="item-0">x <strong>Follow-up.</strong> Reopened: y</li></ul>')
         self.assertEqual(tool.item_history(elsewhere, 'item-0'), [('a1', 'Parent')])     # an outcome given elsewhere
 
+    def test_a_lead_and_a_bridge_of_one_identifier_keep_their_own_text_and_entries(self):
+        items = ('<li data-lead="a1:1" data-source="a1">The lead asks about signs.</li>'
+                 '<li data-bridge="a1:1" data-source="a1">The bridge asks about sources.</li>')
+        source = ('<section id="open-statements"><ol><li>Open.</li></ol></section>'
+                  f'<section id="lead-queue"><ol>{items}</ol></section>' + NOTEBOOK)
+        source = source.replace('<article id="a2">two</article>',
+                                '<article id="a2" data-kind="research" data-lead="a1:1"><h3>On the lead</h3>two '
+                                '<p><strong>Follow-up.</strong> Continuing: the cut grid next.</p></article>')
+        both = tool.named_items(source, '<p>Take a1:1 next.</p>')                  # no kind said: both are shown
+        self.assertEqual([(i.kind, text) for i, text, _, _ in both],
+                         [('lead', 'The lead asks about signs.'), ('bridge', 'The bridge asks about sources.')])
+        self.assertEqual([(anchor, follow) for _, _, anchor, follow in both],
+                         [('a2', 'Continuing: the cut grid next.'), ('', '')])     # the entry is the lead's alone
+        lead = tool.named_items(source, '<p>Take the lead a1:1 next.</p>')
+        self.assertEqual([(i.kind, text) for i, text, _, _ in lead], [('lead', 'The lead asks about signs.')])
+        bridge = tool.named_items(source, '<p>Take the bridge a1:1 next.</p>')
+        self.assertEqual([(i.kind, a) for i, _, a, _ in bridge], [('bridge', '')])
+        self.assertEqual(tool.item_history(source, lead[0][0]), [('a2', 'On the lead')])
+        self.assertEqual(tool.item_history(source, bridge[0][0]), [])
+        colon = tool.named_items(source, '<p>Take bridge:a1:1 next.</p>')         # the form the queue tool prints
+        self.assertEqual([(i.kind, i.label) for i, *_ in colon], [('bridge', 'bridge:a1:1')])
+        self.assertEqual(tool.named_items(source, '<p>Not xbridge:a1:1 or a1:10.</p>'), [])
+        # the lead's result files are printed for the lead and not for the bridge
+        files = source.replace('two <p>', 'two <a href="research/results/x/run.out.txt">output</a> <p>')
+        self.assertIn('research/results/x/run.out.txt', tool.result_files_line(files, lead[0][0]))
+        self.assertEqual(tool.result_files_line(files, bridge[0][0]), '')
+        self.assertEqual(tool.result_files_line(files, 'a1:1'), '')               # bare and shared: refused, no line
+        with self.assertRaisesRegex(ValueError, 'names queue item lead:a1:1 and quotes neither'):
+            tool.require_quoted_items(source, '<p>Take the lead a1:1 next, for other reasons entirely.</p>')
+
     def test_a_draining_queue_refuses_a_next_step_that_names_no_item(self):
         entry = '<article id="a3">three</article>'
         tool.append(queued(2), entry, '<p>Some other work.</p>')                    # not draining

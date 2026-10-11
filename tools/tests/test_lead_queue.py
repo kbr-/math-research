@@ -1625,6 +1625,27 @@ class LinkEarlierWorkTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Expected one queued item missing; found 0'):
             lq.item_status(body, 'missing')
 
+    def test_a_lead_and_a_bridge_of_one_identifier_are_told_apart_by_kind(self):
+        entries = [self.entry('entry-2026-10-11-on-lead', ('lead', 'r:1')),
+                   self.entry('entry-2026-10-11-on-bridge', ('bridge', 'r:1'))]
+        both = notebook(entries, [('lead', 'r:1'), ('bridge', 'r:1')])
+        with self.assertRaisesRegex(ValueError, '2 queued items share the identifier r:1; name one by its kind: '
+                                                'lead:r:1, bridge:r:1'):
+            lq.item_status(both, 'r:1')
+        lead, bridge = '\n'.join(lq.item_status(both, 'lead:r:1')), '\n'.join(lq.item_status(both, 'bridge:r:1'))
+        self.assertIn('Item: lead:r:1', lead)
+        self.assertIn('Latest development: #entry-2026-10-11-on-lead', lead)
+        self.assertIn('Item: bridge:r:1', bridge)
+        self.assertIn('Latest development: #entry-2026-10-11-on-bridge', bridge)
+        self.assertIn('Entries on it in all: 1.', bridge)             # not the lead's count: 13 for 1 on the real queue
+        self.assertEqual([anchor for anchor, _, _ in lq.history(both, 'bridge:r:1')], ['entry-2026-10-11-on-bridge'])
+        with self.assertRaisesRegex(ValueError, '2 queued items share the identifier r:1'):
+            lq.history(both, 'r:1')                                   # never the first match unsaid
+        self.assertEqual([(kind, count) for kind, _, count, *_ in lq.survey(both)], [('lead', 1), ('bridge', 1)])
+        # An unshared identifier takes the prefix too, and the bare form still works.
+        one = notebook(entries[:1], [('lead', 'r:1')])
+        self.assertEqual(lq.item_status(one, 'lead:r:1'), lq.item_status(one, 'r:1'))
+
     def test_the_latest_earlier_entry_of_the_group_is_linked(self):
         parent, child, sibling, other = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2'), ('lead', 'r:2')
         queue = [(parent, [child, sibling]), other]
