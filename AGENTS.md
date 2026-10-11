@@ -333,8 +333,10 @@ assessments.
   checks both; user, 10 October 2026). It also states, after `<strong>Sources read.</strong>`, which
   statements of each source the closure relies on were read, or that it relies on recorded results
   only; a closure resting on an abstract is refused (the finisher checks). Closed and Developed
-  remove the item. Four consecutive research entries are the default spell. At its boundary, extend
-  by two cycles when a proof, refutation or reduction from the current spell/extension period
+  remove the item. Before planning a queued item, run `tools/lead_queue.py history NOTEBOOK ID
+  --status` and read its latest development; take the spell count from this computed status, not an
+  older entry's prose. Four consecutive research entries are the default spell. At its boundary,
+  extend by two cycles when a proof, refutation or reduction from the current spell/extension period
   materially advances a named open statement and a concrete next necessary implication uses the same
   mechanism. Record that evidence and next attempt using [the queue tool's extension
   format](tools/lead_queue.py). Reassess after each two-cycle extension; there is no lifetime cap,

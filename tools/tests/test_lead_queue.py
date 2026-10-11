@@ -1391,6 +1391,55 @@ class LinkEarlierWorkTest(unittest.TestCase):
         body = notebook(articles, queue)
         return lq.unlinked_earlier_entry(body, lq.parse_tree(body)[1], lq.record_articles(body), item)
 
+    def test_status_uses_latest_group_entry_and_resets_only_after_other_work(self):
+        parent, child, other = ('lead', 'r:1'), ('check', 'e:s1'), ('lead', 'r:2')
+        queue = [(parent, [child]), other]
+        entries = [self.entry(f'entry-2026-10-10-{i}', parent) for i in range(3)]
+        entries += [self.entry('entry-2026-10-10-later', child)]
+        body = notebook(entries, queue)
+        status = '\n'.join(lq.item_status(body, child[1]))
+        self.assertIn('group: lead:r:1', status)
+        self.assertIn('Latest development: #entry-2026-10-10-later (Continuing)', status)
+        self.assertIn('Current spell: 4; boundary: 4.', status)
+        self.assertIn('Boundary reached:', status)
+        self.assertIn('Open sub-ideas: e:s1', status)
+        extended = entries[:-1] + [entries[-1].replace('<article ', '<article data-spell-extend="2" ')]
+        status = '\n'.join(lq.item_status(notebook(extended, queue), child[1]))
+        self.assertIn('Current spell: 4; boundary: 6.', status)
+        self.assertIn('Next development would be entry 5.', status)
+        override = ('<article id="override" data-kind="audit" data-picked="user" '
+                    'data-spell-limit="none" data-spell-item="lead:r:1">'
+                    '<p><strong>Picked.</strong> "No hard cycle limit."</p></article>')
+        self.assertIn('boundary: unlimited.', '\n'.join(lq.item_status(
+            notebook(entries + [override], queue), parent[1])))
+        entries += [review('review', [PASS]), self.entry('entry-2026-10-11-other', other)]
+        status = '\n'.join(lq.item_status(notebook(entries, queue), parent[1]))
+        self.assertIn('Latest development: #entry-2026-10-10-later', status)
+        self.assertIn('Current spell: 0; boundary: 4.', status)
+        self.assertIn('Next development would be entry 1.', status)
+        entries += [self.entry('entry-2026-10-11-return', parent)]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'notebook.html'
+            path.write_text(notebook(entries, queue))
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(lq.main(['lead_queue.py', 'history', str(path), child[1], '--status']), 0)
+            self.assertIn('Latest development: #entry-2026-10-11-return', output.getvalue())
+            self.assertIn('Current spell: 1; boundary: 4.', output.getvalue())
+
+    def test_status_requires_queued_item_and_reports_an_unused_one(self):
+        body = notebook([], [('lead', 'r:1')])
+        status = '\n'.join(lq.item_status(body, 'r:1'))
+        self.assertIn('Latest development: none', status)
+        self.assertIn('Open sub-ideas: none', status)
+        one = notebook([self.entry('entry-2026-10-11-only', ('lead', 'r:1'))], [('lead', 'r:1')])
+        self.assertIn('Latest development: #entry-2026-10-11-only (Continuing)',
+                      '\n'.join(lq.item_status(one, 'r:1')))
+        with self.assertRaisesRegex(ValueError, 'Expected one queued item r:1; found 0'):
+            lq.item_status(notebook([], None), 'r:1')
+        with self.assertRaisesRegex(ValueError, 'Expected one queued item missing; found 0'):
+            lq.item_status(body, 'missing')
+
     def test_the_latest_earlier_entry_of_the_group_is_linked(self):
         parent, child, sibling, other = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2'), ('lead', 'r:2')
         queue = [(parent, [child, sibling]), other]

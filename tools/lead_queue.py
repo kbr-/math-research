@@ -87,6 +87,8 @@ finish-turn.py against HEAD:
 
 Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, if it is absent)
        lead_queue.py head NOTEBOOK.html  (the first HEAD_READ items, as restoration prints them)
+       lead_queue.py history NOTEBOOK.html ID [--status]  (group history; --status gives the latest
+                                            development and computed current spell before planning)
        lead_queue.py done NOTEBOOK.html Closed|Developed|Continuing  (after appending the entry developing an
                                             item, and before append)
        lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT  (appends the item at the tail;
@@ -724,6 +726,27 @@ def spell_entries(body, item, nodes=None, end=None):
 def spell(body, item, nodes=None, end=None):
     """Number of consecutive developments of a parent or its children (reviews do not reset it)."""
     return len(spell_entries(body, item, nodes, end))
+
+
+def item_status(body, ident):
+    """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
+    found = parse_tree(body)
+    nodes = found[1] if found else []
+    matches = [item for item in every_item(nodes) if item[1] == ident]
+    if len(matches) != 1:
+        raise ValueError(f'Expected one queued item {ident}; found {len(matches)}')
+    parent, node = locate(nodes, matches[0])
+    top = parent or node
+    rows = history(body, ident)
+    count = spell(body, top.item, nodes)
+    limit = spell_limit(body, top.item, nodes)
+    boundary = 'unlimited' if limit == float('inf') else str(limit)
+    return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}',
+            'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'),
+            f'Current spell: {count}; boundary: {boundary}.',
+            (f'Next development would be entry {count + 1}.' if count < limit else
+             'Boundary reached: develop a different item first, unless an extension is earned.'),
+            'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none')]
 
 
 def extension_item(body, nodes, tag, text, position=None):
@@ -1655,8 +1678,15 @@ def main(argv):
             print('\n'.join(f'{share}  {a}  {b}' for share, a, b in similar_items(parse_tree(body)[1]))
                   or 'No similar queued items')
         return 0
-    if len(argv) == 4 and argv[1] == 'history':
+    if len(argv) in (4, 5) and argv[1] == 'history' and (len(argv) == 4 or argv[4] == '--status'):
         body = Path(argv[2]).read_text()
+        if len(argv) == 5:
+            try:
+                print('\n'.join(item_status(body, argv[3])))
+            except ValueError as error:
+                print(error, file=sys.stderr)
+                return 1
+            return 0
         rows = history(body, argv[3])
         print('\n'.join(f'{anchor}\t{ident}\t{outcome}' for anchor, ident, outcome in rows)
               or f'No entry has developed {argv[3]}, its group or a member of it')
