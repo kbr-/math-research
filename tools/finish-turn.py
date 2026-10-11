@@ -357,6 +357,30 @@ def validate_owed_unmade(body, article, close):
                              '(AGENTS.md, Owed attempt)')
 
 
+def third_deferral_line(body, article, close):
+    """A line for the finisher to print, or None: this entry's Owed attempt paragraph reports an attempt unmade,
+    as those of the last two entries on its item did (tools/deferred_attempts.py).  A reading deferred three
+    times held a published form of a period's main result.
+
+    It prints and does not refuse.  The words cannot tell which attempt each entry defers: as a refusal it
+    stopped an entry that made the attempt deferred twice and named a new one, and one of four recorded cases
+    it would have refused was of that kind (a reviewer's finding, 11 October 2026)."""
+    try:
+        import deferred_attempts
+    except ImportError:      # a checkout without the tool has nothing to print
+        return None
+    record = body.find('<section id="research-record"')
+    earlier = deferred_attempts.ARTICLE.findall(body[record:article]) if record >= 0 else []
+    tag = body[article:body.index('>', article) + 1]
+    previous = deferred_attempts.third_deferral(earlier, tag, body[article:close])
+    if not previous:
+        return None
+    return ('Deferred attempts: this entry reports an owed attempt unmade, as the last two entries on its item did '
+            '(#' + ', #'.join(previous) + '). If one attempt is unmade in all three, make it or drop it with the '
+            'reason; if they are different attempts, say in the Owed attempt paragraph which each entry left '
+            '(AGENTS.md, Owed attempt).')
+
+
 def validate_review_builds(body, article, close):
     """A review whose period (the entries on its route since the previous review, itself included) queued
     build items that are still queued, and in which no build item was recorded Developed, names each of
@@ -1431,6 +1455,9 @@ def validate_marker(body, marker, draining=None):
     validate_convergence(body, article, close)
     validate_review_builds(body, article, close)
     validate_owed_unmade(body, article, close)
+    deferred = third_deferral_line(body, article, close)
+    if deferred:
+        print(deferred)
     validate_bridges(body, article, close)
     validate_progress(body, article, close)
     if '$' in body[article:close]:

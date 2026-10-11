@@ -395,6 +395,25 @@ class UnreviewedDerivationsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'needs a <p><strong>General statement'):
             FT.validate_general(text, text.index('<article'), text.index('</article>'))
 
+    def test_a_third_deferral_in_a_row_of_an_owed_attempt_on_one_item_is_printed(self):
+        def entry(ident, owed, item='the-idea'):
+            return (f'<article id="entry-{ident}" data-kind="research" data-idea="{item}">'
+                    f'<p><strong>Owed attempt.</strong> {owed}</p></article>')
+        later = 'The reading named is made. The attempt on the twist is again not made, since room comes first.'
+        made = 'The attempt on the twist is made here, with its outcome below.'
+        dropped = 'The attempt on the twist is not made and is dropped: the proof it audits is no longer used.'
+        def line(last, *before):
+            body = '<section id="research-record">' + ''.join(before) + last + '</section>'
+            return FT.third_deferral_line(body, body.rindex('<article'), body.rindex('</article>'))
+        two = (entry('a', later), entry('b', later))
+        self.assertIn('#entry-a, #entry-b', line(entry('c', later), *two))
+        self.assertIsNone(line(entry('c', made), *two))
+        self.assertIsNone(line(entry('c', dropped), *two))
+        self.assertIsNone(line(entry('c', later, item='another'), *two))              # another item's run
+        self.assertIsNone(line(entry('c', later), entry('a', later), entry('b', made)))   # made in between
+        # Why it prints and does not refuse: an entry that makes the attempt deferred twice is still reported.
+        self.assertIsNotNone(line(entry('c', 'The attempt deferred twice is made here, with its outcome.'), *two))
+
     def test_a_removal_whose_corrections_the_reviewer_did_not_read_is_refused(self):
         gate = '<p><strong>Verification gate.</strong> One reviewer: pass with corrections. {}</p>'
         removal = '<p><strong>Follow-up.</strong> Developed: the build exists.</p>'
