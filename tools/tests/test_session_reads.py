@@ -85,6 +85,59 @@ class SessionReadsTest(unittest.TestCase):
             lines.append(call('Read', file_path=str(source), offset=16, limit=10))
             self.assertEqual(tool.turn_lines(lines, 'turn-2'), [])
 
+    def test_a_conclusion_about_a_file_read_in_part_is_listed(self):
+        import tempfile
+
+        def said(entry, lines):
+            return tool.partial_conclusions(entry, tool.calls(lines))
+        with tempfile.TemporaryDirectory() as folder:
+            record = Path(folder) / 'AUDIT.md'
+            record.write_text('\n'.join(['line'] * 248 + ['## Revision note: layout'] + ['line'] * 28))
+            part = [call('Bash', command=f'sed -n 1,60p {record}'), call('Bash', command=f'sed -n 180,225p {record}'),
+                    call('Bash', command=f'grep -c sorry {record}')]            # a search is not a reading
+            entry = '<p>The record AUDIT.md reports a complete build for the present state. Other text.</p>'
+            found = said(entry, part)
+            self.assertEqual(len(found), 1)
+            self.assertIn('PARTIAL READ: AUDIT.md was read to line 225 of 277', found[0])
+            self.assertIn('reports a complete build', found[0])
+            # Passed: the range said in the paragraph; no verb of saying; the file read to its end, or shown whole.
+            self.assertEqual(said('<p>AUDIT.md, lines 1 to 60, reports a build.</p>', part), [])
+            self.assertEqual(said('<p>I opened AUDIT.md for its first section.</p>', part), [])
+            # The verb belongs to the file: a noun elsewhere, or what someone else says, is not it.
+            self.assertEqual(said('<p>The record of 17 states is in AUDIT.md.</p>', part), [])
+            self.assertEqual(said('<p>The reviewer says that AUDIT.md is long.</p>', part), [])
+            # The limit, recorded: someone else's saying just after the name is taken for the file's.
+            self.assertEqual(len(said('<p>It is in AUDIT.md, as the reviewer says.</p>', part)), 1)
+            self.assertEqual(len(said('<p>AUDIT.md, the project\'s own, states a build.</p>', part)), 1)
+            # One file under two spellings is one file; of two files of one name, one read to its end passes.
+            both = part + [call('Bash', command=f'cd {folder} && sed -n 226,277p AUDIT.md')]
+            self.assertEqual(said(entry, both), [])
+            other = Path(folder) / 'sub' / 'AUDIT.md'
+            other.parent.mkdir()
+            other.write_text('one\ntwo')
+            self.assertEqual(said(entry, part + [call('Bash', command=f'sed -n 1,2p {other}')]), [])
+            self.assertEqual(said(entry, part + [call('Bash', command=f'sed -n 226,277p {record}')]), [])
+            self.assertEqual(said(entry, part + [call('Bash', command=f'cat {record}')]), [])
+            self.assertEqual(said(entry, part + [call('Read', file_path=str(record))]), [])
+            # Not listed: a file never opened by a range, and one that is not on disk.
+            self.assertEqual(said(entry, [call('Bash', command=f'grep -c sorry {record}')]), [])
+            self.assertEqual(said(entry, [call('Bash', command='sed -n 1,9p /nowhere/AUDIT.md')]), [])
+            # A path written with a variable the command assigns, or after a change of directory, is resolved.
+            for command in (f'R={folder}; sed -n 1,60p $R/AUDIT.md', f'R={folder}; sed -n 1,60p ${{R}}/AUDIT.md',
+                            f'cd {folder} && sed -n 1,60p AUDIT.md', f'D={folder}; cd $D; sed -n 1,60p AUDIT.md'):
+                self.assertIn('read to line 60 of 277', said(entry, [call('Bash', command=command)])[0], command)
+            # The unread parts of a file the entry names are listed, also where no sentence says what it says.
+            unread = tool.unread_ends('<p>Read in part: AUDIT.md.</p>', tool.calls(part))
+            self.assertEqual(unread, ['  UNREAD: AUDIT.md, 277 lines, named in the entry: not read are lines '
+                                      '61-179, 226-277', '    unread heading, line 249: ## Revision note: layout'])
+            self.assertEqual(tool.unread_ends('<p><a href="x/AUDIT.md">the record</a></p>', tool.calls(part)), [])
+            self.assertEqual(tool.unread_ends('<p>Another file.</p>', tool.calls(part)), [])
+            self.assertEqual(tool.unread_ends('<p>AUDIT.md</p>', tool.calls([call('Read', file_path=str(record))])), [])
+            # One turn's calls only.
+            lines = [call('Bash', command='./tools/finish-turn.py turn-1 --next turn-2')] + part
+            self.assertEqual(len(tool.turn_partial(lines, 'turn-2', entry)), 1)
+            self.assertEqual(tool.turn_partial(lines, 'turn-3', entry), [])
+
     def test_what_a_draft_names(self):
         draft = ('<p>Read in <a href="research/results/x/out.txt">output</a> and document.tex, lines 1380 to '
                  '1414 and line 12; the scratch file is in its corrected form.</p>')

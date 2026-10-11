@@ -1033,21 +1033,25 @@ def stand_in(root, owed, now=None):
         return [f'Stand-in review failed ({type(error).__name__}: {error}); the finisher passes without one.']
 
 
-def stopped_short(root, turn):
+def stopped_short(root, turn, entry=None):
     """Lines for the finisher to print, or none: theorem-like statements of TeX and Lean files that begin,
-    unread, within 100 lines after a range the session read in this turn (tools/session_reads.py).  A reading
-    of 11 October 2026 stopped fifty lines short of the proposition that decided its test.  It prints and
-    refuses nothing; a turn not started by the finisher's --next, and an agent without a transcript, print
-    nothing."""
+    unread, within 100 lines after a range the session read in this turn; the unread parts of files the
+    entry names, with their headings; and the entry's sentences that say what such a file says
+    (tools/session_reads.py).  A reading of 11 October 2026 stopped fifty lines short of the proposition that
+    decided its test; an entry of 12 October said what a record reports from its first 225 lines of 277, and
+    the rest said the opposite.  It prints and refuses nothing: a refusal of such sentences was built and
+    withdrawn at its review, its match of the verbs and of files by name refusing wrongly.  A turn not started
+    by the finisher's --next, and an agent without a transcript, print nothing."""
     stand_in_review = reviewer()
     try:
         import session_reads
         transcript = stand_in_review.session_transcript(root)
-        lines = session_reads.turn_lines(Path(transcript).read_text(errors='replace').splitlines(), turn)
+        lines = session_reads.turn_lines(Path(transcript).read_text(errors='replace').splitlines(), turn, entry)
     except Exception:      # a listing is never the finisher's failure
         return []
-    return (['Readings: statements that begin just past a range of a source this turn read, and sources that '
-             'could not be checked; say in the entry whether each was read or why it does not matter:']
+    return (['Readings: statements that begin just past a range of a source this turn read, sources that could '
+             'not be checked, the unread parts of files the entry names, and its sentences on what a partly '
+             'read file says; say in the entry whether each was read or why it does not matter:']
             + lines) if lines else []
 
 
@@ -1709,7 +1713,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     print(f'Finished {turn} in {item["name"]}: timing embedded and evidence archived; review and commit.')
     print(f'Stage with the entry: {item["source"]} '
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
-    for line in stopped_short(root, turn) + stand_in(root, owed):
+    for line in stopped_short(root, turn, entry) + stand_in(root, owed):
         print(line)
     if next_turn:
         print(f'{next_turn} is running in preparation phase.')

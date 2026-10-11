@@ -1,0 +1,14 @@
+Reviewer's record for a change of the entry shared-identifier-by-kind that was committed unread (riemann
+notebook, 12 October 2026): the catch of the lookup's refusal in the queue tool's linkers command. The same
+medium reviewer that reviewed that build, resumed, read-only, after the commit.
+
+Verdict: pass, no remaining defect found. Run on the real notebook:
+- linkers with the bare shared identifier: exit 1 and the two-forms message on stderr, no traceback.
+- linkers with an unqueued identifier: exit 1 and the old "is not queued, or no entry of the record queued it"
+  message, so the None case behaves as before.
+- linkers with bridge:...:1: works, 1 linking entry.
+- survey (run in the previous round) and nearby (run now): complete without error; both look up by the
+  qualified form.
+The other commands in main that reach history are history and history --status, both of which catch the error.
+named_attempts is called only from item_status and survey. Not read line by line: the append, done, check and
+triage paths; a search for callers of history shows none there.

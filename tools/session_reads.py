@@ -84,16 +84,72 @@ def reads(found):
     return opened
 
 
+ASSIGNED = re.compile(r'(?:^|[;&\s])([A-Za-z_]\w*)=([^\s;&|]+)')
+CHANGED = re.compile(r'(?:^|[;&]\s*)cd\s+([^\s;&|]+)')
+
+
+def resolved(command, path):
+    """A path of a shell command with the variables that the same command assigns put in, then the process's,
+    and, if relative, under the directory the command changes to before it.  On 12 October 2026 three files
+    read by ranges were printed as not checked because their paths were written R=...; sed ... $R/FILE, and
+    the unread end of one of them held the sentence that mattered."""
+    def filled(text):
+        for name, value in ASSIGNED.findall(command):
+            text = text.replace('${' + name + '}', value)
+            text = re.sub(r'\$' + re.escape(name) + r'(?!\w)', lambda _: value, text)
+        return os.path.expandvars(os.path.expanduser(text))
+    moved = CHANGED.findall(command[:command.find(path)] if path in command else command)
+    path = filled(path)
+    if moved and not os.path.isabs(path):
+        path = os.path.join(filled(moved[-1]), path)
+    return same(path)
+
+
+def same(path):
+    """One spelling for a file on disk, so that its ranges read by an absolute and by a relative path are
+    joined; a path that is no file here is left as written."""
+    return os.path.realpath(path) if os.path.isfile(path) else path
+
+
 def ranged_paths(found):
     """{path as the session wrote it, variables expanded: [ranges]} for the reads that have a range."""
     paths = {}
     for name, given in found:
         if name == 'Read':
-            paths.setdefault(str(given.get('file_path', '')), []).append(read_span(given))
+            paths.setdefault(same(str(given.get('file_path', ''))), []).append(read_span(given))
         elif name == 'Bash':
-            for low, high, path in SED.findall(str(given.get('command', ''))):
-                paths.setdefault(os.path.expandvars(path), []).append((int(low), int(high)))
+            command = str(given.get('command', ''))
+            for low, high, path in SED.findall(command):
+                paths.setdefault(resolved(command, path), []).append((int(low), int(high)))
     return paths
+
+
+HEADINGS = 4      # headings printed for each unread part of a Markdown file, its last ones
+
+
+def unread_ends(entry, found):
+    """Lines for the files an entry names that the calls read only by ranges ending before the file's last
+    line: what of each was left unread, to be read or to be said beside any conclusion about the file."""
+    found, lines = list(found), []
+    plain = html.unescape(re.sub(r'<[^>]*>', ' ', entry))       # the entry's words, not its links
+    for path, spans in sorted(ranged_paths(found).items()):
+        name = Path(path).name
+        if not Path(path).is_file() or not re.search(r'(?<![\w.-])' + re.escape(name) + r'(?![\w-])', plain):
+            continue
+        text = Path(path).read_text(errors='replace').splitlines()
+        ranges = merged(spans)
+        gaps = [(a + 1, b - 1) for (_, a), (b, _) in zip([(0, 0)] + ranges, ranges + [(len(text) + 1, 0)])
+                if b - 1 >= a + 1]
+        if gaps:
+            lines.append(f'  UNREAD: {name}, {len(text)} lines, named in the entry: not read are lines '
+                         + ', '.join(f'{low}-{high}' for low, high in gaps))
+            # the headings of a Markdown file's unread parts: what the reading left out, by its own titles
+            for low, high in gaps if Path(path).suffix == '.md' else []:
+                heads = [number for number in range(low, high + 1) if text[number - 1].startswith('#')]
+                # the last headings of each unread part, a record's latest notes being at its end
+                lines += [f'    unread heading, line {number}: {" ".join(text[number - 1].split())[:110]}'
+                          for number in heads[-HEADINGS:]]
+    return lines
 
 
 def statements_ahead(text, spans, ahead=AHEAD):
@@ -125,6 +181,57 @@ def short_lines(found):
     return lines
 
 
+SAYS = re.compile(r'\b(?:reports?|says?|records?|states?|holds no|does not (?:report|say|record|state))\b')
+WHOLE = r'\bcat\b[^;|&\n]*'      # the one command taken to show a whole file; a search of it shows its matches
+
+
+def partial_conclusions(entry, found):
+    """Lines for sentences of an entry that say what a named file reports, says, records or states while the
+    calls read that file only by ranges that stop before its last line, the file being on disk; a paragraph
+    that gives a line range is passed, since it says what was read.
+
+    An entry of 12 October 2026 said what a project's audit record "reports, for the present state" after
+    reading its lines 1 to 60 and 180 to 225 of 277; the last note, unread, said that no build had been made
+    for that state.  A file the calls opened whole (the reading tool without a range reaching its end, or a
+    command that goes through it), one they never opened by a range, and one not found on disk are not
+    listed: this is about a partial reading taken for the whole, and it reads the commands' words.  A search of
+    the file does not count as reading it: that entry's session had searched the record for three words.
+
+    Printed, not refused.  Built as a refusal first and withdrawn at its review: the verbs are also nouns, an
+    end read with tail or a script is not seen, and a file that grew after a whole read looks partly read.  The
+    sentence of that entry itself, which said "the upstream audit record" and named no file, is not matched;
+    the unread lines and headings printed by unread_ends are what shows such a case."""
+    found = list(found)
+    ranged = ranged_paths(found)
+    commands = [str(given.get('command', '')) for name, given in found if name == 'Bash']
+    lines = []
+    for paragraph in re.findall(r'<(?:p|li)\b[^>]*>(.*?)</(?:p|li)>', entry, re.S):
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', paragraph))
+        if LINES.search(plain):
+            continue
+        for sentence in re.split(r'(?<=[.;:])\s+', plain):
+            for name in sorted({Path(path).name for path in PATH.findall(sentence)}):
+                # the verb within three words after the file's name: "the record FILE reports", not a noun
+                # elsewhere in the sentence ("the record", "17 states") or what a reviewer says
+                if not re.search(re.escape(name) + r'(?:,?\s+[\w\'-]+){0,3}?,?\s+' + SAYS.pattern, sentence):
+                    continue
+                if any(re.search(WHOLE + re.escape(name) + r'(?![\w.-])', command) for command in commands):
+                    continue
+                # every file of that name the calls read by ranges, each on disk and each short of its end
+                ends = [(max(high for _, high in merged(spans)), len(Path(path).read_text(errors='replace').splitlines()))
+                        for path, spans in ranged.items() if Path(path).name == name and Path(path).is_file()]
+                if ends and all(last < length for last, length in ends):
+                    last, length = ends[0]
+                    lines.append(f'  PARTIAL READ: {name} was read to line {last} of {length}, and the entry '
+                                 f'says what it says: "{" ".join(sentence.split())[:160]}"')
+    return lines
+
+
+def turn_partial(transcript_lines, turn, entry):
+    """The same for one measured turn's calls (those after the finisher command that started it)."""
+    return partial_conclusions(entry, after(calls(transcript_lines), FINISHER + re.escape(turn) + r'(?![\w-])'))
+
+
 FINISHER = r'finish-turn\.py\b[^\n;|&]*--next\s+'
 
 
@@ -136,17 +243,24 @@ def after(found, pattern, last=False):
     return found[(at[-1] if last else at[0]) + 1:] if at else []
 
 
-def turn_lines(transcript_lines, turn):
+def about(found, entry):
+    """The lines for a set of calls: statements stopped short of and, given the entry's or draft's text, the
+    unread parts of files it names and its sentences on what a partly read file says."""
+    found = list(found)
+    return short_lines(found) + (unread_ends(entry, found) + partial_conclusions(entry, found) if entry else [])
+
+
+def turn_lines(transcript_lines, turn, entry=None):
     """The same for one measured turn: the calls after the finisher command that started it with --next."""
-    return short_lines(after(calls(transcript_lines), FINISHER + re.escape(turn) + r'(?![\w-])'))
+    return about(after(calls(transcript_lines), FINISHER + re.escape(turn) + r'(?![\w-])'), entry)
 
 
-def current_lines(transcript_lines):
+def current_lines(transcript_lines, entry=None):
     """The same for the turn in progress: the calls after the session's last finisher command with --next, or
     all of them in a session that has run none yet."""
     found = list(calls(transcript_lines))
     started = any(name == 'Bash' and re.search(FINISHER, str(given.get('command', ''))) for name, given in found)
-    return short_lines(after(found, FINISHER, last=True) if started else found)
+    return about(after(found, FINISHER, last=True) if started else found, entry)
 
 
 def merged(spans):
@@ -196,6 +310,10 @@ def main():
     for line in short_lines(found):
         print(line)
     if '--draft' in options:
+        for line in unread_ends(Path(options['--draft']).read_text(), found):
+            print(line)
+        for line in partial_conclusions(Path(options['--draft']).read_text(), found):
+            print(line)
         paths, ranges = named(Path(options['--draft']).read_text())
         print(f'The draft names {len(paths)} files and {len(ranges)} line ranges.')
         for name in paths:

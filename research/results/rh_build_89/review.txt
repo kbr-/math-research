@@ -1,0 +1,47 @@
+Reviewer's record, entry partial-read-listed (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, read-only, a pass and a follow-up, both from reading the code and the saved outputs; nothing run. The
+cut of headings per unread part was made after the follow-up and not read by the reviewer.
+
+PASS. Verdict: pass with corrections. The listing is sound. The refusal can refuse wrongly and should not be
+committed as a refusal as it stands.
+Required changes:
+- The verb pattern matches nouns: "the record AUDIT.md", "report", "17 states"; the test's "no verb" case
+  passes only because it avoids the word "record". "Says" about a reviewer in a sentence with a file name also
+  fires. A real false refusal, likely in this notebook.
+- Path keys: ranged paths are keyed by the path as written and looked up by basename, last one wins. The same
+  file read 61-277 by absolute path and 1-60 by relative path is refused, as is A/README.md read whole plus
+  B/README.md read in part. Key by the real path, merge spans, refuse only if every candidate is partial.
+- Ends read another way (tail, head -n, awk, a script) are not seen; a file that grew after a whole read fires.
+- Not false refusals: a range followed by a Read with a limit reaching the end; a file over 2000 lines read by
+  default. "The output x.out.txt shows" is not caught.
+- resolved(): nothing unsafe (nothing is executed). Wrong or missed: successive relative cd; the first
+  substring occurrence of the path; quoted values; chained variables and reassignment; a subshell.
+- unread_ends(): the gap arithmetic is correct; the None branch is dead; it ignores the cat exemption and
+  matches names in raw HTML including links.
+- Entry against the saved output: supported are 17 calls, 1.01 s, the quoted line, four files, ten Final.lean
+  statements, third paragraph and not second. Unsupported: "76 MB"; "three lines not checked" and "which the
+  old listing could not reach" (save a run of the HEAD version); the suite's counts and times.
+- "Not examined" overstates: "NOT OPENED" is printed only by the command with --draft.
+- The finisher's path is unmeasured and parses the transcript twice.
+Commit it as a printed line until the verbs and the path keys are fixed. No simple safe strengthening exists:
+the incident's draft did give "AUDIT.md lines ... of 277" and would pass any range-stated rule.
+Continuing is right; "drafts are not kept" is a weak reason for skipping the count.
+Suggestions (unverified): print the Markdown headings inside each unread gap of a named file; require the verb
+immediately after the file's name.
+Process audit: "the listing would have shown it" is an unchecked counterfactual, the earlier listing's line
+having been answered by stating ranges, which fits UNREAD too. Best outcome cites a promise to the user, not
+an admissible reason. The title may claim that unread lines of named files are listed and a refusal only for
+sentences naming the file, which would not have stopped the incident.
+
+FOLLOW-UP. Verdict: pass with minor corrections. No defect found in the corrected code that can raise or block.
+- same(), resolved() and the Read paths are fine; for a symlink the real path's basename can differ from the
+  name the entry writes.
+- merged() cannot return an open end here; the gap arithmetic and the headings index stay in bounds, also for
+  an empty file.
+- The verb pattern is correct; it still prints for a noun after the name, acceptable for a printed line.
+- Change: the first eight headings of a file cut the last gap's headings in a longer file, where the incident
+  sat; cap per gap or keep the last. Comment lines in code blocks also count as headings.
+- Finisher: everything is inside the guard, after "Finished"; acceptable.
+- Entry: all numbers match the outputs; "the three files read by ranges" should be "three Lean files". Not
+  checked: that line 249 is the note that contradicted the sentence. Run and cite a search for the follow-up's
+  Record search. Queue refusal-run-on-record before finishing. Continuing with the count is right.
