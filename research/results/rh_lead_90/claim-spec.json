@@ -1,0 +1,37 @@
+{
+  "source": {
+    "record": "[Cluster form bound](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cluster-form-bound)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cluster-form-bound"],
+    "label": "The whole Gram form on the binomial family: a norm bound for its off-axis part, and positivity behind a real lattice"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:binomial-cluster-form-bound",
+      "summary": "Complete-grid Gram model, flat window, bandwidth L. (1) For a real unit vector u with f(t) = sum_n u_n e^{i alpha_n t} on [-L/2, L/2] and F(z) = int f(t) e^{-izt} dt: u^T G_Z u = sum_z m_z F(z)^2/(L ||f||_2^2). (2) For any finite conjugation-closed set of off-axis points the nonzero eigenvalues of the off-axis part B of the form are those of the matrix (sqrt(m_z m_w) sinc((z - w) L/2)). (3) For the binomial family, k + 1 off-axis pairs at distance delta, heights gamma_0 + j pi/L, multiplicities binom(k, j), b = delta L: the operator norm of B is at most (2 e^b/b) k! (pi/b)^k. (4) A lattice of real points of spacing s <= 2 pi/L, each of multiplicity one, has form (2 pi/(sL)) times the identity; so the form of the family together with such a lattice is positive semidefinite whenever 2 pi/(sL) >= (2 e^b/b) k! (pi/b)^k, although the family lies off the axis.",
+      "assessment": "Working elementary proof: the form at u is a double integral of f(t) f(t') against sum_z m_z e^{-iz(t+t')}, which for the family carries the factor (1 + e^{-i pi (t+t')/L})^k, small where e^{delta |t+t'|} is large, and Schur's test bounds the integral; the lattice by Parseval's identity on an interval of length 2 pi/s. For fixed k and large b a bound of this order follows from the recorded endpoint moment order. The mechanism is that of the recorded hiding from the form's diagonal, the one-sided density, now for every vector. Computed for b = 4..14, k = 1..4 from the matrix of (2), with an independent control on a truncated grid: the form's smallest eigenvalue is between 1.03 and 2.39 times the least value of its diagonal, and at most 0.28 of that of one point with the total multiplicity. One family, one spacing, one bandwidth.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Answers the question a lead on Weil's positivity left for clusters: at one bandwidth the sign of the whole form, not only its diagonal, misses this family behind real points of a density smaller, by the factor k!(pi/b)^k up to a constant, than what one pair of the total multiplicity would need.",
+      "next_action": "None on this statement.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; the bound holds in the 44 computed cases, the matrix reduction controlled on a truncated grid in two.",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction in a model. That positivity of the form for test functions of one bounded support does not exclude off-axis points is in the spirit of known results on Weil's criterion, not read here; no novelty claimed.",
+        "relationships": "Extends the binomial cluster hiding from the diagonal to the whole form; uses the pair atom spectrum's Gram identity."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:binomial-cluster-form-bound", "cites", "prop:binomial-cluster-hiding", "The same family; that proposition bounds the form's diagonal, the one-sided density, this one the form at every vector. Neither is stated so as to imply the other: that one has the sharper constant for the diagonal."],
+    ["prop:binomial-cluster-form-bound", "depends_on", "lem:pair-atom-spectrum", "The bilinear Gram identity v_z^T v_w = Lambda times the transform of phi^2 at z - w, used for part (2)."],
+    ["prop:binomial-cluster-form-bound", "refines", "lem:fejer-lattice-density", "Part (4), the lattice's form being a multiple of the identity, implies that lemma, which is its value on the diagonal's vectors."],
+    ["prop:binomial-cluster-form-bound", "cites", "prop:extreme-eigenvalue-detection", "For one off-axis pair the form's smallest eigenvalue is about -m(kappa - 1); for the binomial family of total multiplicity 2^k it is smaller in modulus by the factor of part (3)."],
+    ["prop:binomial-cluster-form-bound", "cites", "prop:endpoint-moment-order", "That proposition gives the Hilbert-Schmidt norm of the off-axis part for any cluster at one distance, asymptotically in b with an O(1/b) relative error and an O(M) term; with the maximal cancellation order it already implies, for b large, a bound of the order of part (3). Part (3) is explicit for every b and k, for the operator norm, and by another proof; neither is stated so as to imply the other."],
+    ["prop:binomial-cluster-form-bound", "cites", "cor:maximal-cancellation-order", "The binomial family at spacing pi/L is the configuration of maximal cancellation order there."],
+    ["prop:binomial-cluster-form-bound", "cites", "prop:many-pair-norm-bound", "That proposition's lower bound for the off-axis part is empty for clusters; this gives an upper bound for one cluster family."]
+  ]
+}
