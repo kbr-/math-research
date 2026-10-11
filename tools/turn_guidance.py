@@ -107,8 +107,10 @@ def queue_state_notes(body):
     import lead_queue as lq
     found = lq.parse_tree(body)
     if found is None:
-        return ['Lead queue: this notebook has none yet. Run python3 tools/lead_queue.py init NOTEBOOK.html and '
-                'commit the section with this cycle\'s entry; the finisher requires it.']
+        return ['Lead queue: this notebook has none yet. After appending this cycle\'s entry, run python3 '
+                'tools/lead_queue.py init NOTEBOOK.html, which seeds the queue with the entry\'s sub-ideas, and '
+                'commit the section with the entry; the finisher requires it. A queue created before the entry '
+                'is refused.']
     draining, nodes = found
     if not nodes:
         return ['Lead queue: empty. New passed leads and bridges of a review and the sub-ideas entries list go '

@@ -1242,7 +1242,8 @@ def check(head_body, body, path=None, root=None):
             raise ValueError('A new queue holds exactly the listed items not closed, sub-ideas under their parents: '
                              'missing ' + (', '.join(i for _, i in want - have) or 'none') + '; not open '
                              + (', '.join(i for _, i in have - want) or 'none') + '; otherwise the placement differs '
-                             '(lead_queue.py init writes it)')
+                             '(lead_queue.py init writes it; a queue created before the entries it must seed '
+                             'is rebuilt by removing the section and running init again)')
         if draining != draining_after(False, nodes):
             raise ValueError(f'The queue has {len(nodes)} top-level items: data-draining="true" must be '
                              + ('set' if not draining else 'absent') + f' (on at {CAP} items unless backpressure is '
