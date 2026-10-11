@@ -602,7 +602,10 @@ assessments.
   cannot be retrieved after an honest attempt is a user request (below), with citation, attempted
   links and purpose. Where the obstacle is a login the user holds, the request asks the user to sign
   in in Firefox and run `tools/firefox_cookies.py HOST`; `tools/firefox_get.py HOST PATH` then reads
-  the page through that session, GET only.
+  the page through that session, GET only. A paper on arXiv is read from its source:
+  `tools/arxiv_source.py ID --out DIR` unpacks it into a scratch directory outside the repository. A
+  web fetch that returns a model's report of a page is not a reading of its statements; an entry
+  that relies on one says so in its status line.
 - Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the
   one the user reads; in a worktree `user_requests` is a link to it, which `compute.sh start`
   creates and insists on: a missing source, an installation, a permission, a choice between research
