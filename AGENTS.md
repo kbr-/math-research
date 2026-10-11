@@ -600,7 +600,10 @@ assessments.
   section's paragraphs), continues, and stops on what needs a person. A conflict in wrapped Markdown
   is merged word by word with `tools/merge_md_words.py FILE`, or by itself where the clone has
   turned on the merge driver that tool describes. A conflict shape that recurs in another file gets
-  a guarded resolver there too, with tests, never a scratch loop.
+  a guarded resolver there too, with tests, never a scratch loop. When a commit that registers
+  claims is replayed onto a base that registered others, the registry and its views conflict: run
+  `tools/claim_rebase.py --spec SPEC` (the commit's compact spec), which keeps the base's registry,
+  rebuilds the claims on it, renders, stages and rechecks, and refuses any other conflict.
 - Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`. Before authorized
   publication run `tools/verify-checkout.py --public-history BRANCH` (it includes the claim-index CI
   job, `tools/check-claims.py`, against `origin/BRANCH`) and the append-only check, unless
