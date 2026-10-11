@@ -297,6 +297,26 @@ class StructuralReasonTest(unittest.TestCase):
         FT.validate_structural_reason(plain, {'working_proof', None})
 
 
+class DevelopedRemovalTest(unittest.TestCase):
+    DONE = '<p><strong>Follow-up.</strong> Developed: the bound is proved and nothing of the item remains.</p>'
+    LEFT = ClosureStakesTest.LEFT
+    OWED = ClosureStakesTest.OWED
+    RECORD = ClosureStakesTest.RECORD
+
+    def test_a_developed_follow_up_accounts_for_unexamined_parts_and_the_owed_attempt(self):
+        FT.validate_developed_removals('<p><strong>Follow-up.</strong> Continuing: next.</p>')   # nothing removed
+        with self.assertRaisesRegex(ValueError, 'Not examined'):
+            FT.validate_developed_removals(self.DONE + self.OWED + self.RECORD)
+        with self.assertRaisesRegex(ValueError, 'Owed attempt'):
+            FT.validate_developed_removals(self.DONE + self.LEFT + self.RECORD)
+        with self.assertRaisesRegex(ValueError, 'review.txt'):
+            FT.validate_developed_removals(self.DONE + self.LEFT + self.OWED)
+        FT.validate_developed_removals(self.DONE + self.LEFT + self.OWED + self.RECORD)
+        item = ('<ul><li data-check="a:s1">A sub-idea. <strong>Follow-up.</strong> Developed: done.</li></ul>')
+        with self.assertRaisesRegex(ValueError, 'Not examined'):
+            FT.validate_developed_removals(item)
+
+
 class DevelopedReadingTest(unittest.TestCase):
     ASK = '<li data-check="a:s1">Read the statement of the threshold theorem with its window. '
     READ = ('<strong>Sources read.</strong> Theorem 3.2 of the paper, in its text, with the definition of a '

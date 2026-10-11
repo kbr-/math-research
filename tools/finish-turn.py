@@ -520,6 +520,36 @@ def validate_closures(text):
                          'named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
 
 
+DEVELOPED_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
+
+
+def validate_developed_removals(text):
+    """A Developed follow-up removes its item as a Closed one does, and accounts for it the same way.
+
+    On 11 October 2026 three drafts in two blocks removed queue items as Developed, where the paragraphs of a
+    closure were not asked: one after four lines of the queuing entry had been read, one dropping parts the
+    item's previous entry had listed as not examined, one whose queued case was unresolved; a reviewer refused
+    each.  So an entry with a Developed follow-up says, after <strong>Not examined.</strong>, what the item names
+    that it did not examine, and after <strong>Owed attempt.</strong>, what became of the attempt its last
+    follow-up named, and links the reviewer's record."""
+    if not DEVELOPED_RE.search(text):
+        return
+    for label, what in (('Not examined', 'what the item\'s own statement and its previous entry\'s list name that '
+                         'this entry did not examine, and why the removal stands without each, or that nothing '
+                         'is left'),
+                        ('Owed attempt', 'which attempt the item\'s latest follow-up named and that it was made, '
+                         'with its outcome, or that none was named')):
+        found = re.search(rf'<strong>{label}\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+        if len(plain) < 40:
+            raise ValueError(f'An entry that removes a queue item as Developed says, after <strong>{label}.</strong> '
+                             f'and in at least 40 characters, {what}; an item with a named part unexamined or a '
+                             'named attempt unmade is Continuing (AGENTS.md)')
+    if not re.search(r'href="[^"]*review[^"/]*\.txt"', text):
+        raise ValueError('An entry that removes a queue item as Developed links the reviewer\'s record '
+                         '(review.txt): the reviewer reads every removal (AGENTS.md)')
+
+
 READING_ITEM_RE = re.compile(r'<li\b[^>]*>((?:(?!</li>).)*?)<strong>Follow-up\.</strong>\s*Developed\b((?:(?!</li>).)*)</li>',
                              re.S)
 READING_ASK_RE = re.compile(r'\bRead (?:in full |in its text )?(?:the |a |one )?(?:statements?|definitions?|theorems?|'
@@ -870,6 +900,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
         validate_unreviewed_derivations(text)
         validate_closures(text)
+        validate_developed_removals(text)
         validate_developed_readings(text)
         if check_registered_claims:
             known = registered_status()
