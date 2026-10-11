@@ -35,7 +35,7 @@ class ReviewerBriefTest(unittest.TestCase):
         self.assertIn('("whole Path")', err)
 
     def test_a_narrow_brief_other_agents_and_other_tools_pass(self):
-        narrow = ('Audit every row in /tmp/batch.tsv; read that file in full first. It holds the increments '
+        narrow = (f'Audit every row in {Path(__file__).resolve()}; read that file in full first. It holds the increments '
                   'the rows cite. Search PLAN.md only for a clause you challenge.')
         for payload in (call(narrow), call('Read the whole Path.', agent='Explore'),
                         call('Read the whole Path.', tool='Bash'), {'tool_name': 'Agent'}):
@@ -59,3 +59,18 @@ class ReviewerBriefTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class MissingBriefFileTest(unittest.TestCase):
+    def test_a_brief_naming_a_file_that_is_not_there_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            there = Path(tmp) / 'brief.txt'
+            there.write_text('x')
+            self.assertIsNone(hook.refusal(call(f'Read only {there} and answer.')))
+            reason = hook.refusal(call(f'Read only {tmp}/absent.txt and {there}.'))
+            self.assertIn(f'{tmp}/absent.txt', reason)
+            self.assertNotIn(str(there) + ',', reason)
+            # A directory, a relative path, a pattern and another agent's brief are left alone.
+            self.assertIsNone(hook.refusal(call(f'Work from {tmp}/nowhere and save to research/results/x/review.txt; '
+                                                f'run tools/tests/run.py; see {tmp}/*.txt')))
+            self.assertIsNone(hook.refusal(call(f'Read {tmp}/absent.txt', agent='general-purpose')))

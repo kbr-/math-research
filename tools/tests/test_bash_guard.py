@@ -400,3 +400,19 @@ class StaleBranchTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StagingSilencedTest(unittest.TestCase):
+    def test_git_add_and_commit_keep_their_errors(self):
+        for command in ('git add a b 2>/dev/null && git commit -m x',
+                        'git add a; git commit -q -m x >/dev/null 2>&1',
+                        'git -C repo add a &>/dev/null'):
+            with self.subTest(command=command):
+                self.assertIn('errors shown', guard.staging_silenced(command))
+        for command in ('git add a b && git commit -q -m x',
+                        'git add a; ls missing 2>/dev/null',
+                        'GIT_EDITOR=true git rebase --continue >/dev/null 2>&1',
+                        'git status --short 2>/dev/null',
+                        "cat > notes.txt <<'EOF'\ngit add a 2>/dev/null\nEOF"):
+            with self.subTest(command=command):
+                self.assertIsNone(guard.staging_silenced(command))

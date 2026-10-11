@@ -312,6 +312,8 @@ OWED_PROCEDURAL_RE = re.compile(r'\b(?:\w+ )?review(?:\'s)? (?:decided|asked|nam
                                 r'\bby the decision\b|\bthe order chosen\b|\bthe plan was\b', re.I)
 OWED_REVIEWER_READ_RE = re.compile(r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
 OWED_FROM = '2026-10-12'
+ATTEMPT_CHECKED_RE = re.compile(r'<strong>Verification gate\.</strong>.*?<strong>Attempt checked\.</strong>\s*\S[^<]{40,}',
+                                re.S)
 
 
 def validate_owed_unmade(body, article, close):
@@ -1141,6 +1143,14 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'posing the test, to answer it from the statements it cites, and where that '
                                      'stopped; a test those statements answer in a few lines is a lemma, not a '
                                      'test (AGENTS.md, Decisive test)')
+                # Four reviews in a row posed a test their reviewer then closed in a few lines: the gate of a
+                # review says what the reviewer found when it tried the step at which the Attempt stops.
+                dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+                if dated and dated.group(1) >= OWED_FROM and not ATTEMPT_CHECKED_RE.search(text):
+                    raise ValueError('A review\'s Verification gate must say, after "<strong>Attempt checked.'
+                                     '</strong>", what its reviewer found on trying to close the step at which '
+                                     'the Decisive test\'s Attempt stops: ask for that in the second-stage brief '
+                                     '(AGENTS.md, Decisive test)')
                 trivial = re.search(r'<strong>Trivial cases\.</strong>(.*?)(?=<strong>Power\.</strong>|$)', value, re.S)
                 plain = html.unescape(re.sub(r'<[^>]*>', ' ', trivial.group(1))).strip() if trivial else ''
                 if len(plain) < 40:

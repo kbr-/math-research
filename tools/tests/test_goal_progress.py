@@ -535,3 +535,19 @@ class BearingTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class AttemptCheckedTest(unittest.TestCase):
+    GATE = ('<p><strong>Verification gate.</strong> One reviewer. <strong>Attempt checked.</strong> The reviewer '
+            'tried the step at which the attempt stops and did not close it either.</p>')
+
+    def test_a_review_says_what_its_reviewer_found_at_the_step_where_the_attempt_stops(self):
+        dated = 'entry-2026-10-12-review'
+        with self.assertRaisesRegex(ValueError, 'Attempt checked'):
+            validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE)))
+        validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE + self.GATE)))
+        with self.assertRaisesRegex(ValueError, 'Attempt checked'):    # the marker alone says nothing
+            validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE
+                                      + self.GATE.split('The reviewer')[0] + '</p>')))
+        # Reviews recorded before the rule are left alone.
+        validate(notebook(article('entry-2026-10-11-review', kind='review', content=REPORT + ARCHITECTURE)))

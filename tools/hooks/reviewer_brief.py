@@ -26,6 +26,9 @@ WHOLE = re.compile(
     r"|\b(?:PLAN\.md|notebook\.html)`?\s+(?:in full|in its entirety|from start to end)\b"
     r"|\bread\s+all\s+of\s+(?:the\s+)?(?:`?Path`?|plan|theory|notebook)\b", re.I)
 
+# A file named by its full path: /dir/.../name.ext, not a directory and not a pattern.
+NAMED_FILE = re.compile(r'(?<![\w.~*-])(/(?:[\w.+-]+/)+[\w+-][\w.+-]*\.[A-Za-z0-9]{1,5})(?![\w/*])')
+
 
 def refusal(payload, tools=TOOLS):
     """The reason to refuse this tool call, or None."""
@@ -34,7 +37,14 @@ def refusal(payload, tools=TOOLS):
     tool_input = payload.get('tool_input') or {}
     if 'review' not in str(tool_input.get('subagent_type', '')).lower():
         return None
-    found = WHOLE.search(str(tool_input.get('prompt', '')))
+    prompt = str(tool_input.get('prompt', ''))
+    # A file the brief names by its full path and that is not there: on 11 October 2026 a reviewer was launched
+    # in the same step as the command that wrote its brief, the command was refused, and the stage went unanswered.
+    missing = [path for path in dict.fromkeys(NAMED_FILE.findall(prompt)) if not Path(path).exists()]
+    if missing:
+        return ('the brief names a file that does not exist: ' + ', '.join(missing) + '. Write the brief and its '
+                'excerpts in one step and launch the reviewer in the next')
+    found = WHOLE.search(prompt)
     if not found:
         return None
     # A further tool that builds an excerpt, where the branch's own module names one.

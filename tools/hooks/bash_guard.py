@@ -206,6 +206,26 @@ def sed_in_place(command: str):
     return None
 
 
+STAGING_SILENCED = re.compile(r"\bgit\s+(?:-C\s+\S+\s+)?(?:add|commit)\b[^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|>\s*/dev/null\s+2>&1)")
+
+
+def staging_silenced(command: str):
+    """A git add or commit whose errors are thrown away: on 11 October 2026 a path that did not exist was staged
+    with the error discarded, nothing was staged and the commit failed two steps later."""
+    kept, end = [], None
+    for line in command.split("\n"):   # a heredoc's body is text, not a command
+        if end is not None:
+            end = None if line.strip() == end else end
+            continue
+        kept.append(line)
+        match = HEREDOC.search(line)
+        end = match.group(2) if match else None
+    if STAGING_SILENCED.search("\n".join(kept)):
+        return ("git add and git commit run with their errors shown: a discarded error hides a path that does not "
+                "exist or a refused commit. Drop the redirection of stderr")
+    return None
+
+
 def blocked(command: str):
     """Return the reason for the first filtered must-read command, or None."""
     for segment in SEPARATOR.split(shell_code(command)):
@@ -482,6 +502,7 @@ def main() -> int:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
     reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or sed_in_place(command)
+              or staging_silenced(command)
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
