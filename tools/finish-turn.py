@@ -517,6 +517,33 @@ def validate_structural_reason(text, statuses=(), claims=()):
                          'which other candidates or hypotheses the reason applies (AGENTS.md)')
 
 
+def logged_searches(root, since):
+    """The registry searches tools/search-claims.py logged at or after `since` (unix seconds)."""
+    path = Path(root) / 'research/logs/claim-searches.jsonl'
+    found = []
+    for line in path.read_text().splitlines() if path.exists() else ():
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if row.get('unix_s', 0) >= since:
+            found.append(row.get('query', ''))
+    return found
+
+
+def validate_searches_run(entry, queries):
+    """An entry that reports a record search was written in a session that ran one.
+
+    An entry of 11 October 2026 said the registry had been searched for a family and held nothing on it; no
+    such search had been run, and the registry held a ceiling for that family.  The check cannot tell whether
+    the searches run are the ones the paragraph reports: it returns them, for the finisher to print."""
+    if '<strong>Record search.</strong>' in entry and not queries:
+        raise ValueError('This entry has a <strong>Record search.</strong> paragraph, and tools/search-claims.py '
+                         'was not run in its session: run the searches the paragraph reports, and correct the '
+                         'paragraph by what they return (AGENTS.md)')
+    return queries
+
+
 PROVED = {'working_proof', 'conditional'}
 
 
@@ -1146,6 +1173,12 @@ def finish(root, turn, next_turn=None, notebook_name=None):
         raise ValueError("Timing marker must belong uniquely to selected notebook " + item["name"])
     draining = validate_queue(root, notebook)
     validate_marker(notebook.read_text(), marker, draining=draining)
+    whole = notebook.read_text()
+    entry = whole[whole.rfind('<article', 0, whole.index(marker)):whole.index(marker)]
+    searches = validate_searches_run(entry, logged_searches(root, first.get('unix_s', 0)))
+    if '<strong>Record search.</strong>' in entry:
+        print('Registry searches run in this session, to compare with the entry\'s Record search: '
+              + '; '.join(searches))
     owed = validate_review_answer(root, notebook.read_text(), marker)
     check_context(root, item["name"])  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)

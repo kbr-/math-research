@@ -236,9 +236,28 @@ def main(validated=False):
     text='\n'.join(lines)+'\n';sys.stdout.write(text);observed(text)
 
 
+SEARCH_LOG = ROOT / 'research/logs/claim-searches.jsonl'
+
+
+def log_search(argv, path=None):
+    """Append this search's words to the ignored log the finisher reads: an entry of 11 October 2026 said
+    under Record search that the registry had been searched for a subject and found empty, when no such
+    search had been run and the registry held the answer.  A log that cannot be written is not an error."""
+    import time
+    try:
+        path = path or SEARCH_LOG
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open('a') as handle:
+            handle.write(json.dumps({'unix_s': time.time(), 'query': ' '.join(argv)}) + '\n')
+    except OSError:
+        pass
+
+
 def run():
     """main(), and where the registry as written cannot be answered from, main() on the validated one, which
     says what is wrong with it."""
+    if '--registry' not in sys.argv:        # a search of another registry, as the tests make, is not one of the record
+        log_search(sys.argv[1:])
     try:
         try:
             main()

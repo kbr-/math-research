@@ -91,8 +91,10 @@ growing checklists or one-off setup narratives.
   distinguish it from the alternative at the sizes run. Otherwise label it an untested hypothesis
   and base no decision or status on it.
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
-  `--show LABEL`. Unfiltered display searches also surface up to three historical statement matches.
-  For a generic mechanism, follow relevant matches and search the immutable [historical
+  `--show LABEL`. The tool logs each search, and the finisher refuses an entry with a Record search
+  paragraph whose session ran none, printing the session's searches to compare with the paragraph.
+  Unfiltered display searches also surface up to three historical statement matches. For a generic
+  mechanism, follow relevant matches and search the immutable [historical
   index](php_codex_handoff/manuscript/CLAIM_INDEX.md) further when needed; bounded suggestions do
   not establish absence of prior work. Use `tools/claim-dependencies.py packet --claim ID` for
   bounded orientation, or `tools/claim-index.py list --fields id,summary --format tsv` for a

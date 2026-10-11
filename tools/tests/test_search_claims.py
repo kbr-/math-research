@@ -66,7 +66,8 @@ class UnvalidatedReadTest(unittest.TestCase):
         argv = ['search-claims.py', 'modules', '--list', '--fields', 'id,summary']
         with mock.patch.object(search_claims, 'read_json', lambda path: calls.append('read') or written), \
                 mock.patch.object(search_claims, 'load', load), mock.patch.object(sys, 'argv', argv), \
-                mock.patch('recovery_evidence.observe'), contextlib.redirect_stdout(out):
+                mock.patch('recovery_evidence.observe'), mock.patch.object(search_claims, 'log_search'), \
+                contextlib.redirect_stdout(out):
             try:
                 search_claims.run()
             except SystemExit as stop:
@@ -84,6 +85,17 @@ class UnvalidatedReadTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.run_tool(self.BAD, self.BAD)
         self.assertEqual(self.run_tool(ValueError, self.GOOD)[0], ['read', 'load'])    # not a registry at all
+
+    def test_a_search_is_logged_for_the_finisher(self):
+        import json, tempfile
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / 'logs/claim-searches.jsonl'
+            search_claims.log_search(['cut', 'ceiling'], path)
+            search_claims.log_search(['--show', 'prop:x'], path)
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            self.assertEqual([row['query'] for row in rows], ['cut ceiling', '--show prop:x'])
+            self.assertTrue(all(row['unix_s'] > 0 for row in rows))
+            search_claims.log_search(['x'], Path(root) / 'logs/claim-searches.jsonl/under-a-file')   # no error
 
 
 if __name__ == '__main__':

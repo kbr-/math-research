@@ -243,6 +243,24 @@ class DegenerateCasesTest(unittest.TestCase):
                                      {'working_proof'})
 
 
+class SearchesRunTest(unittest.TestCase):
+    def test_a_record_search_paragraph_needs_a_logged_search(self):
+        import json, tempfile
+        entry = '<article><p><strong>Record search.</strong> Searched the registry for cut ceilings: nothing.</p>'
+        with self.assertRaisesRegex(ValueError, 'was not run'):
+            FT.validate_searches_run(entry, [])
+        self.assertEqual(FT.validate_searches_run(entry, ['cut ceiling']), ['cut ceiling'])
+        self.assertEqual(FT.validate_searches_run('<article><p>No such paragraph.</p>', []), [])
+        with tempfile.TemporaryDirectory() as root:
+            logs = Path(root) / 'research/logs'
+            logs.mkdir(parents=True)
+            (logs / 'claim-searches.jsonl').write_text(
+                json.dumps({'unix_s': 10.0, 'query': 'old'}) + '\nnot json\n'
+                + json.dumps({'unix_s': 30.0, 'query': 'cut ceiling'}) + '\n')
+            self.assertEqual(FT.logged_searches(root, 20.0), ['cut ceiling'])
+            self.assertEqual(FT.logged_searches(Path(root) / 'absent', 0), [])
+
+
 class StructuralReasonTest(unittest.TestCase):
     REASON = ('<p><strong>Structural reason.</strong> One is a combination of the rows with constant coefficients; '
               'random rows of width three are not expected to have one.</p>')
