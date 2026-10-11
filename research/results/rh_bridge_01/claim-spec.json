@@ -1,0 +1,64 @@
+{
+  "source": {
+    "record": "[Pair atom spectrum](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-pair-atom-spectrum"],
+    "label": "Complete-grid Gram model of one off-line zero pair"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:pair-atom-spectrum",
+      "summary": "For real even phi in L^2 supported in [-Lam/2,Lam/2], grid step 2pi/Lam over Z and v_z=(phihat(z-alpha_k))_k: v_z^T v_w = Lam (phi^2)^(z-w), v_z^* v_w = Lam (phi^2)^(w-conj z); a conjugate pair z, conj z off the real axis at distance delta has normalized atom (kappa+1) e_x e_x^T - (kappa-1) e_y e_y^T with kappa = int phi^2 cosh(2 delta u) / int phi^2 > 1.",
+      "assessment": "Working elementary proof by Parseval on the interval and evenness. The bilinear identity is the imported density proof's Poisson identity; the Hermitian companion at complex arguments and the two-eigenvalue form are worked out here. Abstract complete-grid statement; says nothing about actual zeta zeros.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Elementary consequence of Fourier-series orthogonality, expected to be known in the explicit-formula literature; recorded as the model for the bridge test, no novelty claimed.",
+      "next_action": "Use for the many-pair cancellation computation; before applying to the imported cut form verify the tail hypothesis for its smoothed window.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry for every bandwidth and every real even L^2 window supported in the interval; numerical control on four parameter pairs agrees.",
+        "formalization": "No formalization.",
+        "significance": "Context-level elementary lemma; novelty not claimed and not searched in the literature.",
+        "relationships": "Extends the Poisson identity used in the imported density deduction to Hermitian products at complex arguments."
+      }
+    },
+    {
+      "id": "prop:solitary-amplification",
+      "summary": "In the complete-grid Gram form G_Z of a finite conjugation-closed configuration: trace = number of points with multiplicity regardless of position; at most p negative eigenvalues for p off-axis pairs; if exactly one pair is off the axis then ||G_Z||_HS >= lambda_max >= m(kappa+1), and >= (4/5) m (kappa+1) on a cut grid when kappa >= 2 and the pair vector's tail fraction is at most 1/16; kappa >= c (s'-s) e^{2 delta s} / ||phi||^2 when phi^2 >= c on s <= |u| <= s'.",
+      "assessment": "Working elementary proof from the pair atom spectrum. At the imported bandwidth log T the resulting bound on a solitary off-line zero is delta <= 1/2 + o(1), which is vacuous; a restriction would need a second-moment bound at bandwidth theta log T with theta > 1, which is not available. The bound is not additive over pairs at constant cost (two-pair cancellation, a polylogarithmic loss); the many-pair case is unproved.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Identifies what the density proof's second moment does and does not say about one off-line zero; gives no restriction on zeta zeros from available premises.",
+      "next_action": "Determine the loss for n close off-axis pairs, and whether an adaptive test vector removes it.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof of all six parts in the entry; the application to the imported cut form is not made because the tail hypothesis is unverified and the outcome at bandwidth log T is vacuous.",
+        "formalization": "No formalization.",
+        "significance": "Context: a precise statement of missing information for the route, not a result about zeta. Novelty not claimed.",
+        "relationships": "Depends on the pair atom spectrum; limited by the two-pair cancellation."
+      }
+    },
+    {
+      "id": "prop:two-pair-cancellation",
+      "summary": "Flat window, complete grid, configuration {+-i delta, t +- i delta}: ||G_Z||_HS^2 = 4 + 4 kappa^2 + 4 sinc^2(t Lam/2) + 4 Re sinc^2((t+2i delta)Lam/2), kappa = sinh(b)/b, b = delta Lam; at t = pi/Lam and b >= pi/2 this is at most 4 + 16/pi^2 + 3 pi^2 kappa^2 / b^2, so no absolute c > 0 gives ||G_Z||_HS^2 >= c sum_j (kappa_j^2 + 1) over off-axis pairs.",
+      "assessment": "Refutation, by an exact identity, of the additive lower bound that would extend solitary amplification to several off-line pairs at constant cost. The loss shown is a factor of order b^-2 for two pairs; the loss for many close pairs is not computed.",
+      "status": "refutation",
+      "category": "context",
+      "rationale": "Shows that a second-moment bound alone does not bound each off-line pair's contribution; the obstruction to passing from isolated zeros to all zeros in this model.",
+      "next_action": "Compute the n-pair loss and test adaptive test vectors.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Exact sixteen-term computation with closed form at t = pi/Lam, proved in the entry and matched numerically at four parameter pairs with a no-cancellation control at t = 2 pi/Lam.",
+        "formalization": "No formalization.",
+        "significance": "Context: an explicit obstruction in the model. Novelty not claimed.",
+        "relationships": "Refutes the many-pair extension of solitary amplification at constant cost; uses the pair atom spectrum's Gram identity for the flat window."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:solitary-amplification", "depends_on", "lem:pair-atom-spectrum", "Uses the two-eigenvalue atom and the Gram identities."],
+    ["prop:two-pair-cancellation", "depends_on", "lem:pair-atom-spectrum", "Uses the bilinear Gram identity for the flat window."]
+  ]
+}
