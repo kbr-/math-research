@@ -93,3 +93,16 @@ class CountsTest(unittest.TestCase):
         report = dcs.counts_report(self.DRAFT, 0)
         self.assertTrue(report.endswith('7 sentences with a count.'))
         self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
+
+
+class RunLogTest(unittest.TestCase):
+    def test_a_run_is_logged_with_the_draft_s_entry_and_its_number_of_count_sentences(self):
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            log = pathlib.Path(directory) / 'logs' / 'searches.jsonl'
+            dcs.log_run(CountsTest.DRAFT, log)
+            row = json.loads(log.read_text())
+            self.assertEqual(row['query'], 'draft_counts entry-2026-10-11-x 7')
+            dcs.log_run('<p>no article</p>', log)
+            self.assertEqual(json.loads(log.read_text().splitlines()[1])['query'], 'draft_counts - 0')

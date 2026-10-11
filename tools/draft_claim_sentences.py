@@ -93,6 +93,25 @@ def counts(draft):
     return found
 
 
+RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
+
+
+def log_run(draft, path=None):
+    """Append this run, with the draft's article id and its number of count sentences, to the ignored log the
+    finisher reads, so that an entry whose listing was never printed is reported.  A log that cannot be written
+    is not an error."""
+    import time
+    ident = re.search(r'<article\b[^>]*\bid="([^"]+)"', draft)
+    try:
+        path = path or RUN_LOG
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open('a') as handle:
+            handle.write(json.dumps({'unix_s': time.time(), 'query': 'draft_counts '
+                                     + (ident.group(1) if ident else '-') + f' {len(counts(draft))}'}) + '\n')
+    except OSError:
+        pass
+
+
 def counts_report(draft, width):
     found = counts(draft)
     lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
@@ -180,6 +199,7 @@ def main():
         linked, missing = entry_report(draft, pathlib.Path(args.notebook).read_text(), args.width)
         print('\n' + linked)
     print('\n' + counts_report(draft, args.width))
+    log_run(draft)
     return 1 if unregistered or missing else 0
 
 

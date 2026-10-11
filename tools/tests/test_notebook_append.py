@@ -339,3 +339,15 @@ class NotebookAppendTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ResultFilesLineTest(unittest.TestCase):
+    def test_the_line_lists_an_item_s_result_files_and_is_empty_without_them(self):
+        import lead_queue
+        with mock.patch.object(lead_queue, 'result_files', return_value=['research/results/a/x.py', 'research/results/a/x.json']):
+            self.assertEqual(tool.result_files_line('body', 'item'),
+                             '  Result files its entries link (2): research/results/a/x.py, research/results/a/x.json')
+        with mock.patch.object(lead_queue, 'result_files', return_value=[]):
+            self.assertEqual(tool.result_files_line('body', 'item'), '')
+        with mock.patch.object(lead_queue, 'result_files', side_effect=ValueError('no such item')):
+            self.assertEqual(tool.result_files_line('body', 'item'), '')

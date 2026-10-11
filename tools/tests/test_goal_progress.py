@@ -557,3 +557,16 @@ class AttemptCheckedTest(unittest.TestCase):
             validate(notebook(article(dated, kind='review', content=REPORT + ARCHITECTURE + elsewhere)))
         # Reviews recorded before the rule are left alone.
         validate(notebook(article('entry-2026-10-11-review', kind='review', content=REPORT + ARCHITECTURE)))
+
+
+class CountListingReportTest(unittest.TestCase):
+    ENTRY = '<article id="entry-2026-10-12-x" data-kind="research"><p><strong>Checks.</strong> It ran 12 tests.</p>'
+
+    def test_an_entry_with_counts_and_no_logged_listing_is_reported_and_not_refused(self):
+        line = FT.count_listing_report(self.ENTRY, ['-n 3 some search', 'draft_counts entry-2026-10-12-other 4'])
+        self.assertIn('logged no run on this entry', line)
+        self.assertIn('1 of its sentences hold a count', line)
+        self.assertIsNone(FT.count_listing_report(self.ENTRY, ['draft_counts entry-2026-10-12-x 1']))
+        # An entry without a count, and text without an article, have nothing to report.
+        self.assertIsNone(FT.count_listing_report('<article id="e"><p><strong>Checks.</strong> None.</p>', []))
+        self.assertIsNone(FT.count_listing_report('<p>loose text with 3 numbers</p>', []))

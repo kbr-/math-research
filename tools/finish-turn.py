@@ -770,6 +770,28 @@ def validate_searches_run(entry, queries):
     return queries
 
 
+def count_listing_report(entry, queries):
+    """A line for the finisher to print, or None: the entry holds sentences with a count and the draft tool,
+    which lists them for reading beside their sources, logged no run on it in the session.
+
+    It reports and does not refuse: a refusal would be met by running the tool without reading its listing, and
+    the line makes the omission visible in the finisher's output, where the session reviewer reads it.  It cannot
+    tell whether a listing that was printed was read."""
+    ident = re.search(r'<article\b[^>]*\bid="([^"]+)"', entry)
+    if not ident or any(query.split()[1:2] == [ident.group(1)] for query in queries
+                        if query.startswith('draft_counts ')):
+        return None
+    try:
+        import draft_claim_sentences
+    except ImportError:      # a checkout without the draft tool has no listing to report on
+        return None
+    found = len(draft_claim_sentences.counts(entry + '</article>'))
+    if not found:
+        return None
+    return (f'Count listing: tools/draft_claim_sentences.py logged no run on this entry in its session, and {found} '
+            'of its sentences hold a count; run it on the entry and read each beside its saved source (AGENTS.md).')
+
+
 def validate_resemblance_run(entry, queries):
     """An entry that declares claims was written in a session that ran tools/claim_resemblance.py on each.
 
@@ -1487,7 +1509,11 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     validate_marker(notebook.read_text(), marker, draining=draining)
     whole = notebook.read_text()
     entry = whole[whole.rfind('<article', 0, whole.index(marker)):whole.index(marker)]
-    searches = validate_searches_run(entry, logged_searches(root, first.get('unix_s', 0)))
+    logged = logged_searches(root, first.get('unix_s', 0))
+    unread = count_listing_report(entry, logged)
+    if unread:
+        print(unread)
+    searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
         validate_resemblance_run(entry, searches)
     if '<strong>Record search.</strong>' in entry:
