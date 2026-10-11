@@ -63,6 +63,8 @@ class BashGuardTest(unittest.TestCase):
             "python3 tools/search-claims.py extension variables degree | head -6",
             "python3 tools/search-claims.py weighted retraction 2>&1 | grep -E '^[a-z]+:' | head",
             "python3 tools/lead_queue.py history n.html a:s1 --status | sed -n '1,4p'",
+            "python3 tools/notebook-append.py e.html --next n.html > out.txt 2>&1",
+            "python3 tools/notebook-append.py e.html --next n.html | head -3",
         ]:
             with self.subTest(command=command):
                 result = run(command)
@@ -74,6 +76,8 @@ class BashGuardTest(unittest.TestCase):
             "python3 tools/resume.py",
             "python3 tools/search-claims.py -n 20 extension variables degree",
             "python3 tools/lead_queue.py history n.html a:s1 --status",
+            "python3 tools/notebook-append.py e.html --next n.html --stand-unchanged 'No change.'",
+            "python3 tools/notebook-append.py --help | sed -n '1,30p'",
             "python3 tools/lead_queue.py pending n.html | head",
             "python3 tools/search-claims.py --show lem:x | head -40",
             "python3 tools/search-claims.py --help | grep limit",

@@ -66,6 +66,11 @@ GUARDED = [
     # of which had closed it for the reason a review then had to be told by its reviewer.
     (re.compile(INVOKED + r"lead_queue\.py\s+history\b"),
      "tools/lead_queue.py history lists every entry that developed the item, below its status"),
+    # 11 October 2026: the append tool's output was sent to a file and its first lines read; the lines below said
+    # that the item a next step called never developed had three entries.
+    (re.compile(INVOKED + r"notebook-append\.py\b(?![^|;&\n]*\s--help\b)"),
+     "tools/notebook-append.py prints, for each queue item the next step names, its latest follow-up and its "
+     "earlier entries"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")
