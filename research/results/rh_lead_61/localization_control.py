@@ -43,13 +43,14 @@ def direct(r):
     return quad(lambda u: math.cos(math.pi * u / L) ** 2 * math.cos(u * r), -L / 2, L / 2, limit=400)[0]
 
 
-def tail(c, radius):
+def tails(vectors, radius):
+    """The left side of T for each column of `vectors`; the matrix of phihat is built once for each side."""
     step, span = 0.01 / L, 4000.0 / L
     offsets = radius + np.arange(0, span, step)
-    total = 0.0
+    total = np.zeros(vectors.shape[1])
     for points in (TAU[-1] + offsets, TAU[0] - offsets):
-        values = (phihat(points[:, None] - TAU[None, :]) @ c) ** 2
-        total += float(np.sum((values[1:] + values[:-1]) / 2) * step)
+        values = (phihat(points[:, None] - TAU[None, :]) @ vectors) ** 2
+        total += np.sum((values[1:] + values[:-1]) / 2, axis=0) * step
     return total
 
 
@@ -69,8 +70,10 @@ def main():
         bound_unit = B ** 2 * (2 / (3 * radius ** 3) + L / (6 * math.pi * radius ** 2))
         cut = radius + 4000.0 / L
         beyond = B ** 2 * (2 / (3 * cut ** 3) + L / (6 * math.pi * cut ** 2)) / bound_unit
-        for name, c in vectors + [('aligned', aligned)]:
-            ratio = tail(c, radius) / (float(c @ c) * bound_unit)
+        named = vectors + [('aligned', aligned)]
+        columns = np.stack([c for _, c in named], axis=1)
+        for (name, c), value in zip(named, tails(columns, radius)):
+            ratio = float(value) / (float(c @ c) * bound_unit)
             cases += 1
             if ratio > largest:
                 largest, where = ratio, (name, radius)
