@@ -1416,13 +1416,14 @@ class LinkEarlierWorkTest(unittest.TestCase):
         third = self.entry('entry-2026-10-11-c', item)
         body = notebook([first, second, third], [item])
         rows = lq.named_attempts(body, 'r:1')
-        self.assertEqual([(anchor, owed) for anchor, _said, owed in rows],
-                         [('entry-2026-10-09-a', False), ('entry-2026-10-11-b', True)])
+        self.assertEqual([(anchor, owed) for anchor, _said, owed in rows],         # b answers a; nothing answers b
+                         [('entry-2026-10-09-a', True), ('entry-2026-10-11-b', False)])
         self.assertEqual(rows[1][1], ['Next attempt: the complex.', 'Still owed from 9 October: the proof of '
                                       'the bound.'])
         status = '\n'.join(lq.item_status(body, 'r:1'))
-        self.assertIn('#entry-2026-10-09-a [no Owed attempt paragraph]: Next attempt on it: read the proof', status)
-        self.assertIn('#entry-2026-10-11-b: Next attempt: the complex. Still owed', status)
+        self.assertIn('#entry-2026-10-09-a: Next attempt on it: read the proof', status)
+        self.assertIn('#entry-2026-10-11-b [no later entry has an Owed attempt paragraph]: Next attempt: the '
+                      'complex. Still owed', status)
         self.assertIn('  none', '\n'.join(lq.item_status(notebook([third], [item]), 'r:1')))
 
     def test_an_entry_accounts_for_the_attempt_its_item_s_last_entry_named(self):

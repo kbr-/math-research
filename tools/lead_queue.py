@@ -761,8 +761,8 @@ ATTEMPT_SENTENCE_RE = re.compile(r'\b(?:next attempt|still owed|owed (?:from|sin
 
 
 def named_attempts(body, ident):
-    """(anchor, sentences of its Follow-up that name an attempt, whether it has an Owed attempt paragraph)
-    for every entry of the item's group whose Follow-up names one, oldest first.
+    """(anchor, sentences of its Follow-up that name an attempt, whether a later entry of the group has an
+    Owed attempt paragraph) for every entry of the item's group whose Follow-up names one, oldest first.
 
     On 11 October 2026 an attempt named on 9 October was deferred in two entries of its item, each of whose
     Owed attempt paragraphs answered only the latest follow-up; a review found that the statement to be read
@@ -773,15 +773,17 @@ def named_attempts(body, ident):
         if anchor:
             articles[anchor.group(1)] = text
     rows = []
-    for anchor, _item, _outcome in history(body, ident):
+    anchors = [anchor for anchor, _item, _outcome in history(body, ident)]
+    for position, anchor in enumerate(anchors):
         text = articles.get(anchor, '')
         follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
         if not follow:
             continue
         plain = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', follow[-1])).split())
         said = [s for s in re.split(r'(?<=[.;:])\s+(?=[A-Z])', plain) if ATTEMPT_SENTENCE_RE.search(s)]
-        if said:
-            rows.append((anchor, said, OWED_RE.search(text) is not None))
+        if said:       # answered, as far as a pattern can tell: some later entry of the group has the paragraph
+            later = any(OWED_RE.search(articles.get(a, '')) for a in anchors[position + 1:])
+            rows.append((anchor, said, later))
     return rows
 
 
@@ -805,8 +807,8 @@ def item_status(body, ident):
              'Boundary reached: develop a different item first, unless an extension is earned.'),
             'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
             'Attempts named by the follow-ups of its entries (write the Owed attempt paragraph against all):'
-            ] + ([f'  #{anchor}{"" if owed else " [no Owed attempt paragraph]"}: '
-                  + ' '.join(sentence[:300] for sentence in said)
+            ] + ([f'  #{anchor}{"" if owed else " [no later entry has an Owed attempt paragraph]"}: '
+                  + ' '.join(said)
                   for anchor, said, owed in named_attempts(body, ident)] or ['  none'])
 
 
