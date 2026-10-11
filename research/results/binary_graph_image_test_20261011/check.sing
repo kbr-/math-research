@@ -1,0 +1,146 @@
+// Exact local-graph interpolation, two nonlinear blocks on four one-hot edges.
+// 9 core cells/block; 9 distinct outside normal monomials/cell span every
+// specialized local-normal monomial (avoid recomputing 81 duplicates).
+// All 81 local states; companions, fields, degree and two negative controls.
+ring lgR=2,(x(1..4),y(1..4)),dp;
+ideal lgLoc;
+int lgI,lgJ,lgA,lgS,lgBits,lgV,lgC3,lgC4,lgU,lgW,lgMask,lgH;
+int lgChecks=0;
+int lgFailures=0;
+int lgBranches=0;
+int lgBasis=0;
+int lgPoints=0;
+int lgNegative=0;
+intvec lgGraphCounts=0,0;
+ideal lgImages,lgG;
+matrix lgBeta[1][2];
+matrix lgHs[1][2];
+poly lgF3=x(1)*x(2);
+poly lgF4=y(1)+y(2)+x(1)*y(2);
+poly lgQ,lgChi,lgP,lgM,lgRemainder,lgExpected,lgBad;
+for(lgI=1;lgI<=4;lgI++)
+{ lgLoc[3*lgI-2]=x(lgI)^2+x(lgI); lgLoc[3*lgI-1]=y(lgI)^2+y(lgI); lgLoc[3*lgI]=x(lgI)*y(lgI); }
+ideal lgGB=std(lgLoc);
+proc lgAssert(int lgOk,string lgLabel)
+{ lgChecks++; if(!lgOk) { lgFailures++; print("FAIL "+lgLabel); } }
+proc lgSplit(poly lgInput,int lgB3,int lgB4)
+{
+  poly lgCur=lgInput;
+  poly lgNext,lgDiff,lgDiv,lgQuot;
+  matrix lgCo[1][2];
+  int lgE,lgBit;
+  for(lgE=3;lgE<=4;lgE++)
+  {
+    lgBit=lgB3; if(lgE==4) { lgBit=lgB4; }
+    lgNext=subst(lgCur,x(lgE),lgBit);
+    lgDiff=lgCur+lgNext; lgDiv=x(lgE)+lgBit;
+    lgQuot=lgDiff/lgDiv;
+    lgAssert(lgQuot*lgDiv==lgDiff,"exact primary division");
+    lgCo[1,lgE-2]=lgCo[1,lgE-2]+lgQuot;
+    lgCur=lgNext;
+    if(lgBit==1)
+    {
+      lgNext=subst(lgCur,y(lgE),0);
+      lgDiff=lgCur+lgNext; lgQuot=lgDiff/y(lgE);
+      lgAssert(lgQuot*y(lgE)==lgDiff,"exact partner division");
+      lgCo[1,lgE-2]=lgCo[1,lgE-2]+lgQuot*y(lgE);
+      lgCur=lgNext;
+    }
+  }
+  poly lgRem=lgInput+lgCo[1,1]*(x(3)+lgB3)+lgCo[1,2]*(x(4)+lgB4);
+  lgAssert(reduce(lgRem+lgCur,lgGB)==0,"complete local telescoping");
+  lgAssert(deg(lgCo[1,1])<=4 && deg(lgCo[1,2])<=4,"branch coefficient degree");
+  lgAssert(deg(lgRem)<=5,"branch local remainder degree");
+  list lgOut=lgCo[1,1],lgCo[1,2],lgRem,lgCur;
+  return(lgOut);
+}
+list lgParts;
+print("PLAN: 18 core cells, 162 distinct outside basis checks, 81 local states, two negative controls.");
+print("STAGES: local split, selector interpolation, full companions/fields, simultaneous survival.");
+lgQ=reduce((x(3)+lgF3)*(x(4)+1+lgF4),lgGB);
+lgAssert(lgQ!=0 && deg(lgQ)<=4,"nonzero common degree-four target");
+print("Q="+string(lgQ));
+for(lgA=0;lgA<=1;lgA++)
+{
+  lgBeta[1,1]=0; lgBeta[1,2]=0;
+  lgBad=0;
+  for(lgS=0;lgS<9;lgS++)
+  {
+    lgBranches++; lgBits=lgS; lgChi=1;
+    for(lgI=1;lgI<=8;lgI++) { lgImages[lgI]=var(lgI); }
+    for(lgI=1;lgI<=2;lgI++)
+    {
+      lgV=lgBits%3; lgBits=lgBits div 3;
+      lgImages[lgI]=0; lgImages[4+lgI]=0;
+      if(lgV==0) { lgChi=lgChi*(1+x(lgI)+y(lgI)); }
+      if(lgV==1) { lgImages[lgI]=1; lgChi=lgChi*x(lgI); }
+      if(lgV==2) { lgImages[4+lgI]=1; lgChi=lgChi*y(lgI); }
+    }
+    map lgCore=lgR,lgImages;
+    lgP=lgF3+lgA; lgC3=int(lgCore(lgP));
+    lgP=lgF4+lgA; lgC4=int(lgCore(lgP));
+    for(lgU=0;lgU<=2;lgU++)
+    {
+      for(lgW=0;lgW<=2;lgW++)
+      {
+        lgM=1;
+        if(lgU==1) { lgM=lgM*x(3); } if(lgU==2) { lgM=lgM*y(3); }
+        if(lgW==1) { lgM=lgM*x(4); } if(lgW==2) { lgM=lgM*y(4); }
+        lgParts=lgSplit(lgM,lgC3,lgC4); lgBasis++;
+      }
+    }
+    lgP=lgCore(lgQ); lgParts=lgSplit(lgP,lgC3,lgC4);
+    lgAssert(reduce(lgParts[3],lgGB)==0,"target vanishes on branch graph");
+    lgBeta[1,1]=lgBeta[1,1]+lgChi*lgParts[1];
+    lgBeta[1,2]=lgBeta[1,2]+lgChi*lgParts[2];
+    lgBad=lgBad+lgParts[1]*(x(3)+lgF3+lgA)+lgParts[2]*(x(4)+lgF4+lgA);
+    kill lgCore;
+  }
+  lgG[1]=x(3)+lgF3+lgA; lgG[2]=x(4)+lgF4+lgA;
+  lgG[3]=x(1)+y(3)*x(4);
+  lgHs[1,lgA+1]=lgBeta[1,1]*lgG[1]+lgBeta[1,2]*lgG[2];
+  lgAssert(reduce(lgHs[1,lgA+1]+lgQ,lgGB)==0,"interpolated common target");
+  lgAssert(deg(lgBeta[1,1])<=6 && deg(lgBeta[1,2])<=6,"global coefficient degree");
+  for(lgI=1;lgI<=3;lgI++)
+  {
+    lgP=lgQ*lgG[lgI]*(1+lgHs[1,lgA+1]);
+    lgAssert(reduce(lgP,lgGB)==0,"weighted companion including extra input");
+    for(lgH=1;lgH<=3;lgH=lgH+2)
+    { lgAssert(deg(lgP)<=4+6*(3*lgH+2),"original companion ceiling h=1,3"); }
+  }
+  for(lgI=1;lgI<=2;lgI++)
+  {
+    lgP=lgQ*(lgBeta[1,lgI]^2+lgBeta[1,lgI]);
+    lgAssert(reduce(lgP,lgGB)==0 && deg(lgP)<=16,"weighted coefficient field");
+    print("block="+string(lgA+1)+" beta"+string(lgI)+"="+string(lgBeta[1,lgI]));
+  }
+  if(lgA==0)
+  { lgNegative++; lgAssert(reduce(lgBad+lgQ,lgGB)!=0,"negative omit core selectors"); }
+}
+lgNegative++; lgAssert(reduce(y(3),lgGB)!=0,"negative unguarded partner after x=1");
+for(lgMask=0;lgMask<81;lgMask++)
+{
+  lgBits=lgMask;
+  for(lgI=1;lgI<=4;lgI++)
+  {
+    lgV=lgBits%3; lgBits=lgBits div 3; lgImages[lgI]=0; lgImages[4+lgI]=0;
+    if(lgV==1) { lgImages[lgI]=1; } if(lgV==2) { lgImages[4+lgI]=1; }
+  }
+  map lgPoint=lgR,lgImages;
+  for(lgA=0;lgA<=1;lgA++)
+  {
+    lgP=x(3)+lgF3+lgA; lgM=x(4)+lgF4+lgA;
+    if(lgPoint(lgP)==0 && lgPoint(lgM)==0)
+    { lgGraphCounts[lgA+1]=lgGraphCounts[lgA+1]+1; lgAssert(lgPoint(lgQ)==0,"target on graph"); }
+    lgP=lgHs[1,lgA+1];
+    lgAssert(lgPoint(lgP)==lgPoint(lgQ),"all local values of H=Q");
+  }
+  lgPoints++; kill lgPoint;
+}
+lgAssert(lgBranches==18 && lgBasis==162 && lgPoints==81 && lgNegative==2,"completion counts");
+print("SUMMARY checks="+string(lgChecks)+" branches="+string(lgBranches)+" basis="+string(lgBasis)
++" points="+string(lgPoints)+" graph_counts="+string(lgGraphCounts)
++" negatives="+string(lgNegative)+" failures="+string(lgFailures));
+if(lgFailures==0) { print("FINAL PASS"); } else { print("FINAL FAIL"); }
+quit;
+
