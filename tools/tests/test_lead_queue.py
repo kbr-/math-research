@@ -1469,6 +1469,7 @@ class LinkEarlierWorkTest(unittest.TestCase):
         self.assertIn('group: lead:r:1', status)
         self.assertIn('Latest development: #entry-2026-10-10-later (Continuing)', status)
         self.assertIn('Current spell: 4; boundary: 4.', status)
+        self.assertNotIn('the spell restarted', status)
         self.assertIn('Boundary reached:', status)
         self.assertIn('Open sub-ideas: e:s1', status)
         extended = entries[:-1] + [entries[-1].replace('<article ', '<article data-spell-extend="2" ')]
@@ -1484,6 +1485,7 @@ class LinkEarlierWorkTest(unittest.TestCase):
         status = '\n'.join(lq.item_status(notebook(entries, queue), parent[1]))
         self.assertIn('Latest development: #entry-2026-10-10-later', status)
         self.assertIn('Current spell: 0; boundary: 4.', status)
+        self.assertIn('the spell restarted after entries on other items', status)   # the lifetime count shows it
         self.assertIn('Next development would be entry 1.', status)
         entries += [self.entry('entry-2026-10-11-return', parent)]
         with tempfile.TemporaryDirectory() as directory:

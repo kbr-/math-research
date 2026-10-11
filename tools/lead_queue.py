@@ -817,9 +817,15 @@ def item_status(body, ident):
     count = spell(body, top.item, nodes)
     limit = spell_limit(body, top.item, nodes)
     boundary = 'unlimited' if limit == float('inf') else str(limit)
+    lifetime = len(history(body, top.ident))
+    # A spell counts consecutive entries, so entries on another item between restart it: on 11 October 2026 an
+    # item with fifteen entries stood at "spell 0".  The lifetime count is printed so that this is seen.
+    reset = (f' Entries on it in all: {lifetime}, more than a spell: the spell restarted after entries on other '
+             'items, and the boundary has not limited the item.' if lifetime > count and lifetime >= 3
+             else f' Entries on it in all: {lifetime}.')
     return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}',
             'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'),
-            f'Current spell: {count}; boundary: {boundary}.',
+            f'Current spell: {count}; boundary: {boundary}.' + reset,
             (f'Next development would be entry {count + 1}.' if count < limit else
              'Boundary reached: develop a different item first, unless an extension is earned.'),
             'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
