@@ -289,7 +289,14 @@ unfinished.
   expectation is one the script computes and prints, not one typed from hand arithmetic.
   `compute.sh` refuses a computation whose script under `research/results` differs from HEAD or is
   untracked; `--exploratory` runs it, and the entry then says its expectations were not committed
-  first.
+  first. Write there also, for each control and prediction, what output would refute it and why that
+  output can occur, in two labelled lines, each opening a line with at least five words after it:
+  `Refuted by:` and `Possible because:`. A control or a prediction that cannot fail decides nothing.
+  A script that tests no statement says `No statement tested:` with its reason. `compute.sh` refuses
+  a script under `research/results` whose first 150 lines have neither the exemption nor both
+  labelled lines; one pair of lines satisfies it for a whole script, and it cannot tell whether the
+  lines are true, so a reviewer still reads them. `--exploratory` runs the script anyway, and the
+  entry then says that the script named no refuting output.
 - A numerical control of a formula includes one check that does not share the method under test:
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is

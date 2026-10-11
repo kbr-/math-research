@@ -619,6 +619,44 @@ def uncommitted_results_scripts(command):
     return found
 
 
+REFUTATION_HEAD_LINES = 150
+REFUTATION_SUFFIXES = ('.py', '.gp', '.m2', '.sing', '.g')        # scripts that state expectations; not sources
+_FIVE_WORDS = r'[ \t]*(?:\S+[ \t]+){4,}\S+'                       # on the label's own line
+_LINE_START = r'^[ \t#/*;%"\'-]*'                                 # the label opens its line, after comment marks
+REFUTATION_PARTS = ((re.compile(_LINE_START + r'Refuted by:' + _FIVE_WORDS, re.M), 'a line "Refuted by:" with '
+                     'the output that would refute its expectation or control'),
+                    (re.compile(_LINE_START + r'Possible because:' + _FIVE_WORDS, re.M), 'a line "Possible '
+                     'because:" with the reason that output can occur'))
+NO_STATEMENT = re.compile(_LINE_START + r'No statement tested:' + _FIVE_WORDS, re.M)
+
+
+def scripts_without_refuting_outcome(command):
+    """(script argument, what its head lacks) for the command's script arguments under a research/results
+    directory whose first lines carry neither both labelled lines, "Refuted by:" and "Possible because:", each
+    followed by at least five words, nor "No statement tested:" with its reason, for a script that processes data
+    and tests nothing.  A control or a prediction that cannot fail tests nothing: on 12 October 2026 two scripts
+    of one block carried one each, found by reviewers after the runs.  Labels and not words in passing: this
+    subject's scripts speak of refutations throughout, and a first form that looked for the words passed three
+    of four scripts by accident.  The check cannot tell whether the sentence is true; it makes the author write
+    it where a reviewer reads it."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()):
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        missing = [what for pattern, what in REFUTATION_PARTS if not pattern.search(head)]
+        if missing and not NO_STATEMENT.search(head):
+            found.append((arg, missing))
+    return found
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -952,6 +990,15 @@ def main():
                          'tracked: commit it first, so that its written expectations precede the run, and check '
                          'that the commit succeeded; --exploratory runs it anyway and the entry then says so '
                          '(COMPUTATION_RULES.md)')
+        silent = scripts_without_refuting_outcome(command)
+        if silent:
+            parser.error('; '.join(f'the script {arg} under research/results lacks, in its first '
+                                   f'{REFUTATION_HEAD_LINES} lines, ' + ' and '.join(missing)
+                                   for arg, missing in silent)
+                         + ': write both lines, each with at least five words, then commit and run; a test that '
+                         'cannot fail decides nothing. A script that tests no statement says so in a line "No '
+                         'statement tested:" with the reason. --exploratory runs it anyway, and the entry then '
+                         'says that the script named no refuting output (COMPUTATION_RULES.md)')
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
