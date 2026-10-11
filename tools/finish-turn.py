@@ -581,6 +581,9 @@ def closure_admits_unmade(plain):
     return bool(CLOSURE_EXCEPTION_RE.search(denied))
 
 
+NOTHING_BEST_RE = re.compile(r"\bnothing (?:at|for) the goal|\bnothing for the family statement|"
+                             r"\bneither gives a candidate", re.I)
+CLOSED_FOLLOW_UP_RE = re.compile(r'<strong>Follow-up\.</strong>\s*Closed\b')
 DEVELOPED_RE =re.compile(r'<strong>Follow-up\.</strong>\s*Developed\b')
 UNREAD_CORRECTIONS = re.compile(r'\b(?:did|has) not (?:read|seen?) (?:the|my|these|those|its) (?:last |later )?'
                                 r'(?:corrections|changes|code as changed)', re.I)
@@ -960,6 +963,14 @@ def validate_bearing(body, article, progress, text=None):
                                  "what this entry's best outcome would give at the goal's own parameters, "
                                  'written before the work; if nothing, the entry closes a queue item and says so '
                                  '(AGENTS.md, goal progress)')
+            # An entry in such a run opened with "nothing at the goal's parameters" as its best outcome and
+            # closed no item; its reviewer could only say afterwards that it should have been refused
+            # (review of 11 October 2026).
+            if NOTHING_BEST_RE.search(plain) and not CLOSED_FOLLOW_UP_RE.search(text):
+                raise ValueError(f'{without} research entries in a row on {route} declared no bearing, and this '
+                                 "entry's Best outcome says it gives nothing at the goal's parameters while it "
+                                 'closes no queue item: take an attempt whose best outcome bears on the goal, or '
+                                 'close the item (AGENTS.md, goal progress)')
     # A bearing that claims something was closed, in two entries in a row, with a summary sentence wider
     # than the proof (reviews of 10 October 2026): it ends with what the result does not cover.
     if declared.group(1) == 'some':
