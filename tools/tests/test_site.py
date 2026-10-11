@@ -109,15 +109,19 @@ class Browser(unittest.TestCase):
         modules = node_modules()
         if not modules:
             self.skipTest('Playwright is not installed')
-        used = RUNNER.cpu_seconds()
+        used, mine, jobs = RUNNER.cpu_seconds(), RUNNER.own_seconds(), RUNNER.other_jobs()
         result, elapsed = node('run_browser_tests.cjs', '--group', f'{k}/{BROWSER_GROUPS}', modules=modules, timeout=60)
-        load = RUNNER.outside_load(used, RUNNER.cpu_seconds(), elapsed, os.cpu_count())
+        after = RUNNER.cpu_seconds()
+        load = RUNNER.outside_load(used, after, elapsed, os.cpu_count())
+        # What was certainly other work during the group; a case over its limit still fails, and says this.
+        busy = RUNNER.elsewhere((used[0], after[0]), (used[1], after[1]), RUNNER.jobs_growth(jobs, RUNNER.other_jobs()),
+                                (mine, RUNNER.own_seconds()), elapsed, os.cpu_count())[1]
         cases = [json.loads(line) for line in result.stdout.splitlines() if line.startswith('{')]
         self.assertGreaterEqual(len(cases), 3, result.stdout + result.stderr)   # nine or more cases in all
         for case in cases:
             with self.subTest(case['name']):
                 self.assertTrue(case['ok'], case.get('error'))
-                self.assertLess(case['seconds'], BROWSER_LIMIT_S, slow_case(case, elapsed, load))
+                self.assertLess(case['seconds'], BROWSER_LIMIT_S, slow_case(case, elapsed, ' '.join(filter(None, [load, busy]))))
         self.assertEqual(result.returncode, 0, result.stderr)
 
 

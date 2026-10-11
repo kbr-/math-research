@@ -533,24 +533,27 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   --threads 1 --timeout 60 python3 tools/tests/run.py`, which runs the tests in parallel worker
   processes. The whole suite stays under 10 seconds (user, 26 September 2026: "The suite should run
   in 10s tops"); the runner fails a slower run and lists its slowest tests. That is a defect to find
-  and fix, such as repeated work in the code under test, not a wait to accept. A timing-limit
-  failure alone does not require another suite run. For the same reason `compute.sh start` warns
-  when its turn guidance takes over 1 s, the finisher when its checks take over 5 s, and
-  `tools/resume.py` when preparing a bundle takes over 2 s. Tests run on small fixtures, where work
-  repeated per item costs nothing: a change to a framework tool that reads the repository's records,
-  or whose work grows with the directory it is given (a copy, a walk, a scan), also gets one timed
-  run against the real repository, and against the largest one it will be used in; such a tool
-  prints what its work grew with (files, megabytes), so a jump is seen at its first use. What git
-  tracks is not all source: recorded data and archived output are tracked too, so a tool that needs
-  the source is told which paths. The run uses a real diff where the tool compares revisions (an
-  unchanged base skips whole code paths), before its commit, and a profile if it is slower than the
-  work it does. Measure a change's effect before claiming it: a framework commit message states only
-  what was measured or checked, and a mechanism (a cache, an option, a helper) needs a measured use.
-  Other tests run only on their own trigger: `formalization/tests/` needs the Lean toolchain and
-  runs when formalization tooling changes; `resource-controls/test_watchdog.py` and `test_11gb.py`
-  validate the memory controls and run only when those controls change. Scripts and tests under
-  `research/` are computations or provenance of finished one-off jobs, tied to the data of their
-  date, and are not rerun.
+  and fix, such as repeated work in the code under test, not a wait to accept. The runner prints the
+  CPU time the run used itself and what was other work on the machine, and names an overrun under
+  load "TOO SLOW (machine busy)"; it still fails. A change that would let a limit quoted here from
+  the user pass where it failed is built as an option that is off and filed as a question, never
+  made the default by the agent. A timing-limit failure alone does not require another suite run.
+  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s, the finisher
+  when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes over 2 s. Tests
+  run on small fixtures, where work repeated per item costs nothing: a change to a framework tool
+  that reads the repository's records, or whose work grows with the directory it is given (a copy, a
+  walk, a scan), also gets one timed run against the real repository, and against the largest one it
+  will be used in; such a tool prints what its work grew with (files, megabytes), so a jump is seen
+  at its first use. What git tracks is not all source: recorded data and archived output are tracked
+  too, so a tool that needs the source is told which paths. The run uses a real diff where the tool
+  compares revisions (an unchanged base skips whole code paths), before its commit, and a profile if
+  it is slower than the work it does. Measure a change's effect before claiming it: a framework
+  commit message states only what was measured or checked, and a mechanism (a cache, an option, a
+  helper) needs a measured use. Other tests run only on their own trigger: `formalization/tests/`
+  needs the Lean toolchain and runs when formalization tooling changes;
+  `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and run only
+  when those controls change. Scripts and tests under `research/` are computations or provenance of
+  finished one-off jobs, tied to the data of their date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general rules, not

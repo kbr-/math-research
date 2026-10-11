@@ -23,12 +23,54 @@ class SuiteTimeLimit(unittest.TestCase):
                                            '    def test_returns(self):\n        pass\n')
         self.root = root
 
-    def run_suite(self, limit):
-        return subprocess.run([sys.executable, 'run.py', '-j', '2', '--limit', str(limit)], cwd=self.root,
+    def run_suite(self, limit, *more):
+        return subprocess.run([sys.executable, 'run.py', '-j', '2', '--limit', str(limit), *more], cwd=self.root,
                               capture_output=True, text=True, timeout=30)
 
+    def test_an_overrun_on_a_busy_machine_is_named_and_fails_unless_excused(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('framework_runner', RUNNER)
+        runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(runner)
+        # The figures measured on 11 October 2026: alone, and beside a job loading fourteen CPUs.
+        self.assertEqual(runner.verdict(8.3, 10, 0.06, 94), 'ok')
+        self.assertEqual(runner.verdict(13.6, 10, 0.50, 90), 'busy')
+        self.assertEqual(runner.verdict(14.8, 10, 0.53, 90), 'busy')
+        self.assertEqual(runner.verdict(13.6, 10, 0.06, 90), 'slow')    # a quiet machine: the suite is slow
+        self.assertEqual(runner.verdict(13.6, 10, None, None), 'slow')  # no reading: the limit stands
+        self.assertEqual(runner.verdict(13.6, 10, 0.50, 140), 'slow')   # its own CPU time grew: its own work
+        self.assertEqual(runner.verdict(20.1, 10, 0.90, 90), 'slow')    # beyond twice the limit nothing is excused
+        share, line, own = runner.elsewhere((100.0, 300.0), (20.0, 215.0), 100.0, (5.0, 95.0), 13.6, 16)
+        self.assertEqual((round(share, 3), own), (round(105 / (16 * 13.6), 3), 90.0))   # 100 s of jobs, 5 s of programs
+        self.assertIn('90 s in its own control group; elsewhere 100 s in other jobs', line)
+        self.assertEqual(runner.elsewhere((1.0, 2.0), (None, 1.0), 0.0, (1.0, 2.0), 1.0, 16), (None, None, None))
+        self.assertEqual(runner.jobs_growth({'a': 1.0, 'gone': 5.0}, {'a': 4.0, 'born': 50.0}), 3.0)
+        # The other jobs of the slice: every job's group but the run's own; nothing outside the slice.
+        groups, group = self.root / 'groups', self.root / 'cgroup'
+        for name, usage in (('mine.service', 9_000_000), ('theirs.service', 2_500_000), ('unreadable.service', None)):
+            (groups / 'user.slice/mathcompute.slice' / name).mkdir(parents=True)
+            if usage is not None:
+                (groups / 'user.slice/mathcompute.slice' / name / 'cpu.stat').write_text(f'usage_usec {usage}\n')
+        (groups / 'user.slice/mathcompute.slice/cpu.stat').write_text('usage_usec 11500000\n')
+        group.write_text('0::/user.slice/mathcompute.slice/mine.service\n')
+        self.assertEqual(runner.other_jobs(group, groups), {'theirs.service': 2.5})
+        self.assertEqual(runner.own_seconds(group, groups), 9.0)
+        group.write_text('0::/user.slice/session-2.scope\n')
+        self.assertEqual(runner.other_jobs(group, groups), {})
+        self.assertIsNone(runner.own_seconds(group, groups))
+        # The flags: with every share counted as busy and a limit the sleeping test overruns by less than
+        # twice, the run is named busy; it fails unless excused, whatever else the machine does.
+        result = self.run_suite(0.45, '--busy-share', '0')
+        if 'in its own control group' in result.stdout and 'Busy machine:' in result.stdout:
+            self.assertEqual(result.returncode, 1, result.stdout)
+            self.assertIn('TOO SLOW (machine busy)', result.stdout)
+        excused = self.run_suite(0.45, '--busy-share', '0', '--excuse-busy')
+        self.assertEqual(excused.returncode == 0, 'Busy machine:' in excused.stdout, excused.stdout)
+        result = self.run_suite(0.45, '--busy-share', '0', '--own-cpu-limit', '0', '--excuse-busy')
+        self.assertEqual(result.returncode, 1, result.stdout)
+
     def test_over_the_limit_fails_and_names_the_slowest_test(self):
-        result = self.run_suite(0.2)
+        result = self.run_suite(0.2, '--busy-share', '2')   # never excused as a busy machine
         self.assertEqual(result.returncode, 1, result.stdout)
         self.assertIn('TOO SLOW', result.stdout)
         slowest = result.stdout.split('Slowest tests:')[1].splitlines()[1]

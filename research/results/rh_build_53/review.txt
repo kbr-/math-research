@@ -1,0 +1,39 @@
+Reviewer's record, entry suite-limit-busy-machine (riemann notebook, 11 October 2026). One fresh-context medium
+reviewer, read-only, in two passes; it ran no tests. It did not read the last corrections.
+
+FIRST PASS. Verdict: fail as drafted (code mostly sound; the rule's threshold and the "Developed" closure are
+not supported).
+- Self-excuse is real: "elsewhere" counts launcher services the suite's own tests start; a test adding about
+  31 CPU-s in a sibling group lengthens the run, raises the share, leaves own CPU flat, and is excused on a quiet
+  machine.
+- The 0.25 threshold is unmeasured: both loaded runs sit at 50-53%.
+- No cap on excused time: a 60 s run, or a 30 s browser case, passes under load; cap it (about twice the limit).
+- Limit paragraph incomplete: lost parallelism, I/O stalls, own-CPU growth up to 33%, drift of 125 s as tests are
+  added, and that the excused run exits 0.
+- "Developed" fails the Not examined rule: the archive was opened in seconds; it confirms 212 s, 11 s and "busy
+  for 222 s of 256", and its slowest list has two tests of the two-partition kernel at 3.71 and 3.38 s, evidently
+  the merged item's subject.
+- Numbers: "a time failure in another run" has no source; "9.4 to 11.8 s" should be 9.4 to 12.0; "two thirds"
+  should be 64-80%.
+- Stale text: a docstring, the module docstring, and the framework rule's sentence.
+Process audit: the title may claim "overruns under load are excused with a note", not that the limit "tells a
+busy machine from a slow test"; the Bearing's reason cuts against a rule that passes silently; not asked:
+whether this needs the user, since it weakens a quoted user rule; the archive was skipped without a reason; only
+the 14-CPU control was run.
+
+SECOND PASS (reworked: fails by default and names the overrun; only other jobs present throughout and programs
+outside the slice count; a cap; a pure verdict function; a 4-CPU load measured; the archive read). Verdict: pass
+with corrections; verdict, jobs_growth and elsewhere correct as read.
+- The archive question is decidable: the slice truncation dates from the first version of the line (10 October,
+  evening); the "shared slice" label came only on 11 October after the archive; the archived file is a launcher
+  output, so its 212 s was the whole slice; against 90-97 s for the suite itself, roughly half was other jobs.
+  The only caveat: the 864-test suite's own CPU was not measured.
+- "The suite cannot make itself look busy" is too strong: work the tests cause outside the slice still counts as
+  programs (measured quiet: 10-13 s, 7-9%, against the 40 s needed).
+- Mixed definitions: the 6%, 7%, 50% and 53% figures were printed by the first definition; the fourteen-CPU runs
+  were not repeated on the final code.
+- A stale comment; other_jobs has no test; the nested-run assertions can be skipped silently; three kernel times,
+  not two.
+"Developed" stands once the first item is corrected.
+Process audit: the title may claim that the runner names overruns under load and measures them, not that they
+are excused or that the limit was changed; "a load of four CPUs is already enough" rests on one run.
