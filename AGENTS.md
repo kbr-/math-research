@@ -376,26 +376,28 @@ assessments.
   select a diff item"). Then work returns to the route, or to a better route the leads opened. While
   the queue is draining, reviews produce no Outside leads or Absurd bridges: omit both sections and
   assess existing work (user, 5 October 2026). Review cadence and the other review requirements
-  still apply. Reviews report only follow-ups whose status changed. The finisher checks all of this
-  against HEAD and `compute.sh start` prints the queue's state and head. A one-step objection (a
-  structural remark, a record match, one encoding tried) falsifies only that formulation. Before a
-  review declares an open statement without mechanism, or moves cycles away from it, each "Not run"
-  item and each item closed by such an objection that bears on that statement gets a development
-  cycle: read the source in full, and try other encodings, formulations and settings where the
-  objection does not apply (user, 26 September 2026: "Did you make an honest attempt at developing
-  some of these in order to solve A1?"). In the user's words (25 September 2026): "absurd bridges
-  can reach for mathematics, computer science, theoretical physics, quantum fucking chemistry, I
-  don't give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
-  every cycle, not only when the user names a field. Proposed next step names its route item. While
-  the goal is open that step is always research: never park, pause or stop the goal, or wait for a
-  user decision; when recorded routes are closed, propose and test a new idea. Once the goal is
-  proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the
-  next cycle or review in the current turn; possible user redirection is no reason to idle or
-  request a check-in. Low-yield cycles, corrections and hard next steps call for developing the
-  latest review's Outside leads and Absurd bridges, not stopping the loop while the goal is open.
-  Explain progress, obstructions and remaining uncertainty; do not invent numerical probabilities
-  for research prospects. A probability requires a stated quantitative method and evidence, not an
-  uncalibrated impression.
+  still apply. A review of a draining queue declares `data-queue-items="N"`, its top-level count
+  (the finisher checks), and `compute.sh start` prints the last two recorded counts beside the
+  present one: draining is a rule, and only the counts show whether the queue shrinks. Reviews
+  report only follow-ups whose status changed. The finisher checks all of this against HEAD and
+  `compute.sh start` prints the queue's state and head. A one-step objection (a structural remark, a
+  record match, one encoding tried) falsifies only that formulation. Before a review declares an
+  open statement without mechanism, or moves cycles away from it, each "Not run" item and each item
+  closed by such an objection that bears on that statement gets a development cycle: read the source
+  in full, and try other encodings, formulations and settings where the objection does not apply
+  (user, 26 September 2026: "Did you make an honest attempt at developing some of these in order to
+  solve A1?"). In the user's words (25 September 2026): "absurd bridges can reach for mathematics,
+  computer science, theoretical physics, quantum fucking chemistry, I don't give a fuck. That's why
+  they are absurd." Reaching for other areas is the agent's job at every cycle, not only when the
+  user names a field. Proposed next step names its route item. While the goal is open that step is
+  always research: never park, pause or stop the goal, or wait for a user decision; when recorded
+  routes are closed, propose and test a new idea. Once the goal is proved, a Spin loop stops
+  ([PROMPTS.md](PROMPTS.md#spin)). During an authorized Spin, continue the next cycle or review in
+  the current turn; possible user redirection is no reason to idle or request a check-in. Low-yield
+  cycles, corrections and hard next steps call for developing the latest review's Outside leads and
+  Absurd bridges, not stopping the loop while the goal is open. Explain progress, obstructions and
+  remaining uncertainty; do not invent numerical probabilities for research prospects. A probability
+  requires a stated quantitative method and evidence, not an uncalibrated impression.
 - Keep entries chronological and append-only, including opinions/assessments even when the user
   objects. Withdraw/correct/retract in a new dated entry linking the old anchor; update living
   status and correction metadata. Never silently rewrite prior mathematics to match later results.

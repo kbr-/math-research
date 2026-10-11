@@ -633,6 +633,35 @@ def unlinked_earlier_entry(body, nodes, articles, item):
     return None
 
 
+QUEUE_ITEMS_RE = re.compile(r'\bdata-queue-items="(\d+)"')
+
+
+def review_counts(body):
+    """[(anchor, count)] for the reviews that declare the queue's top-level count, in record order."""
+    out = []
+    for tag, _ in record_articles(body):
+        declared = QUEUE_ITEMS_RE.search(tag)
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        if declared and anchor and 'data-kind="review"' in tag:
+            out.append((anchor.group(1), int(declared.group(1))))
+    return out
+
+
+def undeclared_review_count(tag, draining, nodes):
+    """What a review of a draining queue must declare and does not: data-queue-items with the top-level count.
+
+    A queue was called draining through a block of six entries that left its count where it was (52 and 52,
+    11 October 2026).  A review of a draining queue therefore records the count, and the start guidance prints
+    the last two recorded counts beside the present one."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if not draining or 'data-kind="review"' not in tag or dated is None or dated.group(1) < LINK_EARLIER_FROM:
+        return None
+    declared = QUEUE_ITEMS_RE.search(tag)
+    if declared is None or int(declared.group(1)) != len(nodes):
+        return len(nodes)
+    return None
+
+
 def unstated_subideas(tag, text, item, before_nodes):
     """The open sub-ideas of the top-level item an entry develops for which the entry lists no outcome.
 
@@ -1202,6 +1231,10 @@ def check(head_body, body, path=None, root=None):
     work = developed_by(tag, text)
     batch = triaged(tag, text)
     chosen = picked(tag, text)
+    count = undeclared_review_count(tag, draining, nodes)
+    if count is not None:
+        raise ValueError(f'A review of a draining queue declares data-queue-items="{count}", the number of top-level '
+                         'items now queued, so that the next cycles see whether the queue shrinks (AGENTS.md)')
     if work:
         earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
         if earlier:

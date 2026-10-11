@@ -1438,6 +1438,48 @@ class OpenSubideaOutcomesTest(unittest.TestCase):
             lq.check(head, notebook([self.entry('entry-2026-10-11-new', one)], queue))
 
 
+class QueueTrendTest(unittest.TestCase):
+    """A review of a draining queue records its count; the guidance shows the trend and the run without bearing."""
+
+    def review(self, ident, count=None):
+        attr = '' if count is None else f' data-queue-items="{count}"'
+        return f'<article id="{ident}" data-kind="review" data-route="step"{attr}><p>Assess.</p></article>'
+
+    def test_a_draining_review_declares_the_count(self):
+        queue = [('lead', 'r:1'), ('lead', 'r:2')]
+        nodes = lq.parse_tree(notebook([], queue, draining=True))[1]
+        tag = '<article id="entry-2026-10-12-review" data-kind="review">'
+        self.assertEqual(lq.undeclared_review_count(tag, True, nodes), 2)
+        self.assertEqual(lq.undeclared_review_count(tag.replace('>', ' data-queue-items="3">'), True, nodes), 2)
+        self.assertIsNone(lq.undeclared_review_count(tag.replace('>', ' data-queue-items="2">'), True, nodes))
+        self.assertIsNone(lq.undeclared_review_count(tag, False, nodes))                      # not draining
+        self.assertIsNone(lq.undeclared_review_count(tag.replace('review"', 'research"'), True, nodes))
+        self.assertIsNone(lq.undeclared_review_count('<article id="old" data-kind="review">', True, nodes))
+        with self.assertRaisesRegex(ValueError, 'data-queue-items="2"'):
+            lq.check(notebook([], queue, draining=True),
+                     notebook([self.review('entry-2026-10-12-review')], queue, draining=True))
+
+    def test_guidance_prints_the_trend_and_the_run(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('turn_guidance', ROOT / 'tools/turn_guidance.py')
+        guide = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(guide)
+        queue = [('lead', 'r:1'), ('lead', 'r:2')]
+        self.assertIn('no review has recorded', guide.queue_trend_notes(notebook([], queue, draining=True))[0])
+        self.assertEqual(guide.queue_trend_notes(notebook([], queue)), [])                      # not draining
+        body = notebook([self.review('entry-a', 5), self.review('entry-b', 2)], queue, draining=True)
+        note = guide.queue_trend_notes(body)[0]
+        self.assertIn('5 at #entry-a, 2 at #entry-b', note)
+        self.assertIn('not shrunk', note)
+        self.assertIn('shrinking', guide.queue_trend_notes(notebook([self.review('entry-a', 5)], queue, draining=True))[0])
+        none = '<article id="e{}" data-kind="research" data-route="step" data-bearing="none"></article>'
+        some = '<article id="s" data-kind="research" data-route="step" data-bearing="some"></article>'
+        run = [some] + [none.format(i) for i in range(2)] + [self.review('entry-r')] + [none.format(2)]
+        self.assertIn('last 3 research entries', guide.bearing_run_notes(notebook(run, queue))[0])
+        self.assertEqual(guide.bearing_run_notes(notebook(run[:3], queue)), [])               # two is below the mark
+        self.assertEqual(guide.bearing_run_notes(notebook(run + [some], queue)), [])
+
+
 class LastItemGuidanceTest(unittest.TestCase):
     def test_start_guidance_counts_the_chosen_items_spell(self):
         import importlib.util

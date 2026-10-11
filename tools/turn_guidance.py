@@ -68,7 +68,46 @@ def library_note(has=installed_header):
 
 def queue_notes(body):
     """The queue's state, and the spell of the item the last entry developed when that is not the head."""
-    return queue_state_notes(body) + last_item_notes(body)
+    return queue_state_notes(body) + queue_trend_notes(body) + last_item_notes(body) + bearing_run_notes(body)
+
+
+def queue_trend_notes(body):
+    """A draining queue's top-level count at the last two reviews that recorded it, beside the present count."""
+    import lead_queue as lq
+    found = lq.parse_tree(body)
+    if found is None or not found[0]:
+        return []
+    counts = lq.review_counts(body)[-2:]
+    if not counts:
+        return [f'Lead queue: {len(found[1])} top-level items now; no review has recorded the count yet, so whether '
+                'the queue shrinks is not measured. The next review declares data-queue-items.']
+    past = ', '.join(f'{count} at #{anchor}' for anchor, count in counts)
+    grew = len(found[1]) >= counts[-1][1]
+    return [f'Lead queue: {len(found[1])} top-level items now; {past}. '
+            + ('It has not shrunk since the last review: an item removed for each one added does not drain it.'
+               if grew else 'It is shrinking.')]
+
+
+BEARING_RUN = 3
+
+
+def bearing_run_notes(body):
+    """How many research entries in a row, on any queue item, declared that they give nothing at the goal's
+    parameters.  The finisher's rule moves an agent off an item after two such entries; nothing counted the run
+    across items, and on 11 October 2026 twelve entries in a row declared no bearing, each on a fresh item."""
+    import lead_queue as lq
+    run = 0
+    for tag, _ in reversed(lq.record_articles(body)):
+        if 'data-kind="research"' not in tag:
+            continue                                   # reviews and audits neither count nor end the run
+        if 'data-bearing="none"' not in tag:
+            break
+        run += 1
+    if run < BEARING_RUN:
+        return []
+    return [f'The last {run} research entries in a row declared no bearing on the goal (data-bearing="none"), across '
+            'queue items. State in this entry\'s choice of item what at the goal\'s own parameters it could give; '
+            'if nothing, say why the cycle is spent on it.']
 
 
 def last_item_notes(body):
