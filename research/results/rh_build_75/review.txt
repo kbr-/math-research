@@ -1,0 +1,33 @@
+Reviewer's record, entry hook-notices-recorded (riemann notebook, 11 October 2026). One fresh-context medium
+reviewer, read-only, with a follow-up.
+
+FIRST PASS. Verdict: pass with corrections (tool logic correct; removal as Developed not yet supported).
+Checked: the notice pattern matches the queue tool's wording; reopen-after-answer and the starting time are
+right; recording cannot alter or lose the notice text; research/logs/ is ignored; 2 new tests pass; 958 tests in
+7.4 s matches the saved output; five items, four/one, each counted twice matches past_notices.txt.
+Required changes:
+- The hook-to-log-to-finisher path has no test and no use; built() in the hook has no test anywhere. The
+  entry's "first real use is this commit" will probably show nothing: the commit removes the item, and the
+  queue tool names only items still queued. Add a test of built() recording and one of the finisher printing,
+  or mark Continuing.
+- Which hook copy runs: the settings run the project directory's copy; if that is the main checkout, nothing
+  is recorded until its files are updated. State which, in Limit.
+- The starting time is correct only with --next; a commit after a finisher run without it is never printed.
+- The finisher's new block catches only ImportError; a non-object row would raise. Guard in rows().
+- Measurement: "three answered, late, and two never" and the doubling have no saved source.
+- "Not recorded anywhere" is true today but a few lines to add; say "not built".
+Suggestion (unverified): have the queue tool's history command append an answer row when a notice for that
+item is open.
+Process audit: the title may claim "recorded and listed by the finisher; tool tested, hook path untested", not
+that notices are now answered; review.txt linked but absent; the other agent's hook calls only the base check,
+so its sessions get no notices; the Prevention is honest about report-only.
+
+FOLLOW-UP. Verdict: pass; nothing blocks the removal.
+1. The new test runs the real built() recording line and the real hook_notice_lines (3 tests pass; 959 in 7.7 s
+   matches). sys.path is restored and the module popped; residue harmless. The damaged-log assertion cannot
+   tell the rows() guard from the finisher's except.
+2. Developed is supported: the path exists, is tested with replaced calls, and the entry and title say no real
+   commit has gone through it.
+3. Gate: "and every figure" overstates; write "the figures with saved output". review.txt must exist before
+   the append.
+4. Title accurate against the body. No further findings.

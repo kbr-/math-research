@@ -74,7 +74,15 @@ def built(command, cwd=None):
         result = subprocess.run([sys.executable, tool, 'built'], cwd=root, capture_output=True, text=True, timeout=10)
     except (OSError, subprocess.TimeoutExpired):
         return None
-    return result.stdout.strip() or None if result.returncode == 0 else None
+    text = result.stdout.strip() or None if result.returncode == 0 else None
+    if text:      # kept, so that the finisher can print the notices nothing answered (tools/hook_notices.py)
+        try:
+            sys.path.insert(0, os.path.join(root, 'tools'))
+            import hook_notices
+            hook_notices.record(root, text)
+        except Exception:      # recording must never cost the notice itself
+            pass
+    return text
 
 
 def main():

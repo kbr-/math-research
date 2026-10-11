@@ -367,6 +367,32 @@ def result_files_line(body, ident):
     return f'  Result files its entries link ({len(files)}): ' + ', '.join(files) if files else ''
 
 
+REVIEW_PERIOD = 6      # the finisher's; a test holds the two equal
+
+
+def cadence_line(text):
+    """One line on the review cadence after the last entry of the record, for a next step to be written against.
+
+    Twice on 11 October 2026 a next step said which coming entry is the sixth since the last route review,
+    counted from memory, and was wrong by one; the count is printed where the next step is written."""
+    tags = re.findall(r'<article\b[^>]*>', text[text.find('<section id="research-record"'):])
+    if not tags:
+        return None
+    route = re.search(r'data-route="([^"]*)"', tags[-1])
+    streak = 0
+    for tag in reversed(tags):
+        if route and f'data-route="{route.group(1)}"' not in tag:
+            continue
+        kind = re.search(r'data-kind="([^"]*)"', tag)
+        if kind and kind.group(1) == 'review':
+            break
+        streak += bool(kind and kind.group(1) == 'research')
+    left = REVIEW_PERIOD - streak
+    where = f' on route {route.group(1)}' if route else ''
+    return (f'Review cadence{where}: {streak} research entries since the last route review, this one included; '
+            + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('entry', type=Path)
@@ -384,6 +410,8 @@ def main():
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
     print(f'Appended to {path.relative_to(ROOT)}')
+    if nxt and cadence_line(result):
+        print(cadence_line(result))
     for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
         print(f'The next step names queue item {ident}. Check its description against the item\'s own words:')
         print(f'  Queued text: {text}')

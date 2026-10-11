@@ -351,5 +351,28 @@ class ResultFilesLineTest(unittest.TestCase):
             self.assertEqual(tool.result_files_line('body', 'item'), '')
 
 
+class CadenceLineTest(unittest.TestCase):
+    def record(self, *kinds):
+        return ('<section id="lead-queue"><article data-kind="research" data-route="r">not the record</article>'
+                '</section><section id="research-record">' + ''.join(
+                    f'<article id="e{i}" data-kind="{kind.split(":")[0]}" data-route="{kind.split(":")[-1]}">x</article>'
+                    for i, kind in enumerate(kinds)) + '</section>')
+
+    def test_the_line_counts_research_entries_of_the_last_entry_s_route_since_its_review(self):
+        line = tool.cadence_line(self.record('research:r', 'review:r', 'research:r', 'research:other', 'audit:r',
+                                             'research:r'))
+        self.assertEqual(line, 'Review cadence on route r: 2 research entries since the last route review, this '
+                               'one included; 4 more, then the review.')
+        self.assertIn('the next entry is the review', tool.cadence_line(self.record(*['research:r'] * 6)))
+        self.assertIn('0 research entries', tool.cadence_line(self.record('research:r', 'review:r')))
+        self.assertIsNone(tool.cadence_line('<section id="research-record"></section>'))
+
+    def test_the_period_is_the_finisher_s(self):
+        finisher = importlib.util.spec_from_file_location('finisher_for_cadence', TOOLS / 'finish-turn.py')
+        module = importlib.util.module_from_spec(finisher)
+        finisher.loader.exec_module(module)
+        self.assertEqual(tool.REVIEW_PERIOD, module.REVIEW_PERIOD)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -817,6 +817,18 @@ def decided_report(entry):
              'each hedge beside the report and say in the entry which matter it is about:'] + lines) if lines else []
 
 
+def hook_notice_lines(root, since):
+    """Lines for the finisher to print, or none: the post-commit hook's notices at or after `since` that no
+    answer followed (tools/hook_notices.py).  It prints and refuses nothing, and a failure to read the log
+    prints nothing rather than stopping the checkpoint.  With --next the session starts before the commit of
+    the entry it follows, so that commit's notice is in its window; without --next it is in no window."""
+    try:
+        import hook_notices
+        return hook_notices.report(root, since)
+    except Exception:
+        return []
+
+
 def validate_resemblance_run(entry, queries):
     """An entry that declares claims was written in a session that ran tools/claim_resemblance.py on each.
 
@@ -1550,6 +1562,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     if unread:
         print(unread)
     for line in decided_report(entry):
+        print(line)
+    for line in hook_notice_lines(root, first.get('unix_s', 0)):
         print(line)
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
