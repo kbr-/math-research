@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Affine mask degree](https://kbr.is-a.dev/math-research/#entry-2026-10-11-affine-mask-degree)",
+    "label": "Affine mask degree",
+    "targets": ["../notebook.html#entry-2026-10-11-affine-mask-degree"]
+  },
+  "date": "2026-10-11",
+  "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["method-obstructions", "degree-accounting", "frege-simulation"],
+  "claims": [
+    {
+      "id": "thm:affine-flat-vanishing-degree",
+      "summary": "For a finite field F_q contained in K, v>=1 and 0<=k<v, the least degree of a nonzero f in K[x_1,...,x_v] whose formal restriction f(Ut+c) is zero for every rank-k U over F_q and c in F_q^v is q(q^(k+1)-1)/(q-1). A smallest-dimensional nonzero affine restriction is divisible by every rational affine hyperplane of that space; projecting to k+1 coordinates and multiplying all its affine hyperplane forms attains equality. Joint restriction is injective below that degree. Formal vanishing, not just finite-point evaluation; k=v has no nonzero example.",
+      "assessment": "Working all-parameter minimal-restriction and explicit-product proof, passed by the sole medium reviewer. No efficient reconstruction or Frege lower bound asserted.",
+      "status": "working_proof",
+      "rationale": "Sharp general geometric calibration for a common-mask mechanism; point-vanishing and multiplicity results have distinct hypotheses.",
+      "next_action": "Use the exact mask threshold when assessing a collective affine-slice certificate invariant; do not infer global hardness from detection alone.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:common-mask-size-barrier",
+      "summary": "For a binary full certificate C and scalar patch C'=A+MC, if restriction to every binary affine k-flat fixes placeholders and gives rho(C')=rho(A), then any nonzero M has degree at least 2^(k+2)-2. A size-S depth-d division-free arithmetic circuit for M counting gates and wires, with scalar/variable leaves and no succinct powers, has S^d>=2^(k+2)-2. Fixed depth and k=omega(log N) exclude polynomial-size nonzero masks; for rank m=2n, k=n gives an exponential mask bound. Zero M, other patch forms and certificate/Frege size lower bounds are not excluded or proved.",
+      "assessment": "Working consequence of formal affine-flat vanishing and the elementary circuit-degree bound, passed by the sole medium reviewer. Scoped to nonzero common multipliers.",
+      "status": "working_proof",
+      "rationale": "At the rank candidate's parameters, rules out cheap simultaneous erasure by this nonzero scalar mask while leaving actual refutation complexity unchanged.",
+      "next_action": "Scheduled goal review must compare collective compatibility against alternative complete routes; this mask lower bound is not a refutation lower bound.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["thm:affine-flat-vanishing-degree", "cites", "lem:hyperplane-restriction-dichotomy", "Uses the recorded formal-zero-restriction implies hyperplane divisibility mechanism; the new exact all-flat degree statement is distinct from the BMD point-multiplicity dichotomy."],
+    ["cor:common-mask-size-barrier", "depends_on", "thm:affine-flat-vanishing-degree", "Specializes the sharp minimum to binary nonzero masks."],
+    ["cor:common-mask-size-barrier", "cites", "thm:affine-slice-normalization", "Uses its necessary vanishing condition for the scalar patch and contrasts a common all-slice mask with the individually affordable fixed-slice construction."]
+  ]
+}
