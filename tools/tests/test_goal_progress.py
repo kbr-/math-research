@@ -514,6 +514,8 @@ class BearingTest(unittest.TestCase):
                                 'search.</strong> Searched the registry for the next attempt: no statement.</p>'
                                 + nothing)
         FT.validate_bearing(full, full.rindex('<article'), said, entry + nothing)   # the entry closes an item
+        FT.validate_bearing(full, full.rindex('<article'), said,                    # or removes it as developed
+                            '<p><strong>Follow-up.</strong> Developed: built.</p>' + nothing)
         fewer = body(rows[1:])                                             # two such entries: not yet asked
         FT.validate_bearing(fewer, fewer.rindex('<article'), said, entry)
         broken = body([rows[0], ('b:1', 'some'), rows[2]])                 # a run broken by a bearing
