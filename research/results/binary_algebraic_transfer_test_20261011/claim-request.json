@@ -1,0 +1,485 @@
+{
+  "base_sha256": "d0fe287c16e02ebd489261392fe4c60c89f771f3869ae9c5a6870419717c215d",
+  "provenance": {
+    "revision": "093067d7a45d92af73036061a03da91c369228fa",
+    "date": "2026-10-11",
+    "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:prime-field-residual-normalization",
+        "summary": "For fixed prime p, input circuits F_i over F_p of total size s/depth Delta, and Boolean B_j=x_j^2-x_j, put A=product_i(1-F_i^(p-1)). A general IPS certificate of size S/depth d yields a circuit Q(x,Z), linear in Z, with Q(x,0)=0 and Q(x,B)=A, at polynomial size in S+s+n+m and depth O(d+Delta+1). Conversely Q yields a full certificate with input coefficients F_i^(p-2) product_(l<i)(1-F_l^(p-1)). The forward proof explicitly linearizes general IPS by gate telescoping and constructs small Frobenius Boolean-defect certificates. No PC-degree, multilinearity-in-x or extension-field preservation is claimed.",
+        "assessment": "Working complete formal transformation, passed by the sole fresh medium reviewer. This composes the earlier clause-normalization scaling with standard circuit telescoping and prime-field Frobenius certificates. It gives an equivalent residual-certificate task, not a lower bound or a cheap correction circuit. The older all-field literal-CNF theorem keeps its separate field and sharper-depth scope.",
+        "record": "[Algebraic transfer test](https://kbr.is-a.dev/math-research/#entry-2026-10-11-algebraic-transfer-test)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "nullstellensatz",
+          "substitution",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Specifies the full correction-circuit obligation for the algebraic-to-CNF route without imposing multilinearity or discarding Boolean terms; goal progress remains unchanged because the transformation alone supplies no hard family.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": "Verify the cited knapsack family's full nonmultilinear certificate mechanism, including its written feature Booleanity, and identify the structural range-exclusion condition a different algebraic candidate must evade."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:clause-coefficient-normalization",
+        "summary": "Over any field, let literal CNF violation products F_i and all Boolean B_j=x_j^2-x_j have Hilbert-like certificate C(x,Y,Z), size S depth d. Put P=product_i(1-F_i), P_i=product_(k!=i)(1-F_k), and literal-telescoping T_i(x,B)=F_i^2-F_i. Then Q=C(x,(-P_i T_i(x,Z))_i,(P Z_j)_j) satisfies Q(x,B)=P, is Hilbert-like and has size O(S+s^3), depth<=d+10, s=m+n+literal length+1, counting gates and wires with unbounded fan-in. Conversely sum_i(product_(k<i)(1-F_k))Y_i+Q gives a certificate with fixed clause coefficients, size O(S+s^3), depth<=max(d,6)+2. Repeated, tautological and empty clauses allowed; polynomial Hilbert-likeness suffices.",
+        "assessment": "Working explicit formal transformation, medium reviewed. Extends the earlier selector identity by retaining and constructing Boolean corrections from the supplied certificate. Does not supply a certificate from nothing, preserve exact Frege simulation image or give a PC degree bound.",
+        "record": "[Clause coefficient test](https://kbr.is-a.dev/math-research/#entry-2026-10-11-clause-coefficient-test)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "nullstellensatz",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Isolates the complete Boolean-ideal certificate as an equivalent constant-depth circuit-size target for literal CNFs; it is an equivalent formulation, not goal progress.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": "A lower-bound use still needs a size-sensitive obstruction for all full Boolean corrections at the stated depth overhead."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Algebraic transfer test: new relationship with lem:prime-field-residual-normalization.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-clause-coefficient-test"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "imp:binary-algebraic-CNF-IPS-transfer",
+        "summary": "F2 specialization of Elbaz-Govindasamy-Lu-Tzameret Theorem64/Corollary65: constant-depth arithmetic circuit equations of total description size s, with Boolean axioms, have a polynomial-size CNF encoding whose size-S depth-t general IPS refutation transfers to the equations with size poly(S,s) and depth O(t+Delta). General constant-depth IPS hardness for such fixed input families therefore transfers to CNFs.",
+        "assessment": "Attributed established import, exact F2 gate/substitution and field-equation proof scope read and reviewed. This is general degree-unrestricted IPS: no preservation of PC degree, multilinearity or Hilbert-likeness is asserted. Constant input depth, polynomial description and Boolean domains matter. No extension-field interpretation of the unary-bit notation is imported, and the restricted multilinear/ROABP lower bounds do not supply the required premise.",
+        "record": "[Realization goal review](https://kbr.is-a.dev/math-research/#entry-2026-10-09-realization-goal-review)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting",
+          "moment-designs",
+          "frege-simulation"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Broadens the algebraic starting families available to the queued IPS alternative, while retaining its unproved unrestricted circuit-size lower bound. No new simulation or goal advance is claimed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": "Look for a qualifying general-IPS-hard algebraic family; do not substitute a near-half PC bound or multilinear IPS bound without a separate implication."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Source mechanism review: new relationship with cor:binary-coordinate-depth-gap. Algebraic transfer test: new relationship with lem:prime-field-residual-normalization.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-realization-goal-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "audit:finite-field-IPS-source-scope",
+        "summary": "The checked finite-field IPS results do not establish compatibility for the fixed named PHP source, whose generator list consists of polynomial-width ROABP inputs.",
+        "assessment": "Bounded audit of ECCC TR25-080 plus three abstract-level screens. Its placeholder lower bounds have hard inputs; the constant-depth multilinear theorem has p>=5 and another instance. The fixed-field functional inverse argument is for a single unsatisfiable polynomial, not arbitrary multi-generator IPS or uncharged Boolean corrections.",
+        "record": "[Full record](https://kbr.is-a.dev/math-research/#finite-field-IPS-source-scope)",
+        "mathematical_status": "context",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Recorded human argument and source-model audit only; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#finite-field-IPS-source-scope"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "algebraic-branching-programs",
+          "nullstellensatz"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Prevents a specific model mismatch and records the small-input scope of the named presentation; no main-goal compatibility theorem is imported.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#finite-field-IPS-source-scope"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Bounded audit of ECCC TR25-080 plus three abstract-level screens. Its placeholder lower bounds have hard inputs; the constant-depth multilinear theorem has p>=5 and another instance. The fixed-field functional inverse argument is for a single unsatisfiable polynomial, not arbitrary multi-generator IPS or uncharged Boolean corrections.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-named-source-IPS-screen"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Recorded human argument and source-model audit only; no Lean verification.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-named-source-IPS-screen"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Finite-field algebraic source models and exact binary linear-algebra description of affine-flat indicators.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-named-source-IPS-screen"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Prevents a specific model mismatch and records the small-input scope of the named presentation; no main-goal compatibility theorem is imported.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-named-source-IPS-screen"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Reviewed source-format relevance and matrix-program application; the matroid coefficient proof is self-contained and no source compatibility is inferred. Source construction review: new relationship with imp:depth-preserving-IPS-simulation. Realization goal review: new relationship with imp:binary-algebraic-CNF-IPS-transfer. Review now explicitly queues its decisive profile test; mathematical scope unchanged. Algebraic transfer test: new relationship with lem:prime-field-residual-normalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-named-source-IPS-screen"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:binary-component-depth-gap",
+        "summary": "There is no generic polynomial-size fixed-depth operation extracting arbitrary homogeneous components from all polynomial-size fixed-depth binary arithmetic circuits of polynomial degree. Already G_n=product(1+x_i), q=2^a, n=2q-1 has degree-q component e_q evaluating to majority, since binomial(w,q) mod2 is the a-th bit of w. Such an operation would contradict Smolensky's majority lower bound for AC0[2]. Binary constants and unbounded-fanin gates with wire size are essential.",
+        "assessment": "Working attributed elementary consequence of the published majority lower bound, medium reviewed. Does not rule out special component extraction with additional hypotheses or large-field interpolation.",
+        "record": "[Canonical projection test](https://kbr.is-a.dev/math-research/#entry-2026-10-11-canonical-projection-test)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "frege-simulation",
+          "nullstellensatz",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Blocks a precise unsupported binary circuit operation; this is not a new Boolean-circuit lower bound or Frege lower bound.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": "Do not use homogeneous extraction or extension-field coefficient projection as a free bounded-depth operation."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Entry presentation finalized; mathematical content and reviewed scope unchanged. Algebraic transfer test: new relationship with lem:prime-field-residual-normalization.",
+          "targets": [
+            "../notebook.html#entry-2026-10-11-canonical-projection-test"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:prime-field-residual-normalization::cites::lem:clause-coefficient-normalization",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:prime-field-residual-normalization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:clause-coefficient-normalization",
+        "locator": null
+      },
+      "scope": "Reuses scaling after general-IPS gate linearization, replacing literal idempotence by circuit Frobenius defects; prime-field scope does not imply the older all-field statement.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "093067d7a45d92af73036061a03da91c369228fa",
+        "date": "2026-10-11",
+        "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Reuses scaling after general-IPS gate linearization, replacing literal idempotence by circuit Frobenius defects; prime-field scope does not imply the older all-field statement."
+      }
+    },
+    {
+      "id": "lem:prime-field-residual-normalization::cites::imp:binary-algebraic-CNF-IPS-transfer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:prime-field-residual-normalization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "imp:binary-algebraic-CNF-IPS-transfer",
+        "locator": null
+      },
+      "scope": "Develops its general binary IPS premise as an equivalent full Boolean-correction task, using the same field-defect mechanism but proving the displayed transformation directly.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "093067d7a45d92af73036061a03da91c369228fa",
+        "date": "2026-10-11",
+        "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Develops its general binary IPS premise as an equivalent full Boolean-correction task, using the same field-defect mechanism but proving the displayed transformation directly."
+      }
+    },
+    {
+      "id": "lem:prime-field-residual-normalization::cites::audit:finite-field-IPS-source-scope",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:prime-field-residual-normalization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "audit:finite-field-IPS-source-scope",
+        "locator": null
+      },
+      "scope": "Retains the distinction between cheap functional inverse coefficients and unbounded Boolean-correction complexity.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "093067d7a45d92af73036061a03da91c369228fa",
+        "date": "2026-10-11",
+        "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Retains the distinction between cheap functional inverse coefficients and unbounded Boolean-correction complexity."
+      }
+    },
+    {
+      "id": "lem:prime-field-residual-normalization::cites::cor:binary-component-depth-gap",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:prime-field-residual-normalization",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:binary-component-depth-gap",
+        "locator": null
+      },
+      "scope": "The gate telescoping constructs a linear certificate directly, without the forbidden generic high homogeneous-component extraction.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-11-algebraic-transfer-test"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "093067d7a45d92af73036061a03da91c369228fa",
+        "date": "2026-10-11",
+        "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "The gate telescoping constructs a linear certificate directly, without the forbidden generic high homogeneous-component extraction."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
