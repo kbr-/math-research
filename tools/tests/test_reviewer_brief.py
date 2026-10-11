@@ -42,14 +42,14 @@ class ReviewerBriefTest(unittest.TestCase):
             with self.subTest(payload=payload):
                 self.assertEqual(self.run_hook(payload), (0, ''))
 
-    def test_the_refusal_names_the_clause_table_tool_only_on_a_branch_that_has_it(self):
-        with tempfile.TemporaryDirectory() as tools:
-            there = hook.refusal(call('Read the whole notebook.'), tools=Path(tools))
-            (Path(tools) / 'clause_table.py').write_text('')
+    def test_the_refusal_names_a_further_tool_only_where_the_branch_s_own_module_does(self):
+        with tempfile.TemporaryDirectory() as without, tempfile.TemporaryDirectory() as tools:
+            there = hook.refusal(call('Read the whole notebook.'), tools=Path(without))
+            (Path(tools) / 'branch_own.py').write_text('EXCERPT_TOOL = "`tools/rows.py --brief` for a table or "\n')
             here = hook.refusal(call('Read the whole notebook.'), tools=Path(tools))
-        self.assertIn('built with `tools/clause_table.py PLAN TABLE --audited RECORD --batch N --brief` for a clause '
-                      'table or `tools/notebook-excerpt.py ANCHOR --out FILE` for the notebook', here)
-        self.assertNotIn('clause', there)
+        self.assertIn('built with `tools/rows.py --brief` for a table or `tools/notebook-excerpt.py ANCHOR --out FILE` '
+                      'for the notebook', here)
+        self.assertNotIn('rows.py', there)
         self.assertIn('built with `tools/notebook-excerpt.py ANCHOR --out FILE` for the notebook', there)
 
     def test_input_that_is_not_json_passes(self):

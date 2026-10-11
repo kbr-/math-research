@@ -1,26 +1,18 @@
 #!/usr/bin/env python3
 """Checks that fire while a turn runs, since a long autonomous turn never reaches the Stop hook.
 
-Usage (PreToolUse hooks; the tool call is on standard input):
+Usage (a PreToolUse hook; the tool call is on standard input):
   during_run.py commit    for Bash: before a `git commit`, the Stop hook's checks of a turn
                           (tools/hooks/stop_checks.py) run on what the assistant wrote since the last
                           commit this check saw: a promise about future behaviour or an admission
                           that implies one, a tool's fault worked around, a declared gap, and, by
                           its Haiku judge, an unchecked claim. The first one found blocks that
-                          commit once, with the Stop hook's own request. A proposed loop is left to
-                          the stop, since the user starts loops. The shell guard calls this for a
-                          commit, so other commands pay nothing.
-  during_run.py theory    for Edit and Write: an edit that adds a question to the Theory building of a
-                          plan under implementation (its Path has a Current increment line) is
-                          blocked once per question, with the test such an entry has to pass. The
-                          theory is ready before implementation; how a decided thing is built goes
-                          in a commit message. Repeating the edit passes: the check asks the
-                          question before the entry is written, and leaves the answer to judgement.
+                          commit once, with the Stop hook's own request. The shell guard calls this
+                          for a commit, so other commands pay nothing.
 
 A blocked call exits 2 with the message on standard error. What was already said is kept per session
 under research/logs/hook-state/, which git ignores.
 """
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -30,18 +22,6 @@ import sys
 ROOT =Path(__file__).resolve().parents[2]
 STATE = ROOT / 'research' / 'logs' / 'hook-state'
 COMMIT = re.compile(r'(?:^|[;&|(]\s*|\s)git\b[^;&|]*\bcommit\b')
-PLAN = re.compile(r'(?:^|/)tasks/[^/]+/PLAN\.md$')
-# An entry's bold title that ends in a question mark; a title may wrap over lines.
-QUESTION = re.compile(r'^- \*\*((?:(?!\*\*).)+?\?)\*\*', re.M | re.S)
-IMPLEMENTING = '**Current increment:**'
-THEORY = ('This adds to the theory of a plan under implementation: "{title}". The theory is ready before '
-          'implementation and the implementation derives from it, so a new entry now is rare. It belongs there only if '
-          'it (A) replaces or contradicts a decision the theory already made, (B) decides something a user of the '
-          'product or a reader of its output will notice, which no decision settled, or (C) chooses among alternatives '
-          'with a real trade-off. If it says how an already decided thing is built (which object stands for which, when '
-          'a substitute is put in place, the shape of a record, a name), do not add it: build it, and say it in the '
-          'commit message. If several such questions have come up in this increment, reread that part of the theory in '
-          'one pass and decide them together, then go on. If this entry is one of the three, make the edit again.')
 
 
 def load(session, directory=None):
@@ -96,8 +76,7 @@ def commit(data, directory=None):
     except OSError:
         return None
     save(path, {**state, 'offset': offset})
-    # The Stop hook's checks of a turn, in its order. A proposed loop is left to the stop: it is the
-    # user who starts one.
+    # The Stop hook's own checks of a turn, in its order.
     off = stop_checks.checks_off(stop_checks.ROOT)
     blocked = stop_checks.turn_block(texts, calls, said, off)
     if not blocked and said.strip() and 'judge' not in off:
@@ -120,42 +99,18 @@ def judge(said, calls):
     return stop_checks.judge(said, calls)
 
 
-def theory(data, directory=None):
-    """The message that blocks this Edit or Write call, or None."""
-    given = data.get('tool_input') or {}
-    target = given.get('file_path') or ''
-    if not PLAN.search(target):
-        return None
-    try:
-        current = Path(target).read_text(encoding='utf-8')
-    except OSError:
-        return None
-    if IMPLEMENTING not in current:
-        return None
-    old, new = (given.get('old_string') or '', given.get('new_string') or '') if 'new_string' in given else (
-        current, given.get('content') or '')
-    # A title is the same title however its lines are wrapped.
-    titles = lambda text: [' '.join(title.split()) for title in QUESTION.findall(text)]
-    before = set(titles(current)) | set(titles(old))
-    added = [title for title in titles(new) if title not in before]
-    path, state = load(data.get('session_id'), directory)
-    told = state.get('theory', [])
-    untold = [title for title in added if hashlib.sha256(title.encode()).hexdigest()[:16] not in told]
-    if not untold:
-        return None
-    save(path, {**state, 'theory': told + [hashlib.sha256(title.encode()).hexdigest()[:16] for title in untold]})
-    return THEORY.format(title=untold[0])
+
 
 
 def main(argv):
     # A judge's own session (tools/haiku_judge.py sets this) is not checked.
-    if os.environ.get('INSIDE_HAIKU_JUDGE') or len(argv) != 1 or argv[0] not in ('commit', 'theory'):
+    if os.environ.get('INSIDE_HAIKU_JUDGE') or argv != ['commit']:
         return 0
     try:
         data = json.load(sys.stdin)
     except ValueError:
         return 0
-    message = (commit if argv[0] == 'commit' else theory)(data)
+    message = commit(data)
     if message:
         print(message, file=sys.stderr)
         return 2

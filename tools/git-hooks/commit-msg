@@ -16,11 +16,7 @@ if [ -n "$long" ]; then
     printf 'commit-msg: lines over 100 characters (AGENTS.md); rewrap the message:\n%s\n' "$long" >&2
     exit 1
 fi
-# A squash merge prepared by tools/merge_main.py records main's tip; its next run needs that line.
-squash=$(git rev-parse --git-path SQUASH_MSG)
-recorded=$( [ -f "$squash" ] && grep -m1 '^Merges-main: ' "$squash" || true)
-if [ -n "$recorded" ] && ! grep -qxF "$recorded" "$1"; then
-    echo "commit-msg: this squash merge's message must keep \"$recorded\"; commit with git commit --no-edit." >&2
-    echo "If no squash merge is in progress, the file is a leftover: rm \"$squash\"" >&2
-    exit 1
-fi
+# A branch's own check of the message, where it has one (tools/git-hooks-branch/commit-msg).
+own="$(git rev-parse --show-toplevel)/tools/git-hooks-branch/commit-msg"
+[ -x "$own" ] || exit 0
+exec "$own" "$1"

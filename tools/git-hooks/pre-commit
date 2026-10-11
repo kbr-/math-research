@@ -1,11 +1,10 @@
 #!/bin/sh
 # Check the lead and bridge queue (tools/lead_queue.py check) of each staged notebook that holds one or held
-# one, each staged notebook's living sections against their hard budgets (tools/notebook_context.py
-# --staged), and the task records (tools/task_index.py check), with the notebook's Where we stand, when a
-# commit stages a path under tasks/ or notebook.html.
+# one, and each staged notebook's living sections against their hard budgets (tools/notebook_context.py
+# --staged); then a branch's own checks, where it has them.
 # .git/hooks/pre-commit links here, so every worktree of this repository runs it with its own tools.
-# tools/install-git-hooks.sh links this hook into the external repositories a task works in too;
-# there, without either tool, it does nothing.
+# tools/install-git-hooks.sh links this hook into other repositories too; there, without these tools, it
+# does nothing.
 top=$(git rev-parse --show-toplevel) || exit 1
 if [ -f "$top/tools/lead_queue.py" ]; then
   base=HEAD
@@ -47,8 +46,7 @@ if [ -f "$top/tools/notebook_context.py" ]; then
     fi
   done
 fi
-[ -f "$top/tools/task_index.py" ] || exit 0
-git diff --cached --quiet -- "$top/tasks" "$top/notebook.html" && exit 0
-# A warning, never a refusal: a task entry the commit adds with no Process paragraph.
-[ -f "$top/tools/cycle_numbers.py" ] && python3 "$top/tools/cycle_numbers.py" --staged
-exec python3 "$top/tools/task_index.py" check
+# A branch's own checks of a commit, where it has them (tools/git-hooks-branch/pre-commit).
+own="$top/tools/git-hooks-branch/pre-commit"
+[ -x "$own" ] || exit 0
+exec "$own"

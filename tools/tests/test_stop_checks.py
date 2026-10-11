@@ -14,26 +14,9 @@ hook = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(hook)
 
 REPLY = 'The hook copies the staged files to a temporary directory and checks that copy.'
-# The checks that rest on the task protocol are tested where the branch has the task tool they call.
-MACHINERY = (Path(__file__).resolve().parents[1] / 'task_index.py').is_file()
-needs_machinery = unittest.skipUnless(MACHINERY, 'this branch has no task machinery')
 
 
-def tasks_with_a_request(root, judged):
-    """tasks/ under `root` with task alpha's request 1 to others, waiting for the judge unless `judged`."""
-    tasks = root / 'tasks'
-    (tasks / 'alpha').mkdir(parents=True)
-    (tasks / 'schema.json').write_text((Path(__file__).resolve().parents[2] / 'tasks/schema.json').read_text())
-    (tasks / 'index.json').write_text('{"schema_version": 1, "tasks": ["alpha"]}\n')
-    (tasks / 'alpha' / 'PLAN.md').write_text('# alpha\n')
-    request = {'number': 1, 'title': 'Ask', 'kind': 'required', 'body': '1. x', 'next_part': 1, 'parts': [],
-               **({} if judged else {'judged': False})}
-    (tasks / 'alpha' / 'task.json').write_text(json.dumps({
-        'title': 'Alpha', 'summary': 'S.', 'status': 'in_progress', 'status_note': 'N.', 'tickets': [],
-        'relations': {'waits_for': [], 'split_from': None}, 'next_request': 2, 'requests': [request]}))
-
-
-class UncheckedClaimTest(unittest.TestCase):
+class HookFixture(unittest.TestCase):
     """The hook around a fake `claude` that answers with a fixed verdict."""
 
     def setUp(self):
@@ -49,14 +32,9 @@ class UncheckedClaimTest(unittest.TestCase):
                  {'type': 'user', 'message': {'content': [{'type': 'tool_result', 'content': 'ok'}]}},
                  {'type': 'assistant', 'message': {'content': [{'type': 'tool_use', 'name': 'Bash', 'input': {'command': 'git status'}}]}}]
         self.transcript.write_text(''.join(json.dumps(line) + '\n' for line in lines))
-        # The task records the gate reads are the fixture's, not this clone's.
+        # The checkout the hook reads is the fixture's, not this clone's.
         self.root = self.dir / 'clone'
         self.root.mkdir()
-        # The fixture is a branch that works under the task protocol, where this branch has its machinery,
-        # unless a test removes the file.
-        (self.root / hook.PROTOCOL).parent.mkdir(parents=True)
-        if MACHINERY:
-            (self.root / hook.PROTOCOL).write_text('# protocol\n')
         patcher = mock.patch.object(hook, 'ROOT', self.root)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -86,6 +64,19 @@ class UncheckedClaimTest(unittest.TestCase):
     def verdict(self, kind='workaround', quote='copies the staged files to a temporary directory', checked=False, declared=False):
         return '```json\n' + json.dumps({'kind': kind, 'quote': quote, 'tool': 'git', 'checked': checked, 'declared': declared,
                                          'reason': 'Check git ls-files and cat-file.'}) + '\n```'
+
+    def add(self, *entries):
+        with self.transcript.open('a') as f:
+            f.write(''.join(json.dumps(entry) + '\n' for entry in entries))
+
+    def off(self, *names):
+        path = self.root / hook.CHECKS_OFF
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(''.join(name + '\n' for name in names))
+
+
+class UncheckedClaimTest(HookFixture):
+    """The hook's own checks, which every branch runs."""
 
     def test_a_verdict_that_names_no_third_party_tool_does_not_block(self):
         reply = 'It copies the staged files to a temporary directory.'
@@ -162,32 +153,7 @@ class UncheckedClaimTest(unittest.TestCase):
                 self.assertIsNone(self.run_hook())
         self.assertFalse((self.dir / 'prompt.txt').exists())
 
-    @needs_machinery
-    def test_blocks_while_a_request_waits_for_the_judge_without_asking_haiku(self):
-        tasks_with_a_request(self.root, judged=False)
-        with self.fake_claude(self.verdict()):
-            out = self.run_hook()
-            self.assertFalse((self.dir / 'prompt.txt').exists())
-            self.assertIsNone(self.run_hook(stop_hook_active=True))
-            with mock.patch.dict(os.environ, {'CLAUDE_PROJECT_DIR': str(self.dir)}):
-                self.assertIn('Unchecked claim', self.run_hook(argv=['--global'])['reason'])
-        self.assertEqual(out['decision'], 'block')
-        self.assertIn('Requests for others wait for the judge: alpha request 1. Once all', out['reason'])
-        self.assertIn('run tools/task_index.py request judge SLUG', out['reason'])
 
-    @needs_machinery
-    def test_judged_requests_and_unreadable_records_leave_the_claim_check(self):
-        for judged in (True, None):
-            with self.subTest(judged=judged):
-                shutil.rmtree(self.root / 'tasks', ignore_errors=True)
-                if judged is not None:
-                    tasks_with_a_request(self.root, judged)
-                with self.fake_claude(self.verdict()):
-                    self.assertIn('Unchecked claim', self.run_hook()['reason'])
-
-    def add(self, *entries):
-        with self.transcript.open('a') as f:
-            f.write(''.join(json.dumps(entry) + '\n' for entry in entries))
 
     def test_a_promise_anywhere_in_the_turn_blocks_without_asking_haiku(self):
         self.add({'type': 'assistant', 'message': {'content': [{'type': 'thinking', 'thinking': (
@@ -305,52 +271,7 @@ class UncheckedClaimTest(unittest.TestCase):
             'Callers outside GitLab, such as one-off scripts, stay unseen.', 'It said "no helper exists" then.',
             'The `no tool for` flag is off.']), [])
 
-    @needs_machinery
-    def test_a_step_handed_to_others_blocks_also_from_what_the_turn_writes(self):
-        message = ('api: remove the syncs\n\nNothing reads SYNC_KEY; whether those two syncs can go\n'
-                   'for every instance is left to their\nowners.')
-        self.add({'type': 'assistant', 'message': {'content': [{'type': 'tool_use', 'name': 'Bash', 'input': {
-            'command': f"git commit -q -F - <<'EOF'\n{message}\nEOF"}}]}})
-        with self.fake_claude(self.verdict(kind='other')):
-            out = self.run_hook(last_assistant_message='Committed.')
-            self.assertFalse((self.dir / 'prompt.txt').exists())
-            in_reply = self.run_hook(last_assistant_message='The rest is up to their team. Done.')
-        self.assertEqual(out['decision'], 'block')
-        self.assertIn('A step handed to others: "Nothing reads SYNC_KEY; whether those two syncs can go for every '
-                      'instance is left to their owners"', out['reason'])
-        self.assertIn('request add --to-others', out['reason'])
-        self.assertIn('A step handed to others: "The rest is up to their team"', in_reply['reason'])
 
-    def test_deferral_shapes(self):
-        handed = ['Left to the owners: the sync', 'It is left to their owners', 'We leave it for the team',
-                  'That is up to their team', 'It is the owners\' call', 'Deferred to the code owners',
-                  'It is not ours to remove', 'This is for the owners to decide']
-        self.assertEqual(hook.deferrals(['. '.join(handed) + '.']), handed)
-        self.assertEqual(hook.deferrals([
-            'The team left the meeting.', 'I handed the review to the user.', 'Owners left it as it was.',
-            'It said "left to their owners" then.', 'The draft read:\n> It is left to their owners.']), [])
-        # A sentence wrapped over lines is read whole, up to a blank line.
-        self.assertEqual(hook.deferrals(['Intro\n\nWhether they\ncan go is left\nto their owners,\nnoted.\n\nNext']),
-                         ['Whether they can go is left to their owners, noted'])
-        self.assertEqual(hook.written([('Edit', {'file_path': 'a.md', 'new_string': 'x'}),
-                                       ('Bash', {'command': 'git log'}), ('Read', {'file_path': 'b.md'})]),
-                         ['x', 'git log'])
-        # What is written into the checks' own code and tests is a fixture of a check, not said by the turn.
-        handed = "HANDED = 'It is left to their owners.'"   # in single quotes, which the quote filter does not blank
-        own = ('tools/tests/test_stop_checks.py', '/repo/tools/hooks/stop_checks.py', 'tools/tests/test_during_run.py',
-               '/repo/tools/measure_stop_checks.py', 'tools/hooks/during_run.py')
-        for path in own:
-            with self.subTest(path=path):
-                self.assertEqual(hook.written([('Edit', {'file_path': path, 'new_string': handed}),
-                                               ('Write', {'file_path': path, 'content': handed})]), [])
-                self.assertIsNone(hook.deferral_block([], [('Edit', {'file_path': path, 'new_string': handed})]))
-        for path in ('tools/tests/test_lead_queue.py', 'src/tools/hooks.py', 'notes/tools/tests/test_stop_checks.py.md',
-                     'tasks/a/PLAN.md', 'mytools/hooks/x.py'):
-            with self.subTest(path=path):
-                self.assertEqual(hook.written([('Edit', {'file_path': path, 'new_string': handed})]), [handed])
-                self.assertIsNotNone(hook.deferral_block([], [('Edit', {'file_path': path, 'new_string': handed})]))
-        # A command that writes such a file is still read: only an edit names the file it writes.
-        self.assertEqual(len(hook.written([('Bash', {'command': 'cat > tools/tests/test_stop_checks.py <<EOF\nx\nEOF'})])), 1)
 
     def test_a_gap_declared_in_the_final_reply_asks_for_its_routes(self):
         gap = 'No kubeconfig context reaches it, so its live plugins can\'t be read either. The rest holds.'
@@ -367,6 +288,8 @@ class UncheckedClaimTest(unittest.TestCase):
         self.assertIn('who owns and changes its configuration: CODEOWNERS, commit history, project members',
                       out['reason'])
         self.assertIn('"Whether it is up is unchecked"', elsewhere['reason'])
+
+
 
     def test_gaps_only_in_the_final_reply_and_outside_quotes_code_and_narration(self):
         self.add({'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': 'That is unverified so far.'}]}})
@@ -422,23 +345,7 @@ class UncheckedClaimTest(unittest.TestCase):
             with self.subTest(reply=reply):
                 self.assertIn(f'A declared gap: "{quoted}"', hook.gap_block(reply)['reason'])
 
-    @needs_machinery
-    def test_a_proposed_loop_without_a_goal_prompt_blocks(self):
-        loop = 'Yes: run review rounds until one comes back clean. It costs a few reviewer runs.'
-        with self.fake_claude(self.verdict(kind='other')):
-            out = self.run_hook(last_assistant_message=loop)
-            self.assertFalse((self.dir / 'prompt.txt').exists())
-            with_prompt = self.run_hook(last_assistant_message=loop + '\n\n```\n/goal the review is clean\n```')
-            for reply in ('The second round found eleven defects.', 'Wait until the build ends.',
-                          'Round 4\'s reviewer is reading; I make no edits until it reports.',
-                          'The word "loop until done" was theirs.', 'Pass `--loop` until it settles.'):
-                with self.subTest(reply=reply):
-                    self.assertIsNone(self.run_hook(last_assistant_message=reply))
-        self.assertIn('A loop with no /goal prompt: "Yes: run review rounds until one comes back clean"', out['reason'])
-        self.assertIn('every way out inside the goal\'s condition', out['reason'])
-        self.assertIsNone(with_prompt)
-        self.assertEqual(hook.sentences(hook.LOOP, ['Until the audit is clean, repeat the pass. Iterate until stable.']),
-                         ['Until the audit is clean, repeat the pass', 'Iterate until stable'])
+
 
     def test_a_quoted_promise_promises_nothing(self):
         self.assertEqual(hook.promises(['1. **"From here on I\'ll write links as Markdown"** (1 October).',
@@ -493,30 +400,10 @@ class UncheckedClaimTest(unittest.TestCase):
                                         'The catcher misses "I should have checked" as a phrase.',
                                         "The tool should have refused it, and you should have been told."]), [])
 
-    LOOP = 'Yes: run review rounds until one comes back clean. It costs a few reviewer runs.'
-    HANDED = 'The cleanup of the old volumes is left to their owners.'
-    GAP = 'No kubeconfig context reaches it, so its live plugins can\'t be read either. The rest holds.'
+    GAP ='No kubeconfig context reaches it, so its live plugins can\'t be read either. The rest holds.'
     PROMISE = 'From now on I will fetch before reading a branch.'
 
-    @needs_machinery
-    def test_on_a_branch_without_the_task_protocol_its_three_checks_do_not_run(self):
-        with self.fake_claude(self.verdict(kind='other')):
-            for reply, reason in ((self.LOOP, '/goal'), (self.HANDED, 'left to their owners')):
-                self.assertIn(reason, self.run_hook(last_assistant_message=reply)['reason'])
-            tasks_with_a_request(self.root, judged=False)
-            self.assertIn('Requests for others wait', self.run_hook()['reason'])
-            (self.root / hook.PROTOCOL).unlink()
-            # The branch has no task tool either: the hook must not reach for it.
-            with mock.patch.dict('sys.modules', {'task_index': None}):
-                for reply in (REPLY, self.LOOP, self.HANDED):
-                    self.assertIsNone(self.run_hook(last_assistant_message=reply))
-                # The checks that rest on no protocol still run there.
-                self.assertEqual(self.run_hook(last_assistant_message=self.PROMISE)['decision'], 'block')
 
-    def off(self, *names):
-        path = self.root / hook.CHECKS_OFF
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(''.join(name + '\n' for name in names))
 
     def test_a_check_named_in_the_branch_s_checks_off_does_not_run(self):
         with self.fake_claude(self.verdict()):
@@ -542,15 +429,13 @@ class UncheckedClaimTest(unittest.TestCase):
             self.assertIn('A declared gap', self.run_hook(last_assistant_message=self.GAP)['reason'])
 
     def test_each_check_can_be_named_and_only_the_reader_opens_the_file(self):
-        self.assertEqual(hook.CHECK_NAMES, ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge',
-                                            'review'))
+        shared = ('promise', 'mistake', 'workaround', 'missing tool', 'gap', 'judge', 'review')
+        self.assertEqual(hook.CHECK_NAMES, shared + tuple(hook.branch_extension.ask('STOP_CHECK_NAMES', ())))
         self.off(*hook.CHECK_NAMES)
         self.assertEqual(hook.checks_off(self.root), frozenset(hook.CHECK_NAMES))
         with self.fake_claude(self.verdict()):
-            if MACHINERY:
-                (self.root / hook.PROTOCOL).write_text('# protocol\n')
             mistake = 'That was my mistake: I read the wrong file.'
-            for reply in (self.PROMISE, mistake, self.GAP, self.LOOP, self.HANDED, REPLY):
+            for reply in (self.PROMISE, mistake, self.GAP, REPLY):
                 self.assertIsNone(self.run_hook(last_assistant_message=reply))
         hooks = Path(hook.__file__).parent
         naming = sorted(path.name for path in hooks.glob('*.py') if 'checks_off' in path.read_text())
@@ -561,6 +446,41 @@ class UncheckedClaimTest(unittest.TestCase):
         own = hooks / 'checks_off'
         if own.is_file():
             self.assertLessEqual({line.strip() for line in own.read_text().splitlines()}, set(hook.CHECK_NAMES))
+
+    def branch(self, **named):
+        """The hook with a branch's own module that holds `named`, and nothing else."""
+        return mock.patch.object(hook.branch_extension, 'ask', lambda name, default=None, tools=None: named.get(name, default))
+
+    def test_without_a_module_of_the_branch_s_own_the_hook_runs_its_own_checks_alone(self):
+        with self.branch():
+            self.assertIsNone(hook.branch_block(self.root))
+            self.assertEqual(hook.branch_checks([], [], '', self.root), ())
+            with self.fake_claude(self.verdict()):
+                self.assertIn('Unchecked claim', self.run_hook()['reason'])
+                self.assertEqual(self.run_hook(last_assistant_message=self.PROMISE)['decision'], 'block')
+
+    def test_a_branch_s_own_module_gives_the_first_block_and_further_checks(self):
+        seen = []
+        first = lambda root: seen.append(root) or {'decision': 'block', 'reason': 'first'}
+        further = lambda texts, calls, reply, root: (
+            ('one', lambda: None), ('two', lambda: 'colour' in reply and {'decision': 'block', 'reason': f'two: {len(calls)} calls'}),
+            ('three', lambda: {'decision': 'block', 'reason': 'three'}))
+        with self.fake_claude(self.verdict()):
+            # The first block comes before every check, and not from the global entry.
+            with self.branch(stop_first_block=first):
+                self.assertEqual(self.run_hook(last_assistant_message=self.PROMISE)['reason'], 'first')
+                with mock.patch.dict(os.environ, {'CLAUDE_PROJECT_DIR': str(self.dir)}):
+                    self.assertIn('promise', self.run_hook(argv=['--global'], last_assistant_message=self.PROMISE)['reason'].lower())
+            self.assertEqual(seen, [self.root])
+            # The further checks run in the module's order, after the hook's own and before the judge.
+            with self.branch(stop_checks=further):
+                self.assertIn('promise', self.run_hook(last_assistant_message=self.PROMISE + ' The colour is set.')['reason'].lower())
+                self.assertEqual(self.run_hook(last_assistant_message='The colour is set.')['reason'], 'two: 3 calls')
+                self.assertEqual(self.run_hook()['reason'], 'three')
+                self.assertFalse((self.dir / 'prompt.txt').exists())
+                # Each is turned off by its name.
+                self.off('two', 'three')
+                self.assertIn('Unchecked claim', self.run_hook(last_assistant_message='The colour is set. ' + REPLY)['reason'])
 
     def test_global_entry_leaves_this_clone_to_the_project_entry(self):
         with self.fake_claude(self.verdict()):

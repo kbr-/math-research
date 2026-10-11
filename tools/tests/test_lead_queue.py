@@ -1058,30 +1058,30 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaises(ValueError):                             # a Waiting follow-up names its request
             lq.check(notebook([rev], q), lq.append_new(notebook([rev, nameless], q))[0])
 
-    def test_a_waiting_task_request_must_exist(self):
+    def test_a_branch_s_own_module_reads_and_checks_what_a_waiting_follow_up_names(self):
+        def wait(body):
+            return ('<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
+                    f'Follow-up.</strong> Waiting: {body}.</li></ul></article>')
+        seen = []
+        named = {'wait_reference': lambda rest: 'ledger 3' if 'ledger' in rest else None,
+                 'wait_problems': lambda ref, base: seen.append((ref, base)) or (['no such row'] if ref == 'ledger 3' else [])}
+        head = notebook([self.rev], self.q)
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / 'tasks/x').mkdir(parents=True)
-            (root / 'tasks/x/task.json').write_text(json.dumps({'requests': [{'number': 3}]}))
-            (root / 'tasks/x/USER_REQUESTS.md').write_text('3. a request')
-            (root / 'tasks/z').mkdir()
-            (root / 'tasks/z/task.json').write_text(json.dumps({'requests': [{'number': 3}]}))
-
-            def wait(n):
-                return (f'<article id="w" data-kind="research" data-route="step"><ul><li data-lead="r1:1">x <strong>'
-                        f'Follow-up.</strong> Waiting: <a href="tasks/x/USER_REQUESTS.md">item {n}</a>.</li></ul>'
-                        '</article>')
-            head = notebook([self.rev], self.q)
-            body, _ = lq.append_new(notebook([self.rev, wait(3)], self.q))
-            lq.check(head, body, root / 'notebook.html', root)
-            body, _ = lq.append_new(notebook([self.rev, wait(4)], self.q))
-            with self.assertRaises(ValueError):
-                lq.check(head, body, root / 'notebook.html', root)
-            for broken in (wait(3).replace('item 3', 'request 3'),                     # no "item N"
-                           wait(3).replace('tasks/x/', 'tasks/z/')):                   # the link does not resolve
-                with self.subTest(broken=broken), self.assertRaises(ValueError):
-                    lq.check(head, lq.append_new(notebook([self.rev, broken], self.q))[0], root / 'notebook.html',
-                             root)
+            check = lambda body: lq.check(head, lq.append_new(notebook([self.rev, wait(body)], self.q))[0],
+                                          root / 'notebook.html', root)
+            # No module: the reference is the follow-up's plain text, and nothing more is asked of it.
+            with patch.object(lq.branch_extension, 'ask', lambda name, default=None, tools=None: default):
+                self.assertEqual(lq.wait_changes(wait('the <a href="ledger.md">ledger</a>, row 3')),
+                                 {('lead', 'r1:1'): 'the ledger , row 3'})
+                check('the <a href="ledger.md">ledger</a>, row 3')
+            with patch.object(lq.branch_extension, 'ask', lambda name, default=None, tools=None: named.get(name, default)):
+                self.assertEqual(lq.wait_changes(wait('the <a href="ledger.md">ledger</a>, row 3')), {('lead', 'r1:1'): 'ledger 3'})
+                self.assertEqual(lq.wait_changes(wait('your answer on the route')), {('lead', 'r1:1'): 'your answer on the route'})
+                check('your answer on the route')
+                with self.assertRaisesRegex(ValueError, 'r1:1: no such row'):
+                    check('the ledger')
+            self.assertEqual(seen, [('your answer on the route', root), ('ledger 3', root)])
 
     def test_a_kind_module_adds_its_kind(self):
         with tempfile.TemporaryDirectory() as tmp:

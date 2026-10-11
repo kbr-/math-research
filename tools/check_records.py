@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Lint the workspace's prose records before a commit.
 
-Checks, in the notebook, the research notes and report, the task files, the skills and the rule
-files (evidence under research/results/ and tasks/*/evidence/ is exempt, since it quotes sources):
+Checks, in the notebook, the research notes and report, the skills, the rule files and the files the
+branch's own module adds (tools/branch_extension.py); evidence under research/results/ is exempt,
+since it quotes sources:
 
 - commit-hash-like strings (7-40 hex characters with a digit and a letter), other than known
   session ids: a hash goes stale with the next rebase, so records name a commit by its subject;
@@ -31,12 +32,14 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import branch_extension
 from char_refs import broken_entities
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECTS = Path.home() / ".claude" / "projects"
 DEFAULT = ["notebook.html", "research/branches/*/notebook.html", "CLAUDE.md", "AGENTS.md", "PROMPTS.md",
-           "COMPUTATION_RULES.md", "research/*.md", "research/notes/*.md", "tasks/*/*.md", "skills/**/*.md"]
+           "COMPUTATION_RULES.md", "research/*.md", "research/notes/*.md", "skills/**/*.md",
+           *branch_extension.ask("RECORD_PATHS", ())]
 # The curve name ed25519 is all hex digits; it names a key type, never a commit.
 HASH = re.compile(r"(?<![\w/#.-])(?!ed25519(?![\w-]))(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}(?![\w-])")
 META = re.compile(r'<p class="entry-meta">(.*?)</p>', re.S)

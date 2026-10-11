@@ -111,37 +111,7 @@ class DuringRunTest(unittest.TestCase):
             self.assertEqual((after(gap), len(asked)), (None, 1))
             self.assertIn('promise', after(promise).lower())
 
-    def theory(self, plan, **given):
-        return hook.theory({'session_id': 's', 'tool_input': {'file_path': str(plan), **given}}, self.state)
-
-    def test_a_question_added_to_the_theory_of_a_plan_under_implementation_is_asked_about_once(self):
-        plan = self.dir / 'tasks' / 'alpha' / 'PLAN.md'
-        plan.parent.mkdir(parents=True)
-        resolved = '### Resolved\n\n- **What does it cover?** Decided.\n'
-        plan.write_text(f'# alpha\n\n{resolved}\n## Path\n\n- **First.** Text.\n')
-        added = {'old_string': '### Resolved\n', 'new_string': '### Resolved\n\n- **How is the\n  record shaped?** A list.\n'}
-        # A plan that is not under implementation takes any entry.
-        self.assertIsNone(self.theory(plan, **added))
-        plan.write_text(f'# alpha\n\n{resolved}\n## Path\n\n**Current increment:** "First".\n\n- **First.** Text.\n')
-        message = self.theory(plan, **added)
-        self.assertTrue(message.startswith('This adds to the theory of a plan under implementation: "How is the record shaped?".'))
-        self.assertIn('do not add it: build it, and say it in the commit message', message)
-        # The same edit made again passes; another question is asked about in its turn.
-        self.assertIsNone(self.theory(plan, **added))
-        self.assertIn('"Which errors fail?"', self.theory(plan, old_string='x', new_string='- **Which errors fail?** Those.'))
-        # An entry already there, rewritten or moved, a Path step and other files are no new question.
-        for given in ({'old_string': '- **What does it cover?** Decided.', 'new_string': '- **What does it cover?** Decided again.'},
-                      {'old_string': 'y', 'new_string': '- **What does it cover?** Moved.'},
-                      {'old_string': '- **First.** Text.', 'new_string': '- **First (done).** Text.\n- **Second.** More.'},
-                      {'content': plan.read_text()}):
-            self.assertIsNone(self.theory(plan, **given), given)
-        self.assertIn('"Is it new?"', self.theory(plan, content=plan.read_text() + '- **Is it new?** Yes.\n'))
-        other = self.dir / 'tasks' / 'alpha' / 'NOTES.md'
-        other.write_text('**Current increment:**')
-        self.assertIsNone(self.theory(other, old_string='', new_string='- **Why?** Because.'))
-        self.assertIsNone(self.theory(self.dir / 'tasks' / 'beta' / 'PLAN.md', old_string='', new_string='- **Why?** x'))
-
-    def test_the_hook_blocks_with_exit_status_2_and_its_message(self):
+    def test_the_hook_passes_what_is_no_commit_another_mode_and_bad_input(self):
         run = lambda mode, data: subprocess.run([sys.executable, str(HOOK), mode], input=json.dumps(data),
                                                 capture_output=True, text=True)
         quiet = run('commit', {'session_id': 'none', 'tool_input': {'command': 'ls'}})
@@ -149,15 +119,7 @@ class DuringRunTest(unittest.TestCase):
         self.assertEqual(run('other', {}).returncode, 0)
         self.assertEqual(subprocess.run([sys.executable, str(HOOK), 'commit'], input='not json', capture_output=True,
                                         text=True).returncode, 0)
-        plan = self.dir / 'tasks' / 'alpha' / 'PLAN.md'
-        plan.parent.mkdir(parents=True)
-        plan.write_text('### Resolved\n\n## Path\n\n**Current increment:** x\n')
-        session = f'test-during-run-{self.dir.name}'
-        self.addCleanup(lambda: (hook.STATE / f'{session}.json').unlink(missing_ok=True))
-        asked = run('theory', {'session_id': session, 'tool_input': {
-            'file_path': str(plan), 'old_string': '### Resolved\n', 'new_string': '### Resolved\n\n- **Why so?** x\n'}})
-        self.assertEqual(asked.returncode, 2)
-        self.assertTrue(asked.stderr.startswith('This adds to the theory of a plan under implementation: "Why so?".'))
+
 
     def test_the_shell_guard_checks_promises_at_a_commit(self):
         guard = HOOK.with_name('bash_guard.py')

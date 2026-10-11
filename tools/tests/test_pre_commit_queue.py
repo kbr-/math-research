@@ -48,6 +48,7 @@ class PreCommitQueueTest(unittest.TestCase):
 
     def install_tool(self, source=None):
         (self.root / 'tools').mkdir(exist_ok=True)
+        shutil.copy(TOOLS / 'branch_extension.py', self.root / 'tools' / 'branch_extension.py')
         if source is None:
             shutil.copy(TOOLS / 'lead_queue.py', self.root / 'tools' / 'lead_queue.py')
         else:

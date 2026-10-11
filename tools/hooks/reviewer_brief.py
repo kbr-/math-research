@@ -5,8 +5,8 @@ plan, Path, theory or notebook.
 AGENTS.md has reviewers briefed narrowly: exact files and anchors, and dependency excerpts in a scratch
 file. A brief that says "read the whole Path" makes every run pay for the whole document however few
 rows it audits: on 9 October 2026 a review of 10 table rows cost about as much as one of 190. The
-refusal names the tools that build the excerpt: `tools/clause_table.py --batch N --brief` for a task
-plan's clause table, `tools/notebook-excerpt.py` for the notebook.
+refusal names the tools that build the excerpt: `tools/notebook-excerpt.py` for the notebook, and a
+further one where the branch's own module (tools/branch_extension.py) names it.
 
 It reads the hook's JSON from stdin and acts only on an Agent call whose `subagent_type` names a
 reviewer. Exit status 2 refuses the call, with the reason on stderr.
@@ -17,6 +17,9 @@ import sys
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(TOOLS))
+import branch_extension
+
 # A whole document handed over to read: "read the whole Path", "the entire theory", "PLAN.md in full".
 WHOLE = re.compile(
     r"\b(?:whole|entire)\s+(?:`?Path`?|plan|theory|notebook|record)\b"
@@ -34,9 +37,8 @@ def refusal(payload, tools=TOOLS):
     found = WHOLE.search(str(tool_input.get('prompt', '')))
     if not found:
         return None
-    # The clause-table tool is named only on a branch that has it.
-    table = ('`tools/clause_table.py PLAN TABLE --audited RECORD --batch N --brief` for a clause table or '
-             if (tools / 'clause_table.py').is_file() else '')
+    # A further tool that builds an excerpt, where the branch's own module names one.
+    table = branch_extension.ask('EXCERPT_TOOL', '', tools)
     return (f'the brief sends the reviewer to read a whole document ("{found.group(0)}"). Brief it narrowly '
             '(AGENTS.md): name the rows or anchors to review and an excerpt file holding what they depend on, '
             f'built with {table}`tools/notebook-excerpt.py ANCHOR --out FILE` for the notebook, and let the '

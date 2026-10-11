@@ -11,7 +11,8 @@ It also refuses, before anything is written:
 - an entry or a next step with a dollar sign, which MathJax reads as a math delimiter, or with an HTML
   character reference that lost its ampersand (tools/char_refs.py);
 - a next step that parks the goal (a wait for a date, a feed or the user) while the notebook's Open
-  statements section still lists a statement; an entry of kind task is not checked;
+  statements section still lists a statement; an entry of a kind the branch's own module names
+  (tools/branch_extension.py) is not checked;
 - an entry while the notebook's Where we stand is the same as in the last commit, since every cycle
   reviews that section. --stand-unchanged REASON lets it through, and the entry then holds the reason
   in a paragraph labelled Where we stand, which tools/stand_reasons.py counts.
@@ -28,6 +29,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import branch_extension
 from char_refs import broken_entities
 from notebooks import selected, ROOT
 
@@ -127,7 +129,10 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     if next_html is not None:
         refuse_broken_text('next step', next_html)
         parked = PARKING.search(re.sub(r'<[^>]+>', ' ', next_html))
-        if parked and goal_open(source) and not re.match(r'<article\b[^>]*\bdata-kind="task"', entry):
+        # A branch's own module may name kinds of entry whose next step may wait.
+        may_wait = '|'.join(map(re.escape, branch_extension.ask('PARKING_KINDS', (), tools)))
+        waiting_kind = may_wait and re.match(rf'<article\b[^>]*\bdata-kind="(?:{may_wait})"', entry)
+        if parked and goal_open(source) and not waiting_kind:
             raise ValueError(f'the next step parks the goal ("{parked.group(0)}"); while the goal is open '
                              'the next step is research: open a new line or test a new idea (AGENTS.md)')
     entry = with_stand_reason(source, entry, committed, reason)

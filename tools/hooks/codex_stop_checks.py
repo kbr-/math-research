@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Native Codex Stop adapter for the checks of stop_checks.py: requests waiting for the judge, promises,
-and unchecked claims, through the shared predicate and prompt.
+"""Native Codex Stop adapter for the checks of stop_checks.py: the block a branch's own module puts first,
+promises, and unchecked claims, through the shared predicate and prompt.
 
 Its file name is the path tools/hooks/codex_dispatch.py loads it by.
 """
@@ -13,8 +13,8 @@ import sys
 from urllib.parse import urlsplit, urlunsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stop_checks import (PROMPT, MAX_CALLS, CALL_CHARS, checks_off, gap_block, promise_block, validate_verdict,
-                         waiting_block)
+from stop_checks import (PROMPT, MAX_CALLS, CALL_CHARS, branch_block, checks_off, gap_block, promise_block,
+                         validate_verdict)
 
 ROOT = Path(__file__).resolve().parents[2]
 JUDGE_TIMEOUT = 6.5
@@ -232,7 +232,7 @@ def failure_details(response, key):
 def check(event):
     if event.get('stop_hook_active'):
         return {}
-    blocked = waiting_block(ROOT)
+    blocked = branch_block(ROOT)
     if blocked:
         return blocked
     reply = event.get('last_assistant_message') or ''

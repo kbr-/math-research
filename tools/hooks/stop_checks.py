@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 """Claude Code Stop hook: the checks a turn's end must pass.
 
-Requests waiting for the judge. In this clone's own sessions, the stop is blocked while a task
-holds a request to others that `tools/task_index.py request judge` hasn't passed, so no such
-request reaches the user unjudged (research/notes/TASK_PROTOCOL.md, A request for someone else's
-action). It reads the task records only; the Codex adapter, codex_stop_checks.py, runs it too.
-
 Promises. A turn that promises the assistant's behaviour beyond it ("from now on I'll ...", in
 its text or its thinking) is blocked once, with the sentence: nothing said in a turn survives
 compaction or a new session, so a promise holds only through a framework change. A pattern finds
@@ -26,30 +21,23 @@ its thinking), and neither queues the tool (`tools/lead_queue.py add` or `append
 under tools/ is blocked once, with the sentence: a helper the framework lacks is built or queued in
 the same turn, so the need outlives the turn. A pattern finds them, without a model.
 
-Deferrals. A turn that hands a step to someone else ("left to the owners", "up to their team"), in its
-text, its thinking or what it writes (an edit's new text, a written file, a command such as a
-commit message), is blocked once, with the sentence: the step is taken apart and settled as
-TASK_PROTOCOL.md's request for someone else's action requires, so what is left to others holds only
-what needs them. A pattern finds them, without a model; it reads across a wrapped line's break.
-
 Gaps. A final reply that declares something unchecked, unverified or out of reach is blocked
 once, with the sentence: the agent lists every route that could settle it, each tried, cheap (a
 check of a few minutes, taken at once), expensive (its cost named, left to the user) or closed,
 then settles the question or asks for the narrowest open route. A pattern finds them in the
 reply's text outside quotes and code spans.
 
-Loops. A final reply that proposes a loop (a word for repetition with its "until") and holds no
-`/goal` prompt for it blocks once: the agent gives the prompt unasked, as TASK_PROTOCOL.md's "Loops"
-section says.
+A branch's own checks. Where the branch has a module of its own (tools/branch_extension.py), the hook
+asks it for a block that comes before every other check and for further checks of the turn, which run
+after the ones above and are turned off by the names the module gives.
 
 Unchecked claims. It asks Haiku whether the turn's final reply proposes building around a tool, or calls something
 impossible, missing or costly, without the turn having checked what the tool already offers.
 If so, the hook blocks the stop once with Haiku's reason, so the agent checks before the turn
 ends. Haiku classifies the reply's sentence closest to the failure and quotes it; only an
 unchecked workaround or missing-feature claim whose quote is found in the reply blocks, and
-not when the reply declares the gap with a reason or a way to check it. The rule it enforces is
-the engineering-discipline skill's: before designing around a tool's limit, check whether the tool
-already does the job.
+not when the reply declares the gap with a reason or a way to check it. The rule it enforces:
+before designing around a tool's limit, check whether the tool already does the job.
 
 The reply comes from the hook input's `last_assistant_message`; the turn's tool calls from the
 transcript, read backwards from its end only as far as the turn's first prompt. Haiku runs
@@ -59,8 +47,8 @@ the API refuses) lets the stop through with a warning to the user naming the cau
 
 When `stop_hook_active` is set the stop already follows a block, so no check runs. The
 repository's `.claude/settings.json` runs it for sessions in this clone; a session elsewhere
-runs it through an entry in the global settings, with `--global` (see README.md), which checks
-promises and claims, not this clone's requests.
+runs it through an entry in the global settings, with `--global`, which leaves out the
+block the branch's own module puts first.
 """
 import json
 import os
@@ -69,6 +57,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import branch_extension
 from haiku_judge import INSIDE_JUDGE, MODEL, Failed, Refused, ask
 
 JUDGE_TIMEOUT = 9.5
@@ -255,22 +244,7 @@ def workaround_block(texts, calls):
     return None
 
 
-# A loop proposed or described as the way forward: a word for repetition with its "until" condition, in
-# either order within one sentence. A numbered round ("round 4's reviewer") reports on a loop already running.
-REPEATS = r"\b(?:loop|loops|looping|rounds?(?! \d)|iterate|iterating|iterations?|repeat|repeating|repeated)\b"
-LOOP = re.compile(rf"[^.!?\n]*(?:{REPEATS}[^.!?\n]*\buntil\b|\buntil\b[^.!?\n]*{REPEATS})[^.!?\n]*", re.I)
 
-
-def loop_block(reply):
-    """The block for a final reply that proposes a loop and gives no /goal prompt for it, or None."""
-    found = sentences(LOOP, [reply])
-    if not found or '/goal' in reply:
-        return None
-    return {'decision': 'block', 'reason': (
-        f'A loop with no /goal prompt: "{found[0]}". Give the prompt in this reply, unasked, written as '
-        'research/notes/TASK_PROTOCOL.md\'s "Loops" section says: every way out inside the goal\'s condition '
-        '(success, a round cap, non-convergence), and each round costed, with no run a later round repeats '
-        'anyway. If the sentence proposes no loop to run, say so.')}
 
 
 # The gap's words used for something else: the outcome a tool gives a case ("reports such a scenario as
@@ -342,69 +316,7 @@ def missing_tool_block(texts, calls):
         'or the sentence names no missing tool, say so.')}
 
 
-# A step handed to someone else. Measured on one long session's 14,847 text and thinking blocks and
-# 13,411 tool calls' written content (edits' new text, written files, commands), in 0.39 s: 8 sentences
-# matched, 3 of them a step left to others (a reply, a plan edit, a commit message), one a runbook's
-# instruction to hand a token to its owners, and 4 this check's own test fixtures.
-_GAP = r"[ \t]*\n?[ \t]*(?:#[ \t]*)?"  # a word gap, a wrapped line's break (and a comment's #) included
-_WHO = rf"(?:owners?|team|maintainers?|code{_GAP}?owners?|admins?|platform{_GAP}team|other{_GAP}team)"
-# The phrase alone: its sentence is found around it by deferrals(), since a pattern spanning a sentence
-# across wrapped lines backtracks over every start position (54 s over the session above).
-DEFERRAL = re.compile(
-    rf"(?:\b(?:left|leave|leaving|hand(?:ed|ing)?|defer(?:red|ring)?|pass(?:ed|ing)?){_GAP}"
-    rf"(?:(?:it|this|that|them|these|those){_GAP})?(?:to|for){_GAP}(?:the|their|its){_GAP}{_WHO}\b"
-    rf"|\bfor{_GAP}(?:the|their|its){_GAP}{_WHO}{_GAP}to{_GAP}(?:decide|confirm|check|fix|remove|clean)\b"
-    rf"|\bup{_GAP}to{_GAP}(?:the|their|its){_GAP}{_WHO}\b"
-    rf"|\b(?:the|their|its){_GAP}owners'?{_GAP}(?:call|decision|job|problem)\b"
-    rf"|\bnot{_GAP}(?:this{_GAP}task's|ours){_GAP}to{_GAP}(?:decide|fix|change|remove)\b)", re.I)
-WRITTEN_FIELDS = ('new_string', 'content', 'new_source', 'command')
-_SENTENCE_BREAK = re.compile(r'[.!?]|\n[ \t]*\n')
 
-
-def deferrals(texts):
-    """The sentences of `texts` handing a step to someone else, outside quotes and code spans, each read
-    across a wrapped line's breaks up to a sentence's end or a blank line."""
-    found = []
-    for text in texts:
-        unquoted = QUOTED.sub(lambda m: ' ' * len(m.group(0)), text)
-        seen = set()
-        for phrase in DEFERRAL.finditer(unquoted):
-            start = max([0] + [m.end() for m in _SENTENCE_BREAK.finditer(unquoted, 0, phrase.start())][-1:])
-            end_match = _SENTENCE_BREAK.search(unquoted, phrase.end())
-            end = end_match.start() if end_match else len(unquoted)
-            if start not in seen:
-                seen.add(start)
-                found.append(' '.join(text[start:end].split()))
-    return found
-
-
-# Where the patterns' own examples are written: the checks' code and their tests. A sentence there is a
-# fixture of a check, not something the turn says; an edit adding a deferral example to a test was blocked
-# as a step handed to others (9 October 2026).
-OWN_FIXTURES = re.compile(r"(?:^|/)tools/(?:hooks/[^/]+|measure_stop_checks\.py|tests/test_(?:stop_checks|during_run|"
-                          r"codex_stop_checks|measure_stop_checks|unlisted_work)\.py)$")
-
-
-def written(calls):
-    """What the turn's calls write: edits' new text, written files and commands; not what they write into
-    the checks' own code and tests."""
-    return [str(tool_input[field]) for _, tool_input in calls for field in WRITTEN_FIELDS
-            if isinstance(tool_input.get(field), str)
-            and not OWN_FIXTURES.search(str(tool_input.get('file_path') or tool_input.get('notebook_path') or ''))]
-
-
-def deferral_block(texts, calls):
-    """The block for a turn that hands a step to someone else, or None."""
-    found = deferrals(texts + written(calls))
-    if not found:
-        return None
-    return {'decision': 'block', 'reason': (
-        f'A step handed to others: "{found[0]}". Take it apart and settle each part yourself '
-        '(TASK_PROTOCOL.md, A request for someone else\'s action): what access it needs; whether we lack '
-        'it, checked; who holds it, from the role lists, CODEOWNERS or commit history; how the system does '
-        'it today; and a route around it. Do what needs no access we lack, and record what is left as a '
-        'request (tools/task_index.py request add --to-others), naming who acts. If the sentence hands '
-        'no step to anyone, say so.')}
 
 
 # A mistake of the assistant's own, admitted. Measured on one machine's 7,766 text and thinking blocks with
@@ -490,18 +402,25 @@ def validate_verdict(reply, verdict):
     return {'ok': not failed, 'kind': verdict['kind'], 'quote': quote, 'reason': str(verdict.get('reason', ''))}
 
 
-PROTOCOL = 'research/notes/TASK_PROTOCOL.md'
 CHECKS_OFF = 'tools/hooks/checks_off'
-# The checks a branch can turn off, by the names tools/measure_stop_checks.py prints.
-# 'review' is no check of a stop: it turns off the stand-in review at the finisher (tools/stand_in_review.py).
-CHECK_NAMES = ('promise', 'mistake', 'workaround', 'missing tool', 'deferral', 'gap', 'loop', 'judge', 'review')
+# The checks a branch can turn off, by name: this hook's own, then those of the branch's own module.
+# 'review' is no check of a stop: it turns off the stand-in review (tools/stand_in_review.py).
+CHECK_NAMES = (('promise', 'mistake', 'workaround', 'missing tool', 'gap', 'judge', 'review')
+               + tuple(branch_extension.ask('STOP_CHECK_NAMES', ())))
 
 
-def has_protocol(root):
-    """Whether the branch at `root` works under the task protocol. The checks that send the agent to it
-    (requests waiting for the judge, a step handed to others, a loop proposed without its prompt) run
-    only there."""
-    return (Path(root) / PROTOCOL).is_file()
+def branch_block(root):
+    """The block the branch's own module puts before every other check of a stop, or None."""
+    first = branch_extension.ask('stop_first_block')
+    return first(root) if first else None
+
+
+def branch_checks(texts, calls, reply, root):
+    """The branch's own further checks of a turn's end, in its order, each as (name, check)."""
+    further = branch_extension.ask('stop_checks')
+    return tuple(further(texts, calls, reply, root)) if further else ()
+
+
 
 
 def checks_off(root):
@@ -515,22 +434,7 @@ def checks_off(root):
     return frozenset(line.strip() for line in lines)
 
 
-def waiting_block(root):
-    """The block for requests in `root`'s tasks that wait for the judge, or None when none wait."""
-    if not has_protocol(root):
-        return None
-    import task_index
-    try:
-        waiting = task_index.waiting(root)
-    except (task_index.TaskError, ValueError, OSError):
-        return None
-    if not waiting:
-        return None
-    listed = ', '.join(f'{slug} request {label}' for slug, label in waiting)
-    return {'decision': 'block', 'reason': (
-        f'Requests for others wait for the judge: {listed}. Once all of a task\'s requests are ready, '
-        'run tools/task_index.py request judge SLUG, fix any it refuses, then answer again: a request '
-        'reaches the user only judged (TASK_PROTOCOL.md, A request for someone else\'s action).')}
+
 
 
 def turn_block(texts, calls, said, off):
@@ -540,6 +444,9 @@ def turn_block(texts, calls, said, off):
     checks = (('promise', lambda: promise_block(texts)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
               ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)))
     return next(filter(None, (check() for name, check in checks if name not in off)), None)
+
+
+
 
 
 def emit_block(decision):
@@ -561,7 +468,7 @@ def main(argv):
     data = json.load(sys.stdin)
     if data.get('stop_hook_active'):
         return 0
-    blocked = None if global_entry else waiting_block(ROOT)
+    blocked = None if global_entry else branch_block(ROOT)
     if blocked:
         emit_block(blocked)
         return 0
@@ -573,11 +480,10 @@ def main(argv):
         calls, texts = [], []
     # The final reply may not be in the transcript yet when the hook runs.
     turn_texts = texts + ([reply] if reply not in texts else [])
-    off, protocol = checks_off(ROOT), has_protocol(ROOT)
+    off = checks_off(ROOT)
     blocked = turn_block(turn_texts, calls, reply, off) or next(filter(None, (
-        check() for name, check in (('missing tool', lambda: missing_tool_block(turn_texts, calls)),
-                                    ('deferral', lambda: protocol and deferral_block(turn_texts, calls)),
-                                    ('loop', lambda: protocol and loop_block(reply)))
+        check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),)
+                                    + branch_checks(turn_texts, calls, reply, ROOT))
         if name not in off)), None)
     if blocked:
         emit_block(blocked)
@@ -602,4 +508,6 @@ def main(argv):
 
 
 if __name__ == '__main__':
+    # The branch's own module asks for this one by name; it gets this copy, not a second one.
+    sys.modules.setdefault('stop_checks', sys.modules['__main__'])
     sys.exit(main(sys.argv[1:]))

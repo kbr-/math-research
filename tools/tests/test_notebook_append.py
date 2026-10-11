@@ -128,15 +128,25 @@ class NotebookAppendTests(unittest.TestCase):
             tool.append(NOTEBOOK, '<article id="a3">three</article>', '<p>the (quot;new) step</p>')
 
     def test_a_next_step_that_parks_an_open_goal_is_refused(self):
-        entry, task = '<article id="a3">three</article>', '<article id="a3" data-kind="task">three</article>'
+        entry, survey = '<article id="a3">three</article>', '<article id="a3" data-kind="survey">three</article>'
         opened = '<section id="open-statements"><ol><li>Statement one is open.</li></ol></section>' + NOTEBOOK
         proved = '<section id="open-statements"><p>The goal is proved.</p></section>' + NOTEBOOK
         waits = '<p>Research <em>waits</em> for your decision on the route.</p>'
         with self.assertRaisesRegex(ValueError, r'the next step parks the goal \("Research  waits"\)'):
             tool.append(opened, entry, waits)
-        # A proved goal, a notebook that lists no statements, and a task's entry may wait.
-        for source, appended in ((proved, entry), (NOTEBOOK, entry), (opened, task)):
-            self.assertIn('waits', tool.append(source, appended, waits))
+        # A proved goal and a notebook that lists no statements may wait.
+        with tempfile.TemporaryDirectory() as tools:
+            for source in (proved, NOTEBOOK):
+                self.assertIn('waits', tool.append(source, entry, waits, tools=Path(tools)))
+            # An entry of another kind may wait only where the branch's own module names its kind.
+            with self.assertRaisesRegex(ValueError, 'parks the goal'):
+                tool.append(opened, survey, waits, tools=Path(tools))
+        with tempfile.TemporaryDirectory() as tools:
+            (Path(tools) / 'branch_own.py').write_text("PARKING_KINDS = ('survey', 'audit')\n")
+            self.assertIn('waits', tool.append(opened, survey, waits, tools=Path(tools)))
+            for other in (entry, survey.replace('survey', 'surveys')):
+                with self.assertRaisesRegex(ValueError, 'parks the goal'):
+                    tool.append(opened, other, waits, tools=Path(tools))
         # A step that turns to another statement, or names work that waits without being a wait, is research.
         for step in ('<p>Switch to statement two: prove the transfer lemma for odd fields.</p>',
                      '<p>Prove the bound; the write-up can wait until then.</p>'):

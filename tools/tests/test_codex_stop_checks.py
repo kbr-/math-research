@@ -12,21 +12,15 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/hooks'))
 import codex_stop_checks as hook
 import stop_checks
-sys.path.insert(0,str(ROOT/'tools/tests'))
-from test_stop_checks import MACHINERY, needs_machinery, tasks_with_a_request
 
 
 class NativeClaimTest(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         self.path=Path(self.tmp.name)/'rollout.jsonl'
-        # The gate reads the fixture's task records, not this clone's.
-        self.root=Path(self.tmp.name)/'clone';(self.root/stop_checks.PROTOCOL).parent.mkdir(parents=True)
-        if MACHINERY:(self.root/stop_checks.PROTOCOL).write_text('# protocol\n')
-        # The checks this branch turns off are the fixture's too, not this clone's.
+        # The checkout the adapter reads, and the checks it turns off, are the fixture's, not this clone's.
+        self.root=Path(self.tmp.name)/'clone';self.root.mkdir()
         own=patch.object(hook,'ROOT',self.root);own.start();self.addCleanup(own.stop)
-        gate=patch.object(hook,'waiting_block',lambda root:stop_checks.waiting_block(self.root))
-        gate.start();self.addCleanup(gate.stop)
         self.prompt={'type':'event_msg','payload':{'type':'user_message','message':'request'}}
         self.write(self.prompt)
         self.reply='Git has no way to show a staged file.'
@@ -80,23 +74,13 @@ class NativeClaimTest(unittest.TestCase):
             with patch.object(hook.subprocess,'run',return_value=self.result({**self.raw,**change})):
                 self.assertEqual(hook.check(self.event),{})
 
-    @needs_machinery
-    def test_blocks_while_a_request_waits_for_the_judge_before_the_judge_runs(self):
-        tasks_with_a_request(self.root,judged=False)
-        with patch.object(hook.subprocess,'run',return_value=self.result()) as run:
+    def test_a_branch_s_first_block_comes_before_the_judge_runs(self):
+        block={'decision':'block','reason':'first'}
+        with patch.object(hook,'branch_block',lambda root:block),patch.object(hook.subprocess,'run',return_value=self.result()) as run:
             decision=hook.check({**self.event,'last_assistant_message':None})
             self.assertEqual(hook.check({**self.event,'stop_hook_active':True}),{})
         run.assert_not_called()
-        self.assertEqual(decision['decision'],'block')
-        self.assertIn('Requests for others wait for the judge: alpha request 1.',decision['reason'])
-
-    @needs_machinery
-    def test_without_the_task_protocol_a_waiting_request_blocks_nothing(self):
-        tasks_with_a_request(self.root,judged=False)
-        (self.root/stop_checks.PROTOCOL).unlink()
-        with patch.dict(sys.modules,{'task_index':None}),patch.object(hook.subprocess,'run',return_value=self.result(dict(self.raw,kind='other'))):
-            self.assertEqual(hook.check(self.event),{})
-            self.assertEqual(hook.check({**self.event,'last_assistant_message':'From now on I will fetch first.'})['decision'],'block')
+        self.assertEqual(decision,block)
 
     def test_a_check_the_branch_turns_off_does_not_run(self):
         gap,promise='Its plugins are unchecked.','From now on I will fetch first.'

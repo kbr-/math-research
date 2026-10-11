@@ -106,6 +106,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import branch_extension
+
 ROOT = Path(__file__).resolve().parents[1]
 
 CAP, FLOOR, HEAD_READ = 30, 10, 5     # user, 9 October 2026: earlier draining leaves fewer stale items
@@ -515,11 +518,11 @@ def wait_changes(text):
         outcome = OUTCOME_RE.search(item)
         if outcome and outcome.group(1) == 'Waiting':
             rest = item[outcome.end():]
-            link = re.search(r'href="([^"]*USER_REQUESTS\.md)"', rest)
-            number = re.search(r'\bitem (\d+)', re.sub(r'<[^>]+>', ' ', rest))
+            # A branch's own module may read the reference its own way (a link to a record of requests).
+            reference = branch_extension.ask('wait_reference')
+            given = reference(rest) if reference else None
             plain = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', rest)).strip(' :.')
-            out[(kind, item_id)] = (link.group(1) + (f' item {number.group(1)}' if number else '') if link
-                                    else plain[:80])
+            out[(kind, item_id)] = plain[:80] if given is None else given
         elif outcome and outcome.group(1) == 'Unblocked':
             out[(kind, item_id)] = None
     return out
@@ -537,7 +540,8 @@ def apply_marks(nodes, text):
 
 
 def check_waits(text, where):
-    """Problems with an entry's Waiting follow-ups: each names its request; a task's request must exist."""
+    """Problems with an entry's Waiting follow-ups: each names its request, and passes what the branch's own
+    module asks of the reference, where it asks anything."""
     problems = []
     for item, ref in wait_changes(text).items():
         if ref is None:
@@ -545,16 +549,8 @@ def check_waits(text, where):
         if not ref:
             problems.append(f'{item[1]}: a Waiting follow-up names the request it waits on')
             continue
-        task = re.match(r'(\S*USER_REQUESTS\.md)(?: item (\d+))?$', ref)
-        if task:
-            listing = (where.base or where.root) / task.group(1)
-            record = listing.parent / 'task.json'
-            if not listing.exists() or not record.exists():
-                problems.append(f'{item[1]}: {task.group(1)} does not resolve to a task\'s requests')
-            elif not task.group(2):
-                problems.append(f'{item[1]}: name the request as "item N" after the link to {task.group(1)}')
-            elif int(task.group(2)) not in {r['number'] for r in json.loads(record.read_text())['requests']}:
-                problems.append(f'{item[1]}: {task.group(1)} has no open request {task.group(2)}')
+        further = branch_extension.ask('wait_problems')
+        problems += [f'{item[1]}: {problem}' for problem in (further(ref, where.base or where.root) if further else ())]
     return problems
 
 
