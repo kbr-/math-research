@@ -363,8 +363,8 @@ def main():
     for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
         print(f'The next step names queue item {ident}. Check its description against the item\'s own words:')
         print(f'  Queued text: {text}')
-        for claim, summary in registry_matches(text):
-            print(f'  Registry match for its text, to read before planning: {claim} — {summary}')
+        for claim, summary in registry_matches(f'{text} {follow or ""}'):   # attempts are named in follow-ups
+            print(f'  Registry match for its text and latest follow-up, to read before planning: {claim} — {summary}')
         if anchor:
             print(f'  Latest development, #{anchor}. Follow-up: {follow}')
         earlier = [entry for entry in item_history(result, ident) if entry[0] != anchor]
