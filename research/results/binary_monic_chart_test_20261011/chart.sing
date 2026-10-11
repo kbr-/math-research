@@ -5,7 +5,12 @@
 // linear reparametrization, checked separately, not a low-degree simplification.
 // Check both ideal inclusions, every pair of the proposed basis, and propriety.
 // Controls remove one active generator, and add an explicit constant obstruction.
-ring scRing=2,(z(1..48)),dp;
+// The review specifies graded lex (Dp), not graded reverse lex (dp).
+// The two orders disagree on x*z versus y^2; check both sides of that control.
+ring scWrongOrder=2,(ox,oy,oz),dp;
+if(lead(ox*oz+oy^2)==ox*oz) { print("FAIL reverse-lex negative control"); quit; }
+print("ORDER CONTROL: dp differs from graded lex on x*z+y^2");
+ring scRing=2,(z(1..48)),Dp;
 int scFailures=0;
 int scChecks=0;
 int scPairs=0;
@@ -16,6 +21,7 @@ proc scAssert(int scOK,string scLabel)
   scChecks++;
   if(!scOK) { scFailures++; print("FAIL "+scLabel); }
 }
+scAssert(lead(z(1)*z(3)+z(2)^2)==z(1)*z(3),"specified graded lex order");
 proc scIndex(int scPoint,int scBlock,int scRow,int scInput)
 {
   return(12*scPoint+4*scBlock+2*scRow+scInput+1);
