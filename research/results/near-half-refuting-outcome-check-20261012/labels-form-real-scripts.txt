@@ -1,0 +1,10 @@
+# command: python3 -c 
+import glob,time
+from importlib.machinery import SourceFileLoader
+CS=SourceFileLoader('c','compute.sh').load_module()
+fs=sorted(glob.glob('research/results/near-half-*-2026101[12]/*.py')); bad=dict(CS.scripts_without_refuting_outcome(['python3']+fs))
+print(len(fs),'scripts of 11 and 12 October,',len(bad),'refused; passing:',[f for f in fs if f not in bad])
+allf=sorted(glob.glob('research/results/**/*.py',recursive=True)); t=time.monotonic(); b=CS.scripts_without_refuting_outcome(['python3']+allf); print(len(allf),'scripts in all results,',len(b),'refused, in',round(time.monotonic()-t,2),'s')
+# run 632b63b2ef, session nhpc-20261012-refuting-outcome-build; full output
+31 scripts of 11 and 12 October, 31 refused; passing: []
+510 scripts in all results, 510 refused, in 0.12 s

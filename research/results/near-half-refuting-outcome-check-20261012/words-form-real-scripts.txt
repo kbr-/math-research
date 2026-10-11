@@ -1,0 +1,42 @@
+# command: python3 -c 
+import glob,time
+from importlib.machinery import SourceFileLoader
+CS=SourceFileLoader('c','compute.sh').load_module()
+t=time.monotonic(); fs=sorted(glob.glob('research/results/near-half-*-2026101[12]/*.py')); bad=dict(CS.scripts_without_refuting_outcome(['python3']+fs))
+for f in fs: print(('REFUSED ' if f in bad else 'passes  ')+f, '; '.join(bad.get(f,[])))
+print(len(fs),'scripts,',len(bad),'refused, in',round(time.monotonic()-t,2),'s')
+allf=sorted(glob.glob('research/results/**/*.py',recursive=True)); t=time.monotonic(); b=CS.scripts_without_refuting_outcome(['python3']+allf); print(len(allf),'scripts in all results,',len(b),'would be refused, in',round(time.monotonic()-t,2),'s')
+# run 8ca72d30de, session nhpc-20261012-refuting-outcome-build; full output
+passes  research/results/near-half-all-subsets-pigeonhole-20261011/all_subsets.py 
+REFUSED research/results/near-half-basis-filtration-20261011/three_rows.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-block-free-pairing-20261011/block_free.py why that output is possible
+REFUSED research/results/near-half-block-relations-20261011/block_relations.py why that output is possible
+REFUSED research/results/near-half-comparator-review-20261011/padded_index.py why that output is possible
+REFUSED research/results/near-half-dense-profile-rank-20261011/profile_rank.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-exact-closure-series-20261011/closure_series.py why that output is possible
+REFUSED research/results/near-half-exact-closure-series-20261011/reference_check.py why that output is possible
+REFUSED research/results/near-half-exact-closure-series-20261011/series_index.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-five-circuit-20261011/example.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-flow-closure-20261011/instance.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-flow-large-blocks-20261011/instance.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-group-relaxation-20261011/thresholds.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-irreducible-count-20261011/quotient_count.py an output that would refute its expectation or control; why that output is possible
+passes  research/results/near-half-lifted-degree-20261011/lift_degrees.py 
+REFUSED research/results/near-half-local-expansion-20261011/instance.py an output that would refute its expectation or control; why that output is possible
+passes  research/results/near-half-majority-density-20261012/density.py 
+REFUSED research/results/near-half-majority-point-bound-20261012/point_bound.py why that output is possible
+REFUSED research/results/near-half-method-block-review-two-20261011/php_index.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-onto-pigeonhole-20261011/onto_index.py an output that would refute its expectation or control
+REFUSED research/results/near-half-paired-pigeons-20261011/paired_pigeons.py why that output is possible
+REFUSED research/results/near-half-pairings-thirty-two-20261011/blocking.py why that output is possible
+REFUSED research/results/near-half-pairings-thirty-two-20261011/pairings_32.py why that output is possible
+REFUSED research/results/near-half-parity-row-witnesses-20261011/profile_search.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-pigeonhole-index-20261011/index_series.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-pigeonhole-levels-20261011/dance_counts.py an output that would refute its expectation or control; why that output is possible
+passes  research/results/near-half-root-barrier-20261012/root_drop.py 
+REFUSED research/results/near-half-scope-free-extension-count-20261011/extension_window.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-symmetric-pair-rows-20261011/check.py an output that would refute its expectation or control; why that output is possible
+REFUSED research/results/near-half-thin-block-covers-20261011/thin_covers.py why that output is possible
+REFUSED research/results/near-half-weight-class-degrees-20261011/weight_classes.py why that output is possible
+31 scripts, 27 refused, in 0.02 s
+510 scripts in all results, 496 would be refused, in 0.17 s
