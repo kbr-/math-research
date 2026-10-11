@@ -1,0 +1,97 @@
+Review record for entry-2026-10-11-resonance-free-bandwidth (riemann notebook), 11 October 2026.
+Reviewer: fresh-context medium reviewer subagent (Claude Code, medium effort), read-only, ran nothing.
+Files given: the entry draft, the plain-text excerpt of entry-2026-10-11-many-pair-bound,
+research/results/rh_cluster_05/bandwidth_scan.py and bandwidth_scan.json.
+The report below is the reviewer's, transcribed by the entry's author; formulas are in the reviewer's notation.
+
+Verdict: pass with corrections.
+
+Both proofs are correct as written; no mathematical error found in the proposition or the theorem. The
+corrections concern framing, one sub-idea status, the closure reason, one rounding and some wording.
+Numbers were compared against bandwidth_scan.json by reading.
+
+Correctness
+
+1. Setting. Correct: (1/Lam^2) int_{-Lam}^{Lam} (Lam-|s|)|S|^2 with |S| even gives the stated formula and
+   Lam ||B|| = sqrt2 ||S||_Lam.
+
+2. Subset-sum resonance. Every step checks: the product formula, the vanishing for odd q_i,
+   2|sin(u alpha/2)| <= u alpha, the Gamma integral, the 3n^2 term, (1-e^{-2})^2/4 = 0.187 > 1/6, the ratio
+   bound and the k=1 match (3 pi^2/(4 b^2) = 0.0514 at b=12, as in the JSON).
+   - "tends to zero like b^{-2k}" is only an upper bound: write "is O_k(b^{-2k})".
+   - The implied constant is about (2k+1)! 3^{k(k-1)} (pi/2)^{2k}/n, so the decay only starts for b well
+     above 3^k. The JSON shows it: at b=24 the k=3 ratio (0.0062) exceeds the k=2 ratio (0.0043).
+   - The "Hence no bound ..." sentence is valid only as a statement uniform in n; for fixed n an exponent
+     A(n) is not excluded.
+   - Rounding: the third ratio is 0.004284661, so 0.00428, not 0.00429.
+
+3. Resonance-free bandwidth. Every step checks: the decomposition, the integration by parts (2f(A)/|nu|,
+   needing A >= 0, which holds), the off-diagonal sum against 2M^2/g, the change of variables and
+   discarding u > Lam1, 3e^{-2} < 1/2, ||R||_Lam^2 <= M^2 Lam^2/2, e^x >= 2 sinh x, and the n=1, H=0 case
+   (Q(Lam1) >= m^2/(8 delta^2)). The solitary value sqrt(2 kappa^2+2) is right.
+   - Notation: P is both the exponential polynomial and the real part of the form; S and A are also reused.
+   - "No hypothesis ... on separation is needed" although distinct heights are assumed and g sets H: reword
+     to "no separation relative to delta".
+   - The benchmark is m_* kappa, one pair, not (sum m_j^2 kappa_j^2)^{1/2} as in the proposition and in
+     sub-idea s2. "No loss beyond a constant" is true only against the single largest pair.
+
+4. Conditional paragraph. The inequality e^{delta_* Lam} <= 2 sqrt2 delta_* Lam (...)/m_* follows.
+   - The O() needs a >= 0, delta_* bounded, and sup ||P_Lam|| over the whole interval.
+   - "Two-sided": the upper direction ||B_Lam|| <= M sqrt(2 kappa_Lam(delta_*)^2+2) is trivial from
+     |S| <= 2M cosh(delta_* s) but is not written. State it.
+   - "No exception for clusters" is too strong: points at equal height are excluded, and H -> infinity as
+     g -> 0. H depends on the unknown configuration through M^2/(g m_*^2).
+   - Nothing is claimed about zeta beyond the model.
+
+5. Follow-up.
+   - s2 is labelled "Decided, in a stronger form than asked". It is incomparable: more general in delta,
+     weaker in range (H in place of Lam0) and weaker in benchmark. As asked, s2 appears to have a negative
+     answer (Suggestion 1). Reword it.
+   - "Developed" for the item: the draft names an undecided question (whether H can be taken of size Lam1)
+     and neither lists it under Sub-ideas nor drops it with a reason. Either keep the item Continuing with
+     that sub-idea, or settle it in the entry.
+   - s3 closure (the adaptive test vector, Closed: superseded): lambda_max(B) <= ||B||_HS is correct, and the
+     single-bandwidth limitation on the subset-sum family is sound for B alone, as the Stakes says.
+     "Superseded by the theorem" is only partly supported. The theorem bounds the HS norm, and passing to
+     lambda_max costs (2n)^{3/2}. A test vector at a resonance-free bandwidth could avoid that factor, and
+     the closure does not address it. Add the reason it does not matter (a polynomial factor in n moves the
+     exponent by O(log n/Lam)), or keep that residue open.
+   - Stakes is otherwise sound, but its "no" branch should name this (2n)^{3/2} residue.
+
+6. Goal progress. "Unchanged" with bearing none is a fair reading. Two phrases over-claim: "removes the
+   cluster obstruction" and "clean equivalence-type reformulation".
+
+JSON comparison. All other quoted numbers match.
+
+Unused hypotheses. Theorem: m_j >= 1 (only m_j > 0 is used); Lam1 >= 1/delta_* is used only for the
+constant 1/2. Proposition: positivity of q_i.
+
+Suggestions (unverified)
+
+1. H cannot be a constant multiple of Lam1; [Lam1, 2 Lam1] can lose a growing factor. Equal delta, heights
+   j g for 0 <= j < N with g = pi/(2 Lam1). Simple points (Dirichlet kernel): |P(s)| <= sqrt2 for s in
+   [Lam1, 3 Lam1]; for Lam in [Lam1 + t, 3 Lam1] with t = 2 ln N/delta, ||B_Lam||^2 = O(kappa^2) + O(N^2)
+   against N kappa^2. Fejer multiplicities N - |j|: |P| <= 2 on the same range while m_* = N, so the
+   theorem's own conclusion fails by a factor of about N there; hence H >= about pi/g is necessary. Both
+   need delta Lam1 >> ln N and kappa >> N^2. Checked by hand only.
+2. H = C/g suffices for equal delta, by the Montgomery-Vaughan mean-value theorem; this removes M^2/m_*^2
+   and improves m_* to (sum m_j^2)^{1/2}.
+3. Elementary improvement for all delta within the draft's proof: order the heights and use
+   m_j m_l <= (m_j^2 + m_l^2)/2; the off-diagonal total is at most 4(1 + ln n) sum m_j^2 / g, so
+   H >= 8(1 + ln n) sum_j m_j^2/(g m_*^2) suffices. Arithmetic verified by the reviewer.
+4. Unequal delta at H = C/g: a sketch only, not verified.
+
+Process audit
+
+- Title over-claims ("a bandwidth nearby with none for every configuration").
+- Goal-progress and Process-assessment wording stronger than what is proved.
+- Two benchmarks used without saying so.
+- Unasked question the data raises: in all five subset-sum scans the maximizing bandwidth is about 2 Lam0;
+  in most cluster scans it is Lam1 itself. The scan never needed the range H.
+- Scan resolution: the step reaches 5.8 against a resonance width of about 2.5.
+- Deferred without reason: the H ~ Lam1 question, while the item is marked Developed.
+- s2 labelled "stronger form than asked": it is not.
+- s3 closure reason incomplete: the (2n)^{3/2} passage to lambda_max is not addressed.
+- Number without source: "thirteen scans" in the first run.
+- Possible tag mismatch between the article's item tag and the sub-items: confirm.
+- Framework changes: none in the brief; no findings.

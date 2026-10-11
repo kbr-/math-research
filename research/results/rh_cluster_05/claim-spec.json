@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Resonance-free bandwidth](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-resonance-free-bandwidth"],
+    "label": "Cancellation among close off-line pairs as a resonance in the bandwidth"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-11",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:subset-sum-resonance",
+      "summary": "Flat window, complete grid, n = 2^k simple off-axis points at equal distance delta with heights sum_{i in S} q_i pi/Lam0 (q_i odd, distinct subset sums), b = delta Lam0: ||B_{Lam0}||_HS^2 <= (e^{2b}/(2b^2)) (2k+1)! prod_i (q_i pi/(2b))^2 + 3 n^2, which is O_k(b^{-2k}) times 2 n kappa^2 for q_i = 3^(i-1); so no single-bandwidth bound ||B||_HS^2 >= c b^{-A} sum m_j^2 kappa_j^2 with fixed c, A holds uniformly in n for simple points.",
+      "assessment": "Refutation, by an explicit family and a short proof (product formula, vanishing of order k at the end of the interval), of a single-bandwidth lower bound with a fixed power loss. The case k = 1 is the two-pair cancellation. The exact single-bandwidth loss between exponents 2 log_2 n and 2(n-1) is not determined.",
+      "status": "refutation",
+      "category": "context",
+      "rationale": "Shows that at one bandwidth close off-line pairs with simple points can cancel by more than any fixed power of delta*Lam; motivates varying the bandwidth.",
+      "next_action": "None on this route; the resonance-free bandwidth theorem makes the exact single-bandwidth loss immaterial.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; closed-form control at five parameter pairs with k <= 3 lies below the bound.",
+        "formalization": "No formalization.",
+        "significance": "Context: an explicit obstruction at a single bandwidth in the model. Novelty not claimed.",
+        "relationships": "Generalizes the two-pair cancellation (k = 1); uses the second-moment identity."
+      }
+    },
+    {
+      "id": "thm:resonance-free-bandwidth",
+      "summary": "Flat window, complete grid, off-axis points at pairwise distinct heights with least gap g, total multiplicity M, largest distance delta_* attained with multiplicity m_*: for Lam1 >= 1/delta_* and H >= 4 M^2/(g m_*^2) (H = 0 if n = 1) some Lam in [Lam1, Lam1+H] has ||B_Lam||_HS >= (sqrt2/4) m_* e^{delta_* Lam}/(delta_* Lam) - M >= (sqrt2/2) m_* kappa_Lam(delta_*) - M. No condition on the other delta_j and no separation relative to delta; the benchmark is the single largest pair.",
+      "assessment": "Working proof: split off e^{delta_* s}, mean value of an exponential sum with nonincreasing positive amplitudes by integration by parts, average over the bandwidth, triangle inequality in the weighted norm. For configurations at distinct heights it bounds the largest delta from a second-moment bound over a range of bandwidths of length 4M^2/(g m_*^2), which depends on the configuration and can far exceed Lam1; how short the range can be is open, and unverified examples indicate that length of order 1/g is necessary. Conditional on an unavailable second-moment premise for any consequence about zeros.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows that cancellation among close off-line pairs in the Gram model is a resonance at particular bandwidths. With the real configuration bound the route is a reformulation in the model and supplies no estimate.",
+      "next_action": "Determine the necessary and sufficient length of the bandwidth range: verify the equally spaced examples and prove the version with H of order 1/g for equal delta.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry for the flat window; scans of 4001 bandwidths on 20 configurations find a bandwidth with the stated bound in every case, which checks direction and constants only.",
+        "formalization": "No formalization.",
+        "significance": "Context: completes the description of what a second-moment bound says about off-line points in the model. Novelty not claimed.",
+        "relationships": "Depends on the second-moment identity; complements the many-pair norm bound, whose separated case it extends to arbitrary configurations at a nearby bandwidth; the subset-sum resonance shows a single bandwidth does not suffice."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:subset-sum-resonance", "depends_on", "lem:gram-second-moment-identity", "Uses the flat-window mean-square form."],
+    ["prop:subset-sum-resonance", "cites", "prop:many-pair-norm-bound", "An upper bound at one bandwidth for a clustered configuration, where that proposition's lower bound is empty."],
+    ["prop:subset-sum-resonance", "refines", "prop:two-pair-cancellation", "The case k = 1, q_1 = 1 is the two-pair configuration; the bound's leading ratio equals that proposition's."],
+    ["thm:resonance-free-bandwidth", "depends_on", "lem:gram-second-moment-identity", "Uses the flat-window mean-square form."],
+    ["thm:resonance-free-bandwidth", "cites", "prop:many-pair-norm-bound", "Extends its separated case to arbitrary configurations at a nearby bandwidth."],
+    ["thm:resonance-free-bandwidth", "cites", "prop:subset-sum-resonance", "Shows that the change of bandwidth is needed."]
+  ]
+}
