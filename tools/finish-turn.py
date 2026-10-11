@@ -289,6 +289,29 @@ BUILT_RE = re.compile(r'<li\b[^>]*data-build="[^"]+"[^>]*>(?:(?!</li>).)*?<stron
 BUILDS_PARAGRAPH_RE = re.compile(r'<p><strong>Builds\.</strong>(.*?)</p>', re.S)
 
 
+OWED_PARAGRAPH_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
+OWED_UNMADE_RE = re.compile(r'\bnot reached\b|\bnot made\b|\bunmade\b|\b(?:did|have) not read\b|\bnot read by me\b|'
+                            r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
+OWED_REASON_RE = re.compile(r'\bbecause\b|\bsince\b|\bcame first\b|\bcomes first\b|\bthe reason\b', re.I)
+OWED_FROM = '2026-10-12'
+
+
+def validate_owed_unmade(body, article, close):
+    """An Owed attempt paragraph that reports the named attempt unmade, or made by the reviewer, gives the reason
+    another came first: two entries of 11 October 2026 on one item wrote "not reached" and went on to an easier
+    neighbour of the owed proof, which their reviewer then read.  Entries dated before the check are exempt."""
+    tag = body[article:body.index('>', article) + 1]
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if dated is None or dated.group(1) < OWED_FROM:
+        return
+    for found in OWED_PARAGRAPH_RE.finditer(body[article:close]):
+        plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1)))
+        if OWED_UNMADE_RE.search(plain) and not OWED_REASON_RE.search(plain):
+            raise ValueError('The Owed attempt paragraph reports the named attempt unmade, or made by the reviewer, '
+                             'without the reason another came first: make the attempt, or say why it waits '
+                             '(AGENTS.md, Owed attempt)')
+
+
 def validate_review_builds(body, article, close):
     """A review whose period (the entries on its route since the previous review, itself included) queued
     build items that are still queued, and in which no build item was recorded Developed, names each of
@@ -1173,6 +1196,7 @@ def validate_marker(body, marker, draining=None):
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_review_builds(body, article, close)
+    validate_owed_unmade(body, article, close)
     validate_bridges(body, article, close)
     validate_progress(body, article, close)
     if '$' in body[article:close]:
