@@ -1,0 +1,263 @@
+// Exact local pivot/mux certificate identities over F2.
+// Seven size fixtures; full polynomial identities, not unsat truth-table tests.
+// Includes satisfiable m=n local controls. No full rank residual is expanded.
+ring pcR=2,(a(1..18),b(1..18),e(1..36),z(1..36)),dp;
+int pcN,pcM,pcI,pcJ,pcK,pcL,pcH,pcT,pcU,pcV,pcMask,pcBits,pcFirst;
+int pcMi,pcIndex,pcOld;
+int pcCases=0;
+int pcFields=0;
+int pcMatrices=0;
+int pcTruthCases=0;
+int pcNegatives=0;
+int pcChecks=0;
+int pcFailures=0;
+intvec pcMs;
+ideal pcImages,pcTruthImages,pcW,pcPrefix,pcSquare;
+ideal pcBA,pcBB,pcKA,pcKB,pcPhiA,pcPhiB,pcPhiKA,pcPhiKB;
+matrix pcPair[3][3];
+matrix pcMix[3][3];
+poly pcW0,pcWSum,pcP,pcQ,pcTerm,pcCert,pcExpected,pcValue;
+poly pcZeroCert,pcZeroFields,pcBranchFields,pcMux,pcGen;
+proc pcA(int pcRow,int pcCol) { return(var(3*(pcRow-1)+pcCol)); }
+proc pcB(int pcRow,int pcCol) { return(var(18+6*(pcRow-1)+pcCol)); }
+proc pcY(int pcRow,int pcCol) { return(var(36+6*(pcRow-1)+pcCol)); }
+proc pcZA(int pcRow,int pcCol) { return(var(72+3*(pcRow-1)+pcCol)); }
+proc pcZB(int pcRow,int pcCol) { return(var(90+6*(pcRow-1)+pcCol)); }
+proc pcIA(int pcPivot,int pcRow,int pcCol)
+{ return((pcPivot-1)*10+(pcRow-1)*2+pcCol); }
+proc pcIB(int pcPivot,int pcRow,int pcCol)
+{ return((pcPivot-1)*10+(pcRow-1)*5+pcCol); }
+proc pcAssert(int pcCondition,string pcLabel)
+{
+  pcChecks++;
+  if (!pcCondition)
+  {
+    pcFailures++;
+    print("FAIL "+pcLabel+" n="+string(pcN)+" m="+string(pcM));
+  }
+}
+print("Plan: 7 fixtures; 53 child matrix and 52 child field identities; 14 selector assignments.");
+print("Stages: shared selectors, exact local map, fields, zero-row branch, omitted-correction controls.");
+print("Largest raw weighted child equation <=1379 terms at n=3; no whole residual expansion.");
+for (pcI=1;pcI<=108;pcI++) { pcTruthImages[pcI]=var(pcI); }
+for (pcN=1;pcN<=3;pcN++)
+{
+  pcImages=0;
+  for (pcI=1;pcI<=108;pcI++) { pcImages[pcI]=var(pcI); }
+  for (pcI=1;pcI<=36;pcI++) { pcImages[72+pcI]=var(pcI)^2+var(pcI); }
+  for (pcI=1;pcI<=6;pcI++)
+  {
+    for (pcK=1;pcK<=6;pcK++)
+    {
+      pcP=0;
+      if (pcI==pcK) { pcP=1; }
+      for (pcJ=1;pcJ<=pcN;pcJ++) { pcP=pcP+pcA(pcI,pcJ)*pcB(pcJ,pcK); }
+      pcImages[36+6*(pcI-1)+pcK]=pcP;
+    }
+  }
+  map pcEval=pcR,pcImages;
+  pcW=0; pcPrefix=0; pcSquare=0;
+  pcW0=1; pcWSum=0;
+  for (pcJ=1;pcJ<=pcN;pcJ++)
+  {
+    pcPrefix[pcJ]=pcW0;
+    pcW[pcJ]=pcA(1,pcJ)*pcW0;
+    pcWSum=pcWSum+pcW[pcJ];
+    pcW0=pcW0*(1+pcA(1,pcJ));
+  }
+  pcAssert(pcWSum+pcW0+1==0,"literal selector partition");
+  for (pcJ=1;pcJ<=pcN;pcJ++)
+  {
+    pcCert=0;
+    for (pcL=1;pcL<=pcJ;pcL++)
+    {
+      pcTerm=pcZA(1,pcL);
+      for (pcK=1;pcK<=pcJ;pcK++)
+      {
+        pcP=1+pcA(1,pcK);
+        if (pcK==pcJ) { pcP=pcA(1,pcK); }
+        if (pcK<pcL) { pcTerm=pcTerm*pcP^2; }
+        if (pcK>pcL) { pcTerm=pcTerm*pcP; }
+      }
+      pcCert=pcCert+pcTerm;
+    }
+    pcSquare[pcJ]=pcCert;
+    pcExpected=pcW[pcJ]^2+pcW[pcJ];
+    pcAssert(pcEval(pcCert)==pcExpected,"selector field certificate");
+  }
+  for (pcJ=1;pcJ<=3;pcJ++)
+  { for (pcK=1;pcK<=3;pcK++) { pcPair[pcJ,pcK]=0; pcMix[pcJ,pcK]=0; } }
+  for (pcJ=1;pcJ<=pcN;pcJ++)
+  {
+    for (pcK=pcJ+1;pcK<=pcN;pcK++)
+    {
+      pcP=pcZA(1,pcJ)*pcPrefix[pcJ]*pcA(1,pcK);
+      for (pcL=1;pcL<pcK;pcL++)
+      { if (pcL!=pcJ) { pcP=pcP*(1+pcA(1,pcL)); } }
+      pcPair[pcJ,pcK]=pcP; pcPair[pcK,pcJ]=pcP;
+      pcExpected=pcW[pcJ]*pcW[pcK];
+      pcAssert(pcEval(pcP)==pcExpected,"selector orthogonality certificate");
+    }
+  }
+  for (pcJ=1;pcJ<=pcN;pcJ++)
+  {
+    for (pcK=1;pcK<=pcN;pcK++)
+    {
+      pcP=pcWSum*pcPair[pcJ,pcK];
+      pcExpected=pcWSum*pcW[pcJ]*pcW[pcK];
+      if (pcJ==pcK)
+      {
+        pcP=(pcWSum+1)*pcSquare[pcJ];
+        for (pcL=1;pcL<=pcN;pcL++)
+        { if (pcL!=pcJ) { pcP=pcP+pcPair[pcL,pcJ]; } }
+        pcExpected=pcExpected+pcW[pcJ];
+      }
+      pcMix[pcJ,pcK]=pcP;
+      pcAssert(pcEval(pcP)==pcExpected,"weighted mux selector");
+    }
+  }
+  for (pcMask=0;pcMask<2^pcN;pcMask++)
+  {
+    pcTruthCases++; pcBits=pcMask; pcFirst=0;
+    for (pcJ=1;pcJ<=pcN;pcJ++)
+    {
+      pcT=pcBits%2; pcBits=pcBits div 2;
+      pcTruthImages[pcJ]=pcT;
+      if ((pcFirst==0)&&(pcT==1)) { pcFirst=pcJ; }
+    }
+    map pcTruth=pcR,pcTruthImages;
+    for (pcJ=1;pcJ<=pcN;pcJ++)
+    {
+      pcP=pcW[pcJ]; pcExpected=0;
+      if (pcJ==pcFirst) { pcExpected=1; }
+      pcAssert(pcTruth(pcP)==pcExpected,"first-one truth case");
+    }
+    pcExpected=0; if (pcFirst==0) { pcExpected=1; }
+    pcAssert(pcTruth(pcW0)==pcExpected,"zero-row truth case");
+    kill pcTruth;
+  }
+  if (pcN>1)
+  {
+    pcP=pcW0+1;
+    for (pcJ=1;pcJ<=pcN;pcJ++) { pcP=pcP+pcA(1,pcJ); }
+    pcNegatives++; pcAssert(pcP!=0,"negative independent-bit selectors");
+  }
+  if (pcN==1) { pcMs=2; }
+  if (pcN==2) { pcMs=2,3,4; }
+  if (pcN==3) { pcMs=3,4,6; }
+  for (pcMi=1;pcMi<=size(pcMs);pcMi++)
+  {
+    pcM=pcMs[pcMi]; pcCases++;
+    pcBA=0; pcBB=0; pcKA=0; pcKB=0;
+    pcPhiA=0; pcPhiB=0; pcPhiKA=0; pcPhiKB=0;
+    for (pcJ=1;pcJ<=pcN;pcJ++)
+    {
+      for (pcH=1;pcH<pcN;pcH++)
+      {
+        pcOld=pcH; if (pcH>=pcJ) { pcOld=pcH+1; }
+        for (pcI=1;pcI<pcM;pcI++)
+        {
+          pcIndex=pcIA(pcJ,pcI,pcH);
+          pcBA[pcIndex]=pcA(pcI+1,pcOld)+pcA(pcI+1,pcJ)*pcA(1,pcOld);
+          pcKA[pcIndex]=pcZA(pcI+1,pcOld)+pcZA(pcI+1,pcJ)*pcA(1,pcOld)
+                         +pcA(pcI+1,pcJ)^2*pcZA(1,pcOld);
+          pcIndex=pcIB(pcJ,pcH,pcI);
+          pcBB[pcIndex]=pcB(pcOld,pcI+1);
+          pcKB[pcIndex]=pcZB(pcOld,pcI+1);
+        }
+      }
+    }
+    for (pcI=1;pcI<pcM;pcI++)
+    {
+      for (pcH=1;pcH<pcN;pcH++)
+      {
+        pcP=0; pcCert=0; pcQ=0; pcValue=0;
+        for (pcJ=1;pcJ<=pcN;pcJ++)
+        {
+          pcIndex=pcIA(pcJ,pcI,pcH);
+          pcP=pcP+pcW[pcJ]*pcBA[pcIndex];
+          pcCert=pcCert+pcSquare[pcJ]*pcBA[pcIndex]+pcW[pcJ]^2*pcKA[pcIndex];
+          pcIndex=pcIB(pcJ,pcH,pcI);
+          pcQ=pcQ+pcW[pcJ]*pcBB[pcIndex];
+          pcValue=pcValue+pcSquare[pcJ]*pcBB[pcIndex]+pcW[pcJ]^2*pcKB[pcIndex];
+        }
+        pcPhiA[(pcI-1)*2+pcH]=pcP;
+        pcPhiB[(pcH-1)*5+pcI]=pcQ;
+        pcExpected=pcWSum*(pcP^2+pcP);
+        pcCert=pcWSum*pcCert;
+        pcAssert(pcEval(pcCert)==pcExpected,"weighted child A field"); pcFields++;
+        pcExpected=pcWSum*(pcQ^2+pcQ);
+        pcValue=pcWSum*pcValue;
+        pcAssert(pcEval(pcValue)==pcExpected,"weighted child B field"); pcFields++;
+      }
+    }
+    for (pcI=1;pcI<pcM;pcI++)
+    {
+      for (pcK=1;pcK<pcM;pcK++)
+      {
+        pcGen=0; if (pcI==pcK) { pcGen=1; }
+        for (pcH=1;pcH<pcN;pcH++)
+        { pcGen=pcGen+pcPhiA[(pcI-1)*2+pcH]*pcPhiB[(pcH-1)*5+pcK]; }
+        pcExpected=pcWSum*pcGen;
+        pcCert=pcWSum*pcY(pcI+1,pcK+1); pcBranchFields=0; pcMux=0;
+        for (pcJ=1;pcJ<=pcN;pcJ++)
+        {
+          pcCert=pcCert+pcW[pcJ]*pcA(pcI+1,pcJ)*pcY(1,pcK+1);
+          pcBranchFields=pcBranchFields+pcPrefix[pcJ]*pcA(pcI+1,pcJ)
+                          *pcB(pcJ,pcK+1)*pcZA(1,pcJ);
+        }
+        for (pcH=1;pcH<pcN;pcH++)
+        {
+          for (pcJ=1;pcJ<=pcN;pcJ++)
+          { for (pcL=1;pcL<=pcN;pcL++)
+            { pcMux=pcMux+pcMix[pcJ,pcL]*pcBA[pcIA(pcJ,pcI,pcH)]
+                            *pcBB[pcIB(pcL,pcH,pcK)]; } }
+        }
+        pcCert=pcCert+pcBranchFields+pcMux;
+        pcAssert(pcEval(pcCert)==pcExpected,"weighted child matrix equation"); pcMatrices++;
+        if ((pcI==1)&&(pcK==1))
+        {
+          pcValue=pcCert+pcBranchFields;
+          pcNegatives++;
+          pcAssert(pcEval(pcValue)!=pcExpected,"negative omitted pivot-field correction");
+          if (pcN>1)
+          {
+            pcValue=pcCert+pcMux;
+            pcNegatives++;
+            pcAssert(pcEval(pcValue)!=pcExpected,"negative omitted mux correction");
+          }
+        }
+      }
+    }
+    pcZeroFields=0;
+    for (pcJ=1;pcJ<=pcN;pcJ++)
+    {
+      pcTerm=pcB(pcJ,1)*pcZA(1,pcJ);
+      for (pcL=1;pcL<=pcN;pcL++)
+      { if (pcL!=pcJ) { pcTerm=pcTerm*(1+pcA(1,pcL)); } }
+      pcZeroFields=pcZeroFields+pcTerm;
+    }
+    pcZeroCert=pcW0*pcY(1,1)+pcZeroFields;
+    pcAssert(pcEval(pcZeroCert)==pcW0,"all-zero row certificate");
+    pcValue=pcZeroCert+pcZeroFields; pcNegatives++;
+    pcAssert(pcEval(pcValue)!=pcW0,"negative omitted zero-row fields");
+    if ((pcN==1)&&(pcM==2))
+    {
+      pcValue=pcCert+pcZeroCert;
+      pcAssert(pcEval(pcValue)==1,"complete n1 m2 refutation");
+    }
+    print("case="+string(pcCases)+" n="+string(pcN)+" m="+string(pcM)+" local identities complete");
+  }
+  kill pcEval;
+}
+pcAssert(pcCases==7,"fixture count");
+pcAssert(pcMatrices==53,"matrix count");
+pcAssert(pcFields==52,"field count");
+pcAssert(pcTruthCases==14,"truth-case count");
+pcAssert(pcNegatives==22,"negative-control count");
+print("SUMMARY fixtures="+string(pcCases)+" matrix="+string(pcMatrices)+" fields="+string(pcFields)
++" selector_assignments="+string(pcTruthCases)+" negatives="+string(pcNegatives)
++" checks="+string(pcChecks)+" failures="+string(pcFailures));
+if (pcFailures==0) { print("FINAL PASS"); } else { print("FINAL FAIL"); }
+quit;
+
