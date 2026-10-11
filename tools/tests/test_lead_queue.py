@@ -1635,8 +1635,6 @@ class LastItemGuidanceTest(unittest.TestCase):
         head = developing(('lead', 'r1:1'), 'Continuing')
         self.assertEqual(tg.last_item_notes(notebook([rev, head], queue)), [])       # the head has its own line
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class BuiltItemsTest(unittest.TestCase):
@@ -1685,3 +1683,7 @@ class BuiltItemsTest(unittest.TestCase):
             run(*commit, 'Queue: the launcher should refuse a long computation that names no sizing run, with a '
                          'measured estimate from a smaller completed case')
             self.assertEqual(lq.built(root), [])                           # the commit queued the item itself
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -70,8 +70,6 @@ class ReviewBuildsTest(unittest.TestCase):
         FT.validate_review_builds(body, article, close)
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class PeriodOfAnItemTest(unittest.TestCase):
@@ -103,3 +101,7 @@ class PeriodOfAnItemTest(unittest.TestCase):
         article = two.rindex('<article')
         with self.assertRaisesRegex(ValueError, 'new-check, other-check'):
             FT.validate_review_builds(two, article, two.index('</article>', article))
+
+
+if __name__ == '__main__':
+    unittest.main()

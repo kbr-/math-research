@@ -515,7 +515,8 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   A scratch script whose output is committed to a tracked record becomes a tested framework tool
   before that commit. Register claims with `tools/claim-index.py author build` and a compact spec
   per the registry README. Append drafted entries and new Proposed next steps with
-  `tools/notebook-append.py`; build reviewer excerpts with `tools/notebook-excerpt.py`. Wrap every
+  `tools/notebook-append.py`; build reviewer excerpts with `tools/notebook-excerpt.py`, whose
+  `--claims ID ...` writes the registered statement and assessment of named claims. Wrap every
   Markdown file written here with `tools/rewrap_md.py`, at its default width, after every edit:
   never by hand or with an ad hoc script. Replace a passage of prose with `tools/replace_text.py`,
   which keeps its indentation, and make an exact edit with the editing tool, never with a replace

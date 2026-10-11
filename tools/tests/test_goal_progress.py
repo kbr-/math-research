@@ -533,8 +533,6 @@ class BearingTest(unittest.TestCase):
         FT.validate_bearing(body, body.rindex('<article'), said, '<p><strong>Follow-up.</strong> Developed: x.</p>')
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class AttemptCheckedTest(unittest.TestCase):
@@ -576,3 +574,7 @@ class CountListingReportTest(unittest.TestCase):
         # An entry without a count, and text without an article, have nothing to report.
         self.assertIsNone(FT.count_listing_report('<article id="e"><p><strong>Checks.</strong> None.</p>', []))
         self.assertIsNone(FT.count_listing_report('<p>loose text with 3 numbers</p>', []))
+
+
+if __name__ == '__main__':
+    unittest.main()

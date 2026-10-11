@@ -44,8 +44,6 @@ class UntimedCountsTest(unittest.TestCase):
             self.assertEqual((result.returncode, result.stdout), (0, '1 files, 0 findings\n'))
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 TODAY = datetime.date(2026, 9, 29)
@@ -130,3 +128,7 @@ class BrokenEntityTest(unittest.TestCase):
         self.assertEqual(broken('see note #3; then'), [])
         # A word that ends in a reference's name is a word: only a name with no letter before it is a lost reference.
         self.assertEqual(broken('a lamp; a stamp; (amp; nbsp;'), ['amp;', 'nbsp;'])
+
+
+if __name__ == '__main__':
+    unittest.main()

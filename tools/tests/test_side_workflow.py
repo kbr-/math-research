@@ -68,7 +68,6 @@ class SideFinalization(FinalizationTest):
         self.assertEqual(main.read_bytes(),before)
         self.assertIn('timing-table',(d/'notebook.html').read_text())
 
-if __name__=='__main__':unittest.main()
 
 class SideIntegration(SideWorkflow):
     def test_resume_only_selected_context(self):
@@ -120,3 +119,7 @@ class SideIntegration(SideWorkflow):
         report=dependencies.scan(d,self.root)
         self.assertTrue(any(c['source']=='lem:a' and 'lem:b' in c['targets'] for c in report['candidates']))
         self.assertTrue(Evidence(self.root).sha256('https://kbr.is-a.dev/math-research/branches/test/#result'))
+
+
+if __name__ == '__main__':
+    unittest.main()

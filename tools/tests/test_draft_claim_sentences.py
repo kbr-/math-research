@@ -58,8 +58,6 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertIn('  REGISTERED: First lemma: holds f\n', out)
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class CountsTest(unittest.TestCase):
@@ -110,3 +108,7 @@ class RunLogTest(unittest.TestCase):
             self.assertEqual(row['query'], 'draft_counts entry-2026-10-11-x 8')
             dcs.log_run('<p>no article</p>', log)
             self.assertEqual(json.loads(log.read_text().splitlines()[1])['query'], 'draft_counts - 0')
+
+
+if __name__ == '__main__':
+    unittest.main()

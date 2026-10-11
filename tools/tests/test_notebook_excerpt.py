@@ -162,4 +162,28 @@ class ExcerptTest(unittest.TestCase):
             self.assertEqual(failure.exception.code, 2)
 
 
-if __name__=='__main__':unittest.main()
+
+
+class ClaimExcerptsTest(unittest.TestCase):
+    def test_named_claims_are_written_with_statement_and_assessment_and_unknown_ones_refused(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notebook_excerpt_tool', Path(__file__).resolve().parents[1] / 'notebook-excerpt.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        registry = {'claims': [
+            {'id': 'lem:first', 'summary': 'First statement.', 'assessment': 'Working proof.',
+             'mathematical_status': 'working_proof', 'record': '[Entry](https://example.org/#e1)'},
+            {'id': 'prop:second', 'summary': 'Second statement.', 'assessment': 'Conditional.'}]}
+        text = tool.claim_excerpts(['prop:second', 'lem:first'], registry)
+        self.assertEqual(text.index('prop:second'), 0)                       # in the order asked
+        self.assertIn('lem:first\n  Statement: First statement.\n  Assessment: Working proof.\n'
+                      '  Status: working_proof\n  Record: [Entry](https://example.org/#e1)\n', text)
+        with self.assertRaisesRegex(ValueError, 'not in the registry: lem:absent, thm:gone'):
+            tool.claim_excerpts(['lem:first', 'lem:absent', 'thm:gone'], registry)
+        registry['claims'].append({'id': 'cor:blank', 'summary': ' '})
+        with self.assertRaisesRegex(ValueError, 'registered without a statement: cor:blank'):
+            tool.claim_excerpts(['lem:first', 'cor:blank'], registry)
+
+
+if __name__ == '__main__':
+    unittest.main()

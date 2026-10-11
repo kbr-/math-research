@@ -57,8 +57,6 @@ class ReviewerBriefTest(unittest.TestCase):
             self.assertEqual(hook.main(), 0)
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class MissingBriefFileTest(unittest.TestCase):
@@ -74,3 +72,7 @@ class MissingBriefFileTest(unittest.TestCase):
             self.assertIsNone(hook.refusal(call(f'Work from {tmp}/nowhere and save to research/results/x/review.txt; '
                                                 f'run tools/tests/run.py; see {tmp}/*.txt')))
             self.assertIsNone(hook.refusal(call(f'Read {tmp}/absent.txt', agent='general-purpose')))
+
+
+if __name__ == '__main__':
+    unittest.main()

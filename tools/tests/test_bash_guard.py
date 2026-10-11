@@ -398,8 +398,6 @@ class StaleBranchTest(unittest.TestCase):
         self.assertIsNone(self.stale("git log other"))
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 class StagingSilencedTest(unittest.TestCase):
@@ -416,3 +414,7 @@ class StagingSilencedTest(unittest.TestCase):
                         "cat > notes.txt <<'EOF'\ngit add a 2>/dev/null\nEOF"):
             with self.subTest(command=command):
                 self.assertIsNone(guard.staging_silenced(command))
+
+
+if __name__ == '__main__':
+    unittest.main()

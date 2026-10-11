@@ -337,8 +337,6 @@ class NotebookAppendTests(unittest.TestCase):
             self.assertEqual(notebook.read_text(), source)
 
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class ResultFilesLineTest(unittest.TestCase):
@@ -351,3 +349,7 @@ class ResultFilesLineTest(unittest.TestCase):
             self.assertEqual(tool.result_files_line('body', 'item'), '')
         with mock.patch.object(lead_queue, 'result_files', side_effect=ValueError('no such item')):
             self.assertEqual(tool.result_files_line('body', 'item'), '')
+
+
+if __name__ == '__main__':
+    unittest.main()

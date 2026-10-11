@@ -255,6 +255,25 @@ def review_tests(source, width=600):
     return '\n'.join(lines) + '\n' if lines else '(no review entries)\n'
 
 
+def claim_excerpts(idents, registry):
+    """The registered statement, assessment, status and record of each named claim, for a reviewer's brief;
+    ValueError naming every identifier the registry does not hold.  On 11 October 2026 a dependency file given to
+    a reviewer held the registry display's header lines in place of two claims, cut out by line numbers."""
+    claims = {claim['id']: claim for claim in registry['claims']}
+    missing = [ident for ident in idents if ident not in claims]
+    if missing:
+        raise ValueError('not in the registry: ' + ', '.join(missing))
+    blank = [ident for ident in idents if not str(claims[ident].get('summary', '')).strip()]
+    if blank:      # an excerpt without its statement is the failure this mode exists against
+        raise ValueError('registered without a statement: ' + ', '.join(blank))
+    blocks = []
+    for ident in idents:
+        claim = claims[ident]
+        blocks.append(f"{ident}\n  Statement: {claim.get('summary', '')}\n  Assessment: {claim.get('assessment', '')}\n"
+                      f"  Status: {claim.get('mathematical_status', '')}\n  Record: {claim.get('record', '')}\n")
+    return '\n'.join(blocks)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("anchor", nargs="?", help="Section, article, or heading ID")
@@ -273,7 +292,25 @@ def main():
     parser.add_argument("--notebook", help="Research thread name; defaults to worktree selection or main")
     parser.add_argument("--text", action="store_true",
                         help="Plain text for reading (one line per block, TeX kept, timing table dropped)")
+    parser.add_argument('--claims', nargs='+', metavar='ID',
+                        help='The registered statement and assessment of each named claim, for a reviewer\'s brief')
     args = parser.parse_args()
+    if args.claims:
+        if (args.anchor or args.current or args.toc or args.review_tests or args.backlinks or args.until
+                or args.enclosing or args.text or args.notebook or args.tail is not None or args.since is not None):
+            parser.error('--claims takes claim identifiers and, optionally, --out; no other option applies')
+        import json
+        try:
+            registry = json.loads((Path(__file__).resolve().parents[1] / 'research/claims/index.json').read_text())
+            result = claim_excerpts(args.claims, registry)
+            if args.out:
+                with args.out.open('x', encoding='utf-8') as stream:
+                    stream.write(result)
+            else:
+                sys.stdout.write(result)
+        except (OSError, ValueError) as error:
+            parser.exit(1, f'notebook-excerpt.py: {error}\n')
+        return
     if args.enclosing and (not args.anchor or args.current or args.toc or args.backlinks or args.until):
         parser.error('--enclosing requires an anchor and excludes --current, --toc, --backlinks and --until')
     if args.backlinks and (not args.anchor or args.current or args.toc or args.until or args.text):
