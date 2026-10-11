@@ -1,0 +1,51 @@
+Reviewer's record, entry import-proofs-located (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, read-only, a pass and a follow-up. Nothing was built or downloaded.
+
+PASS. Verdict: pass with corrections. The delegation chain, the absent modules and every count match the files
+and saved outputs. One factual sentence is wrong and the user request understates the download.
+Required changes:
+- AUDIT.md, density paragraph: the record does not report a build or comparator run "for the present state".
+  Those results (9016 jobs, 23 axiom lines, comparator with nanoda) are in the note at line 172, for the old
+  comparator/ layout with config.json. The last note (lines 249-277) says no full build or comparator run was
+  performed for this revision and carries results over on a claim of byte-identical comment-stripped sources;
+  it also changed lakefile.toml. The draft's source list shows that note was not read.
+- "The library's theorems take no hypothesis" was read only for thmA0; the other sixteen are inferred from how
+  Solution.lean applies them. WeilEF.EF_lit_zetaZeroConfig (WeilEF/Main.lean:270) is a hypothesis-free
+  theorem, EF_lit_zeta zetaSeam; zetaSeam is unread.
+- User request, half-plane: the upstream lakefile requires about 25 packages (30 by the count made after), and
+  lake update resolves all of them and may move pins; the README does not say how the patches are applied;
+  the package is rellich-kondrachov, RellichKondrachov its module; lake exe cache get covers Mathlib only.
+- User request, density: scripts/verify-comparator.sh also needs NanoDa, go and cargo; go and cargo are not on
+  the path.
+- The closure the draft says it did not compute: the import closure of Nonvanishing is 2924 of the 2926
+  modules, all inside DirichletL, none missing; externals are 248 Mathlib modules plus the three named.
+- Minor: a typo; "about 300 lines" read is nearer 450.
+Checked and fine: the counts (28 = 19 + 6 + 1 + 2; 319; 326; 103032; 2926; 486558); upstream HEAD fd4aeeb2,
+clean; Dirichlet statements carry only 1 < q and primitivity; both challenges import only Mathlib, so
+riemannZeta is Mathlib's, with no redefinition in either tree; Ncount is a finsum with multiplicity and N0star
+the ncard of on-line zeros, the windows finite, so junk values cannot make the statements vacuous. Extra
+searches, zero hits in both trees: opaque, @[extern], reduceBool, trustCompiler, +native, bv_decide,
+skipKernelTC, run_cmd, #eval, decreasing_by, lcProof; sorryAx once in the density tree, in a comment. Density
+tree: 98 set_option lines (42 maxHeartbeats, 33 backward.isDefEq.respectTransparency), one tactic syntax.
+Half-plane tree: 2884 local notation lines, no set_option.
+Follow-up outcome: Developed supportable once the AUDIT correction is made and re-read; nothing the item names
+is unexamined, XiPrime and Hecke/Siegel being outside it.
+Suggestions (unverified): no cheap partial check without a download looks plausible (neither tree has .lake;
+the only local Mathlib is another commit on v4.34.0-rc2; the cache's commit is unknown); the smallest real step
+is the density lake build Solution plus PrintAxioms, without the comparator.
+Process audit: the title may claim proofs located as delegations, density tree present with all imports
+resolving and unbuilt, half-plane tree outside the checkout, nothing replayed; not "verified", "unconditional"
+or "upstream-audited present state". "Complete in this checkout" should read "all project imports resolve".
+The closure was cheap and skipped without a reason. The AUDIT conclusion was drawn from an unread section. The
+request's package list has no source: it comes from grepped imports, not the lakefile.
+
+FOLLOW-UP. Verdict: pass; "Developed" is supported.
+1. Every sentence of the rewritten AUDIT paragraph matches AUDIT.md lines 134-277: the earlier note's caveat
+   (no sandbox, nanoda off, a sandboxed run "remains the authoritative check"); the 17-and-6 revision's build,
+   23 axiom lines and both comparator runs in the old layout; the last two notes carrying results over; the
+   last saying no full build or comparator run and changing lakefile.toml.
+2. The request's correction matches the upstream lakefile (30 require lines) and the density script, which
+   requires cargo, git, go, lake, python3 and enforces enable_nanoda true.
+3. The closure count and the WeilEF reading are attributed to the reviewer.
+4. Optional wording: say that the 17-and-6 revision's own comparator run used the real sandbox with the
+   second kernel; name go and cargo; the saved output's empty "on the path" line should say none found.
