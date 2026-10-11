@@ -47,7 +47,7 @@ finish-turn.py against HEAD:
   research and checks to run (<li data-sub="check">) and things to build (<li data-sub="build">) that it names and
   leaves undone; they join the tail with no test, as ANCHOR:sN, N counted over the whole list.  A check is Developed
   when the developing entry answers it citing evidence that resolves (a registered claim ID, an anchor, a repository
-  file); a build when its task opens (a link to an existing tasks/ID/) or the thing exists and its path is linked.
+  file); a build when its task opens (a link to it) or the thing exists and its path is linked.
   Every relative link of an entry developing either must resolve.
 - `add` (user, 7 October 2026: "You should be able to queue items by just running the tool") appends a check, a
   build or an idea at the tail, <li data-KIND="ID" data-source="WHERE">TEXT</li>, a top-level item of its own, from
@@ -225,11 +225,11 @@ def check_developed(tag, text, where):
 
 
 def build_developed(tag, text, where):
-    """A build is Developed when its task opens (tasks/ID/) or the thing exists and its path is linked."""
+    """A build is Developed when its task opens (a link to it) or the thing exists and its path is linked."""
     unresolved, paths, anchors, claims = references(tag, text, where)
     problems = [f'links that do not resolve: {", ".join(unresolved)}'] if unresolved else []
     if not paths:
-        problems.append('link the opened task (tasks/ID/) or the built thing\'s path in the repository')
+        problems.append('link the opened task or the built thing\'s path in the repository')
     return problems
 
 
@@ -314,7 +314,7 @@ def configure(attrs):
 
 def counted(tag, text):
     """Whether an entry counts: it may develop items, its entries make spells, draining binds it.  Its kind is one
-    the section counts, and no kind module calls it uncounted (business's reviews are business entries)."""
+    the section counts, and no kind module calls it uncounted (a notebook whose reviews are entries of its own kind)."""
     kind = re.search(r'\bdata-kind="([^"]+)"', tag)
     return (bool(kind) and kind.group(1) in SETTINGS['counted']
             and not any(rule(tag, text) for rule in SETTINGS['uncounted']))
@@ -1136,7 +1136,7 @@ def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
     directory its relative links resolve, and `root` the repository (default: this one)."""
-    # both sections are read under the committed notebook's settings, so a commit changing them (business's move
+    # both sections are read under the committed notebook's settings, so a commit changing them (a move
     # from data-items="ideas" to its kind module) reads HEAD's items as the notebook now means them
     section = SECTION_RE.search(body)
     before = parse_tree(head_body, section.group(1) if section else None) if head_body else None
@@ -1324,7 +1324,7 @@ def head_lines(body, count=HEAD_READ):
     settle(body, nodes)
     state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
-    def plain(node):     # with its ID first, which a lead's text has and an idea's (business) has not
+    def plain(node):     # with its ID first, which a lead's text has and a kind module's idea has not
         text = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', node.text)).strip())
         return text if text.startswith(node.ident) else f'{node.ident}: {text}'
     for n, node in enumerate(nodes[:count], 1):

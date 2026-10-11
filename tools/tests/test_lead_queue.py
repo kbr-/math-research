@@ -664,7 +664,7 @@ class LeadQueueTest(unittest.TestCase):
             root = Path(tmp)
             (root / 'research/results').mkdir(parents=True)
             (root / 'research/results/out.txt').write_text('answer')
-            (root / 'tasks/arm-check').mkdir(parents=True)
+            (root / 'work/arm-check').mkdir(parents=True)
             (root / 'research/claims').mkdir(parents=True)
             (root / 'research/claims/index.json').write_text(json.dumps({'claims': [{'id': 'lem:known'}]}))
             nb = root / 'notebook.html'
@@ -704,11 +704,11 @@ class LeadQueueTest(unittest.TestCase):
             def built(body):
                 return notebook([listing, developing(queue[0], 'Closed'), developing(queue[1], 'Developed', body)
                                  .replace('id="d"', 'id="e"')], [])
-            lq.check(build_head, built('<a href="tasks/arm-check/">task</a>'), nb, root)
+            lq.check(build_head, built('<a href="work/arm-check/">task</a>'), nb, root)
             lq.check(build_head, built('<a href="research/results/out.txt">built</a>'), nb, root)
             github = 'https://github.com/kbr-/math-research/blob/main/'     # the notebooks' file links
             lq.check(build_head, built(f'<a href="{github}research/results/out.txt">built</a>'), nb, root)
-            for body in ('<a href="#t1">an anchor is no build</a>', 'lem:known', '<a href="tasks/none/">x</a>',
+            for body in ('<a href="#t1">an anchor is no build</a>', 'lem:known', '<a href="work/none/">x</a>',
                          f'<a href="{github}research/results/none.txt">x</a>', '<a href="https://example.org/a">x</a>'):
                 with self.subTest(build_refused=body), self.assertRaises(ValueError):
                     lq.check(build_head, built(body), nb, root)
@@ -1095,7 +1095,7 @@ class LeadQueueTest(unittest.TestCase):
                 '    return [lq.Kind("idea", admit=admit, rules={"Closed": closed}, reopen=False)]\n')
             sys.path.insert(0, tmp)
             try:
-                attrs = ' data-kind-modules="fake_kinds" data-counted="research business"'
+                attrs = ' data-kind-modules="fake_kinds" data-counted="research survey"'
                 ideas = [('idea', 'ok-one'), ('idea', 'ok-two')]
                 head = notebook([self.rev], [self.q[0]] + ideas, attrs=attrs)
                 lq.check(head, notebook([self.rev, research()], [self.q[0]] + ideas + [('idea', 'ok-three')], attrs=attrs))
@@ -1103,7 +1103,7 @@ class LeadQueueTest(unittest.TestCase):
                     lq.check(head, notebook([self.rev, research()], [self.q[0]] + ideas + [('idea', 'bad')], attrs=attrs))
                 closed = lambda body: notebook([self.rev, research(self.q[0], 'Closed'),
                                                 developing(ideas[0], 'Closed', body).replace('data-kind="research"',
-                                                                                           'data-kind="business"')],
+                                                                                           'data-kind="survey"')],
                                                ideas[1:], attrs=attrs)
                 after_lead = notebook([self.rev, research(self.q[0], 'Closed')], ideas, attrs=attrs)
                 lq.check(after_lead, closed('<p>Kill criterion: none sold.</p>'))
@@ -1136,17 +1136,17 @@ class LeadQueueTest(unittest.TestCase):
                 'def uncounted(tag, text):\n    return "Review:" in text\n')
             sys.path.insert(0, tmp)
             try:
-                attrs = ' data-kind-modules="titled_reviews" data-counted="research business"'
+                attrs = ' data-kind-modules="titled_reviews" data-counted="research survey"'
                 big = review('r1', [PASS] * lq.CAP)
                 queue = [('lead', f'r1:{n}') for n in range(1, lq.CAP + 1)]
                 head = notebook([big], queue, draining=True, attrs=attrs)
-                entry = lambda title: ('<article id="b" data-kind="business" data-route="step"><h3>3 October 2026 '
+                entry = lambda title: ('<article id="b" data-kind="survey" data-route="step"><h3>3 October 2026 '
                                        f'&mdash; {title}</h3></article>')
                 lq.check(head, notebook([big, entry('Review: where things stand')], queue, draining=True,
                                         attrs=attrs))                    # a review need not develop the head
-                with self.assertRaises(ValueError):                     # another business entry must
+                with self.assertRaises(ValueError):                     # another survey entry must
                     lq.check(head, notebook([big, entry('A cycle')], queue, draining=True, attrs=attrs))
-                cont = developing(queue[0], 'Continuing').replace('data-kind="research"', 'data-kind="business"')
+                cont = developing(queue[0], 'Continuing').replace('data-kind="research"', 'data-kind="survey"')
                 titled = cont.replace('<p>', '<h3>Review: x</h3><p>', 1)
                 self.assertEqual(lq.spell(notebook([big, cont, titled, cont], queue, attrs=attrs), queue[0]), 2)
                 lq.configure('')

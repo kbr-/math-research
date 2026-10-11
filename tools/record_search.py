@@ -1,7 +1,7 @@
 """Ranked search of a notebook's Research-record entries by content words.
 
-A grep for one phrase misses an entry that names the same thing in other words: "planning
-refusal" missed the entry on "householder planning appeals" and the Planning Inspectorate.
+A grep for one phrase misses an entry that names the same thing in other words: "rank bound"
+misses the entry titled "a lower bound on the dimension of the span".
 Entries are ranked by the rarity-weighted number of distinct word stems they share with the
 query, so an entry sharing several uncommon words comes first whatever the phrasing. The
 command-line front end is tools/search-record.py.

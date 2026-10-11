@@ -2,7 +2,7 @@
 
 The sample holds the registry's first three claims, the relationships among them, and its other top-level keys,
 small ones in full and large lists cut to their first five entries, so test_claim_shape compares the compiled and
-interpreted shape checkers on the same input on every branch, whatever its registry holds (softeng's has none).
+interpreted shape checkers on the same input on every branch, whatever its registry holds (a branch's may be empty).
 The search sample keeps the leading competitors for the two retrieval regressions,
 using only the fields scored by search; unit tests must not parse the growing corpus.
 Usage: python3 tools/tests/fixtures/make_claim_registry_sample.py"""

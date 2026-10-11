@@ -183,7 +183,7 @@ class UncheckedClaimTest(HookFixture):
         self.add({'type': 'assistant', 'isSidechain': True,
                   'message': {'content': [{'type': 'text', 'text': 'From now on I\'ll report in tables.'}]}},
                  {'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': (
-                     "I'll push softeng again. The tool always prepends origin/. Going forward, the guard refuses "
+                     "I'll push the branch again. The tool always prepends origin/. Going forward, the guard refuses "
                      "it. I won't wait for it.")}]}})
         with self.fake_claude(self.verdict(kind='other')):
             self.assertIsNone(self.run_hook())
@@ -228,8 +228,8 @@ class UncheckedClaimTest(HookFixture):
 
     def test_a_fenced_block_is_text_handed_over_and_is_not_checked(self):
         # A goal prompt for the user to paste (the real block): its condition names a tool beside "merged".
-        prompt = ('Here is the prompt.\n\n```\n/goal Finish it. DONE: (5) business has merged softeng and its suite passes; '
-                  '(6) `python3 tools/task_index.py check` passes.\nI will not do this again; the rest is unverified.\n```\n\nNotes follow.')
+        prompt = ('Here is the prompt.\n\n```\n/goal Finish it. DONE: (5) the other branch has merged this one and its suite passes; '
+                  '(6) `python3 tools/replace_text.py` passes.\nI will not do this again; the rest is unverified.\n```\n\nNotes follow.')
         self.assertEqual(hook.tool_faults([prompt]), [])
         self.assertEqual(hook.promises([prompt]), [])
         self.assertIsNone(hook.gap_block(prompt))

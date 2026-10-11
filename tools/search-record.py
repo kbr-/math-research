@@ -12,7 +12,7 @@ Usage: tools/search-record.py [-n ROWS] [--notebook PATH] WORD [WORD ...]
 each, oldest first: the check that a lead, bridge or name is not already in the record.
 
 A catalogue file holds one procedure per line, "NAME<TAB>WORDS", for screening a published list
-(a tribunal's jurisdictions, an agency's adjudication schemes) against the record before a draw:
+(a survey's problems, a catalogue's techniques) against the record before a draw:
 each row shows its best entries and how many of its words their titles share.
 """
 import argparse

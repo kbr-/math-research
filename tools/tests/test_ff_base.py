@@ -1,5 +1,5 @@
-"""ff-base.sh and the base_behind hook (ported from the business framework, 3 October 2026, without its site-terms
-merge driver): a worktree branch is rebased onto its base and the base fast-forwarded, without a push.
+"""ff-base.sh and the base_behind hook: a worktree branch is rebased onto its base and the base
+fast-forwarded, without a push.
 
 Runs the real script in a scratch repository: main checked out in one worktree, a work branch in another."""
 import os

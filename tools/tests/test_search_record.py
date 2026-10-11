@@ -7,7 +7,7 @@ sys.path.insert(0, str(TOOLS))
 import record_search as search_record  # noqa: E402
 
 NOTEBOOK = '''<section id="where-we-stand"><p>Planning appeals stand here too.</p></section>
-<article class="research-entry" id="entry-a-planning"><h3>Householder planning appeals: too few a year</h3>
+<article class="research-entry" id="entry-a-planning"><h3>Homeowner planning appeals: too few a year</h3>
 <p>Homeowners appealing a refused extension to the Planning Inspectorate.</p></article>
 <article class="research-entry" id="entry-b-school"><h3>School admission appeals</h3>
 <p>Parents appeal a refused school place to an independent panel.</p></article>

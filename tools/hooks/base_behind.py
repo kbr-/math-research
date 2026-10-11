@@ -8,9 +8,8 @@ worktree"). A linked worktree whose branch has no upstream gets a reminder to se
 branch tracking only a remote branch, are left alone.
 
 A session stopped fast-forwarding its base when its push grant was withdrawn, though the withdrawal covered pushes
-only, and the base fell 380 commits behind (user, 3 October 2026: "I thought you were always rebasing and
-fast-forwarding business to business-work after every git commit?").  Ported to main
-from the business framework the same day."""
+only, and the base fell 380 commits behind (user, 3 October 2026, who had taken the rebase and fast-forward
+after every git commit for granted)."""
 import json
 import os
 import re

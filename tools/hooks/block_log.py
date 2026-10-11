@@ -1,4 +1,5 @@
-"""The log of the times a hook blocked a call or a stop, which tools/cycle_numbers.py counts per cycle.
+"""The log of the times a hook blocked a call or a stop, with what the hook said, so the blocks of a
+stretch of work can be counted and read.
 
 record(HOOK) appends one line, time and hook name, to research/logs/hook-state/blocks.tsv, which git
 ignores. It writes only inside a Claude Code session of this checkout (CLAUDE_PROJECT_DIR names the

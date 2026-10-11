@@ -6,8 +6,7 @@
 # Rebases HEAD onto BRANCH when BRANCH has commits HEAD lacks, then fast-forwards the local BRANCH to HEAD:
 # its ref when no worktree has it checked out, else that worktree, when it is clean. A conflict stops the
 # rebase with git's own instructions. --no-rebase only fast-forwards, as tools/checked-push.sh does after a
-# push. It never pushes. (Ported from the business framework, 3 October 2026, without its site-terms merge
-# driver: main has no site registry.)
+# push. It never pushes.
 set -euo pipefail
 rebase=1
 if [ "${1:-}" = "--no-rebase" ]; then rebase=0; shift; fi

@@ -25,7 +25,7 @@ class ReviewerBriefTest(unittest.TestCase):
     def test_a_brief_that_hands_over_a_whole_document_is_refused(self):
         for prompt in ('Read the file, then read the whole Path section of PLAN.md once.',
                        'Audit the rows against the entire theory.',
-                       'Read tasks/x/PLAN.md in full before you start.',
+                       'Read notes/x/PLAN.md in full before you start.',
                        'First read all of the notebook.'):
             with self.subTest(prompt=prompt):
                 status, err = self.run_hook(call(prompt))

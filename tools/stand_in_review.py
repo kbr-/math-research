@@ -8,15 +8,15 @@ Usage: tools/stand_in_review.py [--transcript FILE] [--minutes N] [--force]     
 A reviewer with no memory of the session (Opus, tools/haiku_judge.py's call) reads the rules the work is held
 to, then the instruction to check whether they were followed, then what the assistant wrote since the reviewer
 last ran, from the session's Claude Code transcript; at its first run, the last two hours. The rules are the
-engineering-discipline skill where the branch has it, and AGENTS.md otherwise. It lists at most five things
+rules file the branch keeps as a skill, where it has one, and AGENTS.md otherwise. It lists at most five things
 the user would object to, each with a quote of that text; an objection whose quote is not in the text is
 dropped. They are printed and kept under research/logs/stand-in-review/, which git ignores.
 
-It runs only when it has not run for --minutes (20 at a task checkpoint, 40 at the finisher, where cycles are
-longer), so checkpoints made in quick succession share one review, of everything since the last. The next
+It runs only when it has not run for --minutes (40 at the finisher; a tool with shorter cycles gives fewer),
+so checkpoints made in quick succession share one review, of everything since the last. The next
 entry answers each objection in a paragraph starting "Review." (the tool that runs the review, such as
 tools/finish-turn.py, refuses an entry without one while a review is unanswered): fixed, queued, or wrong and
-why. Measured on a task session and on a research session, seven and eight of ten sampled objections held
+why. Measured on two long sessions, one of them research, seven and eight of ten sampled objections held
 against the record and one or two misread the text (10 and 11 October 2026), so each is checked against the
 record before it is acted on. It found 4 of 18 and 2 of 12 of the user's own corrections.
 

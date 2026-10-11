@@ -165,7 +165,7 @@ class BashGuardTest(unittest.TestCase):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 
     def test_sed_in_place_on_a_markdown_file_is_refused_whatever_its_script(self):
-        for command, name in (("sed -i 's/^Status: .*/Status: done./' tasks/a/PLAN.md", "tasks/a/PLAN.md"),
+        for command, name in (("sed -i 's/^Status: .*/Status: done./' notes/a/PLAN.md", "notes/a/PLAN.md"),
                               ("sed -i '12,15d' notes.md", "notes.md"), ("sed -i -e '/^x$/d' x.py AGENTS.md", "AGENTS.md"),
                               ("cd repo && sed -i 's/a/b/' README.md && git add README.md", "README.md")):
             with self.subTest(command=command):
@@ -253,7 +253,7 @@ class BashGuardTest(unittest.TestCase):
                         "uv run --frozen pytest tests",
                         "APP_DB=x timeout 60 .venv/bin/pytest -x",
                         "scripts/local/api-tests.sh -k relay",
-                        "bash tasks/some-task/suite_tips.sh",
+                        "bash notes/some-work/suite_tips.sh",
                         "python3 tools/tests/run.py",
                         "python3 -I /tmp/claude-1/p/scratchpad/probe.py --out x",
                         "git status; python3 /tmp/s/scratchpad/m.py 2>&1 | tail",
@@ -268,7 +268,7 @@ class BashGuardTest(unittest.TestCase):
                         "./compute.sh --threads 1 --timeout 60 python3 tools/tests/run.py",
                         "docker exec db pytest -q",
                         "GIT_SEQUENCE_EDITOR=\"python3 /tmp/s/scratchpad/todo.py\" git rebase -i HEAD~3",
-                        "python3 tools/task_index.py check",
+                        "python3 tools/claim-index.py render",
                         "python3 -c 'import pytest; print(pytest.__version__)'",
                         "grep -n pytest .gitlab-ci.yml",
                         "cat /tmp/s/scratchpad/probe.py",
