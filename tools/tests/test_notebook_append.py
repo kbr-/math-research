@@ -66,6 +66,10 @@ class NextStepItemTests(unittest.TestCase):
                          [('item-1', 'Does the bound hold at width 1?', 'a2', 'Continuing: the width-one case next.')])
         self.assertEqual(tool.named_items(source, '<p>Something else, not item-10.</p>'), [])
         self.assertIsNone(tool.named_items(NOTEBOOK, '<p>item-0</p>'))
+        twice = source.replace('<article id="a1">', '<article id="a1" data-check="item-1"><h3>First look</h3>')
+        self.assertEqual([anchor for anchor, _ in tool.item_history(twice, 'item-1')][0], 'a1')
+        self.assertEqual(tool.item_history(twice, 'item-1')[0][1], 'First look')
+        self.assertEqual(tool.item_history(source, 'item-0'), [])
 
     def test_a_draining_queue_refuses_a_next_step_that_names_no_item(self):
         entry = '<article id="a3">three</article>'

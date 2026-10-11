@@ -118,6 +118,23 @@ def named_items(source, next_html):
     return [(i, plain(queued[i].text), *developments.get(i, ('', ''))) for i in named]
 
 
+def item_history(source, ident):
+    """Every record entry that developed the queued item `ident`, oldest first, as (anchor, title).
+
+    A review of 11 October 2026 gave its decisive test to a queued item after reading that item's latest
+    entry only; an earlier entry on the same item already answered the test.  The whole list is printed
+    beside the next step, so that the entries to read are named."""
+    import lead_queue
+    history = []
+    for tag, text in lead_queue.record_articles(source):
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        item = re.search(r'\bdata-(?:' + lead_queue.NAMES + r')="([^"]+)"', tag)
+        if anchor and item and item.group(1) == ident:
+            title = re.search(r'<h3>(.*?)</h3>', text, re.S)
+            history.append((anchor.group(1), plain(title.group(1)) if title else ''))
+    return history
+
+
 QUOTED_WORDS = 8    # consecutive words of an item's follow-up or text that a next step naming it must quote
 
 
@@ -295,6 +312,11 @@ def main():
         print(f'  Queued text: {text}')
         if anchor:
             print(f'  Latest development, #{anchor}. Follow-up: {follow}')
+        earlier = [entry for entry in item_history(result, ident) if entry[0] != anchor]
+        if earlier:
+            print(f'  {len(earlier)} earlier entries developed it; read each before planning on it:')
+            for entry_anchor, title in earlier:
+                print(f'    #{entry_anchor}: {title[:140]}')
 
 
 if __name__ == '__main__':
