@@ -47,13 +47,14 @@ growing checklists or one-off setup narratives.
 - Restricted examples must test a named general hypothesis, obstruction or mechanism. A growing case
   list or equivalent reformulation leaves the general implication open. `finish-turn.py` enforces
   this: each research entry has a "General statement." paragraph citing the registered claim ID of
-  its all-parameter claim, two finite-check-only entries in a row on one route are rejected (judged
-  from the registered claims, not status words), and at most three of any five consecutive research
-  entries on a route may register new finite checks other than refutations, so case lists cannot
-  grow behind small lemmas; `./compute.sh start` prints the matching warnings before the work
-  begins. State that implication and test it against known obstructions, hard instances and allowed
-  equivalent representations before further refinement; a surrogate becoming simple need not resolve
-  the original obligation. Check preserved hypotheses and accumulated composition costs against the
+  its all-parameter claim (an entry on a build item that declares no claims says there that none
+  applies), two finite-check-only entries in a row on one route are rejected (judged from the
+  registered claims, not status words), and at most three of any five consecutive research entries
+  on a route may register new finite checks other than refutations, so case lists cannot grow behind
+  small lemmas; `./compute.sh start` prints the matching warnings before the work begins. State that
+  implication and test it against known obstructions, hard instances and allowed equivalent
+  representations before further refinement; a surrogate becoming simple need not resolve the
+  original obligation. Check preserved hypotheses and accumulated composition costs against the
   goal's budget. Report mathematics and goal progress separately under [Goal progress and scheduled
   review](#goal-progress-and-scheduled-review). If these fail, or repeated cycles leave the same
   required implication untouched, address the failure in the next research cycle (a different

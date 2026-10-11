@@ -1311,6 +1311,15 @@ def validate_suggestions(body, article, close):
                              'match (AGENTS.md)')
 
 
+def claimless_build(body, article):
+    """An entry on a build item that declares no claims: a framework build has no all-parameter claim.
+
+    Such entries met the General statement check by citing an unrelated registered claim and saying so
+    (11 October 2026, a reviewer's finding); their paragraph may now say that no claim applies."""
+    tag = body[article:body.index('>', article) + 1]
+    return bool(re.search(r'\bdata-build="[^"]+"', tag) and re.search(r'\bdata-claims="none"', tag))
+
+
 def validate_general(body, article, close):
     """AGENTS.md: restricted examples must test a named general statement; enforce it mechanically.
     Every research entry states its general claim for all parameters, and two finite-check entries
@@ -1329,7 +1338,7 @@ def validate_general(body, article, close):
     ids = GENERAL_ID.findall(found.group(1))
     if (ROOT / 'research/claims/index.json').exists():
         ids = [i for i in ids if i in registered_status()]
-    if not ids:
+    if not ids and not claimless_build(body, article):
         raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
                          'prop: or cor:) that states it for all parameters; register a conjecture if '
                          'it is not proved')

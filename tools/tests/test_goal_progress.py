@@ -375,6 +375,26 @@ class UnreviewedDerivationsTest(unittest.TestCase):
         FT.validate_unreviewed_derivations('<p>Quoted only.</p><p><strong>Verification gate.</strong> No reviewer '
                                            'was used; nothing here is an extrapolation.</p>')
 
+    def test_a_build_entry_without_claims_may_say_that_no_claim_applies(self):
+        general = '<p><strong>General statement.</strong> None: a framework build has no all-parameter claim.</p>'
+        def body(tags):
+            return ('<section id="remaining-route"><li data-route-item="step">x</li></section>'
+                    f'<section id="research-record"><article data-kind="research" data-route="step" {tags}>'
+                    + general + '</article></section>')
+        def check(tags):
+            text = body(tags)
+            FT.validate_general(text, text.index('<article'), text.index('</article>'))
+        check('data-build="some-item" data-claims="none"')
+        check('data-claims="none" data-claim-note="A build." data-build="some-item"')
+        for tags in ('data-claims="none"', 'data-build="some-item" data-claims="lem:fixture"',
+                     'data-build="" data-claims="none"', 'data-lead="some-item" data-claims="none"'):
+            with self.subTest(tags=tags), self.assertRaisesRegex(ValueError, 'must cite the registered claim'):
+                check(tags)
+        # The paragraph itself is still required of a build entry.
+        text = body('data-build="some-item" data-claims="none"').replace(general, '')
+        with self.assertRaisesRegex(ValueError, 'needs a <p><strong>General statement'):
+            FT.validate_general(text, text.index('<article'), text.index('</article>'))
+
     def test_a_removal_whose_corrections_the_reviewer_did_not_read_is_refused(self):
         gate = '<p><strong>Verification gate.</strong> One reviewer: pass with corrections. {}</p>'
         removal = '<p><strong>Follow-up.</strong> Developed: the build exists.</p>'
