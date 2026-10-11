@@ -115,6 +115,22 @@ class JobMemory(unittest.TestCase):
         self.assertIn('0.09 GB of RAM', compute.memory_line((90_000_000, 0), 3))
         self.assertIsNone(compute.memory_line(None, 3))
 
+    def test_a_job_of_seconds_on_one_cpu_is_called_serial(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            group = Path(tmp)
+            self.assertIsNone(compute.cpu_seconds(group))
+            (group / 'cpu.stat').write_text('usage_usec 8250000\nuser_usec 8000000\n')
+            self.assertEqual(compute.cpu_seconds(group), 8.25)
+            (group / 'cpu.stat').write_text('usage_usec many\n')
+            self.assertIsNone(compute.cpu_seconds(group))
+        said = compute.serial_line(8.2, 8.0)
+        self.assertIn('took 8 s and used 8 s of CPU time, about 1.0 of the 14 CPUs allowed', said)
+        self.assertIn('split its independent parts across processes', said)
+        self.assertIsNone(compute.serial_line(8.2, 4.9))      # a short job says nothing
+        self.assertIsNone(compute.serial_line(12.0, 8.0))     # nor one that used more than one CPU
+        self.assertIsNone(compute.serial_line(None, 8.0))     # nor one without a reading
+        self.assertIsNone(compute.serial_line(0.5, 30.0))     # nor one that mostly waited
+
     def test_a_failed_job_s_end_names_its_own_memory(self):
         failed = call('--threads', '1', '--timeout', '20', '--category', 'local_processing', '--', sys.executable, '-c',
                       'import time; x = bytearray(b"x") * 60_000_000; time.sleep(0.5); raise SystemExit(3)')

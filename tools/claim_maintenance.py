@@ -1,4 +1,5 @@
 """Changed-claim completeness gate, separate from the historical curation backlog."""
+import multiprocessing
 import re
 import subprocess
 from collections import defaultdict
@@ -131,6 +132,21 @@ def maintenance(before, after, root=ROOT, changed_paths=(), base=None, source_te
                     'Pending questions remain pending; unchanged historical backlog is not excused or blocked.'}
 
 
+_REGISTER={}
+
+
+def _register(index):
+    """One notebook's registration check, in a forked worker: the same call as the sequential path below."""
+    notebook,relative=_REGISTER['todo'][index]
+    commit,root=_REGISTER['commit'],_REGISTER['root']
+    def notebook_at(ref):
+        if ref=='EMPTY':return ''
+        shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)
+        return shown.stdout if shown.returncode==0 else ''
+    return check_entries(notebook_at(commit),notebook.read_text(),_REGISTER['after'],root,
+                         lambda:article_ids(notebook_at(ENTRY_INVENTORY_BASE)),notebook)
+
+
 def check_revision(after, revision='HEAD', root=ROOT):
     if revision=='EMPTY':
         commit,before=baseline(revision,root)
@@ -144,16 +160,28 @@ def check_revision(after, revision='HEAD', root=ROOT):
         tracked=subprocess.check_output(['git','ls-tree','--name-only',commit,'--',path],cwd=root,text=True).strip()
         before=after if tracked and path not in changed else baseline(commit,root)[1]
     source_texts={}
-    result=maintenance(before,after,root,changed,base=commit,source_texts=source_texts)
-    result['base_revision']=commit
     from notebooks import paths
     registrations=[]
     notebooks=[(n,n.relative_to(root).as_posix()) for n in paths(root)]
     at_base=set() if commit=='EMPTY' else set(subprocess.check_output(
         ['git','ls-tree','--name-only',commit,'--',*[r for _,r in notebooks]],cwd=root,text=True).splitlines())
-    for notebook,relative in notebooks:
-        if relative in at_base and relative not in changed:
-            continue   # identical to the base: no new entries to register
+    # Identical to the base: no new entries to register.
+    todo=[(n,r) for n,r in notebooks if not (r in at_base and r not in changed)]
+    # Each notebook's registration is independent of the others and of the maintenance check, so with several
+    # changed notebooks they run in forked workers beside it (the workers share the loaded registry).
+    pending=pool=None
+    if len(todo)>1 and 'fork' in multiprocessing.get_all_start_methods():
+        _REGISTER.update(todo=todo,commit=commit,root=root,after=after)
+        pool=multiprocessing.get_context('fork').Pool(len(todo))
+        pending=pool.map_async(_register,range(len(todo)))
+        pool.close()
+    result=maintenance(before,after,root,changed,base=commit,source_texts=source_texts)
+    result['base_revision']=commit
+    if pending is not None:
+        registrations=pending.get()
+        pool.join()
+        todo=[]
+    for notebook,relative in todo:
         def notebook_at(ref):
             if ref=='EMPTY':return ''
             if ref==commit and notebook in source_texts:return source_texts[notebook][0]

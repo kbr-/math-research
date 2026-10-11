@@ -1,0 +1,29 @@
+Reviewer's record, entry claim-check-scope-limit (riemann notebook, 11 October 2026). One fresh-context medium
+reviewer, read-only; nothing run. It read the first version of the entry and of the change to
+tools/check-claims.py (a limit scaled with the changed scope, applied to the whole run). It did not read what
+was built afterwards: the limit on the contract alone, the wall-against-CPU distinction, the parallel
+registration in tools/claim_maintenance.py, and the launcher's serial note.
+
+Verdict: pass with corrections. The code is correct; the entry overstates in four places.
+
+Required changes:
+- Follow-up: "other jobs running" is a named part left unexamined, and "I did not load the machine" is not a
+  reason; either make the loaded run or mark the item Continuing.
+- "Each computed once": the summary gives call counts, not distinctness; 712 normalized articles against 682
+  entries, and 18070 sha256 calls of which 1518 are attributed, are unexplained. Check for repeats or drop it.
+- "1 s against the latest commit": the check's own line shows 1.9 s. "3 s", "879 commits", "8 October" and
+  "twenty-two of thirty-two" have no source in the excerpts.
+- Cache reason: "cut 3.5 s of the 8 s" leaves 4.8 s, under 5 s, contradicting "would not bring the check under
+  5 s"; the 3.5 s is profiler time; rescale or re-argue.
+- Limit paragraph: the allowance applies to the whole wall time, so a slowdown in any of the six checks is
+  hidden; 19.1 s against 8.3 s is a factor of 2.3, not "less than two"; the limit now passes the 15.2 s run that
+  prompted the item, whose scope and cause are unknown.
+- Verification gate: "no reviewer in this cycle" is now false; link this review.
+- Docstring: still says the run fails over LIMIT_S.
+- Test: both sides of main are tested; the wiring of the last check's report in run() is not.
+
+Suggestion (unverified): apply the scaled limit to the contract's own time and keep 5 s for the other checks.
+
+Process audit: the title's "grows with the claims changed" rests on two points and does not separate claims from
+entries or excerpts; "which is how the finisher runs the contract" is not sourced; scaling the limit is
+legitimate under the item's own text, but only once the repeated-work point is settled.

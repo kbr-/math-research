@@ -4,20 +4,39 @@
 The workflow .github/workflows/claim-index.yml runs this script, and
 tools/verify-checkout.py --public-history runs it before publication, so a push cannot
 reach CI with a failure this job would find. Outside GitHub Actions, whose runners are several
-times slower, it also fails a run that takes longer than LIMIT_S, so a slowdown is noticed. With
+times slower, it also fails a run in which a check takes longer than LIMIT_S (the changed-claim contract:
+LIMIT_S plus PER_CLAIM_S for each claim changed since the base), so a slowdown is noticed. With
 --warn-over-limit, as a push runs it, an overrun is a note instead: a push carries changes and may
 meet a loaded machine, and a performance regression must not block publishing.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import json
 import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-LIMIT_S = 5.0  # About twice this job's time on the project machine.
+LIMIT_S = 5.0  # About twice this job's time on the project machine, when little changed since the base.
+# The changed-claim contract rechecks every claim changed since the base, so its time grows with their
+# number: measured on 11 October 2026 on this repository, inside this job 1.9 s against HEAD and 8.3 to 9.1 s
+# against a published base 879 commits and 1178 changed claims behind (about 6 ms a claim).  A count found 712
+# normalizations of 711 distinct texts and 806 excerpts of 793 distinct anchors, so the cited evidence is not
+# rehashed; the rest is parsing five notebooks and loading the registry.  The contract's own limit grows by
+# 12 ms a claim, about twice that cost; the other checks keep the fixed limit.
+PER_CLAIM_S = 0.012
+SCOPE = {'claims': 0, 'times': None}
+
+
+def changed_claims(output):
+    """The number of claims the changed-claim contract reviewed, from its JSON report; 0 if unreadable."""
+    try:
+        return len(json.loads(output[output.index('{'):output.rindex('}') + 1])['required_reviews'])
+    except (ValueError, KeyError, TypeError):
+        return 0
 TESTS = ('claim_attention', 'fossick', 'claim_registry', 'claim_duplicates', 'claim_authoring',
          'claim_notices', 'claim_article_evidence', 'claim_article_finalizer', 'finish_turn',
          'record_citations', 'claim_dependencies', 'claim_graph', 'merge_formalization_appends',
@@ -49,18 +68,31 @@ def annotate(title, text):
     print(f'::error title={escape(title).replace(",", "%2C").replace(":", "%3A")}::{escape(text)}')
 
 
+def measured(command):
+    """Run one check: its result, its wall time, and the CPU time of the process and the children it waited
+    for.  A busy machine stretches wall time and not CPU time, which is how the two are told apart."""
+    start = time.monotonic()
+    with tempfile.TemporaryFile('w+') as out, tempfile.TemporaryFile('w+') as err:
+        process = subprocess.Popen(command, cwd=ROOT, text=True, stdout=out, stderr=err)
+        _, status, usage = os.wait4(process.pid, 0)
+        process.returncode = os.waitstatus_to_exitcode(status)
+        out.seek(0)
+        err.seek(0)
+        result = subprocess.CompletedProcess(command, process.returncode, out.read(), err.read())
+    return result, time.monotonic() - start, usage.ru_utime + usage.ru_stime
+
+
 def run(base, jobs=8):
     """Checks are independent (read-only, tests in their own temporary directories), so they
     run concurrently; results are reported in the fixed order of checks()."""
     listed = list(checks(base))
-    def execute(command):
-        start = time.monotonic()
-        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
-        return result, time.monotonic() - start
     with ThreadPoolExecutor(max_workers=jobs) as pool:
-        results = list(pool.map(execute, [command for _, command in listed]))
+        results = list(pool.map(measured, [command for _, command in listed]))
     failures = []
-    for (title, _), (result, seconds) in zip(listed, results):
+    # The contract is the last check listed.
+    SCOPE.update(claims=changed_claims(results[-1][0].stdout),
+                 times=[(title, seconds, cpu) for (title, _), (_, seconds, cpu) in zip(listed, results)])
+    for (title, _), (result, seconds, _) in zip(listed, results):
         if result.returncode == 0:
             print(f'ok    {seconds:5.1f} s  {title}')
             continue
@@ -85,9 +117,31 @@ def main():
     start = time.monotonic()
     failures = run(args.base, args.jobs)
     elapsed = time.monotonic() - start
-    slow = elapsed > args.limit and os.environ.get('GITHUB_ACTIONS') != 'true'
+    times = SCOPE['times']
+    if times is None:      # no per-check times: the whole run against the fixed limit
+        over = [(elapsed, args.limit)] if elapsed > args.limit else []
+    else:
+        # The checks run at once, so each is held to the limit by its own time; only the contract's grows.
+        scaled = args.limit + PER_CLAIM_S * SCOPE['claims']
+        if SCOPE['claims']:
+            print(f'Changed scope: {SCOPE["claims"]} claims since {args.base}; the contract\'s limit is '
+                  f'{args.limit:g} s plus {PER_CLAIM_S * 1000:g} ms for each, {scaled:.1f} s; the other checks keep '
+                  f'{args.limit:g} s.')
+        over = []
+        for index, (title, seconds, cpu) in enumerate(times):
+            limit = scaled if index == len(times) - 1 else args.limit
+            if seconds <= limit:
+                continue
+            if cpu is not None and cpu <= limit:
+                # Over in wall time and within the limit in CPU time: the machine was busy, not the check slow.
+                print(f'Note: {title} took {seconds:.1f} s of wall time and {cpu:.1f} s of CPU time, within its '
+                      f'{limit:g} s limit: the machine was busy.')
+                continue
+            over.append((seconds, limit))
+    slow = bool(over) and os.environ.get('GITHUB_ACTIONS') != 'true'
     if slow:
-        print(f'{"Note: took" if args.warn_over_limit else "Took"} {elapsed:.1f} s, over the {args.limit:g} s '
+        shown, limit = over[0]
+        print(f'{"Note: took" if args.warn_over_limit else "Took"} {shown:.1f} s, over the {limit:g} s '
               'limit; the times above show which checks.')
     print(f'{len(failures)} failing claim-index checks' if failures else 'All claim-index checks pass.')
     return 1 if failures or (slow and not args.warn_over_limit) else 0

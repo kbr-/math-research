@@ -384,6 +384,31 @@ def memory_peak(group):
         return None
 
 
+def cpu_seconds(group):
+    """CPU time used so far by every process of a job's own control group; None once it is gone."""
+    try:
+        for line in (group / 'cpu.stat').read_text().splitlines():
+            if line.startswith('usage_usec '):
+                return int(line.split()[1]) / 1e6
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+SERIAL_NOTE_S = 5.0
+
+
+def serial_line(cpu, elapsed):
+    """What a job's end says when it ran for seconds on about one CPU; else None.  On 11 October 2026 a
+    framework check that took 8 s on one CPU had its limit raised before anyone asked whether it could use
+    the others (user: "You keep forgetting I have these 14 CPUs given to you")."""
+    if cpu is None or elapsed < SERIAL_NOTE_S or cpu >= 1.5 * elapsed or cpu < 0.5 * elapsed:
+        return None   # short, already parallel, or mostly waiting (a network read, a sleep): nothing to split
+    return (f'Serial: this job took {elapsed:.0f} s and used {cpu:.0f} s of CPU time, about '
+            f'{max(cpu / elapsed, 0.1):.1f} of the {len(MAX_CPUS)} CPUs allowed. Before accepting the wait or raising a '
+            f'limit, split its independent parts across processes, or say why they cannot be split.')
+
+
 class PeakWatch(threading.Thread):
     """Reads a running job's memory peak ten times a second and keeps the last reading: the job's group is
     removed when it ends, and when the watchdog kills every job for the shared budget, each job's last
@@ -392,10 +417,12 @@ class PeakWatch(threading.Thread):
     def __init__(self, process, group, interval=0.1):
         super().__init__(daemon=True)
         self.process, self.group, self.interval, self.last = process, group, interval, None
+        self.cpu = None
 
     def run(self):
         while True:
             self.last = memory_peak(self.group) or self.last
+            self.cpu = cpu_seconds(self.group) or self.cpu
             if self.process.poll() is not None:
                 return
             time.sleep(self.interval)
@@ -527,6 +554,9 @@ def run_job(args, command):
     memory = memory_line(watch.last if watch else None, rc)
     if memory:
         print(memory)
+    serial = serial_line(watch.cpu if watch else None, time.monotonic() - started)
+    if serial:
+        print(serial)
     print(f'Exit {rc}; log: {log.relative_to(ROOT)}')
     return rc if rc >= 0 else 128 - rc
 
