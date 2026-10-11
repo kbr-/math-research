@@ -20,7 +20,11 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-CLAIM = re.compile(r'<code>((?:lem|thm|prop|cor|conj|obs|ex|def|rem|local|historical):[A-Za-z0-9-]+)</code>')
+# Every prefix the registry's identifiers had on 11 October 2026, and historical: until then eleven were listed
+# and 352 registered identifiers, imported statements (imp:) among them, were passed over.
+PREFIXES = ('lem|thm|prop|cor|conj|obs|ex|def|rem|local|historical|imp|check|audit|third-party|ctx|criterion|q|'
+            'note|open|draft|proof')
+CLAIM = re.compile(r'<code>((?:' + PREFIXES + r'):[A-Za-z0-9-]+)</code>')
 BLOCK = re.compile(r'<(p|li|h3|h4)\b[^>]*>(.*?)</\1>', re.S)
 LABEL = re.compile(r'^\s*<(?:strong|em)>([^<]{1,80}?)\.?</(?:strong|em)>')
 
@@ -183,6 +187,10 @@ def report(draft, registry, width):
                 lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')
         lines.append('')
     claims = len({c for c, _, _ in found})
+    unknown = sorted({ident.split(':', 1)[0] for ident in summaries} - set(PREFIXES.split('|')))
+    if unknown:                 # a kind of identifier added to the registry since the list was written
+        lines.append('WARNING: the registry holds identifiers with prefixes this tool does not look for, so '
+                     'sentences citing them are not listed: ' + ', '.join(unknown) + '. Add them to PREFIXES.')
     lines.append(f'{len(found)} citing sentences, {claims} claims, {len(unregistered)} unregistered.')
     return '\n'.join(lines), unregistered
 

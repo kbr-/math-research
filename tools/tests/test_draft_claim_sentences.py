@@ -39,6 +39,19 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertIn('lem:new-one\n  REGISTERED: (declared by this draft; not yet registered)', out)
         self.assertIn('cor:missing\n  REGISTERED: (NOT IN THE REGISTRY)', out)
         self.assertTrue(out.endswith('6 citing sentences, 4 claims, 1 unregistered.'))
+        # identifiers of every kind the registry holds are found, an imported statement among them
+        more = ('<article><p>By <code>imp:a-source</code> and <code>third-party:b</code>, and <code>check:c</code>; '
+                'a path <code>tools/x.py</code> and a queue item <code>entry-2026-10-09-x:s2</code> are not claims.</p>'
+                '</article>')
+        listed, missing = dcs.report(more, REGISTRY, 0)
+        self.assertEqual(missing, {'imp:a-source', 'third-party:b', 'check:c'})
+        self.assertNotIn('tools/x.py\n', listed)
+        self.assertNotIn('entry-2026-10-09-x:s2\n', listed)
+        # a kind of identifier the list does not hold is reported, not passed over in silence
+        self.assertNotIn('WARNING', listed)
+        newer = {'claims': REGISTRY['claims'] + [{'id': 'newkind:a', 'summary': 'A statement.'}]}
+        self.assertIn('prefixes this tool does not look for', dcs.report(more, newer, 0)[0])
+        self.assertIn(': newkind.', dcs.report(more, newer, 0)[0])
 
     def test_sentences_linking_an_entry_stand_beside_its_title_and_status(self):
         notebook = ('<article id="entry-old" data-kind="research">\n<h3>9 October — An attempt that stops</h3>\n'
