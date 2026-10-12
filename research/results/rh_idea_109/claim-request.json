@@ -1,0 +1,473 @@
+{
+  "base_sha256": "bc96220adddfabef6f2b3debc5404b76ca0aac04dfd22f1f2a90dc09b9ca6f99",
+  "provenance": {
+    "revision": "27279ebf6e20eb34a1b437ea0c9a4c73cdc3cda9",
+    "date": "2026-10-12",
+    "reviewer": "Claude Code proof assessment; fresh medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "prop:coefficient-blind-moment-floor",
+        "summary": "For a finite matrix M with rows U and columns C, Delta(M) the least constant with sum over u of |sum over N of beta(N) M(u,N)|^2 <= Delta sum |beta|^2 for all beta. (1) If every entry has modulus 1 or 0, Delta is at least the number of nonzero entries of each row and of each column. (2) Squarefree primary n in Z[omega] prime to S, sextic symbols chi_n extended by zero; D a finite set of such n, c with c(ab) = c(a) c(b) for coprime a, b; A_u = sum over D of c(n) chi_n(u); T the ordered m-tuples of pairwise coprime elements of D, C_m their products, t(N) the number of tuples with product N. Then A_u^m = Q_u + R_u with Q_u = sum over C_m of c(N) t(N) chi_N(u). (3) If |c| = 1 on C_m and U contains u0 prime to all of D, then for M(u,N) = chi_N(u) on U x C_m: Delta(M) sum |c(N) t(N)|^2 >= |T|^2. (4) For u0 prime to all of D, c(n) = conj(chi_n(u0)) is multiplicative on coprime arguments, of modulus 1 on D, and gives A_u0 = |D|, so the sum over any U containing u0 of |A_u|^(2m) is at least |D|^(2m).",
+        "assessment": "Working elementary proof (test vectors for a row and a column; expansion of the power; Cauchy's inequality; one row). The obstruction of one row, standard; part (4) extends to an arbitrary row and every moment the argument with coefficients one of the entry on the twist average. It limits bounds valid for a class of coefficients, not the moment of the imported family. Read with one recalled count (|D| of order D): a bound of the form D^(m+eps) H valid for all unimodular coefficients multiplicative on coprime arguments needs H >= D^(m-eps), where the moment extraction gives no exponent below 1 - 1/(2k) less a term in eps. The imported second moment uses its coefficients and is not limited by this.",
+        "record": "[Coefficient-blind moment floor](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Says which bounds cannot give a higher moment of the imported family with fewer rows than its length: none that holds for every unimodular coefficient function multiplicative on coprime arguments.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": "Run the import's Gauss-sum identity on the extremal function of part (4) to say what its Poisson step uses of the Moebius function."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Working elementary proof, read by a fresh medium reviewer.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a standard lower bound applied to a power of a character family. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Extends the coefficients-one argument of the twist-average entry to every moment; read through the moment extraction exponents; same setting as the squared-sum column factorization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:moment-extraction-exponents",
+        "summary": "Let k, m >= 1, beta > 0, H = D^beta, and complex A, A_u (u in P) with |P| >= H^(1/k) D^-eps / C, |A - A_u| <= E and sum over P of |A_u|^(2m) <= C D^(m+eps) H. Then |A| <= C^(1/m) D^(1/2 + beta(1-1/k)/(2m) + eps/m) + E. With E <= D^(1-beta/k) the best exponent over beta is (k-1+m)/(k-1+2m); for beta >= m the first exponent is at least 1 - 1/(2k) for every m.",
+        "assessment": "Working elementary proof with exponent arithmetic. Applied to the imported sextic family (k = 6, m = 1, beta slightly above 1) it reproduces the source's 11/12. For beta >= m the exponent is at best 1 - 1/(2k). For beta < m the moment hypothesis alone, from one row, gives every member the exponent 1/2 + beta/(2m), so the extraction only improves a saving the hypothesis already contains. For Moebius coefficients the defect unfolds into sums of the same kind with the same excluded set, so an induction over scales removes it.",
+        "record": "[Moment extraction exponents](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Computes, with the defect term and the range of rows, what the previous reviewer's observation on higher moments gives: no gain for at least D^m rows, and below that a hypothesis that contains a power saving for every member.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": "Decide from the source's Poisson step whether a fourth moment at fewer than D^2 rows is within reach of its tools."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; no computation.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: elementary. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Abstracts the extraction step of the imported eleven-twelfths argument. Column sums of a squared sum factor through column sums at an enlarged auxiliary index: new relationship with lem:squared-sum-column-factorization. Recovering sums from a mean square over rows written as a power part times a primitive part: an inequality for all primitive parts at once, a two-sided form under a sieve for primitive rows, and the family of heights as the case without recurrence: new relationship with prop:twist-averaged-extraction. Coefficient-blind moment floor: new relationship with prop:coefficient-blind-moment-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-moment-extraction-exponents"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:squared-sum-column-factorization",
+        "summary": "Squarefree primary n in Z[omega] prime to S, sextic symbols chi_n extended by zero, a with a(ab) = a(a) a(b) chi_b(a)^4 for coprime a, b and |a| <= 1; finitely supported W1, W2 and w(N) = sum over n1 n2 = N of W1(n1) W2(n2); coprime b, f. Then (1) the sum over M prime to b f of a(M) chi_M(k f^4) w(b f M) equals the sum over splittings b = b1 b2, f = f1 f2 and over m1 of a(m1) chi_m1(k f^4) W1(b1 f1 m1) C(k, f m1), with C(k, f') = sum over m2 of a(m2) chi_m2(k) chi_m2(f')^4 W2(b2 f2 m2), and f m1 squarefree in nonzero terms; (2) for fixed splittings, with at most R nonzero terms in m1, the sum over f and k of the squared modulus of the m1-sum is at most R sup|W1|^2 times the sum over f, m1, k of |C(k, f m1)|^2.",
+        "assessment": "Working elementary proof (unique factorization of a squarefree element, the twisted multiplicativity, the Cauchy-Schwarz inequality), read by a fresh medium reviewer. Algebra only: it bounds nothing by itself. The hypothesis on a is the property an imported, unaudited preprint states for its cubic Gauss coefficients; tested numerically at small norms in an earlier entry, not proved here. Its use with the import's dual estimate is an outline in the entry and gives no bound beyond what the import's second moment gives trivially.",
+        "record": "[Squared-sum column factorization](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that the cross twist in the dual of a fourth moment of the import's family is the auxiliary twist its dual mean square already carries, and that what is missing is a mean square for bilinear columns.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": "Read a source on double Dirichlet series of cubic Gauss sums and say whether the bilinear column sum is a coefficient sum of one."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry; the consequence with the import's estimate is an outline and is not part of the claim.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a small structural lemma on an imported method. Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Used with the moment extraction proposition to read what a fourth moment would give; concerns the device of the imported half-plane. On coprime squarefree pairs the type A2 double-series coefficient is the Gauss sum of the product, for cubic symbols: new relationship with lem:double-series-product-coefficient. Coefficient-blind moment floor: new relationship with prop:coefficient-blind-moment-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-squared-sum-column-factorization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:quadratic-large-sieve-number-fields",
+        "summary": "Published (Goldmakher and Louvel 2013, Theorem 1.1; arXiv:1112.1642). k a number field, c an integral ideal, {chi_a} a quadratic Hecke family with respect to c: primitive Hecke characters of trivial infinite type and order dividing 2, indexed by the squarefree integral ideals a prime to c, with a reciprocity law chi_a(b) = chi_b(a) C([a],[b]) for coprime a, b through a homomorphism to a finite group, and chi_a conj(chi_b) primitive modulo ab for coprime a, b of one class. Then for eps > 0, M, N >= 1 and complex lambda_b: the sum over squarefree a prime to c with norm <= M of |sum over squarefree b prime to c with norm <= N of lambda_b chi_b(a)|^2 is << (MN)^eps (M + N) sum |lambda_b|^2, the constant depending on k, c and eps only.",
+        "assessment": "Statement, Definition 1 and the section constructing a family read in the arXiv source; the proof not read, the journal version not compared; not audited. The source shows a family exists for every number field (Fisher and Friedberg's construction).",
+        "record": "[Cited sieve statement reading](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "The one cited input of the large-sieve step in the imported eleven-twelfths preprint; the notebook's reading sets its hypotheses beside that step's lemma for Q(omega) and finds the lemma covered, with the reciprocity law recalled and not read.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": "None planned; read the proof only if the import's audit comes to depend on it."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Published theorem; statement read, not audited.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a published result. No novelty.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Cited by the imported eleven-twelfths preprint for its lemma on the quadratic mean square on the dual side. Coefficient-blind moment floor: new relationship with prop:coefficient-blind-moment-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-cited-sieve-statement-reading"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:twist-averaged-extraction",
+        "summary": "R a finite set of rows, each a pair (v, w); complex numbers A_(v,w); M = sum over R of |A_(v,w)|^2. (1) If for each w in a set W0 there are a number A^(w), a set P_w of v with (v, w) in R, and E_w >= 0 with |A_(v,w) - A^(w)| <= E_w for v in P_w, then sum over w in W0 of |P_w| (|A^(w)| - E_w)_+^2 <= M. (2) If 1 denotes one value of w, B_v = A_(v,1) for v in V = {v : (v,1) in R}, and for each v in V the rows (v, w) with w != 1 have sum of |A_(v,w)|^2 at most S_v, rows with v outside V being absent, then sum over V of |B_v|^2 <= M <= sum over V of |B_v|^2 + sum over V of S_v; and if |B_v - A| <= E on V then |V| (|A| - E)_+^2 <= M <= 2 |V| (|A|^2 + E^2) + sum of S_v. (3) Exponents: with D >= 2, H = D^beta, k >= 1, |P_w| >= c (H/N(w))^(1/k) for the w in W0, all of norm N(w) <= D^gamma, and M <= C D^(1+eps) H, part (1) gives sum over W0 of (|A^(w)| - E_w)_+^2 <= (C/c) D^(1 + eps + beta - (beta - gamma)/k), so for |W0| >= c' D^gamma a mean value at most (C/(c c')) D^(1 + eps + (beta - gamma)(1 - 1/k)); with S_v = C D^(1+eps)(H N(v)^(-k) + D) the upper bound of (2) is 2|V|(|A|^2 + E^2) + C D^(1+eps)(H sum N(v)^(-k) + D |V|). (4) Heights: for complex a_n, D < n <= 2D, A(t) = sum a_n n^(-it), S = sum |a_n| and 0 < E: |A(t) - A(0)| <= E for |t| <= delta = E/(S log(2D)); so if the integral of |A|^2 over [-T, T], T >= delta, is at most B, then |A(0)| <= (B S log(2D)/(2E))^(1/2) + E; with |a_n| = 1 for all D values of n and B >= D^2 this bound is at least 0.83 D for every E.",
+        "assessment": "Working elementary proof: positivity of the terms of a mean square, grouped by primitive part in (1) and by power part in (2); (3) is arithmetic of exponents; (4) is the mean value inequality for a function that moves by at most E on an interval. Bookkeeping: part (1) is the moment extraction exponents at the second moment summed over disjoint primitive parts, and part (2) adds a triangle inequality; registered as context for the reading it supports. For the imported family (rows u = v^6 w) nothing is verified: the instantiation assumes the import's mean square over all rows as read in an earlier entry, the count of v, and the recurrence defect; the sieve hypothesis of (2) is not known to me for sextic symbols.",
+        "record": "[Twist-averaged extraction](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Answers the fourteenth route review's two questions on the imported device. As the family's order falls the number of recurring rows and the defect improve; the hypothesis, the mean square over all rows, is by the lower side of (2) at least the mean square on the power rows, which for coefficients one exceeds the claimed strength whenever beta < k/(k-1), the range in which the extraction's exponent is below one (counts of primes stated, not derived); so at every order the mean square must use the particular coefficients. A sieve of large-sieve strength for primitive rows gives the mean square from the bound on the power rows when the rows number at least D^(k/(k-1)); below that this upper bound does not suffice, which shows nothing about what is true. In the family of heights the recurrence proved is on an interval of length E/(S log 2D) and the extraction gives nothing from it; recurrence at other heights is not examined. Part (1) shows the import's mean square, if true, bounds on average the twists of norm up to D^gamma; with the defect bounded trivially this says something only for beta - gamma >= 6/7, and it is of interest only for gamma <= 1.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": "None on its own; the item's reading of the import's unread sections stays owed."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete elementary proof in the entry; one hand instance; no computation.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: bookkeeping of what a mean square over a twisted family contains; no statement about zeros and no novelty claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Extends the second-moment case of the moment extraction exponents from one sum to all twists and adds the upper side. Coefficient-blind moment floor: new relationship with prop:coefficient-blind-moment-floor.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-twist-averaged-extraction"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:coefficient-blind-moment-floor::cites::prop:moment-extraction-exponents",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:coefficient-blind-moment-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:moment-extraction-exponents",
+        "locator": null
+      },
+      "scope": "The floor is read through that proposition's exponents; not part of the claim.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "27279ebf6e20eb34a1b437ea0c9a4c73cdc3cda9",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The floor is read through that proposition's exponents; not part of the claim."
+      }
+    },
+    {
+      "id": "prop:coefficient-blind-moment-floor::cites::lem:squared-sum-column-factorization",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:coefficient-blind-moment-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:squared-sum-column-factorization",
+        "locator": null
+      },
+      "scope": "Same setting and the same splitting of a power into its coprime part; that lemma treats the dual side's columns.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "27279ebf6e20eb34a1b437ea0c9a4c73cdc3cda9",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Same setting and the same splitting of a power into its coprime part; that lemma treats the dual side's columns."
+      }
+    },
+    {
+      "id": "prop:coefficient-blind-moment-floor::cites::thm:quadratic-large-sieve-number-fields",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:coefficient-blind-moment-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:quadratic-large-sieve-number-fields",
+        "locator": null
+      },
+      "scope": "Part (1) shows each term of that theorem's M + N to be of the right order for a matrix of symbols, up to constants.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "27279ebf6e20eb34a1b437ea0c9a4c73cdc3cda9",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Part (1) shows each term of that theorem's M + N to be of the right order for a matrix of symbols, up to constants."
+      }
+    },
+    {
+      "id": "prop:coefficient-blind-moment-floor::cites::prop:twist-averaged-extraction",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:coefficient-blind-moment-floor",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:twist-averaged-extraction",
+        "locator": null
+      },
+      "scope": "That entry's reading has the argument with coefficients one at the second moment; part (4) is its extension to any row and any moment.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-coefficient-blind-moment-floor"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "27279ebf6e20eb34a1b437ea0c9a4c73cdc3cda9",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "That entry's reading has the argument with coefficients one at the second moment; part (4) is its extension to any row and any moment."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
