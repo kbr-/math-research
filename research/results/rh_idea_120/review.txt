@@ -1,0 +1,51 @@
+Reviewer's record, entry premise-zero-weight (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, one pass; its report as it wrote it to a scratch file at my request.
+
+VERDICT: pass with corrections. Parts (1)-(4) are correct; every constant recomputed by hand; no step of the 
+earlier proof is used outside tau <= y; the edge bound 12 y tau^-1 log 2y and the sum of m w_tau(d) over all 
+zeros are exactly what that proof has. Script not rerun; saved output read (7 rows ok, 0.132-0.248; controls 
+4.1e-6 to 0.033).
+
+Required changes
+- Architecture test, "the exponent at which the bound turns, c=2": only one direction is proved (c=2 
+suffices). Nothing shows failure for c>2; the entry itself declines to state it. Say "suffices at c=2; not 
+shown to fail above".
+- Follow-up, "which the comb shows cannot hold": asserted, not checked. prop:gaussian-comb-hiding gives 
+smallness on a window only; the claim needs the window to cover log y from 2 log tau to log tau/(1-beta_0) 
+within the local count. Either check it (see Suggestions) or write "may show".
+- Degenerate cases, one point alone "smaller by the factor L": it is y_0^beta |g|/(tau L^2), smaller by tau L.
+- Part (3): state a >= 0 (used in log^a(3 2^i tau) <= (i+2)^a log^a 2tau).
+- Part (4): 6.8*3/c = 2.2505 > 2.25; write 2.26 (still <= 0.013) or use |g| <= 6.792.
+- "does not follow, in the model, ... with the count and the strip alone": add "for the zeros' part of the 
+trapezoid, configuration not symmetric" in that sentence, not only in Limit; with conjugates added a 
+comparable coherent term of phase e^(-2i tau a)(2^beta e^(-2i tau log 2)+1) enters.
+- Degenerate (3): "the statement is empty" -> "says nothing" (it remains a true inequality).
+- Note that the configuration of (4) itself violates the density hypothesis (about tau L/9 points against 
+(tau L)^(2-2 beta)): consistent, worth one sentence.
+
+Unused hypotheses: N >= 1 in (4) (any integer N); beta > 0 in (4) (beta >= 0 suffices). (3) uses the density 
+hypothesis only at T = 3 2^i tau; with (2) it is needed only up to T about tau^2 log tau, as the review said; 
+stated for all T it is stronger than necessary. Under RH it holds with a = 1 by part (1)'s count: fine.
+
+Title allowed: "Prime sums at one height from length tau^2: a weighted sum over zeros suffices; under an 
+unproved density hypothesis the zeros within tau suffice; in an unsymmetric model far aligned points break 
+it. Sufficient only; no step toward the goal."
+
+Suggestions (unverified)
+1. Necessity fails in the model without a cancellation hypothesis. The trapezoid kernel is e^(z(a-l)) times a 
+transform of a nonnegative weight on [0, b-a+2l], so the comb applies: window U = 2 log tau, r = 
+1/(2(1-beta_0)) - 1, d(2+r) <= 2 pi, Lam = (2 beta_0 - 1) log tau. For beta_0 near 1/2 this needs about 
+(4/pi)(2 beta_0 - 1) log tau points within O(1) of tau, inside the count; W_tau >= tau^(2 beta_0 - 1), yet 
+the zeros' part stays below y/tau on the whole range; beyond it y^beta_0 < y/tau.
+2. W is an l^1 quantity; generic phases give square-root cancellation. A necessary condition, if any, is l^2: 
+mean square over log y of the zeros' part, by Montgomery-Vaughan for points spaced at least 2 pi over the 
+range; zeta's zeros are not so spaced, which is where it breaks.
+
+Process audit
+- Sub-idea "Continuing: not built here": a deferral without a reason.
+- Bearing "none": fair. "Third outcome occurred": fair except the c=2 wording above.
+- The control is real (same count, other step); at tau=3 it is only 5 times below the aligned row.
+- Script header says "written before the run"; the entry says not committed first: disclosed, acceptable.
+- answers.txt: quotes agree with the spec and the review's Downstream sentence.
+- "is replaced": the new sufficient condition contains the conclusion at the height; the entry says so. No 
+further findings.

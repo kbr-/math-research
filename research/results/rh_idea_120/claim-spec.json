@@ -1,0 +1,34 @@
+{
+  "source": {
+    "record": "[Premise zero weight](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-premise-zero-weight)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-premise-zero-weight"],
+    "label": "Premise zero weight"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:prime-sum-premise-zero-weight",
+      "summary": "Under premise X of the Riesz mean formula from one premise and the strip hypothesis (0 < beta < 1 for every nontrivial zero), tau >= 2, d = |gamma - tau|, w(d) = min(2, 2/d, 4 tau/d^2), W_tau = sum over zeros of m tau^(2 beta - 1) w(d). (1) For tau^2 <= y < y' <= 2y: |sum over y < n <= y' of Lambda(n) n^(-i tau)| <= (y/tau)(4 W_tau + 30 log 2y). (2) For an integer K >= 2 tau the zeros with d >= K contribute to W_tau at most 16 tau^2 (11 + (5/4) log 3K)/K. (3) If for all 1/2 <= sigma <= 1 and T >= 2 the zeros with beta >= sigma and |gamma| <= T number at most M T^(2(1 - sigma)) log^a T with a >= 0, and every zero with d < tau has beta <= 1/2, then W_tau <= C_0 log^2(tau + 2) + 12 M B_a log^(a+1)(2 tau), C_0 absolute, B_a = sum 2^-i (i + 2)^a. (4) Model statement, no hypothesis: tau >= 3, L >= 42, tau L >= 180, 0 < beta <= 1, y_0 = 2^N, a = log y_0, b = a + log 2, l = 1/tau, E(z) = e^(z(b+l)) - e^(zb) - e^(za) + e^(z(a-l)), c = 2 pi/log 2, k_0 = ceil(tau L/c), k_1 >= 2 k_0 - 1, z_k = beta + i c k: |sum over k_0 <= k <= k_1 of E(z_k)/(l z_k^2)| >= 0.05 y_0^beta/L.",
+      "assessment": "Conditional in (1) to (3), with a complete deduction from the proof of the zero bound for the premise: each zero's term in the trapezoid carries its own exponent, and y^(beta - 1) is largest at y = tau^2; the tail by the local count; (3) by writing tau^(2 beta - 1) as an integral in sigma and summing dyadic ranges of the distance against the density hypothesis, which is unproved. (4) is elementary: on the progression the two exponentials without the ramp are aligned at y_0 and 2 y_0, the constant term of the reduced kernel adds coherently and the rotating terms are bounded by summation by parts; checked in seven cases from the four exponentials. The condition of (1) is sufficient only; (4) concerns a configuration in a model, not closed under the symmetries, and says nothing about zeta. No novelty.",
+      "status": "conditional",
+      "category": "context",
+      "rationale": "Gives a condition on the zeros that suffices for the premise of the record's conditional exclusion: a weighted count out to distance about tau^2, in which the zeros beyond distance tau drop out under a density hypothesis; in an unsymmetric model, far aligned points break the bound without one. Sufficient only.",
+      "next_action": "If the line returns: whether the weighted condition is necessary under a hypothesis on cancellation.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Conditional on one premise and one classical import, part (3) also on a density hypothesis; part (4) proved; read by a fresh medium reviewer.",
+        "formalization": "No formalization.",
+        "significance": "Context: a description of a premise. No novelty.",
+        "relationships": "Refines the reading of the zero bound for the premise by keeping each zero's exponent; uses that proposition's proof and local count."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:prime-sum-premise-zero-weight", "depends_on", "prop:zero-bound-gives-prime-sum-premise", "Uses the steps of that proposition's proof (edges, pole, trivial zeros, the three bounds for E) and its local count."],
+    ["prop:prime-sum-premise-zero-weight", "depends_on", "lem:riesz-mean-formula-one-premise", "Parts (1) to (3) are under that lemma's premise X, through the zero bound for the premise, whose proof applies its formula."],
+    ["prop:prime-sum-premise-zero-weight", "cites", "cor:sparse-off-line-exclusion", "Part (1) bounds the sums of that corollary's premise at one height."],
+    ["prop:prime-sum-premise-zero-weight", "cites", "prop:gaussian-comb-hiding", "Another model configuration on a progression of heights: there points hide a rightmost point by cancellation; here far points add coherently at one length."]
+  ]
+}
