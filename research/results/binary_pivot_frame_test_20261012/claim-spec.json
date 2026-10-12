@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Pivot frame sampling and gluing](https://kbr.is-a.dev/math-research/#entry-2026-10-12-pivot-frame-law)",
+    "label": "Pivot frame sampling and gluing",
+    "targets": ["../notebook.html#entry-2026-10-12-pivot-frame-law"]
+  },
+  "date": "2026-10-12",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["polynomial-calculus", "degree-accounting", "substitution", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "lem:pivot-frame-fibers",
+      "summary": "For a fixed rank-k binary k-by-n matrix R, 1<=k<n, and uniform U in GL_n(F2), write RU=[M C], W=det M, X=adj(M)C and V=U(I+N_X), with N_X in the upper-right rectangle. Pr(W=1)=product_(i<k)(1-2^(i-k))/product_(i<k)(1-2^(i-n)). Conditional on W=1, V is uniform on the invertible matrices with RV=[M_V 0], M_V invertible, and each has exactly 2^(k(n-k)) preimages. For rank R<k no frame succeeds. Consequently summing W f(AV,V^-1 B) over all U in F2 gives zero pointwise for every binary function f. This is an ambient-point law, not a probability distribution on an inconsistent PC quotient; no low-degree Boolean certificate is claimed for the parity identity.",
+      "assessment": "Working elementary orbit-and-fiber proof passed by the sole fresh GPT-6.1-Sol medium reviewer. Preserves the pointwise parity and conditional pushforward scopes; no source contraction or invariant-theory novelty claimed.",
+      "status": "working_proof",
+      "rationale": "Executes the fixed-source random-frame conditional-law test and separates real probabilities from field-valued normalization.",
+      "next_action": "Test a paid source-specific use of the normalization without converting point probabilities into quotient ranks."
+    },
+    {
+      "id": "prop:minor-chart-product-defect",
+      "summary": "Over F2 for Boolean matrices A:m by n and B:n by m, m>n, choose k outer rows, 1<=k<n. For k-subsets S of inner indices set p_S=det(A_R,S)det(B_S,R) and let sigma_S be the rectangular adjugate gauge on those pivot columns, relabeled back to the original coordinates. Then sum p_S=det((AB)_R,R), with sum p_S-1 having a rank-axiom certificate through 2k. The linear operator Lambda(f)=sum p_S sigma_S(f) is unital modulo the old rank base and has degree at most 2k+(k+1)deg f. It need not preserve products even in the proper old PC quotient: for k=1, R={1}, f=A_11, g=A_12, D>=8, n>=2D, m>n, Lambda(fg)-Lambda(f)Lambda(g) is outside C_D(Gamma_m,n). An affine identity-frame embedding with first row of A and first column of B equal to (1,1,1,0,...,0) maps the defect to one and the old base to Gamma_(m-1,n-1). This excludes using that linear gluing as a multiplicative source substitution, not every proof-specific or action-aware use.",
+      "assessment": "Working Cauchy-Binet normalization and hard-residual product-defect proof passed by the sole fresh GPT-6.1-Sol medium reviewer. Retains relabeled charts, affine Boolean certificates and the actual proper-PC cutoff. Source inventories and actual error ranks are not bounded.",
+      "status": "working_proof",
+      "rationale": "Tests an explicit binary repair of the even-fiber average against a product identity in the actual proper matrix-PC window, rather than against ambient points alone.",
+      "next_action": "Retain multiplication identities explicitly in any weaker proof-specific interpretation; unitality alone cannot justify source substitution."
+    }
+  ],
+  "relationships": [
+    ["lem:pivot-frame-fibers", "depends_on", "thm:weighted-rectangular-gauge", "Uses the predecessor's rectangular polynomial map; the numerical orbit/fiber count is proved directly."],
+    ["lem:pivot-frame-fibers", "cites", "prop:unipotent-transfer-degree", "Distinguishes the pointwise even-fiber sum from the formal low-degree full-Sylow transfer obstruction."],
+    ["prop:minor-chart-product-defect", "depends_on", "thm:weighted-rectangular-gauge", "Defines each relabeled chart by its reviewed degree-paid adjugate substitution."],
+    ["prop:minor-chart-product-defect", "depends_on", "lem:quadratic-rank-CNF", "Uses its recorded arbitrary-row algebraic matrix-PC baseline after an affine frame embedding, not the weaker CNF cutoff."],
+    ["prop:minor-chart-product-defect", "cites", "prop:compression-action-defect", "A matrix-source instance of the general warning that linear unital compression need not preserve multiplication; no refinement relation is asserted."]
+  ]
+}
