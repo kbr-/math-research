@@ -548,6 +548,65 @@ class LeadQueueTest(unittest.TestCase):
             f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')), 't1:s1'), [])       # the item's own
         self.assertIsNone(lq.linking_entries(body, 'no-such-item'))                   # not a zero: nothing to look for
         self.assertIsNone(lq.linking_entries(lq.add(body, 'check', 'by-tool', 'a talk', a), 'by-tool'))
+        # other entries whose claims cite, by a registry edge, a claim of the queuing entry: the case of
+        # 12 October 2026, where the ranking by nearness printed none (lem:y is far from the item's text)
+        self.assertIn('<article id="t1"', listing)
+        based = body.replace('<article id="t1"', '<article id="t1" data-claims="lem:base"')
+        edges = [{'type': 'cites', 'source': {'id': 'lem:y'}, 'target': {'id': 'lem:base'}},
+                 {'type': 'depends_on', 'source': {'id': 'lem:y'}, 'target': {'id': 'lem:far'}},
+                 {'type': 'cites', 'source': {'id': 'lem:nowhere'}, 'target': {'id': 'lem:base'}},
+                 {'type': 'cites', 'source': {'id': 'lem:base'}, 'target': {'id': 'lem:base'}},
+                 {'type': 'cites', 'source': {'id': 'lem:x'}, 'target': {'id': 'lem:base', 'namespace': 'historical'}}]
+        self.assertNotIn('lem:y', [claim for _, claim, _ in lq.claims_elsewhere(based, summaries, 't1:s1')])
+        row = ('o', 'lem:y', 'cites', 'lem:base', True, True)
+        self.assertEqual(lq.citing_entries(based, edges, 't1:s1'), [row])     # not the queuing entry, not the historical
+        self.assertEqual(lq.citing_entries(based, edges, 't1:s2'), [row])     # the other sub-idea of the same entry
+        self.assertEqual(lq.citing_entries(body, edges, 't1:s1'), [])         # the queuing entry declares no claim
+        self.assertEqual(lq.citing_entries(based, [], 't1:s1'), [])
+        self.assertEqual(lq.citing_entries(based, edges, 'no-such-item'), [])
+        as_review = based.replace(other, other.replace('data-kind="research"', 'data-kind="review"'))
+        self.assertEqual(lq.citing_entries(as_review, edges, 't1:s1'), [row])           # a review is listed too
+        developed = other.replace(f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')
+        own_entry = based.replace(other, developed)
+        self.assertEqual(lq.citing_entries(own_entry, edges, 't1:s1'), [])      # the item's own entry is not another's
+        # a claim of an entry that developed the item is looked for too, marked apart: a third entry citing lem:x,
+        # after the item's latest development, and one from before the queuing entry
+        third = other.replace('"o"', '"p"').replace('lem:x lem:y', 'lem:w')
+        before = other.replace('"o"', '"b"').replace('lem:x lem:y', 'lem:v')
+        refines = [{'type': 'refines', 'source': {'id': 'lem:w'}, 'target': {'id': 'lem:x'}},
+                   {'type': 'cites', 'source': {'id': 'lem:v'}, 'target': {'id': 'lem:x'}},
+                   {'type': 'cites', 'source': {'id': 'lem:base'}, 'target': {'id': 'lem:x'}}]
+        cites_own = based.replace(other, developed + third).replace('<article id="t1"', before + '<article id="t1"')
+        self.assertIn('<article id="b"', cites_own)
+        found = lq.citing_entries(cites_own.replace('<article id="t1" data-claims="lem:base"', '<article id="t1"'),
+                                  refines, 't1:s1')
+        self.assertEqual(found, [('b', 'lem:v', 'cites', 'lem:x', False, False),
+                                 ('p', 'lem:w', 'refines', 'lem:x', False, True)])
+        self.assertEqual(lq.citing_lines(found, False), ['  #b: lem:v cites lem:x', '  #p [later]: lem:w refines lem:x'])
+        self.assertEqual(lq.citing_lines(found, True), [])
+        # an item added by the tool names no queuing entry: an identifier equal to an entry's anchor does not make
+        # that entry's claims the item's (without the guard the entry t1, citing lem:x of #o, would be listed)
+        tool = lq.add(based, 'check', 'o', 'a talk', a)
+        self.assertIn('data-check="o"', tool)
+        self.assertEqual(lq.citing_entries(tool, refines, 'o'), [])
+        unstamped = re.sub(r'(<li data-check="o"[^>]*?) data-after="[^"]*"', r'\1', tool)
+        self.assertNotEqual(unstamped, tool)
+        self.assertEqual(lq.citing_entries(unstamped, refines, 'o'), [('t1', 'lem:base', 'cites', 'lem:x', True, True)])
+        status = lq.item_status(based, 't1:s1', summaries, edges)
+        self.assertIn('  #o [later]: lem:y cites lem:base', status)
+        self.assertEqual(status[-1], '  none')                                  # no claim of its own entries is cited
+        self.assertNotIn('whose claims cite', '\n'.join(lq.item_status(based, 't1:s1', summaries)))
+        self.assertEqual(lq.item_status(body, 't1:s1', summaries, edges)[-3:-1],
+                         ['  none', 'Other entries whose claims cite a claim of its own entries or its group\'s '
+                          '([later]: after the latest development):'])
+        self.assertEqual(lq.registered(Path('no-such-file')), ([], []))
+        # the start of a cycle prints the entries citing the queuing entry for the item the next step names
+        import turn_guidance
+        named_step = '<section id="proposed-next-step"><p>Take <code>t1:s1</code> next.</p></section>'
+        cited_notes = turn_guidance.next_item_notes(based + named_step, [], edges)
+        self.assertEqual(len(cited_notes), 1)
+        self.assertIn('#o [later]: lem:y cites lem:base', cited_notes[0])
+        self.assertEqual(turn_guidance.next_item_notes(based + named_step, [], []), [])
         # the start of a cycle prints them for the item the next step names, and nothing for one it does not
         import turn_guidance
         step = '<section id="proposed-next-step"><p>Take <code>t1:s1</code> next.</p></section>'

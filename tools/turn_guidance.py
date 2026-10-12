@@ -72,10 +72,12 @@ def queue_notes(body):
             + bearing_run_notes(body))
 
 
-def next_item_notes(body, claims=None):
+def next_item_notes(body, claims=None, relationships=None):
     """For the first queued item, not a build, that Proposed next step names: the claims of later entries on other
-    items nearest to its text.  In one block of 11 October 2026 four items taken as never developed had each
-    been partly answered by an entry filed under another item."""
+    items nearest to its text, and the other entries whose claims cite a claim of the entry that queued it.  In
+    one block of 11 October 2026 four items taken as never developed had each been partly answered by an entry
+    filed under another item, and on 12 October one was developed in five entries beside an unread entry that
+    cited its proposition."""
     import lead_queue as lq
     found = lq.parse_tree(body)
     step = re.search(r'<section id="proposed-next-step">(.*?)</section>', body, re.S)
@@ -85,13 +87,16 @@ def next_item_notes(body, claims=None):
              if n.kind != 'build' and re.search(re.escape(n.ident) + r'(?![\w:-])', step.group(1))]
     if not named:
         return []
-    near = lq.claims_elsewhere(body, lq.registered_claims() if claims is None else claims,
-                              lq.qualified(named[0]))
-    if not near:
-        return []
-    return [f'Lead queue: the next step names {named[0].ident}. Claims of later entries on other items nearest to '
-            'its text, to read before planning (a reading list, not a verdict): '
-            + '; '.join(f'{claim} in #{anchor}' for _score, claim, anchor in near) + '.']
+    if claims is None and relationships is None:
+        claims, relationships = lq.registered()
+    near = lq.claims_elsewhere(body, claims or [], lq.qualified(named[0]))
+    citing = lq.citing_lines(lq.citing_entries(body, relationships or [], lq.qualified(named[0])), True)
+    return ([f'Lead queue: the next step names {named[0].ident}. Claims of later entries on other items nearest to '
+             'its text, to read before planning (a reading list, not a verdict): '
+             + '; '.join(f'{claim} in #{anchor}' for _score, claim, anchor in near) + '.'] if near else []) + (
+            [f'Lead queue: the next step names {named[0].ident}. Other entries whose claims cite a claim of the entry '
+             'that queued it, to read before planning: ' + '; '.join(line.strip() for line in citing) + '.']
+            if citing else [])
 
 
 def queue_trend_notes(body):

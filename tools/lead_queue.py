@@ -918,6 +918,48 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE, earlier=False):
             for score, claim in module.search({'claims': later}, [text])[:limit] if score > 0]
 
 
+def registered(path=None):
+    """(claims, typed edges) of the registry from one reading of it, or ([], []) where there is none."""
+    try:
+        registry = json.loads((path or ROOT / 'research' / 'claims' / 'index.json').read_text())
+        return registry['claims'], registry.get('relationships', [])
+    except (OSError, ValueError, KeyError):
+        return [], []
+
+
+def citing_entries(body, relationships, ident):
+    """[(entry anchor, its claim, edge type, cited claim, of the queuing entry, after the latest development), ...]
+    in record order: the articles of any kind that did not develop the item `ident` or its group, and are not
+    the entry that queued it, one of whose declared claims has a registry edge of any type to a claim declared
+    by the queuing entry (fifth field true) or by an entry that developed the item or its group.
+    On 12 October 2026 a queued check was developed in five entries while an entry on another item, two after the
+    one that queued it, had tested its general claim and cited its proposition: the ranking by nearness of text
+    printed none, and the citation was in the registry.  An item added by the tool names no queuing entry, and
+    only the claims of its own entries are looked for.  A reading list, not a verdict."""
+    found = parse_tree(body)
+    node = next((n for top in (found[1] if found else []) for n in [top] + top.children if named(n.item, ident)), None)
+    if node is None:
+        return []
+    own = {anchor for anchor, _, _ in history(body, ident)}
+    source = None if re.search(r'\bdata-after="', node.attrs) else node.ident.rsplit(':', 1)[0]
+    declared = []
+    for tag, _ in record_articles(body):
+        anchor = (re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1]
+        claims = re.search(r'\bdata-claims="([^"]*)"', tag)
+        declared.append((anchor, set(claims.group(1).split()) - {'none'} if claims else set()))
+    queuing = set().union(*[claims for anchor, claims in declared if anchor == source] or [set()])
+    cited = queuing.union(*[claims for anchor, claims in declared if anchor in own] or [set()])
+    edges = {}
+    for edge in relationships:           # edges between current claims only: a historical label may share an id
+        ends = [edge.get(end, {}) for end in ('source', 'target')]
+        if ends[1].get('id') in cited and all(end.get('namespace', 'current') == 'current' for end in ends):
+            edges.setdefault(ends[0].get('id'), []).append((edge.get('type'), ends[1].get('id')))
+    latest = max([position for position, (anchor, _) in enumerate(declared) if anchor in own] or [-1])
+    return [(anchor, claim, kind, target, target in queuing, position > latest)
+            for position, (anchor, claims) in enumerate(declared) if anchor not in own and anchor != source
+            for claim in sorted(claims) for kind, target in edges.get(claim, [])]
+
+
 def linking_entries(body, ident):
     """Anchors of the later entries, of any kind, that did not develop the item `ident` and link the entry which
     queued it, in order; None for an item that is not queued or that no entry queued (one added by the tool).
@@ -982,7 +1024,7 @@ def result_files(body, ident):
     return out
 
 
-def item_status(body, ident, claims=None):
+def item_status(body, ident, claims=None, relationships=None):
     """Bounded orientation for a queued item, using the same grouping and spell rules as the gate."""
     found = parse_tree(body)
     nodes = found[1] if found else []
@@ -1026,7 +1068,30 @@ def item_status(body, ident, claims=None):
             + ['Claims of entries up to the one that queued it, nearest to its text (read each statement too):']
             + ([f'  {score} {claim} in #{anchor} [earlier]'
                 for score, claim, anchor in claims_elsewhere(body, claims, ident, earlier=True)] or ['  none'])
-            if claims is not None else [])
+            if claims is not None else []) + (
+            citing_status(citing_entries(body, relationships, ident)) if relationships is not None else [])
+
+
+def citing_status(rows):
+    """The status lines for citing_entries' rows: the queuing entry's list, then that of the item's own entries."""
+    return (['Other entries whose claims cite, by a registry edge, a claim of the entry that queued it (read each '
+             'before planning; [later]: after the item\'s latest development, or it has none):']
+            + (citing_lines(rows, True) or ['  none'])
+            + ['Other entries whose claims cite a claim of its own entries or its group\'s ([later]: after the '
+               'latest development):']
+            + (citing_lines(rows, False) or ['  none']))
+
+
+def citing_lines(rows, queuing):
+    """One line for each entry among citing_entries' rows that cite a claim of the queuing entry (`queuing` true)
+    or of the item's own entries, in their order, with those edges; [later] marks an entry after the item's
+    latest development."""
+    by_entry = {}
+    for anchor, claim, kind, target, of_queuing, later in rows:
+        if of_queuing == queuing:
+            by_entry.setdefault((anchor, later), []).append(f'{claim} {kind} {target}')
+    return [f'  #{anchor}{" [later]" if later else ""}: ' + '; '.join(edges)
+            for (anchor, later), edges in by_entry.items()]
 
 
 def older_nearest(body, claims):
@@ -2115,7 +2180,7 @@ def main(argv):
         body = Path(argv[2]).read_text()
         if len(argv) == 5:
             try:
-                print('\n'.join(item_status(body, argv[3], registered_claims())))
+                print('\n'.join(item_status(body, argv[3], *registered())))
             except ValueError as error:
                 print(error, file=sys.stderr)
                 return 1

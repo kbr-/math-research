@@ -1,0 +1,27 @@
+Review record, 12 October 2026: the queue tool's listing of citing entries (tools/lead_queue.py: registered,
+citing_entries, citing_lines, citing_status; tools/turn_guidance.py: next_item_notes), read before its commit.
+Reviewer: one fresh-context medium-effort reviewer (Claude Code medium-reviewer agent), two reads.
+
+First read. Verdict: pass with corrections; the code does what the build asks. Required: the saved survey was
+produced by a call that the diff no longer contained (an earlier draft), so its timings were to be remeasured; the
+assertion for an item added by the tool passed with or without the guard it tests; cases not covered: the queuing
+entry citing itself, a child node, a review article, an entry before the queuing one; the header said "entries on
+other items" while reviews and entries on no item are listed. Answers: direction and exclusions correct, all edge
+types counted; reviews should stay listed (17 of 214 pairs); entries before the queuing entry occur once and are
+harmless; the source added beyond the build's words, claims of the item's own entries, gave 139 of 275 rows;
+siblings get identical lists; the edge's namespace was ignored. The entry "two later" of the build's text is
+entry-2026-10-08-fixed-cutoff-transport, on the first line. A list of 45 rows (23 entries) is not credible as
+"read each": no numeric cut, but split by target and mark entries later than the latest development. Process
+audit: the inputs of the prompting case were gone and its revision unrecorded; the suite's figures were in no
+saved file; the share of the added source was not measured before adding it; whether the cycle-start guidance
+should print the listing was not asked. Suggestion: print the queuing entry's lines at cycle start.
+
+Second read, of the rewritten code and the measurements redone by measure.py: pass, nothing must change. Each
+new assertion fails if the line it guards is removed (self-citing edge, historical edge, unstamped tool item, the
+fifth and sixth fields); the sibling and review cases record behaviour. next_item_notes: old calls behave as
+before; the default call can return a note where no claim is near, or two; its one caller concatenates lists.
+The saved files show every figure stated. Optional: explain [later] for an item with no entry, call
+citing_entries once in the status, duplicate lines in the test. Process audit: no findings.
+
+Author's note: the first two optional points were taken after the second read (citing_status), and the suite
+rerun: 1011 tests in 8.3 s, OK (suite.txt).
