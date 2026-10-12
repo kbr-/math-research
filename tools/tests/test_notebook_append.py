@@ -467,6 +467,43 @@ class NotebookAppendTests(unittest.TestCase):
                     tool.main()
             self.assertEqual(notebook.read_text(), source)
 
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+                    with self.assertRaisesRegex(SystemExit, reason):
+                        run()
+                    self.assertEqual(notebook.read_text(), source)
+                    self.assertEqual(nxt.read_text(), fragment)
+            notebook.write_text(NOTEBOOK)
+            fragment = r'<h2>Another heading</h2><h3>Experiment</h3><p>\(a<section>b\) and &lt;section&gt;.</p>'
+            nxt.write_text(fragment)
+            run()
+            result = notebook.read_text()
+            self.assertIn('<h2>Proposed next step</h2>\n' + fragment, result)
+            self.assertIn('<article id="new">A new entry.</article>', result)
+            self.assertEqual(result.count('<section id="proposed-next-step">'), 1)
+
     def test_a_closing_follow_up_quotes_the_listed_text_of_its_item(self):
         source = ('<article id="entry-a" data-kind="research"><p>work</p><h4>Sub-ideas</h4><ul>'
                   '<li data-sub="check">Bound the mean square of the off-axis sum over a short range of scales '

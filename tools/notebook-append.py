@@ -20,7 +20,9 @@ It also refuses, before anything is written:
   the notebook's queue is draining. For each item a next step names it prints the item's queued text and
   its latest follow-up, to write the description against;
 - a next step that names a queued item by its identifier, when the item has a latest follow-up, without
-  quoting eight consecutive words of that follow-up or of the item's queued text.
+  quoting eight consecutive words of that follow-up or of the item's queued text;
+- a next-step section wrapper or retained heading, and an invalid living-section structure in the
+  proposed notebook (the same parser used by the context-budget check).
 After these, a branch's own tools/append_checks.py, where it has one, is asked: its
 check(source, entry, next_html) raises ValueError to refuse.
 """
@@ -37,6 +39,7 @@ import sys
 import branch_extension
 from char_refs import broken_entities
 from notebooks import selected, ROOT
+from notebook_context import excerpt, living_sections
 
 HEADING = '<h2>Proposed next step</h2>'
 # While the goal is open the next step is always research (AGENTS.md): wording that parks it on a
@@ -388,6 +391,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     refuse_broken_text('entry', entry)
     if next_html is not None:
         refuse_broken_text('next step', next_html)
+        refuse_next_structure(next_html)
         parked = PARKING.search(re.sub(r'<[^>]+>', ' ', next_html))
         # A branch's own module may name kinds of entry whose next step may wait.
         may_wait = '|'.join(map(re.escape, branch_extension.ask('PARKING_KINDS', (), tools)))
@@ -426,8 +430,19 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         require_quoted_items(source, next_html)
         refuse_excluded_item(source, next_html)
         refuse_no_bearing_plan(source, next_html)
+    living_sections(source)
     preflight(source, m.group(1))
     return source
+
+
+def refuse_next_structure(fragment):
+    """The next-step file is section contents; its enclosing section and heading are retained."""
+    book = excerpt.Notebook(fragment)
+    for node in book.nodes:
+        if node['tag'] == 'section' or (node['tag'] == 'h2' and
+                excerpt.visible_text(fragment[node['start']:node['end']]).casefold() == 'proposed next step'):
+            raise ValueError('next step must contain only the section contents, without a section wrapper '
+                             'or the retained Proposed next step heading')
 
 
 def committed_version(path):
@@ -593,7 +608,7 @@ def main():
     except ValueError as err:
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
-    print(f'Appended to {path.relative_to(ROOT)}')
+    print(f'Appended to {path.relative_to(ROOT)} ({path.stat().st_size:,} bytes)')
     for line in closures:
         print(line)
     if nxt and cadence_line(result):

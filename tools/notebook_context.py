@@ -21,6 +21,29 @@ excerpt = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(excerpt)
 
 
+def living_sections(source):
+    """Return the validated living prefix and its sections, excluding the unbudgeted queue."""
+    # The lead and bridge queue is a living section without a word budget; restoration reads only its head
+    # (tools/lead_queue.py; user, 3 October 2026).
+    source = re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*', '', source, flags=re.S)
+    # Only the text before the unlimited Research record is parsed. Every section and heading must
+    # be closed where the record opens, so the record is top level and no living section crosses it.
+    masked = excerpt.MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
+    opening = re.search(r'<section\b[^>]*\bid=["\']research-record["\']', masked)
+    if opening is None:
+        raise ValueError('Research record must be a top-level section')
+    prefix = source[:opening.start()]
+    try:
+        book = excerpt.Notebook(prefix)
+    except ValueError as error:
+        raise ValueError(f'Research record must be a top-level section after closed living sections: {error}')
+    sections = [n for n in book.nodes if n['tag'] == 'section']
+    ids = [n['anchor'] for n in sections]
+    if None in ids or len(set(ids)) != len(ids):
+        raise ValueError('Every pre-record section needs a unique ID')
+    return prefix, sections
+
+
 def budgets(source, config):
     required = {'version', 'hard_multiplier', 'characters_per_word', 'total_soft_words', 'regions'}
     if set(config) != required or config['version'] != 1:
@@ -31,27 +54,11 @@ def budgets(source, config):
     for number in [config['characters_per_word'], config['total_soft_words'], *regions.values()]:
         if type(number) is not int or number <= 0:
             raise ValueError('Context budgets must be positive integers')
-    # The lead and bridge queue is a living section without a word budget; restoration reads only its head
-    # (tools/lead_queue.py; user, 3 October 2026).
-    source = re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*', '', source, flags=re.S)
     multiplier = Fraction(str(config['hard_multiplier']))
     if multiplier < 1:
         raise ValueError('Hard multiplier must be at least one')
-    # Only the text before the unlimited Research record is parsed. Every section and heading must
-    # be closed where the record opens, so the record is top level and no living section crosses it.
-    masked = excerpt.MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
-    opening = re.search(r'<section\b[^>]*\bid=["\']research-record["\']', masked)
-    if opening is None:
-        raise ValueError('Research record must be a top-level section')
-    record = {'start': opening.start()}
-    try:
-        book = excerpt.Notebook(source[:record['start']])
-    except ValueError as error:
-        raise ValueError(f'Research record must be a top-level section after closed living sections: {error}')
-    sections = [n for n in book.nodes if n['tag'] == 'section']
+    source, sections = living_sections(source)
     ids = [n['anchor'] for n in sections]
-    if None in ids or len(set(ids)) != len(ids):
-        raise ValueError('Every pre-record section needs a unique ID')
     unknown = set(ids) - (set(regions)-{'@intro'})
     missing = (set(regions)-{'@intro'}) - set(ids)
     if unknown or missing:
@@ -59,7 +66,7 @@ def budgets(source, config):
     # Attribute every span to its deepest section. Nested sections are budgeted
     # separately, and aggregate accounting includes their text exactly once.
     pieces = {key: [] for key in regions}
-    cuts = sorted({0, record['start'], *(n['start'] for n in sections), *(n['end'] for n in sections)})
+    cuts = sorted({0, len(source), *(n['start'] for n in sections), *(n['end'] for n in sections)})
     for start, end in zip(cuts, cuts[1:]):
         owners = [n for n in sections if n['start'] <= start and end <= n['end']]
         owner = max(owners, key=lambda n: n['start'])['anchor'] if owners else '@intro'

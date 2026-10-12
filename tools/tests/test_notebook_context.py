@@ -7,7 +7,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'tools'))
-from notebook_context import budgets, excerpt
+from notebook_context import budgets, excerpt, living_sections
 
 
 class ContextBudgetTest(unittest.TestCase):
@@ -65,10 +65,16 @@ class ContextBudgetTest(unittest.TestCase):
                 budgets(source,self.config({'@intro':5,'a':5}))
 
     def test_record_is_unlimited_and_math_is_not_a_section(self):
-        source=self.book(r'\(a<section>b\)', '<article>'+'many '*10000+'</article>')
+        prefix = r'\(a<section id="research-record">b\)'
+        queue = '<section id="lead-queue">\n' + 'many '*10000 + '</section>\n'
+        source=self.book(prefix + queue, '<article>'+'many '*10000+'</article>')
         result=budgets(source,self.config({'@intro':100}))
         self.assertTrue(result['passed'])
-        self.assertEqual(result['total']['words'],1)
+        self.assertEqual(result['total']['words'],2)
+        self.assertEqual(living_sections(source), (prefix, []))
+        # Math in the real boundary's attributes must not terminate its tag match.
+        attributed = prefix + r'<section title="\(a>b\)" id="research-record"></section>'
+        self.assertEqual(living_sections(attributed), (prefix, []))
 
     def test_invalid_policy_rejected(self):
         for field,value in [('hard_multiplier',.5),('characters_per_word',0),('total_soft_words',True)]:

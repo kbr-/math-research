@@ -1,0 +1,5 @@
+# command: python3 -m timeit -n 1 -r 1 -s import runpy,sys; from pathlib import Path; sys.path.insert(0,"tools"); api=runpy.run_path("tools/notebook-append.py"); source=Path("notebook.html").read_text(); book=api["excerpt"].Notebook(source); articles=[n for n in book.nodes if n["tag"]=="article" and n["scope"] and n["scope"]["anchor"]=="research-record"]; last=articles[-1]; entry=source[last["start"]:last["end"]]; base=source[:last["start"]]+source[last["end"]:]; nxt=api["section"](source,"proposed-next-step").split(api["HEADING"],1)[1]; print("Real notebook bytes:",len(source.encode()),"record entries:",len(articles)); print("Read-only reappend of:",last["anchor"]) api["append"](base,entry,nxt)
+# run 25ca52c718, session binary_sampler_goal_review_20261012; full output
+Real notebook bytes: 9599994 record entries: 708
+Read-only reappend of: entry-2026-10-12-switching-survival-test
+1 loop, best of 1: 317 msec per loop

@@ -1,0 +1,39 @@
+# command: env MATH_TEST_ROOT=/home/kbr/dev/math-auxiliary python3 -m pytest -q tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+# run b73470fd94, session binary_sampler_goal_review_20261012; full output
+.                                                                   [100%]
+=================================== FAILURES ===================================
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing (fragment='<p>new</p>') _
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+>                   with self.assertRaisesRegex(SystemExit, reason):
+E                   AssertionError: SystemExit not raised
+
+tests/test_append.py:493: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(fragment='<p>new</p>') tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+1 failed, 1 passed, 4 subtests passed in 0.09s
