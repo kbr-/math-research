@@ -1552,11 +1552,16 @@ def validate_append_only(root):
 
 def validate_queue(root, notebook):
     """The lead and bridge queue against HEAD's notebook (tools/lead_queue.py)."""
-    from lead_queue import check, is_draining, SECTION_RE
+    from lead_queue import check, extended_again, is_draining, SECTION_RE
     relative = notebook.resolve().relative_to(root.resolve()).as_posix()
     head = subprocess.run(['git', 'show', f'HEAD:{relative}'], cwd=root, capture_output=True, text=True)
     body = notebook.read_text()
     check(head.stdout if head.returncode == 0 else None, body, notebook, root)
+    again = extended_again(head.stdout if head.returncode == 0 else None, body)
+    if again:
+        raise ValueError('The text of a queued build was extended again (' + ', '.join(again) + '): its text '
+                         'already carried an addition. Build it in this turn, or queue what is new as an item of '
+                         'its own with tools/lead_queue.py add; a prevention is not a longer queue item (AGENTS.md)')
     section = SECTION_RE.search(body)
     return is_draining(head.stdout if head.returncode == 0 else None,
                        section.group(1) if section else None)

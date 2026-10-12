@@ -936,6 +936,23 @@ def linking_entries(body, ident):
             if anchors[position] not in own and f'href="#{source}"' in articles[position][1]]
 
 
+EXTENSION_RE = re.compile(r'\bAdded\b')
+
+
+def extended_again(head_body, body):
+    """Identifiers of the queued build items whose text gained a dated addition ("Added ...") in `body` while
+    HEAD's text of the same item already carried one.  In one review period of 12 October 2026 the text of one
+    queued build was extended five times, each time as the prevention of a mistake, and nothing was built:
+    a second extension is refused, and what is new is built or queued as an item of its own."""
+    def builds(text):
+        found = parse_tree(text) if text else None
+        return {qualified(node): len(EXTENSION_RE.findall(node.text))
+                for top in (found[1] if found else []) for node in [top] + top.children if node.kind == 'build'}
+    before = builds(head_body)
+    return sorted(ident for ident, count in builds(body).items()
+                  if before.get(ident, 0) >= 1 and count > before[ident])
+
+
 def answered_report(body, claims):
     """[(item id, [(score, claim, anchor), ...]), ...] for the top-level queued items no entry has developed that
     have such claims; build items are left out, a claim being no answer to a build."""

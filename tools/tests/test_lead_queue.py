@@ -705,6 +705,18 @@ class LeadQueueTest(unittest.TestCase):
         body = lq.add(body, 'check', 'a-check', 's', 'Why?')
         lq.edit(body, 'a-check', 'Why is the copy slow?')
 
+    def test_a_second_extension_of_a_queued_builds_text_is_found(self):
+        base = lq.add(notebook([self.rev], self.q), 'build', 'b1', 'a talk', 'Have the tool print the line.')
+        once = base.replace('print the line.', 'print the line. Added 1 May from an entry: also the count.')
+        twice = once.replace('also the count.', 'also the count. Added 2 May from another: also the words.')
+        self.assertEqual(lq.extended_again(base, once), [])          # a first addition is allowed
+        self.assertEqual(lq.extended_again(once, twice), ['build:b1'])
+        self.assertEqual(lq.extended_again(once, once), [])
+        self.assertEqual(lq.extended_again(None, twice), [])         # no committed notebook to compare with
+        other = lq.add(once, 'check', 'c1', 'a talk', 'Read the source. Added 1 May: its second lemma.')
+        self.assertEqual(lq.extended_again(other, other.replace('second lemma.', 'second lemma. Added 2 May: more.')),
+                         [])                                         # a check's text may be extended
+
     def test_edit_replaces_an_added_items_text_and_keeps_its_source(self):
         head = notebook([self.rev], self.q)
         body = lq.add(head, 'build', 'port-it', 'entry-2026-10-07-x', 'Port it.')
