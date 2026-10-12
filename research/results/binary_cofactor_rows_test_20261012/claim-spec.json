@@ -1,0 +1,27 @@
+{
+  "source": {
+    "record": "[Polynomial row rank test](https://kbr.is-a.dev/math-research/#entry-2026-10-12-polynomial-row-rank)",
+    "label": "Polynomial row rank test",
+    "targets": ["../notebook.html#entry-2026-10-12-polynomial-row-rank"]
+  },
+  "date": "2026-10-12",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["ens", "polynomial-calculus", "degree-accounting", "substitution"],
+  "claims": [
+    {
+      "id": "prop:polynomial-majority-rank-floor",
+      "summary": "Over F2 on m Q-state coordinates, Q=2 or3 with degree-one one-hot indicators, let delta>=2 be a power of two, d=2delta-1, and q>=1 disjoint d-blocks, qd<=m, with majority inputs g_i=e_delta(nonzero-state indicators). Let Z be their common-zero product fiber. Any polynomial P equal to1 on Z, of reduced degree<=e, and weight w of degree<=b satisfy rank(f in V_K -> (wP g_i f)_i) >= rank(V_K -> (wf)|Z) whenever b+K+e<q*delta, in the full local function algebra, b,e,K nonnegative integers. For w=1 the rank is at least the coefficient sum through degree K of (1+(Q-1)z)^(m-qd)*(sum_(j<delta)(Q-1)^j binom(d,j)z^j)^q, hence normalized rank >=1-q*(4K/m)^delta for K<=m. Arbitrary polynomial coefficient rows beta_ui of degree<=T give P=product_(u<=h)(1+sum_i beta_ui g_i), automatically P|Z=1 and e<=h(T+delta); retain D>=b+K+h(T+delta)+delta for the actual mapped columns before local reduction. A weight killing all such local companions must vanish on Z if b+e<q*delta. No charged-quotient floor or obstruction to optimized incoming weights is asserted; original complete-source replay retains its own b+K+TB budget.",
+      "assessment": "Working all-parameter proof passed by the sole fresh medium reviewer: tensor support-degree argument, weighted kernel inclusion, exact local rank, original degree reserves and source-scale calibration. This remains a full local function-algebra bound, not a charged-quotient rank floor or a Frege lower bound.",
+      "status": "working_proof",
+      "rationale": "Tests whether arbitrary bounded-degree polynomial coefficient rows can evade the earlier all-scalar full-local rank floor, while retaining a weighted escape and the distinction from actual charged ranks.",
+      "next_action": "Use the local floor as a control on polynomial-row numerator arguments; seek actual charged cancellation or a common surviving incoming weight, preserving original replay costs.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["prop:polynomial-majority-rank-floor", "cites", "cor:majority-row-rank-floor", "Extends row-choice scope to polynomial coefficients under a different total output-degree condition; does not imply the older entire h<q parameter range."],
+    ["prop:polynomial-majority-rank-floor", "cites", "prop:majority-fiber-rank", "Uses the recorded Boolean majority-fiber interpolation mechanism; gives a polynomial-prefix rank floor rather than the earlier exact fixed-fiber rank."],
+    ["prop:polynomial-majority-rank-floor", "cites", "lem:all-field-approximate-majority-certifier-barrier", "Credits the Hamming-ball support-degree mechanism, tensorized across disjoint local blocks."],
+    ["prop:polynomial-majority-rank-floor", "cites", "thm:universal-Boolean-source-map-obstruction", "Retains the distinction between full local Boolean cleanup and quotient-relative source maps; no unrestricted source-map impossibility is inferred."]
+  ]
+}
