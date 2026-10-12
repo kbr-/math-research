@@ -1,0 +1,119 @@
+F....                                                       [100%]
+=================================== FAILURES ===================================
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing (fragment='<p>new</p>') _
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+                    with self.assertRaisesRegex(SystemExit, reason):
+>                       run()
+
+tests/test_append.py:494: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_append.py:488: in run
+    tool.main()
+notebook_append.py:604: in main
+    result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+notebook_append.py:401: in append
+    reporting_checks().refuse_unverified_attempt(entry, next_html)
+notebook_append.py:366: in reporting_checks
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:879: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1016: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-guard-mutation/finish-turn.py'
+
+<frozen importlib._bootstrap_external>:1073: FileNotFoundError
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing _
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+                    with self.assertRaisesRegex(SystemExit, reason):
+                        run()
+                    self.assertEqual(notebook.read_text(), source)
+                    self.assertEqual(nxt.read_text(), fragment)
+            notebook.write_text(NOTEBOOK)
+            fragment = r'<h3>Experiment</h3><p>\(a<section>b\) and &lt;section&gt;.</p>'
+            nxt.write_text(fragment)
+>           run()
+
+tests/test_append.py:500: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_append.py:488: in run
+    tool.main()
+notebook_append.py:604: in main
+    result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+notebook_append.py:401: in append
+    reporting_checks().refuse_unverified_attempt(entry, next_html)
+notebook_append.py:366: in reporting_checks
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:879: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1016: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x781c9d556b00>
+path = '/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-guard-mutation/finish-turn.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-guard-mutation/finish-turn.py'
+
+<frozen importlib._bootstrap_external>:1073: FileNotFoundError
+----------------------------- Captured stdout call -----------------------------
+uuuuu
+=========================== short test summary info ============================
+SUBFAILED(fragment='<p>new</p>') tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+FAILED tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+2 failed, 4 passed, 12 subtests passed in 0.18s

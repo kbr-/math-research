@@ -1,0 +1,12 @@
+# notebook_append.x_refuse_next_structure__mutmut_9: survived
+--- notebook_append.py
++++ notebook_append.py
+@@ -2,7 +2,6 @@
+     """The next-step file is section contents; its enclosing section and heading are retained."""
+     book = excerpt.Notebook(fragment)
+     for node in book.nodes:
+-        if node['tag'] == 'section' or (node['tag'] == 'h2' and
+-                excerpt.visible_text(fragment[node['start']:node['end']]).casefold() == 'proposed next step'):
++        if node['tag'] == 'section' or (node['tag'] == 'h2' or excerpt.visible_text(fragment[node['start']:node['end']]).casefold() == 'proposed next step'):
+             raise ValueError('next step must contain only the section contents, without a section wrapper '
+                              'or the retained Proposed next step heading')

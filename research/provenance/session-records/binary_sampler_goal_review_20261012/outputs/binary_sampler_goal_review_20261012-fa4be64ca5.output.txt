@@ -1,0 +1,177 @@
+.                                                                   [100%]
+=================================== FAILURES ===================================
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing (fragment='<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>') _
+
+    def main():
+        parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
+        parser.add_argument('entry', type=Path, nargs='?')
+        parser.add_argument('--closures', action='store_true',
+                            help='append nothing: count, over the notebook\'s entries, the follow-ups that close a '
+                                 'listed item and how many quote its listed text')
+        parser.add_argument('--answers', type=Path,
+                            help='the file answering the entry\'s summing-up sentences (see refuse_unanswered)')
+        parser.add_argument('--next', type=Path, dest='next_file')
+        parser.add_argument('--notebook')
+        parser.add_argument('--stand-unchanged', metavar='REASON',
+                            help='why Where we stand needs no change in this cycle; recorded in the entry')
+        args = parser.parse_args()
+        path = Path(ROOT) / selected(args.notebook)['source']
+        if args.closures:
+            print(closures_count(path.read_text()))
+            return
+        if args.entry is None:
+            parser.error('an entry file is required')
+        nxt = args.next_file.read_text() if args.next_file else None
+        try:
+            refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
+            closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
+>           result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+                            args.stand_unchanged)
+
+notebook_append.py:605: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+notebook_append.py:432: in append
+    living_sections(source)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = '<section id="proposed-next-step">\n<h2>Proposed next step</h2>\n<section id="proposed-next-step"><h2>Proposed next st...one</article>\n<article id="a2">two</article>\n<article id="new">A new entry.</article>\n</section>\n<footer></footer>'
+
+    def living_sections(source):
+        """Return the validated living prefix and its sections, excluding the unbudgeted queue."""
+        # The lead and bridge queue is a living section without a word budget; restoration reads only its head
+        # (tools/lead_queue.py; user, 3 October 2026).
+        source = re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*', '', source, flags=re.S)
+        # Only the text before the unlimited Research record is parsed. Every section and heading must
+        # be closed where the record opens, so the record is top level and no living section crosses it.
+        masked = excerpt.MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
+        opening = re.search(r'<section\b[^>]*\bid=["\']research-record["\']', masked)
+        if opening is None:
+            raise ValueError('Research record must be a top-level section')
+        prefix = source[:opening.start()]
+        try:
+            book = excerpt.Notebook(prefix)
+        except ValueError as error:
+            raise ValueError(f'Research record must be a top-level section after closed living sections: {error}')
+        sections = [n for n in book.nodes if n['tag'] == 'section']
+        ids = [n['anchor'] for n in sections]
+        if None in ids or len(set(ids)) != len(ids):
+>           raise ValueError('Every pre-record section needs a unique ID')
+E           ValueError: Every pre-record section needs a unique ID
+
+notebook_context.py:44: ValueError
+
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-no-fragment/notebook_append.py", line 605, in main
+    result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+  File "/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-no-fragment/notebook_append.py", line 432, in append
+    living_sections(source)
+  File "/home/kbr/dev/math-auxiliary/research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/append-no-fragment/notebook_context.py", line 44, in living_sections
+    raise ValueError('Every pre-record section needs a unique ID')
+ValueError: Every pre-record section needs a unique ID
+
+During handling of the above exception, another exception occurred:
+
+SystemExit: notebook-append.py: Every pre-record section needs a unique ID
+
+During handling of the above exception, another exception occurred:
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+>                   with self.assertRaisesRegex(SystemExit, reason):
+E                   AssertionError: "only the section contents" does not match "notebook-append.py: Every pre-record section needs a unique ID"
+
+tests/test_append.py:493: AssertionError
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing (fragment="<SECTION id='other'><p>new</p></SECTION>") _
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+>                   with self.assertRaisesRegex(SystemExit, reason):
+E                   AssertionError: SystemExit not raised
+
+tests/test_append.py:493: AssertionError
+_ NotebookAppendTests.test_cli_checks_fragment_and_living_structure_before_writing (fragment='<h2 class="title">Proposed next step</h2><p>new</p>') _
+
+self = <test_append.NotebookAppendTests testMethod=test_cli_checks_fragment_and_living_structure_before_writing>
+
+    def test_cli_checks_fragment_and_living_structure_before_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, entry, nxt = (root / name for name in ('notebook.html', 'draft.html', 'next.html'))
+            entry.write_text('<article id="new">A new entry.</article>')
+            cases = [
+                (NOTEBOOK, '<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>',
+                 'only the section contents'),
+                (NOTEBOOK, "<SECTION id='other'><p>new</p></SECTION>", 'only the section contents'),
+                (NOTEBOOK, '<h2 class="title">Proposed next step</h2><p>new</p>', 'retained Proposed'),
+                (NOTEBOOK, '</section><p>new</p>', 'Unmatched closing tag'),
+                ('<section id="duplicate"></section><section id="duplicate"></section>' + NOTEBOOK,
+                 '<p>new</p>', 'unique ID'),
+            ]
+            def run():
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--next', str(nxt)]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            for source, fragment, reason in cases:
+                with self.subTest(fragment=fragment):
+                    notebook.write_text(source)
+                    nxt.write_text(fragment)
+>                   with self.assertRaisesRegex(SystemExit, reason):
+E                   AssertionError: SystemExit not raised
+
+tests/test_append.py:493: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(fragment='<section id="proposed-next-step"><h2>Proposed next step</h2><p>new</p></section>') tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+SUBFAILED(fragment="<SECTION id='other'><p>new</p></SECTION>") tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+SUBFAILED(fragment='<h2 class="title">Proposed next step</h2><p>new</p>') tests/test_append.py::NotebookAppendTests::test_cli_checks_fragment_and_living_structure_before_writing
+3 failed, 1 passed, 2 subtests passed in 0.23s

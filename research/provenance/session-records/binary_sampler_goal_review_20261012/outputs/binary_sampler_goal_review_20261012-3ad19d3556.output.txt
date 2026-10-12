@@ -1,0 +1,12 @@
+# notebook_context.x_living_sections__mutmut_10: survived
+--- notebook_context.py
++++ notebook_context.py
+@@ -2,7 +2,7 @@
+     """Return the validated living prefix and its sections, excluding the unbudgeted queue."""
+     # The lead and bridge queue is a living section without a word budget; restoration reads only its head
+     # (tools/lead_queue.py; user, 3 October 2026).
+-    source = re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*', '', source, flags=re.S)
++    source = re.sub(r'XX<section id="lead-queue"[^>]*>.*?</section>\s*XX', '', source, flags=re.S)
+     # Only the text before the unlimited Research record is parsed. Every section and heading must
+     # be closed where the record opens, so the record is top level and no living section crosses it.
+     masked = excerpt.MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)

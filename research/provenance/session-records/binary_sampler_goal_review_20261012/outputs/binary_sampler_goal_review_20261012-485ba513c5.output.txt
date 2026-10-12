@@ -1,0 +1,184 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ LeadQueueTest.test_review_records_one_completed_standalone_build _______
+
+self = <test_queue.LeadQueueTest testMethod=test_review_records_one_completed_standalone_build>
+
+    def test_review_records_one_completed_standalone_build(self):
+        builds = [('build', 'built'), ('build', 'other')]
+        before = notebook([self.rev], self.q + builds)
+        def entry(items, kind='review', link=True):
+            evidence = '<a href="tools/lead_queue.py">implementation</a>' if link else 'no evidence'
+            return (f'<article id="build-review" data-kind="{kind}"><ul>' + ''.join(
+                f'<li data-{k}="{i}">{evidence}. <strong>Follow-up.</strong> Developed: delivered.</li>'
+                for k, i in items) + '</ul></article>')
+        after, _ = lq.append_new(notebook([self.rev, entry(builds[:1])], self.q + builds))
+        self.assertEqual(lq.parse(after)[1], self.q + builds[1:])
+>       lq.check(before, after, ROOT / 'notebook.html', ROOT)
+
+tests/test_queue.py:996: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+head_body = '<section id="remaining-route"><li data-route-item="step">x</li></section><section id="lead-queue"><ol><li data-lead="...ified: no.</li><li>B1 <strong>Answers.</strong> y. <strong>Test.</strong> Falsified: no.</li></ul></article></section>'
+body = '<section id="remaining-route"><li data-route-item="step">x</li></section><section id="lead-queue"><ol>\n<li data-lead...ols/lead_queue.py">implementation</a>. <strong>Follow-up.</strong> Developed: delivered.</li></ul></article></section>'
+path = PosixPath('/home/kbr/dev/math-auxiliary/notebook.html')
+root = PosixPath('/home/kbr/dev/math-auxiliary')
+
+    def check(head_body, body, path=None, root=None):
+        """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
+        The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
+        directory its relative links resolve, and `root` the repository (default: this one)."""
+        # both sections are read under the committed notebook's settings, so a commit changing them (a move
+        # from data-items="ideas" to its kind module) reads HEAD's items as the notebook now means them
+        section = SECTION_RE.search(body)
+        before = parse_tree(head_body, section.group(1) if section else None) if head_body else None
+        now = parse_tree(body)
+        if before is not None and now is None:
+            raise ValueError('The lead and bridge queue section is gone: a notebook keeps its queue once it has one')
+        if not re.search(r'data-route-item="', body) and now is None:
+            return
+        if now is None:
+            raise ValueError('The notebook needs its lead and bridge queue: run python3 tools/lead_queue.py init '
+                             'NOTEBOOK.html, with the --counted, --backpressure and --kind-modules options its branch '
+                             'uses, review the section, and commit it with this entry (AGENTS.md)')
+        draining, nodes = now
+        items = every_item(nodes)
+        if len(set(items)) != len(items):
+            raise ValueError('The lead and bridge queue lists an item twice')
+        articles = record_articles(body)
+        fresh = head_body is None or len(articles) > len(record_articles(head_body))
+        tag, text = articles[-1] if articles and fresh else ('', '')     # only a new entry's work is checked
+        where = Where(body, path, root)
+        work = developed_by(tag, text)
+        batch = triaged(tag, text)
+        chosen = picked(tag, text)
+        count = undeclared_review_count(tag, draining, nodes)
+        if count is not None:
+            raise ValueError(f'A review of a draining queue declares data-queue-items="{count}", the number of top-level '
+                             'items now queued, so that the next cycles see whether the queue shrinks (AGENTS.md)')
+        unknown = unknown_left_items(tag, nodes)
+        if unknown:
+            raise ValueError('The review\'s data-left-items names items that are not queued: ' + ', '.join(unknown)
+                             + ': give the queue\'s own identifiers, since a mistyped one leaves nothing')
+        if work:
+            earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
+            if earlier:
+                raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
+                                 'entry, after reading it, so that work already recorded on the item is not repeated '
+                                 '(AGENTS.md, restoration and research discipline)')
+            unread = unread_item_entries(articles, work[0])
+            if unread:
+                raise ValueError(f'This entry develops an item that has at most {READ_ALL_LIMIT} earlier entries, counting '
+                                 'those on the item itself and those on sub-ideas they listed, and for some of them it '
+                                 'lacks: ' + ', '.join(f'#{anchor} ({what})' for anchor, what in unread) + f'. Link each '
+                                 f'after reading it and quote {QUOTED_WORDS} consecutive words of its Follow-up (of its '
+                                 'title when that is shorter), or name it by its anchor after <strong>Unread.</strong> with the reason it '
+                                 'was not read (tools/lead_queue.py, unread_item_entries)')
+            left = left_by_last_review(body, nodes, articles, work[0])
+            if left:
+                raise ValueError(f'The last review, #{left}, names this entry\'s item, or its parent, among the items it '
+                                 'leaves (data-left-items): develop another item, or say after <strong>Returns.</strong>, '
+                                 'in at least 40 characters, why this entry returns to it (AGENTS.md)')
+            owed = unaccounted_attempt(articles, work[0])
+            if owed:
+                raise ValueError(f'The item\'s last entry, #{owed}, named a next attempt: say after <strong>Owed '
+                                 'attempt.</strong>, in at least 40 characters, that it was made, with its outcome, or '
+                                 'why another attempt came first (AGENTS.md; a named reading was displaced three times)')
+            silent = unstated_subideas(tag, text, work[0], before[1] if before else nodes)
+            if silent:
+                raise ValueError('This entry develops an item with open sub-ideas it does not mention: give each a '
+                                 'follow-up list item with its outcome (Closed, Developed or Continuing): '
+                                 + ', '.join(silent) + ' (AGENTS.md; a sub-idea answered by a later entry stayed queued)')
+        if work and batch:
+            raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
+                             'batch, not both')
+        if work and work[1] not in ('Closed', 'Developed', 'Continuing'):
+            raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
+                             '"Developed ..." or "Continuing ..."')
+        rule = KINDS[work[0][0]].rules.get(work[1]) if work else None
+        problems = rule(tag, text, where) if rule else []
+        if problems:
+            raise ValueError(f'{work[0][1]} ({work[0][0]}), {work[1]}: ' + '; '.join(problems))
+        validate_spell_extension(body, tag, text, nodes, where)
+        problems = check_waits(text, where)
+        if problems:
+            raise ValueError('Waiting follow-ups: ' + '; '.join(problems))
+        problems = subidea_problems(text)
+        if problems:
+            raise ValueError('; '.join(problems))
+        problems = kind_rule_problems(tag, [(b[0], b[1], b[4]) for b in batch] + listed_outcomes(text), where)
+        if problems:
+            raise ValueError('; '.join(problems))
+        if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
+            raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
+                             'against the commit before it')
+        if not fresh and before is not None:
+            kept, added = nodes[:len(before[1])], nodes[len(before[1]):]
+            if (shape(kept) != shape(before[1]) or marks(nodes) != marks(before[1])
+                    or any(n.children or admitter(n) is None for n in added)
+                    or draining != draining_after(before[0], nodes)):
+                raise ValueError('A commit that adds no Research-record entry changes the queue only by appending, at the '
+                                 'tail, the checks, builds and ideas lead_queue.py add writes')
+            for node in added:
+                problems = admitter(node)(body, head_body, node.item)
+                if problems:
+                    raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
+            return
+        if before is None:
+            if work or batch:
+                raise ValueError('The commit that creates the queue may not develop queue items: run lead_queue.py init, '
+                                 'commit the section, then develop its head')
+            wanted = open_tree(body)
+            admitted = [n for n in nodes if admitter(n) is not None]
+            for node in admitted:
+                problems = admitter(node)(body, head_body, node.item)
+                if problems:
+                    raise ValueError(f'{node.ident} ({node.kind}) may not join the queue: ' + '; '.join(problems))
+            seeded = [n for n in nodes if n not in admitted]
+            items = every_item(seeded)
+            if shape(seeded) != shape(wanted) or marks(nodes):
+                have, want = set(items), set(every_item(wanted))
+                raise ValueError('A new queue holds exactly the listed items not closed, sub-ideas under their parents: '
+                                 'missing ' + (', '.join(i for _, i in want - have) or 'none') + '; not open '
+                                 + (', '.join(i for _, i in have - want) or 'none') + '; otherwise the placement differs '
+                                 '(lead_queue.py init writes it; a queue created before the entries it must seed '
+                                 'is rebuilt by removing the section and running init again)')
+            if draining != draining_after(False, nodes):
+                raise ValueError(f'The queue has {len(nodes)} top-level items: data-draining="true" must be '
+                                 + ('set' if not draining else 'absent') + f' (on at {CAP} items unless backpressure is '
+                                 'off)')
+            return
+        every = {item for t, x in articles for item in arrivals_of(t, x)}
+        reopened = reopened_by(text)
+        unknown = [i for k, i in reopened if (k, i) not in every and KINDS[k].admit is None]
+        if unknown:
+            raise ValueError('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(unknown))
+        barred = [i for k, i in reopened if not KINDS[k].reopen]
+        if barred:
+            raise ValueError('These items are not reopened by a follow-up; their kind has its own way back: '
+                             + ', '.join(barred))
+        was_draining, old = before
+        old = settle(head_body, [n.copy() for n in old])
+        if batch:
+            raise ValueError(TRIAGE_RETIRED)
+        closed, developed = listed_closures(tag, text)
+        listed_developed = [item for item in developed if item in every_item(old)]
+        if listed_developed:
+            # A scheduled review may record one completed standalone build. It is not a
+            # research spell and must not restore multi-item triage or close open children.
+            review_build = review_build_completion(tag, listed_developed, old)
+            # sub-ideas of the one top-level item the entry develops may be batched (user, 9 October 2026)
+            own = locate(old, work[0]) if work else (None, None)
+            group = own[0] or own[1]
+            outside = [i for k, i in listed_developed
+                       if group is None or locate(old, (k, i))[0] is not group]
+            if outside:
+>               raise ValueError('A follow-up list marks Developed only sub-ideas of the top-level item the entry '
+                                 'develops (one top-level item per entry; its sub-ideas may be batched): '
+                                 + ', '.join(outside))
+E               ValueError: A follow-up list marks Developed only sub-ideas of the top-level item the entry develops (one top-level item per entry; its sub-ideas may be batched): built
+
+lead_queue.py:1956: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_queue.py::LeadQueueTest::test_review_records_one_completed_standalone_build
+1 failed in 0.25s
