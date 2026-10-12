@@ -1,0 +1,33 @@
+{
+  "source": {
+    "record": "[Gaussian comb hiding](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"],
+    "label": "In the model of prime sums at one height: a finite comb of close points with real parts falling off quadratically hides a strictly rightmost point on a window of lengths, with a number of points proportional to the logarithm of the accuracy"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication", "method-obstructions"],
+  "claims": [
+    {
+      "id": "prop:gaussian-comb-hiding",
+      "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; beta_0, tau real, g > 0, c > 0, U > 0; points rho_j = beta_0 - c j^2/U + i(tau + j g), j an integer, unit multiplicities, so that rho_0 is strictly rightmost; P(u) = sum over all j and P_J(u) = sum over |j| <= J of a(rho_j - i tau) e^((rho_j - i tau) u). (1) For u > 0: P(u) = int W(v) e^(beta_0 x) Theta(x) dv with x = u + v and Theta(x) = sqrt(pi U/(c x)) sum over integers n of exp(-U (g x - 2 pi n)^2/(4 c x)) > 0. (2) If 0 < d <= pi, R >= 0, g x is at distance at least d from every multiple of 2 pi for U <= x <= U + R + l, and A = c (U + R + l)/U <= d^2/2, then 0 < P(u) e^(-beta_0 u)/a(beta_0) <= 4.2 A^(-1/2) e^(-d^2/(4A)) for U <= u <= U + R. (3) For J >= 1 and u >= U: |P(u) - P_J(u)| e^(-beta_0 u)/a(beta_0) <= e^(-c J^2)/(c J). (4) Hence for Lam >= 1/2, with A = d^2/(4 Lam), c = A U/(U + R + l), r = (R + l)/U and J the least integer at least sqrt(Lam/c): the 2J + 1 <= (4 Lam/d) sqrt(1 + r) + 3 points with |j| <= J, of heights within J g of tau, have |P_J(u)| e^(-beta_0 u)/a(beta_0) <= (8.4 sqrt(Lam) + 2 sqrt(1 + r)) e^(-Lam)/d on [U, U + R]. A spacing g meeting the hypothesis of (2) exists if and only if d (2 + r) <= 2 pi, and then g = d/U is one.",
+      "assessment": "Working elementary proof: Poisson summation for a Gaussian turns the sum over the comb into a theta function whose peaks sit where g x is a multiple of 2 pi and whose width is governed by the fall of the real parts; between the peaks it is exponentially small; the points far along the comb are exponentially lower and are cut off. The construction was suggested by the reviewer of the rightmost point window criterion and is verified here with constants. Numerical control at one instance (21 points): the supremum on the window against the bound, and the direct sum against the closed form by an independent quadrature, on the window and near a peak. It is a statement about a model configuration, not about zeros of zeta: it shows that in the model a count of near-tied points of the order of the logarithm of the required accuracy suffices to hide a strictly rightmost point, so an exclusion from a bound on such sums must assume fewer; whether as many are necessary is not proved here.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Settles the open case of the rightmost point window criterion in the direction of an obstruction: near-tied points closer than the window resolves can hide a strictly rightmost point with a number of points proportional to log tau at the accuracy that Turan's premise needs, within a bounded height; so on that conditional line a hypothesis counting the near-tied off-line zeros near the height, of the order of log tau, cannot be dispensed with in the model.",
+      "next_action": "The lower side: the least number of points that can hide to a given accuracy, with a constant to compare with the comb's.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry with a numerical control at one instance by two independent routes.",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction in a model on one conditional line of the route. The construction is the reviewer's suggestion; no novelty claimed and no literature search made.",
+        "relationships": "The obstruction side of the rightmost point window criterion; the relative, for prime sums at one height and unit multiplicities, of the binomial cluster hiding in the Gram model."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:gaussian-comb-hiding", "cites", "prop:rightmost-point-window-criterion", "Same model and notation; that criterion shows a rightmost point when near-tied points are separated, this construction hides one with points closer than its threshold and real parts strictly lower. Neither implies the other; the criterion's inequality is checked on the construction."],
+    ["prop:gaussian-comb-hiding", "cites", "prop:binomial-cluster-hiding", "The record's hiding cluster in the Gram model, with binomial multiplicities at one distance; here unit multiplicities and falling real parts, for sums at one height."],
+    ["prop:gaussian-comb-hiding", "cites", "cor:sparse-off-line-exclusion", "The conditional corollary whose hypothesis counts zeros near the height with a small constant times log tau; the construction shows, in the model, that a count of that order cannot be dropped."]
+  ]
+}
