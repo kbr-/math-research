@@ -1,0 +1,376 @@
+{
+  "base_sha256": "9f342bc520f3397e68648320d909678cd04ddf6484e810e601b5b6b78f50b752",
+  "provenance": {
+    "revision": "f2e5deb399efdcaa3da4a13bfa7776e9bad1f27c",
+    "date": "2026-10-12",
+    "reviewer": "Claude Code proof assessment; fresh medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "prop:zero-bound-gives-prime-sum-premise",
+        "summary": "Under premise X of the Riesz mean formula from one premise (xi entire with the nontrivial zeros as its zeros and Re xi'/xi(s) = sum m_rho (sigma - beta)/|s - rho|^2) and the strip hypothesis, classical and imported, that every nontrivial zero has 0 < beta < 1. (1) For every real t the zeros with |gamma - t| <= 1 number at most 9 + (5/4) log(|t| + 2), with multiplicity. (2) If 1/2 <= theta <= 1 and every nontrivial zero has beta <= theta, then for tau >= 2 and tau <= y < y' <= 2y: |sum over y < n <= y' of Lambda(n) n^(-i tau)| <= C (y^theta log^2(tau + 2) + y tau^-1 log(2y)), C an absolute constant. (3) Hence for theta < 1 and y >= tau^(1/(1 - theta)) the sum is at most 8C y tau^-1 log^2 y; at theta = 1/2, the Riemann hypothesis, this is the premise of the sparse off-line exclusion with A = 2 for tau >= 2 and y >= tau^2.",
+        "assessment": "Conditional on premise X and the strip hypothesis, with a complete deduction: the count from the real part of xi'/xi at 2 + it and the series of the digamma function; the sum over a sharp interval compared with a trapezoid of ramps 1/tau, the edges bounded by Lambda(n) <= log n; the trapezoid as a second difference of the record's Riesz means, whose terms at a zero are bounded three ways and summed with the count. Classical in kind; not new. It shows that the conditional exclusion's premise follows from the goal from length tau^2 on; with a weaker bound on the zeros this argument gives it from a longer length, and that no shorter length is possible is not proved. The constant C is not computed. It gives no approach to the goal.",
+        "record": "[Zero bound gives the premise](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise)",
+        "mathematical_status": "conditional",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Replaces an expectation the record leaned on, that the goal implies the premise of its one conditional exclusion for zeta, by a statement with a proof under one premise.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": "If the line returns: separate in the bound the zeros near the height from those far."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Conditional on one premise and one classical import; complete deduction, read by a fresh medium reviewer.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a classical consequence of a bound on the zeros. No novelty.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Derives the premise of the sparse off-line exclusion from a bound on the zeros, through the Riesz mean formula from one premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:riesz-mean-formula-one-premise",
+        "summary": "Notation of the Riesz mean explicit formula (R_L, D_L, F_L, X = e^L). Premise X: xi(s) = s(s-1) pi^(-s/2) Gamma(s/2) zeta(s)/2 is entire, its zeros are the nontrivial zeros rho with orders m_rho and real parts at most 1, and Re xi'/xi(s) = sum_rho m_rho (sigma - beta)/|s - rho|^2, absolutely convergent, wherever xi(s) is not 0. Under premise X alone: (0) xi'/xi(s) = C + sum_rho m_rho [1/(s - rho) - 1/(2 - rho)] and (zeta'/zeta)'(s) = 1/(s-1)^2 - sum_rho m_rho/(s - rho)^2 - sum_{q >= 1} 1/(s + 2q)^2; (1) for every L > 0 and every s other than 1, the rho and the points -2q, q >= 1: R_L(s) = -zeta'/zeta(s) + D_L(s-1) - sum_rho m_rho D_L(s-rho) - sum_{q >= 1} D_L(s+2q), the sums absolutely convergent; (2) for such s, Re R_L(s) = Re F_L(s-1) - sum_rho m_rho Re F_L(s-rho) + Re[psi(s/2 + 1)/2 - (log pi)/2] - sum_{q >= 1} Re D_L(s+2q).",
+        "assessment": "Conditional on one premise, with a complete elementary deduction: an entire function with constant real part is constant, which gives the partial fraction of xi'/xi and by differentiation that of (zeta'/zeta)' with absolutely convergent sums; for Re s > 1 the derivative in s of L R_L(s) is a Perron integral of (zeta'/zeta)' against X^w/w^2, which may be integrated term by term, each double pole giving the derivative of L F_L; the constant of integration vanishes as s tends to infinity, and the identity continues in s. Selberg's formula is not used. Premise X was read as a theorem statement in the density import's Lean project, which is not built here; the classical facts used beside it are the Dirichlet series of zeta'/zeta, the series of the digamma function and of its derivative.",
+        "record": "[Riesz mean formula from one premise](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise)",
+        "mathematical_status": "conditional",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Removes the premise of the registered formula that had been read for one length only while its proof needed lengths tending to zero. The formula through which the tilted three-four-one statements are read now rests on one classical identity.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": "None planned; a reading of premise X in a built proof or a textbook would make the lemma unconditional."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete deduction from one premise; the formula it gives is the one controlled numerically at five points in the earlier entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization; premise X is a statement of an imported, unbuilt Lean project.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a classical formula with a self-contained derivation from one identity. No novelty claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Implies the identities of the registered Riesz mean explicit formula, under one of its two premises; that lemma's bound for the trivial zeros' sum is not restated. In a model of prime sums at one height: a point rightmost in the whole configuration shows on a window of lengths unless the other points near its height carry a weighted count of at least its multiplicity; a progression that hides; the link to weighted prime sums: new relationship with prop:rightmost-point-window-criterion. Zero bound gives the premise: new relationship with prop:zero-bound-gives-prime-sum-premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:rightmost-point-window-criterion",
+        "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; Z a multiset of points rho = beta + i gamma with multiplicities m_rho >= 1, tau real, sum over Z of m_rho |a(rho - i tau)| e^(beta_rho u) finite at the two ends of each window used; P(u) = sum m_rho a(rho - i tau) e^((rho - i tau) u). (1) If rho_0 = beta_0 + i tau is in Z with multiplicity m_0, every point has beta_rho <= beta_0, U1 real, R > 0 and |P(u)| <= E(u) on [U1, U1 + R], then m_0 <= sup over the window of E(u) e^(-beta_0 u)/a(beta_0) + sum over the other points of m_rho e^(-(beta_0 - beta_rho) U1) min(1, 16/(R^2 (gamma_rho - tau)^2)). (2) If moreover U1 >= 0 and, for some eta > 0 and g > 0, the other points with beta_rho > beta_0 - eta have multiplicities at most m' and heights gamma with |gamma - tau| >= g and pairwise distances at least g, and the remaining points have at most kappa log(|t| + 3) of them, with multiplicity, in each |gamma - t| <= 1, then m_0 <= sup E(u) e^(-beta_0 u)/a(beta_0) + (16 pi^2/3) m'/(R g)^2 + kappa e^(-eta U1) [log(|tau| + 3) + (32/R^2)(1.645 log(|tau| + 4) + 1.9)]. (3) For W continuous on the line, supported in [0, l], and the points beta_0 + i(tau + j g), j an integer, unit multiplicities, with a(beta_0 + i lambda) = O(1/lambda^2): P(u) = (2 pi/g) sum over integers n of W(2 pi n/g - u) e^(2 pi n beta_0/g), which is 0 on every window [U1, U1 + R] with no multiple of 2 pi/g in [U1, U1 + R + l]. (4) Under the premise of the Riesz mean formula from one premise, for W the hat function on [0, l] and tau real with i tau not a zero: sum over n of Lambda(n) n^(-i tau) W(log n - u) = a(1 - i tau) e^((1 - i tau) u) - P(u) - sum over q >= 1 of a(-2q - i tau) e^(-(2q + i tau) u) for u > 0, P taken over the nontrivial zeros.",
+        "assessment": "Working elementary proof of (1) to (3): P is averaged against a triangle on the window after division by the rightmost point's exponential, whose transform at a point with real part at most 0 is at most min(1, 16/(R^2 lambda^2)) in modulus, and |a(beta + i lambda)| <= a(beta) <= a(beta_0) for a nonnegative weight on v >= 0; (2) is (1) with a sum over separated heights and a shell count; (3) is Poisson summation, the transport to a continuous weight of the progression named in the fourteenth route review for the sharp cutoff. The mechanism is that of the short resonance-free range, a recorded theorem in the Gram model, carried to prime sums at one height with a pointwise premise. Part (4) is the second difference in the length of the Riesz mean formula and is conditional on that formula's premise. Numerical control: (3) on a truncated progression; (1) in 200 random configurations, a weak check of the direction only, the constants never binding; no instance computed for (2). For exact hiding at equal real parts and unit multiplicities, (2) excludes R g > 7.26 and (3) realises R g < 2 pi - l g.",
+        "record": "[Rightmost point window criterion](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Answers in part the fourteenth review's test on Turan's line, in a model: a point rightmost in the whole configuration shows on a window of lengths unless near-tied points stand closer in height than about 7.3 divided by the window's logarithmic length; the bound uses the near-tied points' largest multiplicity and a local count of the lower points. An arithmetic progression of spacing below 2 pi over that length hides exactly. For points closer than that and not in progression nothing is proved; an unverified construction of the reviewer suggests about kappa log tau of them can hide.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": "Verify or break the reviewer's construction of close points that hide a strictly rightmost one."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof of (1) to (3) in the entry with a numerical control of (1) and (3); (4) conditional on the registered formula's premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a model statement on one conditional line of the route; the mechanism is on record in another setting. No novelty claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Carries the mechanism of the short resonance-free range to Turan's setting; replaces the margin of the margin-rightmost zero count by a separation in height, for a premise on a window of lengths. In the model of prime sums at one height: a finite comb of close points with real parts falling off quadratically hides a strictly rightmost point on a window of lengths, with a number of points proportional to the logarithm of the accuracy: new relationship with prop:gaussian-comb-hiding. In the model of prime sums at one height, under a hypothesis on far heights: a rightmost point cannot be hidden on a window of lengths by fewer than a logarithmic number of points, by Turan's second main theorem; and the Gram model's off-axis sum restated with that theorem: new relationship with prop:window-power-sum-count. Positive-type window count: new relationship with prop:positive-type-window-count. Zero bound gives the premise: new relationship with prop:zero-bound-gives-prime-sum-premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:sparse-off-line-exclusion",
+        "summary": "For each 0 < x < 1/2 there are mu, R1 = mu + 1/4 + x/2 and kappa > 0 such that for all large tau0: if |sum over y < n <= y' of Lambda(n) n^(-i tau0)| <= C y tau0^-1 log^A y for all tau0^2 <= y < y' <= 2y, and zeta has at most kappa log tau0 zeros in |s - (1 + mu + i tau0)| <= R1 (a disk in Re s >= 3/4 - x/2), then zeta(1 - x + i tau0) != 0.",
+        "assessment": "Conditional result with a complete proof from the two-radius lemma and an elementary growth bound for zeta. The premise on prime sums is unproved; it is compatible with the pole, and its relation to the zeros near the height is not read. The exception is a cluster of at least kappa log tau0 off-line zeros in one disk.",
+        "record": "[Sparse off-line exclusion](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion)",
+        "mathematical_status": "conditional",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "States for zeta itself the second half of the missing implication with its exact exception: square-root cancellation of prime sums at one height excludes every off-line zero at that height that is not in a dense off-line cluster.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": "Decide the premise's status from the explicit formula; make kappa explicit for one x."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Conditional on the prime-sum premise at the height and on the count of zeros in the disk.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: likely classical in substance (Turan's method). Novelty not claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "The zeta case of the local implication; the function-level relative of the model's solitary amplification. The local implication for zeta with the count on a thin shell, and explicit constants: new relationship with cor:shell-off-line-exclusion. Turan's exact local implication under the Lindelof hypothesis: new relationship with thm:turan-lindelof-exact-implication. Turan's weak Lindelof hypothesis and its density theorem: new relationship with thm:turan-weak-lindelof-density. In a model of prime sums at one height: a point rightmost in the whole configuration shows on a window of lengths unless the other points near its height carry a weighted count of at least its multiplicity; a progression that hides; the link to weighted prime sums: new relationship with prop:rightmost-point-window-criterion. In the model of prime sums at one height: a finite comb of close points with real parts falling off quadratically hides a strictly rightmost point on a window of lengths, with a number of points proportional to the logarithm of the accuracy: new relationship with prop:gaussian-comb-hiding. In the model of prime sums at one height, under a hypothesis on far heights: a rightmost point cannot be hidden on a window of lengths by fewer than a logarithmic number of points, by Turan's second main theorem; and the Gram model's off-axis sum restated with that theorem: new relationship with prop:window-power-sum-count. Zero bound gives the premise: new relationship with prop:zero-bound-gives-prime-sum-premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-11-sparse-off-line-exclusion"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:zero-bound-gives-prime-sum-premise::depends_on::lem:riesz-mean-formula-one-premise",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:zero-bound-gives-prime-sum-premise",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:riesz-mean-formula-one-premise",
+        "locator": null
+      },
+      "scope": "Part (2) applies that lemma's formula at s = i tau at four lengths; the whole statement is under its premise.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "f2e5deb399efdcaa3da4a13bfa7776e9bad1f27c",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Part (2) applies that lemma's formula at s = i tau at four lengths; the whole statement is under its premise."
+      }
+    },
+    {
+      "id": "prop:zero-bound-gives-prime-sum-premise::cites::prop:rightmost-point-window-criterion",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:zero-bound-gives-prime-sum-premise",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:rightmost-point-window-criterion",
+        "locator": null
+      },
+      "scope": "That proposition's part (4) is the same second difference of the Riesz mean formula for a hat weight; here it is taken for a trapezoid and bounded under a bound on the zeros.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "f2e5deb399efdcaa3da4a13bfa7776e9bad1f27c",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "That proposition's part (4) is the same second difference of the Riesz mean formula for a hat weight; here it is taken for a trapezoid and bounded under a bound on the zeros."
+      }
+    },
+    {
+      "id": "prop:zero-bound-gives-prime-sum-premise::cites::cor:sparse-off-line-exclusion",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:zero-bound-gives-prime-sum-premise",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:sparse-off-line-exclusion",
+        "locator": null
+      },
+      "scope": "Part (3) at theta = 1/2 is that corollary's premise on prime sums with A = 2.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-hypothesis-gives-the-premise"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "f2e5deb399efdcaa3da4a13bfa7776e9bad1f27c",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Part (3) at theta = 1/2 is that corollary's premise on prime sums with A = 2."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
