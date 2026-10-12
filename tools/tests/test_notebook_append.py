@@ -408,6 +408,19 @@ class NotebookAppendTests(unittest.TestCase):
                     tool.main()
             self.assertEqual(notebook.read_text(), source)
 
+    def test_an_entry_s_summing_up_sentences_are_answered_before_it_is_appended(self):
+        import draft_claim_sentences
+        entry = ('<article id="new"><h3>T</h3><p><strong>New mathematics.</strong> No point hides.</p>'
+                 '<p>Every other paragraph is not asked about.</p></article>')
+        with self.assertRaisesRegex(ValueError, '1 summing-up sentences.*--answers FILE'):
+            tool.refuse_unanswered(entry, None)
+        form = draft_claim_sentences.answers_template(entry)
+        with self.assertRaisesRegex(ValueError, '1 of 1 summing-up sentences are not answered'):
+            tool.refuse_unanswered(entry, form)
+        tool.refuse_unanswered(entry, form.replace('rests on: \n', 'rests on: part one of lem:the-lemma\n'))
+        tool.refuse_unanswered('<article id="new"><p>A sentence with none of it in a body paragraph.</p></article>',
+                               None)                                   # nothing to answer, nothing asked
+
 
 
 

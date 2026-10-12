@@ -15,6 +15,7 @@ It then lists the sentences outside the mathematics that hold a count, and the s
 statements and proofs that hold a universal or negative word, each to be read beside its source.
 """
 import argparse
+import hashlib
 import html
 import json
 import pathlib
@@ -26,7 +27,18 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 # and 352 registered identifiers, imported statements (imp:) among them, were passed over.
 PREFIXES = ('lem|thm|prop|cor|conj|obs|ex|def|rem|local|historical|imp|check|audit|third-party|ctx|criterion|q|'
             'note|open|draft|proof')
-CLAIM = re.compile(r'<code>((?:' + PREFIXES + r'):[A-Za-z0-9-]+)</code>')
+# Bare, only the kinds that name a statement: "note:", "proof:", "q:" and the like begin ordinary phrases.
+BARE_PREFIXES = 'lem|thm|prop|cor|conj|obs|criterion'
+# An identifier in code tags, or bare with a hyphen in its name: a notebook that keeps code formatting for
+# program names writes its claims bare, and until 12 October 2026 none of them was listed (0 citing sentences
+# in every draft of the riemann notebook, 105 entries).
+CLAIM = re.compile(r'<code>((?:' + PREFIXES + r'):[A-Za-z0-9-]+)</code>'
+                   r'|(?<![\w/#.:-])((?:' + BARE_PREFIXES + r'):[a-z0-9]+(?:-[a-z0-9]+)+)(?![\w-])')
+
+
+def cited(fragment):
+    """The claim identifiers a fragment cites, in order, each once."""
+    return list(dict.fromkeys(a or b for a, b in CLAIM.findall(fragment)))
 BLOCK = re.compile(r'<(p|li|h3|h4)\b[^>]*>(.*?)</\1>', re.S)
 LABEL = re.compile(r'^\s*<(?:strong|em)>([^<]{1,80}?)\.?</(?:strong|em)>')
 
@@ -59,9 +71,71 @@ def citations(draft):
         label = LABEL.match(body)
         where = label.group(1) if label else heading
         for sentence in sentences(body):
-            for claim in dict.fromkeys(CLAIM.findall(sentence)):
+            for claim in cited(sentence):
                 found.append((claim, where, text(sentence)))
     return found
+
+
+# Names of Greek letters as a registered summary writes them in plain text, with an index: the symbols by which
+# a statement's hypotheses are told from one another without reading its formulas.
+SYMBOL = re.compile(r'\b((?:alpha|beta|gamma|delta|eps|epsilon|zeta|eta|theta|kappa|lam|lambda|mu|nu|xi|rho|sigma|'
+                    r'tau|phi|chi|psi|omega)(?:_[A-Za-z0-9*]+|[0-9]+)?)\b', re.I)
+
+
+# The same symbols as a paragraph's TeX or plain text writes them.
+HELD = re.compile(r'(?<![A-Za-z])\\?(?:var)?(?:alpha|beta|gamma|delta|eps|epsilon|zeta|eta|theta|kappa|lam|lambda|mu|'
+                  r'nu|xi|rho|sigma|tau|phi|chi|psi|omega)(?:_\{?\\?[A-Za-z0-9*]+\}?|[0-9]+)?(?![A-Za-z])', re.I)
+# Paragraphs that name claims without applying them.
+NAMING = re.compile(r'^(?:New mathematics|General statement|Verification gate|Process assessment|Review|'
+                    r"Reviewer's suggestions.*|Suggestion check|The item's sub-ideas|Sub-ideas)$", re.I)
+
+
+def bare(name):
+    return re.sub(r'[\\_{}\s]|var', '', name).lower().replace('epsilon', 'eps').replace('lambda', 'lam')
+
+
+def unmentioned(draft, summaries):
+    """[(claim id, section label, sentence text, [symbols])] for the sentences citing a registered claim whose
+    paragraph names none of some symbols of the claim's registered statement.  On 12 October 2026 a sentence
+    applied a statement "with fewer than log tau zeros" where the statement has a constant kappa, and the
+    reviewer found it; the listing prints the statement's symbols the paragraph does not hold.  A symbol the
+    paragraph writes otherwise is printed too: it is a list to read, not a finding."""
+    found, heading = [], ''
+    own = set((re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split())
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where) or BOOKKEEPING.match(where) or NAMING.match(where):
+            continue
+        held = {bare(token) for token in HELD.findall(text(body))}      # whole symbols: "eta" is not in "zeta"
+        for sentence in sentences(body):
+            if re.match(r'\s*(?:<strong>)?Record(?: search)?\.', sentence):
+                break                          # a search's results, to the paragraph's end, are named, not applied
+            for claim in cited(sentence):
+                if claim not in summaries or claim in own:      # the draft's own claim is stated beside it
+                    continue
+                symbols = list(dict.fromkeys(m for m in SYMBOL.findall(summaries[claim])))
+                missing = [s for s in symbols if bare(s) not in held]
+                if missing:
+                    found.append((claim, where, text(sentence), missing))
+    return found
+
+
+def unmentioned_report(draft, summaries, width):
+    articles = re.findall(r'<article\b.*?</article>', draft, re.S)     # each with its own declared claims
+    found = [row for article in (articles if len(articles) > 1 else [draft])
+             for row in unmentioned(article, summaries)]
+    lines = []
+    for claim, where, sentence, missing in found:
+        lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')
+        lines.append(f'      {claim}: its statement names, and this paragraph does not: {", ".join(missing[:12])}'
+                     + (f' and {len(missing) - 12} more' if len(missing) > 12 else ''))
+    return '\n'.join(['Sentences citing a claim whose paragraph does not name some symbols of the claim\'s '
+                      'registered statement; ask of each whether a hypothesis that symbol carries is used:']
+                     + lines + [f'{len(found)} such sentences.'])
 
 
 # Paragraphs of mathematics, where a number is part of a statement or an argument and not a count taken from
@@ -213,6 +287,44 @@ def exactness_report(draft, width):
                      + lines + [f'{len(found)} such sentences.'])
 
 
+def summing_up(draft):
+    """[(key, section label, sentence text)] for the sentences of the summing-up paragraphs (SUMMARY) that either
+    listing above prints, each once: the sentences an entry answers before it is appended.  The key is of the
+    sentence's text, so a sentence changed after its answer is unanswered again."""
+    rows = [(where, sentence) for where, sentence in universals(draft)[0]]
+    rows += [(where, sentence) for where, sentence, _ in exactness(draft)]
+    found = {}
+    for where, sentence in rows:
+        if SUMMARY.match(where):
+            found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence))
+    return [(key, where, sentence) for key, (where, sentence) in found.items()]
+
+
+ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n[ \t]*rests on:[ \t]*([^\n]*)$', re.M)
+ANSWER_WORDS = 4
+
+
+def answers_template(draft):
+    return ''.join(f'{key} [{where}] {sentence}\n  rests on: \n' for key, where, sentence in summing_up(draft))
+
+
+def unanswered(draft, answers):
+    """The rows of summing_up(draft) that the answers text does not answer: a line beginning with the row's key
+    followed by a line "rests on:" with at least ANSWER_WORDS words, naming the statement, condition or source
+    the sentence rests on."""
+    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    return [row for row in summing_up(draft) if not grounded(given.get(row[0], ''))]
+
+
+# What an answer points at: a claim, an entry, a saved file, a formula; or "none:" and why the sentence rests on
+# nothing of the kind.  Four words of anything passed the first form (a reviewer's test, 12 October 2026).
+GROUND = re.compile(r'#entry-|\bresearch/|\\\(|\\\[|^\s*none:', re.I)
+
+
+def grounded(answer):
+    return len(answer.split()) >= ANSWER_WORDS and bool(GROUND.search(answer) or cited(answer))
+
+
 RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
 
 
@@ -292,9 +404,11 @@ def report(draft, registry, width):
             statement = summaries[claim]
         elif claim in declared:
             statement = '(declared by this draft; not yet registered)'
-        else:
+        elif f'<code>{claim}</code>' in draft:
             statement = '(NOT IN THE REGISTRY)'
             unregistered.add(claim)
+        else:                   # written bare: it may be a phrase and not a claim, so it fails nothing
+            statement = '(not in the registry; written without code tags, perhaps not a claim)'
         lines.append(f'{claim}\n  REGISTERED: {statement if width <= 0 else statement[:width]}')
         for cited, where, sentence in found:
             if cited == claim:
@@ -305,6 +419,10 @@ def report(draft, registry, width):
     if unknown:                 # a kind of identifier added to the registry since the list was written
         lines.append('WARNING: the registry holds identifiers with prefixes this tool does not look for, so '
                      'sentences citing them are not listed: ' + ', '.join(unknown) + '. Add them to PREFIXES.')
+    silent = sorted(c for c in declared - {'none'} if c not in {cited_claim for cited_claim, _, _ in found})
+    if silent:                  # a listing that is empty where the draft declares claims has not read them
+        lines.append('WARNING: the draft declares claims that no listed sentence cites, so the listing has not '
+                     'seen them (written in a form this tool does not read?): ' + ', '.join(silent))
     lines.append(f'{len(found)} citing sentences, {claims} claims, {len(unregistered)} unregistered.')
     return '\n'.join(lines), unregistered
 
@@ -338,8 +456,19 @@ def main():
                         'beside the entry\'s title and status line')
     parser.add_argument('--exactness', action='store_true', help='print only the listing of words of exactness; '
                         'for a file of several articles, the count of such sentences in each')
+    parser.add_argument('--answers', help='a file answering the summing-up sentences the listings print: written '
+                        'as a form if it does not exist, else read, and the unanswered sentences printed')
+    parser.add_argument('--summing-up', action='store_true', help='print only, for each article of the file, the '
+                        'number of summing-up sentences an entry answers before it is appended')
     args = parser.parse_args()
     draft = pathlib.Path(args.draft).read_text()
+    if args.summing_up:
+        rows = [(ident, len(summing_up(body))) for ident, body in
+                re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)]
+        print('\n'.join(f'{count}\t{ident}' for ident, count in rows))
+        print(f'{sum(count for _, count in rows)} such sentences in {len(rows)} articles; '
+              f'most in one article {max([count for _, count in rows] or [0])}.')
+        return 0
     if args.exactness:
         articles = re.findall(r'<article id="([^"]+)".*?</article>', draft, re.S)
         if len(articles) > 1:
@@ -361,10 +490,25 @@ def main():
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
+    print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     for line in readings(draft=draft):
         print(line)
     log_run(draft)
-    return 1 if unregistered or missing else 0
+    open_rows = []
+    if args.answers:
+        answers = pathlib.Path(args.answers)
+        if not answers.exists():
+            answers.write_text(answers_template(draft))
+            print(f'\nWrote {answers} with {len(summing_up(draft))} summing-up sentences to answer: after each, '
+                  'say on its "rests on:" line what it rests on, pointing at a claim identifier, an #entry- '
+                  'anchor, a file under research/ or a formula, or "none:" and why.')
+        else:
+            open_rows = unanswered(draft, answers.read_text())
+            print(f'\n{len(open_rows)} of {len(summing_up(draft))} summing-up sentences unanswered in {answers}'
+                  + (':' if open_rows else '.'))
+            for key, where, sentence in open_rows:
+                print(f'{key} [{where}] {sentence}\n  rests on: ')
+    return 1 if unregistered or missing or open_rows else 0
 
 
 if __name__ == '__main__':

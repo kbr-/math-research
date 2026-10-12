@@ -210,5 +210,68 @@ class RunLogTest(unittest.TestCase):
             self.assertEqual(json.loads(log.read_text().splitlines()[1])['query'], 'draft_counts - 0')
 
 
+class BareClaimsAndAnswersTest(unittest.TestCase):
+    REGISTRY = {'claims': [{'id': 'prop:local-count-reach',
+                            'summary': 'A multiset of points with at most kappa log(|t| + 3) of them in each unit; tilt a; '
+                                       'beta_0 the rightmost real part; a margin eta; then T >= 0.'}]}
+    DRAFT = ('<article id="entry-y" data-claims="none"><h3>T</h3>'
+             '<p><strong>New mathematics.</strong> None of the points hides. The bound holds for \\(\\beta_0\\).</p>'
+             '<h4>Reading</h4>'
+             '<p>A count of fewer than \\(\\log\\tau\\) zeros of \\(\\zeta\\), the form of prop:local-count-reach, with '
+             '\\(\\beta_0\\) fixed. A path research/x:y-z and a link #prop:not-a-claim are no citations.</p>'
+             '<p><strong>Follow-up.</strong> Continuing: the reach is the same at every tilt.</p></article>')
+
+    def test_a_claim_written_without_code_tags_is_cited(self):
+        found = dcs.citations(self.DRAFT)
+        self.assertEqual([claim for claim, _, _ in found], ['prop:local-count-reach'])
+        self.assertEqual(dcs.cited('see <code>lem:a</code>, lem:a-b and lem:c'), ['lem:a', 'lem:a-b'])
+        # a phrase with a colon, and an identifier inside a path or after another colon, are not claims
+        self.assertEqual(dcs.cited('note:well-known, proof:by-induction, q:is-it, x.py:lem:a-b, (cor:c-d).'),
+                         ['cor:c-d'])
+        # a bare identifier the registry does not hold is listed and fails nothing; in code tags it does
+        listed, missing = dcs.report('<article id="e"><p>By lem:not-there it holds.</p></article>', self.REGISTRY, 0)
+        self.assertIn('lem:not-there\n  REGISTERED: (not in the registry; written without code tags', listed)
+        self.assertEqual(missing, set())
+        # a declared claim that no listed sentence cites is said aloud, not passed in a count of zero
+        unseen = '<article id="e" data-claims="lem:x_y"><p>The lemma lem:x_y holds.</p></article>'
+        self.assertIn('WARNING: the draft declares claims that no listed sentence cites', dcs.report(unseen, {'claims': []}, 0)[0])
+        self.assertNotIn('declares claims that no listed', dcs.report(self.DRAFT, self.REGISTRY, 0)[0])
+
+    def test_symbols_of_a_cited_statement_that_the_paragraph_does_not_name_are_listed(self):
+        summaries = {c['id']: c['summary'] for c in self.REGISTRY['claims']}
+        rows = dcs.unmentioned(self.DRAFT, summaries)
+        self.assertEqual([(claim, where, missing) for claim, where, _, missing in rows],
+                         [('prop:local-count-reach', 'Reading', ['kappa', 'eta'])])
+        # beta_0 is in the paragraph; "eta" is not, though "zeta" and "beta" are: whole symbols are compared
+        self.assertTrue(dcs.unmentioned_report(self.DRAFT, summaries, 0).endswith('1 such sentences.'))
+        # the draft's own declared claim, a naming paragraph and a search's results are not listed
+        own = self.DRAFT.replace('data-claims="none"', 'data-claims="prop:local-count-reach"')
+        self.assertEqual(dcs.unmentioned(own, summaries), [])
+        named = ('<article id="e" data-claims="none"><p><strong>Verification gate.</strong> Read: '
+                 'prop:local-count-reach.</p><h4>Reading</h4><p>It holds. Record search. Found '
+                 'prop:local-count-reach.</p></article>')
+        self.assertEqual(dcs.unmentioned(named, summaries), [])
+        # in a file of several articles each article's own claims are its own
+        both = own + self.DRAFT.replace('entry-y', 'entry-z')
+        self.assertTrue(dcs.unmentioned_report(both, summaries, 0).endswith('1 such sentences.'))
+
+    def test_summing_up_sentences_are_answered_by_key_and_a_changed_sentence_is_new(self):
+        rows = dcs.summing_up(self.DRAFT)
+        self.assertEqual([where for _, where, _ in rows], ['New mathematics', 'Follow-up'])   # not "Reading"
+        form = dcs.answers_template(self.DRAFT)
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, form)), 2)                 # an empty form answers nothing
+        short = form.replace('rests on: \n', 'rests on: the proposition\n')
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, short)), 2)                # fewer than four words
+        vague = form.replace('rests on: \n', 'rests on: part two of the proposition\n')
+        self.assertEqual(len(dcs.unanswered(self.DRAFT, vague)), 2)                # points at nothing
+        filled = form.replace('rests on: \n', 'rests on: part two of prop:local-count-reach\n')
+        self.assertEqual(dcs.unanswered(self.DRAFT, filled), [])
+        for ground in ('the display \\(T\\ge0\\) of its paragraph', 'see #entry-old for the bound',
+                       'the saved output research/results/x/out.txt', 'none: a statement of what was not done'):
+            self.assertEqual(dcs.unanswered(self.DRAFT, form.replace('rests on: \n', f'rests on: {ground}\n')), [])
+        changed = self.DRAFT.replace('None of the points hides', 'None of the points ever hides')
+        self.assertEqual([where for _, where, _ in dcs.unanswered(changed, filled)], ['New mathematics'])
+
+
 if __name__ == '__main__':
     unittest.main()

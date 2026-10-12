@@ -470,9 +470,32 @@ def cadence_line(text):
             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
 
 
+def refuse_unanswered(entry, answers):
+    """Refuse an entry whose summing-up sentences with a universal, negative or exact word are not each
+    answered in the file given by --answers.  In one review period of 12 October 2026 the draft tool printed,
+    in five entries of six, sentences that a reviewer then corrected: a printed list that nothing answers is
+    passed over.  The answer is a line saying what the sentence rests on; whether it does is for the reviewer,
+    who is given the file."""
+    import draft_claim_sentences
+    rows = draft_claim_sentences.summing_up(entry)
+    if not rows:
+        return
+    if answers is None:
+        raise ValueError(f'{len(rows)} summing-up sentences of the entry say no, every, exactly and the like; '
+                         'answer each in a file and pass it with --answers FILE '
+                         '(tools/draft_claim_sentences.py DRAFT --answers FILE writes the form)')
+    left = draft_claim_sentences.unanswered(entry, answers)
+    if left:
+        raise ValueError(f'{len(left)} of {len(rows)} summing-up sentences are not answered in the --answers '
+                         'file (a sentence changed since its answer counts as new):\n'
+                         + '\n'.join(f'  {key} [{where}] {sentence[:160]}' for key, where, sentence in left))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('entry', type=Path)
+    parser.add_argument('--answers', type=Path,
+                        help='the file answering the entry\'s summing-up sentences (see refuse_unanswered)')
     parser.add_argument('--next', type=Path, dest='next_file')
     parser.add_argument('--notebook')
     parser.add_argument('--stand-unchanged', metavar='REASON',
@@ -481,6 +504,7 @@ def main():
     path = Path(ROOT) / selected(args.notebook)['source']
     nxt = args.next_file.read_text() if args.next_file else None
     try:
+        refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
     except ValueError as err:
