@@ -60,6 +60,11 @@ class UnpackTest(unittest.TestCase):
             self.assertFalse(arxiv_source.expected(found, ['graph', 'fidelity']))
             self.assertFalse(arxiv_source.expected(found, ['Second']))       # a title is asked, not a first line
             self.assertEqual(arxiv_source.titles(out, ['fig.txt']), [])
+            # the AMS-TeX form, met on 12 October 2026 in a paper of 1998 whose title the tool did not find
+            (out / 'ams.tex').write_text('\\topmatter\n\\title\nzeta and\n L-functions\n\\endtitle\n'
+                                         '\\author\nJ. C. and X. L.\n\\endauthor\n')
+            self.assertEqual(arxiv_source.titles(out, ['ams.tex']),
+                             [('ams.tex', 'title', 'zeta and L-functions'), ('ams.tex', 'author', 'J. C. and X. L.')])
 
     def test_a_fetch_names_the_title_meant_and_a_wrong_paper_is_marked(self):
         import contextlib

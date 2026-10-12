@@ -1,0 +1,8 @@
+in 2 2
+(g)->my(n=#g,c);c=2;print("in ",n," ",c)
+rhF(g, s) = prod(j=1, #g, s - I*g[j]);$
+rhcheck(g) = {$
+  my(n = #g, c, th, eta, lo, hi, s, r, okc, pred);$
+  c = prod(j=2, n, 1 + I/(g[j]-g[1]));$
+  /* residue of F(s+1)/F(s) at the lowest point, from the polynomial */$
+  my(e = 10^(-30), res = e*rhF(g, I*g[1]+e+1)/rhF(g, I*g[1]+e));$

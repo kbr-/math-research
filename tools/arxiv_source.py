@@ -59,6 +59,7 @@ def unpack(data, out):
 
 
 BRACED = re.compile(r'\\(title|author)\s*(?:\[[^\]]*\])?\s*\{')
+ENDED = re.compile(r'\\(title|author)\b(?!\s*[\[{])(.*?)\\end\1\b', re.S)
 
 
 def titles(out, names):
@@ -77,6 +78,8 @@ def titles(out, names):
                 depth += {'{': 1, '}': -1}.get(text[end], 0)
                 end += 1
             hits.append((name, match.group(1), ' '.join(text[match.end():end - 1].split())[:300]))
+        for match in ENDED.finditer(text):                              # AMS-TeX: \title ... \endtitle
+            hits.append((name, match.group(1), ' '.join(match.group(2).split())[:300]))
         if not hits:
             lines = [line.strip() for line in text.splitlines() if line.strip()][:3]
             hits = [(name, 'first lines', ' | '.join(lines)[:300])] if lines else []
