@@ -408,6 +408,37 @@ class NotebookAppendTests(unittest.TestCase):
                     tool.main()
             self.assertEqual(notebook.read_text(), source)
 
+    def test_a_closing_follow_up_quotes_the_listed_text_of_its_item(self):
+        source = ('<article id="entry-a" data-kind="research"><p>work</p><h4>Sub-ideas</h4><ul>'
+                  '<li data-sub="check">Bound the mean square of the off-axis sum over a short range of scales '
+                  'and compare it.</li><li data-sub="check">A second one.</li></ul></article>')
+        resembling = ('<article id="new"><ul><li data-check="entry-a:s1">A pointwise bound was found. '
+                      '<strong>Follow-up.</strong> Closed: superseded by the pointwise bound.</li></ul></article>')
+        with self.assertRaisesRegex(ValueError, 'quotes 8 consecutive words.*check:entry-a:s1, whose text is: '
+                                                'Bound the mean square'):
+            tool.refuse_unquoted_closures(source, resembling)
+        quoting = resembling.replace('A pointwise bound was found.', 'Its text asks to "bound the mean square '
+                                     'of the off-axis sum over a short range"; a pointwise bound does not.')
+        lines = tool.refuse_unquoted_closures(source, quoting)
+        self.assertEqual(lines[0], 'The entry closes check:entry-a:s1. Its listed text, to read beside the '
+                                   'follow-up:')
+        self.assertIn('Listed text: Bound the mean square', lines[1])
+        # a follow-up that keeps the item open, a merge, and an item of another notebook's article ask nothing
+        for other in (resembling.replace('Closed: superseded by the pointwise bound', 'Continuing: not attempted'),
+                      resembling.replace('Closed: superseded by the pointwise bound', 'Closed: merged into x'),
+                      resembling.replace('entry-a:s1', 'entry-zz:s1')):
+            tool.refuse_unquoted_closures(source, other)
+        self.assertEqual(len(tool.closing_followups(source, resembling.replace('entry-a:s1', 'entry-zz:s1'))), 1)
+        self.assertEqual(tool.closing_followups(source, '<article id="n"><p>No list.</p></article>'), [])
+        # a listed text of fewer than eight words is quoted whole; a Developed follow-up is held to the same
+        short = resembling.replace('entry-a:s1', 'entry-a:s2').replace('Closed: superseded by the pointwise bound',
+                                                                       'Developed: by the bound')
+        with self.assertRaisesRegex(ValueError, 'check:entry-a:s2, whose text is: A second one'):
+            tool.refuse_unquoted_closures(source, short)
+        tool.refuse_unquoted_closures(source, short.replace('A pointwise bound was found.', 'It was "a second one".'))
+        self.assertTrue(tool.closures_count(source + resembling + quoting.replace('id="new"', 'id="new2"'))
+                        .startswith('1\t0\t0\tnew\n1\t1\t0\tnew2\n2 closing follow-ups in 2 entries; 1 quote'))
+
     def test_an_entry_s_summing_up_sentences_are_answered_before_it_is_appended(self):
         import draft_claim_sentences
         entry = ('<article id="new"><h3>T</h3><p><strong>New mathematics.</strong> No point hides.</p>'

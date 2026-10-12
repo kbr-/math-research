@@ -470,6 +470,73 @@ def cadence_line(text):
             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
 
 
+def closing_followups(source, entry, articles=None):
+    """[(kind, identifier, the follow-up's text, the item's listed text)] for the follow-up list items of
+    `entry` that close a listed item (Closed or Developed, a merge apart), the listed text read whole from
+    the article of `source` that listed it, or '' when that article or the item is not found.  `articles`,
+    {anchor: article}, spares a search of the whole notebook for each item when many entries are read."""
+    import lead_queue
+    found = []
+    for kind, ident, item in lead_queue.FOLLOWUP_ITEM.findall(entry):
+        outcome = lead_queue.OUTCOME_RE.search(item)
+        if not outcome or outcome.group(1) not in ('Closed', 'Developed') or ':' not in ident:
+            continue
+        if re.search(r'Closed:\s*merged into\b', item):
+            continue
+        anchor = ident.rsplit(':', 1)[0]
+        if articles is not None:
+            art = articles.get(anchor)
+        else:
+            hit = re.search(r'<article\b[^>]*\bid="' + re.escape(anchor) + r'"[^>]*>.*?</article>', source, re.S)
+            art = hit.group(0) if hit else None
+        listed = lead_queue.listed_item(kind, art, ident) if art else None
+        found.append((kind, ident, plain(item), plain(listed[1]) if listed else ''))
+    return found
+
+
+def refuse_unquoted_closures(source, entry):
+    """Lines to print, the listed text of each item the entry closes beside its follow-up; a closing follow-up
+    that quotes no QUOTED_WORDS consecutive words of that text is refused.  On 12 October 2026 two sub-ideas
+    were closed by what a result resembled and not by what their texts ask, and a reviewer caught both: the
+    quotation puts the item's own words into the closure, where the reviewer and the author read them."""
+    lines, bad = [], []
+    for kind, ident, follow, text in closing_followups(source, entry):
+        lines.append(f'The entry closes {kind}:{ident}. Its listed text, to read beside the follow-up:')
+        lines.append(f'  Listed text: {text or "(not found in the notebook)"}')
+        lines.append(f'  Follow-up: {follow}')
+        if text and not quotes(follow, text, min(QUOTED_WORDS, len(words(text)))):    # a short text, whole
+            bad.append(f'{kind}:{ident}, whose text is: {text}')
+    if bad:
+        raise ValueError(f'A follow-up that closes a listed item quotes {QUOTED_WORDS} consecutive words of the '
+                         'item\'s listed text, so that the closure answers what the item asks; none is quoted '
+                         'for ' + '; '.join(bad))
+    return lines
+
+
+def closures_count(source):
+    """A line for each entry with closing follow-ups (how many, how many quote their item, how many items were
+    not found), and the totals."""
+    rows, kinds = [], {}
+    whole = {m.group(1): m.group(0)
+             for m in re.finditer(r'<article\b[^>]*\bid="([^"]+)"[^>]*>.*?</article>', source, re.S)}
+    for ident, article in whole.items():
+        found = closing_followups(source, article, whole)
+        for kind, _, _, _ in found:
+            kinds[kind] = kinds.get(kind, 0) + 1
+        if found:
+            rows.append((ident, len(found),
+                         sum(1 for _, _, follow, text in found
+                             if text and quotes(follow, text, min(QUOTED_WORDS, len(words(text))))),
+                         sum(1 for _, _, _, text in found if not text)))
+    lines = [f'{n}\t{quoted}\t{missing}\t{ident}' for ident, n, quoted, missing in rows]
+    return '\n'.join(lines + [f'{sum(r[1] for r in rows)} closing follow-ups in {len(rows)} entries; '
+                              f'{sum(r[2] for r in rows)} quote {QUOTED_WORDS} consecutive words of their item\'s '
+                              f'listed text; {sum(r[3] for r in rows)} name an item whose text was not found '
+                              '(columns: closing, quoting, not found). By kind of item: '
+                              + (', '.join(f'{n} {kind}' for kind, n in sorted(kinds.items())) or 'none')
+                              + f'. The notebook has {len(source.encode())} bytes.'])
+
+
 def refuse_unanswered(entry, answers):
     """Refuse an entry whose summing-up sentences with a universal, negative or exact word are not each
     answered in the file given by --answers.  In one review period of 12 October 2026 the draft tool printed,
@@ -493,7 +560,10 @@ def refuse_unanswered(entry, answers):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    parser.add_argument('entry', type=Path)
+    parser.add_argument('entry', type=Path, nargs='?')
+    parser.add_argument('--closures', action='store_true',
+                        help='append nothing: count, over the notebook\'s entries, the follow-ups that close a '
+                             'listed item and how many quote its listed text')
     parser.add_argument('--answers', type=Path,
                         help='the file answering the entry\'s summing-up sentences (see refuse_unanswered)')
     parser.add_argument('--next', type=Path, dest='next_file')
@@ -502,15 +572,23 @@ def main():
                         help='why Where we stand needs no change in this cycle; recorded in the entry')
     args = parser.parse_args()
     path = Path(ROOT) / selected(args.notebook)['source']
+    if args.closures:
+        print(closures_count(path.read_text()))
+        return
+    if args.entry is None:
+        parser.error('an entry file is required')
     nxt = args.next_file.read_text() if args.next_file else None
     try:
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
+        closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
     except ValueError as err:
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
     print(f'Appended to {path.relative_to(ROOT)}')
+    for line in closures:
+        print(line)
     if nxt and cadence_line(result):
         print(cadence_line(result))
     for ident, text, anchor, follow in (named_items(result, nxt) or []) if nxt else []:
