@@ -984,6 +984,23 @@ class LeadQueueTest(unittest.TestCase):
         via_child = developing(('check', 'k:s1'), 'Closed', done.replace('k:s1', 'k:s2'))  # from a sibling
         lq.check(before, notebook([self.rev, via_child], [(self.q[0], []), (self.q[1], [('check', 'm:s1')])]))
 
+    def test_a_window_count_refuses_interleaved_entries_only_where_the_section_sets_it(self):
+        tree = [self.q[0], self.q[1]]
+        own, other = research(self.q[0], 'Continuing'), research(self.q[1], 'Continuing')
+        earlier = [self.rev, own, own, other, own, own, other]         # four of six on the first; never three in a row
+        chosen = own.replace('</article>', '<p><strong>Chosen.</strong> It bears on the open statement and comes '
+                                           'first for a reason given here.</p></article>')
+        self.assertEqual(lq.spell(notebook(earlier + [chosen], tree), self.q[0]), 1)
+        self.assertEqual(lq.window_count(notebook(earlier + [chosen], tree), self.q[0]), 5)
+        self.assertEqual(lq.window_count(notebook(earlier + [chosen], tree), self.q[1]), 2)
+        self.assertEqual(lq.window_count(notebook(earlier + [chosen], tree), self.q[0], window=2), 1)
+        lq.check(notebook(earlier, tree), notebook(earlier + [chosen], tree))         # off: nothing refused
+        on = ' data-spell-window="8"'
+        with self.assertRaisesRegex(ValueError, 'data-spell-window'):
+            lq.check(notebook(earlier, tree, attrs=on), notebook(earlier + [chosen], tree, attrs=on))
+        short = ' data-spell-window="2"'                               # one of the last two: allowed
+        lq.check(notebook(earlier, tree, attrs=short), notebook(earlier + [chosen], tree, attrs=short))
+
     def test_the_head_or_its_first_subidea_and_their_spell(self):
         tree = [(self.q[0], [('check', 'k:s1'), ('check', 'k:s2')]), (self.q[1], [])]
         before = notebook([self.rev], tree)

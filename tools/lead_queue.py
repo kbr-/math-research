@@ -298,6 +298,8 @@ def configure(attrs):
     counted = re.search(r'\bdata-counted="([^"]*)"', attrs)
     SETTINGS['counted'] = set(counted.group(1).split()) if counted else {'research'}
     SETTINGS['backpressure'] = 'data-backpressure="off"' not in attrs
+    window = re.search(r'\bdata-spell-window="(\d+)"', attrs)
+    SETTINGS['spell_window'] = int(window.group(1)) if window else None     # off unless the section sets it
     SETTINGS['uncounted'], SETTINGS['guidance'] = [], []
     KINDS.clear()
     KINDS.update(BUILTIN)
@@ -910,6 +912,32 @@ def spell(body, item, nodes=None, end=None):
     return len(spell_entries(body, item, nodes, end))
 
 
+SPELL_WINDOW = 8    # the window the status of an item reports; a refusal needs data-spell-window on the section
+
+
+def window_count(body, item, nodes=None, window=SPELL_WINDOW, end=None):
+    """Number of entries developing `item` or its sub-ideas among the last `window` counted entries that develop
+    an item (reviews and user picks do not count).  A spell counts entries in a row, so one entry on another
+    item restarts it: on 12 October 2026 an item with 23 entries had never had more than two in a row."""
+    if nodes is None:
+        found = parse_tree(body)
+        nodes = found[1] if found else []
+    articles = record_articles(body)[:end]
+    count = seen = 0
+    for position in range(len(articles) - 1, -1, -1):
+        if seen == window:
+            break
+        tag, text = articles[position]
+        if not counted(tag, text) or 'data-picked="user"' in tag:
+            continue
+        work = developed_by(tag, text)
+        if not work:
+            continue
+        seen += 1
+        count += group_of(body, nodes, work[0], position) == item
+    return count
+
+
 ATTEMPT_SENTENCE_RE = re.compile(r'\b(?:next attempt|still owed|owed (?:from|since)|stays? owed)\b', re.I)
 
 
@@ -1150,6 +1178,8 @@ def item_status(body, ident, claims=None, relationships=None):
             f'Queued text: {queued}',
             'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'),
             f'Current spell: {count}; boundary: {boundary}.' + reset,
+            f'Entries on it among the last {SPELL_WINDOW} on queued items: '
+            f'{window_count(body, top.item, nodes)}.',
             (f'Next development would be entry {count + 1}.' if count < limit else
              'Boundary reached: develop a different item first, unless an extension is earned.'),
             'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
@@ -1932,6 +1962,11 @@ def check(head_body, body, path=None, root=None):
             if spell(body, top.item, old) > spell_limit(body, top.item, old):
                 raise ValueError(f'{top.ident} has reached the boundary of its spell: develop another item first, '
                                  'or earn an extension (data-spell-extend)')
+        window = SETTINGS.get('spell_window')       # the head too: its rotation does not see interleaved entries
+        top = locate(old, work[0])[0] or located
+        if window and not chosen and window_count(body, top.item, old, window) > spell_limit(body, top.item, old):
+            raise ValueError(f'{top.ident} has had more entries among the last {window} on queued items than '
+                             'its spell allows (data-spell-window): develop another item first')
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
             raise ValueError(f'{work[0][1]} still has open sub-ideas, so it is not Developed; it is Continuing')
         staying = [c.ident for c in located.children if c.item in kept_children(text)]

@@ -63,6 +63,13 @@ def main():
     for group, count in total.most_common(8):
         print(f'  {group[0]}:{group[1]}: {count} entries, longest run {longest[group]}, most in {window}: {most[group]}')
     print(f'time {time.time() - start:.2f} s')
+    if hasattr(lq, 'window_count'):     # the option built on 12 October 2026: the tool's own count, on the record's end
+        start = time.time()
+        counts = [(lq.window_count(body, node.item, nodes, window), node.ident) for node in nodes]
+        over = [(count, ident) for count, ident in counts if count >= lq.SPELL]
+        print(f'window_count over {len(nodes)} queued top-level items, window {window}: {len(over)} at or above '
+              f'{lq.SPELL} now ({", ".join(f"{i} {c}" for c, i in sorted(over, reverse=True)) or "none"}); '
+              f'time {time.time() - start:.2f} s')
 
 
 if __name__ == '__main__':
