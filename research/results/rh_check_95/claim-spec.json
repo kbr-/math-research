@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Tilted reach with a local count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-local-count-reach)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-tilted-local-count-reach"],
+    "label": "The tilted three-four-one function is nonnegative for every configuration with a local count, infinite ones included, under an explicit condition on the length, the tilt and the height"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:tilted-local-count-reach",
+      "summary": "Setting of the tilted inequality reach (F, Phi, T_S), tilt a in (-1/2, 1/2), p = 1/2 - a; S a multiset, finite or not, of points 1/2 + delta_rho + i gamma_rho with a < delta_rho <= delta < 1/2, c = delta - a, such that for every real t the points with |gamma_rho - t| <= 1 number at most kappa log(|t| + 3) with multiplicity. (1) For Re w in [-c, 0) and Im w = u: |Re F(w)| <= b(u) = min(Phi(c), K/u^2), K = c + (1 + e^(cL))/L. (2) For every real t, sum_S m_rho b(t - gamma_rho) <= kappa [Phi(c) log(|t| + 3) + 2K (1.645 log(|t| + 4) + 1.9)]; so the sum defining T_S converges absolutely. (3) If cL >= 2, |tau| >= 6p and (1/2 - delta) L >= log(kappa (87 + 33 log(|tau| + 4))) + 2 log(p/c), then T_S(tau) >= 0.",
+      "assessment": "Working elementary proof: the real part of F is 1/w plus a term of modulus at most (1 + e^(cL))/(L|w|^2), so it decays like the inverse square of the height and is summable against a logarithmic local count, shell by shell; the pole's term 2.25 Phi(p) of the reach proposition then exceeds the points' by the factor e^((1/2 - delta)L) against kappa log|tau|. It bounds each point's term in absolute value. One instance at a negative tilt with 8003 points, at most three in a window of length two away from its pair, computed directly at four heights: T_S is 3.3e6 and the points' part at most 5.4e3.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Covers what the reach proposition and its local form do not: configurations with infinitely many points to the right of the tilt, as the zeros of zeta at a negative tilt. With the conditional explicit formula it says that the three-four-one inequality with a triangle weight of length L, every nonnegative term dropped, is satisfied by every configuration with a logarithmic local count at a tilt in (-1/2, delta - 2/L] meeting the condition of (3), and at all those tilts once (1/2 - delta)L >= log(kappa(87 + 33 log(|tau| + 4))) + 2 log(1 + (1/2 - delta)L/2). An upper bound for what negative tilts can add; shorter lengths and tilts nearer delta are not covered.",
+      "next_action": "None planned.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; constants computed by the script; one instance evaluated directly.",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction for one classical argument in a model with a local count. No novelty claimed.",
+        "relationships": "A companion of the tilted inequality reach and the tilted local reach for infinite configurations; neither implies the other."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:tilted-local-count-reach", "depends_on", "lem:tilted-triangle-positivity", "Its bounds for |F| on the left half-plane."],
+    ["prop:tilted-local-count-reach", "depends_on", "prop:tilted-inequality-reach", "The lower bound 2.25 Phi(p) for the pole's part, from that proposition's proof, and the definition of T_S."],
+    ["prop:tilted-local-count-reach", "cites", "prop:tilted-local-reach", "That proposition's weight decays like 1/|t| and is for finite multisets; this one's decays like 1/t^2 and is summed against a local count. Neither statement implies the other."],
+    ["prop:tilted-local-count-reach", "cites", "prop:tilted-cluster-hiding", "The same function T_S for one finite family with cancellation; this proposition bounds every point's term in absolute value and sees no cancellation. Neither implies the other."],
+    ["prop:tilted-local-count-reach", "cites", "lem:riesz-mean-explicit-formula", "The conditional formula through which T_S is read as the classical argument's bound."]
+  ]
+}
