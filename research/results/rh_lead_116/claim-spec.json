@@ -1,0 +1,33 @@
+{
+  "source": {
+    "record": "[Li height window](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-li-height-window)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-li-height-window"],
+    "label": "Li height window"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:li-height-window",
+      "summary": "For a multiset of points rho = beta + i gamma in 0 < beta < 1, closed under rho -> 1 - conj(rho), with at most A log(k + 2) points of height k <= |gamma| < k + 1 for each integer k >= 0, w = 1 - 1/rho and Lambda_n = sum of m Re(1 - w^n): (1) the sum converges absolutely and equals the on-line part S_on(n) = sum m (1 - cos n theta) >= 0 plus, over off-line pairs, m (2 - (r^n + r^-n) cos n phi); (2) for n >= 1, Lambda_n >= S_on(n) - 4 sum over off-line pairs with |gamma| <= sqrt(n) of m sinh^2(n tau/2) - 5 A sqrt(n) log(n + 2), tau = delta/(min(beta, 1 - beta)^2 + gamma^2); (3) if no off-line point has |gamma| <= sqrt(n) then Lambda_n >= S_on(n) - 5 A sqrt(n) log(n + 2).",
+      "assessment": "Working elementary proof: the pair formulas and the bound per pair are those of the Li coefficient threshold, which use no finiteness; a pair above height sqrt(n) has n tau < 1/2 and lowers the sum by at most 1.03 m n^2/(4 gamma^4), and the count sums these to at most 5 A sqrt(n) log(n + 2). The height sqrt(n) and the order of the error are those of Lagarias's unconditional formula for the prime side (arXiv math/0404394, Theorem 6.1, read in its statement, with one sign as printed corrected in the entry). For zeta it rests on a local count and on the identification of Lambda_n with Li's coefficient, neither proved here. No novelty.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows, in one direction, that off-line points above height sqrt(n) lower Li's coefficient at index n by at most a polynomial error, so a lower bound at that index is not threatened by them.",
+      "next_action": "Verify the two-sided form and the strictness argument; read the statement of Bombieri and Lagarias on one-sided bounds.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Working proof, read by a fresh medium reviewer.",
+        "formalization": "No formalization.",
+        "significance": "Context: an elementary tail bound for a known criterion. No novelty.",
+        "relationships": "Extends the Li coefficient threshold from finite configurations to configurations with a logarithmic local count."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:li-height-window", "depends_on", "prop:li-coefficient-threshold", "Uses that proposition's pair formulas and its bound per off-line pair, whose proofs are term by term."],
+    ["prop:li-height-window", "cites", "prop:tilted-local-count-reach", "The same device on another object: a term decaying like an inverse power of the height summed against a logarithmic local count, shell by shell. That statement is about the tilted inequality; neither implies the other."],
+    ["prop:li-height-window", "cites", "prop:zero-bound-gives-prime-sum-premise", "Part (1) of that proposition is the local count that makes the hypothesis hold for the zeros of zeta, conditionally."]
+  ]
+}
