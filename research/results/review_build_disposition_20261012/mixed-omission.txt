@@ -1,0 +1,41 @@
+# command: env MATH_TEST_ROOT=/home/kbr/dev/math-auxiliary bash -c cd research/tmp/codex/38604c5b2a9074bd574da00878ee681513d628d3c1f449d06293b613f1e111e9/review-build-mixed && python3 -m pytest -q tests/test_queue.py::LeadQueueTest::test_review_records_one_completed_standalone_build
+# run 9a46a24493, session binary_sampler_goal_review_20261012; full output
+.                                                                [100%]
+=================================== FAILURES ===================================
+_ LeadQueueTest.test_review_records_one_completed_standalone_build (label='mixed completions') _
+
+self = <test_queue.LeadQueueTest testMethod=test_review_records_one_completed_standalone_build>
+
+    def test_review_records_one_completed_standalone_build(self):
+        builds = [('build', 'built'), ('build', 'other')]
+        before = notebook([self.rev], self.q + builds)
+        def entry(items, kind='review', link=True):
+            evidence = '<a href="tools/lead_queue.py">implementation</a>' if link else 'no evidence'
+            return (f'<article id="build-review" data-kind="{kind}"><ul>' + ''.join(
+                f'<li data-{k}="{i}">{evidence}. <strong>Follow-up.</strong> Developed: delivered.</li>'
+                for k, i in items) + '</ul></article>')
+        after, _ = lq.append_new(notebook([self.rev, entry(builds[:1])], self.q + builds))
+        self.assertEqual(lq.parse(after)[1], self.q + builds[1:])
+        lq.check(before, after, ROOT / 'notebook.html', ROOT)
+        cases = [
+            ('two builds', before, entry(builds), self.q),
+            ('mixed completions', before, entry(builds).replace(
+                '<strong>Follow-up.</strong> Developed: delivered.</li></ul>',
+                '<strong>Follow-up.</strong> Closed: superseded.</li></ul>'), self.q),
+            ('research', before, entry(builds[:1], kind='research'), self.q + builds[1:]),
+            ('missing evidence', before, entry(builds[:1], link=False), self.q + builds[1:]),
+            ('not removed', before, entry(builds[:1]), self.q + builds),
+            ('mathematical item', before, entry(self.q[:1]), self.q[1:] + builds),
+            ('unresolved child', notebook([self.rev], self.q + [(builds[0], [('check', 'open')])]),
+             entry(builds[:1]), self.q),
+            ('nested build', notebook([self.rev], [(self.q[0], builds[:1])] + self.q[1:]),
+             entry(builds[:1]), self.q),
+        ]
+        for label, base, article, remaining in cases:
+>           with self.subTest(label=label), self.assertRaises(ValueError):
+E           AssertionError: ValueError not raised
+
+tests/test_queue.py:1012: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(label='mixed completions') tests/test_queue.py::LeadQueueTest::test_review_records_one_completed_standalone_build
+1 failed, 1 passed, 7 subtests passed in 0.29s

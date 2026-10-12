@@ -1,0 +1,3 @@
+# command: python3 -c import sys,subprocess,time; from pathlib import Path; sys.path.insert(0,"tools"); import lead_queue; p=Path("notebook.html").resolve(); old=subprocess.check_output(["git","show","HEAD:notebook.html"],text=True); new=p.read_text(); t=time.perf_counter(); lead_queue.check(old,new,p,Path.cwd()); print(f"main: {len(new.encode())} bytes, {len(lead_queue.record_articles(new))} entries, real review/build-removal diff: passed in {time.perf_counter()-t:.3f}s")
+# run 17dad3790d, session binary_sampler_goal_review_20261012; full output
+main: 9619284 bytes, 709 entries, real review/build-removal diff: passed in 0.349s

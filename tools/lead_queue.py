@@ -1795,6 +1795,15 @@ def transition(body, old, tag, text):
     return ordered(tag, text, nodes)
 
 
+def review_build_completion(tag, items, nodes):
+    """A review records one completed standalone build, not a batch or open children."""
+    if 'data-kind="review"' not in tag or len(items) != 1:
+        return False
+    item = items[0]
+    parent, node = locate(nodes, item)
+    return item[0] == 'build' and parent is None and node is not None and not node.children
+
+
 def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
@@ -1935,12 +1944,15 @@ def check(head_body, body, path=None, root=None):
     closed, developed = listed_closures(tag, text)
     listed_developed = [item for item in developed if item in every_item(old)]
     if listed_developed:
+        # A scheduled review may record one completed standalone build. It is not a
+        # research spell and must not restore multi-item triage or close open children.
+        review_build = review_build_completion(tag, closed + listed_developed, old)
         # sub-ideas of the one top-level item the entry develops may be batched (user, 9 October 2026)
         own = locate(old, work[0]) if work else (None, None)
         group = own[0] or own[1]
         outside = [i for k, i in listed_developed
                    if group is None or locate(old, (k, i))[0] is not group]
-        if outside:
+        if outside and not review_build:
             raise ValueError('A follow-up list marks Developed only sub-ideas of the top-level item the entry '
                              'develops (one top-level item per entry; its sub-ideas may be batched): '
                              + ', '.join(outside))

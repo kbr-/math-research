@@ -984,6 +984,35 @@ class LeadQueueTest(unittest.TestCase):
         via_child = developing(('check', 'k:s1'), 'Closed', done.replace('k:s1', 'k:s2'))  # from a sibling
         lq.check(before, notebook([self.rev, via_child], [(self.q[0], []), (self.q[1], [('check', 'm:s1')])]))
 
+    def test_review_records_one_completed_standalone_build(self):
+        builds = [('build', 'built'), ('build', 'other')]
+        before = notebook([self.rev], self.q + builds)
+        def entry(items, kind='review', link=True):
+            evidence = '<a href="tools/lead_queue.py">implementation</a>' if link else 'no evidence'
+            return (f'<article id="build-review" data-kind="{kind}"><ul>' + ''.join(
+                f'<li data-{k}="{i}">{evidence}. <strong>Follow-up.</strong> Developed: delivered.</li>'
+                for k, i in items) + '</ul></article>')
+        after, _ = lq.append_new(notebook([self.rev, entry(builds[:1])], self.q + builds))
+        self.assertEqual(lq.parse(after)[1], self.q + builds[1:])
+        lq.check(before, after, ROOT / 'notebook.html', ROOT)
+        cases = [
+            ('two builds', before, entry(builds), self.q),
+            ('mixed completions', before, entry(builds).replace(
+                '<strong>Follow-up.</strong> Developed: delivered.</li></ul>',
+                '<strong>Follow-up.</strong> Closed: superseded.</li></ul>'), self.q),
+            ('research', before, entry(builds[:1], kind='research'), self.q + builds[1:]),
+            ('missing evidence', before, entry(builds[:1], link=False), self.q + builds[1:]),
+            ('not removed', before, entry(builds[:1]), self.q + builds),
+            ('mathematical item', before, entry(self.q[:1]), self.q[1:] + builds),
+            ('unresolved child', notebook([self.rev], self.q + [(builds[0], [('check', 'open')])]),
+             entry(builds[:1]), self.q),
+            ('nested build', notebook([self.rev], [(self.q[0], builds[:1])] + self.q[1:]),
+             entry(builds[:1]), self.q),
+        ]
+        for label, base, article, remaining in cases:
+            with self.subTest(label=label), self.assertRaises(ValueError):
+                lq.check(base, notebook([self.rev, article], remaining), ROOT / 'notebook.html', ROOT)
+
     def test_a_window_count_refuses_interleaved_entries_only_where_the_section_sets_it(self):
         tree = [self.q[0], self.q[1]]
         own, other = research(self.q[0], 'Continuing'), research(self.q[1], 'Continuing')
