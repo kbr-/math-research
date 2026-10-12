@@ -141,6 +141,35 @@ class UniversalsTest(unittest.TestCase):
         self.assertEqual(read, 8)        # the lemma, its proof, the degenerate cases and the bookkeeping unread
         self.assertTrue(dcs.universals_report(self.DRAFT, 0).endswith('5 such sentences of 8 read.'))
 
+    def test_words_of_exactness_are_listed_beside_their_paragraphs_conditions(self):
+        draft = ('<article><h3>T</h3><h4>What it says</h4>'
+                 '<p>Any such set has \\(T\\ge0\\) at every tilt, once \\[(\\tfrac12-d)L\\ge\\log(p/c)\\] holds. It is so.</p>'
+                 '<p>The reach is the same \\(\\log(12M)/L\\), with \\(c\\ge0\\), \\(c&lt;p\\) and a symbol \\(L\\).</p>'
+                 '<p>The step is immediate.</p>'
+                 '<p>The bound holds with a constant.</p>'
+                 '<p><strong>Lemma (a cap).</strong> It holds for every row, exactly.</p>'
+                 '<p><strong>Owed attempt.</strong> Made at every length.</p></article>')
+        found = dcs.exactness(draft)
+        self.assertEqual([(where, conditions) for where, _, conditions in found], [
+            ('What it says', ['(\\tfrac12-d)L\\ge\\log(p/c)']),       # the displayed condition of its paragraph
+            ('What it says', ['c\\ge0', 'c<p']),                             # no display: the inline relation, not the symbol
+            ('What it says', [])])                                   # nothing to put beside it: said in the report
+        self.assertTrue(found[0][1].startswith('Any such set') and 'It is so' not in found[0][1])
+        report = dcs.exactness_report(draft, 0)
+        self.assertIn('      beside: no displayed or inline condition in its paragraph', report)
+        self.assertTrue(report.endswith('3 such sentences.'))        # the statement and the bookkeeping unread
+        self.assertEqual(dcs.exactness(self.DRAFT), [])
+        # at most three conditions; a summing-up paragraph first; words left to the other listing or dropped
+        more = ('<article><h3>T</h3><h4>Reading</h4>'
+                '<p>It is exactly so, with \\(a&lt;b\\), \\(b\\le c\\), \\(c\\geqslant d\\), \\(d&gt;e\\).</p>'
+                '<p>The same reviewer read it for every row, not at all quickly.</p>'
+                '<p><strong>Goal progress.</strong> Unchanged. The reach is the same, and it cannot extend.</p>'
+                '</article>')
+        rows = dcs.exactness(more)
+        self.assertEqual([(where, len(conditions)) for where, _, conditions in rows],
+                         [('Reading', 3), ('Goal progress', 0)])
+        self.assertIn('[Goal progress]', dcs.exactness_report(more, 0).splitlines()[1])
+
     def test_the_title_and_status_line_are_printed_and_summing_up_paragraphs_come_first(self):
         self.assertEqual(dcs.universals_report(self.DRAFT, 0).splitlines()[1], '  [title] A title')   # no status line
         draft = self.DRAFT.replace('<h3>A title</h3>', '<h3>Barriers stop at \\(2w-1\\)</h3>\n'

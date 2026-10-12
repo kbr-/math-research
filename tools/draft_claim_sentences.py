@@ -158,6 +158,61 @@ def universals_report(draft, width):
                      + head + lines + [f'{len(found)} such sentences of {read} read.'])
 
 
+# Words by which a sentence says more than a bound or a sufficient condition gives: equality and exactness, a
+# quantifier over a parameter, and words that call an unwritten step done.  In one review period of 12 October
+# 2026 five sentences of three entries were corrected by reviewers for one of these ("exactly when", "at every
+# tilt" under a condition containing the tilt, "do not extend", "immediate", "the reach is the same"); the
+# reviewers' records of three entries name four of them, the fifth is from the session's own drafts.
+# "for every" and "for all" are left to the listing of universal sentences; "the same" is taken only as a
+# predicate ("is the same"), 137 of the first form's 521 lines on one notebook being "the same reviewer" and
+# the like, and "at all" is dropped for the same reason (a reviewer's count).
+EXACT = re.compile(r'\b(?:exactly|precisely|(?:is|are|was|were|stays?|remains?) the same|'
+                   r'(?:do(?:es)?|did|can)(?: ?not|n\'t) extend|cannot extend|no farther|no further|only when|'
+                   r'immediate(?:ly)?|clear(?:ly)?|direct(?:ly)?|obviously|at every|if and only if|sharp|tight|'
+                   r'equals?)\b', re.I)
+DISPLAY = re.compile(r'\\\[(.*?)\\\]', re.S)
+INLINE = re.compile(r'\\\((.*?)\\\)', re.S)
+RELATION = re.compile(r'\\(?:ge|le|geq|leq|geqslant|leqslant|lesssim|gtrsim|lt|gt|gg|ll)(?![A-Za-z])|[<>]|&lt;|&gt;')
+
+
+def exactness(draft):
+    """[(section label, sentence text, [conditions]), ...] for the sentences, outside the statements, their
+    proofs and the paragraphs of bookkeeping, that hold a word of EXACT; the conditions are the displayed
+    formulas of the sentence's paragraph, or without any its inline formulas that hold a relation, at most
+    three, so that a quantifier or an equality is read beside the condition it was drawn from."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where) or BOOKKEEPING.match(where):
+            continue
+        shown = DISPLAY.findall(body) or [m for m in INLINE.findall(body) if RELATION.search(m)]
+        conditions = [' '.join(html.unescape(m).split()) for m in shown[:3]]
+        for index, sentence in enumerate(sentences(body)):
+            unlabelled = LABEL.sub('', sentence) if index == 0 and label else sentence
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', unlabelled, flags=re.S)
+            if EXACT.search(text(bare)):
+                found.append((where, text(sentence), conditions))
+    return found
+
+
+def exactness_report(draft, width):
+    found = exactness(draft)
+    found = [row for row in found if SUMMARY.match(row[0])] + [row for row in found if not SUMMARY.match(row[0])]
+    lines = []
+    for where, sentence, conditions in found:
+        lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')
+        lines += [f'      beside: {c if width <= 0 else c[:width]}' for c in conditions] or [
+            '      beside: no displayed or inline condition in its paragraph']
+    return '\n'.join(['Sentences that say exactly, the same, at every, immediate and the like, each beside the '
+                      'conditions displayed in its paragraph; ask of each whether the condition is sufficient only, '
+                      'contains the quantified parameter, or leaves a step unwritten:']
+                     + lines + [f'{len(found)} such sentences.'])
+
+
 RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
 
 
@@ -281,8 +336,21 @@ def main():
     parser.add_argument('--width', type=int, default=0, help='cut statements and sentences at N characters')
     parser.add_argument('--notebook', help='also list sentences that link an entry of this notebook file, '
                         'beside the entry\'s title and status line')
+    parser.add_argument('--exactness', action='store_true', help='print only the listing of words of exactness; '
+                        'for a file of several articles, the count of such sentences in each')
     args = parser.parse_args()
     draft = pathlib.Path(args.draft).read_text()
+    if args.exactness:
+        articles = re.findall(r'<article id="([^"]+)".*?</article>', draft, re.S)
+        if len(articles) > 1:
+            rows = [(ident, len(exactness(body))) for ident, body in
+                    re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)]
+            print('\n'.join(f'{count}\t{ident}' for ident, count in rows))
+            print(f'{sum(count for _, count in rows)} such sentences in {len(rows)} articles; '
+                  f'{sum(1 for _, count in rows if count == 0)} articles with none.')
+        else:
+            print(exactness_report(draft, args.width))
+        return 0
     registry = json.loads(pathlib.Path(args.registry).read_text())
     out, unregistered = report(draft, registry, args.width)
     print(out)
@@ -292,6 +360,7 @@ def main():
         print('\n' + linked)
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
+    print('\n' + exactness_report(draft, args.width))
     for line in readings(draft=draft):
         print(line)
     log_run(draft)
