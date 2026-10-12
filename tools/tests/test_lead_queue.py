@@ -998,6 +998,13 @@ class LeadQueueTest(unittest.TestCase):
         on = ' data-spell-window="8"'
         with self.assertRaisesRegex(ValueError, 'data-spell-window'):
             lq.check(notebook(earlier, tree, attrs=on), notebook(earlier + [chosen], tree, attrs=on))
+        fourth = [self.rev, own, other, own, other, own, other]       # the boundary: a fourth in the window passes
+        lq.check(notebook(fourth, tree, attrs=on), notebook(fourth + [chosen], tree, attrs=on))
+        self.assertEqual(lq.window_count(notebook(fourth + [chosen], tree), self.q[0]), 4)
+        alone = [self.q[0]]                                            # no other item to take: nothing refused
+        lq.check(notebook(earlier, alone, attrs=on), notebook(earlier + [chosen], alone, attrs=on))
+        closing = research(self.q[0], 'Closed')                        # the entry that removes the item passes
+        lq.check(notebook(earlier, tree, attrs=on), notebook(earlier + [closing], [self.q[1]], attrs=on))
         short = ' data-spell-window="2"'                               # one of the last two: allowed
         lq.check(notebook(earlier, tree, attrs=short), notebook(earlier + [chosen], tree, attrs=short))
 

@@ -1964,7 +1964,9 @@ def check(head_body, body, path=None, root=None):
                                  'or earn an extension (data-spell-extend)')
         window = SETTINGS.get('spell_window')       # the head too: its rotation does not see interleaved entries
         top = locate(old, work[0])[0] or located
-        if window and not chosen and window_count(body, top.item, old, window) > spell_limit(body, top.item, old):
+        # not for a queue with no other item to take, nor for the entry that removes the item
+        if (window and not chosen and len(old) > 1 and work[1] not in ('Closed', 'Developed')
+                and window_count(body, top.item, old, window) > spell_limit(body, top.item, old)):
             raise ValueError(f'{top.ident} has had more entries among the last {window} on queued items than '
                              'its spell allows (data-spell-window): develop another item first')
         if work[1] == 'Developed' and [c for c in located.children if c.item not in closed]:
