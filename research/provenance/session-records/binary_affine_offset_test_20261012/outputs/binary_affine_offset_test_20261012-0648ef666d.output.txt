@@ -1,0 +1,105 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ FinalizationTest.test_review_crossing_queue_threshold_keeps_pre_entry_state_after_archive _
+
+root = PosixPath('/tmp/math-finish-turn-aisvpkq4'), turn = 'test_turn'
+next_turn = 'next_turn', notebook_name = None
+
+>   ???
+
+/tmp/math-finish-turn-aisvpkq4/tools/finish-turn.py:1697: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/tmp/math-finish-turn-aisvpkq4/tools/finish-turn.py:1493: in validate_marker
+    ???
+/tmp/math-finish-turn-aisvpkq4/tools/finish-turn.py:144: in validate_leads
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tag = '<article id="current" data-kind="review" data-route="general-step" data-open-items="3" data-obligation="open-goal" data-goal-progress="unchanged">'
+text = '<article id="current" data-kind="review" data-route="general-step" data-open-items="3" data-obligation="open-goal" da...stacle. <strong>Test.</strong> Falsified: this proposed transfer fails its control.</li></ul><!-- TIMING test_turn -->'
+draining = True
+
+    def validate_review_generation(tag, text, draining):
+        """Reject new review lead/bridge sections during backpressure; historical entries stay readable."""
+        if not draining or not re.search(r'\bdata-kind="review"', tag):
+            return
+        headings = re.findall(r'<h[1-6]\b[^>]*>(.*?)</h[1-6]>', text, re.S | re.I)
+        names = {re.sub(r'<[^>]+>', '', heading).strip().casefold() for heading in headings}
+        if names & {'outside leads', 'absurd bridges'}:
+>           raise ValueError(DRAINING_REVIEW_RULE)
+E           ValueError: While the queue is draining, reviews produce no Outside leads or Absurd bridges; omit both sections and assess the existing work.
+
+tools/lead_queue.py:529: ValueError
+
+The above exception was the direct cause of the following exception:
+
+self = <test_finish_turn.FinalizationTest testMethod=test_review_crossing_queue_threshold_keeps_pre_entry_state_after_archive>
+
+    def test_review_crossing_queue_threshold_keeps_pre_entry_state_after_archive(self):
+        import lead_queue
+        notebook = self.root / 'notebook.html'
+        queue = '<section id="lead-queue"><ol>' + ''.join(
+            f'<li data-idea="old-{i}" data-source="old">Existing research question {i}.</li>'
+            for i in range(lead_queue.CAP - 1)) + '</ol></section>'
+        earlier = ''.join(
+            f'<article id="old-{i}" data-kind="research" data-route="general-step">'
+            '<p class="entry-meta">Earlier research.</p></article>' for i in range(6))
+        base = ('<section id="remaining-route"><li data-route-item="general-step">step</li></section>'
+                + queue + '<section id="research-record">' + earlier + '</section>')
+        notebook.write_text(base)
+        subprocess.run(['git', 'init', '-q'], cwd=self.root, check=True)
+        subprocess.run(['git', 'add', 'notebook.html'], cwd=self.root, check=True)
+        subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid',
+                        'commit', '-qm', 'Before review'], cwd=self.root, check=True)
+        passed = ('<li data-pick>A concrete continuation. <strong>Answers.</strong> The open obstacle. '
+                  '<strong>Test.</strong> Passed. <strong>Break point.</strong> The full source bound '
+                  'still requires a proved compatibility statement.</li>')
+        rejected = ('<li>A rejected shortcut. <strong>Answers.</strong> The same open obstacle. '
+                    '<strong>Test.</strong> Falsified: this proposed transfer fails its control.</li>')
+        tags, report = reporting('id="current" data-kind="review" data-route="general-step" '
+                                 'data-open-items="3"')
+        entry = (f'<article {tags}><p class="entry-meta">Reviewed route assessment.</p>'
+                 '<p><strong>General statement.</strong> The recorded conjecture remains open '
+                 '(conj:fixture-general); this review does not promote it.</p>' + report + OBSTACLE
+                 + '<h4>Outside leads</h4><ul>' + passed + rejected * 2 + '</ul>'
+                 + '<h4>Absurd bridges</h4><ul>' + rejected * 2 + '</ul>'
+                 + '<!-- TIMING test_turn --></article>')
+        current = base
+        at = current.rindex('</section>')
+        current = current[:at] + entry + current[at:]
+        current, added = lead_queue.append_new(current)
+        self.assertEqual(added, 1)
+        self.assertFalse(lead_queue.is_draining(base))
+        self.assertTrue(lead_queue.is_draining(current))
+        budget_path = self.root / 'research/context-budgets.json'
+        budget = json.loads(budget_path.read_text())
+        budget['regions']['remaining-route'] = 100
+        budget_path.write_text(json.dumps(budget))
+        notebook.write_text(current)
+        (self.root / 'research/logs/claim-searches.jsonl').write_text(json.dumps({
+            'unix_s': self.events('test_turn')[0]['unix_s'], 'query': 'fixture compatibility'}) + '\n')
+>       self.fixture_finisher().finish(self.root, 'test_turn', next_turn='next_turn')
+
+tools/tests/test_finish_turn.py:274: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/math-finish-turn-aisvpkq4'), turn = 'test_turn'
+next_turn = 'next_turn', notebook_name = None
+
+>   ???
+E   ValueError: Timing and archive are saved, but While the queue is draining, reviews produce no Outside leads or Absurd bridges; omit both sections and assess the existing work.
+
+/tmp/math-finish-turn-aisvpkq4/tools/finish-turn.py:1699: ValueError
+----------------------------- Captured stdout call -----------------------------
+Registry searches run in this session, to compare with the entry's Record search: fixture compatibility
+Output: 1 lines, 72 bytes, saved in research/logs/next_turn-3cb916481e.output.txt; read it from that file.
+Preserved 1 completed sessions in research/provenance/session-records/.
+Exit 0; log: research/logs/next_turn-3cb916481e.output.txt
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:283
+  <frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tools/tests/test_finish_turn.py::FinalizationTest::test_review_crossing_queue_threshold_keeps_pre_entry_state_after_archive
+1 failed, 1 warning in 0.54s

@@ -1,0 +1,99 @@
+// Exact F2 identities for all ordered pairs of two-subsets of four coordinates.
+// Independent formal offset symbols cover every affine specialization.
+// Predictions: all certificates and original-row lifts agree identically,
+// with summand degree at most four. Omitting exchanges changes every S!=T
+// certificate; omitting support corrections changes every S=T certificate.
+// Refuted by: any nonzero identity remainder or excessive written summand degree.
+// Possible because: certificates and expanded target polynomials are built separately.
+ring amRing=2,(y(1..4),z(1..6)),dp;
+intmat amSets[6][2]=1,2,1,3,1,4,2,3,2,4,3,4;
+int amChecks=0; int amFailures=0; int amPairs=0; int amRows=0;
+int amExchangeControls=0; int amSupportControls=0;
+int amS,amT,amI,amJ,amA,amB,amK,amPrev,amNext;
+intvec amRemove,amAdd,amCommon;
+poly amYS,amYT,amCert,amExchange,amSupport,amTail,amTerm,amCurrent,amTarget;
+proc amAssert(int amOK,string amMsg)
+{ amChecks++; if(!amOK) { amFailures++; print("FAIL "+amMsg); } }
+proc amHas(int amSet,int amVar)
+{ return((amSets[amSet,1]==amVar)||(amSets[amSet,2]==amVar)); }
+proc amMono(int amSet)
+{ return(y(amSets[amSet,1])*y(amSets[amSet,2])); }
+proc amFind(poly amMonomial)
+{
+  int amF;
+  for(amF=1;amF<=6;amF++) { if(amMono(amF)==amMonomial) { return(amF); } }
+  return(0);
+}
+print("Stages: 36 ordered exchange paths, 12 support rows, 24 exchange rows, omission controls.");
+print("Symbolic space: 10 variables; maximum written certificate degree 4.");
+for(amS=1;amS<=6;amS++)
+{
+  amYS=amMono(amS);
+  for(amT=1;amT<=6;amT++)
+  {
+    amYT=amMono(amT); amK=0; amRemove=0; amAdd=0; amCommon=0; amB=0;
+    for(amI=1;amI<=4;amI++)
+    {
+      if(amHas(amS,amI)&&!amHas(amT,amI)) { amK++; amRemove[amK]=amI; }
+      if(amHas(amS,amI)&&amHas(amT,amI)) { amB++; amCommon[amB]=amI; }
+    }
+    amA=0;
+    for(amI=1;amI<=4;amI++)
+    { if(!amHas(amS,amI)&&amHas(amT,amI)) { amA++; amAdd[amA]=amI; } }
+    amAssert(amA==amK,"exchange length");
+    amTail=1;
+    for(amJ=1;amJ<=amK;amJ++) { amTail=amTail*y(amAdd[amJ]); }
+    amCert=amTail*(z(amS)^2+z(amS));
+    amAssert(deg(amCert)<=4,"Boolean-offset certificate degree");
+    amExchange=0; amPrev=amS; amCurrent=amYS;
+    for(amJ=1;amJ<=amK;amJ++)
+    {
+      amCurrent=(amCurrent/y(amRemove[amJ]))*y(amAdd[amJ]);
+      amNext=amFind(amCurrent); amAssert(amNext>0,"complete layer");
+      amTail=1;
+      for(amA=amJ+1;amA<=amK;amA++) { amTail=amTail*y(amAdd[amA]); }
+      amTerm=amTail*z(amS)*(y(amAdd[amJ])*z(amPrev)+y(amRemove[amJ])*z(amNext));
+      amAssert(deg(amTerm)<=4,"exchange summand degree");
+      amExchange=amExchange+amTerm;
+      amTerm=amTail*z(amNext)*(1+y(amRemove[amJ]))*z(amS);
+      amAssert(deg(amTerm)<=4,"support correction degree");
+      amExchange=amExchange+amTerm; amPrev=amNext;
+    }
+    amTail=1;
+    for(amJ=1;amJ<=amK;amJ++) { amTail=amTail*y(amAdd[amJ]); }
+    amSupport=0;
+    for(amJ=1;amJ<=amB;amJ++)
+    {
+      amTerm=amTail*(1+y(amCommon[amJ]))*z(amS);
+      amAssert(deg(amTerm)<=4,"common correction degree");
+      amSupport=amSupport+amTerm; amTail=amTail*y(amCommon[amJ]);
+    }
+    amCert=amCert+amExchange+amSupport;
+    amAssert(amCert==z(amS)*(amYT+z(amT)),"full certificate"); amPairs++;
+    if(amS!=amT) { amAssert(amExchange!=0,"exchange omission"); amExchangeControls++; }
+    if(amS==amT) { amAssert(amSupport!=0,"support omission"); amSupportControls++; }
+  }
+  for(amI=1;amI<=4;amI++)
+  {
+    if(amHas(amS,amI))
+    {
+      amTarget=(1+y(amI))*(amYS+z(amS))+(1+y(amI))*z(amS);
+      amAssert(amTarget==(y(amI)^2+y(amI))*(amYS/y(amI)),"support row lift"); amRows++;
+      for(amJ=1;amJ<=4;amJ++)
+      {
+        if(!amHas(amS,amJ))
+        {
+          amNext=amFind((amYS/y(amI))*y(amJ));
+          amTarget=y(amJ)*(amYS+z(amS))+y(amI)*(amMono(amNext)+z(amNext));
+          amAssert(amTarget==y(amJ)*z(amS)+y(amI)*z(amNext),"exchange row lift"); amRows++;
+        }
+      }
+    }
+  }
+}
+amAssert(amPairs==36,"pair count"); amAssert(amRows==36,"row count");
+amAssert(amExchangeControls==30,"exchange control count");
+amAssert(amSupportControls==6,"support control count");
+print("RESULT pairs="+string(amPairs)+" row_lifts="+string(amRows)+" exchange_controls="+string(amExchangeControls)+" support_controls="+string(amSupportControls)+" assertions="+string(amChecks)+" failures="+string(amFailures));
+if(amFailures>0) { exit(1); }
+quit;
