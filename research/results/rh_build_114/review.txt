@@ -1,0 +1,41 @@
+Reviewer's record, entry fetched-title-printed (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, read-only, a pass and three follow-ups; it ran no test and made no fetch.
+
+PASS. Verdict: pass with corrections. The code does what the item's text asks.
+- `expected`: an empty --expect word passes on any paper; short words and words inside kept TeX command
+  names also match. Refuse words under about four characters, or state it.
+- Exit status 2 is also argparse's usage-error status; use another or state it.
+- The Limit's "a macro of another name yields no title, and the tool then says so" is false for a TeX
+  payload: it prints the first lines. Missing from the Limit: a redefinition of the title command matched as
+  a title; only lowercase .tex files read; comment signs in URLs or verbatim; the wrong paper left unpacked
+  and unmarked.
+- The saved output holds an absolute home path; it does not record the commands. Titles and authors are
+  bibliographic data and fine to commit.
+- An answer line misdates the item's queueing.
+Confirmed: related command names do not match; the test covers Checks; the test count; no other code imports
+the tool; "Developed" justified.
+Suggestions (unverified): write a marker file on a failed expectation; test main() with the network call
+patched.
+Process audit: the title may say the tool prints the fetched title and authors and fails on an expected
+word when asked; not "prevents" or "checks the paper fetched". The incident's class is not stopped by
+default, and the entry asks nowhere whether --expect should be required or the framework's sentence should
+name it.
+
+FIRST FOLLOW-UP (--expect required; status 3; marker; second test; the framework's sentence). Verdict: pass
+with corrections.
+- The older test of the two refusals now passes for the wrong reason: without --expect, status 1 comes from
+  the new requirement and the repository refusal is never reached. Add --expect and assert the stderr text,
+  or move the new checks after the identifier and repository checks.
+- The docstring's usage line; a marker of an earlier failed fetch survives a later successful one; the title
+  should add "or a stated reason".
+Confirmed: no other caller or documented use; the framework's sentence is general; the new test matches
+Checks; the suite's count and the three calls match the saved outputs.
+
+SECOND FOLLOW-UP. Verdict: pass with one small correction: the marker was removed before the download, so a
+failed download leaves the earlier wrong paper with its marker gone; move the removal after the download and
+unpack succeed, or state it. The moved checks, the older test's assertions, the stale-marker test and the
+title in order.
+
+THIRD FOLLOW-UP. Confirmed: the marker is unlinked only after the download and the unpacking have returned,
+and rewritten only when the new expectation fails. The entry should quote the rerun's time. Verdict: pass.
+No code was changed after this read.
