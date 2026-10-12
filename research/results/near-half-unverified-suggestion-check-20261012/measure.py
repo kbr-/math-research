@@ -30,15 +30,16 @@ def main():
     wanted = sys.argv[2:]
     record = body[body.index('<section id="research-record">'):]
     articles = re.findall(r'<article\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</article>', record, re.S)
+    checks = tool.reporting_checks()        # the finisher's module, where the check lives; the append tool calls it
     listed = attempts = 0
     found = {}
     for anchor, text in articles:
         entry = f'<article id="{anchor}">{text}</article>'
-        listed += bool(tool.SUGGESTIONS.search(entry))
-        attempts += any(tool.ATTEMPT_SENTENCE.search(tool.plain(follow))
-                        for follow in re.findall(r'<p><strong>Follow-up\.</strong>((?:(?!</p>).)*)</p>', entry, re.S))
-        hits = tool.unverified_attempts(entry)
-        if hits and not tool.CHECKED.search(entry):
+        listed += bool(checks.SUGGESTION_LIST_RE.search(entry))
+        attempts += any(checks.ATTEMPT_PHRASE_RE.search(follow) for follow in checks.FOLLOW_UP_TEXT_RE.findall(entry))
+        hits = checks.unverified_attempts(entry)
+        said = checks.CHECKED_RE.search(entry)
+        if hits and not (said and len(said.group(1).strip()) >= checks.CHECKED_LEAST):
             found[anchor] = hits[0][1]
     print(f'{len(articles)} articles ({len(body) / 1e6:.1f} MB); {listed} with a list of reviewer\'s suggestions; '
           f'{attempts} with a Follow-up naming a next attempt; {len(found)} the check would refuse')
