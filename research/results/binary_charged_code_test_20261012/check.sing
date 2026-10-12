@@ -1,0 +1,142 @@
+// Sparse-pattern cofactor rule over F2. Three formal features, three mixed inputs
+// with raw affine old parts, two rows: all 64 binary coefficient matrices in
+// both constant-feature-coefficient and affine-feature-coefficient fixtures.
+// Expected: 384 formal and 384 substituted identities, bounded cofactors, two
+// distinct omitted-part controls, zero failures. This tests an interface, not hardness.
+// Refuted by: any nonzero correct remainder, excessive cofactor degree or failed control.
+// Possible because: Mobius evaluations are compared with independently reduced expanded products.
+// A full-rank input fixture must exercise a nonzero feature-dependent cofactor.
+// Largest unreduced product has at most 500 terms; native polynomial arithmetic only.
+ring spR=2,(x(1..2),y(1..3),Z(1..3),wt),dp;
+ideal spZGB=std(ideal(Z(1)^2+Z(1),Z(2)^2+Z(2),Z(3)^2+Z(3)));
+ideal spOldGB=std(ideal(x(1)^2+x(1),x(2)^2+x(2),y(1)^2+y(1),y(2)^2+y(2),y(3)^2+y(3)));
+ideal spG;
+intmat spBits[8][3]; intmat spInc[8][8];
+intvec spSize; intvec spC; intvec spPow=1,2,4;
+ideal spMon,spEval,spRem;
+poly spP,spE,spValue,spCoef,spLow,spHigh,spOldE,spOldLow,spOldHigh,spWeighted;
+list spSeen;
+int spS,spU,spI,spJ,spRow,spMask,spCarry,spBit,spSubset,spPick,spHave,spKind,spDelta;
+int spChecks=0; int spFailures=0; int spFormal=0; int spOld=0; int spControls=0;
+int spFeatureControl=0;
+proc spAssert(int spOK,string spMsg)
+{ spChecks++; if(!spOK) { spFailures++; print("FAIL "+spMsg); } }
+proc spPull(poly spF)
+{
+  spF=subst(spF,Z(1),y(1)*y(2));
+  spF=subst(spF,Z(2),y(2)*y(3));
+  return(subst(spF,Z(3),y(1)*y(3)));
+}
+proc spControl(poly spF,string spName)
+{
+  poly spBad=reduce(spF,spOldGB); int spN;
+  spAssert(spBad!=0,"omission is nonzero: "+spName);
+  for(spN=1;spN<=size(spSeen);spN++)
+  { spAssert(spSeen[spN]!=spBad,"duplicate normalized control"); }
+  spSeen[size(spSeen)+1]=spBad; spControls++;
+  print("CONTROL "+spName+": "+string(spBad));
+}
+for(spS=0;spS<=7;spS++)
+{
+  spCarry=spS; spMon[spS+1]=1; spSize[spS+1]=0;
+  for(spI=1;spI<=3;spI++)
+  {
+    spBit=spCarry%2; spCarry=(spCarry-spBit) div 2;
+    spBits[spS+1,spI]=spBit;
+    if(spBit) { spMon[spS+1]=spMon[spS+1]*Z(spI); spSize[spS+1]=spSize[spS+1]+1; }
+  }
+  spAssert(spSize[spS+1]==deg(spMon[spS+1]),"subset size matches polynomial degree");
+}
+for(spS=0;spS<=7;spS++)
+{
+  for(spU=0;spU<=7;spU++)
+  {
+    spSubset=1;
+    for(spI=1;spI<=3;spI++)
+    { if(spBits[spU+1,spI]>spBits[spS+1,spI]) { spSubset=0; } }
+    spInc[spS+1,spU+1]=spSubset;
+  }
+}
+print("Stages: 2 fixtures times 64 row matrices, weighted cofactors, old substitution, two omissions.");
+for(spKind=0;spKind<=1;spKind++)
+{
+spDelta=2+spKind;
+spG=x(1)+1+Z(1)+Z(2),x(1)+x(2)+Z(2)+Z(3),x(2)+Z(3);
+if(spKind==1)
+{ spG[1]=spG[1]+x(2)*Z(3); spG[2]=spG[2]+x(1)*Z(1); spG[3]=spG[3]+x(1)*Z(2); }
+for(spMask=0;spMask<=63;spMask++)
+{
+  spCarry=spMask;
+  for(spI=1;spI<=6;spI++)
+  { spBit=spCarry%2; spCarry=(spCarry-spBit) div 2; spC[spI]=spBit; }
+  spP=1;
+  for(spRow=1;spRow<=2;spRow++)
+  { spP=spP*(1+spC[3*spRow-2]*spG[1]+spC[3*spRow-1]*spG[2]+spC[3*spRow]*spG[3]); }
+  for(spJ=1;spJ<=3;spJ++)
+  {
+    spE=spP*spG[spJ]; spLow=0; spHigh=0; spRem=0;
+    for(spU=1;spU<=8;spU++) { spRem[spU]=0; }
+    for(spU=0;spU<=7;spU++)
+    {
+      spValue=spE;
+      for(spI=1;spI<=3;spI++) { spValue=subst(spValue,Z(spI),spBits[spU+1,spI]); }
+      spEval[spU+1]=spValue;
+    }
+    for(spS=0;spS<=7;spS++)
+    {
+      spCoef=0;
+      for(spU=0;spU<=7;spU++) { spCoef=spCoef+spInc[spS+1,spU+1]*spEval[spU+1]; }
+      spAssert(deg(spCoef)<=3*spDelta-2*spSize[spS+1],"weighted coefficient degree");
+      if((spKind==0)&&(spMask==34)&&(spJ==1)&&(spS==7))
+      { spAssert(spCoef==1,"nonzero cubic feature coefficient"); }
+      if(spSize[spS+1]<=1) { spLow=spLow+spCoef*spMon[spS+1]; }
+      else
+      {
+        spPick=0; spHave=0;
+        for(spI=1;spI<=3;spI++)
+        {
+          if(spBits[spS+1,spI])
+          { spHave++; if(spHave<=2) { spPick=spPick+spPow[spI]; } }
+        }
+        spRem[spPick+1]=spRem[spPick+1]+spCoef*(spMon[spS+1]/spMon[spPick+1]);
+      }
+    }
+    for(spS=0;spS<=7;spS++)
+    {
+      if(spSize[spS+1]==2)
+      {
+        spWeighted=subst(spRem[spS+1],Z(1),Z(1)*wt);
+        spWeighted=subst(spWeighted,Z(2),Z(2)*wt);
+        spWeighted=subst(spWeighted,Z(3),Z(3)*wt);
+        spAssert(deg(spWeighted)<=3*spDelta-4,"weighted grouped cofactor degree");
+        spValue=spPull(spRem[spS+1]);
+        spAssert(deg(spValue)<=3*spDelta-4,"old grouped cofactor degree");
+        spHigh=spHigh+spMon[spS+1]*spRem[spS+1];
+      }
+    }
+    spValue=spE+spLow+spHigh;
+    spAssert(reduce(spValue,spZGB)==0,"formal decomposition"); spFormal++;
+    spOldE=spPull(spE); spOldLow=spPull(spLow); spOldHigh=spPull(spHigh);
+    spValue=spOldE+spOldLow+spOldHigh;
+    spAssert(reduce(spValue,spOldGB)==0,"old decomposition"); spOld++;
+    spAssert(deg(spValue)<=3*spDelta,"old comparison ceiling");
+    if((spKind==0)&&(spMask==3)&&(spJ==1))
+    { spControl(spOldLow,"drop-low"); spControl(spOldHigh,"drop-high"); }
+    if((spKind==0)&&(spMask==34)&&(spJ==1))
+    {
+      spValue=subst(spRem[4],Z(3),0)+subst(spRem[4],Z(3),1);
+      spAssert(spValue==1,"feature-dependent grouped cofactor");
+      spValue=spPull(spMon[8]);
+      spAssert(reduce(spValue,spOldGB)!=0,"cubic feature product survives substitution");
+      spFeatureControl++;
+    }
+  }
+}
+}
+spAssert(spFormal==384,"formal completion"); spAssert(spOld==384,"old completion");
+spAssert(spControls==2,"control completion");
+spAssert(spFeatureControl==1,"feature-dependent fixture completion");
+print("RESULT formal="+string(spFormal)+" old="+string(spOld)+" controls="+string(spControls)+" feature_control="+string(spFeatureControl)+" assertions="+string(spChecks)+" failures="+string(spFailures));
+if(spFailures>0) { ERROR("CHECK FAILED"); }
+// Require expected counts, zero failures and no interpreter diagnostics, not shell exit alone.
+quit;
