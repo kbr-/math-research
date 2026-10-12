@@ -1,0 +1,20 @@
+# command: python3 -c 
+import importlib.util, time, re, sys
+sys.path.insert(0,'tools')
+spec=importlib.util.spec_from_file_location('na','tools/notebook-append.py'); na=importlib.util.module_from_spec(spec); spec.loader.exec_module(na)
+src=open('research/branches/near-half-pc-degree/notebook.html').read()
+print('notebook', round(len(src)/1e6,2), 'MB;', len(re.findall(r'<article\b', src)), 'articles; the function is called, not the command line')
+t=time.monotonic(); na.reporting_checks(); print('loading the finisher once:', round(time.monotonic()-t,3), 's')
+R='research/results/near-half-no-bearing-plan-check-20261012/'
+for name in ('next-step-majority-test.html','next-step-refused-plan.html','next-step-head.html'):
+    step=open(R+name).read(); t=time.monotonic()
+    try: na.refuse_no_bearing_plan(src, step); out='accepted'
+    except ValueError as e: out='REFUSED'
+    print(name, out, round(time.monotonic()-t,3),'s')
+
+# run 3fccc4773c, session nhpc-20261012-head-static-barrier; full output
+notebook 5.98 MB; 362 articles; the function is called, not the command line
+loading the finisher once: 0.036 s
+next-step-majority-test.html accepted 0.081 s
+next-step-refused-plan.html REFUSED 0.005 s
+next-step-head.html accepted 0.005 s
