@@ -1403,6 +1403,88 @@ def validate_suggestions(body, article, close):
                              'match (AGENTS.md)')
 
 
+FOLLOW_UP_TEXT_RE = re.compile(r'<strong>Follow-up\.</strong>(.*?)(?=</p>|</li>)', re.S)   # paragraphs and list items
+ATTEMPT_PHRASE_RE = re.compile(r'\b(?:next attempt|still owed|stays? owed)\b', re.I)
+SENTENCE_END_RE = re.compile(r'(?<=[.!?])\s+(?=[A-Z\\(])')        # "cf. the list" does not end a sentence
+REVIEWERS_IDEA_RE = re.compile(r"\breviewer(?:'s|’s) (?:candidate|suggestion|remark|proposal|idea|"
+                               r'construction|count|argument)\b', re.I)
+SET_ASIDE_RE = re.compile(r'\b(?:dropped|withdrawn|not taken|not named|set aside)\b', re.I)
+CHECKED_RE = re.compile(r'<p><strong>Suggestion checked\.</strong>((?:(?!</p>).)*)</p>', re.S)
+CHECKED_LEAST = 60     # plain characters; the paragraph is a prompt to check, which no tool can verify
+SUGGESTION_QUOTE = 8   # consecutive words of a listed suggestion
+# the heading with any attributes, and whatever lists follow it, nested ones included
+SUGGESTION_LIST_RE = re.compile(r"<h4\b[^>]*>\s*Reviewer(?:'s|&#39;s|’s)? suggestions[^<]*</h4>(.*?)"
+                                r'(?=<h4\b|<p>|<p\s|$)', re.S)
+
+
+def unverified_attempts(entry, next_html=None):
+    """What an entry plans on a suggestion nobody has checked: [(where, reason)].
+
+    Read: each Follow-up, in a paragraph or a list item, from the sentence that names a next attempt to its end;
+    and the next step.  Found: a sentence there that calls what it names unverified, or speaks of the reviewer's
+    candidate, suggestion or remark, unless the sentence sets it aside; eight consecutive words of an item of
+    the entry's list of reviewer's suggestions, its Record note excepted; and, for a follow-up, an item of that
+    list that points back with "as in the follow-up".
+
+    On 12 October 2026 a follow-up named as its next attempt "the reviewer's candidate, unverified", with a best
+    outcome built on it; one line of the next entry refuted the candidate's count, and that entry named "the
+    reviewer's remark" as its next attempt in turn.  The rule that a suggestion is verified before it is named
+    as a next step (AGENTS.md) had no check.  These are signals of wording: an attempt put in the author's own
+    words, without the label, is not seen ("the construction the reviewer proposed"), and a different attempt on
+    an object a suggestion names is, as is "the reviewer's count, proved above".  A sentence that sets one thing
+    aside is skipped whole, so a plan in the same sentence passes; and sentences are split only before a capital
+    or a formula.  A follow-up that is Closed, Developed or Promoted is not read."""
+    def plain(text):
+        return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', text))).strip()
+
+    def words(text):
+        return [w for w in (re.sub(r'^\W+|\W+$', '', t).lower() for t in plain(text).split()) if w]
+
+    items = [RECORD_RE.split(item)[0] for section in SUGGESTION_LIST_RE.finditer(entry)
+             for item in re.findall(r'<li\b[^>]*>(.*?)</li>', section.group(1), re.S)]
+    runs = {tuple(given[i:i + SUGGESTION_QUOTE]) for given in map(words, items)
+            for i in range(len(given) - SUGGESTION_QUOTE + 1)}
+    points_back = any(re.search(r'\bas in the follow-up\b', plain(item), re.I) for item in items)
+    plans = []
+    for follow in FOLLOW_UP_TEXT_RE.findall(entry):
+        if re.match(r'\s*(?:Closed|Developed|Promoted)\b', plain(follow)):
+            continue                                    # it removes its item and plans nothing
+        sentences = SENTENCE_END_RE.split(plain(follow))
+        first = next((i for i, s in enumerate(sentences) if ATTEMPT_PHRASE_RE.search(s)), None)
+        if first is not None:
+            plans.append(('follow-up', sentences[first:]))
+    if next_html is not None:
+        plans.append(('next step', SENTENCE_END_RE.split(plain(next_html))))
+    found = []
+    for where, sentences in plans:
+        live = [s for s in sentences if not SET_ASIDE_RE.search(s)]
+        have = words(' '.join(live))
+        if any(re.search(r'\bunverified\b', s, re.I) for s in live):
+            found.append((where, 'calls what it names unverified'))
+        elif any(REVIEWERS_IDEA_RE.search(s) for s in live):
+            found.append((where, "names the reviewer's candidate, suggestion or remark"))
+        elif any(tuple(have[i:i + SUGGESTION_QUOTE]) in runs for i in range(len(have) - SUGGESTION_QUOTE + 1)):
+            found.append((where, f"quotes {SUGGESTION_QUOTE} consecutive words of an item of the entry's list of "
+                                 "reviewer's suggestions"))
+        elif where == 'follow-up' and points_back:
+            found.append((where, "is what an item of the entry's list of reviewer's suggestions points to "
+                                 '("as in the follow-up")'))
+    return found
+
+
+def refuse_unverified_attempt(entry, next_html=None):
+    """Refuse such a plan unless the entry says, after a fixed label, what was checked of the suggestion."""
+    found = unverified_attempts(entry, next_html)
+    checked = CHECKED_RE.search(entry)
+    said = len(re.sub(r'<[^>]+>', ' ', checked.group(1)).strip()) if checked else 0
+    if found and said < CHECKED_LEAST:
+        where, reason = found[0]
+        raise ValueError(f"The {where} {reason}: a reviewer's suggestion is an unverified lead, verified before it "
+                         'is named as a next step (AGENTS.md). Say in a <p><strong>Suggestion checked.</strong> '
+                         f'paragraph of the entry, in at least {CHECKED_LEAST} characters, what of it was checked '
+                         'and how, or name another attempt')
+
+
 def claimless_build(body, article):
     """An entry on a build item that declares no claims: a framework build has no all-parameter claim.
 
@@ -1490,6 +1572,7 @@ def validate_marker(body, marker, draining=None):
     validate_general(body, article, close)
     validate_paragraphs(body, article, close)
     validate_suggestions(body, article, close)
+    refuse_unverified_attempt(body[article:close])      # the entry as it stands at the end, edits after appending included
     validate_leads(body, article, close, draining=draining)
     validate_convergence(body, article, close)
     validate_review_builds(body, article, close)

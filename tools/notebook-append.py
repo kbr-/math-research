@@ -395,6 +395,10 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         if parked and goal_open(source) and not waiting_kind:
             raise ValueError(f'the next step parks the goal ("{parked.group(0)}"); while the goal is open '
                              'the next step is research: open a new line or test a new idea (AGENTS.md)')
+    try:        # the finisher's rule, with the next step, which the finisher does not see
+        reporting_checks().refuse_unverified_attempt(entry, next_html)
+    except ValueError as error:
+        raise ValueError(str(error)[0].lower() + str(error)[1:]) from None
     entry = with_stand_reason(source, entry, committed, reason)
     own = branch_checks(tools)
     if own:

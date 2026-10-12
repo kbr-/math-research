@@ -476,6 +476,16 @@ sys.exit(compute.main())
         for content in accepted:
             with self.subTest(content=content[:160]):
                 ft.validate_marker(content, marker)
+        # an entry edited after it was appended is held to the rule on unverified suggestions here
+        plan = ("<p><strong>Follow-up.</strong> Continuing: open. Next attempt, the reviewer's candidate, "
+                'unverified: an extension by products.</p>')
+        with self.assertRaisesRegex(ValueError, 'follow-up calls what it names unverified'):
+            ft.validate_marker(record(['research'], tagged, general=general + plan), marker)
+        # a follow-up that closes its item plans nothing, whatever it reports of a past attempt
+        past = ("<p><strong>Follow-up.</strong> Closed: restatement. <strong>Not examined.</strong> What the item's "
+                "last entry named as its next attempt; this is the reviewer's argument.</p>")
+        self.assertEqual(ft.unverified_attempts(f'<article>{past}</article>'), [])
+        self.assertTrue(ft.unverified_attempts(f'<article>{past.replace("Closed: restatement.", "Continuing.")}</article>'))
 
     def test_scratchpad_cap(self):
         import importlib.util

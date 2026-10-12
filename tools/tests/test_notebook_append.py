@@ -302,6 +302,65 @@ class NotebookAppendTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, r'next step has character references without their & \(quot;\)'):
             tool.append(NOTEBOOK, '<article id="a3">three</article>', '<p>the (quot;new) step</p>')
 
+    def test_an_unverified_suggestion_is_not_named_as_a_next_attempt_without_a_check(self):
+        suggestion = ('a core near half extended by variables defined as the products of pairs of its variables, '
+                      'whose plateau sits near a quarter')
+        listed = ("<h4>Reviewer's suggestions, unverified</h4><ul><li>" + suggestion.capitalize()
+                  + '. <strong>Record.</strong> Searched for extension variables defined as products of pairs and '
+                  'the closure at twice the cutoff: no match.</li></ul>')
+
+        def entry(follow, extra=''):
+            return f'<article id="a3">{listed}{extra}<p><strong>Follow-up.</strong> {follow}</p></article>'
+        said = entry("Continuing: the question is open. Next attempt, the reviewer's candidate, unverified: " + suggestion + '.')
+        with self.assertRaisesRegex(ValueError, 'follow-up calls what it names unverified'):
+            tool.append(NOTEBOOK, said)
+        quoted = entry('Continuing: open. Next attempt: ' + suggestion + ', to prove or refute.')
+        with self.assertRaisesRegex(ValueError, "follow-up quotes 8 consecutive words"):
+            tool.append(NOTEBOOK, quoted)
+        plain_entry = entry('Continuing: open. Next attempt: bound the degree of the input from the width.')
+        with self.assertRaisesRegex(ValueError, 'next step quotes 8 consecutive words'):
+            tool.append(NOTEBOOK, plain_entry, '<p>The entry takes ' + suggestion + '.</p>')
+        # the Record note is the author's search, not the suggestion; and other attempts pass
+        self.assertIn('a3', tool.append(NOTEBOOK, plain_entry, '<p>Search for extension variables defined as '
+                                        'products of pairs and the closure at twice the cutoff again.</p>'))
+        # a sentence before the next attempt may use the word; a short paragraph does not lift the refusal
+        before = entry('Continuing: the suggestion stays unverified and is dropped. Next attempt: the width bound.')
+        self.assertIn('a3', tool.append(NOTEBOOK, before))
+        with self.assertRaisesRegex(ValueError, 'Suggestion checked'):
+            tool.append(NOTEBOOK, quoted.replace(listed, listed + '<p><strong>Suggestion checked.</strong> Yes.</p>'))
+        checked = ('<p><strong>Suggestion checked.</strong> Its count of the shattered set was computed for four '
+                   'variables by hand and agrees with the suggestion.</p>')
+        self.assertIn('a3', tool.append(NOTEBOOK, quoted.replace(listed, listed + checked)))
+        # the two follow-ups of 12 October 2026 that prompted the check, as recorded, with their lists' items
+        pointing = ("<h4 id=\"s\">Reviewer's suggestions, unverified</h4><ol><li>A colon family isolating Q, as in "
+                    'the follow-up. <strong>Record.</strong> Searched for a colon family isolating a shattered set: '
+                    'no general statement.</li></ol>')
+        first = ("Continuing: open. Next attempt, the reviewer's candidate, unverified: a core near half on "
+                 'variables q, extended by variables defined as the products.')
+        second = ('Continuing: the question is open. Next attempt on its return, toward a proof and not a '
+                  "construction: ask whether the engine has a family that removes them; the reviewer's remark is "
+                  'that the degree of such an input is about the number of outside variables.')
+        for follow, reason in ((first, 'calls what it names unverified'), (second, "names the reviewer's")):
+            with self.assertRaisesRegex(ValueError, reason):
+                tool.append(NOTEBOOK, f'<article id="a3">{pointing}<p><strong>Follow-up.</strong> {follow}</p></article>')
+        own_words = 'Continuing: open. Next attempt: bound the degree of an isolating input from the width.'
+        with self.assertRaisesRegex(ValueError, 'as in the follow-up'):
+            tool.append(NOTEBOOK, f'<article id="a3">{pointing}<p><strong>Follow-up.</strong> {own_words}</p></article>')
+        # a follow-up in a list item is read; with no list and no label nothing is found
+        in_item = ('<article id="a3"><ul><li data-check="x:s1">Tried. <strong>Follow-up.</strong> Continuing: next '
+                   'attempt, the unverified candidate (cf. the list) again.</li></ul></article>')
+        with self.assertRaisesRegex(ValueError, 'calls what it names unverified'):
+            tool.append(NOTEBOOK, in_item)
+        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {own_words}</p></article>'))
+        # a sentence that sets a suggestion aside is not a plan on it, in a follow-up or a next step
+        aside = ('Continuing: open. Next attempt: the width bound. A remark on series stays unverified and is '
+                 'dropped.')
+        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {aside}</p></article>'))
+        entry3 = '<article id="a3">three</article>'
+        self.assertIn('a3', tool.append(NOTEBOOK, entry3, '<p>The unverified count is withdrawn. Prove the bound.</p>'))
+        with self.assertRaisesRegex(ValueError, 'next step calls what it names unverified'):
+            tool.append(NOTEBOOK, entry3, "<p>Take the unverified count and build on it.</p>")
+
     def test_a_next_step_that_parks_an_open_goal_is_refused(self):
         entry, survey = '<article id="a3">three</article>', '<article id="a3" data-kind="survey">three</article>'
         opened = '<section id="open-statements"><ol><li>Statement one is open.</li></ol></section>' + NOTEBOOK
