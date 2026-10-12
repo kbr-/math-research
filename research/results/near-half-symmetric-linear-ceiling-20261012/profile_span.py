@@ -29,6 +29,16 @@ would close symmetric witnesses for such pairs of rows; a D* of the order of 2^w
 be a pair of dense rows with a symmetric barrier far above the width, the outcome the review of 12 October named
 as the one that would matter.
 
+Added after the first run, whose dense pairs were drawn with different numbers of variables and so were not two
+rows of one cube: dense pairs now have equal n, and the cap is n - 1.  Added too, the case the goal's widths give:
+rows whose atoms have one variable or none (w forms with distinct columns, 2^w > n), with no free variable and no
+pair to fix, alone and as a pair; the search stops at w + 5.  An untested expectation, on which nothing rests: a
+row of this kind alone already leaves no symmetric barrier a few steps above its width.
+Refuted by: a row of single columns with no height through w + 5, alone and in its pair.
+Possible because: with no free variable and no pair only the profiles with other sets of odd labels are available.
+A pair of rows is not a cover: a height that is absent for a pair shows only that these two rows do not cap the
+barrier, not that a cover containing them has one.
+
 Usage: profile_span.py OUT.json SEED WIDEST   (widths 1 to WIDEST; at width four fewer samples)
 """
 import itertools
@@ -53,7 +63,7 @@ def generators(w, alpha, c, limit):
     odd = {mu for mu in labels if alpha[mu] % 2}
     nonempty = [mu for mu in labels if alpha[mu]]
     found = {}
-    for size in range(len(nonempty) + 1):
+    for size in range(min(len(nonempty), limit) + 1):
         for tau in itertools.combinations(nonempty, size):
             shifted_c = c
             for mu in tau:
@@ -150,7 +160,7 @@ def random_alpha(w, rng, free, low, high):
 def main(out, seed, widest):
     rng = random.Random(seed)
     widths = range(1, widest + 1)
-    report = {'formula': [], 'recorded': [], 'free': [], 'dense': []}
+    report = {'formula': [], 'recorded': [], 'free': [], 'dense': [], 'single': []}
     for _ in range(40):                                              # control one
         w = rng.choice((1, 2, 3))
         while True:
@@ -177,9 +187,28 @@ def main(out, seed, widest):
         for _ in range(40 if w < 4 else 3):
             first = random_alpha(w, rng, 0, 1 if w > 1 else 2, 5)
             second = random_alpha(w, rng, 0, 1 if w > 1 else 2, 5)
-            cap = 2 ** (w + 1) + 2 * w + 6
+            while sum(second) != sum(first):                         # the two rows live in one cube
+                second = random_alpha(w, rng, 0, 1 if w > 1 else 2, 5)
+            cap = min(sum(first) - 1, 2 ** (w + 1) + 2 * w + 6)
             got = least_height(w, [(first, 0), (second, through_ones(w, second))], cap)
-            report['dense'].append({'w': w, 'rows': [first, second], 'height': got, 'cap': cap})
+            report['dense'].append({'w': w, 'n': sum(first), 'rows': [first, second], 'height': got, 'cap': cap})
+    for w in (3, 4, 5):                                              # single columns: every atom of size one or zero
+        for n in (12, 16, 20):
+            if n >= 1 << w:
+                continue
+            for _ in range(4):
+                rows = []
+                for _ in range(2):
+                    alpha = [0] * (1 << w)
+                    for mu in rng.sample(range(1, 1 << w), n):
+                        alpha[mu] = 1
+                    rows.append(alpha)
+                if not (spanning(w, rows[0]) and spanning(w, rows[1])):
+                    continue
+                cap = w + 5
+                alone = least_height(w, [(rows[0], 0)], cap)
+                both = least_height(w, [(rows[0], 0), (rows[1], through_ones(w, rows[1]))], cap)
+                report['single'].append({'w': w, 'n': n, 'rows': rows, 'row_alone': alone, 'pair': both, 'cap': cap})
     with open(out, 'w') as handle:
         json.dump(report, handle)
     summary = {
@@ -191,7 +220,10 @@ def main(out, seed, widest):
         'dense rows, heights by w': {w: sorted({(r['height'] if r['height'] is not None else 'none through cap')
                                                 for r in report['dense'] if r['w'] == w}, key=str)
                                      for w in widths},
-        'dense rows, caps by w': {w: 2 ** (w + 1) + 2 * w + 6 for w in widths},
+        'dense rows, none through cap': [[r['w'], r['n'], r['cap']] for r in report['dense'] if r['height'] is None],
+        'single columns, (w, n, row alone, pair) counted': sorted(
+            [list(key) + [count] for key, count in __import__('collections').Counter(
+                (r['w'], r['n'], str(r['row_alone']), str(r['pair'])) for r in report['single']).items()], key=str),
     }
     print(json.dumps(summary))
 
