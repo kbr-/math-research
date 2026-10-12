@@ -449,6 +449,8 @@ class NotebookAppendTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, '1 of 1 summing-up sentences are not answered'):
             tool.refuse_unanswered(entry, form)
         tool.refuse_unanswered(entry, form.replace('rests on: \n', 'rests on: part one of lem:the-lemma\n'))
+        with self.assertRaisesRegex(ValueError, '(?s)limits them by a word the sentence lacks.*the answer says: only'):
+            tool.refuse_unanswered(entry, form.replace('rests on: \n', 'rests on: lem:the-lemma, one side only\n'))
         tool.refuse_unanswered('<article id="new"><p>A sentence with none of it in a body paragraph.</p></article>',
                                None)                                   # nothing to answer, nothing asked
 

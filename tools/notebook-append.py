@@ -556,6 +556,9 @@ def refuse_unanswered(entry, answers):
         raise ValueError(f'{len(left)} of {len(rows)} summing-up sentences are not answered in the --answers '
                          'file (a sentence changed since its answer counts as new):\n'
                          + '\n'.join(f'  {key} [{where}] {sentence[:160]}' for key, where, sentence in left))
+    gaps = draft_claim_sentences.qualifier_gaps(entry, answers)
+    if gaps:                    # the answer admits a limit that the sentence does not carry
+        raise ValueError(draft_claim_sentences.qualifier_gaps_report(gaps))
 
 
 def main():

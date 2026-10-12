@@ -299,6 +299,52 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         changed = self.DRAFT.replace('None of the points hides', 'None of the points ever hides')
         self.assertEqual([where for _, where, _ in dcs.unanswered(changed, filled)], ['New mathematics'])
 
+    def test_an_answer_that_limits_its_sentence_by_a_word_the_sentence_lacks_is_a_gap(self):
+        form = dcs.answers_template(self.DRAFT)
+        answer = lambda words: form.replace('rests on: \n', f'rests on: {words}\n')
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('part two of prop:local-count-reach')), [])
+        gaps = dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach, one direction only, as read'))
+        self.assertEqual([(where, missing) for _, where, _, missing in gaps],
+                         [('New mathematics', ['as read', 'one direction', 'only']),
+                          ('Follow-up', ['as read', 'one direction', 'only'])])
+        self.assertIn('the answer says: as read, one direction, only', dcs.qualifier_gaps_report(gaps))
+        # the registered words in quotation marks are the claim's, not the answer's limit
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach, "under a count only"')), [])
+        # an answer that rests on nothing limits nothing; an unanswered sentence is the other check's
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('none: only a statement of what was not done')), [])
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, form), [])
+        # the sentence itself carries the limit
+        limited = self.DRAFT.replace('The bound holds for', 'Under a count only, the bound holds for')
+        left = dcs.qualifier_gaps(limited, dcs.answers_template(limited).replace(
+            'rests on: \n', 'rests on: prop:local-count-reach under a count only\n'))
+        self.assertEqual(len(left), 2)
+        self.assertFalse(any('Under a count only' in sentence for _, _, sentence, _ in left))
+        # or the answer says where the entry states it, in five or more of the entry's consecutive words
+        said = answer('prop:local-count-reach, given a count; stated in: A count of fewer than zeros')
+        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 2)             # not consecutive in the entry
+        said = answer('prop:local-count-reach, given a count; stated in: "the form of prop:local-count-reach, with"')
+        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, said)), 2)             # the passage lacks "given"
+        stating = self.DRAFT.replace('<h4>Reading</h4>', '<h4>Reading</h4><p>All this is given a count of the '
+                                     'points in each unit.</p>')
+        form2 = dcs.answers_template(stating)
+        ok = form2.replace('rests on: \n', 'rests on: prop:local-count-reach, given a count; stated in: this is '
+                           'given a count of the points\n')
+        self.assertEqual(dcs.qualifier_gaps(stating, ok), [])
+        # the sentence asked about cannot be its own place of statement, and curly quotation marks are quotes
+        own = form2.replace('rests on: \n', 'rests on: prop:local-count-reach given it; stated in: the reach is '
+                            'the same at every tilt\n')
+        self.assertIn('Follow-up', [where for _, where, _, _ in dcs.qualifier_gaps(stating, own)])
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach, “under a count only”')), [])
+        # the count over a file of articles counts a repeated sentence once
+        two = self.DRAFT + self.DRAFT.replace('id="entry-y"', 'id="entry-z"')
+        out = dcs.gaps_count(two, answer('prop:local-count-reach, one side only'), 1)
+        self.assertIn('2\t2\tentry-y', out)
+        self.assertTrue(out.endswith('2 distinct answered summing-up sentences in 2 articles; 2 of them have an '
+                                     'answer that limits the sentence by a word it lacks (second column), from 1 '
+                                     'answers files.'))
+        self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach given it; stated in: '
+                                                                   'the form of'))), 2)   # fewer than five words
+
 
 if __name__ == '__main__':
     unittest.main()

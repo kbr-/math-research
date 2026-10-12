@@ -325,6 +325,75 @@ def grounded(answer):
     return len(answer.split()) >= ANSWER_WORDS and bool(GROUND.search(answer) or cited(answer))
 
 
+# Words by which an answer limits what its sentence rests on.  In three of four entries in a row of 12 October
+# 2026 a summing-up sentence was wider than its statement, and in those three the answer written for that sentence
+# already carried the limit the sentence lacked ("one direction only", "as read and not checked", "omits").
+QUALIFIER = re.compile(r'\b(one direction|only|conditional(?:ly)?|given|under|provided|not checked|unverified|'
+                       r'unread|omits?|up to|heuristic(?:ally)?|assum\w+|as read)\b', re.I)
+STATED = re.compile(r'\bstated in:\s*(.+)$', re.I)
+STATED_WORDS = 5
+
+
+def plain(fragment):
+    return re.sub(r'[^a-z0-9 ]+', ' ', text(fragment).lower()).split()
+
+
+def qualifier_gaps(draft, answers):
+    """[(key, section label, sentence, [qualifiers])] for the answered summing-up sentences whose answer limits
+    the sentence by a word of QUALIFIER, outside quotation marks, that the sentence does not hold, unless the
+    answer ends "stated in:" with at least STATED_WORDS consecutive words of the draft, outside that sentence
+    and holding each missing word: the place where the entry itself states the limit.  An answer beginning
+    "none:" limits nothing.  A word match: an answer reworded without the word passes, and a reviewer of the
+    first form found any five words of the draft accepted (12 October 2026)."""
+    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    words = ' ' + ' '.join(plain(draft)) + ' '
+    found = []
+    for key, where, sentence in summing_up(draft):
+        answer = given.get(key, '')
+        if not grounded(answer) or re.match(r'\s*none:', answer, re.I):
+            continue
+        stated = STATED.search(answer)
+        own = STATED.sub('', answer)
+        limits = {m.lower() for m in QUALIFIER.findall(re.sub(r'"[^"]*"|“[^”]*”', ' ', own))}
+        missing = sorted(limits - {m.lower() for m in QUALIFIER.findall(text(sentence))})
+        quote = ' '.join(plain(stated.group(1))) if stated else ''
+        # the passage quoted is the entry's, lies outside the sentence asked about, and holds each missing word
+        elsewhere = words.replace(f' {" ".join(plain(sentence))} ', ' | ')
+        holds = {m.lower() for m in QUALIFIER.findall(quote)}
+        if missing and not (len(quote.split()) >= STATED_WORDS and f' {quote} ' in elsewhere
+                            and set(missing) <= holds):
+            found.append((key, where, sentence, missing))
+    return found
+
+
+def gaps_count(draft, answers, files):
+    """For a file of several articles: per article, its answered summing-up sentences and the gaps among them;
+    the totals count a key once, since a sentence repeated in many articles has one answer."""
+    lines, keys, flagged = [], set(), set()
+    for ident, body in re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S):
+        open_keys = {key for key, _, _ in unanswered(body, answers)}
+        answered = [key for key, _, _ in summing_up(body) if key not in open_keys]
+        gaps = qualifier_gaps(body, answers)
+        if answered:
+            keys.update(answered)
+            flagged.update(key for key, _, _, _ in gaps)
+            lines.append(f'{len(answered)}\t{len(gaps)}\t{ident}')
+            lines += [f'    {key} [{where}] {sentence[:150]} | the answer says: {", ".join(missing)}'
+                      for key, where, sentence, missing in gaps]
+    lines.append(f'{len(keys)} distinct answered summing-up sentences in {sum(1 for l in lines if not l.startswith(" "))} '
+                 f'articles; {len(flagged)} of them have an answer that limits the sentence by a word it lacks '
+                 f'(second column), from {files} answers files.')
+    return '\n'.join(lines)
+
+
+def qualifier_gaps_report(gaps):
+    lines = [f'{len(gaps)} summing-up sentences whose answer limits them by a word the sentence lacks; put the '
+             f'limit into the sentence, or end the answer "stated in:" with {STATED_WORDS} or more consecutive '
+             'words of the entry that state it:']
+    return '\n'.join(lines + [f'{key} [{where}] {sentence}\n  the answer says: {", ".join(missing)}'
+                              for key, where, sentence, missing in gaps])
+
+
 RUN_LOG = ROOT / 'research' / 'logs' / 'claim-searches.jsonl'
 
 
@@ -559,8 +628,15 @@ def main():
                         'of this file; for a file of several articles without a source, their number in each')
     parser.add_argument('--lines', action='store_true', help='print only the sentences that name line numbers and '
                         'the body paragraphs that name none; for a file of several articles, the two counts in each')
+    parser.add_argument('--gaps', nargs='+', metavar='ANSWERS', help='print only, for each article of the file, '
+                        'its summing-up sentences answered in these answers files and how many of the answers '
+                        'limit their sentence by a word it lacks, with those sentences')
     args = parser.parse_args()
     draft = pathlib.Path(args.draft).read_text()
+    if args.gaps:
+        answers = '\n'.join(pathlib.Path(name).read_text() for name in args.gaps)
+        print(gaps_count(draft, answers, len(args.gaps)))
+        return 0
     if args.source or args.lines:
         articles = re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)
         if len(articles) > 1 and not args.source:
@@ -621,6 +697,10 @@ def main():
                   + (':' if open_rows else '.'))
             for key, where, sentence in open_rows:
                 print(f'{key} [{where}] {sentence}\n  rests on: ')
+            gaps = qualifier_gaps(draft, answers.read_text())
+            if gaps:
+                print(qualifier_gaps_report(gaps))
+                open_rows = open_rows + gaps
     return 1 if unregistered or missing or open_rows else 0
 
 
