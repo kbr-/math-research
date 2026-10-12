@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Rightmost point window criterion](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"],
+    "label": "In a model of prime sums at one height: a point rightmost in the whole configuration shows on a window of lengths unless the other points near its height carry a weighted count of at least its multiplicity; a progression that hides; the link to weighted prime sums"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:rightmost-point-window-criterion",
+      "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; Z a multiset of points rho = beta + i gamma with multiplicities m_rho >= 1, tau real, sum over Z of m_rho |a(rho - i tau)| e^(beta_rho u) finite at the two ends of each window used; P(u) = sum m_rho a(rho - i tau) e^((rho - i tau) u). (1) If rho_0 = beta_0 + i tau is in Z with multiplicity m_0, every point has beta_rho <= beta_0, U1 real, R > 0 and |P(u)| <= E(u) on [U1, U1 + R], then m_0 <= sup over the window of E(u) e^(-beta_0 u)/a(beta_0) + sum over the other points of m_rho e^(-(beta_0 - beta_rho) U1) min(1, 16/(R^2 (gamma_rho - tau)^2)). (2) If moreover U1 >= 0 and, for some eta > 0 and g > 0, the other points with beta_rho > beta_0 - eta have multiplicities at most m' and heights gamma with |gamma - tau| >= g and pairwise distances at least g, and the remaining points have at most kappa log(|t| + 3) of them, with multiplicity, in each |gamma - t| <= 1, then m_0 <= sup E(u) e^(-beta_0 u)/a(beta_0) + (16 pi^2/3) m'/(R g)^2 + kappa e^(-eta U1) [log(|tau| + 3) + (32/R^2)(1.645 log(|tau| + 4) + 1.9)]. (3) For W continuous on the line, supported in [0, l], and the points beta_0 + i(tau + j g), j an integer, unit multiplicities, with a(beta_0 + i lambda) = O(1/lambda^2): P(u) = (2 pi/g) sum over integers n of W(2 pi n/g - u) e^(2 pi n beta_0/g), which is 0 on every window [U1, U1 + R] with no multiple of 2 pi/g in [U1, U1 + R + l]. (4) Under the premise of the Riesz mean formula from one premise, for W the hat function on [0, l] and tau real with i tau not a zero: sum over n of Lambda(n) n^(-i tau) W(log n - u) = a(1 - i tau) e^((1 - i tau) u) - P(u) - sum over q >= 1 of a(-2q - i tau) e^(-(2q + i tau) u) for u > 0, P taken over the nontrivial zeros.",
+      "assessment": "Working elementary proof of (1) to (3): P is averaged against a triangle on the window after division by the rightmost point's exponential, whose transform at a point with real part at most 0 is at most min(1, 16/(R^2 lambda^2)) in modulus, and |a(beta + i lambda)| <= a(beta) <= a(beta_0) for a nonnegative weight on v >= 0; (2) is (1) with a sum over separated heights and a shell count; (3) is Poisson summation, the transport to a continuous weight of the progression named in the fourteenth route review for the sharp cutoff. The mechanism is that of the short resonance-free range, a recorded theorem in the Gram model, carried to prime sums at one height with a pointwise premise. Part (4) is the second difference in the length of the Riesz mean formula and is conditional on that formula's premise. Numerical control: (3) on a truncated progression; (1) in 200 random configurations, a weak check of the direction only, the constants never binding; no instance computed for (2). For exact hiding at equal real parts and unit multiplicities, (2) excludes R g > 7.26 and (3) realises R g < 2 pi - l g.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Answers in part the fourteenth review's test on Turan's line, in a model: a point rightmost in the whole configuration shows on a window of lengths unless near-tied points stand closer in height than about 7.3 divided by the window's logarithmic length; the bound uses the near-tied points' largest multiplicity and a local count of the lower points. An arithmetic progression of spacing below 2 pi over that length hides exactly. For points closer than that and not in progression nothing is proved; an unverified construction of the reviewer suggests about kappa log tau of them can hide.",
+      "next_action": "Verify or break the reviewer's construction of close points that hide a strictly rightmost one.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof of (1) to (3) in the entry with a numerical control of (1) and (3); (4) conditional on the registered formula's premise.",
+        "formalization": "No formalization.",
+        "significance": "Context: a model statement on one conditional line of the route; the mechanism is on record in another setting. No novelty claimed.",
+        "relationships": "Carries the mechanism of the short resonance-free range to Turan's setting; replaces the margin of the margin-rightmost zero count by a separation in height, for a premise on a window of lengths."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:rightmost-point-window-criterion", "cites", "thm:short-resonance-free-range", "The same average with a triangular weight, there for the Hilbert-Schmidt norm of the Gram form over a range of bandwidths, with the threshold 14.5 sqrt(m'/m_*)/g; here for a pointwise bound on prime sums at one height. Different statements; neither implies the other."],
+    ["prop:rightmost-point-window-criterion", "cites", "prop:margin-rightmost-zero-count", "That proposition forces a large value at one length for a point rightmost by a margin; this one needs no margin but a separation in height and a window of lengths."],
+    ["prop:rightmost-point-window-criterion", "cites", "cor:sparse-off-line-exclusion", "The conditional corollary on Turan's line; in the model this criterion replaces its small-constant zero count by a separation in height of the near-tied points, for a point rightmost in the whole configuration."],
+    ["prop:rightmost-point-window-criterion", "depends_on", "lem:riesz-mean-formula-one-premise", "Part (4) is the second difference in the length of that lemma's part (1), under its premise."],
+    ["prop:rightmost-point-window-criterion", "cites", "prop:tilted-local-count-reach", "The shell count of its part (2) is reused for the points below the margin."]
+  ]
+}
