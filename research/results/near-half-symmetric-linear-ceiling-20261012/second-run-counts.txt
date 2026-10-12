@@ -1,0 +1,16 @@
+# command: python3 -c 
+import json
+from collections import Counter
+r=json.load(open('research/results/near-half-symmetric-linear-ceiling-20261012/span-w3-second.json'))
+print('free', sorted(Counter((x['w'],x['height']) for x in r['free']).items()))
+print('dense', len(r['dense']), sorted(Counter((x['w'], str(x['height'])) for x in r['dense']).items()))
+print('dense pairs with no height, n odd:', sum(x['n']%2 for x in r['dense'] if x['height'] is None), 'of', sum(x['height'] is None for x in r['dense']), '; pairs with n odd:', sum(x['n']%2 for x in r['dense']))
+print('single', len(r['single']), sorted(Counter((x['w'],x['n'],str(x['row_alone']),str(x['pair'])) for x in r['single']).items()))
+print('recorded', [(x['w'],x['height']) for x in r['recorded']])
+
+# run 9629e94194, session nhpc-20261012-symmetric-barrier-test; full output
+free [((1, 1), 12), ((2, 2), 4), ((2, 3), 8), ((3, 3), 3), ((3, 4), 9)]
+dense 120 [((1, '1'), 40), ((2, '2'), 27), ((2, 'None'), 13), ((3, '3'), 16), ((3, '4'), 17), ((3, 'None'), 7)]
+dense pairs with no height, n odd: 20 of 20 ; pairs with n odd: 61
+single 16 [((4, 12, '4', '4'), 1), ((4, 12, 'None', '4'), 1), ((4, 12, 'None', '5'), 2), ((5, 12, '5', '5'), 1), ((5, 12, 'None', '6'), 3), ((5, 16, 'None', '6'), 4), ((5, 20, '5', '5'), 1), ((5, 20, 'None', '6'), 3)]
+recorded [(2, 3), (2, 3), (2, 3), (3, 4), (3, 4), (3, 4)]
