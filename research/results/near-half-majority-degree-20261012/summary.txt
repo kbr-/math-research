@@ -1,0 +1,27 @@
+# command: python3 -c 
+import json, math
+from math import comb, log
+rows=[json.loads(l) for l in open('research/results/near-half-majority-degree-20261012/sizing.jsonl')]
+print(len(rows),'instances;', sorted({(r['w'],r['n']) for r in rows}))
+print('degree equals k+1 in', sum(r['exact_degree']==r['w']//2+1 for r in rows),'; within point bound', sum(r['degree_within_point_bound'] for r in rows),'; monotone', sum(1 for r in rows if r.get('monotone')), 'of', sum(1 for r in rows if 'monotone' in r))
+print('point bounds', min(r['point_bound'] for r in rows), 'to', max(r['point_bound'] for r in rows), '; draws total', sum(r['draws'] for r in rows), '; memory flag false in', sum(not r['memory_within_estimate'] for r in rows), 'peak there', sorted({r['peak_bytes'] for r in rows if not r['memory_within_estimate']}))
+def E(w,n): k=w//2; m=n+1; return (m*m/4)*comb(w,k+1)**2/comb(n,k+1)
+for w,ns in ((5,(14,16,18,22,24,150,300,1000)),(7,(14,18,22,86,200,1000)),(19,(1900,))):
+    print('w',w,'expected coincidences bound', {n: float('%.3g'%E(w,n)) for n in ns}, 'least n with bound below 1:', next(n for n in range(w,10**6) if E(w,n)<1))
+for w,n in ((5,150),(5,300),(7,86),(7,200)):
+    k=w//2; print('w',w,'n',n,'monomials through degree k+3:', sum(comb(n,j) for j in range(k+4)))
+n,w,m1=1900,19,900
+print('first moment lower bound, ln:', round(-2*log(n/2+1)-log(2)+m1*log(1+1/(w+1)),1), 'with m_1 =',m1)
+
+# run 9d9535350e, session nhpc-20261012-majority-degree-test; full output
+24 instances; [(5, 14), (5, 16), (5, 18), (5, 22), (5, 24), (7, 14), (7, 18), (7, 22)]
+degree equals k+1 in 24 ; within point bound 24 ; monotone 6 of 6
+point bounds 7 to 13 ; draws total 31 ; memory flag false in 3 peak there [193155072, 193269760]
+w 5 expected coincidences bound {14: 15.5, 16: 12.9, 18: 11.1, 22: 8.59, 24: 7.72, 150: 1.03, 300: 0.508, 1000: 0.151} least n with bound below 1: 155
+w 7 expected coincidences bound {14: 68.8, 18: 36.1, 22: 22.1, 86: 1.09, 200: 0.191, 1000: 0.00741} least n with bound below 1: 90
+w 19 expected coincidences bound {1900: 4.67e-11} least n with bound below 1: 103
+w 5 n 150 monomials through degree k+3: 612422931
+w 5 n 300 monomials through degree k+3: 19918128986
+w 7 n 86 monomials through degree k+3: 507211016
+w 7 n 200 monomials through degree k+3: 85010294791
+first moment lower bound, ln: 29.5 with m_1 = 900
