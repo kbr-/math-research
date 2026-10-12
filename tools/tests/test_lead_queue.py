@@ -566,7 +566,46 @@ class LeadQueueTest(unittest.TestCase):
         # a claim of an entry that developed the item itself, or that came before the item was queued, is not listed
         own = other.replace(f'data-{self.q[0][0]}="{self.q[0][1]}"', 'data-check="t1:s1"')
         self.assertEqual(lq.claims_elsewhere(queued.replace(listing, listing + own), summaries, 't1:s1'), [])
-        self.assertEqual(lq.claims_elsewhere(queued.replace(listing, other + listing), summaries, 't1:s1'), [])
+        before = queued.replace(listing, other + listing)
+        self.assertEqual(lq.claims_elsewhere(before, summaries, 't1:s1'), [])
+        # ... but the status lists it apart, marked as earlier, and the count over the queue sees it
+        old = lq.claims_elsewhere(before, summaries, 't1:s1', earlier=True)
+        self.assertEqual([pair[1:] for pair in old], [('lem:x', 'o')])
+        self.assertIn(f'  {old[0][0]} lem:x in #o [earlier]', lq.item_status(before, 't1:s1', summaries))
+        self.assertNotIn('[earlier]', '\n'.join(lq.item_status(body, 't1:s1', summaries)))
+        self.assertEqual(lq.claims_elsewhere(body, summaries, 't1:s1', earlier=True), [])
+        self.assertEqual(lq.claims_elsewhere(queued.replace(listing, own + listing), summaries, 't1:s1',
+                                             earlier=True), [])                       # the item's own entry
+        self.assertEqual(lq.older_nearest(body, summaries)[0], 0)
+        self.assertEqual(lq.older_nearest(before, summaries)[:2], (1, 1))
+        apart = lq.add(before, 'check', 'by-hand', 'a talk', a)
+        gone = re.sub(r'(<li data-check="by-hand"[^>]*?) data-after="[^"]*"', r'\1 data-after="no-such-entry"', apart)
+        self.assertEqual(lq.older_nearest(gone, summaries)[2], lq.older_nearest(apart, summaries)[2] + 1)
+        # both sides in one ranking: the better match after the item wins, and the worse one before it does not
+        late = other.replace('"o"', '"p"')            # with lem:y: a word every ranked claim has weighs nothing
+        early = other.replace('lem:x lem:y', 'lem:z')
+        mixed = queued.replace(listing, early + listing + late)
+        self.assertEqual([c for _, c, _ in lq.claims_elsewhere(mixed, summaries, 't1:s1', earlier=None)],
+                         ['lem:x', 'lem:z'])
+        self.assertEqual(lq.older_nearest(mixed, summaries)[0], 0)
+        # another entry's claim between the queuing and the item's own entry is on neither side
+        between = queued.replace(listing, listing + early + own)
+        self.assertEqual(lq.claims_elsewhere(between, summaries, 't1:s1', earlier=True), [])
+        self.assertEqual(lq.claims_elsewhere(between, summaries, 't1:s1'), [])
+        # an item whose queuing entry the record does not hold has no earlier side and is counted apart
+        self.assertEqual(lq.claims_elsewhere(lq.add(before, 'check', 'by-hand', 'a talk', a).replace(
+            ' data-after="o"', '').replace(' data-after="t1"', ''), summaries, 'by-hand', earlier=True), [])
+        places = lq.claim_places(before, summaries, 't1:s1', ['lem:x', 'lem:z'])
+        self.assertIn('lem:x: place 1 of 1 among the claims of earlier entries', places[0])
+        self.assertEqual(places[1], 'lem:z: not among them')
+        # the append tool prints them for an item its next step names
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notebook_append', Path(lq.__file__).parent / 'notebook-append.py')
+        append_tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(append_tool)
+        self.assertEqual(append_tool.older_claim_lines(before, 't1:s1', summaries),
+                         ['  Claim of an entry up to the one that queued it, nearest to its text [earlier]: lem:x in #o'])
+        self.assertEqual(append_tool.older_claim_lines(body, 't1:s1', summaries), [])
 
     def test_new_review_pick_merged_without_reappearing(self):
         head = notebook([self.rev], self.q)

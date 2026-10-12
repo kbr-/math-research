@@ -875,13 +875,18 @@ def registered_claims(path=None):
         return []
 
 
-def claims_elsewhere(body, claims, ident, limit=ELSEWHERE):
+def claims_elsewhere(body, claims, ident, limit=ELSEWHERE, earlier=False):
     """[(score, claim id, entry anchor), ...], best first: the claims nearest to the queued item's text, by the
     registry search's ranking and with its score, among those declared by entries that did not develop the item
     `ident` or its group and came after the entry that queued it (for an item added by the tool, after the
     record's last entry at that time) and after the group's last entry.  In one block of 11 October 2026 four
     items taken as never developed had each been partly answered by an entry filed under another item, and
-    nothing showed it before the cycle was spent.  A hint to read the entry, not a verdict."""
+    nothing showed it before the cycle was spent.  A hint to read the entry, not a verdict.
+
+    With `earlier` true, the claims of the other entries up to the entry that queued the item instead, and none
+    where that entry is not in the record; with None, both sides in one ranking, the search's scores depending
+    on the set ranked.  On 12 October 2026 a queued check was taken and a cycle spent before two registered
+    statements that bore on it, both older than the item, were read."""
     found = parse_tree(body)
     node = next((n for top in (found[1] if found else []) for n in [top] + top.children if named(n.item, ident)), None)
     if node is None:
@@ -892,10 +897,13 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE):
     added = re.search(r'\bdata-after="([^"]+)"', node.attrs)    # an item added by the tool: the record's last entry then
     source = added.group(1) if added else node.ident.rsplit(':', 1)[0]
     after = max([position for position, anchor in enumerate(anchors) if anchor == source or anchor in own] or [-1])
-    where = {}
+    queued = max([position for position, anchor in enumerate(anchors) if anchor == source] or [-1])
+    where = {}                # earlier: up to the queuing entry, none where it is unknown; None: of either side
     for position, (tag, _) in enumerate(articles):
         declared = re.search(r'\bdata-claims="([^"]*)"', tag)
-        if position > after and declared:
+        wanted = (position > after or position <= queued) if earlier is None else (
+            position <= queued if earlier else position > after)
+        if wanted and declared and anchors[position] not in own:
             where.update({claim: anchors[position] for claim in declared.group(1).split()})
     later = [claim for claim in claims if claim['id'] in where]
     if not later:
@@ -998,7 +1006,47 @@ def item_status(body, ident, claims=None):
             ['Claims of later entries on other items nearest to its text (read each entry before planning):']
             + ([f'  {score} {claim} in #{anchor}' for score, claim, anchor in claims_elsewhere(body, claims, ident)]
                or ['  none'])
+            + ['Claims of entries up to the one that queued it, nearest to its text (read each statement too):']
+            + ([f'  {score} {claim} in #{anchor} [earlier]'
+                for score, claim, anchor in claims_elsewhere(body, claims, ident, earlier=True)] or ['  none'])
             if claims is not None else [])
+
+
+def older_nearest(body, claims):
+    """(older, some, unknown) over the top-level queued items, builds left out: items whose nearest claim, in one
+    ranking of the claims of entries on other items from before the item's queuing and from after its last own
+    entry, is of an entry before the queuing; items with any such claim and a known queuing entry; and items
+    whose queuing entry is not in the record, which have no earlier side and are counted apart."""
+    found = parse_tree(body)
+    order = [(re.search(r'\bid="([^"]+)"', tag) or [None, ''])[1] for tag, _ in record_articles(body)]
+    anchors = set(order)
+    older = some = unknown = 0
+    for node in (found[1] if found else []):
+        if node.kind == 'build':
+            continue
+        added = re.search(r'\bdata-after="([^"]+)"', node.attrs)
+        source = added.group(1) if added else node.ident.rsplit(':', 1)[0]
+        if source not in anchors:
+            unknown += 1
+            continue
+        both = claims_elsewhere(body, claims, qualified(node), 1, earlier=None)
+        some += bool(both)               # the side is that of the entry the ranking names for the top claim
+        older += bool(both and order.index(both[0][2]) <= max(i for i, a in enumerate(order) if a == source))
+    return older, some, unknown
+
+
+def claim_places(body, claims, ident, wanted):
+    """['CLAIM: place N of M among the claims of earlier|later entries, score S' or 'CLAIM: not among them', ...]:
+    where named claims stand in the two rankings for an item, to measure what a listing cut at ELSEWHERE shows."""
+    lines = []
+    for label, earlier in (('earlier', True), ('later', False)):
+        ranked = claims_elsewhere(body, claims, ident, len(claims) or 1, earlier=earlier)
+        places = {claim: (place, score) for place, (score, claim, _) in enumerate(ranked, 1)}
+        lines += [f'{claim}: place {places[claim][0]} of {len(ranked)} among the claims of {label} entries, score '
+                  f'{places[claim][1]}; the listing shows {ELSEWHERE}'
+                  for claim in wanted if claim in places]
+    return lines + [f'{claim}: not among them' for claim in wanted if not any(line.startswith(claim + ':')
+                                                                              for line in lines)]
 
 
 def extension_item(body, nodes, tag, text, position=None):
@@ -2028,6 +2076,14 @@ def main(argv):
               f'later entries on other items nearest to its text, with the search\'s score; {len(claims)} '
               f'registered claims and {len(record_articles(body))} entries read. A reading list, not a verdict: '
               'every item gets one, answered or not.')
+        older, some, unknown = older_nearest(body, claims)
+        print(f'{older} of the {some} queued items with a known queuing entry and a nearest claim, builds left out, '
+              'have that claim, in one ranking of both sides, in an entry up to the queuing; the status of an item '
+              f'lists those too, marked [earlier]. {unknown} more items name no queuing entry of the record and '
+              'have no earlier side.')
+        return 0
+    if len(argv) >= 5 and argv[1] == 'places':            # places NOTEBOOK ID CLAIM...
+        print('\n'.join(claim_places(Path(argv[2]).read_text(), registered_claims(), argv[3], argv[4:])))
         return 0
     if len(argv) == 3 and argv[1] == 'survey':
         rows = survey(Path(argv[2]).read_text())

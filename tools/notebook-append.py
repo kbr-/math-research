@@ -259,6 +259,16 @@ def registry_matches(text, limit=3, data=None, home=None):
     return [(claim['id'], ' '.join(claim['summary'].split())[:140]) for _score, claim in found[:limit]]
 
 
+def older_claim_lines(source, ident, claims=None):
+    """Lines for the claims of entries older than a queued item that are nearest to its text, marked as earlier;
+    the registry matches above them are of any date and do not say which."""
+    import lead_queue
+    found = lead_queue.claims_elsewhere(source, lead_queue.registered_claims() if claims is None else claims,
+                                        getattr(ident, 'full', ident), 3, earlier=True)
+    return [f'  Claim of an entry up to the one that queued it, nearest to its text [earlier]: {claim} in #{anchor}'
+            for _score, claim, anchor in found]
+
+
 def home_of(source):
     """The part of a record address that marks a side notebook's claims, or None for the main notebook."""
     found = re.search(r'branches/[^/]+/', str(source))
@@ -445,6 +455,8 @@ def main():
         for claim, summary in registry_matches(f'{text} {follow or ""}',     # attempts are named in follow-ups
                                                home=home_of(path)):
             print(f'  Registry match for its text and latest follow-up, to read before planning: {claim} — {summary}')
+        for line in older_claim_lines(result, ident):
+            print(line)
         if anchor:
             print(f'  Latest development, #{anchor}. Follow-up: {follow}')
         earlier = [entry for entry in item_history(result, ident) if entry[0] != anchor]
