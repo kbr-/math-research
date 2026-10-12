@@ -66,6 +66,34 @@ class UnpackTest(unittest.TestCase):
             self.assertEqual(arxiv_source.titles(out, ['ams.tex']),
                              [('ams.tex', 'title', 'zeta and L-functions'), ('ams.tex', 'author', 'J. C. and X. L.')])
 
+    def test_a_title_set_by_hand_in_large_type_is_read_when_no_title_command_gives_one(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            out = Path(scratch)
+            (out / 'hand.tex').write_text('\\documentclass{article}\n'
+                                          '\\renewcommand{\\section}{-.2ex 2.3ex plus .2ex \\large\\bf}\n'
+                                          '\\begin{document}\n\\begin{center}\n'
+                                          '{\\Large {\\bf  Li  Coefficients for Automorphic $L$-Functions}}\\\\\n'
+                                          '{\\em J. C. L.} \\\\\n\\end{center}\n{\\Large A later heading}\n')
+            found = arxiv_source.titles(out, ['hand.tex'])
+            self.assertEqual(found, [('hand.tex', 'title', 'Li Coefficients for Automorphic L -Functions')])
+            self.assertTrue(arxiv_source.expected(found, ['coefficients']))
+            # a title that runs over lines to its line break, with an accent; a large line in a file that
+            # begins no document (an included file, a macro file) is not a title
+            (out / 'run.tex').write_text('\\begin{document}\n{\\Large\n On a theorem of Erd\\H{o}s\n'
+                                         'and G\\"odel \\\\\n A. B.}\n')
+            self.assertEqual(arxiv_source.titles(out, ['run.tex']),
+                             [('run.tex', 'title', 'On a theorem of Erdos and Godel')])
+            (out / 'inc.tex').write_text('{\\Large Macros and more}\nSecond line.\n')
+            self.assertEqual(arxiv_source.titles(out, ['inc.tex']),
+                             [('inc.tex', 'first lines', '{\\Large Macros and more} | Second line.')])
+            # a title command wins, and large type far into the body or of one word is no title
+            (out / 'cmd.tex').write_text('\\title{The real one}\n\\begin{document}\n{\\Large Not this one}\n')
+            self.assertEqual(arxiv_source.titles(out, ['cmd.tex']), [('cmd.tex', 'title', 'The real one')])
+            (out / 'far.tex').write_text('\\begin{document}\n\\begin{center}\n\\vspace{2ex}\n{\\Large Abstract}\n'
+                                         + 'text\n' * 50 + '{\\Large Far down the body}\n')
+            self.assertEqual(arxiv_source.titles(out, ['far.tex']),          # of the body, layout lines skipped
+                             [('far.tex', 'first lines', 'Abstract | text | text')])
+
     def test_a_fetch_names_the_title_meant_and_a_wrong_paper_is_marked(self):
         import contextlib
         from unittest import mock

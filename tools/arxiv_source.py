@@ -59,13 +59,26 @@ def unpack(data, out):
 
 
 BRACED = re.compile(r'\\(title|author)\s*(?:\[[^\]]*\])?\s*\{')
+HAND = re.compile(r'\\(?:Large|LARGE|huge|Huge|large)\b')
+HAND_LINES = 40
+LAYOUT = re.compile(r'\s*\\(?:begin|end|vspace|vskip|hspace|hskip|setlength|baselineskip|maketitle|pagestyle|'
+                    r'thispagestyle|newpage|bigskip|medskip|smallskip|noindent\s*$)\b')
 ENDED = re.compile(r'\\(title|author)\b(?!\s*[\[{])(.*?)\\end\1\b', re.S)
 
 
+def words_of(line):
+    """A TeX line's words: accents joined to their letters, commands, braces and mathematics signs removed."""
+    line = re.sub(r'\\(?:[\'"`^~=.]|[Hcvudbk](?![A-Za-z]))\s*\{\\?(\w)\}', r'\1', line)
+    line = re.sub(r'\\[\'"`^~=.]\s*\\?(\w)', r'\1', line)
+    return ' '.join(re.sub(r'\\[A-Za-z]+\*?|\\.|[{}$\[\]]', ' ', line).split())
+
+
 def titles(out, names):
-    """[(file, 'title' or 'author', text)] from the \\title{...} and \\author{...} of the unpacked TeX files,
-    braces balanced, TeX commands left as written; for a TeX file with neither, its first three nonblank,
-    uncommented lines.  On 12 October 2026 a paper fetched under a recalled identifier was an unrelated one,
+    """[(file, 'title' or 'author' or 'first lines', text)] from the \\title{...} and \\author{...} of the
+    unpacked TeX files, braces balanced, TeX commands left as written, and from the AMS-TeX form ended by
+    \\endtitle; for the file that begins the document and has no title of these forms, the first line of its
+    body in large type; for a TeX file with nothing of these, the first three lines of its body that hold
+    words, or of the file as they stand when it marks no body.  On 12 October 2026 a paper fetched under a recalled identifier was an unrelated one,
     and the title was looked at only afterwards by hand."""
     found = []
     for name in sorted(n for n in names if n.endswith('.tex')):
@@ -80,7 +93,32 @@ def titles(out, names):
             hits.append((name, match.group(1), ' '.join(text[match.end():end - 1].split())[:300]))
         for match in ENDED.finditer(text):                              # AMS-TeX: \title ... \endtitle
             hits.append((name, match.group(1), ' '.join(match.group(2).split())[:300]))
-        if not hits:
+        parts = re.split(r'\\begin\{document\}|\\document\b', text, maxsplit=1)
+        body = parts[-1]
+        if len(parts) == 2 and not any(kind == 'title' for _, kind, _ in hits):
+            # a title set by hand: large type among the first lines of the body of the file that begins the
+            # document, read on to a line break or a blank line (a paper of 2004 met on 12 October 2026 was
+            # refused for want of a title command and identified by hand)
+            lines = body.splitlines()[:HAND_LINES]
+            for index, line in enumerate(lines):
+                if HAND.search(line):
+                    run = []
+                    for more in lines[index:index + 4]:
+                        if not more.strip():
+                            break
+                        run.append(more)
+                        joined = ' '.join(run)
+                        if '\\\\' in more or joined.count('{') <= joined.count('}'):
+                            break                     # a line break, or the group that set the size has closed
+                    shown = words_of(' '.join(run))
+                    if len(shown.split()) >= 2:
+                        hits.append((name, 'title', shown[:300]))
+                        break
+        if not hits and len(parts) == 2:  # the body's first lines that hold words, layout commands removed
+            lines = [shown for shown in (words_of(line) for line in body.splitlines() if not LAYOUT.match(line))
+                     if shown][:3]
+            hits = [(name, 'first lines', ' | '.join(lines)[:300])] if lines else []
+        if not hits:                      # a file that marks no body: its first lines as they stand
             lines = [line.strip() for line in text.splitlines() if line.strip()][:3]
             hits = [(name, 'first lines', ' | '.join(lines)[:300])] if lines else []
         found += hits

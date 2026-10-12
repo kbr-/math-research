@@ -1,0 +1,60 @@
+Reviewer's record, entry hand-set-title-read (riemann notebook, 12 October 2026). One fresh-context medium
+reviewer, a pass and a follow-up; both reports as it wrote them to scratch files at my request.
+
+PASS:
+VERDICT: pass with corrections (code runs as described on the incident paper; the entry overstates what is 
+built and one control cannot fail).
+
+Required changes, most serious first
+1. Entry, "Not examined" / "What is built": "The rest of the text is built" and "narrower in one way" are 
+false. The item also asks for first lines "skipping layout commands": not built (fallback prints 
+\begin{center}, \vspace lines as they stand), not disclosed. Build it or list it. With two named parts 
+unbuilt and the bold reason unmeasured ("common ... I have not measured" is an untested hypothesis; the 
+incident paper's only other bold line is the one-word "Abstract"), Developed is not justified as written: 
+measure/build, or Continuing.
+2. Test: the preamble line `\renewcommand{\section}{\large\bf}` cleans to zero words, so it is skipped with 
+or without the body split; "a redefinition before the body ignored" cannot fail. Give it two or more 
+surviving words (the paper's own line 136 leaves "-.2ex 2.3ex plus .2ex").
+3. Code/Limit: the hand read runs on every .tex file, including included files and files with no body marker 
+(body = whole file; no test). Any such file's first 40 lines with a large-type line of two "words" (e.g. `[1] 
+#1`) becomes a title for --expect. Restrict the hand read to files where the split found a marker, or state 
+it in Limit.
+4. Limit incomplete: only the one line holding the size command is read (size command alone on a line, or a 
+title continued on later lines, is missed or cut); accents break words (`G\"odel` -> `G "odel`, `Erd\H{o}s` 
+-> `Erd o s`); `\Large2`/`\large_` not matched.
+5. `titles` docstring is stale (no hand-set title, no body).
+6. Brief says "one changed assertion"; the diff (identical to the working tree) only adds a test.
+
+Checked, no defect: `\document\b` does not match `\documentclass`/`\documentstyle`; `\large\b` does not match 
+`\largeskip`/`\larger`; `body` is always defined when the fallback runs; existing expectations (plain.tex) 
+unaffected; five fetches and statuses 0,3,0,0,3 and titles match; first-fetch words match rh_lead_116; "6 
+tests in 0.1 s" matches; nothing else imports the tool.
+
+Suggestions (unverified)
+- Join the size-command line with following lines up to `\\` or a blank line before cleaning.
+- Take hand titles only from the file containing \begin{document}.
+
+Process audit
+- Measurement: calls 3-5 have title commands and never enter the new block; "behave as before" tests only 
+control flow. No false-pass case was measured (a paper without hand title whose first large line is a 
+heading).
+- Follow-up "Record search": "The registry holds no claim on a framework tool" is a universal from one 
+search; answers.txt limits it, the entry sentence does not.
+- answers.txt: otherwise consistent.
+- Title allowed: "Fetch tool reads a hand-set title in large type; bold lines and layout skipping not built; 
+one paper measured".
+
+FOLLOW-UP:
+VERDICT: pass with corrections (minor). Diff equals the working tree; earlier items 1-6 are resolved; tests 
+can now fail on the split and the body-marker guard.
+
+Remaining changes
+1. Limit: a title holding a line break (`\\`) between its lines is cut at the first one, even inside an open 
+group (run.tex shows the design); say so. Words on later lines are not matched: a false refusal, the safe 
+direction.
+2. Limit: unbraced letter accents (`\c c`, `\v s`) still split words; "common forms" should name this.
+3. LAYOUT `noindent\s*$` before `\b`: harmless and redundant (words_of empties such a line); remove it.
+4. Docstring of titles: one overlong line.
+5. Unsaved bold count: save it or delete it; no decision rests on it.
+
+Developed: justified. Title: allowed as intended.
