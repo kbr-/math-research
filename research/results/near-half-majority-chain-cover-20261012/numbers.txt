@@ -1,0 +1,18 @@
+# command: python3 -c 
+from math import comb, e, log1p, exp, log
+n,w,m=1900,19,1901; k=w//2; p=w/n
+one=exp(m*log1p(-p)); two=m*p*exp((m-1)*log1p(-p))
+print('P(a fixed variable is in at most one row) =', '%.3g'%(one+two), '; union over n variables:', '%.3g'%(n*(one+two)))
+print('Theorem 3.8 ceiling 0.0335 v + s/4 =', round(0.0335*n+w/4,2), '=', round((0.0335*n+w/4)/n,4), 'n')
+d=2*comb(w-1,k); s=k+1
+print('clause graph: least column degree at two rows per variable', d, '; Theorem 3.13 ceiling (1/2)(1-1/d)^(d-1) v + s/2 =', round(0.5*(1-1/d)**(d-1)*n+s/2,1), '=', round((0.5*(1-1/d)**(d-1)*n+s/2)/n,4),'n')
+for t in (1,2,3,5): print('chain t =',t,'k = 9: rows',t+1,'variables',(t+1)*w-t,'degree of p',2*k+(t-1)*(k-1))
+
+# run 963cf1ec04, session nhpc-20261012-majority-expansion-bound; full output
+P(a fixed variable is in at most one row) = 1.02e-07 ; union over n variables: 0.000193
+Theorem 3.8 ceiling 0.0335 v + s/4 = 68.4 = 0.036 n
+clause graph: least column degree at two rows per variable 97240 ; Theorem 3.13 ceiling (1/2)(1-1/d)^(d-1) v + s/2 = 354.5 = 0.1866 n
+chain t = 1 k = 9: rows 2 variables 37 degree of p 18
+chain t = 2 k = 9: rows 3 variables 55 degree of p 26
+chain t = 3 k = 9: rows 4 variables 73 degree of p 34
+chain t = 5 k = 9: rows 6 variables 109 degree of p 50
