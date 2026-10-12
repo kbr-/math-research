@@ -427,6 +427,101 @@ def report(draft, registry, width):
     return '\n'.join(lines), unregistered
 
 
+LINE_RUN = re.compile(r'\blines?\s+(\d{1,6}(?:\s*(?:to|through|–|—|--?|,|and)\s*\d{1,6})*)', re.I)
+LINE_TOKEN = re.compile(r'\d+|to|through|–|—|--?', re.I)
+
+
+def line_ranges(plain):
+    """[(first, last), ...] named in a sentence: "lines 3, 7 and 10 to 20" gives three; a range written
+    backwards is kept as written, for the report to say so."""
+    ranges = []
+    for run in LINE_RUN.findall(plain):
+        tokens = LINE_TOKEN.findall(run)
+        index = 0
+        while index < len(tokens):
+            first = int(tokens[index])
+            if index + 2 < len(tokens) and not tokens[index + 1].isdigit():
+                ranges.append((first, int(tokens[index + 2])))
+                index += 3
+            else:
+                ranges.append((first, first))
+                index += 1
+    return ranges
+
+
+def naming_lines(draft):
+    """[(section label, sentence text, [(first, last), ...])] for the sentences that name line numbers
+    ("line 412", "lines 1883 to 2214").  On 12 October 2026 a reading's summary gave a passage about one
+    variable as the answer to a question about another and wrote "needs" where the lines "use"; each such
+    sentence is read beside the lines it names before the brief."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        for sentence in sentences(body):
+            plain = text(sentence)
+            ranges = line_ranges(plain)
+            if ranges:
+                found.append((where, plain, ranges))
+    return found
+
+
+def unanchored(draft):
+    """[(heading, first sentence)] for the body paragraphs of a draft that names lines somewhere, which stand
+    under a heading, are not statements, bookkeeping or naming paragraphs, and name no line themselves: what a
+    reading says its source does, with nothing to set it beside.  In the reading that prompted the listing
+    above, the three paragraphs a reviewer corrected were of this kind and the listing above printed none."""
+    if not naming_lines(draft):
+        return []
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        if tag != 'p' or LABEL.match(body) or not heading:
+            continue
+        if STATEMENT.match(heading) or BOOKKEEPING.match(heading) or NAMING.match(heading):
+            continue
+        if not line_ranges(text(body)):
+            found.append((heading, text(sentences(body)[0])))
+    return found
+
+
+def naming_lines_report(draft, width, source=None, shown=4):
+    """The listing; with the source's lines, each range's first `shown` lines and its last, cut at `width`.
+    The source's text is printed for reading and is not for a tracked file when the source is not ours."""
+    found = naming_lines(draft)
+    lines = []
+    for where, sentence, ranges in found:
+        lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')
+        for first, last in ranges:
+            if first > last:
+                lines.append(f'      lines {first}-{last}: WRITTEN BACKWARDS')
+                continue
+            if source is None:
+                continue
+            if first < 1 or last > len(source):
+                lines.append(f'      lines {first}-{last}: OUTSIDE THE FILE, which has {len(source)} lines')
+                continue
+            picked = list(range(first, min(last, first + shown - 1) + 1))
+            if last > picked[-1]:
+                picked += ['...', last] if last > picked[-1] + 1 else [last]
+            for n in picked:
+                lines.append('      ...' if n == '...' else
+                             f'      {n}: {source[n - 1] if width <= 0 else source[n - 1][:width]}')
+    loose = unanchored(draft)
+    tail = ['Body paragraphs of this draft that name no line, though the draft names lines elsewhere; say of '
+            'each which lines it speaks of, or that it is the draft\'s own inference:'] if loose else []
+    tail += [f'  [{heading}] {first if width <= 0 else first[:width]}' for heading, first in loose]
+    return '\n'.join(['Sentences that name line numbers' + (', each beside the lines it names' if source is not None
+                                                           else '; pass --source FILE to print the lines') + ':']
+                     + lines + [f'{len(found)} such sentences, {sum(len(r) for _, _, r in found)} ranges.']
+                     + tail + ([f'{len(loose)} such paragraphs.'] if loose else []))
+
+
 def readings(transcript=None, draft=None):
     """Lines to print before a brief, or none: theorem-like statements of TeX and Lean sources that begin,
     unread, just past a range the session read since its last checkpoint (tools/session_reads.py).  A reading
@@ -460,8 +555,24 @@ def main():
                         'as a form if it does not exist, else read, and the unanswered sentences printed')
     parser.add_argument('--summing-up', action='store_true', help='print only, for each article of the file, the '
                         'number of summing-up sentences an entry answers before it is appended')
+    parser.add_argument('--source', help='print only the sentences that name line numbers, each beside those lines '
+                        'of this file; for a file of several articles without a source, their number in each')
+    parser.add_argument('--lines', action='store_true', help='print only the sentences that name line numbers and '
+                        'the body paragraphs that name none; for a file of several articles, the two counts in each')
     args = parser.parse_args()
     draft = pathlib.Path(args.draft).read_text()
+    if args.source or args.lines:
+        articles = re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)
+        if len(articles) > 1 and not args.source:
+            rows = [(ident, len(naming_lines(body)), len(unanchored(body))) for ident, body in articles]
+            print('\n'.join(f'{count}\t{loose}\t{ident}' for ident, count, loose in rows if count))
+            print(f'{sum(count for _, count, _ in rows)} such sentences in {sum(1 for _, c, _ in rows if c)} of '
+                  f'{len(rows)} articles; {sum(loose for _, _, loose in rows)} body paragraphs naming no line in '
+                  'those articles (second column).')
+        else:
+            source = pathlib.Path(args.source).read_text(errors='replace').splitlines() if args.source else None
+            print(naming_lines_report(draft, args.width, source))
+        return 0
     if args.summing_up:
         rows = [(ident, len(summing_up(body))) for ident, body in
                 re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)]
@@ -491,6 +602,8 @@ def main():
     print('\n' + universals_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
     print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
+    if naming_lines(draft):
+        print('\n' + naming_lines_report(draft, args.width))
     for line in readings(draft=draft):
         print(line)
     log_run(draft)

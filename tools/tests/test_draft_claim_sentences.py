@@ -255,6 +255,33 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         both = own + self.DRAFT.replace('entry-y', 'entry-z')
         self.assertTrue(dcs.unmentioned_report(both, summaries, 0).endswith('1 such sentences.'))
 
+    def test_sentences_naming_line_numbers_are_listed_beside_those_lines(self):
+        draft = ('<article id="e"><h4>What the lines do</h4>'
+                 '<p>The step applies the sieve (lines 3 to 9 of the retained file). It needs nothing else. '
+                 'At line 2 the weight is fixed, and lines 40 to 41 are cited.</p>'
+                 '<p>A pipeline of five stages names no line.</p></article>')
+        rows = dcs.naming_lines(draft)
+        self.assertEqual([(where, ranges) for where, _, ranges in rows],
+                         [('What the lines do', [(3, 9)]), ('What the lines do', [(2, 2), (40, 41)])])
+        self.assertIn('2 such sentences, 3 ranges.', dcs.naming_lines_report(draft, 0))
+        # several lines, several ranges, a double hyphen, and a range written backwards
+        self.assertEqual(dcs.line_ranges('See lines 3, 7 and 10 to 20, lines 30--40 and line 5.'),
+                         [(3, 3), (7, 7), (10, 20), (30, 40), (5, 5)])
+        self.assertIn('lines 90-12: WRITTEN BACKWARDS',
+                      dcs.naming_lines_report('<article id="e"><p>Read lines 90 to 12.</p></article>', 0))
+        # a body paragraph that names no line, in a draft that names lines, is listed; a labelled one is not
+        self.assertEqual(dcs.unanchored(draft), [('What the lines do', 'A pipeline of five stages names no line.')])
+        self.assertTrue(dcs.naming_lines_report(draft, 0).endswith('1 such paragraphs.'))
+        labelled = draft.replace('<p>A pipeline', '<p><strong>Limit.</strong> A pipeline')
+        self.assertEqual(dcs.unanchored(labelled), [])
+        self.assertEqual(dcs.unanchored('<article id="e"><h4>H</h4><p>No line is named anywhere.</p></article>'), [])
+        source = [f'text of line {n}' for n in range(1, 13)]
+        out = dcs.naming_lines_report(draft, 0, source)
+        for expected in ('      3: text of line 3', '      6: text of line 6', '      ...', '      9: text of line 9',
+                         '      2: text of line 2', 'lines 40-41: OUTSIDE THE FILE, which has 12 lines'):
+            self.assertIn(expected, out)
+        self.assertNotIn('7: text of line 7', out)                 # a long range is shown by its ends
+
     def test_summing_up_sentences_are_answered_by_key_and_a_changed_sentence_is_new(self):
         rows = dcs.summing_up(self.DRAFT)
         self.assertEqual([where for _, where, _ in rows], ['New mathematics', 'Follow-up'])   # not "Reading"
