@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Positive-type window count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+    ],
+    "label": "Positive-type window count"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": [
+    "publication"
+  ],
+  "claims": [
+    {
+      "id": "prop:positive-type-window-count",
+      "summary": "l > 0; f real, even, integrable, zero outside [-l, l], with Fourier transform >= 0 everywhere; b real, W(v) = e^(-bv) f(v) on [0, l], a(z) = int W(v) e^(zv) dv. (1) Re a(beta + i lambda) >= 0 for every beta <= b and real lambda. (2) For n distinct points z_j = beta_j + i gamma_j with multiplicities m_j > 0 and beta_j <= beta_0 <= b, one of them rho_0 = beta_0 + i tau with multiplicity m_0, a(beta_0) > 0, P(u) = sum m_j a(z_j - i tau) e^((z_j - i tau) u), U >= 0, R > 0: sup over [U, U + R] of |P(u)| e^(-beta_0 u)/a(beta_0) >= 2 m_0 (R/(8e(U + R)))^n, with no hypothesis on heights. (3) For a split into Z1, n1 points containing rho_0, and Z2: that supremum is at least 2 m_0 (R/(8e(U + R)))^n1 minus the supremum over the window of |P_2(u)| e^(-beta_0 u)/a(beta_0). (4) If W is real and integrable on [0, l], beta real, Re a(beta + i lambda) >= 0 for every real lambda and a(beta + i lambda) is integrable in lambda over the line, then W = 0 almost everywhere.",
+      "assessment": "Working proof: (1) by writing e^(-eta|v|) as the transform of a positive kernel; (2) from Turan's second main theorem (Theorem 8.1 of his 1984 book, statement reread from the scan in this cycle), all coefficients having nonnegative real part so that every partial sum has real part at least that of the first; (4) by Fourier inversion at 0 for a function vanishing on the negative axis. A model statement for finite configurations. It removes the far-heights hypothesis of the window power-sum count. By (4), for f not zero the transform of such a weight is not integrable along a line Re z = beta <= b. That is a limit on one-sided weights with positivity referred to the left end of the interval, not a price of positivity in general: a weight symmetric about an interior point has nonnegative coefficients on the line Re z = beta_0 after a shift of the sampling lengths. Nothing is concluded for the zeros of zeta.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows that the sparsity assumption at other heights in the lower side of the count can be removed in the finite model by the choice of weight, and records a limit on the one-sided weights that do it.",
+      "next_action": "If the line returns: a centred weight of positive type with shifted sampling, and the negative part of the coefficients of points lower by eta against e^(-eta U).",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Working proof from one published theorem; read by a fresh medium reviewer.",
+        "formalization": "No formalization.",
+        "significance": "Context: a model statement on Turan's line. Novelty not claimed; positive-type kernels are standard.",
+        "relationships": "Variant of the window power-sum count with another weight and without its hypothesis on far heights; neither implies the other."
+      }
+    }
+  ],
+  "relationships": [
+    [
+      "prop:positive-type-window-count",
+      "cites",
+      "prop:window-power-sum-count",
+      "Same sampling and the same theorem; the weight differs and the hypothesis on far heights is not needed; neither statement implies the other."
+    ],
+    [
+      "prop:positive-type-window-count",
+      "cites",
+      "prop:gaussian-comb-hiding",
+      "The comb's upper side applies to this weight when f >= 0."
+    ],
+    [
+      "prop:positive-type-window-count",
+      "cites",
+      "prop:rightmost-point-window-criterion",
+      "The other treatment of far points, by a triangle average, not combined here."
+    ]
+  ]
+}

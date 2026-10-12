@@ -1,0 +1,377 @@
+{
+  "base_sha256": "72400dce704618d5a8bc36c92b40b30994f6c12b7eca742334d3836317087231",
+  "provenance": {
+    "revision": "e7b957b59934faa113821e5182bdce4cc093eab1",
+    "date": "2026-10-12",
+    "reviewer": "Claude Code proof assessment; fresh medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "prop:positive-type-window-count",
+        "summary": "l > 0; f real, even, integrable, zero outside [-l, l], with Fourier transform >= 0 everywhere; b real, W(v) = e^(-bv) f(v) on [0, l], a(z) = int W(v) e^(zv) dv. (1) Re a(beta + i lambda) >= 0 for every beta <= b and real lambda. (2) For n distinct points z_j = beta_j + i gamma_j with multiplicities m_j > 0 and beta_j <= beta_0 <= b, one of them rho_0 = beta_0 + i tau with multiplicity m_0, a(beta_0) > 0, P(u) = sum m_j a(z_j - i tau) e^((z_j - i tau) u), U >= 0, R > 0: sup over [U, U + R] of |P(u)| e^(-beta_0 u)/a(beta_0) >= 2 m_0 (R/(8e(U + R)))^n, with no hypothesis on heights. (3) For a split into Z1, n1 points containing rho_0, and Z2: that supremum is at least 2 m_0 (R/(8e(U + R)))^n1 minus the supremum over the window of |P_2(u)| e^(-beta_0 u)/a(beta_0). (4) If W is real and integrable on [0, l], beta real, Re a(beta + i lambda) >= 0 for every real lambda and a(beta + i lambda) is integrable in lambda over the line, then W = 0 almost everywhere.",
+        "assessment": "Working proof: (1) by writing e^(-eta|v|) as the transform of a positive kernel; (2) from Turan's second main theorem (Theorem 8.1 of his 1984 book, statement reread from the scan in this cycle), all coefficients having nonnegative real part so that every partial sum has real part at least that of the first; (4) by Fourier inversion at 0 for a function vanishing on the negative axis. A model statement for finite configurations. It removes the far-heights hypothesis of the window power-sum count. By (4), for f not zero the transform of such a weight is not integrable along a line Re z = beta <= b. That is a limit on one-sided weights with positivity referred to the left end of the interval, not a price of positivity in general: a weight symmetric about an interior point has nonnegative coefficients on the line Re z = beta_0 after a shift of the sampling lengths. Nothing is concluded for the zeros of zeta.",
+        "record": "[Positive-type window count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Shows that the sparsity assumption at other heights in the lower side of the count can be removed in the finite model by the choice of weight, and records a limit on the one-sided weights that do it.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": "If the line returns: a centred weight of positive type with shifted sampling, and the negative part of the coefficients of points lower by eta against e^(-eta U)."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Working proof from one published theorem; read by a fresh medium reviewer.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a model statement on Turan's line. Novelty not claimed; positive-type kernels are standard.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Variant of the window power-sum count with another weight and without its hypothesis on far heights; neither implies the other.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:window-power-sum-count",
+        "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; a finite set of n points z_j = beta_j + i gamma_j with multiplicities m_j > 0 and beta_j <= beta_0, one of them rho_0 = beta_0 + i tau with multiplicity m_0; P(u) = sum m_j a(z_j - i tau) e^((z_j - i tau) u); U >= 0, R > 0. Hypothesis F: the points with |gamma_j - tau| > pi/(2l) have sum of m_j |a(z_j - i tau)| at most phi a(beta_0) m_0 with 0 <= phi < 1. (1) Then sup over [U, U + R] of |P(u)| e^(-beta_0 u)/a(beta_0) >= 2 (1 - phi) m_0 (R/(8e(U + R)))^n. (2) If the points are split into Z1, with n1 points containing rho_0 and satisfying F among themselves, and Z2 with beta_j <= beta_0 - eta for some eta >= 0 and S2 = sum over Z2 of m_j |a(z_j - i tau)|, then that supremum is at least 2 (1 - phi) m_0 (R/(8e(U + R)))^n1 - (S2/a(beta_0)) e^(-eta U). (3) Hence if the supremum is at most eps m_0 and (S2/a(beta_0)) e^(-eta U) <= eps m_0 with 0 < eps < (1 - phi), then n1 >= log((1 - phi)/eps)/log(8e(U + R)/R); n1 counts every point of Z1, at near and far heights. (4) Without F: for n pairs gamma_j +- i delta_j, delta_1 >= delta_j > 0, m_j > 0, S(s) = sum m_j (e^(-is(gamma_j - i delta_j)) + e^(-is(gamma_j + i delta_j))), every h > 0 and integer m >= 0, some s = nu h with m < nu <= m + 2n has |S(s)| >= 2 m_1 e^(delta_1 s) (2n/(8e(m + 2n)))^(2n).",
+        "assessment": "Working proof from one published theorem, Turan's second main theorem (Theorem 8.1 of his 1984 book, read as page images in an earlier cycle, quoted in the notebook's working context, not reread here): the sum is sampled at equally spaced lengths, where it is a power sum with nodes of modulus at most one, and the partial sums of the coefficients are bounded below, in (1) because the weight's transform has nonnegative real part at heights within pi/(2l) and the far points are assumed light, in (4) because the coefficients are positive; coincident nodes are merged. Part (2) is the triangle inequality. An earlier entry of this notebook outlined this use of the theorem, with the positivity at near heights and the obstruction from far heights, and left it unverified; this carries it out with the obstruction assumed away by F. F is itself an assumption of sparsity: many near-tied points at far heights violate it. With the Gaussian comb the number of points needed to hide to e^(-Lam) is of order Lam in the model from both sides, under the condition that the comb's heights are near and up to its prefactor; the constants differ by about 7.5 at r = 1/4 in the limit of a short weight.",
+        "record": "[Window power-sum count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "The lower side to the Gaussian comb in the model: fewer than about Lam/log(8e(1 + 1/r)) points cannot hide a rightmost point to e^(-Lam) on a window, under F. Read on the conditional line of prime sums at one height, to leading order and in the model only: a rightmost point at beta_0 hides from the premise's window starting at tau^y only if at least about (q/2) log tau/log(16e/q) points have real part above beta_0 - q/(2y), q = 1 - (1 - beta_0) y; at y = 2 that line is the one of the recorded conditional corollary for zeta, so the set counted is not new; the constant is explicit. Part (4) restates an earlier lemma's application with no dependence on the gaps.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": "Hypothesis F: remove it by a weight whose transform has nonnegative real part at every height, at the cost the entry's reviewer names, or show it cannot be removed."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry from a published theorem as recorded; hand instances only, no computation.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: the application of a published theorem in a model, outlined before on this record; the conditional corollary on the record already has a count of this order for zeta. No novelty claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Lower side to the Gaussian comb hiding; complements the rightmost point window criterion; the model relative of the sparse off-line exclusion, with the same line and an explicit constant; part (4) is the interpolation bound's application with the published theorem. Positive-type window count: new relationship with prop:positive-type-window-count.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:gaussian-comb-hiding",
+        "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; beta_0, tau real, g > 0, c > 0, U > 0; points rho_j = beta_0 - c j^2/U + i(tau + j g), j an integer, unit multiplicities, so that rho_0 is strictly rightmost; P(u) = sum over all j and P_J(u) = sum over |j| <= J of a(rho_j - i tau) e^((rho_j - i tau) u). (1) For u > 0: P(u) = int W(v) e^(beta_0 x) Theta(x) dv with x = u + v and Theta(x) = sqrt(pi U/(c x)) sum over integers n of exp(-U (g x - 2 pi n)^2/(4 c x)) > 0. (2) If 0 < d <= pi, R >= 0, g x is at distance at least d from every multiple of 2 pi for U <= x <= U + R + l, and A = c (U + R + l)/U <= d^2/2, then 0 < P(u) e^(-beta_0 u)/a(beta_0) <= 4.2 A^(-1/2) e^(-d^2/(4A)) for U <= u <= U + R. (3) For J >= 1 and u >= U: |P(u) - P_J(u)| e^(-beta_0 u)/a(beta_0) <= e^(-c J^2)/(c J). (4) Hence for Lam >= 1/2, with A = d^2/(4 Lam), c = A U/(U + R + l), r = (R + l)/U and J the least integer at least sqrt(Lam/c): the 2J + 1 <= (4 Lam/d) sqrt(1 + r) + 3 points with |j| <= J, of heights within J g of tau, have |P_J(u)| e^(-beta_0 u)/a(beta_0) <= (8.4 sqrt(Lam) + 2 sqrt(1 + r)) e^(-Lam)/d on [U, U + R]. A spacing g meeting the hypothesis of (2) exists if and only if d (2 + r) <= 2 pi, and then g = d/U is one.",
+        "assessment": "Working elementary proof: Poisson summation for a Gaussian turns the sum over the comb into a theta function whose peaks sit where g x is a multiple of 2 pi and whose width is governed by the fall of the real parts; between the peaks it is exponentially small; the points far along the comb are exponentially lower and are cut off. The construction was suggested by the reviewer of the rightmost point window criterion and is verified here with constants. Numerical control at one instance (21 points): the supremum on the window against the bound, and the direct sum against the closed form by an independent quadrature, on the window and near a peak. It is a statement about a model configuration, not about zeros of zeta: it shows that in the model a count of near-tied points of the order of the logarithm of the required accuracy suffices to hide a strictly rightmost point, so an exclusion from a bound on such sums must assume fewer; whether as many are necessary is not proved here.",
+        "record": "[Gaussian comb hiding](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Settles the open case of the rightmost point window criterion in the direction of an obstruction: near-tied points closer than the window resolves can hide a strictly rightmost point with a number of points proportional to log tau at the accuracy that Turan's premise needs, within a bounded height; so on that conditional line a hypothesis counting the near-tied off-line zeros near the height, of the order of log tau, cannot be dispensed with in the model.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": "The lower side: the least number of points that can hide to a given accuracy, with a constant to compare with the comb's."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof in the entry with a numerical control at one instance by two independent routes.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: an obstruction in a model on one conditional line of the route. The construction is the reviewer's suggestion; no novelty claimed and no literature search made.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "The obstruction side of the rightmost point window criterion; the relative, for prime sums at one height and unit multiplicities, of the binomial cluster hiding in the Gram model. In the model of prime sums at one height, under a hypothesis on far heights: a rightmost point cannot be hidden on a window of lengths by fewer than a logarithmic number of points, by Turan's second main theorem; and the Gram model's off-axis sum restated with that theorem: new relationship with prop:window-power-sum-count. Positive-type window count: new relationship with prop:positive-type-window-count.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-gaussian-comb-hiding"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:rightmost-point-window-criterion",
+        "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; Z a multiset of points rho = beta + i gamma with multiplicities m_rho >= 1, tau real, sum over Z of m_rho |a(rho - i tau)| e^(beta_rho u) finite at the two ends of each window used; P(u) = sum m_rho a(rho - i tau) e^((rho - i tau) u). (1) If rho_0 = beta_0 + i tau is in Z with multiplicity m_0, every point has beta_rho <= beta_0, U1 real, R > 0 and |P(u)| <= E(u) on [U1, U1 + R], then m_0 <= sup over the window of E(u) e^(-beta_0 u)/a(beta_0) + sum over the other points of m_rho e^(-(beta_0 - beta_rho) U1) min(1, 16/(R^2 (gamma_rho - tau)^2)). (2) If moreover U1 >= 0 and, for some eta > 0 and g > 0, the other points with beta_rho > beta_0 - eta have multiplicities at most m' and heights gamma with |gamma - tau| >= g and pairwise distances at least g, and the remaining points have at most kappa log(|t| + 3) of them, with multiplicity, in each |gamma - t| <= 1, then m_0 <= sup E(u) e^(-beta_0 u)/a(beta_0) + (16 pi^2/3) m'/(R g)^2 + kappa e^(-eta U1) [log(|tau| + 3) + (32/R^2)(1.645 log(|tau| + 4) + 1.9)]. (3) For W continuous on the line, supported in [0, l], and the points beta_0 + i(tau + j g), j an integer, unit multiplicities, with a(beta_0 + i lambda) = O(1/lambda^2): P(u) = (2 pi/g) sum over integers n of W(2 pi n/g - u) e^(2 pi n beta_0/g), which is 0 on every window [U1, U1 + R] with no multiple of 2 pi/g in [U1, U1 + R + l]. (4) Under the premise of the Riesz mean formula from one premise, for W the hat function on [0, l] and tau real with i tau not a zero: sum over n of Lambda(n) n^(-i tau) W(log n - u) = a(1 - i tau) e^((1 - i tau) u) - P(u) - sum over q >= 1 of a(-2q - i tau) e^(-(2q + i tau) u) for u > 0, P taken over the nontrivial zeros.",
+        "assessment": "Working elementary proof of (1) to (3): P is averaged against a triangle on the window after division by the rightmost point's exponential, whose transform at a point with real part at most 0 is at most min(1, 16/(R^2 lambda^2)) in modulus, and |a(beta + i lambda)| <= a(beta) <= a(beta_0) for a nonnegative weight on v >= 0; (2) is (1) with a sum over separated heights and a shell count; (3) is Poisson summation, the transport to a continuous weight of the progression named in the fourteenth route review for the sharp cutoff. The mechanism is that of the short resonance-free range, a recorded theorem in the Gram model, carried to prime sums at one height with a pointwise premise. Part (4) is the second difference in the length of the Riesz mean formula and is conditional on that formula's premise. Numerical control: (3) on a truncated progression; (1) in 200 random configurations, a weak check of the direction only, the constants never binding; no instance computed for (2). For exact hiding at equal real parts and unit multiplicities, (2) excludes R g > 7.26 and (3) realises R g < 2 pi - l g.",
+        "record": "[Rightmost point window criterion](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Not formalized; no Lean work assigned.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "publication"
+        ],
+        "significance": {
+          "category": "context",
+          "rationale": "Answers in part the fourteenth review's test on Turan's line, in a model: a point rightmost in the whole configuration shows on a window of lengths unless near-tied points stand closer in height than about 7.3 divided by the window's logarithmic length; the bound uses the near-tied points' largest multiplicity and a local count of the lower points. An arithmetic progression of spacing below 2 pi over that length hides exactly. For points closer than that and not in progression nothing is proved; an unverified construction of the reviewer suggests about kappa log tau of them can hide.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": "Verify or break the reviewer's construction of close points that hide a strictly rightmost one."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Complete proof of (1) to (3) in the entry with a numerical control of (1) and (3); (4) conditional on the registered formula's premise.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No formalization.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Context: a model statement on one conditional line of the route; the mechanism is on record in another setting. No novelty claimed.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Carries the mechanism of the short resonance-free range to Turan's setting; replaces the margin of the margin-rightmost zero count by a separation in height, for a premise on a window of lengths. In the model of prime sums at one height: a finite comb of close points with real parts falling off quadratically hides a strictly rightmost point on a window of lengths, with a number of points proportional to the logarithm of the accuracy: new relationship with prop:gaussian-comb-hiding. In the model of prime sums at one height, under a hypothesis on far heights: a rightmost point cannot be hidden on a window of lengths by fewer than a logarithmic number of points, by Turan's second main theorem; and the Gram model's off-axis sum restated with that theorem: new relationship with prop:window-power-sum-count. Positive-type window count: new relationship with prop:positive-type-window-count.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-rightmost-point-window-criterion"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:positive-type-window-count::cites::prop:window-power-sum-count",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:positive-type-window-count",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:window-power-sum-count",
+        "locator": null
+      },
+      "scope": "Same sampling and the same theorem; the weight differs and the hypothesis on far heights is not needed; neither statement implies the other.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e7b957b59934faa113821e5182bdce4cc093eab1",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "Same sampling and the same theorem; the weight differs and the hypothesis on far heights is not needed; neither statement implies the other."
+      }
+    },
+    {
+      "id": "prop:positive-type-window-count::cites::prop:gaussian-comb-hiding",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:positive-type-window-count",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:gaussian-comb-hiding",
+        "locator": null
+      },
+      "scope": "The comb's upper side applies to this weight when f >= 0.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e7b957b59934faa113821e5182bdce4cc093eab1",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The comb's upper side applies to this weight when f >= 0."
+      }
+    },
+    {
+      "id": "prop:positive-type-window-count::cites::prop:rightmost-point-window-criterion",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:positive-type-window-count",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:rightmost-point-window-criterion",
+        "locator": null
+      },
+      "scope": "The other treatment of far points, by a triangle average, not combined here.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-positive-type-window-count"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e7b957b59934faa113821e5182bdce4cc093eab1",
+        "date": "2026-10-12",
+        "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+        "note": "The other treatment of far points, by a triangle average, not combined here."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
