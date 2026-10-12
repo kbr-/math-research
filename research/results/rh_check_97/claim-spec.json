@@ -1,0 +1,53 @@
+{
+  "source": {
+    "record": "[Riesz mean formula from one premise](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-formula-one-premise"],
+    "label": "The explicit formula for the Riesz mean from the real-part identity for xi'/xi alone, and the tilted reach in two strata"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:riesz-mean-formula-one-premise",
+      "summary": "Notation of the Riesz mean explicit formula (R_L, D_L, F_L, X = e^L). Premise X: xi(s) = s(s-1) pi^(-s/2) Gamma(s/2) zeta(s)/2 is entire, its zeros are the nontrivial zeros rho with orders m_rho and real parts at most 1, and Re xi'/xi(s) = sum_rho m_rho (sigma - beta)/|s - rho|^2, absolutely convergent, wherever xi(s) is not 0. Under premise X alone: (0) xi'/xi(s) = C + sum_rho m_rho [1/(s - rho) - 1/(2 - rho)] and (zeta'/zeta)'(s) = 1/(s-1)^2 - sum_rho m_rho/(s - rho)^2 - sum_{q >= 1} 1/(s + 2q)^2; (1) for every L > 0 and every s other than 1, the rho and the points -2q, q >= 1: R_L(s) = -zeta'/zeta(s) + D_L(s-1) - sum_rho m_rho D_L(s-rho) - sum_{q >= 1} D_L(s+2q), the sums absolutely convergent; (2) for such s, Re R_L(s) = Re F_L(s-1) - sum_rho m_rho Re F_L(s-rho) + Re[psi(s/2 + 1)/2 - (log pi)/2] - sum_{q >= 1} Re D_L(s+2q).",
+      "assessment": "Conditional on one premise, with a complete elementary deduction: an entire function with constant real part is constant, which gives the partial fraction of xi'/xi and by differentiation that of (zeta'/zeta)' with absolutely convergent sums; for Re s > 1 the derivative in s of L R_L(s) is a Perron integral of (zeta'/zeta)' against X^w/w^2, which may be integrated term by term, each double pole giving the derivative of L F_L; the constant of integration vanishes as s tends to infinity, and the identity continues in s. Selberg's formula is not used. Premise X was read as a theorem statement in the density import's Lean project, which is not built here; the classical facts used beside it are the Dirichlet series of zeta'/zeta, the series of the digamma function and of its derivative.",
+      "status": "conditional",
+      "category": "context",
+      "rationale": "Removes the premise of the registered formula that had been read for one length only while its proof needed lengths tending to zero. The formula through which the tilted three-four-one statements are read now rests on one classical identity.",
+      "next_action": "None planned; a reading of premise X in a built proof or a textbook would make the lemma unconditional.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete deduction from one premise; the formula it gives is the one controlled numerically at five points in the earlier entry.",
+        "formalization": "No formalization; premise X is a statement of an imported, unbuilt Lean project.",
+        "significance": "Context: a classical formula with a self-contained derivation from one identity. No novelty claimed.",
+        "relationships": "Implies the identities of the registered Riesz mean explicit formula, under one of its two premises; that lemma's bound for the trivial zeros' sum is not restated."
+      }
+    },
+    {
+      "id": "prop:tilted-stratified-reach",
+      "summary": "Setting of the tilted local count reach (F, Phi, T_S, tilt a in (-1/2, 1/2), p = 1/2 - a). S0 a multiset, finite or not, of points with a < delta_rho <= delta0 < 1/2, c0 = delta0 - a, with at most kappa log(|t| + 3) points, with multiplicity, in |gamma_rho - t| <= 1 for every real t; S1 a finite multiset of points with a < delta_rho <= delta < 1/2, total multiplicity M, c = delta - a. If c0 L >= 2, |tau| >= 6p, (1/2 - delta) L >= log(12 M) + 2 log(p/c) and (1/2 - delta0) L >= log(kappa (174 + 66 log(|tau| + 4))) + 2 log(p/c0), then T_S(tau) >= 0 for S the union of S0 and S1. In particular, with S0 on the line (delta0 = 0, a < 0, |a| L >= 2): T_S(tau) >= 0 once (1/2 - delta) L >= log(12 M) + 2 log(p/c) and L/2 >= log(kappa (174 + 66 log(|tau| + 4))) + 2 log(p/|a|).",
+      "assessment": "Working proof in a few lines from the tilted local count reach and the tilted triangle positivity: the pole's term 2.25 Phi(p) is halved between the two strata, the first bounded by the local-count sum at its own distance c0 and the second by 8 M Phi(c). One instance at a negative tilt, 8001 points on the line and one pair, at a length the one-stratum condition does not cover, computed directly at four heights: T_S about 9.8e5 against a lower bound 6.9e5.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "For a configuration with all points on the line except finitely many, as the zeros of zeta with one hypothetical off-line zero, a sufficient condition for T_S >= 0 at a negative tilt with the same shape as the one on record for nonnegative tilts, 12 in place of 6, the points on the line costing a condition on the length, about 2 log log|tau| plus a term 4 log(p/|a|) in the tilt. A sufficient condition only: that the argument reaches exactly so far is not proved.",
+      "next_action": "None planned.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry; one instance evaluated directly.",
+        "formalization": "No formalization.",
+        "significance": "Context: an obstruction for one classical argument in a model. No novelty claimed.",
+        "relationships": "A two-strata form of the tilted local count reach, combined with the bound of the tilted inequality reach for the finite stratum."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:riesz-mean-formula-one-premise", "refines", "lem:riesz-mean-explicit-formula", "The same identities under premise X alone, so this lemma implies that one's parts (1) and (2) apart from its bound for the trivial zeros' sum, which is elementary and independent of either premise."],
+    ["lem:riesz-mean-formula-one-premise", "cites", "thm:anthropic-critical-line-density", "Premise X is a theorem statement in that import's Lean project."],
+    ["prop:tilted-stratified-reach", "depends_on", "prop:tilted-local-count-reach", "Its parts (1) and (2) for the stratum with a local count, at that stratum's own distance, and the constants of its part (3)."],
+    ["prop:tilted-stratified-reach", "depends_on", "lem:tilted-triangle-positivity", "The bound Phi(c) for each term of a point of the finite stratum."],
+    ["prop:tilted-stratified-reach", "depends_on", "prop:tilted-inequality-reach", "The lower bound 2.25 Phi(p) for the pole's part and the bound 8 M Phi(c) for a finite multiset."],
+    ["prop:tilted-stratified-reach", "cites", "prop:tilted-cluster-hiding", "Its single point of a family's total multiplicity violating the inequality shows that a logarithmic multiplicity at one height forces the log log|tau| in the one-stratum class."],
+    ["prop:tilted-stratified-reach", "cites", "prop:tilted-local-reach", "The earlier local form for finite multisets, with a weight not summable over a configuration with a local count."]
+  ]
+}
