@@ -1,0 +1,46 @@
+// Exact F2 identity checks for a disjoint cubic pair with formal affine offset z.
+// Predictions: all nine quadratic-coefficient rows reduce to d*z modulo Booleanity;
+// the constant-offset residual identity agrees literally, degree at most six.
+// Refuted by: a nonzero correct identity remainder or a degree above its ledger.
+// Possible because: native normal forms check independently expanded source expressions.
+// Each omission control deletes the B-support factor and must leave a nonzero remainder.
+// Seven formal variables; no enumeration or hard-system degree computation.
+ring prR=2,(x(1..6),z),dp;
+ideal prB=x(1)^2+x(1),x(2)^2+x(2),x(3)^2+x(3),x(4)^2+x(4),x(5)^2+x(5),x(6)^2+x(6),z^2+z;
+ideal prGB=std(prB);
+poly prA=x(1)*x(2)*x(3); poly prC=x(4)*x(5)*x(6);
+poly prG=prA+prC+z;
+poly prD,prQ,prLeft,prBad,prReduced,prSum,prU,prV;
+list prSeen;
+int prI,prJ,prL; int prChecks=0; int prRows=0; int prControls=0; int prFailures=0;
+proc prAssert(int prOK,string prName)
+{ prChecks++; if(!prOK) { prFailures++; print("FAIL "+prName); } }
+print("Stages: nine row identities, three distinct omission controls, full residual telescope.");
+prSum=0; prU=1;
+for(prI=1;prI<=3;prI++)
+{
+  prV=1;
+  for(prJ=4;prJ<=6;prJ++)
+  {
+    prD=(1+x(prI))*(1+x(prJ)); prQ=prD*z;
+    prLeft=prD*prG+prQ;
+    prAssert(reduce(prLeft,prGB)==0,"quadratic row identity");
+    prAssert(deg(prLeft)<=5,"row certificate ceiling"); prRows++;
+    if(prJ>=4)
+    {
+      prBad=(1+x(prI))*(prG+z); prReduced=reduce(prBad,prGB);
+      prAssert(prReduced!=0,"omitted support factor changes the identity");
+      for(prL=1;prL<=size(prSeen);prL++)
+      { prAssert(prSeen[prL]!=prReduced,"duplicate control polynomial"); }
+      prSeen[size(prSeen)+1]=prReduced; prControls++;
+    }
+    prSum=prSum+prU*prV*prD; prV=prV*x(prJ);
+  }
+  prU=prU*x(prI);
+}
+prAssert(prSum==1+prA+prC+prA*prC,"literal residual telescope");
+prAssert(deg(prSum)<=6,"residual certificate ceiling");
+prAssert(prRows==9,"row completion"); prAssert(prControls==3,"control completion");
+print("RESULT rows="+string(prRows)+" controls="+string(prControls)+" assertions="+string(prChecks)+" failures="+string(prFailures));
+if(prFailures>0) { ERROR("CHECK FAILED"); }
+quit;
