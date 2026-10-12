@@ -1590,6 +1590,83 @@ class LinkEarlierWorkTest(unittest.TestCase):
         body = notebook(articles, queue)
         return lq.unlinked_earlier_entry(body, lq.parse_tree(body)[1], lq.record_articles(body), item)
 
+    def test_entry_links_and_quotes_the_few_earlier_entries_on_its_item_and_their_sub_ideas(self):
+        # the case of 12 October 2026: an item with earlier entries a and b; an audit filed under a's sub-idea
+        item = ('check', 't:s2')
+
+        def earlier(name, on, said):
+            return (f'<article id="entry-2026-10-10-{name}" data-kind="research" data-route="step" data-{on[0]}="{on[1]}">'
+                    f'<h3>10 October 2026 — The {name} entry has a title of its own with enough words</h3>'
+                    f'<p><strong>Follow-up.</strong> Continuing: {said}.</p></article>')
+
+        a = earlier('a', item, 'the exponent at two levels is fixed and the audit of one level is listed below')
+        b = earlier('b', item, 'what levels the depths need is settled and the simulation rule by rule stays open')
+        audit = earlier('audit', ('check', 'entry-2026-10-10-a:s1'),
+                        'the consequence at one level is the source theorem and the earlier statement is withdrawn')
+        other = earlier('other', ('lead', 'r:1'), 'nothing that bears on the item under test here at all')
+        quote = {'a': 'the exponent at two levels is fixed and the audit',
+                 'b': 'what levels the depths need is settled and the',
+                 'audit': 'the consequence at one level is the source theorem'}
+
+        def missing(last_body, before=(a, b, audit, other), date='2026-10-12'):
+            last = self.entry(f'entry-{date}-last', item, last_body)
+            return lq.unread_item_entries(lq.record_articles(notebook(list(before) + [last], [item])), item)
+
+        def link(name, quoted=True):
+            return f'<p><a href="#entry-2026-10-10-{name}">x</a> says "{quote[name] if quoted else "something"}".</p>'
+
+        self.assertEqual(missing(''), [('entry-2026-10-10-a', 'link'), ('entry-2026-10-10-b', 'link'),
+                                       ('entry-2026-10-10-audit', 'link')])
+        self.assertEqual(missing(link('a') + link('b')), [('entry-2026-10-10-audit', 'link')])   # a's sub-idea too
+        self.assertEqual(missing(link('a') + link('b') + link('audit')), [])
+        # a link without words of the entry is not accepted: the draft of 12 October linked one unread
+        self.assertEqual(missing(link('a', False) + link('b') + link('audit')), [('entry-2026-10-10-a', 'quotation')])
+        self.assertEqual(missing(link('a') + link('b') + '<p><a href="#entry-2026-10-10-audit">x</a>: The audit '
+                                 'entry has a title of its own with enough words.</p>'),
+                         [('entry-2026-10-10-audit', 'quotation')])    # the title does not serve beside a Follow-up
+        # ... but serves for an entry whose Follow-up is short, and a link is all that is asked of one with
+        # neither to quote
+        brief = earlier('audit', ('check', 'entry-2026-10-10-a:s1'), 'done')
+        self.assertEqual(missing(link('a') + link('b') + '<p><a href="#entry-2026-10-10-audit">x</a>.</p>',
+                                 (a, b, brief)), [('entry-2026-10-10-audit', 'quotation')])
+        self.assertEqual(missing(link('a') + link('b') + '<p><a href="#entry-2026-10-10-audit">x</a>: The audit '
+                                 'entry has a title of its own with enough words.</p>', (a, b, brief)), [])
+        bare = brief.replace('The audit entry has a title of its own with enough words', 'Short title')
+        self.assertEqual(missing(link('a') + link('b') + '<p><a href="#entry-2026-10-10-audit">x</a>.</p>',
+                                 (a, b, bare)), [])
+        # an anchor that begins another's is not waived with it
+        self.assertEqual(missing(link('b') + '<p><strong>Unread.</strong> entry-2026-10-10-audit: another system.</p>'),
+                         [('entry-2026-10-10-a', 'link')])
+        # the Unread paragraph waives the entries it names, and only those
+        unread = '<p><strong>Unread.</strong> entry-2026-10-10-audit: its subject is another system.</p>'
+        self.assertEqual(missing(link('a') + link('b') + unread), [])
+        self.assertEqual(missing(link('a') + unread), [('entry-2026-10-10-b', 'link')])
+        self.assertEqual(len(missing('<p><strong>Unread.</strong> I did not read some of them, for want of time.</p>')), 3)
+        self.assertEqual(missing('', (other,)), [])                    # no earlier entry on the item
+        many = [earlier(f'm{n}', item, f'number {n} of the many entries made on this one item') for n in
+                range(lq.READ_ALL_LIMIT + 1)]
+        self.assertEqual(missing('', many), [])                        # over the limit: the latest only, as before
+        self.assertEqual(len(missing('', many[:lq.READ_ALL_LIMIT])), lq.READ_ALL_LIMIT)
+        self.assertEqual(missing('', date='2026-10-11'), [])           # entries before the rule are not retrofitted
+        articles = lq.record_articles(notebook([a, b, audit, other], [item]))
+        self.assertEqual(lq.item_entries(articles, item),
+                         (['entry-2026-10-10-a', 'entry-2026-10-10-b'], ['entry-2026-10-10-audit']))
+        self.assertEqual(lq.item_entries(articles, item, 2)[1], [])    # only those before `end`
+        self.assertEqual(lq.descendant_entries(articles, ['entry-2026-10-10-b']), [])
+        double = ('<article id="entry-2026-09-01-two" data-kind="research" data-route="step" data-lead="r:1" '
+                  'data-check="t:s2"><p><strong>Follow-up.</strong> Continuing: x.</p></article>')
+        self.assertEqual(lq.item_entries(lq.record_articles(notebook([double, a], [item])), item)[0],
+                         ['entry-2026-10-10-a'])                   # an old entry naming two items is passed over
+        # the status names them, the audit among them, whatever group the record's grouping gives it
+        status = lq.item_status(notebook([a, b, audit, other], [item]), 't:s2')
+        self.assertIn(f'Entries on the item itself, then on sub-ideas they listed (when at most {lq.READ_ALL_LIMIT} in '
+                      'all, a new entry links and quotes each): #entry-2026-10-10-a, #entry-2026-10-10-b | '
+                      '#entry-2026-10-10-audit', status)
+        # the gate refuses the entry and names what it lacks
+        last = self.entry('entry-2026-10-12-last', item, link('b') + link('a', False))
+        with self.assertRaisesRegex(ValueError, r'#entry-2026-10-10-a \(quotation\), #entry-2026-10-10-audit \(link\)'):
+            lq.check(notebook([a, b, audit], [item]), notebook([a, b, audit, last], [item]))
+
     def test_status_lists_every_attempt_the_item_s_follow_ups_named(self):
         item = ('lead', 'r:1')
         first = ('<article id="entry-2026-10-09-a" data-kind="research" data-route="step" data-lead="r:1">'

@@ -649,6 +649,103 @@ def unlinked_earlier_entry(body, nodes, articles, item):
     return None
 
 
+READ_ALL_LIMIT = 6      # an item with more earlier entries than this is held to its latest only, as before
+READ_ALL_FROM = '2026-10-12'    # entries dated from here on; earlier ones could not have known the rule
+QUOTED_WORDS = 8
+UNREAD_RE = re.compile(r'<strong>Unread\.</strong>((?:(?!</p>).)*)', re.S)
+
+
+def descendant_entries(articles, anchors, end=None):
+    """Anchors, in record order, of the entries before position `end` that developed a sub-idea listed by one of
+    the entries `anchors` (an item ANCHOR:sN), and are not among them; one generation.  On 10 October 2026 an
+    audit answering part of a queued check was filed under a sub-idea of an entry on that check, and appeared in
+    no list for the check; an entry of 12 October on it was drafted without it."""
+    wanted = set(anchors)
+    found = []
+    for tag, text in articles[:end]:
+        work = developed_or_none(tag, text)
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        if (work and anchor and anchor.group(1) not in wanted and ':s' in work[0][1]
+                and work[0][1].rsplit(':s', 1)[0] in wanted):
+            found.append(anchor.group(1))
+    return found
+
+
+def item_entries(articles, item, end=None):
+    """(own, below): anchors of the entries before position `end` that developed `item` itself, and of those that
+    developed a sub-idea listed by one of them."""
+    own = []
+    for tag, text in articles[:end]:
+        work = developed_or_none(tag, text)
+        anchor = re.search(r'\bid="([^"]+)"', tag)
+        if work and work[0] == item and anchor:
+            own.append(anchor.group(1))
+    return own, descendant_entries(articles, own, end)
+
+
+def developed_or_none(tag, text):
+    """developed_by, with None for an older entry whose tag names two items: the largest notebook's record has
+    one, of September 2026, and a check on a new entry is not the place to refuse it."""
+    try:
+        return developed_by(tag, text)
+    except ValueError:
+        return None
+
+
+def _words(text):
+    plain = html.unescape(re.sub(r'<[^>]+>', ' ', text))
+    return [w for w in (re.sub(r'^\W+|\W+$', '', token).lower() for token in plain.split()) if w]
+
+
+def quotable(text):
+    """The words of an entry that a later entry on its item quotes: those of its own Follow-up paragraph, where
+    it says what it left; of its title when the Follow-up has fewer than QUOTED_WORDS words; and none when the
+    title is as short, in which case a link is all that can be asked."""
+    follow = re.findall(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', FOLLOWUP_ITEM.sub('', text), re.S)
+    title = re.search(r'<h3>(.*?)</h3>', text, re.S)
+    for part in (follow[-1] if follow else '', title.group(1) if title else ''):
+        if len(_words(part)) >= QUOTED_WORDS:
+            return _words(part)
+    return []
+
+
+def unread_item_entries(articles, item, limit=READ_ALL_LIMIT):
+    """[(anchor, what is missing), ...] for the earlier entries that developed `item` itself, or a sub-idea listed
+    by one of those, when there are at most `limit` of them: 'link' where the last entry does not link the entry,
+    'quotation' where it links it without QUOTED_WORDS consecutive words of what `quotable` gives for it.  An
+    entry named in the last entry's <strong>Unread.</strong> paragraph, by its anchor, is waived: the paragraph
+    says which were not read and why.  On 12 October 2026 an entry on an item with two earlier entries, and two
+    more on sub-ideas they listed, repeated a statement that one of the four had withdrawn; it linked one of them
+    without having read it, which is why a link alone is not accepted.  A quotation shows that a sentence was
+    seen, not that an entry was read."""
+    tag, text = articles[-1]
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})-', tag)
+    if dated is None or dated.group(1) < READ_ALL_FROM:
+        return []
+    own, below = item_entries(articles, item, len(articles) - 1)
+    wanted = own + below
+    if not wanted or len(wanted) > limit:
+        return []
+    said = UNREAD_RE.search(text)
+    waived = said.group(1) if said else ''
+    have = _words(text)
+    runs = {tuple(have[i:i + QUOTED_WORDS]) for i in range(len(have) - QUOTED_WORDS + 1)}
+    by_anchor = {(re.search(r'\bid="([^"]+)"', old_tag) or [None, ''])[1]: old_text
+                 for old_tag, old_text in articles[:-1]}
+    missing = []
+    for anchor in wanted:
+        if re.search(re.escape(anchor) + r'(?![\w-])', waived):      # the whole anchor: anchors share prefixes
+            continue
+        if f'href="#{anchor}"' not in text:
+            missing.append((anchor, 'link'))
+            continue
+        given = quotable(by_anchor[anchor])
+        if given and not any(tuple(given[i:i + QUOTED_WORDS]) in runs
+                             for i in range(len(given) - QUOTED_WORDS + 1)):
+            missing.append((anchor, 'quotation'))
+    return missing
+
+
 OWED_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
 
 
@@ -1056,6 +1153,10 @@ def item_status(body, ident, claims=None, relationships=None):
             (f'Next development would be entry {count + 1}.' if count < limit else
              'Boundary reached: develop a different item first, unless an extension is earned.'),
             'Open sub-ideas: ' + (', '.join(c.ident for c in top.children) or 'none'),
+            'Entries on the item itself, then on sub-ideas they listed (when at most '
+            f'{READ_ALL_LIMIT} in all, a new entry links and quotes each): '
+            + ' | '.join(', '.join('#' + anchor for anchor in part) or 'none'
+                         for part in item_entries(record_articles(body), node.item)),
             'Result files its entries link (read what was computed before computing again): '
             + (', '.join(result_files(body, ident)) or 'none'),
             'Attempts named by the follow-ups of its entries (write the Owed attempt paragraph against all):'
@@ -1706,6 +1807,14 @@ def check(head_body, body, path=None, root=None):
             raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
                              'entry, after reading it, so that work already recorded on the item is not repeated '
                              '(AGENTS.md, restoration and research discipline)')
+        unread = unread_item_entries(articles, work[0])
+        if unread:
+            raise ValueError(f'This entry develops an item that has at most {READ_ALL_LIMIT} earlier entries, counting '
+                             'those on the item itself and those on sub-ideas they listed, and for some of them it '
+                             'lacks: ' + ', '.join(f'#{anchor} ({what})' for anchor, what in unread) + f'. Link each '
+                             f'after reading it and quote {QUOTED_WORDS} consecutive words of its Follow-up (of its '
+                             'title when that is shorter), or name it by its anchor after <strong>Unread.</strong> with the reason it '
+                             'was not read (tools/lead_queue.py, unread_item_entries)')
         left = left_by_last_review(body, nodes, articles, work[0])
         if left:
             raise ValueError(f'The last review, #{left}, names this entry\'s item, or its parent, among the items it '
