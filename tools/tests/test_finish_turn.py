@@ -227,6 +227,56 @@ sys.exit(compute.main())
         self.assertIsNone(json.loads((state / 'state.json').read_text())['unanswered'])
         self.assertIn('Stand-in review not run: no transcript of this session was found.', done.stdout)
 
+    def test_review_crossing_queue_threshold_keeps_pre_entry_state_after_archive(self):
+        import lead_queue
+        notebook = self.root / 'notebook.html'
+        queue = '<section id="lead-queue"><ol>' + ''.join(
+            f'<li data-idea="old-{i}" data-source="old">Existing research question {i}.</li>'
+            for i in range(lead_queue.CAP - 1)) + '</ol></section>'
+        earlier = ''.join(
+            f'<article id="old-{i}" data-kind="research" data-route="general-step">'
+            '<p class="entry-meta">Earlier research.</p></article>' for i in range(6))
+        base = ('<section id="remaining-route"><li data-route-item="general-step">step</li></section>'
+                + queue + '<section id="research-record">' + earlier + '</section>')
+        notebook.write_text(base)
+        subprocess.run(['git', 'init', '-q'], cwd=self.root, check=True)
+        subprocess.run(['git', 'add', 'notebook.html'], cwd=self.root, check=True)
+        subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid',
+                        'commit', '-qm', 'Before review'], cwd=self.root, check=True)
+        passed = ('<li data-pick>A concrete continuation. <strong>Answers.</strong> The open obstacle. '
+                  '<strong>Test.</strong> Passed. <strong>Break point.</strong> The full source bound '
+                  'still requires a proved compatibility statement.</li>')
+        rejected = ('<li>A rejected shortcut. <strong>Answers.</strong> The same open obstacle. '
+                    '<strong>Test.</strong> Falsified: this proposed transfer fails its control.</li>')
+        tags, report = reporting('id="current" data-kind="review" data-route="general-step" '
+                                 'data-open-items="3"')
+        entry = (f'<article {tags}><p class="entry-meta">Reviewed route assessment.</p>'
+                 '<p><strong>General statement.</strong> The recorded conjecture remains open '
+                 '(conj:fixture-general); this review does not promote it.</p>' + report + OBSTACLE
+                 + '<h4>Outside leads</h4><ul>' + passed + rejected * 2 + '</ul>'
+                 + '<h4>Absurd bridges</h4><ul>' + rejected * 2 + '</ul>'
+                 + '<!-- TIMING test_turn --></article>')
+        current = base
+        at = current.rindex('</section>')
+        current = current[:at] + entry + current[at:]
+        current, added = lead_queue.append_new(current)
+        self.assertEqual(added, 1)
+        self.assertFalse(lead_queue.is_draining(base))
+        self.assertTrue(lead_queue.is_draining(current))
+        budget_path = self.root / 'research/context-budgets.json'
+        budget = json.loads(budget_path.read_text())
+        budget['regions']['remaining-route'] = 100
+        budget_path.write_text(json.dumps(budget))
+        notebook.write_text(current)
+        (self.root / 'research/logs/claim-searches.jsonl').write_text(json.dumps({
+            'unix_s': self.events('test_turn')[0]['unix_s'], 'query': 'fixture compatibility'}) + '\n')
+        self.fixture_finisher().finish(self.root, 'test_turn', next_turn='next_turn')
+        self.assertNotIn('<!-- TIMING test_turn -->', notebook.read_text())
+        self.assertIn('data-generated="finish-turn-timing-v1"', notebook.read_text())
+        self.assertTrue((self.root / 'research/provenance/session-records/test_turn/manifest.json').exists())
+        self.assertTrue(any(e['event'] == 'stop' for e in self.events('test_turn')))
+        self.assertFalse(any(e['event'] == 'stop' for e in self.events('next_turn')))
+
     def test_incomplete_new_claim_is_rejected_before_clock_stops(self):
         sys.path.insert(0,str(ROOT/'tools'))
         import claim_registry as cr

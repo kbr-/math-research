@@ -1694,7 +1694,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     # Re-read after commands so unrelated edits made meanwhile are retained.
     current = notebook.read_text()
     try:
-        validate_marker(current, marker)
+        validate_marker(current, marker, draining=draining)
     except ValueError as error:
         raise ValueError(f'Timing and archive are saved, but {error}') from error
     first = json.loads((root / 'research/logs' / f'{turn}.jsonl').read_text().splitlines()[0])

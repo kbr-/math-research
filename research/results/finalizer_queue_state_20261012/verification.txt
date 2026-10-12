@@ -1,0 +1,40 @@
+The finalizer checked review lead generation against the pre-entry queue state before stopping
+timing, but called validate_marker again without that state after archival. A review crossing
+the backpressure threshold therefore passed one gate and failed the opposite gate after its
+clock was stopped. The second call now retains the same checked state.
+
+The regression uses the real finisher, timing and archive flow with the existing fixture-only
+launcher. It commits a non-draining queue, appends a review whose one passed lead crosses the
+threshold, and checks timing insertion, archival and the next clock. It does not mock the
+queue-state calculation or marker validation.
+
+Validation:
+- Finalizer module: 21 tests passed in 0.7 seconds during development.
+- Isolated unmutated regression control: one test passed in 0.59 seconds.
+- Removing the new keyword argument in scratch made that same regression fail after timing and
+  archival, with the original contradictory draining error.
+- Generic mutmut scope: the six argument mutations of this changed call, IDs 344-349 in the
+  saved call listing. All six were killed; zero survivors or uncovered mutants in that scope.
+  The rest of the generated file's mutants were not selected. The initial mutation harness
+  reported a fixture module-name mismatch; after aligning it with finish_turn, clean tests and
+  the forced-failure control passed before the six mutants ran. That failed setup is not counted
+  as a killed mutant. Mutation generation was a one-time serial tool cost, not a timed check
+  accepted above a repository threshold.
+- Full framework suite: 1014 tests passed in 8.5 seconds. Its printed rejection messages belong
+  to deliberate fixture controls; the suite's terminal exit is zero.
+
+The mutation workspace copied only framework source, schemas and this test. The hyphenated
+script was copied as src/finish_turn.py for mutmut imports, and copied into the fixture at its
+normal executable path. No live source was mutated. Full accepted and deliberately failing
+outputs are preserved beside this note.
+
+The real interrupted research finalization completed with its existing stopped clock and
+without --next, because the next clock already existed. For a timed full-repository measurement,
+the same uncommitted entry's generated timing was restored to its original draft marker and
+the controller was run again. real-inputs.txt records the notebook and registry byte counts;
+real-use.txt contains the external elapsed/CPU/RSS measurement. This does not redo mathematics,
+change the clock's original interval or alter queue thresholds.
+
+The cycle's same medium reviewer passed the code fix and integration regression after reading
+the diff and verification scope. It did not rerun the saved tests. The separate early-append
+validation enhancement remains queued; retaining the state after archival is now implemented.
