@@ -1,0 +1,34 @@
+{
+  "source": {
+    "record": "[Window power-sum count](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-window-power-sum-count"],
+    "label": "In the model of prime sums at one height, under a hypothesis on far heights: a rightmost point cannot be hidden on a window of lengths by fewer than a logarithmic number of points, by Turan's second main theorem; and the Gram model's off-axis sum restated with that theorem"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "prop:window-power-sum-count",
+      "summary": "W >= 0 integrable on [0, l], not almost everywhere zero, a(z) = int W(v) e^(zv) dv; a finite set of n points z_j = beta_j + i gamma_j with multiplicities m_j > 0 and beta_j <= beta_0, one of them rho_0 = beta_0 + i tau with multiplicity m_0; P(u) = sum m_j a(z_j - i tau) e^((z_j - i tau) u); U >= 0, R > 0. Hypothesis F: the points with |gamma_j - tau| > pi/(2l) have sum of m_j |a(z_j - i tau)| at most phi a(beta_0) m_0 with 0 <= phi < 1. (1) Then sup over [U, U + R] of |P(u)| e^(-beta_0 u)/a(beta_0) >= 2 (1 - phi) m_0 (R/(8e(U + R)))^n. (2) If the points are split into Z1, with n1 points containing rho_0 and satisfying F among themselves, and Z2 with beta_j <= beta_0 - eta for some eta >= 0 and S2 = sum over Z2 of m_j |a(z_j - i tau)|, then that supremum is at least 2 (1 - phi) m_0 (R/(8e(U + R)))^n1 - (S2/a(beta_0)) e^(-eta U). (3) Hence if the supremum is at most eps m_0 and (S2/a(beta_0)) e^(-eta U) <= eps m_0 with 0 < eps < (1 - phi), then n1 >= log((1 - phi)/eps)/log(8e(U + R)/R); n1 counts every point of Z1, at near and far heights. (4) Without F: for n pairs gamma_j +- i delta_j, delta_1 >= delta_j > 0, m_j > 0, S(s) = sum m_j (e^(-is(gamma_j - i delta_j)) + e^(-is(gamma_j + i delta_j))), every h > 0 and integer m >= 0, some s = nu h with m < nu <= m + 2n has |S(s)| >= 2 m_1 e^(delta_1 s) (2n/(8e(m + 2n)))^(2n).",
+      "assessment": "Working proof from one published theorem, Turan's second main theorem (Theorem 8.1 of his 1984 book, read as page images in an earlier cycle, quoted in the notebook's working context, not reread here): the sum is sampled at equally spaced lengths, where it is a power sum with nodes of modulus at most one, and the partial sums of the coefficients are bounded below, in (1) because the weight's transform has nonnegative real part at heights within pi/(2l) and the far points are assumed light, in (4) because the coefficients are positive; coincident nodes are merged. Part (2) is the triangle inequality. An earlier entry of this notebook outlined this use of the theorem, with the positivity at near heights and the obstruction from far heights, and left it unverified; this carries it out with the obstruction assumed away by F. F is itself an assumption of sparsity: many near-tied points at far heights violate it. With the Gaussian comb the number of points needed to hide to e^(-Lam) is of order Lam in the model from both sides, under the condition that the comb's heights are near and up to its prefactor; the constants differ by about 7.5 at r = 1/4 in the limit of a short weight.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "The lower side to the Gaussian comb in the model: fewer than about Lam/log(8e(1 + 1/r)) points cannot hide a rightmost point to e^(-Lam) on a window, under F. Read on the conditional line of prime sums at one height, to leading order and in the model only: a rightmost point at beta_0 hides from the premise's window starting at tau^y only if at least about (q/2) log tau/log(16e/q) points have real part above beta_0 - q/(2y), q = 1 - (1 - beta_0) y; at y = 2 that line is the one of the recorded conditional corollary for zeta, so the set counted is not new; the constant is explicit. Part (4) restates an earlier lemma's application with no dependence on the gaps.",
+      "next_action": "Hypothesis F: remove it by a weight whose transform has nonnegative real part at every height, at the cost the entry's reviewer names, or show it cannot be removed.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete proof in the entry from a published theorem as recorded; hand instances only, no computation.",
+        "formalization": "No formalization.",
+        "significance": "Context: the application of a published theorem in a model, outlined before on this record; the conditional corollary on the record already has a count of this order for zeta. No novelty claimed.",
+        "relationships": "Lower side to the Gaussian comb hiding; complements the rightmost point window criterion; the model relative of the sparse off-line exclusion, with the same line and an explicit constant; part (4) is the interpolation bound's application with the published theorem."
+      }
+    }
+  ],
+  "relationships": [
+    ["prop:window-power-sum-count", "cites", "prop:gaussian-comb-hiding", "The construction whose number of points this bounds from below; same model and notation."],
+    ["prop:window-power-sum-count", "cites", "prop:rightmost-point-window-criterion", "Same model; that criterion needs separated heights, this one a count and a condition on far heights. Neither implies the other."],
+    ["prop:window-power-sum-count", "cites", "cor:sparse-off-line-exclusion", "The conditional corollary for zeta, counting the zeros in a disk to the right of a line with a small constant; here, in a model, the points to the right of the same line at window start tau^2, in a strip, with an explicit constant."],
+    ["prop:window-power-sum-count", "cites", "lem:interpolation-power-sum-bound", "Part (4) is that lemma's application to the off-axis sum restated with the published theorem: no dependence on the gaps and the exponential at the point found. The lemma itself is elementary and self-contained; neither implies the other."]
+  ]
+}
