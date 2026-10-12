@@ -1,0 +1,34 @@
+{
+  "source": {
+    "record": "[Riesz mean explicit formula](https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-mean-explicit-formula)",
+    "targets": ["https://kbr.is-a.dev/math-research/branches/riemann/#entry-2026-10-12-riesz-mean-explicit-formula"],
+    "label": "The explicit formula for the Riesz mean of Lambda(n) n^(-s) at one length, from Selberg's formula for two lengths, with its archimedean term"
+  },
+  "reviewer": "Claude Code proof assessment; fresh medium reviewer",
+  "date": "2026-10-12",
+  "topics": ["publication"],
+  "claims": [
+    {
+      "id": "lem:riesz-mean-explicit-formula",
+      "summary": "L > 0, X = e^L, R_L(s) = sum_{n <= X} Lambda(n) n^(-s) (1 - log n/L), D_L(w) = (e^(-wL) - 1)/(L w^2), F_L(w) = 1/w + D_L(w) (the one-sided triangle's transform). Premise S: Selberg's identity -zeta'/zeta(s) = sum_{n <= y^2} Lambda_y(n) n^(-s) + (y^(1-s) - y^(2(1-s)))/((1-s)^2 log y) - (1/log y) sum_{q >= 1} (y^(-2q-s) - y^(-2(2q+s)))/(2q+s)^2 - (1/log y) sum_rho (y^(rho-s) - y^(2(rho-s)))/(s-rho)^2 for every y > 1 and every s that is not 1 and not a zero of zeta, with sum_rho m_rho/|s - rho|^2 finite. Premise X: Re xi'/xi(s) = sum_rho m_rho Re 1/(s - rho), absolutely convergent, where xi(s) is not 0. (1) Under S, for such s: R_L(s) = -zeta'/zeta(s) + D_L(s-1) - sum_rho m_rho D_L(s-rho) - sum_{q >= 1} D_L(s+2q), all sums absolutely convergent. (2) Under S and X, for s not 1 and not a zero of zeta: Re R_L(s) = Re F_L(s-1) - sum_rho m_rho Re F_L(s-rho) + a_L(s), a_L(s) = Re[psi(s/2 + 1)/2 - (log pi)/2] - sum_{q >= 1} Re D_L(s+2q), the sum over zeros absolutely convergent; and for Re s > 0, |sum_q D_L(s+2q)| <= pi^2/(12 L).",
+      "assessment": "Conditional: an elementary deduction from the two premises. Selberg's identity is the difference of (1) at lengths 2 log y and log y; so the defect of (1) is invariant under halving the length, and it tends to 0 with the length, the Riesz mean being empty below log 2. Part (2) takes real parts and uses the logarithmic derivative of xi. Premise S was read as quoted in arXiv:2111.10001 from Selberg 1943, Lemma 2, where it is written for one value of y, above e^(1/4), while the proof uses y tending to 1; Selberg's paper is unread. Premise X was read as a theorem statement in the density import's Lean project, which is not built here. Controlled numerically at five points against 300 zeros: part (1) to about 0.001 where its pieces are 0.14 to 0.59, within an estimated truncation that is itself up to a few hundredths of the pieces.",
+      "status": "conditional",
+      "category": "context",
+      "rationale": "Makes exact the formula that two registered propositions on the tilted three-four-one inequality were read through: the classical inequality is 0 <= T_S + A - (nonnegative terms) with A the archimedean combination, of size (5/2) log |tau| + O(1) by Stirling's formula, recalled, its sign from an explicit height unproved; and it shows that for zeta the set S of that reading is every zero to the right of the tilt, infinite for a tilt below 0, where neither the reach proposition nor its local form applies.",
+      "next_action": "Replace premise S by termwise integration with the partial fraction of zeta'/zeta; prove a bound for |Re F| decaying like the inverse square of the height and sum it over the zeros.",
+      "formalization_scope": "Not formalized; no Lean work assigned.",
+      "notes": {
+        "mathematical_status": "Complete deduction from two premises that are classical statements read in secondary places; numerical control at five points.",
+        "formalization": "No formalization; premise X is a statement of an imported, unbuilt Lean project.",
+        "significance": "Context: a classical formula in the form the record uses. No novelty claimed.",
+        "relationships": "Supplies the explicit formula that prop:tilted-inequality-reach, prop:tilted-local-reach and prop:tilted-cluster-hiding were read through."
+      }
+    }
+  ],
+  "relationships": [
+    ["lem:riesz-mean-explicit-formula", "cites", "lem:tilted-triangle-positivity", "The function F and the sign of its real part on the right half-plane, used to drop the terms of zeros left of the tilt."],
+    ["lem:riesz-mean-explicit-formula", "cites", "prop:tilted-inequality-reach", "The proposition whose reading of the classical argument this formula supports; the proposition itself does not use the formula."],
+    ["lem:riesz-mean-explicit-formula", "cites", "prop:tilted-local-reach", "The local form of the reach; its weight is not summable over the zeros, so it too does not cover zeta at a negative tilt."],
+    ["lem:riesz-mean-explicit-formula", "cites", "thm:anthropic-critical-line-density", "Premise X is a theorem statement in that import's Lean project."]
+  ]
+}
