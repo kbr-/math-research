@@ -305,6 +305,46 @@ def refuse_excluded_item(source, next_html):
               'another of the items this step names.', file=sys.stderr)
 
 
+# What the plan must say of the entry it plans; "does not close" and "the other check is closed" do not match.
+PLAN_CLOSES = re.compile(r'\b(?:the |this )?entry (?:then )?(?:closes|will close) (?:its|the|that|this) '
+                         r'(?:queue |queued )?(?:item|check|lead|build)\b', re.I)
+PLAN_BEST = re.compile(r'\bBest outcome\b(.*)', re.I | re.S)
+
+
+def refuse_no_bearing_plan(source, next_html):
+    """A next step may not plan, in a run of entries without bearing, an entry the finisher will refuse.
+
+    After three research entries in a row on the route that declare no bearing, the finisher refuses an entry
+    whose Best outcome says it gives nothing at the goal's parameters unless its follow-up closes its item.  On
+    12 October 2026 a next step stated exactly that best outcome, was accepted, and the cycle made by it was
+    refused at its end, when its reviewer had ruled the item open.  The run's length and the words for nothing
+    are the finisher's own; like the finisher it reads only what follows "Best outcome", so a sentence about
+    past work is not taken for the plan, and a next step that states no best outcome is not refused here.  A
+    next step for the route review that is due is not a plan of a research entry."""
+    import lead_queue
+    if review_due(lead_queue.record_articles(source)):
+        return
+    checks = reporting_checks()
+    tags = [t for t in re.findall(r'<article\b[^>]*>', source) if 'data-kind="research"' in t]
+    if not tags:
+        return
+    route = re.search(r'data-route="([^"]+)"', tags[-1])
+    run = 0
+    for tag in reversed([t for t in tags if route and f'data-route="{route.group(1)}"' in t]):
+        if 'data-bearing="none"' not in tag:
+            break
+        run += 1
+    step = plain(next_html)
+    best = PLAN_BEST.search(step)
+    text = best.group(1) if best else ''                 # the closing may be said anywhere in the step
+    if run >= checks.NO_BEARING_RUN and checks.NOTHING_BEST_RE.search(text) and not PLAN_CLOSES.search(step):
+        raise ValueError(f'the last {run} research entries on the route declared no bearing, and this next step '
+                         "says its best outcome is nothing at the goal's parameters without saying that the entry "
+                         'closes its item: the finisher will refuse the entry it plans; plan an attempt whose '
+                         'best outcome bears on the goal, or one that closes its item and says so (AGENTS.md, '
+                         'goal progress)')
+
+
 def branch_checks(tools=None):
     """The branch's own check(source, entry, next_html), or None where it has no tools/append_checks.py."""
     path = (tools or Path(__file__).parent) / 'append_checks.py'
@@ -381,6 +421,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         require_named_item(source, next_html)
         require_quoted_items(source, next_html)
         refuse_excluded_item(source, next_html)
+        refuse_no_bearing_plan(source, next_html)
     preflight(source, m.group(1))
     return source
 

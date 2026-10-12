@@ -169,6 +169,48 @@ class NextStepItemTests(unittest.TestCase):
         tool.refuse_excluded_item(twice + tagged('a3', 'item-0', 'none'), '<p>Develop item-1 again.</p>')
         tool.refuse_excluded_item(twice, '<p>Develop item-1 again.</p>')                    # one entry only
 
+    def test_a_next_step_planning_no_bearing_in_such_a_run_is_refused_unless_it_closes(self):
+        def tagged(anchor, bearing):
+            return f'<article id="{anchor}" data-kind="research" data-route="x" data-bearing="{bearing}">t</article>'
+        run = ''.join(tagged(f'a{i}', 'none') for i in range(3))
+        nothing = "<p>Evaluate the bound. Best outcome: nothing at the goal's deficit.</p>"
+        with self.assertRaisesRegex(ValueError, 'the finisher will refuse the entry it plans'):
+            tool.refuse_no_bearing_plan(run, nothing)
+        tool.refuse_no_bearing_plan(run, nothing.replace('deficit.', 'deficit; the entry closes its item.'))
+        tool.refuse_no_bearing_plan(run, '<p>The entry closes its item. ' + nothing[3:])    # said before the outcome
+        tool.refuse_no_bearing_plan(run, '<p>Best outcome: a barrier near half for narrow rows.</p>')
+        tool.refuse_no_bearing_plan(tagged('a0', 'none') * 2, nothing)                      # a run of two only
+        tool.refuse_no_bearing_plan(run + tagged('a9', 'some'), nothing)                    # the run is broken
+        # the next step of 12 October 2026 that was accepted and whose entry was refused
+        real = ('<p>read the entry on the immunity budget and evaluate what it gives. Best outcome at the goal\'s '
+                'parameters: a proved lower bound, which cannot exceed a quarter; so nothing at the goal\'s '
+                'deficit, and the entry is spent to learn whether the item has anything left.</p>')
+        with self.assertRaisesRegex(ValueError, 'the finisher will refuse'):
+            tool.refuse_no_bearing_plan(run, real)
+        # words that do not say the planned entry closes its item
+        for words in ('it does not close the item.', 'the other check is closed.'):
+            with self.assertRaisesRegex(ValueError, 'the finisher will refuse'):
+                tool.refuse_no_bearing_plan(run, nothing.replace('deficit.', 'deficit; ' + words))
+        # a sentence about past work, before the best outcome, is not the plan
+        tool.refuse_no_bearing_plan(run, "<p>The block gave nothing at the goal's parameters. Best outcome: a "
+                                         'barrier near half.</p>')
+        # the route review that is due is not a planned research entry
+        record = '<section id="research-record">' + ''.join(tagged(f'b{i}', 'none') for i in range(6)) + '</section>'
+        tool.refuse_no_bearing_plan(record, nothing)
+        with self.assertRaisesRegex(ValueError, 'the finisher will refuse'):
+            tool.refuse_no_bearing_plan(record.replace(tagged('b5', 'none'), ''), nothing)
+
+    def test_the_refusal_of_such_a_plan_is_made_by_append(self):
+        def tagged(anchor):
+            return f'<article id="{anchor}" data-kind="research" data-route="x" data-bearing="none">t</article>'
+        source = NOTEBOOK.replace('<article id="a1">one</article>\n<article id="a2">two</article>',
+                                  tagged('a1') + '\n' + tagged('a2'))
+        nothing = "<p>Evaluate the bound. Best outcome: nothing at the goal's deficit.</p>"
+        with self.assertRaisesRegex(ValueError, 'the finisher will refuse the entry it plans'):
+            tool.append(source, tagged('a3'), nothing)                     # the appended entry is the third
+        tool.append(source, tagged('a3'), nothing.replace('deficit.', 'deficit; the entry closes its item.'))
+        tool.append(NOTEBOOK, tagged('a3'), nothing)                       # one entry without bearing only
+
     def test_a_review_due_next_needs_no_item(self):
         research = [('<article id="r%d" data-kind="research" data-route="x">' % n, '') for n in range(6)]
         self.assertTrue(tool.review_due(research))
