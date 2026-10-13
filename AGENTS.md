@@ -690,10 +690,11 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   retrieval is recorded, in a request or an entry, only after the retrieved file has been opened and
   identified as the source. A number or range transcribed from a scanned page is checked against a
   second place where the source uses it, or marked uncertain. A paper on arXiv is read from its
-  source: `tools/arxiv_source.py ID --out DIR --expect WORDS` unpacks it into a scratch directory
-  outside the repository, prints its title, and fails when the title holds none of the words given
-  of the title meant. A web fetch that returns a model's report of a page is not a reading of its
-  statements; an entry that relies on one says so in its status line.
+  source: `tools/arxiv_source.py ID --out DIR --expect WORDS` unpacks into external scratch or the
+  actor's managed, Git-ignored scratch, rejects tracked destinations and links, prints the title,
+  and fails when it holds none of the words given of the title meant. A web fetch that returns a
+  model's report of a page is not a reading of its statements; an entry that relies on one says so
+  in its status line.
 - Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the
   one the user reads; in a worktree `user_requests` is a link to it, which `compute.sh start`
   creates and insists on: a missing source, an installation, a permission, a choice between research

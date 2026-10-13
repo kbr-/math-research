@@ -1,0 +1,510 @@
+....                                                                     [100%]
+4 passed in 0.11s
+# arxiv_source.x_validate_destination__mutmut_2: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -1,6 +1,6 @@
+ def validate_destination(out):
+     """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+-    if '..' in out.parts:
++    if '..' not in out.parts:
+         raise ValueError('Source output path must not contain parent traversal')
+     out = out.absolute()
+     for path in (out, *out.parents):
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_cli_allows_owned_fetch_but_refuses_foreign_before_network _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_cli_allows_owned_fetch_but_refuses_foreign_before_network>
+
+    def test_cli_allows_owned_fetch_but_refuses_foreign_before_network(self):
+        import contextlib
+        payload = io.BytesIO(gzip.compress(b'\\title{Persistence modules}\n'))
+        out = self.owned / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen', return_value=payload) as fetch, \
+                contextlib.redirect_stdout(io.StringIO()):
+>           self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(out),
+                                               '--expect', 'Persistence']), 0)
+E           AssertionError: 1 != 0
+
+tests/test_arxiv_source.py:117: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Source output path must not contain parent traversal
+___ ManagedDestinationTest.test_links_and_traversal_are_refused_before_fetch ___
+ValueError: Source output path must not contain parent traversal
+
+During handling of the above exception, another exception occurred:
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_links_and_traversal_are_refused_before_fetch>
+
+    def test_links_and_traversal_are_refused_before_fetch(self):
+        out = self.owned / 'paper'
+        out.mkdir(parents=True)
+        external = Path(self.tmp.name) / 'external'
+        external.mkdir()
+        victim = external / 'kept.tex'
+        victim.write_text('keep this file')
+>       with self.assertRaisesRegex(ValueError, 'must be a directory'):
+E       AssertionError: "must be a directory" does not match "Source output path must not contain parent traversal"
+
+tests/test_arxiv_source.py:89: AssertionError
+_ ManagedDestinationTest.test_owned_ignored_destination_and_protected_job_identity _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_owned_ignored_destination_and_protected_job_identity>
+
+    def test_owned_ignored_destination_and_protected_job_identity(self):
+        out = self.owned / 'paper'
+>       self.assertEqual(arxiv_source.validate_destination(out), out)
+
+tests/test_arxiv_source.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+out = PosixPath('/tmp/tmpiy3z1de9/repo/research/tmp/codex/6ac7d958de501c93a3300a8551c85a0fadf2637b60d8d7da425459137862fdcb/paper')
+
+    def validate_destination(out):
+        """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+        if '..' not in out.parts:
+>           raise ValueError('Source output path must not contain parent traversal')
+E           ValueError: Source output path must not contain parent traversal
+
+src/arxiv_source.py:43: ValueError
+_ ManagedDestinationTest.test_unignored_and_force_tracked_destinations_are_refused _
+ValueError: Source output path must not contain parent traversal
+
+During handling of the above exception, another exception occurred:
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_unignored_and_force_tracked_destinations_are_refused>
+
+    def test_unignored_and_force_tracked_destinations_are_refused(self):
+        out = self.owned / 'paper'
+        (self.root / '.gitignore').write_text('')
+>       with self.assertRaisesRegex(ValueError, 'Git-ignored'):
+E       AssertionError: "Git-ignored" does not match "Source output path must not contain parent traversal"
+
+tests/test_arxiv_source.py:64: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_cli_allows_owned_fetch_but_refuses_foreign_before_network
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_links_and_traversal_are_refused_before_fetch
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_owned_ignored_destination_and_protected_job_identity
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_unignored_and_force_tracked_destinations_are_refused
+4 failed in 0.08s
+# arxiv_source.x_validate_destination__mutmut_8: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -5,7 +5,7 @@
+     out = out.absolute()
+     for path in (out, *out.parents):
+         if path.is_symlink():
+-            raise ValueError(f'Source output must not pass through a symlink: {path}')
++            raise ValueError(None)
+     inside = repository_of(out)
+     if inside is not None:
+         inside = inside.resolve()
+.F..                                                                     [100%]
+=================================== FAILURES ===================================
+___ ManagedDestinationTest.test_links_and_traversal_are_refused_before_fetch ___
+ValueError: None
+
+During handling of the above exception, another exception occurred:
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_links_and_traversal_are_refused_before_fetch>
+
+    def test_links_and_traversal_are_refused_before_fetch(self):
+        out = self.owned / 'paper'
+        out.mkdir(parents=True)
+        external = Path(self.tmp.name) / 'external'
+        external.mkdir()
+        victim = external / 'kept.tex'
+        victim.write_text('keep this file')
+        with self.assertRaisesRegex(ValueError, 'must be a directory'):
+            arxiv_source.validate_destination(victim)
+        link = out / 'link'
+        for target in (victim, external):
+            link.symlink_to(target)
+            with self.assertRaisesRegex(ValueError, 'symlink'):
+                arxiv_source.validate_destination(out)
+>           with self.assertRaisesRegex(ValueError, 'symlink'):
+E           AssertionError: "symlink" does not match "None"
+
+tests/test_arxiv_source.py:96: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_links_and_traversal_are_refused_before_fetch
+1 failed, 3 passed in 0.11s
+# arxiv_source.x_validate_destination__mutmut_36: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -16,8 +16,7 @@
+             # compute.sh transports this opaque path, not the raw thread identity.
+             inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
+             owned = Path(inherited) if inherited else None
+-            if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+-                                      or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
++            if owned is not None and (owned.parent != inside / 'research/tmp/codex' and not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                 raise ValueError('Invalid inherited managed scratch path')
+         if owned is None or (out != owned and owned not in out.parents):
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+..F.                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_owned_ignored_destination_and_protected_job_identity _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_owned_ignored_destination_and_protected_job_identity>
+
+    def test_owned_ignored_destination_and_protected_job_identity(self):
+        out = self.owned / 'paper'
+        self.assertEqual(arxiv_source.validate_destination(out), out)
+        out.mkdir(parents=True)
+        (out / 'regular.tex').write_text('ordinary source')
+        (out / 'subdir').mkdir()
+        # Unrelated tracked operands must not enter the scoped Git query.
+        for name in ('XX-zXX', 'XX--XX'):
+            unrelated = self.root / name
+            unrelated.write_text('unrelated tracked file')
+            subprocess.run(['git', '-C', str(self.root), 'add', '--', str(unrelated)], check=True)
+        self.assertEqual(arxiv_source.validate_destination(out), out)
+        with patch.dict(os.environ, {'MATH_CODEX_SCRATCH': str(self.owned)}, clear=True):
+            self.assertEqual(arxiv_source.validate_destination(out), out)
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(ValueError, 'current Codex actor'):
+                arxiv_source.validate_destination(out)
+        other = arxiv_source.scratch_directory(self.root, 'other-owner') / 'paper'
+        with self.assertRaisesRegex(ValueError, 'current Codex actor'):
+            arxiv_source.validate_destination(other)
+        with patch.dict(os.environ, {'MATH_CODEX_SCRATCH': str(self.root)}, clear=True):
+            with self.assertRaisesRegex(ValueError, 'Invalid inherited'):
+                arxiv_source.validate_destination(out)
+        for invalid in (self.owned.parent / 'not-an-owner', self.root / self.owned.name):
+            with patch.dict(os.environ, {'MATH_CODEX_SCRATCH': str(invalid)}, clear=True):
+>               with self.assertRaisesRegex(ValueError, 'Invalid inherited'):
+E               AssertionError: ValueError not raised
+
+tests/test_arxiv_source.py:55: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_owned_ignored_destination_and_protected_job_identity
+1 failed, 3 passed in 0.12s
+# arxiv_source.x_validate_destination__mutmut_52: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -19,7 +19,7 @@
+             if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                       or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                 raise ValueError('Invalid inherited managed scratch path')
+-        if owned is None or (out != owned and owned not in out.parents):
++        if owned is None and (out != owned and owned not in out.parents):
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                              'the current Codex actor\'s managed scratch')
+         relative = str(out.relative_to(inside))
+F.F.                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_cli_allows_owned_fetch_but_refuses_foreign_before_network _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_cli_allows_owned_fetch_but_refuses_foreign_before_network>
+
+    def test_cli_allows_owned_fetch_but_refuses_foreign_before_network(self):
+        import contextlib
+        payload = io.BytesIO(gzip.compress(b'\\title{Persistence modules}\n'))
+        out = self.owned / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen', return_value=payload) as fetch, \
+                contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(out),
+                                               '--expect', 'Persistence']), 0)
+        fetch.assert_called_once()
+        self.assertIn('Persistence', (out / 'paper.tex').read_text())
+        foreign = arxiv_source.scratch_directory(self.root, 'foreign') / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen') as fetch, \
+                contextlib.redirect_stderr(io.StringIO()):
+>           self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(foreign),
+                                               '--expect', 'Persistence']), 1)
+
+tests/test_arxiv_source.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/arxiv_source.py:213: in main
+    names = unpack(data, args.out)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+data = <MagicMock name='urlopen().__enter__().read()' id='136854899218112'>
+out = PosixPath('/tmp/tmpb2416pf6/repo/research/tmp/codex/656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd/paper')
+
+    def unpack(data, out):
+        """Write the files of an e-print payload under `out`; return their paths relative to it."""
+        out.mkdir(parents=True, exist_ok=True)
+        if data[:4] == b'%PDF':
+            (out / 'paper.pdf').write_bytes(data)
+            return ['paper.pdf']
+        if data[:2] == b'\x1f\x8b':
+            data = gzip.decompress(data)
+        try:
+>           archive = tarfile.open(fileobj=io.BytesIO(data))
+E           TypeError: a bytes-like object is required, not 'MagicMock'
+
+src/arxiv_source.py:94: TypeError
+_ ManagedDestinationTest.test_owned_ignored_destination_and_protected_job_identity _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_owned_ignored_destination_and_protected_job_identity>
+
+    def test_owned_ignored_destination_and_protected_job_identity(self):
+        out = self.owned / 'paper'
+        self.assertEqual(arxiv_source.validate_destination(out), out)
+        out.mkdir(parents=True)
+        (out / 'regular.tex').write_text('ordinary source')
+        (out / 'subdir').mkdir()
+        # Unrelated tracked operands must not enter the scoped Git query.
+        for name in ('XX-zXX', 'XX--XX'):
+            unrelated = self.root / name
+            unrelated.write_text('unrelated tracked file')
+            subprocess.run(['git', '-C', str(self.root), 'add', '--', str(unrelated)], check=True)
+        self.assertEqual(arxiv_source.validate_destination(out), out)
+        with patch.dict(os.environ, {'MATH_CODEX_SCRATCH': str(self.owned)}, clear=True):
+            self.assertEqual(arxiv_source.validate_destination(out), out)
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(ValueError, 'current Codex actor'):
+                arxiv_source.validate_destination(out)
+        other = arxiv_source.scratch_directory(self.root, 'other-owner') / 'paper'
+>       with self.assertRaisesRegex(ValueError, 'current Codex actor'):
+E       AssertionError: ValueError not raised
+
+tests/test_arxiv_source.py:48: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_cli_allows_owned_fetch_but_refuses_foreign_before_network
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_owned_ignored_destination_and_protected_job_identity
+2 failed, 2 passed in 0.14s
+# arxiv_source.x_validate_destination__mutmut_82: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -25,7 +25,7 @@
+         relative = str(out.relative_to(inside))
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                   relative], capture_output=True)
+-        if ignored.returncode != 0:
++        if ignored.returncode == 0:
+             raise ValueError('Managed source output must be Git-ignored')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                  capture_output=True)
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_cli_allows_owned_fetch_but_refuses_foreign_before_network _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_cli_allows_owned_fetch_but_refuses_foreign_before_network>
+
+    def test_cli_allows_owned_fetch_but_refuses_foreign_before_network(self):
+        import contextlib
+        payload = io.BytesIO(gzip.compress(b'\\title{Persistence modules}\n'))
+        out = self.owned / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen', return_value=payload) as fetch, \
+                contextlib.redirect_stdout(io.StringIO()):
+>           self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(out),
+                                               '--expect', 'Persistence']), 0)
+E           AssertionError: 1 != 0
+
+tests/test_arxiv_source.py:117: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Managed source output must be Git-ignored
+___ ManagedDestinationTest.test_links_and_traversal_are_refused_before_fetch ___
+ValueError: Managed source output must be Git-ignored
+
+During handling of the above exception, another exception occurred:
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_links_and_traversal_are_refused_before_fetch>
+
+    def test_links_and_traversal_are_refused_before_fetch(self):
+        out = self.owned / 'paper'
+        out.mkdir(parents=True)
+        external = Path(self.tmp.name) / 'external'
+        external.mkdir()
+        victim = external / 'kept.tex'
+        victim.write_text('keep this file')
+        with self.assertRaisesRegex(ValueError, 'must be a directory'):
+            arxiv_source.validate_destination(victim)
+        link = out / 'link'
+        for target in (victim, external):
+            link.symlink_to(target)
+>           with self.assertRaisesRegex(ValueError, 'symlink'):
+E           AssertionError: "symlink" does not match "Managed source output must be Git-ignored"
+
+tests/test_arxiv_source.py:94: AssertionError
+_ ManagedDestinationTest.test_owned_ignored_destination_and_protected_job_identity _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_owned_ignored_destination_and_protected_job_identity>
+
+    def test_owned_ignored_destination_and_protected_job_identity(self):
+        out = self.owned / 'paper'
+>       self.assertEqual(arxiv_source.validate_destination(out), out)
+
+tests/test_arxiv_source.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+out = PosixPath('/tmp/tmp6ighyf01/repo/research/tmp/codex/6ac7d958de501c93a3300a8551c85a0fadf2637b60d8d7da425459137862fdcb/paper')
+
+    def validate_destination(out):
+        """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+        if '..' in out.parts:
+            raise ValueError('Source output path must not contain parent traversal')
+        out = out.absolute()
+        for path in (out, *out.parents):
+            if path.is_symlink():
+                raise ValueError(f'Source output must not pass through a symlink: {path}')
+        inside = repository_of(out)
+        if inside is not None:
+            inside = inside.resolve()
+            thread = os.environ.get('CODEX_THREAD_ID')
+            if thread:
+                owned = scratch_directory(inside, thread)
+            else:
+                # compute.sh transports this opaque path, not the raw thread identity.
+                inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
+                owned = Path(inherited) if inherited else None
+                if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                          or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                    raise ValueError('Invalid inherited managed scratch path')
+            if owned is None or (out != owned and owned not in out.parents):
+                raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                                 'the current Codex actor\'s managed scratch')
+            relative = str(out.relative_to(inside))
+            ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                      relative], capture_output=True)
+            if ignored.returncode == 0:
+>               raise ValueError('Managed source output must be Git-ignored')
+E               ValueError: Managed source output must be Git-ignored
+
+src/arxiv_source.py:68: ValueError
+_ ManagedDestinationTest.test_unignored_and_force_tracked_destinations_are_refused _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_unignored_and_force_tracked_destinations_are_refused>
+
+    def test_unignored_and_force_tracked_destinations_are_refused(self):
+        out = self.owned / 'paper'
+        (self.root / '.gitignore').write_text('')
+>       with self.assertRaisesRegex(ValueError, 'Git-ignored'):
+E       AssertionError: ValueError not raised
+
+tests/test_arxiv_source.py:64: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_cli_allows_owned_fetch_but_refuses_foreign_before_network
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_links_and_traversal_are_refused_before_fetch
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_owned_ignored_destination_and_protected_job_identity
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_unignored_and_force_tracked_destinations_are_refused
+4 failed in 0.09s
+# arxiv_source.x_validate_destination__mutmut_104: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -29,7 +29,7 @@
+             raise ValueError('Managed source output must be Git-ignored')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                  capture_output=True)
+-        if tracked.returncode or tracked.stdout:
++        if tracked.returncode and tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+         raise ValueError('Source output must be a directory')
+...F                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_unignored_and_force_tracked_destinations_are_refused _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_unignored_and_force_tracked_destinations_are_refused>
+
+    def test_unignored_and_force_tracked_destinations_are_refused(self):
+        out = self.owned / 'paper'
+        (self.root / '.gitignore').write_text('')
+        with self.assertRaisesRegex(ValueError, 'Git-ignored'):
+            arxiv_source.validate_destination(out)
+        # An unrelated ignored name must not satisfy the destination's ignore check.
+        out.mkdir(parents=True)
+        (self.root / '.gitignore').write_text('*\n!research/\n!research/**\n')
+        with self.assertRaisesRegex(ValueError, 'Git-ignored'):
+            arxiv_source.validate_destination(out)
+        (self.root / '.gitignore').write_text('/research/tmp/\n')
+        for name in ('paper', 'paper[1]'):
+            out = self.owned / name
+            out.mkdir(parents=True, exist_ok=True)
+            tracked = out / 'already.tex'
+            tracked.write_text('keep this file')
+            subprocess.run(['git', '-C', str(self.root), 'add', '-f', '--', str(tracked)], check=True)
+>           with self.assertRaisesRegex(ValueError, 'tracked files'):
+E           AssertionError: ValueError not raised
+
+tests/test_arxiv_source.py:78: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_unignored_and_force_tracked_destinations_are_refused
+1 failed, 3 passed in 0.11s
+# arxiv_source.x_validate_destination__mutmut_121: killed
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -38,6 +38,6 @@
+             path = Path(directory) / name
+             if path.is_symlink():
+                 raise ValueError(f'Source output contains a symlink: {path}')
+-            if path.is_file() and path.stat().st_nlink > 1:
++            if path.is_file() or path.stat().st_nlink > 1:
+                 raise ValueError(f'Source output contains a hard link: {path}')
+     return out
+..F.                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_owned_ignored_destination_and_protected_job_identity _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_owned_ignored_destination_and_protected_job_identity>
+
+    def test_owned_ignored_destination_and_protected_job_identity(self):
+        out = self.owned / 'paper'
+        self.assertEqual(arxiv_source.validate_destination(out), out)
+        out.mkdir(parents=True)
+        (out / 'regular.tex').write_text('ordinary source')
+        (out / 'subdir').mkdir()
+        # Unrelated tracked operands must not enter the scoped Git query.
+        for name in ('XX-zXX', 'XX--XX'):
+            unrelated = self.root / name
+            unrelated.write_text('unrelated tracked file')
+            subprocess.run(['git', '-C', str(self.root), 'add', '--', str(unrelated)], check=True)
+>       self.assertEqual(arxiv_source.validate_destination(out), out)
+
+tests/test_arxiv_source.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+out = PosixPath('/tmp/tmp08lh6anf/repo/research/tmp/codex/6ac7d958de501c93a3300a8551c85a0fadf2637b60d8d7da425459137862fdcb/paper')
+
+    def validate_destination(out):
+        """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+        if '..' in out.parts:
+            raise ValueError('Source output path must not contain parent traversal')
+        out = out.absolute()
+        for path in (out, *out.parents):
+            if path.is_symlink():
+                raise ValueError(f'Source output must not pass through a symlink: {path}')
+        inside = repository_of(out)
+        if inside is not None:
+            inside = inside.resolve()
+            thread = os.environ.get('CODEX_THREAD_ID')
+            if thread:
+                owned = scratch_directory(inside, thread)
+            else:
+                # compute.sh transports this opaque path, not the raw thread identity.
+                inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
+                owned = Path(inherited) if inherited else None
+                if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                          or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                    raise ValueError('Invalid inherited managed scratch path')
+            if owned is None or (out != owned and owned not in out.parents):
+                raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                                 'the current Codex actor\'s managed scratch')
+            relative = str(out.relative_to(inside))
+            ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                      relative], capture_output=True)
+            if ignored.returncode != 0:
+                raise ValueError('Managed source output must be Git-ignored')
+            tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                     capture_output=True)
+            if tracked.returncode or tracked.stdout:
+                raise ValueError('Managed source output must contain no tracked files')
+        if out.exists() and not out.is_dir():
+            raise ValueError('Source output must be a directory')
+        for directory, dirs, files in os.walk(out):
+            for name in dirs + files:
+                path = Path(directory) / name
+                if path.is_symlink():
+                    raise ValueError(f'Source output contains a symlink: {path}')
+                if path.is_file() or path.stat().st_nlink > 1:
+>                   raise ValueError(f'Source output contains a hard link: {path}')
+E                   ValueError: Source output contains a hard link: /tmp/tmp08lh6anf/repo/research/tmp/codex/6ac7d958de501c93a3300a8551c85a0fadf2637b60d8d7da425459137862fdcb/paper/subdir
+
+src/arxiv_source.py:81: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_owned_ignored_destination_and_protected_job_identity
+1 failed, 3 passed in 0.11s

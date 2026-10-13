@@ -1,0 +1,263 @@
+# arxiv_source.x_validate_destination__mutmut_4: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -1,7 +1,7 @@
+ def validate_destination(out):
+     """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+     if '..' in out.parts:
+-        raise ValueError('Source output path must not contain parent traversal')
++        raise ValueError('XXSource output path must not contain parent traversalXX')
+     out = out.absolute()
+     for path in (out, *out.parents):
+         if path.is_symlink():
+# arxiv_source.x_validate_destination__mutmut_5: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -1,7 +1,7 @@
+ def validate_destination(out):
+     """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+     if '..' in out.parts:
+-        raise ValueError('Source output path must not contain parent traversal')
++        raise ValueError('source output path must not contain parent traversal')
+     out = out.absolute()
+     for path in (out, *out.parents):
+         if path.is_symlink():
+# arxiv_source.x_validate_destination__mutmut_24: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -14,7 +14,7 @@
+             owned = scratch_directory(inside, thread)
+         else:
+             # compute.sh transports this opaque path, not the raw thread identity.
+-            inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
++            inherited = os.environ.get('MATH_CODEX_SCRATCH', None)
+             owned = Path(inherited) if inherited else None
+             if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                       or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+# arxiv_source.x_validate_destination__mutmut_26: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -14,7 +14,7 @@
+             owned = scratch_directory(inside, thread)
+         else:
+             # compute.sh transports this opaque path, not the raw thread identity.
+-            inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
++            inherited = os.environ.get('MATH_CODEX_SCRATCH', )
+             owned = Path(inherited) if inherited else None
+             if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                       or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+# arxiv_source.x_validate_destination__mutmut_36: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -16,8 +16,7 @@
+             # compute.sh transports this opaque path, not the raw thread identity.
+             inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
+             owned = Path(inherited) if inherited else None
+-            if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+-                                      or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
++            if owned is not None and (owned.parent != inside / 'research/tmp/codex' and not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                 raise ValueError('Invalid inherited managed scratch path')
+         if owned is None or (out != owned and owned not in out.parents):
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+# arxiv_source.x_validate_destination__mutmut_49: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -18,7 +18,7 @@
+             owned = Path(inherited) if inherited else None
+             if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                       or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+-                raise ValueError('Invalid inherited managed scratch path')
++                raise ValueError('XXInvalid inherited managed scratch pathXX')
+         if owned is None or (out != owned and owned not in out.parents):
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                              'the current Codex actor\'s managed scratch')
+# arxiv_source.x_validate_destination__mutmut_58: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -21,7 +21,7 @@
+                 raise ValueError('Invalid inherited managed scratch path')
+         if owned is None or (out != owned and owned not in out.parents):
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+-                             'the current Codex actor\'s managed scratch')
++                             'XXthe current Codex actor\'s managed scratchXX')
+         relative = str(out.relative_to(inside))
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                   relative], capture_output=True)
+# arxiv_source.x_validate_destination__mutmut_66: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -24,7 +24,7 @@
+                              'the current Codex actor\'s managed scratch')
+         relative = str(out.relative_to(inside))
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+-                                  relative], capture_output=True)
++                                  relative], capture_output=None)
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+# arxiv_source.x_validate_destination__mutmut_68: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -24,7 +24,7 @@
+                              'the current Codex actor\'s managed scratch')
+         relative = str(out.relative_to(inside))
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+-                                  relative], capture_output=True)
++                                  relative], )
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+# arxiv_source.x_validate_destination__mutmut_76: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -23,7 +23,7 @@
+             raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                              'the current Codex actor\'s managed scratch')
+         relative = str(out.relative_to(inside))
+-        ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
++        ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', 'XX--quietXX', '--no-index', '--',
+                                   relative], capture_output=True)
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+# arxiv_source.x_validate_destination__mutmut_81: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -24,7 +24,7 @@
+                              'the current Codex actor\'s managed scratch')
+         relative = str(out.relative_to(inside))
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+-                                  relative], capture_output=True)
++                                  relative], capture_output=False)
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+# arxiv_source.x_validate_destination__mutmut_85: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -26,7 +26,7 @@
+         ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                   relative], capture_output=True)
+         if ignored.returncode != 0:
+-            raise ValueError('Managed source output must be Git-ignored')
++            raise ValueError('XXManaged source output must be Git-ignoredXX')
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                  capture_output=True)
+         if tracked.returncode or tracked.stdout:
+# arxiv_source.x_validate_destination__mutmut_100: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -27,7 +27,7 @@
+                                   relative], capture_output=True)
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+-        tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
++        tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', 'XX-zXX', '--', relative],
+                                  capture_output=True)
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+# arxiv_source.x_validate_destination__mutmut_102: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -27,7 +27,7 @@
+                                   relative], capture_output=True)
+         if ignored.returncode != 0:
+             raise ValueError('Managed source output must be Git-ignored')
+-        tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
++        tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', 'XX--XX', relative],
+                                  capture_output=True)
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+# arxiv_source.x_validate_destination__mutmut_106: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -30,7 +30,7 @@
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                  capture_output=True)
+         if tracked.returncode or tracked.stdout:
+-            raise ValueError('Managed source output must contain no tracked files')
++            raise ValueError('XXManaged source output must contain no tracked filesXX')
+     if out.exists() and not out.is_dir():
+         raise ValueError('Source output must be a directory')
+     for directory, dirs, files in os.walk(out):
+# arxiv_source.x_validate_destination__mutmut_107: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -30,7 +30,7 @@
+         tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                  capture_output=True)
+         if tracked.returncode or tracked.stdout:
+-            raise ValueError('Managed source output must contain no tracked files')
++            raise ValueError('managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+         raise ValueError('Source output must be a directory')
+     for directory, dirs, files in os.walk(out):
+# arxiv_source.x_validate_destination__mutmut_111: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -32,7 +32,7 @@
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+-        raise ValueError('Source output must be a directory')
++        raise ValueError(None)
+     for directory, dirs, files in os.walk(out):
+         for name in dirs + files:
+             path = Path(directory) / name
+# arxiv_source.x_validate_destination__mutmut_112: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -32,7 +32,7 @@
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+-        raise ValueError('Source output must be a directory')
++        raise ValueError('XXSource output must be a directoryXX')
+     for directory, dirs, files in os.walk(out):
+         for name in dirs + files:
+             path = Path(directory) / name
+# arxiv_source.x_validate_destination__mutmut_113: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -32,7 +32,7 @@
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+-        raise ValueError('Source output must be a directory')
++        raise ValueError('source output must be a directory')
+     for directory, dirs, files in os.walk(out):
+         for name in dirs + files:
+             path = Path(directory) / name
+# arxiv_source.x_validate_destination__mutmut_114: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -32,7 +32,7 @@
+         if tracked.returncode or tracked.stdout:
+             raise ValueError('Managed source output must contain no tracked files')
+     if out.exists() and not out.is_dir():
+-        raise ValueError('Source output must be a directory')
++        raise ValueError('SOURCE OUTPUT MUST BE A DIRECTORY')
+     for directory, dirs, files in os.walk(out):
+         for name in dirs + files:
+             path = Path(directory) / name
+# arxiv_source.x_validate_destination__mutmut_121: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -38,6 +38,6 @@
+             path = Path(directory) / name
+             if path.is_symlink():
+                 raise ValueError(f'Source output contains a symlink: {path}')
+-            if path.is_file() and path.stat().st_nlink > 1:
++            if path.is_file() or path.stat().st_nlink > 1:
+                 raise ValueError(f'Source output contains a hard link: {path}')
+     return out
+# arxiv_source.x_validate_destination__mutmut_122: survived
+--- src/arxiv_source.py
++++ src/arxiv_source.py
+@@ -38,6 +38,6 @@
+             path = Path(directory) / name
+             if path.is_symlink():
+                 raise ValueError(f'Source output contains a symlink: {path}')
+-            if path.is_file() and path.stat().st_nlink > 1:
++            if path.is_file() and path.stat().st_nlink >= 1:
+                 raise ValueError(f'Source output contains a hard link: {path}')
+     return out

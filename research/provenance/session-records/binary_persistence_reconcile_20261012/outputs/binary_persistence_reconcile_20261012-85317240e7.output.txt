@@ -1,0 +1,27 @@
+.F..                                                                     [100%]
+=================================== FAILURES ===================================
+___ ManagedDestinationTest.test_links_and_traversal_are_refused_before_fetch ___
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_links_and_traversal_are_refused_before_fetch>
+
+    def test_links_and_traversal_are_refused_before_fetch(self):
+        out = self.owned / 'paper'
+        out.mkdir(parents=True)
+        external = Path(self.tmp.name) / 'external'
+        external.mkdir()
+        victim = external / 'kept.tex'
+        victim.write_text('keep this file')
+        with self.assertRaisesRegex(ValueError, 'must be a directory'):
+            arxiv_source.validate_destination(victim)
+        link = out / 'link'
+        for target in (victim, external):
+            link.symlink_to(target)
+            with self.assertRaisesRegex(ValueError, 'symlink'):
+                arxiv_source.validate_destination(out)
+>           with self.assertRaisesRegex(ValueError, 'symlink'):
+E           AssertionError: ValueError not raised
+
+tests/test_arxiv_source.py:96: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_links_and_traversal_are_refused_before_fetch
+1 failed, 3 passed in 0.12s

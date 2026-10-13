@@ -367,6 +367,10 @@ def invocation(command, threads, timeout, unit):
     owner = recovery_stream()
     if owner:
         args.append(f'--setenv=MATH_RECOVERY_STREAM={owner}')
+    if os.environ.get('CODEX_THREAD_ID') and not os.environ.get('CLAUDE_CODE_SESSION_ID'):
+        from codex_state import scratch_directory
+        scratch = scratch_directory(ROOT, os.environ['CODEX_THREAD_ID'])
+        args.append(f'--setenv=MATH_CODEX_SCRATCH={scratch}')
     return args + ['--', sys.executable, str(Path(__file__).resolve()), '--inside', '--', *command]
 
 

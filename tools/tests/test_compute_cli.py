@@ -59,6 +59,19 @@ class InactiveControls(unittest.TestCase):
                 self.assertIn('run python3 resource-controls/setup.py from the repository root, without asking',
                               str(raised.exception))
 
+    @unittest.mock.patch.object(compute, 'check_limits')
+    def test_protected_job_gets_owned_scratch_without_raw_identity(self, limits):
+        from codex_state import scratch_directory
+        with unittest.mock.patch.dict(os.environ, {'CODEX_THREAD_ID': 'fixture-owner'}, clear=True):
+            args = compute.invocation([sys.executable, '-c', 'pass'], 1, 10, 'fixture.service')
+        self.assertIn('--setenv=MATH_CODEX_SCRATCH=' + str(scratch_directory(ROOT, 'fixture-owner')), args)
+        self.assertFalse(any('CODEX_THREAD_ID=' in value or 'fixture-owner' in value for value in args))
+        for env in ({}, {'CODEX_THREAD_ID': 'fixture-owner', 'CLAUDE_CODE_SESSION_ID': 'claude'}):
+            with unittest.mock.patch.dict(os.environ, env, clear=True):
+                args = compute.invocation([sys.executable, '-c', 'pass'], 1, 10, 'fixture.service')
+            self.assertFalse(any('MATH_CODEX_SCRATCH=' in value for value in args))
+        self.assertEqual(limits.call_count, 3)
+
 
 class GuidanceNote(unittest.TestCase):
     """compute.sh start warns when its turn guidance is slow, and stays quiet otherwise."""

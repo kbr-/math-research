@@ -227,10 +227,12 @@ and interrupts stop the actual service and its children, with a systemd runtime 
 Full output and timing records are saved in `research/logs/`. Computation output is never displayed:
 the launcher prints only its own lines (guard messages, timing, exit status) and the path and size
 of the saved log, which is read from the file. Other categories can show a tail with `--tail-bytes
-N` (default none). Jobs run as systemd services and do not inherit the caller's environment, apart
-from the thread-count variables the launcher sets. Pass any other variable inside the command, as in
+N` (default none). Jobs run as systemd services with the launcher's thread limits and explicit
+runtime allowlist (paths, locale, certificate settings and recovery routing). Codex jobs also
+receive `MATH_CODEX_SCRATCH`, the managed owner path, without the raw session identity; this lets
+source tools check scratch ownership. Other variables must be passed inside the command, as in
 `./compute.sh run TURN -- env NAME=VALUE python3 script.py`; a prefix before `./compute.sh` is
-silently dropped.
+otherwise dropped.
 
 Mark `formalization` for translating statements into Lean, designing formal proofs, writing tactics,
 and debugging formalization code. Use `mathematics` when developing or revising the underlying

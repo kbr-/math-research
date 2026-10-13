@@ -8,18 +8,21 @@ of 11 October 2026: two entries read sources by report after naming a full readi
 serves the authors' source at /e-print/ID: a gzipped TeX file, a gzipped tar archive, or a PDF.  This tool
 downloads it, unpacks it and prints the files with their sizes, largest TeX first.
 
-The text is third-party: the output directory must lie outside the repository, and nothing unpacked is to be
-committed (AGENTS.md, licences).  Restate what is read; do not quote at length.
+The text is third-party: use external scratch or this Codex actor's managed, Git-ignored scratch.
+Tracked destinations and links are refused; nothing unpacked is to be committed (AGENTS.md, licences).
+Restate what is read; do not quote at length.
 """
 import argparse
 import gzip
 import io
+import os
 import re
 import subprocess
 import sys
 import tarfile
 import urllib.request
 from pathlib import Path
+from codex_state import scratch_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 ID_CHARS = set('0123456789.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-/')
@@ -32,6 +35,55 @@ def repository_of(path):
         probe = probe.parent
     done = subprocess.run(['git', '-C', str(probe), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
     return Path(done.stdout.strip()) if done.returncode == 0 and done.stdout.strip() else None
+
+
+def validate_destination(out):
+    """Admit external scratch or the current actor's ignored, untracked managed subtree."""
+    if '..' in out.parts:
+        raise ValueError('Source output path must not contain parent traversal')
+    out = out.absolute()
+    for path in (out, *out.parents):
+        if path.name == '.git':
+            raise ValueError(f'Source output must not enter Git metadata: {path}')
+        if path.is_symlink():
+            raise ValueError(f'Source output must not pass through a symlink: {path}')
+    inside = repository_of(out)
+    if inside is not None:
+        inside = inside.resolve()
+        thread = os.environ.get('CODEX_THREAD_ID')
+        if thread:
+            owned = scratch_directory(inside, thread)
+        else:
+            # compute.sh transports this opaque path, not the raw thread identity.
+            inherited = os.environ.get('MATH_CODEX_SCRATCH', '')
+            owned = Path(inherited) if inherited else None
+            if owned is not None and (owned.parent != inside / 'research/tmp/codex'
+                                      or not re.fullmatch(r'[0-9a-f]{64}', owned.name)):
+                raise ValueError('Invalid inherited managed scratch path')
+        if owned is None or (out != owned and owned not in out.parents):
+            raise ValueError(f'{out} lies inside the repository {inside}: use external scratch or '
+                             'the current Codex actor\'s managed scratch')
+        relative = str(out.relative_to(inside))
+        ignored = subprocess.run(['git', '-C', str(inside), 'check-ignore', '--quiet', '--no-index', '--',
+                                  relative], capture_output=True)
+        if ignored.returncode != 0:
+            raise ValueError('Managed source output must be Git-ignored')
+        tracked = subprocess.run(['git', '-C', str(inside), 'ls-files', '-z', '--', relative],
+                                 capture_output=True)
+        if tracked.returncode or tracked.stdout:
+            raise ValueError('Managed source output must contain no tracked files')
+    if out.exists() and not out.is_dir():
+        raise ValueError('Source output must be a directory')
+    for directory, dirs, files in os.walk(out):
+        for name in dirs + files:
+            path = Path(directory) / name
+            if name == '.git':
+                raise ValueError(f'Source output contains a nested repository: {path}')
+            if path.is_symlink():
+                raise ValueError(f'Source output contains a symlink: {path}')
+            if path.is_file() and path.stat().st_nlink > 1:
+                raise ValueError(f'Source output contains a hard link: {path}')
+    return out
 
 
 def unpack(data, out):
@@ -49,6 +101,8 @@ def unpack(data, out):
         return ['paper.tex']
     names = []
     for member in archive.getmembers():
+        if '.git' in Path(member.name).parts:
+            continue                      # a payload cannot introduce a nested repository
         target = (out / member.name).resolve()
         if not member.isfile() or out.resolve() not in target.parents:
             continue                      # no links, devices, or paths leaving the directory
@@ -134,7 +188,7 @@ def expected(found, wanted):
 def main(argv):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('ident', help='arXiv identifier, e.g. 1204.3057 or math/0601001')
-    parser.add_argument('--out', required=True, type=Path, help='scratch directory outside the repository')
+    parser.add_argument('--out', required=True, type=Path, help='external or owned managed scratch directory')
     parser.add_argument('--expect', nargs='+', metavar='WORD',
                         help='words, of four letters or more, of the title of the paper meant: exit 3 when the '
                              'fetched title holds none')
@@ -144,10 +198,10 @@ def main(argv):
     if not args.ident or set(args.ident) - ID_CHARS:
         print(f'Not an arXiv identifier: {args.ident}', file=sys.stderr)
         return 1
-    inside = repository_of(args.out.resolve())
-    if inside is not None:
-        print(f'{args.out} lies inside the repository {inside}: third-party text goes to a scratch directory '
-              'outside it and is not committed', file=sys.stderr)
+    try:
+        args.out = validate_destination(args.out)
+    except (OSError, ValueError) as error:
+        print(error, file=sys.stderr)
         return 1
     if args.expect and any(len(word) < 4 for word in args.expect):
         print('--expect takes words of four letters or more: a shorter one matches nearly any title',

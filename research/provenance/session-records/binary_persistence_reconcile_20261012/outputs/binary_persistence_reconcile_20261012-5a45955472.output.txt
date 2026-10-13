@@ -1,0 +1,51 @@
+F...                                                                     [100%]
+=================================== FAILURES ===================================
+_ ManagedDestinationTest.test_cli_allows_owned_fetch_but_refuses_foreign_before_network _
+
+self = <test_arxiv_source.ManagedDestinationTest testMethod=test_cli_allows_owned_fetch_but_refuses_foreign_before_network>
+
+    def test_cli_allows_owned_fetch_but_refuses_foreign_before_network(self):
+        import contextlib
+        payload = io.BytesIO(gzip.compress(b'\\title{Persistence modules}\n'))
+        out = self.owned / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen', return_value=payload) as fetch, \
+                contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(out),
+                                               '--expect', 'Persistence']), 0)
+        fetch.assert_called_once()
+        self.assertIn('Persistence', (out / 'paper.tex').read_text())
+        foreign = arxiv_source.scratch_directory(self.root, 'foreign') / 'paper'
+        with patch.object(arxiv_source.urllib.request, 'urlopen',
+                          side_effect=AssertionError('foreign destination reached network')) as fetch, \
+                contextlib.redirect_stderr(io.StringIO()):
+>           self.assertEqual(arxiv_source.main(['arxiv_source.py', '1210.0819v3', '--out', str(foreign),
+                                               '--expect', 'Persistence']), 1)
+
+tests/test_arxiv_source.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/arxiv_source.py:211: in main
+    with urllib.request.urlopen(request, timeout=60) as response:
+/usr/lib/python3.10/unittest/mock.py:1114: in __call__
+    return self._mock_call(*args, **kwargs)
+/usr/lib/python3.10/unittest/mock.py:1118: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='urlopen' id='130941599988704'>
+args = (<urllib.request.Request object at 0x7717378d30a0>,)
+kwargs = {'timeout': 60}
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               AssertionError: foreign destination reached network
+
+/usr/lib/python3.10/unittest/mock.py:1173: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_arxiv_source.py::ManagedDestinationTest::test_cli_allows_owned_fetch_but_refuses_foreign_before_network
+1 failed, 3 passed in 0.19s
