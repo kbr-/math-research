@@ -250,7 +250,9 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   reachable sizes and why its outcomes differ there (the finisher checks it). Say after
   `<strong>Attempt.</strong>` what was tried, before posing the test, to answer it from the
   statements it cites, and where that stopped: a test those statements answer in a few lines is a
-  lemma for the next entry, not a test. The second-stage brief asks the reviewer to try the step at
+  lemma for the next entry, not a test. Apply this again when the reviewer supplies the missing
+  argument: rewrite the decision and next step as a lemma-first entry before finalization, rather
+  than retaining an unanswered test. The second-stage brief asks the reviewer to try the step at
   which the Attempt stops, and the review's Verification gate says what it found after
   `<strong>Attempt checked.</strong>` (the finisher checks).
 
