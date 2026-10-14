@@ -484,6 +484,38 @@ def article_attribute(body, article, name):
     return html.unescape(found.group(1)) if found else None
 
 
+def validate_test_disposition(body, article, value):
+    """Require a reviewed operation/prediction or an explicit retained question.
+
+    This checks the classification and evidence fields, not mathematical novelty.
+    The existing reviewer audits whether the operation is more than a rewrite.
+    """
+    note = re.search(r'<strong>Test disposition\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+    kind = re.match(r'\s*(New operation|Retained exploratory)\b', note.group(1) if note else '')
+    if not kind:
+        raise ValueError('Decisive test needs Test disposition: New operation or Retained exploratory; '
+                         'a rewritten parameterization is not a new test')
+    if kind.group(1) == 'New operation':
+        for label in ('Operation', 'Prediction'):
+            field = re.search(r'<strong>' + label + r'\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+            plain = html.unescape(re.sub(r'<[^>]*>', ' ', field.group(1))).strip() if field else ''
+            if len(plain) < 40:
+                raise ValueError(f'A new Decisive test needs {label} describing the actual operation '
+                                 'and its distinguishing predicted outcomes; the reviewer checks their content')
+        return
+    earlier = set()
+    for tag in re.finditer(r'<article\b([^>]*)>(.*?)</article>', body[:article], re.S):
+        if (re.search(r'\bdata-kind="review"', tag.group(1))
+                and '<strong>Decisive test.</strong>' in tag.group(2)):
+            ident = re.search(r'\bid="([^"]+)"', tag.group(1))
+            if ident:
+                earlier.add(ident.group(1))
+    links = set(re.findall(r'href=["\']#([^"\']+)["\']', note.group(1)))
+    if not links.intersection(earlier):
+        raise ValueError('A Retained exploratory test must link its earlier review after Test disposition; '
+                         'another representation alone does not make it a new decisive operation')
+
+
 def report_paragraph(text, label):
     found = re.search(r'<p\b[^>]*>\s*<strong>' + re.escape(label) + r'\.</strong>(.*?)</p>',
                       text, re.S)
@@ -1254,6 +1286,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'IDs, with the explicit consequence and whether it is the goal or weaker '
                                      '(AGENTS.md, Necessary target)')
             if label == 'Decisive test':
+                validate_test_disposition(body, article, value)
                 searched = re.search(r'<strong>Record search\.</strong>(.*)', value, re.S)
                 plain = html.unescape(re.sub(r'<[^>]*>', ' ', searched.group(1))).strip() if searched else ''
                 if len(plain) < 40:

@@ -17,6 +17,9 @@ ARCHITECTURE = FT.ARCHITECTURE_HEADING + ''.join(
     + (' <strong>Downstream.</strong> Through thm:downstream-transfer the target gives the goal\'s '
        'statement at every parameter; goal: yes.' if label == 'Necessary target' else '')
     + (' <strong>Attempt.</strong> The cited statements were tried on the test and decide it at no reachable size.'
+       ' <strong>Test disposition.</strong> New operation. '
+       '<strong>Operation.</strong> Contract the two specified maps on the same paid domain. '
+       '<strong>Prediction.</strong> Either the contraction is strict or the specified residual survives. '
        ' <strong>Trivial cases.</strong> Adding an implied row changes neither quantity compared. '
        '<strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
        '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '

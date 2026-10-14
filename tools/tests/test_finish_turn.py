@@ -28,6 +28,9 @@ ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     'and the goal budget. <a href="review.txt">Reviewer evidence</a>. <strong>Downstream.</strong> Through '
     'thm:downstream-transfer the target gives the statement wanted at every parameter. <strong>Attempt.</strong> '
     'The cited statements were tried on the test and decide it at no reachable size. <strong>Trivial cases.</strong> '
+    '<strong>Test disposition.</strong> New operation. <strong>Operation.</strong> '
+    'Contract the two specified maps on their shared domain and retain the paid kernel. '
+    '<strong>Prediction.</strong> Either the shared contraction is strict or the stated residual survives. '
     'Adding an implied row changes neither quantity compared. <strong>Power.</strong> The recorded '
     'ceilings leave the outcomes apart at the sizes reachable. <strong>Record search.</strong> '
     'Searched the registry for the terms of the test; no recorded claim answers it.</p>'
@@ -43,6 +46,98 @@ def reporting(tags):
 from importlib.machinery import SourceFileLoader
 
 FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py')).load_module()
+
+
+class ArchitectureDisposition(unittest.TestCase):
+    def new_test(self):
+        return ('<strong>Test disposition.</strong> New operation. '
+                '<strong>Operation.</strong> Contract the specified maps on their common paid domain. '
+                '<strong>Prediction.</strong> A strict loss or an unchanged residual distinguishes the outcomes. ')
+
+    def validate(self, value, earlier=None):
+        if earlier is None:
+            earlier = ('<article id="old" data-kind="review"><p><strong>Decisive test.</strong>'
+                       'The original complete output cost is still unanswered.</p></article>')
+        body = (earlier + '<article id="current" data-kind="review"></article>'
+                '<article id="later" data-kind="review"><p><strong>Decisive test.</strong>'
+                'The later complete output cost is still unanswered.</p></article>')
+        FT.validate_test_disposition(body, body.index('<article id="current"'), value)
+
+    def test_missing_and_unknown_dispositions_are_rejected(self):
+        self.validate(self.new_test())
+        self.validate(self.new_test().replace('New operation. ', 'New operation.\n'))
+        for note in ('', '<strong>Test disposition.</strong> Rewritten question. '):
+            value = self.new_test().replace('<strong>Test disposition.</strong> New operation. ', note)
+            with self.subTest(note=note), self.assertRaisesRegex(ValueError, 'Test disposition'):
+                self.validate(value)
+
+    def test_new_operation_and_prediction_have_the_report_floor(self):
+        for label in ('Operation', 'Prediction'):
+            start = self.new_test().index(f'<strong>{label}.</strong>')
+            end = self.new_test().find('<strong>', start + len(f'<strong>{label}.</strong>'))
+            end = len(self.new_test()) if end == -1 else end
+            for size in (0, 39, 40):
+                value = (self.new_test()[:start] + f'<strong>{label}.</strong>'
+                         + 'x' * size + self.new_test()[end:])
+                with self.subTest(label=label, size=size):
+                    if size == 40:
+                        self.validate(value)
+                    else:
+                        with self.assertRaisesRegex(ValueError, label):
+                            self.validate(value)
+            without = self.new_test()[:start] + self.new_test()[end:]
+            with self.subTest(label=label, missing=True), self.assertRaisesRegex(ValueError, label):
+                self.validate(without)
+            multiline = (self.new_test()[:start] + f'<strong>{label}.</strong>'
+                         + 'x' * 20 + '\n' + 'x' * 20 + self.new_test()[end:])
+            self.validate(multiline)
+            for size in (39, 40):
+                for payload in (f'<span data-padding="long attribute">{"x" * size}</span>', '&#120;' * size):
+                    value = (self.new_test()[:start] + f'<strong>{label}.</strong>'
+                             + payload + self.new_test()[end:])
+                    with self.subTest(label=label, size=size, payload=payload):
+                        if size == 40:
+                            self.validate(value)
+                        else:
+                            with self.assertRaisesRegex(ValueError, label):
+                                self.validate(value)
+
+    def test_retained_question_links_an_earlier_review_only(self):
+        def retained(anchor):
+            return (f'<strong>Test disposition.</strong> Retained exploratory: '
+                    f'<a href="#{anchor}">Earlier unanswered test</a>.')
+        self.validate(retained('old'))
+        self.validate(retained('old'), '<article id="old" data-kind="review">\n'
+                      '<p><strong>Decisive test.</strong>Earlier unanswered test.</p>\n</article>')
+        for anchor, earlier in (('missing', '<article id="old" data-kind="review"></article>'),
+                                ('current', '<article id="old" data-kind="review"></article>'),
+                                ('old', '<article id="old" data-kind="research"></article>'),
+                                ('old', '<article data-kind="review"></article>'),
+                                ('later', '<article id="old" data-kind="review"></article>')):
+            with self.subTest(anchor=anchor, earlier=earlier), self.assertRaisesRegex(ValueError, 'earlier review'):
+                self.validate(retained(anchor), earlier)
+        for tag in ('<article id="old" data-kind="review">', '<article data-kind="review">',
+                    '<article id="old" data-kind="research">'):
+            for content in ('', '<p><strong>Decisive test.</strong>Earlier unanswered test.</p>'):
+                if 'id="old"' in tag and 'data-kind="review"' in tag and content:
+                    continue
+                with self.subTest(tag=tag, content=content), self.assertRaisesRegex(ValueError, 'earlier review'):
+                    self.validate(retained('old'), tag + content + '</article>')
+        with self.assertRaisesRegex(ValueError, 'earlier review'):
+            self.validate('<strong>Test disposition.</strong> Retained exploratory without a link.')
+
+    def test_progress_gate_checks_the_decisive_test_classification(self):
+        def body(architecture):
+            return ('<li data-route-item="step">step</li><article id="current" '
+                    'data-kind="review" data-route="step"' + PROGRESS_ATTRS + '>'
+                    + PROGRESS_REPORT + architecture + '</article>')
+        valid = body(ARCHITECTURE)
+        FT.validate_progress(valid, valid.index('<article'), valid.index('</article>'),
+                             check_registered_claims=False)
+        invalid = body(ARCHITECTURE.replace('<strong>Test disposition.</strong> New operation. ', ''))
+        with self.assertRaisesRegex(ValueError, 'Test disposition'):
+            FT.validate_progress(invalid, invalid.index('<article'), invalid.index('</article>'),
+                                 check_registered_claims=False)
 
 
 class ChecksNote(unittest.TestCase):

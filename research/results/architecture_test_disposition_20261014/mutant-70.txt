@@ -1,0 +1,16 @@
+# command: python3 -m mutmut show architecture_disposition.x_validate_test_disposition__mutmut_70
+# run 356ae28e8f, session ac2-pang-goal-review-20261014; full output
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# architecture_disposition.x_validate_test_disposition__mutmut_70: survived
+--- src/architecture_disposition.py
++++ src/architecture_disposition.py
+@@ -12,7 +12,7 @@
+     if kind.group(1) == 'New operation':
+         for label in ('Operation', 'Prediction'):
+             field = re.search(r'<strong>' + label + r'\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+-            plain = html.unescape(re.sub(r'<[^>]*>', ' ', field.group(1))).strip() if field else ''
++            plain = html.unescape(re.sub(r'<[^>]*>', ' ', field.group(1))).strip() if field else 'XXXX'
+             if len(plain) < 40:
+                 raise ValueError(f'A new Decisive test needs {label} describing the actual operation '
+                                  'and its distinguishing predicted outcomes; the reviewer checks their content')

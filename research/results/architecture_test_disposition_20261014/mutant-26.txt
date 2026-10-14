@@ -1,0 +1,16 @@
+# command: python3 -m mutmut show architecture_disposition.x_validate_test_disposition__mutmut_26
+# run 1459a7fcc1, session ac2-pang-goal-review-20261014; full output
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# architecture_disposition.x_validate_test_disposition__mutmut_26: survived
+--- src/architecture_disposition.py
++++ src/architecture_disposition.py
+@@ -7,7 +7,7 @@
+     note = re.search(r'<strong>Test disposition\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+     kind = re.match(r'\s*(New operation|Retained exploratory)\b', note.group(1) if note else '')
+     if not kind:
+-        raise ValueError('Decisive test needs Test disposition: New operation or Retained exploratory; '
++        raise ValueError('XXDecisive test needs Test disposition: New operation or Retained exploratory; XX'
+                          'a rewritten parameterization is not a new test')
+     if kind.group(1) == 'New operation':
+         for label in ('Operation', 'Prediction'):

@@ -240,16 +240,21 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
 - **Decision.** Choose the weakened endpoint or competing architecture to test, or justify retaining
   the current one against the comparison.
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
-  required implication or the chosen route. Read the earlier reviews' tests first
-  (`tools/notebook-excerpt.py --review-tests`). Search the registry for the test as for a new lemma
-  and end with `<strong>Record search.</strong>`, the searches and what they returned (the finisher
-  checks it): a test the record already answers decides nothing. Before both state `<strong>Trivial
-  cases.</strong>`: how each quantity the test compares behaves under the object's trivial
-  transformations (implied or duplicated rows, another presentation of the same object), and the
-  trivial instance, if any, that would give each outcome; a question with a trivial answer is not
-  given a block (the finisher checks presence). Then state `<strong>Power.</strong>`: what the
-  recorded upper bounds and method limits give on the test's object, and for a computation the
-  reachable sizes and why its outcomes differ there (the finisher checks it). Say after
+  required implication or the chosen route. State **Test disposition.** New operation or Retained
+  exploratory. A new operation states **Operation.** and **Prediction.**: the actual operation or
+  restricted hypothesis, and outcomes distinguishing it; a rewritten parameterization is not an
+  operation. A retained exploratory attempt links its earlier review after Test disposition and
+  claims no new mechanism. The same reviewer checks this classification and the operation's content;
+  the finisher checks the declaration, new-operation reports and retained-review link. Read the
+  earlier reviews' tests first (`tools/notebook-excerpt.py --review-tests`). Search the registry for
+  the test as for a new lemma and end with `<strong>Record search.</strong>`, the searches and what
+  they returned (the finisher checks it): a test the record already answers decides nothing. Before
+  both state `<strong>Trivial cases.</strong>`: how each quantity the test compares behaves under
+  the object's trivial transformations (implied or duplicated rows, another presentation of the same
+  object), and the trivial instance, if any, that would give each outcome; a question with a trivial
+  answer is not given a block (the finisher checks presence). Then state `<strong>Power.</strong>`:
+  what the recorded upper bounds and method limits give on the test's object, and for a computation
+  the reachable sizes and why its outcomes differ there (the finisher checks it). Say after
   `<strong>Attempt.</strong>` what was tried, before posing the test, to answer it from the
   statements it cites, and where that stopped: a test those statements answer in a few lines is a
   lemma for the next entry, not a test. Apply this again when the reviewer supplies the missing

@@ -1,0 +1,29 @@
+# command: python3 -m pytest tests/test_disposition.py -q
+# run 911114fccf, session ac2-pang-goal-review-20261014; full output
+..F.                                                   [100%]
+=================================== FAILURES ===================================
+_ ArchitectureDisposition.test_progress_gate_checks_the_decisive_test_classification _
+
+self = <test_finish_turn.ArchitectureDisposition testMethod=test_progress_gate_checks_the_decisive_test_classification>
+
+    def test_progress_gate_checks_the_decisive_test_classification(self):
+        def body(architecture):
+            return ('<li data-route-item="step">step</li><article id="current" '
+                    'data-kind="review" data-route="step"' + PROGRESS_ATTRS + '>'
+                    + PROGRESS_REPORT + architecture + '</article>')
+        valid = body(ARCHITECTURE)
+        FT.validate_progress(valid, valid.index('<article'), valid.index('</article>'),
+                             check_registered_claims=False)
+        invalid = body(ARCHITECTURE.replace('<strong>Test disposition.</strong> New operation. ', ''))
+>       with self.assertRaisesRegex(ValueError, 'Test disposition'):
+E       AssertionError: ValueError not raised
+
+../../../../../tools/tests/test_finish_turn.py:119: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:283
+  <frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_disposition.py::ArchitectureDisposition::test_progress_gate_checks_the_decisive_test_classification
+1 failed, 3 passed, 1 warning, 18 subtests passed in 0.09s

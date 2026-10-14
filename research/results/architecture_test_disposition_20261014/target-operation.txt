@@ -1,0 +1,53 @@
+# command: python3 -m pytest tests/test_disposition.py -q
+# run af134afda7, session ac2-pang-goal-review-20261014; full output
+....                                                   [100%]
+=================================== FAILURES ===================================
+_ ArchitectureDisposition.test_new_operation_and_prediction_have_the_report_floor (label='Operation', size=0) _
+
+self = <test_finish_turn.ArchitectureDisposition testMethod=test_new_operation_and_prediction_have_the_report_floor>
+
+    def test_new_operation_and_prediction_have_the_report_floor(self):
+        for label in ('Operation', 'Prediction'):
+            start = self.new_test().index(f'<strong>{label}.</strong>')
+            end = self.new_test().find('<strong>', start + len(f'<strong>{label}.</strong>'))
+            end = len(self.new_test()) if end == -1 else end
+            for size in (0, 39, 40):
+                value = (self.new_test()[:start] + f'<strong>{label}.</strong>'
+                         + 'x' * size + self.new_test()[end:])
+                with self.subTest(label=label, size=size):
+                    if size == 40:
+                        self.validate(value)
+                    else:
+>                       with self.assertRaisesRegex(ValueError, label):
+E                       AssertionError: ValueError not raised
+
+../../../../../tools/tests/test_finish_turn.py:85: AssertionError
+_ ArchitectureDisposition.test_new_operation_and_prediction_have_the_report_floor (label='Operation', size=39) _
+
+self = <test_finish_turn.ArchitectureDisposition testMethod=test_new_operation_and_prediction_have_the_report_floor>
+
+    def test_new_operation_and_prediction_have_the_report_floor(self):
+        for label in ('Operation', 'Prediction'):
+            start = self.new_test().index(f'<strong>{label}.</strong>')
+            end = self.new_test().find('<strong>', start + len(f'<strong>{label}.</strong>'))
+            end = len(self.new_test()) if end == -1 else end
+            for size in (0, 39, 40):
+                value = (self.new_test()[:start] + f'<strong>{label}.</strong>'
+                         + 'x' * size + self.new_test()[end:])
+                with self.subTest(label=label, size=size):
+                    if size == 40:
+                        self.validate(value)
+                    else:
+>                       with self.assertRaisesRegex(ValueError, label):
+E                       AssertionError: ValueError not raised
+
+../../../../../tools/tests/test_finish_turn.py:85: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:283
+  <frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SUBFAILED(label='Operation', size=0) tests/test_disposition.py::ArchitectureDisposition::test_new_operation_and_prediction_have_the_report_floor
+SUBFAILED(label='Operation', size=39) tests/test_disposition.py::ArchitectureDisposition::test_new_operation_and_prediction_have_the_report_floor
+2 failed, 4 passed, 1 warning, 16 subtests passed in 0.09s

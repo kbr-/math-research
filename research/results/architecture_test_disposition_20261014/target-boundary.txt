@@ -1,0 +1,30 @@
+# command: python3 -m pytest tests/test_disposition.py -q
+# run 7f1040e499, session ac2-pang-goal-review-20261014; full output
+....                                                   [100%]
+=================================== FAILURES ===================================
+_ ArchitectureDisposition.test_retained_question_links_an_earlier_review_only (anchor='later', earlier='<article id="old" data-kind="review"></article>') _
+
+self = <test_finish_turn.ArchitectureDisposition testMethod=test_retained_question_links_an_earlier_review_only>
+
+    def test_retained_question_links_an_earlier_review_only(self):
+        def retained(anchor):
+            return (f'<strong>Test disposition.</strong> Retained exploratory: '
+                    f'<a href="#{anchor}">Earlier unanswered test</a>.')
+        self.validate(retained('old'))
+        for anchor, earlier in (('missing', '<article id="old" data-kind="review"></article>'),
+                                ('current', '<article id="old" data-kind="review"></article>'),
+                                ('old', '<article id="old" data-kind="research"></article>'),
+                                ('old', '<article data-kind="review"></article>'),
+                                ('later', '<article id="old" data-kind="review"></article>')):
+>           with self.subTest(anchor=anchor, earlier=earlier), self.assertRaisesRegex(ValueError, 'earlier review'):
+E           AssertionError: ValueError not raised
+
+../../../../../tools/tests/test_finish_turn.py:98: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:283
+  <frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SUBFAILED(anchor='later', earlier='<article id="old" data-kind="review"></article>') tests/test_disposition.py::ArchitectureDisposition::test_retained_question_links_an_earlier_review_only
+1 failed, 4 passed, 1 warning, 17 subtests passed in 0.07s
