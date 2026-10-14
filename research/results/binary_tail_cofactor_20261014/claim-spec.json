@@ -1,0 +1,27 @@
+{
+  "source": {
+    "record": "[Tail cofactors](https://kbr.is-a.dev/math-research/#entry-2026-10-14-tail-cofactor)",
+    "label": "Tail cofactors",
+    "targets": ["../notebook.html#entry-2026-10-14-tail-cofactor"]
+  },
+  "date": "2026-10-14",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["nullstellensatz", "method-obstructions", "degree-accounting"],
+  "claims": [
+    {
+      "id": "lem:tail-cofactor-correction",
+      "summary": "Over F2, m>n>=1 and independent original A:m by n,B:n by m, E=AB,W=prod_a!=b(1+Eab),P=W prod_a Eaa. For i<j define Di=prod_a<i Eaa,Wij=W's syntactic product omitting (1+Eij),Cij=det E_rows(i+1..m),cols(i..m except j),Kij=sum_l(B_lj Z_Ail+A_il² Z_Blj). Then Q=sum_i<j Di Wij Cij Kij is linear in every original Boolean placeholder and Q(X,b)=P,Q(X,0)=0. Nonidentity permutations grouped by their first moved row give detE+prod Eaa=sum Di Eij Cij; rank makes detE and minors of order>n zero formally, so terms i<m-n vanish. Given joint minor circuits of size H and depth e, Q has size O(H+m⁴+m²n+1), depth<=e+8 over binary constants without determinant primitives. At m2n,i=n,j=n+1, setting B's listed n columns to the identity restricts Cij to the generic n-square determinant; individual minor registers have no polynomial-size uniformly fixed-depth binary arithmetic circuits. Each weight Gij=Di Wij Cij is nevertheless Boolean-zero even for arbitrary Boolean E: Wij either vanishes or forces the minor's column i zero. Hence hard unmasked minors do not imply full Q hardness. Column-i Laplace gives Gij=Di sum_r>i W_(ij,ri)(Eri²+Eri) Cij^(r), reducing order by one but retaining growing principal blocks when r=j. No polynomial-size fixed-depth combined correction or all-certificate bound follows.",
+      "assessment": "Exact complete cofactor formula, conditional circuit ledger and formal output-degree bounds passed by the sole fresh-context medium reviewer with concrete correction checks. Old coefficient degree<=2m²-2 and specialized output degree<=2m² do not bound internal gate degrees or PC derivations. Explicit intermediate restriction and mask controls supply no efficient fixed-depth full implementation or all-certificate bound.",
+      "status": "working_proof",
+      "rationale": "Contracts the actual complete marked sum rather than expanding another restricted case, and isolates the remaining minor-computation cost without making it a universal certificate requirement.",
+      "next_action": "Develop a shared contraction of the masked principal-block contributions before computing individual determinants.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["lem:tail-cofactor-correction", "cites", "lem:collision-rectangle-decomposition", "Develops the reviewed whole-sum permutation seed in its source record, not a claimed consequence of the decomposition statement; retains complete correction coefficients instead of the first-collision residual."],
+    ["lem:tail-cofactor-correction", "applies", "lem:prime-field-residual-normalization", "Uses the explicit binary Frobenius product witness for each original bilinear Eij."],
+    ["lem:tail-cofactor-correction", "applies", "cor:binary-determinant-depth-gap", "A binary constant restriction makes one individual surviving minor a generic determinant; no weighted/full correction restriction is claimed."],
+    ["lem:tail-cofactor-correction", "cites", "lem:normalized-pivot-mask", "Retains its warning that a formally nonzero Boolean-zero mask does not transfer hard-cofactor cost to a full representative."]
+  ]
+}

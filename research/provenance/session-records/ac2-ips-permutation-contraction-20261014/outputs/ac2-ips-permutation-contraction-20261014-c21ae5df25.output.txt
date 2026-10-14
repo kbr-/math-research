@@ -1,0 +1,30 @@
+F....                                                            [100%]
+=================================== FAILURES ===================================
+__________ SingularCheckTest.test_complete_clean_output_is_preserved ___________
+
+self = <test_singular_check.SingularCheckTest testMethod=test_complete_clean_output_is_preserved>
+
+    def test_complete_clean_output_is_preserved(self):
+        for mode in ('direct', 'default', 'cli'):
+            with self.subTest(mode=mode):
+                status, output = self.run_script('print("data before completion"); print("PASS calculation"); print("");', mode=mode)
+                self.assertEqual(status, 0)
+                self.assertEqual(output, b'data before completion\nPASS calculation\n\n')
+        error_output = io.BytesIO()
+        self.assertEqual(tool.run_script('--invalid-singular-check-option', error_output), 1)
+        self.assertIn(b'invalid-singular-check-option', error_output.getvalue())
+        with tempfile.TemporaryDirectory() as folder:
+            path = pathlib.Path(folder) / 'check.sing'
+            path.write_text('print("data before completion"); print("PASS calculation"); quit;\n')
+            raw = io.BytesIO()
+            buffered = io.BufferedWriter(raw, buffer_size=4096)
+            self.assertEqual(tool.main([str(path)], output=buffered), 0)
+>           self.assertEqual(raw.getvalue(), b'data before completion\nPASS calculation\n')
+E           AssertionError: b'' != b'data before completion\nPASS calculation\n'
+
+tests/test_singular_check.py:52: AssertionError
+----------------------------- Captured stdout call -----------------------------
+uuu
+=========================== short test summary info ============================
+FAILED tests/test_singular_check.py::SingularCheckTest::test_complete_clean_output_is_preserved
+1 failed, 4 passed, 8 subtests passed in 0.15s

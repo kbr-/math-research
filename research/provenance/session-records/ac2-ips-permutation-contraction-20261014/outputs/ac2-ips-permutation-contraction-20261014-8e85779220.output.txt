@@ -1,0 +1,116 @@
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# singular_check.x_run_script__mutmut_1: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def run_script(script, output):
+-    diagnostic = False
++    diagnostic = None
+     last_line = b''
+     with subprocess.Popen(['Singular', '-q', str(script)], stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT) as process:
+# singular_check.x_run_script__mutmut_4: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,6 +1,6 @@
+ def run_script(script, output):
+     diagnostic = False
+-    last_line = b''
++    last_line = b'XXXX'
+     with subprocess.Popen(['Singular', '-q', str(script)], stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT) as process:
+         for line in process.stdout:
+# singular_check.x_run_script__mutmut_7: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -2,7 +2,7 @@
+     diagnostic = False
+     last_line = b''
+     with subprocess.Popen(['Singular', '-q', str(script)], stdout=subprocess.PIPE,
+-                          stderr=subprocess.STDOUT) as process:
++                          stderr=None) as process:
+         for line in process.stdout:
+             output.write(line)
+             if line.strip():
+# singular_check.x_run_script__mutmut_10: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -2,7 +2,7 @@
+     diagnostic = False
+     last_line = b''
+     with subprocess.Popen(['Singular', '-q', str(script)], stdout=subprocess.PIPE,
+-                          stderr=subprocess.STDOUT) as process:
++                          ) as process:
+         for line in process.stdout:
+             output.write(line)
+             if line.strip():
+# singular_check.x_main__mutmut_2: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+-    parser = argparse.ArgumentParser(description=__doc__)
++    parser = argparse.ArgumentParser(description=None)
+     parser.add_argument('script', help='Assertion script ending with a PASS token')
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_4: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('script', help='Assertion script ending with a PASS token')
++    parser.add_argument('script', help=None)
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_6: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('script', help='Assertion script ending with a PASS token')
++    parser.add_argument('script', )
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_9: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('script', help='Assertion script ending with a PASS token')
++    parser.add_argument('script', help='XXAssertion script ending with a PASS tokenXX')
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_10: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('script', help='Assertion script ending with a PASS token')
++    parser.add_argument('script', help='assertion script ending with a pass token')
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_11: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -1,5 +1,5 @@
+ def main(argv=None, output=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('script', help='Assertion script ending with a PASS token')
++    parser.add_argument('script', help='ASSERTION SCRIPT ENDING WITH A PASS TOKEN')
+     args = parser.parse_args(argv)
+     return run_script(args.script, output if output is not None else sys.stdout.buffer)
+# singular_check.x_main__mutmut_19: survived
+--- src/singular_check.py
++++ src/singular_check.py
+@@ -2,4 +2,4 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('script', help='Assertion script ending with a PASS token')
+     args = parser.parse_args(argv)
+-    return run_script(args.script, output if output is not None else sys.stdout.buffer)
++    return run_script(args.script, output if (output is not None) or True else sys.stdout.buffer)

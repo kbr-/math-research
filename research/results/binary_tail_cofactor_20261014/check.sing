@@ -1,0 +1,116 @@
+// Tail-cofactor full correction: exact general-matrix and original-entry controls.
+// Expected: the general matrix identity retains W det(E); the rank instance has det(E)=0.
+// Refuted by: Any nonzero formal identity difference or a zero omitted-group control.
+// Possible because: Incorrect first-moved-row cofactors or omitted cells change formal polynomials.
+// This is a small encoding control, not a parameter series or a hardness experiment.
+ring genericRing=2,(e11,e12,e13,e21,e22,e23,e31,e32,e33,z11,z12,z13,z21,z22,z23,z31,z32,z33),dp;
+int checkedCount=0;
+proc mustZero(poly value,string label)
+{
+  if(value!=0){print("FAILED "+label);quit;}
+  checkedCount++;
+}
+proc mustNonzero(poly value,string label)
+{
+  if(value==0){print("FAILED nonzero "+label);quit;}
+  checkedCount++;
+}
+matrix ee[3][3]=e11,e12,e13,e21,e22,e23,e31,e32,e33;
+matrix zz[3][3]=z11,z12,z13,z21,z22,z23,z31,z32,z33;
+int expectedGroups=nrows(ee)*(nrows(ee)-1) div 2;
+poly ww=1;
+int ii,jj,rr,aaIndex,bbIndex;
+int groupCount=0;
+for(aaIndex=1;aaIndex<=3;aaIndex++)
+{for(bbIndex=1;bbIndex<=3;bbIndex++){if(aaIndex!=bbIndex){ww=ww*(1+ee[aaIndex,bbIndex]);}}}
+poly qq=0;
+poly qqValue=0;
+poly firstGroup=0;
+poly cc,dd,wMinus,wTwo,tailWeight,laplaceWeight,cNext;
+ideal fields=e11^2+e11,e12^2+e12,e13^2+e13,e21^2+e21,e22^2+e22,e23^2+e23,e31^2+e31,e32^2+e32,e33^2+e33;
+ideal fieldBasis=std(fields);
+for(ii=1;ii<3;ii++)
+{
+  for(jj=ii+1;jj<=3;jj++)
+  {
+    groupCount++;
+    if(ii==1 && jj==2){cc=e21*e33+e23*e31;}
+    if(ii==1 && jj==3){cc=e21*e32+e22*e31;}
+    if(ii==2){cc=e32;}
+    dd=1;
+    for(rr=1;rr<ii;rr++){dd=dd*ee[rr,rr];}
+    wMinus=1;
+    for(aaIndex=1;aaIndex<=3;aaIndex++)
+    {for(bbIndex=1;bbIndex<=3;bbIndex++){if(aaIndex!=bbIndex && !(aaIndex==ii && bbIndex==jj)){wMinus=wMinus*(1+ee[aaIndex,bbIndex]);}}}
+    tailWeight=dd*wMinus*cc;
+    qq=qq+tailWeight*zz[ii,jj];
+    qqValue=qqValue+tailWeight*(ee[ii,jj]^2+ee[ii,jj]);
+    if(ii==1 && jj==2){firstGroup=tailWeight*(ee[ii,jj]^2+ee[ii,jj]);}
+    mustZero(reduce(tailWeight,fieldBasis),"masked cofactor Boolean class");
+    laplaceWeight=0;
+    for(rr=ii+1;rr<=3;rr++)
+    {
+      if(ii==1 && jj==2 && rr==2){cNext=e33;}
+      if(ii==1 && jj==2 && rr==3){cNext=e23;}
+      if(ii==1 && jj==3 && rr==2){cNext=e32;}
+      if(ii==1 && jj==3 && rr==3){cNext=e22;}
+      if(ii==2){cNext=1;}
+      wTwo=1;
+      for(aaIndex=1;aaIndex<=3;aaIndex++)
+      {for(bbIndex=1;bbIndex<=3;bbIndex++){if(aaIndex!=bbIndex && !(aaIndex==ii && bbIndex==jj) && !(aaIndex==rr && bbIndex==ii)){wTwo=wTwo*(1+ee[aaIndex,bbIndex]);}}}
+      laplaceWeight=laplaceWeight+dd*wTwo*(ee[rr,ii]^2+ee[rr,ii])*cNext;
+    }
+    mustZero(tailWeight+laplaceWeight,"exposed-column masked Laplace");
+  }
+}
+poly original=ww*e11*e22*e33;
+mustZero(original+ww*det(ee)+qqValue,"general matrix retains determinant term");
+mustNonzero(firstGroup,"omitted first moved-row group");
+mustNonzero(original+qqValue,"dropping rank hypothesis");
+int genericCount=checkedCount;
+print("Generic assertions: "+string(genericCount));
+ring actualRing=2,(a11,a12,a21,a22,a31,a32,b11,b12,b13,b21,b22,b23,za11,za12,za21,za22,za31,za32,zb11,zb12,zb13,zb21,zb22,zb23),dp;
+matrix matA[3][2]=a11,a12,a21,a22,a31,a32;
+matrix matB[2][3]=b11,b12,b13,b21,b22,b23;
+matrix matZA[3][2]=za11,za12,za21,za22,za31,za32;
+matrix matZB[2][3]=zb11,zb12,zb13,zb21,zb22,zb23;
+matrix actualE=matA*matB;
+ideal originals=a11,a12,a21,a22,a31,a32,b11,b12,b13,b21,b22,b23;
+ideal placeholders=za11,za12,za21,za22,za31,za32,zb11,zb12,zb13,zb21,zb22,zb23;
+poly actualP=1;
+for(aaIndex=1;aaIndex<=3;aaIndex++)
+{for(bbIndex=1;bbIndex<=3;bbIndex++){if(aaIndex==bbIndex){actualP=actualP*actualE[aaIndex,bbIndex];}else{actualP=actualP*(1+actualE[aaIndex,bbIndex]);}}}
+poly actualQ=0;
+poly tailMinor,diagonalPrefix,offProduct,kWitness,kValue,qValue;
+int ll,xx;
+for(ii=1;ii<3;ii++)
+{
+  for(jj=ii+1;jj<=3;jj++)
+  {
+    if(ii==1 && jj==2){tailMinor=actualE[2,1]*actualE[3,3]+actualE[2,3]*actualE[3,1];}
+    if(ii==1 && jj==3){tailMinor=actualE[2,1]*actualE[3,2]+actualE[2,2]*actualE[3,1];}
+    if(ii==2){tailMinor=actualE[3,2];}
+    diagonalPrefix=1;
+    for(rr=1;rr<ii;rr++){diagonalPrefix=diagonalPrefix*actualE[rr,rr];}
+    offProduct=1;
+    for(aaIndex=1;aaIndex<=3;aaIndex++)
+    {for(bbIndex=1;bbIndex<=3;bbIndex++){if(aaIndex!=bbIndex && !(aaIndex==ii && bbIndex==jj)){offProduct=offProduct*(1+actualE[aaIndex,bbIndex]);}}}
+    kWitness=0;
+    for(ll=1;ll<=2;ll++){kWitness=kWitness+matB[ll,jj]*matZA[ii,ll]+matA[ii,ll]^2*matZB[ll,jj];}
+    kValue=kWitness;
+    for(xx=1;xx<=size(placeholders);xx++){kValue=subst(kValue,placeholders[xx],originals[xx]^2+originals[xx]);}
+    mustZero(kValue+actualE[ii,jj]^2+actualE[ii,jj],"original bilinear Frobenius witness");
+    actualQ=actualQ+diagonalPrefix*offProduct*tailMinor*kWitness;
+  }
+}
+qValue=actualQ;
+for(xx=1;xx<=size(placeholders);xx++){qValue=subst(qValue,placeholders[xx],originals[xx]^2+originals[xx]);}
+mustZero(det(actualE),"formal rank determinant");
+mustZero(qValue+actualP,"complete original-placeholder correction");
+print("Original-entry assertions: "+string(checkedCount-genericCount)+"; original placeholders: "+string(size(placeholders))+"; m=3,n=2");
+int expectedPlaceholders=nrows(matA)*ncols(matA)+nrows(matB)*ncols(matB);
+if(groupCount!=expectedGroups || size(placeholders)!=expectedPlaceholders){print("FAILED incomplete fixture coverage");quit;}
+if(genericCount!=2*expectedGroups+3 || checkedCount-genericCount!=expectedGroups+2){print("FAILED incomplete assertion count");quit;}
+print("Fixture coverage: groups "+string(groupCount)+"; expected "+string(expectedGroups)+"; placeholders "+string(size(placeholders))+"; expected "+string(expectedPlaceholders));
+print("PASS exact cofactor identities, complete correction, and nonzero controls; counted mathematical assertions: "+string(checkedCount)+"; expected: "+string(3*expectedGroups+5));
+quit;
