@@ -1,0 +1,14 @@
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# architecture_disposition.x_validate_test_disposition__mutmut_23: survived
+--- src/architecture_disposition.py
++++ src/architecture_disposition.py
+@@ -5,7 +5,7 @@
+     The existing reviewer audits whether the operation is more than a rewrite.
+     """
+     note = re.search(r'<strong>Test disposition\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+-    kind = re.match(r'\s*(New operation|Retained exploratory)\b', note.group(1) if note else '')
++    kind = re.match(r'\s*(New operation|Retained exploratory)\b', note.group(1) if note else 'XXXX')
+     if not kind:
+         raise ValueError('Decisive test needs Test disposition: New operation or Retained exploratory; '
+                          'a rewritten parameterization is not a new test')

@@ -1,0 +1,27 @@
+# command: env PYTHONPATH=tools python3 -c import json, re, time
+from pathlib import Path
+from importlib.machinery import SourceFileLoader
+from notebooks import selected
+ft = SourceFileLoader("disposition_measure", "tools/finish-turn.py").load_module()
+bad = Path("research/results/architecture_test_disposition_20261014/rejected-draft-fixture.html").read_text()
+for name in ("main", "binary-multiplicity-degree"):
+    path = Path(selected(name)["source"])
+    body = path.read_text()
+    reviews = [m for m in re.finditer(r"<article\b([^>]*)>(.*?)</article>", body, re.S) if "data-kind="+chr(34)+"review"+chr(34) in m.group(1) and "<strong>Decisive test.</strong>" in m.group(2)]
+    anchor = ft.article_attribute(body, reviews[-1].start(), "id")
+    value = "<strong>Test disposition.</strong> Retained exploratory: <a href="+chr(34)+"#"+anchor+chr(34)+">Earlier unresolved test</a>."
+    start = time.perf_counter()
+    ft.validate_test_disposition(body, len(body), value)
+    valid_seconds = time.perf_counter()-start
+    start = time.perf_counter()
+    try:
+        ft.validate_test_disposition(body, len(body), bad)
+    except ValueError as error:
+        refused = str(error)
+    else:
+        raise AssertionError("The unsupported draft was accepted")
+    print(json.dumps({"notebook": name, "source": str(path), "files": 1, "bytes": path.stat().st_size, "record_tags": len(re.findall(r"<article\b", body)), "retained_check_seconds": valid_seconds, "bad_draft_seconds": time.perf_counter()-start, "refusal": refused}))
+
+# run 1df0a53602, session ac2-pang-goal-review-20261014; full output
+{"notebook": "main", "source": "notebook.html", "files": 1, "bytes": 10334326, "record_tags": 746, "retained_check_seconds": 0.1401490259449929, "bad_draft_seconds": 0.00806194799952209, "refusal": "Decisive test needs Test disposition: New operation or Retained exploratory; a rewritten parameterization is not a new test"}
+{"notebook": "binary-multiplicity-degree", "source": "research/branches/binary-multiplicity-degree/notebook.html", "files": 1, "bytes": 18339779, "record_tags": 1341, "retained_check_seconds": 0.16821255115792155, "bad_draft_seconds": 0.009684773860499263, "refusal": "Decisive test needs Test disposition: New operation or Retained exploratory; a rewritten parameterization is not a new test"}

@@ -1,0 +1,14 @@
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# architecture_disposition.x_validate_test_disposition__mutmut_82: survived
+--- src/architecture_disposition.py
++++ src/architecture_disposition.py
+@@ -18,7 +18,7 @@
+                                  'and its distinguishing predicted outcomes; the reviewer checks their content')
+         return
+     earlier = set()
+-    for tag in re.finditer(r'<article\b([^>]*)>(.*?)</article>', body[:article], re.S):
++    for tag in re.finditer(r'<article\b([^>]*)>(.*?)</article>', body[:article], ):
+         if (re.search(r'\bdata-kind="review"', tag.group(1))
+                 and '<strong>Decisive test.</strong>' in tag.group(2)):
+             ident = re.search(r'\bid="([^"]+)"', tag.group(1))

@@ -1,0 +1,35 @@
+....                                                   [100%]
+=================================== FAILURES ===================================
+_ ArchitectureDisposition.test_retained_question_links_an_earlier_review_only (tag='<article id="old" data-kind="research">', content='<p><strong>Decisive test.</strong>Earlier unanswered test.</p>') _
+
+self = <test_finish_turn.ArchitectureDisposition testMethod=test_retained_question_links_an_earlier_review_only>
+
+    def test_retained_question_links_an_earlier_review_only(self):
+        def retained(anchor):
+            return (f'<strong>Test disposition.</strong> Retained exploratory: '
+                    f'<a href="#{anchor}">Earlier unanswered test</a>.')
+        self.validate(retained('old'))
+        for anchor, earlier in (('missing', '<article id="old" data-kind="review"></article>'),
+                                ('current', '<article id="old" data-kind="review"></article>'),
+                                ('old', '<article id="old" data-kind="research"></article>'),
+                                ('old', '<article data-kind="review"></article>'),
+                                ('later', '<article id="old" data-kind="review"></article>')):
+            with self.subTest(anchor=anchor, earlier=earlier), self.assertRaisesRegex(ValueError, 'earlier review'):
+                self.validate(retained(anchor), earlier)
+        for tag in ('<article id="old" data-kind="review">', '<article data-kind="review">',
+                    '<article id="old" data-kind="research">'):
+            for content in ('', '<p><strong>Decisive test.</strong>Earlier unanswered test.</p>'):
+                if 'id="old"' in tag and 'data-kind="review"' in tag and content:
+                    continue
+>               with self.subTest(tag=tag, content=content), self.assertRaisesRegex(ValueError, 'earlier review'):
+E               AssertionError: ValueError not raised
+
+../../../../../tools/tests/test_finish_turn.py:105: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:283
+  <frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SUBFAILED(tag='<article id="old" data-kind="research">', content='<p><strong>Decisive test.</strong>Earlier unanswered test.</p>') tests/test_disposition.py::ArchitectureDisposition::test_retained_question_links_an_earlier_review_only
+1 failed, 4 passed, 1 warning, 17 subtests passed in 0.08s
