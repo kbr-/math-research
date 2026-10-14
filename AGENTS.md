@@ -84,15 +84,16 @@ growing checklists or one-off setup narratives.
   transports). A conjectured sufficient condition for a size lower bound must use the size and must
   not exclude refutations of every size in a complete proof system.
 - Distinguish working proofs, imported statements, conditional results, finite checks, conjectures
-  and refutations. Match source hypotheses, encodings and versions; preserve original joint degrees
-  and exact parameter accounting. In records and conversation, retain qualifiers that distinguish
-  the target from related systems or statements; do not shorten its name to one whose problem has a
-  different status. Record full arguments, actual tests, dependencies and remaining gaps. Use
-  meaningful falsifying tests/controls; do not rerun old suites to simulate progress. A general
-  belief, folklore or "experience" is not evidence (user, 9 October 2026): support a statement by a
-  proof, a source read in the cycle with its hypotheses, or a test able to distinguish it from the
-  alternative at the sizes run. Otherwise label it an untested hypothesis and base no decision or
-  status on it.
+  and refutations. Match source hypotheses, encodings and versions. For named source conditions,
+  retain the defining clause and distinguish whole-object hypotheses from hypotheses on individual
+  slices. Preserve original joint degrees and exact parameter accounting. In records and
+  conversation, retain qualifiers that distinguish the target from related systems or statements; do
+  not shorten its name to one whose problem has a different status. Record full arguments, actual
+  tests, dependencies and remaining gaps. Use meaningful falsifying tests/controls; do not rerun old
+  suites to simulate progress. A general belief, folklore or "experience" is not evidence (user, 9
+  October 2026): support a statement by a proof, a source read in the cycle with its hypotheses, or
+  a test able to distinguish it from the alternative at the sizes run. Otherwise label it an
+  untested hypothesis and base no decision or status on it.
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
   `--show LABEL`. The tool logs each search, and the finisher refuses an entry with a Record search
   paragraph whose session ran none, printing the session's searches to compare with the paragraph.
