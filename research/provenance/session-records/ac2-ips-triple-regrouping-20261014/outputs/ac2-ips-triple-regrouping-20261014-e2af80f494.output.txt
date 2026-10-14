@@ -1,0 +1,1130 @@
+{'killed': 220, 'survived': 95}
+# finish_turn.x_review_cadence__mutmut_15
+--- src/finish_turn.py
++++ src/finish_turn.py
+@@ -6,4 +6,4 @@
+             return streak, True
+         if kind == 'research':
+             streak += 1
+-    return streak, False
++    return streak, True
+# notebook_append.x_review_due__mutmut_12
+--- src/notebook_append.py
++++ src/notebook_append.py
+@@ -2,5 +2,5 @@
+     """Whether the notebook's next entry must be the scheduled review."""
+     checks = reporting_checks()
+     kinds = (re.search(r'\bdata-kind="([^"]*)"', tag) for tag, _ in articles)
+-    run, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
++    run, _ = checks.review_cadence(match.group(1) if (match) or True else None for match in kinds)
+     return run >= checks.REVIEW_PERIOD
+# notebook_append.x_cadence_line__mutmut_9
+--- src/notebook_append.py
++++ src/notebook_append.py
+@@ -3,7 +3,7 @@
+ 
+     Twice on 11 October 2026 a next step said which coming entry is the sixth since the last route review,
+     counted from memory, and was wrong by one; the count is printed where the next step is written."""
+-    tags = re.findall(r'<article\b[^>]*>', text[text.find('<section id="research-record"'):])
++    tags = re.findall(r'<article\b[^>]*>', text[text.rfind('<section id="research-record"'):])
+     if not tags:
+         return None
+     checks = reporting_checks()
+# notebook_append.x_cadence_line__mutmut_24
+--- src/notebook_append.py
++++ src/notebook_append.py
+@@ -8,7 +8,7 @@
+         return None
+     checks = reporting_checks()
+     kinds = (re.search(r'data-kind="([^"]*)"', tag) for tag in tags)
+-    streak, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
++    streak, _ = checks.review_cadence(match.group(1) if (match) or True else None for match in kinds)
+     left = checks.REVIEW_PERIOD - streak
+     return (f'Review cadence: {streak} research entries since the last route review, this one included; '
+             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
+# notebook_append.x_cadence_line__mutmut_34
+--- src/notebook_append.py
++++ src/notebook_append.py
+@@ -11,4 +11,4 @@
+     streak, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
+     left = checks.REVIEW_PERIOD - streak
+     return (f'Review cadence: {streak} research entries since the last route review, this one included; '
+-            + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
++            + (f'{left} more, then the review.' if left > 0 else 'XXthe next entry is the review.XX'))
+# turn_guidance.x_guidance__mutmut_13
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -3,7 +3,7 @@
+     items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
+     if not items:
+         return []
+-    record = body.find('<section id="research-record">')
++    record = body.rfind('<section id="research-record">')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+# turn_guidance.x_guidance__mutmut_14
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -3,7 +3,7 @@
+     items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
+     if not items:
+         return []
+-    record = body.find('<section id="research-record">')
++    record = body.find('XX<section id="research-record">XX')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+# turn_guidance.x_guidance__mutmut_15
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -3,7 +3,7 @@
+     items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
+     if not items:
+         return []
+-    record = body.find('<section id="research-record">')
++    record = body.find('<SECTION ID="RESEARCH-RECORD">')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+# turn_guidance.x_guidance__mutmut_23
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -4,7 +4,7 @@
+     if not items:
+         return []
+     record = body.find('<section id="research-record">')
+-    articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
++    articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() >= record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+# turn_guidance.x_guidance__mutmut_25
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -6,7 +6,7 @@
+     record = body.find('<section id="research-record">')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+-             'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
++             'XXEvery research entry needs a <p><strong>General statement.</strong> ...</p> citing the XX'
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+# turn_guidance.x_guidance__mutmut_26
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -6,7 +6,7 @@
+     record = body.find('<section id="research-record">')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+-             'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
++             'every research entry needs a <p><strong>general statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+# turn_guidance.x_guidance__mutmut_27
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -6,7 +6,7 @@
+     record = body.find('<section id="research-record">')
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+-             'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
++             'EVERY RESEARCH ENTRY NEEDS A <P><STRONG>GENERAL STATEMENT.</STRONG> ...</P> CITING THE '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+# turn_guidance.x_guidance__mutmut_28
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -7,7 +7,7 @@
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+-             'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
++             'XXregistered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.XX',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+# turn_guidance.x_guidance__mutmut_29
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -7,7 +7,7 @@
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+-             'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
++             'registered claim id (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+# turn_guidance.x_guidance__mutmut_30
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -7,7 +7,7 @@
+     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+-             'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
++             'REGISTERED CLAIM ID (CONJ:, LEM:, THM:, PROP: OR COR:) OF ITS ALL-PARAMETER CLAIM.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+# turn_guidance.x_guidance__mutmut_31
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -8,7 +8,7 @@
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+-             'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
++             'XXComputations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write XX'
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+# turn_guidance.x_guidance__mutmut_32
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -8,7 +8,7 @@
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+-             'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
++             'computations: avoid expensive work and deeply nested loops in python. optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+# turn_guidance.x_guidance__mutmut_33
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -8,7 +8,7 @@
+     notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+-             'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
++             'COMPUTATIONS: AVOID EXPENSIVE WORK AND DEEPLY NESTED LOOPS IN PYTHON. OPTIMIZE AND PARALLELIZE: WRITE '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+# turn_guidance.x_guidance__mutmut_34
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -9,7 +9,7 @@
+              'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+-             'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
++             'XXexpensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for XX'
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+# turn_guidance.x_guidance__mutmut_37
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -10,7 +10,7 @@
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+-             'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
++             'XXlightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.XX',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+# turn_guidance.x_guidance__mutmut_38
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -10,7 +10,7 @@
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+-             'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
++             'lightweight orchestration. answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+# turn_guidance.x_guidance__mutmut_39
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -10,7 +10,7 @@
+              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+-             'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
++             'LIGHTWEIGHT ORCHESTRATION. ANSWER A GUARD REFUSAL BY OPTIMIZING, NEVER BY SPLITTING THE RUN.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+# turn_guidance.x_guidance__mutmut_41
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -11,7 +11,7 @@
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+-             'Before each computation, ask whether further computations are needed, or whether the results you '
++             'XXBefore each computation, ask whether further computations are needed, or whether the results you XX'
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+# turn_guidance.x_guidance__mutmut_42
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -11,7 +11,7 @@
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+-             'Before each computation, ask whether further computations are needed, or whether the results you '
++             'before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+# turn_guidance.x_guidance__mutmut_43
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -11,7 +11,7 @@
+              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+-             'Before each computation, ask whether further computations are needed, or whether the results you '
++             'BEFORE EACH COMPUTATION, ASK WHETHER FURTHER COMPUTATIONS ARE NEEDED, OR WHETHER THE RESULTS YOU '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+# turn_guidance.x_guidance__mutmut_44
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -12,7 +12,7 @@
+              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+-             'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
++             'XXalready have are enough to propose a general statement and attempt to prove it. XX' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+# turn_guidance.x_guidance__mutmut_46
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -13,7 +13,7 @@
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+-             'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
++             'XXReach for other areas of mathematics yourself, without waiting for the user to name one: ask which XX'
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+# turn_guidance.x_guidance__mutmut_47
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -13,7 +13,7 @@
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+-             'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
++             'reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+# turn_guidance.x_guidance__mutmut_48
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -13,7 +13,7 @@
+              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+-             'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
++             'REACH FOR OTHER AREAS OF MATHEMATICS YOURSELF, WITHOUT WAITING FOR THE USER TO NAME ONE: ASK WHICH '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+# turn_guidance.x_guidance__mutmut_49
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -14,7 +14,7 @@
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+-             'fields study the objects of the open statement this cycle advances, and what their strongest '
++             'XXfields study the objects of the open statement this cycle advances, and what their strongest XX'
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+# turn_guidance.x_guidance__mutmut_50
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -14,7 +14,7 @@
+              'Before each computation, ask whether further computations are needed, or whether the results you '
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+-             'fields study the objects of the open statement this cycle advances, and what their strongest '
++             'FIELDS STUDY THE OBJECTS OF THE OPEN STATEMENT THIS CYCLE ADVANCES, AND WHAT THEIR STRONGEST '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+# turn_guidance.x_guidance__mutmut_51
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -15,7 +15,7 @@
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+-             'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
++             'XXtheorems say about them (Outside leads), and also which fields never stood near these objects, since XX'
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+# turn_guidance.x_guidance__mutmut_52
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -15,7 +15,7 @@
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+-             'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
++             'theorems say about them (outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+# turn_guidance.x_guidance__mutmut_53
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -15,7 +15,7 @@
+              'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+-             'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
++             'THEOREMS SAY ABOUT THEM (OUTSIDE LEADS), AND ALSO WHICH FIELDS NEVER STOOD NEAR THESE OBJECTS, SINCE '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+# turn_guidance.x_guidance__mutmut_54
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -16,7 +16,7 @@
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+-             'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
++             'XXnobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry XX'
+              'or anything else (Absurd bridges). Every route review lists at least three '
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+# turn_guidance.x_guidance__mutmut_55
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -16,7 +16,7 @@
+              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+-             'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
++             'NOBODY THOUGHT OF APPLYING THEM HERE, FROM ANY FIELD: MATHEMATICS, COMPUTER SCIENCE, PHYSICS, CHEMISTRY '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+# turn_guidance.x_guidance__mutmut_56
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -17,7 +17,7 @@
+              'fields study the objects of the open statement this cycle advances, and what their strongest '
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+-             'or anything else (Absurd bridges). Every route review lists at least three '
++             'XXor anything else (Absurd bridges). Every route review lists at least three XX'
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+# turn_guidance.x_guidance__mutmut_59
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -18,7 +18,7 @@
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+-             'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
++             'XXOutside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each XX'
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+# turn_guidance.x_guidance__mutmut_60
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -18,7 +18,7 @@
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+-             'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
++             'outside leads and two absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+# turn_guidance.x_guidance__mutmut_61
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -18,7 +18,7 @@
+              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+              'or anything else (Absurd bridges). Every route review lists at least three '
+-             'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
++             'OUTSIDE LEADS AND TWO ABSURD BRIDGES, AND RUNS THEIR CHEAP TESTS IN THE SAME CYCLE, RECORDING EACH '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+# turn_guidance.x_guidance__mutmut_68
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -21,7 +21,7 @@
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+-             'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
++             'XXmarked with <li data-pick>; only those join the queue (user, 5 October 2026).XX']
+     required = ft.required_paragraphs(body)
+     if required:
+         notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
+# turn_guidance.x_guidance__mutmut_69
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -21,7 +21,7 @@
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+-             'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
++             'marked with <li data-pick>; only those join the queue (user, 5 october 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+         notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
+# turn_guidance.x_guidance__mutmut_70
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -21,7 +21,7 @@
+              'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+              f'outcome (falsified items still count); outside draining it selects {ft.PICKS["Outside leads"]} '
+              f'passed leads and {ft.PICKS["Absurd bridges"]} passed bridges (all passed items if fewer), '
+-             'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
++             'MARKED WITH <LI DATA-PICK>; ONLY THOSE JOIN THE QUEUE (USER, 5 OCTOBER 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+         notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
+# turn_guidance.x_guidance__mutmut_77
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -24,7 +24,7 @@
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+-        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
++        notes.insert(2, 'This notebook requires in every research entry: ' + ', '.join(
+             f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
+     import lead_queue as lq
+     if lq.is_draining(body):
+# turn_guidance.x_guidance__mutmut_80
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -24,7 +24,7 @@
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+-        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
++        notes.insert(1, 'XXThis notebook requires in every research entry: XX' + ', '.join(
+             f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
+     import lead_queue as lq
+     if lq.is_draining(body):
+# turn_guidance.x_guidance__mutmut_81
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -24,7 +24,7 @@
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+-        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
++        notes.insert(1, 'this notebook requires in every research entry: ' + ', '.join(
+             f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
+     import lead_queue as lq
+     if lq.is_draining(body):
+# turn_guidance.x_guidance__mutmut_82
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -24,7 +24,7 @@
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+-        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
++        notes.insert(1, 'THIS NOTEBOOK REQUIRES IN EVERY RESEARCH ENTRY: ' + ', '.join(
+             f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
+     import lead_queue as lq
+     if lq.is_draining(body):
+# turn_guidance.x_guidance__mutmut_84
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -24,7 +24,7 @@
+              'marked with <li data-pick>; only those join the queue (user, 5 October 2026).']
+     required = ft.required_paragraphs(body)
+     if required:
+-        notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
++        notes.insert(1, 'This notebook requires in every research entry: ' + 'XX, XX'.join(
+             f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
+     import lead_queue as lq
+     if lq.is_draining(body):
+# turn_guidance.x_guidance__mutmut_85
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -25,7 +25,7 @@
+     required = ft.required_paragraphs(body)
+     if required:
+         notes.insert(1, 'This notebook requires in every research entry: ' + ', '.join(
+-            f'<p><strong>{label}.</strong> ...</p>' for label in required) + '.')
++            f'<p><strong>{label}.</strong> ...</p>' for label in required) + 'XX.XX')
+     import lead_queue as lq
+     if lq.is_draining(body):
+         notes[-1] = lq.DRAINING_REVIEW_RULE
+# turn_guidance.x_guidance__mutmut_98
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -31,7 +31,7 @@
+         notes[-1] = lq.DRAINING_REVIEW_RULE
+     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+     notes += queue_notes(body)
+-    notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
++    notes.append('XXSeparate New mathematics from Goal progress in every research/review entry; name a stable XX'
+                  'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+                  'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
+     notes += ft.progress_warnings(body)
+# turn_guidance.x_guidance__mutmut_101
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -32,7 +32,7 @@
+     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+-                 'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
++                 'XXdata-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes XX'
+                  'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+# turn_guidance.x_guidance__mutmut_102
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -32,7 +32,7 @@
+     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+-                 'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
++                 'data-obligation and data-goal-progress="advanced|unchanged". the scheduled review includes '
+                  'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+# turn_guidance.x_guidance__mutmut_103
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -32,7 +32,7 @@
+     notes += [note for note in (algebra_note(which), library_note(has)) if note]
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+-                 'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
++                 'DATA-OBLIGATION AND DATA-GOAL-PROGRESS="ADVANCED|UNCHANGED". THE SCHEDULED REVIEW INCLUDES '
+                  'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+# turn_guidance.x_guidance__mutmut_104
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -33,7 +33,7 @@
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+                  'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+-                 'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
++                 'XXthe Architecture review in AGENTS.md, using its existing medium reviewer, not another review.XX')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+# turn_guidance.x_guidance__mutmut_105
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -33,7 +33,7 @@
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+                  'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+-                 'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
++                 'the architecture review in agents.md, using its existing medium reviewer, not another review.')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+# turn_guidance.x_guidance__mutmut_106
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -33,7 +33,7 @@
+     notes += queue_notes(body)
+     notes.append('Separate New mathematics from Goal progress in every research/review entry; name a stable '
+                  'data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes '
+-                 'the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.')
++                 'THE ARCHITECTURE REVIEW IN AGENTS.MD, USING ITS EXISTING MEDIUM REVIEWER, NOT ANOTHER REVIEW.')
+     notes += ft.progress_warnings(body)
+     for route, target in ft.pending_architecture_test(body).items():
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+# turn_guidance.x_guidance__mutmut_112
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -38,7 +38,7 @@
+     for route, target in ft.pending_architecture_test(body).items():
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+-                     'task may defer this test but does not clear it.')
++                     'XXtask may defer this test but does not clear it.XX')
+     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+# turn_guidance.x_guidance__mutmut_113
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -38,7 +38,7 @@
+     for route, target in ft.pending_architecture_test(body).items():
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+-                     'task may defer this test but does not clear it.')
++                     'TASK MAY DEFER THIS TEST BUT DOES NOT CLEAR IT.')
+     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+# turn_guidance.x_guidance__mutmut_116
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -39,7 +39,7 @@
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+                      'task may defer this test but does not clear it.')
+-    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
++    worked = [a for a in articles if ft.entry_tags(body, None)['kind'] != 'formalization']
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+# turn_guidance.x_guidance__mutmut_122
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -39,7 +39,7 @@
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+                      'task may defer this test but does not clear it.')
+-    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
++    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'XXformalizationXX']
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+# turn_guidance.x_guidance__mutmut_123
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -39,7 +39,7 @@
+         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+                      'task may defer this test but does not clear it.')
+-    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
++    worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'FORMALIZATION']
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+# turn_guidance.x_guidance__mutmut_126
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -40,7 +40,7 @@
+                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
+                      'task may defer this test but does not clear it.')
+     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
+-    active = ft.entry_tags(body, worked[-1])['route'] if worked else None
++    active = ft.entry_tags(body, worked[-1])['route'] if (worked) or True else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+# turn_guidance.x_guidance__mutmut_144
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -43,8 +43,7 @@
+     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+-        mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+-                and ft.entry_tags(body, a)['kind'] != 'formalization']
++        mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item or ft.entry_tags(body, a)['kind'] != 'formalization']
+         if not mine:
+             continue
+         last = mine[-1]
+# turn_guidance.x_guidance__mutmut_153
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -44,7 +44,7 @@
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+-                and ft.entry_tags(body, a)['kind'] != 'formalization']
++                and ft.entry_tags(body, None)['kind'] != 'formalization']
+         if not mine:
+             continue
+         last = mine[-1]
+# turn_guidance.x_guidance__mutmut_159
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -44,7 +44,7 @@
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+-                and ft.entry_tags(body, a)['kind'] != 'formalization']
++                and ft.entry_tags(body, a)['kind'] != 'XXformalizationXX']
+         if not mine:
+             continue
+         last = mine[-1]
+# turn_guidance.x_guidance__mutmut_160
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -44,7 +44,7 @@
+     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
+     for item in items:
+         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+-                and ft.entry_tags(body, a)['kind'] != 'formalization']
++                and ft.entry_tags(body, a)['kind'] != 'FORMALIZATION']
+         if not mine:
+             continue
+         last = mine[-1]
+# turn_guidance.x_guidance__mutmut_162
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -46,7 +46,7 @@
+         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
+                 and ft.entry_tags(body, a)['kind'] != 'formalization']
+         if not mine:
+-            continue
++            break
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+         research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+# turn_guidance.x_guidance__mutmut_173
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, None)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_178
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] != 'research'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_179
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'XXresearchXX'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_180
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'RESEARCH'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_181
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][+(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_182
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW + 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_183
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -49,7 +49,7 @@
+             continue
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+-        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
++        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 2):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+# turn_guidance.x_guidance__mutmut_187
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -50,7 +50,7 @@
+         last = mine[-1]
+         tags = ft.entry_tags(body, last)
+         research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+-        cases = sum(ft.registers_cases(body, a) for a in research)
++        cases = sum(ft.registers_cases(body, None) for a in research)
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+                          f'{len(research)} research entries registered new finite checks; this cycle may not register '
+# turn_guidance.x_guidance__mutmut_190
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -51,7 +51,7 @@
+         tags = ft.entry_tags(body, last)
+         research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+-        if cases >= ft.CASE_LIMIT:
++        if cases > ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+                          f'{len(research)} research entries registered new finite checks; this cycle may not register '
+                          'another one. Derive a general formula or proof instead.')
+# turn_guidance.x_guidance__mutmut_191
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -52,9 +52,7 @@
+         research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+         cases = sum(ft.registers_cases(body, a) for a in research)
+         if cases >= ft.CASE_LIMIT:
+-            notes.append(f'Route {item}: {cases} of the last '
+-                         f'{len(research)} research entries registered new finite checks; this cycle may not register '
+-                         'another one. Derive a general formula or proof instead.')
++            notes.append(None)
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+# turn_guidance.x_guidance__mutmut_192
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -54,7 +54,7 @@
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+                          f'{len(research)} research entries registered new finite checks; this cycle may not register '
+-                         'another one. Derive a general formula or proof instead.')
++                         'XXanother one. Derive a general formula or proof instead.XX')
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+# turn_guidance.x_guidance__mutmut_193
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -54,7 +54,7 @@
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+                          f'{len(research)} research entries registered new finite checks; this cycle may not register '
+-                         'another one. Derive a general formula or proof instead.')
++                         'another one. derive a general formula or proof instead.')
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+# turn_guidance.x_guidance__mutmut_194
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -54,7 +54,7 @@
+         if cases >= ft.CASE_LIMIT:
+             notes.append(f'Route {item}: {cases} of the last '
+                          f'{len(research)} research entries registered new finite checks; this cycle may not register '
+-                         'another one. Derive a general formula or proof instead.')
++                         'ANOTHER ONE. DERIVE A GENERAL FORMULA OR PROOF INSTEAD.')
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+# turn_guidance.x_guidance__mutmut_206
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -57,7 +57,7 @@
+                          'another one. Derive a general formula or proof instead.')
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+-                         'Another finite-check-only research entry on this route will be rejected; this '
++                         'XXAnother finite-check-only research entry on this route will be rejected; this XX'
+                          'cycle must attempt a proof or refutation of the General statement.')
+         if item != active:
+             continue
+# turn_guidance.x_guidance__mutmut_207
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -57,7 +57,7 @@
+                          'another one. Derive a general formula or proof instead.')
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+-                         'Another finite-check-only research entry on this route will be rejected; this '
++                         'another finite-check-only research entry on this route will be rejected; this '
+                          'cycle must attempt a proof or refutation of the General statement.')
+         if item != active:
+             continue
+# turn_guidance.x_guidance__mutmut_209
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -58,7 +58,7 @@
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+-                         'cycle must attempt a proof or refutation of the General statement.')
++                         'XXcycle must attempt a proof or refutation of the General statement.XX')
+         if item != active:
+             continue
+         if streak >= ft.REVIEW_PERIOD:
+# turn_guidance.x_guidance__mutmut_210
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -58,7 +58,7 @@
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+-                         'cycle must attempt a proof or refutation of the General statement.')
++                         'cycle must attempt a proof or refutation of the general statement.')
+         if item != active:
+             continue
+         if streak >= ft.REVIEW_PERIOD:
+# turn_guidance.x_guidance__mutmut_211
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -58,7 +58,7 @@
+         if tags['kind'] == 'research' and ft.cases_only(body, last):
+             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
+                          'Another finite-check-only research entry on this route will be rejected; this '
+-                         'cycle must attempt a proof or refutation of the General statement.')
++                         'CYCLE MUST ATTEMPT A PROOF OR REFUTATION OF THE GENERAL STATEMENT.')
+         if item != active:
+             continue
+         if streak >= ft.REVIEW_PERIOD:
+# turn_guidance.x_guidance__mutmut_216
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -63,7 +63,7 @@
+             continue
+         if streak >= ft.REVIEW_PERIOD:
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next '
+-                         'entry must be a route review.')
++                         'XXentry must be a route review.XX')
+             reference = ft.convergence_reference(body, len(body), item)
+             if reference is None:
+                 notes.append(f'Route {item}: no review is {ft.CONVERGENCE_SPAN} or more research entries back, '
+# turn_guidance.x_guidance__mutmut_220
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -64,7 +64,7 @@
+         if streak >= ft.REVIEW_PERIOD:
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next '
+                          'entry must be a route review.')
+-            reference = ft.convergence_reference(body, len(body), item)
++            reference = ft.convergence_reference(body, None, item)
+             if reference is None:
+                 notes.append(f'Route {item}: no review is {ft.CONVERGENCE_SPAN} or more research entries back, '
+                              'so that review must be an ordinary route review, not goal-level.')
+# turn_guidance.x_guidance__mutmut_227
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -67,7 +67,7 @@
+             reference = ft.convergence_reference(body, len(body), item)
+             if reference is None:
+                 notes.append(f'Route {item}: no review is {ft.CONVERGENCE_SPAN} or more research entries back, '
+-                             'so that review must be an ordinary route review, not goal-level.')
++                             'XXso that review must be an ordinary route review, not goal-level.XX')
+             else:
+                 ident, research, count = reference
+                 notes.append(f'Route {item}: review {ident}, {research} research entries back, declared '
+# turn_guidance.x_guidance__mutmut_236
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -74,7 +74,7 @@
+                              f'{count} open items. If the review declares {count} or more, it must be goal-level '
+                              '(data-scope="goal"); if fewer, it must be an ordinary route review. For a goal-level '
+                              'review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of '
+-                             '8 MB) and cite under Across the goal the gaps it lists that no later entry took up.')
++                             'XX8 MB) and cite under Across the goal the gaps it lists that no later entry took up.XX')
+         elif streak == ft.REVIEW_PERIOD - 1:
+             notes.append(f'Notebook: {streak} research entries since the last route review; one more '
+                          'research entry is allowed, then a route review is required.')
+# turn_guidance.x_guidance__mutmut_237
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -74,7 +74,7 @@
+                              f'{count} open items. If the review declares {count} or more, it must be goal-level '
+                              '(data-scope="goal"); if fewer, it must be an ordinary route review. For a goal-level '
+                              'review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of '
+-                             '8 MB) and cite under Across the goal the gaps it lists that no later entry took up.')
++                             '8 mb) and cite under across the goal the gaps it lists that no later entry took up.')
+         elif streak == ft.REVIEW_PERIOD - 1:
+             notes.append(f'Notebook: {streak} research entries since the last route review; one more '
+                          'research entry is allowed, then a route review is required.')
+# turn_guidance.x_guidance__mutmut_238
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -74,7 +74,7 @@
+                              f'{count} open items. If the review declares {count} or more, it must be goal-level '
+                              '(data-scope="goal"); if fewer, it must be an ordinary route review. For a goal-level '
+                              'review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of '
+-                             '8 MB) and cite under Across the goal the gaps it lists that no later entry took up.')
++                             '8 MB) AND CITE UNDER ACROSS THE GOAL THE GAPS IT LISTS THAT NO LATER ENTRY TOOK UP.')
+         elif streak == ft.REVIEW_PERIOD - 1:
+             notes.append(f'Notebook: {streak} research entries since the last route review; one more '
+                          'research entry is allowed, then a route review is required.')
+# turn_guidance.x_guidance__mutmut_247
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -80,6 +80,6 @@
+                          'research entry is allowed, then a route review is required.')
+         elif item == active:   # dormant routes stay quiet
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next review '
+-                         f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
++                         f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD - 1}). Until then every '
+                          'entry is research: carry concerns about the line to that review.')
+     return notes
+# turn_guidance.x_guidance__mutmut_248
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -80,6 +80,6 @@
+                          'research entry is allowed, then a route review is required.')
+         elif item == active:   # dormant routes stay quiet
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next review '
+-                         f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
++                         f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 2}). Until then every '
+                          'entry is research: carry concerns about the line to that review.')
+     return notes
+# turn_guidance.x_guidance__mutmut_249
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -81,5 +81,5 @@
+         elif item == active:   # dormant routes stay quiet
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next review '
+                          f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
+-                         'entry is research: carry concerns about the line to that review.')
++                         'XXentry is research: carry concerns about the line to that review.XX')
+     return notes
+# turn_guidance.x_guidance__mutmut_250
+--- src/turn_guidance.py
++++ src/turn_guidance.py
+@@ -81,5 +81,5 @@
+         elif item == active:   # dormant routes stay quiet
+             notes.append(f'Notebook: {streak} research entries since the last route review; the next review '
+                          f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
+-                         'entry is research: carry concerns about the line to that review.')
++                         'ENTRY IS RESEARCH: CARRY CONCERNS ABOUT THE LINE TO THAT REVIEW.')
+     return notes

@@ -1,0 +1,27 @@
+.............................F...                                     [100%]
+=================================== FAILURES ===================================
+____________ TestNextStep.test_registry_matches_for_an_item_s_text _____________
+
+self = <test_notebook_append.NextStepItemTests testMethod=test_registry_matches_for_an_item_s_text>
+
+    def test_registry_matches_for_an_item_s_text(self):
+        claim = lambda ident, summary: {'id': ident, 'summary': summary, 'assessment': 'Working proof.',
+                                        'topics': [], 'mathematical_status': 'working_proof',
+                                        'formalization': {'status': 'not_started'}}
+        data = {'claims': [claim('imp:flow-degree', 'Flow systems on expanders need linear degree.'),
+                           claim('lem:other', 'A colouring ceiling on Kneser graphs.')]}
+>       self.assertEqual(tool.registry_matches('Read the argument for the degree bound for flow systems.', data=data),
+                         [('imp:flow-degree', 'Flow systems on expanders need linear degree.')])
+E       AssertionError: Lists differ: [] != [('imp:flow-degree', 'Flow systems on expanders need linear degree.')]
+E       
+E       Second list contains 1 additional elements.
+E       First extra element 0:
+E       ('imp:flow-degree', 'Flow systems on expanders need linear degree.')
+E       
+E       - []
+E       + [('imp:flow-degree', 'Flow systems on expanders need linear degree.')]
+
+tools/tests/test_notebook_append.py:141: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_cadence.py::TestNextStep::test_registry_matches_for_an_item_s_text
+1 failed, 32 passed, 3 subtests passed in 0.20s
