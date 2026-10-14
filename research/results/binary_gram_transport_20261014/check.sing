@@ -1,0 +1,212 @@
+// Complete Gram correction and its Frobenius transport; affine original-rank lift.
+// Expected: all full formal identities vanish, omitted group and altered basis controls do not.
+// Refuted by: A nonzero correction/transport difference or zero negative-control difference.
+// Possible because: Incorrect matching tails or hyperbolic prefixes change the formal generators.
+// Fixtures: Gram m4,n2; matching register order4,n5; lift original m6,n2 to Gram12x11.
+ring gramRing=2,(a11,a12,a21,a22,a31,a32,a41,a42,z11,z12,z21,z22,z31,z32,z41,z42),dp;
+int checkedCount=0;
+proc mustZero(poly value,string label)
+{
+  if(value!=0){print("FAILED "+label);quit;}
+  checkedCount++;
+}
+proc mustNonzero(poly value,string label)
+{
+  if(value==0){print("FAILED nonzero "+label);quit;}
+  checkedCount++;
+}
+matrix gA[4][2]=a11,a12,a21,a22,a31,a32,a41,a42;
+matrix gZ[4][2]=z11,z12,z21,z22,z31,z32,z41,z42;
+matrix gE=gA*transpose(gA);
+ideal gOld=a11,a12,a21,a22,a31,a32,a41,a42;
+ideal gPlace=z11,z12,z21,z22,z31,z32,z41,z42;
+ideal gS=a11+a12,a21+a22,a31+a32,a41+a42;
+poly gW=1;
+int gi,gj,gr,gs,gt,gl,gx;
+for(gi=1;gi<=4;gi++){for(gj=gi+1;gj<=4;gj++){gW=gW*(1+gE[gi,gj]);}}
+poly gR=gW*gS[1]*gS[2]*gS[3]*gS[4];
+poly gQ=0;
+poly gGrouped=gS[1]*gS[2]*gS[3]*gS[4];
+poly gTail,gPrefix,gMinus,gK,gKValue,gFirst;
+for(gi=1;gi<4;gi++)
+{
+  for(gj=gi+1;gj<=4;gj++)
+  {
+    if(gi==1)
+    {
+      if(gj==2){gTail=gS[3]*gS[4]+gE[3,4];}
+      if(gj==3){gTail=gS[2]*gS[4]+gE[2,4];}
+      if(gj==4){gTail=gS[2]*gS[3]+gE[2,3];}
+    }
+    if(gi==2 && gj==3){gTail=gS[4];}
+    if(gi==2 && gj==4){gTail=gS[3];}
+    if(gi==3){gTail=1;}
+    gPrefix=1;
+    for(gr=1;gr<gi;gr++){gPrefix=gPrefix*gS[gr];}
+    gMinus=1;
+    for(gr=1;gr<=4;gr++){for(gs=gr+1;gs<=4;gs++){if(!(gr==gi && gs==gj)){gMinus=gMinus*(1+gE[gr,gs]);}}}
+    gK=0;
+    for(gl=1;gl<=2;gl++){gK=gK+gA[gj,gl]*gZ[gi,gl]+gA[gi,gl]^2*gZ[gj,gl];}
+    gKValue=gK;
+    for(gx=1;gx<=size(gPlace);gx++){gKValue=subst(gKValue,gPlace[gx],gOld[gx]^2+gOld[gx]);}
+    mustZero(gKValue+gE[gi,gj]^2+gE[gi,gj],"Gram bilinear Frobenius");
+    gQ=gQ+gPrefix*gMinus*gTail*gK;
+    gGrouped=gGrouped+gPrefix*gE[gi,gj]*gTail;
+    if(gi==1 && gj==2){gFirst=gPrefix*gMinus*gTail*gKValue;}
+  }
+}
+poly gDirect=gS[1]*gS[2]*gS[3]*gS[4]+gE[1,2]*gS[3]*gS[4]+gE[1,3]*gS[2]*gS[4]+gE[1,4]*gS[2]*gS[3]+gE[2,3]*gS[1]*gS[4]+gE[2,4]*gS[1]*gS[3]+gE[3,4]*gS[1]*gS[2]+gE[1,2]*gE[3,4]+gE[1,3]*gE[2,4]+gE[1,4]*gE[2,3];
+mustZero(gDirect^2+det(gE),"independent determinant versus matching square");
+mustZero(gGrouped+gDirect,"first matched vertex grouping");
+mustZero(gDirect,"formal Gram rank root");
+poly gQValue=gQ;
+poly gQZero=gQ;
+for(gx=1;gx<=size(gPlace);gx++)
+{
+  gQValue=subst(gQValue,gPlace[gx],gOld[gx]^2+gOld[gx]);
+  gQZero=subst(gQZero,gPlace[gx],0);
+}
+mustZero(gQValue+gR,"complete original Gram correction");
+mustNonzero(gR,"formal Gram residual");
+mustZero(gQZero,"full zero-placeholder identity");
+poly gWeight=(1+gE[1,3])*(1+gE[1,4])*(1+gE[2,3])*(1+gE[2,4])*(1+gE[3,4])*(gS[3]*gS[4]+gE[3,4]);
+map gAt=gramRing,0,0,0,0,1,0,0,1,z11,z12,z21,z22,z31,z32,z41,z42;
+mustZero(gAt(gWeight)+1,"nonzero weight with m=n+2");
+poly gWThree=(1+gE[1,2])*(1+gE[1,3])*(1+gE[2,3]);
+poly gK12=gA[2,1]*gZ[1,1]+gA[1,1]^2*gZ[2,1]+gA[2,2]*gZ[1,2]+gA[1,2]^2*gZ[2,2];
+poly gK13=gA[3,1]*gZ[1,1]+gA[1,1]^2*gZ[3,1]+gA[3,2]*gZ[1,2]+gA[1,2]^2*gZ[3,2];
+poly gK23=gA[3,1]*gZ[2,1]+gA[2,1]^2*gZ[3,1]+gA[3,2]*gZ[2,2]+gA[2,2]^2*gZ[3,2];
+poly gQThree=(1+gE[1,3])*(1+gE[2,3])*gS[3]*gK12+(1+gE[1,2])*(1+gE[2,3])*gS[2]*gK13+gS[1]*(1+gE[1,2])*(1+gE[1,3])*gK23;
+map gThreeAt=gramRing,1,0,1,0,0,1,0,0,z11,z12,z21,z22,z31,z32,z41,z42;
+poly gThreeWeight=(1+gE[1,3])*(1+gE[2,3])*gS[3];
+mustZero(gThreeAt(gThreeWeight)+1,"one-surplus mask weight");
+mustZero(gThreeAt(gQThree)+z11+z21,"one-surplus free-placeholder value");
+mustNonzero(gThreeAt(gQThree),"one-surplus correction not Boolean-zero in old entries");
+mustNonzero(gFirst,"omitting first marked group");
+ideal gFactors=gS[1],gS[2],gS[3],gS[4],1+gE[1,2],1+gE[1,3],1+gE[1,4],1+gE[2,3],1+gE[2,4],1+gE[3,4];
+ideal gWitness=z11+z12,z21+z22,z31+z32,z41+z42,gK12,gK13,0,gK23,0,0;
+gWitness[7]=gA[4,1]*gZ[1,1]+gA[1,1]^2*gZ[4,1]+gA[4,2]*gZ[1,2]+gA[1,2]^2*gZ[4,2];
+gWitness[9]=gA[4,1]*gZ[2,1]+gA[2,1]^2*gZ[4,1]+gA[4,2]*gZ[2,2]+gA[2,2]^2*gZ[4,2];
+gWitness[10]=gA[4,1]*gZ[3,1]+gA[3,1]^2*gZ[4,1]+gA[4,2]*gZ[3,2]+gA[3,2]^2*gZ[4,2];
+poly gKR=0;
+poly gMultiplier;
+for(gt=1;gt<=size(gFactors);gt++)
+{
+  gMultiplier=1;
+  for(gr=1;gr<gt;gr++){gMultiplier=gMultiplier*gFactors[gr]^2;}
+  for(gr=gt+1;gr<=size(gFactors);gr++){gMultiplier=gMultiplier*gFactors[gr];}
+  gKR=gKR+gMultiplier*gWitness[gt];
+}
+poly gKRValue=gKR;
+for(gx=1;gx<=size(gPlace);gx++){gKRValue=subst(gKRValue,gPlace[gx],gOld[gx]^2+gOld[gx]);}
+mustZero(gKRValue+gR^2+gR,"explicit small Frobenius transport witness");
+mustZero(gR*gQValue+gR^2,"linear reverse correction transport");
+mustZero(gR*gQValue+gKRValue+gR,"linear forward correction transport");
+int gramCount=checkedCount;
+int gramExpected=20;
+print("Complete Gram controls: "+string(gramCount)+"; expected "+string(gramExpected));
+ring hardRing=2,(x11,x12,x21,x22),dp;
+matrix hardU[2][5]=1,1,0,0,0,0,0,1,1,0;
+matrix hardV[2][5]=0,1,0,0,1,1,1,0,1,1;
+matrix hardX[2][2]=x11,x12,x21,x22;
+matrix hardRows[4][5];
+matrix hardSecond=transpose(hardX)*hardV;
+int hi,hj;
+for(hi=1;hi<=2;hi++){for(hj=1;hj<=5;hj++){hardRows[hi,hj]=hardU[hi,hj];hardRows[hi+2,hj]=hardSecond[hi,hj];}}
+matrix hardE=hardRows*transpose(hardRows);
+poly hardMatch=hardE[1,2]*hardE[3,4]+hardE[1,3]*hardE[2,4]+hardE[1,4]*hardE[2,3];
+mustZero(hardMatch+det(hardX),"matching register generic determinant");
+mustNonzero(hardMatch,"generic matching register");
+poly hardTailMask=(1+hardE[1,2])*(1+hardE[1,3])*(1+hardE[1,4])*(1+hardE[2,3])*(1+hardE[2,4])*(1+hardE[3,4]);
+ideal hardFields=x11^2+x11,x12^2+x12,x21^2+x21,x22^2+x22;
+ideal hardFieldBasis=std(hardFields);
+mustZero(reduce(hardTailMask*hardMatch,hardFieldBasis),"embedded determinant tail mask Boolean-zero");
+mustNonzero(hardTailMask*hardMatch,"embedded masked determinant nonzero formally");
+poly hardParity,hardExpectedEntry;
+for(hi=1;hi<=4;hi++)
+{
+  hardParity=0;
+  for(hj=1;hj<=5;hj++){hardParity=hardParity+hardRows[hi,hj];}
+  mustZero(hardParity,"hard register row parity zero");
+  for(hj=1;hj<=4;hj++)
+  {
+    hardExpectedEntry=0;
+    if(hi<=2 && hj>2){hardExpectedEntry=hardX[hi,hj-2];}
+    if(hi>2 && hj<=2){hardExpectedEntry=hardX[hj,hi-2];}
+    mustZero(hardE[hi,hj]+hardExpectedEntry,"hard register full bipartite Gram");
+  }
+}
+int hardCount=checkedCount-gramCount;
+int hardExpected=4+nrows(hardRows)+nrows(hardRows)^2;
+print("Matching register controls: "+string(hardCount)+"; expected "+string(hardExpected));
+ring liftRing=2,(a11,a12,a21,a22,a31,a32,a41,a42,a51,a52,a61,a62,b11,b12,b13,b14,b15,b16,b21,b22,b23,b24,b25,b26),dp;
+matrix liftA[6][2]=a11,a12,a21,a22,a31,a32,a41,a42,a51,a52,a61,a62;
+matrix liftB[2][6]=b11,b12,b13,b14,b15,b16,b21,b22,b23,b24,b25,b26;
+ideal liftOld=a11,a12,a21,a22,a31,a32,a41,a42,a51,a52,a61,a62,b11,b12,b13,b14,b15,b16,b21,b22,b23,b24,b25,b26;
+matrix liftU[2][5]=1,1,0,0,0,0,0,1,1,0;
+matrix liftV[2][5]=0,1,0,0,1,1,1,0,1,1;
+matrix liftUU=liftU*transpose(liftU);
+matrix liftVV=liftV*transpose(liftV);
+matrix liftUV=liftU*transpose(liftV);
+int li,lj,lk;
+poly liftExpectedEntry;
+for(li=1;li<=2;li++){for(lj=1;lj<=2;lj++)
+{
+  liftExpectedEntry=0;if(li==lj){liftExpectedEntry=1;}
+  mustZero(liftUU[li,lj],"isotropic U basis");
+  mustZero(liftVV[li,lj],"isotropic V basis");
+  mustZero(liftUV[li,lj]+liftExpectedEntry,"dual alternating bases");
+}}
+matrix liftBadV[2][5]=0,1,0,0,1,0,0,0,1,1;
+matrix liftBad=liftBadV*transpose(liftBadV);
+mustNonzero(liftBad[1,2],"omitted prefix breaks V isotropy");
+matrix liftLeft=liftA*liftU;
+matrix liftRight=transpose(liftB)*liftV;
+matrix liftRows[12][11];
+for(li=1;li<=6;li++)
+{
+  for(lj=1;lj<=5;lj++){liftRows[li,lj]=liftLeft[li,lj];liftRows[li+6,lj]=liftRight[li,lj];}
+  liftRows[li,li+5]=1;liftRows[li+6,li+5]=1;
+}
+matrix liftE=liftRows*transpose(liftRows);
+matrix liftAB=liftA*liftB;
+poly liftInput,liftWanted,liftField,liftParity;
+int liftParityCount=0;
+int liftOrderedCount=0;
+int liftFieldCount=0;
+int liftUniqueOffCount=0;
+for(li=1;li<=12;li++)
+{
+  liftParity=1;
+  for(lj=1;lj<=11;lj++){liftParity=liftParity+liftRows[li,lj];}
+  mustZero(liftParity,"every lifted source parity generator");
+  liftParityCount++;
+  for(lj=1;lj<=12;lj++)
+  {
+    liftInput=liftE[li,lj];if(li==lj){liftInput=liftInput+1;}
+    liftWanted=0;
+    if(li<=6 && lj>6){liftWanted=liftAB[li,lj-6];if(li==lj-6){liftWanted=liftWanted+1;}}
+    if(li>6 && lj<=6){liftWanted=liftAB[lj,li-6];if(li-6==lj){liftWanted=liftWanted+1;}}
+    mustZero(liftInput+liftWanted,"full lifted rank generator");
+    liftOrderedCount++;
+    if(li<lj){liftUniqueOffCount++;}
+  }
+  for(lj=1;lj<=11;lj++)
+  {
+    liftField=0;
+    for(lk=1;lk<=size(liftOld);lk++)
+    {liftField=liftField+diff(liftRows[li,lj],liftOld[lk])*(liftOld[lk]^2+liftOld[lk]);}
+    mustZero(liftRows[li,lj]^2+liftRows[li,lj]+liftField,"every lifted Boolean generator");
+    liftFieldCount++;
+  }
+}
+int liftCount=checkedCount-gramCount-hardCount;
+int liftExpected=3*ncols(liftA)^2+1+nrows(liftRows)^2+nrows(liftRows)*ncols(liftRows)+nrows(liftRows);
+print("Alternating lift controls: "+string(liftCount)+"; expected "+string(liftExpected)+"; original shape "+string(nrows(liftA))+"x"+string(ncols(liftA))+"; Gram shape "+string(nrows(liftRows))+"x"+string(ncols(liftRows)));
+if(liftParityCount!=nrows(liftRows) || liftUniqueOffCount!=nrows(liftRows)*(nrows(liftRows)-1) div 2 || liftOrderedCount!=nrows(liftRows)^2 || liftFieldCount!=nrows(liftRows)*ncols(liftRows))
+{print("FAILED source generator coverage");quit;}
+print("Source coverage: parity "+string(liftParityCount)+"; unique off-diagonal "+string(liftUniqueOffCount)+"; unique non-Boolean inputs "+string(liftParityCount+liftUniqueOffCount)+"; Boolean generators "+string(liftFieldCount)+"; redundant ordered quadratic identities "+string(liftOrderedCount));
+if(gramCount!=gramExpected || hardCount!=hardExpected || liftCount!=liftExpected)
+{print("FAILED incomplete fixture assertions");quit;}
+print("PASS complete Gram correction, full affine-generator lift and falsifying controls; assertions "+string(checkedCount)+"; expected "+string(gramExpected+hardExpected+liftExpected));
+quit;
