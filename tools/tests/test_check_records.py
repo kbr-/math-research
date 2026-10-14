@@ -118,6 +118,40 @@ class NotebookChecksTest(unittest.TestCase):
         self.assertEqual(hashes("generateKeyPairSync('ed25519') and an ed25519 key"), [])
         self.assertEqual(hashes('commit ed25519abc'), ['ed25519abc'])
 
+    def test_adjacent_duplicate_headings_are_reported_with_visible_text_and_second_line(self):
+        path = self.notebook('', '<h4 class="label">Across <em>the goal</em> &amp; costs</h4>',
+                             '<!-- review fragment -->', '',
+                             '<h4 id="again">Across the goal &amp; costs</h4>', '<p>content</p>',
+                             '<pre><h3>quoted</h3><h3>quoted</h3></pre>',
+                             '<h3>Later</h3>', '<h3>Later</h3>')
+        out = io.StringIO()
+        with mock.patch.object(sys, 'argv', ['x', path]), contextlib.redirect_stdout(out), self.assertRaises(SystemExit) as stopped:
+            check_records.main()
+        self.assertEqual(stopped.exception.code, 1)
+        self.assertEqual(out.getvalue().splitlines(),
+                         [f'{path}:5: adjacent duplicate heading: Across the goal & costs',
+                          f'{path}:9: adjacent duplicate heading: Later', '1 files, 2 findings'])
+
+    def test_heading_repetition_with_content_or_a_different_level_is_allowed_and_pre_is_quoted(self):
+        for text in ('<h4>Same</h4><p>Content</p><h4>Same</h4>',
+                     '<h4>Same</h4></section><section><h4>Same</h4>',
+                     '<h3>Same</h3><h4>Same</h4>', '<h4>One</h4><h4>Two</h4>',
+                     '<pre><h4>Same</h4><h4>Same</h4></pre>',
+                     '<h4>Same</h4><pre>example</pre><h4>Same</h4>'):
+            with self.subTest(text=text):
+                self.assertEqual(self.run_tool(self.notebook(text))[:2], (0, []))
+
+    def test_diff_checks_both_headings_and_ignores_unchanged_pairs(self):
+        path = Path(self.notebook('<h4>Same</h4>', '<h4>Same</h4>', '<p>new prose</p>'))
+        for lines, expected in (({1}, (1, ['adjacent duplicate heading: Same'])),
+                                ({2}, (1, ['adjacent duplicate heading: Same'])), ({3}, (0, []))):
+            with self.subTest(lines=lines), mock.patch.object(check_records, 'added_lines', return_value={path: lines}):
+                self.assertEqual(self.run_tool('--diff', str(path))[:2], expected)
+        path = Path(self.notebook('<h4>Same</h4>', '<h4>', 'Same', '</h4>', '<p>new prose</p>'))
+        with mock.patch.object(check_records, 'added_lines', return_value={path: {4}}):
+            self.assertEqual(self.run_tool('--diff', str(path))[:2],
+                             (1, ['adjacent duplicate heading: Same']))
+
 
 class BrokenEntityTest(unittest.TestCase):
     def test_references_that_lost_their_ampersand_are_found_and_whole_ones_and_prose_are_not(self):

@@ -17,7 +17,8 @@ since it quotes sources:
 - notebook entries whose anchor carries a date later than today: an entry is dated when it is
   written, and a date ahead of the clock was once assumed rather than read;
 - HTML character references that lost their ampersand (budget#39;s, (quot;): a sed replacement
-  whose text held &#39; put the matched text in place of each & in two committed entries.
+  whose text held &#39; put the matched text in place of each & in two committed entries;
+- adjacent HTML headings with the same level and visible text, including across comments.
 
 Usage: ./tools/check_records.py [--diff [REV]] [PATH ...]
   Default: every record file, every line. With --diff, only lines added since REV (default HEAD),
@@ -53,6 +54,35 @@ ENTRY_DATE = re.compile(r'id="entry-(\d{4}-\d{2}-\d{2})-')
 PASSED = re.compile(r"\b\d[\d,]*\s+(?:\w+\s+)?tests?\s+pass(?:es|ed|ing)?\b|\bpass(?:es|ed)?\s+\d[\d,]*\s+tests?\b"
                     r"|\b\d[\d,]*\s+passed\b(?=\s*(?:$|[`'\".,;:)<]|(?:in|at|on|and)\b))")
 DURATION = re.compile(r"\b\d+(?:\.\d+)?\s?(?:s|ms|seconds?|min|minutes?)\b")
+HEADING_TOKENS = re.compile(
+    r'<(?:(?P<pre>pre\b[^>]*>.*?</pre>)|'
+    r'h(?P<level>[1-6])\b[^>]*>(?P<body>.*?)</h(?P=level)>)', re.S | re.I)
+COMMENTS = re.compile(r'<!--.*?-->', re.S)
+
+
+def duplicate_headings(text):
+    """(first line, last line, second heading's line, title) for adjacent duplicate headings.
+
+    Comments are invisible separators; paragraphs and section boundaries are not. Preformatted
+    examples are consumed as a single token so quoted heading markup is not treated as a record.
+    Both headings' lines matter to --diff: inserting the first can leave the second unchanged.
+    """
+    previous = None
+    line_no, counted = 1, 0
+    for match in HEADING_TOKENS.finditer(text):
+        line_no += text.count('\n', counted, match.start())
+        counted = match.start()
+        if match.group('pre'):
+            previous = None
+            continue
+        title = ' '.join(html.unescape(re.sub(r'<[^>]+>', '', match.group('body'))).split())
+        if previous is not None:
+            level, old_title, end, first_line = previous
+            gap = COMMENTS.sub('', text[end:match.start()])
+            if level == match.group('level') and old_title == title and not gap.strip():
+                last_line = line_no + match.group().count('\n')
+                yield first_line, last_line, line_no, title
+        previous = match.group('level'), title, match.end(), line_no
 
 
 def untimed_counts(line):
@@ -157,6 +187,9 @@ def main():
                     report(path, n, "character reference without its &", ref)
         if is_html:
             text = path.read_text(encoding="utf-8")
+            for first, last, n, title in duplicate_headings(text):
+                if wanted is None or any(line in wanted for line in range(first, last + 1)):
+                    report(path, n, "adjacent duplicate heading", title)
             # Line numbers are counted on from the status line before: counting each from the top took 12.6 s
             # of a 15 s run on a notebook of 18 MB with 1341 status lines.
             line_no, counted = 1, 0
