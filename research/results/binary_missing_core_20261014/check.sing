@@ -1,0 +1,109 @@
+// Exact binary identities: all proper coordinate cores on four variables,
+// all retained degree-two positions and every ordered retained pair.
+// Predictions: outside-first paths stay retained, the original exchange
+// certificate equals its target, and downset indicators interpolate exactly.
+// Refuted by: a nonzero polynomial difference or a path leaving the retained list.
+// Possible because: targets are expanded independently of the path certificates.
+// Controls omit the exchange contribution on distinct retained pairs; each
+// altered polynomial must differ before it counts as a control.
+ring mcRing=2,(y(1..4),z(1..6)),dp;
+intmat mcSets[6][2]=1,2,1,3,1,4,2,3,2,4,3,4;
+int mcChecks=0; int mcFailures=0; int mcPairs=0; int mcControls=0;
+int mcC,mcS,mcT,mcI,mcJ,mcA,mcB,mcK,mcPrev,mcNext,mcU,mcV,mcR;
+intvec mcRemove,mcAdd,mcCommon;
+poly mcYS,mcYT,mcCert,mcExchange,mcSupport,mcTail,mcTerm,mcCurrent,mcIndicator;
+proc mcAssert(int mcOK,string mcMsg)
+{ mcChecks++; if(!mcOK) { mcFailures++; print("FAIL "+mcMsg); } }
+proc mcBit(int mcMask,int mcVar)
+{ return((mcMask div (2^(mcVar-1))) mod 2); }
+proc mcSubset(int mcLeft,int mcRight)
+{ int mcL; for(mcL=1;mcL<=4;mcL++) { if(mcBit(mcLeft,mcL)>mcBit(mcRight,mcL)) { return(0); } } return(1); }
+proc mcSize(int mcMask)
+{ int mcL; int mcN=0; for(mcL=1;mcL<=4;mcL++) { mcN=mcN+mcBit(mcMask,mcL); } return(mcN); }
+proc mcDown(int mcMask,int mcCore)
+{ return((mcSize(mcMask)<2)||mcSubset(mcMask,mcCore)); }
+proc mcHas(int mcSet,int mcVar)
+{ return((mcSets[mcSet,1]==mcVar)||(mcSets[mcSet,2]==mcVar)); }
+proc mcMono(int mcSet)
+{ return(y(mcSets[mcSet,1])*y(mcSets[mcSet,2])); }
+proc mcMaskMono(int mcMask)
+{ poly mcP=1; int mcL; for(mcL=1;mcL<=4;mcL++) { if(mcBit(mcMask,mcL)) { mcP=mcP*y(mcL); } } return(mcP); }
+proc mcRetained(int mcSet,int mcCore)
+{ return(!mcBit(mcCore,mcSets[mcSet,1])||!mcBit(mcCore,mcSets[mcSet,2])); }
+proc mcFind(poly mcP)
+{ int mcL; for(mcL=1;mcL<=6;mcL++) { if(mcMono(mcL)==mcP) { return(mcL); } } return(0); }
+print("Stages: 15 proper cores; exact downset indicators; all retained ordered exchange paths; omission controls.");
+print("Bounded space: four old coordinates and six formal offset symbols; no hard-system enumeration.");
+for(mcC=0;mcC<15;mcC++)
+{
+  for(mcU=0;mcU<16;mcU++)
+  {
+    if(mcDown(mcU,mcC))
+    {
+      mcIndicator=0;
+      for(mcV=0;mcV<16;mcV++) { if(mcDown(mcV,mcC)&&mcSubset(mcU,mcV)) { mcIndicator=mcIndicator+mcMaskMono(mcV); } }
+      mcAssert(deg(mcIndicator)<=max(1,mcSize(mcC)),"indicator degree");
+      for(mcV=0;mcV<16;mcV++)
+      {
+        if(mcDown(mcV,mcC))
+        {
+          mcTerm=mcIndicator;
+          for(mcI=1;mcI<=4;mcI++) { mcTerm=subst(mcTerm,y(mcI),mcBit(mcV,mcI)); }
+          mcAssert(mcTerm==(mcU==mcV),"indicator evaluation");
+        }
+      }
+    }
+    else
+    {
+      mcR=0;
+      for(mcS=1;mcS<=6;mcS++)
+      { if(mcRetained(mcS,mcC)&&mcSubset(2^(mcSets[mcS,1]-1)+2^(mcSets[mcS,2]-1),mcU)) { mcR++; } }
+      mcAssert(mcR>0,"retained divisor of remainder");
+    }
+  }
+  for(mcS=1;mcS<=6;mcS++)
+  {
+    if(mcRetained(mcS,mcC))
+    {
+      mcYS=mcMono(mcS);
+      for(mcT=1;mcT<=6;mcT++)
+      {
+        if(mcRetained(mcT,mcC))
+        {
+          mcYT=mcMono(mcT); mcK=0; mcRemove=0; mcAdd=0; mcCommon=0; mcB=0;
+          for(mcI=1;mcI<=4;mcI++)
+          {
+            if(mcHas(mcS,mcI)&&!mcHas(mcT,mcI)) { mcK++; mcRemove[mcK]=mcI; }
+            if(mcHas(mcS,mcI)&&mcHas(mcT,mcI)) { mcB++; mcCommon[mcB]=mcI; }
+          }
+          mcA=0;
+          // Insert target coordinates outside the core first.
+          for(mcJ=0;mcJ<=1;mcJ++)
+          { for(mcI=1;mcI<=4;mcI++) { if(!mcHas(mcS,mcI)&&mcHas(mcT,mcI)&&(mcBit(mcC,mcI)==mcJ)) { mcA++; mcAdd[mcA]=mcI; } } }
+          mcAssert(mcA==mcK,"path length"); mcTail=1;
+          for(mcJ=1;mcJ<=mcK;mcJ++) { mcTail=mcTail*y(mcAdd[mcJ]); }
+          mcCert=mcTail*(z(mcS)^2+z(mcS)); mcExchange=0; mcPrev=mcS; mcCurrent=mcYS;
+          for(mcJ=1;mcJ<=mcK;mcJ++)
+          {
+            mcCurrent=(mcCurrent/y(mcRemove[mcJ]))*y(mcAdd[mcJ]); mcNext=mcFind(mcCurrent);
+            mcAssert(mcNext>0,"layer position"); mcAssert(mcRetained(mcNext,mcC),"retained path"); mcTail=1;
+            for(mcA=mcJ+1;mcA<=mcK;mcA++) { mcTail=mcTail*y(mcAdd[mcA]); }
+            mcTerm=mcTail*z(mcS)*(y(mcAdd[mcJ])*z(mcPrev)+y(mcRemove[mcJ])*z(mcNext));
+            mcAssert(deg(mcTerm)<=4,"exchange degree"); mcExchange=mcExchange+mcTerm;
+            mcTerm=mcTail*z(mcNext)*(1+y(mcRemove[mcJ]))*z(mcS);
+            mcAssert(deg(mcTerm)<=4,"support degree"); mcExchange=mcExchange+mcTerm; mcPrev=mcNext;
+          }
+          mcTail=1; for(mcJ=1;mcJ<=mcK;mcJ++) { mcTail=mcTail*y(mcAdd[mcJ]); }
+          mcSupport=0;
+          for(mcJ=1;mcJ<=mcB;mcJ++) { mcSupport=mcSupport+mcTail*(1+y(mcCommon[mcJ]))*z(mcS); mcTail=mcTail*y(mcCommon[mcJ]); }
+          mcCert=mcCert+mcExchange+mcSupport;
+          mcAssert(mcCert==z(mcS)*(mcYT+z(mcT)),"exchange certificate"); mcPairs++;
+          if(mcS!=mcT) { mcAssert(mcExchange!=0,"nonvacuous exchange omission"); mcControls++; }
+        }
+      }
+    }
+  }
+}
+print("RESULT cores=15 pairs="+string(mcPairs)+" controls="+string(mcControls)+" assertions="+string(mcChecks)+" failures="+string(mcFailures));
+if(mcFailures>0) { ERROR("missing-core checker failed"); }
+quit;
