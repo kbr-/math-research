@@ -1,0 +1,9 @@
+{
+  "source": "tools/singular_check.py",
+  "tests": "tools/tests/test_singular_check.py",
+  "native_suite": ["./compute.sh", "--threads", "14", "--timeout", "60", "python3", "tools/tests/run.py", "test_singular_check"],
+  "isolated_mutation_setup": "Copy the source to an owned scratch directory's src/singular_check.py and tests to tests/test_singular_check.py; use mutmut-config.toml as pyproject.toml. Use the repository compute.sh by its path from that directory; no symlinks or installations are needed.",
+  "generic_command": ["mutmut", "run", "--max-children", "4", "singular_check.*"],
+  "targeted": "Each launcher-target-NAME.diff changes only the copied source. Run the five native pytest methods in that isolated directory after a clean control; their complete named failure outputs are preserved. Restore the source between variants.",
+  "scope": "Complete CLI and API output, live diagnostics, asserted failure, completed token and flushed received lines; no mathematical proof or all-CAS completion inference."
+}

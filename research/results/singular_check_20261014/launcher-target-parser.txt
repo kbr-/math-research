@@ -1,0 +1,17 @@
+# command: env PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q tests/test_singular_check.py
+# run 8830f58569, session ac2-ips-permutation-contraction-20261014; full output
+....F                                                                 [100%]
+=================================== FAILURES ===================================
+____ SingularCheckTest.test_parser_errors_cannot_be_hidden_by_a_later_pass _____
+
+self = <test_singular_check.SingularCheckTest testMethod=test_parser_errors_cannot_be_hidden_by_a_later_pass>
+
+    def test_parser_errors_cannot_be_hidden_by_a_later_pass(self):
+        status, output = self.run_script('poly minor; print("PASS calculation");')
+>       self.assertEqual(status, 1)
+E       AssertionError: 0 != 1
+
+tests/test_singular_check.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_singular_check.py::SingularCheckTest::test_parser_errors_cannot_be_hidden_by_a_later_pass
+1 failed, 4 passed, 3 subtests passed in 0.07s

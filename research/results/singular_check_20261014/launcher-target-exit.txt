@@ -1,0 +1,17 @@
+# command: env PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q tests/test_singular_check.py
+# run cf929afca5, session ac2-ips-permutation-contraction-20261014; full output
+...F.                                                                 [100%]
+=================================== FAILURES ===================================
+____ SingularCheckTest.test_nonzero_exit_cannot_be_a_successful_completion _____
+
+self = <test_singular_check.SingularCheckTest testMethod=test_nonzero_exit_cannot_be_a_successful_completion>
+
+    def test_nonzero_exit_cannot_be_a_successful_completion(self):
+        self.assertTrue(tool.acceptable(0, False, b'PASS calculation'))
+>       self.assertFalse(tool.acceptable(7, False, b'PASS calculation'))
+E       AssertionError: True is not false
+
+tests/test_singular_check.py:50: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_singular_check.py::SingularCheckTest::test_nonzero_exit_cannot_be_a_successful_completion
+1 failed, 4 passed, 3 subtests passed in 0.06s

@@ -141,6 +141,12 @@ in another; wait on a job's own completion notice.
 ./compute.sh --threads 1 python3 parallel_calculation.py
 ```
 
+For Singular assertion scripts, use `./compute.sh python3 tools/singular_check.py SCRIPT`. The
+checked launcher forwards and flushes each received line unchanged and rejects parser diagnostics,
+FAILED lines, a nonzero exit status, or a missing final PASS token. The script checks its expected
+assertion count before printing PASS; a zero exit status or an earlier success line alone does not
+establish completion. It cannot preserve output the child has not emitted before an interruption.
+
 ## Libraries and virtual environments
 
 - **Install no libraries or dependencies without explicit user approval.**

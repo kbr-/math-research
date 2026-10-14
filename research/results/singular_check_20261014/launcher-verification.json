@@ -1,0 +1,31 @@
+{
+  "scope": "Singular assertion-script output validation; compute.sh continues to own resource controls",
+  "snapshot": "Initial verification before received-line flushing was added; the final flushing verification is preserved separately.",
+  "behavior": "Preserves stdout/stderr bytes on completed runs, rejects native diagnostic lines and FAILED lines even before a later PASS, requires a final PASS token and zero process status. The assertion script checks its own expected count; the launcher does not prove mathematical correctness or infer that count.",
+  "tests": "launcher-tests-final.txt: five native methods pass. Live fixtures exercise real Singular parser errors, a failed-check marker, missing/early/prefix completion, the direct API, default stdout, actual CLI and native invalid-option stderr. Nonzero-status acceptance is also checked directly in the pure result predicate.",
+  "targeted": {
+    "count": 5,
+    "killed": 5,
+    "unique_promises": {
+      "parser": "launcher-target-parser.txt: parser-error method fails",
+      "assertion": "launcher-target-assertion.txt: FAILED-marker method fails",
+      "completion": "launcher-target-completion.txt: completion method's three subcases fail",
+      "exit": "launcher-target-exit.txt: nonzero-status predicate method fails",
+      "output": "launcher-target-output.txt: complete-output method fails"
+    },
+    "control": "The isolated clean control passed all five methods before any mutation. Source variants and complete named-test failure reports are preserved; no import/setup failure is counted as a kill."
+  },
+  "generic": {
+    "generated": 62,
+    "killed": 54,
+    "survived": 8,
+    "uncovered_or_timeouts": 0,
+    "first_run": "launcher-generic.txt: 51 killed, 11 survived; every surviving diff was read and preserved in launcher-survivor-diffs.txt",
+    "gap_closure": "Three behavioral survivors dropped merged stderr or selected None instead of default stdout: run_script7, run_script10, main19. Existing live tests were strengthened. The first recheck still survived because shell-generated output did not distinguish Singular's native stderr, and child CLI mutation context did not exercise the imported default-output branch. Native invalid-option stderr and the imported real default-output path distinguish both. launcher-generic-final.txt kills all three.",
+    "equivalent": "run_script1 changes initial False to None, both false and replaced by a Boolean when a line is classified. run_script4 changes initial empty bytes to XXXX; it still rejects absent/blank-only completion, and nonempty lines replace it.",
+    "cosmetic": "main2,main4,main6,main9,main10,main11 alter only argparse description/help wording, padding or case. No exact-help tests were added solely to kill those.",
+    "cache_scope": "Earlier kills are reused with the unchanged source. Explicit final recheck covers the three strengthened cases; launcher-all-mutations.txt preserves all final statuses. Generation measured 164 ms for one file, recheck 32 ms for the unchanged file; four test workers were used."
+  },
+  "real_use": "The five-method suite exercises real Singular scripts through the direct API, default output and actual CLI, including real parser diagnostics and native stderr. No mocked CAS responses are used; arbitrary mathematical scripts still need their own independent checks.",
+  "limits": "The protocol is for assertion scripts. Other CAS programs and ordinary Singular data scripts are outside this completion-token interface; no automatic validation of every historical run is claimed."
+}
