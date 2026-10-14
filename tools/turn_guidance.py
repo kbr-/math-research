@@ -237,7 +237,8 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
         return []
     record = body.find('<section id="research-record">')
     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
-    notes = ['Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
+    notes = [f'Notebook input: {len(articles)} record article tags; {len(body.encode("utf-8"))} bytes.',
+             'Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
              'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
              'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
@@ -272,6 +273,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
                      'task may defer this test but does not clear it.')
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
+    streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
                 and ft.entry_tags(body, a)['kind'] != 'formalization']
@@ -289,16 +291,11 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
                          'Another finite-check-only research entry on this route will be rejected; this '
                          'cycle must attempt a proof or refutation of the General statement.')
-        streak = 0
-        for a in reversed(mine):
-            kind = ft.entry_tags(body, a)['kind']
-            if kind == 'review':
-                break
-            if kind == 'research':      # audits and other entries neither count nor end the scan, as in the finisher
-                streak += 1
+        if item != active:
+            continue
         if streak >= ft.REVIEW_PERIOD:
-            notes.append(f'Route {item}: {streak} research entries since the last route review; the next '
-                         'entry on this route must be a route review.')
+            notes.append(f'Notebook: {streak} research entries since the last route review; the next '
+                         'entry must be a route review.')
             reference = ft.convergence_reference(body, len(body), item)
             if reference is None:
                 notes.append(f'Route {item}: no review is {ft.CONVERGENCE_SPAN} or more research entries back, '
@@ -311,10 +308,10 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
                              'review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of '
                              '8 MB) and cite under Across the goal the gaps it lists that no later entry took up.')
         elif streak == ft.REVIEW_PERIOD - 1:
-            notes.append(f'Route {item}: {streak} research entries since the last route review; one more '
+            notes.append(f'Notebook: {streak} research entries since the last route review; one more '
                          'research entry is allowed, then a route review is required.')
         elif item == active:   # dormant routes stay quiet
-            notes.append(f'Route {item}: {streak} research entries since the last route review; the next review '
+            notes.append(f'Notebook: {streak} research entries since the last route review; the next review '
                          f'comes after {ft.REVIEW_PERIOD} (one entry in {ft.REVIEW_PERIOD + 1}). Until then every '
                          'entry is research: carry concerns about the line to that review.')
     return notes

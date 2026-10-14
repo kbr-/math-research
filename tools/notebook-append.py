@@ -202,22 +202,12 @@ def require_quoted_items(source, next_html):
                              f'(tools/lead_queue.py history NOTEBOOK {ident.label} --status)')
 
 
-REVIEW_AFTER = 6    # research entries on a route, then its review (AGENTS.md)
-
-
 def review_due(articles):
-    """Whether the last entry's route has had its six research entries since its last review."""
-    route = re.search(r'\bdata-route="([^"]+)"', articles[-1][0]) if articles else None
-    if not route:
-        return False
-    run = 0
-    for tag, _ in reversed(articles):
-        if f'data-route="{route.group(1)}"' not in tag:
-            continue
-        if 'data-kind="research"' not in tag:
-            break
-        run += 1
-    return run >= REVIEW_AFTER
+    """Whether the notebook's next entry must be the scheduled review."""
+    checks = reporting_checks()
+    kinds = (re.search(r'\bdata-kind="([^"]*)"', tag) for tag, _ in articles)
+    run, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
+    return run >= checks.REVIEW_PERIOD
 
 
 def plain(fragment):
@@ -467,9 +457,6 @@ def result_files_line(body, ident):
     return f'  Result files its entries link ({len(files)}): ' + ', '.join(files) if files else ''
 
 
-REVIEW_PERIOD = 6      # the finisher's; a test holds the two equal
-
-
 def cadence_line(text):
     """One line on the review cadence after the last entry of the record, for a next step to be written against.
 
@@ -478,13 +465,10 @@ def cadence_line(text):
     tags = re.findall(r'<article\b[^>]*>', text[text.find('<section id="research-record"'):])
     if not tags:
         return None
-    streak = 0
-    for tag in reversed(tags):      # as the finisher counts: every research entry back to the last review
-        kind = re.search(r'data-kind="([^"]*)"', tag)
-        if kind and kind.group(1) == 'review':
-            break
-        streak += bool(kind and kind.group(1) == 'research')
-    left = REVIEW_PERIOD - streak
+    checks = reporting_checks()
+    kinds = (re.search(r'data-kind="([^"]*)"', tag) for tag in tags)
+    streak, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
+    left = checks.REVIEW_PERIOD - streak
     return (f'Review cadence: {streak} research entries since the last route review, this one included; '
             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
 

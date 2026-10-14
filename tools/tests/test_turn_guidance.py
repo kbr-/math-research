@@ -32,11 +32,27 @@ class TurnGuidanceTest(unittest.TestCase):
 
     def test_warns_after_finite_check(self):
         self.assertIn('will be rejected', self.notes([('research', 'ex:a', 'Finite check.')]))
+        self.assertIn('will be rejected', self.notes([('research', 'ex:a', 'Finite check.'),
+                                                      ('formalization', 'none', 'Formalization.')]))
 
     def test_no_warning_after_proof_or_review(self):
         self.assertNotIn('will be rejected', self.notes([('research', 'lem:a', 'Working proof.')]))
         self.assertNotIn('will be rejected', self.notes([('research', 'ex:a', 'Finite check.'),
                                                           ('review', 'none', 'Route review.')]))
+        self.assertNotIn('Notebook: ', self.notes([]))
+
+    def test_case_quota_uses_the_route_window_and_keeps_dormant_warnings(self):
+        finite = ('research', 'ex:a', 'Finite check.')
+        proof = ('research', 'lem:a', 'Working proof.')
+        self.assertIn('3 of the last 4 research entries', self.notes([finite] * 3 + [proof]))
+        self.assertNotIn('this cycle may not register', self.notes([finite] * 3 + [proof] * 2))
+        body = self.body([finite] * 3 + [proof]).replace(
+            '</section><section id="research-record">',
+            '<li data-route-item="other">y</li></section><section id="research-record">')
+        body = body[:-len('</section>')] + ('<article data-kind="research" data-route="other" '
+                                            'data-claims="lem:a"></article></section>')
+        self.assertIn('Route step: 3 of the last 4 research entries',
+                      ' '.join(self.guide.guidance(body, self.ft)))
 
     def test_proof_only_guidance_does_not_read_registry(self):
         self.notes([('research', 'lem:a', 'Working proof.')] * 4)
@@ -63,6 +79,43 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn('one more research entry is allowed', self.notes(five))
         six = five + [('research', 'lem:b', 'Working proof.')]
         self.assertIn('must be a route review', self.notes(six))
+
+    def test_review_period_counts_mixed_routes_and_ignores_administration(self):
+        routes = ('<article data-kind="research" data-route="step">outside the record</article>'
+                  '<section id="remaining-route"><li data-route-item="unused">u</li>'
+                  '<li data-route-item="step">x</li>'
+                  '<li data-route-item="other">y</li></section><section id="research-record">')
+        review = '<article data-kind="review" data-route="step"></article>'
+        research = lambda route: (f'<article data-kind="research" data-route="{route}" '
+                                  'data-claims="lem:a"><p class="entry-meta">Working proof.</p></article>')
+        body = routes + '<p>α</p>' + review + research('step') * 4
+        body += '<article data-kind="audit" data-route="other"></article>'
+        body += '<article data-kind="formalization" data-route="other"></article>'
+        body += research('other')
+        five = ' '.join(self.guide.guidance(body, self.ft))
+        self.assertIn(f'Notebook input: 8 record article tags; {len(body.encode("utf-8"))} bytes.', five)
+        self.assertNotIn(f'; {len(body)} bytes.', five)
+        self.assertIn('Notebook: 5 research entries', five)
+        self.assertEqual(five.count('one more research entry is allowed'), 1)
+        ignored = body + '<article data-kind="formalization" data-route="unused"></article>'
+        self.assertIn('Notebook: 5 research entries', ' '.join(self.guide.guidance(ignored, self.ft)))
+        bootstrap = routes + research('step') + review
+        self.ft.validate_route(bootstrap, bootstrap.rindex('<article'))
+        early_review = body + review
+        with self.assertRaisesRegex(ValueError, 'Only 5 research entries'):
+            self.ft.validate_route(early_review, early_review.rindex('<article'))
+        six = ' '.join(self.guide.guidance(body + research('other'), self.ft))
+        self.assertIn('Notebook: 6 research entries', six)
+        self.assertEqual(six.count('must be a route review'), 1)
+        allowed_review = body + research('other') + review
+        self.ft.validate_route(allowed_review, allowed_review.rindex('<article'))
+        seventh = body + research('other') + research('step')
+        with self.assertRaisesRegex(ValueError, 'last 6 research entries'):
+            self.ft.validate_route(seventh, seventh.rindex('<article'))
+        reset = ' '.join(self.guide.guidance(body + research('other') + review, self.ft))
+        self.assertIn('Notebook: 0 research entries', reset)
+        self.assertIn('comes after 6 (one entry in 7)', reset)
+        self.assertNotIn('must be a route review', reset)
 
     def test_goal_level_and_cadence_notes(self):
         research = ('research', 'lem:a', 'Working proof.')
@@ -129,6 +182,9 @@ class TurnGuidanceTest(unittest.TestCase):
 
     def test_computation_and_generalization_notes(self):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
+        self.assertIn('<p><strong>General statement.</strong>', notes)
+        self.assertIn('(conj:, lem:, thm:, prop: or cor:)', notes)
+        self.assertIn('data-goal-progress="advanced|unchanged"', notes)
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
         self.assertIn(self.guide.CASES_PLEA, notes)

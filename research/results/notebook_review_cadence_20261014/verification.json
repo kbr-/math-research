@@ -1,0 +1,35 @@
+{
+  "scope": "Notebook-wide review cadence shared by enforcement, guidance, next-step validation and append summaries",
+  "policy": "The existing six-research-entry period and first-review bootstrap behavior are unchanged",
+  "suite": "suite-final.txt",
+  "native_target_control": "target-control.txt",
+  "targeted_mutants": [
+    {"change": "Filter guidance to the active route", "output": "target-route-guidance.txt", "caught_by": "test_review_period_counts_mixed_routes_and_ignores_administration"},
+    {"change": "Filter next-step review detection to the final route", "output": "target-route-next-step.txt", "caught_by": "test_a_review_due_next_needs_no_item"},
+    {"change": "Hardcode the next-step period instead of reading the finisher", "output": "target-period-next-step.txt", "caught_by": "test_the_period_is_the_finisher_s"},
+    {"change": "Hardcode the printed summary period", "output": "target-period-summary.txt", "caught_by": "test_the_period_is_the_finisher_s"},
+    {"change": "Count text characters as bytes", "output": "target-text-bytes.txt", "caught_by": "test_review_period_counts_mixed_routes_and_ignores_administration"}
+  ],
+  "generic": {
+    "counts": "mutation-stats-selected.json",
+    "native_counts": "mutation-stats-native.json",
+    "scope": "review_cadence, review_due, cadence_line, guidance; generated mutants outside these functions were not selected",
+    "initial_diffs_read": "survivor-diffs-first.txt",
+    "rechecked_diffs": "survivor-diffs-rechecked.txt",
+    "final_additional_kills": ["generic-period-text.txt", "generic-schema-text.txt"],
+    "gaps_closed": "Bootstrap review state, untagged legacy entries, record boundary, dormant and empty routes, trailing formalization, finite-check window boundaries, default one-in-seven message and exact metadata examples",
+    "equivalent_survivors": [
+      {"id": "notebook_append.x_cadence_line__mutmut_9", "reason": "find and rfind coincide for the notebook format's single exact Research-record marker"},
+      {"id": "turn_guidance.x_guidance__mutmut_13", "reason": "Same single-marker format equivalence"},
+      {"id": "turn_guidance.x_guidance__mutmut_23", "reason": "An article tag cannot start at the same character as the section tag marking the record"},
+      {"id": "turn_guidance.x_guidance__mutmut_220", "reason": "The route-article reader slices body[:article]; both len(body) and None include the whole body"}
+    ],
+    "other_survivors": "Cosmetic capitalization, punctuation, wrapping and help-note ordering; every surviving diff was read",
+    "import_adapter": "Import-only aliases in an isolated project give the two hyphenated production files importable mutmut module names. The committed test methods exercise the copied production predicates; native controls and the full suite separately exercise their real loaders.",
+    "cache_notice": "The changed main notebook is not input to these fixture-based mutation tests; the retained cached results remain applicable"
+  },
+  "real_input": "real-notebook.txt",
+  "performance": "One protected run on the full selected repository notebook; source-size diagnostic and the controller's elapsed interval are retained. No speedup claim.",
+  "worker_admission": "worker-overlap-fixture.json; queued guard remains unimplemented",
+  "administrative_checkpoint": "No mathematical research entry or review period is consumed by this framework commit"
+}

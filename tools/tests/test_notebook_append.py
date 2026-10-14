@@ -219,6 +219,20 @@ class NextStepItemTests(unittest.TestCase):
         self.assertTrue(tool.review_due(research + [('<article id="o" data-kind="research" data-route="y">', '')]
                                         + [research[0]]))
         self.assertFalse(tool.review_due([]))
+        mixed = research[:4] + [('<article data-kind="audit" data-route="x">', ''),
+                                 ('<article id="legacy" data-route="x">', ''),
+                                 ('<article data-kind="formalization" data-route="y">', '')]
+        mixed += [('<article id="other%d" data-kind="research" data-route="y">' % n, '')
+                  for n in range(2)]
+        self.assertTrue(tool.review_due(mixed))
+        source = queued(2, draining=True).replace(
+            '<article id="a1">one</article>\n<article id="a2">two</article>',
+            ''.join(tag + '</article>' for tag, _ in mixed))
+        tool.require_named_item(source, '<p>The scheduled route review comes next.</p>')
+        with self.assertRaisesRegex(ValueError, 'names none'):
+            tool.require_named_item(source.replace('<article id="other1" data-kind="research" '
+                                                   'data-route="y"></article>', ''), '<p>Other work.</p>')
+        self.assertFalse(tool.review_due(mixed + [('<article data-kind="review" data-route="x">', '')]))
 
 
 class NotebookAppendTests(unittest.TestCase):
@@ -575,7 +589,8 @@ class CadenceLineTest(unittest.TestCase):
     def test_the_line_counts_research_entries_since_the_last_review_as_the_finisher_does(self):
         # Every route counts and an audit does not, as in the finisher's own scan.
         line = tool.cadence_line(self.record('research:r', 'review:r', 'research:r', 'research:other', 'audit:r',
-                                             'research:r'))
+                                             'research:r').replace('<section id="research-record">',
+                                                                  '<section id="research-record"><article>legacy</article>'))
         self.assertEqual(line, 'Review cadence: 3 research entries since the last route review, this one included; '
                                '3 more, then the review.')
         self.assertIn('the next entry is the review', tool.cadence_line(self.record(*['research:r'] * 6)))
@@ -586,7 +601,11 @@ class CadenceLineTest(unittest.TestCase):
         finisher = importlib.util.spec_from_file_location('finisher_for_cadence', TOOLS / 'finish-turn.py')
         module = importlib.util.module_from_spec(finisher)
         finisher.loader.exec_module(module)
-        self.assertEqual(tool.REVIEW_PERIOD, module.REVIEW_PERIOD)
+        self.assertEqual(tool.reporting_checks().REVIEW_PERIOD, module.REVIEW_PERIOD)
+        six = [('<article data-kind="research" data-route="r">', '')] * 6
+        with mock.patch.object(tool.reporting_checks(), 'REVIEW_PERIOD', 7):
+            self.assertFalse(tool.review_due(six))
+            self.assertIn('1 more, then the review', tool.cadence_line(self.record(*['research:r'] * 6)))
 
 
 if __name__ == '__main__':

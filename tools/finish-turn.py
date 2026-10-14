@@ -57,6 +57,17 @@ def entry_tags(body, article):
     return {key: match.group(1) if match else None for key, match in found.items()}
 
 
+def review_cadence(kinds):
+    """Notebook-wide research count since the latest review; other entry kinds do not count."""
+    streak = 0
+    for kind in reversed(list(kinds)):
+        if kind == 'review':
+            return streak, True
+        if kind == 'research':
+            streak += 1
+    return streak, False
+
+
 def validate_route(body, article):
     """Enforce AGENTS.md's periodic route review; active once the notebook declares route items."""
     items = set(re.findall(r'data-route-item="([^"]+)"', body))
@@ -73,15 +84,7 @@ def validate_route(body, article):
                          'name the top-level route item, not a sub-gap of the current line')
     record = body.find('<section id="research-record">')
     earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
-    streak, after_review = 0, False
-    for position in reversed(earlier):
-        kind = entry_tags(body, position)['kind']
-        if kind == 'review':
-            after_review = True
-            break
-        if kind != 'research':   # formalization, task or untagged entries neither count nor end the scan
-            continue
-        streak += 1
+    streak, after_review = review_cadence(entry_tags(body, position)['kind'] for position in earlier)
     if tags['kind'] == 'review':
         # One route review in seven entries (user, 3 October 2026: "That's too frequent. Drop to one in
         # seven"): a review needs REVIEW_PERIOD research entries since the previous one.
