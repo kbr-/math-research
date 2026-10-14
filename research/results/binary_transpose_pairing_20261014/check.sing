@@ -1,0 +1,88 @@
+// Original binary rank system m=2,n=1, full four input/four Boolean placeholders.
+// Expected: transpose trace cancels its target; orbit product is invariant and evaluates to one.
+// Refuted by: A nonzero invariant or certificate identity difference, or vanishing Gram control.
+// Possible because: Incorrect placeholder permutations or deletion of the orbit product change these identities.
+// Exact formal controls of the symbolic argument, not a hardness experiment or size series.
+ring rankRing=2,(a1,a2,b1,b2,za1,za2,zb1,zb2,y11,y12,y21,y22),dp;
+int checkedCount=0;
+int expectedCount=18;
+proc mustZero(poly value,string label)
+{
+  if(value!=0){print("FAILED "+label);quit;}
+  checkedCount++;
+}
+proc mustNonzero(poly value,string label)
+{
+  if(value==0){print("FAILED nonzero "+label);quit;}
+  checkedCount++;
+}
+poly e11=a1*b1;
+poly e12=a1*b2;
+poly e21=a2*b1;
+poly e22=a2*b2;
+poly residual=e11*e22*(1+e12)*(1+e21);
+poly correction=e21*(1+e21)*(b2*za1+a1^2*zb2);
+ideal oldVars=a1,a2,b1,b2;
+ideal booleanVars=za1,za2,zb1,zb2;
+ideal inputVars=y11,y12,y21,y22;
+ideal inputValues=1+e11,e12,e21,1+e22;
+proc fillFields(poly value)
+{
+  int ff;
+  for(ff=1;ff<=size(booleanVars);ff++)
+  {value=subst(value,booleanVars[ff],oldVars[ff]^2+oldVars[ff]);}
+  return(value);
+}
+proc fillAll(poly value)
+{
+  int ff;
+  value=fillFields(value);
+  for(ff=1;ff<=size(inputVars);ff++)
+  {value=subst(value,inputVars[ff],inputValues[ff]);}
+  return(value);
+}
+map flip=rankRing,b1,b2,a1,a2,zb1,zb2,za1,za2,y11,y21,y12,y22;
+map gram=rankRing,a1,a2,a1,a2,za1,za2,za1,za2,0,0,0,0;
+poly transposed=flip(correction);
+poly traced=correction+transposed;
+mustZero(fillFields(correction)+residual,"full original correction");
+mustZero(fillFields(traced),"linear trace has target zero");
+mustNonzero(traced,"linear trace is not the zero formal polynomial");
+mustZero(gram(traced),"linear trace cancels on paired fixed locus");
+poly gramRoot=a1*a2*(1+a1*a2);
+mustZero(gram(residual)+gramRoot^2,"independent Gram residual square");
+mustNonzero(gram(residual),"Gram residual stays nonzero formally");
+poly certificate=y11+e11*y12+e11*(1+e12)*y21+e11*(1+e12)*(1+e21)*y22+correction;
+poly flippedCertificate=flip(certificate);
+poly repaired=certificate+flippedCertificate+certificate*flippedCertificate;
+mustZero(fillAll(certificate)+1,"original full Hilbert certificate");
+mustZero(fillAll(flippedCertificate)+1,"transposed full Hilbert certificate");
+mustZero(fillAll(repaired)+1,"nonlinear full orbit product certificate");
+mustZero(flip(repaired)+repaired,"orbit product invariance");
+poly atZero=repaired;
+int zz;
+for(zz=1;zz<=size(booleanVars);zz++){atZero=subst(atZero,booleanVars[zz],0);}
+for(zz=1;zz<=size(inputVars);zz++){atZero=subst(atZero,inputVars[zz],0);}
+mustZero(atZero,"orbit product vanishes at zero placeholders");
+mustNonzero(fillAll(certificate+flippedCertificate)+1,"omitted nonlinear product breaks refutation");
+poly squaredCorrection=correction*transposed;
+mustZero(fillFields(squaredCorrection)+residual^2,"invariant correction product changes target to square");
+mustZero(flip(squaredCorrection)+squaredCorrection,"squared residual correction invariance");
+poly fixedC=fillAll(certificate);
+poly fixedFlip=fillAll(flippedCertificate);
+poly fixedD=fillAll(repaired);
+for(zz=1;zz<=size(oldVars);zz++)
+{
+  fixedC=subst(fixedC,oldVars[zz],1);
+  fixedFlip=subst(fixedFlip,oldVars[zz],1);
+  fixedD=subst(fixedD,oldVars[zz],1);
+}
+mustZero(fixedC+1,"original certificate at fixed Boolean old point");
+mustZero(fixedFlip+1,"flipped certificate at fixed Boolean old point");
+mustZero(fixedC+fixedFlip,"trace at fixed Boolean old point");
+mustZero(fixedD+1,"nonlinear repair at fixed Boolean old point");
+if(size(oldVars)!=4 || size(booleanVars)!=4 || size(inputVars)!=4 || checkedCount!=expectedCount)
+{print("FAILED fixture or completion count");quit;}
+print("Original rank fixture: m=2,n=1; old variables "+string(size(oldVars))+"; input placeholders "+string(size(inputVars))+"; Boolean placeholders "+string(size(booleanVars)));
+print("PASS formal transpose, fixed-locus, complete orbit-product and omitted-product controls; assertions "+string(checkedCount)+"; expected "+string(expectedCount));
+quit;
