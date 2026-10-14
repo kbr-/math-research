@@ -1,0 +1,37 @@
+{
+  "source": {
+    "record": "[Collision rectangles](https://kbr.is-a.dev/math-research/#entry-2026-10-14-collision-rectangles)",
+    "label": "Collision rectangles",
+    "targets": ["../notebook.html#entry-2026-10-14-collision-rectangles"]
+  },
+  "date": "2026-10-14",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["nullstellensatz", "method-obstructions", "degree-accounting"],
+  "claims": [
+    {
+      "id": "lem:collision-rectangle-decomposition",
+      "summary": "Over F2 with independent A:m by n,B:n by m,m>n>=1 and all original Boolean placeholders, put Eij=sum_a Aia Baj,P=prod_i Eii prod_i!=j(1+Eij). Group diagonal colour assignments by first repeat p<q<=n+1,ell. Let u=Apell,v=Aqell,s=Bellp,t=Bellq,D=uvst,R=sum_a!=ell Apa Baq,S=sum_a!=ell Aqa Bap; Lpq omits the two cross factors; Jpqell sums products A_i,alpha(i) B_alpha(i),i over injective alpha:[q-1]->[n] with alpha(p)=ell, omitting i=p; T=J prod_i>q Eii. U=vs(tZu+u²Zt),V=ut(sZv+v²Zs),K=(1+vs+S)U+RV give formal P=Q(X,b)+residual, Q=sum LTK, residual=sum LTDRS. Q is linear in the full placeholder tuple. There are n*binomial(n+1,2) groups. Given J circuits of total size H and depth e, Q and residual have polynomial size in H+m+n and depth<=e+10. No cost bound for J or residual correction is supplied. At n1 the residual vanishes and the construction is a cheap full correction. At n>=2 DRS is locally nonzero; this does not say its complete coupled sum is nonzero on Boolean points.",
+      "assessment": "Working all-parameter first-collision identity and explicit local Frobenius patch passed by the sole fresh-context medium reviewer. Global fixed-depth assembly and retained residual removal remain open; the later determinant seed supplies only a factorial direct alternative.",
+      "status": "working_proof",
+      "rationale": "Makes one concrete proposed full-correction aggregation explicit, preserving the global residual and original placeholders instead of assuming local cancellation settles the complete sum.",
+      "next_action": "Try a whole-sum identity bypassing separately computed injective prefixes and retaining the cross-colour residual.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:collision-prefix-depth-gap",
+      "summary": "For the actual m=2n rank candidate, the first-collision prefix J_(1,n+1,1) sums bijections from rows2..n to colours2..n of products A_i,pi(i) B_pi(i),i. Restricting all B_ai=1 for a,i2..n gives the formal generic determinant of order n-1 in characteristic2. Thus these individual prefix polynomials have no polynomial-size uniformly fixed-depth unbounded-fanin arithmetic circuits over F2 with binary constants, by the existing binary determinant-family depth gap. This excludes that prefix-register implementation only. No constant restriction extracting the prefix from a complete correction, hard all-certificate invariant, or Frege lower bound is asserted.",
+      "assessment": "Working explicit source-prefix restriction consequence of the registered determinant lower bound passed by the sole fresh-context medium reviewer; no new lower-bound technique and no whole-output hardness.",
+      "status": "working_proof",
+      "rationale": "Tests the chosen aggregation at the goal's growing parameters by an actual circuit restriction, rather than an explicit-state dimension or selected-coefficient hardness claim for all representatives.",
+      "next_action": "Bypass individual prefix registers when attempting complete correction assembly; preserve the distinction from extracting a hard invariant from every certificate.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["lem:collision-rectangle-decomposition", "applies", "lem:prime-field-residual-normalization", "Uses the recorded binary product Frobenius witness for two anchored cross products; no new general defect theorem."],
+    ["lem:collision-rectangle-decomposition", "applies", "lem:rank-moment-expansion", "Expands only diagonal colours and partitions assignments by the first collision; replaces the fully marked colouring sum by a patch plus a retained residual."],
+    ["lem:collision-rectangle-decomposition", "cites", "prop:rank-support-tail", "Its rank-one correction and mixed-inner-index warning already show why separately easy inner columns do not settle the full growing-rank candidate."],
+    ["cor:collision-prefix-depth-gap", "depends_on", "lem:collision-rectangle-decomposition", "Uses its exact first-collision prefix with q=n+1,p=ell=1."],
+    ["cor:collision-prefix-depth-gap", "applies", "cor:binary-determinant-depth-gap", "Binary constant restriction gives the generic determinant of order n-1; the individual-register family inherits the known fixed-depth obstruction."]
+  ]
+}

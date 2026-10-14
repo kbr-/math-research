@@ -1,0 +1,127 @@
+// Exact polynomial controls for the first-collision rectangle decomposition.
+// Expected: all identities zero; omitted RV term nonzero before specialization.
+// Refuted by: A nonzero difference in either independent formal identity.
+// Possible because: Wrong cross terms or first-repeat indices change formal polynomials.
+// No larger series is needed; the all-parameter argument is in the full entry.
+ring localRing=2,(u,v,s,t,r,k,w,zu,zv,zs,zt),dp;
+int checkedCount=0;
+proc mustZero(poly value,string label)
+{
+  if(value!=0){print("FAILED "+label);quit;}
+  checkedCount++;
+}
+proc mustNonzero(poly value,string label)
+{
+  if(value==0){print("FAILED nonzero control "+label);quit;}
+  checkedCount++;
+}
+poly anchor=u*v*s*t;
+poly patchU=v*s*(t*zu+u^2*zt);
+poly patchV=u*t*(s*zv+v^2*zs);
+poly patch=(1+v*s+k)*patchU+r*patchV;
+poly direct=anchor*(1+u*t+r)*(1+v*s+k);
+poly patchValue=subst(subst(subst(subst(patch,zu,u^2+u),zv,v^2+v),zs,s^2+s),zt,t^2+t);
+mustZero(w*(direct+patchValue+anchor*r*k),"arbitrary multiplier identity");
+poly missing=(1+v*s+k)*patchU;
+poly missingValue=subst(subst(subst(subst(missing,zu,u^2+u),zv,v^2+v),zs,s^2+s),zt,t^2+t);
+mustNonzero(direct+missingValue+anchor*r*k,"omitted RV term");
+mustZero(direct+missingValue+anchor*r*k+r*anchor*(1+v*s),"independent omitted-term difference");
+mustNonzero(anchor*r*k,"retained local residual");
+print("Local assertions: "+string(checkedCount));
+ring matrixRing=2,(a11,a12,a21,a22,a31,a32,b11,b12,b13,b21,b22,b23),dp;
+matrix aa[3][2]=a11,a12,a21,a22,a31,a32;
+matrix bb[2][3]=b11,b12,b13,b21,b22,b23;
+matrix ee=aa*bb;
+poly original=1;
+int rowIndex,colIndex,maskIndex,repeatIndex,earlierIndex,colourIndex,scanIndex;
+for(rowIndex=1;rowIndex<=3;rowIndex++)
+{
+  for(colIndex=1;colIndex<=3;colIndex++)
+  {
+    if(rowIndex==colIndex){original=original*ee[rowIndex,colIndex];}
+    else{original=original*(1+ee[rowIndex,colIndex]);}
+  }
+}
+poly branchSum=0;
+poly patchSum=0;
+poly residualSum=0;
+poly branchOuter,localU,localV,localR,localS,localD,localK;
+intvec diagonalColours;
+for(maskIndex=0;maskIndex<8;maskIndex++)
+{
+  diagonalColours=1+(maskIndex%2),1+((maskIndex div 2)%2),1+((maskIndex div 4)%2);
+  if(diagonalColours[1]==diagonalColours[2]){repeatIndex=2;earlierIndex=1;}
+  else
+  {
+    repeatIndex=3;
+    if(diagonalColours[1]==diagonalColours[3]){earlierIndex=1;}
+    else{earlierIndex=2;}
+  }
+  colourIndex=diagonalColours[repeatIndex];
+  branchOuter=1;
+  for(scanIndex=1;scanIndex<=3;scanIndex++)
+  {
+    if(scanIndex!=earlierIndex && scanIndex!=repeatIndex)
+    {branchOuter=branchOuter*aa[scanIndex,diagonalColours[scanIndex]]*bb[diagonalColours[scanIndex],scanIndex];}
+  }
+  for(rowIndex=1;rowIndex<=3;rowIndex++)
+  {
+    for(colIndex=1;colIndex<=3;colIndex++)
+    {
+      if(rowIndex!=colIndex && !(rowIndex==earlierIndex && colIndex==repeatIndex) && !(rowIndex==repeatIndex && colIndex==earlierIndex))
+      {branchOuter=branchOuter*(1+ee[rowIndex,colIndex]);}
+    }
+  }
+  localD=aa[earlierIndex,colourIndex]*aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]*bb[colourIndex,repeatIndex];
+  localR=ee[earlierIndex,repeatIndex]+aa[earlierIndex,colourIndex]*bb[colourIndex,repeatIndex];
+  localS=ee[repeatIndex,earlierIndex]+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex];
+  localU=localD*(1+aa[earlierIndex,colourIndex]*bb[colourIndex,repeatIndex]);
+  localV=localD*(1+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]);
+  localK=(1+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]+localS)*localU+localR*localV;
+  branchSum=branchSum+branchOuter*localD*(1+ee[earlierIndex,repeatIndex])*(1+ee[repeatIndex,earlierIndex]);
+  patchSum=patchSum+branchOuter*localK;
+  residualSum=residualSum+branchOuter*localD*localR*localS;
+}
+if(original+branchSum!=0){print("FAILED first-repeat partition");quit;}
+if(original+patchSum+residualSum!=0){print("FAILED complete original-product identity");quit;}
+poly aggregatePatch=0;
+poly aggregateResidual=0;
+int otherRow,otherColour;
+for(repeatIndex=2;repeatIndex<=3;repeatIndex++)
+{
+  for(earlierIndex=1;earlierIndex<repeatIndex;earlierIndex++)
+  {
+    for(colourIndex=1;colourIndex<=2;colourIndex++)
+    {
+      branchOuter=1;
+      if(repeatIndex==2){branchOuter=ee[3,3];}
+      else
+      {
+        otherRow=3-earlierIndex;
+        otherColour=3-colourIndex;
+        branchOuter=aa[otherRow,otherColour]*bb[otherColour,otherRow];
+      }
+      for(rowIndex=1;rowIndex<=3;rowIndex++)
+      {
+        for(colIndex=1;colIndex<=3;colIndex++)
+        {
+          if(rowIndex!=colIndex && !(rowIndex==earlierIndex && colIndex==repeatIndex) && !(rowIndex==repeatIndex && colIndex==earlierIndex))
+          {branchOuter=branchOuter*(1+ee[rowIndex,colIndex]);}
+        }
+      }
+      localD=aa[earlierIndex,colourIndex]*aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]*bb[colourIndex,repeatIndex];
+      localR=ee[earlierIndex,repeatIndex]+aa[earlierIndex,colourIndex]*bb[colourIndex,repeatIndex];
+      localS=ee[repeatIndex,earlierIndex]+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex];
+      localU=localD*(1+aa[earlierIndex,colourIndex]*bb[colourIndex,repeatIndex]);
+      localV=localD*(1+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]);
+      localK=(1+aa[repeatIndex,colourIndex]*bb[colourIndex,earlierIndex]+localS)*localU+localR*localV;
+      aggregatePatch=aggregatePatch+branchOuter*localK;
+      aggregateResidual=aggregateResidual+branchOuter*localD*localR*localS;
+    }
+  }
+}
+if(aggregatePatch+patchSum!=0){print("FAILED aggregate prefix patch");quit;}
+if(aggregateResidual+residualSum!=0){print("FAILED aggregate prefix residual");quit;}
+print("Matrix assertions: 4; diagonal assignments: "+string(maskIndex)+"; m=3,n=2");
+print("PASS all exact identities and nonzero controls");
+quit;
