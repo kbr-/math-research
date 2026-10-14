@@ -1,0 +1,12 @@
+# finish_turn.x_pending_architecture_test__mutmut_19: survived
+--- src/finish_turn.py
++++ src/finish_turn.py
+@@ -5,7 +5,7 @@
+         route = entry['route']
+         text = body[entry['position']:entry['close']]
+         if entry['kind'] == 'review':
+-            if ARCHITECTURE_HEADING in text and entry['ident']:
++            if ARCHITECTURE_HEADING in text or entry['ident']:
+                 pending[route] = entry['ident']
+             else:  # historical reviews have no new-format test to enforce
+                 pending.pop(route, None)

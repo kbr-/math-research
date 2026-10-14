@@ -1,0 +1,12 @@
+# finish_turn.x_pending_architecture_test__mutmut_49: survived
+--- src/finish_turn.py
++++ src/finish_turn.py
+@@ -12,7 +12,7 @@
+         else:
+             evidence = report_paragraph(text, 'Architecture test')
+             plain = html.unescape(re.sub(r'<[^>]*>', ' ', evidence)).strip()
+-            if len(plain) >= 40 and re.search(r'<strong>(?:Not decided|Decided)\.</strong>', evidence):
++            if len(plain) >= 41 and re.search(r'<strong>(?:Not decided|Decided)\.</strong>', evidence):
+                 for reviewed_route, target in tuple(pending.items()):
+                     if re.search(r'href=["\']#' + re.escape(target) + r'["\']', evidence):
+                         pending.pop(reviewed_route)
