@@ -1,0 +1,47 @@
+{
+  "source": {
+    "record": "[Rank moment queries](https://kbr.is-a.dev/math-research/#entry-2026-10-14-rank-moment-queries)",
+    "label": "Rank moment queries",
+    "targets": ["../notebook.html#entry-2026-10-14-rank-moment-queries"]
+  },
+  "date": "2026-10-14",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["nullstellensatz", "method-obstructions", "degree-accounting"],
+  "claims": [
+    {
+      "id": "lem:rank-moment-expansion",
+      "summary": "Over F2, m>n>=1, independent A:m by n,B:n by m, rank residual P=product_ij(1+deltaij+(AB)ij), and all v=2mn Boolean generators bj=Xj^2+Xj. With independent formal s, Gamma_s=product_j(I+sDj) for coordinate interpolation defects. Legal cell colours 0..n exclude zero on diagonal and select each original bilinear or off-diagonal constant. If kj is the incident multiplicity, V0=1 and Vk=(1+s)X^k+sX for k>=1. Then Gamma_sP=sum_c product_j V_kj and the full marked linear-placeholder correction Q_s=sum_c,j s Zj h_kj product_(r<j)V_kr product_(r>j)Xr^kr, where h0=h1=0,hk=sum_(r=0)^(k-2)X^r, satisfies Q_s(X,b)=P+Gamma_sP. At s=1 the remainder is zero by rank contradiction, giving Q1(X,b)=P. All n^m(n+1)^(m^2-m) legal colourings and coincident monomial parities are retained. This is an explicit generally exponential expansion, not a polynomial-size global construction or certificate lower bound.",
+      "assessment": "Complete symbolic expansion and marked telescoping proof passed by the sole fresh-context medium reviewer; applies existing coordinate interpolation and canonical division. Global assembly cost remains open.",
+      "status": "working_proof",
+      "rationale": "Locates the exact coupled sum required by this complete correction attempt on actual rank inputs, without making the canonical endpoint or expansion a hardness claim.",
+      "next_action": "Seek a costed shared cancellation or contraction of the full marked sum, retaining every Boolean coefficient.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "prop:rank-moment-table",
+      "summary": "For every m>n>=1, the local positive-colour profiles k in N^n with 1<=sum k<=m all occur in legal rank-product colourings. Over F2(s), their row moment polynomials product_l V_kl(Xl,s) are linearly independent, with dimension binomial(m+n,n)-1. Each has distinct leading monomial X^k and nonzero coefficient (1+s)^(number of kl>1); lower terms have smaller degree. At m=2n this is at least3^n-1. At s=0 the same row dimension coexists with the cheap original product; at s=1 the local dimension is2^n-1 while the full rank interpolation is zero. This only obstructs an explicit table or a fixed linear-register span for all row polynomials, not implicit queries, shared nonlinear circuits, full Boolean correction circuits or paid-quotient ranks.",
+      "assessment": "Elementary exact profile count and triangular independence proof with explicit cheap-product controls passed by the sole fresh-context medium reviewer. No circuit lower bound is claimed.",
+      "status": "working_proof",
+      "rationale": "Tests the proposed dense moment-state update at unbounded actual parameters while preserving the distinction from the goal's circuit cost.",
+      "next_action": "Bypass the dense linear moment table; test shared assembly directly on implicit contributions.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:rank-color-query",
+      "summary": "For m>n>=1 over F2, legal rank cell colours encoded by independent Boolean bits have a division-free unbounded-fanin arithmetic circuit over F2 with binary constants, O(m^3n) gate/wire size and depth<=12 computing that colouring's complete moment product and marked contribution to Q_s, with all original Boolean placeholders. Equality selectors use integer label bits, never nonbinary field constants. For a coordinate's m incident selectors eta_t, U=product_t(1+eta_t(1+X)), O=product_t(1+eta_t), V=(1+s)U+s((1+X)O+X), and H=sum_(l<t)eta_l eta_t product_(r<l)(1+eta_r(1+X)) product_(r>t)(1+eta_r) obey U+LU=(X^2+X)H formally even for formal eta. On legal indices U=X^k,V=Vk,H=hk. Global product telescoping constructs the marked contribution using shared coordinate/global prefixes. No binary multiplicity conversion, succinct powers, adaptive old-variable indices, whole-colouring enumeration cost bound or small full correction is asserted.",
+      "assessment": "Complete direct-query construction and conservative size/depth accounting passed by the sole fresh-context medium reviewer after explicitly naming unbounded fanin and binary constants. Exact Singular polynomial and exhaustive bounded-index checks include nonzero omitted-term controls.",
+      "status": "working_proof",
+      "rationale": "Removes a subsidiary count-encoding requirement while retaining the unpaid global coupled sum; a local convenience is not goal advancement.",
+      "next_action": "Use direct queries only inside a proved costed global sum elimination, rather than assuming that summing all query inputs is free.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["lem:rank-moment-expansion", "applies", "lem:Boolean-support-mask", "Uses the same coordinate interpolation defects; complete action is expanded by actual rank colourings without asserting a growing-order polynomial cost."],
+    ["lem:rank-moment-expansion", "cites", "lem:triangular-satisfaction-projection", "Canonical triangular Boolean correction and the nonfree extraction warning are already recorded; this is a different explicit rank-colouring presentation."],
+    ["prop:rank-moment-table", "depends_on", "lem:rank-moment-expansion", "Uses its exact univariate moment polynomials and legal row count profiles."],
+    ["lem:rank-color-query", "applies", "lem:rank-moment-expansion", "Computes a single complete legal-colouring contribution by direct fixed-root product formulas; does not sum the whole expansion."],
+    ["lem:rank-moment-expansion", "cites", "prop:rank-support-tail", "The actual dyadic support requirement persists and does not prove any query or global circuit lower bound."],
+    ["prop:rank-moment-table", "cites", "prop:symmetric-rank-moment-obstruction", "Polynomial-valued local moments and raw symbolic dimension are not a normalized invariant scalar rank annihilator or paid-quotient rank."]
+  ]
+}

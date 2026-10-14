@@ -1,0 +1,183 @@
+// Statement tested: legal colour queries implement the marked rank moment expansion.
+// Predictions: exact formal polynomial differences vanish in all bounded fixtures.
+// Refuted by: any nonzero identity difference or undetected deliberately missing term.
+// Possible because: formal Boolean cofactors need not vanish before generator substitution.
+// Expectations are exploratory, not committed before this run. No large colour enumeration.
+ring rqR=2,(s,x(1..4),e(1..4),b(1..4),h(1..4),u(1..4)),dp;
+int rqChecks=0;
+int rqFailures=0;
+int rqSelectors=0;
+int rqPatterns=0;
+int rqRows=0;
+int rqColours=0;
+int rqControls=0;
+int rqM,rqN,rqI,rqJ,rqK,rqL,rqT,rqRr,rqBits,rqVal,rqLab,rqTemp,rqBit;
+int rqMask,rqCount,rqC1,rqC2,rqC3,rqC4,rqQ;
+poly rqP,rqV,rqH,rqA,rqF,rqTerm,rqRef,rqExpected,rqSumG,rqSumQ,rqPart;
+ideal rqEta,rqUs,rqVs,rqHs;
+intvec rqKs;
+proc rqAssert(int rqCondition,string rqLabel)
+{
+  rqChecks++;
+  if (!rqCondition) { rqFailures++; print("FAIL "+rqLabel); }
+}
+proc rqQuery(int rqLen,poly rqX,ideal rqEs)
+{
+  poly rqLocalU=1;
+  poly rqLocalZero=1;
+  poly rqLocalH=0;
+  poly rqLocalTerm;
+  int rqLl,rqTt,rqRz;
+  for (rqLl=1;rqLl<=rqLen;rqLl++)
+  {
+    rqLocalU=rqLocalU*(1+rqEs[rqLl]*(1+rqX));
+    rqLocalZero=rqLocalZero*(1+rqEs[rqLl]);
+    for (rqTt=rqLl+1;rqTt<=rqLen;rqTt++)
+    {
+      rqLocalTerm=rqEs[rqLl]*rqEs[rqTt];
+      for (rqRz=1;rqRz<rqLl;rqRz++)
+      { rqLocalTerm=rqLocalTerm*(1+rqEs[rqRz]*(1+rqX)); }
+      for (rqRz=rqTt+1;rqRz<=rqLen;rqRz++)
+      { rqLocalTerm=rqLocalTerm*(1+rqEs[rqRz]); }
+      rqLocalH=rqLocalH+rqLocalTerm;
+    }
+  }
+  return(list(rqLocalU,(1+s)*rqLocalU+s*((1+rqX)*rqLocalZero+rqX),rqLocalH));
+}
+proc rqMoment(int rqDegree,poly rqX)
+{ if (rqDegree==0) { return(poly(1)); } return((1+s)*rqX^rqDegree+s*rqX); }
+proc rqGeometric(int rqDegree,poly rqX)
+{
+  poly rqLocalSum=0;
+  int rqLl;
+  for (rqLl=0;rqLl<=rqDegree-2;rqLl++) { rqLocalSum=rqLocalSum+rqX^rqLl; }
+  return(rqLocalSum);
+}
+print("Stages: selectors n=1..4; formal local quotients m=1..4; all local bit patterns;");
+print("abstract global telescoping q=1..4; 4 full rank-one colourings; 54 legal n=2,m=4 rows; controls.");
+print("Enumeration caps: at most 16 local bit patterns, 54 rows; no growing full matrix table.");
+for (rqN=1;rqN<=4;rqN++)
+{
+  rqBits=1;
+  while (2^rqBits<rqN+1) { rqBits++; }
+  for (rqVal=0;rqVal<2^rqBits;rqVal++)
+  {
+    for (rqLab=0;rqLab<=rqN;rqLab++)
+    {
+      rqP=1;
+      for (rqI=0;rqI<rqBits;rqI++)
+      { rqP=rqP*(1+((rqVal div (2^rqI))%2)+((rqLab div (2^rqI))%2)); }
+      rqExpected=0;
+      if (rqVal==rqLab) { rqExpected=1; }
+      rqAssert(rqP==rqExpected,"integer-label equality selector");
+      rqSelectors++;
+    }
+  }
+}
+list rqLocal;
+for (rqM=1;rqM<=4;rqM++)
+{
+  rqEta=0;
+  for (rqI=1;rqI<=rqM;rqI++) { rqEta[rqI]=e(rqI); }
+  rqLocal=rqQuery(rqM,x(1),rqEta);
+  rqP=rqLocal[1]; rqV=rqLocal[2]; rqH=rqLocal[3];
+  rqRef=subst(rqP,x(1),0)*(1+x(1))+x(1)*subst(rqP,x(1),1);
+  rqAssert(rqP+rqRef+(x(1)^2+x(1))*rqH==0,"generic local fixed-root quotient");
+  rqAssert(rqP+rqV+s*(x(1)^2+x(1))*rqH==0,"generic homotopy difference");
+  for (rqMask=0;rqMask<2^rqM;rqMask++)
+  {
+    rqEta=0; rqCount=0;
+    for (rqI=1;rqI<=rqM;rqI++)
+    { rqBit=(rqMask div (2^(rqI-1)))%2; rqEta[rqI]=rqBit; rqCount=rqCount+rqBit; }
+    rqLocal=rqQuery(rqM,x(1),rqEta);
+    rqAssert(rqLocal[1]==x(1)^rqCount,"all-pattern ordinary monomial");
+    rqAssert(rqLocal[2]==rqMoment(rqCount,x(1)),"all-pattern interpolated moment");
+    rqAssert(rqLocal[3]==rqGeometric(rqCount,x(1)),"all-pattern geometric quotient");
+    rqPatterns++;
+  }
+}
+for (rqQ=1;rqQ<=4;rqQ++)
+{
+  rqP=1; rqV=1; rqH=0;
+  for (rqI=1;rqI<=rqQ;rqI++)
+  {
+    rqP=rqP*u(rqI); rqV=rqV*(u(rqI)+s*b(rqI)*h(rqI));
+    rqTerm=s*b(rqI)*h(rqI);
+    for (rqJ=1;rqJ<rqI;rqJ++) { rqTerm=rqTerm*(u(rqJ)+s*b(rqJ)*h(rqJ)); }
+    for (rqJ=rqI+1;rqJ<=rqQ;rqJ++) { rqTerm=rqTerm*u(rqJ); }
+    rqH=rqH+rqTerm;
+  }
+  rqAssert(rqP+rqV+rqH==0,"abstract complete marked telescoping");
+}
+rqSumG=0; rqSumQ=0;
+for (rqC1=0;rqC1<=1;rqC1++)
+{
+  for (rqC2=0;rqC2<=1;rqC2++)
+  {
+    rqKs=1+rqC1,1+rqC2,1+rqC2,1+rqC1;
+    rqUs=0; rqVs=0; rqHs=0;
+    for (rqI=1;rqI<=4;rqI++)
+    {
+      rqBit=rqC1; if (rqI==2 || rqI==3) { rqBit=rqC2; }
+      rqEta=1,rqBit;
+      rqLocal=rqQuery(2,x(rqI),rqEta);
+      rqUs[rqI]=rqLocal[1]; rqVs[rqI]=rqLocal[2]; rqHs[rqI]=rqLocal[3];
+      rqAssert(rqUs[rqI]==x(rqI)^rqKs[rqI],"full-colouring ordinary query");
+      rqAssert(rqVs[rqI]==rqMoment(rqKs[rqI],x(rqI)),"full-colouring moment query");
+    }
+    rqP=1; rqV=1; rqH=0;
+    for (rqI=1;rqI<=4;rqI++)
+    {
+      rqP=rqP*rqUs[rqI]; rqV=rqV*rqVs[rqI];
+      rqTerm=s*(x(rqI)^2+x(rqI))*rqHs[rqI];
+      for (rqJ=1;rqJ<rqI;rqJ++) { rqTerm=rqTerm*rqVs[rqJ]; }
+      for (rqJ=rqI+1;rqJ<=4;rqJ++) { rqTerm=rqTerm*rqUs[rqJ]; }
+      rqH=rqH+rqTerm;
+    }
+    rqAssert(rqP+rqV+rqH==0,"full-colouring correction identity");
+    rqSumG=rqSumG+rqV; rqSumQ=rqSumQ+rqH;
+    if (rqC1==1 && rqC2==1) { rqPart=rqH; }
+    rqColours++;
+  }
+}
+rqExpected=x(1)*x(3)*x(2)*x(4)*(1+x(1)*x(4))*(1+x(2)*x(3));
+rqAssert(subst(rqSumG,s,1)==0,"full residual multilinear remainder");
+rqAssert(subst(rqSumQ,s,1)==rqExpected,"complete four-colour correction");
+for (rqC1=1;rqC1<=2;rqC1++)
+{ for (rqC2=0;rqC2<=2;rqC2++)
+  { for (rqC3=0;rqC3<=2;rqC3++)
+    { for (rqC4=0;rqC4<=2;rqC4++)
+      {
+        rqKs=0,0;
+        for (rqI=1;rqI<=2;rqI++)
+        {
+          rqEta=(rqC1==rqI),(rqC2==rqI),(rqC3==rqI),(rqC4==rqI);
+          rqCount=0;
+          for (rqJ=1;rqJ<=4;rqJ++) { rqCount=rqCount+int(rqEta[rqJ]); }
+          rqKs[rqI]=rqCount;
+          rqLocal=rqQuery(4,x(rqI),rqEta);
+          rqAssert(rqLocal[1]==x(rqI)^rqCount,"legal-row ordinary query");
+          rqAssert(rqLocal[2]==rqMoment(rqCount,x(rqI)),"legal-row moment query");
+          rqAssert(rqLocal[3]==rqGeometric(rqCount,x(rqI)),"legal-row quotient query");
+        }
+        rqAssert(rqKs[1]+rqKs[2]>=1,"diagonal legal-row nonvacuity");
+        rqRows++;
+      }
+    }
+  }
+}
+rqEta=1,1;
+rqLocal=rqQuery(2,x(1),rqEta);
+rqAssert(rqLocal[3]!=0,"missing-pair control changes the quotient");
+rqAssert(rqLocal[1]+subst(rqLocal[1],x(1),0)*(1+x(1))+x(1)*subst(rqLocal[1],x(1),1)!=0,
+  "missing-pair mutant is rejected before Boolean specialization");
+rqControls++;
+rqAssert(subst(rqPart,s,1)!=0,"omitted colour changes complete correction");
+rqAssert(subst(rqSumQ+rqPart,s,1)!=rqExpected,"omitted-colour mutant rejected");
+rqControls++;
+print("Counts: selectors="+string(rqSelectors)+" patterns="+string(rqPatterns)+" rows="+string(rqRows)
+  +" full_colours="+string(rqColours)+" controls="+string(rqControls)+" assertions="+string(rqChecks));
+print("Failures="+string(rqFailures));
+if (rqFailures>0) { exit(1); }
+print("COMPLETE exact query checks");
+exit;
