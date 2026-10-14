@@ -563,11 +563,13 @@ def pending_architecture_test(body, before=None):
                 pending[route] = entry['ident']
             else:  # historical reviews have no new-format test to enforce
                 pending.pop(route, None)
-        elif route in pending:
+        else:
             evidence = report_paragraph(text, 'Architecture test')
             plain = html.unescape(re.sub(r'<[^>]*>', ' ', evidence)).strip()
-            if len(plain) >= 40 and re.search(r'href=["\']#' + re.escape(pending[route]) + r'["\']', evidence):
-                pending.pop(route)
+            if len(plain) >= 40 and re.search(r'<strong>(?:Not decided|Decided)\.</strong>', evidence):
+                for reviewed_route, target in tuple(pending.items()):
+                    if re.search(r'href=["\']#' + re.escape(target) + r'["\']', evidence):
+                        pending.pop(reviewed_route)
     return pending
 
 

@@ -174,6 +174,44 @@ class GoalProgressTest(unittest.TestCase):
         self.assertEqual(FT.pending_architecture_test(body), {'step': 'review'})
         with self.assertRaisesRegex(ValueError, 'Architecture test'):
             validate(notebook(review, picked, article('ordinary')))
+        # A review can deliberately select another route's research mechanism.
+        # Only its explicit outcome and exact review link discharge that test.
+        for kind in ('audit', 'formalization'):
+            self.assertEqual(FT.pending_architecture_test(notebook(
+                review, article('not-research', kind=kind, route='different',
+                                content=REPORT + test_report('review')))), {'step': 'review'})
+        for content in (test_report('wrong'),
+                        test_report('review').replace('<strong>Decided.</strong>', ''),
+                        '<p><strong>Architecture test.</strong> <strong>Decided.</strong>'
+                        '<a href="#review">Done.</a></p>'):
+            self.assertEqual(FT.pending_architecture_test(notebook(
+                review, article('not-tested', route='different', content=content))), {'step': 'review'})
+        for legacy in (article('legacy', kind='review'),
+                       article('', kind='review', content=REPORT + ARCHITECTURE)):
+            self.assertEqual(FT.pending_architecture_test(notebook(legacy)), {})
+            self.assertEqual(FT.pending_architecture_test(notebook(review, legacy)), {})
+        self.assertEqual(FT.pending_architecture_test(notebook(
+            review, article('legacy-other', kind='review', route='unseen'))), {'step': 'review'})
+        # report_paragraph excludes its label. Closing/opening tags contribute
+        # the two spaces here, so this outcome is at the existing character floor.
+        self.assertEqual(len('Decided.  ' + 'abcdefghij' * 3), 40)
+        for label, expected in ((('abcdefghij' * 3)[:-1], {'step': 'review'}),
+                                ('abcdefghij' * 3, {})):
+            boundary = ('<p><strong>Architecture test.</strong><strong>Decided.</strong>'
+                        f'<a href="#review">{label}</a></p>')
+            self.assertEqual(FT.pending_architecture_test(notebook(
+                review, article('boundary', route='different', content=boundary))), expected)
+        other_review = article('other-review', kind='review', route='different', content=REPORT + ARCHITECTURE)
+        for outcome in ('Decided', 'Not decided'):
+            tested = article('tested', route='different', content=REPORT + test_report('review').replace(
+                '<strong>Decided.</strong>', f'<strong>{outcome}.</strong>'))
+            body = notebook(review, other_review, tested)
+            self.assertEqual(FT.pending_architecture_test(body), {'different': 'other-review'})
+            self.assertEqual(FT.pending_architecture_test(body, body.index(tested)),
+                             {'step': 'review', 'different': 'other-review'})
+            both = notebook(review, other_review, tested,
+                            article('second-test', route='step', content=REPORT + test_report('other-review')))
+            self.assertEqual(FT.pending_architecture_test(both), {})
 
     def test_legacy_and_nonresearch_entries_are_not_rewritten_or_inferred(self):
         legacy = '<article data-kind="research" data-route="step">Legacy result.</article>'
