@@ -1,0 +1,19 @@
+.............F                                                  [100%]
+=================================== FAILURES ===================================
+______ RewrapMdTest.test_unclosed_generated_status_block_leaves_the_file _______
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_unclosed_generated_status_block_leaves_the_file>
+
+    def test_unclosed_generated_status_block_leaves_the_file(self):
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root)
+        path = root / "index.md"
+        text = "<!-- CLAIM-STATUS-NOTICES:START -->\n- incomplete generated notice\n"
+        path.write_text(text)
+>       self.assertEqual(rewrap_md.main([str(path)]), 1)
+E       AssertionError: 0 != 1
+
+tests/test_rewrap_md.py:55: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_rewrap_md.py::RewrapMdTest::test_unclosed_generated_status_block_leaves_the_file
+1 failed, 13 passed, 9 subtests passed in 0.06s

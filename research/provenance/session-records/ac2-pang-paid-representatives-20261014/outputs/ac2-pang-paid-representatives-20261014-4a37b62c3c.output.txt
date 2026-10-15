@@ -1,0 +1,176 @@
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_1: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -1,4 +1,4 @@
+-def rewrap_section(text: str, heading: str, width: int = 100, base: str | None = None) -> str:
++def rewrap_section(text: str, heading: str, width: int = 101, base: str | None = None) -> str:
+     lines = text.split("\n")
+     start = level = None
+     in_generated = in_fence = False
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_6: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -1,7 +1,7 @@
+ def rewrap_section(text: str, heading: str, width: int = 100, base: str | None = None) -> str:
+     lines = text.split("\n")
+     start = level = None
+-    in_generated = in_fence = False
++    in_generated = in_fence = None
+     for number, line in enumerate(lines):
+         if in_generated:
+             if line.strip() == _GENERATED_END:
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_10: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -6,7 +6,7 @@
+         if in_generated:
+             if line.strip() == _GENERATED_END:
+                 in_generated = False
+-        elif in_fence or _FENCE.match(line):
++        elif in_fence and _FENCE.match(line):
+             if _FENCE.match(line):
+                 in_fence = not in_fence
+             continue
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_18: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -11,7 +11,7 @@
+                 in_fence = not in_fence
+             continue
+         elif line.strip() == _GENERATED_START:
+-            in_generated = True
++            in_generated = False
+             continue
+         match = _HEADING.match(line)
+         if not match:
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_35: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -20,7 +20,7 @@
+             if in_generated:
+                 raise ValueError("cannot rewrap a heading inside generated claim-status notices")
+             start, level = number, len(match.group(1))
+-        elif start is not None and len(match.group(1)) <= level:
++        elif start is not None and len(match.group(1)) < level:
+             end = number
+             break
+     else:
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_40: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -26,6 +26,6 @@
+     else:
+         end = len(lines)
+     if start is None:
+-        raise ValueError(f"no heading {heading!r}")
++        raise ValueError(None)
+     body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_43: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap(None, width, base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_44: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(lines[start:end]), None, base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_45: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(lines[start:end]), width, None).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_46: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap(width, base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_47: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(lines[start:end]), base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_48: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(lines[start:end]), width, ).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_49: killed
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(None), width, base).split("\n")
+     return "\n".join(lines[:start] + body + lines[end:])
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_51: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -27,5 +27,5 @@
+         end = len(lines)
+     if start is None:
+         raise ValueError(f"no heading {heading!r}")
+-    body = rewrap("\n".join(lines[start:end]), width, base).split("\n")
++    body = rewrap("\n".join(lines[start:end]), width, base).split("XX\nXX")
+     return "\n".join(lines[:start] + body + lines[end:])

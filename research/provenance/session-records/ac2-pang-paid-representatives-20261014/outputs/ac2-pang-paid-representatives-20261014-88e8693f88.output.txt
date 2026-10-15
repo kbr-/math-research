@@ -1,0 +1,116 @@
+.....F.......F                                                  [100%]
+=================================== FAILURES ===================================
+__ RewrapMdTest.test_generated_status_notices_keep_rendered_bytes (base=None) __
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_generated_status_notices_keep_rendered_bytes>
+
+    def test_generated_status_notices_keep_rendered_bytes(self):
+        import claim_registry
+        data = {"preamble": "# Index\n\n", "claims": [{"id": "thm:conditional-fixture", "summary": "A supplied reference condition",
+                            "assessment": "Conditional", "record": "[Proof](https://example.org/proof)",
+                            "mathematical_status": "conditional"}], "relationships": []}
+        rendered = claim_registry.render(data)
+        start = "<!-- CLAIM-STATUS-NOTICES:START -->"
+        end = "<!-- CLAIM-STATUS-NOTICES:END -->"
+        expected_notices = rendered.split(start)[1].split(end)[0]
+        # Newly rendered notices are absent from HEAD: --changed cannot preserve them by membership.
+        for base in (None, "# Old index\n"):
+            with self.subTest(base=base):
+                wrapped = rewrap_md.rewrap(rendered, base=base)
+>               self.assertEqual(wrapped.split(start)[1].split(end)[0], expected_notices)
+E               AssertionError: '\n##[133 chars]these\nnotices show recorded qualifications. A[309 chars]\n\n' != '\n##[133 chars]these notices show recorded qualifications. A [303 chars]\n\n'
+E               Diff is 1080 characters long. Set self.maxDiff to None to see it.
+
+tests/test_rewrap_md.py:35: AssertionError
+_ RewrapMdTest.test_generated_status_notices_keep_rendered_bytes (base='# Old index\n') _
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_generated_status_notices_keep_rendered_bytes>
+
+    def test_generated_status_notices_keep_rendered_bytes(self):
+        import claim_registry
+        data = {"preamble": "# Index\n\n", "claims": [{"id": "thm:conditional-fixture", "summary": "A supplied reference condition",
+                            "assessment": "Conditional", "record": "[Proof](https://example.org/proof)",
+                            "mathematical_status": "conditional"}], "relationships": []}
+        rendered = claim_registry.render(data)
+        start = "<!-- CLAIM-STATUS-NOTICES:START -->"
+        end = "<!-- CLAIM-STATUS-NOTICES:END -->"
+        expected_notices = rendered.split(start)[1].split(end)[0]
+        # Newly rendered notices are absent from HEAD: --changed cannot preserve them by membership.
+        for base in (None, "# Old index\n"):
+            with self.subTest(base=base):
+                wrapped = rewrap_md.rewrap(rendered, base=base)
+>               self.assertEqual(wrapped.split(start)[1].split(end)[0], expected_notices)
+E               AssertionError: '\n##[133 chars]these\nnotices show recorded qualifications. A[309 chars]\n\n' != '\n##[133 chars]these notices show recorded qualifications. A [303 chars]\n\n'
+E               Diff is 1080 characters long. Set self.maxDiff to None to see it.
+
+tests/test_rewrap_md.py:35: AssertionError
+________ RewrapMdTest.test_generated_status_notices_keep_rendered_bytes ________
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_generated_status_notices_keep_rendered_bytes>
+
+    def test_generated_status_notices_keep_rendered_bytes(self):
+        import claim_registry
+        data = {"preamble": "# Index\n\n", "claims": [{"id": "thm:conditional-fixture", "summary": "A supplied reference condition",
+                            "assessment": "Conditional", "record": "[Proof](https://example.org/proof)",
+                            "mathematical_status": "conditional"}], "relationships": []}
+        rendered = claim_registry.render(data)
+        start = "<!-- CLAIM-STATUS-NOTICES:START -->"
+        end = "<!-- CLAIM-STATUS-NOTICES:END -->"
+        expected_notices = rendered.split(start)[1].split(end)[0]
+        # Newly rendered notices are absent from HEAD: --changed cannot preserve them by membership.
+        for base in (None, "# Old index\n"):
+            with self.subTest(base=base):
+                wrapped = rewrap_md.rewrap(rendered, base=base)
+                self.assertEqual(wrapped.split(start)[1].split(end)[0], expected_notices)
+        text = ("Prose before the block that needs wrapping.\n\n"
+                "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                "Prose after the block that needs wrapping.\n")
+        expected = ("Prose before the block that\nneeds wrapping.\n\n"
+                    "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                    "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                    "Prose after the block that\nneeds wrapping.\n")
+>       self.assertEqual(rewrap_md.rewrap(text, width=28), expected)
+E       AssertionError: 'Pros[88 chars]ated words kept on\n  one long line\n```\n- ge[108 chars]g.\n' != 'Pros[88 chars]ated  words kept on one long line\n```\n- gene[105 chars]g.\n'
+E         Prose before the block that
+E         needs wrapping.
+E         
+E         <!-- CLAIM-STATUS-NOTICES:START -->
+E       - - generated words kept on
+E       + - generated  words kept on one long line
+E       ?             +             ++++++++++++++
+E       -   one long line
+E         ```
+E         - generated code stays too
+E         ```
+E       - <!--
+E       - CLAIM-STATUS-NOTICES:END -->
+E       + <!-- CLAIM-STATUS-NOTICES:END -->
+E       ? +++++
+E         
+E         Prose after the block that
+E         needs wrapping.
+
+tests/test_rewrap_md.py:44: AssertionError
+----------------------------- Captured stdout call -----------------------------
+uu
+______ RewrapMdTest.test_unclosed_generated_status_block_leaves_the_file _______
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_unclosed_generated_status_block_leaves_the_file>
+
+    def test_unclosed_generated_status_block_leaves_the_file(self):
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root)
+        path = root / "index.md"
+        text = "<!-- CLAIM-STATUS-NOTICES:START -->\n- incomplete generated notice\n"
+        path.write_text(text)
+>       self.assertEqual(rewrap_md.main([str(path)]), 1)
+E       AssertionError: 0 != 1
+
+tests/test_rewrap_md.py:55: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(base=None) tests/test_rewrap_md.py::RewrapMdTest::test_generated_status_notices_keep_rendered_bytes
+SUBFAILED(base='# Old index\n') tests/test_rewrap_md.py::RewrapMdTest::test_generated_status_notices_keep_rendered_bytes
+FAILED tests/test_rewrap_md.py::RewrapMdTest::test_generated_status_notices_keep_rendered_bytes
+FAILED tests/test_rewrap_md.py::RewrapMdTest::test_unclosed_generated_status_block_leaves_the_file
+4 failed, 12 passed, 7 subtests passed in 0.09s
