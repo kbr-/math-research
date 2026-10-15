@@ -1,0 +1,200 @@
+/*
+Exact unit-block square inverse consequence gluing over F2.
+For U=[I R;S T], P=T+SR, L=[I 0;S I], Q=[I R;0 I],
+W=V22, c=V21+WS, H'=L(UV+I)L. Child J specializes to WP+I.
+M=[H'11,H'12 P;W H'21+J c,J]; test Q M Q=VU+I.
+Stages: diagonalization, child generator/fields, full consequence, omissions.
+Fixtures (n,k): (2,1),(3,1),(3,2),(4,2),(4,3).
+Expected: every identity holds formally and every omission changes its target.
+Refuted by: A nonzero mapped generator, field or full-output residual, or an ineffective omission.
+Possible because: Noncommuting matrix order and missing Frobenius terms change independent formal polynomials.
+Predictions precede execution but are not committed first; run exploratory.
+No asymptotic circuit lower bound is inferred from the fixtures.
+*/
+ring biR=2,(q(1..96)),dp;
+int biN,biK,biQ,biI,biJ,biA,biB,biCase;
+int biChecks=0;
+int biExpected=0;
+int biControls=0;
+int biFailures=0;
+intvec biNs=2,3,3,4,4;
+intvec biKs=1,1,2,2,3;
+matrix biU[4][4]; matrix biV[4][4];
+matrix biL[4][4]; matrix biC[4][4];
+matrix biH[4][4]; matrix biE[4][4];
+matrix biY[4][4]; matrix biYP[4][4];
+matrix biP[4][4]; matrix biW[4][4]; matrix biChild[4][4];
+matrix biLower[4][4]; matrix biM[4][4];
+matrix biTmp[4][4]; matrix biOut[4][4];
+ideal biImages;
+poly biF,biG,biWitness,biChanged,biBad;
+proc biAssert(int okay,string label)
+{
+  biChecks++;
+  if (!okay) { biFailures++; print("FAILED "+label); }
+}
+print("Plan: all full output entries, every child generator/field, three omission controls per fixture.");
+for (biCase=1;biCase<=size(biNs);biCase++)
+{
+  biN=biNs[biCase]; biK=biKs[biCase]; biQ=biN-biK;
+  biExpected=biExpected+2*biN^2+3*biQ^2+6;
+  for (biI=1;biI<=96;biI++) { biImages[biI]=var(biI); }
+  for (biI=1;biI<=biN;biI++)
+  { for (biJ=1;biJ<=biN;biJ++)
+    {
+      biU[biI,biJ]=var(4*(biI-1)+biJ);
+      if ((biI<=biK)&&(biJ<=biK))
+      { biU[biI,biJ]=0; if (biI==biJ) { biU[biI,biJ]=1; } }
+      biV[biI,biJ]=var(16+4*(biI-1)+biJ);
+      biY[biI,biJ]=var(64+4*(biI-1)+biJ);
+      biL[biI,biJ]=0; biC[biI,biJ]=0;
+      if (biI==biJ) { biL[biI,biJ]=1; biC[biI,biJ]=1; }
+      if ((biI>biK)&&(biJ<=biK)) { biL[biI,biJ]=biU[biI,biJ]; }
+      if ((biI<=biK)&&(biJ>biK)) { biC[biI,biJ]=biU[biI,biJ]; }
+      biImages[32+4*(biI-1)+biJ]=biU[biI,biJ]^2+biU[biI,biJ];
+      biImages[48+4*(biI-1)+biJ]=biV[biI,biJ]^2+biV[biI,biJ];
+    }
+  }
+  for (biI=1;biI<=biN;biI++)
+  { for (biJ=1;biJ<=biN;biJ++)
+    {
+      biH[biI,biJ]=0; biE[biI,biJ]=0;
+      if (biI==biJ) { biH[biI,biJ]=1; biE[biI,biJ]=1; }
+      for (biA=1;biA<=biN;biA++)
+      {
+        biH[biI,biJ]=biH[biI,biJ]+biU[biI,biA]*biV[biA,biJ];
+        biE[biI,biJ]=biE[biI,biJ]+biV[biI,biA]*biU[biA,biJ];
+      }
+      biImages[64+4*(biI-1)+biJ]=biH[biI,biJ];
+      biYP[biI,biJ]=0;
+      for (biA=1;biA<=biN;biA++)
+      { for (biB=1;biB<=biN;biB++)
+        { biYP[biI,biJ]=biYP[biI,biJ]+biL[biI,biA]*biY[biA,biB]*biL[biB,biJ]; }
+      }
+    }
+  }
+  for (biI=1;biI<=biQ;biI++)
+  { for (biJ=1;biJ<=biQ;biJ++)
+    {
+      biP[biI,biJ]=biU[biK+biI,biK+biJ];
+      for (biA=1;biA<=biK;biA++)
+      { biP[biI,biJ]=biP[biI,biJ]+biU[biK+biI,biA]*biU[biA,biK+biJ]; }
+      biW[biI,biJ]=biV[biK+biI,biK+biJ];
+      biChild[biI,biJ]=var(80+4*(biI-1)+biJ);
+    }
+  }
+  for (biI=1;biI<=biQ;biI++)
+  { for (biJ=1;biJ<=biQ;biJ++)
+    {
+      biF=0; if (biI==biJ) { biF=1; }
+      for (biA=1;biA<=biQ;biA++) { biF=biF+biW[biI,biA]*biP[biA,biJ]; }
+      biImages[80+4*(biI-1)+biJ]=biF;
+    }
+  }
+  if (defined(biEval)) { kill biEval; }
+  map biEval=biR,biImages;
+  for (biI=1;biI<=biN;biI++)
+  { for (biJ=1;biJ<=biN;biJ++)
+    {
+      biF=0; biG=0;
+      for (biA=1;biA<=biN;biA++)
+      { for (biB=1;biB<=biN;biB++)
+        { biF=biF+biL[biI,biA]*biU[biA,biB]*biC[biB,biJ]; }
+      }
+      if ((biI<=biK)&&(biI==biJ)) { biG=1; }
+      if ((biI>biK)&&(biJ>biK)) { biG=biP[biI-biK,biJ-biK]; }
+      biAssert(biF+biG==0,"unit block diagonalization");
+    }
+  }
+  for (biI=1;biI<=biQ;biI++)
+  { for (biJ=1;biJ<=biQ;biJ++)
+    {
+      biF=biY[biK+biI,biK+biJ]; biG=0;
+      if (biI==biJ) { biG=1; }
+      for (biA=1;biA<=biK;biA++)
+      { biF=biF+biU[biK+biI,biA]*biY[biA,biK+biJ]; }
+      for (biA=1;biA<=biQ;biA++) { biG=biG+biP[biI,biA]*biW[biA,biJ]; }
+      biAssert(biEval(biF)+biG==0,"child generator image");
+      biWitness=var(32+4*(biK+biI-1)+biK+biJ);
+      for (biA=1;biA<=biK;biA++)
+      {
+        biWitness=biWitness+biU[biA,biK+biJ]^2*var(32+4*(biK+biI-1)+biA)
+          +biU[biK+biI,biA]*var(32+4*(biA-1)+biK+biJ);
+      }
+      biAssert(biEval(biWitness)+biP[biI,biJ]^2+biP[biI,biJ]==0,"Schur field witness");
+      biWitness=var(48+4*(biK+biI-1)+biK+biJ);
+      biAssert(biEval(biWitness)+biW[biI,biJ]^2+biW[biI,biJ]==0,"retained W field");
+    }
+  }
+  for (biI=1;biI<=biQ;biI++)
+  { for (biJ=1;biJ<=biK;biJ++)
+    {
+      biLower[biI,biJ]=biV[biK+biI,biJ];
+      for (biA=1;biA<=biQ;biA++)
+      { biLower[biI,biJ]=biLower[biI,biJ]+biW[biI,biA]*biU[biK+biA,biJ]; }
+    }
+  }
+  for (biI=1;biI<=biN;biI++)
+  { for (biJ=1;biJ<=biN;biJ++)
+    {
+      biM[biI,biJ]=0;
+      if ((biI<=biK)&&(biJ<=biK)) { biM[biI,biJ]=biYP[biI,biJ]; }
+      if ((biI<=biK)&&(biJ>biK))
+      { for (biA=1;biA<=biQ;biA++)
+        { biM[biI,biJ]=biM[biI,biJ]+biYP[biI,biK+biA]*biP[biA,biJ-biK]; }
+      }
+      if ((biI>biK)&&(biJ<=biK))
+      { for (biA=1;biA<=biQ;biA++)
+        {
+          biM[biI,biJ]=biM[biI,biJ]+biW[biI-biK,biA]*biYP[biK+biA,biJ]
+            +biChild[biI-biK,biA]*biLower[biA,biJ];
+        }
+      }
+      if ((biI>biK)&&(biJ>biK)) { biM[biI,biJ]=biChild[biI-biK,biJ-biK]; }
+    }
+  }
+  for (biI=1;biI<=biN;biI++)
+  { for (biJ=1;biJ<=biN;biJ++)
+    {
+      biOut[biI,biJ]=0;
+      for (biA=1;biA<=biN;biA++)
+      { for (biB=1;biB<=biN;biB++)
+        { biOut[biI,biJ]=biOut[biI,biJ]+biC[biI,biA]*biM[biA,biB]*biC[biB,biJ]; }
+      }
+      biF=biOut[biI,biJ];
+      biAssert(biEval(biF)+biE[biI,biJ]==0,"complete inverse consequence");
+    }
+  }
+  biChanged=0;
+  for (biA=1;biA<=biQ;biA++)
+  { biChanged=biChanged+biChild[1,biA]*biLower[biA,1]; }
+  biF=biChanged;
+  biAssert(biEval(biF)!=0,"omitted Jc term changes formal output");
+  biBad=biOut[biK+1,1]+biChanged;
+  biAssert(biEval(biBad)+biE[biK+1,1]!=0,"omitted Jc fails complete target"); biControls++;
+  biChanged=biP[1,1]+biU[biK+1,biK+1];
+  biAssert(biChanged!=0,"omitted Schur product changes old map");
+  biF=0;
+  for (biA=1;biA<=biN;biA++)
+  { for (biB=1;biB<=biN;biB++)
+    { biF=biF+biL[biK+1,biA]*biU[biA,biB]*biC[biB,biK+1]; }
+  }
+  biAssert(biF+biU[biK+1,biK+1]!=0,"unmodified lower block fails diagonalization"); biControls++;
+  biChanged=biU[1,biK+1]^2*(biU[biK+1,1]^2+biU[biK+1,1]);
+  biAssert(biChanged!=0,"omitted Frobenius contribution nonzero");
+  biBad=var(32+4*biK+biK+1);
+  for (biA=1;biA<=biK;biA++)
+  {
+    biBad=biBad+biU[biK+1,biA]*var(32+4*(biA-1)+biK+1);
+    if (biA>1)
+    { biBad=biBad+biU[biA,biK+1]^2*var(32+4*biK+biA); }
+  }
+  biAssert(biEval(biBad)+biP[1,1]^2+biP[1,1]!=0,"missing Schur field term rejected"); biControls++;
+  print("completed n="+string(biN)+" k="+string(biK)+" q="+string(biQ));
+}
+if (biChecks!=biExpected) { biFailures++; print("FAILED completion count"); }
+print("SUMMARY fixtures="+string(size(biNs))+" omission_controls="+string(biControls)
+  +" checks="+string(biChecks)+" expected="+string(biExpected)+" failures="+string(biFailures));
+if (biFailures==0) { print("PASS unit-block inverse consequences"); }
+else { print("FAILED unit-block inverse consequences"); }
+quit;

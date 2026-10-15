@@ -1,0 +1,86 @@
+<article id="entry-2026-10-11-normalized-pivot-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-bearing="none" data-lead="entry-2026-10-08-after-symmetry-review:3" data-claims="lem:normalized-pivot-mask">
+<h3>11 October 2026 — Normalized pivot coefficients retain a smaller rank residual</h3>
+<p class="entry-meta">Working normalization identity and syzygy control. Normalized pivot test. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Chosen.</strong> Continue the rank item before the restriction head to discharge the preceding entry's promised normalization test on general-step and binary-frege-lower-bound. The missing implication remains a size-sensitive lower bound for every eligible bounded-depth certificate or the matched Frege simulation image. A concrete cancellation identity or identified surviving term with its exact circuit cost ends this test; nonzero formal coefficients alone do not prove hardness.</p>
+<p><strong>Owed attempt.</strong> The <a href="#entry-2026-10-11-pivot-certificate-test">shared-pivot entry</a> asked whether direct normalization permits shallow cancellation. We isolate an actual surviving term, decompose its mask with every Boolean correction, and apply the recorded unit-slice modification to remove its determinant dependence. This gives neither a shallow global certificate nor a full-coset obstruction.</p>
+<p><strong>General statement.</strong> lem:normalized-pivot-mask gives an exact scalar restriction of direct normalization for every Hilbert-like matrix-rank certificate. For the chosen pivot certificate it exposes a determinant-function coefficient times a smaller-rank mask. The existing unit-slice lemma replaces that restricted coefficient by one at polynomial cost and constant added depth.</p>
+<p><strong>New mathematics.</strong> The explicit mask and its complete Boolean correction identify what survives normalization. The syzygy erasure is an application already implied by the recorded lemma, not a new general mechanism.</p>
+<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> The result gives no lower-bound exponent at the goal's parameters. It tests the actual proposed normalized recurrence and demonstrates why further study of its chosen coefficient would be insufficient: a cheap representative change removes the hard function from that probe. The full circuit and the matched simulation image remain open.</p>
+<h4 id="normalized-pivot-mask">Normalized pivot mask</h4>
+<p><strong>Lemma.</strong> Work over \(\mathbb F_2\), with \(m>n\ge1\), \(A\) of shape \(m\times n\), \(B\) of shape \(n\times m\),
+\[
+F_{ik}=\delta_{ik}+\sum_lA_{il}B_{lk},\qquad
+P=\prod_{i,k}(1+F_{ik}),\qquad P_{ik}=\prod_{(a,b)\ne(i,k)}(1+F_{ab}).
+\]
+Let \(C=\sum c_{ik}Y_{ik}+\sum d_xZ_x\) be any Hilbert-like certificate for these equations and all entry Boolean axioms \(b_x=x^2+x\). Fix
+\[
+K_{F_{ik}}=\sum_l(B_{lk}Z_{A_{il}}+A_{il}^2Z_{B_{lk}}),\qquad
+Q=\sum_{i,k}c_{ik}P_{ik}K_{F_{ik}}+P\sum_xd_xZ_x.
+\]
+This is the direct normalization \(Q(x,b(x))=P(x)\). Set \(j=n+1\). Let \(\rho_x\) set column \(j\) of \(B\) to zero and row \(j\) of \(A\) to \(e_1\). Extend it to \(\rho\) by setting \(Z_{B_{1j}}=1\) and every other \(Z\) to zero. Then
+\[
+\rho(Q)=\rho_x(c_{jj})R,\qquad R=\rho_x(P_{jj}).
+\]
+This restriction has no size or depth overhead. The mask \(R\) is nonzero formally, Boolean-zero, and has the smaller-residual decomposition below with polynomial-size constant-depth correction circuits.</p>
+<p><strong>Isolation proof.</strong> Each summand of the displayed \(K\) specializes to
+\(B_{lk}(A_{il}^2+A_{il})+A_{il}^2(B_{lk}^2+B_{lk})=(A_{il}B_{lk})^2+A_{il}B_{lk}\), so it is the stated complete field-defect witness. Under \(\rho_x\), the diagonal factor \(1+F_{jj}\) is zero. Thus \(P\) and every \(P_{ik}\) other than \(P_{jj}\) vanish. The remaining witness specializes to \(A_{j1}^2=1\). This proves the restriction identity independently of the syntax of a circuit computing \(C\).</p>
+<p>For the <a href="#shared-pivot-certificate">canonical shared-pivot certificate</a>, \(c_{jj}\) depends only on the first \(n\) rows of \(A\), so \(\rho_x\) leaves it unchanged. Its <a href="#canonical-pivot-depth-gap">Boolean function is determinant</a>, hence the polynomial is nonzero. Every diagonal factor remaining in \(R\) is a nonzero bilinear sum and every off-diagonal factor has constant term one. Their polynomial ring is an integral domain, so \(R\ne0\) and \(c_{jj}R\ne0\). Complete formal cancellation of this probe is excluded for this fixed representative. No circuit lower bound for the product follows.</p>
+<p><strong>Complete mask decomposition.</strong> Let \(I=\{1,\ldots,m\}\setminus\{j\}\), \(t_k=B_{1k}\) for \(k\in I\), and put
+\[
+T=\prod_{k\in I}(1+t_k),\quad
+H=\prod_{i,k\in I}h_{ik},\quad
+h_{ik}=1+\delta_{ik}+\sum_{l=1}^nA_{il}B_{lk}.
+\]
+The remaining row-\(j\) factors give \(R=TH\); all column-\(j\) off-diagonal factors are one. Set \(t=0\). Then
+\(H_0=P'\) is exactly the rank residual on matrices of shape \((m-1)\times(n-1)\) and \((n-1)\times(m-1)\), with the same order on the surviving outer labels. Order the factors \(h_a\), and write \(h_a^0=h_a|_{t=0}\). Literal telescoping gives
+\[
+H+H_0=\sum_a(h_a+h_a^0)\prod_{b<a}h_b\prod_{b>a}h_b^0
+=\sum_{k\in I}t_kL_k,
+\quad
+L_k=\sum_{i\in I}A_{i1}\prod_{b<(i,k)}h_b\prod_{b>(i,k)}h_b^0.
+\]
+Multiplying by \(T\) yields the full Boolean correction
+\[
+R=TP'+\sum_{k\in I}\left(\prod_{\substack{r\in I\\r\ne k}}(1+t_r)\right)L_k(t_k^2+t_k).
+\]
+All factors are explicit degree-at-most-two expressions; the displayed sums and products have jointly polynomial gate/wire size in \(m,n\) and absolute constant depth. There is no division or high-component extraction. Multiplying this identity by \(c_{jj}\) retains that coefficient's actual cost.</p>
+<p>On Boolean inputs, either \(T=0\), or every \(t_k=0\). In the latter case \(H=P'\), which is zero: rank \(m-1\) cannot be achieved with inner dimension \(n-1\). Hence \(R\) is Boolean-zero even at \(m=n+1\). It is not a nonzero Boolean scalar that can be inverted to expose determinant.</p>
+<p><strong>Erase the chosen coefficient using the existing lemma.</strong> The variable-only map \(\rho_x\) is a coordinate retraction and \(\rho_x(F_{jj})=1\). Index this generator as \(G_0\) and include every other matrix and Boolean generator among \(G_i\), writing \(C=\sum_ic_iU_i\). For \(i>0\), set \(h_i=\rho_x(c_i)\) and
+\[
+c'_i=c_i+h_iG_0,\qquad c'_0=c_0+\sum_{i>0}h_iG_i.
+\]
+The added terms cancel in \(\sum_ic'_iG_i=1\). Moreover \(\rho_x(c'_i)=0\) for \(i>0\), and applying \(\rho_x\) to the original identity gives \(\rho_x(c'_0)=1\). The <a href="#unit-slice-certificates">proved unit-slice circuit construction</a> realizes this with polynomial overhead and depth at most \(\max(d,2)+4\) from a size-\(S\), depth-\(d\) circuit for \(C\). Its direct normalization therefore has \(\rho(Q')=R\). This removes determinant dependence from this probe, including all Boolean coefficients; it constructs no shallow global certificate from nothing. The following normalization adds only constant depth. \(\square\)</p>
+<p><strong>Nonvacuity.</strong> The previous cycle constructs \(C\) for every \(m=2n\), \(n\ge1\), so the certificate premise has unbounded witnesses of polynomial description. At \(n=1,m=2\), write the surviving top row entry as \(a\) and surviving \(B\) entry as \(t\). Then \(R=at(1+t)=a(t^2+t)\ne0\) formally, \(P'=0\), and the exact Boolean correction supplies the entire mask.</p>
+<p><strong>Degenerate cases.</strong> For all \(n=1,m>1\), the child inner dimension is zero, so \(P'=0\). For \(n\ge2\) it is a nonzero formal rank residual but zero on the Boolean cube. The case \(m=n+1\) is covered, not excluded by a large deficit. For \(m\le n\), the refutation premise is unavailable; local telescoping remains an identity, but Boolean vanishing is not asserted from the same rank inequality. The \(n=0\) base belongs to the preceding theorem and is not part of this lemma.</p>
+<h4>Decision and verification</h4>
+<p>The hard coefficient of the chosen unnormalized certificate survives as a nonzero formal product in its chosen normalization, yet the old syzygy operation erases it from that scalar probe. This is an explicit reason not to refine that probe into a purported universal obstruction. A direct full-coset lower bound would still suffice, but the weaker matched simulation image is the next concrete object to inspect. No random finite samples or new inference rule are used: the identities follow from literal expansion and the already reviewed retraction construction.</p>
+<h4>Reviewer's suggestions, unverified</h4>
+<ul><li>Apply unit-slice normalization with the variable-only restriction underlying \(\rho\), obtaining \(\rho(Q')=R\). The author verified the full coefficient formulas above and the same reviewer checked the strengthened statement. <strong>Record.</strong> Searches for unit-slice-certificates and simulation-image provenance recovered lem:unit-slice-certificates and imp:depth-preserving-IPS-simulation; the former already implies this application, which is labeled accordingly.</li></ul>
+<p><strong>Follow-up.</strong> Continuing: stop refining this removable scalar probe. Next develop the existing simulation-image child: compare the explicit syzygy patch with the published Frege-to-IPS construction, seeking a costed realization inside that image or a precise provenance constraint excluding it. This tests the weaker sufficient target rather than presuming general IPS closure describes the image. <strong>Record search.</strong> Normalized coefficient/matrix, masked pivot, zero-column, unit-slice and simulation/syzygy searches recovered the prior certificate and simulation records; the resemblance preflight names the exact canonical-pivot and unit-slice dependencies. No already-proved realization inside the exact image was identified. The queued child explicitly carries that unresolved question.</p>
+<h4>Sub-idea follow-up</h4>
+<ul>
+<li data-check="entry-2026-10-09-rank-certificate-slice:s1">This probe is not full-coset protected; alternative full-coset extractions remain unproved. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-shared-parent-choice-test:s1">No costed determinant extraction from every full rank certificate follows. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-core-scope-review:s3">Next test the explicit unit-slice patch against the exact Frege-to-IPS simulation image, retaining polynomial size and quantified fixed depth. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-handoff-tool-audit:s1">Core-residual and conditioning tools still lack the required source-wide paid application. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-tensor-source-image:s1">The mixed-input source estimate is unchanged. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-profile-architecture-review:s1">Profile/source compatibility is not supplied by this certificate identity. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-paired-affine-law:s1">Nonlinear paired-source control is untouched. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-mixed-parent-law-test:s1">A common paid choice for shared groups remains unconstructed. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer passed the isolation, field-witness orientation, formal nonvanishing, telescoping, full correction and edge cases, then checked the explicit unit-slice application. Exact shared-pivot and unit-slice dependency proofs were supplied and reread. See <a href="research/results/binary_normalized_pivot_test_20261011/review.md">review evidence</a>. <strong>Process audit.</strong> The initial next step proposed an unspecified white-box operation despite an applicable recorded lemma. It was replaced by that lemma's explicit application and the concrete simulation-image task. Title and unchanged goal assessment match the result.</p>
+<p><strong>Process assessment.</strong> The exact normalization test prevents confusing a nonzero masked determinant coefficient with full-certificate hardness. <strong>Prevention.</strong> The existing rule requiring exact prior-proof comparison before imposing a new interface applies: the full retraction lemma now discharges the suggested operation in this same cycle, and the next step names an existing unresolved child rather than a duplicate task.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="binary_normalized_pivot_test_20261011">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 16.28 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">6.13 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 42.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 0.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">27.73 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
