@@ -1,0 +1,118 @@
+// Coefficient-fed fixed binary monic division: reverse-series convolution.
+// Predictions: recovered quotient equals the independent formal source and
+// native polynomial division for every divisor and quotient degree enumerated.
+// Refuted by: Any nonzero formal difference in the complete symbolic fixtures.
+// Possible because: A wrong reversal or inverse index changes a formal coefficient.
+// Control: omit a nonconstant nonzero inverse coefficient only when the resulting
+// quotient has changed; assert this difference before rejecting the bad quotient.
+ring giR=2,(z,h0,h1,h2,h3,h4),dp;
+// Bound the native continue regression itself; never let it hang the checker.
+int giSkip; int giSkipVisits=0; int giSkipCap=6;
+for(giSkip=0;giSkip<3;giSkip++)
+{
+  giSkipVisits++;
+  if(giSkipVisits>giSkipCap){break;}
+  if(giSkip==1){continue;}
+}
+"Bounded native continue visits: "+string(giSkipVisits)+", final index: "+string(giSkip);
+proc giAssert(int giOk,string giMessage)
+{
+  if(giOk==0){"FAILED "+giMessage;exit;}
+}
+int giCases=0; int giControls=0; int giExpected=0;
+int giB; int giMask; int giU; int giI; int giJ; int giL;
+int giBits; int giCoeff; int giFirst; int giMode; int giK;
+int giBound=4;
+int giDegree; int giVisits=0; int giVisitLimit=0;
+for(giB=0;giB<=giBound;giB++){giExpected=giExpected+2^giB*(giBound+1);}
+for(giB=0;giB<=giBound;giB++){giVisitLimit=giVisitLimit+2*2^giB*7;}
+giExpected=giExpected+4*(giBound+1);
+giAssert(giExpected<1000,"enumeration size guard");
+poly giD; poly giH; poly giG; poly giTemp; poly giA;
+poly giResult; poly giBad; poly giNative;
+intvec giInverse; intvec giDcoeff;
+list giCoeffs;
+for(giMode=0;giMode<=1;giMode++)
+{
+  for(giB=0;giB<=giBound;giB++)
+  {
+    for(giMask=0;giMask<2^giB;giMask++)
+    {
+      for(giK=0;giK<=6;giK++)
+      {
+        giVisits++;
+        giAssert(giVisits<=giVisitLimit,"finite fixture traversal bound");
+        if((giMode==0 && giK==0) ||
+           (giMode==1 && giB==0 && giMask==0 && giK>=3))
+        {
+        if(giMode==0)
+        {
+          giD=z^giB; giBits=giMask;
+          for(giI=0;giI<giB;giI++)
+          {
+            giCoeff=giBits%2; giBits=giBits div 2;
+            giD=giD+giCoeff*z^giI;
+          }
+        }
+        else{giD=(z^2+z)^giK;}
+        giDegree=deg(giD);
+        for(giU=0;giU<=giBound;giU++)
+        {
+          giH=0;
+          for(giI=0;giI<=giU;giI++){giH=giH+var(giI+2)*z^giI;}
+          giG=giD*giH; giCoeffs=list(); giTemp=giG;
+          for(giI=0;giI<=giDegree+giU;giI++)
+          {
+            giA=subst(giTemp,z,0); giCoeffs[giI+1]=giA;
+            giTemp=(giTemp-giA)/z;
+          }
+          giAssert(giTemp==0,"coefficient extraction completed");
+          giDcoeff=0; giTemp=giD;
+          for(giI=0;giI<=giDegree;giI++)
+          {
+            giDcoeff[giI+1]=int(subst(giTemp,z,0));
+            giTemp=(giTemp-subst(giTemp,z,0))/z;
+          }
+          giInverse=0; giInverse[1]=1;
+          for(giJ=1;giJ<=giU;giJ++)
+          {
+            giCoeff=0;
+            for(giL=1;giL<=giJ;giL++)
+            {
+              if(giL<=giDegree)
+              {giCoeff=giCoeff+giDcoeff[giDegree-giL+1]*giInverse[giJ-giL+1];}
+            }
+            giInverse[giJ+1]=giCoeff%2;
+          }
+          giResult=0;
+          for(giJ=0;giJ<=giU;giJ++)
+          {
+            for(giL=0;giL<=giU-giJ;giL++)
+            {giResult=giResult+giInverse[giL+1]*giCoeffs[giJ+giDegree+giL+1]*z^giJ;}
+          }
+          giNative=giG/giD;
+          giAssert(giResult==giH && giNative==giH,"source and native division");
+          giFirst=0;
+          for(giJ=1;giJ<=giU;giJ++)
+          {if(giFirst==0 && giInverse[giJ+1]!=0){giFirst=giJ;}}
+          if(giFirst>0)
+          {
+            giBad=giResult;
+            for(giJ=0;giJ<=giU-giFirst;giJ++)
+            {giBad=giBad+giCoeffs[giJ+giDegree+giFirst+1]*z^giJ;}
+            giAssert(giBad!=giResult,"omitted inverse contribution changes output");
+            giAssert(giD*giBad!=giG,"altered quotient fails original identity");
+            giControls++;
+          }
+          giCases++;
+        }
+        }
+      }
+    }
+  }
+}
+giAssert(giCases==giExpected && giControls>0 && giVisits==giVisitLimit,"completion counts");
+"Formal divisor/quotient fixtures: "+string(giCases);
+"Nonzero omitted-inverse controls: "+string(giControls);
+"PASS coefficient-fed division completion";
+exit;
