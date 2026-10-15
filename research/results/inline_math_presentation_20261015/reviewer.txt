@@ -1,0 +1,47 @@
+Sole fresh-context GPT-6.1-Sol medium reviewer, reused for the cycle's concrete
+framework corrections after its mathematical review.
+
+Initial framework verdict: fail pending one boundary repair.
+The regex for a protected block stopped at closing-tag text inside an attribute:
+<code data-note="</code>">(x)</code>
+It could therefore accept a delimiter insertion in actual code contents.
+The generic tag token likewise stopped at a quoted >. Require quote-aware
+tokenization and regressions. The initial mutation cases did not test these
+boundaries; passing those cases did not establish the claimed protection.
+
+Second framework verdict: fail pending one further boundary repair.
+The quoted-attribute examples are fixed, but an inline token can consume a
+protected opening tag:
+before: (a <code>x)</code>
+after: \(a <code>x\)</code>
+The closing backslash changes actual code contents, yet canonical text agrees.
+Require inline delimiter pairs to stay inside unprotected text regions.
+
+Boundary correction check: passes inspection.
+Inline candidates can no longer consume HTML tokens. Separate display tracking
+closes the related display-swallowing hole. Regressions cover both reported
+failures. No further concrete boundary defect found. This is inspection, not
+independent execution of the regenerated tests.
+
+Final consolidated verdict: pass with one evidence correction.
+The corrected boundary and regression tests pass inspection. Current logs support
+156 selected mutants, 146 killed, 10 dispositioned survivors, no selected
+timeouts/uncovered cases, and 1061 suite tests passing in 8.3 seconds. Survivor
+dispositions are appropriately limited to verdict equivalence or cosmetic
+findings. Saved performance outputs support both reported measurements.
+
+Correct or omit the reported count of other mutants not selected: the current
+output shows 156/366, implying 210 rather than 209 unless there is a documented
+extra baseline. Reconcile the inventory; do not rerun tests for this metadata.
+
+Process audit
+Both discovered boundary defects are repaired and covered by targeted failing
+controls. Superseded evidence is clearly identified. The broad TeX guard remains
+explicitly unimplemented. No further code correction or mathematical change is
+required. No independent certification of timing/Git/search execution is implied.
+
+Author disposition
+The native inventory in current-mutant-inventory.txt lists exactly 210
+not-checked mutants. verification-current.json records 210 and the earlier
+superseded ledgers' off-by-one. No production source/test change or rerun followed
+that metadata correction. Historical source snapshots use underscore filenames.

@@ -3,7 +3,9 @@
 
 Every <article id=...> of BASE:notebook.html must reappear in the working notebook with the same
 text. Only presentation changes are tolerated, as AGENTS.md allows: <a ...> and </a> tags are
-ignored (link repairs), and a non-breaking space counts as a space (layout).
+ignored (link repairs), a non-breaking space counts as a space (layout), and adding paired inline
+MathJax delimiters around unchanged parenthesized text is allowed. Removing or moving existing
+delimiters, or changing code or displayed mathematics, is not a presentation repair.
 Usage: check-append-only.py [--base REF]   (default origin/main; exit 1 on any changed or missing entry)"""
 import argparse
 from pathlib import Path
@@ -28,6 +30,58 @@ def normalize(article):
     return article.replace('&nbsp;', ' ').replace('\u00a0', ' ')
 
 
+def inline_math_view(text):
+    """Plain parenthesized text and the spans already marked as inline mathematics.
+
+    Positions refer to that plain text, so adding a delimiter does not move later spans.
+    Protected HTML blocks, comments, tags and displayed mathematics remain byte-for-byte.
+    """
+    tokens = re.compile(
+        r'<!--.*?-->|(?P<html><(?:[^>"\']|"[^"]*"|\'[^\']*\')*>)|'
+        r'(?P<display>\\\[|\\\])|(?P<inline>\\\((?P<body>[^<]*?)\\\))', re.S)
+    pieces, spans, protected, displayed, end, length = [], set(), [], False, 0, 0
+    for token in tokens.finditer(text):
+        gap = text[end:token.start()]
+        pieces.append(gap)
+        length += len(gap)
+        value = token.group()
+        if token.group('html'):
+            tag = re.match(r'<(/?)([a-zA-Z][\w:-]*)', value)
+            if tag:
+                closing, name = tag.group(1), tag.group(2).lower()
+                if protected and protected[-1] in ('script', 'style'):
+                    if closing and name == protected[-1]:
+                        protected.pop()
+                elif name in ('pre', 'code', 'script', 'style'):
+                    if not closing:
+                        protected.append(name)
+                    elif protected and name == protected[-1]:
+                        protected.pop()
+                    elif name in protected:
+                        return None
+        elif token.group('display') and not protected:
+            if value == r'\[' and displayed:
+                return None
+            displayed = value == r'\['
+        elif token.group('inline') and not protected and not displayed:
+            if any(marker in token.group('body') for marker in (r'\(', r'\[', r'\]')):
+                return None
+            value = '(' + token.group('body') + ')'
+            spans.add((length, length + len(value)))
+        pieces.append(value)
+        length += len(value)
+        end = token.end()
+    pieces.append(text[end:])
+    return None if protected or displayed else (''.join(pieces), spans)
+
+
+def presentation_equal(before, after):
+    if before == after:
+        return True
+    old, new = inline_math_view(before), inline_math_view(after)
+    return old is not None and new is not None and old[0] == new[0] and old[1] <= new[1]
+
+
 def record_articles_text(body):
     """The record from its section tag through the last article's end."""
     start = body.find('<section id="research-record">')
@@ -43,7 +97,7 @@ def violations(base_body, current_body):
         return [], []
     base, current = entries(base_body), entries(current_body)
     missing = [name for name in base if name not in current]
-    changed = [name for name in base if name in current and base[name] != current[name]]
+    changed = [name for name in base if name in current and not presentation_equal(base[name], current[name])]
     if [name for name in current if name in base] != [name for name in base if name in current]:
         changed.append('(historical entry order)')
     return missing, changed
@@ -61,16 +115,19 @@ def check(root, ref):
     present = [p for p in before if p in current and (root/p).exists()]
     diff = subprocess.run(['git','diff','--name-only',ref,'--',*present],cwd=root,capture_output=True,text=True)
     differing = set(diff.stdout.splitlines()) if diff.returncode == 0 else set(present)
-    missing, changed = [], []
+    missing, changed, compared_bytes = [], [], 0
     for path in before:
         if path not in current or not (root/path).exists():
             missing.append(path + ' (notebook deleted or unregistered)'); continue
         if path not in differing:   # identical to the base revision
             continue
         shown = subprocess.check_output(['git','show',f'{ref}:{path}'],cwd=root,text=True)
-        left,right = violations(shown,(root/path).read_text())
+        current_text = (root/path).read_text()
+        compared_bytes += len(shown.encode('utf-8')) + (root/path).stat().st_size
+        left,right = violations(shown,current_text)
         missing.extend(path+'#'+x for x in left)
         changed.extend(path+'#'+x for x in right)
+    print(f'Append-only input: {len(before)} registered notebook paths; {compared_bytes} compared bytes.')
     return missing, changed
 
 

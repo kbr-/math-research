@@ -1,0 +1,44 @@
+{
+  "change": "Append-only comparison permits paired inline MathJax delimiter additions around identical parenthesized text, while preserving previous math spans, code, comments, HTML tags and displayed mathematics.",
+  "production": ["tools/check-append-only.py", "tools/tests/test_check_append_only.py"],
+  "control": {"tests": 8, "evidence": "control.txt", "final_control": "generic-final.txt includes the final clean-test run; full-suite.txt runs the final production tests"},
+  "targeted": [
+    {"mutant": "reject every nonidentical repair", "killed_by": "test_inline_math_delimiters_may_be_added_around_unchanged_text", "tests_ran": 8, "evidence": "target-reject-repairs.txt"},
+    {"mutant": "remove the old-span subset requirement", "killed_by": "test_existing_inline_math_cannot_be_removed_or_moved", "tests_ran": 8, "evidence": "target-removal.txt"},
+    {"mutant": "drop the unchanged-plain-text comparison", "killed_by": "test_math_repair_does_not_allow_changed_content_or_nested_delimiters", "tests_ran": 8, "evidence": "target-content.txt"},
+    {"mutant": "strip delimiters inside protected tokens", "killed_by": "test_code_comments_and_displayed_math_are_not_inline_repairs", "tests_ran": 8, "evidence": "target-protected.txt"}
+  ],
+  "generic": {
+    "tool": "installed mutmut 3",
+    "scope": ["inline_math_view", "presentation_equal", "violations"],
+    "selected": 107,
+    "initial_survivors": 22,
+    "final_killed": 95,
+    "final_survived": 12,
+    "selected_uncovered": 0,
+    "timeouts": 0,
+    "other_mutants_not_selected": 209,
+    "gaps_closed": ["unchanged protected blocks beside a valid repair", "multiline and uppercase protected contexts", "leading prose before math", "direct malformed/nested-delimiter refusal", "empty base research record"],
+    "equivalent": {
+      "inline_math_view__8": "Case-insensitive regex: uppercase group/backreference and tag alternatives have the same match language; that capture is not read by name.",
+      "inline_math_view__54": "Uppercase alternatives under re.I have the same language.",
+      "inline_math_view__15": "Adds one constant to all span coordinates on both sides; unchanged plain text and subset/equality decisions are identical. Equivalence is for the append-only verdict, not absolute coordinate documentation.",
+      "inline_math_view__45": "Re-encodes each span (start,end) as (start,2*start-end), an injective transformation on both sides; all subset/equality decisions are unchanged.",
+      "presentation_equal__15": "When raw strings differ but canonical plain text agrees, identical span sets would reconstruct identical raw strings. Therefore a permitted addition is already a strict superset; the equal-string fast return covers the equality case.",
+      "violations__1": "Disables only the fast path; the full comparison gives the same verdict.",
+      "violations__7": "find and rfind agree for a valid notebook's unique research-record section.",
+      "violations__8": "The nonexistent needle disables only the fast path; full comparison preserves the verdict.",
+      "violations__9": "The uppercase nonexistent needle disables only the fast path; full comparison preserves the verdict."
+    },
+    "cosmetic": {
+      "violations__26": "Changes the nonempty historical-order finding's label to None; the verdict still fails closed.",
+      "violations__27": "Changes only the historical-order finding text.",
+      "violations__28": "Changes only the historical-order finding text."
+    },
+    "evidence": ["generic-initial.txt", "generic-final.txt", "generic-survivors-initial.txt"]
+  },
+  "full_suite": {"tests": 1061, "elapsed_seconds": 8.4, "status": "OK", "evidence": "full-suite.txt"},
+  "repository_measurement": {"notebook_paths": 7, "compared_bytes": 21177663, "elapsed_seconds": 0.69, "evidence": "repository-check.txt"},
+  "largest_notebook_measurement": {"source": "research/branches/binary-multiplicity-degree/notebook.html", "compared_bytes": 36679664, "elapsed_seconds": 0.4626073781400919, "method": "read-only copies of the real largest notebook, differing by one synthetic delimiter-only research article; source notebook unchanged", "evidence": "largest-notebook-check.txt"},
+  "limits": "No speedup or broad inline-TeX lint is claimed. The separate inline-tex-delimiter-guard build remains unimplemented."
+}

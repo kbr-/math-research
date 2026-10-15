@@ -1,0 +1,13 @@
+# command: python3 -c import importlib.util,json,time
+from pathlib import Path
+s=importlib.util.spec_from_file_location("append_only","tools/check-append-only.py")
+m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+p=Path("research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/largest-before.html")
+q=Path("research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/largest-after.html")
+before=p.read_text();after=q.read_text()
+start=time.perf_counter();result=m.violations(before,after);elapsed=time.perf_counter()-start
+print(json.dumps({"compared_bytes":p.stat().st_size+q.stat().st_size,"result":result,"elapsed_seconds":elapsed}))
+assert result==([],[])
+
+# run a94cc574a9, session ac2-ips-block-pivots-20261015; full output
+{"compared_bytes": 36679664, "result": [[], []], "elapsed_seconds": 0.5665075199212879}

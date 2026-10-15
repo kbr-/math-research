@@ -1,0 +1,57 @@
+# command: python3 -m pytest -q research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests
+# run 4fdaa2ff48, session ac2-ips-block-pivots-20261015; full output
+.F.F....                                                                 [100%]
+=================================== FAILURES ===================================
+_ AppendOnlyTest.test_code_comments_and_displayed_math_are_not_inline_repairs __
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_code_comments_and_displayed_math_are_not_inline_repairs>
+
+    def test_code_comments_and_displayed_math_are_not_inline_repairs(self):
+        for wrapper in ['<code>{}</code>', '<CODE>{}</CODE>', '<pre>{}</pre>', '<script>{}</script>',
+                        '<style>{}</style>', '<!--{}-->', r'\[{}\]', '<i title="{}">',
+                        '<code data-note="</code>">{}</code>', "<code data-note='</code>'>{}</code>",
+                        '<pre><i data-note="</pre>">{}</i></pre>', '<i title="> {}">',
+                        '<script>const s="<code>";{}</script>', '<script>const s="<script>";{}</script>',
+                        '<style>/* <code> */{}</style>', '<style>/* <style> */{}</style>',
+                        r'<code>\[ {}</code>']:
+            self.assertEqual(MODULE.violations(body(wrapper.format('(x)')),
+                                             body(wrapper.format(r'\(x\)'))), ([], ['e1']))
+            protected = wrapper.format('(x)\nunchanged')
+>           self.assertEqual(MODULE.violations(body(protected + ' (y)'),
+                                             body(protected + r' \(y\)')), ([], []))
+E           AssertionError: Tuples differ: ([], ['e1']) != ([], [])
+E           
+E           First differing element 1:
+E           ['e1']
+E           []
+E           
+E           - ([], ['e1'])
+E           ?       ----
+E           
+E           + ([], [])
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:54: AssertionError
+_ AppendOnlyTest.test_inline_math_delimiters_may_be_added_around_unchanged_text _
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_inline_math_delimiters_may_be_added_around_unchanged_text>
+
+    def test_inline_math_delimiters_may_be_added_around_unchanged_text(self):
+        before = r'(\mathbb F_2), \(x+y\), (O(M(log M)))'
+        after = r'\(\mathbb F_2\), \(x+y\), \(O(M(log M))\)'
+>       self.assertEqual(MODULE.violations(body(before), body(after)), ([], []))
+E       AssertionError: Tuples differ: ([], ['e1']) != ([], [])
+E       
+E       First differing element 1:
+E       ['e1']
+E       []
+E       
+E       - ([], ['e1'])
+E       ?       ----
+E       
+E       + ([], [])
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_code_comments_and_displayed_math_are_not_inline_repairs
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_inline_math_delimiters_may_be_added_around_unchanged_text
+2 failed, 6 passed in 0.04s

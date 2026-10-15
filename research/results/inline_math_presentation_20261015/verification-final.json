@@ -1,0 +1,36 @@
+{
+  "status": "Corrected quote-aware implementation; supersedes verification.json, whose initial regex was rejected in focused review.",
+  "implementation": ["tools/check-append-only.py", "tools/tests/test_check_append_only.py"],
+  "repair_scope": "Only add paired inline MathJax delimiters to unchanged parenthesized text while preserving every existing inline span. Quote-aware HTML tags and protected-element tracking keep code/pre/script/style, comments, attributes and displayed math unchanged.",
+  "review_correction": "The first protected-block regex stopped at closing-tag text inside a quoted attribute. The corrected lexer consumes complete quoted tags and tracks protected elements, including nested and raw script/style contexts.",
+  "initial_version": ["check_before_attribute_fix.py", "tests_before_attribute_fix.py", "verification.json", "provenance.json"],
+  "targeted": {"tested": 5, "killed": 5, "tests_per_run": 8, "mutants": ["reject valid repairs", "permit delimiter removal", "permit content changes", "strip protected literals", "ignore quoted attribute boundaries"], "evidence": ["quote-target-reject.txt", "quote-target-removal.txt", "quote-target-content.txt", "quote-target-protected.txt", "quote-target-attributes.txt"]},
+  "generic": {
+    "selected_functions": ["inline_math_view", "presentation_equal", "violations"],
+    "selected": 144,
+    "initial_killed": 125,
+    "initial_survived": 19,
+    "final_killed": 134,
+    "final_survived": 10,
+    "selected_uncovered": 0,
+    "timeouts": 0,
+    "other_mutants_not_selected": 209,
+    "closed_gaps": ["multiline inline repairs", "unbalanced HTML-looking strings inside raw script/style", "opening same-name tags inside raw strings", "unmatched closing tags", "crossed protected nesting"],
+    "equivalent_for_verdict": {
+      "inline_math_view__14": "Constant translation of all span coordinates on both sides preserves every equality/subset decision; plain text is unchanged.",
+      "inline_math_view__91": "Injective re-encoding (start,end) to (start,2*start-end) on both sides preserves equality/subset decisions.",
+      "presentation_equal__15": "Different raw strings with the same plain text and identical inline-span sets cannot occur under this canonical encoding. An allowed addition is already a strict superset; identical strings return early.",
+      "violations__1": "Disables only the optimization, leaving the full comparison.",
+      "violations__7": "find and rfind agree for the valid notebook's unique research-record section.",
+      "violations__8": "Disables only the fast path, leaving the full comparison.",
+      "violations__9": "Disables only the fast path, leaving the full comparison."
+    },
+    "cosmetic": {"violations__26": "Historical-order finding label becomes None; verdict still fails closed.", "violations__27": "Only finding label changes.", "violations__28": "Only finding label changes."},
+    "evidence": ["quote-generic-initial.txt", "quote-generic-final.txt", "quote-survivors-initial.txt"]
+  },
+  "control": "quote-control.txt and final generic clean-test run",
+  "full_suite": {"tests": 1061, "elapsed_seconds": 8.5, "status": "OK", "evidence": "quote-full-suite.txt"},
+  "real_repository": {"registered_notebook_paths": 7, "compared_bytes": 21177663, "elapsed_seconds": 0.61, "evidence": "quote-repository-check.txt"},
+  "largest_notebook": {"source": "research/branches/binary-multiplicity-degree/notebook.html", "compared_bytes": 36679664, "elapsed_seconds": 0.5665075199212879, "method": "Read-only copies of the largest real notebook with one synthetic delimiter-only article difference; source notebook unchanged.", "evidence": "quote-largest-check.txt"},
+  "limits": "Generic mutations cover only the listed functions. CLI source counters were checked by real runs, not generic mutation testing. The broad inline-TeX detector remains a separate queued, unimplemented build. No speedup is claimed."
+}

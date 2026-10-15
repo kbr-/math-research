@@ -1,0 +1,41 @@
+{
+  "status": "Current accepted boundary-corrected implementation. Earlier verification.json and verification-final.json describe superseded versions rejected in focused review.",
+  "implementation": ["tools/check-append-only.py", "tools/tests/test_check_append_only.py"],
+  "scope": "Allow only paired inline MathJax delimiter additions to identical parenthesized text; retain all existing spans. Quote-aware HTML tokens and protected-element state prevent code/attribute edits; inline candidates cannot cross raw HTML boundaries; display state never hides HTML tags.",
+  "review_repairs": ["Quoted fake closing tags and quoted > must not terminate HTML tokens.", "Inline or displayed math must not swallow an opening protected tag and permit changes inside code."],
+  "historical_sources": ["check_before_attribute_fix.py", "tests_before_attribute_fix.py", "check_before_crossing_fix.py", "tests_before_crossing_fix.py"],
+  "targeted": {
+    "tested": 7, "killed": 7, "tests_ran_per_mutant": 8,
+    "mutants": [
+      {"name": "reject valid repairs", "killed_by": "test_inline_math_delimiters_may_be_added_around_unchanged_text", "evidence": "current-target-reject.txt"},
+      {"name": "permit delimiter removal", "killed_by": "test_existing_inline_math_cannot_be_removed_or_moved", "evidence": "current-target-removal.txt"},
+      {"name": "permit content change", "killed_by": "test_math_repair_does_not_allow_changed_content_or_nested_delimiters", "evidence": "current-target-content.txt"},
+      {"name": "strip protected literals", "killed_by": "test_code_comments_and_displayed_math_are_not_inline_repairs", "evidence": "current-target-protected.txt"},
+      {"name": "ignore quoted attributes", "killed_by": "test_code_comments_and_displayed_math_are_not_inline_repairs", "evidence": "current-target-attributes.txt"},
+      {"name": "let inline math cross HTML", "killed_by": "test_math_repair_does_not_allow_changed_content_or_nested_delimiters", "evidence": "current-target-inline-crossing.txt"},
+      {"name": "let whole display tokens hide HTML", "killed_by": "test_math_repair_does_not_allow_changed_content_or_nested_delimiters", "evidence": "current-target-display-crossing.txt"}
+    ]
+  },
+  "generic": {
+    "selected_functions": ["inline_math_view", "presentation_equal", "violations"],
+    "selected": 156, "killed": 146, "survived": 10, "selected_uncovered": 0, "timeouts": 0,
+    "other_mutants_not_selected": 210,
+    "inventory_correction": "current-mutant-inventory.txt lists 210 not-checked mutants. Earlier superseded ledgers miscounted this by one; selected/killed/survived counts are unchanged.",
+    "equivalent_for_verdict": {
+      "inline_math_view__15": "Constant translation of all span coordinates on both sides preserves equality and subset decisions.",
+      "inline_math_view__102": "Injective span re-encoding (start,end) -> (start,2*start-end) preserves all equality and subset decisions.",
+      "presentation_equal__15": "Identical plain text and span sets reconstruct identical raw strings, already handled by the early equality return; a genuine permitted addition is strict.",
+      "violations__1": "Disables only the fast path, leaving full comparison.",
+      "violations__7": "find and rfind agree on a valid notebook's unique research-record section.",
+      "violations__8": "Disables only the fast path.",
+      "violations__9": "Disables only the fast path."
+    },
+    "cosmetic": {"violations__26": "Changes only the nonempty historical-order finding label, retaining fail-closed status.", "violations__27": "Finding label only.", "violations__28": "Finding label only."},
+    "evidence": "current-generic.txt"
+  },
+  "unmutated_control": "current-control.txt; the current generic run also starts with clean tests",
+  "full_suite": {"tests": 1061, "elapsed_seconds": 8.3, "status": "OK", "evidence": "current-full-suite.txt"},
+  "repository": {"registered_notebook_paths": 7, "compared_bytes": 21177663, "elapsed_seconds": 0.61, "evidence": "current-repository-check.txt"},
+  "largest_notebook": {"source": "research/branches/binary-multiplicity-degree/notebook.html", "compared_bytes": 36679664, "elapsed_seconds": 0.5185105698183179, "method": "Real largest notebook copies with one synthetic delimiter-only article difference; source notebook unchanged.", "evidence": "current-largest-check.txt"},
+  "limits": "Other mutation functions were not selected. Current code is not a general HTML validator or a broad inline-TeX linter; conservative refusal is allowed. The broad inline-tex-delimiter-guard remains queued and unimplemented. No speedup is claimed."
+}

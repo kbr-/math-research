@@ -1,0 +1,25 @@
+# command: python3 -m pytest -q research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests
+# run 3ecdb49290, session ac2-ips-block-pivots-20261015; full output
+..F.....                                                                 [100%]
+=================================== FAILURES ===================================
+_____ AppendOnlyTest.test_existing_inline_math_cannot_be_removed_or_moved ______
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_existing_inline_math_cannot_be_removed_or_moved>
+
+    def test_existing_inline_math_cannot_be_removed_or_moved(self):
+        for before, after in [(r'\(x\)', '(x)'), (r'\(x\) (y)', r'(x) \(y\)')]:
+>           self.assertEqual(MODULE.violations(body(before), body(after)), ([], ['e1']))
+E           AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E           
+E           First differing element 1:
+E           []
+E           ['e1']
+E           
+E           - ([], [])
+E           + ([], ['e1'])
+E           ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:30: AssertionError
+=========================== short test summary info ============================
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_existing_inline_math_cannot_be_removed_or_moved
+1 failed, 7 passed in 0.04s
