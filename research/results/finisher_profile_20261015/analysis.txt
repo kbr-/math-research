@@ -1,0 +1,28 @@
+Actual checkpoint profile, 15 October 2026
+
+The powered-prefix checkpoint reported 6.4 seconds of checks under cProfile;
+the preceding unprofiled GCD checkpoint reported 5.1 seconds. The profile
+includes instrumentation overhead and is not a speed comparison.
+
+profile.txt preserves the built-in pstats cumulative report from the completed
+real checkpoint. Its 12.543-second overall interval also includes timing,
+archival, next-cycle guidance and the external stand-in attempt. These are not
+all inside the check-warning interval.
+
+Within checks, check_revision accounts for 2.411 seconds, full registry schema
+validation for 1.098 seconds, validate_queue for 1.180 seconds, and two calls to
+validate_marker for 0.809 seconds. Existing registry parsing is cached; the
+profile does not justify adding another parse cache. The two marker validations
+are not automatically redundant: one runs on the draft and one after timing
+replacement. Removing either requires verifying which state it protects.
+
+The existing queued checkpoint-check-cost build already owns reducing these
+checks without weakening validation. This evidence narrows its next profiling
+work to changed-evidence maintenance and repeated notebook scans; it proves no
+speedup and changes no limit or default. A same-check unprofiled measurement is
+still needed before attributing an improvement. No framework implementation was
+changed in this administrative evidence checkpoint.
+
+The full-framework-suite overrun is a separately queued task and was not tested
+or explained by this finisher profile. The stand-in weekly-limit failure yielded
+no review verdict.
