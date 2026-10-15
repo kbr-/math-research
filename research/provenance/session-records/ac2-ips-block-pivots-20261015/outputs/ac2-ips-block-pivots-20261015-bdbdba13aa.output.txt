@@ -1,0 +1,84 @@
+FF...F.F                                                                 [100%]
+=================================== FAILURES ===================================
+__________ AppendOnlyTest.test_appended_entries_and_their_neighbours ___________
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_appended_entries_and_their_neighbours>
+
+    def test_appended_entries_and_their_neighbours(self):
+        base = body('x')
+        added = base.replace('</section>', '<article id="e2">new</article></section>')
+        self.assertEqual(MODULE.violations(base, added), ([], []))                     # the fast path
+>       self.assertEqual(MODULE.violations(base, added.replace('<td>x', '<td>y')), ([], ['e1']))
+E       AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E       
+E       First differing element 1:
+E       []
+E       ['e1']
+E       
+E       - ([], [])
+E       + ([], ['e1'])
+E       ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:54: AssertionError
+_ AppendOnlyTest.test_code_comments_and_displayed_math_are_not_inline_repairs __
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_code_comments_and_displayed_math_are_not_inline_repairs>
+
+    def test_code_comments_and_displayed_math_are_not_inline_repairs(self):
+        for wrapper in ['<code>{}</code>', '<CODE>{}</CODE>', '<pre>{}</pre>', '<script>{}</script>',
+                        '<style>{}</style>', '<!--{}-->', r'\[{}\]', '<i title="{}">']:
+>           self.assertEqual(MODULE.violations(body(wrapper.format('(x)')),
+                                             body(wrapper.format(r'\(x\)'))), ([], ['e1']))
+E           AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E           
+E           First differing element 1:
+E           []
+E           ['e1']
+E           
+E           - ([], [])
+E           + ([], ['e1'])
+E           ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:41: AssertionError
+_ AppendOnlyTest.test_math_repair_does_not_allow_changed_content_or_nested_delimiters _
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_math_repair_does_not_allow_changed_content_or_nested_delimiters>
+
+    def test_math_repair_does_not_allow_changed_content_or_nested_delimiters(self):
+        for before, after in [(r'(\alpha+x)', r'\(\alpha+y\)'), (r'\(f(x)\)', r'\(f\(x\)\)'),
+                              ('(x)', r'\(\[(x)\]\)')]:
+>           self.assertEqual(MODULE.violations(body(before), body(after)), ([], ['e1']))
+E           AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E           
+E           First differing element 1:
+E           []
+E           ['e1']
+E           
+E           - ([], [])
+E           + ([], ['e1'])
+E           ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:34: AssertionError
+_________________ AppendOnlyTest.test_text_change_is_rejected __________________
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_text_change_is_rejected>
+
+    def test_text_change_is_rejected(self):
+>       self.assertEqual(MODULE.violations(body('38 / 527'), body('38 / 528')), ([], ['e1']))
+E       AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E       
+E       First differing element 1:
+E       []
+E       ['e1']
+E       
+E       - ([], [])
+E       + ([], ['e1'])
+E       ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_appended_entries_and_their_neighbours
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_code_comments_and_displayed_math_are_not_inline_repairs
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_math_repair_does_not_allow_changed_content_or_nested_delimiters
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_text_change_is_rejected
+4 failed, 4 passed in 0.04s

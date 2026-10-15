@@ -1,0 +1,114 @@
+// Test the constant/variable determinant projection of the COMPLETE symmetric
+// correction at A=0, not a selected cofactor register. At A=0 all masks equal
+// one and all monomers vanish, leaving the perfect-matching polynomial of ZZ^T.
+// Refuted by: a nonzero projection discrepancy for any listed generic matrix.
+// Possible because: removing a forced cross edge changes its determinant term.
+// The exact symbolic checks use r=1,2,3, the first nonconstant, mixed and
+// six-row controls, with N=r and M=2r. No larger case is needed for this test.
+// Expectations precede this exploratory execution, but not a commit.
+ring wcRing=2,(z(1..18),x(1..9),si,ri,delta),dp;
+int wcChecks=0;
+proc wcZero(poly p,string label)
+{
+  if(p!=0){print("FAILED "+label);quit;}
+  wcChecks++;print("OK "+label);
+}
+proc wcNonzero(poly p,string label)
+{
+  if(p==0){print("FAILED "+label);quit;}
+  wcChecks++;print("OK "+label);
+}
+proc wcMatching(matrix edges,intvec vertices)
+{
+  int len=size(vertices);
+  if(len==0){return(poly(1));}
+  int first=vertices[1];int a;int c;int b;
+  intvec rest;
+  poly answer=0;
+  for(a=2;a<=len;a++)
+  {
+    if(len==2){answer=answer+edges[first,vertices[a]];}
+    else
+    {
+      rest=intvec(0);b=0;
+      for(c=2;c<=len;c++)
+      {if(c!=a){b++;rest[b]=vertices[c];}}
+      answer=answer+edges[first,vertices[a]]*wcMatching(edges,rest);
+    }
+  }
+  return(answer);
+}
+proc wcProject(poly p,int r)
+{
+  int i;int j;
+  for(i=1;i<=r;i++)
+  {
+    for(j=1;j<=r;j++)
+    {
+      p=subst(p,z((i-1)*3+j),int(i==j));
+      p=subst(p,z((r+i-1)*3+j),x((i-1)*3+j));
+    }
+  }
+  return(p);
+}
+proc wcFixture(int r)
+{
+  int m=2*r;int i;int j;int ell;
+  matrix edges[m][m];matrix generic[r][r];
+  for(i=1;i<=m;i++)
+  {
+    for(j=i+1;j<=m;j++)
+    {
+      for(ell=1;ell<=r;ell++)
+      {edges[i,j]=edges[i,j]+z((i-1)*3+ell)*z((j-1)*3+ell);}
+      edges[j,i]=edges[i,j];
+    }
+  }
+  for(i=1;i<=r;i++)
+  {
+    for(j=1;j<=r;j++)
+    {generic[i,j]=x((i-1)*3+j);}
+  }
+  for(i=1;i<=r;i++)
+  {
+    for(j=1;j<=r;j++)
+    {
+      wcZero(wcProject(edges[i,r+j],r)+generic[j,i],"cross edge");
+    }
+    for(j=i+1;j<=r;j++)
+    {wcZero(wcProject(edges[i,j],r),"no first-block edge");}
+  }
+  poly complete=wcMatching(edges,1..m);
+  poly projected=wcProject(complete,r);
+  poly expected=det(generic);
+  wcZero(projected+expected,"whole matching determinant r="+string(r));
+  // Alter the actual complete matching input before evaluating its projection.
+  matrix altered=edges;
+  altered[1,r+1]=0;altered[r+1,1]=0;
+  poly wrong=wcMatching(altered,1..m);
+  wrong=wcProject(wrong,r);
+  wcNonzero(wrong+expected,"missing cross edge distinguishes output");
+  for(i=1;i<=r;i++)
+  {
+    for(j=1;j<=r;j++)
+    {
+      projected=subst(projected,x((i-1)*3+j),int(i==j));
+      wrong=subst(wrong,x((i-1)*3+j),int(i==j));
+    }
+  }
+  wcZero(projected+1,"identity determinant survives");
+  wcZero(wrong,"missing diagonal edge kills identity control");
+  print("FIXTURE r="+string(r)+" M="+string(m)+" N="+string(r)+" original_Boolean_placeholders="+string(m*r));
+}
+wcFixture(1);wcFixture(2);wcFixture(3);
+// Independent abstract check of the row-cut residual repair after the full
+// Boolean substitution: sum row Boolean fields is si^2+si and target=si*ri.
+poly wcPatched=si*(si*ri)+ri*(si^2+si);
+wcZero(wcPatched+si*ri,"row-cut residual repair");
+int wcExpected=1;
+for(int wcR=1;wcR<=3;wcR++)
+{wcExpected=wcExpected+wcR*wcR+wcR*(wcR-1) div 2+4;}
+if(wcChecks!=wcExpected){print("FAILED completion count");quit;}
+print("ASSERTIONS "+string(wcChecks)+" expected "+string(wcExpected));
+print("PASS");
+quit;

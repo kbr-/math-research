@@ -1,0 +1,58 @@
+.F...F..                                                                 [100%]
+=================================== FAILURES ===================================
+_ AppendOnlyTest.test_code_comments_and_displayed_math_are_not_inline_repairs __
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_code_comments_and_displayed_math_are_not_inline_repairs>
+
+    def test_code_comments_and_displayed_math_are_not_inline_repairs(self):
+        for wrapper in ['<code>{}</code>', '<CODE>{}</CODE>', '<pre>{}</pre>', '<script>{}</script>',
+                        '<style>{}</style>', '<!--{}-->', r'\[{}\]', '<i title="{}">',
+                        '<code data-note="</code>">{}</code>', "<code data-note='</code>'>{}</code>",
+                        '<pre><i data-note="</pre>">{}</i></pre>', '<i title="> {}">',
+                        '<script>const s="<code>";{}</script>', '<script>const s="<script>";{}</script>',
+                        '<style>/* <code> */{}</style>', '<style>/* <style> */{}</style>',
+                        r'<code>\[ {}</code>']:
+            self.assertEqual(MODULE.violations(body(wrapper.format('(x)')),
+                                             body(wrapper.format(r'\(x\)'))), ([], ['e1']))
+            protected = wrapper.format('(x)\nunchanged')
+            self.assertEqual(MODULE.violations(body(protected + ' (y)'),
+                                             body(protected + r' \(y\)')), ([], []))
+        self.assertIsNone(MODULE.inline_math_view(r'<code>\(x\)'))
+        self.assertIsNone(MODULE.inline_math_view(r'<CODE>\(x\)'))
+        self.assertIsNone(MODULE.inline_math_view(r'<pre>\(x\)'))
+        self.assertIsNone(MODULE.inline_math_view(r'<code data-note="</code>">\(x\)'))
+        self.assertEqual(MODULE.inline_math_view(r'</code>(x)')[0], r'</code>(x)')
+        self.assertIsNone(MODULE.inline_math_view(r'<pre><code>(x)</pre></code></pre>'))
+>       self.assertIsNone(MODULE.inline_math_view(r'\[unclosed'))
+E       AssertionError: ('\\[unclosed', set()) is not None
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:62: AssertionError
+_ AppendOnlyTest.test_math_repair_does_not_allow_changed_content_or_nested_delimiters _
+
+self = <test_check_append_only.AppendOnlyTest testMethod=test_math_repair_does_not_allow_changed_content_or_nested_delimiters>
+
+    def test_math_repair_does_not_allow_changed_content_or_nested_delimiters(self):
+        for before, after in [(r'(\alpha+x)', r'\(\alpha+y\)'), (r'\(f(x)\)', r'\(f\(x\)\)'),
+                              ('(x)', r'\(\[(x)\]\)')]:
+            self.assertEqual(MODULE.violations(body(before), body(after)), ([], ['e1']))
+        self.assertIsNone(MODULE.inline_math_view(r'\(f\(x\)'))
+        self.assertIsNone(MODULE.inline_math_view(r'\(\[x\)'))
+        self.assertIsNone(MODULE.inline_math_view(r'\(x\]\)'))
+        for before, after in [(r'(a <code>x)</code>', r'\(a <code>x\)</code>'),
+                              (r'\[<code>\](x)</code>', r'\[<code>\]\(x\)</code>')]:
+>           self.assertEqual(MODULE.violations(body(before), body(after)), ([], ['e1']))
+E           AssertionError: Tuples differ: ([], []) != ([], ['e1'])
+E           
+E           First differing element 1:
+E           []
+E           ['e1']
+E           
+E           - ([], [])
+E           + ([], ['e1'])
+E           ?       ++++
+
+research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py:41: AssertionError
+=========================== short test summary info ============================
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_code_comments_and_displayed_math_are_not_inline_repairs
+FAILED research/tmp/codex/0116b2de761f162a30a9dfa5c6a455ad73ce0c6f0399f3b8fb3bb7f8aaac193b/append-mutation/tests/test_check_append_only.py::AppendOnlyTest::test_math_repair_does_not_allow_changed_content_or_nested_delimiters
+2 failed, 6 passed in 0.04s

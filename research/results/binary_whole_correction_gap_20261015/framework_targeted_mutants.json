@@ -1,0 +1,52 @@
+{
+  "purpose": "Exact hand-mutant edits used in the current-cycle framework verification; apply each independently to a scratch copy of tools/check-append-only.py from the checkpoint titled Permit unchanged inline MathJax delimiter repairs.",
+  "test_command": "python3 -m pytest -q tests",
+  "installed_versions": {"mutmut": "3.8.0", "pytest": "9.1.1"},
+  "scratch_pyproject": {"tool.pytest.ini_options": {"pythonpath": ["src"]}, "tool.mutmut": {"source_paths": ["src"], "tests_dir": ["tests"], "max_children": 14}},
+  "test_copy": "tools/tests/test_check_append_only.py with its import adapted to import check_append_only as MODULE in the scratch src/tests layout",
+  "mutants": [
+    {
+      "name": "reject_repairs",
+      "replace_line": "    return old is not None and new is not None and old[0] == new[0] and old[1] <= new[1]",
+      "with": "    return False",
+      "output": "research/results/inline_math_presentation_20261015/current-target-reject.txt"
+    },
+    {
+      "name": "permit_removal",
+      "replace_line": "    return old is not None and new is not None and old[0] == new[0] and old[1] <= new[1]",
+      "with": "    return old is not None and new is not None and old[0] == new[0]",
+      "output": "research/results/inline_math_presentation_20261015/current-target-removal.txt"
+    },
+    {
+      "name": "permit_content",
+      "replace_line": "    return old is not None and new is not None and old[0] == new[0] and old[1] <= new[1]",
+      "with": "    return old is not None and new is not None and old[1] <= new[1]",
+      "output": "research/results/inline_math_presentation_20261015/current-target-content.txt"
+    },
+    {
+      "name": "strip_protected",
+      "insert_before": "        pieces.append(value)",
+      "line": "        value = value.replace(r'\\(', '(').replace(r'\\)', ')')",
+      "output": "research/results/inline_math_presentation_20261015/current-target-protected.txt"
+    },
+    {
+      "name": "ignore_quoted_attributes",
+      "replace_line": "        r'<!--.*?-->|(?P<html><(?:[^>\"\\']|\"[^\"]*\"|\\'[^\\']*\\')*>)|'",
+      "with": "        r'<!--.*?-->|(?P<html><[^>]*>)|'",
+      "output": "research/results/inline_math_presentation_20261015/current-target-attributes.txt"
+    },
+    {
+      "name": "inline_cross_html",
+      "replace_fragment": "[^<]*?",
+      "with": ".*?",
+      "location": "inline body group in token pattern",
+      "output": "research/results/inline_math_presentation_20261015/current-target-inline-crossing.txt"
+    },
+    {
+      "name": "display_swallow_html",
+      "replace_fragment": "(?P<display>\\\\\\[|\\\\\\])",
+      "with": "(?P<display>\\\\\\[.*?\\\\\\])",
+      "output": "research/results/inline_math_presentation_20261015/current-target-display-crossing.txt"
+    }
+  ]
+}
