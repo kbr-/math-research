@@ -189,8 +189,8 @@ BOOKKEEPING = re.compile(r'^(?:Where we stand|Chosen|Returns|Picked|Best outcome
                          r'Against the expectations.*|What was built)$', re.I)
 # The paragraphs where a result is summed up, printed first: the others are prose under the entry's own headings.
 SUMMARY = re.compile(r'^(?:New mathematics|Goal progress|Structural reason|Follow-up)$', re.I)
-TITLE = re.compile(r'<h3>(.*?)</h3>(?:\s*<p class="entry-meta">(.*?)</p>)?', re.S)
-STATUS_LINE = re.compile(r'<p class="entry-meta">.*?</p>', re.S)
+TITLE = re.compile(r'<h3>(.*?)</h3>', re.S)
+STATUS_LINE = re.compile(r'<p class="entry-meta">(.*?)</p>', re.S)
 UNIVERSAL = re.compile(r'\b(?:no|none|nothing|never|cannot|every|all|always|any|whatever)\b', re.I)
 
 
@@ -223,9 +223,9 @@ def universals_report(draft, width):
     found, read = universals(draft)
     found = [row for row in found if SUMMARY.match(row[0])] + [row for row in found if not SUMMARY.match(row[0])]
     lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
-    title = TITLE.search(draft)
-    head = [] if not title else [f'  [title] {text(title.group(1))}'] + (
-        [f'  [status line] {text(title.group(2))}'] if title.group(2) else [])
+    header = article_header(draft)
+    head = [] if header is None else [f'  [title] {header[0]}'] + (
+        [f'  [status line] {header[1]}'] if header[1] is not None else [])
     return '\n'.join(['The title and the status line, whatever their words, then the sentences outside the '
                       'statements, proofs and bookkeeping that say no, none, cannot, every, all and the like, '
                       'the summing-up paragraphs first; read each beside the statement it rests on:']
@@ -424,7 +424,17 @@ def counts_report(draft, width):
 
 
 LINK = re.compile(r'<a href="#(entry-[A-Za-z0-9-]+)"')
-ARTICLE = re.compile(r'<article id="(entry-[A-Za-z0-9-]+)"[^>]*>\s*<h3>(.*?)</h3>\s*<p class="entry-meta">(.*?)</p>', re.S)
+ARTICLE = re.compile(r'<article id="(entry-[A-Za-z0-9-]+)"[^>]*>(.*?)</article>', re.S)
+
+
+def article_header(fragment):
+    """Read title and status independently, without borrowing from a later article."""
+    body = fragment.split('</article>', 1)[0]
+    title = TITLE.search(body)
+    if title is None:
+        return None
+    status = STATUS_LINE.search(body, title.end())
+    return text(title.group(1)), text(status.group(1)) if status is not None else None
 
 
 def entry_links(draft):
@@ -444,13 +454,17 @@ def entry_links(draft):
 
 def entry_report(draft, notebook, width):
     """Per linked entry, its title and status line from the notebook, then each sentence linking it."""
-    heads = {entry: (text(title), text(meta)) for entry, title, meta in ARTICLE.findall(notebook)}
+    heads = {entry: header for entry, body in ARTICLE.findall(notebook)
+             if (header := article_header(body)) is not None}
     found = entry_links(draft)
-    lines, missing = [], set()
+    lines = [f'Notebook input: {len(notebook.encode("utf-8"))} bytes; {len(heads)} entry headers.', '']
+    missing = set()
     cut = (lambda s: s) if width <= 0 else (lambda s: s[:width])
     for entry in dict.fromkeys(e for e, _, _ in found):
         if entry in heads:
-            lines.append(f'{entry}\n  TITLE: {cut(heads[entry][0])}\n  STATUS: {cut(heads[entry][1])}')
+            status = heads[entry][1]
+            lines.append(f'{entry}\n  TITLE: {cut(heads[entry][0])}\n  STATUS: '
+                         f'{cut(status) if status is not None else "(NO STATUS LINE)"}')
         else:
             lines.append(f'{entry}\n  TITLE: (NOT IN THE NOTEBOOK)')
             missing.add(entry)

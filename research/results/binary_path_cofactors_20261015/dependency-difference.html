@@ -1,0 +1,26 @@
+<h4 id="coordinate-line-coefficients">Coordinate line coefficients</h4>
+<p><strong>Lemma.</strong> Over any field \(k\), write \(B_i=x_i^2-x_i\), and suppose
+\[
+P(x)=\sum_{i=1}^v q_i(x)B_i.
+\]
+For each \(j\), put \(I_{-j}=(B_i:i\ne j)\). The class of \(q_j\) modulo \(I_{-j}\) is determined by \(P\), independently of the certificate. Let \(t=x_j\), and define the polynomial divided difference
+\[
+\mathcal D_a f=\frac{f(t)-f(a)}{t-a}\qquad(a\in\{0,1\}),
+\quad R_j=\mathcal D_1\mathcal D_0P.
+\]
+These quotients are formal polynomial identities, not division gates. Then \(q_j\equiv R_j\pmod{I_{-j}}\). If a division-free arithmetic circuit of size \(S\) and depth \(d\), with unbounded fan-in and size counting gates and wires, computes \(P\), all \(v\) representatives have a joint circuit of size \(O(v(S+1)^4)\), depth at most \(4d+4\), over the same field. These are not necessarily a full correction tuple or multilinear normal forms in the other coordinates.</p>
+<p><strong>Class proof.</strong> Polynomial division gives the exact identity
+\[
+P=t(t-1)R_j+(1-t)P|_{t=0}+tP|_{t=1}.
+\]
+Both endpoint polynomials belong to \(I_{-j}\), by evaluating the supplied certificate. Reducing it modulo \(I_{-j}\) therefore yields \(B_j(q_j-R_j)=0\). The quotient ring is \(A[t]\), where \(A=k[x_i:i\ne j]/I_{-j}\). Multiplication by the monic polynomial \(t^2-t\) is injective even though \(A\) has zero divisors: the highest coefficient of a nonzero product cannot disappear. Hence the classes agree. Applying the same argument to a syzygy proves independence under every coefficient change. Equivalently, fix all coordinates other than \(j\) to Boolean constants and leave \(x_j\) formal; this equivalence follows from the two-root Chinese remainder decomposition in the other variables.</p>
+<p><strong>Circuit proof.</strong> For one divided difference, retain each original gate value, its evaluation at \(t=a\), and its divided difference. Sums commute with \(\mathcal D_a\). At a product gate with inputs \(f_1,\ldots,f_s\), use
+\[
+\mathcal D_a\!\left(\prod_{i=1}^s f_i\right)
+=\sum_{i=1}^s (\mathcal D_af_i)
+  \prod_{u&lt;i}f_u(t)\prod_{u&gt;i}f_u(a).
+\]
+Telescoping proves this identity, including repeated inputs. At an input gate, the divided difference is one for \(t\) and zero for all other variables or constants. The products and final sum use at most two additional layers per original layer; their total new wire cost is bounded by a constant times \(\sum s^2\le S^2\), with shared original/evaluation gates. Thus one pass costs \(O((S+1)^2)\) and depth at most \(2d+1\); applying two passes costs at most \(4d+3\), below the stated conservative bound. Repeat for the \(v\) output representatives. Only zero, one and the original field constants are used. No interpolation grid or extraction of an arbitrary homogeneous component occurs. \(\square\)</p>
+<p><strong>Nonvacuity.</strong> For \(P=B_j\), the line coefficient is one. For \(P=B_j^s\), \(s\ge2\), its matching line class is \(B_j^{s-1}\), nonzero as a polynomial in the free coordinate although all Boolean-point values vanish. Thus the domain really extends cube traces, while its representative remains cheap.</p>
+<p><strong>Degenerate cases.</strong> Zero residuals have zero matching line classes. Constant and empty gates use the usual constant divided differences. Other coordinates are Boolean modulo \(I_{-j}\); this is not a statement about arbitrary affine lines moving several coordinates. No PC-degree or full-certificate construction is inferred.</p>
+<p>The earlier <code>cor:coefficient-cube-traces</code> has a sharper size/depth bound for its smaller domain, so no blanket refinement of that circuit bound is claimed. The present representatives need not assemble: for \(P=B_1B_2\), all matching line classes are zero, while \(P\) is a nonzero formal polynomial. Also a Koszul change \((q_1,q_2)\mapsto(q_1+B_2,q_2-B_1)\) can change \(q_1\) on a line where coordinate two is free. The invariant for \(q_j\) uses its <em>matching</em> coordinate \(x_j\), not any freely chosen coordinate.</p>

@@ -70,6 +70,34 @@ class DraftClaimSentences(unittest.TestCase):
         out, _ = dcs.report(DRAFT, REGISTRY, 20)
         self.assertIn('  REGISTERED: First lemma: holds f\n', out)
 
+    def test_header_paragraph_does_not_hide_title_or_status(self):
+        notebook = ('<article id="entry-old"><h3>Existing title</h3>'
+                    '<p><strong>Latest development.</strong> Navigation.</p>'
+                    '<p class="entry-meta">Working result.</p></article>')
+        draft = '<p>Read <a href="#entry-old">the existing entry</a>.</p>'
+        out, missing = dcs.entry_report(draft, notebook, 0)
+        self.assertFalse(missing)
+        self.assertIn('TITLE: Existing title\n  STATUS: Working result.', out)
+        report = dcs.universals_report(notebook, 0)
+        self.assertIn('[title] Existing title', report)
+        self.assertIn('[status line] Working result.', report)
+
+    def test_missing_status_cannot_borrow_from_next_article(self):
+        first = '<article id="entry-first"><h3>First title</h3><p>Body.</p></article>'
+        second = ('<article id="entry-second"><h3>Second title</h3>'
+                  '<p class="entry-meta">Second status.</p></article>')
+        draft = '<p>Read <a href="#entry-first">the first entry</a>.</p>'
+        out, missing = dcs.entry_report(draft, first + second, 0)
+        self.assertFalse(missing)
+        self.assertIn('TITLE: First title\n  STATUS: (NO STATUS LINE)', out)
+        report = dcs.universals_report(first + second, 0)
+        self.assertIn('[title] First title', report)
+        self.assertNotIn('[status line]', report)
+        self.assertEqual(dcs.article_header('<article><p>No heading.</p></article>'), None)
+        self.assertEqual(dcs.article_header('<article><p class="entry-meta">Before the title.</p>'
+                                            '<h3>Actual title</h3></article>'),
+                         ('Actual title', None))
+
 
 
 
