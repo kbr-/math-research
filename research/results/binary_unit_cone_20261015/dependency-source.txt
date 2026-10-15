@@ -1,0 +1,28 @@
+ \label{eq:factorzero}
+\end{aligned}$$ All are ordinary polynomial identities over $\mathbb F_p$.
+
+**Proof.** The first two identities have degree at most $p-1$ and agree on $\mathbb F_p$: the $\chi_\alpha$ are its point indicators. This also covers $p=2$. For the third, write $1-\alpha^{-1}t=-\alpha^{-1}(t-\alpha)$ and use $(t-\alpha)^p=t^p-\alpha$. Both sides of the fourth have degree $p-1$, the same nonzero roots, and constant term one. *End of proof.*
+
+<a id="lem-columnnf"></a>
+
+### Lemma 1.7: Column-exclusive normal form
+
+Let $$J=(x_{ij}^2-x_{ij},\ x_{ij}x_{i'j}:i\ne i').$$ Its quotient is the algebra of functions on assignments where every column is either empty or occupied by one row. Every polynomial in $J$ of degree at most $B$ has a representation by its displayed generators within degree $B$.
+
+**Proof.** Reduce powers by $x_{ij}^2\mapsto x_{ij}$ and different-row products in a column to zero. The surviving monomials choose at most one variable per column. For a single column, $1,x_{1j},\ldots,x_{mj}$ are independent functions on its $m+1$ states; tensoring proves uniqueness on all columns. The reductions never increase degree and record the desired certificate. *End of proof.*
+
+## Extension data and the actual quantifiers
+
+An extension block $a$, of accuracy $h_a\ge1$, has old-variable inputs $g_{a,1},\ldots,g_{a,k_a}$, fresh variables $r_{a,u,j}$, and all companions <a id="eq-ens"></a>
+
+$$\label{eq:ens}
+ E_{a,i}=g_{a,i}\prod_{u=1}^{h_a}
+ \left(1-\sum_jr_{a,u,j}g_{a,j}\right).$$ Within one level, new variables are disjoint across blocks. Inputs use only original variables and variables from earlier levels. The field axioms $\mathcal R=\{r^p-r\}$ are included. This definition and level convention follow [Krajicek Definition 2.1](../../references/README.md#krajicek).
+
+With zero inputs omitted, put $$\delta_{a,i}=\deg g_{a,i},\quad \delta_a=\max_i\delta_{a,i},\quad
+ e_{a,i}=\delta_{a,i}+h_a(\delta_a+1).$$ Fresh coefficient variables make this the original degree of a nonzero companion. A companion is *active at $D$* if $e_{a,i}\le D$.
+
+<a id="lem-scalar-sufficient"></a>
+
+### Lemma 1.8: Scalar lifting is sufficient, not necessary
+<p>Complete ENS blocks retain \(g_iP\), all coefficient fields \(r^p-r\), and \(P=\prod_{u\le h}(1-\sum_jr_{u,j}g_j)\). Charge original product weight \(h(\delta+1)\) and companion ceiling \(h(\delta+1)+d_i\), where \(\delta=\max d_i\). Cancellation and padding never reset original costs.</p>
