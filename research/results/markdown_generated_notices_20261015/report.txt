@@ -1,0 +1,44 @@
+Generated claim-status notices and Markdown wrapping, 15 October 2026
+
+The old wrapper reformatted new conditional notices, making the generated index
+stale. --changed cannot preserve new blocks by HEAD membership, and selecting the
+top heading includes its subsections. The fix copies the renderer-owned START/END
+region byte-for-byte, ignores markers inside code fences, resumes authored prose
+after END, and refuses an unclosed block before writing. A heading inside the
+generated region is also refused before section slicing can lose its START.
+
+Renderer-backed default/--changed fixtures, surrounding prose, internal fences,
+idempotence, a fenced marker and generated-section CLI refusal are checked.
+Authored sections after generated blocks still wrap. Existing tests were
+strengthened for default widths, first/empty/unclosed frontmatter, quoted tables,
+post-quote prose and a committed final paragraph without a newline.
+
+Final control: fourteen test methods passed. Three targeted faults were killed:
+disabled preservation, missing unclosed-block refusal and missing section guard.
+Generic final scope: both changed functions, rewrap and rewrap_section, with
+209 covered mutants. Final status: 187 killed, fifteen equivalent survivors,
+seven cosmetic message survivors, no uncovered or timed-out mutant in that scope.
+The 115 mutants of unchanged _fill and main were not selected. All initial
+survivor diffs are saved; real boundary gaps were closed in existing tests.
+
+Final equivalent survivors in rewrap: YAML offset omission (8,10), unused initial
+values (23-27,29,31,32), false/None generated-state reset (64), redundant quote
+resets (95,105). Cosmetic survivors: error messages 149-151. In rewrap_section,
+equivalent survivors are false/None initial state (6) and splitting a string before
+joining with the same newline (51); message survivors are 29-31,40. The actual
+section-width and early-break faults (1,19) were killed by the last strengthened
+fixtures. Earlier reports describe their earlier snapshots; final files are
+control-final, generic-expanded, section-correction and mutation-status-final.
+
+Final complete framework suite: 1057 tests passed in 8.4 seconds, saved in
+framework-suite-final.txt. The largest Markdown file, research/CLAIM_INDEX.md,
+was 4,256,498 bytes; protected final wrapping took 0.14 seconds. The native registry
+validator reported generated_markdown_current true (real-index-final.txt).
+Negative framework fixtures emit expected refusals; terminal suite OK/exit zero
+establish success. No source change followed these final measurements/tests.
+
+The same cycle's sole medium reviewer found the section-slicing defect in the
+initial fix, then passed the corrected state scan and real-heading CLI fixture.
+It accepted process scope and mutation exclusions. No mathematical claim changed.
+The build remains queued for scheduled-review closure; this is its implemented
+path and evidence, not another top-level research development.

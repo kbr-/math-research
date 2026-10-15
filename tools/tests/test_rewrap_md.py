@@ -19,16 +19,70 @@ NESTED = """\
 
 
 class RewrapMdTest(unittest.TestCase):
+    def test_generated_status_notices_keep_rendered_bytes(self):
+        import claim_registry
+        data = {"preamble": "# Index\n\n", "claims": [{"id": "thm:conditional-fixture", "summary": "A supplied reference condition",
+                            "assessment": "Conditional", "record": "[Proof](https://example.org/proof)",
+                            "mathematical_status": "conditional"}], "relationships": []}
+        rendered = claim_registry.render(data)
+        start = "<!-- CLAIM-STATUS-NOTICES:START -->"
+        end = "<!-- CLAIM-STATUS-NOTICES:END -->"
+        expected_notices = rendered.split(start)[1].split(end)[0]
+        # Newly rendered notices are absent from HEAD: --changed cannot preserve them by membership.
+        for base in (None, "# Old index\n"):
+            with self.subTest(base=base):
+                wrapped = rewrap_md.rewrap(rendered, base=base)
+                self.assertEqual(wrapped.split(start)[1].split(end)[0], expected_notices)
+        text = ("Prose before the block that needs wrapping.\n\n"
+                "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                "Prose after the block that needs wrapping.\n")
+        expected = ("Prose before the block that\nneeds wrapping.\n\n"
+                    "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                    "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                    "Prose after the block that\nneeds wrapping.\n")
+        self.assertEqual(rewrap_md.rewrap(text, width=28), expected)
+        self.assertEqual(rewrap_md.rewrap(expected, width=28), expected)
+        self.assertEqual(rewrap_md.rewrap("```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\nwords\njoin\n"),
+                         "```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\nwords join\n")
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root)
+        path = root / "index.md"
+        path.write_text(rendered)
+        self.assertEqual(rewrap_md.main([str(path), "--section", "Current status and scoped corrections"]), 1)
+        self.assertEqual(path.read_text(), rendered)
+        self.assertEqual(rewrap_md.rewrap_section(rendered + "\n## Authored\nshort\nlines\n", "Authored"),
+                         rendered + "\n## Authored\nshort lines\n")
+        fenced = "```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\n## Authored\nwords\njoin\n"
+        self.assertEqual(rewrap_md.rewrap_section(fenced, "Authored"),
+                         "```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\n## Authored\nwords join\n")
+
+    def test_unclosed_generated_status_block_leaves_the_file(self):
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root)
+        path = root / "index.md"
+        text = "<!-- CLAIM-STATUS-NOTICES:START -->\n- incomplete generated notice\n"
+        path.write_text(text)
+        self.assertEqual(rewrap_md.main([str(path)]), 1)
+        self.assertEqual(path.read_text(), text)
+
     def test_frontmatter_passes_through_and_the_prose_after_it_wraps(self):
         text = ("---\nname: skill\ndescription: Use when a description is long enough to pass the width.\n---\n\n"
                 "A sentence\nlong enough to wrap here.\n")
         self.assertEqual(rewrap_md.rewrap(text, width=40),
                          "---\nname: skill\ndescription: Use when a description is long enough to pass the width.\n"
                          "---\n\nA sentence long enough to wrap here.\n")
+        self.assertEqual(rewrap_md.rewrap(text + "\n---\n", width=40),
+                         "---\nname: skill\ndescription: Use when a description is long enough to pass the width.\n"
+                         "---\n\nA sentence long enough to wrap here.\n\n---\n")
+        self.assertEqual(rewrap_md.rewrap("---\nname: unfinished\n\nA sentence\nshould wrap here.\n", width=40),
+                         "--- name: unfinished\n\nA sentence should wrap here.\n")
+        self.assertEqual(rewrap_md.rewrap("---\n---\n\nAuthored\nwords\n"),
+                         "---\n---\n\nAuthored words\n")
 
     def test_a_blockquote_is_wrapped_as_a_blockquote(self):
         text = ("Before the quote.\n> A quoted sentence that is long\n> enough to wrap over lines.\n>\n"
-                "> A second paragraph of it.\nAfter the quote, not drawn into it.\n")
+                "> A second paragraph of it.\nAfter the quote,\nnot drawn into it.\n")
         wrapped = rewrap_md.rewrap(text, width=30)
         self.assertEqual(wrapped, "Before the quote.\n> A quoted sentence that is\n> long enough to wrap over\n> lines.\n>\n"
                                   "> A second paragraph of it.\nAfter the quote, not drawn\ninto it.\n")
@@ -40,6 +94,8 @@ class RewrapMdTest(unittest.TestCase):
         self.assertEqual(rewrap_md.rewrap("> - an item whose text wraps\n>   over lines\n> - two\n", width=20),
                          "> - an item whose\n>   text wraps over\n>   lines\n> - two\n")
         self.assertEqual(rewrap_md.rewrap("> | a | b |\n> ```\n> code  kept\n> ```\n", width=10), "> | a | b |\n> ```\n> code  kept\n> ```\n")
+        self.assertEqual(rewrap_md.rewrap(">   | a | b |\n>   |---|---|\n", width=10),
+                         ">   | a | b |\n>   |---|---|\n")
         self.assertEqual(rewrap_md.rewrap("  > Jira refused it. Either a\n  > cutover is on.\n", width=24),
                          "  > Jira refused it.\n  > Either a cutover is\n  > on.\n")
         self.assertEqual(rewrap_md.rewrap(">no space after the marker\n", width=40), "> no space after the marker\n")
@@ -71,6 +127,8 @@ class RewrapMdTest(unittest.TestCase):
         self.assertEqual((root / "doc.md").read_text(), expected)
         self.assertEqual((root / "new.md").read_text(), rewrap_md.rewrap(edited, width=18))
         self.assertNotEqual(rewrap_md.rewrap(edited, width=18), expected)
+        self.assertEqual(rewrap_md.rewrap("An uneven\nending", base="An uneven\nending"),
+                         "An uneven\nending")
 
     def test_nested_items_stay_items_with_hanging_indents(self):
         self.assertEqual(rewrap_md.rewrap(NESTED, width=40), """\
@@ -82,6 +140,7 @@ class RewrapMdTest(unittest.TestCase):
 """)
 
     def test_long_items_wrap_under_their_text(self):
+        self.assertEqual(rewrap_md.rewrap("a " * 49 + "bbb"), "a " * 48 + "a\nbbb")
         text = "- " + "word " * 20 + "\n  1. " + "deep " * 12 + "\n"
         lines = rewrap_md.rewrap(text, width=30).splitlines()
         self.assertTrue(all(len(line) <= 30 for line in lines))
@@ -116,6 +175,8 @@ class RewrapMdTest(unittest.TestCase):
         self.assertEqual(rewrap_md.rewrap(f"see {url} here", width=30), f"see\n{url}\nhere")
 
     def test_only_the_named_section_is_rewrapped(self):
+        self.assertEqual(rewrap_md.rewrap_section("# Theory\n" + "a " * 49 + "bbb", "Theory"),
+                         "# Theory\n" + "a " * 48 + "a\nbbb")
         text = "# Doc\n\n## Theory\n\nshort\nlines\n\n### Sub\n\njoined\ntoo\n\n## Path\n\nkept\nas is\n"
         self.assertEqual(rewrap_md.rewrap_section(text, "Theory"),
                          "# Doc\n\n## Theory\n\nshort lines\n\n### Sub\n\njoined too\n\n## Path\n\nkept\nas is\n")

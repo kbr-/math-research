@@ -6,7 +6,7 @@ same indent as its parent's continuation lines is merged into the parent. This
 keeps every list item a block of its own: its marker on the first line, its
 text hung under the marker's text. A blockquote is wrapped as one, each line of
 its paragraphs and items under its markers. YAML frontmatter, headings, blank lines,
-tables, fenced code blocks and trailer lines (`Refs: <url>`) pass through
+tables, fenced code blocks, generated claim-status notices and trailer lines (`Refs: <url>`) pass through
 unchanged. The result
 depends only on the words, so rewrapping twice changes nothing, and a later
 edit changes only the lines its own words reflow.
@@ -36,6 +36,8 @@ _FENCE = re.compile(r"^\s*(```|~~~)")
 _QUOTE = re.compile(r"^(\s*(?:>\s?)+)(.*)$")
 # A trailer, "Refs: <url>": a key and one value, kept on its own line like a commit trailer.
 _TRAILER = re.compile(r"^[A-Z][\w-]*: \S+$")
+_GENERATED_START = "<!-- CLAIM-STATUS-NOTICES:START -->"
+_GENERATED_END = "<!-- CLAIM-STATUS-NOTICES:END -->"
 
 
 # A word that, starting a line, would open a list item, a heading or a quote.
@@ -69,6 +71,7 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
     raw: list[str] = []  # its lines as written
     first = rest = ""
     in_fence = False
+    in_generated = False
     quoting: str | None = None  # the marker of the blockquote paragraph being collected
     quoted_fence = False  # inside a fenced block of a blockquote
 
@@ -80,6 +83,11 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
             block, raw = [], []
 
     for line in text.split("\n"):
+        if in_generated:
+            out.append(line)
+            if line.strip() == _GENERATED_END:
+                in_generated = False
+            continue
         if in_fence or _FENCE.match(line):
             flush()
             out.append(line)
@@ -87,6 +95,11 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
                 in_fence = not in_fence
             continue
         stripped = line.strip()
+        if stripped == _GENERATED_START:
+            flush()
+            out.append(line)
+            in_generated = True
+            continue
         quote = _QUOTE.match(line)
         if quote:
             # A blockquote is wrapped as one: every line of a paragraph of it carries its marker.
@@ -135,6 +148,8 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
         else:
             first = rest = line[: len(line) - len(line.lstrip())]
             block, raw = stripped.split(), [line]
+    if in_generated:
+        raise ValueError("unclosed generated claim-status notices")
     flush()
     return front + "\n".join(out)
 
@@ -142,11 +157,24 @@ def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
 def rewrap_section(text: str, heading: str, width: int = 100, base: str | None = None) -> str:
     lines = text.split("\n")
     start = level = None
+    in_generated = in_fence = False
     for number, line in enumerate(lines):
+        if in_generated:
+            if line.strip() == _GENERATED_END:
+                in_generated = False
+        elif in_fence or _FENCE.match(line):
+            if _FENCE.match(line):
+                in_fence = not in_fence
+            continue
+        elif line.strip() == _GENERATED_START:
+            in_generated = True
+            continue
         match = _HEADING.match(line)
         if not match:
             continue
         if start is None and match.group(2) == heading:
+            if in_generated:
+                raise ValueError("cannot rewrap a heading inside generated claim-status notices")
             start, level = number, len(match.group(1))
         elif start is not None and len(match.group(1)) <= level:
             end = number

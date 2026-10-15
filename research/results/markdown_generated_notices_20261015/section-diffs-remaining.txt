@@ -1,0 +1,58 @@
+# command: bash -c for n in 19 29 30 31; do mutmut show rewrap_md.x_rewrap_section__mutmut_$n || exit; done
+# run 7b16289cbd, session ac2-pang-paid-representatives-20261014; full output
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_19: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -12,7 +12,7 @@
+             continue
+         elif line.strip() == _GENERATED_START:
+             in_generated = True
+-            continue
++            break
+         match = _HEADING.match(line)
+         if not match:
+             continue
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_29: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -18,7 +18,7 @@
+             continue
+         if start is None and match.group(2) == heading:
+             if in_generated:
+-                raise ValueError("cannot rewrap a heading inside generated claim-status notices")
++                raise ValueError(None)
+             start, level = number, len(match.group(1))
+         elif start is not None and len(match.group(1)) <= level:
+             end = number
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_30: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -18,7 +18,7 @@
+             continue
+         if start is None and match.group(2) == heading:
+             if in_generated:
+-                raise ValueError("cannot rewrap a heading inside generated claim-status notices")
++                raise ValueError("XXcannot rewrap a heading inside generated claim-status noticesXX")
+             start, level = number, len(match.group(1))
+         elif start is not None and len(match.group(1)) <= level:
+             end = number
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap_section__mutmut_31: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -18,7 +18,7 @@
+             continue
+         if start is None and match.group(2) == heading:
+             if in_generated:
+-                raise ValueError("cannot rewrap a heading inside generated claim-status notices")
++                raise ValueError("CANNOT REWRAP A HEADING INSIDE GENERATED CLAIM-STATUS NOTICES")
+             start, level = number, len(match.group(1))
+         elif start is not None and len(match.group(1)) <= level:
+             end = number

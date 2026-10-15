@@ -1,0 +1,332 @@
+# command: bash -c for n in 1 8 10 11 13 15 16 23 24 25 26 27 29 31 32 47 66 99 106 109 127 153 154 155; do mutmut show rewrap_md.x_rewrap__mutmut_$n || exit; done
+# run 01adfd0e2d, session ac2-pang-paid-representatives-20261014; full output
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_1: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -1,4 +1,4 @@
+-def rewrap(text: str, width: int = 100, base: str | None = None) -> str:
++def rewrap(text: str, width: int = 101, base: str | None = None) -> str:
+     """`text` rewrapped; with `base`, a block whose lines `base` holds consecutively stays as it is."""
+     # YAML frontmatter (a skill's name and description) is data, not prose.
+     front = ""
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_8: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -3,7 +3,7 @@
+     # YAML frontmatter (a skill's name and description) is data, not prose.
+     front = ""
+     if text.startswith("---\n"):
+-        end = text.find("\n---\n", 3)
++        end = text.find("\n---\n", None)
+         if end != -1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_10: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -3,7 +3,7 @@
+     # YAML frontmatter (a skill's name and description) is data, not prose.
+     front = ""
+     if text.startswith("---\n"):
+-        end = text.find("\n---\n", 3)
++        end = text.find("\n---\n", )
+         if end != -1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_11: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -3,7 +3,7 @@
+     # YAML frontmatter (a skill's name and description) is data, not prose.
+     front = ""
+     if text.startswith("---\n"):
+-        end = text.find("\n---\n", 3)
++        end = text.rfind("\n---\n", 3)
+         if end != -1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_13: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -3,7 +3,7 @@
+     # YAML frontmatter (a skill's name and description) is data, not prose.
+     front = ""
+     if text.startswith("---\n"):
+-        end = text.find("\n---\n", 3)
++        end = text.find("\n---\n", 4)
+         if end != -1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_15: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -4,7 +4,7 @@
+     front = ""
+     if text.startswith("---\n"):
+         end = text.find("\n---\n", 3)
+-        if end != -1:
++        if end != +1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+     block: list[str] = []  # words of the paragraph or item being collected
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_16: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -4,7 +4,7 @@
+     front = ""
+     if text.startswith("---\n"):
+         end = text.find("\n---\n", 3)
+-        if end != -1:
++        if end != -2:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+     block: list[str] = []  # words of the paragraph or item being collected
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_23: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -7,7 +7,7 @@
+         if end != -1:
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+-    block: list[str] = []  # words of the paragraph or item being collected
++    block: list[str] = None  # words of the paragraph or item being collected
+     raw: list[str] = []  # its lines as written
+     first = rest = ""
+     in_fence = False
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_24: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -8,7 +8,7 @@
+             front, text = text[: end + 5], text[end + 5 :]
+     out: list[str] = []
+     block: list[str] = []  # words of the paragraph or item being collected
+-    raw: list[str] = []  # its lines as written
++    raw: list[str] = None  # its lines as written
+     first = rest = ""
+     in_fence = False
+     in_generated = False
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_25: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -9,7 +9,7 @@
+     out: list[str] = []
+     block: list[str] = []  # words of the paragraph or item being collected
+     raw: list[str] = []  # its lines as written
+-    first = rest = ""
++    first = rest = None
+     in_fence = False
+     in_generated = False
+     quoting: str | None = None  # the marker of the blockquote paragraph being collected
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_26: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -9,7 +9,7 @@
+     out: list[str] = []
+     block: list[str] = []  # words of the paragraph or item being collected
+     raw: list[str] = []  # its lines as written
+-    first = rest = ""
++    first = rest = "XXXX"
+     in_fence = False
+     in_generated = False
+     quoting: str | None = None  # the marker of the blockquote paragraph being collected
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_27: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -10,7 +10,7 @@
+     block: list[str] = []  # words of the paragraph or item being collected
+     raw: list[str] = []  # its lines as written
+     first = rest = ""
+-    in_fence = False
++    in_fence = None
+     in_generated = False
+     quoting: str | None = None  # the marker of the blockquote paragraph being collected
+     quoted_fence = False  # inside a fenced block of a blockquote
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_29: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -11,7 +11,7 @@
+     raw: list[str] = []  # its lines as written
+     first = rest = ""
+     in_fence = False
+-    in_generated = False
++    in_generated = None
+     quoting: str | None = None  # the marker of the blockquote paragraph being collected
+     quoted_fence = False  # inside a fenced block of a blockquote
+ 
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_31: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -12,7 +12,7 @@
+     first = rest = ""
+     in_fence = False
+     in_generated = False
+-    quoting: str | None = None  # the marker of the blockquote paragraph being collected
++    quoting: str | None = ""  # the marker of the blockquote paragraph being collected
+     quoted_fence = False  # inside a fenced block of a blockquote
+ 
+     def flush() -> None:
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_32: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -13,7 +13,7 @@
+     in_fence = False
+     in_generated = False
+     quoting: str | None = None  # the marker of the blockquote paragraph being collected
+-    quoted_fence = False  # inside a fenced block of a blockquote
++    quoted_fence = None  # inside a fenced block of a blockquote
+ 
+     def flush() -> None:
+         nonlocal block, raw
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_47: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -18,7 +18,7 @@
+     def flush() -> None:
+         nonlocal block, raw
+         if block:
+-            kept = base is not None and "\n" + "\n".join(raw) + "\n" in "\n" + base + "\n"
++            kept = base is not None and "\n" + "\n".join(raw) + "\n" in "\n" + base + "XX\nXX"
+             out.extend(raw if kept else _fill(block, first, rest, width))
+             block, raw = [], []
+ 
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_66: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -26,7 +26,7 @@
+         if in_generated:
+             out.append(line)
+             if line.strip() == "<!-- CLAIM-STATUS-NOTICES:END -->":
+-                in_generated = False
++                in_generated = None
+             continue
+         if in_fence or _FENCE.match(line):
+             flush()
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_99: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -48,7 +48,7 @@
+             if quoted_fence or _FENCE.match(body):
+                 flush()
+                 out.append(line)
+-                quoting = None
++                quoting = ""
+                 if _FENCE.match(body):
+                     quoted_fence = not quoted_fence
+             elif not body.strip() or body.lstrip().startswith("|"):
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_106: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -51,7 +51,7 @@
+                 quoting = None
+                 if _FENCE.match(body):
+                     quoted_fence = not quoted_fence
+-            elif not body.strip() or body.lstrip().startswith("|"):
++            elif not body.strip() or body.rstrip().startswith("|"):
+                 flush()
+                 out.append(line)
+                 quoting = None
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_109: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -54,7 +54,7 @@
+             elif not body.strip() or body.lstrip().startswith("|"):
+                 flush()
+                 out.append(line)
+-                quoting = None
++                quoting = ""
+             elif inner:
+                 flush()
+                 indent, sign, words = inner.groups()
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_127: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -71,7 +71,7 @@
+         if quoting is not None:
+             # A line without the marker ends the quote's paragraph: it is not drawn into it.
+             flush()
+-            quoting = None
++            quoting = ""
+         if not stripped or _HEADING.match(line) or stripped.startswith("|") or _TRAILER.match(line):
+             flush()
+             out.append(line)
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_153: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -89,6 +89,6 @@
+             first = rest = line[: len(line) - len(line.lstrip())]
+             block, raw = stripped.split(), [line]
+     if in_generated:
+-        raise ValueError("unclosed generated claim-status notices")
++        raise ValueError(None)
+     flush()
+     return front + "\n".join(out)
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_154: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -89,6 +89,6 @@
+             first = rest = line[: len(line) - len(line.lstrip())]
+             block, raw = stripped.split(), [line]
+     if in_generated:
+-        raise ValueError("unclosed generated claim-status notices")
++        raise ValueError("XXunclosed generated claim-status noticesXX")
+     flush()
+     return front + "\n".join(out)
+/home/kbr/.local/lib/python3.10/site-packages/mutmut/configuration.py:152: UserWarning: The config tests_dir is deprecated. Please add the path to pytest_add_cli_args_test_selection instead
+  warnings.warn(
+# rewrap_md.x_rewrap__mutmut_155: survived
+--- src/rewrap_md.py
++++ src/rewrap_md.py
+@@ -89,6 +89,6 @@
+             first = rest = line[: len(line) - len(line.lstrip())]
+             block, raw = stripped.split(), [line]
+     if in_generated:
+-        raise ValueError("unclosed generated claim-status notices")
++        raise ValueError("UNCLOSED GENERATED CLAIM-STATUS NOTICES")
+     flush()
+     return front + "\n".join(out)

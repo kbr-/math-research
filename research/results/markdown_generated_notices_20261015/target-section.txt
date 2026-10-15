@@ -1,0 +1,47 @@
+# command: python3 -m pytest -q tests
+# run eaffef979f, session ac2-pang-paid-representatives-20261014; full output
+.....F........                                                  [100%]
+=================================== FAILURES ===================================
+________ RewrapMdTest.test_generated_status_notices_keep_rendered_bytes ________
+
+self = <test_rewrap_md.RewrapMdTest testMethod=test_generated_status_notices_keep_rendered_bytes>
+
+    def test_generated_status_notices_keep_rendered_bytes(self):
+        import claim_registry
+        data = {"preamble": "# Index\n\n", "claims": [{"id": "thm:conditional-fixture", "summary": "A supplied reference condition",
+                            "assessment": "Conditional", "record": "[Proof](https://example.org/proof)",
+                            "mathematical_status": "conditional"}], "relationships": []}
+        rendered = claim_registry.render(data)
+        start = "<!-- CLAIM-STATUS-NOTICES:START -->"
+        end = "<!-- CLAIM-STATUS-NOTICES:END -->"
+        expected_notices = rendered.split(start)[1].split(end)[0]
+        # Newly rendered notices are absent from HEAD: --changed cannot preserve them by membership.
+        for base in (None, "# Old index\n"):
+            with self.subTest(base=base):
+                wrapped = rewrap_md.rewrap(rendered, base=base)
+                self.assertEqual(wrapped.split(start)[1].split(end)[0], expected_notices)
+        text = ("Prose before the block that needs wrapping.\n\n"
+                "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                "Prose after the block that needs wrapping.\n")
+        expected = ("Prose before the block that\nneeds wrapping.\n\n"
+                    "<!-- CLAIM-STATUS-NOTICES:START -->\n- generated  words kept on one long line\n"
+                    "```\n- generated code stays too\n```\n<!-- CLAIM-STATUS-NOTICES:END -->\n\n"
+                    "Prose after the block that\nneeds wrapping.\n")
+        self.assertEqual(rewrap_md.rewrap(text, width=28), expected)
+        self.assertEqual(rewrap_md.rewrap(expected, width=28), expected)
+        self.assertEqual(rewrap_md.rewrap("```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\nwords\njoin\n"),
+                         "```\n<!-- CLAIM-STATUS-NOTICES:START -->\n```\nwords join\n")
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root)
+        path = root / "index.md"
+        path.write_text(rendered)
+>       self.assertEqual(rewrap_md.main([str(path), "--section", "Current status and scoped corrections"]), 1)
+E       AssertionError: 0 != 1
+
+tests/test_rewrap_md.py:52: AssertionError
+----------------------------- Captured stdout call -----------------------------
+uu
+=========================== short test summary info ============================
+FAILED tests/test_rewrap_md.py::RewrapMdTest::test_generated_status_notices_keep_rendered_bytes
+1 failed, 13 passed, 9 subtests passed in 0.08s
