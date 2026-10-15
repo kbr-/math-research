@@ -1,0 +1,28 @@
+<h4 id="shallow-noncommutative-sequent-simulation">Shallow noncommutative sequent simulation</h4>
+<p><strong>Theorem.</strong> Let a size-\(S\ge2\) DAG refutation in the binary sequent presentation just specified have formula depth at most \(d\), where antecedent formulas are counted after negation as in the source. Size counts all formula-symbol and sequent occurrences. Let \(F\) be its original CNF clause-falsity polynomials in a fixed literal order, together with all Boolean and variable-commutator generators. There is a placeholder-linear noncommutative IPS formula \(C\) over \(\mathbb F_2\) of size \(O(S^{12})\) and unbounded-fan-in depth at most \(d+10\), satisfying formally \(C(X,0)=0\), \(C(X,F)=1\). The constants are absolute for this fixed rule presentation. The generous exponent and depth allowance are not claimed sharp.</p>
+<p><strong>Local rule identities.</strong> Translate a cedent to the ordered product of its right-hand formula falsities and the complements of its left-hand formula falsities. Write its polynomial as \(L_i\), in topological proof order, with \(L_T=1\) for the empty final cedent. Every translated formula has depth at most \(d+1\), every cedent at most \(d+2\), and total translation size \(O(S)\). Reordering cedent factors is paid by adjacent commutators and the lemma. For a common ordered context product \(H\), put \(a=t(A_1)\), \(b=t(\bigvee_{j&gt;1}A_j)\), or \(b=t(\bigoplus_{j&gt;1}A_j)\), as appropriate. The complete nontrivial identities are
+\[
+ (1-a)H+aH=H,\qquad
+ (1-a)H+a(1-b)H=(1-ab)H,
+\]
+\[
+ (1-a)bH+a(1-b)H=(a+b)H,\qquad
+ (1-a)(1-b)H+abH=(1+a+b)H.
+\]
+They cover cut, OR-left and the two parity rules without commuting \(a,b\). Weakening multiplies by the added factor, with reordering paid if necessary; negation and OR-right are identical after factor grouping and ordering. The logical axiom \(A\to A\) is \((1-t(A))t(A)=-(t(A)^2-t(A))\), supplied by the lemma. Empty-disjunction and negated-empty-parity axioms translate to zero. Contraction is a contextual multiple of \(P^2-P\), and exchange a contextual commutator. Original input clauses map to their own placeholders, after a paid literal permutation if their written order differs. These operations yield, for every non-input line, an exact identity
+\[
+ L_i=R_i+\sum_{j&lt;i}a_{ij}L_jb_{ij},
+\]
+with at most two premise terms for the displayed rules, where \(R_i\) has an explicit shallow Boolean/commutator certificate. For the supplied structural rules there is one premise. The multipliers are products of old translated subformulas and constants, and every ordering correction is paid; no certificate for an earlier proof-line is substituted recursively.</p>
+<p><strong>Global prefix construction.</strong> Set \(P_0=1\), \(P_i=\prod_{j=1}^i(1-L_j)\), with this exact order. Since \(L_T=1\), the telescoping identity is
+\[
+ 1=\sum_{i=1}^T P_{i-1}L_i.
+\]
+For an input occurrence, write \(L_i=F_k+R_i\), where \(F_k\) is the original clause in its fixed order and \(R_i\) has the paid literal-permutation commutator certificate (zero if the orders agree). Insert its original placeholder plus that correction certificate. For a logical axiom or correction \(R_i\), insert its given certificate. For a premise term \(P_{i-1}aL_jb\), write \(P_{i-1}=U(1-L_j)V\), where \(U,V\) are the preceding and following ordered prefix factors. The exact free-algebra absorption identity is
+\[
+ U(1-L_j)VaL_jb
+ =-U(L_j^2-L_j)Vab+U(1-L_j)[Va,L_j]b.
+\]
+The lemma supplies both certificates on the right. Thus every summand of one is expressed from the original inputs, Boolean generators and commutators. Replacing their occurrences by the corresponding placeholders gives the required \(C\); all terms contain exactly one placeholder. The proof DAG is never unrolled, and a premise may be used by arbitrarily many later lines.</p>
+<p><strong>Cost ledger.</strong> There are at most \(S\) lines and \(O(S)\) premise occurrences. Original translations, context products and each \(Va\) above have size \(O(S^2)\) under a loose copied-input bound, but more sharply \(O(S)\): one prefix uses a subset of line translations whose aggregate size is \(O(S)\), and each local multiplier has size \(O(S)\). A lemma application therefore has size \(O(S^8)\). At most \(O(S^3)\) local factor swaps over all lines and at most \(O(S)\) absorption applications, with their context copies, fit \(O(S^{12})\). Each factor \(1-L_j\) has depth at most \(d+3\), a prefix product or \(Va\) at most \(d+4\). A lemma certificate has depth at most \(d+6\); outer context multiplication and the final sum add at most two, below the stated \(d+10\). Products of adjacent factors are flattened in their given order. There is no conversion of unbounded products to binary gates at constant depth, no extension-field descent, and no low-PC-degree conclusion. \(\square\)</p>
+<p><strong>Nonvacuity.</strong> Contradictory unit inputs \(x\) and \(1-x\) with one cut give a refutation; arbitrary dummy variables and repeated legal weakenings give unbounded \(S\). Non-tree proof reuse is explicitly allowed. <strong>Degenerate cases.</strong> A unit input gives its one-placeholder certificate; zero polynomial lines cause no problem. Without \(L_T=1\), the telescope is \(1-P_T\), not one. On a satisfiable CNF all valid cedents vanish at a satisfying Boolean assignment, so the final empty cedent cannot occur. The construction cannot refute every formula irrespective of proof existence.</p>
