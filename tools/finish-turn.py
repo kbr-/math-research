@@ -19,6 +19,7 @@ from claim_maintenance import check_revision
 from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
 from lead_queue import LEADS_RE, BRIDGES_RE
+from bearing_ledger import validate as validate_bearing_ledger
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -1234,6 +1235,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     text = body[article:close]
     require_report(text, 'New mathematics')
     progress = require_report(text, 'Goal progress')
+    validate_bearing_ledger(text)
     validate_prevention(text)
     validate_process_audit(text)
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):

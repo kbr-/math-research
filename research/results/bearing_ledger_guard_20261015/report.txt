@@ -1,0 +1,53 @@
+Bearing ledger guard, 15 October 2026
+
+Implemented queued build bearing-ledger-reference in tools/bearing_ledger.py,
+called from the finisher's new-article progress validation. Every declared
+bearing-some application now names a linked budget inside Bearing. Nonvacuity
+paragraphs name a matching budget; both/all-budget assertions need distinct
+names. The check verifies declarations and references, not mathematical adequacy.
+Historical articles are not retrofitted. AGENTS.md owns the new link convention.
+
+Full framework suite: 1069 tests passed in 7.3 seconds (suite.txt). Initial fixture
+copies lacked the new module; they were corrected before the final suite. The
+validator tests were strengthened for missing hrefs, ordinary HTML whitespace,
+unmarked links before the ledger, and references outside the Bearing segment.
+
+Targeted mutations: six killed, zero survived. Unmutated controls ran three
+validator tests and one integration test successfully. Each mutant ran that same
+test population and was detected by the intended test:
+- Accept a missing ledger: test_application_needs_an_explicit_ledger_inside_bearing.
+- Accept an unmatched witness budget: test_witness_names_the_specific_supported_budget.
+- Skip the both-budget check: test_witness_names_the_specific_supported_budget.
+- Skip name/target validation: test_references_are_valid_and_scope_is_only_some.
+- Apply the requirement outside bearing-some: the same scope test rejects the
+  unexpected ValueError on a valid no-bearing entry, not an import/harness error.
+- Disconnect the finisher call: test_first_application_also_requires_a_matched_ledger.
+The complete named-test output is retained in each *-mutant.txt file.
+
+Generic mutation testing used installed mutmut 3.8.0, isolated src/tests copies
+and the supplied mutation-config.toml. The final run tested 193 mutants: 177
+killed, 16 survived, zero uncovered, zero timeouts. Strengthening the tests killed
+20 mutants that survived the first run. Every survivor's diff was read.
+
+Four survivors are equivalent:
+- _Paragraphs.__init__ mutant1 changes initial bearing None to empty string;
+  both skip the check unless an article explicitly sets some.
+- _check_multiple mutant8 uppercases the regex's words under re.I.
+- validate mutants52 and53 change end<0 to end<=0 or end<1; a found ending is
+  necessarily after the nonempty Goal progress/Bearing prefix, never at zero.
+Twelve are cosmetic error-message changes:
+- _references mutants20,21;
+- _check_multiple mutants12,13;
+- validate mutants26,63,64,88,89,91,92,93.
+They change case or add XX around diagnostics, retaining the rejection. Exact
+message bytes are deliberately not asserted. Full final inventory is retained.
+
+Real-article measurement: the largest current Common multiplier draft (23820
+bytes) parsed in 0.000772 seconds; the 19675-byte Pang draft parsed and refused
+its old unmarked ledger in 0.000614 seconds. These are one-run measurements of
+the validator on actual files, not a claim about full-finalizer speed. The old
+draft is a negative regression input, not a retroactive invalidation of its proof.
+
+No package installation, numerical mathematics or historical record rewrite.
+The queue item remains pending its next recorded status reconciliation; its
+implementation and verification are complete at these paths.

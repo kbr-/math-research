@@ -502,6 +502,14 @@ class ProcessAuditTest(unittest.TestCase):
                                       'search made after the draft and nothing else.')
 
 
+class BearingLedgerIntegrationTest(unittest.TestCase):
+    def test_first_application_also_requires_a_matched_ledger(self):
+        body = notebook(article('first', attrs='data-bearing="some"'))
+        start = body.index('<article')
+        with self.assertRaisesRegex(ValueError, 'data-ledger'):
+            FT.validate_progress(body, start, body.index('</article>'), check_registered_claims=False)
+
+
 class BearingTest(unittest.TestCase):
     def test_a_bearing_that_claims_something_ends_with_what_is_not_covered(self):
         unchanged = ('research', 'unchanged')

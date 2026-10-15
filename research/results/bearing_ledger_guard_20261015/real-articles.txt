@@ -1,0 +1,24 @@
+# command: python3 -c from pathlib import Path
+from time import perf_counter
+import sys
+sys.path.insert(0, 'tools')
+from bearing_ledger import validate
+for name, expected_refusal in [('common_multiplier_core_20261015', False), ('common_multiplier_pang_20261015', True)]:
+    path = Path('research/results') / name / 'entry.html'
+    text = path.read_text()
+    start = perf_counter()
+    refused = False
+    try:
+        validate(text)
+    except ValueError as error:
+        refused = True
+        outcome = str(error)
+    else:
+        outcome = 'accepted: no bearing-some declaration'
+    elapsed = perf_counter() - start
+    assert refused == expected_refusal
+    print(f'{name}: {len(text.encode())} bytes; {elapsed:.6f} s; {outcome}')
+
+# run a95ada54b5, session common-multiplier-repair-calculus-20261015; full output
+common_multiplier_core_20261015: 23820 bytes; 0.000772 s; accepted: no bearing-some declaration
+common_multiplier_pang_20261015: 19675 bytes; 0.000614 s; A bearing-some application must link its matched parameter ledger with data-ledger
