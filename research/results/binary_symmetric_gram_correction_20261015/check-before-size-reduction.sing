@@ -1,0 +1,134 @@
+// Whole symmetric matching correction and residual orbit norm over F2.
+// Expected: original-variable formal correction, invariance, degree witnesses pass.
+// Refuted by: A nonzero identity residual or a zero deliberately altered residual.
+// Possible because: Missing quadratic placeholders or matching terms changes the target.
+// Small fixtures only: Gram2x1, norm cyclic3, Gram4x3 and satisfiable Gram2x2.
+// These test identities, not circuit hardness or the all-parameter orbit-degree proof.
+ring smallRing=2,(aa,bb,zz,ww),dp;
+int checkedCount=0;
+proc mustZero(poly value,string label)
+{
+  if(value!=0){print("FAILED "+label);quit;}
+  checkedCount++;
+}
+proc mustNonzero(poly value,string label)
+{
+  if(value==0){print("FAILED nonzero "+label);quit;}
+  checkedCount++;
+}
+poly smallR=aa*bb*(1+aa*bb);
+poly smallK=aa*ww+bb*zz+zz*ww;
+map smallFields=smallRing,aa,bb,aa^2+aa,bb^2+bb;
+map smallZero=smallRing,aa,bb,0,0;
+map smallSwap=smallRing,bb,aa,ww,zz;
+mustZero(smallFields(smallK)+smallR,"Gram2x1 full symmetric correction");
+mustZero(smallZero(smallK),"Gram2x1 zero placeholders");
+mustZero(smallSwap(smallK)+smallK,"Gram2x1 row symmetry");
+poly smallLinear=aa*ww+bb*zz;
+poly smallBad=smallFields(smallLinear)+smallR;
+mustNonzero(smallBad,"quadratic placeholder omission");
+mustZero(smallBad+(aa^2+aa)*(bb^2+bb),"independent omission discrepancy");
+poly smallShift=(aa+zz)*(bb+ww)*(1+(aa+zz)*(bb+ww));
+poly smallD=smallShift+smallR;
+mustZero(smallFields(smallD)+smallR^2+smallR,"equivariant Frobenius difference");
+poly smallNorm=smallK*smallSwap(smallK)+smallD;
+mustZero(smallFields(smallNorm)+smallR,"residual norm order two");
+mustZero(smallZero(smallNorm),"norm zero placeholders");
+mustZero(smallSwap(smallNorm)+smallNorm,"norm invariance");
+poly smallProduct=smallK*smallSwap(smallK);
+mustNonzero(smallFields(smallProduct)+smallR,"uncorrected norm changes residual");
+int smallCount=checkedCount;
+int smallExpected=10;
+if(smallCount!=smallExpected){print("FAILED small fixture count");quit;}
+print("Gram2x1/norm2 assertions: "+string(smallCount)+"; expected "+string(smallExpected));
+
+ring normRing=2,(x1,x2,x3,z1,z2,z3),dp;
+poly normR=x1^2+x1+x2^2+x2+x3^2+x3;
+poly normQ=z1+z2+z3;
+map normCycle=normRing,x2,x3,x1,z2,z3,z1;
+map normCycleTwo=normRing,x3,x1,x2,z3,z1,z2;
+map normFields=normRing,x1,x2,x3,x1^2+x1,x2^2+x2,x3^2+x3;
+map normZero=normRing,x1,x2,x3,0,0,0;
+poly normShift=(x1+z1)^2+x1+z1+(x2+z2)^2+x2+z2+(x3+z3)^2+x3+z3;
+poly normD=normShift+normR;
+poly normOut=normQ*normCycle(normQ)*normCycleTwo(normQ)+normD*(1+normR);
+mustZero(normFields(normOut)+normR,"residual norm order three");
+mustZero(normZero(normOut),"order-three zero placeholders");
+mustZero(normCycle(normOut)+normOut,"order-three invariance");
+mustZero(normFields(normD)+normR^2+normR,"order-three Frobenius identity");
+poly normAltered=normQ^3+normD;
+mustNonzero(normFields(normAltered)+normR,"omitted geometric correction factor");
+int normCount=checkedCount-smallCount;
+int normExpected=5;
+if(normCount!=normExpected){print("FAILED norm fixture count");quit;}
+print("Faithful cyclic3 assertions: "+string(normCount)+"; expected "+string(normExpected));
+
+ring gramRing=2,(a11,a12,a13,a21,a22,a23,a31,a32,a33,a41,a42,a43,z11,z12,z13,z21,z22,z23,z31,z32,z33,z41,z42,z43),dp;
+matrix gramA[4][3]=a11,a12,a13,a21,a22,a23,a31,a32,a33,a41,a42,a43;
+matrix gramZ[4][3]=z11,z12,z13,z21,z22,z23,z31,z32,z33,z41,z42,z43;
+matrix gramE=gramA*transpose(gramA);
+matrix gramK[4][4];
+ideal gramS=a11+a12+a13,a21+a22+a23,a31+a32+a33,a41+a42+a43;
+map gramFields=gramRing,a11,a12,a13,a21,a22,a23,a31,a32,a33,a41,a42,a43,a11^2+a11,a12^2+a12,a13^2+a13,a21^2+a21,a22^2+a22,a23^2+a23,a31^2+a31,a32^2+a32,a33^2+a33,a41^2+a41,a42^2+a42,a43^2+a43;
+map gramZero=gramRing,a11,a12,a13,a21,a22,a23,a31,a32,a33,a41,a42,a43,0,0,0,0,0,0,0,0,0,0,0,0;
+map gramCycle=gramRing,a21,a22,a23,a31,a32,a33,a41,a42,a43,a11,a12,a13,z21,z22,z23,z31,z32,z33,z41,z42,z43,z11,z12,z13;
+int ii,jj,ll,rr,ss;
+poly gramLocal;
+for(ii=1;ii<=4;ii++)
+{
+  for(jj=ii+1;jj<=4;jj++)
+  {
+    for(ll=1;ll<=3;ll++){gramK[ii,jj]=gramK[ii,jj]+gramA[ii,ll]*gramZ[jj,ll]+gramA[jj,ll]*gramZ[ii,ll]+gramZ[ii,ll]*gramZ[jj,ll];}
+    gramLocal=gramK[ii,jj];
+    mustZero(gramFields(gramLocal)+gramE[ii,jj]^2+gramE[ii,jj],"complete local symmetric witness");
+  }
+}
+poly gramW=1;
+for(ii=1;ii<=4;ii++){for(jj=ii+1;jj<=4;jj++){gramW=gramW*(1+gramE[ii,jj]);}}
+poly gramR=gramW*gramS[1]*gramS[2]*gramS[3]*gramS[4];
+poly gramQ=0;
+poly gramMask,gramMono;
+for(ii=1;ii<=4;ii++)
+{
+  for(jj=ii+1;jj<=4;jj++)
+  {
+    gramMask=1;gramMono=1;
+    for(rr=1;rr<=4;rr++)
+    {
+      if(rr!=ii && rr!=jj){gramMono=gramMono*gramS[rr];}
+      for(ss=rr+1;ss<=4;ss++){if(!(rr==ii && ss==jj)){gramMask=gramMask*(1+gramE[rr,ss]);}}
+    }
+    gramQ=gramQ+gramK[ii,jj]*gramMask*gramMono;
+  }
+}
+poly gramPerfect=gramK[1,2]*gramK[3,4]*(1+gramE[1,3])*(1+gramE[1,4])*(1+gramE[2,3])*(1+gramE[2,4]);
+gramQ=gramQ+gramPerfect+gramK[1,3]*gramK[2,4]*(1+gramE[1,2])*(1+gramE[1,4])*(1+gramE[2,3])*(1+gramE[3,4])+gramK[1,4]*gramK[2,3]*(1+gramE[1,2])*(1+gramE[1,3])*(1+gramE[2,4])*(1+gramE[3,4]);
+mustZero(gramFields(gramQ)+gramR,"Gram4x3 whole original-variable correction");
+mustZero(gramZero(gramQ),"Gram4x3 zero placeholders");
+mustZero(gramCycle(gramQ)+gramQ,"Gram4x3 cyclic row invariance");
+mustNonzero(gramR,"Gram4x3 formal residual");
+mustNonzero(gramFields(gramPerfect),"omitting a perfect matching changes identity");
+map gramTop=gramRing,0,0,0,0,0,0,0,0,0,0,0,0,z11,0,0,z21,0,0,z31,0,0,z41,0,0;
+mustZero(gramTop(gramQ)+z11*z21*z31*z41,"exact placeholder-degree-four witness");
+mustNonzero(gramTop(gramQ),"placeholder top witness nonzero");
+poly gramMatching=gramS[1]*gramS[2]*gramS[3]*gramS[4]+gramE[1,2]*gramS[3]*gramS[4]+gramE[1,3]*gramS[2]*gramS[4]+gramE[1,4]*gramS[2]*gramS[3]+gramE[2,3]*gramS[1]*gramS[4]+gramE[2,4]*gramS[1]*gramS[3]+gramE[3,4]*gramS[1]*gramS[2]+gramE[1,2]*gramE[3,4]+gramE[1,3]*gramE[2,4]+gramE[1,4]*gramE[2,3];
+mustZero(gramMatching,"independent matching identity before masks");
+int gramCount=checkedCount-smallCount-normCount;
+int gramExpected=6+8;
+if(gramCount!=gramExpected){print("FAILED Gram fixture count");quit;}
+print("Gram4x3 assertions: "+string(gramCount)+"; expected "+string(gramExpected));
+print("Gram4x3 fixture: 12 original variables; 12 Boolean placeholders; 4 parity and 6 off-diagonal inputs.");
+
+ring rankControlRing=2,(c11,c12,c21,c22,v11,v12,v21,v22),dp;
+poly controlS1=c11+c12;
+poly controlS2=c21+c22;
+poly controlE=c11*c21+c12*c22;
+poly controlK=c11*v21+c21*v11+v11*v21+c12*v22+c22*v12+v12*v22;
+map controlIdentity=rankControlRing,1,0,0,1,0,0,0,0;
+poly controlDifference=controlK+controlS1*controlS2*(1+controlE);
+mustZero(controlIdentity(controlDifference)+1,"rank hypothesis omission at identity frame");
+int totalExpected=10+5+(6+8)+1;
+if(checkedCount!=totalExpected){print("FAILED independent total count");quit;}
+print("Mathematical assertions: "+string(checkedCount)+"; expected "+string(totalExpected));
+print("PASS symmetric matching correction and residual norm");
+quit;

@@ -1,0 +1,45 @@
+{
+  "source": {"record": "[Symmetric Gram correction](https://kbr.is-a.dev/math-research/#entry-2026-10-15-symmetric-gram-correction)", "label": "Symmetric Gram correction", "targets": ["../notebook.html#entry-2026-10-15-symmetric-gram-correction"]},
+  "date": "2026-10-15",
+  "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["method-obstructions", "degree-accounting", "frege-simulation", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "lem:residual-orbit-norm",
+      "summary": "Over F2, G of finite order k compatibly permutes old X and Boolean placeholders Z; b_j=x_j^2+x_j, invariant binary target R, supplied Q(X,0)=0,Q(X,b)=R. For k>=2 let D_R=R(X+Z)+R(X),H_k=sum_(j=0..k-2)R^j. Then Q_G=prod_(g inG)gQ+D_R H_k is invariant and corrects R, vanishing at Z0; k1 returns Q. Frob D_R(b)=R²+R and geometric telescoping repair the norm's R^k target. Supplied division-free unbounded-fanin binary circuits Q sizeS/depthd and R sizeS_R/depthd_R give size O(k(S+1)+S_R+k²+v), depth<=max(d+2,d_R+5), joint degree<=max(kD,(k-1)e) and placeholder degree<=max(kr,e) from input joint/placeholder degreesD,r and degR<=e. Powers use explicit product wires. No linearity, simulation-image or PC-cutoff preservation. Polynomial-order cyclic symmetry is affordable for general correction existence at polynomial size and constant added depth; this constructs no unavailable cheap correction. Application of elementary norm and Frobenius/geometric identities, not a new lower-bound method.",
+      "assessment": "The sole fresh-context GPT-6.1-Sol medium reviewer passed the correction, invariant Frobenius witness, all-group geometric repair and explicit circuit/degree costs with no required correction or unused hypothesis. Native even/faithful-odd cyclic controls pass, but the full proof establishes the statement. General symmetry does not preserve linearity or the simulation image.",
+      "status": "working_proof",
+      "rationale": "Makes a polynomial-order cyclic symmetry restriction costed for the general Boolean correction model, while separating placeholder linearity and complete-certificate hardness.",
+      "next_action": "Test whether the combined cyclic nonlinear Gram output has a polynomial-size fixed-depth implementation; the norm itself does not supply one.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:symmetric-matching-correction",
+      "summary": "Over F2, M>N>=1 independent original A:MxN, E=AA^T,s_i=sum_l Ail, all original Boolean placeholders Z, residualR=prod_i s_i prod_i<j(1+Eij) for full parity/orthogonality/Boolean tuple. Symmetric Kij=sum_l(Ail Zjl+Ajl Zil+Zil Zjl) has Kij(A,b)=Eij²+Eij. Q_match=sum over nonempty row matchingsF of prod_edgesF Kij times prod_unmatchedrows s_i times prod_allunorderedpairsnotinF(1+Eij) is fully row-permutation invariant, Q_match(A,0)=0,Q_match(A,b)=R. Uses the recorded matching identity T_[M]^2=detE=0 and literal omitted masks, no determinant primitive. With t_M all-matchings count, explicit size O(M²N+M²t_M), depth<=8, formal joint degree<=M²-2,specialized old degree<=M²,placeholder degree<=2floor(M/2), exactlyM ifM even. Setting A0 and only first placeholder column free gives prod_i z_i because perfect-matchings count is odd. Full general IPS adds1+prod parity/offdiag placeholder complements; all Boolean fields retained. No polynomial matching-count, compressed output, PC transfer or hardness claim.",
+      "assessment": "The sole fresh-context GPT-6.1-Sol medium reviewer passed the full nonlinear matching formula, all original Boolean placeholders, parity/unique-offdiagonal tuple, symmetry and circuit/degree ledgers. Native mixed-column identities and discriminating omission controls completed; the general matching proof supplies the theorem. Explicit enumeration is not a polynomial-size implementation.",
+      "status": "working_proof",
+      "rationale": "Attempts the whole-output correction with nonlinear symmetric local witnesses rather than optional individual determinant-containing registers, but explicit enumeration remains expensive.",
+      "next_action": "Seek a source-specific compression of the combined masks and nonlinear witnesses, preserving the complete output rather than separately computing hard registers.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "prop:cyclic-placeholder-degree",
+      "summary": "For binary Gram residualR=prod_i s_i prod_i<j(1+(AA^T)ij) with M=2^a>N>=1 independent A:MxN, any Q(A,Z) with Q(A,0)=0,Q(A,b)=R invariant under the full M-cycle of rows has total Boolean-placeholder degree>=M; symmetric matching correction attainsM. Collapse old rows to a common formal row. Positive placeholder monomials of degree<M have nontrivial even cyclic orbits; diagonal placeholder-row collapse kills each orbit, contradicting nonzero formal fixed-row residual (sum x)^M(1+sum x²)^(M choose2). This is an invariant residual-correction degree bound, not circuit size or arbitrary full-certificate Boolean-placeholder degree; 1+T(Yoff,1+Yparity) is an invariant full certificate without Boolean placeholders, at unpaid matching size. Residual norm imposes cyclic general symmetry at polynomial circuit overhead but loses linearity. The one-surplus M=2^a,N=M-1,a>=3 is exactly paid lift of original m=2r+2,n=r,r=2^(a-2)-1, with retained polynomial encoding and all fields. No cheap complete correction, original m2n reverse lift, all-certificate hardness or Frege bound.",
+      "assessment": "The sole fresh-context GPT-6.1-Sol medium reviewer passed fixed formal row-locus orbit cancellation, exact degree sharpness, full-certificate counter-scope and the unbounded one-surplus/lift accounting. The optional fixed-coefficient-ring clarification makes the existing orbit argument explicit. This is a placeholder-degree bound in the invariant correction model, not circuit-size or arbitrary full-certificate hardness.",
+      "status": "working_proof",
+      "rationale": "Calibrates the nonlinear degree cost of a costed cyclic correction architecture at a nonvacuous unbounded family; high placeholder degree alone gives no circuit lower bound.",
+      "next_action": "Retain arbitrary nonlinear cyclic corrections in whole-output tests; do not impose invariant linearity or infer circuit hardness from this degree bound.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["lem:residual-orbit-norm", "cites", "lem:orbit-product-certificate", "Target-R correction norm with an equivariant Frobenius/geometric repair; earlier full-certificate norm targets one. No implication preserving Hilbert-like form is asserted."],
+    ["lem:residual-orbit-norm", "cites", "lem:odd-group-certificate-average", "Compares odd linear averaging with an all-order nonlinear residual correction; their degree and target scopes differ."],
+    ["lem:symmetric-matching-correction", "applies", "lem:gram-correction-transport", "Reuses its exact all-matching identity and full parity/unique-offdiagonal/Boolean tuple, replacing first-edge linear witnesses by symmetric nonlinear witnesses."],
+    ["prop:cyclic-placeholder-degree", "applies", "lem:symmetric-matching-correction", "The explicit complete correction attains the cyclic lower bound on placeholder degree at even power-of-two row counts."],
+    ["prop:cyclic-placeholder-degree", "applies", "lem:residual-orbit-norm", "Cyclic general symmetry has polynomial size/constant-depth overhead; invariant linearity is not preserved and degree is not circuit size."],
+    ["prop:cyclic-placeholder-degree", "cites", "prop:transpose-linear-obstruction", "Reuses fixed formal locus orbit-cancellation idea for a different row-cycle action and sharp degree scope; no refinement of its full Hilbert-like certificate statement."],
+    ["prop:cyclic-placeholder-degree", "applies", "lem:alternating-gram-lift", "Power-of-two one-surplus Gram shapes fit the paid original rank m2n+2 lift, retaining all fields and polynomial encoding; not a reverse lift at m2n."],
+    ["prop:cyclic-placeholder-degree", "cites", "prop:symmetric-rank-moment-obstruction", "Distinguishes row-cycle invariance of correction polynomials from inner-index invariance of normalized rank moments; the moment obstruction is not imported." ]
+  ]
+}
