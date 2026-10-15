@@ -1,0 +1,68 @@
+// Statement tested: for f=([a,b]a^2)^4, a=x+y,b=x+t*y,
+// psi_2(x)=A*x, psi_2(y)=B*(x+y), with generic upper bidiagonal 3x3 A,B,
+// all 17 word coefficients of y-degree zero or one vanish.
+// Refuted by: any one of the seventeen exact coefficient matrices being nonzero.
+// Possible because: the matrices are symbolic, and an incorrect filtration count
+// would retain nonzero polynomial entries rather than disappear by sampling.
+// Controls: f is nonzero at explicit nontriangular 2x2 matrices; two factors
+// instead of four have a nonzero zero-y coefficient on the symbolic matrices.
+// Refuted by: either independent matrix witness vanishing or shortened control zero.
+// Possible because: these controls omit the triangular nilpotence threshold
+// or evaluate outside the triangular domain, where the claimed zero need not hold.
+ring ncRing=(2,t),(a1,a2,a3,a4,a5,b1,b2,b3,b4,b5),dp;
+matrix ncA[3][3]=a1,a2,0,0,a3,a4,0,0,a5;
+matrix ncB[3][3]=b1,b2,0,0,b3,b4,0,0,b5;
+matrix ncI[3][3]=1,0,0,0,1,0,0,0,1;
+matrix ncZero[3][3];
+matrix ncP=ncA+ncB;
+matrix ncQ=ncA+t*ncB;
+list ncLeft=list(ncP,ncQ,ncP,ncP);
+list ncRight=list(ncQ,ncP,ncP,ncP);
+list ncLeftY=list(ncB,t*ncB,ncB,ncB);
+list ncRightY=list(t*ncB,ncB,ncB,ncB);
+matrix ncH0=ncP*ncQ*ncP*ncP+ncQ*ncP*ncP*ncP;
+int ncChecks=0;
+proc ncAssert(int ncTruth,string ncLabel)
+{
+  if(ncTruth==0){print("FAILED: "+ncLabel);exit;}
+  ncChecks=ncChecks+1;
+}
+list ncPowers=list(ncI,ncH0,ncH0*ncH0,ncH0*ncH0*ncH0,ncH0*ncH0*ncH0*ncH0);
+ncAssert(ncPowers[5]==ncZero,"zero-y coefficient of four factors");
+int ncPos,ncSlot,ncBlock;
+matrix ncL,ncR,ncH,ncWord;
+for(ncPos=1;ncPos<=4;ncPos++)
+{
+  ncL=ncI; ncR=ncI;
+  for(ncSlot=1;ncSlot<=4;ncSlot++)
+  {
+    if(ncSlot==ncPos)
+    { ncL=ncL*ncLeftY[ncSlot]; ncR=ncR*ncRightY[ncSlot]; }
+    else
+    { ncL=ncL*ncLeft[ncSlot]; ncR=ncR*ncRight[ncSlot]; }
+  }
+  ncH=ncL+ncR;
+  for(ncBlock=0;ncBlock<4;ncBlock++)
+  {
+    ncWord=ncPowers[ncBlock+1]*ncH*ncPowers[4-ncBlock];
+    ncAssert(ncWord==ncZero,"one-y word coefficient");
+  }
+}
+print("Symbolic vanishing coefficients: "+string(ncChecks));
+ncAssert(ncH0*ncH0!=ncZero,"shortened two-factor control is nonzero");
+matrix ncX0[2][2]=1,1,0,1;
+matrix ncY0[2][2]=0,0,1,0;
+matrix ncE[2][2]=1,0,0,1;
+matrix ncX=(t*ncX0+ncY0)/(t+1);
+matrix ncY=(ncX0+ncY0)/(t+1);
+matrix ncAA=ncX+ncY;
+matrix ncBB=ncX+t*ncY;
+matrix ncF=(ncAA*ncBB+ncBB*ncAA)*ncAA*ncAA;
+ncAssert(ncAA==ncX0 && ncBB==ncY0,"invertible dense letter change");
+ncAssert(ncF*ncF*ncF*ncF==ncE,"independent full 2x2 polynomial evaluation");
+matrix ncBinary=(ncX0*ncY0+ncY0*ncX0)*ncX0*ncX0;
+ncAssert(ncBinary*ncBinary*ncBinary*ncBinary==ncE,"binary original evaluation");
+print("Negative and nonzero controls: "+string(ncChecks-17));
+if(ncChecks!=21){print("FAILED: assertion count");exit;}
+print("PASS 21 exact symbolic assertions");
+quit;

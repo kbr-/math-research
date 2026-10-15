@@ -402,6 +402,22 @@ Over F(a,b,c) for every fieldF, the four cubics (x-a)^3,(x-b)^3,(x-c)^3,(x-a)(x-
 
 ---
 
+### Triangular concentration gap
+
+**Claim:** [prop:triangular-concentration-gap](<https://kbr.is-a.dev/math-research/#entry-2026-10-15-triangular-concentration-gap>)
+
+For any field F, commutative F-algebra R, n>=1 and upper triangular (n+1)-matrices A,B, psi_n:x->A*x,y->B*(x+y) sends H_d^d, H_d=[x,y]x^(d-2), to a matrix polynomial with every y-degree j<n word coefficient zero when d>=max(2,2n). Each coefficient lies in J^(d-j) for j<=d, J strictly upper triangular. H_d^d is nonzero homogeneous degree d² and has size O(d²), ordered unbounded-fanin depth<=5. H_d^d+K_d^d,K_d=[x,y]y^(d-2), has same properties for d>=max(3,2n). Invertible a=x+y,b=x+lambda*y with lambda not0,1 gives dense nonzero leaf coefficients, e.g. overF4. One-channel source form w1=2,w2=1 gives ell2=2 and d>=4; two-channel w1=4,w2=2,c=(1,1),c1 with rows(1,-1,0,0),(0,0,1,-1) gives ell2=6,d>=12, refuting Lakhani-Saxena ECCC TR26-173 Lemma4.10's printed backward implication. The final tensor-upper-triangular detector also vanishes for d>=2n+1 since (J tensor T+T tensor J)^(2n+1)=0. For even d>=4, binary X=I+E12,Y=E21 gives the two-channel polynomial value I2, so no refutation of the main abstract matrix-witness theorem, IPS bound or hard-formula family is claimed.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** An explicit homogeneous counterfamily prevents importing the screened concentration construction as printed; the main matrix-witness theorem and the Frege goal remain open in this audit.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Check the exact image residual's geometric nonidentity and finish the separately owed commutativity-square block, retaining original costs; no general PIT repair without a certificate connection.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
