@@ -14,14 +14,16 @@ const ENTRIES = 40;
 
 // A repository with a small main notebook and two side notebooks, each with ENTRIES matching entries.
 async function repository(root, site) {
-  fs.writeFileSync(path.join(root, 'main-notebook.html'), notebook({entries: 5}));
+  fs.writeFileSync(path.join(root, 'main-notebook.html'), notebook({entries: 5}).replace(
+    '<section id="research-record">', () => String.raw`<section id="math-angles"><h2>Comparisons</h2>
+      <p>\(P_{<a}>0\) and \[x<y>z\] and $$u<v>w$$.</p></section><section id="research-record">`));
   await promisify(execFile)('python3', ['-c', `
 import sys, shutil
 from pathlib import Path
 root = Path(sys.argv[1]); repo = Path.cwd(); sys.path.insert(0, str(repo / 'tools'))
 from branch import create, SECTIONS
 for name in ['index.html', 'server.py', 'LICENSES/MIT.txt', 'research/context-budgets.json',
-             'tools/notebooks.py', 'tools/notebook_site.py']:
+             'tools/notebooks.py', 'tools/notebook_site.py', 'tools/notebook_math.py']:
     p = root / name; p.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(repo / name, p)
 (root / 'main-notebook.html').rename(root / 'notebook.html')
 context = {k: '<p>Initial context.</p>' for k in SECTIONS}
@@ -83,6 +85,17 @@ const sideNotebooks = mode => async browser => {
     const otherNotebooks = () => requests.filter(url => /notebooks\.json|notebook-source/.test(url)).length;
     await page.goto(server.url, {waitUntil: 'load'});
     await page.waitForFunction(() => window.mathReady);
+    // Exercise production source() in both the live handler and the Pages builder.
+    // MathJax sees the complete TeX only if HTML parsing did not consume its comparisons.
+    await page.locator('#math-angles').scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => [...document.querySelectorAll('#math-angles mjx-container')]
+      .filter(node => node.querySelector('svg')).length === 3);
+    const formulas = await page.evaluate(() => [...MathJax.startup.document.math].map(item => item.math));
+    for (const formula of [String.raw`P_{<a}>0`, 'x<y>z', 'u<v>w']) assert.ok(formulas.includes(formula), formula);
+    assert.equal(await page.locator('#math-angles [data-mml-node="merror"]').count(), 0);
+    const payload = await page.request.get(server.url + 'notebook-source.html');
+    assert.equal(payload.status(), 200);
+    assert.ok((await payload.text()).includes(String.raw`\(P_{&lt;a}&gt;0\)`));
     assert.equal(otherNotebooks(), 0, `${mode}: no other notebooks fetched on startup`);
     assert.equal(await page.locator('#search-scope').inputValue(), 'current');
     await page.locator('#search-open').click();

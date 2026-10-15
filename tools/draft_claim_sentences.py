@@ -21,6 +21,7 @@ import json
 import pathlib
 import re
 import sys
+from notebook_math import MATH, protect_math
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 # Every prefix the registry's identifiers had on 11 October 2026, and historical: until then eleven were listed
@@ -45,7 +46,7 @@ LABEL = re.compile(r'^\s*<(?:strong|em)>([^<]{1,80}?)\.?</(?:strong|em)>')
 
 def text(fragment):
     """Plain text of an HTML fragment, claim identifiers kept, TeX kept."""
-    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', fragment))).strip()
+    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', protect_math(fragment)))).strip()
 
 
 def sentences(fragment):
@@ -56,7 +57,7 @@ def sentences(fragment):
         held.append(match.group(0))
         return f'\x00{len(held) - 1}\x00'
 
-    masked = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', hold, fragment, flags=re.S)
+    masked = re.sub(MATH.pattern + r'|<code>.*?</code>', hold, fragment, flags=re.S)
     parts = re.split(r'(?<=[.?!])\s+(?=[A-Z<\x00(])', masked)
     return [re.sub(r'\x00(\d+)\x00', lambda m: held[int(m.group(1))], part) for part in parts]
 

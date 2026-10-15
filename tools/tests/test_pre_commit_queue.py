@@ -56,7 +56,7 @@ class PreCommitQueueTest(unittest.TestCase):
 
     def install_context_tool(self, budget):
         (self.root / 'tools').mkdir(exist_ok=True)
-        for name in ('notebook_context.py', 'notebook-excerpt.py', 'notebooks.py', 'recovery_evidence.py'):
+        for name in ('notebook_context.py', 'notebook-excerpt.py', 'notebook_math.py', 'notebooks.py', 'recovery_evidence.py'):
             shutil.copy(TOOLS / name, self.root / 'tools' / name)
         (self.root / 'research').mkdir(exist_ok=True)
         (self.root / 'research' / 'context-budgets.json').write_text(budget)

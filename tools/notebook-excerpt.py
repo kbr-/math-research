@@ -12,9 +12,7 @@ import sys
 import subprocess
 from recovery_evidence import observe
 from notebooks import PUBLIC, selected, resolve_anchor, selection_file
-
-
-MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]')
+from notebook_math import MATH, protect_math
 
 
 def visible_text(source):
@@ -30,7 +28,7 @@ def visible_text(source):
                 self.parts.append(' ')
         def handle_endtag(self, tag):
             self.handle_starttag(tag, [])
-    source = MATH.sub(lambda m: m.group().replace('<', '&lt;').replace('>', '&gt;'), source)
+    source = protect_math(source)
     parser = Text()
     parser.feed(source); parser.close()
     return ' '.join(''.join(parser.parts).split())
@@ -58,7 +56,7 @@ def readable_text(source):
             if tag in BLOCKS:
                 self.parts.append('\n')
     source = TIMING.sub('', source)
-    source = MATH.sub(lambda m: m.group().replace('<', '&lt;').replace('>', '&gt;'), source)
+    source = protect_math(source)
     parser = Text()
     parser.feed(source); parser.close()
     lines = (' '.join(line.split('\t')[0].split()) + ''.join('\t' + ' '.join(c.split()) for c in line.split('\t')[1:])

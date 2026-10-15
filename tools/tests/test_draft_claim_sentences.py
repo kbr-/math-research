@@ -21,6 +21,14 @@ DRAFT = '''<article id="entry-x" data-claims="lem:new-one">
 
 
 class DraftClaimSentences(unittest.TestCase):
+    def test_raw_tex_comparisons_survive_the_citation_report(self):
+        draft = (r'<p>By <code>lem:first</code>, \(4\le D<\epsilon n/8\) and '
+                 r'\(P_{<a}>0\) hold.</p><p>Also <code>lem:first</code> gives \[a<b>c\] and $$u<v. W>w$$.</p>')
+        out, missing = dcs.report(draft, REGISTRY, 0)
+        self.assertFalse(missing)
+        self.assertIn(r'By lem:first, \(4\le D<\epsilon n/8\) and \(P_{<a}>0\) hold.', out)
+        self.assertIn(r'Also lem:first gives \[a<b>c\] and $$u<v. W>w$$.', out)
+
     def test_sentences_are_listed_under_their_claim_with_labels(self):
         out, unregistered = dcs.report(DRAFT, REGISTRY, 0)
         self.assertIn('lem:first\n  REGISTERED: First lemma: holds for original instances only.', out)

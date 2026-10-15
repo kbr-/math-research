@@ -1,0 +1,31 @@
+Scope: shared TeX angle protection in page/source rendering, notebook
+excerpts and sentence audits. Stored historical mathematics is unchanged.
+
+Cause: the citation audit removed substrings matching HTML tags before
+protecting TeX comparisons. Live and static source paths also exposed raw
+comparisons to HTML parsing. Existing tests used escaped comparisons or
+formulas without angle brackets, so they did not exercise the loss.
+
+Prevention: notebook_math.protect_math is shared by these paths. Tests
+exercise the real citation report and live/static browser routes, preserve
+existing entities, and assert complete MathJax input. Dollar-math sentence
+masking now uses the same delimiter pattern.
+
+Final framework suite: 1065 tests passed in 9.1 seconds.
+Generic helper mutations: 19 killed, zero survivors or uncovered mutants.
+Targeted mutations in owned scratch copies, after passing controls:
+- Removing audit protection fails the citation-report test, showing the
+  actual swallowed formula in its assertion output.
+- Removing source protection fails both static and live browser cases.
+- Omitting dollar-math sentence masking fails the citation-report test.
+Full outputs accompany this report. No dependency installation was needed.
+
+Real-repository paths: eight notebooks, 48,010,754 source bytes.
+Complete Pages build: 1.17 seconds, 266456 KiB peak RSS.
+Main sentence audit: 11,629,256 source bytes; 1.49 seconds, 74100 KiB.
+Largest side notebook, binary-multiplicity-degree: 18,339,779 source bytes;
+sentence audit 3.80 seconds, 106712 KiB. Timed audits used --summing-up.
+These are measured complete command times, not a claimed speedup.
+
+Separate raw HTML consumers remain queued for their own actual-path audit;
+this repair does not claim to fix every notebook text transformation.

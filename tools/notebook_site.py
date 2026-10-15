@@ -4,6 +4,7 @@ import html
 import posixpath
 import re
 from notebooks import catalogue, selected, PUBLIC
+from notebook_math import protect_math
 
 
 def relative(route, current):
@@ -25,7 +26,7 @@ def source(root, name):
     for other in catalogue(root).values():
         for host in ('https://kbr.is-a.dev/math-research/','https://kbr-.github.io/math-research/'):
             body=body.replace('href="'+host+other['route']+'#','href="'+relative(other['route'],item['route'])+'#')
-    return body
+    return protect_math(body)
 
 
 def manifest(root):
