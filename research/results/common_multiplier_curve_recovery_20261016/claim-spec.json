@@ -1,0 +1,38 @@
+{
+  "source": {
+    "record": "[Marked curve recovery](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-marked-curve-recovery)",
+    "label": "Marked curve recovery",
+    "targets": ["branches/common-multiplier/notebook.html#entry-2026-10-16-marked-curve-recovery"]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Codex with sole fresh-context GPT-6.1-Sol medium reviewer",
+  "topics": ["affine-linear-algebra", "degree-accounting"],
+  "claims": [
+    {
+      "id": "thm:marked-curve-recovery",
+      "summary": "On a smooth projective geometrically integral curve over a finite field, genus g, n distinct rational evaluation points, divisors A,G of nonnegative degrees a,m avoiding those points, t>=0, a>=t+g and n>a+m+t, recover any f in L(G) from its evaluations corrupted at <=t unknown positions. Solve N(P_i)=lambda(P_i)y_i with lambda in L(A), N in L(A+G). Nonzero solutions exist, every nonzero solution has lambda nonzero and N=lambda f identically, and kills every actual error. A second weighted evaluation system uniquely recovers f. If rational R avoids the points and supports of A,G and a>=t+2g, add lambda(R)=1; the system remains consistent and N(R)=f(R). With bases/evaluation matrices supplied, O(n^3) field operations and O(n^2) memory. Costs of producing those inputs are separate. This supplies geometric certificates for established bilinear error recovery, not a new decoder or a bounded-PC identification.",
+      "assessment": "Working geometric recovery application passed by the sole fresh-context medium reviewer: divisor bounds, every accepted solution, protected normalization, signal injectivity and dense-input cost checked. Established decoding mechanism, no novelty claim.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Completes the known-defect curve locator into a constructive unknown-error application with protected value and explicit genus costs.",
+      "next_action": "Use the explicit curve provider for the queued partially overlapping-support joint-rank application, retaining the detection and pole budgets.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:hermitian-repair-family",
+      "summary": "For every s=2^r>=4 in a supplied field F_(s^2), use the Hermitian curve Y^s Z+YZ^s=X^(s+1), infinity P=(0:1:0), protected R=(0:0:1), and all affine rational points except R. Set n=s^3-1,g=s(s-1)/2,m=s^3/4-1,t=s^3/8-1,a=t+2g,G=mP,A=aP. Marked curve recovery corrects every error pattern of size<=t and returns lambda(R)=1, preserving the message value there. Dimension is m-g+1. Bases L(bP) are x^i y^j for i>=0,0<=j<s and si+(s+1)j<=b. Points, bases, evaluation matrices and decoding use O(n^3) field operations/O(n^2) storage. Field construction excluded; pole filtration is not total polynomial degree. Positive genus and length are unbounded; no new code, radius improvement or binary-PC transfer claimed.",
+      "assessment": "Working explicit positive-genus application passed by the sole fresh-context medium reviewer: geometry, point count, basis, all-parameter arithmetic and full input/decoding construction cost checked.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Makes the geometric repair application nonvacuous at unbounded positive-genus parameters without hiding a Riemann-Roch basis oracle.",
+      "next_action": "Retain as the completed geometric application; test the separately queued joint-error budget extension without treating identical kernels as a gain.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["thm:marked-curve-recovery", "depends_on", "cor:curve-locator-budget", "Riemann-Roch supplies a nonzero locator or a locator normalized at the protected point with the stated genus cost."],
+    ["thm:marked-curve-recovery", "applies", "thm:bilinear-error-recovery", "Divisor dimensions, zero bounds and the product evaluation tester verify all selection, detection and signal-injectivity hypotheses."],
+    ["thm:marked-curve-recovery", "cites", "thm:certified-repair-composition", "The geometric provider has the same common-weight and additive-cost architecture; its pole filtration is not asserted to be the polynomial theorem's bounded-PC domain."],
+    ["cor:hermitian-repair-family", "depends_on", "thm:marked-curve-recovery", "The Hermitian parameters satisfy the marked existence and zero-detection budget; explicit bases and points supply the algorithm's inputs."]
+  ]
+}
