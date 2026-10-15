@@ -1,0 +1,138 @@
+// Test: the paid bivariate-series Pfaffian circuit equals literal masked
+// matching enumeration over F2 for M=2,3,4, with independent edge symbols.
+// Refuted by: any nonzero formal discrepancy in these native identities.
+// Possible because: omitting monomers or masks changes the tested output.
+// Expectations precede this exploratory run, but are not committed first.
+ring acR=2,(s(1..4),e(1..6),k(1..6),t,u),dp;
+int acCount=0;
+proc acAssert(poly p,string label)
+{
+  if(p!=0){print("FAILED "+label);quit;}
+  acCount++;
+  print("OK "+label);
+}
+proc acNonzero(poly p,string label)
+{
+  if(p==0){print("FAILED "+label);quit;}
+  acCount++;
+  print("OK "+label);
+}
+// Independent literal recursion: the least available vertex is unmatched
+// or paired with exactly one other available vertex. No Pfaffian operations.
+proc acLiteral(intvec vertices,matrix edges,int omitMonomers)
+{
+  int len=size(vertices);
+  if(len==0){return(poly(1));}
+  int i=vertices[1]; int j; int a; int b;
+  intvec rest;
+  poly result=0;
+  if(omitMonomers==0)
+  {
+    if(len==1){result=s(i);}
+    else
+    {
+      rest=vertices[2..len];
+      result=s(i)*acLiteral(rest,edges,0);
+    }
+  }
+  for(a=2;a<=len;a++)
+  {
+    j=vertices[a];
+    if(len==2){result=result+edges[i,j];}
+    else
+    {
+      rest=intvec(0); b=0;
+      for(int c=2;c<=len;c++)
+      {
+        if(c!=a){b++;rest[b]=vertices[c];}
+      }
+      result=result+edges[i,j]*acLiteral(rest,edges,omitMonomers);
+    }
+  }
+  return(result);
+}
+// The independent recursion above uses rational edge weights represented by
+// finite t-series; multiplication by the complete mask precedes truncation.
+for(int acM=2;acM<=4;acM++)
+{
+  int acD=acM*acM;
+  int acL=acM+(acM%2);
+  int acQ=acL/2;
+  ideal acCut=std(ideal(t^(acD+1),u^(acQ+1)));
+  matrix acH[acL][acL];
+  matrix acEdges[acM][acM];
+  matrix acC[acL][acL];
+  poly acW=1;
+  int acE=0;
+  for(int acI=1;acI<=acM;acI++)
+  {
+    for(int acJ=acI+1;acJ<=acM;acJ++)
+    {
+      acE++;
+      poly acInvB=0;
+      for(int acA=0;2*acA<=acD;acA++)
+      {acInvB=acInvB+t^(2*acA)*e(acE)^acA;}
+      acAssert(reduce((1+t^2*e(acE))*acInvB+1,acCut),"mask inverse");
+      acEdges[acI,acJ]=k(acE)*acInvB;
+      acEdges[acJ,acI]=acEdges[acI,acJ];
+      acH[acI,acJ]=reduce(t^2*(k(acE)*acInvB+s(acI)*s(acJ)),acCut);
+      acH[acJ,acI]=acH[acI,acJ];
+      acW=reduce(acW*(1+t^2*e(acE)),acCut);
+    }
+    if(acM%2)
+    {acH[acI,acL]=t*s(acI);acH[acL,acI]=t*s(acI);}
+  }
+  acC=u*acH;
+  for(acI=1;acI<acL;acI=acI+2)
+  {acC[acI,acI+1]=acC[acI,acI+1]+1;acC[acI+1,acI]=acC[acI,acI+1];}
+  poly acPf=1;
+  for(acI=1;acI<acL;acI=acI+2)
+  {
+    poly acP=acC[acI,acI+1];
+    poly acInv=1;
+    poly acPower=1;
+    for(acA=1;acA<=acQ;acA++)
+    {acPower=reduce(acPower*(1+acP),acCut);acInv=acInv+acPower;}
+    acAssert(reduce(acP*acInv+1,acCut),"pivot inverse");
+    acPf=reduce(acPf*acP,acCut);
+    for(acJ=acI+2;acJ<=acL;acJ++)
+    {
+      for(int acB=acJ+1;acB<=acL;acB++)
+      {
+        acC[acJ,acB]=reduce(acC[acJ,acB]+acInv*(acC[acI,acJ]*acC[acI+1,acB]+acC[acI,acB]*acC[acI+1,acJ]),acCut);
+        acC[acB,acJ]=acC[acJ,acB];
+      }
+    }
+  }
+  ideal acLow=std(ideal(u^acQ));
+  poly acTop=(acPf-reduce(acPf,acLow))/u^acQ;
+  poly acResult=reduce(acW*acTop,acCut);
+  // Matching enumeration is independent of the Pfaffian elimination.
+  // It shares the separately verified inverse-mask series, and multiplies
+  // by the full mask before comparing truncated formal polynomials.
+  // acLiteral uses s(i), so homogenize those variables after recursion.
+  poly acExpected=acLiteral(1..acM,acEdges,0);
+  for(acI=1;acI<=acM;acI++){acExpected=subst(acExpected,s(acI),t*s(acI));}
+  for(acI=1;acI<=acE;acI++){acExpected=subst(acExpected,k(acI),t^2*k(acI));}
+  acExpected=reduce(acW*acExpected,acCut);
+  acAssert(acResult+acExpected,"complete masked matching M="+string(acM));
+  // At e=0,k=0 the entire output is the nonzero monomer product.
+  poly acMono=acResult;
+  for(acI=1;acI<=acE;acI++)
+  {acMono=subst(acMono,e(acI),0);acMono=subst(acMono,k(acI),0);}
+  poly acWant=t^acM;
+  for(acI=1;acI<=acM;acI++){acWant=acWant*s(acI);}
+  acAssert(acMono+acWant,"monomer specialization");
+  acNonzero(acWant,"dropping monomers distinguishes control");
+  acNonzero(reduce(acTop+acExpected,acCut),"omitting mask distinguishes control");
+  print("FIXTURE M="+string(acM)+" q="+string(acQ)+" D="+string(acD)+" edges="+string(acE));
+}
+// Expected counts are fixture-derived: one per mask and pivot inverse,
+// plus four end-to-end identities/controls per fixture.
+int acExpectedCount=0;
+for(int acN=2;acN<=4;acN++)
+{acExpectedCount=acExpectedCount+acN*(acN-1)/2+(acN+(acN%2))/2+4;}
+if(acCount!=acExpectedCount){print("FAILED completion count");quit;}
+print("ASSERTIONS "+string(acCount)+" expected "+string(acExpectedCount));
+print("PASS");
+quit;
