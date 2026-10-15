@@ -1,0 +1,167 @@
+/*
+Exact local inverse-counter transfer over F2, all indices at n=1,2.
+Tests the polynomial generator/field maps, the target-consequence gluing, and
+the reverse rectangular identity. It does not decide certificate size hardness.
+Refuted by: Any nonzero exact identity residual or surviving omitted-correction control.
+Possible because: Incorrect transpose, index, or missing Boolean term changes these formal polynomials.
+Expectations: every listed exact identity is zero; each omission changes its
+map and then fails the independently formed target identity. Expectations were
+written before execution, not committed first; run explicitly exploratory.
+Stages: rectangular generator maps; all mapped fields; inverse target glue;
+nonzero omission controls; reverse identity; full scalar counter calibration.
+All polynomial inputs remain formal; no unsatisfiable-point implication tests.
+*/
+ring icR=2,(q(1..26)),dp;
+int icN,icI,icJ,icK,icL,icA,icB,icT;
+int icChecks=0;
+int icFailures=0;
+int icCases=0;
+int icNegatives=0;
+int icExpected=0;
+ideal icImages;
+matrix icH[2][2];
+matrix icE[2][2];
+matrix icKE[2][2];
+matrix icAA[3][2];
+matrix icBB[2][3];
+matrix icPhi[3][3];
+poly icP,icTarget,icG,icFieldMap,icBad,icDropped,icReverse,icScalar;
+proc icU(int ii,int jj) { return(var(2*(ii-1)+jj)); }
+proc icV(int ii,int jj) { return(var(4+2*(ii-1)+jj)); }
+proc icY(int ii,int jj) { return(var(8+2*(ii-1)+jj)); }
+proc icZU(int ii,int jj) { return(var(12+2*(ii-1)+jj)); }
+proc icZV(int ii,int jj) { return(var(16+2*(ii-1)+jj)); }
+proc icAssert(int okay,string label)
+{
+  icChecks++;
+  if (!okay) { icFailures++; print("FAILED "+label); }
+}
+print("Plan: all formal generator and field maps at n=1,2 and every counter index.");
+print("Stages: local maps, field corrections, target glue, omissions, reverse identity, scalar certificate.");
+for (icN=1;icN<=2;icN++)
+{
+  for (icA=1;icA<=icN;icA++)
+  {
+    for (icB=1;icB<=icN;icB++)
+    {
+      icH[icA,icB]=0;
+      icE[icA,icB]=0;
+      icKE[icA,icB]=0;
+      if (icA==icB) { icH[icA,icB]=1; icE[icA,icB]=1; }
+      for (icK=1;icK<=icN;icK++)
+      {
+        icH[icA,icB]=icH[icA,icB]+icU(icA,icK)*icV(icK,icB);
+        icE[icA,icB]=icE[icA,icB]+icV(icA,icK)*icU(icK,icB);
+        icKE[icA,icB]=icKE[icA,icB]+icU(icK,icB)^2*icZV(icA,icK)
+          +icV(icA,icK)*icZU(icK,icB);
+      }
+    }
+  }
+  for (icI=1;icI<=icN;icI++)
+  {
+    for (icJ=1;icJ<=icN;icJ++)
+    {
+      icCases++;
+      icExpected=icExpected+(icN+1)^2+2*icN*(icN+1)+5;
+      icG=1+icE[icI,icJ];
+      for (icT=1;icT<=26;icT++) { icImages[icT]=var(icT); }
+      for (icA=1;icA<=icN;icA++)
+      {
+        for (icB=1;icB<=icN;icB++)
+        {
+          icImages[8+2*(icA-1)+icB]=icH[icA,icB];
+          icImages[12+2*(icA-1)+icB]=icU(icA,icB)^2+icU(icA,icB);
+          icImages[16+2*(icA-1)+icB]=icV(icA,icB)^2+icV(icA,icB);
+          icAA[icA,icB]=icU(icA,icB);
+          icBB[icA,icB]=icV(icA,icB);
+          icPhi[icA,icB]=icY(icA,icB);
+        }
+        icAA[icN+1,icA]=icE[icI,icA];
+        icBB[icA,icN+1]=icE[icA,icJ];
+        icPhi[icA,icN+1]=0;
+        icPhi[icN+1,icA]=0;
+        for (icK=1;icK<=icN;icK++)
+        {
+          icPhi[icA,icN+1]=icPhi[icA,icN+1]+icY(icA,icK)*icU(icK,icJ);
+          icPhi[icN+1,icA]=icPhi[icN+1,icA]+icV(icI,icK)*icY(icK,icA);
+        }
+      }
+      icImages[21]=icG;
+      if (defined(icEval)) { kill icEval; }
+      map icEval=icR,icImages;
+      icPhi[icN+1,icN+1]=var(21);
+      for (icA=1;icA<=icN;icA++)
+      { for (icB=1;icB<=icN;icB++)
+        { icPhi[icN+1,icN+1]=icPhi[icN+1,icN+1]+icV(icI,icA)*icY(icA,icB)*icU(icB,icJ); }
+      }
+      for (icA=1;icA<=icN+1;icA++)
+      { for (icB=1;icB<=icN+1;icB++)
+        {
+          icTarget=0;
+          if (icA==icB) { icTarget=1; }
+          for (icK=1;icK<=icN;icK++)
+          { icTarget=icTarget+icAA[icA,icK]*icBB[icK,icB]; }
+          icAssert(icEval(icPhi[icA,icB])+icTarget==0,"rectangular generator image");
+        }
+      }
+      for (icA=1;icA<=icN+1;icA++)
+      { for (icB=1;icB<=icN;icB++)
+        {
+          icFieldMap=icKE[icI,icB];
+          if (icA<=icN) { icFieldMap=icZU(icA,icB); }
+          icAssert(icEval(icFieldMap)+icAA[icA,icB]^2+icAA[icA,icB]==0,"A field image");
+          icFieldMap=icKE[icB,icJ];
+          if (icA<=icN) { icFieldMap=icZV(icB,icA); }
+          icAssert(icEval(icFieldMap)+icBB[icB,icA]^2+icBB[icB,icA]==0,"B field image");
+        }
+      }
+      icP=icE[icI,icJ]*(1+var(26)*icG)+var(26)*icEval(icKE[icI,icJ]);
+      icAssert(icP+icE[icI,icJ]==0,"abstract consequence glue");
+      icDropped=0;
+      for (icA=1;icA<=icN;icA++)
+      { for (icB=1;icB<=icN;icB++)
+        { icDropped=icDropped+icV(icI,icA)*icH[icA,icB]*icU(icB,icJ); }
+      }
+      icAssert(icDropped!=0,"omitted bottom correction is nonzero formally");
+      icTarget=1;
+      for (icK=1;icK<=icN;icK++) { icTarget=icTarget+icAA[icN+1,icK]*icBB[icK,icN+1]; }
+      icAssert(icG+icTarget!=0,"bottom omission rejected against direct product");
+      icDropped=icEval(icU(1,icJ)^2*icZV(icI,1));
+      icAssert(icDropped!=0,"omitted Frobenius contribution nonzero formally");
+      icBad=icKE[icI,icJ]+icU(1,icJ)^2*icZV(icI,1);
+      icAssert(icEval(icBad)+icE[icI,icJ]^2+icE[icI,icJ]!=0,"field omission rejected against direct square");
+      icNegatives=icNegatives+2;
+      if (icN==1)
+      {
+        // C_counter=Y11+W; c=1. The constructed consequence is E Y11+K_E.
+        icScalar=icEval(icE[1,1]*icY(1,1)+icKE[1,1]);
+        icAssert(icScalar+icE[1,1]==0,"full scalar certificate consequence");
+        icExpected++;
+      }
+    }
+  }
+  icReverse=1;
+  for (icA=1;icA<=icN;icA++) { icReverse=icReverse+var(21+icA)*var(23+icA); }
+  for (icA=1;icA<=icN;icA++)
+  { for (icB=1;icB<=icN;icB++)
+    { icReverse=icReverse+var(21+icA)*icE[icA,icB]*var(23+icB); }
+  }
+  for (icK=1;icK<=icN;icK++)
+  {
+    icP=0; icTarget=0;
+    for (icA=1;icA<=icN;icA++)
+    {
+      icP=icP+var(21+icA)*icV(icA,icK);
+      icTarget=icTarget+icU(icK,icA)*var(23+icA);
+    }
+    icReverse=icReverse+icP*icTarget;
+  }
+  icAssert(icReverse+1==0,"reverse rectangular certificate identity");
+  icExpected++;
+  print("completed n="+string(icN)+" cumulative counter cases="+string(icCases));
+}
+if (icChecks!=icExpected) { icFailures++; print("FAILED completion count"); }
+print("SUMMARY cases="+string(icCases)+" negative_controls="+string(icNegatives)
+  +" checks="+string(icChecks)+" expected="+string(icExpected)+" failures="+string(icFailures));
+if (icFailures==0) { print("FINAL PASS"); } else { print("FINAL FAILED"); }
+exit;

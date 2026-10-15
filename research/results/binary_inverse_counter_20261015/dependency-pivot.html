@@ -1,0 +1,112 @@
+<article id="entry-2026-10-11-pivot-certificate-test" data-kind="research" data-route="general-step" data-route-item="general-step" data-obligation="binary-frege-lower-bound" data-goal-progress="unchanged" data-bearing="some" data-lead="entry-2026-10-08-after-symmetry-review:3" data-claims="thm:shared-pivot-certificate cor:canonical-pivot-depth-gap">
+<h3>11 October 2026 — Shared pivot certificates retain the determinant function</h3>
+<p class="entry-meta">Working shared certificate and scoped depth obstruction. Pivot certificate test. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Chosen.</strong> Return to the rank-principle item before the restriction head to execute the latest scheduled review's test on general-step and binary-frege-lower-bound. The missing implication is a superpolynomial lower bound covering every eligible bounded-depth certificate, or the smaller matched Frege image. Test whether full pivot/gluing certificates admit polynomial sharing at constant depth; an actual construction or a scoped obstruction with all Boolean corrections ends this test.</p>
+<p><strong>Owed attempt.</strong> The item's <a href="#entry-2026-10-09-rank-certificate-slice">last development</a> left full-coset extraction open. The <a href="#entry-2026-10-11-image-goal-review">latest review</a> directed the present full-tuple construction first, after finding a binary scalar-oracle obstruction. We execute that test; the older universal extraction obligation is not declared settled.</p>
+<p><strong>Architecture test.</strong> The <a href="#entry-2026-10-11-image-goal-review">scheduled review's pivot test</a> succeeds at polynomial size through a single shared child, but gives depth \(O(n)\). The exact resulting certificate has a determinant-function coefficient and cannot have polynomial-size fixed-depth binary circuits. Its directly normalized residual has no fixed-order matrix-\(B\) jet at the zero slice for large \(n\); this does not transfer the certificate's depth lower bound to that residual.</p>
+<p><strong>General statement.</strong> thm:shared-pivot-certificate constructs complete certificates for every \(m>n\), including all field corrections and a shared recursion. cor:canonical-pivot-depth-gap concerns this exact certificate polynomial, not arbitrary representatives.</p>
+<p><strong>New mathematics.</strong> A literal one-child construction answers the sharing question without factorial branch expansion. A designated coefficient computes the determinant function, and direct normalization suppresses low-order zero-factor jets. The general existence of polynomial-size rank-principle IPS is not claimed as new.</p>
+<p><strong>Goal progress.</strong> Unchanged. <strong>Bearing.</strong> On the fixed family \(m=2n\), polynomial description and genuine shared circuits are available, while this exact pivot certificate cannot be flattened to polynomial size and fixed depth. This decides the specified construction's depth question. <strong>Not covered.</strong> All alternative certificates, arbitrary normalized residual representatives, the matched Frege image, and the desired superpolynomial proof-size bound remain open.</p>
+<h4 id="shared-pivot-certificate">Shared pivot certificate</h4>
+<p><strong>Theorem.</strong> Over \(\mathbb F_2\), let \(A\) be \(m\times n\), \(B\) be \(n\times m\), and \(m>n\ge0\). Put \(F_{ik}=\delta_{ik}+\sum_lA_{il}B_{lk}\), with Boolean generators \(b_x=x^2+x\) for every entry. There is an explicit Hilbert-like IPS certificate \(C_{m,n}(x,Y,Z)\) with one shared child \(C_{m-1,n-1}\), polynomial gate/wire size, depth \(O(n)\), and joint degree at most \(3^n(n+1)!\). Its direct normalization gives \(Q(x,b(x))=P(x)\), where \(P=\prod_{i,k}(1+F_{ik})\), with polynomial size and depth \(O(n)\). For \(n\ge1\) that \(Q\) belongs to \(J^{m-1}\), where \(J\) is the ideal of matrix-\(B\) entries with \(A,Z\) independent. Gates are unbounded-fanin sums/products over binary constants; no original-PC-degree preservation or constant-depth upper bound is asserted.</p>
+<p><strong>Selectors and branches.</strong> Write \(u_j=A_{1j}\), \(p_j=\prod_{l<j}(1+u_l)\), \(w_j=u_jp_j\), \(w_0=\prod_l(1+u_l)\), and \(w=\sum_jw_j=1+w_0\). This last identity is literal. On the Boolean cube exactly the first nonzero \(u_j\) is selected. For each \(j\), list the remaining inner indices \(k_j(h)\) in increasing order and put
+\[
+a^j_{i,h}=A_{i+1,k_j(h)}+A_{i+1,j}u_{k_j(h)},\qquad
+b^j_{h,k}=B_{k_j(h),k+1}.
+\]
+Use the actual mux matrices \(a=\sum_jw_ja^j\), \(b=\sum_jw_jb^j\). They implement pivot-to-first permutation and column elimination on the selected branch.</p>
+<p>For \(i,k\ge2\), direct expansion gives
+\[
+G^j_{i-1,k-1}=F_{ik}+A_{ij}F_{1k}+(1+u_j)A_{ij}B_{jk},\qquad G^j=I+a^jb^j.
+\]
+Thus \(w_jG^j\) is certified by \(w_jY_{ik}+w_jA_{ij}Y_{1k}+p_jA_{ij}B_{jk}Z_{u_j}\). This includes the old Boolean error when the chosen pivot is formal rather than idempotent.</p>
+<p><strong>Mux correction.</strong> Let \(K_j(x,Z)\) certify \(w_j^2+w_j\). Explicitly, if \(w_j=\prod_{t\le j}v_t\), with \(v_j=u_j\), \(v_t=1+u_t\) for \(t<j\), use
+\[
+K_j=\sum_{t\le j}Z_{u_t}\prod_{l<t}v_l^2\prod_{l>t}v_l.
+\]
+For \(j<k\), set
+\[
+L_{jk}=Z_{u_j}p_j u_k\prod_{\substack{l<k\\l\ne j}}(1+u_l),\quad L_{kj}=L_{jk}.
+\]
+It specializes to \(w_jw_k\). Set \(M_{jk}=wL_{jk}\) if \(j\ne k\), and
+\[
+M_{jj}=(w+1)K_j+\sum_{l\ne j}L_{lj}.
+\]
+Substitution \(Z=b(x)\) gives \(M_{jk}=ww_jw_k+\delta_{jk}w_j\). For the diagonal identity, expand \((w+1)(w_j^2+w_j)+(w+w_j)w_j=ww_j^2+w_j\).</p>
+<p>Replace the child equation placeholder by
+\[
+H_{ik}=wY_{ik}+\sum_jw_jA_{ij}Y_{1k}
++\sum_jp_jA_{ij}B_{jk}Z_{u_j}
++\sum_{h,j,l}M_{jl}a^j_{i-1,h}b^l_{h,k-1}.
+\]
+The branch certificates and the displayed mux identity prove literally
+\(H_{ik}(x,F,b(x))=wG_{i-1,k-1}(a,b)\).
+For every mux entry \(\phi\), the <a href="#prime-field-residual-normalization">explicit Frobenius rule</a> gives a linear-placeholder certificate \(K_\phi(x,b(x))=\phi^2+\phi\). Replace its child Boolean placeholder by \(wK_\phi\). For completeness the binary rule is \(K_x=Z_x\), \(K_c=0\), \(K_{f+g}=K_f+K_g\), and
+\(K_{\prod_t f_t}=\sum_tK_{f_t}\prod_{l<t}f_l^2\prod_{l>t}f_l\).
+Every field term is retained.</p>
+<p>The zero-row branch has the certificate
+\[
+H_0=w_0Y_{11}+\sum_j\left(\prod_{l\ne j}(1+u_l)\right)B_{j1}Z_{u_j},
+\qquad H_0(x,F,b(x))=w_0.
+\]
+Use \(C_{m,0}=Y_{11}\). In one copy of \(C_{m-1,n-1}\), substitute the mux entries for old variables, \(H\) for matrix placeholders and \(wK_\phi\) for field placeholders, then add \(H_0\). By the child's formal identity and linearity in all placeholders, the child now evaluates to \(w\). The parent evaluates to \(w+w_0=1\) and remains Hilbert-like. Induction proves existence for all \(m>n\).</p>
+<p><strong>Circuit and degree ledger.</strong> Each selector, witness and mux entry is computed once; each \(H_{ik}\) has at most \((n-1)n^2\) correction summands. These input maps have polynomial size and absolute constant depth. They feed one existing child circuit:
+\[
+S(m,n)\le S(m-1,n-1)+\operatorname{poly}(m,n),\qquad
+d(m,n)\le d(m-1,n-1)+O(1).
+\]
+Sharing is literal circuit reuse, not a claim that distinct branch polynomials coincide. With placeholder degree one, mux entries have degree at most \(n+2\), matrix maps at most \(3n+2\), and weighted field maps at most \(3n+3\). For example \(\deg K_j\le2n-1\), \(\deg M_{jl}\le3n-1\), and a branch product has degree at most three. The Frobenius certificate of a degree-\((n+2)\) mux expression has joint degree at most \(2n+3\). Composition multiplies the child degree by at most \(3(n+1)\); the bound follows from degree one at \(n=0\). Substitution of quadratic generators into a Hilbert-like certificate raises each NS summand's degree by at most one. These loose bounds are not PC lower bounds.</p>
+<p><strong>Direct residual normalization.</strong> Let \(P_{ik}\) omit factor \((i,k)\) from \(P\). Since \(C\) is already Hilbert-like, use it directly:
+\[
+Q(x,Z)=C\bigl(x,(P_{ik}K_{F_{ik}}(x,Z))_{ik},(PZ_x)_x\bigr).
+\]
+Here \(P_{ik}(F_{ik}^2+F_{ik})=PF_{ik}\), so \(Q(x,b(x))=P\). This is the proved normalization, with no coefficient expansion. Each of the \(m\) diagonal factors \(1+F_{aa}=\sum_lA_{al}B_{la}\) belongs to \(J\); hence \(P\in J^m\) and every \(P_{ik}\in J^{m-1}\). Linearity of \(C\) in its placeholders gives \(Q\in J^{m-1}\). The same argument holds for direct normalization of any Hilbert-like \(C\). Every matrix-\(B\) Hasse derivative of order below \(m-1\) vanishes at \(B=0\); for \(m=2n\), every fixed-order such jet is zero for sufficiently large \(n\). Arbitrary residual representatives and higher-order extraction are outside this observation. \(\square\)</p>
+<h4 id="canonical-pivot-depth-gap">Canonical pivot depth gap</h4>
+<p><strong>Corollary.</strong> The \(Y_{n+1,n+1}\) coefficient of this exact \(C_{m,n}\) computes the determinant function of the first \(n\) rows of \(A\) on Boolean inputs. Consequently at \(m=2n\) this particular certificate polynomial has no polynomial-size uniformly fixed-depth binary arithmetic circuit.</p>
+<p><strong>Proof.</strong> Extract the coefficient by setting the named placeholder to one and every other \(Y,Z\) to zero; Hilbert-linearity makes this a depth-free operation. The special row is not the first row at any stage before the base case, so it enters \(H\) only through \(wY_{ik}\), and never enters \(H_0\). Its coefficient therefore satisfies
+\[
+c_{m,n}(A,B)=w\,c_{m-1,n-1}(a,b),\qquad c_{m,0}=1.
+\]
+Inductively it depends only on \(A\). On Boolean inputs, a zero first row gives zero. Otherwise the selected nonzero pivot is one, and elementary column elimination shows that the top \(n\times n\) square is nonsingular exactly when the child's top \((n-1)\times(n-1)\) square is nonsingular. Induction proves equality of Boolean functions, not formal polynomial equality. The <a href="#binary-determinant-depth-gap">recorded explicit MOD3 reduction</a> excludes polynomial-size fixed-depth binary circuits for this function, since such circuits become parity/AND circuits on Boolean inputs. Placeholder evaluation and fixing irrelevant entries preserve those bounds. \(\square\)</p>
+<p>This is not a lower bound for every IPS certificate. The <a href="#unit-slice-certificates">unit-slice syzygies</a> already invalidate assuming a designated coefficient is protected universally. Nor does the obstruction automatically transfer to normalized \(Q\): normalization can move or cancel the determinant dependence, and no cheap reverse extraction is supplied.</p>
+<h4>Controls and record comparison</h4>
+<p><strong>Nonvacuity.</strong> The full certificate exists for every \(m=2n\), \(n\ge1\), an unbounded polynomial-description family. At \(n=1,m=2\), the child has inner dimension zero and the complete refutation includes both first-row branches and old fields. Local identities also hold at \(m=n\ge2\), giving satisfiable controls without refutations. Before the check, seven distinct fixtures were specified at \(n=1,2,3\), \(m\in\{n,n+1,2n\}\), omitting \(m=n=1\). The largest weighted child equation has at most 1379 raw terms; no full rank residual or recursive certificate was expanded.</p>
+<p><strong>Degenerate cases.</strong> The \(n=0\) base is the constant contradiction, not a hard family. A zero first row uses \(H_0\); otherwise the Boolean first-one selector is unique. Repeated entries, zero branch coefficients and cancellations preserve the literal identities. No satisfiable \(m\le n\) refutation is asserted.</p>
+<p>The accepted <a href="research/results/binary_pivot_certificate_test_20261011/check.txt">native Singular output</a> reports 7 fixtures, 53 matrix identities, 52 field identities, 14 shared selector assignments, 22 negative controls, and 215 total checks with zero failures. Controls omit mux, pivot-field or zero-row corrections, or replace the first-one selectors by independent bits. The <a href="research/results/binary_pivot_certificate_test_20261011/check.sing">checker</a> was read; these are local exact symbolic checks, not a general lower-bound computation. The rejected first run's <a href="research/results/binary_pivot_certificate_test_20261011/failed-declarations.txt">declaration errors</a> completed no fixtures; separate initialized integer declarations repaired them. No larger finite run is needed for the general induction.</p>
+<p>The claim-resemblance preflight preceded review. Its nearby collected-cofactor width result and stronger all-local-witness version concern ROABPs in a fixed local basis, not binary unrestricted arithmetic depth; its triangular degree-growth and free-affine moment examples are finite controls in different systems. Their exact source passages were inspected. Unit-slice, determinant, normalization and rank-order records were reread; none supplies the missing all-certificate bound. The new claims claim no independent literature novelty.</p>
+<h4>Reviewer's suggestions, unverified</h4>
+<ul><li>Test the direct normalization's matrix-\(B\) vanishing order. The author verified the diagonal-factor argument above and the same reviewer checked it as an added theorem consequence. It rules out fixed-order jets on this slice for large \(n\), without solving full correction hardness. <strong>Record.</strong> Searches for normalization/zero-factor/jet/order/diagonal residual, derivative/coefficient/jet ideal, and the exact unit-slice and rank-residual records found the earlier slice and scalar-oracle controls; those do not state this direct-normalization ideal inclusion.</li></ul>
+<p><strong>Follow-up.</strong> Continuing: the shared pivot construction settles size sharing but leaves the full normalized correction tuple's bounded-depth complexity open. Next test whether its exact normalization admits a circuit-level cancellation or a different shallow full certificate, before treating its growing-depth representation as necessary. Compare direct lower-bound constructions and method repairs at the full-certificate endpoint; do not assume free high-order coefficient extraction. <strong>Record search.</strong> Pivot/cofactor/sharing searches and the resemblance preflight recover the prior rank family, unit-slice and determinant controls. Normalization and zero-factor jet searches recover only scoped extraction controls, not a small full residual circuit or an all-representative lower bound.</p>
+<h4>Sub-idea follow-up</h4>
+<ul>
+<li data-check="entry-2026-10-09-rank-certificate-slice:s1">The constructed certificate is hard at bounded depth, but universal full-coset extraction remains unproved; the direct-normalization zero-slice control is a restriction on one representation. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<ul>
+<li data-check="entry-2026-10-09-handoff-tool-audit:s1">The imported core-residual and conditioning tools still need a source-wide application with paid degrees; this circuit construction does not provide one. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-tensor-source-image:s1">A source-sensitive mixed-input estimate is not supplied by a single chosen certificate. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-profile-architecture-review:s1">The profile/source compatibility question remains outside the present full-certificate recurrence. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-paired-affine-law:s1">Nonlinear paired-source control is not settled by the pivot identity. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-mixed-parent-law-test:s1">A common paid choice for shared input groups remains unconstructed. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-shared-parent-choice-test:s1">No hard polynomial is extracted from every complete formal rank certificate. The determinant coefficient belongs to the chosen representative only. <strong>Follow-up.</strong> Continuing.</li>
+<li data-check="entry-2026-10-09-core-scope-review:s3">Realization of unit-slice normalization inside the exact Frege simulation image remains unproved. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Review.</strong> The stand-in review's four objections were checked. First, failure of an upper-bound search alone would not decide hardness; the actual test instead proves shared polynomial size and an exact chosen-certificate depth obstruction, with the full goal unchanged. Second, the committed image review contains the record search, trivial cases, power statement and fixed unbounded \(m=2n\) family; these were omitted from the short commentary, not the record. Third, that review's resemblance and registry searches preceded its new rank-order claim; the present preflight likewise preceded review. Fourth, its committed article contains Obstacle, three Outside leads, two Absurd bridges, their symbolic outcomes and the completed local checkpoint. Those alleged record omissions were wrong; no extra review cycle is introduced.</p>
+<p><strong>Verification gate.</strong> The sole fresh-context GPT-6.1-Sol medium reviewer checked literal gluing, field corrections, one-child sharing, degree/depth bounds and determinant-function extraction against the exact dependency excerpts. It passed after the title and \(Q(x,b(x))=P(x)\) notation were qualified, then passed the added direct-normalization ideal-order control. See <a href="research/results/binary_pivot_certificate_test_20261011/review.md">review evidence</a>. The author read the checker and accepted output; the reviewer did not rerun it. <strong>Process audit.</strong> The original proposed title could imply formal determinant equality; the final title says determinant function. No further findings or unused hypotheses were reported.</p>
+<p><strong>Process assessment.</strong> Shared recursion answers the construction's size question without enumerating larger cases; the lower-bound scope stays limited to the fixed certificate. <strong>Prevention.</strong> The existing reviewed-title rule prevents presenting functional equality as formal equality, and mandatory completion-count/error checks rejected the parser-failed run. Bounded source excerpts avoid relying on truncated multi-record displays; no new framework rule is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="binary_pivot_certificate_test_20261011">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>37 min 8.22 s</strong></td></tr>
+<tr><td>Context restoration</td><td class="elapsed">41.44 s</td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">28.61 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">27 min 18.86 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 6.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 3.64 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.44 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">28.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>

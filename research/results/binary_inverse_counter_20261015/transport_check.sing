@@ -1,0 +1,136 @@
+/*
+Exact fixed binary basis changes for the diagonal-counter strengthening.
+Stages: inverse matrix, H invariance, E conjugation, every Boolean-field map,
+permutation diagonal transfer, shear off-diagonal transfer, omission controls.
+Exhaust every transposition (1,a) and every shear I+e_ab at n=1,2,3.
+Refuted by: A nonzero local identity residual or an undetected omitted inverse/field term.
+Possible because: A wrong matrix side or forgotten linear Boolean witness changes a formal polynomial.
+Expectations precede execution but are not committed first; run exploratory.
+No circuit hardness or large-n theorem is inferred from these finite fixtures.
+*/
+ring tcR=2,(q(1..36)),dp;
+int tcN,tcA,tcB,tcI,tcJ,tcK,tcL;
+int tcChecks=0;
+int tcExpected=0;
+int tcCases=0;
+int tcControls=0;
+int tcFailures=0;
+matrix tcQ[3][3];
+matrix tcUP[3][3];
+matrix tcVP[3][3];
+matrix tcH[3][3];
+matrix tcE[3][3];
+matrix tcEP[3][3];
+ideal tcImages;
+poly tcP,tcTmp,tcTarget,tcBad,tcDropped;
+proc tcU(int ii,int jj) { return(var(3*(ii-1)+jj)); }
+proc tcV(int ii,int jj) { return(var(9+3*(ii-1)+jj)); }
+proc tcZU(int ii,int jj) { return(var(18+3*(ii-1)+jj)); }
+proc tcZV(int ii,int jj) { return(var(27+3*(ii-1)+jj)); }
+proc tcAssert(int okay,string label)
+{
+  tcChecks++;
+  if (!okay) { tcFailures++; print("FAILED "+label); }
+}
+print("Plan: every transposition (1,a) and elementary shear at n=1,2,3.");
+for (tcN=1;tcN<=3;tcN++)
+{
+  for (tcI=1;tcI<=36;tcI++) { tcImages[tcI]=var(tcI); }
+  for (tcI=1;tcI<=tcN;tcI++)
+  { for (tcJ=1;tcJ<=tcN;tcJ++)
+    {
+      tcImages[18+3*(tcI-1)+tcJ]=tcU(tcI,tcJ)^2+tcU(tcI,tcJ);
+      tcImages[27+3*(tcI-1)+tcJ]=tcV(tcI,tcJ)^2+tcV(tcI,tcJ);
+      tcH[tcI,tcJ]=0; tcE[tcI,tcJ]=0;
+      if (tcI==tcJ) { tcH[tcI,tcJ]=1; tcE[tcI,tcJ]=1; }
+      for (tcK=1;tcK<=tcN;tcK++)
+      {
+        tcH[tcI,tcJ]=tcH[tcI,tcJ]+tcU(tcI,tcK)*tcV(tcK,tcJ);
+        tcE[tcI,tcJ]=tcE[tcI,tcJ]+tcV(tcI,tcK)*tcU(tcK,tcJ);
+      }
+    }
+  }
+  if (defined(tcEval)) { kill tcEval; }
+  map tcEval=tcR,tcImages;
+  for (tcA=1;tcA<=tcN;tcA++)
+  { for (tcB=1;tcB<=tcN;tcB++)
+    {
+      tcCases++;
+      tcExpected=tcExpected+5*tcN^2+1;
+      for (tcI=1;tcI<=tcN;tcI++)
+      { for (tcJ=1;tcJ<=tcN;tcJ++)
+        { tcQ[tcI,tcJ]=0; if (tcI==tcJ) { tcQ[tcI,tcJ]=1; } }
+      }
+      if (tcA==tcB)
+      {
+        if (tcA>1)
+        { tcQ[1,1]=0; tcQ[tcA,tcA]=0; tcQ[1,tcA]=1; tcQ[tcA,1]=1; }
+      }
+      else { tcQ[tcA,tcB]=1; }
+      for (tcI=1;tcI<=tcN;tcI++)
+      { for (tcJ=1;tcJ<=tcN;tcJ++)
+        {
+          tcP=0;
+          tcUP[tcI,tcJ]=0; tcVP[tcI,tcJ]=0;
+          for (tcK=1;tcK<=tcN;tcK++)
+          {
+            tcP=tcP+tcQ[tcI,tcK]*tcQ[tcK,tcJ];
+            tcUP[tcI,tcJ]=tcUP[tcI,tcJ]+tcU(tcI,tcK)*tcQ[tcK,tcJ];
+            tcVP[tcI,tcJ]=tcVP[tcI,tcJ]+tcQ[tcI,tcK]*tcV(tcK,tcJ);
+          }
+          tcTarget=0; if (tcI==tcJ) { tcTarget=1; }
+          tcAssert(tcP+tcTarget==0,"Q inverse");
+        }
+      }
+      for (tcI=1;tcI<=tcN;tcI++)
+      { for (tcJ=1;tcJ<=tcN;tcJ++)
+        {
+          tcP=0; tcEP[tcI,tcJ]=0; tcTarget=0;
+          if (tcI==tcJ) { tcP=1; tcEP[tcI,tcJ]=1; }
+          for (tcK=1;tcK<=tcN;tcK++)
+          {
+            tcP=tcP+tcUP[tcI,tcK]*tcVP[tcK,tcJ];
+            tcEP[tcI,tcJ]=tcEP[tcI,tcJ]+tcVP[tcI,tcK]*tcUP[tcK,tcJ];
+            for (tcL=1;tcL<=tcN;tcL++)
+            { tcTarget=tcTarget+tcQ[tcI,tcK]*tcE[tcK,tcL]*tcQ[tcL,tcJ]; }
+          }
+          tcAssert(tcP+tcH[tcI,tcJ]==0,"H invariance");
+          tcAssert(tcEP[tcI,tcJ]+tcTarget==0,"E conjugation");
+          tcTmp=0;
+          for (tcK=1;tcK<=tcN;tcK++) { tcTmp=tcTmp+tcQ[tcK,tcJ]*tcZU(tcI,tcK); }
+          tcAssert(tcEval(tcTmp)+tcUP[tcI,tcJ]^2+tcUP[tcI,tcJ]==0,"U field transport");
+          tcTmp=0;
+          for (tcK=1;tcK<=tcN;tcK++) { tcTmp=tcTmp+tcQ[tcI,tcK]*tcZV(tcK,tcJ); }
+          tcAssert(tcEval(tcTmp)+tcVP[tcI,tcJ]^2+tcVP[tcI,tcJ]==0,"V field transport");
+        }
+      }
+      if (tcA==tcB)
+      { tcAssert(tcEP[1,1]+tcE[tcA,tcA]==0,"permuted diagonal"); }
+      else
+      { tcAssert(tcEP[tcA,tcA]+tcE[tcA,tcA]+tcE[tcB,tcA]==0,"shear off diagonal"); }
+      if ((tcA!=tcB)||(tcA>1))
+      {
+        tcExpected=tcExpected+2; tcControls++;
+        tcI=tcA; if (tcA==tcB) { tcI=1; }
+        tcAssert(tcVP[tcI,1]+tcV(tcI,1)!=0,"omitted V inverse changes map");
+        tcBad=1;
+        for (tcK=1;tcK<=tcN;tcK++) { tcBad=tcBad+tcUP[1,tcK]*tcV(tcK,1); }
+        tcAssert(tcBad+tcH[1,1]!=0,"wrong V side rejected");
+      }
+      if (tcA!=tcB)
+      {
+        tcExpected=tcExpected+2; tcControls++;
+        tcDropped=tcU(1,tcA)^2+tcU(1,tcA);
+        tcAssert(tcDropped!=0,"dropped shear field term nonzero");
+        tcTmp=tcZU(1,tcB);
+        tcAssert(tcEval(tcTmp)+tcUP[1,tcB]^2+tcUP[1,tcB]!=0,"missing linear field witness rejected");
+      }
+    }
+  }
+  print("completed n="+string(tcN)+" cumulative basis maps="+string(tcCases));
+}
+if (tcChecks!=tcExpected) { tcFailures++; print("FAILED completion count"); }
+print("SUMMARY basis_maps="+string(tcCases)+" omission_controls="+string(tcControls)
+  +" checks="+string(tcChecks)+" expected="+string(tcExpected)+" failures="+string(tcFailures));
+if (tcFailures==0) { print("PASS diagonal inverse transport"); } else { print("FAILED diagonal inverse transport"); }
+quit;

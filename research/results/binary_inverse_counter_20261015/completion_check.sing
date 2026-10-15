@@ -1,0 +1,105 @@
+/*
+Exact zero-coordinate completion of rectangular rank tuples over F2.
+Stages: independent matrix products, counter image, every Boolean witness,
+and shifted-row, missing-zero-coordinate and omitted-field controls.
+Fixtures: (m,n)=(2,1),(3,2),(4,2),(4,3),(6,3).
+Expected: all source generator images agree; every altered map is rejected.
+Refuted by: A nonzero generator residual or a control whose changed contribution vanishes.
+Possible because: A misplaced reserved coordinate or missing field witness changes a formal polynomial.
+Predictions precede execution but are not committed first; run exploratory.
+Finite fixtures check the encoding, not certificate hardness or a universal proof.
+*/
+ring ccR=2,(q(1..72)),dp;
+int ccM,ccN,ccCase,ccI,ccJ,ccK;
+int ccChecks=0;
+int ccExpected=0;
+int ccControls=0;
+int ccFailures=0;
+intvec ccMs=2,3,4,4,6;
+intvec ccNs=1,2,2,3,3;
+matrix ccU[6][6];
+matrix ccV[6][6];
+matrix ccZU[6][6];
+matrix ccZV[6][6];
+ideal ccImages;
+poly ccP,ccTarget,ccTmp,ccBad,ccChanged;
+proc ccA(int ii,int kk) { return(var(3*(ii-1)+kk)); }
+proc ccB(int kk,int jj) { return(var(18+6*(kk-1)+jj)); }
+proc ccZA(int ii,int kk) { return(var(36+3*(ii-1)+kk)); }
+proc ccZB(int kk,int jj) { return(var(54+6*(kk-1)+jj)); }
+proc ccAssert(int okay,string label)
+{
+  ccChecks++;
+  if (!okay) { ccFailures++; print("FAILED "+label); }
+}
+print("Plan: five rectangular fixtures, every matrix/field image, three omission controls each.");
+for (ccCase=1;ccCase<=size(ccMs);ccCase++)
+{
+  ccM=ccMs[ccCase]; ccN=ccNs[ccCase];
+  ccExpected=ccExpected+3*ccM^2+7;
+  for (ccI=1;ccI<=72;ccI++) { ccImages[ccI]=var(ccI); }
+  for (ccI=1;ccI<=ccM;ccI++)
+  { for (ccK=1;ccK<=ccN;ccK++)
+    {
+      ccImages[36+3*(ccI-1)+ccK]=ccA(ccI,ccK)^2+ccA(ccI,ccK);
+      ccImages[54+6*(ccK-1)+ccI]=ccB(ccK,ccI)^2+ccB(ccK,ccI);
+    }
+  }
+  if (defined(ccEval)) { kill ccEval; }
+  map ccEval=ccR,ccImages;
+  for (ccI=1;ccI<=ccM;ccI++)
+  { for (ccJ=1;ccJ<=ccM;ccJ++)
+    {
+      ccU[ccI,ccJ]=0; ccV[ccI,ccJ]=0;
+      ccZU[ccI,ccJ]=0; ccZV[ccI,ccJ]=0;
+      if ((ccJ>=2)&&(ccJ<=ccN+1))
+      { ccU[ccI,ccJ]=ccA(ccI,ccJ-1); ccZU[ccI,ccJ]=ccZA(ccI,ccJ-1); }
+      if ((ccI>=2)&&(ccI<=ccN+1))
+      { ccV[ccI,ccJ]=ccB(ccI-1,ccJ); ccZV[ccI,ccJ]=ccZB(ccI-1,ccJ); }
+    }
+  }
+  for (ccI=1;ccI<=ccM;ccI++)
+  { for (ccJ=1;ccJ<=ccM;ccJ++)
+    {
+      ccP=0; ccTarget=0;
+      if (ccI==ccJ) { ccP=1; ccTarget=1; }
+      for (ccK=1;ccK<=ccM;ccK++) { ccP=ccP+ccU[ccI,ccK]*ccV[ccK,ccJ]; }
+      for (ccK=1;ccK<=ccN;ccK++) { ccTarget=ccTarget+ccA(ccI,ccK)*ccB(ccK,ccJ); }
+      ccAssert(ccP+ccTarget==0,"square H maps to rectangular F");
+      ccTmp=ccZU[ccI,ccJ];
+      ccAssert(ccEval(ccTmp)+ccU[ccI,ccJ]^2+ccU[ccI,ccJ]==0,"retained U field");
+      ccTmp=ccZV[ccI,ccJ];
+      ccAssert(ccEval(ccTmp)+ccV[ccI,ccJ]^2+ccV[ccI,ccJ]==0,"retained V field");
+    }
+  }
+  ccP=0;
+  for (ccK=1;ccK<=ccM;ccK++) { ccP=ccP+ccV[1,ccK]*ccU[ccK,1]; }
+  ccAssert(ccP==0,"fixed diagonal counter maps to zero");
+  // Incorrectly place B in rows 1..n instead of 2..n+1.
+  ccChanged=ccB(1,1);
+  if (ccN>=2) { ccChanged=ccChanged+ccB(2,1); }
+  ccAssert(ccChanged!=0,"shifted row changes a source leaf");
+  ccBad=0; ccTarget=0;
+  for (ccK=1;ccK<=ccN;ccK++)
+  {
+    ccTarget=ccTarget+ccA(1,ccK)*ccB(ccK,1);
+    if (ccK<ccN) { ccBad=ccBad+ccA(1,ccK)*ccB(ccK+1,1); }
+  }
+  ccAssert(ccBad+ccTarget!=0,"shifted row fails H identity"); ccControls++;
+  // Ordinary padding into coordinates 1..n has no reserved zero coordinate.
+  ccBad=0;
+  for (ccK=1;ccK<=ccM;ccK++) { ccBad=ccBad+ccB(1,ccK)*ccA(ccK,1); }
+  ccAssert(ccBad!=0,"unreserved counter contribution is nonzero");
+  ccAssert(ccBad+0!=0,"zero counter witness fails without reserved coordinate"); ccControls++;
+  ccChanged=ccA(1,1)^2+ccA(1,1);
+  ccAssert(ccChanged!=0,"omitted field contribution is nonzero");
+  ccTmp=0;
+  ccAssert(ccEval(ccTmp)+ccU[1,2]^2+ccU[1,2]!=0,"omitted retained field rejected"); ccControls++;
+  print("completed m="+string(ccM)+" n="+string(ccN));
+}
+if (ccChecks!=ccExpected) { ccFailures++; print("FAILED completion count"); }
+print("SUMMARY fixtures="+string(size(ccMs))+" omission_controls="+string(ccControls)
+  +" checks="+string(ccChecks)+" expected="+string(ccExpected)+" failures="+string(ccFailures));
+if (ccFailures==0) { print("PASS zero-coordinate square completion"); }
+else { print("FAILED zero-coordinate square completion"); }
+quit;
