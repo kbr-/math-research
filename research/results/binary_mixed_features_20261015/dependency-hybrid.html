@@ -1,0 +1,30 @@
+<h4 id="mixed-packing-common-vanishing-learning">2. Pack low ranks and learn from high ranks in one substitution</h4>
+    <p>Let an old system \(\mathcal F\) over \(\mathbb F_2\) contain Booleanity, and adjoin a complete one-level affine-input family of common accuracy \(h\). Remove zero and unit spans by scalar cleanup. Fix \(k\ge1\), and call a block low if \(r_b\le h(k+1)\), high otherwise.</p>
+    <p><strong>Working hybrid lemma.</strong> Suppose the augmented system has a degree-\(D\) refutation, \(D\ge2h+1\). If a multilinear polynomial \(f\) of degree at most \(k\) vanishes on the affine zero space of every high block, then</p>
+    <div class="math">\[
+      f\in\mathcal C_B(\mathcal F)
+      \quad\text{for PC},\qquad
+      f\in\mathcal I_B(\mathcal F)
+      \quad\text{for NS},\qquad
+      B=k(D+1).
+      \tag{HYB-learning}
+    \]</div>
+    <p>No vanishing condition on the low blocks is required.</p>
+    <p><strong>Low blocks.</strong> Choose an affine basis \(F_1,\ldots,F_r\), and distribute its \(r\le h(k+1)\) complements among \(h\) bins of size at most \(k+1\). The existing <a href="#relative-optimal-linear-packing">factor telescoping construction</a>, here with no retained core, assigns coefficient polynomials of degree at most \(k\). It makes the product \(A=\prod_s(1-F_s)\). Each companion image is a Boolean consequence through \(r+1\), by the same explicit basis identity used in affine packing. After multiplying by \(f\), its certificate costs at most</p>
+    <div class="math">\[
+      r+1+\deg f\le h(k+1)+1+k
+        \le k(2h+1)+k.
+    \]</div>
+    <p>The last inequality is \((k-1)(h+1)\ge0\).</p>
+    <p><strong>High blocks.</strong> By the <a href="#affine-common-vanishing-learning">affine ideal-membership argument</a>, choose \(a_{b,i}\) of degree at most \(k-1\) with
+      \(H_b=\sum_i a_{b,i}g_{b,i}\) and
+      \(f-H_b\in\mathcal I_k({\rm BOOL})\).
+      Put these coefficients in the first factor row and set all later rows to zero. Then the product is \(1-H_b\), and</p>
+    <div class="math">\[
+      f g_{b,i}(1-H_b)
+       =g_{b,i}\bigl[f(1-f)+f(f-H_b)\bigr]
+          \in\mathcal I_{2k+1}({\rm BOOL}).
+    \]</div>
+    <p>Since \(2k+1\le k(2h+1)+k\), these images fit the same ledger. All low and high coefficient assignments use only the original old variables, so the simultaneous substitution has degree at most \(k\); the two costs do not multiply.</p>
+    <p><strong>Weighted replay.</strong> Multiply every substituted proof line by \(f\). A coefficient-field image has a Boolean certificate through \(2k+\deg f\le3k\). Old axioms become their multiples by \(f\). The same PC replay as in the earlier learning lemma fits \(kD+k\): at a multiplication step the original preceding degree is at most \(D-1\), and the substituted multiplier has degree at most \(k\).</p>
+    <p>For NS, an original degree-\(e\) axiom has cofactor image of degree at most \(k(D-e)\). The weighted image certificates above cost at most \(ke+k\), including \(e=2\) fields and the old axioms. Every substituted NS summand therefore fits \(kD+k\). The final weighted image of one is \(f\), proving (HYB-learning). This argument uses one level essentially: the inputs do not change when another block's coefficients are specialized.</p>
