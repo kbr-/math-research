@@ -1,0 +1,485 @@
+{
+  "base_sha256": "2f56b365efdefbf3e3f02159cb7dbd0ac074d10727129de7727c3709eb67a82d",
+  "provenance": {
+    "revision": "c3cdca5b2292b15d1ca096780eb255bdd5052cff",
+    "date": "2026-10-15",
+    "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:quotient-restriction-data",
+        "summary": "Fix v>=0,d>=1,k>=0,2k<=d,n=max(v+1,6),B=z²+z. For binary formal quotients q=g/B^k with supplied g=sum of at most3 products each of <=d binary affine factors in z,x1..xv, choose E=F2^a of least cardinality>36dn and U subset E of size36dn+1. Homogenize x only with X0, padding products to d, and add dummy variables to n. Over E(z) the numerator is homogeneous degree d in X. Apply Saxena-Seshadhri STOC2011 Theorem2/Lemma11 r=6 maps X_i->sum_(j=1)^6 beta^(ij)Y_j, fixing z. Complete restricted quotients Q_beta=G_beta/B^k in E[z,Y1..Y6] distinguish every pair of this class, since numerator differences have at most6 products and all36dn+1 maps detect nonzero. Each has z-degree<=d-2k, homogeneous Y-degree d, support <=(d-2k+1)binom(d+5,5). Restricted factor lists have <=12 monomials per factor, so ordinary polynomial-table operations construct full coefficient data in polynomial field operations; no unrestricted coefficient oracle. Each of a binary coefficient components has sum-of-monomials depth<=2, total per-seed sizeO(a(d+1)^7) counting ordinary repeated variable wires; all data sizeO(na(d+1)^8),a=O(log(dn+1)). Y are scalar formal indeterminates; no generic growing-extension evaluator, Boolean fixed-depth coefficient construction, nonlinear decoder, original-variable quotient circuit, automatic actual-dividend representation or Frege consequence asserted.",
+        "assessment": "Working attributed corollary passed by the sole fresh-context medium reviewer: exact source application over E(z), constant seeds, x-only homogenization, fixed divisor, pairwise rather than span injectivity, output circuits and all limits checked. No required corrections or unused hypotheses; no novelty claimed.",
+        "record": "[Quotient restriction data](https://kbr.is-a.dev/math-research/#entry-2026-10-15-quotient-restriction-data)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "frege-simulation",
+          "method-obstructions",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Develops a general restriction mechanism for the queued triple-division repair, obtaining complete formal data but leaving reconstruction explicit.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": "Check whether supplied factors permit nonlinear reconstruction of the original quotient; do not infer it from equality detection."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:linear-quotient-assembly-gap",
+        "summary": "For quotient-restriction-data's fixed maps at v=d=4k and all sufficiently large d, no universal F2-linear map from the complete binary coefficient arrays to F2[z,x] returns every quotient in its three-affine-product class. For every subset A of [d] with size2k, one-product numerator g_A=B^k product_(i in A)x_i uses d affine factors and quotient q_A=product x_i. These binom(d,d/2)>=2^d/(d+1) outputs are linearly independent. All input arrays lie in dimension at most a(36dn+1)(d-2k+1)binom(d+5,5)=O(d^8 log(d+1)),n=d+1, so any fixed linear decoder has image too small. Each q_A itself has depth1 sizeO(d); no circuit lower bound or obstruction to nonlinear or member-dependent reconstruction follows. H_A=q_A(F dot Z)^k on an easy full unit-generating tuple containing B has this actual reciprocal dividend, polynomial size/fixed depth and growing variables/divisor, retaining ordinary power wires. No hard family or general dividend representation theorem follows.",
+        "assessment": "Working elementary dimension control passed by the same sole medium reviewer, including the complete coefficient-array dimension, linear-decoder quantifier, growing easy monomial and actual invariant-probe witnesses. No nonlinear circuit lower bound or goal consequence; no novelty claimed.",
+        "record": "[Quotient restriction data](https://kbr.is-a.dev/math-research/#entry-2026-10-15-quotient-restriction-data)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "frege-simulation",
+          "method-obstructions",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Falsifies the attempted fixed linear assembly after faithful quotient restriction, without confusing linear rank with circuit complexity.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": "Keep nonlinear factor-sensitive construction open and carry the unchanged necessary implication to the scheduled review."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:reciprocal-probe-dividend",
+        "summary": "For a size-S>=1 depth-d>=0 division-free unbounded-fanin arithmetic circuit H(x,Z) over F2 counting gates and wires, fix Z_b and B=x_1^2+x_1. Some syntactic denominator weight 0<=k<=(S+1)^d admits a binary division-free circuit for g=B^k H(x,e_b/B) of size O((S+2)^(d+2)) and depth<=2d+4. Gate weights use maximum at sums and sum at products, with sum inputs scaled by nonnegative powers of B. If F generates the unit ideal and includes B, and H has common polynomial value h on every formal Hilbert-like coefficient certificate, the rational-pivot identity gives g=B^k h regardless of placeholder degree. This is a dividend construction only; no binary bounded-depth circuit for the quotient h is obtained.",
+        "assessment": "Working elementary denominator bookkeeping extending the dividend stage of the recorded bounded-coset probe composition. Syntactic weight and wire cost are explicit, including cancellation and empty gates. No literature novelty or goal progress claimed. Exact growing-multiplicity division over F2 remains open; the read finite-field factor theorem returns a power over an algebraic closure and is not imported as a binary quotient result.",
+        "record": "[Reciprocal probe dividend](https://kbr.is-a.dev/math-research/#entry-2026-10-13-growing-probe-dividend)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "method-obstructions",
+          "nullstellensatz",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Removes growing placeholder-degree truncation from the numerator stage of the proposed full-class invariant extraction and isolates the unpaid binary quotient operation.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": "Test a simultaneous known-root division construction on actual probe dividends, preserving binary constants and fixed depth; do not infer arbitrary factor closure or a hard invariant value."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Invariant probe values: new relationship with prop:invariant-probe-truncation-gap. Affine pair division: new relationship with prop:primitive-triple-contact, thm:affine-pair-division. Pair merging gap: new relationship with prop:pair-merging-gap. Primitive merger gap: new relationship with prop:primitive-merger-gap. Coupled pivot chart: new relationship with lem:coupled-pivot-chart. Coefficient-fed division: new relationship with lem:coefficient-fed-division. Quotient restriction data: new relationship with lem:quotient-restriction-data.",
+          "targets": [
+            "../notebook.html#entry-2026-10-13-growing-probe-dividend"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:affine-pair-division",
+        "summary": "Over F2[z,y_1,...,y_v], v>=0, let g=P0+P1 with Pi explicitly supplied products of binary affine polynomials, zero factors and empty products allowed, and S>=2 counting gates and wires including repeated factors. If (z^2+z)^k divides g for any k>=0, its formal quotient has a division-free unbounded-fanin binary circuit of size O((S+1)^4) and depth at most20 independent of k. After cancelling the common affine-factor product, a nonzero reduced pair has root order zero or q at each binary root, where q is the largest common power of2 in all remaining full-factor multiplicities. Matching specializations and distinct simple poles prove primitive contact order1. Dividing the deflated sum at each needed root at most once, then taking the paid qth power and retaining root/common factors, gives the quotient. Pure products and zero sums are handled directly. This is a supplied two-product representation theorem, not generic factorization or arbitrary reciprocal-dividend coverage.",
+        "assessment": "Working binary affine factor-contact and exact quotient construction passed by the sole fresh-context medium reviewer, including corrected both-zero preprocessing. It preserves original power wires and isolates a strict representation premise; no proof-size lower bound or literature novelty is claimed.",
+        "record": "[Affine pair division](https://kbr.is-a.dev/math-research/#entry-2026-10-14-affine-pair-division)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Repairs the growing known-split-denominator step for a nonvacuous supplied two-product class without requesting hard generic intermediate coefficients.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": "Test a distinct regrouping mechanism for three affine-product dividends, retaining the growing primitive-contact control and avoiding the already false pair-contact classification."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair merging gap: new relationship with prop:pair-merging-gap. Quotient restriction data: new relationship with lem:quotient-restriction-data.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-affine-pair-division"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:rank-moment-table",
+        "summary": "For every m>n>=1, the local positive-colour profiles k in N^n with 1<=sum k<=m all occur in legal rank-product colourings. Over F2(s), their row moment polynomials product_l V_kl(Xl,s) are linearly independent, with dimension binomial(m+n,n)-1. Each has distinct leading monomial X^k and nonzero coefficient (1+s)^(number of kl>1); lower terms have smaller degree. At m=2n this is at least3^n-1. At s=0 the same row dimension coexists with the cheap original product; at s=1 the local dimension is2^n-1 while the full rank interpolation is zero. This only obstructs an explicit table or a fixed linear-register span for all row polynomials, not implicit queries, shared nonlinear circuits, full Boolean correction circuits or paid-quotient ranks.",
+        "assessment": "Elementary exact profile count and triangular independence proof with explicit cheap-product controls passed by the sole fresh-context medium reviewer. No circuit lower bound is claimed.",
+        "record": "[Rank moment queries](https://kbr.is-a.dev/math-research/#entry-2026-10-14-rank-moment-queries)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "nullstellensatz",
+          "method-obstructions",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Tests the proposed dense moment-state update at unbounded actual parameters while preserving the distinction from the goal's circuit cost.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": "Bypass the dense linear moment table; test shared assembly directly on implicit contributions."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Quotient restriction data: new relationship with prop:linear-quotient-assembly-gap.",
+          "targets": [
+            "../notebook.html#entry-2026-10-14-rank-moment-queries"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:linear-quotient-assembly-gap::depends_on::lem:quotient-restriction-data",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:linear-quotient-assembly-gap",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:quotient-restriction-data",
+        "locator": null
+      },
+      "scope": "Uses its fixed complete restricted coefficient arrays and exact polynomial dimension bound; not injectivity on their ambient linear span.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "c3cdca5b2292b15d1ca096780eb255bdd5052cff",
+        "date": "2026-10-15",
+        "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Uses its fixed complete restricted coefficient arrays and exact polynomial dimension bound; not injectivity on their ambient linear span."
+      }
+    },
+    {
+      "id": "lem:quotient-restriction-data::cites::lem:reciprocal-probe-dividend",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:quotient-restriction-data",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:reciprocal-probe-dividend",
+        "locator": null
+      },
+      "scope": "Application requires an additional supplied three-affine-product representation of the actual dividend; generic denominator clearing does not give it or reconstruct the common value.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "c3cdca5b2292b15d1ca096780eb255bdd5052cff",
+        "date": "2026-10-15",
+        "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Application requires an additional supplied three-affine-product representation of the actual dividend; generic denominator clearing does not give it or reconstruct the common value."
+      }
+    },
+    {
+      "id": "lem:quotient-restriction-data::cites::thm:affine-pair-division",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:quotient-restriction-data",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:affine-pair-division",
+        "locator": null
+      },
+      "scope": "The pair theorem is a complete original-variable quotient construction; the new result treats three-product restriction data only, not a refinement of that endpoint.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "c3cdca5b2292b15d1ca096780eb255bdd5052cff",
+        "date": "2026-10-15",
+        "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "The pair theorem is a complete original-variable quotient construction; the new result treats three-product restriction data only, not a refinement of that endpoint."
+      }
+    },
+    {
+      "id": "prop:linear-quotient-assembly-gap::cites::prop:rank-moment-table",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:linear-quotient-assembly-gap",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:rank-moment-table",
+        "locator": null
+      },
+      "scope": "Reuses the elementary distinction between universal linear-register dimension and nonlinear implicit circuit size, on a different quotient-data object; neither statement implies the other's formula.",
+      "evidence": [
+        "../notebook.html#entry-2026-10-15-quotient-restriction-data"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "c3cdca5b2292b15d1ca096780eb255bdd5052cff",
+        "date": "2026-10-15",
+        "reviewer": "Codex and sole fresh-context GPT-6.1-Sol medium reviewer",
+        "note": "Reuses the elementary distinction between universal linear-register dimension and nonlinear implicit circuit size, on a different quotient-data object; neither statement implies the other's formula."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
