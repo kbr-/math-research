@@ -66,14 +66,26 @@ def stale_files(text, log, now=None, window=600):
     count (the block log keeps them, tools/hooks/block_log.py), so an unrelated refusal or a file the
     message names beside the updated one does not refuse it. Not caught: refusals by hooks other than
     the Bash guard, which record no paths, and files a refused command named by a relative path."""
-    if not UPDATE_CLAIM.search(text) or CHECKED.search(text):
+    if not UPDATE_CLAIM.search(text):
         return []
     now = now or datetime.now()
     recent = [(when, set(paths)) for when, _, paths in block_log.blocks(log)
               if 0 <= (now - when).total_seconds() <= window]
+    # A refused call's file counts when the message names it by full path or, a second 16 October 2026 case, by
+    # its file name alone ("the spec is spec.json beside it"); "checked on disk" lets through only the files
+    # named in its own sentence, since in that case it was said of another file of the same message.
+    checked = ' '.join(s for s in re.split(r'(?<=[.;:!?])\s+', text) if CHECKED.search(s))
+    refused = {path for _, paths in recent for path in paths}
+    named = list(dict.fromkeys(NAMED_FILE.findall(text)))
+    # A file name alone stands for a refused file only when no full path in the message has that name: a message
+    # naming /worktree/notebook.html is about that file, not about a refused /main/notebook.html.
+    full_names = {Path(path).name for path in named}
+    named += [path for path in sorted(refused) if path not in named and Path(path).name not in full_names
+              and re.search(r'(?<![\w./-])' + re.escape(Path(path).name) + r'(?![\w])', text)]
     stale = []
-    for path in dict.fromkeys(NAMED_FILE.findall(text)):
-        if not Path(path).is_file():
+    for path in named:
+        if not Path(path).is_file() or path in checked or re.search(
+                r'(?<![\w./-])' + re.escape(Path(path).name) + r'(?![\w])', checked):
             continue
         written = datetime.fromtimestamp(Path(path).stat().st_mtime)
         if any(path in paths and written < when for when, paths in recent):
@@ -189,7 +201,47 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
             'reviewer search the source only for a claim it challenges')
 
 
+def replay(lines, log=None, covered=None):
+    """[(time, message start, stale files)] for each SendMessage of a session transcript (JSON lines) that the
+    stale-file check refuses at the message's own time, against the block log: the count of its refusals on past
+    messages, before a change to it is committed (AGENTS.md). File times are read now, so a file written after
+    the message hides a refusal it would then have had, false or right, and only messages with a refused call in
+    the block log within the window before them can be refused at all (`covered`, a list, collects their times):
+    the count is a lower bound under the current file times and block-log coverage, not a false-refusal count."""
+    found = []
+    for line in lines:
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        content = (entry.get('message') or {}).get('content') if isinstance(entry, dict) else None
+        if not isinstance(content, list) or not entry.get('timestamp'):
+            continue
+        when = datetime.fromisoformat(entry['timestamp'].replace('Z', '+00:00')).astimezone().replace(tzinfo=None)
+        for part in content:
+            if isinstance(part, dict) and part.get('type') == 'tool_use' and part.get('name') == 'SendMessage':
+                message = str((part.get('input') or {}).get('message', ''))
+                stale = stale_files(message, log or block_log.LOG, when)
+                if covered is not None and any(0 <= (when - at).total_seconds() <= 600
+                                               for at, _, _ in block_log.blocks(log or block_log.LOG)):
+                    covered.append(when)
+                if stale:
+                    found.append((when, ' '.join(message.split())[:120], stale))
+    return found
+
+
 def main():
+    if sys.argv[1:2] == ['--replay']:
+        lines = Path(sys.argv[2]).read_text(errors='replace').splitlines()
+        covered = []
+        found = replay(lines, covered=covered)
+        for when, start, stale in found:
+            print(f'{when.isoformat(timespec="seconds")}\t{", ".join(stale)}\t{start}')
+        sends = sum(line.count('"name":"SendMessage"') + line.count('"name": "SendMessage"') for line in lines)
+        print(f'{len(found)} of {sends} SendMessage calls would be refused ({len(lines)} transcript lines read); '
+              f'{len(covered)} had a refused call in the block log within 600 s before them; a lower bound under '
+              'the current file times and block-log coverage, not a false-refusal count.')
+        return 0
     try:
         payload = json.load(sys.stdin)
     except json.JSONDecodeError:

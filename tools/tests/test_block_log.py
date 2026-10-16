@@ -51,6 +51,12 @@ class BlockLogTest(unittest.TestCase):
                 (datetime(2026, 10, 16, 19, 0, 0), 'bash_guard', ['/home/u/tmp/spec.json', '/home/u/tmp/deps.md']),
                 (datetime(2026, 10, 16, 19, 1, 0), 'bash_guard', [])])
             self.assertEqual(block_log.blocks(Path(scratch) / 'missing.tsv'), [])
+            # Files named through a shell variable assigned a full path, as $T/... or ${T}/..., are expanded.
+            command = 'cd /home/u/repo && T=/home/u/tmp && printf x > $T/commit.txt && cat ${T}/spec.json $HOME/x.md'
+            self.assertEqual(block_log.paths_in(command), ['/home/u/tmp/commit.txt', '/home/u/tmp/spec.json'])
+            # A reassigned variable: each use reads the latest assignment before it.
+            command = 'T=/home/u/a && cat $T/one.txt && T=/home/u/b && cat $T/two.txt'
+            self.assertEqual(block_log.paths_in(command), ['/home/u/a/one.txt', '/home/u/b/two.txt'])
 
     def test_the_stop_hook_and_the_commit_checks_hand_the_log_what_they_said(self):
         with unittest.mock.patch.object(block_log, 'record') as record, contextlib.redirect_stdout(io.StringIO()):

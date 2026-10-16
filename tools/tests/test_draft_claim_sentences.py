@@ -143,6 +143,30 @@ class CountsTest(unittest.TestCase):
         self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
 
 
+class OwnSummariesTest(unittest.TestCase):
+    def test_summaries_are_set_beside_the_drafts_own_statement(self):
+        # 16 October 2026: the ledger said "is a matched image" where the lemma gave that image minus H.
+        draft = ('<article><h3>16 October 2026 — Remainder identity</h3><p class="entry-meta">Working proof.</p>'
+                 '<p><strong>Lemma (remainder identity).</strong> Without logical axioms, H+Q is a matched image, '
+                 'and the remainder is that image minus H.</p>'
+                 '<p><strong>Proof.</strong> Compare the terms.</p>'
+                 '<p><strong>New mathematics.</strong> The remainder is the image. It is small.</p>'
+                 '<p><strong>Degenerate cases.</strong> None.</p>'
+                 '<h4 id="remainder-ledger">Remainder ledger</h4><ul><li><strong>Size.</strong> The remainder is a '
+                 'matched image.</li></ul></article>')
+        statements, summaries = dcs.own_summaries(draft)
+        self.assertEqual([label for label, _ in statements], ['Lemma (remainder identity)'])
+        self.assertIn('minus H', statements[0][1])
+        self.assertEqual([where for where, _ in summaries], ['title', 'New mathematics', 'New mathematics', 'ledger'])
+        self.assertEqual(summaries[1][1], 'The remainder is the image.')
+        self.assertIn('Size. The remainder is a matched image.', summaries[3][1])
+        report = dcs.own_summaries_report(draft, 0)
+        self.assertIn('STATEMENT [Lemma (remainder identity)]', report)
+        self.assertIn('4 summary sentences beside 1 statements.', report)
+        # A draft that proves no statement of its own gets no listing.
+        self.assertEqual(dcs.own_summaries('<p><strong>New mathematics.</strong> None.</p>'), ([], []))
+
+
 class ConstructionStepsTest(unittest.TestCase):
     def test_unsourced_proof_sentences_about_a_recorded_construction_are_listed(self):
         # 16 October 2026: the first draft of the matched jet envelope wrote this from a picture of the compiler.

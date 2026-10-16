@@ -173,6 +173,38 @@ class MissingBriefFileTest(unittest.TestCase):
             log.write_text('')
             hook.block_log.record('bash_guard', log, written - hook.timedelta(seconds=30), paths=[str(spec)])
             self.assertIsNone(send(f'The spec {spec} is updated.'))
+            # The second case of 16 October 2026: the refused command named the spec as $T/spec.json, and the
+            # message named it by its file name, saying "checked on disk" of another file only.
+            log.write_text('')
+            command = f'T={tmp} && python3 - <<EOF\nopen("$T/spec.json","w")\nEOF'
+            hook.block_log.record('bash_guard', log, blocked, paths=hook.block_log.paths_in(command))
+            said = (f'The corrected draft is {excerpts} (checked on disk). The updated claim spec is spec.json '
+                    'beside it.')
+            self.assertIn('spec.json', send(said))
+            self.assertIsNone(send('The updated claim spec is spec.json beside it, checked on disk.'))
+            # A file name that only resembles the refused file's does not count.
+            self.assertIsNone(send('The updated claim spec is old-spec.json beside it.'))
+            # A full path with the same file name in another directory is that file, not the refused one: the
+            # reviewer's two cases (another notebook.html, another scratch directory's spec.json).
+            other = Path(tmp) / 'other'
+            other.mkdir()
+            (other / 'spec.json').write_text('{}')
+            self.assertIsNone(send(f'The draft is updated; {other / "spec.json"} is unchanged.'))
+            # Replayed on a transcript, at each message's own time: the stale message is found, the other not.
+            stamp = blocked.astimezone(hook.datetime.now().astimezone().tzinfo).isoformat()
+
+            def sent(text):
+                return json.dumps({'timestamp': stamp, 'message': {'content': [
+                    {'type': 'tool_use', 'name': 'SendMessage', 'input': {'message': text}}]}})
+            later = (blocked + hook.timedelta(seconds=60)).astimezone().isoformat()
+            lines = [sent('ignored, sent before the time below'), 'not json',
+                     sent('The updated claim spec is spec.json beside it.').replace(stamp, later),
+                     sent('The plan is updated.').replace(stamp, later)]
+            covered = []
+            found = hook.replay(lines, log, covered)
+            self.assertEqual([stale for _, _, stale in found], [[str(spec)]])
+            # All three replayed messages have the refusal within their window, the first at the refusal's time.
+            self.assertEqual(len(covered), 3)
 
 
 if __name__ == '__main__':

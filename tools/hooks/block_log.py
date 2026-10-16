@@ -19,9 +19,25 @@ LOG = Path(__file__).resolve().parents[2] / 'research' / 'logs' / 'hook-state' /
 FULL_PATH = re.compile(r'(?<![\w.~*-])(/(?:[\w.+-]+/)+[\w+-][\w.+-]*\.[A-Za-z0-9]{1,5})(?![\w/*])')
 
 
+ASSIGNMENT = re.compile(r'(?<![\w$])([A-Za-z_]\w*)=(/[^\s;&|\'"]+)')
+
+
 def paths_in(text):
-    """The files `text` names by full path, in order, each once."""
-    return list(dict.fromkeys(FULL_PATH.findall(text or '')))
+    """The files `text` names by full path, in order, each once; a shell variable assigned a full path in the
+    text (T=/scratch && ... $T/spec.json) is expanded first, since on 16 October 2026 a refused command named
+    the files it was to write only as $T/... and the block log kept none of them."""
+    text, values, expanded, start = text or '', {}, [], 0
+    # Each use takes the value of the latest assignment before it (T=/a ... T=/b ... $T/x reads /b).
+    for match in list(ASSIGNMENT.finditer(text)) + [None]:
+        end = match.start() if match else len(text)
+        segment = text[start:end]
+        for name, value in values.items():
+            segment = re.sub(r'\$\{?' + name + r'\}?(?=/)', lambda _: value.rstrip('/'), segment)
+        expanded.append(segment)
+        if match:
+            values[match.group(1)] = match.group(2)
+            start = match.start()
+    return list(dict.fromkeys(FULL_PATH.findall(''.join(expanded))))
 
 
 def record(hook, log=None, now=None, what='', paths=()):

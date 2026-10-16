@@ -15,7 +15,11 @@ When relaying what another agent, a reviewer or a tool found, carry its qualifie
 (unverified, sketched, at these sizes, for this instance) into every summary of it: a report, a
 commit message, a status line, a next step. A finding relayed is restated from its source, not from
 memory of its gist (16 October 2026: qualifiers dropped in relaying a reviewer's computation and in
-summaries of corrected items).
+summaries of corrected items). Likewise write every summary of your own result (a title, New
+mathematics, a Bearing, a ledger line, a commit message, the report) last, after the statement and
+its review corrections are final, by copying the statement's hypotheses and qualifiers into it,
+never from the shape the result was expected to have while drafting (16 October 2026: four summaries
+of one lemma said more than it).
 
 The first lines drafted for any proof, test, witness or next attempt are its Plainest bound: the
 bare count or oldest recorded lemma evaluated on its instance, written before any method is chosen.

@@ -293,6 +293,45 @@ def construction_report(draft, width, words=None):
                      + lines + [f'{len(found)} such sentences of {read} proof sentences read.'])
 
 
+OWN_STATEMENT = re.compile(r'^(?:Lemma|Theorem|Proposition|Corollary)\b')
+OWN_SUMMARY = re.compile(r'^(?:New mathematics|Goal progress|Architecture test)$')
+LEDGER = re.compile(r'<h4\b[^>]*ledger[^>]*>.*?</h4>\s*<ul>(.*?)</ul>', re.S | re.I)
+
+
+def own_summaries(draft):
+    """([(label, text)] for each statement the draft proves itself, a paragraph opening Lemma, Theorem, Proposition
+    or Corollary; [(where, sentence)] for each sentence that summarizes the draft's results: the title, the
+    New mathematics, Goal progress (with its Bearing) and Architecture test paragraphs, and the items of a ledger).
+    16 October 2026: a draft's ledger, Bearing, Architecture test and commit message said more than its lemma
+    (a matched image where the lemma gave that image minus a sum, without the lemma's two qualifiers), having
+    been written while the statement was still settling."""
+    statements = [(label.group(1), text(body)) for tag, body in BLOCK.findall(draft)
+                  if tag == 'p' and (label := LABEL.match(body)) and OWN_STATEMENT.match(label.group(1))]
+    if not statements:
+        return [], []
+    summaries = [('title', text(title)) for title in TITLE.findall(draft)]
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag == 'p' and label and OWN_SUMMARY.match(label.group(1)):
+            summaries += [(label.group(1), text(LABEL.sub('', s) if i == 0 else s))
+                          for i, s in enumerate(sentences(body))]
+    for items in LEDGER.findall(draft):
+        summaries += [('ledger', text(body)) for tag, body in BLOCK.findall(items) if tag == 'li']
+    return statements, summaries
+
+
+def own_summaries_report(draft, width):
+    statements, summaries = own_summaries(draft)
+    if not statements:
+        return 'No statement of the draft\'s own (Lemma, Theorem, Proposition, Corollary paragraph) to set summaries beside.'
+    cut = (lambda s: s) if width <= 0 else (lambda s: s[:width])
+    return '\n'.join(['The draft\'s own statements, then each sentence that summarizes them: a summary says no more '
+                      'than the statement and keeps its hypotheses and qualifiers (AGENTS.md):']
+                     + [f'  STATEMENT [{label}] {body}' for label, body in statements]
+                     + [f'  [{where}] {cut(sentence)}' for where, sentence in summaries]
+                     + [f'{len(summaries)} summary sentences beside {len(statements)} statements.'])
+
+
 # Words by which a sentence says more than a bound or a sufficient condition gives: equality and exactness, a
 # quantifier over a parameter, and words that call an unwritten step done.  In one review period of 12 October
 # 2026 five sentences of three entries were corrected by reviewers for one of these ("exactly when", "at every
@@ -972,6 +1011,7 @@ def main():
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + construction_report(draft, args.width, words))
+    print('\n' + own_summaries_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
     print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     if naming_lines(draft):
