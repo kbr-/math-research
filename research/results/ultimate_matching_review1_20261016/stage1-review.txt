@@ -1,0 +1,51 @@
+Stage one of the first route review of the ultimate-matching notebook (16 October 2026): the
+fresh-context medium reviewer received only the goal, the known results from the sources and the
+registered statements of the thread's proved results, not the route. Its report, as returned
+(lightly reformatted):
+
+Facts the candidates rely on (checked by the reviewer):
+1. On the curve both exponents are at least 2; the curve with an infinite exponent consists of
+   (2,infinity) and (infinity,2), so the hard endpoint is (2,infinity), Conjecture 17.1.4.
+2. The two joint constraints reduce to one cost at a constant loss: with c = exp(term 1) +
+   exp(term 2), an optimal permutation for this single linear cost with total at most C N has each
+   coordinate sum at most C N; enlarging L by t^(1/alpha), t >= log2(C), brings each below 2N
+   (power mean). So the problem is one optimal-transport bound, with Kantorovich duality available.
+3. Layer-cake form: with s = sqrt(log N/N), the condition is, up to constants, that for each
+   k = 1..log N at most N e^(-k) pairs have |d_j| > s k^(1/alpha_j) for some j, and none at
+   k = log N. The level-k box has area s^2 k^(1/alpha_1+1/alpha_2) = s^2 sqrt k for every pair on
+   the curve; only its aspect ratio kappa_k = k^(1/alpha_1-1/alpha_2) changes, between k^(-1/2) and
+   k^(1/2). An area-preserving stretch makes each level isotropic on a torus of aspect at most
+   (log N)^(1/2).
+
+Candidates, ranked:
+A. Prove each level separately, then glue. (i) Fact 3. (ii) For each k a Hall deficiency bound:
+   for every union of cells A, #X(A) - #Y(A expanded by the level-k box) <= C N e^(-k).
+   (iii) A deterministic gluing lemma for nested graphs G_k (edges inside the level-k box): if each
+   G_k has a matching missing at most m_k vertices, one perfect matching M has |M \ G_k| <= C m_k
+   for all k at once. (ii) at fixed k is the Leighton-Shor upper bound on elongated tori, but the
+   other levels need its large-deviation version (no source recalled). (iii) has no known theorem
+   (bipartite matching with laminar edge-capacity constraints is not totally unimodular). Breaks
+   at (iii): two-edge examples show a factor-2 loss, G_1 = {au}, G_2 = G_1 + {av, bu}; chains might
+   lose a factor growing with the number of levels; the weights e^k may absorb it. Smallest test:
+   random small nested bipartite graphs, compare the optimal sum_k e^k |M \ G_k| with
+   sum_k e^k m_k, and search adversarially for a growing ratio.
+B. Shor's coordinate-separated scheme for (2,infinity): horizontal strips of height L s with
+   vertical balancing, then 1D matching within strips. Breaks (checked arithmetic): a strip holds
+   about L sqrt(N log N) points, so independent within-strip matching has moves of order
+   (N log N)^(-1/4), larger than s by N^(1/4)(log N)^(-3/4); strips must exchange mass at every
+   horizontal scale. Endpoint only.
+C. Randomized transport plans (Markov kernels) with a martingale bound per level: martingales give
+   sub-Gaussian, not bounded, tails, so alpha_2 = infinity forces deterministic vertical moves, and
+   different levels want different aspect ratios. May coincide with the current route.
+D. Refutation by subgraphs whose aspect ratio varies with scale: the below-curve exclusion uses one
+   aspect ratio; a curve pair would be refuted if letting kappa vary across the log N tent scales
+   gained an unbounded factor. Guess: no gain, by self-similarity and convexity. Smallest test:
+   optimize the excess-versus-penalty functional over kappa(.) numerically at r = 10..30.
+
+Not found: a link supplying the cross-level gluing of A(iii) other than the original problem; fact 2
+makes the gluing equivalent to one optimal-transport bound with cost sum_k e^k 1[e not in G_k], so
+the reduction alone is circular. A, B and C each move the difficulty into making one matching serve
+every level, each with its own aspect ratio.
+
+Numerical control (weak): the smallest L meeting 2N at (2,infinity), (4,4), (3,6) for the optimal
+assignment up to N about 10^5 can flag only growth like a power of log N.
