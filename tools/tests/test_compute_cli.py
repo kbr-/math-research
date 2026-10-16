@@ -59,6 +59,11 @@ class ArchivedSessionName(unittest.TestCase):
                     compute.start_session('old-turn', agent='unit', model='unit test, none')
                 self.assertIn('already archived', str(raised.exception))
                 self.assertFalse((root / 'research/logs/old-turn.jsonl').exists())
+                (root / 'research/results/table-turn').mkdir(parents=True)
+                (root / 'research/results/table-turn/timing.html').write_text('<table></table>')
+                with self.assertRaises(ValueError) as raised:
+                    compute.start_session('table-turn', agent='unit', model='unit test, none')
+                self.assertIn('timing.html', str(raised.exception))
                 with unittest.mock.patch.object(compute, 'add_event') as added:
                     compute.start_session('new-turn', agent='unit', model='unit test, none')
                 added.assert_called_once()
