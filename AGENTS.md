@@ -47,6 +47,10 @@ growing checklists or one-off setup narratives.
   item that **Proposed next step** names on that route. Before reopening an older question, search
   for later links to its anchor and read those entries; restate restart conditions/calibrations only
   from the latest applicable entry after checking for later fulfillment or replacement.
+- A property defined over all inputs (linearity, uniqueness, monotonicity, additivity) is not
+  concluded from one computed instance: exhibit the defining relation failing, such as two inputs
+  whose sum breaks it, or call the instance what it shows (16 October 2026: a rule was called
+  nonlinear because one instance differed from a linear flow).
 - Restricted examples must test a named general hypothesis, obstruction or mechanism. A growing case
   list or equivalent reformulation leaves the general implication open. `finish-turn.py` enforces
   this: each research entry has a "General statement." paragraph citing the registered claim ID of
