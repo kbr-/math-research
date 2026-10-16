@@ -40,6 +40,7 @@ import f2_span
 def load(name):
     spec = importlib.util.spec_from_file_location(name, HERE / f'{name}.py')
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod             # so that worker processes can pickle its functions by name
     spec.loader.exec_module(mod)
     return mod
 
