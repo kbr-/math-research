@@ -21,6 +21,8 @@ the mixed set {x00,x01,x11} at 6x5, and F3, F4 on 7 pigeons and 6 holes at D=3, 
 conj:functional-kernel-transfer, whose prediction is zero total excess for every set.
 Refuted by: a positive total excess for any set, a killer the proper closure adds.
 Possible because: two errors sharing a pigeon or a hole let pigeon-axiom multiples cancel differently.
+Decisive at these sizes: every outcome is an exact integer dimension, zero against at least one, with no seeds or sampling spread.
+Parallel use: the two boards are independent closures, run in two worker processes; each closure is serial.
 Positive control: the recorded instance (variables a, b, w, z; monomial axioms ab, bz; linear axiom w+a+z;
 D=2; K=1; F={w}) must give total excess 1 (dimension 3 against 2); asserted.
 Refuted by: excess 0 there, which would mean the code cannot see a killer a linear axiom adds.
@@ -185,20 +187,32 @@ def positive_control():
     return q
 
 
+BOARDS = ((6, 5, {'same pigeon x00,x01': [(0, 0), (0, 1)], 'same hole x00,x10': [(0, 0), (1, 0)],
+                  'mixed x00,x01,x11': [(0, 0), (0, 1), (1, 1)]}),
+          (7, 6, {'F3': [(0, 0), (1, 1), (2, 2)], 'F4': [(0, 0), (1, 1), (2, 2), (3, 3)]}))
+
+
+def board(spec):
+    m, n, sets = spec
+    mono, full, nv, v = systems(m, n)
+    cC, cH = prepare(pc.Closure(full, nv, 3)), prepare(pc.Closure(mono, nv, 3))
+    assert cC.proper, f'{m}x{n} must be proper at degree 3'
+    v2 = [mm for mm in cC.monos if deg(mm) <= 2]
+    found = {}
+    for name, cells in sets.items():
+        q, _, _ = quantities(cC, cH, v2, [1 << v(i, j) for i, j in cells])
+        found[f'{m}x{n} {name}'] = q
+        print(f'{m}x{n}', name, q, flush=True)
+    return found
+
+
 def falsify(out):
+    import multiprocessing
     out['positive_control'] = positive_control()
     print('positive control', out['positive_control'], flush=True)
-    for m, n, sets in ((6, 5, {'same pigeon x00,x01': [(0, 0), (0, 1)], 'same hole x00,x10': [(0, 0), (1, 0)],
-                               'mixed x00,x01,x11': [(0, 0), (0, 1), (1, 1)]}),
-                       (7, 6, {'F3': [(0, 0), (1, 1), (2, 2)], 'F4': [(0, 0), (1, 1), (2, 2), (3, 3)]})):
-        mono, full, nv, v = systems(m, n)
-        cC, cH = prepare(pc.Closure(full, nv, 3)), prepare(pc.Closure(mono, nv, 3))
-        assert cC.proper, f'{m}x{n} must be proper at degree 3'
-        v2 = [mm for mm in cC.monos if deg(mm) <= 2]
-        for name, cells in sets.items():
-            q, _, _ = quantities(cC, cH, v2, [1 << v(i, j) for i, j in cells])
-            out['falsify'][f'{m}x{n} {name}'] = q
-            print(f'{m}x{n}', name, q, flush=True)
+    with multiprocessing.Pool(len(BOARDS)) as pool:
+        for found in pool.map(board, BOARDS):
+            out['falsify'].update(found)
 
 
 def main():
