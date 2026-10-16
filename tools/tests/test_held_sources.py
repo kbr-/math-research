@@ -56,6 +56,7 @@ class HeldSources(unittest.TestCase):
         self.assertIn("no file name matches; every held file, to look through:", out)
         self.assertIn("on-a-theorem-of-levinson.pdf", out)
         self.assertIn("kiosk-ki2004.pdf", out)
+        self.assertIn("not held: retrieve it with node tools/browser_get.cjs", out)
 
 
 if __name__ == "__main__":

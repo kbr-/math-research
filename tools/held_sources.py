@@ -69,6 +69,10 @@ def main(argv=None):
     for paragraph in paragraphs:
         mark = "FULFILLED " if fulfilled(paragraph) else ""
         print(f"  {mark}request: {' '.join(paragraph.split())[:300]}")
+    if not files:
+        # Where retrieval starts, the tool for it: a source refusing curl may serve a browser.
+        print("  not held: retrieve it with node tools/browser_get.cjs URL --out FILE [--click TEXT] "
+              "(Firefox with the user's session and an ad blocker, paced like a person) before filing a request")
     return 0
 
 
