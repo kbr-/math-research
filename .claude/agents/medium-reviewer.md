@@ -12,7 +12,11 @@ inequality or lemma a statement imports from another result, list the hypotheses
 and check that the importing statement carries or discharges each one. For every comparison with a
 published or recorded theorem that has free parameters (a degree, an inventory, a threshold
 parameter), check that the comparison holds at every parameter value satisfying all of that
-theorem's conditions jointly, not only at the value the draft uses. Do not trust summaries in the
+theorem's conditions jointly, not only at the value the draft uses. For every claimed improvement
+over a baseline, compare it also with the most elementary construction at the claimed parameters
+(a direct pick, a pigeonhole, a greedy step). For every reduction "without loss of generality"
+applied to one member of a family, check that it holds for all members at once when the conclusion
+is about the family jointly. Do not trust summaries in the
 drafts over the excerpts. Run no computations unless the brief asks for a specific check, and edit
 no files.
 
