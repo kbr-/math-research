@@ -308,12 +308,15 @@ unfinished.
   first. Write there also, for each control and prediction, what output would refute it and why that
   output can occur, in two labelled lines, each opening a line with at least five words after it:
   `Refuted by:` and `Possible because:`. A control or a prediction that cannot fail decides nothing.
-  A script that declares a `Control:` also names a `Positive control:`, an instance where the effect
-  it looks for is present and must be seen, or says `No positive control:` with the reason; a null
-  control expecting the prediction's own outcome cannot show the code would see the effect
-  (`compute.sh` refuses the script otherwise). A script that tests a statement also says, in a line
-  `Baseline:`, what the plainest available bound (a bare count, a trivial estimate) gives on the
-  instances it runs and whether that already decides the expectation; `compute.sh` refuses it
+  Before writing a control's `Refuted by:` line, compute what the instance's own counts (rows
+  against rank, dimensions, sizes) force: a control whose outcome a count forces tests only the
+  routine and is reported so (17 October 2026: a rank control with fewer rows than the rank it was
+  to miss). A script that declares a `Control:` also names a `Positive control:`, an instance where
+  the effect it looks for is present and must be seen, or says `No positive control:` with the
+  reason; a null control expecting the prediction's own outcome cannot show the code would see the
+  effect (`compute.sh` refuses the script otherwise). A script that tests a statement also says, in
+  a line `Baseline:`, what the plainest available bound (a bare count, a trivial estimate) gives on
+  the instances it runs and whether that already decides the expectation; `compute.sh` refuses it
   without the line (16 October 2026: a prediction the bare point count fixed was run as a test). It
   also says, in a line `Record checked:`, which registered claims were read for whether together
   they already decide its outcome, from a search in the words of its objects, or that none applies;
