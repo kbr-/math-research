@@ -833,6 +833,10 @@ def spec_summary(claim):
 
 def report(draft, registry, width):
     summaries = {claim['id']: claim['summary'] for claim in registry['claims']}
+    rests_on = {}
+    for edge in registry.get('relationships', []):
+        if edge.get('type') == 'depends_on':
+            rests_on.setdefault(edge['source']['id'], set()).add(edge['target']['id'])
     declared = set((re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split())
     found = citations(draft)
     lines, unregistered = [], set()
@@ -847,6 +851,11 @@ def report(draft, registry, width):
         else:                   # written bare: it may be a phrase and not a claim, so it fails nothing
             statement = '(not in the registry; written without code tags, perhaps not a claim)'
         lines.append(f'{claim}\n  REGISTERED: {statement if width <= 0 else statement[:width]}')
+        if rests_on.get(claim):
+            # 16 October 2026: a draft citing a theorem repeated, as new, a step of the proof of the lemma that
+            # theorem rests on; the listing showed the theorem but not what it rests on.
+            lines.append('  RESTS ON (read their proofs for steps the draft may repeat): '
+                         + ', '.join(sorted(rests_on[claim])))
         for cited, where, sentence in found:
             if cited == claim:
                 lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')

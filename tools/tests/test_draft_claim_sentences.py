@@ -51,6 +51,15 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertEqual(out.count('An item citing lem:first twice'), 1)
         self.assertEqual(unregistered, {'cor:missing'})
 
+    def test_a_cited_claim_is_shown_with_what_it_rests_on(self):
+        # 16 October 2026: a step of the proof a cited theorem rests on was repeated as new.
+        registry = dict(REGISTRY, relationships=[
+            {'type': 'depends_on', 'source': {'id': 'lem:first'}, 'target': {'id': 'lem:base'}},
+            {'type': 'cites', 'source': {'id': 'lem:first'}, 'target': {'id': 'lem:other'}}])
+        out, _ = dcs.report(DRAFT, registry, 0)
+        self.assertIn('  RESTS ON (read their proofs for steps the draft may repeat): lem:base', out)
+        self.assertNotIn('lem:other', out.split('RESTS ON')[1].split('\n')[0])
+
     def test_a_recorded_result_named_without_its_id_is_listed(self):
         # 16 October 2026: an i.i.d. lemma was applied to unequal weights through a sentence naming it in words.
         draft = ('<p><strong>Smallest case.</strong> The lower tail of such a sum is Gaussian by the recorded block '
