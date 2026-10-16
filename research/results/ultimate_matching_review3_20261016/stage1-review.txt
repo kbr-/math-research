@@ -1,0 +1,37 @@
+Stage-one record of the third route review (entry-2026-10-16-third-route-review), 16 October 2026,
+Claude Code medium-reviewer. Brief: the goal, the survey's Section 5, the thread's registered
+statements with assessments, and the registered open conjectures with their evidence; the earlier
+stage-one proposals named so as not to be repeated. Its report, condensed in layout only.
+
+Record searches: "coarea level sets max-flow min-cut capacity weighted perimeter" and
+"Leighton-Shor resolution truncated scales gradient level decomposition matching" found no claim
+using coarea, continuum min-cut, or a Leighton-Shor bound truncated at a resolution scale.
+
+Premise: thm:dyadic-flow-obstruction suggests flows linear in the sample have Gaussian marginals, so
+a proof must route nonlinearly using the sample.
+
+1. Coarea splitting by gradient level, Leighton-Shor truncated at a resolution scale (dual side).
+   int G dmu = int mu({G>t}) dt and int psi*(|grad G|) = int dt int_{G=t} w(|grad G|) dH^1 with
+   w(y) = psi*(y)/y ~ (log y)^(1/alpha). A piece at gradient level 2^k: at scales coarser than 2^(-k)
+   it acts like a boundary, so Leighton-Shor chaining over those k scales gives discrepancy per unit
+   length about sqrt N k^(3/4); at finer scales it acts like a Lipschitz function, AKT orthogonality
+   gives about sqrt N sqrt(log N). Cost per unit length times k^(1/4) at (4,4); ratio about
+   sqrt N (k^(1/2) + sqrt(log N)/k^(1/4)) <= 2 sqrt(N log N). Heuristic: the anisotropic version with
+   weights k^(beta_j) balances exactly when beta_1+beta_2 = 1/2 (the kappa arithmetic of the
+   below-curve exclusion). Rests on coarea (standard) and the Leighton-Shor upper-bound chaining
+   (monograph Section 4.7, recalled). May break on uniformity over gradient levels and because band
+   functions have wiggly level sets (band-averaged, not set, discrepancy). First test: sup over
+   1-Lipschitz graphs f of the discrepancy of the band function of width 2^(-k) is
+   <~ sqrt N (k^(3/4) + sqrt(log N)), checked against lem:band-overlap-penalty (2) at every k.
+2. Variable-capacity max-flow/min-cut (primal, existential): a flow of bounded psi-cost exists iff a
+   sample-dependent capacity kappa with bounded psi-cost satisfies the cut condition for every set
+   (forward kappa = |Phi|; converse Strang 1983, Nozawa 1990, recalled, hypotheses unchecked). Natural
+   kappa: constant plus a boost c m^(1/4) on sets of measure e^(-m). First test: the constant capacity
+   fails by (log N)^(1/4) on Leighton-Shor sets; compute the boost they need.
+3. Entropy-number calibration for Conjecture 5.7: the class is the unit ball of a logarithmic
+   Orlicz-Sobolev space; heuristic e_k ~ k^(-1/2)(log k)^(-1/alpha), Dudley integral about
+   p^(1-1/alpha) over p levels, <= sqrt p exactly when alpha <= 2, mirroring the dyadic obstruction;
+   any proof above exponent 2 would need majorizing measures adapted to coarea layers. First test:
+   rigorous Dudley and Sudakov exponents at (4,4).
+Not proposed: fractional relaxation and minimax over the two constraints (already the summed cost;
+integrality by Birkhoff).
