@@ -395,6 +395,11 @@ class HypothesisPartsTest(unittest.TestCase):
             FT.validate_hypothesis_steps(body, {'working_proof'})
         FT.validate_hypothesis_steps(body.replace('in (b);', 'in (b) and (c);'), {'working_proof'})
         FT.validate_hypothesis_steps(body.replace('2026-10-17', '2026-10-15'), {'working_proof'})
+        # parts named in later items of a list inside the paragraph count too
+        listed = body.replace('The field is used in (a) and the axiom in (b);',
+                              '<ul><li>Part (a): the field is used throughout the whole proof.</li>'
+                              '<li>Part (b): the axiom.</li><li>Part (c): nothing else.</li></ul>')
+        FT.validate_hypothesis_steps(listed, {'working_proof'})
 
 
 class SmallestCaseTest(unittest.TestCase):

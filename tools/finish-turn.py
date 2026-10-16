@@ -1242,6 +1242,10 @@ def validate_hypothesis_steps(text, statuses=()):
         return
     given = re.search(r'<strong>Hypotheses, each with its step\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
     plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
+    # A paragraph holding a list continues past its first item, which may be short.
+    opened = re.search(r'<strong>Hypotheses, each with its step\.</strong>\s*<ul>(.*?)</ul>', text, re.S)
+    if opened:
+        plain = html.unescape(strip_tags(opened.group(1))).strip()
     if len(plain) < 60:
         raise ValueError('This entry registers a proved statement: name, after <strong>Hypotheses, each with its '
                          'step.</strong> and in at least 60 characters, the step of the proof that uses each '
@@ -1253,7 +1257,10 @@ def validate_hypothesis_steps(text, statuses=()):
     statement = re.search(r'<strong>Statement\.</strong>((?:(?!</p>).)*)', text, re.S)
     if dated and dated.group(1) >= PARTS_FROM and statement:
         parts = dict.fromkeys(re.findall(r'(?<![\w\\])\(([a-h])\)\s', html.unescape(strip_tags(statement.group(1)))))
-        missing = [p for p in parts if f'({p})' not in plain]
+        # the whole paragraph, list items included (16 October 2026: a list hid parts named after its first item)
+        whole = re.search(r'<strong>Hypotheses, each with its step\.</strong>(.*?)</p>', text, re.S)
+        named = html.unescape(strip_tags(whole.group(1))) if whole else plain
+        missing = [p for p in parts if f'({p})' not in named and f'Part ({p})' not in named]
         if len(parts) >= 2 and missing:
             raise ValueError('The Statement has parts ' + ', '.join(f'({p})' for p in parts) + ' and the Hypotheses '
                              'paragraph names none of ' + ', '.join(f'({p})' for p in missing) + ': say which '
