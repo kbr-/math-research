@@ -1,7 +1,11 @@
 """Sentences of a draft that cite a claim are listed beside the claim's registered statement."""
+import json
 import pathlib
 import sys
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import draft_claim_sentences as dcs
@@ -37,6 +41,17 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertEqual(out.count('An item citing lem:first twice'), 1)
         self.assertEqual(unregistered, {'cor:missing'})
 
+    def test_a_declared_claim_is_shown_with_its_spec_summary(self):
+        # 16 October 2026: a draft's own claim was never set beside its statement before the review.
+        with tempfile.TemporaryDirectory() as root:
+            spec = Path(root) / 'research' / 'results' / 'x_20261016' / 'claim-spec.json'
+            spec.parent.mkdir(parents=True)
+            spec.write_text(json.dumps({'claims': [{'id': 'lem:new-one', 'summary': 'A bound for dyadic grids only.'}]}))
+            with patch.object(dcs, 'ROOT', Path(root)):
+                out, _ = dcs.report(DRAFT, REGISTRY, 0)
+        self.assertIn('lem:new-one\n  REGISTERED: (declared by this draft; spec research/results/x_20261016/'
+                      'claim-spec.json) A bound for dyadic grids only.', out)
+
     def test_a_full_stop_inside_tex_does_not_split_a_sentence(self):
         found = dcs.citations(DRAFT)
         self.assertIn(('lem:new-one', 'New mathematics', 'New mathematics. lem:new-one: a bound \\(s<n/2.5\\) holds.'),
@@ -44,7 +59,7 @@ class DraftClaimSentences(unittest.TestCase):
 
     def test_declared_and_unregistered_claims_are_told_apart(self):
         out, _ = dcs.report(DRAFT, REGISTRY, 0)
-        self.assertIn('lem:new-one\n  REGISTERED: (declared by this draft; not yet registered)', out)
+        self.assertIn('lem:new-one\n  REGISTERED: (declared by this draft; not yet registered, and no spec found)', out)
         self.assertIn('cor:missing\n  REGISTERED: (NOT IN THE REGISTRY)', out)
         self.assertTrue(out.endswith('6 citing sentences, 4 claims, 1 unregistered.'))
         # identifiers of every kind the registry holds are found, an imported statement among them

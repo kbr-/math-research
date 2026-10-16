@@ -778,6 +778,24 @@ def converse_report(draft, summaries, width):
     return '\n'.join(lines)
 
 
+def spec_summary(claim):
+    """The summary a compact claim spec under research/results gives the claim, newest spec first, or None.
+
+    A draft's own claim is registered only after its review, so without this its sentences (New mathematics, a
+    Bearing, a commit message) were never set beside its statement before the review: on 16 October 2026 three
+    entries in a row had their summaries of their own claim narrowed by the reviewer."""
+    for path in sorted((ROOT / 'research' / 'results').glob('*/claim-spec.json'),
+                       key=lambda p: p.stat().st_mtime, reverse=True):
+        try:
+            spec = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        for item in spec.get('claims', []):
+            if item.get('id') == claim and item.get('summary'):
+                return f"(declared by this draft; spec {path.relative_to(ROOT)}) {item['summary']}"
+    return None
+
+
 def report(draft, registry, width):
     summaries = {claim['id']: claim['summary'] for claim in registry['claims']}
     declared = set((re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split())
@@ -787,7 +805,7 @@ def report(draft, registry, width):
         if claim in summaries:
             statement = summaries[claim]
         elif claim in declared:
-            statement = '(declared by this draft; not yet registered)'
+            statement = spec_summary(claim) or '(declared by this draft; not yet registered, and no spec found)'
         elif f'<code>{claim}</code>' in draft:
             statement = '(NOT IN THE REGISTRY)'
             unregistered.add(claim)
