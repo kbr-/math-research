@@ -1,0 +1,56 @@
+Reviewer record: the single fresh-context medium reviewer of entry-2026-10-16-maximum-displacement-threshold,
+16 October 2026 (Claude Code, medium-reviewer agent). Its report, as returned:
+
+Verdict: pass with corrections. Lemma and theorem correct after one repair in "Matching in each strip"; one
+restriction unnecessary.
+
+Required changes
+- "Matching in each strip": the extra point lies on the grid (gap). Under A_k o T_k the point of rank m_k
+  lands on the edge x=1 of [0,1]^2, which is part of every grid G, G'. The B.3 deduction assumes "without
+  loss of generality that no point X_i belongs to G" (definition of D(C), and the passage from (B.15)/(B.16)
+  to card{X_i in R} that (B.13) bounds). A point on G' counts in card{X_i in R} but in no interior. Repair:
+  move the extra point into the open square, off G', before applying the deduction; the move is less than
+  one mesh width, so it costs at most 2^{-l_2}, absorbed into L'. Alternatively carry a +1 through (B.13).
+- The restriction alpha_j >= 2 is unnecessary. Set beta'_j = min(beta_j, 1/2): if beta_1+beta_2 >= 1/2 then
+  beta'_1+beta'_2 >= 1/2 and aspect <= (log N)^{1/2}; the allowance increases with beta_j, so a matching for
+  beta' serves beta; part (ii) already holds on (0,infinity]^2. Rewrite statement, spec and degenerate cases.
+- Sources (DKW/Massart) not read in the cycle; only the M-1 quantiles are needed: Hoeffding at each p_k with
+  a union bound gives |c_k-p_k| <= a eps with probability at least 1-2MN^{-2}. Adjust the probability.
+- Sources (evenly spread): the definition was not among the excerpts; diameter 10/sqrt n vs (B.21)'s
+  20/sqrt N; write L/sqrt n or cite the definition. Only a constant.
+- Where the aspect bound enters: also through M <= (log N)^{1/2} in the union bound and n_k-1 >= N^{1/2}.
+  Say (log N)^{1/2} is the method's limit, sharpness not claimed; a one-dimensional count fluctuation of
+  order a/sqrt N stays below the Leighton-Shor scale up to aspect (log N)^{3/2}.
+- Claim spec: add an edge to lem:two-sample-matching-transfer.
+- Baseline relation missing: plain Leighton-Shor gives the maximum form only for beta_j >= 1/4 (on the curve
+  only (4,4)); naive anisotropic scaling of Theorem 4.7.1 loses sqrt(a/b). One sentence.
+
+Checked and correct: strips parameters; quantile shift (F_N(c_k)=m_k/N, endpoint displacement, conditional
+law of order statistics, one extra point per strip for k<M, per-strip failure bound conditional on every c);
+B.3 uses only (4.103) and (B.10) on G' with Y through (B.20)-(B.21), G' subset G(n-1), right sides >= 2,
+pull-back bound, n_k-1 >= sqrt N, factor 3 in the exponent; Total and the aspect equivalence; Theorem (i)
+rescaling, Hall argument, two samples by composition; Theorem (ii) uses the matching only in Step 3 of the
+below-curve proof, so max-bounded matchings are excluded for every K; "What it gives" matches
+lem:exponential-matching-consequences(a); (4,4) and (2,infinity) statements; Nonvacuity (3,6); commit
+message says no more than the entry. No unused hypotheses apart from alpha_j >= 2.
+
+Open point. Boxes of area s^2 sqrt t cannot work: count fluctuations leave deficiency about
+N/(L sqrt(log N) t^{1/4}) > 2N e^{-t} once t >~ (1/2) log log N. Unverified sketch, each level alone:
+rescale coordinate j by t^{beta_j} (density N sqrt t, target radius s); tile by squares of m=e^{2t+C}
+expected points; Leighton-Shor inside each square, displacement about 2^{3/4} sqrt t/sqrt N <= s for
+t <= c L^2 log N; count mismatch leaves about (N/m) sqrt m = N e^{-t-C/2} unmatched; failing squares cost
+less; squares fit inside the short side for t <= (1/2) log N - O(log log N), above that part (i) gives the
+level bound. To check: Leighton-Shor with unequal counts, concentration of sum_Q |n_Q-m|, edge squares,
+small t. Combining levels is blocked: each level uses its own matching; lem:per-level-gluing-fails shows
+per-level deficiency bounds do not give one matching; nested dyadic gluing fails (passed-up points move by
+the parent's diameter; leftover sets are not uniform). Next attempt: prove the per-level lemma; it would
+extend the barrier to every single-level count consequence, so a refutation must use the coupling across
+levels.
+
+Process audit. Title proposed: "Maximum displacements: exact threshold at the curve, via Leighton-Shor on
+elongated rectangles"; do not call it the conjecture at the curve. Two statements rested on results not read
+in the cycle (DKW/Massart, the definition of evenly spread); the quoted B.3 sentence dropped "provided l_2
+has been chosen appropriately". The draft narrowed to alpha_j >= 2 naming no step that needs it. Unasked
+questions: is the aspect limit a property of the truth or of the method; do the per-level count consequences
+also hold. Record search: word "no upper bound on rectangles is registered" as "the search returned none".
+Chosen, Owed attempt, Unchanged with Bearing some: supported, no findings.

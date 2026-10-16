@@ -1,0 +1,72 @@
+{
+  "source": {
+    "record": "[Maximum-displacement threshold](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-maximum-displacement-threshold)",
+    "label": "Maximum-displacement threshold",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-maximum-displacement-threshold"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:anisotropic-leighton-shor-bound",
+      "summary": "For N >= N_0 and a rectangle Q=[0,a]x[0,b] with 1 <= a/b <= (log N)^(1/2) there is a fixed N-point set Z in Q, whose cells tile Q with area ab/N and diameter at most K sqrt(ab/N), such that for X_1..X_N i.i.d. uniform on Q, with probability at least 1-2(log N)^(1/2) N^(-2)-L (log N)^(1/2) exp(-(log N)^(3/2)/(3L)), some matching moves each coordinate by at most K sqrt(ab/N)(log N)^(3/4), K and L universal.",
+      "assessment": "Working proof: quantile strips equalize the strip counts at horizontal cost a sqrt(log N/N) (Hoeffding at the M-1 inner quantiles), which fits the Leighton-Shor scale exactly up to aspect (log N)^(1/2); in each strip the monograph's Theorem 4.7.1, whose deterministic part (Appendix B.3) uses the points only through the discrepancy events (4.103) and (B.10) on a coarser grid, tolerates the one boundary point once it is moved off the grid. The aspect bound is this method's limit, not a proved threshold.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Extends the Leighton-Shor upper bound to the elongated rectangles that the exponent pairs of the ultimate matching curve produce after rescaling.",
+      "next_action": "None beyond use.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "thm:maximum-displacement-curve-threshold",
+      "summary": "For alpha_1,alpha_2 in (0,infinity], u_j=(log N)^(1/alpha_j), X i.i.d. uniform on [0,1]^2 and Y evenly spread or an independent uniform sample: if 1/alpha_1+1/alpha_2 >= 1/2, with probability tending to one some matching has max_i |X_i^j-Y^j_pi(i)| <= K u_j sqrt(log N/N) for j=1,2, K universal; if 1/alpha_1+1/alpha_2 < 1/2, for every K this fails with probability tending to one. So the maximum-displacement consequence of the ultimate matching conjecture holds exactly on and above its curve.",
+      "assessment": "Working proof: capping 1/alpha_j at 1/2, rescaling each coordinate by u_j and lem:anisotropic-leighton-shor-bound for (i), with a Hall argument to the evenly spread Y or composition through the common set for two samples; (ii) is the proof of thm:below-curve-matching-exclusion, which uses only maximal displacements.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves the conjecture's maximum consequence at every pair of the curve and shows that a refutation on the curve must use the joint exponential moments, not maximal displacements.",
+      "next_action": "Control the intermediate levels: the number of pairs with displacement above s t^(1/alpha_j) for 1 << t << log N.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "depends_on",
+      "lem:anisotropic-leighton-shor-bound",
+      "Part (i) after rescaling."
+    ],
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "depends_on",
+      "thm:below-curve-matching-exclusion",
+      "Part (ii): its proof uses only maximal displacements."
+    ],
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "depends_on",
+      "lem:two-sample-matching-transfer",
+      "Part (i) for two samples, at exponent infinity."
+    ],
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "cites",
+      "lem:common-exponent-cap",
+      "Same setting; the cap concerns the full exponential condition for pairs in (4,infinity]^2, this theorem the maximum consequence for every pair."
+    ],
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "applies",
+      "conj:ultimate-matching",
+      "Proves the conjecture's maximum consequence at every pair of the curve."
+    ],
+    [
+      "thm:maximum-displacement-curve-threshold",
+      "cites",
+      "lem:exponential-matching-consequences",
+      "The maximum consequence it proves is the one that lemma derives from a good matching."
+    ]
+  ]
+}
