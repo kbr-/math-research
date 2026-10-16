@@ -34,6 +34,24 @@ class LongRunPowerTest(unittest.TestCase):
             self.assertEqual(dict(CS.long_scripts_without_power(['python3', str(stated)])), {})
 
 
+class PositiveControlTest(unittest.TestCase):
+    def test_a_declared_control_needs_a_positive_one_or_a_reason(self):
+        # 16 October 2026: a null control could not show a positive excess would be seen.
+        with tempfile.TemporaryDirectory() as folder:
+            null = script(folder, BOTH.replace('"""\n', 'Control: at K=1 the excess must be zero as recorded.\n"""\n',
+                                               1), 'a.py')
+            self.assertEqual(CS.scripts_without_positive_control(['python3', str(null)]), [str(null)])
+            positive = script(folder, BOTH.replace('"""\n', 'Control: at K=1 the excess must be zero as recorded.\n'
+                                                   'Positive control: the recorded instance with a linear axiom '
+                                                   'gives excess one.\n"""\n', 1), 'b.py')
+            reason = script(folder, BOTH.replace('"""\n', 'Control: the count must match the record.\n'
+                                                 'No positive control: the quantity is a count with no effect to '
+                                                 'detect.\n"""\n', 1), 'c.py')
+            plain = script(folder, BOTH + 'print(1)\n', 'd.py')       # no control declared
+            self.assertEqual(CS.scripts_without_positive_control(['python3', str(positive), str(reason),
+                                                                  str(plain)]), [])
+
+
 class ResultsScriptRefutationTest(unittest.TestCase):
     def test_both_labelled_lines_pass(self):
         with tempfile.TemporaryDirectory() as folder:

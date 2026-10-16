@@ -696,6 +696,33 @@ def scripts_without_refuting_outcome(command):
     return found
 
 
+CONTROL_LABEL = re.compile(_LINE_START + r'Control:', re.M)
+POSITIVE_CONTROL = re.compile(_LINE_START + r'(?:Positive control:|No positive control:)' + _FIVE_WORDS, re.M)
+
+
+def scripts_without_positive_control(command):
+    """Script arguments under research/results whose head declares a "Control:" but neither a "Positive control:"
+    nor a "No positive control:" line with at least five words.  On 16 October 2026 a script's only control
+    expected zero, the same outcome as its prediction, so it could not show that the code would see the effect
+    the test looked for; the reviewer asked for a recorded positive instance.  The check cannot tell whether the
+    positive control is real; it makes the author name one or say why there is none."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()):
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        if CONTROL_LABEL.search(head) and not POSITIVE_CONTROL.search(head):
+            found.append(arg)
+    return found
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -1065,6 +1092,13 @@ def main():
                          'cannot fail decides nothing. A script that tests no statement says so in a line "No '
                          'statement tested:" with the reason. --exploratory runs it anyway, and the entry then '
                          'says that the script named no refuting output (COMPUTATION_RULES.md)')
+        unproven = scripts_without_positive_control(command)
+        if unproven:
+            parser.error('the script ' + ', '.join(unproven) + ' under research/results declares a "Control:" '
+                         'but no "Positive control:" line naming an instance where the effect it looks for is '
+                         'present and must be seen, nor a "No positive control:" line with the reason: a control '
+                         'expecting the same outcome as the prediction cannot show the code would see the effect '
+                         '(COMPUTATION_RULES.md); --exploratory runs it anyway')
         if args.timeout > KERNEL_RUN_S and not args.user_approved.strip():
             weak = long_scripts_without_power(command)
             if weak:
