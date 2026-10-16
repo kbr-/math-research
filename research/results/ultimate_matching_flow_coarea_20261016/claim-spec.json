@@ -1,0 +1,76 @@
+{
+  "source": {
+    "record": "[Flow-coarea level bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-flow-coarea-levels)",
+    "label": "Flow-coarea level bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-flow-coarea-levels"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:flow-coarea-level-bound",
+      "summary": "In the smearing of thm:dyadic-flow-square-exponential's proof (X over dyadic cells of side in [s/64, s/32], evenly spread Y over their rectangles), L >= L_0, with probability tending to one: (a) every Lipschitz G has |int G d(nu_X - nu_Y)| <= (L/4) sqrt(N log N)(1 + sum_j int psi_2*(|d_j G|)), the inequality in the proof of lem:flow-matching-bound (2) on the dyadic flow's event; (b) for every pair alpha in [2,infinity]^2 and every G with int sum_j psi*_alpha_j(|d_j G|) <= 2 and partials bounded by Y, this is at most (L/4) sqrt(N log N)(23 + 6 max_j (log max{Y, e^16})^(1/2 - 1/alpha_j)); (c) at (4,4), if the larger partial is at least y >= e^16 where grad G != 0, the discrepancy is at most L' sqrt N (log N)^(3/4)(log y)^(-1/4), by lem:fine-grid-leighton-shor on the cell averages; (d) for larger partial in [y, Y], at most C sqrt(N log N) min{1 + (log Y)^(1/4), (log N/log y)^(1/4)}: C_K sqrt(N log N)(log N)^(1/8) when log Y <= K log y, and C_K sqrt(N log N)(log log N)^(1/4) by (b) alone when Y <= (log N)^K.",
+      "assessment": "Working proof: (a) is the Fenchel-Young step of lem:flow-matching-bound (2) on the event int psi_2(4|Phi|/(L sqrt(N log N))) <= 1/2 of the proof of thm:dyadic-flow-square-exponential; (b) bounds on psi_2* and psi_alpha*; (c) the identity of the smeared discrepancy with the cell averages' X-term, lem:fine-grid-leighton-shor (b) with kappa = L/64, the translation sweep at mesh delta (proved in the entry), and the gradient-mass bound of lem:dominant-level-split.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "In the dyadic flow's smearing, the flow's class bound (b) and the coarea bound (c) fail at opposite ends of the gradient levels; on a band of levels with bounded log-ratio the loss is at most (log N)^(1/8), and at polylogarithmic levels (log log N)^(1/4) by (b) alone, which excludes the continuous analogue of the fifth route review's outcome (B) in that smearing; (B) itself, for discrete chains, is untouched. Neither loss is shown tight.",
+      "next_action": "Compare the dyadic flow truncated at the level's scale with lem:dominant-level-split at j*(y), on a ramp at y = exp(sqrt(log N)); then the superposition of levels.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:flow-coarea-level-bound",
+      "depends_on",
+      "thm:dyadic-flow-square-exponential",
+      "The event that the dyadic flow is square-exponentially integrable, from that theorem's proof."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "depends_on",
+      "lem:fine-grid-leighton-shor",
+      "Part (b) for the cell averages."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "cites",
+      "lem:dominant-level-split",
+      "Its gradient-mass bound 8 (log y)^(-1/4)."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "depends_on",
+      "lem:flow-matching-bound",
+      "Part (a) is the Fenchel-Young inequality in the proof of its part (2), applied to the dyadic flow."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Bounds the class functions with larger partial in [y, Y] within (log N)^(1/8) of the conjectured order when log Y <= K log y, in the dyadic flow's smearing."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "cites",
+      "lem:cellwise-lipschitz-split",
+      "Against Lebesgue measure with a cellwise Lipschitz sum; this lemma is in the dyadic flow's smearing and needs no cellwise sum; neither contains the other."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "cites",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Its class bound is in the reduction's grid smearing; this one is in the dyadic flow's smearing, which lem:flow-matching-bound (1) turns into matchings the same way."
+    ],
+    [
+      "lem:flow-coarea-level-bound",
+      "depends_on",
+      "lem:mesh-function-discrepancy",
+      "The translation sweep of its corollary, carried out in the entry at mesh delta."
+    ]
+  ]
+}
