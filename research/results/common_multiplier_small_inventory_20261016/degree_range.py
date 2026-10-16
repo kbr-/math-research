@@ -95,9 +95,9 @@ METHODS = {'published': published, 'summed': summed, 'greedy': greedy}
 
 def smallest_k(ell, M, test):
     n, m, v, h = params(ell)
-    # A proper block pins at most v - 1 bits, so a rank r = h(k+1)+1 needs k <= (v-2)/h - 1; the
-    # published count has no block rank in it and runs to k = m.
-    hi = m if test is published else (v - 2) // h - 1
+    # Only k with D = floor((n+1)/(2k)) - 1 >= 2h+1 matter: k <= (n+1)/(2(2h+2)).  There r = h(k+1)+1 is
+    # below v/4, inside every certificate's hypotheses; beyond, the summed count stops being monotone.
+    hi = (n + 1) // (2 * (2 * h + 2))
     if not test(ell, M, hi):
         return None
     lo = 1
