@@ -64,6 +64,10 @@ October 2026; a rule added after a mistake is applied at once to the next text w
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
+- Count a step done only when its effect is seen, not when its command was issued: read the written
+  file's new content or the tool's own report of the write, the commit's subject in the log, a mark
+  matching on the case it is for (17 October 2026: an excerpt refused behind a silenced error, a
+  stale commit subject printed and not read, and a word mark that matched a path).
 - Run a required tool or check so that it does its job, never in the cheapest form that passes its
   gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
   logged): if a gate's form is a burden, change the gate in the open, not its use.
