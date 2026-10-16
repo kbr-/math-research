@@ -12,6 +12,12 @@ for single-variable error sets, beta' equals k*.
 Expected: beta' <= k* for every F (asserted), and beta' = k* for the listed sets; the script prints both.
 Refuted by: some F with beta' > k*, which would contradict the reduction lemma and mean an error in it.
 Possible because: the multilinear product may lower degree in a way the graded product in G misses.
+Second run: the sets above all have linear killers from monomial axioms, so beta' = k* = 1 there equals
+the trivial bound (no constant survives when the errors are outside C). Added: F = all variables, and F =
+the variables of pigeons 0 and 1, where no monomial axiom gives a common linear killer.
+Expected: k* >= 2 or no surviving killer within the window for these, and beta' printed beside it.
+Refuted by: k* = 1 for all variables, which would mean a linear surviving common killer of every variable.
+Possible because: a linear combination built from the pigeon axioms may kill every variable modulo C.
 Control: F = {1} (a constant error) has no surviving killer, k* undefined, and beta' undefined; asserted.
 Refuted by: a reported surviving killer of the constant error, which would mean the closure reports 1 in C.
 Possible because: a bug in the membership of f * 1 would let a non-member pass.
@@ -87,10 +93,8 @@ def beta_prime(c, errors, D):
     for a in range(0, D - e + 1):
         monos_a, idx_a, T_a = top_parts(c, a)
         # The linear map g -> (residue of g*E modulo T_(a+e_E)) for each E; its kernel, modulo T_a.
-        targets = {}
-        for E in errors:
-            k = a + deg(E)
-            targets[E] = top_parts(c, k)
+        by_degree = {k: top_parts(c, k) for k in {a + deg(E) for E in errors}}
+        targets = {E: by_degree[a + deg(E)] for E in errors}
         rows = []          # images of the basis monomials of G_a, concatenated over the errors
         for m in monos_a:
             image = 0
@@ -128,6 +132,16 @@ def kernel_of(rows):
     return kernel
 
 
+def fast_reduce(c, v):
+    """Remainder modulo C: the stored rows are in reduced echelon form, so XOR the rows at v's pivot bits."""
+    bits = v & c._pivot_mask
+    while bits:
+        low = bits & -bits
+        v ^= c.rows[low.bit_length() - 1]
+        bits ^= low
+    return v
+
+
 def least_killer(c, errors, D):
     """Least k <= D - e with f in V_k, f not in C, f*E in C for every E."""
     e = max(deg(E) for E in errors)
@@ -137,14 +151,14 @@ def least_killer(c, errors, D):
         for m in monos:
             image = 0
             for t, E in enumerate(errors):
-                image |= c.reduce(c.vector(pc.multiply({m}, {E}))) << (t * len(c.monos))
+                image |= fast_reduce(c, c.vector(pc.multiply({m}, {E}))) << (t * len(c.monos))
             rows.append(image)
         for tag in kernel_of(rows):
             f = set()
             for i in range(tag.bit_length()):
                 if tag >> i & 1:
                     f ^= {monos[i]}
-            if not c.contains(f):
+            if fast_reduce(c, c.vector(f)):
                 return k
     return None
 
@@ -157,14 +171,19 @@ def main():
     axioms, nv, v = functional_php(m, n)
     c = pc.Closure(axioms, nv, D)
     assert c.proper, 'the 6 x 5 functional system must be proper at degree 3'
+    c._pivot_mask = sum(1 << p for p in c.rows)
+    for p, row in c.rows.items():          # reduced echelon form, which fast_reduce relies on
+        assert row & c._pivot_mask == 1 << p
     x = lambda i, j: 1 << v(i, j)
     sets = {'x00': [x(0, 0)], 'x00,x11': [x(0, 0), x(1, 1)], 'x00,x10': [x(0, 0), x(1, 0)],
-            'x00,x01': [x(0, 0), x(0, 1)], 'x00x11': [x(0, 0) | x(1, 1)], 'x00x11,x22x33': [x(0, 0) | x(1, 1), x(2, 2) | x(3, 3)]}
+            'x00,x01': [x(0, 0), x(0, 1)], 'x00x11': [x(0, 0) | x(1, 1)], 'x00x11,x22x33': [x(0, 0) | x(1, 1), x(2, 2) | x(3, 3)],
+            'all variables': [x(i, j) for i in range(m) for j in range(n)],
+            'pigeons 0,1': [x(i, j) for i in range(2) for j in range(n)]}
     out = {'system': 'functional pigeonhole, 6 pigeons, 5 holes, F_2, multilinear', 'D': D, 'closure_dim': c.dim,
            'sets': {}}
     for name, errors in sets.items():
         b, k = beta_prime(c, errors, D), least_killer(c, errors, D)
-        assert b is not None and k is not None and b <= k, (name, b, k)
+        assert k is None or (b is not None and b <= k), (name, b, k)
         out['sets'][name] = {'beta_prime': b, 'least_surviving_killer': k}
         print(name, 'beta_prime', b, 'least surviving killer', k, flush=True)
     # Control: the constant error 1 has no surviving killer.
