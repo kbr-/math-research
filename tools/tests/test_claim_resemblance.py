@@ -82,6 +82,8 @@ class ResemblanceTest(unittest.TestCase):
         self.assertIn('3 registered claims compared', text)
         self.assertRegex(text, r'0\.\d\d ex:old-degrees: Exact refutation')
         self.assertIn('prop:other (related in the spec)', text)
+        # the listed claims are to be applied to the next attempt, not only compared for generality
+        self.assertIn('apply each to the entry\'s next attempt', text)
 
     def test_a_queued_item_the_claim_answers_is_listed_and_an_unrelated_one_is_not(self):
         notebook = ('<section id="lead-queue"><h2>Queue</h2><ol>'

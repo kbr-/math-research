@@ -58,6 +58,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
 - Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
   is listed for without it, with signs or general coefficients, and list it only if that fails (17
   October 2026: an identity valid over every field was listed as needing characteristic 2).
+- Read a rule or a listed record by applying it to the case in hand (the next attempt, the instance,
+  the sentence being written) and writing what it gives there, never as seen once read (17 October
+  2026: a listed lemma, read, already answered the entry's next attempt).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).

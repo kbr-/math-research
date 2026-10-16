@@ -211,6 +211,10 @@ def main(argv=None):
             # 16 October 2026: a listed claim was a more general version of the new one, unread as such.
             print('  Read each listed statement and say in the entry whether it is a more general version of '
                   'this claim (fewer hypotheses, the same conclusion) or a special case of it.')
+            # 17 October 2026: a listed lemma, read only for generality, already answered the entry's next
+            # attempt for one of its cases.
+            print('  Then apply each to the entry\'s next attempt and its Smallest case: write under Own statements '
+                  'what it already decides there, or that it decides nothing.')
     found_siblings = siblings(registered, spec)
     for related_id, rows in found_siblings:
         print(f'Registered beside {related_id}, which the spec relates (same record entry), and not related in '
