@@ -55,6 +55,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   the side of a bound), derive in its docstring from the containment or inequality which extreme the
   question needs (17 October 2026: a domain saving was taken as a maximum where the bound needs the
   minimum).
+- Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
+  is listed for without it, with signs or general coefficients, and list it only if that fails (17
+  October 2026: an identity valid over every field was listed as needing characteristic 2).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
