@@ -173,6 +173,11 @@ def start_session(name, agent=None, model=None, notebook=None):
     model = session_model(agent, model) or 'unspecified'
     # Record who produced the cycle; never a machine-local session ID.
     path = session_path(name)
+    # A name whose evidence is archived is taken even when its log is gone (logs are runtime files):
+    # on 17 October 2026 a turn reused "route-review", and its archive refused at the finisher.
+    archived = ROOT / 'research/provenance/session-records' / name
+    if archived.exists():
+        raise ValueError(f'Session name already archived in {archived.relative_to(ROOT)}; choose a new name')
     with locked(path):
         if path.exists():
             raise ValueError('Session exists; choose a new name')

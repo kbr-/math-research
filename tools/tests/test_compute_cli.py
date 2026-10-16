@@ -42,6 +42,28 @@ def gone_or_dead(pid):
         return True
 
 
+class ArchivedSessionName(unittest.TestCase):
+    def test_a_name_whose_evidence_is_archived_is_refused_though_its_log_is_gone(self):
+        # 17 October 2026: "route-review" was reused after its log was gone, and the archive refused at the end.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research/provenance/session-records/old-turn').mkdir(parents=True)
+            (root / 'research/logs').mkdir(parents=True)
+            with unittest.mock.patch.object(compute, 'ROOT', root), \
+                    unittest.mock.patch.object(compute, 'link_user_requests'), \
+                    unittest.mock.patch.object(compute, 'link_shared'), \
+                    unittest.mock.patch.object(compute, 'session_path', lambda name: root / f'research/logs/{name}.jsonl'), \
+                    unittest.mock.patch.dict(sys.modules, {'notebooks': type(sys)('notebooks')}):
+                sys.modules['notebooks'].selected = lambda notebook, root: {'name': 'main'}
+                with self.assertRaises(ValueError) as raised:
+                    compute.start_session('old-turn', agent='unit', model='unit test, none')
+                self.assertIn('already archived', str(raised.exception))
+                self.assertFalse((root / 'research/logs/old-turn.jsonl').exists())
+                with unittest.mock.patch.object(compute, 'add_event') as added:
+                    compute.start_session('new-turn', agent='unit', model='unit test, none')
+                added.assert_called_once()
+
+
 class InactiveControls(unittest.TestCase):
     """Controls down, as after a reboot: the error names the setup the agent runs itself."""
 
