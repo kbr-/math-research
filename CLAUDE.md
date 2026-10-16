@@ -45,6 +45,10 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   finding it will carry beside its source (a saved output, a named agent's report, a proof in the
   entry); one whose only source is another agent's report is written as that agent's, or recomputed
   and saved first.
+- A conjecture drawn from a check states the quantity the check computed (its maxima, its field, its
+  representatives); a stronger form is tried first against the system's trivial transformations (16
+  October 2026: a conjecture dropped the check's maximum over representatives and failed on the
+  plainest one).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
