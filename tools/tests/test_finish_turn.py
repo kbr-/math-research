@@ -51,7 +51,7 @@ FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / '
 class StaleReviewHint(unittest.TestCase):
     def test_a_stale_review_gets_the_refresh_steps_and_other_errors_do_not(self):
         hint = FT.stale_review_hint(['lem:x: topics is stale', 'lem:x: significance is missing'])
-        self.assertIn('rerun author build', hint)
+        self.assertIn('tools/claim_refresh.py', hint)
         self.assertEqual(FT.stale_review_hint(['lem:x: significance is missing']), '')
 
 

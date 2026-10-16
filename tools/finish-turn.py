@@ -1669,8 +1669,10 @@ def stale_review_hint(errors):
     if not any(error.endswith(' is stale') for error in errors):
         return ''
     return ('\nA stale review hashes evidence that changed after registration, usually the entry edited after '
-            'author build. Restore research/claims/index.json from HEAD, delete that build\'s --out, --proposal and '
-            '--report files, rerun author build, copy the proposal over the registry and render.')
+            'author build. Rebuild in one step, with that build\'s paths: ./compute.sh --threads 1 --category '
+            'local_processing python3 tools/claim_refresh.py SPEC --out OUT --proposal PROPOSAL --report REPORT '
+            '(it restores the registry from HEAD, deletes the old outputs, reruns author build, copies the '
+            'proposal and renders; keep PROPOSAL in scratch).')
 
 
 def validate_append_only(root):
