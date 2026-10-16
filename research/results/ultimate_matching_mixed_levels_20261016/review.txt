@@ -1,0 +1,78 @@
+Reviewer record: the single fresh-context medium reviewer of entry-2026-10-16-low-level-mixed-counts,
+16 October 2026 (Claude Code, medium-reviewer agent). First report, as returned (condensed only in
+layout):
+
+Verdict: pass with corrections. The proof is correct as written (items 1-5 checked); the scope
+statements are narrower or stronger than the proof supports.
+
+Steps that hold: cells (k >= NDH/16 = (L^2/16) log N t_1^beta_1 t_2^beta_2); leftover matching
+(Lambda(c) = U_X(ca) - U_Y(ca); three-column argument in both directions: r <= X(c) = Y(c) +
+Lambda(c) <= Y(c+3), and from the condition at c-4, Y(c-4) <= X(c-4) + #X_left(c-3..c-1) = X(c-1)
+< r; at the edges the bound holds trivially, say so); Doob (constant 4N, reflection); supply (Hoelder
+gives E|z| >= (2k)^(3/2)/(12k^2+2k)^(1/2), so E z^- >= sqrt k/4 for every k >= 1; E(z^-)^2 = k,
+r = ES/2, e^(-M/128), de-Poissonization factor e^2 N, window count correct); second level (E z^2 =
+2Np(1-p) <= 2k, Efron-Stein variance <= 4N, k = o(N)).
+
+Required changes.
+1. The (1/2) log log N and L >= 3 hypotheses are stronger than the proof uses: the last step needs
+   only sqrt k >= e^(t_2)/sqrt 2 with k >= (L^2/16) log N t_1^beta_1 t_2^beta_2, so the theorem holds
+   for every L > 0 under rho -> infinity and e^(2 t_2) <= (L^2/8) log N t_1^beta_1 t_2^beta_2; the
+   stated case follows (t_1^beta_1 t_2^beta_2 >= rho t_2^(2 beta_2) -> infinity); at (4,4) with
+   t_1 = log N this reaches t_2 <= (5/8) log log N + (1/4) log t_2 + O(1). State the general
+   condition (statement, spec, General statement); drop L >= 3.
+2. "Not proved: both levels above (1/2) log log N" is wrong after change 1; the construction's
+   barrier is leftovers about N/sqrt k exceeding 2N e^(-t_2), i.e. e^(2 t_2) >~ log N t_1^beta_1
+   t_2^beta_2.
+3. The Bearing "a refutation through mixed levels must use two levels both above (1/2) log log N"
+   is false as written: e.g. beta_1 = 0.01, beta_2 = 1, t_1 = (log log N)^50, t_2 = (1/2) log log N
+   (rho -> 0); at (4,4), t_2 = (1/2) log log N, t_1 = log log N (rho bounded). State the covered
+   region.
+4. Relate the elementary baseline: if both levels are at most about (1/2) log log N, cells D x H
+   with any in-cell matching give the mixed consequence for every pair and every rho (leftovers
+   sqrt 2 N/sqrt k <= 2N e^(-max t_j) may fail both coordinates); say what the theorem adds (no
+   exceptions in coordinate 1, t_1 up to log N).
+5. alpha_1 = infinity: "the columns are too thin" is a failure of the method, not the statement.
+6. "t_2 above (1/2) log log N is excluded: leftovers exceed 2N e^(-t_2)" is false (with rho -> infinity
+   the cells are larger); correct per change 1.
+7. Small: require 1/h integral (M = 3/h is a cell count); cite a source for the lower-tail
+   inequality for nonnegative summands (Maurer 2003; Boucheron-Lugosi-Massart Exercise 2.9); note
+   that the theorem has no curve hypothesis and holds below the curve, without conflict with
+   thm:below-curve-matching-exclusion (that concerns the whole condition).
+8. The commit message inherits the scope errors of 2-3.
+Unused or stronger-than-needed: L >= 3, t_2 <= (1/2) log log N; t_2 >= 1 used only for t_2^beta_2 >= 1.
+
+Suggestions (unverified). m-column windows (columns of width about D/(m+1)): supply about
+(1/8) sqrt(m N rho) beats omega sqrt N when m rho -> infinity; leftovers stay within 2N e^(-t_2) if
+m <= c log N t_1^beta_1 t_2^beta_2 e^(-2 t_2); both together when e^(2 t_2) <= c L^2 log N
+t_1^beta_1 t_2^beta_2 and e^(2 t_2) = o(log N t_1^(2 beta_1)); would cover bounded rho, alpha_1 =
+infinity when e^(2 t_2) = o(log N), t_2 up to about (1/2) log log N + beta_1 log t_1. Open point (both
+levels high, (4,4), t_1 = log N, t_2 = sqrt(log N)): no proof, no obstruction found. Every
+"cells, leftovers move vertically freely" scheme is limited by its N/sqrt k leftovers, k
+polylogarithmic. Re-matching the bad pairs of the per-level matching by column order fails
+quantitatively (bad endpoints of density e^(-t_2) against the strip discrepancy; at (4,4) it needs
+(log N)^(3/4) e^(-sqrt(log N)) >> 1, false). Sacrificial pairs need rho >> e^(t_2), false at (4,4).
+Next attempt: make the per-level construction at t_2 position-aware in coordinate 1 (rescale by
+t_1^-beta_1 and t_2^-beta_2), carrying each cell's coordinate-1 imbalance across column boundaries by
+in-row side-neighbour flux (about omega sqrt N h << k per cell); the remaining difficulty, the
+vertical imbalance inside a column (a random walk of size about sqrt(N a) >> k), is the
+two-dimensional multiscale transport problem: a both-high result likely needs an anisotropic
+multiscale transport bound.
+
+Process audit. Title placeholder; proposed "Mixed counts with one low level"; avoid both-levels
+wording and "complete". Overstated scope: What it gives, Bearing, spec next_action and commit message
+present (1/2) log log N as the boundary of what is proved, an artifact of a loose final inequality;
+the bounded-rho question unasked. Baseline unrelated. Chosen paragraph: supported, no findings. Owed
+attempt: dismissing the test-set route as needing both coordinates bounded is a one-step objection;
+it should not suggest the route is ruled out for the both-high case. Nonvacuity correct. Commit
+message says no more than the entry but inherits the scope errors.
+
+Follow-up check of the corrections, same reviewer, as returned (condensed only in layout):
+corrections (1)-(7) are in the draft, spec and commit message. (1) the last step for every L > 0 is
+right (k >= (L^2/16) log N t_1^beta_1 t_2^beta_2 >= e^(2 t_2)/2; 8/D <= N and M >= sqrt N/polylog
+for any fixed L once N is large); (2) at (4,4), t_1 = log N: t_2 <= (5/8) log log N + (1/8) log t_2
++ O(1), rho -> infinity there; the baseline and the no-curve remark are correct; (3) Bearing, Not
+covered and New mathematics describe the covered region only; (4)-(7) done. Required wording fixes:
+"t_2 <= (5/8) log log N + O(log log log N)" in Bearing, spec summary and commit message is
+imprecise (the hidden constant is not free; only C < 1/8 up to O(1)): use the exact form; the spec's
+relation to thm:per-level-count-matchings ("when one is low") overstates: name the covered region;
+replace the gate placeholder.

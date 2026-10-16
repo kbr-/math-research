@@ -1,0 +1,56 @@
+{
+  "source": {
+    "record": "[Low-level mixed counts](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-low-level-mixed-counts)",
+    "label": "Low-level mixed counts",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-low-level-mixed-counts"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "thm:low-level-mixed-counts",
+      "summary": "For alpha_1,alpha_2 in (0,infinity] (no curve condition), every L>0, X,Y independent uniform samples of size N in [0,1]^2 and levels t_1,t_2 in [1,log N] with t_1^(1/alpha_1)/t_2^(1/alpha_2) -> infinity and e^(2 t_2) <= (L^2/8) log N t_1^(1/alpha_1) t_2^(1/alpha_2), with probability tending to one some matching has |X_i^1-Y^1_pi(i)| <= L sqrt(log N/N) t_1^(1/alpha_1) for every i and at most 2N e^(-t_2) pairs with |X_i^2-Y^2_pi(i)| > L sqrt(log N/N) t_2^(1/alpha_2). At (4,4) with t_1=log N it covers t_2 <= (5/8) log log N + (1/8) log t_2 + O(1).",
+      "assessment": "Working proof: cells of width about D/8 and height about H (the two levels' boxes), any matching inside cells, leftovers matched by column order one-dimensionally; the strip discrepancy is O(omega sqrt N) by Doob's inequality for the martingale U(x)/(1-x), and every three-column window holds about sqrt N (D/H)^(1/2) leftovers of each sample (Poissonization, lower tail for nonnegative sums); the leftovers number about N/sqrt k, within 2N e^(-t_2) by the hypothesis on t_2.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves mixed level consequences of the condition with the first level up to the maximum and the second low, beyond the elementary cells baseline; mixed levels with bounded box ratio or a high second level, and the coupling of levels, remain.",
+      "next_action": "Mixed levels with bounded box ratio or e^(2 t_2) beyond log N t_1^(1/alpha_1) t_2^(1/alpha_2), e.g. (4,4), t_1=log N, t_2=sqrt(log N).",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:low-level-mixed-counts",
+      "cites",
+      "thm:per-level-count-matchings",
+      "The equal-level case; together they cover a pair of levels when equal, or when the second level is low and the first box larger by a factor tending to infinity."
+    ],
+    [
+      "thm:low-level-mixed-counts",
+      "cites",
+      "thm:maximum-displacement-curve-threshold",
+      "The top level in both coordinates; here the first coordinate's top level holds with the second coordinate low."
+    ],
+    [
+      "thm:low-level-mixed-counts",
+      "cites",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Same setting; that corollary reduces the whole condition to a discrepancy bound, this proves two levels of the condition directly."
+    ],
+    [
+      "thm:low-level-mixed-counts",
+      "cites",
+      "lem:level-count-consequence",
+      "The counts it supplies are those the condition implies, at two levels."
+    ],
+    [
+      "thm:low-level-mixed-counts",
+      "applies",
+      "conj:ultimate-matching",
+      "Mixed level consequences hold when the second level is low relative to log N times the two boxes and the first box is larger by a factor tending to infinity."
+    ]
+  ]
+}
