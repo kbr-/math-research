@@ -204,6 +204,19 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 
+    def test_rm_of_a_framework_tool_is_refused(self):
+        for command in ("rm -rf /tmp/x tools/browser_get.cjs", "cd repo && rm tools/hooks/x.py",
+                        "rm -f /home/u/repo/tools/a.py; ls"):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn("a framework tool", done.stderr)
+        # Scratch, results and git rm are fine.
+        for command in ("rm -rf /home/u/.claude/jobs/x/tmp/bget", "rm research/results/a/old.json",
+                        "git rm tools/old.py"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
     def test_an_inline_script_replacing_text_in_a_file_is_refused(self):
         heredoc = "python3 - <<'EOF'\nfrom pathlib import Path\n{}\nEOF"
         for script in (

@@ -716,17 +716,19 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   beyond the source's own copies: where what is needed is a definition or a statement, look for it
   also in its authors' other writings (talks, theses, surveys) and in papers that use it, and say in
   the entry which of these the statement was read in. A file whose text does not extract is read
-  from its pages rendered as images before it is called unreadable. Where the obstacle is a login
-  the user holds, the request asks the user to sign in in Firefox and run `tools/firefox_cookies.py
-  HOST`; `tools/firefox_get.py HOST PATH` then reads the page through that session, GET only. A
-  retrieval is recorded, in a request or an entry, only after the retrieved file has been opened and
-  identified as the source. A number or range transcribed from a scanned page is checked against a
-  second place where the source uses it, or marked uncertain. A paper on arXiv is read from its
-  source: `tools/arxiv_source.py ID --out DIR --expect WORDS` unpacks into external scratch or the
-  actor's managed, Git-ignored scratch, rejects tracked destinations and links, prints the title,
-  and fails when it holds none of the words given of the title meant. A web fetch that returns a
-  model's report of a page is not a reading of its statements; an entry that relies on one says so
-  in its status line.
+  from its pages rendered as images before it is called unreadable. A source that refuses a scripted
+  client (a 403 or a bot wall) is tried in a browser, `node tools/browser_get.cjs URL --out FILE
+  [--click TEXT]`, before a request is filed; it carries the user's saved session when there is one.
+  Where the obstacle is a login the user holds, the request asks the user to sign in in Firefox and
+  run `tools/firefox_cookies.py HOST`; `tools/firefox_get.py HOST PATH` or `tools/browser_get.cjs`
+  then reads through that session. A retrieval is recorded, in a request or an entry, only after the
+  retrieved file has been opened and identified as the source. A number or range transcribed from a
+  scanned page is checked against a second place where the source uses it, or marked uncertain. A
+  paper on arXiv is read from its source: `tools/arxiv_source.py ID --out DIR --expect WORDS`
+  unpacks into external scratch or the actor's managed, Git-ignored scratch, rejects tracked
+  destinations and links, prints the title, and fails when it holds none of the words given of the
+  title meant. A web fetch that returns a model's report of a page is not a reading of its
+  statements; an entry that relies on one says so in its status line.
 - Every request to the user goes into the Git-ignored `user_requests` file of the main checkout, the
   one the user reads; in a worktree `user_requests` is a link to it, which `compute.sh start`
   creates and insists on: a missing source, an installation, a permission, a choice between research

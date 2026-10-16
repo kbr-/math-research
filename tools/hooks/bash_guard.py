@@ -206,6 +206,25 @@ def sed_in_place(command: str):
     return None
 
 
+def tool_removed(command: str):
+    """The reason when rm deletes a file under tools/: a helper written there serves a job that recurs by
+    nature, and on 16 October 2026 a browser retrieval tool was deleted after its first use failed, although
+    the next source would need it (user: "It will be needed in the future..."). A tool is kept, tested and
+    committed; one that is wrong is fixed, and one that is truly obsolete is removed with git rm, in a commit
+    that says why."""
+    for words in simple_commands(command):
+        while words and (re.match(r"^\w+=", words[0]) or words[0] in ("env", "command", "sudo", "xargs")):
+            words = words[1:]
+        if not words or words[0] not in ("rm", "unlink", "shred"):
+            continue
+        for word in words[1:]:
+            if not word.startswith("-") and re.search(r"(^|/)tools/[^/]", word):
+                return (f"rm deletes {word}, a framework tool: keep it, make it work and commit it with a test, "
+                        "since retrieval and similar jobs recur; remove an obsolete one with git rm in a commit "
+                        "that says why")
+    return None
+
+
 def sed_ampersand(command: str):
     """The reason when an in-place sed substitution has an unescaped & in its replacement: sed inserts the
     whole match there, so a replacement holding an HTML entity such as &lt; pastes the matched text into
@@ -528,7 +547,7 @@ def main() -> int:
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
-    reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or sed_in_place(command)
+    reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
               or sed_ampersand(command) or staging_silenced(command)
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
