@@ -519,5 +519,20 @@ class StagingSilencedTest(unittest.TestCase):
                 self.assertIsNone(guard.staging_silenced(command))
 
 
+class ExistingResultFolderTest(unittest.TestCase):
+    def test_mkdir_of_a_results_folder_with_files_is_refused(self):
+        # 16 October 2026: a new entry reused an earlier review's folder and overwrote its reviewer record.
+        with tempfile.TemporaryDirectory() as d:
+            used = Path(d, 'research/results/old_review')
+            used.mkdir(parents=True)
+            (used / 'reviewer.txt').write_text('x')
+            Path(d, 'research/results/empty').mkdir(parents=True)
+            self.assertIn('already exists', guard.existing_result_folder('mkdir -p research/results/old_review', d))
+            self.assertIn('already exists', guard.existing_result_folder(f'mkdir -p {used} && echo ok', d))
+            self.assertIsNone(guard.existing_result_folder('mkdir -p research/results/new_entry', d))
+            self.assertIsNone(guard.existing_result_folder('mkdir -p research/results/empty', d))
+            self.assertIsNone(guard.existing_result_folder('mkdir -p research/logs/x', d))
+
+
 if __name__ == '__main__':
     unittest.main()

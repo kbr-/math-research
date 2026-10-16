@@ -146,6 +146,23 @@ def scratch_script_replaces(command: str) -> bool:
     return False
 
 
+MKDIR_RESULTS = re.compile(r'\bmkdir\s+(?:-\w+\s+)*(\S*research/results/[^\s;&|]+)')
+
+
+def existing_result_folder(command: str, cwd: str):
+    """The reason when mkdir names a results folder that already holds files: on 16 October 2026 a new entry's
+    folder took the name of an earlier review's, mkdir -p said nothing, and the new files overwrote the earlier
+    entry's reviewer record."""
+    for path in MKDIR_RESULTS.findall(command):
+        folder = Path(os.path.expandvars(path))
+        if not folder.is_absolute():
+            folder = Path(cwd) / folder
+        if folder.is_dir() and any(folder.iterdir()):
+            return (f"{path} already exists and holds files of an earlier entry; a new entry's results go in a new "
+                    "folder: choose another name (AGENTS.md: results are kept, never overwritten)")
+    return None
+
+
 def adhoc_replace_helper(command: str):
     """The reason when a heredoc script defines its own text-replacement helper, or an inline Python
     script, or a scratch script run by its path, replaces text in a file."""
@@ -603,6 +620,7 @@ def main() -> int:
         return 2
     reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
               or sed_ampersand(command) or staging_silenced(command)
+              or existing_result_folder(command, payload.get("cwd") or os.getcwd())
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
