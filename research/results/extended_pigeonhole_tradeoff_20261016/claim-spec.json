@@ -1,0 +1,82 @@
+{
+ "source": {
+  "record": "[Extended pigeonhole tradeoff](https://kbr.is-a.dev/math-research/#entry-2026-10-16-extended-pigeonhole-tradeoff)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-16-extended-pigeonhole-tradeoff"
+  ],
+  "label": "Extended pigeonhole tradeoff"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-16",
+ "topics": [
+  "polynomial-calculus",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "imp:ips-size-degree-tradeoff",
+   "summary": "Imported (Impagliazzo, Pudlak, Sgall, Lower Bounds for the Polynomial Calculus and the Groebner Basis Algorithm, ECCC TR97-042, Lemma 3.1, Lemma 5.1 from Clegg-Edmonds-Impagliazzo, Theorems 5.2 and 5.6, Corollary 5.7): PC lines are polynomials with Boolean axioms for all variables, degree the largest line degree. Lemma 3.1: a derivation whose monomials have at most b distinct variables yields one of degree max(b+1,d). Lemma 5.1: P of degree <=d with P|x=0 refuted in degree d and P|x=1 in degree d+1 is refuted in degree d+1. Theorem 5.2: degree-<=d axioms in n variables refuted with M monomials have a refutation of degree O(d+(n log M)^(1/2)); its proof gives <= 1+b+(n ln M)^(1/2), b=max(d,ceil((n ln M)^(1/2))). Theorem 5.6: functional PHP^m_n refuted with M monomials has a refutation of degree O((n log M)^(1/2)), counting a monomial's distinct holes; Corollary 5.7: 2^Omega(n) monomials over any field.",
+   "assessment": "Imported; Definitions 1.1 and 1.2, Lemma 3.1 with proof, Section 5 with the proofs of Theorems 5.2 and 5.6 read from the report's pages rendered as images (its text does not extract); the reviewer compared the statements with the page images.",
+   "status": "established",
+   "rationale": "Supplies the size step of the plain extension route and the hole-counting tradeoff for PHP.",
+   "next_action": "Use as imported; Sections 2 to 4 beyond Lemma 3.1 not read."
+  },
+  {
+   "id": "thm:extended-pigeonhole-tradeoff",
+   "summary": "Extended pigeonhole tradeoff: over any field, functional PHP^m_n (m>n) with Boolean axioms on all variables plus M acyclic extension axioms z_l-Q_l, z_l^2-z_l, Q_l of degree <=k in the x's and earlier z's and 0/1-valued on Boolean points, with composed degree K = max deg phi(z_l), phi substituting definitions, 1<=K<=n/4: if Gamma=(n/2+1)/K-max(k,2)-3>0, every PC refutation of size s has ln s >= Gamma^2/(8(n+M)). Proof: the substitution phi gives degree >= (n/2+1)/K (Razborov's n/2+1 bound); Theorem 5.6's induction of imp:ips-size-degree-tradeoff with holes and extension variables as items gives degree <= 3+max(k,2)+2(2(n+M) ln s)^(1/2). No hole cost; over F_2 nested parities of any fan-in have K=1. Vacuous once M is of order n^2/(32K^2), at most about N/(32K^2) on ordinary PHP.",
+   "assessment": "Working proof extending Theorem 5.6 of imp:ips-size-degree-tradeoff by extension variables as items and composed degree in the substitution; novelty in the literature not assessed. Reviewed by the sole fresh-context medium reviewer, whose corrections and general form (acyclic definitions, composed degree) are adopted.",
+   "status": "working_proof",
+   "rationale": "Supersedes what the hole-cost restriction's statements on ordinary PHP implied, and moves the cleanup's inventory cap.",
+   "next_action": "None at the goal's inventories, which exceed the cap; definitions with unbounded-fan-in OR or AND gates can exceed K <= n/4."
+  }
+ ],
+ "relationships": [
+  [
+   "thm:extended-pigeonhole-tradeoff",
+   "depends_on",
+   "imp:ips-size-degree-tradeoff",
+   "Its Lemmas 3.1 and 5.1 and Theorem 5.6's induction."
+  ],
+  [
+   "thm:extended-pigeonhole-tradeoff",
+   "depends_on",
+   "imp:razborov-generic-pigeonhole-degree",
+   "The plain principle's n/2+1 bound."
+  ],
+  [
+   "thm:extended-pigeonhole-tradeoff",
+   "cites",
+   "thm:binary-hole-cost-restriction",
+   "A different family with a hole cost; neither implies the other."
+  ],
+  [
+   "thm:extended-pigeonhole-tradeoff",
+   "cites",
+   "ctx:pc-extension-variables-literature",
+   "The plain route's size step and the IMP and DMM settings."
+  ],
+  [
+   "imp:ips-size-degree-tradeoff",
+   "cites",
+   "ctx:pc-extension-variables-literature",
+   "Supplies the tradeoff the context names."
+  ],
+  [
+   "imp:ips-size-degree-tradeoff",
+   "cites",
+   "imp:subset-sum-real-degree",
+   "The same paper (journal version, Section 4); this import is its Section 5 in the ECCC report."
+  ],
+  [
+   "thm:extended-pigeonhole-tradeoff",
+   "cites",
+   "lem:defined-variable-substitution",
+   "Its forward direction gives the degree step over F_2 in weighted degree."
+  ]
+ ],
+ "overrides": {
+  "thm:binary-hole-cost-restriction": {
+   "assessment": "Working proof, method not new: (a) is the degree step of the route ctx:pc-extension-variables-literature records; (b) is stronger than that route, by the read tradeoff imp:ips-size-degree-tradeoff (Theorem 5.2's proof), exactly when 4(mn+M eta) < k(mn+M) up to lower-order terms, so only for k>4. Passed by the sole fresh-context medium reviewer with corrections."
+  }
+ }
+}
