@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Lipschitz class lower bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-lipschitz-class-lower-bound)",
+    "label": "Lipschitz class lower bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-lipschitz-class-lower-bound"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:lipschitz-class-lower-bound",
+      "summary": "In the setting of cor:exponential-matching-discrepancy-reduction (X i.i.d. uniform, Y evenly spread, L>=132, cell-smeared measures on the grid of side 1/ceil(32/s), s=L sqrt(log N/N)), there is a universal L_0 such that for every L>=132, with probability tending to one the penalized discrepancy D_N is at least sqrt(N log N)/(4 L_0) for all alpha_1,alpha_2 in [1,infinity] simultaneously, endpoints included; more generally on the same event for every class of Lipschitz functions containing the 1-Lipschitz functions vanishing on the boundary (any separable penalty with nondecreasing phi_j, phi_j(1) <= 1).",
+      "assessment": "Working proof: 1-Lipschitz functions vanishing on the boundary lie in the class (psi*_alpha(1) <= 1, psi*_infinity(y) = y for y <= N); Theorem 4.6.1 of Talagrand's monograph with McDiarmid's inequality for the main term; the X-side smearing error is a sum of within-cell discrepancies, O(sqrt(N log log N)) in expectation by Theorem 4.5.3 at cell scale and Cauchy-Schwarz; the Y-side error is O(sqrt N) through the evenly spread rectangles meeting grid lines.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Shows that the order sqrt(N log N) of conj:conjugate-class-discrepancy is forced at every pair, endpoints included, through the elementary Lipschitz baseline that lem:leighton-shor-class-lower-bound left unchecked; that lemma's contribution on the curve is therefore not the order.",
+      "next_action": "None for the order; the open question is the constant, conj:conjugate-class-discrepancy itself.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:lipschitz-class-lower-bound",
+      "cites",
+      "lem:leighton-shor-class-lower-bound",
+      "Gives the same order at every pair, endpoints included, by the Lipschitz baseline that lemma left unchecked; below the curve the Leighton-Shor lemma is larger."
+    ],
+    [
+      "lem:lipschitz-class-lower-bound",
+      "cites",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Same class D_N, grid and smearing."
+    ],
+    [
+      "lem:lipschitz-class-lower-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Its order sqrt(N log N) cannot be lowered at any pair."
+    ]
+  ]
+}
