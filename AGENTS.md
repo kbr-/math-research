@@ -137,29 +137,30 @@ growing checklists or one-off setup narratives.
   drafting a corollary, check for an earlier result under fewer hypotheses. Before sending a proved
   statement to review, name for each hypothesis the step of the proof that uses it and the weakest
   form that step needs, and state that form: a hypothesis copied from the instance at hand, rather
-  than read off the proof, narrows the lemma and the next step drawn from it (16 October 2026); say
-  there too which class each conclusion holds for, after `<strong>Hypotheses, each with its
-  step.</strong>` (the finisher requires the paragraph of an entry registering a proof). Evaluate
-  every inequality a statement or a sentence about the goal's endpoint uses at the Nonvacuity
-  witness's parameters, before the review and again for each sentence a correction rewrites: a
-  corrected sentence is a new claim (16 October 2026: a correction wrote a degree condition its own
-  example violated). Try it on degenerate inputs (the trivial instance, the empty one, an input
-  outside its stated form) and report it in the entry after `<strong>Degenerate cases.</strong>`:
-  what the statement gives on each, or the hypothesis that excludes it (the finisher requires the
-  paragraph of an entry registering a proof). Write down also one input that satisfies all the
-  statement's hypotheses, with its parameters, after `<strong>Nonvacuity.</strong>`: a statement
-  about a class with no member proves nothing (the finisher requires it of the same entries). State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
-  At the start of drafting, run the entry's skeleton (its headings and labelled paragraphs, before
-  the body) through `tools/notebook-append.py DRAFT --check`, which lists each failing entry check
-  of the append and the finisher that applies to a draft, so a required paragraph is planned before
-  the work. Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook
-  NOTEBOOK` and read each sentence that cites a claim beside that claim's registered statement, and
-  each that links an entry beside that entry's title and status line: a sentence may say no more
-  than its source, and one that draws a decision from a bound of the entry restates the bound's
-  hypotheses and error terms beside the instance and the scale decided. The tool also lists the
-  draft's sentences outside its mathematics that hold a count: read each beside the saved output the
-  count came from.
+  than read off the proof, narrows the lemma and the next step drawn from it (16 October 2026), and
+  a free parameter (a mesh, a scale, a threshold) is stated with the whole range its proof allows
+  before a value is chosen for the instance; say there too which class each conclusion holds for,
+  after `<strong>Hypotheses, each with its step.</strong>` (the finisher requires the paragraph of
+  an entry registering a proof). Evaluate every inequality a statement or a sentence about the
+  goal's endpoint uses at the Nonvacuity witness's parameters, before the review and again for each
+  sentence a correction rewrites: a corrected sentence is a new claim (16 October 2026: a correction
+  wrote a degree condition its own example violated). Try it on degenerate inputs (the trivial
+  instance, the empty one, an input outside its stated form) and report it in the entry after
+  `<strong>Degenerate cases.</strong>`: what the statement gives on each, or the hypothesis that
+  excludes it (the finisher requires the paragraph of an entry registering a proof). Write down also
+  one input that satisfies all the statement's hypotheses, with its parameters, after
+  `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
+  finisher requires it of the same entries). State compositions as lemmas in one common setting with
+  a complete proof, not a reference to a sketch. At the start of drafting, run the entry's skeleton
+  (its headings and labelled paragraphs, before the body) through `tools/notebook-append.py DRAFT
+  --check`, which lists each failing entry check of the append and the finisher that applies to a
+  draft, so a required paragraph is planned before the work. Before the reviewer's brief, run
+  `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that cites a
+  claim beside that claim's registered statement, and each that links an entry beside that entry's
+  title and status line: a sentence may say no more than its source, and one that draws a decision
+  from a bound of the entry restates the bound's hypotheses and error terms beside the instance and
+  the scale decided. The tool also lists the draft's sentences outside its mathematics that hold a
+  count: read each beside the saved output the count came from.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
