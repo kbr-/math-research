@@ -318,7 +318,8 @@ def queued_in(tag, idents):
 
 
 OWED_PARAGRAPH_RE = re.compile(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
-OWED_UNMADE_RE = re.compile(r'\bnot reached\b|\bnot made\b|\bunmade\b|\b(?:did|have) not read\b|\bnot read by me\b|'
+OWED_UNMADE_RE = re.compile(r'\bnot reached\b|\bnot made\b|\bunmade\b|\b(?:is|was) not run\b|\bskipped\b|'
+                            r'\b(?:did|have) not read\b|\bnot read by me\b|'
                             r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
 OWED_REASON_RE = re.compile(r'\bbecause\b|\bsince\b|\bcame first\b|\bcomes first\b|\bthe reason\b', re.I)
 OWED_PROCEDURAL_RE = re.compile(r'\b(?:\w+ )?review(?:\'s)? (?:decided|asked|named|gave|said|listed|put|having put|'
@@ -326,6 +327,8 @@ OWED_PROCEDURAL_RE = re.compile(r'\b(?:\w+ )?review(?:\'s)? (?:decided|asked|nam
                                 r'\bthe (?:last )?next step (?:asked|named|said)\b|\bthe reviewer asked\b|'
                                 r'\bby the decision\b|\bthe order chosen\b|\bthe plan was\b', re.I)
 OWED_REVIEWER_READ_RE = re.compile(r'\bread by the reviewer\b|\bthe reviewer (?:then )?read\b', re.I)
+OWED_VERDICT_RE = re.compile(r'\bvacuous\b|\bcannot\b|\bimpossible\b|\bnot needed\b|\bunnecessary\b|'
+                             r'\balready (?:decided|settled|answered)\b|\bpointless\b', re.I)
 OWED_FROM = '2026-10-12'
 GATE_PARAGRAPH_RE = re.compile(r'<p><strong>Verification gate\.</strong>(.*?)</p>', re.S)
 
@@ -366,6 +369,16 @@ def validate_owed_unmade(body, article, close):
             raise ValueError(f'The Owed attempt paragraph reports the named attempt unmade and gives a procedural '
                              f'reason ("{procedural.group(0)}"): say what about the mathematics, or the evidence, '
                              'puts another attempt first, or make it (AGENTS.md, Owed attempt)')
+        verdict = OWED_UNMADE_RE.search(plain) and OWED_VERDICT_RE.search(plain)
+        if verdict:
+            # On 16 October 2026 an entry skipped the computation its item named, "it is vacuous", resting on a
+            # remark in its own unreviewed proof; the reviewer found the remark false and the bound sharper.
+            own = set((re.search(r'\bdata-claims="([^"]*)"', tag) or [None, ''])[1].split())
+            if not set(CLAIM_ID_RE.findall(plain)) - own:
+                raise ValueError(f'The Owed attempt paragraph leaves the named attempt unmade on a mathematical '
+                                 f'verdict ("{verdict.group(0)}") that cites no claim of an earlier entry: an '
+                                 "unreviewed remark of this entry is not evidence; make the attempt, or cite the "
+                                 'registered claim that settles it (AGENTS.md, Owed attempt)')
         if OWED_UNMADE_RE.search(plain) and not OWED_REASON_RE.search(plain):
             raise ValueError('The Owed attempt paragraph reports the named attempt unmade, or made by the reviewer, '
                              'without the reason another came first: make the attempt, or say why it waits '

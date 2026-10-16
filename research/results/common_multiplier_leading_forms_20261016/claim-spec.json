@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Leading-form killer bounds](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-initial-pseudoideal-bound)",
+    "label": "Leading-form killer bounds",
+    "targets": ["branches/common-multiplier/notebook.html#entry-2026-10-16-initial-pseudoideal-bound"]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["polynomial-calculus", "degree-accounting"],
+  "claims": [{
+    "id": "lem:leading-form-killer-bound",
+    "summary": "Over any field, in the multilinear ring with G=F[x]/(x_v^2) and C a degree-D pseudoideal, the top parts T of members of C form a graded pseudoideal of G, and fE in C gives top(f)top(E) in T. Within the window deg f + max e_j <= D, a surviving common killer whose leading form lies in T reduces, by subtracting a member with the same top part, to a lower-degree surviving killer; so every surviving killer has degree at least beta', the least degree of g in G outside T with g top(E_j) in T for all j. If 1 - sum a_j E_j lies in C, no common killer of degree <= D - max e_j survives; beta' can miss this, since the graded algebra drops the constant term of inhomogeneous axioms.",
+    "assessment": "Working proof passed by the sole fresh-context medium reviewer after a failed first draft (whose survival remark was false) and a follow-up; the reduction (c) is the reviewer's correction.",
+    "status": "working_proof",
+    "category": "route_specific",
+    "rationale": "Fixes what graded duality gives on proper closures: a valid lower bound, blind to inhomogeneous axioms, where closures differ from domain models.",
+    "next_action": "Non-graded pairing: a native old-functional form at Pang's cutoff (the duality item's sub-idea).",
+    "novelty": "not_claimed"
+  }, {
+    "id": "check:leading-form-functional-pigeons",
+    "summary": "Exact F_2 computation (beta_prime.py with tools/pc_closure.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3 (closure dimension 4056): for x00, three pairs of variables, x00x11 and {x00x11, x22x33}, beta' equals the least surviving killer degree 1, the trivial bound; for all 30 variables both are none up to degree 2; for the 10 variables of pigeons 0 and 1, beta' = 2 while no surviving killer of degree <= 2 exists (the unit-combination part of lem:leading-form-killer-bound); for {x00,x11,x22} and {x00,x11,x22,x33}, whose common linear kernel is C cap V_1, beta' = k* = 2. The first six sets could only give 1 = 1 (controls). The constant-error control gives none for both.",
+    "assessment": "Finite check by exact elimination; three committed runs, the second adding two variable sets and a faster reduction relying on the closure's reduced echelon form (asserted), the third the two sets without linear survivors, at the reviewer's request.",
+    "status": "finite_check",
+    "category": "route_specific",
+    "rationale": "Shows the graded bound non-trivial on one set and blind on another, at the smallest proper size.",
+    "next_action": "None on this check; the item moves to a non-graded pairing.",
+    "novelty": "not_claimed"
+  }],
+  "relationships": [
+    ["lem:leading-form-killer-bound", "refines", "lem:graded-domain-pairing", "Part (c) of the older lemma is the case of a domain's vanishing ideal, where T is the initial ideal."],
+    ["lem:leading-form-killer-bound", "cites", "lem:cylinder-killer-degree", "The exact degree on domain models."],
+    ["check:leading-form-functional-pigeons", "cites", "lem:leading-form-killer-bound", "The bound and the unit-combination part it computes."],
+    ["check:leading-form-functional-pigeons", "cites", "check:functional-factor-kernels", "The proper 6 x 5 instance at degree 3."]
+  ]
+}

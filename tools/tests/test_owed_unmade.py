@@ -86,6 +86,20 @@ class OwedUnmadeTest(unittest.TestCase):
     def test_earlier_entries_are_exempt(self):
         FT.validate_owed_unmade(*entry('The proof is not reached.', date='2026-10-11'))
 
+    def test_a_verdict_skipping_the_attempt_cites_an_earlier_claim(self):
+        # The paragraph drafted on 16 October 2026, whose verdict rested on the entry's own false remark.
+        drafted = 'Made here, in general, by proof; it is vacuous, so the computation it planned is not run.'
+        with self.assertRaisesRegex(ValueError, 'cites no claim of an earlier entry'):
+            FT.validate_owed_unmade(*entry(drafted))
+        body, article, close = entry('The computation is not run, since lem:new-bound shows it is vacuous.')
+        body = body.replace('data-kind="research"', 'data-kind="research" data-claims="lem:new-bound"')
+        article = body.rindex('<article')
+        with self.assertRaisesRegex(ValueError, 'cites no claim of an earlier entry'):   # its own claim
+            FT.validate_owed_unmade(body, article, body.index('</article>', article))
+        FT.validate_owed_unmade(*entry('The computation is not run, since lem:old-bound settles it: it is '
+                                       'vacuous there.'))
+        FT.validate_owed_unmade(*entry('The run was not run because the machine was busy.'))   # no verdict
+
 
 if __name__ == '__main__':
     unittest.main()
