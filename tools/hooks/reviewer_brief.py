@@ -142,6 +142,60 @@ SENTENCES_REASON = ('tools/draft_claim_sentences.py has not run on {} since it w
                     'claim beside the claim before the brief (AGENTS.md)')
 
 
+# A brief asking the reviewer to search the record: on 16 October 2026 two record searches in a row missed a
+# registered result, and only the reviewer's own search, in the words of the next attempt's objects, found it;
+# a search ranked by the draft's own words (tools/claim_resemblance.py, the agent's queries) did not.
+SEARCH = re.compile(r'search-claims|\bclaim searche?s?\b|\brecord searche?s?\b|\bsearch(?:es)? (?:of |in )?the '
+                    r'(?:registry|record)\b', re.I)
+NO_SEARCH_REASON = ('the brief sends an entry draft but asks the reviewer for no record search; ask it to run one '
+                    'or two tools/search-claims.py searches in the words of the objects the draft\'s proof or next '
+                    'attempt works on, for registered results the draft does not cite')
+
+
+def brief_replay(lines, tools=TOOLS):
+    """[(time, prompt start)] for each reviewer Agent call of a session transcript (JSON lines) whose brief sends
+    an entry draft and asks for no record search: the count of the search check's refusals on past briefs."""
+    found = []
+    for line in lines:
+        if '"Agent"' not in line:   # transcripts run to hundreds of megabytes; parse only lines with an Agent call
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        content = (entry.get('message') or {}).get('content') if isinstance(entry, dict) else None
+        if not isinstance(content, list):
+            continue
+        for part in content:
+            if not (isinstance(part, dict) and part.get('type') == 'tool_use' and part.get('name') == 'Agent'):
+                continue
+            tool_input = part.get('input') or {}
+            if 'review' not in str(tool_input.get('subagent_type', '')).lower():
+                continue
+            prompt = str(tool_input.get('prompt', ''))
+            if research_drafts(prompt, tools) and not SEARCH.search(prompt):
+                found.append((entry.get('timestamp', ''), ('asks to search' if re.search(r'\bsearch', prompt, re.I)
+                              else 'no search word') + ': ' + ' '.join(prompt.split())[:100]))
+    return found
+
+
+def research_drafts(prompt, tools=TOOLS):
+    """The entry drafts a brief names: .html files outside the repository holding a research or review article.
+    A framework tool's review names other pages (16 October 2026: the one such brief the replay flagged)."""
+    repository = tools.resolve().parent
+    drafts = []
+    for path in dict.fromkeys(NAMED_FILE.findall(prompt)):
+        if not path.endswith('.html') or Path(path).resolve().is_relative_to(repository):
+            continue
+        try:
+            text = Path(path).read_text(errors='replace')[:20000]
+        except OSError:
+            continue
+        if re.search(r'<article[^>]*data-kind="(?:research|review)"', text):
+            drafts.append(path)
+    return drafts
+
+
 def refusal(payload, tools=TOOLS, log=None, now=None):
     """The reason to refuse this tool call, or None."""
     tool_input = payload.get('tool_input') or {}
@@ -190,6 +244,8 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         return ('the brief sends an entry draft but no drafted commit message; write the commit message to a '
                 'file whose name starts with "commit" (.txt or .md) and name it in the brief, so the reviewer '
                 'reads it beside the entry')
+    if research_drafts(prompt, tools) and not SEARCH.search(prompt):
+        return NO_SEARCH_REASON
     found = WHOLE.search(prompt)
     if not found:
         return None
@@ -231,6 +287,23 @@ def replay(lines, log=None, covered=None):
 
 
 def main():
+    if sys.argv[1:2] == ['--replay-briefs']:
+        found, calls, read, size = [], 0, 0, 0
+        for name in sys.argv[2:]:
+            size += Path(name).stat().st_size
+            with open(name, errors='replace') as stream:
+                kept = []
+                for line in stream:
+                    read += 1
+                    if '"Agent"' in line:
+                        calls += line.count('"name":"Agent"') + line.count('"name": "Agent"')
+                        kept.append(line)
+                found += brief_replay(kept)
+        for when, start in found:
+            print(f'{when}\t{start}')
+        print(f'{len(found)} reviewer briefs sending a draft without a record search, of {calls} Agent calls in '
+              f'{len(sys.argv) - 2} transcripts ({read} lines, {size / 1e6:.0f} MB read).')
+        return 0
     if sys.argv[1:2] == ['--replay']:
         lines = Path(sys.argv[2]).read_text(errors='replace').splitlines()
         covered = []

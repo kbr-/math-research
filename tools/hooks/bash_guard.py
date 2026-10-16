@@ -602,7 +602,31 @@ def stale_branch(command: str, cwd: str, now: float):
     return None
 
 
+# A file a command writes by redirection or tee: "> f", ">> f", "2> f", "&> f", "tee -a f"; not ">&1" or /dev/null.
+WRITTEN = re.compile(r"(?:(?<![<>&\w])(?:\d|&)?>>?\s*|\btee\s+(?:-a\s+)?)([^\s;&|<>()'\"]+)")
+
+
+def unwritten_notice(command):
+    """The notice, for a refused command, of the files it would have written, or None. On 16 October 2026 a
+    commit message was written by a command the guard refused, and the next command appended to the old file
+    and committed its stale subject: a refusal says nothing ran, but not which files are therefore unchanged."""
+    paths = [p for p in dict.fromkeys(WRITTEN.findall(command)) if p != "/dev/null" and not p.startswith("&")]
+    if not paths:
+        return None
+    return ("Nothing in the refused command ran, so these files were not written or changed: " + ", ".join(paths) +
+            ". A later command that reads them reads what they held before.")
+
+
 def main() -> int:
+    status = check()
+    if status == 2 and COMMANDS:
+        notice = unwritten_notice(COMMANDS[-1])
+        if notice:
+            print(notice, file=sys.stderr)
+    return status
+
+
+def check() -> int:
     try:
         payload = json.load(sys.stdin)
     except json.JSONDecodeError:

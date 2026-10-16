@@ -59,7 +59,8 @@ class ReviewerBriefTest(unittest.TestCase):
             message.write_text('Main: x')
             refused = hook.refusal(call(f'Review the draft {draft} with excerpts.'))
             self.assertIn('no drafted commit message', refused)
-            self.assertIsNone(hook.refusal(call(f'Review the draft {draft} and the commit message {message}.')))
+            self.assertIsNone(hook.refusal(call(f'Review the draft {draft} and the commit message {message}; '
+                                                'run one claim search.')))
             # A brief without an entry draft (a blind stage, a tool review) needs none.
             notes = Path(folder) / 'blind.md'
             notes.write_text('goal')
@@ -70,6 +71,28 @@ class ReviewerBriefTest(unittest.TestCase):
             stray = Path(folder) / 'test_commit_hook.py'
             stray.write_text('')
             self.assertIn('no drafted commit message', hook.refusal(call(f'Review {draft} and {stray}.')))
+
+    def test_an_entry_draft_needs_a_record_search_in_the_brief(self):
+        # 16 October 2026: two record searches in a row missed a registered result; the reviewer's search found it.
+        with tempfile.TemporaryDirectory() as folder:
+            draft, message = Path(folder) / 'entry_x.html', Path(folder) / 'commit_x.txt'
+            draft.write_text('<article data-kind="research"></article>')
+            message.write_text('Main: x')
+            base = f'Review the draft {draft} and the commit message {message}.'
+            page = Path(folder) / 'fixture.html'   # a framework tool's review names other pages
+            page.write_text('<html><body>fixture</body></html>')
+            self.assertIsNone(hook.refusal(call(f'Review the tool on {page} and the commit message {message}.')))
+            self.assertEqual(hook.refusal(call(base)), hook.NO_SEARCH_REASON)
+            for ask in ('One or two claim searches are allowed (python3 tools/search-claims.py WORDS).',
+                        'Run one record search in the words of the next attempt.',
+                        'Search the registry for results the draft misses.',
+                        'Make one or two searches of the record before the audit.',
+                        'A claim search for the missed results.'):
+                with self.subTest(ask=ask):
+                    self.assertIsNone(hook.refusal(call(f'{base} {ask}')))
+            notes = Path(folder) / 'blind.md'
+            notes.write_text('goal')
+            self.assertIsNone(hook.refusal(call(f'Read {notes} only.')))   # no draft, no search needed
 
     def test_input_that_is_not_json_passes(self):
         with mock.patch('sys.stdin', io.StringIO('not json')):

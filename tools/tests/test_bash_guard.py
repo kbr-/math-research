@@ -65,6 +65,26 @@ class BashGuardTest(unittest.TestCase):
         self.assertIn("Run this command bare", done.stderr)
         self.assertEqual(run("python3 tools/resume.py | tail -5").stderr, done.stderr)
 
+    def test_a_refusal_names_the_files_the_refused_command_would_have_written(self):
+        # 16 October 2026: a refused command was to write a commit message; the next one committed the old file.
+        done = run("printf 'new' > $T/commit.txt && tee -a log.txt < x && python3 tools/resume.py 2>&1 | tail -5")
+        self.assertEqual(done.returncode, 2)
+        self.assertIn("these files were not written or changed: $T/commit.txt, log.txt.", done.stderr)
+        for command in ("python3 tools/resume.py 2>&1 | head -40", "python3 tools/resume.py > /dev/null"):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2)
+                self.assertNotIn("were not written", done.stderr)
+        self.assertEqual(run("printf x > ok.txt").returncode, 0)
+        self.assertIsNone(guard.unwritten_notice("echo a 2>&1 >&2; cat <<'EOF' | sort"))
+        # The case itself: the commit-time checks refused the commit whose command wrote the message.
+        stub = types.SimpleNamespace(commit=lambda payload: "A narrowing reported without its scopes.")
+        with unittest.mock.patch.dict(sys.modules, {"during_run": stub}):
+            done = run("printf 'Main: x' > $T/commit_cos.txt && git commit -q -F $T/commit_cos.txt")
+        self.assertEqual(done.returncode, 2)
+        self.assertIn("A narrowing reported without its scopes.", done.stderr)
+        self.assertIn("not written or changed: $T/commit_cos.txt.", done.stderr)
+
     def test_blocks_filters_and_redirections(self):
         for command in [
             "python3 tools/resume.py 2>&1 | head -40",
