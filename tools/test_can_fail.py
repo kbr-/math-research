@@ -22,9 +22,9 @@ on the tool only through side effects a stub does not change (a file the real fu
 a test that ignores one function's result while asserting on another's, since a flag needs every stubbed
 function to survive. False flags possible: a test asserting only assertNotEqual on a result (the wrong value
 is unequal to everything), or catching a broad exception around a validator (the raising stub's error).
-In --staged mode the line numbers come from the staged diff but the tests are read from the working-tree
-file, so an unstaged edit above an added test can shift its line and miss or misname it; the commit check
-uses --base HEAD, where the two agree.
+In --staged mode the test files are read as staged (git show :PATH), the version whose lines the staged
+diff numbers; the test itself is still loaded and run from the working tree, so the test judged can
+differ from the staged one.
 """
 import argparse
 import ast
@@ -166,7 +166,11 @@ def added_tests(staged=True, base='HEAD'):
         if not file or not re.match(r'tools/tests/test_\w+\.py$', file.group(1)):
             continue
         path = ROOT / file.group(1)
-        tests = enclosing_tests(path.read_text()) if path.exists() else {}
+        if staged:      # the staged version, whose lines the hunks number
+            shown = subprocess.run(['git', 'show', f':{file.group(1)}'], cwd=ROOT, capture_output=True, text=True)
+            tests = enclosing_tests(shown.stdout) if shown.returncode == 0 else {}
+        else:
+            tests = enclosing_tests(path.read_text()) if path.exists() else {}
         line = 0
         for row in part.splitlines():
             hunk = re.match(r'^@@ -\d+(?:,\d+)? \+(\d+)', row)

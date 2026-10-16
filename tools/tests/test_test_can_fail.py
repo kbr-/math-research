@@ -1,11 +1,13 @@
 import pathlib
 import shutil
+import subprocess
 import sys
 import tempfile
 import textwrap
 import unittest
+from unittest import mock
 
-TOOLS = pathlib.Path(__file__).resolve().parents[1]
+TOOLS =pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 import test_can_fail  # noqa: E402
 
@@ -67,6 +69,27 @@ class TestCanFailTest(unittest.TestCase):
                     pass
         ''')
         self.assertEqual(test_can_fail.enclosing_tests(text), {3: 'A.test_main', 10: 'B.test_main'})
+
+    def test_staged_mode_reads_the_staged_file_whose_lines_the_diff_numbers(self):
+        repo = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, repo, True)
+        git = lambda *args: subprocess.run(['git', '-C', str(repo), *args], check=True, capture_output=True)
+        git('init', '-q')
+        git('config', 'user.email', 't@t')
+        git('config', 'user.name', 't')
+        tests = repo / 'tools' / 'tests'
+        tests.mkdir(parents=True)
+        path = tests / 'test_x.py'
+        path.write_text('class A:\n    def test_old(self):\n        pass\n')
+        git('add', '.')
+        git('commit', '-qm', 'one')
+        path.write_text('class A:\n    def test_old(self):\n        pass\n\n    def test_new(self):\n        pass\n')
+        git('add', '.')
+        # An unstaged edit above the new test moves its working-tree line.
+        path.write_text('class A:\n    def test_inserted(self):\n        pass\n\n    def test_old(self):\n        pass\n\n'
+                        '    def test_new(self):\n        pass\n')
+        with mock.patch.object(test_can_fail, 'ROOT', repo):
+            self.assertEqual(test_can_fail.added_tests(staged=True), ['tools/tests/test_x.py::A.test_new'])
 
 
 if __name__ == '__main__':
