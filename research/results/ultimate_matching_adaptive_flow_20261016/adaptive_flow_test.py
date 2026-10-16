@@ -47,6 +47,28 @@ over the whole unit square is invariant.
   over its own square and hence over the unit square.
   Refuted by: a difference above 1e-9 relative to the field scale.
   Possible because: an indexing error in applying the circulation.
+Second run (after the entry's review, expectations written before it). The first run's greedy flow
+had a discretization defect: evaluation points on the square's diagonals were assigned by argmin to
+the left/right triangles, so the sampled circulation acted mostly on coordinate 2; diagonal points now
+get 0 in both coordinates (the continuous curl gives the diagonals measure zero). The first run's
+dyadic kurtosis above 3 is explained (reviewer) by the per-position variance sigma^2(x) = N sum_j
+w(t_j(x)) varying with x, a scale mixture over positions with kurtosis about 3(1 + 0.8/J).
+- Prediction for the dyadic flow, raw pooled kurtosis: within 0.12 of 3(1 + 0.8/J) in each coordinate.
+  Refuted by: a raw pooled dyadic kurtosis further than 0.12 from 3(1 + 0.8/J) at some size.
+  Possible because: the finest levels' discretized weights and the coarse levels' few coefficients
+  change the mixture.
+- Prediction for the dyadic flow divided by its analytic per-position sigma: kurtosis in [2.85, 3.15]
+  and log-tail slope in [-0.6, -0.4] at every size.
+  Refuted by: a per-position standardized dyadic kurtosis outside [2.85, 3.15] or slope outside
+  [-0.6, -0.4] at some size.
+  Possible because: per realization the coarse levels carry few coefficients, which could leave
+  non-Gaussian structure.
+- The greedy flow, divided by the same dyadic sigma(x): lighter tails would show as kurtosis below
+  2.85 and slope steeper than -0.6 with the gap growing in J; Gaussian as values inside the dyadic
+  bands. A variance moved between coordinates in the corrected run would point to another asymmetry.
+  Refuted by: either outcome refutes the other branch.
+  Possible because: the greedy circulation is a nonlinear, data-dependent correction.
+
 All shape statistics are computed on the per-point values pooled over the seeds of one size (eight
 by default), which estimates the per-point law; a single realization's coarse levels carry too few
 random coefficients for its own empirical shape to mean anything.
@@ -120,8 +142,9 @@ def circulation_pattern(m):
     t2 = u[:, None]
     dist = np.stack(np.broadcast_arrays(t1, 1 - t1, t2, 1 - t2))
     side = np.argmin(dist, axis=0)                       # 0 left, 1 right, 2 bottom, 3 top
-    s1 = np.where(side == 2, 1.0, np.where(side == 3, -1.0, 0.0))
-    s2 = np.where(side == 0, -1.0, np.where(side == 1, 1.0, 0.0))
+    tie = (dist == dist.min(axis=0)).sum(axis=0) > 1    # points on a diagonal: measure zero, value 0
+    s1 = np.where(tie, 0.0, np.where(side == 2, 1.0, np.where(side == 3, -1.0, 0.0)))
+    s2 = np.where(tie, 0.0, np.where(side == 0, -1.0, np.where(side == 1, 1.0, 0.0)))
     return s1, s2
 
 
@@ -183,6 +206,7 @@ def run(J, N, seed):
     flux_err = abs(abs(flux) - abs(bottom - N / 2.0)) / math.sqrt(N)
     avg_diff = max(abs(float(ad[k].mean() - dy[k].mean())) for k in range(2))
     avg_rel = avg_diff / float(dy.std())
+    sigma = dyadic_sigma(J, G, N)
     return {
         'J': J, 'N': N, 'seed': seed, 'points': G * G,
         'control_variance_ratio': level_ratio,
@@ -190,7 +214,20 @@ def run(J, N, seed):
         'flux': flux, 'bottom_excess': bottom - N / 2.0,
         'control_square_average_rel_diff': avg_rel,
         'variance_greedy_over_dyadic': [float(ad[k].var() / dy[k].var()) for k in range(2)],
-    }, dy / math.sqrt(N * J), ad / math.sqrt(N * J)
+    }, dy / math.sqrt(N * J), ad / math.sqrt(N * J), dy / sigma, ad / sigma
+
+
+def dyadic_sigma(J, G, N):
+    """The dyadic flow's per-position standard deviation, sqrt(N sum_j w_k(t_j(x))), shape (2, G, G):
+    w_1 = 2 min(t1, 1-t1)^2 along x and w_2 = min(t2, 1-t2)^2 along y (dyadic flow obstruction entry)."""
+    s2 = np.zeros((2, G, G))
+    for j in range(J):
+        m = G >> j
+        t = (np.arange(m) + 0.5) / m
+        w = np.tile(np.minimum(t, 1 - t) ** 2, 1 << j)
+        s2[0] += N * 2.0 * w[None, :]
+        s2[1] += N * w[:, None]
+    return np.sqrt(s2)
 
 
 def pooled_shapes(arrs):
@@ -201,7 +238,8 @@ def pooled_shapes(arrs):
 def report_lines(entry):
     return [f'J={entry["J"]} pooled {name} coord {k + 1}: kurtosis {s["kurtosis"]:.3f} slope '
             f'{s["slope_vs_t2"]:.3f} tails {["%.2e" % x for x in s["tail"]]}'
-            for name in ('dyadic', 'greedy') for k, s in enumerate(entry[name])]
+            for name in ('dyadic', 'greedy', 'dyadic_per_position', 'greedy_per_position')
+            for k, s in enumerate(entry[name])]
 
 
 def main():
@@ -213,16 +251,20 @@ def main():
     a = p.parse_args()
     results, pooled = [], []
     for J in a.levels:
-        dys, ads = [], []
+        dys, ads, dzs, azs = [], [], [], []
         for seed in a.seeds:
             t0 = time.time()
-            r, dy, ad = run(J, a.per_cell * 4 ** J, seed)
+            r, dy, ad, dz, az = run(J, a.per_cell * 4 ** J, seed)
             r['seconds'] = time.time() - t0
             results.append(r)
             dys.append(dy)
             ads.append(ad)
+            dzs.append(dz)
+            azs.append(az)
             print(json.dumps(r), flush=True)
-        entry = {'J': J, 'seeds': a.seeds, 'dyadic': pooled_shapes(dys), 'greedy': pooled_shapes(ads)}
+        entry = {'J': J, 'seeds': a.seeds, 'dyadic': pooled_shapes(dys), 'greedy': pooled_shapes(ads),
+                 'dyadic_per_position': pooled_shapes(dzs), 'greedy_per_position': pooled_shapes(azs),
+                 'mixture_kurtosis_reference': 3.0 * (1.0 + 0.8 / J)}
         print('\n'.join(report_lines(entry)), flush=True)
         pooled.append(entry)
         with open(a.out, 'w') as fh:
