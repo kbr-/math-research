@@ -1,0 +1,74 @@
+{
+  "source": {
+    "record": "[Product board twist](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-product-board-twist)",
+    "label": "Product board twist decided by recorded killers",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-product-board-twist"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "cor:top-degree-twist-scalar",
+      "summary": "Over any field, for the product pigeonhole system with m pigeons and n holes (multilinear ring or Boolean axioms) at its top degree D=n, Y the hole-respecting assignments, x=x_ab a hole variable, S a set of variables other than x, P = {x_kb: k!=a} union S and 1<=K'<=n-1: F = {f of degree <=K': p f in C for p in P} has a member outside C iff tau<=K', tau the number of distinct holes the variables of P lie in; then, if hole b is touched (b in H, e.g. m>=2), x prod_{j in H minus b}(1-sum_k x_kj), H the touched holes, lies in F minus C, a scalar repair x m with deg m = tau-1. Consequently, at any window W>=2 with room TW+deg nu<=n, a twisted repair with one twisted variable x, weight x and variable errors S (K'=T+deg nu<=n-1) implies, with b in H, a scalar repair with multiplier degree tau-1<=T+deg nu-1 for the same errors, at most deg nu when T=1 (necessary direction, via the pair identity of lem:twist-window-trade).",
+      "assessment": "Working proof from lem:top-degree-killer-transfer, lem:cylinder-killer-degree and lem:top-degree-axiom-inertness, set out by the sole fresh-context medium reviewer and written and checked step by step in a follow-up (review record in research/results/common_multiplier_product_twist_20261016).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "On the product pigeonhole system at its top degree, single twists with weight a hole variable add nothing beyond scalar repairs; decides check:product-board-twist.",
+      "next_action": "Twists in two different holes, first x_00 and x_11 on three pigeons and two holes at D'=2.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:product-board-twist",
+      "summary": "Exact F_2 computation with tools/pc_closure.py on the product pigeonhole system with 4 pigeons and 3 holes (multilinear ring, pigeon axioms prod_j(1+x_ij), hole axioms) at its top degree D'=3 (closure dim 178 of 299, proper), window D-K=2, K=1, T=1, deg nu=1, tight room, twisted variable and weight x_00: for every nonempty error set S of the other 11 variables (2047 sets), the twisted-pair space F_S = {f in V_2: x_k0 f, E f in C} has a survivor (f not in C) for 247 sets, and each of these 247 has a product survivor r m (r, m linear) and indeed a scalar repair x_00 m of degree 1; no set has a twisted pair without a scalar repair. The count matches cor:top-degree-twist-scalar (tau<=2 iff S avoids touching both holes 1 and 2: 2^7+2^7-2^3-1=247); positive control (synthetic, three condition variables) sees its gap.",
+      "assessment": "Exact computation, script and counts checked by the sole fresh-context medium reviewer; it confirms cor:top-degree-twist-scalar's count and validates the script.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "On the one proper top-degree board, twisted (matrix) repairs with one twisted variable add nothing beyond scalar repairs of degree one.",
+      "next_action": "Prove that on the product pigeonhole system at its top degree a survivor of F_S gives a scalar repair of degree one.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "cor:top-degree-twist-scalar",
+      "depends_on",
+      "lem:top-degree-killer-transfer",
+      "Membership of p f."
+    ],
+    [
+      "cor:top-degree-twist-scalar",
+      "depends_on",
+      "lem:cylinder-killer-degree",
+      "Least degree and the killer."
+    ],
+    [
+      "cor:top-degree-twist-scalar",
+      "depends_on",
+      "lem:top-degree-axiom-inertness",
+      "Survival as non-vanishing on Y."
+    ],
+    [
+      "cor:top-degree-twist-scalar",
+      "depends_on",
+      "lem:twist-window-trade",
+      "The pair identity."
+    ],
+    [
+      "check:product-board-twist",
+      "cites",
+      "cor:top-degree-twist-scalar",
+      "Confirms its count at n=3."
+    ],
+    [
+      "check:product-board-twist",
+      "cites",
+      "cor:hole-occupancy-kernels",
+      "The top-degree closure."
+    ]
+  ]
+}
