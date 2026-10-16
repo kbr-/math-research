@@ -1314,6 +1314,22 @@ def validate_hypothesis_steps(text, statuses=()):
                              '(AGENTS.md)')
 
 
+    # 16 October 2026: a bullet "m > N: the system of Theorem 2.9" named a source's setting where a proof step
+    # belonged, and the hypothesis, used by no step, stayed in the lemma.  A bullet's step is a step.
+    whole = re.search(r'<strong>Hypotheses, each with its step\.</strong>\s*<ul>(.*?)</ul>', text, re.S)
+    if dated and dated.group(1) >= PARTS_FROM and whole:
+        for item in re.findall(r'<li>(.*?)</li>', whole.group(1), re.S):
+            said = html.unescape(strip_tags(item))
+            step = said.split(':', 1)[1] if ':' in said else ''
+            if SOURCE_SETTING.match(step):
+                raise ValueError('A Hypotheses bullet names a source\'s setting, not a step of this proof: "'
+                                 + said.strip()[:120] + '". Name the step that uses the hypothesis and the weakest '
+                                 'form it needs, or say no step uses it and drop it (AGENTS.md)')
+
+
+# a hypothesis "justified" by where it came from rather than by a step that uses it
+SOURCE_SETTING = re.compile(r'\s*(?:it is |as in )?(?:the )?(?:system|setting|statement|hypothes[ie]s|assumptions?|'
+                            r'standing assumptions?) (?:of|in|from) ', re.I)
 PARTS_FROM = '2026-10-16'
 INSTANCE_CHECK_FROM = '2026-10-16'
 # a relation between two numbers, in TeX or plain text: "3\le4", "2 < 3", "4=4"

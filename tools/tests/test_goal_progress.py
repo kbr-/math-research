@@ -441,6 +441,21 @@ class HypothesisPartsTest(unittest.TestCase):
                               '<li>Part (b): the axiom.</li><li>Part (c): nothing else.</li></ul>')
         FT.validate_hypothesis_steps(listed, {'working_proof'})
 
+    def test_a_hypothesis_bullet_names_a_step_not_a_source(self):
+        # 16 October 2026: "m > N: the system of Theorem 2.9" kept a hypothesis no step used.
+        body = ('<article id="entry-2026-10-17-x"><p><strong>Hypotheses, each with its step.</strong><ul>'
+                '<li>\\(D\\le n\\): Proposition 2.8 at degree \\(D\\), the basis step of the proof.</li>'
+                '<li>\\(m&gt;N\\): the system of Theorem 2.9.</li></ul></p>')
+        with self.assertRaisesRegex(ValueError, "names a source's setting"):
+            FT.validate_hypothesis_steps(body, {'working_proof'})
+        for phrase in ('the setting of', 'the statement of', 'the hypotheses of', 'the assumptions in'):
+            with self.assertRaisesRegex(ValueError, "names a source's setting"):
+                FT.validate_hypothesis_steps(body.replace('the system of', phrase), {'working_proof'})
+        # the same words inside a named step are a step
+        FT.validate_hypothesis_steps(body.replace('the system of Theorem 2.9', 'the free-hole step, which counts '
+                                                  'holes in the system of Theorem 2.9'), {'working_proof'})
+        FT.validate_hypothesis_steps(body.replace('2026-10-17', '2026-10-15'), {'working_proof'})
+
 
 class SmallestCaseTest(unittest.TestCase):
     def test_a_named_next_attempt_reports_its_smallest_case(self):
