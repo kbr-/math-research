@@ -52,6 +52,26 @@ class PositiveControlTest(unittest.TestCase):
                                                                   str(plain)]), [])
 
 
+class BaselineTest(unittest.TestCase):
+    def test_a_tested_statement_needs_a_baseline_line(self):
+        # 16 October 2026: a strip computation's expectation followed from the bare point count.
+        with tempfile.TemporaryDirectory() as folder:
+            bare = script(folder, BOTH + 'print(1)\n', 'a.py')
+            self.assertEqual(CS.scripts_without_baseline(['python3', str(bare)]), [str(bare)])
+            based = script(folder, BOTH.replace('"""\n', 'Baseline: the bare point count gives at most q '
+                                                'sqrt N, which does not fix the growth in N.\n"""\n', 1), 'b.py')
+            exempt = script(folder, '"""No statement tested: it converts the archived table to JSON.\n"""\n', 'c.py')
+            passing = script(folder, '"""Our baseline: the count.\nRefuted by: a rank above n in any case.\n'
+                                     'Possible because: the search for the rank does not use the bound.\n"""\n',
+                             'd.py')
+            self.assertEqual(CS.scripts_without_baseline(['python3', str(based), str(exempt)]), [])
+            self.assertEqual(CS.scripts_without_baseline(['python3', str(passing)]), [str(passing)])
+
+    def test_the_prompting_script_is_refused(self):
+        strip = ROOT / 'research/results/ultimate_matching_review4_20261016/strip_dp.py'
+        self.assertEqual(CS.scripts_without_baseline(['python3', str(strip)]), [str(strip)])
+
+
 class ResultsScriptRefutationTest(unittest.TestCase):
     def test_both_labelled_lines_pass(self):
         with tempfile.TemporaryDirectory() as folder:

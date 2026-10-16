@@ -723,6 +723,33 @@ def scripts_without_positive_control(command):
     return found
 
 
+BASELINE = re.compile(_LINE_START + r'Baseline:' + _FIVE_WORDS, re.M)
+
+
+def scripts_without_baseline(command):
+    """Script arguments under research/results that test a statement (a "Refuted by:" line, no "No statement
+    tested:") but carry no "Baseline:" line of at least five words: what the plainest available bound (a bare
+    count, a trivial estimate) gives on the instances run, and whether it already decides the expectation.  On
+    16 October 2026 a strip computation's prediction (no growth in N at fixed width) followed from the bare point
+    count, so the run could not have failed; the reviewer found it.  The check cannot tell whether the baseline
+    is right; it makes the author compute it before the run, where a reviewer reads it."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()):
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        if REFUTATION_PARTS[0][0].search(head) and not NO_STATEMENT.search(head) and not BASELINE.search(head):
+            found.append(arg)
+    return found
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -1098,6 +1125,13 @@ def main():
                          'but no "Positive control:" line naming an instance where the effect it looks for is '
                          'present and must be seen, nor a "No positive control:" line with the reason: a control '
                          'expecting the same outcome as the prediction cannot show the code would see the effect '
+                         '(COMPUTATION_RULES.md); --exploratory runs it anyway')
+        unbased = scripts_without_baseline(command)
+        if unbased:
+            parser.error('the script ' + ', '.join(unbased) + ' under research/results tests a statement but has '
+                         'no "Baseline:" line (at least five words) saying what the plainest available bound (a '
+                         'bare count, a trivial estimate) gives on the instances run and whether it already '
+                         'decides the expectation: a prediction the baseline fixes cannot fail '
                          '(COMPUTATION_RULES.md); --exploratory runs it anyway')
         if args.timeout > KERNEL_RUN_S and not args.user_approved.strip():
             weak = long_scripts_without_power(command)
