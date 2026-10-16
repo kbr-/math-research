@@ -133,6 +133,31 @@ def context_matches(sentences, spec, count=CONTEXT_SHOWN):
     return out
 
 
+SCHEMA = ROOT / 'research' / 'claims' / 'schema.json'
+# spec field -> the schema's enumeration it must belong to ($defs path)
+SPEC_ENUMS = {'status': ('claim', 'mathematical_status'), 'category': ('significance', 'category'),
+              'novelty': ('significance', 'novelty')}
+RELATION_ENUM = ('relationship', 'type')
+
+
+def spec_value_problems(spec, schema=None):
+    """The spec's values that registration would refuse by the registry schema's enumerations: each claim's status,
+    category and novelty and each relationship's type.  Registration found them only after the entry was appended
+    (16 October 2026: "computation" as a category), so the run made when the spec is first drafted reports them."""
+    defs = json.loads((schema or SCHEMA).read_text())['$defs']
+    allowed = lambda where: [v for v in defs[where[0]]['properties'][where[1]]['enum'] if v is not None]
+    found = []
+    for item in spec.get('claims', []):
+        for field, where in SPEC_ENUMS.items():
+            if field in item and item[field] not in allowed(where):
+                found.append(f'{item.get("id", "?")}: {field} {item[field]!r} is not one of {", ".join(allowed(where))}')
+    for edge in spec.get('relationships', []):
+        if len(edge) > 1 and edge[1] not in allowed(RELATION_ENUM):
+            found.append(f'{edge[0]} -> {edge[2] if len(edge) > 2 else "?"}: relationship {edge[1]!r} is not one of '
+                         + ', '.join(allowed(RELATION_ENUM)))
+    return found
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('spec')
@@ -144,6 +169,9 @@ def main(argv=None):
     spec = json.loads(pathlib.Path(args.spec).read_text())
     if args.registry == str(DEFAULT_REGISTRY):       # a run on the record: logged for the finisher, as searches are
         log_run([claim['id'] for claim in spec.get('claims', [])])
+    problems = spec_value_problems(spec)
+    for problem in problems:
+        print('Spec value registration would refuse: ' + problem)
     print(f'{len(registered)} registered claims compared; registration refuses a score of {SIMILAR_AT} or more '
           'unless the spec relates the two.')
     related = {tuple(edge[:1] + edge[2:3]) for edge in spec.get('relationships', [])}
@@ -174,7 +202,7 @@ def main(argv=None):
         for share, ident, queued in matches:
             print(f'  {share:.2f} {ident} ~ queued {queued}: read the item; if the claim answers it, close it '
                   'in this entry\'s follow-up list')
-    return 0
+    return 1 if problems else 0
 
 
 if __name__ == '__main__':

@@ -22,6 +22,15 @@ SPEC = {'claims': [{'id': 'ex:new-degrees',
 
 
 class ResemblanceTest(unittest.TestCase):
+    def test_spec_values_outside_the_schema_are_reported(self):
+        bad = {'claims': [{'id': 'ex:a', 'status': 'finite_check', 'category': 'computation', 'novelty': 'none'}],
+               'relationships': [['ex:a', 'uses', 'lem:b', 'x']]}
+        found = tool.spec_value_problems(bad)
+        self.assertEqual(len(found), 3)
+        self.assertTrue(any("'computation'" in f for f in found))
+        self.assertTrue(any("'uses'" in f for f in found))
+        self.assertEqual(tool.spec_value_problems(SPEC), [])
+
     def test_the_nearest_registered_claim_comes_first(self):
         (ident, found), = tool.resemblances(REGISTERED, SPEC, 2)
         self.assertEqual(ident, 'ex:new-degrees')
