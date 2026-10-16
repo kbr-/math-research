@@ -1,0 +1,18 @@
+Fresh-context medium reviewer, framework-check-timing build, 16 October 2026
+
+First report: fail. test_side_workflow still did `from test_finish_turn import FinalizationTest`, so
+unittest collected that class in the module and its fifteen tests still ran twice (three times before
+the change); the commit message's counts and "instead of inheriting its tests" were wrong. Checks
+passed: --no-guidance returns only after the session start and the recovery bind, its help says it is
+not for research turns (a "guidance: skipped" journal mark would be optional), SideFinalization uses
+only setUp/command, the new --no-guidance test fails when the flag is ignored while the real guidance
+prints something.
+
+Follow-up: pass with corrections. The hygiene test catches both forms (an imported suite class and a
+subclass inheriting a suite module's tests), lets borrowed setUp/command and test_site's imports from
+tests/ pass, and would have caught the original case. Required: the fixture module name leaked into
+the real check (now passed in as a parameter); the count arithmetic needed the three new tests named
+(1101 - 30 + 9 = 1080); the queued item's text needed the import as well as the subclass. All adopted.
+Process audit: the per-module CPU figures come from scratch scripts the reviewer could not check (the
+runs are in the session archive; suite-cpu-by-module is queued to make the measurement a runner
+option); the full-suite figure was read in the saved log.

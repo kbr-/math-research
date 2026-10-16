@@ -1,0 +1,18 @@
+===== test_suite_hygiene.SuiteHygiene.test_no_module_reruns_another_module_s_tests =====
+======================================================================
+FAIL: test_no_module_reruns_another_module_s_tests (test_suite_hygiene.SuiteHygiene)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_suite_hygiene.py", line 45, in test_no_module_reruns_another_module_s_tests
+    self.assertEqual(problems, {}, 'test classes collected outside their own module rerun their tests')
+AssertionError: {'test_site.py': ['PagesBuild (imported fr[57 chars]s)']} != {}
++ {}
+- {'test_site.py': ['PagesBuild (imported from test_pages)',
+-                   'SidePages (imported from test_side_pages)']} : test classes collected outside their own module rerun their tests
+
+----------------------------------------------------------------------
+Ran 1 test in 0.155s
+
+FAILED (failures=1)
+
+Ran 2 tests in 0.2s: FAILED (1)

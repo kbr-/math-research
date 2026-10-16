@@ -9,7 +9,8 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from branch import create, SECTIONS
 from notebooks import selected, select
 from notebook_context import check
-from test_finish_turn import FinalizationTest
+# A module import, not the class: a TestCase in this namespace is collected here and its tests rerun.
+import test_finish_turn as fixtures
 TOOLS=Path(__file__).resolve().parents[1]
 def module(name):
     spec=importlib.util.spec_from_file_location(name,TOOLS/(name+'.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
@@ -52,7 +53,10 @@ class SideWorkflow(unittest.TestCase):
         shutil.rmtree(p.parent)
         self.assertTrue(guard.check(self.root,'HEAD')[0])
 
-class SideFinalization(FinalizationTest):
+class SideFinalization(unittest.TestCase):
+    # The finisher fixture only: subclassing FinalizationTest reran its fifteen tests here (16 October 2026).
+    setUp=fixtures.FinalizationTest.setUp
+    command=fixtures.FinalizationTest.command
     def test_side_finish_does_not_touch_main(self):
         # Fixture has permissive budget regions, so initialize a registered notebook
         # manually to exercise the actual finalizer with independent content.

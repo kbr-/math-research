@@ -157,7 +157,7 @@ class JobMemory(unittest.TestCase):
 class RunnerChecks(unittest.TestCase):
     def setUp(self):
         self.name = 'cli_test_' + uuid.uuid4().hex[:12]
-        self.assertEqual(call('start', self.name, '--model', 'unit test, no reasoning').returncode, 0)
+        self.assertEqual(call('start', self.name, '--model', 'unit test, no reasoning', '--no-guidance').returncode, 0)
         self.path = ROOT / 'research/logs' / (self.name + '.jsonl')
 
     def tearDown(self):
@@ -165,6 +165,15 @@ class RunnerChecks(unittest.TestCase):
 
     def events(self):
         return [json.loads(line) for line in self.path.read_text().splitlines()]
+
+    def test_a_start_without_guidance_prints_only_the_journal(self):
+        # Fails if the flag is ignored only while the real repository's turn guidance prints something, which its
+        # queue and cadence lines always do.
+        name = 'cli_test_' + uuid.uuid4().hex[:12]
+        started = call('start', name, '--model', 'unit test, no reasoning', '--no-guidance')
+        self.addCleanup(call, 'report', name, '--stop')
+        self.assertEqual(started.returncode, 0, started.stderr)
+        self.assertEqual(started.stdout.strip(), f'research/logs/{name}.jsonl')
 
     def test_parallel_success_failure_and_stopped_session(self):
         processes = [subprocess.Popen(

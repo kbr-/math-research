@@ -934,6 +934,10 @@ def main():
         parser.add_argument('session')
         if action == 'start':
             parser.add_argument('--notebook', help='Research thread; defaults to worktree selection or main')
+            # The framework tests of the clock itself: each start's guidance read the real notebook, about 0.8 s
+            # of CPU per test (16 October 2026).
+            parser.add_argument('--no-guidance', action='store_true',
+                                help='Skip the turn guidance (for tests of the clock, not for research turns)')
             parser.add_argument('--agent', help='Default: detected from the environment or MATH_AGENT')
             parser.add_argument('--model', help='Model and reasoning setting; Codex uses active turn metadata when available, otherwise this value or MATH_AGENT_MODEL')
         if action == 'phase':
@@ -956,6 +960,8 @@ def main():
                 parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
             print(start_session(args.session, args.agent, args.model, args.notebook).relative_to(ROOT))
             recovery_observe('bind', root=ROOT, turn=args.session)
+            if args.no_guidance:
+                return 0
             try:   # advisory only: what finish-turn.py would reject, said before the work starts
                 began = time.monotonic()
                 guide = subprocess.run([sys.executable, str(ROOT / 'tools/turn_guidance.py')]
