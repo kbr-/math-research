@@ -20,6 +20,8 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   before any method is chosen; then, once a proof exists, each of its own steps used alone (a
   substitution, a reduction, a restriction), since a step that already decides the instance makes
   the rest of the proof a variant to compare, not the result.
+- When a tool refuses, collides or reports something unexpected, find its cause before trying
+  another route, and state the cause; an opening claim is stated only in the scope already proved.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
   limit, never at the size written for.
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
