@@ -14,6 +14,8 @@ Persistent worktrees and after-commit local synchronization follow AGENTS.md.
 Order of work for any proof, test, witness, next attempt or summary (each line from a mistake of 16
 October 2026; a rule added after a mistake is applied at once to the next text written):
 
+- Open each entry's Question by restating its target in the goal's own form and naming what the
+  working form changes; a framing inherited from the first lemma that worked is a choice to recheck.
 - First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
   before any method is chosen.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the

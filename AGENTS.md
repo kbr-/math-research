@@ -38,12 +38,15 @@ growing checklists or one-off setup narratives.
   necessary unproved obligation, and among those the item the latest review names highest risk: work
   on it first, developing its leads and bridges when it lacks a mechanism, rather than moving to
   lower-risk items (user, 1 October 2026: "focus on highest risk item first"); distinguish a
-  sufficient endpoint from stronger conveniences before adding steps. Read **Open statements** first
-  and name the statement and top-level remaining-route item advanced; do not inherit the previous
-  entry's gap without assessing the line. Read in full every parked or linked item that **Proposed
-  next step** names on that route. Before reopening an older question, search for later links to its
-  anchor and read those entries; restate restart conditions/calibrations only from the latest
-  applicable entry after checking for later fulfillment or replacement.
+  sufficient endpoint from stronger conveniences before adding steps, and before working toward a
+  convenience (another measure, a smaller class, a stronger norm) try to refute it on the plainest
+  instance that separates it from the goal's own form (16 October 2026: four entries aimed at a
+  Lebesgue-measure form that functions concentrated at the sample points refute). Read **Open
+  statements** first and name the statement and top-level remaining-route item advanced; do not
+  inherit the previous entry's gap without assessing the line. Read in full every parked or linked
+  item that **Proposed next step** names on that route. Before reopening an older question, search
+  for later links to its anchor and read those entries; restate restart conditions/calibrations only
+  from the latest applicable entry after checking for later fulfillment or replacement.
 - Restricted examples must test a named general hypothesis, obstruction or mechanism. A growing case
   list or equivalent reformulation leaves the general implication open. `finish-turn.py` enforces
   this: each research entry has a "General statement." paragraph citing the registered claim ID of
