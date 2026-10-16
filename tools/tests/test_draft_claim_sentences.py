@@ -246,6 +246,33 @@ class RunLogTest(unittest.TestCase):
             self.assertEqual(json.loads(log.read_text().splitlines()[1])['query'], 'draft_counts - 0')
 
 
+class PairingsTest(unittest.TestCase):
+    DRAFT = ('<article id="entry-2026-10-16-x"><h3>T</h3><p class="entry-meta">S.</p>'
+             '<p><strong>Lemma.</strong> No class is lost.</p>'
+             '<p><strong>New mathematics.</strong> The cube gives <code>lem:cube</code> at every level. '
+             'No level-wise floor follows.</p>'
+             '<p><strong>Correction.</strong> Its conditional-use paragraph in <code>lem:sparse</code> applies '
+             'to error kernels.</p></article>')
+    NOTEBOOK = ('<article id="entry-a"><h3>Old</h3><p class="entry-meta">Old status.</p><p>Setting words here. '
+                'Conditional use. The bound applies to the surviving weight of the common-kernel criterion, '
+                'not to error kernels.</p></article>')
+    CLAIMS = [{'id': 'lem:cube', 'summary': 'A free cube at each level.', 'record': '[x](#entry-b)'},
+              {'id': 'lem:sparse', 'summary': 'Sparse weights keep h/s.', 'record': '[x](https://e/#entry-a)'}]
+
+    def test_an_uncited_denial_is_paired_with_its_paragraph_s_claims_and_a_described_remark_with_its_record(self):
+        rows = dcs.pairings(self.DRAFT)
+        self.assertEqual([(where, claims) for where, _, claims, _ in rows],
+                         [('New mathematics', ['lem:cube']), ('Correction', ['lem:sparse'])])
+        self.assertEqual(rows[0][1], 'No level-wise floor follows.')      # the statement's own denial is skipped
+        out = dcs.pairings_report(self.DRAFT, self.CLAIMS, self.NOTEBOOK, 0)
+        self.assertIn('lem:cube: A free cube at each level.', out)
+        self.assertIn('its record #entry-a: …', out)
+        self.assertIn('surviving weight of the common-kernel criterion', out)
+        self.assertNotIn('Old status', out)                               # title and status line are not passages
+        self.assertIn('2 such sentences.', out)
+        self.assertIsNone(dcs.best_window('<p>unrelated prose only</p>', {'kernels'}))
+
+
 class BareClaimsAndAnswersTest(unittest.TestCase):
     REGISTRY = {'claims': [{'id': 'prop:local-count-reach',
                             'summary': 'A multiset of points with at most kappa log(|t| + 3) of them in each unit; tilt a; '

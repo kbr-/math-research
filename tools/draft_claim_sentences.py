@@ -11,7 +11,10 @@ Prints, per cited claim in order of first citation, the registered summary and t
 with the heading or paragraph label it stands under.  Ends with the counts: sentences, claims, unregistered.
 With --notebook it then lists, per entry the draft links, that entry's title and status line and each
 sentence linking it: a sentence about what an earlier entry said is read beside what that entry claims.
-It then lists the sentences outside the mathematics that hold a count, and the sentences outside the
+It then lists each sentence that denies (no, none, cannot, not) without citing a claim itself, beside the
+claims and entries its paragraph cites, and each that describes a cited result's proof, remarks or scope,
+beside that result; for both, the passage of the claim's record entry (with --notebook) nearest the
+sentence's words is shown. It then lists the sentences outside the mathematics that hold a count, and the sentences outside the
 statements and proofs that hold a universal or negative word, each to be read beside its source.
 """
 import argparse
@@ -479,6 +482,95 @@ def entry_report(draft, notebook, width):
     return '\n'.join(lines), missing
 
 
+NEGATIVE = re.compile(r'\b(?:no|none|nothing|never|cannot|not)\b', re.I)
+DESCRIBES = re.compile(r'\b(?:proofs?|remarks?|conditional(?:ly)?|scope|applies|apply|says|states|uses|requires|'
+                       r'assumes|covers)\b', re.I)
+KEY_STOP = set('which their there these those where while about after before other under every claim entry '
+               'lemma theorem corollary proof remark statement since given gives needs holds'.split())
+WINDOW = 400        # characters of a linked entry shown around a sentence's key words
+
+
+def _keys(sentence):
+    bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S)
+    return {w for w in re.findall(r'[a-z]{5,}', bare.lower()) if w not in KEY_STOP}
+
+
+def best_window(body, keys, size=WINDOW):
+    """The passage of `size` characters of an entry's plain text holding the most of `keys`, by word starts, or
+    None when no passage holds any."""
+    plain = text(TITLE.sub('', STATUS_LINE.sub('', body)))
+    starts = [m.start() for m in re.finditer(r'\b\w', plain)]
+    best, where = 0, None
+    for start in starts[::8]:
+        hits = len(keys & set(re.findall(r'[a-z]{5,}', plain[start:start + size].lower())))
+        if hits > best:
+            best, where = hits, start
+    return None if where is None else plain[where:where + size]
+
+
+def pairings(draft):
+    """[(section label, sentence text, [claim ids], [entry ids]), ...]: each sentence, outside the statements and
+    bookkeeping, that either says no, none, cannot or not without citing a claim itself, paired with the claims
+    and entries its paragraph cites, or describes what a cited result's proof, remarks or scope say, paired with
+    the claims and entries it cites itself.
+
+    In the error cube floor draft of 16 October 2026 a sentence denying a level-wise floor cited no claim and so
+    was not set beside the weighted cube statement, cited in its paragraph, that gives one; the same day the goal
+    review's draft said a lemma's conditional-use paragraph applied to error kernels, when that paragraph applies
+    to the surviving weight.  Both are read beside their sources here."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        if STATEMENT.match(where) or BOOKKEEPING.match(where):
+            continue
+        block_claims, block_entries = cited(body), list(dict.fromkeys(LINK.findall(body)))
+        for sentence in sentences(body):
+            own_claims, own_entries = cited(sentence), list(dict.fromkeys(LINK.findall(sentence)))
+            bare = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', sentence, flags=re.S))
+            if NEGATIVE.search(bare) and not own_claims and (block_claims or block_entries):
+                found.append((where, text(sentence), block_claims, block_entries))
+            elif DESCRIBES.search(bare) and (own_claims or own_entries):
+                found.append((where, text(sentence), own_claims, own_entries))
+    return found
+
+
+def pairings_report(draft, claims_list, notebook, width):
+    """The listing of pairings: each claim's registered statement and, where its record is an entry of the
+    notebook, the passage of that entry nearest the sentence's words; each linked entry's nearest passage."""
+    rows = pairings(draft)
+    summaries = {c['id']: c.get('summary', '') for c in claims_list}
+    records = {c['id']: m.group(1) for c in claims_list if (m := re.search(r'#(entry-[A-Za-z0-9-]+)',
+                                                                           c.get('record', '')))}
+    bodies = dict(ARTICLE.findall(notebook)) if notebook else {}
+    cut = (lambda s: s) if width <= 0 else (lambda s: s[:width])
+    lines = ['Sentences that deny without citing, or describe a cited result\'s proof, remarks or scope, beside the '
+             'claims and entries their paragraph cites, with the passage of each record nearest the sentence\'s '
+             'words; read each sentence against its source:']
+    for where, sentence, claims, entries in rows:
+        lines.append(f'  [{where}] {cut(sentence)}')
+        keys = _keys(sentence)
+        shown = set()
+        for claim in claims:
+            lines.append(f'    {claim}: {cut(summaries.get(claim, "(not in the registry)"))}')
+            entry = records.get(claim)
+            if entry in bodies and entry not in shown:
+                shown.add(entry)
+                passage = best_window(bodies[entry], keys)
+                if passage:
+                    lines.append(f'      its record #{entry}: …{passage}…')
+        for entry in entries:
+            if entry in bodies and entry not in shown:
+                shown.add(entry)
+                passage = best_window(bodies[entry], keys)
+                lines.append(f'    #{entry}: ' + (f'…{passage}…' if passage else '(none of its words found)'))
+    lines.append(f'{len(rows)} such sentences.')
+    return '\n'.join(lines)
+
+
 def report(draft, registry, width):
     summaries = {claim['id']: claim['summary'] for claim in registry['claims']}
     declared = set((re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split())
@@ -687,9 +779,12 @@ def main():
     out, unregistered = report(draft, registry, args.width)
     print(out)
     missing = set()
+    notebook_text = notebook_file(args.notebook).read_text() if args.notebook else ''
     if args.notebook:
-        linked, missing = entry_report(draft, notebook_file(args.notebook).read_text(), args.width)
+        linked, missing = entry_report(draft, notebook_text, args.width)
         print('\n' + linked)
+    print('\n' + pairings_report(draft, registry['claims'], notebook_text,
+                                 args.width))
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
