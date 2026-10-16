@@ -14,7 +14,7 @@ import tempfile
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from claim_registry import read_json, validate as validate_claims, render as render_claims
+from claim_registry import cached_json, read_json, validate as validate_claims, render as render_claims
 from claim_maintenance import check_revision
 from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
@@ -25,16 +25,12 @@ from notebook_math import strip_tags, strip_tags_tight
 ROOT = Path(__file__).resolve().parents[1]
 
 
-@functools.lru_cache(maxsize=1)
-def _registry_snapshot(path, mtime_ns, size):
-    """Share the current parse; file metadata in the key invalidates a changed snapshot."""
-    return read_json(path)
+_registry_snapshot = sys.modules['claim_registry']._snapshot     # the shared cache, cleared by tests
 
 
 def registry_data(path):
-    path = Path(path).resolve()
-    stat = path.stat()
-    return _registry_snapshot(path, stat.st_mtime_ns, stat.st_size)
+    """The shared parse of claim_registry.cached_json."""
+    return cached_json(path)
 
 
 def load_claims(path):

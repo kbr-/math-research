@@ -2,6 +2,7 @@
 
 Standard library only. This module does not assess mathematical correctness.
 """
+import functools
 import hashlib
 import copy
 import json
@@ -55,6 +56,21 @@ def parse_json(text):
 
 def read_json(path):
     return parse_json(Path(path).read_text())
+
+
+@functools.lru_cache(maxsize=4)
+def _snapshot(path, mtime_ns, size):
+    return read_json(path)
+
+
+def cached_json(path):
+    """One parse per process of an unchanged file, shared by every tool that imports this module; file metadata in
+    the key invalidates a changed file.  Callers must not mutate the result.  The turn guidance parsed the
+    registry twice, through finish-turn.py and lead_queue.py, 0.39 s and 0.31 s of its 0.86 s (cProfile,
+    16 October 2026)."""
+    path = Path(path).resolve()
+    stat = path.stat()
+    return _snapshot(path, stat.st_mtime_ns, stat.st_size)
 
 
 def write_json(path, value):

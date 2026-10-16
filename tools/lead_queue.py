@@ -1050,7 +1050,10 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE, earlier=False):
 def registered(path=None):
     """(claims, typed edges) of the registry from one reading of it, or ([], []) where there is none."""
     try:
-        registry = json.loads((path or ROOT / 'research' / 'claims' / 'index.json').read_text())
+        if str(ROOT / 'tools') not in sys.path:
+            sys.path.insert(0, str(ROOT / 'tools'))
+        from claim_registry import cached_json        # one parse per process, shared with finish-turn.py
+        registry = cached_json(path or ROOT / 'research' / 'claims' / 'index.json')
         return registry['claims'], registry.get('relationships', [])
     except (OSError, ValueError, KeyError):
         return [], []

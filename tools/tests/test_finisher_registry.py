@@ -3,6 +3,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -32,10 +33,11 @@ class RegistrySnapshotTest(unittest.TestCase):
     def test_status_lookup_then_strict_load_reads_once(self):
         expected = {c['id']: c['mathematical_status'] for c in self.data['claims']}
         with mock.patch.object(FT, 'ROOT', self.root), mock.patch.object(
-                FT, 'read_json', wraps=FT.read_json) as read:
+                sys.modules['claim_registry'], 'read_json', wraps=FT.read_json) as read:
             self.assertEqual(FT.registered_status(), expected)
             self.assertEqual(FT.load_claims(self.path), self.data)
-            read.assert_called_once_with(self.path)
+            # the schema file is read too, by claim_registry itself; the registry is read once
+            self.assertEqual([c for c in read.call_args_list if c.args == (self.path,)], [mock.call(self.path)])
 
     def test_changed_snapshot_is_read_and_still_validated(self):
         for version, time_delta, size_delta in ((9, 1, 0), (99, 0, 1)):
