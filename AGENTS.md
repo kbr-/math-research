@@ -710,26 +710,29 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   (a check, a hook, a test, a tool that reports or refuses; a written rule only where nothing
   mechanical can), or, only where it can't be built in that turn, the build item queued for it with
   that reason (user, 13 October 2026; `lead_queue.py add --build` refuses a text without "Not built
-  in the turn:" and the reason). Fixing the one instance is not a prevention. A fix is finished when
-  the case that exposed it passes at the earliest point a check can run, not when a rule, a
-  statement of the limit or a later check covers it. The order of work follows: the check for a
-  right objection is built and committed before the reply that answers it is written, and the reply
-  names that commit (16 October 2026: answers written first were prose, and the checks came a turn
-  later). The Stop hook and the commit check block a turn that admits a mistake without that
-  paragraph (user, 10 October 2026, on having to ask after every fix how the mistake is prevented).
-  Beside it goes a paragraph that starts "Meta", the meta-question: what should change so that in
-  future neither the mistake nor its fix would have been needed at all. It is about the agent's own
-  behaviour, as a class wider than this mistake and its kind: the way of working that produced it (a
-  habit of deciding, of weighing cost against the user's stated priority, of reading or of
-  stopping), where else that habit shows, and the change in how the agent works that ends it, in its
-  durable home, named by its path. A Meta that names the Prevention's mechanism again, or only this
-  mistake, answers the Prevention twice (user, 14 October 2026: "The answer should also be meta,
-  with broader, more general scope than prevention"). It is asked for each admitted mistake, for
-  each reviewer agent's report (answered after it with both paragraphs, Prevention saying where it
-  found no mistake of the agent's) and for each stand-in review's right objections, in the entry's
-  `<strong>Meta.</strong>` paragraph; the Stop hook, the commit check and the finisher enforce it
-  (user, 13 October 2026: "I won't be there forever ... AIs will live on and they must learn to
-  become better on their own"; ported from another branch, 16 October 2026).
+  in the turn:" and the reason). Fixing the one instance is not a prevention. The Prevention names
+  the stage the mistake entered at (drafting, a reviewer's suggestion adopted, a reply, a commit)
+  and changes the tool of that stage (16 October 2026: answers addressed the sentence, not the
+  stage, and the same stage leaked again). A fix is finished when the case that exposed it passes at
+  the earliest point a check can run, not when a rule, a statement of the limit or a later check
+  covers it. The order of work follows: the check for a right objection is built and committed
+  before the reply that answers it is written, and the reply names that commit (16 October 2026:
+  answers written first were prose, and the checks came a turn later). The Stop hook and the commit
+  check block a turn that admits a mistake without that paragraph (user, 10 October 2026, on having
+  to ask after every fix how the mistake is prevented). Beside it goes a paragraph that starts
+  "Meta", the meta-question: what should change so that in future neither the mistake nor its fix
+  would have been needed at all. It is about the agent's own behaviour, as a class wider than this
+  mistake and its kind: the way of working that produced it (a habit of deciding, of weighing cost
+  against the user's stated priority, of reading or of stopping), where else that habit shows, and
+  the change in how the agent works that ends it, in its durable home, named by its path. A Meta
+  that names the Prevention's mechanism again, or only this mistake, answers the Prevention twice
+  (user, 14 October 2026: "The answer should also be meta, with broader, more general scope than
+  prevention"). It is asked for each admitted mistake, for each reviewer agent's report (answered
+  after it with both paragraphs, Prevention saying where it found no mistake of the agent's) and for
+  each stand-in review's right objections, in the entry's `<strong>Meta.</strong>` paragraph; the
+  Stop hook, the commit check and the finisher enforce it (user, 13 October 2026: "I won't be there
+  forever ... AIs will live on and they must learn to become better on their own"; ported from
+  another branch, 16 October 2026).
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
   new work requests. Run no tools or restart tasks in response to those notifications alone; say at
   most one sentence and wait for the user's message.

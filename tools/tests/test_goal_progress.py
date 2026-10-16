@@ -331,6 +331,18 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class UnlistedSuggestionTest(unittest.TestCase):
+    def test_a_gate_reporting_a_suggestion_needs_the_list(self):
+        # 16 October 2026: a next attempt taken from a reviewer's suggestion in the author's words, with no list.
+        body = ('<article id="entry-2026-10-17-x"><p><strong>Verification gate.</strong> The reviewer suggested a '
+                'matching upper bound, adopted as the next attempt.</p>')
+        with self.assertRaisesRegex(ValueError, 'no <h4>Reviewer'):
+            FT.refuse_unlisted_suggestions(body)
+        FT.refuse_unlisted_suggestions(body + "<h4>Reviewer's suggestions, unverified</h4><ul><li>A bound. "
+                                              '<strong>Record.</strong> none.</li></ul>')
+        FT.refuse_unlisted_suggestions(body.replace('2026-10-17', '2026-10-15'))
+
+
 class ScopeDirectionTest(unittest.TestCase):
     def test_a_reported_change_of_scope_says_which_way(self):
         # 16 October 2026: "weakened" hypotheses read as a generalization thrown away.

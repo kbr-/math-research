@@ -1827,8 +1827,27 @@ def unverified_attempts(entry, next_html=None):
     return found
 
 
+SUGGESTED_RE = re.compile(r'\bsuggest(?:ed|ion|ions|s)?\b', re.I)
+
+
+def refuse_unlisted_suggestions(entry):
+    """A gate that reports a reviewer's suggestion needs the entry's list of them, which the check below reads.
+
+    On 16 October 2026 an entry adopted a reviewer's suggestion as its next attempt in its own words, with no
+    list of suggestions, so unverified_attempts saw nothing; the suggestion was false at every case."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', entry)
+    if not dated or dated.group(1) < '2026-10-16':
+        return
+    gate = re.search(r'<strong>Verification gate\.</strong>((?:(?!</p>).)*)', entry, re.S)
+    if gate and SUGGESTED_RE.search(strip_tags(gate.group(1))) and not SUGGESTION_LIST_RE.search(entry):
+        raise ValueError("The Verification gate reports a reviewer's suggestion and the entry has no <h4>Reviewer's "
+                         'suggestions, unverified</h4> list: list each suggestion there, with its Record note, so '
+                         'that a next attempt drawn from one is checked (AGENTS.md)')
+
+
 def refuse_unverified_attempt(entry, next_html=None):
     """Refuse such a plan unless the entry says, after a fixed label, what was checked of the suggestion."""
+    refuse_unlisted_suggestions(entry)
     found = unverified_attempts(entry, next_html)
     checked = CHECKED_RE.search(entry)
     said = len(strip_tags(checked.group(1)).strip()) if checked else 0
