@@ -362,7 +362,8 @@ class UncheckedClaimTest(HookFixture):
     def test_a_narrowing_reported_without_its_scopes_blocks(self):
         # 16 October 2026: "its corrections narrowed the scope sentences" named neither scope.
         for reply in ('The bound passed review; its corrections narrowed the scope sentences.',
-                      'The review passed the proofs, with corrections that mostly narrow the claims.'):
+                      'The review passed the proofs, with corrections that mostly narrow the claims.',
+                      '**What the review narrowed.** The bound is smaller.\n\nOld scope: every method.'):
             with self.subTest(reply=reply):
                 self.assertIn('A narrowing reported without its scopes', hook.scope_block(reply)['reason'])
         for reply in ('The review narrowed it: I said it covers every union; it now holds for dyadic grids only.',
@@ -371,6 +372,8 @@ class UncheckedClaimTest(HookFixture):
                       'The rule rereads a summary when a correction narrows what it summarizes.',
                       'The Assessment still says the smooth part is "charged once", which the reviewer withdrew.',
                       '**What the first review narrowed:**\n- **Novelty.** I had claimed (a) as new. Now it is cited.',
+                      '**What the review narrowed.** My last report said it was false. Old scope: every method. '
+                      'New scope: its own averaging.',
                       'The entry is committed.'):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.scope_block(reply))

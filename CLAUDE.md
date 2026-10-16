@@ -33,7 +33,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   that is inside a cited proof is a citation, not new.
 - Name a relation between two statements (false, superseded, implied, a special case) only after
   setting the earlier statement's own words beside the new one, and choose the weakest relation both
-  support: a statement true of its own method is not made false by a better method.
+  support: a statement true of its own method is not made false by a better method; a one-sided
+  bound is summarized as a bound or a sufficient condition, never with "is", "equals" or "reduces
+  to".
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines

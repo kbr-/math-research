@@ -332,6 +332,12 @@ def scope_block(reply):
             block = text[m.end():].split('\n\n', 1)[0]
             if OLD_AND_NEW.search(block) or re.search(r'["“`]', block):
                 continue
+        # A bold label ending in a period is read with the rest of its paragraph (16 October 2026: "**What the
+        # review narrowed.** My last report said ... Old scope ... New scope ..." was refused at the label).
+        if re.match(r'[.:]?\*\*', text[m.end():]) and s.lstrip().startswith('**'):
+            block = text[m.end():].split('\n\n', 1)[0]
+            if OLD_AND_NEW.search(block) or re.search(r'["“`]', block):
+                continue
         found.append(s)
     if not found:
         return None
