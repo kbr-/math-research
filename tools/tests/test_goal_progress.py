@@ -398,7 +398,8 @@ class PlainestBoundTest(unittest.TestCase):
         for meta in ('Working proof. IPS block, third turn: the collapse.', 'The IPS block\'s first turn.',
                      'This is turn 2 of the IPS block.', 'This is the third IPS research turn.',
                      'It is the first of the four IPS turns.', 'The entry counts as an IPS turn.',
-                     'Third IPS turn.', 'Turn 3 of 4 of the IPS block.', 'IPS turn 3 of 4: a lemma.'):
+                     'Third IPS turn.', 'Turn 3 of 4 of the IPS block.', 'IPS turn 3 of 4: a lemma.',
+                     'The third IPS turn follows from the lemma of the second.'):    # the reviewer's probe
             bad = entry('depth-prime-recurrence', meta)
             with self.subTest(meta=meta), self.assertRaisesRegex(ValueError, 'another route'):
                 FT.validate_block_route(bad, self.LIVING + bad, len(self.LIVING))

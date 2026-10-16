@@ -1,89 +1,89 @@
 # command: python3 tools/hooks/stop_checks.py --replay-figures /home/kbr/.claude/projects/-home-kbr-dev-math-auxiliary/d56a25e2-0e04-486a-8bda-c7425e77fcb8.jsonl /home/kbr/.claude/projects/-home-kbr-dev-math-auxiliary/12c2025e-83cd-4daf-bcaa-c2fd279a4271.jsonl /home/kbr/.claude/projects/-home-kbr-dev-math-auxiliary/a4244260-0ba1-4f7b-9b17-c241644e3f14.jsonl /home/kbr/.claude/projects/-home-kbr-dev-math-auxiliary/ee0e8a65-c7c5-40ba-abe3-5fa78a4f00c2.jsonl
-# run f6e8ebb347, session framework-builds-20261017; full output
-- **The attack.** Fill each block with column-sum forms \(C_s-2\). Under the reference distribution these vanish fairly often, about 18% of the time, because that
-- - **Refutation:** I tested whether freeness through a degree follows from two conditions: every single element acts freely, and the predicted Hilbert function s
-- **Where the rule held.** It was exact in all 35 complete-column cases and in 333 of 340 random rank-one instances. The 7 failures are all special-position defec
-- - **Girth lemma (new, proved):** a single-element failure always comes from a small linear dependency among the forms, a circuit of about \(2D\) of them. So tho
-- - **Girth lemma (proved):** in the model where each selector adds a one-dimensional column, the smallest number of columns a single element can act on equals th
-- - **What I tested:** 144 random families of up to 8 width-two product constraints, so total density stays below one, in the truncated ring \(\mathbb F_3[s]/(s_i
-- - **n=7, degree 3:** one column-type equation is never refuted, for any of its 3 right-hand sides, and each of them has a valid occupancy vector. Two equations 
-- - **Main finding:** on the PHP board itself, some robust affine systems sit in special position: column-type (occupancy) systems, where every pigeon gets the sa
-- The finding: some affine systems on the PHP board break the pattern that random ones follow, even though they satisfy the wide-conditioning conjecture's robustn
-- One run is still going: a random column-type pair with low robustness, probably Q=1, due in about 10 minutes. It decides whether low robustness still produces r
-- Result so far this cycle: at n=8, degree 3, no column-type system has been refuted, neither the single forms nor the most robust pair (Q=4, 0 of 9).
-- - **No refutations at n=8.** Degree-3 PHP closures refuted none of the 21 column-type right-hand sides and none of the 21 random comparison systems. That includ
-- The reviewer also asked for a control: rerun a recorded count with the modified closure. I'm launching the \(n=7\) pair (recorded 2 of 9) in the background.
-- The write-up for the n=8 cycle is fully revised. It isn't committed yet: I'm waiting on a control run. That run reruns a recorded result (the n=7 pair, 2 of 9 r
-- - **Freeness formula holds.** A single column-type form stays free through degree ⌈c/2⌉ and fails at ⌈c/2⌉+1 in all four n=8 cases. Here c is n minus the most f
-- The main record put its version of this statement at about 3%. That estimate isn't obsolete, but the open part is now one clean, well-studied kind of question i
-- **What the one run at n = 6 showed.** It used forms that are full in every pair, as the conjecture requires. - All 12 cases match the criterion. - Local generat
-- **This cycle's kernel.** I wrote an incremental prefix-rank elimination in C (`gf3_prefix.c`). It matched the recorded elimination on 20 random block matrices. 
-- **Local-falls cycle: the answer so far is yes.** I planted up to 7 satisfiable pencils among random selectors at n = 6, degree 3, over 3 seeds: - **No cascade:*
-- **Its falls are still local.** I planted up to 8 copies among random selectors at n = 6, degree 3, over 2 seeds: - Alone, the member adds 5 to the low-degree pa
-- **What the last cycle found:** - **Edge Castelnuovo sequence (working proof).** Deleting one cell of a board, versus contracting it (removing its row and label)
-- - **Proved (reviewer pending):** - Splitting off the last row works exactly on P. - The residual piece is now injective with no conditions; on G it needed an im
-- **Worst-direction cycle.** - **Lemma (proved):** in characteristic 3, the Gale-dual quotient is squares of linear forms on the group algebra of (ℤ/3)^r. The col
-- My view: 2 of 4 is on the strict side, but a cap in that range is right.
-- Under 3 of 5 the recent run would still have been stopped: all of its last ten entries registered cases. The current cycle stays a general derivation. It will d
-- - **The occupancy system has no falls.** "C_j Boolean, Σ_j C_j = m" is a single weak row with right-hand side m instead of 1. The one-row proof carries over, so
-- - **Occupancy stability.** "C_j Boolean, Σ_j C_j = m" is a single weak row with right-hand side m. The one-row proof carries over, so for n ≥ 2D−1 it has no fal
-- - **Covering obstruction:** for every t, take about 3s random selectors in F_3^s. Every t of their normals are independent, and together they cover every point 
-- - **Why the test failed:** at the sizes the direct-sum kernel reaches, three width-2 clauses leave only about 17% of the slice allowed. Every variant, the consi
-- The chain test itself can't settle anything, and I should have seen that before launching it. An inconsistent chain of width-2 clauses leaves only about 400 of 
-- **New result, now under review: row-dependent forms.** - **Row changes.** The weak base's top algebra is unchanged by any invertible change of rows, and by shif
-- **Computation.** I measured the lowest non-free degree of the column tensor power (u(W)/𝔪²)^{⊗N}, exactly over F₃. In all 25 cases that ran to completion (N fro
-- - **The sign problem is solved.** The part of the Koszul complex where each row is used once is exactly the chessboard complex's cochain complex, after flipping
-- **Check.** All 7 grouped configurations tested are free exactly as predicted. Random F₃ forms usually went beyond the theorem's count, reaching the positivity b
-- **The computation now.** I replaced the Python seed-and-case loops with a C++ grid mode, `pure_tops.cpp`. It generates each seed's forms once for all degrees an
-- **Notebook:** I updated Where we stand, now at 597 of 600 words. I dropped a sentence about the statement-set audits there, since the remaining-route section al
-- - **The repair I tested:** split everything by x-degree. The cross generators themselves are fine: R's top has a single x-degree, and T can be swapped for an eq
-- **What it means for W.** - **Genericity is not enough:** a single W clause has its own vanishing function of degree k + 2. So the corollary covers only about 4.
-- - **The theorem (`thm:tetrahedral-double-points`).** Give each selector a form that is the sum of 4 cells. The 4 cells sit on distinct rows and have distinct la
-- The novelty check found no earlier version and no error; its requested clarifications are in the draft. The Proposed next step and the degree status in Open sta
-- The other fixes: - **Hubs:** the reduction lemma applies only when ℓ₀ has at least 8 nonzero columns. That excludes all of N = 7 and about 61% of the N = 8 samp
-- **Current cycle (odd-prime-free-hole-proof).** - **Proof:** the conjecture follows directly from the recorded lemma lem:filtered-freeness-transfer. On every lin
-- **Exact tests over F₃:** - **Setup.** Ranks come from a FLINT kernel, checked against a NumPy reference on small cases. Chessboard controls come out as expected
-- - **Spiders are everywhere in the residual.** In simulations, 94–97% of rows are spider centres when the residual has as many holes as rows, and every row is on
-- - **The twin-board test.** Boards whose holes come in twin pairs (equal pigeon sets) have no spiders, yet they failed matching-complex filling more often than r
-- **Strategy review (drafted).** Since restrictions stop at about \(\log n\) dense constraints, I stepped back to ask what could handle polynomially many. Two che
-- - The budget argument covers random forms only. An adversary can pick forms that are almost never zero, and excluded mass doesn't measure degree loss anyway. - 
-- | Test | Outcome | |---|---| | Can a W clause's allowed patterns carry a pairwise-uniform distribution? (the SoS lead) | Yes for \(k\ge3\); 3-wise uniform for \
-- **Tests in the review:** - **Random-code minimum distance.** In \(\ker C\) it is only 1–7 at \(h=16\). So prefixes protect only low-weight zero patterns, not de
-- The current cycle is a route review of the whole dense core, for W and W_RS together. Its main finding is quantitative. On the recorded small-size data (T1 from
-- - **Joint count fails too:** at p=3, two generic falsifying sets already leave only products of their quadrics. This held in 61 of 64 cases with at least two sl
-- The reduction needs a fix first. The random residual graph the light-family proof uses leaves about 0.7% of its holes with no neighbour, and each such hole's on
-- The result, over any field of characteristic other than 2: - **Construction:** place the same linear forms on groups of at least three rows. That gives up to ⌊m
-- - **A missing but harmless syzygy.** For each row j of the prefix matrix, Σ_k c_jk·τ_k contains q_j³ = 0, so these rows give syzygies the randomized Taylor glue
-- - **The refutation:** combining blocks pair by pair does not account for all the lower-degree consequences of a tree-shaped family. With random member sets that
-- **Framework.** Twice, a failed scripted edit was followed by an append, registration and finisher that still ran on the unedited draft. The Bash guard now refus
-- **In short:** the goal is still open. The thread made 105 commits from 18:00 yesterday to 13:31 today, each one a cycle or review, all pushed. It proved several
-- Overnight this thread made 105 commits, all pushed, but the goal (superpolynomial Res(Lin_F3) lower bounds for PHP) is still open. The other commits on main in 
-- - **Flat-sum certificates (proof drafted, under review):** the transversal functionals are the same as weighted sums over a c-dimensional flat. For every g of d
-- The A1 open statement now points to the new conjecture and stays within its word budget (448 of 450). Next cycle: test the conjecture on the smallest unsatisfia
-- I've drafted a route review, and a fresh-context reviewer is checking it now: - **Obstacle:** once the forms span the whole board, no graded ring can be built f
-- - **Galton–Watson test.** "With one-cell columns ... offspring": in one-row boards |c| = 1, so the extinction threshold "absorption rate above 1 − 1/|c|" is 0: 
-- **New result: nontrivial relation bound.** Some relations among Taylor generators are trivial: commutations, self-annihilations (L³ = 0 in characteristic 3), Fr
-- **Result: h_e = 0 is refuted, but the excess stays tiny.** The hypothesis was that, below the fill point, random product tops have no nontrivial relations among
-- I used it on the six builds, which the reviewer had read: the queue went from 56 items to 50. A new build item takes it to 51 (see Prevention below). Full suite
-- The full suite ran 1088 tests in 9.9 s, all passing except one: `test_notebook_deep_links` took 5.003 s against its 5.0 s limit. The machine was busy for 122 of
-- All 1101 tests pass, but the full suite took 10.3 s, over your 10 s limit. The three browser test groups are the slowest, at 8 to 9 s each; profiling them is th
-- The full suite's 1101 tests all pass, but the run took 10.3 s and so fails your 10 s limit; the three browser test groups are the slowest. Profiling them is the
-- I've fixed the slow suite rather than deferring it again; the fix is with a reviewer and not yet committed. The full suite now runs 1093 tests in 8.2 s, all pas
-- The reviewer failed my first suite fix, correctly, so the numbers I reported last time were wrong: - **Duplicates:** I had stopped `SideFinalization` subclassin
-- The whole suite passes: 1103 tests in 7.9 s.
-- New tests cover the reviewer's rewordings, which are flagged, and the uses that supply the hypothesis, which are not. On the last eight real entries the check f
-- The whole suite passes: 1114 tests in 9.7 s, 1 skipped.
-- The reviewer failed my first version of the Unreviewed-label check in the Stop hook. It was often blind in practice: it looked only at the three newest log file
-- **One figure changed since I reported it.** The replay of the message check, which I reported as "none of 181 past messages refused", is 0 of 183. This session'
-- The whole suite passes: 1186 tests in 8.4 s.
-- The unsweet part: at N=9 the excess is already rare (4 of 60), so this nonzero H₁ may be a small-board effect. The next cycle should find out whether it is befo
-- | Base | Degrees | Outcome | |---|---|---| | One block | D=6, 7, 8 | No new consequences, including shared-input blocks and the dependent three-selector forms |
-- | Base | D | Seeds with new consequences | |---|---|---| | One block | 6, 7, 8 | none, also with dependent forms or a shared input | | Two blocks | 6 | 3 of 6 i
-- **What the evidence shows:** - **Failures thin out with degree.** 10 of 22 unsaturated instances fail at D=6, but only 1 of 8 at D=7. Most small bases are alrea
-- **Single-block cycle (pushed).** - One two-input block over a single random quadratic equation on 10 variables fills the whole gap at D=6 in all 4 bases. All 46
-- - **No external mechanism.** The only DAG-like Res(⊕) lower bound for PHP is your own bit-PHP paper, which is over F2. Part–Tzameret prove only tree-like Res(li
-- - **Literature:** nothing handles extension variables that depend on many variables in odd characteristic, which is what the window's blocks are. Recent DAG-lik
-- The cycle isn't finished yet. The D=8 PC comparison run is done, and polynomial calculus (PC) is conservative on all four bases. Those were the bases with room 
-- **Results:** - **No NS loss anywhere.** The rise is 0 in all 53 NS tests: 40 at D=6 with 2–5 inputs, 12 at D=8 with 2–3 inputs, and the one four-input test. The
-- That accretion shows: - **At the soft limits:** Where we stand is at 400 of 400 words, The remaining route at 500 of 500, and Working mathematical context at 99
+# run ff08f69ab6, session framework-builds-20261017; full output
+- [18%] **The attack.** Fill each block with column-sum forms \(C_s-2\). Under the reference distribution these vanish fairly often, about 18% of the time, because that
+- [333 of 340] - **Refutation:** I tested whether freeness through a degree follows from two conditions: every single element acts freely, and the predicted Hilbert function s
+- [333 of 340] **Where the rule held.** It was exact in all 35 complete-column cases and in 333 of 340 random rank-one instances. The 7 failures are all special-position defec
+- [11 of 12] - **Girth lemma (new, proved):** a single-element failure always comes from a small linear dependency among the forms, a circuit of about \(2D\) of them. So tho
+- [11 of 12] - **Girth lemma (proved):** in the model where each selector adds a one-dimensional column, the smallest number of columns a single element can act on equals th
+- [53 defects] - **What I tested:** 144 random families of up to 8 width-two product constraints, so total density stays below one, in the truncated ring \(\mathbb F_3[s]/(s_i
+- [2 of 9] - **n=7, degree 3:** one column-type equation is never refuted, for any of its 3 right-hand sides, and each of them has a valid occupancy vector. Two equations 
+- [2 of 9] - **Main finding:** on the PHP board itself, some robust affine systems sit in special position: column-type (occupancy) systems, where every pigeon gets the sa
+- [2 of 9] The finding: some affine systems on the PHP board break the pattern that random ones follow, even though they satisfy the wide-conditioning conjecture's robustn
+- [9 of 9] One run is still going: a random column-type pair with low robustness, probably Q=1, due in about 10 minutes. It decides whether low robustness still produces r
+- [0 of 9] Result so far this cycle: at n=8, degree 3, no column-type system has been refuted, neither the single forms nor the most robust pair (Q=4, 0 of 9).
+- [9 of 9] - **No refutations at n=8.** Degree-3 PHP closures refuted none of the 21 column-type right-hand sides and none of the 21 random comparison systems. That includ
+- [2 of 9] The reviewer also asked for a control: rerun a recorded count with the modified closure. I'm launching the \(n=7\) pair (recorded 2 of 9) in the background.
+- [2 of 9] The write-up for the n=8 cycle is fully revised. It isn't committed yet: I'm waiting on a control run. That run reruns a recorded result (the n=7 pair, 2 of 9 r
+- [2 of 9] - **Freeness formula holds.** A single column-type form stays free through degree ⌈c/2⌉ and fails at ⌈c/2⌉+1 in all four n=8 cases. Here c is n minus the most f
+- [3%] The main record put its version of this statement at about 3%. That estimate isn't obsolete, but the open part is now one clean, well-studied kind of question i
+- [12 cases] **What the one run at n = 6 showed.** It used forms that are full in every pair, as the conjecture requires. - All 12 cases match the criterion. - Local generat
+- [41 in 222] **This cycle's kernel.** I wrote an incremental prefix-rank elimination in C (`gf3_prefix.c`). It matched the recorded elimination on 20 random block matrices. 
+- [17 of 18] **Local-falls cycle: the answer so far is yes.** I planted up to 7 satisfiable pencils among random selectors at n = 6, degree 3, over 3 seeds: - **No cascade:*
+- [14 cases] **Its falls are still local.** I planted up to 8 copies among random selectors at n = 6, degree 3, over 2 seeds: - Alone, the member adds 5 to the low-degree pa
+- [24 cases] **What the last cycle found:** - **Edge Castelnuovo sequence (working proof).** Deleting one cell of a board, versus contracting it (removing its row and label)
+- [48%] - **Proved (reviewer pending):** - Splitting off the last row works exactly on P. - The residual piece is now injective with no conditions; on G it needed an im
+- [96 of 97] **Worst-direction cycle.** - **Lemma (proved):** in characteristic 3, the Gale-dual quotient is squares of linear forms on the group algebra of (ℤ/3)^r. The col
+- [2 of 4] My view: 2 of 4 is on the strict side, but a cap in that range is right.
+- [3 of 5] Under 3 of 5 the recent run would still have been stopped: all of its last ten entries registered cases. The current cycle stays a general derivation. It will d
+- [24 cases] - **The occupancy system has no falls.** "C_j Boolean, Σ_j C_j = m" is a single weak row with right-hand side m instead of 1. The one-row proof carries over, so
+- [24 cases] - **Occupancy stability.** "C_j Boolean, Σ_j C_j = m" is a single weak row with right-hand side m. The one-row proof carries over, so for n ≥ 2D−1 it has no fal
+- [51 of 52] - **Covering obstruction:** for every t, take about 3s random selectors in F_3^s. Every t of their normals are independent, and together they cover every point 
+- [17%] - **Why the test failed:** at the sizes the direct-sum kernel reaches, three width-2 clauses leave only about 17% of the slice allowed. Every variant, the consi
+- [400 of 16] The chain test itself can't settle anything, and I should have seen that before launching it. An inconsistent chain of width-2 clauses leaves only about 400 of 
+- [20 of 40] **New result, now under review: row-dependent forms.** - **Row changes.** The weak base's top algebra is unchanged by any invertible change of rows, and by shif
+- [25 cases] **Computation.** I measured the lowest non-free degree of the column tensor power (u(W)/𝔪²)^{⊗N}, exactly over F₃. In all 25 cases that ran to completion (N fro
+- [22 cases] - **The sign problem is solved.** The part of the Koszul complex where each row is used once is exactly the chessboard complex's cochain complex, after flipping
+- [3 of 6] **Check.** All 7 grouped configurations tested are free exactly as predicted. Random F₃ forms usually went beyond the theorem's count, reaching the positivity b
+- [10 cases] **The computation now.** I replaced the Python seed-and-case loops with a C++ grid mode, `pure_tops.cpp`. It generates each seed's forms once for all degrees an
+- [597 of 600] **Notebook:** I updated Where we stand, now at 597 of 600 words. I dropped a sentence about the statement-set audits there, since the remaining-route section al
+- [10 of 41] - **The repair I tested:** split everything by x-degree. The cross generators themselves are fine: R's top has a single x-degree, and T can be swapped for an eq
+- [4.5%] **What it means for W.** - **Genericity is not enough:** a single W clause has its own vanishing function of degree k + 2. So the corollary covers only about 4.
+- [0.6%] - **The theorem (`thm:tetrahedral-double-points`).** Give each selector a form that is the sum of 4 cells. The 4 cells sit on distinct rows and have distinct la
+- [597 of 600] The novelty check found no earlier version and no error; its requested clarifications are in the draft. The Proposed next step and the degree status in Open sta
+- [61%] The other fixes: - **Hubs:** the reduction lemma applies only when ℓ₀ has at least 8 nonzero columns. That excludes all of N = 7 and about 61% of the N = 8 samp
+- [38 of 67] **Current cycle (odd-prime-free-hole-proof).** - **Proof:** the conjecture follows directly from the recorded lemma lem:filtered-freeness-transfer. On every lin
+- [3 of 40] **Exact tests over F₃:** - **Setup.** Ranks come from a FLINT kernel, checked against a NumPy reference on small cases. Chessboard controls come out as expected
+- [97%] - **Spiders are everywhere in the residual.** In simulations, 94–97% of rows are spider centres when the residual has as many holes as rows, and every row is on
+- [7 of 30] - **The twin-board test.** Boards whose holes come in twin pairs (equal pigeon sets) have no spiders, yet they failed matching-complex filling more often than r
+- [15 of 16] **Strategy review (drafted).** Since restrictions stop at about \(\log n\) dense constraints, I stepped back to ask what could handle polynomially many. Two che
+- [16 cases] - The budget argument covers random forms only. An adversary can pick forms that are almost never zero, and excluded mass doesn't measure degree loss anyway. - 
+- [10 of 10] | Test | Outcome | |---|---| | Can a W clause's allowed patterns carry a pairwise-uniform distribution? (the SoS lead) | Yes for \(k\ge3\); 3-wise uniform for \
+- [7 of 10] **Tests in the review:** - **Random-code minimum distance.** In \(\ker C\) it is only 1–7 at \(h=16\). So prefixes protect only low-weight zero patterns, not de
+- [21 of 176] The current cycle is a route review of the whole dense core, for W and W_RS together. Its main finding is quantitative. On the recorded small-size data (T1 from
+- [61 of 64] - **Joint count fails too:** at p=3, two generic falsifying sets already leave only products of their quadrics. This held in 61 of 64 cases with at least two sl
+- [0.7%] The reduction needs a fix first. The random residual graph the light-family proof uses leaves about 0.7% of its holes with no neighbour, and each such hole's on
+- [15 of 99] The result, over any field of characteristic other than 2: - **Construction:** place the same linear forms on groups of at least three rows. That gives up to ⌊m
+- [17 of 18] - **A missing but harmless syzygy.** For each row j of the prefix matrix, Σ_k c_jk·τ_k contains q_j³ = 0, so these rows give syzygies the randomized Taylor glue
+- [6 of 6] - **The refutation:** combining blocks pair by pair does not account for all the lower-degree consequences of a tree-shaped family. With random member sets that
+- [286 tests] **Framework.** Twice, a failed scripted edit was followed by an append, registration and finisher that still ran on the unedited draft. The Bash guard now refus
+- [105 commits] **In short:** the goal is still open. The thread made 105 commits from 18:00 yesterday to 13:31 today, each one a cycle or review, all pushed. It proved several
+- [105 commits] Overnight this thread made 105 commits, all pushed, but the goal (superpolynomial Res(Lin_F3) lower bounds for PHP) is still open. The other commits on main in 
+- [567 of 1521] - **Flat-sum certificates (proof drafted, under review):** the transversal functionals are the same as weighted sums over a c-dimensional flat. For every g of d
+- [448 of 450] The A1 open statement now points to the new conjecture and stays within its word budget (448 of 450). Next cycle: test the conjecture on the smallest unsatisfia
+- [3%] I've drafted a route review, and a fresh-context reviewer is checking it now: - **Obstacle:** once the forms span the whole board, no graded ring can be built f
+- [31 of 34] - **Galton–Watson test.** "With one-cell columns ... offspring": in one-row boards |c| = 1, so the extinction threshold "absorption rate above 1 − 1/|c|" is 0: 
+- [34 cases] **New result: nontrivial relation bound.** Some relations among Taylor generators are trivial: commutations, self-annihilations (L³ = 0 in characteristic 3), Fr
+- [6 of 36] **Result: h_e = 0 is refuted, but the excess stays tiny.** The hypothesis was that, below the fill point, random product tops have no nontrivial relations among
+- [1087 tests] I used it on the six builds, which the reviewer had read: the queue went from 56 items to 50. A new build item takes it to 51 (see Prevention below). Full suite
+- [1088 tests] The full suite ran 1088 tests in 9.9 s, all passing except one: `test_notebook_deep_links` took 5.003 s against its 5.0 s limit. The machine was busy for 122 of
+- [1101 tests] All 1101 tests pass, but the full suite took 10.3 s, over your 10 s limit. The three browser test groups are the slowest, at 8 to 9 s each; profiling them is th
+- [1101 tests] The full suite's 1101 tests all pass, but the run took 10.3 s and so fails your 10 s limit; the three browser test groups are the slowest. Profiling them is the
+- [1093 tests] I've fixed the slow suite rather than deferring it again; the fix is with a reviewer and not yet committed. The full suite now runs 1093 tests in 8.2 s, all pas
+- [1093 tests] The reviewer failed my first suite fix, correctly, so the numbers I reported last time were wrong: - **Duplicates:** I had stopped `SideFinalization` subclassin
+- [1103 tests] The whole suite passes: 1103 tests in 7.9 s.
+- [1107 tests] New tests cover the reviewer's rewordings, which are flagged, and the uses that supply the hypothesis, which are not. On the last eight real entries the check f
+- [1114 tests] The whole suite passes: 1114 tests in 9.7 s, 1 skipped.
+- [1129 tests] The reviewer failed my first version of the Unreviewed-label check in the Stop hook. It was often blind in practice: it looked only at the three newest log file
+- [0 of 183] **One figure changed since I reported it.** The replay of the message check, which I reported as "none of 181 past messages refused", is 0 of 183. This session'
+- [1186 tests] The whole suite passes: 1186 tests in 8.4 s.
+- [4 of 60] The unsweet part: at N=9 the excess is already rare (4 of 60), so this nonzero H₁ may be a small-board effect. The next cycle should find out whether it is befo
+- [3 of 6] | Base | Degrees | Outcome | |---|---|---| | One block | D=6, 7, 8 | No new consequences, including shared-input blocks and the dependent three-selector forms |
+- [3 of 6] | Base | D | Seeds with new consequences | |---|---|---| | One block | 6, 7, 8 | none, also with dependent forms or a shared input | | Two blocks | 6 | 3 of 6 i
+- [10 of 22] **What the evidence shows:** - **Failures thin out with degree.** 10 of 22 unsaturated instances fail at D=6, but only 1 of 8 at D=7. Most small bases are alrea
+- [13 instances] **Single-block cycle (pushed).** - One two-input block over a single random quadratic equation on 10 variables fills the whole gap at D=6 in all 4 bases. All 46
+- [1 in 26] - **No external mechanism.** The only DAG-like Res(⊕) lower bound for PHP is your own bit-PHP paper, which is over F2. Part–Tzameret prove only tree-like Res(li
+- [36 of 38] - **Literature:** nothing handles extension variables that depend on many variables in odd characteristic, which is what the window's blocks are. Recent DAG-lik
+- [8 of 12] The cycle isn't finished yet. The D=8 PC comparison run is done, and polynomial calculus (PC) is conservative on all four bases. Those were the bases with room 
+- [8 of 12] **Results:** - **No NS loss anywhere.** The rise is 0 in all 53 NS tests: 40 at D=6 with 2–5 inputs, 12 at D=8 with 2–3 inputs, and the one four-input test. The
+- [400 of 400] That accretion shows: - **At the soft limits:** Where we stand is at 400 of 400 words, The remaining route at 500 of 500, and Working mathematical context at 99
 1518 texts read: 93 paragraphs with a figure and no source beside it; 86 texts refused, each with a figure whose paragraph names no source.

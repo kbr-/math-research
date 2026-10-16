@@ -1437,7 +1437,10 @@ BLOCK_FORMS = [re.compile(p) for p in (
     NAME + r'turn\s+\d+\s+of\s+\d+\b')]
 # A block named as the one coming next is not counted: "the first IPS turn comes next", "before the first IPS turn"
 # (the builds' reviewer found these refused on a Pang entry).
-COMING_AFTER = re.compile(r'^[^.;,]*?\b(?:comes?\s+next|follows?|is\s+next|starts?\s+next|begins?\s+next)\b')
+# "follows" only at its clause's end or as "follows next": "the third IPS turn follows from the lemma" counts a turn
+# (the builds' reviewer's probe, 17 October 2026).
+COMING_AFTER = re.compile(r'^[^.;,]*?\b(?:comes?\s+next|follows?(?=\s*(?:[.;,:]|$|next\b))|is\s+next|starts?\s+next|'
+                          r'begins?\s+next)')
 COMING_BEFORE = re.compile(r'\b(?:before|until|ahead\s+of)\s+(?:the\s+)?$', re.I)
 BLOCK_SKIP = {'the', 'this', 'that', 'its', 'first', 'second', 'third', 'fourth', 'fifth', 'next', 'route', 'a'}
 

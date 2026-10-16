@@ -918,7 +918,8 @@ def replay_figures(paths):
                     texts += 1
                     paragraphs += len(figure_paragraphs(part['text']))
                     if figure_block(part['text']):
-                        refused.append(' '.join(figure_paragraphs(part['text'])[0].split())[:160])
+                        first = figure_paragraphs(part['text'])[0]     # the figure that matched, then the paragraph
+                        refused.append(f'[{REPLY_FIGURE.search(first).group(0)}] ' + ' '.join(first.split())[:160])
     for text in refused:
         print(f'- {text}')
     print(f'{texts} texts read: {paragraphs} paragraphs with a figure and no source beside it; {len(refused)} texts '
@@ -937,8 +938,9 @@ def figure_block(reply):
     worktree's session transcripts (17 October 2026): a reply-level rule refused 10 of 1514 texts but let a bare
     "review" anywhere clear every figure (reply-figure-replay.txt); this paragraph-level rule with named sources
     refuses 86 of 1518 texts (reply-figure-replay-paragraph.txt, both in
-    research/results/framework-builds-20261017/). Read one by one, 5 of the 86 are false: rule parameters ("under 3
-    of 5", "2 of 4 is on the strict side") and word-budget counts; the rest are computed findings with no path."""
+    research/results/framework-builds-20261017/, which prints each matched figure). Read one by one, 6 of the 86
+    are false: two rule parameters ("under 3 of 5", "2 of 4 is on the strict side") and four word-budget counts;
+    the rest are computed findings with no path."""
     found = figure_paragraphs(reply)
     if not found:
         return None
