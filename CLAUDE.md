@@ -17,7 +17,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
 - Choose a target by what is true at the goal, not by what the tools at hand prove easily: a target
   the tools reach easily is first tried for refutation on its plainest counterexample.
 - First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
-  before any method is chosen.
+  before any method is chosen; then, once a proof exists, each of its own steps used alone (a
+  substitution, a reduction, a restriction), since a step that already decides the instance makes
+  the rest of the proof a variant to compare, not the result.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
   limit, never at the size written for.
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its

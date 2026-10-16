@@ -346,7 +346,8 @@ class PlainestBoundTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
             FT.validate_plainest(witness, {'working_proof'})
         FT.validate_plainest(witness.replace('</p>', ' <strong>Plainest bound.</strong> None applies: the '
-                                             'statement is an identity of formal series.</p>'), {'working_proof'})
+                                             'statement is an identity of formal series. <strong>Tried.</strong> The bare coefficient '
+                                             'count, which bounds nothing in an identity.</p>'), {'working_proof'})
 
     def test_a_draft_with_a_proof_counts_as_proved_before_registration(self):
         # 16 October 2026: a Nonvacuity without its Plainest bound passed the skeleton check twice, the draft's
@@ -367,6 +368,17 @@ class PlainestBoundTest(unittest.TestCase):
                    '<p><strong>Nonvacuity.</strong> The band with a = 1.</p>')
         with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
             FT.validate_plainest(witness, FT.draft_statuses(witness))
+
+    def test_an_undecided_plainest_bound_names_what_was_tried(self):
+        # 16 October 2026: "no recorded result gives" one, while the entry's own substitution step decided more.
+        for phrase in ('none applies', 'no recorded result', 'neither decides', 'nothing applies', 'no plain bound'):
+            bare = (f'<article id="entry-2026-10-16-x"><p><strong>Smallest case.</strong> One band. <strong>Plainest '
+                    f'bound.</strong> On this instance {phrase} gives a usable estimate of the share.</p>')
+            with self.assertRaisesRegex(ValueError, 'Tried'):
+                FT.validate_plainest(bare)
+            FT.validate_plainest(bare.replace('</p>', ' <strong>Tried.</strong> The bare count and the substitution '
+                                              'step alone, each giving a negative exponent.</p>'))
+            FT.validate_plainest(bare.replace('2026-10-16', '2026-10-15'))
 
     def test_the_draft_branch_runs_the_other_checks_of_proved_statements(self):
         draft = ('<article id="entry-2026-10-17-y"><p><strong>Proof.</strong> Direct.</p>'

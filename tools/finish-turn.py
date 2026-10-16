@@ -1206,6 +1206,8 @@ def validate_drafted_proofs(text, drafted):
 
 
 PLAINEST_FROM = '2026-10-16'
+TRIED_FROM = '2026-10-16'
+UNDECIDED = re.compile(r'\b(?:none applies|no recorded result|neither decides|nothing applies|no plain bound)\b', re.I)
 PLAINEST_RE = re.compile(r'<strong>Plainest bound\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
 
 
@@ -1231,6 +1233,14 @@ def validate_plainest(text, statuses=()):
                              '30 characters, what the plainest available bound (a bare count, a one-dimensional '
                              'estimate, the record\'s oldest applicable lemma) gives on its instance, or why none '
                              'applies: an instance the plain bound decides tests nothing (AGENTS.md)')
+        if dated.group(1) >= TRIED_FROM and UNDECIDED.search(html.unescape(strip_tags(said.group(1)))) \
+                and '<strong>Tried.</strong>' not in said.group(1):
+            # 16 October 2026: a Plainest bound said "no recorded result gives" one, beside no attempt; the entry's
+            # own substitution step with a recorded tradeoff gave a stronger bound than its theorem.
+            raise ValueError(f'The {label} paragraph\'s Plainest bound says none decides or applies: say after '
+                             '<strong>Tried.</strong> which plain bounds were tried on the instance, the entry\'s '
+                             'own proof steps used alone among them, and what each gave (AGENTS.md: "None applies" '
+                             'is written only after the plainest bound was tried)')
     # 16 October 2026: three named next attempts in a row were decided by the naming entry's own statements,
     # found by its reviewer.  The Smallest case says what those statements give on the attempt.
     whole = re.search(r'<strong>Smallest case\.</strong>(.*?)</p>', text, re.S)
