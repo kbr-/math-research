@@ -175,17 +175,25 @@ growing checklists or one-off setup narratives.
   required paragraph or artifact is called done, name what it is meant to establish in the case at
   hand and check that it does: a witness exercises the step the statement adds, a Meta names the
   change its commit made, a message reports a result and not an intent (16 October 2026: each of the
-  three passed its rule's wording first). An example or witness offered for a claim, in an entry or
-  a reply, is written with the quantity it illustrates computed beside it, never from memory of its
-  shape. A statement covering several parts (cases, forms, earlier lemmas it refines) gives each
-  part its own form, and a simplification true of some parts is attached to those parts only. Name
-  after `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious
-  witness, the trivial estimate) and what the statement adds over it (the finisher requires it of
-  the same entries; 16 October 2026: a comparison omitted a multiplier that survived every choice).
-  An example or test computed with the entry's method also gets its own baseline, computed first:
-  what the plainest available bound gives on that example. State compositions as lemmas in one
-  common setting with a complete proof, not a reference to a sketch. At the start of drafting, run
-  the entry's skeleton (its headings and labelled paragraphs, before the body) through
+  three passed its rule's wording first). Likewise a prevention, a count or a check is reported as
+  in force only beside the output of its run on the case that exposed it, at the earliest stage it
+  can run: that it exists is not that it works (16 October 2026: a message check announced in force
+  missed its own case's other form, and a replay count could not fail on the case it was quoted
+  for). An example or witness offered for a claim, in an entry or a reply, is written with the
+  quantity it illustrates computed beside it, never from memory of its shape, and a witness offered
+  for a case analysis exercises each branch it is offered for. A proof step that makes a term vanish
+  by the value of a factor says where that factor sits relative to every bracket or certificate
+  around it, quoted from the construction's record (16 October 2026: a factor inside a commutator
+  was used as if it stood outside, and the witness had no branch where it mattered). A statement
+  covering several parts (cases, forms, earlier lemmas it refines) gives each part its own form, and
+  a simplification true of some parts is attached to those parts only. Name after
+  `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious witness,
+  the trivial estimate) and what the statement adds over it (the finisher requires it of the same
+  entries; 16 October 2026: a comparison omitted a multiplier that survived every choice). An
+  example or test computed with the entry's method also gets its own baseline, computed first: what
+  the plainest available bound gives on that example. State compositions as lemmas in one common
+  setting with a complete proof, not a reference to a sketch. At the start of drafting, run the
+  entry's skeleton (its headings and labelled paragraphs, before the body) through
   `tools/notebook-append.py DRAFT --check`, which lists each failing entry check of the append and
   the finisher that applies to a draft, so a required paragraph is planned before the work. Before
   the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each
