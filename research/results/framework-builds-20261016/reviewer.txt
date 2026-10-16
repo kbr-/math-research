@@ -1,0 +1,60 @@
+# Reviewer record: modular collapse target and the framework builds of 16 October 2026
+
+Fresh-context medium reviewer (Claude Code medium-reviewer subagent). It read the entry draft, the
+source excerpts of Buss, Kołodziejczyk and Zdanowski (Trans. AMS 2015) with five registered claim
+statements, and the diff of the framework builds (commits 7c1eb2c17 to 5adf357b4).
+
+## First report (verdict: pass with corrections)
+
+The arithmetic is correct: with base-2 logarithms, S^(log^e S) = 2^((A log N)^(e+1)) < 2^((log
+N)^(e+2)) exactly when log N > A^(e+1), for every A >= 1. A >= 2 is needed only so that the size of
+phi_N is at most N^A. phi_N is Sigma_3 and Sigma_2 as Theorems 43 and 45 require.
+
+Required changes:
+
+- Corollary statement and proof: the tautology was written plain, but Theorem 43 was applied to its
+  oplus-wrapped version; add the conversion or state the corollary for the wrapped formula.
+- "The complement of psi is the literal" was false as written: the complement is bar-oplus^1_2{neg
+  lit}, equivalent to the literal by constant-size proofs, with the usual linear F_2 translation.
+- "has Sigma-size greater than 2^((log N)^c)": Sigma-size is an upper-bound property; rephrase as
+  "no refutation of Sigma-size 2^((log N)^c)".
+- Imported (i): the polynomial analogue is stated after Theorem 43 with details left to the reader;
+  cite it as such.
+- Imported (ii) and the tree-like variant: f depends on d, phi and the proof, so the hypothesis must
+  quantify over every PV_2^(oplus P) function and every quasipolynomial t; the constant c clashed
+  with the element c.
+- Imported (iii): t = t(n, 2^d); the proof is sketched for p = 2 and part (d) is left to the reader.
+- Systems paragraph: Definition 4 bounds every conjunction or disjunction of literals.
+- Robust statement: the authors' closing remarks concern NS with sWPHP(PV_1^(oplus P)), not PV_2;
+  drop "Nullstellensatz or"; Theorem 46(b)'s restriction comes from a constant-depth Frege proof of
+  (29) making the axioms vanish for a concrete m.
+- Error control: Proposition 47's rarity is over polylogarithmically many new variables for every
+  old assignment, while the narrow-error criterion measures a mean over old labels; restrict the
+  sentence.
+- Depth ledger: no lemma maps a PCK^1 refutation to an ENS source; label it a calibration; cover
+  disjunction members (false iff the product is one).
+- Inventory ledger: drop the underived accuracy claim; "polynomial inventory only" should read
+  "below n^2 per level".
+- New mathematics: qualify by the presentation conversion; Follow-up: the robust statement is not
+  answered, given the APC_1/APC_2 mismatch.
+
+Build findings: all six builds do what their items say. resemblance-living-context and
+spec-entry-drift reintroduced the bare tag pattern (claim_authoring.py `_plain`,
+claim_resemblance.py two sites). spec-entry-drift's statement pattern missed "Imported statement."
+paragraphs; its time test fires on any notebook edit; the refusal path in main has no test.
+next-step-quote-current refuses eight-word quotations of words other than the named items' (a
+false-positive class; the refusal text offers the workaround). item-history-read-gate sees only
+notebook-excerpt.py reads; its compute.sh call has no test. Developed is justified for all six,
+conditional on fixing the two unprotected sites.
+
+Open point: inventory enters the stage-two degree only through its logarithm if the step is a union
+bound over blocks of a failure event of probability below 1/M; for ORs of F_2 polynomials the only
+known logarithmic-cost tool is probabilistic approximation, whose pointwise-rare errors are the kind
+Proposition 47 shows insufficient, and there is no switching lemma for such predicates. The missing
+step is a restriction under which polylog-degree F_2 predicates simplify with probability 1 - 1/M.
+Unverified.
+
+Process audit: title and status accurate for the import, but "working target corollary" should wait
+for the conversion; counting the entry as an IPS turn is unsupported (the target is not IPS); "four
+IPS cycles" was unlinked; the Bearing rests on the unproved ENS translation; the draft did not ask
+whether any lower bound for these systems is known; unchanged goal progress honest.

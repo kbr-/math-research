@@ -29,7 +29,10 @@ class MathMarkup(unittest.TestCase):
         import re
         tools = Path(__file__).resolve().parents[1]
         bare = re.compile(r"""re\.sub\(\s*r?['"]<\[\^>\][*+]>['"]""")
-        found = [f'{path.name}:{number}' for path in sorted(tools.glob('*.py')) if path.name != 'notebook_math.py'
+        # literal re.sub calls only, in tools/ and tools/hooks/; a pattern compiled ahead or passed in a variable
+        # is not seen
+        files = sorted(tools.glob('*.py')) + sorted((tools / 'hooks').glob('*.py'))
+        found = [f'{path.name}:{number}' for path in files if path.name != 'notebook_math.py'
                  for number, line in enumerate(path.read_text().splitlines(), 1) if bare.search(line)]
         self.assertEqual(found, [], 'use notebook_math.strip_tags or strip_tags_tight instead')
 
