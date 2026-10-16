@@ -318,8 +318,10 @@ OLD_AND_NEW = re.compile(r"\b(?:I (?:said|described|reported|wrote|called|stated
 def scope_block(reply):
     """The block for a reply that reports a review narrowing or withdrawing something without naming what was said
     before and what holds now, or None."""
-    found = [s for s in NARROWED.findall(QUOTED.sub(' ', reply))
-             if not NARROWED_SKIP.search(s) and not OLD_AND_NEW.search(s)]
+    # A quotation of the old wording names the old scope (16 October 2026: "The Assessment still says the smooth
+    # part is "charged once", which the reviewer withdrew" was refused once its quotation had been stripped).
+    found = [s for s in NARROWED.findall(re.sub(FENCED, ' ', reply, flags=re.M))
+             if not NARROWED_SKIP.search(s) and not OLD_AND_NEW.search(s) and not re.search(r'["“`]', s)]
     if not found:
         return None
     return {'decision': 'block', 'reason': (

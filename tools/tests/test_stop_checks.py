@@ -369,6 +369,7 @@ class UncheckedClaimTest(HookFixture):
                       'The reviewer finds the stated scope too narrow.',
                       'Only deleting text, or adopting the reviewer\'s own wording, counts as narrowing.',
                       'The rule rereads a summary when a correction narrows what it summarizes.',
+                      'The Assessment still says the smooth part is "charged once", which the reviewer withdrew.',
                       'The entry is committed.'):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.scope_block(reply))
