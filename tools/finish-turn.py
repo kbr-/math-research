@@ -1173,6 +1173,38 @@ def validate_baseline(text, statuses=()):
                          'exists (AGENTS.md)')
 
 
+DRAFT_PROOF = re.compile(r'<strong>(?![^<]*\b(?:sketch|attempt)\b)[^<]{0,40}\b[Pp]roof\b[^<]{0,40}\.</strong>')
+NOT_PROVED_STATUS = re.compile(r'<p class="entry-meta">\s*(?:Refutation|Finite check|Conjecture)', re.I)
+
+
+def draft_statuses(text, known=None):
+    """The statuses a draft's claims stand for at drafting, before registration: the registered statuses of
+    its declared claims where they are registered (`known`, a map from claim id), and otherwise
+    {'working_proof'} when it has a proof paragraph ("Proof.", "Proof of (b).", "Full proof.", not a sketch or
+    an attempt), unless it declares data-claims="none" or its status line opens with Refutation, Finite check or
+    Conjecture, which the finisher's registry path would not count as proved. The append path omits `known`,
+    registration waiting for the finisher."""
+    declared = re.search(r'\bdata-claims="([^"]*)"', text)
+    ids = declared.group(1).split() if declared else []
+    # The append path does not read the registry (registration waits for the finisher), so finite checks are
+    # told by their declared prefixes, as cases_only does.
+    if ids == ['none'] or NOT_PROVED_STATUS.search(text) or (ids and all(i.startswith(FINITE_PREFIXES) for i in ids)):
+        return set()
+    registered = {known[cid] for cid in ids if known and cid in known}
+    if registered:
+        return registered
+    return {'working_proof'} if DRAFT_PROOF.search(text) else set()
+
+
+def validate_drafted_proofs(text, drafted):
+    """The checks of proved statements that the registry path runs, run on a draft with `drafted` statuses."""
+    validate_plainest(text, drafted)
+    if drafted & PROVED:
+        validate_degenerate_cases(text, drafted)
+        validate_hypothesis_steps(text, drafted)
+        validate_baseline(text, drafted)
+
+
 PLAINEST_FROM = '2026-10-16'
 PLAINEST_RE = re.compile(r'<strong>Plainest bound\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
 
@@ -1626,7 +1658,10 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_plainest(text, statuses)
             validate_unbounded_witness(text)
         else:
-            validate_plainest(text)
+            # A draft's claims are not registered yet: a Proof paragraph stands for a proved status, so the
+            # checks of proved statements run at drafting (16 October 2026: a Nonvacuity without its Plainest
+            # bound passed the skeleton check twice and was refused only at the finisher, after the append).
+            validate_drafted_proofs(text, draft_statuses(text))
             validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)

@@ -348,6 +348,34 @@ class PlainestBoundTest(unittest.TestCase):
         FT.validate_plainest(witness.replace('</p>', ' <strong>Plainest bound.</strong> None applies: the '
                                              'statement is an identity of formal series.</p>'), {'working_proof'})
 
+    def test_a_draft_with_a_proof_counts_as_proved_before_registration(self):
+        # 16 October 2026: a Nonvacuity without its Plainest bound passed the skeleton check twice, the draft's
+        # claims being unregistered, and was refused only at the finisher after the append.
+        self.assertEqual(FT.draft_statuses('<p><strong>Proof.</strong> Direct.</p>'), {'working_proof'})
+        self.assertEqual(FT.draft_statuses('<p><strong>Proof of (b).</strong> Direct.</p>'), {'working_proof'})
+        self.assertEqual(FT.draft_statuses('<p><strong>Full proof.</strong> Direct.</p>'), {'working_proof'})
+        self.assertEqual(FT.draft_statuses('<p><strong>Proof sketch.</strong> Roughly.</p>'), set())
+        self.assertEqual(FT.draft_statuses('<p><strong>Nonvacuity.</strong> One case.</p>'), set())
+        # Not counted as proved where the registry path would not count it (the reviewer's one case in 241).
+        proof = '<p><strong>Proof.</strong> Direct.</p>'
+        self.assertEqual(FT.draft_statuses('<article data-claims="none">' + proof), set())
+        self.assertEqual(FT.draft_statuses('<p class="entry-meta">Refutation, by one case.</p>' + proof), set())
+        self.assertEqual(FT.draft_statuses('<article data-claims="ex:c">' + proof), set())
+        self.assertEqual(FT.draft_statuses('<article data-claims="ex:c">' + proof, {'ex:c': 'finite_check'}),
+                         set())
+        witness = ('<article id="entry-2026-10-16-y"><p><strong>Proof.</strong> Direct.</p>'
+                   '<p><strong>Nonvacuity.</strong> The band with a = 1.</p>')
+        with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
+            FT.validate_plainest(witness, FT.draft_statuses(witness))
+
+    def test_the_draft_branch_runs_the_other_checks_of_proved_statements(self):
+        draft = ('<article id="entry-2026-10-17-y"><p><strong>Proof.</strong> Direct.</p>'
+                 '<p><strong>Nonvacuity.</strong> The band with a = 1. <strong>Plainest bound.</strong> The bare '
+                 'count gives the same order, so it decides nothing.</p>')
+        with self.assertRaisesRegex(ValueError, 'Degenerate|Hypotheses|Baseline'):
+            FT.validate_drafted_proofs(draft, FT.draft_statuses(draft))
+        FT.validate_drafted_proofs(draft, set())
+
     def test_smallest_case_says_what_the_entry_s_own_statements_give(self):
         # 16 October 2026: three named next attempts in a row were decided by their entries' own statements.
         plain = (' <strong>Plainest bound.</strong> The per-cell counts give the same order, so they decide '
