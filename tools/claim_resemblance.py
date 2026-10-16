@@ -180,6 +180,10 @@ def main(argv=None):
         for score, other, start in found:
             mark = ' (related in the spec)' if (ident, other) in related or (other, ident) in related else ''
             print(f'  {score:.2f} {other}{mark}: {start}')
+        if found:
+            # 16 October 2026: a listed claim was a more general version of the new one, unread as such.
+            print('  Read each listed statement and say in the entry whether it is a more general version of '
+                  'this claim (fewer hypotheses, the same conclusion) or a special case of it.')
     if args.notebook or args.registry == str(DEFAULT_REGISTRY):
         import lead_queue
         if args.notebook:
