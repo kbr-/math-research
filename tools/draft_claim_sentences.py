@@ -22,6 +22,7 @@ import pathlib
 import re
 import sys
 from notebook_math import MATH, protect_math
+from notebooks import notebook_file
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 # Every prefix the registry's identifiers had on 11 October 2026, and historical: until then eleven were listed
@@ -687,7 +688,7 @@ def main():
     print(out)
     missing = set()
     if args.notebook:
-        linked, missing = entry_report(draft, pathlib.Path(args.notebook).read_text(), args.width)
+        linked, missing = entry_report(draft, notebook_file(args.notebook).read_text(), args.width)
         print('\n' + linked)
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))

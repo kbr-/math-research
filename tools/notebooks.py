@@ -79,6 +79,18 @@ def selected(name=None, root=ROOT, items=None):
     return items[name]
 
 
+def notebook_file(value, root=ROOT):
+    """A --notebook argument as a file: an existing path, or a registered thread name such as main.
+    Tools named the same option for both (16 October 2026: one crashed on the name form AGENTS.md uses)."""
+    path = Path(value)
+    if path.exists():
+        return path
+    try:
+        return Path(root) / selected(value, root)['source']
+    except ValueError:
+        raise SystemExit(f'--notebook {value}: neither a file nor a registered notebook name')
+
+
 def select(name, root=ROOT):
     item = selected(name, root)
     path = selection_file(root)

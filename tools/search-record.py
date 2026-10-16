@@ -20,6 +20,7 @@ from pathlib import Path
 import sys
 
 from record_search import coverage, phrase_hits, search
+from notebooks import notebook_file
 from text_stems import stems
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +35,7 @@ def main(argv=None):
     parser.add_argument('--catalogue', help='file of NAME<TAB>WORDS lines to screen against the record')
     parser.add_argument('--phrase', action='append', default=[], help='exact phrase to find; repeatable')
     args = parser.parse_args(argv)
-    text = Path(args.notebook).read_text()
+    text = notebook_file(args.notebook).read_text()
     if args.phrase:
         return show_phrases(text, args.phrase, args.n or 6)
     if args.catalogue:

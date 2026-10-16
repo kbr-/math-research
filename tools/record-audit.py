@@ -19,6 +19,7 @@ from pathlib import Path
 import sys
 
 from record_audit import carried_items, not_run, open_gaps, reason_date
+from notebooks import notebook_file
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -31,7 +32,7 @@ def main(argv=None):
                         help='not-run items whose reason names a date on or before this one only')
     parser.add_argument('--notebook', default=str(ROOT / 'notebook.html'))
     args = parser.parse_args(argv)
-    text = Path(args.notebook).read_text()
+    text = notebook_file(args.notebook).read_text()
     if args.report == 'leads':
         rows = carried_items(text)
         shown = [r for r in rows if not (args.never and r[3])]

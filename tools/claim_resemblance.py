@@ -97,7 +97,8 @@ def main(argv=None):
     if args.notebook or args.registry == str(DEFAULT_REGISTRY):
         import lead_queue
         if args.notebook:
-            notebook = pathlib.Path(args.notebook)
+            import notebooks
+            notebook = notebooks.notebook_file(args.notebook)
         else:
             import notebooks
             notebook = ROOT / notebooks.selected()['source']
