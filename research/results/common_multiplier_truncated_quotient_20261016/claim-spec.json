@@ -1,0 +1,55 @@
+{
+  "source": {
+    "record": "[Truncated quotient kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-truncated-quotient)",
+    "label": "Truncated quotient kernels",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-truncated-quotient"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "lem:two-input-kernel-enlargement",
+      "summary": "Over F2, let C be the degree-D PC closure of a system containing the Boolean axioms with 1 not in C, g_1,g_2 of degree <=d>=1, P=1+g_1+g_2, E_i=P g_i and 2d+K<=D. Then (a) E_1 = E_2 = g_1 g_2 modulo Boolean consequences of degree <=2d; (b) the kernel {u in V_K: E_i u in C} contains ker_B + (C cap V_K) + A_1 + A_2, with ker_B the support kernel and A_i={u in V_K: g_i u in C}; (c) if g_1 g_2 is in C with degree <=D-K, the kernel is all of V_K, and it strictly contains ker_B + (C cap V_K) exactly when (C cap V_K)|_S differs from V_K|_S for the support S of g_1 g_2 (sufficient in the multilinear ring: dim(C cap V_K) < dim V_K|_S). So proper-quotient error kernels need not be support kernels plus relations.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in two passes; the exact condition in (c) is its follow-up correction.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Refutes, in every instance of (c), the hypothesis that joint savings in Pang's proper quotient are support counts, and names the enlarging mechanism: members that kill single inputs.",
+      "next_action": "Test equality in (b) for single-variable pigeonhole families at 5 pigeons and derive the stacked rank.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:truncated-kernel-beyond-support",
+      "summary": "Over F2 for the pigeonhole system with 4 pigeons and 3 holes (pigeon axioms prod_j(1+x_ij), hole axioms x_ij x_i'j, multilinear ring), at its largest proper degree D=3 and K=1 (dim V_1=13, C_3 cap V_1=0): for the six families (x_00,x_01),(x_00,x_02),(x_00,x_10),(x_00,x_11),(x_00,x_12),(x_00,x_20) with P=1+g_1+g_2, the kernel codimensions are 5,5,0,5,5,0 against 11 each for the support kernel plus relations (summed 20 against 66, stacked 9 against 12); for the four non-member families the kernel equals ker_B + A_1 + A_2 of lem:two-input-kernel-enlargement, traced to hole axioms.",
+      "assessment": "Finite check by exact elimination over F2 (truncated_kernels.py, truncated_kernels.json) with an empty-system control and a containment assertion; numbers and trace checked by the reviewer.",
+      "status": "finite_check",
+      "rationale": "Quantifies lem:two-input-kernel-enlargement on one instance, where its inclusion is an equality.",
+      "next_action": "Repeat at 5 pigeons and 4 holes to test equality in general.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:two-input-kernel-enlargement",
+      "cites",
+      "lem:domain-model-stacked-rank",
+      "Its support kernel is the domain-only kernel of that lemma."
+    ],
+    [
+      "lem:two-input-kernel-enlargement",
+      "cites",
+      "cor:pang-observation-calibration",
+      "Applies to Pang-form errors with t=1 and two inputs."
+    ],
+    [
+      "check:truncated-kernel-beyond-support",
+      "cites",
+      "lem:two-input-kernel-enlargement",
+      "Finds its inclusion an equality for four families."
+    ]
+  ]
+}
