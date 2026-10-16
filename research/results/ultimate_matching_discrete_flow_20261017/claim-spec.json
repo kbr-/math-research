@@ -1,0 +1,58 @@
+{
+  "source": {
+    "record": "[Discrete flow bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-discrete-flow-bound)",
+    "label": "Discrete flow bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-discrete-flow-bound"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:discrete-flow-bound",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2 and one dyadic sequence delta_0 = 2^(-J) >= 4 sqrt(log N/N), with D(g) = sum_Q (n_Q - N delta_0^2) g_Q over the cells of side delta_0 and Delta_e g the increment across an inner edge, with probability tending to one: (a) every grid function g has |D(g)| <= (3/4) L_0 sqrt(N log N)(1 + sum_e delta_0^2 psi_2*(|Delta_e g|/delta_0)), L_0 of thm:dyadic-flow-square-exponential; (b) for every pair alpha in [2,infinity]^2 and g with sum_e delta_0^2 psi*_alpha_d(e)(|Delta_e g|/(2 delta_0)) <= 2 and |Delta_e g| <= Y delta_0, |D(g)| <= (3/4) L_0 sqrt(N log N)(47 + 12 max_j (log max{Y, 2e^16})^(1/2 - 1/alpha_j)); (c) at (4,4), if delta_0 <= 2^(-l_1) and every increment has |Delta_e g|/delta_0 in {0} or [y, Y], 2e^16 <= y <= Y, then |D(g)| <= C sqrt(N log N) min{1 + (log Y)^(1/4), (log N/log(y/2))^(1/4)}; nested chains g = y delta_0 sum_k 1_{A_k} with each inner edge on at most m of the boundaries and cost at most 2 have |D(g)| <= C sqrt(N log N)(1 + (log(my))^(1/4)).",
+      "assessment": "Working proof: the dyadic flow of thm:dyadic-flow-square-exponential's proof built to level J, whose event uses J only through N 4^(-J) >= 16 log N and J <= log N; on each cell its first component is affine in x alone and its second in y alone (the square-flow construction), so the edge flux is at most (1+sqrt 2) times the cell average over delta_0; summation by parts D(g) = sum_e F_e Delta_e g, Young with psi_2 per edge and Jensen per cell; (b) conjugate bounds as in lem:flow-coarea-level-bound; (c) with lem:fine-grid-leighton-shor (c) at kappa = 4.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Carries the record's dyadic flow bound from Lipschitz functions to the discrete class itself: at increment levels capped by a polylogarithm the X-term of the discrete class is within (log log N)^(1/4) of the conjectured order, and the fifth route review's outcome (B), a chain at level (log N)^2 of discrepancy sqrt N (log N)^(3/4)(log log N)^(-1/4), does not occur for chains with at most two boundaries through each edge on these grids. The review's operation stays unproved. Neither loss is shown tight.",
+      "next_action": "The fifth review's operation, the gap-charged bound for nested chains with at most two boundaries per edge, first on two nested blocks at gap sigma; the split of the flow at the level's scale is decided by this lemma's statements and dropped.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:discrete-flow-bound",
+      "depends_on",
+      "thm:dyadic-flow-square-exponential",
+      "The dyadic flow, its square-flow construction and its event I <= 1/2, at level J."
+    ],
+    [
+      "lem:discrete-flow-bound",
+      "depends_on",
+      "lem:fine-grid-leighton-shor",
+      "Part (c)'s second bound, at kappa = 4."
+    ],
+    [
+      "lem:discrete-flow-bound",
+      "cites",
+      "lem:flow-coarea-level-bound",
+      "Its conjugate bounds; that lemma bounds Lipschitz functions in the flow's smearing, this one grid functions through edge fluxes."
+    ],
+    [
+      "lem:discrete-flow-bound",
+      "cites",
+      "lem:flow-matching-bound",
+      "The continuous Fenchel-Young step that this lemma carries to cell edges."
+    ],
+    [
+      "lem:discrete-flow-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Bounds the X-term of the discrete class within (log log N)^(1/4) at polylogarithmic increment levels on dyadic grids of side at least 4 sqrt(log N/N)."
+    ]
+  ]
+}
