@@ -15,12 +15,12 @@ ROOT=Path(__file__).resolve().parents[1]
 class SidePages(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.root=Path(self.tmp.name)
-        for name in ['index.html','notebook.html','LICENSES/MIT.txt','research/context-budgets.json']:
+        for name in ['index.html','notebook.html','LICENSES/MIT.txt','CITATION.cff','research/context-budgets.json']:
             p=self.root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,p)
         self.ctx={k:'<p>Side content \\(\\alpha\\).</p>' for k in SECTIONS};self.ctx['goal']='Side goal';self.ctx['remaining-route']='<li data-route-item="side-test">Test</li>'
         create('alpha','Alpha',self.ctx,self.root)
     def test_nested_routes_and_no_private_payload(self):
-        out=self.root/'site';build(out,self.root)
+        out=self.root/'site';build(out,'https://example.github.io/math-research/',self.root)
         side=(out/'branches/alpha/index.html').read_text()
         self.assertIn('"catalogue": "../../notebooks.json"',side)
         self.assertIn('href="../../"',side)

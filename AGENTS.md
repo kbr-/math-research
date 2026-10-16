@@ -733,9 +733,10 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   explicitly overridden by the user; push with `tools/checked-push.sh` (from a worktree branch
   `tools/checked-push.sh main`, which pushes HEAD to main only as a fast-forward), which runs both
   and pushes only if both pass. Pages targets main only; local commits are checkpoints. The Pages
-  workflow builds HTML/site-tool changes with `tools/build_pages.py --out _site`: upload only that
-  minimal artifact, never the checkout/private sources. Preserve live mode and project-relative
-  published revision URLs.
+  workflow builds HTML/site-tool changes with `tools/build_pages.py --out _site --site-url URL`, URL
+  being the site's HTTPS base URL that every page's citations use: upload only that minimal
+  artifact, never the checkout/private sources. Preserve live mode and project-relative published
+  revision URLs.
 - Follow LICENSE: original software MIT, original research CC BY 4.0. Preserve attribution, cite
   upstream mathematics and distinguish working from established results. Third-party papers are not
   ours to relicense: follow THIRD_PARTY_NOTICES.md and research/references/redistribution.json. Keep

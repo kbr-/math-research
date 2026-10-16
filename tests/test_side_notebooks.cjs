@@ -22,7 +22,7 @@ import sys, shutil
 from pathlib import Path
 root = Path(sys.argv[1]); repo = Path.cwd(); sys.path.insert(0, str(repo / 'tools'))
 from branch import create, SECTIONS
-for name in ['index.html', 'server.py', 'LICENSES/MIT.txt', 'research/context-budgets.json',
+for name in ['index.html', 'server.py', 'LICENSES/MIT.txt', 'CITATION.cff', 'research/context-budgets.json',
              'tools/notebooks.py', 'tools/notebook_site.py', 'tools/notebook_math.py']:
     p = root / name; p.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(repo / name, p)
 (root / 'main-notebook.html').rename(root / 'notebook.html')
@@ -37,7 +37,7 @@ for name in ['alpha', 'beta']:
     s = p.read_text(); n = s.rfind('</section>'); p.write_text(s[:n] + entries + s[n:])
 if sys.argv[2] == 'static':
     from build_pages import build
-    build(root / 'site', root)
+    build(root / 'site', 'https://example.github.io/math-research/', root)
 `, root, site ? 'static' : 'live']);
 }
 

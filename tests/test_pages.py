@@ -10,6 +10,8 @@ sys.path.insert(0, str(ROOT))
 from server import snapshot
 from tools.build_pages import build, OUTPUT_FILES
 
+SITE = 'https://example.github.io/math-research/'
+
 
 class PagesBuild(unittest.TestCase):
     def setUp(self):
@@ -19,6 +21,7 @@ class PagesBuild(unittest.TestCase):
         (self.root / 'notebook.html').write_text('<h1>Example</h1>\\[x^2 + y^2 = z^2\\]')
         (self.root / 'LICENSES').mkdir()
         (self.root / 'LICENSES/MIT.txt').write_text((ROOT / 'LICENSES/MIT.txt').read_text())
+        (self.root / 'CITATION.cff').write_text((ROOT / 'CITATION.cff').read_text())
         (self.root / 'private').mkdir()
         (self.root / 'private/secret.txt').write_text('must not be published')
         self.out = self.root / 'site'
@@ -27,7 +30,7 @@ class PagesBuild(unittest.TestCase):
         self.temp.cleanup()
 
     def test_only_rendered_public_files_are_built(self):
-        revision = build(self.out, root=self.root)
+        revision = build(self.out, SITE, root=self.root)
         page = (self.out / 'index.html').read_text()
         self.assertEqual({p.name for p in self.out.iterdir()}, OUTPUT_FILES)
         self.assertIn('<h1>Example</h1>', page)
@@ -43,10 +46,10 @@ class PagesBuild(unittest.TestCase):
         self.assertEqual(json.loads((self.out / 'revision.json').read_text())['revision'], revision)
 
     def test_revision_is_repeatable_and_changes_with_notebook(self):
-        first = build(self.out, root=self.root)
-        self.assertEqual(build(self.out, root=self.root), first)
+        first = build(self.out, SITE, root=self.root)
+        self.assertEqual(build(self.out, SITE, root=self.root), first)
         (self.root / 'notebook.html').write_text('<h1>New result</h1>')
-        self.assertNotEqual(build(self.out, root=self.root), first)
+        self.assertNotEqual(build(self.out, SITE, root=self.root), first)
 
     def test_local_snapshot_keeps_live_configuration(self):
         template, notebook, revision = snapshot(self.root)
@@ -55,23 +58,70 @@ class PagesBuild(unittest.TestCase):
         self.assertEqual(len(revision), 64)
 
     def test_update_url_works_under_project_subpath(self):
-        build(self.out, root=self.root)
+        build(self.out, SITE, root=self.root)
         page = (self.out / 'index.html').read_text()
         self.assertIn('"revisionUrl": "./revision.json"', page)
         self.assertEqual(urljoin('https://example.github.io/math-research/', './revision.json'),
                          'https://example.github.io/math-research/revision.json')
 
+    def test_citations_follow_the_introduction_and_every_entry(self):
+        (self.root / 'notebook.html').write_text(
+            '<h1>Goal</h1><p class="intro">The target.</p><section id="where-we-stand"><p>Open.</p></section>'
+            '<article class="research-entry" id="entry-2026-09-26-first" data-kind="research">\n'
+            '<h3>26 September 2026 — A <em>first</em> result</h3>\n'
+            '<p class="entry-meta"><strong>Status:</strong> proved.</p><p>Body one.</p></article>'
+            '<article id="entry-2026-10-05-second" data-claim-note="k > 2, no claim."> <h3>5 October 2026 — '
+            'Second \\(q<h\\) <em>bound</em></h3><p>Body two.</p></article>'
+            '<article data-note="a > b" id="entry-setup"><h3>Setup</h3></article><article id="other"><h3>Not an entry</h3></article>')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        url = SITE + '#entry-2026-09-26-first'
+        self.assertLess(page.index('The target.</p>'), page.index('id="cite-this-notebook"'))
+        self.assertLess(page.index('id="cite-this-notebook"'), page.index('id="where-we-stand"'))
+        self.assertIn(f'<strong>Cite as:</strong> Kamil Braun, <cite>Main research notebook</cite>, '
+                      f'Noemesis research notebooks, <a href="{SITE}">{SITE}</a>', page)
+        self.assertIn('<p class="entry-meta"><strong>Status:</strong> proved.</p>\n<p class="entry-cite">Cite as: '
+                      'Kamil Braun, “A first result”, Main research notebook, Noemesis research notebooks, '
+                      f'26 September 2026, <a href="{url}">{url}</a>.</p><p>Body one.', page)
+        self.assertIn('bound</em></h3>\n<p class="entry-cite">Cite as: Kamil Braun, “Second \\(q&lt;h\\) bound”, '
+                      'Main research notebook, '
+                      'Noemesis research notebooks, 5 October 2026, ', page)
+        self.assertIn('Setup</h3>\n<p class="entry-cite">Cite as: Kamil Braun, “Setup”, Main research notebook, '
+                      f'Noemesis research notebooks, <a href="{SITE}#entry-setup">', page)
+        self.assertEqual(page.count('class="entry-cite"'), 3)
+        source = (self.out / 'notebook-source.html').read_text()
+        self.assertEqual(source.count('class="entry-cite"'), 3)
+        self.assertIn('id="cite-this-notebook"', source)
+
+    def test_author_is_read_from_the_citation_file(self):
+        citation = self.root / 'CITATION.cff'
+        citation.write_text(citation.read_text().replace('given-names: Kamil', 'given-names: Ada'))
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        self.assertIn('<strong>Author:</strong> Ada Braun.', page)
+        self.assertIn('<footer id="notebook-footer">Ada Braun · ', page)
+        citation.write_text('cff-version: 1.2.0\ntitle: "No authors"\n')
+        with self.assertRaises(ValueError):
+            build(self.out, SITE, root=self.root)
+
+    def test_refuses_a_site_url_without_https(self):
+        with self.assertRaises(ValueError):
+            build(self.out, 'http://example.github.io/math-research/', root=self.root)
+        with self.assertRaises(ValueError):
+            build(self.out, 'https:///', root=self.root)
+        self.assertFalse((self.out / 'index.html').exists())
+
     def test_refuses_unexpected_output_files(self):
         self.out.mkdir()
         (self.out / 'private.txt').write_text('do not publish')
         with self.assertRaises(ValueError):
-            build(self.out, root=self.root)
+            build(self.out, SITE, root=self.root)
         self.assertFalse((self.out / 'index.html').exists())
 
     def test_requires_template_markers(self):
         (self.root / 'index.html').write_text('<html>unrecognized template</html>')
         with self.assertRaises(ValueError):
-            build(self.out, root=self.root)
+            build(self.out, SITE, root=self.root)
 
 
 if __name__ == '__main__':

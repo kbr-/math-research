@@ -56,7 +56,7 @@ def node(script, *args, modules=None, timeout=30):
 class PublishedClient(unittest.TestCase):
     def test_update_behavior(self):
         with tempfile.TemporaryDirectory(prefix='math-pages-client-') as temp:
-            build(Path(temp) / 'site', root=ROOT)
+            build(Path(temp) / 'site', 'https://example.github.io/math-research/', root=ROOT)
             result, _ = node('test_pages_client.js', str(Path(temp) / 'site/index.html'))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
