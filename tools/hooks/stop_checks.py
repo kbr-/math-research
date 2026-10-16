@@ -288,6 +288,27 @@ def gap_block(reply):
         'the question, or ask for the narrowest open route. If the sentence leaves no question open, say so.')}
 
 
+# A reply that ends by waiting on a background reviewer or run (16 October 2026: "Waiting for the review of
+# the maximum-displacement entry." ended a turn): AGENTS.md has the waiting time spent on checkpoint
+# preparation, so such a reply either lists what was prepared or keeps working.
+IDLE = re.compile(r"[^.!?\n]*\b(?:wait(?:s|ed|ing)?\s+(?:for|on)|until)\s+(?:the\s+|its\s+|a\s+)?"
+                  r"(?:\w+[- ]){0,3}(?:review|reviewer|subagent|agent|run|job|notification|verdict)s?\b[^.!?\n]*", re.I)
+PREPARED = re.compile(r"\b(?:prepared|ready to commit|staged|commit message (?:is )?(?:drafted|written))\b", re.I)
+
+
+def idle_block(reply):
+    """The block for a final reply that waits on a background reviewer or run without saying what the
+    wait was used for, or None."""
+    parts = [part for part in re.split(r'(?<=[.!?])\s+|\n+', reply.strip()) if part.strip()]
+    found = IDLE.search(parts[-1]) if parts else None
+    if not found or PREPARED.search(reply):
+        return None
+    return {'decision': 'block', 'reason': (
+        f'The reply ends waiting: "{found.group(0).strip()}". A background reviewer or run is no reason to idle '
+        '(AGENTS.md: prepare staging paths, commit message and checks during review). Prepare the checkpoint '
+        'or continue other work, and say in the reply what was prepared.')}
+
+
 # A tool the framework lacks: no tool, helper or script does a job, or a scratch script stands in for one.
 # Measured on one long session's 14,647 text and thinking blocks: 6 sentences matched, 5 of them a job
 # done without a tool, the sixth this check's own description.
@@ -458,7 +479,8 @@ def turn_block(texts, calls, said, off, quoted=()):
     mistake, a tool's fault worked around, a declared gap), those named in `off` left out; or None.
     `said` is what the gap check reads: the final reply, or what was said since the last commit."""
     checks = (('promise', lambda: promise_block(texts, quoted)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
-              ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)))
+              ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)),
+              ('idle', lambda: idle_block(said)))
     return next(filter(None, (check() for name, check in checks if name not in off)), None)
 
 

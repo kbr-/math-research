@@ -359,6 +359,19 @@ class UncheckedClaimTest(HookFixture):
             with self.subTest(reply=reply):
                 self.assertIn(f'A declared gap: "{quoted}"', hook.gap_block(reply)['reason'])
 
+    def test_a_reply_ending_in_a_wait_on_a_reviewer_blocks_unless_it_says_what_was_prepared(self):
+        for reply in ('The ledger is in place. Waiting for the review of the maximum-displacement entry.',
+                      'Drafted the entry.\nI will continue when the reviewer reports, waiting on its verdict.',
+                      'Launched the run; waiting for the background job.'):
+            with self.subTest(reply=reply):
+                self.assertIn('The reply ends waiting', hook.idle_block(reply)['reason'])
+        for reply in ('Waiting for the review. The commit message is drafted and the paths staged.',
+                      'The checkpoint is prepared; the reviewer is still running.',
+                      'Waiting for the review of the entry, I read the source meanwhile.\nThen the proof was finished.',
+                      'The entry is committed.'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.idle_block(reply))
+
 
 
     def test_a_quoted_promise_promises_nothing(self):

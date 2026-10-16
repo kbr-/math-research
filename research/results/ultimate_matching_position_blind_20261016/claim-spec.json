@@ -1,0 +1,60 @@
+{
+  "source": {
+    "record": "[Position-blind cell exits](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-position-blind-exits)",
+    "label": "Position-blind cell exits",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-position-blind-exits"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:level-count-consequence",
+      "summary": "If a matching is (L,alpha)-good in coordinate j with alpha in (0,infinity), then for every t>=0 at most 2N e^(-t) pairs have |X_i^j-Y^j_pi(i)| >= L sqrt(log N/N) t^(1/alpha); hence for every a,delta,beta>0, if more than N (log N)^(-a) pairs have |X_i^j-Y^j_pi(i)| >= delta (log N)^(1/2+beta)/sqrt N, the matching is not (L,alpha)-good in coordinate j for N >= N_0(a,delta,beta,L,alpha).",
+      "assessment": "Working proof: Markov's inequality on the exponential sum, at t=(delta/L)^alpha (log N)^(alpha beta), which exceeds a log log N + log 2 for large N.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "The level-count form of the exponential condition that refutations of constructions use.",
+      "next_action": "None beyond use.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "thm:position-blind-cell-exits",
+      "summary": "For alpha_1,alpha_2 in (0,infinity], square cells of side s=s_N -> 0 with s sqrt N >= delta (log N)^(1/2+gamma) (delta,gamma>0 fixed), X,Y independent uniform samples: for each fixed measurable rule that, in each cell with excess z(u)>0, chooses z(u) of its X points by cell memberships and labels only and matches them to Y points outside the cell, and every L, with probability tending to one the matching fails to be (L,alpha_j)-good in some coordinate j. In particular the matching of [C5] (Ouimet, solution of Talagrand's Problem 5.3) fails the (4,4) condition for every L.",
+      "assessment": "Working proof: McDiarmid gives sqrt N/(8s) exits; conditional on memberships and labels the exits are uniform in their cells, a quarter lie at depth s/4 and move at least s/4 in some coordinate; the level count of lem:level-count-consequence at t=(s sqrt N/(4L sqrt log N))^alpha_j excludes goodness. [C5]'s excess is its largest-label points (its Section 2.5), each paired into a side-neighbouring cell (Section 2.6).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Excludes the known simultaneous AKT/Leighton-Shor construction at (4,4) and shows that the points leaving a coarse cell must be chosen by position.",
+      "next_action": "Test a position-aware repair: exits chosen nearest the side they leave through, recursively at dyadic scales, against the level counts 2N e^(-t).",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:level-count-consequence",
+      "cites",
+      "lem:exponential-matching-consequences",
+      "The count at every level; that lemma's maximum bound is its top level, its sum bound is not implied."
+    ],
+    [
+      "thm:position-blind-cell-exits",
+      "depends_on",
+      "lem:level-count-consequence",
+      "The conclusion step."
+    ],
+    [
+      "thm:position-blind-cell-exits",
+      "applies",
+      "conj:ultimate-matching",
+      "Excludes a class of constructions, [C5]'s included, at (4,4) and at every pair with beta>0."
+    ],
+    [
+      "thm:position-blind-cell-exits",
+      "cites",
+      "thm:maximum-displacement-curve-threshold",
+      "Maximal displacements alone cannot refute a pair of the curve; this obstruction uses level counts of one construction class."
+    ]
+  ]
+}

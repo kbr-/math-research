@@ -1,0 +1,85 @@
+Reviewer record: the single fresh-context medium reviewer of entry-2026-10-16-position-blind-exits,
+16 October 2026 (Claude Code, medium-reviewer agent). First report, as returned (condensed only in
+layout):
+
+Verdict: pass with corrections. Every step checks out; one quantifier in the theorem statement is
+false as written, and the general version is free.
+
+Checked and correct: the level count (Markov on positive summands; t hits the level; N_0 depends on
+a, delta, L, alpha since alpha*beta >= 1 is used only for t >= (delta/L)^alpha log N); the moments
+of z(u) (fourth cumulant of a difference of binomials at most sigma^2, so E z^4 <= 3 sigma^4 +
+sigma^2, the draft's 3 sigma^4 + 2 sigma^2 weaker but valid; Hoelder exponents right; sigma^2 >=
+lambda uses m >= 2; constant 0.5 holds for large lambda); McDiarmid (sum of squared differences 8N,
+exp(-r^2/(4N))); f/2 >= N/(8 sqrt lambda) and the Chernoff steps to N/(64 sqrt lambda) and
+N/(128 sqrt lambda); the conditioning (given cells and labels, positions independent uniform, E_u
+fixed; y outside Q_u by the rule itself, so the matching's dependence on positions does no harm);
+the central-square geometry; the [C5] application (Section 2.5 selects the k_u smallest labels from
+the larger sample, so the excess is the largest labels; Section 2.6 pairs every excess X point x0 of
+Q_{u0} with y1 in a neighbouring Q_{u1}, u1 != u0; the construction works on an intersection of
+events of probability tending to one; delta = K and C = 1 valid for large N).
+
+Required changes.
+- Quantifier order: "with probability tending to one every matching produced by a position-blind
+  exit rule fails" is false: for each realization the rule picking, on that membership pattern, the
+  labels of the points nearest the boundary is position-blind and beats the bound there. Fix: "for
+  every fixed (measurable, possibly N-dependent) position-blind exit rule and every L, with
+  probability -> 1 ...". Also in the spec summary and commit message ("each fixed").
+- Free generalization: for any beta > 0 the level-count consequence holds without beta >= 1/alpha
+  (t = (delta/L)^alpha (log N)^(alpha beta) > a log log N + log 2 eventually; N_0 also depends on
+  beta). So the theorem holds for any cell scale s sqrt N >= delta (log N)^(1/2+gamma), gamma > 0,
+  whatever the pair, including (infinity, infinity). The upper bound s sqrt N <= (log N)^C can be
+  weakened to m -> infinity (McDiarmid needs m^2/64 -> infinity; for larger s the allowed count
+  2N e^(-t) falls super-polynomially while the exit count N/(8 s sqrt N) falls only polynomially).
+  State the general version (AGENTS.md); rewrite Not covered and Degenerate cases to match.
+- Cosmetic: N (log N)^(-C-8) is odd; a = C+1 suffices.
+- Setting: say the rule may produce a matching only on an event of probability -> 1, and that it is
+  measurable.
+- What it shows: the sentence on what exiting points "must be" is interpretation of the level count,
+  not a proved converse; call it a necessary condition. The quoted survey remark is not from a source
+  listed in Sources read: cite where it was read or drop it.
+- Degenerate cases, Nonvacuity, Bearing: fine apart from the generalization; Bearing "some" and
+  progress "unchanged" are right.
+
+Open point (unverified). One-scale repair: choose exits nearest the side they cross; a crossing at
+depth >= s_1 u happens only across an edge with |g(e)| >~ u N s s_1 = u sqrt(lambda log N), so the
+(4,4) level counts become sum_e (|g(e)| - u sqrt(lambda log N))_+ <~ N e^(-u^4) plus the same for
+the partner side and re-routed through-paths: a psi_4-Orlicz bound on edge loads normalized by
+sqrt(lambda log N). [C5]'s electrical flow is linear in z with Gaussian loads (variance about
+lambda log m), counts about N e^(-c u^2), failing at u ~ (log N)^(1/4); its interpolated flow g has
+only ||g||_inf <= lambda/32, far above ||h||_inf ~ sqrt(lambda) (log N)^(3/4) of the routed
+Leighton-Shor flow; using h moves the problem to the tails of the Leighton-Shor matching, which is
+circular. Intermediate levels: at every dyadic scale the depth unit equals s_1, so adding log N
+scales naively loses sqrt(log N), or gives Gaussian tails if scales are independent; the repair needs
+per-scale psi_4 control summed across scales without that loss, the conjecture's multiscale content.
+No reason found that the multiscale version must fail. Next attempt: (1) prove that psi_4-bounded
+cell flows at all dyadic scales with nearest-side exits give a (4,4)-good matching; (2) test whether
+Lemma 2.10's truncation with an Orlicz-psi_4 constraint in place of the l_inf cap gives such a flow
+at one scale.
+
+Process audit. Title proposed "Position-blind cell exits fail; [C5] fails (4,4)", status working
+proof; not "every position-blind scheme" without "each fixed". The quantifier error survives in the
+spec summary. The spec's cites-edge to thm:maximum-displacement-curve-threshold is a fair reading but
+the body never cites that theorem: cite it or drop the edge. The hypotheses were tied to the
+Leighton-Shor scale without checking which step needs them. The survey quote is outside the sources
+read. Review paragraph (5): "no mechanical check of reply endings is possible" is unsupported; the
+Stop hook tools/hooks/stop_checks.py sees the reply text, so an ending-phrase check is possible;
+build or queue it. Review paragraph (2): commit 1290753a6 exists with the quoted title. Review
+paragraph (3) honestly limits the claim to the measured 2.5 s. The commit message otherwise says no
+more than the entry.
+
+Follow-up check of the corrections, same reviewer, as returned (condensed only in layout):
+the corrections check out. McDiarmid: N/(64 lambda) = m^2/64 -> infinity exactly when s -> 0;
+lambda >= delta^2 (log N)^(1+2 gamma) -> infinity, so the 0.5 constant applies. Chernoff: exits
+sqrt N/(8s) -> infinity; N/(128 sqrt lambda) = sqrt N/(128 s). Conclusion: 2N e^(-t) < sqrt N/(128 s)
+iff t > log(256 x) + (1/2) log log N; log log N <= gamma^(-1) log(x/delta); t = (x/4L)^alpha beats
+O(log x); alpha = infinity needs x > 4L. The quantifier fix is in the theorem, General statement,
+Bearing, New mathematics and spec. Required: (1) the Conclusion cites the lemma's consequence but uses
+its first part, the level count itself; (2) "all but 2N e^(-t) of the exits lie within ..." needs
+both coordinates: 4N e^(-t); (3) the Follow-up closes as Developed partly on the reviewer's
+unverified repair analysis (a heuristic, the sufficient direction only, no proved reduction); rest
+the closure on the item's own question, which the theorem answers, and record the hand-off as an
+unverified lead; the reviewer did not read lem:hopf-lax-matching-bound and cannot confirm it gives
+per-scale psi_4 tails. Optional: s -> 0 is not needed (for fixed m, f/sqrt N tends in law to a sum of
+absolute Gaussians, almost surely positive); reword Degenerate cases as "excluded by hypothesis".
+Minor: Nonvacuity still quoted beta = 1/4. The planned commit-message wording matches the entry.
+Process audit: title and status match the body; the remaining overreach was (3).
