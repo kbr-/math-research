@@ -864,6 +864,16 @@ class LeadQueueTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'fewer than'):
                 lq.close_built(head, 'notebook.html', 'b-1', 'research/results/reviewer.txt', ['tools/thing.py'],
                                'short', root)
+            # a build a measurement falsified leaves marked so, and only with the measurement named in its note
+            with self.assertRaisesRegex(ValueError, 'what was measured'):
+                lq.close_built(head, 'notebook.html', 'b-1', 'research/results/reviewer.txt', ['tools/thing.py'],
+                               'Not built: the mechanism was dropped and a reviewer duty replaces it.', root,
+                               falsified=True)
+            _, dropped = lq.close_built(head, 'notebook.html', 'b-1', 'research/results/reviewer.txt',
+                                        ['tools/thing.py'], 'Not built: measured, its search ranks the claims '
+                                        'hundreds deep.', root, falsified=True)
+            self.assertEqual(dropped['outcome'], 'falsified')
+            self.assertNotIn('outcome', row)
             with self.assertRaisesRegex(ValueError, 'only builds close this way'):
                 lq.close_built(head, 'notebook.html', self.q[0][1], 'research/results/reviewer.txt',
                                ['tools/thing.py'], note, root)

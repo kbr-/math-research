@@ -148,7 +148,10 @@ growing checklists or one-off setup narratives.
   satisfies all the statement's hypotheses, with its parameters, after
   `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
   finisher requires it of the same entries). State compositions as lemmas in one common setting with
-  a complete proof, not a reference to a sketch. Before the reviewer's brief, run
+  a complete proof, not a reference to a sketch. At the start of drafting, run the entry's skeleton
+  (its headings and labelled paragraphs, before the body) through `tools/notebook-append.py DRAFT
+  --check`, which lists each failing entry check of the append and the finisher that applies to a
+  draft, so a required paragraph is planned before the work. Before the reviewer's brief, run
   `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that cites a
   claim beside that claim's registered statement, and each that links an entry beside that entry's
   title and status line: a sentence may say no more than its source, and one that draws a decision
@@ -612,12 +615,14 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   too, so a tool that needs the source is told which paths. The run uses a real diff where the tool
   compares revisions (an unchanged base skips whole code paths), before its commit, and a profile if
   it is slower than the work it does. Measure a change's effect before claiming it: a framework
-  commit message states only what was measured or checked, and a mechanism (a cache, an option, a
-  helper) needs a measured use. Other tests run only on their own trigger: `formalization/tests/`
-  needs the Lean toolchain and runs when formalization tooling changes;
-  `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and run only
-  when those controls change. Scripts and tests under `research/` are computations or provenance of
-  finished one-off jobs, tied to the data of their date, and are not rerun.
+  commit message, a tool's docstring and help, and a queue-closure note state only what was measured
+  or checked, each figure beside the saved output it came from, written after that output exists,
+  with every measured value of the comparison it draws, not only those that support it; and a
+  mechanism (a cache, an option, a helper) needs a measured use. Other tests run only on their own
+  trigger: `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
+  changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and
+  run only when those controls change. Scripts and tests under `research/` are computations or
+  provenance of finished one-off jobs, tied to the data of their date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general rules, not

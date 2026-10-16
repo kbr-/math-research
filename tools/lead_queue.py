@@ -2269,7 +2269,7 @@ def closure_problems(row, root=None):
     root = Path(root or ROOT)
     problems = []
     if len(row.get('note', '').strip()) < CLOSURE_NOTE:
-        problems.append(f'its note says in fewer than {CLOSURE_NOTE} characters what was built')
+        problems.append(f'its note says in fewer than {CLOSURE_NOTE} characters what was built (or measured)')
     record = row.get('record', '')
     if not re.search(r'review[^/]*\.txt$', record) or not (root / record).is_file():
         problems.append(f'its reviewer record {record or "(none)"} is not an existing *review*.txt file')
@@ -2280,9 +2280,15 @@ def closure_problems(row, root=None):
     return problems
 
 
-def close_built(body, notebook, ident, record, paths, note, root=None, today=None):
+def close_built(body, notebook, ident, record, paths, note, root=None, today=None, falsified=False):
     """(the notebook without build `ident`, the ledger row recording why): a top-level build with no sub-ideas,
     built in a framework commit, leaves the queue without an entry, as `add` let it join without one.
+
+    With `falsified`, the build leaves without being built, because a measurement showed that its mechanism
+    does not do what it was queued for: the row says so ("outcome": "falsified"), its note says what was
+    measured, and its paths are the measurement and whatever replaced the mechanism (16 October 2026: a
+    registry search queued to find a test's missed claims ranked them hundreds deep, and the only way out
+    of the queue recorded it as built).
 
     Until 16 October 2026 a build left the queue only through an entry developing it or, one per review, a
     route review; six builds finished in one framework turn would have waited six reviews, swelling a draining
@@ -2302,7 +2308,11 @@ def close_built(body, notebook, ident, record, paths, note, root=None, today=Non
     row = {'notebook': notebook, 'ident': ident, 'text': ' '.join(html.unescape(strip_tags(node.text)).split()),
            'note': note, 'record': record, 'paths': list(paths),
            'date': (today or datetime.date.today()).isoformat()}
+    if falsified:
+        row['outcome'] = 'falsified'
     problems = closure_problems(row, root)
+    if falsified and not re.search(r'\bmeasur(?:ed|ement)\b', note, re.I):
+        problems.append('its note does not say what was measured, which a falsified build rests on')
     if problems:
         raise ValueError(f'{ident} cannot close: ' + '; '.join(problems))
     nodes = [n for n in nodes if n is not node]
@@ -2376,19 +2386,23 @@ def main(argv):
         parser.add_argument('--record', required=True, help='the reviewer record, a *review*.txt file')
         parser.add_argument('--path', action='append', required=True, help='an implementation path (repeatable)')
         parser.add_argument('--note', required=True, help='what was built, with its measured checks')
+        parser.add_argument('--falsified', action='store_true',
+                            help='not built: a measurement showed its mechanism fails its purpose (the note says '
+                                 'what was measured; the paths name the measurement and any replacement)')
         args = parser.parse_args(argv[2:])
         import notebooks
         path = Path(notebooks.notebook_file(args.notebook))
         relative = path.resolve().relative_to(ROOT.resolve()).as_posix()
         try:
-            body, row = close_built(path.read_text(), relative, args.ident, args.record, args.path, args.note)
+            body, row = close_built(path.read_text(), relative, args.ident, args.record, args.path, args.note,
+                                    falsified=args.falsified)
         except ValueError as error:
             print(error, file=sys.stderr)
             return 1
         with (ROOT / CLOSURES).open('a') as ledger:
             ledger.write(json.dumps(row, ensure_ascii=False) + '\n')
         path.write_text(body)
-        print(f'Closed {args.ident} as built, recorded in {CLOSURES}; '
+        print(f'Closed {args.ident} as {"falsified by measurement" if args.falsified else "built"}, recorded in {CLOSURES}; '
               f'{len(parse_tree(body)[1])} items in the queue. Stage the ledger with the notebook.')
         return 0
     if len(argv) == 5 and argv[1] == 'edit':

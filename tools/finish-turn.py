@@ -1677,10 +1677,11 @@ def claimless_build(body, article):
     return bool(re.search(r'\bdata-build="[^"]+"', tag) and re.search(r'\bdata-claims="none"', tag))
 
 
-def validate_general(body, article, close):
+def validate_general(body, article, close, *, registered=True):
     """AGENTS.md: restricted examples must test a named general statement; enforce it mechanically.
     Every research entry states its general claim for all parameters, and two finite-check entries
-    in a row on one route (neither with a proof or refutation) are rejected."""
+    in a row on one route (neither with a proof or refutation) are rejected. With `registered=False`, for a
+    draft whose claims are not registered yet, a cited claim ID need not be in the registry."""
     if not re.search(r'data-route-item="', body):     # active once the notebook declares route items
         return
     tags = entry_tags(body, article)
@@ -1693,7 +1694,7 @@ def validate_general(body, article, close):
                          'paragraph: the claim this cycle tests or proves, for all parameters, with '
                          'its conjectured bound as a formula (AGENTS.md, restricted examples)')
     ids = GENERAL_ID.findall(found.group(1))
-    if (ROOT / 'research/claims/index.json').exists():
+    if registered and (ROOT / 'research/claims/index.json').exists():
         ids = [i for i in ids if i in registered_status()]
     if not ids and not claimless_build(body, article):
         raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
@@ -1744,37 +1745,58 @@ def validate_marker(body, marker, draining=None):
     close = body.find('</article>', article) if article >= 0 else -1
     if not (0 <= record < article < position < close < end):
         raise ValueError('Timing marker must be inside a Research-record article')
-    meta = body.find('<p class="entry-meta">', article, position)
-    if meta < 0 or body.find('</p>', meta, position) < 0:
+    deferred = third_deferral_line(body, article, close)    # printed even when a check below refuses
+    if deferred:
+        print(deferred)
+    for _, check in entry_checks(body, article, close, draining, before=position):
+        check()
+
+
+def validate_status_line(body, article, before):
+    meta = body.find('<p class="entry-meta">', article, before)
+    if meta < 0 or body.find('</p>', meta, before) < 0:
         raise ValueError('The entry needs a <p class="entry-meta"> status line before its timing marker')
     status = strip_tags_tight(body[meta:body.find('</p>', meta)]).split('Produced by')[0]
     if len(status.strip()) > STATUS_LIMIT:
         raise ValueError(f'The status line has {len(status.strip())} characters; keep it under '
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
-    validate_route(body, article)
-    validate_general(body, article, close)
-    validate_paragraphs(body, article, close)
-    validate_suggestions(body, article, close)
-    refuse_unverified_attempt(body[article:close])      # the entry as it stands at the end, edits after appending included
-    validate_leads(body, article, close, draining=draining)
-    validate_convergence(body, article, close)
-    validate_review_builds(body, article, close)
-    validate_owed_unmade(body, article, close)
-    deferred = third_deferral_line(body, article, close)
-    if deferred:
-        print(deferred)
-    validate_bridges(body, article, close)
-    validate_progress(body, article, close)
-    if '$' in body[article:close]:
+
+
+def entry_checks(body, article, close, draining=None, *, registered=True, before=None):
+    """The finisher's checks of one entry, as (name, call) pairs in the order validate_marker runs them, so that
+    notebook-append.py --check runs the same list on a draft; `registered=False` leaves out the parts that read
+    claims registered for the entry, which a draft does not have yet. The status line is looked for before
+    `before` (the timing marker), by default anywhere in the entry."""
+    return [
+        ('status line', lambda: validate_status_line(body, article, close if before is None else before)),
+        ('route', lambda: validate_route(body, article)),
+        ('general statement', lambda: validate_general(body, article, close, registered=registered)),
+        ('required paragraphs', lambda: validate_paragraphs(body, article, close)),
+        ('reviewer suggestions', lambda: validate_suggestions(body, article, close)),
+        # the entry as it stands at the end, edits after appending included
+        ('unverified attempt', lambda: refuse_unverified_attempt(body[article:close])),
+        ('leads and follow-ups', lambda: validate_leads(body, article, close, draining=draining)),
+        ('convergence', lambda: validate_convergence(body, article, close)),
+        ('review builds', lambda: validate_review_builds(body, article, close)),
+        ('owed attempt', lambda: validate_owed_unmade(body, article, close)),
+        ('bridges', lambda: validate_bridges(body, article, close)),
+        ('progress and bearing',
+         lambda: validate_progress(body, article, close, check_registered_claims=registered)),
+        ('characters and names', lambda: validate_characters(body[article:close])),
+    ]
+
+
+def validate_characters(entry):
+    if '$' in entry:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
                          'write mathematics with \\( \\) and currency as "USD 5"')
-    coded = letter_code_labels(body[article:close])
+    coded = letter_code_labels(entry)
     if coded:
         raise ValueError('The entry names results by letter codes ' + ', '.join(coded) + ': cite them '
                          'by descriptive names (CLAUDE.md, Naming results), e.g. "the constant-row clamp" '
                          'rather than "Lemma K"; the claim ID usually gives the name')
-    control = sorted({c for c in body[article:close] if ord(c) < 32 and c != '\n'})
+    control = sorted({c for c in entry if ord(c) < 32 and c != '\n'})
     if control:
         # "\rho", "\text", "\bigl" written through a non-raw Python string become CR, TAB, BS.
         raise ValueError('The entry contains control characters ' + repr(control) + ': a TeX command '

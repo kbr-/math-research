@@ -661,5 +661,47 @@ class PublicationCitationTests(unittest.TestCase):
         self.assertEqual(publication_claims.lookup(['no-such-label']), {})
 
 
+class SkeletonCheckTests(unittest.TestCase):
+    """--check runs every entry-level check on a draft and lists each that fails, writing nothing."""
+
+    def names(self, entry, source=None):
+        return [name for name, _ in tool.skeleton_check(source or routed(), entry)]
+
+    def test_a_skeleton_missing_required_paragraphs_lists_each_failing_check(self):
+        bare = ('<article id="new" data-kind="research" data-route="general-step" data-obligation="open-goal" '
+                'data-goal-progress="unchanged"><p><strong>Question.</strong> Trial.</p></article>')
+        names = self.names(bare)
+        self.assertIn('general statement', names)
+        self.assertIn('progress and bearing', names)    # the first failure does not hide the later ones
+
+    def test_a_paragraph_added_to_the_skeleton_clears_its_check(self):
+        general = ('<p><strong>General statement.</strong> lem:new-result: the bound holds at every width and '
+                   'every depth of the source.</p>')
+        entry = draft(extra='data-claims="lem:new-result"', content=general)
+        self.assertNotIn('general statement', self.names(entry))
+        self.assertIn('general statement', self.names(draft(extra='data-claims="lem:new-result"')))
+
+    def test_a_draft_that_is_not_an_article_fails_as_append(self):
+        self.assertEqual(tool.skeleton_check(routed(), '<p>not an article</p>')[0][0], 'append')
+
+    def test_the_command_writes_nothing_and_fails_while_a_check_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook = root / 'notebook.html'
+            notebook.write_text(routed())
+            entry = root / 'draft.html'
+            entry.write_text(draft())       # no General statement
+            out = io.StringIO()
+            with mock.patch.object(tool, 'ROOT', root), \
+                 mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                 mock.patch.object(sys, 'argv', ['notebook-append.py', str(entry), '--check']), \
+                 contextlib.redirect_stdout(out):
+                with self.assertRaises(SystemExit) as stop:
+                    tool.main()
+            self.assertEqual(stop.exception.code, 1)
+            self.assertIn('FAILS general statement', out.getvalue())
+            self.assertEqual(notebook.read_text(), routed())
+
+
 if __name__ == '__main__':
     unittest.main()

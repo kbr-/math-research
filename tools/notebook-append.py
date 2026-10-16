@@ -408,7 +408,7 @@ def preflight(source, ident):
     checks.validate_progress(source, article, close, check_registered_claims=False)
 
 
-def append(source, entry, next_html=None, committed=None, reason=None, tools=None):
+def append(source, entry, next_html=None, committed=None, reason=None, tools=None, *, checked=True):
     """The notebook `source` with `entry` appended and, with `next_html`, its next step replaced.
     `committed` is the notebook as of the last commit, for the Where we stand rule, and `reason`
     what --stand-unchanged gave."""
@@ -437,18 +437,64 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         own(source, entry, next_html)
     if f'id="{m.group(1)}"' in source:
         raise ValueError(f'anchor already present: {m.group(1)}')
+    source = insert_entry(source, entry)
+    if next_html is not None:
+        source = replace_next(source, next_html)
+    living_sections(source)
+    if checked:     # skeleton_check runs these checks itself, under their own names
+        preflight(source, m.group(1))
+    return source
+
+
+def insert_entry(source, entry):
+    """The notebook with `entry` after the last article of its research record."""
     start = source.find('<section id="research-record">')
     if start < 0:
         raise ValueError('research-record section missing')
     close = source.find('</section>', start)
     last = source.rfind('</article>', start, close)
     at = last + len('</article>') if last >= 0 else close
-    source = source[:at] + '\n' + entry + source[at:]
-    if next_html is not None:
-        source = replace_next(source, next_html)
-    living_sections(source)
-    preflight(source, m.group(1))
-    return source
+    return source[:at] + '\n' + entry.strip() + source[at:]
+
+
+def skeleton_check(source, entry, next_html=None, committed=None, reason=None, path=None, root=ROOT):
+    """The entry checks that can run on a draft, run without writing anything: the (check, error) pairs that
+    fail. They are the append's refusals (one at a time: its first refusal hides its later ones), the queue
+    check, and the finisher's entry_checks with claim registration not required. An entry's skeleton, its
+    headings and labelled paragraphs before the body, goes through it at the start of drafting (AGENTS.md), so
+    that a paragraph a check requires is found then and not when the finished draft is appended or finished
+    (16 October 2026: two drafts of one session lacked such a paragraph). Left to the finisher: the checks that
+    read the session's searches, the registered claims and the context budgets, and its printed reports."""
+    failures = []
+
+    def run(name, call):
+        try:
+            call()
+        except ValueError as error:
+            failures.append((name, str(error)))
+
+    proposed = []
+    run('append', lambda: proposed.append(append(source, entry, next_html, committed, reason, checked=False)))
+    try:
+        body = proposed[0] if proposed else insert_entry(source, entry)
+    except ValueError as error:
+        return failures + [('record', str(error))]
+    ident = re.match(r'\s*<article\b[^>]*?\sid="([^"]+)"', entry)
+    if not ident:
+        return failures
+    article = body.rfind('<article', 0, body.rindex(f'id="{ident.group(1)}"'))
+    close = body.find('</article>', article)
+    checks = reporting_checks()
+    from lead_queue import check as queue_check, is_draining, SECTION_RE
+    run('queue', lambda: queue_check(committed, body, path, Path(root)))
+    section = SECTION_RE.search(body)
+    draining = is_draining(committed, section.group(1) if section else None)
+    for name, call in checks.entry_checks(body, article, close, draining, registered=False):
+        run(name, call)
+    marker = re.search(r'<!-- TIMING \S+ -->', entry)
+    if marker:
+        run('stand-in review answer', lambda: checks.validate_review_answer(Path(root), body, marker.group(0)))
+    return failures
 
 
 def replace_next(source, next_html):
@@ -660,12 +706,25 @@ def main():
     parser.add_argument('--notebook')
     parser.add_argument('--stand-unchanged', metavar='REASON',
                         help='why Where we stand needs no change in this cycle; recorded in the entry')
+    parser.add_argument('--check', action='store_true',
+                        help='append nothing: run the entry checks of this tool and the finisher that apply to a '
+                             'draft and list each that fails (for an entry\'s skeleton, at the start of drafting)')
     args = parser.parse_args()
     path = Path(ROOT) / selected(args.notebook)['source']
     if args.closures:
         print(closures_count(path.read_text()))
         return
     nxt = args.next_file.read_text() if args.next_file else None
+    if args.check:
+        if args.entry is None:
+            parser.error('--check needs the draft entry')
+        failures = skeleton_check(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
+                                  args.stand_unchanged, path)
+        for name, error in failures:
+            print(f'FAILS {name}: {error}')
+        print(f'Skeleton check of {args.entry}: {len(failures)} failing check(s), against '
+              f'{path.relative_to(ROOT)} ({path.stat().st_size / 1e6:.1f} MB); nothing was written.')
+        sys.exit(1 if failures else 0)
     if args.entry is None:
         if nxt is None:
             parser.error('an entry file is required, or --next alone to replace the Proposed next step')
