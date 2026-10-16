@@ -46,6 +46,11 @@ def main():
             ours = {D: pc.Closure(axioms, n, D) for D in range(0, 4)}
             rows.append(dict(system=label, reference=ref,
                              ours={D: (c.dim if c.proper else None) for D, c in ours.items()}))
+            for D, c in ours.items():
+                if str(D) in ref['dimensions']:
+                    assert c.proper and c.dim == ref['dimensions'][str(D)], (label, D)
+                elif ref['degree'] is not None and D >= ref['degree']:
+                    assert not c.proper, (label, D)
             print(json.dumps(rows[-1]), flush=True)
     with open(args.out, 'w') as handle:
         json.dump(rows, handle, indent=1)
