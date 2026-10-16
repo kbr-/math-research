@@ -27,6 +27,10 @@ the domain a construction needs) as well as its arithmetic: the numbers of a ste
 while the tool it uses does not apply (16 October 2026: a recheck confirmed every constant of a
 concentration step whose summands were dependent).
 
+A rule written in answer to a mistake is applied at once to whatever is being written next in the
+same session, by rereading that text against the rule before sending it on (16 October 2026: a
+missing union over a parameter recurred minutes after a rule against it).
+
 A negative sentence ("no estimate applies", "nothing covers it", "the record lacks it") is a claim
 like any other: write it only beside the attempt that failed, never as the plausible default when a
 paragraph needs filling (16 October 2026: "no one-dimensional estimate applies" was false for a
