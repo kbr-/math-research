@@ -51,5 +51,31 @@ class ConditionTest(unittest.TestCase):
         self.assertEqual(len(cmc.new_claims('', new)), 2)
 
 
+class SuiteAfterTest(unittest.TestCase):
+    def test_shared_code_needs_a_whole_suite_run_after_its_last_edit(self):
+        # 17 October 2026: a hook change was committed after its own module's tests only.
+        import json
+        import os
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            top = Path(tmp)
+            (top / 'tools/hooks').mkdir(parents=True)
+            (top / 'tools/tests').mkdir()
+            (top / 'tools/hooks/guard.py').write_text('x = 1\n')
+            (top / 'tools/shared.py').write_text('y = 1\n')
+            (top / 'tools/user.py').write_text('import shared\n')
+            (top / 'tools/alone.py').write_text('z = 1\n')
+            self.assertEqual(cmc.shared_code(['tools/hooks/guard.py', 'tools/shared.py', 'tools/alone.py',
+                                              'tools/tests/test_alone.py', 'compute.sh'], top),
+                             ['tools/hooks/guard.py', 'tools/shared.py', 'compute.sh'])
+            self.assertIn('whole suite', cmc.suite_after(['tools/hooks/guard.py'], top))      # no run yet
+            stamp = top / 'tools/tests/.suite-pass.json'
+            stamp.write_text(json.dumps({'unix_s': os.stat(top / 'tools/hooks/guard.py').st_mtime + 5}))
+            self.assertIsNone(cmc.suite_after(['tools/hooks/guard.py'], top))
+            os.utime(top / 'tools/hooks/guard.py', (9e9, 9e9))                               # edited after it
+            self.assertIn('tools/hooks/guard.py', cmc.suite_after(['tools/hooks/guard.py'], top))
+            self.assertIsNone(cmc.suite_after(['tools/alone.py'], top))                     # its own tests do
+
+
 if __name__ == '__main__':
     unittest.main()

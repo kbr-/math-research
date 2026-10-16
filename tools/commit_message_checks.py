@@ -91,12 +91,54 @@ def new_claims(old_index, new_index):
     return [(c['id'], c.get('summary', '')) for c in json.loads(new_index)['claims'] if c['id'] not in old]
 
 
+def shared_code(paths, top):
+    """The staged paths a change to which needs the whole suite (AGENTS.md: shared code, fixtures, hooks): hooks,
+    compute.sh, the tests' own runner and fixtures, and a tools module another tool imports by name."""
+    tools = (list((top / 'tools').glob('*.py')) + list((top / 'tools/hooks').glob('*.py'))
+             + [p for p in (top / 'tools').glob('git-hooks*/*') if p.is_file()])
+    found = []
+    for path in paths:
+        if path == 'compute.sh' or path.startswith('tools/hooks/') or path.startswith('tools/git-hooks'):
+            found.append(path)
+        elif path.startswith('tools/') and path.endswith('.py') and not path.startswith('tools/tests/test_'):
+            stem = Path(path).stem
+            uses = re.compile(rf'^\s*(?:import [\w, ]*\b{re.escape(stem)}\b|from {re.escape(stem)} import)', re.M)
+            if path.startswith('tools/tests/') or any(
+                    other.name != Path(path).name and uses.search(other.read_text(errors='replace'))
+                    for other in tools):
+                found.append(path)
+    return found
+
+
+def suite_after(paths, top):
+    """None when the whole suite passed after the last edit of each staged shared path, else the refusal."""
+    shared = [p for p in shared_code(paths, top) if (top / p).exists()]
+    if not shared:
+        return None
+    stamp = top / 'tools/tests/.suite-pass.json'
+    try:
+        passed = json.loads(stamp.read_text())['unix_s']
+    except (OSError, ValueError, KeyError):
+        passed = 0.0
+    later = [p for p in shared if (top / p).stat().st_mtime > passed]
+    if not later:
+        return None
+    return ('commit-msg: the commit changes shared code (' + ', '.join(later[:5]) + (' ...' if len(later) > 5 else '')
+            + ') edited after the last passing run of the whole suite: run ./compute.sh --threads 1 --timeout 60 '
+            'python3 tools/tests/run.py, then commit (AGENTS.md: a change to shared code, fixtures or hooks needs '
+            'the whole suite).')
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
     top = Path(git('rev-parse', '--show-toplevel').strip())
     read = lambda p: (top / p).read_text(errors='replace') if (top / p).is_file() else ''   # noqa: E731
     status = 0
+    refusal = suite_after(paths, top)
+    if refusal:
+        print(refusal, file=sys.stderr)
+        status = 1
     if is_framework(paths):
         missing = unsourced(message, paths, read)
         if missing:

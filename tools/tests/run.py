@@ -32,6 +32,9 @@ import unittest
 HERE = Path(__file__).resolve().parent
 LIMIT_S = 10.0
 DURATIONS = HERE / '.durations.json'
+# Written by a passing run of the whole suite: the commit check refuses a change to shared code made after it
+# (17 October 2026: a hook change was committed after its own module's tests only; AGENTS.md asks the suite).
+SUITE_PASS = HERE / '.suite-pass.json'
 MEMORY = Path('/dev/shm')
 
 
@@ -290,6 +293,11 @@ def timed_run(args, found, broken):
           + (f'FAILED ({len(failed)})' if failed else 'OK')
           + (', TOO SLOW' + (' (machine busy)' if outcome == 'busy' else '') if slow else '')
           + (f', {len(skipped)} skipped' if skipped else ''))
+    if not failed and not slow and not args.modules:
+        try:
+            SUITE_PASS.write_text(json.dumps({'unix_s': time.time(), 'tests': sum(r[1] for r in results)}))
+        except OSError:
+            pass
     return 1 if failed or slow else 0
 
 
