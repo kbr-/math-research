@@ -120,11 +120,34 @@ CHANGES_TEXT = re.compile(r"\.replace\(|\bre\.sub\(")
 WRITES_FILE = re.compile(r"\.write_(?:text|bytes)\(|\bopen\([^)]*['\"][wa]")
 
 
+# A Python script run by its path: python3 [-I] PATH.py
+SCRIPT_RUN = re.compile(r"\bpython3?\s+(?:-I\s+)?(\S+\.py)\b")
+REPOSITORY = Path(__file__).resolve().parents[2]
+
+
+def scratch_script_replaces(command: str) -> bool:
+    """A script outside the repository, run by its path, that changes text and writes a file.  On 16 October
+    2026 replace scripts written to the scratchpad and run by path passed the inline check; three of them
+    swallowed labels of the entry they edited.  Committed tools inside the repository are not read."""
+    for path in SCRIPT_RUN.findall(command):
+        file = Path(os.path.expandvars(path)).expanduser()
+        try:
+            if file.resolve().is_relative_to(REPOSITORY) or not file.is_file():
+                continue
+            source = file.read_text(errors="replace")[:200000]
+        except OSError:
+            continue
+        if CHANGES_TEXT.search(source) and WRITES_FILE.search(source):
+            return True
+    return False
+
+
 def adhoc_replace_helper(command: str):
     """The reason when a heredoc script defines its own text-replacement helper, or an inline Python
-    script replaces text in a file."""
+    script, or a scratch script run by its path, replaces text in a file."""
     if ((HEREDOC.search(command) and ADHOC_REPLACE.search(command))
-            or (INLINE_PYTHON.search(command) and CHANGES_TEXT.search(command) and WRITES_FILE.search(command))):
+            or (INLINE_PYTHON.search(command) and CHANGES_TEXT.search(command) and WRITES_FILE.search(command))
+            or scratch_script_replaces(command)):
         return ("a script replaces text in a file; replace a passage of prose with "
                 "tools/replace_text.py FILE OLD_FILE NEW_FILE, which matches across line breaks and keeps the "
                 "passage's indentation, or make an exact edit with the Edit tool (AGENTS.md: a recurring helper "

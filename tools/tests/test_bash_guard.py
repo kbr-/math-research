@@ -285,6 +285,25 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(good=good):
                 self.assertEqual(run(good).returncode, 0, run(good).stderr)
 
+    def test_a_scratch_script_replacing_text_in_a_file_is_refused_when_run_by_path(self):
+        # 16 October 2026: replace scripts in the scratchpad, run by path, swallowed three labels of an entry.
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            edit = Path(tmp) / 'fix.py'
+            edit.write_text("import sys\np = sys.argv[1]; t = open(p).read()\nt = t.replace('a', 'b')\n"
+                            "open(p, 'w').write(t)\n")
+            reader = Path(tmp) / 'count.py'
+            reader.write_text("import sys\nprint(open(sys.argv[1]).read().replace('a', 'b').count('b'))\n")
+            writer = Path(tmp) / 'make.py'
+            writer.write_text("open('out.json', 'w').write('[]')\n")
+            result = run(f"python3 {edit} research/x.html")
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("a script replaces text in a file", result.stderr)
+            for good in (f"python3 {reader} x.md", f"python3 {writer}", "python3 tools/replace_text.py a b c",
+                         f"python3 {tmp}/absent.py x"):
+                with self.subTest(good=good):
+                    self.assertEqual(run(good).returncode, 0, run(good).stderr)
+
     def test_long_compute_runs_go_to_the_background(self):
         long_runs = ["./compute.sh run t1 --threads 1 --timeout 600 --expect 300 -- M2 --script x.m2",
                      "./compute.sh run t1 --expect 120 -- ./k",
