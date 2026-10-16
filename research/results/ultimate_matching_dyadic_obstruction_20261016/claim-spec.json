@@ -1,0 +1,64 @@
+{
+  "source": {
+    "record": "[Dyadic flow obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-dyadic-flow-obstruction)",
+    "label": "Dyadic flow obstruction",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-dyadic-flow-obstruction"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:block-lower-tail",
+      "summary": "If xi_1..xi_n are i.i.d., mean 0, variance sigma^2>0, |xi_i|<=c, S their sum, s=sigma sqrt n, x>=1, m=ceil(128x^2)<=n and c^2<=s^2/(2m), then P(S>=xs)>=64^(-m)>=exp(-540x^2).",
+      "assessment": "Working elementary proof: m independent blocks, each with fourth moment at most 4 sigma_l^4, Hoelder and Paley-Zygmund giving P(block >= sigma_l/8) >= 1/64.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "A self-contained Gaussian-type lower tail for bounded sums up to deviations of order s/c, used to show that linear flows have Gaussian per-point tails.",
+      "next_action": "None beyond use.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "thm:dyadic-flow-obstruction",
+      "summary": "For the dyadic Ajtai-Komlos-Tusnady flow Phi of thm:dyadic-flow-square-exponential with X i.i.d. uniform and any fixed L>0, each coordinate k, each alpha in (2,infinity] and each M, with probability tending to one int psi_alpha(4|Phi_k(x)|/(L sqrt(N log N))) dx >= M (psi_alpha(u)=e^(u^alpha)-1, psi_infinity(u)=N(u-1)_+). So the flow-bound value of this flow, for any lambda' within a constant factor of N, exceeds every multiple of N at every pair with an exponent above 2, in particular at every pair of the ultimate matching curve.",
+      "assessment": "Working proof: per-point variance of order N log N from explicit scale-invariant coefficient weights (means 1/6 and 1/12 per level) and independent dyadic digits, lem:block-lower-tail conditionally on the level-(log N)/8 counts with the coarse part's sign absorbed, concentration over the level blocks by Chebyshev. About one flow only; for a general fixed kernel the concentration over points is not proved.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Turns the heuristic that the dyadic flow cannot reach the curve into a theorem, so this route's next construction is a different, presumably adaptive, flow.",
+      "next_action": "Try a multiscale self-balancing flow (profiles chosen within each dyadic square to anti-correlate with the coarser field), first by a small simulation of per-point tails.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:dyadic-flow-obstruction",
+      "depends_on",
+      "lem:block-lower-tail",
+      "The conditional per-point lower tail."
+    ],
+    [
+      "thm:dyadic-flow-obstruction",
+      "cites",
+      "thm:dyadic-flow-square-exponential",
+      "Same flow and parameters; shows its method stops at exponent 2."
+    ],
+    [
+      "thm:dyadic-flow-obstruction",
+      "cites",
+      "lem:flow-matching-bound",
+      "Shows the bound's right-hand side for this flow is unbounded at exponents above 2."
+    ]
+  ],
+  "overrides": {
+    "thm:dyadic-flow-square-exponential": {
+      "assessment": "Working proof: lem:flow-matching-bound with the dyadic Ajtai-Komlos-Tusnady flow as a vector martingale over dyadic levels. Talagrand and Yukich (Ann. Appl. Probab. 1993, Theorem 1, statement read 16 October 2026, proofs unread) prove the isotropic two-sample pair (2,2) as an expectation bound on a set of probability 1-n^(-2), by an analogous fixed-point displacement argument through the adaptive AKT transformation; as stated it gives every failure level with a constant depending on that level. In the two-sample setting the addition here is only probability tending to one at a fixed constant; in the evenly-spread setting, where Theorem 1 does not formally apply and [T4] (4.131) gives 9/10, it adds every failure level as well. No novelty claimed."
+    }
+  },
+  "refresh": {
+    "thm:dyadic-flow-square-exponential": "Assessment updated after reading Talagrand and Yukich (1993) in the dyadic flow obstruction entry."
+  }
+}
