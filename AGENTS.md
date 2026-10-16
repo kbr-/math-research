@@ -94,9 +94,10 @@ growing checklists or one-off setup narratives.
   October 2026): support a statement by a proof, a source read in the cycle with its hypotheses, or
   a test able to distinguish it from the alternative at the sizes run. Otherwise label it an
   untested hypothesis and base no decision or status on it. When a proof's steps hold in a more
-  general setting at no extra cost, state and prove the general version; narrow a statement, also on
-  a reviewer's correction, only after naming the step that needs the narrower setting, and record
-  that step. A correct result is withdrawn only when false: one that is elementary, dominated or
+  general setting at no extra cost, state and prove the general version, then recheck every sentence
+  that relied on the narrower form (comparisons, bearings, instances); narrow a statement, also on a
+  reviewer's correction, only after naming the step that needs the narrower setting, and record that
+  step. A correct result is withdrawn only when false: one that is elementary, dominated or
   superseded is kept and registered with that relation (user, 16 October 2026: "If we get a general
   version for free, we do the general version. Don't throw away results."). To compare dimensions or
   bound a rank, first seek a natural map: an injection into the space claimed larger, or a map whose
