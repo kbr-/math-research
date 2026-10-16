@@ -1,0 +1,39 @@
+Review record of entry-2026-10-16-fourth-route-review, 16 October 2026, Claude Code medium-reviewer
+(one fresh-context reviewer, staged; the stage-one record is stage1-review.txt beside this file).
+Condensed in layout only.
+
+Stage two (route revealed). Verdict: pass with corrections. Re-read Theorems 4.5.13 and 4.5.16 and
+Corollary 4.5.7 of [T4], the computation's script and output. Chaining lead: arithmetic holds
+(d_2 per slice, entropy numbers, crossovers, plateau log(W/w_r), Jensen packing B log(y/B), the
+threshold log y <= c (log N)^(2/3)); required: slope K = ||f'||_inf explicit (gamma_1 needs
+w >= K sqrt(log N/N); cost by full gradient mass (1+K) a l), resolution eps <= w l/sqrt N,
+Talagrand or Bousquet concentration instead of bounded differences, disjointness used only for cost
+additivity. Strip computation: expectations committed first and a positive control, but its
+prediction (no growth in N at fixed q) is fixed by the bare point count O(q sqrt N); strips lie at
+or below the class's grid side; drop "within the target for every gradient level"; "consistent
+with" log(W/w_r); q = 16 ratio from 2^14 (1.116 vs 1.361). Sobolev lead: sqrt(r/w) arithmetic and
+the d_inf remark correct; per-cell bound unproved. Ewald: edge tubes cover a single plateau; Holtsmark:
+annulus count correct, restore the variance and kernel conditions. Decisive test: prediction not
+exhaustive; Attempt checked: the tube localization appears reachable from lem:mesh-function-
+discrepancy rescaled to W-cells plus a Bernstein union bound over coarse W-cell approximations
+(about 3^(l/W) choices), total a l sqrt N((log(W/w_r))^(3/4) + sqrt(log N)); unchecked: the union
+over about N cells with conditioning on counts, and closing segments; so rewrite lemma-first.
+Smaller: "single" in the Assessment, Downstream qualifiers, sources of counts. Process audit: the
+computation run without its baseline; the decisive test posed without trying the rescaled mesh
+lemma; three counts without source; overstated sentences. Strength count: 5.
+
+Follow-up one. Verdict: pass with corrections. Confirmed sqrt K in gamma_2, the rounding sentence,
+the Hammersley rewrite and picks. Required: chaining Answers to match (a l sqrt K, w >= K
+sqrt(log N/N)); Ewald "Passed" rests on the support claim only; Decision qualifier log y <= C log N;
+define W(x) non-circularly; source (B) or drop it; adding a linear function is not class-preserving.
+Attempt checked: the grad W step is routine (Lipschitz envelope, d_W rho_W of mean zero, cellwise
+sum <= C int |grad G| on a balanced Whitney partition); the real stopping point is a cancellation
+inequality sum_Q F(i(Q)) int_Q |grad(rho_W * G)| <~ (log N)^(1/2). Strength count: 3.
+
+Follow-up two. Verdict: pass with corrections. The first W(x) definition (distance between connected
+components of supp grad G) fails on the sawtooth: adjacent teeth share crests, so the support is
+one component; fix (unverified): split by the sign of the normal derivative, W = own component's
+width plus distance to the nearest other, Lipschitz envelope over ramp points; checked on the
+sawtooth (about half the tooth width), plateau (w_r + W) and staircase (w_r + spacing). Other
+edits confirmed (sqrt K, K sqrt(log N/N), Ewald support claim, log y <= C log N, (B) sourced,
+cancellation inequality named). Strength count: 1 (the sawtooth sentence in Trivial cases).
