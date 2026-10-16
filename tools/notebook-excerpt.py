@@ -379,6 +379,12 @@ def claim_excerpts(idents, registry, root=None):
         claim = claims[ident]
         block = (f"{ident}\n  Statement: {claim.get('summary', '')}\n  Assessment: {claim.get('assessment', '')}\n"
                  f"  Status: {claim.get('mathematical_status', '')}\n  Record: {claim.get('record', '')}\n")
+        # 16 October 2026: a reviewer read a registered statement whose corrected clause was flagged only in its
+        # assessment; the correcting claim's own statement now stands beside it.
+        for edge in registry.get('relationships', []):
+            source, kind, target = (str(edge.get('id', '')).split('::') + ['', '', ''])[:3]
+            if kind == 'corrects' and target == ident:
+                block += f"  Corrected by {source}: {claims.get(source, {}).get('summary', '')}\n"
         if root is not None:
             block += ''.join(f'  Record statement: {line}\n'
                              for line in record_statements(claim.get('record', ''), Path(root), cache, ident,

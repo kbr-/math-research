@@ -180,6 +180,12 @@ class ClaimExcerptsTest(unittest.TestCase):
                       '  Status: working_proof\n  Record: [Entry](https://example.org/#e1)\n', text)
         with self.assertRaisesRegex(ValueError, 'not in the registry: lem:absent, thm:gone'):
             tool.claim_excerpts(['lem:first', 'lem:absent', 'thm:gone'], registry)
+        # a correcting claim's statement stands beside the claim it corrects (16 October 2026)
+        registry['claims'].append({'id': 'ex:fix', 'summary': 'The transfer clause fails.'})
+        registry['relationships'] = [{'id': 'ex:fix::corrects::lem:first'}, {'id': 'ex:fix::cites::prop:second'}]
+        text = tool.claim_excerpts(['prop:second', 'lem:first'], registry)
+        self.assertIn('  Corrected by ex:fix: The transfer clause fails.\n', text.split('lem:first\n')[1])
+        self.assertNotIn('Corrected by', text.split('lem:first\n')[0])
         registry['claims'].append({'id': 'cor:blank', 'summary': ' '})
         with self.assertRaisesRegex(ValueError, 'registered without a statement: cor:blank'):
             tool.claim_excerpts(['lem:first', 'cor:blank'], registry)
