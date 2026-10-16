@@ -53,6 +53,8 @@ class BashGuardTest(unittest.TestCase):
             "./tools/finish-turn.py t1 2>&1 | tail -15",
             "./tools/finish-turn.py t1 --next t2 | head",
             "./tools/check_records.py --diff 2>&1 | tail -2 && git commit -q -m x",
+            "python3 tools/check-claims.py 2>&1 | tail -1 && tools/ff-base.sh",
+            "python3 tools/claim_rebase.py --spec s.json 2>&1 | tail -2 && git rebase --continue",
             "FOO=1 python3 -u tools/resume.py | head",
             "(python3 tools/resume.py) | head",
             "bash compute.sh start t1 | tail",

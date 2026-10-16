@@ -76,6 +76,11 @@ GUARDED = [
     (re.compile(INVOKED + r"check_records\.py\b"),
      "tools/check_records.py is a gate whose exit status a pipe replaces with the filter's (a finding would no "
      "longer stop a following && git commit)"),
+    # 16 October 2026: "check-claims.py | tail -1 && tools/ff-base.sh" fast-forwarded main past a failing claim
+    # check, for the same reason.  The claim gates keep their exit status too.
+    (re.compile(INVOKED + r"(?:check-claims|claim_rebase)\.py\b"),
+     "tools/check-claims.py and tools/claim_rebase.py are gates whose exit status a pipe replaces with the "
+     "filter's (a failure would no longer stop a following && tools/ff-base.sh or git rebase --continue)"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")
