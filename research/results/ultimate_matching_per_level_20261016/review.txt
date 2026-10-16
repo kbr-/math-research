@@ -1,0 +1,74 @@
+Reviewer record: the single fresh-context medium reviewer of entry-2026-10-16-per-level-counts,
+16 October 2026 (Claude Code, medium-reviewer agent). First report, as returned (condensed only in
+layout):
+
+Verdict: pass with corrections. The proof holds; the corrections concern the scope of "What it
+gives" and the commit message, an unrelated baseline, and small slips in constants.
+
+Checked and correct: reduction to the curve (lowering to beta'_j works since t >= 1; high levels
+(log N)^beta_j <= 4^beta_j t^beta_j <= 2 t^beta_j); cells (area A <= t^-1 <= short side squared,
+sides in [sqrt A/2, sqrt A], mu_Q in [m/4, m], at most 4N/m cells); conditional law of label-chosen
+subsamples; the lemma's hypotheses (k_Q >= m/8 -> infinity, aspect 2 <= (log k)^(1/2), Z_Q fixed
+given memberships); composition through Z_Q (8K (log 2m)^(3/4) <= 14K (log m)^(3/4); both branches
+of the case split; L = 40K suffices); the count (E|n_X - n_Y| <= sqrt(2 mu); Cauchy-Schwarz with
+4m^2 + 2m <= 9m^2; Chernoff constants; bounding by p(m/8) on k_Q >= m/8); uniformity (the bound on
+EV/(2N e^-t) is uniform in t on [1, (log N)/4), the high-level event does not depend on t).
+
+Required changes.
+- Exponent split: for t < 3/2, log(m/8) >= 2t + 2 log log N - 3 does not give (2t-3)_+ + 2 log log N;
+  use b = 2 log log N - 1 or treat t < 3/2 separately (harmless).
+- p(k) uses L_0 undefined: say it is the L of lem:anisotropic-leighton-shor-bound.
+- Nonvacuity: log 2m = 4 log log N + log 2, not (4 log log N)^(3/4).
+- Scope: the theorem gives one matching per level t common to both coordinates;
+  lem:level-count-consequence is per coordinate, so the condition also implies mixed levels
+  (t_1 != t_2) in one matching, which the theorem does not supply (t = min gives only 2N e^-min).
+  Narrow every sentence ("every single level holds", "no argument one level at a time refutes") to a
+  common level, or prove the mixed version (rescale coordinate j by t_j^-beta_j; not checked).
+- The position-blind sentence: thm:position-blind-cell-exits assumes square cells; here cells are
+  squares only when beta_1 = beta_2, i.e. (4,4) on the curve; "at other levels they are not" is not
+  proved. Restrict to (4,4) or mark it unproved, and drop that clause.
+- Unrelated baseline: thm:dyadic-flow-square-exponential gives one matching meeting all levels at
+  exponent 2 in both coordinates (Y evenly spread; two samples need lem:two-sample-matching-transfer
+  at exponent 2, not checked by the reviewer), so for alpha_1, alpha_2 <= 2 the full condition is on
+  record; the new content is pairs with some alpha_j > 2, the whole curve among them.
+- Degenerate cases: at an endpoint such as (2, infinity), coordinate 2 alone at all levels is already
+  answered by the maximum-displacement threshold; the remaining content is coordinate 1's counts in the
+  same matching.
+- Unused hypotheses: none.
+
+Open point (nested and consistent cells). Label-chosen leftovers matched in the level-(t+1) cell
+move about its side, e^(t+1) log N t^(beta_j - 1/4)/sqrt N, beyond L s_1 t'^beta_j for every t' up
+to T ~ (e^t sqrt(log N))^(1/beta_j); about N e^-t/log N such leftovers against 2N e^-T allowed: fails
+by a huge margin (the mechanism of thm:position-blind-cell-exits). Position-aware exchange: carry each
+sibling imbalance (about sqrt(m_t)) across the shared edge through a boundary strip of mapped width
+1/(N^(1/2) t^(1/4)), about one point spacing; cascading these over levels is the dyadic AKT flow,
+which thm:dyadic-flow-square-exponential gives Gaussian tails (exponent 2) and
+thm:dyadic-flow-obstruction excludes above 2. A proof needs Leighton-Shor-type correlation of shifts
+across scales, not nesting; no adjustment of the nested scheme found that avoids both obstructions.
+Next step (unverified): simultaneous per-level matchings with m = e^(2t)(log N)^3 and a union bound
+over integer t, at a factor 2^beta in L; strengthens the statement, not the coupling.
+
+Process audit. Title proposed "Per-level counts on and above the curve: one matching per common
+level", status "Working proof; one matching per level"; avoid "every level of the condition holds".
+The commit message's first line and "no argument using one level at a time refutes" are stronger
+than the body; "the conjecture's content is the coupling of levels" needs the unproved converse
+(mixed levels untested). The record search missed thm:dyadic-flow-square-exponential and
+thm:dyadic-flow-obstruction. The Chosen paragraph is adequate, but "fixes what the head's flow must
+achieve beyond single levels" claims more than the result gives. Uniformity: the proof is uniform in
+t; the draft could say so.
+
+Follow-up check of the corrections, same reviewer, as returned (condensed only in layout):
+corrections (1)-(5) check out in the entry and commit message. Required in the spec: the "applies
+conj:ultimate-matching" note still said "every single level holds" (narrow to a common level); the
+"cites thm:position-blind-cell-exits" note needs the restriction to (4,4), where the cells are
+squares; optional "one common level at a time" in the level-count note. The mixed-level claim is
+correct as a statement about this construction: rescaling by t_j^-beta_j gives density N P,
+P = t_1^beta_1 t_2^beta_2, cell distance (log m)^(3/4)/sqrt(N P) against L s_1, and leftovers count
+in both coordinates so m >= e^(2 max t_j); at (4,4), t_1 = log N, t_2 = 1, the right side is about
+(log N)^(5/8) and the left about (log N)^(3/4), indeed m >= N^2, so the cells argument does not
+exist there; the maximum-displacement threshold does not cover the instance either (it gives
+K (log N)^(1/4) s_1, not K s_1). Word it as a limit of this construction, not a proof that mixed
+levels fail. Other checks: the split (2t-2) + (2 log log N - 1) is valid (log 8 < 3); Nonvacuity and
+L_0 correct; uniformity stated with the caveat; endpoint case right. Process: closing as Developed
+and queuing mixed-level-counts is consistent with the item's text; the Chosen paragraph could say
+"one common level"; the commit message says no more than the entry.

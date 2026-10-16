@@ -1,0 +1,68 @@
+{
+  "source": {
+    "record": "[Per-level count matchings](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-per-level-counts)",
+    "label": "Per-level count matchings",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-per-level-counts"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "thm:per-level-count-matchings",
+      "summary": "There is a universal L such that for alpha_1,alpha_2 in (0,infinity] with 1/alpha_1+1/alpha_2 >= 1/2, X,Y independent uniform samples of size N in [0,1]^2 and any sequence t=t_N in [1,log N], with probability tending to one some matching (depending on t) has at most 2N e^(-t) pairs with |X_i^j-Y^j_pi(i)| > L sqrt(log N/N) t^(1/alpha_j) for some j; the failure probability tends to zero uniformly in t. So each level of the ultimate matching condition common to both coordinates holds alone on and above the curve; a refutation must use mixed levels or levels coupled in one matching.",
+      "assessment": "Working proof: reduce to the curve by lowering 1/alpha_j; for t >= (log N)/4 thm:maximum-displacement-curve-threshold; below, rescale coordinate j by t^(-1/alpha_j), tile by near-square cells of about e^(2t)(log N)^2 expected points, match label-chosen equal subsamples in each cell by lem:anisotropic-leighton-shor-bound composed through its fixed set, count leftovers and bad cells as violations, and bound their mean by 4 sqrt2 N/sqrt m + 12 N Pr(bad)^(1/2), with Markov.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Shows that no argument using one level of the exponential condition common to both coordinates can refute a pair of the curve; mixed levels and the coupling of levels remain. Baseline: for exponents at most 2 thm:dyadic-flow-square-exponential gives all levels at once.",
+      "next_action": "Build the coupling: a matching meeting all levels at once, the head item's threshold flow.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:per-level-count-matchings",
+      "depends_on",
+      "lem:anisotropic-leighton-shor-bound",
+      "Matching in each rescaled cell."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "depends_on",
+      "thm:maximum-displacement-curve-threshold",
+      "The levels t >= (log N)/4."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "cites",
+      "lem:level-count-consequence",
+      "The level counts the condition implies are the ones met here, one common level at a time."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "cites",
+      "lem:per-level-gluing-fails",
+      "Per-level bounds do not glue into one matching in general."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "cites",
+      "thm:position-blind-cell-exits",
+      "At (4,4), where the cells are squares, its matchings use label-chosen leftovers, which that theorem forbids for a matching good at all levels."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "cites",
+      "thm:dyadic-flow-square-exponential",
+      "For exponents at most 2 that theorem gives all levels in one matching, stronger than this one."
+    ],
+    [
+      "thm:per-level-count-matchings",
+      "applies",
+      "conj:ultimate-matching",
+      "Each level common to both coordinates holds alone on and above the curve."
+    ]
+  ]
+}
