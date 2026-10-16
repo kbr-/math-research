@@ -79,6 +79,18 @@ def main(argv):
             return 1
     except OSError:
         pass
+    # 16 October 2026: a byte cut from a file written without a trailing newline left "</p" at the end of the new
+    # text, and the notebook took an unclosed tag.
+    try:
+        new_text = Path(argv[3]).read_text()
+        cut = re.search(r'</?(?:p|li|ul|ol|strong|em|h[1-6]|div|span|code|section|article|table|tr|td)\b[^<>]*$',
+                        new_text)
+        if cut:
+            print(f'replace_text: {argv[3]} ends inside a tag ("{cut.group(0)[:20]}"): '
+                  'the text was probably cut; write it again', file=sys.stderr)
+            return 1
+    except OSError:
+        pass
     try:
         updated, line = replace(path.read_text(), Path(argv[2]).read_text(), Path(argv[3]).read_text())
     except (ValueError, OSError) as error:

@@ -117,6 +117,22 @@ class ReplaceTextTest(unittest.TestCase):
             self.assertIn('written before', err.getvalue())
             self.assertEqual((tmp / 'plan.md').read_text(), PLAN)
 
+    def test_new_text_ending_inside_a_tag_is_refused(self):
+        # 16 October 2026: a cut byte left "</p" at the end of the new text.
+        with tempfile.TemporaryDirectory() as d:
+            tmp = Path(d)
+            (tmp / 'page.html').write_text('<p>Answer.</p>\n')
+            (tmp / 'old').write_text('<p>Answer.</p>')
+            (tmp / 'new').write_text('<p>Settled.</p')
+            with contextlib.redirect_stderr(io.StringIO()) as err:
+                self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'page.html'), str(tmp / 'old'),
+                                                    str(tmp / 'new')]), 1)
+            self.assertIn('ends inside a tag', err.getvalue())
+            (tmp / 'new').write_text('Settled: 1 < 2 and a<b')     # a comparison, not a tag, passes
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'page.html'), str(tmp / 'old'),
+                                                    str(tmp / 'new')]), 0)
+
 
 if __name__ == '__main__':
     unittest.main()
