@@ -383,7 +383,9 @@ def unprotected_workload(command: str):
         # A segment that only assigns a variable (S=path) runs nothing.
         if re.match(r"\w+=", program):
             continue
+        # A test module run as a program (python3 tools/tests/test_x.py) is a test runner too.
         if (program.rsplit("/", 1)[-1] in TEST_RUNNERS or program.endswith("tests/run.py")
+                or re.search(r"(^|/)tests?/test_[^/\s]*\.py$", program)
                 or (re.search(r"scratchpad/\S*\.(?:py|sh)$", program))):
             return (f"{program} runs a workload, which goes through ./compute.sh, small runs and other "
                     "repositories' tests included (COMPUTATION_RULES.md, enforced execution; user, 8 October "

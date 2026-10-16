@@ -30,6 +30,7 @@ class FirefoxCookiesTest(unittest.TestCase):
             ('session', 'shared', '.' + HOST, '/', 1),
             ('session', 'other-site', 'example.com', '/', 1),
             ('session_like', 'x', 'evil' + HOST, '/', 1),
+            ('clearance', 'parent', '.example.ts.net', '/', 1),
         ])
         connection.commit()
         connection.close()
@@ -58,6 +59,12 @@ class FirefoxCookiesTest(unittest.TestCase):
         _, out, _ = self.run_tool()
         values = sorted(c['value'] for c in json.loads(out.read_text()))
         self.assertEqual(values, ['dark', 'first-half', 'second', 'shared'])
+
+    def test_site_adds_the_parent_domains_cookies_and_no_others(self):
+        _, out, _ = self.run_tool('--site')
+        values = sorted(c['value'] for c in json.loads(out.read_text()))
+        self.assertEqual(values, ['dark', 'first-half', 'parent', 'second', 'shared'])
+        self.assertEqual(fc.site_hosts('www.researchgate.net'), ['www.researchgate.net', 'researchgate.net'])
 
     def test_fails_when_nothing_matches(self):
         code, out, _ = self.run_tool('--prefix', 'missing')

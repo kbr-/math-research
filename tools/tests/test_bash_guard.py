@@ -293,6 +293,7 @@ class BashGuardTest(unittest.TestCase):
                         "scripts/local/api-tests.sh -k relay",
                         "bash notes/some-work/suite_tips.sh",
                         "python3 tools/tests/run.py",
+                        "python3 tools/tests/test_browser_get.py 2>&1 | tail -1",
                         "python3 -I /tmp/claude-1/p/scratchpad/probe.py --out x",
                         "git status; python3 /tmp/s/scratchpad/m.py 2>&1 | tail",
                         "sh /tmp/s/scratchpad/loop.sh",

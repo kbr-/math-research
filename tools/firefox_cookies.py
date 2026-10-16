@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Copy one site's login cookies out of Firefox into a private file, for scripts to send.
 
-Usage: tools/firefox_cookies.py HOST [--prefix NAME] [--out PATH] [--db COOKIES_SQLITE]
+Usage: tools/firefox_cookies.py HOST [--prefix NAME] [--site] [--out PATH] [--db COOKIES_SQLITE]
 
 Reads a copy of the Firefox profile's cookies.sqlite (Firefox locks the live one), keeps only
 the cookies of exactly HOST, or of HOST whose names start with NAME, and writes them as JSON
@@ -29,7 +29,19 @@ def find_db(home: Path) -> Path:
     return max(found, key=lambda db: db.stat().st_mtime)
 
 
-def read_cookies(db: Path, host: str, prefix: str) -> list[dict]:
+def site_hosts(host: str) -> list[str]:
+    """HOST and every parent domain of at least two labels: the cookies a browser sends to HOST are set
+    on one of these (www.researchgate.net gets those of .researchgate.net too)."""
+    labels = host.split('.')
+    return ['.'.join(labels[i:]) for i in range(len(labels) - 1)] or [host]
+
+
+def read_cookies(db: Path, host: str, prefix: str, site: bool = False) -> list[dict]:
+    hosts = site_hosts(host) if site else [host]
+    return [cookie for name in hosts for cookie in _read(db, name, prefix)]
+
+
+def _read(db: Path, host: str, prefix: str) -> list[dict]:
     with tempfile.TemporaryDirectory() as tmp:
         for suffix in ('', '-wal'):
             source = Path(str(db) + suffix)
@@ -61,9 +73,11 @@ def main(argv=None) -> int:
     parser.add_argument('--prefix', default='', help='keep only cookies whose names start with this')
     parser.add_argument('--out', type=Path, help='default: ~/.cache/cookies-HOST.json')
     parser.add_argument('--db', type=Path)
+    parser.add_argument('--site', action='store_true',
+                        help='also the cookies of its parent domains, all a browser would send to HOST')
     args = parser.parse_args(argv)
     home = Path.home()
-    cookies = read_cookies(args.db or find_db(home), args.host, args.prefix)
+    cookies = read_cookies(args.db or find_db(home), args.host, args.prefix, args.site)
     if not cookies:
         print(f'no cookies for {args.host}{" named " + args.prefix + "*" if args.prefix else ""}: '
               'signed in to it in Firefox?', file=sys.stderr)
