@@ -197,12 +197,14 @@ growing checklists or one-off setup narratives.
   suggestions, unverified</h4>`, each item ending `<strong>Record.</strong>` with the outcome of a
   record search made before recording it (claim IDs or anchors that bear on it, or the words
   searched without a match; the finisher checks this), and verify one yourself before relying on it
-  or naming it as a next step; one that adds or strengthens a claim gets the follow-up check below.
-  Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer. The user
-  authorizes and encourages spawning reviewers for any needed review in this and all future Spin
-  runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set reviewer
-  subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not inherit
-  its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
+  or naming it as a next step; until then a report to the user that uses one says "unverified"
+  beside it, as the entry does (16 October 2026: a reply narrowed an open case on a reviewer's
+  computation without the label); one that adds or strengthens a claim gets the follow-up check
+  below. Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer. The
+  user authorizes and encourages spawning reviewers for any needed review in this and all future
+  Spin runs; no separate confirmation is needed. In both Codex and Claude Code, explicitly set
+  reviewer subagents to **medium** reasoning, regardless of the main agent's reasoning level; do not
+  inherit its high or higher setting. Claude Code uses the committed `medium-reviewer` agent type
   (`.claude/agents/medium-reviewer.md`, loaded at session start). Codex uses a native subagent with
   no conversation history, explicit `gpt-6.1-sol` and `medium` effort; see [the reviewer
   protocol](tools/CODEX.md). Give it the canonical reviewer instructions and only the review brief
