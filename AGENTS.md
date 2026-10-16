@@ -353,16 +353,19 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   and, if not, what its outcome bears on (the finisher checks it); work out for each instance the
   operation names the outcome its Trivial cases and Power already fix, and drop an instance they
   decide (twice on 16 October 2026 a review posed a test whose every instance its own bounds
-  decided, so it could not fail). Write that work out after `<strong>Instance check.</strong>`: each
-  inequality the Trivial cases and Power use, evaluated with the instance's numbers (the finisher
-  requires a numeric relation there; a third review that day called a room tight that its numbers
-  gave as \(2<3\)). Say after `<strong>Attempt.</strong>` what was tried, before posing the test, to
-  answer it from the statements it cites, and where that stopped: a test those statements answer in
-  a few lines is a lemma for the next entry, not a test. Apply this again when the reviewer supplies
-  the missing argument: rewrite the decision and next step as a lemma-first entry before
-  finalization, rather than retaining an unanswered test. The second-stage brief asks the reviewer
-  to try the step at which the Attempt stops, and the review's Verification gate says what it found
-  after `<strong>Attempt checked.</strong>` (the finisher checks).
+  decided, so it could not fail); an operation that states an inequality is tried there also at both
+  extremes of each parameter it names (objects packed and spread apart, one and many), since the
+  case it was drafted from is one extreme (16 October 2026: a bound in a chain's band width failed
+  for layers spread across the square). Write that work out after `<strong>Instance
+  check.</strong>`: each inequality the Trivial cases and Power use, evaluated with the instance's
+  numbers (the finisher requires a numeric relation there; a third review that day called a room
+  tight that its numbers gave as \(2<3\)). Say after `<strong>Attempt.</strong>` what was tried,
+  before posing the test, to answer it from the statements it cites, and where that stopped: a test
+  those statements answer in a few lines is a lemma for the next entry, not a test. Apply this again
+  when the reviewer supplies the missing argument: rewrite the decision and next step as a
+  lemma-first entry before finalization, rather than retaining an unanswered test. The second-stage
+  brief asks the reviewer to try the step at which the Attempt stops, and the review's Verification
+  gate says what it found after `<strong>Attempt checked.</strong>` (the finisher checks).
 
 The next research cycle on that route reports the actual outcome in **Architecture test.**, opening
 with `<strong>Decided.</strong>` or `<strong>Not decided.</strong>` and which of the review's

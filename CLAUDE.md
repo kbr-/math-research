@@ -32,7 +32,8 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines
   of its output that show the cause.
 - When a computation agrees with what was expected, write next what it does not show, before the
-  sentence that concludes from it.
+  sentence that concludes from it; and before posing a statement drawn from one worked construction,
+  write down the construction most unlike it and check the statement there.
 - Before writing any durable text (docstring, commit message, entry, reply), list each figure and
   finding it will carry beside its source (a saved output, a named agent's report, a proof in the
   entry); one whose only source is another agent's report is written as that agent's, or recomputed
