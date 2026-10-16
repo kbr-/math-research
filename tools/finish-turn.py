@@ -1426,13 +1426,19 @@ def reduced_mentions(plain, titles):
 # The record's forms (17 October 2026, from its own sentences): "X block, third turn", "X block's first turn",
 # "turn 2 of the X block", "the third X research turn", "the first of the four X turns", "counted as an X turn".
 # "The next X turn" names a later entry and is left out.
+# Also "Third Pang turn", "Turn N of M of the X block" and "X turn N of M" (the builds' reviewer, 17 October 2026).
 NAME = r'((?:[A-Z][\w-]*\s+){1,3})'
-ORDINAL = r'(?:first|second|third|fourth|fifth|sixth|last|\d+(?:st|nd|rd|th))'
+ORDINAL = r'(?i:first|second|third|fourth|fifth|sixth|last|\d+(?:st|nd|rd|th))'
 BLOCK_FORMS = [re.compile(p) for p in (
     NAME + r'block(?:,|\'s)\s+(?:[\w-]+\s+){0,2}?turn\b',
-    r'\bturn\s+(?:\d+\s+)?of\s+the\s+' + NAME + r'block\b',
+    r'\b[Tt]urn\s+(?:\d+\s+(?:of\s+\d+\s+)?)?of\s+the\s+' + NAME + r'block\b',
     r'\b' + ORDINAL + r'\s+(?:of\s+(?:the\s+)?(?:two|three|four|five|six|\d+)\s+)?' + NAME + r'(?:research\s+)?turns?\b',
-    r'\b(?:is|as)\s+an?\s+' + NAME + r'(?:research\s+)?turn\b')]
+    r'\b(?:is|as)\s+an?\s+' + NAME + r'(?:research\s+)?turn\b',
+    NAME + r'turn\s+\d+\s+of\s+\d+\b')]
+# A block named as the one coming next is not counted: "the first IPS turn comes next", "before the first IPS turn"
+# (the builds' reviewer found these refused on a Pang entry).
+COMING_AFTER = re.compile(r'^[^.;,]*?\b(?:comes?\s+next|follows?|is\s+next|starts?\s+next|begins?\s+next)\b')
+COMING_BEFORE = re.compile(r'\b(?:before|until|ahead\s+of)\s+(?:the\s+)?$', re.I)
 BLOCK_SKIP = {'the', 'this', 'that', 'its', 'first', 'second', 'third', 'fourth', 'fifth', 'next', 'route', 'a'}
 
 
@@ -1448,12 +1454,41 @@ def block_routes(text, routes):
         counting = ' '.join(s for s in re.split(r'(?<=[.;:])\s+', plain) if re.search(r'\bturns?\b', s, re.I))
         for form in BLOCK_FORMS:
             for m in form.finditer(counting):
+                if COMING_AFTER.search(counting[m.end():]) or COMING_BEFORE.search(counting[max(0, m.start() - 20):
+                                                                                            m.start()]):
+                    continue
                 words = [w.lower() for w in m.group(1).split() if w.lower() not in BLOCK_SKIP]
                 hits = [slug for slug, title in routes.items()
                         if words and all(re.search(r'\b' + re.escape(w) + r'\b', title.lower()) for w in words)]
                 if len(hits) == 1:
                     found.append((m.group(1).strip(), hits[0]))
     return found
+
+
+# A route title may hold lowercase words ("Use IPS directly"): after a capitalized first word any words count.
+NEXT_STEP_BLOCK = re.compile(r'\b((?:[A-Z][\w-]*\s+)(?:[\w-]+\s+){0,4}?)block,?\s+on\s+([a-z][a-z-]+)\b')
+
+
+def validate_next_step_blocks(body):
+    """The Proposed next step names each block with the route it runs on ("the fourth Use IPS directly block, on
+    ips-direct"): a block whose name belongs to another route item than the one named is refused (the item
+    block-count-route-check asks the Proposed next step to be read too)."""
+    section = re.search(r'<section id="proposed-next-step">(.*?)</section>', body, re.S)
+    if not section:
+        return
+    routes = living_titles(body, 'remaining-route', 'data-route-item')
+    plain = ' '.join(html.unescape(strip_tags(section.group(1))).split())
+    wrong = []
+    for m in NEXT_STEP_BLOCK.finditer(plain):
+        if m.group(2) not in routes:
+            continue
+        words = [w.lower() for w in m.group(1).split() if w.lower() not in BLOCK_SKIP]
+        hits = [slug for slug, title in routes.items()
+                if words and all(re.search(r'\b' + re.escape(w) + r'\b', title.lower()) for w in words)]
+        if len(hits) == 1 and hits[0] != m.group(2):
+            wrong.append(f'"{m.group(1).strip()} block" is route {hits[0]}, not {m.group(2)}')
+    if wrong:
+        raise ValueError('The Proposed next step names a block with another route: ' + '; '.join(wrong))
 
 
 def validate_statement_names(text, body):
@@ -1801,6 +1836,8 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     validate_statement_names(text, body)
     if tags['kind'] == 'research':
         validate_block_route(text, body, article)
+    if re.search(r'\bid="entry-2026-10-(?:1[7-9]|[23]\d)|\bid="entry-2026-1[12]-|\bid="entry-202[7-9]-', text):
+        validate_next_step_blocks(body)
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries

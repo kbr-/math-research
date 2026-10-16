@@ -397,7 +397,8 @@ class PlainestBoundTest(unittest.TestCase):
         # Each form the record uses, on an entry of another route (the forms of its own sentences).
         for meta in ('Working proof. IPS block, third turn: the collapse.', 'The IPS block\'s first turn.',
                      'This is turn 2 of the IPS block.', 'This is the third IPS research turn.',
-                     'It is the first of the four IPS turns.', 'The entry counts as an IPS turn.'):
+                     'It is the first of the four IPS turns.', 'The entry counts as an IPS turn.',
+                     'Third IPS turn.', 'Turn 3 of 4 of the IPS block.', 'IPS turn 3 of 4: a lemma.'):
             bad = entry('depth-prime-recurrence', meta)
             with self.subTest(meta=meta), self.assertRaisesRegex(ValueError, 'another route'):
                 FT.validate_block_route(bad, self.LIVING + bad, len(self.LIVING))
@@ -405,10 +406,23 @@ class PlainestBoundTest(unittest.TestCase):
                             ('general-step', 'This is the first of four Pang-repair turns after the completed IPS '
                                              'block.'),
                             ('general-step', 'The lemma is adopted, and the next IPS turn proves it.'),
+                            # A block named as coming next (the builds' reviewer's sentences).
+                            ('general-step', 'Third Pang turn; the first IPS turn comes next.'),
+                            ('general-step', 'Repair Pang block, fourth turn; the first IPS turn follows.'),
+                            ('general-step', 'Before the first IPS turn, a Pang lemma.'),
+                            ('general-step', 'The last Pang turn before the IPS block, whose first turn is next.'),
                             ('ips-direct', 'The second turn of the IPS block.')):
             good = entry(route, meta)
             with self.subTest(meta=meta):
                 FT.validate_block_route(good, self.LIVING + good, len(self.LIVING))
+
+    def test_the_proposed_next_step_names_each_block_with_its_own_route(self):
+        good = self.LIVING + ('<section id="proposed-next-step"><p>The fourth Use IPS directly block, on ips-direct, '
+                              'starts; the next Repair Pang block, on general-step, follows.</p></section>')
+        FT.validate_next_step_blocks(good)
+        bad = good.replace('Use IPS directly block, on ips-direct', 'Use IPS directly block, on general-step')
+        with self.assertRaisesRegex(ValueError, 'another route'):
+            FT.validate_next_step_blocks(bad)
 
     def test_work_of_a_later_turn_is_written_as_planned_not_done(self):
         # 16 October 2026: queued builds were stated as built "in the framework turn right after this review".

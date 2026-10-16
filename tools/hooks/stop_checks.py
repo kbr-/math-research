@@ -893,7 +893,9 @@ REPLY_FIGURE = re.compile(r'(?<!turn )(?<!block )\b\d+(?:\.\d+)? (?:of|in) \d+\b
                           r'listings|defects)\b')
 FIGURE_SOURCE = re.compile(r'research/(?:results|provenance|logs)/|[\w-]\.(?:txt|json|jsonl|html|py|md|csv)\b|'
                            r'\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,12}\b|\bentry-20\d\d-|'
-                           r"\b(?:reviewer|agent)(?:'s report)?\b|\bproof\b", re.I)
+                           r"\b(?:reviewer|agent)'s (?:report|reply|count|run)\b|\b(?:the|its|a) reviewer "
+                           r"(?:found|reported|counted|checked|ran|read|confirms|confirmed)\b|\bproof (?:in|of) (?:the|this) entry\b",
+                           re.I)
 
 
 def replay_figures(paths):
@@ -934,9 +936,9 @@ def figure_block(reply):
     """The block for a reply with a paragraph holding a figure and no source, or None. Replayed over four of this
     worktree's session transcripts (17 October 2026): a reply-level rule refused 10 of 1514 texts but let a bare
     "review" anywhere clear every figure (reply-figure-replay.txt); this paragraph-level rule with named sources
-    refuses 66 of 1516 texts (reply-figure-replay-paragraph.txt, both in
-    research/results/framework-builds-20261017/). Read one by one, most are computed findings stated with no path;
-    the false ones seen are rule parameters ("under 3 of 5", "2 of 4 is on the strict side") and budget counts."""
+    refuses 86 of 1518 texts (reply-figure-replay-paragraph.txt, both in
+    research/results/framework-builds-20261017/). Read one by one, 5 of the 86 are false: rule parameters ("under 3
+    of 5", "2 of 4 is on the strict side") and word-budget counts; the rest are computed findings with no path."""
     found = figure_paragraphs(reply)
     if not found:
         return None
