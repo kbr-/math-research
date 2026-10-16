@@ -52,24 +52,25 @@ equivalence or "nothing more can be had" drawn from one implication, a lower bou
 upper one); a counterfactual or comparison whose other side was not checked; a cited result said to
 "give" or "supply" something without the hypotheses it needs for that (an existence assumed, a
 uniform bound read from a pointwise one, a parameter the lemma fixes treated as free); a named next
-attempt whose outcome the draft's own bounds already fix; a parameter fixed at one value where the
-proof allows a range; a summary sentence (gate, scope, title, status, commit message) that drops a
-qualifier its source carries ("sketched", "unverified", "for thick supports"), read beside that
-source; a sentence saying something fails, is not bounded or cannot be had, without the attempt that
-failed beside it; a statement, test or check shaped by the one instance that prompted it, whose
-other inputs (a wider parameter range, the record's other entries, legitimate uses of the same
-words) were not tried; a prevention queued, or left to a reviewer, without naming what kept it from
-being built in the turn; a control that could not have failed on some of the cases it is reported
-for; a sentence saying what the record has or lacks for an object (that only one mechanism applies,
-that a recorded result cannot reach a case), or a decisive test or next attempt the record may
-already answer: search with `tools/search-claims.py` under the object's other names (structural
-names, a dual formulation, the objects in the proofs of the claims the draft cites), since a search
-in the draft's own words misses a result filed under another name, and report what it missed; a rule
-added to AGENTS.md, when the brief includes framework changes, that speaks about one goal's
-mathematics instead of every notebook. Give each finding with its location, or write "no findings".
-End the audit with "Strength count: N", the number of sentences outside the proofs (title, status,
-bearing, decision, follow-up, commit message) whose claim is stronger than its source in the draft,
-so that the pattern is counted per entry.
+attempt whose outcome the draft's own bounds already fix; an example offered for a claim that,
+computed, does not exhibit it; a parameter fixed at one value where the proof allows a range; a
+summary sentence (gate, scope, title, status, commit message) that drops a qualifier its source
+carries ("sketched", "unverified", "for thick supports"), read beside that source; a sentence saying
+something fails, is not bounded or cannot be had, without the attempt that failed beside it; a
+statement, test or check shaped by the one instance that prompted it, whose other inputs (a wider
+parameter range, the record's other entries, legitimate uses of the same words) were not tried; a
+prevention queued, or left to a reviewer, without naming what kept it from being built in the turn;
+a control that could not have failed on some of the cases it is reported for; a sentence saying what
+the record has or lacks for an object (that only one mechanism applies, that a recorded result
+cannot reach a case), or a decisive test or next attempt the record may already answer: search with
+`tools/search-claims.py` under the object's other names (structural names, a dual formulation, the
+objects in the proofs of the claims the draft cites), since a search in the draft's own words misses
+a result filed under another name, and report what it missed; a rule added to AGENTS.md, when the
+brief includes framework changes, that speaks about one goal's mathematics instead of every
+notebook. Give each finding with its location, or write "no findings". End the audit with "Strength
+count: N", the number of sentences outside the proofs (title, status, bearing, decision, follow-up,
+commit message) whose claim is stronger than its source in the draft, so that the pattern is counted
+per entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
