@@ -42,6 +42,12 @@ clause that differs.
 Where a draft states a conjecture or a summary from a finite check, set it beside the quantity the check computed (a maximum over choices, a field, a representative, a size) and report any part of the statement stronger than that quantity; then try the statement on the system's trivial transformations (adding a member of low degree, another presentation of the same object). Where the brief names a claim spec beside the draft, compare each claim's registered summary with the entry's General statement and Statement, and report any scope (degree range, number of pigeons, field, error form) that one states and the other does not. Where a draft calls a step taken from elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look for the one case it worked through that step and the citation's own words for the reason; report "checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
 brief asks for a specific check, and edit no files.
 
+Where the brief sends a check, a rule or a statement that its author corrected after an earlier
+report, do not stop at the cases the earlier report supplied: write the case most unlike them (the
+same words with another meaning, the opposite clause order, the form a later entry is likely to
+write) and run it, since a correction tested only on its reviewer's examples is fitted to them (17
+October 2026: a block-count check passed every sentence its reviewer gave and missed a fresh one).
+
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
 open point: for a failed proof attempt, an adjustment that gets past the failing step or a reason
 none exists; for an unproved expectation, a proof or a counterexample; for a new bound, whether it
