@@ -125,24 +125,26 @@ growing checklists or one-off setup narratives.
   independence, and an impact warning is not a verdict that a claim is false. Label
   rediscoveries/refinements and link their original records. Search each newly formulated lemma, not
   only the opening question, by technique name, the record's synonyms/structural names, dual or
-  adjoint formulation, and statement content words with `tools/search-claims.py`. Test it against
-  every recorded counterexample, refutation and obstruction for those objects. Before drafting its
-  proof, check yourself whether the record already implies it; include the relevant prior results in
-  the end-of-cycle review brief. Registration refuses a new claim whose summary resembles a
-  registered one unless the spec relates the two (`claim-index.py author build`); read the record it
-  names before deciding which. Run the same search when the spec is first drafted, before the
-  review, with `tools/claim_resemblance.py SPEC`, which prints the nearest registered claims below
-  the refusal threshold too, and read them before the entry says what is new; the tool logs its runs
-  and the finisher refuses an entry declaring a claim it was not run on in the session. Before
-  drafting a corollary, check for an earlier result under fewer hypotheses. Before sending a proved
-  statement to review, name for each hypothesis the step of the proof that uses it and the weakest
-  form that step needs, and state that form: a hypothesis copied from the instance at hand, rather
-  than read off the proof, narrows the lemma and the next step drawn from it (16 October 2026), and
-  a free parameter (a mesh, a scale, a threshold) is stated with the whole range its proof allows
-  before a value is chosen for the instance; say there too which class each conclusion holds for,
-  after `<strong>Hypotheses, each with its step.</strong>` (the finisher requires the paragraph of
-  an entry registering a proof). Evaluate every inequality a statement or a sentence about the
-  goal's endpoint uses at the Nonvacuity witness's parameters, before the review and again for each
+  adjoint formulation, and statement content words with `tools/search-claims.py`, one search in the
+  words of the objects its proof or its next step works on (the extremal examples, the records it
+  could contradict) rather than its own name. Test it against every recorded counterexample,
+  refutation and obstruction for those objects. Before drafting its proof, check yourself whether
+  the record already implies it; include the relevant prior results in the end-of-cycle review
+  brief. Registration refuses a new claim whose summary resembles a registered one unless the spec
+  relates the two (`claim-index.py author build`); read the record it names before deciding which.
+  Run the same search when the spec is first drafted, before the review, with
+  `tools/claim_resemblance.py SPEC`, which prints the nearest registered claims below the refusal
+  threshold too, and read them before the entry says what is new; the tool logs its runs and the
+  finisher refuses an entry declaring a claim it was not run on in the session. Before drafting a
+  corollary, check for an earlier result under fewer hypotheses. Before sending a proved statement
+  to review, name for each hypothesis the step of the proof that uses it and the weakest form that
+  step needs, and state that form: a hypothesis copied from the instance at hand, rather than read
+  off the proof, narrows the lemma and the next step drawn from it (16 October 2026), and a free
+  parameter (a mesh, a scale, a threshold) is stated with the whole range its proof allows before a
+  value is chosen for the instance; say there too which class each conclusion holds for, after
+  `<strong>Hypotheses, each with its step.</strong>` (the finisher requires the paragraph of an
+  entry registering a proof). Evaluate every inequality a statement or a sentence about the goal's
+  endpoint uses at the Nonvacuity witness's parameters, before the review and again for each
   sentence a correction rewrites: a corrected sentence is a new claim (16 October 2026: a correction
   wrote a degree condition its own example violated). Try it on degenerate inputs (the trivial
   instance, the empty one, an input outside its stated form) and report it in the entry after
