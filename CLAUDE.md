@@ -51,6 +51,10 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   representatives); a stronger form is tried first against the system's trivial transformations (16
   October 2026: a conjecture dropped the check's maximum over representatives and failed on the
   plainest one).
+- Before a script compares two quantities over choices (a maximum or minimum over representatives,
+  the side of a bound), derive in its docstring from the containment or inequality which extreme the
+  question needs (17 October 2026: a domain saving was taken as a maximum where the bound needs the
+  minimum).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
