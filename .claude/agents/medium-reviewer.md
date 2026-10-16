@@ -35,7 +35,10 @@ versus mechanism) and check that the entry states them all rather than choosing 
 favours. Where a hypothesis constrains several components at once (the coordinates of a vector,
 the terms of a tuple, each block of a matrix), check that the draft draws on every component it
 constrains before accepting a conclusion drawn from one; a claim that a condition binds "only the
-difference" or "only one part" is checked against all the components the hypotheses name.
+difference" or "only one part" is checked against all the components the hypotheses name. Where a
+draft defines an object that a cited theorem consumes (a repair, a certificate, a design), check
+that the definition asks no more and no less than that theorem's hypotheses use, and name the
+clause that differs.
 Do not trust summaries in the drafts over the excerpts. Run no computations unless the
 brief asks for a specific check, and edit no files.
 
