@@ -320,6 +320,10 @@ def sed_ampersand(command: str):
     return None
 
 
+# A writer of --out FILE with its errors discarded: on 16 October 2026 tools/notebook-excerpt.py refused to replace
+# an existing excerpt ("File exists") behind "> /dev/null 2>&1", and a reviewer read the previous review's excerpt.
+WRITER_SILENCED = re.compile(r"\s--out[\s=][^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|"
+                             r">\s*/dev/null\s+2>&1)")
 STAGING_SILENCED = re.compile(r"\bgit\s+(?:-C\s+\S+\s+)?(?:add|commit)\b[^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|>\s*/dev/null\s+2>&1)")
 
 
@@ -337,6 +341,10 @@ def staging_silenced(command: str):
     if STAGING_SILENCED.search("\n".join(kept)):
         return ("git add and git commit run with their errors shown: a discarded error hides a path that does not "
                 "exist or a refused commit. Drop the redirection of stderr")
+    if WRITER_SILENCED.search("\n".join(kept)):
+        return ("a command that writes --out FILE runs with its errors shown: a discarded error hides a refused "
+                "write (FILE exists, a bad argument), and the old FILE is then read as new. Keep stderr; drop only "
+                "stdout with > /dev/null")
     return None
 
 
@@ -699,6 +707,38 @@ def cannot_fail_tests(run=subprocess.run, notice=sys.stderr):
 SAID = []   # what the commit's checks said when they blocked, for the block log
 COMMANDS = []   # the command checked, whose named files the block log keeps
 
+
+def replay_silenced(paths):
+    """Print each past Bash command of the session transcripts at `paths` that staging_silenced refuses, with the
+    count: a refusal on a command's words is counted over past commands before it is committed (AGENTS.md)."""
+    found, commands, read = [], 0, 0
+    for name in paths:
+        with open(name, errors="replace") as stream:
+            for line in stream:
+                read += len(line)
+                if '"Bash"' not in line or "/dev/null" not in line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                content = (entry.get("message") or {}).get("content") if isinstance(entry, dict) else None
+                for part in content if isinstance(content, list) else []:
+                    if isinstance(part, dict) and part.get("type") == "tool_use" and part.get("name") == "Bash":
+                        commands += 1
+                        command = str((part.get("input") or {}).get("command", ""))
+                        reason = staging_silenced(command)
+                        if reason:
+                            found.append((entry.get("timestamp", ""), reason.split(":")[0], " ".join(command.split())[:120]))
+    for when, kind, start in found:
+        print(f"{when}\t{kind}\t{start}")
+    print(f"{len(found)} refused of {commands} Bash commands that mention /dev/null, in {len(paths)} transcripts "
+          f"({read / 1e6:.0f} MB read).")
+
+
+if __name__ == "__main__" and sys.argv[1:2] == ["--replay-silenced"]:
+    replay_silenced(sys.argv[2:])
+    sys.exit(0)
 
 if __name__ == "__main__":
     status = main()

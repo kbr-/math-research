@@ -538,6 +538,20 @@ class StagingSilencedTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertIsNone(guard.staging_silenced(command))
 
+    def test_a_writer_of_out_keeps_its_errors(self):
+        # 16 October 2026: an excerpt's --out refused an existing file behind "> /dev/null 2>&1".
+        for command in ('python3 tools/notebook-excerpt.py --claims a b --out $T/x.txt > /dev/null 2>&1; wc -c x',
+                        'python3 tools/notebook-excerpt.py A --text --out=f.txt 2>/dev/null',
+                        './compute.sh run t -- python3 r.py --out res.json &>/dev/null'):
+            with self.subTest(command=command):
+                self.assertIn('writes --out FILE', guard.staging_silenced(command))
+        for command in ('python3 tools/notebook-excerpt.py A --text --out $T/x.txt > /dev/null',
+                        'python3 tools/notebook-excerpt.py A --out x.txt',
+                        'python3 tools/x.py --outdir d 2>/dev/null',
+                        'python3 tools/x.py --out x.txt; ls missing 2>/dev/null'):
+            with self.subTest(command=command):
+                self.assertIsNone(guard.staging_silenced(command))
+
 
 class ExistingResultFolderTest(unittest.TestCase):
     def test_mkdir_of_a_results_folder_with_files_is_refused(self):
