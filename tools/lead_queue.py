@@ -2415,6 +2415,21 @@ NOT_BUILT_RE = re.compile(r'\bNot built in the turn:\s*(?:\S+\s+){4,}\S+', re.I)
 TRIED_RE = re.compile(r'\bTried:\s*(?:\S+\s+){4,}\S+', re.I)
 
 
+def tried_names_file(text, root):
+    """Whether the Tried clause names a file of the repository that the attempt read or tested (17 October 2026:
+    a clause said a hook had been read when it had not, naming no file; a named file can at least be looked up).
+    Counted on the record's seven earlier clauses: six name a file; the seventh, a web search for papers, is not
+    a queued build's."""
+    match = re.search(r'\bTried:(.*?)(?:\bNot built in the turn:|$)', text, re.I | re.S)
+    if not match:
+        return False
+    for token in re.findall(r'[\w./-]+', match.group(1)):
+        token = token.strip('.,;:')
+        if ('/' in token or '.' in token) and (Path(root) / token).is_file():
+            return True
+    return False
+
+
 def main(argv):
     if len(argv) in (2, 3) and argv[1] == 'built':
         print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
@@ -2425,6 +2440,10 @@ def main(argv):
             print(f'{argv[4]}: a build is queued only when it cannot be built in the turn that found it; say why in '
                   '"Not built in the turn: <reason>" (at least five words) and what was tried first in "Tried: '
                   '<attempt>" (at least five words), or build it now (AGENTS.md)', file=sys.stderr)
+            return 1
+        if argv[3] == '--build' and not tried_names_file(argv[6], Path.cwd()):
+            print(f'{argv[4]}: the Tried clause names no file of the repository; name the file the attempt read or '
+                  'tested (a tool, a rule file, a script), by its path from the repository root', file=sys.stderr)
             return 1
         try:
             path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))

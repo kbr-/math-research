@@ -821,9 +821,20 @@ class LeadQueueTest(unittest.TestCase):
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 1)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
                                           'Not built in the turn: the target branch is not checked out here.']), 1)
+                # 17 October 2026: a Tried clause naming no file is refused; one naming a repository file passes
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
                                           'Not built in the turn: the target branch is not checked out here. '
-                                          'Tried: a checkout of the target branch, refused.']), 0)
+                                          'Tried: a checkout of the target branch, refused.']), 1)
+                Path(tmp, 'tools').mkdir()
+                Path(tmp, 'tools', 'port.py').write_text('')
+                here = os.getcwd()
+                os.chdir(tmp)
+                try:
+                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                                              'Not built in the turn: the target branch is not checked out here. '
+                                              'Tried: tools/port.py on a checkout of the target branch, refused.']), 0)
+                finally:
+                    os.chdir(here)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
@@ -832,9 +843,10 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('Appended weigh-it, an idea; 4 items in the queue.', out.getvalue())
             self.assertIn('port-it is already queued', err.getvalue())
             self.assertIn('Not built in the turn: <reason>', err.getvalue())
+            self.assertIn('names no file of the repository', err.getvalue())
             self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\. '
                                                r'Not built in the turn: the target branch is not checked out here\. '
-                                               r'Tried: a checkout of the target branch, refused\.</li>')
+                                               r'Tried: tools/port\.py on a checkout of the target branch, refused\.</li>')
             self.assertNotIn('Again.', path.read_text())
             self.assertNotIn('other', path.read_text())
 
