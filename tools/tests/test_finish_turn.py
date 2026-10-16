@@ -583,6 +583,12 @@ sys.exit(compute.main())
                 f'<li data-pick>a{ok}</li>',
                 f'<li data-pick>a{ok.replace("<strong>Break point.</strong> None found. ", "")}</li>')),  # passed, break point unevaluated
             record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a{ok.replace("Passed", "Passed for the quadratic cost")}</li>')),  # passed on another object
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a{ok.replace("None found. <strong>Test.</strong> Passed.", "Seen. <strong>Test.</strong> Passed. <strong>Break point.</strong> It is the coupling in another form.")}</li>')),  # restatement found after the test
+            record(['research'] * 6, reviewed, general=general + leads.replace(
                 'Not run: needs a kernel.', 'Not run: the theorem was recalled, not read.')),  # unread, no retrieval named
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 'Not run: needs a kernel.', 'Not run: Recalled. <strong>Retrieval.</strong> None tried.')),  # upper case, none named
@@ -621,6 +627,15 @@ sys.exit(compute.main())
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 'Not run: needs a kernel.', 'Not run: recalled, not read. <strong>Retrieval.</strong> '
                 'tools/held_sources.py found no copy; the publisher copy is restricted.')),  # retrieval named
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a{ok.replace("None found.", "The transfer to the continuous class was not checked.")}</li>')),  # a limit, not another object
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a{ok.replace("Passed.", "Passed on all three instances; the bound does not transfer beyond p = 2.")}</li>')),  # ordinary qualifiers
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li data-pick>a{ok}</li>',
+                f'<li data-pick>a (it may return in another form){ok}</li>')),  # the words before the test
             record(['review:4'] + ['research'] * 10, reviewed, general=general + leads),  # count dropped
             record(['review:3'] + ['research'] * 9, reviewed, general=general + leads),   # span not reached
             record(['review'] + ['research'] * 10, reviewed, general=general + leads),    # no earlier count

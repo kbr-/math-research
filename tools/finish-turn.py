@@ -108,6 +108,9 @@ LEADS_MIN, BRIDGES_MIN = 3, 2
 PICKS = {'Outside leads': 3, 'Absurd bridges': 2}
 PICK_RE = re.compile(r'^[^>]*\bdata-pick\b')
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
+# Read after the Test label only, so that an item's description or Answers paragraph may use the words.
+PASSED_ELSEWHERE_RE = re.compile(r'^\s*Passed\s+(?:only\s+)?for\b|\bin another form\b|\brestates the open problem\b',
+                                 re.I)
 NOT_RUN_UNREAD_RE = re.compile(r'\b(recalled|not read|unread|not retrieved)\b', re.I)
 # A Retrieval paragraph names a tool or a search or fetch it made; "Retrieval. None tried." does not pass.
 RETRIEVAL_RE = re.compile(r'<strong>Retrieval\.</strong>(?:(?!</li>).)*?\b(held_sources|arxiv_source|browser_get|'
@@ -192,6 +195,16 @@ def validate_leads(body, article, close, draining=None):
                              '</strong>": say where the translation would break and what the test found there; a '
                              'test of the named theorem alone, or of a recalled statement, is Not run for the '
                              'translation (AGENTS.md)')
+        # A review of 16 October 2026 marked items Passed on a test of another cost ("Passed for the quadratic
+        # cost") or of a translation whose Break point found it the open problem "in another form"; such a mark is
+        # Not run or Falsified for the translation.  It does not catch a test of the named theorem's hypotheses
+        # alone (the same review's third such mark).
+        narrowed = [(i, found.group(0).strip()) for i in passed
+                    if (found := PASSED_ELSEWHERE_RE.search(items[i - 1].split('<strong>Test.</strong>', 1)[1]))]
+        if narrowed:
+            raise ValueError(f'{heading} item(s) marked Passed on a test of another object, or on a translation its '
+                             f'own Break point finds a restatement: {narrowed}. Mark it Not run for the translation, '
+                             'or Falsified, and pick only items whose test reached the translation (AGENTS.md)')
         # A review of 16 October 2026 left items Not run as "recalled, not read" although the statements were a
         # search away; such an item says what retrieval was tried and how it ended. The source may be marked
         # unread in its citation, before the Test label, as well as in the reason after it.
