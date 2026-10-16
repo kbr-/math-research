@@ -820,7 +820,10 @@ class LeadQueueTest(unittest.TestCase):
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 1)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
-                                          'Not built in the turn: the target branch is not checked out here.']), 0)
+                                          'Not built in the turn: the target branch is not checked out here.']), 1)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                                          'Not built in the turn: the target branch is not checked out here. '
+                                          'Tried: a checkout of the target branch, refused.']), 0)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
@@ -830,7 +833,8 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('port-it is already queued', err.getvalue())
             self.assertIn('Not built in the turn: <reason>', err.getvalue())
             self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\. '
-                                               r'Not built in the turn: the target branch is not checked out here\.</li>')
+                                               r'Not built in the turn: the target branch is not checked out here\. '
+                                               r'Tried: a checkout of the target branch, refused\.</li>')
             self.assertNotIn('Again.', path.read_text())
             self.assertNotIn('other', path.read_text())
 

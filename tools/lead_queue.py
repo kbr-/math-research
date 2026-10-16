@@ -2410,6 +2410,9 @@ def edit(body, ident, text):
 # A build added from the command line says why it was not built when found (16 October 2026: three builds
 # queued for a stand-in review's right objections gave no reason, against AGENTS.md's rule).
 NOT_BUILT_RE = re.compile(r'\bNot built in the turn:\s*(?:\S+\s+){4,}\S+', re.I)
+# and what was tried before the reason was written (16 October 2026: a stand-in review found a build queued with
+# a reason that a one-edit fix disproved, and three others whose reasons no attempt had tested)
+TRIED_RE = re.compile(r'\bTried:\s*(?:\S+\s+){4,}\S+', re.I)
 
 
 def main(argv):
@@ -2418,10 +2421,10 @@ def main(argv):
         return 0
     if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
         path = Path(argv[2])
-        if argv[3] == '--build' and not NOT_BUILT_RE.search(argv[6]):
+        if argv[3] == '--build' and not (NOT_BUILT_RE.search(argv[6]) and TRIED_RE.search(argv[6])):
             print(f'{argv[4]}: a build is queued only when it cannot be built in the turn that found it; say why in '
-                  '"Not built in the turn: <reason>" (at least five words), or build it now (AGENTS.md)',
-                  file=sys.stderr)
+                  '"Not built in the turn: <reason>" (at least five words) and what was tried first in "Tried: '
+                  '<attempt>" (at least five words), or build it now (AGENTS.md)', file=sys.stderr)
             return 1
         try:
             path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))
