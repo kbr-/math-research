@@ -1224,6 +1224,28 @@ def validate_hypothesis_steps(text, statuses=()):
 PARTS_FROM = '2026-10-16'
 
 
+SCOPE_VERB = re.compile(r'\b(?:weaken(?:ed|s|ing)?|narrow(?:ed|s|ing)?|strengthen(?:ed|s|ing)?|restrict(?:ed|s)?)\b',
+                        re.I)
+SCOPE_DIRECTION = re.compile(r'\bmore general\b|\bless general\b|\bgeneraliz|\bnarrower\b|\bwider\b|\bassumes? less\b|'
+                             r'\bassumes? more\b|\bsame scope\b|\bbecause (?:it was |they were )?false\b', re.I)
+
+
+def validate_scope_direction(text):
+    """A Verification gate that reports hypotheses or statements weakened, narrowed or strengthened says which
+    way the statement's scope moved.  On 16 October 2026 'soundness and killing weakened' meant weaker
+    hypotheses, a more general lemma, and the user read it as a free generalization thrown away."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < '2026-10-16':
+        return
+    gate = report_paragraph(text, 'Verification gate')
+    plain = html.unescape(strip_tags(gate))
+    for sentence in re.split(r'(?<=[.;])\s+', plain):
+        if SCOPE_VERB.search(sentence) and not SCOPE_DIRECTION.search(sentence):
+            raise ValueError('The Verification gate reports a change of scope ("' + SCOPE_VERB.search(sentence).group(0)
+                             + '") without its direction: say whether the statement became more general, less '
+                             'general (and the step that needs it), or was false; ' + sentence[:120] + ' (AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -1528,6 +1550,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         validate_corrections_read(text)
         validate_developed_readings(text)
         validate_smallest_case(text)
+        validate_scope_direction(text)
         if check_registered_claims:
             known = registered_status()
             statuses = {known.get(cid) for cid in entry_claims(body, article)}

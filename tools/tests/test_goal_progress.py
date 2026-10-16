@@ -331,6 +331,18 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class ScopeDirectionTest(unittest.TestCase):
+    def test_a_reported_change_of_scope_says_which_way(self):
+        # 16 October 2026: "weakened" hypotheses read as a generalization thrown away.
+        gate = ('<article id="entry-2026-10-17-x"><p><strong>Verification gate.</strong> The reviewer passed it; '
+                'soundness and killing were weakened to the downstream form.</p>')
+        with self.assertRaisesRegex(ValueError, 'without its direction'):
+            FT.validate_scope_direction(gate)
+        FT.validate_scope_direction(gate.replace('downstream form', 'downstream form, so the lemma assumes less '
+                                                 'and is more general'))
+        FT.validate_scope_direction(gate.replace('2026-10-17', '2026-10-15'))
+
+
 class HypothesisPartsTest(unittest.TestCase):
     def test_each_statement_part_is_named_in_the_hypotheses(self):
         # 16 October 2026: a part added after review was missing from the Hypotheses paragraph.
