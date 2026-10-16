@@ -48,6 +48,13 @@ from importlib.machinery import SourceFileLoader
 FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py')).load_module()
 
 
+class StaleReviewHint(unittest.TestCase):
+    def test_a_stale_review_gets_the_refresh_steps_and_other_errors_do_not(self):
+        hint = FT.stale_review_hint(['lem:x: topics is stale', 'lem:x: significance is missing'])
+        self.assertIn('rerun author build', hint)
+        self.assertEqual(FT.stale_review_hint(['lem:x: significance is missing']), '')
+
+
 class ArchitectureDisposition(unittest.TestCase):
     def new_test(self):
         return ('<strong>Test disposition.</strong> New operation. '

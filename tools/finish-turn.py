@@ -1662,6 +1662,16 @@ def checks_note(elapsed):
             'work before it grows.\n')
 
 
+def stale_review_hint(errors):
+    """How to refresh reviews made stale by an entry edited after its claims were built (16 October 2026: the
+    message named the stale fields only, and author build refuses to overwrite its own outputs)."""
+    if not any(error.endswith(' is stale') for error in errors):
+        return ''
+    return ('\nA stale review hashes evidence that changed after registration, usually the entry edited after '
+            'author build. Restore research/claims/index.json from HEAD, delete that build\'s --out, --proposal and '
+            '--report files, rerun author build, copy the proposal over the registry and render.')
+
+
 def validate_append_only(root):
     """Earlier entries must match HEAD; corrections belong in a new dated entry."""
     checker = root / 'tools/check-append-only.py'
@@ -1774,7 +1784,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
             raise ValueError('Generated claim index is stale; run tools/claim-index.py render')
         contract = check_revision(claims, root=root)
         if not contract['passed']:
-            raise ValueError('Changed-claim metadata incomplete:\n' + '\n'.join(contract['errors']))
+            raise ValueError('Changed-claim metadata incomplete:\n' + '\n'.join(contract['errors'])
+                             + stale_review_hint(contract['errors']))
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
     print(checks_note(time.monotonic() - started), end='')
