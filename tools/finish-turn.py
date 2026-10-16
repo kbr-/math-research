@@ -836,6 +836,37 @@ def validate_searches_run(entry, queries):
     return queries
 
 
+# The words that name an attempt: long enough to carry content, and not the paragraph's own frame.
+ATTEMPT_FRAME = {'attempt', 'search', 'searches', 'searched', 'returned', 'record', 'registry', 'which', 'their',
+                 'there', 'these', 'those', 'where', 'whose', 'about', 'after', 'before', 'nothing', 'stating',
+                 'states', 'statement', 'entry', 'next', 'first'}
+
+
+def attempt_words(text):
+    """The content words of `text`, lower case, of five letters or more, without the frame words."""
+    return {word for word in re.findall(r'[a-z][a-z-]{4,}', text.lower()) if word not in ATTEMPT_FRAME}
+
+
+def validate_next_attempt_search(entry, queries):
+    """An entry whose Record search says what was searched for its next attempt ran a search for it.
+
+    Twice on 16 October 2026 a Record search paragraph said a search for the next attempt had returned
+    nothing before any such search had run; validate_searches_run passed, as other searches had. The sentence
+    naming the next attempt must share two content words with one search logged in the session."""
+    found = re.search(r'<strong>Record search\.</strong>(.*?)</p>', entry, re.S)
+    if not found:
+        return
+    plain = html.unescape(strip_tags(found.group(1)))
+    for sentence in re.split(r'(?<=[.;])\s+', plain):
+        if 'next attempt' not in sentence.lower():
+            continue
+        wanted = attempt_words(sentence)
+        if wanted and not any(len(wanted & attempt_words(query)) >= 2 for query in queries):
+            raise ValueError('The Record search names a next attempt that no search of this session matches: '
+                             f'"{" ".join(sentence.split())[:200]}". Run tools/search-claims.py with words of that '
+                             'attempt, and report what it returned (AGENTS.md)')
+
+
 def count_listing_report(entry, queries):
     """A line for the finisher to print, or None: the entry holds sentences with a count and the draft tool,
     which lists them for reading beside their sources, logged no run on it in the session.
@@ -1782,6 +1813,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     for line in hook_notice_lines(root, first.get('unix_s', 0)):
         print(line)
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
+    validate_next_attempt_search(entry, searches)
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
         validate_resemblance_run(entry, searches)
     if '<strong>Record search.</strong>' in entry:

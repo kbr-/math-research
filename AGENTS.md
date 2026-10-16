@@ -135,18 +135,21 @@ growing checklists or one-off setup narratives.
   the refusal threshold too, and read them before the entry says what is new; the tool logs its runs
   and the finisher refuses an entry declaring a claim it was not run on in the session. Before
   drafting a corollary, check for an earlier result under fewer hypotheses. Before sending a proved
-  statement to review, try it on degenerate inputs (the trivial instance, the empty one, an input
-  outside its stated form) and report it in the entry after `<strong>Degenerate cases.</strong>`:
-  what the statement gives on each, or the hypothesis that excludes it (the finisher requires the
-  paragraph of an entry registering a proof). Write down also one input that satisfies all the
-  statement's hypotheses, with its parameters, after `<strong>Nonvacuity.</strong>`: a statement
-  about a class with no member proves nothing (the finisher requires it of the same entries). State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
-  Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and
-  read each sentence that cites a claim beside that claim's registered statement, and each that
-  links an entry beside that entry's title and status line: a sentence may say no more than its
-  source. The tool also lists the draft's sentences outside its mathematics that hold a count: read
-  each beside the saved output the count came from.
+  statement to review, name for each hypothesis the step of the proof that uses it and the weakest
+  form that step needs, and state that form: a hypothesis copied from the instance at hand, rather
+  than read off the proof, narrows the lemma and the next step drawn from it (16 October 2026). Try
+  it on degenerate inputs (the trivial instance, the empty one, an input outside its stated form)
+  and report it in the entry after `<strong>Degenerate cases.</strong>`: what the statement gives on
+  each, or the hypothesis that excludes it (the finisher requires the paragraph of an entry
+  registering a proof). Write down also one input that satisfies all the statement's hypotheses,
+  with its parameters, after `<strong>Nonvacuity.</strong>`: a statement about a class with no
+  member proves nothing (the finisher requires it of the same entries). State compositions as lemmas
+  in one common setting with a complete proof, not a reference to a sketch. Before the reviewer's
+  brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that
+  cites a claim beside that claim's registered statement, and each that links an entry beside that
+  entry's title and status line: a sentence may say no more than its source. The tool also lists the
+  draft's sentences outside its mathematics that hold a count: read each beside the saved output the
+  count came from.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
@@ -632,22 +635,23 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   paragraph that starts "Prevention": the class of the mistake in general terms, why the existing
   rules and checks let it through, and the framework change made in that turn that stops the class
   (a check, a hook, a test, a tool that reports or refuses; a written rule only where nothing
-  mechanical can), or the build item queued for it. Fixing the one instance is not a prevention. The
-  Stop hook and the commit check block a turn that admits a mistake without that paragraph (user, 10
-  October 2026, on having to ask after every fix how the mistake is prevented). Beside it goes a
-  paragraph that starts "Meta", the meta-question: what should change so that in future neither the
-  mistake nor its fix would have been needed at all. It is about the agent's own behaviour, as a
-  class wider than this mistake and its kind: the way of working that produced it (a habit of
-  deciding, of weighing cost against the user's stated priority, of reading or of stopping), where
-  else that habit shows, and the change in how the agent works that ends it, in its durable home,
-  named by its path. A Meta that names the Prevention's mechanism again, or only this mistake,
-  answers the Prevention twice (user, 14 October 2026: "The answer should also be meta, with
-  broader, more general scope than prevention"). It is asked for each admitted mistake, for each
-  reviewer agent's report (answered after it with both paragraphs, Prevention saying where it found
-  no mistake of the agent's) and for each stand-in review's right objections, in the entry's
-  `<strong>Meta.</strong>` paragraph; the Stop hook, the commit check and the finisher enforce it
-  (user, 13 October 2026: "I won't be there forever ... AIs will live on and they must learn to
-  become better on their own"; ported from another branch, 16 October 2026).
+  mechanical can), or, only where it can't be built in that turn, the build item queued for it with
+  that reason (user, 13 October 2026). Fixing the one instance is not a prevention. The Stop hook
+  and the commit check block a turn that admits a mistake without that paragraph (user, 10 October
+  2026, on having to ask after every fix how the mistake is prevented). Beside it goes a paragraph
+  that starts "Meta", the meta-question: what should change so that in future neither the mistake
+  nor its fix would have been needed at all. It is about the agent's own behaviour, as a class wider
+  than this mistake and its kind: the way of working that produced it (a habit of deciding, of
+  weighing cost against the user's stated priority, of reading or of stopping), where else that
+  habit shows, and the change in how the agent works that ends it, in its durable home, named by its
+  path. A Meta that names the Prevention's mechanism again, or only this mistake, answers the
+  Prevention twice (user, 14 October 2026: "The answer should also be meta, with broader, more
+  general scope than prevention"). It is asked for each admitted mistake, for each reviewer agent's
+  report (answered after it with both paragraphs, Prevention saying where it found no mistake of the
+  agent's) and for each stand-in review's right objections, in the entry's `<strong>Meta.</strong>`
+  paragraph; the Stop hook, the commit check and the finisher enforce it (user, 13 October 2026: "I
+  won't be there forever ... AIs will live on and they must learn to become better on their own";
+  ported from another branch, 16 October 2026).
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
   new work requests. Run no tools or restart tasks in response to those notifications alone; say at
   most one sentence and wait for the user's message.

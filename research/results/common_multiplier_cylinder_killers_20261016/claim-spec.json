@@ -1,0 +1,69 @@
+{
+  "source": {
+    "record": "[Cylinder killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-cylinder-killers)",
+    "label": "Cylinder killers",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus",
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "lem:cylinder-killer-degree",
+      "summary": "Over any field, on a finite product domain X = prod_j A_j (nonempty factors) with base states and one-hot variables x_(j,a) for non-base a (degree = least polynomial degree in them), a nonzero function vanishing on a union of cylinders (partial assignments) has degree at least the transversal number of their coordinate sets; if every coordinate of a least transversal T has a state no cylinder assigns there, the product of those state indicators (each of degree <=1) attains it. On the hole-respecting assignments of the product pigeonhole system, with base state empty, the least degree of a nonzero function vanishing on the supports of monomial errors on distinct holes is the transversal number of their hole sets, which is the least degree of a surviving common killer of 1 when tau<=K and K+e is inert, or D=n with K+e<=n and K<=n-1; for tau>K there is none of degree <=K.",
+      "assessment": "PENDING",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Gives the exact first surviving killer degree for cylinder errors on product domains, the domain-model baseline that a non-domain killer must beat.",
+      "next_action": "Find error families whose supports defeat the top-degree transfer.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:top-degree-killer-transfer",
+      "summary": "For the product pigeonhole system (m pigeons, n>=1 holes) at D=n over any field, an error E of degree e with K+e<=n and support S_E on the hole-respecting assignments Y: if the unplaced-pigeon indicators restricted to Y minus S_E are linearly independent, then for f of degree <=K, fE lies in the closure exactly when f vanishes on S_E. The independence holds when Y minus S_E contains the empty assignment and, for each pigeon, an assignment placing only it; it also holds for every monomial error of degree e>=1 on distinct holes, for all m and n (at n=1 by a separate argument). For K+e<=n-1 the conclusion needs no hypothesis; the content is K+e=n. With lem:cylinder-killer-degree, the six errors x_jj x_ll on the hole pairs at m=5, n=4, D=4, K=2 have no surviving common killer of degree 2, the least degree being tau(K_4)=3.",
+      "assessment": "PENDING",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Decides the goal review's top-degree test: the pigeon axioms add no killer for monomial errors of positive degree.",
+      "next_action": "Test errors whose supports contain the empty assignment, where the independence fails.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:cylinder-killer-degree",
+      "cites",
+      "lem:transversal-killer-basis",
+      "Its first-degree part on the cube with base state 1, here on any product domain without the basis count."
+    ],
+    [
+      "lem:cylinder-killer-degree",
+      "cites",
+      "cor:hole-occupancy-kernels",
+      "Its inert range makes Y the domain model."
+    ],
+    [
+      "lem:cylinder-killer-degree",
+      "cites",
+      "lem:greedy-transversal-certificate",
+      "The upper-bound construction."
+    ],
+    [
+      "lem:top-degree-killer-transfer",
+      "applies",
+      "cor:hole-occupancy-kernels",
+      "Its part (d), membership at the top degree."
+    ],
+    [
+      "lem:top-degree-killer-transfer",
+      "applies",
+      "lem:cylinder-killer-degree",
+      "For the decisive test."
+    ]
+  ]
+}
