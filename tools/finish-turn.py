@@ -348,6 +348,7 @@ OWED_REVIEWER_READ_RE = re.compile(r'\bread by the reviewer\b|\bthe reviewer (?:
 OWED_VERDICT_RE = re.compile(r'\bvacuous\b|\bcannot\b|\bimpossible\b|\bnot needed\b|\bunnecessary\b|'
                              r'\balready (?:decided|settled|answered)\b|\bpointless\b', re.I)
 OWED_FROM = '2026-10-12'
+WINDOW_FROM = '2026-10-16'      # reviews from this date say where their test's instance stands
 GATE_PARAGRAPH_RE = re.compile(r'<p><strong>Verification gate\.</strong>(.*?)</p>', re.S)
 
 
@@ -1523,6 +1524,14 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'and, for a computation, the sizes reachable and why its outcomes differ '
                                      'there; a test whose every outcome fits every answer decides nothing '
                                      '(AGENTS.md, Decisive test)')
+                # A review of 16 October 2026 posed a test on an instance outside the goal's parameter window
+                # without saying so; its reviewer found it. Power says where the instance stands.
+                stamped = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+                if (stamped and stamped.group(1) >= WINDOW_FROM
+                        and not re.search(r"\bwindow\b|goal's (?:own )?parameters|goal-parameter", plain, re.I)):
+                    raise ValueError('Decisive test\'s Power must say whether the test\'s instance lies within the '
+                                     'goal\'s parameter window and, if not, what its outcome bears on (AGENTS.md, '
+                                     'Decisive test)')
                 attempt = re.search(r'<strong>Attempt\.</strong>(.*?)(?=<strong>|$)', value, re.S)
                 plain = html.unescape(strip_tags(attempt.group(1))).strip() if attempt else ''
                 if len(plain) < 40:

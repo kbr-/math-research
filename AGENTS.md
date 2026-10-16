@@ -291,16 +291,18 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   object), and the trivial instance, if any, that would give each outcome; a question with a trivial
   answer is not given a block (the finisher checks presence). Then state `<strong>Power.</strong>`:
   what the recorded upper bounds and method limits give on the test's object, and for a computation
-  the reachable sizes and why its outcomes differ there (the finisher checks it); work out for each
-  instance the operation names the outcome its Trivial cases and Power already fix, and drop an
-  instance they decide (twice on 16 October 2026 a review posed a test whose every instance its own
-  bounds decided, so it could not fail). Say after `<strong>Attempt.</strong>` what was tried,
-  before posing the test, to answer it from the statements it cites, and where that stopped: a test
-  those statements answer in a few lines is a lemma for the next entry, not a test. Apply this again
-  when the reviewer supplies the missing argument: rewrite the decision and next step as a
-  lemma-first entry before finalization, rather than retaining an unanswered test. The second-stage
-  brief asks the reviewer to try the step at which the Attempt stops, and the review's Verification
-  gate says what it found after `<strong>Attempt checked.</strong>` (the finisher checks).
+  the reachable sizes and why its outcomes differ there, and whether the test's instance lies in the
+  goal's parameter window and, if not, what its outcome bears on (the finisher checks it); work out
+  for each instance the operation names the outcome its Trivial cases and Power already fix, and
+  drop an instance they decide (twice on 16 October 2026 a review posed a test whose every instance
+  its own bounds decided, so it could not fail). Say after `<strong>Attempt.</strong>` what was
+  tried, before posing the test, to answer it from the statements it cites, and where that stopped:
+  a test those statements answer in a few lines is a lemma for the next entry, not a test. Apply
+  this again when the reviewer supplies the missing argument: rewrite the decision and next step as
+  a lemma-first entry before finalization, rather than retaining an unanswered test. The
+  second-stage brief asks the reviewer to try the step at which the Attempt stops, and the review's
+  Verification gate says what it found after `<strong>Attempt checked.</strong>` (the finisher
+  checks).
 
 The next research cycle on that route reports the actual outcome in **Architecture test.**, opening
 with `<strong>Decided.</strong>` or `<strong>Not decided.</strong>` and which of the review's
@@ -666,22 +668,24 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   rules and checks let it through, and the framework change made in that turn that stops the class
   (a check, a hook, a test, a tool that reports or refuses; a written rule only where nothing
   mechanical can), or, only where it can't be built in that turn, the build item queued for it with
-  that reason (user, 13 October 2026). Fixing the one instance is not a prevention. The Stop hook
-  and the commit check block a turn that admits a mistake without that paragraph (user, 10 October
-  2026, on having to ask after every fix how the mistake is prevented). Beside it goes a paragraph
-  that starts "Meta", the meta-question: what should change so that in future neither the mistake
-  nor its fix would have been needed at all. It is about the agent's own behaviour, as a class wider
-  than this mistake and its kind: the way of working that produced it (a habit of deciding, of
-  weighing cost against the user's stated priority, of reading or of stopping), where else that
-  habit shows, and the change in how the agent works that ends it, in its durable home, named by its
-  path. A Meta that names the Prevention's mechanism again, or only this mistake, answers the
-  Prevention twice (user, 14 October 2026: "The answer should also be meta, with broader, more
-  general scope than prevention"). It is asked for each admitted mistake, for each reviewer agent's
-  report (answered after it with both paragraphs, Prevention saying where it found no mistake of the
-  agent's) and for each stand-in review's right objections, in the entry's `<strong>Meta.</strong>`
-  paragraph; the Stop hook, the commit check and the finisher enforce it (user, 13 October 2026: "I
-  won't be there forever ... AIs will live on and they must learn to become better on their own";
-  ported from another branch, 16 October 2026).
+  that reason (user, 13 October 2026). Fixing the one instance is not a prevention. The order of
+  work follows: the check for a right objection is built and committed before the reply that answers
+  it is written, and the reply names that commit (16 October 2026: answers written first were prose,
+  and the checks came a turn later). The Stop hook and the commit check block a turn that admits a
+  mistake without that paragraph (user, 10 October 2026, on having to ask after every fix how the
+  mistake is prevented). Beside it goes a paragraph that starts "Meta", the meta-question: what
+  should change so that in future neither the mistake nor its fix would have been needed at all. It
+  is about the agent's own behaviour, as a class wider than this mistake and its kind: the way of
+  working that produced it (a habit of deciding, of weighing cost against the user's stated
+  priority, of reading or of stopping), where else that habit shows, and the change in how the agent
+  works that ends it, in its durable home, named by its path. A Meta that names the Prevention's
+  mechanism again, or only this mistake, answers the Prevention twice (user, 14 October 2026: "The
+  answer should also be meta, with broader, more general scope than prevention"). It is asked for
+  each admitted mistake, for each reviewer agent's report (answered after it with both paragraphs,
+  Prevention saying where it found no mistake of the agent's) and for each stand-in review's right
+  objections, in the entry's `<strong>Meta.</strong>` paragraph; the Stop hook, the commit check and
+  the finisher enforce it (user, 13 October 2026: "I won't be there forever ... AIs will live on and
+  they must learn to become better on their own"; ported from another branch, 16 October 2026).
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
   new work requests. Run no tools or restart tasks in response to those notifications alone; say at
   most one sentence and wait for the user's message.

@@ -144,6 +144,16 @@ class GoalProgressTest(unittest.TestCase):
             validate(valid.replace('<strong>Record search.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Power'):
             validate(valid.replace('<strong>Power.</strong>', ''))
+        # From 16 October 2026 Power says where the test's instance stands against the goal's window.
+        dated = valid.replace('id="review"', 'id="entry-2026-10-17-review"')
+        with self.assertRaisesRegex(ValueError, "parameter window"):
+            validate(dated)
+        stated = dated.replace('at the sizes reachable.', 'at the sizes reachable, inside the goal\'s window.')
+        with patch.object(FT, 'attempt_checked', return_value=True):
+            try:
+                validate(stated)
+            except ValueError as error:
+                self.assertNotIn('parameter window', str(error))
         with self.assertRaisesRegex(ValueError, 'Trivial cases'):
             validate(valid.replace('<strong>Trivial cases.</strong>', ''))
         with self.assertRaisesRegex(ValueError, 'Attempt'):
