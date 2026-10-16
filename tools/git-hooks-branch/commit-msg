@@ -37,5 +37,19 @@ def main(path):
     return 0
 
 
+def checked(path):
+    """The stale-subject check, then the message's figures and claim conditions (tools/commit_message_checks.py)."""
+    status = main(path)
+    if status:
+        return status
+    top = subprocess.run(['git', 'rev-parse', '--show-toplevel'], capture_output=True, text=True).stdout.strip()
+    tools = os.path.join(top, 'tools')
+    if not os.path.exists(os.path.join(tools, 'commit_message_checks.py')):    # a repository without the module
+        return 0
+    sys.path.insert(0, tools)
+    import commit_message_checks
+    return commit_message_checks.check_staged(path)
+
+
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1]))
+    sys.exit(checked(sys.argv[1]))

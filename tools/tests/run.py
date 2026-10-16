@@ -17,6 +17,7 @@ their reasons.
 Usage: python3 tools/tests/run.py [-j WORKERS] [--limit SECONDS] [MODULE ...]
 """
 import argparse
+import resource
 import io
 import json
 import multiprocessing
@@ -42,12 +43,33 @@ def tests(suite):
             yield item
 
 
+def process_cpu():
+    """CPU seconds of this process and of its waited children, user and system."""
+    own, kids = resource.getrusage(resource.RUSAGE_SELF), resource.getrusage(resource.RUSAGE_CHILDREN)
+    return own.ru_utime + own.ru_stime + kids.ru_utime + kids.ru_stime
+
+
 def run(test, test_id):
     stream = io.StringIO()
-    start = time.monotonic()
+    start, cpu = time.monotonic(), process_cpu()
     result = unittest.TextTestRunner(stream=stream, verbosity=0).run(test)
     skipped = [(case.id(), reason) for case, reason in result.skipped]
-    return test_id, result.testsRun, result.wasSuccessful(), stream.getvalue(), time.monotonic() - start, skipped
+    return (test_id, result.testsRun, result.wasSuccessful(), stream.getvalue(), time.monotonic() - start, skipped,
+            process_cpu() - cpu)
+
+
+def cpu_report(results, shown=15):
+    """Lines giving the CPU of each module and of the slowest tests, children included, slowest first: on 16
+    October 2026 a suite overrun was traced with two scratch scripts to two modules' CPU."""
+    modules = {}
+    for test_id, _, _, _, _, _, cpu in results:
+        module = test_id.split('.')[0]
+        modules[module] = modules.get(module, 0.0) + cpu
+    lines = [f'CPU by module (children included), {sum(modules.values()):.1f} s in all:']
+    lines += [f'  {cpu:7.2f} s  {module}' for module, cpu in sorted(modules.items(), key=lambda m: -m[1])[:shown]]
+    lines.append('CPU by test:')
+    lines += [f'  {r[6]:7.2f} s  {r[0]}' for r in sorted(results, key=lambda r: -r[6])[:shown]]
+    return lines
 
 
 def run_one(test_id):
@@ -66,6 +88,8 @@ def main():
                         help='do not fail a run whose overrun is a busy machine\'s (default: it fails, and says so)')
     parser.add_argument('--cpu', action='store_true',
                         help='always print the CPU used by the run and elsewhere on the machine')
+    parser.add_argument('--cpu-report', action='store_true',
+                        help='print the CPU used per module and per test, children included, slowest first')
     parser.add_argument('modules', nargs='*', help='module names (default: all test_*.py here)')
     args = parser.parse_args()
     os.chdir(HERE)
@@ -237,7 +261,7 @@ def timed_run(args, found, broken):
     except OSError:
         pass
     failed = [r for r in results if not r[2]]
-    for test_id, _, _, output, _, _ in sorted(failed):
+    for test_id, _, _, output, _, _, _ in sorted(failed):
         print(f'===== {test_id} =====\n{output}')
     after = cpu_seconds()
     share, line, own = elsewhere((used[0], after[0]), (used[1], after[1]), jobs_growth(jobs, other_jobs()),
@@ -246,7 +270,7 @@ def timed_run(args, found, broken):
     slow = outcome != 'ok'
     if slow:
         print(f'Over the {args.limit:g} s limit (AGENTS.md). Slowest tests:')
-        for test_id, _, _, _, seconds, _ in sorted(results, key=lambda r: -r[4])[:10]:
+        for test_id, _, _, _, seconds, _, _ in sorted(results, key=lambda r: -r[4])[:10]:
             print(f'  {seconds:6.2f} s  {test_id}')
         load = outside_load(used, after, elapsed, os.cpu_count())
         if load:
@@ -257,6 +281,8 @@ def timed_run(args, found, broken):
         # Other work held the processors and the suite's own CPU time is as when it runs alone.
         print('Busy machine: the overrun is not shown to be the suite\'s; time it again alone.')
         slow = not args.excuse_busy
+    if args.cpu_report:
+        print('\n'.join(cpu_report(results)))
     skipped = sorted(skip for r in results for skip in r[5])
     for test_id, reason in skipped:
         print(f'Skipped {test_id}: {reason}')

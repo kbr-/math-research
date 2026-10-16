@@ -81,6 +81,20 @@ class SuiteTimeLimit(unittest.TestCase):
                                         r"computation slice \(this run and any other session's jobs in it\)), \d+ s by other "
                                         rf"programs; the machine's {os.cpu_count()} processors were busy for \d+ s of \d+\.\n")
 
+    def test_the_cpu_report_counts_child_processes_and_ranks_modules(self):
+        # 16 October 2026: an overrun was traced to two modules' CPU with scratch scripts.
+        (self.root / 'test_busy.py').write_text(
+            'import subprocess, sys, unittest\nclass Busy(unittest.TestCase):\n    def test_child_burns(self):\n'
+            '        subprocess.run([sys.executable, "-c", "import time\\nt=time.process_time()\\n'
+            'while time.process_time()-t<0.4: pass"], check=True)\n')
+        result = self.run_suite(30, '--cpu-report')
+        self.assertEqual(result.returncode, 0, result.stdout)
+        modules = result.stdout.split('CPU by module')[1].split('CPU by test')[0].splitlines()[1:]
+        self.assertTrue(modules[0].strip().endswith('test_busy'), result.stdout)
+        self.assertGreaterEqual(float(modules[0].split()[0]), 0.35)          # the child's CPU, not the parent's
+        self.assertLess(float(modules[-1].split()[0]), 0.35)
+        self.assertNotIn('CPU by module', self.run_suite(30).stdout)          # only on request
+
     def test_within_the_limit_passes(self):
         result = self.run_suite(30)
         self.assertEqual(result.returncode, 0, result.stdout)
