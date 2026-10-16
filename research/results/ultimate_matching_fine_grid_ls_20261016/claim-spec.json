@@ -1,0 +1,76 @@
+{
+  "source": {
+    "record": "[Fine-grid Leighton-Shor bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-fine-grid-leighton-shor)",
+    "label": "Fine-grid Leighton-Shor bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-fine-grid-leighton-shor"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:fine-grid-leighton-shor",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, l_1 the Leighton-Shor scale, kappa > 0 fixed and s_0 = kappa sqrt(log N/N), with probability tending to one and L depending only on kappa, for every dyadic delta_0 with s_0 <= delta_0 <= 2^(-l_1): (a) every union A of cells of side delta_0 has |#(X in A) - N area(A)| <= L sqrt N (log N)^(3/4) P(A), P(A) the length of the inner grid edges separating A from its complement; (b) every g constant on the cells has |sum_i g(X_i) - N int g| <= L sqrt N (log N)^(3/4) TV(g), TV(g) = sum over inner edges of delta_0 |jump|; (c) at (4,4), if every increment |jump|/delta_0 is 0 or at least y >= 2e^16 and sum_e delta_0^2 psi*_4(|jump|/(2 delta_0)) <= 2, then TV(g) <= 8 (log(y/2))^(-1/4), so for y >= N^c the discrepancy is at most 8 3^(1/4) c^(-1/4) L sqrt(N log N).",
+      "assessment": "Working proof: lem:mesh-function-discrepancy (b), (c) at the Leighton-Shor mesh for the coarse averages of 1_A, whose inner variation is at most P(A) by a global Fubini count; Chernoff for the coarse counts; Bernstein conditionally on the coarse counts with a union over the subsets of the at most (4/kappa^2) sqrt(log N) fine cells of each coarse cell, at most P(A)/delta_0 cut cells; the layer-cake formula; the recorded lower bound of psi*_4.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Extends the Leighton-Shor bound below its mesh to all unions of fine cells on dyadic grids; for the X-term of the discrete class split by increment level it bounds the levels from N^c on at the conjectured order and locates the obstacle at levels with log y = o(log N).",
+      "next_action": "A band-confined layer bound for nested layers {g>t} at spacing delta_0 in the discrete class, the fine-grid analogue of band-family (b), starting with the transfer of the band-family bound to cell averages, for a staircase along curved graphs at level (log N)^2.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:fine-grid-leighton-shor",
+      "depends_on",
+      "lem:mesh-function-discrepancy",
+      "Parts (b) and (c) at the Leighton-Shor mesh bound the coarse averages."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:sample-point-pyramids",
+      "Works in the discrete class that entry reduced the smeared X-term to; for the X-term split by increment level it bounds the levels from N^c on, while the pyramids act against Lebesgue measure from levels of order (log N)^2."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:band-family-discrepancy",
+      "Its part (a) works below the Leighton-Shor mesh for column-interval sets only; this lemma covers every union of fine cells by a union over the subsets of each coarse cell."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "The X-term of the discrete class on a dyadic grid of side at least kappa sqrt(log N/N), split by increment level, at levels at least N^c, at (4,4), is O(sqrt(N log N))."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:local-factor-discrepancy",
+      "Dyadic partitions with cells of side at least the Leighton-Shor mesh only; this lemma works below that mesh, neither statement contains the other."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:cellwise-lipschitz-split",
+      "Meshes up to the Leighton-Shor scale only; below it this lemma bounds every union of fine cells."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:two-mesh-partition-discrepancy",
+      "Partitions with sides between two meshes at most the Leighton-Shor scale; this lemma takes cells finer than that scale."
+    ],
+    [
+      "lem:fine-grid-leighton-shor",
+      "cites",
+      "lem:tube-localized-discrepancy",
+      "The plainest recorded bound for unions of cells, at meshes up to the Leighton-Shor scale; this lemma works below that mesh."
+    ]
+  ]
+}
