@@ -32,15 +32,23 @@ a closure and an ideal), check that each object lives where the comparison puts 
 transfer map is named and proved, not assumed. Where an entry interprets an endpoint or exclusion
 clause of the goal, list each reading the clause's words allow (the field, the degree, property
 versus mechanism) and check that the entry states them all rather than choosing the one its result
-favours. Where a hypothesis constrains several components at once (the coordinates of a vector,
-the terms of a tuple, each block of a matrix), check that the draft draws on every component it
+favours. Where a hypothesis constrains several components at once (the coordinates of a vector, the
+terms of a tuple, each block of a matrix), check that the draft draws on every component it
 constrains before accepting a conclusion drawn from one; a claim that a condition binds "only the
 difference" or "only one part" is checked against all the components the hypotheses name. Where a
 draft defines an object that a cited theorem consumes (a repair, a certificate, a design), check
-that the definition asks no more and no less than that theorem's hypotheses use, and name the
-clause that differs.
-Where a draft states a conjecture or a summary from a finite check, set it beside the quantity the check computed (a maximum over choices, a field, a representative, a size) and report any part of the statement stronger than that quantity; then try the statement on the system's trivial transformations (adding a member of low degree, another presentation of the same object). Where the brief names a claim spec beside the draft, compare each claim's registered summary with the entry's General statement and Statement, and report any scope (degree range, number of pigeons, field, error form) that one states and the other does not. Where a draft calls a step taken from elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look for the one case it worked through that step and the citation's own words for the reason; report "checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
-brief asks for a specific check, and edit no files.
+that the definition asks no more and no less than that theorem's hypotheses use, and name the clause
+that differs. Where a draft states a conjecture or a summary from a finite check, set it beside the
+quantity the check computed (a maximum over choices, a field, a representative, a size) and report
+any part of the statement stronger than that quantity; then try the statement on the system's
+trivial transformations (adding a member of low degree, another presentation of the same object).
+Where the brief names a claim spec beside the draft, compare each claim's registered summary with
+the entry's General statement and Statement, and report any scope (degree range, number of pigeons,
+field, error form) that one states and the other does not. Where a draft calls a step taken from
+elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look
+for the one case it worked through that step and the citation's own words for the reason; report
+"checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Run
+no computations unless the brief asks for a specific check, and edit no files.
 
 Where the brief sends a check, a rule or a statement that its author corrected after an earlier
 report, do not stop at the cases the earlier report supplied: write the case most unlike them (the
@@ -82,10 +90,12 @@ already answer: search with `tools/search-claims.py` under the object's other na
 names, a dual formulation, the objects in the proofs of the claims the draft cites), since a search
 in the draft's own words misses a result filed under another name, and report what it missed; a rule
 added to AGENTS.md, when the brief includes framework changes, that speaks about one goal's
-mathematics instead of every notebook. Give each finding with its location, or write "no findings".
-End the audit with "Strength count: N", the number of sentences outside the proofs (title, status,
-bearing, decision, follow-up, commit message) whose claim is stronger than its source in the draft,
-so that the pattern is counted per entry.
+mathematics instead of every notebook; a rule or check placed in a file whose own statement of its
+scope does not cover it (a shared rule in CLAUDE.md, a goal's rule in AGENTS.md, a tool's behaviour
+only in prose), read from that file's opening lines. Give each finding with its location, or write
+"no findings". End the audit with "Strength count: N", the number of sentences outside the proofs
+(title, status, bearing, decision, follow-up, commit message) whose claim is stronger than its
+source in the draft, so that the pattern is counted per entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a
