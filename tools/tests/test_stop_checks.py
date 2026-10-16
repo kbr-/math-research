@@ -168,6 +168,20 @@ class UncheckedClaimTest(HookFixture):
                       'forward, and now I\'m editing request 7".', out['reason'])
         self.assertIn('only the framework does', out['reason'])
 
+    def test_a_promise_its_feedback_already_quoted_does_not_block_again(self):
+        sentence = "I'll switch to exact matches for indented Markdown going forward"
+        self.add({'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': sentence + '.'}]}},
+                 {'type': 'user', 'isMeta': True, 'message': {'content': (
+                     'Stop hook feedback:\nA promise about future behaviour, or an admission that implies one: "'
+                     + sentence + '". Nothing said...')}},
+                 {'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': 'The check is committed.'}]}})
+        with self.fake_claude(self.verdict(kind='other')):
+            self.assertIsNone(self.run_hook())
+            self.add({'type': 'assistant', 'message': {'content': [{'type': 'text', 'text': (
+                'From now on I will background the clones.')}]}})
+            out = self.run_hook()
+        self.assertIn('"From now on I will background the clones"', out['reason'])
+
     def test_a_promise_in_the_final_reply_alone_blocks_also_from_the_global_entry(self):
         with self.fake_claude(self.verdict(kind='other')):
             out = self.run_hook(last_assistant_message='Done. From now on I will background the clones.')
