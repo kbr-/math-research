@@ -1,0 +1,66 @@
+{
+  "source": {
+    "record": "[Dyadic flow bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-dyadic-flow-bound)",
+    "label": "Dyadic flow bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-dyadic-flow-bound"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:flow-matching-bound",
+      "summary": "For a separable convex finite cost C with C(0)=0, N-point sets X,Y in [0,1]^2 smeared by probability measures within l-infinity distance delta_X, delta_Y of the points whose sums are absolutely continuous with densities at least lambda, h in (0,1/2), lambda'=(1-2h)lambda: for every bounded field Phi with int grad g . Phi = int g d(nu_X-nu_Y) for all Lipschitz g, the minimal matching cost is at most lambda' int C(Phi/lambda') dx + hN sum_(k=1,2) (Psi_k(delta_X/h)+Psi_k(delta_Y/h)).",
+      "assessment": "Working proof: the Hopf-Lax matching bound with general smearings (same proof) and the Fenchel-Young inequality.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Primal form of the Hopf-Lax reduction: any flow between the smeared configurations bounds the matching cost.",
+      "next_action": "Use it with flows whose per-point values have sub-Gaussian tails.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "thm:dyadic-flow-square-exponential",
+      "summary": "For L>=260, X_1..X_N i.i.d. uniform on [0,1]^2 and Y evenly spread, with probability tending to one there is a matching with sum_i exp[N|X_i^j-Y^j_pi(i)|^2/(L^2 log N)] <= 2N for j=1,2: the conjecture's conclusion at the off-curve pair (2,2), coordinatewise.",
+      "assessment": "Working proof: lem:flow-matching-bound with the dyadic Ajtai-Komlos-Tusnady flow, a vector martingale over dyadic levels with conditionally sub-Gaussian increments (Hoeffding), coarse levels bounded uniformly, fine levels by block independence and Chebyshev. The Talagrand-Yukich bound (4.131) already implies the coordinatewise conclusion with probability 9/10; the only addition is probability tending to one, possibly known from its unread source; no novelty claimed.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows the reduction reaches a known exponent pair through one explicit flow, and locates the Gaussian per-point tails of that flow as what blocks, heuristically, every pair with an exponent above 2.",
+      "next_action": "Prove that every flow linear in the empirical measure has Gaussian per-point tails, so that the route needs an adaptive flow.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:flow-matching-bound",
+      "depends_on",
+      "lem:hopf-lax-matching-bound",
+      "Same proof with general smearings, then Fenchel-Young."
+    ],
+    [
+      "thm:dyadic-flow-square-exponential",
+      "depends_on",
+      "lem:flow-matching-bound",
+      "Applies it to the dyadic flow with h=1/4."
+    ],
+    [
+      "thm:dyadic-flow-square-exponential",
+      "cites",
+      "conj:ultimate-matching",
+      "The pair (2,2) lies off the conjecture's curve; the theorem calibrates the reduction on a known pair."
+    ],
+    [
+      "thm:dyadic-flow-square-exponential",
+      "cites",
+      "lem:common-exponent-cap",
+      "Same setting and normalization: the cap excludes pairs with both exponents above 4, the theorem proves the pair (2,2)."
+    ],
+    [
+      "thm:dyadic-flow-square-exponential",
+      "cites",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Proves the matching at (2,2) through the primal form of the same Hopf-Lax bound rather than through the discrepancy hypothesis."
+    ]
+  ]
+}
