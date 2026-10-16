@@ -304,6 +304,30 @@ def gap_block(reply):
         'the question, or ask for the narrowest open route. If the sentence leaves no question open, say so.')}
 
 
+# A reply reporting that a review narrowed or withdrew a conclusion names the old scope and the new one (AGENTS.md;
+# 16 October 2026: "its corrections narrowed the scope sentences" named neither).  On this worktree's replies of that
+# day the pattern matched 3 sentences, each such a report without its scopes; rule text and "too narrow" are skipped.
+NARROWED = re.compile(r"[^.!?\n]*\b(?:review|reviewer|correction)s?\b[^.!?\n]{0,60}?\b(?:narrow(?:ed|s)?|"
+                      r"withdr(?:ew|awn|aws))\b(?!\s+(?:than|as))[^.!?\n]*", re.I)
+NARROWED_SKIP = re.compile(r"too narrow|counts as|summar|\bwhen a\b|\bif a\b", re.I)
+OLD_AND_NEW = re.compile(r"\b(?:I (?:said|described|reported|wrote|called|stated|claimed)|earlier|before the review|"
+                         r"from\b.*\bto\b|old scope|new scope|now (?:says|reads|holds|covers|states)|instead|was)\b",
+                         re.I)
+
+
+def scope_block(reply):
+    """The block for a reply that reports a review narrowing or withdrawing something without naming what was said
+    before and what holds now, or None."""
+    found = [s for s in NARROWED.findall(QUOTED.sub(' ', reply))
+             if not NARROWED_SKIP.search(s) and not OLD_AND_NEW.search(s)]
+    if not found:
+        return None
+    return {'decision': 'block', 'reason': (
+        f'A narrowing reported without its scopes: "{found[0].strip()}". When a review narrows or withdraws a '
+        'conclusion, the report names the old scope and the new one (AGENTS.md): say what was stated before, in its '
+        'words, and what holds now.')}
+
+
 # A reply that ends by waiting on a background reviewer or run (16 October 2026: "Waiting for the review of
 # the maximum-displacement entry." ended a turn): AGENTS.md has the waiting time spent on checkpoint
 # preparation, so such a reply either lists what was prepared or keeps working.
@@ -846,7 +870,7 @@ def turn_block(texts, calls, said, off, quoted=()):
     `said` is what the gap check reads: the final reply, or what was said since the last commit."""
     checks = (('promise', lambda: promise_block(texts, quoted)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
               ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)),
-              ('idle', lambda: idle_block(said)))
+              ('idle', lambda: idle_block(said)), ('scope', lambda: scope_block(said)))
     return next(filter(None, (check() for name, check in checks if name not in off)), None)
 
 

@@ -359,6 +359,20 @@ class UncheckedClaimTest(HookFixture):
             with self.subTest(reply=reply):
                 self.assertIn(f'A declared gap: "{quoted}"', hook.gap_block(reply)['reason'])
 
+    def test_a_narrowing_reported_without_its_scopes_blocks(self):
+        # 16 October 2026: "its corrections narrowed the scope sentences" named neither scope.
+        for reply in ('The bound passed review; its corrections narrowed the scope sentences.',
+                      'The review passed the proofs, with corrections that mostly narrow the claims.'):
+            with self.subTest(reply=reply):
+                self.assertIn('A narrowing reported without its scopes', hook.scope_block(reply)['reason'])
+        for reply in ('The review narrowed it: I said it covers every union; it now holds for dyadic grids only.',
+                      'The reviewer finds the stated scope too narrow.',
+                      'Only deleting text, or adopting the reviewer\'s own wording, counts as narrowing.',
+                      'The rule rereads a summary when a correction narrows what it summarizes.',
+                      'The entry is committed.'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.scope_block(reply))
+
     def test_a_reply_ending_in_a_wait_on_a_reviewer_blocks_unless_it_says_what_was_prepared(self):
         for reply in ('The ledger is in place. Waiting for the review of the maximum-displacement entry.',
                       'Drafted the entry.\nI will continue when the reviewer reports, waiting on its verdict.',
