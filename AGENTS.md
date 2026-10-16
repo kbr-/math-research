@@ -227,16 +227,17 @@ the finisher refuses it), and the article declares `data-bearing="none"` or `"so
 after two entries in a row on one queue item declaring `none`, the next entry develops a different
 item; after three entries in a row on the route declaring `none`, across items, the next states
 before its work, after `<strong>Best outcome.</strong>`, what its best outcome would give at the
-goal's own parameters; and an entry in such a run whose follow-up is Continuing states
-`<strong>Record search.</strong>`, the registry searches made for the next attempt it names (the
-finisher checks all six). Keep the obligation ID stable while that implication is unchanged. The
-finisher checks declarations and evidence references, not the truth of the agent's assessment; the
-existing reviewer must challenge that assessment. Every new `data-bearing="some"` entry links its
-matched parameter ledger from **Bearing** with a named link such as `<a data-ledger="selection"
-href="#selection-ledger">selection budget</a>`. Each **Nonvacuity** paragraph uses a matching named
-link to identify the particular budget its witness verifies. Assertions about both or all budgets
-need separately named references. These checks validate references and declarations; the reviewer
-checks that the inequalities and application really hold.
+goal's own parameters and, by claim ID, the recorded result it must beat; and an entry in such a run
+whose follow-up is Continuing states `<strong>Record search.</strong>`, the registry searches made
+for the next attempt it names (the finisher checks all six). Keep the obligation ID stable while
+that implication is unchanged. The finisher checks declarations and evidence references, not the
+truth of the agent's assessment; the existing reviewer must challenge that assessment. Every new
+`data-bearing="some"` entry links its matched parameter ledger from **Bearing** with a named link
+such as `<a data-ledger="selection" href="#selection-ledger">selection budget</a>`. Each
+**Nonvacuity** paragraph uses a matching named link to identify the particular budget its witness
+verifies. Assertions about both or all budgets need separately named references. These checks
+validate references and declarations; the reviewer checks that the inequalities and application
+really hold.
 
 Fold an `<h4>Architecture review</h4>` section into each scheduled review, with these
 `<p><strong>Label.</strong> ...</p>` paragraphs:

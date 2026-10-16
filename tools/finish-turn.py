@@ -1283,6 +1283,14 @@ def validate_bearing(body, article, progress, text=None):
                                  "what this entry's best outcome would give at the goal's own parameters, "
                                  'written before the work; if nothing, the entry closes a queue item and says so '
                                  '(AGENTS.md, goal progress)')
+            # On 16 October 2026 an entry spent its cycle on a question its own record had settled a cycle
+            # before: its Best outcome named what a success would give, not the recorded bound a success must
+            # beat, and nothing made it look.
+            if not re.search(r'\b(?:lem|thm|prop|cor|check|ex|conj):[\w-]+', plain):
+                raise ValueError(f'{without} research entries in a row on {route} declared no bearing: name in the '
+                                 'Best outcome, by its claim ID, the recorded result or bound its best outcome must '
+                                 'beat, and check that the record does not already decide the question (AGENTS.md, '
+                                 'goal progress)')
             # An entry in such a run opened with "nothing at the goal's parameters" as its best outcome and
             # closed no item; its reviewer could only say afterwards that it should have been refused
             # (review of 11 October 2026).

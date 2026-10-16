@@ -606,10 +606,15 @@ class BearingTest(unittest.TestCase):
             FT.validate_bearing(full, full.rindex('<article'), said, entry)
         with self.assertRaisesRegex(ValueError, 'Best outcome'):
             FT.validate_bearing(full, full.rindex('<article'), said, entry + '<p><strong>Best outcome.</strong> Some.</p>')
+        # A Best outcome that names no recorded result to beat is refused (16 October 2026).
+        with self.assertRaisesRegex(ValueError, 'by its claim ID, the recorded result'):
+            FT.validate_bearing(full, full.rindex('<article'), said, entry + '<p><strong>Best outcome.</strong> A '
+                                'proof would give a family at the cutoff the goal needs; a refutation closes it.</p>')
         FT.validate_bearing(full, full.rindex('<article'), said, entry + '<p><strong>Best outcome.</strong> A proof '
-                            'would give a family at the cutoff the goal needs; a refutation closes the item.</p>')
+                            'would give a family at the cutoff the goal needs, below lem:cylinder-killer-degree; a '
+                            'refutation closes the item.</p>')
         nothing = ('<p><strong>Best outcome.</strong> Nothing at the goal\'s parameters; a family on which the frame '
-                   'provably halves a degree, which settles one point.</p>')
+                   'provably halves a degree beyond cor:frame-ratio-half, which settles one point.</p>')
         with self.assertRaisesRegex(ValueError, 'closes no queue item'):    # nothing to gain and nothing closed
             FT.validate_bearing(full, full.rindex('<article'), said,
                                 '<p><strong>Follow-up.</strong> Continuing: open.</p><p><strong>Record '
