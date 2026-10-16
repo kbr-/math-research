@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Balanced sandpile flow](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-balanced-sandpile-flow)",
+    "label": "Balanced sandpile flow",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-balanced-sandpile-flow"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:balanced-sandpile-flow",
+      "summary": "On a finite set with a stochastic splitting rule P, irreducible and reversible with respect to pi (conductances c(x,y) = pi(x)p(x,y)), and initial mass eta and thresholds t with equal sums: every divisible-sandpile odometer v >= 0 whose final configuration eta - v + P^T v is at most t ends exactly at t, and its net flow v(x)p(x,y) - v(y)p(y,x) equals c(x,y)(u(x) - u(y)) for any solution of sum_y c(x,y)(u(x) - u(y)) = eta(x) - t(x): the same for every such stabilizing odometer, linear in eta - t, the electrical (least-energy) flow; odometers exist (v = pi (u - min u)). For a non-reversible rule the flow is unique only up to a circulation. With equal splitting on the grid of cells and uniform thresholds, the sandpile odometer flow is the electrical flow, and every balanced transport flow is it plus a divergence-free circulation.",
+      "assessment": "Working proof: the stochastic rule conserves mass, so a stable configuration with the thresholds' total equals them; reversibility turns the balance equation into a weighted Laplacian equation, whose kernel on an irreducible chain is the constants; Thomson's principle by orthogonality to divergence-free flows.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Decides the premise of the queued sandpile-odometer-flow item: in the balanced setting on the square the odometer flow is the electrical flow, a fixed linear kernel, for which the fourth route review's Holtsmark sketch predicts Gaussian per-point tails; nonlinearity needs slack or a state-dependent rule, whose flows are the electrical flow plus a circulation.",
+      "next_action": "Test whether the circulation of the state-dependent sandpile (mass sent only to neighbours below threshold) lightens the per-point tails of the electrical flow on the grid.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:balanced-sandpile-flow",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "That obstruction is proved for the dyadic flow only; this lemma reduces the sandpile candidate to another fixed linear flow, the electrical one."
+    ],
+    [
+      "lem:balanced-sandpile-flow",
+      "cites",
+      "lem:flow-matching-bound",
+      "The flow bound through which any such flow would give a matching."
+    ],
+    [
+      "lem:balanced-sandpile-flow",
+      "cites",
+      "ex:greedy-circulation-tails",
+      "Every balanced transport flow is the electrical flow plus a divergence-free circulation, the class that check probed for the dyadic flow."
+    ]
+  ]
+}
