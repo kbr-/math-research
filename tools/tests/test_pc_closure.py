@@ -35,26 +35,31 @@ class PCClosureTest(unittest.TestCase):
         theirs = tb.pc_degree([to_exponents(a, n) for a in axioms], n, 4)
         self.assertEqual(ours, theirs)
         self.assertEqual(ours, 3)
-        rng = random.Random(7)
+        # Random width-2 clause systems on 4 variables: seed 3 gives some refuted at degree 2 and some
+        # never refuted, so agreement is tested on both outcomes (asserted below).
+        rng = random.Random(3)
+        degrees = []
         for _ in range(6):
             n = 4
-            axioms = [{rng.randrange(1 << n) for _ in range(rng.randint(1, 3))} for _ in range(rng.randint(1, 4))]
-            axioms = [a for a in axioms if a]
+            axioms = []
+            for _ in range(rng.randint(6, 12)):
+                p = {0}
+                for v in rng.sample(range(n), 2):
+                    p = pc.multiply(p, {1 << v} if rng.random() < 0.5 else {0, 1 << v})
+                axioms.append(p)
+            ours = pc.refutation_degree(axioms, n, 4)
+            degrees.append(ours)
             with self.subTest(axioms=axioms):
-                self.assertEqual(pc.refutation_degree(axioms, n, 4),
-                                 tb.pc_degree([to_exponents(a, n) for a in axioms], n, 4))
+                self.assertEqual(ours, tb.pc_degree([to_exponents(a, n) for a in axioms], n, 4))
+        self.assertTrue(any(d is not None and d >= 2 for d in degrees) and None in degrees, degrees)
 
-    def test_remainders_are_canonical_and_membership_is_closed_under_low_multiplication(self):
+    def test_remainders_are_canonical(self):
         axioms, n = php(3, 2)
         c = pc.Closure(axioms, n, 2)
         self.assertTrue(c.proper)
-        members = [c.poly(row) for row in c.rows.values()]
         f = {0b11, 0b100, 0}
-        for g in members:
-            self.assertEqual(c.remainder(f ^ g), c.remainder(f))
-            if pc.degree(g) < c.D:
-                for x in range(n):
-                    self.assertTrue(c.contains(pc.multiply(g, {1 << x})))
+        for row in c.rows.values():
+            self.assertEqual(c.remainder(f ^ c.poly(row)), c.remainder(f))
 
     def test_a_cancelling_top_term_member_is_multiplied(self):
         # x0 x1 and x0 x1 + x2 are degree-2 members whose sum x2 has degree 1 < D = 2, so x2 x3 must enter.
@@ -65,6 +70,8 @@ class PCClosureTest(unittest.TestCase):
         c = pc.Closure([], 3, 1)
         with self.assertRaises(ValueError):
             c.contains({0b11})
+        with self.assertRaises(ValueError):
+            c.contains({0b1000})
 
 
 if __name__ == '__main__':

@@ -86,7 +86,10 @@ in another; wait on a job's own completion notice.
   degree-truncated standard basis (Singular's `degBound`) does not measure PC refutation degree: on
   26 September 2026 it gave higher degrees after an axiom was added, which PC degree never does.
   Measure PC degree with an exact degree-D closure computation, and check monotonicity under added
-  axioms as a control.
+  axioms as a control. Over F_2 use the tested tools (`tools/pc_closure.py` for membership and
+  remainders, `tools/f2_closure_degree.cpp` for large refutation-degree runs) rather than writing a
+  closure in a research script: a hand-written one had a non-canonical remainder and missed members
+  from cancelling top terms (16 October 2026).
 - Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not on
   hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products mod p
   at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse and

@@ -11,8 +11,11 @@ Monomials are ordered by degree descending, so a row's lowest set bit is its lea
 members of degree below D are spanned by the rows whose pivot has degree below D, and each such row is
 multiplied by every variable until nothing new enters.  The remainder is canonical: no pivot position
 stays set, so it is linear and two polynomials have equal remainders exactly when they differ by a
-member.  Pure Python, for systems with a few thousand monomials of degree at most D; it agrees with
-tools/truncated_buchberger.py and tools/f2_closure_degree.cpp on the refutation degree (tests).
+member.  Pure Python, for systems with a few thousand monomials of degree at most D.  Its tests compare
+the refutation degree with tools/truncated_buchberger.py, an independent method; a committed provenance
+run (research/results/common_multiplier_closure_module_20261016/cross_check.py) compares properness and
+closure dimension with tools/f2_closure_degree.cpp, which uses the same elimination design and so checks
+the implementation, not the convention.
 
 Built after a hand-written closure in a research script had a non-canonical remainder and missed
 members of degree below D arising from cancelling top terms (16 October 2026).
@@ -64,8 +67,8 @@ class Closure:
     def vector(self, poly):
         v = 0
         for m in poly:
-            if bin(m).count('1') > self.D:
-                raise ValueError('a monomial above the closure degree has no coordinate')
+            if bin(m).count('1') > self.D or m >> self.nvars:
+                raise ValueError('a monomial above the closure degree or outside the variables has no coordinate')
             v ^= 1 << self.index[m]
         return v
 
