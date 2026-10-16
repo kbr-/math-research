@@ -369,6 +369,41 @@ class PlainestBoundTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
             FT.validate_plainest(witness, FT.draft_statuses(witness))
 
+    LIVING = ('<section id="open-statements"><ol><li id="binary-goal"><strong>Binary \\(\\mathrm{AC}^0[2]\\)-Frege '
+              'lower bound — open.</strong> Body.</li><li id="family-goal"><strong>Complete binary PHP-source '
+              'exclusion — open.</strong> B.</li></ol></section><section id="remaining-route"><ol>'
+              '<li data-route-item="general-step"><strong>Repair Pang route.</strong> R.</li>'
+              '<li data-route-item="ips-direct"><strong>Use IPS directly.</strong> I.</li></ol></section>')
+
+    def test_an_open_statement_is_named_by_its_full_title(self):
+        # 16 October 2026: a review dropped a title's qualifier, "Binary Frege lower bound".
+        for sentence in ('Binary Frege lower bound: open and unchanged.', 'No entry established complete PHP-source '
+                         'exclusion in this period.'):
+            entry = f'<article id="entry-2026-10-17-x"><p>{sentence}</p></article>'
+            with self.subTest(sentence=sentence), self.assertRaisesRegex(ValueError, 'reduced form'):
+                FT.validate_statement_names(entry, self.LIVING + entry)
+        for sentence in ('Binary \\(\\mathrm{AC}^0[2]\\)-Frege lower bound: open and unchanged.',
+                         'binary-goal, the Binary Frege lower bound, is unchanged.',
+                         'Complete binary PHP-source exclusion stays optional.'):
+            entry = f'<article id="entry-2026-10-17-x"><p>{sentence}</p></article>'
+            with self.subTest(sentence=sentence):
+                FT.validate_statement_names(entry, self.LIVING + entry)
+
+    def test_a_turn_counts_only_toward_its_own_routes_block(self):
+        # 16 October 2026: a depth-prime-recurrence draft counted itself as a turn of the IPS block.
+        def entry(route, meta):
+            return (f'<article id="entry-2026-10-17-x" data-kind="research" data-route-item="{route}">'
+                    f'<p class="entry-meta">{meta}</p></article>')
+        bad = entry('depth-prime-recurrence', 'Working proof. IPS block, third turn: the collapse.')
+        with self.assertRaisesRegex(ValueError, 'another route'):
+            FT.validate_block_route(bad, self.LIVING + bad, len(self.LIVING))
+        for route, meta in (('general-step', 'Working proof. Repair Pang block, fourth turn: a lemma.'),
+                            ('general-step', 'This is the first of four turns after the completed IPS block.'),
+                            ('ips-direct', 'The second turn of the IPS block.')):
+            good = entry(route, meta)
+            with self.subTest(meta=meta):
+                FT.validate_block_route(good, self.LIVING + good, len(self.LIVING))
+
     def test_work_of_a_later_turn_is_written_as_planned_not_done(self):
         # 16 October 2026: queued builds were stated as built "in the framework turn right after this review".
         for sentence in ('The two waiting builds are built in the framework turn right after this review.',

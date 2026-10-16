@@ -56,6 +56,24 @@ def checks():
             registry.update(json.loads((ROOT / 'research/claims/index.json').read_text()))
         return [f'{i}, {p}: {s}' for i, p, s in dcs.unread_citations(raw, registry)]
     found['unread-section'] = unread
+    titles = {}
+
+    def living(kind):
+        if not titles:
+            body = (ROOT / 'notebook.html').read_text(encoding='utf-8')
+            titles['statements'] = ft.living_titles(body, 'open-statements', 'id')
+            titles['routes'] = ft.living_titles(body, 'remaining-route', 'data-route-item')
+        return titles[kind]
+    found['open-statement-names'] = lambda plain, raw: [f'"{form}": {passage}' for form, passage in
+                                                        ft.reduced_mentions(plain, living('statements'))]
+
+    def blocks(plain, raw):
+        route = re.search(r'data-route-item="([^"]+)"', raw[:600])
+        if 'data-kind="research"' not in raw[:600]:
+            return []
+        return [f'{name} block -> {slug}, entry route {route.group(1) if route else "?"}'
+                for name, slug in ft.block_routes(raw, living('routes')) if not route or slug != route.group(1)]
+    found['block-route'] = blocks
     return found
 
 

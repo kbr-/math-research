@@ -1378,6 +1378,105 @@ LATER_TURN_DONE = re.compile(
     r"(?:[\w-]+\s+){0,2}?turn\b)", re.I)
 
 
+def living_titles(body, section, item):
+    """{id: plain title} of a living section's list items (`item` the attribute holding the id): the Open
+    statements by li id, the remaining route by data-route-item; a title ends at its em dash or period."""
+    found = re.search(rf'<section id="{section}">(.*?)</section>', body, re.S)
+    titles = {}
+    for m in re.finditer(rf'<li {item}="([^"]+)"><strong>(.*?)</strong>', found.group(1) if found else '', re.S):
+        title = ' '.join(html.unescape(strip_tags(m.group(2))).split())
+        titles[m.group(1)] = re.split(r'\s+—\s+|\.\s*$', title)[0].strip()
+    return titles
+
+
+def reduced_names(titles):
+    """Forms of each Open statements title with one qualifier dropped (a word, or the prefix of a hyphenated
+    token such as a MathJax qualifier before "-Frege"), at least three words long and found in no full title."""
+    forms = {}
+    for ident, title in titles.items():
+        words = title.split()
+        for i, word in enumerate(words):
+            shorter = words[:i] + words[i + 1:]
+            variants = [shorter] if len(shorter) >= 3 else []
+            if '-' in word and not word.startswith('-'):
+                variants.append(words[:i] + [word.rsplit('-', 1)[1]] + words[i + 1:])
+            for variant in variants:
+                form = ' '.join(variant)
+                if len(variant) >= 3 and not any(form.lower() in t.lower() for t in titles.values()):
+                    forms.setdefault(form, ident)
+    return forms
+
+
+def reduced_mentions(plain, titles):
+    """(form, passage) for each place `plain` names an Open statements item by a reduced form of its title."""
+    found = []
+    lower = plain.lower()
+    full = [m.span() for t in titles.values() for m in re.finditer(re.escape(t.lower()), lower)]
+    for form in reduced_names(titles):
+        for m in re.finditer(r'(?<![\w\\])' + re.escape(form.lower()) + r'(?!\w)', lower):
+            if not any(a <= m.start() and m.end() <= b for a, b in full):
+                found.append((form, plain[max(0, m.start() - 60):m.end() + 30]))
+    return found
+
+
+# A block of the route rotation named in an entry: capitalized words before "block" ("Repair Pang block").
+BLOCK_NAME = re.compile(r'\b((?:[A-Z][\w-]*\s+){1,3})block(?:,|\'s)\s+(?:[\w-]+\s+){0,2}?turn\b'
+                        r'|\bturn\s+(?:\d+\s+)?of\s+the\s+((?:[A-Z][\w-]*\s+){1,3})block\b')
+BLOCK_SKIP = {'the', 'this', 'that', 'its', 'first', 'second', 'third', 'fourth', 'fifth', 'next', 'route', 'a'}
+
+
+def block_routes(text, routes):
+    """(name, slug) for each rotation block an entry's status line or Chosen paragraph names, with the route
+    item whose title holds all of the name's words, when exactly one does."""
+    meta = re.search(r'<p class="entry-meta">(.*?)</p>', text, re.S)
+    chosen = report_paragraph(text, 'Chosen') if '<strong>Chosen.</strong>' in text else ''
+    found = []
+    for part in (meta.group(1) if meta else '', chosen):
+        plain = ' '.join(html.unescape(strip_tags(part)).split())
+        # Only a sentence that counts a turn toward the block: a review naming the block that comes next does not.
+        counting = ' '.join(s for s in re.split(r'(?<=[.;:])\s+', plain) if re.search(r'\bturns?\b', s, re.I))
+        for m in BLOCK_NAME.finditer(counting):
+            words = [w.lower() for w in (m.group(1) or m.group(2)).split() if w.lower() not in BLOCK_SKIP]
+            hits = [slug for slug, title in routes.items()
+                    if words and all(re.search(r'\b' + re.escape(w) + r'\b', title.lower()) for w in words)]
+            if len(hits) == 1:
+                found.append(((m.group(1) or m.group(2)).strip(), hits[0]))
+    return found
+
+
+def validate_statement_names(text, body):
+    """An entry names an Open statements item by its full title, or by a reduced form beside the item's
+    identifier (16 October 2026: a review dropped the qualifier of a title and it was fixed by hand)."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < '2026-10-17':
+        return
+    titles = living_titles(body, 'open-statements', 'id')
+    plain = ' '.join(html.unescape(strip_tags(text)).split())
+    forms = reduced_names(titles)
+    found = [(form, passage) for form, passage in reduced_mentions(plain, titles) if forms[form] not in passage]
+    if found:
+        raise ValueError('The entry names an Open statements item by a reduced form of its title: '
+                         + '; '.join(f'"{form}" (full title: "{titles[forms[form]]}") in "...{passage}..."'
+                                     for form, passage in found)
+                         + '. Write the full title, or name the item\'s identifier beside it')
+
+
+def validate_block_route(text, body, article):
+    """A research entry counts a turn only toward the rotation block of its own route (16 October 2026: a draft
+    counted a depth-prime-recurrence entry as a turn of the IPS block; only its reviewer saw it)."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < '2026-10-17':
+        return
+    route = article_attribute(body, article, 'data-route-item')
+    wrong = [(name, slug) for name, slug in block_routes(text, living_titles(body, 'remaining-route',
+                                                                          'data-route-item')) if slug != route]
+    if wrong:
+        raise ValueError('The entry counts a turn toward the block of another route: '
+                         + '; '.join(f'"{name} block" is route {slug}' for name, slug in wrong)
+                         + f', while the entry\'s route is {route}. Count it toward its own route\'s block, or '
+                         'toward none')
+
+
 def validate_planned_tense(text):
     """Work a later turn is to do is written as planned, with its date, never as done."""
     dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
@@ -1687,6 +1786,9 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     validate_prevention(text)
     validate_process_audit(text)
     validate_planned_tense(text)
+    validate_statement_names(text, body)
+    if tags['kind'] == 'research':
+        validate_block_route(text, body, article)
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
