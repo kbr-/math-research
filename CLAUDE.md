@@ -22,6 +22,8 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   the rest of the proof a variant to compare, not the result.
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved.
+- A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
+  checked on the family's extreme members: boundaries that coincide, many members through one point.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
   limit, never at the size written for.
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
