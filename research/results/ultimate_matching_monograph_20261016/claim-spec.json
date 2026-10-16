@@ -1,0 +1,87 @@
+{
+  "source": {
+    "record": "[Monograph statements](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-monograph-statements)",
+    "label": "Monograph statements",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-monograph-statements"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "topic_definitions": [
+    {
+      "id": "random-matchings",
+      "title": "Random matchings",
+      "description": "Matchings of random point samples, transportation costs and the discrepancy bounds behind them."
+    }
+  ],
+  "claims": [
+    {
+      "id": "conj:ultimate-matching",
+      "summary": "Talagrand's ultimate matching conjecture (Conjecture 5.8 of The Status of my favorite problems): for alpha_1, alpha_2 in (0,infinity] with 1/alpha_1+1/alpha_2=1/2 and a universal L, with probability tending to one as N grows, two independent samples X, Y of N i.i.d. uniform points of [0,1]^2 admit a matching pi with sum_i exp[(sqrt(N/log N)|X_i^j-Y^j_pi(i)|/L)^alpha_j] <= 2N for j=1,2; alpha=infinity means max_i |X_i^j-Y^j_pi(i)| <= L sqrt(log N/N). Research Problem 17.1.2 of Upper and Lower Bounds for Stochastic Processes (2nd ed., 2021) states it with Y evenly spread, a sufficient form by lem:two-sample-matching-transfer.",
+      "assessment": "Open conjecture, imported from its two sources with their read statements. Known in the monograph's setting: the pair (alpha,infinity) for alpha<1/2 with constant K(alpha) (Theorem 17.1.3), and the pair (2,2) with constant sqrt(L) but only with probability 9/10 (Talagrand-Yukich), not with probability tending to one; the three-dimensional analogue with exponent sum 1 is Theorem 18.1.1.",
+      "status": "conjecture",
+      "category": "context",
+      "rationale": "The goal of the ultimate-matching notebook.",
+      "next_action": "Derive the matching-from-discrepancy reduction for a general exponent pair and identify the class whose discrepancy bound would give it.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:two-sample-matching-transfer",
+      "summary": "For N>=2, alpha in (0,infinity] and point sequences X,Y,Z of length N: if sigma_1 matches X to Z and sigma_2 matches Y to Z with sum_i exp[(sqrt N|P_i^j-Z^j|/(L sqrt(log N)))^alpha] <= 2N (or the maximum bound L sqrt(log N/N) at alpha=infinity), then sigma_2^-1 sigma_1 matches X to Y with the same bound at constant max(2,2^(1/alpha))L. Hence an evenly-spread matching theorem holding with probability 1-eps_N gives the two-sample one with probability 1-2eps_N, no independence of the samples assumed.",
+      "assessment": "Working elementary proof: triangle inequality, convexity of t^alpha (alpha>=1) or its subadditivity (alpha<1), arithmetic-geometric mean, union bound. Only this direction; the converse is not addressed.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Shows the monograph's form of the ultimate matching conjecture implies the survey's two-sample form with constant 2L, and transfers Theorem 17.1.3 to two samples.",
+      "next_action": "Decide whether the two-sample form implies the evenly-spread form, if a later step needs it.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:exponential-matching-consequences",
+      "summary": "If a matching pi of point sequences satisfies sum_i exp[(sqrt N|X_i^j-Y^j_pi(i)|/(L sqrt(log N)))^alpha_j] <= 2N, N>=2, then max_i |X_i^j-Y^j_pi(i)| <= L sqrt(log N)(log 2N)^(1/alpha_j)/sqrt N, and for alpha_j>=1 the coordinate distances sum to at most 2L sqrt(N log N). At alpha_1=alpha_2=4 the Euclidean distances have sum <= 4L sqrt(N log N) and maximum <= 4L(log N)^(3/4)/sqrt N; at (2,infinity) Shor's two bounds hold with 2L.",
+      "assessment": "Working elementary proof (each summand at least 1; t <= exp(t^alpha) for alpha>=1); records with constants the deductions both sources sketch.",
+      "status": "working_proof",
+      "category": "context",
+      "rationale": "Shows the conjecture contains the Ajtai-Komlos-Tusnady, Leighton-Shor and Shor bounds and the simultaneous sum-and-maximum question.",
+      "next_action": "None beyond use in later entries.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:common-exponent-cap",
+      "summary": "For X i.i.d. uniform on [0,1]^2 and Y evenly spread, and any alpha_1, alpha_2 in (4,infinity] and L'>0, it is false that with probability tending to one some matching satisfies sum_i exp[(sqrt N|X_i^j-Y^j_pi(i)|/(L' sqrt(log N)))^alpha_j] <= 2N (maximum bound at infinity) for j=1,2. So the diagonal exponent 4 of the ultimate matching conjecture cannot be raised in the evenly-spread setting.",
+      "assessment": "Working proof from the stated Leighton-Shor upper bound in probability (Theorem 4.7.1) and lower bound in expectation (Theorem 4.8.1) of the monograph: a reverse-Markov step gives the lower bound with probability bounded below; argument proposed by the reviewer and checked. Evenly-spread setting only; off-diagonal pairs with one exponent at most 4 are not addressed.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Shows the conjecture cannot be strengthened on its diagonal in the monograph's evenly-spread setting.",
+      "next_action": "Seek an anisotropic Leighton-Shor lower bound to test pairs with exponent sum below 1/2 and one exponent at most 4.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:two-sample-matching-transfer",
+      "applies",
+      "conj:ultimate-matching",
+      "Carries the monograph's evenly-spread form to the survey's two-sample form with constant 2L at every admissible pair."
+    ],
+    [
+      "lem:exponential-matching-consequences",
+      "applies",
+      "conj:ultimate-matching",
+      "Derives the maximum and sum bounds, and the special cases (4,4) and (2,infinity), from the conjecture's conclusion."
+    ],
+    [
+      "lem:common-exponent-cap",
+      "depends_on",
+      "lem:exponential-matching-consequences",
+      "Uses part (a), the maximum bound, for exponents at least 1."
+    ],
+    [
+      "lem:common-exponent-cap",
+      "applies",
+      "conj:ultimate-matching",
+      "Shows no pair with both exponents above 4 holds in the evenly-spread form, so the conjecture is sharp on its diagonal there."
+    ]
+  ]
+}
