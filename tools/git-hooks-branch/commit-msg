@@ -3,7 +3,10 @@
 
 16 October 2026: a command that would have written a new message file was refused, the next call committed with
 the file left from the previous commit, and the commit went in under the wrong subject. A message read from a
-stale file repeats the last subject; set SAME_SUBJECT_OK=1 for a deliberate repeat (an amend that keeps it)."""
+stale file repeats the last subject; set SAME_SUBJECT_OK=1 for a deliberate repeat (an amend that keeps it).
+Counted over this branch's 4587 first-parent subjects (16 October 2026): 7 repeat one of the ten before them,
+1 the stale message that prompted the hook, 6 routine "Refresh claim ... after rebasing" commits, which need
+the variable. Not covered: git commit --no-verify, and clones whose hooks are not installed."""
 import os
 import subprocess
 import sys
