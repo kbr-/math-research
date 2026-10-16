@@ -95,7 +95,10 @@ def main(argv=None):
             proposal = Path(scratch, f'proposal{number}.json')
             run([sys.executable, tool, 'author', 'build', '--spec', str(path.resolve()),
                  '--out', str(Path(scratch, f'request{number}.json')), '--proposal', str(proposal),
-                 '--report', str(Path(scratch, f'report{number}.txt'))], cwd)
+                 '--report', str(Path(scratch, f'report{number}.txt')),
+                 # the commit being replayed registered these summaries after comparing them with its entry; a
+                 # rebuild on another base changes no text (16 October 2026: the check first broke this replay)
+                 '--summaries-checked'], cwd)
             Path(cwd, REGISTRY).write_text(proposal.read_text())
             rebuilt += [item['id'] for item in specs[number].get('claims', [])]
     run([sys.executable, tool, 'render'], cwd)

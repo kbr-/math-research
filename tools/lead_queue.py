@@ -95,6 +95,9 @@ Usage: lead_queue.py init NOTEBOOK.html  (adds the section, oldest items first, 
        lead_queue.py add NOTEBOOK.html --check|--build|--idea ID SOURCE TEXT  (appends the item at the tail;
                                             SOURCE says where it came up)
        lead_queue.py edit NOTEBOOK.html ID TEXT  (replaces the text of an item add wrote; its source stays)
+       lead_queue.py close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH [--path PATH] --note TEXT
+                                            (removes a built top-level build without an entry and records it in
+                                            research/queue-closures.jsonl; a commit without an entry may carry it)
        lead_queue.py append NOTEBOOK.html  (after the last entry, and done: items its follow-up list closes leave,
                                             its newly listed items join the queue, the items it reopens go to
                                             the tail, its Waiting and Unblocked marks apply)
@@ -1894,8 +1897,25 @@ def check(head_body, body, path=None, root=None):
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
                          'against the commit before it')
     if not fresh and before is not None:
-        kept, added = nodes[:len(before[1])], nodes[len(before[1]):]
-        if (shape(kept) != shape(before[1]) or marks(nodes) != marks(before[1])
+        # builds closed by close-built, each recorded in the ledger with its evidence, leave without an entry
+        present = {n.ident for n in nodes}
+        removed = [n for n in before[1] if n.ident not in present]
+        if removed:
+            top = Path(root or ROOT)
+            relative = Path(path).resolve().relative_to(top.resolve()).as_posix() if path else None
+            ledger = closure_ledger(top)
+            for node in removed:
+                row = ledger.get((relative, node.ident))
+                if node.kind != 'build' or node.children or row is None:
+                    raise ValueError(f'{node.ident} left the queue in a commit without an entry: only a build with '
+                                     'no sub-ideas leaves so, through lead_queue.py close-built, which records it '
+                                     f'in {CLOSURES}')
+                problems = closure_problems(row, top)
+                if problems:
+                    raise ValueError(f'{node.ident}: the closure in {CLOSURES} is incomplete: ' + '; '.join(problems))
+        remaining = [n for n in before[1] if n.ident in present]
+        kept, added = nodes[:len(remaining)], nodes[len(remaining):]
+        if (shape(kept) != shape(remaining) or marks(nodes) != marks(remaining)
                 or any(n.children or admitter(n) is None for n in added)
                 or draining != draining_after(before[0], nodes)):
             raise ValueError('A commit that adds no Research-record entry changes the queue only by appending, at the '
@@ -2195,6 +2215,69 @@ def add(body, kind, ident, source, text):
     return updated
 
 
+CLOSURES = 'research/queue-closures.jsonl'     # tracked: one line per build closed without an entry
+CLOSURE_NOTE = 40                               # characters a closure note needs at least
+
+
+def closure_ledger(root=None):
+    """{(notebook path relative to the repository, item identifier): ledger row} of builds closed by close-built."""
+    path = Path(root or ROOT) / CLOSURES
+    rows = {}
+    for line in path.read_text().splitlines() if path.exists() else []:
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        rows[(row.get('notebook'), row.get('ident'))] = row
+    return rows
+
+
+def closure_problems(row, root=None):
+    """What a ledger row lacks: the implementation paths it names exist, its reviewer record is a *review*.txt
+    file that exists, and its note says what was built in at least CLOSURE_NOTE characters."""
+    root = Path(root or ROOT)
+    problems = []
+    if len(row.get('note', '').strip()) < CLOSURE_NOTE:
+        problems.append(f'its note says in fewer than {CLOSURE_NOTE} characters what was built')
+    record = row.get('record', '')
+    if not re.search(r'review[^/]*\.txt$', record) or not (root / record).is_file():
+        problems.append(f'its reviewer record {record or "(none)"} is not an existing *review*.txt file')
+    paths = row.get('paths') or []
+    if not paths:
+        problems.append('it names no implementation path')
+    problems += [f'its implementation path {p} does not exist' for p in paths if not (root / p).exists()]
+    return problems
+
+
+def close_built(body, notebook, ident, record, paths, note, root=None, today=None):
+    """(the notebook without build `ident`, the ledger row recording why): a top-level build with no sub-ideas,
+    built in a framework commit, leaves the queue without an entry, as `add` let it join without one.
+
+    Until 16 October 2026 a build left the queue only through an entry developing it or, one per review, a
+    route review; six builds finished in one framework turn would have waited six reviews, swelling a draining
+    queue (user: "Isn't that a gap in the framework? Why can't you close items")."""
+    found = parse_tree(body)
+    if found is None:
+        raise ValueError('The notebook has no lead and bridge queue')
+    draining, nodes = found
+    node = next((n for n in nodes if n.ident == ident), None)
+    if node is None:
+        raise ValueError(f'{ident} is not a top-level queued item')
+    if node.kind != 'build':
+        raise ValueError(f'{ident} is a {node.kind}: only builds close this way; other items close in an entry')
+    if node.children:
+        raise ValueError(f'{ident} has sub-ideas: they close in an entry with it')
+    import datetime
+    row = {'notebook': notebook, 'ident': ident, 'text': ' '.join(html.unescape(strip_tags(node.text)).split()),
+           'note': note, 'record': record, 'paths': list(paths),
+           'date': (today or datetime.date.today()).isoformat()}
+    problems = closure_problems(row, root)
+    if problems:
+        raise ValueError(f'{ident} cannot close: ' + '; '.join(problems))
+    nodes = [n for n in nodes if n is not node]
+    return rewrite(body, nodes, draining_after(draining, nodes)), row
+
+
 COST_CLAIM = re.compile(
     r'\b(?:sav(?:e|es|ing|ings)|faster|slow(?:er|ly|s|ed)?|speeds? up|costs?|wastes?|halves?|shorten(?:s|ed)?|cheaper|'
     r'most of (?:it|its|the|that)|(?:takes?|took|spen[dt]s?)\b[^.;:]{0,60}?\b(?:\d[\d.,]*\s*(?:s|ms|min|h)|seconds?|minutes?|hours?))\b',
@@ -2253,6 +2336,29 @@ def main(argv):
         kind = argv[3][2:]
         article = 'an' if kind[0] in 'aeiou' else 'a'
         print(f'Appended {argv[4]}, {article} {kind}; {len(parse_tree(path.read_text())[1])} items in the queue.')
+        return 0
+    if len(argv) >= 3 and argv[1] == 'close-built':
+        import argparse
+        parser = argparse.ArgumentParser(prog='lead_queue.py close-built')
+        parser.add_argument('notebook')
+        parser.add_argument('ident')
+        parser.add_argument('--record', required=True, help='the reviewer record, a *review*.txt file')
+        parser.add_argument('--path', action='append', required=True, help='an implementation path (repeatable)')
+        parser.add_argument('--note', required=True, help='what was built, with its measured checks')
+        args = parser.parse_args(argv[2:])
+        import notebooks
+        path = Path(notebooks.notebook_file(args.notebook))
+        relative = path.resolve().relative_to(ROOT.resolve()).as_posix()
+        try:
+            body, row = close_built(path.read_text(), relative, args.ident, args.record, args.path, args.note)
+        except ValueError as error:
+            print(error, file=sys.stderr)
+            return 1
+        with (ROOT / CLOSURES).open('a') as ledger:
+            ledger.write(json.dumps(row, ensure_ascii=False) + '\n')
+        path.write_text(body)
+        print(f'Closed {args.ident} as built, recorded in {CLOSURES}; '
+              f'{len(parse_tree(body)[1])} items in the queue. Stage the ledger with the notebook.')
         return 0
     if len(argv) == 5 and argv[1] == 'edit':
         path = Path(argv[2])

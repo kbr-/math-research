@@ -421,7 +421,11 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   review, a tool's defect) joins the queue at once with `lead_queue.py add NOTEBOOK.html
   --check|--build|--idea ID SOURCE TEXT`: a top-level item at the tail, which needs no entry and
   which a commit without an entry may add (user, 7 October 2026: "You should be able to queue items
-  by just running the tool"). Those of a research entry that develops no queue item have no parent:
+  by just running the tool"). A finished top-level build leaves the same way: `lead_queue.py
+  close-built NOTEBOOK.html ID --record REVIEW.txt --path PATH --note TEXT` records the reviewer's
+  record, the implementation paths and what was built in `research/queue-closures.jsonl`, and a
+  commit without an entry may carry it (user, 16 October 2026: "Isn't that a gap in the framework?
+  Why can't you close items"). Those of a research entry that develops no queue item have no parent:
   they wait in their entry, `lead_queue.py pending` lists them, and the next review promotes any
   number by judgement with a follow-up list item ending `<strong>Follow-up.</strong> Promoted:
   <reason>` (user, 9 October 2026). `lead_queue.py append` and `similar` show queued items with

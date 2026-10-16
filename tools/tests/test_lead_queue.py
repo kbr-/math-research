@@ -841,6 +841,45 @@ class LeadQueueTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, refused):
             lq.check(head, body.replace(' data-draining="true"', ''))
 
+    def test_a_built_build_leaves_without_an_entry_through_its_ledgered_closure(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'research/results').mkdir(parents=True)
+            (root / 'research/results/reviewer.txt').write_text('pass')
+            (root / 'tools').mkdir()
+            (root / 'tools/thing.py').write_text('')
+            head = lq.add(lq.add(notebook([self.rev], self.q), 'build', 'b-1', 's', 'Build the thing'),
+                          'build', 'b-2', 's', 'Build the other thing')
+            page = root / 'notebook.html'
+            note = 'Built in tools/thing.py with its test; the suite passes in 9 s.'
+            for record, paths, wanted in (('research/results/reviewer.md', ['tools/thing.py'], 'review'),
+                                          ('research/results/reviewer.txt', ['tools/none.py'], 'does not exist'),
+                                          ('research/results/reviewer.txt', ['tools/thing.py'], None)):
+                with self.subTest(record=record, paths=paths):
+                    if wanted:
+                        with self.assertRaisesRegex(ValueError, wanted):
+                            lq.close_built(head, 'notebook.html', 'b-1', record, paths, note, root)
+                        continue
+                    body, row = lq.close_built(head, 'notebook.html', 'b-1', record, paths, note, root)
+            with self.assertRaisesRegex(ValueError, 'fewer than'):
+                lq.close_built(head, 'notebook.html', 'b-1', 'research/results/reviewer.txt', ['tools/thing.py'],
+                               'short', root)
+            with self.assertRaisesRegex(ValueError, 'only builds close this way'):
+                lq.close_built(head, 'notebook.html', self.q[0][1], 'research/results/reviewer.txt',
+                               ['tools/thing.py'], note, root)
+            self.assertNotIn('data-build="b-1"', body)
+            self.assertIn('data-build="b-2"', body)
+            self.assertEqual(row['text'], 'Build the thing')
+            with self.assertRaisesRegex(ValueError, 'only a build with no sub-ideas leaves so'):
+                lq.check(head, body, page, root)                        # not yet in the ledger
+            (root / lq.CLOSURES).write_text(json.dumps(row) + '\n')
+            lq.check(head, body, page, root)
+            lq.check(head, lq.add(body, 'check', 'c-1', 's', 'Check it'), page, root)   # with an addition too
+            gone = notebook([self.rev], self.q[1:]) if len(self.q) > 1 else None
+            if gone:
+                with self.assertRaisesRegex(ValueError, 'only a build'):
+                    lq.check(notebook([self.rev], self.q), gone, page, root)
+
     def test_added_items_are_developed_by_their_kinds_rules(self):
         closed = [self.rev, research(self.q[0], 'Closed'), research(self.q[1], 'Closed')]
         for kind, cited, error in (('build', '<a href="tools/lead_queue.py">ported</a>', 'link the opened task'),
