@@ -1,0 +1,105 @@
+Review record: multilinear repairs (entry-2026-10-17-multilinear-repair). Sole fresh-context medium reviewer (medium-reviewer agent type), its first report and its follow-up, verbatim.
+
+===== first report =====
+
+**Verdict: pass with corrections.** The corollary is a correct instance of lem:module-repair-factorization (b). Several statement-level sentences say more than the proof gives, the notation has a real clash, and the Baseline citation is unsupported.
+
+**Check 1 (applying (b)).** I checked every hypothesis of (b) under the substitution: R' = R^{⊗k}, S = R, φ = μ, T = 1, J' = J.
+- φ(x_i^{(t)}) = x_i lies in S_1.
+- J is closed under each x_i within degree D'.
+- The window condition TD+σ ≤ D' becomes D+σ ≤ D'.
+- β(J_N) ⊆ J and β(F_j) ⊆ V_{j+σ}.
+- The compatibility condition holds for every copy t.
+- The monomial range is surjective: m'' ↦ m''^{(t)} is a degree-preserving section of μ on monomials.
+- The degrees in the converse match: R and R' are domains, so deg(w'E^{(t)}) = Σ_t deg w_t + deg E = deg(∏_t w_t · E).
+- The converse is correct. J_N = μ^{-1}(J) ∩ V'_D is a pseudo-submodule because deg μ(u) ≤ D−1 < D'.
+
+**Gaps and errors**
+- **The letter k means two things** (Setting, Hypotheses, the spec summary). It names both the field and the number of lines, so "R^{⊗k} = k[x^{(1)},…,x^{(k)}]" and "The field, k and the axioms: any" are ambiguous. Rename one, for example call the number of lines ℓ.
+- **"Of no larger degree" and "exactly as strong" are overstated** (General statement, New mathematics, spec summary). The forward direction gives f ∈ V_{K+σ}, at parameter K+σ, not K. The converse gives σ = 0. The window is D−K against J at degree D'. That is a scalar repair at parameter K+σ only when D' = D+σ; otherwise its window D−K is narrower than D'−K−σ.
+  - Required change: "a scalar common repair at parameter K+σ, on the window deg(a_j m) ≤ D−K, against the degree-D' closure".
+  - The equivalence holds for the least value of K+σ (with D' = D+σ), not for K.
+- **"Which settled single-line module repairs"** (Chosen) is false. The module-repair entry's Follow-up is Continuing, and it leaves twisted modules M_ρ and certificates into other algebras open. Change it to "settled single-line module repairs certified semilinearly over a ring map".
+- **The Baseline's use of historical:ex:mixedfailure is unsupported.** That example ("Independent block corrections can conflict") is about design functionals Λ: Λ(R_A) = Λ(R_B) = 1 but Λ(R_A R_B) = 0. It is not about products of repair multipliers. Either call it an analogue for design corrections, or give the direct example:
+  - Over F_2, n = 1, Boolean axiom, w = 1, line 1 with E = x and line 2 with E = 1+x.
+  - The separate repairs are 1+x and x. Their product x(1+x) lies in J, so survival fails.
+  - No common repair exists, since a common repair would have to vanish on the whole cube.
+- **The Nonvacuity witness exercises little.**
+  - With D = 3, K = 2 the soundness window D−K = 1 is below the axiom degree, so soundness is vacuous.
+  - σ = 0, N = R', and J_N = μ^{-1}(J), so the forward direction there is trivial.
+  - The instance is covered by (b) itself, since the corollary is (b). The rule requires an input the recorded statement does not already cover; only the converse is new, so the witness should exercise the converse.
+  - Say all this. A cheap fix that exercises soundness: D = D' = 4, K = 2. Then a_j^{(t)}ν has degree 4 and image (x_j²+x_j)(1+x_1)(1+x_2) ∈ J.
+  - The Plainest bound (transversal number τ = 2 by lem:transversal-killer-basis (c), with τ + max|A_j| = 3 ≤ D) is correct, and it already decides the instance's question. State that.
+- **Unused or over-strong hypotheses.**
+  - (i) The forward direction uses the axioms of only one copy, since μ(a_j^{(t)}m) runs over all a_j m'' for any fixed t. Requiring "the axioms of every copy" is more than the corollary consumes.
+  - (ii) The forward direction never uses that J_N is a pseudo-submodule. (b)'s proof uses the closure of J', not of J_N, as the module-repair entry's own Hypotheses paragraph says.
+  - (iii) The structural reason should be stated: certification along μ forgets which copy an error or axiom sits in. That is why the corollary collapses to the scalar case, and it is what the entry teaches.
+- **Check 2 (does the definition read the item correctly?).** The definition requires killing each w'E_{t,i}^{(t)} separately. A product of lines carries one combined error, roughly Σ_t E_t^{(t)} ∏_{s≠t} w_s^{(s)} plus cross terms. Killing only that combination is a weaker requirement than killing each E_{t,i} separately, and it is not covered. Under μ it becomes a scalar repair of a single combined error, which can be cheaper than a common repair of all the errors. Not examined omits this reading; list it, or argue that it is not the item's.
+- **Check 4 (closure as Developed).** Not examined dismisses survival "not read along multiplication" as "a different system". But a survival certificate through product designs λ_1⊗λ_2 follows from the old system's hardness and is not compatible along μ. That is a legitimate reading of "repair of a product proof". Either treat it (see Suggestions) or make the follow-up Continuing.
+- **Check 5 (presented as a corollary?).** Yes, apart from the overstated sentences above. Against the record is accurate. μ is a substitution with trivially certified image axioms, as thm:certified-repair-composition allows.
+
+**Suggestions (unverified)**
+- **Answer to the open point (is there a reading under which a bilinear repair beats the scalar common one?), sketch, unverified.**
+  - *Readings already covered by the lemma.* Read "restricted along multiplication" as an R⊗R-module killed by ker μ, as an R⊗R-module viewed through a one-factor inclusion, or through x ↦ x⊗1 + 1⊗x. Each yields an R-module repair, so lem:module-repair-factorization (b) already makes it scalar whenever its certificate is semilinear into the old closure.
+  - *The doubled-system reading with product designs.* With Boolean axioms on the 2n-variable cube and monomial errors, lem:transversal-killer-basis gives least degree τ(M_1 ⊔ M_2) = τ(M_1) + τ(M_2), because the copies have disjoint supports. That is at least τ(M_1 ∪ M_2), the old scalar common bound. So this reading does not beat the scalar repair either; it is worse whenever errors share variables.
+  - *The one opening.* Only the combined-error reading from Check 2 could beat the scalar repair, and it does so by weakening what is killed, not by being multilinear.
+  - Record: searches for "product of designs on disjoint variables" and "mixed failure independent corrections survival" found no claim on tensor-product repairs; the second surfaced historical:ex:mixedfailure.
+
+**Process audit**
+- **Chosen:** "settled single-line module repairs" is stronger than its source, whose follow-up is Continuing.
+- **General statement and New mathematics:** "no larger degree" and "exactly as strong" drop the σ shift and the window that (b) carries.
+- **Baseline:** the citation is relayed without its object (designs, not multipliers).
+- **Nonvacuity:** offered as a witness, but its soundness branch is vacuous and the instance is already covered by (b). The draft does not say so, although the module-repair entry did say this of its own witness.
+- **Not examined and Follow-up Developed:** they skip the combined-error and product-design readings without an attempt beside them. "Which repair a different system" is a negative sentence with no tried case.
+- **Process assessment:** "No mistake of mine is found" comes before the review. That assertion should be written after the review.
+- **Title:** it is TITLE-PENDING. Propose "Multiplication-certified multilinear repairs are scalar". Status: "Working proof · scope: survival certified along multiplication (corollary of lem:module-repair-factorization)".
+
+Strength count: 4 (Chosen "settled"; General statement "no larger degree / exactly as strong"; New mathematics "at no larger degree"; Follow-up Developed "No application … remains").
+
+Files: draft /home/kbr/.claude/jobs/354c41d4/tmp/mr-draft.html; spec /home/kbr/.claude/jobs/354c41d4/tmp/mr-spec.json.
+
+===== follow-up =====
+
+**Verdict on the rewritten draft: pass with corrections.** I re-read the rewritten draft. The corrections I asked for are made correctly; I rechecked the D = 4 witness, the one-copy soundness and the converse. Of the four new items, (1) is correct with two wording fixes, and (2) does not show what it claims.
+
+**(1) Any set of lines, infinitely many included: correct.**
+- Part (b) of the lemma uses only induction over the monomials g with deg g ≤ D−K, closure of J under each variable, and compatibility for each variable. It never uses finitely many variables; only part (e) uses finite dimension. So it holds in R^{⊗Λ}, and b = Σ_t deg w_t is finite.
+- Say what this adds: nothing beyond one line. μ sends every error into R, so the conclusion depends only on the set {E_{t,i}} and on the product ∏_t w_t. An infinite Λ is the same as one line carrying all the errors.
+- Required: in the Setting, "a protected class w_t, all but finitely many equal to 1" can be read as applying to the errors too. An error equal to 1 cannot be repaired. Write "w_t = 1 for all but finitely many t".
+- Required: the Verification gate correctly says only the author checked this addition. Keep that wording.
+
+**(2) Smallest case: the instance is degenerate.**
+- With f̃ = w_1 = 1 and g̃ = w_2 = 0, the product line's intended value is f̃g̃ = 0. A repair of the product line must survive at the protected class w_1w_2 = 0, which nothing does. Checking that f = x survives at protected class 1 tests the wrong class.
+- So "the product line can be repairable where its factors have no common repair" is not exhibited. It is a sentence stronger than its source, and it appears in both the Smallest case and the Follow-up.
+- Required: state the product line's protected class as w_1w_2 and check survival there. With g̃ = 1 the same errors give the combined error E_1 + E_2 + E_1E_2 ≡ 1 mod J, a constant, so no repair exists.
+- Required: in the spec, "it fails for readings that kill only the product line's combined error or certify survival by product designs" should say "does not cover". The corollary does not fail there, and the product-design case is my unverified sketch.
+
+**(3) Not examined and the next attempt: acceptable, with two notes.**
+- The trivial direction should be stated: when the degrees fit, a common repair of the factors' errors also kills the combined error w_2E_1 + w_1E_2 + E_1E_2. So the combined repair's degree is at most the common repair's, and the next attempt asks only whether the inequality can be strict.
+- Item (3) of Not examined gives no reason why the item stays Continuing without it. Add one line.
+
+**(4) Process assessment, Prevention and Meta: not acceptable as written.**
+- **The Prevention names no new check.** It cites the existing Not examined requirement and the CLAUDE.md lines, but those let the mistakes through, and "written only after the review in this entry" is a promise.
+- **"Whether a paragraph was written before a review is not visible in its text" is unsupported.** A check can be built: the finisher could refuse a Process assessment that reports no mistake when the Verification gate lists reviewer corrections. Build it, or queue it with `lead_queue.py add --build` and the "Not built in the turn:" reason.
+- **The Meta's "it shows in the earlier Developed drafts too" has no source.** Cite the entries, or drop the sentence.
+- **The Meta's change is an existing CLAUDE.md line.** It does not say why that line failed here, so it names no change. Name the change and its path.
+
+**Suggestions (unverified)**
+- **The combined-error reading saves nothing over F_2 when w_1 = w_2 = 1.**
+  - On the cube the combined error vanishes at a point p exactly when (1+E_1(p))(1+E_2(p)) = 1. Over F_2 that forces E_1(p) = E_2(p) = 0.
+  - So the killing set of the combined error equals that of the common repair. By lem:transversal-killer-basis (b), which depends only on the zero sets, the least degrees agree.
+- **Over characteristic other than 2 there is a strict saving.**
+  - Take E_1 = E_2 = −2 with w_1 = w_2 = 1. The combined error is −2 − 2 + 4 = 0, so f = 1 repairs the product line, while each factor's constant error has no repair.
+  - This is a valid smallest case for strictness, although the errors are constants. The family question is then whether pointwise cancellation (1+E_1)(1+E_2) = 1 can happen with nonconstant errors at Pang's parameters.
+- **Record.** I made no new search for this.
+
+**Process audit**
+- **Smallest case and Follow-up:** they draw a conclusion from a degenerate instance (protected class 0), and that instance was not checked for that branch.
+- **Prevention:** "no check can be seen in the text" is a negative claim with no attempt beside it.
+- **Meta:** an unsourced claim about earlier drafts, and a named change that is an existing rule.
+- **Spec:** "fails" is stronger than "does not cover", and it relays my unverified sketch as fact.
+- **Title and status line:** they match the body.
+
+Strength count: 4 (the Smallest case conclusion, the Follow-up's repeat of it, the spec's "fails", and the Meta's claim about earlier drafts).
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/mr-draft.html, /home/kbr/.claude/jobs/354c41d4/tmp/mr-spec.json

@@ -225,7 +225,10 @@ class AssessmentAfterReview(unittest.TestCase):
         for gate, assessment in (
                 ('The reviewer passed it with no required change.', 'No mistake of mine was found by the review.'),
                 ('It required two changes; all are made.', 'Two mistakes of mine: an overstated title and a citation.'),
-                ('The reviewer found no gap.', 'Nothing went wrong in the computation.')):
+                ('The reviewer found no gap.', 'Nothing went wrong in the computation.'),
+                # the entry that built the check describes it (17 October 2026)
+                ('It required two changes; all are made.', 'Two mistakes of mine. The finisher now refuses a '
+                 'Process assessment that reports no mistake beside a gate listing corrections.')):
             with self.subTest(gate=gate):
                 FT.validate_prevention(self.entry(gate, assessment))
 

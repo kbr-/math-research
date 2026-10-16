@@ -1609,7 +1609,10 @@ def validate_prevention(text):
     # A Process assessment that reports no mistake while the review required corrections was written before the
     # review (17 October 2026: "No mistake of mine is found" stood beside a gate listing nine corrections).
     gate = html.unescape(strip_tags(report_paragraph(text, 'Verification gate')))
-    said = html.unescape(strip_tags(assessment))
+    # A sentence describing a check that refuses such an assessment is not one (17 October 2026: the entry that
+    # built this check described it in its own Prevention).
+    said = ' '.join(s for s in re.split(r'(?<=[.!?])\s+', html.unescape(strip_tags(assessment)))
+                    if not re.search(r'\brefus', s, re.I))
     if NO_MISTAKE.search(said) and REVIEW_CORRECTED.search(gate):
         raise ValueError(f'The Process assessment says "{NO_MISTAKE.search(said).group(0)}" while the Verification '
                          'gate reports corrections the reviewer required: write the assessment after the review, '
