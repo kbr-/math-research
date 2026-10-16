@@ -131,11 +131,29 @@ def bearing_run_notes(body):
         if 'data-bearing="none"' not in tag:
             break
         run += 1
-    if run < BEARING_RUN:
-        return []
-    return [f'The last {run} research entries in a row declared no bearing on the goal (data-bearing="none"), across '
-            'queue items. State in this entry\'s choice of item what at the goal\'s own parameters it could give; '
-            'if nothing, say why the cycle is spent on it.']
+    notes = []
+    if run >= BEARING_RUN:
+        notes.append(f'The last {run} research entries in a row declared no bearing on the goal (data-bearing="none"), '
+                     'across queue items. State in this entry\'s choice of item what at the goal\'s own parameters it '
+                     'could give; if nothing, say why the cycle is spent on it.')
+    # The finisher counts the run per route, passing over other routes' entries; when routes alternate in blocks a
+    # route's run spans the other route's block, and on 16 October 2026 an entry on such a route was drafted without
+    # its Best outcome paragraph because this note counted only the run across routes.
+    runs, ended = {}, set()
+    for tag, _ in reversed(lq.record_articles(body)):
+        found = re.search(r'\bdata-route="([^"]+)"', tag)
+        if 'data-kind="research"' not in tag or not found or found.group(1) in ended:
+            continue
+        if 'data-bearing="none"' in tag:
+            runs[found.group(1)] = runs.get(found.group(1), 0) + 1
+        else:
+            ended.add(found.group(1))
+    for route, count in sorted(runs.items()):
+        if count >= BEARING_RUN:
+            notes.append(f'Route {route}: the last {count} research entries on it declared no bearing; the next entry '
+                         'on it states, before its work, after <strong>Best outcome.</strong>, what its best outcome '
+                         'would give at the goal\'s own parameters (the finisher checks it).')
+    return notes
 
 
 def last_item_notes(body):

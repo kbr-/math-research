@@ -2023,7 +2023,14 @@ class QueueTrendTest(unittest.TestCase):
         run = [some] + [none.format(i) for i in range(2)] + [self.review('entry-r')] + [none.format(2)]
         self.assertIn('last 3 research entries', guide.bearing_run_notes(notebook(run, queue))[0])
         self.assertEqual(guide.bearing_run_notes(notebook(run[:3], queue)), [])               # two is below the mark
-        self.assertEqual(guide.bearing_run_notes(notebook(run + [some], queue)), [])
+        self.assertEqual([n for n in guide.bearing_run_notes(notebook(run + [some], queue)) if 'across' in n], [])
+        other = '<article id="o{}" data-kind="research" data-route="other" data-bearing="some"></article>'
+        interleaved = [some] + [none.format(i) for i in range(3)] + [other.format(i) for i in range(4)]
+        notes = guide.bearing_run_notes(notebook(interleaved, queue))
+        self.assertEqual(len(notes), 1)                     # no run across routes: the last entry has a bearing
+        self.assertIn('Route step: the last 3', notes[0])
+        self.assertIn('Best outcome', notes[0])
+        self.assertEqual(guide.bearing_run_notes(notebook(interleaved[:3] + interleaved[4:], queue)), [])
 
 
 class LastItemGuidanceTest(unittest.TestCase):
