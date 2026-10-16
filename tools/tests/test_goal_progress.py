@@ -761,6 +761,24 @@ class AttemptCheckedTest(unittest.TestCase):
         validate(notebook(article('entry-2026-10-11-review', kind='review', content=REPORT + ARCHITECTURE)))
 
 
+class InstanceCheckTest(unittest.TestCase):
+    def test_a_review_s_decisive_test_evaluates_its_inequalities_at_the_instance(self):
+        # 16 October 2026: a third review's test was decided by its own Trivial cases (room 2 < 3, called tight).
+        dated = 'entry-2026-10-17-review'
+        gate = AttemptCheckedTest.GATE
+        base = ARCHITECTURE.replace('<strong>Power.</strong>', "<strong>Power.</strong> The instance lies outside the goal's window. ", 1)
+        with self.assertRaisesRegex(ValueError, 'Instance check'):
+            validate(notebook(article(dated, kind='review', content=REPORT + base + gate)))
+        words = base.replace('<strong>Record search.</strong>',
+                                     '<strong>Instance check.</strong> The room is tight. <strong>Record search.</strong>', 1)
+        with self.assertRaisesRegex(ValueError, 'Instance check'):         # the label without numbers
+            validate(notebook(article(dated, kind='review', content=REPORT + words + gate)))
+        numbers = base.replace('<strong>Record search.</strong>',
+                                       '<strong>Instance check.</strong> The room is \\(2+1=3\\le3\\), tight. '
+                                       '<strong>Record search.</strong>', 1)
+        validate(notebook(article(dated, kind='review', content=REPORT + numbers + gate)))
+
+
 class CountListingReportTest(unittest.TestCase):
     ENTRY = '<article id="entry-2026-10-12-x" data-kind="research"><p><strong>Checks.</strong> It ran 12 tests.</p>'
 

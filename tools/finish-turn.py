@@ -1245,6 +1245,9 @@ def validate_hypothesis_steps(text, statuses=()):
 
 
 PARTS_FROM = '2026-10-16'
+INSTANCE_CHECK_FROM = '2026-10-16'
+# a relation between two numbers, in TeX or plain text: "3\le4", "2 < 3", "4=4"
+NUMERIC_RELATION = re.compile(r'\d\s*(?:\\le|\\ge|\\leq|\\geq|\\lt|\\gt|<|>|=|≤|≥)\s*\d')
 
 
 SCOPE_VERB = re.compile(r'\b(?:weaken(?:ed|s|ing)?|narrow(?:ed|s|ing)?|strengthen(?:ed|s|ing)?|restrict(?:ed|s)?)\b',
@@ -1670,6 +1673,19 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'transformations (implied or duplicated rows, another presentation), and '
                                      'the trivial instance, if any, that would give each outcome; a question '
                                      'with a trivial answer decides nothing (AGENTS.md, Decisive test)')
+                # Three reviews of 16 October 2026 posed a test whose instance their own Trivial cases or Power
+                # decided; the third called its room tight where its numbers gave 2 < 3.  The inequalities are
+                # evaluated with the instance's numbers in writing.
+                if dated and dated.group(1) >= INSTANCE_CHECK_FROM:
+                    check = re.search(r'<strong>Instance check\.</strong>(.*?)(?=<strong>[A-Z][a-z ]*\.</strong>|$)',
+                                      value, re.S)
+                    plain = html.unescape(strip_tags(check.group(1))) if check else ''
+                    if not NUMERIC_RELATION.search(plain):
+                        raise ValueError('Decisive test must state "<strong>Instance check.</strong>": each '
+                                         'inequality its Trivial cases and Power use, evaluated with the '
+                                         'instance\'s numbers (for example \\(2+1=3\\le3\\)), so that an instance '
+                                         'they already decide is seen before it is posed (AGENTS.md, Decisive '
+                                         'test)')
     else:
         target = pending_architecture_test(body, article).get(tags['route'])
         if target and article_attribute(body, article, 'data-picked') != 'user':
