@@ -90,6 +90,10 @@ class ReviewerBriefTest(unittest.TestCase):
                         'A claim search for the missed results.'):
                 with self.subTest(ask=ask):
                     self.assertIsNone(hook.refusal(call(f'{base} {ask}')))
+            # A sentence that names the search to deny it does not ask for one (the builds' reviewer).
+            for denial in ('No record search is needed.', 'Skip the claim search.'):
+                with self.subTest(denial=denial):
+                    self.assertEqual(hook.refusal(call(f'{base} {denial}')), hook.NO_SEARCH_REASON)
             notes = Path(folder) / 'blind.md'
             notes.write_text('goal')
             self.assertIsNone(hook.refusal(call(f'Read {notes} only.')))   # no draft, no search needed

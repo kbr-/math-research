@@ -394,11 +394,17 @@ class PlainestBoundTest(unittest.TestCase):
         def entry(route, meta):
             return (f'<article id="entry-2026-10-17-x" data-kind="research" data-route-item="{route}">'
                     f'<p class="entry-meta">{meta}</p></article>')
-        bad = entry('depth-prime-recurrence', 'Working proof. IPS block, third turn: the collapse.')
-        with self.assertRaisesRegex(ValueError, 'another route'):
-            FT.validate_block_route(bad, self.LIVING + bad, len(self.LIVING))
+        # Each form the record uses, on an entry of another route (the forms of its own sentences).
+        for meta in ('Working proof. IPS block, third turn: the collapse.', 'The IPS block\'s first turn.',
+                     'This is turn 2 of the IPS block.', 'This is the third IPS research turn.',
+                     'It is the first of the four IPS turns.', 'The entry counts as an IPS turn.'):
+            bad = entry('depth-prime-recurrence', meta)
+            with self.subTest(meta=meta), self.assertRaisesRegex(ValueError, 'another route'):
+                FT.validate_block_route(bad, self.LIVING + bad, len(self.LIVING))
         for route, meta in (('general-step', 'Working proof. Repair Pang block, fourth turn: a lemma.'),
-                            ('general-step', 'This is the first of four turns after the completed IPS block.'),
+                            ('general-step', 'This is the first of four Pang-repair turns after the completed IPS '
+                                             'block.'),
+                            ('general-step', 'The lemma is adopted, and the next IPS turn proves it.'),
                             ('ips-direct', 'The second turn of the IPS block.')):
             good = entry(route, meta)
             with self.subTest(meta=meta):
@@ -408,13 +414,18 @@ class PlainestBoundTest(unittest.TestCase):
         # 16 October 2026: queued builds were stated as built "in the framework turn right after this review".
         for sentence in ('The two waiting builds are built in the framework turn right after this review.',
                          'The listing is added in the turn that follows this entry.',
-                         'Both checks get built in the next framework turn.'):
+                         'Both checks get built in the next framework turn.',
+                         'They are built in the following cycle.',          # the builds' reviewer's phrasings
+                         'The listings are built right after this review.',
+                         'It is fixed in the framework session after this review.'):
             with self.subTest(sentence=sentence), self.assertRaisesRegex(ValueError, 'later turn as done'):
                 FT.validate_planned_tense(f'<article id="entry-2026-10-17-x"><p>{sentence}</p>')
         for sentence in ('Each waits, as of 17 October 2026, for the framework turn planned right after this review.',
                          'The eleven are to be built in the framework turn planned after this review.',
                          'The check was built in this turn and committed before this entry.',
-                         'The builds will be built in the turn after this one.'):
+                         'The builds will be built in the turn after this one.',
+                         'The mistake of 16 October was fixed in the next turn.',      # true history
+                         'The next framework turn builds both checks.'):
             with self.subTest(sentence=sentence):
                 FT.validate_planned_tense(f'<article id="entry-2026-10-17-x"><p>{sentence}</p>')
         FT.validate_planned_tense('<article id="entry-2026-10-16-x"><p>It is built in the turn after this.</p>')

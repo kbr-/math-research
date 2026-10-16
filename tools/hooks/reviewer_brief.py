@@ -147,6 +147,15 @@ SENTENCES_REASON = ('tools/draft_claim_sentences.py has not run on {} since it w
 # a search ranked by the draft's own words (tools/claim_resemblance.py, the agent's queries) did not.
 SEARCH = re.compile(r'search-claims|\bclaim searche?s?\b|\brecord searche?s?\b|\bsearch(?:es)? (?:of |in )?the '
                     r'(?:registry|record)\b', re.I)
+DENIES = re.compile(r"\b(?:no|not|without|need not|needn't|unnecessary|skip)\b", re.I)
+
+
+def asks_search(prompt):
+    """Whether a sentence of the brief asks for a record search without denying it ("no record search needed"
+    cleared the check: the builds' reviewer, 17 October 2026)."""
+    return any(SEARCH.search(s) and not DENIES.search(s) for s in re.split(r'(?<=[.!?\n])\s+', prompt))
+
+
 NO_SEARCH_REASON = ('the brief sends an entry draft but asks the reviewer for no record search; ask it to run one '
                     'or two tools/search-claims.py searches in the words of the objects the draft\'s proof or next '
                     'attempt works on, for registered results the draft does not cite')
@@ -173,7 +182,7 @@ def brief_replay(lines, tools=TOOLS):
             if 'review' not in str(tool_input.get('subagent_type', '')).lower():
                 continue
             prompt = str(tool_input.get('prompt', ''))
-            if research_drafts(prompt, tools) and not SEARCH.search(prompt):
+            if research_drafts(prompt, tools) and not asks_search(prompt):
                 found.append((entry.get('timestamp', ''), ('asks to search' if re.search(r'\bsearch', prompt, re.I)
                               else 'no search word') + ': ' + ' '.join(prompt.split())[:100]))
     return found
@@ -244,7 +253,7 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         return ('the brief sends an entry draft but no drafted commit message; write the commit message to a '
                 'file whose name starts with "commit" (.txt or .md) and name it in the brief, so the reviewer '
                 'reads it beside the entry')
-    if research_drafts(prompt, tools) and not SEARCH.search(prompt):
+    if research_drafts(prompt, tools) and not asks_search(prompt):
         return NO_SEARCH_REASON
     found = WHOLE.search(prompt)
     if not found:

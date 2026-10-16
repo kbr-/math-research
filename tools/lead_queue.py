@@ -1936,6 +1936,19 @@ def check(head_body, body, path=None, root=None):
         errors.append('Waiting follow-ups: ' + '; '.join(problems))
     errors += subidea_problems(text)
     errors += kind_rule_problems(tag, [(b[0], b[1], b[4]) for b in batch] + listed_outcomes(text), where)
+    # The reopening and triage checks are a new entry's too, collected with the rest (the builds' reviewer, 17
+    # October 2026: they ran after the joint raise and stopped at the first); without a new entry `text` is empty.
+    every = {item for t, x in articles for item in arrivals_of(t, x)}
+    reopened = reopened_by(text)
+    strangers = [i for k, i in reopened if (k, i) not in every and KINDS[k].admit is None]
+    if strangers:
+        errors.append('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(strangers))
+    barred = [i for k, i in reopened if not KINDS[k].reopen]
+    if barred:
+        errors.append('These items are not reopened by a follow-up; their kind has its own way back: '
+                      + ', '.join(barred))
+    if batch and before is not None:
+        errors.append(TRIAGE_RETIRED)
     if errors:
         raise ValueError(errors[0] if len(errors) == 1 else
                          f'{len(errors)} queue problems: ' + ' | '.join(f'({i}) {e}' for i, e in enumerate(errors, 1)))
@@ -1995,19 +2008,8 @@ def check(head_body, body, path=None, root=None):
                              + ('set' if not draining else 'absent') + f' (on at {CAP} items unless backpressure is '
                              'off)')
         return
-    every = {item for t, x in articles for item in arrivals_of(t, x)}
-    reopened = reopened_by(text)
-    unknown = [i for k, i in reopened if (k, i) not in every and KINDS[k].admit is None]
-    if unknown:
-        raise ValueError('Reopened items must be passed review items or listed sub-ideas: ' + ', '.join(unknown))
-    barred = [i for k, i in reopened if not KINDS[k].reopen]
-    if barred:
-        raise ValueError('These items are not reopened by a follow-up; their kind has its own way back: '
-                         + ', '.join(barred))
     was_draining, old = before
     old = settle(head_body, [n.copy() for n in old])
-    if batch:
-        raise ValueError(TRIAGE_RETIRED)
     closed, developed = listed_closures(tag, text)
     listed_developed = [item for item in developed if item in every_item(old)]
     if listed_developed:

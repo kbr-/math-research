@@ -362,11 +362,13 @@ class UncheckedClaimTest(HookFixture):
     def test_a_figure_without_any_source_in_the_reply_blocks(self):
         # 16 October 2026: a reply quoted an unsaved count of 258.
         for reply in ('It was exact in 333 of 340 random instances.', 'The suite passes: 1191 tests.',
-                      'About 18% of the slice is allowed.'):
+                      'About 18% of the slice is allowed.', 'The check flags 258 sentences in the record.',
+                      'The review is done.\n\nThe scan listed 3 of 544 entries.'):   # a source in another paragraph
             with self.subTest(reply=reply):
                 self.assertIn('A figure without its source', hook.figure_block(reply)['reason'])
         for reply in ('It was exact in 333 of 340 instances (research/results/x/run.txt).',
                       'The reviewer found 3 of 4 claims overstated.',
+                      'The scan listed 3 of 544 entries (scan-block-route.txt).',
                       'This turn starts the IPS block, turn 1 of 4.',
                       'Committed as 745913d2b: 38 of 1562 commands.',
                       'Nothing counted here.'):

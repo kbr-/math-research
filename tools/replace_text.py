@@ -47,6 +47,10 @@ def replace(text, old, new, prose=False):
             match = re.compile(body).match(text, starts[0])
             # In prose (Markdown, plain text, HTML) a replacement of several lines is joined into the flow, to be
             # rewrapped (17 October 2026: a passage of several lines that a rewrap had moved mid-line was refused).
+            # A replacement holding a blank line or a <pre> block has layout the join would erase: refused.
+            if prose and (re.search(r'\n[ \t]*\n', new.strip()) or '<pre' in new):
+                raise ValueError('the passage starts mid-line, and the replacement has a blank line or a <pre> '
+                                 'block, which joining it into the line would erase; replace a line-aligned passage')
             placed = ' '.join(new.split()) if prose else new.strip()
             return text[:match.start()] + placed + text[match.end():], text.count('\n', 0, match.start()) + 1
         raise ValueError(f'the passage matches no line-aligned place and {len(starts)} places within or across lines, '

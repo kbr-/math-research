@@ -598,6 +598,20 @@ class NewListingsTest(unittest.TestCase):
         self.assertEqual([r for r, _ in dcs.hypothesis_restrictions(draft)], ['characteristic two'])
         self.assertEqual(dcs.hypothesis_restrictions(draft.replace('ring map', 'ring map in characteristic two')), [])
 
+    def test_a_notebook_adds_its_own_words_and_a_denial_is_no_use(self):
+        notebook = '<section id="working-context" data-listing-words="restriction=nonrecursive; position=commutators?">'
+        words = dcs.listing_words(notebook)
+        self.assertEqual(words, {'restriction': 'nonrecursive', 'position': 'commutators?'})
+        draft = ('<article id="entry-x"><p><strong>Hypotheses, each with its step.</strong> Nonrecursive '
+                 'definitions: the count. Characteristic two: the substitution.</p><p><strong>Proof.</strong> '
+                 'Characteristic two is not used here. The factor \\(1-L_k\\) is zero in the commutator, so the '
+                 'term vanishes.</p></article>')
+        self.assertEqual([r for r, _ in dcs.hypothesis_restrictions(draft)], ['characteristic two'])
+        self.assertEqual([r for r, _ in dcs.hypothesis_restrictions(draft, words)],
+                         ['nonrecursive', 'characteristic two'])
+        self.assertEqual(len(dcs.vanishing_steps(draft)), 1)              # the general words do not place it
+        self.assertEqual(dcs.vanishing_steps(draft, words), [])           # the notebook's commutator does
+
     def test_a_part_listed_as_unread_is_listed_where_cited(self):
         # 16 October 2026: a draft cited a section its own spec listed as not read.
         spec = {'claims': [{'id': 'imp:tradeoff', 'assessment': 'Use as imported; Sections 2 to 4 beyond Lemma '
@@ -607,14 +621,14 @@ class NewListingsTest(unittest.TestCase):
         draft = ('<article id="entry-x"><p>By Section 3 of the source the degree bound holds. imp:other\'s '
                  'Proposition 24 gives the projection. Section 5 is read.</p></article>')
         found = dcs.unread_citations(draft, registry, spec)
-        self.assertEqual([part for _, part, _ in found], ['sectio 3'])
+        self.assertEqual([part for _, part, _ in found], ['section 3'])
         self.assertEqual(dcs.unread_citations(draft, registry), [])        # the statement of Proposition 24 was read
 
     def test_the_motivating_spec_marks_its_unread_sections(self):
         spec = json.loads((pathlib.Path(__file__).resolve().parents[2] /
                            'research/results/extended_pigeonhole_tradeoff_20261016/claim-spec.json').read_text())
         parts = {(kind, n) for _, kind, n in dcs.unread_parts({'claims': []}, set(), spec)}
-        self.assertTrue({('sectio', '2'), ('sectio', '3'), ('sectio', '4')} <= parts, parts)
+        self.assertTrue({('section', '2'), ('section', '3'), ('section', '4')} <= parts, parts)
 
 
 if __name__ == '__main__':

@@ -65,6 +65,8 @@ class ReplaceTextTest(unittest.TestCase):
         self.assertEqual(line, 3)
         with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):   # code stays line-aligned
             replace_text.replace(message, old, new)
+        with self.assertRaisesRegex(ValueError, 'blank line'):     # a paragraph break would be erased (reviewer)
+            replace_text.replace(message, old, 'One paragraph.\n\nAnother,', prose=True)
 
     def test_a_one_line_passage_inside_a_longer_line_is_replaced_there(self):
         # 16 October 2026: a notebook paragraph kept on one line held the passage mid-line.

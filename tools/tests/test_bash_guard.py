@@ -563,7 +563,8 @@ class StagingSilencedTest(unittest.TestCase):
         # 16 October 2026: an excerpt's --out refused an existing file behind "> /dev/null 2>&1".
         for command in ('python3 tools/notebook-excerpt.py --claims a b --out $T/x.txt > /dev/null 2>&1; wc -c x',
                         'python3 tools/notebook-excerpt.py A --text --out=f.txt 2>/dev/null',
-                        './compute.sh run t -- python3 r.py --out res.json &>/dev/null'):
+                        './compute.sh run t -- python3 r.py --out res.json &>/dev/null',
+                        'python3 tools/notebook-excerpt.py A 2>/dev/null --out f.txt'):   # before --out (reviewer)
             with self.subTest(command=command):
                 self.assertIn('writes --out FILE', guard.staging_silenced(command))
         for command in ('python3 tools/notebook-excerpt.py A --text --out $T/x.txt > /dev/null',

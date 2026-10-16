@@ -248,6 +248,8 @@ def timed_run(args, found, broken):
     used = cpu_seconds()
     mine, jobs = own_seconds(), other_jobs()
     start = time.monotonic()
+    # The stamp records when the run started: an edit made while it ran is not covered by it (reviewer).
+    started_unix = time.time()
     results = [run(t, t.id()) for t in broken]
     try:
         known = json.loads(DURATIONS.read_text())
@@ -295,7 +297,7 @@ def timed_run(args, found, broken):
           + (f', {len(skipped)} skipped' if skipped else ''))
     if not failed and not slow and not args.modules:
         try:
-            SUITE_PASS.write_text(json.dumps({'unix_s': time.time(), 'tests': sum(r[1] for r in results)}))
+            SUITE_PASS.write_text(json.dumps({'unix_s': started_unix, 'tests': sum(r[1] for r in results)}))
         except OSError:
             pass
     return 1 if failed or slow else 0

@@ -23,7 +23,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIGURE = re.compile(r'\b\d+(?:\.\d+)?\s?(?:of|in)\s\d+(?:\.\d+)?\b|\b\d+(?:\.\d+)?\s?(?:tests?|s|ms|MB|GB|%)(?![\w/])'
-                    r'|\b\d+(?:\.\d+)?\s(?:matches|entries|briefs|commands|calls|flags|findings|refusals)\b')
+                    r'|\b\d+(?:\.\d+)?\s(?:matches|entries|briefs|commands|calls|flags|findings|refusals|texts|'
+                   r'paragraphs|conditions|commits|cases|sentences|listings|instances|failures|defects)\b')
 NUMBER = re.compile(r'\d+(?:\.\d+)?')
 SOURCES = ('research/results/', 'research/provenance/')
 CONDITION = re.compile(r'\b(?:if|when|provided|unless|at most|at least|for every|for all)\b[^,;.]*', re.I)
@@ -50,15 +51,20 @@ def is_framework(paths):
 
 
 def unsourced(message, paths, read):
-    """The message's figures some number of which appears in none of the source files among `paths`;
-    `read(path)` gives a file's text in the commit."""
-    texts = [read(p) for p in paths if p.startswith(SOURCES)]
-    texts = [t for t in texts if t]
+    """The message's figures some number of which appears in none of their source files; `read(path)` gives a
+    file's text in the commit. A paragraph that names files of the commit (by their names) is checked against
+    those files only: a figure anywhere in a long committed profile passed before (the builds' reviewer, 17
+    October 2026)."""
+    sources = [p for p in paths if p.startswith(SOURCES)]
+    body = '\n'.join(line for line in message.splitlines() if not line.startswith('#'))
     missing = []
-    for figure in figures(message):
-        if not all(any(re.search(r'(?<![\d.])' + re.escape(n) + r'(?![\d])', t) for t in texts)
-                   for n in NUMBER.findall(figure)):
-            missing.append(figure)
+    for paragraph in re.split(r'\n\s*\n', body):
+        named = [p for p in sources if Path(p).name in paragraph]
+        texts = [t for t in (read(p) for p in (named or sources)) if t]
+        for figure in (m.group(0) for m in FIGURE.finditer(paragraph)):
+            if not all(any(re.search(r'(?<![\d.])' + re.escape(n) + r'(?![\d])', t) for t in texts)
+                       for n in NUMBER.findall(figure)):
+                missing.append(figure)
     return missing
 
 
@@ -102,7 +108,10 @@ def shared_code(paths, top):
             found.append(path)
         elif path.startswith('tools/') and path.endswith('.py') and not path.startswith('tools/tests/test_'):
             stem = Path(path).stem
-            uses = re.compile(rf'^\s*(?:import [\w, ]*\b{re.escape(stem)}\b|from {re.escape(stem)} import)', re.M)
+            # By name, or by path as a quoted string (spec_from_file_location of 'tools/finish-turn.py'): the
+            # builds' reviewer found finish-turn.py, loaded by path, not counted as shared (17 October 2026).
+            uses = re.compile(rf'^\s*(?:import [\w, ]*\b{re.escape(stem)}\b|from {re.escape(stem)} import)'
+                              rf'|[\'"/]{re.escape(Path(path).name)}[\'"]', re.M)
             if path.startswith('tools/tests/') or any(
                     other.name != Path(path).name and uses.search(other.read_text(errors='replace'))
                     for other in tools):

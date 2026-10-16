@@ -325,8 +325,10 @@ def sed_ampersand(command: str):
 
 # A writer of --out FILE with its errors discarded: on 16 October 2026 tools/notebook-excerpt.py refused to replace
 # an existing excerpt ("File exists") behind "> /dev/null 2>&1", and a reviewer read the previous review's excerpt.
-WRITER_SILENCED = re.compile(r"\s--out[\s=][^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|"
-                             r">\s*/dev/null\s+2>&1)")
+# The redirection may stand before --out too (the builds' reviewer, 17 October 2026). A bare -o is left out: grep -o
+# and many readers use it for no file.
+SILENCE = r"(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|>\s*/dev/null\s+2>&1)"
+WRITER_SILENCED = re.compile(r"\s--out[\s=][^;&|\n]*?" + SILENCE + r"|" + SILENCE + r"[^;&|\n]*?\s--out[\s=]")
 STAGING_SILENCED = re.compile(r"\bgit\s+(?:-C\s+\S+\s+)?(?:add|commit)\b[^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|>\s*/dev/null\s+2>&1)")
 
 

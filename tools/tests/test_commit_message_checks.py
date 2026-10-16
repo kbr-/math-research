@@ -19,6 +19,11 @@ class FigureTest(unittest.TestCase):
         self.assertEqual(cmc.unsourced(message, paths, files.get), [])
         self.assertEqual(cmc.unsourced(message.replace('8.5 s', '8.6 s'), paths, files.get), ['8.6 s'])
         self.assertEqual(cmc.unsourced(message, ['tools/x.py'], files.get), ['1191 tests', '8.5 s', '10 calls'])
+        # A paragraph naming a file is checked against that file only (the builds' reviewer, 17 October 2026).
+        self.assertEqual(cmc.unsourced('Tool: x\n\nIt flags 10 calls (suite.txt).\n', paths, files.get), ['10 calls'])
+        self.assertEqual(cmc.unsourced('Tool: x\n\nIt flags 10 calls (replay.txt).\n', paths, files.get), [])
+        self.assertEqual(cmc.figures('1514 texts, 56 paragraphs, 13 conditions over 9 commits'),
+                         ['1514 texts', '56 paragraphs', '13 conditions', '9 commits'])
         self.assertEqual(cmc.figures('# 3 tests in a comment line\nNo figure here.'), [])
         self.assertEqual(cmc.figures('5 of 15 framework commits; 38 of 1562 commands; 12.6 MB read'),
                          ['5 of 15', '38 of 1562', '12.6 MB'])
@@ -65,6 +70,9 @@ class SuiteAfterTest(unittest.TestCase):
             (top / 'tools/shared.py').write_text('y = 1\n')
             (top / 'tools/user.py').write_text('import shared\n')
             (top / 'tools/alone.py').write_text('z = 1\n')
+            (top / 'tools/by-path.py').write_text('w = 1\n')
+            (top / 'tools/loader.py').write_text("spec = load(ROOT / 'tools/by-path.py')\n")
+            self.assertEqual(cmc.shared_code(['tools/by-path.py'], top), ['tools/by-path.py'])   # loaded by path
             self.assertEqual(cmc.shared_code(['tools/hooks/guard.py', 'tools/shared.py', 'tools/alone.py',
                                               'tools/tests/test_alone.py', 'compute.sh'], top),
                              ['tools/hooks/guard.py', 'tools/shared.py', 'compute.sh'])

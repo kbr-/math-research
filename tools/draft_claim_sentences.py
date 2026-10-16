@@ -302,8 +302,32 @@ VANISH = re.compile(r'\b(?:vanish(?:es|ing)?|(?:is|are|becomes?) zero|contribute
 # Only a step that names a factor or multiplier: without it, 72 proof sentences of 235 entries from 10 October 2026
 # were listed, mostly products or images vanishing with no factor involved.
 FACTOR = re.compile(r'\b(?:factors?|multipliers?|multiplied)\b', re.I)
-POSITION = re.compile(r'\b(?:inside|outside|left|right|within|brackets?|commutators?|sits|stands|before|after|'
-                      r'prefix(?:es)?|around|outer|inner)\b', re.I)
+# General words of a factor's place; a notebook adds its own (its brackets, certificates) through the
+# data-listing-words attribute (listing_words). Common words such as "left", "before" or "around" are not
+# here: anywhere in a sentence they silenced the listing.
+POSITION_WORDS = r'inside|outside|within|brackets?|sits|stands|outer|inner|placed'
+# General restrictions a Hypotheses paragraph can copy from a source; a notebook adds the words of its own
+# families and ranges through data-listing-words, so this tool holds no goal's vocabulary.
+RESTRICTION_WORDS = (r'characteristic(?: two| three| zero| 2| 3| p)?|prime field|odd|acyclic|regular|bipartite|'
+                     r'connected|simple graphs?|multigraphs?|monotone|multilinear')
+# A proof sentence that names a restriction to deny it does not count as using it.
+DENIED = re.compile(r'\b(?:not (?:used|needed|required)|unused|without|need not)\b', re.I)
+
+
+def listing_words(notebook_text):
+    """{kind: words} from the notebook's data-listing-words="restriction=a|b; position=c|d" attribute, the words a
+    notebook adds to these listings for its own objects."""
+    found = re.search(r'\bdata-listing-words="([^"]*)"', notebook_text or '')
+    words = {}
+    for part in (found.group(1).split(';') if found else []):
+        kind, _, value = part.partition('=')
+        if value.strip():
+            words[kind.strip()] = value.strip()
+    return words
+
+
+def word_pattern(general, extra=None):
+    return re.compile(r'\b(?:' + general + ('|' + extra if extra else '') + r')\b', re.I)
 
 
 def proof_sentences(draft):
@@ -317,48 +341,46 @@ def proof_sentences(draft):
             yield label.group(1), unlabelled, text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', unlabelled, flags=re.S))
 
 
-def vanishing_steps(draft):
+def vanishing_steps(draft, words=None):
     """(label, sentence) for each proof sentence that makes a term vanish by a factor's value and does not say
     where the factor stands relative to the brackets or certificates around it (AGENTS.md: quoted from the
-    construction's record). A reading list, not a verdict."""
-    return [(label, text(sentence)) for label, sentence, words in proof_sentences(draft)
-            if VANISH.search(words) and FACTOR.search(words) and not POSITION.search(words)]
+    construction's record). A reading list, not a verdict; `words` are the notebook's (listing_words)."""
+    position = word_pattern(POSITION_WORDS, (words or {}).get('position'))
+    return [(label, text(sentence)) for label, sentence, plain_words in proof_sentences(draft)
+            if VANISH.search(plain_words) and FACTOR.search(plain_words) and not position.search(plain_words)]
 
 
-def vanishing_report(draft, width):
-    found = vanishing_steps(draft)
+def vanishing_report(draft, width, words=None):
+    found = vanishing_steps(draft, words)
     lines = [f'  [{where}] {s if width <= 0 else s[:width]}' for where, s in found]
     return '\n'.join(['Proof sentences that make a term vanish by a factor\'s value without saying where the factor '
-                      'stands (inside or outside a bracket, a certificate, a prefix); quote its place from the '
+                      'stands (inside or outside a bracket, a certificate); quote its place from the '
                       'construction\'s record (AGENTS.md):'] + lines + [f'{len(found)} such sentences.'])
 
 
-# Restrictions a Hypotheses paragraph can copy from a source: a field or characteristic, a family, a range.
-RESTRICTION = re.compile(r'\b(?:characteristic(?: two| three| zero| 2| 3| p)?|binary|ternary|odd|prime field|'
-                         r'nonrecursive|acyclic|0/1-valued|simple graphs?|multigraphs?|regular|bipartite|'
-                         r'connected|power-growing|window|monotone|multilinear|nested)\b', re.I)
-
-
-def hypothesis_restrictions(draft):
-    """(restriction, sentence) for each restriction the Hypotheses paragraph names that no proof sentence names:
-    a restriction copied from a source and used by no step (16 October 2026: characteristic two stated where the
-    proof needed only 0/1-valued definitions). A reading list: a proof may use a restriction in other words."""
-    proof = ' '.join(words for _, _, words in proof_sentences(draft)).lower()
+def hypothesis_restrictions(draft, words=None):
+    """(restriction, sentence) for each restriction the Hypotheses paragraph names that no proof sentence names,
+    other than to deny it: a restriction copied from a source and used by no step (16 October 2026:
+    characteristic two stated where the proof needed only 0/1-valued definitions). A reading list: a proof may use
+    a restriction in other words; `words` are the notebook's (listing_words)."""
+    restriction = word_pattern(RESTRICTION_WORDS, (words or {}).get('restriction'))
+    proof = ' '.join(plain_words for _, _, plain_words in proof_sentences(draft)
+                     if not DENIED.search(plain_words)).lower()
     found = []
     for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
         label = LABEL.match(body)
         if tag != 'p' or not label or not label.group(1).startswith('Hypotheses'):
             continue
         for sentence in sentences(body):
-            words = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S))
-            for m in dict.fromkeys(r.group(0).lower() for r in RESTRICTION.finditer(words)):
-                if proof and m not in proof:
+            plain_words = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S))
+            for m in dict.fromkeys(r.group(0).lower() for r in restriction.finditer(plain_words)):
+                if m not in proof:
                     found.append((m, text(sentence)))
     return found
 
 
-def hypothesis_report(draft, width):
-    found = hypothesis_restrictions(draft)
+def hypothesis_report(draft, width, words=None):
+    found = hypothesis_restrictions(draft, words)
     lines = [f'  "{r}": {s if width <= 0 else s[:width]}' for r, s in found]
     return '\n'.join(['Restrictions the Hypotheses paragraph names that no proof sentence names; read each off the '
                       'proof, and drop or justify one no step uses (AGENTS.md):'] + lines
@@ -380,7 +402,7 @@ def unread_in(source, text_of):
         if re.search(r'\bproofs? of\s*$', text_of[max(0, m.start() - 12):m.start()], re.I):
             continue
         whole = m.group(1) or m.group(2)
-        kind = whole.split()[0].rstrip('s').lower()[:6]
+        kind = re.sub(r'(?:ies|s)$', lambda e: 'y' if e.group(0) == 'ies' else '', whole.split()[0]).lower()
         rest = whole[len(whole.split()[0]):]
         numbers = re.findall(r'[\dA-Z][\w.]*', rest)
         span = re.search(r'\b(\d+)\s*(?:to|–|-)\s*(\d+)\b', rest)
@@ -416,7 +438,7 @@ def unread_citations(draft, registry, spec=None):
             plain_text = text(sentence)
             for ident, kind, number in parts:
                 if re.search(r'\b' + PART + r'\s+' + re.escape(number) + r'(?![\w.])', plain_text, re.I) and \
-                        re.search(r'\b' + kind, plain_text, re.I):
+                        re.search(r'\b' + kind[:6], plain_text, re.I):
                     found.append((ident, f'{kind} {number}', plain_text))
     return found
 
@@ -1266,8 +1288,9 @@ def main():
     print('\n' + unnamed_results_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + construction_report(draft, args.width, words))
-    print('\n' + vanishing_report(draft, args.width))
-    print('\n' + hypothesis_report(draft, args.width))
+    listing = listing_words(notebook_text)
+    print('\n' + vanishing_report(draft, args.width, listing))
+    print('\n' + hypothesis_report(draft, args.width, listing))
     spec = json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))

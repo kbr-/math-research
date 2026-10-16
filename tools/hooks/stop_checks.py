@@ -883,11 +883,17 @@ def unreviewed_block(path, reply, root):
         'before a draft exists), and answer again.')}
 
 
-# A figure in a reply (N of M, N tests, a percentage) and what may stand beside it as its source: a saved output's
-# path, a file, a named agent's report, a commit (16 October 2026: a reply quoted an unsaved count of 258).
-REPLY_FIGURE = re.compile(r'(?<!turn )(?<!block )\b\d+(?:\.\d+)? (?:of|in) \d+\b|\b\d+ tests\b|\b\d+(?:\.\d+)?%')
-FIGURE_SOURCE = re.compile(r'research/(?:results|provenance)/|\.(?:txt|json|html|py|md)\b|\breview(?:er)?\b|'
-                           r'\breport\b|\bsaved\b|\breplay\b|\bscan\b|\b[0-9a-f]{9}\b|\blog\b', re.I)
+# A figure in a reply (N of M, N tests, a percentage, a count of ten or more things) and what may stand beside it,
+# in its own paragraph, as its source: a saved output's path or file, a commit, an entry's anchor, or a named
+# agent's report (16 October 2026: a reply quoted an unsaved count of 258; 17 October 2026, the builds' reviewer:
+# a bare "review" or "saved" anywhere in a reply cleared every figure in it).
+REPLY_FIGURE = re.compile(r'(?<!turn )(?<!block )\b\d+(?:\.\d+)? (?:of|in) \d+\b|\b\d+ tests\b|\b\d+(?:\.\d+)?%'
+                          r'|\bcount of \d+|\b\d{2,}(?:,\d{3})* (?:cases|instances|matches|entries|sentences|refusals|'
+                          r'failures|paragraphs|texts|commits|briefs|commands|calls|flags|findings|conditions|'
+                          r'listings|defects)\b')
+FIGURE_SOURCE = re.compile(r'research/(?:results|provenance|logs)/|[\w-]\.(?:txt|json|jsonl|html|py|md|csv)\b|'
+                           r'\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,12}\b|\bentry-20\d\d-|'
+                           r"\b(?:reviewer|agent)(?:'s report)?\b|\bproof\b", re.I)
 
 
 def replay_figures(paths):
@@ -914,7 +920,7 @@ def replay_figures(paths):
     for text in refused:
         print(f'- {text}')
     print(f'{texts} texts read: {paragraphs} paragraphs with a figure and no source beside it; {len(refused)} texts '
-          'refused, with no source anywhere in them.')
+          'refused, each with a figure whose paragraph names no source.')
 
 
 def figure_paragraphs(reply):
@@ -925,12 +931,14 @@ def figure_paragraphs(reply):
 
 
 def figure_block(reply):
-    """The block for a reply with a figure and no source anywhere in it, or None. Counted over four of this
-    worktree's session transcripts, 1514 texts of more than 200 characters (17 October 2026), a paragraph-level rule
-    flags 56 paragraphs and this reply-level one refuses 10 texts, each a figure from a run no path names
-    (research/results/framework-builds-20261017/reply-figure-replay.txt)."""
+    """The block for a reply with a paragraph holding a figure and no source, or None. Replayed over four of this
+    worktree's session transcripts (17 October 2026): a reply-level rule refused 10 of 1514 texts but let a bare
+    "review" anywhere clear every figure (reply-figure-replay.txt); this paragraph-level rule with named sources
+    refuses 66 of 1516 texts (reply-figure-replay-paragraph.txt, both in
+    research/results/framework-builds-20261017/). Read one by one, most are computed findings stated with no path;
+    the false ones seen are rule parameters ("under 3 of 5", "2 of 4 is on the strict side") and budget counts."""
     found = figure_paragraphs(reply)
-    if not found or FIGURE_SOURCE.search(reply):
+    if not found:
         return None
     return {'decision': 'block', 'reason': (
         f'A figure without its source: "{found[0][:160]}". Each count, ratio or percentage in a reply stands beside '

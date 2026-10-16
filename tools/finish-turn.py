@@ -1372,10 +1372,13 @@ def validate_scope_direction(text):
 # turn" (16 October 2026: two queued builds stated as built in a draft's Review and Prevention, caught only by its
 # reviewer). "To be built", "planned for" and "will be" forms are not matched.
 LATER_TURN_DONE = re.compile(
-    r"\b(?:is|are|was|were|gets?|got)\s+(?:now\s+)?(?:built|closed|done|fixed|added|committed|answered|made|run)\s+"
-    r"in\s+(?:the|a)\s+(?:(?:[\w-]+\s+){0,3}?turn\s+(?:(?:right|just|planned|immediately)\s+)?"
+    # Present tense only: "was fixed in the next turn" can be true history (the builds' reviewer, 17 October 2026),
+    # and "cycle" and "session" are the record's other words for a turn.
+    r"\b(?:is|are|gets?)\s+(?:now\s+)?(?:built|closed|done|fixed|added|committed|answered|made|run)\s+"
+    r"(?:in\s+(?:the|a)\s+(?:(?:[\w-]+\s+){0,3}?(?:turn|cycle|session)\s+(?:(?:right|just|planned|immediately)\s+)?"
     r"(?:after|following|that\s+follows|to\s+come)\b|(?:next|later|following|coming|subsequent)\s+"
-    r"(?:[\w-]+\s+){0,2}?turn\b)", re.I)
+    r"(?:[\w-]+\s+){0,2}?(?:turn|cycle|session)\b)|(?:right|just|immediately)\s+after\s+this\s+(?:review|entry)\b)",
+    re.I)
 
 
 def living_titles(body, section, item):
@@ -1420,8 +1423,16 @@ def reduced_mentions(plain, titles):
 
 
 # A block of the route rotation named in an entry: capitalized words before "block" ("Repair Pang block").
-BLOCK_NAME = re.compile(r'\b((?:[A-Z][\w-]*\s+){1,3})block(?:,|\'s)\s+(?:[\w-]+\s+){0,2}?turn\b'
-                        r'|\bturn\s+(?:\d+\s+)?of\s+the\s+((?:[A-Z][\w-]*\s+){1,3})block\b')
+# The record's forms (17 October 2026, from its own sentences): "X block, third turn", "X block's first turn",
+# "turn 2 of the X block", "the third X research turn", "the first of the four X turns", "counted as an X turn".
+# "The next X turn" names a later entry and is left out.
+NAME = r'((?:[A-Z][\w-]*\s+){1,3})'
+ORDINAL = r'(?:first|second|third|fourth|fifth|sixth|last|\d+(?:st|nd|rd|th))'
+BLOCK_FORMS = [re.compile(p) for p in (
+    NAME + r'block(?:,|\'s)\s+(?:[\w-]+\s+){0,2}?turn\b',
+    r'\bturn\s+(?:\d+\s+)?of\s+the\s+' + NAME + r'block\b',
+    r'\b' + ORDINAL + r'\s+(?:of\s+(?:the\s+)?(?:two|three|four|five|six|\d+)\s+)?' + NAME + r'(?:research\s+)?turns?\b',
+    r'\b(?:is|as)\s+an?\s+' + NAME + r'(?:research\s+)?turn\b')]
 BLOCK_SKIP = {'the', 'this', 'that', 'its', 'first', 'second', 'third', 'fourth', 'fifth', 'next', 'route', 'a'}
 
 
@@ -1435,12 +1446,13 @@ def block_routes(text, routes):
         plain = ' '.join(html.unescape(strip_tags(part)).split())
         # Only a sentence that counts a turn toward the block: a review naming the block that comes next does not.
         counting = ' '.join(s for s in re.split(r'(?<=[.;:])\s+', plain) if re.search(r'\bturns?\b', s, re.I))
-        for m in BLOCK_NAME.finditer(counting):
-            words = [w.lower() for w in (m.group(1) or m.group(2)).split() if w.lower() not in BLOCK_SKIP]
-            hits = [slug for slug, title in routes.items()
-                    if words and all(re.search(r'\b' + re.escape(w) + r'\b', title.lower()) for w in words)]
-            if len(hits) == 1:
-                found.append(((m.group(1) or m.group(2)).strip(), hits[0]))
+        for form in BLOCK_FORMS:
+            for m in form.finditer(counting):
+                words = [w.lower() for w in m.group(1).split() if w.lower() not in BLOCK_SKIP]
+                hits = [slug for slug, title in routes.items()
+                        if words and all(re.search(r'\b' + re.escape(w) + r'\b', title.lower()) for w in words)]
+                if len(hits) == 1:
+                    found.append((m.group(1).strip(), hits[0]))
     return found
 
 

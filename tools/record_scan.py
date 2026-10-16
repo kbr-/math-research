@@ -47,8 +47,15 @@ def checks():
     for name in getattr(ft, 'SCAN_CHECKS', {}):
         found[name] = ft.SCAN_CHECKS[name]
     import draft_claim_sentences as dcs
-    found['vanishing-factor'] = lambda plain, raw: [s for _, s in dcs.vanishing_steps(raw)]
-    found['hypothesis-restriction'] = lambda plain, raw: [f'{r}: {s}' for r, s in dcs.hypothesis_restrictions(raw)]
+    notebook_words = {}
+
+    def own_words():            # the notebook's own words for these listings (data-listing-words)
+        if not notebook_words:
+            notebook_words['w'] = dcs.listing_words((ROOT / 'notebook.html').read_text(encoding='utf-8'))
+        return notebook_words['w']
+    found['vanishing-factor'] = lambda plain, raw: [s for _, s in dcs.vanishing_steps(raw, own_words())]
+    found['hypothesis-restriction'] = lambda plain, raw: [f'{r}: {s}' for r, s in
+                                                          dcs.hypothesis_restrictions(raw, own_words())]
     registry = {}
 
     def unread(plain, raw):
@@ -74,6 +81,14 @@ def checks():
         return [f'{name} block -> {slug}, entry route {route.group(1) if route else "?"}'
                 for name, slug in ft.block_routes(raw, living('routes')) if not route or slug != route.group(1)]
     found['block-route'] = blocks
+
+    def counted(plain, raw):        # every block count the check reads, whether or not its route matches
+        route = re.search(r'data-route-item="([^"]+)"', raw[:600])
+        if 'data-kind="research"' not in raw[:600]:
+            return []
+        return [f'{name} -> {slug}, entry route {route.group(1) if route else "?"}'
+                for name, slug in ft.block_routes(raw, living('routes'))]
+    found['block-counts'] = counted
     return found
 
 
