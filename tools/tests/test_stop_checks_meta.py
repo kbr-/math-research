@@ -222,3 +222,108 @@ class MetaHomeTest(HookFixture):
                   'message': {'content': [{'type': 'tool_result', 'content': 'ok'}]}})
         self.assertEqual(hook.turn_start(self.transcript), '2026-10-16T10:00:00Z')
 
+
+
+FIXTURES = Path(__file__).resolve().parents[2] / 'research/results'
+
+
+def fixture_report(name, marker, end):
+    """The premature report quoted in a recorded fixture: the lines after `marker` up to `end`."""
+    text = (FIXTURES / name / 'report-fixture.txt').read_text()
+    return text.split(marker, 1)[1].split(end, 1)[0].strip()
+
+
+class UnreviewedLabelTest(HookFixture):
+    """A reply reporting mathematics while the cycle's mathematics is unreviewed carries the Unreviewed label."""
+
+    def setUp(self):
+        super().setUp()
+        agents = self.dir / 'session' / 'subagents'
+        agents.mkdir(parents=True)
+        (agents / 'agent-r1.meta.json').write_text(json.dumps({'agentType': 'medium-reviewer'}))
+        self.logs = self.root / 'research/logs'
+        self.logs.mkdir(parents=True)
+
+    def session(self, *phases, stopped=False, start=1000.0):
+        events = [{'event': 'start', 'unix_s': start, 'agent': 'claude'}] + [{'event': 'phase', 'category': p}
+                                                                             for p in phases]
+        events += [{'event': 'stop'}] if stopped else []
+        (self.logs / 'cycle.jsonl').write_text(''.join(json.dumps(e) + '\n' for e in events))
+
+    def returned(self, when):
+        origin = {'kind': 'peer', 'from': 'r1', 'handback': True, 'body': 'pass'}
+        self.add({'type': 'user', 'isMeta': True, 'origin': origin, 'timestamp': when, 'message': {'content': 'r'}})
+
+    def block(self, reply):
+        return hook.unreviewed_block(str(self.transcript), reply, self.root)
+
+    def test_the_recorded_premature_reports_are_flagged(self):
+        self.session('reading', 'mathematics')
+        first = fixture_report('binary_star_conditional_rank_20261013', 'Premature assistant commentary:',
+                               'Following correction:')
+        second = fixture_report('binary_star_cell_images_20261013', 'Native pre-review progress message in this cycle:',
+                                'At that message:')
+        for reply in (first, second):
+            with self.subTest(reply=reply[:40]):
+                self.assertIn('Unreviewed', self.block(reply)['reason'])
+
+    def test_the_label_or_a_returned_review_lets_it_through(self):
+        self.session('mathematics')
+        reply = 'The rank of the weighted kernel is nonzero, so the bound holds for every source.'
+        self.assertIsNotNone(self.block(reply))
+        self.assertIsNone(self.block('**Unreviewed:** ' + reply))
+        self.returned('1970-01-01T00:10:00Z')          # 600 s: before the session started at 1000 s
+        self.assertIsNotNone(self.block(reply))
+        self.returned('1970-01-01T00:20:00Z')          # 1200 s: after it
+        self.assertIsNone(self.block(reply))
+
+    def test_no_open_mathematics_session_or_no_mathematics_passes(self):
+        reply = 'The rank of the weighted kernel is nonzero, so the bound holds for every source.'
+        self.session('coding')
+        self.assertIsNone(self.block(reply))
+        self.session('mathematics', stopped=True)
+        self.assertIsNone(self.block(reply))
+        self.session('mathematics')
+        self.assertIsNone(self.block('The suite passes: 1115 tests in 8.1 s.'))
+
+    def test_math_words_pass_outside_a_mathematics_session_and_block_inside_one(self):
+        framework = 'The hook proves nothing new; its span check implies the bounds the finisher already reads.'
+        self.session('coding')
+        self.assertIsNone(self.block(framework))
+        self.session('coding', 'mathematics')
+        self.assertIsNotNone(self.block(framework))       # a stated limit: the words decide
+
+    def test_a_bullet_of_a_list_is_read_on_its_own(self):
+        self.session('mathematics')
+        reply = 'Two results:\n- the suite passes\n- the rank of the kernel is nonzero'
+        self.assertIn('rank of the kernel', self.block(reply)['reason'])
+
+    def test_newer_journals_that_are_not_sessions_do_not_hide_the_open_one(self):
+        self.session('mathematics')
+        for n in range(6):
+            (self.logs / f'cli_test_{n}.jsonl').write_text(json.dumps({'event': 'start', 'unix_s': 5}) + '\n')
+            (self.logs / f'hook-notices-{n}.jsonl').write_text(json.dumps({'note': 'x'}) + '\n')
+        self.assertEqual(hook.unreviewed_cycle(self.root), 1000.0)
+
+    def test_an_older_session_left_open_does_not_count_after_a_newer_one_stopped(self):
+        events = [{'event': 'start', 'unix_s': 10.0, 'agent': 'claude'}, {'event': 'phase', 'category': 'mathematics'}]
+        old = self.logs / 'abandoned.jsonl'
+        old.write_text(''.join(json.dumps(e) + '\n' for e in events))
+        os.utime(old, (1, 1))
+        self.session('coding', stopped=True)
+        self.assertIsNone(hook.unreviewed_cycle(self.root))
+        self.assertIsNone(self.block('The rank of the weighted kernel is nonzero.'))
+
+    def test_only_a_reviewer_s_report_clears_it(self):
+        self.session('mathematics')
+        agents = self.dir / 'session' / 'subagents'
+        (agents / 'agent-e1.meta.json').write_text(json.dumps({'agentType': 'Explore'}))
+        origin = {'kind': 'peer', 'from': 'e1', 'handback': True, 'body': 'found'}
+        self.add({'type': 'user', 'isMeta': True, 'origin': origin, 'timestamp': '1970-01-01T00:20:00Z',
+                  'message': {'content': 'e'}})
+        self.assertIsNotNone(self.block('The rank of the weighted kernel is nonzero.'))
+
+    def test_the_hook_runs_the_check(self):
+        self.session('mathematics')
+        decision = self.run_hook(last_assistant_message='The rank of the weighted kernel is nonzero.')
+        self.assertIn('Unreviewed', decision['reason'])

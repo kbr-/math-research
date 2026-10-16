@@ -64,6 +64,7 @@ repository's `.claude/settings.json` runs it for sessions in this clone; a sessi
 runs it through an entry in the global settings, with `--global`, which leaves out the
 block the branch's own module puts first.
 """
+from datetime import datetime
 import json
 import os
 import re
@@ -699,6 +700,121 @@ def checks_off(root):
 
 
 
+MATH_SIGN = re.compile(r'\\\(|\\\[|\b(?:lem|thm|cor|prop|conj|ex|obs|local):[a-z]')
+MATH_WORD = re.compile(r'\b(?:lemma|theorem|corollary|proofs?|prove[sd]?|bounds?|rank|quotient|degree|kernel|span|'
+                       r'polynomials?|refut\w*|counterexample|injectiv\w*|nonzero|impl(?:y|ies|ied)|exclu(?:des?|ded|sion)|'
+                       r'inequalit\w*|annihilat\w*|weight)\b', re.I)
+NOT_SESSIONS = ('cli_test_', 'run_', 'test_')     # journals the suite and unnamed runs write, never a research turn
+
+
+def mathematical(paragraph):
+    """Whether a paragraph of a reply reports mathematics: TeX, a claim identifier, or two different words of the
+    vocabulary above. A heuristic over words: it does not see whether a conclusion is drawn."""
+    return bool(MATH_SIGN.search(paragraph)) or len({w.lower() for w in MATH_WORD.findall(paragraph)}) >= 2
+
+
+def unreviewed_cycle(root):
+    """The start (Unix seconds) of the open timing session that has had a mathematics phase, or None. Sessions
+    are the journals in research/logs whose first event is a start naming its agent, other than those the suite
+    and unnamed runs write (16 October 2026: the three newest files of the directory were often a hook log and
+    test journals). Only the newest session decides: stopped, or without mathematics, it gives None, so a session
+    abandoned without a stop does not count once a later one has started."""
+    logs = Path(root) / 'research/logs'
+    journals = sorted((p for p in logs.glob('*.jsonl') if not p.name.startswith(NOT_SESSIONS)),
+                      key=lambda p: p.stat().st_mtime, reverse=True)
+    for journal in journals:
+        with journal.open() as f:
+            first = f.readline()
+        try:
+            start = json.loads(first)
+        except ValueError:
+            continue
+        if not isinstance(start, dict) or start.get('event') != 'start' or 'agent' not in start:
+            continue
+        events = [json.loads(line) for line in journal.read_text().splitlines() if line.strip()]
+        if any(isinstance(e, dict) and e.get('event') == 'stop' for e in events):
+            return None         # only the newest session decides: an older one left open is abandoned
+        if any(isinstance(e, dict) and e.get('event') == 'phase' and e.get('category') == 'mathematics'
+               for e in events):
+            return start.get('unix_s')
+        return None             # the open session has had no mathematics
+    return None
+
+
+def reviewer_returned(path, since, chunk=4_000_000, limit=64_000_000):
+    """Whether a reviewer agent's report reached the transcript at `path` at or after `since` (Unix seconds). It
+    reads back from the end in chunks until it passes an entry older than `since`, at most `limit` bytes."""
+    agents = Path(path).with_suffix('') / 'subagents'
+    with open(path, 'rb') as f:
+        end = f.seek(0, 2)
+        position, carry = end, b''
+        while position > 0 and end - position < limit:
+            start = max(0, position - chunk)
+            f.seek(start)
+            lines = (f.read(position - start) + carry).split(b'\n')
+            carry, lines = (lines[0], lines[1:]) if start else (b'', lines)
+            position = start
+            older = False
+            for raw in lines:
+                try:
+                    entry = json.loads(raw)
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict):
+                    continue
+                try:
+                    when = datetime.fromisoformat(str(entry.get('timestamp', '')).replace('Z', '+00:00')).timestamp()
+                except ValueError:
+                    when = None
+                if when is not None and when < since:
+                    older = True
+                    continue
+                attached = entry.get('attachment') if isinstance(entry.get('attachment'), dict) else {}
+                origin = next((o for o in (entry.get('origin'), attached.get('origin')) if isinstance(o, dict)), {})
+                if not origin.get('handback') or when is None:
+                    continue
+                try:
+                    kind = json.loads((agents / f"agent-{origin.get('from')}.meta.json").read_text()).get('agentType', '')
+                except (OSError, ValueError, AttributeError):
+                    kind = ''
+                if 'reviewer' in str(kind):
+                    return True
+            if older:
+                return False
+    return False
+
+
+def unreviewed_block(path, reply, root):
+    """The block for a reply that reports mathematics without the Unreviewed label while the current cycle's
+    mathematics has had no review (AGENTS.md: from opening until its review returns, each conclusion is labelled,
+    also before a draft exists), or None. Fixtures: research/results/binary_star_conditional_rank_20261013/
+    report-fixture.txt and research/results/binary_star_cell_images_20261013/report-fixture.txt (13 October 2026).
+
+    Its limits. It is retrospective: it reads the reply at the stop and cannot hold back commentary already sent.
+    The word "unreviewed" anywhere in the reply lets it through. Its test of mathematics is a word heuristic, so
+    once the open session has had a mathematics phase it also blocks a framework reply with two of its words, a
+    reply about an earlier cycle's reviewed results, and any reply citing a claim identifier. Any reviewer's report
+    since the session started clears it, a framework reviewer's too, and the interval after a review returns but
+    before its corrections are checked is not seen. Any failure of its own lets the stop through."""
+    try:
+        if 'unreviewed' in reply.lower():
+            return None
+        reports = [p for p in re.split(r'\n\s*\n|\n(?=\s*[-*] )', reply) if mathematical(p)]
+        if not reports:
+            return None
+        since = unreviewed_cycle(root)
+        if since is None or (path and reviewer_returned(path, since)):
+            return None
+    except Exception:       # a check of its own must not stop the hook's other checks
+        return None
+    quote = ' '.join(reports[0].split())[:160]
+    return {'decision': 'block', 'reason': (
+        f'This reply reports mathematics ("{quote}") while the current cycle\'s mathematics has had no review: no '
+        'reviewer\'s report has arrived since its timing session started. Prefix each such conclusion with '
+        '**Unreviewed:** (AGENTS.md: until its correctness review returns and its corrections are checked, also '
+        'before a draft exists), and answer again.')}
+
+
 def turn_block(texts, calls, said, off, quoted=()):
     """The first block among the checks that run at a stop and at a commit alike (a promise, an admitted
     mistake, a tool's fault worked around, a declared gap), those named in `off` left out; or None.
@@ -748,6 +864,7 @@ def main(argv):
     blocked = turn_block(turn_texts, calls, reply, off, quoted) or next(filter(None, (
         check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),
                                      ('reviewer meta', lambda: reviewer_meta_block(path, reply)),
+                                     ('unreviewed', lambda: unreviewed_block(path, reply, ROOT)),
                                      ('meta home', lambda: meta_home_block(
                                          reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
                                     + branch_checks(turn_texts, calls, reply, ROOT))
