@@ -77,6 +77,10 @@ class BashGuardTest(unittest.TestCase):
                 self.assertNotIn("were not written", done.stderr)
         self.assertEqual(run("printf x > ok.txt").returncode, 0)
         self.assertIsNone(guard.unwritten_notice("echo a 2>&1 >&2; cat <<'EOF' | sort"))
+        # A heredoc's body is text: its comparisons are not files (17 October 2026: "> 1:" was named).
+        notice = guard.unwritten_notice("cat > q.txt <<'EOF'\nif len(a) > 1: pass\nEOF\npython3 x.py > out.txt")
+        self.assertIn("q.txt, out.txt.", notice)
+        self.assertNotIn("1:", notice)
         # The case itself: the commit-time checks refused the commit whose command wrote the message.
         stub = types.SimpleNamespace(commit=lambda payload: "A narrowing reported without its scopes.")
         with unittest.mock.patch.dict(sys.modules, {"during_run": stub}):

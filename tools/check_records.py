@@ -219,40 +219,60 @@ def main():
                 continue
             if is_html:
                 in_pre = (in_pre or "<pre" in line) and "</pre>" not in line
-            for m in HASH.finditer(line):
-                if m.group(0)[:8] not in known and not re.search(r"https?://\S*" + m.group(0), line):
-                    report(path, n, "commit hash", m.group(0))
-            if is_html and not in_pre:
-                text = re.sub(r"<code>.*?</code>", "", line)
-                for m in BACKTICK.finditer(text):
-                    report(path, n, "Markdown backticks in HTML", m.group(0))
-            for rx in deny:
-                for m in rx.finditer(line):
-                    report(path, n, "denylisted literal", m.group(0))
-            for count in untimed_counts(line):
-                report(path, n, "test count without the run's time (say how long the run took)", count)
-            if is_html:
-                for date in future_entry_dates(line, datetime.date.today()):
-                    report(path, n, "entry dated after today", date)
-                for ref in broken_entities(line):
-                    report(path, n, "character reference without its &", ref)
+            for kind, found in line_findings(line, is_html, in_pre, known, deny):
+                report(path, n, kind, found)
         if is_html:
-            text = path.read_text(encoding="utf-8")
-            for first, last, n, title in duplicate_headings(text):
-                if wanted is None or any(line in wanted for line in range(first, last + 1)):
-                    report(path, n, "adjacent duplicate heading", title)
-            # Line numbers are counted on from the status line before: counting each from the top took 12.6 s
-            # of a 15 s run on a notebook of 18 MB with 1341 status lines.
-            line_no, counted = 1, 0
-            for m in META.finditer(text):
-                meta = status_text(m.group(1))
-                line_no, counted = line_no + text.count("\n", counted, m.start()), m.start()
-                if wanted is not None and line_no not in wanted:
-                    continue
-                if len(meta) > MAX_META:
-                    report(path, line_no, "long status line", meta)
+            for n, kind, found in html_findings(path.read_text(encoding="utf-8"), wanted):
+                report(path, n, kind, found)
     print(f"{len(paths)} files, {findings} findings")
     sys.exit(1 if findings else 0)
+
+
+def line_findings(line, is_html, in_pre, known, deny):
+    """(kind, text) for each finding of the record check on one line."""
+    found = []
+    for m in HASH.finditer(line):
+        if m.group(0)[:8] not in known and not re.search(r"https?://\S*" + m.group(0), line):
+            found.append(("commit hash", m.group(0)))
+    if is_html and not in_pre:
+        text = re.sub(r"<code>.*?</code>", "", line)
+        found += [("Markdown backticks in HTML", m.group(0)) for m in BACKTICK.finditer(text)]
+    for rx in deny:
+        found += [("denylisted literal", m.group(0)) for m in rx.finditer(line)]
+    found += [("test count without the run's time (say how long the run took)", c) for c in untimed_counts(line)]
+    if is_html:
+        found += [("entry dated after today", d) for d in future_entry_dates(line, datetime.date.today())]
+        found += [("character reference without its &", r) for r in broken_entities(line)]
+    return found
+
+
+def html_findings(text, wanted=None):
+    """(line, kind, text) for the whole-file findings of an HTML record: duplicate headings, long status lines."""
+    found = []
+    for first, last, n, title in duplicate_headings(text):
+        if wanted is None or any(line in wanted for line in range(first, last + 1)):
+            found.append((n, "adjacent duplicate heading", title))
+    # Line numbers are counted on from the status line before: counting each from the top took 12.6 s
+    # of a 15 s run on a notebook of 18 MB with 1341 status lines.
+    line_no, counted = 1, 0
+    for m in META.finditer(text):
+        meta = status_text(m.group(1))
+        line_no, counted = line_no + text.count("\n", counted, m.start()), m.start()
+        if wanted is not None and line_no not in wanted:
+            continue
+        if len(meta) > MAX_META:
+            found.append((line_no, "long status line", meta))
+    return found
+
+
+def draft_findings(text):
+    """(line, kind, text) for every finding of the record check on an entry draft, as the checkpoint's
+    --diff run would report its lines (16 October 2026: a commit hash in a draft was found only there)."""
+    known, deny, found, in_pre = session_ids(), denylist(), [], False
+    for n, line in enumerate(text.splitlines(), 1):
+        in_pre = (in_pre or "<pre" in line) and "</pre>" not in line
+        found += [(n, kind, item) for kind, item in line_findings(line, True, in_pre, known, deny)]
+    return found + html_findings(text)
 
 
 if __name__ == "__main__":

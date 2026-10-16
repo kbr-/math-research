@@ -369,6 +369,21 @@ class PlainestBoundTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
             FT.validate_plainest(witness, FT.draft_statuses(witness))
 
+    def test_work_of_a_later_turn_is_written_as_planned_not_done(self):
+        # 16 October 2026: queued builds were stated as built "in the framework turn right after this review".
+        for sentence in ('The two waiting builds are built in the framework turn right after this review.',
+                         'The listing is added in the turn that follows this entry.',
+                         'Both checks get built in the next framework turn.'):
+            with self.subTest(sentence=sentence), self.assertRaisesRegex(ValueError, 'later turn as done'):
+                FT.validate_planned_tense(f'<article id="entry-2026-10-17-x"><p>{sentence}</p>')
+        for sentence in ('Each waits, as of 17 October 2026, for the framework turn planned right after this review.',
+                         'The eleven are to be built in the framework turn planned after this review.',
+                         'The check was built in this turn and committed before this entry.',
+                         'The builds will be built in the turn after this one.'):
+            with self.subTest(sentence=sentence):
+                FT.validate_planned_tense(f'<article id="entry-2026-10-17-x"><p>{sentence}</p>')
+        FT.validate_planned_tense('<article id="entry-2026-10-16-x"><p>It is built in the turn after this.</p>')
+
     def test_an_undecided_plainest_bound_names_what_was_tried(self):
         # 16 October 2026: "no recorded result gives" one, while the entry's own substitution step decided more.
         for phrase in ('none applies', 'no recorded result', 'neither decides', 'nothing applies', 'no plain bound'):

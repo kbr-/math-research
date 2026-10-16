@@ -693,6 +693,12 @@ class SkeletonCheckTests(unittest.TestCase):
         with mock.patch.object(tool, 'refuse_item_history', side_effect=ValueError('open sub-ideas')):
             self.assertIn('item history', dict(tool.skeleton_check(NOTEBOOK, '<article id="a3">x</article>')))
 
+    def test_a_commit_hash_in_the_draft_is_found_at_drafting(self):
+        # 16 October 2026: a commit hash in an entry was found only by the checkpoint's record check.
+        failures = dict(tool.skeleton_check(routed(), draft(content='<p>As committed in 0fc5cc0773a.</p>')))
+        self.assertIn('commit hash', failures.get('record lines', ''))
+        self.assertNotIn('record lines', dict(tool.skeleton_check(routed(), draft())))
+
     def test_a_draft_that_is_not_an_article_fails_as_append(self):
         self.assertEqual(tool.skeleton_check(routed(), '<p>not an article</p>')[0][0], 'append')
 

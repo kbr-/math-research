@@ -618,7 +618,16 @@ def unwritten_notice(command):
     """The notice, for a refused command, of the files it would have written, or None. On 16 October 2026 a
     commit message was written by a command the guard refused, and the next command appended to the old file
     and committed its stale subject: a refusal says nothing ran, but not which files are therefore unchanged."""
-    paths = [p for p in dict.fromkeys(WRITTEN.findall(command)) if p != "/dev/null" and not p.startswith("&")]
+    kept, end = [], None
+    for line in command.split("\n"):   # a heredoc's body is text, not a command (17 October 2026: "> 1:" in one)
+        if end is not None:
+            end = None if line.strip() == end else end
+            continue
+        kept.append(line)
+        match = HEREDOC.search(line)
+        end = match.group(2) if match else None
+    paths = [p for p in dict.fromkeys(WRITTEN.findall("\n".join(kept)))
+             if p != "/dev/null" and not p.startswith("&")]
     if not paths:
         return None
     return ("Nothing in the refused command ran, so these files were not written or changed: " + ", ".join(paths) +

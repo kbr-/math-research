@@ -1903,38 +1903,42 @@ def check(head_body, body, path=None, root=None):
     work = developed_by(tag, text)
     batch = triaged(tag, text)
     chosen = picked(tag, text)
+    # The checks of a new entry's queue work are independent: each problem is collected and all are raised
+    # together, so a draft sees every one at once (16 October 2026: the first raise hid a missing Chosen
+    # paragraph behind another problem until the finisher).
+    errors = []
     count = undeclared_review_count(tag, draining, nodes)
     if count is not None:
-        raise ValueError(f'A review of a draining queue declares data-queue-items="{count}", the number of top-level '
-                         'items now queued, so that the next cycles see whether the queue shrinks (AGENTS.md)')
+        errors.append(f'A review of a draining queue declares data-queue-items="{count}", the number of top-level '
+                      'items now queued, so that the next cycles see whether the queue shrinks (AGENTS.md)')
     unknown = unknown_left_items(tag, nodes)
     if unknown:
-        raise ValueError('The review\'s data-left-items names items that are not queued: ' + ', '.join(unknown)
-                         + ': give the queue\'s own identifiers, since a mistyped one leaves nothing')
+        errors.append('The review\'s data-left-items names items that are not queued: ' + ', '.join(unknown)
+                      + ': give the queue\'s own identifiers, since a mistyped one leaves nothing')
     if work:
-        problems = item_history_problems(body, nodes, articles, tag, text, work, before)
-        if problems:
-            raise ValueError(problems[0])
+        errors += item_history_problems(body, nodes, articles, tag, text, work, before)
     if work and batch:
-        raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
-                         'batch, not both')
+        errors.append('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
+                      'batch, not both')
     if work and work[1] not in ('Closed', 'Developed', 'Continuing'):
-        raise ValueError('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
-                         '"Developed ..." or "Continuing ..."')
+        errors.append('An entry developing a queue item states "<strong>Follow-up.</strong> Closed: <reason>", '
+                      '"Developed ..." or "Continuing ..."')
     rule = KINDS[work[0][0]].rules.get(work[1]) if work else None
     problems = rule(tag, text, where) if rule else []
     if problems:
-        raise ValueError(f'{work[0][1]} ({work[0][0]}), {work[1]}: ' + '; '.join(problems))
-    validate_spell_extension(body, tag, text, nodes, where)
+        errors.append(f'{work[0][1]} ({work[0][0]}), {work[1]}: ' + '; '.join(problems))
+    try:
+        validate_spell_extension(body, tag, text, nodes, where)
+    except ValueError as error:
+        errors.append(str(error))
     problems = check_waits(text, where)
     if problems:
-        raise ValueError('Waiting follow-ups: ' + '; '.join(problems))
-    problems = subidea_problems(text)
-    if problems:
-        raise ValueError('; '.join(problems))
-    problems = kind_rule_problems(tag, [(b[0], b[1], b[4]) for b in batch] + listed_outcomes(text), where)
-    if problems:
-        raise ValueError('; '.join(problems))
+        errors.append('Waiting follow-ups: ' + '; '.join(problems))
+    errors += subidea_problems(text)
+    errors += kind_rule_problems(tag, [(b[0], b[1], b[4]) for b in batch] + listed_outcomes(text), where)
+    if errors:
+        raise ValueError(errors[0] if len(errors) == 1 else
+                         f'{len(errors)} queue problems: ' + ' | '.join(f'({i}) {e}' for i, e in enumerate(errors, 1)))
     if head_body is not None and len(articles) - len(record_articles(head_body)) > 1:
         raise ValueError('Commit one Research-record entry at a time: each entry\'s queue change is checked '
                          'against the commit before it')

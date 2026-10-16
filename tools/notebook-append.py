@@ -464,6 +464,16 @@ def insert_entry(source, entry):
     return source[:at] + '\n' + entry.strip() + source[at:]
 
 
+def refuse_record_findings(entry):
+    """Refuse a draft with a finding of tools/check_records.py (commit hashes, environment literals, backticks,
+    long status lines), which the checkpoint's --diff run would otherwise find only at the commit."""
+    import check_records
+    found = check_records.draft_findings(entry)
+    if found:
+        raise ValueError(f'{len(found)} record-check findings in the draft: '
+                         + '; '.join(f'line {n}: {kind}: {text[:60]}' for n, kind, text in found))
+
+
 def skeleton_check(source, entry, next_html=None, committed=None, reason=None, path=None, root=ROOT):
     """The entry checks that can run on a draft, run without writing anything: the (check, error) pairs that
     fail. They are the Where we stand rule, the append's other refusals (one at a time: its first refusal hides
@@ -497,6 +507,7 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
     run('item history', lambda: refuse_item_history(body))
     run('closures', lambda: refuse_unquoted_closures(source, entry))
     run('publication citation', lambda: refuse_uncited_publication(entry))
+    run('record lines', lambda: refuse_record_findings(entry))
     ident = re.match(r'\s*<article\b[^>]*?\sid="([^"]+)"', entry)
     if not ident:
         return failures

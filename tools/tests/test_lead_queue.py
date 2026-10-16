@@ -2057,6 +2057,18 @@ class QueueTrendTest(unittest.TestCase):
             lq.check(notebook([], queue, draining=True),
                      notebook([self.review('entry-2026-10-12-review')], queue, draining=True))
 
+    def test_every_problem_of_a_new_entry_is_raised_together(self):
+        # 16 October 2026: the first raise hid a second problem of the same draft until the finisher.
+        queue = [('lead', 'r:1'), ('lead', 'r:2')]
+        review = self.review('entry-2026-10-12-review').replace('data-route="step"',
+                                                                 'data-route="step" data-left-items="r:9"')
+        with self.assertRaises(ValueError) as raised:
+            lq.check(notebook([], queue, draining=True), notebook([review], queue, draining=True))
+        said = str(raised.exception)
+        self.assertIn('2 queue problems', said)
+        self.assertIn('data-queue-items="2"', said)
+        self.assertIn('not queued: r:9', said)
+
     def test_guidance_prints_the_trend_and_the_run(self):
         import importlib.util
         spec = importlib.util.spec_from_file_location('turn_guidance', ROOT / 'tools/turn_guidance.py')

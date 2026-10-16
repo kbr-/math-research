@@ -1368,6 +1368,29 @@ def validate_scope_direction(text):
                              'general (and the step that needs it), or was false; ' + sentence[:120] + ' (AGENTS.md)')
 
 
+# Work of a later turn reported as done: "is built in the framework turn that follows", "are fixed in the next
+# turn" (16 October 2026: two queued builds stated as built in a draft's Review and Prevention, caught only by its
+# reviewer). "To be built", "planned for" and "will be" forms are not matched.
+LATER_TURN_DONE = re.compile(
+    r"\b(?:is|are|was|were|gets?|got)\s+(?:now\s+)?(?:built|closed|done|fixed|added|committed|answered|made|run)\s+"
+    r"in\s+(?:the|a)\s+(?:(?:[\w-]+\s+){0,3}?turn\s+(?:(?:right|just|planned|immediately)\s+)?"
+    r"(?:after|following|that\s+follows|to\s+come)\b|(?:next|later|following|coming|subsequent)\s+"
+    r"(?:[\w-]+\s+){0,2}?turn\b)", re.I)
+
+
+def validate_planned_tense(text):
+    """Work a later turn is to do is written as planned, with its date, never as done."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < '2026-10-17':
+        return
+    plain = ' '.join(html.unescape(strip_tags(text)).split())
+    found = LATER_TURN_DONE.search(plain)
+    if found:
+        raise ValueError(f'The entry reports work of a later turn as done ("{found.group(0)}"): write it as '
+                         'planned, with its date ("planned, as of DATE, for the framework turn after this entry") '
+                         '(AGENTS.md: a message reports a result and not an intent)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -1663,6 +1686,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     validate_bearing_ledger(text)
     validate_prevention(text)
     validate_process_audit(text)
+    validate_planned_tense(text)
     if any(cid.startswith('ex:') for cid in entry_claims(body, article)):
         validate_nonvacuity(text)
     if tags['kind'] == 'research':      # queue items are developed, and so closed, in research entries
