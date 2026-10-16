@@ -14,6 +14,14 @@ Statements tested:
      shared, yet the stacked kernel equals span{x_k0 : k not in I}, of dimension 3, while the summed
      codimensions exceed dim V_1.
 Expected: (A), (B), (C) hold as stated; the script asserts them and prints PASS.
+
+Run 09c3aa2ac0 (saved as factor_kernels_run1.txt) refuted (C): the stacked kernel has dimension 4, not 3.
+Formulated after that run, and so not a prediction:
+ (C') the stacked kernel in (C) equals Ann(x_00) cap Ann(x_10) = span{x_20, x_30, x_40, 1+x_00+x_10};
+      1 + x_00 + x_10 kills x_00 and x_10 modulo the hole axiom x_00 x_10.
+Predicted from the corrected reading before its run:
+ (D)  for I = {0,1,2} the stacked kernel equals the intersection of Ann(x_i0), i in I, spanned by
+      1 + x_00 + x_10 + x_20, x_30 and x_40, of dimension 3.
 Refuted by: a stacked kernel strictly larger or smaller than the predicted span in (A), (B) or (C).
 Possible because: the closure at D=3 may contain further degree-3 members (pigeon-axiom products) that
 kill more classes, or the hole-axiom multiples may fail to reach degree 3 inside the closure.
@@ -139,8 +147,25 @@ def main():
                     summed_codim=sum(w - span_dim(k) for k in single),
                     ann_x00_cap_ann_x10=span_dim(kernel(c, nv, [{1 << v(0, 0)}, {1 << v(1, 0)}])[0]))
     print('C', out['C'], flush=True)
-    assert out['C']['equal'] and out['C']['stacked_kernel'] == 3
+    assert not out['C']['equal'] and out['C']['stacked_kernel'] == 4, 'run 09c3aa2ac0 outcome'
     assert out['C']['summed_codim'] > w
+    capI = kernel(c, nv, [{1 << v(i, 0)} for i in I])[0]
+    extra = [1 | coord(v(0, 0)) | coord(v(1, 0))]
+    out['C_prime'] = dict(equal_to_intersection=same_span(stacked, capI),
+                          contains_sum_element=span_dim(stacked + extra) == span_dim(stacked))
+    print('C_prime', out['C_prime'], flush=True)
+    assert out['C_prime']['equal_to_intersection'] and out['C_prime']['contains_sum_element']
+    I3 = (0, 1, 2)
+    fams3 = [(1 << v(i, 0)) | y for i in I3 for y in others]
+    stacked3, _ = kernel(c, nv, [{f} for f in fams3])
+    cap3 = kernel(c, nv, [{1 << v(i, 0)} for i in I3])[0]
+    gens3 = [1 | coord(v(0, 0)) | coord(v(1, 0)) | coord(v(2, 0)), coord(v(3, 0)), coord(v(4, 0))]
+    out['D'] = dict(families=len(fams3), stacked_kernel=span_dim(stacked3), intersection=span_dim(cap3),
+                    equal_to_intersection=same_span(stacked3, cap3),
+                    equal_to_generators=same_span(stacked3, gens3))
+    print('D', out['D'], flush=True)
+    assert out['D']['equal_to_intersection'] and out['D']['equal_to_generators']
+    assert out['D']['stacked_kernel'] == 3
     pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
     print('PASS')
 
