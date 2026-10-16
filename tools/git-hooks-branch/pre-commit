@@ -1,0 +1,15 @@
+#!/bin/sh
+# The stale-claim check (tools/staged_claims.py) where the active pre-commit hook lacks it. The repository's
+# .git/hooks/pre-commit links into one worktree, and every worktree runs that worktree's hook; a hook from a
+# branch without the check never ran it (16 October 2026: an entry edited after its claim was built was
+# committed from this branch with its claim's reviews stale). The active hook runs this file last, from the
+# committing worktree, so the check here uses this branch's own tool.
+top=$(git rev-parse --show-toplevel) || exit 1
+[ -f "$top/tools/staged_claims.py" ] && [ -f "$top/research/claims/index.json" ] || exit 0
+active=$(git rev-parse --git-path hooks/pre-commit)
+grep -q 'staged_claims\.py' "$active" 2>/dev/null && exit 0
+base=HEAD
+case " $(ps -o args= -p "$PPID" 2>/dev/null) " in
+  *" --amend "*) base=HEAD^ ;;
+esac
+python3 "$top/tools/staged_claims.py" --base "$base"
