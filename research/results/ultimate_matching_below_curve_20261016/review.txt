@@ -1,0 +1,73 @@
+Reviewer's report on the draft of the entry entry-2026-10-16-below-curve-exclusion
+(fresh-context medium reviewer, 16 October 2026), as returned.
+
+Verdict: pass with corrections. Steps 1-5 are correct. No error that breaks the argument; the
+corrections are about wording and one small gap in a citation.
+
+Checked and found correct:
+- Item 1 (Step 1). The draft imports only the inner claim of Step 1 of the dependency, not the
+  registered lemma, so that lemma's hypotheses (L >= 132, alpha_j in [1,infinity]) are rightly not
+  carried. The inner claim needs only kappa >= (log N)^(-1/2); here kappa is strictly larger, since
+  beta_1-beta_2 <= beta_1+beta_2 < 1/2. g is built from X alone. int|g'| <= kappa by Cauchy-Schwarz,
+  and the graph has length at most 1+kappa <= 2. Exchanging the coordinates is legitimate in both
+  settings (transposed evenly spread rectangles are evenly spread, the uniform law is symmetric, the
+  good-matching definition swaps with the exponents); it is applied to a single pair.
+- Item 2 (Step 2). A rectangle is connected and g continuous, so a rectangle meeting both S and its
+  complement meets the graph. Rectangles inside S number at most N lambda(S). Chebyshev applies
+  conditionally on X (variance at most N/4).
+- Item 3 (Step 3). A term with |Delta^j| > s u_j exceeds N, so at most one such term per
+  coordinate ("at most 2" and "+4" are true but loose). Excess <= crossing pairs is correct. The
+  layer derivation is correct, and the restriction a+t in [0,1] handles the vertical edges.
+- Item 4 (Step 4). Chernoff and union bound (K_0 >= e^2 mu, K_0 >= 3 log N); per-column interval
+  length at most s u_2 + 2 O_k; window overlap at most 2u_1+2; sum_k O_k <= 2(u_1+1) kappa; the step
+  to 4u_2/h for h <= 1/3; kappa u_1 = u_2; the constant 12. Holds for every L > 0 once N >= N_0(L).
+- Item 5 (Step 5). Exponent gap 1/4-(beta_1+beta_2)/2 > 0 correct; the extreme cases (alpha,infinity)
+  with alpha near 2, (infinity,infinity), beta_1 near 1/2 go through for each fixed pair.
+- Item 6. The implication to lem:common-exponent-cap holds for any evenly spread sequence, since
+  Step 2 is deterministic in Y; same normalization.
+- Item 7. Nonvacuity arithmetic correct; Goal progress unchanged with Bearing none is consistent.
+- Unused hypotheses: none.
+
+Required changes:
+- Gap (Step 2): Lemma 4.8.2 of [T4] is stated for the class C of (4.117); state that g is in C.
+- Wording (Step 2): the constant in the area bound reuses L, the matching parameter; rename it.
+- Wording (Step 3): at most one long displacement per coordinate, giving +2 (optional).
+- Wording (Step 5): the exponent inequality is strict; positivity alone suffices.
+- Wording (Degenerate cases): a lower bound in expectation does not give "no good matching with
+  probability tending to one"; cite the proof of Theorem 4.8.1 with the dependency's repair.
+- Wording (Relation to earlier results): limit the absence claim to the passages read; the
+  monograph entry read Sections 17.1-17.3 and recorded no corresponding lower-bound argument.
+- Not checkable: the survey's paragraph before Conjecture 5.8 was not in the excerpts; mark it as
+  resting on the author's reading.
+- Wording (claim spec): "cannot be crossed anywhere" should read "cannot be strengthened below the
+  curve at any pair, in either setting".
+
+Open point (unverified leads): no gain on the curve found.
+- Excess side: by a scaled Leighton-Shor upper bound the excess over kappa-scaled subgraphs is
+  presumably at most of order sqrt(kappa N)(log N)^(3/4); better constructions of this kind gain
+  only constants.
+- Layer side: pairs with |Delta^j| >= s t number at most 2N exp(-t^alpha_j), points at depth s t in
+  the layer about N s t; the crossover is at t about u_j, so the layer count stays of order N s u_2.
+- Structural reason: the argument uses only the max-type consequence of goodness (|Delta^j| <= s u_j
+  for all but O(1) pairs). Rescaling x_j by u_j turns it into the isotropic sup-norm Leighton-Shor
+  problem on a rectangle of area 1/(u_1 u_2), whose predicted maximal displacement
+  (log N)^(3/4-(beta_1+beta_2)/2)/sqrt N equals s/L on the curve. Assuming the Leighton-Shor upper
+  bound on rectangles of aspect ratio up to (log N)^(1/2) with a universal constant (not checked),
+  the max-only problem is attainable on the curve, so no test-set argument using only maximal
+  displacements can refute a pair on the curve; a refutation would have to use the joint
+  exponential moments.
+- Small constants: a layer count without the 3 log N term would exclude L below a universal
+  constant on the curve, a lower bound on the conjecture's constant, not a refutation.
+
+Process audit:
+- Title: proposed "Exponent pairs below the curve excluded, both settings"; "sharp" or "settled"
+  would overstate.
+- Goal progress: "settles the sharpness off the diagonal" should say "below the curve, in both
+  settings"; sharpness on the curve is not addressed.
+- Unasked question: "whether sharper constants could exclude a fixed L was not examined" should say
+  that this can only bound the conjecture's constant from below.
+- Bearing: "larger by any power of log N" should be "by any unbounded factor".
+- Novelty: absence claims went beyond the passages listed as read.
+- Claim spec: the depends_on note should say only the inner claim of Step 1 is used.
+- Record search: "anisotropic Leighton Shor matching exclusion below curve" returned only
+  lem:leighton-shor-class-lower-bound, lem:common-exponent-cap and conj:conjugate-class-discrepancy.

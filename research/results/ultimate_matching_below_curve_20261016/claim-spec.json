@@ -1,0 +1,56 @@
+{
+  "source": {
+    "record": "[Below-curve exclusion](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-below-curve-exclusion)",
+    "label": "Below-curve exclusion",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-below-curve-exclusion"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "thm:below-curve-matching-exclusion",
+      "summary": "For alpha_1, alpha_2 in (0,infinity] with 1/alpha_1+1/alpha_2<1/2 and every fixed L>0, for X i.i.d. uniform on [0,1]^2 and Y either evenly spread or an independent uniform sample, with probability tending to one no matching satisfies sum_i exp[(sqrt N|X_i^j-Y^j_pi(i)|/(L sqrt(log N)))^alpha_j] <= 2N (maximum bound L sqrt(log N/N) at infinity) for both j=1,2. So the ultimate matching conjecture cannot be strengthened below its curve at any pair, in either setting; e.g. (alpha,infinity) fails for every alpha>2.",
+      "assessment": "Working proof: the vertically scaled Leighton-Shor subgraph of Step 1 of lem:leighton-shor-class-lower-bound with kappa=(log N)^(1/alpha_2-1/alpha_1), crossing pairs bounded by an anisotropic boundary layer counted on a grid of side L sqrt(log N/N) plus at most two long displacements; the exponents balance exactly on the curve. A direct adaptation of the monograph's proof of Theorem 4.8.1; neither source read states it; no novelty claimed.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Shows the conjecture cannot be strengthened at any pair below its curve, in both settings and for every constant.",
+      "next_action": "None for sharpness; the open part of the conjecture is the upper bound on the curve.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:below-curve-matching-exclusion",
+      "depends_on",
+      "lem:leighton-shor-class-lower-bound",
+      "Uses only the inner claim of its Step 1, the scaled Leighton-Shor excess, which does not carry that lemma's hypotheses L>=132 and alpha_j>=1."
+    ],
+    [
+      "thm:below-curve-matching-exclusion",
+      "refines",
+      "lem:common-exponent-cap",
+      "Implies it: every pair in (4,infinity]^2 lies below the curve, and no good matching with probability tending to one is stronger than not some with probability tending to one."
+    ],
+    [
+      "thm:below-curve-matching-exclusion",
+      "cites",
+      "thm:dyadic-flow-square-exponential",
+      "Same notion of good matching; that theorem proves the pair (2,2), above the curve, while this one excludes every pair below it."
+    ],
+    [
+      "thm:below-curve-matching-exclusion",
+      "cites",
+      "lem:two-sample-matching-transfer",
+      "Same notion of good matching; the exclusion is proved in the two-sample setting directly, not by the transfer, which runs in the other direction."
+    ],
+    [
+      "thm:below-curve-matching-exclusion",
+      "applies",
+      "conj:ultimate-matching",
+      "Shows the conjecture cannot be strengthened below its curve."
+    ]
+  ]
+}
