@@ -1,0 +1,870 @@
+{
+  "base_sha256": "c5b65847c187afd3d17891eca83c9e6827d2811428b4c5e285caa203ebe9346f",
+  "provenance": {
+    "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+    "date": "2026-10-16",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "summary": "Over F2 in Braun's finite-parameter setting (m>0, l>=2, n=2^l, h=3l, complete old-affine family adjoined to Q_{m,l}), if the proper blocks of rank >h(k+1) are M coordinate blocks (input spans spanned by literals x_b+c_b) and either M<=k or, with r=h(k+1)+1 and V=2v (V=v under consistent pins), M prod_{i<t}(1-(r-l i)/V)<=k-t for some 0<=t<=k-1, there is no ordinary-PC refutation through any D>=2h+1 with 2k(D+1)-1<=n. So M such blocks are excluded through D=floor((n+1)/(2M))-1 when that is >=2h+1. For M<=k spread coordinate blocks of r bits in distinct rows with ln M>=-(kr/m)ln(1-1/l), the exact summed restriction ranks on L_k are >= dim L_k. Proof: fix one pinned bit per block in fresh rows (weight prod(x_b+c_b) in L_k with zero restriction); Braun's restriction-ideal lemma, weighted removal and row separation finish; Jensen for the spread bound. The saving is a cover by single literals.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (field F2, greedy inequality, qualified summed-rank range, worst-case-rank table, full-scan baselines, f=1 baseline and restriction reading); the degree comparison is from degree_range.json, l<=32.",
+        "record": "[Small-inventory coordinate exclusion](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-small-inventory-exclusion)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Raises the certified exclusion degree of Braun's theorem for small coordinate inventories from about sqrt(n/ln M)/2 to about n/(2M); an elementary cover, not a structural joint saving at the goal's polylogarithmic degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": "Extend to non-coordinate flats whose input spans contain single-row forms, comparing with the safe-probe clamp of thm:safe-probe-affine-augmentation."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:greedy-transversal-certificate",
+        "summary": "In Braun's F2 setting, for M proper coordinate blocks each pinning at least r>l(k-1) bits, k>=1, with V=v under consistent pins and V=2v otherwise: if M prod_{i<t}(1-(r-l i)/V) <= k-t for some integer 0<=t<=k-1, a nonzero product of at most k affine forms x_b+c in distinct rows lies in L_k and has zero ordinary restriction to every flat. At t=0: any M<=k such blocks have a common kernel. Proof: t greedy literal choices by double counting, then one literal per remaining block in a fresh row. At l=16, D=107 (k=303, r=14593) it certifies ln M up to 7.14 (consistent pins) and 6.00 (general), against the summed count's 4.25 and the Harris certificate's 5.44.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its second pass (double counting with V=v or 2v, the finishing step under r>l(k-1)); the comparison numbers are from baselines.json, eight computed rows.",
+        "record": "[Harris kernel certificate](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-harris-certificate)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "The elementary baseline for any claimed joint saving in Braun's common-kernel step on coordinate families; beats the exact summed count at moderate k.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": "Use as the comparison baseline; restate the review's non-domination requirement, which the t=0 case meets."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "audit:ordinary-restriction-affine-family",
+        "summary": "Finite-parameter affine-family exclusion and polynomial-inventory/polylogarithmic-degree consequence",
+        "assessment": "Fully Lean verified with actual kernel/removal/separation, original ceiling and uniform square-condition versions; unit blocks included",
+        "record": "[Original audit](https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit), [Full formalization proof](https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion), [Lean](../formalization/claims/AffineFamilyExclusion.lean)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "complete",
+          "scope": "Finite-parameter affine-family exclusion and polynomial-inventory/polylogarithmic-degree consequence. Recorded qualifications: Fully Lean verified with actual kernel/removal/separation, original ceiling and uniform square-condition versions; unit blocks included",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion",
+            "results/r_parallel_assembly_review_20260915/exclusion-final.txt",
+            "../formalization/claims/AffineFamilyExclusion.lean"
+          ],
+          "artifacts": [
+            {
+              "scope": "Finite-parameter binary affine-family exclusion from the actual kernel, weighted removal, and cube separator. Includes polynomial proper inventory and arbitrary fixed polylogarithmic degree, by a uniform parameter argument.",
+              "status": "complete",
+              "references": [
+                "../formalization/claims/AffineFamilyExclusion.lean"
+              ],
+              "declarations": [
+                "MathResearch.affine_family_exclusion_of_square",
+                "MathResearch.affine_family_exclusion",
+                "MathResearch.affine_family_polylog_exclusion"
+              ],
+              "verification": "results/r_parallel_assembly_review_20260915/exclusion-final.txt"
+            }
+          ]
+        },
+        "topics": [
+          "bit-php",
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Verified ordinary restriction supplies both finite-parameter and asymptotic affine-family exclusion.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit",
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified ordinary restriction supplies both finite-parameter and asymptotic affine-family exclusion. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit",
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Matched indexed scope/qualifications against explicit Lean Claim/Scope/Declarations headers and linked notebook verification records. This is metadata extraction, not a new proof audit or kernel replay.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion",
+            "results/r_parallel_assembly_review_20260915/exclusion-final.txt",
+            "../formalization/claims/AffineFamilyExclusion.lean"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified ordinary restriction supplies both finite-parameter and asymptotic affine-family exclusion. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit",
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified ordinary restriction supplies both finite-parameter and asymptotic affine-family exclusion. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit",
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Verified common kernel, complete removal, cube dual and parameter bounds prove finite and asymptotic exclusion; affine-polynomial/row-space bridges instantiate the actual systems. Integrated only after pinned core/source validation. Ordinary restriction moments: new relationship with cor:ordinary-restriction-moments. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit",
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion",
+            "../formalization/claims/AffineFamilyExclusion.lean"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:ordinary-affine-restriction-ideal",
+        "summary": "Binary affine ordinary pullbacks compose and invert; zero free restriction gives literal degree-(k−1) affine coefficients and image dimension≤choose(v−r+k,k)",
+        "assessment": "Fully Lean-verified supporting claim; actual common-kernel assembly remains R15",
+        "record": "[Statement and proof](https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal), [Lean](../formalization/claims/AffineRestrictionIdeal.lean)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "complete",
+          "scope": "Binary affine ordinary pullbacks compose and invert; zero free restriction gives literal degree-(k−1) affine coefficients and image dimension≤choose(v−r+k,k). Recorded qualifications: Fully Lean-verified supporting claim; common-kernel assembly is separately verified under lem:common-affine-restriction-kernel (R15)",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal",
+            "results/r15_kernel_20260915_01/affine-ideal-verification-final.txt",
+            "../formalization/claims/AffineRestrictionIdeal.lean"
+          ],
+          "artifacts": [
+            {
+              "scope": "Binary ordinary affine coordinate pullbacks and inverse identities; zero ordinary free-coordinate restriction gives literal degree-(k-1) affine-generator coefficients.",
+              "status": "complete",
+              "references": [
+                "../formalization/claims/AffineRestrictionIdeal.lean"
+              ],
+              "declarations": [
+                "MathResearch.polynomialPullback_degree",
+                "MathResearch.polynomialPullback_eval",
+                "MathResearch.polynomialPullback_comp",
+                "MathResearch.polynomialPullback_id",
+                "MathResearch.polynomialPullback_inverse",
+                "MathResearch.affine_restriction_coefficients",
+                "MathResearch.coordinateRestriction_degree",
+                "MathResearch.affineRestriction_degree",
+                "MathResearch.coordinateFreeIndex_card",
+                "MathResearch.affineRestriction_image_finrank_le"
+              ],
+              "verification": "results/r15_kernel_20260915_01/affine-ideal-verification-final.txt"
+            }
+          ]
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Ordinary affine pullbacks and restriction witnesses preserve the literal degree ceiling.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Recorded status and scope: Ordinary affine pullbacks and restriction witnesses preserve the literal degree ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Matched indexed scope/qualifications against explicit Lean Claim/Scope/Declarations headers and linked notebook verification records. This is metadata extraction, not a new proof audit or kernel replay. Removed obsolete prospective R15 wording; verified scope unchanged and assembly remains a separate claim. Existing evidence inspected, no fresh kernel replay.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal",
+            "results/r15_kernel_20260915_01/affine-ideal-verification-final.txt",
+            "../formalization/claims/AffineRestrictionIdeal.lean",
+            "results/parallel_formalization_route_reconcile/report.json"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topic classification follows the object and method: Ordinary affine pullbacks and restriction witnesses preserve the literal degree ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance is methodological, not a fresh novelty audit: Ordinary affine pullbacks and restriction witnesses preserve the literal degree ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Reviewed pullback and literal coefficient steps and image dimension call; supplied coordinates are hypotheses, not an invocation of completion. Inventory covers recorded direct project/historical proof dependencies and substantive comparisons; library internals are outside the claim graph. Integrated only after pinned core/source validation. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal",
+            "../formalization/claims/AffineRestrictionIdeal.lean"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:affine-family-removal-with-unit-blocks",
+        "summary": "Complete weighted affine-family removal permits each high block a unit-span certificate or the existing degree(k−1) literal witness",
+        "assessment": "Lean-verified same k(D+1) ceiling; unit blocks specialize to zero, original literal-only theorem preserved as wrapper",
+        "record": "[Full proof](https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks); [Lean](../formalization/claims/AffineFamilyRemovalWithUnits.lean)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "complete",
+          "scope": "Complete weighted affine-family removal permits each high block a unit-span certificate or the existing degree(k−1) literal witness. Recorded qualifications: Lean-verified same k(D+1) ceiling; unit blocks specialize to zero, original literal-only theorem preserved as wrapper",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks",
+            "https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/lean-verification.txt",
+            "../formalization/claims/AffineFamilyRemovalWithUnits.lean"
+          ],
+          "artifacts": [
+            {
+              "scope": "Complete finite dependent-registry low/high affine ENS removal allowing each high block either a unit-span certificate or literal degree-(k−1) target witnesses. Unit-span blocks specialize to zero; all Boolean domains and ordinary weighted PC budgets are retained.",
+              "status": "complete",
+              "references": [
+                "../formalization/claims/AffineFamilyRemovalWithUnits.lean"
+              ],
+              "declarations": [
+                "MathResearch.affine_family_removal_with_units"
+              ],
+              "verification": "https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/lean-verification.txt"
+            }
+          ]
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Unit-span treatment closes the tautological-block case without changing the removal ceiling.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Recorded status and scope: Unit-span treatment closes the tautological-block case without changing the removal ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Matched indexed scope/qualifications against explicit Lean Claim/Scope/Declarations headers and linked notebook verification records. This is metadata extraction, not a new proof audit or kernel replay.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks",
+            "https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/lean-verification.txt",
+            "../formalization/claims/AffineFamilyRemovalWithUnits.lean"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topic classification follows the object and method: Unit-span treatment closes the tautological-block case without changing the removal ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance is methodological, not a fresh novelty audit: Unit-span treatment closes the tautological-block case without changing the removal ceiling. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Reviewed all three local cases and final weighted replay, including an actual substitute_weighted call absent from automatic discovery. Inventory covers recorded direct project/historical proof dependencies and substantive comparisons; library internals are outside the claim graph. Integrated only after pinned core/source validation. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-affine-family-removal-with-unit-blocks",
+            "../formalization/claims/AffineFamilyRemovalWithUnits.lean"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cube-residual-dual-separation",
+        "summary": "Disjoint two-point bit lines and a residual design separate every nonzero row-linear bit polynomial from actual unary and compact-bit PC through B",
+        "assessment": "Full Lean verification with all dependencies; arbitrary m, ell>=2, 1<=k<=B, 4(k-1)<2^ell and 2B-1<=2^ell; constant and nonconstant normalization included",
+        "record": "[Original proof](https://kbr.is-a.dev/math-research/#cube-residual-dual-separation), [full alternative proof](https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation), [Lean](../formalization/claims/CubeResidualDualSeparation.lean)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "complete",
+          "scope": "Disjoint two-point bit lines and a residual design separate every nonzero row-linear bit polynomial from actual unary and compact-bit PC through B. Recorded qualifications: Full Lean verification with all dependencies; arbitrary m, ell>=2, 1<=k<=B, 4(k-1)<2^ell and 2B-1<=2^ell; constant and nonconstant normalization included",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation",
+            "results/r_boolean_matching_20260915_08/verification.txt",
+            "../formalization/claims/CubeResidualDualSeparation.lean"
+          ],
+          "artifacts": [
+            {
+              "scope": "Full binary row-linear cube/residual dual separation, generalized to arbitrary row count, including actual PC exclusion and constant/nonconstant normalization.",
+              "status": "complete",
+              "references": [
+                "../formalization/claims/CubeResidualDualSeparation.lean"
+              ],
+              "declarations": [
+                "MathResearch.PolynomialCalculus.cube_residual_dual_separation"
+              ],
+              "verification": "results/r_boolean_matching_20260915_08/verification.txt"
+            }
+          ]
+        },
+        "topics": [
+          "bit-php",
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Verified residual duals separate row-linear bit polynomials with exact board and normalization conditions.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#cube-residual-dual-separation",
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified residual duals separate row-linear bit polynomials with exact board and normalization conditions. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#cube-residual-dual-separation",
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Matched indexed scope/qualifications against explicit Lean Claim/Scope/Declarations headers and linked notebook verification records. This is metadata extraction, not a new proof audit or kernel replay.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation",
+            "results/r_boolean_matching_20260915_08/verification.txt",
+            "../formalization/claims/CubeResidualDualSeparation.lean"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified residual duals separate row-linear bit polynomials with exact board and normalization conditions. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#cube-residual-dual-separation",
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Reviewed indexed scope and compact source evidence. Verified residual duals separate row-linear bit polynomials with exact board and normalization conditions. This is source-relative metadata, not a new proof or literature audit. Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#cube-residual-dual-separation",
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Verified disjoint lines, cube restriction/isolation, residual moment extension and compact decoder supply actual separation; the earlier injection is refined by an explicit dual. Integrated only after pinned core/source validation. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#cube-residual-dual-separation",
+            "https://kbr.is-a.dev/math-research/#lean-cube-residual-dual-separation",
+            "../formalization/claims/CubeResidualDualSeparation.lean"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:safe-probe-affine-augmentation",
+        "summary": "A binary safe bit-affine system of rank a<=cN, c<1/4, gives a degree-preserving restriction of flat avoidance plus any complete affine ENS family to a near-balanced affine PHP source.",
+        "assessment": "Working binary theorem using the concrete older safe-system map. Pairwise disjoint pivot-row coordinate edges map marked cells to u_i and 1+u_i, with all u_i affine, leaving N+1-a rows and N-2a holes. Every old-affine ENS family remains complete and affine, even if chosen after the flats; forced avoidance indicators have Boolean image certificates at their original degrees. The near-balanced endpoint excludes D<=N^alpha polylog N when log affine inventory<=N^beta polylog N and 2alpha+beta<1. A direct constant first-row map clamps each bottom with a safe probe equal to one, so the two-level old-affine-plus-product-sum source version has no bottom-rank or positive-accuracy restriction. Specified consistent deeper affine reference profiles are also covered. Compact and weak unary cases use the decoder and strengthening. Arbitrary polynomial inventories need not admit an affordable safe system, and the PHP substitution is specifically binary.",
+        "record": "[Intersection-span source map and controls](https://kbr.is-a.dev/math-research/#safe-probe-affine-augmentation)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal algebraic proofs only; no Lean verification, finite computation or membership algorithm is asserted.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "degree-accounting",
+          "affine-linear-algebra",
+          "substitution",
+          "matching-php"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Discharges the current affine-augmentation premise by preserving the whole source under a previously recorded affine restriction, avoiding stronger mixed-moment preservation.",
+          "novelty": "unknown",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "next_action": "Independently audit the safe substitution on every original axiom, the near-balanced row counts, adaptive affine-family quantifier and direct all-accuracy source version; compare prior safe-system applications before claiming novelty."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Working binary theorem using the concrete older safe-system map. Pairwise disjoint pivot-row coordinate edges map marked cells to u_i and 1+u_i, with all u_i affine, leaving N+1-a rows and N-2a holes. Every old-affine ENS family remains complete and affine, even if chosen after the flats; forced avoidance indicators have Boolean image certificates at their original degrees. The near-balanced endpoint excludes D<=N^alpha polylog N when log affine inventory<=N^beta polylog N and 2alpha+beta<1. A direct constant first-row map clamps each bottom with a safe probe equal to one, so the two-level old-affine-plus-product-sum source version has no bottom-rank or positive-accuracy restriction. Specified consistent deeper affine reference profiles are also covered. Compact and weak unary cases use the decoder and strengthening. Arbitrary polynomial inventories need not admit an affordable safe system, and the PHP substitution is specifically binary.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Informal algebraic proofs only; no Lean verification, finite computation or membership algorithm is asserted.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Old functional PHP stability, affine flat choices and complete ENS degree-preserving substitution.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Discharges the current affine-augmentation premise by preserving the whole source under a previously recorded affine restriction, avoiding stronger mixed-moment preservation.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "The source theorem includes its direct and consistent-profile versions; the criterion includes the classical linear Hall proof and finite-field descent. The probability and direct-sum applications are separately indexed; these cover the complete new article. Odd-prime safe maps entry: new relationship with prop:odd-prime-safe-maps-local. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-safe-probes-affine-augmentation",
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-21-adaptive-row-clamps-and-count-limit"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:coordinate-count-window",
+        "summary": "In Braun's F2 setting (m rows of l bits, v=ml, row-linear L_k of dimension H), for proper coordinate blocks pinning at least r bits each to constants (pins to one translate to pins to zero), with x=1-r/v, rho=(m-k+1)l/k and rho x>1, each restriction rank is at most H x^k rho x/(rho x-1) by Maclaurin's inequality and a geometric bound, so the exact summed count gives a common row-linear kernel when ln M < -k ln x - ln(rho x/(rho x-1)), with -k ln x >= rk/v. By prop:common-kernel-ceiling some family at the same k and r with ln M <= rk/(v-r-k)+ln(k ln(v+1)+1) has none: the main terms agree to a factor 1+O((r+k)/v), with additive gap about (rk/v)(r/2v+k/v), which grows at minimal degree D=6l+1 (341 at l=32). At l=16, D=107 (k=303, r=14593): certified 4.246 against the ceiling 12.62 and the published 1.40.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its route-review stage 2 and follow-up, including the sandwich at every admissible parameter and the reproduced minimal-degree sweep. Coordinate blocks only; Braun's general affine flats are not covered.",
+        "record": "[Joint-savings route review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-joint-savings-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "negative_result",
+          "rationale": "Shows that on coordinate families the gap between Braun's published count and the common-kernel ceiling is mainly in single-flat estimates; the remaining window for joint-rank savings is logarithmic at moderate degree and grows at minimal degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": "Extend the single-flat estimate to non-coordinate flats."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Harris kernel certificate: new relationship with lem:greedy-transversal-certificate. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::depends_on::lem:greedy-transversal-certificate",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:greedy-transversal-certificate",
+        "locator": null
+      },
+      "scope": "Supplies the common kernel in L_k.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Supplies the common kernel in L_k."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::depends_on::audit:ordinary-restriction-affine-family",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "audit:ordinary-restriction-affine-family",
+        "locator": null
+      },
+      "scope": "Braun's finite-parameter exclusion proof, with its common-kernel lemma replaced.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Braun's finite-parameter exclusion proof, with its common-kernel lemma replaced."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::depends_on::lem:ordinary-affine-restriction-ideal",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:ordinary-affine-restriction-ideal",
+        "locator": null
+      },
+      "scope": "Turns zero restriction into literal cofactors.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Turns zero restriction into literal cofactors."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::depends_on::lem:affine-family-removal-with-unit-blocks",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:affine-family-removal-with-unit-blocks",
+        "locator": null
+      },
+      "scope": "Weighted removal derives f from the old base.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Weighted removal derives f from the old base."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::depends_on::lem:cube-residual-dual-separation",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cube-residual-dual-separation",
+        "locator": null
+      },
+      "scope": "Row separation forbids that derivation.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Row separation forbids that derivation."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::cites::thm:safe-probe-affine-augmentation",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:safe-probe-affine-augmentation",
+        "locator": null
+      },
+      "scope": "A different small-inventory mechanism (safe clamps) for general bit-affine blocks at lower degree.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "A different small-inventory mechanism (safe clamps) for general bit-affine blocks at lower degree."
+      }
+    },
+    {
+      "id": "thm:small-inventory-coordinate-exclusion::cites::prop:coordinate-count-window",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "thm:small-inventory-coordinate-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:coordinate-count-window",
+        "locator": null
+      },
+      "scope": "The summed count it is compared with.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "b3262f1bf4490347cceb910e1696b427b06ba0a4",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The summed count it is compared with."
+      }
+    }
+  ],
+  "topic_definitions": []
+}

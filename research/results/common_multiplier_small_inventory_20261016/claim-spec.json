@@ -1,0 +1,71 @@
+{
+  "source": {
+    "record": "[Small-inventory coordinate exclusion](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-small-inventory-exclusion)",
+    "label": "Small-inventory coordinate exclusion",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-small-inventory-exclusion"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "affine-linear-algebra",
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "thm:small-inventory-coordinate-exclusion",
+      "summary": "Over F2 in Braun's finite-parameter setting (m>0, l>=2, n=2^l, h=3l, complete old-affine family adjoined to Q_{m,l}), if the proper blocks of rank >h(k+1) are M coordinate blocks (input spans spanned by literals x_b+c_b) and either M<=k or, with r=h(k+1)+1 and V=2v (V=v under consistent pins), M prod_{i<t}(1-(r-l i)/V)<=k-t for some 0<=t<=k-1, there is no ordinary-PC refutation through any D>=2h+1 with 2k(D+1)-1<=n. So M such blocks are excluded through D=floor((n+1)/(2M))-1 when that is >=2h+1. For M<=k spread coordinate blocks of r bits in distinct rows with ln M>=-(kr/m)ln(1-1/l), the exact summed restriction ranks on L_k are >= dim L_k. Proof: fix one pinned bit per block in fresh rows (weight prod(x_b+c_b) in L_k with zero restriction); Braun's restriction-ideal lemma, weighted removal and row separation finish; Jensen for the spread bound. The saving is a cover by single literals.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (field F2, greedy inequality, qualified summed-rank range, worst-case-rank table, full-scan baselines, f=1 baseline and restriction reading); the degree comparison is from degree_range.json, l<=32.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Raises the certified exclusion degree of Braun's theorem for small coordinate inventories from about sqrt(n/ln M)/2 to about n/(2M); an elementary cover, not a structural joint saving at the goal's polylogarithmic degree.",
+      "next_action": "Extend to non-coordinate flats whose input spans contain single-row forms, comparing with the safe-probe clamp of thm:safe-probe-affine-augmentation.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "depends_on",
+      "lem:greedy-transversal-certificate",
+      "Supplies the common kernel in L_k."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "depends_on",
+      "audit:ordinary-restriction-affine-family",
+      "Braun's finite-parameter exclusion proof, with its common-kernel lemma replaced."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "depends_on",
+      "lem:ordinary-affine-restriction-ideal",
+      "Turns zero restriction into literal cofactors."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "depends_on",
+      "lem:affine-family-removal-with-unit-blocks",
+      "Weighted removal derives f from the old base."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "depends_on",
+      "lem:cube-residual-dual-separation",
+      "Row separation forbids that derivation."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "cites",
+      "thm:safe-probe-affine-augmentation",
+      "A different small-inventory mechanism (safe clamps) for general bit-affine blocks at lower degree."
+    ],
+    [
+      "thm:small-inventory-coordinate-exclusion",
+      "cites",
+      "prop:coordinate-count-window",
+      "The summed count it is compared with."
+    ]
+  ]
+}

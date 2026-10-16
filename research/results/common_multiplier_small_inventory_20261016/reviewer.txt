@@ -1,0 +1,28 @@
+Review record: Small-inventory coordinate exclusion (16 October 2026)
+Reviewer: sole fresh-context medium-reviewer subagent (Claude Code), medium reasoning; one pass.
+
+Verdict: pass with corrections.
+- Part (a): one pinned literal per block in fresh rows, restriction-ideal lemma, lem:hybrid and
+  thm:row-separation, correct. Part (c) Jensen bound correct. All 11 table rows match degree_range.json.
+- Field: Braun's F is F2 (whitepaper.tex defines \F as \mathbb F_2; row separation uses "a nonzero
+  constant over F is one"). Restrict to F2, literals x_b+c_b.
+- Write the greedy inequality out; V=2v in general, V=v under consistent pins.
+- The summed-rank sentence holds only in the range of (c) (about M <~ sqrt(m ln M/3) at k=M); the
+  factor sqrt(n ln M)/M is false at M=1.
+- Say the table evaluates worst-case ranks h(k+1)+1, so each column is a guarantee.
+- Baselines from a binary search with monotonicity checked only at l=16 may be understated.
+- Missing elementary baseline: f=1 excludes all families with only low-rank proper blocks at every k;
+  over F2 the weight prod(x_b+c_b) is restriction of each chosen bit to its unpinned value. The
+  theorem is "kill each block by fixing one bit in fresh rows, then row separation".
+- Prior work: the transversal weight is the clamp of the safe-probe theorem; they differ in the
+  lower-bound engine. thm:shared-span-affine-exclusion does not give (b).
+- Nonvacuity ledger link pointed at the theorem heading.
+- Unused: k<=m, M<=m; redundant: 4(k-1)<n.
+- Goal: "advanced" weakly supported; the saving is a cover by single literals; recommend unchanged.
+- Suggestions: disjoint-support packing extension beyond coordinate blocks; on that class the
+  comparison with the safe-probe clamp reduces to the lower-bound engine.
+- Process audit: setting more general than sources; summary sentences overstated; advanced declared
+  while domination left open; proposed title "Small-inventory coordinate exclusion over F2".
+
+Author resolution: all required changes made; the baselines recomputed by a full scan (agreeing
+with the binary search in every row); goal progress lowered to unchanged, bearing none.
