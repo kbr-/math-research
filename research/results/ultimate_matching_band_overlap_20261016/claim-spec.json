@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Band overlap penalty](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-band-overlap-penalty)",
+    "label": "Band overlap penalty",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-band-overlap-penalty"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:band-overlap-penalty",
+      "summary": "(1) For band functions G_k(x,y)=A_k min{1,max{0,(f_k(x)+w-y)/w}} on [0,1]^2 over continuous piecewise linear graphs f_k, k<=m, with every difference f_k-f_k' having at most P linear pieces, and convex phi_1 with phi_1(y)<=rho y for y<=Y, A_k|f_k'|<=wY: the vertical gradients are aligned and the members' penalty on the misaligned set is sigma <= 2 rho w P (m-1) sum_k A_k. (2) For scaled Leighton-Shor graphs kappa_k F_k (F_k of the form (4.122) of Talagrand's monograph, kappa_k in [(log N)^(-1/2),(log N)^(1/2)], A_k<=1, w the grid side, phi_j=psi*_alpha_j finite): sigma <= (L/4) m^2 (log N)^(3/2) N^(-1/2+1/100). (3) Hence, for positively oriented members with m<=(log N)^C and Phi(sum G_k)<=2: l(sum G_k) <= (1+sigma/2)(1+c_0 log log N/log N) max_k l(H_k)^+, H_k rescaled to Phi(H_k)=2, with no additive term.",
+      "assessment": "Working proof: on the misaligned set two bands overlap with opposite slopes, where |h'| >= |f_k'| for h=f_k-f_k', and each linear piece of h spends integral of |h'| at most 2w within |h|<w; Leighton-Shor graphs are linear on the grid 2^(-cr-1)Z, so P <= 2N^(1/100); then the proof of part (2) of lem:aligned-superposition-bound, whose gradient hypothesis is needed only for the rescaled H_k, of amplitude at least (log N)^(-3/2)/2 and gradients at least N^(1/3). Positively oriented, vertically scaled members only; reflected or transposed members, alpha=infinity and the exact dual not covered.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Decides the second route review's architecture test in the class form for its posed object: superposing scaled Leighton-Shor test functions at up to (log N)^C aspects gains at most 1+o(1) over the best single member, whatever the single-member decay.",
+      "next_action": "The single-member question: an upper bound for one scaled Leighton-Shor function's value at full budget off balance; and the exact dual.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:band-overlap-penalty",
+      "depends_on",
+      "lem:aligned-superposition-bound",
+      "Part (3) applies its part (2) with the overlap penalty computed here."
+    ],
+    [
+      "lem:band-overlap-penalty",
+      "cites",
+      "lem:leighton-shor-class-lower-bound",
+      "Its band functions over scaled (4.122) graphs are the family whose overlap is bounded; Step 3's bound on psi* is used."
+    ],
+    [
+      "lem:band-overlap-penalty",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "A refutation through scaled Leighton-Shor test functions at several aspects needs a single such function beyond the bound."
+    ]
+  ]
+}
