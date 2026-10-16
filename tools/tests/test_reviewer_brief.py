@@ -92,6 +92,21 @@ class MissingBriefFileTest(unittest.TestCase):
                                                 f'run tools/tests/run.py; see {tmp}/*.txt')))
             self.assertIsNone(hook.refusal(call(f'Read {tmp}/absent.txt', agent='general-purpose')))
 
+    def test_files_named_inside_the_brief_and_in_a_follow_up_must_exist(self):
+        # 16 October 2026: the brief file existed, the excerpt it named did not.
+        with tempfile.TemporaryDirectory() as tmp:
+            brief = Path(tmp) / 'brief.md'
+            brief.write_text(f'Draft: {tmp}/draft.html\nDependencies: {tmp}/deps.md\n')
+            (Path(tmp) / 'draft.html').write_text('x')
+            reason = hook.refusal(call(f'Read the brief at {brief} and only the files it names.'))
+            self.assertIn(f'{tmp}/deps.md', reason)
+            (Path(tmp) / 'deps.md').write_text('x')
+            self.assertIsNone(hook.refusal(call(f'Read the brief at {brief} and only the files it names.')))
+            follow = {'tool_name': 'SendMessage', 'tool_input': {'to': 'a1', 'message': f'Check {tmp}/draft2.html.'}}
+            self.assertIn('draft2.html', hook.refusal(follow))
+            (Path(tmp) / 'draft2.html').write_text('x')
+            self.assertIsNone(hook.refusal(follow))
+
 
 if __name__ == '__main__':
     unittest.main()

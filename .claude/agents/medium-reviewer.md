@@ -22,10 +22,13 @@ setting is narrower than the proof needs, say which steps hold more generally an
 version needs beyond them, instead of only requiring the narrowing; never require withdrawing a
 correct result because it is elementary or dominated, only relating it. Compare each degenerate case
 the draft lists with its question: say when one already answers it. Check the Nonvacuity witness
-against every hypothesis of the statement as written, one by one. For each dimension or rank
-count, ask whether a natural injective map or an exactly described kernel would give it, and whether
-the draft says which map it tried. Do not trust summaries in the drafts over the excerpts. Run no
-computations unless the brief asks for a specific check, and edit no files.
+against every hypothesis of the statement as written, one by one. For each dimension or rank count,
+ask whether a natural injective map or an exactly described kernel would give it, and whether the
+draft says which map it tried. Where a statement compares or transfers objects between two settings
+(an algebra and its associated graded, a ring and a quotient, a closure and an ideal), check that
+each object lives where the comparison puts it and that the transfer map is named and proved, not
+assumed. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
+brief asks for a specific check, and edit no files.
 
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
 open point: for a failed proof attempt, an adjustment that gets past the failing step or a reason

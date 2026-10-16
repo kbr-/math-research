@@ -30,17 +30,40 @@ WHOLE = re.compile(
 NAMED_FILE = re.compile(r'(?<![\w.~*-])(/(?:[\w.+-]+/)+[\w+-][\w.+-]*\.[A-Za-z0-9]{1,5})(?![\w/*])')
 
 
+def missing_files(text):
+    """Files named by full path in `text`, or in a brief file (.md or .txt) it names, that do not exist.
+
+    On 16 October 2026 a reviewer was started twice on a brief file that existed while the excerpt files it
+    named did not: the command building them had been refused, and the check read only the prompt."""
+    named = list(dict.fromkeys(NAMED_FILE.findall(text)))
+    missing = [path for path in named if not Path(path).exists()]
+    for path in named:
+        if path.endswith(('.md', '.txt')) and Path(path).is_file():
+            try:
+                inner = Path(path).read_text(errors='replace')[:200000]
+            except OSError:
+                continue
+            missing += [p for p in dict.fromkeys(NAMED_FILE.findall(inner)) if not Path(p).exists()
+                        and p not in missing]
+    return missing
+
+
 def refusal(payload, tools=TOOLS):
     """The reason to refuse this tool call, or None."""
+    tool_input = payload.get('tool_input') or {}
+    if payload.get('tool_name') == 'SendMessage':
+        # A follow-up to a reviewer naming its corrected draft, before the draft is written.
+        missing = missing_files(str(tool_input.get('message', '')))
+        return (('the message names a file that does not exist: ' + ', '.join(missing) + '. Write it first')
+                if missing else None)
     if payload.get('tool_name') != 'Agent':
         return None
-    tool_input = payload.get('tool_input') or {}
     if 'review' not in str(tool_input.get('subagent_type', '')).lower():
         return None
     prompt = str(tool_input.get('prompt', ''))
     # A file the brief names by its full path and that is not there: on 11 October 2026 a reviewer was launched
     # in the same step as the command that wrote its brief, the command was refused, and the stage went unanswered.
-    missing = [path for path in dict.fromkeys(NAMED_FILE.findall(prompt)) if not Path(path).exists()]
+    missing = missing_files(prompt)
     if missing:
         return ('the brief names a file that does not exist: ' + ', '.join(missing) + '. Write the brief and its '
                 'excerpts in one step and launch the reviewer in the next')
