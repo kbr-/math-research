@@ -46,5 +46,35 @@ class CommitMessageLength(unittest.TestCase):
         self.assertEqual(self.git('commit', '-q', '-F', str(message)).returncode, 0)
 
 
+BRANCH_HOOK = Path(__file__).resolve().parents[1] / 'git-hooks-branch' / 'commit-msg'
+
+
+class RepeatedSubject(unittest.TestCase):
+    """The branch hook refuses a subject that repeats the previous commit's (16 October 2026: a stale message file
+    left from the previous commit was committed after the command writing the new one was refused)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        subprocess.run(['git', 'init', '-q'], cwd=self.root, check=True)
+        shutil.copy(BRANCH_HOOK, self.root / '.git' / 'hooks' / 'commit-msg')
+
+    def commit(self, message, env=None):
+        (self.root / 'f').write_text(message + str(len(list(self.root.iterdir()))))
+        subprocess.run(['git', 'add', 'f'], cwd=self.root, check=True)
+        return subprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-q', '-m', message],
+                              cwd=self.root, capture_output=True, text=True,
+                              env={**__import__('os').environ, **(env or {})})
+
+    def test_a_repeated_subject_is_refused_unless_declared(self):
+        self.assertEqual(self.commit('First change').returncode, 0)    # no previous commit
+        refused = self.commit('First change\n\nOther body.')
+        self.assertEqual(refused.returncode, 1)
+        self.assertIn('repeats the previous commit', refused.stderr)
+        self.assertEqual(self.commit('First change', {'SAME_SUBJECT_OK': '1'}).returncode, 0)
+        self.assertEqual(self.commit('Second change').returncode, 0)
+
+
 if __name__ == '__main__':
     unittest.main()

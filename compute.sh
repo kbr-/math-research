@@ -11,6 +11,7 @@ import argparse
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import fcntl
+import hashlib
 import html
 import json
 import math
@@ -778,6 +779,25 @@ def scripts_without_record_check(command):
     return found
 
 
+LOOP_REFUSALS = LOGS / 'loop-refusals.txt'
+
+
+def script_digest(script):
+    """SHA-256 of a script's text, or None when it cannot be read."""
+    try:
+        return hashlib.sha256(Path(script).read_bytes()).hexdigest()
+    except OSError:
+        return None
+
+
+def loop_refusals():
+    """Digests of scripts the nested-loop guard has refused."""
+    try:
+        return {line.split()[0] for line in LOOP_REFUSALS.read_text().splitlines() if line.strip()}
+    except OSError:
+        return set()
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -1184,15 +1204,27 @@ def main():
                      'least six words: name the compiled C/C++ kernel doing the heavy work (including product '
                      'or row generation) and the reuse (one incremental pass per series, shared prefixes '
                      'computed once and copied); never launch with known waste (CLAUDE.md)')
+    script = next((c for c in command[1:] if c.endswith('.py')), None) if exe.startswith('python') else None
+    # 16 October 2026: a script refused here was rerun at a shorter allowance, under the threshold, instead of
+    # being optimized.  A refused script stays refused, at any allowance, until its text changes.
+    refused = script_digest(script) if script and args.category == 'computation' else None
+    if refused and refused in loop_refusals() and not args.user_approved.strip():
+        parser.error(f'{Path(script).name} was refused for loops nested {MAX_PY_LOOP_DEPTH} deep, unchanged since: '
+                     'a shorter allowance does not answer that refusal. Vectorize or move the loops into a '
+                     'compiled kernel, which changes the script and lifts this (COMPUTATION_RULES.md)')
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and not args.user_approved.strip()):
-        script = next((c for c in command[1:] if c.endswith('.py')), None)
         offenders = python_loop_offenders(script) if script else []
         if offenders:
+            if refused:
+                LOOP_REFUSALS.parent.mkdir(parents=True, exist_ok=True)
+                with LOOP_REFUSALS.open('a') as record:
+                    record.write(f'{refused} {script}\n')
             shown = '; '.join(f'{Path(f).name}:{line} (depth {d})' for f, line, d in offenders[:6])
             parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s may not nest loops '
                          f'{MAX_PY_LOOP_DEPTH} deep in its script or local imports: {shown}. Vectorize or move them '
-                         'into the compiled kernel (CLAUDE.md); only --user-approved overrides')
+                         'into the compiled kernel (CLAUDE.md); only --user-approved overrides. The script stays '
+                         'refused at any allowance until it changes')
     return run_job(args, command)
 
 

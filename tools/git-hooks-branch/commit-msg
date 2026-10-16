@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+"""Refuse a commit whose subject repeats the previous commit's.
+
+16 October 2026: a command that would have written a new message file was refused, the next call committed with
+the file left from the previous commit, and the commit went in under the wrong subject. A message read from a
+stale file repeats the last subject; set SAME_SUBJECT_OK=1 for a deliberate repeat (an amend that keeps it)."""
+import os
+import subprocess
+import sys
+
+
+def subject(text):
+    for line in text.splitlines():
+        if line.strip() and not line.startswith('#'):
+            return line.strip()
+    return ''
+
+
+def main(path):
+    if os.environ.get('SAME_SUBJECT_OK') == '1':
+        return 0
+    last = subprocess.run(['git', 'log', '-1', '--format=%s'], capture_output=True, text=True)
+    if last.returncode != 0:
+        return 0
+    new = subject(open(path, encoding='utf-8', errors='replace').read())
+    if new and new == last.stdout.strip():
+        print(f'commit-msg: the subject repeats the previous commit\'s ("{new[:70]}"): the message file is '
+              'probably stale; write the new message, or set SAME_SUBJECT_OK=1 for a deliberate repeat.',
+              file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1]))

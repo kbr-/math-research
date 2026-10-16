@@ -57,5 +57,24 @@ class SeriesGuardTest(unittest.TestCase):
         events = self.six(prog='other.py') + self.six(category='local_processing')
         self.assertIsNone(CS.series_error(events, ['python3', 'scan.py', 'new'], 100))
 
+class LoopRefusalMemoryTest(unittest.TestCase):
+    def test_a_refused_script_is_remembered_until_it_changes(self):
+        # 16 October 2026: a refused script was rerun under the threshold instead of being optimized.
+        with tempfile.TemporaryDirectory() as d:
+            script, record = Path(d) / 's.py', Path(d) / 'refusals.txt'
+            script.write_text('x = 1\n')
+            old = CS.LOOP_REFUSALS
+            CS.LOOP_REFUSALS = record
+            try:
+                self.assertEqual(CS.loop_refusals(), set())
+                record.write_text(f'{CS.script_digest(script)} {script}\n')
+                self.assertIn(CS.script_digest(script), CS.loop_refusals())
+                script.write_text('x = 2\n')
+                self.assertNotIn(CS.script_digest(script), CS.loop_refusals())
+                self.assertIsNone(CS.script_digest(Path(d) / 'absent.py'))
+            finally:
+                CS.LOOP_REFUSALS = old
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -128,9 +128,11 @@ in another; wait on a job's own completion notice.
 - `compute.sh` requires `--kernel-reason` of at least six words for a Python computation allowed
   more than 120 s: name the compiled kernel and the reuse. It scans the script and reachable
   local-import code (module-level code and names used), refusing loops nested three deep over
-  non-literal ranges; vectorize or move them into the kernel. It also refuses a program already run
-  in the session with four different argument lists, for compiled and Python computations of any
-  duration. Parameter series and validation cases belong in one series invocation.
+  non-literal ranges; vectorize or move them into the kernel. A script so refused stays refused at
+  any allowance until its text changes, so a shorter timeout does not answer the refusal (16 October
+  2026). It also refuses a program already run in the session with four different argument lists,
+  for compiled and Python computations of any duration. Parameter series and validation cases belong
+  in one series invocation.
 - Budget process counts and library threads together. Across concurrent work, keep worker count
   times threads per worker within 14; avoid nested thread pools and oversubscription. In computer
   algebra scripts, prefix custom names to avoid built-in collisions (for example Singular's `test`,
