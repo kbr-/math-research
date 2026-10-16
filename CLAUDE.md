@@ -26,7 +26,8 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   that failed.
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
-  source, with its qualifiers word for word.
+  source, with its qualifiers word for word, and explain a failing check only by quoting the lines
+  of its output that show the cause.
 - Before every reviewer brief, reread the draft once against each item of this list and against
   AGENTS.md's rules on statements (free parameters at their whole range, searches under other
   names), item by item, rather than relying on having known them while drafting.
