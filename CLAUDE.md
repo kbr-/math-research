@@ -71,6 +71,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
 - In a reply as in an entry, say what the record covers, or offer a direction as new, only after a
   search of the record in the words of its objects in that turn (17 October 2026: a reply offered
   substitutions and extension variables as unexplored, both recorded).
+- A gap found in the record, or a promising idea met in conversation, is the next attempt: try it or
+  queue it in that turn, and report it so; describing it as missing, or offering it to the user, is
+  not an answer (user, 17 October 2026: "We are the ones developing the record").
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
