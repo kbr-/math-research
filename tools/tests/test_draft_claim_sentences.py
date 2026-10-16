@@ -273,6 +273,58 @@ class PairingsTest(unittest.TestCase):
         self.assertIsNone(dcs.best_window('<p>unrelated prose only</p>', {'kernels'}))
 
 
+class ConverseUseTest(unittest.TestCase):
+    # The registered statement of 16 October 2026 that a draft used backwards, shortened.
+    SUMMARIES = {'cor:edge-supported-error-ratio': (
+        'Edge-supported error ratio: let an error tuple contain a component E = P m_gamma. If c_E(K) > 0, then '
+        'some compatible label a\' of T has P(a\') != 0, c_E(K) >= q_T(K) >= h(K)/3^tau, and the ratio is bounded.')}
+
+    def test_the_relation_assumed_in_an_if_clause_is_read(self):
+        self.assertIn(('c(K)', '>', '0'), dcs.assumed_relations(self.SUMMARIES['cor:edge-supported-error-ratio']))
+
+    def test_the_sentence_that_derived_the_hypothesis_is_flagged(self):
+        draft = (r'<p><strong>Proof.</strong> The component, nonzero at that label, gives '
+                 r'\(c(K)\ge q_T(K)&gt;0\) by part (i) of cor:edge-supported-error-ratio.</p>')
+        flagged = dcs.converse_uses(draft, self.SUMMARIES)
+        self.assertEqual([(c, r) for c, _, _, r in flagged], [('cor:edge-supported-error-ratio', ('c(K)', '>', '0'))])
+        self.assertIn('CONVERSE USE?', dcs.converse_report(draft, self.SUMMARIES, 0))
+
+    def test_a_use_that_assumes_the_hypothesis_is_not_flagged(self):
+        draft = (r'<p>Since \(c_E(K)&gt;0\) was shown above, cor:edge-supported-error-ratio gives '
+                 r'\(c_E(K)\ge q_T(K)\) and the ratio bound.</p>')
+        self.assertEqual(dcs.converse_uses(draft, self.SUMMARIES), [])
+        self.assertIn('No citing sentence derives', dcs.converse_report(draft, self.SUMMARIES, 0))
+
+    def test_rewordings_of_the_mistake_are_flagged(self):
+        for sentence in (r'Part (i) of cor:edge-supported-error-ratio applied with \(T\) as label set gives '
+                         r'\(c(K)\ge q_T(K)&gt;0\).',
+                         r'cor:edge-supported-error-ratio combined with \(q_T(K)&gt;0\) gives \(c(K)\ge q_T(K)&gt;0\).',
+                         r'By cor:edge-supported-error-ratio, \(0&lt;q_T(K)\le c(K)\).',
+                         r'By cor:edge-supported-error-ratio the rank is positive: c_E(K) > 0.'):
+            with self.subTest(sentence=sentence):
+                self.assertTrue(dcs.converse_uses(f'<p>{sentence}</p>', self.SUMMARIES))
+
+    def test_supplied_hypotheses_are_not_flagged(self):
+        for sentence in (r'For \(c_E(K)&gt;0\), cor:edge-supported-error-ratio gives \(c_E(K)\ge q_T(K)\).',
+                         r'Let \(c_E(K)&gt;0\); then cor:edge-supported-error-ratio bounds the ratio.',
+                         r'Assume that \(c_E(K)&gt;0\), so that cor:edge-supported-error-ratio applies.'):
+            with self.subTest(sentence=sentence):
+                self.assertEqual(dcs.converse_uses(f'<p>{sentence}</p>', self.SUMMARIES), [])
+
+    def test_hypothesis_clauses_end_where_they_should(self):
+        self.assertEqual(dcs.assumed_relations('Ratio: if c_E(K) > 0, the ratio R(K) > 1 holds.'),
+                         [('c(K)', '>', '0')])
+        self.assertEqual(dcs.assumed_relations('R(K) > 1 if and only if c_E(K) > 0.'), [])
+        self.assertEqual(dcs.assumed_relations('R(K) > 1 only if c_E(K) > 0.'), [])
+        self.assertIn(('c(K)', '>', '0'), dcs.assumed_relations('Let E be a component with c_E(K) > 0.'))
+        self.assertIn(('h', '>', '0'), dcs.assumed_relations('Suppose h > 0, then the rank grows.'))
+
+    def test_a_weak_chain_does_not_state_a_strict_relation(self):
+        self.assertFalse(dcs._derives(['c(K)', 'q(K)', '0'], ['>=', '>='], ('c(K)', '>', '0')))
+        self.assertTrue(dcs._derives(['c(K)', 'q(K)', '0'], ['>=', '>'], ('c(K)', '>', '0')))
+        self.assertFalse(dcs._derives(['c(K)', 'q(K)', '0'], ['<=', '>'], ('c(K)', '>', '0')))
+
+
 class BareClaimsAndAnswersTest(unittest.TestCase):
     REGISTRY = {'claims': [{'id': 'prop:local-count-reach',
                             'summary': 'A multiset of points with at most kappa log(|t| + 3) of them in each unit; tilt a; '

@@ -571,6 +571,118 @@ def pairings_report(draft, claims_list, notebook, width):
     return '\n'.join(lines)
 
 
+# A cited claim used in the converse direction: on 16 October 2026 a draft cited part (i) of a corollary that
+# assumes c_E(K) > 0 to conclude c(K) > 0, and the side-by-side listing above was read past.  The relations a
+# registered statement assumes are those of its "If ..."/"assume ..." clauses; a citing sentence whose chain of
+# relations derives one of them is flagged.
+# An If clause ends at "then", or, without one, at its first comma; "if and only if" and "only if" state
+# equivalences or necessary conditions, not assumptions.
+ASSUMING = re.compile(r'(?<!\bonly )(?<!\band )\b(?:[Ii]f(?! and only if)|[Aa]ssum(?:e|es|ed|ing)|'
+                      r'[Pp]rovided(?: that)?|[Ww]henever|[Gg]iven that|[Ll]et|[Ss]uppose)\b'
+                      r'((?:(?!\bthen\b)[^,;])*?)(?:,\s*then\b|\bthen\b|,|;|\.(?:\s|$)|$)', re.S)
+REL_OPS = [(r'\\geqslant|\\geq|\\ge(?![a-z])|>=|≥', '>='), (r'\\leqslant|\\leq|\\le(?![a-z])|<=|≤', '<='),
+           (r'\\neq|\\ne(?![a-z])|!=|≠', '!='), (r'\\gt(?![a-z])|>', '>'), (r'\\lt(?![a-z])|<', '<')]
+REL_SPLIT = re.compile('(' + '|'.join(p for p, _ in REL_OPS) + ')')
+
+
+def _term(raw):
+    """A relation's side, normalized: no TeX delimiters, spacing or subscripts (c_E(K) and c(K) are one term)."""
+    raw = re.sub(r'\\[(),;! ]|\\left|\\right|\\mathrm|\\operatorname|[{}\s]', '', raw)
+    raw = re.sub(r'_(?:\{[^}]*\}|\\?[A-Za-z0-9]+)', '', raw)
+    return raw.strip('.,:;')
+
+
+def _chains(fragment, positions=False):
+    """Chains of relations, [(terms, ops)], in the formulas and words of a fragment; with positions, also the
+    offset at which each starts."""
+    chains = []
+    for found in re.finditer(r'\\\((.*?)\\\)|\\\[(.*?)\\\]', fragment, re.S):
+        parts = REL_SPLIT.split(found.group(1) or found.group(2) or '')
+        if len(parts) >= 3:
+            ops = [next(norm for pattern, norm in REL_OPS if re.fullmatch(pattern, op)) for op in parts[1::2]]
+            terms = [_term(t.split(',')[-1] if i == 0 else t.split(',')[0]) for i, t in enumerate(parts[::2])]
+            chains.append((terms, ops, found.start()))
+    plain = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', lambda m: ' ' * len(m.group(0)), fragment, flags=re.S)
+    plain_op = {'>=': '>=', '≥': '>=', '<=': '<=', '≤': '<=', '!=': '!=', '≠': '!=', '>': '>', '<': '<'}
+    for found in re.finditer(r'(?<![\w(])([A-Za-z]\w*(?:\([^()]*\))?)\s*(>=|<=|!=|≥|≤|≠|>|<)\s*'
+                             r'([\w.]+(?:\([^()]*\))?)', plain):
+        chains.append(([_term(found.group(1)), _term(found.group(3))], [plain_op[found.group(2)]], found.start()))
+    return chains if positions else [(terms, ops) for terms, ops, _ in chains]
+
+
+# A relation the sentence introduces as already known ("since c(K) > 0, ...", "for \(c(K)>0\)") is assumed
+# there, not derived: the marker must stand at most one word before the formula ("assume that", "for every"),
+# so that "applied with T as label set gives c(K) > 0" is still read as a derivation.
+KNOWN = re.compile(r'\b(?:since|given(?: that)?|assum\w*|if|because|when(?:ever)?|hypothes[ei]s|provided(?: that)?|'
+                   r'for|let|at|suppose|where|as|with|including)\b(?:\s+\w+)?\s*$', re.I)
+FLIPPED = {'>': '<', '>=': '<=', '<': '>', '<=': '>=', '!=': '!='}
+
+
+def assumed_relations(summary):
+    """(left, op, right) relations that a registered statement assumes."""
+    found = []
+    for clause in ASSUMING.findall(summary):
+        for terms, ops in _chains(clause):
+            found.extend((terms[i], ops[i], terms[i + 1]) for i in range(len(ops)))
+    return found
+
+
+def _derives(terms, ops, relation):
+    """Whether a chain states the relation, directly or by transitivity (c >= q > 0 states c > 0), in either
+    orientation (0 < q <= c states it too)."""
+    return (_derives_forward(terms, ops, relation)
+            or _derives_forward(terms[::-1], [FLIPPED[op] for op in ops[::-1]], relation))
+
+
+def _derives_forward(terms, ops, relation):
+    left, op, right = relation
+    up, down = {'>', '>='}, {'<', '<='}
+    for i, term in enumerate(terms):
+        if term != left:
+            continue
+        for j in range(i + 1, len(terms)):
+            if terms[j] != right:
+                continue
+            between = set(ops[i:j])
+            if op in up and between <= up and (op == '>=' or '>' in between):
+                return True
+            if op in down and between <= down and (op == '<=' or '<' in between):
+                return True
+            if op == '!=' and between == {'!='} and j == i + 1:
+                return True
+    return False
+
+
+def converse_uses(draft, summaries):
+    """(claim, section, sentence, relation) for each citing sentence that derives a relation the claim assumes."""
+    flagged = []
+    for claim, where, sentence in citations(draft):
+        assumed = assumed_relations(summaries.get(claim, ''))
+        chains = [(terms, ops) for terms, ops, start in _chains(sentence, positions=True)
+                  if not KNOWN.search(sentence[:start])]
+        for relation in assumed:
+            if any(_derives(terms, ops, relation) for terms, ops in chains):
+                flagged.append((claim, where, sentence, relation))
+                break
+    return flagged
+
+
+def converse_report(draft, summaries, width):
+    flagged = converse_uses(draft, summaries)
+    if not flagged:
+        return 'No citing sentence derives a relation that its cited claim assumes.'
+    lines = ['CONVERSE USE? Each sentence below states, in one formula or a plain-text relation, a relation that '
+             'the claim it cites assumes in an If, Let, Suppose or assume clause of its registered statement '
+             '(subscripts ignored, either orientation): check that it does not use the claim in the converse '
+             'direction. Conclusions in words or split across formulas are not seen, and plain-text relations are '
+             'read one pair at a time.']
+    for claim, where, sentence, (left, op, right) in flagged:
+        lines.append(f'  {claim} assumes {left} {op} {right}\n    [{where}] '
+                     f'{sentence if width <= 0 else sentence[:width]}')
+    lines.append(f'{len(flagged)} such sentences.')
+    return '\n'.join(lines)
+
+
 def report(draft, registry, width):
     summaries = {claim['id']: claim['summary'] for claim in registry['claims']}
     declared = set((re.search(r'data-claims="([^"]*)"', draft) or [None, ''])[1].split())
@@ -778,6 +890,7 @@ def main():
     registry = json.loads(pathlib.Path(args.registry).read_text())
     out, unregistered = report(draft, registry, args.width)
     print(out)
+    print('\n' + converse_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     missing = set()
     notebook_text = notebook_file(args.notebook).read_text() if args.notebook else ''
     if args.notebook:

@@ -1,0 +1,26 @@
+Fresh-context medium reviewer, framework builds of 16 October 2026 (converse-citation-check,
+architecture-test-power-paragraph)
+
+First pass: pass with corrections. architecture-test-power-paragraph does what its item asks (on the real
+notebook the four latest reviews print Decision, Prediction, Power, Attempt and cited statements);
+converse-citation-check catches the original sentence but simple rewordings get past it.
+- KNOWN too broad (searched anywhere in the clause; one hit suppresses all later chains): "applied with T as
+  label set gives c(K) >= q_T(K) > 0" and "combined with q_T(K) > 0 gives ..." not flagged. Require adjacency;
+  drop or tie "as", "with", "including".
+- Reversed chains missed (0 < q_T(K) <= c(K)); test the mirrored relation.
+- Let/with/Suppose hypotheses never read; plain-text hypotheses only as name(args) op x.
+- Conclusions in words or split across formulas missed: acceptable if the report says so.
+- False positives: For/Let/At-supplied hypotheses flagged; an If clause without "then" runs to the full stop;
+  "if and only if" read as an assumption. Subscripts stripped by design: say so.
+- Architecture helper: a differing sub-label is dropped silently (print "not found"); bold inside Power cuts
+  it short (minor); CLAIM_ID_RE omits ctx/def/criterion/q/rem/open/third-party; cited_summaries depends on
+  the registry's key order (all 4938 summaries match a full parse; document it); no test of the start
+  guidance line.
+- Commit message: name the two runs behind "0.3 s saved"; say whether the one real flag is a true or false
+  positive; it was broader than the check.
+Process audit: closing converse-citation-check was premature; its tests covered only the exact sentence.
+
+Follow-up check: pass; closing both items justified. Probes rerun: rewordings, reversed chain, Let/Suppose
+hypotheses now handled; For/Let/At uses and If clauses without "then" no longer flagged. Optional (adopted): limit
+the finisher context to linked reviews; say plain-text relations are read one pair at a time (the chain
+"c(K) >= q_T(K) > 0" in plain text is still missed). No other process findings.

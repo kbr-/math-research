@@ -165,6 +165,16 @@ class GoalProgressTest(unittest.TestCase):
         validate(notebook(review, tested, article('later')))
         self.assertEqual(FT.pending_architecture_test(notebook(review, tested)), {})
 
+    def test_start_guidance_prints_what_the_review_says_of_its_test(self):
+        import sys
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import turn_guidance
+        review = article('review', kind='review', content=REPORT + ARCHITECTURE)
+        notes = turn_guidance.guidance(notebook(review), FT, which=lambda name: None, has=lambda header: False)
+        at = next(i for i, note in enumerate(notes) if 'must perform the decisive Architecture test' in note)
+        self.assertIn('What #review already says about its test', notes[at + 1])
+        self.assertTrue(any(note.startswith('  Decision') for note in notes[at + 2:]))
+
     def test_other_routes_and_user_picks_do_not_consume_test(self):
         review = article('review', kind='review', content=REPORT + ARCHITECTURE)
         picked = article('picked', attrs='data-picked="user"')

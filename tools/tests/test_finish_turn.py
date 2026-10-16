@@ -147,6 +147,51 @@ class ArchitectureDisposition(unittest.TestCase):
                                  check_registered_claims=False)
 
 
+class ReviewTestContext(unittest.TestCase):
+    """The linked review's Decision, Prediction, Power and Attempt, and the claims they cite, are printed."""
+    REVIEW = ('<article id="entry-r" data-kind="review"><p><strong>Decision.</strong> Core: test dense components; '
+              'lem:sparse-weight-survival already covers the sparse ones.</p>'
+              '<p><strong>Decisive test.</strong> <strong>Test disposition.</strong> New operation. '
+              '<strong>Operation.</strong> Compare ratios. <strong>Prediction.</strong> Ratios stay canonical. '
+              '<strong>Trivial cases.</strong> None. <strong>Power.</strong> The yes outcome is decided for '
+              'polynomially many classes by lem:sparse-weight-survival. <strong>Attempt.</strong> It stops at dense '
+              'components. <strong>Record search.</strong> Nothing.</p></article>')
+
+    def load(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('ft', Path(__file__).resolve().parents[1] / 'finish-turn.py')
+        ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)
+        return ft
+
+    def test_the_review_says_what_its_power_paragraph_decides(self):
+        ft = self.load()
+        lines = ft.review_test_context(self.REVIEW, 'entry-r', {'lem:sparse-weight-survival': 'Rank at least h/s.'})
+        joined = '\n'.join(lines)
+        self.assertIn('Decision. Core: test dense components', joined)
+        self.assertIn('Power. The yes outcome is decided for polynomially many classes', joined)
+        self.assertIn('Attempt. It stops at dense components.', joined)
+        self.assertIn('Prediction. Ratios stay canonical.', joined)
+        self.assertNotIn('Trivial cases', joined)
+        self.assertEqual(joined.count('lem:sparse-weight-survival: Rank at least h/s.'), 1)
+
+    def test_an_entry_linking_the_review_gets_its_context_at_the_finisher(self):
+        ft = self.load()
+        entry = ('<article id="entry-x" data-kind="research"><p><strong>Architecture test.</strong> '
+                 '<strong>Not decided.</strong> The <a href="#entry-r">review</a> test is open for dense ones.</p>')
+        lines = ft.architecture_context_report(self.REVIEW + entry, entry)
+        self.assertTrue(lines and 'entry-r' in lines[0])
+        self.assertEqual(ft.review_test_context(self.REVIEW, 'entry-missing', {}), [])
+
+    def test_summaries_are_read_without_parsing_the_whole_registry(self):
+        ft = self.load()
+        index = Path(tempfile.mkdtemp()) / 'index.json'
+        index.write_text(json.dumps({'claims': [{'id': 'lem:a', 'summary': 'First "quoted".'},
+                                                {'id': 'lem:b', 'title': 'no summary'},
+                                                {'id': 'lem:c', 'summary': 'Third.'}]}, indent=1))
+        self.assertEqual(ft.cited_summaries(index, ['lem:a', 'lem:b', 'lem:c', 'lem:z']),
+                         {'lem:a': 'First "quoted".', 'lem:c': 'Third.'})
+
+
 class ChecksNote(unittest.TestCase):
     """The finisher warns when its checks are slow, and stays quiet otherwise."""
 

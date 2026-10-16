@@ -894,6 +894,73 @@ def count_listing_report(entry, queries):
             'of its sentences hold a count; run it on the entry and read each beside its saved source (AGENTS.md).')
 
 
+TEST_PARTS = ('Prediction', 'Power', 'Attempt')
+CLAIM_ID_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|obs|imp|ex|audit|check|ctx|def|criterion|q|rem|open|'
+                         r'third-party):[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*')
+
+
+def cited_summaries(index, claims):
+    """{claim: summary} for the named claims, read from the registry's text without parsing all of it (parsing
+    the whole registry took 0.3 s at 4938 claims, a third of the start guidance's budget).
+
+    It relies on the registry's layout: the claim objects come before the relationships, so an id's first
+    occurrence is its claim, and that object's "summary" comes before the next object's "id"; checked against a
+    full parse for all 4938 claims on 16 October 2026."""
+    raw = index.read_text() if index.exists() else ''
+    decoder, found = json.JSONDecoder(), {}
+    for claim in claims:
+        at = raw.find(f'"id": "{claim}"')
+        start = raw.find('"summary": ', at) if at >= 0 else -1
+        following = raw.find('"id": "', at + 1)
+        if start >= 0 and (following < 0 or start < following):    # the summary of this object, not the next
+            found[claim] = decoder.raw_decode(raw, start + len('"summary": '))[0]
+    return found
+
+
+def review_test_context(body, target, summaries=None, width=400):
+    """Lines giving what a review already decided about the test it poses: its Decision paragraph, the
+    Prediction, Power and Attempt of its Decisive test, and the registered statements of the claims those cite.
+
+    On 16 October 2026 one draft listed as open a case the linked review's Power paragraph decides, and another
+    rediscovered a lemma the review's Decision paragraph names; both quoted only the Prediction."""
+    at = body.find(f'<article id="{target}"')         # a plain search: a regex over the whole record took 0.3 s
+    end = body.find('</article>', at) if at >= 0 else -1
+    if end < 0:
+        return []
+    text = body[at:end]
+    plain = lambda fragment: re.sub(r'\s+', ' ', html.unescape(strip_tags(fragment))).strip()
+    parts = [('Decision', report_paragraph(text, 'Decision'))]
+    test = report_paragraph(text, 'Decisive test')
+    for label in TEST_PARTS:
+        part = re.search(r'<strong>' + label + r'\.</strong>(.*?)(?=<strong>[A-Z][\w ]*\.</strong>|$)', test, re.S)
+        parts.append((label, part.group(1) if part else ''))
+    lines = [f'What #{target} already says about its test (read before treating a case as open):']
+    for label, fragment in parts:
+        if fragment:
+            lines.append(f'  {label}. {plain(fragment)}')
+        elif test or label == 'Decision':     # a review without a Decisive test has none of its parts
+            lines.append(f'  {label}: not found in #{target} under that label; read the review itself.')
+    cited = dict.fromkeys(CLAIM_ID_RE.findall(plain(parts[0][1]) + ' ' + plain(dict(parts)['Power'])))
+    if summaries is None and cited:
+        summaries = cited_summaries(ROOT / 'research/claims/index.json', cited)
+    for claim in cited:
+        if claim in summaries:
+            statement = summaries[claim]
+            lines.append(f'  {claim}: {statement if len(statement) <= width else statement[:width] + "…"}')
+    return lines if len(lines) > 1 else []
+
+
+def architecture_context_report(body, entry):
+    """Lines for the finisher to print: the context of each review the entry's Architecture test links."""
+    evidence = report_paragraph(entry + '</article>', 'Architecture test')
+    lines = []
+    for target in dict.fromkeys(re.findall(r'href=["\']#([^"\']+)["\']', evidence)):
+        at = body.find(f'<article id="{target}"')
+        if at >= 0 and 'data-kind="review"' in body[at:body.find('>', at)]:     # linked research entries: none
+            lines += review_test_context(body, target)
+    return lines
+
+
 def decided_report(entry):
     """Lines for the finisher to print, or none: the entry reports its Architecture test Decided and its body
     has sentences that hedge (in outline, not verified, not checked and the like).
@@ -1808,7 +1875,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
               if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
-    for line in decided_report(entry) + absence_report(entry):
+    for line in decided_report(entry) + absence_report(entry) + architecture_context_report(whole, entry):
         print(line)
     for line in hook_notice_lines(root, first.get('unix_s', 0)):
         print(line)

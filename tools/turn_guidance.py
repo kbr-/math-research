@@ -289,6 +289,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
         notes.append(f'Route {route}: the next research cycle must perform the decisive Architecture test '
                      f'from #{target}, report its outcome and link that review. An explicit user-picked '
                      'task may defer this test but does not clear it.')
+        notes += ft.review_test_context(body, target)
     worked = [a for a in articles if ft.entry_tags(body, a)['kind'] != 'formalization']
     active = ft.entry_tags(body, worked[-1])['route'] if worked else None
     streak, _ = ft.review_cadence(ft.entry_tags(body, a)['kind'] for a in articles)
