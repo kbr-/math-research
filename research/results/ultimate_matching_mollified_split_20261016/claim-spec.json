@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Mollified smooth part](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-mollified-split)",
+    "label": "Mollified smooth part",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-mollified-split"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:mollified-smooth-part",
+      "summary": "On the event of lem:cellwise-lipschitz-split, with rho a bounded measurable mollifier supported in the unit disc and L depending only on its sup norm: for every 1 <= j <= l_1, h = 2^(-j), and every Lipschitz G on [0,1]^2, the mollification S of the even reflection of G at scale h has |sum_i S(X_i) - N int S| <= L sqrt N (j^(3/4) + sqrt(log N)) ||grad G||_1, its cellwise sum at mesh h being at most 81 ||rho||_inf ||grad G||_1. For class functions at (4,4) whose larger partial is at least y >= e^16 where the gradient is nonzero and j <= j*(y), this is O(sqrt(N log N)), so the single-level class bound reduces to the remainder G - S. Against Lebesgue measure.",
+      "assessment": "Working proof: nabla S = rho_h * nabla G-hat, the pointwise bound |nabla S| <= ||rho||_inf h^(-2) times the gradient mass of the nine neighbouring cells, so Lambda_j(S) <= 81 ||rho||_inf ||grad G||_1; then lem:cellwise-lipschitz-split, and the gradient-mass bound of lem:dominant-level-split for (b).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Decides the fourth route review's test: charging a smooth part on the partition by the local spacing overcharges functions smooth above that scale (a constant-spacing staircase by (log N)^(1/4)); mollifying at 2^(-j*(y)) bounds the smooth part of every class function whose larger partial is at least y >= e^16 where its gradient is nonzero, so its single-level case is the high-frequency remainder's, which for features thinner than that scale is about the function itself.",
+      "next_action": "Bound the remainder G - rho_h * G-hat at h = 2^(-j*(y)) on curve traces with weights, first for a staircase along curved graphs.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:mollified-smooth-part",
+      "depends_on",
+      "lem:cellwise-lipschitz-split",
+      "Applied to the mollified function, whose cellwise sum is bounded by its gradient mass."
+    ],
+    [
+      "lem:mollified-smooth-part",
+      "cites",
+      "lem:dominant-level-split",
+      "Its gradient-mass bound 8 (log y)^(-1/4) and j*(y); unlike it, no thickness condition is needed for the smooth part."
+    ],
+    [
+      "lem:mollified-smooth-part",
+      "cites",
+      "lem:local-factor-discrepancy",
+      "Charging a smooth part on a fine partition with that lemma overcharges a constant-spacing staircase by a factor of order (log N)^(1/4)."
+    ],
+    [
+      "lem:mollified-smooth-part",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "The single-level case at (4,4) reduces to the remainder below the scale 2^(-j*(y))."
+    ]
+  ]
+}
