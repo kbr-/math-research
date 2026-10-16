@@ -8,6 +8,8 @@ import os
 import subprocess
 import sys
 
+RECENT = 10
+
 
 def subject(text):
     for line in text.splitlines():
@@ -19,12 +21,13 @@ def subject(text):
 def main(path):
     if os.environ.get('SAME_SUBJECT_OK') == '1':
         return 0
-    last = subprocess.run(['git', 'log', '-1', '--format=%s'], capture_output=True, text=True)
+    # the last RECENT subjects, since a file left from two commits back is as stale as one from the last
+    last = subprocess.run(['git', 'log', f'-{RECENT}', '--format=%s'], capture_output=True, text=True)
     if last.returncode != 0:
         return 0
     new = subject(open(path, encoding='utf-8', errors='replace').read())
-    if new and new == last.stdout.strip():
-        print(f'commit-msg: the subject repeats the previous commit\'s ("{new[:70]}"): the message file is '
+    if new and new in {line.strip() for line in last.stdout.splitlines()}:
+        print(f'commit-msg: the subject repeats a recent commit\'s ("{new[:70]}"): the message file is '
               'probably stale; write the new message, or set SAME_SUBJECT_OK=1 for a deliberate repeat.',
               file=sys.stderr)
         return 1

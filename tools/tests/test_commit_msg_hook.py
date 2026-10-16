@@ -71,9 +71,10 @@ class RepeatedSubject(unittest.TestCase):
         self.assertEqual(self.commit('First change').returncode, 0)    # no previous commit
         refused = self.commit('First change\n\nOther body.')
         self.assertEqual(refused.returncode, 1)
-        self.assertIn('repeats the previous commit', refused.stderr)
+        self.assertIn('repeats a recent commit', refused.stderr)
         self.assertEqual(self.commit('First change', {'SAME_SUBJECT_OK': '1'}).returncode, 0)
         self.assertEqual(self.commit('Second change').returncode, 0)
+        self.assertEqual(self.commit('First change\n\nTwo commits back.').returncode, 1)
 
 
 if __name__ == '__main__':

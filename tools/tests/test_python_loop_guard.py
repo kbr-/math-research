@@ -62,16 +62,17 @@ class LoopRefusalMemoryTest(unittest.TestCase):
         # 16 October 2026: a refused script was rerun under the threshold instead of being optimized.
         with tempfile.TemporaryDirectory() as d:
             script, record = Path(d) / 's.py', Path(d) / 'refusals.txt'
-            script.write_text('x = 1\n')
             old = CS.LOOP_REFUSALS
             CS.LOOP_REFUSALS = record
             try:
                 self.assertEqual(CS.loop_refusals(), set())
-                record.write_text(f'{CS.script_digest(script)} {script}\n')
-                self.assertIn(CS.script_digest(script), CS.loop_refusals())
-                script.write_text('x = 2\n')
-                self.assertNotIn(CS.script_digest(script), CS.loop_refusals())
-                self.assertIsNone(CS.script_digest(Path(d) / 'absent.py'))
+                record.write_text(f'{script.resolve()}\n')
+                self.assertIn(str(script.resolve()), CS.loop_refusals())
+                # the refusal lasts while the loops do, whatever else changes, and lifts when they go
+                script.write_text('a = [1]\nfor i in a:\n    for j in a:\n        for k in a:\n            pass\n# x\n')
+                self.assertTrue(CS.python_loop_offenders(script))
+                script.write_text('import numpy\n')
+                self.assertFalse(CS.python_loop_offenders(script))
             finally:
                 CS.LOOP_REFUSALS = old
 
