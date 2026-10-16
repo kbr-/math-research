@@ -523,6 +523,39 @@ def counts_report(draft, width):
                      + lines + [f'{len(found)} sentences with a count.'])
 
 
+UNNAMED_RESULT = re.compile(r'\b(?:the|a) (?:recorded|registered)\s+(?:[\w-]+\s+){0,3}(?:lemma|statement|bound|theorem|'
+                            r'result|proposition|corollary)\b', re.I)
+CLAIM_ID = re.compile(r'\b(?:lem|thm|prop|cor|conj|ex|def|imp):[\w-]+')
+
+
+def unnamed_results(draft):
+    """(section label, sentence) for each sentence naming a recorded result in words without its claim ID.
+
+    Such a sentence escapes the listing of claims beside their statements: on 16 October 2026 "the recorded block
+    lower-tail statement" was applied to summands it does not cover (it assumes i.i.d. summands), and no listing
+    set it beside its hypotheses.  Of the record's 499 sentences naming a recorded result in words, 417 carry no
+    ID, so this lists for reading and refuses nothing."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(draft):
+        if tag in ('h3', 'h4'):
+            heading = text(body)
+            continue
+        label = re.match(r'\s*<strong>([^<]+?)\.?</strong>', body)
+        where = label.group(1) if label else heading
+        for sentence in sentences(body):
+            said = text(sentence)
+            if UNNAMED_RESULT.search(said) and not CLAIM_ID.search(said):
+                found.append((where, said))
+    return found
+
+
+def unnamed_results_report(draft, width):
+    found = unnamed_results(draft)
+    lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
+    return '\n'.join(['Sentences naming a recorded result without its claim ID; give the ID and read each beside the '
+                      "result's statement and hypotheses:"] + lines + [f'{len(found)} such sentences.'])
+
+
 LINK = re.compile(r'<a href="#(entry-[A-Za-z0-9-]+)"')
 ARTICLE = re.compile(r'<article id="(entry-[A-Za-z0-9-]+)"[^>]*>(.*?)</article>', re.S)
 
@@ -1027,6 +1060,7 @@ def main():
     print('\n' + pairings_report(draft, registry['claims'], notebook_text,
                                  args.width))
     print('\n' + counts_report(draft, args.width))
+    print('\n' + unnamed_results_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + construction_report(draft, args.width, words))
     print('\n' + own_summaries_report(draft, args.width))

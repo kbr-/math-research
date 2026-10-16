@@ -41,6 +41,15 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertEqual(out.count('An item citing lem:first twice'), 1)
         self.assertEqual(unregistered, {'cor:missing'})
 
+    def test_a_recorded_result_named_without_its_id_is_listed(self):
+        # 16 October 2026: an i.i.d. lemma was applied to unequal weights through a sentence naming it in words.
+        draft = ('<p><strong>Smallest case.</strong> The lower tail of such a sum is Gaussian by the recorded block '
+                 'lower-tail statement once no single weight dominates. By lem:block-lower-tail the tail is '
+                 'Gaussian. The recorded statement lem:first applies.</p>')
+        found = dcs.unnamed_results(draft)
+        self.assertEqual([where for where, _ in found], ['Smallest case'])
+        self.assertIn('recorded block lower-tail statement', found[0][1])
+
     def test_a_declared_claim_is_shown_with_its_spec_summary(self):
         # 16 October 2026: a draft's own claim was never set beside its statement before the review.
         with tempfile.TemporaryDirectory() as root:
