@@ -309,16 +309,20 @@ unfinished.
   (`compute.sh` refuses the script otherwise). A script that tests a statement also says, in a line
   `Baseline:`, what the plainest available bound (a bare count, a trivial estimate) gives on the
   instances it runs and whether that already decides the expectation; `compute.sh` refuses it
-  without the line (16 October 2026: a prediction the bare point count fixed was run as a test). A
-  script that tests no statement says `No statement tested:` with its reason. `compute.sh` refuses a
-  script under `research/results` whose first 150 lines have neither the exemption nor both labelled
-  lines; one pair of lines satisfies it for a whole script, and it cannot tell whether the lines are
-  true, so a reviewer still reads them. `--exploratory` runs the script anyway, and the entry then
-  says that the script named no refuting output. A run allowed more than 120 s also needs `Decisive
-  at these sizes:` (by how much its outcomes differ at the sizes run, against the spread between
-  seeds at one size) and `Parallel use:` (how it uses the CPUs, or why it cannot): a series whose
-  predicted difference is a power of \(\log N\) over a few units of \(\log N\) decides nothing
-  (user, 16 October 2026: "Optimize and parallelize your stuff").
+  without the line (16 October 2026: a prediction the bare point count fixed was run as a test). It
+  also says, in a line `Record checked:`, which registered claims were read for whether together
+  they already decide its outcome, from a search in the words of its objects, or that none applies;
+  `compute.sh` refuses it without the line (16 October 2026: three recorded lemmas decided a
+  review's test, found after the run). A script that tests no statement says `No statement tested:`
+  with its reason. `compute.sh` refuses a script under `research/results` whose first 150 lines have
+  neither the exemption nor both labelled lines; one pair of lines satisfies it for a whole script,
+  and it cannot tell whether the lines are true, so a reviewer still reads them. `--exploratory`
+  runs the script anyway, and the entry then says that the script named no refuting output. A run
+  allowed more than 120 s also needs `Decisive at these sizes:` (by how much its outcomes differ at
+  the sizes run, against the spread between seeds at one size) and `Parallel use:` (how it uses the
+  CPUs, or why it cannot): a series whose predicted difference is a power of \(\log N\) over a few
+  units of \(\log N\) decides nothing (user, 16 October 2026: "Optimize and parallelize your
+  stuff").
 - A numerical control of a formula includes one check that does not share the method under test:
   both sides computed from the inputs by a route that does not use the formula, or a second
   quadrature or library. A check whose only evidence is one numerical method agreeing with itself is
