@@ -1,0 +1,35 @@
+Review record: Harris kernel certificate (16 October 2026)
+Reviewer: sole fresh-context medium-reviewer subagent (Claude Code), medium reasoning; two passes.
+
+Pass 1 (draft with lem:harris-kernel-certificate and thm:spread-correlation-saving): fail.
+- Harris lemma correct in every step (reduction, Harris given b, Chernoff tails, good event,
+  averaging, both halves of the split series); condition (1) sufficient.
+- Main finding: each pinned set meets more than 3(k+1) rows, so any M <= k blocks have a common
+  kernel by picking one bit per block in fresh rows. L_H < ln K in every computed row (5.44 vs
+  5.71 at l=16, D=107; ... 10.43 vs 11.09 at l=32), and asymptotically L_H >= ln K - 1.9 < ln K.
+  The spread saving is pigeonhole, not correlation.
+- Also: theorem false or vacuous for small l; margin positive only for l >= 49; constant 1.908 vs
+  1.9; garbled margin paragraph; K <= 2s loose; k'=0 outside the rho' formula.
+- Goal progress "advanced" unsupported; at the goal's parameters (polynomial inventory, polylog
+  degree) the summed count suffices; bearing none.
+- Open point: uniform random f gives exactly the summed count; products of row-disjoint affine
+  forms replace monomials, but generic flats give S_a meet W_R = 0 unless r + |R| l > v.
+- Suggestions: hybrid greedy then transversal; tighter margin constant; row-local extension.
+- Process audit: title overstated; the M <= k control never asked; prediction discrepancies.
+
+Pass 2 (rewritten draft: spread theorem withdrawn, greedy lemma added, literal form after the
+author found the per-block translation error): pass with corrections.
+- Confirmed the translation error (valid per block, not for the joint kernel); both literal-form
+  proofs correct; baselines.py computes the table; all 56 entries match baselines.json; nonvacuity
+  numbers check.
+- Harris is above greedy at l=20, 24 minimal degree (51.04 > 48.06, 583.48 > 498.05; general
+  291.27 > 251.17): domination only with the summed count, at the eight computed rows.
+- Bearing none stands; cite the polylog corollary; fix "super-polynomial ... near sqrt n".
+- Required: label greedy lemma a refinement of the review's bound; check the review's Obstacle and
+  the ceiling against inconsistent pins; explain the dropped affine sub-idea.
+- Suggestion: replace V by the literals left in unused rows.
+- Process audit: proposed title "Elementary certificates dominate the Harris kernel certificate at
+  computed parameters" and status line.
+
+Author resolution: all required changes made; the ceiling family pins to zero, so the ceiling
+stands; the review's Obstacle characterization corrected in this entry for inconsistent pins.

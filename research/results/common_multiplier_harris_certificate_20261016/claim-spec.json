@@ -1,0 +1,63 @@
+{
+  "source": {
+    "record": "[Harris kernel certificate](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-harris-certificate)",
+    "label": "Harris kernel certificate",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "affine-linear-algebra",
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "lem:harris-kernel-certificate",
+      "summary": "In Braun's F2 setting (m rows of l bits, v=ml, row-linear L_k), for M>=1 proper coordinate blocks pinning at least r bits, with consistent pins (a bit pinned by several blocks has one constant), 0<mu<k, pi=mu/m, 0<eps<2, J=floor(eps/pi)>=1, c0=ceil(r/(2l)), y=(1-eps/2) mu r/v, g(y)=-ln(1-e^-y), tau=e^(-eps c0)/(J(1-e^(-pi c0))), h(t)=t ln t-t+1: if M e^(-r/(8l))<=1/2 and 2M(g(y)+tau)<mu h(k/mu), a nonzero product of affine forms in distinct rows, in L_k, has zero ordinary restriction to every flat; for arbitrary pinned constants the same with l, v replaced by 2l, 2v. Proof: a uniform literal per row, rows selected with probability pi, Harris's inequality, a Chernoff good event, the split series and a Chernoff degree tail.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in two passes, including the literal form for arbitrary pinned constants. At the eight computed rows of baselines.json it is below the greedy transversal certificate or the summed count.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "A correlation certificate for Braun's common-kernel step; at the eight computed rows it is below lem:greedy-transversal-certificate or the summed count, so it records that correlation gave no saving on coordinate families there.",
+      "next_action": "None on coordinate families; any use on affine flats needs a row-locality hypothesis.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:greedy-transversal-certificate",
+      "summary": "In Braun's F2 setting, for M proper coordinate blocks each pinning at least r>l(k-1) bits, k>=1, with V=v under consistent pins and V=2v otherwise: if M prod_{i<t}(1-(r-l i)/V) <= k-t for some integer 0<=t<=k-1, a nonzero product of at most k affine forms x_b+c in distinct rows lies in L_k and has zero ordinary restriction to every flat. At t=0: any M<=k such blocks have a common kernel. Proof: t greedy literal choices by double counting, then one literal per remaining block in a fresh row. At l=16, D=107 (k=303, r=14593) it certifies ln M up to 7.14 (consistent pins) and 6.00 (general), against the summed count's 4.25 and the Harris certificate's 5.44.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in its second pass (double counting with V=v or 2v, the finishing step under r>l(k-1)); the comparison numbers are from baselines.json, eight computed rows.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "The elementary baseline for any claimed joint saving in Braun's common-kernel step on coordinate families; beats the exact summed count at moderate k.",
+      "next_action": "Use as the comparison baseline; restate the review's non-domination requirement, which the t=0 case meets.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:harris-kernel-certificate",
+      "cites",
+      "lem:avoiding-sets-fraction",
+      "Uses the same Harris-plus-Chernoff technique, here row-constrained, over literals and averaged over per-row choices."
+    ],
+    [
+      "lem:greedy-transversal-certificate",
+      "cites",
+      "prop:coordinate-count-window",
+      "Beats that summed count at moderate k on coordinate families."
+    ],
+    [
+      "lem:greedy-transversal-certificate",
+      "cites",
+      "prop:common-kernel-ceiling",
+      "Its certified range lies below the ceiling at every computed parameter."
+    ],
+    [
+      "lem:harris-kernel-certificate",
+      "cites",
+      "prop:common-kernel-ceiling",
+      "Its certified range lies below the ceiling at every computed parameter."
+    ]
+  ]
+}

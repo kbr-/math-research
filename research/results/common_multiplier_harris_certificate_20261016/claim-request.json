@@ -1,0 +1,485 @@
+{
+  "base_sha256": "c29ad173a2b1bcb6317c7b902378da2d21ede509ad93a292543664df7a5158b1",
+  "provenance": {
+    "revision": "9a5a3ca6d8a39afe2e685a0364eb6d38dbe2791f",
+    "date": "2026-10-16",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:harris-kernel-certificate",
+        "summary": "In Braun's F2 setting (m rows of l bits, v=ml, row-linear L_k), for M>=1 proper coordinate blocks pinning at least r bits, with consistent pins (a bit pinned by several blocks has one constant), 0<mu<k, pi=mu/m, 0<eps<2, J=floor(eps/pi)>=1, c0=ceil(r/(2l)), y=(1-eps/2) mu r/v, g(y)=-ln(1-e^-y), tau=e^(-eps c0)/(J(1-e^(-pi c0))), h(t)=t ln t-t+1: if M e^(-r/(8l))<=1/2 and 2M(g(y)+tau)<mu h(k/mu), a nonzero product of affine forms in distinct rows, in L_k, has zero ordinary restriction to every flat; for arbitrary pinned constants the same with l, v replaced by 2l, 2v. Proof: a uniform literal per row, rows selected with probability pi, Harris's inequality, a Chernoff good event, the split series and a Chernoff degree tail.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in two passes, including the literal form for arbitrary pinned constants. At the eight computed rows of baselines.json it is below the greedy transversal certificate or the summed count.",
+        "record": "[Harris kernel certificate](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-harris-certificate)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "A correlation certificate for Braun's common-kernel step; at the eight computed rows it is below lem:greedy-transversal-certificate or the summed count, so it records that correlation gave no saving on coordinate families there.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": "None on coordinate families; any use on affine flats needs a row-locality hypothesis."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:greedy-transversal-certificate",
+        "summary": "In Braun's F2 setting, for M proper coordinate blocks each pinning at least r>l(k-1) bits, k>=1, with V=v under consistent pins and V=2v otherwise: if M prod_{i<t}(1-(r-l i)/V) <= k-t for some integer 0<=t<=k-1, a nonzero product of at most k affine forms x_b+c in distinct rows lies in L_k and has zero ordinary restriction to every flat. At t=0: any M<=k such blocks have a common kernel. Proof: t greedy literal choices by double counting, then one literal per remaining block in a fresh row. At l=16, D=107 (k=303, r=14593) it certifies ln M up to 7.14 (consistent pins) and 6.00 (general), against the summed count's 4.25 and the Harris certificate's 5.44.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its second pass (double counting with V=v or 2v, the finishing step under r>l(k-1)); the comparison numbers are from baselines.json, eight computed rows.",
+        "record": "[Harris kernel certificate](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-harris-certificate)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "The elementary baseline for any claimed joint saving in Braun's common-kernel step on coordinate families; beats the exact summed count at moderate k.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": "Use as the comparison baseline; restate the review's non-domination requirement, which the t=0 case meets."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:avoiding-sets-fraction",
+        "summary": "Avoiding sets fraction: for a family B of nonempty subsets of [n], a subfamily B' such that every member of B contains a member of B', and 0 < p < 1: the fraction f(j) of j-sets containing no member of B is nonincreasing in j, and f(ceil(pn/2)) >= prod over B' of (1 - p^|B|) - e^(-pn/8). Proof: double counting for monotonicity, Harris's inequality under the product measure, Chernoff.",
+        "assessment": "Working proof; checked by the reviewer by hand.",
+        "record": "[The counting lemma](https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Turns a certification of terms avoiding a family of sets into a lower bound on a level at linear degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Harris kernel certificate: new relationship with lem:harris-kernel-certificate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-linear-levels",
+            "results/near-half-linear-levels-20261010/review.txt"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:coordinate-count-window",
+        "summary": "In Braun's F2 setting (m rows of l bits, v=ml, row-linear L_k of dimension H), for proper coordinate blocks pinning at least r bits each to constants (pins to one translate to pins to zero), with x=1-r/v, rho=(m-k+1)l/k and rho x>1, each restriction rank is at most H x^k rho x/(rho x-1) by Maclaurin's inequality and a geometric bound, so the exact summed count gives a common row-linear kernel when ln M < -k ln x - ln(rho x/(rho x-1)), with -k ln x >= rk/v. By prop:common-kernel-ceiling some family at the same k and r with ln M <= rk/(v-r-k)+ln(k ln(v+1)+1) has none: the main terms agree to a factor 1+O((r+k)/v), with additive gap about (rk/v)(r/2v+k/v), which grows at minimal degree D=6l+1 (341 at l=32). At l=16, D=107 (k=303, r=14593): certified 4.246 against the ceiling 12.62 and the published 1.40.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its route-review stage 2 and follow-up, including the sandwich at every admissible parameter and the reproduced minimal-degree sweep. Coordinate blocks only; Braun's general affine flats are not covered.",
+        "record": "[Joint-savings route review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-joint-savings-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "negative_result",
+          "rationale": "Shows that on coordinate families the gap between Braun's published count and the common-kernel ceiling is mainly in single-flat estimates; the remaining window for joint-rank savings is logarithmic at moderate degree and grows at minimal degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": "Extend the single-flat estimate to non-coordinate flats."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Harris kernel certificate: new relationship with lem:greedy-transversal-certificate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:common-kernel-ceiling",
+        "summary": "In Braun's setting at a fixed degree D>=6l+1, with K_D=floor((n+1)/(2(D+1)))>=1 the largest k allowed by 2k(D+1)-1<=n, r_D=3l(K_D+1)+1<v-K_D, q_D=exp(-r_D K_D/(v-r_D-K_D)) and M_D=floor(K_D ln(v+1)/q_D)+1, some family of at most M_D distinct proper coordinate blocks of rank r_D (high-rank at every k'<=K_D) has flats with no common nonzero kernel in L_k' for every k'<=K_D: joint kernels of coordinate restrictions are spanned by row-linear monomials meeting every pinned set, and a union bound over at most (v+1)^K_D monomials leaves none. So at degree D no certificate of the common-kernel step excludes it; ln M_D<=ln(K_D ln(v+1)+1)+3K_D^2/m(1+O(1/K_D+K_D/m)), against the published ln(4M)<=K_D^2/m. At l=16, D=107: K_D=303, ln M_D<=12.62 against 1.40.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its third check, after a first version (rank just above the threshold at one k) was excluded at k+1 and a second (k=n/4) was compared with a k no degree allows; the fixed-degree form is the reviewer's suggestion, verified by the author.",
+        "record": "[Increment count and kernel-count tightness](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-increment-count)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "negative_result",
+          "rationale": "Bounds what any joint-rank certificate can add to Braun's common-kernel step at a fixed degree on unrestricted families: about a factor three in ln M plus a logarithmic term.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": "Use as the adversarial baseline when testing structured joint-error savings."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Joint-savings route review: new relationship with prop:coordinate-count-window. Harris kernel certificate: new relationship with lem:greedy-transversal-certificate, lem:harris-kernel-certificate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-increment-count"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:harris-kernel-certificate::cites::lem:avoiding-sets-fraction",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:harris-kernel-certificate",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:avoiding-sets-fraction",
+        "locator": null
+      },
+      "scope": "Uses the same Harris-plus-Chernoff technique, here row-constrained, over literals and averaged over per-row choices.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "9a5a3ca6d8a39afe2e685a0364eb6d38dbe2791f",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Uses the same Harris-plus-Chernoff technique, here row-constrained, over literals and averaged over per-row choices."
+      }
+    },
+    {
+      "id": "lem:greedy-transversal-certificate::cites::prop:coordinate-count-window",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:greedy-transversal-certificate",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:coordinate-count-window",
+        "locator": null
+      },
+      "scope": "Beats that summed count at moderate k on coordinate families.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "9a5a3ca6d8a39afe2e685a0364eb6d38dbe2791f",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Beats that summed count at moderate k on coordinate families."
+      }
+    },
+    {
+      "id": "lem:greedy-transversal-certificate::cites::prop:common-kernel-ceiling",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:greedy-transversal-certificate",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:common-kernel-ceiling",
+        "locator": null
+      },
+      "scope": "Its certified range lies below the ceiling at every computed parameter.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "9a5a3ca6d8a39afe2e685a0364eb6d38dbe2791f",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its certified range lies below the ceiling at every computed parameter."
+      }
+    },
+    {
+      "id": "lem:harris-kernel-certificate::cites::prop:common-kernel-ceiling",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:harris-kernel-certificate",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:common-kernel-ceiling",
+        "locator": null
+      },
+      "scope": "Its certified range lies below the ceiling at every computed parameter.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "9a5a3ca6d8a39afe2e685a0364eb6d38dbe2791f",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its certified range lies below the ceiling at every computed parameter."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
