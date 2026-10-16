@@ -549,6 +549,17 @@ def meta_home_block(reply, calls, changed):
                 'notebook (tools/lead_queue.py add). Only a file this turn changed counts, not one a command only '
                 'mentions. Archived results and provenance are records nothing loads: a review record is no home. '
                 'Write it there, and name that file by its path in the paragraph.')}
+    # Twice on 16 October 2026 a Meta paragraph named only the file its Prevention had just named, restating the
+    # Prevention's mechanism; the stand-in review objected both times (AGENTS.md: that answers it twice).
+    named = lambda paragraph: {found.strip('./') for found in HOME.findall(paragraph)} - {''}
+    prevented = set().union(*(named(p) for kind, p in paragraphs if kind == 'Prevention'))
+    for kind, paragraph in paragraphs:
+        if kind == 'Meta' and prevented and named(paragraph) and named(paragraph) <= prevented:
+            return {'decision': 'block', 'reason': (
+                f'A Meta paragraph that names only the Prevention\'s files ({", ".join(sorted(named(paragraph)))}): '
+                f'"{" ".join(paragraph.split())[:300]}". The Meta is about the way of working behind the mistake, '
+                'wider than the mistake, and its change lives somewhere the Prevention did not already change: '
+                'make that change and name its file (AGENTS.md, a fix of the agent\'s own mistake).')}
     return None
 
 

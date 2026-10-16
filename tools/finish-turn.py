@@ -1109,6 +1109,23 @@ def validate_proved_instance(text, statuses=()):
                          'parameters, or say that the statement has no hypotheses to satisfy (AGENTS.md)')
 
 
+def validate_hypothesis_steps(text, statuses=()):
+    """An entry registering a proved statement names, for each hypothesis, the step of the proof that uses it.
+
+    AGENTS.md asked for this from 16 October 2026 with no check; the same day two entries stated conclusions for
+    a wider class than their proofs covered (every idempotent where the proof used span generators, every field
+    where it used 0/1-valued killers), which naming each hypothesis's step would have shown."""
+    if not PROVED & set(statuses):
+        return
+    given = re.search(r'<strong>Hypotheses, each with its step\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
+    if len(plain) < 60:
+        raise ValueError('This entry registers a proved statement: name, after <strong>Hypotheses, each with its '
+                         'step.</strong> and in at least 60 characters, the step of the proof that uses each '
+                         'hypothesis and the weakest form that step needs, and the class each conclusion holds '
+                         'for (AGENTS.md)')
+
+
 def validate_process_audit(text):
     """A reviewed entry reports the reviewer's audit of how the work was done (user, 10 October 2026: the
     agent should find its own mistakes without the user's hand-holding)."""
@@ -1418,6 +1435,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_structural_reason(text, statuses, entry_claims(body, article))
             validate_degenerate_cases(text, statuses)
             validate_proved_instance(text, statuses)
+            validate_hypothesis_steps(text, statuses)
         else:
             validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':

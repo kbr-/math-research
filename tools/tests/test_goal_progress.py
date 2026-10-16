@@ -85,6 +85,12 @@ class GoalProgressTest(unittest.TestCase):
                 validate(body)
         body = body.replace('</article>', '<p><strong>Nonvacuity.</strong> The system of three rows on four '
                             'variables recorded with the witness satisfies every hypothesis.</p></article>')
+        with patch.object(FT, 'registered_status', return_value={'thm:result': 'working_proof'}):
+            with self.assertRaisesRegex(ValueError, 'Hypotheses, each with its step'):   # and names each step
+                validate(body)
+        body = body.replace('</article>', '<p><strong>Hypotheses, each with its step.</strong> Unsatisfiability '
+                            'is used in the counting step and nowhere else; the rows need only be distinct.</p>'
+                            '</article>')
         for status in ('working_proof', 'conditional', 'established'):
             with patch.object(FT, 'registered_status', return_value={'thm:result': status}):
                 validate(body)

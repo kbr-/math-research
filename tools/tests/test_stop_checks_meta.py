@@ -82,6 +82,16 @@ class ReviewerMetaTest(HookFixture):
 
 
 class MetaHomeTest(HookFixture):
+    def test_a_meta_naming_only_the_prevention_files_is_refused(self):
+        # 16 October 2026: Meta paragraphs that named only the file the Prevention had just named.
+        calls = [('Edit', {'file_path': '/repo/AGENTS.md'}), ('Edit', {'file_path': '/repo/tools/finish-turn.py'})]
+        twice = ('Prevention: the finisher now checks it (`tools/finish-turn.py`).\n\n'
+                 'Meta: the habit is posing; the change is in `tools/finish-turn.py`.')
+        blocked = hook.meta_home_block(twice, calls, [])
+        self.assertIn("names only the Prevention's files", blocked['reason'])
+        wider = twice.replace('the change is in `tools/finish-turn.py`', 'the change is in `AGENTS.md`')
+        self.assertIsNone(hook.meta_home_block(wider, calls, []))
+
     def test_a_meta_paragraph_names_a_file_the_turn_wrote(self):
         edit = ('Edit', {'file_path': '/repo/research/notes/WORK_RULES.md'})
         queue = ('Bash', {'command': 'python3 tools/lead_queue.py add notebook.html --build x "s" "t"'})
