@@ -147,9 +147,10 @@ growing checklists or one-off setup narratives.
   in one common setting with a complete proof, not a reference to a sketch. Before the reviewer's
   brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that
   cites a claim beside that claim's registered statement, and each that links an entry beside that
-  entry's title and status line: a sentence may say no more than its source. The tool also lists the
-  draft's sentences outside its mathematics that hold a count: read each beside the saved output the
-  count came from.
+  entry's title and status line: a sentence may say no more than its source, and one that draws a
+  decision from a bound of the entry restates the bound's hypotheses and error terms beside the
+  instance and the scale decided. The tool also lists the draft's sentences outside its mathematics
+  that hold a count: read each beside the saved output the count came from.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
