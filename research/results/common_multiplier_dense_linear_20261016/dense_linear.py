@@ -108,6 +108,16 @@ def main():
 
     single('control x00', {x(0, 0)})
     assert out['control x00']['excess'] == 0, 'null control'
+    # Second run, after the review: a control on the polynomial path. x00 + Q_0 has the C-kernel of x00 (15),
+    # but its trivial representative's domain side is 10 (reviewer's hand count); the maximum over
+    # representatives, reached at c = (1,0,...,0), must restore 15.
+    shifted = add_poly({x(0, 0)}, Q[0])
+    single('control x00+Q0', shifted)
+    trivial = len(ann_poly(cH, monos, shifted) + C1)
+    out['control x00+Q0']['trivial_rep_H_side'] = trivial
+    print('control x00+Q0 trivial representative H side', trivial, flush=True)
+    assert out['control x00+Q0']['C_side'] == 15 and out['control x00+Q0']['excess'] == 0, 'polynomial control'
+    assert trivial < 15, 'the trivial representative must fall short, or the control shows nothing'
     a1 = single('E1', E1)
     a2 = single('E2', E2)
     joint_C = len(a1 & a2)
