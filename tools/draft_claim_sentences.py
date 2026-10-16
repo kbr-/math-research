@@ -295,6 +295,139 @@ def construction_report(draft, width, words=None):
                      + lines + [f'{len(found)} such sentences of {read} proof sentences read.'])
 
 
+# A proof step that makes a term vanish by a factor's value, and the words that say where the factor stands
+# (16 October 2026: a factor inside a commutator certificate was used as if it stood outside).
+VANISH = re.compile(r'\b(?:vanish(?:es|ing)?|(?:is|are|becomes?) zero|contributes? (?:zero|nothing)|translates? '
+                    r'to (?:one|zero)|has the factor|kills? the term|drops? out)\b', re.I)
+# Only a step that names a factor or multiplier: without it, 72 proof sentences of 235 entries from 10 October 2026
+# were listed, mostly products or images vanishing with no factor involved.
+FACTOR = re.compile(r'\b(?:factors?|multipliers?|multiplied)\b', re.I)
+POSITION = re.compile(r'\b(?:inside|outside|left|right|within|brackets?|commutators?|sits|stands|before|after|'
+                      r'prefix(?:es)?|around|outer|inner)\b', re.I)
+
+
+def proof_sentences(draft):
+    """(label, sentence HTML, plain text without its mathematics) for every sentence of a Proof paragraph."""
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag != 'p' or not label or not label.group(1).startswith('Proof'):
+            continue
+        for index, sentence in enumerate(sentences(body)):
+            unlabelled = LABEL.sub('', sentence) if index == 0 else sentence
+            yield label.group(1), unlabelled, text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', unlabelled, flags=re.S))
+
+
+def vanishing_steps(draft):
+    """(label, sentence) for each proof sentence that makes a term vanish by a factor's value and does not say
+    where the factor stands relative to the brackets or certificates around it (AGENTS.md: quoted from the
+    construction's record). A reading list, not a verdict."""
+    return [(label, text(sentence)) for label, sentence, words in proof_sentences(draft)
+            if VANISH.search(words) and FACTOR.search(words) and not POSITION.search(words)]
+
+
+def vanishing_report(draft, width):
+    found = vanishing_steps(draft)
+    lines = [f'  [{where}] {s if width <= 0 else s[:width]}' for where, s in found]
+    return '\n'.join(['Proof sentences that make a term vanish by a factor\'s value without saying where the factor '
+                      'stands (inside or outside a bracket, a certificate, a prefix); quote its place from the '
+                      'construction\'s record (AGENTS.md):'] + lines + [f'{len(found)} such sentences.'])
+
+
+# Restrictions a Hypotheses paragraph can copy from a source: a field or characteristic, a family, a range.
+RESTRICTION = re.compile(r'\b(?:characteristic(?: two| three| zero| 2| 3| p)?|binary|ternary|odd|prime field|'
+                         r'nonrecursive|acyclic|0/1-valued|simple graphs?|multigraphs?|regular|bipartite|'
+                         r'connected|power-growing|window|monotone|multilinear|nested)\b', re.I)
+
+
+def hypothesis_restrictions(draft):
+    """(restriction, sentence) for each restriction the Hypotheses paragraph names that no proof sentence names:
+    a restriction copied from a source and used by no step (16 October 2026: characteristic two stated where the
+    proof needed only 0/1-valued definitions). A reading list: a proof may use a restriction in other words."""
+    proof = ' '.join(words for _, _, words in proof_sentences(draft)).lower()
+    found = []
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag != 'p' or not label or not label.group(1).startswith('Hypotheses'):
+            continue
+        for sentence in sentences(body):
+            words = text(re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', sentence, flags=re.S))
+            for m in dict.fromkeys(r.group(0).lower() for r in RESTRICTION.finditer(words)):
+                if proof and m not in proof:
+                    found.append((m, text(sentence)))
+    return found
+
+
+def hypothesis_report(draft, width):
+    found = hypothesis_restrictions(draft)
+    lines = [f'  "{r}": {s if width <= 0 else s[:width]}' for r, s in found]
+    return '\n'.join(['Restrictions the Hypotheses paragraph names that no proof sentence names; read each off the '
+                      'proof, and drop or justify one no step uses (AGENTS.md):'] + lines
+                     + [f'{len(found)} such restrictions.'])
+
+
+PART = r'(?:Sections?|Theorems?|Lemmas?|Corollar(?:y|ies)|Propositions?|Definitions?|Appendix|Remarks?)'
+NOT_READ = re.compile(r'(' + PART + r'\s+[\dA-Z][\w.]*(?:(?:\s*(?:,|and|to|–|-)\s*)[\dA-Z][\w.]*)*)'
+                      r'(?:[^.;]|(?<=\d)\.(?=\d)){0,60}?\b(?:not read|unread|was not read|were not read)\b'
+                      r'|\b(?:not read|unread)\b[^.;]{0,20}?(' + PART + r'\s+[\dA-Z][\w.]*)', re.I)
+
+
+def unread_in(source, text_of):
+    """(source, kind, number) for each numbered part `text_of` says was not read; a part whose proof alone was
+    not read ("the proof of Proposition 24 was not read") is read for its statement and is skipped; "Sections
+    2 to 4" gives 2, 3 and 4."""
+    found = []
+    for m in NOT_READ.finditer(text_of):
+        if re.search(r'\bproofs? of\s*$', text_of[max(0, m.start() - 12):m.start()], re.I):
+            continue
+        whole = m.group(1) or m.group(2)
+        kind = whole.split()[0].rstrip('s').lower()[:6]
+        rest = whole[len(whole.split()[0]):]
+        numbers = re.findall(r'[\dA-Z][\w.]*', rest)
+        span = re.search(r'\b(\d+)\s*(?:to|–|-)\s*(\d+)\b', rest)
+        if span and int(span.group(2)) - int(span.group(1)) < 20:
+            numbers += [str(n) for n in range(int(span.group(1)), int(span.group(2)) + 1)]
+        found += [(source, kind, n.rstrip('.')) for n in dict.fromkeys(numbers)]
+    return found
+
+
+def unread_parts(registry, ids, spec=None):
+    """(source, kind, number) for each numbered part of a source that the assessment of a cited import, or any
+    text of the draft's own spec, says was not read."""
+    claims = {c['id']: c for c in registry['claims']}
+    found = []
+    for ident in ids:
+        found += unread_in(ident, claims.get(ident, {}).get('assessment', ''))
+    for claim in (spec or {}).get('claims', []):
+        found += unread_in(f"the spec's {claim.get('id', '?')}",
+                           ' '.join(str(v) for v in claim.values() if isinstance(v, str)))
+    return found
+
+
+def unread_citations(draft, registry, spec=None):
+    """(source, part, sentence) for each draft sentence citing a numbered part of a source that a registered
+    import cited by the draft, or the draft's own spec (--spec), says was not read (16 October 2026: a section
+    cited that its own spec listed as not read). Parts are matched by kind and number, not by source, so a part
+    of another source with the same number is listed too: a reading list."""
+    ids = {i for i in CLAIM_ID.findall(text(draft)) if i.startswith('imp:')}
+    parts = unread_parts(registry, ids, spec)
+    found = []
+    for _tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        for sentence in sentences(body):
+            plain_text = text(sentence)
+            for ident, kind, number in parts:
+                if re.search(r'\b' + PART + r'\s+' + re.escape(number) + r'(?![\w.])', plain_text, re.I) and \
+                        re.search(r'\b' + kind, plain_text, re.I):
+                    found.append((ident, f'{kind} {number}', plain_text))
+    return found
+
+
+def unread_report(draft, registry, width, spec=None):
+    found = unread_citations(draft, registry, spec)
+    lines = [f'  {ident}, {part} (not read): {s if width <= 0 else s[:width]}' for ident, part, s in found]
+    return '\n'.join(['Sentences citing a part of a source that its registered import says was not read; read it '
+                      'first or cite only what was read (AGENTS.md):'] + lines + [f'{len(found)} such sentences.'])
+
+
 OWN_STATEMENT = re.compile(r'^(?:Lemma|Theorem|Proposition|Corollary)\b')
 OWN_SUMMARY = re.compile(r'^(?:New mathematics|Goal progress|Architecture test)$')
 LEDGER = re.compile(r'<h4\b[^>]*ledger[^>]*>.*?</h4>\s*<ul>(.*?)</ul>', re.S | re.I)
@@ -1004,6 +1137,8 @@ def main():
                         'construction, in place of the default list (a notebook with its own vocabulary)')
     parser.add_argument('--exactness', action='store_true', help='print only the listing of words of exactness; '
                         'for a file of several articles, the count of such sentences in each')
+    parser.add_argument('--spec', help='the draft\'s claim spec, whose texts saying a part of a source was not '
+                        'read are read for the unread-section listing')
     parser.add_argument('--answers', help='a file answering the summing-up sentences the listings print: written '
                         'as a form if it does not exist, else read, and the unanswered sentences printed')
     parser.add_argument('--summing-up', action='store_true', help='print only, for each article of the file, the '
@@ -1083,6 +1218,10 @@ def main():
     print('\n' + unnamed_results_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
     print('\n' + construction_report(draft, args.width, words))
+    print('\n' + vanishing_report(draft, args.width))
+    print('\n' + hypothesis_report(draft, args.width))
+    spec = json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
+    print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
     print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))

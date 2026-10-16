@@ -12,6 +12,7 @@ every article, prints each match with its anchor, then the count and how much it
 import argparse
 import html
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
@@ -45,6 +46,16 @@ def checks():
     found = {'planned-tense': matches_of(ft.LATER_TURN_DONE)}
     for name in getattr(ft, 'SCAN_CHECKS', {}):
         found[name] = ft.SCAN_CHECKS[name]
+    import draft_claim_sentences as dcs
+    found['vanishing-factor'] = lambda plain, raw: [s for _, s in dcs.vanishing_steps(raw)]
+    found['hypothesis-restriction'] = lambda plain, raw: [f'{r}: {s}' for r, s in dcs.hypothesis_restrictions(raw)]
+    registry = {}
+
+    def unread(plain, raw):
+        if not registry:
+            registry.update(json.loads((ROOT / 'research/claims/index.json').read_text()))
+        return [f'{i}, {p}: {s}' for i, p, s in dcs.unread_citations(raw, registry)]
+    found['unread-section'] = unread
     return found
 
 

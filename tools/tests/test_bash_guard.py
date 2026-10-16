@@ -292,7 +292,7 @@ class BashGuardTest(unittest.TestCase):
                 self.assertIn("a framework tool", done.stderr)
         # Scratch, results and git rm are fine.
         for command in ("rm -rf /home/u/.claude/jobs/x/tmp/bget", "rm research/results/a/old.json",
-                        "git rm tools/old.py"):
+                        "git rm tools/old.py", "rm -f tools/record_scan.py.bak", "rm tools/x.orig tools/y.py~"):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 

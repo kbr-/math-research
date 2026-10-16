@@ -286,6 +286,9 @@ def tool_removed(command: str):
         if not words or words[0] not in ("rm", "unlink", "shred"):
             continue
         for word in words[1:]:
+            # An editor's or sed's backup (x.py.bak, x.orig, x~) is no tool (17 October 2026: a .bak was refused).
+            if re.search(r"\.(?:bak|orig|rej)$|~$", word):
+                continue
             if not word.startswith("-") and re.search(r"(^|/)tools/[^/]", word):
                 return (f"rm deletes {word}, a framework tool: keep it, make it work and commit it with a test, "
                         "since retrieval and similar jobs recur; remove an obsolete one with git rm in a commit "

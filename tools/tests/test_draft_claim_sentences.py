@@ -553,5 +553,44 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
                                                                    'the form of'))), 2)   # fewer than five words
 
 
+class NewListingsTest(unittest.TestCase):
+    """The vanishing-factor, hypothesis-restriction and unread-section listings (17 October 2026)."""
+
+    def test_a_vanishing_factor_without_its_place_is_listed(self):
+        # 16 October 2026: a factor inside a commutator certificate was used as if it stood outside.
+        draft = ('<article id="entry-x"><p><strong>Proof.</strong> The factor \\(1-L_k\\) is zero at \\(a\\), so '
+                 'the term vanishes. The factor sits outside the commutator, so it vanishes there too. '
+                 'Products of \\(D+1\\) elements vanish.</p></article>')
+        found = dcs.vanishing_steps(draft)
+        self.assertEqual(len(found), 1)
+        self.assertIn('is zero at', found[0][1])
+
+    def test_a_restriction_no_proof_step_names_is_listed(self):
+        # 16 October 2026: characteristic two was stated where the proof needed only 0/1-valued definitions.
+        draft = ('<article id="entry-x"><p><strong>Hypotheses, each with its step.</strong> Characteristic two: '
+                 'the substitution. Acyclic definitions: the map \\(\\varphi\\).</p><p><strong>Proof.</strong> The '
+                 'map is defined because the definitions are acyclic; the substitution is a ring map.</p></article>')
+        self.assertEqual([r for r, _ in dcs.hypothesis_restrictions(draft)], ['characteristic two'])
+        self.assertEqual(dcs.hypothesis_restrictions(draft.replace('ring map', 'ring map in characteristic two')), [])
+
+    def test_a_part_listed_as_unread_is_listed_where_cited(self):
+        # 16 October 2026: a draft cited a section its own spec listed as not read.
+        spec = {'claims': [{'id': 'imp:tradeoff', 'assessment': 'Use as imported; Sections 2 to 4 beyond Lemma '
+                                                                '3.1 not read.'}]}
+        registry = {'claims': [{'id': 'imp:other', 'summary': 'x', 'assessment': 'Theorem 8 read; the proof of '
+                                'Proposition 24 was not read; the import rests on its statement.'}]}
+        draft = ('<article id="entry-x"><p>By Section 3 of the source the degree bound holds. imp:other\'s '
+                 'Proposition 24 gives the projection. Section 5 is read.</p></article>')
+        found = dcs.unread_citations(draft, registry, spec)
+        self.assertEqual([part for _, part, _ in found], ['sectio 3'])
+        self.assertEqual(dcs.unread_citations(draft, registry), [])        # the statement of Proposition 24 was read
+
+    def test_the_motivating_spec_marks_its_unread_sections(self):
+        spec = json.loads((pathlib.Path(__file__).resolve().parents[2] /
+                           'research/results/extended_pigeonhole_tradeoff_20261016/claim-spec.json').read_text())
+        parts = {(kind, n) for _, kind, n in dcs.unread_parts({'claims': []}, set(), spec)}
+        self.assertTrue({('sectio', '2'), ('sectio', '3'), ('sectio', '4')} <= parts, parts)
+
+
 if __name__ == '__main__':
     unittest.main()
