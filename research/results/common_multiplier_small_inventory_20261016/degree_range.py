@@ -147,8 +147,8 @@ def main():
                 k = smallest_k(ell, M, test)
                 row[name + '_k'] = k
                 row[name + '_D'] = degree(ell, k)
-            if M <= params(ell)[1]:
-                assert row['greedy_k'] <= M, 'the t = 0 case certifies k = M'
+            if M <= (n + 1) // (2 * (6 * ell + 2)):
+                assert row['greedy_k'] is not None and row['greedy_k'] <= M, 'the t = 0 case certifies k = M'
             rows.append(row)
             print(row)
     with open(args.out, 'w') as handle:
