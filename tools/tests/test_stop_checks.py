@@ -568,5 +568,24 @@ class UncheckedClaimTest(HookFixture):
                 self.assertEqual(self.run_hook(argv=['--global'])['decision'], 'block')
 
 
+class OfferBlockTest(unittest.TestCase):
+    # 17 October 2026: a reply offered to queue an idea, and another gave "isn't in the record" as an answer.
+    def test_an_offer_is_refused(self):
+        block = hook.offer_block('If you want, I can queue route 3 as an item on the hardness route.')
+        self.assertIn('offer instead of the work', block['reason'])
+
+    def test_a_record_gap_without_an_attempt_is_refused(self):
+        block = hook.offer_block('Turning it back needs a compactness argument that isn\'t in the record.')
+        self.assertIn('gap in the record', block['reason'])
+
+    def test_legitimate_uses_pass(self):
+        for reply in ('The compactness argument is not in the record, so it is queued as product-hardness-transfer.',
+                      'You asked "shall I stop", and the work went on.',
+                      'The record has no such bound; the next attempt is its smallest case, tried below.',
+                      'The rule says a decision of the user\'s goes into user_requests.'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.offer_block(reply))
+
+
 if __name__ == '__main__':
     unittest.main()

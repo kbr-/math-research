@@ -938,6 +938,60 @@ def figure_block(reply):
         '(CLAUDE.md, order of work); save the output first, or drop the figure.')}
 
 
+# A reply that offers work instead of doing it, or names a gap in the record as if it were an answer (user, 17
+# October 2026: "Why do you have to ask me???? Ideas are worth exploring if you think they are promising!!!!" and,
+# on "nothing in the record does that": "How is that an answer to anything? We are the ones developing the record").
+OFFER = re.compile(r"[^.!?\n]*\b(?:if you (?:want|like|wish|prefer)|shall I|should I|want me to|would you like(?: me)? to|"
+                   r"let me know if)\b[^.!?\n]*", re.I)
+RECORD_GAP = re.compile(r"[^.!?\n]*\b(?:nothing in the record|not in the record|isn't in the record|the record "
+                        r"(?:lacks|has no|does not (?:have|give|contain|do)|doesn't (?:have|give|contain|do))|no recorded "
+                        r"(?:argument|result|theorem|claim|statement))\b[^.!?\n]*", re.I)
+GAP_TAKEN = re.compile(r"\b(?:queued|Appended|next attempt|tried|attempt(?:ed)? (?:it|here|now))\b", re.I)
+
+
+def offer_block(reply):
+    """The block for a reply that offers research work to the user instead of doing it, or that names a gap in the
+    record without queuing or attempting it, or None.  A real decision of the user's (a permission, a source, a
+    choice the rules leave to them) goes into user_requests, not into an offer."""
+    offers = sentences(OFFER, [reply])
+    gaps = [s for s in sentences(RECORD_GAP, [reply]) if not GAP_TAKEN.search(reply)]
+    if not offers and not gaps:
+        return None
+    if offers:
+        return {'decision': 'block', 'reason': (
+            f'An offer instead of the work: "{offers[0][:160]}". A promising idea is explored or queued '
+            '(tools/lead_queue.py add), not offered; a decision that is the user\'s goes into user_requests. Do it, '
+            'then answer again.')}
+    return {'decision': 'block', 'reason': (
+        f'A gap in the record given as an answer: "{gaps[0][:160]}". We write the record: a gap is the next attempt. '
+        'Attempt it now, or queue it (tools/lead_queue.py add) and say so, then answer again.')}
+
+
+def replay_offers(paths):
+    """Each past text of more than 200 characters in the session transcripts at `paths` that offer_block refuses,
+    with the count: the check is counted over past replies before its commit."""
+    texts, refused = 0, []
+    for name in paths:
+        for line in open(name, errors='replace'):
+            if '"assistant"' not in line or '"text"' not in line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if entry.get('type') != 'assistant':
+                continue
+            for part in (entry.get('message') or {}).get('content') or []:
+                if isinstance(part, dict) and part.get('type') == 'text' and len(part.get('text', '')) > 200:
+                    texts += 1
+                    block = offer_block(part['text'])
+                    if block:
+                        refused.append(block['reason'][:200])
+    for text in refused:
+        print(f'- {text}')
+    print(f'{texts} texts read; {len(refused)} refused.')
+
+
 def turn_block(texts, calls, said, off, quoted=()):
     """The first block among the checks that run at a stop and at a commit alike (a promise, an admitted
     mistake, a tool's fault worked around, a declared gap), those named in `off` left out; or None.
@@ -989,6 +1043,7 @@ def main(argv):
         check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),
                                      ('reviewer meta', lambda: reviewer_meta_block(path, reply)),
                                      ('unreviewed', lambda: unreviewed_block(path, reply, ROOT)),
+                                     ('offer', lambda: offer_block(reply)),
                                      ('meta home', lambda: meta_home_block(
                                          reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
                                     + branch_checks(turn_texts, calls, reply, ROOT))
