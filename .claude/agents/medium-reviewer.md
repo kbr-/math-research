@@ -32,7 +32,11 @@ a closure and an ideal), check that each object lives where the comparison puts 
 transfer map is named and proved, not assumed. Where an entry interprets an endpoint or exclusion
 clause of the goal, list each reading the clause's words allow (the field, the degree, property
 versus mechanism) and check that the entry states them all rather than choosing the one its result
-favours. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
+favours. Where a hypothesis constrains several components at once (the coordinates of a vector,
+the terms of a tuple, each block of a matrix), check that the draft draws on every component it
+constrains before accepting a conclusion drawn from one; a claim that a condition binds "only the
+difference" or "only one part" is checked against all the components the hypotheses name.
+Do not trust summaries in the drafts over the excerpts. Run no computations unless the
 brief asks for a specific check, and edit no files.
 
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
