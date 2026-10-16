@@ -602,6 +602,35 @@ def refuse_unanswered(entry, answers):
         raise ValueError(draft_claim_sentences.qualifier_gaps_report(gaps))
 
 
+PUBLICATION_LINK = re.compile(r'href="(publications/[^"#]+\.tex)')
+
+
+def refuse_uncited_publication(entry):
+    """Refuse an entry with a sentence that links a publication's source file but cites no registered claim.
+    Every publication statement is derived from registered claims, reached through its Lean files
+    (tools/publication_claims.py); on 16 October 2026 an entry cited Braun's corollary as unregistered."""
+    import draft_claim_sentences
+    import publication_claims
+    # Any registry prefix, bare: a publication's statements are often audit: or imp: claims, which cited()
+    # takes bare only for the kinds that name a statement.
+    any_claim = re.compile(r'(?<![\w/#.:-])(?:' + draft_claim_sentences.PREFIXES + r'):[A-Za-z0-9]')
+    bare = []
+    for _tag, body in draft_claim_sentences.BLOCK.findall(entry):
+        for sentence in draft_claim_sentences.sentences(body):
+            links = PUBLICATION_LINK.findall(sentence)
+            if links and not any_claim.search(strip_tags(sentence)):
+                bare.append((links, draft_claim_sentences.text(sentence)))
+    if bare:
+        lines = []
+        for links, sentence in bare:
+            lines.append(f'  {sentence[:160]}')
+            for (section, label), ids in publication_claims.lookup(links).items():
+                lines.append(f'    {section} {label}: {" ".join(ids) or "no claim names its Lean files"}')
+        raise ValueError(f'{len(bare)} sentences link a publication file and cite no registered claim; cite the '
+                         'claim of the statement used (tools/publication_claims.py SECTION lists them):\n'
+                         + '\n'.join(lines))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('entry', type=Path, nargs='?')
@@ -624,6 +653,7 @@ def main():
     nxt = args.next_file.read_text() if args.next_file else None
     try:
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
+        refuse_uncited_publication(args.entry.read_text())
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)

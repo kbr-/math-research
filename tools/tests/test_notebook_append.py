@@ -620,5 +620,23 @@ class CadenceLineTest(unittest.TestCase):
             self.assertIn('1 more, then the review', tool.cadence_line(self.record(*['research:r'] * 6)))
 
 
+class PublicationCitationTests(unittest.TestCase):
+    def test_a_sentence_linking_a_publication_file_without_a_claim_is_refused(self):
+        link = '<a href="publications/bit-php-resolution-over-parities/sections/05-affine-exclusion.tex">corollary</a>'
+        with self.assertRaises(ValueError) as caught:
+            tool.refuse_uncited_publication(f'<p>The bound of Braun\'s {link} applies here.</p>')
+        self.assertIn('cite no registered claim', str(caught.exception))
+        self.assertIn('audit:ordinary-restriction-affine-family', str(caught.exception))
+        # The same link beside the claim's identifier, and a publication named without a link, pass.
+        tool.refuse_uncited_publication(f'<p>Braun\'s {link}, audit:ordinary-restriction-affine-family, applies.</p>')
+        tool.refuse_uncited_publication('<p>Braun\'s corollary applies.</p>')
+
+    def test_the_lookup_follows_labels_to_claims_through_lean_files(self):
+        import publication_claims
+        found = publication_claims.lookup(['cor:polylog-exclusion'])
+        self.assertEqual(list(found.values()), [['audit:ordinary-restriction-affine-family']])
+        self.assertEqual(publication_claims.lookup(['no-such-label']), {})
+
+
 if __name__ == '__main__':
     unittest.main()
