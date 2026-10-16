@@ -36,6 +36,24 @@ class ClaimRefreshTests(unittest.TestCase):
             self.assertEqual(calls[2][2:], ['render'])
             self.assertEqual((root / claim_refresh.REGISTRY).read_text(), '{"claims": []}')
 
+    def test_summaries_checked_reaches_the_build_only_when_given(self):
+        for given in (False, True):
+            with self.subTest(given=given), tempfile.TemporaryDirectory() as tmp:
+                root = pathlib.Path(tmp)
+                (root / 'research/claims').mkdir(parents=True)
+                calls = []
+
+                def fake_run(command, cwd, check):
+                    calls.append(command)
+                    if 'build' in command:
+                        (root / 'proposal.json').write_text('{}')
+
+                with mock.patch.object(claim_refresh, 'ROOT', root), \
+                        mock.patch.object(claim_refresh.subprocess, 'run', fake_run):
+                    claim_refresh.refresh('spec.json', 'o', 'proposal.json', 'r', root=root,
+                                          summaries_checked=given)
+                self.assertEqual('--summaries-checked' in calls[1], given)
+
     def test_a_failed_build_stops_before_the_registry_is_replaced(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)

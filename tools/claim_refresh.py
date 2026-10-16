@@ -26,13 +26,17 @@ def run(command, root):
     subprocess.run(command, cwd=root, check=True)
 
 
-def refresh(spec, out, proposal, report, root=ROOT):
+def refresh(spec, out, proposal, report, root=ROOT, summaries_checked=False):
     run(['git', 'checkout', 'HEAD', '--', REGISTRY, GENERATED], root)
     for path in (out, proposal, report):
         pathlib.Path(root, path).unlink(missing_ok=True)
     tool = str(pathlib.Path(root, 'tools', 'claim-index.py'))
+    # A refresh always follows an entry edit, so the build refuses until the agent has compared the
+    # spec summaries with the entry statements it prints and says so (16 October 2026: the refusal,
+    # added to author build, broke this caller, which passed no way to answer it).
     run([sys.executable, tool, 'author', 'build', '--spec', str(spec), '--out', str(out),
-         '--proposal', str(proposal), '--report', str(report)], root)
+         '--proposal', str(proposal), '--report', str(report)]
+        + (['--summaries-checked'] if summaries_checked else []), root)
     shutil.copyfile(pathlib.Path(root, proposal), pathlib.Path(root, REGISTRY))
     run([sys.executable, tool, 'render'], root)
 
@@ -43,8 +47,10 @@ def main(argv=None):
     parser.add_argument('--out', required=True)
     parser.add_argument('--proposal', required=True)
     parser.add_argument('--report', required=True)
+    parser.add_argument('--summaries-checked', action='store_true',
+                        help="passed to author build: the spec's summaries were compared with the entry")
     args = parser.parse_args(argv)
-    refresh(args.spec, args.out, args.proposal, args.report)
+    refresh(args.spec, args.out, args.proposal, args.report, summaries_checked=args.summaries_checked)
     print('Registry rebuilt from HEAD with the spec; stage it with the entry.')
     return 0
 

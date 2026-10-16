@@ -1,0 +1,57 @@
+Fresh-context medium reviewer, staged architecture review for entry-2026-10-16-extension-barrier-goal-review (16 October 2026)
+
+Stage 1 (blind: goal, open statements, fourteen registered results; no route shown; one claim search,
+"functional lower bound Boolean cube evaluation certificate Smolensky")
+
+1. Endpoints, weakest first (each for every fixed d, family fixed before A, encoding length N):
+- E1: superpolynomial lower bounds for F2 placeholder-linear noncommutative IPS formulas of depth d+10 for
+  CNF + Boolean + commutator axioms, via thm:shallow-noncommutative-sequent-simulation (O(S^12)), only for
+  the audited binary GP sequent presentation. cor:ordered-projection-barrier rules out generic f(d)s^c
+  homogenization transfers; lem:koszul-bucket-collapse rules out abecedarian conversion for syzygy-closed
+  classes.
+- E2: depth-(d+2) Hilbert-like IPS over F2 with Boolean axioms via imp:depth-preserving-IPS-simulation, GP
+  presentation; presentation conversion an extra step.
+- E3: the collapse endpoint via imp:modular-counting-collapse: a superquasipolynomial Sigma-size lower bound
+  for PCK^1_2 (for Sigma_2 a tree-like PCK^0 bound with axioms {f(u) != v} for every PV_2^{+P} function f).
+  Weaker system, stronger size demand: incomparable with E1/E2. Proposition 47: degree lower bounds alone
+  cannot meet it.
+- E4: general constant-depth IPS over F2, via imp:binary-algebraic-CNF-IPS-transfer; stronger than needed.
+- E5: PHP-source exclusion, PHP-specific.
+
+2. Architectures:
+(a) Collapse-first: tree-like low-degree F2 PC with cedents plus weak-dual-PHP-type axioms. Break point:
+    uniformity over proof-dependent f (untested). Prop 47 rules out degree-only versions.
+(b) Boolean-evaluation route via Razborov-Smolensky. Own elementary check: g_i = F_i prod_{j<i}(1-F_j)
+    gives sum g_i F_i = 1 on the cube with depth-3 poly-size g_i, so hardness sits in the Boolean-axiom
+    coefficients, invisible on Boolean points; a functional route needs non-Boolean evaluation points
+    (thm:finite-algebra-evaluation looked relevant, read only as a summary).
+(c) Characteristic-sensitive families: families whose cheap certificates need odd-order roots of unity;
+    show every F2 certificate yields an AC0[2] computation of a MOD_q-type function, as
+    cor:trace-certificate-depth-gap does for one certificate. Break point: one certificate to all.
+
+3. Why extension fields are cheap: F_(2^a)^* is cyclic of odd order, so constant-depth circuits over
+F_(2^a) compute MOD_q via prod(1+(zeta-1)x_i); Smolensky shows F2 constant depth cannot. Rank is invariant
+under extension, so the rank method cannot see the difference. Around it: families without cheap
+extension-field certificates (none known from the file), or methods using properties not preserved by
+extension (Boolean-input approximation, Frobenius equivariance of gate-level computation, evaluation over
+non-field F2-algebras). Binary coefficients alone do not help (the trace achieves them); the distinction
+must be about F2 gates.
+
+Untested: that E1 is weakest; that PCK^1 does not reduce to polylog-degree PC; that uniform-in-f bounds
+are plausible; that non-Boolean evaluation evades the barrier; the odd-order mechanism for the PHP
+certificate. Process audit: ranking by weakness mixes model strength with size demand.
+
+Stage 2 (revealed: route, draft, dependencies). Verdict: pass with corrections. Corollary correct for
+the class of all placeholder-linear certificates; (b) follows by trace linearity; K growing harmless.
+Required: Downstream, Nonvacuity and Obstacle overstated (carry corollary to the matched image, which it
+does not reach); Decision scoped to classes with all certificates; Prediction: rank route would prove more
+than the goal, and failure to construct is not an outcome; test should cover moduli 2^k-1, k=O(log n);
+Independent alternative: attribute normalization remark, restore caveat and pointer; Builds reason weak;
+refresh cor:projection-rank-criterion summary. Attempt step: very likely routine: recursion
+M_r(u,psi)=M_r(u)+psi(M_{r-1}(u)-M_r(u)) and splitting sum_s M_s(u1)M_{r-s}(u2)=M_r(u1,u2) exact by
+orthogonality; M_r^2-M_r via P_jP_j' = P_{j+j'} by per-factor telescoping (1+au)(1+bu)=
+1+((1+a)(1+b)-1)u+ab(u^2-u), size O(n^2); depth O(d); GP composition modularity unread; rewrite test
+lemma-first. Assessment after reveal: needed is a field-sensitive property of the matched image; proposal
+(c) matches. Process audit: repeated method-bounding pattern on ips-direct; image/all distinction lost in
+three paragraphs; Process assessment honest. Supported title: extension barrier covers all Hilbert-like
+certificates, goal review.

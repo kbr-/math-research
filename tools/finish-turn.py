@@ -1672,7 +1672,8 @@ def stale_review_hint(errors):
             'author build. Rebuild in one step, with that build\'s paths: ./compute.sh --threads 1 --category '
             'local_processing python3 tools/claim_refresh.py SPEC --out OUT --proposal PROPOSAL --report REPORT '
             '(it restores the registry from HEAD, deletes the old outputs, reruns author build, copies the '
-            'proposal and renders; keep PROPOSAL in scratch).')
+            'proposal and renders; keep PROPOSAL in scratch). Add --summaries-checked once the spec\'s '
+            'summaries have been compared with the edited entry\'s statements, which author build prints.')
 
 
 def validate_append_only(root):
