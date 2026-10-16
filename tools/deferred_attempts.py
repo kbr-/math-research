@@ -15,6 +15,8 @@ import html
 import re
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 ARTICLE = re.compile(r'<article\b([^>]*)>(.*?)</article>', re.S)
 ITEM = re.compile(r'\bdata-(lead|bridge|idea|check|build)="([^"]+)"')
@@ -26,7 +28,7 @@ DROPPED = re.compile(r'\bdropped\b|\bwill not be made\b|\bis given up\b|\bno lon
 
 
 def owed_text(entry):
-    return ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', ' '.join(OWED.findall(entry)))).split())
+    return ' '.join(html.unescape(strip_tags(' '.join(OWED.findall(entry)))).split())
 
 
 def defers(entry):
@@ -43,7 +45,7 @@ def handles(entry):
     """What the deferring sentences of an entry's Owed attempt paragraphs name their attempt by: the anchors
     they link, the queue identifiers they write, and their runs of QUOTE consecutive words."""
     raw = re.sub(r'<a\b[^>]*\bhref="#([^"]+)"[^>]*>', r' @\1 ', ' '.join(OWED.findall(entry)))
-    text = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', raw)).split())
+    text = ' '.join(html.unescape(strip_tags(raw)).split())
     found = set()
     for sentence in re.split(r'(?<=\.)\s+', text):
         if not UNMADE.search(DENIED.sub(' ', sentence)) or DROPPED.search(sentence):

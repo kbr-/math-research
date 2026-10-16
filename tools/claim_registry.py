@@ -11,6 +11,7 @@ import re
 import subprocess
 from urllib.parse import unquote, urlparse
 from claim_notices import render_notices, strip_notices
+from notebook_math import strip_tags_tight
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / 'research/claims/index.json'
@@ -396,7 +397,7 @@ def file_anchors(path):
     if path.suffix.lower() == '.md':
         used = {}
         for heading in re.findall(r'^#{1,6}\s+(.+?)\s*#*$', text, re.M):
-            slug = re.sub(r'[^\w\- ]', '', re.sub(r'<[^>]+>', '', heading).lower()).replace(' ', '-')
+            slug = re.sub(r'[^\w\- ]', '', strip_tags_tight(heading).lower()).replace(' ', '-')
             n = used.get(slug, 0)
             used[slug] = n + 1
             found.add(slug + (f'-{n}' if n else ''))

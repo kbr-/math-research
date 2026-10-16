@@ -23,6 +23,16 @@ class MathMarkup(unittest.TestCase):
         self.assertIn(r'\(q&lt;h\)', strip_tags(source))
         self.assertEqual(strip_tags_tight('<b>a</b>b'), 'ab')
 
+    def test_no_tool_strips_tags_with_the_bare_pattern(self):
+        # On 16 October 2026 two tools written the same day as the strip_tags repair reintroduced the bare
+        # pattern, which runs from a raw < inside TeX to the next tag; the reviewer found them, not a check.
+        import re
+        tools = Path(__file__).resolve().parents[1]
+        bare = re.compile(r"""re\.sub\(\s*r?['"]<\[\^>\][*+]>['"]""")
+        found = [f'{path.name}:{number}' for path in sorted(tools.glob('*.py')) if path.name != 'notebook_math.py'
+                 for number, line in enumerate(path.read_text().splitlines(), 1) if bare.search(line)]
+        self.assertEqual(found, [], 'use notebook_math.strip_tags or strip_tags_tight instead')
+
     def test_the_tools_that_read_notebook_prose_keep_it(self):
         import importlib.util
         tools = Path(__file__).resolve().parents[1]

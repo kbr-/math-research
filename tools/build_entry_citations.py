@@ -9,6 +9,8 @@ import html
 import re
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 ARTICLE = re.compile(r'<article id="([^"]+)"([^>]*)>(.*?)</article>', re.S)
 GENERAL = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
@@ -22,7 +24,7 @@ def build_entries(text):
         if not (re.search(r'\bdata-build="[^"]+"', tags) and 'data-claims="none"' in tags):
             continue
         general = GENERAL.search(body)
-        paragraph = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', general.group(1))).split()) if general else ''
+        paragraph = ' '.join(html.unescape(strip_tags(general.group(1))).split()) if general else ''
         found.append((ident, CLAIM.findall(paragraph), paragraph))
     return found
 

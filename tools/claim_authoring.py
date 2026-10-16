@@ -11,6 +11,7 @@ from claim_registry import ROOT, REGISTRY, load, read_json, validate, require, w
 from claim_reviews import FIELDS, Evidence, make_review, digest
 from claim_maintenance import maintenance
 from result_names import letter_code_labels
+from notebook_math import strip_tags
 
 REQUIRED = 'REQUIRED: '
 
@@ -256,13 +257,14 @@ def build(data, spec, revision):
             'relationships': relationships, 'topic_definitions': deepcopy(spec.get('topic_definitions', []))}
 
 
-STATEMENT = re.compile(r'<p><strong>(?:Lemma|Theorem|Corollary|Proposition|Statement|Claim|Conjecture)\b[^<]*'
+STATEMENT = re.compile(r'<p><strong>(?:Lemma|Theorem|Corollary|Proposition|Statement|Claim|Conjecture|'
+                       r'Imported statement)\b[^<]*'
                        r'</strong>.*?</p>(?:\s*\\\[.*?\\\])?', re.S)
 SHOWN = 700     # characters of an entry statement shown beside a summary
 
 
 def _plain(fragment):
-    return ' '.join(re.sub(r'<[^>]+>', ' ', fragment).replace('&lt;', '<').replace('&gt;', '>')
+    return ' '.join(strip_tags(fragment).replace('&lt;', '<').replace('&gt;', '>')
                     .replace('&amp;', '&').split())
 
 

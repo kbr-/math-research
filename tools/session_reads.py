@@ -22,6 +22,8 @@ import os
 import re
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 SED = re.compile(r"sed -n ['\"]?(\d+),(\d+)p['\"]?\s+([^\s;|&)]+)")
 STATEMENT = re.compile(r'\\begin\{(theorem|thm|proposition|prop|lemma|lem|corollary|cor|claim)\*?\}'
@@ -131,7 +133,7 @@ def unread_ends(entry, found):
     """Lines for the files an entry names that the calls read only by ranges ending before the file's last
     line: what of each was left unread, to be read or to be said beside any conclusion about the file."""
     found, lines = list(found), []
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', entry))       # the entry's words, not its links
+    plain = html.unescape(strip_tags(entry))       # the entry's words, not its links
     for path, spans in sorted(ranged_paths(found).items()):
         name = Path(path).name
         if not Path(path).is_file() or not re.search(r'(?<![\w.-])' + re.escape(name) + r'(?![\w-])', plain):
@@ -206,7 +208,7 @@ def partial_conclusions(entry, found):
     commands = [str(given.get('command', '')) for name, given in found if name == 'Bash']
     lines = []
     for paragraph in re.findall(r'<(?:p|li)\b[^>]*>(.*?)</(?:p|li)>', entry, re.S):
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', paragraph))
+        plain = html.unescape(strip_tags(paragraph))
         if LINES.search(plain):
             continue
         for sentence in re.split(r'(?<=[.;:])\s+', plain):
@@ -283,7 +285,7 @@ def shown(spans):
 
 def named(draft):
     """(paths, line ranges) the draft's text writes out."""
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', draft))
+    plain = html.unescape(strip_tags(draft))
     paths = sorted({Path(path).name for path in PATH.findall(draft)})
     return paths, sorted({(int(low), int(high or low)) for low, high in LINES.findall(plain)})
 

@@ -2,6 +2,7 @@
 new text (CLAUDE.md and AGENTS.md, Naming results): cite results by descriptive names instead. Shared by the
 finisher (new notebook entries) and claim authoring (new claim text)."""
 import re
+from notebook_math import strip_tags
 
 KEPT_LABELS = {'Corollary SL', 'Conjecture SR', 'Remark A.4'}
 LABEL_NOUNS = 'Lemma|Theorem|Corollary|Conjecture|Proposition|Observation|Question|Remark|Criterion'
@@ -10,7 +11,7 @@ LABEL_NOUNS = 'Lemma|Theorem|Corollary|Conjecture|Proposition|Observation|Questi
 def letter_code_labels(html_text):
     """Letter-code result labels in prose; tables (name maps) and HTML tags are ignored."""
     text = re.sub(r'<table\b.*?</table>', ' ', html_text, flags=re.S)   # name maps live in tables
-    text = re.sub(r'<[^>]*>', ' ', text)
+    text = strip_tags(text)
     found = []
     for m in re.finditer(r'\b(' + LABEL_NOUNS + r')\s+([A-Z][A-Za-z0-9.]*[\u2032\u2033]*)', text):
         code = m.group(2).rstrip('.')

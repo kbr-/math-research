@@ -24,7 +24,7 @@ import json
 import pathlib
 import re
 import sys
-from notebook_math import MATH, protect_math
+from notebook_math import MATH, protect_math, strip_tags_tight
 from notebooks import notebook_file
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -50,7 +50,7 @@ LABEL = re.compile(r'^\s*<(?:strong|em)>([^<]{1,80}?)\.?</(?:strong|em)>')
 
 def text(fragment):
     """Plain text of an HTML fragment, claim identifiers kept, TeX kept."""
-    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', protect_math(fragment)))).strip()
+    return re.sub(r'\s+', ' ', html.unescape(strip_tags_tight(fragment))).strip()
 
 
 def sentences(fragment):

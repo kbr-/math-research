@@ -12,6 +12,7 @@ import html
 import re
 
 from record_search import entries, plain, rank
+from notebook_math import strip_tags
 from text_stems import stems
 
 # An article of the record, whatever attributes stand before its id: the notebooks write
@@ -84,7 +85,7 @@ def open_gaps(text, kind=None):
         match = GAP.search(body)
         if not match:
             continue
-        gap = ' '.join(html.unescape(re.sub('<[^>]+>', ' ', match.group(1))).split())
+        gap = ' '.join(html.unescape(strip_tags(match.group(1))).split())
         if gap.startswith('None') or linked_later.get(anchor, -1) > position[anchor]:
             continue
         start = place[anchor] + 1

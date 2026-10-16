@@ -24,6 +24,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from claim_authoring import SIMILAR_AT, similar_claims
+from notebook_math import strip_tags
 
 
 DEFAULT_REGISTRY = ROOT / 'research' / 'claims' / 'index.json'
@@ -89,7 +90,7 @@ CONTEXT_STOP = set('with that this from which their have each when only does int
 def _stems(text):
     """Five-letter prefixes of the words of four or more letters, without markup and inline formulas: weights,
     weighted and weight share one."""
-    text = re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', text))
+    text = re.sub(r'\\\(.*?\\\)', ' ', strip_tags(text))
     return {w[:5] for w in re.findall(r'[a-z]{4,}', text.lower()) if w not in CONTEXT_STOP}
 
 
@@ -126,7 +127,7 @@ def context_matches(sentences, spec, count=CONTEXT_SHOWN):
             stems = _stems(sentence)
             total = sum(weight[s] for s in stems)
             share = sum(weight[s] for s in stems & mine) / total if total else 0.0
-            text = ' '.join(re.sub(r'<[^>]+>', ' ', sentence).split())
+            text = ' '.join(strip_tags(sentence).split())
             scored.append((round(share, 2), text, link))
         out.append((claim['id'], sorted(scored, key=lambda row: -row[0])[:count]))
     return out

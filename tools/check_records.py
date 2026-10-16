@@ -35,6 +35,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import branch_extension
 from char_refs import broken_entities
+from notebook_math import strip_tags_tight
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECTS = Path.home() / ".claude" / "projects"
@@ -75,7 +76,7 @@ def duplicate_headings(text):
         if match.group('pre'):
             previous = None
             continue
-        title = ' '.join(html.unescape(re.sub(r'<[^>]+>', '', match.group('body'))).split())
+        title = ' '.join(html.unescape(strip_tags_tight(match.group('body'))).split())
         if previous is not None:
             level, old_title, end, first_line = previous
             gap = COMMENTS.sub('', text[end:match.start()])
@@ -92,7 +93,7 @@ def untimed_counts(line):
 
 def status_text(meta_html):
     """The status line's text without the finisher's producer credit."""
-    return html.unescape(re.sub(r"<[^>]+>", "", PRODUCER.sub("", meta_html))).strip()
+    return html.unescape(strip_tags_tight(PRODUCER.sub("", meta_html))).strip()
 
 
 def future_entry_dates(line, today):

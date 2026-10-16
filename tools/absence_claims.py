@@ -13,6 +13,8 @@ import html
 import re
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 ARTICLE = re.compile(r'<article id="(entry-[^"]+)"[^>]*>(.*?)</article>', re.S)
 # The entry's own follow-up is a paragraph; a sub-idea's is a list item and removes no top-level item.
@@ -33,7 +35,7 @@ def sentences(entry):
     body = SUGGESTIONS.sub(' ', entry)
     found = []
     for paragraph in re.findall(r'<(?:p|li)\b[^>]*>(.*?)</(?:p|li)>', body, re.S):
-        plain = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', SEARCHED.sub(' ', paragraph))).split())
+        plain = ' '.join(html.unescape(strip_tags(SEARCHED.sub(' ', paragraph))).split())
         for sentence in re.split(r'(?<=[.;])\s+', plain):
             match = ABSENCE.search(sentence)
             if match:

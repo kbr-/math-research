@@ -17,6 +17,8 @@ import json
 import re
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 ARTICLE = re.compile(r'(<article id="(entry-[^"]+)"[^>]*>.*?)</article>', re.S)
 FIRM = re.compile(r'\b(?:proved|verified|measured|working proofs?)\b', re.I)
@@ -27,7 +29,7 @@ SUGGESTIONS = re.compile(r"<h4>Reviewer's suggestions, unverified</h4>\s*<ul>.*?
 
 
 def plain(text):
-    return ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', text)).split())
+    return ' '.join(html.unescape(strip_tags(text)).split())
 
 
 def report(entry, status_line=True):
