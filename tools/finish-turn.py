@@ -1207,6 +1207,21 @@ def validate_hypothesis_steps(text, statuses=()):
                          'step.</strong> and in at least 60 characters, the step of the proof that uses each '
                          'hypothesis and the weakest form that step needs, and the class each conclusion holds '
                          'for (AGENTS.md)')
+    # 16 October 2026: a part added to a Statement after review kept hypotheses copied from its instance and
+    # was missing from this paragraph.  Each lettered part of the Statement is named here.
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    statement = re.search(r'<strong>Statement\.</strong>((?:(?!</p>).)*)', text, re.S)
+    if dated and dated.group(1) >= PARTS_FROM and statement:
+        parts = dict.fromkeys(re.findall(r'(?<![\w\\])\(([a-h])\)\s', html.unescape(strip_tags(statement.group(1)))))
+        missing = [p for p in parts if f'({p})' not in plain]
+        if len(parts) >= 2 and missing:
+            raise ValueError('The Statement has parts ' + ', '.join(f'({p})' for p in parts) + ' and the Hypotheses '
+                             'paragraph names none of ' + ', '.join(f'({p})' for p in missing) + ': say which '
+                             'hypotheses each part uses, read off its proof, not copied from an instance '
+                             '(AGENTS.md)')
+
+
+PARTS_FROM = '2026-10-16'
 
 
 def validate_process_audit(text):

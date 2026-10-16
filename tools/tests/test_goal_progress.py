@@ -331,6 +331,18 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class HypothesisPartsTest(unittest.TestCase):
+    def test_each_statement_part_is_named_in_the_hypotheses(self):
+        # 16 October 2026: a part added after review was missing from the Hypotheses paragraph.
+        body = ('<article id="entry-2026-10-17-x"><p><strong>Statement.</strong> (a) One thing. (b) Another thing. '
+                '(c) A third.</p><p><strong>Hypotheses, each with its step.</strong> The field is used in (a) and '
+                'the axiom in (b); nothing else is used anywhere in the proof at all.</p>')
+        with self.assertRaisesRegex(ValueError, r'names none of \(c\)'):
+            FT.validate_hypothesis_steps(body, {'working_proof'})
+        FT.validate_hypothesis_steps(body.replace('in (b);', 'in (b) and (c);'), {'working_proof'})
+        FT.validate_hypothesis_steps(body.replace('2026-10-17', '2026-10-15'), {'working_proof'})
+
+
 class SmallestCaseTest(unittest.TestCase):
     def test_a_named_next_attempt_reports_its_smallest_case(self):
         # 16 October 2026: four next attempts in a row were decided in a few lines at their smallest case.
