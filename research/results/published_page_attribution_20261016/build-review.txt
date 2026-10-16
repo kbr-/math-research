@@ -1,0 +1,55 @@
+Build published-page-attribution: fresh-context review of the first three commits
+16 October 2026. Reviewer: a Claude Code general-purpose subagent at medium effort, given the
+queued item, the commits and the built site, with no other context. It read and grepped only.
+
+Verdict: pass with corrections.
+
+Checked against the built site: one citation line per article and one citation block on every
+page, in index.html and notebook-source.html alike (main 825, binary-multiplicity-degree 1341,
+odd-prime-reslin-php 753, near-half-pc-degree 383, riemann 121, common-multiplier 32,
+ultimate-matching 17, odd-field-double-covering 6, openai-math-import 4); no line outside its
+article or inserted twice; entries without a status line handled; attribute values holding '>'
+handled; escaping correct in text, attributes and JSON-LD; the live client reloads
+notebook-source.html, which carries the citations; the workflow's base-URL expansion correct with
+or without a trailing slash, from http or https, and an empty output fails the build.
+
+Findings, and what became of each:
+
+1. The workflow's push paths lacked CITATION.cff (now a build input) and tools/notebook_math.py.
+   Fixed: both added.
+2. Escaping in the visible text was untested. Fixed: tests on a title and a heading holding
+   <, & and quotes; the two escaping mutants are killed.
+3. The fallback placements (after the title, at the top), a site URL without a trailing slash and
+   side-notebook citations were untested. Fixed: tests added.
+4. Search: each citation line became a search block, doubling title hits and making the author's
+   name match every entry; the all-notebooks index took the block too. Fixed: both indexes skip
+   .entry-cite and .citation; a browser test searches all notebooks for the block's words.
+5. The author pattern was not limited to the top-level authors list and depended on key order.
+   Fixed: only that list is read, in any key order; the old pattern fails the new test.
+6. Entry dates came from identifiers; one near-half entry's heading shows 12 October where its
+   identifier says 11 October; a month 00 or 13 misbehaved. Fixed: the heading's date is used,
+   and an impossible identifier date fails the build.
+7. The first commit's message had wrong figures (824 for 825 entries; "the two largest pages",
+   which were the live main page and the odd-prime page). Not rewritten: other sessions had
+   committed on local main after these commits, so their messages stand and the corrections are
+   stated in the message of the follow-up commit. The reviewer's offsets (12.25 MB, 18.36 MB)
+   were checked against the baseline build.
+
+Suggestions (unverified), and what became of each:
+- Default --site-url to tools/notebooks.py's PUBLIC: not adopted. That constant is a second
+  hardcoded copy of the deployment's address; the workflow passes the address the Pages
+  configuration gives, and a local build names its own.
+- Escape [ and ] in llms.txt link text: done.
+- TeX in every citation line may add MathJax work on large pages: not measured.
+
+Process audit, and what became of each:
+- Scope beyond the queued item, not flagged in the commits (page title, author meta, canonical
+  and license links): reported to the user with the build.
+- Unmeasured or misattributed claims (text conversion dropping the head; the cause of TeX
+  surviving; "Fourteen mutants", of which the scratch script listed eleven, the other three run
+  separately): stated in the follow-up commit's message.
+- The head-metadata and llms.txt commits ran only the site tests before committing, and the
+  head pass had no timed real build. The whole suite ran at their tip (1117 tests in 8.2 s) and
+  after the fixes (1120 tests in 8.6 s); the real build takes 1.51 s.
+
+Strength count: 4
