@@ -1,0 +1,130 @@
+{
+  "source": {
+    "record": "[Functional killer transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-functional-killer-transfer)",
+    "label": "Functional killer transfer below half the holes",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:admissible-numbering-transfer",
+      "summary": "Admissible numbering transfer: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number m of pigeons and N >= 1 holes, D <= ceil(N/2), C the degree-D PC closure of all axioms and H that of the hole and functionality axioms alone: if a set F of monomial errors with K+|E|<=D has one numbering of pigeons and holes in which, for every matching E in F and every dance-admissible x_t in T_K cap B_K (Impagliazzo-Pudlak-Sgall basis) with t cup E a matching, x_{t cup E} is in B_D, then the common kernel of the x_E in V_K modulo C equals the common kernel modulo H plus C cap V_K. Equivalently the IPS projection R satisfies R(x_E r) = x_E r modulo H on its image.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in two follow-ups; the criterion is sufficient, not necessary, and needs the union of the errors' hole sets to miss a hole.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Gives the joint transfer conjectures for any error set with one admissible numbering, a sufficient condition.",
+      "next_action": "Numbering search for the chain, shared and diagonal sets at 6x5.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:functional-killer-transfer",
+      "summary": "Functional killer transfer: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number m of pigeons and N >= 1 holes, D <= ceil(N/2), C the degree-D PC closure of all axioms and H that of the hole and functionality axioms alone: for every set E of variables and K+|E|<=D, Ann_C(x_E) cap V_K = Ann_H(x_E) cap V_K + (C cap V_K). For N >= 2 the numbering with the holes of E lowest and its pigeons last in a chain order is admissible; N = 1 is checked directly.",
+      "assessment": "Working proof checked against IPS ECCC TR97-042 pages 3-6 by the sole fresh-context medium reviewer with two follow-ups; m > N and N >= 2 were dropped at its finding that no step uses them (more general).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves the single-error parts of conj:functional-kernel-transfer and conj:monomial-kernel-transfer in the basis range, at every K, over every field, for every number of pigeons.",
+      "next_action": "Joint sets without nested hole sets.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:nested-hole-joint-transfer",
+      "summary": "Nested hole joint transfer: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number m of pigeons and N >= 1 holes, D <= ceil(N/2), C the degree-D PC closure of all axioms and H that of the hole and functionality axioms alone: for a set F of matchings whose hole sets form a chain under inclusion, with pigeon set Pi, if for each E in F K+|E|<=D and K+2|E|+min(|Pi|-|E|,K)<=N, then the joint transfer of lem:admissible-numbering-transfer holds. Covers the crossing set {x00x11, x01x10} at 6 pigeons, 5 holes, K=1, and every same-hole variable set at K=1 there; at K=2 only same-hole sets with |Pi|<=2. The room condition is a bookkeeping bound.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer, who checked the room count per error; the room condition is a bookkeeping bound.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Supplies admissible numberings for nested-hole families with room.",
+      "next_action": "Weaker room using vacated holes of E.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:six-by-five-numberings",
+      "summary": "Exhaustive check (numberings.py, exact dance-existence search) on the functional pigeonhole board with 6 pigeons and 5 holes at K=1, D=3: the error sets {x00x11,x11x22} (holes ordered 1,0,2,3,4, pigeons 0,3,4,5,1,2), {x00x11,x00x22} (holes 0..4, pigeons 3,4,5,1,2,0) and {x00x11,x22x33} (holes 0..4, pigeons 3,2,1,0,4,5) satisfy the property of lem:admissible-numbering-transfer, so their joint transfer holds there over every field; the triple {x00x11,x22x33,x34x43} has the property under none of the 86400 numberings, as a count fixes in advance (its hole sets cover all five holes, so some error has a pigeon at the top hole, which cannot dance; the property needs the union of hole sets to miss a hole), although check:block-pair-kernels found its excess 0 over F_2, so the criterion is not necessary. Controls: the crossing set with the corollary's numbering passes; {x04x13} under the identity fails.",
+      "assessment": "Exact search; code, encodings and controls read by the sole fresh-context medium reviewer, who did not rerun it and supplied the top-hole count for the triple.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Decides three recorded sets by the criterion and shows its limit on the fourth.",
+      "next_action": "Joint transfer for the triple by combining numberings.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:admissible-numbering-transfer",
+      "depends_on",
+      "prop:exact-operator-criterion",
+      "Same IPS basis setting and projection R."
+    ],
+    [
+      "lem:admissible-numbering-transfer",
+      "cites",
+      "conj:monomial-kernel-transfer",
+      "Reduces its joint part to a numbering."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "depends_on",
+      "lem:admissible-numbering-transfer",
+      "Supplies the numbering for one error."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "cites",
+      "conj:monomial-kernel-transfer",
+      "Proves its single-error part for D <= ceil(N/2)."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "cites",
+      "conj:functional-kernel-transfer",
+      "Proves its single-error part in the basis range."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "cites",
+      "lem:top-degree-killer-transfer",
+      "The product-system analogue."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "cites",
+      "check:block-pair-kernels",
+      "Agrees with its single excess 0."
+    ],
+    [
+      "lem:functional-killer-transfer",
+      "cites",
+      "check:functional-factor-kernels",
+      "Agrees with its K=1 single kernels."
+    ],
+    [
+      "cor:nested-hole-joint-transfer",
+      "depends_on",
+      "lem:admissible-numbering-transfer",
+      "Supplies one numbering for nested hole sets."
+    ],
+    [
+      "cor:nested-hole-joint-transfer",
+      "cites",
+      "check:functional-kernels-k2",
+      "Agrees with its same-hole set at K=2."
+    ],
+    [
+      "check:six-by-five-numberings",
+      "applies",
+      "lem:admissible-numbering-transfer",
+      "Supplies numberings for three sets."
+    ],
+    [
+      "check:six-by-five-numberings",
+      "cites",
+      "check:block-pair-kernels",
+      "The same six-by-five sets."
+    ]
+  ]
+}
