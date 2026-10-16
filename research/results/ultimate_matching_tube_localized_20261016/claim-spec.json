@@ -1,0 +1,64 @@
+{
+  "source": {
+    "record": "[Tube-localized discrepancy](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-tube-localized-discrepancy)",
+    "label": "Tube-localized discrepancy",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-tube-localized-discrepancy"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:tube-localized-discrepancy",
+      "summary": "On the event of lem:mesh-function-discrepancy, for 0 <= k <= j <= l_1, W = 2^(-k), Phi = (2(j-k)+5)^(3/4) + sqrt(log N): (a) a union A of cells of mesh 2^(-j) has |sum_i 1_A(X_i) - N area(A)| <= L sqrt N Phi (perimeter(A) + 4W #{W-cells containing a cell of A}); (b) a cell function H has the bound with V^0(H) + 4W sum over W-cells of (max H^+ + max H^-); on the event of lem:loglog-mesh-deviation, (a) and (b) hold with sqrt(j + log log N) in Phi. (c) A band a phi(y - f(x)) with |f'| <= K, ramp width w >= 2^(-l_1) and band width W' <= 1 has discrepancy at most L(1+K)^2 a sqrt N((2 log_2(W'/w) + 9)^(3/4) + sqrt(log N)). (d) Disjoint such bands inside the square at their own ramp gradients e^16 <= y_r <= N, B = sum of amplitudes: at most L(1+K)^2 sqrt N(sum_r a_r (2 log_2 y_r)^(3/4) + B(2 log_2(1+1/B) + 9)^(3/4) + B sqrt(log N)); under class cost at most 2 this is O((1+K)^2 sqrt(N log N)). (e) The plain per-cell count bound: a band with ramps w >= 6 sqrt(log N/N) has discrepancy at most L(1+K)^2 (1 + W'/w) a sqrt(N log N). Against Lebesgue measure.",
+      "assessment": "Working proof: cut A along the W-cells; each piece's boundary splits into closed curves of length at most 4 W^2 2^j, charged by part (a) of lem:mesh-function-discrepancy at the log of their own length; layer cake for (b); the cellwise split's remainder plus (b) for (c); Jensen's inequality with the packing sum W'_r <= 1 and the psi*_4 lower bound for (d); Bernstein per cell and the cellwise remainder for (e).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "The fourth route review's lemma-first step: the scale gains of a band are those between its width and its ramps', so disjoint band families inside the square at any gradient levels up to N, with ramps at least the Leighton-Shor scale, are bounded at the conjectured order against Lebesgue measure; tent bands and bands of bounded width ratio already follow from the per-cell count bound.",
+      "next_action": "Plateau bands with ramps between 6 sqrt(log N/N) and 2^(-l_1) and large width ratio, by layers between the two meshes; then the review's decisive test, the split of a single-level class function at its local spacing.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:tube-localized-discrepancy",
+      "depends_on",
+      "lem:mesh-function-discrepancy",
+      "Its part (a), applied to closed curves inside one W-cell, whose length is at most 4 W^2 2^j."
+    ],
+    [
+      "lem:tube-localized-discrepancy",
+      "depends_on",
+      "lem:cellwise-lipschitz-split",
+      "Its proof's cellwise remainder bound for the plateau bands of part (c); its corollary's inner-edge bound."
+    ],
+    [
+      "lem:tube-localized-discrepancy",
+      "cites",
+      "lem:dominant-level-split",
+      "Part (d) covers thin disjoint band families beyond j*(y), where the dominant-level split's cellwise sum is unbounded."
+    ],
+    [
+      "lem:tube-localized-discrepancy",
+      "cites",
+      "lem:local-factor-discrepancy",
+      "That lemma charges each edge at its own level from scale 1 down; this one localizes the charge to the scales below W at a cost of 4W per W-cell met."
+    ],
+    [
+      "lem:tube-localized-discrepancy",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Disjoint band families at one gradient level at (4,4), ramps at least the Leighton-Shor scale, bounded at order sqrt(N log N) against Lebesgue measure."
+    ],
+    [
+      "lem:tube-localized-discrepancy",
+      "depends_on",
+      "lem:loglog-mesh-deviation",
+      "Its sharper deviation in part (a) gives the sqrt(j + log log N) form of parts (a) and (b)."
+    ]
+  ]
+}
