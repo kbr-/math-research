@@ -153,7 +153,16 @@ DENIES = re.compile(r"\b(?:no|not|without|need not|needn't|unnecessary|skip)\b",
 def asks_search(prompt):
     """Whether a sentence of the brief asks for a record search without denying it ("no record search needed"
     cleared the check: the builds' reviewer, 17 October 2026)."""
-    return any(SEARCH.search(s) and not DENIES.search(s) for s in re.split(r'(?<=[.!?\n])\s+', prompt))
+    # The denial counts only near the request, in the words before it or the three after it: "report the
+    # results the draft does not cite" asked for a search and was refused on its "not" (17 October 2026).
+    def asked(sentence):
+        match = SEARCH.search(sentence)
+        if not match:
+            return False
+        before = sentence[max(0, match.start() - 40):match.start()]
+        after = ' '.join(sentence[match.end():].split()[:3])
+        return not (DENIES.search(before) or DENIES.search(after))
+    return any(asked(s) for s in re.split(r'(?<=[.!?\n])\s+', prompt))
 
 
 NO_SEARCH_REASON = ('the brief sends an entry draft but asks the reviewer for no record search; ask it to run one '

@@ -87,11 +87,14 @@ class ReviewerBriefTest(unittest.TestCase):
                         'Run one record search in the words of the next attempt.',
                         'Search the registry for results the draft misses.',
                         'Make one or two searches of the record before the audit.',
-                        'A claim search for the missed results.'):
+                        'A claim search for the missed results.',
+                        # 17 October 2026: refused on the "not" of "does not cite".
+                        'Run two searches with python3 tools/search-claims.py -n 5 and report registered '
+                        'results the draft does not cite that bear on it.'):
                 with self.subTest(ask=ask):
                     self.assertIsNone(hook.refusal(call(f'{base} {ask}')))
             # A sentence that names the search to deny it does not ask for one (the builds' reviewer).
-            for denial in ('No record search is needed.', 'Skip the claim search.'):
+            for denial in ('No record search is needed.', 'Skip the claim search.', 'A record search is not needed.'):
                 with self.subTest(denial=denial):
                     self.assertEqual(hook.refusal(call(f'{base} {denial}')), hook.NO_SEARCH_REASON)
             notes = Path(folder) / 'blind.md'
