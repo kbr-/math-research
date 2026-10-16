@@ -220,6 +220,18 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 
+    def test_sed_substituting_in_a_commit_message_is_refused(self):
+        # 16 October 2026: two substitutions in rewrapped commit messages matched nothing.
+        for command, name in (("sed -i 's/is L sqrt/is at most L sqrt/' $T/commit.txt", "$T/commit.txt"),
+                              ("sed -i 's/a/b/' tmp/msg4.txt", "tmp/msg4.txt")):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn(f"sed -i substitutes in a wrapped commit message ({name})", done.stderr)
+        for command in ("sed -i '129s/old/new/' notes.txt", "sed -n 's/a/b/p' commit.txt", "sed -i 's/a/b/' data.txt"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
     def test_sed_substituting_in_a_page_is_refused(self):
         # A notebook or an entry draft is prose: a substitution that misses says nothing.
         for command, name in (("sed -i 's|old words|new words|' $D/entry.html", "$D/entry.html"),

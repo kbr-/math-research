@@ -228,6 +228,13 @@ def sed_in_place(command: str):
                     "tools/rewrap_md.py")
         # A notebook or an entry draft is prose too: on 16 October 2026 a session replaced sentences of entry drafts
         # with sed substitutions a dozen times, where a pattern that misses says nothing.
+        # A commit message is wrapped prose too: on 16 October 2026 two sed substitutions in rewrapped commit
+        # messages matched nothing across a line break and said nothing.
+        message = next((name for name in files if re.search(r"(?:^|/)(?:commit|msg)[^/]*\.txt$", name)), None)
+        if message and any(re.search(r"(?:^|[;}\s])s(.).*\1.*\1", script) for script in scripts):
+            return (f"sed -i substitutes in a wrapped commit message ({message}): a pattern that a line break "
+                    "splits matches nothing and sed says nothing. Rewrite the message with the Write tool, or "
+                    "replace a passage with tools/replace_text.py FILE OLD_FILE NEW_FILE, then rewrap it")
         page = next((name for name in files if name.endswith(".html")), None)
         if page and any(re.search(r"(?:^|[;}\s])s(.).*\1.*\1", script) for script in scripts):
             return (f"sed -i replaces prose in a page ({page}): a pattern that misses matches nothing and sed says "
