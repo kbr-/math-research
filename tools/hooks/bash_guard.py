@@ -206,6 +206,33 @@ def sed_in_place(command: str):
     return None
 
 
+def sed_ampersand(command: str):
+    """The reason when an in-place sed substitution has an unescaped & in its replacement: sed inserts the
+    whole match there, so a replacement holding an HTML entity such as &lt; pastes the matched text into
+    the file. Twice on 16 October 2026 this garbled a notebook entry without any error."""
+    for scripts, _files in sed_scripts(command):
+        for script in scripts:
+            for start in (m.start() for m in re.finditer(r"(?:^|[;\s}])s(?=[^\w\s\\])", script)):
+                at = start + (0 if script[start] == "s" else 1)
+                delim = script[at + 1]
+                fields, field, i = [], "", at + 2
+                while i < len(script) and len(fields) < 2:
+                    if script[i] == "\\" and i + 1 < len(script):
+                        field += script[i:i + 2]
+                        i += 2
+                        continue
+                    if script[i] == delim:
+                        fields.append(field)
+                        field = ""
+                    else:
+                        field += script[i]
+                    i += 1
+                if len(fields) == 2 and re.search(r"(?<!\\)&", fields[1]):
+                    return ("sed -i has an unescaped & in a replacement, which sed replaces by the whole match "
+                            f"({fields[1][:60]}): escape it as \\& or make the edit with the Edit tool")
+    return None
+
+
 STAGING_SILENCED = re.compile(r"\bgit\s+(?:-C\s+\S+\s+)?(?:add|commit)\b[^;&|\n]*?(?:2>\s*/dev/null|&>\s*/dev/null|2>&1\s*>\s*/dev/null|>\s*/dev/null\s+2>&1)")
 
 
@@ -502,7 +529,7 @@ def main() -> int:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
     reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or sed_in_place(command)
-              or staging_silenced(command)
+              or sed_ampersand(command) or staging_silenced(command)
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)

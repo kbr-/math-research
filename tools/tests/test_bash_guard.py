@@ -192,6 +192,18 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 
+    def test_sed_in_place_with_an_unescaped_ampersand_in_a_replacement_is_refused(self):
+        for command in ("sed -i 's#a b#x &lt; y#' entry.html", "sed -i -e 's/p/q/' -e 's|r|M&amp;N|' a.html"):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn("unescaped & in a replacement", done.stderr)
+        # An escaped ampersand, one only in the pattern, and sed without -i are fine.
+        for command in ("sed -i 's#a b#x \\&lt; y#' entry.html", "sed -i 's/&lt;/</' entry.html",
+                        "sed 's/a/&b/' entry.html"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
     def test_an_inline_script_replacing_text_in_a_file_is_refused(self):
         heredoc = "python3 - <<'EOF'\nfrom pathlib import Path\n{}\nEOF"
         for script in (
