@@ -161,33 +161,36 @@ growing checklists or one-off setup narratives.
   the rules it uses; it, and a next attempt's Smallest case, say after `<strong>Plainest
   bound.</strong>` what the plainest available bound (a bare count, a one-dimensional estimate, the
   record's oldest applicable lemma) gives on that instance, or why none applies (the finisher
-  checks); and a recorded result the draft cites is read also for what it already implies about the
-  new statement's special cases. Before a required paragraph or artifact is called done, name what
-  it is meant to establish in the case at hand and check that it does: a witness exercises the step
-  the statement adds, a Meta names the change its commit made, a message reports a result and not an
-  intent (16 October 2026: each of the three passed its rule's wording first). An example or witness
-  offered for a claim, in an entry or a reply, is written with the quantity it illustrates computed
-  beside it, never from memory of its shape. A statement covering several parts (cases, forms,
-  earlier lemmas it refines) gives each part its own form, and a simplification true of some parts
-  is attached to those parts only. Name after `<strong>Baseline.</strong>` the construction or bound
-  that needs no idea (the obvious witness, the trivial estimate) and what the statement adds over it
-  (the finisher requires it of the same entries; 16 October 2026: a comparison omitted a multiplier
-  that survived every choice). An example or test computed with the entry's method also gets its own
-  baseline, computed first: what the plainest available bound gives on that example. State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
-  At the start of drafting, run the entry's skeleton (its headings and labelled paragraphs, before
-  the body) through `tools/notebook-append.py DRAFT --check`, which lists each failing entry check
-  of the append and the finisher that applies to a draft, so a required paragraph is planned before
-  the work. Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook
-  NOTEBOOK` and read each sentence that cites a claim beside that claim's registered statement, and
-  each that links an entry beside that entry's title and status line: a sentence may say no more
-  than its source, and one that draws a decision from a bound of the entry restates the bound's
-  hypotheses and error terms beside the instance and the scale decided. The tool also lists the
-  draft's sentences outside its mathematics that hold a count: read each beside the saved output the
-  count came from. A property of a recorded construction that a proof step uses (what its terms
-  contain, where a factor sits, what it specializes to) is quoted from that construction's record,
-  with its anchor, in the step: a property written from the agent's picture of the construction is
-  an untested hypothesis.
+  checks). For a statement uniform over a family, every fixed witness is decided by a bound for one
+  function (its variance, or a one-dimensional estimate after a change of variables): the sentence
+  then says so and names what the uniformity adds. "None applies" is written only after the plainest
+  bound was tried on the instance; and a recorded result the draft cites is read also for what it
+  already implies about the new statement's special cases. Before a required paragraph or artifact
+  is called done, name what it is meant to establish in the case at hand and check that it does: a
+  witness exercises the step the statement adds, a Meta names the change its commit made, a message
+  reports a result and not an intent (16 October 2026: each of the three passed its rule's wording
+  first). An example or witness offered for a claim, in an entry or a reply, is written with the
+  quantity it illustrates computed beside it, never from memory of its shape. A statement covering
+  several parts (cases, forms, earlier lemmas it refines) gives each part its own form, and a
+  simplification true of some parts is attached to those parts only. Name after
+  `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious witness,
+  the trivial estimate) and what the statement adds over it (the finisher requires it of the same
+  entries; 16 October 2026: a comparison omitted a multiplier that survived every choice). An
+  example or test computed with the entry's method also gets its own baseline, computed first: what
+  the plainest available bound gives on that example. State compositions as lemmas in one common
+  setting with a complete proof, not a reference to a sketch. At the start of drafting, run the
+  entry's skeleton (its headings and labelled paragraphs, before the body) through
+  `tools/notebook-append.py DRAFT --check`, which lists each failing entry check of the append and
+  the finisher that applies to a draft, so a required paragraph is planned before the work. Before
+  the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each
+  sentence that cites a claim beside that claim's registered statement, and each that links an entry
+  beside that entry's title and status line: a sentence may say no more than its source, and one
+  that draws a decision from a bound of the entry restates the bound's hypotheses and error terms
+  beside the instance and the scale decided. The tool also lists the draft's sentences outside its
+  mathematics that hold a count: read each beside the saved output the count came from. A property
+  of a recorded construction that a proof step uses (what its terms contain, where a factor sits,
+  what it specializes to) is quoted from that construction's record, with its anchor, in the step: a
+  property written from the agent's picture of the construction is an untested hypothesis.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use

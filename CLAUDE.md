@@ -21,3 +21,8 @@ The first lines drafted for any proof, test, witness or next attempt are its Pla
 bare count or oldest recorded lemma evaluated on its instance, written before any method is chosen.
 A rule written about this after a mistake does not change the order of work; drafting it first does
 (16 October 2026: the baseline rule of the morning did not stop the same mistake in the evening).
+
+A negative sentence ("no estimate applies", "nothing covers it", "the record lacks it") is a claim
+like any other: write it only beside the attempt that failed, never as the plausible default when a
+paragraph needs filling (16 October 2026: "no one-dimensional estimate applies" was false for a
+sheared witness).
