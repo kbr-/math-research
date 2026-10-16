@@ -358,12 +358,12 @@ def mistake_block(texts, told):
         'instance is not a prevention. If the sentence admits no mistake of yours, say so.')}
 
 
-def promise_block(texts, answered=()):
+def promise_block(texts, quoted=()):
     """The block for a turn that promises future behaviour, or None.  A sentence quoted by an earlier block
-    of this turn (`answered`, the hook's feedback) is not blocked again: mid-turn messages and the feedback
-    itself start no new turn, so without this one answered promise blocked every later stop (16 October
-    2026, three times)."""
-    found = [s for s in promises(texts) if not any(f'"{s}"' in f for f in answered)]
+    of this turn (`quoted`, the hook's feedback) is not blocked again, whether or not the reply answered
+    it: mid-turn messages and the feedback itself start no new turn, so without this one answered promise
+    blocked every later stop (16 October 2026, three times)."""
+    found = [s for s in promises(texts) if not any(f'"{s}"' in f for f in quoted)]
     if not found:
         return None
     return {'decision': 'block', 'reason': (
@@ -453,11 +453,11 @@ def checks_off(root):
 
 
 
-def turn_block(texts, calls, said, off, answered=()):
+def turn_block(texts, calls, said, off, quoted=()):
     """The first block among the checks that run at a stop and at a commit alike (a promise, an admitted
     mistake, a tool's fault worked around, a declared gap), those named in `off` left out; or None.
     `said` is what the gap check reads: the final reply, or what was said since the last commit."""
-    checks = (('promise', lambda: promise_block(texts, answered)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
+    checks = (('promise', lambda: promise_block(texts, quoted)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
               ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)))
     return next(filter(None, (check() for name, check in checks if name not in off)), None)
 
@@ -490,15 +490,15 @@ def main(argv):
         return 0
     reply = data.get('last_assistant_message') or ''
     path = data.get('transcript_path')
-    answered = []
+    quoted = []
     try:
-        calls, texts = read_turn(path, answered) if path else ([], [])
+        calls, texts = read_turn(path, quoted) if path else ([], [])
     except OSError:
         calls, texts = [], []
     # The final reply may not be in the transcript yet when the hook runs.
     turn_texts = texts + ([reply] if reply not in texts else [])
     off = checks_off(ROOT)
-    blocked = turn_block(turn_texts, calls, reply, off, answered) or next(filter(None, (
+    blocked = turn_block(turn_texts, calls, reply, off, quoted) or next(filter(None, (
         check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),)
                                     + branch_checks(turn_texts, calls, reply, ROOT))
         if name not in off)), None)
