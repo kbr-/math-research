@@ -370,6 +370,7 @@ class UncheckedClaimTest(HookFixture):
                       'Only deleting text, or adopting the reviewer\'s own wording, counts as narrowing.',
                       'The rule rereads a summary when a correction narrows what it summarizes.',
                       'The Assessment still says the smooth part is "charged once", which the reviewer withdrew.',
+                      '**What the first review narrowed:**\n- **Novelty.** I had claimed (a) as new. Now it is cited.',
                       'The entry is committed.'):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.scope_block(reply))

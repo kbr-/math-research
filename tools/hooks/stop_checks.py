@@ -310,7 +310,7 @@ def gap_block(reply):
 NARROWED = re.compile(r"[^.!?\n]*\b(?:review|reviewer|correction)s?\b[^.!?\n]{0,60}?\b(?:narrow(?:ed|s)?|"
                       r"withdr(?:ew|awn|aws))\b(?!\s+(?:than|as))[^.!?\n]*", re.I)
 NARROWED_SKIP = re.compile(r"too narrow|counts as|summar|\bwhen a\b|\bif a\b", re.I)
-OLD_AND_NEW = re.compile(r"\b(?:I (?:said|described|reported|wrote|called|stated|claimed)|earlier|before the review|"
+OLD_AND_NEW = re.compile(r"\b(?:I (?:had )?(?:said|described|reported|wrote|written|called|stated|claimed)|earlier|before the review|"
                          r"from\b.*\bto\b|old scope|new scope|now (?:says|reads|holds|covers|states)|instead|was)\b",
                          re.I)
 
@@ -320,8 +320,19 @@ def scope_block(reply):
     before and what holds now, or None."""
     # A quotation of the old wording names the old scope (16 October 2026: "The Assessment still says the smooth
     # part is "charged once", which the reviewer withdrew" was refused once its quotation had been stripped).
-    found = [s for s in NARROWED.findall(re.sub(FENCED, ' ', reply, flags=re.M))
-             if not NARROWED_SKIP.search(s) and not OLD_AND_NEW.search(s) and not re.search(r'["“`]', s)]
+    # A heading line ending in a colon is read with the list that follows it, up to the next blank line
+    # (16 October 2026: "**What the first review narrowed:**" was refused though each bullet under it gave both).
+    text = re.sub(FENCED, ' ', reply, flags=re.M)
+    found = []
+    for m in NARROWED.finditer(text):
+        s = m.group(0)
+        if NARROWED_SKIP.search(s) or OLD_AND_NEW.search(s) or re.search(r'["“`]', s):
+            continue
+        if re.match(r'[^\n]*:\**[ \t]*\n', text[m.start():]):
+            block = text[m.end():].split('\n\n', 1)[0]
+            if OLD_AND_NEW.search(block) or re.search(r'["“`]', block):
+                continue
+        found.append(s)
     if not found:
         return None
     return {'decision': 'block', 'reason': (
