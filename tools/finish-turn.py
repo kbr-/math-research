@@ -1131,6 +1131,29 @@ def validate_degenerate_cases(text, statuses=()):
                          '(AGENTS.md)')
 
 
+SMALLEST_FROM = '2026-10-16'
+
+
+def validate_smallest_case(text):
+    """An entry whose Continuing follow-up names a next attempt says what that attempt gives on its smallest case.
+
+    On 16 October 2026 four entries in a row named a next attempt that their reviewer, or the next entry,
+    decided in a few lines at its smallest instance; the rule to try it first was written and not applied."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < SMALLEST_FROM:
+        return
+    follow = re.search(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', text, re.S)
+    plain = html.unescape(strip_tags(follow.group(1))) if follow else ''
+    if not re.match(r'\s*Continuing', plain) or not re.search(r'\bnext attempt\b', plain, re.I):
+        return
+    given = re.search(r'<strong>Smallest case\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    said = html.unescape(strip_tags(given.group(1))).strip() if given else ''
+    if len(said) < 40:
+        raise ValueError('This entry names a next attempt: say, after <strong>Smallest case.</strong> and in at '
+                         'least 40 characters, what the attempt gives on its smallest nontrivial instance, tried '
+                         'before naming it, or why that instance does not decide it (AGENTS.md, next attempts)')
+
+
 BASELINE_FROM = '2026-10-16'
 
 
@@ -1489,6 +1512,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
         validate_developed_removals(text)
         validate_corrections_read(text)
         validate_developed_readings(text)
+        validate_smallest_case(text)
         if check_registered_claims:
             known = registered_status()
             statuses = {known.get(cid) for cid in entry_claims(body, article)}

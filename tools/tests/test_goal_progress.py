@@ -331,6 +331,19 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class SmallestCaseTest(unittest.TestCase):
+    def test_a_named_next_attempt_reports_its_smallest_case(self):
+        # 16 October 2026: four next attempts in a row were decided in a few lines at their smallest case.
+        body = ('<article id="entry-2026-10-17-x"><p><strong>Follow-up.</strong> Continuing. The next attempt is '
+                'the twisted case.</p>')
+        with self.assertRaisesRegex(ValueError, 'Smallest case'):
+            FT.validate_smallest_case(body)
+        FT.validate_smallest_case(body + '<p><strong>Smallest case.</strong> At k=2, n=1 the matrix is '
+                                  'conjugate to a diagonal one only when its trace is a polynomial.</p>')
+        FT.validate_smallest_case(body.replace('2026-10-17', '2026-10-15'))
+        FT.validate_smallest_case(body.replace('Continuing', 'Closed: superseded'))
+
+
 class SearchesRunTest(unittest.TestCase):
     def test_a_record_search_paragraph_needs_a_logged_search(self):
         import json, tempfile
