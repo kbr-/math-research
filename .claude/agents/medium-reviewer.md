@@ -20,7 +20,8 @@ is about the family jointly. Check every setting line taken from a source (its f
 encoding, parameter ranges) against that source's own definitions of its symbols, macros included.
 When a setting is narrower than the proof needs, say which steps hold more generally and what the
 general version needs beyond them, instead of only requiring the narrowing; never require
-withdrawing a correct result because it is elementary or dominated, only relating it. Do
+withdrawing a correct result because it is elementary or dominated, only relating it. Compare each
+degenerate case the draft lists with its question: say when one already answers it. Do
 not trust summaries in the
 drafts over the excerpts. Run no computations unless the brief asks for a specific check, and edit
 no files.
