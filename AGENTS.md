@@ -98,7 +98,11 @@ growing checklists or one-off setup narratives.
   a reviewer's correction, only after naming the step that needs the narrower setting, and record
   that step. A correct result is withdrawn only when false: one that is elementary, dominated or
   superseded is kept and registered with that relation (user, 16 October 2026: "If we get a general
-  version for free, we do the general version. Don't throw away results.").
+  version for free, we do the general version. Don't throw away results."). To compare dimensions or
+  bound a rank, first seek a natural map: an injection into the space claimed larger, or a map whose
+  zero set is described exactly, which shows which elements survive. Use a bare dimension count only
+  after the entry says which map was tried and where it failed (user, 16 October 2026: dimension
+  counts only when no such map is found after an honest attempt).
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
   `--show LABEL`. The tool logs each search, and the finisher refuses an entry with a Record search
   paragraph whose session ran none, printing the session's searches to compare with the paragraph.
