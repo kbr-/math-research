@@ -272,6 +272,91 @@ growing checklists or one-off setup narratives.
   run site/rendering checks only for layout/tool changes or a concrete rendering concern. Do not
   display PNG previews unless requested.
 
+### Order of work
+
+For any proof, test, witness, next attempt or summary (each line from a mistake of 16 or 17 October
+2026; a rule added after a mistake is applied at once to the next text written; moved here from
+CLAUDE.md on 17 October 2026, user: "Please don't perform improvements in CLAUDE.md. the place is
+AGENTS.md"):
+
+- Choose a target by what is true at the goal, not by what the tools at hand prove easily: a target
+  the tools reach easily is first tried for refutation on its plainest counterexample.
+- First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
+  before any method is chosen; then, once a proof exists, each of its own steps used alone (a
+  substitution, a reduction, a restriction), since a step that already decides the instance makes
+  the rest of the proof a variant to compare, not the result.
+- When a tool refuses, collides or reports something unexpected, find its cause before trying
+  another route, and state the cause; an opening claim is stated only in the scope already proved.
+- A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
+  checked on the family's extreme members: boundaries that coincide, many members through one point.
+- A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
+  source: a proof, a statement of record, or the word judgement; the reason is written from that
+  source, not from the decision it is meant to support.
+- Check a witness's or construction's constraints as functions of the growing parameter, in the
+  limit, never at the size written for.
+- Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
+  arithmetic.
+- Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt
+  that failed.
+- Write the Record comparison before New mathematics, the title or any sentence calling a result
+  new: compare from the record's side (the entries a draft leans on, their dependencies and
+  dependents), not from the draft's own wording, and only then decide what is new. The comparison
+  reads the proofs of the results the draft builds on for a step, not only their statements: a step
+  that is inside a cited proof is a citation, not new.
+- Name a relation between two statements (false, superseded, implied, a special case) only after
+  setting the earlier statement's own words beside the new one, and choose the weakest relation both
+  support: a statement true of its own method is not made false by a better method; a one-sided
+  bound is summarized as a bound or a sufficient condition, never with "is", "equals" or "reduces
+  to".
+- Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
+  statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
+  source, with its qualifiers word for word, and explain a failing check only by quoting the lines
+  of its output that show the cause.
+- When a computation agrees with what was expected, write next what it does not show, before the
+  sentence that concludes from it; and before posing a statement drawn from one worked construction,
+  write down the construction most unlike it and check the statement there.
+- Before writing any durable text (docstring, commit message, entry, reply), list each figure and
+  finding it will carry beside its source (a saved output, a named agent's report, a proof in the
+  entry); one whose only source is another agent's report is written as that agent's, or recomputed
+  and saved first.
+- A conjecture drawn from a check states the quantity the check computed (its maxima, its field, its
+  representatives); a stronger form is tried first against the system's trivial transformations (16
+  October 2026: a conjecture dropped the check's maximum over representatives and failed on the
+  plainest one).
+- Before a script compares two quantities over choices (a maximum or minimum over representatives,
+  the side of a bound), derive in its docstring from the containment or inequality which extreme the
+  question needs (17 October 2026: a domain saving was taken as a maximum where the bound needs the
+  minimum).
+- Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
+  is listed for without it, with signs or general coefficients, and list it only if that fails (17
+  October 2026: an identity valid over every field was listed as needing characteristic 2).
+- Read a rule or a listed record by applying it to the case in hand (the next attempt, the instance,
+  the sentence being written) and writing what it gives there, never as seen once read (17 October
+  2026: a listed lemma, read, already answered the entry's next attempt).
+- When a written rule lets the same mistake through a second time, replace or back it with a check
+  in that turn, rather than citing the rule again (17 October 2026: a rule on forced controls,
+  written after one, did not stop the next).
+- In a reply as in an entry, say what the record covers, or offer a direction as new, only after a
+  search of the record in the words of its objects in that turn (17 October 2026: a reply offered
+  substitutions and extension variables as unexplored, both recorded).
+- A gap found in the record, or a promising idea met in conversation, is the next attempt: try it or
+  queue it in that turn, and report it so; describing it as missing, or offering it to the user, is
+  not an answer (user, 17 October 2026: "We are the ones developing the record").
+- Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
+  already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
+  (16 October 2026: a new review's folder overwrote an earlier review's record).
+- Count a step done only when its effect is seen, not when its command was issued: read the written
+  file's new content or the tool's own report of the write, the commit's subject in the log, a mark
+  matching on the case it is for (17 October 2026: an excerpt refused behind a silenced error, a
+  stale commit subject printed and not read, and a word mark that matched a path).
+- Run a required tool or check so that it does its job, never in the cheapest form that passes its
+  gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
+  logged, a clause such as Tried: written before the action it reports): if a gate's form is a
+  burden, change the gate in the open, not its use.
+- Before every reviewer brief, reread the draft once against each item of this list and against the
+  rules above on statements (free parameters at their whole range, searches under other names), item
+  by item, rather than relying on having known them while drafting.
+
 ### Goal progress and scheduled review
 
 Keep the existing cadence: six research cycles, then one route review. Do not add reviews or

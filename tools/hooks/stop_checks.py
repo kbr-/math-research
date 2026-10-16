@@ -935,7 +935,7 @@ def figure_block(reply):
     return {'decision': 'block', 'reason': (
         f'A figure without its source: "{found[0][:160]}". Each count, ratio or percentage in a reply stands beside '
         'the saved output it came from (a research/results path), a named agent\'s report or a proof in the entry '
-        '(CLAUDE.md, order of work); save the output first, or drop the figure.')}
+        '(AGENTS.md, order of work); save the output first, or drop the figure.')}
 
 
 # A reply that offers work instead of doing it, or names a gap in the record as if it were an answer (user, 17
