@@ -150,8 +150,11 @@ growing checklists or one-off setup narratives.
   excludes it (the finisher requires the paragraph of an entry registering a proof). Write down also
   one input that satisfies all the statement's hypotheses, with its parameters, after
   `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
-  finisher requires it of the same entries). State compositions as lemmas in one common setting with
-  a complete proof, not a reference to a sketch. At the start of drafting, run the entry's skeleton
+  finisher requires it of the same entries). When the statement extends a recorded one, the input
+  must be one the recorded statement does not already cover, and it is checked step by step against
+  the rules it uses; and a recorded result the draft cites is read also for what it already implies
+  about the new statement's special cases. State compositions as lemmas in one common setting with a
+  complete proof, not a reference to a sketch. At the start of drafting, run the entry's skeleton
   (its headings and labelled paragraphs, before the body) through `tools/notebook-append.py DRAFT
   --check`, which lists each failing entry check of the append and the finisher that applies to a
   draft, so a required paragraph is planned before the work. Before the reviewer's brief, run
