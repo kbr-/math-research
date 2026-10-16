@@ -30,6 +30,31 @@ def run(command, tool="Bash", background=False):
     return types.SimpleNamespace(returncode=status, stderr=said.getvalue())
 
 
+class CannotFailTestsTest(unittest.TestCase):
+    def test_a_commit_adding_a_test_that_cannot_fail_is_refused_only_in_a_session_of_this_checkout(self):
+        flagged = types.SimpleNamespace(returncode=1, stdout='CANNOT FAIL tools/tests/test_x.py::X.test_y: it passes\n'
+                                        '1 tests checked, 1 flagged.\n')
+        clean = types.SimpleNamespace(returncode=0, stdout='ok tools/tests/test_x.py::X.test_y\n')
+        project = str(HOOK.parents[2])
+        with unittest.mock.patch.dict(os.environ, {'CLAUDE_PROJECT_DIR': project}):
+            reason = guard.cannot_fail_tests(run=lambda *a, **k: flagged)
+            self.assertIn('cannot fail', reason)
+            self.assertIn('test_x.py::X.test_y', reason)
+            self.assertIsNone(guard.cannot_fail_tests(run=lambda *a, **k: clean))
+            # A crash or a timeout lets the commit through, with a notice saying it was not checked.
+            said = io.StringIO()
+            crashed = types.SimpleNamespace(returncode=2, stdout='', stderr='Traceback: KeyError')
+            self.assertIsNone(guard.cannot_fail_tests(run=lambda *a, **k: crashed, notice=said))
+            self.assertIn('failed without a verdict (exit status 2): Traceback: KeyError', said.getvalue())
+
+            def timeout(*a, **k):
+                raise subprocess.TimeoutExpired('x', 60)
+            self.assertIsNone(guard.cannot_fail_tests(run=timeout, notice=said))
+            self.assertIn('timed out after 60 s', said.getvalue())
+        with unittest.mock.patch.dict(os.environ, {}, clear=True):
+            self.assertIsNone(guard.cannot_fail_tests(run=lambda *a, **k: flagged))
+
+
 class BashGuardTest(unittest.TestCase):
     def test_the_hook_started_as_a_program_reads_its_call_and_refuses_with_status_two(self):
         payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": "python3 tools/resume.py | tail -5"}})

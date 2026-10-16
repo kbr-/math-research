@@ -1,0 +1,16 @@
+$ python3 tools/test_can_fail.py --base HEAD   (the commit check's own call, before this build's commit)
+ok tools/tests/test_bash_guard.py::CannotFailTestsTest.test_a_commit_adding_a_test_that_cannot_fail_is_refused_only_in_a_session_of_this_checkout (stubbed bash_guard.cannot_fail_tests)
+ok tools/tests/test_draft_claim_sentences.py::ConstructionStepsTest.test_unsourced_proof_sentences_about_a_recorded_construction_are_listed (stubbed draft_claim_sentences.construction_steps, draft_claim_sentences.construction_report)
+ok tools/tests/test_test_can_fail.py::TestCanFailTest.test_a_test_whose_assertion_ignores_the_tool_is_flagged_and_a_real_one_is_not (stubbed test_can_fail.check)
+ok tools/tests/test_test_can_fail.py::TestCanFailTest.test_tests_are_placed_by_their_definition_line_even_when_two_classes_share_a_name (stubbed test_can_fail.enclosing_tests)
+4 tests checked, 0 flagged.
+elapsed 0.12 s
+
+$ python3 tools/test_can_fail.py --all   (final code; full log test-can-fail-all.txt)
+1097 tests checked, 0 flagged.
+not judged (no direct tool call): 480
+
+Earlier versions on the whole suite: one truthy wrong value only, 17 flagged (test-can-fail-all-first.txt); with a raising stub for None-returning functions, 4 flagged, all sound assertTrue tests (test-can-fail-all-second.txt).
+
+The 16 October test is not in the history: the reviewer found it in the first pass of research/results/framework-builds-20261016d/reviewer.txt, before the commit that added the skeleton-check tests, which holds the corrected version; the fixture of tools/tests/test_test_can_fail.py rebuilds its shape.
+Launcher line of that --all run (research/logs/fw-builds-1017-fd20e87d7d): "Expected 20 s, took 11 s."

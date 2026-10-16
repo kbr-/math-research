@@ -143,6 +143,31 @@ class CountsTest(unittest.TestCase):
         self.assertIn('[Assessment of this line] Assessment of this line. The queue went from 31 to 33.', report)
 
 
+class ConstructionStepsTest(unittest.TestCase):
+    def test_unsourced_proof_sentences_about_a_recorded_construction_are_listed(self):
+        # 16 October 2026: the first draft of the matched jet envelope wrote this from a picture of the compiler.
+        draft = ('<p><strong>Proof.</strong> (a) Every compiler term carries exactly one placeholder (the compiler is '
+                 'zero-respecting: an input line contributes its prefix times its clause placeholder), so '
+                 '\\(A_t(x,0)=0\\). The record states that the segment "specializes to one minus its final prefix '
+                 'product". By <code>thm:used-node-jet-erasure</code> the transform keeps the generators. '
+                 'Then \\(D(x,0)=0\\) and \\(D(x,G)=1\\).</p>'
+                 '<p><strong>Degenerate cases.</strong> The compiler of an empty list has no terms.</p>')
+        found, read = dcs.construction_steps(draft)
+        self.assertEqual(read, 4)
+        self.assertEqual([where for where, _ in found], ['Proof'])
+        self.assertTrue(found[0][1].startswith('(a) Every compiler term carries exactly one placeholder'))
+        # Accepted, each with a listed word: a quoted record passage, a cited claim, an entry anchor, a sentence
+        # outside a proof, and a proof sentence about the draft's own objects.
+        report = dcs.construction_report(draft, 0)
+        self.assertIn('1 such sentences of 4 proof sentences read.', report)
+        anchored = '<p><strong>Proof.</strong> The construction keeps each tag (<a href="#entry-2026-10-12-used-tag-image">its record</a>).</p>'
+        self.assertEqual(dcs.construction_steps(anchored)[0], [])
+        # An attribute's quotes are no quotation: a link elsewhere does not source the sentence.
+        linked = ('<p><strong>Proof.</strong> The compiler keeps each tag, as <a href="research/results/some-long'
+                  '-file.txt">the run</a> shows.</p>')
+        self.assertEqual(len(dcs.construction_steps(linked)[0]), 1)
+
+
 class UniversalsTest(unittest.TestCase):
     """The four conclusions of 12 October 2026 that reviewers found wider than their statements, reconstructed
     from the review records in the paragraphs they stood in, the first drafts having been overwritten: a

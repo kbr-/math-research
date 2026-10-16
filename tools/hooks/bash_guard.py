@@ -581,12 +581,43 @@ def main() -> int:
     if "git" in command and "commit" in command:
         # A long autonomous turn never reaches the Stop hook: its promises are checked at each commit.
         import during_run
-        reason = during_run.commit(payload)
+        reason = during_run.commit(payload) or cannot_fail_tests()
         if reason:
             print(reason, file=sys.stderr)
             SAID.append(reason)
             return 2
     return 0
+
+
+def cannot_fail_tests(run=subprocess.run, notice=sys.stderr):
+    """The refusal of a commit that adds a framework test which still passes with every tool function it calls
+    stubbed to a wrong value or a refusal (tools/test_can_fail.py), or None. On 16 October 2026 a new test
+    compared an immutable string with itself, and only the reviewer caught it. It runs only in a Claude Code
+    session of this checkout (Codex sessions do not get it), outside ./compute.sh since it runs only the
+    commit's new tests; when the check times out or fails without a verdict, the commit goes through with a
+    notice saying so."""
+    tool = Path(__file__).resolve().parents[1] / 'test_can_fail.py'
+    # Only in a session of this checkout, as the block log does: a test of the guard leaves the variable unset
+    # or names another directory, and must not run the check against the repository's working tree.
+    project = os.environ.get('CLAUDE_PROJECT_DIR')
+    if not tool.exists() or not (project and tool.resolve().is_relative_to(Path(project).resolve())):
+        return None
+    try:
+        done = run([sys.executable, str(tool), '--base', 'HEAD'], cwd=str(tool.parents[1]), capture_output=True,
+                   text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        print('Notice: tools/test_can_fail.py timed out after 60 s; the commit is not checked for tests that '
+              'cannot fail.', file=notice)
+        return None
+    flagged = [line for line in done.stdout.splitlines() if line.startswith('CANNOT FAIL')]
+    if done.returncode == 1 and flagged:
+        return ('Refused: a test this commit adds cannot fail (tools/test_can_fail.py):\n' + '\n'.join(flagged) +
+                '\nMake its assertions depend on what the tool returns, or test the tool through a call the '
+                'check can stub.')
+    if done.returncode != 0:
+        print('Notice: tools/test_can_fail.py failed without a verdict (exit status '
+              f'{done.returncode}): ' + (done.stderr or done.stdout).strip()[-300:], file=notice)
+    return None
 
 
 SAID = []   # what the commit's checks said when they blocked, for the block log

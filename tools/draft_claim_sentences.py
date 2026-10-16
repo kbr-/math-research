@@ -15,7 +15,9 @@ It then lists each sentence that denies (no, none, cannot, not) without citing a
 claims and entries its paragraph cites, and each that describes a cited result's proof, remarks or scope,
 beside that result; for both, the passage of the claim's record entry (with --notebook) nearest the
 sentence's words is shown. It then lists the sentences outside the mathematics that hold a count, and the sentences outside the
-statements and proofs that hold a universal or negative word, each to be read beside its source.
+statements and proofs that hold a universal or negative word, each to be read beside its source, and the
+proof sentences that speak of a recorded construction (its compiler, transform, convention, "the lemma's")
+without a claim identifier, an entry anchor or a quotation, each to be checked against that record.
 """
 import argparse
 import hashlib
@@ -235,6 +237,60 @@ def universals_report(draft, width):
                       'statements, proofs and bookkeeping that say no, none, cannot, every, all and the like, '
                       'the summing-up paragraphs first; read each beside the statement it rests on:']
                      + head + lines + [f'{len(found)} such sentences of {read} read.'])
+
+
+# Nouns by which a proof sentence speaks of a recorded construction (a compiler's terms, a transform's lines, a
+# segment's specialization) rather than of the draft's own objects; and what sources such a sentence: a claim
+# identifier, an entry anchor or a quotation. On 16 October 2026 a draft's proof asserted that every compiler
+# term carries one placeholder, and a review's argument read prefix products without the absorption terms, both
+# written from the agent's picture of the construction; the reviewer found each.
+# Only nouns that point outside the draft: "prefix", "translates" and "absorption" were dropped after a count of
+# five past entries (dag composite, composite modulus, paid core pencils, exact implication capacity, the
+# representation review), where 14 of 20 listings were the proofs' own derivations with those words.
+# The narrowed list both dropped and added words, which is why it lists sentences the first did not: it adds
+# phrases that refer to a recorded result without naming it ("the lemma's", "as in the lemma", "recorded").
+# Dropping "prefix" and "absorption" loses the second 16 October case, a review argument that read a prefix
+# product without its absorption terms: such a sentence is listed only if it also names the construction.
+# "compiler", "initial segment" and "GP's" come from one goal's vocabulary; the rest are general, and
+# --construction-words replaces the list. "specialization", a word of the queued item, was tried and dropped:
+# on the representation review both its listings were the proof's own minors.
+CONSTRUCTION = re.compile(r'\b(?:compiler|compiled|construction|transform(?:ed|s)?|initial segments?|'
+                          r'the record|record\'s|recorded|convention|(?:the|its) (?:theorem|lemma|source)\'s|'
+                          r'as in the (?:lemma|theorem|source|record)|GP\'s|its terms)\b',
+                          re.I)
+# A claim identifier or an entry anchor in the sentence's HTML; a quotation in its text, tags stripped, so an
+# attribute's quotes (href="...", class="...") do not count.
+SOURCED_HTML = re.compile(r'#entry-|' + CLAIM.pattern)
+SOURCED_TEXT = re.compile(r'[“”]|"[^"]{8,}"')
+
+
+def construction_steps(draft, words=None):
+    """((section label, sentence text) for every sentence of a Proof paragraph that speaks of a recorded
+    construction (CONSTRUCTION) without a claim identifier, an entry anchor or a quotation in it; the number of
+    proof sentences read). A reading list: each such step is read against the construction's record, and quoted
+    with its anchor, before the review (AGENTS.md)."""
+    found, read = [], 0
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag != 'p' or not label or not label.group(1).startswith('Proof'):
+            continue
+        for index, sentence in enumerate(sentences(body)):
+            unlabelled = LABEL.sub('', sentence) if index == 0 else sentence
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]', ' ', unlabelled, flags=re.S)
+            read += 1
+            if ((words or CONSTRUCTION).search(text(bare)) and not SOURCED_HTML.search(sentence)
+                    and not SOURCED_TEXT.search(text(sentence))):
+                found.append((label.group(1), text(unlabelled)))
+    return found, read
+
+
+def construction_report(draft, width, words=None):
+    found, read = construction_steps(draft, words)
+    lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
+    return '\n'.join(['Proof sentences that speak of a recorded construction (its compiler, transform, segment, '
+                      'translations, prefixes) without a claim identifier, an entry anchor or a quotation; check '
+                      'each against the construction\'s record and quote it with its anchor (AGENTS.md):']
+                     + lines + [f'{len(found)} such sentences of {read} proof sentences read.'])
 
 
 # Words by which a sentence says more than a bound or a sufficient condition gives: equality and exactness, a
@@ -838,6 +894,10 @@ def main():
     parser.add_argument('--width', type=int, default=0, help='cut statements and sentences at N characters')
     parser.add_argument('--notebook', help='also list sentences that link an entry of this notebook file, '
                         'beside the entry\'s title and status line')
+    parser.add_argument('--construction', action='store_true', help='print only the listing of unsourced proof '
+                        'sentences about recorded constructions; for a file of several articles, their count in each')
+    parser.add_argument('--construction-words', help='a regular expression of the nouns that mark a recorded '
+                        'construction, in place of the default list (a notebook with its own vocabulary)')
     parser.add_argument('--exactness', action='store_true', help='print only the listing of words of exactness; '
                         'for a file of several articles, the count of such sentences in each')
     parser.add_argument('--answers', help='a file answering the summing-up sentences the listings print: written '
@@ -876,6 +936,17 @@ def main():
         print(f'{sum(count for _, count in rows)} such sentences in {len(rows)} articles; '
               f'most in one article {max([count for _, count in rows] or [0])}.')
         return 0
+    words = re.compile(r'\b(?:' + args.construction_words + r')\b', re.I) if args.construction_words else None
+    if args.construction:
+        articles = re.findall(r'<article id="([^"]+)"(.*?)</article>', draft, re.S)
+        if len(articles) > 1:
+            rows = [(ident, *construction_steps(body, words)) for ident, body in articles]
+            print('\n'.join(f'{len(found)}\t{read}\t{ident}' for ident, found, read in rows if found))
+            print(f'{sum(len(found) for _, found, _ in rows)} such sentences of '
+                  f'{sum(read for _, _, read in rows)} proof sentences in {len(rows)} articles.')
+        else:
+            print(construction_report(draft, args.width, words))
+        return 0
     if args.exactness:
         articles = re.findall(r'<article id="([^"]+)".*?</article>', draft, re.S)
         if len(articles) > 1:
@@ -900,6 +971,7 @@ def main():
                                  args.width))
     print('\n' + counts_report(draft, args.width))
     print('\n' + universals_report(draft, args.width))
+    print('\n' + construction_report(draft, args.width, words))
     print('\n' + exactness_report(draft, args.width))
     print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     if naming_lines(draft):
