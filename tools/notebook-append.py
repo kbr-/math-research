@@ -473,6 +473,15 @@ def refuse_next_structure(fragment):
                              'or the retained Proposed next step heading')
 
 
+def refuse_item_history(result):
+    """Refuse an entry developing a queue item that the finisher would refuse for its item's record (links to
+    earlier developments, an owed attempt, open sub-ideas), before anything is written or registered."""
+    import lead_queue
+    problems = lead_queue.draft_item_problems(result)
+    if problems:
+        raise ValueError('; '.join(problems))
+
+
 def committed_version(path):
     """The notebook as of HEAD, or None outside a repository or for a notebook not yet committed."""
     try:
@@ -657,6 +666,7 @@ def main():
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
+        refuse_item_history(result)
     except ValueError as err:
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)

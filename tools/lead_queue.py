@@ -1808,6 +1808,62 @@ def review_build_completion(tag, items, nodes):
     return item[0] == 'build' and parent is None and node is not None and not node.children
 
 
+def item_history_problems(body, nodes, articles, tag, text, work, before):
+    """The refusals, in the order check() raises them, of an entry developing queue item work[0] against the item's
+    earlier record: an unlinked last development, unread earlier entries, a return to an item the last review left,
+    an unaccounted named attempt and unmentioned open sub-ideas.  None of them depends on the queue section, so
+    notebook-append.py runs them on a draft before it is appended (16 October 2026: four refusals of one entry
+    came only from the finisher, each after the claims had been registered, which a fix of the entry made stale)."""
+    found = []
+    earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
+    if earlier:
+        found.append(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
+                     'entry, after reading it, so that work already recorded on the item is not repeated '
+                     '(AGENTS.md, restoration and research discipline)')
+    unread = unread_item_entries(articles, work[0])
+    if unread:
+        found.append(f'This entry develops an item that has at most {READ_ALL_LIMIT} earlier entries, counting '
+                     'those on the item itself and those on sub-ideas they listed, and for some of them it '
+                     'lacks: ' + ', '.join(f'#{anchor} ({what})' for anchor, what in unread) + f'. Link each '
+                     f'after reading it and quote {QUOTED_WORDS} consecutive words of its Follow-up (of its '
+                     'title when that is shorter), or name it by its anchor after <strong>Unread.</strong> with the reason it '
+                     'was not read (tools/lead_queue.py, unread_item_entries)')
+    left = left_by_last_review(body, nodes, articles, work[0])
+    if left:
+        found.append(f'The last review, #{left}, names this entry\'s item, or its parent, among the items it '
+                     'leaves (data-left-items): develop another item, or say after <strong>Returns.</strong>, '
+                     'in at least 40 characters, why this entry returns to it (AGENTS.md)')
+    owed = unaccounted_attempt(articles, work[0])
+    if owed:
+        found.append(f'The item\'s last entry, #{owed}, named a next attempt: say after <strong>Owed '
+                     'attempt.</strong>, in at least 40 characters, that it was made, with its outcome, or '
+                     'why another attempt came first (AGENTS.md; a named reading was displaced three times)')
+    silent = unstated_subideas(tag, text, work[0], before[1] if before else nodes)
+    if silent:
+        found.append('This entry develops an item with open sub-ideas it does not mention: give each a '
+                     'follow-up list item with its outcome (Closed, Developed or Continuing): '
+                     + ', '.join(silent) + ' (AGENTS.md; a sub-idea answered by a later entry stayed queued)')
+    return found
+
+
+def draft_item_problems(body):
+    """item_history_problems for the last article of `body`, a notebook with a drafted entry appended but its
+    queue section not yet updated; [] when the entry develops no queue item or the notebook has no queue."""
+    section = SECTION_RE.search(body)
+    now = parse_tree(body)
+    if now is None or not section:
+        return []
+    articles = record_articles(body)
+    if not articles:
+        return []
+    tag, text = articles[-1]
+    work = developed_by(tag, text)
+    if not work:
+        return []
+    nodes = now[1]
+    return item_history_problems(body, nodes, articles, tag, text, work, now)
+
+
 def check(head_body, body, path=None, root=None):
     """Raise ValueError if the queue in `body` breaks the rules relative to `head_body` (HEAD's notebook).
     The entry checked is the last Research-record article of `body`; `path` is the notebook's file, against whose
@@ -1845,34 +1901,9 @@ def check(head_body, body, path=None, root=None):
         raise ValueError('The review\'s data-left-items names items that are not queued: ' + ', '.join(unknown)
                          + ': give the queue\'s own identifiers, since a mistyped one leaves nothing')
     if work:
-        earlier = unlinked_earlier_entry(body, nodes, articles, work[0])
-        if earlier:
-            raise ValueError(f'This entry develops an item that, or whose parent, was last developed in #{earlier}: link that '
-                             'entry, after reading it, so that work already recorded on the item is not repeated '
-                             '(AGENTS.md, restoration and research discipline)')
-        unread = unread_item_entries(articles, work[0])
-        if unread:
-            raise ValueError(f'This entry develops an item that has at most {READ_ALL_LIMIT} earlier entries, counting '
-                             'those on the item itself and those on sub-ideas they listed, and for some of them it '
-                             'lacks: ' + ', '.join(f'#{anchor} ({what})' for anchor, what in unread) + f'. Link each '
-                             f'after reading it and quote {QUOTED_WORDS} consecutive words of its Follow-up (of its '
-                             'title when that is shorter), or name it by its anchor after <strong>Unread.</strong> with the reason it '
-                             'was not read (tools/lead_queue.py, unread_item_entries)')
-        left = left_by_last_review(body, nodes, articles, work[0])
-        if left:
-            raise ValueError(f'The last review, #{left}, names this entry\'s item, or its parent, among the items it '
-                             'leaves (data-left-items): develop another item, or say after <strong>Returns.</strong>, '
-                             'in at least 40 characters, why this entry returns to it (AGENTS.md)')
-        owed = unaccounted_attempt(articles, work[0])
-        if owed:
-            raise ValueError(f'The item\'s last entry, #{owed}, named a next attempt: say after <strong>Owed '
-                             'attempt.</strong>, in at least 40 characters, that it was made, with its outcome, or '
-                             'why another attempt came first (AGENTS.md; a named reading was displaced three times)')
-        silent = unstated_subideas(tag, text, work[0], before[1] if before else nodes)
-        if silent:
-            raise ValueError('This entry develops an item with open sub-ideas it does not mention: give each a '
-                             'follow-up list item with its outcome (Closed, Developed or Continuing): '
-                             + ', '.join(silent) + ' (AGENTS.md; a sub-idea answered by a later entry stayed queued)')
+        problems = item_history_problems(body, nodes, articles, tag, text, work, before)
+        if problems:
+            raise ValueError(problems[0])
     if work and batch:
         raise ValueError('An entry either develops the head (data-lead or data-bridge) or settles a Queue triage '
                          'batch, not both')

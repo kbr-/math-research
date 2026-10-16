@@ -1973,6 +1973,16 @@ class OpenSubideaOutcomesTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'e:s2'):
             lq.check(head, notebook([self.entry('entry-2026-10-11-new', one)], queue))
 
+    def test_a_draft_is_refused_before_its_queue_is_updated(self):
+        parent, one, two = ('lead', 'r:1'), ('check', 'e:s1'), ('check', 'e:s2')
+        queue = [(parent, [one, two])]
+        silent = lq.draft_item_problems(notebook([self.entry('entry-2026-10-11-new', one)], queue))
+        self.assertEqual(len(silent), 1)
+        self.assertIn('e:s2', silent[0])
+        said = '<ul><li data-check="e:s2">Other. <strong>Follow-up.</strong> Continuing: waits.</li></ul>'
+        self.assertEqual(lq.draft_item_problems(notebook([self.entry('entry-2026-10-11-new', one, said)], queue)), [])
+        self.assertEqual(lq.draft_item_problems(notebook([], queue)), [])                    # no entry yet
+
 
 class QueueTrendTest(unittest.TestCase):
     """A review of a draining queue records its count; the guidance shows the trend and the run without bearing."""
