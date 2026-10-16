@@ -10,7 +10,3 @@ under AGENTS.md's Spin rules and re-arm with a short delay (about 60 seconds). U
 for genuinely blocked waits, such as a running reviewer or background batch.
 
 Persistent worktrees and after-commit local synchronization follow AGENTS.md.
-
-Order of drafting: before writing an entry's argument, write its cheapest competitor (the obvious
-witness, the trivial bound, the positive control) and run the skeleton through
-`tools/notebook-append.py DRAFT --check`; compare with the strongest result in view only after that.

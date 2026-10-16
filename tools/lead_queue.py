@@ -2334,7 +2334,40 @@ def build_evidence(text):
     if claim and not re.search(r'\bmeasur(?:ed|ement|ements)\b', text, re.I):
         return (f'the text claims a cost or a saving ("{claim.group(0)}") and does not say what it rests on: name '
                 'the measurement ("measured: ...", with where it is saved), or write "not measured"')
-    return None
+    return saved_figure_missing(text)
+
+
+FIGURE_RE = re.compile(r'\b\d[\d.,]*\s?(?:ms|s|min|h)\b')
+SAVED_PATH_RE = re.compile(r'\b(?:research|tools)/[\w./-]*\w')
+SAVED_SCAN_BYTES = 50_000_000
+
+
+def saved_figure_missing(text, root=None):
+    """A build that names where its measured figure is saved must name a place that holds it.
+
+    On 16 October 2026 a build cited a session-record folder for a warning that had only been printed to the
+    terminal; the folder existed, so the citation looked checked.  The figure (as written, or without its space)
+    is looked for in the named files, a folder's files included, up to SAVED_SCAN_BYTES in all."""
+    root = Path(root or ROOT)
+    figures = {f for f in FIGURE_RE.findall(text)}
+    paths = [root / p for p in SAVED_PATH_RE.findall(text) if (root / p).exists()]
+    if not figures or not paths:
+        return None
+    wanted = {f for fig in figures for f in (fig, fig.replace(' ', ''))}
+    budget = SAVED_SCAN_BYTES
+    for path in paths:
+        files = [path] if path.is_file() else sorted(p for p in path.rglob('*') if p.is_file())
+        for file in files:
+            size = file.stat().st_size
+            if size > budget:
+                return None                                   # too large to check; not refused
+            budget -= size
+            content = file.read_text(errors='replace')
+            if any(w in content for w in wanted):
+                return None
+    return (f'the text names {", ".join(str(p.relative_to(root)) for p in paths)} as where its measurement is '
+            f'saved, but its figure ({", ".join(sorted(figures))}) appears in none of those files: cite the file '
+            'that holds it, or say the figure was not saved')
 
 
 def added_text(source, text):

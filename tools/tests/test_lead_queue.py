@@ -764,6 +764,18 @@ class LeadQueueTest(unittest.TestCase):
         body = lq.add(body, 'check', 'a-check', 's', 'Why?')
         lq.edit(body, 'a-check', 'Why is the copy slow?')
 
+    def test_a_cited_saved_measurement_must_hold_the_figure(self):
+        # 16 October 2026: a build cited a folder for a warning printed only to the terminal.
+        import tempfile
+        with tempfile.TemporaryDirectory() as root:
+            folder = Path(root, 'research', 'logs')
+            folder.mkdir(parents=True)
+            (folder / 'run.txt').write_text('guidance took 1.0 s\n')
+            held = 'Profile it: guidance took 1.0 s (measured: research/logs).'
+            self.assertIsNone(lq.saved_figure_missing(held, root))
+            self.assertIn('appears in none', lq.saved_figure_missing(held.replace('1.0 s', '2.5 s'), root))
+            self.assertIsNone(lq.saved_figure_missing('It took 3 s (measured, not saved).', root))
+
     def test_a_second_extension_of_a_queued_builds_text_is_found(self):
         base = lq.add(notebook([self.rev], self.q), 'build', 'b1', 'a talk', 'Have the tool print the line.')
         once = base.replace('print the line.', 'print the line. Added 1 May from an entry: also the count.')
