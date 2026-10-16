@@ -1,0 +1,67 @@
+{
+  "source": {
+    "record": "[Constructed kernels where truncation is active](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-kernel-construction)",
+    "label": "Constructed kernels where truncation is active",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:top-degree-axiom-inertness",
+      "summary": "Over any field (multilinear ring, or Boolean axioms among G), let G and P be finite sets of polynomials, H the degree-D PC closure of G, P_D the members of P of degree exactly D, and every member of P of degree >= D. The degree-D closure of G with P equals H + span P_D, with the same members of degree below D as H, if and only if (H + span P_D) cap V_{D-1} lies in H; it suffices that the degree-D parts of P_D are linearly independent modulo the degree-D parts of members of H. For the product pigeonhole system over any field (pigeon axioms prod_j(1-x_ij) of degree n, hole axioms) and D <= n, H is the degree-D part of the vanishing ideal of the hole-respecting assignments and the closure's members of degree below D are those of H.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer; the exact condition and the extension to any field are its corrections.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Shows when high-degree axioms leave a window a domain model, so that savings computed there are union-of-supports counts; it reclassifies the line's pigeonhole evidence and tells where a test of truncation must be run.",
+      "next_action": "None for the lemma; tests of truncation effects run on systems whose axioms lie inside the window.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:functional-factor-kernels",
+      "summary": "Exact F2 computation with tools/pc_closure.py on the functional pigeonhole system (pigeon axioms 1+sum_j x_ij, hole and functionality axioms): refutation degree 3 at 3 and 4 holes and 4 at 5 holes; at 6 pigeons, 5 holes, D=3, K=1 (dim V_1=31, C cap V_1 the 6 pigeon axioms), for factor sets {x00,x10}, {x00,x01}, {x00,x11}, {x00,x11,x22}, {x00,x11,x22,x33} the common kernel of the factor maps has dimension 11, 9, 8, 6, 6 and equals the common kernel in the closure of the monomial axioms alone (dimension 5, 4, 2, 0, 0) plus C cap V_1. A positive control (monomial axioms ab, bz, linear axiom w+a+z, D=2, F={w}) gives 3 against 2, so linear axioms can transport killers and the equality is not generic. At 7 pigeons and 6 holes (proper at D=3, dim V_1=43, C cap V_1 the 7 pigeon axioms) the same sets give 13, 11, 9, 7, 7 against Ann_H 6, 5, 2, 0, 0 plus the relations, again equal.",
+      "assessment": "Finite check by exact elimination (functional_factor_kernels.py, functional_factor_kernels.json, the first run's output and the timeout); numbers checked by the reviewer, who supplied the positive control.",
+      "status": "finite_check",
+      "rationale": "The decisive test of the factor-domination review: where the non-monomial axioms are active, they add no common killer at K=1 beyond the domain model of the monomial axioms and the relations.",
+      "next_action": "Transported killers: test them on systems whose factors are sums modulo linear axioms, and prove the pigeonhole K=1 equality at every size.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:top-degree-axiom-inertness",
+      "cites",
+      "check:clique-factor-kernels",
+      "Explains why those instances are a domain model on hole-respecting assignments."
+    ],
+    [
+      "lem:top-degree-axiom-inertness",
+      "cites",
+      "cor:frame-ratio-half",
+      "Both concern closures that are truncated vanishing ideals of a satisfiable frame."
+    ],
+    [
+      "check:functional-factor-kernels",
+      "cites",
+      "lem:factor-ideal-domination",
+      "Its one-hole and one-pigeon controls are the lemma's principal case."
+    ],
+    [
+      "check:functional-factor-kernels",
+      "cites",
+      "check:clique-factor-kernels",
+      "Repeats the comparison on a system whose linear axioms are active in the window."
+    ],
+    [
+      "check:functional-factor-kernels",
+      "cites",
+      "ex:pigeonhole-binary-degree",
+      "Its refutation degrees 3 and 4 at 4 and 5 holes agree with that check's ceil(n/2)+1."
+    ]
+  ]
+}

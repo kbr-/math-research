@@ -1,0 +1,37 @@
+Review record: Constructed kernels where truncation is active (16 October 2026)
+Reviewer: sole fresh-context medium-reviewer subagent (Claude Code), medium reasoning.
+
+Verdict: pass with corrections. lem:top-degree-axiom-inertness (a) correct; the exact condition is
+(H + span P_D) cap V_{D-1} subset H, necessary and sufficient; independence of tops is a strictly
+stronger sufficient case (tops of H form a subspace, top part linear). (b) correct incl.
+triangularity (x_S(1_T) = [S subset T]); free generalisations: H = I(Y) cap V_D, any field with
+prod(1-x_ij). General statement overclaimed "every proper window" (refutation degree n+1 recorded
+only at n=2,3,4). Degenerate case sentence self-contradictory. Nonvacuity: confirm against
+php_degrees.json.
+
+Architecture test: the no-computation argument is correct but trivial (any proper closure of an
+unsatisfiable system's axioms); H = I(Y'') cap V_D for partial matchings and H subset C, so C is a
+domain model in lem:factor-ideal-domination (c)'s containment sense; the test asks whether linear
+axioms add killers beyond the monomial frame. The run used 6 pigeons, 5 holes, not the named 7, 6.
+The comparison Ann_H(F) + C cap V_1 implies the review's prediction at K=1 (state it). Script
+computes the stated quantities; numbers match JSON (11/9/8/6/6, 5/4/2/0/0, 6, 31, degrees 3/3/4);
+cross killers x01, x10 checked by hand; controls could not fail (code checks); dim C cap V_1 = 6 = m.
+ex:pigeonhole-binary-degree covers n=4,5,6 only.
+
+Open point: K=1 equality fails in general: variables a,b,w,z, monomial axioms ab, bz, linear axiom
+w+a+z, F={w}, D=2: b in Ann_C(w), Ann_H(w) = span{1+w}, b not in Ann_H(w) + C cap V_1 (points 0 and
+e_b). Mechanism: killers transported along linear relations. Pigeonhole escapes since x_i0 = 1 +
+sum_{j>0} x_ij forces killing the constant.
+
+Builds: stop_checks change correct, tested, does what stop-check-repeat asked; caveat: it skips any
+quoted sentence whether answered or not ("answered" overstates; rename). claim_refresh change
+correct and tested; the tool does what claim-refresh-command asked; its git checkout HEAD discards
+uncommitted registry edits (predates the change). Both can be closed.
+
+Process audit: title missing (proposed "Inert top-degree axioms and functional pigeonhole kernels");
+"at the size it named" false; General statement overclaim; trivial check presented as result; general
+Reading rests on one size; Follow-up's next attempt belongs to effective-annihilator-degree.
+Suggestions: the counterexample as positive control; a lemma that transported killers must kill 1.
+
+Author resolution: all applied; the named size was attempted and timed out at 110 s; positive control
+added and passed (3 against 2); stop hook parameter renamed to quoted.

@@ -1,0 +1,608 @@
+{
+  "base_sha256": "a1cf6f70bd32ef10456a493652233ac7fe292d94c1130bf05b8fb0790c08f25e",
+  "provenance": {
+    "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+    "date": "2026-10-16",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:top-degree-axiom-inertness",
+        "summary": "Over any field (multilinear ring, or Boolean axioms among G), let G and P be finite sets of polynomials, H the degree-D PC closure of G, P_D the members of P of degree exactly D, and every member of P of degree >= D. The degree-D closure of G with P equals H + span P_D, with the same members of degree below D as H, if and only if (H + span P_D) cap V_{D-1} lies in H; it suffices that the degree-D parts of P_D are linearly independent modulo the degree-D parts of members of H. For the product pigeonhole system over any field (pigeon axioms prod_j(1-x_ij) of degree n, hole axioms) and D <= n, H is the degree-D part of the vanishing ideal of the hole-respecting assignments and the closure's members of degree below D are those of H.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the exact condition and the extension to any field are its corrections.",
+        "record": "[Constructed kernels where truncation is active](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-kernel-construction)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Shows when high-degree axioms leave a window a domain model, so that savings computed there are union-of-supports counts; it reclassifies the line's pigeonhole evidence and tells where a test of truncation must be run.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": "None for the lemma; tests of truncation effects run on systems whose axioms lie inside the window."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:functional-factor-kernels",
+        "summary": "Exact F2 computation with tools/pc_closure.py on the functional pigeonhole system (pigeon axioms 1+sum_j x_ij, hole and functionality axioms): refutation degree 3 at 3 and 4 holes and 4 at 5 holes; at 6 pigeons, 5 holes, D=3, K=1 (dim V_1=31, C cap V_1 the 6 pigeon axioms), for factor sets {x00,x10}, {x00,x01}, {x00,x11}, {x00,x11,x22}, {x00,x11,x22,x33} the common kernel of the factor maps has dimension 11, 9, 8, 6, 6 and equals the common kernel in the closure of the monomial axioms alone (dimension 5, 4, 2, 0, 0) plus C cap V_1. A positive control (monomial axioms ab, bz, linear axiom w+a+z, D=2, F={w}) gives 3 against 2, so linear axioms can transport killers and the equality is not generic. At 7 pigeons and 6 holes (proper at D=3, dim V_1=43, C cap V_1 the 7 pigeon axioms) the same sets give 13, 11, 9, 7, 7 against Ann_H 6, 5, 2, 0, 0 plus the relations, again equal.",
+        "assessment": "Finite check by exact elimination (functional_factor_kernels.py, functional_factor_kernels.json, the first run's output and the timeout); numbers checked by the reviewer, who supplied the positive control.",
+        "record": "[Constructed kernels where truncation is active](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-kernel-construction)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The decisive test of the factor-domination review: where the non-monomial axioms are active, they add no common killer at K=1 beyond the domain model of the monomial axioms and the relations.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": "Transported killers: test them on systems whose factors are sums modulo linear axioms, and prove the pigeonhole K=1 equality at every size."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:clique-factor-kernels",
+        "summary": "Exact F2 computation with tools/pc_closure.py, pigeonhole systems (pigeon axioms prod_j(1+x_ij), hole axioms), multilinear ring, K=1, families of single-variable inputs (g1,g2) with kernel {u in V_1: g1 g2 u in C}: at 4 pigeons, 3 holes, D=3 the six families of check:truncated-kernel-beyond-support have stacked kernel Ann(x_00), dimension 4; at 5 pigeons, 4 holes, D=3 the 15 families (x_00,y), y outside hole 0, have stacked kernel Ann(x_00), dimension 5, against summed codimension 165 in dim V_1=21; the 30 families with first input x_00 or x_10 have stacked kernel of dimension 4, refuting the predicted span{x_20,x_30,x_40} of dimension 3, and equal to Ann(x_00) cap Ann(x_10), which contains 1+x_00+x_10; the 45 families with first input in {x_00,x_10,x_20} have stacked kernel span{1+x_00+x_10+x_20,x_30,x_40}, dimension 3, as predicted before that run.",
+        "assessment": "Finite check by exact elimination with tools/pc_closure.py (factor_kernels.py, factor_kernels.json, factor_kernels_run1.txt); prediction (C) refuted in the first run and recorded; (D) predicted from the corrected reading; numbers checked by the reviewer. All instances lie below the pigeon axioms' degree, a domain model on hole-respecting assignments.",
+        "record": "[Joint-savings goal review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-factor-domination-review)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows on one instance that the joint savings of the pigeonhole families are the annihilator of one element, as lem:factor-ideal-domination proves.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": "None at these sizes: the instances are a domain model; the decisive test moves to the functional pigeonhole system."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Constructed kernels where truncation is active: new relationship with check:functional-factor-kernels, lem:top-degree-axiom-inertness.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:frame-ratio-half",
+        "summary": "For a satisfiable frame whose closure is its truncated vanishing ideal, with top standard degree tau: every unsatisfiable extension by axioms of degree <=w is refuted in degree tau+w, and an extension-count or thin condition verified on the frame alone needs a cutoff of at least about tau/(2+1/Delta). The cube attains ratio one half; the product tree's proved ratio is four fifths.",
+        "assessment": "Working proof from prop:shattered-dimension-bound applied to the divisors of a top standard monomial. Bounds what a frame alone can guarantee, not what a particular contradiction needs.",
+        "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Closes the search for a frame with a better ratio of cutoff to ceiling.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Frame cutoff median entry: new relationship with obs:frame-cutoff-median-comparison. Engine rate skeleton frame entry: new relationship with lem:skeleton-frame-collapse, prop:skeleton-frame-engine-rate. Constructed kernels where truncation is active: new relationship with lem:top-degree-axiom-inertness.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-09-shattered-dimension-bound",
+            "results/near-half-shattered-dimension-20261009/review.txt"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:factor-ideal-domination",
+        "summary": "Over any field, let C be a degree-D PC closure, w_1..w_r of degrees e_i<=e, Ann_K(w)={u in V_K: wu in C}, and s=sum_i a_i w_i with deg a_i+e_i<=K', deg s<=sigma, s w_i - w_i in C for every i, K+K'<=D and K+sigma+e<=D. Then intersection_i Ann_K(w_i)=Ann_K(s): the common kernel of the factor maps is one annihilator. Errors E_nu=h_nu w_{i(nu)}+(member) with deg h_nu<=g and K+e+g<=D have that common kernel inside theirs. In a domain model on a finite X with 0/1-valued w_i, s=1-prod(1-w_i) qualifies when K+(r+1)e<=D; for the pigeonhole hole axioms, w_i=x_ij (i in I) and s=sum_{i in I} x_ij qualify when K+2<=D.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in a staged review; the general per-index degrees and the remark that factorization through s=1 is vacuous are its corrections.",
+        "record": "[Joint-savings goal review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-factor-domination-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "negative_result",
+          "rationale": "Turns the route's non-domination requirement into a checkable condition: a joint saving among errors with shared factors needs truncation to block every affordable principal generator of their factor ideal. Explains why every saving found so far, including the pigeonhole check's, is domination.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": "Test the common kernels of factor families in the functional pigeonhole system at 7 pigeons, 6 holes, D=3, where the closure need not be a vanishing ideal."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Constructed kernels where truncation is active: new relationship with check:functional-factor-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "ex:pigeonhole-binary-degree",
+        "summary": "Exact F_2 computation with research/tools/augmented_php_degree.py (no blocks): for the functional pigeonhole system with n+1 pigeons, n = 4, 5, 6 holes and pigeon equations as axioms, 1 lies in the degree-d PC closure at d = 3, 4, 4 = ceil(n/2)+1; with the recorded lower bound the degree over F_2 is exactly ceil(n/2)+1 there, against the interpolation ceiling n+1 of prop:full-ideal-relaxation-ceiling. The lower degree was not run.",
+        "assessment": "Finite check; outputs and the tool's computation checked by the reviewer.",
+        "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows the literature's upper bound for pigeonhole, whose proof fails in F_2, still gives the right value there at small sizes.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Constructed kernels where truncation is active: new relationship with check:functional-factor-kernels.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-pigeonhole-binary-degree",
+            "results/near-half-pigeonhole-binary-degree-20261010/review.txt",
+            "results/near-half-pigeonhole-binary-degree-20261010/n4-d3.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n5-d4.json",
+            "results/near-half-pigeonhole-binary-degree-20261010/n6-d4.json"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:top-degree-axiom-inertness::cites::check:clique-factor-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-degree-axiom-inertness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:clique-factor-kernels",
+        "locator": null
+      },
+      "scope": "Explains why those instances are a domain model on hole-respecting assignments.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Explains why those instances are a domain model on hole-respecting assignments."
+      }
+    },
+    {
+      "id": "lem:top-degree-axiom-inertness::cites::cor:frame-ratio-half",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:top-degree-axiom-inertness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:frame-ratio-half",
+        "locator": null
+      },
+      "scope": "Both concern closures that are truncated vanishing ideals of a satisfiable frame.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Both concern closures that are truncated vanishing ideals of a satisfiable frame."
+      }
+    },
+    {
+      "id": "check:functional-factor-kernels::cites::lem:factor-ideal-domination",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:functional-factor-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:factor-ideal-domination",
+        "locator": null
+      },
+      "scope": "Its one-hole and one-pigeon controls are the lemma's principal case.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its one-hole and one-pigeon controls are the lemma's principal case."
+      }
+    },
+    {
+      "id": "check:functional-factor-kernels::cites::check:clique-factor-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:functional-factor-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:clique-factor-kernels",
+        "locator": null
+      },
+      "scope": "Repeats the comparison on a system whose linear axioms are active in the window.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Repeats the comparison on a system whose linear axioms are active in the window."
+      }
+    },
+    {
+      "id": "check:functional-factor-kernels::cites::ex:pigeonhole-binary-degree",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:functional-factor-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "ex:pigeonhole-binary-degree",
+        "locator": null
+      },
+      "scope": "Its refutation degrees 3 and 4 at 4 and 5 holes agree with that check's ceil(n/2)+1.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "8dfe65422cf62407b4ce9601841001292460c3bb",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its refutation degrees 3 and 4 at 4 and 5 holes agree with that check's ceil(n/2)+1."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
