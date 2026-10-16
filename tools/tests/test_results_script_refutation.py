@@ -22,6 +22,18 @@ def check(*paths):
     return dict(CS.scripts_without_refuting_outcome(['python3', *map(str, paths)]))
 
 
+class LongRunPowerTest(unittest.TestCase):
+    def test_a_long_run_script_states_its_power_and_parallel_use(self):
+        with tempfile.TemporaryDirectory() as folder:
+            bare = script(folder, BOTH + 'print(1)\n', 'a.py')
+            found = dict(CS.long_scripts_without_power(['python3', str(bare)]))
+            self.assertEqual(len(found[str(bare)]), 2)
+            stated = script(folder, BOTH.replace('"""\n', 'Decisive at these sizes: the two outcomes differ by '
+                                                 'ten times the seed spread.\nParallel use: one process per seed '
+                                                 'over fourteen CPUs.\n"""\n', 1) + 'print(1)\n', 'b.py')
+            self.assertEqual(dict(CS.long_scripts_without_power(['python3', str(stated)])), {})
+
+
 class ResultsScriptRefutationTest(unittest.TestCase):
     def test_both_labelled_lines_pass(self):
         with tempfile.TemporaryDirectory() as folder:

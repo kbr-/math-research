@@ -637,6 +637,38 @@ REFUTATION_PARTS = ((re.compile(_LINE_START + r'Refuted by:' + _FIVE_WORDS, re.M
 NO_STATEMENT = re.compile(_LINE_START + r'No statement tested:' + _FIVE_WORDS, re.M)
 
 
+LONG_RUN_PARTS = ((re.compile(_LINE_START + r'Decisive at these sizes:' + _FIVE_WORDS, re.M), 'a line "Decisive '
+                   'at these sizes:" saying by how much the outcomes it tells apart differ at the sizes run, against '
+                   'the spread between seeds or cases at one size'),
+                  (re.compile(_LINE_START + r'Parallel use:' + _FIVE_WORDS, re.M), 'a line "Parallel use:" saying '
+                   'how the run uses the CPUs (processes over seeds or cases, threaded kernels), or why it cannot'))
+
+
+def long_scripts_without_power(command):
+    """(script argument, what its head lacks) for a run allowed more than KERNEL_RUN_S seconds on a script under
+    research/results without the two labelled lines of LONG_RUN_PARTS.  On 16 October 2026 a run planned at 18
+    minutes, serial in one process on a 14-CPU budget, asked whether a quantity grows like a power of log N over
+    log N from 10 to 14, where its seed-to-seed spread exceeded the whole predicted trend; the user stopped it.
+    The lines make the author state, before the run, whether its outcomes can differ at those sizes and how the
+    CPUs are used; the check cannot tell whether either sentence is true."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()):
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        missing = [what for pattern, what in LONG_RUN_PARTS if not pattern.search(head)]
+        if missing:
+            found.append((arg, missing))
+    return found
+
+
 def scripts_without_refuting_outcome(command):
     """(script argument, what its head lacks) for the command's script arguments under a research/results
     directory whose first lines carry neither both labelled lines, "Refuted by:" and "Possible because:", each
@@ -1027,6 +1059,15 @@ def main():
                          'cannot fail decides nothing. A script that tests no statement says so in a line "No '
                          'statement tested:" with the reason. --exploratory runs it anyway, and the entry then '
                          'says that the script named no refuting output (COMPUTATION_RULES.md)')
+        if args.timeout > KERNEL_RUN_S and not args.user_approved.strip():
+            weak = long_scripts_without_power(command)
+            if weak:
+                parser.error('; '.join(f'the script {arg}, allowed more than {KERNEL_RUN_S} s, lacks in its first '
+                                       f'{REFUTATION_HEAD_LINES} lines ' + ' and '.join(missing)
+                                       for arg, missing in weak)
+                             + ': a long run whose outcomes cannot differ at the sizes it reaches decides nothing, '
+                             'and a serial run wastes the CPU budget; write both lines (at least five words each), '
+                             'commit and run, or shorten the run (COMPUTATION_RULES.md)')
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
