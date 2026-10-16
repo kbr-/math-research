@@ -20,6 +20,7 @@ from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
 from lead_queue import LEADS_RE, BRIDGES_RE
 from bearing_ledger import validate as validate_bearing_ledger
+from notebook_math import strip_tags, strip_tags_tight
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -149,7 +150,7 @@ def validate_leads(body, article, close, draining=None):
     # Leads and bridges exist to answer the line's current obstacle, not as items of their own (user,
     # 26 September 2026): the review states the obstacle, and every item says how it would resolve it.
     obstacle = OBSTACLE_RE.search(body, article, close)
-    if obstacle is None or len(re.sub(r'<[^>]+>', '', obstacle.group(1)).strip()) < OBSTACLE_MIN:
+    if obstacle is None or len(strip_tags_tight(obstacle.group(1)).strip()) < OBSTACLE_MIN:
         raise ValueError('A route review needs an <h4>Obstacle</h4> section whose paragraph states precisely '
                          f'the obstacle the line is stuck on (at least {OBSTACLE_MIN} characters; AGENTS.md)')
     if draining:
@@ -324,7 +325,7 @@ def attempt_checked(text):
     characters of plain text before the next marker."""
     gate = GATE_PARAGRAPH_RE.search(text)
     said = re.search(r'<strong>Attempt checked\.</strong>(.*?)(?=<strong>|$)', gate.group(1) if gate else '', re.S)
-    return bool(said) and len(html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip()) >= 40
+    return bool(said) and len(html.unescape(strip_tags(said.group(1))).strip()) >= 40
 
 
 def validate_owed_unmade(body, article, close):
@@ -336,7 +337,7 @@ def validate_owed_unmade(body, article, close):
     if dated is None or dated.group(1) < OWED_FROM:
         return
     for found in OWED_PARAGRAPH_RE.finditer(body[article:close]):
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1)))
+        plain = html.unescape(strip_tags(found.group(1)))
         handed = OWED_REVIEWER_READ_RE.search(plain)
         if handed:
             # The queued item's own case: on 11 October 2026 an entry said of an owed proof "I did not read: I
@@ -499,7 +500,7 @@ def validate_test_disposition(body, article, value):
     if kind.group(1) == 'New operation':
         for label in ('Operation', 'Prediction'):
             field = re.search(r'<strong>' + label + r'\.</strong>(.*?)(?=<strong>|$)', value, re.S)
-            plain = html.unescape(re.sub(r'<[^>]*>', ' ', field.group(1))).strip() if field else ''
+            plain = html.unescape(strip_tags(field.group(1))).strip() if field else ''
             if len(plain) < 40:
                 raise ValueError(f'A new Decisive test needs {label} describing the actual operation '
                                  'and its distinguishing predicted outcomes; the reviewer checks their content')
@@ -526,7 +527,7 @@ def report_paragraph(text, label):
 def validate_nonvacuity(text):
     """An entry registering a finite check says, in its own paragraph, why the check could decide."""
     found = re.search(r'<strong>Nonvacuity\.</strong>(.*?)</p>', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    plain = html.unescape(strip_tags(found.group(1))).strip() if found else ''
     if len(plain) < 60:
         raise ValueError('An entry registering a finite check (an ex: claim) needs "<strong>Nonvacuity.</strong>" '
                          'with at least 60 characters: what recorded bounds give on the object at the sizes '
@@ -539,7 +540,7 @@ VERDICT_RE = re.compile(r'<strong>\s*(?:Not decided|Decided)\.?\s*</strong>')
 
 def require_report(text, label):
     value = report_paragraph(text, label)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', value)).strip()
+    plain = html.unescape(strip_tags(value)).strip()
     if len(plain) < 40:
         raise ValueError(f'Add a substantive <p><strong>{label}.</strong> ...</p> paragraph '
                          '(AGENTS.md, goal progress and scheduled architecture review)')
@@ -598,7 +599,7 @@ def pending_architecture_test(body, before=None):
                 pending.pop(route, None)
         else:
             evidence = report_paragraph(text, 'Architecture test')
-            plain = html.unescape(re.sub(r'<[^>]*>', ' ', evidence)).strip()
+            plain = html.unescape(strip_tags(evidence)).strip()
             if len(plain) >= 40 and re.search(r'<strong>(?:Not decided|Decided)\.</strong>', evidence):
                 for reviewed_route, target in tuple(pending.items()):
                     if re.search(r'href=["\']#' + re.escape(target) + r'["\']', evidence):
@@ -622,7 +623,7 @@ def validate_closures(text):
     closed = len(CLOSED_RE.findall(text))
     if not closed:
         return
-    stakes = [html.unescape(re.sub(r'<[^>]*>', ' ', found)).strip() for found in STAKES_RE.findall(text)]
+    stakes = [html.unescape(strip_tags(found)).strip() for found in STAKES_RE.findall(text)]
     if len([s for s in stakes if len(s) >= 60]) < closed:
         raise ValueError(f'This entry closes {closed} queue item(s): give each a <strong>Stakes.</strong> '
                          'statement of at least 60 characters, in the paragraph or list item that closes it, '
@@ -633,7 +634,7 @@ def validate_closures(text):
                          'reviewer reads every closure and its stakes (AGENTS.md; user, 10 October 2026)')
     # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
     read = re.search(r'<strong>Sources read\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', read.group(1))).strip() if read else ''
+    plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
     if len(plain) < 40:
         raise ValueError('An entry that closes a queue item says, after <strong>Sources read.</strong> and in at '
                          'least 40 characters, which statements of each source the closure relies on were read, '
@@ -644,7 +645,7 @@ def validate_closures(text):
     # Two closures drafted on 11 October 2026 covered the forms examined while the item named others (its
     # sources, a construction, a consequence); reviewers overturned both.  The author lists the remainder.
     left = re.search(r'<strong>Not examined\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', left.group(1))).strip() if left else ''
+    plain = html.unescape(strip_tags(left.group(1))).strip() if left else ''
     if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
         raise ValueError('An entry that closes a queue item says, after <strong>Not examined.</strong> and in at '
                          'least 40 characters, what the item\'s own statement names (objects, sources, forms) that '
@@ -653,7 +654,7 @@ def validate_closures(text):
     # On 11 October 2026 three closures of one item were drafted while the attempt its last reviewer had
     # named stayed unmade; each reviewer refused.  The closure accounts for that attempt in its own paragraph.
     owed = re.search(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', owed.group(1))).strip() if owed else ''
+    plain = html.unescape(strip_tags(owed.group(1))).strip() if owed else ''
     if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
         raise ValueError('An entry that closes a queue item says, after <strong>Owed attempt.</strong> and in at '
                          'least 40 characters, which attempt the item\'s latest follow-up or its reviewer named '
@@ -678,7 +679,7 @@ NOT_EXAMINED_RE = re.compile(r'<strong>Not examined\.</strong>((?:(?!</p>)(?!</l
 
 def unlisted_limits(text):
     """The self-declared limits of an entry's body that none of its Not examined paragraphs quotes."""
-    plain = lambda fragment: html.unescape(re.sub(r'<[^>]*>', ' ', fragment)).lower()
+    plain = lambda fragment: html.unescape(strip_tags(fragment)).lower()
     listed = ' '.join(plain(found) for found in NOT_EXAMINED_RE.findall(text))
     declared = {found.lower() for found in DECLARED_LIMIT_RE.findall(plain(NOT_EXAMINED_RE.sub(' ', text)))}
     return sorted(limit for limit in declared if limit not in listed)
@@ -716,7 +717,7 @@ def validate_corrections_read(text):
     are removals.  The follow-up with the same reviewer exists for this."""
     if not (CLOSED_RE.search(text) or DEVELOPED_RE.search(text)):
         return
-    gate = html.unescape(re.sub(r'<[^>]*>', ' ', report_paragraph(text, 'Verification gate')))
+    gate = html.unescape(strip_tags(report_paragraph(text, 'Verification gate')))
     found = UNREAD_CORRECTIONS.search(gate)
     if found:
         raise ValueError(f'This entry removes a queue item and its Verification gate says the reviewer '
@@ -742,7 +743,7 @@ def validate_developed_removals(text):
                         ('Owed attempt', 'which attempt the item\'s latest follow-up named and that it was made, '
                          'with its outcome, or that none was named')):
         found = re.search(rf'<strong>{label}\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+        plain = html.unescape(strip_tags(found.group(1))).strip() if found else ''
         if len(plain) < 40:
             raise ValueError(f'An entry that removes a queue item as Developed says, after <strong>{label}.</strong> '
                              f'and in at least 40 characters, {what}; an item with a named part unexamined or a '
@@ -770,13 +771,13 @@ def validate_developed_readings(text):
     whose follow-up is Developed says, after <strong>Sources read.</strong> inside that item, which statement
     was read in its text, and may not say it rests on memory, an abstract or a report."""
     for asked, outcome in READING_ITEM_RE.findall(text):
-        if not READING_ASK_RE.search(html.unescape(re.sub(r'<[^>]*>', ' ', asked))):
+        if not READING_ASK_RE.search(html.unescape(strip_tags(asked))):
             continue
         item = asked + outcome
         read = re.search(r'<strong>Sources read\.</strong>((?:(?!<strong>Follow-up\.</strong>).)*)', item, re.S)
         if not read:                      # also accepted after the follow-up, inside the same item
             read = re.search(r'<strong>Sources read\.</strong>(.*)', outcome, re.S)
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', read.group(1))).strip() if read else ''
+        plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
         if len(plain) < 40:
             raise ValueError('A sub-idea that asks for a reading is marked Developed: say in that list item, after '
                              '<strong>Sources read.</strong> and in at least 40 characters, which statement was '
@@ -801,7 +802,7 @@ def validate_structural_reason(text, statuses=(), claims=()):
     if 'refutation' not in statuses and not obstruction and not re.search(r'\bcounterexamples?\b', told, re.I):
         return
     given = re.search(r'<strong>Structural reason\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
     if len(plain) < 60:
         raise ValueError('This entry reports a counterexample or registers a refutation: say, after '
                          '<strong>Structural reason.</strong> and in at least 60 characters, why it works and to '
@@ -936,7 +937,7 @@ def validate_degenerate_cases(text, statuses=()):
     if not PROVED & set(statuses):
         return
     given = re.search(r'<strong>Degenerate cases\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
     if len(plain) < 60:
         raise ValueError('This entry registers a proved statement: say, after <strong>Degenerate cases.</strong> '
                          'and in at least 60 characters, what the statement gives on a satisfiable system, an '
@@ -952,7 +953,7 @@ def validate_proved_instance(text, statuses=()):
     if not PROVED & set(statuses):
         return
     given = re.search(r'<strong>Nonvacuity\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', given.group(1))).strip() if given else ''
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
     if len(plain) < 60:
         raise ValueError('This entry registers a proved statement: exhibit, after <strong>Nonvacuity.</strong> '
                          'and in at least 60 characters, an input that satisfies all its hypotheses, with its '
@@ -966,7 +967,7 @@ def validate_process_audit(text):
     if not re.search(r'href="[^"]*review[^"/]*\.txt"', gate):
         return
     found = re.search(r'<strong>Process audit\.</strong>(.*)', gate, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    plain = html.unescape(strip_tags(found.group(1))).strip() if found else ''
     if len(plain) < 40:
         raise ValueError('This entry links a reviewer record: report in its Verification gate, after '
                          '<strong>Process audit.</strong>, what the reviewer found about how the work was done '
@@ -993,10 +994,10 @@ def validate_unreviewed_derivations(text, claims=None):
     while they extrapolated a source's formulas and evaluated a what-if; one conclusion took a fixed constant
     for an inherited bound and steered a route review before a reviewer saw it.  An entry whose gate says no
     reviewer was used may quote a source, and may not extrapolate from it."""
-    gate = html.unescape(re.sub(r'<[^>]*>', ' ', report_paragraph(text, 'Verification gate')))
+    gate = html.unescape(strip_tags(report_paragraph(text, 'Verification gate')))
     if not re.search(r'\bno reviewer\b', gate, re.I):
         return
-    body = html.unescape(re.sub(r'<[^>]*>', ' ', text.replace(report_paragraph(text, 'Verification gate'), '')))
+    body = html.unescape(strip_tags(text.replace(report_paragraph(text, 'Verification gate'), '')))
     found = DERIVES.search(body)
     if not found and claims is not None and not claims and '\\[' in text and not QUOTED_ONLY.search(gate):
         # Measured on 11 October 2026 on every notebook: of 142 research entries whose gate says no reviewer,
@@ -1020,7 +1021,7 @@ def validate_prevention(text):
     if not assessment:
         return
     found = re.search(r'<strong>Prevention\.</strong>(.*)', assessment, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    plain = html.unescape(strip_tags(found.group(1))).strip() if found else ''
     if len(plain) < 40:
         raise ValueError('End the Process assessment with <strong>Prevention.</strong> and at least 40 '
                          'characters: the committed check or rule for each mistake it reports, or why none '
@@ -1049,7 +1050,7 @@ def validate_review_answer(root, body, marker):
     position = body.index(marker)
     article = body.rfind('<article', 0, position)
     answer = report_paragraph(body[article:body.find('</article>', article)], 'Review')
-    if len(html.unescape(re.sub(r'<[^>]*>', ' ', answer)).strip()) < 40:
+    if len(html.unescape(strip_tags(answer)).strip()) < 40:
         raise ValueError(f'The stand-in review in {owed} is unanswered: check each of its objections against the '
                          'record, then say in a paragraph of the entry starting <strong>Review.</strong> what became '
                          'of each: fixed, queued, or wrong and why (AGENTS.md, framework maintenance)')
@@ -1123,7 +1124,7 @@ def validate_bearing(body, article, progress, text=None):
     if run < BEARING_AFTER:
         return
     found = re.search(r'<strong>Bearing\.</strong>(.*)', progress, re.S)
-    plain = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1))).strip() if found else ''
+    plain = html.unescape(strip_tags(found.group(1))).strip() if found else ''
     if len(plain) < BEARING_MIN:
         raise ValueError(f'{run} research entries in a row on {route} report unchanged goal progress: end the '
                          f'Goal progress paragraph with <strong>Bearing.</strong> and at least {BEARING_MIN} '
@@ -1169,7 +1170,7 @@ def validate_bearing(body, article, progress, text=None):
             without += 1
         if without >= NO_BEARING_RUN:
             best = re.search(r'<strong>Best outcome\.</strong>((?:(?!</p>).)*)', text, re.S)
-            plain = html.unescape(re.sub(r'<[^>]*>', ' ', best.group(1))).strip() if best else ''
+            plain = html.unescape(strip_tags(best.group(1))).strip() if best else ''
             if len(plain) < BEARING_MIN:
                 raise ValueError(f'{without} research entries in a row on {route} declared no bearing: state, '
                                  f'after <strong>Best outcome.</strong> and in at least {BEARING_MIN} characters, '
@@ -1188,7 +1189,7 @@ def validate_bearing(body, article, progress, text=None):
     # than the proof (reviews of 10 October 2026): it ends with what the result does not cover.
     if declared.group(1) == 'some':
         uncovered = re.search(r'<strong>Not covered\.</strong>(.*)', found.group(1), re.S)
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', uncovered.group(1))).strip() if uncovered else ''
+        plain = html.unescape(strip_tags(uncovered.group(1))).strip() if uncovered else ''
         if len(plain) < NOT_COVERED_MIN:
             raise ValueError('This entry declares data-bearing="some": end its Bearing statement with '
                              f'"<strong>Not covered.</strong>" and at least {NOT_COVERED_MIN} characters '
@@ -1196,7 +1197,7 @@ def validate_bearing(body, article, progress, text=None):
                              '(AGENTS.md, goal progress)')
         # A reviewer of 11 October 2026 refused a bearing whose own text said the hypotheses of the
         # statement it rested on had not been checked.
-        whole = html.unescape(re.sub(r'<[^>]*>', ' ', found.group(1)))
+        whole = html.unescape(strip_tags(found.group(1)))
         if UNCHECKED_RE.search(whole):
             raise ValueError('This entry declares data-bearing="some" and its Bearing statement says that '
                              'something it relies on was not checked: check it, or declare "none" '
@@ -1281,7 +1282,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                  'brief the same medium reviewer with goal and tools before the preferred route')
             if label == 'Necessary target':
                 down = re.search(r'<strong>Downstream\.</strong>(.*)', value, re.S)
-                plain = html.unescape(re.sub(r'<[^>]*>', ' ', down.group(1))).strip() if down else ''
+                plain = html.unescape(strip_tags(down.group(1))).strip() if down else ''
                 if len(plain) < 60 or not re.search(r'\b(?:thm|cor|prop|lem):[\w-]+', plain):
                     raise ValueError('Necessary target must end with "<strong>Downstream.</strong>": the target '
                                      'evaluated through the proved downstream statements, citing their claim '
@@ -1290,13 +1291,13 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             if label == 'Decisive test':
                 validate_test_disposition(body, article, value)
                 searched = re.search(r'<strong>Record search\.</strong>(.*)', value, re.S)
-                plain = html.unescape(re.sub(r'<[^>]*>', ' ', searched.group(1))).strip() if searched else ''
+                plain = html.unescape(strip_tags(searched.group(1))).strip() if searched else ''
                 if len(plain) < 40:
                     raise ValueError('Decisive test must end with "<strong>Record search.</strong>" naming the '
                                      'registry searches made for the test and what they returned: a test the '
                                      'record already answers decides nothing (AGENTS.md, Decisive test)')
                 power = re.search(r'<strong>Power\.</strong>(.*?)(?=<strong>Record search\.</strong>|$)', value, re.S)
-                plain = html.unescape(re.sub(r'<[^>]*>', ' ', power.group(1))).strip() if power else ''
+                plain = html.unescape(strip_tags(power.group(1))).strip() if power else ''
                 if len(plain) < 40:
                     raise ValueError('Decisive test must state "<strong>Power.</strong>" before its Record search: '
                                      'what the recorded ceilings and method limits give on the test\'s object, '
@@ -1304,7 +1305,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'there; a test whose every outcome fits every answer decides nothing '
                                      '(AGENTS.md, Decisive test)')
                 attempt = re.search(r'<strong>Attempt\.</strong>(.*?)(?=<strong>|$)', value, re.S)
-                plain = html.unescape(re.sub(r'<[^>]*>', ' ', attempt.group(1))).strip() if attempt else ''
+                plain = html.unescape(strip_tags(attempt.group(1))).strip() if attempt else ''
                 if len(plain) < 40:
                     # A review of 11 October 2026 posed a test twice that its cited statements answered in a
                     # few lines; the attempt to answer it had not been made before posing it.
@@ -1321,7 +1322,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                                      'the Decisive test\'s Attempt stops: ask for that in the second-stage brief '
                                      '(AGENTS.md, Decisive test)')
                 trivial = re.search(r'<strong>Trivial cases\.</strong>(.*?)(?=<strong>Power\.</strong>|$)', value, re.S)
-                plain = html.unescape(re.sub(r'<[^>]*>', ' ', trivial.group(1))).strip() if trivial else ''
+                plain = html.unescape(strip_tags(trivial.group(1))).strip() if trivial else ''
                 if len(plain) < 40:
                     # A block of 11 October 2026 was given to a comparison with a quantity that changes when
                     # implied rows are added to a system while its degree does not: the question had a trivial yes.
@@ -1388,7 +1389,7 @@ CASE_WINDOW, CASE_LIMIT = 5, 3
 
 def entry_status(body, article):
     meta = body.find('<p class="entry-meta">', article)
-    return re.sub(r'<[^>]*>', '', body[meta:body.find('</p>', meta)]).split('Produced by')[0]
+    return strip_tags_tight(body[meta:body.find('</p>', meta)]).split('Produced by')[0]
 
 
 ENTRY_PARAGRAPHS = re.compile(r'data-entry-paragraphs="([^"]+)"')
@@ -1414,7 +1415,7 @@ def validate_paragraphs(body, article, close):
     kind = entry_tags(body, article)['kind']
     for label in required_paragraphs(body, kind):
         found = re.search(r'<p><strong>' + re.escape(label) + r'\.</strong>(.*?)</p>', body[article:close], re.S)
-        if not found or len(re.sub(r'<[^>]*>', ' ', found.group(1)).strip()) < 40:
+        if not found or len(strip_tags(found.group(1)).strip()) < 40:
             raise ValueError(f'This notebook requires a <p><strong>{label}.</strong> ...</p> paragraph in every '
                              f'{kind} entry (data-entry-paragraphs on its living sections)')
 
@@ -1435,7 +1436,7 @@ def validate_suggestions(body, article, close):
             raise ValueError("A Reviewer's suggestions section lists each suggestion as a <li> item")
         bare = [i for i, item in enumerate(items, 1)
                 if not (found := RECORD_RE.search(item))
-                or len(re.sub(r'<[^>]*>', ' ', found.group(1)).strip()) < 20]
+                or len(strip_tags(found.group(1)).strip()) < 20]
         if bare:
             raise ValueError(f"Reviewer's suggestions item(s) {bare} lack \"<strong>Record.</strong>\" with the "
                              'outcome of a record search (tools/search-claims.py and the notebook): the claim '
@@ -1475,7 +1476,7 @@ def unverified_attempts(entry, next_html=None):
     aside is skipped whole, so a plan in the same sentence passes; and sentences are split only before a capital
     or a formula.  A follow-up that is Closed, Developed or Promoted is not read."""
     def plain(text):
-        return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', text))).strip()
+        return re.sub(r'\s+', ' ', html.unescape(strip_tags(text))).strip()
 
     def words(text):
         return [w for w in (re.sub(r'^\W+|\W+$', '', t).lower() for t in plain(text).split()) if w]
@@ -1516,7 +1517,7 @@ def refuse_unverified_attempt(entry, next_html=None):
     """Refuse such a plan unless the entry says, after a fixed label, what was checked of the suggestion."""
     found = unverified_attempts(entry, next_html)
     checked = CHECKED_RE.search(entry)
-    said = len(re.sub(r'<[^>]+>', ' ', checked.group(1)).strip()) if checked else 0
+    said = len(strip_tags(checked.group(1)).strip()) if checked else 0
     if found and said < CHECKED_LEAST:
         where, reason = found[0]
         raise ValueError(f"The {where} {reason}: a reviewer's suggestion is an unverified lead, verified before it "
@@ -1544,7 +1545,7 @@ def validate_general(body, article, close):
     if tags['kind'] != 'research':
         return
     found = GENERAL_RE.search(body, article, close)
-    text = re.sub(r'<[^>]*>', ' ', found.group(1)).strip() if found else ''
+    text = strip_tags(found.group(1)).strip() if found else ''
     if len(text) < 40:
         raise ValueError('A research entry needs a <p><strong>General statement.</strong> ...</p> '
                          'paragraph: the claim this cycle tests or proves, for all parameters, with '
@@ -1604,7 +1605,7 @@ def validate_marker(body, marker, draining=None):
     meta = body.find('<p class="entry-meta">', article, position)
     if meta < 0 or body.find('</p>', meta, position) < 0:
         raise ValueError('The entry needs a <p class="entry-meta"> status line before its timing marker')
-    status = re.sub(r'<[^>]*>', '', body[meta:body.find('</p>', meta)]).split('Produced by')[0]
+    status = strip_tags_tight(body[meta:body.find('</p>', meta)]).split('Produced by')[0]
     if len(status.strip()) > STATUS_LIMIT:
         raise ValueError(f'The status line has {len(status.strip())} characters; keep it under '
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')

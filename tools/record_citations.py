@@ -11,6 +11,7 @@ import re
 from urllib.parse import urlsplit
 
 from claim_registry import ROOT, local_target, references
+from notebook_math import MATH, strip_tags
 
 LABEL = re.compile(r'\b(?:lem|thm|prop|cor|obs|ex|audit|def|claim|conj|check|proof|note|local|criterion|third-party|imp|draft|ctx|open|q|rem):[A-Za-z0-9][A-Za-z0-9_.+-]*')
 VOID = {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
@@ -21,7 +22,7 @@ def sha(text):
 
 
 def plain(text):
-    return re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]*>', ' ', text))).strip()
+    return re.sub(r'\s+', ' ', unescape(strip_tags(text))).strip()
 
 
 class CitationHTML(HTMLParser):
@@ -31,7 +32,9 @@ class CitationHTML(HTMLParser):
         self.label_pattern=label_pattern
         self.text=text; self.offsets=[0]+[m.end() for m in re.finditer('\n',text)]
         self.stack=[];self.ids=defaultdict(list);self.links=[];self.labels=[];self.open_links=[]
-        self.feed(text);self.close()
+        # a raw < inside TeX would open a tag: masked by a character of the same length, so offsets still
+        # index the original text
+        self.feed(MATH.sub(lambda m:m.group().replace('<','\x02').replace('>','\x03'),text));self.close()
 
     def pos(self):
         line,column=self.getpos();return self.offsets[line-1]+column

@@ -40,6 +40,7 @@ import subprocess
 import sys
 import branch_extension
 from char_refs import broken_entities
+from notebook_math import strip_tags
 from notebooks import selected, ROOT
 from notebook_context import excerpt, living_sections
 
@@ -248,7 +249,7 @@ def review_due(articles):
 
 
 def plain(fragment):
-    return ' '.join(html.unescape(re.sub(r'<[^>]+>', ' ', fragment)).split())
+    return ' '.join(html.unescape(strip_tags(fragment)).split())
 
 
 def require_named_item(source, next_html):
@@ -419,7 +420,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     if next_html is not None:
         refuse_broken_text('next step', next_html)
         refuse_next_structure(next_html)
-        parked = PARKING.search(re.sub(r'<[^>]+>', ' ', next_html))
+        parked = PARKING.search(strip_tags(next_html))
         # A branch's own module may name kinds of entry whose next step may wait.
         may_wait = '|'.join(map(re.escape, branch_extension.ask('PARKING_KINDS', (), tools)))
         waiting_kind = may_wait and re.match(rf'<article\b[^>]*\bdata-kind="(?:{may_wait})"', entry)

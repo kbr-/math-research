@@ -11,6 +11,7 @@ import math
 import re
 
 from text_stems import STOP, matches, stems
+from notebook_math import strip_tags
 
 ARTICLE = re.compile(r'<article\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</article>', re.S)
 TITLE = re.compile(r'<h3[^>]*>(.*?)</h3>', re.S)
@@ -19,7 +20,7 @@ RARE_SHARE = 0.03
 
 
 def plain(fragment):
-    return html.unescape(re.sub(r'<[^>]+>', ' ', fragment))
+    return html.unescape(strip_tags(fragment))
 
 
 def entries(text):

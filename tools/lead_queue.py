@@ -114,6 +114,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import branch_extension
+from notebook_math import strip_tags, strip_tags_tight
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -249,7 +250,7 @@ def added_admit(body, head_body, item):
     line = re.search(r'<li data-' + kind + '="' + re.escape(ident) + r'"([^>]*)>(.*?)</li>', body, re.S)
     source = re.search(r'\bdata-source="([^"]*)"', line.group(1)) if line else None
     problems = [] if ADDED_ID.match(ident) else [f'{kind} ID {ident!r}: lower-case words joined by hyphens']
-    if not source or not source.group(1).strip() or not re.sub(r'<[^>]+>', '', line.group(2)).strip():
+    if not source or not source.group(1).strip() or not strip_tags_tight(line.group(2)).strip():
         problems.append(f'an added {kind} is <li data-{kind}="ID" data-source="WHERE">TEXT</li>, with where it came '
                         'up and a line of text (lead_queue.py add writes it)')
     return problems
@@ -526,7 +527,7 @@ def validate_review_generation(tag, text, draining):
     if not draining or not re.search(r'\bdata-kind="review"', tag):
         return
     headings = re.findall(r'<h[1-6]\b[^>]*>(.*?)</h[1-6]>', text, re.S | re.I)
-    names = {re.sub(r'<[^>]+>', '', heading).strip().casefold() for heading in headings}
+    names = {strip_tags_tight(heading).strip().casefold() for heading in headings}
     if names & {'outside leads', 'absurd bridges'}:
         raise ValueError(DRAINING_REVIEW_RULE)
 
@@ -541,7 +542,7 @@ def wait_changes(text):
             # A branch's own module may read the reference its own way (a link to a record of requests).
             reference = branch_extension.ask('wait_reference')
             given = reference(rest) if reference else None
-            plain = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', rest)).strip(' :.')
+            plain = re.sub(r'\s+', ' ', strip_tags(rest)).strip(' :.')
             out[(kind, item_id)] = plain[:80] if given is None else given
         elif outcome and outcome.group(1) == 'Unblocked':
             out[(kind, item_id)] = None
@@ -695,7 +696,7 @@ def developed_or_none(tag, text):
 
 
 def _words(text):
-    plain = html.unescape(re.sub(r'<[^>]+>', ' ', text))
+    plain = html.unescape(strip_tags(text))
     return [w for w in (re.sub(r'^\W+|\W+$', '', token).lower() for token in plain.split()) if w]
 
 
@@ -771,7 +772,7 @@ def unaccounted_attempt(articles, item):
             if not follow or not re.search(r'\bnext attempt\b', follow[-1], re.I):
                 return None
             said = OWED_RE.search(text)
-            plain = html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip() if said else ''
+            plain = html.unescape(strip_tags(said.group(1))).strip() if said else ''
             anchor = re.search(r'\bid="([^"]+)"', old_tag)
             return anchor.group(1) if len(plain) < 40 and anchor else None
     return None
@@ -802,7 +803,7 @@ def left_by_last_review(body, nodes, articles, item):
         if not names & {item[1], group_of(body, nodes, item, last)[1]}:
             return None
         said = RETURNS_RE.search(text)
-        plain = html.unescape(re.sub(r'<[^>]*>', ' ', said.group(1))).strip() if said else ''
+        plain = html.unescape(strip_tags(said.group(1))).strip() if said else ''
         anchor = re.search(r'\bid="([^"]+)"', old_tag)
         return anchor.group(1) if len(plain) < 40 and anchor else None
     return None
@@ -960,7 +961,7 @@ def named_attempts(body, ident):
         follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
         if not follow:
             continue
-        plain = ' '.join(html.unescape(re.sub(r'<[^>]*>', ' ', follow[-1])).split())
+        plain = ' '.join(html.unescape(strip_tags(follow[-1])).split())
         said = [s for s in re.split(r'(?<=[.;:])\s+(?=[A-Z])', plain) if ATTEMPT_SENTENCE_RE.search(s)]
         if said:       # answered, as far as a pattern can tell: some later entry of the group has the paragraph
             later = any(OWED_RE.search(articles.get(a, '')) for a in anchors[position + 1:])
@@ -1036,7 +1037,7 @@ def claims_elsewhere(body, claims, ident, limit=ELSEWHERE, earlier=False):
     spec = importlib.util.spec_from_file_location('search_claims', Path(__file__).parent / 'search-claims.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    text = html.unescape(re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', node.text.split('):', 1)[-1])))
+    text = html.unescape(re.sub(r'\\\(.*?\\\)', ' ', strip_tags(node.text.split('):', 1)[-1])))
     if not module.stems(text):                  # nothing to rank by: the search would return every claim at zero
         return []
     return [(round(score, 1), claim['id'], where[claim['id']])
@@ -1173,7 +1174,7 @@ def item_status(body, ident, claims=None, relationships=None):
              else f' Entries on it in all: {lifetime}.')
     # The queued text holds what a merge carried over from another item, which no entry's follow-up names: on
     # 11 October 2026 two starting points of a merged check survived there alone and the status did not show them.
-    queued = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', node.text))).strip()
+    queued = re.sub(r'\s+', ' ', html.unescape(strip_tags(node.text))).strip()
     return [f'Item: {node.kind}:{node.ident}; group: {top.kind}:{top.ident}',
             f'Queued text: {queued}',
             'Latest development: ' + (f'#{rows[-1][0]} ({rows[-1][2]})' if rows else 'none'),
@@ -1340,7 +1341,7 @@ def validate_spell_extension(body, tag, text, nodes, where):
         raise ValueError('A spell extension names its open statement in a spell-extension paragraph')
     progress = re.search(r'<strong>Progress\.</strong>(.*?)<strong>Next\.</strong>(.+)',
                          paragraph.group(1), re.S)
-    if not progress or any(not re.sub(r'<[^>]+>', '', part).strip() for part in progress.groups()):
+    if not progress or any(not strip_tags_tight(part).strip() for part in progress.groups()):
         raise ValueError('A spell extension states Progress and a concrete Next necessary implication')
     articles = record_articles(body)
     positions = spell_entries(body, item, nodes)
@@ -1480,7 +1481,7 @@ def triaged(tag, text):
     out = []
     for kind, item_id, item in FOLLOWUP_ITEM.findall(section.group(1)):
         outcome = OUTCOME_RE.search(item)
-        words = len(re.sub(r'<[^>]+>', ' ', item).split())
+        words = len(strip_tags(item).split())
         out.append(((kind, item_id), outcome.group(1) if outcome else None, words, bool(EVIDENCE_RE.search(item)),
                     item))
     return out
@@ -1641,7 +1642,7 @@ STOP = set('with that this from have were which their there than then into also 
 
 def content_words(text):
     """Lower-case words of four or more letters in a queue line, without its ID link, markup and formulas."""
-    text = re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', text.split('):', 1)[-1]))
+    text = re.sub(r'\\\(.*?\\\)', ' ', strip_tags(text.split('):', 1)[-1]))
     return {w for w in re.findall(r'[a-z]{4,}', text.lower())} - STOP
 
 
@@ -1717,7 +1718,7 @@ def item_text(body, kind, ident):
     if listed is None:
         return ''
     # the entry's text is HTML: unescape it before the queue line escapes it, so an entity is not escaped twice
-    text = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', listed[1])).strip())
+    text = html.unescape(re.sub(r'\s+', ' ', strip_tags_tight(listed[1])).strip())
     short = text[:220]
     while short.count('\\(') > short.count('\\)'):   # never cut inside inline math
         short = short[:short.rindex('\\(')].rstrip()
@@ -2039,7 +2040,7 @@ def head_lines(body, count=HEAD_READ):
     state = f'draining (backpressure from {CAP} until {FLOOR})' if draining or len(nodes) >= CAP else 'not draining'
     out = [f'{len(nodes)} items, {state}; restoration shows the first {min(count, len(nodes))}.']
     def plain(node):     # with its ID first, which a lead's text has and a kind module's idea has not
-        text = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', node.text)).strip())
+        text = html.unescape(re.sub(r'\s+', ' ', strip_tags_tight(node.text)).strip())
         return text if text.startswith(node.ident) else f'{node.ident}: {text}'
     for n, node in enumerate(nodes[:count], 1):
         out.append(f'{n}. {plain(node)}{waiting_note(node)}')
