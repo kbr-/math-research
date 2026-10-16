@@ -11,6 +11,9 @@ Expected: unknown; the run decides at PHP^{m}_{m-1}, m = 3, 4, at the largest D 
 Refuted by: some error (or the stacked family) with dim ker_C larger than dim(ker_B + C_D cap V_K).
 Possible because: C_D contains consequences such as E u for u outside the support kernel, which only
 the unsatisfiable axioms supply.
+Containment control: ker_B + relations inside ker_C, asserted for every case.
+Refuted by: an assertion failure, which would mean the closure or the remainder is wrong.
+Possible because: the first version of this script had a non-canonical remainder.
 Control: with the empty system (only Booleanity, here built into the multilinear ring) C_D = 0 and the
 two sides must be equal; the script asserts it.
 Refuted by: unequal sides on the empty system, which would mean the kernel computation is wrong.
@@ -62,12 +65,12 @@ class Space:
         self.rows = {}
 
     def reduce(self, v):
-        while v:
-            p = (v & -v).bit_length() - 1
-            if p not in self.rows:
-                return v
-            v ^= self.rows[p]
-        return 0
+        """Canonical remainder: no pivot position stays set.  A row's lowest bit is its pivot, so
+        eliminating pivots in ascending order only changes higher bits; the map is linear."""
+        for p in sorted(self.rows):
+            if v >> p & 1:
+                v ^= self.rows[p]
+        return v
 
     def add(self, v):
         v = self.reduce(v)
@@ -81,23 +84,42 @@ class Space:
 
 
 def closure(axioms, nvars, D):
+    """Degree-D PC closure in the multilinear ring.  Members of degree below D are spanned by the echelon
+    rows whose pivot (their leading monomial, monomials being ordered by degree descending) has degree
+    below D, so each pass multiplies every such row by every variable, until nothing new enters."""
     monos, index = mono_index(nvars, D)
     space = Space()
-    polys = []
     for a in axioms:
-        if deg(a) <= D and space.add(poly_vec(a, index)):
-            polys.append(a)
-    frontier = list(polys)
-    while frontier:
-        new = []
-        for p in frontier:
-            if deg(p) >= D:
+        if deg(a) <= D:
+            space.add(poly_vec(a, index))
+    done = set()
+    while True:
+        todo = [p for p in space.rows if p not in done and bin(monos[p]).count('1') < D]
+        if not todo:
+            break
+        for p in todo:
+            done.add(p)
+            row = space.rows.get(p)
+            if row is None:
                 continue
+            poly = {monos[i] for i in range(row.bit_length()) if row >> i & 1}
             for x in range(nvars):
-                q = mul_var(p, x)
-                if q and deg(q) <= D and space.add(poly_vec(q, index)):
-                    new.append(q)
-        frontier = new
+                q = mul_var(poly, x)
+                if q:
+                    space.add(poly_vec(q, index))
+        # Rows can change when later additions are reduced; recheck every low pivot once more.
+        if not any(p not in done for p in space.rows if bin(monos[p]).count('1') < D):
+            changed = False
+            for p in list(space.rows):
+                if bin(monos[p]).count('1') < D:
+                    row = space.rows[p]
+                    poly = {monos[i] for i in range(row.bit_length()) if row >> i & 1}
+                    for x in range(nvars):
+                        q = mul_var(poly, x)
+                        if q and space.add(poly_vec(q, index)):
+                            changed = True
+            if not changed:
+                break
     one = space.reduce(poly_vec({0}, index)) == 0
     return space, monos, index, one
 
@@ -164,6 +186,11 @@ def kernel_dims(errors, space, index, monos, nvars, K, D):
     span = Space()
     for t in ker_b + ker_rel:
         span.add(t)
+    # Containment control: support kernel and relations lie in the proper kernel by construction.
+    cspan = Space()
+    for t in ker_c:
+        cspan.add(t)
+    assert all(cspan.reduce(t) == 0 for t in ker_b + ker_rel), 'ker_B + relations must lie in ker_C'
     return len(ker_c), span.dim(), len(ker_rel), len(basis)
 
 
