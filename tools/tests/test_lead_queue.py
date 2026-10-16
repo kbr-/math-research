@@ -818,7 +818,9 @@ class LeadQueueTest(unittest.TestCase):
             path.write_text(notebook([self.rev], self.q))
             out, err = io.StringIO(), io.StringIO()
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 0)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it.']), 1)
+                self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                                          'Not built in the turn: the target branch is not checked out here.']), 0)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--idea', 'weigh-it', 's', 'Weigh it.']), 0)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
@@ -826,7 +828,9 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('Appended port-it, a build; 3 items in the queue.', out.getvalue())
             self.assertIn('Appended weigh-it, an idea; 4 items in the queue.', out.getvalue())
             self.assertIn('port-it is already queued', err.getvalue())
-            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\.</li>')
+            self.assertIn('Not built in the turn: <reason>', err.getvalue())
+            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\. '
+                                               r'Not built in the turn: the target branch is not checked out here\.</li>')
             self.assertNotIn('Again.', path.read_text())
             self.assertNotIn('other', path.read_text())
 

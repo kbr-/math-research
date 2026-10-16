@@ -709,12 +709,13 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   rules and checks let it through, and the framework change made in that turn that stops the class
   (a check, a hook, a test, a tool that reports or refuses; a written rule only where nothing
   mechanical can), or, only where it can't be built in that turn, the build item queued for it with
-  that reason (user, 13 October 2026). Fixing the one instance is not a prevention. A fix is
-  finished when the case that exposed it passes at the earliest point a check can run, not when a
-  rule, a statement of the limit or a later check covers it. The order of work follows: the check
-  for a right objection is built and committed before the reply that answers it is written, and the
-  reply names that commit (16 October 2026: answers written first were prose, and the checks came a
-  turn later). The Stop hook and the commit check block a turn that admits a mistake without that
+  that reason (user, 13 October 2026; `lead_queue.py add --build` refuses a text without "Not built
+  in the turn:" and the reason). Fixing the one instance is not a prevention. A fix is finished when
+  the case that exposed it passes at the earliest point a check can run, not when a rule, a
+  statement of the limit or a later check covers it. The order of work follows: the check for a
+  right objection is built and committed before the reply that answers it is written, and the reply
+  names that commit (16 October 2026: answers written first were prose, and the checks came a turn
+  later). The Stop hook and the commit check block a turn that admits a mistake without that
   paragraph (user, 10 October 2026, on having to ask after every fix how the mistake is prevented).
   Beside it goes a paragraph that starts "Meta", the meta-question: what should change so that in
   future neither the mistake nor its fix would have been needed at all. It is about the agent's own

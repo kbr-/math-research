@@ -2396,12 +2396,22 @@ def edit(body, ident, text):
     return rewrite(body, nodes, draining)
 
 
+# A build added from the command line says why it was not built when found (16 October 2026: three builds
+# queued for a stand-in review's right objections gave no reason, against AGENTS.md's rule).
+NOT_BUILT_RE = re.compile(r'\bNot built in the turn:\s*(?:\S+\s+){4,}\S+', re.I)
+
+
 def main(argv):
     if len(argv) in (2, 3) and argv[1] == 'built':
         print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
         return 0
     if len(argv) == 7 and argv[1] == 'add' and argv[3] in [f'--{k}' for k in ADDABLE]:
         path = Path(argv[2])
+        if argv[3] == '--build' and not NOT_BUILT_RE.search(argv[6]):
+            print(f'{argv[4]}: a build is queued only when it cannot be built in the turn that found it; say why in '
+                  '"Not built in the turn: <reason>" (at least five words), or build it now (AGENTS.md)',
+                  file=sys.stderr)
+            return 1
         try:
             path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))
         except ValueError as error:
