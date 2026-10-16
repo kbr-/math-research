@@ -476,9 +476,11 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   concrete next attempt, first tried on its smallest nontrivial instance and written as the next
   entry's lemma when a few lines decide it (16 October 2026: two named attempts in one entry failed
   at their first case; the entry reports that try after `<strong>Smallest case.</strong>`, which the
-  finisher requires), and never one the entry's own statements already decide; Developed only when
-  its results leave it no remaining application to an open statement; Closed only for a reason the
-  attempt found (a restatement of the open problem, inapplicability, a falsification, or
+  finisher requires), and never one the entry's own statements already decide, which that paragraph
+  shows after `<strong>Own statements.</strong>` by applying them to the attempt (the finisher
+  requires it from 17 October 2026, after three named attempts in a row were decided so); Developed
+  only when its results leave it no remaining application to an open statement; Closed only for a
+  reason the attempt found (a restatement of the open problem, inapplicability, a falsification, or
   supersession by a stronger result). One cycle, which may be short, is enough to find that an item
   deserves closing; state the reason and its limits and close it, without asking the user whether it
   may be pruned (user, 10 October 2026: "the existing process already supports closing an item

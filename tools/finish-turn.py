@@ -1189,15 +1189,29 @@ def validate_plainest(text, statuses=()):
     if not dated or dated.group(1) < PLAINEST_FROM:
         return
     for label, required in (('Smallest case', True), ('Nonvacuity', bool(PROVED & set(statuses)))):
-        given = re.search(rf'<strong>{label}\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+        # to the paragraph's end, past any list inside it (16 October 2026: a list hid the label twice)
+        given = re.search(rf'<strong>{label}\.</strong>((?:(?!</p>).)*)', text, re.S)
         if not (given and required):
             continue
-        said = PLAINEST_RE.search(given.group(0))
+        said = re.search(r'<strong>Plainest bound\.</strong>((?:(?!</p>).)*)', given.group(0), re.S)
         if not said or len(html.unescape(strip_tags(said.group(1))).strip()) < 30:
             raise ValueError(f'The {label} paragraph needs, after <strong>Plainest bound.</strong> and in at least '
                              '30 characters, what the plainest available bound (a bare count, a one-dimensional '
                              'estimate, the record\'s oldest applicable lemma) gives on its instance, or why none '
                              'applies: an instance the plain bound decides tests nothing (AGENTS.md)')
+    # 16 October 2026: three named next attempts in a row were decided by the naming entry's own statements,
+    # found by its reviewer.  The Smallest case says what those statements give on the attempt.
+    whole = re.search(r'<strong>Smallest case\.</strong>(.*?)</p>', text, re.S)
+    if whole and dated.group(1) >= OWN_FROM:
+        own = re.search(r'<strong>Own statements\.</strong>(.*)', whole.group(1), re.S)
+        if not own or len(html.unescape(strip_tags(own.group(1))).strip()) < 30:
+            raise ValueError('The Smallest case paragraph needs, after <strong>Own statements.</strong> and in at '
+                             'least 30 characters, what this entry\'s own statements (its lemmas applied variable by '
+                             'variable, coordinate by coordinate, at the attempt\'s parameters) give on the named '
+                             'attempt: an attempt they decide is the next lemma, not a next attempt (AGENTS.md)')
+
+
+OWN_FROM = '2026-10-17'
 
 
 N_UPPER_RE = re.compile(r'\\log\\log N\s*\\le\s*\d|\\log N\s*\\le\s*\d|(?<![\w\\])N\s*\\le\s*\d')

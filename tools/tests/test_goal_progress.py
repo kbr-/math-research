@@ -348,6 +348,18 @@ class PlainestBoundTest(unittest.TestCase):
         FT.validate_plainest(witness.replace('</p>', ' <strong>Plainest bound.</strong> None applies: the '
                                              'statement is an identity of formal series.</p>'), {'working_proof'})
 
+    def test_smallest_case_says_what_the_entry_s_own_statements_give(self):
+        # 16 October 2026: three named next attempts in a row were decided by their entries' own statements.
+        plain = (' <strong>Plainest bound.</strong> The per-cell counts give the same order, so they decide '
+                 'nothing.</p>')
+        later = ('<article id="entry-2026-10-17-x"><p><strong>Smallest case.</strong> Two twists in two '
+                 'holes on three pigeons:<ul><li>window two.</li></ul>' + plain)
+        with self.assertRaisesRegex(ValueError, 'Own statements'):
+            FT.validate_plainest(later)
+        FT.validate_plainest(later.replace('</p>', ' <strong>Own statements.</strong> Part (a) splits both '
+                                           'twists to window zero, so it gives nothing here.</p>'))
+        FT.validate_plainest(later.replace('2026-10-17', '2026-10-16'))
+
 
 class UnboundedWitnessTest(unittest.TestCase):
     def test_a_witness_bounding_n_from_above_is_refused(self):
