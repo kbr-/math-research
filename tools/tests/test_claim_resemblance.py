@@ -34,6 +34,13 @@ class ResemblanceTest(unittest.TestCase):
         (_, found), = tool.resemblances(REGISTERED, again, 3)
         self.assertNotIn('ex:old-degrees', [ident for _, ident, _ in found])
 
+    def test_a_registered_sibling_of_the_spec_is_not_compared(self):
+        sibling = {'id': 'ex:twin-degrees', 'summary': SPEC['claims'][0]['summary']}
+        spec = {'claims': SPEC['claims'] + [sibling]}
+        results = dict(tool.resemblances(REGISTERED + [sibling], spec, 3))
+        self.assertNotIn('ex:twin-degrees', [ident for _, ident, _ in results['ex:new-degrees']])
+        self.assertEqual(results['ex:new-degrees'][0][1], 'ex:old-degrees')
+
     def test_the_command_prints_scores_and_marks_related_claims(self):
         with tempfile.TemporaryDirectory() as folder:
             registry = pathlib.Path(folder) / 'index.json'

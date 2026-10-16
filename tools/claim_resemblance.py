@@ -46,11 +46,14 @@ def log_run(idents, path=None):
 
 def resemblances(registered, spec, count=5):
     """[(draft id, [(score, registered id, summary start), ...]), ...] for the spec's claims; a claim already
-    registered under the same id is not compared with itself."""
+    registered under an id of the spec, itself or a sibling, is not compared: registration compares the spec only
+    with the registry before it, so a run after registering gives the same answer as one before (16 October 2026,
+    when a run after registration listed the spec's own claims as the nearest)."""
     summaries = {claim['id']: claim.get('summary', '') for claim in registered}
+    own = {claim['id'] for claim in spec.get('claims', [])}
     out = []
     for claim in spec.get('claims', []):
-        others = [c for c in registered if c['id'] != claim['id']]
+        others = [c for c in registered if c['id'] not in own]
         found = similar_claims(others, claim['summary'], count)
         out.append((claim['id'], [(score, ident, summaries[ident][:160]) for score, ident in found]))
     return out

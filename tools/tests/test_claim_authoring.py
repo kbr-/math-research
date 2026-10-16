@@ -243,6 +243,17 @@ class BuildTest(unittest.TestCase):
             build(self.empty, self.spec([self.item('lem:a')], rel), 'e' * 40)
         ok = dict(self.item('lem:a'), summary='Extends the first-active substitution lemma; Theorem numbering aside.')
         build(self.empty, self.spec([ok]), 'e' * 40)
+    def test_spec_may_define_a_new_topic(self):
+        from claim_authoring import build
+        topic = {'id': 'fresh-topic', 'title': 'Fresh topic', 'description': 'A topic no fixture defines.'}
+        item = dict(self.item('lem:a'), topics=['fresh-topic'])
+        proposed, report = prepare(self.empty, build(self.empty, self.spec([item], topic_definitions=[topic]), 'f' * 40),
+                                   self.root)
+        self.assertTrue(report['passed'])
+        self.assertIn(topic, proposed['topic_definitions'])
+        self.assertEqual(proposed['claims'][0]['topics'], ['fresh-topic'])
+        with self.assertRaises(ValueError):
+            build(self.empty, self.spec([item], topic_definitions=[{'id': 'x'}]), 'f' * 40)
     def test_overrides_update_existing_fields(self):
         from claim_authoring import build
         base, _ = prepare(self.empty, self.request(self.empty), self.root)

@@ -191,13 +191,17 @@ def build(data, spec, revision):
     """Expand a compact claim spec into a complete authoring request.
 
     spec keys: source {record, targets, label}, reviewer, date, claims [...], relationships [[src, type, tgt, scope]],
-    optional refresh {id: note or {field: note}}, overrides {id: {field: value}}, topics (default for new claims).
+    optional refresh {id: note or {field: note}}, overrides {id: {field: value}}, topics (default for new claims),
+    topic_definitions [{id, title, description}] for topics the registry does not define yet.
     A new claim may carry a complete `formalization` object (status, scope, references, artifacts) when it is
     registered already formalized; otherwise it starts as not_started with `formalization_scope`.
     Every existing claim that is an endpoint of a new relationship is refreshed automatically (its relationships
     review gains a note), which is what the maintenance check requires; refresh/overrides add more."""
-    require(set(spec) <= {'source', 'reviewer', 'date', 'claims', 'relationships', 'refresh', 'overrides', 'topics'},
+    require(set(spec) <= {'source', 'reviewer', 'date', 'claims', 'relationships', 'refresh', 'overrides', 'topics',
+                          'topic_definitions'},
             'Unexpected claim-spec keys')
+    for topic in spec.get('topic_definitions', []):
+        require(set(topic) == {'id', 'title', 'description'}, 'A topic definition needs exactly id, title and description')
     coded = sorted({code for text in _spec_texts(spec) for code in letter_code_labels(text)})
     require(not coded, 'Claim text names results by letter codes ' + ', '.join(coded) + ': cite them by '
             'descriptive names (Naming results), e.g. "the first-active substitution lemma", not "Lemma FA"')
@@ -249,7 +253,7 @@ def build(data, spec, revision):
         claim.update(spec.get('overrides', {}).get(cid, {}))
         submissions.append({'claim': claim, 'dispositions': _existing_dispositions(existing[cid], targets, note)})
     return {'base_sha256': digest(data), 'provenance': meta, 'submissions': submissions,
-            'relationships': relationships, 'topic_definitions': []}
+            'relationships': relationships, 'topic_definitions': deepcopy(spec.get('topic_definitions', []))}
 
 
 STATEMENT = re.compile(r'<p><strong>(?:Lemma|Theorem|Corollary|Proposition|Statement|Claim|Conjecture)\b[^<]*'
