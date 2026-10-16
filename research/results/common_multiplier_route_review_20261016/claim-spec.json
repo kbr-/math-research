@@ -1,0 +1,41 @@
+{
+  "source": {
+    "record": "[Joint-savings route review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-joint-savings-review)",
+    "label": "Joint-savings route review",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-joint-savings-review"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "affine-linear-algebra",
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "prop:coordinate-count-window",
+      "summary": "In Braun's F2 setting (m rows of l bits, v=ml, row-linear L_k of dimension H), for proper coordinate blocks pinning at least r bits each to constants (pins to one translate to pins to zero), with x=1-r/v, rho=(m-k+1)l/k and rho x>1, each restriction rank is at most H x^k rho x/(rho x-1) by Maclaurin's inequality and a geometric bound, so the exact summed count gives a common row-linear kernel when ln M < -k ln x - ln(rho x/(rho x-1)), with -k ln x >= rk/v. By prop:common-kernel-ceiling some family at the same k and r with ln M <= rk/(v-r-k)+ln(k ln(v+1)+1) has none: the main terms agree to a factor 1+O((r+k)/v), with additive gap about (rk/v)(r/2v+k/v), which grows at minimal degree D=6l+1 (341 at l=32). At l=16, D=107 (k=303, r=14593): certified 4.246 against the ceiling 12.62 and the published 1.40.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in its route-review stage 2 and follow-up, including the sandwich at every admissible parameter and the reproduced minimal-degree sweep. Coordinate blocks only; Braun's general affine flats are not covered.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Shows that on coordinate families the gap between Braun's published count and the common-kernel ceiling is mainly in single-flat estimates; the remaining window for joint-rank savings is logarithmic at moderate degree and grows at minimal degree.",
+      "next_action": "Extend the single-flat estimate to non-coordinate flats.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "prop:coordinate-count-window",
+      "cites",
+      "prop:common-kernel-ceiling",
+      "Compares the certified range with the ceiling family's at the same k and rank."
+    ],
+    [
+      "prop:coordinate-count-window",
+      "cites",
+      "thm:bit-affine-all-ranks-dimension-criterion",
+      "Bounds the exact restriction dimensions that criterion sums, for coordinate flats."
+    ]
+  ]
+}
