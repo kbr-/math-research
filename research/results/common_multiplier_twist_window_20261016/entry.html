@@ -1,0 +1,130 @@
+<article id="entry-2026-10-16-twist-window-trade" data-kind="research" data-route="effective-selection" data-route-item="effective-selection" data-obligation="joint-error-savings" data-goal-progress="unchanged" data-bearing="none" data-idea="matrix-multiplier-repair" data-picked="user" data-claims="lem:twist-window-trade">
+<h3>Twisted repairs split into substitution repairs</h3>
+<p class="entry-meta">16 October 2026 · Working proof · architecture test decided on a degenerate instance · Twist-window trade.</p>
+<p><strong>Picked.</strong> The user: “On next cycles, prioritize that modules + matrices idea at least for some time (give it the usual 4 cycles + extensions if deserved treatment)”. This is the item's third entry.</p>
+<p><strong>Earlier entries.</strong> The item's entries are the <a href="#entry-2026-10-16-module-repair">module-repair entry</a>, whose certificates semilinear over a ring map give scalar repairs, and the <a href="#entry-2026-10-16-twisted-module">twisted-module entry</a>, whose follow-up named “many twisted Boolean variables at room for fewer splits than variables”; the <a href="#entry-2026-10-16-selection-review">goal review</a> turned that attempt into this entry's lemma and posed its decisive test.</p>
+<p><strong>Best outcome.</strong> At the goal's own parameters, a module repair that kills Pang's errors with a protected class at a degree below every scalar and substitution repair, which would lower the multiplier budget of thm:certified-repair-composition beyond what lem:module-repair-factorization's scalar repairs reach; failing that, the exact cost at which twisted repairs reduce to substitutions times multipliers.</p>
+<p><strong>General statement.</strong> lem:twist-window-trade: with the variables beyond \(x_1,\dots,x_t\) untwisted, a twisted repair on Boolean twisted variables splits into substitution repairs of \(x_1,\dots,x_t\), losing for each split the room does not pay one window degree: soundness and killing above the reduced window are dropped. Twisted variables that the closure defines linearly in untwisted ones cost nothing, with no Boolean axiom: the repair is scalar on the window. In a domain model the split keeps the full window, measured in the degree-\((D'+T)\) part of the same vanishing ideal.</p>
+<h4>Twist-window trade</h4>
+<p><strong>Statement.</strong> Over a field, let \(R=k[x]\), \(J\) the degree-\(D'\) closure of axioms \(a_j\), and \(\rho:R\to\operatorname{Mat}_k(R)\) given by commuting \(\rho(x_i)\) of entry degree at most \(T\ge1\). Call \(\nu\in R^k\) a twisted repair at window \(D-K\) with room \(R_0\) when:
+<ul>
+<li>soundness: \(\rho(a_jm)\nu\in J^k\) for \(\deg(a_jm)\le D-K\);</li>
+<li>killing: \(\rho(wE_i)\nu\in J^k\) for the errors with \(\deg(wE_i)\le D-K\);</li>
+<li>survival: \(\rho(w)\nu\notin J^k\);</li>
+<li>room: \(T(D-K)+\deg\nu\le R_0\le D'\).</li>
+</ul>
+Put \(u_0=\nu-\rho(x_1)\nu\) and \(u_1=\rho(x_1)\nu\).
+(a) Let \(x_1,\dots,x_t\) carry Boolean axioms \(x_i^2-x_i\), and let \(\rho(x_i)=x_iI\) for \(i&gt;t\).
+<ul>
+<li>For \(g\) of degree at most \(D-K-1\), \(\rho(g)\nu\in J^k\) implies \(\rho(g|_{x_1=0})u_0\in J^k\) and \(\rho(g|_{x_1=1})u_1\in J^k\).</li>
+<li>For \(w\) multilinear in \(x_1\), \(\rho(w)\nu=\rho(w|_{x_1=0})u_0+\rho(w|_{x_1=1})u_1\). For other \(w\) this holds modulo \(J^k\), when soundness reaches \(\deg w\).</li>
+<li>So one of the vectors \(u_\varepsilon\) is a twisted repair of the substituted map \(g\mapsto\rho(g|_{x_1=\varepsilon})u_\varepsilon\), measured in \(J\). Its window is \(D-K-1\): soundness and killing of degree \(D-K\) are dropped. Its vector degree is at most \(\deg\nu+T\), and the room is unchanged.</li>
+<li>After all \(t\) splits the action is scalar, and some coordinate of some \(u_\sigma\), \(\sigma\in\{0,1\}^t\), is a substitution repair of \(x_1,\dots,x_t\mapsto\sigma\), at window \(D-K-t\).</li>
+<li>With room \(R_0\ge T(D-K)+sT+\deg\nu\), the first \(s\) splits keep the window and the result has window \(D-K-(t-s)\).</li>
+<li>The conclusion has content only when \(D-K&gt;t-s\).</li>
+</ul>
+(b) Let \(x_1,\dots,x_s\) be twisted and \(\rho(x_i)=x_iI\) for \(i&gt;s\). Let each \(x_i-\ell_i\), \(i\le s\), be an axiom, with \(\ell_i\) of degree at most \(1\) in the untwisted variables, and \(D-K+\deg\nu\le D'\). Then \(\rho(g)\nu\equiv g\nu\pmod{J^k}\) for every \(g\) of degree at most \(D-K\): the twisted repair is the scalar repair with the coordinates of \(\nu\) as multipliers, at the full window. No Boolean axiom is needed, and (b) uses neither the entry bound \(T\) nor the room of the definition.
+(c) Let \(J\) be the space of polynomials of degree at most \(D'\) vanishing on a finite set \(X\) (a domain model), let \(x_1^2-x_1\) be an axiom, and let \(D-K\ge2\). For every \(g\) of degree at most \(D-K\) with \(\rho(g)\nu\) vanishing on \(X\), both \(\rho(g|_{x_1=\varepsilon})u_\varepsilon\) vanish on \(X\), with degree at most \(T(D-K)+T+\deg\nu\le D'+T\). So the split keeps the full window, measured in the degree-\((D'+T)\) part of the same vanishing ideal. Survival is unchanged, since a polynomial not vanishing on \(X\) lies in no degree part.</p>
+<p><strong>Proof.</strong> The identity: for \(g=g_0+x_1g_1\) with \(g_0,g_1\) free of \(x_1\), \(\rho(g)\nu=\rho(g_0)u_0+\rho(g_0+g_1)u_1=\rho(g|_{x_1=0})u_0+\rho(g|_{x_1=1})u_1\), since \(\rho\) is an algebra map. A \(g\) of degree at most \(D-K\) has this form modulo multiples of \(x_1^2-x_1\) of no higher degree, which soundness sends into \(J^k\).
+(a)
+<ul>
+<li>Separation. If \(\deg g\le D-K-1\) and \(\rho(g)\nu\in J^k\), its entries have degree at most \(T(D-K-1)+\deg\nu\). Multiplying by the entries of \(\rho(x_1)\) stays in \(J\) within \(T(D-K)+\deg\nu\le D'\), so \(\rho(x_1g)\nu\in J^k\). Since \(x_1g=x_1g|_{x_1=1}+(x_1^2-x_1)g_1\) with \(\deg((x_1^2-x_1)g_1)\le D-K\), soundness gives \(\rho(g|_{x_1=1})u_1\in J^k\), and the identity gives \(\rho(g|_{x_1=0})u_0\in J^k\).</li>
+<li>The new repair. Applied to axiom multiples and weighted errors of degree at most \(D-K-1\), this is soundness and killing of the substituted maps. The identity at \(w\) splits survival, so one of the two survives.</li>
+<li>Room. The new vectors have degree at most \(\deg\nu+T\), and \(T(D-K-1)+\deg\nu+T=T(D-K)+\deg\nu\), so the next split, on \(x_2\) acting on \(u_\varepsilon\) by commuting, has the same room.</li>
+<li>Paid splits. With room \(T(D-K)+sT+\deg\nu\), the first \(s\) splits are made at the full window by lem:twisted-certificate-reduction (f)'s argument. That argument holds with the other variables still twisted, since \(\rho(x_1^2-x_1)\rho(g_1)\nu=\rho(g_1)\rho(x_1^2-x_1)\nu\) by commuting, at degree at most \(T(D-K+1)+\deg\nu\). The \(i\)-th paid split needs \(iT\le sT\) of extra room. The unpaid ones follow by the separation step.</li>
+<li>The last split. Once every twisted variable is substituted, \(\rho\) acts by scalars, and the coordinates separate.</li>
+</ul>
+(b) Substituting \(x_1\mapsto\ell_1\), then \(x_2\mapsto\ell_2\), and so on, writes \(g=\bar g+\sum_{i\le s}(x_i-\ell_i)h_i\), where \(\bar g\) is \(g\) after all \(s\) substitutions and \(\deg h_i\le\deg g-1\). No step raises degree, since \(\deg\ell_i\le1\). Each \((x_i-\ell_i)h_i\) is an axiom multiple of degree at most \(D-K\), so soundness gives \(\rho((x_i-\ell_i)h_i)\nu\in J^k\). Then \(\rho(g)\nu\equiv\rho(\bar g)\nu=\bar g\,\nu\), since \(\bar g\) involves only untwisted variables. Finally \(g\nu-\bar g\nu=\sum_i(x_i-\ell_i)h_i\nu\) is a sum of axiom multiples of degree at most \(D-K+\deg\nu\le D'\), so it lies in \(J^k\).
+(c) At a point \(p\in X\):
+<ul>
+<li>\((\rho(x_1g)\nu)(p)=\rho(x_1)(p)\,(\rho(g)\nu)(p)=0\);</li>
+<li>\((\rho((x_1^2-x_1)g_1)\nu)(p)=\rho(g_1)(p)\,(\rho(x_1^2-x_1)\nu)(p)=0\), by soundness at \(x_1^2-x_1\), of degree \(2\le D-K\).</li>
+</ul>
+So \(\rho(g|_{x_1=1})u_1\) vanishes on \(X\), and then so does \(\rho(g|_{x_1=0})u_0\). Their degrees are at most \(T(D-K)+T+\deg\nu\). In a domain model membership is vanishing plus a degree bound.</p>
+<p><strong>Hypotheses, each with its step.</strong>
+<ul>
+<li>Part (a). That \(\rho\) is an algebra map is used in the identity, and commuting in the later splits. The Boolean axiom on \(x_i\) makes \((x_i^2-x_i)g_1\) a sound multiple. The room is the closure step. \(\rho(x_i)=x_iI\) for \(i&gt;t\) makes the last action scalar, so that coordinates separate. \(D-K&gt;t-s\) is nontriviality only, used by no step.</li>
+<li>Part (b). Soundness at the axioms \(x_i-\ell_i\), \(\deg\ell_i\le1\), and \(\ell_i\) untwisted are the steps. \(D-K+\deg\nu\le D'\) is the final membership. A closure member \(x_i-\ell_i\) that is not an axiom needs soundness extended to closure members, which lem:twisted-certificate-reduction (a) gives within its room.</li>
+<li>Part (c). The domain model is membership as vanishing. Soundness at \(x_1^2-x_1\), with \(D-K\ge2\), is the second vanishing.</li>
+<li>The field is arbitrary throughout.</li>
+</ul></p>
+<p><strong>Degenerate cases.</strong>
+<ul>
+<li>\(t=0\) in (a), or \(s=0\) in (b): nothing to split or substitute.</li>
+<li>\(\rho(x_1)=x_1I\): \(u_1=x_1\nu\), and the split is the scalar repair split by cases.</li>
+<li>\(u_1=0\) or \(u_0=0\): one piece only, already substituted.</li>
+<li>\(D-K\le t-s\) in (a): the reduced window is empty and (a) says nothing.</li>
+<li>\(\ell_i\) constant in (b): \(x_i\) is fixed by an axiom, and the substitution is by that constant.</li>
+</ul></p>
+<p><strong>Nonvacuity.</strong>
+<ul>
+<li>Part (a), at tight room, a case lem:twisted-certificate-reduction (f) does not cover. Take \(n=2\), Boolean axioms on \(x_1,x_2\) over \(\mathbb F_2\), \(\rho(x_1)=\bigl(\begin{smallmatrix}0&amp;x_2\\1&amp;0\end{smallmatrix}\bigr)\), \(\rho(x_2)=x_2I\), \(\nu=(x_2,1)\), \(E=x_1+x_2\), \(w=1\), \(D=3\), \(K=1\), \(D'=3\) and \(T=1\).
+<ul>
+<li>Room: \(1\cdot2+1=3\le3\), tight, while (f) needs \(2+1+1=4\le3\), which fails.</li>
+<li>Soundness: \(\rho(x_1^2+x_1)\nu=(x_2^2+x_2,0)\in J^2\).</li>
+<li>Killing: \(\rho(x_1+x_2)\nu=(x_2+x_2^2,0)\in J^2\).</li>
+<li>Survival: \(\nu\notin J^2\).</li>
+<li>Pieces: \(u_1=(x_2,x_2)\) and \(u_0=(0,1+x_2)\). The substitution repair \(x_1\mapsto1\) with multiplier \(x_2\) at window \(1\) gives \((1+x_2)x_2\in J\) and \(x_2\notin J\).</li>
+</ul>
+This \(J\) is the cube's domain model, so (c) covers the same witness at the full window. A witness of (a) in a proper closure that is no domain model is not given here; finding one is the next attempt.</li>
+<li>Part (b), with the reviewer's witness, checked here: the same \(\rho\) and Boolean axioms, the axiom \(x_1+x_2\) (\(\ell=x_2\)), \(E=x_2\notin J\), \(w=1\) and \(\nu=(0,1+x_2)\).
+<ul>
+<li>\(u_1=(x_2+x_2^2,0)\).</li>
+<li>\(\rho(x_1^2+x_1)\nu=(x_2+x_2^2,x_2+x_2^2)\in J^2\), and \(\rho(x_1+x_2)\nu=(x_2+x_2^2,x_2+x_2^2)\in J^2\).</li>
+<li>The multiples of \(x_1+x_2\) by \(m=x_1\) and \(m=x_2\) also lie in \(J^2\), at degree \(3\).</li>
+<li>\(x_2\nu\in J^2\), and \(\nu\notin J^2\).</li>
+<li>(b) gives the scalar repair \(1+x_2\).</li>
+</ul></li>
+<li>Part (c): the (a) witness, in the cube's domain model.</li>
+</ul>
+No parameter ledger applies: the witnesses verify no budget of the goal.</p>
+<p><strong>Baseline.</strong> Without the twist, the scalar repair \(\nu\) is the plain object, and lem:twisted-certificate-reduction (f) splits a twisted variable when the room pays \(T\). Part (c) is the observation that in a domain model membership is pointwise vanishing, so degree bookkeeping alone is at stake. What the lemma adds is the unpaid split at one window degree, and the free untwisting of linearly defined variables.</p>
+<p><strong>Relations.</strong>
+<ul>
+<li>(a) adds to lem:twisted-certificate-reduction (f) the unpaid split; paid splits of several variables were already available from (f) variable by variable, as the goal review recorded.</li>
+<li>(b) and (c) are new cases.</li>
+<li>The substitution repairs are those of lem:module-repair-factorization (b), with \(\phi\) the substitution.</li>
+<li>The cost of a split may correspond to the asymmetric case split of lem:branching-tree-degree; not checked.</li>
+</ul></p>
+<p><strong>Architecture test.</strong> <strong>Decided.</strong> The <a href="#entry-2026-10-16-selection-review">goal review</a>'s test is decided without computation by part (b). That test is the fractional-substitution quotient on the functional pigeonhole system with six pigeons and five holes at \(D'=3\), \(K=1\), \(\deg\nu=1\). Every variable is linearly defined by its pigeon axiom, \(x_{ij}=1+\sum_{j'\ne j}x_{ij'}\) over \(\mathbb F_2\), an axiom of degree \(1\) inside the window. So for every error set and every twisted variable, \(f_1\equiv x_1c\pmod{J_3}\), and the quotient is zero.
+<ul>
+<li>The review's outcome, a zero quotient everywhere, occurred. The review said that outcome would close the item as Developed.</li>
+<li>This entry departs from that rule, as a decision. The instance was decided by its linear axioms, a structure the review's Trivial cases did not list, so the outcome says nothing about closures without such members.</li>
+<li>Whether Pang's systems have members \(x_i-\ell_i\) of degree \(1\) in their degree-\((D-K)\) closures is an untested hypothesis, with no source read. The product pigeonhole system has none below its top degree. By lem:top-degree-axiom-inertness, as cor:hole-occupancy-kernels records, its closure below degree \(D'\) consists of the polynomials vanishing on the hole-respecting assignments \(Y\). \(Y\) contains the all-zero assignment and every single-variable one, so no nonzero polynomial of degree at most \(1\) vanishes on it.</li>
+</ul></p>
+<p><strong>Owed attempt.</strong> The twisted-module entry named several twisted Boolean variables at room for fewer splits, first at \(n=4\), \(\deg\nu=0\), \(T=1\) with three twisted variables. That named instance gives no \(D\), \(K\) or \(D'\), so the number of splits its room pays is not fixed. Part (a) answers it for every value: with room \(T(D-K)+sT+\deg\nu\le D'\), the three splits give substitution repairs at window \(D-K-(3-s)\).</p>
+<p><strong>New mathematics.</strong> lem:twist-window-trade: with the other variables untwisted, twisted repairs on Boolean twisted variables split into substitution repairs, at one window degree or \(T\) room degrees per split, the dropped window losing soundness and killing above it; linearly defined twisted variables cost nothing and need no Boolean axiom; in a domain model the window is kept, measured at degree \(D'+T\).</p>
+<p><strong>Selection gain.</strong> Unchanged: the lemma reduces module repairs to substitution and scalar repairs and lowers no rank.</p>
+<p><strong>Goal progress.</strong> Unchanged. The matrix generalization reduces, at a stated cost, to substitutions and multipliers; no saving at Pang's parameters follows. <strong>Bearing.</strong> None at the goal's own parameters: whether Pang's systems have linearly defined variables in their closures is untested, and the case without them at tight room is not decided here. The cycle could have found the window loss real on the review's instance; that instance turned out to be decided by its linear axioms.</p>
+<p><strong>Record search.</strong> Searches for a linearly defined variable untwisting a twisted repair returned lem:twisted-certificate-reduction, lem:module-repair-factorization, lem:pair-variable-repairing (definitions of product variables, another object) and historical lem:substitution; none states (b). For the next attempt, the reviewer's search for the top degree of the product pigeonhole system returned cor:hole-occupancy-kernels, whose registered statement gives at \(D=n\) that \(c\) of degree at most \(n\) lies in \(C\) exactly when \(c|_Y\) lies in the span \(P_Y\) of the unplaced-pigeon indicators, \(Y\) the hole-respecting assignments.</p>
+<p><strong>Smallest case.</strong> The next attempt is a proper closure without linear definitions at tight room: the product pigeonhole system with four pigeons and three holes at its top degree \(D'=3\), over \(\mathbb F_2\), proper since by the same inertness \(1\notin J_3\), \(Y\) being nonempty, with \(K=1\), \(D-K=2\), \(T=1\), \(\deg\nu=1\), room \(2+1=3\), twisted variable \(x_{00}\), and the error pairs \((E,w)\) of distinct variables with \(x_{00}\in\{E,w\}\). Its pigeon axioms have degree \(3&gt;D-K\), so they never enter soundness, and (b) and (c) do not apply. <strong>Plainest bound.</strong> At \(k=1\) every twisted repair is a substitution. In the inert range at \(D=n\), \(K+e\le n-1=2\), cor:hole-occupancy-kernels makes every scalar kernel a support count on \(Y\). So the plain bound fixes the scalar and substitution side of the comparison, and leaves open only whether a realizable \(k=2\) pair falls outside \(\{rc\}\). By cor:hole-occupancy-kernels, the degree-\(3\) memberships, the killing conditions \(v\,f_1\) and the soundness conditions \(x_{i0}f_1\), are restrictions to \(Y\) lying in the span \(P_Y\) of the unplaced-pigeon indicators, and degree-\(2\) survival is non-vanishing on \(Y\). The test is the goal review's Operation on this board, with matrix size \(k=2\):
+<ul>
+<li>the linear conditions on \((c,f_1)\) modulo \(J_3\), with \(\deg f_1\le2\);</li>
+<li>the quotient by \(\{rc\}\), taken modulo \(J_3\);</li>
+<li>the realizability search for any element outside \(\{rc\}\).</li>
+</ul>
+The comparison is with substitutions of multiplier degree at most \(\deg\nu\), the form \(f_1\equiv rc\). At tight room a full-window substitution with multiplier \(u_\varepsilon\), of degree \(\deg\nu+T\), exceeds \(D'\) by definition. A caution for reading the quotient: with \(w=x_{00}\) and \(E=v\), any \(f_1\) with \(vf_1\) vanishing on \(Y\) is a solution, for example a variable of another pigeon in \(v\)'s hole, and it may be of the form \(rc\) with \(r=1\). An earlier draft reduced the test to whether \(\rho(x_1)\) keeps components inside \(P_Y\). That reduction, the reviewer's suggestion, is withdrawn: the soundness term \(\rho(g_1)\rho(x_1^2-x_1)\nu\) does not vanish on \(Y\), and for \(\deg g=2\) the piece has degree \(4&gt;D'\). Not decided here; the reviewer found nothing in (a) to (c) or the cited records that decides it.</p>
+<p><strong>Review.</strong> The stand-in review of 19:23 raised five objections.
+<ol>
+<li>Replace scripts ate labels three times and each was patched by hand. Right: the Bash guard now refuses a scratch script, run by its path, that replaces text in a file (tools/hooks/bash_guard.py, scratch_script_replaces).</li>
+<li>A test decided by its own bounds was posed again, with a wrong linearity claim and no Prevention or Meta paragraphs. Right that both paragraphs were missing when the quoted message was written. They came in the reply after the review's commit, with the finisher's new Instance check (tools/finish-turn.py).</li>
+<li>A withdrawn conclusion was left without its old and new scope. Right at the time of the quoted message. The final report of the review named both scopes, for the test and for the split.</li>
+<li>Settling the domination clause fixed the instance and not the class, and "plus" got no prevention. Right for the class, a question deferred to the next review while being applied: queued as the build deferred-question-listing, with the reason it was not built in the turn. "Plus" for a sum of subspaces has no mechanical signal, and none is claimed.</li>
+<li>Adding a written rule to AGENTS.md broke the one-place principle. Wrong: the Instance check sentence sits inside the Decisive test rule it serves, not beside a second statement of it, and the finisher enforces it.</li>
+</ol></p>
+<p><strong>Meta.</strong> The way of working behind the right objections is reaching for a private shortcut when the committed path feels slow: scratch replace scripts instead of tools/replace_text.py, a reply before its check, a fix to one sentence instead of the class. The change is to take the committed path for every edit and every answer. tools/hooks/bash_guard.py now enforces this for scratch edits, and the queued build for deferred questions. The same habit recurred inside this cycle in another form: the review's test was chosen by the instrument at hand, the board the record had computed, and not by reading that board's structure, its linear axioms, which decided the test. The change is to read the structure of an instance before choosing it. The Trivial cases rule in AGENTS.md now names this structure.</p>
+<h4>Reviewer's suggestions, unverified</h4><ul><li>Part (b) without the Boolean axiom, the entry bound or the room, and for several linearly defined twisted variables in sequence. <strong>Record.</strong> Searched linear definitions untwisting a repair: lem:twisted-certificate-reduction, lem:module-repair-factorization, historical lem:substitution; none states it. Adopted in (b) after the proof was written out here, and checked by the reviewer in the follow-up.</li><li>A reduction of the next attempt to whether \(\rho(x_1)\) keeps the repair's \(P_Y\)-components in \(P_Y\). <strong>Record.</strong> cor:hole-occupancy-kernels gives the \(P_Y\) description at \(D=n\). Withdrawn by the reviewer in the follow-up: the soundness term does not vanish on \(Y\), and the top-degree piece exceeds \(D'\).</li></ul>
+<p><strong>Suggestion checked.</strong> The general (b) was checked by writing its sequential substitution out: each substitution keeps degree, \(\deg h_i\le\deg g-1\), so each \((x_i-\ell_i)h_i\) is an axiom multiple within the window, and the final difference has degree at most \(D-K+\deg\nu\). The reviewer's witness for (b) was recomputed with its multiples by \(x_1\) and \(x_2\).</p>
+<p><strong>Verification gate.</strong> Dependencies read: lem:twisted-certificate-reduction, lem:module-repair-factorization, lem:branching-tree-degree and check:functional-factor-kernels by registered statement; cor:hole-occupancy-kernels and lem:top-degree-axiom-inertness by registered statement. The sole fresh-context medium reviewer (<a href="research/results/common_multiplier_twist_window_20261016/reviewer.txt">review record</a>) passed the first draft with corrections. Its part (a) claimed coordinate repairs while other variables were still twisted; the claim is now correct, made only after the last split with the other variables untwisted. Its part (b) carried unused hypotheses; dropping them makes (b) more general. Its part (c) carried an unused hypothesis, \(x_1\in\{0,1\}\) on \(X\); dropping it makes (c) more general. The Architecture test omitted that it departs from the review's rule. Its Owed attempt was not evaluated at its instance, and its next attempt was not a test. A follow-up passed the rewrite and withdrew the reviewer's own \(P_Y\) reduction, which the draft had adopted. It also gave the right reason why the product pigeonhole system has no linear closure members, and named the next attempt's missing field, matrix size and quotient. All changes were made. <strong>Process audit.</strong> The reviewer proposed the title now used and found it matches the body. It found:
+<ul>
+<li>the review's instance decided by a structure that its Trivial cases did not list, framed as a result;</li>
+<li>a departure from the review's rule left unstated;</li>
+<li>an unsourced claim about Pang's systems, and a lemma cited for a reason it does not contain;</li>
+<li>witnesses that do not exercise their parts;</li>
+<li>"checked here" written for a suggestion whose check missed two errors.</li>
+</ul>
+All are addressed.</p>
+<p><strong>Process assessment.</strong> The entry adopted a reviewer's unverified reduction as its next attempt with “checked here” without working one pair through it. It framed a degenerate instance as a result. It copied hypotheses from the instance into parts (b) and (c). <strong>Prevention.</strong> AGENTS.md's Trivial cases rule now names the system's deciding structure, a written rule only, since the structures that decide a test are not a fixed list. The finisher refuses an entry whose gate reports a reviewer's suggestion without listing it, and it requires a Suggestion checked paragraph when one is named as a next attempt. Neither can tell a check that missed errors from a sound one. The reviewer is the guard there. <strong>Meta.</strong> The way of working is accepting a step as checked once it reads plausibly, rather than once one case has been computed through it. This shows in “checked here”, in the cited reason for inertness and in the hypotheses copied from instances. The change is to write out one case of every step adopted from elsewhere before calling it checked. AGENTS.md states this for witnesses and examples, “written with the quantity it illustrates computed beside it”; this entry applies it to adopted reductions too.</p>
+<p><strong>Follow-up.</strong> Continuing. The item asked whether a matrix multiplier on a module kills a set of errors with a protected class surviving at a degree below the least scalar common multiplier; twisted repairs on Boolean variables split into substitution repairs at one window degree or \(T\) room degrees per split, free for linearly defined variables, and in domain models at room alone; the next attempt is a proper closure without linear definitions at tight room, the product pigeonhole system with four pigeons and three holes at its top degree \(D'=3\) over \(\mathbb F_2\): the goal review's Operation there, at matrix size \(k=2\), with the linear conditions on \((c,f_1)\) modulo \(J_3\), the quotient by \(\{rc\}\) taken modulo \(J_3\), and the realizability search.</p>
+<!-- TIMING twist-window-trade -->
+</article>
