@@ -353,6 +353,9 @@ AGENTS.md"):
   allow, each with its attempt: what the entry's own definition covers is not the item (17 October
   2026: a corollary covered the reading the draft had defined, and two other readings of the item
   were listed as covered without an attempt).
+- Put a new rule or check where the file that owns its kind says it belongs, read before writing,
+  not beside the lines last added (17 October 2026: two days of rules went into CLAUDE.md, which
+  says that shared rules are in AGENTS.md, because the previous rules were there).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).
