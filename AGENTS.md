@@ -348,7 +348,12 @@ AGENTS.md"):
 - Count a step done only when its effect is seen, not when its command was issued: read the written
   file's new content or the tool's own report of the write, the commit's subject in the log, a mark
   matching on the case it is for (17 October 2026: an excerpt refused behind a silenced error, a
-  stale commit subject printed and not read, and a word mark that matched a path).
+  stale commit subject printed and not read, and a word mark that matched a path). A check's
+  refusing test cases are the sentences that prompted it, quoted before its pattern is written, and
+  a scan count of zero is reported beside the listing of what the check reads
+  (`tools/record_scan.py` block-counts): a pattern fitted to a paraphrase matches nothing and its
+  zero looks like a clean record (17 October 2026: a block-count check missed every form the record
+  writes).
 - Run a required tool or check so that it does its job, never in the cheapest form that passes its
   gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
   logged, a clause such as Tried: written before the action it reports): if a gate's form is a
