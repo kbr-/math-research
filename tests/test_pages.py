@@ -140,6 +140,23 @@ class PagesBuild(unittest.TestCase):
         self.assertIn('"headline": "Bounds for x \\u003c y & \\"z\\""', head)
         self.assertIn(f'<link rel="canonical" href="{SITE}branches/alpha/">', head)
 
+    def test_llms_txt_lists_every_notebook_and_how_to_cite(self):
+        (self.root / 'research/branches/alpha').mkdir(parents=True)
+        (self.root / 'research/branches/alpha/notebook.html').write_text('<h1>Alpha</h1>')
+        (self.root / 'research/branches/alpha/context-budgets.json').write_text('{}')
+        (self.root / 'research/branches/alpha/notebook.json').write_text(json.dumps(dict(
+            version=1, name='alpha', title='Alpha bounds', status='completed', parent='main', origin=None)))
+        build(self.out, SITE, root=self.root)
+        text = (self.out / 'llms.txt').read_text()
+        self.assertTrue(text.startswith('# Noemesis research notebooks\n\n> Mathematical research notebooks by '
+                                        'Kamil Braun: '))
+        self.assertIn(f'- [Main research notebook]({SITE}): active\n- [Alpha bounds]({SITE}branches/alpha/): '
+                      'completed\n', text)
+        self.assertIn('- Cite as: Kamil Braun, NOTEBOOK TITLE, Noemesis research notebooks, PAGE URL', text)
+        self.assertIn('- [Source repository, with CITATION.cff](https://github.com/kbr-/math-research)', text)
+        self.assertIn('- [License: CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)', text)
+        self.assertFalse((self.out / 'branches/alpha/llms.txt').exists())
+
     def test_refuses_a_site_url_without_https(self):
         with self.assertRaises(ValueError):
             build(self.out, 'http://example.github.io/math-research/', root=self.root)

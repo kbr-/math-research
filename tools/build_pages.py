@@ -17,7 +17,7 @@ from notebook_site import manifest
 from notebook_math import strip_tags_tight
 
 SOURCE_URL = 'https://github.com/kbr-/math-research'
-OUTPUT_FILES = {'index.html', 'revision.json', '.nojekyll', 'notebooks.json', 'notebook-source.html'}
+OUTPUT_FILES = {'index.html', 'revision.json', '.nojekyll', 'notebooks.json', 'notebook-source.html', 'llms.txt'}
 COLLECTION = 'Noemesis research notebooks'
 RESEARCH_LICENSE = ('CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/')
 # An attribute value may hold '>', as in data-claim-note="... = 2, so no claim ...".
@@ -159,10 +159,29 @@ def page(root, source_url, notebook_name, site_url):
     return page,notebook,revision
 
 
+def llms_txt(items, names, site_url, source_url):
+    """/llms.txt (the llmstxt.org proposal): what the site is, its notebooks, and how to cite them."""
+    author = ', '.join(names)
+    name, deed = RESEARCH_LICENSE
+    lines = [f'# {COLLECTION}', '',
+             f'> Mathematical research notebooks by {author}: dated entries recording proofs, reductions, '
+             f'refutations and open statements. The research text is licensed {name}, which requires attribution.',
+             '',
+             'Each notebook is one HTML page. Each dated entry gives its own citation and anchor link below its '
+             'heading. If you build on a result here, please cite its entry and tell your readers where it came from.',
+             '', '## Notebooks', '']
+    lines += [f'- [{item["title"]}]({site_page(site_url, item["route"])}): {item["status"]}' for item in items.values()]
+    lines += ['', '## Citation', '',
+              f'- Cite as: {author}, NOTEBOOK TITLE, {COLLECTION}, PAGE URL, with the dated entry used',
+              f'- [Source repository, with CITATION.cff]({source_url})', f'- [License: {name}]({deed})', '']
+    return '\n'.join(lines)
+
+
 def build(out, site_url, root=ROOT, source_url=SOURCE_URL):
     out,root=Path(out),Path(root)
     items=catalogue(root)
-    payload={'.nojekyll':'','notebooks.json':json.dumps(manifest(root))+'\n'}
+    payload={'.nojekyll':'','notebooks.json':json.dumps(manifest(root))+'\n',
+             'llms.txt':llms_txt(items,authors(root),site_url,source_url)}
     main_revision=None
     for name,item in items.items():
         rendered,notebook,revision=page(root,source_url,name,site_url)
