@@ -703,11 +703,19 @@ def _words(text):
     return [w for w in (re.sub(r'^\W+|\W+$', '', token).lower() for token in plain.split()) if w]
 
 
+def own_follow_ups(text):
+    """The entry's own Follow-up passages, in order: each from <strong>Follow-up.</strong> to the end of its paragraph,
+    wherever it stands, outside the follow-up list items on other items.  One reader for every check: on 16 October
+    2026 an entry's Follow-up inside its Owed attempt paragraph counted for its outcome but read as empty to the
+    history and the next step's quotation check, which wanted it to open a paragraph."""
+    return re.findall(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', FOLLOWUP_ITEM.sub('', text), re.S)
+
+
 def quotable(text):
     """The words of an entry that a later entry on its item quotes: those of its own Follow-up paragraph, where
     it says what it left; of its title when the Follow-up has fewer than QUOTED_WORDS words; and none when the
     title is as short, in which case a link is all that can be asked."""
-    follow = re.findall(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', FOLLOWUP_ITEM.sub('', text), re.S)
+    follow = own_follow_ups(text)
     title = re.search(r'<h3>(.*?)</h3>', text, re.S)
     for part in (follow[-1] if follow else '', title.group(1) if title else ''):
         if len(_words(part)) >= QUOTED_WORDS:
@@ -771,7 +779,7 @@ def unaccounted_attempt(articles, item):
         old_tag, old_text = articles[position]
         work = developed_by(old_tag, old_text)
         if work and work[0] == item:
-            follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', old_text, re.S)
+            follow = own_follow_ups(old_text)
             if not follow or not re.search(r'\bnext attempt\b', follow[-1], re.I):
                 return None
             said = OWED_RE.search(text)
@@ -961,7 +969,7 @@ def named_attempts(body, ident):
     anchors = [anchor for anchor, _item, _outcome in history(body, ident)]
     for position, anchor in enumerate(anchors):
         text = articles.get(anchor, '')
-        follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
+        follow = own_follow_ups(text)
         if not follow:
             continue
         plain = ' '.join(html.unescape(strip_tags(follow[-1])).split())

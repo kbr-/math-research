@@ -127,7 +127,7 @@ def named_items(source, next_html):
         anchor = re.search(r'\bid="([^"]+)"', tag)
         item = re.search(r'\bdata-(' + lead_queue.NAMES + r')="([^"]+)"', tag)
         if anchor and item and item.groups() in queued:
-            follow = re.findall(r'<p><strong>Follow-up\.</strong>(.*?)</p>', text, re.S)
+            follow = lead_queue.own_follow_ups(text)
             developments[item.groups()] = (anchor.group(1), plain(follow[-1]) if follow else '')
             if anchor.group(1) in linked and item.groups() not in named:
                 named.append(item.groups())

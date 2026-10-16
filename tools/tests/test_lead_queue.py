@@ -1694,6 +1694,16 @@ class LeadQueueTest(unittest.TestCase):
 
 
 
+class OwnFollowUpsTest(unittest.TestCase):
+    def test_a_follow_up_inside_another_paragraph_is_read(self):
+        # 16 October 2026: a Follow-up after an Owed attempt in one paragraph read as empty to the history.
+        text = ('<p><strong>Owed attempt.</strong> Not made. <strong>Follow-up.</strong> Continuing. Next attempt: '
+                'the curve.</p><ul><li data-lead="R:3"><strong>Follow-up.</strong> Closed: done.</li></ul>')
+        self.assertEqual([lq._words(f) for f in lq.own_follow_ups(text)],
+                         [['continuing', 'next', 'attempt', 'the', 'curve']])
+        self.assertEqual(lq.own_follow_ups('<p><strong>Follow-up.</strong> Developed.</p>'), [' Developed.'])
+
+
 class LinkEarlierWorkTest(unittest.TestCase):
     """An entry on a queue item links the latest earlier entry on that item's group."""
 
