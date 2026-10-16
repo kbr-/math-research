@@ -11,36 +11,17 @@ for genuinely blocked waits, such as a running reviewer or background batch.
 
 Persistent worktrees and after-commit local synchronization follow AGENTS.md.
 
-When relaying what another agent, a reviewer or a tool found, carry its qualifiers word for word
-(unverified, sketched, at these sizes, for this instance) into every summary of it: a report, a
-commit message, a status line, a next step. A finding relayed is restated from its source, not from
-memory of its gist (16 October 2026: qualifiers dropped in relaying a reviewer's computation and in
-summaries of corrected items). Likewise write every summary of your own result (a title, New
-mathematics, a Bearing, a ledger line, a commit message, the report) last, after the statement and
-its review corrections are final, by copying the statement's hypotheses and qualifiers into it,
-never from the shape the result was expected to have while drafting (16 October 2026: four summaries
-of one lemma said more than it).
+Order of work for any proof, test, witness, next attempt or summary (each line from a mistake of 16
+October 2026; a rule added after a mistake is applied at once to the next text written):
 
-The first lines drafted for any proof, test, witness or next attempt are its Plainest bound: the
-bare count or oldest recorded lemma evaluated on its instance, written before any method is chosen.
-A rule written about this after a mistake does not change the order of work; drafting it first does
-(16 October 2026: the baseline rule of the morning did not stop the same mistake in the evening).
-
-A recheck of a proof reads each step's preconditions (independence, the range a quantifier covers,
-the domain a construction needs) as well as its arithmetic: the numbers of a step can all be right
-while the tool it uses does not apply (16 October 2026: a recheck confirmed every constant of a
-concentration step whose summands were dependent).
-
-A rule written in answer to a mistake is applied at once to whatever is being written next in the
-same session, by rereading that text against the rule before sending it on (16 October 2026: a
-missing union over a parameter recurred minutes after a rule against it).
-
-A constraint on a witness or a construction is checked as a function of the growing parameter, in
-the limit, not at the size it happens to be written for: a condition that holds "for N up to" some
-bound is a failed constraint (16 October 2026: a witness's cost stayed below its budget only while
-log log N was below 1024).
-
-A negative sentence ("no estimate applies", "nothing covers it", "the record lacks it") is a claim
-like any other: write it only beside the attempt that failed, never as the plausible default when a
-paragraph needs filling (16 October 2026: "no one-dimensional estimate applies" was false for a
-sheared witness).
+- First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
+  before any method is chosen.
+- Check a witness's or construction's constraints as functions of the growing parameter, in the
+  limit, never at the size written for.
+- Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
+  arithmetic.
+- Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt
+  that failed.
+- Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
+  statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
+  source, with its qualifiers word for word.
