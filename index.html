@@ -274,7 +274,8 @@
             const deadline = performance.now() + 8;
             do {
               const element = stack.pop();
-              if (element.matches('script, style, footer, .heading-anchor, mjx-container')) continue;
+              // Citation lines repeat the author and each entry's title; they are not notebook content.
+              if (element.matches('script, style, footer, .heading-anchor, mjx-container, .entry-cite, .citation')) continue;
               window.notebookText.wrapBareMath(element);
               if (element.matches(selector + ', pre') || !element.querySelector(selector + ', pre')) {
                 const text = normalize(sources.get(element) ?? element.textContent);
@@ -309,6 +310,7 @@
             const response = await fetch(new URL(notebook.source, catalogueUrl));
             if (!response.ok) throw new Error('Cannot load ' + notebook.title);
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            for (const citation of doc.querySelectorAll('.entry-cite, .citation')) citation.remove();
             // Detached source is never inserted/typeset. Index complete sections/articles,
             // retaining original TeX and navigable source anchors.
             let deadline = performance.now() + 8;

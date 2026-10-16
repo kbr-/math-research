@@ -106,6 +106,15 @@ const sideNotebooks = mode => async browser => {
     await page.locator('#search-scope').selectOption('all');
     await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
     assert.match(await page.locator('#search-status').textContent(), new RegExp(`${2 * ENTRIES} matching`));
+    if (mode === 'static') {
+      // Every published page carries a citation block; search finds notebook content, not citations.
+      assert.ok(await page.locator('#cite-this-notebook').count() === 1, 'static: the page has its citation block');
+      await page.locator('#search-query').fill('requires attribution');
+      await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
+      assert.match(await page.locator('#search-status').textContent(), /No matching/);
+      await page.locator('#search-query').fill('sideprobe');
+      await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
+    }
     await page.locator('#search-results button').first().click();
     await page.waitForURL('**/branches/alpha/#alpha-0');
     assert.match(await page.locator('.thread-navigation').textContent(), /Alpha/);
