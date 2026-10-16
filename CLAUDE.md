@@ -28,7 +28,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   that failed.
 - Write the Record comparison before New mathematics, the title or any sentence calling a result
   new: compare from the record's side (the entries a draft leans on, their dependencies and
-  dependents), not from the draft's own wording, and only then decide what is new.
+  dependents), not from the draft's own wording, and only then decide what is new. The comparison
+  reads the proofs of the results the draft builds on for a step, not only their statements: a step
+  that is inside a cited proof is a citation, not new.
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines
