@@ -203,6 +203,13 @@ def sed_in_place(command: str):
                     "sed says nothing. Replace the passage with tools/replace_text.py FILE OLD_FILE NEW_FILE, which "
                     "matches across line breaks, or make an exact edit with the Edit tool; then rewrap with "
                     "tools/rewrap_md.py")
+        # A notebook or an entry draft is prose too: on 16 October 2026 a session replaced sentences of entry drafts
+        # with sed substitutions a dozen times, where a pattern that misses says nothing.
+        page = next((name for name in files if name.endswith(".html")), None)
+        if page and any(re.search(r"(?:^|[;}\s])s(.).*\1.*\1", script) for script in scripts):
+            return (f"sed -i replaces prose in a page ({page}): a pattern that misses matches nothing and sed says "
+                    "nothing. Make the edit with the Edit tool, which fails when the old text is not there, or "
+                    "replace a passage with tools/replace_text.py FILE OLD_FILE NEW_FILE (AGENTS.md)")
         if not any(SED_SOURCE.search(name) for name in files):
             continue
         for part in (part for script in scripts for part in re.split(r";\s*", script)):

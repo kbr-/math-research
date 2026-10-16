@@ -195,14 +195,29 @@ class BashGuardTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
 
+    def test_sed_substituting_in_a_page_is_refused(self):
+        # A notebook or an entry draft is prose: a substitution that misses says nothing.
+        for command, name in (("sed -i 's|old words|new words|' $D/entry.html", "$D/entry.html"),
+                              ("sed -i -e 's#a#b#' -e 's#c#d#' notebook.html", "notebook.html"),
+                              ("D=x && sed -i 's/a/b/' x/entry.html && grep -c b x/entry.html", "x/entry.html")):
+            with self.subTest(command=command):
+                done = run(command)
+                self.assertEqual(done.returncode, 2, done.stderr)
+                self.assertIn(f"sed -i replaces prose in a page ({name})", done.stderr)
+        # Reading a page, or substituting into a copy, is no such edit.
+        for command in ("sed -n '1,5p' notebook.html", "sed 's/a/b/' notebook.html > out.html"):
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, run(command).stderr)
+
     def test_sed_in_place_with_an_unescaped_ampersand_in_a_replacement_is_refused(self):
-        for command in ("sed -i 's#a b#x &lt; y#' entry.html", "sed -i -e 's/p/q/' -e 's|r|M&amp;N|' a.html"):
+        # (A page is refused whatever its substitution, by the test above; these are text files.)
+        for command in ("sed -i 's#a b#x &lt; y#' entry.txt", "sed -i -e 's/p/q/' -e 's|r|M&amp;N|' a.txt"):
             with self.subTest(command=command):
                 done = run(command)
                 self.assertEqual(done.returncode, 2, done.stderr)
                 self.assertIn("unescaped & in a replacement", done.stderr)
         # An escaped ampersand, one only in the pattern, and sed without -i are fine.
-        for command in ("sed -i 's#a b#x \\&lt; y#' entry.html", "sed -i 's/&lt;/</' entry.html",
+        for command in ("sed -i 's#a b#x \\&lt; y#' entry.txt", "sed -i 's/&lt;/</' entry.txt",
                         "sed 's/a/&b/' entry.html"):
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0, run(command).stderr)
