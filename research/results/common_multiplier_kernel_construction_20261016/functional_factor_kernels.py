@@ -25,6 +25,9 @@ dimension 3 against 2 for Ann_H(w) + (C cap V_1), so the comparison detects a ki
 transports (b kills a and z, and w = a+z).  Expected: the control shows 3 against 2, asserted.
 Refuted by: the control showing equality, which would mean the script cannot see such killers.
 Possible because: a bug in kernel_span or members_in_v1 would hide the transported killer.
+Run 69971fefa4 at --holes 6 stopped at 110 s inside the compiled refutation-degree search through
+degree 4 (no size line printed); with --holes the search now stops at degree 3, where the review's
+record gives 6 holes proper.
 """
 import argparse
 import itertools
@@ -125,7 +128,7 @@ def main():
         chosen = None
         for n in ((args.holes,) if args.holes else (3, 4, 5)):
             axioms, nv, v = functional_php(n + 1, n)
-            info = refutation_degree(axioms, nv, 4, binary, tmp)
+            info = refutation_degree(axioms, nv, 3 if args.holes else 4, binary, tmp)
             out['sizes'].append(dict(holes=n, pigeons=n + 1, result=info))
             print(json.dumps(out['sizes'][-1]), flush=True)
             proper = [int(d) for d in info['dimensions']]
