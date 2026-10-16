@@ -1,0 +1,37 @@
+{
+  "source": {
+    "record": "[Overlapping curve recovery](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-overlapping-curve-recovery)",
+    "label": "Overlapping curve recovery",
+    "targets": ["branches/common-multiplier/notebook.html#entry-2026-10-16-overlapping-curve-recovery"]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["affine-linear-algebra", "degree-accounting"],
+  "claims": [{
+    "id": "thm:overlapping-curve-recovery",
+    "summary": "On a smooth projective geometrically integral curve over a finite field, genus g, n distinct received rational points plus protected R, divisors A,G of degrees a,m>=0 avoiding all points, L received words from L(G) with exact error supports E_j, union size u and maximum size t: if a>=u+2g and n>a+m+t, actual error actions on common U=L(A) and their observed maps modulo ev L(A+G) have individual ranks |E_j| and joint rank u; their common kernel evaluates surjectively at R. One common normalized locator is found from the received words and recovers every message, in O(Ln^3) field operations and O(n^2+Ln) memory with bases/evaluations supplied. On Hermitian curves s=2^r>=8, n=s^3-1,g=s(s-1)/2,m=s^3/4-1,d=s^3/16-1,a=3d+2g, supports I union J and I union K for disjoint d-sets give ranks 2d,2d, joint 3d and incomparable kernels. The summed-rank criterion for a nonzero common multiplier first holds at pole order 4d+g (for every support choice when s>=16; with support-based rank bounds at s=8); a nonzero common multiplier exists at 3d+g and a protected one at a, savings d and d-g, with both windows feasible. Joint rank is union size by definition here; separate per-word locators are cheaper; no bound on paid PC errors or hardness transfer.",
+    "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections, rechecked in follow-up: ranks, normalization, recovery, cost, all-parameter Hermitian arithmetic and the summed-rank threshold. Elementary union-of-supports mechanism of interleaved decoding; evaluation model only.",
+    "status": "working_proof",
+    "category": "general_tool",
+    "rationale": "Supplies a concrete joint-action saving over summed exact individual ranks with a common-multiplier pole-budget saving and protected recovery, in the evaluation model.",
+    "next_action": "Compare its H^1-vanishing degree bound u+2g with the effective-annihilator-degree statement.",
+    "novelty": "not_claimed"
+  }, {
+    "id": "lem:exact-common-kernel-selection",
+    "summary": "For a finite-dimensional space S, subspace J, linear maps rho_a on S with stacked map rho and quotient q:S->S/J, the common kernel of the rho_a is not contained in J if and only if rank(rho,q)>rank rho; in particular when rank rho<dim S/J or sum of rank bounds r_a<dim S/J. In thm:certified-repair-composition with J=S cap J_D, its later stages use only a chosen w in the common kernel outside J_D, so the summed hypothesis may be replaced by any certificate of this exact criterion, with unchanged later costs. Certifying the criterion is a separate cost; on the marked Hermitian instance the summed and joint conditions fail (dim S/J=1) while the exact one holds.",
+    "assessment": "Working elementary linear-algebra proof passed by the sole fresh-context medium reviewer in its follow-up check. No joint certificate for Braun or Pang adapters is supplied.",
+    "status": "working_proof",
+    "category": "general_tool",
+    "rationale": "Widens the selection hypothesis of the composition theorem from summed rank bounds to an exact criterion, needed by the protected curve instance.",
+    "next_action": "Seek an independent joint certificate of the exact criterion for a paid PC source.",
+    "novelty": "not_claimed"
+  }],
+  "relationships": [
+    ["thm:overlapping-curve-recovery", "depends_on", "thm:marked-curve-recovery", "Uses the divisor-zero detection and unique recovery proof separately for every received word, with one common locator."],
+    ["thm:overlapping-curve-recovery", "depends_on", "cor:hermitian-repair-family", "Uses the proved Hermitian geometry, rational points and explicit pole bases with newly checked budgets."],
+    ["thm:overlapping-curve-recovery", "depends_on", "cor:curve-locator-budget", "The same Riemann-Roch point-evaluation argument gives surjectivity on the union and protected point."],
+    ["thm:overlapping-curve-recovery", "applies", "lem:exact-common-kernel-selection", "Its surjectivity onto the union and protected point certifies the exact selection criterion where the summed one fails."],
+    ["lem:exact-common-kernel-selection", "applies", "thm:certified-repair-composition", "Replaces the summed rank selection hypothesis by an exact criterion; every later stage is unchanged."],
+    ["lem:exact-common-kernel-selection", "cites", "lem:weight-compatibility-factorization", "Uses the same predicate, a common kernel not inside the forbidden space, in rank form."]
+  ]
+}
