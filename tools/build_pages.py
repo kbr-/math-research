@@ -36,7 +36,7 @@ def authors(root):
              for family, given in re.findall(r'-\s*family-names:\s*(.+)\n\s*given-names:\s*(.+)', text)]
     if not names:
         raise ValueError('CITATION.cff names no author (family-names, then given-names)')
-    return ', '.join(names)
+    return names
 
 
 def site_page(site_url, route):
@@ -64,6 +64,30 @@ def cite_entries(notebook, author, title, url):
         return (match.group(0) + f'\n<p class="entry-cite">Cite as: {html.escape(author, quote=False)}, {named}'
                 f'{html.escape(title, quote=False)}, {COLLECTION}, {date}<a href="{anchor}">{anchor}</a>.</p>')
     return ENTRY.sub(line, notebook)
+
+
+def head_metadata(names, title, url, notebook):
+    """Citation metadata for the page head: Highwire tags, which Google Scholar reads, and schema.org JSON-LD,
+    with the dates of the notebook's first and latest dated entries."""
+    found = (ENTRY_ID.search(entry.group(0)) for entry in ENTRY.finditer(notebook))
+    dates = sorted('-'.join(ident.groups()[1:]) for ident in found if ident.group(2))
+    quoted = lambda value: html.escape(value, quote=True)
+    tags = [f'<meta name="citation_title" content="{quoted(title)}">']
+    tags += [f'<meta name="citation_author" content="{quoted(name)}">' for name in names]
+    if dates:
+        tags.append(f'<meta name="citation_publication_date" content="{dates[0].replace("-", "/")}">')
+    tags += [f'<meta name="citation_public_url" content="{quoted(url)}">',
+             f'<meta name="author" content="{quoted(", ".join(names))}">',
+             f'<link rel="canonical" href="{quoted(url)}">',
+             f'<link rel="license" href="{RESEARCH_LICENSE[1]}">']
+    record = {'@context': 'https://schema.org', '@type': 'ScholarlyArticle', 'headline': title, 'url': url,
+              'author': [{'@type': 'Person', 'name': name} for name in names],
+              'isPartOf': {'@type': 'Collection', 'name': COLLECTION},
+              'license': RESEARCH_LICENSE[1], 'isAccessibleForFree': True}
+    if dates:
+        record.update(datePublished=dates[0], dateModified=dates[-1])
+    data = json.dumps(record, ensure_ascii=False, sort_keys=True).replace('<', '\\u003c')
+    return '\n'.join(['  ' + tag for tag in tags] + [f'  <script type="application/ld+json">{data}</script>'])
 
 
 def citation_block(author, title, url):
@@ -97,8 +121,9 @@ def page(root, source_url, notebook_name, site_url):
         raise ValueError('Source URL must use HTTPS')
     template, notebook, source_revision = snapshot(root, notebook_name)
     item = catalogue(root)[notebook_name]
-    author = authors(root)
-    notebook = attribute(notebook, author, item['title'], site_page(site_url, item['route']))
+    names = authors(root)
+    author, url = ', '.join(names), site_page(site_url, item['route'])
+    notebook = attribute(notebook, author, item['title'], url)
     software_license = (root / 'LICENSES/MIT.txt').read_text(encoding='utf-8').strip()
     if '--' in software_license:
         raise ValueError('License text cannot be embedded in an HTML comment unchanged')
@@ -124,6 +149,11 @@ def page(root, source_url, notebook_name, site_url):
     if page.count('<head>') != 1:
         raise ValueError('Expected one page head for the software license notice')
     page = page.replace('<head>', '<head>\n<!--\n' + software_license + '\n-->', 1)
+    if page.count('</head>') != 1 or len(re.findall(r'<title>.*?</title>', page)) != 1:
+        raise ValueError('Expected one page title and one end of the page head')
+    page = re.sub(r'<title>.*?</title>', lambda _: f'<title>{html.escape(item["title"], quote=False)} · Noemesis'
+                  '</title>', page)
+    page = page.replace('</head>', head_metadata(names, item['title'], url, notebook) + '\n</head>')
     page = page.replace('__REVISION__', revision).replace('<!-- NOTEBOOK -->', notebook)
 
     return page,notebook,revision

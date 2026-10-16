@@ -104,6 +104,42 @@ class PagesBuild(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.out, SITE, root=self.root)
 
+    def test_head_names_the_notebook_and_carries_citation_metadata(self):
+        (self.root / 'notebook.html').write_text(
+            '<h1>Goal</h1><article id="entry-2026-10-05-later"><h3>5 October 2026 — Later</h3></article>'
+            '<article id="entry-2026-09-21-first"><h3>21 September 2026 — First</h3></article>'
+            '<p>Not an entry: id="entry-2027-01-01-quoted"</p>')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        head = page[:page.index('</head>')]
+        self.assertIn('<title>Main research notebook · Noemesis</title>', head)
+        for tag in ('<meta name="citation_title" content="Main research notebook">',
+                    '<meta name="citation_author" content="Kamil Braun">',
+                    '<meta name="citation_publication_date" content="2026/09/21">',
+                    f'<meta name="citation_public_url" content="{SITE}">',
+                    f'<link rel="canonical" href="{SITE}">',
+                    '<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">'):
+            self.assertIn(tag, head)
+        record = json.loads(head.split('<script type="application/ld+json">', 1)[1].split('</script>', 1)[0])
+        self.assertEqual(record['@type'], 'ScholarlyArticle')
+        self.assertEqual(record['author'], [{'@type': 'Person', 'name': 'Kamil Braun'}])
+        self.assertEqual((record['datePublished'], record['dateModified']), ('2026-09-21', '2026-10-05'))
+        self.assertEqual(record['url'], SITE)
+        self.assertEqual(page.count('<title>'), 1)
+
+    def test_head_metadata_escapes_the_title(self):
+        (self.root / 'research/branches/alpha').mkdir(parents=True)
+        (self.root / 'research/branches/alpha/notebook.html').write_text('<h1>Alpha</h1>')
+        (self.root / 'research/branches/alpha/context-budgets.json').write_text('{}')
+        (self.root / 'research/branches/alpha/notebook.json').write_text(json.dumps(dict(
+            version=1, name='alpha', title='Bounds for x < y & "z"', status='active', parent='main', origin=None)))
+        build(self.out, SITE, root=self.root)
+        head = (self.out / 'branches/alpha/index.html').read_text().split('</head>', 1)[0]
+        self.assertIn('<title>Bounds for x &lt; y &amp; "z" · Noemesis</title>', head)
+        self.assertIn('<meta name="citation_title" content="Bounds for x &lt; y &amp; &quot;z&quot;">', head)
+        self.assertIn('"headline": "Bounds for x \\u003c y & \\"z\\""', head)
+        self.assertIn(f'<link rel="canonical" href="{SITE}branches/alpha/">', head)
+
     def test_refuses_a_site_url_without_https(self):
         with self.assertRaises(ValueError):
             build(self.out, 'http://example.github.io/math-research/', root=self.root)

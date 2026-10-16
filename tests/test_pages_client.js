@@ -85,6 +85,9 @@ async function check(changed) {
   for (const [, attrs, code] of page.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
     // Real DOM search interactions are covered by test_notebook_browser.cjs.
     if (attrs.includes('id="notebook-search-client"')) continue;
+    // A browser runs no script whose type is not JavaScript, such as the head's JSON-LD citation record.
+    const type = /\btype="([^"]*)"/.exec(attrs);
+    if (type && !/^(text\/javascript|module)$/i.test(type[1])) continue;
     if (!/\bsrc=/.test(attrs)) vm.runInContext(code, context);
   }
   context.MathJax.startup.defaultPageReady = async () => {};
