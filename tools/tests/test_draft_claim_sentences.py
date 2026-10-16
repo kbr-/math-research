@@ -152,6 +152,18 @@ class DraftClaimSentences(unittest.TestCase):
 
 
 
+class DecisionWordsTest(unittest.TestCase):
+    # 17 October 2026: decisions justified as "the same question in a sharper form" and "decided by".
+    def test_decision_reasons_are_listed_also_in_bookkeeping(self):
+        draft = ('<p><strong>Owed attempt.</strong> The operation asks the same question in a sharper form.</p>'
+                 '<p><strong>Follow-up.</strong> The split is decided by this entry\'s statements.</p>')
+        self.assertEqual(len(dcs.exactness(draft)), 2)
+
+    def test_other_bookkeeping_words_stay_unlisted(self):
+        draft = '<p><strong>Owed attempt.</strong> It was made exactly as named.</p>'
+        self.assertEqual(dcs.exactness(draft), [])
+
+
 class ComparisonsTest(unittest.TestCase):
     # 17 October 2026: an Owed attempt called a bound "below" a target it exceeded.
     def test_a_comparison_in_a_bookkeeping_paragraph_is_listed(self):

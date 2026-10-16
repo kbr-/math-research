@@ -479,6 +479,10 @@ EXACT = re.compile(r'\b(?:exactly|precisely|(?:is|are|was|were|stays?|remains?) 
                    r'(?:do(?:es)?|did|can)(?: ?not|n\'t) extend|cannot extend|no farther|no further|only when|'
                    r'immediate(?:ly)?|clear(?:ly)?|direct(?:ly)?|obviously|at every|if and only if|sharp|tight|'
                    r'equals?)\b', re.I)
+# Words by which a sentence gives a decision its reason (17 October 2026: an attempt was dropped as "the same
+# question in a sharper form" and a split as "decided by this entry's statements", neither shown; the reviewer
+# found both).  Read also in bookkeeping paragraphs, where such decisions are written.
+DECISION = re.compile(r'\b(?:decided by|the same question|sharper form|supersed(?:es|ed)|implies)\b', re.I)
 DISPLAY = re.compile(r'\\\[(.*?)\\\]', re.S)
 INLINE = re.compile(r'\\\((.*?)\\\)', re.S)
 RELATION = re.compile(r'\\(?:ge|le|geq|leq|geqslant|leqslant|lesssim|gtrsim|lt|gt|gg|ll)(?![A-Za-z])|[<>]|&lt;|&gt;')
@@ -496,14 +500,15 @@ def exactness(draft):
             continue
         label = LABEL.match(body)
         where = label.group(1) if label else heading
-        if STATEMENT.match(where) or BOOKKEEPING.match(where):
+        if STATEMENT.match(where):
             continue
+        pattern = DECISION if BOOKKEEPING.match(where) else re.compile(EXACT.pattern + '|' + DECISION.pattern, re.I)
         shown = DISPLAY.findall(body) or [m for m in INLINE.findall(body) if RELATION.search(m)]
         conditions = [' '.join(html.unescape(m).split()) for m in shown[:3]]
         for index, sentence in enumerate(sentences(body)):
             unlabelled = LABEL.sub('', sentence) if index == 0 and label else sentence
             bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', unlabelled, flags=re.S)
-            if EXACT.search(text(bare)):
+            if pattern.search(text(bare)):
                 found.append((where, text(sentence), conditions))
     return found
 

@@ -24,6 +24,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   another route, and state the cause; an opening claim is stated only in the scope already proved.
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
+- A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
+  source: a proof, a statement of record, or the word judgement; the reason is written from that
+  source, not from the decision it is meant to support.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
   limit, never at the size written for.
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
