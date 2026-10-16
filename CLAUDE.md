@@ -22,6 +22,11 @@ bare count or oldest recorded lemma evaluated on its instance, written before an
 A rule written about this after a mistake does not change the order of work; drafting it first does
 (16 October 2026: the baseline rule of the morning did not stop the same mistake in the evening).
 
+A recheck of a proof reads each step's preconditions (independence, the range a quantifier covers,
+the domain a construction needs) as well as its arithmetic: the numbers of a step can all be right
+while the tool it uses does not apply (16 October 2026: a recheck confirmed every constant of a
+concentration step whose summands were dependent).
+
 A negative sentence ("no estimate applies", "nothing covers it", "the record lacks it") is a claim
 like any other: write it only beside the attempt that failed, never as the plausible default when a
 paragraph needs filling (16 October 2026: "no one-dimensional estimate applies" was false for a

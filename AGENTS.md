@@ -145,41 +145,44 @@ growing checklists or one-off setup narratives.
   step needs, and state that form: a hypothesis copied from the instance at hand, rather than read
   off the proof, narrows the lemma and the next step drawn from it (16 October 2026), and a free
   parameter (a mesh, a scale, a threshold) is stated with the whole range its proof allows before a
-  value is chosen for the instance; say there too which class each conclusion holds for, after
-  `<strong>Hypotheses, each with its step.</strong>` (the finisher requires the paragraph of an
-  entry registering a proof). Evaluate every inequality a statement or a sentence about the goal's
-  endpoint uses at the Nonvacuity witness's parameters, before the review and again for each
-  sentence a correction rewrites: a corrected sentence is a new claim (16 October 2026: a correction
-  wrote a degree condition its own example violated). Try it on degenerate inputs (the trivial
-  instance, the empty one, an input outside its stated form) and report it in the entry after
-  `<strong>Degenerate cases.</strong>`: what the statement gives on each, or the hypothesis that
-  excludes it (the finisher requires the paragraph of an entry registering a proof). Write down also
-  one input that satisfies all the statement's hypotheses, with its parameters, after
-  `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
-  finisher requires it of the same entries). When the statement extends a recorded one, the input
-  must be one the recorded statement does not already cover, and it is checked step by step against
-  the rules it uses; it, and a next attempt's Smallest case, say after `<strong>Plainest
-  bound.</strong>` what the plainest available bound (a bare count, a one-dimensional estimate, the
-  record's oldest applicable lemma) gives on that instance, or why none applies (the finisher
-  checks). For a statement uniform over a family, every fixed witness is decided by a bound for one
-  function (its variance, or a one-dimensional estimate after a change of variables): the sentence
-  then says so and names what the uniformity adds. "None applies" is written only after the plainest
-  bound was tried on the instance; and a recorded result the draft cites is read also for what it
-  already implies about the new statement's special cases. Before a required paragraph or artifact
-  is called done, name what it is meant to establish in the case at hand and check that it does: a
-  witness exercises the step the statement adds, a Meta names the change its commit made, a message
-  reports a result and not an intent (16 October 2026: each of the three passed its rule's wording
-  first). An example or witness offered for a claim, in an entry or a reply, is written with the
-  quantity it illustrates computed beside it, never from memory of its shape. A statement covering
-  several parts (cases, forms, earlier lemmas it refines) gives each part its own form, and a
-  simplification true of some parts is attached to those parts only. Name after
-  `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious witness,
-  the trivial estimate) and what the statement adds over it (the finisher requires it of the same
-  entries; 16 October 2026: a comparison omitted a multiplier that survived every choice). An
-  example or test computed with the entry's method also gets its own baseline, computed first: what
-  the plainest available bound gives on that example. State compositions as lemmas in one common
-  setting with a complete proof, not a reference to a sketch. At the start of drafting, run the
-  entry's skeleton (its headings and labelled paragraphs, before the body) through
+  value is chosen for the instance; a statement holding with high probability for every value of a
+  parameter names, in its proof, the union bound that covers that parameter, and each concentration
+  inequality it uses names the independence it rests on (16 October 2026: a union over a slope
+  parameter was missing, and dependent multinomial counts were summed as independent); say there too
+  which class each conclusion holds for, after `<strong>Hypotheses, each with its step.</strong>`
+  (the finisher requires the paragraph of an entry registering a proof). Evaluate every inequality a
+  statement or a sentence about the goal's endpoint uses at the Nonvacuity witness's parameters,
+  before the review and again for each sentence a correction rewrites: a corrected sentence is a new
+  claim (16 October 2026: a correction wrote a degree condition its own example violated). Try it on
+  degenerate inputs (the trivial instance, the empty one, an input outside its stated form) and
+  report it in the entry after `<strong>Degenerate cases.</strong>`: what the statement gives on
+  each, or the hypothesis that excludes it (the finisher requires the paragraph of an entry
+  registering a proof). Write down also one input that satisfies all the statement's hypotheses,
+  with its parameters, after `<strong>Nonvacuity.</strong>`: a statement about a class with no
+  member proves nothing (the finisher requires it of the same entries). When the statement extends a
+  recorded one, the input must be one the recorded statement does not already cover, and it is
+  checked step by step against the rules it uses; it, and a next attempt's Smallest case, say after
+  `<strong>Plainest bound.</strong>` what the plainest available bound (a bare count, a
+  one-dimensional estimate, the record's oldest applicable lemma) gives on that instance, or why
+  none applies (the finisher checks). For a statement uniform over a family, every fixed witness is
+  decided by a bound for one function (its variance, or a one-dimensional estimate after a change of
+  variables): the sentence then says so and names what the uniformity adds. "None applies" is
+  written only after the plainest bound was tried on the instance; and a recorded result the draft
+  cites is read also for what it already implies about the new statement's special cases. Before a
+  required paragraph or artifact is called done, name what it is meant to establish in the case at
+  hand and check that it does: a witness exercises the step the statement adds, a Meta names the
+  change its commit made, a message reports a result and not an intent (16 October 2026: each of the
+  three passed its rule's wording first). An example or witness offered for a claim, in an entry or
+  a reply, is written with the quantity it illustrates computed beside it, never from memory of its
+  shape. A statement covering several parts (cases, forms, earlier lemmas it refines) gives each
+  part its own form, and a simplification true of some parts is attached to those parts only. Name
+  after `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious
+  witness, the trivial estimate) and what the statement adds over it (the finisher requires it of
+  the same entries; 16 October 2026: a comparison omitted a multiplier that survived every choice).
+  An example or test computed with the entry's method also gets its own baseline, computed first:
+  what the plainest available bound gives on that example. State compositions as lemmas in one
+  common setting with a complete proof, not a reference to a sketch. At the start of drafting, run
+  the entry's skeleton (its headings and labelled paragraphs, before the body) through
   `tools/notebook-append.py DRAFT --check`, which lists each failing entry check of the append and
   the finisher that applies to a draft, so a required paragraph is planned before the work. Before
   the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each
