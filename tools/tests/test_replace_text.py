@@ -53,6 +53,19 @@ class ReplaceTextTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'matches 2 line-aligned places'):
             replace_text.replace('a b\n  a\n  b\n', 'a b', 'x')
 
+    def test_in_prose_a_passage_of_several_lines_moved_mid_line_by_a_rewrap_is_replaced(self):
+        # 17 October 2026: a commit message's passage, rewrapped to start mid-line, was refused.
+        message = ('Subject\n\ntools/x.py: a check. Replayed over this worktree\'s four nonempty session\n'
+                   'transcripts with the new mode, it flags 10 calls.\n\nSuite: ok.\n')
+        old = 'Replayed over this worktree\'s four nonempty\nsession transcripts with the new mode,'
+        new = 'Replayed with the new mode over four of\nthe six transcripts,'
+        updated, line = replace_text.replace(message, old, new, prose=True)
+        self.assertIn('a check. Replayed with the new mode over four of the six transcripts, it flags', updated)
+        self.assertIn('\n\nSuite: ok.\n', updated)                   # the paragraph break stays
+        self.assertEqual(line, 3)
+        with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):   # code stays line-aligned
+            replace_text.replace(message, old, new)
+
     def test_a_one_line_passage_inside_a_longer_line_is_replaced_there(self):
         # 16 October 2026: a notebook paragraph kept on one line held the passage mid-line.
         text = '<p>One <a href="#x">old link</a>. More.</p>\nnext\n'

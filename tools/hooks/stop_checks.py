@@ -883,13 +883,69 @@ def unreviewed_block(path, reply, root):
         'before a draft exists), and answer again.')}
 
 
+# A figure in a reply (N of M, N tests, a percentage) and what may stand beside it as its source: a saved output's
+# path, a file, a named agent's report, a commit (16 October 2026: a reply quoted an unsaved count of 258).
+REPLY_FIGURE = re.compile(r'(?<!turn )(?<!block )\b\d+(?:\.\d+)? (?:of|in) \d+\b|\b\d+ tests\b|\b\d+(?:\.\d+)?%')
+FIGURE_SOURCE = re.compile(r'research/(?:results|provenance)/|\.(?:txt|json|html|py|md)\b|\breview(?:er)?\b|'
+                           r'\breport\b|\bsaved\b|\breplay\b|\bscan\b|\b[0-9a-f]{9}\b|\blog\b', re.I)
+
+
+def replay_figures(paths):
+    """Each past text of more than 200 characters in the session transcripts at `paths` that figure_block refuses,
+    with the counts at paragraph and at reply level: the check is counted over past replies before its commit."""
+    texts = paragraphs = 0
+    refused = []
+    for name in paths:
+        for line in open(name, errors='replace'):
+            if '"assistant"' not in line or '"text"' not in line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if entry.get('type') != 'assistant':
+                continue
+            for part in (entry.get('message') or {}).get('content') or []:
+                if isinstance(part, dict) and part.get('type') == 'text' and len(part.get('text', '')) > 200:
+                    texts += 1
+                    paragraphs += len(figure_paragraphs(part['text']))
+                    if figure_block(part['text']):
+                        refused.append(' '.join(figure_paragraphs(part['text'])[0].split())[:160])
+    for text in refused:
+        print(f'- {text}')
+    print(f'{texts} texts read: {paragraphs} paragraphs with a figure and no source beside it; {len(refused)} texts '
+          'refused, with no source anywhere in them.')
+
+
+def figure_paragraphs(reply):
+    """The paragraphs of a reply holding a figure and no source beside it (outside code blocks)."""
+    text = re.sub(FENCED, ' ', reply, flags=re.M)
+    return [p.strip() for p in re.split(r'\n\s*\n', text)
+            if REPLY_FIGURE.search(p) and not FIGURE_SOURCE.search(p)]
+
+
+def figure_block(reply):
+    """The block for a reply with a figure and no source anywhere in it, or None. Counted over four of this
+    worktree's session transcripts, 1514 texts of more than 200 characters (17 October 2026), a paragraph-level rule
+    flags 56 paragraphs and this reply-level one refuses 10 texts, each a figure from a run no path names
+    (research/results/framework-builds-20261017/reply-figure-replay.txt)."""
+    found = figure_paragraphs(reply)
+    if not found or FIGURE_SOURCE.search(reply):
+        return None
+    return {'decision': 'block', 'reason': (
+        f'A figure without its source: "{found[0][:160]}". Each count, ratio or percentage in a reply stands beside '
+        'the saved output it came from (a research/results path), a named agent\'s report or a proof in the entry '
+        '(CLAUDE.md, order of work); save the output first, or drop the figure.')}
+
+
 def turn_block(texts, calls, said, off, quoted=()):
     """The first block among the checks that run at a stop and at a commit alike (a promise, an admitted
     mistake, a tool's fault worked around, a declared gap), those named in `off` left out; or None.
     `said` is what the gap check reads: the final reply, or what was said since the last commit."""
     checks = (('promise', lambda: promise_block(texts, quoted)), ('mistake', lambda: mistake_block(texts, '\n'.join(texts))),
               ('workaround', lambda: workaround_block(texts, calls)), ('gap', lambda: gap_block(said)),
-              ('idle', lambda: idle_block(said)), ('scope', lambda: scope_block(said)))
+              ('idle', lambda: idle_block(said)), ('scope', lambda: scope_block(said)),
+              ('figures', lambda: figure_block(said)))
     return next(filter(None, (check() for name, check in checks if name not in off)), None)
 
 
@@ -962,4 +1018,7 @@ def main(argv):
 if __name__ == '__main__':
     # The branch's own module asks for this one by name; it gets this copy, not a second one.
     sys.modules.setdefault('stop_checks', sys.modules['__main__'])
+    if sys.argv[1:2] == ['--replay-figures']:
+        replay_figures(sys.argv[2:])
+        sys.exit(0)
     sys.exit(main(sys.argv[1:]))

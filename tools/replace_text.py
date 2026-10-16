@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 
-def replace(text, old, new):
+def replace(text, old, new, prose=False):
     """`text` with its one line-aligned occurrence of `old` replaced by `new`, re-indented; ValueError
     when `old` matches no line-aligned passage or more than one."""
     words = old.split()
@@ -27,7 +27,7 @@ def replace(text, old, new):
         raise ValueError('the passage to replace is empty')
     pattern = re.compile(r'^([ \t]*)' + r'\s+'.join(map(re.escape, words)) + r'[ \t]*$', re.M)
     found = list(pattern.finditer(text))
-    if not found and '\n' not in old.strip() and '\n' not in new.strip():
+    if not found and (prose or '\n' not in old.strip() and '\n' not in new.strip()):
         # A one-line passage inside a longer line, as in a notebook paragraph kept on one line (16 October 2026:
         # the passage sat mid-line and the tool refused it): it matches within that line only, and the one-line
         # replacement takes its place with no re-indentation.
@@ -45,7 +45,10 @@ def replace(text, old, new):
             starts = [m.start() for m in re.finditer(f'(?=(?:{body}))', text)]
         if len(starts) == 1:
             match = re.compile(body).match(text, starts[0])
-            return text[:match.start()] + new.strip() + text[match.end():], text.count('\n', 0, match.start()) + 1
+            # In prose (Markdown, plain text, HTML) a replacement of several lines is joined into the flow, to be
+            # rewrapped (17 October 2026: a passage of several lines that a rewrap had moved mid-line was refused).
+            placed = ' '.join(new.split()) if prose else new.strip()
+            return text[:match.start()] + placed + text[match.end():], text.count('\n', 0, match.start()) + 1
         raise ValueError(f'the passage matches no line-aligned place and {len(starts)} places within or across lines, '
                          'not one')
     if len(found) != 1:
@@ -92,7 +95,8 @@ def main(argv):
     except OSError:
         pass
     try:
-        updated, line = replace(path.read_text(), Path(argv[2]).read_text(), Path(argv[3]).read_text())
+        updated, line = replace(path.read_text(), Path(argv[2]).read_text(), Path(argv[3]).read_text(),
+                                prose=path.suffix in ('.md', '.txt', '.html', ''))
     except (ValueError, OSError) as error:
         print(f'replace_text: {path}: {error}', file=sys.stderr)
         return 1

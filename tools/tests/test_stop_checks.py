@@ -359,6 +359,20 @@ class UncheckedClaimTest(HookFixture):
             with self.subTest(reply=reply):
                 self.assertIn(f'A declared gap: "{quoted}"', hook.gap_block(reply)['reason'])
 
+    def test_a_figure_without_any_source_in_the_reply_blocks(self):
+        # 16 October 2026: a reply quoted an unsaved count of 258.
+        for reply in ('It was exact in 333 of 340 random instances.', 'The suite passes: 1191 tests.',
+                      'About 18% of the slice is allowed.'):
+            with self.subTest(reply=reply):
+                self.assertIn('A figure without its source', hook.figure_block(reply)['reason'])
+        for reply in ('It was exact in 333 of 340 instances (research/results/x/run.txt).',
+                      'The reviewer found 3 of 4 claims overstated.',
+                      'This turn starts the IPS block, turn 1 of 4.',
+                      'Committed as 745913d2b: 38 of 1562 commands.',
+                      'Nothing counted here.'):
+            with self.subTest(reply=reply):
+                self.assertIsNone(hook.figure_block(reply))
+
     def test_a_narrowing_reported_without_its_scopes_blocks(self):
         # 16 October 2026: "its corrections narrowed the scope sentences" named neither scope.
         for reply in ('The bound passed review; its corrections narrowed the scope sentences.',
