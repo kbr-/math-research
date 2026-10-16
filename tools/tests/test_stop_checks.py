@@ -390,10 +390,22 @@ class UncheckedClaimTest(HookFixture):
         self.assertIn('A mistake admitted with no prevention: "It copied everything, and I never measured it on this '
                       'repository". The user must not have to ask how it is prevented.', out['reason'])
         self.assertIn('A fix of the one instance is not a prevention.', out['reason'])
-        for told in (admitted + '\n\n**Prevention.** A tool that copies now prints what it copies.',
-                     admitted + '\n\n## Prevention\n\nA test fails on a whole-tree copy.', 'It is fixed.'):
-            with self.subTest(told=told), self.fake_claude(self.verdict()):
-                self.assertIsNone(self.run_hook(last_assistant_message=told))
+        self.assertIn('Then a paragraph that starts "Meta": what should change so that in future neither this '
+                      'mistake nor its fix would have been needed at all', out['reason'])
+        meta = '\n\nMeta: the copy count was printed and nothing read it; the check now does.'
+        for told in (admitted + '\n\n**Prevention.** A tool that copies now prints what it copies.' + meta,
+                     admitted + '\n\n## Prevention\n\nA test fails on a whole-tree copy.\n\n## Meta\n\nThe signal.'):
+            with self.subTest(told=told):
+                self.assertIsNone(hook.mistake_block([told], told))
+        with self.fake_claude(self.verdict()):
+            self.assertIsNone(self.run_hook(last_assistant_message='It is fixed.'))
+        # At the stop, the Meta paragraph also needs its home, here none: a heading takes the paragraph under it.
+        with self.fake_claude(self.verdict()):
+            out = self.run_hook(last_assistant_message=admitted + '\n\nPrevention: a test.\n\n## Meta\n\nThe signal.')
+        self.assertIn('A Meta paragraph with no home: "## Meta The signal."', out['reason'])
+        # A Prevention paragraph without the Meta one still blocks.
+        self.assertIsNotNone(hook.mistake_block(['That was my mistake.'],
+                                                'That was my mistake.\n\nPrevention: a check now refuses it.'))
         for text in ('That was my mistake.', 'My own error: the path.', 'I was wrong about the runner.', 'I got that wrong.',
                      'I missed the ignored files.', 'I put it badly.', 'Yes, it was avoidable.', 'I misjudged the cost.',
                      'I withdraw my claim of a floor.', 'I overstated the bound.', 'My earlier reading was wrong.',
@@ -460,7 +472,8 @@ class UncheckedClaimTest(HookFixture):
             self.assertIn('A declared gap', self.run_hook(last_assistant_message=self.GAP)['reason'])
 
     def test_each_check_can_be_named_and_only_the_reader_opens_the_file(self):
-        shared = ('promise', 'mistake', 'workaround', 'missing tool', 'gap', 'judge', 'review')
+        shared = ('promise', 'mistake', 'workaround', 'missing tool', 'reviewer meta', 'meta home', 'gap', 'judge',
+                  'review')
         self.assertEqual(hook.CHECK_NAMES, shared + tuple(hook.branch_extension.ask('STOP_CHECK_NAMES', ())))
         self.off(*hook.CHECK_NAMES)
         self.assertEqual(hook.checks_off(self.root), frozenset(hook.CHECK_NAMES))

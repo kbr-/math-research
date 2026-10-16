@@ -324,8 +324,15 @@ sys.exit(compute.main())
             self.assertEqual(refused.returncode, 1)
             self.assertIn('The stand-in review in research/logs/stand-in-review/r.json is unanswered', refused.stderr)
             self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
-        notebook.write_text(entry.format('<p><strong>Review.</strong> The first objection was right and is fixed; the second misread '
-                                         'the text.</p>\n'))
+        review = ('<p><strong>Review.</strong> The first objection was right and is fixed; the second misread '
+                  'the text.</p>\n')
+        # The Review paragraph alone still leaves the meta-question for the right objection unanswered.
+        notebook.write_text(entry.format(review))
+        refused = self.command('tools/finish-turn.py', 'test_turn', check=False)
+        self.assertEqual(refused.returncode, 1)
+        self.assertIn('is answered without its meta-question', refused.stderr)
+        notebook.write_text(entry.format(review + '<p><strong>Meta.</strong> The habit of reporting before checking '
+                                         'the record; AGENTS.md now asks for the check first.</p>\n'))
         done = self.command('tools/finish-turn.py', 'test_turn')
         # The answered review is settled, and the review that is due says why it did not run here.
         self.assertIsNone(json.loads((state / 'state.json').read_text())['unanswered'])

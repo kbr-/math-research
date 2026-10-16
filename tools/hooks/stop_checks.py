@@ -9,7 +9,21 @@ them, without a model: first person and future tense with a marker such as "goin
 Mistakes. A turn that admits a mistake of the assistant's own ("my mistake", "I was wrong", "I never
 measured it") is blocked once, with the sentence, unless what the user is told has a paragraph that
 starts "Prevention": the user must not have to ask how the class of mistake is prevented. A pattern
-finds them, without a model.
+finds them, without a model. It also needs a paragraph that starts "Meta": the behaviour of the agent's, as a
+class wider than the mistake, that made the mistake and its fix needed at all, and the change in how it works
+that ends it.
+
+Meta homes. A final reply's paragraph that starts "Meta" states a change in how the agent works; it is blocked
+once unless it names, by its path, a file the turn changed that shapes later work (a rule file, a check or tool,
+a reviewer definition, the queue's notebook): a change stated only in a reply is lost at the next compaction, and
+one kept only in archived results or provenance is read by nothing that guides the work. A Prevention paragraph
+is held to the same, unless it says the agent made no mistake.
+
+Reviewers' reports. A turn that received a reviewer agent's report (a subagent whose metadata beside the
+transcript names a reviewer's type) is blocked once unless a reply after the report has the Prevention and the
+Meta paragraphs, covering each mistake the report found, or saying it found none.
+
+These three were ported from another branch's version of this hook (16 October 2026, at the user's request).
 
 Tool faults. A turn that reports one of this clone's tools misbehaving (a sentence naming it, as
 `name`, name.py or tools/name, next to a word such as "nested", "refused" or "wrong", in its text or
@@ -54,6 +68,7 @@ import json
 import os
 import re
 from pathlib import Path
+import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -360,15 +375,33 @@ MISTAKE = re.compile(r"[^.!?\n]*(?:\bmy (?:own )?(?:mistake|error|fault|oversigh
                      r"(?:my|the|that|this) (?:\w+ ){0,2}(?:claim|statement|conclusion|reading|lemma|result|bound|"
                      r"assertion|estimate|what-if)\b|\bmy (?:own )?(?:\w+ )?(?:claim|statement|reading|draft|conclusion) "
                      r"(?:was|is) (?:wrong|overstated|withdrawn|mistaken)\b)[^.!?\n]*", re.I)
-# The paragraph that answers it, in what the user is told.
-PREVENTION = re.compile(r'^[\s>*#-]*Prevention\b', re.M)
+# The paragraphs that answer it, in what the user is told: the class of the mistake and its prevention, and the
+# meta-question, what behaviour made the mistake and its fix needed at all. A bold or italic span is the label only
+# when it holds the word alone (ported from another branch, 16 October 2026: a list item "**Prevention
+# paragraphs** go through the same reader" was read as a Prevention).
+
+
+def label(word):
+    """A line's start that labels its paragraph `word`: the word plain, or emphasised alone with its stop."""
+    return rf'(?:\*\*{word}[.:]?\*\*|\*{word}[.:]?\*|__{word}[.:]?__|_{word}[.:]?_|{word}\b)'
+
+
+PREVENTION = re.compile(rf'^[\s>#-]*{label("Prevention")}', re.M)
+META = re.compile(rf'^[\s>#-]*{label("Meta")}', re.M)
+META_QUESTION = (
+    'a paragraph that starts "Meta": what should change so that in future neither this mistake nor its fix would '
+    'have been needed at all. It is about your own behaviour, as a class wider than this mistake: the way of '
+    'working that produced it (a habit of deciding, of weighing cost against the user\'s stated priority, of '
+    'reading or of stopping), where else that habit shows, and the change in how you work that ends it, in its '
+    'durable home. Naming the Prevention\'s mechanism again, or only this mistake, answers the Prevention twice '
+    '(user, 14 October 2026: "The answer should also be meta, with broader, more general scope than prevention")')
 
 
 def mistake_block(texts, told):
-    """The block for a turn that admits a mistake while what the user is told (`told`) has no
-    Prevention paragraph, or None."""
+    """The block for a turn that admits a mistake while what the user is told (`told`) lacks the Prevention or the
+    Meta paragraph, or None."""
     found = sentences(MISTAKE, texts)
-    if not found or PREVENTION.search(told):
+    if not found or (PREVENTION.search(told) and META.search(told)):
         return None
     return {'decision': 'block', 'reason': (
         f'A mistake admitted with no prevention: "{found[0]}". The user must not have to ask how it is prevented. '
@@ -376,7 +409,198 @@ def mistake_block(texts, told):
         'instance), why the existing rules and checks let it through, and the framework change made in this turn '
         'that stops the class (a check, a hook, a test, a tool that reports or refuses; a written rule only where '
         'nothing mechanical can), or the build item queued for it with tools/lead_queue.py. A fix of the one '
-        'instance is not a prevention. If the sentence admits no mistake of yours, say so.')}
+        f'instance is not a prevention. Then {META_QUESTION}. If the sentence admits no mistake of yours, say so.')}
+
+
+# A Meta paragraph's change lives where the turn wrote it: a reply's sentence is gone at the next compaction. On
+# 15 October 2026 a Meta paragraph named a change that no file the turn wrote held, and the user had to ask
+# whether it was among the proposals. A heading "## Meta" takes the paragraph under it.
+META_PARAGRAPH = re.compile(rf'^(?:#+[ \t]*Meta[ \t]*\n[ \t]*\n|[\s>-]*{label("Meta")}).*?(?=\n[ \t]*\n|\Z)',
+                            re.M | re.S)
+# What names a home: a path with a directory, or a file name with an extension.
+HOME = re.compile(r'[\w.~-]*/[\w./~-]*\w|\b[\w-]+\.(?:py|md|html|json|sh|ya?ml|txt|toml)\b')
+WRITERS = ('Edit', 'Write', 'NotebookEdit')
+# A record nothing loads into later work: archived results, provenance and logs. A review record or a result
+# file shapes no later work; a rule file, a hook or tool, or the queue's notebook does.
+RECORD = re.compile(r'(?:^|/|\s)(?:tasks|research/(?:results|provenance|logs))/\S*')
+
+
+def written_homes(calls, changed):
+    """The files the turn changed: each editing call's file, and `changed`, those git shows changed since the
+    turn's prompt; a record's path left out, since a change kept only there shapes no later work. A shell
+    command's text is no home: a queue item's wording can quote a file's path that the turn never wrote."""
+    homes = [str(tool_input.get('file_path', '')) for name, tool_input in calls if name in WRITERS]
+    return [home for home in homes + list(changed) if not RECORD.search(' ' + home)]
+
+
+def turn_start(path):
+    """The timestamp of the transcript's last prompt, or None."""
+    tail = b''
+    with open(path, 'rb') as f:
+        position = f.seek(0, 2)
+        while position > 0:
+            step = min(BLOCK, position)
+            position -= step
+            f.seek(position)
+            lines = (f.read(step) + tail).split(b'\n')
+            tail = lines.pop(0) if position > 0 else b''
+            for line in reversed(lines):
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if is_prompt(entry):
+                    return entry.get('timestamp')
+    return None
+
+
+def changed_files(root, since):
+    """The paths, from `root`, that git shows changed in `root` and its submodules: uncommitted, and in commits
+    made since `since` (an ISO timestamp; None leaves commits out)."""
+    def git(where, *args):
+        try:
+            done = subprocess.run(['git', '-C', str(where), *args], capture_output=True, text=True)
+        except OSError:  # no git to run: nothing is known changed, so only the editing calls count
+            return []
+        return done.stdout.splitlines() if done.returncode == 0 else []
+    places = [''] + [line.split()[-1] for line in git(root, 'config', '-f', '.gitmodules', '--get-regexp', r'\.path$')]
+    found = set()
+    for place in places:
+        prefix = place + '/' if place else ''
+        found |= {prefix + line[3:] for line in git(Path(root) / place, 'status', '--porcelain') if len(line) > 3}
+        if since:
+            found |= {prefix + line for line in git(Path(root) / place, 'log', f'--since={since}', '--name-only',
+                                                      '--format=') if line}
+    return sorted(found)
+
+
+# A file named without its extension or path, by a name no plain word has (a skill's directory, an upper-case
+# record name).
+NAME = re.compile(r'\b[\w-]*(?:_|-|[A-Z]{2})[\w-]*\b')
+
+
+def homed(paragraph, homes):
+    """Whether `paragraph` names one of `homes` (written files and commands): by a path, by a file name with
+    its extension, or by a written file's distinctive name or directory."""
+    if any(name and name in home for name in (found.strip('./') for found in HOME.findall(paragraph))
+           for home in homes):
+        return True
+    parts = {part for home in homes for found in HOME.findall(home) for part in Path(found).with_suffix('').parts}
+    return any(len(name) >= 6 and name in parts for name in NAME.findall(paragraph))
+
+
+# A Prevention paragraph's check lives in a file too: one could otherwise describe a check nothing held. One that
+# says the agent made no mistake needs no home.
+PREVENTION_PARAGRAPH = re.compile(rf'^(?:#+[ \t]*Prevention[ \t]*\n[ \t]*\n|[\s>-]*{label("Prevention")}).*?'
+                                  r'(?=\n[ \t]*\n|\Z)',
+                                  re.M | re.S)
+# A paragraph that starts "Meta" or "Prevention" runs on through the prose that resumes after a list it holds or
+# introduces. The prose after the list ends at its blank line, and a block that starts with a heading or a label
+# (`**Review.**`, `Committed locally:`) is no part of it, so a home named in the reply's other paragraphs is not
+# borrowed.
+LIST_LINE = re.compile(r'[ \t]*(?:[-*+]|\d+[.)])[ \t]')
+LABELLED = re.compile(r"[ \t>]*(?:#|\*\*|__|\w[\w'-]*(?:[ \t]+[\w'-]+){0,3}[ \t]*[:.](?:[ \t]|$))")
+NEXT_BLOCK = re.compile(r'\n[ \t]*\n\s*(.*?)(?=\n[ \t]*\n|\Z)', re.S)
+
+
+def leads_on(block):
+    """Whether prose resumes after `block`: it ends in a list, or in a colon that introduces one."""
+    for line in reversed(block.rstrip().splitlines()):
+        if LIST_LINE.match(line):
+            return True
+        if not line[:1].isspace():
+            return line.rstrip().endswith(':')
+    return False
+
+
+def sections(start, reply):
+    """Each paragraph `start` finds in `reply`, with the blocks it leads on to: a list it introduces and the
+    prose after a list, up to a block that starts with a heading or a label."""
+    found = []
+    for match in start.finditer(reply):
+        text, end = match.group(0), match.end()
+        while leads_on(text):
+            block = NEXT_BLOCK.match(reply, end)
+            if not block or (LABELLED.match(block.group(1)) and not LIST_LINE.match(block.group(1))):
+                break
+            text, end = f'{text}\n\n{block.group(1)}', block.end()
+        found.append(text)
+    return found
+
+
+NO_MISTAKE = re.compile(r"\bno (?:mistake|defect|fault)s? (?:of|by) (?:mine|the agent'?s?)\b|\bnone of mine\b|"
+                        r"\bfound no mistake\b|\bno mistake of mine\b", re.I)
+
+
+def meta_home_block(reply, calls, changed):
+    """The block for a reply whose Meta or Prevention paragraph names no file the turn changed outside the
+    records (`changed`: what git shows changed since the turn's prompt), or None; a Prevention saying there
+    was no mistake of the agent's needs none."""
+    homes = written_homes(calls, changed)
+    paragraphs = [('Meta', p) for p in sections(META_PARAGRAPH, reply)]
+    paragraphs += [('Prevention', p) for p in sections(PREVENTION_PARAGRAPH, reply) if not NO_MISTAKE.search(p)]
+    for kind, paragraph in paragraphs:
+        if not homed(paragraph, homes):
+            return {'decision': 'block', 'reason': (
+                f'A {kind} paragraph with no home: "{" ".join(paragraph.split())[:300]}". The change it states lasts '
+                'only where this turn wrote it into what shapes later work: a rule file (AGENTS.md, '
+                'COMPUTATION_RULES.md), a check, hook or tool, a reviewer definition, or a queue item in the '
+                'notebook (tools/lead_queue.py add). Only a file this turn changed counts, not one a command only '
+                'mentions. Archived results and provenance are records nothing loads: a review record is no home. '
+                'Write it there, and name that file by its path in the paragraph.')}
+    return None
+
+
+def reviewers_reports(path, tail=4_000_000):
+    """The reviewer agents' reports since the user's last message, and the assistant's texts after the last of
+    them, from the end of the transcript at `path`. A reviewer is a subagent whose metadata, beside the
+    transcript, names a reviewer's agent type."""
+    with open(path, 'rb') as f:
+        start = max(0, f.seek(0, 2) - tail)
+        f.seek(start)
+        # A read that starts mid-file starts mid-line: that first line is cut.
+        lines = f.read().decode('utf-8', 'replace').splitlines()[1 if start else 0:]
+    entries = []
+    for line in lines:
+        try:
+            entries.append(json.loads(line))
+        except ValueError:
+            continue
+    start = max((i for i, entry in enumerate(entries) if is_prompt(entry)), default=-1) + 1
+    agents = Path(path).with_suffix('') / 'subagents'
+    reports, after = [], []
+    for entry in entries[start:]:
+        # A report comes as a message of its own, or, while the assistant works, as an attachment.
+        attached = entry.get('attachment') if isinstance(entry.get('attachment'), dict) else {}
+        origin = next((o for o in (entry.get('origin'), attached.get('origin')) if isinstance(o, dict)), {})
+        if origin.get('handback'):
+            try:
+                kind = json.loads((agents / f"agent-{origin.get('from')}.meta.json").read_text()).get('agentType', '')
+            except (OSError, ValueError):
+                kind = ''
+            if 'reviewer' in kind:
+                reports.append(origin.get('from'))
+                after = []
+        elif reports and entry.get('type') == 'assistant':
+            after.extend(blocks_in(entry)[1])
+    return reports, after
+
+
+def reviewer_meta_block(path, reply):
+    """The block for a turn that received a reviewer's report and answers it without the Prevention and the Meta
+    paragraphs, or None: a reviewer's finding is a mistake someone else had to find, as the user's are."""
+    try:
+        reports, after = reviewers_reports(path) if path else ([], [])
+    except OSError:
+        return None
+    texts = after + [reply]
+    if not reports or (any(PREVENTION.search(text) for text in texts) and any(META.search(text) for text in texts)):
+        return None
+    return {'decision': 'block', 'reason': (
+        f'A reviewer reported (agent {reports[-1]}): answer it, once for the report, with a paragraph that starts '
+        '"Prevention": for each mistake of yours it found, the class in general terms, why the existing rules and '
+        'checks let it through, and the framework change made in this turn that stops the class, or the build item '
+        f'queued for it; where it found none of yours, say so there. Then {META_QUESTION}.')}
 
 
 def promise_block(texts, quoted=()):
@@ -442,7 +666,8 @@ def validate_verdict(reply, verdict):
 CHECKS_OFF = 'tools/hooks/checks_off'
 # The checks a branch can turn off, by name: this hook's own, then those of the branch's own module.
 # 'review' is no check of a stop: it turns off the stand-in review (tools/stand_in_review.py).
-CHECK_NAMES = (('promise', 'mistake', 'workaround', 'missing tool', 'gap', 'judge', 'review')
+CHECK_NAMES = (('promise', 'mistake', 'workaround', 'missing tool', 'reviewer meta', 'meta home', 'gap', 'judge',
+                'review')
                + tuple(branch_extension.ask('STOP_CHECK_NAMES', ())))
 
 
@@ -521,7 +746,10 @@ def main(argv):
     turn_texts = texts + ([reply] if reply not in texts else [])
     off = checks_off(ROOT)
     blocked = turn_block(turn_texts, calls, reply, off, quoted) or next(filter(None, (
-        check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),)
+        check() for name, check in ((('missing tool', lambda: missing_tool_block(turn_texts, calls)),
+                                     ('reviewer meta', lambda: reviewer_meta_block(path, reply)),
+                                     ('meta home', lambda: meta_home_block(
+                                         reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
                                     + branch_checks(turn_texts, calls, reply, ROOT))
         if name not in off)), None)
     if blocked:

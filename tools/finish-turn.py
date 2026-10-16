@@ -1049,11 +1049,19 @@ def validate_review_answer(root, body, marker):
         return None
     position = body.index(marker)
     article = body.rfind('<article', 0, position)
-    answer = report_paragraph(body[article:body.find('</article>', article)], 'Review')
+    text = body[article:body.find('</article>', article)]
+    answer = report_paragraph(text, 'Review')
     if len(html.unescape(strip_tags(answer)).strip()) < 40:
         raise ValueError(f'The stand-in review in {owed} is unanswered: check each of its objections against the '
                          'record, then say in a paragraph of the entry starting <strong>Review.</strong> what became '
                          'of each: fixed, queued, or wrong and why (AGENTS.md, framework maintenance)')
+    # The meta-question for the objections that were right: why the stand-in, not the agent, found them (AGENTS.md;
+    # ported from another branch's checkpoint, 16 October 2026).
+    if len(html.unescape(strip_tags(report_paragraph(text, 'Meta'))).strip()) < 40:
+        raise ValueError(f'The stand-in review in {owed} is answered without its meta-question: add a paragraph '
+                         'starting <strong>Meta.</strong> saying, for its right objections, what way of working '
+                         'produced them, where else it shows, and the change in how the work is done that ends it, '
+                         'named by the file that holds it; where none was right, say so (AGENTS.md)')
     return owed
 
 
