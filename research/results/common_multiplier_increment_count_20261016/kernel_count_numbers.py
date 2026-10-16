@@ -29,6 +29,14 @@ Statements tested (finite arithmetic for the entry entry-2026-10-16-increment-co
    G > h(K+1), so every block is high-rank at every admissible k'.
    Refuted by: G <= h(K+1), or a printed ln M1 bound below K^2/m, which would leave no gap.
    Possible because: G, K and the probability bound depend on l and could be mis-specified.
+
+4. Fixed degree.  For D = 2h+1 and D = 107, K_D = floor((n+1)/(2(D+1))) is the largest k with
+   2k(D+1)-1 <= n; blocks of rank h(K_D+1)+1 are high-rank at every k <= K_D, and the bound of
+   part 2 at k = K_D gives ln M <= ln(K_D ln(v+1)+1) + r K_D/(v-r-K_D).  Expected: K_D = 303 at
+   D = 107 and 334 at D = 97, with ln M bounds about 12.6 and 13.6 against K_D^2/m about 1.40 and
+   1.70.
+   Refuted by: a printed K_D violating 2K_D(D+1)-1 <= n, or a ln M bound not above K_D^2/m.
+   Possible because: the floor and the degree condition interact, and an off-by-one changes K_D.
 """
 import argparse
 import json
@@ -85,6 +93,21 @@ def main():
         json.dump(result, handle, indent=1)
     assert w_max >= 19 and not published_19 and not published_2 and first_moment_exponent < 0
     assert ln_m1_bound > big_k * big_k / m
+    # Part 4: fixed degree D.  K_D is the largest k with 2k(D+1)-1 <= n; blocks of rank h(K_D+1)+1.
+    fixed = {}
+    for degree in (2 * h + 1, 107):
+        k_d = (n + 1) // (2 * (degree + 1))
+        assert 2 * k_d * (degree + 1) - 1 <= n < 2 * (k_d + 1) * (degree + 1) - 1
+        assert 4 * (k_d - 1) < n and k_d <= m
+        rank_d = h * (k_d + 1) + 1
+        expo_d = rank_d * k_d / (v - rank_d - k_d)
+        ln_m_d = math.log(k_d * math.log(v + 1) + 1) + expo_d
+        fixed[degree] = dict(K_D=k_d, rank=rank_d, three_k2_over_m=3 * k_d * k_d / m, exponent=expo_d,
+                             ln_M_upper=ln_m_d, published_ln4M=k_d * k_d / m,
+                             ratio=ln_m_d / (k_d * k_d / m))
+        assert ln_m_d > k_d * k_d / m
+    print('fixed-degree', fixed)
+    result['fixed_degree'] = fixed
     print('PASS')
 
 
