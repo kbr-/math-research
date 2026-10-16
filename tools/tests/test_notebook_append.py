@@ -681,6 +681,14 @@ class SkeletonCheckTests(unittest.TestCase):
         self.assertNotIn('general statement', self.names(entry))
         self.assertIn('general statement', self.names(draft(extra='data-claims="lem:new-result"')))
 
+    def test_the_where_we_stand_refusal_does_not_hide_later_refusals(self):
+        source = '<section id="where-we-stand"><p>Same.</p></section>' + NOTEBOOK
+        failures = dict(tool.skeleton_check(source, '<article id="a2">dup</article>', committed=source))
+        self.assertIn('where we stand', failures)
+        self.assertIn('already present', failures['append'])
+        with mock.patch.object(tool, 'refuse_item_history', side_effect=ValueError('open sub-ideas')):
+            self.assertIn('item history', dict(tool.skeleton_check(NOTEBOOK, '<article id="a3">x</article>')))
+
     def test_a_draft_that_is_not_an_article_fails_as_append(self):
         self.assertEqual(tool.skeleton_check(routed(), '<p>not an article</p>')[0][0], 'append')
 

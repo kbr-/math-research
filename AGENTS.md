@@ -191,13 +191,14 @@ growing checklists or one-off setup narratives.
   same reviewer. Follow up with that same reviewer only for those stages, to resolve a concrete gap
   or check a correction that adds or strengthens a claim, adds an outcome or an argument the
   reviewer did not write, or rewrites code it read (only deleting text or adopting the reviewer's
-  own wording counts as narrowing), and always before an entry removes a queue item on corrected
-  work (the finisher refuses a removal whose gate says the reviewer did not read the corrections);
-  do not spawn additional reviewers in the cycle. Defer optional extensions. Record dependencies
-  re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not the status
-  line. An incomplete gate means conditional status, not a working proof; correctness takes
-  precedence over cycle speed. A report to the user about current-cycle mathematics, from opening
-  until its correctness review has returned and its corrections are checked, prefixes each
+  own wording counts as narrowing; code written to carry out a reviewer's suggestion is not its
+  wording, and goes back to it before the commit), and always before an entry removes a queue item
+  on corrected work (the finisher refuses a removal whose gate says the reviewer did not read the
+  corrections); do not spawn additional reviewers in the cycle. Defer optional extensions. Record
+  dependencies re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not
+  the status line. An incomplete gate means conditional status, not a working proof; correctness
+  takes precedence over cycle speed. A report to the user about current-cycle mathematics, from
+  opening until its correctness review has returned and its corrections are checked, prefixes each
   conclusion with **Unreviewed:**, including before an entry draft exists; saying later that a
   reviewer is checking it does not replace the label. When a review narrows or withdraws a
   conclusion already reported, the next report says so explicitly, naming the old and the new scope.
@@ -584,7 +585,9 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   never by hand or with an ad hoc script. Replace a passage of prose with `tools/replace_text.py`,
   which keeps its indentation, and make an exact edit with the editing tool, never with a replace
   helper written into a script, which the Bash guard refuses. Where the tool falls short, improve it
-  until it does the job (user, 5 October 2026: "The tool exists for you to use it. Always.").
+  until it does the job (user, 5 October 2026: "The tool exists for you to use it. Always."); a
+  limit stated in a tool's documentation that misses a case in use is improved then, not worked
+  around.
 - Before proposing to replace a tool of ours with another, or to give up something ours does, list
   what each does that the other does not, build the smallest change to ours that closes the gap, and
   measure both. A cost given for that change is a measurement of an attempt, never an estimate, and

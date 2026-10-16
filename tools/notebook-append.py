@@ -459,12 +459,15 @@ def insert_entry(source, entry):
 
 def skeleton_check(source, entry, next_html=None, committed=None, reason=None, path=None, root=ROOT):
     """The entry checks that can run on a draft, run without writing anything: the (check, error) pairs that
-    fail. They are the append's refusals (one at a time: its first refusal hides its later ones), the queue
-    check, and the finisher's entry_checks with claim registration not required. An entry's skeleton, its
+    fail. They are the Where we stand rule, the append's other refusals (one at a time: its first refusal hides
+    its later ones), the refusals main() makes around the append (item history, quoted closures, publication
+    citations), the queue check, and the finisher's entry_checks with claim registration not required. An entry's skeleton, its
     headings and labelled paragraphs before the body, goes through it at the start of drafting (AGENTS.md), so
     that a paragraph a check requires is found then and not when the finished draft is appended or finished
-    (16 October 2026: two drafts of one session lacked such a paragraph). Left to the finisher: the checks that
-    read the session's searches, the registered claims and the context budgets, and its printed reports."""
+    (16 October 2026: two drafts of one session lacked such a paragraph). Left out: main()'s check that every
+    summing-up sentence is answered (refuse_unanswered), since those sentences are written after the work and
+    their answers with them; and, left to the finisher, the checks that read the session's searches, the
+    registered claims and the context budgets, and its printed reports."""
     failures = []
 
     def run(name, call):
@@ -473,12 +476,20 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
         except ValueError as error:
             failures.append((name, str(error)))
 
+    # The Where we stand rule is reported on its own, and the append then runs with a stand-in reason, so that
+    # its refusal does not hide the append's later ones (16 October 2026: it hid the open sub-ideas refusal).
+    run('where we stand', lambda: with_stand_reason(source, entry, committed, reason))
     proposed = []
-    run('append', lambda: proposed.append(append(source, entry, next_html, committed, reason, checked=False)))
+    run('append', lambda: proposed.append(append(source, entry, next_html, committed, reason or 'skeleton check',
+                                                 checked=False)))
     try:
         body = proposed[0] if proposed else insert_entry(source, entry)
     except ValueError as error:
         return failures + [('record', str(error))]
+    # The refusals main() makes around the append: the item's record, quoted closures, publication citations.
+    run('item history', lambda: refuse_item_history(body))
+    run('closures', lambda: refuse_unquoted_closures(source, entry))
+    run('publication citation', lambda: refuse_uncited_publication(entry))
     ident = re.match(r'\s*<article\b[^>]*?\sid="([^"]+)"', entry)
     if not ident:
         return failures
