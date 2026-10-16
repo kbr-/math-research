@@ -11,6 +11,7 @@ further one where the branch's own module (tools/branch_extension.py) names it.
 It reads the hook's JSON from stdin and acts only on an Agent call whose `subagent_type` names a
 reviewer. Exit status 2 refuses the call, with the reason on stderr.
 """
+from datetime import datetime, timedelta
 import json
 import re
 import sys
@@ -18,6 +19,8 @@ from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import block_log
 import branch_extension
 
 # A whole document handed over to read: "read the whole Path", "the entire theory", "PLAN.md in full".
@@ -48,14 +51,49 @@ def missing_files(text):
     return missing
 
 
-def refusal(payload, tools=TOOLS):
+# A message saying a named file now holds a change: "updated", "rewritten", "now written", "corrected".
+UPDATE_CLAIM = re.compile(r'\b(?:updated|rewritten|rewrote|now written|corrected|revised)\b', re.I)
+# The words by which a message says the file was read back after the refusal, which lets it through.
+CHECKED = re.compile(r'\bchecked on disk\b', re.I)
+
+
+def stale_files(text, log, now=None, window=600):
+    """Files named by full path in `text`, which says something was updated, that a call refused by a hook
+    within `window` seconds before `now` also named, and that were last written before that refusal.
+
+    On 16 October 2026 a follow-up told a reviewer that a spec was updated when the command writing
+    it had been refused, and the reviewer first read the old spec. Only the refused call's own files
+    count (the block log keeps them, tools/hooks/block_log.py), so an unrelated refusal or a file the
+    message names beside the updated one does not refuse it. Not caught: refusals by hooks other than
+    the Bash guard, which record no paths, and files a refused command named by a relative path."""
+    if not UPDATE_CLAIM.search(text) or CHECKED.search(text):
+        return []
+    now = now or datetime.now()
+    recent = [(when, set(paths)) for when, _, paths in block_log.blocks(log)
+              if 0 <= (now - when).total_seconds() <= window]
+    stale = []
+    for path in dict.fromkeys(NAMED_FILE.findall(text)):
+        if not Path(path).is_file():
+            continue
+        written = datetime.fromtimestamp(Path(path).stat().st_mtime)
+        if any(path in paths and written < when for when, paths in recent):
+            stale.append(path)
+    return stale
+
+
+def refusal(payload, tools=TOOLS, log=None, now=None):
     """The reason to refuse this tool call, or None."""
     tool_input = payload.get('tool_input') or {}
     if payload.get('tool_name') == 'SendMessage':
         # A follow-up to a reviewer naming its corrected draft, before the draft is written.
-        missing = missing_files(str(tool_input.get('message', '')))
-        return (('the message names a file that does not exist: ' + ', '.join(missing) + '. Write it first')
-                if missing else None)
+        message = str(tool_input.get('message', ''))
+        missing = missing_files(message)
+        if missing:
+            return 'the message names a file that does not exist: ' + ', '.join(missing) + '. Write it first'
+        stale = stale_files(message, log or block_log.LOG, now)
+        return (('the message says ' + ', '.join(stale) + ' was updated, but a call naming it was refused '
+                 'after it was last written: read it back, write the update again if it is missing, and say '
+                 '"checked on disk" in the message') if stale else None)
     if payload.get('tool_name') != 'Agent':
         return None
     if 'review' not in str(tool_input.get('subagent_type', '')).lower():

@@ -105,7 +105,45 @@ class MissingBriefFileTest(unittest.TestCase):
             follow = {'tool_name': 'SendMessage', 'tool_input': {'to': 'a1', 'message': f'Check {tmp}/draft2.html.'}}
             self.assertIn('draft2.html', hook.refusal(follow))
             (Path(tmp) / 'draft2.html').write_text('x')
-            self.assertIsNone(hook.refusal(follow))
+            self.assertIsNone(hook.refusal(follow, log=Path(tmp) / 'none.tsv'))
+
+    def test_a_follow_up_claiming_an_update_its_refused_command_was_to_write_is_refused(self):
+        # 16 October 2026: the command writing the spec was refused, and the follow-up said it was updated.
+        with tempfile.TemporaryDirectory() as tmp:
+            spec, excerpts = Path(tmp) / 'spec.json', Path(tmp) / 'deps.md'
+            spec.write_text('{}')
+            excerpts.write_text('x')
+            written = hook.datetime.fromtimestamp(spec.stat().st_mtime)
+            log = Path(tmp) / 'blocks.tsv'
+            blocked = written + hook.timedelta(seconds=30)
+            hook.block_log.record('bash_guard', log, blocked, what='Refused: a script replaces text', paths=[str(spec)])
+            now = blocked + hook.timedelta(seconds=60)
+
+            def send(text, when=now):
+                return hook.refusal({'tool_name': 'SendMessage', 'tool_input': {'message': text}}, log=log, now=when)
+
+            words = ('updated', 'rewritten', 'rewrote', 'now written', 'corrected', 'revised')
+            for word in words:
+                self.assertIn('spec.json', send(f'The spec {spec} is {word} as described.'), word)
+                # The same word in a legitimate sentence passes: about a file the refused call did not name.
+                self.assertIsNone(send(f'The excerpts {excerpts} are {word} as described.'), word)
+            # A file named beside the updated one is not refused for it; the stale one alone is named.
+            both = send(f'The spec {spec} is updated; the excerpts are at {excerpts}.')
+            self.assertIn('spec.json', both)
+            self.assertNotIn('deps.md', both)
+            # The file read back, a refusal older than the window, no file named: all pass.
+            self.assertIsNone(send(f'The spec {spec} is updated, checked on disk.'))
+            self.assertIsNone(send(f'The spec {spec} is updated.', blocked + hook.timedelta(seconds=900)))
+            self.assertIsNone(send('The corrected lemma now holds for every t.'))
+            # An unrelated refusal, naming no file or another one, does not refuse the message.
+            log.write_text('')
+            hook.block_log.record('bash_guard', log, blocked, what='Refused: a pipe')
+            hook.block_log.record('bash_guard', log, blocked, paths=[str(excerpts)])
+            self.assertIsNone(send(f'The spec {spec} is updated.'))
+            # A refusal older than the file's last write passes: the update was written after it.
+            log.write_text('')
+            hook.block_log.record('bash_guard', log, written - hook.timedelta(seconds=30), paths=[str(spec)])
+            self.assertIsNone(send(f'The spec {spec} is updated.'))
 
 
 if __name__ == '__main__':

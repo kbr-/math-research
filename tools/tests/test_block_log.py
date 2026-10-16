@@ -39,6 +39,19 @@ class BlockLogTest(unittest.TestCase):
                     block_log.record('x')
                 self.assertTrue(default.read_text().endswith('\tx\n'))
 
+    def test_a_block_keeps_the_files_its_refused_call_named_and_reads_them_back(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            log = Path(scratch) / 'blocks.tsv'
+            command = "python3 - <<'EOF'\np='/home/u/tmp/spec.json'; open(p,'w')\nEOF\ncat /home/u/tmp/deps.md"
+            self.assertEqual(block_log.paths_in(command), ['/home/u/tmp/spec.json', '/home/u/tmp/deps.md'])
+            block_log.record('bash_guard', log, datetime(2026, 10, 16, 19, 0, 0), what='Refused: x',
+                             paths=block_log.paths_in(command))
+            block_log.record('bash_guard', log, datetime(2026, 10, 16, 19, 1, 0))
+            self.assertEqual(block_log.blocks(log), [
+                (datetime(2026, 10, 16, 19, 0, 0), 'bash_guard', ['/home/u/tmp/spec.json', '/home/u/tmp/deps.md']),
+                (datetime(2026, 10, 16, 19, 1, 0), 'bash_guard', [])])
+            self.assertEqual(block_log.blocks(Path(scratch) / 'missing.tsv'), [])
+
     def test_the_stop_hook_and_the_commit_checks_hand_the_log_what_they_said(self):
         with unittest.mock.patch.object(block_log, 'record') as record, contextlib.redirect_stdout(io.StringIO()):
             stop_checks.emit_block({'decision': 'block', 'reason': 'A declared gap: "x"'})

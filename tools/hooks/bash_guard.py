@@ -560,6 +560,7 @@ def main() -> int:
         return 0
     tool_input = payload.get("tool_input") or {}
     command = tool_input.get("command") or ""
+    COMMANDS.append(command)
     background = bool(tool_input.get("run_in_background"))
     reason = (foreground_long_run(command, background) or foreground_download(command, background)
               or unprotected_workload(command))
@@ -589,11 +590,12 @@ def main() -> int:
 
 
 SAID = []   # what the commit's checks said when they blocked, for the block log
+COMMANDS = []   # the command checked, whose named files the block log keeps
 
 
 if __name__ == "__main__":
     status = main()
     if status == 2:
         import block_log
-        block_log.record("bash_guard", what=''.join(SAID))
+        block_log.record("bash_guard", what=''.join(SAID), paths=block_log.paths_in(''.join(COMMANDS)))
     sys.exit(status)

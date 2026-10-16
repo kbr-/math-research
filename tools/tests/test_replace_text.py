@@ -42,14 +42,38 @@ class ReplaceTextTest(unittest.TestCase):
         updated, _ = replace_text.replace(PLAN, '- first step, wrapped across two lines.', '- one\n\n  more\n')
         self.assertIn('  - one\n\n    more\n', updated)
 
-    def test_refuses_no_match_several_matches_and_a_passage_inside_a_line(self):
-        for old, count in (('- missing item.', 0), ('step,', 0), ('are ours.', 0),
-                           ('- the alert route: the receiver', 0)):
-            with self.subTest(old=old):
-                with self.assertRaisesRegex(ValueError, f'matches {count} line-aligned places, not one'):
-                    replace_text.replace(PLAN, old, 'x')
+    def test_refuses_no_match_several_matches_and_a_split_passage_inside_lines(self):
+        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 0 places within a line'):
+            replace_text.replace(PLAN, '- missing item.', 'x')
+        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 2 places within a line'):
+            replace_text.replace('x a b y\nz a b w\n', 'a b', 'c')
+        # A passage that crosses a line break but starts mid-line is still refused.
+        with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):
+            replace_text.replace(PLAN, 'step, wrapped\nacross', 'x')
         with self.assertRaisesRegex(ValueError, 'matches 2 line-aligned places'):
             replace_text.replace('a b\n  a\n  b\n', 'a b', 'x')
+
+    def test_a_one_line_passage_inside_a_longer_line_is_replaced_there(self):
+        # 16 October 2026: a notebook paragraph kept on one line held the passage mid-line.
+        text = '<p>One <a href="#x">old link</a>. More.</p>\nnext\n'
+        updated, line = replace_text.replace(text, '<a href="#x">old link</a>.', '<a href="#y">new link</a>.')
+        self.assertEqual((updated, line), ('<p>One <a href="#y">new link</a>. More.</p>\nnext\n', 1))
+        updated, _ = replace_text.replace(PLAN, 'step,', 'stage,')
+        self.assertEqual(updated, PLAN.replace('first step,', 'first stage,'))
+        # The old refusals of passages inside a line now replace them, on a continuation line too.
+        updated, line = replace_text.replace(PLAN, 'are ours.', 'are theirs.')
+        self.assertEqual((updated, line), (PLAN.replace('route are ours.', 'route are theirs.'), 5))
+        updated, _ = replace_text.replace(PLAN, '- the alert route: the receiver', '- the alert path: the receiver')
+        self.assertEqual(updated, PLAN.replace('alert route', 'alert path'))
+
+    def test_an_inline_passage_neither_starts_inside_a_word_nor_hides_an_overlap(self):
+        with self.assertRaisesRegex(ValueError, '0 places within a line'):
+            replace_text.replace('a misstep, here\n', 'step,', 'stage,')
+        with self.assertRaisesRegex(ValueError, '2 places within a line'):
+            replace_text.replace('x a a a y\n', 'a a', 'b')
+        # A multi-line replacement of a passage found only inside a line is refused.
+        with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):
+            replace_text.replace('x step, y\n', 'step,', 'one\ntwo')
         with self.assertRaisesRegex(ValueError, 'empty'):
             replace_text.replace(PLAN, ' \n', 'x')
 
@@ -68,7 +92,7 @@ class ReplaceTextTest(unittest.TestCase):
             self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
                                                 str(tmp / 'new')]), 0)
             self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md')]), 2)
-        self.assertIn('matches 0 line-aligned places', err.getvalue())
+        self.assertIn('matches no line-aligned place and 0 places within a line', err.getvalue())
         self.assertIn('replaced the passage at line 6', out.getvalue())
         self.assertTrue((tmp / 'plan.md').read_text().endswith('- **Next question?** Settled.\n'))
 
