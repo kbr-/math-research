@@ -22,8 +22,9 @@ survivor, and the gap sets (expected none).
 Refuted by: a set S whose F_S contains a survivor while no product r m in F_S survives.
 Possible because: degree-3 memberships at the top degree (restriction to Y lying in the span of the
 unplaced-pigeon indicators) can hold for a sum of products when they hold for no single product.
-Positive control: a synthetic closure on y1..y4, v with the one axiom v(y1 y2 + y3 y4) at D = 3 and
-conditions {v}: y1 y2 + y3 y4 survives and no product of linear forms does, so the gap must be seen.
+Positive control: a synthetic closure on y1..y4, v1..v3 with the axioms v_i(y1 y2 + y3 y4) at D = 3 and
+conditions {v1, v2, v3}: y1 y2 + y3 y4 survives and no product of linear forms does, so the gap must
+be seen (three conditions, so that the Boolean complement product has degree 3, outside V_2).
 Refuted by: the control reporting no gap, which would mean the search cannot see one.
 Possible because: a bug in the product enumeration or in the survivor test would hide it.
 Control: S = {x_01} must have the product survivor x_00 * x_11 (the scalar repair m = x_11), asserted.
@@ -134,12 +135,16 @@ def product_php(m, n):
 
 
 def positive_control():
-    nv = 5                        # y1..y4 = bits 0..3, v = bit 4
-    axiom = pc.multiply({1 << 4}, {(1 << 0) | (1 << 1), (1 << 2) | (1 << 3)})
-    red = Reducer(pc.Closure([axiom], nv, 3))
+    # y1..y4 = bits 0..3, v1..v3 = bits 4..6.  Three condition variables, so that the Boolean complement
+    # (1+v1)(1+v2)(1+v3), which every condition kills, has degree 3 and lies outside V_2: run
+    # e432f2c6a6 used one condition variable v, and r m = 1+v survived trivially since v(1+v) = 0.
+    nv = 7
+    q = {(1 << 0) | (1 << 1), (1 << 2) | (1 << 3)}
+    axioms = [pc.multiply({1 << i}, q) for i in (4, 5, 6)]
+    red = Reducer(pc.Closure(axioms, nv, 3))
     linear = [{0}] + [{1 << i} for i in range(nv)]
     quad = pc.monomials(nv, 2)
-    conds = [{1 << 4}]
+    conds = [{1 << i} for i in (4, 5, 6)]
     surv = survivors(red, conds, [{q} for q in quad])
     prod = product_survivor(red, conds, linear)
     return surv, prod
