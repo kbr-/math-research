@@ -35,6 +35,7 @@ class ClaimRefreshTests(unittest.TestCase):
             self.assertEqual(calls[1][calls[1].index('--spec') + 1], 'spec.json')
             self.assertEqual(calls[2][2:], ['render'])
             self.assertEqual((root / claim_refresh.REGISTRY).read_text(), '{"claims": []}')
+            self.assertFalse((root / 'proposal.json').exists())
 
     def test_summaries_checked_reaches_the_build_only_when_given(self):
         for given in (False, True):

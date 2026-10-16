@@ -38,6 +38,9 @@ def refresh(spec, out, proposal, report, root=ROOT, summaries_checked=False):
          '--proposal', str(proposal), '--report', str(report)]
         + (['--summaries-checked'] if summaries_checked else []), root)
     shutil.copyfile(pathlib.Path(root, proposal), pathlib.Path(root, REGISTRY))
+    # Once copied, the proposal is a second full registry (50 MB on 16 October 2026); left in scratch,
+    # one per refresh, they filled the session's 500 MB cap.
+    pathlib.Path(root, proposal).unlink()
     run([sys.executable, tool, 'render'], root)
 
 
