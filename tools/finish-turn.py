@@ -945,6 +945,29 @@ def cited_summaries(index, claims):
     return found
 
 
+def next_attempt_neighbours(body, entry, index, last=10, least=4, shown=3):
+    """Lines naming the claims of the notebook's last `last` entries whose registered summaries share at least
+    `least` content words with the entry's next attempt, nearest first, to read before the attempt is kept.
+
+    Twice on 16 October 2026 an entry named a next attempt that a lemma registered earlier the same day already
+    decided; the record search for it had run and returned other claims, and the deciding lemma was the
+    session's own. It reports and does not refuse: whether a claim answers an attempt needs reading."""
+    follow = re.findall(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', entry, re.S)
+    plain = html.unescape(strip_tags(follow[-1])) if follow else ''
+    at = plain.lower().find('next attempt')
+    if at < 0:
+        return []
+    wanted = attempt_words(plain[at:])
+    tags = re.findall(r'<article\b[^>]*>', body[:body.rfind('<article')])[-last:]
+    claims = [c for tag in tags for c in (re.search(r'\bdata-claims="([^"]*)"', tag) or [None, ''])[1].split()
+              if c != 'none']
+    scored = sorted(((len(wanted & attempt_words(summary)), claim)
+                     for claim, summary in cited_summaries(index, claims).items()), reverse=True)
+    near = [f'{claim} ({score} words)' for score, claim in scored if score >= least][:shown]
+    return ([f'Next attempt: recent claims nearest to it, to read before keeping it (one may already decide it): '
+             f'{", ".join(near)}.'] if near else [])
+
+
 def review_test_context(body, target, summaries=None, width=400):
     """Lines giving what a review already decided about the test it poses: its Decision paragraph, the
     Prediction, Power and Attempt of its Decisive test, and the registered statements of the claims those cite.
@@ -1933,7 +1956,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
               if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
-    for line in decided_report(entry) + absence_report(entry) + architecture_context_report(whole, entry):
+    for line in (decided_report(entry) + absence_report(entry) + architecture_context_report(whole, entry)
+                 + next_attempt_neighbours(whole, entry, root / 'research/claims/index.json')):
         print(line)
     for line in hook_notice_lines(root, first.get('unix_s', 0)):
         print(line)

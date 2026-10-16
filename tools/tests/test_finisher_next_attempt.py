@@ -29,5 +29,29 @@ class NextAttemptSearchTest(unittest.TestCase):
                 FT.validate_next_attempt_search(entry, [])
 
 
+class NextAttemptNeighboursTest(unittest.TestCase):
+    def test_recent_claims_sharing_words_with_the_next_attempt_are_listed(self):
+        # 16 October 2026: a next attempt at the top degree of the product pigeonhole system was already decided
+        # by a transfer lemma registered that day.
+        import json, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            index = Path(tmp) / 'index.json'
+            index.write_text(json.dumps({'claims': [
+                {'id': 'lem:transfer', 'summary': 'At the top degree of the product pigeonhole system monomial '
+                                                  'errors on distinct holes reduce to the domain model.'},
+                {'id': 'lem:other', 'summary': 'Curves of positive genus carry locators.'}]}, indent=1))
+            body = ('<article id="entry-a" data-claims="lem:transfer"></article>'
+                    '<article id="entry-b" data-claims="lem:other"></article>')
+            entry = ('<article id="entry-c"><p><strong>Follow-up.</strong> Continuing; the next attempt is the '
+                     'block degree at the top degree of the product pigeonhole system, monomial errors on '
+                     'distinct holes.</p>')
+            lines = FT.next_attempt_neighbours(body + entry, entry, index)
+            self.assertEqual(len(lines), 1)
+            self.assertIn('lem:transfer', lines[0])
+            self.assertNotIn('lem:other', lines[0])
+            quiet = entry.replace('the next attempt is', 'nothing is named;')
+            self.assertEqual(FT.next_attempt_neighbours(body + quiet, quiet, index), [])
+
+
 if __name__ == '__main__':
     unittest.main()
