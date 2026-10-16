@@ -40,6 +40,36 @@ def endpoint(label):
     return {'namespace': 'current', 'id': label, 'locator': None}
 
 
+class CheckedOnceTests(unittest.TestCase):
+    def test_duplicate_keys_are_checked_once_per_version_of_a_file(self):
+        # 17 October 2026: the duplicate-key hook took 0.39 s of a registry read, plain parsing 0.22 s.
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            path, marker = Path(tmp) / 'index.json', Path(tmp) / 'checked.json'
+            path.write_text('{"a": 1}')
+            with mock.patch.object(cr, 'CHECKED', marker):
+                cr._snapshot.cache_clear()
+                self.assertEqual(cr.cached_json(path), {'a': 1})
+                self.assertIn(str(path.resolve()), json.loads(marker.read_text()))
+                path.write_text('{"a": 1, "a": 2}')                      # a new version: checked again
+                os.utime(path, (1e9, 1e9))
+                cr._snapshot.cache_clear()
+                with self.assertRaisesRegex(ValueError, 'Duplicate JSON key'):
+                    cr.cached_json(path)
+                with mock.patch.object(cr, 'parse_json', side_effect=AssertionError('checked again')):
+                    path.write_text('{"b": 3}')
+                    os.utime(path, (2e9, 2e9))
+                    cr._snapshot.cache_clear()
+                    with self.assertRaises(AssertionError):             # a version not yet checked is checked
+                        cr.cached_json(path)
+                cr._snapshot.cache_clear()
+                cr.cached_json(path)                                     # now checked and recorded
+                cr._snapshot.cache_clear()
+                with mock.patch.object(cr, 'parse_json', side_effect=AssertionError('checked again')):
+                    self.assertEqual(cr.cached_json(path), {'b': 3})    # the same version: parsed plainly
+            cr._snapshot.cache_clear()
+
+
 class ClaimRegistryTests(unittest.TestCase):
     def test_repeated_link_reads_reuse_parse_without_sharing_mutable_records(self):
         text = '[Proof](https://example.org/a(b))'

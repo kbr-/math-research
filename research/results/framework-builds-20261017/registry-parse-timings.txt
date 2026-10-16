@@ -1,0 +1,11 @@
+# command: python3 -c 
+import json,pickle,marshal,time,sys
+sys.path.insert(0,'tools'); import claim_registry as cr
+t=open('research/claims/index.json').read()
+a=time.perf_counter(); d=json.loads(t); b=time.perf_counter(); cr.parse_json(t); c=time.perf_counter()
+p=pickle.dumps(d,protocol=5); e=time.perf_counter(); pickle.loads(p); f=time.perf_counter()
+m=marshal.dumps(d); g=time.perf_counter(); marshal.loads(m); h=time.perf_counter()
+print(f'json.loads {b-a:.3f} s; parse_json with unique-key hook {c-b:.3f} s; pickle.loads {f-e:.3f} s ({len(p)/1e6:.1f} MB); marshal.loads {h-g:.3f} s ({len(m)/1e6:.1f} MB)')
+
+# run 74be071184, session framework-builds-20261017; full output
+json.loads 0.223 s; parse_json with unique-key hook 0.394 s; pickle.loads 0.310 s (35.3 MB); marshal.loads 0.259 s (36.3 MB)

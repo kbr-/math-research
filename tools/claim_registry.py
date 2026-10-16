@@ -55,7 +55,31 @@ def parse_json(text):
 
 
 def read_json(path):
-    return parse_json(Path(path).read_text())
+    """The parsed file; the duplicate-key check runs once per version of it (its size and mtime, recorded in
+    CHECKED), and later reads parse it plainly: on the registry of 51 MB the check took 0.39 s of a read and plain
+    parsing 0.22 s (17 October 2026; research/results/framework-builds-20261017/registry-parse-timings.txt), the
+    largest part of the turn guidance's 1.1 s (guidance-profile-before.txt there)."""
+    path = Path(path).resolve()
+    stat = path.stat()
+    key = f'{stat.st_mtime_ns}:{stat.st_size}'
+    try:
+        done = json.loads(CHECKED.read_text())
+    except (OSError, ValueError):
+        done = {}
+    text = path.read_text()
+    if done.get(str(path)) == key:
+        return json.loads(text)
+    value = parse_json(text)
+    try:
+        CHECKED.parent.mkdir(parents=True, exist_ok=True)
+        kept = {p: k for p, k in done.items() if Path(p).exists()}     # tests' temporary files leave the marker
+        CHECKED.write_text(json.dumps({**kept, str(path): key}))
+    except OSError:
+        pass
+    return value
+
+
+CHECKED = Path(__file__).resolve().parents[1] / 'research' / 'logs' / '.unique-keys-checked.json'
 
 
 @functools.lru_cache(maxsize=4)
