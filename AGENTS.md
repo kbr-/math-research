@@ -196,20 +196,22 @@ growing checklists or one-off setup narratives.
   on corrected work (the finisher refuses a removal whose gate says the reviewer did not read the
   corrections); do not spawn additional reviewers in the cycle. Defer optional extensions. Record
   dependencies re-read, checks and reviewer verdict in a short **Verification gate.** paragraph, not
-  the status line. An incomplete gate means conditional status, not a working proof; correctness
-  takes precedence over cycle speed. A report to the user about current-cycle mathematics, from
-  opening until its correctness review has returned and its corrections are checked, prefixes each
-  conclusion with **Unreviewed:**, including before an entry draft exists; saying later that a
-  reviewer is checking it does not replace the label. When a review narrows or withdraws a
-  conclusion already reported, the next report says so explicitly, naming the old and the new scope.
-  Prepare staging paths, commit message and focused metadata checks during review; the checks
-  include `./tools/check_records.py --diff`, which flags commit hashes, environment literals,
-  backticks in the notebook's HTML and long status lines in the lines being committed. Then run a
-  sequential checkpoint batch: preparation marker, checks, provenance, timing export/archive,
-  staging, commit, and any authorized push. Stop on failure. For asynchronous checkpoint commands,
-  observe terminal success of the commit and required base synchronization before planning the next
-  result; until then, do only checkpoint preparation. A launched command is not a completed local
-  checkpoint.
+  the status line; it credits the reviewer only with what its report says it checked, a sketch it
+  marked unverified staying unverified, and an entry's scope sentences (Not covered, a commit
+  message) leave open what no one checked. An incomplete gate means conditional status, not a
+  working proof; correctness takes precedence over cycle speed. A report to the user about
+  current-cycle mathematics, from opening until its correctness review has returned and its
+  corrections are checked, prefixes each conclusion with **Unreviewed:**, including before an entry
+  draft exists; saying later that a reviewer is checking it does not replace the label. When a
+  review narrows or withdraws a conclusion already reported, the next report says so explicitly,
+  naming the old and the new scope. Prepare staging paths, commit message and focused metadata
+  checks during review; the checks include `./tools/check_records.py --diff`, which flags commit
+  hashes, environment literals, backticks in the notebook's HTML and long status lines in the lines
+  being committed. Then run a sequential checkpoint batch: preparation marker, checks, provenance,
+  timing export/archive, staging, commit, and any authorized push. Stop on failure. For asynchronous
+  checkpoint commands, observe terminal success of the commit and required base synchronization
+  before planning the next result; until then, do only checkpoint preparation. A launched command is
+  not a completed local checkpoint.
 - Measure every research turn from as early as practical, including reading, failed attempts and
   retries: `./compute.sh start TURN`. Codex uses active session metadata; omit `--model` rather than
   supply a guessed or placeholder label. For other agents or unavailable metadata, follow the
