@@ -225,6 +225,11 @@ def main(validated=False):
                 f'{i} ({t}, formalization {f or "unknown"})' for i, t, f in newer))
     lines.append(f'{len(selected)} of {total} matches; {total-len(selected)} omitted. '
                  'Use --show LABEL for full metadata; ellipses mark shortened text.')
+    if len(selected) >= 2 and args.words:
+        # 16 October 2026: three searches in a day returned the lemmas that together decided the question, and
+        # the agent stopped at the first match each time.
+        lines.append('Read these together: before computing or naming an attempt, write what the matches imply '
+                     'jointly about the question searched, not only which one is nearest.')
     if (args.words and not args.list and args.registry.resolve() == REGISTRY.resolve()
             and not any([args.status, args.kind, args.topic, args.formalization, args.has_lean])):
         historical = historical_matches(args.words)
