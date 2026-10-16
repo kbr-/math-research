@@ -70,6 +70,15 @@ def main(argv):
         print(__doc__, file=sys.stderr)
         return 2
     path = Path(argv[1])
+    # 16 October 2026: a write of the new text failed, and the next call replaced a passage with the stale file
+    # left by an earlier edit.  New text written before the old text it replaces is that case.
+    try:
+        if Path(argv[3]).stat().st_mtime + 1 < Path(argv[2]).stat().st_mtime:
+            print(f'replace_text: {argv[3]} was written before {argv[2]}: the new text is probably left from an '
+                  'earlier edit (a failed write?); write it again', file=sys.stderr)
+            return 1
+    except OSError:
+        pass
     try:
         updated, line = replace(path.read_text(), Path(argv[2]).read_text(), Path(argv[3]).read_text())
     except (ValueError, OSError) as error:

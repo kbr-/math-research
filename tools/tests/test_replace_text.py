@@ -102,6 +102,21 @@ class ReplaceTextTest(unittest.TestCase):
         self.assertIn('replaced the passage at line 6', out.getvalue())
         self.assertTrue((tmp / 'plan.md').read_text().endswith('- **Next question?** Settled.\n'))
 
+    def test_new_text_older_than_the_old_text_is_refused(self):
+        # 16 October 2026: a failed write left an earlier edit's new-text file, which then replaced a passage.
+        import os
+        with tempfile.TemporaryDirectory() as d:
+            tmp = Path(d)
+            (tmp / 'plan.md').write_text(PLAN)
+            (tmp / 'new').write_text('Settled.')
+            (tmp / 'old').write_text('Answer.')
+            os.utime(tmp / 'new', (1000, 1000))
+            with contextlib.redirect_stderr(io.StringIO()) as err:
+                self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
+                                                    str(tmp / 'new')]), 1)
+            self.assertIn('written before', err.getvalue())
+            self.assertEqual((tmp / 'plan.md').read_text(), PLAN)
+
 
 if __name__ == '__main__':
     unittest.main()
