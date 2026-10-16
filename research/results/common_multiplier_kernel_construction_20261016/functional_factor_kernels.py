@@ -17,6 +17,14 @@ Possible because: C contains degree-2 consequences of the pigeon axioms not in H
 x10 (1 + sum_j x0j) = x10 + sum_{j>0} x10 x0j modulo H, which can make new linear classes kill a factor.
 Control: for a one-hole and a one-pigeon F the sum s of the factors is a linear generator, so
 Ann_C(F) = Ann_C(s) must hold (lem:factor-ideal-domination (a)); asserted.
+
+Run 5ec722393c (6 pigeons, 5 holes, D=3) passed.  Second version, after the review: --holes picks the
+size; the review named 7 pigeons and 6 holes.  Positive control (the reviewer's counterexample): on
+variables a, b, w, z with monomial axioms ab, bz and linear axiom w+a+z at D=2, F={w}: Ann_C(w) has
+dimension 3 against 2 for Ann_H(w) + (C cap V_1), so the comparison detects a killer the linear axiom
+transports (b kills a and z, and w = a+z).  Expected: the control shows 3 against 2, asserted.
+Refuted by: the control showing equality, which would mean the script cannot see such killers.
+Possible because: a bug in kernel_span or members_in_v1 would hide the transported killer.
 """
 import argparse
 import itertools
@@ -99,15 +107,25 @@ def refutation_degree(axioms, nv, dmax, binary, tmp):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', required=True)
+    parser.add_argument('--holes', type=int, default=0, help='run this size only (0: first with D>=3)')
     args = parser.parse_args()
     out = {'sizes': []}
+    # Positive control: a=bit0, b=bit1, w=bit2, z=bit3.
+    ctl_monomial = [{0b0011}, {0b1010}]
+    ctl = pc.Closure(ctl_monomial + [{0b0100, 0b0001, 0b1000}], 4, 2)
+    ctl_h = pc.Closure(ctl_monomial, 4, 2)
+    ann_c, ann_h, rel_c = (kernel_span(ctl, 4, [{0b0100}]), kernel_span(ctl_h, 4, [{0b0100}]),
+                           members_in_v1(ctl, 4))
+    out['positive_control'] = dict(ann_C=rank(ann_c), ann_H_plus_relations=rank(ann_h + rel_c))
+    print('positive control', json.dumps(out['positive_control']), flush=True)
+    assert out['positive_control'] == dict(ann_C=3, ann_H_plus_relations=2)
     with tempfile.TemporaryDirectory() as tmp:
         binary = str(pathlib.Path(tmp) / 'fcd')
         subprocess.run(['g++', '-O2', '-o', binary, str(ROOT / 'tools' / 'f2_closure_degree.cpp')], check=True)
         chosen = None
-        for n in (3, 4, 5):
+        for n in ((args.holes,) if args.holes else (3, 4, 5)):
             axioms, nv, v = functional_php(n + 1, n)
-            info = refutation_degree(axioms, nv, 5, binary, tmp)
+            info = refutation_degree(axioms, nv, 4, binary, tmp)
             out['sizes'].append(dict(holes=n, pigeons=n + 1, result=info))
             print(json.dumps(out['sizes'][-1]), flush=True)
             proper = [int(d) for d in info['dimensions']]
