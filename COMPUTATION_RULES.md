@@ -89,7 +89,10 @@ in another; wait on a job's own completion notice.
   axioms as a control. Over F_2 use the tested tools (`tools/pc_closure.py` for membership and
   remainders, `tools/f2_closure_degree.cpp` for large refutation-degree runs) rather than writing a
   closure in a research script: a hand-written one had a non-canonical remainder and missed members
-  from cancelling top terms (16 October 2026).
+  from cancelling top terms (16 October 2026). A second, independent route to such a number builds
+  its elimination on `tools/f2_span.py` (tested canonical remainders), never on a reduce written in
+  the script: on 17 October 2026 one returned at its first non-pivot bit and gave impossible
+  negative excesses.
 - Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not on
   hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products mod p
   at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse and
