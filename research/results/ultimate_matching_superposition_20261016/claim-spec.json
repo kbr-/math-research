@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Aligned superposition bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-aligned-superposition)",
+    "label": "Aligned superposition bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-aligned-superposition"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:aligned-superposition-bound",
+      "summary": "(1) For convex phi_1,phi_2:[0,infinity)->[0,infinity] with phi_j(0)=0, Phi(G)=int sum_j phi_j(|d_j G|) on [0,1]^2 and Lipschitz G_1..G_m: sum_k Phi(G_k) <= Phi(sum G_k) + sigma, sigma the members' penalty on the set where their d_j G_k disagree in sign; if aligned (sigma=0), l(sum G_k) <= Phi(sum G_k) max_k l(G_k)^+/Phi(G_k) for any linear l. (2) For phi_j=psi*_alpha_j, alpha_j in [1,infinity) and theta, C>0 fixed, m <= (log N)^C, nonzero gradient components >= N^theta and Phi(sum G_k) <= 2: l(sum G_k) <= (1+sigma/2)(1+c_0 log log N/log N) max_k l(H_k)^+, H_k = G_k rescaled to Phi(H_k)=2, l vanishing on constants.",
+      "assessment": "Working proof: superadditivity of convex functions vanishing at 0 off the misaligned set, near-homogeneity psi*(lambda y) >= (1-a-1/u) lambda psi*(y) from the maximizer equation (u=t^alpha, F'(u)>=1), convexity for lambda>1, members with lambda_k < 1/(m log N) bounded by max l(H_k)/log N. Class form only; misaligned overlaps of non-negligible penalty, gradients below N^theta, alpha=infinity and the exact Kantorovich dual not covered.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Decides the second route review's architecture test in the class form for aligned or nearly aligned superpositions: superposing large-gradient test functions gains at most 1+o(1) over the best member at full budget, whatever the single-member decay. Scaled Leighton-Shor functions built on the whole square are not aligned; their overlap penalty is not computed.",
+      "next_action": "Compute the misaligned overlap penalty of scaled Leighton-Shor functions at several aspects (or rebuild them on disjoint strips); the analogous question for the exact dual, where alignment does not make the deficiency superadditive.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:aligned-superposition-bound",
+      "cites",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Same class D_N and penalty psi*; the lemma bounds aligned superpositions inside that class."
+    ],
+    [
+      "lem:aligned-superposition-bound",
+      "cites",
+      "lem:leighton-shor-class-lower-bound",
+      "Its scaled Leighton-Shor test functions satisfy the gradient hypothesis; at several aspects on the whole square they are not aligned, so they are covered only when their overlap penalty is o(1)."
+    ],
+    [
+      "lem:aligned-superposition-bound",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "A counterexample built as an aligned or nearly aligned superposition of large-gradient pieces needs a single piece within 1+o(1) of its value."
+    ]
+  ]
+}
