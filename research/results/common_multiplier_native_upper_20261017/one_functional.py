@@ -12,11 +12,15 @@ Expected: no expectation is predicted; the script prints the largest rank over 5
 reached.
 Refuted by: no single functional reaching rank 24 among the masks, which leaves the case open, not refuted.
 Possible because: over F_2 the symmetric forms of one functional may all be degenerate on this space.
-Control: for E = x00 (rank 31 - 15 = 16 by dense_linear.json) the same search is run and its largest rank printed.
+Second instance: E = x00, with no predicted failure. (Second run, after the review: r is computed here, in the
+same closure, as the rank of u -> remainder(Eu) on the 31 monomials of V_1, and asserted against the values 24 and
+16 of dense_linear.json; the mask reaching rank r is saved. The first run's output is one_functional_run1.json.)
+Control: a mask's rectangle form never exceeds rank r, the left kernel containing Ann_C(E) cap V_1; asserted.
 Forced by counts: nothing; M_mu is 31 by 31 and the rank of interest is 24, so no row count decides it.
-Refuted by: a largest rank above the rank r of the error, which is impossible and would mean a bug.
+Refuted by: a rank above r for some mask, which is impossible and would mean a bug in the remainders.
 Possible because: a wrong remainder or mask would give ranks unrelated to r.
-Positive control: rank M_mu never exceeds r for any mask (asserted), the left kernel containing Ann_C(E).
+No positive control: the effect sought, a full-rank form, is what the search measures; no instance is known in
+advance to have it.
 Baseline: the recorded bracket [1, 24] and thm:common-moment-radical over a large extension.
 Record checked: the claims read were lem:native-detection-count and thm:common-moment-radical; neither decides
 one functional over F_2 itself.
@@ -39,15 +43,22 @@ tq = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tq)
 
 
+def error_rank(cC, monos, E):
+    """r: the rank of u -> remainder of uE modulo C on the monomials of V_1, in this closure."""
+    return len(f2_span.Span([tq.red(cC, cC.vector(pc.multiply({u}, set(E)))) for u in monos]))
+
+
 def best_rank(cC, monos, E, trials, rng):
     prods = [[tq.red(cC, cC.vector(pc.multiply(pc.multiply({u}, set(E)), {v}))) for v in monos] for u in monos]
     width = max(x.bit_length() for row in prods for x in row) + 1
-    best = 0
+    best, witness = 0, None
     for _ in range(trials):
         mask = rng.getrandbits(width)
         rows = [sum(((bin(x & mask).count('1') & 1) << k) for k, x in enumerate(row)) for row in prods]
-        best = max(best, len(f2_span.Span(rows)))
-    return best
+        rank = len(f2_span.Span(rows))
+        if rank > best:
+            best, witness = rank, mask
+    return best, witness
 
 
 def main():
@@ -63,9 +74,12 @@ def main():
     rng = random.Random(17)
     out = {}
     for name, E, r in (('E1', {x(j, j) for j in range(5)}, 24), ('x00', {x(0, 0)}, 16)):
-        b = best_rank(cC, monos, E, 500, rng)
-        assert b <= r, 'positive control: rank at most r'
-        out[name] = {'r': r, 'best_rank_500_masks': b, 'one_functional_detects': b == r}
+        r_here = error_rank(cC, monos, E)
+        assert r_here == r, ('r computed in this closure', r_here, r)
+        b, mask = best_rank(cC, monos, E, 500, rng)
+        assert b <= r, 'control: rank at most r'
+        out[name] = {'r': r_here, 'best_rank_500_masks': b, 'one_functional_detects': b == r_here,
+                     'witness_mask_over_remainder_coordinates': hex(mask)}
         print(name, out[name], flush=True)
     pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
 
