@@ -138,79 +138,81 @@ growing checklists or one-off setup narratives.
   only the opening question, by technique name, the record's synonyms/structural names, dual or
   adjoint formulation, and statement content words with `tools/search-claims.py`, one search in the
   words of the objects its proof or its next step works on (the extremal examples, the records it
-  could contradict) rather than its own name. Test it against every recorded counterexample,
-  refutation and obstruction for those objects. Before drafting its proof, check yourself whether
-  the record already implies it; include the relevant prior results in the end-of-cycle review
-  brief. Registration refuses a new claim whose summary resembles a registered one unless the spec
-  relates the two (`claim-index.py author build`); read the record it names before deciding which.
-  Run the same search when the spec is first drafted, before the review, with
-  `tools/claim_resemblance.py SPEC`, which prints the nearest registered claims below the refusal
-  threshold too, and read them before the entry says what is new; the tool logs its runs and the
-  finisher refuses an entry declaring a claim it was not run on in the session. Before drafting a
-  corollary, check for an earlier result under fewer hypotheses. Before sending a proved statement
-  to review, name for each hypothesis the step of the proof that uses it and the weakest form that
-  step needs, and state that form: a hypothesis copied from the instance at hand, rather than read
-  off the proof, narrows the lemma and the next step drawn from it (16 October 2026), and a free
-  parameter (a mesh, a scale, a threshold) is stated with the whole range its proof allows before a
-  value is chosen for the instance; a statement holding with high probability for every value of a
-  parameter names, in its proof, the union bound that covers that parameter, and each concentration
-  inequality it uses names the independence it rests on (16 October 2026: a union over a slope
-  parameter was missing, and dependent multinomial counts were summed as independent); say there too
-  which class each conclusion holds for, after `<strong>Hypotheses, each with its step.</strong>`
-  (the finisher requires the paragraph of an entry registering a proof). Evaluate every inequality a
-  statement or a sentence about the goal's endpoint uses at the Nonvacuity witness's parameters,
-  before the review and again for each sentence a correction rewrites: a corrected sentence is a new
-  claim (16 October 2026: a correction wrote a degree condition its own example violated). Try it on
-  degenerate inputs (the trivial instance, the empty one, an input outside its stated form) and
-  report it in the entry after `<strong>Degenerate cases.</strong>`: what the statement gives on
-  each, or the hypothesis that excludes it (the finisher requires the paragraph of an entry
-  registering a proof). Write down also one input that satisfies all the statement's hypotheses,
-  with its parameters, after `<strong>Nonvacuity.</strong>`: a statement about a class with no
-  member proves nothing (the finisher requires it of the same entries). When the statement extends a
-  recorded one, the input must be one the recorded statement does not already cover, and it is
-  checked step by step against the rules it uses; it, and a next attempt's Smallest case, say after
-  `<strong>Plainest bound.</strong>` what the plainest available bound (a bare count, a
-  one-dimensional estimate, the record's oldest applicable lemma) gives on that instance, or why
-  none applies (the finisher checks). For a statement uniform over a family, every fixed witness is
-  decided by a bound for one function (its variance, or a one-dimensional estimate after a change of
-  variables): the sentence then says so and names what the uniformity adds; over a family of
-  polynomially many members that bound with a union over the members is the plainest uniform bound,
-  tried before any other (17 October 2026: two nested blocks, at most \(N^2\) of them, were called a
-  case for a deep lemma that the union bound decides). "None applies" is written only after the
-  plainest bound was tried on the instance; and a recorded result the draft cites is read also for
-  what it already implies about the new statement's special cases. Before a required paragraph or
-  artifact is called done, name what it is meant to establish in the case at hand and check that it
-  does: a witness exercises the step the statement adds, a Meta names the change its commit made, a
-  message reports a result and not an intent (16 October 2026: each of the three passed its rule's
-  wording first). Likewise a prevention, a count or a check is reported as in force only beside the
-  output of its run on the case that exposed it, at the earliest stage it can run: that it exists is
-  not that it works (16 October 2026: a message check announced in force missed its own case's other
-  form, and a replay count could not fail on the case it was quoted for). An example or witness
-  offered for a claim, in an entry or a reply, is written with the quantity it illustrates computed
-  beside it, never from memory of its shape, and a witness offered for a case analysis exercises
-  each branch it is offered for. A proof step that makes a term vanish by the value of a factor says
-  where that factor sits relative to every bracket or certificate around it, quoted from the
-  construction's record (16 October 2026: a factor inside a commutator was used as if it stood
-  outside, and the witness had no branch where it mattered). A statement covering several parts
-  (cases, forms, earlier lemmas it refines) gives each part its own form, and a simplification true
-  of some parts is attached to those parts only. Name after `<strong>Baseline.</strong>` the
-  construction or bound that needs no idea (the obvious witness, the trivial estimate) and what the
-  statement adds over it (the finisher requires it of the same entries; 16 October 2026: a
-  comparison omitted a multiplier that survived every choice). An example or test computed with the
-  entry's method also gets its own baseline, computed first: what the plainest available bound gives
-  on that example. State compositions as lemmas in one common setting with a complete proof, not a
-  reference to a sketch. At the start of drafting, run the entry's skeleton (its headings and
-  labelled paragraphs, before the body) through `tools/notebook-append.py DRAFT --check`, which
-  lists each failing entry check of the append and the finisher that applies to a draft, so a
-  required paragraph is planned before the work. Before the reviewer's brief, run
-  `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that cites a
-  claim beside that claim's registered statement, and each that links an entry beside that entry's
-  title and status line: a sentence may say no more than its source, and one that draws a decision
-  from a bound of the entry restates the bound's hypotheses and error terms beside the instance and
-  the scale decided. The tool also lists the draft's sentences outside its mathematics that hold a
-  count: read each beside the saved output the count came from. A property of a recorded
-  construction that a proof step uses (what its terms contain, where a factor sits, what it
-  specializes to) is quoted from that construction's record, with its anchor, in the step: a
+  could contradict) rather than its own name; when a next attempt's objects change during drafting
+  or review, that search is made again in the new objects' words (17 October 2026: an attempt moved
+  from nested chains to closed lattice curves, and three records charging such curves were missed).
+  Test it against every recorded counterexample, refutation and obstruction for those objects.
+  Before drafting its proof, check yourself whether the record already implies it; include the
+  relevant prior results in the end-of-cycle review brief. Registration refuses a new claim whose
+  summary resembles a registered one unless the spec relates the two (`claim-index.py author
+  build`); read the record it names before deciding which. Run the same search when the spec is
+  first drafted, before the review, with `tools/claim_resemblance.py SPEC`, which prints the nearest
+  registered claims below the refusal threshold too, and read them before the entry says what is
+  new; the tool logs its runs and the finisher refuses an entry declaring a claim it was not run on
+  in the session. Before drafting a corollary, check for an earlier result under fewer hypotheses.
+  Before sending a proved statement to review, name for each hypothesis the step of the proof that
+  uses it and the weakest form that step needs, and state that form: a hypothesis copied from the
+  instance at hand, rather than read off the proof, narrows the lemma and the next step drawn from
+  it (16 October 2026), and a free parameter (a mesh, a scale, a threshold) is stated with the whole
+  range its proof allows before a value is chosen for the instance; a statement holding with high
+  probability for every value of a parameter names, in its proof, the union bound that covers that
+  parameter, and each concentration inequality it uses names the independence it rests on (16
+  October 2026: a union over a slope parameter was missing, and dependent multinomial counts were
+  summed as independent); say there too which class each conclusion holds for, after
+  `<strong>Hypotheses, each with its step.</strong>` (the finisher requires the paragraph of an
+  entry registering a proof). Evaluate every inequality a statement or a sentence about the goal's
+  endpoint uses at the Nonvacuity witness's parameters, before the review and again for each
+  sentence a correction rewrites: a corrected sentence is a new claim (16 October 2026: a correction
+  wrote a degree condition its own example violated). Try it on degenerate inputs (the trivial
+  instance, the empty one, an input outside its stated form) and report it in the entry after
+  `<strong>Degenerate cases.</strong>`: what the statement gives on each, or the hypothesis that
+  excludes it (the finisher requires the paragraph of an entry registering a proof). Write down also
+  one input that satisfies all the statement's hypotheses, with its parameters, after
+  `<strong>Nonvacuity.</strong>`: a statement about a class with no member proves nothing (the
+  finisher requires it of the same entries). When the statement extends a recorded one, the input
+  must be one the recorded statement does not already cover, and it is checked step by step against
+  the rules it uses; it, and a next attempt's Smallest case, say after `<strong>Plainest
+  bound.</strong>` what the plainest available bound (a bare count, a one-dimensional estimate, the
+  record's oldest applicable lemma) gives on that instance, or why none applies (the finisher
+  checks). For a statement uniform over a family, every fixed witness is decided by a bound for one
+  function (its variance, or a one-dimensional estimate after a change of variables): the sentence
+  then says so and names what the uniformity adds; over a family of polynomially many members that
+  bound with a union over the members is the plainest uniform bound, tried before any other (17
+  October 2026: two nested blocks, at most \(N^2\) of them, were called a case for a deep lemma that
+  the union bound decides). "None applies" is written only after the plainest bound was tried on the
+  instance; and a recorded result the draft cites is read also for what it already implies about the
+  new statement's special cases. Before a required paragraph or artifact is called done, name what
+  it is meant to establish in the case at hand and check that it does: a witness exercises the step
+  the statement adds, a Meta names the change its commit made, a message reports a result and not an
+  intent (16 October 2026: each of the three passed its rule's wording first). Likewise a
+  prevention, a count or a check is reported as in force only beside the output of its run on the
+  case that exposed it, at the earliest stage it can run: that it exists is not that it works (16
+  October 2026: a message check announced in force missed its own case's other form, and a replay
+  count could not fail on the case it was quoted for). An example or witness offered for a claim, in
+  an entry or a reply, is written with the quantity it illustrates computed beside it, never from
+  memory of its shape, and a witness offered for a case analysis exercises each branch it is offered
+  for. A proof step that makes a term vanish by the value of a factor says where that factor sits
+  relative to every bracket or certificate around it, quoted from the construction's record (16
+  October 2026: a factor inside a commutator was used as if it stood outside, and the witness had no
+  branch where it mattered). A statement covering several parts (cases, forms, earlier lemmas it
+  refines) gives each part its own form, and a simplification true of some parts is attached to
+  those parts only. Name after `<strong>Baseline.</strong>` the construction or bound that needs no
+  idea (the obvious witness, the trivial estimate) and what the statement adds over it (the finisher
+  requires it of the same entries; 16 October 2026: a comparison omitted a multiplier that survived
+  every choice). An example or test computed with the entry's method also gets its own baseline,
+  computed first: what the plainest available bound gives on that example. State compositions as
+  lemmas in one common setting with a complete proof, not a reference to a sketch. At the start of
+  drafting, run the entry's skeleton (its headings and labelled paragraphs, before the body) through
+  `tools/notebook-append.py DRAFT --check`, which lists each failing entry check of the append and
+  the finisher that applies to a draft, so a required paragraph is planned before the work. Before
+  the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each
+  sentence that cites a claim beside that claim's registered statement, and each that links an entry
+  beside that entry's title and status line: a sentence may say no more than its source, and one
+  that draws a decision from a bound of the entry restates the bound's hypotheses and error terms
+  beside the instance and the scale decided. The tool also lists the draft's sentences outside its
+  mathematics that hold a count: read each beside the saved output the count came from. A property
+  of a recorded construction that a proof step uses (what its terms contain, where a factor sits,
+  what it specializes to) is quoted from that construction's record, with its anchor, in the step: a
   property written from the agent's picture of the construction is an untested hypothesis.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive

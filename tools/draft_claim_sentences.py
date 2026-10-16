@@ -504,7 +504,10 @@ EXACT = re.compile(r'\b(?:exactly|precisely|(?:is|are|was|were|stays?|remains?) 
 # Words by which a sentence gives a decision its reason (17 October 2026: an attempt was dropped as "the same
 # question in a sharper form" and a split as "decided by this entry's statements", neither shown; the reviewer
 # found both).  Read also in bookkeeping paragraphs, where such decisions are written.
-DECISION = re.compile(r'\b(?:decided by|the same question|sharper form|supersed(?:es|ed)|implies)\b', re.I)
+DECISION = re.compile(r'\b(?:decided by|the same question|sharper form|supersed(?:es|ed)|implies|'
+                      r'(?:the )?conjectured order|the goal\'s order)\b', re.I)
+# "conjectured order" from 17 October 2026: a Bearing said single-level functions meet the goal "at the conjectured
+# order" while its constant, about 1.31 L, exceeded the goal's L/2 unless a cellwise sum was small.
 DISPLAY = re.compile(r'\\\[(.*?)\\\]', re.S)
 INLINE = re.compile(r'\\\((.*?)\\\)', re.S)
 RELATION = re.compile(r'\\(?:ge|le|geq|leq|geqslant|leqslant|lesssim|gtrsim|lt|gt|gg|ll)(?![A-Za-z])|[<>]|&lt;|&gt;')

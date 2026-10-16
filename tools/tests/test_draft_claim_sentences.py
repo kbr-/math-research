@@ -159,6 +159,12 @@ class DecisionWordsTest(unittest.TestCase):
                  '<p><strong>Follow-up.</strong> The split is decided by this entry\'s statements.</p>')
         self.assertEqual(len(dcs.exactness(draft)), 2)
 
+    def test_conjectured_order_is_listed(self):
+        # 17 October 2026: a Bearing claimed the conjectured order while its constant exceeded the goal's.
+        draft = ('<p><strong>Goal progress.</strong> <strong>Bearing.</strong> The functions satisfy the goal '
+                 'at the conjectured order.</p>')
+        self.assertEqual(len(dcs.exactness(draft)), 1)
+
     def test_other_bookkeeping_words_stay_unlisted(self):
         draft = '<p><strong>Owed attempt.</strong> It was made exactly as named.</p>'
         self.assertEqual(dcs.exactness(draft), [])
