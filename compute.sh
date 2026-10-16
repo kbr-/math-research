@@ -750,6 +750,34 @@ def scripts_without_baseline(command):
     return found
 
 
+RECORD_CHECKED = re.compile(_LINE_START + r'Record checked:' + _FIVE_WORDS, re.M)
+RECORD_CHECKED_FROM = 1792170000      # 16 October 2026 17:00 UTC; scripts last changed earlier are left alone
+
+
+def scripts_without_record_check(command):
+    """Script arguments under research/results that test a statement but carry no "Record checked:" line (at
+    least five words) naming the registered claims read for whether they already decide its outcome, or saying
+    none applies and which search found none.  On 16 October 2026 a computation of a review's test ran on a
+    board whose outcome three recorded lemmas decided, found by the reviewer afterwards; the search before the
+    run had named one of them but not read what the three together implied.  Scripts last modified before the
+    rule are not refused."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()) or path.stat().st_mtime < RECORD_CHECKED_FROM:
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        if REFUTATION_PARTS[0][0].search(head) and not NO_STATEMENT.search(head) and not RECORD_CHECKED.search(head):
+            found.append(arg)
+    return found
+
+
 def python_loop_offenders(script, root=None):
     """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
     in each local module it imports the module-level statements plus the imported names and every top-level
@@ -1133,6 +1161,13 @@ def main():
                          'bare count, a trivial estimate) gives on the instances run and whether it already '
                          'decides the expectation: a prediction the baseline fixes cannot fail '
                          '(COMPUTATION_RULES.md); --exploratory runs it anyway')
+        unread = scripts_without_record_check(command)
+        if unread:
+            parser.error('the script ' + ', '.join(unread) + ' under research/results tests a statement but has '
+                         'no "Record checked:" line (at least five words) naming the registered claims read for '
+                         'whether they already decide its outcome, from a search in the words of its objects '
+                         '(tools/search-claims.py), or saying none applies: an outcome the record decides is no '
+                         'test (COMPUTATION_RULES.md); --exploratory runs it anyway')
         if args.timeout > KERNEL_RUN_S and not args.user_approved.strip():
             weak = long_scripts_without_power(command)
             if weak:

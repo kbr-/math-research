@@ -67,6 +67,20 @@ class BaselineTest(unittest.TestCase):
             self.assertEqual(CS.scripts_without_baseline(['python3', str(based), str(exempt)]), [])
             self.assertEqual(CS.scripts_without_baseline(['python3', str(passing)]), [str(passing)])
 
+    def test_a_tested_statement_needs_a_record_check_line(self):
+        # 16 October 2026: a review's test was decided by three recorded lemmas, found after the run.
+        import os
+        with tempfile.TemporaryDirectory() as folder:
+            bare = script(folder, BOTH + 'print(1)\n', 'a.py')
+            self.assertEqual(CS.scripts_without_record_check(['python3', str(bare)]), [str(bare)])
+            read = script(folder, BOTH.replace('"""\n', 'Record checked: lem:top-degree-killer-transfer and '
+                                               'lem:cylinder-killer-degree do not decide the sum case.\n"""\n', 1),
+                          'b.py')
+            exempt = script(folder, '"""No statement tested: it converts the archived table to JSON.\n"""\n', 'c.py')
+            self.assertEqual(CS.scripts_without_record_check(['python3', str(read), str(exempt)]), [])
+            os.utime(bare, (1000, 1000))                       # written before the rule
+            self.assertEqual(CS.scripts_without_record_check(['python3', str(bare)]), [])
+
     def test_the_prompting_script_is_refused(self):
         strip = ROOT / 'research/results/ultimate_matching_review4_20261016/strip_dp.py'
         self.assertEqual(CS.scripts_without_baseline(['python3', str(strip)]), [str(strip)])
