@@ -522,6 +522,49 @@ def exactness_report(draft, width):
                      + lines + [f'{len(found)} such sentences.'])
 
 
+# Words by which a sentence outside the mathematics compares two orders.  17 October 2026: an Owed attempt
+# dropped an attempt because a bound was "below its heuristic target", when the bound was the larger of the two;
+# the reviewer found the comparison read the wrong way round.
+COMPARE = re.compile(r'\b(?:below|above|beats?|beat by|smaller|larger|exceeds?|less than|more than|'
+                     r'better than|worse than|stronger than|weaker than|within)\b', re.I)
+
+
+def comparisons(draft):
+    """[(section label, sentence text, [conditions])] for the sentences, outside the statements, their proofs
+    and bookkeeping, that compare two orders by a word of COMPARE, with the formulas of their paragraph as in
+    exactness(), so that both sides are evaluated at the instance before the sentence stands."""
+    found, heading = [], ''
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        if tag in ('h3', 'h4'):
+            heading = text(body) if tag == 'h4' else ''
+            continue
+        label = LABEL.match(body)
+        where = label.group(1) if label else heading
+        # Bookkeeping paragraphs are read too: the exposing sentence was in an Owed attempt, where a comparison
+        # decided what was dropped, as one in an Architecture test decides its verdict.
+        if STATEMENT.match(where) or where.lower() == 'statement':
+            continue
+        shown = DISPLAY.findall(body) or [m for m in INLINE.findall(body) if RELATION.search(m)]
+        conditions = [' '.join(html.unescape(m).split()) for m in shown[:3]]
+        for index, sentence in enumerate(sentences(body)):
+            unlabelled = LABEL.sub('', sentence) if index == 0 and label else sentence
+            bare = re.sub(r'\\\(.*?\\\)|\\\[.*?\\\]|<code>.*?</code>', ' ', unlabelled, flags=re.S)
+            if COMPARE.search(text(bare)) and INLINE.search(unlabelled):
+                found.append((where, text(sentence), conditions))
+    return found
+
+
+def comparisons_report(draft, width):
+    found = comparisons(draft)
+    lines = []
+    for where, sentence, conditions in found:
+        lines.append(f'  [{where}] {sentence if width <= 0 else sentence[:width]}')
+        lines += [f'      beside: {c if width <= 0 else c[:width]}' for c in conditions]
+    return '\n'.join(['Sentences that compare two orders (below, above, beats, smaller, within and the like); '
+                      'evaluate both sides at the instance, with numbers or exponents written out, and say which is '
+                      'larger before the sentence stands:'] + lines + [f'{len(found)} such sentences.'])
+
+
 def summing_up(draft):
     """[(key, section label, sentence text)] for the sentences of the summing-up paragraphs (SUMMARY) that either
     listing above prints, each once: the sentences an entry answers before it is appended.  The key is of the
@@ -1224,6 +1267,7 @@ def main():
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
+    print('\n' + comparisons_report(draft, args.width))
     print('\n' + unmentioned_report(draft, {c['id']: c['summary'] for c in registry['claims']}, args.width))
     if naming_lines(draft):
         print('\n' + naming_lines_report(draft, args.width))

@@ -152,6 +152,19 @@ class DraftClaimSentences(unittest.TestCase):
 
 
 
+class ComparisonsTest(unittest.TestCase):
+    # 17 October 2026: an Owed attempt called a bound "below" a target it exceeded.
+    def test_a_comparison_in_a_bookkeeping_paragraph_is_listed(self):
+        draft = ('<p><strong>Owed attempt.</strong> Its purpose is met at \\((\\log\\log N)^{1/4}\\), below its '
+                 'target \\(\\sqrt{N\\log N}\\).</p>')
+        self.assertEqual(len(dcs.comparisons(draft)), 1)
+
+    def test_statements_and_words_without_formulas_are_not_listed(self):
+        draft = ('<p><strong>Statement.</strong> Then \\(a\\) is below \\(b\\).</p>'
+                 '<p><strong>Review.</strong> The objection above was right.</p>')
+        self.assertEqual(dcs.comparisons(draft), [])
+
+
 class CountsTest(unittest.TestCase):
     DRAFT = '''<article id="entry-2026-10-11-x">
 <h3>11 October 2026 — A title with 3 in it, naming a lemma</h3>
