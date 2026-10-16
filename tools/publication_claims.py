@@ -26,14 +26,21 @@ def statement_links(root=ROOT):
     return rows
 
 
+def lean_references(claim):
+    """The Lean file references a claim records: formalization.references and each artifact's references.
+    Reading only these fields keeps a lookup fast (serializing every claim took 2.6 s) and exact (a raw-text
+    scan attributed occurrences in the registry's top-level relationships to unrelated claims)."""
+    form = claim.get('formalization') or {}
+    refs = list(form.get('references') or [])
+    for artifact in form.get('artifacts') or []:
+        refs.extend(artifact.get('references') or [])
+    return refs
+
+
 def claims_naming(lean_files, registry):
-    """The registered claim identifiers whose metadata names one of the Lean files."""
-    found = []
-    for claim in registry:
-        blob = json.dumps(claim)
-        if any(name in blob for name in lean_files):
-            found.append(claim['id'])
-    return found
+    """The registered claim identifiers whose formalization references name one of the Lean files."""
+    return [claim['id'] for claim in registry
+            if any(name in ref for ref in lean_references(claim) for name in lean_files)]
 
 
 def lookup(keys, root=ROOT):
