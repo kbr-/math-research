@@ -27,8 +27,11 @@ ask whether a natural injective map or an exactly described kernel would give it
 draft says which map it tried. Where a statement compares or transfers objects between two settings
 (an algebra and its associated graded, a ring and a quotient, a closure and an ideal), check that
 each object lives where the comparison puts it and that the transfer map is named and proved, not
-assumed. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
-brief asks for a specific check, and edit no files.
+assumed. Where an entry interprets an endpoint or exclusion clause of the goal, list each reading
+the clause's words allow (the field, the degree, property versus mechanism) and check that the entry
+states them all rather than choosing the one its result favours. Do not trust summaries in the
+drafts over the excerpts. Run no computations unless the brief asks for a specific check, and edit
+no files.
 
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
 open point: for a failed proof attempt, an adjustment that gets past the failing step or a reason
