@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Sample-point pyramids](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-sample-point-pyramids)",
+    "label": "Sample-point pyramids",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-sample-point-pyramids"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:sample-point-pyramids",
+      "summary": "For every exponent pair alpha in [1,infinity]^2 (beta = max_j 1/alpha_j), every N, every level y >= 2 (y <= N if an exponent is infinite) and every N points x_i in [0,1]^2: with r = (2Ny(log(1+y))^beta)^(-1/2), a = yr, G = max_i max(0, a - y|z - x_i|_inf) has cost int sum_j psi*_alpha_j(|d_j G|) <= 2, one partial +-y and the other 0 a.e. where grad G != 0, and sum_i G(x_i) - N int G >= (2/3) N a = (sqrt 2/3) sqrt(N y) (log(1+y))^(-beta/2). So against Lebesgue measure the conjugate class is unbounded for every point set when both exponents are finite, and at least (sqrt 2/3) N (log(1+N))^(-beta/2) when one is infinite (cell smearing is necessary); at (4,4) a Lebesgue bound L' sqrt(N log N) for the functions of level at least y fails for every point set once (sqrt 2/3) sqrt y (log(1+y))^(-1/8) > L' sqrt(log N), e.g. y = (log N)^2.",
+      "assessment": "Working proof: psi*_alpha(y) <= y (log(1+y))^(1/alpha) for y >= 2 by monotonicity of psi' beyond t_0 = (log(1+y))^(1/alpha); a.e. gradient of a maximum of Lipschitz functions; support area 4Nr^2; pyramid volume 4r^2 a/3.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Refutes the Lebesgue-measure form of the single-level class bound that the route's lemmas and the fourth route review's outcome (A) targeted, above levels of order log N (log log N)^(1/4) at (4,4); the Lebesgue lemmas stay true but serve there through cell averages, and the smeared X-term reduces to a discrete class on the cells of side delta.",
+      "next_action": "Split the discrete class (cell averages on the side-delta grid, against centred cell counts) by increment level, a new split not the image of the continuous single-level functions, and bound its single-level part for staircases along curved graphs by curve-trace layers between delta and 2^(-j*(y)); then recombine the levels.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:sample-point-pyramids",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Shows the cell smearing in the conjecture's class bound is necessary: against Lebesgue measure the class is unbounded for every point set."
+    ],
+    [
+      "lem:sample-point-pyramids",
+      "cites",
+      "lem:mollified-smooth-part",
+      "Its reduction of the single-level case to the remainder below 2^(-j*(y)) targets a Lebesgue-measure bound that fails at levels (log N)^2."
+    ],
+    [
+      "lem:sample-point-pyramids",
+      "cites",
+      "lem:lipschitz-class-lower-bound",
+      "That lower bound forces the order sqrt(N log N) for random points; this one is deterministic and unbounded, against Lebesgue measure only."
+    ]
+  ]
+}
