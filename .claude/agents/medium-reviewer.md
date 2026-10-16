@@ -52,7 +52,9 @@ equivalence or "nothing more can be had" drawn from one implication, a lower bou
 upper one); a counterfactual or comparison whose other side was not checked; a cited result said to
 "give" or "supply" something without the hypotheses it needs for that (an existence assumed, a
 uniform bound read from a pointwise one, a parameter the lemma fixes treated as free); a named next
-attempt whose outcome the draft's own bounds already fix; a prevention queued, or left to a
+attempt whose outcome the draft's own bounds already fix; a statement, test or check shaped by the
+one instance that prompted it, whose other inputs (a wider parameter range, the record's other
+entries, legitimate uses of the same words) were not tried; a prevention queued, or left to a
 reviewer, without naming what kept it from being built in the turn; a control that could not have
 failed on some of the cases it is reported for; a sentence saying what the record has or lacks for
 an object (that only one mechanism applies, that a recorded result cannot reach a case), or a
