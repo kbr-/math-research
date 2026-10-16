@@ -52,6 +52,20 @@ class PositiveControlTest(unittest.TestCase):
                                                                   str(plain)]), [])
 
 
+class ForcedByCountsTest(unittest.TestCase):
+    def test_a_declared_control_states_what_its_counts_force(self):
+        # 17 October 2026: two rank controls had fewer rows than the rank they were to miss.
+        with tempfile.TemporaryDirectory() as folder:
+            bare = script(folder, BOTH.replace('"""\n', 'Control: dropping one set must lower the rank.\n"""\n', 1),
+                          'a.py')
+            self.assertEqual(CS.scripts_without_forced_counts(['python3', str(bare)]), [str(bare)])
+            counted = script(folder, BOTH.replace('"""\n', 'Control: dropping one set must lower the rank.\n'
+                                                  'Forced by counts: nothing, the remaining rows number 20 against '
+                                                  'rank 11.\n"""\n', 1), 'b.py')
+            plain = script(folder, BOTH + 'print(1)\n', 'c.py')       # no control declared
+            self.assertEqual(CS.scripts_without_forced_counts(['python3', str(counted), str(plain)]), [])
+
+
 class BaselineTest(unittest.TestCase):
     def test_a_tested_statement_needs_a_baseline_line(self):
         # 16 October 2026: a strip computation's expectation followed from the bare point count.

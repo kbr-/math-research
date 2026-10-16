@@ -729,6 +729,33 @@ def scripts_without_positive_control(command):
     return found
 
 
+FORCED_BY_COUNTS = re.compile(_LINE_START + r'Forced by counts:' + _FIVE_WORDS, re.M)
+
+
+def scripts_without_forced_counts(command):
+    """Script arguments under research/results whose head declares a "Control:" but no "Forced by counts:" line
+    with at least five words, saying what the instance's own counts (rows against rank, dimensions, sizes) force
+    on each control's outcome.  On 17 October 2026 two rank controls in a row had fewer rows than the rank they
+    were to miss, and a replacement control lost rank only through uncovered edges, so the counts decided each;
+    the written rule did not stop the second.  The check cannot tell whether the line is right; it makes the
+    author compute the counts before the run."""
+    found = []
+    for arg in command[1:]:
+        path = Path(arg)
+        if path.suffix not in REFUTATION_SUFFIXES or not path.is_file():
+            continue
+        if '/research/results/' not in str(path.resolve()):
+            continue
+        try:
+            with path.open(errors='replace') as handle:
+                head = ''.join(line for _, line in zip(range(REFUTATION_HEAD_LINES), handle))
+        except OSError:
+            continue
+        if CONTROL_LABEL.search(head) and not FORCED_BY_COUNTS.search(head):
+            found.append(arg)
+    return found
+
+
 BASELINE = re.compile(_LINE_START + r'Baseline:' + _FIVE_WORDS, re.M)
 
 
@@ -1171,6 +1198,13 @@ def main():
                          'present and must be seen, nor a "No positive control:" line with the reason: a control '
                          'expecting the same outcome as the prediction cannot show the code would see the effect '
                          '(COMPUTATION_RULES.md); --exploratory runs it anyway')
+        uncounted = scripts_without_forced_counts(command)
+        if uncounted:
+            parser.error('the script ' + ', '.join(uncounted) + ' under research/results declares a "Control:" '
+                         'but no "Forced by counts:" line (at least five words) saying what the instance\'s own '
+                         'counts (rows against rank, dimensions, sizes) force on each control\'s outcome: a control '
+                         'a count decides tests only the routine (COMPUTATION_RULES.md); --exploratory runs it '
+                         'anyway')
         unbased = scripts_without_baseline(command)
         if unbased:
             parser.error('the script ' + ', '.join(unbased) + ' under research/results tests a statement but has '
