@@ -18,6 +18,12 @@ the variables of pigeons 0 and 1, where no monomial axiom gives a common linear 
 Expected: k* >= 2 or no surviving killer within the window for these, and beta' printed beside it.
 Refuted by: k* = 1 for all variables, which would mean a linear surviving common killer of every variable.
 Possible because: a linear combination built from the pigeon axioms may kill every variable modulo C.
+Third run, after the review: the first six sets could only give beta' = k* = 1 (controls that cannot
+fail). Added: {x00,x11,x22} and {x00,x11,x22,x33}, whose common linear kernel is C cap V_1
+(check:functional-factor-kernels), so k* is 2 or none and beta' is 1 or 2 or none.
+Expected: beta' = k* for both, printed; beta' = 1 with k* = 2 would show the graded bound loose there.
+Refuted by: beta' strictly below k* for either set, which would mean the bound is not tight here.
+Possible because: a graded killer of degree one need not lift, as on the cube with x_[N].
 Control: F = {1} (a constant error) has no surviving killer, k* undefined, and beta' undefined; asserted.
 Refuted by: a reported surviving killer of the constant error, which would mean the closure reports 1 in C.
 Possible because: a bug in the membership of f * 1 would let a non-member pass.
@@ -178,7 +184,9 @@ def main():
     sets = {'x00': [x(0, 0)], 'x00,x11': [x(0, 0), x(1, 1)], 'x00,x10': [x(0, 0), x(1, 0)],
             'x00,x01': [x(0, 0), x(0, 1)], 'x00x11': [x(0, 0) | x(1, 1)], 'x00x11,x22x33': [x(0, 0) | x(1, 1), x(2, 2) | x(3, 3)],
             'all variables': [x(i, j) for i in range(m) for j in range(n)],
-            'pigeons 0,1': [x(i, j) for i in range(2) for j in range(n)]}
+            'pigeons 0,1': [x(i, j) for i in range(2) for j in range(n)],
+            'x00,x11,x22': [x(0, 0), x(1, 1), x(2, 2)],
+            'x00,x11,x22,x33': [x(0, 0), x(1, 1), x(2, 2), x(3, 3)]}
     out = {'system': 'functional pigeonhole, 6 pigeons, 5 holes, F_2, multilinear', 'D': D, 'closure_dim': c.dim,
            'sets': {}}
     for name, errors in sets.items():
