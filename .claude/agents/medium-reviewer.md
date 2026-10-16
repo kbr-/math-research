@@ -17,7 +17,10 @@ over a baseline, compare it also with the most elementary construction at the cl
 (a direct pick, a pigeonhole, a greedy step). For every reduction "without loss of generality"
 applied to one member of a family, check that it holds for all members at once when the conclusion
 is about the family jointly. Check every setting line taken from a source (its field, ring,
-encoding, parameter ranges) against that source's own definitions of its symbols, macros included. Do
+encoding, parameter ranges) against that source's own definitions of its symbols, macros included.
+When a setting is narrower than the proof needs, say which steps hold more generally and what the
+general version needs beyond them, instead of only requiring the narrowing; never require
+withdrawing a correct result because it is elementary or dominated, only relating it. Do
 not trust summaries in the
 drafts over the excerpts. Run no computations unless the brief asks for a specific check, and edit
 no files.

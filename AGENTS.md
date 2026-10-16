@@ -93,7 +93,12 @@ growing checklists or one-off setup narratives.
   suites to simulate progress. A general belief, folklore or "experience" is not evidence (user, 9
   October 2026): support a statement by a proof, a source read in the cycle with its hypotheses, or
   a test able to distinguish it from the alternative at the sizes run. Otherwise label it an
-  untested hypothesis and base no decision or status on it.
+  untested hypothesis and base no decision or status on it. When a proof's steps hold in a more
+  general setting at no extra cost, state and prove the general version; narrow a statement, also on
+  a reviewer's correction, only after naming the step that needs the narrower setting, and record
+  that step. A correct result is withdrawn only when false: one that is elementary, dominated or
+  superseded is kept and registered with that relation (user, 16 October 2026: "If we get a general
+  version for free, we do the general version. Don't throw away results.").
 - Before proposing a next step or naming/developing a result, use `tools/search-claims.py WORDS` or
   `--show LABEL`. The tool logs each search, and the finisher refuses an entry with a Record search
   paragraph whose session ran none, printing the session's searches to compare with the paragraph.
