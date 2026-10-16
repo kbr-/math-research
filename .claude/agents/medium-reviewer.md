@@ -16,7 +16,9 @@ theorem's conditions jointly, not only at the value the draft uses. For every cl
 over a baseline, compare it also with the most elementary construction at the claimed parameters
 (a direct pick, a pigeonhole, a greedy step). For every reduction "without loss of generality"
 applied to one member of a family, check that it holds for all members at once when the conclusion
-is about the family jointly. Do not trust summaries in the
+is about the family jointly. Check every setting line taken from a source (its field, ring,
+encoding, parameter ranges) against that source's own definitions of its symbols, macros included. Do
+not trust summaries in the
 drafts over the excerpts. Run no computations unless the brief asks for a specific check, and edit
 no files.
 
