@@ -4,10 +4,13 @@ System: functional pigeonhole over F_2, 4 pigeons, 3 holes, multilinear, D=2=cei
 the first 10 of the 12 errors with positive excess that row_search.py found on rows {1,2} (row_search.json
 lists ten), all 45 pairs.
 For a pair (E1, E2) the saving modulo C is rank1 + rank2 - stacked rank = dim V_1 - dim(Ann_C(E1) + Ann_C(E2)).
-The domain saving is the largest, over pairs of linear representatives, of dim V_1 - dim(A1 + A2), where
-Ai = Ann_H(Ei') + C cap V_1; with Ann_C(Ei) containing Ai, the C-saving is at most this, so the comparison asks
-how much smaller it is: the gap is domain saving minus C-saving, and a gap of 0 means the extra killers keep
-the domain saving.
+A saving sum_i codim Ann_i - codim (cap_i Ann_i) can only fall when one kernel grows (codim Ann_1 drops by delta,
+codim of the intersection by at most delta), and Ann_C(Ei) contains Ai = Ann_H(Ei') + C cap V_1 for every linear
+representative Ei', so the C-saving is at most the domain saving dim V_1 - dim(A1 + A2) for every choice of
+representatives. The domain saving compared is therefore the minimum over pairs of representatives, and the gap
+is that minimum minus the C-saving, at least 0; a gap of 0 means the extra killers keep the domain saving.
+(Second run. The first run took the maximum over representatives, which picks representatives with small
+domain kernels; it failed its own null control below, in log exceptional-products-8906a7ce8d.)
 Statement tested: the untested hypothesis that the extra killers leave the joint saving at the domain model's
 value (gap 0) for every pair.
 Expected: no expectation is predicted; the script prints the distribution of (C-saving, domain saving).
@@ -18,7 +21,7 @@ at this size: its kernels are the domain model's).
 Refuted by: a positive gap for (x00, x11).
 Possible because: a bug in the sum of spaces or the representative loop would show one.
 Positive control: a pair (E, E) of a hit error has C-saving dim V_1 - dim Ann_C(E) and domain saving one more,
-since Ann_C(E) exceeds every A by one dimension, so its gap is the single excess 1; asserted.
+since Ann_C(E) exceeds the largest A by one dimension, so its gap is the single excess 1; asserted.
 Refuted by: a gap other than 1 for (E, E).
 Possible because: a bug in the pair maximum over representatives.
 Baseline: the summed-rank bound gives saving at most min(rank1, rank2); it decides nothing.
@@ -54,7 +57,7 @@ def pair(cC, cH, monos, C1, reps, E1, E2):
     c_saving = dimV - len(dl.ann_poly(cC, monos, E1) + dl.ann_poly(cC, monos, E2))
     k1 = [dl.ann_poly(cH, monos, E1 ^ s) + C1 for _, s in reps]
     k2 = [dl.ann_poly(cH, monos, E2 ^ s) + C1 for _, s in reps]
-    d_saving = max(dimV - len(a + b) for a, b in itertools.product(k1, k2))
+    d_saving = min(dimV - len(a + b) for a, b in itertools.product(k1, k2))
     return c_saving, d_saving
 
 
