@@ -1,0 +1,89 @@
+{
+  "source": {
+    "record": "[Joint-savings goal review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-factor-domination-review)",
+    "label": "Joint-savings goal review",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer, staged architecture review",
+  "topics": [
+    "polynomial-calculus",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "lem:factor-ideal-domination",
+      "summary": "Over any field, let C be a degree-D PC closure, w_1..w_r of degrees e_i<=e, Ann_K(w)={u in V_K: wu in C}, and s=sum_i a_i w_i with deg a_i+e_i<=K', deg s<=sigma, s w_i - w_i in C for every i, K+K'<=D and K+sigma+e<=D. Then intersection_i Ann_K(w_i)=Ann_K(s): the common kernel of the factor maps is one annihilator. Errors E_nu=h_nu w_{i(nu)}+(member) with deg h_nu<=g and K+e+g<=D have that common kernel inside theirs. In a domain model on a finite X with 0/1-valued w_i, s=1-prod(1-w_i) qualifies when K+(r+1)e<=D; for the pigeonhole hole axioms, w_i=x_ij (i in I) and s=sum_{i in I} x_ij qualify when K+2<=D.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer in a staged review; the general per-index degrees and the remark that factorization through s=1 is vacuous are its corrections.",
+      "status": "working_proof",
+      "category": "negative_result",
+      "rationale": "Turns the route's non-domination requirement into a checkable condition: a joint saving among errors with shared factors needs truncation to block every affordable principal generator of their factor ideal. Explains why every saving found so far, including the pigeonhole check's, is domination.",
+      "next_action": "Test the common kernels of factor families in the functional pigeonhole system at 7 pigeons, 6 holes, D=3, where the closure need not be a vanishing ideal.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:clique-factor-kernels",
+      "summary": "Exact F2 computation with tools/pc_closure.py, pigeonhole systems (pigeon axioms prod_j(1+x_ij), hole axioms), multilinear ring, K=1, families of single-variable inputs (g1,g2) with kernel {u in V_1: g1 g2 u in C}: at 4 pigeons, 3 holes, D=3 the six families of check:truncated-kernel-beyond-support have stacked kernel Ann(x_00), dimension 4; at 5 pigeons, 4 holes, D=3 the 15 families (x_00,y), y outside hole 0, have stacked kernel Ann(x_00), dimension 5, against summed codimension 165 in dim V_1=21; the 30 families with first input x_00 or x_10 have stacked kernel of dimension 4, refuting the predicted span{x_20,x_30,x_40} of dimension 3, and equal to Ann(x_00) cap Ann(x_10), which contains 1+x_00+x_10; the 45 families with first input in {x_00,x_10,x_20} have stacked kernel span{1+x_00+x_10+x_20,x_30,x_40}, dimension 3, as predicted before that run.",
+      "assessment": "Finite check by exact elimination with tools/pc_closure.py (factor_kernels.py, factor_kernels.json, factor_kernels_run1.txt); prediction (C) refuted in the first run and recorded; (D) predicted from the corrected reading; numbers checked by the reviewer. All instances lie below the pigeon axioms' degree, a domain model on hole-respecting assignments.",
+      "status": "finite_check",
+      "rationale": "Shows on one instance that the joint savings of the pigeonhole families are the annihilator of one element, as lem:factor-ideal-domination proves.",
+      "next_action": "None at these sizes: the instances are a domain model; the decisive test moves to the functional pigeonhole system.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "ex:support-saving-not-inherited",
+      "summary": "The joint saving (sum of ranks minus stacked rank) of error maps in a domain model need not carry into a proper PC quotient containing it: in check:truncated-kernel-beyond-support (F2, 4 pigeons, 3 holes, D=3, K=1, C_3 cap V_1 = 0) the support ranks sum to 66 with stacked rank 12, a saving of 54, while the proper-quotient ranks sum to 20 with stacked rank 9, a saving of 11. B_D inside C_D gives only that each rank and the stacked rank can drop: the stacked proper rank is at most dim U|_S. Corrects the transfer clause of lem:domain-model-stacked-rank.",
+      "assessment": "Refutation from the recorded figures of check:truncated-kernel-beyond-support, found by the stage-one reviewer from the statement and checked by the author and the stage-two reviewer.",
+      "status": "refutation",
+      "category": "negative_result",
+      "rationale": "Removes an unsupported clause from a registered lemma; joint savings in the proper quotient must be measured there.",
+      "next_action": "None beyond the correction; the decisive test measures savings in the proper quotient.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "overrides": {
+    "lem:domain-model-stacked-rank": {
+      "assessment": "Working proof of the domain-model statement, passed by the sole fresh-context medium reviewer. Its final transfer clause (savings carry into Pang's proper quotient since B_D is inside C_D) is corrected by ex:support-saving-not-inherited: only the inequality stacked proper rank <= dim U|_S follows."
+    }
+  },
+  "relationships": [
+    [
+      "ex:support-saving-not-inherited",
+      "corrects",
+      "lem:domain-model-stacked-rank",
+      "Its last clause: the inclusion gives rank inequalities, not inherited savings."
+    ],
+    [
+      "ex:support-saving-not-inherited",
+      "cites",
+      "check:truncated-kernel-beyond-support",
+      "The saving figures come from that check."
+    ],
+    [
+      "lem:factor-ideal-domination",
+      "cites",
+      "lem:domain-model-stacked-rank",
+      "In the domain model its single generator recovers the union-of-supports kernel."
+    ],
+    [
+      "lem:factor-ideal-domination",
+      "cites",
+      "lem:two-input-kernel-enlargement",
+      "Explains the single-input killers of that lemma as one annihilator when the inputs' factor ideal is principal."
+    ],
+    [
+      "check:clique-factor-kernels",
+      "cites",
+      "lem:factor-ideal-domination",
+      "Instance of its pigeonhole case."
+    ],
+    [
+      "check:clique-factor-kernels",
+      "cites",
+      "check:truncated-kernel-beyond-support",
+      "Its part (A) re-reads that check's stacked kernel as one annihilator."
+    ]
+  ]
+}
