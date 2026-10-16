@@ -71,6 +71,11 @@ GUARDED = [
     (re.compile(INVOKED + r"notebook-append\.py\b(?![^|;&\n]*\s--help\b)"),
      "tools/notebook-append.py prints, for each queue item the next step names, its latest follow-up and its "
      "earlier entries"),
+    # 16 October 2026: "check_records.py --diff | tail -2 && git commit" committed a flagged commit hash, since a
+    # pipeline's status is its last command's and tail succeeds.  A gate before a commit keeps its exit status.
+    (re.compile(INVOKED + r"check_records\.py\b"),
+     "tools/check_records.py is a gate whose exit status a pipe replaces with the filter's (a finding would no "
+     "longer stop a following && git commit)"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")
