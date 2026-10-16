@@ -271,14 +271,16 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   object), and the trivial instance, if any, that would give each outcome; a question with a trivial
   answer is not given a block (the finisher checks presence). Then state `<strong>Power.</strong>`:
   what the recorded upper bounds and method limits give on the test's object, and for a computation
-  the reachable sizes and why its outcomes differ there (the finisher checks it). Say after
-  `<strong>Attempt.</strong>` what was tried, before posing the test, to answer it from the
-  statements it cites, and where that stopped: a test those statements answer in a few lines is a
-  lemma for the next entry, not a test. Apply this again when the reviewer supplies the missing
-  argument: rewrite the decision and next step as a lemma-first entry before finalization, rather
-  than retaining an unanswered test. The second-stage brief asks the reviewer to try the step at
-  which the Attempt stops, and the review's Verification gate says what it found after
-  `<strong>Attempt checked.</strong>` (the finisher checks).
+  the reachable sizes and why its outcomes differ there (the finisher checks it); work out for each
+  instance the operation names the outcome its Trivial cases and Power already fix, and drop an
+  instance they decide (twice on 16 October 2026 a review posed a test whose every instance its own
+  bounds decided, so it could not fail). Say after `<strong>Attempt.</strong>` what was tried,
+  before posing the test, to answer it from the statements it cites, and where that stopped: a test
+  those statements answer in a few lines is a lemma for the next entry, not a test. Apply this again
+  when the reviewer supplies the missing argument: rewrite the decision and next step as a
+  lemma-first entry before finalization, rather than retaining an unanswered test. The second-stage
+  brief asks the reviewer to try the step at which the Attempt stops, and the review's Verification
+  gate says what it found after `<strong>Attempt checked.</strong>` (the finisher checks).
 
 The next research cycle on that route reports the actual outcome in **Architecture test.**, opening
 with `<strong>Decided.</strong>` or `<strong>Not decided.</strong>` and which of the review's

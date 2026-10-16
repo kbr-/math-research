@@ -1,0 +1,577 @@
+{
+  "base_sha256": "843c8a34008a169809123b63ea86b46d198e03d1ada9d75d8f4194f865059f34",
+  "provenance": {
+    "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+    "date": "2026-10-16",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:transversal-killer-basis",
+        "summary": "Over any field, on the Boolean cube {0,1}^N, let U be an up-set with minimal sets M. The functions given by polynomials of degree <=d vanishing on U have the basis prod_{v in T}(1-x_v) over the transversals T of M (sets meeting every member) with |T|<=d; so their dimension is the number of such transversals and the least degree of a nonzero one is the transversal number tau(M). For a function p, the least degree of such an f with fp nonzero is the least size of a transversal avoiding some point of supp p (infinite if supp p lies in U). Hence for monomial errors c_j x_(A_j), among killers f with deg f+max|A_j|<=D, a common killer modulo the cube's degree-D vanishing ideal that keeps 1 alive exists exactly when tau({A_j})+max|A_j|<=D, of least degree tau({A_j}) (none for a constant error); for Pang's t=1 families over F2 with inputs exactly x_a, x_b and q=x_a+x_b it is the vertex-cover number of the input graph.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in a staged goal review; the degree window, the Gallai conditions and the relation to the greedy certificate are its corrections.",
+        "record": "[Goal review: transversal killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-transversal-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Gives the first surviving annihilator degree exactly in the cube's domain model for monomial supports, showing that there every killer is a combination of products of literal killers.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": "Test on the hole-respecting domain of the product pigeonhole system, in the inert range and at the top degree, against mixed transversals."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:greedy-transversal-certificate",
+        "summary": "In Braun's F2 setting, for M proper coordinate blocks each pinning at least r>l(k-1) bits, k>=1, with V=v under consistent pins and V=2v otherwise: if M prod_{i<t}(1-(r-l i)/V) <= k-t for some integer 0<=t<=k-1, a nonzero product of at most k affine forms x_b+c in distinct rows lies in L_k and has zero ordinary restriction to every flat. At t=0: any M<=k such blocks have a common kernel. Proof: t greedy literal choices by double counting, then one literal per remaining block in a fresh row. At l=16, D=107 (k=303, r=14593) it certifies ln M up to 7.14 (consistent pins) and 6.00 (general), against the summed count's 4.25 and the Harris certificate's 5.44.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in its second pass (double counting with V=v or 2v, the finishing step under r>l(k-1)); the comparison numbers are from baselines.json, eight computed rows.",
+        "record": "[Harris kernel certificate](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-harris-certificate)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "The elementary baseline for any claimed joint saving in Braun's common-kernel step on coordinate families; beats the exact summed count at moderate k.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": "Use as the comparison baseline; restate the review's non-domination requirement, which the t=0 case meets."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Small-inventory coordinate exclusion: new relationship with thm:small-inventory-coordinate-exclusion. All-prime small-inventory exclusion: new relationship with cor:all-prime-small-inventory-exclusion. Goal review: transversal killers: new relationship with lem:transversal-killer-basis.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-harris-certificate"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:domain-model-stacked-rank",
+        "summary": "Over any field F, for a finite set X in F^n, B_D the polynomials of degree <=D vanishing on X, U=V_K/(B_D cap V_K) and errors E_1..E_s of degree <=e with K+e<=D: the map u->[E_j u] in V_D/B_D has rank dim U|_{S_j}, S_j the support of E_j on X, and the stacked map has rank dim U|_S, S the union of the supports; the restriction U|_S -> direct sum of U|_{S_j} is injective, so the sum of ranks exceeds the stacked rank by its cokernel dimension. With X the Boolean cube over F_p this is the domain-only model of cor:pang-observation-calibration at Pang's cutoff Delta+K+d<=D, where every saving over the sum is a union-of-supports interpolation count; such savings carry into Pang's proper quotient since B_D is inside C_D.",
+        "assessment": "Working proof of the domain-model statement, passed by the sole fresh-context medium reviewer. Its final transfer clause (savings carry into Pang's proper quotient since B_D is inside C_D) is corrected by ex:support-saving-not-inherited: only the inequality stacked proper rank <= dim U|_S follows.",
+        "record": "[Pang contraction joint count](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-pang-contraction-count)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Fixes what a joint saving in Pang's contraction must use beyond the domain relations: degree truncation or nilpotence of the proper quotient.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": "Compare stacked rank with the domain-only count in a degree-truncated quotient of a small unsatisfiable system."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Truncated quotient kernels: new relationship with lem:two-input-kernel-enlargement. Joint-savings goal review: new relationship with ex:support-saving-not-inherited, lem:factor-ideal-domination. Idempotent common denominators: new relationship with lem:idempotent-common-denominator. Hole-occupancy kernels: new relationship with cor:hole-occupancy-kernels. Goal review: transversal killers: new relationship with lem:transversal-killer-basis.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-pang-contraction-count"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pang-family-killer",
+        "summary": "Over F_p, let C be a degree-D pseudoideal containing x^2-x for every variable. If deg q<=d, P=(1-q^(p-1))R and deg h+deg P+(p-1)d<=D, then q^(p-1)Ph lies in C. So for a Pang family with t>=1 choices q_j of degree <=d, P=prod_j(1-q_j^(p-1)), Delta=(p-1)dt and errors P g_i (deg g_i<=d), every q_j^(p-1) kills every error when (p-1)d+Delta+d<=D; for S families and any choice per family, the product of these Fermat killers, of degree <=S(p-1)d, kills every error when S(p-1)d+Delta+d<=D, and in the cube's vanishing ideal survives exactly when some cube point has every chosen q nonzero. Its degree bound S(p-1)d is below Pang's multiplier degree K exactly when S<K/((p-1)d), and it is not shown to survive in Pang's proper closure.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the general form, the comparison against Pang's multiplier degree K and the withdrawn sublinearity conclusion are its corrections.",
+        "record": "[Family killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-family-killer)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Measures the Fermat product construction on Pang's errors against Pang's multiplier; useful only for few families, with survival open in Pang's closure.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": "Prove the reviewer's disjoint-block lower bound for every surviving common killer in the vanishing-ideal model."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Goal review: transversal killers: new relationship with lem:transversal-killer-basis.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-family-killer"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:hole-occupancy-kernels",
+        "summary": "Over any field, for the product pigeonhole system (m pigeons, n>=1 holes, multilinear ring) at degree D<=n and errors E_j of degree <=e, in the inert range (K+e<=D<n, or K+e<=n-1 at D=n): restriction to the set Y of hole-respecting assignments identifies V_K/(C cap V_K) with V_K|_Y, the common kernel with the zero set of restriction to the union S of the supports on Y, and the stacked rank with dim V_K|_S. If S = A x (all states of the other n-t holes), dim V_K|_S = sum_{s<=K} binom(n-t,s) m^s d_A(K-s), d_A(a)=dim V_a|_A; a monomial on e distinct holes has kernel dimension sum_{k<=K}[binom(n,k)-binom(n-e,k)] m^k, and the common kernel of x_(i,0), i in a set of size sigma, at K=1 has dimension m+1-sigma. At D=n, c of degree <=n lies in C iff c|_Y is in the span P_Y of the unplaced-pigeon indicators; for K+e<=n and K<=n-1 the stacked rank lies between dim V_K|_S - sum_j dim P_Y^{S_j} and dim V_K|_S.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the exact inert range and the top-degree part are its corrections.",
+        "record": "[Hole-occupancy kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-hole-occupancy-kernels)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "In the inert range the product pigeonhole system shows only union-of-supports savings; the top degree, where the record's non-inheritance example lives, is reduced to the unplaced-pigeon span.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": "Test the top-degree description against check:truncated-kernel-beyond-support."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Goal review: transversal killers: new relationship with lem:transversal-killer-basis.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-hole-occupancy-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:independent-affine-common-kernel",
+        "summary": "Jointly independent affine input groups have a common Boolean vanishing basis of monomials meeting every group; first nonzero degree equals the number of groups",
+        "assessment": "Working exact filtered-coordinate calculation and integer Hilbert series; pairwise independence does not suffice",
+        "record": "[Proof and dependent control](https://kbr-.github.io/math-research/#affine-independent-common-kernel)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "no_record",
+          "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere.",
+          "references": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Common-kernel bases require joint independence; pairwise independence alone is insufficient.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#affine-independent-common-kernel"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Recorded assessment and compact source qualifications reviewed; original wording, corrections and restricted scopes retained. No new proof or novelty verification.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#affine-independent-common-kernel"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Mechanical explicit-mapping census only; no inference from mathematical implication or proof nonexistence.",
+          "targets": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Recorded assessment and compact source qualifications reviewed; original wording, corrections and restricted scopes retained. No new proof or novelty verification.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#affine-independent-common-kernel"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Recorded assessment and compact source qualifications reviewed; original wording, corrections and restricted scopes retained. No new proof or novelty verification.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#affine-independent-common-kernel"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Added scoped gluing or residual-design application; existing conclusions and hypotheses are unchanged. Increment count and kernel-count tightness: new relationship with prop:common-kernel-ceiling. Goal review: transversal killers: new relationship with lem:transversal-killer-basis.",
+          "targets": [
+            "https://kbr-.github.io/math-research/#affine-independent-common-kernel",
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-semiregularity-source-audit",
+            "https://kbr.is-a.dev/math-research/#entry-2026-09-20-affine-gluing-test"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:transversal-killer-basis::cites::lem:greedy-transversal-certificate",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:transversal-killer-basis",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:greedy-transversal-certificate",
+        "locator": null
+      },
+      "scope": "Its product of literals is the upper-bound construction; this lemma shows it is exact in the cube's domain model.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its product of literals is the upper-bound construction; this lemma shows it is exact in the cube's domain model."
+      }
+    },
+    {
+      "id": "lem:transversal-killer-basis::cites::lem:domain-model-stacked-rank",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:transversal-killer-basis",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:domain-model-stacked-rank",
+        "locator": null
+      },
+      "scope": "The same restriction-map view on the cube.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The same restriction-map view on the cube."
+      }
+    },
+    {
+      "id": "lem:transversal-killer-basis::cites::lem:pang-family-killer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:transversal-killer-basis",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pang-family-killer",
+        "locator": null
+      },
+      "scope": "Compares with the Fermat product construction for Pang's families.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Compares with the Fermat product construction for Pang's families."
+      }
+    },
+    {
+      "id": "lem:transversal-killer-basis::cites::cor:hole-occupancy-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:transversal-killer-basis",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:hole-occupancy-kernels",
+        "locator": null
+      },
+      "scope": "The decisive test's domain.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The decisive test's domain."
+      }
+    },
+    {
+      "id": "lem:transversal-killer-basis::refines::prop:independent-affine-common-kernel",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "lem:transversal-killer-basis",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:independent-affine-common-kernel",
+        "locator": null
+      },
+      "scope": "Its disjoint groups are the case of disjoint minimal sets, after its affine change of coordinates; this lemma allows overlapping minimal sets.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-transversal-review"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1d9c380ea004f3d7993c8bdb69e31fcd92d63f88",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its disjoint groups are the case of disjoint minimal sets, after its affine change of coordinates; this lemma allows overlapping minimal sets."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
