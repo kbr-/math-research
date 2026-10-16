@@ -259,7 +259,10 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   measured in the same quotient and whether relative contraction could replace absolute smallness.
   Otherwise state why this question does not apply.
 - **Decision.** Choose the weakened endpoint or competing architecture to test, or justify retaining
-  the current one against the comparison.
+  the current one against the comparison. A decision that moves cycles away from an order the user
+  set for the goal's statements says so in the notebook's Route decisions and in the next report to
+  the user, as the agent's decision the user may reverse (16 October 2026: a review switched
+  priorities by its own rule and the user had to ask).
 - **Decisive test.** Name the next cycle's concrete test and the outcomes that would change the
   required implication or the chosen route. State **Test disposition.** New operation or Retained
   exploratory. A new operation states **Operation.** and **Prediction.**: the actual operation or
