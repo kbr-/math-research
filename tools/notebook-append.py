@@ -318,21 +318,28 @@ def refuse_excluded_item(source, next_html):
     tags = [t for t in re.findall(r'<article\b[^>]*>', source) if 'data-kind="research"' in t]
     if not tags:
         return
-    route = re.search(r'data-route="([^"]+)"', tags[-1])
-    last = [t for t in tags if route and f'data-route="{route.group(1)}"' in t][-2:]
-    taken = [re.search(r'data-(check|lead|bridge|idea|build)="([^"]+)"', t) for t in last]
-    if len(last) < 2 or not all(taken) or taken[0].groups() != taken[1].groups():
+    # Each named item on its own route: on 16 October 2026 a next step written in an entry of another route
+    # named an item whose route had just had two such entries, and the check, reading the route of the last
+    # entry, passed it; the finisher refused the entry that developed it.
+    excluded = []
+    for full in sorted({ident.full for ident, *_ in items}):
+        kind, _, ident = full.partition(':')
+        mark = f'data-{kind}="{ident}"'
+        mine = [t for t in tags if mark in t]
+        route = re.search(r'data-route="([^"]+)"', mine[-1]) if mine else None
+        if route is None:
+            continue
+        last = [t for t in tags if f'data-route="{route.group(1)}"' in t][-2:]
+        if len(last) == 2 and all(mark in t and 'data-bearing="none"' in t for t in last):
+            excluded.append((full, ident))
+    if not excluded:
         return
-    if not all('data-bearing="none"' in t for t in last):
-        return
-    # by kind and identifier: a bridge sharing the excluded lead's identifier is a different item
-    excluded, named = taken[0].group(2), {ident.full for ident, *_ in items}
-    if named == {':'.join(taken[0].groups())}:
-        raise ValueError(f'the next step takes {excluded}, whose last two entries declared no bearing: the '
+    if len(excluded) == len({ident.full for ident, *_ in items}):
+        raise ValueError(f'the next step takes {excluded[0][1]}, whose last two entries declared no bearing: the '
                          'finisher will refuse a third in a row, so name the different item the next entry '
                          'develops (AGENTS.md, goal progress)')
-    if ':'.join(taken[0].groups()) in named:
-        print(f'Note: {excluded} had two entries in a row without bearing; the next entry must develop '
+    for _full, ident in excluded:
+        print(f'Note: {ident} had two entries in a row without bearing; the next entry must develop '
               'another of the items this step names.', file=sys.stderr)
 
 

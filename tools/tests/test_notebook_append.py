@@ -180,6 +180,10 @@ class NextStepItemTests(unittest.TestCase):
         tool.refuse_excluded_item(twice + tagged('a3', 'item-1', 'some'), '<p>Develop item-1 again.</p>')
         tool.refuse_excluded_item(twice + tagged('a3', 'item-0', 'none'), '<p>Develop item-1 again.</p>')
         tool.refuse_excluded_item(twice, '<p>Develop item-1 again.</p>')                    # one entry only
+        # 16 October 2026: the last entry is on another route; the item is judged on its own route.
+        other = '<article id="a4" data-kind="research" data-route="y" data-check="item-0" data-bearing="none">t</article>'
+        with self.assertRaisesRegex(ValueError, 'last two entries declared no bearing'):
+            tool.refuse_excluded_item(both + other, '<p>Develop item-1 again.</p>')
 
     def test_a_next_step_planning_no_bearing_in_such_a_run_is_refused_unless_it_closes(self):
         def tagged(anchor, bearing):
