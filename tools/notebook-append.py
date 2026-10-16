@@ -21,6 +21,8 @@ It also refuses, before anything is written:
   its latest follow-up, to write the description against;
 - a next step that names a queued item by its identifier, when the item has a latest follow-up, without
   quoting eight consecutive words of that follow-up or of the item's queued text;
+- a passage of eight or more words that such a next step puts in quotation marks and that is not in the
+  latest follow-up or queued text of any item it names;
 - a next-step section wrapper or retained heading, and an invalid living-section structure in the
   proposed notebook (the same parser used by the context-budget check).
 After these, a branch's own tools/append_checks.py, where it has one, is asked: its
@@ -133,9 +135,13 @@ def named_items(source, next_html):
 
 
 def mentioned(ident, text):
-    """Whether `text` names the queue identifier, bare or as KIND:IDENTIFIER, and not as part of a longer one."""
+    """Whether `text` names the queue identifier, bare or as KIND:IDENTIFIER, and not as part of a longer one.
+
+    A colon after it continues a longer identifier only when a word follows: "item:s1: the check" names item:s1
+    (on 16 October 2026 such a step's quotation of the item was checked against other items only)."""
     import lead_queue
-    return re.search(r'(?<![\w:#-])(?:(?:' + lead_queue.NAMES + r'):)?' + re.escape(ident) + r'(?![\w:-])', text)
+    return re.search(r'(?<![\w:#-])(?:(?:' + lead_queue.NAMES + r'):)?' + re.escape(ident) + r'(?![\w-]|:[\w-])',
+                     text)
 
 
 class Named(str):
@@ -200,6 +206,37 @@ def require_quoted_items(source, next_html):
                              f'(#{anchor}) nor its queued text: quote at least {QUOTED_WORDS} consecutive words '
                              'of one of them, so that what the item asks is written from its own words '
                              f'(tools/lead_queue.py history NOTEBOOK {ident.label} --status)')
+    refuse_stale_quotations(source, next_html)
+
+
+QUOTATION = re.compile(r'“([^”]*)”|"([^"]*)"')
+
+
+def contains_words(source, passage):
+    """Whether the words of `passage` occur consecutively in `source`."""
+    have, want = words(source), words(passage)
+    return bool(want) and any(have[i:i + len(want)] == want for i in range(len(have) - len(want) + 1))
+
+
+def refuse_stale_quotations(source, next_html):
+    """Every passage of QUOTED_WORDS or more words that a next step naming queued items puts in quotation marks
+    occurs in one of those items' latest follow-up or queued text.
+
+    On 16 October 2026 a next step quoted the next attempt of an entry draft whose follow-up the review had since
+    rewritten; it passed the eight-word check through a phrase common to both versions ("the item's last turn
+    before its spell boundary") and was patched by hand after the append.  A quotation is the step's claim about
+    what the item now says, so it is held to the current words."""
+    named = named_items(source, next_html) or []
+    sources = [part for _, text, _, follow in named for part in (follow, text) if part]
+    if not sources:
+        return
+    for match in QUOTATION.finditer(plain(next_html)):
+        passage = match.group(1) if match.group(1) is not None else match.group(2)
+        if len(words(passage)) >= QUOTED_WORDS and not any(contains_words(part, passage) for part in sources):
+            labels = ', '.join(ident.label if hasattr(ident, 'label') else str(ident) for ident, *_ in named)
+            raise ValueError(f'the next step quotes “{passage.strip()}”, which is not in the latest follow-up or '
+                             f'queued text of the item it names ({labels}): quote the current words, or drop the '
+                             'quotation marks if the passage is not a quotation of the item')
 
 
 def review_due(articles):

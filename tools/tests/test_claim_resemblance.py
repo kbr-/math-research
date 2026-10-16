@@ -74,6 +74,32 @@ class ResemblanceTest(unittest.TestCase):
         self.assertRegex(out.getvalue(), r'ex:new-degrees ~ queued entry-a:s1')
         self.assertNotIn('entry-a:s2:', out.getvalue())
 
+    def test_a_working_context_sentence_the_claim_restates_comes_first(self):
+        notebook = ('<section id="working-context"><h2>Working</h2><p><a href="#sparse">Sparse weights</a> give '
+                    '\\(h_w(K)\\ge h(K)/s\\). Copied sources keep their certificates at logarithmic depth. '
+                    'Norms pay orbit size.</p></section>')
+        sentences = tool.context_sentences(notebook)
+        self.assertEqual([link for _, link in sentences], ['#sparse', '', ''])
+        spec = {'claims': [{'id': 'prop:x', 'summary': 'A weight supported on one class keeps the weighted rank; '
+                            'sparse combinations of s classes keep a 1/s share.', 'assessment': 'Working proof.'}]}
+        [(ident, rows)] = tool.context_matches(sentences, spec)
+        self.assertEqual(ident, 'prop:x')
+        self.assertTrue(rows[0][1].startswith('Sparse weights give'))
+        self.assertGreater(rows[0][0], rows[1][0])
+        self.assertEqual(tool.context_sentences('<p>No context section.</p>'), [])
+        with tempfile.TemporaryDirectory() as folder:
+            registry = pathlib.Path(folder) / 'index.json'
+            registry.write_text(json.dumps({'claims': REGISTERED}))
+            path = pathlib.Path(folder) / 'spec.json'
+            path.write_text(json.dumps(spec))
+            page = pathlib.Path(folder) / 'notebook.html'
+            page.write_text(notebook)
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                tool.main([str(path), '--registry', str(registry), '--notebook', str(page)])
+        self.assertIn('nearest Working mathematical context sentences', out.getvalue())
+        self.assertIn('[#sparse]', out.getvalue())
+
     def test_a_run_is_logged_with_the_claims_it_compared(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / 'logs/claim-searches.jsonl'

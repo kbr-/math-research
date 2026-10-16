@@ -11,9 +11,12 @@ entry's claim of novelty.
 
 Usage: claim_resemblance.py SPEC.json [--count N] [--registry PATH]
 The spec is the compact form `claim-index.py author build` takes (a "claims" list with "id" and "summary").
-Prints the registry's size, which the work grows with.
+It also prints, per claim, the three Working mathematical context sentences of the notebook whose words the
+claim most contains. Prints the registry's size, which the work grows with.
 """
 import argparse
+import math
+import re
 import json
 import pathlib
 import sys
@@ -75,6 +78,57 @@ def queued_matches(nodes, spec, threshold=QUEUED_AT):
     return sorted(out, reverse=True)
 
 
+CONTEXT_SHOWN = 3   # Working-context sentences printed per claim
+CONTEXT_STOP = set('with that this from which their have each when only does into than then them they also must over '
+                   'under were what where while about after before other these those such'.split())
+
+
+def _stems(text):
+    """Five-letter prefixes of the words of four or more letters, without markup and inline formulas: weights,
+    weighted and weight share one."""
+    text = re.sub(r'\\\(.*?\\\)', ' ', re.sub(r'<[^>]+>', ' ', text))
+    return {w[:5] for w in re.findall(r'[a-z]{4,}', text.lower()) if w not in CONTEXT_STOP}
+
+
+def context_sentences(notebook_text):
+    """[(sentence html, first link href or ''), ...] of the notebook's Working mathematical context section."""
+    found = re.search(r'<section id="working-context">(.*?)</section>', notebook_text, re.S)
+    if not found:
+        return []
+    body = ' '.join(re.sub(r'<h[1-6][^>]*>.*?</h[1-6]>', ' ', found.group(1), flags=re.S).split())
+    out = []
+    for sentence in re.split(r'(?<=[.;])\s+(?=[A-Z<])', body):
+        link = re.search(r'href="([^"]+)"', sentence)
+        out.append((sentence, link.group(1) if link else ''))
+    return [(s, link) for s, link in out if len(_stems(s)) >= 2]
+
+
+def context_matches(sentences, spec, count=CONTEXT_SHOWN):
+    """[(draft id, [(share, sentence text, link), ...]), ...]: the living context sentences most of whose words,
+    weighted by inverse frequency among the sentences, a draft claim's summary and assessment contain.
+
+    The character error thin-tail spec of 16 October 2026 scored 0.21 or less against every registered claim
+    while the Working context already said "Sparse weights give h_w(K) >= h(K)/s", the result its first two parts
+    restate; measured on the context of that day, this share ranks that sentence first, at 0.62."""
+    frequency = {}
+    for sentence, _ in sentences:
+        for stem in _stems(sentence):
+            frequency[stem] = frequency.get(stem, 0) + 1
+    weight = {stem: math.log(1 + len(sentences) / seen) for stem, seen in frequency.items()}
+    out = []
+    for claim in spec.get('claims', []):
+        mine = _stems(claim.get('summary', '') + ' ' + claim.get('assessment', ''))
+        scored = []
+        for sentence, link in sentences:
+            stems = _stems(sentence)
+            total = sum(weight[s] for s in stems)
+            share = sum(weight[s] for s in stems & mine) / total if total else 0.0
+            text = ' '.join(re.sub(r'<[^>]+>', ' ', sentence).split())
+            scored.append((round(share, 2), text, link))
+        out.append((claim['id'], sorted(scored, key=lambda row: -row[0])[:count]))
+    return out
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('spec')
@@ -102,7 +156,13 @@ def main(argv=None):
         else:
             import notebooks
             notebook = ROOT / notebooks.selected()['source']
-        found = lead_queue.parse_tree(notebook.read_text())
+        text = notebook.read_text()
+        for ident, rows in context_matches(context_sentences(text), spec):
+            print(f'{ident}: nearest Working mathematical context sentences (read each; a result stated there is '
+                  'not new):')
+            for share, sentence, link in rows:
+                print(f'  {share:.2f} {sentence[:200]}' + (f' [{link}]' if link else ''))
+        found = lead_queue.parse_tree(text)
         nodes = found[1] if found else []
         count = sum(1 + len(n.children) for n in nodes)
         matches = queued_matches(nodes, spec)

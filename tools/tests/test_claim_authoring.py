@@ -189,6 +189,29 @@ class BuildTest(unittest.TestCase):
         proposed, report = prepare(self.empty, request, self.root)
         self.assertTrue(report['passed'])
         self.assertEqual([c['id'] for c in proposed['claims']], ['lem:a'])
+    def test_entry_statements_are_shown_beside_summaries_and_a_newer_notebook_is_reported(self):
+        import os
+        from claim_authoring import statement_drift, source_notebook
+        (self.root / 'notebook.html').write_text(
+            '<article id="entry-b"><p><strong>Lemma.</strong> Every level \\(j\\) has \\(b_j\\ge\\binom{R-1}j\\).</p>'
+            '\\[x\\]<p>Proof.</p></article>')
+        spec = self.spec([self.item('lem:b')])
+        spec['source']['targets'] = ['https://example.org/math-research/#entry-b']
+        path = self.root / 'spec.json'; path.write_text(json.dumps(spec))
+        os.utime(path, (1, 1))                                       # the spec is older than the notebook
+        lines, newer = statement_drift(spec, path, self.root)
+        self.assertTrue(newer)
+        self.assertIn('lem:b: registered summary: Scoped fixture claim lem:b', lines[0])
+        self.assertIn('Every level \\(j\\) has \\(b_j\\ge\\binom{R-1}j\\).', lines[1])
+        self.assertIn('\\[x\\]', lines[1])                           # a display following the statement is kept
+        os.utime(path, None); os.utime(self.root / 'notebook.html', (1, 1))
+        self.assertFalse(statement_drift(spec, path, self.root)[1])
+        spec['source']['targets'] = ['https://example.org/math-research/#entry-missing']
+        self.assertIn('not yet in notebook.html', statement_drift(spec, path, self.root)[0][0])
+        self.assertEqual(source_notebook('https://e.org/math-research/branches/side-x/#a1', self.root),
+                         (self.root / 'research/branches/side-x/notebook.html', 'a1'))
+        self.assertEqual(source_notebook('source.md', self.root), (None, None))
+
     def test_touched_existing_claim_is_refreshed_automatically(self):
         from claim_authoring import build
         base, _ = prepare(self.empty, self.request(self.empty), self.root)

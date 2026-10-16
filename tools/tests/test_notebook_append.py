@@ -69,6 +69,8 @@ class NextStepItemTests(unittest.TestCase):
         self.assertEqual(tool.named_items(source, '<p>After <a href="#a2">the last entry</a>.</p>'),
                          [('item-1', 'Does the bound hold at width 1?', 'a2', 'Continuing: the width-one case next.')])
         self.assertEqual(tool.named_items(source, '<p>Something else, not item-10.</p>'), [])
+        self.assertEqual(len(tool.named_items(source, '<p>Develop item-0: the width check.</p>')), 1)
+        self.assertEqual(tool.named_items(source, '<p>Not item-0:x1, a longer identifier.</p>'), [])
         self.assertIsNone(tool.named_items(NOTEBOOK, '<p>item-0</p>'))
         twice = source.replace('<article id="a1">', '<article id="a1" data-check="item-1"><h3>First look</h3>')
         self.assertEqual([anchor for anchor, _ in tool.item_history(twice, 'item-1')][0], 'a1')
@@ -131,6 +133,13 @@ class NextStepItemTests(unittest.TestCase):
         tool.append(longer, entry, '<p>On item-1, which asks whether the bound "hold at width one for every '
                     'large size".</p>')                                # eight words of the queued text
         tool.append(source, entry, '<p>Develop item-0, never developed, in any words.</p>')
+        # a quotation must be of the current words: a passage from a superseded draft is refused even when an
+        # eight-word run shared by both versions satisfies the quotation requirement
+        with self.assertRaisesRegex(ValueError, 'not in the latest follow-up'):
+            tool.append(source, entry, '<p>Develop item-1, to compute the degree of the paired class at thirty-two '
+                        'holes, that is “the width-two case where the bound is no longer polynomial at all”.</p>')
+        tool.append(source, entry, '<p>Develop item-1, to “compute the degree of the paired class at thirty-two '
+                    'holes and more”, then “a short aside”.</p>')       # short quotations are not checked
         tool.append(source, entry, '<p>After <a href="#a2">the last entry</a>, something else.</p>')   # by link only
         self.assertTrue(tool.quotes('a b c d e f g h i', 'x a, b c d e f g h. y'))
         self.assertFalse(tool.quotes('a b c d e f g', 'a b c d e f g h'))

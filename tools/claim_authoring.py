@@ -252,6 +252,56 @@ def build(data, spec, revision):
             'relationships': relationships, 'topic_definitions': []}
 
 
+STATEMENT = re.compile(r'<p><strong>(?:Lemma|Theorem|Corollary|Proposition|Statement|Claim|Conjecture)\b[^<]*'
+                       r'</strong>.*?</p>(?:\s*\\\[.*?\\\])?', re.S)
+SHOWN = 700     # characters of an entry statement shown beside a summary
+
+
+def _plain(fragment):
+    return ' '.join(re.sub(r'<[^>]+>', ' ', fragment).replace('&lt;', '<').replace('&gt;', '>')
+                    .replace('&amp;', '&').split())
+
+
+def source_notebook(target, root=ROOT):
+    """The notebook file and anchor a spec target URL points at: the main notebook, or a side notebook under
+    research/branches/NAME/ for a .../branches/NAME/#anchor link."""
+    if '#' not in target:
+        return None, None
+    page, anchor = target.split('#', 1)
+    side = re.search(r'/branches/([\w.-]+)/?$', page)
+    return (root / 'research/branches' / side.group(1) / 'notebook.html' if side else root / 'notebook.html'), anchor
+
+
+def statement_drift(spec, spec_path, root=ROOT):
+    """Lines that show each new claim's summary beside its source entry's statement paragraphs, and whether the
+    entry's notebook changed after the spec was last edited.
+
+    On 16 October 2026 the error cube floor was registered from its pre-review spec: the entry had been
+    corrected after review, the spec had not, and the registered summary denied the level-wise floor the
+    reviewed entry proves.  Showing the two side by side, and asking for --summaries-checked when the notebook
+    is newer than the spec, makes the comparison part of registration."""
+    lines, newer = [], False
+    targets = spec.get('source', {}).get('targets', [])
+    for target in targets:
+        path, anchor = source_notebook(target, root)
+        if path is None or not path.exists():
+            continue
+        text = path.read_text(encoding='utf-8')
+        start = text.find(f'<article id="{anchor}"')
+        if start < 0:
+            lines.append(f'Entry #{anchor} is not yet in {path.relative_to(root)}; its statements were not compared.')
+            continue
+        article = text[start:text.find('</article>', start)]
+        statements = [_plain(m.group(0)) for m in STATEMENT.finditer(article)]
+        if spec_path is not None and path.stat().st_mtime > Path(spec_path).stat().st_mtime:
+            newer = True
+        for item in spec.get('claims', []):
+            lines.append(f'{item.get("id")}: registered summary: {item.get("summary", "")[:SHOWN]}')
+            for statement in statements or ['(no Lemma, Theorem, Corollary, Proposition or Statement paragraph)']:
+                lines.append(f'  entry #{anchor}: {statement[:SHOWN]}' + (' …' if len(statement) > SHOWN else ''))
+    return lines, newer
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--registry', type=Path, default=REGISTRY)
@@ -269,6 +319,8 @@ def main():
     spec.add_argument('--revision', help='source revision (default: git HEAD)')
     spec.add_argument('--proposal', type=Path, help='also run prepare and write the proposed registry here')
     spec.add_argument('--report', type=Path, help='prepare report (required with --proposal)')
+    spec.add_argument('--summaries-checked', action='store_true',
+                      help='the summaries were compared with the entry statements printed beside them')
     args = parser.parse_args()
     destinations = [args.out] + ([args.report] if args.mode == 'prepare' else [])
     if args.mode == 'build' and args.proposal:
@@ -284,7 +336,13 @@ def main():
     elif args.mode == 'build':
         import subprocess
         revision = args.revision or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-        request = build(data, read_json(args.spec), revision)
+        compact = read_json(args.spec)
+        lines, newer = statement_drift(compact, args.spec)
+        print('\n'.join(lines))
+        require(not (newer and args.proposal and not args.summaries_checked),
+                'The source notebook changed after the spec was last edited: compare each summary above with the '
+                'entry statements beside it, correct the spec if they differ, then rerun with --summaries-checked')
+        request = build(data, compact, revision)
         write_json(args.out, request)
         if args.proposal:
             proposed, report = prepare(data, request)
