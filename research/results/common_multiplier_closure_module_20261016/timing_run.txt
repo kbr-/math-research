@@ -1,0 +1,11 @@
+# command: python3 -c 
+import sys,time; sys.path.insert(0,'tools'); sys.path.insert(0,'tools/tests')
+import pc_closure as pc
+from test_pc_closure import php
+for m,D in ((4,3),(5,3),(5,4)):
+    a,n=php(m,m-1); t=time.time(); c=pc.Closure(a,n,D); print(m,D,'monomials',len(c.monos),'dim',c.dim,'proper',c.proper,'%.1fs'%(time.time()-t),flush=True)
+
+# run c275a87f5a, session closure-module; full output
+4 3 monomials 299 dim 178 proper True 0.0s
+5 3 monomials 1351 dim 680 proper True 0.1s
+5 4 monomials 6196 dim 4905 proper True 13.2s

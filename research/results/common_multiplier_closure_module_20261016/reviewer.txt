@@ -1,0 +1,25 @@
+Review record: PC closure module (16 October 2026)
+Reviewer: sole fresh-context medium-reviewer subagent (Claude Code), medium reasoning; one pass,
+read-only, code read without running.
+
+Verdict: pass with corrections. Correct: degree-descending monomial order with lowest set bit as
+leading monomial; fully reduced echelon basis (new pivot cleared from older rows); members of degree
+below D are the span of rows with low pivots; final loop pass adds nothing, so the closure is closed
+and minimal; D=0, properness, dropping axioms above D; comparison with truncated_buchberger valid.
+
+Required: docstring wrongly said tests compare with f2_closure_degree.cpp; Measured timings and
+dimensions (680, 4905, 13.2 s) had no cited saved output; the C++ tool shares the algorithm, so its
+agreement checks the implementation, not the convention; the six random systems may all be
+unrefuted (record degrees or assert a refuted one); the multiplication half of the canonical test is
+near-tautological; out-of-range variables raise KeyError, not ValueError; cross_check.py imports a
+test module (minor). Item closure: C++ comparison is in a provenance run, not the tests; say so.
+
+Suggestion (unverified): multiply only new rows (pending queue) and keep pivots sorted to speed up.
+
+Process audit: title accurate; prevention not written as a rule; gate quotes agreement without
+degrees and counts the C++ agreement as separate confirmation; Bearing lacks a claim ID.
+
+Author resolution: all required changes made (random seed 3 width-2 clause systems with an assertion
+that refuted and unrefuted cases occur; multiplication half removed; ValueError for out-of-range
+variables; docstring corrected; timing_run.txt saved; entry wording; COMPUTATION_RULES.md rule). The
+test-module import in cross_check.py is kept: it is a finished provenance script.
