@@ -1,0 +1,31 @@
+Fresh-context medium reviewer, review of entry-2026-10-16-composite-modulus-simulation (16 October 2026)
+
+Verdict: pass with corrections. Rechecked: a_i = 1 - t(A_i) is the truth value; M_r is the MOD indicator;
+q^(-1) = 1 in characteristic 2; M_r(a_1,a') = M_r(a') + a_1(M_(r-1)(a') - M_r(a')) as polynomials; the
+premises of MOD-Left and MOD-Right sum exactly to their conclusions and both rules are sound, reducing to
+GP's parity rules at q = 2; the per-factor identity, telescoping, q pairs per l, the trace step and the
+Nonvacuity values at (1,1,1) and (1,0,0) over F_4 are correct. No unused hypotheses.
+
+Required changes (all adopted):
+- GP's parity translation n - sum t(A_i) vanishes on falsity; use the record's corrected odd-parity
+  translation (thm:shallow-noncommutative-sequent-simulation) and cite it.
+- State the size recursion for the A -> A derivation.
+- Degenerate cases: the bound q^(O(d)) is stated for every d and is superpolynomial once d log q =
+  omega(log s).
+- Corollary: carry the quantifiers of cor:placeholder-linear-extension-barrier; k up to ord_q 2 <= q-1,
+  so |E| can be exponential, which (ii) allows.
+- "Composite modulus" overstates: covered are MOD_2 with odd moduli (and 2q by rewriting), not MOD_4.
+- Architecture test: judged against a wrong excerpt in the brief (an older review's test); see below.
+- Bearing: a failed proof attempt would not show the route open; scope to the class of all certificates.
+- Commit message: unsourced block count; scope.
+- Process assessment: cite where the identities came from.
+
+Open point: dag-like proofs via the record's ordered prefix products (thm:shallow-noncommutative-sequent-
+simulation) look easiest for MOD steps, which are pure concatenations; or a Krajicek-style tree-like
+conversion (not read). p-equivalence with standard presentations via the Cook-Reckhow argument is folklore
+here: label it an untested hypothesis.
+
+Follow-up check: with this review's own decisive test (cut by anchor), "Decided, first outcome" is justified
+in the scoped form. All corrections applied; one remaining: the size recursion must sum over disjoint
+subformulas and pay the multiplier per child term: T(A) <= q^2 sum_i T(A_i), S(A) <= q^2 sum_i (S(A_i) +
+T(A_i) O(|t(A)|)). Adopted. Title and status supported; suggested naming tree-like in the title (done).
