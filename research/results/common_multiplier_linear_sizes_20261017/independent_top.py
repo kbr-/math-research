@@ -72,12 +72,17 @@ class Elim:
         return x
 
     def reduce(self, x):
+        """The canonical remainder: every pivot bit cleared. (The first run returned at the first non-pivot top
+        bit, a non-canonical remainder, and gave negative excesses; independent_top_run1.json.)"""
+        r = 0
         while x:
             h = x.bit_length() - 1
-            if h not in self.piv:
-                return x
-            x ^= self.piv[h]
-        return 0
+            if h in self.piv:
+                x ^= self.piv[h]
+            else:
+                r |= 1 << h
+                x ^= 1 << h
+        return r
 
     def add(self, x):
         x = self.reduce(x)
