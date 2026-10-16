@@ -1,0 +1,37 @@
++ git checkout HEAD -- research/claims/index.json research/CLAIM_INDEX.md
++ /usr/bin/python3 /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim-index.py author build --spec research/results/common_multiplier_transfer_test_20261016/claim-spec.json --out research/results/common_multiplier_transfer_test_20261016/claim-request.json --proposal /home/kbr/.claude/jobs/354c41d4/tmp/index-proposed7.json --report research/results/common_multiplier_transfer_test_20261016/proposal-check.json --summaries-checked
+Entry #entry-2026-10-16-transfer-test is not yet in notebook.html; its statements were not compared.
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_authoring.py", line 365, in <module>
+    main()
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_authoring.py", line 354, in main
+    proposed, report = prepare(data, request)
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_authoring.py", line 142, in prepare
+    claim['reviews'][field] = make_review(after, claim, field, disposition['targets'],
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_reviews.py", line 202, in make_review
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_reviews.py", line 202, in <listcomp>
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_reviews.py", line 167, in snapshot
+    self.sha256(target)  # Load and validate the raw excerpt first.
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_reviews.py", line 151, in sha256
+    content = self.excerpt(path, anchor).encode()
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_reviews.py", line 138, in excerpt
+    return parsed.excerpt(anchor)
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/notebook-excerpt.py", line 171, in excerpt
+    node = self.anchor(name)
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/notebook-excerpt.py", line 167, in anchor
+    raise ValueError(f"Expected one section/heading anchor {name!r}; found {len(matches)}")
+ValueError: Expected one section/heading anchor 'entry-2026-10-16-transfer-test'; found 0
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_refresh.py", line 62, in <module>
+    sys.exit(main())
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_refresh.py", line 56, in main
+    refresh(args.spec, args.out, args.proposal, args.report, summaries_checked=args.summaries_checked)
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_refresh.py", line 37, in refresh
+    run([sys.executable, tool, 'author', 'build', '--spec', str(spec), '--out', str(out),
+  File "/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim_refresh.py", line 26, in run
+    subprocess.run(command, cwd=root, check=True)
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/tools/claim-index.py', 'author', 'build', '--spec', 'research/results/common_multiplier_transfer_test_20261016/claim-spec.json', '--out', 'research/results/common_multiplier_transfer_test_20261016/claim-request.json', '--proposal', '/home/kbr/.claude/jobs/354c41d4/tmp/index-proposed7.json', '--report', 'research/results/common_multiplier_transfer_test_20261016/proposal-check.json', '--summaries-checked']' returned non-zero exit status 1.

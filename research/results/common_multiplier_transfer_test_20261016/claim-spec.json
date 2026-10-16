@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Proper-closure kernels at K=2 on functional pigeonhole boards](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-transfer-test)",
+    "label": "Proper-closure kernels at K=2 on functional pigeonhole boards",
+    "targets": ["branches/common-multiplier/notebook.html#entry-2026-10-16-transfer-test"]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["polynomial-calculus", "matching-php"],
+  "claims": [{
+    "id": "conj:functional-kernel-transfer",
+    "summary": "Conjecture: for the functional pigeonhole system over F_2 (pigeon axioms 1+sum_j x_ij, hole and functionality axioms, multilinear ring) with n+1 pigeons and n holes, at every proper degree D and K<=D-1, the common kernel in V_K of a set of variables modulo the degree-D closure C equals the common kernel modulo the closure H of the monomial axioms alone, plus C cap V_K. Evidence: K=1 at 6x5 (check:functional-factor-kernels) and K=2 at 6x5 and 7x6, all at D=3 (check:functional-kernels-k2), F_2 and m=n+1 only. Variable errors are load-bearing: non-monomial errors are governed by other memberships (check:truncated-kernel-beyond-support).",
+    "assessment": "Conjecture from finite checks at D=3 on two boards; a proposed route (unverified) is the dual design-extension form through prop:exact-operator-criterion at D<=ceil(n/2), which stops at a top-layer correction.",
+    "status": "conjecture",
+    "category": "route_specific",
+    "rationale": "States the sandwich's killing half for the functional pigeonhole system, so that survival is the only open half there.",
+    "next_action": "Single-error case through its dual top-layer design extension, against prop:blocked-centre-lift-failure.",
+    "novelty": "not_claimed"
+  }, {
+    "id": "check:functional-kernels-k2",
+    "summary": "Exact F_2 computation (three_quantities.py with tools/pc_closure.py) on the functional pigeonhole system at D=3, K=2, comparing kernels of sets of variables modulo the closure C with those modulo the monomial-axiom closure H plus C cap V_2: at 6x5 (C dimension 4056, H 2995, C cap V_2 276) the diagonal sets {x00,x11,x22} and {x00,x11,x22,x33} and the sets {x00,x01}, {x00,x10}, {x00,x01,x11}, and at 7x6 (C cap V_2 469) the two diagonal sets, all have single excess 0, joint defect 0 and total excess 0, with surviving domain killers modulo C cap V_2 of dimension 36, 12, 68, 88, 41, 48, 12. Controls: K=1 excess 0 as recorded; a positive control (monomial axioms ab, bz, linear axiom w+a+z, D=2, K=1, F={w}) gives excess 1.",
+    "assessment": "Finite check by exact elimination; two committed runs; both controls passed.",
+    "status": "finite_check",
+    "category": "route_specific",
+    "rationale": "Decides the transfer review's test at its proxy and tests the conjecture on non-diagonal sets and a second board.",
+    "next_action": "None on this check; conj:functional-kernel-transfer is the general form.",
+    "novelty": "not_claimed"
+  }],
+  "relationships": [
+    ["conj:functional-kernel-transfer", "cites", "check:functional-factor-kernels", "Its K=1 evidence."],
+    ["conj:functional-kernel-transfer", "cites", "prop:exact-operator-criterion", "The operator of the proposed route."],
+    ["conj:functional-kernel-transfer", "cites", "check:truncated-kernel-beyond-support", "Why the restriction to variable errors matters."],
+    ["check:functional-kernels-k2", "cites", "check:functional-factor-kernels", "The K=1 comparison it extends and its control."]
+  ]
+}
