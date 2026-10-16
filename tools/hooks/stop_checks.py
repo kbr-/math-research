@@ -422,7 +422,7 @@ HOME = re.compile(r'[\w.~-]*/[\w./~-]*\w|\b[\w-]+\.(?:py|md|html|json|sh|ya?ml|t
 WRITERS = ('Edit', 'Write', 'NotebookEdit')
 # A record nothing loads into later work: archived results, provenance and logs. A review record or a result
 # file shapes no later work; a rule file, a hook or tool, or the queue's notebook does.
-RECORD = re.compile(r'(?:^|/|\s)(?:tasks|research/(?:results|provenance|logs))/\S*')
+RECORD = re.compile(r'(?:^|/|\s)research/(?:results|provenance|logs)/\S*')
 
 
 def written_homes(calls, changed):

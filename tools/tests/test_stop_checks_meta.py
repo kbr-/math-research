@@ -83,7 +83,7 @@ class ReviewerMetaTest(HookFixture):
 
 class MetaHomeTest(HookFixture):
     def test_a_meta_paragraph_names_a_file_the_turn_wrote(self):
-        edit = ('Edit', {'file_path': '/repo/research/notes/TASK_PROTOCOL.md'})
+        edit = ('Edit', {'file_path': '/repo/research/notes/WORK_RULES.md'})
         queue = ('Bash', {'command': 'python3 tools/lead_queue.py add notebook.html --build x "s" "t"'})
         # The case of 15 October 2026: a change named in prose, held by no file.
         unhomed = ('Fixed.\n\n**Meta.** The change: search the protocol for the same shape first; the Stop hook '
@@ -93,11 +93,11 @@ class MetaHomeTest(HookFixture):
         self.assertNotIn('Next paragraph', blocked['reason'])
         # A file it names but the turn didn't write, and a Meta paragraph after a homed one.
         self.assertIsNotNone(hook.meta_home_block('Meta: now in `tools/hooks/bash_guard.py`.', [edit, queue], []))
-        self.assertIsNotNone(hook.meta_home_block('Meta: in `TASK_PROTOCOL.md`.\n\nMeta: and the skill.', [edit], []))
+        self.assertIsNotNone(hook.meta_home_block('Meta: in `WORK_RULES.md`.\n\nMeta: and the skill.', [edit], []))
         skill = ['skills/engineering-discipline/SKILL.md']
         for reply, calls, changed in (
-                ('Meta: the Loops section of `research/notes/TASK_PROTOCOL.md` now says so.', [edit], []),
-                ('**Meta.** A file name alone: TASK_PROTOCOL.md, its Loops section.', [edit], []),
+                ('Meta: the Loops section of `research/notes/WORK_RULES.md` now says so.', [edit], []),
+                ('**Meta.** A file name alone: WORK_RULES.md, its Loops section.', [edit], []),
                 ('Meta: queued in notebook.html.', [queue], ['notebook.html']),
                 # The replay's case: the file named without its extension, and a skill's directory.
                 ('Meta: the list has an item ("MR_REVIEW_FAILURE_MODES: a claim ...").',
@@ -114,20 +114,20 @@ class MetaHomeTest(HookFixture):
                       'Prevention: `tools/lead_queue.py close` already asks it.'):
             with self.subTest(reply=reply):
                 self.assertIsNotNone(hook.meta_home_block(reply, [quoting], ['notebook.html']))
-        # A task's record is no home, written by an edit or by a command: on 15 October 2026 a review round's Meta
-        # was kept in the task's review file, which nothing reads. Archived results are none either.
-        review = ('Edit', {'file_path': '/r/tasks/review-convergence/PATH_REVIEW.md'})
-        plan = 'tasks/review-convergence/PLAN.md'
+        # A record is no home, written by an edit or by a command: on 15 October 2026 a review round's Meta was kept
+        # in a review file that nothing reads. Archived results and provenance are none either.
+        review = ('Edit', {'file_path': '/r/research/results/review-round/PATH_REVIEW.md'})
+        plan = 'research/provenance/review-round/PLAN.md'
         result = ('Write', {'file_path': '/r/research/results/framework-checks/out.txt'})
         for reply, calls, changed in (('Meta: recorded as round 10\'s Meta in PATH_REVIEW.md.', [review], []),
-                                      ('Meta: in `tasks/review-convergence/PATH_REVIEW.md`.', [review], []),
-                                      ('Meta: the plan, tasks/review-convergence/PLAN.md, says so.', [], [plan]),
+                                      ('Meta: in `research/results/review-round/PATH_REVIEW.md`.', [review], []),
+                                      ('Meta: the plan, research/provenance/review-round/PLAN.md, says so.', [], [plan]),
                                       ('Meta: kept in research/results/framework-checks/out.txt.', [result], [])):
             with self.subTest(reply=reply):
                 self.assertIsNotNone(hook.meta_home_block(reply, calls, changed))
         # Beside a record, a rule file the same turn changed still counts; a tool it only ran doesn't.
-        self.assertIsNone(hook.meta_home_block('Meta: research/notes/TASK_PROTOCOL.md now says so.', [review, edit], []))
-        ran = ('Bash', {'command': 'python3 tools/rewrap_md.py tasks/review-convergence/PLAN.md --changed'})
+        self.assertIsNone(hook.meta_home_block('Meta: research/notes/WORK_RULES.md now says so.', [review, edit], []))
+        ran = ('Bash', {'command': 'python3 tools/rewrap_md.py research/provenance/review-round/PLAN.md --changed'})
         self.assertIsNotNone(hook.meta_home_block('Meta: tools/rewrap_md.py now does it.', [ran], [plan]))
         self.assertIsNone(hook.meta_home_block('Meta: tools/rewrap_md.py now does it.', [ran], ['tools/rewrap_md.py']))
         # A paragraph runs on through the prose that resumes after its list: on 16 October 2026 a Meta naming its
@@ -175,7 +175,7 @@ class MetaHomeTest(HookFixture):
         hook_edit = ('Edit', {'file_path': '/r/tools/hooks/stop_checks.py'})
         blocked = hook.meta_home_block('**Prevention.** None built; I will be careful.', [hook_edit], [])
         self.assertIn('A Prevention paragraph with no home: "**Prevention.** None built', blocked['reason'])
-        self.assertIsNotNone(hook.meta_home_block('Prevention: kept in tasks/a/REVIEW.md.', [review], []))
+        self.assertIsNotNone(hook.meta_home_block('Prevention: kept in research/results/a/REVIEW.md.', [review], []))
         self.assertIsNone(hook.meta_home_block('Prevention: tools/hooks/stop_checks.py now refuses it.', [hook_edit], []))
         # One that reports no mistake of the agent's needs none, and is the only kind that does.
         for reply in ('Prevention: the reviewer found no mistake of mine.', 'Prevention. None of mine: the defects were '
