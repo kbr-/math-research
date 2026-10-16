@@ -328,23 +328,26 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   they returned (the finisher checks it): a test the record already answers decides nothing. Before
   both state `<strong>Trivial cases.</strong>`: how each quantity the test compares behaves under
   the object's trivial transformations (implied or duplicated rows, another presentation of the same
-  object), and the trivial instance, if any, that would give each outcome; a question with a trivial
-  answer is not given a block (the finisher checks presence). Then state `<strong>Power.</strong>`:
-  what the recorded upper bounds and method limits give on the test's object, and for a computation
-  the reachable sizes and why its outcomes differ there, and whether the test's instance lies in the
-  goal's parameter window and, if not, what its outcome bears on (the finisher checks it); work out
-  for each instance the operation names the outcome its Trivial cases and Power already fix, and
-  drop an instance they decide (twice on 16 October 2026 a review posed a test whose every instance
-  its own bounds decided, so it could not fail). Write that work out after `<strong>Instance
-  check.</strong>`: each inequality the Trivial cases and Power use, evaluated with the instance's
-  numbers (the finisher requires a numeric relation there; a third review that day called a room
-  tight that its numbers gave as \(2<3\)). Say after `<strong>Attempt.</strong>` what was tried,
-  before posing the test, to answer it from the statements it cites, and where that stopped: a test
-  those statements answer in a few lines is a lemma for the next entry, not a test. Apply this again
-  when the reviewer supplies the missing argument: rewrite the decision and next step as a
-  lemma-first entry before finalization, rather than retaining an unanswered test. The second-stage
-  brief asks the reviewer to try the step at which the Attempt stops, and the review's Verification
-  gate says what it found after `<strong>Attempt checked.</strong>` (the finisher checks).
+  object), and the trivial instance, if any, that would give each outcome, and the structure of the
+  instance's own system that could decide it (an axiom of degree one, a member defining a variable,
+  an inert or domain-model range); a question with a trivial answer is not given a block (the
+  finisher checks presence; 16 October 2026: a test was decided by its system's linear axioms, which
+  its Trivial cases did not list). Then state `<strong>Power.</strong>`: what the recorded upper
+  bounds and method limits give on the test's object, and for a computation the reachable sizes and
+  why its outcomes differ there, and whether the test's instance lies in the goal's parameter window
+  and, if not, what its outcome bears on (the finisher checks it); work out for each instance the
+  operation names the outcome its Trivial cases and Power already fix, and drop an instance they
+  decide (twice on 16 October 2026 a review posed a test whose every instance its own bounds
+  decided, so it could not fail). Write that work out after `<strong>Instance check.</strong>`: each
+  inequality the Trivial cases and Power use, evaluated with the instance's numbers (the finisher
+  requires a numeric relation there; a third review that day called a room tight that its numbers
+  gave as \(2<3\)). Say after `<strong>Attempt.</strong>` what was tried, before posing the test, to
+  answer it from the statements it cites, and where that stopped: a test those statements answer in
+  a few lines is a lemma for the next entry, not a test. Apply this again when the reviewer supplies
+  the missing argument: rewrite the decision and next step as a lemma-first entry before
+  finalization, rather than retaining an unanswered test. The second-stage brief asks the reviewer
+  to try the step at which the Attempt stops, and the review's Verification gate says what it found
+  after `<strong>Attempt checked.</strong>` (the finisher checks).
 
 The next research cycle on that route reports the actual outcome in **Architecture test.**, opening
 with `<strong>Decided.</strong>` or `<strong>Not decided.</strong>` and which of the review's
