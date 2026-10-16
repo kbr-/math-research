@@ -1131,6 +1131,29 @@ def validate_degenerate_cases(text, statuses=()):
                          '(AGENTS.md)')
 
 
+BASELINE_FROM = '2026-10-16'
+
+
+def validate_baseline(text, statuses=()):
+    """An entry registering a proved statement compares it with the construction or bound that needs no idea.
+
+    A lemma of 16 October 2026 compared an exact degree with Pang's criterion and called the criterion's miss a
+    calibration; the reviewer found that the obvious multiplier, the indicator of the origin, already survived
+    for every choice, so what the lemma added was a saving of t degrees, not the existence the draft implied."""
+    if not PROVED & set(statuses):
+        return
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < BASELINE_FROM:
+        return
+    given = re.search(r'<strong>Baseline\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
+    if len(plain) < 40:
+        raise ValueError('This entry registers a proved statement: say, after <strong>Baseline.</strong> and in '
+                         'at least 40 characters, the trivial construction or bound the statement improves on '
+                         '(the witness or estimate that needs no idea) and what it adds over it, or why none '
+                         'exists (AGENTS.md)')
+
+
 def validate_proved_instance(text, statuses=()):
     """An entry registering a proved statement exhibits an input that satisfies its hypotheses.
 
@@ -1473,6 +1496,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_degenerate_cases(text, statuses)
             validate_proved_instance(text, statuses)
             validate_hypothesis_steps(text, statuses)
+            validate_baseline(text, statuses)
         else:
             validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':

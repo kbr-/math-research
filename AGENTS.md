@@ -156,12 +156,15 @@ growing checklists or one-off setup narratives.
   about the new statement's special cases. An example or witness offered for a claim, in an entry or
   a reply, is written with the quantity it illustrates computed beside it, never from memory of its
   shape. A statement covering several parts (cases, forms, earlier lemmas it refines) gives each
-  part its own form, and a simplification true of some parts is attached to those parts only. State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
-  At the start of drafting, run the entry's skeleton (its headings and labelled paragraphs, before
-  the body) through `tools/notebook-append.py DRAFT --check`, which lists each failing entry check
-  of the append and the finisher that applies to a draft, so a required paragraph is planned before
-  the work. Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook
+  part its own form, and a simplification true of some parts is attached to those parts only. Name
+  after `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious
+  witness, the trivial estimate) and what the statement adds over it (the finisher requires it of
+  the same entries; 16 October 2026: a comparison omitted a multiplier that survived every choice).
+  State compositions as lemmas in one common setting with a complete proof, not a reference to a
+  sketch. At the start of drafting, run the entry's skeleton (its headings and labelled paragraphs,
+  before the body) through `tools/notebook-append.py DRAFT --check`, which lists each failing entry
+  check of the append and the finisher that applies to a draft, so a required paragraph is planned
+  before the work. Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook
   NOTEBOOK` and read each sentence that cites a claim beside that claim's registered statement, and
   each that links an entry beside that entry's title and status line: a sentence may say no more
   than its source, and one that draws a decision from a bound of the entry restates the bound's

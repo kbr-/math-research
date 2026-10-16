@@ -319,6 +319,18 @@ class DegenerateCasesTest(unittest.TestCase):
                                      {'working_proof'})
 
 
+class BaselineTest(unittest.TestCase):
+    def test_a_registered_proof_names_the_trivial_baseline(self):
+        # 16 October 2026: a comparison omitted the multiplier that survived every choice.
+        plain = '<article id="entry-2026-10-17-bound"><p><strong>New mathematics.</strong> A degree.</p>'
+        FT.validate_baseline(plain, {'finite_check'})
+        FT.validate_baseline(plain.replace('2026-10-17', '2026-10-15'), {'working_proof'})
+        with self.assertRaisesRegex(ValueError, 'Baseline'):
+            FT.validate_baseline(plain, {'working_proof'})
+        FT.validate_baseline(plain + '<p><strong>Baseline.</strong> The indicator of the origin survives at '
+                             'degree n; the lemma saves t degrees.</p>', {'working_proof'})
+
+
 class SearchesRunTest(unittest.TestCase):
     def test_a_record_search_paragraph_needs_a_logged_search(self):
         import json, tempfile
