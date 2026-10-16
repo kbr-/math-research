@@ -1173,6 +1173,33 @@ def validate_baseline(text, statuses=()):
                          'exists (AGENTS.md)')
 
 
+PLAINEST_FROM = '2026-10-16'
+PLAINEST_RE = re.compile(r'<strong>Plainest bound\.</strong>((?:(?!</p>)(?!</li>).)*)', re.S)
+
+
+def validate_plainest(text, statuses=()):
+    """A next attempt's smallest case, and a registered proof's witness, are checked against the plainest bound.
+
+    On 16 October 2026 a review's computation, a lemma's witness and a next attempt (entropy chaining) each
+    concerned instances that a bare count already decided: per-cell point counts settled the bands the chaining
+    was to bound, and the witness was elementary; rules and a reviewer audit caught them only afterwards.  Each
+    paragraph says, after <strong>Plainest bound.</strong>, what the plainest available bound (a bare count, a
+    one-dimensional estimate, the record's oldest lemma) gives on its instance, or why none applies."""
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < PLAINEST_FROM:
+        return
+    for label, required in (('Smallest case', True), ('Nonvacuity', bool(PROVED & set(statuses)))):
+        given = re.search(rf'<strong>{label}\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+        if not (given and required):
+            continue
+        said = PLAINEST_RE.search(given.group(0))
+        if not said or len(html.unescape(strip_tags(said.group(1))).strip()) < 30:
+            raise ValueError(f'The {label} paragraph needs, after <strong>Plainest bound.</strong> and in at least '
+                             '30 characters, what the plainest available bound (a bare count, a one-dimensional '
+                             'estimate, the record\'s oldest applicable lemma) gives on its instance, or why none '
+                             'applies: an instance the plain bound decides tests nothing (AGENTS.md)')
+
+
 def validate_proved_instance(text, statuses=()):
     """An entry registering a proved statement exhibits an input that satisfies its hypotheses.
 
@@ -1555,7 +1582,9 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_proved_instance(text, statuses)
             validate_hypothesis_steps(text, statuses)
             validate_baseline(text, statuses)
+            validate_plainest(text, statuses)
         else:
+            validate_plainest(text)
             validate_structural_reason(text, claims=entry_claims(body, article))
         if state == 'unchanged':
             validate_bearing(body, article, progress, text)

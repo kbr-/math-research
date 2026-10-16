@@ -331,6 +331,24 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class PlainestBoundTest(unittest.TestCase):
+    def test_smallest_case_and_witness_name_the_plainest_bound(self):
+        # 16 October 2026: a next attempt and a witness that bare per-cell counts already decided.
+        smallest = ('<article id="entry-2026-10-16-x"><p><strong>Smallest case.</strong> One band along a '
+                    'horizontal line: the chaining gives a bounded factor.</p>')
+        with self.assertRaisesRegex(ValueError, 'Smallest case paragraph needs'):
+            FT.validate_plainest(smallest)
+        FT.validate_plainest(smallest.replace('2026-10-16', '2026-10-15'))
+        FT.validate_plainest(smallest.replace('</p>', ' <strong>Plainest bound.</strong> The per-cell counts give '
+                                              'the same order, so the instance decides nothing.</p>'))
+        witness = '<article id="entry-2026-10-16-y"><p><strong>Nonvacuity.</strong> The band with a = 1.</p>'
+        FT.validate_plainest(witness, {'finite_check'})
+        with self.assertRaisesRegex(ValueError, 'Nonvacuity paragraph needs'):
+            FT.validate_plainest(witness, {'working_proof'})
+        FT.validate_plainest(witness.replace('</p>', ' <strong>Plainest bound.</strong> None applies: the '
+                                             'statement is an identity of formal series.</p>'), {'working_proof'})
+
+
 class UnlistedSuggestionTest(unittest.TestCase):
     def test_a_gate_reporting_a_suggestion_needs_the_list(self):
         # 16 October 2026: a next attempt taken from a reviewer's suggestion in the author's words, with no list.
