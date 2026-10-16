@@ -1,0 +1,68 @@
+{
+  "source": {
+    "record": "[Block pair kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-block-pair-kernels)",
+    "label": "Block-pair kernels on the six-by-five functional board",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-block-pair-kernels"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "conj:monomial-kernel-transfer",
+      "summary": "Conjecture: for the functional pigeonhole system over F_2 (pigeon axioms 1+sum_j x_ij, hole and functionality axioms, multilinear ring) with n+1 pigeons and n holes, at a proper degree D, K<=D-1, and any set F of monomial errors E with K+deg E<=D, the common kernel {u in V_K: uE in C for E in F} modulo the degree-D closure C equals the common kernel modulo the closure H of the hole and functionality axioms alone, plus C cap V_K. Monomials on one pigeon or one hole lie in H and constrain neither side. Extends conj:functional-kernel-transfer (deg E=1) to monomial errors; via multiplication by x_b, Ann_C(x_a x_b) = mu_b^{-1}(Ann_C^{(2)}(x_a)). Evidence: check:block-pair-kernels.",
+      "assessment": "Conjecture; evidence check:block-pair-kernels at one size, F_2, K=1, D=3; the sole fresh-context medium reviewer checked its scope and the mu_b reduction.",
+      "status": "conjecture",
+      "category": "route_specific",
+      "rationale": "A positive excess would be a killer the pigeon axioms add, a joint saving beyond supports; none found.",
+      "next_action": "Prove it at K=1 by comparing leading forms of a member uE of degree 3.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:block-pair-kernels",
+      "summary": "Exact F_2 computation (block_pairs.py reusing three_quantities.py and tools/pc_closure.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3, K=1 (dim V_1=31, C cap V_1 the 6 pigeon axioms): the error sets {x00x11}, {x00x11,x22x33}, {x00x11,x11x22}, {x00x11,x01x10}, {x00x11,x00x22} and {x00x11,x22x33,x34x43} have total excess 0, single excess 0 and joint defect 0, with surviving domain killers modulo C cap V_1 of dimension 16, 8, 11, 15, 11, 4. Controls: the variable set {x00,x11} gives excess 0 as recorded; the linear-axiom positive control gives excess 1. By the S_6 x S_5 symmetry the singleton covers every pair on distinct pigeons and holes.",
+      "assessment": "Exact computation; the script, masks and controls checked by the sole fresh-context medium reviewer, who recomputed the H-side dimensions by hand; no control runs the degree-2 error path on the C side.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Tests the head item's block-pair families in a proper closure; no killer beyond the domain model's.",
+      "next_action": "Prove conj:monomial-kernel-transfer at K=1.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "conj:monomial-kernel-transfer",
+      "refines",
+      "conj:functional-kernel-transfer",
+      "Extends it from variable errors to monomial errors on distinct pigeons and holes."
+    ],
+    [
+      "conj:monomial-kernel-transfer",
+      "cites",
+      "check:block-pair-kernels",
+      "Its evidence."
+    ],
+    [
+      "check:block-pair-kernels",
+      "cites",
+      "check:functional-factor-kernels",
+      "Its K=1 variable control."
+    ],
+    [
+      "check:block-pair-kernels",
+      "cites",
+      "check:functional-kernels-k2",
+      "Same board and kernel code; its K=2 variable equalities reduce the K=1 monomial case through multiplication by x_b."
+    ],
+    [
+      "conj:monomial-kernel-transfer",
+      "cites",
+      "check:functional-factor-kernels",
+      "Its deg E = 1 case at K=1, recorded there."
+    ]
+  ]
+}
