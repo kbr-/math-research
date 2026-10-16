@@ -1,0 +1,50 @@
+Stage-one record of the second route review (entry-2026-10-16-second-route-review), 16 October 2026,
+Claude Code medium-reviewer agent. Brief: the goal, the survey's Section 5 and the thread's registered
+results only, the route withheld. Its report, as returned (condensed only in layout):
+
+Basis: both files read; one record search ("combined single cost both coordinates Kantorovich duality
+dual discrepancy") returned lem:hopf-lax-matching-bound and lem:anisotropic-leighton-shor-bound.
+Nothing below verified.
+
+Framing remark (checked in a few lines, not new): gluing levels is not a separate difficulty from
+bounding a cost. Each sum S_j >= N, so S_1 + S_2 <= KN gives each S_j <= 2N after multiplying L by
+c^(1/alpha_j) with K^(1/c) <= 2 (Jensen for y -> y^(1/c)); counts 2N e^(-t) at every level in one
+matching give sum e^(x/c) <= N + 2N/(c-1) by the layer-cake formula. So up to L the conjecture is a
+bound of order N on one assignment cost C(z) = sum_j psi_alpha_j(|z_j|/s), convex for alpha_j >= 1,
+with an integral assignment polytope; the record uses its dual (Hopf-Lax); lem:per-level-gluing-fails
+concerns weighted Hall deficiencies, not this cost.
+
+Structural reason (inference): thm:dyadic-flow-obstruction is one instance of a central-limit effect;
+any scheme where a point's displacement is a sum of about log N weakly dependent per-scale
+contributions of size N^(-1/2) gives Gaussian tails at sqrt(log N) N^(-1/2), exponent 2; on the curve
+max alpha_j >= 4, so a proof needs per-scale moves negatively correlated with the point's accumulated
+displacement, and exits depending on position (thm:position-blind-cell-exits).
+
+Ranked proposals.
+1. Refutation by superposing dual test functions across aspect ratios (cheapest decisive test). The
+   below-curve exclusion uses one vertically scaled Leighton-Shor obstruction with aspect
+   (log N)^(1/alpha_2 - 1/alpha_1), balancing exactly on the curve; in the dual the conjugate C* grows
+   like v (log v)^(1-1/alpha); superposing about log log N obstructions at aspects (log N)^gamma_m with
+   independent signs makes the linear term add, and where gradient supports are nearly disjoint C*
+   adds too; if the gain survives, the dual value at every fixed L exceeds KN by a factor growing
+   with log log N, refuting the conjecture at that pair. Rests on Kantorovich duality and the
+   Leighton-Shor lower-bound construction (monograph Section 4.8, recalled). First test: for two
+   aspects, bound the overlap of gradient supports and whether int C*(grad g_1 + grad g_2) <=
+   (1+o(1)) sum int C*(grad g_m) while linear terms add. Breaks if the obstructions' boundary layers
+   share the high-discrepancy points.
+2. Feedback-controlled multiscale transport (proof): AKT-type hierarchy, each cell's flux carried by
+   relay chains plus free circulations, riders chosen by position (near the cut) and accumulated
+   displacement (opposite sign preferred); vector balancing keeping each point's running sum in a tube
+   with e^(-u^4) tails (Alweiss-Liu-Sawhney STOC 2021; Banaszczyk 1998; recalled). First test: a
+   hierarchical toy reproducing the AKT lower bound as control, then the tails. Breaks if the
+   divergence constraint ties a point's moves at successive scales too tightly.
+3. Dual layer gluing with chaining: decompose the dual potential into Lipschitz layers with gradients
+   in magnitude bands, bound each by anisotropic Leighton-Shor/AKT bounds (Ellipsoid theorem,
+   Bernstein; [T4] chapters 4 and 17, recalled), sum over about log N bands. Breaks because bands are
+   not gradients of separate functions.
+4. Direct numerical probe at N ~ 10^4 (poor power: (log N)^(1/4) ~ 1.8).
+
+Process audit: the brief's "point the results isolate" (one matching meeting all levels) is
+equivalent up to L to one transport-cost bound; the route should say whether lem:per-level-gluing-fails
+bears on that cost (it concerns weighted deficiencies). thm:per-level-count-matchings gives a
+different matching per t, so "each level holds alone" should not be read as approaching the goal.
