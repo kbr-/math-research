@@ -38,6 +38,9 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   finding it will carry beside its source (a saved output, a named agent's report, a proof in the
   entry); one whose only source is another agent's report is written as that agent's, or recomputed
   and saved first.
+- Run a required tool or check so that it does its job, never in the cheapest form that passes its
+  gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
+  logged): if a gate's form is a burden, change the gate in the open, not its use.
 - Before every reviewer brief, reread the draft once against each item of this list and against
   AGENTS.md's rules on statements (free parameters at their whole range, searches under other
   names), item by item, rather than relying on having known them while drafting.

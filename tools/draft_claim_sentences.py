@@ -29,6 +29,8 @@ import sys
 from notebook_math import MATH, protect_math, strip_tags_tight
 from notebooks import notebook_file
 
+MIN_WIDTH = 120  # the shortest cut at which a sentence can still be read beside its source
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 # Every prefix the registry's identifiers had on 11 October 2026, and historical: until then eleven were listed
 # and 352 registered identifiers, imported statements (imp:) among them, were passed over.
@@ -1002,6 +1004,12 @@ def main():
                         'its summing-up sentences answered in these answers files and how many of the answers '
                         'limit their sentence by a word it lacks, with those sentences')
     args = parser.parse_args()
+    # 16 October 2026: a listing run at --width 1 passed the brief hook while cutting every sentence to one
+    # character, so no citing sentence was read beside its source, and an unsupported citation reached review.
+    if 0 < args.width < MIN_WIDTH:
+        parser.error(f'--width {args.width} cuts sentences below {MIN_WIDTH} characters, too short to read them '
+                     'beside their sources; omit it or give at least {MIN_WIDTH}'.replace('{MIN_WIDTH}',
+                                                                                         str(MIN_WIDTH)))
     draft = pathlib.Path(args.draft).read_text()
     if args.gaps:
         answers = '\n'.join(pathlib.Path(name).read_text() for name in args.gaps)

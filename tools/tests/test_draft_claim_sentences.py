@@ -25,6 +25,16 @@ DRAFT = '''<article id="entry-x" data-claims="lem:new-one">
 
 
 class DraftClaimSentences(unittest.TestCase):
+    def test_a_width_too_short_to_read_is_refused(self):
+        # 16 October 2026: --width 1 passed the brief hook and showed no sentence.
+        with tempfile.TemporaryDirectory() as tmp:
+            draft = Path(tmp, 'd.html')
+            draft.write_text('<p>Nothing.</p>')
+            with patch.object(sys, 'argv', ['draft_claim_sentences.py', str(draft), '--width', '1']), \
+                    patch('sys.stderr'), self.assertRaises(SystemExit) as stop:
+                dcs.main()
+            self.assertEqual(stop.exception.code, 2)
+
     def test_raw_tex_comparisons_survive_the_citation_report(self):
         draft = (r'<p>By <code>lem:first</code>, \(4\le D<\epsilon n/8\) and '
                  r'\(P_{<a}>0\) hold.</p><p>Also <code>lem:first</code> gives \[a<b>c\] and $$u<v. W>w$$.</p>')
