@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Two-mesh partition discrepancy](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-two-mesh-partition)",
+    "label": "Two-mesh partition discrepancy",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-two-mesh-partition"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:two-mesh-partition-discrepancy",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, with probability tending to one, for all 1 <= j_1 <= j_2 <= l_1 (the Leighton-Shor scale), every partition of [0,1]^2 into dyadic squares of sides between 2^(-j_2) and 2^(-j_1), every H constant on its cells and every c: |sum_i H(X_i) - N int H| <= L sqrt N ((j_1^(3/4) + sqrt(log N)) V^c(H) + (j_2^(3/4) + sqrt(log N)) V^c_f(H)), V^c the cell variation (jumps times edge lengths, boundary edges against c) and V^c_f its part over fine edges (partition edges that are not whole edges of the mesh 2^(-j_1)). For a closed simple curve on the partition's edges, the bound is L sqrt N ((j_1^(3/4)+sqrt(log N)) l(C) + (j_2^(3/4)+sqrt(log N)) l_f(C)).",
+      "assessment": "Working proof: each run of fine edges of a curve ends at coarse vertices and is closed by a coarse staircase no longer than it; the curve splits as a chain into a coarse closed chain of mass at most its length and fine closed chains of mass at most twice the fine length; closed integer chains split into simple closed curves with additive winding numbers; lem:mesh-function-discrepancy (a) at both meshes; layer cake.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Lets a cell function pay the fine mesh's Leighton-Shor factor only on its fine edges, a step toward adapting the mesh to the gradient level in the coarea mechanism for conj:conjugate-class-discrepancy.",
+      "next_action": "Iterate the staircase step over a graded partition with geometrically spaced meshes, and bound the interface sum and the coarse level's mass near the fine support.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:two-mesh-partition-discrepancy",
+      "cites",
+      "lem:mesh-function-discrepancy",
+      "Its part (a) at both meshes, and its Step 2 and Step 3."
+    ],
+    [
+      "lem:two-mesh-partition-discrepancy",
+      "cites",
+      "lem:cellwise-lipschitz-split",
+      "The two-level attempt pairs the partition averages with that lemma's cellwise remainder bound."
+    ],
+    [
+      "lem:two-mesh-partition-discrepancy",
+      "cites",
+      "conj:conjugate-class-discrepancy",
+      "A tool toward the two-level case of the coarea mechanism for this conjecture."
+    ]
+  ]
+}
