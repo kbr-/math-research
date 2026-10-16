@@ -582,6 +582,8 @@ sys.exit(compute.main())
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 f'<li data-pick>a{ok}</li>',
                 f'<li data-pick>a{ok.replace("<strong>Break point.</strong> None found. ", "")}</li>')),  # passed, break point unevaluated
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                'Not run: needs a kernel.', 'Not run: the theorem was recalled, not read.')),  # unread, no retrieval named
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
@@ -612,6 +614,9 @@ sys.exit(compute.main())
                     ft.validate_marker(content, marker)
         accepted = [
             record(['research'] * 6, reviewed, general=general + leads),
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                'Not run: needs a kernel.', 'Not run: recalled, not read. <strong>Retrieval.</strong> '
+                'tools/held_sources.py found no copy; the publisher copy is restricted.')),  # retrieval named
             record(['review:4'] + ['research'] * 10, reviewed, general=general + leads),  # count dropped
             record(['review:3'] + ['research'] * 9, reviewed, general=general + leads),   # span not reached
             record(['review'] + ['research'] * 10, reviewed, general=general + leads),    # no earlier count

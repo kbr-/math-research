@@ -108,6 +108,7 @@ LEADS_MIN, BRIDGES_MIN = 3, 2
 PICKS = {'Outside leads': 3, 'Absurd bridges': 2}
 PICK_RE = re.compile(r'^[^>]*\bdata-pick\b')
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
+NOT_RUN_UNREAD_RE = re.compile(r'\b(recalled|not read|unread|not retrieved)\b', re.I)
 OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
 OBSTACLE_MIN = 80
 
@@ -188,6 +189,15 @@ def validate_leads(body, article, close, draining=None):
                              '</strong>": say where the translation would break and what the test found there; a '
                              'test of the named theorem alone, or of a recalled statement, is Not run for the '
                              'translation (AGENTS.md)')
+        # A review of 16 October 2026 left items Not run as "recalled, not read" although the statements were a
+        # search away; such an item says what retrieval was tried and how it ended.
+        unretrieved = [i for i, item in enumerate(items, 1) if (TEST_RE.search(item) or [None, None])[1] == 'Not run'
+                       and NOT_RUN_UNREAD_RE.search(item[TEST_RE.search(item).end():])
+                       and '<strong>Retrieval.</strong>' not in item]
+        if unretrieved:
+            raise ValueError(f'{heading} item(s) {unretrieved} are Not run on a source recalled or unread without '
+                             '"<strong>Retrieval.</strong>": say what retrieval was tried (tools/held_sources.py, '
+                             'tools/arxiv_source.py, tools/browser_get.cjs, a search) and how it ended (AGENTS.md)')
         picks = [i for i, item in enumerate(items, 1) if PICK_RE.search(item)]
         want = min(PICKS[heading], len(passed))
         if not set(picks) <= set(passed) or len(picks) != want:
