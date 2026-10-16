@@ -193,6 +193,17 @@ def run(J, N, seed):
     }, dy / math.sqrt(N * J), ad / math.sqrt(N * J)
 
 
+def pooled_shapes(arrs):
+    """Shape statistics of each coordinate, pooled over the seeds' per-point values."""
+    return [shape(np.concatenate([x[k].ravel() for x in arrs])) for k in range(2)]
+
+
+def report_lines(entry):
+    return [f'J={entry["J"]} pooled {name} coord {k + 1}: kurtosis {s["kurtosis"]:.3f} slope '
+            f'{s["slope_vs_t2"]:.3f} tails {["%.2e" % x for x in s["tail"]]}'
+            for name in ('dyadic', 'greedy') for k, s in enumerate(entry[name])]
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     p.add_argument('--levels', type=int, nargs='+', default=[6, 7, 8, 9])
@@ -211,13 +222,8 @@ def main():
             dys.append(dy)
             ads.append(ad)
             print(json.dumps(r), flush=True)
-        entry = {'J': J, 'seeds': a.seeds}
-        for name, arrs in (('dyadic', dys), ('greedy', ads)):
-            entry[name] = [shape(np.concatenate([x[k].ravel() for x in arrs])) for k in range(2)]
-            for k in range(2):
-                s = entry[name][k]
-                print(f'J={J} pooled {name} coord {k + 1}: kurtosis {s["kurtosis"]:.3f} slope '
-                      f'{s["slope_vs_t2"]:.3f} tails {["%.2e" % x for x in s["tail"]]}', flush=True)
+        entry = {'J': J, 'seeds': a.seeds, 'dyadic': pooled_shapes(dys), 'greedy': pooled_shapes(ads)}
+        print('\n'.join(report_lines(entry)), flush=True)
         pooled.append(entry)
         with open(a.out, 'w') as fh:
             json.dump({'per_cell': a.per_cell, 'pooled': pooled, 'runs': results}, fh, indent=1)
