@@ -63,7 +63,9 @@ METHODS = {'published': published, 'summed': summed, 'greedy': greedy}
 
 def smallest_k(ell, M, test):
     n, m, v, h = params(ell)
-    hi = m
+    # A proper block pins at most v - 1 bits, so a rank r = h(k+1)+1 needs k <= (v-2)/h - 1; the
+    # published count has no block rank in it and runs to k = m.
+    hi = m if test is published else (v - 2) // h - 1
     if not test(ell, M, hi):
         return None
     lo = 1
