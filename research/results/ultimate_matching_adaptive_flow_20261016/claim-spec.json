@@ -1,0 +1,48 @@
+{
+  "source": {
+    "record": "[Adaptive circulation test](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-adaptive-circulation-test)",
+    "label": "Adaptive circulation test",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-adaptive-circulation-test"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:per-level-gluing-fails",
+      "summary": "For X={1..n}, Y=X+h on the line (h=floor(sqrt n), n>=4), nested graphs G_k={|x-y|<=e^(k-1)} for k from any k_0<=1 (or all integers) up to complete, weights w_k=e^k and m_k the deficiency of G_k: sum_k w_k m_k <= e^2 h^2/(e-1)+e h/(e-1) while every perfect matching M has sum_k w_k |M minus G_k| >= n(h-1). So per-level Hall deficiencies cannot be glued into one matching at any constant factor.",
+      "assessment": "Working elementary proof (counterexample proposed by the review's medium reviewer, checked and stated for levels of every radius): deficiencies by Hall's condition on X and explicit shifts, edge cost at least its length beyond length 1, and sum(y-x)=nh for every perfect matching.",
+      "status": "refutation",
+      "category": "negative_result",
+      "rationale": "Refutes the per-level-deficiency form of the first route review's alternative architecture: per-level counts do not control displacement lengths, so a correct per-level bound integrates over level sets of one potential, the class formulation.",
+      "next_action": "None for the gluing step; a per-level condition with completion lengths remains queued.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "ex:greedy-circulation-tails",
+      "summary": "Simulation, N=16*4^J uniform points, J=6..10, eight seeds each: the dyadic flow plus a greedy circulation per square (curl of a pyramid, chosen to minimize the quartic cost of the running field) has per-point kurtosis, after division by the dyadic flow's analytic per-position standard deviation, 2.71-2.89 against 2.88-3.19 for the dyadic flow, lower at every size with no trend in J, and moves variance from the first coordinate to the second (mean ratios 0.70-0.76 and 1.16-1.24).",
+      "assessment": "Finite check, two runs with expectations committed before each; the second fixes a diagonal-tie defect of the first. Controls: flux and global average pass; the per-level variance control failed as stated in 5 of 320 values, all at level 4 (sampling error; mean ratios 0.99-1.02); the reference predictions partly failed (raw mixture kurtosis formula off by up to 0.30, three of ten per-position slopes outside their band). The test is not decided: no growing gap at reachable sizes.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The first route review's decisive test of the one adaptive mechanism the obstacle leaves open.",
+      "next_action": "Try adaptive choices acting on fluxes at scales coarser than one parent square, or the tube flow of a matching.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "ex:greedy-circulation-tails",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "The reference flow; tests whether an adaptive correction escapes its Gaussian per-point tails."
+    ],
+    [
+      "lem:per-level-gluing-fails",
+      "cites",
+      "conj:conjugate-class-discrepancy",
+      "Shows the per-level alternative to the class formulation fails; the class supremum is retained."
+    ]
+  ]
+}
