@@ -1603,6 +1603,22 @@ def validate_prevention(text):
         raise ValueError('End the Process assessment with <strong>Prevention.</strong> and at least 40 '
                          'characters: the committed check or rule for each mistake it reports, or why none '
                          'applies (AGENTS.md, framework maintenance)')
+    # A Process assessment that reports no mistake while the review required corrections was written before the
+    # review (17 October 2026: "No mistake of mine is found" stood beside a gate listing nine corrections).
+    gate = html.unescape(strip_tags(report_paragraph(text, 'Verification gate')))
+    said = html.unescape(strip_tags(assessment))
+    if NO_MISTAKE.search(said) and REVIEW_CORRECTED.search(gate):
+        raise ValueError(f'The Process assessment says "{NO_MISTAKE.search(said).group(0)}" while the Verification '
+                         'gate reports corrections the reviewer required: write the assessment after the review, '
+                         'naming each mistake the corrections show (AGENTS.md, framework maintenance)')
+
+
+# Tried, before its commit, against rewordings of the exposing sentence ("I found no error", "No mistakes in this
+# cycle", "went without mistakes", "None of mine", "I made no mistake"): the first form let five of six through.
+NO_MISTAKE = re.compile(r"\b(?:no|without) (?:mistakes?|errors?)\b|\bnothing went wrong\b|\bnone of mine\b", re.I)
+REVIEW_CORRECTED = re.compile(r"\b(?:it|the reviewer|the review) (?:required|asked for|found(?! no\b| nothing\b))\b|"
+                              r"\bcorrections?\b"
+                              r"[^.]{0,40}\b(?:made|adopted|applied|required)\b|\bAll are (?:made|corrected)\b", re.I)
 
 
 REVIEW_MINUTES = 40    # between two stand-in reviews: a research cycle is longer than a task's

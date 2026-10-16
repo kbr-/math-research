@@ -342,6 +342,10 @@ AGENTS.md"):
 - A gap found in the record, or a promising idea met in conversation, is the next attempt: try it or
   queue it in that turn, and report it so; describing it as missing, or offering it to the user, is
   not an answer (user, 17 October 2026: "We are the ones developing the record").
+- Before a follow-up is Developed or Closed, write the item's question in each reading its words
+  allow, each with its attempt: what the entry's own definition covers is not the item (17 October
+  2026: a corollary covered the reading the draft had defined, and two other readings of the item
+  were listed as covered without an attempt).
 - Before naming a new artifact (a results folder, a claim ID, an anchor, a session), list what
   already exists under that name: a name chosen from memory of a pattern can be an earlier entry's
   (16 October 2026: a new review's folder overwrote an earlier review's record).

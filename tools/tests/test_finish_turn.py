@@ -203,6 +203,33 @@ class ChecksNote(unittest.TestCase):
 
 
 
+class AssessmentAfterReview(unittest.TestCase):
+    """A Process assessment reporting no mistake beside a gate listing reviewer corrections is refused."""
+    PREVENT = ' <strong>Prevention.</strong> The committed check for each reported item is named in the finisher.</p>'
+
+    def entry(self, gate, assessment):
+        return (f'<p><strong>Verification gate.</strong> {gate}</p>'
+                f'<p><strong>Process assessment.</strong> {assessment}{self.PREVENT}')
+
+    def test_no_mistake_beside_required_corrections_is_refused(self):
+        # 17 October 2026: "No mistake of mine is found" beside nine corrections the reviewer required.
+        with self.assertRaisesRegex(ValueError, 'after the review'):
+            FT.validate_prevention(self.entry('The reviewer passed it. It required: a letter. All are made.',
+                                              'No mistake of mine is found in drafting.'))
+        for reworded in ('I found no error in drafting.', 'No mistakes in this cycle.', 'None of mine.',
+                         'The drafting went without mistakes.', 'I made no mistake.'):
+            with self.subTest(reworded=reworded), self.assertRaises(ValueError):
+                FT.validate_prevention(self.entry('It required two changes; all are made.', reworded))
+
+    def test_legitimate_uses_pass(self):
+        for gate, assessment in (
+                ('The reviewer passed it with no required change.', 'No mistake of mine was found by the review.'),
+                ('It required two changes; all are made.', 'Two mistakes of mine: an overstated title and a citation.'),
+                ('The reviewer found no gap.', 'Nothing went wrong in the computation.')):
+            with self.subTest(gate=gate):
+                FT.validate_prevention(self.entry(gate, assessment))
+
+
 class DrainingReviewsTest(unittest.TestCase):
     def body(self, text, attrs=' data-draining="true"'):
         queue = '<section id="lead-queue"' + attrs + '><ol>' + ''.join(

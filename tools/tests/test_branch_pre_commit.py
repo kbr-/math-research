@@ -33,6 +33,23 @@ class BranchPreCommitTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn('stale-check ran', result.stdout)
 
+    def stage(self, name, text):
+        (self.dir / name).write_text(text)
+        subprocess.run(['git', 'add', name], cwd=self.dir, check=True)
+
+    def test_refuses_staged_conflict_markers(self):
+        # 17 October 2026: a rebase left CLAUDE.md's conflict markers, and the file was committed with them.
+        self.stage('CLAUDE.md', 'a\n<<<<<<< ours\nb\n=======\n>>>>>>> theirs\n')
+        result = self.run_hook('#!/bin/sh\npython3 "$top/tools/staged_claims.py" --base HEAD\n')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('conflict markers', result.stderr)
+
+    def test_markers_inside_a_line_pass(self):
+        # a test fixture holding markers inside a string, as tools/tests do
+        self.stage('t.py', "TEXT = '<<<<<<< ours\\n=======\\n>>>>>>> theirs\\n'\nline = '=' * 7\n")
+        result = self.run_hook('#!/bin/sh\npython3 "$top/tools/staged_claims.py" --base HEAD\n')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_skips_when_the_active_hook_already_runs_it(self):
         result = self.run_hook('#!/bin/sh\npython3 "$top/tools/staged_claims.py" --base HEAD\n')
         self.assertEqual(result.returncode, 0)

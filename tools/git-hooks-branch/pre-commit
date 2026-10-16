@@ -5,6 +5,15 @@
 # committed from this branch with its claim's reviews stale). The active hook runs this file last, from the
 # committing worktree, so the check here uses this branch's own tool.
 top=$(git rev-parse --show-toplevel) || exit 1
+# Conflict markers left by a merge or rebase (17 October 2026: a rebase stopped on a CLAUDE.md conflict and the
+# file was staged and committed with its markers). A staged line that begins with one refuses the commit.
+markers=$(git diff --cached -U0 --no-color --diff-filter=ACMR | grep -E '^\+(<{7}( |$)|={7}$|>{7}( |$))' | head -3)
+if [ -n "$markers" ]; then
+  echo "Commit refused: staged lines hold merge conflict markers:" >&2
+  echo "$markers" >&2
+  echo "Resolve the conflict in each file (git diff --cached shows where), stage it again and commit again." >&2
+  exit 1
+fi
 [ -f "$top/tools/staged_claims.py" ] && [ -f "$top/research/claims/index.json" ] || exit 0
 active=$(git rev-parse --git-path hooks/pre-commit)
 grep -q 'staged_claims\.py' "$active" 2>/dev/null && exit 0
