@@ -28,6 +28,9 @@ class SidePages(unittest.TestCase):
         self.assertNotIn('<!-- THREAD',side)
         self.assertEqual({p.name for p in (out/'branches/alpha').iterdir()},{'index.html','revision.json','notebook-source.html'})
         self.assertEqual(len(json.loads((out/'notebooks.json').read_text())),2)
+        self.assertIn('<strong>Cite as:</strong> Kamil Braun, <cite>Alpha</cite>, Noemesis research notebooks, '
+                      '<a href="https://example.github.io/math-research/branches/alpha/">',side)
+        self.assertIn('id="cite-this-notebook"',(out/'branches/alpha/notebook-source.html').read_text())
     def test_live_refresh_is_scoped(self):
         main=snapshot(self.root)[2];side=snapshot(self.root,'alpha')[2]
         p=self.root/'research/branches/alpha/notebook.html';p.write_text(p.read_text().replace('Side content','Edited content'))

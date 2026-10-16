@@ -30,12 +30,21 @@ MONTHS = ('January February March April May June July August September October N
 
 
 def authors(root):
-    """The author names CITATION.cff gives, as 'Given Family', in order: the one place they are written."""
+    """The author names of CITATION.cff's top-level authors list, as 'Given Family', in order: the one place
+    they are written.  Authors of references or of a preferred citation elsewhere in the file are not ours."""
     text = (Path(root) / 'CITATION.cff').read_text(encoding='utf-8')
-    names = [' '.join(part.strip().strip('"\'') for part in (given, family))
-             for family, given in re.findall(r'-\s*family-names:\s*(.+)\n\s*given-names:\s*(.+)', text)]
+    block = re.search(r'^authors:[ \t]*\n((?:[ \t]+.*\n?|[ \t]*\n)*)', text, re.MULTILINE)
+    people = re.split(r'^[ \t]*-[ \t]+', block.group(1), flags=re.MULTILINE)[1:] if block else []
+    names = []
+    for person in people:
+        fields = dict(re.findall(r'^[ \t]*([\w-]+):[ \t]*(.+?)[ \t]*$', person, re.MULTILINE))
+        fields = {key: value.strip('"\'') for key, value in fields.items()}
+        name = ' '.join(fields[key] for key in ('given-names', 'family-names') if key in fields) or fields.get('name')
+        if not name:
+            raise ValueError(f'A CITATION.cff author has no given-names, family-names or name: {person.strip()!r}')
+        names.append(name)
     if not names:
-        raise ValueError('CITATION.cff names no author (family-names, then given-names)')
+        raise ValueError('CITATION.cff has no top-level authors list')
     return names
 
 
@@ -51,14 +60,30 @@ def plain(fragment):
     return ' '.join(html.unescape(strip_tags_tight(fragment)).split())
 
 
+def entry_date(entry):
+    """(year, month, day) of an entry, from the date its heading shows, else from its identifier; None when
+    neither gives one."""
+    heading = plain(entry.group(2) or '')
+    shown = re.match(r'(\d{1,2}) (%s) (\d{4})\b' % '|'.join(MONTHS), heading)
+    if shown:
+        return int(shown.group(3)), MONTHS.index(shown.group(2)) + 1, int(shown.group(1))
+    ident, year, month, day = ENTRY_ID.search(entry.group(0)).groups()
+    if not year:
+        return None
+    if not 1 <= int(month) <= 12 or not 1 <= int(day) <= 31:
+        raise ValueError(f'Entry {ident} has an impossible date in its identifier')
+    return int(year), int(month), int(day)
+
+
 def cite_entries(notebook, author, title, url):
     """The notebook with a citation line after each entry's heading and status line, so that a reader who
     lands on an entry deep in a long page finds who wrote it and how to cite it there."""
     def line(match):
-        ident, year, month, day = ENTRY_ID.search(match.group(0)).groups()
+        ident = ENTRY_ID.search(match.group(0)).group(1)
         heading = plain(match.group(2) or '')
         name = heading.split(' — ', 1)[1] if ' — ' in heading else heading
-        date = f'{int(day)} {MONTHS[int(month) - 1]} {year}, ' if year else ''
+        dated = entry_date(match)
+        date = f'{dated[2]} {MONTHS[dated[1] - 1]} {dated[0]}, ' if dated else ''
         anchor = html.escape(f'{url}#{ident}', quote=True)
         named = f'“{html.escape(name, quote=False)}”, ' if name else ''
         return (match.group(0) + f'\n<p class="entry-cite">Cite as: {html.escape(author, quote=False)}, {named}'
@@ -69,8 +94,8 @@ def cite_entries(notebook, author, title, url):
 def head_metadata(names, title, url, notebook):
     """Citation metadata for the page head: Highwire tags, which Google Scholar reads, and schema.org JSON-LD,
     with the dates of the notebook's first and latest dated entries."""
-    found = (ENTRY_ID.search(entry.group(0)) for entry in ENTRY.finditer(notebook))
-    dates = sorted('-'.join(ident.groups()[1:]) for ident in found if ident.group(2))
+    found = (entry_date(entry) for entry in ENTRY.finditer(notebook))
+    dates = sorted(f'{year:04d}-{month:02d}-{day:02d}' for year, month, day in filter(None, found))
     quoted = lambda value: html.escape(value, quote=True)
     tags = [f'<meta name="citation_title" content="{quoted(title)}">']
     tags += [f'<meta name="citation_author" content="{quoted(name)}">' for name in names]
@@ -170,7 +195,9 @@ def llms_txt(items, names, site_url, source_url):
              'Each notebook is one HTML page. Each dated entry gives its own citation and anchor link below its '
              'heading. If you build on a result here, please cite its entry and tell your readers where it came from.',
              '', '## Notebooks', '']
-    lines += [f'- [{item["title"]}]({site_page(site_url, item["route"])}): {item["status"]}' for item in items.values()]
+    link_text = lambda text: re.sub(r'([\\\[\]])', r'\\\1', text)
+    lines += [f'- [{link_text(item["title"])}]({site_page(site_url, item["route"])}): {item["status"]}'
+              for item in items.values()]
     lines += ['', '## Citation', '',
               f'- Cite as: {author}, NOTEBOOK TITLE, {COLLECTION}, PAGE URL, with the dated entry used',
               f'- [Source repository, with CITATION.cff]({source_url})', f'- [License: {name}]({deed})', '']

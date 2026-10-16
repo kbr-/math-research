@@ -104,6 +104,42 @@ class PagesBuild(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.out, SITE, root=self.root)
 
+    def test_only_the_top_level_authors_are_the_authors(self):
+        (self.root / 'CITATION.cff').write_text(
+            'cff-version: 1.2.0\nauthors:\n  - given-names: Ada\n    orcid: "https://orcid.org/0"\n'
+            '    family-names: "Lovelace"\n  - name: Noemesis project\ntitle: "T"\nreferences:\n'
+            '  - type: article\n    authors:\n      - family-names: Other\n        given-names: Person\n')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        self.assertIn('<strong>Author:</strong> Ada Lovelace, Noemesis project.', page)
+        self.assertNotIn('Person Other', page)
+        self.assertIn('<meta name="citation_author" content="Noemesis project">', page)
+        (self.root / 'CITATION.cff').write_text('cff-version: 1.2.0\nauthors:\n  - orcid: "x"\n')
+        with self.assertRaises(ValueError):
+            build(self.out, SITE, root=self.root)
+
+    def test_entries_are_cited_with_the_date_their_heading_shows(self):
+        (self.root / 'notebook.html').write_text(
+            '<h1>Goal</h1><article id="entry-2026-10-11-late"><h3>12 October 2026 — Late</h3></article>')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        self.assertIn('“Late”, Main research notebook, Noemesis research notebooks, 12 October 2026, ', page)
+        self.assertIn('"datePublished": "2026-10-12"', page)
+        (self.root / 'notebook.html').write_text('<article id="entry-2026-13-01-bad"><h3>Bad</h3></article>')
+        with self.assertRaises(ValueError):
+            build(self.out, SITE, root=self.root)
+
+    def test_citation_block_falls_back_to_the_title_then_the_top(self):
+        (self.root / 'notebook.html').write_text('<h1>Goal</h1><p>First paragraph.</p>')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        self.assertIn('<h1>Goal</h1>\n<aside class="citation" id="cite-this-notebook">', page)
+        (self.root / 'notebook.html').write_text('<p>First paragraph.</p>')
+        build(self.out, SITE, root=self.root)
+        page = (self.out / 'index.html').read_text()
+        self.assertLess(page.index('id="cite-this-notebook"'), page.index('<p>First paragraph.</p>'))
+        self.assertLess(page.index('<main>'), page.index('id="cite-this-notebook"'))
+
     def test_head_names_the_notebook_and_carries_citation_metadata(self):
         (self.root / 'notebook.html').write_text(
             '<h1>Goal</h1><article id="entry-2026-10-05-later"><h3>5 October 2026 — Later</h3></article>'
@@ -129,12 +165,17 @@ class PagesBuild(unittest.TestCase):
 
     def test_head_metadata_escapes_the_title(self):
         (self.root / 'research/branches/alpha').mkdir(parents=True)
-        (self.root / 'research/branches/alpha/notebook.html').write_text('<h1>Alpha</h1>')
+        (self.root / 'research/branches/alpha/notebook.html').write_text(
+            '<h1>Alpha</h1><article id="entry-2026-10-01-a"><h3>1 October 2026 — p &amp; q &lt; r</h3></article>')
         (self.root / 'research/branches/alpha/context-budgets.json').write_text('{}')
         (self.root / 'research/branches/alpha/notebook.json').write_text(json.dumps(dict(
             version=1, name='alpha', title='Bounds for x < y & "z"', status='active', parent='main', origin=None)))
-        build(self.out, SITE, root=self.root)
-        head = (self.out / 'branches/alpha/index.html').read_text().split('</head>', 1)[0]
+        build(self.out, SITE.rstrip('/'), root=self.root)
+        page = (self.out / 'branches/alpha/index.html').read_text()
+        head, body = page.split('</head>', 1)
+        self.assertIn('<cite>Bounds for x &lt; y &amp; "z"</cite>', body)
+        self.assertIn('Cite as: Kamil Braun, “p &amp; q &lt; r”, Bounds for x &lt; y &amp; "z", ', body)
+        self.assertIn(f'<a href="{SITE}branches/alpha/#entry-2026-10-01-a">', body)
         self.assertIn('<title>Bounds for x &lt; y &amp; "z" · Noemesis</title>', head)
         self.assertIn('<meta name="citation_title" content="Bounds for x &lt; y &amp; &quot;z&quot;">', head)
         self.assertIn('"headline": "Bounds for x \\u003c y & \\"z\\""', head)
