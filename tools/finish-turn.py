@@ -1200,6 +1200,23 @@ def validate_plainest(text, statuses=()):
                              'applies: an instance the plain bound decides tests nothing (AGENTS.md)')
 
 
+N_UPPER_RE = re.compile(r'\\log\\log N\s*\\le\s*\d|\\log N\s*\\le\s*\d|(?<![\w\\])N\s*\\le\s*\d')
+
+
+def validate_unbounded_witness(text):
+    """A Nonvacuity paragraph does not bound N from above: its witness must work at every large N.
+
+    On 16 October 2026 a witness's cost was at most 2 only "for N with 4 log log N <= 4096", which the draft's
+    recheck passed and its reviewer caught: a statement about all large N needs a witness at unbounded N.  On
+    the record's 376 Nonvacuity paragraphs of that day the pattern matched none."""
+    given = re.search(r'<strong>Nonvacuity\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    found = N_UPPER_RE.search(given.group(1)) if given else None
+    if found:
+        raise ValueError(f'The Nonvacuity paragraph bounds N from above ("{found.group(0)}"): a witness of a '
+                         'statement about all large N must satisfy the hypotheses at unbounded N; choose its '
+                         'parameters so that every constraint holds as N grows (AGENTS.md)')
+
+
 def validate_proved_instance(text, statuses=()):
     """An entry registering a proved statement exhibits an input that satisfies its hypotheses.
 
@@ -1586,6 +1603,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_hypothesis_steps(text, statuses)
             validate_baseline(text, statuses)
             validate_plainest(text, statuses)
+            validate_unbounded_witness(text)
         else:
             validate_plainest(text)
             validate_structural_reason(text, claims=entry_claims(body, article))

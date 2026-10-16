@@ -349,6 +349,18 @@ class PlainestBoundTest(unittest.TestCase):
                                              'statement is an identity of formal series.</p>'), {'working_proof'})
 
 
+class UnboundedWitnessTest(unittest.TestCase):
+    def test_a_witness_bounding_n_from_above_is_refused(self):
+        # 16 October 2026: a cost at most 2 only "for N with 4 log log N <= 4096".
+        bounded = (r'<p><strong>Nonvacuity.</strong> The cost is at most \(2\) when \(\log(1+y_0)\le8^4\), true '
+                   r'for \(N\) with \(4\log\log N\le4096\).</p>')
+        with self.assertRaisesRegex(ValueError, 'bounds N from above'):
+            FT.validate_unbounded_witness(bounded)
+        for fine in (r'<p><strong>Nonvacuity.</strong> \(w&lt;m\) when \(\log N&gt;12^4\); \(j\le\ell_1\).</p>',
+                     r'<p><strong>Nonvacuity.</strong> \(\log y\le\log N\) and \(2^{-j}\le w\) for large \(N\).</p>'):
+            FT.validate_unbounded_witness(fine)
+
+
 class UnlistedSuggestionTest(unittest.TestCase):
     def test_a_gate_reporting_a_suggestion_needs_the_list(self):
         # 16 October 2026: a next attempt taken from a reviewer's suggestion in the author's words, with no list.

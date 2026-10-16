@@ -35,6 +35,11 @@ A rule written in answer to a mistake is applied at once to whatever is being wr
 same session, by rereading that text against the rule before sending it on (16 October 2026: a
 missing union over a parameter recurred minutes after a rule against it).
 
+A constraint on a witness or a construction is checked as a function of the growing parameter, in
+the limit, not at the size it happens to be written for: a condition that holds "for N up to" some
+bound is a failed constraint (16 October 2026: a witness's cost stayed below its budget only while
+log log N was below 1024).
+
 A negative sentence ("no estimate applies", "nothing covers it", "the record lacks it") is a claim
 like any other: write it only beside the attempt that failed, never as the plausible default when a
 paragraph needs filling (16 October 2026: "no one-dimensional estimate applies" was false for a
