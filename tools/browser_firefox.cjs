@@ -33,6 +33,7 @@ function userJs(downloads) {
 }
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const {pause, isLocal} = require('./browser_pacing.cjs');
 
 // Start Firefox on a temporary profile and return the BiDi WebSocket address it announces.
 function launch(profile, headed, timeoutMs) {
@@ -120,7 +121,7 @@ const CANDIDATES = `(text) => Array.from(document.querySelectorAll('a, button, [
     && getComputedStyle(e).visibility !== 'hidden')`;
 
 // Open opt.url in Firefox and save the page or the downloaded file to opt.out. Returns what happened.
-async function firefoxGet(opt, cookies, extension, pickTarget, isChallenge, log, cookiesFor = null) {
+async function firefoxGet(opt, cookies, extension, pickTarget, isChallenge, log) {
   const ms = opt.timeout * 1000;
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'browser-get-firefox-'));
   const downloads = path.join(profile, 'downloads');
@@ -156,33 +157,19 @@ async function firefoxGet(opt, cookies, extension, pickTarget, isChallenge, log,
     if (main.length) result.status = main[main.length - 1].params.response.status;
     const page = await bidi.send('script.evaluate', {target: {context}, awaitPromise: false,
       expression: '[location.href, document.title, document.documentElement ? document.documentElement.outerHTML : ""]'});
-    let [href, title, html] = plain(page.result);
-    // A redirect to another site (a doi.org link to its publisher): load that site's cookies too and open
-    // the page again, so the session that passes its wall comes along.
-    const landed = new URL(href).hostname;
-    if (cookiesFor && landed !== new URL(opt.url).hostname) {
-      const more = cookiesFor(landed);
-      if (more.length) {
-        for (const c of more) {
-          await bidi.send('storage.setCookie', {cookie: {name: c.name, value: {type: 'string', value: c.value},
-            domain: c.domain, path: c.path || '/'}});
-        }
-        bidi.events.length = 0;
-        await bidi.send('browsingContext.navigate', {context, url: href, wait: 'complete'}, ms)
-          .catch(e => log(`navigation: ${e.message.split('\n')[0]}`));
-        await sleep(200);
-        const again = bidi.events.filter(e => e.method === 'network.responseCompleted'
-          && e.params.context === context && e.params.navigation);
-        if (again.length) result.status = again[again.length - 1].params.response.status;
-        [href, title, html] = plain((await bidi.send('script.evaluate', {target: {context}, awaitPromise: false,
-          expression: '[location.href, document.title, document.documentElement ? document.documentElement.outerHTML : ""]'})).result);
-      }
-    }
+    const [href, title, html] = plain(page.result);
     result.finalUrl = href;
     result.challenge = isChallenge(title || '', html || '');
     fs.mkdirSync(path.dirname(path.resolve(opt.out)), {recursive: true});
     let file = fs.readdirSync(downloads).length ? await waitForDownload(downloads, 5000) : null;
-    if (!file && opt.click) {
+    if (!file && opt.click && !result.challenge) {
+      // A person reads the page for a few seconds and scrolls before looking for the link.
+      await pause(href, 2500, 6000);
+      for (let step = 0; step < 3; step++) {
+        await bidi.send('script.evaluate', {target: {context}, awaitPromise: false,
+          expression: `window.scrollBy(0, ${120 + Math.floor(Math.random() * 200)})`});
+        await pause(href, 400, 1200);
+      }
       const found = await bidi.send('script.evaluate', {target: {context}, awaitPromise: false,
         expression: `(${CANDIDATES})(${JSON.stringify(opt.click)}).map(e => ({href: e.getAttribute('href'), text: e.textContent.trim().slice(0, 60)}))`});
       const candidates = plain(found.result);
@@ -192,10 +179,17 @@ async function firefoxGet(opt, cookies, extension, pickTarget, isChallenge, log,
       const element = await bidi.send('script.evaluate', {target: {context}, awaitPromise: false, resultOwnership: 'root',
         expression: `(${CANDIDATES})(${JSON.stringify(opt.click)})[${index}]`});
       await bidi.send('script.callFunction', {target: {context}, awaitPromise: false,
-        functionDeclaration: 'e => e.scrollIntoView({block: "center"})', arguments: [element.result]});
+        functionDeclaration: 'e => e.scrollIntoView({behavior: "smooth", block: "center"})', arguments: [element.result]});
+      await pause(href, 600, 1400);
+      // The pointer travels to the link over a few hundred milliseconds and rests on it before the click.
+      const local = isLocal(new URL(href).hostname);
+      const travel = local ? 0 : 250 + Math.floor(Math.random() * 450);
       await bidi.send('input.performActions', {context, actions: [{type: 'pointer', id: 'mouse', actions: [
-        {type: 'pointerMove', x: 0, y: 0, origin: {type: 'element', element: {sharedId: element.result.sharedId}}},
-        {type: 'pointerDown', button: 0}, {type: 'pointerUp', button: 0}]}]});
+        {type: 'pointerMove', x: 40 + Math.floor(Math.random() * 300), y: 60 + Math.floor(Math.random() * 300), duration: 0},
+        {type: 'pointerMove', x: 0, y: 0, duration: travel, origin: {type: 'element', element: {sharedId: element.result.sharedId}}},
+        {type: 'pause', duration: local ? 0 : 150 + Math.floor(Math.random() * 450)},
+        {type: 'pointerDown', button: 0}, {type: 'pause', duration: local ? 0 : 70 + Math.floor(Math.random() * 90)},
+        {type: 'pointerUp', button: 0}]}]});
     }
     if (!file && (opt.click || opt.download)) file = await waitForDownload(downloads, ms);
     if (file) fs.copyFileSync(file, opt.out);

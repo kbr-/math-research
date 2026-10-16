@@ -43,10 +43,14 @@ class Site(http.server.BaseHTTPRequestHandler):
         return self.answer(403, b'<html><title>Verify you are human</title>captcha</html>')
 
 
+PACING_MODULE = Path(__file__).resolve().parents[1] / 'browser_pacing.cjs'
+
+
 def node(script, *args):
     """Run a few lines against the tool's exported functions, without a browser."""
     return subprocess.run([NODE, '-e', f'const t = require({json.dumps(str(TOOL))});\n'
-                           f'const f = require({json.dumps(str(FIREFOX_MODULE))});\n{script}', *args],
+                           f'const f = require({json.dumps(str(FIREFOX_MODULE))});\n'
+                           f'const p = require({json.dumps(str(PACING_MODULE))});\n{script}', *args],
                           capture_output=True, text=True, timeout=10)
 
 
@@ -97,6 +101,30 @@ console.log(JSON.stringify([
         result = subprocess.run([NODE, str(TOOL), 'http://x.org'], capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 2)
         self.assertIn('usage', result.stderr)
+
+    def test_pacing_spaces_visits_to_a_site_and_caps_them_per_hour(self):
+        with tempfile.TemporaryDirectory() as home:
+            done = node('''
+(async () => {
+  const now = 100000;
+  const out = [
+    p.plan([], now), p.plan([now - 30], now), p.plan([now - 200], now),
+    p.plan(Array.from({length: 10}, (_, i) => now - 3000 + i * 200), now).refuse !== undefined,
+    p.plan([now - 3700], now), p.site('www.researchgate.net'), p.isLocal('127.0.0.1'), p.isLocal('arxiv.org')];
+  // A local page is never paced; an outside one is recorded, and a second at once must wait.
+  await p.beforeVisit('http://127.0.0.1:9/x', () => {}, process.argv[1]);
+  await p.beforeVisit('https://www.example.org/a', () => {}, process.argv[1]);
+  const fs = require('node:fs');
+  const visits = JSON.parse(fs.readFileSync(process.argv[1] + '/.cache/browser-get/visits.json', 'utf8'));
+  out.push(Object.keys(visits), p.plan(visits['example.org'], Date.now() / 1000).wait > 80);
+  console.log(JSON.stringify(out));
+})();''', home)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            got = json.loads(done.stdout.strip().splitlines()[-1])
+            self.assertEqual(got[0], {'wait': 0})
+            self.assertEqual(got[1], {'wait': 60})
+            self.assertEqual(got[2], {'wait': 0})
+            self.assertEqual(got[3:], [True, {'wait': 0}, 'researchgate.net', True, False, ['example.org'], True])
 
     def download(self, engine):
         with tempfile.TemporaryDirectory() as tmp:

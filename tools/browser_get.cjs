@@ -25,7 +25,12 @@
 //
 // Prints the final URL, the HTTP status of the main response, whether the page looks like a
 // challenge, and the saved file's size; exits 1 when the status is 400 or above or nothing was saved,
-// and 2 on a usage error or when Playwright cannot be loaded.
+// 2 on a usage error or when Playwright cannot be loaded, and 3 when pacing refuses the visit.
+//
+// Pacing (tools/browser_pacing.cjs): visits to one outside site are at least 90 s apart and at most 10
+// an hour, recorded across runs; within a visit the tool reads for a few seconds, scrolls, and moves the
+// pointer to the link before clicking, as a person does. A doi.org link is resolved first by asking
+// doi.org alone, so the publisher's page is opened once. On a challenge page the tool does not click.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -109,6 +114,36 @@ function savedCookies(opt) {
   return list;
 }
 
+// Where a doi.org link leads, asked of doi.org alone (it answers with a redirect and nothing is fetched
+// from the publisher), so the browser opens the publisher's page once, with its cookies.
+async function resolveDoi(url) {
+  let current = url;
+  for (let hop = 0; hop < 3 && /(^|\.)doi\.org$/.test(new URL(current).hostname); hop++) {
+    const answer = await fetch(current, {method: 'HEAD', redirect: 'manual'}).catch(() => null);
+    const next = answer && answer.headers.get('location');
+    if (!next) break;
+    current = new URL(next, current).href;
+  }
+  return current;
+}
+
+// Before either engine opens the page: resolve a doi.org link, gather the cookies of the site it lands
+// on, and space the visit after the last one to that site (tools/browser_pacing.cjs). Exits 2 on a bad
+// cookie file and 3 when pacing refuses the visit.
+async function prepare(opt) {
+  opt.url = await resolveDoi(opt.url);
+  let cookies;
+  try { cookies = savedCookies(opt); } catch (e) { console.error(`browser_get: ${e.message}`); process.exit(2); }
+  try {
+    await require('./browser_pacing.cjs').beforeVisit(opt.url, line => console.log(line));
+  } catch (e) {
+    console.error(`browser_get: ${e.message}`);
+    process.exit(3);
+  }
+  console.log(`opening: ${opt.url}`);
+  return cookies;
+}
+
 // The default engine: the installed Firefox, driven over WebDriver BiDi (tools/browser_firefox.cjs).
 async function mainFirefox(opt) {
   if (typeof WebSocket === 'undefined') {
@@ -118,13 +153,10 @@ async function mainFirefox(opt) {
       ...process.argv.slice(2)], {stdio: 'inherit'});
     process.exit(again.status === null ? 1 : again.status);
   }
-  let cookies;
-  try { cookies = savedCookies(opt); } catch (e) { console.error(`browser_get: ${e.message}`); process.exit(2); }
+  const cookies = await prepare(opt);
   const {firefoxGet} = require('./browser_firefox.cjs');
-  // Cookies of a site the page redirects to come from the same places, unless a file was named.
-  const cookiesFor = opt.cookies || opt.noCookies ? null : host => savedCookies({...opt, url: `https://${host}/`});
   const result = await firefoxGet(opt, cookies, blocker(opt), pickTarget, isChallenge,
-    (line, error) => (error ? console.error : console.log)(line), cookiesFor);
+    (line, error) => (error ? console.error : console.log)(line));
   console.log(`final URL: ${result.finalUrl}`);
   console.log(`status: ${result.status}`);
   console.log(`challenge page: ${result.challenge ? 'yes' : 'no'}`);
@@ -138,8 +170,7 @@ async function main() {
   if (opt.engine === 'firefox') return mainFirefox(opt);
   const playwright = loadPlaywright();
   if (!playwright) { console.error('browser_get: Playwright cannot be loaded (local, NODE_PATH or global).'); process.exit(2); }
-  let cookies;
-  try { cookies = savedCookies(opt); } catch (e) { console.error(`browser_get: ${e.message}`); process.exit(2); }
+  const cookies = await prepare(opt);
   const extension = blocker(opt);
   let browser = null;
   let context;
@@ -178,9 +209,19 @@ async function main() {
       download.catch(() => {});
       pdf.catch(() => {});
       if (opt.click) {
+        // As in the Firefox engine: read a few seconds, scroll, rest the pointer on the link, then click.
+        const {pause, isLocal} = require('./browser_pacing.cjs');
+        await pause(page.url(), 2500, 6000);
+        for (let step = 0; step < 3; step++) {
+          await page.mouse.wheel(0, 120 + Math.floor(Math.random() * 200));
+          await pause(page.url(), 400, 1200);
+        }
         const target = await clickTarget(page, opt.click);
         console.log(`clicking: ${target.describe}`);
-        await target.locator.click({timeout: ms});
+        const local = isLocal(new URL(page.url()).hostname);
+        await target.locator.hover({timeout: ms});
+        await pause(page.url(), 150, 600);
+        await target.locator.click({timeout: ms, delay: local ? 0 : 70 + Math.floor(Math.random() * 90)});
       }
       const got = await Promise.any([download, pdf]);
       if (got.download) await got.download.saveAs(opt.out);
