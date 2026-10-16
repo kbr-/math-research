@@ -1,0 +1,476 @@
+{
+  "base_sha256": "6edc24d3cb0cfc6fa7006513fc7cc9706ca1140006ab6104aeae7cfcd32b7ab8",
+  "provenance": {
+    "revision": "db2370b3021d02093dbdf300babb9794a7b8db67",
+    "date": "2026-10-16",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:fi-system-windows",
+        "summary": "Over a field k, let X_t be a finitely generated FI-set of variables (every variable in the image of X_s for s<=r) and Gamma_t polynomial systems on X_t such that every injection carries the axioms of degree <=D of Gamma_t into the degree-D closure of Gamma_t'. Then the induced substitutions carry closures into closures; the windows Q_t = V_K/(C_D cap V_K) form an FI-module generated in degree <=rK; for fixed polynomials F on a fixed index set with deg w + K <= D the common kernels form a sub-FI-module under injections fixing it; by Church-Ellenberg-Farb-Nagpal (arXiv 1210.1854, its Noetherian property and polynomial-dimension theorems) both dimensions are eventually polynomial over any field. The product and functional pigeonhole systems at fixed holes are such families in the pigeons; holes are functorial contravariantly by setting new variables to 0. For the product pigeonhole systems with K<D<=n the windows have the basis of distinct-hole monomials, dim Q_m = sum_{s<=min(K,n)} binom(n,s) m^s for every m, and along the diagonal m=t+1, n=t the hole-axiom windows form an FI-module agreeing with Q for t>=D, of dimension sum_{s<=K} binom(t,s)(t+1)^s there.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the restricted hypothesis, the corrected hole direction and the exact inert-regime count are its corrections.",
+        "record": "[FI-modules of closure windows](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-fi-windows)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Turns finite checks at a fixed number of holes into eventually polynomial families of window and kernel dimensions; no explicit range is given.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": "Closed forms for common factor kernels in the inert regime, using lem:cell-splitting."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:clique-factor-kernels",
+        "summary": "Exact F2 computation with tools/pc_closure.py, pigeonhole systems (pigeon axioms prod_j(1+x_ij), hole axioms), multilinear ring, K=1, families of single-variable inputs (g1,g2) with kernel {u in V_1: g1 g2 u in C}: at 4 pigeons, 3 holes, D=3 the six families of check:truncated-kernel-beyond-support have stacked kernel Ann(x_00), dimension 4; at 5 pigeons, 4 holes, D=3 the 15 families (x_00,y), y outside hole 0, have stacked kernel Ann(x_00), dimension 5, against summed codimension 165 in dim V_1=21; the 30 families with first input x_00 or x_10 have stacked kernel of dimension 4, refuting the predicted span{x_20,x_30,x_40} of dimension 3, and equal to Ann(x_00) cap Ann(x_10), which contains 1+x_00+x_10; the 45 families with first input in {x_00,x_10,x_20} have stacked kernel span{1+x_00+x_10+x_20,x_30,x_40}, dimension 3, as predicted before that run.",
+        "assessment": "Finite check by exact elimination with tools/pc_closure.py (factor_kernels.py, factor_kernels.json, factor_kernels_run1.txt); prediction (C) refuted in the first run and recorded; (D) predicted from the corrected reading; numbers checked by the reviewer. All instances lie below the pigeon axioms' degree, a domain model on hole-respecting assignments.",
+        "record": "[Joint-savings goal review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-factor-domination-review)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows on one instance that the joint savings of the pigeonhole families are the annihilator of one element, as lem:factor-ideal-domination proves.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": "None at these sizes: the instances are a domain model; the decisive test moves to the functional pigeonhole system."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Constructed kernels where truncation is active: new relationship with check:functional-factor-kernels, lem:top-degree-axiom-inertness. FI-modules of closure windows: new relationship with lem:fi-system-windows.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-factor-domination-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:top-degree-axiom-inertness",
+        "summary": "Over any field (multilinear ring, or Boolean axioms among G), let G and P be finite sets of polynomials, H the degree-D PC closure of G, P_D the members of P of degree exactly D, and every member of P of degree >= D. The degree-D closure of G with P equals H + span P_D, with the same members of degree below D as H, if and only if (H + span P_D) cap V_{D-1} lies in H; it suffices that the degree-D parts of P_D are linearly independent modulo the degree-D parts of members of H. For the product pigeonhole system over any field (pigeon axioms prod_j(1-x_ij) of degree n, hole axioms) and D <= n, H is the degree-D part of the vanishing ideal of the hole-respecting assignments and the closure's members of degree below D are those of H.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the exact condition and the extension to any field are its corrections.",
+        "record": "[Constructed kernels where truncation is active](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-kernel-construction)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Shows when high-degree axioms leave a window a domain model, so that savings computed there are union-of-supports counts; it reclassifies the line's pigeonhole evidence and tells where a test of truncation must be run.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": "None for the lemma; tests of truncation effects run on systems whose axioms lie inside the window."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Idempotent common denominators: new relationship with lem:idempotent-common-denominator. FI-modules of closure windows: new relationship with lem:fi-system-windows.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-kernel-construction"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cyclic-repair-map",
+        "summary": "For R=k[x_1,...,x_n], an R-module M and a linear map T:R_<=d to M intertwining every multiplication by x_i within the window, T(q)=qT(1). A filtered image of one of degree b costs at most b; maps R/I to M correspond to Ann_M(I). This describes linear compatible repair, not arbitrary proof transformations or a module quotient for an unverified PC pseudoideal.",
+        "assessment": "Working self-contained proof of the standard cyclic-module universal property, passed by the sole fresh-context medium reviewer.",
+        "record": "[Compatible repair and separation](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-15-multiplier-separation)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Explains why a common multiplier preserves all paid linear and multiplication operations; no selection theorem follows.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": "Use only with a verified filtered action and a separate selection/survival theorem."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Reviewed mathematics unchanged; final evidence includes explicit reboot timing limitation. Certified repair: new relationship with thm:certified-repair-composition. FI-modules of closure windows: new relationship with lem:fi-system-windows.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cell-splitting",
+        "summary": "Cell splitting: over any field, for any set Q of column-injective assignments of m rows to N holes (e.g. cut by W clauses on arbitrary cell forms) and a column j, with fibers Q^{(empty)} and Q^{(i)} (row i at column j) on the other holes and rho_j = sum_i x_ij, the vanishing tops A(Q) in the weak top algebra T have a filtration by row-sum submodules with factors (1) sum_i x_ij (x) A(Q^{(i)}), (2) rho_j (x) A(Q^{(empty)})/(A(Q^{(empty)}) cap cap_i A(Q^{(i)})), (3) cap over all states of A(Q^{(s)}); hence V(Q) = T/A(Q) is an extension of T'/cap_s A(Q^{(s)}) by (sum_i x_ij V(Q^{(i)}))/(image of factor 2), and the Koszul condition of thm:global-closure-gluing for Q through D follows from it for the row fibers through D-1, Tor_1 of T'/cap_s A(Q^{(s)}) through D, and an (L)-type injectivity for factor 2, over Lambda_{m-1} in characteristic p (the row fibers lie in occupancy class m-1); only the row-fiber condition recurses on sets, and working on the quotient side avoids the socle shift of the ideal-side route. Generalizes lem:hole-splitting (u = m-1, after a change of basis in column j) to cell forms.",
+        "assessment": "Working proof after a fresh-context review, with an exact check of the dimension identity (m = 3, N = 5).",
+        "record": "[Cell splitting entry](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "matching-php"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Extends the closure route recursion from column forms to W arbitrary cell forms.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": "Measure the intersection Koszul condition and the (L)-type condition on cell-form members."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Monotone fibers entry: new relationship with cor:monotone-fiber-recursion. FI-modules of closure windows: new relationship with lem:fi-system-windows.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-25-cell-splitting"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:fi-system-windows::cites::check:clique-factor-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:fi-system-windows",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:clique-factor-kernels",
+        "locator": null
+      },
+      "scope": "Its nonvacuity instance at five pigeons.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "db2370b3021d02093dbdf300babb9794a7b8db67",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its nonvacuity instance at five pigeons."
+      }
+    },
+    {
+      "id": "lem:fi-system-windows::cites::lem:top-degree-axiom-inertness",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:fi-system-windows",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:top-degree-axiom-inertness",
+        "locator": null
+      },
+      "scope": "Gives the window dimension of the product pigeonhole systems below the pigeon axioms' degree.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "db2370b3021d02093dbdf300babb9794a7b8db67",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Gives the window dimension of the product pigeonhole systems below the pigeon axioms' degree."
+      }
+    },
+    {
+      "id": "lem:fi-system-windows::cites::lem:cyclic-repair-map",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:fi-system-windows",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cyclic-repair-map",
+        "locator": null
+      },
+      "scope": "The Yoneda reading behind the user's question; the windows are modules over a category of degrees.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "db2370b3021d02093dbdf300babb9794a7b8db67",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The Yoneda reading behind the user's question; the windows are modules over a category of degrees."
+      }
+    },
+    {
+      "id": "lem:fi-system-windows::cites::lem:cell-splitting",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:fi-system-windows",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cell-splitting",
+        "locator": null
+      },
+      "scope": "The tool named for closed forms of the kernels in the inert regime.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-16-fi-windows"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "db2370b3021d02093dbdf300babb9794a7b8db67",
+        "date": "2026-10-16",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The tool named for closed forms of the kernels in the inert regime."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
