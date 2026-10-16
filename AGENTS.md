@@ -406,15 +406,17 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   never stood near these objects because nobody thought of applying them here, from any field
   (mathematics, computer science, theoretical physics, chemistry or anything else), each with the
   translation that would carry the objects across, what a theorem there would give, and the smallest
-  test of the translation. Run every cheap test named in these sections within the review cycle
-  itself, and end each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified
-  or "Not run:" and the reason (the finisher checks this); falsified items stay listed and count
-  toward the minimums (user, 25 September 2026). A Passed item states, after `<strong>Break
-  point.</strong>`, where its translation would break and what the test found there: a test of the
-  named theorem alone, or of a statement recalled and unread, is Not run for the translation (the
-  finisher checks the paragraph). Write each item's outcome word last, from what its Break point
-  found, and a review's Decision after its Attempt has tried the step it names with the sources at
-  hand. A Not run item resting on a source recalled or unread says after
+  test of the translation. Choose each test by where the question is open, not by the instrument at
+  hand: before building it, name the instances on which the recorded bounds and the plainest count
+  leave its outcome undecided, and run it there. Run every cheap test named in these sections within
+  the review cycle itself, and end each item with its outcome, `<strong>Test.</strong>` followed by
+  Passed, Falsified or "Not run:" and the reason (the finisher checks this); falsified items stay
+  listed and count toward the minimums (user, 25 September 2026). A Passed item states, after
+  `<strong>Break point.</strong>`, where its translation would break and what the test found there:
+  a test of the named theorem alone, or of a statement recalled and unread, is Not run for the
+  translation (the finisher checks the paragraph). Write each item's outcome word last, from what
+  its Break point found, and a review's Decision after its Attempt has tried the step it names with
+  the sources at hand. A Not run item resting on a source recalled or unread says after
   `<strong>Retrieval.</strong>` what retrieval was tried (tools/held_sources.py,
   tools/arxiv_source.py, tools/browser_get.cjs, a search) and how it ended (the finisher checks).
   Outside draining, the review marks its three most promising passed Outside leads and two most
