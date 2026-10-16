@@ -32,9 +32,12 @@ def certified(m, ell, k, r):
             if jj < 1:
                 continue
             y = (1 - eps / 2) * mu * r / v
-            g = -math.log(-math.expm1(-y))
-            tail = math.exp(-eps * c0) / (jj * -math.expm1(-pi * c0))
-            value = math.log(mass) - math.log(2) - math.log(g + tail)
+            # Logarithms throughout: g(y) = -ln(1 - e^{-y}) underflows for large y.
+            log_g = math.log(-math.log1p(-math.exp(-y))) if y < 700 else -y
+            log_tail = -eps * c0 - math.log(jj) - math.log(-math.expm1(-pi * c0))
+            top = max(log_g, log_tail)
+            log_sum = top + math.log(math.exp(log_g - top) + math.exp(log_tail - top))
+            value = math.log(mass) - math.log(2) - log_sum
             if value > best[0]:
                 best = (value, mu, eps)
     cap = r / (8 * ell) - math.log(2)
