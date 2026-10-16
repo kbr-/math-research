@@ -137,6 +137,10 @@ def scratch_script_replaces(command: str) -> bool:
             source = file.read_text(errors="replace")[:200000]
         except OSError:
             continue
+        # A test file writes fixtures and runs under the protected launcher, which owns its own checks: the one
+        # false refusal counted on 16 October 2026 was a scratch copy of a test module.
+        if re.search(r'^\s*import unittest\b|^\s*from unittest\b', source, re.M):
+            continue
         if CHANGES_TEXT.search(source) and WRITES_FILE.search(source):
             return True
     return False

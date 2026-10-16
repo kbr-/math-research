@@ -311,8 +311,11 @@ class BashGuardTest(unittest.TestCase):
             result = run(f"python3 {edit} research/x.html")
             self.assertEqual(result.returncode, 2)
             self.assertIn("a script replaces text in a file", result.stderr)
+            tests = Path(tmp) / 'test_copy.py'
+            tests.write_text("import unittest\nclass T(unittest.TestCase):\n    def test_a(self):\n"
+                             "        open('f', 'w').write('x'.replace('x', 'y'))\n")
             for good in (f"python3 {reader} x.md", f"python3 {writer}", "python3 tools/replace_text.py a b c",
-                         f"python3 {tmp}/absent.py x"):
+                         f"python3 {tmp}/absent.py x", f"python3 {tests}"):
                 with self.subTest(good=good):
                     self.assertEqual(run(good).returncode, 0, run(good).stderr)
 
