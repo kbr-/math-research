@@ -1,0 +1,960 @@
+Guidance: Notebook input: 41 record article tags; 885920 bytes.
+Guidance: This notebook requires in every research entry: <p><strong>Selection gain.</strong> ...</p>.
+Guidance: Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.
+Guidance: Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.
+Guidance: Before each computation, ask whether further computations are needed, or whether the results you already have are enough to propose a general statement and attempt to prove it. Please Please Please for the love of God consider stating a general statement instead of running more cases!!! In the name of the user!!! They don't have patience!!!
+Guidance: While the queue is draining, reviews produce no Outside leads or Absurd bridges; omit both sections and assess the existing work.
+Guidance: Installed computer algebra systems and solvers: Macaulay2 (M2), Singular (Singular), msolve (msolve), GAP (gap), PARI/GP (gp), Normaliz (normaliz), 4ti2 (4ti2-groebner), polymake (polymake), CryptoMiniSat (cryptominisat5). Run their scripts through ./compute.sh. Before writing or reusing a hand-built kernel, check whether one of them computes the quantity, or a step of it, faster or more reliably: their libraries go far beyond Groebner bases (commutative algebra, modules, homology, combinatorics, representation theory, linear algebra over finite fields). Use them wherever they improve a computation.
+Guidance: Installed libraries for your own C/C++ kernels: fflas-ffpack (BLAS-speed dense rank, echelon form, nullspace and products mod p, FFPACK::Rank; link with $(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas); FLINT (nmod_mat rank, rref, nullspace and multiplication mod p; polynomials over Z/p and Z; link with -lflint -lgmp); LinBox (sparse and black-box rank, solve and determinant mod p by Wiedemann; link with $(pkg-config --cflags --libs linbox) -lopenblas); NTL (polynomials and matrices over Z/p and GF(p^k); link with -lntl -lgmp). Build every exact linear algebra step of a kernel on them instead of hand-written elimination, and validate against a second library on small cases.
+Guidance: Lead queue: 34 items, DRAINING (backpressure from 30 until 10). Every research entry must develop a queued item until the queue has 10 items, by default the head is entry-2026-10-15-multiplier-separation:s1 (check), tagged data-check="entry-2026-10-15-multiplier-separation:s1", or its first sub-idea entry-2026-10-15-two-sided-frobenius:s1 (check); this would be its entry 1; current spell boundary 4; another item needs a <strong>Chosen.</strong> paragraph naming the open statement it bears on and why it comes first (user, 9 October 2026). End the entry with "<strong>Follow-up.</strong> Closed: <reason>", "Developed ..." or "Continuing ..." and update the queue: Closed and Developed remove the item. Continuing keeps the head until its current boundary (4), then rotates unless this period earned a two-cycle extension. Declare data-spell-extend="2" with a spell-extension paragraph naming the open statement, new proved/refuted Progress and the concrete Next implication; finite checks or reused progress do not qualify. Reassess every two extra cycles. Squeeze each item, do not close it at its first usable result (user, 3 October 2026): Continuing while it still bears on an open statement, with the concrete next attempt named and made where possible; Developed only when no application to an open statement remains; Closed only for a reason the attempt found (restatement, inapplicability, falsification, supersession). Every top-level item gets its own entry; sub-ideas of the one item an entry develops may be batched in it, each in a follow-up list item with its own outcome (user, 9 October 2026). Only route reviews outside draining mode propose Outside leads and Absurd bridges; research entries carry none. Any entry lists the questions, checks and builds it names and leaves undone under <h4>Sub-ideas</h4> (data-sub="check" or "build"); lead_queue.py append queues them under the item they belong to.
+Guidance: Lead queue: 34 top-level items now; 28 at #entry-2026-10-16-transfer-review. It has not shrunk since the last review: an item removed for each one added does not drain it.
+Guidance: Lead queue: the last entry developed common-multiplier-duality, which has had 1 consecutive entries against a boundary of 4; it may have 3 more before its boundary.
+Guidance: The last 25 research entries in a row declared no bearing on the goal (data-bearing="none"), across queue items. State in this entry's choice of item what at the goal's own parameters it could give; if nothing, say why the cycle is spent on it.
+Guidance: Route effective-selection: the last 18 research entries on it declared no bearing; the next entry on it states, before its work, after <strong>Best outcome.</strong>, what its best outcome would give at the goal's own parameters (the finisher checks it).
+Guidance: Route transfer: the last 7 research entries on it declared no bearing; the next entry on it states, before its work, after <strong>Best outcome.</strong>, what its best outcome would give at the goal's own parameters (the finisher checks it).
+Guidance: Separate New mathematics from Goal progress in every research/review entry; name a stable data-obligation and data-goal-progress="advanced|unchanged". The scheduled review includes the Architecture review in AGENTS.md, using its existing medium reviewer, not another review.
+Guidance: Route effective-selection, obligation joint-error-savings: 7 cycles report unchanged goal progress. Flag this for the next scheduled Architecture review; do not add an early review.
+Guidance: Notebook: 6 research entries since the last route review; the next entry must be a route review.
+Guidance: Route effective-selection: review entry-2026-10-16-factor-domination-review, 11 research entries back, declared 2 open items. If the review declares 2 or more, it must be goal-level (data-scope="goal"); if fewer, it must be an ordinary route review. For a goal-level review run tools/record-audit.py gaps (it reads the whole record, 2.4 s on one of 8 MB) and cite under Across the goal the gaps it lists that no later entry took up.
+         711543 function calls (706859 primitive calls) in 0.864 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     62/1    0.000    0.000    0.865    0.865 {built-in method builtins.exec}
+        1    0.000    0.000    0.865    0.865 turn_guidance.py:1(<module>)
+        1    0.000    0.000    0.860    0.860 turn_guidance.py:339(main)
+        1    0.000    0.000    0.801    0.801 turn_guidance.py:251(guidance)
+       10    0.000    0.000    0.512    0.051 __init__.py:299(loads)
+       10    0.000    0.000    0.512    0.051 decoder.py:332(decode)
+       10    0.383    0.038    0.512    0.051 decoder.py:343(raw_decode)
+       52    0.000    0.000    0.394    0.008 {built-in method builtins.sum}
+        1    0.034    0.034    0.393    0.393 turn_guidance.py:69(queue_notes)
+       12    0.000    0.000    0.392    0.033 turn_guidance.py:304(<genexpr>)
+        9    0.000    0.000    0.392    0.044 finish-turn.py:1691(registers_cases)
+        1    0.000    0.000    0.392    0.392 finish-turn.py:1669(registered_status)
+        1    0.000    0.000    0.390    0.390 finish-turn.py:34(registry_data)
+        1    0.000    0.000    0.390    0.390 finish-turn.py:28(_registry_snapshot)
+        1    0.010    0.010    0.390    0.390 claim_registry.py:56(read_json)
+        1    0.000    0.000    0.344    0.344 turn_guidance.py:75(next_item_notes)
+        1    0.008    0.008    0.314    0.314 lead_queue.py:1050(registered)
+        1    0.000    0.000    0.294    0.294 claim_registry.py:41(parse_json)
+       13    0.066    0.005    0.177    0.014 {method 'read' of '_io.TextIOWrapper' objects}
+       12    0.000    0.000    0.176    0.015 pathlib.py:1129(read_text)
+   141818    0.119    0.000    0.129    0.000 claim_registry.py:42(unique)
+       13    0.000    0.000    0.111    0.009 codecs.py:319(decode)
+       13    0.111    0.009    0.111    0.009 {built-in method _codecs.utf_8_decode}
+     61/5    0.000    0.000    0.058    0.012 <frozen importlib._bootstrap_external>:877(exec_module)
+    111/5    0.000    0.000    0.057    0.011 <frozen importlib._bootstrap>:233(_call_with_frames_removed)
+        1    0.000    0.000    0.048    0.048 turn_guidance.py:20(finisher)
+        1    0.000    0.000    0.048    0.048 finish-turn.py:1(<module>)
+    88/14    0.000    0.000    0.042    0.003 <frozen importlib._bootstrap>:1022(_find_and_load)
+    88/14    0.000    0.000    0.041    0.003 <frozen importlib._bootstrap>:987(_find_and_load_unlocked)
+     2579    0.001    0.000    0.041    0.000 re.py:288(_compile)
+    79/14    0.000    0.000    0.040    0.003 <frozen importlib._bootstrap>:664(_load_unlocked)
+      205    0.001    0.000    0.039    0.000 sre_compile.py:783(compile)
+      148    0.000    0.000    0.031    0.000 re.py:249(compile)
+      205    0.000    0.000    0.024    0.000 sre_parse.py:944(parse)
+  523/205    0.001    0.000    0.023    0.000 sre_parse.py:436(_parse_sub)
+  846/267    0.009    0.000    0.022    0.000 sre_parse.py:494(_parse)
+        1    0.005    0.005    0.015    0.015 lead_queue.py:1059(citing_entries)
+      205    0.000    0.000    0.014    0.000 sre_compile.py:622(_code)
+     2238    0.001    0.000    0.013    0.000 re.py:197(search)
+        1    0.000    0.000    0.012    0.012 turn_guidance.py:190(queue_state_notes)
+298628/297274    0.011    0.000    0.012    0.000 {built-in method builtins.len}
+        3    0.000    0.000    0.010    0.003 lead_queue.py:914(spell)
+        3    0.001    0.000    0.010    0.003 lead_queue.py:895(spell_entries)
+        1    0.000    0.000    0.010    0.010 lead_queue.py:2102(settle)
+        1    0.000    0.000    0.010    0.010 claim_maintenance.py:1(<module>)
+ 1211/205    0.005    0.000    0.010    0.000 sre_compile.py:87(_compile)
+        1    0.000    0.000    0.009    0.009 lead_queue.py:1007(claims_elsewhere)
+        1    0.007    0.007    0.008    0.008 lead_queue.py:346(record_articles)
+        5    0.000    0.000    0.008    0.002 __init__.py:1(<module>)
+        1    0.000    0.000    0.007    0.007 notebook_context.py:1(<module>)
+       61    0.000    0.000    0.007    0.000 <frozen importlib._bootstrap_external>:950(get_code)
+       10    0.000    0.000    0.007    0.001 lead_queue.py:431(parse_tree)
+        2    0.002    0.001    0.007    0.003 finish-turn.py:592(progress_history)
+        1    0.000    0.000    0.007    0.007 lead_queue.py:1(<module>)
+        1    0.000    0.000    0.006    0.006 turn_guidance.py:86(<listcomp>)
+      8/3    0.000    0.000    0.006    0.002 {built-in method builtins.__import__}
+    13253    0.003    0.000    0.006    0.000 lead_queue.py:1083(<listcomp>)
+     11/8    0.000    0.000    0.005    0.001 <frozen importlib._bootstrap>:1053(_handle_fromlist)
+       86    0.000    0.000    0.005    0.000 <frozen importlib._bootstrap>:921(_find_spec)
+     2321    0.005    0.000    0.005    0.000 {method 'search' of 're.Pattern' objects}
+    46408    0.005    0.000    0.005    0.000 {method 'get' of 'dict' objects}
+        1    0.000    0.000    0.005    0.005 finish-turn.py:631(pending_architecture_test)
+        1    0.000    0.000    0.005    0.005 notebook-excerpt.py:1(<module>)
+       61    0.000    0.000    0.005    0.000 <frozen importlib._bootstrap_external>:670(_compile_bytecode)
+        1    0.000    0.000    0.005    0.005 context.py:1(<module>)
+        1    0.000    0.000    0.005    0.005 claim_reviews.py:1(<module>)
+       61    0.004    0.000    0.004    0.000 {built-in method marshal.loads}
+       72    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap_external>:1431(find_spec)
+       72    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap_external>:1399(_get_spec)
+        1    0.000    0.000    0.004    0.004 notebooks.py:1(<module>)
+        1    0.000    0.000    0.004    0.004 notebooks.py:67(selected)
+        1    0.000    0.000    0.004    0.004 recovery_evidence.py:1(<module>)
+        2    0.000    0.000    0.004    0.002 lead_queue.py:869(history)
+    10302    0.002    0.000    0.004    0.000 sre_parse.py:255(get)
+      205    0.001    0.000    0.004    0.000 sre_compile.py:560(_compile_info)
+        1    0.000    0.000    0.004    0.004 reduction.py:1(<module>)
+        1    0.000    0.000    0.004    0.004 claim_evidence.py:1(<module>)
+    82/81    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap>:564(module_from_spec)
+        1    0.000    0.000    0.004    0.004 finish-turn.py:616(progress_warnings)
+        1    0.000    0.000    0.004    0.004 parser.py:1(<module>)
+      250    0.001    0.000    0.004    0.000 <frozen importlib._bootstrap_external>:1536(find_spec)
+       10    0.002    0.000    0.003    0.000 lead_queue.py:397(parse_nodes)
+    14259    0.002    0.000    0.003    0.000 sre_parse.py:165(__getitem__)
+  179/177    0.001    0.000    0.003    0.000 {built-in method builtins.__build_class__}
+        1    0.000    0.000    0.003    0.003 uuid.py:1(<module>)
+    11705    0.003    0.000    0.003    0.000 sre_parse.py:234(__next)
+        1    0.000    0.000    0.003    0.003 search-claims.py:43(search)
+       87    0.000    0.000    0.003    0.000 lead_queue.py:360(developed_by)
+        1    0.000    0.000    0.003    0.003 pathlib.py:1(<module>)
+        1    0.000    0.000    0.003    0.003 claim_registry.py:1(<module>)
+ 1264/342    0.002    0.000    0.003    0.000 sre_parse.py:175(getwidth)
+      196    0.000    0.000    0.003    0.000 {built-in method builtins.any}
+        1    0.000    0.000    0.002    0.002 platform.py:1(<module>)
+        7    0.000    0.000    0.002    0.000 enum.py:536(_convert_)
+        1    0.000    0.000    0.002    0.002 notebooks.py:24(catalogue)
+        1    0.000    0.000    0.002    0.002 socket.py:1(<module>)
+        1    0.002    0.002    0.002    0.002 finish-turn.py:1674(<dictcomp>)
+        7    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap_external>:1174(create_module)
+        7    0.002    0.000    0.002    0.000 {built-in method _imp.create_dynamic}
+        1    0.000    0.000    0.002    0.002 subprocess.py:1(<module>)
+      197    0.002    0.000    0.002    0.000 {method 'findall' of 're.Pattern' objects}
+      455    0.000    0.000    0.002    0.000 finish-turn.py:56(entry_tags)
+      328    0.000    0.000    0.002    0.000 finish-turn.py:525(article_attribute)
+      130    0.002    0.000    0.002    0.000 {method 'find' of 'str' objects}
+        1    0.000    0.000    0.002    0.002 notebooks.py:61(selection_file)
+        1    0.000    0.000    0.002    0.002 subprocess.py:373(check_output)
+        1    0.000    0.000    0.002    0.002 subprocess.py:461(run)
+    36854    0.002    0.000    0.002    0.000 {method 'append' of 'list' objects}
+      429    0.000    0.000    0.002    0.000 enum.py:359(__call__)
+        1    0.000    0.000    0.002    0.002 fractions.py:1(<module>)
+     7500    0.001    0.000    0.002    0.000 sre_parse.py:173(append)
+      597    0.001    0.000    0.002    0.000 {built-in method posix.stat}
+        3    0.002    0.001    0.002    0.001 lead_queue.py:1298(spell_limit)
+        1    0.000    0.000    0.002    0.002 parse.py:1(<module>)
+        1    0.000    0.000    0.002    0.002 shutil.py:1(<module>)
+    21211    0.001    0.000    0.001    0.000 {built-in method builtins.isinstance}
+      278    0.001    0.000    0.001    0.000 sre_compile.py:292(_optimize_charset)
+        1    0.001    0.001    0.001    0.001 lead_queue.py:1037(<listcomp>)
+        1    0.000    0.000    0.001    0.001 hashlib.py:1(<module>)
+        7    0.000    0.000    0.001    0.000 enum.py:483(_create_)
+        1    0.000    0.000    0.001    0.001 subprocess.py:1110(communicate)
+        1    0.000    0.000    0.001    0.001 search-claims.py:48(<dictcomp>)
+      455    0.000    0.000    0.001    0.000 finish-turn.py:58(<dictcomp>)
+      157    0.001    0.000    0.001    0.000 {method 'sub' of 're.Pattern' objects}
+       94    0.000    0.000    0.001    0.000 search-claims.py:48(<genexpr>)
+        1    0.000    0.000    0.001    0.001 turn_guidance.py:159(last_item_notes)
+       61    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1070(get_data)
+     1292    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:126(_path_join)
+        1    0.000    0.000    0.001    0.001 search-claims.py:62(<listcomp>)
+    13821    0.001    0.000    0.001    0.000 {method 'startswith' of 'str' objects}
+        1    0.000    0.000    0.001    0.001 lead_queue.py:522(is_draining)
+       81    0.000    0.000    0.001    0.000 re.py:232(findall)
+     2568    0.001    0.000    0.001    0.000 {method 'group' of 're.Match' objects}
+        1    0.000    0.000    0.001    0.001 finish-turn.py:233(convergence_reference)
+        1    0.001    0.001    0.001    0.001 finish-turn.py:303(route_articles)
+     2994    0.001    0.000    0.001    0.000 search-claims.py:62(<genexpr>)
+        1    0.000    0.000    0.001    0.001 pickle.py:1(<module>)
+       82    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:492(_init_module_attrs)
+        8    0.000    0.000    0.001    0.000 enum.py:180(__new__)
+       12    0.000    0.000    0.001    0.000 pathlib.py:1064(resolve)
+      405    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:140(_path_stat)
+        1    0.000    0.000    0.001    0.001 decimal.py:1(<module>)
+       77    0.000    0.000    0.001    0.000 lead_queue.py:620(group_of)
+        1    0.000    0.000    0.001    0.001 turn_guidance.py:102(queue_trend_notes)
+        4    0.000    0.000    0.001    0.000 turn_guidance.py:297(<listcomp>)
+        1    0.000    0.000    0.001    0.001 decoder.py:1(<module>)
+        1    0.000    0.000    0.001    0.001 ipaddress.py:1(<module>)
+     2667    0.000    0.000    0.001    0.000 sre_parse.py:250(match)
+        7    0.000    0.000    0.001    0.000 enum.py:553(<listcomp>)
+        1    0.000    0.000    0.001    0.001 signal.py:1(<module>)
+       12    0.000    0.000    0.001    0.000 posixpath.py:389(realpath)
+       35    0.001    0.000    0.001    0.000 {method 'encode' of 'str' objects}
+        7    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1182(exec_module)
+        7    0.001    0.000    0.001    0.000 {built-in method _imp.exec_dynamic}
+      122    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:380(cache_from_source)
+       36    0.000    0.000    0.001    0.000 finish-turn.py:563(report_paragraph)
+  238/202    0.000    0.000    0.001    0.000 sre_compile.py:485(_get_literal_prefix)
+     1292    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:128(<listcomp>)
+       78    0.000    0.000    0.001    0.000 pathlib.py:1092(stat)
+        1    0.000    0.000    0.001    0.001 tempfile.py:1(<module>)
+        1    0.000    0.000    0.001    0.001 turn_guidance.py:47(algebra_note)
+        1    0.000    0.000    0.001    0.001 turn_guidance.py:49(<listcomp>)
+        3    0.000    0.000    0.001    0.000 lead_queue.py:140(section_list)
+       10    0.000    0.000    0.001    0.000 shutil.py:1439(which)
+      132    0.000    0.000    0.001    0.000 sre_parse.py:97(closegroup)
+       67    0.000    0.000    0.001    0.000 pathlib.py:569(_parse_args)
+      205    0.000    0.000    0.001    0.000 enum.py:986(__and__)
+       12    0.000    0.000    0.001    0.000 posixpath.py:398(_joinrealpath)
+     2469    0.000    0.000    0.001    0.000 sre_parse.py:161(__len__)
+        1    0.000    0.000    0.001    0.001 ntpath.py:1(<module>)
+        1    0.000    0.000    0.001    0.001 lead_queue.py:581(reopenings)
+       41    0.000    0.000    0.001    0.000 lead_queue.py:1577(reopened_by)
+       14    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:770(create_module)
+        3    0.000    0.000    0.001    0.000 search-claims.py:39(stems)
+      129    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:391(cached)
+        1    0.000    0.000    0.001    0.001 scanner.py:1(<module>)
+       14    0.001    0.000    0.001    0.000 {built-in method _imp.create_builtin}
+      587    0.000    0.000    0.001    0.000 sre_parse.py:356(_escape)
+        7    0.000    0.000    0.001    0.000 __init__.py:328(namedtuple)
+       61    0.001    0.000    0.001    0.000 {built-in method io.open_code}
+       43    0.000    0.000    0.001    0.000 {built-in method builtins.sorted}
+        1    0.000    0.000    0.001    0.001 dbapi2.py:1(<module>)
+        1    0.000    0.000    0.001    0.001 subprocess.py:758(__init__)
+        1    0.001    0.001    0.001    0.001 turn_guidance.py:257(<listcomp>)
+        1    0.000    0.000    0.000    0.000 _markupbase.py:1(<module>)
+       68    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:510(_get_cached)
+       10    0.000    0.000    0.000    0.000 lead_queue.py:296(configure)
+        1    0.000    0.000    0.000    0.000 bz2.py:1(<module>)
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:169(__enter__)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1703(_execute_child)
+       61    0.000    0.000    0.000    0.000 {method 'read' of '_io.BufferedReader' objects}
+       98    0.000    0.000    0.000    0.000 lead_queue.py:327(counted)
+        9    0.000    0.000    0.000    0.000 pathlib.py:1023(glob)
+       68    0.000    0.000    0.000    0.000 pathlib.py:56(parse_parts)
+     1454    0.000    0.000    0.000    0.000 sre_parse.py:287(tell)
+        1    0.000    0.000    0.000    0.000 claim_reviews.py:58(Evidence)
+      122    0.000    0.000    0.000    0.000 enum.py:89(__setitem__)
+     6922    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+       32    0.000    0.000    0.000    0.000 pathlib.py:589(_from_parts)
+       35    0.000    0.000    0.000    0.000 pathlib.py:853(__truediv__)
+      369    0.000    0.000    0.000    0.000 sre_compile.py:447(_simple)
+      411    0.000    0.000    0.000    0.000 re.py:269(escape)
+        3    0.000    0.000    0.000    0.000 search-claims.py:40(<setcomp>)
+     2889    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+       35    0.000    0.000    0.000    0.000 pathlib.py:615(_make_child)
+      121    0.000    0.000    0.000    0.000 sre_compile.py:456(_generate_overlap_table)
+      278    0.000    0.000    0.000    0.000 sre_compile.py:265(_compile_charset)
+        1    0.000    0.000    0.000    0.000 datetime.py:1(<module>)
+      224    0.000    0.000    0.000    0.000 posixpath.py:71(join)
+     1328    0.000    0.000    0.000    0.000 sre_parse.py:112(__init__)
+        1    0.000    0.000    0.000    0.000 turn_guidance.py:122(bearing_run_notes)
+        1    0.000    0.000    0.000    0.000 random.py:1(<module>)
+       12    0.000    0.000    0.000    0.000 pathlib.py:1111(open)
+      294    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x5f479355e9a0}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:2299(_IPv6Constants)
+       34    0.000    0.000    0.000    0.000 ipaddress.py:2223(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method _posixsubprocess.fork_exec}
+        1    0.000    0.000    0.000    0.000 lead_queue.py:825(review_counts)
+      821    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+       13    0.000    0.000    0.000    0.000 {built-in method io.open}
+      107    0.000    0.000    0.000    0.000 pathlib.py:631(__fspath__)
+        1    0.000    0.000    0.000    0.000 entities.py:1(<module>)
+      194    0.000    0.000    0.000    0.000 search-claims.py:31(stem)
+        1    0.000    0.000    0.000    0.000 encoder.py:1(<module>)
+      100    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:179(_get_module_lock)
+       21    0.000    0.000    0.000    0.000 abc.py:105(__new__)
+       18    0.000    0.000    0.000    0.000 pathlib.py:957(__new__)
+        1    0.000    0.000    0.000    0.000 lzma.py:1(<module>)
+       33    0.000    0.000    0.000    0.000 pathlib.py:1353(is_symlink)
+       78    0.000    0.000    0.000    0.000 lead_queue.py:478(locate)
+      105    0.000    0.000    0.000    0.000 shutil.py:1434(_access_check)
+        1    0.000    0.000    0.000    0.000 selectors.py:1(<module>)
+      205    0.000    0.000    0.000    0.000 sre_parse.py:225(__init__)
+        1    0.000    0.000    0.000    0.000 notebook_math.py:1(<module>)
+       65    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1531(_get_spec)
+       68    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:721(spec_from_file_location)
+        1    0.000    0.000    0.000    0.000 argparse.py:1(<module>)
+       80    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:159(_path_isfile)
+      455    0.000    0.000    0.000    0.000 finish-turn.py:59(<dictcomp>)
+      110    0.000    0.000    0.000    0.000 pathlib.py:621(__str__)
+      297    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1356(_path_importer_cache)
+        7    0.000    0.000    0.000    0.000 {built-in method builtins.eval}
+       87    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:150(_path_is_mode_type)
+      125    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:132(_path_split)
+       33    0.000    0.000    0.000    0.000 pathlib.py:1217(lstat)
+      411    0.000    0.000    0.000    0.000 {method 'translate' of 'str' objects}
+     1359    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:244(_verbose_message)
+      422    0.000    0.000    0.000    0.000 enum.py:678(__new__)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1555(_IPv4Constants)
+       86    0.000    0.000    0.000    0.000 __init__.py:101(find_spec)
+      244    0.000    0.000    0.000    0.000 sre_parse.py:433(_uniq)
+       21    0.000    0.000    0.000    0.000 ipaddress.py:1488(__init__)
+        9    0.000    0.000    0.000    0.000 pathlib.py:438(_select_from)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1587(_fill_cache)
+       16    0.000    0.000    0.000    0.000 pathlib.py:1316(is_file)
+      105    0.000    0.000    0.000    0.000 genericpath.py:16(exists)
+      100    0.000    0.000    0.000    0.000 {built-in method posix.lstat}
+     1534    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 pickle.py:197(<listcomp>)
+       40    0.000    0.000    0.000    0.000 notebook_math.py:17(strip_tags)
+        1    0.000    0.000    0.000    0.000 claim_registration.py:1(<module>)
+      2/1    0.000    0.000    0.000    0.000 pathlib.py:368(_make_selector)
+        1    0.000    0.000    0.000    0.000 pathlib.py:434(__init__)
+       73    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+        7    0.000    0.000    0.000    0.000 {built-in method posix.listdir}
+     1120    0.000    0.000    0.000    0.000 {method 'groups' of 're.Match' objects}
+        1    0.000    0.000    0.000    0.000 turn_guidance.py:293(<listcomp>)
+        1    0.000    0.000    0.000    0.000 search-claims.py:47(<listcomp>)
+      551    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+      107    0.000    0.000    0.000    0.000 re.py:187(match)
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:173(__exit__)
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1089(path_stats)
+       50    0.000    0.000    0.000    0.000 ipaddress.py:1908(__init__)
+        1    0.000    0.000    0.000    0.000 pathlib.py:260(compile_pattern)
+        1    0.000    0.000    0.000    0.000 finish-turn.py:62(review_cadence)
+      132    0.000    0.000    0.000    0.000 sre_parse.py:85(opengroup)
+      682    0.000    0.000    0.000    0.000 sre_parse.py:82(groups)
+       47    0.000    0.000    0.000    0.000 sre_compile.py:435(_mk_bitmap)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1343(_path_hooks)
+       15    0.000    0.000    0.000    0.000 pathlib.py:1285(exists)
+       42    0.000    0.000    0.000    0.000 turn_guidance.py:295(<genexpr>)
+      480    0.000    0.000    0.000    0.000 lead_queue.py:378(__init__)
+        3    0.000    0.000    0.000    0.000 turn_guidance.py:303(<listcomp>)
+       12    0.000    0.000    0.000    0.000 finish-turn.py:1661(entry_claims)
+      100    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:125(release)
+       40    0.000    0.000    0.000    0.000 notebook_math.py:9(protect_math)
+      205    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+        1    0.000    0.000    0.000    0.000 search-claims.py:1(<module>)
+     2708    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+      100    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:100(acquire)
+      427    0.000    0.000    0.000    0.000 sre_parse.py:169(__setitem__)
+        8    0.000    0.000    0.000    0.000 enum.py:222(<setcomp>)
+      198    0.000    0.000    0.000    0.000 sre_parse.py:296(_class_escape)
+      869    0.000    0.000    0.000    0.000 {method 'index' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 threading.py:1(<module>)
+      914    0.000    0.000    0.000    0.000 {method 'find' of 'bytearray' objects}
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:585(_classify_pyc)
+     1769    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+       86    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:746(find_spec)
+      407    0.000    0.000    0.000    0.000 socket.py:83(<lambda>)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:778(exec_module)
+      900    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+      406    0.000    0.000    0.000    0.000 socket.py:78(<lambda>)
+     2094    0.000    0.000    0.000    0.000 {built-in method _sre.unicode_iscased}
+      408    0.000    0.000    0.000    0.000 socket.py:88(<lambda>)
+      409    0.000    0.000    0.000    0.000 socket.py:93(<lambda>)
+      158    0.000    0.000    0.000    0.000 enum.py:470(__setattr__)
+       31    0.000    0.000    0.000    0.000 ipaddress.py:1272(__init__)
+      410    0.000    0.000    0.000    0.000 sre_compile.py:619(isstring)
+     1393    0.000    0.000    0.000    0.000 lead_queue.py:382(item)
+       34    0.000    0.000    0.000    0.000 ipaddress.py:1636(_ip_int_from_string)
+        1    0.000    0.000    0.000    0.000 process.py:1(<module>)
+       14    0.000    0.000    0.000    0.000 {built-in method _imp.exec_builtin}
+      205    0.000    0.000    0.000    0.000 sre_parse.py:928(fix_flags)
+      710    0.000    0.000    0.000    0.000 {built-in method posix.fspath}
+      183    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+       16    0.000    0.000    0.000    0.000 pathlib.py:422(_select_from)
+      183    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:84(_unpack_uint32)
+        1    0.000    0.000    0.000    0.000 numbers.py:1(<module>)
+     1912    0.000    0.000    0.000    0.000 {built-in method _sre.unicode_tolower}
+       13    0.000    0.000    0.000    0.000 posixpath.py:374(abspath)
+       14    0.000    0.000    0.000    0.000 hashlib.py:126(__get_openssl_constructor)
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:618(_validate_timestamp_pyc)
+       43    0.000    0.000    0.000    0.000 pathlib.py:865(parent)
+        1    0.000    0.000    0.000    0.000 turn_guidance.py:59(library_note)
+     1706    0.000    0.000    0.000    0.000 {method 'isupper' of 'str' objects}
+      205    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+       22    0.000    0.000    0.000    0.000 ipaddress.py:1173(_ip_int_from_string)
+        1    0.000    0.000    0.000    0.000 turn_guidance.py:61(<listcomp>)
+        6    0.000    0.000    0.000    0.000 enum.py:980(__or__)
+        1    0.000    0.000    0.000    0.000 re.py:202(sub)
+      316    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:897(__exit__)
+        5    0.000    0.000    0.000    0.000 turn_guidance.py:43(installed_header)
+       74    0.000    0.000    0.000    0.000 pathlib.py:608(_format_parsed_parts)
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:71(__init__)
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:198(cb)
+      790    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       47    0.000    0.000    0.000    0.000 sre_compile.py:437(<listcomp>)
+      316    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:893(__enter__)
+        6    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+      169    0.000    0.000    0.000    0.000 types.py:176(__get__)
+      205    0.000    0.000    0.000    0.000 sre_parse.py:76(__init__)
+       81    0.000    0.000    0.000    0.000 sre_compile.py:516(_get_charset_prefix)
+        8    0.000    0.000    0.000    0.000 enum.py:165(__prepare__)
+        1    0.000    0.000    0.000    0.000 _compat_pickle.py:1(<module>)
+      102    0.000    0.000    0.000    0.000 pathlib.py:600(_from_parsed_parts)
+        7    0.000    0.000    0.000    0.000 <frozen zipimport>:64(__init__)
+       55    0.000    0.000    0.000    0.000 ipaddress.py:533(_split_addr_prefix)
+       12    0.000    0.000    0.000    0.000 datetime.py:461(__new__)
+      245    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+       13    0.000    0.000    0.000    0.000 posixpath.py:335(normpath)
+        4    0.000    0.000    0.000    0.000 enum.py:937(_missing_)
+      263    0.000    0.000    0.000    0.000 posixpath.py:41(_get_sep)
+      120    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1628(path_hook_for_FileFinder)
+      186    0.000    0.000    0.000    0.000 lead_queue.py:466(named)
+        4    0.000    0.000    0.000    0.000 enum.py:947(_create_pseudo_member_)
+      250    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:134(<genexpr>)
+       95    0.000    0.000    0.000    0.000 pathlib.py:239(splitroot)
+       11    0.000    0.000    0.000    0.000 functools.py:518(decorating_function)
+      122    0.000    0.000    0.000    0.000 enum.py:44(_is_private)
+        4    0.000    0.000    0.000    0.000 re.py:242(finditer)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:421(spec_from_loader)
+       23    0.000    0.000    0.000    0.000 enum.py:579(_get_mixins_)
+        1    0.000    0.000    0.000    0.000 struct.py:1(<module>)
+       88    0.000    0.000    0.000    0.000 ipaddress.py:1199(_parse_octet)
+      319    0.000    0.000    0.000    0.000 sre_compile.py:477(_get_iscased)
+      356    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+      554    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+       21    0.000    0.000    0.000    0.000 {built-in method _abc._abc_init}
+        4    0.000    0.000    0.000    0.000 lead_queue.py:1477(triaged)
+      854    0.000    0.000    0.000    0.000 {method 'start' of 're.Match' objects}
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1024(<listcomp>)
+        4    0.000    0.000    0.000    0.000 enum.py:1026(_decompose)
+        2    0.000    0.000    0.000    0.000 hashlib.py:82(__get_builtin_constructor)
+      248    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+      181    0.000    0.000    0.000    0.000 sre_compile.py:81(_combine_flags)
+      334    0.000    0.000    0.000    0.000 {built-in method sys.intern}
+        3    0.000    0.000    0.000    0.000 finish-turn.py:1677(cases_only)
+      104    0.000    0.000    0.000    0.000 enum.py:12(_is_descriptor)
+        2    0.000    0.000    0.000    0.000 pathlib.py:995(home)
+       64    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:542(_check_name_wrapper)
+       89    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:357(__init__)
+       19    0.000    0.000    0.000    0.000 subprocess.py:1791(<genexpr>)
+       11    0.000    0.000    0.000    0.000 functools.py:35(update_wrapper)
+        1    0.000    0.000    0.000    0.000 _compression.py:1(<module>)
+        7    0.000    0.000    0.000    0.000 abc.py:110(register)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:216(_lock_unlock_module)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1204(wait)
+       34    0.000    0.000    0.000    0.000 ipaddress.py:1616(_make_netmask)
+      127    0.000    0.000    0.000    0.000 {method 'match' of 're.Pattern' objects}
+        2    0.000    0.000    0.000    0.000 lead_queue.py:876(<listcomp>)
+        1    0.000    0.000    0.000    0.000 bisect.py:1(<module>)
+        7    0.000    0.000    0.000    0.000 {built-in method _abc._abc_register}
+     18/8    0.000    0.000    0.000    0.000 abc.py:121(__subclasscheck__)
+      122    0.000    0.000    0.000    0.000 enum.py:22(_is_dunder)
+        1    0.000    0.000    0.000    0.000 process.py:71(BaseProcess)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1494(__init__)
+        1    0.000    0.000    0.000    0.000 os.py:44(_get_exports_list)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1927(_wait)
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.dir}
+        2    0.000    0.000    0.000    0.000 lead_queue.py:1020(<genexpr>)
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:404(parent)
+       75    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:180(_path_isabs)
+     18/8    0.000    0.000    0.000    0.000 {built-in method _abc._abc_subclasscheck}
+      122    0.000    0.000    0.000    0.000 enum.py:33(_is_sunder)
+       23    0.000    0.000    0.000    0.000 enum.py:590(_find_data_type)
+      500    0.000    0.000    0.000    0.000 {method 'end' of 're.Match' objects}
+        8    0.000    0.000    0.000    0.000 enum.py:626(_find_new_)
+      480    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:383(_IPAddressBase)
+      504    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+       21    0.000    0.000    0.000    0.000 ipaddress.py:1147(_make_netmask)
+        4    0.000    0.000    0.000    0.000 lead_queue.py:596(record_parent)
+      504    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+       76    0.000    0.000    0.000    0.000 signal.py:9(<lambda>)
+      287    0.000    0.000    0.000    0.000 __init__.py:122(unescape)
+        2    0.000    0.000    0.000    0.000 pathlib.py:1432(expanduser)
+       16    0.000    0.000    0.000    0.000 pathlib.py:675(__lt__)
+       46    0.000    0.000    0.000    0.000 ipaddress.py:1740(_parse_hextet)
+        2    0.000    0.000    0.000    0.000 lead_queue.py:1069(<genexpr>)
+       72    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:826(find_spec)
+       76    0.000    0.000    0.000    0.000 {built-in method builtins.locals}
+       34    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 datetime.py:442(timedelta)
+      320    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+       25    0.000    0.000    0.000    0.000 posixpath.py:60(isabs)
+       12    0.000    0.000    0.000    0.000 {method 'sort' of 'list' objects}
+       16    0.000    0.000    0.000    0.000 os.py:675(__getitem__)
+       55    0.000    0.000    0.000    0.000 ipaddress.py:156(_split_optional_netmask)
+       52    0.000    0.000    0.000    0.000 notebook_math.py:11(<lambda>)
+       41    0.000    0.000    0.000    0.000 lead_queue.py:1580(<listcomp>)
+        2    0.000    0.000    0.000    0.000 lead_queue.py:462(every_item)
+        3    0.000    0.000    0.000    0.000 finish-turn.py:1704(entry_status)
+        1    0.000    0.000    0.000    0.000 os.py:620(get_exec_path)
+      481    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+       76    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+        8    0.000    0.000    0.000    0.000 pathlib.py:525(__getitem__)
+        1    0.000    0.000    0.000    0.000 threading.py:1386(__init__)
+        1    0.000    0.000    0.000    0.000 search-claims.py:49(<dictcomp>)
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:48(_new_module)
+       16    0.000    0.000    0.000    0.000 pathlib.py:966(_make_child_relpath)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1914(_try_wait)
+        8    0.000    0.000    0.000    0.000 notebooks.py:18(valid_name)
+      203    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.lock' objects}
+      126    0.000    0.000    0.000    0.000 posixpath.py:52(normcase)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1087(<listcomp>)
+       11    0.000    0.000    0.000    0.000 _collections_abc.py:821(get)
+       16    0.000    0.000    0.000    0.000 {method 'fullmatch' of 're.Pattern' objects}
+       13    0.000    0.000    0.000    0.000 codecs.py:309(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.waitpid}
+       88    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:165(__init__)
+      250    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:71(_relax_case)
+       25    0.000    0.000    0.000    0.000 ipaddress.py:474(_prefix_from_prefix_string)
+        9    0.000    0.000    0.000    0.000 sre_parse.py:268(getuntil)
+      180    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+      201    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+        3    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:866(is_package)
+      169    0.000    0.000    0.000    0.000 enum.py:801(value)
+        2    0.000    0.000    0.000    0.000 posixpath.py:229(expanduser)
+        1    0.000    0.000    0.000    0.000 finish-turn.py:1712(required_paragraphs)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1227(_close_pipe_fds)
+       33    0.000    0.000    0.000    0.000 pathlib.py:654(_cparts)
+      136    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+       15    0.000    0.000    0.000    0.000 {method 'finditer' of 're.Pattern' objects}
+        3    0.000    0.000    0.000    0.000 notebook_math.py:26(strip_tags_tight)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:452(marks)
+        1    0.000    0.000    0.000    0.000 functools.py:651(cache)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:164(_path_isdir)
+        1    0.000    0.000    0.000    0.000 pickle.py:1137(_Unpickler)
+        1    0.000    0.000    0.000    0.000 fractions.py:38(Fraction)
+       19    0.000    0.000    0.000    0.000 os.py:805(fsencode)
+        1    0.000    0.000    0.000    0.000 bearing_ledger.py:1(<module>)
+        9    0.000    0.000    0.000    0.000 genericpath.py:39(isdir)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1604(_get_handles)
+        1    0.000    0.000    0.000    0.000 os.py:48(<listcomp>)
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1040(__init__)
+      284    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    0.000    0.000 datetime.py:2185(timezone)
+        1    0.000    0.000    0.000    0.000 uuid.py:78(SafeUUID)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1266(IPv4Address)
+      133    0.000    0.000    0.000    0.000 {built-in method _stat.S_ISLNK}
+       12    0.000    0.000    0.000    0.000 posixpath.py:150(dirname)
+        9    0.000    0.000    0.000    0.000 sre_parse.py:259(getwhile)
+        1    0.000    0.000    0.000    0.000 pathlib.py:398(select_from)
+       35    0.000    0.000    0.000    0.000 pathlib.py:94(join_parsed_parts)
+        1    0.000    0.000    0.000    0.000 random.py:119(__init__)
+      100    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+      158    0.000    0.000    0.000    0.000 {method 'get' of 'mappingproxy' objects}
+       16    0.000    0.000    0.000    0.000 pathlib.py:710(name)
+        1    0.000    0.000    0.000    0.000 pathlib.py:945(Path)
+      168    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        1    0.000    0.000    0.000    0.000 random.py:128(seed)
+        1    0.000    0.000    0.000    0.000 warnings.py:165(simplefilter)
+       72    0.000    0.000    0.000    0.000 {built-in method _imp.is_frozen}
+       11    0.000    0.000    0.000    0.000 functools.py:479(lru_cache)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:254(_requires_builtin_wrapper)
+        1    0.000    0.000    0.000    0.000 argparse.py:163(HelpFormatter)
+       34    0.000    0.000    0.000    0.000 ipaddress.py:1873(_split_scope_id)
+        2    0.000    0.000    0.000    0.000 {method 'close' of '_io.TextIOWrapper' objects}
+       38    0.000    0.000    0.000    0.000 __init__.py:23(<genexpr>)
+        8    0.000    0.000    0.000    0.000 enum.py:569(_check_for_existing_members)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha224}
+        2    0.000    0.000    0.000    0.000 decoder.py:284(__init__)
+        1    0.000    0.000    0.000    0.000 warnings.py:181(_add_filter)
+        3    0.000    0.000    0.000    0.000 datetime.py:1571(__new__)
+        1    0.000    0.000    0.000    0.000 pathlib.py:112(_WindowsFlavour)
+        2    0.000    0.000    0.000    0.000 {built-in method posix.pipe}
+       16    0.000    0.000    0.000    0.000 os.py:755(encode)
+        2    0.000    0.000    0.000    0.000 functools.py:188(total_ordering)
+        1    0.000    0.000    0.000    0.000 __init__.py:22(<listcomp>)
+      101    0.000    0.000    0.000    0.000 enum.py:559(<lambda>)
+        2    0.000    0.000    0.000    0.000 datetime.py:634(__neg__)
+        4    0.000    0.000    0.000    0.000 uuid.py:138(__init__)
+        1    0.000    0.000    0.000    0.000 pathlib.py:1300(is_dir)
+      2/1    0.000    0.000    0.000    0.000 pathlib.py:389(__init__)
+        1    0.000    0.000    0.000    0.000 fnmatch.py:80(translate)
+        1    0.000    0.000    0.000    0.000 fnmatch.py:1(<module>)
+       47    0.000    0.000    0.000    0.000 {method 'translate' of 'bytearray' objects}
+        1    0.000    0.000    0.000    0.000 threading.py:827(__init__)
+       78    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+        1    0.000    0.000    0.000    0.000 argparse.py:1148(_SubParsersAction)
+       29    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 enum.py:198(<dictcomp>)
+       88    0.000    0.000    0.000    0.000 lead_queue.py:332(<genexpr>)
+       52    0.000    0.000    0.000    0.000 lead_queue.py:386(waits)
+        8    0.000    0.000    0.000    0.000 pathlib.py:875(parents)
+        3    0.000    0.000    0.000    0.000 lead_queue.py:457(head_of)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1902(IPv6Address)
+       85    0.000    0.000    0.000    0.000 sre_parse.py:163(__delitem__)
+        1    0.000    0.000    0.000    0.000 {method 'remove' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 tempfile.py:816(SpooledTemporaryFile)
+       61    0.000    0.000    0.000    0.000 {built-in method _imp._fix_co_filename}
+        2    0.000    0.000    0.000    0.000 selectors.py:584(_can_use)
+       46    0.000    0.000    0.000    0.000 {method 'issuperset' of 'frozenset' objects}
+       82    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:412(has_location)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.scandir}
+        9    0.000    0.000    0.000    0.000 {built-in method posix.access}
+        1    0.000    0.000    0.000    0.000 {function Random.seed at 0x7877a74f3520}
+        8    0.000    0.000    0.000    0.000 enum.py:423(__getattr__)
+        1    0.000    0.000    0.000    0.000 subprocess.py:702(Popen)
+        1    0.000    0.000    0.000    0.000 numbers.py:32(Complex)
+        1    0.000    0.000    0.000    0.000 platform.py:903(system)
+        1    0.000    0.000    0.000    0.000 datetime.py:1563(datetime)
+      122    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:671(_BaseNetwork)
+       18    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        1    0.000    0.000    0.000    0.000 platform.py:814(uname)
+        1    0.000    0.000    0.000    0.000 pathlib.py:540(PurePath)
+        2    0.000    0.000    0.000    0.000 lead_queue.py:463(<listcomp>)
+       68    0.000    0.000    0.000    0.000 {method 'reverse' of 'list' objects}
+       76    0.000    0.000    0.000    0.000 __init__.py:108(<lambda>)
+       46    0.000    0.000    0.000    0.000 abc.py:7(abstractmethod)
+      110    0.000    0.000    0.000    0.000 ipaddress.py:574(__int__)
+        1    0.000    0.000    0.000    0.000 uuid.py:84(UUID)
+        1    0.000    0.000    0.000    0.000 datetime.py:762(date)
+       64    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1065(get_filename)
+        2    0.000    0.000    0.000    0.000 sre_compile.py:440(_bytes_to_codes)
+       15    0.000    0.000    0.000    0.000 os.py:759(decode)
+        2    0.000    0.000    0.000    0.000 _collections_abc.py:828(__contains__)
+        5    0.000    0.000    0.000    0.000 datetime.py:384(_check_date_fields)
+       40    0.000    0.000    0.000    0.000 enum.py:446(<genexpr>)
+        1    0.000    0.000    0.000    0.000 threading.py:986(_set_tstate_lock)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1080(_get_devnull)
+        1    0.000    0.000    0.000    0.000 tempfile.py:960(TemporaryDirectory)
+        1    0.000    0.000    0.000    0.000 context.py:30(BaseContext)
+        1    0.000    0.000    0.000    0.000 numbers.py:294(Integral)
+       16    0.000    0.000    0.000    0.000 pathlib.py:519(__len__)
+        8    0.000    0.000    0.000    0.000 enum.py:82(__init__)
+        1    0.000    0.000    0.000    0.000 pickle.py:407(_Pickler)
+        4    0.000    0.000    0.000    0.000 {built-in method posix.close}
+        9    0.000    0.000    0.000    0.000 finish-turn.py:1694(<listcomp>)
+       13    0.000    0.000    0.000    0.000 codecs.py:260(__init__)
+        3    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1665(_get_supported_file_loaders)
+       49    0.000    0.000    0.000    0.000 {built-in method math.log}
+       17    0.000    0.000    0.000    0.000 {built-in method builtins.globals}
+        1    0.000    0.000    0.000    0.000 contextlib.py:533(__exit__)
+      113    0.000    0.000    0.000    0.000 {method 'isdigit' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 subprocess.py:1867(_handle_exitstatus)
+       53    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 threading.py:816(Thread)
+        1    0.000    0.000    0.000    0.000 subprocess.py:648(_use_posix_spawn)
+        3    0.000    0.000    0.000    0.000 {built-in method posix.getcwd}
+       56    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1500(<genexpr>)
+        1    0.000    0.000    0.000    0.000 pathlib.py:668(__hash__)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:454(<setcomp>)
+       85    0.000    0.000    0.000    0.000 _compat_pickle.py:167(<genexpr>)
+        1    0.000    0.000    0.000    0.000 socket.py:214(socket)
+       61    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:874(create_module)
+       25    0.000    0.000    0.000    0.000 ipaddress.py:431(_ip_int_from_prefix)
+        2    0.000    0.000    0.000    0.000 datetime.py:792(__new__)
+        2    0.000    0.000    0.000    0.000 datetime.py:1239(__new__)
+        1    0.000    0.000    0.000    0.000 numbers.py:147(Real)
+      113    0.000    0.000    0.000    0.000 {method 'isascii' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method posix.open}
+       45    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+       10    0.000    0.000    0.000    0.000 os.py:817(fsdecode)
+        1    0.000    0.000    0.000    0.000 pathlib.py:282(_NormalAccessor)
+       35    0.000    0.000    0.000    0.000 __init__.py:402(<genexpr>)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1473(IPv4Network)
+        1    0.000    0.000    0.000    0.000 abc.py:117(__instancecheck__)
+        1    0.000    0.000    0.000    0.000 result_names.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1596(_BaseV6)
+       78    0.000    0.000    0.000    0.000 signal.py:21(<lambda>)
+        1    0.000    0.000    0.000    0.000 datetime.py:1214(time)
+       24    0.000    0.000    0.000    0.000 {built-in method io.text_encoding}
+        1    0.000    0.000    0.000    0.000 pathlib.py:128(<setcomp>)
+        1    0.000    0.000    0.000    0.000 reduction.py:33(ForkingPickler)
+        4    0.000    0.000    0.000    0.000 enum.py:442(__iter__)
+        8    0.000    0.000    0.000    0.000 pathlib.py:512(__init__)
+        2    0.000    0.000    0.000    0.000 contextlib.py:496(callback)
+        1    0.000    0.000    0.000    0.000 random.py:103(Random)
+       77    0.000    0.000    0.000    0.000 signal.py:16(<lambda>)
+        1    0.000    0.000    0.000    0.000 claim_attention.py:1(<module>)
+        7    0.000    0.000    0.000    0.000 fractions.py:276(_operator_fallbacks)
+       96    0.000    0.000    0.000    0.000 {built-in method builtins.abs}
+       25    0.000    0.000    0.000    0.000 ipaddress.py:415(_check_int_address)
+        2    0.000    0.000    0.000    0.000 functools.py:191(<setcomp>)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1086(<listcomp>)
+        1    0.000    0.000    0.000    0.000 platform.py:767(uname_result)
+        5    0.000    0.000    0.000    0.000 datetime.py:397(_check_time_fields)
+        1    0.000    0.000    0.000    0.000 threading.py:568(set)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_md5}
+        2    0.000    0.000    0.000    0.000 lead_queue.py:473(qualified)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1028(<listcomp>)
+        1    0.000    0.000    0.000    0.000 {built-in method _abc._abc_instancecheck}
+        1    0.000    0.000    0.000    0.000 sre_parse.py:868(_parse_flags)
+       21    0.000    0.000    0.000    0.000 enum.py:245(<genexpr>)
+        5    0.000    0.000    0.000    0.000 functools.py:946(__init__)
+        1    0.000    0.000    0.000    0.000 process.py:399(__init__)
+       26    0.000    0.000    0.000    0.000 {method 'insert' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 dbapi2.py:56(register_adapters_and_converters)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1037(__exit__)
+        1    0.000    0.000    0.000    0.000 {built-in method math.exp}
+        2    0.000    0.000    0.000    0.000 lead_queue.py:591(reopened_before)
+       44    0.000    0.000    0.000    0.000 {method 'isidentifier' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 selectors.py:81(BaseSelector)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1406(IPv4Interface)
+       60    0.000    0.000    0.000    0.000 {built-in method builtins.divmod}
+       43    0.000    0.000    0.000    0.000 _compat_pickle.py:165(<genexpr>)
+        1    0.000    0.000    0.000    0.000 bz2.py:26(BZ2File)
+       12    0.000    0.000    0.000    0.000 finish-turn.py:1663(<listcomp>)
+        6    0.000    0.000    0.000    0.000 lead_queue.py:459(<genexpr>)
+        1    0.000    0.000    0.000    0.000 threading.py:545(__init__)
+       40    0.000    0.000    0.000    0.000 {method 'items' of 'mappingproxy' objects}
+       16    0.000    0.000    0.000    0.000 {built-in method _stat.S_ISREG}
+        1    0.000    0.000    0.000    0.000 pathlib.py:38(_ignore_error)
+       12    0.000    0.000    0.000    0.000 {built-in method builtins.round}
+       35    0.000    0.000    0.000    0.000 {method '__contains__' of 'frozenset' objects}
+        1    0.000    0.000    0.000    0.000 notebook-excerpt.py:93(Notebook)
+        1    0.000    0.000    0.000    0.000 argparse.py:1691(ArgumentParser)
+       10    0.000    0.000    0.000    0.000 {method 'clear' of 'dict' objects}
+        6    0.000    0.000    0.000    0.000 signal.py:49(decorator)
+       16    0.000    0.000    0.000    0.000 pathlib.py:412(_select_from)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.all}
+        1    0.000    0.000    0.000    0.000 threading.py:622(Barrier)
+        1    0.000    0.000    0.000    0.000 tempfile.py:271(_RandomNameSequence)
+        1    0.000    0.000    0.000    0.000 parse.py:156(_NetlocResultMixinBase)
+        2    0.000    0.000    0.000    0.000 _weakrefset.py:37(__init__)
+        2    0.000    0.000    0.000    0.000 os.py:1080(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.uname}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:563(_BaseAddress)
+        1    0.000    0.000    0.000    0.000 parser.py:90(HTMLParser)
+        1    0.000    0.000    0.000    0.000 threading.py:236(__init__)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:1125(_BaseV4)
+       15    0.000    0.000    0.000    0.000 {method 'decode' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 threading.py:224(Condition)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1080(<listcomp>)
+        1    0.000    0.000    0.000    0.000 pathlib.py:418(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'close' of 'select.epoll' objects}
+       18    0.000    0.000    0.000    0.000 {method 'startswith' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:2132(IPv6Interface)
+        8    0.000    0.000    0.000    0.000 _collections_abc.py:315(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 encoder.py:73(JSONEncoder)
+        1    0.000    0.000    0.000    0.000 subprocess.py:425(CompletedProcess)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1178(poll)
+        1    0.000    0.000    0.000    0.000 selectors.py:207(_BaseSelectorImpl)
+        2    0.000    0.000    0.000    0.000 __init__.py:91(_replace_charref)
+        1    0.000    0.000    0.000    0.000 warnings.py:458(__enter__)
+        1    0.000    0.000    0.000    0.000 tempfile.py:571(_TemporaryFileCloser)
+        9    0.000    0.000    0.000    0.000 {method 'setter' of 'property' objects}
+        5    0.000    0.000    0.000    0.000 lead_queue.py:163(__init__)
+        7    0.000    0.000    0.000    0.000 enum.py:451(__members__)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha512}
+        1    0.000    0.000    0.000    0.000 context.py:295(ForkServerProcess)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1163(__init__)
+        3    0.000    0.000    0.000    0.000 datetime.py:2205(_create)
+        1    0.000    0.000    0.000    0.000 branch_extension.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:2207(IPv6Network)
+       18    0.000    0.000    0.000    0.000 {method 'endswith' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1220(citing_lines)
+        1    0.000    0.000    0.000    0.000 tempfile.py:614(_TemporaryFileWrapper)
+        1    0.000    0.000    0.000    0.000 datetime.py:1114(tzinfo)
+        1    0.000    0.000    0.000    0.000 lzma.py:38(LZMAFile)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha3_224}
+        3    0.000    0.000    0.000    0.000 {built-in method _imp.extension_suffixes}
+       35    0.000    0.000    0.000    0.000 {built-in method _operator.index}
+        1    0.000    0.000    0.000    0.000 threading.py:800(_maintain_shutdown_locks)
+        1    0.000    0.000    0.000    0.000 random.py:219(__init_subclass__)
+        4    0.000    0.000    0.000    0.000 finish-turn.py:1698(<genexpr>)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1065(__del__)
+        7    0.000    0.000    0.000    0.000 {built-in method builtins.vars}
+        1    0.000    0.000    0.000    0.000 threading.py:389(notify_all)
+        5    0.000    0.000    0.000    0.000 functools.py:952(__set_name__)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:795(is_package)
+        2    0.000    0.000    0.000    0.000 _collections_abc.py:78(_check_methods)
+        1    0.000    0.000    0.000    0.000 pathlib.py:385(_Selector)
+        8    0.000    0.000    0.000    0.000 {method 'is_dir' of 'posix.DirEntry' objects}
+        5    0.000    0.000    0.000    0.000 finish-turn.py:622(<dictcomp>)
+        3    0.000    0.000    0.000    0.000 {method 'union' of 'set' objects}
+        5    0.000    0.000    0.000    0.000 {method 'rsplit' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 socket.py:662(SocketIO)
+        1    0.000    0.000    0.000    0.000 platform.py:729(_Processor)
+        1    0.000    0.000    0.000    0.000 argparse.py:1637(_ArgumentGroup)
+        1    0.000    0.000    0.000    0.000 subprocess.py:104(CalledProcessError)
+        2    0.000    0.000    0.000    0.000 contextlib.py:514(_push_exit_callback)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha1}
+        9    0.000    0.000    0.000    0.000 pathlib.py:257(casefold_parts)
+        1    0.000    0.000    0.000    0.000 context.py:283(SpawnProcess)
+       21    0.000    0.000    0.000    0.000 {method 'pop' of 'set' objects}
+        2    0.000    0.000    0.000    0.000 contextlib.py:448(_exit_wrapper)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1079(<listcomp>)
+        1    0.000    0.000    0.000    0.000 _markupbase.py:23(ParserBase)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1029(<listcomp>)
+        1    0.000    0.000    0.000    0.000 argparse.py:759(ArgumentError)
+       10    0.000    0.000    0.000    0.000 {built-in method _stat.S_ISDIR}
+        5    0.000    0.000    0.000    0.000 finish-turn.py:1682(<genexpr>)
+        1    0.000    0.000    0.000    0.000 numbers.py:267(Rational)
+        1    0.000    0.000    0.000    0.000 claim_notices.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 recovery_evidence.py:38(Store)
+        1    0.000    0.000    0.000    0.000 _compression.py:33(DecompressReader)
+        1    0.000    0.000    0.000    0.000 parse.py:367(_fix_result_transcoding)
+        8    0.000    0.000    0.000    0.000 {method 'mro' of 'type' objects}
+        9    0.000    0.000    0.000    0.000 search-claims.py:66(<genexpr>)
+        1    0.000    0.000    0.000    0.000 argparse.py:1327(_ActionsContainer)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha384}
+        1    0.000    0.000    0.000    0.000 pathlib.py:129(<setcomp>)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.read}
+        1    0.000    0.000    0.000    0.000 threading.py:983(_set_native_id)
+        2    0.000    0.000    0.000    0.000 {method 'tolist' of 'memoryview' objects}
+        1    0.000    0.000    0.000    0.000 finish-turn.py:626(<listcomp>)
+        1    0.000    0.000    0.000    0.000 claim_evidence.py:39(_Decorations)
+        1    0.000    0.000    0.000    0.000 subprocess.py:436(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha3_512}
+        2    0.000    0.000    0.000    0.000 sre_parse.py:99(checkgroup)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha3_256}
+        7    0.000    0.000    0.000    0.000 {built-in method sys._getframe}
+        1    0.000    0.000    0.000    0.000 reduction.py:251(AbstractReducer)
+        1    0.000    0.000    0.000    0.000 threading.py:103(_RLock)
+        5    0.000    0.000    0.000    0.000 datetime.py:51(_days_in_month)
+        2    0.000    0.000    0.000    0.000 {method 'cast' of 'memoryview' objects}
+        1    0.000    0.000    0.000    0.000 selectors.py:291(SelectSelector)
+        1    0.000    0.000    0.000    0.000 subprocess.py:141(TimeoutExpired)
+        3    0.000    0.000    0.000    0.000 lead_queue.py:1084(<genexpr>)
+        1    0.000    0.000    0.000    0.000 warnings.py:477(__exit__)
+        1    0.000    0.000    0.000    0.000 threading.py:359(notify)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.urandom}
+        1    0.000    0.000    0.000    0.000 context.py:220(Process)
+        2    0.000    0.000    0.000    0.000 {built-in method _sqlite3.register_converter}
+        2    0.000    0.000    0.000    0.000 {built-in method posix.register_at_fork}
+        3    0.000    0.000    0.000    0.000 datetime.py:46(_days_before_year)
+        5    0.000    0.000    0.000    0.000 reduction.py:43(register)
+        6    0.000    0.000    0.000    0.000 signal.py:48(_wraps)
+        1    0.000    0.000    0.000    0.000 pathlib.py:231(_PosixFlavour)
+        1    0.000    0.000    0.000    0.000 decoder.py:254(JSONDecoder)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha3_384}
+        1    0.000    0.000    0.000    0.000 datetime.py:1183(IsoCalendarDate)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_shake_128}
+        5    0.000    0.000    0.000    0.000 {method 'count' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 lead_queue.py:375(Node)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:282(Live)
+        1    0.000    0.000    0.000    0.000 claim_registration.py:8(Entries)
+        1    0.000    0.000    0.000    0.000 dbapi2.py:50(<listcomp>)
+        1    0.000    0.000    0.000    0.000 pathlib.py:880(is_absolute)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1879(_internal_poll)
+        2    0.000    0.000    0.000    0.000 pathlib.py:43(_is_wildcard_pattern)
+       10    0.000    0.000    0.000    0.000 search-claims.py:65(<genexpr>)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_sha256}
+        2    0.000    0.000    0.000    0.000 turn_guidance.py:112(<genexpr>)
+        2    0.000    0.000    0.000    0.000 pathlib.py:53(__init__)
+        1    0.000    0.000    0.000    0.000 encoder.py:104(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method _hashlib.openssl_shake_256}
+        1    0.000    0.000    0.000    0.000 process.py:364(_ParentProcess)
+        1    0.000    0.000    0.000    0.000 pickle.py:200(_Framer)
+        1    0.000    0.000    0.000    0.000 selectors.py:342(_PollLikeSelector)
+        1    0.000    0.000    0.000    0.000 bearing_ledger.py:6(_Paragraphs)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1025(<setcomp>)
+        1    0.000    0.000    0.000    0.000 contextlib.py:452(__init__)
+        1    0.000    0.000    0.000    0.000 _weakrefset.py:86(add)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.confstr}
+        1    0.000    0.000    0.000    0.000 context.py:230(DefaultContext)
+        9    0.000    0.000    0.000    0.000 enum.py:1049(<lambda>)
+        1    0.000    0.000    0.000    0.000 threading.py:264(__enter__)
+        1    0.000    0.000    0.000    0.000 argparse.py:116(_AttributeHolder)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1072(<setcomp>)
+        5    0.000    0.000    0.000    0.000 datetime.py:414(_check_tzinfo_arg)
+        1    0.000    0.000    0.000    0.000 threading.py:1301(_make_invoke_excepthook)
+        1    0.000    0.000    0.000    0.000 {built-in method _thread.get_native_id}
+        2    0.000    0.000    0.000    0.000 turn_guidance.py:277(<genexpr>)
+        2    0.000    0.000    0.000    0.000 {built-in method _sqlite3.register_adapter}
+        1    0.000    0.000    0.000    0.000 selectors.py:443(EpollSelector)
+        1    0.000    0.000    0.000    0.000 random.py:813(SystemRandom)
+        2    0.000    0.000    0.000    0.000 finish-turn.py:1683(<genexpr>)
+        1    0.000    0.000    0.000    0.000 _compression.py:9(BaseStream)
+        1    0.000    0.000    0.000    0.000 warnings.py:437(__init__)
+        1    0.000    0.000    0.000    0.000 threading.py:534(Event)
+        1    0.000    0.000    0.000    0.000 argparse.py:882(BooleanOptionalAction)
+        2    0.000    0.000    0.000    0.000 contextlib.py:446(_create_cb_wrapper)
+        1    0.000    0.000    0.000    0.000 parse.py:837(Quoter)
+        1    0.000    0.000    0.000    0.000 context.py:203(reducer)
+        5    0.000    0.000    0.000    0.000 platform.py:761(_unknown_as_blank)
+        1    0.000    0.000    0.000    0.000 context.py:233(__init__)
+        1    0.000    0.000    0.000    0.000 selectors.py:61(_SelectorMapping)
+        1    0.000    0.000    0.000    0.000 dbapi2.py:51(<listcomp>)
+        2    0.000    0.000    0.000    0.000 turn_guidance.py:210(<genexpr>)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1036(<dictcomp>)
+        1    0.000    0.000    0.000    0.000 threading.py:410(Semaphore)
+        1    0.000    0.000    0.000    0.000 selectors.py:434(PollSelector)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1046(<listcomp>)
+        1    0.000    0.000    0.000    0.000 pathlib.py:49(_Flavour)
+        1    0.000    0.000    0.000    0.000 search-claims.py:67(<lambda>)
+        1    0.000    0.000    0.000    0.000 argparse.py:788(Action)
+        1    0.000    0.000    0.000    0.000 turn_guidance.py:282(<listcomp>)
+        1    0.000    0.000    0.000    0.000 threading.py:1354(Timer)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:168(Where)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 pickle.py:263(_Unframer)
+        1    0.000    0.000    0.000    0.000 {method '__exit__' of 'posix.ScandirIterator' objects}
+        1    0.000    0.000    0.000    0.000 <string>:1(<lambda>)
+        1    0.000    0.000    0.000    0.000 claim_maintenance.py:24(UnchangedArticles)
+        1    0.000    0.000    0.000    0.000 threading.py:279(_is_owned)
+        1    0.000    0.000    0.000    0.000 context.py:276(ForkProcess)
+        1    0.000    0.000    0.000    0.000 subprocess.py:246(_cleanup)
+        1    0.000    0.000    0.000    0.000 argparse.py:923(_StoreAction)
+        1    0.000    0.000    0.000    0.000 context.py:310(ForkServerContext)
+        2    0.000    0.000    0.000    0.000 {method 'pop' of 'collections.deque' objects}
+        1    0.000    0.000    0.000    0.000 pathlib.py:507(_PathParents)
+        1    0.000    0.000    0.000    0.000 parse.py:194(_NetlocResultMixinStr)
+        1    0.000    0.000    0.000    0.000 threading.py:1405(_DummyThread)
+        1    0.000    0.000    0.000    0.000 argparse.py:213(_Section)
+        1    0.000    0.000    0.000    0.000 claim_maintenance.py:77(Hasher)
+        2    0.000    0.000    0.000    0.000 {method 'acquire' of '_thread.lock' objects}
+        1    0.000    0.000    0.000    0.000 decoder.py:20(JSONDecodeError)
+        1    0.000    0.000    0.000    0.000 threading.py:90(RLock)
+        1    0.000    0.000    0.000    0.000 threading.py:493(BoundedSemaphore)
+        1    0.000    0.000    0.000    0.000 argparse.py:1103(_HelpAction)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:155(Kind)
+        1    0.000    0.000    0.000    0.000 {method 'rfind' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 threading.py:267(__exit__)
+        1    0.000    0.000    0.000    0.000 argparse.py:1122(_VersionAction)
+        1    0.000    0.000    0.000    0.000 parse.py:329(DefragResult)
+        1    0.000    0.000    0.000    0.000 numbers.py:12(Number)
+        1    0.000    0.000    0.000    0.000 pickle.py:84(UnpicklingError)
+        1    0.000    0.000    0.000    0.000 pickle.py:97(_Stop)
+        1    0.000    0.000    0.000    0.000 parse.py:224(_NetlocResultMixinBytes)
+        1    0.000    0.000    0.000    0.000 {built-in method sys.exit}
+        1    0.000    0.000    0.000    0.000 argparse.py:1252(FileType)
+        2    0.000    0.000    0.000    0.000 lead_queue.py:593(<genexpr>)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.WIFSTOPPED}
+        1    0.000    0.000    0.000    0.000 argparse.py:1307(Namespace)
+        1    0.000    0.000    0.000    0.000 argparse.py:1671(_MutuallyExclusiveGroup)
+        1    0.000    0.000    0.000    0.000 parse.py:140(_ResultMixinStr)
+        1    0.000    0.000    0.000    0.000 threading.py:979(_set_ident)
+        1    0.000    0.000    0.000    0.000 {built-in method sys.exc_info}
+        3    0.000    0.000    0.000    0.000 {built-in method _warnings._filters_mutated}
+        2    0.000    0.000    0.000    0.000 {built-in method sys.audit}
+        1    0.000    0.000    0.000    0.000 process.py:349(AuthenticationString)
+        1    0.000    0.000    0.000    0.000 argparse.py:958(_StoreConstAction)
+        1    0.000    0.000    0.000    0.000 argparse.py:1015(_AppendAction)
+        1    0.000    0.000    0.000    0.000 lead_queue.py:1228(<listcomp>)
+        1    0.000    0.000    0.000    0.000 socket.py:211(_GiveupOnSendfile)
+        1    0.000    0.000    0.000    0.000 pathlib.py:463(_RecursiveWildcardSelector)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.waitstatus_to_exitcode}
+        1    0.000    0.000    0.000    0.000 ipaddress.py:20(AddressValueError)
+        1    0.000    0.000    0.000    0.000 {method 'difference_update' of 'set' objects}
+        1    0.000    0.000    0.000    0.000 process.py:397(_MainProcess)
+        1    0.000    0.000    0.000    0.000 pathlib.py:416(_PreciseSelector)
+        1    0.000    0.000    0.000    0.000 pathlib.py:432(_WildcardSelector)
+        1    0.000    0.000    0.000    0.000 reduction.py:211(_C)
+        1    0.000    0.000    0.000    0.000 pathlib.py:1453(WindowsPath)
+        1    0.000    0.000    0.000    0.000 parse.py:342(ParseResult)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+        1    0.000    0.000    0.000    0.000 pathlib.py:277(_Accessor)
+        1    0.000    0.000    0.000    0.000 argparse.py:685(RawDescriptionHelpFormatter)
+        1    0.000    0.000    0.000    0.000 argparse.py:724(MetavarTypeHelpFormatter)
+        1    0.000    0.000    0.000    0.000 argparse.py:981(_StoreTrueAction)
+        1    0.000    0.000    0.000    0.000 argparse.py:1053(_AppendConstAction)
+        1    0.000    0.000    0.000    0.000 pathlib.py:932(PureWindowsPath)
+        2    0.000    0.000    0.000    0.000 sre_parse.py:102(checklookbehindgroup)
+        1    0.000    0.000    0.000    0.000 argparse.py:696(RawTextHelpFormatter)
+        1    0.000    0.000    0.000    0.000 pathlib.py:922(PurePosixPath)
+        1    0.000    0.000    0.000    0.000 parse.py:148(_ResultMixinBytes)
+        1    0.000    0.000    0.000    0.000 pickle.py:73(PickleError)
+        1    0.000    0.000    0.000    0.000 search-claims.py:68(<listcomp>)
+        1    0.000    0.000    0.000    0.000 shutil.py:59(Error)
+        2    0.000    0.000    0.000    0.000 {method 'append' of 'collections.deque' objects}
+        1    0.000    0.000    0.000    0.000 subprocess.py:101(SubprocessError)
+        1    0.000    0.000    0.000    0.000 argparse.py:707(ArgumentDefaultsHelpFormatter)
+        1    0.000    0.000    0.000    0.000 argparse.py:1080(_CountAction)
+        1    0.000    0.000    0.000    0.000 threading.py:1384(_MainThread)
+        1    0.000    0.000    0.000    0.000 argparse.py:998(_StoreFalseAction)
+        1    0.000    0.000    0.000    0.000 argparse.py:1150(_ChoicesPseudoAction)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 pathlib.py:410(_TerminatingSelector)
+        1    0.000    0.000    0.000    0.000 pathlib.py:1446(PosixPath)
+        1    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.RLock' objects}
+        1    0.000    0.000    0.000    0.000 context.py:302(ForkContext)
+        1    0.000    0.000    0.000    0.000 threading.py:1183(daemon)
+        1    0.000    0.000    0.000    0.000 parse.py:337(SplitResult)
+        1    0.000    0.000    0.000    0.000 ipaddress.py:24(NetmaskValueError)
+        1    0.000    0.000    0.000    0.000 {built-in method math.sqrt}
+        1    0.000    0.000    0.000    0.000 parse.py:361(ParseResultBytes)
+        1    0.000    0.000    0.000    0.000 {built-in method _thread._set_sentinel}
+        1    0.000    0.000    0.000    0.000 threading.py:810(<listcomp>)
+        1    0.000    0.000    0.000    0.000 argparse.py:1241(_ExtendAction)
+        1    0.000    0.000    0.000    0.000 context.py:306(SpawnContext)
+        1    0.000    0.000    0.000    0.000 context.py:14(ProcessError)
+        1    0.000    0.000    0.000    0.000 threading.py:776(BrokenBarrierError)
+        1    0.000    0.000    0.000    0.000 shutil.py:79(_GiveupOnFastCopy)
+        1    0.000    0.000    0.000    0.000 parse.py:348(DefragResultBytes)
+        1    0.000    0.000    0.000    0.000 parse.py:356(SplitResultBytes)
+        1    0.000    0.000    0.000    0.000 contextlib.py:530(__enter__)
+        1    0.000    0.000    0.000    0.000 context.py:17(BufferTooShort)
+        1    0.000    0.000    0.000    0.000 argparse.py:779(ArgumentTypeError)
+        1    0.000    0.000    0.000    0.000 shutil.py:62(SameFileError)
+        1    0.000    0.000    0.000    0.000 pickle.py:77(PicklingError)
+        1    0.000    0.000    0.000    0.000 shutil.py:72(ReadError)
+        1    0.000    0.000    0.000    0.000 subprocess.py:1034(__enter__)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.callable}
+        1    0.000    0.000    0.000    0.000 shutil.py:65(SpecialFileError)
+        1    0.000    0.000    0.000    0.000 shutil.py:69(ExecError)
+        1    0.000    0.000    0.000    0.000 shutil.py:75(RegistryError)
+        1    0.000    0.000    0.000    0.000 context.py:23(AuthenticationError)
+        1    0.000    0.000    0.000    0.000 context.py:20(TimeoutError)
+        1    0.000    0.000    0.000    0.000 {method '__enter__' of '_thread.lock' objects}
+
+
