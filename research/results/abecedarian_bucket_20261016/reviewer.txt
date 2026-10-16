@@ -1,0 +1,47 @@
+Fresh-context medium reviewer, consolidated review of entry-2026-10-16-abecedarian-bucket-collapse (16 October 2026)
+
+Verdict: pass with corrections. Both lemma proofs are correct over every field; the overstatements were in
+the interpretation paragraphs, the closure reason and the commit message.
+
+Checks that passed
+- Koszul bucket collapse: y_c w (w nonconstant) cannot come from -F_c y_d, whose words end in y_d or are
+  y_d alone; symmetrically u y_d cannot come from y_c F_d. The alpha versus alpha+beta argument is
+  field-free; the c=d step and the merging step are right; constant generators still have y_c join, via
+  (1) for (c,d) and (2) for (d,c), so one nonconstant F_d suffices. T_cd has the two-sided form a y b, so
+  placeholder-linear and Hilbert-like classes stay closed, matching the Li-Tzameret-Wang convention.
+- Projection conversion: the product rule counts each splitting once (c >= a since c is at least the last
+  bucket of w_1, which is at least a); leaves, constants and the path count match the source.
+- Nonvacuity polynomials C+T_12 and C+T_21 and the bucket chain are correct, also in characteristic 2.
+- The lchsym arguments in Theorem 1 and the Corollary match the source's macros.
+
+Required changes (all adopted in the entry)
+- Reading: "the hypothesis of Theorem 2 fails for every certificate class" is wrong as stated; with one
+  bucket it holds trivially and is useless. Size-bounded classes: conditional on a smaller certificate.
+  Same fix in Bearing and the commit message.
+- Consequence: "its lower-bound half is the source's own open question" holds only when the class has a
+  member with a polynomial-size ABP (then pi_B(C) has an ABP of size O(ms)); the closure reason inherits
+  this. Add that the projection may be of a transformed certificate.
+- Projection proof: sum over i in [m+1] to include the constant term; the source's definition sums over [m].
+- Degenerate cases: m = 1 size is poly(s), not O(s).
+- Nonvacuity sizes unsourced; the rank-ledger link needs justification.
+- Commutator sentence unclear: commutator generators are among the F_c and the lemma applies to them.
+- Field hypotheses: give the reason they were not checked.
+- Review answer (5): a browser test at 5.003 s breaks the user's per-test 5 s limit; it is a failure.
+
+Open point: the collapse does not exclude the image of the copy-lift transformation (bucket order X<Y<W):
+every original certificate of size S gives a three-bucket abecedarian certificate of size O(S^3+ST), and
+Theorem 2 at m=3 gives a log-depth abecedarian formula of poly size. A superpolynomial abecedarian bound
+for these would bound all original placeholder-linear certificates, but at constant m abecedarian size
+equals general formula size up to poly(s): a reformulation, not a lever. No bound on pi_B(C) using
+C(x,F)=1 was found: pi_B does not commute with substituting F for y.
+
+Process audit: the body supports a title naming the two lemmas, working-proof status for both, with no
+claim of where the method must act. The first closure rested on an overstated reason and omitted the
+copy-lift route, which the item's words ("alternative bucket assignments") cover. Goal progress
+"unchanged" is honest; the first Bearing overstated.
+
+Follow-up check by the same reviewer (16 October 2026): every earlier correction applied correctly. Two
+remaining changes: the closure reason holds only for classes with a polynomial-size-ABP member, not
+shown for the matched class (keep Continuing or cite a member), and "few buckets" should read "a
+constant number of buckets"; and a nonvacuity sentence called size-bounded classes closed under T_cd.
+Both adopted: the sub-idea is kept Continuing. Title and status line match the body.
