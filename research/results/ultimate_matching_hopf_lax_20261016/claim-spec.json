@@ -1,0 +1,76 @@
+{
+  "source": {
+    "record": "[Hopf-Lax reduction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-hopf-lax-reduction)",
+    "label": "Hopf-Lax reduction",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-hopf-lax-reduction"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:hopf-lax-matching-bound",
+      "summary": "For a separable cost C(z)=Psi_1(|z_1|)+Psi_2(|z_2|) with Psi_j convex, nondecreasing, finite, Psi_j(0)=0, and N-point sets X,Y in [0,1]^2 whose counts in every cell Q of a grid of side delta are at least lambda|Q|: for every h in (0,1/2), min over matchings of sum_i C(X_i-Y_pi(i)) is at most sup over Lipschitz g of [int g d(mu_X-mu_Y) - (1-2h) lambda int C*(grad g) dx] + 2hN(Psi_1(delta/h)+Psi_2(delta/h)), mu_X, mu_Y the cell-smeared measures and C* the convex conjugate (possibly infinite).",
+      "assessment": "Working proof: finite matching duality (Proposition 4.3.2 of Talagrand's monograph), a Hopf-Lax semigroup inequality proved in the entry, Rademacher and Fubini, interpolation between the smeared measures. Deterministic; finite costs; one direction. The point-configuration, cell-smeared form of the standard dynamic duality bound (Benamou-Brenier; Bobkov-Gentil-Ledoux), sources recalled, not read.",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Turns a matching problem with any separable convex finite cost into a discrepancy bound penalized by the conjugate cost, the role the monograph's regularity step plays for Shor's theorem.",
+      "next_action": "Seek a converse up to constants, which would make the reduction an equivalence.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:exponential-matching-discrepancy-reduction",
+      "summary": "For alpha_1,alpha_2 in [1,infinity], L>=132, X i.i.d. uniform and Y evenly spread in [0,1]^2: if with probability tending to one D_N <= (L/2) sqrt(N log N), D_N the sup of int G d(mu_X-mu_Y) over Lipschitz G with int sum_j psi*_alpha_j(|d_j G|) dx <= 2 on the grid of side 1/ceil(32/s), s=L sqrt(log N/N), psi_alpha(t)=e^(t^alpha)-1 and psi_infinity(t)=N(t-1)_+, then with probability tending to one a matching has sum_i exp[(|X_i^j-Y^j_pi(i)|/s)^alpha_j] <= 2N for finite alpha_j and max_i |X_i^j-Y^j_pi(i)| <= 2s for alpha_j=infinity; for two i.i.d. samples with constants doubled.",
+      "assessment": "Working proof of the implication from lem:hopf-lax-matching-bound with h=1/4, a Chernoff bound for cell counts, the evenly spread cell count, and homogeneity of the convex penalty; the endpoint uses the finite cost N(t-1)_+. Conditional: no instance of its hypothesis is known.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Reduces the ultimate matching conjecture at every admissible pair, endpoints included, with one universal constant, to one discrepancy bound of Ajtai-Komlos-Tusnady size.",
+      "next_action": "Test the reduced discrepancy statement against the Leighton-Shor lower-bound functions in an anisotropic tile.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "conj:conjugate-class-discrepancy",
+      "summary": "There is L>=132 such that for every alpha_1,alpha_2 in [2,infinity] with 1/alpha_1+1/alpha_2=1/2, for X i.i.d. uniform and Y evenly spread in [0,1]^2, with probability tending to one every Lipschitz G with int sum_j psi*_alpha_j(|d_j G|) dx <= 2 (psi_alpha(t)=e^(t^alpha)-1, psi_infinity(t)=N(t-1)_+) has cell-averaged discrepancy int G d(mu_X-mu_Y) <= (L/2) sqrt(N log N), on the grid of side 1/ceil(32/s), s=L sqrt(log N/N).",
+      "assessment": "Conjecture stated to be tested; no evidence beyond consistency: it contains the gradient-at-most-one class at Ajtai-Komlos-Tusnady size, its penalty may be replaced by a weight at least linear at a factor e, and at (2,infinity) its class is a continuous counterpart of the monograph's Research Problem 17.2.2, open there. A reviewer heuristic suggests Leighton-Shor functions meet it at its threshold on the whole curve.",
+      "status": "conjecture",
+      "category": "route_specific",
+      "rationale": "Sufficient for the ultimate matching conjecture at every admissible pair with one universal constant, by cor:exponential-matching-discrepancy-reduction.",
+      "next_action": "Redo the Leighton-Shor lower bound for the penalized class in an anisotropic tile with explicit scale bookkeeping.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "cor:exponential-matching-discrepancy-reduction",
+      "depends_on",
+      "lem:hopf-lax-matching-bound",
+      "Applies the bound with h=1/4 and the exponential and capped linear costs."
+    ],
+    [
+      "cor:exponential-matching-discrepancy-reduction",
+      "depends_on",
+      "lem:two-sample-matching-transfer",
+      "Uses the transfer for the two-sample form."
+    ],
+    [
+      "cor:exponential-matching-discrepancy-reduction",
+      "applies",
+      "conj:ultimate-matching",
+      "Reduces the conjecture at every admissible pair to conj:conjugate-class-discrepancy."
+    ],
+    [
+      "cor:exponential-matching-discrepancy-reduction",
+      "cites",
+      "lem:common-exponent-cap",
+      "Same setting and normalization; the cap excludes pairs with both exponents above 4, the reduction concerns every pair in [1,infinity]^2."
+    ],
+    [
+      "conj:conjugate-class-discrepancy",
+      "applies",
+      "conj:ultimate-matching",
+      "Sufficient for it at every admissible pair with one universal constant, through cor:exponential-matching-discrepancy-reduction."
+    ]
+  ]
+}
