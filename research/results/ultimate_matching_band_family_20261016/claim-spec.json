@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Band-family discrepancy](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-band-family-discrepancy)",
+    "label": "Band-family discrepancy",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-band-family-discrepancy"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:band-family-discrepancy",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, s_0 = 3 sqrt(log N/N), w_0 = 2 s_0, with probability tending to one: (a) for every mesh 2^(-i) >= s_0 and every set S of cells of mesh 2^(-(i-1)) meeting each column in an interval of at most K+4 cells, neighbouring intervals starting at most K+1 rows apart, the sum over the children Q of S of |n_Q - n_parent/4| is at most L((K+4) sqrt N + sqrt((K+4) N 2^(-i) log N)); (b) every band a phi(y - f(x)) with |f'| <= K, any ramp width w > 0 and band width W' <= 1 has discrepancy at most L(1+K)^2 a sqrt N((2 log_2(2 + W'/max(w,w_0)) + 9)^(3/4) + sqrt(log N)); (c) disjoint bands inside the square along full-width graphs, slopes at most K, ramp gradients y_r >= e^16, any ramp widths, with class cost at most 2 have discrepancy at most L(1+K)^2 sqrt(N log N). Against Lebesgue measure.",
+      "assessment": "Working proof: (a) children counts multinomial given the parents, sub-Gaussian deviations, Hoeffding and a union over the column-interval sets; (b) comparison with ramps w_0 below w_0, lem:tube-localized-discrepancy (c) for w >= 2^(-l_1), and otherwise layers E_i G - E_(i-1) G between 2^(-l_1) and w bounded by (a), at most (1/4) log_2 log N of them, plus that lemma's (b) on the coarse part and the cellwise remainder; (c) Jensen with packing and the psi*_4 cost bound as in that lemma's (d).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Closes, against Lebesgue measure, the families of disjoint bands inside the square along full-width graphs of slope at most K at every ramp width under the class cost at (4,4); the fourth route review's decisive split produces tubes along level curves of any shape, which are not of this form in general.",
+      "next_action": "The fourth route review's decisive test: split a single-level class function at its local spacing, with this lemma for the tube part and the cancellation inequality for the smooth part.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:band-family-discrepancy",
+      "refines",
+      "lem:tube-localized-discrepancy",
+      "Its (b) and (c) extend that lemma's (c) and (d) from ramps at least 2^(-l_1) to every ramp width, with 2 + W'/max(w, w_0) in place of W'/w, and drop the upper bound on the gradients in (d)."
+    ],
+    [
+      "lem:band-family-discrepancy",
+      "depends_on",
+      "lem:cellwise-lipschitz-split",
+      "Its proof's cellwise remainder bound, on meshes down to side 3 sqrt(log N/N)."
+    ],
+    [
+      "lem:band-family-discrepancy",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Disjoint band families at (4,4) inside the square along graphs of bounded slope, at any ramp widths, bounded at order sqrt(N log N) against Lebesgue measure."
+    ]
+  ]
+}
