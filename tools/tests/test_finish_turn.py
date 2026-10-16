@@ -584,6 +584,10 @@ sys.exit(compute.main())
                 f'<li data-pick>a{ok.replace("<strong>Break point.</strong> None found. ", "")}</li>')),  # passed, break point unevaluated
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 'Not run: needs a kernel.', 'Not run: the theorem was recalled, not read.')),  # unread, no retrieval named
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                'Not run: needs a kernel.', 'Not run: Recalled. <strong>Retrieval.</strong> None tried.')),  # upper case, none named
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                '<li>e <strong>Answers.</strong>', '<li>e (a theorem recalled) <strong>Answers.</strong>')),  # unread in the citation
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row

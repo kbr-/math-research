@@ -109,6 +109,9 @@ PICKS = {'Outside leads': 3, 'Absurd bridges': 2}
 PICK_RE = re.compile(r'^[^>]*\bdata-pick\b')
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
 NOT_RUN_UNREAD_RE = re.compile(r'\b(recalled|not read|unread|not retrieved)\b', re.I)
+# A Retrieval paragraph names a tool or a search or fetch it made; "Retrieval. None tried." does not pass.
+RETRIEVAL_RE = re.compile(r'<strong>Retrieval\.</strong>(?:(?!</li>).)*?\b(held_sources|arxiv_source|browser_get|'
+                          r'firefox_get|search(?:ed|es)?|fetch(?:ed)?|WebSearch|WebFetch)\b', re.I | re.S)
 OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
 OBSTACLE_MIN = 80
 
@@ -190,14 +193,16 @@ def validate_leads(body, article, close, draining=None):
                              'test of the named theorem alone, or of a recalled statement, is Not run for the '
                              'translation (AGENTS.md)')
         # A review of 16 October 2026 left items Not run as "recalled, not read" although the statements were a
-        # search away; such an item says what retrieval was tried and how it ended.
+        # search away; such an item says what retrieval was tried and how it ended. The source may be marked
+        # unread in its citation, before the Test label, as well as in the reason after it.
         unretrieved = [i for i, item in enumerate(items, 1) if (TEST_RE.search(item) or [None, None])[1] == 'Not run'
-                       and NOT_RUN_UNREAD_RE.search(item[TEST_RE.search(item).end():])
-                       and '<strong>Retrieval.</strong>' not in item]
+                       and NOT_RUN_UNREAD_RE.search(item)
+                       and not RETRIEVAL_RE.search(item)]
         if unretrieved:
             raise ValueError(f'{heading} item(s) {unretrieved} are Not run on a source recalled or unread without '
-                             '"<strong>Retrieval.</strong>": say what retrieval was tried (tools/held_sources.py, '
-                             'tools/arxiv_source.py, tools/browser_get.cjs, a search) and how it ended (AGENTS.md)')
+                             'a "<strong>Retrieval.</strong>" paragraph naming what retrieval was tried '
+                             '(tools/held_sources.py, tools/arxiv_source.py, tools/browser_get.cjs, a search or a '
+                             'fetch) and how it ended (AGENTS.md); the check reads the names, not the outcome')
         picks = [i for i, item in enumerate(items, 1) if PICK_RE.search(item)]
         want = min(PICKS[heading], len(passed))
         if not set(picks) <= set(passed) or len(picks) != want:
