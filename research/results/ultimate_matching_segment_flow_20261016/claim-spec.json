@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Segment flow cost](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-segment-flow-cost)",
+    "label": "Segment flow cost",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-segment-flow-cost"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": ["random-matchings"],
+  "claims": [
+    {
+      "id": "lem:segment-flow-cost",
+      "summary": "In the setting of lem:tube-density-converse (cells of side delta, cell-uniform smearings, bijection pi, centre differences D_i, tube densities rho_i with rho_pi = sum rho_i): the segment flux Phi_pi = sum_i D_i rho_i is a bounded flow from mu_X to mu_Y (int grad g . Phi_pi = int g d(mu_Y - mu_X) for Lipschitz g), and for convex psi_j >= 0 with psi_j(0)=0, lambda > 0 and M >= max rho_pi: sum_j int M psi_j(|Phi_pi,j|/(lambda M)) dx <= sum_j sum_i psi_j(|D_i^j|/lambda). So for the flow bound's fixed density level lambda', the flow -Phi_pi has cost lambda' int C_mu(-Phi_pi/lambda') <= (lambda'/M) 2N at the cost scale mu = lambda M/lambda' when the matching's cost is at most 2N.",
+      "assessment": "Working proof: the swept cells' change of variables for the flow identity; Jensen pointwise with weights rho_i/rho_pi; the perspective r -> r psi(a/r) nonincreasing for convex psi with psi(0)=0. Deterministic.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "A good matching of bounded tube density yields, through its segment flux, a flow of bounded cost at a rescaled cost scale, which implies the class bound (Fenchel-Young); a sufficient condition for the converse of the Hopf-Lax reduction, in flow form. Not an equivalence: C => F is not on record.",
+      "next_action": "Whether an optimal matching for the cost has tube density O(N), first through the injectivity of displacement interpolation for strictly convex costs.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:segment-flow-cost",
+      "cites",
+      "lem:tube-density-converse",
+      "Same setting; that lemma's class bound follows from this flow and Fenchel-Young."
+    ],
+    [
+      "lem:segment-flow-cost",
+      "cites",
+      "lem:flow-matching-bound",
+      "The flow it builds has bounded cost in that lemma's form when the tube density is bounded."
+    ],
+    [
+      "lem:segment-flow-cost",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Up to constants and grid, the class bound follows from a good matching of bounded tube density through its segment flux."
+    ]
+  ]
+}
