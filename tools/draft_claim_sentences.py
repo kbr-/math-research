@@ -521,7 +521,10 @@ def log_run(draft, path=None):
 def counts_report(draft, width):
     found = counts(draft)
     lines = [f'  [{where}] {sentence if width <= 0 else sentence[:width]}' for where, sentence in found]
-    return '\n'.join(['Sentences outside the mathematics that hold a count; read each beside its saved source:']
+    # 16 October 2026: "at least two twists", derived from inequalities, was false at its boundary t = 1 and was
+    # repeated in four summaries before anyone tried that case.
+    return '\n'.join(['Sentences outside the mathematics that hold a count; read each beside its saved source, '
+                      'and a count derived from inequalities beside its boundary case, worked out:']
                      + lines + [f'{len(found)} sentences with a count.'])
 
 
