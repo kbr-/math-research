@@ -283,7 +283,18 @@ RECORD_SHOWN = 1500     # characters of each record statement paragraph printed 
 RECORD_MAX = 4          # statement paragraphs printed per claim
 
 
-def record_statements(record, root, cache):
+def statement_rank(plain, ident, summary):
+    """Sort key for a record statement paragraph: one naming the claim in its label first, then by the share of
+    the summary's words of four or more letters it contains."""
+    name = ident.split(':', 1)[-1].replace('-', ' ').lower() if ident else ''
+    label = plain.split('.', 1)[0].replace('-', ' ').lower()
+    words = {w for w in re.findall(r'[a-z]{4,}', (summary or '').lower())}
+    held = {w for w in re.findall(r'[a-z]{4,}', plain.lower())}
+    share = len(words & held) / len(words) if words else 0.0
+    return (not (name and name in label), -share)
+
+
+def record_statements(record, root, cache, ident=None, summary=''):
     """The Lemma, Theorem, Corollary, Proposition or Statement paragraphs of the entry a claim's record link
     points at, as plain text, or a line saying why none could be read.  `cache` maps notebook paths to text, so
     a brief naming several claims reads each notebook once.
@@ -293,10 +304,19 @@ def record_statements(record, root, cache):
     proposition states; a brief carrying only summaries could not show the reviewer the difference.
 
     Only the first entry link of the record is followed. When the anchor names a paragraph inside an entry,
-    the statement paragraph at that anchor comes first."""
+    the statement paragraph at that anchor comes first. Otherwise, when `ident` is given, a paragraph whose
+    label names the claim (lem:cut-code-classes: "Lemma (cut-code classes)") comes first, then the others by
+    the share of the summary's words they hold: on 16 October 2026 two claims of one entry both printed its
+    first statements, neither its own."""
     from claim_authoring import STATEMENT, _plain, source_notebook
-    # A statement paragraph may carry its own id (a paragraph claim): allow attributes on the <p>.
-    statement = re.compile(STATEMENT.pattern.replace('<p><strong>', r'<p(?:\s[^>]*)?><strong>', 1), STATEMENT.flags)
+    # A statement may open its paragraph (which may carry an id) or follow setup prose inside it, as in the
+    # cut-code rank normalization entry: match the bold label wherever it stands, up to its paragraph's end.
+    # The body may not cross into or out of a list item, table cell, heading or another paragraph, so a bold
+    # reference in a list item matches nothing instead of swallowing the next paragraph's statement.
+    within = r'(?:(?!</?(?:li|td|th|h\d|ul|ol|p)\b)[\s\S])*?'
+    statement = re.compile(STATEMENT.pattern.replace('<p><strong>', '<strong>', 1)
+                           .replace('</strong>.*?</p>', '</strong>' + within + '</p>', 1), STATEMENT.flags)
+    assert within in statement.pattern, 'STATEMENT changed shape; update the element guard'
     link = re.search(r'\((https?://[^)\s]+#[^)\s]+)\)', record or '')
     if not link:
         return ['(the record link names no entry anchor; read the record)']
@@ -318,10 +338,10 @@ def record_statements(record, root, cache):
     end = text.find('</article>', at)
     article = text[at:end if end >= 0 else None]
     matches = list(statement.finditer(article))
-    if inner is not None:          # the statement paragraph holding the anchor first
-        offset = inner - at
-        matches.sort(key=lambda m: not (m.start() <= offset < m.end()))
-    statements = [_plain(m.group(0)) for m in matches]
+    offset = inner - at if inner is not None else -1
+    ranked = sorted(((not (m.start() <= offset < m.end()), statement_rank(_plain(m.group(0)), ident, summary), i,
+                      _plain(m.group(0))) for i, m in enumerate(matches)))
+    statements = [plain for *_, plain in ranked]
     if not statements:
         return [f'(#{anchor} has no Lemma, Theorem, Corollary, Proposition or Statement paragraph)']
     shown = [s[:RECORD_SHOWN] + (' …' if len(s) > RECORD_SHOWN else '') for s in statements[:RECORD_MAX]]
@@ -349,7 +369,8 @@ def claim_excerpts(idents, registry, root=None):
                  f"  Status: {claim.get('mathematical_status', '')}\n  Record: {claim.get('record', '')}\n")
         if root is not None:
             block += ''.join(f'  Record statement: {line}\n'
-                             for line in record_statements(claim.get('record', ''), Path(root), cache))
+                             for line in record_statements(claim.get('record', ''), Path(root), cache, ident,
+                                                           claim.get('summary', '')))
         blocks.append(block)
     if root is not None:
         size = sum(len(text) for text in cache.values())

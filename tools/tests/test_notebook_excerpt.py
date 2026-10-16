@@ -218,6 +218,30 @@ class RecordStatementTest(unittest.TestCase):
             # Without a root the excerpt is the registry's alone, as before.
             self.assertNotIn('Record statement', tool.claim_excerpts(['prop:w'], registry))
 
+    def test_claims_sharing_an_entry_each_get_their_own_statement_first(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notebook_excerpt_tool', Path(__file__).resolve().parents[1] / 'notebook-excerpt.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'notebook.html').write_text(
+                '<article id="e1"><p><strong>Lemma (sparse survival).</strong> A weight keeps rank.</p>'
+                '<ul><li><strong>Lemma (cut-code classes)</strong> cited in a list.</li></ul>'
+                '<p>Setup prose first. <strong>Lemma (cut-code classes).</strong> Classes are cosets.</p>'
+                '<p><strong>Theorem.</strong> Conjunction rank equals the coset count of the orbit.</p></article>')
+            registry = {'claims': [
+                {'id': 'lem:cut-code-classes', 'summary': 'Characters share a coordinate.',
+                 'record': '[E](https://x.dev/r/#e1)'},
+                {'id': 'thm:conjunction-rank', 'summary': 'Conjunction multiplication rank equals the orbit coset count.',
+                 'record': '[E](https://x.dev/r/#e1)'}]}
+            first = lambda ident: tool.claim_excerpts([ident], registry, root=root).split('Record statement: ')[1]
+            # By the label naming the claim, then by the summary's words.
+            self.assertTrue(first('lem:cut-code-classes').startswith('Lemma (cut-code classes).'))
+            self.assertTrue(first('thm:conjunction-rank').startswith('Theorem. Conjunction'))
+            # The list item's bold reference is not taken for a statement.
+            self.assertNotIn('cited in a list', tool.claim_excerpts(['lem:cut-code-classes'], registry, root=root))
+
 
 class LivingAndTocTest(unittest.TestCase):
     def test_the_tail_parse_agrees_with_the_full_parse(self):
