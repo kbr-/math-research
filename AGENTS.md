@@ -173,41 +173,44 @@ growing checklists or one-off setup narratives.
   one-dimensional estimate, the record's oldest applicable lemma) gives on that instance, or why
   none applies (the finisher checks). For a statement uniform over a family, every fixed witness is
   decided by a bound for one function (its variance, or a one-dimensional estimate after a change of
-  variables): the sentence then says so and names what the uniformity adds. "None applies" is
-  written only after the plainest bound was tried on the instance; and a recorded result the draft
-  cites is read also for what it already implies about the new statement's special cases. Before a
-  required paragraph or artifact is called done, name what it is meant to establish in the case at
-  hand and check that it does: a witness exercises the step the statement adds, a Meta names the
-  change its commit made, a message reports a result and not an intent (16 October 2026: each of the
-  three passed its rule's wording first). Likewise a prevention, a count or a check is reported as
-  in force only beside the output of its run on the case that exposed it, at the earliest stage it
-  can run: that it exists is not that it works (16 October 2026: a message check announced in force
-  missed its own case's other form, and a replay count could not fail on the case it was quoted
-  for). An example or witness offered for a claim, in an entry or a reply, is written with the
-  quantity it illustrates computed beside it, never from memory of its shape, and a witness offered
-  for a case analysis exercises each branch it is offered for. A proof step that makes a term vanish
-  by the value of a factor says where that factor sits relative to every bracket or certificate
-  around it, quoted from the construction's record (16 October 2026: a factor inside a commutator
-  was used as if it stood outside, and the witness had no branch where it mattered). A statement
-  covering several parts (cases, forms, earlier lemmas it refines) gives each part its own form, and
-  a simplification true of some parts is attached to those parts only. Name after
-  `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious witness,
-  the trivial estimate) and what the statement adds over it (the finisher requires it of the same
-  entries; 16 October 2026: a comparison omitted a multiplier that survived every choice). An
-  example or test computed with the entry's method also gets its own baseline, computed first: what
-  the plainest available bound gives on that example. State compositions as lemmas in one common
-  setting with a complete proof, not a reference to a sketch. At the start of drafting, run the
-  entry's skeleton (its headings and labelled paragraphs, before the body) through
-  `tools/notebook-append.py DRAFT --check`, which lists each failing entry check of the append and
-  the finisher that applies to a draft, so a required paragraph is planned before the work. Before
-  the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each
-  sentence that cites a claim beside that claim's registered statement, and each that links an entry
-  beside that entry's title and status line: a sentence may say no more than its source, and one
-  that draws a decision from a bound of the entry restates the bound's hypotheses and error terms
-  beside the instance and the scale decided. The tool also lists the draft's sentences outside its
-  mathematics that hold a count: read each beside the saved output the count came from. A property
-  of a recorded construction that a proof step uses (what its terms contain, where a factor sits,
-  what it specializes to) is quoted from that construction's record, with its anchor, in the step: a
+  variables): the sentence then says so and names what the uniformity adds; over a family of
+  polynomially many members that bound with a union over the members is the plainest uniform bound,
+  tried before any other (17 October 2026: two nested blocks, at most \(N^2\) of them, were called a
+  case for a deep lemma that the union bound decides). "None applies" is written only after the
+  plainest bound was tried on the instance; and a recorded result the draft cites is read also for
+  what it already implies about the new statement's special cases. Before a required paragraph or
+  artifact is called done, name what it is meant to establish in the case at hand and check that it
+  does: a witness exercises the step the statement adds, a Meta names the change its commit made, a
+  message reports a result and not an intent (16 October 2026: each of the three passed its rule's
+  wording first). Likewise a prevention, a count or a check is reported as in force only beside the
+  output of its run on the case that exposed it, at the earliest stage it can run: that it exists is
+  not that it works (16 October 2026: a message check announced in force missed its own case's other
+  form, and a replay count could not fail on the case it was quoted for). An example or witness
+  offered for a claim, in an entry or a reply, is written with the quantity it illustrates computed
+  beside it, never from memory of its shape, and a witness offered for a case analysis exercises
+  each branch it is offered for. A proof step that makes a term vanish by the value of a factor says
+  where that factor sits relative to every bracket or certificate around it, quoted from the
+  construction's record (16 October 2026: a factor inside a commutator was used as if it stood
+  outside, and the witness had no branch where it mattered). A statement covering several parts
+  (cases, forms, earlier lemmas it refines) gives each part its own form, and a simplification true
+  of some parts is attached to those parts only. Name after `<strong>Baseline.</strong>` the
+  construction or bound that needs no idea (the obvious witness, the trivial estimate) and what the
+  statement adds over it (the finisher requires it of the same entries; 16 October 2026: a
+  comparison omitted a multiplier that survived every choice). An example or test computed with the
+  entry's method also gets its own baseline, computed first: what the plainest available bound gives
+  on that example. State compositions as lemmas in one common setting with a complete proof, not a
+  reference to a sketch. At the start of drafting, run the entry's skeleton (its headings and
+  labelled paragraphs, before the body) through `tools/notebook-append.py DRAFT --check`, which
+  lists each failing entry check of the append and the finisher that applies to a draft, so a
+  required paragraph is planned before the work. Before the reviewer's brief, run
+  `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that cites a
+  claim beside that claim's registered statement, and each that links an entry beside that entry's
+  title and status line: a sentence may say no more than its source, and one that draws a decision
+  from a bound of the entry restates the bound's hypotheses and error terms beside the instance and
+  the scale decided. The tool also lists the draft's sentences outside its mathematics that hold a
+  count: read each beside the saved output the count came from. A property of a recorded
+  construction that a proof step uses (what its terms contain, where a factor sits, what it
+  specializes to) is quoted from that construction's record, with its anchor, in the step: a
   property written from the agent's picture of the construction is an untested hypothesis.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
@@ -285,6 +288,10 @@ AGENTS.md"):
   before any method is chosen; then, once a proof exists, each of its own steps used alone (a
   substitution, a reduction, a restriction), since a step that already decides the instance makes
   the rest of the proof a variant to compare, not the result.
+- Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
+  step on the instance yourself: a union bound over its family's members, the default the rules
+  already give, the result of the edit just made (17 October 2026: a two-block case called deep, a
+  question the Spin rules answered, a commit sent before its edit's result).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved.
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
