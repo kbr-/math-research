@@ -18,6 +18,10 @@ Possible because: an indexing error in the greedy scan would raise its smallest 
 Also refuted by: a non-monotone certificate in k on the full l = 16 scan, which would invalidate the
 binary search used at larger l.
 Possible because: the greedy optimum over t could in principle drop as r grows with k.
+The baselines' smallest k is taken from a full scan of every allowed k, and the binary search is kept
+only as a cross-check (it must return a certifying k at or above the scanned one).
+Refuted by: a binary-search baseline k below the full-scan smallest k, which would mean a bad scan.
+Possible because: an off-by-one in the vectorized scan would shift every scanned index by one.
 """
 import argparse
 import json
@@ -110,6 +114,27 @@ def smallest_k(ell, M, test):
     return lo
 
 
+def exact_baseline_k(ell, M, name):
+    """The smallest k at which a baseline certifies, by a full scan of every allowed k (vectorized), with
+    no monotonicity assumption: the binary search can return a certifying k above the smallest one, and
+    an understated baseline would overstate the greedy gain (review of 16 October 2026)."""
+    n, m, v, h = params(ell)
+    hi = (n + 1) // (2 * (2 * h + 2))
+    k = np.arange(1, hi + 1, dtype=np.float64)
+    if name == 'published':
+        ok = m * math.log(4 * M) <= k * k
+    else:
+        r = h * (k + 1) + 1
+        x = 1 - r / v
+        rho = (m - k + 1) * ell / k
+        rx = rho * x
+        valid = (r + k < v) & (rx > 1)
+        rhs = np.where(valid, -k * np.log(x) - np.log(np.where(valid, rx / (rx - 1), 2.0)), -np.inf)
+        ok = math.log(M) < rhs
+    hits = np.flatnonzero(ok)
+    return int(hits[0]) + 1 if hits.size else None
+
+
 def degree(ell, k):
     n, m, v, h = params(ell)
     if k is None or k > m or 4 * (k - 1) >= n:
@@ -145,6 +170,11 @@ def main():
             row = dict(ell=ell, M_label=label, M=M)
             for name, test in METHODS.items():
                 k = smallest_k(ell, M, test)
+                if name != 'greedy':
+                    exact = exact_baseline_k(ell, M, name)
+                    row[name + '_k_search'] = k
+                    assert (k is None) == (exact is None) and (k is None or exact <= k)
+                    k = exact
                 row[name + '_k'] = k
                 row[name + '_D'] = degree(ell, k)
             if M <= (n + 1) // (2 * (6 * ell + 2)):
