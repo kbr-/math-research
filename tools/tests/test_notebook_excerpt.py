@@ -213,7 +213,11 @@ class RecordStatementTest(unittest.TestCase):
                 {'id': 'thm:t', 'summary': 'Second.', 'record': '[E](https://x.dev/r/#e3-second)'},
                 {'id': 'lem:s', 'summary': 'Out.', 'record': '[E](https://x.dev/r/#s9)'}]
             anchored = tool.claim_excerpts(['thm:t', 'lem:s'], registry, root=root)
+            # The paragraph at the anchor comes first; the entry's other one, which neither names the claim nor holds
+            # its summary's words, follows marked as possibly another claim's.
             self.assertLess(anchored.index('Theorem. Second'), anchored.index('Lemma. First'))
+            self.assertIn("Record statement: (may be another claim's: it does not name this claim and holds 0% of "
+                          "its summary's words) Lemma. First.", anchored)
             self.assertIn('#s9 is not inside an entry', anchored)
             # Without a root the excerpt is the registry's alone, as before.
             self.assertNotIn('Record statement', tool.claim_excerpts(['prop:w'], registry))
@@ -241,6 +245,18 @@ class RecordStatementTest(unittest.TestCase):
             self.assertTrue(first('thm:conjunction-rank').startswith('Theorem. Conjunction'))
             # The list item's bold reference is not taken for a statement.
             self.assertNotIn('cited in a list', tool.claim_excerpts(['lem:cut-code-classes'], registry, root=root))
+            # An entry citing an imported claim states other things: each is marked as possibly another claim's.
+            registry['claims'].append({'id': 'imp:grochow-pitassi', 'summary': 'Depth preserving simulation of '
+                                       'modular Frege by IPS over prime fields.', 'record': '[E](https://x.dev/r/#e1)'})
+            text = tool.claim_excerpts(['imp:grochow-pitassi'], registry, root=root)
+            self.assertIn("Record statement: (may be another claim's: it does not name this claim and holds 0% of its "
+                          "summary's words) Lemma (cut-code classes). Classes are cosets.", text)
+            # An unnamed paragraph holding a fifth of the summary's words is shown unmarked, and so is every
+            # paragraph of a claim registered without summary words of four letters.
+            self.assertIn('Record statement: Theorem. Conjunction rank',
+                          tool.claim_excerpts(['thm:conjunction-rank'], registry, root=root))
+            registry['claims'].append({'id': 'lem:x', 'summary': 'A b.', 'record': '[E](https://x.dev/r/#e1)'})
+            self.assertNotIn('may be another', tool.claim_excerpts(['lem:x'], registry, root=root))
 
 
 class LivingAndTocTest(unittest.TestCase):

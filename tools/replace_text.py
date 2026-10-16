@@ -10,8 +10,9 @@ is. The replacement's first line takes the indentation of the passage's first li
 line keeps its offset from the replacement's first line, so a list item stays at its level, and a
 replacement starting on a continuation line can end with a new item one level out. When a one-line
 passage matches no line-aligned place, it may lie inside a longer line: it then matches there,
-literally, once, never starting or ending inside a word, and a one-line replacement takes its place.
-A passage or a replacement of several lines is still matched line-aligned only.
+literally, once, never starting or ending inside a word, and a one-line replacement takes its place;
+failing that, single line breaks (never a blank line) may fall between its words, and the
+replacement takes the whole span on one line, to be rewrapped. A replacement of several lines is still placed line-aligned only.
 """
 import re
 import sys
@@ -35,10 +36,18 @@ def replace(text, old, new):
         body = r'[ \t]+'.join(map(re.escape, words))
         body = (r'(?<!\w)' if re.match(r'\w', words[0]) else '') + body + (r'(?!\w)' if re.search(r'\w$', words[-1]) else '')
         starts = [m.start() for m in re.finditer(f'(?=(?:{body}))', text)]
+        if not starts:
+            # A passage whose words cross line breaks and start or end mid-line, as in wrapped Markdown or a
+            # commit message (16 October 2026): its words match across any whitespace, and the one-line
+            # replacement takes its place, to be rewrapped by the file's own tool.
+            # One line break between two words, never a blank line, so two paragraphs are not merged.
+            body = body.replace(r'[ \t]+', r'(?:[ \t]*\n[ \t]*|[ \t]+)')
+            starts = [m.start() for m in re.finditer(f'(?=(?:{body}))', text)]
         if len(starts) == 1:
             match = re.compile(body).match(text, starts[0])
             return text[:match.start()] + new.strip() + text[match.end():], text.count('\n', 0, match.start()) + 1
-        raise ValueError(f'the passage matches no line-aligned place and {len(starts)} places within a line, not one')
+        raise ValueError(f'the passage matches no line-aligned place and {len(starts)} places within or across lines, '
+                         'not one')
     if len(found) != 1:
         raise ValueError(f'the passage matches {len(found)} line-aligned places, not one')
     match = found[0]

@@ -281,6 +281,7 @@ def review_tests(source, width=600):
 
 RECORD_SHOWN = 1500     # characters of each record statement paragraph printed beside a registered summary
 RECORD_MAX = 4          # statement paragraphs printed per claim
+RECORD_MIN_SHARE = 0.2  # least share of a summary's words an unnamed, unanchored paragraph holds to be shown unmarked
 
 
 def statement_rank(plain, ident, summary):
@@ -307,7 +308,10 @@ def record_statements(record, root, cache, ident=None, summary=''):
     the statement paragraph at that anchor comes first. Otherwise, when `ident` is given, a paragraph whose
     label names the claim (lem:cut-code-classes: "Lemma (cut-code classes)") comes first, then the others by
     the share of the summary's words they hold: on 16 October 2026 two claims of one entry both printed its
-    first statements, neither its own."""
+    first statements, neither its own. A paragraph neither at the anchor nor naming the claim, holding less
+    than RECORD_MIN_SHARE of the summary's words, is printed marked as possibly another claim's and never
+    dropped: a first version dropped them and lost a claim's real statement, and over the whole registry it
+    would have left 490 of 4972 claims with no paragraph at all."""
     from claim_authoring import STATEMENT, _plain, source_notebook
     # A statement may open its paragraph (which may carry an id) or follow setup prose inside it, as in the
     # cut-code rank normalization entry: match the bold label wherever it stands, up to its paragraph's end.
@@ -341,9 +345,17 @@ def record_statements(record, root, cache, ident=None, summary=''):
     offset = inner - at if inner is not None else -1
     ranked = sorted(((not (m.start() <= offset < m.end()), statement_rank(_plain(m.group(0)), ident, summary), i,
                       _plain(m.group(0))) for i, m in enumerate(matches)))
-    statements = [plain for *_, plain in ranked]
-    if not statements:
+    if not ranked:
         return [f'(#{anchor} has no Lemma, Theorem, Corollary, Proposition or Statement paragraph)']
+    # A paragraph neither at the record's anchor nor naming the claim, holding less than a fifth of the summary's
+    # words, is marked as possibly another claim's: on 16 October 2026 a review entry's unrelated proposition was
+    # printed as the statement of imp:depth-preserving-IPS-simulation (share 0.08), and a reviewer took it for the
+    # claim's. Such a paragraph is not dropped: the one of cor:pang-observation-calibration (share 0.06) is the
+    # linear-algebra statement that claim rests on.
+    unjudged = not re.findall(r'[a-z]{4,}', (summary or '').lower())   # no summary words to compare
+    statements = [plain if not elsewhere or not unnamed or -share >= RECORD_MIN_SHARE or unjudged else
+                  f'(may be another claim\'s: it does not name this claim and holds {-share:.0%} of its summary\'s '
+                  f'words) {plain}' for elsewhere, (unnamed, share), _, plain in ranked]
     shown = [s[:RECORD_SHOWN] + (' …' if len(s) > RECORD_SHOWN else '') for s in statements[:RECORD_MAX]]
     if len(statements) > RECORD_MAX:
         shown.append(f'({len(statements) - RECORD_MAX} more statement paragraphs in #{anchor})')

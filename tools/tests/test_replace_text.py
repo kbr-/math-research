@@ -43,9 +43,9 @@ class ReplaceTextTest(unittest.TestCase):
         self.assertIn('  - one\n\n    more\n', updated)
 
     def test_refuses_no_match_several_matches_and_a_split_passage_inside_lines(self):
-        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 0 places within a line'):
+        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 0 places within or across lines'):
             replace_text.replace(PLAN, '- missing item.', 'x')
-        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 2 places within a line'):
+        with self.assertRaisesRegex(ValueError, 'no line-aligned place and 2 places within or across lines'):
             replace_text.replace('x a b y\nz a b w\n', 'a b', 'c')
         # A passage that crosses a line break but starts mid-line is still refused.
         with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):
@@ -67,10 +67,16 @@ class ReplaceTextTest(unittest.TestCase):
         self.assertEqual(updated, PLAN.replace('alert route', 'alert path'))
 
     def test_an_inline_passage_neither_starts_inside_a_word_nor_hides_an_overlap(self):
-        with self.assertRaisesRegex(ValueError, '0 places within a line'):
+        with self.assertRaisesRegex(ValueError, '0 places within or across lines'):
             replace_text.replace('a misstep, here\n', 'step,', 'stage,')
-        with self.assertRaisesRegex(ValueError, '2 places within a line'):
+        with self.assertRaisesRegex(ValueError, '2 places within or across lines'):
             replace_text.replace('x a a a y\n', 'a a', 'b')
+        # A passage starting mid-line and crossing a line break takes a one-line replacement over its whole span.
+        updated, line = replace_text.replace('the wrapped\nstep, here and\nthere.\n', 'step, here and there', 'stage')
+        self.assertEqual((updated, line), ('the wrapped\nstage.\n', 2))
+        # It never crosses a blank line, which would merge two paragraphs.
+        with self.assertRaisesRegex(ValueError, '0 places within or across lines'):
+            replace_text.replace('one step, here\n\nand there.\n', 'step, here and there', 'stage')
         # A multi-line replacement of a passage found only inside a line is refused.
         with self.assertRaisesRegex(ValueError, 'matches 0 line-aligned places'):
             replace_text.replace('x step, y\n', 'step,', 'one\ntwo')
@@ -92,7 +98,7 @@ class ReplaceTextTest(unittest.TestCase):
             self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
                                                 str(tmp / 'new')]), 0)
             self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md')]), 2)
-        self.assertIn('matches no line-aligned place and 0 places within a line', err.getvalue())
+        self.assertIn('matches no line-aligned place and 0 places within or across lines', err.getvalue())
         self.assertIn('replaced the passage at line 6', out.getvalue())
         self.assertTrue((tmp / 'plan.md').read_text().endswith('- **Next question?** Settled.\n'))
 
