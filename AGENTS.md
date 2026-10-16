@@ -385,7 +385,9 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   toward the minimums (user, 25 September 2026). A Passed item states, after `<strong>Break
   point.</strong>`, where its translation would break and what the test found there: a test of the
   named theorem alone, or of a statement recalled and unread, is Not run for the translation (the
-  finisher checks the paragraph). A Not run item resting on a source recalled or unread says after
+  finisher checks the paragraph). Write each item's outcome word last, from what its Break point
+  found, and a review's Decision after its Attempt has tried the step it names with the sources at
+  hand. A Not run item resting on a source recalled or unread says after
   `<strong>Retrieval.</strong>` what retrieval was tried (tools/held_sources.py,
   tools/arxiv_source.py, tools/browser_get.cjs, a search) and how it ended (the finisher checks).
   Outside draining, the review marks its three most promising passed Outside leads and two most
