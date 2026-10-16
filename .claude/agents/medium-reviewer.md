@@ -52,12 +52,13 @@ equivalence or "nothing more can be had" drawn from one implication, a lower bou
 upper one); a counterfactual or comparison whose other side was not checked; a cited result said to
 "give" or "supply" something without the hypotheses it needs for that (an existence assumed, a
 uniform bound read from a pointwise one, a parameter the lemma fixes treated as free); a named next
-attempt whose outcome the draft's own bounds already fix; an example offered for a claim that,
-computed, does not exhibit it; a parameter fixed at one value where the proof allows a range; a
-summary sentence (gate, scope, title, status, commit message) that drops a qualifier its source
-carries ("sketched", "unverified", "for thick supports"), read beside that source; a sentence saying
-something fails, is not bounded or cannot be had, without the attempt that failed beside it; a
-statement, test or check shaped by the one instance that prompted it, whose other inputs (a wider
+attempt whose outcome the draft's own bounds already fix; a bound produced by a crude bookkeeping
+and reported without saying that it is the bookkeeping's, not the object's; an example offered for a
+claim that, computed, does not exhibit it; a parameter fixed at one value where the proof allows a
+range; a summary sentence (gate, scope, title, status, commit message) that drops a qualifier its
+source carries ("sketched", "unverified", "for thick supports"), read beside that source; a sentence
+saying something fails, is not bounded or cannot be had, without the attempt that failed beside it;
+a statement, test or check shaped by the one instance that prompted it, whose other inputs (a wider
 parameter range, the record's other entries, legitimate uses of the same words) were not tried; a
 prevention queued, or left to a reviewer, without naming what kept it from being built in the turn;
 a control that could not have failed on some of the cases it is reported for; a sentence saying what
