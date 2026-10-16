@@ -12,7 +12,8 @@ a k is floor((n+1)/(2k)) - 1, decreasing in k, so each certificate's range is se
 Expected: for M = 1, 2, 16 the greedy degree is about (n+1)/(2M) - 1, far above the published and
 summed degrees (about sqrt(n)/(2 sqrt(ln 4M)) and sqrt(3n/ln M)/2); at M = n and n^2 the summed count
 gives the largest degree and the greedy gain is small or none.
-Refuted by: a greedy smallest k larger than M for M <= m, since t = 0 certifies k = M.
+Refuted by: a greedy smallest k larger than M for M <= m, since t = 0 certifies k = M,
+or the closed-form greedy value differing from the direct sum at l = 16 by more than 1e-6.
 Possible because: an indexing error in the greedy scan would raise its smallest k above M.
 Also refuted by: a non-monotone certificate in k on the full l = 16 scan, which would invalidate the
 binary search used at larger l.
@@ -48,14 +49,45 @@ def summed(ell, M, k):
     return math.log(M) < -k * math.log(x) - math.log(rho * x / (rho * x - 1))
 
 
-def greedy(ell, M, k):
+def greedy_value(ell, k):
+    """max over 0 <= t <= k-1 of ln(k-t) - sum_{i<t} ln(1-(r-l i)/V), V = 2v, in closed form:
+    prod_{i<t}(1-(r-l i)/V) = (l/V)^t Gamma(c+t)/Gamma(c), c = (V-r)/l.  The increment from t to t+1,
+    ln(1-1/(k-t)) - ln(1-f_t), decreases in t (f_t falls, 1/(k-t) rises), so the optimum is the first t
+    whose increment is not positive, found by binary search."""
+    n, m, v, h = params(ell)
+    V = 2 * v
+    r = h * (k + 1) + 1
+    assert r - ell * (k - 1) > 0 and r < V
+    c = (V - r) / ell
+
+    def gain(t):
+        return -t * math.log(ell / V) - math.lgamma(c + t) + math.lgamma(c)
+
+    def increment(t):
+        f = (r - ell * t) / V
+        return math.log1p(-1 / (k - t)) - math.log1p(-f)
+
+    lo, hi = 0, k - 1
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if increment(mid) > 0:
+            lo = mid + 1
+        else:
+            hi = mid
+    return math.log(k - lo) + gain(lo)
+
+
+def greedy_value_direct(ell, k):
     n, m, v, h = params(ell)
     r = h * (k + 1) + 1
     i = np.arange(0, k)
     f = (r - ell * i) / (2 * v)
-    assert (f > 0).all() and (f < 1).all()
-    gain = np.concatenate([[0.0], np.cumsum(-np.log1p(-f))[:-1]])
-    return bool((math.log(M) <= np.log(k - i) + gain + 1e-12).any())
+    g = np.concatenate([[0.0], np.cumsum(-np.log1p(-f))[:-1]])
+    return float(np.max(np.log(k - i) + g))
+
+
+def greedy(ell, M, k):
+    return math.log(M) <= greedy_value(ell, k) + 1e-9
 
 
 METHODS = {'published': published, 'summed': summed, 'greedy': greedy}
@@ -101,6 +133,10 @@ def main():
     for M in (1, 2, 16, 256, 65537):
         for test in METHODS.values():
             monotone_check(16, M, test, 1500)
+    # The closed form against the direct sum, an independent route, on every k to 1500 at l = 16.
+    worst = max(abs(greedy_value(16, k) - greedy_value_direct(16, k)) for k in range(1, 1501))
+    print('closed form vs direct sum, largest difference', worst, 'tolerance 1e-6')
+    assert worst < 1e-6
     rows = []
     for ell in (16, 20, 24, 28, 32):
         n = 2 ** ell
