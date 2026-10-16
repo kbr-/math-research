@@ -927,6 +927,16 @@ def main():
                     ensure_active(events)
                     add_event(path, 'phase', category=args.category, note=args.note)
                     recovery_observe('phase', root=ROOT, turn=args.session, category=args.category)
+                    if args.category == 'mathematics':   # advisory: a queue item's history read before planning
+                        began = next((e.get('unix_s') for e in events if e['event'] == 'start'), None)
+                        try:
+                            if began is not None:
+                                notes = subprocess.run([sys.executable, str(ROOT / 'tools/history_reads.py'),
+                                                        '--since', str(began)], cwd=ROOT, capture_output=True,
+                                                       text=True, timeout=20)
+                                print(notes.stdout, end='')
+                        except (OSError, subprocess.SubprocessError):
+                            pass
                 else:
                     stop = next((e for e in events if e['event'] == 'stop'), None)
                     if stop is None: ensure_active(events)

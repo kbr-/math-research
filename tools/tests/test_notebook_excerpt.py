@@ -185,5 +185,17 @@ class ClaimExcerptsTest(unittest.TestCase):
             tool.claim_excerpts(['lem:first', 'cor:blank'], registry)
 
 
+class ReadLogTest(unittest.TestCase):
+    def test_the_anchors_an_excerpt_prints_are_logged(self):
+        import json
+        with tempfile.TemporaryDirectory() as folder:
+            excerpt.log_read(folder, 'main', ['a2', 'a1', 'a2'])
+            [row] = [json.loads(line) for line in (Path(folder) / excerpt.READ_LOG).read_text().splitlines()]
+            self.assertEqual((row['notebook'], row['anchors']), ('main', ['a1', 'a2']))
+            blocker = Path(folder) / 'file'
+            blocker.write_text('')
+            excerpt.log_read(blocker, 'main', ['a'])        # a log that cannot be written is not an error
+
+
 if __name__ == '__main__':
     unittest.main()

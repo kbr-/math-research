@@ -272,6 +272,25 @@ def claim_excerpts(idents, registry):
     return '\n'.join(blocks)
 
 
+READ_LOG = 'research/logs/excerpt-reads.jsonl'
+
+
+def log_read(root, notebook, anchors):
+    """Append the anchors an excerpt printed or saved to the ignored read log, which tools/history_reads.py
+    compares with a queue item's earlier entries when a cycle's mathematics begins.  A log that cannot be
+    written is not an error."""
+    import json
+    import time
+    try:
+        path = Path(root) / READ_LOG
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open('a') as handle:
+            handle.write(json.dumps({'unix_s': time.time(), 'notebook': notebook,
+                                     'anchors': sorted(set(anchors))}) + '\n')
+    except OSError:
+        pass
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("anchor", nargs="?", help="Section, article, or heading ID")
@@ -351,6 +370,8 @@ def main():
             result = notebook.enclosing_excerpt(args.anchor)
         else:
             result = notebook.excerpt(args.anchor, args.until)
+        if args.anchor and not args.backlinks:
+            log_read(root, item['name'], [args.anchor] + re.findall(r'<article id="([^"]+)"', result))
         if args.text:
             result = readable_text(result)
         if args.out:
