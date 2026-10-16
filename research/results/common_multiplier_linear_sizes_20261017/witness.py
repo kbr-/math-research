@@ -18,8 +18,8 @@ pigeon-axiom shift, which lies in C by construction; asserted.
 Refuted by: the independent route rejecting that product.
 Possible because: a reduction or indexing bug in the independent elimination.
 Baseline: the bare count gives an excess of at most 13 - 4 minus the domain part; it does not decide it.
-Record checked: conj:linear-kernel-transfer, check:dense-linear-kernels, lem:admissible-numbering-transfer; none
-decides this error.
+Record checked: the claims read are conj:linear-kernel-transfer, check:dense-linear-kernels and
+lem:admissible-numbering-transfer; none decides this error.
 """
 import argparse
 import importlib.util
