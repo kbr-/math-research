@@ -533,6 +533,10 @@ NO_MISTAKE = re.compile(r"\bno (?:mistake|defect|fault)s? (?:of|by) (?:mine|the 
                         r"\bfound no mistake\b|\bno mistake of mine\b", re.I)
 
 
+CAUGHT_AFTER = re.compile(r"\b(?:falls|fell) under (?:the |an )?(?:existing |reviewer'?s? )*(?:audit|review|check)"
+                          r"[^.]*|\b(?:audit|review|reviewer|check)[^.]{0,40}\bwhich caught (?:it|them|all)\b", re.I)
+
+
 def meta_home_block(reply, calls, changed):
     """The block for a reply whose Meta or Prevention paragraph names no file the turn changed outside the
     records (`changed`: what git shows changed since the turn's prompt), or None; a Prevention saying there
@@ -549,6 +553,16 @@ def meta_home_block(reply, calls, changed):
                 'notebook (tools/lead_queue.py add). Only a file this turn changed counts, not one a command only '
                 'mentions. Archived results and provenance are records nothing loads: a review record is no home. '
                 'Write it there, and name that file by its path in the paragraph.')}
+    # Twice on 16 October 2026 a Prevention offered the reviewer audit that had caught the mistake as its
+    # prevention; the stand-in review objected that a check firing after the fact does not stop the class.
+    for kind, paragraph in paragraphs:
+        excuse = CAUGHT_AFTER.search(paragraph) if kind == 'Prevention' else None
+        if excuse:
+            return {'decision': 'block', 'reason': (
+                f'A Prevention paragraph that rests on a check which caught the mistake after it was made '
+                f'("{excuse.group(0)}"): that check is how the mistake was found, not what stops it. Name the '
+                'change made in this turn that stops the class before a reviewer sees it (a check, hook or tool), '
+                'or the build queued for it with the reason it could not be built now (AGENTS.md).')}
     # Twice on 16 October 2026 a Meta paragraph named only the file its Prevention had just named, restating the
     # Prevention's mechanism; the stand-in review objected both times (AGENTS.md: that answers it twice).
     named = lambda paragraph: {found.strip('./') for found in HOME.findall(paragraph)} - {''}

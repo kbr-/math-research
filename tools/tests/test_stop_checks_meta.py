@@ -92,6 +92,20 @@ class MetaHomeTest(HookFixture):
         wider = twice.replace('the change is in `tools/finish-turn.py`', 'the change is in `AGENTS.md`')
         self.assertIsNone(hook.meta_home_block(wider, calls, []))
 
+    def test_a_check_that_caught_the_mistake_is_not_its_prevention(self):
+        # 16 October 2026, twice: the reviewer audit that found the mistake offered as its prevention.
+        calls = [('Edit', {'file_path': '/repo/AGENTS.md'}), ('Edit', {'file_path': '/repo/tools/finish-turn.py'})]
+        meta = '\n\nMeta: the habit is deciding early; `AGENTS.md` now orders the work.'
+        for excuse in ('Prevention: that falls under the existing reviewer audit (`tools/finish-turn.py`).',
+                       'Prevention: the summary audit of the reviewer, which caught it, stays (`tools/finish-turn.py`).'):
+            with self.subTest(excuse=excuse):
+                blocked = hook.meta_home_block(excuse + meta, calls, [])
+                self.assertIn('caught the mistake after it was made', blocked['reason'])
+        for fine in ('Prevention: `tools/finish-turn.py` now refuses it; the reviewer had caught it once.',
+                     'Prevention: the commit hook refused the long line before the commit (`tools/finish-turn.py`).'):
+            with self.subTest(fine=fine):
+                self.assertIsNone(hook.meta_home_block(fine + meta, calls, []))
+
     def test_a_meta_paragraph_names_a_file_the_turn_wrote(self):
         edit = ('Edit', {'file_path': '/repo/research/notes/WORK_RULES.md'})
         queue = ('Bash', {'command': 'python3 tools/lead_queue.py add notebook.html --build x "s" "t"'})
