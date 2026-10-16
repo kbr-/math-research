@@ -12,10 +12,9 @@ members of degree below D are spanned by the rows whose pivot has degree below D
 multiplied by every variable until nothing new enters.  The remainder is canonical: no pivot position
 stays set, so it is linear and two polynomials have equal remainders exactly when they differ by a
 member.  Pure Python, for systems with a few thousand monomials of degree at most D.  Its tests compare
-the refutation degree with tools/truncated_buchberger.py, an independent method; a committed provenance
-run (research/results/common_multiplier_closure_module_20261016/cross_check.py) compares properness and
-closure dimension with tools/f2_closure_degree.cpp, which uses the same elimination design and so checks
-the implementation, not the convention.
+the refutation degree with tools/truncated_buchberger.py, an independent method; tools/tests/
+test_f2_closure_degree.py compares closure dimensions with tools/f2_closure_degree.cpp, which uses the
+same elimination design and so checks the implementation, not the convention.
 
 Built after a hand-written closure in a research script had a non-canonical remainder and missed
 members of degree below D arising from cancelling top terms (16 October 2026).

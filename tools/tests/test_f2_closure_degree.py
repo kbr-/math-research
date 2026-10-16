@@ -77,6 +77,22 @@ class KernelTest(unittest.TestCase):
             with self.subTest(trial=trial):
                 self.assertEqual(self.degree(n, polys, 4)['degree'], tb.pc_degree(reference, n, 4))
 
+    def test_closure_dimensions_agree_with_the_membership_module(self):
+        # tools/pc_closure.py shares this kernel's elimination design, so agreement checks both
+        # implementations, not the closure convention (that rests on truncated_buchberger).
+        import pc_closure as pc
+        rng = random.Random(11)
+        for trial in range(4):
+            n = 5
+            polys = [sorted({rng.randrange(1 << n) for _ in range(rng.randint(1, 3))})
+                     for _ in range(rng.randint(2, 5))]
+            out = self.degree(n, polys, 3)
+            for D, dim in out['dimensions'].items():
+                with self.subTest(trial=trial, D=D):
+                    closure = pc.Closure([set(p) for p in polys], n, int(D))
+                    self.assertTrue(closure.proper)
+                    self.assertEqual(closure.dim, dim)
+
 
 if __name__ == '__main__':
     unittest.main()
