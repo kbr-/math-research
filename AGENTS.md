@@ -294,6 +294,10 @@ AGENTS.md"):
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a
   question the Spin rules answered, a commit sent before its edit's result).
+- A threshold, constant or range drawn from a bound is computed from the bound as displayed, at the
+  instance's parameters (the saturating ones included), and says which of its parts comes from the
+  bookkeeping rather than the object (17 October 2026: a budget threshold contradicted its own
+  displayed bound, and a saturating perimeter was written without its level).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved.
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
