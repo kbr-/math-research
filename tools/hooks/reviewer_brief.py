@@ -81,6 +81,55 @@ def stale_files(text, log, now=None, window=600):
     return stale
 
 
+ARTICLE_ID = re.compile(r'<article\b[^>]*\bid="([^"]+)"')
+
+
+def unread_sentences(text, tools=TOOLS):
+    """Entry drafts named in `text`, or in a brief file it names, on which tools/draft_claim_sentences.py has not
+    run since they were last written: [path, ...].
+
+    AGENTS.md asks for that run before the reviewer's brief, so that each sentence citing a claim is read beside
+    the claim; on 16 October 2026 a review's sentences dropped their claims' qualifiers and the run had been
+    skipped, so the reviewer found them instead.  A draft is an .html file holding an article; the tool logs each
+    run with the article's id to research/logs/claim-searches.jsonl.  Without that log nothing is checked."""
+    log = tools.resolve().parent / 'research' / 'logs' / 'claim-searches.jsonl'
+    if not log.is_file():
+        return []
+    named = list(dict.fromkeys(NAMED_FILE.findall(text)))
+    for path in list(named):
+        if path.endswith(('.md', '.txt')) and Path(path).is_file():
+            try:
+                named += NAMED_FILE.findall(Path(path).read_text(errors='replace')[:200000])
+            except OSError:
+                pass
+    runs = {}
+    for line in log.read_text(errors='replace').splitlines():
+        try:
+            entry = json.loads(line)
+        except ValueError:
+            continue
+        query = str(entry.get('query', ''))
+        if query.startswith('draft_counts '):
+            ident = query.split()[1]
+            runs[ident] = max(runs.get(ident, 0), float(entry.get('unix_s', 0)))
+    unread = []
+    for path in dict.fromkeys(named):
+        if not path.endswith('.html') or not Path(path).is_file():
+            continue
+        try:
+            found = ARTICLE_ID.search(Path(path).read_text(errors='replace')[:20000])
+        except OSError:
+            continue
+        if found and runs.get(found.group(1), 0) < Path(path).stat().st_mtime:
+            unread.append(path)
+    return unread
+
+
+SENTENCES_REASON = ('tools/draft_claim_sentences.py has not run on {} since it was last written: run it '
+                    '(tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK) and read each sentence that cites a '
+                    'claim beside the claim before the brief (AGENTS.md)')
+
+
 def refusal(payload, tools=TOOLS, log=None, now=None):
     """The reason to refuse this tool call, or None."""
     tool_input = payload.get('tool_input') or {}
@@ -90,6 +139,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         missing = missing_files(message)
         if missing:
             return 'the message names a file that does not exist: ' + ', '.join(missing) + '. Write it first'
+        unread = unread_sentences(message, tools)
+        if unread:
+            return SENTENCES_REASON.format(', '.join(unread))
         stale = stale_files(message, log or block_log.LOG, now)
         return (('the message says ' + ', '.join(stale) + ' was updated, but a call naming it was refused '
                  'after it was last written: read it back, write the update again if it is missing, and say '
@@ -105,6 +157,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     if missing:
         return ('the brief names a file that does not exist: ' + ', '.join(missing) + '. Write the brief and its '
                 'excerpts in one step and launch the reviewer in the next')
+    unread = unread_sentences(prompt, tools)
+    if unread:
+        return SENTENCES_REASON.format(', '.join(unread))
     # A brief that sends an entry draft (an .html file) for review also sends the drafted commit message: on
     # 16 October 2026 a commit message called a PK_oplus2 corollary an AC0[2]-Frege bound, outside every text the
     # reviewer read.

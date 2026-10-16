@@ -107,6 +107,35 @@ class MissingBriefFileTest(unittest.TestCase):
             (Path(tmp) / 'draft2.html').write_text('x')
             self.assertIsNone(hook.refusal(follow, log=Path(tmp) / 'none.tsv'))
 
+    def test_a_draft_needs_the_sentence_listing_since_its_last_write(self):
+        # 16 October 2026: a review's claim sentences dropped their qualifiers; the listing had been skipped.
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            tools = Path(tmp) / 'repo' / 'tools'
+            tools.mkdir(parents=True)
+            log = Path(tmp) / 'repo' / 'research' / 'logs' / 'claim-searches.jsonl'
+            log.parent.mkdir(parents=True)
+            log.write_text('')
+            draft = Path(tmp) / 'draft.html'
+            draft.write_text('<article id="entry-2026-10-17-x" data-kind="review"><p>x</p></article>')
+            os.utime(draft, (1000, 1000))
+            brief = Path(tmp) / 'brief.md'
+            brief.write_text(f'Draft: {draft}\n')
+            prompt = f'Read the brief at {brief} and only the files it names.'
+            self.assertIn('draft_claim_sentences', hook.unread_sentences(prompt, tools) and
+                          hook.SENTENCES_REASON.format(draft))
+            self.assertEqual(hook.unread_sentences(prompt, tools), [str(draft)])
+            log.write_text(json.dumps({'unix_s': 999, 'query': 'draft_counts entry-2026-10-17-x 3'}) + '\n')
+            self.assertEqual(hook.unread_sentences(prompt, tools), [str(draft)])      # run before the last write
+            log.write_text(json.dumps({'unix_s': 1001, 'query': 'draft_counts entry-2026-10-17-x 3'}) + '\n')
+            self.assertEqual(hook.unread_sentences(prompt, tools), [])
+            follow = f'Follow-up: {draft} is corrected.'
+            os.utime(draft, (2000, 2000))
+            self.assertEqual(hook.unread_sentences(follow, tools), [str(draft)])
+            plain = Path(tmp) / 'page.html'
+            plain.write_text('<html>no article</html>')
+            self.assertEqual(hook.unread_sentences(f'See {plain}.', tools), [])
+
     def test_a_follow_up_claiming_an_update_its_refused_command_was_to_write_is_refused(self):
         # 16 October 2026: the command writing the spec was refused, and the follow-up said it was updated.
         with tempfile.TemporaryDirectory() as tmp:
