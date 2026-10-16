@@ -398,11 +398,20 @@ class BashGuardTest(unittest.TestCase):
                         "python3 -I /tmp/claude-1/p/scratchpad/probe.py --out x",
                         "git status; python3 /tmp/s/scratchpad/m.py 2>&1 | tail",
                         "sh /tmp/s/scratchpad/loop.sh",
-                        "cat cases.txt | python3 /tmp/s/scratchpad/m.py"]:
+                        "cat cases.txt | python3 /tmp/s/scratchpad/m.py",
+                        # 17 October 2026: a replay ran one git show per commit, outside the launcher
+                        "for c in $(git rev-list --no-merges -n 2000 HEAD); do git show $c | grep -q x; done",
+                        "git log --format=%h | while read c; do git show $c; done",
+                        "while read c; do git show $c; done < <(git rev-list HEAD)"]:
             with self.subTest(command=command):
                 result = run(command)
                 self.assertEqual(result.returncode, 2)
                 self.assertIn("compute.sh", result.stderr)
+        for command in ["git log --oneline -5", "for f in a b; do git add $f; done",
+                        "./compute.sh bash -c \"for c in $(git rev-list -n 9 HEAD); do git show $c; done\"",
+                        "x=$(git log -1 --format=%h); echo $x"]:
+            with self.subTest(command=command):
+                self.assertEqual(run(command).returncode, 0, command)
         for command in ["./compute.sh --threads 4 env A=1 .venv/bin/python -m pytest -q tests",
                         "~/dev/noemesis/compute.sh python3 /tmp/s/scratchpad/m.py",
                         "./compute.sh --threads 1 --timeout 60 python3 tools/tests/run.py",

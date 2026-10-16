@@ -471,9 +471,20 @@ def shell_code(command: str):
     return re.sub(r"\"(?:\\.|[^\"\\])*\"|'[^']*'", '""', "\n".join(kept))
 
 
+# A shell loop over the repository's history (17 October 2026: a replay of a check ran one git show per commit
+# over 2000 commits outside the launcher, for minutes).
+HISTORY_LOOP = re.compile(r"\b(?:for\s+\w+\s+in\s+\$\(|while\s+read\b[^\n]*<\s*<\(|\$\()\s*git\s+(?:rev-list|log)\b|"
+                          r"\bgit\s+(?:rev-list|log)\b[^\n|;&]*\|\s*while\s+read\b")
+
+
 def unprotected_workload(command: str):
-    """A test runner, the framework suite or a scratchpad script run outside compute.sh."""
-    for segment in re.split(r"\|\||&&|;|\n|\|", shell_code(command)):
+    """A test runner, the framework suite, a scratchpad script or a loop over the history run outside compute.sh."""
+    code = shell_code(command)
+    if HISTORY_LOOP.search(code) and re.search(r"\b(?:for|while)\b", code) and "compute.sh" not in code:
+        return ("a shell loop over git history runs a workload, which goes through ./compute.sh "
+                "(COMPUTATION_RULES.md, enforced execution): stream it as one git log -p piped to a filter, inside "
+                "./compute.sh bash -c '...', and read the saved log")
+    for segment in re.split(r"\|\||&&|;|\n|\|", code):
         match = PROGRAM.match(segment)
         program = match.group(1) if match else ""
         # A segment that only assigns a variable (S=path) runs nothing.
