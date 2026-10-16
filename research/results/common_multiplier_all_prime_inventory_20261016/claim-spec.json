@@ -1,0 +1,53 @@
+{
+  "source": {
+    "record": "[All-prime small-inventory exclusion](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-all-prime-small-inventory)",
+    "label": "All-prime small-inventory exclusion",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-all-prime-small-inventory"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "affine-linear-algebra",
+    "degree-accounting"
+  ],
+  "claims": [
+    {
+      "id": "cor:all-prime-small-inventory-exclusion",
+      "summary": "For every prime p, over the compact base Q_{n,p} (n=2^l, l>=2, m=n+1 rows of l bits, v=(n+1)l) with accuracy h=3(p-1)l and complete one-level ENS blocks affine in the old bits: if the proper high blocks ((p-1)r>h(k+1)) are M coordinate blocks (input spans spanned by literals x_b-c_b, c_b in F_p) and either M<=k or, with r=3l(k+1)+1 and V=pv (V=v under consistent pins), M prod_{i<t}(1-(r-l i)/V)<=k-t for some 0<=t<=k-1, there is no ordinary-PC refutation through any D>=1 with 2k(D+1)-1<=n. So M such blocks are excluded through floor((n+1)/(2M))-1 when that is >=1, i.e. M<=(n+1)/4. Proof: a product of pinned literal factors in distinct rows (one per block, or the greedy choice over F_p literals) is a nonzero f in L_k with zero restriction to every high flat; the rest of the all-prime affine exclusion proof (literal cofactors, p-1 coefficient rows, weighted ceilings, signed row separation) is unchanged.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (D>=2h+1 found unused and dropped, F_p greedy argument written out, ledger and choice paragraph).",
+      "status": "working_proof",
+      "category": "general_tool",
+      "rationale": "Extends the small-inventory degree range to every prime field, as an elementary cover at polynomial degree.",
+      "next_action": "Extend to non-coordinate flats by disjoint-support packing, and to the unary-PHP analogue.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "cor:all-prime-small-inventory-exclusion",
+      "depends_on",
+      "thm:all-prime-affine-family-exclusion",
+      "Its proof, with the counting step replaced."
+    ],
+    [
+      "cor:all-prime-small-inventory-exclusion",
+      "depends_on",
+      "lem:signed-cube-row-linear-separation",
+      "Excludes the replayed derivation of f."
+    ],
+    [
+      "cor:all-prime-small-inventory-exclusion",
+      "cites",
+      "thm:small-inventory-coordinate-exclusion",
+      "The F2 theorem on Braun's base; at p=2 and m=n+1 this statement contains it, without its D>=2h+1."
+    ],
+    [
+      "cor:all-prime-small-inventory-exclusion",
+      "cites",
+      "lem:greedy-transversal-certificate",
+      "Its greedy proof, written out again over F_p literals."
+    ]
+  ]
+}
