@@ -1,0 +1,108 @@
+{
+  "source": {
+    "record": "[Native upper bound](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-native-upper-bound)",
+    "label": "Native upper bound",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:native-rectangle-upper-bound",
+      "status": "working_proof",
+      "summary": "Native rectangle upper bound: over a field k, J_{D'} the degree-D' part of the Boolean ideal in n variables, errors E_1..E_s of degree <= e, each supported on a nonempty subcube A_i of the cube of dimension a_i (over F_2, any nonempty affine subspace with affine coordinates, as Pang's E_i = P g_i with linear inputs), U = V_K and slack L with e+K+L <= D': the sum_i N_{a_i}(max(K-L,0)) <= s N_n(max(K-L,0)) old functionals lambda_{i,y} = sum over z in y + B_L of E_i(phi_i z)^{-1} delta_{phi_i z} (B_L the points of weight <= L in coordinates phi_i of A_i, y of weight <= max(K-L,0)) detect the stacked kernel in rectangle forms mu_j(E_i u v), v in V_L. Proof: a translated ball is independent for degree L (unitriangular evaluation), its rectangle forms recover the values of u on it, the balls cover B_K, and B_K determines degree-K functions (lem:all-field-approximate-majority-certifier-barrier). For s = 1, N_a(K)/N_a(L) <= m_min <= N_a(max(K-L,0)), the ratio tending to binom(K,L) for fixed K >= L; L = 0 and K <= L give equality.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (max(K-L,0), the any-field subcube form, fixed t in the comparison).",
+      "rationale": "Matches lem:native-functional-growth's lower bound in order n^{K-L}.",
+      "next_action": "The same count modulo a proper closure, first at L = 1 on the functional pigeonhole system with six pigeons and five holes.",
+      "category": "route_specific",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:native-upper-ranks",
+      "status": "finite_check",
+      "summary": "Exact F_2 computations (native_upper.py, exact_k2.py with tools/f2_span.py): on {0,1}^a for a = 3..7 and (K,L) in {(1,0),(2,0),(2,1),(3,1),(3,2)}, the N_a(K-L) ball-translate functionals of lem:native-rectangle-upper-bound give rank N_a(K) in all 25 cases; at K=2, L=1 the reviewer's construction (B_1 plus the weight-two points of a decomposition of K_a into Hamiltonian paths, a even, or odd Hamiltonian cycles through a centre, a odd) gives rank N_a(2) with floor(a/2)+1 sets for a = 3..9, equal to the lower bound ceil(N_a(2)/(a+1)), so m_min = floor(a/2)+1 there. Controls: at a = 5 one piece replaced by a 4-cycle gives rank 13 < 16, a drop forced by three uncovered edges; dropping one of three sets at a = 4 and 200 random pairs are forced below 11 by the row count.",
+      "assessment": "Exact computation; the ball ranks checked against the json by the sole fresh-context medium reviewer; the exact values at K=2, L=1 verify its unverified suggestion for a <= 9.",
+      "rationale": "Checks the construction and finds the exact least number at K=2, L=1 for a <= 9.",
+      "next_action": "None beyond the lemma.",
+      "category": "route_specific",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:one-native-functional",
+      "status": "finite_check",
+      "summary": "Exact F_2 computation (one_functional.py with three_quantities.py, tools/pc_closure.py and tools/f2_span.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3 (proper closure C), K = L = 1: the rank r of u -> [Eu] modulo C on V_1, computed in the same closure, is 24 for E = sum_{j<5} x_jj and 16 for x00; among 500 random old functionals over F_2 (parities of masks on remainders modulo C) one has rectangle form mu(E u v), u, v in V_1, of rank r for each error, so one old functional over F_2 detects Ann_C(E) cap V_1; the witness masks are saved in one_functional.json.",
+      "assessment": "Exact computation; its method, the rank computed in the same closure and the saved witness checked by the sole fresh-context medium reviewer in two follow-ups.",
+      "rationale": "Decides the native count at K = L = 1 over F_2 itself in a proper closure, below the extension-field theorem's reach.",
+      "next_action": "The count at K = 2, L = 1 in a proper closure.",
+      "category": "route_specific",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:native-rectangle-upper-bound",
+      "cites",
+      "lem:native-functional-growth",
+      "The matching lower bound."
+    ],
+    [
+      "lem:native-rectangle-upper-bound",
+      "depends_on",
+      "lem:native-detection-count",
+      "Its definition of detection and its (a) for the lower bound at s = 1."
+    ],
+    [
+      "check:native-upper-ranks",
+      "cites",
+      "lem:native-rectangle-upper-bound",
+      "Checks its construction."
+    ],
+    [
+      "lem:native-rectangle-upper-bound",
+      "cites",
+      "prop:repair-cost-controls",
+      "Consistent with its instance (an upper bound 8 against the recorded least 3)."
+    ],
+    [
+      "lem:native-rectangle-upper-bound",
+      "depends_on",
+      "lem:all-field-approximate-majority-certifier-barrier",
+      "Its determining step: a nonzero polynomial of degree <= K meets the radius-K ball."
+    ],
+    [
+      "lem:native-rectangle-upper-bound",
+      "cites",
+      "lem:parallel-class-kill-bound",
+      "Another use of one functional's rectangle form."
+    ],
+    [
+      "check:native-upper-ranks",
+      "cites",
+      "lem:native-detection-count",
+      "Its lower bound, met by the construction at K=2, L=1."
+    ],
+    [
+      "check:one-native-functional",
+      "cites",
+      "thm:common-moment-radical",
+      "Its one functional needs an extension of size above 2r+1; here F_2 itself suffices at this instance."
+    ],
+    [
+      "check:one-native-functional",
+      "cites",
+      "lem:native-detection-count",
+      "Its bracket [1, r] at this instance."
+    ],
+    [
+      "check:one-native-functional",
+      "cites",
+      "check:dense-linear-kernels",
+      "Same board and error; its kernel dimension 7 is recomputed here as r = 24."
+    ]
+  ]
+}

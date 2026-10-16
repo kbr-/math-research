@@ -1,0 +1,1003 @@
+{
+  "base_sha256": "ecc51bd50925d369b74a453b7e0208ba993e1719fa86469a373ed4333aaec0fd",
+  "provenance": {
+    "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:native-rectangle-upper-bound",
+        "summary": "Native rectangle upper bound: over a field k, J_{D'} the degree-D' part of the Boolean ideal in n variables, errors E_1..E_s of degree <= e, each supported on a nonempty subcube A_i of the cube of dimension a_i (over F_2, any nonempty affine subspace with affine coordinates, as Pang's E_i = P g_i with linear inputs), U = V_K and slack L with e+K+L <= D': the sum_i N_{a_i}(max(K-L,0)) <= s N_n(max(K-L,0)) old functionals lambda_{i,y} = sum over z in y + B_L of E_i(phi_i z)^{-1} delta_{phi_i z} (B_L the points of weight <= L in coordinates phi_i of A_i, y of weight <= max(K-L,0)) detect the stacked kernel in rectangle forms mu_j(E_i u v), v in V_L. Proof: a translated ball is independent for degree L (unitriangular evaluation), its rectangle forms recover the values of u on it, the balls cover B_K, and B_K determines degree-K functions (lem:all-field-approximate-majority-certifier-barrier). For s = 1, N_a(K)/N_a(L) <= m_min <= N_a(max(K-L,0)), the ratio tending to binom(K,L) for fixed K >= L; L = 0 and K <= L give equality.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (max(K-L,0), the any-field subcube form, fixed t in the comparison).",
+        "record": "[Native upper bound](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-native-upper-bound)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Matches lem:native-functional-growth's lower bound in order n^{K-L}.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": "The same count modulo a proper closure, first at L = 1 on the functional pigeonhole system with six pigeons and five holes."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:native-upper-ranks",
+        "summary": "Exact F_2 computations (native_upper.py, exact_k2.py with tools/f2_span.py): on {0,1}^a for a = 3..7 and (K,L) in {(1,0),(2,0),(2,1),(3,1),(3,2)}, the N_a(K-L) ball-translate functionals of lem:native-rectangle-upper-bound give rank N_a(K) in all 25 cases; at K=2, L=1 the reviewer's construction (B_1 plus the weight-two points of a decomposition of K_a into Hamiltonian paths, a even, or odd Hamiltonian cycles through a centre, a odd) gives rank N_a(2) with floor(a/2)+1 sets for a = 3..9, equal to the lower bound ceil(N_a(2)/(a+1)), so m_min = floor(a/2)+1 there. Controls: at a = 5 one piece replaced by a 4-cycle gives rank 13 < 16, a drop forced by three uncovered edges; dropping one of three sets at a = 4 and 200 random pairs are forced below 11 by the row count.",
+        "assessment": "Exact computation; the ball ranks checked against the json by the sole fresh-context medium reviewer; the exact values at K=2, L=1 verify its unverified suggestion for a <= 9.",
+        "record": "[Native upper bound](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-native-upper-bound)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Checks the construction and finds the exact least number at K=2, L=1 for a <= 9.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": "None beyond the lemma."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:one-native-functional",
+        "summary": "Exact F_2 computation (one_functional.py with three_quantities.py, tools/pc_closure.py and tools/f2_span.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3 (proper closure C), K = L = 1: the rank r of u -> [Eu] modulo C on V_1, computed in the same closure, is 24 for E = sum_{j<5} x_jj and 16 for x00; among 500 random old functionals over F_2 (parities of masks on remainders modulo C) one has rectangle form mu(E u v), u, v in V_1, of rank r for each error, so one old functional over F_2 detects Ann_C(E) cap V_1; the witness masks are saved in one_functional.json.",
+        "assessment": "Exact computation; its method, the rank computed in the same closure and the saved witness checked by the sole fresh-context medium reviewer in two follow-ups.",
+        "record": "[Native upper bound](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-native-upper-bound)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Decides the native count at K = L = 1 over F_2 itself in a proper closure, below the extension-field theorem's reach.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": "The count at K = 2, L = 1 in a proper closure."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:native-functional-growth",
+        "summary": "Over F_2 on the cube (J the degree-D' part of the Boolean ideal), for a family of linear forms g_1..g_s with approximator P=prod_{k<=t}(1+q_k), q_k in their span, errors P g_i, U=V_K and slack L with t+1+K+L<=D': if g_1 is outside the span of the q_k, the stacked rank is at least N_{n-t-1}(K) (restriction to the affine subspace q_k=0, g_1=1), and every m old functionals whose rectangle forms of slack L detect the stacked kernel satisfy m >= N_{n-t-1}(K)/(s N_n(L)), growing like n^(K-L); since detection at slack L implies it at larger slack, the bound is read at the largest admissible L, for d=1 at Pang's degree L_max=max(t+1,w-1), and bites exactly when K>L_max.",
+        "assessment": "Working proof: the sole fresh-context medium reviewer passed the proof with corrections, generalized it to t factors, fixed its reading at the largest admissible slack, and checked the rewrite in a follow-up (review record in research/results/common_multiplier_native_growth_20261016).",
+        "record": "[Native functional growth](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-native-growth)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Native rectangle certificates of Pang-type families on the cube need a number of old functionals growing like n^(K-L) when K exceeds the largest admissible slack.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": "A matching upper bound on the cube by functionals summing over affine subspaces of dimension K+L+1, first at K=2, L=1, s=1."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Native upper bound: new relationship with lem:native-rectangle-upper-bound.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-growth"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:native-detection-count",
+        "summary": "Over a field, for a degree-D pseudoideal J_D, W=V_D/J_D, errors E_1..E_S' of degree <=e, U<=V_K, slack L with e+K+L<=D, and the stacked map T:U->W^S' of rank r: m old functionals (vanishing on J_D) in rectangle forms u->(mu_j(E_i u v))_{i,j,v in V_L} detect ker T only if r<=m dim Z_L, Z_L the span of the E_i v modulo J_{e+L} (so r<=m S' dim V_L, or m S' N_n(L) with Boolean axioms). Over every finite field, if m c>=r, c the least dimension of span{y_i} over nonzero y in the image, some m old functionals (the first with mu_1(1)=1 when 1 is not in J_D) detect ker T at every admissible L. For S'=1, c=1. On prop:repair-cost-controls' instance at q=0 (F_2, n=3, D=4, L=0) the least m is 3 while c=1. For Pang's errors (e=Delta+d), the simulation cost K+max(2Delta+2d,Delta+w)<=D at the same D gives L>=Delta+d, so thm:common-moment-radical's reserve holds when (p-1)K<=Delta+d.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with a follow-up (review record in research/results/common_multiplier_native_detection_20261016); (d) is stated at Pang's full degree after the first pass, and the instance m=3 is the reviewer's, checked.",
+        "record": "[Native detection count](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-native-detection)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Answers the duality item's native-cutoff question for rectangle forms: native certificates at Pang's cutoff need about r/S' functionals.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": "The regime (p-1)K>Delta+d at Pang's full degree, first at p=2, d=t=1, K=3, L=2."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Native functional growth: new relationship with lem:native-functional-growth. Native upper bound: new relationship with check:native-upper-ranks, check:one-native-functional, lem:native-rectangle-upper-bound.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-native-detection"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:repair-cost-controls",
+        "summary": "For every n>=3 over F2 in the Boolean-only degree4 quotient, U the multilinear degree<=2 domain, g=(x1,x2), and any q in span g, the error map f->((1+q)x1 f,(1+q)x2 f) cannot be represented with the same left kernel by one scalar native rectangle mu(E f h), E a scalar error combination and full right degree<=L at deg E+2+L<=4. For q nonzero the actual rank>=2 while L=0 gives rank<=1; for q=0 actual rank=n(n+1)/2>n+1 while L<=1. This is not an obstruction to arbitrary native forms or several functionals. Separately R=k[t],I=(t),M=R,N=(t^m) has exact Artin-Rees delay m; the m-state shift with first-coordinate observation needs m observations to reach zero common kernel. The latter controls hold over every field and m>=1.",
+        "assessment": "Working symbolic scope controls passed by the sole medium reviewer: a narrow native-rectangle obstruction and standard sharp stabilization examples. They do not refute multiplier existence or provide a new selection bound.",
+        "record": "[Repair architecture review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-15-repair-architecture-review)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "degree-accounting",
+          "moment-designs",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "negative_result",
+          "rationale": "Tests stronger conveniences introduced by candidate bridges at their actual costs, distinguishing a finite representation or stabilization theorem from an affordable repair.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": "Keep the controls' restrictions explicit in the repair-calculus synthesis."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Native detection count: new relationship with lem:native-detection-count. Native upper bound: new relationship with lem:native-rectangle-upper-bound.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-repair-architecture-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:all-field-approximate-majority-certifier-barrier",
+        "summary": "A nonzero degree-at-most-a multilinear polynomial meets both radius-a Hamming balls over any field",
+        "assessment": "Known binary certifier argument from Kopparty-Srinivasan; elementary all-field proof retained",
+        "record": "[Statement and proof](https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers)",
+        "mathematical_status": "established",
+        "formalization": {
+          "status": "no_record",
+          "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere.",
+          "references": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "method-obstructions",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Reusable scoped interface; preserve the stated field, degree and source restrictions. Known binary certifier argument from Kopparty-Srinivasan; elementary all-field proof retained",
+          "novelty": "known",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Reviewed exact indexed assessment and bounded source packet; this classifies the recorded scope, not a new proof verification or literature audit. Known binary certifier argument from Kopparty-Srinivasan; elementary all-field proof retained Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "Mechanical explicit-mapping census only; no inference from mathematical implication or proof nonexistence.",
+          "targets": [
+            "results/index_formalization_metadata_20260919/inventory.json"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Reviewed exact indexed assessment and bounded source packet; this classifies the recorded scope, not a new proof verification or literature audit. Known binary certifier argument from Kopparty-Srinivasan; elementary all-field proof retained Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Reviewed exact indexed assessment and bounded source packet; this classifies the recorded scope, not a new proof verification or literature audit. Known binary certifier argument from Kopparty-Srinivasan; elementary all-field proof retained Integrated after source-digest/evidence validation; original text and other fields preserved.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "Minimal nonzero monomial and complementary-variable arguments prove the all-field form directly. The binary certifier idea and definition are attributed externally below; not a new circuit lower bound. Integrated only after pinned core/source validation. Majority fiber rank: new relationship with prop:majority-fiber-rank. Majority local span gap: new relationship with prop:majority-local-span-gap. Restriction goal review: new relationship with thm:hamming-ball-unit-rows. Polynomial row rank test: new relationship with prop:polynomial-majority-rank-floor. Native upper bound: new relationship with lem:native-rectangle-upper-bound.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#approximate-majority-all-field-certifiers"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:parallel-class-kill-bound",
+        "summary": "Parallel class kill bound: B = F_2[x]/(x_i^2 - x_i), phi a linear functional on B_{<=D}, D >= k, Phi(p) = phi(p .) from B_{<=k} to (B_{<=D-k})^*. A clause row f = prod_{t<k}(l_t + c_t) has phi(x_T f) = 0 for all |T| <= D-k iff Phi(f) = 0. For independent forms l and uniform signs c, the number of c with Phi(f_{l,c}) = 0 is at most 2^k - rho_l(phi), rho_l the rank of Phi on the functions of l_1..l_k, so the kill probability q(phi) <= 1 - E_l[rho_l]/2^k; if phi(1) = 1 then q <= 1 - 2^-k with equality for point evaluations. For m i.i.d. rows the expected number of functionals with phi(1) = 1 vanishing on the static span K_D is sum_phi q(phi)^m. The count of functionals by local rank needed for a first-moment proof of 1 in K_D is not made; the bound is slack (linear, not multiplicative, in the rank).",
+        "assessment": "Working proof; checked by the reviewer.",
+        "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "First step of a first-moment approach to conj:cumulative-index-span; accounts exactly for the solutions.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Support flat formula entry: new relationship with lem:sequential-kill-formula. Native upper bound: new relationship with lem:native-rectangle-upper-bound.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/branches/near-half-pc-degree/#entry-2026-10-10-parallel-class-bound",
+            "results/near-half-degree-six-20261010/degree-six.jsonl",
+            "results/near-half-degree-six-20261010/review.txt"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:common-moment-radical",
+        "summary": "For prime p, proper F_p degree-D pseudoideal J containing old Boolean or F_p domain consequences, fixed w of degree<=b, U<=V_K and errors E_i of degree<=e, b+e+pK<=D gives a normalized old annihilator mu and scalar combination E=sum a_i E_i over any finite extension of size>2r+1 such that the symmetric p-linear form mu(w E u_1...u_p) has radical exactly ker(u->([wE_i u])_i), whose rank is r. A finite fixed family shares one mu over size>1+2 sum r_a. The form factors through the forbidden weight kernel and detects useful multipliers; finite specialization preserves flattening rank, not generic diagonal anisotropy. At p2 this is a bilinear form at b+e+2K, not the prior adjoint construction or a new rank deficit.",
+        "assessment": "Working weighted-error extension of the recorded Frobenius moment mechanism, passed by the sole fresh-context medium reviewer, with generic p-power independence and finite-minor specialization. All maps fixed before choosing the common functional; no independent selection bound or matched Braun/Pang ledger.",
+        "record": "[Common moment radical](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-15-common-moment-radical)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting",
+          "moment-designs"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Provides a faithful costed duality for actual common-error kernels without constructing a full quotient algebra or assuming a successful multiplier.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": "Calibrate the interface on Braun's ordinary affine restrictions and original cofactor/replay ledger before claiming a unified motivating-case application."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Ordinary restriction moments: new relationship with thm:diagonal-observation-principle. Pang observation calibration: new relationship with cor:pang-observation-calibration. Repair architecture review: new relationship with prop:repair-cost-controls. Native detection count: new relationship with lem:native-detection-count. Native functional growth: new relationship with lem:native-functional-growth. Native upper bound: new relationship with check:one-native-functional.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-common-moment-radical"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:dense-linear-kernels",
+        "summary": "Exact F_2 computation (dense_linear.py with three_quantities.py and tools/pc_closure.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3, K=1: for E1 = sum_{j<5} x_jj and E2 = sum_{j<5} x_{j+1,j}, the C-kernel has dimension 7 (the 6 pigeon axioms and (1+E) E = 0, a characteristic-2 killer), equal to the best domain side over all 64 linear representatives, attained by the trivial one; the pair's common C-kernel is the 6 pigeon axioms, equal to the domain side. Controls: x00 15 against 15; the transported-killer instance excess 1; on the polynomial path x00 + Q_0 has C-side 15, trivial representative 10, best representative 15.",
+        "assessment": "Exact computation; script, numbers and kernel code checked by the sole fresh-context medium reviewer, who asked for the polynomial-path control added in the second run.",
+        "record": "[Dense linear kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-dense-linear-kernels)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The band review's decisive test; its second outcome occurred.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": "Prove conj:linear-kernel-transfer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Top-degree killers: new relationship with check:top-degree-partition-kernels. Native upper bound: new relationship with check:one-native-functional.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:native-rectangle-upper-bound::cites::lem:native-functional-growth",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:native-functional-growth",
+        "locator": null
+      },
+      "scope": "The matching lower bound.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The matching lower bound."
+      }
+    },
+    {
+      "id": "lem:native-rectangle-upper-bound::depends_on::lem:native-detection-count",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:native-detection-count",
+        "locator": null
+      },
+      "scope": "Its definition of detection and its (a) for the lower bound at s = 1.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its definition of detection and its (a) for the lower bound at s = 1."
+      }
+    },
+    {
+      "id": "check:native-upper-ranks::cites::lem:native-rectangle-upper-bound",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:native-upper-ranks",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "scope": "Checks its construction.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Checks its construction."
+      }
+    },
+    {
+      "id": "lem:native-rectangle-upper-bound::cites::prop:repair-cost-controls",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:repair-cost-controls",
+        "locator": null
+      },
+      "scope": "Consistent with its instance (an upper bound 8 against the recorded least 3).",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Consistent with its instance (an upper bound 8 against the recorded least 3)."
+      }
+    },
+    {
+      "id": "lem:native-rectangle-upper-bound::depends_on::lem:all-field-approximate-majority-certifier-barrier",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:all-field-approximate-majority-certifier-barrier",
+        "locator": null
+      },
+      "scope": "Its determining step: a nonzero polynomial of degree <= K meets the radius-K ball.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its determining step: a nonzero polynomial of degree <= K meets the radius-K ball."
+      }
+    },
+    {
+      "id": "lem:native-rectangle-upper-bound::cites::lem:parallel-class-kill-bound",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:native-rectangle-upper-bound",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:parallel-class-kill-bound",
+        "locator": null
+      },
+      "scope": "Another use of one functional's rectangle form.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Another use of one functional's rectangle form."
+      }
+    },
+    {
+      "id": "check:native-upper-ranks::cites::lem:native-detection-count",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:native-upper-ranks",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:native-detection-count",
+        "locator": null
+      },
+      "scope": "Its lower bound, met by the construction at K=2, L=1.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its lower bound, met by the construction at K=2, L=1."
+      }
+    },
+    {
+      "id": "check:one-native-functional::cites::thm:common-moment-radical",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:one-native-functional",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:common-moment-radical",
+        "locator": null
+      },
+      "scope": "Its one functional needs an extension of size above 2r+1; here F_2 itself suffices at this instance.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its one functional needs an extension of size above 2r+1; here F_2 itself suffices at this instance."
+      }
+    },
+    {
+      "id": "check:one-native-functional::cites::lem:native-detection-count",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:one-native-functional",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:native-detection-count",
+        "locator": null
+      },
+      "scope": "Its bracket [1, r] at this instance.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its bracket [1, r] at this instance."
+      }
+    },
+    {
+      "id": "check:one-native-functional::cites::check:dense-linear-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:one-native-functional",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:dense-linear-kernels",
+        "locator": null
+      },
+      "scope": "Same board and error; its kernel dimension 7 is recomputed here as r = 24.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-native-upper-bound"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e80b28a3cbf124ad7bbf012255fd5dc0b50733f9",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Same board and error; its kernel dimension 7 is recomputed here as r = 24."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
