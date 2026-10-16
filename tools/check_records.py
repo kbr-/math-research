@@ -86,6 +86,48 @@ def duplicate_headings(text):
         previous = match.group('level'), title, match.end(), line_no
 
 
+FIGURE = re.compile(r"\b\d+(?:\.\d+)? (?:of|in) \d+\b|\b\d+ tests\b|\b\d+(?:\.\d+)?%")
+SOURCED = re.compile(r"research/(?:results|provenance)/")
+
+
+def unsourced_figures(source):
+    """[(line number, figure)] for each count or ratio (N of M, N tests, a percentage) in a Python file's
+    docstrings and comments whose docstring or comment names no saved output under research/results or
+    research/provenance. A docstring figure is a claim of a measurement; on 16 October 2026 a docstring
+    quoted a reviewer's unsaved count as if measured. Over the tool files at that commit it flags the figures
+    listed in research/results/framework-fixes-20261016g/figure-count.txt, one of them a line range rather than
+    a measurement; only added lines are checked. Limits found in review: one results path anywhere in a
+    docstring clears all its figures; line numbers drift in a docstring holding a backslash escape or line
+    continuation; the pattern misses "1/241", spelled-out numbers, durations and other counted nouns; help
+    texts, other strings and commit messages are not read."""
+    import ast
+    import io
+    import tokenize
+    found = []
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return found
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and node.body:
+            first = node.body[0]
+            if isinstance(first, ast.Expr) and isinstance(getattr(first, "value", None), ast.Constant) \
+                    and isinstance(first.value.value, str):
+                text = first.value.value
+                if SOURCED.search(text):
+                    continue
+                for offset, line in enumerate(text.split("\n")):
+                    for m in FIGURE.finditer(line):
+                        found.append((first.lineno + offset, m.group(0)))
+    try:
+        for tok in tokenize.generate_tokens(io.StringIO(source).readline):
+            if tok.type == tokenize.COMMENT and not SOURCED.search(tok.string):
+                found.extend((tok.start[0], m.group(0)) for m in FIGURE.finditer(tok.string))
+    except (tokenize.TokenError, IndentationError):
+        pass
+    return found
+
+
 def untimed_counts(line):
     """The statements in `line` that a number of tests pass, where the line gives no duration."""
     return [] if DURATION.search(line) else [m.group(0) for m in PASSED.finditer(line)]
@@ -157,6 +199,14 @@ def main():
         findings += 1
         print(f"{path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}:{n}: {kind}: {text[:100]}")
 
+    if only is not None and not args:
+        for path in sorted(p for p in only if p.suffix == ".py" and p.is_relative_to(ROOT / "tools")
+                           and "tests" not in p.relative_to(ROOT).parts and p.exists()):
+            wanted = only[path]
+            for n, figure in unsourced_figures(path.read_text(encoding="utf-8")):
+                if wanted is None or n in wanted:
+                    report(path, n, "figure in a docstring or comment without its saved output "
+                                    "(name the research/results path, or drop it)", figure)
     for path in paths:
         path = path if path.is_absolute() else (ROOT / path)
         is_html = path.suffix == ".html"

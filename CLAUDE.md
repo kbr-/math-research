@@ -33,6 +33,10 @@ October 2026; a rule added after a mistake is applied at once to the next text w
   of its output that show the cause.
 - When a computation agrees with what was expected, write next what it does not show, before the
   sentence that concludes from it.
+- Before writing any durable text (docstring, commit message, entry, reply), list each figure and
+  finding it will carry beside its source (a saved output, a named agent's report, a proof in the
+  entry); one whose only source is another agent's report is written as that agent's, or recomputed
+  and saved first.
 - Before every reviewer brief, reread the draft once against each item of this list and against
   AGENTS.md's rules on statements (free parameters at their whole range, searches under other
   names), item by item, rather than relying on having known them while drafting.

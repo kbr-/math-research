@@ -15,6 +15,17 @@ check_records = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(check_records)
 
 
+class UnsourcedFiguresTest(unittest.TestCase):
+    def test_a_docstring_figure_needs_its_saved_output(self):
+        # 16 October 2026: a docstring quoted a reviewer's unsaved "1 of 241" as if measured.
+        source = ('def f():\n    """Refuses less: 1 of 241 past entries had no proved claim."""\n\n'
+                  'def g():\n    """Over 258 entries 0 of 258 disagree (research/results/x/count.txt)."""\n\n'
+                  'x = 1  # 12 tests cover it\n'
+                  'y = 2  # an ordinary comment\n')
+        self.assertEqual(check_records.unsourced_figures(source), [(2, '1 of 241'), (7, '12 tests')])
+        self.assertEqual(check_records.unsourced_figures('def ('), [])
+
+
 class UntimedCountsTest(unittest.TestCase):
     def test_a_passing_count_needs_a_duration_on_its_line(self):
         untimed = check_records.untimed_counts
