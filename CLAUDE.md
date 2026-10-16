@@ -16,3 +16,8 @@ When relaying what another agent, a reviewer or a tool found, carry its qualifie
 commit message, a status line, a next step. A finding relayed is restated from its source, not from
 memory of its gist (16 October 2026: qualifiers dropped in relaying a reviewer's computation and in
 summaries of corrected items).
+
+The first lines drafted for any proof, test, witness or next attempt are its Plainest bound: the
+bare count or oldest recorded lemma evaluated on its instance, written before any method is chosen.
+A rule written about this after a mistake does not change the order of work; drafting it first does
+(16 October 2026: the baseline rule of the morning did not stop the same mistake in the evening).
