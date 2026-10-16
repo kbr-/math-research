@@ -185,6 +185,58 @@ class ClaimExcerptsTest(unittest.TestCase):
             tool.claim_excerpts(['lem:first', 'cor:blank'], registry)
 
 
+class RecordStatementTest(unittest.TestCase):
+    def test_each_claim_carries_its_record_statements_read_once_per_notebook(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notebook_excerpt_tool', Path(__file__).resolve().parents[1] / 'notebook-excerpt.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'notebook.html').write_text(
+                '<article id="e1"><p><strong>Proposition.</strong> There is a placeholder-linear certificate.</p>'
+                '<p>Other prose.</p></article><article id="e2"><p>No statement here.</p></article>'
+                '<article id="e3"><p><strong>Lemma.</strong> First.</p>'
+                '<p id="e3-second"><strong>Theorem.</strong> Second, the claim.</p></article>'
+                '<section id="s9"><p>Outside any entry.</p></section>')
+            registry = {'claims': [
+                {'id': 'prop:w', 'summary': 'There is a certificate.', 'record': '[E](https://x.dev/r/#e1)'},
+                {'id': 'lem:v', 'summary': 'Another.', 'record': '[E](https://x.dev/r/#e2)'},
+                {'id': 'lem:u', 'summary': 'Unlinked.', 'record': 'Full record'}]}
+            text = tool.claim_excerpts(['prop:w', 'lem:v', 'lem:u'], registry, root=root)
+            # The record's own wording, which the summary omits, reaches the brief.
+            self.assertIn('  Record statement: Proposition. There is a placeholder-linear certificate.\n', text)
+            self.assertIn('#e2 has no Lemma, Theorem', text)
+            self.assertIn('names no entry anchor', text)
+            self.assertIn('read from 1 notebook(s)', text)
+            registry['claims'] += [
+                {'id': 'thm:t', 'summary': 'Second.', 'record': '[E](https://x.dev/r/#e3-second)'},
+                {'id': 'lem:s', 'summary': 'Out.', 'record': '[E](https://x.dev/r/#s9)'}]
+            anchored = tool.claim_excerpts(['thm:t', 'lem:s'], registry, root=root)
+            self.assertLess(anchored.index('Theorem. Second'), anchored.index('Lemma. First'))
+            self.assertIn('#s9 is not inside an entry', anchored)
+            # Without a root the excerpt is the registry's alone, as before.
+            self.assertNotIn('Record statement', tool.claim_excerpts(['prop:w'], registry))
+
+
+class LivingAndTocTest(unittest.TestCase):
+    def test_the_tail_parse_agrees_with_the_full_parse(self):
+        entries = ''.join(
+            f'<article id="entry-2026-10-{day:02d}-e{day}"><h3>{day} October 2026 — Title {day}</h3>'
+            f'<p>Body \\(a&lt;b\\) and \\(<article>\\).</p><!-- <article id="fake"> --></article>\n'
+            for day in range(1, 15))
+        source = ('<section id="where-we-stand"><p>Living.</p></section>\n'
+                  f'<section id="research-record">\n{entries}</section>\n')
+        book = excerpt.Notebook(source)
+        for tail in (1, 3, 10, 14, 20):
+            with self.subTest(tail=tail):
+                prefix, toc, omitted = excerpt.living_and_toc(source, tail)
+                self.assertEqual(prefix, source[:book.anchor('research-record')['start']])
+                self.assertEqual((toc, omitted), book.toc(tail=tail))
+        with self.assertRaises(ValueError):
+            excerpt.living_and_toc('<section id="x"></section>')
+
+
 class ReadLogTest(unittest.TestCase):
     def test_the_anchors_an_excerpt_prints_are_logged(self):
         import json

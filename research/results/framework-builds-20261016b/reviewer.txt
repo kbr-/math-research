@@ -1,0 +1,33 @@
+Fresh-context medium reviewer, review of framework builds of 16 October 2026 (second framework turn)
+
+First report. Verdicts: excerpt-claims-record-statement pass with corrections; reviewer-brief-commit-message
+pass with corrections; refusal-caller-replay pass with corrections, partial, stays queued; AGENTS.md
+sentence pass (general, placement fits, slight overlap with the withdrawal rule, no duplication). The
+three test modules passed (24 tests).
+
+Required changes:
+- record_statements: anchor search by bare id="..." then backwards to <article> can return the wrong
+  entry; use the article-id search of statement_drift and fall back to the enclosing article only when the
+  anchor lies inside one, saying so otherwise; put the statement at the anchor first; document that only
+  the first record link is followed; avoid sys.path.insert per call.
+- reviewer_brief hook: false positives for any .html file (index.html in a layout review, notebook.html in
+  a scope check); loose "commit" match (test_commit_hook.py); misses relative paths, .txt/.md drafts and
+  other commit-message names. Exempt tracked .html files and state the misses.
+- test_refusal_callers: the first assertion only checks that a flag name appears; check the refusal
+  itself; pattern misses double quotes and other argv constructions; a comment can satisfy the caller
+  check; the docstring overclaims enforcement of new refusals.
+- Commit message: the title implies all items done; the refusal item's end-to-end remainder is unbuilt;
+  "all passing" for a run that failed its time limit; cite the measurement.
+
+Suggestion: run each caller found by the scan against a temporary repository with a spec and a newer
+notebook, starting with claim_refresh, then claim_rebase (the end-to-end remainder).
+
+Follow-up check by the same reviewer. excerpt-claims-record-statement: pass, may close (article-id search, enclosing
+fallback with message, anchored statement first, docstring, attribute-tolerant pattern). reviewer-brief-commit-message:
+pass with one correction: the comment said "tracked" while the code tests "inside the repository"; ignored scratch
+inside the checkout is a miss to list (adopted). resume-bundle-speed: equivalent on the fixture and notebook.html;
+required the comparison on all side notebooks (done: 9 notebooks, 0 differing, compare_living_toc-output.txt) and the
+resume profiles saved (resume-profile-before.txt, -after.txt). Possible differences named: nested articles, <article
+in unescaped attributes, research-record id not first attribute, comment/TeX masking order; none occurs in the nine
+notebooks. refusal-caller-replay: static test acceptable; item stays queued as partial; docstring now names the
+"#"-in-string limit.

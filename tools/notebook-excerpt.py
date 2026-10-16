@@ -64,6 +64,32 @@ def readable_text(source):
     return '\n'.join(line for line in lines if line.strip()) + '\n'
 
 
+def living_and_toc(source, tail=10):
+    """The living sections (everything before the Research record), the record's contents table for its last
+    `tail` entries, and the number of earlier entries, as Notebook(source).toc gives them, but parsing only the
+    last `tail` articles: restoration needs no more, and parsing every entry made preparing the resume bundle
+    take 2.6 s on 16 October 2026, 1.5 s of it in this parse.  The earlier articles are counted by a scan that
+    skips TeX and comments, as the parser does."""
+    opening = re.search(r'<section id="research-record"[^>]*>', source)
+    if opening is None:
+        raise ValueError("Expected one section/heading anchor 'research-record'; found 0")
+    if tail < 1:
+        raise ValueError('--tail must be positive')
+    record = source[opening.start():]
+    masked = re.sub(r'<!--.*?-->', lambda m: ' ' * len(m.group()), record, flags=re.S)
+    masked = MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), masked)
+    opens = [m.start() for m in re.finditer(r'<article\b', masked)]
+    if not opens:
+        return source[:opening.start()], '', 0
+    take = opens[-tail:]
+    close = masked.find('</article>', take[-1])
+    if close < 0:
+        raise ValueError('Unclosed research-record article')
+    mini = opening.group(0) + record[take[0]:close + len('</article>')] + '\n</section>\n'
+    toc, _ = Notebook(mini).toc(tail=tail)
+    return source[:opening.start()], toc, len(opens) - len(take)
+
+
 class Notebook(HTMLParser):
     def __init__(self, source, *, end=None, capture_links=False, capture_anchors=False):
         super().__init__(convert_charrefs=False)
@@ -253,10 +279,62 @@ def review_tests(source, width=600):
     return '\n'.join(lines) + '\n' if lines else '(no review entries)\n'
 
 
-def claim_excerpts(idents, registry):
+RECORD_SHOWN = 1500     # characters of each record statement paragraph printed beside a registered summary
+RECORD_MAX = 4          # statement paragraphs printed per claim
+
+
+def record_statements(record, root, cache):
+    """The Lemma, Theorem, Corollary, Proposition or Statement paragraphs of the entry a claim's record link
+    points at, as plain text, or a line saying why none could be read.  `cache` maps notebook paths to text, so
+    a brief naming several claims reads each notebook once.
+
+    On 16 October 2026 an entry and then its reviewer took "not shown to be Hilbert-like" from a registered
+    summary of prop:binary-word-rank-witness that omitted the word "placeholder-linear", which its record's
+    proposition states; a brief carrying only summaries could not show the reviewer the difference.
+
+    Only the first entry link of the record is followed. When the anchor names a paragraph inside an entry,
+    the statement paragraph at that anchor comes first."""
+    from claim_authoring import STATEMENT, _plain, source_notebook
+    # A statement paragraph may carry its own id (a paragraph claim): allow attributes on the <p>.
+    statement = re.compile(STATEMENT.pattern.replace('<p><strong>', r'<p(?:\s[^>]*)?><strong>', 1), STATEMENT.flags)
+    link = re.search(r'\((https?://[^)\s]+#[^)\s]+)\)', record or '')
+    if not link:
+        return ['(the record link names no entry anchor; read the record)']
+    path, anchor = source_notebook(link.group(1), root)
+    if path is None or not path.exists():
+        return [f'(record notebook for #{anchor} not found)']
+    if path not in cache:
+        cache[path] = path.read_text(encoding='utf-8')
+    text = cache[path]
+    at = text.find(f'<article id="{anchor}"')
+    inner = None
+    if at < 0:
+        inner = text.find(f'id="{anchor}"')
+        if inner < 0:
+            return [f'(#{anchor} not found in {path.name})']
+        at = text.rfind('<article', 0, inner)
+        if at < 0 or text.rfind('</article>', 0, inner) > at:
+            return [f'(#{anchor} is not inside an entry; read the record)']
+    end = text.find('</article>', at)
+    article = text[at:end if end >= 0 else None]
+    matches = list(statement.finditer(article))
+    if inner is not None:          # the statement paragraph holding the anchor first
+        offset = inner - at
+        matches.sort(key=lambda m: not (m.start() <= offset < m.end()))
+    statements = [_plain(m.group(0)) for m in matches]
+    if not statements:
+        return [f'(#{anchor} has no Lemma, Theorem, Corollary, Proposition or Statement paragraph)']
+    shown = [s[:RECORD_SHOWN] + (' …' if len(s) > RECORD_SHOWN else '') for s in statements[:RECORD_MAX]]
+    if len(statements) > RECORD_MAX:
+        shown.append(f'({len(statements) - RECORD_MAX} more statement paragraphs in #{anchor})')
+    return shown
+
+
+def claim_excerpts(idents, registry, root=None):
     """The registered statement, assessment, status and record of each named claim, for a reviewer's brief;
     ValueError naming every identifier the registry does not hold.  On 11 October 2026 a dependency file given to
-    a reviewer held the registry display's header lines in place of two claims, cut out by line numbers."""
+    a reviewer held the registry display's header lines in place of two claims, cut out by line numbers.  With
+    `root`, each claim also gets the statement paragraphs of its record entry, read from the notebooks there."""
     claims = {claim['id']: claim for claim in registry['claims']}
     missing = [ident for ident in idents if ident not in claims]
     if missing:
@@ -264,11 +342,18 @@ def claim_excerpts(idents, registry):
     blank = [ident for ident in idents if not str(claims[ident].get('summary', '')).strip()]
     if blank:      # an excerpt without its statement is the failure this mode exists against
         raise ValueError('registered without a statement: ' + ', '.join(blank))
-    blocks = []
+    blocks, cache = [], {}
     for ident in idents:
         claim = claims[ident]
-        blocks.append(f"{ident}\n  Statement: {claim.get('summary', '')}\n  Assessment: {claim.get('assessment', '')}\n"
-                      f"  Status: {claim.get('mathematical_status', '')}\n  Record: {claim.get('record', '')}\n")
+        block = (f"{ident}\n  Statement: {claim.get('summary', '')}\n  Assessment: {claim.get('assessment', '')}\n"
+                 f"  Status: {claim.get('mathematical_status', '')}\n  Record: {claim.get('record', '')}\n")
+        if root is not None:
+            block += ''.join(f'  Record statement: {line}\n'
+                             for line in record_statements(claim.get('record', ''), Path(root), cache))
+        blocks.append(block)
+    if root is not None:
+        size = sum(len(text) for text in cache.values())
+        blocks.append(f'(record statements read from {len(cache)} notebook(s), {size / 1e6:.1f} MB)\n')
     return '\n'.join(blocks)
 
 
@@ -318,8 +403,9 @@ def main():
             parser.error('--claims takes claim identifiers and, optionally, --out; no other option applies')
         import json
         try:
-            registry = json.loads((Path(__file__).resolve().parents[1] / 'research/claims/index.json').read_text())
-            result = claim_excerpts(args.claims, registry)
+            root = Path(__file__).resolve().parents[1]
+            registry = json.loads((root / 'research/claims/index.json').read_text())
+            result = claim_excerpts(args.claims, registry, root=root)
             if args.out:
                 with args.out.open('x', encoding='utf-8') as stream:
                     stream.write(result)

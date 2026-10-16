@@ -44,6 +44,24 @@ def refusal(payload, tools=TOOLS):
     if missing:
         return ('the brief names a file that does not exist: ' + ', '.join(missing) + '. Write the brief and its '
                 'excerpts in one step and launch the reviewer in the next')
+    # A brief that sends an entry draft (an .html file) for review also sends the drafted commit message: on
+    # 16 October 2026 a commit message called a PK_oplus2 corollary an AC0[2]-Frege bound, outside every text the
+    # reviewer read.
+    # A draft is an .html file outside the repository (external scratch); pages inside the checkout, such as
+    # notebook.html or a site fixture named in a layout review, are not treated as drafts. Not caught: drafts in
+    # ignored scratch inside the checkout (research/tmp/, Codex's managed scratch), drafts named by relative
+    # paths, drafts sent as .txt or .md excerpts, and commit messages in files whose names do not start with
+    # "commit".
+    named = list(dict.fromkeys(NAMED_FILE.findall(prompt)))
+    repository = tools.resolve().parent
+    drafts = [path for path in named if path.endswith('.html')
+              and not Path(path).resolve().is_relative_to(repository)]
+    messages = [path for path in named if Path(path).name.lower().startswith('commit')
+                and Path(path).suffix in ('.txt', '.md', '')]
+    if drafts and not messages:
+        return ('the brief sends an entry draft but no drafted commit message; write the commit message to a '
+                'file whose name starts with "commit" (.txt or .md) and name it in the brief, so the reviewer '
+                'reads it beside the entry')
     found = WHOLE.search(prompt)
     if not found:
         return None

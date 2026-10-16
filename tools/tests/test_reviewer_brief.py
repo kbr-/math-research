@@ -52,6 +52,25 @@ class ReviewerBriefTest(unittest.TestCase):
         self.assertNotIn('rows.py', there)
         self.assertIn('built with `tools/notebook-excerpt.py ANCHOR --out FILE` for the notebook', there)
 
+    def test_an_entry_draft_needs_its_commit_message_in_the_brief(self):
+        with tempfile.TemporaryDirectory() as folder:
+            draft, message = Path(folder) / 'entry_x.html', Path(folder) / 'commit_x.txt'
+            draft.write_text('<article></article>')
+            message.write_text('Main: x')
+            refused = hook.refusal(call(f'Review the draft {draft} with excerpts.'))
+            self.assertIn('no drafted commit message', refused)
+            self.assertIsNone(hook.refusal(call(f'Review the draft {draft} and the commit message {message}.')))
+            # A brief without an entry draft (a blind stage, a tool review) needs none.
+            notes = Path(folder) / 'blind.md'
+            notes.write_text('goal')
+            self.assertIsNone(hook.refusal(call(f'Read {notes} only.')))
+            # A tracked page named in a layout review is not a draft; a test file is not a commit message.
+            page = Path(__file__).resolve().parents[2] / 'index.html'
+            self.assertIsNone(hook.refusal(call(f'Check the layout of {page}.')))
+            stray = Path(folder) / 'test_commit_hook.py'
+            stray.write_text('')
+            self.assertIn('no drafted commit message', hook.refusal(call(f'Review {draft} and {stray}.')))
+
     def test_input_that_is_not_json_passes(self):
         with mock.patch('sys.stdin', io.StringIO('not json')):
             self.assertEqual(hook.main(), 0)

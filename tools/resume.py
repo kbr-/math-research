@@ -111,8 +111,10 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     files=FILES+(('formalization/AGENTS.md','formalization/README.md') if formalization else ())
     parts=[(path,(root/path).read_text(), 'resume-file',path) for path in files]
     parts.append((RUN_STATE+' — the grants and overrides in force for this run',run_state(root),'run-state','current'))
-    source=(root/item['source']).read_text();book=excerpt.Notebook(source)
-    current=source[:book.anchor('research-record')['start']].rstrip()+'\n'
+    source=(root/item['source']).read_text()
+    # Only the living sections and the last `tail` entries are parsed (excerpt.living_and_toc).
+    current,toc,omitted=excerpt.living_and_toc(source,tail)
+    current=current.rstrip()+'\n'
     # The lead queue has no word limit: restoration reads its head only (tools/lead_queue.py).
     current=re.sub(r'<section id="lead-queue"[^>]*>.*?</section>\s*','',current,flags=re.S)
     parts.append((item['source']+' — living sections (thread '+item['name']+')',current,'notebook-excerpt',
@@ -121,7 +123,6 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     queue=head_lines(source)
     if queue:
         parts.append(('Lead and bridge queue — head (the default; another item needs a Chosen. paragraph; sub-ideas under their item)','\n'.join(queue)+'\n','lead-queue','head'))
-    toc,omitted=book.toc(tail=tail)
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))
     if (root/'research/claims/index.json').exists():
