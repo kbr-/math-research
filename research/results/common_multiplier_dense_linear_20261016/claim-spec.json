@@ -1,0 +1,108 @@
+{
+  "source": {
+    "record": "[Dense linear kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-dense-linear-kernels)",
+    "label": "Dense linear kernels",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:closure-degree-locality",
+      "summary": "Closure degree locality: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number of pigeons and N holes, C_d the degree-d PC closure of all axioms, C_D cap V_d = C_d for d <= D <= ceil(N/2); in particular, for E of degree <= e and K + e <= d, {u in V_K : uE in C_D} = {u in V_K : uE in C_d}, so every kernel question sits at d = K + e. Proof: Proposition 2.8 and Theorem 2.9 (Impagliazzo-Pudlak-Sgall) at d and D, with B_d = B_D restricted to |a| <= d; the functional-transfer entry's degree fact (its case d = K) at a general d.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (the general form and the hypotheses' Theorem 2.9 at d).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Reduces every transfer question below half the holes to the window's own top degree.",
+      "next_action": "Use it to prove conj:linear-kernel-transfer at K=1, D=2.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "conj:linear-kernel-transfer",
+      "summary": "Conjecture: over F_2, for the functional pigeonhole system with n+1 pigeons and n holes, at D <= ceil(n/2) and K+1 <= D, for every set F of linear errors, the common kernel of F in V_K modulo the degree-D closure C equals the largest, over choices of linear representatives E' = E modulo C cap V_1, of the common kernel modulo the closure H of the hole and functionality axioms, plus C cap V_K. By lem:closure-degree-locality it suffices to take D = K+1. The representative form is needed: x00 + Q_0 has C-kernel 15 but trivial-representative domain side 10 at 6x5. Evidence: check:dense-linear-kernels (one size, K=1).",
+      "assessment": "Conjecture; restated in the representative form after the sole fresh-context medium reviewer refuted the representative-free draft with x00 + Q_0; evidence one size over F_2.",
+      "status": "conjecture",
+      "category": "route_specific",
+      "rationale": "Extends transfer to errors no admissible numbering reaches.",
+      "next_action": "Prove it at K=1, D=2 by the degree-two linear system.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:dense-linear-kernels",
+      "summary": "Exact F_2 computation (dense_linear.py with three_quantities.py and tools/pc_closure.py) on the functional pigeonhole system with 6 pigeons and 5 holes at D=3, K=1: for E1 = sum_{j<5} x_jj and E2 = sum_{j<5} x_{j+1,j}, the C-kernel has dimension 7 (the 6 pigeon axioms and (1+E) E = 0, a characteristic-2 killer), equal to the best domain side over all 64 linear representatives, attained by the trivial one; the pair's common C-kernel is the 6 pigeon axioms, equal to the domain side. Controls: x00 15 against 15; the transported-killer instance excess 1; on the polynomial path x00 + Q_0 has C-side 15, trivial representative 10, best representative 15.",
+      "assessment": "Exact computation; script, numbers and kernel code checked by the sole fresh-context medium reviewer, who asked for the polynomial-path control added in the second run.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The band review's decisive test; its second outcome occurred.",
+      "next_action": "Prove conj:linear-kernel-transfer.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "conj:linear-kernel-transfer",
+      "refines",
+      "conj:functional-kernel-transfer",
+      "Extends its variable errors to linear errors, below half the holes."
+    ],
+    [
+      "conj:linear-kernel-transfer",
+      "cites",
+      "check:dense-linear-kernels",
+      "Its evidence."
+    ],
+    [
+      "conj:linear-kernel-transfer",
+      "cites",
+      "lem:admissible-numbering-transfer",
+      "Covers errors no numbering reaches."
+    ],
+    [
+      "check:dense-linear-kernels",
+      "cites",
+      "check:block-pair-kernels",
+      "Same board and code."
+    ],
+    [
+      "lem:closure-degree-locality",
+      "cites",
+      "lem:admissible-numbering-transfer",
+      "Same setting; the locality is the degree fact used in its proof, stated for any error."
+    ],
+    [
+      "lem:closure-degree-locality",
+      "cites",
+      "thm:spare-pigeon-onto-hardness",
+      "Another use of the same basis theorem; neither implies the other."
+    ],
+    [
+      "lem:closure-degree-locality",
+      "cites",
+      "cor:pigeonhole-shattering-not-thin",
+      "Same basis, another question."
+    ],
+    [
+      "conj:linear-kernel-transfer",
+      "cites",
+      "conj:monomial-kernel-transfer",
+      "The two share only errors that are single variables."
+    ],
+    [
+      "lem:closure-degree-locality",
+      "cites",
+      "lem:functional-killer-transfer",
+      "Generalizes the degree fact of its Setting (the case d = K) to every d."
+    ],
+    [
+      "check:dense-linear-kernels",
+      "cites",
+      "check:functional-kernels-k2",
+      "Same board and kernel code; that check compares sets of variables at K=2, this one sums of variables at K=1 with representatives."
+    ]
+  ]
+}
