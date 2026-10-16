@@ -445,21 +445,29 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     at = last + len('</article>') if last >= 0 else close
     source = source[:at] + '\n' + entry + source[at:]
     if next_html is not None:
-        a = source.find('<section id="proposed-next-step">')
-        if a < 0:
-            raise ValueError('proposed-next-step section missing')
-        b = source.index('</section>', a)
-        body = source[a:b]
-        if HEADING not in body:
-            raise ValueError('proposed-next-step heading missing')
-        head = body[:body.index(HEADING) + len(HEADING)]
-        source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
-        require_named_item(source, next_html)
-        require_quoted_items(source, next_html)
-        refuse_excluded_item(source, next_html)
-        refuse_no_bearing_plan(source, next_html)
+        source = replace_next(source, next_html)
     living_sections(source)
     preflight(source, m.group(1))
+    return source
+
+
+def replace_next(source, next_html):
+    """The notebook with its Proposed next step replaced by `next_html`, after the next-step checks.
+    Used with an entry, and alone (--next without an entry) when the last entry's next step must change
+    after it was appended, so that the notebook need not be restored and the entry appended again."""
+    a = source.find('<section id="proposed-next-step">')
+    if a < 0:
+        raise ValueError('proposed-next-step section missing')
+    b = source.index('</section>', a)
+    body = source[a:b]
+    if HEADING not in body:
+        raise ValueError('proposed-next-step heading missing')
+    head = body[:body.index(HEADING) + len(HEADING)]
+    source = source[:a] + head + '\n' + next_html.strip() + '\n' + source[b:]
+    require_named_item(source, next_html)
+    require_quoted_items(source, next_html)
+    refuse_excluded_item(source, next_html)
+    refuse_no_bearing_plan(source, next_html)
     return source
 
 
@@ -657,9 +665,19 @@ def main():
     if args.closures:
         print(closures_count(path.read_text()))
         return
-    if args.entry is None:
-        parser.error('an entry file is required')
     nxt = args.next_file.read_text() if args.next_file else None
+    if args.entry is None:
+        if nxt is None:
+            parser.error('an entry file is required, or --next alone to replace the Proposed next step')
+        try:
+            refuse_next_structure(nxt)
+            result = replace_next(path.read_text(), nxt)
+            living_sections(result)
+        except ValueError as err:
+            sys.exit(f'notebook-append.py: {err}')
+        path.write_text(result)
+        print(f'Replaced the Proposed next step in {path.relative_to(ROOT)}')
+        return
     try:
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         refuse_uncited_publication(args.entry.read_text())

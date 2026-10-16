@@ -476,6 +476,29 @@ class NotebookAppendTests(unittest.TestCase):
             self.assertIn('three\n<p><strong>Where we stand.</strong> Unchanged: only a lemma</p>\n</article>',
                           (root / 'notebook.html').read_text())
 
+    def test_next_alone_replaces_the_proposed_next_step_and_appends_nothing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            notebook, nxt = root / 'notebook.html', root / 'next.html'
+            notebook.write_text(NOTEBOOK)
+            def run(*arguments):
+                with mock.patch.object(tool, 'ROOT', root), \
+                     mock.patch.object(tool, 'selected', return_value={'source': 'notebook.html'}), \
+                     mock.patch.object(sys, 'argv', ['notebook-append.py', *arguments]), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    tool.main()
+            nxt.write_text('<section id="x"><p>new</p></section>')
+            with self.assertRaisesRegex(SystemExit, 'only the section contents'):
+                run('--next', str(nxt))
+            self.assertEqual(notebook.read_text(), NOTEBOOK)
+            nxt.write_text('<p>replacement step</p>')
+            run('--next', str(nxt))
+            result = notebook.read_text()
+            self.assertIn('<h2>Proposed next step</h2>\n<p>replacement step</p>', result)
+            self.assertEqual(result.count('<article'), NOTEBOOK.count('<article'))
+            with self.assertRaisesRegex(SystemExit, '2'):
+                run()
+
     def test_cli_reporting_failure_does_not_write_notebook_or_next_step(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
