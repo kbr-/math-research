@@ -938,9 +938,9 @@ def figure_block(reply):
     worktree's session transcripts (17 October 2026): a reply-level rule refused 10 of 1514 texts but let a bare
     "review" anywhere clear every figure (reply-figure-replay.txt); this paragraph-level rule with named sources
     refuses 86 of 1518 texts (reply-figure-replay-paragraph.txt, both in
-    research/results/framework-builds-20261017/, which prints each matched figure). Read one by one, 6 of the 86
-    are false: two rule parameters ("under 3 of 5", "2 of 4 is on the strict side") and four word-budget counts;
-    the rest are computed findings with no path."""
+    research/results/framework-builds-20261017/, which prints each matched figure). Read one by one, at least 8 of
+    the 86 are false (the builds' reviewer, builds-review.txt there): two rule parameters, four word-budget counts
+    and figures quoted from the record without an entry anchor; the rest are computed findings with no path."""
     found = figure_paragraphs(reply)
     if not found:
         return None
