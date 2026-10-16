@@ -39,7 +39,7 @@ difference" or "only one part" is checked against all the components the hypothe
 draft defines an object that a cited theorem consumes (a repair, a certificate, a design), check
 that the definition asks no more and no less than that theorem's hypotheses use, and name the
 clause that differs.
-Do not trust summaries in the drafts over the excerpts. Run no computations unless the
+Where a draft calls a step taken from elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look for the one case it worked through that step and the citation's own words for the reason; report "checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Run no computations unless the
 brief asks for a specific check, and edit no files.
 
 After the correctness check, and never in place of it, help with what the brief names as the cycle's
