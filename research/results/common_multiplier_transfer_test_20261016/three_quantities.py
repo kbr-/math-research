@@ -16,6 +16,15 @@ Expected: (iii) positive for F3 and F4 (x20 x01 lies in Ann_H(F3) and is asserte
 (i), (ii) printed.
 Refuted by: (iii) zero for F3, which would mean every domain killer of degree 2 lies in the closure.
 Possible because: the proper closure contains degree-2 consequences of the pigeon axioms not in H.
+Second run, after the review: --falsify adds the same-pigeon set {x00,x01}, the same-hole set {x00,x10} and
+the mixed set {x00,x01,x11} at 6x5, and F3, F4 on 7 pigeons and 6 holes at D=3, a test of
+conj:functional-kernel-transfer, whose prediction is zero total excess for every set.
+Refuted by: a positive total excess for any set, a killer the proper closure adds.
+Possible because: two errors sharing a pigeon or a hole let pigeon-axiom multiples cancel differently.
+Positive control: the recorded instance (variables a, b, w, z; monomial axioms ab, bz; linear axiom w+a+z;
+D=2; K=1; F={w}) must give total excess 1 (dimension 3 against 2); asserted.
+Refuted by: excess 0 there, which would mean the code cannot see a killer a linear axiom adds.
+Possible because: a bug in ann or in the intersection would hide transported killers.
 Control: at K=1 the total excess for F3 must be 0, as check:functional-factor-kernels recorded for its sets.
 Refuted by: a positive K=1 excess, contradicting the recorded check or showing an error in this script.
 Possible because: a bug in the kernel or intersection code would show spurious killers.
@@ -166,10 +175,43 @@ def quantities(cC, cH, monos, errors):
             'cancellation_part': len(inter_C) - len(inter_plus)}, inter_H, C2
 
 
+def positive_control():
+    a, b, w, z = 1, 2, 4, 8
+    mono = [{a | b}, {b | z}]
+    cC, cH = prepare(pc.Closure(mono + [{w, a, z}], 4, 2)), prepare(pc.Closure(mono, 4, 2))
+    v1 = [mm for mm in cC.monos if deg(mm) <= 1]
+    q, _, _ = quantities(cC, cH, v1, [w])
+    assert q['total_excess'] == 1, ('positive control failed', q)
+    return q
+
+
+def falsify(out):
+    out['positive_control'] = positive_control()
+    print('positive control', out['positive_control'], flush=True)
+    for m, n, sets in ((6, 5, {'same pigeon x00,x01': [(0, 0), (0, 1)], 'same hole x00,x10': [(0, 0), (1, 0)],
+                               'mixed x00,x01,x11': [(0, 0), (0, 1), (1, 1)]}),
+                       (7, 6, {'F3': [(0, 0), (1, 1), (2, 2)], 'F4': [(0, 0), (1, 1), (2, 2), (3, 3)]})):
+        mono, full, nv, v = systems(m, n)
+        cC, cH = prepare(pc.Closure(full, nv, 3)), prepare(pc.Closure(mono, nv, 3))
+        assert cC.proper, f'{m}x{n} must be proper at degree 3'
+        v2 = [mm for mm in cC.monos if deg(mm) <= 2]
+        for name, cells in sets.items():
+            q, _, _ = quantities(cC, cH, v2, [1 << v(i, j) for i, j in cells])
+            out['falsify'][f'{m}x{n} {name}'] = q
+            print(f'{m}x{n}', name, q, flush=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
+    ap.add_argument('--falsify', action='store_true')
     args = ap.parse_args()
+    if args.falsify:
+        out = {'falsify': {}}
+        falsify(out)
+        pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
+        print('PASS', flush=True)
+        return
     m, n, D = 6, 5, 3
     mono, full, nv, v = systems(m, n)
     cC, cH = prepare(pc.Closure(full, nv, D)), prepare(pc.Closure(mono, nv, D))
