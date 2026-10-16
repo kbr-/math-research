@@ -945,6 +945,29 @@ def cited_summaries(index, claims):
     return found
 
 
+DRAFT_ASSESSMENT = re.compile(r'^\s*(?:PENDING|TODO|TBD|PLACEHOLDER)\b', re.I)
+
+
+def validate_assessments_filled(index, claims):
+    """The entry's declared claims carry a filled assessment in the registry, not a draft placeholder.
+
+    On 16 October 2026 a route review found three working-proof claims registered that day still assessed
+    "PENDING": the specs were registered before their reviews, and the finisher checked the status only."""
+    raw = index.read_text() if index.exists() else ''
+    decoder, drafts = json.JSONDecoder(), []
+    for claim in claims:
+        at = raw.find(f'"id": "{claim}"')
+        start = raw.find('"assessment": ', at) if at >= 0 else -1
+        following = raw.find('"id": "', at + 1)
+        if start >= 0 and (following < 0 or start < following):
+            if DRAFT_ASSESSMENT.match(decoder.raw_decode(raw, start + len('"assessment": '))[0]):
+                drafts.append(claim)
+    if drafts:
+        raise ValueError('Claims of this entry still carry a draft assessment in the registry: ' + ', '.join(drafts)
+                         + '. Write the assessment from the review record in the spec and rebuild with '
+                         'tools/claim_refresh.py (AGENTS.md, index maintenance)')
+
+
 def next_attempt_neighbours(body, entry, index, last=10, least=4, shown=3):
     """Lines naming the claims of the notebook's last `last` entries whose registered summaries share at least
     `least` content words with the entry's next attempt, nearest first, to read before the attempt is kept.
@@ -1974,6 +1997,9 @@ def finish(root, turn, next_turn=None, notebook_name=None):
               if (root / 'research/logs/claim-searches.jsonl').exists() else None)
     if unread:
         print(unread)
+    declared = re.search(r'\bdata-claims="([^"]*)"', entry[:entry.find('>') + 1])
+    validate_assessments_filled(root / 'research/claims/index.json',
+                                [c for c in (declared.group(1).split() if declared else []) if c != 'none'])
     for line in (decided_report(entry) + absence_report(entry) + architecture_context_report(whole, entry)
                  + next_attempt_neighbours(whole, entry, root / 'research/claims/index.json')):
         print(line)

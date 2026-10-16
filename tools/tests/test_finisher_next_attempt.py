@@ -29,6 +29,20 @@ class NextAttemptSearchTest(unittest.TestCase):
                 FT.validate_next_attempt_search(entry, [])
 
 
+class DraftAssessmentTest(unittest.TestCase):
+    def test_a_declared_claim_with_a_draft_assessment_is_refused(self):
+        # 16 October 2026: three claims registered before their reviews kept "PENDING".
+        import json, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            index = Path(tmp) / 'index.json'
+            index.write_text(json.dumps({'claims': [
+                {'id': 'lem:a', 'summary': 's', 'assessment': 'PENDING'},
+                {'id': 'lem:b', 'summary': 's', 'assessment': 'Working proof passed by the reviewer.'}]}, indent=1))
+            with self.assertRaisesRegex(ValueError, 'lem:a'):
+                FT.validate_assessments_filled(index, ['lem:a', 'lem:b'])
+            FT.validate_assessments_filled(index, ['lem:b'])
+
+
 class NextAttemptNeighboursTest(unittest.TestCase):
     def test_recent_claims_sharing_words_with_the_next_attempt_are_listed(self):
         # 16 October 2026: a next attempt at the top degree of the product pigeonhole system was already decided
