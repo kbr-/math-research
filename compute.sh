@@ -592,6 +592,9 @@ MAX_PY_LOOP_DEPTH = 3
 # `sh -c` script counts with its own argument lists (variable assignments included), and a shell loop in a
 # computation is refused. Only a quoted user approval overrides.
 MAX_SERIES_ARGSETS = 4
+# Test runners are exempt (user, 16 October 2026: "Exempt test runners"): running different test modules in one
+# framework turn is not a parameter series. The names are those tools/hooks/bash_guard.py treats as test runners.
+TEST_RUNNERS = {"pytest", "py.test", "unittest", "api-tests.sh", "suite_tips.sh"}
 # Sizing runs (user instruction, 24 September 2026, after two runs in one session were launched for 20+ minutes on an
 # estimate that no measurement supported): a run expected to exceed LONG_RUN_S must cite, with --sized-by RUN_ID, a
 # completed run of the same program in the same session, whose measured time the estimate extrapolates.
@@ -796,6 +799,15 @@ def program_key(command):
     return Path(script).name if script else Path(command[0]).name if command else ''
 
 
+def test_runner(command):
+    """Whether a simple command runs a test runner: pytest, unittest (also as python -m), the framework suite
+    tools/tests/run.py, or a repository's suite script named in TEST_RUNNERS."""
+    words = unwrapped(command)
+    if any(Path(w).name in TEST_RUNNERS or w.endswith('tests/run.py') for w in words[:2]):
+        return True
+    return any(a == '-m' and b in ('pytest', 'unittest') for a, b in zip(words, words[1:]))
+
+
 def cases_plea():
     """The user's plea against running more cases, kept once in tools/turn_guidance.py."""
     from importlib.machinery import SourceFileLoader
@@ -815,6 +827,8 @@ def series_error(events, command, timeout):
     past = [inner for e in events if e['event'] == 'run_start' and e.get('category', 'computation') == 'computation'
             for inner in invocations(e['command'])]
     for inner in invocations(command):
+        if test_runner(inner):
+            continue
         key = program_key(inner)
         seen = {argument_list(c) for c in past if program_key(c) == key}
         past.append(inner)

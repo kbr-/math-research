@@ -64,6 +64,21 @@ class SeriesGuardTest(unittest.TestCase):
         self.assertIn('v.m2 already ran', CS.series_error(events, ['env', 'N=9', 'M2', '--script', 'v.m2'], 60))
         self.assertIsNone(CS.series_error(events, ['env', 'N=2', 'M2', '--script', 'v.m2'], 60))
 
+    def test_test_runners_are_exempt(self):
+        # user, 16 October 2026: "Exempt test runners"
+        for runner in (['python3', 'tools/tests/run.py'], ['python3', '-m', 'pytest'], ['pytest'],
+                       ['python3', '-m', 'unittest'], ['bash', 'suite_tips.sh']):
+            with self.subTest(runner=runner):
+                events = starts(*[runner + [f'test_{n}'] for n in range(4)])
+                self.assertIsNone(CS.series_error(events, runner + ['test_9'], 60))
+        events = starts(*[['python3', 'scan.py', str(n)] for n in range(4)])
+        self.assertIn('already ran', CS.series_error(events, ['python3', 'scan.py', '9'], 60))   # others still count
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('bash_guard', CS.ROOT / 'tools/hooks/bash_guard.py')
+        guard = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(guard)
+        self.assertEqual(CS.TEST_RUNNERS, guard.TEST_RUNNERS)       # one list of test runners in both places
+
     def test_shell_loop_is_refused(self):
         self.assertIn('shell loop', CS.series_error([], ['bash', '-c', 'for n in 6 8; do /t/kern 3 $n; done'], 60))
         self.assertIsNone(CS.series_error([], ['bash', '-c', 'g++ -O2 -o k k.cpp && ./k 3 6'], 60))
