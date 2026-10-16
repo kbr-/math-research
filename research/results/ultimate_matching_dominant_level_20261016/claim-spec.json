@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Dominant-level split](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-16-dominant-level-split)",
+    "label": "Dominant-level split",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-16-dominant-level-split"
+    ]
+  },
+  "date": "2026-10-16",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:dominant-level-split",
+      "summary": "For X_1..X_N i.i.d. uniform on [0,1]^2, with probability tending to one: for every y >= e^16, every j <= j*(y) = min(l_1, floor((log N)^(2/3)(log y)^(1/3))), and every Lipschitz G with int sum psi*_4(|d_i G|) <= 2 whose larger partial is at least y where grad G is nonzero, |sum_i G(X_i) - N int G| <= L' sqrt(N log N)(1 + Lambda_j(G)) with L' universal, Lambda_j the sum over cells of mesh 2^(-j) of Lip(G on Q) area(Q). The same holds with the cellwise sum over any balanced dyadic partition with cells of level at most j*(y). The witness of lem:leighton-shor-class-lower-bound at (4,4), built with the reduction's parameter L >= 132, has Lambda_(l_1) <= 297/L, so the bound is of the conjectured order on it, against Lebesgue measure.",
+      "assessment": "Working proof: lem:cellwise-lipschitz-split with the gradient mass bounded by 8 (log y)^(-1/4) through psi*_4(t) >= t (log t)^(1/4)/2 on the larger partial; the witness's Lambda computed column by column over the Leighton-Shor graph, with the breakpoint columns negligible.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Replaces the thickness condition of the single-level case by a bounded cellwise Lipschitz sum and shows the class lower bound's thin witness meets it (an elementary layer-cake bound also gives that witness's order); the open single-level case is functions whose cellwise sum is large at every allowed mesh.",
+      "next_action": "The fourth route review; then whether many parallel thin bands of one small gradient level, with alternating slopes, have discrepancy beyond sqrt(N log N).",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:dominant-level-split",
+      "refines",
+      "lem:cellwise-lipschitz-split",
+      "Implies the corollary of that lemma, up to the constant (Lambda_j <= 2 sqrt 2 y area(U_j)), under a weaker hypothesis; not its main statement."
+    ],
+    [
+      "lem:dominant-level-split",
+      "cites",
+      "lem:leighton-shor-class-lower-bound",
+      "Its witness at (4,4) is bounded at the same order by the split."
+    ],
+    [
+      "lem:dominant-level-split",
+      "applies",
+      "conj:conjugate-class-discrepancy",
+      "Single-level class functions at (4,4) with Lambda_j = O(1) at an allowed mesh are bounded at the conjectured order against Lebesgue measure."
+    ],
+    [
+      "lem:dominant-level-split",
+      "cites",
+      "lem:local-factor-discrepancy",
+      "Its part (b) gives the partition version of this lemma; this lemma bounds that part's first term by the class cost through the larger partial."
+    ]
+  ]
+}
