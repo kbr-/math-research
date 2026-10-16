@@ -60,7 +60,34 @@ def resemblances(registered, spec, count=5):
     return out
 
 
-QUEUED_AT = 0.4     # measured 11 October 2026 on one notebook's 34 claims and 66 queued items: the known answered
+def record_anchors(claim):
+    return tuple(re.findall(r'#([\w-]+)', json.dumps(claim.get('record'))))
+
+
+def siblings(registered, spec):
+    """[(related id, [(sibling id, summary start), ...]), ...]: for every registered claim the spec relates, the
+    other claims registered from the same record entry, unless the spec relates or declares them. 16 October 2026:
+    a spec related thm:conjunction-quotient-rank and missed thm:punctured-quotient-contraction, registered from the
+    same entry, of which its corollary was a consequence; neither the summary resemblance nor the searches found it."""
+    by_id = {claim['id']: claim for claim in registered}
+    own = {claim['id'] for claim in spec.get('claims', [])}
+    related = {edge[2] for edge in spec.get('relationships', []) if len(edge) > 2} | \
+              {edge[0] for edge in spec.get('relationships', []) if edge and edge[0] not in own}
+    groups = {}
+    for claim in registered:
+        groups.setdefault(record_anchors(claim), []).append(claim['id'])
+    out = []
+    for ident in sorted(related):
+        if ident not in by_id or not record_anchors(by_id[ident]):
+            continue
+        rest = [other for other in groups.get(record_anchors(by_id[ident]), [])
+                if other != ident and other not in related and other not in own]
+        if rest:
+            out.append((ident, [(other, by_id[other].get('summary', '')[:160]) for other in rest]))
+    return out
+
+
+QUEUED_AT = 0.4    # measured 11 October 2026 on one notebook's 34 claims and 66 queued items: the known answered
                     # item scores 0.53, and 8 pairs reach 0.4 (34 reach 0.3, 211 reach 0.2)
 
 
@@ -184,6 +211,14 @@ def main(argv=None):
             # 16 October 2026: a listed claim was a more general version of the new one, unread as such.
             print('  Read each listed statement and say in the entry whether it is a more general version of '
                   'this claim (fewer hypotheses, the same conclusion) or a special case of it.')
+    found_siblings = siblings(registered, spec)
+    for related_id, rows in found_siblings:
+        print(f'Registered beside {related_id}, which the spec relates (same record entry), and not related in '
+              'the spec: read each; one may already imply a claim of the spec')
+        for other, start in rows:
+            print(f'  {other}: {start}')
+    print(f'{sum(len(rows) for _, rows in found_siblings)} sibling claims listed for '
+          f'{len(found_siblings)} related claims with siblings.')
     if args.notebook or args.registry == str(DEFAULT_REGISTRY):
         import lead_queue
         if args.notebook:

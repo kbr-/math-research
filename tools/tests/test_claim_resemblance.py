@@ -21,6 +21,25 @@ SPEC = {'claims': [{'id': 'ex:new-degrees',
         'relationships': [['ex:new-degrees', 'cites', 'prop:other', 'a note']]}
 
 
+class SiblingTest(unittest.TestCase):
+    def test_claims_registered_beside_a_related_claim_are_listed_unless_related(self):
+        # 16 October 2026: a spec related thm:conjunction-quotient-rank and missed its sibling, the contraction.
+        entry = '[Cut code](https://example.org/#entry-2026-10-07-cut-code)'
+        registered = [{'id': 'thm:rank', 'summary': 'Exact rank.', 'record': entry},
+                      {'id': 'thm:contraction', 'summary': 'Contraction of the count.', 'record': entry},
+                      {'id': 'lem:classes', 'summary': 'Classes.', 'record': entry},
+                      {'id': 'lem:alone', 'summary': 'Elsewhere.', 'record': '[x](https://example.org/#entry-x)'}]
+        spec = {'claims': [{'id': 'cor:new', 'summary': 's'}],
+                'relationships': [['cor:new', 'cites', 'thm:rank', 'n'], ['cor:new', 'cites', 'lem:classes', 'n'],
+                                  ['cor:new', 'cites', 'lem:alone', 'n']]}
+        found = tool.siblings(registered, spec)
+        self.assertEqual([(ident, [other for other, _ in rows]) for ident, rows in found],
+                         [('lem:classes', ['thm:contraction']), ('thm:rank', ['thm:contraction'])])
+        # Related in the spec, it is no longer listed.
+        spec['relationships'].append(['cor:new', 'depends_on', 'thm:contraction', 'n'])
+        self.assertEqual(tool.siblings(registered, spec), [])
+
+
 class ResemblanceTest(unittest.TestCase):
     def test_spec_values_outside_the_schema_are_reported(self):
         bad = {'claims': [{'id': 'ex:a', 'status': 'finite_check', 'category': 'computation', 'novelty': 'none'}],
