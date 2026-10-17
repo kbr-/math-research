@@ -1,0 +1,60 @@
+Tenth route review, stage one (BLIND STAGE), 17 October 2026. One fresh-context medium reviewer, given
+only blind/brief.txt and blind/results.txt (the thread's 75 registered statements). Its report,
+condensed in its own words; every computation in it is the reviewer's and unverified.
+
+1. What makes it hard. Each per-coordinate consequence holds alone at a pair of the curve
+(thm:maximum-displacement-curve-threshold, thm:per-level-count-matchings, (2,2) by
+thm:dyadic-flow-square-exponential); what fails is all at once in one matching. Every construction on
+record builds the displacement from about log N roughly independent level contributions of size about
+sqrt N, Gaussian with variance about N log N, integrable against psi_2 but not psi_alpha for alpha > 2.
+Lighter tails need strong dependence across levels that the obstructions show cannot be produced
+locally: square means do a random walk with pushes of order sqrt N whatever the rule
+(thm:square-mean-flow-obstruction, thm:coarse-mean-flow-obstruction); a restoring correction pays a
+cross leg at least twice its shift (lem:sibling-exchange-leg); light-looking tails at small sizes did
+not survive (ex:paired-restoring-drift-tails, ex:lagged-restoring-tails).
+
+2. Exclusions and the hypotheses to violate. Dyadic, electrical, linear rules, sandpiles: violate
+linearity in the counts (they bound the flow-bound value, not matchings). Square-mean and coarse-mean:
+violate the bounded r, moving coordinate-k mass across dyadic boundaries whose level-(j-r) means are
+not dyadic, with r growing in N, or violate locality. Adapted partitions and split-matched transports:
+violate rank tracking within A/sqrt n, splits bounded away from 0 and 1, or closeness to the
+hierarchical transport. Position-blind exits: choose exits by position. Box exits: single-pair exit
+arguments cannot refute. Chain duality (thm:bounded-length-chains): a refutation of the (4,4) mixed
+counts needs chains longer than exp(lambda sqrt(log N)). Open: nonlinear routing not hierarchical at a
+fixed lag; matchings not close to any flow; refutations by long chains.
+
+3. Architecture. A two-scale matching whose coarse part is not dyadic-local. Rough count (unchecked):
+the coarse-mean push at lag r is about 2^-r sqrt N; over m ~ theta log N levels u_N ~ c sqrt(log N)
+2^-r; the theorem needs u_N^alpha >~ log N, so it holds only while r <~ (1/2 - 1/alpha) log_2 log N; at
+(4,4) that lag puts the squares at side about sqrt(log N/N) (log N)^(1/4) = (log N)^(3/4)/sqrt N, the
+Leighton-Shor scale. Design: a Leighton-Shor-type matching between coarse cells of that side,
+moving mass across cell boundaries by a nonlinear, position-aware rule that cancels coarse means;
+then an AKT/dyadic flow inside each coarse cell, about (1/4) log_2 log N levels, Gaussian part of
+variance N log log N. First lemma: for r(N) = c log_2 log N with c > 1/2 - 1/alpha the coarse-mean
+walk no longer forces divergence, equivalently a correction with zero level-(j-r) means whose leg cost
+stays within budget; smallest test (4,4) with two coarse levels above J; first, extend the obstruction
+to growing r.
+
+4. Most informative weaker statement. The discrete conjugate-class discrepancy at (4,4)
+(conj:conjugate-class-discrepancy on the grid; lem:grid-flow-duality (c), (d)): equivalent to a grid
+flow of cost O(N), so it decides the flow route at (4,4). The record proves it for nested chains of up
+to exp((log N)^(2/3)) layers (lem:multilevel-chain-bound) and level-restricted classes
+(lem:flow-coarea-level-bound). Second option: whether a good (4,4) matching can have bounded tube
+density (lem:tube-density-converse).
+
+Process audit (claims): conj:ultimate-matching's assessment says (2,2) is known only with probability
+9/10, stale given thm:dyadic-flow-square-exponential; conj:conjugate-class-discrepancy's "no evidence
+beyond consistency" is stale (the subclass bounds and lem:lipschitz-class-lower-bound);
+lem:leighton-shor-class-lower-bound's "baseline unchecked" is dominated by
+lem:lipschitz-class-lower-bound; thm:square-mean-flow-obstruction's summary "every deterministic rule
+... routing inside the dyadic squares" drops the mean condition and locality qualifiers;
+ex:simultaneous-rule-exceedances' "could only understate" has no argument for its direction; the
+results file attaches record statements to wrong claims, truncates some (lem:tube-localized-
+discrepancy, lem:band-family-discrepancy, lem:mollified-smooth-part) and lists the dyadic theorem's
+statement under lem:block-lower-tail. Orbiting: eight or more exclusions of hierarchical or linear
+flows since thm:dyadic-flow-obstruction and no construction violating their shared hypothesis
+(bounded-lag dyadic means); the escape implied by thm:coarse-mean-flow-obstruction, a lag growing with
+N up to the Leighton-Shor scale, was never named as a next step. Strength count 3.
+
+Suggestion (unverified): rerun thm:coarse-mean-flow-obstruction's proof with r(N) free, find the
+exact threshold, then build a Leighton-Shor-scale coarse matching with a nonlinear rule above it.

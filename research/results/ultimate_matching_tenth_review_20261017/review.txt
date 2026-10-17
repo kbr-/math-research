@@ -1,0 +1,74 @@
+Tenth route review, stage two (route revealed), 17 October 2026. The same medium reviewer as the blind
+stage, given draft.html, coarse-mean-entry.txt, claims.txt, instance_check.{py,txt} and its blind
+report; one claim search. Its report, condensed in its own words.
+
+Verdict: pass with corrections. Strength count 4.
+
+1. Growing shift. Every step of thm:coarse-mean-flow-obstruction's proof holds for r = r(N): the push
+h_r for every r; n_P >= 256 eases as r grows; mu = (p_0/4)^m is independent of r; the start at level
+j_1 - r needs j_1 - r >= 0; Chebyshev's factor is 4^r K log N N^(1542 theta - 1), so r may grow until
+4^r is almost a power of N ("4^r at most a power of log N" is true but much weaker than the step
+allows). Cost step: with C = (theta/(sqrt2 L))^alpha and a = 770 theta,
+u_N^alpha - a ln N = ln N (C 2^(alpha(r* - r)) - a), which tends to infinity exactly when
+liminf alpha(r* - r) > log_2(a/C): the binding condition is r <= r* - c_0, a fixed offset, not
+alpha(r* - r) -> infinity, which is only sufficient; "exactly" in outcome (A) is wrong. At alpha = 4,
+L = 1, theta = 6e-4, c_0 ~ 10.9 levels. At alpha = infinity: r <= (1/2) log_2 ln N -
+log_2(2 sqrt2 L/theta). The positive half of (A) holds as a sufficient condition; "beyond r* only this
+proof stops" is right, and in fact it stops about c_0 levels before r*. Missing figure: ln N > a/C ~
+1.4e13 (alpha = 4, L = 1), below which the theorem says nothing even at r = 0.
+
+2. Leighton-Shor identification. At (4,4), 2^(-J) 2^(r*) = sqrt(Theta(log N)/N) (log N)^(1/4), the
+Leighton-Shor scale, up to 2^(-c_0) and the kappa, K constants. At a general pair coordinate k gives
+side (log N)^(1 - 1/alpha_k)/sqrt N, while the curve's maximum box there is
+(log N)^(1/2 + 1/alpha_k)/sqrt N: they agree only at alpha_k = 4. Bearing, Obstacle and New
+mathematics must say "at (4,4)".
+
+3. Falsification attempt. "int G d(mu_X - mu_Y) = int grad G . Phi is the same for every flow only when
+grad G is a gradient" is wrong as written: it is the same for every flow, for every Lipschitz G. The
+point is that c e_k restricted to the chain squares is not a gradient and that the chain is chosen
+from Phi's own running means. Stronger answer (unverified in detail): a class function built on the
+chain's nested squares has nested superlevel sets; with few steep, well-separated values
+lem:multilevel-chain-bound (c) applies at (4,4) (K ~ theta log N layers satisfy its S and B
+conditions) and bounds its discrepancy by C sqrt(N log N), so no refutation comes from it.
+
+4. Decision and Decisive test. The Attempt answers the test in a few lines, and the coarse-mean
+entry's Hypotheses already named the range as not claimed: "New operation" is the wrong disposition;
+rewrite it as the next entry's lemma and make the Decisive test the open step (the legs' cost beyond
+r* - c_0, or the two-scale composition). Power and Hypotheses already fix outcome (B): Chebyshev cannot
+break first. Correct (A). The Decision schedules the extension lemma before the construction, one more
+exclusion while the direct path is named (orbiting): fold it into the construction entry or give a
+reason it must come first.
+
+5. Summaries. Where we stand: "fails" must say "has flow-bound value not O(N) with probability
+tending to one"; the coarse-mean result keeps level-by-level, F_(j+1)-measurable, local at j_1 - r,
+F_j-measurable signs; the multilevel chain bound is "at (4,4)" with its S and B conditions.
+Assessment: "must be nonlinear in the counts" holds only at pairs with both exponents finite; the
+required shift is r >= r* - c_0, not "grows". Obstacle and Extra requirements: "beyond r*" demands more
+than the obstruction does. Bearing: "where the coarse-mean proof stops, at (4,4)";
+thm:linear-flow-obstruction does not stop there. Independent alternative relays "Gaussian variance N
+log log N" without "unverified".
+
+Open point (all the reviewer's own computation, unverified). Inner stage harmless: cells of side
+l = (log N)^(3/4)/sqrt N hold n = (log N)^(3/2) points; a dyadic flow inside displaces by about
+sqrt(log log N/N), Gaussian, never more than l = s (log N)^(1/4), the (4,4) maximum, so
+P(d > s t^(1/4)) <= e^(-t) for t <= log N. The difficulty moves to the coarse stage, a grid flow on
+the l-grid with per-point displacement theta_e/(N l), needing psi_4 tails at scale s:
+lem:grid-flow-duality (a), (b), (d) on a grid of side about the Leighton-Shor mesh. What the record
+excludes there: thm:linear-flow-obstruction applies (l <= N^-eps, N l^2 -> infinity; normalized
+per-edge spread sqrt(ln k/ln N)/L, a constant), so linear coarse rules fail even where the chain proof
+stops; thm:position-blind-cell-exits applies (s sqrt N = (log N)^(3/4) >= delta (log N)^(1/2 + gamma)
+for gamma < 1/4); thm:split-matched-transport-obstruction rules out hierarchical rank-split coarse
+transports. Legs: beyond r* - c_0 each leg is cheap (normalized u << 1), but by lem:sibling-exchange-leg
+the legs of all coarser levels are the coarse edge fluxes, so bounded leg cost is the coarse flow
+problem itself. Way past: a composition lemma, matching cost <= coarse l-grid flow cost + inner dyadic
+cost, replacing the cell-smearing error of lem:grid-flow-duality (c), which needs delta <= s/32, with
+the inner flow's cost; its dual is the discrete class bound at mesh 2^(-l_1), where
+lem:fine-grid-leighton-shor, lem:multilevel-chain-bound and lem:guided-chain-bound live, joining the
+primal and dual open instances at (4,4). Search "coarse grid flow cells fine matching inside cells
+composition smearing error Leighton-Shor mesh" found no composition lemma.
+
+Process audit: title not yet written; unsupported "exactly" in the Prediction; the Decisive test
+already answered by the review's own Attempt; orbiting (an exclusion lemma scheduled before the named
+construction); unasked: why the linear obstruction reaches the l-grid while the chain proof does not
+(the chain uses only the last theta log N levels); the Leighton-Shor coincidence not checked at other
+pairs.
