@@ -778,6 +778,23 @@ class UnrunSearchesTest(unittest.TestCase):
         self.assertEqual(dcs.unrun_searches(draft, []), [])
 
 
+class UnsourcedFiguresTest(unittest.TestCase):
+    def test_a_hand_counted_ledger_figure_is_listed_and_computed_ones_are_not(self):
+        # 17 October 2026: the ledger's "0.81" was a hand count; the script's row says 0.8026.
+        import tempfile
+        with tempfile.TemporaryDirectory() as root:
+            out = Path(root) / 'research' / 'results' / 'x'
+            out.mkdir(parents=True)
+            (out / 'numbers.txt').write_text("{'beta': 0.8026, 'log2_ratio_2t': '-6.1762e+08', 'kappa': '2.0345e-05'}\n")
+            draft = ('<p><strong>On the power-growing family.</strong> From research/results/x/numbers.txt: '
+                     '\\(\\beta=0.8026\\), the bound \\(2^{-6.18\\times10^8}\\), \\(b/s=2.0345\\times10^{-5}\\), and '
+                     'by hand \\(\\beta\\le(6e/62)^{1/6}&lt;0.81\\).</p><p><strong>Proof.</strong> A constant 0.28.</p>'
+                     '<p><strong>Bearing.</strong> At most \\(2^{-6.19\\times10^8}\\).</p>')
+            self.assertEqual(dcs.unsourced_figures(draft, root),
+                             [('On the power-growing family', '0.81'), ('Bearing', '6.19\\times10^8')])
+            self.assertIn('2 such figures.', dcs.unsourced_figures_report(dcs.unsourced_figures(draft, root), 0))
+
+
 class UnreadNamedClaimsTest(unittest.TestCase):
     def test_a_claim_named_from_a_search_listing_is_listed_until_read(self):
         # 17 October 2026: a review's Record search named claims whose statements had not been read.

@@ -483,6 +483,47 @@ def unrun_searches_report(draft, logged, width):
                      + [f'{len(found)} such searches, of {len(logged)} logged queries compared.'])
 
 
+FIGURE_LABELS = ('Nonvacuity', 'On the power-growing family', 'Bearing', 'Instance check')
+FIGURE = re.compile(r'(\d+(?:\.\d+)?)\s*\\times\s*10\^(?:\{(-?\d+)\}|(-?\d+))|(?<![\w.^{])(\d+\.\d+)(?![\w.])')
+FILE_NUMBER = re.compile(r'-?\d+(?:\.\d+)?(?:e[-+]?\d+)?', re.I)
+RESULT_PATH = re.compile(r'research/results/[\w./-]+?\.(?:txt|json|md|csv)')
+
+
+def unsourced_figures(draft, root):
+    """[(label, figure)] for the decimal figures (0.81, 907.1, 6.18\\times10^8) of the draft's Nonvacuity, ledger
+    family, Bearing and Instance check paragraphs that no number of the research/results files the draft cites
+    matches to the figure's displayed precision, signs ignored.  On 17 October 2026 a ledger's lemma-only figure
+    "0.81" was a hand count at a size where the floor it supported was empty; the family script, once it
+    computed that row, failed there.  Integers and figures of the proof are not read."""
+    files = sorted(set(RESULT_PATH.findall(text(draft))))
+    values = []
+    for name in files:
+        path = pathlib.Path(root) / name
+        if path.is_file():
+            values.extend(abs(float(v)) for v in FILE_NUMBER.findall(path.read_text(errors='replace')))
+    found = []
+    for label in FIGURE_LABELS:
+        for match in re.finditer(r'<strong>' + label + r'\.</strong>(.*?)(?=<strong>[A-Z][^<]*\.</strong>|</p>)',
+                                 draft, re.S):
+            for m in FIGURE.finditer(html.unescape(match.group(1))):
+                digits = m.group(1) or m.group(4)
+                scale = 10.0 ** int(m.group(2) or m.group(3)) if m.group(1) else 1.0
+                places = len(digits.split('.')[1]) if '.' in digits else 0
+                value, tolerance = float(digits) * scale, 0.5 * 10.0 ** -places * scale
+                if not any(abs(v - value) <= tolerance * (1 + 1e-9) for v in values):
+                    found.append((label, m.group(0)))
+    return found
+
+
+def unsourced_figures_report(found, width):
+    lines = [f'  [{label}] {figure}' for label, figure in found]
+    return '\n'.join(['Figures of the Nonvacuity, ledger, Bearing and Instance check paragraphs that no results file '
+                      'the draft cites holds to their displayed precision; compute each in the script that computes '
+                      'the others and cite its output (AGENTS.md: every figure beside its saved source):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(found)} such figures.'])
+
+
 def unread_named_claims(draft, root, now=None):
     """The claims the draft's Record search, Record comparison, Record, Own statements or Bearing paragraphs
     name whose statements no reading tool printed in the last SEARCH_WINDOW_S seconds, the draft's declared
@@ -1596,6 +1637,7 @@ def main():
     print('\n' + step_forms_report(draft, args.width))
     print('\n' + unrun_searches_report(draft, logged_queries(ROOT), args.width))
     print('\n' + unread_named_claims_report(unread_named_claims(draft, ROOT), args.width))
+    print('\n' + unsourced_figures_report(unsourced_figures(draft, ROOT), args.width))
     spec =json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))
