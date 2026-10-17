@@ -1,0 +1,43 @@
+Review of entry-2026-10-17-interpolation-locality (lem:interpolation-locality), ultimate-matching, 17 October
+2026: one medium reviewer, given the draft, the spec, extracts of [C5]'s Lemmas 2.9-2.10 and Section 2.2 (private
+held copy) and the registered statements of thm:position-blind-cell-exits, thm:dyadic-flow-square-exponential,
+lem:hopf-lax-matching-bound and thm:per-level-count-matchings. Condensed in its own terms.
+
+First pass. Verdict: pass with corrections. Correct: g - f = rot grad(psi~ - psi); psi~ = psi on A (McShane
+extension Lambda-Lipschitz, psi on A Lambda-Lipschitz via ||h||_inf <= U through (2.27)); support at most 4|B|
+dual edges, matching Lemma 2.9's proof word for word; 4|B| <= 4L||f||^2/U^2 from (2.28) with ||p||_2 = ||f||_2;
+count and Orlicz steps. Size recomputed: U^2 >= L^2 L_LS^2 K^2 (log N)^3, |E_B| <= 4N/(L_LS^2 K^2 (log N)^2),
+|E| about 2N/(K^2 (log N)^{3/2}), fraction O((log N)^{-1/2}). Heuristic correct as a heuristic: variance
+(lambda/pi) ln m, exponent pi L^2 sqrt t, crossing t > pi^2 L^4.
+Required: the degenerate case f = h, "g = h = f", false when B is nonempty (psi~ = Lambda dist(x, A) > 0 on B;
+B can be nonempty since a_p <= 4U while Ma_p can exceed U); "nondecreasing" on Phi unused; the probability
+qualifier missing ((2.16) and Lemma 2.5 hold with high probability); the transfer is one-sided (on E_B only
+||g||_inf <= LU, of order L (log N)^{1/4} normalized; B is where f's heavy edges cluster), counts transfer only at
+t < (1/2) log log N - O(1); reading (2) decided at the wrong scale: lem:grid-flow-duality (c) needs
+delta <= s/32, while at [C5]'s scale delta of order K (log N)^{3/4}/sqrt N the grid error 2hN Psi(delta/h) is
+2hN N^{(K/(Lh))^4}, not O(N) for any fixed L, so no flow on [C5]'s grid gives (4,4) through the flow bound;
+reading (1) reads "scale" as a level; status "reviewed" before the review.
+Suggestions (unverified): Poissonize; Berry-Esseen per edge with sum |w|^3 = O(1), sum w^2 about (1/2pi) ln m;
+currents log-correlated, pair-averaged correlation O(1/log m); normal comparison for the exceedance count;
+de-Poissonize; boundary edges apart; transfer by the lemma at constant t. Lookups: lem:grid-flow-duality and
+conj:conjugate-class-discrepancy read from the registry; neither bounds the electrical flow.
+Process audit: title "keeps the electrical tails" claims a two-sided preservation (suggested "Flow interpolation
+changes few edges"); status line before review; reading (2) settled by naming a lemma without its grid condition;
+sandpile sentence a decision without an argument; next attempt naming an obstacle without computing the deviation
+is O(1) standard deviations, and omitting the concentration across log-correlated edges; spec repeating
+"nondecreasing", no probability qualifier, "reduces ... to the electrical flow's own load tails". Strength count 5.
+
+Second pass. Verdict: pass with corrections. Checked: the window's arithmetic; the grid-error computation again
+(delta/(hs) = K (log N)^{1/4}/(Lh), error 2hN(N^{(K/(Lh))^4} - 1) per coordinate, every h, fixed L); the degenerate
+case f = h correct; the title now accurate; suggestions labelled; the gate credits it only with what it checked.
+Required: a bare failure does not transfer, a failure by a factor 1 + delta does; the counts compare both ways
+inside the window (g's count <= f's + |E_B| = f's + o(|E|e^{-t})), only the Orlicz sum is one-sided; every edge
+with |f_e| > U lies in E_B since Ma_p >= a_p >= |p(e)| if M includes the point itself; New mathematics to carry
+the -1 and per coordinate; the status clause's probability qualifier wrong (the agreement is deterministic); the
+next attempt redone at the conjecture's grid: lambda = N delta^2 about L^2 log N/1024, argument theta/(delta N s) =
+theta/(32 lambda), heuristic spread ratio 1/(L sqrt(2 pi)) as at [C5]'s scale, so the heuristic predicts failure
+once t > pi^2 L^4, and a failure of the electrical flow decides nothing about the cheapest flow; the gate to record
+this pass; the Prevention's partial check not shown on the prompting case. Suggestion (unverified): one proof of
+the electrical flow's failure would close the route at both scales. Process audit: title matches; the status line
+broadens the qualifier; next attempt posed with an outcome the draft's heuristic decides; the window's
+"one-sided" written from its first report's wording, not derived again. Strength count 3.
