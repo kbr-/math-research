@@ -1,0 +1,124 @@
+Review record: top-degree native count (entry-2026-10-17-top-degree-native). Sole fresh-context medium reviewer (medium-reviewer agent type), its report and follow-up, verbatim.
+
+===== first report =====
+
+**Verdict: pass with corrections.** The proofs of (a) and (b) are correct. The corrections are about the stated reasoning, scope and relation wording, plus one sub-idea closure (Developed) that the entry does not support.
+
+## Correctness findings
+
+**1. (a)**
+- `C = H + span Q_i` holds: D = n, and lem:top-degree-axiom-inertness's condition is the clause about degrees below D.
+- Old functionals modulo H are measures on Y. That is right, since V_n|_Y is all functions on the product domain.
+- The kernel equality is the transfer lemma's (a).
+- The extension uses exactly the transfer lemma's hypothesis. The map μ' ↦ (μ'(Q_i))_i is onto k^m exactly when the rows Q_i restricted to Y∖S_E are independent. It is applied to each functional separately, which is enough because the forms depend only on μ restricted to S_E.
+- **Gap, Proof (a), "So 1∉C, as 1∉H":** C ⊋ H, so 1∉H alone does not give this. The right reason is the inertness clause: members of C of degree below D = n ≥ 1 lie in H. When m > n, 1 does vanish nowhere on Y, so the clause is what decides it. Rewrite the sentence.
+- **Redundant hypothesis:** K+e ≤ n follows from e+K+L ≤ D = n with L ≥ 0. Say so in the Proposition and in the Hypotheses bullet, rather than listing it as a separate hypothesis.
+
+**2. (b)**
+- Correct: the product domain S_E with E = 1 on it, N(d), the unitriangular evaluation, the balls B_y, the covering, and N(max(K−L,0)) centres.
+- **Gap, "in degree e+L<D, where it is H":** this needs K ≥ 1. At K = 0, e+L can equal D. The bound survives in any case, because dim Z_L modulo C is at most dim Z_L modulo H = N(L), and a smaller Z_L only strengthens r ≤ m·dim Z_L. State it as that inequality.
+
+**3. Hypotheses, Degenerate cases, Nonvacuity**
+- The numbers are right: N = 1, 16, 91; ⌈91/16⌉ = 6; the independence witnesses lie off S_E.
+- **Nonvacuity, Plainest bound:** "Point evaluations on the 91 points … detect the kernel, so m_min ≤ 91" is false modulo C as written. δ_z at z ∈ S_E is not old: with 3 free holes, some pigeon is always unplaced, so δ_z(Q_i) ≠ 0. Say "after extension by (a)", or "modulo H"; the Baseline already says this.
+- **Degenerate cases, m = 1:** (b) recovers lem:native-rectangle-upper-bound only for s = 1 and for subcubes that fix coordinates to 1. Narrow the sentence.
+- Missing degenerate case: a constant E. Here S_E = Y and the independence fails. Say that (a) excludes it. Also add e ≥ 1 to the General statement, which omits it while the spec states it.
+- **Generality:** the D = n hypothesis is needed only to identify C. The proof of (b) runs modulo H at every D with e+K+L ≤ D ≤ n, because functionals on V_D|_Y extend to measures on Y. For D < n we have C = H, as the Hypotheses bullet itself says. State (b) for e+K+L ≤ D ≤ n.
+
+**4. Smallest case**
+- 17473 is correct.
+- The L = 0 reduction is correct over every field. At L = 0, choose r functionals forming a dual basis on the image; lem:native-detection-count (b) itself is stated only over F_q, so the "over every field" step should be written out.
+- **"the least board is at least six holes":** check:functional-factor-kernels decides this only for n+1 pigeons. That extends to m ≥ n+1 by monotonicity, which the entry should state. With m ≤ n pigeons the system is satisfiable, so every closure is proper, and boards like 4 on 4 (16 variables) were not considered. Either state the scope (m > n) or examine those boards.
+- **Missed record:** historical:imp:php (Razborov, PC degree at least n/2+1 over every field) already makes C_4 proper at n ≥ 7 for every m. So seven holes is settled, and six holes is the only open board.
+- **Contradiction:** the Plainest bound speaks of "(b)'s method on its product-like support", while Own statements says the support is not a product. Also, "the domain-model count … bounds what the forms can do" names no direction. Fix both, and say which matching domain is meant: partial matchings. With all pigeons placed and m = n+1 the domain is empty.
+
+**5. Sub-idea marked Developed: not supported.**
+- The argument at equality is right. At D = Δ+K+d, L = 0, and the count is r.
+- But the cutoff is an inequality, Δ+K+d ≤ D, and the clause allows two readings:
+  - (i) D at the cutoff: L = 0, and the count is r.
+  - (ii) any D satisfying the cutoff, including Pang's full degree: L ≥ Δ+d. This is the case of the cube counts of order n^{K−L}, and of proper closures, which this item's own next attempt still leaves open.
+- The sub-idea's latest follow-up named "proper closures over F_2 and forms that are not rectangles" as remaining. This entry's own "Not examined" leaves the second of these open.
+- Under AGENTS.md this stays **Continuing**. Alternatively, state both readings, close reading (i), and treat reading (ii) as the parent's next attempt.
+- Two possible repairs, unverified:
+  - At L = 0, lem:native-detection-count holds for every pseudoideal, so proper closures are covered there; say so.
+  - Within the degree-D window at L = 0, any product of E_i u with u or with another E_j exceeds degree D. So the only forms are the linear values μ(E_i u), and a function of those values detects a kernel of codimension r only with r of them. This could discharge "Not examined" for reading (i).
+
+**6. Goal progress and bearing**
+- "Unchanged" and "none" are honest.
+- The Bearing gives as its reason "because the item's last entry named this proper closure". That is the reason AGENTS.md forbids. Rewrite it as what the result could have given: pigeon axioms raising the count, an obstruction.
+- "They do not" drops its qualifiers: at the top degree, for supports leaving the Q_i independent.
+
+**7. Claim spec against the entry**
+- The `refines lem:native-rectangle-upper-bound` edge is wrong. Neither statement implies the other: the lemma covers s errors, arbitrary subcubes and affine supports over F_2; (b) covers product domains. Use depends_on, or a "generalizes the construction of" note.
+- The General statement omits e ≥ 1, which the spec carries.
+
+## Open point: m_min at 5 pigeons, 4 holes, K = 2, L = 1 (unverified; my argument, nothing computed)
+
+I believe m_min = 6, the lower bound.
+
+- Put c for the constant coefficient, c_{hi} for the 15 linear coefficients and c_e for the 75 quadratic ones.
+- ν_0 = the ball sum at the empty centre (16 points). Its 16 forms recover c and the c_{hi}.
+- The quadratic coefficients are the edges of K_{5,5,5}: 15 vertices (h,i), with edges between different holes.
+- A 0/1 measure on the weight-two points of an edge set G gives, with v = 1 and v = x_k, the total sum and the 15 star sums of the c_e over G, modulo the known lower part.
+- If G is a connected spanning graph with 15 edges containing an odd cycle, this map is injective on the coordinates of G:
+  - in characteristic other than 2, because the unsigned incidence matrix has kernel of dimension E − V + (number of bipartite components) = 0;
+  - over F_2, because the kernel is the cycle space spanned by the odd cycle, and the total sum is nonzero on it.
+- The edge sets are disjoint, so the ranks add: 16 + 5·15 = 91.
+- A decomposition of K_{5,5,5} into 5 such pieces gives m_min = 6:
+  - In characteristic other than 2, an explicit one: identify the vertices with Z_15, the hole being the residue mod 3. The difference classes ±1, ±2, ±4, ±7 are Hamiltonian 15-cycles, which are odd. The class ±5 is five disjoint triangles; this works when the characteristic is not 2, but over F_2 its rank is 11.
+  - Over every field: Laskar–Auerbach (1976) state that K_{n,…,n} with r parts is Hamiltonian-decomposable when (r−1)n is even. This is recalled, not read.
+- In general this suggests m_min = 1 + ⌈E/V⌉ with E = C(f,2)m², V = fm, for f free holes and m pigeons. On the cube it agrees with ⌊a/2⌋+1 at odd a.
+- Record search: "Hamiltonian decomposition complete multipartite graph" found check:native-upper-ranks only; no decomposition result is on record.
+
+## Process audit
+- **Title (pending).** Proposed: "At the product pigeonhole system's top degree the native count is the domain model's". Status line: "Working proof, at the top degree of the product pigeonhole system · Top-degree native count."
+- **Owed attempt:** "It is made below". The named attempt was the count itself. The entry reduces it to the domain model and brackets it between 6 and 16 without computing it. Say "reduced, and bracketed".
+- **Not done, no reason given:** the 91-dimensional domain-model count on {0..5}^3 is a small exact computation. The entry neither ran it nor said why. The data raises the question of whether 6 is the value; that question was not asked.
+- **Best outcome:** "which give that number on the cube" is too strong. The lemmas bound the number; it is known exactly only for a ≤ 9 at K = 2, L = 1.
+- **Missed record:** historical:imp:php already decides "C_4 proper" from seven holes on. It turned up under a search in the words "functional pigeonhole refutation degree", not the draft's own wording.
+- **Dropped qualifiers:** the Structural reason ("costs … nothing"), the Follow-up and the Bearing drop the independence and monomial hypotheses.
+- **Sub-idea:** marked Developed although its own previous follow-up and its "Not examined" clause leave named parts open (point 5).
+- **Spec relation:** the "refines" edge is not supported in either direction (point 7).
+
+Strength count: 7 (Best outcome, Owed attempt, Structural reason, Follow-up, Bearing, the Smallest-case "at least six holes", the sub-idea "Developed").
+
+## Suggestions (unverified)
+- Prove m_min = 6 at the Nonvacuity instance, and 1 + ⌈E/V⌉ in general, using the odd-unicyclic decomposition above. A computation on 91 coordinates over F_2 would check it; the Z_15 circulant gives the case of characteristic other than 2 explicitly.
+- Smallest case for the functional system: use Razborov's bound (n ≥ 7 makes C_4 proper) and test n = 6. Also consider satisfiable boards (m ≤ n) as a cheaper proper closure that still carries the linear pigeon axioms.
+
+Files reviewed: /home/kbr/.claude/jobs/354c41d4/tmp/nc-draft.html, nc-spec.json, nc-deps.md, nc-native-upper-entry.txt, nc-sentences.txt.
+
+===== follow-up =====
+
+**Verdict on the rewrite: pass with corrections.** Part (c) and the six-functional check hold; the sub-idea's reading (i), the Smallest case and one detail of (c) need short fixes, listed below. All the corrections from my first report are now in the draft.
+
+**(1) Part (c), m_min = 6 over every field: correct.**
+- The lower bound is 6 = ⌈91/16⌉, from lem:native-detection-count (a), which holds over any field.
+- The rank argument is block-triangular. ν_0 fixes the 16 coefficients of degree at most one. The five edge pieces are disjoint, so they act on disjoint sets of the c_e.
+- The triangles piece works in characteristic other than 2: its incidence kernel has dimension 15 − 15 + 0 = 0.
+- In characteristic 2, each piece of the repaired decomposition is an odd 15-cycle. The kernel is the cycle's indicator, and the total sum (15 = 1) kills it.
+- The step "rank over any field of characteristic 2 equals the F_2 rank" is correct. The matrix has 0/1 entries in the prime field, and rank does not change under field extension.
+- Required: say in (c) that ν_0 and each ν_G are extended to old functionals modulo C by (a). As written, (c) defines them only as sums over points of S_E, and those are not old modulo C.
+- Cosmetic: (c) labels the pigeon ⌊t/3⌋, the script ⌊t/3⌋+1. These are labels only, but make them agree.
+
+**(2) six_functionals.py and six_functionals.json: checked.**
+- The script was committed before its run (commit e3e3b8668 at 02:27:33, the JSON written at 02:27:34) and is unchanged since.
+- The rows Σ_z ν(z)v(z)s(z) over the 91 one-hot monomials s are the right matrix.
+- The asserts confirm the repaired pieces are Hamiltonian, between different holes, and cover all 75 edges. Five pieces of 15 edges with a union of 75 makes them disjoint.
+- The F_2 control is not forced by counts (96 rows against 91 columns). Its 87 = 91 − 4 matches the triangles piece's predicted rank of 11.
+- The ranks in the JSON (87, 91, 91; 91, 91, 91) match the entry.
+
+**(3) Reading (i) of the sub-idea: needs two fixes.**
+- **Forms through μ(wu).** The sentence "every form an old functional gives is a linear value μ(E_i u)" holds only for forms built from the products E_i u. One functional also gives the linear forms u ↦ μ(wu) for every w of degree at most D − K = e, not only for w = E_i. Those are natural "native" forms, and one functional supplies many of them. State that forms are those that factor through the products E_i u, so the μ(wu) forms with w outside the span of the E_i are excluded by definition. Otherwise reading (i) is not decided for them.
+- **Error degrees.** Slack L = 0 needs every E_i to have degree exactly Δ+d. An error of lower degree has positive slack of its own. Say so, or give the slack per error.
+
+**(4) Smallest case and Follow-up: needs fixes.**
+- "the matching monomials of degree at most 4, which span the functions on the domain of partial matchings" is wrong. They span the functions of degree at most 4 on that domain; all functions need degree up to 6. 17473 is the dimension of V_4 modulo the monomial axioms.
+- "six holes, seven pigeons, as the first open board" holds within the n+1-pigeon scope. Say so; the satisfiable boards are noted separately in the same item.
+- Plainest bound: the condition "if they extend to old functionals" is unnecessary. The Smallest case's own dual-basis argument, using the forms with v = 1, gives m_min ≤ r for every closure and slack. State the bound without the condition.
+- The Follow-up is consistent with the body.
+
+**Process audit.**
+- **Title.** "the native count is the domain model's" drops the qualifier "for errors whose support leaves the unplaced indicators independent", which the body carries. Add it, or say "for monomial errors".
+- **Reading (i).** The paragraph presents as decided a claim whose class of forms its own argument narrows silently; this is the μ(wu) point under (3).
+- Strength count: 2 (the title, and reading (i)'s "This reading is decided").
