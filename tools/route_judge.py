@@ -118,7 +118,9 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr):
     if len(said) < 40:
         return ('a research entry states, in a <p><strong>Shortest route.</strong> paragraph of at least 40 '
                 'characters, the most direct step toward the goal that the record names and whether this entry '
-                'takes it, or "Not taken" with the concrete reason (AGENTS.md, order of work: shortest route first)')
+                'takes it, or "Not taken" with the concrete reason, or, where the record names none, "No direct '
+                'route known yet" and what the exploration is to find (AGENTS.md, order of work: shortest route '
+                'first)')
     try:
         verdict = judge(draft, notebook, ask)
     except haiku_judge.Failed as error:
