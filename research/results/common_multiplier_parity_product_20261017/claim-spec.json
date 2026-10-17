@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Parity product repair](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-parity-product)",
+    "label": "Parity product repair",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-parity-product"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "prop:parity-product-repair",
+      "status": "working_proof",
+      "category": "route_specific",
+      "novelty": "not_claimed",
+      "summary": "Parity product repair: over any field of characteristic other than 2, on the cube {0,1}^n with the Boolean axioms and J the degree-D part of their closure, take 1 <= l <= n lines with protected class 1 and errors E_t = -2 x_t, and the product line with combined error E_c = prod_{t<=l}(1-2x_t) - 1. (a) If D >= l+1, every common repair of E_1..E_l (f of degree K with soundness on the window D-K, E_t f in J, f not in J) has degree >= l, attained by prod(1-x_t). (b) If D >= l + ceil(l/2), a repair of E_c has degree >= ceil(l/2), attained by prod_{i<=floor(l/2)}(1-x_{2i-1}-x_{2i}) times (1-x_l) for odd l. The lower bounds hold at every D. (c) On the pigeonhole matching domain Y (m >= l pigeons, h >= l holes, h >= l+1 for odd l for the upper bound; J the degree-D part of the closure of the Boolean, hole and functionality axioms) with diagonal errors E_t = -2 x_tt and D >= l + ceil(l/2), both the common repair and the combined-error repair have least degree ceil(l/2): upper bound prod x_{2i-1,2i} (times x_{l,l+1} for odd l), lower bound by Moebius extraction of a coefficient's non-diagonal edges B, which leaves a nonzero function of degree <= deg f - |B| on a diagonal cube of >= l - 2|B| coordinates vanishing on odd parity. The saving on the cube is in the repair's degree K only: the combined reading needs D >= l + ceil(l/2) against l + 1. Proof of (a), (b): J is the cube's vanishing ideal within degree; E_c is nonzero exactly on odd x_1+..+x_l; in the basis y = 1-2x a function vanishing there satisfies f = f y_1..y_l, so its coefficients are symmetric under complementing [l].",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections and a follow-up that checked part (c)'s Moebius extraction; a degree check over F_3 and F_5 for l <= 6 agrees.",
+      "rationale": "For these cancelling errors a product line's combined-error saving holds on the cube but not on the matching domain: on the cube the repair degree is ceil(l/2) against l, at the larger closure degree l + ceil(l/2); on the pigeonhole matching domain with diagonal errors, blocking edges give the common repair the parity bound.",
+      "next_action": "The proper closure: the functional pigeonhole system over F_3 with n+1 pigeons and the least n >= 2 holes with C_3 proper; at l = 2 the four conditions E_c in C_3, x_12 and x_11 not in C_3, 1 not in C_3, which need an exact F_3 closure built on a tested library."
+    }
+  ],
+  "relationships": [
+    [
+      "prop:parity-product-repair",
+      "depends_on",
+      "lem:transversal-killer-basis",
+      "Part (a), the common degree l on singleton supports."
+    ],
+    [
+      "prop:parity-product-repair",
+      "cites",
+      "cor:multilinear-repair-scalar",
+      "The combined-error reading it left open."
+    ],
+    [
+      "prop:parity-product-repair",
+      "cites",
+      "ex:top-degree-linear-killer",
+      "A linear killer of the same form 1 - x - y."
+    ]
+  ]
+}

@@ -1,0 +1,143 @@
+Review record: parity product repair (entry-2026-10-17-parity-product). Sole fresh-context medium reviewer (medium-reviewer agent type), its first report and follow-ups, verbatim.
+
+===== first report =====
+
+**Verdict: pass with corrections.** The proposition is correct as stated. The corrections concern a hypothesis attributed to the wrong step, wording in the degree check and its docstring, one wrong sentence in the Smallest case, and summary sentences that leave out the degree-window cost of the factor-2 saving.
+
+**Correctness, item by item**
+
+- **J and part (a): correct.** Multilinear reduction does not raise degree, so within degree D, J is exactly the set of polynomials vanishing on the cube. Part (a) is lem:transversal-killer-basis (c) with A_t = {t} and c_t = -2. That lemma's condition τ + max|A_j| ≤ D is the draft's ℓ+1 ≤ D. Both of the lemma's hypotheses (killers within the degree window, and 1 kept alive) are discharged. The lower bound also holds at every D, by the lemma's part (a).
+- **Part (b): correct.** deg E_c = ℓ because its top term is (-2)^ℓ x_[ℓ]. The upper bound f_ℓ checks out. In the lower bound, the change y = 1-2x preserves multilinear degree, uniqueness of the y-expansion gives c_S = c_{SΔ[ℓ]}, and the max bound gives ⌈ℓ/2⌉.
+- **Hypotheses, first bullet: wrong attribution.** "f_ℓ(x) = -1 ≠ 0 for a pair a=b=1" does not use characteristic other than 2: -1 ≠ 0 in every field, and survival needs only f_ℓ(0) = 1. Delete that clause. The upper bound f_ℓ holds over every field. Characteristic other than 2 is used only where E_t and E_c must be nonzero, and in the y-change.
+- **Baseline: missing degree condition.** A common repair of degree ℓ repairs the product line only when E_c·f fits in degree D, which needs D ≥ 2ℓ. The multilinear-repairs record says "when the degrees fit"; the draft drops this. Add D ≥ 2ℓ.
+- **The factor-2 saving needs a qualifier everywhere it is summarised.** Measured by the closure degree each reading needs (deg E + deg f), the combined reading costs ℓ + ⌈ℓ/2⌉ and the common reading costs ℓ+1. So the combined line needs a larger D for every ℓ ≥ 3. For ℓ+1 ≤ D < ℓ+⌈ℓ/2⌉ the product line has no repair at all, while the common repair exists. The saving is in K only, and only at D ≥ ℓ+⌈ℓ/2⌉. Say this in the General statement (which also drops both D conditions), New mathematics, Bearing, the title and the spec rationale.
+- **Nonvacuity (F_3, n = ℓ = 3, D = 5): checks.** D = 5 = ℓ+⌈ℓ/2⌉ and D ≥ 4 for part (a). f_3 takes the values 1 and -1 at (0,0,0) and (1,1,0) and vanishes on the four odd points.
+- **Plainest bound: correct.** The support-size bound 2^(n-d) gives ℓ for the common repair and 1 for the combined one.
+- **Degree check: genuine but loosely described.** The output is real: 24 odd-p cases, no mismatches, and the rank computation could have failed.
+  - The docstring's "Forced by counts … the script prints both numbers" and "Baseline … the script prints it" are false. main prints only p, l, n, common, combined; the monomial and point counts are returned and then discarded.
+  - The script never builds the errors; it computes vanishing degrees on sets. Over F_2 the errors are 0, so the repair degree there is 0, not 1. Its F_2 rows (combined 1, common ℓ) are vanishing degrees of the sets, not repair degrees. Reword the entry's sentence "Its control over F_2, where the errors vanish, gives combined degree 1" accordingly.
+  - The F_2 control has no assertion; it can only be read off the output.
+- **Smallest case, ℓ=2 and ℓ=3 hand arguments: correct.** At ℓ=3, -2c = 0 forces c = 0. Every other edge is compatible with some (t,t), t ≤ 3. The blocking-edge product is a matching of degree ⌈ℓ/2⌉: pigeons 1,3,5,… and holes 2,4,…,ℓ+1 are all distinct.
+- **Restriction bullet: one wrong phrase.** "vanishing where |S| has the parity opposite to M's" should read "vanishing where |S| is odd": M_0 has no diagonal edges, and f(M) ≠ 0 already forces M to have even parity. The bound ⌈ℓ/2⌉ - e is correct, since each edge touches at most 2 indices. It also needs at least ℓ pigeons and ℓ holes, which should be stated.
+- **ℓ=4 is not open.** The draft's own ℓ=3 linear argument works for every ℓ ≥ 3 (singletons, a triple, compatibility of each other edge), so the combined degree is at least 2 for all ℓ ≥ 3. Hence ℓ=4 is decided by the entry's own statements. The suggestion below settles every ℓ.
+- **Bearing none / Goal progress unchanged / Selection gain unchanged: honest.** The saving is still overstated in the places listed above.
+- **Review paragraph, fourth answer: count conflated.** offer-replay-2.txt shows 5 of 211 refused, but only 2 are offers. The other 3 are "A gap in the record given as an answer". Write "the Stop hook's checks refuse 5, of which 2 are offers". The commit message 9305df21f repeats the same conflation.
+- **Review paragraph, second answer: no prevention for the class.** It admits a false claim of coverage but names no prevention for that class (a claim that an existing rule covers a case, made without checking).
+- **Meta: one link is loose.** It names a change (AGENTS.md, committed in 9305df21f). Its "a fix described before it was made" fits objection 2 only loosely.
+- **Unused hypothesis:** characteristic other than 2 in the upper bound.
+
+**Suggestions (unverified)**
+
+- **Proof of the open point for every ℓ, on the matching domain Y with at least ℓ pigeons and ℓ holes, characteristic other than 2.**
+  1. Write f on Y in its unique matching-monomial expansion Σ c_N x_N; its degree is at most deg f.
+  2. Among the matchings M_0 with no edge (t,t), t ≤ ℓ, choose one minimal under inclusion for which g_{M_0}(S) = f(M_0 ∪ diag S), S ⊆ T(M_0), is not identically zero. One exists: take any M with f(M) ≠ 0.
+  3. Minimality makes f(A ∪ diag S) = 0 for every proper A ⊂ M_0, because T(A) ⊇ T(M_0). Inclusion–exclusion over A ⊆ M_0 then gives g_{M_0}(S) = Σ_{S'⊆S} c_{M_0 ∪ diag S'}. So g_{M_0} = Σ c_{M_0∪diag S'} s_{S'} as a polynomial in s.
+  4. g_{M_0} is nonzero and vanishes where |S| is odd. The proposition's lower bound on the cube {0,1}^T gives some c_{M_0∪diag S'} ≠ 0 with |S'| ≥ ⌈|T|/2⌉.
+  5. Hence deg f ≥ |M_0| + ⌈(ℓ - 2|M_0|)/2⌉ = ⌈ℓ/2⌉.
+  - With the blocking-edge upper bound (ℓ+1 holes for odd ℓ), both readings on Y have degree exactly ⌈ℓ/2⌉, so there is no saving at any ℓ. The same argument should work on any domain where removing diagonal edges leaves a cube link.
+  - Record: searches for "matching domain partial matchings vanishing function least degree restriction" and "parity sign character degree vanishing odd weight" found no such statement. lem:cylinder-killer-degree, the nearest match, is about product domains.
+
+**Process audit**
+
+- **Title**, "Parity product lines halve the repair degree on the cube": stronger than the body. It drops the D window, the larger closure degree the combined reading needs, and characteristic other than 2; "halve" is (ℓ+1)/2 at odd ℓ.
+  - Proposed title: "Parity product lines: combined-error repair degree ⌈ℓ/2⌉ against ℓ on the cube".
+  - Proposed status: "Working proof, on the Boolean cube in characteristic other than 2 for D ≥ ℓ+⌈ℓ/2⌉ · Parity product repair."
+- **General statement and spec:** both omit the D conditions that the Proposition carries.
+- **Hypotheses paragraph:** characteristic other than 2 is listed for f_ℓ without redoing that step without it (Order of work rule).
+- **Docstring:** claims two prints the script does not make. The F_2 control is described as a repair statement when it is not.
+- **Brief vs. own statements:** the brief names ℓ=4 as the first open case, but the entry's own ℓ=3 argument decides it. The Own statements paragraph did not apply the entry's lemma to the next attempt.
+- **Record search:** it did not list lem:cylinder-killer-degree, which gives exact killer degrees for cylinder errors on the hole-respecting assignments of the product pigeonhole system. That domain is close to Y and bears on choosing the next domain.
+- **Review answer counts:** the "refuses 5" figure counts two different checks.
+- **Follow-up:** "what is missing is a choice of the nonzero point M" is plausibly settled by the minimality argument above (unverified). If verified, the next attempt becomes a short lemma, and the item's next step moves to the proper closure.
+
+Strength count: 6 (title; General statement; New mathematics "factor of about 2"; Bearing's last sentence; spec rationale "about half the degree"; Review bullet 4's "refuses 5").
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/pp-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_parity_product_20261017/parity_product.py, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/framework-builds-20261017/offer-replay-2.txt
+
+===== follow-up =====
+
+**Follow-up verdict: pass with corrections.** Part (c) is proved correctly. The Möbius extraction works without my minimality argument. Three sentences claim more than the proof gives, and the Smallest case does not fix the instance's pigeon and hole counts.
+
+**(1) Part (c) and its proof: correct.**
+- **The three points you asked about all hold:**
+  - **Coefficients:** for N' ⊆ B ∪ diag S, write N' = B'' ∪ diag U' with B'' ⊆ B and U' ⊆ S. This works because B has no edge (t,t) with t ≤ ℓ. The alternating sum over B'' ⊆ B' ⊆ B is 1 exactly when B'' = B. So f_B(S) = Σ_{U'⊆S} c_{B∪diag U'}, and each B ∪ diag U' with U' ⊆ T_B is a matching.
+  - **Degree:** |B ∪ diag U'| = |B| + |U'| is at most the degree of the representative, which is at most deg f. So deg f_B ≤ deg f − |B|.
+  - **Size of T_B:** each edge of B uses one pigeon and one hole, so it removes at most 2 indices. Hence |T_B| ≥ ℓ − 2|B|.
+- f_B is nonzero because its coefficient at U is nonzero, by uniqueness on the cube. It vanishes where |S| is odd. With T_B empty the bound is 0.
+- When |B| > ℓ/2 the final inequality still holds, because deg f − |B| ≥ 0.
+- The membership criterion (J is the vanishing ideal of Y within degree D), the upper bound g_ℓ (a matching that blocks every diagonal edge) and the common-repair reduction all check.
+- Minor: the common repair needs only D ≥ ⌈ℓ/2⌉+1. The stated D ≥ ℓ+⌈ℓ/2⌉ is sufficient; say so or leave it.
+
+**(2) Hypotheses, Degenerate cases and Nonvacuity for (c).**
+- **Hypotheses bullet:** add that characteristic other than 2 is also used for E_t ≠ 0 on x_tt = 1, and for E_c being nonzero exactly on the odd-diagonal matchings (−2 ≠ 0). As written, the bullet lists only (b)'s lower bound.
+- **Degenerate cases:** ℓ = 1 is correct (lower bound 1, x_12 with h ≥ 2 attains it). The case of odd ℓ with h = ℓ is correctly left unclaimed.
+- **Nonvacuity (3 pigeons, 4 holes, ℓ = 3, D = 5):** checks; g_3 = x_12 x_34 blocks (1,1), (2,2) and (3,3).
+  - On g_3's own coefficient, N = B, so T_B = ∅. The witness therefore exercises the Möbius step only on its empty-cube branch.
+  - Add a sentence saying that the branch with T_B nonempty is exercised by the ℓ=3 hand computation, or by a coefficient with fewer blocking edges.
+
+**(3) Smallest case: required change.**
+- **Specify the system.** Name the pigeon and hole counts of the functional pigeonhole system and the closure degree (D = 3, which ℓ+⌈ℓ/2⌉ gives at ℓ = 2). Whether C_3 is proper, and each membership, depends on them; the Follow-up also leaves them out.
+- **What checks:**
+  - x_11 x_12 is a functionality axiom and x_22 x_12 is a hole axiom.
+  - Soundness of x_12 holds because C is closed under multiplication within degree.
+  - The common degree is 0 exactly when x_11 and x_22 both lie in C_3.
+  - Over F_3, E_c = x_11 + x_22 + x_11 x_22, since −2 = 1.
+  - A degree-0 combined repair exists exactly when E_c ∈ C_3 and 1 ∉ C_3.
+- **Membership count:** "three memberships" needs the symmetry that swaps pigeons 1,2 and holes 1,2, which maps x_11 to x_22 and makes the two memberships equivalent. State it. The same swap maps x_12 to x_21, which does not affect the x_12 membership. Then say four conditions: E_c, x_12 and x_11 in C_3, plus 1 ∉ C_3.
+
+**(4) Structural reason's added sentence: reword.** "the common repair needs no union cover" is inaccurate: a common repair still vanishes on the whole union of the supports. What differs is that one blocking variable vanishes on two diagonal supports at once. Suggested wording: "on Y a single edge variable x_{2i−1,2i} vanishes on the supports of two diagonal errors, so covering the union costs ⌈ℓ/2⌉, the parity price; the Möbius coefficient charges each blocking edge to f's degree, so neither reading goes lower."
+
+**(5) Follow-up and summaries: required changes.**
+- The Follow-up is acceptable once the system's parameters are added. Its "the record's closure tools are over F_2" sits beside the two tools named in the Smallest case, which is acceptable.
+- **Strength:** three sentences claim more than the proof:
+  - New mathematics, "so the saving is a property of the cube, not of products": the proof covers two domains with these particular errors (−2x_t, and diagonal −2x_tt).
+  - The spec rationale, "A product line's combined-error saving is a property of the cube", has the same problem.
+  - Goal progress calls Y "the domain model of the goal's pigeonhole systems" without saying that only diagonal errors were tried.
+  - Required: qualify all three, e.g. "for these cancelling errors, on the cube but not on the matching domain".
+- The title, status line, General statement and spec summary otherwise match the body.
+
+**Suggestion (unverified).** The suggestions list now has my minimality proof marked "Not checked". Since the Möbius proof subsumes it, it can be recorded as "superseded by the proof of (c)" instead of left pending.
+
+Strength count: 3 (New mathematics' last clause; spec rationale; Goal progress's description of Y without the diagonal-errors qualifier).
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/pp-draft.html, /home/kbr/.claude/jobs/354c41d4/tmp/pp-spec.json
+
+===== second follow-up =====
+
+**Second follow-up verdict: pass with one correction.** The new witness is correct, but it exercises the Möbius sum only in its one-term case.
+
+**The added Nonvacuity witness (ℓ = 2, f = 1 − x_11 − x_22 on Y): correct.**
+- **Values on Y:** with at least 2 pigeons and 2 holes, f is 1 on matchings with neither diagonal edge, 0 on matchings with exactly one, and −1 on matchings with both. −1 ≠ 0 in characteristic other than 2, and two diagonals is even parity.
+- **It is a combined repair at D = 3:**
+  - Soundness is automatic.
+  - Killing needs deg E_c + deg f = 2 + 1 ≤ 3 = D, and f vanishes on the odd-diagonal matchings.
+  - Survival holds: f(∅) = 1.
+  - Its degree is 1 = ⌈2/2⌉.
+- **The Möbius step on it:** N = ∅ with c_∅ = 1, so B = ∅ and T_B = {1, 2}. f_B(S) = f(diag S), which equals Σ_{U'⊆S} c_{diag U'} with c_∅ = 1, c_{11} = c_{22} = −1 and c_{11,22} = 0. So f_B = 1 − s_1 − s_2, as the draft says.
+- **What it does not exercise:** with B = ∅ the alternating sum has a single term. The witness covers T_B ≠ ∅ but not the inversion itself.
+- **Required:** say so in the Nonvacuity sentence, or add a witness with both B and T_B nonempty. A candidate, checked by hand here: ℓ = 3, at least 3 pigeons and 3 holes, D = 5, f = x_12(1 − x_33).
+  - f vanishes on the odd-diagonal matchings: x_12 = 1 excludes (1,1) and (2,2), and the factor 1 − x_33 is 0 when (3,3) is present. f is nonzero at {(1,2)}, and its degree is 2.
+  - Take N = {(1,2),(3,3)} with c_N = −1. Then B = {(1,2)}, T_B = {3}, U = {3}.
+  - f_B(S) = f({(1,2)} ∪ diag S) − f(diag S), which gives f_B = 1 − s_3, with coefficient −1 = c_N at U.
+  - The bound reads deg f − 1 ≥ ⌈1/2⌉, so deg f ≥ 2, which is attained.
+
+**What the Verification gate and Process assessment may credit to my three reports**
+- **Checked:**
+  - the proofs of (a), (b) and (c), the last including the Möbius identity, the degree bound deg f_B ≤ deg f − |B| and |T_B| ≥ ℓ − 2|B|;
+  - both Nonvacuity witnesses and the ℓ = 2 witness above;
+  - the hand cases at ℓ = 2 and ℓ = 3;
+  - the reduction of the ℓ = 2 Smallest case to four conditions (E_c, x_12 and x_11 in C_3, and 1 ∉ C_3, with x_22 handled by the symmetry);
+  - the Baseline's condition D ≥ 2ℓ;
+  - the offer-replay counts, read in offer-replay-2.txt;
+  - the commit 9305df21f carrying the AGENTS.md reply rule;
+  - two registry searches.
+- **Not checked, so the gate must not claim them:**
+  - the four C_3 conditions themselves, which remain undecided;
+  - the first four stand-in objections, against the stand-in reviewer's own output (I read only the two replay files and the commit);
+  - the rerun degree check: I read the first run's JSON and only grepped the corrected script's assert and print lines. I did not rerun it, did not read the new parity_product.json, and did not read the rewritten docstring in full;
+  - the second suggestion (cube links), which is unverified;
+  - the Meta's grouping of the five objections, which I found only loosely matched;
+  - the history-loop replay figure beyond its output file.
+- **On "superseded":** the minimality argument is superseded by the Möbius proof of (c). The gate should not say the reviewer verified the minimality argument separately; I did not.
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/pp-draft.html
