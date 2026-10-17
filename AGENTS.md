@@ -289,7 +289,11 @@ CLAUDE.md on 17 October 2026, user: "Please don't perform improvements in CLAUDE
 AGENTS.md"):
 
 - Choose a target by what is true at the goal, not by what the tools at hand prove easily: a target
-  the tools reach easily is first tried for refutation on its plainest counterexample.
+  the tools reach easily is first tried for refutation on its plainest counterexample. A method's
+  failure is written as the method's, beside the plainest recorded tool tried on the same instance,
+  before it is said to bear on the question or to choose the next direction (17 October 2026: a cell
+  scheme's stop was read as forcing a refutation, while the per-level counts reduced the instance to
+  a repair).
 - First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
   before any method is chosen; then, once a proof exists, each of its own steps used alone (a
   substitution, a reduction, a restriction), since a step that already decides the instance makes
@@ -308,7 +312,10 @@ AGENTS.md"):
 - A sentence a reviewer finds wrong is replaced by one derived again from the statement and the
   records, its figures computed, not patched from the old wording; a sentence wrong twice is
   redrafted from its sources before it goes back (17 October 2026: three versions in a row of one
-  case's dismissal, each patched from the last, each wrong).
+  case's dismissal, each patched from the last, each wrong). So is a reviewer's lead adopted as a
+  next attempt: each statement it uses is reread for its constants, levels and ranges, and the
+  accounting is redone, before it is written down (17 October 2026: a lead written into a Follow-up
+  dropped a theorem's constant and the box growth of a raised level).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved. A
   retry that passes because the check remembers the text, a rerun until a timing passes, or a rule

@@ -644,6 +644,27 @@ class NotebookAppendTests(unittest.TestCase):
 
 
 
+class UnappliedMatchesTest(unittest.TestCase):
+    # The exposing case, 17 October 2026: thm:per-level-count-matchings printed beside mixed-level-counts and
+    # applied nowhere in the next entry's Own statements (it was named only in its Degenerate cases).
+    MATCHES = ['thm:per-level-count-matchings', 'thm:low-level-mixed-counts']
+
+    def test_a_match_named_outside_own_statements_is_listed(self):
+        entry = ('<article id="e" data-kind="research" data-claims="thm:windowed-mixed-counts">'
+                 '<p><strong>Degenerate cases.</strong> covered already by thm:per-level-count-matchings.</p>'
+                 '<p><strong>Own statements.</strong> thm:low-level-mixed-counts is the case m = 3.</p></article>')
+        self.assertEqual(tool.unapplied_matches(entry, self.MATCHES), ['thm:per-level-count-matchings'])
+
+    def test_applied_or_declared_matches_pass(self):
+        entry = ('<article id="e" data-kind="research" data-claims="thm:low-level-mixed-counts">'
+                 '<p><strong>Own statements.</strong> thm:per-level-count-matchings at level t_2 leaves only the '
+                 'repair. <strong>Plainest bound.</strong> none.</p></article>')
+        self.assertEqual(tool.unapplied_matches(entry, self.MATCHES), [])
+        # A longer identifier sharing a prefix does not count as the shorter one.
+        entry = '<article id="e"><p><strong>Own statements.</strong> thm:per-level-count-matchings-x.</p></article>'
+        self.assertEqual(tool.unapplied_matches(entry, self.MATCHES[:1]), ['thm:per-level-count-matchings'])
+
+
 class ResultFilesLineTest(unittest.TestCase):
     def test_the_line_lists_an_item_s_result_files_and_is_empty_without_them(self):
         import lead_queue

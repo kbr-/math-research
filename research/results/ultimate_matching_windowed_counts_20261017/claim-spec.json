@@ -1,0 +1,40 @@
+{
+  "source": {
+    "record": "[Windowed mixed counts](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-windowed-mixed-counts)",
+    "label": "Windowed mixed counts",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-windowed-mixed-counts"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "thm:windowed-mixed-counts",
+      "summary": "For alpha_1, alpha_2 in (0,infinity] (no curve condition), every L > 0, X, Y independent uniform samples of size N in [0,1]^2, levels t_1, t_2 in [1, log N], rho_N = t_1^(1/alpha_1)/t_2^(1/alpha_2), Lambda_N = log N t_1^(1/alpha_1) t_2^(1/alpha_2), and integers m = m_N >= 1 with (m+1) e^(2 t_2) <= (L^2/2) Lambda_N and m rho_N -> infinity: with probability tending to one some matching has |X_i^1 - Y_pi(i)^1| <= L sqrt(log N/N) t_1^(1/alpha_1) for every i and at most 2N e^(-t_2) pairs with |X_i^2 - Y_pi(i)^2| > L sqrt(log N/N) t_2^(1/alpha_2). At m = 3 it is thm:low-level-mixed-counts; it adds bounded box ratios, and vanishing ones as far as the first condition allows m, at low second levels, and alpha_1 = infinity when e^(2 t_2) = o(log N).",
+      "assessment": "Working proof: the construction of thm:low-level-mixed-counts with windows of m columns of width in [D/(2(m+1)), D/(m+1)]: cells, leftovers matched by column rank within m columns, Doob for the strip discrepancy at omega_N = (m rho_N)^(1/4), the Poissonized lower tail of the window's leftover supply (at least sqrt(m rho_N N)/16), and the leftover count sqrt(2) N/sqrt(k) with k >= e^(2 t_2)/2.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Removes rho_N -> infinity from the low-level mixed counts at the price of a factor m+1; beyond its first condition a scheme of cells whose leftovers may all violate fails for e^(2 t_2) > 64 L^2 Lambda_N, and at the both-high instance the per-level counts leave only a first-coordinate repair.",
+      "next_action": "The repair at the both-high instance (4,4), t_1 = log N, t_2 = sqrt(log N): the per-level matching at level t_2 + c and the maximum-displacement matching composed along alternating cycles, with the cycles holding a bad pair kept short.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:windowed-mixed-counts",
+      "refines",
+      "thm:low-level-mixed-counts",
+      "Implies it: at m = 3 its two conditions are that theorem's; it adds bounded and vanishing box ratios."
+    ],
+    [
+      "thm:windowed-mixed-counts",
+      "cites",
+      "thm:per-level-count-matchings",
+      "Equal levels on and above the curve are covered there; this theorem covers unequal levels at low second levels for every pair."
+    ]
+  ]
+}

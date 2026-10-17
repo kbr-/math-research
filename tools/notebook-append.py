@@ -335,6 +335,53 @@ def registry_matches(text, limit=3, data=None, home=None):
     return [(claim['id'], ' '.join(claim['summary'].split())[:140]) for _score, claim in found[:limit]]
 
 
+OWN_CLAUSE = re.compile(r'<strong>Own statements\.</strong>((?:(?!<strong>[^<]{1,40}\.</strong>).)*)', re.S)
+
+
+def unapplied_matches(entry, matches):
+    """The claims of `matches` (the registry matches printed for the queue item an entry develops) that no Own
+    statements clause of the entry names.  On 17 October 2026 the append tool printed thm:per-level-count-matchings
+    beside the item mixed-level-counts, the next entry did not apply it, and its reviewer found that it reframed
+    the entry's next attempt; the listing was read and not used.  A claim the entry declares itself is exempt.
+    Its limits, from its reviewer: a claim named in a dismissive clause passes, the check not telling an application
+    from a mention; an entry developing an item without a data-check, data-lead, data-bridge, data-build or
+    data-idea attribute is not checked; and the matches are recomputed at append time from the item's text and
+    latest follow-up, so they need not be the ones printed when the next step named the item.  Replayed over the
+    last twelve research entries (research/provenance/framework/unapplied-matches-judged-20261017.txt): 16 findings,
+    10 of them claims registered in that entry or later, which cannot occur at append time, and 6 claims the entry
+    named outside Own statements: every finding it could have made then asked only to move or repeat a name, a
+    false-refusal rate of up to six in six on that replay, whether any would have changed an entry not judged."""
+    own = ' '.join(OWN_CLAUSE.findall(entry))
+    tag = re.search(r'<article\b[^>]*>', entry)
+    declared = set(re.search(r'data-claims="([^"]*)"', tag.group(0)).group(1).split()) if tag and \
+        'data-claims="' in tag.group(0) else set()
+    return [claim for claim in matches if claim not in declared and not re.search(r'(?<![\w:-])' + re.escape(claim)
+                                                                                + r'(?![\w-])', own)]
+
+
+def refuse_unapplied_matches(source, entry, home=None):
+    """Refuse an entry developing a queue item whose Own statements leave out a registry match of that item."""
+    tag = re.search(r'<article\b[^>]*>', entry)
+    found = re.search(r'\bdata-(check|lead|bridge|build|idea)="([^"]+)"', tag.group(0)) if tag else None
+    if not found:
+        return
+    items = named_items(source, f'<p>{found.group(1)}:{found.group(2)}</p>') or []
+    for ident, text, _anchor, follow in items:
+        if ident.full != f'{found.group(1)}:{found.group(2)}':
+            continue
+        matches = [claim for claim, _ in registry_matches(f'{text} {follow or ""}', home=home)]
+        if not matches:
+            # registry_matches returns nothing when the registry cannot be read: say so rather than pass silently
+            print(f'notebook-append.py: warning: no registry matches for {ident.full}; the registry may be '
+                  'unreadable, and the Own statements check of its matches did not run', file=sys.stderr)
+        missing = unapplied_matches(entry, matches)
+        if missing:
+            raise ValueError('the entry develops ' + ident.full + ', beside which the registry matches '
+                             + ', '.join(missing) + ' are printed, and no Own statements clause names them: apply '
+                             'each to the entry\'s next attempt there, or say why it does not bear (AGENTS.md: a '
+                             'listed record is read by applying it to the case in hand)')
+
+
 def older_claim_lines(source, ident, claims=None):
     """Lines for the claims of entries older than a queued item that are nearest to its text, marked as earlier;
     the registry matches above them are of any date and do not say which."""
@@ -867,6 +914,7 @@ def main():
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         refuse_uncited_publication(args.entry.read_text())
         refuse_one_function_plainest(args.entry.read_text())
+        refuse_unapplied_matches(path.read_text(), args.entry.read_text(), home=home_of(path))
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
