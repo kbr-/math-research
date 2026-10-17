@@ -306,6 +306,9 @@ class ClosureStakesTest(unittest.TestCase):
         FT.validate_closures(item.format(own='<strong>Own statements.</strong> None applies: the entry cites no '
                                          'recorded statement, and the closure rests on its own count. ')
                              + self.LINK)
+        developed = item.replace('data-check="a:s1"', 'data-sub="check"').replace('Closed: merged into a.',
+                                                                                   'Developed: settled above.')
+        self.assertEqual(len(FT.closures_without_own_statements(developed.format(own=''))), 1)  # removes it too
 
 
 class ProvedInstanceTest(unittest.TestCase):

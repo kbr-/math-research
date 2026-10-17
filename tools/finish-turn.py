@@ -718,8 +718,8 @@ def validate_closures(text):
 # On 17 October 2026 a sub-idea was closed as merged into its item while the proof of the lemma the entry cited
 # decided it (the lemma's step used reversibility, not the balance its statement assumed); the closing list item
 # applied no recorded statement to the sub-idea's question.  Such an item now carries its own Own statements.
-CLOSING_ITEM_RE = re.compile(r'<li\b[^>]*\bdata-(?:check|build|lead|bridge|idea)="[^"]*"[^>]*>((?:(?!</li>).)*?'
-                             r'<strong>Follow-up\.</strong>\s*Closed\b(?:(?!</li>).)*)</li>', re.S)
+CLOSING_ITEM_RE = re.compile(r'<li\b[^>]*\bdata-(?:check|build|lead|bridge|idea|sub)="[^"]*"[^>]*>((?:(?!</li>).)*?'
+                             r'<strong>Follow-up\.</strong>\s*(?:Closed|Developed)\b(?:(?!</li>).)*)</li>', re.S)
 OWN_CLAUSE_RE = re.compile(r'<strong>Own statements\.</strong>((?:(?!<strong>[^<]{1,40}\.</strong>).)*)', re.S)
 CLAIM_NAMED_RE = re.compile(r'\b(?:lem|thm|prop|cor|conj|ex|def|obs|imp):[A-Za-z0-9-]+|\bnone applies\b', re.I)
 
