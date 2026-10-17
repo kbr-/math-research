@@ -429,6 +429,12 @@ silently truncate results, or leave their only copy in ignored logs/tmp/runtime 
 bounded output preview limits context usage only; saved output is full. Include essential data with
 its checkpoint under the Git rules in AGENTS.md.
 
+A count a script reports over overlapping parameter ranges is a count of distinct cases,
+deduplicated in the script. A figure or object an entry cites from a results file is read back from
+that file after the run, never from the run's printed output (17 October 2026: a series over nested
+ranges reported 135 cases for 112 distinct paths, and an entry cited a file for a matrix a loop had
+overwritten before the file was written).
+
 A program without `--out` is saved with `tools/save-run-output.py SESSION RUN_ID OUT`, which copies
 the run's complete log under its command line; the `compute.sh` display holds only the launcher's
 own lines.

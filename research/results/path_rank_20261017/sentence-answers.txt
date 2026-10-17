@@ -1,0 +1,47 @@
+86e0b075 [New mathematics] New mathematics. lem:path-rank-saturation: for every word with sum \(0\) in which no part jumps across zero, every path of \(\mathcal P_{k,d}\) included, a product of at most \(d\,2^{\max_i|P_i|}\) factors \(1+x\) has an ordered set-multilinear projection whose partial derivative matrix has determinant \(1\) over \(\mathbb Z\), hence is invertible over every ring with \(1\), \(\mathbb F_2\) included.
+  rests on: lem:path-rank-saturation (a) to (c) as proved in this entry, passed in research/results/path_rank_20261017/reviewer.txt.
+81c26315 [Goal progress] Goal progress. Unchanged: the lemma rules out a measure on a wider class of words and proves no certificate lower bound.
+  rests on: lem:path-rank-saturation, a statement about products of affine factors; no claim of the entry bounds a certificate.
+6beff0fe [Goal progress] Bearing. At the goal's parameters it gives nothing: it concerns the formula side of a measure, not certificates.
+  rests on: lem:path-rank-saturation, which concerns formulas, not certificates of a goal family.
+aa71c24f [Follow-up] For relative-rank measures on ordered set-multilinear projections, the formula side now fails over \(\mathbb F_2\) at product-depth one on every balanced word in which no part jumps across zero and on every nested word; what remains for them is words with a part jumping across zero that are not nested.
+  rests on: lem:path-rank-saturation and lem:nested-word-rank-saturation as registered.
+  extreme: product-depth one, the smallest depth, and F_2, the smallest field.
+f686ce58 [Follow-up] Its stakes are small: every word the recorded lower bounds use, the paths of FLST's Theorem 8 and the padded TLS words, is nonnegative balanced and so already decided, and a word with a jump across zero would bear on the goal only through a new formula upper bound on such words.
+  rests on: the definition of P_{k,d} quoted from FLST Section 7.1.2 and part (d) of lem:nested-word-rank-saturation for the TLS words.
+  extreme: the padded TLS words of every depth, whose prefix sums are nonnegative by that part.
+35ba1c09 [Follow-up] Next attempt: decide whether every balanced word has a product over \(\mathbb F_2\) of \(\operatorname{poly}(N)\) affine factors with a full-rank ordered set-multilinear projection, by the reviewer's staircase for a jumping part, extended to neighbouring pieces holding both rows and columns.
+  rests on: lem:path-rank-saturation (c), which covers the words without a jump, and research/results/path_rank_20261017/check.json for (1,-2,1).
+  extreme: size poly(N), the budget of the next attempt.
+30aa1775 [Follow-up] Smallest case. \((2,-1,-2,1)\), parts of sizes \(4,2,4,2\), an \(8\times8\) matrix, \(P=(0,2,1,-1,0)\): part \(3\) jumps from \(1\) to \(-1\), and the positive piece before it holds the row part \(1\) and the column part \(2\); random products of \(16\) general affine factors, each combining letters of all parts, gave full rank in \(241\) of \(2000\) trials, of \(32\) in \(561\) (jump_search.json); in the lemma's own class, single-letter factors \(1+x\), random sequences of \(24\) and \(32\) factors gave no full rank in \(4000\) trials each and of \(48\) factors full rank in \(5\) of \(4000\), the first witness saved (jump_single_letter.json).
+  rests on: the saved random searches research/results/path_rank_20261017/jump_search.json and research/results/path_rank_20261017/jump_single_letter.json, both committed before their runs.
+  extreme: the single word (2,-1,-2,1); no other jump word is claimed.
+bed0420c [Follow-up] So a single-letter product of \(48\) factors decides this instance, found by search, and the attempt's content is a construction for every word with a jump.
+  rests on: research/results/path_rank_20261017/jump_single_letter.json, 5 of 4000 sequences of 48 factors full rank, the first witness saved.
+  extreme: 48 factors, the only length that found one; 24 and 32 found none.
+80d19d6c [Follow-up] Tried. The dimension bound; thm:affine-component-ranks, whose cut here, parts \(1,4\) against parts \(2,3\), is not contiguous, so it does not apply; this lemma's block step alone, which needs a Dyck refinement that \((2,-1,-2,1)\) lacks; and the \((1,-2,1)\) staircase with the segments of the positive piece \((2,-1)\) in place of its part-\(1\) labels, which the reviewer tried by hand under all \(24\) assignments of the jumping part's indices, finding no determinant \(\pm1\) (the reviewer's run, not saved).
+  rests on: thm:affine-component-ranks as registered, the block step of lem:path-rank-saturation, and research/results/path_rank_20261017/reviewer.txt for the reviewer's unsaved hand attempt.
+  within: thm:affine-component-ranks bounds contiguous cuts only; the cut here is not contiguous.
+  extreme: all 24 assignments of the jumping part's indices, in the reviewer's attempt.
+49827913 [Follow-up] Own statements. This lemma covers the words in which no part jumps across zero and the nested word lemma the nested words, and both decide nothing on \((2,-1,-2,1)\), which is neither; imp:noncommutative-homogenization-lower-bound covers paths only.
+  rests on: lem:path-rank-saturation and lem:nested-word-rank-saturation as registered, and imp:noncommutative-homogenization-lower-bound for paths.
+  extreme: (2,-1,-2,1), neither nested nor free of jumps.
+e162b1c6 [Follow-up] Of the item's own matches, cor:projection-rank-criterion and cor:placeholder-linear-extension-barrier speak of certificate classes and decide nothing on products of affine factors.
+  rests on: the registered statements of cor:projection-rank-criterion and cor:placeholder-linear-extension-barrier, read with tools/notebook-excerpt.py --claims.
+  within: both are about certificate classes and the commutative projection.
+  extreme: the threshold N^(-c) of the criterion against the full rank asked here.
+a370edf2 [Follow-up] Record search. For the next attempt, "Dyck word groups of consecutive steps merged parts nonnegative partial sums path full rank block triangular segment" returned lem:nested-word-rank-saturation and no result on words of both signs.
+  rests on: the logged search of tools/search-claims.py in this session, which returned lem:nested-word-rank-saturation and no result on words of both signs.
+  extreme: the search returned no result on words of both signs.
+5076ad21 [Follow-up] The sub-idea asks for a word-coefficient rank invariant for every bounded-depth original-input certificate.
+  rests on: the sub-idea's text in #entry-2026-10-11-noncommutative-depth-audit, queued in notebook.html.
+  extreme: every bounded-depth original-input certificate, the item's class.
+731de85f [Follow-up] Relative ranks now fail on the formula side over \(\mathbb F_2\) for every balanced word in which no part jumps across zero and for every nested word; words with a part jumping across zero that are not nested are the next attempt above.
+  rests on: lem:path-rank-saturation and lem:nested-word-rank-saturation as registered.
+  extreme: F_2 and product-depth one.
+acb02e7c [Follow-up] The lead continues for its other sub-ideas, the certificate-specific homogenizing map and the abecedarian classes without a small-ABP member, which bear on binary-frege-lower-bound directly; the jump words are the rank sub-idea's last case, cheap and of low stakes, and the next IPS turn develops the head item instead, the rule after two entries without bearing on one item.
+  rests on: the follow-ups of #entry-2026-10-16-abecedarian-bucket-collapse and #entry-2026-10-17-nested-word-rank-saturation, and the finisher rule after two entries without bearing on one item.
+d805af18 [Follow-up] Of the item's own matches, cor:projection-rank-criterion and cor:placeholder-linear-extension-barrier speak of certificate classes and decide nothing on products of affine factors; thm:affine-component-ranks bounds contiguous cuts by the number of factors, and the cut of \((2,-1,-2,1)\) is not contiguous, so it decides nothing there; thm:affine-majority-transfer gives surviving standard polynomials of majority features modulo a charged graph pseudoideal, a statement about one ideal's quotient, not about the ordered projections of products of affine factors, so it decides nothing either.
+  rests on: the registered statements of cor:projection-rank-criterion, cor:placeholder-linear-extension-barrier, thm:affine-component-ranks and thm:affine-majority-transfer, read with tools/notebook-excerpt.py --claims this turn.
+  within: the first two are about certificate classes, the third about contiguous cuts, the fourth about the quotient by a charged graph pseudoideal.
+  extreme: the non-contiguous cut of (2,-1,-2,1), outside the third's statement.

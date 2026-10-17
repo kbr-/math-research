@@ -1,0 +1,45 @@
+{
+ "source": {
+  "record": "[Path rank saturation](https://kbr.is-a.dev/math-research/#entry-2026-10-17-path-rank-saturation)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-path-rank-saturation"
+  ],
+  "label": "Path rank saturation"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "method-obstructions",
+  "algebraic-branching-programs"
+ ],
+ "claims": [
+  {
+   "id": "lem:path-rank-saturation",
+   "summary": "Path rank saturation. Let w in Z^d have prefix sums P_0 = 0, P_i = w_1 + ... + w_i, with P_i >= 0 and P_d = 0 (every path of P_{k,d}). Refine each w_i != 0 into a run of |w_i| unit steps of its sign (a zero entry into a marker), a Dyck word matched by the stack; the innermost step of a positive run is its last, of a negative run its first. The factor sequence: a concatenation of primitive blocks and markers gives the concatenation of their sequences, a marker its part's label, and a primitive block (o, W', c) gives, for b = 0, 1 with the pair (o, c) assigned b: the label of o's part if o is innermost in its run, then the sequence of W', then the label of c's part if c is innermost in its run, a label (i, beta) carrying the digits assigned to the pairs of its run's steps. The product P_w of the factors 1 + x in that order, of product-depth one with 0/1 coefficients and s(w) = sum_i 2^max(P_(i-1), P_i) <= d 2^(max P_i) factors (d 2^k for a path of P_{k,d}), has ordered set-multilinear projection whose partial derivative matrix (|X_i| = 2^|w_i|, rows the parts with w_i > 0) has determinant 1 over Z in the orders of the proof, so it is invertible over every ring with 1 and has relative rank 1 over every field, F_2 included. The proof holds for every grouping of a Dyck word's steps into groups of consecutive steps of one sign. The same holds for every word with P_d = 0 in which no part jumps across zero (no i with P_(i-1) > 0 > P_i or P_(i-1) < 0 < P_i), a concatenation of nonnegative and nonpositive balanced pieces, by transposition and Kronecker products.",
+   "assessment": "Working proof passed with corrections by a fresh-context medium reviewer in two rounds: (a) by induction over Dyck words with groups of consecutive same-sign steps, concatenations giving Kronecker products and a primitive block a block upper triangular matrix whose diagonal blocks are those of the inner word with its first and last groups truncated; (b) by the height of each part's innermost step; (c) by transposition and Kronecker products over the one-signed pieces. Checked by integer determinants on the 112 distinct paths with k <= 3, d <= 5 or k <= 2, d = 6, words with zero entries and a nonpositive piece, and a reversed-order control. Words with a part jumping across zero are not covered; (1,-2,1) and (2,-1,-2,1) have full-rank products, the second found only by search.",
+   "status": "working_proof",
+   "rationale": "With lem:nested-word-rank-saturation it shows that the relative-rank measure of the Tavenas-Limaye-Srinivasan noncommutative bound, on ordered set-multilinear projections, gives no bound over F_2 for inhomogeneous formulas of product-depth one on every path FLST's Theorem 8 uses, without the large integral domain of FLST Proposition 24. Words with a part jumping across zero that are not nested are not covered.",
+   "next_action": "Decide words with a part jumping across zero whose neighbouring pieces hold rows and columns, starting with (2,-1,-2,1); (1,-2,1) is decided by a 9-factor product of determinant 1."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:path-rank-saturation",
+   "cites",
+   "lem:nested-word-rank-saturation",
+   "Two constructions that overlap on the nonnegative nested words without coinciding: the nested lemma's block has 2^|w_u| segments and this one's two, and for (2,-1,1,-2) the matchings differ (24 against 16 factors, the reviewer's computation); for a pair (1,-1) the block steps coincide. This lemma covers the paths that are not nested; the nested lemma covers nested words with a part jumping across zero."
+  ],
+  [
+   "lem:path-rank-saturation",
+   "cites",
+   "imp:noncommutative-homogenization-lower-bound",
+   "Its Proposition 24 gives full rank for every path of P_{k,d} over integral domains with at least d^2 2^(k(d+1)) elements; this lemma gives it over every ring with 1 with 0/1 coefficients."
+  ],
+  [
+   "lem:path-rank-saturation",
+   "cites",
+   "thm:affine-component-ranks",
+   "Contiguous cuts are bounded by the number of factors; the cuts here are mostly not contiguous."
+  ]
+ ]
+}

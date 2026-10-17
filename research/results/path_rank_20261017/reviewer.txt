@@ -1,0 +1,54 @@
+Reviewer record, path rank saturation entry (entry-2026-10-17-path-rank-saturation), 17 October 2026.
+One fresh-context medium reviewer (Claude Code medium-reviewer agent). Its reports, from its hand-back messages,
+condensed to their findings, in its own words where quoted.
+
+First report. Verdict: "pass with corrections. The induction (a), the count (b) and the transfer (c) are correct."
+Checked and found correct: the concatenation step (no run crosses a block boundary, chain counts multiply,
+det(A (x) C) = 1); the block step (the G+ label's digit for o is its segment's b for m = 1 and m >= 2, likewise G-;
+a <= b; a = b keeps the chain in one segment, which is S(W') with o and c removed; block upper triangular, det
+det(M_W')^2 = 1; the induction cases exhaustive); (b), recomputed on (3,-1,-1,-1), (1,2,-3), (2,1,-1,-2),
+(1,1,1,-3), (2,-1,2,-3) and (3,-2,1,-2), count equal to the formula and det 1 over Z; (c), the transpose, the
+Kronecker product, the split at zeros of P and the "equivalently" in both directions; (e,-e); the scripts' DP,
+emission rule, digit order and Fraction determinant, whose outcomes could fail; Nonvacuity m = 2, n = 1, s = 10;
+(-1,2,-2,1) nested with parts jumping across zero.
+Required changes:
+- The displayed Nonvacuity matrix is the reduction mod 2; the integer matrix is [[1,2,1,2],[0,1,1,2],[0,1,0,1],
+  [0,0,0,1]]; unit_step_paths.json does not hold it: m is overwritten inside the loop in main().
+- Counts double-counted: every k = 1 path reappears under k = 2, every k = 2 path with d <= 5 under k = 3; the 135
+  rows contain 112 distinct paths, 74 not nested and 38 nested.
+- "Every path of P_{k,d} is one": quote FLST's definition (zero steps, ending at 0, range of partial sums).
+- Record comparison "is the case of ... its block step is the step here with m = n = 1" too strong: the nested
+  lemma's block has 2^|w_u| segments, here two; for (2,-1,1,-2) the matchings differ, 24 against 16 factors;
+  write two overlapping constructions, coinciding for a pair (1,-1); same in the spec's relationship note.
+- Status line understates (c); exclude a marker inside a group; (e,-e) and (1,-1,-1,1) are nested; the scripts
+  never ran zero entries or nonpositive pieces, and the determinant control was never tried where it must fail.
+Suggestions (unverified): (1,-2,1) has a 9-factor 0/1 product with determinant 1 over Z, the order (1,0), (2,0),
+(1,1), (2,1), (3,0), (2,2), (1,0), (2,3), (3,1), a staircase of L and R count vectors; its generalisation for one
+jumping part with about 2^(e+f) labels breaks where the pieces hold rows and columns; bearing "none" right, and
+every word the recorded lower bounds use is nonnegative balanced, which weakens the next attempt's stakes.
+Process audit: placeholder title, suggested "Path rank saturation: for every balanced word in which no part jumps
+across zero, every path of P_{k,d} included, a product of at most d 2^(max |P_i|) factors 1+x has an ordered
+set-multilinear projection invertible over every ring"; duplicate counts in Chosen, Plainest bound, Nonvacuity,
+Baseline; the cited artifact; the Smallest case settled by random trials where nine factors decide it; the next
+attempt's stakes not weighed; Review answers (1), (2), (5) without their sources; "is the case of". Strength
+count: 6.
+
+Second report (follow-up on the corrections). Verdict: "pass with corrections. The mathematics and the corrected
+figures check out."
+Checked and found correct: check.json's figures recomputed from the file (112 distinct paths, 38 nested and 74 not,
+|det| = 1 and the exact count on each; the integer matrix of (2,-1,-1), det -1; the reversed control, det 0; the
+four extra words; the (1,-2,1) product, det 1); check.py's markers, nonpositive pieces and |P| formula, its controls
+able to fail; the quoted definition of P_{k,d} matching the generator; Nonvacuity, Degenerate cases, Baseline; the
+overlap relation with the factor counts labelled as the reviewer's; the Smallest case's facts and jump_search.json;
+the Review answers (2), and (1), (5) taken as quoted; the suggestions list.
+Required changes: Sources read to agree with the gate on Section 7.1.2; the Smallest case again rests on random
+trials with no hand attempt (the reviewer's own, not saved: the (1,-2,1) staircase with the segments of (2,-1) in
+place of the part-1 labels, under all 24 assignments of the jumping part's indices, never determinant +-1); the
+random search used general affine factors, while 30,000 random single-letter sequences of 24 factors gave no odd
+determinant (the reviewer's run, not saved), so say which class the evidence covers; the Follow-up's reason for
+continuing at small stakes; the gate's sentence on what the reviewer did not read; the Meta's rule needs no suite
+run unless a test reads the file, so write it; "every ring with 1" in the title.
+Suggestions (unverified): closure of the decided words under concatenation, negation and probably reversal, so the
+(1,-2,1) product decides (-1,2,-1) and (1,-1,1,-2,1), and the smallest case is chosen up to these transformations.
+Process audit: mistake (e) repeated in the entry that reports it; evidence from one class of products offered for
+another; the gate's out-of-date sentence; the title's "every ring". Strength count: 2.
