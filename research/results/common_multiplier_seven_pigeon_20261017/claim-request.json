@@ -1,0 +1,911 @@
+{
+  "base_sha256": "486325cddc0bfa66e2412db9d259768b23a3038f746462f9648740d7e77b2c04",
+  "provenance": {
+    "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "cor:partition-error-transfer",
+        "summary": "Partition error transfer: over any field, on the functional pigeonhole system with any number of pigeons, two distinct ones written 1 and 2, and N holes, 2 <= D <= ceil(N/2), K = 1, for the partition error E_A = sum_{j in A} x_1j + sum_{j not in A} x_2j: if N - |A| >= 3, Ann_C(E_A) cap V_1 = Ann_H(E') cap V_1 + C cap V_1 with E' = E_A + Q_2 = 1 + sum_{j in A}(x_1j - x_2j), whose edges miss the holes outside A; if |A| >= 3, the same with E' = E_A + Q_1; so the single excess is 0 unless |A| <= 2 and N - |A| <= 2, and for N >= 5 no partition error has excess at K = 1; (b) some representative E_A + sum c_i Q_i and some numbering satisfy cor:linear-error-transfer's criterion (i)-(iii) exactly when max(|A|, N - |A|) >= 3, so (a) is that corollary's whole reach on partition errors. Proof: E_A - E' is a pigeon axiom, and cor:linear-error-transfer applies to a representative whose edges miss three holes; for (b), a representative misses hole j only when c_i = 0 off pigeons 1, 2 and (c_1, c_2) = ([j in A], [j not in A]); (i) needs a missed hole, which forces c_i = 0 off pigeons 1, 2 and (c_1, c_2) in {(1,0), (0,1)}; then every hole it uses holds edges of both pigeons 1 and 2, which (ii) and (iii) forbid at ranks N-2 and N-3.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (pigeon count, closure-degree-locality citation); part (b) is the reviewer's sketch, one step reordered in its second pass and confirmed in a third.",
+        "record": "[Partition sizes](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-partition-sizes)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Places the partition errors' excess at K = 1 by a named representative, the one direction of conj:partition-excess-middle that is proved.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": "The analogue at K >= 2, through lem:polynomial-numbering-transfer and the dance argument of cor:quadratic-separated-kernels (a), which needs N >= 8."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "conj:partition-excess-middle",
+        "summary": "Conjecture (excess at the middle sizes): over F_2, on the functional pigeonhole system with n + 1 pigeons and n holes at D = ceil(n/2), K = D - 1, the partition error E_A has positive single excess (closure kernel above every linear representative's domain side plus C cap V_K) exactly when |A| is floor(n/2) or ceil(n/2). Evidence: check:top-degree-partition-kernels (n = 3, 4, 5, and n = 6 at |A| = 0, 3) and check:partition-sizes-seven-pigeons (n = 6 at |A| = 1, 2); the only-if direction at K = 1 (n <= 4) is cor:partition-error-transfer.",
+        "assessment": "Conjecture from exact F_2 computations at n = 3 to 6; its evidence and its equivalent missed-holes form at the top degree checked by the sole fresh-context medium reviewer; the only-if direction at K = 1 is proved.",
+        "record": "[Partition sizes](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-partition-sizes)",
+        "mathematical_status": "conjecture",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Locates where single errors carry closure killers beyond their representatives, the precondition for the window review's pair kernels.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": "n = 7 at the middle and next sizes; the only-if direction at K >= 2."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:partition-sizes-seven-pigeons",
+        "summary": "Exact F_2 computation (sizes_pairs.py reusing the window review's mixing_pairs_65.py, with tools/pc_closure.py) at 7 pigeons and 6 holes, D = 3, K = 2, dim V_2 = 904, dim W = 469: partition errors E_A with A = {0..s-1} have closure kernel, best single representative and representative sum 469, 469, 469 at s = 0; 519, 519, 519 at s = 1; 535, 535, 535 at s = 2; 542, 527, 542 at s = 3: single excess 0, 0, 0, 15; the same script at 5 pigeons and 4 holes reproduces the window review's figures (excess 0, 0, 1; pair J = 6, a = b = 5, I = 6). No pairs were computed at 7 pigeons: the size with excess, |A| = 3, has its pairs in check:representative-intersection-kernels, and the pairs with a zero-excess member were not computed.",
+        "assessment": "Exact computation; figures checked against the saved JSON by the sole fresh-context medium reviewer, who found that pairs with a zero-excess member were not computed; the five-pigeon control reproduces the recorded figures.",
+        "record": "[Partition sizes](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-partition-sizes)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows |A| = 3 is the only partition-error size with single excess at n = 6; pairs with a zero-excess member were not computed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": "The (2,2) and (2,3) pair orbits at n = 6, in one series invocation; n = 7."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:linear-error-transfer",
+        "summary": "Linear error transfer: in the setting of lem:polynomial-numbering-transfer with 2 <= D <= ceil(N/2), K = 1 and any number of pigeons, for a set of polynomials of degree <= 1 with edge set S, a numbering has that lemma's property for {1} and S exactly when (i) no edge of S is in the hole of rank N-1, (ii) every edge of S in the hole of rank N-2 has its pigeon first, (iii) every edge of S in the hole of rank N-3 has its pigeon last; under such a numbering their common kernel in V_1 modulo C equals the common kernel modulo H plus C cap V_1. In particular when S misses three holes, or misses one hole while the edges of S in two further holes have one pigeon each, distinct. Away from the rank pair {N-3, N-2} the if direction is lem:ballot-dance-maps at two pigeons. Proof: a two-pigeon matching off the top hole fails to dance exactly when the pigeon moving first is at rank N-3 and the other at rank N-2.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer, with corrections adopted in a follow-up.",
+        "record": "[Linear numbering transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-linear-numbering)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Proves, at K=1, the trivial-representative transfer for every set of linear errors meeting the criterion: a special case of conj:linear-kernel-transfer's family form and, for one error, of conj:representative-sum-transfer.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": "Extend the criterion to K = 2."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Separated-family kernels: new relationship with cor:separated-family-kernels. Quadratic separated-family kernels: new relationship with cor:quadratic-separated-kernels. Partition sizes: new relationship with cor:partition-error-transfer.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:quadratic-separated-kernels",
+        "summary": "Quadratic separated-family kernels: over any field, on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with m >= 4 pigeons and N >= 8 holes, K = 2, 4 <= D <= ceil(N/2), q1 = x00 + x11, q2 = x22 + x33, and the separated family of errors E_e = (1+q_nu)x_e over the edges e = (i,j) sharing no pigeon and no hole with q_nu's edges alpha, beta: (a) each error has Ann_C(E_e) cap V_2 = Ann_H(E_e) cap V_2 + C cap V_2, by lem:polynomial-numbering-transfer with hole j ranked lowest and q_nu's holes next, the dance from lem:ballot-dance-maps except for t at ranks {N-3, N-2}, where the pigeons of the error's monomial move into the middle ranks 3..N-4; (b) writing u x_e = x_e rho_e(u) modulo H and rho_e(u) = u_0 + x_alpha u_alpha + x_beta u_beta + gamma x_alpha x_beta, u lies in Ann_H(E_e) exactly when u_0 = 0 and: in characteristic 2, the constant terms of u_alpha and u_beta sum to gamma and their coefficients agree on every edge sharing no pigeon or hole with e, alpha or beta; in characteristic 3, u_alpha = u_beta = 0; otherwise rho_e(u) = 0; (c) when m >= 5, or m = 4 in a characteristic other than 2 and 3, the common kernel in V_2 of the separated family is (C cap V_2) + span{q1 q2}, a direct sum, in characteristic 2, and C cap V_2 in every other characteristic, by gluing the quadratic coefficients into separable functions on each pair of rows, the cells of q1 q2 left in characteristic 2 being forced equal, and cor:separated-family-kernels (c) for the linear part; (d) in characteristic 3 with m = 4, x00 x11 kills every error of the separated family and is not in C, so (c) fails there.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections, checked in two follow-ups; its part (d) is the reviewer's counterexample, checked by hand; the reviewer's K = 3 dance and m = 4 sketches stay unverified.",
+        "record": "[Quadratic separated-family kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-quadratic-separated-kernels)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Decides the K = 2 transfer form on the survival review's test family at N >= 8 and m >= 5: its only joint killer beyond the closure is, in characteristic 2, the product of the families' domain killers, a kind joint-error-savings excludes.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": "The family's joint kernel at every K, C cap V_K + q1 q2 V_{K-2} in characteristic 2, by induction on K, first at K = 3; m = 4 in characteristic 2 through the conditions on the error's own edge."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Window review: new relationship with ex:char3-separated-killer-withdrawn. Partition sizes: new relationship with cor:partition-error-transfer.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-quadratic-separated-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:top-degree-partition-kernels",
+        "summary": "Exact F_2 computations (linear_sizes.py, row_search.py, top_search.py, independent_top.py without tools/pc_closure.py, top_n6.py, rep_sum.py, rep_sum_more.py) on the functional pigeonhole system with n+1 pigeons and n holes. Single-representative excess (dim Ann_C(E) cap V_K minus the largest dim(Ann_H(E') cap V_K + C cap V_K) over linear representatives): at D=2, K=1 zero for every error tested at n=5,6 (28 singles and 5 or 1 pairs each, all 2047 errors on the constant and two rows at n=5); at n=3,4, where D=2 is the top ceil(n/2), excess 1 for 1 of 28 random errors at n=3, 12 of 127 and 12 of 511 two-row errors, 72 of 8191 three-row errors at n=4. Partition errors E_A = sum_{j in A} x1j + sum_{j not in A} x2j at the top D = ceil(n/2), K = D-1: excess by |A| 0,1,1,0 (n=3); 0,0,1,0,0 (n=4); 0,0,12,12,0,0 (n=5, C-side 332 against 320), both routes agreeing; n=6, D=3, K=2: |A|=3 excess 15 (542 against 527), |A|=0 excess 0 (a committed prediction). The sum over all representatives of their domain kernels plus C cap V_K equals Ann_C(E) at the 23 positive cases computed: ten listed hits at n=3 and at n=4, the n=5 partition errors |A|=2,3 and the n=6 one |A|=3.",
+        "assessment": "Exact computation; scripts, numbers and the independent route's closure description checked by the sole fresh-context medium reviewer, who asked for the sums at the uncovered positive cases, run afterwards.",
+        "record": "[Top-degree killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-top-degree-killers)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Locates single-representative excesses at the top degree.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": "Prove conj:representative-sum-transfer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Linear numbering transfer: new relationship with check:linear-numbering-criterion. Window review: new relationship with check:representative-intersection-kernels. Partition sizes: new relationship with check:partition-sizes-seven-pigeons, conj:partition-excess-middle, cor:partition-error-transfer.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:representative-intersection-kernels",
+        "summary": "Exact F_2 computation (mixing_pairs.py, mixing_domination.py, mixing_pairs_65.py, dims_65.py, mixing_pairs_54.py, mixing_pairs_76.py with tools/pc_closure.py) on the functional pigeonhole system, comparing for pairs of errors the common kernel J modulo the closure C with a (the best single pair of representatives modulo span{Q_i}: domain common kernel plus W = C cap V_K), b (the sum over representative pairs) and I (the intersection of the per-error representative sums). At 4 pigeons, 3 holes, D = 2, K = 1, on the 33 non-congruent pairs of the ten positive-excess errors of check:top-degree-partition-kernels: dim J = 5 > 4 = dim W, a = b = 4, I = 5, stacked rank 8 below the capacity 9 with summed ranks 12, and no s of degree <= 1 has Ann_C(s) cap V_1 = J (8191 tried). At 6 pigeons, 5 holes, D = 3, K = 2, partition errors with |A| in {2,3}, on the six unordered non-congruent orbits under the holes' symmetry: J = I exceeds b by 4 or 8 (300 vs 296, 290 vs 282), while a = 292 or 282 > 276 = dim W; dim V_2 = 466, ranks 134, capacity 190, stacked ranks 166 and 176. At 5 pigeons, 4 holes, D = 2, K = 1, |A| = 2, on the non-congruent orbit: dim J = 6, a = b = 5 = dim W, I = 6; dim V_1 = 21, ranks 13, capacity 16, stacked rank 15: the intersection alone gives the survivor. At 7 pigeons, 6 holes, D = 3, K = 2, |A| = 3, on the two non-congruent orbits, dim J = a = b = I = 479 > 469 = dim W (dim V_2 = 904, ranks 362, capacity 435, stacked rank 425, mixing_pairs_76.py): one pair of representatives explains every common kernel. Domination at 5, 6 and 7 pigeons is not tested.",
+        "assessment": "Exact computation; the four-pigeon figures reproduced by the reviewer's independent computation and every script checked by the sole fresh-context medium reviewer, which re-ran none after its second stage; domination tested at four pigeons only.",
+        "record": "[Window review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-window-review)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The window review's evidence that common kernels of pairs exceed every sum over representative pairs at three boards of four, certifying selection alone at two of them.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": "Seven pigeons and six holes at |A| = 2 and 1: single excess, then pairs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Partition sizes: new relationship with check:partition-sizes-seven-pigeons.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "conj:representative-sum-transfer",
+        "summary": "Conjecture: over F_2, for the functional pigeonhole system with n+1 pigeons and n holes, at D <= ceil(n/2) and K+1 <= D, every single linear error E has Ann_C(E) cap V_K equal to the sum over its linear representatives E' (E' = E modulo C cap V_1) of Ann_H(E') cap V_K, plus C cap V_K; the containment of the sum always holds. Evidence: check:top-degree-partition-kernels (equality wherever the single excess is 0, trivially, and at the 23 positive-excess errors where the sum was computed, n = 3..6). Refines conj:linear-kernel-transfer (largest single representative, families of errors), which ex:top-degree-linear-killer refutes.",
+        "assessment": "Conjecture from check:top-degree-partition-kernels.",
+        "record": "[Top-degree killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-top-degree-killers)",
+        "mathematical_status": "conjecture",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The corrected transfer form.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": "Prove it at K=1."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Two-family survival test: new relationship with conj:pang-family-kernel-transfer. Linear numbering transfer: new relationship with cor:linear-error-transfer. Window review: new relationship with check:representative-intersection-kernels. Partition sizes: new relationship with conj:partition-excess-middle.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-top-degree-killers"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "conj:linear-kernel-transfer",
+        "summary": "Conjecture: over F_2, for the functional pigeonhole system with n+1 pigeons and n holes, at D <= ceil(n/2) and K+1 <= D, for every set F of linear errors, the common kernel of F in V_K modulo the degree-D closure C equals the largest, over choices of linear representatives E' = E modulo C cap V_1, of the common kernel modulo the closure H of the hole and functionality axioms, plus C cap V_K. By lem:closure-degree-locality it suffices to take D = K+1. The representative form is needed: x00 + Q_0 has C-kernel 15 but trivial-representative domain side 10 at 6x5. Evidence: check:dense-linear-kernels (one size, K=1).",
+        "assessment": "Conjecture; restated in the representative form after the sole fresh-context medium reviewer refuted the representative-free draft with x00 + Q_0; evidence one size over F_2.",
+        "record": "[Dense linear kernels](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-dense-linear-kernels)",
+        "mathematical_status": "conjecture",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Extends transfer to errors no admissible numbering reaches.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": "Prove it at K=1, D=2 by the degree-two linear system."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Top-degree killers: new relationship with conj:representative-sum-transfer, ex:top-degree-linear-killer. Two-family survival test: new relationship with conj:pang-family-kernel-transfer. Linear numbering transfer: new relationship with cor:linear-error-transfer. Partition sizes: new relationship with conj:partition-excess-middle.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-dense-linear-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "cor:partition-error-transfer::depends_on::cor:linear-error-transfer",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "cor:partition-error-transfer",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:linear-error-transfer",
+        "locator": null
+      },
+      "scope": "Its in-particular clause, for a representative whose edges miss three holes.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its in-particular clause, for a representative whose edges miss three holes."
+      }
+    },
+    {
+      "id": "cor:partition-error-transfer::cites::cor:quadratic-separated-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:partition-error-transfer",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:quadratic-separated-kernels",
+        "locator": null
+      },
+      "scope": "Its part (a) is the record's dance argument at K = 2, the natural route to the analogue at K >= 2; it needs N >= 8.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its part (a) is the record's dance argument at K = 2, the natural route to the analogue at K >= 2; it needs N >= 8."
+      }
+    },
+    {
+      "id": "cor:partition-error-transfer::cites::check:top-degree-partition-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:partition-error-transfer",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:top-degree-partition-kernels",
+        "locator": null
+      },
+      "scope": "Its excesses at K = 1, which the corollary explains.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its excesses at K = 1, which the corollary explains."
+      }
+    },
+    {
+      "id": "conj:partition-excess-middle::cites::check:top-degree-partition-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "conj:partition-excess-middle",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:top-degree-partition-kernels",
+        "locator": null
+      },
+      "scope": "Evidence at n = 3 to 6.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Evidence at n = 3 to 6."
+      }
+    },
+    {
+      "id": "conj:partition-excess-middle::cites::check:partition-sizes-seven-pigeons",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "conj:partition-excess-middle",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:partition-sizes-seven-pigeons",
+        "locator": null
+      },
+      "scope": "Evidence at n = 6, |A| = 1, 2.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Evidence at n = 6, |A| = 1, 2."
+      }
+    },
+    {
+      "id": "conj:partition-excess-middle::cites::cor:partition-error-transfer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "conj:partition-excess-middle",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:partition-error-transfer",
+        "locator": null
+      },
+      "scope": "Proves its only-if direction at K = 1.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Proves its only-if direction at K = 1."
+      }
+    },
+    {
+      "id": "check:partition-sizes-seven-pigeons::cites::check:top-degree-partition-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:partition-sizes-seven-pigeons",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:top-degree-partition-kernels",
+        "locator": null
+      },
+      "scope": "The same quantities at n = 6, |A| = 1, 2; that check has |A| = 0, 3.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The same quantities at n = 6, |A| = 1, 2; that check has |A| = 0, 3."
+      }
+    },
+    {
+      "id": "check:partition-sizes-seven-pigeons::cites::check:representative-intersection-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:partition-sizes-seven-pigeons",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:representative-intersection-kernels",
+        "locator": null
+      },
+      "scope": "Its n = 6 pairs at |A| = 3, the only size with excess here.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its n = 6 pairs at |A| = 3, the only size with excess here."
+      }
+    },
+    {
+      "id": "conj:partition-excess-middle::cites::conj:representative-sum-transfer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "conj:partition-excess-middle",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "conj:representative-sum-transfer",
+        "locator": null
+      },
+      "scope": "That conjecture gives a single error's closure kernel as its representative sum; this one says for which partition errors the sum exceeds every single representative.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "That conjecture gives a single error's closure kernel as its representative sum; this one says for which partition errors the sum exceeds every single representative."
+      }
+    },
+    {
+      "id": "conj:partition-excess-middle::cites::conj:linear-kernel-transfer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "conj:partition-excess-middle",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "conj:linear-kernel-transfer",
+        "locator": null
+      },
+      "scope": "Its largest-single-representative form fails exactly where the excess is positive, at the middle sizes this conjecture names.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "4df26a09c73248b7fd467ddc2dc67f93d49da095",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its largest-single-representative form fails exactly where the excess is positive, at the middle sizes this conjecture names."
+      }
+    }
+  ],
+  "topic_definitions": []
+}

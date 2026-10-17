@@ -2,7 +2,8 @@
 K = D - 1, singles first, then pairs.
 
 Reuses research/results/common_multiplier_route_review_20261017/mixing_pairs_65.py's functions with its board set
-by --holes. For each |A| up to n/2 (the pigeon swap sends E_A to E_{A^c}), the single error E_A with A an initial
+by --holes. For each |A| up to n/2 (over F_2, E_A + E_{A^c} = Q_1 + Q_2 lies in C, so each error may be replaced
+by its complement separately, in a pair too), the single error E_A with A an initial
 segment: its closure kernel, its best single representative's domain side plus W, and the sum over its
 representatives of their domain kernels plus W (the excess is closure kernel minus best single). Then for every
 size pair whose both sizes have positive excess, one pair per orbit of (|A|, |B|, |A cap B|) under the holes'
@@ -107,8 +108,9 @@ def main():
             out['pairs'].append(r)
             print(json.dumps(r), flush=True)
             pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
-    if n == 4 and args.known != 2:     # with --known 2 the control's orbit is skipped (the reviewer found the
-        # first version indexing an empty list there, so that run, sizes_pairs_n4_known.json, could not pass)
+    if n == 4 and args.known != 2 and positive:   # the control's orbit is computed: with --known 2, or with
+        # --skip-singles and no --pair-all, it is not (the reviewer found the first version indexing an empty list
+        # there, so that run, sizes_pairs_n4_known.json, could not pass)
         one = [r for r in out['pairs'] if tuple(r['sizes_and_overlap']) == (2, 2, 1)][0]
         assert (one['J'], one['a'], one['b'], one['I']) == (6, 5, 5, 6), f'control: {one}'
         assert one['b'] < one['J'], 'positive control'

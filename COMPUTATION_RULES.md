@@ -120,7 +120,11 @@ in another; wait on a job's own completion notice.
 - List the run's stages before launch and remove every known waste, even when it does not affect the
   result. Design from the question and the output its conclusion needs, not the nearest driver:
   remove unrelated outputs and skip parameters that proved results or archived runs already settle.
-  Follow the test-design and sizing rules below and AGENTS.md's rule for stopping answered series.
+  Skip only those: a case left out because the expected outcome makes it look uninteresting is named
+  in the script's docstring and in every conclusion drawn from the run, which covers only the cases
+  computed (17 October 2026: pairs were computed only for sizes with positive excess, and the
+  summary covered every pair). Follow the test-design and sizing rules below and AGENTS.md's rule
+  for stopping answered series.
 - A slow implementation of a computation needed for the goal is a reason to use an appropriate
   algebra system or write its kernel in the same cycle, not abandon or defer the line. Need is
   determined by AGENTS.md's missing-implication test; another case of a fitted formula is not

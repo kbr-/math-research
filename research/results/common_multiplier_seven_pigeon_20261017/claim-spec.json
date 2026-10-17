@@ -1,0 +1,108 @@
+{
+  "source": {
+    "record": "[Partition sizes](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-partition-sizes)",
+    "label": "Partition sizes",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-sizes"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "cor:partition-error-transfer",
+      "summary": "Partition error transfer: over any field, on the functional pigeonhole system with any number of pigeons, two distinct ones written 1 and 2, and N holes, 2 <= D <= ceil(N/2), K = 1, for the partition error E_A = sum_{j in A} x_1j + sum_{j not in A} x_2j: if N - |A| >= 3, Ann_C(E_A) cap V_1 = Ann_H(E') cap V_1 + C cap V_1 with E' = E_A + Q_2 = 1 + sum_{j in A}(x_1j - x_2j), whose edges miss the holes outside A; if |A| >= 3, the same with E' = E_A + Q_1; so the single excess is 0 unless |A| <= 2 and N - |A| <= 2, and for N >= 5 no partition error has excess at K = 1; (b) some representative E_A + sum c_i Q_i and some numbering satisfy cor:linear-error-transfer's criterion (i)-(iii) exactly when max(|A|, N - |A|) >= 3, so (a) is that corollary's whole reach on partition errors. Proof: E_A - E' is a pigeon axiom, and cor:linear-error-transfer applies to a representative whose edges miss three holes; for (b), a representative misses hole j only when c_i = 0 off pigeons 1, 2 and (c_1, c_2) = ([j in A], [j not in A]); (i) needs a missed hole, which forces c_i = 0 off pigeons 1, 2 and (c_1, c_2) in {(1,0), (0,1)}; then every hole it uses holds edges of both pigeons 1 and 2, which (ii) and (iii) forbid at ranks N-2 and N-3.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (pigeon count, closure-degree-locality citation); part (b) is the reviewer's sketch, one step reordered in its second pass and confirmed in a third.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Places the partition errors' excess at K = 1 by a named representative, the one direction of conj:partition-excess-middle that is proved.",
+      "next_action": "The analogue at K >= 2, through lem:polynomial-numbering-transfer and the dance argument of cor:quadratic-separated-kernels (a), which needs N >= 8.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "conj:partition-excess-middle",
+      "summary": "Conjecture (excess at the middle sizes): over F_2, on the functional pigeonhole system with n + 1 pigeons and n holes at D = ceil(n/2), K = D - 1, the partition error E_A has positive single excess (closure kernel above every linear representative's domain side plus C cap V_K) exactly when |A| is floor(n/2) or ceil(n/2). Evidence: check:top-degree-partition-kernels (n = 3, 4, 5, and n = 6 at |A| = 0, 3) and check:partition-sizes-seven-pigeons (n = 6 at |A| = 1, 2); the only-if direction at K = 1 (n <= 4) is cor:partition-error-transfer.",
+      "assessment": "Conjecture from exact F_2 computations at n = 3 to 6; its evidence and its equivalent missed-holes form at the top degree checked by the sole fresh-context medium reviewer; the only-if direction at K = 1 is proved.",
+      "status": "conjecture",
+      "category": "route_specific",
+      "rationale": "Locates where single errors carry closure killers beyond their representatives, the precondition for the window review's pair kernels.",
+      "next_action": "n = 7 at the middle and next sizes; the only-if direction at K >= 2.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:partition-sizes-seven-pigeons",
+      "summary": "Exact F_2 computation (sizes_pairs.py reusing the window review's mixing_pairs_65.py, with tools/pc_closure.py) at 7 pigeons and 6 holes, D = 3, K = 2, dim V_2 = 904, dim W = 469: partition errors E_A with A = {0..s-1} have closure kernel, best single representative and representative sum 469, 469, 469 at s = 0; 519, 519, 519 at s = 1; 535, 535, 535 at s = 2; 542, 527, 542 at s = 3: single excess 0, 0, 0, 15; the same script at 5 pigeons and 4 holes reproduces the window review's figures (excess 0, 0, 1; pair J = 6, a = b = 5, I = 6). No pairs were computed at 7 pigeons: the size with excess, |A| = 3, has its pairs in check:representative-intersection-kernels, and the pairs with a zero-excess member were not computed.",
+      "assessment": "Exact computation; figures checked against the saved JSON by the sole fresh-context medium reviewer, who found that pairs with a zero-excess member were not computed; the five-pigeon control reproduces the recorded figures.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Shows |A| = 3 is the only partition-error size with single excess at n = 6; pairs with a zero-excess member were not computed.",
+      "next_action": "The (2,2) and (2,3) pair orbits at n = 6, in one series invocation; n = 7.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "cor:partition-error-transfer",
+      "depends_on",
+      "cor:linear-error-transfer",
+      "Its in-particular clause, for a representative whose edges miss three holes."
+    ],
+    [
+      "cor:partition-error-transfer",
+      "cites",
+      "cor:quadratic-separated-kernels",
+      "Its part (a) is the record's dance argument at K = 2, the natural route to the analogue at K >= 2; it needs N >= 8."
+    ],
+    [
+      "cor:partition-error-transfer",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "Its excesses at K = 1, which the corollary explains."
+    ],
+    [
+      "conj:partition-excess-middle",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "Evidence at n = 3 to 6."
+    ],
+    [
+      "conj:partition-excess-middle",
+      "cites",
+      "check:partition-sizes-seven-pigeons",
+      "Evidence at n = 6, |A| = 1, 2."
+    ],
+    [
+      "conj:partition-excess-middle",
+      "cites",
+      "cor:partition-error-transfer",
+      "Proves its only-if direction at K = 1."
+    ],
+    [
+      "check:partition-sizes-seven-pigeons",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "The same quantities at n = 6, |A| = 1, 2; that check has |A| = 0, 3."
+    ],
+    [
+      "check:partition-sizes-seven-pigeons",
+      "cites",
+      "check:representative-intersection-kernels",
+      "Its n = 6 pairs at |A| = 3, the only size with excess here."
+    ],
+    [
+      "conj:partition-excess-middle",
+      "cites",
+      "conj:representative-sum-transfer",
+      "That conjecture gives a single error's closure kernel as its representative sum; this one says for which partition errors the sum exceeds every single representative."
+    ],
+    [
+      "conj:partition-excess-middle",
+      "cites",
+      "conj:linear-kernel-transfer",
+      "Its largest-single-representative form fails exactly where the excess is positive, at the middle sizes this conjecture names."
+    ]
+  ]
+}

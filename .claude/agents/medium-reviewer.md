@@ -47,14 +47,18 @@ the entry's General statement and Statement, and report any scope (degree range,
 field, error form) that one states and the other does not. Where a draft calls a step taken from
 elsewhere (a reviewer's suggestion, a recorded reduction, a cited lemma's reason) "checked", look
 for the one case it worked through that step and the citation's own words for the reason; report
-"checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Where a
-draft claims a property of every member of a family it defines (every error killed, every edge
+"checked" without them as unsupported. Do not trust summaries in the drafts over the excerpts. Where
+a draft claims a property of every member of a family it defines (every error killed, every edge
 admitted), list the members from the family's definition, not from the cases the proof works
 through, and check the proof's step on each kind, the members that coincide with the construction's
 own objects included; on a satisfiable instance, evaluate a claimed closure member at one solution
 (17 October 2026: a killer of every error of a family was checked on one family's members; the
-other's error on the killer's own edge was nonzero at a solution). Run no computations unless the
-brief asks for a specific check, and edit no files.
+other's error on the killer's own edge was nonzero at a solution). Where a script computes only some
+cases of the question it answers (sizes filtered by a computed criterion, orbits skipped), name the
+cases it leaves out and the argument that they cannot change the outcome, or report the conclusion
+as limited to the cases run (17 October 2026: pairs were computed only for sizes with positive
+single excess, and the summary covered every pair). Run no computations unless the brief asks for a
+specific check, and edit no files.
 
 Where the brief sends a check, a rule or a statement that its author corrected after an earlier
 report, do not stop at the cases the earlier report supplied: write the case most unlike them (the
