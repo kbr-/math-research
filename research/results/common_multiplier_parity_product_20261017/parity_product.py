@@ -13,10 +13,13 @@ dim{coefficients vanishing on the target} > 0, computed as (number of monomials)
 Expected: common = l and combined = ceil(l/2) in every case, as the proof gives.
 Refuted by: a printed combined degree other than ceil(l/2), or a common degree other than l, at some l and p.
 Possible because: the lower bound's symmetry argument or the pairing construction could be wrong at some l.
-Control: the same computation over F_2, where -2 = 0 makes the errors vanish; the parity set is computed as
-written there too, and the combined degree is then that of the parity set itself, not a repair statement.
+Control: the same vanishing-degree computation over F_2. There -2 = 0 makes the errors vanish, so these are
+vanishing degrees of the two sets, not repair degrees; the lower bound's use of characteristic other than 2
+predicts combined degree 1 for every l there (the set is cut out by 1 + x_1 + ... + x_l), asserted below.
 Forced by counts: at degree d < ceil(l/2) the monomial count is below the target set's size 2^(n-1) only for
-small d, so the rank is not forced by the shape of the matrix; the script prints both numbers.
+small d, so the rank is not forced by the shape of the matrix; the script prints both numbers for each case.
+(Corrected 17 October 2026 after review: the first version, whose output is parity_product_run1.json, did not
+print these counts or the baseline and did not assert the F_2 control.)
 Positive control: l = 2 over F_3, where the entry's hand computation gives 1 - x_1 - x_2, degree 1 against 2.
 Baseline: the support-size bound (a nonzero multilinear polynomial of degree d is nonzero on at least
 2^(n-d) points) gives the common degree l exactly and the combined degree only >= 1; the script prints it.
@@ -67,15 +70,23 @@ def main(out):
     for p in (3, 5, 2):
         for l in range(1, 7):
             for n in (l, l + 1):
-                common = least_degree(n, lambda x: any(x[:l]), p)[0]
-                combined = least_degree(n, lambda x: sum(x[:l]) % 2 == 1, p)[0]
+                common, cm, cp = least_degree(n, lambda x: any(x[:l]), p)
+                combined, bm, bp = least_degree(n, lambda x: sum(x[:l]) % 2 == 1, p)
+                # Baseline: support size >= 2^(n-d), the support lying in a set of 2^n - |target| points.
+                base_common = n - (2 ** n - cp).bit_length() + 1
+                base_combined = n - (2 ** n - bp).bit_length() + 1
                 rows.append({'p': p, 'l': l, 'n': n, 'common': common, 'combined': combined,
-                             'expected_common': l, 'expected_combined': -(-l // 2)})
-                print(p, l, n, common, combined, flush=True)
+                             'expected_common': l, 'expected_combined': -(-l // 2),
+                             'monomials_at_degree_common': cm, 'target_points_common': cp,
+                             'monomials_at_degree_combined': bm, 'target_points_combined': bp,
+                             'baseline_common': base_common, 'baseline_combined': base_combined})
+                print(p, l, n, 'common', common, 'combined', combined, 'monomials', cm, bm, 'targets', cp, bp,
+                      'baseline', base_common, base_combined, flush=True)
     bad = [r for r in rows if r['p'] != 2 and (r['common'] != r['expected_common']
                                                 or r['combined'] != r['expected_combined'])]
     json.dump({'rows': rows, 'mismatches_odd_p': bad}, open(out, 'w'), indent=1)
     assert any(r['p'] == 3 and r['l'] == 2 and r['combined'] == 1 for r in rows)   # positive control
+    assert all(r['combined'] == 1 for r in rows if r['p'] == 2)                    # the F_2 control
     print('mismatches at odd p:', len(bad))
     print('PASS' if not bad else 'FAIL')
 
