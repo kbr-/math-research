@@ -25,6 +25,8 @@ Refuted by: J = W over F_2.
 Possible because: a route that loses killers would give J = W.
 Forced by counts: nothing; the dimensions are computed.
 Baseline: W <= J <= single kernel; at F_3 the containment leaves J anywhere in [W, single kernel].
+Decisive at these sizes: exact dimensions over a finite field, no seeds; one dimension against W decides it.
+Parallel use: one process; NumPy's vectorized row operations on matrices of about 1500 columns, a few threads.
 Record checked: the claims read were thm:partition-killer-degree, check:representative-intersection-kernels and
 lem:admissible-numbering-transfer; none gives the F_3 common kernel of the disjoint pair.
 """
