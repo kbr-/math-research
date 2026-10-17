@@ -92,26 +92,23 @@ def unit_shapes(m):
 def descend(A, B, pa, pb, iters=30):
     """Amplitudes a (P,) minimizing sum (A + a pa)^4 + (B + a pb)^4 over the last three axes, damped Newton from 0;
     returns a and the largest relative cost rise (expected 0)."""
-    P = A.shape[0]
-    a = np.zeros(P)
-
-    def cost(a):
-        x = A + a[:, None, None, None] * pa
-        y = B + a[:, None, None, None] * pb
-        return (x ** 4).sum(axis=(1, 2, 3)) + (y ** 4).sum(axis=(1, 2, 3))
-
-    c0 = cost(a)
-    cur = c0.copy()
-    for _ in range(iters):
-        x = A + a[:, None, None, None] * pa
-        y = B + a[:, None, None, None] * pb
-        g = 4 * ((x ** 3) * pa).sum(axis=(1, 2, 3)) + 4 * ((y ** 3) * pb).sum(axis=(1, 2, 3))
-        h = 12 * ((x ** 2) * pa ** 2).sum(axis=(1, 2, 3)) + 12 * ((y ** 2) * pb ** 2).sum(axis=(1, 2, 3))
+    # The cost is the quartic polynomial sum_k c_k a^k in a; its coefficients are summed once over the positions.
+    ax = (1, 2, 3)
+    c = [((A ** 4).sum(axis=ax) + (B ** 4).sum(axis=ax)),
+         4 * ((A ** 3 * pa).sum(axis=ax) + (B ** 3 * pb).sum(axis=ax)),
+         6 * ((A ** 2 * pa ** 2).sum(axis=ax) + (B ** 2 * pb ** 2).sum(axis=ax)),
+         4 * ((A * pa ** 3).sum(axis=ax) + (B * pb ** 3).sum(axis=ax)),
+         float((pa ** 4).sum() + (pb ** 4).sum()) * np.ones(A.shape[0])]
+    cost = lambda a: c[0] + a * (c[1] + a * (c[2] + a * (c[3] + a * c[4])))
+    a = np.zeros(A.shape[0])
+    cur = c[0].copy()
+    for _ in range(iters):                                           # damped Newton on scalars
+        g = c[1] + a * (2 * c[2] + a * (3 * c[3] + a * 4 * c[4]))
+        h = 2 * c[2] + a * (6 * c[3] + a * 12 * c[4])
         step = -g / np.maximum(h, 1e-300)
-        t = np.ones(P)
-        for _ in range(30):
-            trial = cost(a + t * step)
-            bad = trial > cur
+        t = np.ones_like(a)
+        for _ in range(40):
+            bad = cost(a + t * step) > cur
             if not bad.any():
                 break
             t = np.where(bad, t / 2, t)
@@ -119,7 +116,11 @@ def descend(A, B, pa, pb, iters=30):
         ok = trial <= cur
         a = np.where(ok, a + t * step, a)
         cur = np.where(ok, trial, cur)
-    rise = float(np.max((cur - c0) / np.maximum(c0, 1e-300)))
+    # the rise is checked on the field itself, not the polynomial
+    x = A + a[:, None, None, None] * pa
+    y = B + a[:, None, None, None] * pb
+    after = (x ** 4).sum(axis=ax) + (y ** 4).sum(axis=ax)
+    rise = float(np.max((after - c[0]) / np.maximum(c[0], 1e-300)))
     return a, rise
 
 
