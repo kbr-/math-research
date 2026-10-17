@@ -391,16 +391,15 @@ def scope_block(reply):
         s = m.group(0)
         if NARROWED_SKIP.search(s) or OLD_AND_NEW.search(s) or re.search(r'["“`]', s):
             continue
-        if re.match(r'[^\n]*:\**[ \t]*\n', text[m.start():]):
-            block = text[m.end():].split('\n\n', 1)[0]
-            if OLD_AND_NEW.search(block) or re.search(r'["“`]', block):
-                continue
-        # A bold label ending in a period is read with the rest of its paragraph (16 October 2026: "**What the
-        # review narrowed.** My last report said ... Old scope ... New scope ..." was refused at the label).
-        if re.match(r'[.:]?\*\*', text[m.end():]) and s.lstrip().startswith('**'):
-            block = text[m.end():].split('\n\n', 1)[0]
-            if OLD_AND_NEW.search(block) or re.search(r'["“`]', block):
-                continue
+        # The sentence is read with its whole paragraph, up to the blank lines around it: a heading's list, a bold
+        # label's paragraph (16 October 2026, both refused at the label) and a sentence whose scopes stand before it
+        # and in the list right after it (17 October 2026: "My last update said ... for every flow. The review
+        # narrowed that." followed by "Old scope:" and "New scope:" bullets was refused).
+        start = text.rfind('\n\n', 0, m.start())
+        end = text.find('\n\n', m.end())
+        paragraph = text[start + 2 if start >= 0 else 0:end if end >= 0 else len(text)]
+        if OLD_AND_NEW.search(paragraph) or re.search(r'["“`]', paragraph):
+            continue
         found.append(s)
     if not found:
         return None

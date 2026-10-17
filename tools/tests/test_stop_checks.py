@@ -391,6 +391,9 @@ class UncheckedClaimTest(HookFixture):
                       '**What the first review narrowed:**\n- **Novelty.** I had claimed (a) as new. Now it is cited.',
                       '**What the review narrowed.** My last report said it was false. Old scope: every method. '
                       'New scope: its own averaging.',
+                      # 17 October 2026: the scopes stood before the sentence and in the list right after it.
+                      '**Correcting.** My last update said it holds for every flow. The review narrowed that.\n'
+                      '- **Old scope:** every flow.\n- **New scope:** full grid lines only.',
                       'The entry is committed.'):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.scope_block(reply))
