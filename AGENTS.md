@@ -303,11 +303,13 @@ AGENTS.md"):
   direct shortest route above all else, you prioritize it above all else. You do not keep orbiting
   around the goal and producing math just for the sake of producing math."). Exploring the field,
   obstructions included, is right while no direct path is known; once one is identified it is acted
-  on at once (user, same day). Every research entry names that route in a `<strong>Shortest
-  route.</strong>` paragraph and takes it, or writes "Not taken" and the concrete reason;
-  `tools/notebook-append.py` refuses an entry without the paragraph, and a Sonnet judge
-  (`tools/route_judge.py`; Haiku missed the prompting case) reads each entry against the living
-  sections and refuses a detour that does not say why.
+  on at once (user, same day). A direct path the agent sees is stated out loud, in the entry and the
+  reply, never left unnamed to keep exploring (user, same day: "If you got the idea, state it out
+  loud"). Every research entry names that route in a `<strong>Shortest route.</strong>` paragraph
+  and takes it, or writes "Not taken" and the concrete reason; `tools/notebook-append.py` refuses an
+  entry without the paragraph, and a Sonnet judge (`tools/route_judge.py`; Haiku missed the
+  prompting case) reads each entry against the living sections and refuses a detour that does not
+  say why.
 - When the record's obstructions name the mechanism a proof needs and no recorded construction has
   it, the next cycles build a candidate with that mechanism and test it, before any further class is
   excluded: an exclusion narrows the search, and only a construction can reach the goal (user, 17
