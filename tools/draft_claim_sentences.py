@@ -484,7 +484,7 @@ def unrun_searches_report(draft, logged, width):
 
 
 FIGURE_LABELS = ('Nonvacuity', 'On the power-growing family', 'Bearing', 'Instance check')
-FIGURE = re.compile(r'(\d+(?:\.\d+)?)\s*\\times\s*10\^(?:\{(-?\d+)\}|(-?\d+))|(?<![\w.^{])(\d+\.\d+)(?![\w.])')
+FIGURE = re.compile(r'(\d+(?:\.\d+)?)\s*\\times\s*10\^(?:\{(-?\d+)\}|(-?\d+))|(?<![\w.])(\d+\.\d+)(?![\w.])')   # inside 2^{907.1} too: "{" missed it at first
 FILE_NUMBER = re.compile(r'-?\d+(?:\.\d+)?(?:e[-+]?\d+)?', re.I)
 RESULT_PATH = re.compile(r'research/results/[\w./-]+?\.(?:txt|json|md|csv)')
 
@@ -522,6 +522,36 @@ def unsourced_figures_report(found, width):
                       'the others and cite its output (AGENTS.md: every figure beside its saved source):']
                      + [line if width <= 0 else line[:width] for line in lines]
                      + [f'{len(found)} such figures.'])
+
+
+SCOPE_WORD = re.compile(r'\b(?:super-?polynomial(?:ly)?|polynomial(?:ly)? (?:in|small|bounded)|negligible|'
+                        r'exponentially|vacuous|empty|unreachable|not reachable)\b', re.I)
+
+
+def scope_words_at_figures(draft):
+    """[(label, sentence)] for the sentences that hold both an asymptotic or emptiness word (superpolynomial,
+    polynomial in, negligible, exponentially, vacuous, empty, not reachable) and a figure computed at one instance
+    (a decimal or a power of ten): such a word is about a parameter sequence or a whole class, and the figure beside
+    it is one member's value, which can contradict it.  On 17 October 2026 "2^907.1 on the first member,
+    superpolynomial in N" stood where that member's figure is at most N^2.55, and a floor was called "empty" at a
+    size where its negative base, raised to an even power, made it false."""
+    found = []
+    for block in BLOCK.finditer(draft):
+        label = LABEL.match(block.group(2))
+        for sentence in sentences(block.group(2)):
+            plain_text = text(sentence)
+            if SCOPE_WORD.search(plain_text) and FIGURE.search(html.unescape(sentence)):
+                found.append((label.group(1) if label else block.group(1), plain_text))
+    return found
+
+
+def scope_words_report(found, width):
+    lines = [f'  [{label}] {sentence}' for label, sentence in found]
+    return '\n'.join(['Sentences that put an asymptotic or emptiness word beside a figure of one instance; read the '
+                      'figure against the word, and say which parameter sequence or class the word is about '
+                      '(AGENTS.md: read each figure for what it says against the conclusion):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(found)} such sentences.'])
 
 
 def unread_named_claims(draft, root, now=None):
@@ -1638,6 +1668,7 @@ def main():
     print('\n' + unrun_searches_report(draft, logged_queries(ROOT), args.width))
     print('\n' + unread_named_claims_report(unread_named_claims(draft, ROOT), args.width))
     print('\n' + unsourced_figures_report(unsourced_figures(draft, ROOT), args.width))
+    print('\n' + scope_words_report(scope_words_at_figures(draft), args.width))
     spec =json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))

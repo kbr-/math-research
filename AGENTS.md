@@ -360,7 +360,12 @@ AGENTS.md"):
   that may describe a neighbouring construction (17 October 2026: a script took a growth rate from
   the living section's line on another family and printed every figure off the family it named).
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
-  arithmetic.
+  arithmetic. An inequality multiplied by another or raised to a power keeps its direction only
+  where each factor is nonnegative: write each factor's sign range beside such a step, take a free
+  parameter's range from it, and read a computation that finds a factor outside that range as a case
+  where the statement may be false, not one where it is empty (17 October 2026: a bound with a
+  factor \((1-x)^t\) was stated for every \(x>0\); at an even \(t\) and \(x>2\) it was false where a
+  script's domain error had been read as an empty bound).
 - Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt
   that failed.
 - Write the Record comparison before New mathematics, the title or any sentence calling a result

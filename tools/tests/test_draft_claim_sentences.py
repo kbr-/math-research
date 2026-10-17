@@ -795,6 +795,19 @@ class UnsourcedFiguresTest(unittest.TestCase):
             self.assertIn('2 such figures.', dcs.unsourced_figures_report(dcs.unsourced_figures(draft, root), 0))
 
 
+class ScopeWordsTest(unittest.TestCase):
+    def test_an_asymptotic_word_beside_one_members_figure_is_listed(self):
+        # 17 October 2026: the reviewer's two findings of this shape.
+        draft = ('<p><strong>Architecture test.</strong> The excess is up to \\(1/L\\), \\(2^{907.1}\\) on the first '
+                 'member, superpolynomial in \\(N\\) as \\(n\\) grows. The bound is superpolynomial in \\(N\\) as '
+                 '\\(n\\) grows. The floor is \\(2^{-907.1}\\) there.</p><p><strong>Ledger.</strong> At that size the '
+                 'floor is empty, its base \\(1-2.0\\times10^{332}\\) negative.</p>')
+        found = dcs.scope_words_at_figures(draft)
+        self.assertEqual([label for label, _ in found], ['Architecture test', 'Ledger'])
+        self.assertIn('superpolynomial', found[0][1])
+        self.assertIn('1 such sentences.', dcs.scope_words_report(found[:1], 0))
+
+
 class UnreadNamedClaimsTest(unittest.TestCase):
     def test_a_claim_named_from_a_search_listing_is_listed_until_read(self):
         # 17 October 2026: a review's Record search named claims whose statements had not been read.
