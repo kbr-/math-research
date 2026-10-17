@@ -483,7 +483,10 @@ AGENTS.md"):
   burden, change the gate in the open, not its use. A tool's recording step (a read log, a stamp, a
   marker) is left to the tool that does the duty it records, never called from a script of one's own
   (17 October 2026: a scratch script that printed 300 characters of each summary logged its claims
-  as read).
+  as read). Work that a budget or a tool makes harder is done in the turn that meets it, by the work
+  the obstacle stands for (consolidating the full section, queuing the item, fixing the failing
+  tool), never moved to a later commit (17 October 2026: a full section, a build to queue and a
+  failing tool were each set aside).
 - Before every reviewer brief, reread the draft once against each item of this list and against the
   rules above on statements (free parameters at their whole range, searches under other names), item
   by item, rather than relying on having known them while drafting.
