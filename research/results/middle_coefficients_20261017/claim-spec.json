@@ -1,0 +1,46 @@
+{
+ "source": {
+  "record": "[Boolean quotient residues](https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-boolean-quotient-residues"
+  ],
+  "label": "Boolean quotient residues"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "frege-simulation",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "lem:boolean-quotient-residues",
+   "summary": "Boolean quotient residues: let f = sum_(a<=p) prod_j (u_aj + c_aj z) over F2[y][z] with affine u_aj and constant c_aj in {0,1}, description size S, and let (z^2+z)^k, k>=0, divide f with quotient h of z-degree D. At a Boolean point y, with chi_a the product of the c=0 factors' bits, m_a the number of c=1 factors of product a and t_a(y) the number of those with u_aj(y)=1: (a) for every alpha in F_(2^r) off {0,1}, h(y,alpha) = (alpha^2+alpha)^(-k) sum_a chi_a alpha^(m_a) ((1+alpha)/alpha)^(t_a); (b) with 2^r >= D+3 and N = 2^r-1, each coefficient h_i(y) = sum_a chi_a psi_(i,a)(t_a mod N) for fixed functions psi, so each h_i as a Boolean function has a depth-four circuit of size O(NS + pN^2) with XOR, AND and counting-mod-N gates (output one when the input sum is 0 mod N); (c) when D <= 1, h_0 + h_1 omega = sum_a chi_a omega^((m_a + t_a) mod 3) over F4, so h_0 and h_1 lie in depth-four AC0[6] of size O(S + p). Without divisibility the coefficient read off the expansion, h_0 = sum_a chi_a binom(t_a, m_a - k) mod 2, is by Lucas an AND of weight bits of orders up to m_a - k.",
+   "assessment": "Working elementary evaluation and inverse-Vandermonde proof, passed by the sole fresh-context medium reviewer with corrections. No lower bound; in the linear regime a constant-depth binary quotient fails, if at all, through a modulo-three pattern of the products' counts that the divisibility allows.",
+   "status": "working_proof",
+   "rationale": "Develops the head item's sub-idea on three-product quotients: the coefficient read off the expansion is an AND of weight bits of orders up to m_a-k, and divisibility replaces it by a residue modulo 2^r-1 fixed by the quotient's degree, three in the linear regime.",
+   "next_action": "Classify the relations of at most four terms z^s(1+z)^t over F2 and decide whether at points where h is nonzero the counts t_a are pinned to constants, so that h_0 is a sum of exact-count indicators, and whether one can be a growing slice."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:boolean-quotient-residues",
+   "cites",
+   "thm:finite-algebra-evaluation",
+   "Its reduction of modulo-three counting to F4 product coordinates is the hard direction; the lemma uses the elementary converse."
+  ],
+  [
+   "lem:boolean-quotient-residues",
+   "cites",
+   "lem:extension-field-quotients",
+   "The same evaluations at points where z^2+z is a unit, read at Boolean points for the coefficients' Boolean functions."
+  ],
+  [
+   "lem:boolean-quotient-residues",
+   "cites",
+   "cor:invariant-probe-prefix-values",
+   "Probe common values are Boolean-cheap by prefix substitution, so the lemma bears on product-sum quotients, not on probes."
+  ]
+ ],
+ "overrides": {}
+}

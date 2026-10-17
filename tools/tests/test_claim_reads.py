@@ -65,6 +65,9 @@ class ClaimReads(unittest.TestCase):
     def test_identifiers_are_registry_prefixes_only(self):
         self.assertEqual(claim_reads.CLAIM_ID.findall('see third-party:x-y, ex:z1 and data:abc, http://a:b'),
                          ['third-party:x-y', 'ex:z1'])
+        # 17 October 2026: a registered ID with capitals was cut at them and refused though read.
+        self.assertEqual(claim_reads.CLAIM_ID.findall('and imp:binary-algebraic-CNF-IPS-transfer, concern'),
+                         ['imp:binary-algebraic-CNF-IPS-transfer'])
 
 
 if __name__ == '__main__':

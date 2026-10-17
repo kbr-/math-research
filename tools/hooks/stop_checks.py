@@ -402,11 +402,14 @@ IDLE = re.compile(r"[^.!?\n]*\b(?:wait(?:s|ed|ing)?\s+(?:for|on)|until)\s+(?:the
 PREPARED = re.compile(r"\b(?:prepared|ready to commit|staged|commit message (?:is )?(?:drafted|written))\b", re.I)
 
 
-def idle_block(reply):
+def idle_block(reply, last_only=True):
     """The block for a final reply that waits on a background reviewer or run without saying what the
-    wait was used for, or None."""
+    wait was used for, or None.  The last sentence is read: on 17 October 2026 a reply announced its wait in its
+    first sentence and passed, but reading every sentence (last_only=False) refused 76 of 1533 past texts against 7,
+    nearly all status sentences ("drafted and waiting on its reviewer") in reports whose wait the project's
+    instructions allow for a running reviewer (research/results/middle_coefficients_20261017/idle-replay.txt)."""
     parts = [part for part in re.split(r'(?<=[.!?])\s+|\n+', reply.strip()) if part.strip()]
-    found = IDLE.search(parts[-1]) if parts else None
+    found = next((m for m in map(IDLE.search, parts[-1:] if last_only else parts) if m), None)
     if not found or PREPARED.search(reply):
         return None
     return {'decision': 'block', 'reason': (
@@ -973,6 +976,33 @@ def replay_figures(paths):
           'refused, each with a figure whose paragraph names no source.')
 
 
+def replay_idle(paths):
+    """Each past text of more than 200 characters in the transcripts at `paths` that idle_block refuses, and the
+    counts under the last-sentence rule and the any-sentence rule: the check is counted before its commit."""
+    texts = 0
+    old, new = [], []
+    for name in paths:
+        for line in open(name, errors='replace'):
+            if '"assistant"' not in line or '"text"' not in line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if entry.get('type') != 'assistant':
+                continue
+            for part in (entry.get('message') or {}).get('content') or []:
+                if isinstance(part, dict) and part.get('type') == 'text' and len(part.get('text', '')) > 200:
+                    texts += 1
+                    if idle_block(part['text']):
+                        old.append(part['text'])
+                    if idle_block(part['text'], last_only=False):
+                        new.append(part['text'])
+    for text in new:
+        print(f'- {IDLE.search(text).group(0).strip()[:160]}')
+    print(f'{texts} texts read: {len(old)} refused by the last-sentence rule, {len(new)} by the any-sentence rule.')
+
+
 def figure_paragraphs(reply):
     """The paragraphs of a reply holding a figure and no source beside it (outside code blocks)."""
     text = re.sub(FENCED, ' ', reply, flags=re.M)
@@ -1135,6 +1165,9 @@ def main(argv):
 if __name__ == '__main__':
     # The branch's own module asks for this one by name; it gets this copy, not a second one.
     sys.modules.setdefault('stop_checks', sys.modules['__main__'])
+    if sys.argv[1:2] == ['--replay-idle']:
+        replay_idle(sys.argv[2:])
+        sys.exit(0)
     if sys.argv[1:2] == ['--replay-figures']:
         replay_figures(sys.argv[2:])
         sys.exit(0)

@@ -21,10 +21,10 @@ LOG ='research/logs/claim-reads.jsonl'
 
 # Registry identifier prefixes (claim-index.py list, 17 October 2026), longest first so that no prefix
 # matches inside another.
-PREFIXES = ('third-party', 'criterion', 'audit', 'check', 'local', 'proof', 'conj', 'note', 'open', 'prop',
+PREFIXES = ('third-party', 'criterion', 'audit', 'check', 'draft', 'local', 'proof', 'conj', 'note', 'open', 'prop',
             'thm', 'lem', 'cor', 'obs', 'imp', 'def', 'ctx', 'rem', 'ex', 'q')
 CLAIM_ID = re.compile(r'(?<![\w:-])((?:' + '|'.join(re.escape(p) for p in PREFIXES)
-                      + r'):[a-z0-9][a-z0-9-]*[a-z0-9])')
+                      + r'):[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])')   # IDs may hold capitals (CNF, IPS, PHP)
 
 # The paragraphs whose verdicts on other claims must rest on their statements: the record searches, the
 # comparison, the suggestions' Record lines, and the two that apply recorded results to the next attempt and to

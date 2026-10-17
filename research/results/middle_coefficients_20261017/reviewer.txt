@@ -1,0 +1,67 @@
+Reviewer record: the Boolean quotient residues entry, 17 October 2026.
+One fresh-context medium-reviewer; its reports follow verbatim.
+
+=== Report 1: the first draft ===
+
+**Verdict: pass with corrections.** I recomputed (a), (c), the Plainest bound, the Nonvacuity values, the Smallest case and the three-term classification by hand, with no computations run. They hold. Two of them only hold up to minor wording points, listed below.
+
+**Required changes**
+- **Proof (b), size.** Each residue gate gets up to N−1 constant inputs to shift its residue. Those wires are not in the count, so a product costs O(N(q_a+N)) wires, not O(N(q_a+1)). The total is O(NS+pN²). Either state that bound, or name a gate type with an accepting residue ρ. Also state the convention of the counting gate: output 1 iff the sum is ≡0 mod N. Under the convention "output 1 iff ≠0" a negation is needed, and that costs a level. For (c), say that XOR and mod-3 gates are mod-6 gates with inputs repeated three times or twice, and that this keeps depth four. I recounted the levels and get four: XOR, then AND and the residue gates, then AND, then XOR. That matches the draft.
+- **Hypotheses paragraph.**
+  - (i) The lemma never uses k≥1. With k=0, (a) to (c) hold word for word, and the condition 2^r≥D+3 could even relax, since 0 and 1 are then allowed. "Only that 0,1 are excluded" names a choice the lemma makes, not a use of the hypothesis. Following the house rule on free general versions, state the lemma for k≥0, or say that k≥1 is unused.
+  - (ii) Constant c_aj is used in (b) and (c) as well as (a): ψ_{i,a} is fixed by m_a, and the circuit's wiring depends on which factors carry z. The F2[y] remark is right for (a). There, though, m_a(y) varies, the ψ depend on m_a(y) mod N, and the circuit has to compute c_aj(y) and the ANDs of c with u. That adds levels, so say that (b) and (c) need extra depth.
+  - (iii) Exact divisibility is used in (b) too, since h has to be a polynomial of degree D.
+- **Plainest bound and Baseline.** By Lucas, χ_a·binom(t_a, m_a−k) mod 2 is an AND of weight bits. It is a single weight bit only when m_a−k is a power of two. Reword. The out-of-range cases are right: binom(t, k−m+t) = binom(t, m−k), and both are 0 when m−k<0 or m−k>t.
+- **Follow-up.** The question "the degrees pin the counts t_a there to constants" is false as worded. Take two active products with equal m and equal t at a point: their terms cancel for every value of that t. Ask instead about the reduced relation, with cancelling pairs removed. The three-term form X{1, z^q, (1+z)^q} with q a power of two is right; I checked it by an S-unit argument after taking out X. The Smallest case is right: t_a ∈ {k, k+1}, m_a ∈ {2k, 2k+1}, and h_0 = [t_a = m_a−k] is a parity on that set, or the constant 1 when m_a = 2k.
+- **Bearing.** "A weight-bit failure would need that weight bit in this depth-four AC0[6] shape" is correct as a necessary condition. It is weaker than what the lemma gives for three products: h_0 is a XOR of at most three terms χ_a·g_a(t_a mod 3). Say that.
+- **Searches.** I searched the record for values of z^s(1+z)^t at ω over F4 counted modulo three. The nearest results were lem:extension-field-quotients and ex:star-marginal-degree. Neither states (a) to (c). The Record comparison is consistent with this.
+- **Review paragraph counts.** These match their files:
+  - idle-replay.txt: "1533 texts read: 7 … 76".
+  - script-label-replay.txt: "34 of 72"; the replay lists d3f867dc6's divided_difference_check.py.
+  - Commit c7d4b1969 contains the replace_text, notebook-append and commit-check changes.
+
+  stop_checks.py and turn_guidance.py are still uncommitted, so "now prints" holds only once this commit lands.
+
+**Suggestions (unverified)**
+- **Partial answer on pinning (unverified).** Take p=3 and a point where h≠0. Remove the cancelling equal pairs. Three cases remain:
+  - One active term equals B^k·h, and its count is pinned.
+  - A three-term relation with B^k·h. Then q is fixed by the difference of the m's, or by m − deg(B^k·h), so each count takes O(1) values.
+  - A genuine four-term relation, which is the open case.
+
+  So pinning can fail only for cancelling pairs and in the four-term case.
+- **Slice through cancellation, attempted and blocked (unverified).** Let product 1 have t_1 = w(y) and product 2 be the constant term z^{n−c}(1+z)^c with the same m. They cancel exactly on {w=c}. Off the slice, though, the two terms plus B^k·h must close up with one term of product 3, for every w≠c. The three-term form does not allow that, so divisibility fails at most weights. A slice needs the four-term relations, or more products. That makes the four-term classification the decisive step.
+
+**Process audit**
+- **Title.** It says "modulo 2^r−1" but drops the condition 2^r ≥ D+3, which the lemma needs. "Factor counts" is vaguer than the body's t_a, the count of carrying factors with value one. The status line is accurate.
+- **Prevention.** "Each run on its exposing case" has a source only for the script check (the replay) and the "within:" check (c7d4b1969's message). For the replace_text digest check no saved run on the touched-file case is cited. Cite the test or the output.
+- **Next attempt.** It rests on one registry search, and that search was worded in the draft's own terms. No search was made in the words of S-unit equations or two-prime relations over F2[z].
+- **Hypotheses paragraph.** It lists k≥1 with a use it does not have (see above).
+
+Strength count: 2 (the title; the Prevention sentence).
+
+Files: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_bqr.html, /home/kbr/dev/math-auxiliary/research/results/middle_coefficients_20261017/idle-replay.txt, /home/kbr/dev/math-auxiliary/research/results/middle_coefficients_20261017/script-label-replay.txt
+
+=== Report 2: the corrections ===
+
+**Verdict: pass with one correction.**
+
+**Strengthened claims**
+- **(i) k≥0: correct.** For k=0 the factor (α²+α)^{-k} is one, h=f, and nothing in the proof uses k≥1. The spec and the commit message now say k≥0. I also checked the residue shift: N−ρ constant ones make t+N−ρ≡0 exactly when t≡ρ.
+- **(ii) Slice not in AC⁰[2]: true, but the reason is incomplete as written.** Padding alone does not turn majority into one slice. Majority is the OR, over j≥n/2, of the slices [w=j]. Each of those is the slice {w=c} after padding with c−j ones, so the reduction is padding plus one OR gate. Write "padding and one OR gate", and cite the bound on majority it rests on (Razborov 1987 / Smolensky 1987).
+
+**Required change**
+- **New mathematics** still gives the size as O(2^rS). Replace it with O(NS+pN²), as in the lemma and the spec.
+
+**Other checks, all correct**
+- The rewritten Next attempt: it removes the cancelling equal pairs and asks for boundedly many values, not constants. That is right.
+- The Bearing's sharper form, h₀ = Σ_{a≤3} χ_a·g_a(t_a mod 3).
+- The Lucas wording in the Plainest bound, including the out-of-range clause.
+- The two suggestions, each marked unverified, each with a Record line naming the search made.
+- The Verification gate credits me only with what my report says I checked. replace-text-tests.txt exists and shows "Ran 11 tests … OK".
+- The title now carries 2^r≥D+3 and "z-carrying factors with value one".
+
+**Process audit.** The title now matches the lemma's statement: modulus 2^r−1 with 2^r≥D+3, at Boolean points, the counts as defined in the body. The status line is accurate. One summary sentence (New mathematics, size O(2^rS)) still lags the corrected lemma, and the reason given for (ii) is incomplete.
+
+Strength count: 1 (the New mathematics size).
+
+Files: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_bqr.html, /home/kbr/dev/math-auxiliary/research/results/middle_coefficients_20261017/claim-spec.json

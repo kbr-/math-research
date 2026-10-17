@@ -407,6 +407,11 @@ class UncheckedClaimTest(HookFixture):
                       'The entry is committed.'):
             with self.subTest(reply=reply):
                 self.assertIsNone(hook.idle_block(reply))
+        # 17 October 2026: a wait announced in the first sentence; the any-sentence form, measured and not the
+        # default, refuses it.
+        early = "I'm waiting on the reviewer's check of the entry. The goal is still open."
+        self.assertIsNone(hook.idle_block(early))
+        self.assertIn('The reply ends waiting', hook.idle_block(early, last_only=False)['reason'])
 
 
 

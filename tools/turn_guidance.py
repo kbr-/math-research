@@ -270,6 +270,10 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'the plainest bound there before the method\'s intermediates. A conclusion of the same form as the '
              'previous entry\'s (constant, a restatement, nothing beyond) is derived again for the new object, '
              'with its construction, never carried over by its shape.',
+             # 17 October 2026: a generic fill, a touched file and a script run where no check looks each passed a
+             # gate in one cycle; a stand-in reviewer found all three.
+             'A refusal or a required form is answered by what it is for: never by another action that passes it '
+             '(a generic fill, a touched file, a run where the check does not look).',
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
