@@ -266,7 +266,12 @@ So perform the following, in a loop:
   read as a claim to check, not as text to insert: each is first restated as the property it asserts
   and checked on the instance, at both ends of every range it names, before any wording is written,
   and the entry's sentence is then written from that check (17 October 2026: a window copied as
-  "one-sided" from a reviewer's report was false inside the window).
+  "one-sided" from a reviewer's report was false inside the window). A sentence saying what a
+  construction does to its objects (which points cross, which rank a cut has, which edges change) is
+  written after the construction is run on one instance with its numbers set down, and a widened
+  hypothesis is followed by a reread of every clause that used the narrower one (17 October 2026: a
+  cut placed at rank \(n_{\rm lower}\) from the picture moved no point on \(n=10\), and an exponent
+  clause written for \(L\ge128\) stayed after \(L\) was freed).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
