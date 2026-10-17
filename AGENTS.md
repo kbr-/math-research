@@ -492,7 +492,12 @@ AGENTS.md"):
   instance and write the outcome down; a script is written only for what that hand step leaves open,
   and each of its controls is first tried on an input where it must fail (17 October 2026: a routing
   rule was simulated over four sizes when two levels by hand already gave the dyadic flow, and its
-  control was constant by construction).
+  control was constant by construction). A question that does not change when its objects are
+  replaced by another presentation (a set by its span or a sum of its members, an object by an
+  equivalent one) is first tried, by the recorded lemmas, on each presentation they decide; the
+  entry lists the presentations tried before any script (17 October 2026: a joint quantity was
+  computed after one representative per object ran out of room, while a sum of the objects had
+  room).
 - Every command and every path in it serves the step at hand: before a call, drop each part whose
   output nothing reads, and reach outside the worktree and the session's scratch only through the
   route the framework names, since in auto mode such a reach stops the user at a prompt (17 October

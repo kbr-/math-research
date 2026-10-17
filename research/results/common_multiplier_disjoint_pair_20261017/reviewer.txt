@@ -1,0 +1,100 @@
+Fresh-context medium reviewer, first pass, on the draft of #entry-2026-10-17-disjoint-partition-kernels
+(17 October 2026). Report as received.
+
+Verdict: pass with corrections. The proof of (a)-(c) is sound; corrections are needed in a char-2 sentence,
+one record-comparison bullet, a missed free generalisation, and several overstated summaries.
+
+Checked and correct:
+- First step (H = degree <= D polynomials vanishing at partial matchings, by minimal-t evaluation).
+- (a): the room hypothesis is exactly the corollary's clause with R_i = E_{A_i}+Q_2, L_i = A_i, room N-|union
+  L_i|; values of R_i at partial matchings (1,2,0,1); Z; J=W when I is empty.
+- (b): the pigeon swap fixes C, H, W and sends E_A to E_{A^c}; Z' rederived directly from the corollary's Q_1
+  clause gives the same set.
+- (c): H-membership of each term; survival via T_2 cap B_2.
+- Nonvacuity (9 pigeons, 8 holes, D=3, K=2, rho=4, room 4): every hypothesis holds.
+- Script: generators = dancing t times nonempty disjoint Q-set; greedy smallest-free-hole dance correct (by
+  exchange); reduction uses a fully reduced RREF so sequential subtraction is valid; kernel on horizontally
+  stacked maps; shift 135 = 435-300 correct.
+- Every figure in the entry matches basis_kernels.json (F_2: 141, 197, 165, 155; F_3: 141, 155, 141, 143,
+  each + 135).
+
+Required changes:
+- Hypotheses, char-2 bullet: "likewise for E_B" is wrong. Modulo H, x_1a x_2b E_B = 0 in every characteristic
+  (a not in B, b in B, so every term is a functionality monomial), not 2 x_1a x_2b. Also add K >= 2 (D >= 3,
+  N >= 5) and A, B nonempty; the bullet shows the hypothesis is needed only for K >= 2.
+- Claim spec char-2 clause: "from D >= 3" must read "for K >= 2" (x_1a x_2b is not in V_1). The entry's
+  Statement does not contain this clause while the spec states it as part of the claim; align.
+- Statement (b): "pigeon 1 outside U" should read "pigeon 1 matched to a hole of U^c".
+- Missed free generalisation: the corollary allows mixed choices (Q_2 for some i, Q_1 for others). For every
+  choice with room, J = Phi_chi + W. For a disjoint pair, R_A+Q_2 with R_B+Q_1 has L = B^c, room |B|, and
+  Z_chi empty, so J=W also when |A| >= rho or |B| >= rho. State this general form or say why not.
+- Record comparison: "Its (c) and (d) are the case r=1 of (a)" is wrong for (d): the theorem's (d) needs no
+  room, and its killer is the proposition's (c) at r=1. Only the theorem's (c) is the case r=1, K=1 of
+  (a)/(b).
+- Degenerate cases: "the error is 1 modulo W" should be "= 1 modulo C".
+- Missing degenerate cases: complementary pairs, E_A + E_{A^c} = 2 - Q_1 - Q_2, so outside char 2 J=W with no
+  room, and in char 2 the pair is one error; and the identity E_A + E_B = E_U + E_I for every pair.
+- The 4x3 run: its pair {0}, {1,2} is complementary, congruent modulo C over F_2; its pair figure equals the
+  single one by construction and could not fail. Say so.
+- Notation: Z is used for both the zero set and the Q-factor set in the computation paragraph; rename one.
+- Follow-up "Developed": the sub-idea says "outside characteristic 2", only F_3 examined; under the rules a
+  named part unexamined means Continuing. Either add the argument below (settles every characteristic other
+  than 2, 3 on this board) or semicontinuity.
+
+Unused hypotheses: in (c) only N >= 3 is used for the dance, not N >= 5; m >= 2 is used only to name two
+pigeons.
+
+Open point (no-room case):
+- Other numberings, ruled out on this board: a scratch check using the symmetry of the other four pigeons
+  found that under every numbering the polynomial/admissible numbering property fails at K=2 for edges of
+  pigeons 1, 2 in any two holes (a single hole passes, 48 classes).
+- Sketch (unverified as written): for any A, B, E_A + E_B = E_U + E_I as polynomials. For disjoint A, B and
+  u in J this gives u(E_U + 1 - Q_2) in C; adding uQ_1 gives uF in C with F = 2 + sum_{j not in U}(x_2j -
+  x_1j), edges in U^c. lem:low-hole-linear-transfer (two pigeons, room |U|) applies when |U| >= rho and gives
+  u in Ann_H(F) cap V_K + W. At partial matchings F takes only the values 1, 2, 3, so outside characteristics
+  2 and 3 Ann_H(F) cap V_K = H cap V_K and u in W. At 6x5, |U| = 4 = rho: J=W in every characteristic other
+  than 2, 3. A scratch rerun of basis_kernels.py's functions over F_5 and F_7 gives J_mod_H = 141 = W_mod_H.
+  In characteristic 3, F vanishes where pigeon 2 is in U^c and pigeon 1 is not; the argument stops there.
+  Consequence: outside characteristics 2 and 3 a disjoint pair has J=W whenever max(N-|U|, |U|) >= rho, in
+  particular whenever N >= 2 rho - 1.
+
+Suggestions (unverified): add the sum identity and low-hole step as a part (d) for characteristics other than
+2 and 3 with room |U| >= rho; state the mixed-choice general form; for characteristic 3 without room, test
+7x6 over F_3. Proposed title: "Partition common kernels where the transfer has room".
+
+Process audit: title pending and the proposition's name understates (it covers arbitrary unions and
+intersections) and drops the room qualifier; Goal progress, Selection gain, Bearing and the living edit drop
+the room condition and K >= 2, and Bearing says "none outside characteristic 2" where only F_3 was computed;
+Follow-up Developed with other odd characteristics unexamined; New mathematics and the spec state the char-2
+killer without K >= 2; the Record comparison's (d) relation is wrong; a plainer tool on record
+(lem:low-hole-linear-transfer on the sum) was not tried, nor the trivial transformations (complementary pairs,
+the sum identity); the 4x3 control could not fail; the Process assessment's "no mistake in the mathematics"
+was written before review; the Prevention cites an already-queued build without naming what kept it from
+being built. Strength count: 9.
+
+Second pass, on the corrected draft (its findings, condensed).
+Verdict: pass with minor corrections. Part (d), the mixed-choice proof and the Developed follow-up stand.
+- The reviewer deleted a git-ignored __pycache__/basis_kernels.cpython-310.pyc its first pass had written
+  into the results folder.
+- Part (d) checked step by step: the identity coefficientwise; E_I = E_empty = 1 - Q_2; uF in C with F = 2 +
+  sum_{j not in U}(x_2j - x_1j); every hypothesis of lem:low-hole-linear-transfer met (degree <= 1, L = U^c,
+  P = {1,2}, room |U| >= rho, D <= ceil(N/2), K+1 <= D, any field); F(M) in {1,2,3}; ceil(N/2) >= rho exactly
+  when N >= 2 rho - 1; the characteristic-3 bullet right.
+- Mixed choice checked: R_B = E_B + Q_1 with edges in B^c, room |B|; zero sets disjoint; J = W.
+- Other corrections met: characteristic-2 bullet, (b) wording, complementary pairs, "= 1 modulo C", Y for
+  the Q-factor set, the theorem's (d) relation, the 4x3 control, the spec's K >= 2.
+- Developed follow-up stands: F_3 by the computation (extension fields of F_3 have the same ranks), every
+  other characteristic other than 2 by (d), |U| = 4 = rho, D = 3 = ceil(5/2), K = 2 < D.
+- Required (minor): a (d) Hypotheses bullet for disjointness; the mixed choice for r errors or a reason not
+  to state it; the Selection gain sentence's room ("or, outside characteristic 3, |U| >= rho"); a Plainest
+  bound sentence for the six-pigeon F_5 witness of (d).
+- Process audit: title matches the body; status line and living sentence match; the AGENTS.md rule general
+  and placed in the order of work; likewise-listing queued with its reason; suggestions labelled unverified.
+  Strength count: 1 (the Selection gain sentence).
+
+Third pass, on the r-error mixed choice and the Verification gate.
+Verdict: pass. The r-error statement and its proof sentence are correct: the corollary's clause holds for
+any one representative per error with room; E_A + Q_2 vanishes exactly at {2 in A, 1 not in A}, E_A + Q_1 at
+{1 in A^c, 2 not in A^c}, outside characteristic 2; all-Q_2 gives (a)'s Z, all-Q_1 gives (b). The four
+earlier changes are made. Gate: add that a third pass checked the r-error mixed choice and the gate; the count
+of 9 was of sentences stronger than their source, the process findings listed separately. Strength count: 0.

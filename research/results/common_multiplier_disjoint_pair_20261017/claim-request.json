@@ -1,0 +1,789 @@
+{
+  "base_sha256": "a3edc4d1bed605077053801a4f0659ff87c30195e4ed76510807dbc62ce9f70c",
+  "provenance": {
+    "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code with sole fresh-context medium reviewer"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "prop:partition-common-kernels",
+        "summary": "Partition common kernels: on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with m >= 2 pigeons, two distinct ones written 1 and 2, N holes, 1 <= K < D <= ceil(N/2), rho = max(2K - 1, K + 2), W = C cap V_K, C the degree-D closure, for partition errors E_{A_i} = sum_{j in A_i} x_1j + sum_{j not in A_i} x_2j, i = 1..r, r >= 1, with union U and intersection I, and J the intersection of the Ann_C(E_{A_i}) cap V_K: (a) in characteristic other than 2, if N - |U| >= rho, J is W plus the u in V_K vanishing at every partial matching outside {pigeon 2 matched in I, pigeon 1 unmatched or matched to a hole of U^c}, so J = W when I is empty; more generally, for any choice of representatives E_{A_i} + Q_2 (edges in A_i) or E_{A_i} + Q_1 (edges in A_i^c) with N minus the size of the union of their edge sets >= rho, J is W plus the u vanishing off the intersection of their zero sets ({2 in A, 1 not in A} and {1 in A^c, 2 not in A^c}), so for two disjoint sets J = W also when |A| >= rho or |B| >= rho; (b) in characteristic other than 2, if |I| >= rho, the same with pigeons 1, 2 exchanged and the sets complemented, so J = W when U is all holes; (c) in every characteristic, if I is nonempty, U is not all holes and K >= 2, x_1h x_2j with j in I, h not in U is a common surviving killer; (d) in characteristic other than 2 and 3, for two disjoint sets with |A cup B| >= rho, J = W, through E_A + E_B = E_{A cup B} + E_{A cap B} and lem:low-hole-linear-transfer on F = 2 + sum_{j not in A cup B}(x_2j - x_1j); so outside characteristics 2 and 3 a disjoint pair has J = W at every N >= 2 rho - 1. In characteristic 2, for K >= 2, a disjoint pair of nonempty sets has the common surviving killer x_1a x_2b, a in A, b in B.",
+        "assessment": "ASSESSMENT-PENDING",
+        "record": "[Disjoint pair killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-disjoint-partition-kernels)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Gives the value of a in cor:partition-transfer-every-k for partition errors outside characteristic 2, locating every common surviving killer of degree <= K where a transfer has room, and shows by a sum of the errors that disjoint pairs have none at every N >= 2 rho - 1 outside characteristics 2 and 3, against a killer in characteristic 2.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": "Characteristic 3 without room for disjoint pairs, the case only the six-pigeon F_3 computation answers."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:disjoint-pair-kernels-f3",
+        "summary": "Exact F_2 and F_3 computation (basis_kernels.py, the spanning set of C/H from the IPS basis: x_t times a nonempty product of pigeon axioms, t dancing, |t| plus the number of factors <= D) on the functional pigeonhole system with 6 pigeons and 5 holes, D = 3, K = 2: dim W = 276 over both fields; for E_A with A = {0, 1} the single kernel in V_2 is 332 over F_2 and 290 over F_3; the disjoint pair A = {0, 1}, B = {2, 3} has J = 300 over F_2 and J = 276 = dim W over F_3; the overlapping pair {0, 1}, {0, 2} has J = 290 over F_2 and 278 over F_3. The quotient of the matching span by C/H has dimension equal to the number of dancing matchings (470), and the F_2 figures reproduce check:representative-intersection-kernels. The board lies outside the room of prop:partition-common-kernels (a), and its part (d) excludes characteristic 3; other boards and other K are not computed.",
+        "assessment": "ASSESSMENT-PENDING",
+        "record": "[Disjoint pair killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-disjoint-partition-kernels)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The disjoint pair outside the transfer's room in characteristic 3, where a common killer could come only from the pigeon axioms: none.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": "Use as the smallest instance of a no-room transfer for disjoint pairs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:partition-transfer-every-k",
+        "summary": "Partition transfer at every K: on the functional pigeonhole system over any field, with two distinct pigeons 1, 2 among any number, N holes, D <= ceil(N/2), 1 <= K <= D - 1 and rho = max(2K - 1, K + 2): if N - |A| >= rho, Ann_C(E_A) cap V_K = Ann_H(E_A + Q_2) cap V_K + C cap V_K, and if |A| >= rho the same with E_A + Q_1, so the single excess of E_A is 0; for partition errors E_{A_1}..E_{A_r} with representatives R_i = E_{A_i} + Q_2 or + Q_1 (edges in L_i = A_i or its complement) and N - |L_1 cup ... cup L_r| >= rho, the common kernel modulo C is the intersection of the Ann_H(R_i) cap V_K plus C cap V_K, so dim J = a, a the largest over choices of one representative per error of their domain common kernel plus C cap V_K. At the top degree D = ceil(N/2) = K + 1 with N <= 8, every E_A with |A| <= floor(N/2) - 1 or |A| >= ceil(N/2) + 1 has single excess 0. Proof: E_A - (E_A + Q_2) is a pigeon axiom, and lem:low-hole-linear-transfer with P = {1, 2}.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections (pair remark, top-degree labels, the a <= dim J step); its top-degree reading and board checks at n = 3 to 6 confirmed in a follow-up.",
+        "record": "[Low-hole transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-low-hole-transfer)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Proves the single-error side of the window comparison at every K for partition errors away from the middle, dim J = a for sets of them with few holes in all, and the only-if direction of conj:partition-excess-middle at n <= 8.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": "The remaining pair orbits at seven pigeons with a zero-excess member, outside its range there."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Partition killer degree: new relationship with thm:partition-killer-degree. Disjoint pair killers: new relationship with prop:partition-common-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "thm:partition-killer-degree",
+        "summary": "Partition killer degree: on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with at least two pigeons, two distinct ones written 1 and 2, N holes and D <= ceil(N/2), for the partition error E_A = sum_{j in A} x_1j + sum_{j not in A} x_2j with 1 <= |A| <= N - 1 and D >= 2, the least degree K <= D - 1 of a surviving killer (u in V_K outside the degree-D closure C with u E_A in C) is: (a) 1 in characteristic 2, killer sum_{j in A}(x_1j + x_2j), E_A + Q_2 being idempotent modulo the hole and functionality closure H; (b) 1 in every characteristic when A = {j} (killer x_2j) or A's complement is {h} (killer x_1h); (c) in characteristic other than 2, with 2 <= |A| <= N - 2 and N - |A| >= 3 or |A| >= 3, no linear killer survives (cor:partition-transfer-every-k at K = 1 and an evaluation on partial matchings); (d) in characteristic other than 2, with 2 <= |A| <= N - 2 and D >= 3, it is 2, killer the monomial x_1h x_2j, h not in A, j in A, which kills in every field; (e) in characteristic other than 2, from D >= 3, two partition errors E_A, E_B with A and B meeting and not covering the holes, one of them of size between 2 and N - 2, have least common surviving killer degree 2, by x_1h x_2j with j in A cap B, h outside A cup B.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer with corrections; its monomial killer and part (e) are the reviewer's, both checked in its follow-up, which also found (e)'s size condition needed for one error only.",
+        "record": "[Partition killer degree](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-partition-killer-degree)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "An exact surviving annihilator degree in a proper closure for linear errors that are not monomials, and its dependence on the characteristic, against which a filtered bound must be checked.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": "The disjoint pair at six pigeons and five holes, D = 3, K = 2, in characteristic other than 2."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Disjoint pair killers: new relationship with prop:partition-common-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-partition-killer-degree"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:idempotent-common-denominator",
+        "summary": "Over a commutative coefficient ring, let C be a degree-D pseudoideal and w_1..w_r polynomials. If s has degree <=sigma, s w_i - w_i lies in C for every i and s p lies in C, then f=1-s kills every w_i and f p - p lies in C, so f preserves p modulo C; a sufficient case is s = sum_i a_i w_i with w_i p in C and deg a_i + deg w_i + deg p <= D, and then s^2 = s modulo C when deg a_i + sigma + deg w_i <= D. Over a field, if C is the degree-D part of the vanishing ideal of a finite X and k <= min(D - max deg w_i, D - deg p), a polynomial f of degree <=k kills every w_i with fp outside C exactly when f vanishes on the union Z of the w_i's supports on X and not at every point of supp(p) minus Z; the first such degree is an interpolation degree on X. On the cube 1-s is the reduced product of denominators; for pigeonhole hole factors it is the empty-column indicator.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; the general form, the (a)-(b) gap and the comparison with the reduced product are its corrections.",
+        "record": "[Idempotent common denominators](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-idempotent-denominator)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Gives a survival clause for idempotent common killers and the exact first surviving degree in domain models; for Pang's defects reduces a cheap common killer to a cheap OR of the inputs.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": "Look for relations among Pang's inputs that make their OR cheap modulo the closure."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Family killers: new relationship with lem:pang-family-killer. Block-local killers and idempotents: new relationship with lem:block-additive-degree. Partition killer degree: new relationship with thm:partition-killer-degree. Disjoint pair killers: new relationship with prop:partition-common-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-idempotent-denominator"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:representative-intersection-kernels",
+        "summary": "Exact F_2 computation (mixing_pairs.py, mixing_domination.py, mixing_pairs_65.py, dims_65.py, mixing_pairs_54.py, mixing_pairs_76.py with tools/pc_closure.py) on the functional pigeonhole system, comparing for pairs of errors the common kernel J modulo the closure C with a (the best single pair of representatives modulo span{Q_i}: domain common kernel plus W = C cap V_K), b (the sum over representative pairs) and I (the intersection of the per-error representative sums). At 4 pigeons, 3 holes, D = 2, K = 1, on the 33 non-congruent pairs of the ten positive-excess errors of check:top-degree-partition-kernels: dim J = 5 > 4 = dim W, a = b = 4, I = 5, stacked rank 8 below the capacity 9 with summed ranks 12, and no s of degree <= 1 has Ann_C(s) cap V_1 = J (8191 tried). At 6 pigeons, 5 holes, D = 3, K = 2, partition errors with |A| in {2,3}, on the six unordered non-congruent orbits under the holes' symmetry: J = I exceeds b by 4 or 8 (300 vs 296, 290 vs 282), while a = 292 or 282 > 276 = dim W; dim V_2 = 466, ranks 134, capacity 190, stacked ranks 166 and 176. At 5 pigeons, 4 holes, D = 2, K = 1, |A| = 2, on the non-congruent orbit: dim J = 6, a = b = 5 = dim W, I = 6; dim V_1 = 21, ranks 13, capacity 16, stacked rank 15: the intersection alone gives the survivor. At 7 pigeons, 6 holes, D = 3, K = 2, |A| = 3, on the two non-congruent orbits, dim J = a = b = I = 479 > 469 = dim W (dim V_2 = 904, ranks 362, capacity 435, stacked rank 425, mixing_pairs_76.py): one pair of representatives explains every common kernel. Domination at 5, 6 and 7 pigeons is not tested.",
+        "assessment": "Exact computation; the four-pigeon figures reproduced by the reviewer's independent computation and every script checked by the sole fresh-context medium reviewer, which re-ran none after its second stage; domination tested at four pigeons only.",
+        "record": "[Window review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-window-review)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The window review's evidence that common kernels of pairs exceed every sum over representative pairs at three boards of four, certifying selection alone at two of them.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": "Seven pigeons and six holes at |A| = 2 and 1: single excess, then pairs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Partition sizes: new relationship with check:partition-sizes-seven-pigeons. Low-hole transfer: new relationship with cor:partition-transfer-every-k. Disjoint pair killers: new relationship with check:disjoint-pair-kernels-f3, prop:partition-common-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:admissible-numbering-transfer",
+        "summary": "Admissible numbering transfer: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number m of pigeons and N >= 1 holes, D <= ceil(N/2), C the degree-D PC closure of all axioms and H that of the hole and functionality axioms alone: if a set F of monomial errors with K+|E|<=D has one numbering of pigeons and holes in which, for every matching E in F and every dance-admissible x_t in T_K cap B_K (Impagliazzo-Pudlak-Sgall basis) with t cup E a matching, x_{t cup E} is in B_D, then the common kernel of the x_E in V_K modulo C equals the common kernel modulo H plus C cap V_K. Equivalently the IPS projection R satisfies R(x_E r) = x_E r modulo H on its image.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer in two follow-ups; the criterion is sufficient, not necessary, and needs the union of the errors' hole sets to miss a hole.",
+        "record": "[Functional killer transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-functional-killer-transfer)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Gives the joint transfer conjectures for any error set with one admissible numbering, a sufficient condition.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": "Numbering search for the chain, shared and diagonal sets at 6x5."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Dense linear kernels: new relationship with conj:linear-kernel-transfer, lem:closure-degree-locality. Two-family survival test: new relationship with check:pang-family-kernels, conj:pang-family-kernel-transfer. Linear numbering transfer: new relationship with lem:polynomial-numbering-transfer. Separated-family kernels: new relationship with cor:separated-family-kernels. Low-hole transfer: new relationship with lem:low-hole-linear-transfer. Partition killer degree: new relationship with thm:partition-killer-degree. Disjoint pair killers: new relationship with check:disjoint-pair-kernels-f3.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-functional-killer-transfer"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:low-hole-linear-transfer",
+        "summary": "Low-hole linear transfer: over any field, on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with any number of pigeons and N holes, for D <= ceil(N/2) and K + 1 <= D, a set F of polynomials of degree <= 1 whose edges lie in a set L of holes and on a set P of pigeons with N - |L| >= max(2K - 1, K + 1 + min(K, |P| - 1)) has its common kernel in V_K modulo the degree-D closure C equal to its common kernel modulo the hole and functionality closure H plus C cap V_K; in particular N - |L| >= 2K + 1 suffices for every P, and max(2K - 1, K + 2) for edges on two pigeons. Proof: lem:polynomial-numbering-transfer with L's holes ranked lowest and P's pigeons last; for an edge (p, j) and a matching t with a dance, p moves at its turn to a hole above j holding no pigeon and no target of t's dance (at most K + min(K, |P| - 1) excluded), and the one pigeon of t targeting j, if it moves before p, is re-targeted (at most 2K - 1 excluded). With an arbitrary pigeon order the construction needs 2K + 1, exactly. At K = 1 it contains cor:linear-error-transfer's in-particular clause.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer; its pigeons-last room is the reviewer's suggestion, its count and exactness checked in the reviewer's follow-up.",
+        "record": "[Low-hole transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-low-hole-transfer)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Extends the K = 1 linear transfer to every K, so linear errors with edges in few holes, and sets of them, carry no closure killer beyond their representatives.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": "The re-target bound 2K - 1 at K >= 4, by an augmenting-chain dance."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Disjoint pair killers: new relationship with prop:partition-common-kernels.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-17-low-hole-transfer"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "prop:partition-common-kernels::depends_on::cor:partition-transfer-every-k",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:partition-transfer-every-k",
+        "locator": null
+      },
+      "scope": "Its common-kernel clause with the Q_2 representatives, edges in U.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its common-kernel clause with the Q_2 representatives, edges in U."
+      }
+    },
+    {
+      "id": "prop:partition-common-kernels::depends_on::thm:partition-killer-degree",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:partition-killer-degree",
+        "locator": null
+      },
+      "scope": "Survival of x_1h x_2j in part (c), as in its part (d).",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Survival of x_1h x_2j in part (c), as in its part (d)."
+      }
+    },
+    {
+      "id": "prop:partition-common-kernels::cites::lem:idempotent-common-denominator",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:idempotent-common-denominator",
+        "locator": null
+      },
+      "scope": "The evaluation on partial matchings is its part (b) with p = 1.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The evaluation on partial matchings is its part (b) with p = 1."
+      }
+    },
+    {
+      "id": "prop:partition-common-kernels::cites::check:representative-intersection-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:representative-intersection-kernels",
+        "locator": null
+      },
+      "scope": "Its F_2 survivor at the disjoint orbit (J = I = 300 > b > a > W) is absent over F_3 on the same board.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its F_2 survivor at the disjoint orbit (J = I = 300 > b > a > W) is absent over F_3 on the same board."
+      }
+    },
+    {
+      "id": "check:disjoint-pair-kernels-f3::depends_on::lem:admissible-numbering-transfer",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "check:disjoint-pair-kernels-f3",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:admissible-numbering-transfer",
+        "locator": null
+      },
+      "scope": "The description of C as H plus the lift of K_D, from which the spanning set is built.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The description of C as H plus the lift of K_D, from which the spanning set is built."
+      }
+    },
+    {
+      "id": "check:disjoint-pair-kernels-f3::cites::check:representative-intersection-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:disjoint-pair-kernels-f3",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "check:representative-intersection-kernels",
+        "locator": null
+      },
+      "scope": "Its F_2 figures at six pigeons, reproduced as controls.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Its F_2 figures at six pigeons, reproduced as controls."
+      }
+    },
+    {
+      "id": "check:disjoint-pair-kernels-f3::cites::prop:partition-common-kernels",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:disjoint-pair-kernels-f3",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "scope": "The board lies outside part (a)'s room (1 against 4) and part (d) excludes characteristic 3.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "The board lies outside part (a)'s room (1 against 4) and part (d) excludes characteristic 3."
+      }
+    },
+    {
+      "id": "prop:partition-common-kernels::depends_on::lem:low-hole-linear-transfer",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:partition-common-kernels",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:low-hole-linear-transfer",
+        "locator": null
+      },
+      "scope": "Part (d), applied to the sum of the two errors.",
+      "evidence": [
+        "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "a8c05efbe62d022f44c110af00931343cd5a8abf",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code with sole fresh-context medium reviewer",
+        "note": "Part (d), applied to the sum of the two errors."
+      }
+    }
+  ],
+  "topic_definitions": []
+}

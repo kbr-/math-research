@@ -1,0 +1,86 @@
+{
+  "source": {
+    "record": "[Disjoint pair killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-disjoint-partition-kernels)",
+    "label": "Disjoint pair killers",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-disjoint-partition-kernels"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "prop:partition-common-kernels",
+      "summary": "Partition common kernels: on the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_h x_ih, multilinear ring) with m >= 2 pigeons, two distinct ones written 1 and 2, N holes, 1 <= K < D <= ceil(N/2), rho = max(2K - 1, K + 2), W = C cap V_K, C the degree-D closure, for partition errors E_{A_i} = sum_{j in A_i} x_1j + sum_{j not in A_i} x_2j, i = 1..r, r >= 1, with union U and intersection I, and J the intersection of the Ann_C(E_{A_i}) cap V_K: (a) in characteristic other than 2, if N - |U| >= rho, J is W plus the u in V_K vanishing at every partial matching outside {pigeon 2 matched in I, pigeon 1 unmatched or matched to a hole of U^c}, so J = W when I is empty; more generally, for any choice of representatives E_{A_i} + Q_2 (edges in A_i) or E_{A_i} + Q_1 (edges in A_i^c) with N minus the size of the union of their edge sets >= rho, J is W plus the u vanishing off the intersection of their zero sets ({2 in A, 1 not in A} and {1 in A^c, 2 not in A^c}), so for two disjoint sets J = W also when |A| >= rho or |B| >= rho; (b) in characteristic other than 2, if |I| >= rho, the same with pigeons 1, 2 exchanged and the sets complemented, so J = W when U is all holes; (c) in every characteristic, if I is nonempty, U is not all holes and K >= 2, x_1h x_2j with j in I, h not in U is a common surviving killer; (d) in characteristic other than 2 and 3, for two disjoint sets with |A cup B| >= rho, J = W, through E_A + E_B = E_{A cup B} + E_{A cap B} and lem:low-hole-linear-transfer on F = 2 + sum_{j not in A cup B}(x_2j - x_1j); so outside characteristics 2 and 3 a disjoint pair has J = W at every N >= 2 rho - 1. In characteristic 2, for K >= 2, a disjoint pair of nonempty sets has the common surviving killer x_1a x_2b, a in A, b in B.",
+      "assessment": "ASSESSMENT-PENDING",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Gives the value of a in cor:partition-transfer-every-k for partition errors outside characteristic 2, locating every common surviving killer of degree <= K where a transfer has room, and shows by a sum of the errors that disjoint pairs have none at every N >= 2 rho - 1 outside characteristics 2 and 3, against a killer in characteristic 2.",
+      "next_action": "Characteristic 3 without room for disjoint pairs, the case only the six-pigeon F_3 computation answers.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:disjoint-pair-kernels-f3",
+      "summary": "Exact F_2 and F_3 computation (basis_kernels.py, the spanning set of C/H from the IPS basis: x_t times a nonempty product of pigeon axioms, t dancing, |t| plus the number of factors <= D) on the functional pigeonhole system with 6 pigeons and 5 holes, D = 3, K = 2: dim W = 276 over both fields; for E_A with A = {0, 1} the single kernel in V_2 is 332 over F_2 and 290 over F_3; the disjoint pair A = {0, 1}, B = {2, 3} has J = 300 over F_2 and J = 276 = dim W over F_3; the overlapping pair {0, 1}, {0, 2} has J = 290 over F_2 and 278 over F_3. The quotient of the matching span by C/H has dimension equal to the number of dancing matchings (470), and the F_2 figures reproduce check:representative-intersection-kernels. The board lies outside the room of prop:partition-common-kernels (a), and its part (d) excludes characteristic 3; other boards and other K are not computed.",
+      "assessment": "ASSESSMENT-PENDING",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The disjoint pair outside the transfer's room in characteristic 3, where a common killer could come only from the pigeon axioms: none.",
+      "next_action": "Use as the smallest instance of a no-room transfer for disjoint pairs.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "prop:partition-common-kernels",
+      "depends_on",
+      "cor:partition-transfer-every-k",
+      "Its common-kernel clause with the Q_2 representatives, edges in U."
+    ],
+    [
+      "prop:partition-common-kernels",
+      "depends_on",
+      "thm:partition-killer-degree",
+      "Survival of x_1h x_2j in part (c), as in its part (d)."
+    ],
+    [
+      "prop:partition-common-kernels",
+      "cites",
+      "lem:idempotent-common-denominator",
+      "The evaluation on partial matchings is its part (b) with p = 1."
+    ],
+    [
+      "prop:partition-common-kernels",
+      "cites",
+      "check:representative-intersection-kernels",
+      "Its F_2 survivor at the disjoint orbit (J = I = 300 > b > a > W) is absent over F_3 on the same board."
+    ],
+    [
+      "check:disjoint-pair-kernels-f3",
+      "depends_on",
+      "lem:admissible-numbering-transfer",
+      "The description of C as H plus the lift of K_D, from which the spanning set is built."
+    ],
+    [
+      "check:disjoint-pair-kernels-f3",
+      "cites",
+      "check:representative-intersection-kernels",
+      "Its F_2 figures at six pigeons, reproduced as controls."
+    ],
+    [
+      "check:disjoint-pair-kernels-f3",
+      "cites",
+      "prop:partition-common-kernels",
+      "The board lies outside part (a)'s room (1 against 4) and part (d) excludes characteristic 3."
+    ],
+    [
+      "prop:partition-common-kernels",
+      "depends_on",
+      "lem:low-hole-linear-transfer",
+      "Part (d), applied to the sum of the two errors."
+    ]
+  ]
+}
