@@ -357,11 +357,13 @@ AGENTS.md"):
   setting the earlier statement's own words beside the new one, and choose the weakest relation both
   support: a statement true of its own method is not made false by a better method; a one-sided
   bound is summarized as a bound or a sufficient condition, never with "is", "equals" or "reduces
-  to". A question is called a restatement of a wider one only beside the construction that carries
-  every member of the wider class to the property asked about, with its cost: what a narrower class
-  has is not yet what every member can be given (17 October 2026: an item was closed from what
-  matched images share with an initial segment, before the envelope certificate that gives it to
-  every certificate was cited).
+  to". A question is called a restatement of a wider one, or the same question as another, or an
+  item merged into another for its mathematics, only beside the construction that carries every
+  member of the wider class to the property asked about, with its cost (17 October 2026: a count
+  argument was merged into a mixed-level question before the counting step over levels and its
+  factor were written): what a narrower class has is not yet what every member can be given (17
+  October 2026: an item was closed from what matched images share with an initial segment, before
+  the envelope certificate that gives it to every certificate was cited).
 - A condition taken from a record (what a lemma covers, what a numbering needs, when a test applies)
   is written with the record's own sentence quoted beside it, never restated from the gist kept
   while reading: a paraphrase keeps the condition and loses which way it runs (17 October 2026: a
