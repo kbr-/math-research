@@ -109,6 +109,18 @@ def refuse_unbuilt_obstacle(entry):
                          'not make any attempt to construct this?")')
 
 
+def refuse_off_route(source, entry, ask=None):
+    """A research entry of a notebook whose goal is open states its Shortest route and, read by the route judge
+    (tools/route_judge.py, Haiku), takes it or says why not (user, 17 October 2026: "When you identify a direct
+    shortest route above all else, you prioritize it above all else"). The judge's outage never blocks."""
+    if 'data-kind="research"' not in entry[:600] or not goal_open(source):
+        return
+    import route_judge
+    reason = route_judge.refusal(entry, source, **({'ask': ask} if ask else {}))
+    if reason:
+        raise ValueError(reason)
+
+
 NONTRIVIAL = re.compile(r'Nontrivial because[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
 
 
@@ -991,6 +1003,7 @@ def main():
         refuse_one_function_plainest(args.entry.read_text())
         refuse_unapplied_matches(path.read_text(), args.entry.read_text(), home=home_of(path))
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
+        refuse_off_route(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
         refuse_item_history(result)

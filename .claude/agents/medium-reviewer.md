@@ -115,10 +115,16 @@ cheapest form that passes it (another command for a refused one, a queued item f
 citation of the rule that failed, an exception list fitted to the cases at hand), asked of each
 answer: does it do the job its rule names; a rule or check placed in a file whose own statement of
 its scope does not cover it (a shared rule in CLAUDE.md, a goal's rule in AGENTS.md, a tool's
-behaviour only in prose), read from that file's opening lines. Give each finding with its location,
-or write "no findings". End the audit with "Strength count: N", the number of sentences outside the
-proofs (title, status, bearing, decision, follow-up, commit message) whose claim is stronger than
-its source in the draft, so that the pattern is counted per entry.
+behaviour only in prose), read from that file's opening lines; and orbiting: whether the agent has
+already identified a direct construction or shortest path toward the goal (in this draft, a review's
+Obstacle, a Proposed next step, a queued item) and keeps doing work around the goal instead (one
+more exclusion, a side lemma, a stronger convenience) without a concrete reason that work must come
+first. Exploring the field is legitimate while no direct path is known; once one is named, say so
+under "Orbiting" with the path's location and what the draft did instead (user, 17 October 2026).
+Give each finding with its location, or write "no findings". End the audit with "Strength count: N",
+the number of sentences outside the proofs (title, status, bearing, decision, follow-up, commit
+message) whose claim is stronger than its source in the draft, so that the pattern is counted per
+entry.
 
 Report a verdict (pass, pass with corrections, or fail) followed by short bullets: each concrete gap
 or error with the exact location and the change required, and each unused hypothesis. Then, under a

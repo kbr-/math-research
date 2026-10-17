@@ -297,6 +297,17 @@ AGENTS.md"):
   before it is said to bear on the question or to choose the next direction (17 October 2026: a cell
   scheme's stop was read as forcing a refutation, while the per-level counts reduced the instance to
   a repair).
+- **Shortest route first.** Once the shortest direct route to the goal is identified, it comes
+  before everything else; work that orbits the goal (one more exclusion, a side lemma, a stronger
+  convenience) waits, since time and tokens are finite (user, 17 October 2026: "When you identify a
+  direct shortest route above all else, you prioritize it above all else. You do not keep orbiting
+  around the goal and producing math just for the sake of producing math."). Exploring the field,
+  obstructions included, is right while no direct path is known; once one is identified it is acted
+  on at once (user, same day). Every research entry names that route in a `<strong>Shortest
+  route.</strong>` paragraph and takes it, or writes "Not taken" and the concrete reason;
+  `tools/notebook-append.py` refuses an entry without the paragraph, and a Sonnet judge
+  (`tools/route_judge.py`; Haiku missed the prompting case) reads each entry against the living
+  sections and refuses a detour that does not say why.
 - When the record's obstructions name the mechanism a proof needs and no recorded construction has
   it, the next cycles build a candidate with that mechanism and test it, before any further class is
   excluded: an exclusion narrows the search, and only a construction can reach the goal (user, 17
