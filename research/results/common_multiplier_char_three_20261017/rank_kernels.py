@@ -33,6 +33,7 @@ Parallel use: FFPACK's rank runs on OpenBLAS threads; the driver is one process 
 """
 import argparse
 import importlib.util
+import itertools
 import json
 import pathlib
 import subprocess
@@ -54,19 +55,39 @@ def rank(entries, rows, cols, p, binary, scratch):
     return int(subprocess.run([binary, str(path)], check=True, capture_output=True, text=True).stdout)
 
 
+def product_with_axioms(t, pigeons):
+    f = {t: 1}
+    for i in pigeons:
+        f = bk.poly_mul(f, bk.q(i))
+    return f
+
+
+def generators_of(t, m, D):
+    free = [i for i in range(m) if i not in dict(t)]
+    sets = [Z for z in range(1, D - len(t) + 1) for Z in itertools.combinations(free, z)]
+    return [product_with_axioms(t, Z) for Z in sets]
+
+
 def generators(m, n, D, index):
     rows = []
     for t in index:
-        if not bk.dances(t):
-            continue
-        free = [i for i in range(m) if i not in dict(t)]
-        for z in range(1, D - len(t) + 1):
-            for Z in __import__('itertools').combinations(free, z):
-                f = {t: 1}
-                for i in Z:
-                    f = bk.poly_mul(f, bk.q(i))
-                rows.append(f)
+        if bk.dances(t):
+            rows.extend(generators_of(t, m, D))
     return rows
+
+
+def product_entries(row, t, errors, cols, index):
+    entries = []
+    for b, E in enumerate(errors):
+        entries.extend((row, b * cols + index[mono], c) for mono, c in bk.poly_mul({t: 1}, E).items())
+    return entries
+
+
+def block_entries(g_entries, r, gens, cols):
+    entries = []
+    for b in range(r):
+        entries.extend((b * gens + i, b * cols + j, v) for i, j, v in g_entries)
+    return entries
 
 
 def run(p, m, n, D, K, errors_sets, binary, scratch):
@@ -81,12 +102,10 @@ def run(p, m, n, D, K, errors_sets, binary, scratch):
 
     def kernel(errors):
         r = len(errors)
-        entries = [(b * len(gens) + i, b * cols + j, v) for b in range(r) for i, j, v in g_entries]
+        entries = block_entries(g_entries, r, len(gens), cols)
         base = r * len(gens)
         for row, t in enumerate(tk):
-            for b, E in enumerate(errors):
-                for mono, c in bk.poly_mul({t: 1}, E).items():
-                    entries.append((base + row, b * cols + index[mono], c))
+            entries.extend(product_entries(base + row, t, errors, cols, index))
         return len(tk) - (rank(entries, base + len(tk), r * cols, p, binary, scratch) - r * rank_g)
 
     out = {'p': p, 'pigeons': m, 'holes': n, 'D': D, 'K': K, 'generators': len(gens), 'columns': cols,
