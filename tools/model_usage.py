@@ -542,6 +542,11 @@ def cycle(events, root=ROOT, env=None, prices=None, claude=None, codex=None, now
         if monthly is not None:
             weekly = monthly * 12 / 52
             limit.update(plan=plan, usd_per_month=monthly, usd=round(limit['share_percent'] / 100 * weekly, 4))
+            # each row's part of it, by its API-price cost; a Codex cycle's judge calls bill Claude's plan instead
+            for row in result['rows']:
+                other = (agent == 'Codex' and row['effort'] == 'judge') or (row['unpriced_tokens'] and not row['usd'])
+                row['plan_usd'] = None if other or not weight else round(
+                    limit['share_percent'] / 100 * weekly * row['usd'] / weight, 6)
     if note:
         limit['note'] = note
     result['limit'] = limit
@@ -576,12 +581,18 @@ def table_html(use):
             for row in use['rows']]
     totals = {kind: sum(row['tokens'][kind] for row in use['rows']) for kind, _ in COLUMNS}
     head = ''.join(f'<th scope="col">{label}</th>' for _, label in COLUMNS)
+    limit, plan_head = use.get('limit') or {}, ''
+    if 'usd' in limit:  # the plan's price of each row: its part of the cycle's share of the weekly limit
+        plan_head = '<th scope="col">On the plan</th>'
+        rows = [line[:-len('</tr>')] + cell('—' if row.get('plan_usd') is None else usd_text(row['plan_usd']))
+                + '</tr>' for line, row in zip(rows, use['rows'])]
     return '\n'.join(['<table class="timing-table model-use-table">', '<caption>Model use (tokens)</caption>',
                       f'<thead><tr><th scope="col">Model and effort</th>{head}<th scope="col">All tokens</th>'
-                      '<th scope="col">At API prices</th></tr></thead>', '<tbody>',
+                      f'<th scope="col">At API prices</th>{plan_head}</tr></thead>', '<tbody>',
                       '<tr><th scope="row">Total</th>'
                       + ''.join(cell(tokens_text(totals[kind]), True) for kind, _ in COLUMNS)
-                      + cell(tokens_text(sum(totals.values())), True) + cell(usd_text(use['usd']), True) + '</tr>',
+                      + cell(tokens_text(sum(totals.values())), True) + cell(usd_text(use['usd']), True)
+                      + (cell(usd_text(limit['usd']), True) if 'usd' in limit else '') + '</tr>',
                       *rows, '</tbody></table>'])
 
 

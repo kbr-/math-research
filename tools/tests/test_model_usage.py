@@ -137,6 +137,14 @@ class ClaudeCycleTest(Fixture):
         self.assertAlmostEqual(limit['share_percent'], 3 * 0.457774 / 1.258774, places=4)
         self.assertAlmostEqual(limit['usd'], 3 * 0.457774 / 1.258774 / 100 * 200 * 12 / 52, places=4)
         self.assertEqual(limit['plan'], 'Max 20x')
+        # each row's plan dollars: its part, by API price, of the cycle's (m1: 0.03804 of 0.457774)
+        rows = {(row['model'], row['effort']): row for row in self.run_cycle()['rows']}
+        cycle_usd = 3 * 0.457774 / 1.258774 / 100 * 200 * 12 / 52
+        self.assertAlmostEqual(rows['claude-opus-5-5', 'high']['plan_usd'], cycle_usd * 0.03804 / 0.457774, places=6)
+        # the priced rows' parts add up to the cycle's dollars; the unpriced row has none
+        self.assertAlmostEqual(sum(row['plan_usd'] for row in rows.values() if row['plan_usd'] is not None),
+                               limit['usd'], places=4)
+        self.assertIsNone(rows['mystery-model', 'medium']['plan_usd'])
         self.assertNotIn('note', limit)
 
     def test_an_unreadable_transcript_of_another_session_is_left_out(self):
@@ -200,11 +208,16 @@ class ClaudeCycleTest(Fixture):
         self.assertIn('<caption>Model use (tokens)</caption>', table)
         self.assertIn('<th scope="col">Model and effort</th><th scope="col">Input</th><th scope="col">Cache writes, '
                       '5 min</th><th scope="col">Cache writes, 1 h</th><th scope="col">Cache reads</th>'
-                      '<th scope="col">Output</th><th scope="col">All tokens</th><th scope="col">At API prices</th>', table)
+                      '<th scope="col">Output</th><th scope="col">All tokens</th><th scope="col">At API prices</th>'
+                      '<th scope="col">On the plan</th>', table)
         # m1: input 10, no 5-minute writes, 1000 one-hour writes, 100000 reads, 500 output; 101510 in all.
         self.assertIn('<td>claude-opus-5-5, high</td><td class="elapsed">10</td><td class="elapsed">0</td><td class="elapsed">1 k</td><td class="elapsed">100 k</td><td class="elapsed">500</td><td class="elapsed">102 k</td><td class="elapsed">$0.04</td>', table)
         self.assertIn('<td>claude-opus-5-5, xhigh</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">1.0 M</td><td class="elapsed">0</td><td class="elapsed">1.0 M</td><td class="elapsed">$0.40</td>', table)
         self.assertIn('<td>mystery-model, medium</td><td class="elapsed">5</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">5</td><td class="elapsed">10</td><td class="elapsed">unpriced</td>', table)
+        # the plan column: m4's part of the cycle's $0.50 is 0.4 / 0.457774 of it; an unpriced row has none
+        self.assertIn('<td class="elapsed">$0.40</td><td class="elapsed">$0.44</td></tr>', table)
+        self.assertIn('<td class="elapsed">unpriced</td><td class="elapsed">—</td></tr>', table)
+        self.assertIn('<td class="elapsed"><strong>$0.50</strong></td></tr>', table)
         self.assertEqual(mu.note_text(use), 'Model use: 1.09% of the weekly Claude Code limit (≈ $0.50 of Max 20x at '
                                             "$200 a month), its part by API prices of the limit's 3-point movement, "
                                             'read in whole points.')
@@ -289,6 +302,10 @@ class CodexCycleTest(Fixture):
         # this thread's 0.49025 of the plan's 0.49025 + 0.2; the API-key thread's $2 is left out.
         self.assertAlmostEqual(limit['fraction_of_machine_use'], 0.49025 / 0.69025, places=6)
         self.assertAlmostEqual(limit['usd'], 82 * 0.49025 / 0.69025 / 100 * 200 * 12 / 52, places=4)
+        # the Sol row's part of the Codex plan's dollars; the judge call bills Claude's plan, so it has none
+        cycle_usd = 82 * 0.49025 / 0.69025 / 100 * 200 * 12 / 52
+        self.assertAlmostEqual(rows['gpt-6.1-sol', 'high']['plan_usd'], cycle_usd * 0.455 / 0.49025, places=5)
+        self.assertIsNone(rows['claude-haiku-4-5-20251001', 'judge']['plan_usd'])
 
 
 class ReadingTest(unittest.TestCase):
