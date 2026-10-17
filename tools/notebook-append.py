@@ -107,6 +107,27 @@ def refuse_trivial_smallest_case(entry):
                          'attempts are first tried on their smallest nontrivial instance)')
 
 
+UNCOMPUTED = re.compile(r'\bnot\s+(?:yet\s+)?(?:computed|tried|run|checked|attempted)\b'
+                        r'|\b(?:remains?\s+)?to\s+be\s+(?:computed|tried|checked)\b'
+                        r'|\bremains?\s+to\s+(?:compute|try|check)\b', re.I)
+
+
+def refuse_uncomputed_smallest_case(entry):
+    """A Smallest case reports the try on the instance it names. On 17 October 2026 one named a chain of gadgets
+    "its ratio not yet computed" and the entry called the question open, while a four-level family decided it in a
+    few lines (the reviewer's). Over the record, 8 of 61 Smallest case paragraphs held such a phrase, 6 of them an
+    instance named and left untried (research/provenance/framework/smallest-case-uncomputed-replay-20261017.txt).
+    A sentence that calls itself a judgement, or gives the measured cost of the step it leaves, is exempt."""
+    for given in re.finditer(r'<strong>Smallest case\.</strong>((?:(?!</p>)(?!</li>).)*)', entry, re.S):
+        for sentence in re.split(r'(?<=[.;])\s+', strip_tags(given.group(1))):
+            if UNCOMPUTED.search(sentence) and not re.search(r'\bjudgement\b|\bmeasured\b', sentence, re.I):
+                raise ValueError('the Smallest case leaves its instance uncomputed ("' + sentence.strip()[:160]
+                                 + '"): run the attempt on it, or on a smaller instance that decides it, before '
+                                 'the entry calls the question open; a sentence that is a judgement says so, and '
+                                 'one leaving a step for its cost gives the measured cost (AGENTS.md: next '
+                                 'attempts are first tried on their smallest nontrivial instance)')
+
+
 def refuse_broken_text(what, text):
     if '$' in text:
         # The finisher refuses this too, but only after the entry is in the notebook.
@@ -548,6 +569,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     except ValueError as error:
         raise ValueError(str(error)[0].lower() + str(error)[1:]) from None
     refuse_trivial_smallest_case(entry)
+    refuse_uncomputed_smallest_case(entry)
     entry = with_stand_reason(source, entry, committed, reason)
     own = branch_checks(tools)
     if own:

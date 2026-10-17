@@ -437,6 +437,32 @@ class NotebookAppendTests(unittest.TestCase):
         tool.refuse_trivial_smallest_case(draft.replace('Continuing. Next attempt: the rule over two levels.',
                                                         'Closed: a restatement.'))
 
+    def test_a_smallest_case_leaving_its_instance_uncomputed_is_refused(self):
+        # 17 October 2026: "a chain of t such gadgets ... is the next instance, its ratio not yet computed", and
+        # the entry called the question open while a four-level family decided it
+        draft = ('<article id="a6"><p><strong>Smallest case.</strong> The three-pair example, enumerated: ratio '
+                 '(3+e)/(2+e); a chain of t such gadgets is the next instance, its ratio not yet computed.</p>'
+                 '</article>')
+        with self.assertRaisesRegex(ValueError, 'uncomputed'):
+            tool.refuse_uncomputed_smallest_case(draft)
+        for other in ('the expansion itself was not computed.', 'the per-error dance at K=3 was not tried.',
+                      'which range over C, to be computed.', 'its ratio not yet  computed.',
+                      'its ratio remains to compute.'):
+            with self.assertRaisesRegex(ValueError, 'uncomputed'):
+                tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed.', other))
+        # accepted: the instance computed; a judgement said as one; a step left for its measured cost
+        tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed', 'ratio 1.807 at L = 3'))
+        tool.refuse_uncomputed_smallest_case(draft.replace(
+            'its ratio not yet computed.', 'and, as a judgement not tried here, the strips are where it fails.'))
+        tool.refuse_uncomputed_smallest_case(draft.replace(
+            'its ratio not yet computed.', 'its enumeration not run, measured at 40 minutes for L = 9.'))
+        tool.refuse_uncomputed_smallest_case('<article id="a7"><p>Nothing not computed here.</p></article>')
+        # each phrase family in a legitimate sentence: said as a judgement, or with its measured cost
+        for legit in ('as a judgement, the larger chain remains to compute and is not needed.',
+                      'the K=3 dance is to be checked, as a judgement not bearing on the attempt.',
+                      'the L = 9 chain was not run, its enumeration measured at 40 minutes.'):
+            tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed.', legit))
+
     def test_a_status_line_crediting_a_review_before_the_gate_is_refused(self):
         # 17 October 2026: "with a reviewed correction pass" stood beside a placeholder Verification gate.
         early = ('<article id="a3">\n<p class="entry-meta">Working proof, with a reviewed correction pass.</p>\n'
