@@ -221,6 +221,10 @@ class ClaudeCycleTest(Fixture):
         self.assertEqual(mu.note_text(use), 'Model use: 1.09% of the weekly Claude Code limit (≈ $0.50 of Max 20x at '
                                             "$200 a month), its part by API prices of the limit's 3-point movement, "
                                             'read in whole points.')
+        unpriced_plan = {**use, 'limit': {k: v for k, v in use['limit'].items() if k not in ('usd', 'plan')}}
+        self.assertTrue(mu.note_text(unpriced_plan).endswith('No plan price is set, so no dollars '
+                                                             '(USAGE_LOG_DIR/plans.json).'))
+        self.assertNotIn('On the plan', mu.table_html(unpriced_plan))
         still = {**use, 'limit': {**use['limit'], 'moved_percent': 0.0, 'share_percent': 0.0, 'usd': 0.0}}
         self.assertEqual(mu.note_text(still), 'Model use: the weekly Claude Code limit, read in whole points, did '
                                               'not move during the cycle.')

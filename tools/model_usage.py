@@ -609,8 +609,9 @@ def note_text(use):
     if 'usd' in limit:
         share += f' (≈ {usd_text(limit["usd"])} of {limit["plan"] or "the plan"} at ${limit["usd_per_month"]:g} a month)'
     moved = limit['moved_percent']
+    priceless = '' if 'usd' in limit else ' No plan price is set, so no dollars (USAGE_LOG_DIR/plans.json).'
     return (f'Model use: {share}, its part by API prices of the limit\'s {moved:g}-point movement, read in whole '
-            'points.')
+            'points.' + priceless)
 
 
 def main(argv=None):
