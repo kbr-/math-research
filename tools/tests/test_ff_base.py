@@ -53,6 +53,23 @@ class FfBaseTest(unittest.TestCase):
         self.assertTrue((self.main / 'w').exists())                  # the checked-out worktree moved too
         self.assertEqual(git(self.main, 'status', '--porcelain', '--untracked-files=no'), '')
 
+    def test_a_rebase_that_strands_a_recorded_revision_stops_before_the_fast_forward(self):
+        # A stand-in remap tool: --check fails when the hash in file rev is not an ancestor of HEAD.
+        (self.work / 'tools' / 'remap-revisions.py').write_text(
+            'import subprocess, sys\n'
+            'rev = open("rev").read().strip()\n'
+            'sys.exit(subprocess.run(["git", "merge-base", "--is-ancestor", rev, "HEAD"]).returncode)\n')
+        self.commit(self.work, 'w', 'work commits')
+        (self.work / 'rev').write_text(git(self.work, 'rev-parse', 'HEAD') + '\n')
+        git(self.work, 'add', 'rev', 'tools/remap-revisions.py')
+        git(self.work, 'commit', '-qm', 'claims recorded at the commit before')
+        self.commit(self.main, 'm', 'main moves')
+        before = git(self.main, 'rev-parse', 'main')
+        result = self.ff('main')
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn('Rebased onto main', result.stdout)
+        self.assertIn('remap-revisions.py --match', result.stderr)
+        self.assertEqual(git(self.main, 'rev-parse', 'main'), before)          # the base did not move
     def test_fast_forward_only_when_already_on_top(self):
         self.commit(self.work, 'w', 'work commits')
         result = self.ff('main')

@@ -265,6 +265,16 @@ class BuildTest(unittest.TestCase):
             build(self.empty, self.spec([self.item('lem:a')], rel), 'e' * 40)
         ok = dict(self.item('lem:a'), summary='Extends the first-active substitution lemma; Theorem numbering aside.')
         build(self.empty, self.spec([ok]), 'e' * 40)
+    def test_draft_placeholders_are_rejected(self):
+        from claim_authoring import build
+        item = dict(self.item('lem:a'), assessment='ASSESSMENT-PENDING')
+        with self.assertRaises(ValueError):
+            build(self.empty, self.spec([item]), 'e' * 40)
+        rel = [('lem:a', 'depends_on', 'lem:b', 'TBD')]
+        with self.assertRaises(ValueError):
+            build(self.empty, self.spec([self.item('lem:a')], rel), 'e' * 40)
+        ok = dict(self.item('lem:a'), assessment='Working proof; its review is pending, a status, not a marker.')
+        build(self.empty, self.spec([ok]), 'e' * 40)
     def test_spec_may_define_a_new_topic(self):
         from claim_authoring import build
         topic = {'id': 'fresh-topic', 'title': 'Fresh topic', 'description': 'A topic no fixture defines.'}

@@ -29,12 +29,21 @@ if [ "$rebase" = 1 ] && ! git merge-base --is-ancestor "$branch" HEAD; then
     echo "Not rebased: the worktree has uncommitted changes; commit them first." >&2
     exit 1
   fi
+  orig="$(git rev-parse HEAD)"; oldbase="$(git merge-base "$branch" HEAD)"
   if ! git rebase -q "$branch"; then
     echo "Rebase onto $branch stopped on a conflict: resolve it, run git rebase --continue, then" \
          "tools/ff-base.sh $branch again." >&2
     exit 1
   fi
   echo "Rebased onto $branch."
+  # The rebase rewrites the commits a claim registry's review revisions name (17 October 2026: claims built
+  # at one commit kept its hash after this rebase rewrote it, and the base was fast-forwarded over them).
+  if [ -f tools/remap-revisions.py ] && ! python3 tools/remap-revisions.py --check >/dev/null 2>&1; then
+    echo "Base not fast-forwarded: the rebase left recorded claim revisions that are not ancestors of HEAD." \
+         "Run: python3 tools/remap-revisions.py --match $oldbase..$orig $branch..HEAD, commit the registry," \
+         "then tools/ff-base.sh $branch again." >&2
+    exit 1
+  fi
 fi
 commit="$(git rev-parse HEAD)"
 old="$(git rev-parse "refs/heads/$branch")"

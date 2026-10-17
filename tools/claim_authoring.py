@@ -169,6 +169,10 @@ def _existing_dispositions(claim, targets, extra_note=''):
     return out
 
 
+# A draft's fill-in marker: capitals ending in -PENDING (ASSESSMENT-PENDING, TITLE-PENDING), or a bare TODO/TBD.
+PLACEHOLDER = re.compile(r'\b[A-Z]{2,}(?:-[A-Z]+)*-PENDING\b|\bTODO\b|\bTBD\b')
+
+
 def _spec_texts(spec):
     """The new prose a spec writes into the registry: claim text, relationship scopes, overrides, refresh notes."""
     for item in spec.get('claims', []):
@@ -203,6 +207,11 @@ def build(data, spec, revision):
             'Unexpected claim-spec keys')
     for topic in spec.get('topic_definitions', []):
         require(set(topic) == {'id', 'title', 'description'}, 'A topic definition needs exactly id, title and description')
+    # A draft's fill-in marker reached the registry on 17 October 2026: two claims were registered with the
+    # assessment "ASSESSMENT-PENDING", written while the entry awaited its review and never replaced.
+    unfilled = sorted({mark for text in _spec_texts(spec) for mark in PLACEHOLDER.findall(text)})
+    require(not unfilled, 'Claim text holds draft placeholders ' + ', '.join(unfilled) + ': write the text the '
+            'placeholder stood for (an assessment after the review) before building')
     coded = sorted({code for text in _spec_texts(spec) for code in letter_code_labels(text)})
     require(not coded, 'Claim text names results by letter codes ' + ', '.join(coded) + ': cite them by '
             'descriptive names (Naming results), e.g. "the first-active substitution lemma", not "Lemma FA"')
