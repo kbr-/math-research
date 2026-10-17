@@ -23,6 +23,9 @@ Control: the pair word (1,-1) with its factor sequence reversed, whose matrix by
 [[0,0],[1,0]], so rank 1; the routine must print rank 1 there.
 Refuted by: the reversed control printing rank 2, which would mean the chain count ignores order.
 Possible because: a chain counter that sums over all position pairs, not increasing ones, gives 2.
+Forced by counts: on (1,-1) the matrix is 2 by 2 and the product has 4 factors, so the counts
+allow rank 0, 1 or 2 for both orders (thm:affine-component-ranks gives at most 4 at this
+contiguous cut); neither control's outcome is forced by a count.
 Positive control: the pair word (1,-1) in the order of S, whose matrix by hand is [[1,1],[0,1]];
 the routine must print exactly these entries.
 Baseline: the plainest bound is rank at most the matrix dimension, which decides nothing about
