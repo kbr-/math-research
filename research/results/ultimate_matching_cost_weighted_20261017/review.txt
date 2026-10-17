@@ -1,0 +1,69 @@
+Reviewer: one fresh-context medium reviewer (Claude Code medium-reviewer), brief and files in the
+session's scratch folder cw-review/ (brief.md, draft.html, draft-v2.html, discrete-flow-entry.txt,
+claims.txt, multilevel-chains-entry.txt). Two passes, 17 October 2026, session um-bundles.
+
+FIRST PASS. Verdict: pass with corrections.
+Correctness: proof (a) correct step by step (log(1+v) - log(v/2) <= log 2 + 1/v <= 0.70, 0.70/16 =
+0.04375, so 1.044 holds; 4 sqrt2 sqrt(1.044) = 5.780 <= 5.8; exponent 1/2 - 1/alpha >= 0 justifies
+log(v/2) -> log v, alpha = infinity has exponent 0; per-edge bounds match the record; at most
+2*2^J(2^J - 1) <= 2*4^J inner edges; 1 + 5.8W + 16.4 + 28.4 = 45.8 + 5.8W <= 46 + 6W). Proof (b)
+correct; state the range of M. The (b) hypotheses are narrower than the proof needs: y >= 2e^16 only
+selects edges for W, and the proof works for mixed heights y_k with v_e = sum of y_k; state the
+general version. Refinement checked correct; the implication holds with the record's own constants.
+Nonvacuity: the record's (b) gives 47, not 46; Q must be interior and not adjacent to A; the witness
+exercises only (a), so give a chain witness (Q inside A, layers A_1 = A, A_2 = ... = A_K = Q). Plainest
+bound correct; remove the negative closing sentence ("no such split ... at hand") or give the attempt.
+Open instance: "share near 1/2" rests on an upper bound; with the recorded lower bound psi_4*(t) >=
+t (log t)^(1/4)/(2 sqrt2) and psi_4*(e^16) <= 2.4e^16 the bundled/own ratio is at least about
+(log N)^(1/8)/6.7 and the share at epsilon = 1/rho-bar at least about 1/8; write "bounded below
+(between about 1/8 and 1/2)". The Shortest route's "a third" contradicts it. The window is wrong as
+written: for epsilon > 1/rho-bar own costs must be rescaled, S' ~ 2/(1 - epsilon + epsilon rho-bar),
+and the per-layer Jensen term S' (log N)^(9/16) is at most sqrt(log N) once epsilon >= C (log N)^(-1/16);
+the open window at K = e^((log N)^(3/4)) is (log N)^(-1/4) << epsilon << (log N)^(-1/16), its upper end
+depending on K. "Vanishing share" is too weak (eta = 1/log log N still loses (log N)^(1/8)); replace by
+the exact condition. New mathematics, Bearing, Baseline omit "y bounded"; Not covered must add growing
+y. The Follow-up's Smallest case contradicts its own attempt and is decided by the record (m layers:
+lem:cut-cell-variance-bound (d), lem:multilevel-chain-bound); choose one where layers meet at least two
+bundles. "Writing A_k as the region between Gamma and gamma_k" is an assumption. Owed attempt: the
+spread bound is in effect dropped without a reason.
+Suggestions (unverified): (1) spread the bundles apart one cell per layer, bound the spread chain by the
+nested clause and the remainder in tubes of width m delta_0 by a tube bound for functions of the
+lem:tube-localized-discrepancy kind; gaps: collisions, the tube bound is for unions of cells. (2) Flux
+across open pieces Gamma_t: lem:straight-cut-forced-flux bears on it; nothing found that makes the Jensen
+log run over m for general chains.
+Process audit: title matches the body; inconsistent unsourced figures ("a third", "near 1/2"); the
+window's upper end not asked; Smallest case decided by recorded statements not applied to it; Record
+search in the lemma's own words only (lem:straight-cut-forced-flux, lem:tube-localized-discrepancy
+missed); "which the open instance needs" and "no such split" unsupported; generality given up (one
+height); witness misses the chain clause; the spread attempt moved away from without reason. Strength
+count 7.
+
+FOLLOW-UP PASS (draft-v2). Verdict: pass with corrections.
+Checked and correct: (b) in general form (M >= 1 not used; any M > 0 works); the Nonvacuity witness
+(Q's edges m_e = m, A's edges m_e = 1, cost -> 0, eta (log(my))^(1/4) -> 0, record 47 + 12(log(my))^(1/4),
+log(2e^16) = 16.69 <= 17); the bundled share (((sqrt(log N) + 16)/(2 sqrt(log N) + 33))^(1/4) >= 0.834,
+epsilon r >= 0.124, share >= 1/9; upper end about 1/2); the window's two ends (perimeters P_k >= 1 as
+K << sqrt N); the Follow-up's Plainest bound; the new Smallest case is not decided by the statements it
+names (summing the lemma over the K/m groups pays 46 per group).
+Required: Own statements' "eta bounded below in the window" is false (for (log N)^(-1/4) << epsilon <<
+(log N)^(-1/8), eta -> 0); the reason is W ~ epsilon r (log N)^(1/8) >~ epsilon (log N)^(1/4) -> infinity.
+Shortest route needs "at a bounded height y". New mathematics: "with lem:multilevel-chain-bound's proof,
+its condition on |B| dropped"; the window holds for the instance family only (m, K, y, exact bundles);
+restore the source's "existence ... unchecked" qualifier there and in What it gives. "Nontrivial
+because" argues against the old mechanism; one bundle per layer suffices for the spread attempt.
+Suggestion (unverified): spreading adds about m^2 delta_0 of end edges per bundle, relative cost about
+m delta_0/(l (log N)^(1/8)); the attempt needs l >> m delta_0 or the ends charged separately.
+Process audit: title matches; the existence qualifier dropped; Smallest case shaped by the earlier
+report; figures sourced and checked; no orbiting. Strength count 4.
+
+THIRD PASS (entry-v3.txt, after the append; tube-localized.txt, the registered statement read in full).
+Verdict: pass with corrections. (b) covers cell functions ('(b) a cell function H has the bound with V^0(H) +
+4W sum over W-cells of (max H^+ + max H^-)', for 0 <= k <= j <= l_1); its earlier gap came from a search snippet cut
+after (a) and was wrong. Required: mark V^0 as read (not defined in the statement); write the amplitude count
+(W dyadic in [m delta_0, 2 m delta_0], at most C(l/W + 1) W-cells per tube, amplitude <= m y delta_0, so
+4C(l + W) m y delta_0 per bundle, O(TV) when l >= W); cite lem:cut-cell-variance-bound (b) as the precedent
+composition, (W/delta_0)^2 <= log N at W = 2^(-l_1) about (log N)^(1/2)/4; rewrite the Suggestion checked
+sentence and the Follow-up's first sentence, which still rested on the withdrawn gap. Suggestion (unverified): with
+(b) applied the remainder costs o(sqrt(N log N)); the attempt reduces to collisions and end edges, lemma-first.
+Process audit: title matches; the Meta's rule placed in COMPUTATION_RULES.md said to apply to prose; Prevention
+and Meta without quoted lines; gate lacking this pass; the amplitude step left unchecked. Strength count 1.

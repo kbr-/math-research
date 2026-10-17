@@ -414,7 +414,10 @@ AGENTS.md"):
   factor \((1-x)^t\) was stated for every \(x>0\); at an even \(t\) and \(x>2\) it was false where a
   script's domain error had been read as an empty bound).
 - Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt
-  that failed.
+  that failed. A sentence calling a case undecided or open evaluates each bound it uses in the
+  direction it needs (a lower bound for a quantity it says is large) and computes both ends of any
+  window it states (17 October 2026: a bundled share was read off an upper bound, and a window's
+  upper end was never computed).
 - Write the Record comparison before New mathematics, the title or any sentence calling a result
   new: compare from the record's side (the entries a draft leans on, their dependencies and
   dependents), not from the draft's own wording, and only then decide what is new. The comparison

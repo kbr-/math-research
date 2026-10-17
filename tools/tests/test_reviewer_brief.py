@@ -72,6 +72,24 @@ class ReviewerBriefTest(unittest.TestCase):
             stray.write_text('')
             self.assertIn('no drafted commit message', hook.refusal(call(f'Review {draft} and {stray}.')))
 
+    def test_the_follow_up_s_claims_need_their_statements_in_the_draft_s_folder(self):
+        # 17 October 2026: a draft called lem:tube-localized-discrepancy "stated for unions of cells", its folder
+        # held no statement of it, and the reviewer repeated the error.
+        with tempfile.TemporaryDirectory() as folder:
+            draft = Path(folder) / 'draft.html'
+            draft.write_text('<article id="entry-x" data-kind="research" data-claims="lem:new-bound"><p>'
+                             '<strong>Follow-up.</strong> Continuing. Next attempt: lem:tube-localized-discrepancy '
+                             '(a) on the remainder; lem:new-bound gives the rest.</p></article>')
+            brief = Path(folder) / 'brief.md'
+            brief.write_text('Review draft.html.')
+            self.assertEqual(hook.missing_statements(str(brief)), [(str(draft), ['lem:tube-localized-discrepancy'])])
+            (Path(folder) / 'claims.txt').write_text('lem:tube-localized-discrepancy\n  Statement: On the event ...\n')
+            self.assertEqual(hook.missing_statements(str(brief)), [])
+            # The draft's own claim needs no excerpt, and a draft without a Follow-up is not asked.
+            draft.write_text('<article id="entry-y" data-kind="research" data-claims="lem:new-bound"><p>'
+                             '<strong>Verification gate.</strong> lem:other-claim.</p></article>')
+            self.assertEqual(hook.missing_statements(str(brief)), [])
+
     def test_an_entry_draft_needs_a_record_search_in_the_brief(self):
         # 16 October 2026: two record searches in a row missed a registered result; the reviewer's search found it.
         with tempfile.TemporaryDirectory() as folder:

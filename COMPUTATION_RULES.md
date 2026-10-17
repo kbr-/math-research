@@ -462,7 +462,10 @@ Take every quoted number, case count and sampling grid from saved output, read b
 than from memory; a constant of the computation that a summarizing script uses (a grid size,
 positions per seed) is read there from the generating code or its output, never typed in (17 October
 2026: a summary typed 4^J positions per seed where the rule's grid has 4^(J+1), and printed every
-count four times too small). Keep long runs observable: flush progress, avoid filters that buffer it
+count four times too small). A figure taken from another record or run enters a comparison only with
+its kind (upper bound, lower bound, estimate) beside it, checked against the direction the
+comparison needs (17 October 2026: an upper bound carried from an earlier entry was used where a
+lower bound was needed). Keep long runs observable: flush progress, avoid filters that buffer it
 until completion, and write each completed case to the output file immediately so a timeout
 preserves the finished cases.
 

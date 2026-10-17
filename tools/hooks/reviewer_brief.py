@@ -160,6 +160,46 @@ def named_drafts(text):
     return [path for path in dict.fromkeys(found) if Path(path).is_file()]
 
 
+# A claim the draft's Follow-up relies on, judged by the reviewer from the draft's own words: on 17 October 2026 a
+# draft said lem:tube-localized-discrepancy was "stated for unions of cells", its brief's folder held four other
+# claims' statements and not that one's, and the reviewer repeated the error as a gap of the next attempt; its (b)
+# covers cell functions. notebook-excerpt.py --claims writes "ID" on a line and "  Statement:" on the next.
+CLAIM_ID = re.compile(r'\b(?:lem|thm|cor|prop|conj|ex):[a-z0-9-]+')
+FOLLOW_UP = re.compile(r'<strong>Follow-up\.</strong>(.*?)</p>', re.S)
+
+
+def missing_statements(text):
+    """For each draft the brief or message names: the claims its Follow-up names, other than the draft's own,
+    whose registered statement no .txt or .md file in the draft's folder holds: [(draft, [id, ...]), ...]."""
+    out = []
+    for draft in named_drafts(text):
+        try:
+            body = Path(draft).read_text(errors='replace')
+        except OSError:
+            continue
+        declared = re.search(r'\bdata-claims="([^"]*)"', body)
+        own = set(declared.group(1).split()) if declared else set()
+        named = sorted({c for block in FOLLOW_UP.findall(body) for c in CLAIM_ID.findall(block)} - own)
+        if not named:
+            continue
+        corpus = ''
+        for path in sorted(Path(draft).parent.iterdir())[:WALK_LIMIT]:
+            if path.suffix in ('.txt', '.md') and path.is_file():
+                try:
+                    corpus += path.read_text(errors='replace') + '\n'
+                except OSError:
+                    pass
+        missing = [c for c in named if not re.search(r'(?m)^' + re.escape(c) + r'\s*\n\s*Statement:', corpus)]
+        if missing:
+            out.append((draft, missing))
+    return out
+
+
+STATEMENTS_REASON = ('the draft\'s Follow-up relies on claims whose registered statements are not in its folder: '
+                     '{}. Write them there with tools/notebook-excerpt.py --claims ID ... --out FILE, so the '
+                     'reviewer judges the next attempt on the statements and not on the draft\'s words about them')
+
+
 def premature_reviewed(text):
     """Drafts whose status line says "reviewed" while their Verification gate is still a placeholder: on
     17 October 2026 three entries in a row were sent to their reviewer with that status, and each reviewer had to
@@ -318,6 +358,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         early = premature_reviewed(message)
         if early:
             return PREMATURE_REASON.format(', '.join(early))
+        absent = missing_statements(message)
+        if absent:
+            return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
         stale = stale_files(message, log or block_log.LOG, now)
         return (('the message says ' + ', '.join(stale) + ' was updated, but a call naming it was refused '
                  'after it was last written: read it back, write the update again if it is missing, and say '
@@ -339,6 +382,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     early = premature_reviewed(prompt)
     if early:
         return PREMATURE_REASON.format(', '.join(early))
+    absent = missing_statements(prompt)
+    if absent:
+        return STATEMENTS_REASON.format('; '.join(f'{d}: {", ".join(c)}' for d, c in absent))
     leaks = blind_leaks(prompt, tools.resolve().parent)
     if leaks:
         return ('the brief is for a blind stage, and the folder of its files also holds ' + ', '.join(leaks[:6])

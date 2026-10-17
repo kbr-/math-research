@@ -1,0 +1,35 @@
+{
+ "source": {
+  "record": "[Cost-weighted slope bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-cost-weighted-slopes)",
+  "label": "Cost-weighted slope bound",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-cost-weighted-slopes"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:cost-weighted-slope-bound",
+   "summary": "In the setting of lem:discrete-flow-bound (X_1..X_N i.i.d. uniform on [0,1]^2, one dyadic sequence delta_0 = 2^(-J) >= 4 sqrt(log N/N), D(g) = sum_Q (n_Q - N delta_0^2) g_Q, v_e = |Delta_e g|/delta_0), on the event of its part (a): (a) for every pair alpha in [2,infinity]^2 and every grid function g with sum_e w_e <= 2, w_e = delta_0^2 psi*_alpha_d(e)(v_e/2), |D(g)| <= (3/4) L_0 sqrt(N log N)(46 + 6 sum over edges with v_e >= 2e^16 of w_e (log v_e)^(1/2 - 1/alpha_d(e))); (b) at (4,4) every nested chain g = delta_0 sum_{k <= K} y_k 1_{A_k} (any heights y_k > 0, any K) with sum_e w_e <= 2 has v_e = sum of y_k over the boundaries through e, so (a) applies; at one height y, with m_e the number of boundaries through e and any M >= 1, if the edges with m_e > M carry cost at most eta, |D(g)| <= (3/4) L_0 sqrt(N log N)(46 + 12 (log max{M y, 2e^16})^(1/4) + 6 eta (log max{m_max y, 2e^16})^(1/4)).",
+   "assessment": "Working proof: lem:discrete-flow-bound (a) and its proof's per-edge comparison of psi_2* with psi*_alpha (lem:flow-coarea-level-bound (b)), summed with the per-edge logarithm instead of its maximum; for chains, nesting makes each increment m_e y delta_0. A refinement of lem:discrete-flow-bound (b) with no new step.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The retained chain test's open instance loses only on its bundles: a bundle is charged by the cost it carries, so chains at a bounded height whose bundles carry cost eta with eta (log(m_max y))^(1/4) bounded are at the conjectured order at every number of layers; with lem:multilevel-chain-bound it narrows the record's smallest open case to bundled length fractions between (log N)^(-1/4) and (log N)^(-1/16), without deciding it.",
+   "next_action": "The owed spread bound (reviewer's form, unverified): move each bundle's layers apart one cell per layer, bound the spread chain by the nested clause and the remainder in tubes of width m delta_0 by a tube bound for functions of the form of lem:tube-localized-discrepancy (a).",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  ["lem:cost-weighted-slope-bound", "refines", "lem:discrete-flow-bound", "Implies its (b) with its own constants, W <= 2 max_j (log max{Y,2e^16})^(1/2-1/alpha_j) giving 46 + 12 max_j(...) <= 47 + 12 max_j(...); its proof is (b)'s per-edge comparison summed before the maximum."],
+  ["lem:cost-weighted-slope-bound", "depends_on", "lem:discrete-flow-bound", "Its event and part (a), and the per-edge bounds of its proof of (b)."],
+  ["lem:cost-weighted-slope-bound", "depends_on", "lem:flow-coarea-level-bound", "The per-edge conjugate bounds of its (b)."],
+  ["lem:cost-weighted-slope-bound", "cites", "lem:multilevel-chain-bound", "Decides many-layer chains by sets under a condition on the number of large layers; neither implies the other."],
+  ["lem:cost-weighted-slope-bound", "cites", "lem:cut-cell-variance-bound", "The per-set bound the next attempt uses; neither implies the other."],
+  ["lem:cost-weighted-slope-bound", "cites", "lem:guided-chain-bound", "A guided variant of the per-set chain bound; neither implies the other."],
+  ["lem:cost-weighted-slope-bound", "cites", "conj:conjugate-class-discrepancy", "Proves its discrete X-term at (4,4) for grid functions whose cost-weighted (log slope)^(1/4) is bounded."]
+ ]
+}
