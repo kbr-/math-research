@@ -592,7 +592,21 @@ class DeferredChangeTest(unittest.TestCase):
         # The rewordings tried before the commit (research/results/general_step_review_20261017/deferred-bypass.txt).
         for reply in ('**Meta.** That addition to AGENTS.md comes with the next commit.',
                       '**Meta.** I plan to add it to AGENTS.md.',
-                      '**Meta.** The addition to AGENTS.md is not committed yet.'):
+                      '**Meta.** The addition to AGENTS.md is not committed yet.',
+                      # its reviewer's five probes that the first form passed
+                      '**Meta.** The rule goes into the next commit.',
+                      '**Meta.** The new sentence in AGENTS.md is still uncommitted.',
+                      '**Meta.** It will land with the next commit.',
+                      '**Meta.** I am adding it to AGENTS.md after this reply.',
+                      '**Meta.** The rule is staged for the commit.',
+                      # its reviewer's third probes: the bare word "queued", no preposition, plain future
+                      '**Meta.** The earlier item stays queued; that addition to AGENTS.md waits for this turn\'s commit.',
+                      '**Meta.** I will edit AGENTS.md after the suite passes.',
+                      '**Meta.** The AGENTS.md addition follows later.',
+                      '**Meta.** The sentence will follow in AGENTS.md once the suite passes.',
+                      # its reviewer's fourth probe: a queued build's marker beside a deferral in another sentence
+                      '**Prevention.** Queued as x. Not built in the turn: reason. Also the AGENTS.md addition waits '
+                      'for this turn\'s commit.'):
             self.assertIsNotNone(hook.deferred_block(reply), reply)
 
     def test_legitimate_sentences_with_each_phrase_pass(self):
@@ -601,8 +615,40 @@ class DeferredChangeTest(unittest.TestCase):
                 '**Meta.** The commit check now refuses a message that waits for no review; AGENTS.md says so.',
                 '**Prevention.** The hook will refuse such a reply; its test is in tools/tests/test_stop_checks.py.',
                 '**Meta.** Earlier I said "that addition waits for this turn\'s commit"; it is now committed.',
-                'The build waits for the next commit of the other session. **Review.** Nothing else.'):
+                'The build waits for the next commit of the other session. **Review.** Nothing else.',
+                # its reviewer's three legitimate texts the first form refused, one per phrase
+                '**Prevention.** Queued as guard-quote-check. Not built in the turn: the transcript lacks the text; '
+                'I will build it once the harness logs it.',
+                '**Prevention.** The scratch output is not committed, as the rules require; tools/x.py now checks it.',
+                '**Meta.** The habit was: I will make a decision before reading the record; AGENTS.md now says so.',
+                # its reviewer's fourth probe, refused by the editing-verb clause until a made change was exempt
+                '**Meta.** I will update the habit; AGENTS.md now says so (committed abc).'):
             self.assertIsNone(hook.deferred_block(reply), reply)
+
+    # One accepted sentence per verb the first-person clause matches (AGENTS.md: each phrase a refusing check
+    # matches has a legitimate test case); its reviewer's fourth round found "update" added without one.
+    MADE = {'add': 'I will add nothing: AGENTS.md now says it.', 'write': 'I will write no more; tools/x.py now holds it.',
+            'edit': 'I will edit nothing; AGENTS.md now says so.', 'commit': 'I will commit as one: AGENTS.md now says so.',
+            'build': 'I will build on it; tools/x.py now refuses it.', 'put': 'I will put it plainly: AGENTS.md now says it.',
+            'record': 'I will record that AGENTS.md now says it.', 'change': 'I will change course; AGENTS.md now says so.',
+            'update': 'I will update the habit; AGENTS.md now says so.', 'extend': 'I will extend it: tools/x.py now does.'}
+
+    def test_every_matched_verb_has_an_accepted_sentence(self):
+        import re
+        verbs = re.search(r'\(\?:([a-z|]+)\)', hook.FILE_NAMED).group(1).split('|')
+        self.assertEqual(sorted(verbs), sorted(self.MADE), 'a verb added to the clause needs an accepted sentence here')
+        for verb, sentence in self.MADE.items():
+            self.assertIsNone(hook.deferred_block('**Meta.** ' + sentence), verb)
+
+    def test_a_named_commit_must_exist(self):
+        # Its reviewer: "(committed abc)" exempted any deferral; a named hash is now checked with git.
+        import subprocess
+        self.assertIsNotNone(hook.deferred_block('**Meta.** I will add it to AGENTS.md (committed 0123456789abcdef).'))
+        head = subprocess.run(['git', '-C', str(hook.ROOT), 'rev-parse', '--short=12', 'HEAD'],
+                              capture_output=True, text=True).stdout.strip()
+        # the same sentence, its hash real: the exemption, not the pattern, decides it
+        self.assertIsNotNone(hook.DEFERRED.search(f'I will add it to AGENTS.md (committed {head})'))
+        self.assertIsNone(hook.deferred_block(f'**Meta.** I will add it to AGENTS.md (committed {head}).'))
 
 
 class OfferBlockTest(unittest.TestCase):

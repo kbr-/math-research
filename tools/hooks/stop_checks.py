@@ -654,20 +654,59 @@ CAUGHT_AFTER = re.compile(r"\b(?:falls|fell) under (?:the |an )?(?:existing |rev
 # addition "waits for this turn's commit", and passed the home check because the turn had changed AGENTS.md for
 # another reason (the stand-in review's fifth objection). A queued build is the allowed deferral and says so in
 # other words ("queued", "Not built in the turn"), which this does not match.
+# Its reviewer's probes (17 October 2026) found the first form refusing a queued build's "I will build it once the
+# harness logs it", "The scratch output is not committed" and a habit described as "I will make a decision", and
+# passing five rewordings; the first-person clause now needs a file named in its sentence, "not committed" a change,
+# and a paragraph that queues its build is exempt.
+# A file named anywhere later in the sentence, with or without a preposition ("I will edit AGENTS.md after the
+# suite passes", its reviewer's second probe); the verb must be one that changes a file, so "I will make a decision"
+# in a habit described is not one.
+FILE_NAMED = r" (?:add|write|edit|commit|build|put|record|change|update|extend)\b[^!?\n]*?[\w/-]+\.(?:md|py|sh|json|html|txt|cjs)\b"
 DEFERRED = re.compile(r"[^.!?\n]*\b(?:waits? for (?:this turn's|the|its|a later|the next) commit|"
-                      r"comes? (?:with|in) (?:the next|a later|this turn's) commit|"
-                      r"\bis not (?:yet )?committed(?: yet)?\b|"
-                      r"I(?:'ll| will| am going to|'m going to| plan to| intend to) (?:add|write|commit|build|put|"
-                      r"make|record)\b|"
+                      r"(?:goes|go|will go|lands?|will land|comes?|will come) (?:in|into|with) "
+                      r"(?:the next|a later|this turn's|the) commit|"
+                      r"is staged for (?:the|this|its|the next) commit|"
+                      r"is still uncommitted|after this reply\b|follows? later\b|will follow (?:in|with|once|after)\b|"
+                      r"(?:addition|change|rule|check|fix|edit)\b[^!?\n]{0,40}\bis (?:not yet|still not|not) "
+                      r"committed|"
+                      # not "I'm adding": announcing an edit made in the same turn (the replay's one false refusal)
+                      r"I(?:'ll| will| am going to|'m going to| plan to| intend to)\b"
+                      + FILE_NAMED + r"|"
                       r"(?:to be|will be) (?:added|written|committed|built) (?:with|in|after|at) "
                       r"(?:this turn's|the next|a later|the|its) commit)[^.!?\n]*", re.I)
+# The queue tool's own marker for a build that waits (tools/lead_queue.py add --build refuses a text without it);
+# the bare word "queued" exempted "the earlier item stays queued; that addition waits for this turn's commit".
+QUEUED_BUILD = re.compile(r"Not built in the turn:", re.I)
+# A sentence that says the change is already made: its file "now" says it, or the commit is named (its reviewer's
+# probe, 17 October 2026: "I will update the habit; AGENTS.md now says so (committed abc)").
+ALREADY_MADE = re.compile(r"\.(?:md|py|sh|json|html|txt|cjs)\b\s+(?:now|says|said)\b", re.I)
+COMMITTED = re.compile(r"\bcommitted (?:as |in )?([0-9a-f]{7,40})\b", re.I)
+
+
+def already_made(sentence):
+    """Whether `sentence` says its change is made: its file "now" says it, or it names a commit that exists (a
+    named hash is checked with git, since "(committed abc)" otherwise passed any deferral; its reviewer)."""
+    if ALREADY_MADE.search(sentence):
+        return True
+    named = COMMITTED.search(sentence)
+    if not named:
+        return False
+    try:
+        return subprocess.run(['git', '-C', str(ROOT), 'cat-file', '-e', named.group(1) + '^{commit}'],
+                              capture_output=True, timeout=5).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
 
 
 def deferred_block(reply):
-    """The block for a reply whose Meta or Prevention paragraph defers its own change to a later commit, or None."""
+    """The block for a reply whose Meta or Prevention paragraph defers its own change to a later commit, or None; a
+    paragraph that queues its build (tools/lead_queue.py add) defers by the rules and is not refused."""
     for kind, start in (('Meta', META_PARAGRAPH), ('Prevention', PREVENTION_PARAGRAPH)):
         for paragraph in sections(start, reply):
-            found = DEFERRED.search(QUOTED.sub('', paragraph))
+            # Per sentence, not per paragraph: a queued build's marker in one sentence exempted a deferral in the
+            # next (its reviewer's probe, 17 October 2026).
+            found = next((m for m in DEFERRED.finditer(QUOTED.sub('', paragraph))
+                          if not QUEUED_BUILD.search(m.group(0)) and not already_made(m.group(0))), None)
             if found:
                 return {'decision': 'block', 'reason': (
                     f'A {kind} paragraph whose change is still to be made: "{" ".join(found.group(0).split())[:200]}". '

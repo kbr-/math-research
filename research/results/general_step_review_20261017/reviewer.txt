@@ -1,0 +1,97 @@
+=== Stage 1 (blind), fresh medium reviewer, general-step route review, 17 October 2026 ===
+Brief: research/results/general_step_review_20261017/blind-goal.txt and blind-excerpt.txt only; the preferred route withheld. The report, as the reviewer returned it:
+
+Blind stage report. I used one record search ("near half PC degree lower bound family"). Nothing below has been checked against a proof; all of it is unverified and rests only on the excerpt statements.
+
+1. Weakest endpoint. The weakest endpoint is open statement 1 as written: for each fixed d, a family with encoding length N growing, fixed before A, with no depth-d AC0[2]-Frege refutation of size N^A for any A. Three registered results carry a lower bound toward it.
+- (a) thm:near-half-frege-transfer. Hypothesis: no F_2 polynomial-calculus (PC) refutation of degree floor(n/2 - s_n), where n = v_n - rank Lambda_n, with (s_n+w_n)(log n)^(l-2) = o(n) and l = d+c_F. Result: no F_d(MOD_2) refutation with n^A symbols.
+  - The transfer gives the goal only if N <= n^(O(1)). The statement does not require this. cor:parity-resolution-size-bound (a) does carry v_n, |F_n|, |Lambda_n| <= n^A explicitly; the transfer theorem does not, so a large-rank Lambda_n could make n^A polynomial in N.
+  - The hypothesis is allowed to depend on d, because l grows with d. The goal permits this.
+  - It travels furthest among degree statements: PC degree is the best-understood measure here.
+- (b) The imp:modular-counting-collapse corollary. Hypothesis: for every c, no dag-like PCK^1_{F_2} refutation of Sigma-size 2^((log N)^c). Result: all depths d and exponents A at once, for the CNF-negation tautology. This is the only route where one hypothesis is fixed independently of depth.
+- (c) imp:depth-preserving-IPS-simulation with thm:shallow-noncommutative-sequent-simulation. Endpoint: superpolynomial lower bounds for placeholder-linear noncommutative F_2 IPS at depth d+10, size S^12, restricted to the simulation image. Three barriers rule out every class broader than that image: cor:placeholder-linear-extension-barrier, cor:dag-composite-barrier and cor:matched-envelope-barrier.
+
+2. Architectures.
+- A. Near-half degree (a), with prop:parity-resolution-level-one. It first breaks at nonvacuity. My search found no registered family meeting the hypothesis:
+  - random cores give degree eta v with eta = 4000^(-4)/8 (cor:minimal-core-nonvacuity);
+  - PHP's degree n/2+1 sits in mn variables;
+  - thm:random-modular-degree-ceiling and thm:coset-character-degree-ceiling cap the modular candidates.
+  - Affine slicing cannot manufacture near-half degree. cor:affine-slice-budget keeps degree D-r on a fibre of dimension v-r, and D-r >= (v-r)/2 - s needs D >= (v+r)/2 - s. So a fibre is never better than the whole system.
+  - Open question to put to the record: does every width-o(n) unsatisfiable F_2 system have PC degree at most (1/2-delta)n plus lower-order terms? If so, (a) is vacuous.
+- B. Collapse (b). This is materially different from A and D: it is size-based, has no degree threshold, and needs one hypothesis for all depths. It first breaks because nothing in the excerpt gives any PCK^1_{F_2} lower bound. Proposition 47 also shows that the mechanism reduces to polylog-degree Nullstellensatz refutations once one random low-degree q is added. So a lower bound must survive that added axiom; low-degree hardness of the CNF alone is not enough.
+- C. IPS simulation image.
+  - lem:boolean-image-values fixes the clause and Boolean-generator coordinates.
+  - lem:free-commutator-coordinates shows the commutator coordinates can be set to anything at polynomial cost.
+  - cor:axiom-repetition-syzygy shows a property tolerant of polynomial-size zero-certificates gives nothing.
+  - So properties of Boolean-point values are exhausted. The route breaks at naming any property of the remainder Q beyond Q in PC_0 + Z.
+- D. Charged quotient ratios (lem:local-tuple-ratio, cor:star-closure-ratio, cor:exposed-degree-tuple-ratio, cor:pair-sector-bounds). This is the same Smolensky-approximator family as A. It breaks at components with superpolynomially many classes and no closure inside the window. cor:pair-sector-bounds already shows that counts built from c_C >= 1 fail there.
+
+3. Unused, or used below their strength.
+- cor:parity-resolution-size-bound. It is unused as a falsification filter. By that bound, any candidate for A with polynomial-size resolution over parities fails the near-half hypothesis, so known upper bounds for that system rule candidates out cheaply.
+- imp:modular-counting-collapse, Theorem 45 and Proposition 47. Only Theorem 43 is used. Theorem 45 gives a tree-like PCK^0 target, which looks the weakest system on record whose lower bound suffices. The cost is a "for every PV_2^(+_2P) function f" quantifier.
+- thm:finite-algebra-evaluation and lem:matched-jet-envelope (d). They are used only as obstructions. Their positive side (evaluation on upper-triangular matrix algebras in AC0[2]) is never used to test candidate image properties.
+- conj:level-one-fresh-block-conservativity. No registered result consumes it. If it were proved, it would control extension blocks at level one, which is where prop:parity-resolution-level-one lives. The excerpt states no composition with it.
+
+4. Normalizations.
+- Free dimension against encoding length. The near-half transfer measures in the free dimension n, the goal in N (see 1(a)).
+- Ambient against quotient. prop:charge-affine-rank-gap measures losses in the ambient ball B_m(K) (rank >= (1-o(1))B_m(K)) but survivors in the charged quotient (rank/H <= e^(-h/3072)). lem:two-layer-ambient-budget is an obstruction only in the ambient ledger.
+- Relative contraction already exists. The ratio results bound c(K-d)/c(K) by a polynomial times h(K-d)/h(K), and cor:affine-gap-error-ratio writes this as l(K-d)/l(K).
+- Where it could replace absolute smallness. thm:binary-approximator-rank still demands absolute smallness, h_K(1 - 1/2 N(K-d)/N(K))^t. Its factor 1/2 N(K-d)/N(K) is far below 1 except near K ~ n/2, which is where the near-half threshold comes from. A version stated in the relative tuple ratio c(K-d)/c(K), applied after the tuple's quotient, might move that threshold. Unverified idea.
+
+Process audit
+- cor:star-closure-ratio. The assessment says it "decides the general-step review's test in the yes direction". The statement says "The record supplies no family instance with a nonempty closing set". The decision is not backed by an instance.
+- cor:affine-gap-error-ratio. "Decides ... for this candidate" covers only vertex-disjoint private edges, a sub-choice of the source. The assessment does not repeat that scope.
+- imp:modular-counting-collapse. Status is "established", but the PCK^1_{F_2} version that the corollary uses has its proof "left to the reader". Proposition 47 is "sketched" with part (d) left to the reader. The status should carry that qualifier.
+- thm:near-half-frege-transfer. "No imported premise", yet c_F is not computed and the Frege formulation is taken from arXiv:2301.10617v3. The condition l >= 2 depends on that uncomputed c_F.
+- conj:level-one-fresh-block-conservativity. It claims "at any rank" and "for all D" from checks at ranks three and four and small degree. "No ... proof possible" is supported only by two specific method failures.
+- imp:depth-preserving-IPS-simulation. The excerpt tool attached an unrelated record statement (acyclic support gluing). This is a tool defect in building the excerpt.
+
+Strength count: 4
+
+=== Stage 2 (route revealed, correctness and Attempt check), the same reviewer ===
+Brief: the review draft, its commit message, canonical_scale.py and its output, the rate statements, the stand-in objections, the new Stop-hook check and the browser load test. The report, as the reviewer returned it:
+
+Verdict: pass with corrections. The main finding stands. The computed instances are not members of the family, two trivial-case claims are wrong, and the new hook both refuses legitimate text and lets rewordings through.
+
+Required changes
+- Item 1 holds. B_m(K-d)/B_m(K) is at least t_{K-d}/t_K times (1-q), and t_{K-d}/t_K = prod_{i<d}(K-i)/(2(m-K+i+1)), which is at least ((K-d)/(2(m-K+d+1)))^d. The draft puts (1-q) inside the d-th power, which is weaker but still valid. With h(K) <= B_m(K), K/m >= 1/512 and log N = Theta(Delta), this is N^{-O(1)} at d = O(Delta). The previous review's "superpolynomial excess" outcome needs a ratio above N^{O(1)} times canonical, and c(K-d)/c(K) <= 1 forbids it. Its outcomes were fixed in advance. Say that its Power section missed this.
+- The computed instances are outside the family. canonical_scale.py sets Delta = ceil((log2 n)^2) and attributes this to prop:charge-affine-rank-gap. That record has Delta = ceil(n^alpha) with alpha < min(1/17, 1/l), so at n = 2^20 the family's Delta is at most 3, not 400. The asymptotic claims (N^{-Theta(1)} at d = Delta, N^{-Theta(log n)} at d = t) do not depend on how Delta is chosen. Every figure called "on the instances computed" does. Either recompute on family members (the earlier review used n = 2^340, alpha = 1/20, Delta = 2^17) or label these as surrogate parameters, in the docstring, New mathematics, the Falsification attempt, the Instance check and the commit message.
+- The N exponents come from an assumed encoding. The script takes N = n 2^{Delta-1} Delta. The charge clauses are ternary one-hot clauses at degree up to 2 Delta, so log2 N could be about 3 Delta (unverified). Say that -6.4, -9.5, -89 and -197 are this estimate's bookkeeping.
+- The level-one sentence is a finite-size artifact. The condition t canonical >= ln M reads Delta ln n 2^{-7..-10} >= A Delta ln 2 (log2 N/Delta). With the factor 1/2 in eta this means log2 n of order 256A to 2048A, not "several hundred". For fixed A it holds for all large n. At the earlier instance n = 2^340 with canonical 2^{-7} it holds for A = 1. "Below it" is true only at the surrogate sizes. State the threshold formula and that it is met in the limit.
+- Item 2. M(1-eta)^t < 1 is equivalent to t(-ln(1-eta)) > ln M, which is about t eta > ln M with eta = 1/2 ratio. The reading is right up to that 1/2.
+  - The gap d = Delta_1 = r t_1 is of order t only when the input degree r is O(1). Write t_1 and t_2 separately.
+  - The tuple's own ratio as the per-factor contraction: normalized rank monotone, registered with thm:binary-approximator-rank, is the step c_P(K-d)/c_P(K) >= N(K-d)/N(K). So the relative form is a step inside that proof. My search also found cor:small-growth-row-removal (partial-image contraction in one quotient). The Decision should treat the relative condition as a citation to that proof step, not as possibly unrecorded.
+  - The threshold "within N^{O(1)} of canonical at d ~ Delta_1 is the no side" is lem:two-layer-ambient-budget's ledger (Delta_2 > Delta_1 log(M_2) M_1^c) evaluated with h-ratios. Say so in the Record comparison.
+- Item 4, upper bounds. An upper bound on the ratio bounds the proof's guaranteed contraction, not the best achievable one. "Those components contract at an ambient-like rate" must read "ratio repair's guarantee for them is ambient-like".
+- Item 4, the 3^tau claim is wrong. 3^tau canonical at d ~ t is the no side whenever tau = o(Delta log n). That includes cor:edge-supported-error-ratio's own regime tau = O(log M). It decides nothing only for tau >~ Delta log n. The 3^s and e^{sK/m} factors of cor:pair-sector-bounds do decide nothing (s > D/2).
+- Trivial cases, the unit case is wrong. By the Attempt's own Fourier reduction, if 1+q_j has no zero on mu_3^s, then U is the whole grid. Then rank(P|X_C(k)) = dim X_C(k) and the ratio equals canonical exactly, so the case is trivially the no side. The inverse's weight is irrelevant. The Operation must also say which field "generic" means: over a large extension a generic choice is a unit. With F_2 coefficients, 1+q_j takes values in F_4 and has zeros.
+- Trivial cases and Instance check, t = 1. For t = 1, deg P <= 2, so the gap is d <= 2, not d = t. Bounding (s+1) h(K-d)/h(K) at d = t misapplies the bound. The case is decided because t ratio <= 1 < ln M.
+- Attempt, cost ball. "X_C(k) is the span of the monomials of a cost ball" ignores translates by the cut space, which can lower support. It holds only on lem:pair-occupancy's good-character event. Say so.
+- Reviewer's suggestions item 1, Record. It says the registered statement names only Theorem 43. That is false: the excerpt's registered statement includes (ii), Theorem 45, and (iii), Proposition 47.
+- Independent alternative. It relays me faithfully except "no PCK^1_{F_2} lower bound is recorded". I said only that the excerpt gives none.
+- Review (2). browser-load.txt has the case at 1.29 s alone, against the 2.79 s expected, and 2.32 s loaded, against 5.2 s in the suite. Contention of this form accounts for less than half the in-suite time. "The cause is now tested" must become "contention raises it 1.8x; the in-suite 5.2 s, four times the new alone time, remains unexplained". The same correction applies to the commit message.
+- Review (5), the hook. I ran deferred_block on probe texts.
+  - It passes these deferrals: "goes into the next commit", "is still uncommitted", "will land with the next commit", "I am adding it ... after this reply", "is staged for the commit".
+  - It refuses these legitimate texts: a queued-build Prevention: "Queued as X ... Not built in the turn: ...; I will build it once the harness logs it"; "The scratch output is not committed, as the rules require ..."; a Meta describing a habit: "The habit was: I will make a decision ...".
+  - The phrases "I will ..." and "is not committed" have no accepted legitimate test case, as AGENTS.md requires.
+  - Scope the first-person clause to sentences naming a change to a file, exempt paragraphs carrying "Queued" or "Not built in the turn", and report the bypass list in the commit message.
+- Builds paragraph. No finding.
+
+Attempt checked
+For the step where the Attempt stops (verified algebra, unverified consequences):
+- When the q_j have F_2 coefficients, 1+q_j takes values in F_4. Since a^3 = 1 on F_4*, the element f_j = 1+(1+q_j)^3 is the indicator of the zero hyperplane H_j. Because F_4[Z_3^s] is semisimple, the kernel of multiplication by P is the ideal (f_1,...,f_t), and each f_j has cost at most 6, being products of three pair characters.
+- So c(k) = sum_C (dim X_C(k) - dim(ideal cap X_C(k))). The test is then the Hilbert function of t relations of cost 6 in the cost filtration. This confirms the draft's weight-three heuristic.
+- The yes side needs this ideal to swallow almost all of X(K) but not X(K-d), roughly U saturating by level K-d. Yet |U| is about (3/4)^t 3^s, far above |X_C(K)| since t << s.
+- This points to the no side. I found no proof: Schwartz-Zippel-type bounds are vacuous at cost K.
+
+Process audit
+- Title against body. "Surviving needs a superpolynomial excess" should say ratio-based survival under the guaranteed contraction, with r = O(1). "IPS exhausts its Boolean-point coordinates" drops "in characteristic two, at polynomial cost".
+- Previous review. Its Power section did not evaluate canonical's size, the plainest bound that fixed its test. Its reviewer missed this too.
+- Figures. The figures come from instances that are not the family's, without saying so.
+- Decision. It calls the relative survival condition possibly unrecorded, which the cited proof answers.
+- Not checked. I did not verify the Fourier reduction's window condition (K+2t <= D) on family members.
+
+Strength count: 6. The six sentences are: the title clause; the commit "surviving at the second layer needs"; the commit "cause tested"; the commit "every Boolean-point coordinate transferable"; New mathematics "on the power-growing family" for the surrogate instances; and the Assessment's "contract at an ambient-like rate".
+
+Suggestions (unverified)
+- Build the cost-filtered ideal (f_j) explicitly and compare it with a complete intersection's Hilbert series. If it behaves like one, the change between levels is about exp(O(t^2/m)), which decides the no side.
