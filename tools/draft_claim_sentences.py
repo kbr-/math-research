@@ -617,7 +617,9 @@ ANSWER_WORDS = 4
 
 def answers_template(draft, summaries=None):
     domain = {row[0]: row for row in domain_rows(draft, summaries or {})}
+    extreme = {row[0] for row in extreme_rows(draft)}
     form = ''.join(f'{key} [{where}] {sentence}\n  rests on: \n' + ('  within: \n' if key in domain else '')
+                   + ('  extreme: \n' if key in extreme else '')
                    for key, where, sentence in summing_up(draft))
     asked = {key for key, _, _ in summing_up(draft)}
     return form + ''.join(f'{key} [{where}] {sentence}\n  within: \n'
@@ -630,6 +632,34 @@ def answers_template(draft, summaries=None):
 # image; the listing had printed the sentence among those naming fewer symbols than the claim, and its "rests
 # on:" answer, the lemma, was true.
 WITHIN = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*rests on:[^\n]*\n)?[ \t]*within:[ \t]*([^\n]*)$', re.M)
+
+
+# A Follow-up sentence with a universal word ("every", "all", "only", "no") states a property of the next
+# attempt's construction: it is answered also on a line "extreme:", the extreme member of the construction it was
+# tried on (layers that coincide, a member that covers another, the largest family).  On 17 October 2026 two such
+# sentences ("lie on every boundary", "only in the family of all unions") were answered by their sources and were
+# false at an extreme member.
+EXTREME = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*(?:rests on|within):[^\n]*\n)*[ \t]*extreme:[ \t]*([^\n]*)$',
+                     re.M)
+
+
+def extreme_rows(draft):
+    """[(key, section label, sentence)] for the summing-up sentences of Follow-up paragraphs with a universal
+    word."""
+    return [row for row in summing_up(draft) if row[1].lower() == 'follow-up' and UNIVERSAL.search(text(row[2]))]
+
+
+def unextreme(draft, answers):
+    """The rows of extreme_rows(draft) whose answer has no "extreme:" line of at least ANSWER_WORDS words."""
+    given = {key: answer for key, answer in EXTREME.findall(answers or '')}
+    return [row for row in extreme_rows(draft) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
+
+
+def unextreme_report(rows):
+    return '\n'.join([f'{len(rows)} Follow-up sentences state a universal about the next attempt and have no '
+                      '"extreme:" answer: name the extreme member of the construction the sentence was tried on '
+                      '(members that coincide, one that covers another, the largest family) and what it gave:']
+                     + [f'{key} [{where}] {sentence[:160]}\n  extreme: ' for key, where, sentence in rows])
 
 
 def domain_rows(draft, summaries):
@@ -1370,6 +1400,10 @@ def main():
             if outside:
                 print(unbounded_report(outside))
                 open_rows = open_rows + outside
+            untried = unextreme(draft, answers.read_text())
+            if untried:
+                print(unextreme_report(untried))
+                open_rows = open_rows + untried
     return 1 if unregistered or missing or open_rows else 0
 
 

@@ -562,6 +562,17 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         named = draft.replace('these are bounds', 'with \\(\\delta\\ge20/\\sqrt N\\) these are bounds')
         self.assertEqual(dcs.domain_rows(named, summaries), [])                    # every symbol named: not asked
 
+    def test_a_follow_up_universal_needs_an_extreme_answer(self):
+        # 17 October 2026: "lies on every boundary", answered by its source, was false at an extreme member.
+        draft = ('<article id="x"><p><strong>Follow-up.</strong> Continuing. Next attempt: nested unions of '
+                 'translates; their back boundary lies on every \\(\\partial A_k\\), so its multiplicity is '
+                 '\\(K\\).</p><p><strong>Proof.</strong> Every edge is counted.</p></article>')
+        self.assertEqual([where for _, where, _ in dcs.extreme_rows(draft)], ['Follow-up'])   # Proof: not asked
+        form = dcs.answers_template(draft)
+        self.assertEqual(len(dcs.unextreme(draft, form)), 1)
+        filled = form.replace('extreme: \n', 'extreme: a translate that covers back edges lowers it\n')
+        self.assertEqual(dcs.unextreme(draft, filled), [])
+
     def test_an_answer_that_limits_its_sentence_by_a_word_the_sentence_lacks_is_a_gap(self):
         form = dcs.answers_template(self.DRAFT)
         answer = lambda words: form.replace('rests on: \n', f'rests on: {words}\n')

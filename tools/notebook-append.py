@@ -694,6 +694,9 @@ def refuse_unanswered(entry, answers):
     gaps = draft_claim_sentences.qualifier_gaps(entry, answers)
     if gaps:                    # the answer admits a limit that the sentence does not carry
         raise ValueError(draft_claim_sentences.qualifier_gaps_report(gaps))
+    untried = draft_claim_sentences.unextreme(entry, answers)
+    if untried:                 # a universal about the next attempt, not tried on its extreme member
+        raise ValueError(draft_claim_sentences.unextreme_report(untried))
     refuse_unbounded(entry, answers)
 
 
