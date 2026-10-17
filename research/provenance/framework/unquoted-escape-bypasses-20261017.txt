@@ -1,0 +1,9 @@
+# command: python3 -c 
+from importlib.machinery import SourceFileLoader
+CS=SourceFileLoader('c','compute.sh').load_module()
+for s in ['so thm:square-mean-flow-obstruction is beyond its reach.','thm:square-mean-flow-obstruction is irrelevant here.','thm:x-y does not apply since "some unrelated passage of twenty chars".']:
+  print(bool(CS.CLAIM_ID.search(s) and CS.ESCAPE.search(s) and not CS.QUOTED.search(s)), '|', s)
+# run 6dcb368cd9, session run_20261017T141553_bb14d1e2; full output
+False | so thm:square-mean-flow-obstruction is beyond its reach.
+False | thm:square-mean-flow-obstruction is irrelevant here.
+False | thm:x-y does not apply since "some unrelated passage of twenty chars".

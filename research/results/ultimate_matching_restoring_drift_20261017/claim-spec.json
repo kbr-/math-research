@@ -1,0 +1,72 @@
+{
+ "source": {
+  "record": "[A paired restoring drift amplifies tails](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-restoring-drift-construction)",
+  "label": "A paired restoring drift amplifies tails",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-restoring-drift-construction"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "lem:restoring-drift-tail",
+   "summary": "For alpha >= 1, kappa, sigma > 0, d with d(r) between 0 and r and |d(r)| >= min(kappa |r|^(alpha-1), |r|), and R_0 = 0, R_(n+1) = R_n - d(R_n) + xi_(n+1) adapted with E[exp(t xi_(n+1)) | F_n] <= exp(sigma^2 t^2/2) for every real t: for every n >= 1 and u > 0, (a) P(|R_n| >= u) <= 2 exp(-u^2/(2 n sigma^2)); (b) P(|R_n| >= u) <= 2n exp(-min(kappa (u/2)^alpha, (u/2)^2/2)/sigma^2). With n sigma^2 = s^2 fixed, kappa = c sigma^2 ln n, n >= 2: for u with c (u/2)^alpha >= 2 and c ln n (u/2)^(alpha-2) <= n/(2 s^2), P(|R_n| >= u) <= 2 exp(-(c/2) ln n (u/2)^alpha), a psi_alpha-type tail with constants independent of n on a window of u growing like (n/ln n)^(1/(alpha-2)) for alpha > 2.",
+   "assessment": "Working proof: (a) cosh(t R) grows by at most exp(sigma^2 t^2/2) per step since the drift does not increase |R|; (b) exp(theta R) with theta = 2 min(kappa (u/2)^(alpha-1), u/4)/sigma^2 is a supermartingale while R >= u/2, and a last-exit decomposition over the n steps; the lower tail from -R_n, which follows the recursion with -d(-r). The form for every u was the reviewer's suggestion, checked by hand.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The one-dimensional mechanism a restoring flow would need: a drift below the per-step noise gives psi_alpha tails on a window growing with the number of levels. It bears on a flow only through a construction realizing the drift pointwise.",
+   "next_action": "Build the lagged greedy restoring flow (circulations straddling sibling sides, amplitude by quartic descent on both coordinates), measure its conditional pushes, and test its per-point tails.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:sibling-exchange-leg",
+   "summary": "For a closed rectangle B, a segment Gamma of its top side of length l, and a piecewise C^1 field w with continuous normal components near B, with div w = 0 on each piece and w.n = 0 on the boundary of B off Gamma: int_B w_1 = int_Gamma (x - c) w_2 dx for every real c, so |int_B w_1| <= (l/2) int_Gamma |w_2| dx. Hence a divergence-free correction on two stacked squares of side rho with zero normal flux on their outer boundary that shifts the lower square's horizontal mean by m has (1/rho) int over their shared side of |w_2| >= 2|m|; the same with the coordinates exchanged.",
+   "assessment": "Working proof: div(x w) = w_1 when div w = 0, the divergence theorem summed over the pieces, and the zero net flux through Gamma. Elementary.",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Prices every exchange of mean flux between neighbouring squares: a perpendicular leg at least twice the shift on their shared side.",
+   "next_action": "Use it to price the legs in the lagged greedy restoring flow's descent.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "ex:paired-restoring-drift-tails",
+   "summary": "Simulation, N = 16*4^J uniform points, J = 6, 7, 64 seeds each: the dyadic flow with, after each level, mean shifts -(D_b - D_t)/2 between sibling children inside each parent (D = sigma d(R/sigma), d the clipped cubic drift, kappa = c ln J/J, carried by 2m tent profiles and return legs) has per-point exceedance fractions at 2.5, 3.0, 3.5 dyadic standard deviations 2.67-3.94, 9.2-12.8 and 45.6-58.0 times the dyadic flow's at J = 7 for c = 0.5, and 23.7-26.5, 104-120, 607-661 times for c = 2; variance ratios at J = 7 of 2.24-4.62 (c = 0.5) and 133-238 (c = 2), growing from J = 6. The committed Prediction (ratio below 0.3 at 3.5, decreasing in t) failed in every coordinate and size. The construction is covered by thm:square-mean-flow-obstruction, its corrections staying in the level-j squares; that theorem gives the divergence of the psi_alpha cost, not these finite-size tails.",
+   "assessment": "Finite check, expectations committed before the run; controls passed: kappa = 0 gives the dyadic field exactly, global averages agree, dyadic fractions Gaussian within a factor 1.5, a planted lighter law seen. The script's docstring wrongly claimed the construction escapes thm:square-mean-flow-obstruction and miscounted the positions (1,048,576 and 4,194,304 per size, not 262,144 and 1,048,576); the entry withdraws both.",
+   "status": "finite_check",
+   "category": "route_specific",
+   "rationale": "Shows that a restoring drift on square means confined to parent squares amplifies the per-point tails at the sizes run; the cause, plausibly a cascade between the coordinates through the perpendicular legs of lem:sibling-exchange-leg, is an untested hypothesis.",
+   "next_action": "Test the lagged greedy restoring flow, whose corrections change the means of their own level's squares.",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "ex:paired-restoring-drift-tails",
+   "cites",
+   "thm:square-mean-flow-obstruction",
+   "Its statement covers the paired drift, whose corrections stay in the level-j squares with zero normal flux."
+  ],
+  [
+   "ex:paired-restoring-drift-tails",
+   "cites",
+   "lem:sibling-exchange-leg",
+   "The lemma's perpendicular legs are the hypothesized mechanism of the amplification."
+  ],
+  [
+   "ex:paired-restoring-drift-tails",
+   "cites",
+   "ex:greedy-circulation-tails",
+   "The earlier nonlinear rule kept square means; the paired drift exchanges them inside parents."
+  ],
+  [
+   "lem:restoring-drift-tail",
+   "cites",
+   "lem:conditional-push-obstruction",
+   "A drift of the lemma's size realized pointwise would break the push hypothesis at large running values; whether a construction does is open."
+  ]
+ ]
+}
