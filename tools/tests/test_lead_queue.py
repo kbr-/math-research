@@ -383,6 +383,15 @@ class LeadQueueTest(unittest.TestCase):
         lq.check(notebook([rev, batch], q[1:]), notebook([rev, batch], q[1:]))   # an older batch is history
         self.assertEqual(lq.main(['lead_queue.py', 'triage', 'nb.html']), 1)
 
+    def test_help_prints_usage_instead_of_reading_it_as_a_path(self):
+        # 17 October 2026: "lead_queue.py append --help" crashed with FileNotFoundError: '--help'.
+        import contextlib, io
+        for argv in (['lead_queue.py', '--help'], ['lead_queue.py', 'append', '--help'], ['lead_queue.py', 'add', '-h']):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(lq.main(argv), 0)
+            self.assertIn('lead and bridge queue', out.getvalue())
+
     def test_research_entries_add_passed_items(self):
         head = notebook([self.rev], self.q)
         entry = ('<article id="w" data-kind="research" data-route="step" data-lead="r1:1"><p><strong>Follow-up.'

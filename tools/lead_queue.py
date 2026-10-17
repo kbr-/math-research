@@ -2544,6 +2544,10 @@ def listing(body, after=None):
 
 
 def main(argv):
+    # 17 October 2026: "lead_queue.py append --help" read --help as the notebook path and crashed.
+    if any(arg in ('-h', '--help') for arg in argv[1:3]):
+        print(__doc__)
+        return 0
     if len(argv) >= 2 and argv[1] == 'list':
         if len(argv) not in (3, 5) or (len(argv) == 5 and argv[3] != '--after'):
             print('usage: lead_queue.py list NOTEBOOK.html [--after ANCHOR]', file=sys.stderr)
