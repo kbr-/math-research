@@ -86,6 +86,27 @@ def refuse_early_review_credit(entry):
                          '(AGENTS.md: title and status line written after the review)')
 
 
+NONTRIVIAL = re.compile(r'Nontrivial because[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
+
+
+def refuse_trivial_smallest_case(entry):
+    """A draft naming a next attempt gives, in its Smallest case, the reason the instance is nontrivial for that
+    attempt: what the attempt's mechanism has to act on there. On 17 October 2026 a Smallest case took one cut
+    with no coarser load, where the rule has nothing to choose, and the two-level case, which decided the attempt,
+    was not taken; the next draft's Smallest case then dropped the setting's order of steps."""
+    follow = re.search(r'<strong>Follow-up\.</strong>((?:(?!</p>).)*)', entry, re.S)
+    plain = strip_tags(follow.group(1)) if follow else ''
+    if not re.match(r'\s*Continuing', plain) or not re.search(r'\bnext attempt\b', plain, re.I):
+        return
+    given = re.search(r'<strong>Smallest case\.</strong>((?:(?!</p>)(?!</li>).)*)', entry, re.S)
+    said = strip_tags(given.group(1)) if given else ''
+    if not NONTRIVIAL.search(said):
+        raise ValueError('the Smallest case of a next attempt says, after "Nontrivial because:" in at least eight '
+                         'words, what the attempt\'s mechanism acts on in that instance (a load it reads, a choice '
+                         'it makes), so a degenerate instance is not taken for the smallest one (AGENTS.md: next '
+                         'attempts are first tried on their smallest nontrivial instance)')
+
+
 def refuse_broken_text(what, text):
     if '$' in text:
         # The finisher refuses this too, but only after the entry is in the notebook.
@@ -463,6 +484,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         reporting_checks().refuse_unverified_attempt(entry, next_html)
     except ValueError as error:
         raise ValueError(str(error)[0].lower() + str(error)[1:]) from None
+    refuse_trivial_smallest_case(entry)
     entry = with_stand_reason(source, entry, committed, reason)
     own = branch_checks(tools)
     if own:

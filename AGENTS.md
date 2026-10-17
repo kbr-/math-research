@@ -441,6 +441,11 @@ AGENTS.md"):
   (`tools/record_scan.py` block-counts): a pattern fitted to a paraphrase matches nothing and its
   zero looks like a clean record (17 October 2026: a block-count check missed every form the record
   writes).
+- Before writing a script for an attempt, run the attempt by hand on its smallest nontrivial
+  instance and write the outcome down; a script is written only for what that hand step leaves open,
+  and each of its controls is first tried on an input where it must fail (17 October 2026: a routing
+  rule was simulated over four sizes when two levels by hand already gave the dyadic flow, and its
+  control was constant by construction).
 - Every command and every path in it serves the step at hand: before a call, drop each part whose
   output nothing reads, and reach outside the worktree and the session's scratch only through the
   route the framework names, since in auto mode such a reach stops the user at a prompt (17 October

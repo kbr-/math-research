@@ -251,6 +251,10 @@ class NextStepItemTests(unittest.TestCase):
         self.assertFalse(tool.review_due(mixed + [('<article data-kind="review" data-route="x">', '')]))
 
 
+SMALLEST = ('<p><strong>Smallest case.</strong> Width two. Nontrivial because: the input has two variables '
+            'of different degrees there.</p>')
+
+
 class NotebookAppendTests(unittest.TestCase):
     def test_first_article_follows_record_heading_and_introduction(self):
         source = ('<section id="research-record">\n<h2>Research record</h2>\n'
@@ -340,7 +344,9 @@ class NotebookAppendTests(unittest.TestCase):
                   'the closure at twice the cutoff: no match.</li></ul>')
 
         def entry(follow, extra=''):
-            return f'<article id="a3">{listed}{extra}<p><strong>Follow-up.</strong> {follow}</p></article>'
+            smallest = ('<p><strong>Smallest case.</strong> Width two. Nontrivial because: the input has two '
+                        'variables of different degrees there.</p>')
+            return f'<article id="a3">{listed}{extra}<p><strong>Follow-up.</strong> {follow}</p>{smallest}</article>'
         said = entry("Continuing: the question is open. Next attempt, the reviewer's candidate, unverified: " + suggestion + '.')
         with self.assertRaisesRegex(ValueError, 'follow-up calls what it names unverified'):
             tool.append(NOTEBOOK, said)
@@ -381,11 +387,11 @@ class NotebookAppendTests(unittest.TestCase):
                    'attempt, the unverified candidate (cf. the list) again.</li></ul></article>')
         with self.assertRaisesRegex(ValueError, 'calls what it names unverified'):
             tool.append(NOTEBOOK, in_item)
-        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {own_words}</p></article>'))
+        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {own_words}</p>{SMALLEST}</article>'))
         # a sentence that sets a suggestion aside is not a plan on it, in a follow-up or a next step
         aside = ('Continuing: open. Next attempt: the width bound. A remark on series stays unverified and is '
                  'dropped.')
-        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {aside}</p></article>'))
+        self.assertIn('a3', tool.append(NOTEBOOK, f'<article id="a3"><p><strong>Follow-up.</strong> {aside}</p>{SMALLEST}</article>'))
         entry3 = '<article id="a3">three</article>'
         self.assertIn('a3', tool.append(NOTEBOOK, entry3, '<p>The unverified count is withdrawn. Prove the bound.</p>'))
         with self.assertRaisesRegex(ValueError, 'next step calls what it names unverified'):
@@ -417,6 +423,19 @@ class NotebookAppendTests(unittest.TestCase):
             self.assertIn(step, tool.append(opened, entry, step))
         with self.assertRaisesRegex(ValueError, 'next step contains a dollar sign'):
             tool.append(NOTEBOOK, entry, '<p>Costs $5.</p>')
+
+    def test_a_smallest_case_without_its_nontrivial_reason_is_refused(self):
+        # 17 October 2026: one cut with no coarser load was taken for the smallest case of a two-level rule.
+        draft = ('<article id="a5"><p><strong>Follow-up.</strong> Continuing. Next attempt: the rule over two '
+                 'levels. <strong>Smallest case.</strong> One cut of m edges and no coarser load: the even split.'
+                 '</p></article>')
+        with self.assertRaisesRegex(ValueError, 'Nontrivial because'):
+            tool.refuse_trivial_smallest_case(draft)
+        tool.refuse_trivial_smallest_case(draft.replace(
+            'the even split.', 'the even split. Nontrivial because: the rule reads the coarser load, which '
+            'varies along the cut.'))
+        tool.refuse_trivial_smallest_case(draft.replace('Continuing. Next attempt: the rule over two levels.',
+                                                        'Closed: a restatement.'))
 
     def test_a_status_line_crediting_a_review_before_the_gate_is_refused(self):
         # 17 October 2026: "with a reviewed correction pass" stood beside a placeholder Verification gate.
