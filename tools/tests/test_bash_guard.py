@@ -599,6 +599,28 @@ class StagingSilencedTest(unittest.TestCase):
                 self.assertIsNone(guard.staging_silenced(command))
 
 
+class TrackedResultOverwriteTest(unittest.TestCase):
+    def test_a_copy_onto_a_committed_result_is_refused(self):
+        # 17 October 2026: a replay's output was copied over an earlier, committed replay of the same name.
+        with tempfile.TemporaryDirectory() as d:
+            subprocess.run(['git', 'init', '-q'], cwd=d, check=True)
+            folder = Path(d, 'research/results/builds')
+            folder.mkdir(parents=True)
+            (folder / 'replay.txt').write_text('old')
+            (folder / 'new.txt').write_text('untracked')
+            subprocess.run(['git', 'add', '.'], cwd=d, check=True)
+            subprocess.run(['git', 'rm', '-q', '--cached', 'research/results/builds/new.txt'], cwd=d, check=True)
+            committed = 'research/results/builds/replay.txt'
+            self.assertIn('committed result', guard.tracked_result_overwrite(f'cp research/logs/x.txt {committed}', d))
+            self.assertIn('committed result', guard.tracked_result_overwrite(f'L=a; cp $L {committed}; cat $L', d))
+            self.assertIn('committed result', guard.tracked_result_overwrite(f'python3 x.py > {committed}', d))
+            self.assertIn('committed result', guard.tracked_result_overwrite(f'python3 x.py | tee {committed}', d))
+            self.assertIsNone(guard.tracked_result_overwrite('cp a research/results/builds/new.txt', d))
+            self.assertIsNone(guard.tracked_result_overwrite('cp a research/results/builds/fresh.txt', d))
+            self.assertIsNone(guard.tracked_result_overwrite(f'cat {committed} >> /dev/null', d))
+            self.assertIsNone(guard.tracked_result_overwrite(f'cp {committed} research/logs/copy.txt', d))
+
+
 class ExistingResultFolderTest(unittest.TestCase):
     def test_mkdir_of_a_results_folder_with_files_is_refused(self):
         # 16 October 2026: a new entry reused an earlier review's folder and overwrote its reviewer record.

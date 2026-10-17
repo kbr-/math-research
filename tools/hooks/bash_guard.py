@@ -163,6 +163,28 @@ def existing_result_folder(command: str, cwd: str):
     return None
 
 
+COPY_DEST = re.compile(r'\b(?:cp|mv)\s+(?:-\w+\s+)*(?:\S+\s+)+?(\S*research/results/[^\s;&|]+)(?=\s*(?:$|[;&|]))')
+REDIRECT_DEST = re.compile(r'(?<![>&\d])>\s*(\S*research/results/[^\s;&|]+)|\btee\s+(?:-\w+\s+)*(\S*research/results/[^\s;&|]+)')
+
+
+def tracked_result_overwrite(command: str, cwd: str):
+    """The reason when cp, mv or a > redirect writes onto a results file Git tracks: on 17 October 2026 a replay's
+    output was copied under the name of an earlier, committed replay and replaced it without a word."""
+    targets = COPY_DEST.findall(command) + [a or b for a, b in REDIRECT_DEST.findall(command)]
+    for path in targets:
+        target = Path(os.path.expandvars(path))
+        if not target.is_absolute():
+            target = Path(cwd) / target
+        if not target.is_file():
+            continue
+        tracked = subprocess.run(['git', '-C', str(target.parent), 'ls-files', '--error-unmatch', '--', target.name],
+                                 capture_output=True, text=True).returncode == 0
+        if tracked:
+            return (f"{path} is a committed result; a new output goes under a new name: list what exists under the "
+                    "name first (AGENTS.md: results are kept, never overwritten)")
+    return None
+
+
 def adhoc_replace_helper(command: str):
     """The reason when a heredoc script defines its own text-replacement helper, or an inline Python
     script, or a scratch script run by its path, replaces text in a file."""
@@ -707,6 +729,7 @@ def check() -> int:
               or sed_ampersand(command) or staging_silenced(command) or shared_run_file_write(command)
               or subagent_transcript(command)
               or existing_result_folder(command, payload.get("cwd") or os.getcwd())
+              or tracked_result_overwrite(command, payload.get("cwd") or os.getcwd())
               or stale_branch(command, payload.get("cwd") or os.getcwd(), time.time()))
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
