@@ -317,7 +317,10 @@ AGENTS.md"):
   turn). Before a second attempt at a refused step, write in the reply the line of the refusal that
   names its rule and what in the input broke it; an input changed until a gate passes, without that
   line, is the same route (17 October 2026: a launcher's five-word line rule and a qualifier gate
-  were each answered by edits before their cause was read).
+  were each answered by edits before their cause was read). Before an action meant to undo or
+  forestall something (a correction, a retraction, a note to an agent), read the record showing that
+  the thing happened and quote it in the reply (17 October 2026: a "disregard" note went to a
+  reviewer that had been sent nothing).
 - A property of a family (nested, disjoint, packed, few per point) enters a proof only after it is
   checked on the family's extreme members: boundaries that coincide, many members through one point.
 - A sentence that gives a decision its reason (dropping, choosing, calling a case decided) names its
