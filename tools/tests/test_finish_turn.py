@@ -233,6 +233,25 @@ class AssessmentAfterReview(unittest.TestCase):
                 FT.validate_prevention(self.entry(gate, assessment))
 
 
+class UnexaminedClosure(unittest.TestCase):
+    """A follow-up list item that closes a sub-idea while its Not examined names an open part is refused."""
+
+    def test_an_open_part_beside_developed_is_refused(self):
+        # 17 October 2026: a sub-idea marked Developed while its Not examined named forms left open.
+        with self.assertRaisesRegex(ValueError, 'Continuing'):
+            FT.validate_unexamined_closure('<li data-check="x:s1">Asked. Not examined: forms not built from E u '
+                                           'in the window. <strong>Follow-up.</strong> Developed.</li>')
+
+    def test_legitimate_uses_pass(self):
+        for item in ('Done. Not examined. Nothing the sub-idea names is left. <strong>Follow-up.</strong> Developed.',
+                     'Not examined: none. <strong>Follow-up.</strong> Closed: superseded.',
+                     'Not examined: the full bound, transferred to the destination item. <strong>Follow-up.</strong> '
+                     'Developed.',
+                     'Not examined: the cubic case. <strong>Follow-up.</strong> Continuing.'):
+            with self.subTest(item=item):
+                FT.validate_unexamined_closure(f'<li data-check="x:s1">{item}</li>')
+
+
 class DrainingReviewsTest(unittest.TestCase):
     def body(self, text, attrs=' data-draining="true"'):
         queue = '<section id="lead-queue"' + attrs + '><ol>' + ''.join(

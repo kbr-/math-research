@@ -1594,6 +1594,33 @@ def validate_unreviewed_derivations(text, claims=None):
                          'gate (AGENTS.md, one focused correctness review)')
 
 
+# A Developed or Closed outcome beside a Not examined clause that names something left (AGENTS.md: an item with a
+# named part unexamined is Continuing; 17 October 2026, twice: a sub-idea and an item closed while their own Not
+# examined clauses named open parts).
+UNIT_RE = re.compile(r'<li\b[^>]*data-(?:check|build|lead|bridge|idea)="[^"]*"[^>]*>(.*?)</li>', re.S)
+LEFT_OPEN = re.compile(r'Not examined[\s.:]*(?![\s.:])(?!(?:of [^.;]*?)?(?:nothing|none|no|neither|everything)\b)'
+                       r'(\S[^.]*)', re.I)
+CLOSING = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Closed)\b')
+
+
+def validate_unexamined_closure(text):
+    """A follow-up list item (a sub-idea's, or a reopened or promoted item's) that closes it while its own Not
+    examined clause names a part left open. The entry's own Not examined paragraph is left to the reviewer: counted
+    over the record's 1515 entries with a follow-up, a rule on it refused 41, most of them closures saying why they
+    stand in words no pattern lists (research/results/framework-builds-20261017/unexamined-closure-replay.txt)."""
+    for unit in (m.group(1) for m in UNIT_RE.finditer(text)):
+        if not CLOSING.search(unit):
+            continue
+        plain = html.unescape(strip_tags(unit))
+        left = LEFT_OPEN.search(plain)
+        if left and not re.search(r'\b(?:stands without|covered|does not need|not needed|carried by|queued|'
+                                  r'does not rest on|transferred|destination|dropped|discarded|retained|belongs to)\b',
+                                  left.group(1) + ' ' + plain[left.end():left.end() + 200], re.I):
+            raise ValueError(f'A follow-up says {CLOSING.search(unit).group(1)} while its Not examined names a part '
+                             f'left open ("{left.group(1)[:120]}"): an item with a named part unexamined is '
+                             'Continuing, or the clause says why the closure stands without it (AGENTS.md)')
+
+
 def validate_prevention(text):
     """A Process assessment says what prevents each mistake it reports (user, 10 October 2026: the user should
     not have to ask "what will you do to prevent such mistakes in the future?")."""
@@ -1853,6 +1880,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
     progress = require_report(text, 'Goal progress')
     validate_bearing_ledger(text)
     validate_prevention(text)
+    validate_unexamined_closure(text)
     validate_process_audit(text)
     validate_planned_tense(text)
     validate_statement_names(text, body)
