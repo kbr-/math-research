@@ -26,7 +26,7 @@ def normalize_article(source, version):
     if not re.match(r'\s*<article\b', source):
         raise ValueError('Article evidence normalization requires an article excerpt')
     parser = _Decorations(source)
-    masked = re.sub(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]',
+    masked = re.sub(r'(?<!\\)\\\([\s\S]*?\\\)|(?<!\\)\\\[[\s\S]*?\\\]',     # as notebook_math.MATH
                     lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
     parser.feed(masked); parser.close()
     if parser.stack:

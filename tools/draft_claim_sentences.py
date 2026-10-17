@@ -483,6 +483,29 @@ def unrun_searches_report(draft, logged, width):
                      + [f'{len(found)} such searches, of {len(logged)} logged queries compared.'])
 
 
+def unread_named_claims(draft, root, now=None):
+    """The claims the draft's Record search, Record comparison, Record, Own statements or Bearing paragraphs
+    name whose statements no reading tool printed in the last SEARCH_WINDOW_S seconds, the draft's declared
+    claims exempt: the finisher's validate_named_claims_read, run at the drafting stage.  On 17 October 2026 a
+    review's Record search named six claims from search listings, whose summaries are shortened, and only the
+    finisher, after the review, found that their statements had not been read; two descriptions were wrong."""
+    import claim_reads
+    now = now or __import__('time').time()
+    declared = re.search(r'\bdata-claims="([^"]*)"', draft)
+    return claim_reads.unread(draft, claim_reads.read_since(root, now - SEARCH_WINDOW_S),
+                              declared.group(1).split() if declared else ())
+
+
+def unread_named_claims_report(missing, width):
+    lines = [f'  {ident}' for ident in missing]
+    return '\n'.join(['Claims a Record search, Record comparison, Record, Own statements or Bearing paragraph names '
+                      'whose statements no reading tool printed in the last twelve hours; read each with '
+                      'tools/notebook-excerpt.py --claims, and write the paragraph from the statement (the '
+                      'finisher refuses them; AGENTS.md):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(missing)} such claims.'])
+
+
 PART = r'(?:Sections?|Theorems?|Lemmas?|Corollar(?:y|ies)|Propositions?|Definitions?|Appendix|Remarks?)'
 NOT_READ = re.compile(r'(' + PART + r'\s+[\dA-Z][\w.]*(?:(?:\s*(?:,|and|to|–|-)\s*)[\dA-Z][\w.]*)*)'
                       r'(?:[^.;]|(?<=\d)\.(?=\d)){0,60}?\b(?:not read|unread|was not read|were not read)\b'
@@ -923,11 +946,38 @@ def gaps_count(draft, answers, files):
     return '\n'.join(lines)
 
 
-def qualifier_gaps_report(gaps):
+def stated_in_reasons(draft, answers, gaps):
+    """{key: why its "stated in:" passage did not count}, for the gaps qualifier_gaps returned: no passage, too
+    few words, not a run of the entry's words outside the sentence, or lacking a missing word.  On 17 October
+    2026 a second answers file added "stated in:" passages that quoted the entry but held none of the missing
+    words, and the refusal, unchanged, did not say which condition the passages failed."""
+    given = {key: answer for key, answer in ANSWER.findall(answers or '')}
+    words = ' ' + ' '.join(plain(draft)) + ' '
+    reasons = {}
+    for key, _, sentence, missing in gaps:
+        stated = STATED.search(given.get(key, ''))
+        if not stated:
+            reasons[key] = 'no "stated in:" passage'
+            continue
+        quote = ' '.join(plain(stated.group(1)))
+        elsewhere = words.replace(f' {" ".join(plain(sentence))} ', ' | ')
+        lacks = sorted(set(missing) - {m.lower() for m in QUALIFIER.findall(quote)})
+        if len(quote.split()) < STATED_WORDS:
+            reasons[key] = f'the passage has {len(quote.split())} words, fewer than {STATED_WORDS}'
+        elif f' {quote} ' not in elsewhere:
+            reasons[key] = 'the passage is not a run of the entry\'s words outside this sentence'
+        elif lacks:
+            reasons[key] = f'the passage does not hold {", ".join(lacks)}'
+    return reasons
+
+
+def qualifier_gaps_report(gaps, reasons=None):
     lines = [f'{len(gaps)} summing-up sentences whose answer limits them by a word the sentence lacks; put the '
              f'limit into the sentence, or end the answer "stated in:" with {STATED_WORDS} or more consecutive '
-             'words of the entry that state it:']
+             'words of the entry that state it, holding each word the answer adds:']
+    reasons = reasons or {}
     return '\n'.join(lines + [f'{key} [{where}] {sentence}\n  the answer says: {", ".join(missing)}'
+                              + (f'\n  stated in: {reasons[key]}' if key in reasons else '')
                               for key, where, sentence, missing in gaps])
 
 
@@ -1545,7 +1595,8 @@ def main():
     print('\n' + hypothesis_report(draft, args.width, listing))
     print('\n' + step_forms_report(draft, args.width))
     print('\n' + unrun_searches_report(draft, logged_queries(ROOT), args.width))
-    spec = json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
+    print('\n' + unread_named_claims_report(unread_named_claims(draft, ROOT), args.width))
+    spec =json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))
     print('\n' + exactness_report(draft, args.width))
@@ -1573,7 +1624,7 @@ def main():
                 print(f'{key} [{where}] {sentence}\n  rests on: ')
             gaps = qualifier_gaps(draft, answers.read_text())
             if gaps:
-                print(qualifier_gaps_report(gaps))
+                print(qualifier_gaps_report(gaps, stated_in_reasons(draft, answers.read_text(), gaps)))
                 open_rows = open_rows + gaps
             outside = unbounded(draft, answers.read_text(), summaries)
             if outside:

@@ -3,7 +3,13 @@
 import re
 
 
-MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$')
+# An opener preceded by a backslash is an escaped backslash and a bracket, not an opener: prose quoting the TeX
+# line break "\\[2pt]" opened a display match there that ran 14230 characters to the next closer and hid the next
+# entry's article tag from every tool that masks with this pattern (17 October 2026; over the nine notebooks the
+# lookbehind changes two of 403,298 matches, that one and a double-escaped \\(\square\\),
+# research/results/rank_floor_20261017/math-regex-lookbehind.txt).  Inside display math the lazy match has
+# already started, so a line break there is unaffected.
+MATH = re.compile(r'(?<!\\)\\\([\s\S]*?\\\)|(?<!\\)\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$')
 
 
 def protect_math(source):

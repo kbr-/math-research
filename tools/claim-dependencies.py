@@ -281,7 +281,7 @@ def record_decision(data, candidate, *, state, reason, reviewer, date, relation_
 def strip_markup(text):
     # Only actual known markup, never a mathematical inequality such as q<n.
     tags='p|div|span|strong|em|b|i|a|code|sup|sub|br|small|h[1-6]|table|thead|tbody|tr|th|td|ul|ol|li|details|summary'
-    pieces=re.split(r'(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])',text)
+    pieces=re.split(r'((?<!\\)\\\([\s\S]*?\\\)|(?<!\\)\\\[[\s\S]*?\\\])',text)   # as notebook_math.MATH
     return ''.join(part if i%2 else re.sub(r'</?(?:'+tags+r')(?:\s+[^<>]*?)?\s*/?>',' ',part,flags=re.I)
                    for i,part in enumerate(pieces))
 

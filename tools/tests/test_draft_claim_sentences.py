@@ -688,6 +688,26 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         self.assertEqual(len(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach given it; stated in: '
                                                                    'the form of'))), 2)   # fewer than five words
 
+    def test_the_refusal_names_the_condition_each_stated_in_passage_fails(self):
+        # 17 October 2026: a second answers file added passages that quoted the entry but held none of the words
+        # the answers added, and the unchanged refusal did not say which condition they failed.
+        form = dcs.answers_template(self.DRAFT)
+        answer = lambda words: form.replace('rests on: \n', f'rests on: {words}\n')
+        def reasons(words):
+            gaps = dcs.qualifier_gaps(self.DRAFT, answer(words))
+            return gaps, sorted(set(dcs.stated_in_reasons(self.DRAFT, answer(words), gaps).values()))
+        self.assertEqual(reasons('prop:local-count-reach, given a count')[1], ['no "stated in:" passage'])
+        self.assertEqual(reasons('prop:local-count-reach given it; stated in: the form of')[1],
+                         ['the passage has 3 words, fewer than 5'])
+        self.assertEqual(reasons('prop:local-count-reach, given a count; stated in: A count of fewer than zeros')[1],
+                         ["the passage is not a run of the entry's words outside this sentence"])
+        gaps, said = reasons('prop:local-count-reach, given a count; stated in: "the form of prop:local-count-reach, '
+                             'with"')
+        self.assertEqual(said, ['the passage does not hold given'])
+        report = dcs.qualifier_gaps_report(gaps, dcs.stated_in_reasons(self.DRAFT, answer(
+            'prop:local-count-reach, given a count; stated in: "the form of prop:local-count-reach, with"'), gaps))
+        self.assertIn('stated in: the passage does not hold given', report)
+
 
 class NewListingsTest(unittest.TestCase):
     """The vanishing-factor, hypothesis-restriction and unread-section listings (17 October 2026)."""
@@ -756,6 +776,30 @@ class UnrunSearchesTest(unittest.TestCase):
         draft = ('<p>In the lemma\'s words, "M(1-eta)^t<1 with eta the ambient ratio" holds; '
                  'the reviewer said "a polynomial factor decides nothing".</p>')
         self.assertEqual(dcs.unrun_searches(draft, []), [])
+
+
+class UnreadNamedClaimsTest(unittest.TestCase):
+    def test_a_claim_named_from_a_search_listing_is_listed_until_read(self):
+        # 17 October 2026: a review's Record search named claims whose statements had not been read.
+        import json
+        import tempfile
+        import time
+        draft = ('<article id="x" data-claims="lem:own-result"><p><strong>Record search.</strong> "rate threshold" '
+                 'returned thm:tree-weight-transport and lem:marginal-refinement-gain, and lem:own-result.</p>'
+                 '<p><strong>Proof.</strong> By thm:not-a-record-paragraph.</p></article>')
+        with tempfile.TemporaryDirectory() as root:
+            log = Path(root) / 'research' / 'logs'
+            log.mkdir(parents=True)
+            (log / 'claim-reads.jsonl').write_text(
+                json.dumps({'unix_s': time.time() - 13 * 3600, 'claims': ['lem:marginal-refinement-gain']}) + '\n')
+            self.assertEqual(dcs.unread_named_claims(draft, root),
+                             ['thm:tree-weight-transport', 'lem:marginal-refinement-gain'])   # an old read is stale
+            with (log / 'claim-reads.jsonl').open('a') as handle:
+                handle.write(json.dumps({'unix_s': time.time(), 'claims': ['thm:tree-weight-transport']}) + '\n')
+            self.assertEqual(dcs.unread_named_claims(draft, root), ['lem:marginal-refinement-gain'])
+            report = dcs.unread_named_claims_report(dcs.unread_named_claims(draft, root), 0)
+            self.assertIn('lem:marginal-refinement-gain', report)
+            self.assertIn('1 such claims.', report)
 
 
 class StepFormsTest(unittest.TestCase):
