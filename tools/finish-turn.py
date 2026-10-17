@@ -2229,6 +2229,17 @@ def validate_general(body, article, close, *, registered=True):
         raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
                          'prop: or cor:) that states it for all parameters; register a conjecture if '
                          'it is not proved')
+    # The General statement carries the conditions of the claim it cites (17 October 2026: a General statement
+    # dropped both degree windows its claim's summary states); the commit message's condition check, applied here.
+    if ids and (ROOT / 'research/claims/index.json').exists():
+        from commit_message_checks import dropped_conditions
+        summaries = {c['id']: c.get('summary', '') for c in read_json(ROOT / 'research/claims/index.json')['claims']
+                     if c['id'] in ids}
+        dropped = dropped_conditions(html.unescape(found.group(1)), list(summaries.items()), windows_only=True)
+        if dropped:
+            raise ValueError('The General statement drops conditions of the claim it cites: '
+                             + '; '.join(f'{i}: "{c}"' for i, c in dropped) + '. State each, or the range it '
+                             'is stated for (AGENTS.md: summaries keep their source\'s qualifiers)')
     record = body.find('<section id="research-record">')
     earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
     status_of = registered_status()

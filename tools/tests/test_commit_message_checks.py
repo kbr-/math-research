@@ -49,6 +49,18 @@ class ConditionTest(unittest.TestCase):
         self.assertEqual(cmc.dropped_conditions(full, claims), [])
         self.assertEqual(cmc.dropped_conditions('A message that names no claim.', claims), [])
 
+    def test_a_dropped_degree_window_in_an_entry_is_listed(self):
+        # 17 October 2026: a General statement dropped both degree windows of its claim.
+        claims = [('prop:p', '(a) If D >= l+1, the least degree is l. (b) If D >= l + ceil(l/2), it is ceil(l/2).')]
+        bare = 'prop:p: the least common degree is \\(\\ell\\), and the combined one \\(\\lceil\\ell/2\\rceil\\).'
+        self.assertEqual(len(cmc.dropped_conditions(bare, claims, windows_only=True)), 2)
+        full = ('prop:p: degree \\(\\ell\\) when \\(D\\ge\\ell+1\\), and \\(\\lceil\\ell/2\\rceil\\) when '
+                '\\(D\\ge\\ell+\\lceil\\ell/2\\rceil\\).')
+        self.assertEqual(cmc.dropped_conditions(full, claims, windows_only=True), [])
+        # other conditions are left to the reader in an entry
+        other = [('prop:q', 'If H > 0 and beta < 1, the bound holds.')]
+        self.assertEqual(cmc.dropped_conditions('prop:q: the bound holds.', other, windows_only=True), [])
+
     def test_new_claims_are_those_absent_from_the_old_index(self):
         old = '{"claims": [{"id": "lem:a", "summary": "A."}]}'
         new = '{"claims": [{"id": "lem:a", "summary": "A."}, {"id": "lem:b", "summary": "B, if c."}]}'

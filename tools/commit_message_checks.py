@@ -73,21 +73,35 @@ def tokens(text):
             or w in '<>='}
 
 
-def dropped_conditions(message, new_claims):
+def dropped_conditions(message, new_claims, windows_only=False):
     """(claim, condition) for each condition of a newly registered claim's summary that the message's sentences
-    naming the claim carry fewer than half of the words of."""
+    naming the claim carry fewer than half of the words of. With windows_only, only a condition that is an
+    inequality on one variable ("If D >= l+1") is checked, by whether the sentences compare that variable: an
+    entry's General statement, counted over the record's 2132, met the word rule in 1387 (17 October 2026)."""
     found = []
     sentences = re.split(r'(?<=[.;])\s+', ' '.join(message.split()))
     for ident, summary in new_claims:
         about = ' '.join(s for s in sentences if ident in s)
         if not about:
             continue
+        # TeX in an entry's sentence (\lceil, \ge) read as the summary's plain words (17 October 2026).
+        about = re.sub(r'\\[lr](ceil|floor)', r' \1 ', about)
+        about = re.sub(r'\\geq?\b', '>=', re.sub(r'\\leq?\b', '<=', about))
         held = tokens(about)
         for m in CONDITION.finditer(summary):
             words = tokens(m.group(0))
             bound = re.match(r'at (?:most|least)', m.group(0), re.I)   # "at most" turned "about" (16 October)
-            if (len(words) >= 2 and len(words & held) < len(words) / 2
-                    or bound and bound.group(0).lower() not in about.lower()):
+            # An inequality on one variable ("If D >= l+1"), whose single letters tokens() drops: the sentence
+            # needs a comparison on that variable (17 October 2026: a General statement dropped both D windows).
+            compared = re.match(r'\s*(?:if|when|provided)\s+([A-Za-z]\w*)\s*(?:>=|<=|>|<)', m.group(0), re.I)
+            # In an entry, only the closure-degree window D: over the record's General statements a rule on any
+            # variable met 133 of 2132, most of them conditions such as "when H>0" (17 October 2026).
+            if windows_only and not (compared and compared.group(1) == 'D'):
+                continue
+            if (not windows_only and (len(words) >= 2 and len(words & held) < len(words) / 2
+                                      or bound and bound.group(0).lower() not in about.lower())
+                    or compared and not re.search(rf'\b{re.escape(compared.group(1))}\s*(?:>=|<=|>|<|\\ge|\\le|'
+                                                  rf'\\geq|\\leq|≥|≤)', about)):
                 found.append((ident, m.group(0).strip()[:100]))
     return found
 
