@@ -1,0 +1,54 @@
+5c4177bf [New mathematics] New mathematics. lem:nested-word-rank-saturation: for every nested word, with any fixed non-crossing matching of its nonzero entries into equal and opposite pairs, a product of factors \(1+x\) with \(0/1\) coefficients has an ordered set-multilinear projection whose partial derivative matrix has determinant \(1\) over \(\mathbb Z\), hence is invertible over every ring with \(1\), \(\mathbb F_2\) included; for the padded TLS words it has at most \(d\,N^2\) factors.
+  rests on: lem:nested-word-rank-saturation (a) to (d) as proved in this entry, passed in the reviewer record research/results/nested_word_rank_20261017/reviewer.txt.
+6d8804c7 [Goal progress] Goal progress. Unchanged: the lemma rules out a measure and proves no certificate lower bound.
+  rests on: lem:nested-word-rank-saturation, which concerns formulas, and binary-frege-lower-bound, which asks for certificate lower bounds; no claim of the entry bounds a certificate.
+e252d45b [Goal progress] Bearing. At the goal's parameters it gives nothing: it concerns the formula side of a measure, not certificates of any goal family.
+  rests on: lem:nested-word-rank-saturation, a statement about products of affine factors, not about certificates of a goal family.
+c2508c75 [Follow-up] Next attempt: decide, for every path of \(\mathcal P_{k,d}\), whether a product over \(\mathbb F_2\) of at most \(\operatorname{poly}(N)\) affine factors, below \(\exp(kd^{1/\Delta}/10)\) in size, has a full-rank ordered set-multilinear projection; a yes for every path would rule out the direct use of the TLS relative-rank bound on ordered set-multilinear projections of inhomogeneous product-depth-one \(\mathbb F_2\) formulas on those words.
+  rests on: the TLS Proposition 15 bound s exp(-k d^(1/Delta)/10) read in this entry, and imp:noncommutative-homogenization-lower-bound for the path class P_{k,d}, as recorded in #entry-2026-10-16-ordered-projection-barrier.
+  extreme: size poly(N) at the largest k, where exp(k d^(1/Delta)/10) is largest; the budget is the smaller of the two.
+d4defae5 [Follow-up] FLST's \(H_p\) at \(t=1\) over \(\mathbb F_2\) (one leaf, since by Section 7.1.4 "\(L_p\) corresponds exactly to the set of the couples \((i,p_{\le i})\) which verify \(p_i>0\) and \(p_{i+1}<0\)", here \(i=1\) only, so \(\lambda\) is constant; columns \(\omega\in\{0,1\}^2\) in lexicographic order, \(H_{1,\omega}=x_{1,\omega_1\omega_2}\), \(H_{2,\omega}=x_{2,\omega_2}\), \(H_{3,\omega}=x_{3,\omega_1}\), and \(H_p=\mathrm{BE}(H)\)) has rank \(2\), the rows for \(00\) and \(01\) equal and those for \(10\) and \(11\) equal, so its \(t\)-weights cannot be dropped.
+  rests on: FLST TR23-191 Sections 7.1.4 and 7.1.5 as quoted, and research/results/nested_word_rank_20261017/smallest_unmatched.json.
+  extreme: the single path (2,-1,-1), the smallest unmatched one; no other path is claimed.
+bc56e872 [Follow-up] So the smallest unmatched path is saturated by a construction, and the attempt's content is a construction for every path within the size budget.
+  rests on: research/results/nested_word_rank_20261017/smallest_unmatched.json, 16 of 256 label maps of full rank.
+  extreme: the smallest unmatched path only; larger paths are the next attempt.
+96c0e904 [Follow-up] Nontrivial because: the attempt's construction chooses an order of factors whose chains make the matrix triangular, and in \((2,-1,-1)\) the part of size \(4\) must be set against two parts of size \(2\) at once, which no matched pair of equal labels supplies.
+  rests on: the block step of the proof of lem:nested-word-rank-saturation, which needs equal sizes at matched positions.
+  extreme: the part of size 4 against two parts of size 2, the smallest unequal case.
+2e5520d9 [Follow-up] Plainest bound. The dimension bound \(4\) on the smallest case, attained by the search; for growing paths no plain bound decides full rank.
+  rests on: research/results/nested_word_rank_20261017/unmatched.json and smallest_unmatched.json, rank 4 attained.
+  extreme: dimension 4 at the smallest case.
+b23997e7 [Follow-up] Own statements. The lemma covers only nested words, and \((2,-1,-1)\) is not nested, so it decides nothing there; its triangular step needs equal sizes at matched positions.
+  rests on: the Conventions and the block step of lem:nested-word-rank-saturation.
+  extreme: (2,-1,-1), which has no equal and opposite pair.
+80bd28e2 [Follow-up] Of the resembling records, imp:noncommutative-homogenization-lower-bound decides every path over integral domains with at least \(d^22^{k(d+1)}\) elements, not \(\mathbb F_2\); thm:affine-component-ranks bounds contiguous cuts only; cor:ordered-projection-barrier, prop:triangular-concentration-gap and prop:product-dual-code-rows decide nothing on the attempt.
+  rests on: the registered statements of imp:noncommutative-homogenization-lower-bound, thm:affine-component-ranks, cor:ordered-projection-barrier, prop:triangular-concentration-gap and prop:product-dual-code-rows, read with tools/notebook-excerpt.py --claims this turn.
+  within: Proposition 24 needs an integral domain with at least d^2 2^(k(d+1)) elements; thm:affine-component-ranks is about contiguous cuts.
+  extreme: F_2, of two elements, below the domain size Proposition 24 needs for every d >= 1.
+886ce68c [Follow-up] Record search. For the next attempt, the search "product of affine forms ordered set-multilinear projection full rank partial derivative matrix relative rank inhomogeneous product-depth one" returned imp:noncommutative-homogenization-lower-bound as the only result for every path, over large domains; cor:compiled-homogeneous-gap, read separately with tools/notebook-excerpt.py, bounds positional lifts of used images from below, which decides nothing on products of affine factors.
+  rests on: the logged search of tools/search-claims.py this turn and the registered statement of cor:compiled-homogeneous-gap.
+  extreme: the search returned no result over F_2 for every path.
+6fe58074 [Follow-up] Homogeneity enters at the single splitting per product gate, named above; the lemma shows that over \(\mathbb F_2\) the operation's rank bound fails for inhomogeneous formulas already at product-depth one, for every source, so a transfer must send certificates to homogeneous objects first.
+  rests on: TLS TR21-094 Section 4, the proof of Proposition 15 as quoted, and lem:nested-word-rank-saturation at product-depth one.
+  extreme: product-depth one, the smallest depth.
+1b6ba91b [Follow-up] Not examined: a certificate-specific transfer to homogeneous form, which cor:compiled-homogeneous-gap already blocks for the homogeneous components of used images over \(\mathbb F_2\) and cor:ordered-projection-barrier blocks at cost \(f(d)s^c\) generically, but neither for every map.
+  rests on: the registered statements of cor:compiled-homogeneous-gap and cor:ordered-projection-barrier, read this turn.
+  within: cor:compiled-homogeneous-gap is about the homogeneous components of the used images D_n; cor:ordered-projection-barrier about conversions of cost f(d) s^c.
+  extreme: a certificate-specific map of cost above f(d) s^c, which neither excludes.
+5076ad21 [Follow-up] The sub-idea asks for a word-coefficient rank invariant for every bounded-depth original-input certificate.
+  rests on: the sub-idea's text in #entry-2026-10-11-noncommutative-depth-audit, queued in notebook.html.
+  extreme: every bounded-depth original-input certificate, the item's class.
+9e581480 [Follow-up] Not developed here; the abecedarian sub-idea keeps its follow-up, the case of matched classes with no polynomial-size-ABP member.
+  rests on: the follow-up of #entry-2026-10-16-abecedarian-bucket-collapse, quoted in this entry.
+  extreme: matched classes with no polynomial-size-ABP member, the case that follow-up leaves.
+4755291f [Follow-up] On charged ternary Tseitin the certificate side fails by prop:binary-word-rank-witness; for relative ranks on nested words the formula side now fails over \(\mathbb F_2\).
+  within: prop:binary-word-rank-witness is about charged ternary one-hot Tseitin with fixed maximum degree; the lemma is about nested words.
+4fd9d61d [Follow-up] Of the item's own matches, cor:projection-rank-criterion gives a certificate lower bound when every member's commutative set-multilinear projection has relative rank at least \(N^{-c}\), and its part (ii) refutes that hypothesis for a class with a small fixed-depth member over an extension field; cor:placeholder-linear-extension-barrier applies (ii) to the placeholder-linear certificates of charged ternary Tseitin and weak unary PHP.
+  rests on: the registered statements of cor:projection-rank-criterion and cor:placeholder-linear-extension-barrier, read with tools/notebook-excerpt.py --claims this turn.
+  within: both are about certificate classes and the commutative set-multilinear projection, the second for charged ternary Tseitin and weak unary PHP; the next attempt is about products of affine factors and the ordered projection.
+  extreme: N^(-c), the relative-rank threshold of the criterion, against the full rank 1 the next attempt asks for.
+6f4c50bb [Follow-up] Tried. The dimension bound, which caps the rank and decides nothing; thm:affine-component-ranks, which applies since the cut of part \(1\) against parts \(2,3\) is contiguous here, and bounds the rank by the number of factors, at least \(4\) for any product that could reach full rank, so it decides nothing; and the lemma's own block step alone, which needs equal sizes at matched positions and does not apply to the part of size \(4\).
+  rests on: thm:affine-component-ranks as registered, and the block step of lem:nested-word-rank-saturation in this entry.
+  within: thm:affine-component-ranks bounds contiguous cuts by the number of factors; the cut of (2,-1,-1) is contiguous.
+  extreme: 4 factors, the fewest that the recorded bound allows to reach the dimension 4.

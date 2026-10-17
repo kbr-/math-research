@@ -1,0 +1,47 @@
+Reviewer record, nested word rank saturation entry (entry-2026-10-17-nested-word-rank-saturation), 17 October 2026.
+One fresh-context medium reviewer (Claude Code medium-reviewer agent). Its two reports, from its hand-back messages,
+condensed to their findings, in its own words where quoted.
+
+First report. Verdict: "pass with corrections. The lemma's proof (a)-(d) is correct."
+Checked and found correct: the chain-count description of coefficients; the concatenation step (Kronecker product,
+determinant identity); the block step (b >= a forced, diagonal blocks exactly the inner matrix, no chains for b < a,
+upper or lower triangular by the sign of w_1); the induction making a general block the u = 1, v = d case; (c);
+(d): w_Delta nested with at most one extremal pair per level, B_1 = k, B_(i+1) <= 2B_i + k, B_i <= k(2^i - 1),
+s <= d 2^(k(2^Delta - 1)); the nonvacuity witness (176 factors, 1024 by 1024, matching ranks.json); the Consequence
+figures (320 factors, 961 < e^8, Delta = 1 <= log2(20)/3), the inhomogeneous reading being a stated hypothetical
+extension of Proposition 15; the Plainest bound's substitution, recomputed (each triple gives [[1,1],[0,1]]);
+check.py's recursion and split, its reversed control able to fail; search_unmatched.py.
+Required changes:
+- Commutativity of R narrower than the proof needs: the PDM is unimodular over Z, so every ring with 1.
+- "w_u = -w_v excludes matching it" is false (0 = -0); TLS pads with zeros; extend to zero entries as singletons
+  or qualify every "the words of TLS" to d = r^Delta - 1.
+- S(w), P_w, s(w) depend on the chosen matching, which need not be unique ((1,-1,1,-1) has two).
+- "the segment construction ... gave two equal rows" true only of the map tried: over all 256 maps the ranks are
+  {1: 16, 2: 108, 3: 116, 4: 16}, with beta = (0,0,1,1), gamma = (0,0,0,1) full rank.
+- FLST's H_p at t = 1 cannot be checked from the excerpts: quote its definition or label it unverified.
+- The next attempt has no size budget; "a yes closes the relative-rank family over F_2" is unsupported.
+- The spec rationale's polynomial size is not proved: add B_(i+1) >= 2B_i + k and s <= d (max part)^2, or drop it.
+- "the record already decides the question for k=1" is the draft's own substitution computation.
+Suggestions (unverified): every path of P_{k,d} by refinement to unit steps (a Dyck word, hence nested), one factor
+per original part at the innermost open or first close of its run; checked over F_2 for all 135 paths with k <= 2,
+d <= 6 and k = 3, d <= 5, all full rank; (2,-1,-1) gives 10 factors; size at most kd 2^k; no proof written;
+(1,-2,1) and other non-path balanced words open. Bearing "none": agreed.
+Process audit: title says "every field" while the body proves more, and "the words of the TLS bound" overstates
+without padding; "both are made" overstates; the smallest-case claims rest on single choices while a 256-case
+enumeration taking seconds was not run; "closes the relative-rank family" stronger than any statement; the spec's
+polynomial-size claim unsourced; the record credited with the draft's computation. Strength count: 6.
+
+Second report (follow-up on the corrections). Verdict: "pass with corrections. Every correction to the mathematics
+is right; what remains is consistency wording and the Prevention/Meta paragraphs."
+Checked and found correct: (a) over every ring with 1 through determinant 1 over Z and the adjugate along Z -> R;
+the singleton step; (c) with enclosed zeros; (d) with the named matching, prefix sums >= 0, B_(i+1) = 2B_i + k
+exactly, B_i = k(2^i - 1), m = 2^(k 2^(Delta-1)), s <= d' 2^(k(2^Delta - 1)) + d - d' <= d N^2; H_p at t = 1
+recomputed from the quoted definition, rank 2, matching smallest_unmatched.json; the segment distribution and
+witness; the Follow-up's size budget and conclusion; the Owed attempt; the Plainest bound wording; the Hypotheses
+paragraph; the Reviewer's suggestions item, accurate and labelled unverified.
+Required changes: "every commutative ring" left in the General statement and Baseline; quote the line giving
+(2,-1,-1) a single leaf; the title's "projection invertible" should say its partial derivative matrix; the
+Prevention should give the build IDs with their "Not built in the turn" reasons, and for (c), (e) the attempt; the
+Meta named the Prevention's builds again; the status line's review credit only once the gate records this
+follow-up, the unit-step construction unverified, and the stand-in Review items not checked by the reviewer.
+Strength count: 1.
