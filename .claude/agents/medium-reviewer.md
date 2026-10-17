@@ -125,7 +125,12 @@ Report also a check, judge or prevention the draft calls in force without beside
 its run on the case that exposed it and a count of its false refusals over past records (17 October
 2026: a judge was reported in force after replaying 8 entries against today's record only). Report
 also a direct path the draft implies but never names (a mechanism it calls needed, a construction
-its obstructions point to) left unnamed as a next step: an unnamed path is orbiting too. Give each
+its obstructions point to) left unnamed as a next step: an unnamed path is orbiting too. When the
+brief lists rules committed during the cycle, apply each to the draft and report every place it
+breaks one: a rule committed after a mistake is first tested on the next text the author writes,
+and the author does not see its own lapses (17 October 2026: a rule on rereading corrected drafts at
+both ends of each free parameter, committed that day, was broken by the next corrected draft at the
+boundary step of a range). Give each
 finding with its location, or write "no findings". End the audit with "Strength count: N", the
 number of sentences outside the proofs (title, status, bearing, decision, follow-up, commit message)
 whose claim is stronger than its source in the draft, so that the pattern is counted per entry.
