@@ -271,7 +271,10 @@ So perform the following, in a loop:
   written after the construction is run on one instance with its numbers set down, and a widened
   hypothesis is followed by a reread of every clause that used the narrower one (17 October 2026: a
   cut placed at rank \(n_{\rm lower}\) from the picture moved no point on \(n=10\), and an exponent
-  clause written for \(L\ge128\) stayed after \(L\) was freed).
+  clause written for \(L\ge128\) stayed after \(L\) was freed). A file built by a tool for a
+  reviewer (an excerpt, a results list) is read before it is sent, at least the first lines of each
+  block, for what the tool attached to each item (17 October 2026: a blind stage's excerpt gave a
+  conjecture another claim's lemma as its record statement).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
