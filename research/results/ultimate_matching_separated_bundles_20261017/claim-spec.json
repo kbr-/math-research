@@ -1,0 +1,80 @@
+{
+ "source": {
+  "record": "[Separated bundle chains](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-separated-bundles)",
+  "label": "Separated bundle chains",
+  "targets": [
+   "branches/ultimate-matching/notebook.html#entry-2026-10-17-separated-bundles"
+  ]
+ },
+ "date": "2026-10-17",
+ "reviewer": "Claude Code with sole fresh-context medium reviewer",
+ "topics": [
+  "random-matchings"
+ ],
+ "claims": [
+  {
+   "id": "cor:fine-mesh-function-tube",
+   "summary": "On the event of lem:guided-chain-bound, for every dyadic delta_0 with kappa sqrt(log N/N) <= delta_0 <= 2^(-l_1), every dyadic W = 2^(-k) in [2^(-l_1), 1] and every H constant on the cells of side delta_0, |D(H)| <= c_kappa sqrt(N log N) TV(H) + L sqrt N Phi_k (TV(H) + 12 W sum over W-cells Q of (max_Q H^+ + max_Q H^-)), Phi_k = (2(l_1 - k) + 5)^(3/4) + sqrt(log N), TV over inner edges, D(H) = sum_i H(X_i) - N int H.",
+   "assessment": "Working proof, passed two passes of one medium reviewer (research/results/ultimate_matching_separated_bundles_20261017/review.txt): lem:guided-chain-bound (a) with S empty for each superlevel set, and the layer cake (coarea for TV, a W-cell meeting {H > t} exactly for t < max H^+).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "The fine-mesh tube bound for cell functions, used to charge a chain's spread remainder at tube width m delta_0, where the tube factor is of order sqrt(log N).",
+   "next_action": "Use it for the remainder of staircase bundles' spreads.",
+   "novelty": "not_claimed"
+  },
+  {
+   "id": "lem:separated-bundle-chains",
+   "summary": "On the events of lem:cost-weighted-slope-bound and lem:guided-chain-bound at kappa = 4, for every dyadic delta_0 with 4 sqrt(log N/N) <= delta_0 <= 2^(-l_1), at (4,4): a nested chain g = delta_0 sum_{k <= K} y_k 1_{A_k} with heights y_k in [2e^16, V] (K arbitrary) and discrete cost at most 2, v_e the increment over delta_0 of an edge, and bundles b, each a straight run Gamma_b of collinear inner edges of length l_b with a group t_b < k <= t_b + m_b of total height Y_b, such that (B1) every edge of Gamma_b lies on exactly the boundaries of the group's layers, (B2) the strip of cells on Gamma_b's inner side at depths 0..m_b lies in A_{t_b+m_b} minus A_{t_b+m_b+1}, (B3) the strips are pairwise disjoint, (B4) l_b >= max(2^(-l_1), 2 m_b delta_0 (log Y_b)^(1/4)), has |D(g)| <= C sqrt(N log N)(1 + (log V)^(1/4) + eta_W), eta_W = sum of w_e (log v_e)^(1/4) over the edges with v_e > V on no Gamma_b, C universal; at one height y, V = M y.",
+   "assessment": "Working proof, passed two passes of one medium reviewer (research/results/ultimate_matching_separated_bundles_20261017/review.txt): spread each group's layers inward by depths 1..m_b along their strip (nesting kept since the depths are nondecreasing in the layer index); each cell's value drops by delta_0 R, R the removed layers' heights; changed edges are the depth lines (increment one layer's height), Gamma_b edges (increment R of the outer cell) and side edges, each charged to one strip; cost at most 2 + 10.5 and lem:cost-weighted-slope-bound (a) after scaling; the remainder, nonincreasing in depth, TV at most 3 l_b Y_b delta_0, charged by cor:fine-mesh-function-tube at tube width W_b of order m_b delta_0, where Phi is at most (2 log_2(2 m_b) + 5)^(3/4) + sqrt(log N), and l_b Y_b delta_0 <= 4 sqrt 2 c_b (log(Y_b/2))^(-1/4).",
+   "status": "working_proof",
+   "category": "route_specific",
+   "rationale": "Decides at the conjectured order a class of chains with any number of layers whose bundles carry cost, beyond lem:multilevel-chain-bound's count and lem:cost-weighted-slope-bound's charge; its witness (staggered rectangles in groups of m = e^(sqrt(log N)), K of order sqrt(N/log N)) is decided by none of the recorded chain bounds from ln N = 400 on; the band clauses of lem:tube-localized-discrepancy were not compared on it.",
+   "next_action": "Bundles along monotone staircases; then strips that meet a later layer (collisions).",
+   "novelty": "not_claimed"
+  }
+ ],
+ "relationships": [
+  [
+   "cor:fine-mesh-function-tube",
+   "depends_on",
+   "lem:guided-chain-bound",
+   "Its (a) with S empty for each superlevel set."
+  ],
+  [
+   "cor:fine-mesh-function-tube",
+   "cites",
+   "lem:tube-localized-discrepancy",
+   "Its (b) is the same passage from sets to cell functions at meshes no finer than the Leighton-Shor scale; the corollary reaches finer meshes through lem:cut-cell-variance-bound (a); neither implies the other."
+  ],
+  [
+   "lem:separated-bundle-chains",
+   "depends_on",
+   "lem:cost-weighted-slope-bound",
+   "Its (a) for the spread chain."
+  ],
+  [
+   "lem:separated-bundle-chains",
+   "depends_on",
+   "cor:fine-mesh-function-tube",
+   "For the remainder of each bundle."
+  ],
+  [
+   "lem:separated-bundle-chains",
+   "cites",
+   "lem:multilevel-chain-bound",
+   "Bounds chains by a count of large layers; neither implies the other."
+  ],
+  [
+   "lem:separated-bundle-chains",
+   "cites",
+   "lem:cut-cell-variance-bound",
+   "Its (d) bounds chains of at most N^(1/7) layers; neither implies the other."
+  ],
+  [
+   "lem:separated-bundle-chains",
+   "cites",
+   "conj:conjugate-class-discrepancy",
+   "Proves the class bound's dual form for one class of chains at one height; no part of the conjecture in general."
+  ]
+ ]
+}
