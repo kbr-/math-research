@@ -25,6 +25,10 @@ construction and the kernel routine, not the mathematics.
 Positive control: three_quantities.positive_control() must give excess 1 (a transported killer seen).
 Refuted by: excess 0 there, which would mean the kernel code cannot see a transported killer.
 Possible because: a bug in the kernel or in the space sums would hide transported killers.
+Decisive at these sizes: the outcomes are exact dimensions over F_2 with no seeds, so an excess of one
+dimension at any instance decides, and an excess of zero decides that instance.
+Parallel use: the closures run serially inside tools/pc_closure.py; the two boards are built one after the
+other since the 6 x 5 closure is shared by three instances and the 7 x 6 closure is a single build.
 Baseline: the containment A_H + C cap V_1 inside A_C gives dim A_C >= that dimension; the bare count gives
 dim A_C <= dim V_1. Neither decides equality.
 Record checked: the upper bounds lem:saving-monotonicity and ex:support-saving-not-inherited,
