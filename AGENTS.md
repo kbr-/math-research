@@ -333,6 +333,13 @@ AGENTS.md"):
   showed the conclusion empty). A recorded bound used as the baseline is run with each free
   parameter of its proof at its whole range, not at the values its statement fixed (17 October 2026:
   a corollary's argument at a free level already gave the new bound but for one length).
+- Before a step is called the open one (an Attempt's stop, a test's outcome left to the next cycle),
+  the plainest tools of its kind are run on it and their outcome written: a concentration bound on
+  the sum the step concerns, a gluing or composition of the parts it joins, the converse of each
+  condition it calls exact. A stop written from the step's picture is a guess (17 October 2026: a
+  review's stop asked a uniformity over cells that a sum over points does not need, an outcome
+  rested on a gluing not tried, and a growth condition was called exact where a fixed offset
+  sufficed).
 - Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a
