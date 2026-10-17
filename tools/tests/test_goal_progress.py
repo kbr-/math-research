@@ -319,6 +319,30 @@ class ClosureStakesTest(unittest.TestCase):
                                                                                    'Developed: settled above.')
         self.assertEqual(len(FT.closures_without_own_statements(developed.format(own=''))), 1)  # removes it too
 
+    def test_a_closing_list_item_is_judged_by_its_own_paragraphs(self):
+        # 17 October 2026: a sub-idea whose attempt was made was refused on the continuing parent's Owed attempt.
+        parent = ('<p><strong>Owed attempt.</strong> The parent\'s named construction is made in part; its pre-step '
+                  'part is not made and is the next attempt.</p><p><strong>Follow-up.</strong> Continuing.</p>')
+        tail = ('<strong>Own statements.</strong> None applies: the entry cites no recorded statement here, and the '
+                'closure rests on its own count. <strong>Follow-up.</strong> Closed: answered. ')
+        own = ('<strong>Sources read.</strong> The script and its unit shapes, read in this session. '
+               '<strong>Not examined.</strong> Nothing the item names is left: it asked one question, answered. ')
+        made = ('<strong>Owed attempt.</strong> The response per coordinate and test function was named; made by '
+                'hand, outcome above.')
+        item = ('<ul><li data-check="a:s1">Which part do the tests miss? <strong>Stakes.</strong> A yes or a no '
+                'changes only how far a control of this kind can be trusted, in either reading. {own}{tail}{made}'
+                '</li></ul>')
+        FT.validate_closures(parent + item.format(own=own, tail=tail, made=made) + self.RECORD)
+        with self.assertRaisesRegex(ValueError, 'unmade'):                                 # none: the entry's is read
+            FT.validate_closures(parent + item.format(own=own, tail=tail, made='') + self.RECORD)
+        FT.validate_closures(item.format(own='', tail=tail, made='') + self.RECORD + self.READ + self.LEFT
+                             + self.OWED)                                                  # entry-level paragraphs
+        with self.assertRaisesRegex(ValueError, 'unmade'):                                 # in a paragraph: the entry's
+            FT.validate_closures(parent.replace('Continuing.', 'Closed: answered.')
+                                 + '<p><strong>Stakes.</strong> A yes or a no changes only how far a control of '
+                                   'this kind can be trusted, in either reading.</p>' + self.RECORD + self.READ
+                                 + self.LEFT)
+
 
 class ProvedInstanceTest(unittest.TestCase):
     def test_a_registered_proof_exhibits_an_input_meeting_its_hypotheses(self):

@@ -711,8 +711,12 @@ def validate_closures(text):
                          'target is a .txt file with "review" in its name (pattern href="[^"]*review[^"/]*\\.txt"; '
                          'a path in plain text does not count): the reviewer reads every closure and its stakes '
                          '(AGENTS.md; user, 10 October 2026)')
+    # The closure's own paragraphs are read where it was written: a sub-idea closed in a list item of an entry
+    # whose top-level item continues has its Owed attempt in that list item, and the entry's paragraph for the
+    # parent (17 October 2026: a made sub-idea attempt was refused on the parent's unmade next attempt).
+    scope = closing_scope(text)
     # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
-    read = re.search(r'<strong>Sources read\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    read = closure_paragraph('Sources read', scope, text)
     plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
     if len(plain) < 40:
         raise ValueError('An entry that closes a queue item says, after <strong>Sources read.</strong> and in at '
@@ -723,7 +727,7 @@ def validate_closures(text):
                          'relies on, or keep the item open with the reading queued (AGENTS.md)')
     # Two closures drafted on 11 October 2026 covered the forms examined while the item named others (its
     # sources, a construction, a consequence); reviewers overturned both.  The author lists the remainder.
-    left = re.search(r'<strong>Not examined\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    left = closure_paragraph('Not examined', scope, text)
     plain = html.unescape(strip_tags(left.group(1))).strip() if left else ''
     if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
         raise ValueError('An entry that closes a queue item says, after <strong>Not examined.</strong> and in at '
@@ -732,7 +736,7 @@ def validate_closures(text):
                          'names is left; an item with a named part unexamined is Continuing (AGENTS.md)')
     # On 11 October 2026 three closures of one item were drafted while the attempt its last reviewer had
     # named stayed unmade; each reviewer refused.  The closure accounts for that attempt in its own paragraph.
-    owed = re.search(r'<strong>Owed attempt\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    owed = closure_paragraph('Owed attempt', scope, text)
     plain = html.unescape(strip_tags(owed.group(1))).strip() if owed else ''
     if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
         raise ValueError('An entry that closes a queue item says, after <strong>Owed attempt.</strong> and in at '
@@ -803,6 +807,24 @@ def unlisted_limits(text):
 # excuse covering one family; its reviewer refused it.  A closing paragraph may not carry such an exception.
 CLOSURE_EXCEPTION_RE = re.compile(r'\bunmade except\b|\bexcept\b[^.]*\b(?:unmade|undecided|not decided|not made)\b|'
                                   r'\b(?:is|are|stays?|left) (?:undecided|not decided|unmade)\b|\bnot made\b', re.I)
+
+
+def closing_scope(text):
+    """The text in which a closure's paragraphs are looked up first: its closing list items when every closure is
+    in one, else the entry; a paragraph a list item lacks is then read from the entry (closure_paragraph).
+
+    An entry developing a top-level item that continues may close a sub-idea in a list item; the closure's own
+    Sources read, Not examined and Owed attempt are that item's, not the entry's paragraphs for the parent."""
+    items = CLOSING_ITEM_RE.findall(text)
+    if items and sum(len(CLOSED_RE.findall(item)) for item in items) == len(CLOSED_RE.findall(text)):
+        return '\n'.join(items)
+    return text
+
+
+def closure_paragraph(label, scope, text):
+    """The labelled closure paragraph, from the closing items when they carry it, else from the entry."""
+    pattern = rf'<strong>{label}\.</strong>((?:(?!</p>)(?!</li>).)*)'
+    return re.search(pattern, scope, re.S) or re.search(pattern, text, re.S)
 
 
 def closure_admits_unmade(plain):
