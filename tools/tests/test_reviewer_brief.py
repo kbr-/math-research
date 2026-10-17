@@ -201,6 +201,27 @@ class MissingBriefFileTest(unittest.TestCase):
             plain.write_text('<html>no article</html>')
             self.assertEqual(hook.unread_sentences(f'See {plain}.', tools), [])
 
+    def test_a_draft_marked_reviewed_before_its_gate_is_filled_is_refused(self):
+        # 17 October 2026: three entries in a row went to their reviewer with "reviewed" in the status line and
+        # "[after review]" in the gate; their briefs named draft.html beside brief.md, by its bare name.
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'rev-el'
+            folder.mkdir()
+            draft = folder / 'draft.html'
+            brief = folder / 'brief.md'
+            brief.write_text('Files in this folder: draft.html (entry draft), claim-spec.json.\n')
+            prompt = f'Read {brief} and follow it.'
+            early = ('<article id="entry-x" data-kind="research"><p class="entry-meta">17 October 2026 · Working '
+                     'proof, reviewed; scope · Item.</p><p><strong>Verification gate.</strong> [after review]</p>')
+            draft.write_text(early)
+            self.assertEqual(hook.premature_reviewed(prompt), [str(draft)])
+            self.assertEqual(hook.premature_reviewed(f'Follow-up on {draft}.'), [str(draft)])
+            for good in (early.replace('reviewed;', 'under review;'), early.replace('reviewed;', 'unreviewed;'),
+                         early.replace('[after review]', 'One medium reviewer checked the proof.')):
+                with self.subTest(good=good[60:110]):
+                    draft.write_text(good)
+                    self.assertEqual(hook.premature_reviewed(prompt), [])
+
     def test_a_follow_up_claiming_an_update_its_refused_command_was_to_write_is_refused(self):
         # 16 October 2026: the command writing the spec was refused, and the follow-up said it was updated.
         with tempfile.TemporaryDirectory() as tmp:

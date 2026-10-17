@@ -137,6 +137,49 @@ def unread_sentences(text, tools=TOOLS):
     return unread
 
 
+RELATIVE_HTML = re.compile(r'(?<![\w/.-])([\w.+-]+\.html)\b')
+REVIEWED_STATUS = re.compile(r'<p class="entry-meta">[^<]*(?<!un)\breviewed\b', re.I)
+GATE_PLACEHOLDER = re.compile(r'Verification gate\.</strong>\s*\[[^\]]*\]')
+
+
+def named_drafts(text):
+    """The .html files a brief or message names: by full path in `text`, by full path in a .md or .txt file it
+    names, or by a bare name in such a file, resolved against that file's folder (a brief beside its draft.html,
+    the form every brief of 17 October 2026 used, which full-path matching never saw)."""
+    named = list(dict.fromkeys(NAMED_FILE.findall(text)))
+    found = [path for path in named if path.endswith('.html')]
+    for path in named:
+        if path.endswith(('.md', '.txt')) and Path(path).is_file():
+            try:
+                body = Path(path).read_text(errors='replace')[:200000]
+            except OSError:
+                continue
+            found += [p for p in NAMED_FILE.findall(body) if p.endswith('.html')]
+            found += [str(Path(path).parent / name) for name in RELATIVE_HTML.findall(body)
+                      if (Path(path).parent / name).is_file()]
+    return [path for path in dict.fromkeys(found) if Path(path).is_file()]
+
+
+def premature_reviewed(text):
+    """Drafts whose status line says "reviewed" while their Verification gate is still a placeholder: on
+    17 October 2026 three entries in a row were sent to their reviewer with that status, and each reviewer had to
+    report it (AGENTS.md: the title and status line are written after the review)."""
+    early = []
+    for path in named_drafts(text):
+        try:
+            body = Path(path).read_text(errors='replace')
+        except OSError:
+            continue
+        if REVIEWED_STATUS.search(body) and GATE_PLACEHOLDER.search(body):
+            early.append(path)
+    return early
+
+
+PREMATURE_REASON = ('the draft {} says "reviewed" in its status line while its Verification gate is still a '
+                    'placeholder: write the status line after the review (AGENTS.md), for instance "Working '
+                    'proof, under review", and change it when the gate is filled')
+
+
 SENTENCES_REASON = ('tools/draft_claim_sentences.py has not run on {} since it was last written: run it '
                     '(tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK) and read each sentence that cites a '
                     'claim beside the claim before the brief (AGENTS.md)')
@@ -272,6 +315,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
         unread = unread_sentences(message, tools)
         if unread:
             return SENTENCES_REASON.format(', '.join(unread))
+        early = premature_reviewed(message)
+        if early:
+            return PREMATURE_REASON.format(', '.join(early))
         stale = stale_files(message, log or block_log.LOG, now)
         return (('the message says ' + ', '.join(stale) + ' was updated, but a call naming it was refused '
                  'after it was last written: read it back, write the update again if it is missing, and say '
@@ -290,6 +336,9 @@ def refusal(payload, tools=TOOLS, log=None, now=None):
     unread = unread_sentences(prompt, tools)
     if unread:
         return SENTENCES_REASON.format(', '.join(unread))
+    early = premature_reviewed(prompt)
+    if early:
+        return PREMATURE_REASON.format(', '.join(early))
     leaks = blind_leaks(prompt, tools.resolve().parent)
     if leaks:
         return ('the brief is for a blind stage, and the folder of its files also holds ' + ', '.join(leaks[:6])
