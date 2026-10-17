@@ -43,6 +43,8 @@ def member(log2n, alpha, m_over, pi_frac, lemma_only=False):
         kappa = bstar / (s - K - t + 1)
         tail = 0.75 - 2.0 ** max(log2_eta, -1074) - 2.0 ** max(log2_zeta, -1074)
         log2_floor = t * math.log2(1 - kappa) + math.log2(tail)
+        # part (a), every rank-t C: (1 - eta)(1 - 2t/(m - K))^K, one fixed pivot set T* in every frame
+        log2_pick = K * math.log1p(-2 * t / (m - K)) * LOG2E + math.log2(1 - 2.0 ** max(log2_eta, -1074))
         q = K / (2 * (m - K + 1))
         log2_ratio = 2 * t * math.log2(q) - log2_floor
         log2_record = float(s) * (K / m) * LOG2E               # cor:pair-sector-bounds (iii): e^{sK/m}; s*K overflows a float
@@ -50,7 +52,8 @@ def member(log2n, alpha, m_over, pi_frac, lemma_only=False):
                          K=f'2^{math.log2(K):.3f}', t=t, s=f'2^{math.log2(s):.4f}', pi=pi, rho=round(rho, 4),
                          beta=round(2 ** log2_beta, 4), log2_eta=round(log2_eta, 1), log2_zeta=f'{log2_zeta:.4e}',
                          kappa=f'{kappa:.4e}', log2_floor=round(log2_floor, 1), log2_q=round(math.log2(q), 4),
-                         log2_ratio_2t=f'{log2_ratio:.4e}', log2_t_ratio=f'{log2_ratio + math.log2(t):.4e}',
+                         log2_ratio_2t=f'{log2_ratio:.4e}', log2_pick_floor=f'{log2_pick:.4e}',
+                         log2_pick_ratio_2t=f'{2 * t * math.log2(q) - log2_pick:.4e}', log2_t_ratio=f'{log2_ratio + math.log2(t):.4e}',
                          log2_record_excess=f'{log2_record:.4e}', record_bound_log2=f'{2 * t * math.log2(q) + log2_record:.4e}'))
     return rows
 
