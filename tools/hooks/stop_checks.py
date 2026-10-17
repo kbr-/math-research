@@ -1040,6 +1040,28 @@ RECORD_GAP = re.compile(r"[^.!?\n]*\b(?:nothing in the record|not in the record|
                         r"(?:lacks|has no|does not (?:have|give|contain|do)|doesn't (?:have|give|contain|do))|no recorded "
                         r"(?:argument|result|theorem|claim|statement))\b[^.!?\n]*", re.I)
 GAP_TAKEN = re.compile(r"\b(?:queued|Appended|next attempt|tried|attempt(?:ed)? (?:it|here|now))\b", re.I)
+# A sentence on what the record holds or lacks (17 October 2026: "The record holds no statement of this family's
+# kernel", written in a turn whose record search came later, the stand-in review found).
+RECORD_ABSENCE = re.compile(r"[^.!?\n]*\b(?:the record (?:holds|has|gives|states|contains) no|no (?:recorded|registered) "
+                            r"(?:statement|result|claim|lemma|theorem|argument)|nothing (?:recorded|registered))\b"
+                            r"[^.!?\n]*", re.I)
+
+
+def record_search_block(path, reply):
+    """The block for a reply that says what the record lacks in a turn that ran no record search, or None."""
+    found = [m.group(0).strip() for m in RECORD_ABSENCE.finditer(reply or '')]
+    if not found or not path:
+        return None
+    try:
+        calls, _ = read_turn(path)
+    except OSError:
+        return None
+    if any('search-claims.py' in str((call or {}).get('command', '')) for _, call in calls):
+        return None
+    return {'decision': 'block', 'reason': (
+        f'The reply says what the record lacks ("{found[0][:160]}") in a turn that ran no tools/search-claims.py: '
+        'search in the words of the objects first, then write the sentence from what it returned (AGENTS.md, order '
+        'of work: a reply is held to an entry\'s rules).')}
 
 
 def offer_block(reply):
@@ -1138,6 +1160,7 @@ def main(argv):
                                      ('unreviewed', lambda: unreviewed_block(path, reply, ROOT)),
                                      ('offer', lambda: offer_block(reply)),
                                      ('refusal', lambda: refusal_block(path, reply)),
+                                     ('record search', lambda: record_search_block(path, reply)),
                                      ('meta home', lambda: meta_home_block(
                                          reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
                                     + branch_checks(turn_texts, calls, reply, ROOT))

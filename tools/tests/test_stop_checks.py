@@ -602,6 +602,29 @@ class OfferBlockTest(unittest.TestCase):
                 self.assertIsNone(hook.offer_block(reply))
 
 
+class RecordSearchBlockTest(unittest.TestCase):
+    # 17 October 2026: "The record holds no statement of this family's kernel" with no search in the turn.
+    def transcript(self, command):
+        import json
+        import os
+        import tempfile
+        lines = [{'type': 'user', 'message': {'content': 'go on'}},
+                 {'type': 'assistant', 'message': {'content': [
+                     {'type': 'tool_use', 'id': 't1', 'name': 'Bash', 'input': {'command': command}}]}}]
+        f = tempfile.NamedTemporaryFile('w', suffix='.jsonl', delete=False)
+        f.write('\n'.join(json.dumps(x) for x in lines) + '\n')
+        f.close()
+        self.addCleanup(os.unlink, f.name)
+        return f.name
+
+    def test_a_record_absence_without_a_search_is_refused(self):
+        reply = "The record holds no statement of this family's kernel at every size."
+        block = hook.record_search_block(self.transcript('ls research'), reply)
+        self.assertIn('ran no tools/search-claims.py', block['reason'])
+        self.assertIsNone(hook.record_search_block(self.transcript('python3 tools/search-claims.py -n 3 kernel'), reply))
+        self.assertIsNone(hook.record_search_block(self.transcript('ls'), 'The record holds the lemma we need.'))
+
+
 class RefusalBlockTest(unittest.TestCase):
     # 17 October 2026: a checkout the classifier refused was redone by another command, the reply silent on it.
     def transcript(self, refused):
