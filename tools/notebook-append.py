@@ -86,6 +86,29 @@ def refuse_early_review_credit(entry):
                          '(AGENTS.md: title and status line written after the review)')
 
 
+MISSING_CONSTRUCTION = re.compile(r'\bno (?:recorded )?construction (?:has|does|gives|exists)\b'
+                                  r'|\bthe record has no (?:such )?construction\b', re.I)
+BUILDS_NEXT = re.compile(r'\b(?:build|builds|construct|constructs|constructed|built)\b', re.I)
+
+
+def refuse_unbuilt_obstacle(entry):
+    """A review whose Obstacle says the line is stuck at a mechanism no construction has must have its Decision
+    build a candidate for it next: on 17 October 2026 two reviews in a row located that mechanism (cross-boundary
+    correction of the running field) and sent the next entries to further exclusions, and the user asked why no
+    construction was attempted."""
+    if 'data-kind="review"' not in entry[:600]:
+        return
+    obstacle = re.search(r'<h4>Obstacle</h4>((?:(?!<h4>).)*)', entry, re.S)
+    if not obstacle or not MISSING_CONSTRUCTION.search(strip_tags(obstacle.group(1))):
+        return
+    decision = re.search(r'<strong>Decision\.</strong>((?:(?!</p>).)*)', entry, re.S)
+    if not decision or not BUILDS_NEXT.search(strip_tags(decision.group(1))):
+        raise ValueError('the Obstacle says no construction has the mechanism the line needs, and the Decision '
+                         'builds none: name in the Decision the construction the next research entries build '
+                         'and test (user, 17 October 2026: "You identified exactly what is needed ... But you did '
+                         'not make any attempt to construct this?")')
+
+
 NONTRIVIAL = re.compile(r'Nontrivial because[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
 
 
@@ -554,6 +577,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
         raise ValueError('entry must be one <article id="..."> ... </article> element')
     refuse_broken_text('entry', entry)
     refuse_early_review_credit(entry)
+    refuse_unbuilt_obstacle(entry)
     if next_html is not None:
         refuse_broken_text('next step', next_html)
         refuse_next_structure(next_html)

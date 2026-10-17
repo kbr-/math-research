@@ -469,6 +469,24 @@ class NotebookAppendTests(unittest.TestCase):
                       'the L = 9 chain was not run, its enumeration measured at 40 minutes.'):
             tool.refuse_uncomputed_smallest_case(draft.replace('its ratio not yet computed.', legit))
 
+    def test_a_review_naming_a_missing_construction_must_build_one(self):
+        # 17 October 2026: the ninth review's Obstacle and a Decision sending the next entry to an exclusion.
+        review = ('<article id="r9" data-kind="review" data-scope="goal">\n<h4>Obstacle</h4>\n<p>On the primal '
+                  'side the line is stuck at a mechanism no construction has: a flow nonlinear in the counts.</p>\n'
+                  '<h4>Architecture review</h4>\n<p><strong>Decision.</strong> The next research entry proves the '
+                  'linear-flow obstruction lemma-first.</p>\n</article>')
+        with self.assertRaisesRegex(ValueError, 'builds none'):
+            tool.refuse_unbuilt_obstacle(review)
+        for good in (review.replace('proves the linear-flow obstruction lemma-first',
+                                    'builds the restoring-drift flow and tests its tails'),
+                     review.replace('no construction has', 'the walk forces'),
+                     review.replace('data-kind="review"', 'data-kind="research"'),
+                     # The phrase outside the Obstacle section decides nothing.
+                     review.replace('<h4>Obstacle</h4>\n<p>On the primal side the line is stuck at a mechanism '
+                                    'no construction has: a flow nonlinear in the counts.</p>',
+                                    '<p>Assessment: no construction has been tried.</p>')):
+            tool.refuse_unbuilt_obstacle(good)
+
     def test_a_status_line_crediting_a_review_before_the_gate_is_refused(self):
         # 17 October 2026: "with a reviewed correction pass" stood beside a placeholder Verification gate.
         early = ('<article id="a3">\n<p class="entry-meta">Working proof, with a reviewed correction pass.</p>\n'

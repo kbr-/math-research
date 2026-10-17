@@ -297,6 +297,11 @@ AGENTS.md"):
   before it is said to bear on the question or to choose the next direction (17 October 2026: a cell
   scheme's stop was read as forcing a refutation, while the per-level counts reduced the instance to
   a repair).
+- When the record's obstructions name the mechanism a proof needs and no recorded construction has
+  it, the next cycles build a candidate with that mechanism and test it, before any further class is
+  excluded: an exclusion narrows the search, and only a construction can reach the goal (user, 17
+  October 2026: "You identified exactly what is needed to reach the goal ... But you did not make
+  any attempt to construct this?").
 - First draft the Plainest bound: the bare count or the oldest recorded lemma on the instance,
   before any method is chosen; then, once a proof exists, each of its own steps used alone (a
   substitution, a reduction, a restriction), since a step that already decides the instance makes
