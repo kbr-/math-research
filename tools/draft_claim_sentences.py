@@ -405,6 +405,42 @@ def hypothesis_report(draft, width, words=None):
                      + [f'{len(found)} such restrictions.'])
 
 
+HYPOTHESIS_ITEM = re.compile(r'(?:</strong>|[.;])\s*\\\(((?:(?!\\\)).)+?)\\\):')   # one math span opening an item
+INEQUALITY = re.compile(r'\\le|\\ge|\\leq|\\geq|<|>|&lt;|&gt;')
+
+
+def step_forms(draft):
+    """(hypothesis, [inequalities its step displays]) for each item "\\(H\\): step" of a Hypotheses, each with its
+    step paragraph whose step displays inequalities none of which is H itself: the step may need only the form it
+    displays (17 October 2026: "\\(K+\\tau\\le D\\): the cut has support at most \\(2K+\\tau\\le2D\\)", a hypothesis
+    copied from the template, while its own step showed the weaker form the lemma needed). A reading list."""
+    found = []
+    squash = lambda tex: re.sub(r'\s+', '', tex)
+    for tag, body in BLOCK.findall(STATUS_LINE.sub('', draft)):
+        label = LABEL.match(body)
+        if tag != 'p' or not label or not label.group(1).startswith('Hypotheses, each with its step'):
+            continue
+        items = list(HYPOTHESIS_ITEM.finditer(body))
+        for item, following in zip(items, items[1:] + [None]):
+            hypothesis = item.group(1)
+            if not INEQUALITY.search(hypothesis):
+                continue
+            step = body[item.end():following.start() if following else len(body)]
+            shown = [tex for tex in re.findall(r'\\\((.+?)\\\)', step, re.S) if INEQUALITY.search(tex)]
+            if shown and squash(hypothesis) not in {squash(tex) for tex in shown}:
+                found.append((text('\\(' + hypothesis + '\\)'), [text('\\(' + tex + '\\)') for tex in shown]))
+    return found
+
+
+def step_forms_report(draft, width):
+    found = step_forms(draft)
+    lines = [f'  {h}: its step displays ' + '; '.join(forms) for h, forms in found]
+    return '\n'.join(['Hypotheses whose step displays other inequalities than the hypothesis; if the step needs only '
+                      'a displayed form, state that form, the weakest the proof allows (AGENTS.md):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(found)} such hypotheses.'])
+
+
 PART = r'(?:Sections?|Theorems?|Lemmas?|Corollar(?:y|ies)|Propositions?|Definitions?|Appendix|Remarks?)'
 NOT_READ = re.compile(r'(' + PART + r'\s+[\dA-Z][\w.]*(?:(?:\s*(?:,|and|to|–|-)\s*)[\dA-Z][\w.]*)*)'
                       r'(?:[^.;]|(?<=\d)\.(?=\d)){0,60}?\b(?:not read|unread|was not read|were not read)\b'
@@ -1463,6 +1499,7 @@ def main():
     listing = listing_words(notebook_text)
     print('\n' + vanishing_report(draft, args.width, listing))
     print('\n' + hypothesis_report(draft, args.width, listing))
+    print('\n' + step_forms_report(draft, args.width))
     spec = json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))

@@ -56,8 +56,11 @@ def validate(article):
     Nonvacuity paragraph identifies the budget it verifies with a matching link.
     Link existence and mathematical adequacy remain the normal link/review duties.
     """
+    import notebook_math
     parsed = _Paragraphs()
-    parsed.feed(article)
+    # Stored TeX may hold raw "<" (the site escapes it before parsing); unprotected, "\(4K=256<m-\tau\)" opened a
+    # tag that swallowed the Nonvacuity link after it (17 October 2026).
+    parsed.feed(notebook_math.protect_math(article))
     if parsed.bearing != 'some':
         return
     progress = next((p for p in parsed.paragraphs

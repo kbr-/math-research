@@ -734,5 +734,21 @@ class NewListingsTest(unittest.TestCase):
         self.assertTrue({('section', '2'), ('section', '3'), ('section', '4')} <= parts, parts)
 
 
+class StepFormsTest(unittest.TestCase):
+    def test_a_hypothesis_beside_the_weaker_form_its_step_displays(self):
+        # 17 October 2026: the template's hypothesis kept while the step showed the form the lemma needed.
+        draft = ('<p><strong>Hypotheses, each with its step.</strong> \\(K+\\tau\\le D\\): the cut \\(\\gamma\\) has '
+                 'support at most \\(2K+\\tau\\le2D\\), for the small potential. \\(m\\ge1\\): the ball is '
+                 'nonempty.</p>')
+        self.assertEqual(dcs.step_forms(draft), [('\\(K+\\tau\\le D\\)', ['\\(2K+\\tau\\le2D\\)'])])
+
+    def test_a_step_that_displays_the_hypothesis_itself_is_not_listed(self):
+        draft = ('<p><strong>Hypotheses, each with its step.</strong> \\(2K+\\tau\\le2D\\): the cut has support '
+                 'at most \\(2K+\\tau\\le2D\\). \\(\\beta&lt;1\\): the bound.</p>')
+        self.assertEqual(dcs.step_forms(draft), [])
+        other = draft.replace('Hypotheses, each with its step', 'Degenerate cases')
+        self.assertEqual(dcs.step_forms(other), [])
+
+
 if __name__ == '__main__':
     unittest.main()

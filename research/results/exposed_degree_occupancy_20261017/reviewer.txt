@@ -1,0 +1,124 @@
+Reviewer record: the exposed degree occupancy entry, 17 October 2026.
+One fresh-context medium-reviewer; its reports follow verbatim.
+
+=== Report 1: the first draft ===
+
+**Verdict: pass with corrections.** The lemma's proof is correct. The comparison with the record misses a recorded result, cor:star-closure-ratio, and that overstates the Bearing and the "added case".
+
+**Correctness (items 1–10)**
+- **Item 1. Correct.** The split holds, and \(\gamma'_s\) depends only on \((s_{\rm lo},s_X)\). The two edge families are disjoint. The bound \(\mu\sigma\) on edges from \(X\) into \(S\) is right, because each such edge is an off-\(T\) edge from \(S\) to \(V_{\rm hi}\); this holds in multigraphs, and a loop at \(x\) counts in \(\kappa\). A coset holds at most one good character. The probability bound \(\binom{d}{\lceil d/2\rceil}(K/(m-\tau))^{\lceil d/2\rceil}\le\beta_T^d\) is the high-incidence lemma's. The binomial sum gives \(\eta_{\rm ex}\) exactly. Edges from an exposed vertex to other exposed vertices go into \(V_{\rm hi}\), so they are counted in \(\kappa\); the cut edges among them are discarded, which is only lossy.
+- **Item 2. Correct.** The ratio step needs only \(q_T(K-j)\ge(1-\eta_{\rm ex}(K))B_{m-\tau}(K-j)\). \(\eta_{\rm ex}\) increases with \(\beta_T\), so it is monotone in the level.
+- **Item 3. Recomputed and correct.** \(m-\tau\ge7n\Delta/64\) and \(K\le n\Delta/512\) give \(1/56\), so \(\beta_T\le0.2673\). \(1/0.27=3.704>3.7\). \(e^{1/4}-1=0.284\), and \(1/0.71=1.41\).
+- **Item 4. Correct.** \(\varepsilon=32\) is valid since \(\min_{\sigma\le31}(n-\sigma)=33\). The values \(\theta=\mu=1\), \(s_0=31\), \(\kappa=0\) are right, and \(\eta_{\rm ex}\approx128\cdot0.3592^{29}\approx1.6\cdot10^{-11}\).
+- **Unused hypotheses (item 5).** \(\theta+2\mu<\varepsilon\) and \(s_0>\kappa\) are implied by \(\eta_{\rm ex}<1\): if either exponent is \(\le0\), its factor is \(\ge3\). The inequality \(d'_s\ge\ldots\) and \(\beta_T^{d'_s}\le\beta_T^{\rm bound}\) hold without them. So the lemma is true with neither hypothesis. Drop both, or say they are implied. Also say what \(s_0\) means when \(h'=0\) (empty minimum).
+- **Hypothesis stronger than its step (item 5).** \(K+\tau\le D\) is used only for \(2K+\tau\le2D\). State the lemma under \(2K+\tau\le2D\), which is more general (copied from the high-incidence lemma, not read off the proof). The corollary still needs lem:local-tuple-ratio's \(K+\tau+|\operatorname{supp}\gamma_i|\le D\).
+- **"Neither lemma implies the other" (item 5).** True, but give both directions. Example: \(h'=1\), \(s_0-\kappa=1\), \(\beta_T=1/2\) makes the new lemma vacuous while the old one gives about \(1/3\).
+- **Record comparison (item 6), main gap.** cor:star-closure-ratio (with lem:exposed-vertex-occupancy) already handles exposed vertices of any number by closing \(T\) with the stars of \(A\). That gives \(h'=\mu=0\) and the condition \(\theta+\mu<\varepsilon\), which is weaker than \(\theta+2\mu\), at the price \(\tau\to\tau^A\). So the "added case \(h'>0\)" is wrong as stated. The real added case is edge sets whose star closure leaves the window (\(K+\tau^A+|\operatorname{supp}\gamma|>D\)); on the family, roughly \(h'\Delta\gtrsim D\). Inside the closure's window the new lemma's only gain is a smaller \(\tau\) in \(B_{m-\tau}\) and \(\lambda\).
+  - Rewrite the Record comparison, the Best outcome ("would extend cor:star-closure-ratio to partial stars"; it already covers them), and the Bearing's "where the record paid \(3^{h'}\)" (it pays nothing when the closure fits).
+  - Add a spec relationship to cor:star-closure-ratio.
+- **Plainest bound in the Nonvacuity (item 6).** The closure is a plainer recorded bound on the witness. Closing the star at \(v\) gives \(\tau'=63\), still inside the window (\(K+\tau'=127\le128\)). Since \(q_T\ge q_{T'}\), this gives about \((1-\eta')B_{1953}(64)\), roughly \(0.36\,B_{1984}(64)\) (my hand estimate, not run), not a third. Put that in the Plainest bound paragraph.
+- **Architecture test (item 7).** "Not decided" stands. But the stated reason ("the lemma needs \(K+\tau\le D\)") falls under the weakening above, since \(2s\le2(D-K)\) satisfies \(2K+\tau\le2D\). The binding constraint is lem:local-tuple-ratio's window, and the pairs lying in \(T\). Fix the reason. I could not check the review's two outcomes; no review excerpt was supplied.
+- **Smallest case (item 8). Correct.** The three representatives \(e_a\), \(2e_a+e_b\), \(2e_b\) are right.
+- **Framework change (item 9). Sound.** Both parsers use convert_charrefs, so the escaped brackets come back as "<" in the data. Only tags that were swallowed inside math reappear, consistent with no anchor changing. One risk: an unbalanced "\(" (for example in code) would now let the lazy MATH pattern escape real tags up to the next "\)". This is untested.
+- **Search (item 10).** Two searches ("exposed vertices off T degree occupancy residual graph class count"; "star closure partial stars …") found no registered result stating the lemma. They returned cor:star-local-tuple-ratio and lem:exposed-vertex-occupancy as related.
+
+**Suggestions (unverified)**
+- **Free generalizations.** Use per-vertex margins, \(\eta=(1+2\beta^{\varepsilon-\theta-2\mu})^n\prod_{x\in X_0}(1+2\beta^{s(x)-\kappa(x)})-1\). Combine with closure: close the stars of low-margin exposed vertices and charge the rest. This gives a hybrid that dominates both recorded lemmas.
+- **Per-pair occupancy.**
+  - Modulo \(\psi=e_a+e_b\), each nonzero class of \(\mathbb F_3^2\) has two support-1 representatives; class \(x-y\) holds \((1,0),(0,2)\). So \(F_3^E/W\) is a code on \(m-s\) merged coordinates, each costing support 1 with multiplicity 2.
+  - The image of \(\mathcal B\) is a cut code of a 4-uniform hypergraph. For vertex-disjoint pairs, \(|\partial'S|\ge(\varepsilon-1)\sigma\) off the pairs.
+  - The small-potential step needs \(2K+2s\le2D\), so it covers \(D/2<s\le D-K\).
+  - Expected outcome: the good-character argument goes through with \(\beta=2\sqrt{K/(m-s)}\), and per pair the cost is a factor 2 of multiplicity, not 3.
+  - Whether the factor \(2^t\) cancels in the ratio is the open part. It also needs local-tuple-ratio's window relaxed for \(W\) in place of \(\mathbb F_3^T\).
+
+**Process audit**
+- **Title.** It omits "inside the window" and the margin condition. It is accurate for the lemma as an occupancy count, but because of the closure it implies more novelty against the record than holds.
+- **Status line.** Fine.
+- **Comparison drafted from the draft's side.** The Record comparison lists three ratio corollaries and omits cor:star-closure-ratio, though the Best outcome cites it: the comparison was written from the draft's wording, not from the record.
+- **Spec written before the review.** The spec's "reviewer" field credits a fresh-context reviewer before this review returned.
+- **Inherited hypothesis.** \(K+\tau\le D\) was copied from the template, not read off the proof. This changes the Architecture test's stated reason.
+- **Unrun check.** The Process assessment's "the claim checks give the same result with either parser" was not shown to me with its output.
+
+Strength count: 4 (the Best outcome, the Bearing's "record paid \(3^{h'}\)", the Record comparison's "added case \(h'>0\)", and the Architecture test's reason).
+
+=== Report 2: the corrected draft ===
+
+**Follow-up verdict: pass with corrections.** The lemma, the Remark and corollary (i)–(iii) are correct. The family figure is right. Two of the draft's claims are stronger than their arguments.
+
+**Checked and correct**
+- **Per-vertex union bound.** The sum runs over \(S\) among at most \(n-|V_{\rm hi}|\) vertices, so it is at most \(\eta_{\rm ex}\) because each factor is at least 1. "Whatever the signs" holds: \(\beta_T<1\) and \(d'_s\ge\) the bound give \(\beta_T^{d'_s}\le\beta_T^{\rm bound}\) for any sign of the exponent, and \(d'_s=0\) gives probability at most 1.
+  - The edges from \(X\) into \(S\) are at most \(\sum_{u\in S}\mu(u)\), which is right.
+  - Monotonicity in the level: \(\eta_{\rm ex}<1\) makes every exponent positive, so the level-\(k\) value is at most the level-\(K\) value.
+- **Remark.** \(q_T\ge q_{T_Y}\) holds, since each met coarse coset contains the met fine coset of a ball element. \(\theta_Y(u)+2\mu_Y(u)=\theta(u)+a+2b\) is right. The margins are kept: edges to \(Y\) leave \(s(x)\) and \(\kappa(x)\) together. At \(Y=X_0\), \(T_Y=T^A\) with \(A=V_{\rm hi}\) and \(\nu_Y=\max_u(\theta(u)+\mu(u))\).
+- **(ii) and (iii).** The composition in (ii) is right; \(m-\tau\ge K\) follows from \(4K<m-\tau\). In (iii) at \(Y=X_0\), cor:star-closure-ratio's \(\theta^A\) is \(\theta(u)+\mu(u)\) maximized, and \(\eta\), \(\tau^A\), \(\lambda\) all agree. So the factors are equal for one component.
+- **Item 4.** \((D-K-D/8)/(2\Delta)=3D/(8\Delta)=3n/512\). Also \(1/0.71^2=1.98<2\). The \(\lambda\) and \(\eta_{\rm occ}\) estimates in cor:star-closure-ratio's paragraph use only \(\tau\le D\), \(m\), \(K\) and the expansion, so carrying them over is valid.
+- **Witness quantities.** I recomputed them by hand: \(\theta=2\) (at \(u_{31},u_{32}\)), \(\mu=1\), \(\nu=3\), margins \(31-1=30\) (the edge \(v_1v_2\) counts in \(\kappa\)), closure \(63+62=125\).
+
+**Required changes**
+- **Nonvacuity, "cor:star-closure-ratio applies for no A".** This holds only because \(\varepsilon\) is set to \(n/2=32\). The expansion of \(K_{64}\) for \(\sigma\le31\) is \(\min(64-\sigma)=33\), as the draft's own "\(\ge33\sigma\)" says. With \(\varepsilon=33\), \(A=\emptyset\) meets \(\theta^A=32<\varepsilon\), and so does lem:off-support-occupancy's \(\theta(T)<\varepsilon\). Their \(\eta\) is then about \((1+2\cdot0.36)^{64}-1\gg1\) (my hand estimate), so they are vacuous rather than inapplicable. Restate both dismissals as "applies with \(\varepsilon=33\) but \(\eta\ge1\)". The containing-\(A\) branch, closure at least 125 edges against \(D-K=64\), stands.
+- **Degenerate cases, converse non-implication.** "That lemma's \(\eta'\) does not involve margins" is not a demonstration. Exhibit parameters where lem:exposed-vertex-occupancy is informative while \(\eta_{\rm ex}\ge1\). For example, \(h'=1\), \(g=1\), \(\beta_T\ge1/2\) and \(\varepsilon-\theta-\mu\ge\log_2(8n)\) give \(\eta'<1\); check that these fit the window.
+- **(iii) statement.** List \(4K<m-\tau_Y\), \(\eta_Y<1\) and, for (ii), \(q\rho_Y<1\); "in place of" leaves them implicit.
+- **Nonvacuity for the corollary.** Name the tuple, for example \((1)\) read as a function of \(T\), with \(c(K)=h(K)>0\).
+- **Hypotheses paragraph.** "Generalizes lem:high-incidence-occupancy at \(h'=0\)" should read lem:exposed-vertex-occupancy's case \(h'=0\), which is the statement with the same \(\eta\).
+- **Record comparison.** "With exponent \(\varepsilon-\max(\theta+\mu)\), weaker than \(\varepsilon-\nu\)" is ambiguous. Say the closure's exponent is larger and its condition weaker.
+- **Reviewer's suggestions, third item.** The opener/closer counts (76385; 4580 against 4576) need the saved output they came from, or should be labelled as the agent's unsaved run.
+
+**Suggestions relay (item 8).** The relay is faithful. The first item's "verified here" is correct as of this check.
+
+**Process audit**
+- **Title.** "Tuples on edge sets inside the window whose star closure leaves it keep the closure's ratio factor" drops the conditions the body needs: \(\nu\le\Delta/8\) and margins \(g(x)\ge\Delta/8\) (or \(\eta_{\rm ex}<1\) in general). It also says "the closure's ratio factor" where the body has the same form with \(\eta_{\rm ex}\) in place of the closure's \(\eta\). Add "with margins" or similar.
+- **Status line.** Accurate.
+- **Bearing.** It now carries its conditions and the absence of a family instance, which is good.
+- **Witness built to the draft's convention.** The new witness passes because of the convention \(\varepsilon=n/2\), and the draft's own parenthesis shows the sharper value. That is a witness fitted to the claim rather than tried at the source's own quantity.
+- **Spec.** I did not re-read it in this pass. Its reviewer field was pre-filled before the first review, as reported earlier.
+
+Strength count: 2 (the title, and the Plainest bound's "applies for no A").
+
+=== Report 3: the last corrections and the framework changes ===
+
+**Third pass verdict: pass with corrections.** The mathematical corrections are correct. One relay item needs a sentence. The new resemblance check can be bypassed in two cheap ways.
+
+**Mathematics (items 1–3)**
+- **Item 1.** The \(\varepsilon=33\) figures fit the saved output: \(\eta_{\rm ex}=7.71\cdot10^{-12}\), \(264\) for the window, and \(1.39\cdot10^{15}\) for the bounds with no exceptional set. The tuple \((1)\) is named.
+- **Item 2, checked by hand.**
+  - \(T\) is the 61 edges at \(x\) other than \(xz,xy\), with \(V_{\rm hi}=\{x,z\}\).
+  - Each \(u\ne y\) has \(\theta(u)=1\) (its edge to \(x\)) and \(\mu(u)=1\) (its edge to \(z\)). Vertex \(y\) has \(\theta=0\) and \(\mu=2\). So \(\nu=4\).
+  - The margin at \(x\) is \(2-1=1\), and at \(z\) it is \(63-1=62\).
+  - With \(\beta_T=0.5118\), \(\eta_{\rm ex}\ge(1+2\beta_T)-1=1.02\).
+  - The old lemma: \(K+\tau=189\le200\), \(\theta+\mu=3<33\), and \(9\cdot128\cdot0.5118^{30}\approx2\cdot10^{-6}\).
+  - The window is \(126\le200<264\).
+- **Required for item 2.** The entry's own Remark at \(Y=\{x\}\) recovers this case. Closing \(x\) adds two edges (\(\tau_Y=63\), \(2K+63\le400\)), gives \(\nu_Y=3\), and leaves only \(z\), with margin 62. That yields roughly \(B_{m-63}(K)/B_{m-61}(K)\), far above \(1/9\). So the converse shows that the lemma alone does not imply the old one, but the lemma with its Remark does on this witness. Say this in the Degenerate cases and in the Record comparison sentence "neither implies the other".
+- **Item 3.** Correct.
+
+**Relay (item 4).** The title, Verification gate, Process audit and Meta relay my reports faithfully. Update the gate's "the reviewer has not read these last corrections": this third pass read them, with the finding above.
+
+**Framework (item 5)**
+- **Bypass 1, any registry edge.** In tools/resemblance_coverage.py, missing() treats any registry edge touching a declared claim as naming both of its ends, a plain "cites" edge included. One spec line therefore passes the check without the Record comparison ever naming the claim, which is the failure that prompted the check. Restrict this to edges that state a generality relation, or require the identifier in the paragraph regardless.
+- **Bypass 2, no paragraph.** finish-turn.py runs the check only if "Record comparison." is present, so omitting the paragraph skips it. Unless another check requires that paragraph, require it for entries that declare claims.
+- **Threshold 0.3.** The replay shows 0.3 catches the exposing case (0.37), but the docstring does not classify the 16 unnamed claims in the 6 refused past entries as real misses or false refusals. AGENTS.md asks for false refusals to be counted. Add that classification, or say they were not judged. The replay took 12.2 s for 24 entries; time one finisher-path run against the 5 s budget.
+- **step_forms.** It catches the exposing sentence's form. It cannot catch a hypothesis written in words, and it lists any step that shows any inequality, for example \(4K<m-\tau\) with \(\beta_T<1\). That is acceptable as a reading list, as its docstring says. I did not run the tests.
+- **AGENTS.md addition.** It is general in scope. Say it applies when a recorded bound is dismissed or compared; a valid smaller constant is otherwise legitimate.
+
+**Process audit.** The title is now faithful to the body. The resemblance check's edge rule is an exception fitted so that the corrected draft passes by either route; it does not do the job its rule names. Strength count: 1 (the "neither implies the other" sentence, given the Remark).
+
+=== Report 4: the bypass fixes ===
+
+**Fourth pass verdict: pass with three small corrections.** The two bypasses I found are closed, and the docstring's replay figures and the Remark sentences check out.
+
+**1. Code (resemblance check)**
+- **Closed.** Edges now count only if their type is in GENERALITY. validate() refuses a research entry that declares claims and has no Record comparison paragraph. finish-turn.py now calls it unconditionally.
+- **Remaining ways around (no change needed):**
+  - Setting `data-claims="none"` skips the check. This is closed only through the separate inventory check, which refuses an entry whose registered claims do not match its declaration. Say that in the docstring.
+  - Naming an identifier without comparing passes; the docstring already states this limit.
+  - A false "refines" or "rediscovers" edge in the spec also passes; this is the registry's and the reviewer's to catch.
+- **Minor false refusal.** PARAGRAPH matches only a bare `<p>`, so `<p class=…><strong>Record comparison.` would be refused as missing. Allow attributes on the tag.
+
+**2. Replay figures.** The docstring matches coverage-replay.txt: 9 of 24 entries refused with 28 unnamed claims at 0.3, and 3 with 5 at 0.4. The one judged omission is thm:conjunction-quotient-rank in the pin transfer entry.
+- **Required:** "One finisher-path run took 0.36 s" cites no saved output. Save it beside the replay, or drop the figure.
+
+**3. Entry.**
+- **Degenerate cases.** The new sentences match witness-numbers.txt: \(\tau_Y=63\), \(\nu_Y=3\), margin \(62\), \(\eta_Y=2.43\cdot10^{-7}\), \(0.8733\). My hand estimate \((1-128/1954)^2\approx0.873\) agrees.
+- **Record comparison.** "Leaves the general relation open" is the right weakest relation.
+- **Required, gate:** "computed in the saved evaluation and not re-read by the reviewer" is now stale. This pass re-read the figures against the saved output.
+
+**4. AGENTS.md.** The new scope clause is general and correctly limited to dismissals and comparisons. No change needed.

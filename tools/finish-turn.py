@@ -2572,6 +2572,8 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
     validate_next_attempt_search(entry, searches)
     validate_named_claims_read(entry, root, first.get('unix_s', 0))
+    import resemblance_coverage   # tools/resemblance_coverage.py says why; it also requires the paragraph
+    resemblance_coverage.validate(entry, root)
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
         validate_resemblance_run(entry, searches)
     if '<strong>Record search.</strong>' in entry:

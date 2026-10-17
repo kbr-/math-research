@@ -9,7 +9,8 @@ class Entries(HTMLParser):
     def __init__(self,text):
         super().__init__(convert_charrefs=True)
         self.entries=[];self.active=None;self.in_record=False
-        self.feed(text);self.close()
+        import notebook_math  # stored TeX may hold raw "<", which would open a tag and hide what follows
+        self.feed(notebook_math.protect_math(text));self.close()
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs)
         if tag=='section' and attrs.get('id')=='research-record':self.in_record=True

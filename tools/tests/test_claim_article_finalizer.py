@@ -27,7 +27,7 @@ class ArticleFinalizerTest(unittest.TestCase):
         subprocess.run(['git','init','-q'],cwd=self.root,check=True)
         subprocess.run(['git','add','research','notebook.html'],cwd=self.root,check=True)
         subprocess.run(['git','-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','Baseline'],cwd=self.root,check=True)
-        book.write_text('<section id="research-record">\n<article id="entry-fixture" data-kind="research" data-route="side-test" data-claims="lem:new">\n<p class="entry-meta">Working proof.</p>\n<h4 id="last-heading">Claim</h4>\n<p>Exact mathematics.</p>\n<!-- TIMING test_turn -->\n</article>\n</section>\n')
+        book.write_text('<section id="research-record">\n<article id="entry-fixture" data-kind="research" data-route="side-test" data-claims="lem:new">\n<p class="entry-meta">Working proof.</p>\n<h4 id="last-heading">Claim</h4>\n<p>Exact mathematics.</p>\n<p><strong>Record comparison.</strong> No registered claim is near.</p>\n<!-- TIMING test_turn -->\n</article>\n</section>\n')
         claim.update(mathematical_status='working_proof',topics=['fixture'],formalization={'status':'not_started','scope':'Test scope.','references':[],'artifacts':[]},significance={'category':'context','rationale':'Software fixture.','novelty':'not_claimed','publication_status':'not_applicable','references':[],'next_action':None})
         target='https://kbr.is-a.dev/math-research/#'+anchor;ev=Evidence(self.root)
         for field in FIELDS:claim['reviews'][field]=make_review(data,claim,field,[target],revision='a'*40,date='2026-09-19',reviewer='Test',note='Inspected source.',evidence=ev)

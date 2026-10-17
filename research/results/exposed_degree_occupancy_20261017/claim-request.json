@@ -1,0 +1,1289 @@
+{
+  "base_sha256": "5d52ab0ab454cc500c13fa90a0102dbb50af39f6520b9c19d20d2f31dbe23962",
+  "provenance": {
+    "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:exposed-degree-occupancy",
+        "summary": "Exposed degree occupancy: in lem:high-incidence-occupancy's charged character window (any graph, multigraphs included), for an edge set T, |T| = tau, with 2K + tau <= 2D and 4K < m - tau, and any vertex set V_hi, let theta(u) and mu(u) be the numbers of edges of T at u and of off-T edges from u to V_hi (u outside V_hi), nu = max_u (theta(u) + 2 mu(u)), X_0 the exposed vertices (those of V_hi with an off-T edge), and for x in X_0 g(x) = s(x) - kappa(x), its off-T edges minus those ending in V_hi (loops counted there). Then q_T(K) >= (1 - eta_ex) B_(m-tau)(K) with eta_ex = (1 + 2 beta_T^(epsilon - nu))^n prod_(x in X_0) (1 + 2 beta_T^(g(x))) - 1, beta_T = 2 sqrt(K/(m - tau)): a potential's nonzero values at exposed vertices are charged by their own off-T edges, d'_s >= (epsilon - nu) sigma + sum_(x in X) g(x), so a coset holds at most one good character and no factor 3^(h') is paid; eta_ex < 1 forces epsilon > nu and every g(x) >= 1. Closing any Y of X_0 (T_Y = T with the off-T edges at Y) gives q_T(K) >= q_(T_Y)(K) >= (1 - eta_Y) B_(m - tau_Y)(K) under 2K + tau_Y <= 2D, the star closure route at Y = X_0.",
+        "assessment": "Working proof by lem:high-incidence-occupancy's argument with a second disjoint family of cut edges at the exposed vertices, per vertex, under the weaker 2K + tau <= 2D its collision step needs.",
+        "record": "[Exposed degree occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Removes the factor 3^(h') of lem:exposed-vertex-occupancy without closing T, when exposed vertices keep more off-T edges than they send into V_hi, at the cost of mu(u) twice in the expansion exponent; the general-step review's opening lemma for the Repair Pang block.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": "The decisive test's per-pair occupancy for cosets of the cut space plus the span of disjoint pair exponents."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:exposed-degree-tuple-ratio",
+        "summary": "Exposed degree tuple ratio: in lem:local-tuple-ratio's setting (components E_i = P_i m_(gamma_i), P_i functions of the states of T, e_max + K <= D, K + tau + |supp gamma_i| <= D), with c(K) > 0, 4K < m - tau and lem:exposed-degree-occupancy's eta_ex < 1, for 0 <= d <= K: (i) c(K-d)/c(K) <= (1 - eta_ex)^(-1) B_(m-tau)(K-d)/B_(m-tau)(K); (ii) with lambda, q rho < 1 of lem:ball-ratio-comparison at n = m, tau, k = K >= 1 and eta_occ < 1 of lem:cut-ball-occupancy at level K - d, c(K-d)/c(K) <= lambda^d/((1 - eta_ex)(1 - eta_occ)) h(K-d)/h(K); (iii) the same for T_Y, Y within the exposed vertices, when K + tau_Y + |supp gamma_i| <= D, cor:star-closure-ratio's factor at Y = all exposed vertices with A = V_hi; r components: r times the largest. On the power-growing charged family, for tau <= D - K - |supp gamma|, nu <= Delta/8 and margins g(x) >= Delta/8, the factor is at most 2r e^(9.5 tau d/(n Delta)) over canonical, as cor:star-closure-ratio gives for closures inside the window, now also for edge sets whose star closure leaves it (more than (D - K - |supp gamma| - tau)/(2 Delta) exposed vertices).",
+        "assessment": "Working composition of lem:local-tuple-ratio's ratio step with the new occupancy count at every level k <= K, and of cor:star-closure-ratio's passage to the canonical ratio through lem:ball-ratio-comparison and lem:cut-ball-occupancy.",
+        "record": "[Exposed degree occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Gives cor:star-closure-ratio's polynomial factor for edge sets inside the window whose star closure leaves it, when exposed vertices keep a margin of off-T edges.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": "The decisive test's per-pair occupancy for cosets of the cut space plus the span of disjoint pair exponents, beyond the window."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:high-incidence-occupancy",
+        "summary": "High-incidence occupancy: in the charged character pseudoideal window (edge expansion epsilon, max(4,2Delta) <= D < epsilon n/8), on any graph (multigraphs included), let T be an edge set with |T| = tau, K + tau <= D and 4K < m - tau, and V_hi any vertex set with h = |V_hi|. Let theta be the largest number of edges of T at a vertex outside V_hi and mu the largest number of edges off T joining a vertex outside V_hi to V_hi, with theta + mu < epsilon. With beta_T = 2 sqrt(K/(m - tau)) and eta_hi = 3^h((1 + 2 beta_T^(epsilon - theta - mu))^n - 1), the number q_T(K) of cosets of the cut space plus F_3^T met by the support-K ball satisfies q_T(K) >= 3^(-h)(1 - eta_hi) B_(m-tau)(K), vacuous when eta_hi >= 1. Potentials split into parts on and off V_hi; a nonzero part off V_hi forces a cut meeting (epsilon - theta - mu) times its support of off-T edges, so each coset holds at most 3^h good characters. In a simple graph, V_hi = the vertices with more than theta edges of T gives mu <= h. With V_hi empty it is lem:off-support-occupancy.",
+        "assessment": "Working proof extending the union bound of lem:off-support-occupancy to mixed potentials, the step its reviewer named as unproved, passed by a fresh-context medium reviewer after corrections (simple-graph assumption removed by the count mu). No novelty is claimed.",
+        "record": "[High-incidence occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Removes the bounded-incidence hypothesis that excluded error components touching vertex axioms, at a cost of 3^h for the h high-incidence vertices.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": "Use in a relative level comparison for components on axiom stars."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Local tuple ratio: new relationship with lem:local-tuple-ratio. Star closure ratio: new relationship with lem:exposed-vertex-occupancy. Exposed degree occupancy: new relationship with lem:exposed-degree-occupancy.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-high-incidence-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:exposed-vertex-occupancy",
+        "summary": "Exposed vertex occupancy: in lem:high-incidence-occupancy's setting (edge set T, |T| = tau, K + tau <= D, 4K < m - tau, a vertex set V_hi, theta and mu with theta + mu < epsilon), let h' be the number of vertices of V_hi with an edge off T and eta' = 3^(h')((1 + 2 beta_T^(epsilon - theta - mu))^n - 1). Then q_T(K) >= 3^(-h')(1 - eta') B_(m-tau)(K): the off-T cut of a potential depends only on its values off V_hi and at the h' exposed vertices. If T contains every edge at V_hi, then h' = mu = 0 and q_T(K) >= (1 - eta') B_(m-tau)(K) with eta' = (1 + 2 beta_T^(epsilon - theta))^n - 1.",
+        "assessment": "Working proof by the argument of lem:high-incidence-occupancy, with the collision and union-bound counts restricted to the exposed vertices, passed by a fresh-context medium reviewer.",
+        "record": "[Star closure ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Removes the cost of an exceptional vertex set whose stars lie in T, which made the earlier star bounds exponential in the number of stars.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pin transfer cost: new relationship with lem:pin-rank-transfer. Coset ratio reduction: new relationship with lem:coset-ratio-reduction. Exposed degree occupancy: new relationship with lem:exposed-degree-occupancy.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pin-rank-transfer",
+        "summary": "Pin rank transfer: (a) in the charged character pseudoideal J_D of (G,c), for an edge set F and pin assignment rho as in lem:weighted-restriction-transport (G'=G-F with supplied expansion, adjusted charge, nonzero total charge, max(4,2g')<=D'<=D, D'<eps'n/8) and a tuple of degree <= e_max with e_max+K<=D', the tuple's rank on V_K is at least the pinned tuple's rank on G''s degree-K space in J'_(D'), by kernel inclusion. (b) For every edge set T, the conjunction count q_T(K) of thm:conjunction-quotient-rank, the number of cosets of the cut space plus F_3^T met by the support-K ball, equals h_(G-T)(K), the number of cut-code classes of G-T met by its support-K ball, since projecting off T sends the cut space of G onto that of G-T; this is the puncturing in thm:punctured-quotient-contraction's proof, stated as a residual graph.",
+        "assessment": "Working elementary proof: (a) from lem:weighted-restriction-transport's inclusion (nonzero total charge assumed with it), (b) from the projection of the cut space, implicit in the puncturing of thm:punctured-quotient-contraction. Passed by the sole fresh-context medium reviewer with corrections.",
+        "record": "[Pin transfer cost](https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Translates the restriction cleanup of the sparse-extension lead into the charged ratio setting and identifies the conjunction count with a residual cut-class count.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": "Use with an upper bound at level K-d in the pinned space, which the transfer alone does not supply."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Coset ratio reduction: new relationship with lem:coset-ratio-reduction. Exposed degree occupancy: new relationship with lem:exposed-degree-occupancy.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-pin-transfer-cost"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:local-tuple-ratio",
+        "summary": "Local tuple ratio: in the charged character pseudoideal J_D (one-hot coordinates over F containing F_4, window max(4,2Delta) <= D < epsilon n/8), let every component of an error tuple of degree <= e_max be E_i = P_i m_(gamma_i) with P_i, on the one-hot domain, a function of the states of one edge set T, |T| = tau, with e_max + K <= D and K + tau + |supp gamma_i| <= D. With R_j the span of the tuples (R_D(E_i g))_i over characters g on T of support <= j, r_j = dim R_j and Delta r_j = r_j - r_(j-1), the tuple's ranks satisfy sum_(j<=k) Delta r_j q_T(k-j) <= c(k) <= sum_(j<=k) Delta r_j B_(m-tau)(k-j) for k <= K, by translating with off-T characters, which act on cut-code classes as translations with phases depending only on the class (orbit argument of thm:conjunction-quotient-rank) and carry the image into disjoint blocks of cosets of the cut space plus F_3^T. Hence, if c(K) > 0, 4K < m - tau and V_hi, h, theta, mu, eta_hi are as in lem:high-incidence-occupancy with theta + mu < epsilon and eta_hi < 1, c(K-d)/c(K) <= 3^h/(1 - eta_hi) B_(m-tau)(K-d)/B_(m-tau)(K) for 0 <= d <= K.",
+        "assessment": "Working proof passed by a fresh-context medium reviewer after corrections. Its translation remark (multiplication by an exponent of small support is a linear injection on the class span, translating class supports, by the orbit phases of thm:conjunction-quotient-rank) is part of this proof. The lower bound uses least-support off-T representatives of the cosets of the cut space plus F_3^T, and the ratio uses lem:high-incidence-occupancy and the monotonicity of lem:ball-ratio-comparison. All components must live on the one edge set T; lem:component-ratio-combination handles tuples of components on different edge sets.",
+        "record": "[Local tuple ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Removes the loss e^(tau K/m) of cor:axiom-component-ratio for tuples supported on one edge set, comparing numerator and denominator over the same edges.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": "Bound components on the stars of more than Delta/8 vertices, or find one whose ratio beats canonical by more than a polynomial factor."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Coset ratio reduction: new relationship with lem:coset-ratio-reduction. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:ball-ratio-comparison",
+        "summary": "Ball ratio comparison: with t_i(n) = 2^i binom(n,i) and B_n(k) = sum_(i<=k) t_i(n), (i) B_n(k-d)/B_n(k) does not decrease in k for 0 <= d <= k <= n (partial sums of a log-concave sequence are log-concave); (ii) for n' = n - tau >= k >= 1, q = k/(2(n-k+1)), rho = 1 + tau/(n'-k+1) with q rho < 1 and lambda = rho(1 + q(rho-1)/((1-q rho)(1-q))), B_n'(k-d)/B_n'(k) <= lambda^d B_n(k-d)/B_n(k) for 0 <= d <= k. Removing tau coordinates raises a d-step ball ratio by about e^(tau d/(n-tau-k)), not e^(tau k/n).",
+        "assessment": "Working elementary proof by log-concavity and a term-ratio comparison of consecutive partial-sum ratios.",
+        "record": "[Local tuple ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Converts ratios over the edges off an edge set into ratios over all edges at a cost depending on the degree gap only.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Pin transfer cost: new relationship with cor:pin-transfer-cost. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:charge-affine-rank-gap",
+        "summary": "On the fixed binary charged power-growing family Delta=ceil(n^alpha), ell>=2, 0<alpha<min(1/17,1/ell), nDelta/8<=m<=nDelta, min degree>=Delta/4,max<=2Delta, expansion>=Delta/4, D=floor(nDelta/64),K=floor(D/8),h=ceil(Delta log n),B=ceil(h^ell log n),log N=Theta(Delta), choose q=floor(n/(64Delta)) disjoint vertex stars and q private edges outside them. Let a_i be each binary local charge-violation indicator, z_i the private edge nonzero-state indicator, g_i=z_i+a_i. Eventually h<q. For every constant h-by-q binary C, P_C=product_u(1+(Cg)_u), the full local error rank on the SAME V_K is at least (1-q(15/16)^floor(Delta/8))B_m(K)=(1-o(1))B_m(K). Both fibers of g_i inject through degree floor(Delta/8)-1 by ternary hyperplane character independence and private-state conditioning; tensor injection gives the floor. Yet 1,[g_i] are charged-quotient independent and g_i have no nonzero local affine combination, while the supported choice C=(I_h 0) has charged rank/H<=exp(-h/3072), H=dim[V_K]>0, and surviving kernel f=z_1. Paid reference g_i=z_i modulo J turns its prefix into a length-h private-edge conjunction; exact puncturing gives the bound. Complete literal pattern bottoms realize the tuple with all companions/fields, written added size<=N^9 eventually, original ceilings 2h+1 and 2h^2+3h and sampled replay K+RB<=D,R<=2Delta. Refutes a uniform positive constant normalized local-to-charged lower comparison based on fiber immunity plus surviving independent inputs. Does not refute a majority-specific transfer or optimized source maps; this source has explicit supported cleanup. Arbitrary-source Frege implication unchanged.",
+        "assessment": "The sole fresh-context medium reviewer passed after deletion of an unsupported positive-rank assertion; the charged rank may be zero and only its upper bound is used. All fiber, tensor, source, same-domain and original-budget arguments passed, with no unused substantive hypothesis. A scoped application/control of recorded engines; no new removal mechanism or literature novelty claimed.",
+        "record": "[Charge affine gap](https://kbr.is-a.dev/math-research/#entry-2026-10-15-charge-affine-gap)",
+        "mathematical_status": "refutation",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Tests the proposed actual-image transfer in the original hard quotient, keeping every input class independent and pairing the local floor with a supported successful map; identifies the missing affine-reference normalization.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": "Normalize paid old affine references before seeking a charged comparison for actual residual images; the majority-specific problem and arbitrary common-error control remain open."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Disjoint feature transfer: new relationship with thm:disjoint-feature-transfer. Nonlinear charge gap: new relationship with prop:nonlinear-charge-gap. Local tuple ratio: new relationship with cor:star-local-tuple-ratio. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "../notebook.html#entry-2026-10-15-charge-affine-gap"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:star-closure-ratio",
+        "summary": "Star closure ratio: in the charged character pseudoideal window, for a tuple of degree <= e_max (e_max + K <= D) with c(K) > 0 whose components E_i = P_i m_(gamma_i) have P_i, on the one-hot domain, functions of edge sets T_i, and vertex sets A_i whose star closures T_i^(A_i) = T_i together with the stars of A_i have theta_i = (largest number of their edges at a vertex outside A_i) < epsilon, tau_i = |T_i^(A_i)| with K + tau_i + |supp gamma_i| <= D and 4K < m - tau_i, eta_i = (1 + 2 beta_i^(epsilon - theta_i))^n - 1 < 1 (beta_i = 2 sqrt(K/(m - tau_i))) and q rho_i < 1 (lem:ball-ratio-comparison at n = m, tau_i, k = K): with K >= 1, if K - d >= 1 meets lem:cut-ball-occupancy with eta_occ < 1 (or d = K, eta_occ = 0), c(K-d)/c(K) <= r max_i lambda_i^d/((1 - eta_i)(1 - eta_occ)) h(K-d)/h(K). On the power-growing charged family, with theta_i <= Delta/8 and closures inside the window, the factor is at most 2r e^(9.5 tau d/(n Delta)), tau = max tau_i, polynomial in N when r is and tau d = O(n Delta^2) (every d = O(Delta); for k stars, kd = O(n Delta)), with no limit on the number of stars and no simplicity assumption. With lem:sparse-weight-survival, a component E_i outside J_D with s_i nonzero quotient coordinates has ratio at most s_i h(K-d)/h(K), so the tuple ratio is at most r max_i min(s_i, closure factor) h(K-d)/h(K). The record supplies no family instance with a nonempty closing set.",
+        "assessment": "Working composition of lem:local-tuple-ratio on the closed edge sets, lem:exposed-vertex-occupancy with V_hi = A_i, lem:ball-ratio-comparison, lem:cut-ball-occupancy and lem:component-ratio-combination. Passed by a fresh-context medium reviewer after corrections. Decides the general-step review's test in the yes direction for tuples of polynomially many components with closures of incidence at most Delta/8 inside the degree window; components with superpolynomially many classes and no such closure remain open.",
+        "record": "[Star closure ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "On the power-growing family, ratio-based repair cannot make cheap any component with polynomially many classes or with an edge set closed at incidence at most Delta/8 inside the degree window, at gaps with tau d = O(n Delta^2) and for polynomially many components, however many axioms it reads.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": "Compare the ranks at levels K - d and K of prop:charge-affine-rank-gap's product P_C, a component with many classes, to decide whether its ratio beats canonical by more than a polynomial factor."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Affine gap ratio: new relationship with lem:reduced-representative-ratio. Pin transfer cost: new relationship with cor:pin-transfer-cost. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio, lem:exposed-degree-occupancy.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-star-closure-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cut-ball-occupancy",
+        "summary": "In the charged ternary graph window max(4,2Delta)<=D<epsilon n/8, for 1<=K<=D, beta=2sqrt(K/m)<1 and eta=(1+2beta^epsilon)^n-1, actual cut-code quotient dimension h(K)>=(1-eta)sum_(j<=K)2^j binom(m,j). If beta^epsilon<=1/(8n), h(K)>B_m(K)/2.",
+        "assessment": "Working union bound and distinct good-character injection using small cut representatives. Useful only for positive right side; no later weighted survival conclusion.",
+        "record": "[Affine annihilator image](https://kbr.is-a.dev/math-research/#entry-2026-10-09-affine-annihilator-image)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "degree-accounting",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Elementary scoped occupancy lower bound, useful to normalize actual unweighted images; no graph-construction or literature novelty claim.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": "Scheduled goal-level review: test whether the profile can be obtained for actual weighted nonlinear sources within the full original replay budget."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Three-state coded batches: new relationship with lem:cut-collision-bound. Affine collision budget: new relationship with prop:affine-collision-budget. Growing expansion flats: new relationship with cor:growing-expansion-flat-removal. Dense monomial profile: new relationship with prop:dense-monomial-error-profile. Edge-supported error ratio: new relationship with cor:edge-supported-error-ratio. Off-support occupancy: new relationship with lem:off-support-occupancy. Local tuple ratio: new relationship with cor:star-local-tuple-ratio. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-affine-annihilator-image"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:component-ratio-combination",
+        "summary": "Component ratio combination: for any tuple (E_1, ..., E_r) with c(K) > 0 and 0 <= d <= K, with c_i the rank function of the one-component tuple (E_i) and I the indices with c_i(K) > 0, c(K-d)/c(K) <= r max_(i in I) c_i(K-d)/c_i(K), since c(K-d) <= sum_i c_i(K-d), c(K) >= c_i(K) for every i, and c_i(K-d) = 0 for i outside I.",
+        "assessment": "Working elementary proof by coordinate projections, suggested by a fresh-context medium reviewer and verified. It refutes an earlier unverified warning that per-component ratios do not combine.",
+        "record": "[Local tuple ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Reduces a tuple's short-range ratio to its components' at a factor of its length.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Star closure ratio: new relationship with cor:star-closure-ratio. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:off-support-occupancy",
+        "summary": "Off-support occupancy: in the charged character pseudoideal window (edge expansion epsilon, max(4,2Delta)<=D<epsilon n/8), let T be an edge set with |T|=tau and at most theta<epsilon edges of T at every vertex, and K+tau<=D. With beta_T=2 sqrt(K/(m-tau))<1 and eta_T=(1+2 beta_T^(epsilon-theta))^n-1, the number q_T(K) of cosets of the cut space plus F_3^T met by the support-K ball satisfies q_T(K)>=(1-eta_T) B_{m-tau}(K) >= (1-eta_T)(1-tau/(m-K))^K B_m(K). Consequently, in cor:edge-supported-error-ratio, for T also of bounded incidence, c(K-d)/c(K) <= (1-tau/(m-K))^(-K)/(1-eta_T) times B_m(K-d)/B_m(K), a factor at most e^(tau K/(m-K-tau))/(1-eta_T), polynomial in the inventory M when tau K/m = O(log M). Without the incidence bound the stated form fails by a constant factor: if T holds all but one edge f at a vertex v, the cut of 1_v is +-e_f off T. Error components touching a vertex axiom have incidence at least epsilon and fall outside the lemma.",
+        "assessment": "Working proof passed by a fresh-context medium reviewer, adapting the union bound of lem:cut-ball-occupancy to characters supported off T, with the small-potential step proved inline by the level-set argument and the incidence condition keeping off-T cut supports at least (epsilon-theta) times the potential size. On the power-growing family m/K is bounded, so the polynomial range is still tau=O(log M); components touching an axiom are not covered.",
+        "record": "[Off-support occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Sharpens the ratio bound for edge-supported error components of bounded incidence from 3^tau to about e^(tau K/m), and shows that components touching an axiom need another count.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": "Prove a count tolerating full vertex stars (quotient first by the high-incidence vertex cuts), or decide whether degree gaps d=Omega(k Delta) are available in the window."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. High-incidence occupancy: new relationship with lem:high-incidence-occupancy. Star closure ratio: new relationship with cor:star-closure-ratio. Affine gap ratio: new relationship with cor:affine-gap-error-ratio. Pin transfer cost: new relationship with cor:pin-transfer-cost. Exposed degree occupancy: new relationship with lem:exposed-degree-occupancy.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-off-support-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:star-local-tuple-ratio",
+        "summary": "Star-local tuple ratio: in lem:local-tuple-ratio's setting with T = (union of the stars of a vertex set A, |A| = k) together with an edge set T_0, theta_A, theta_0 and eta_A as in cor:axiom-component-ratio, theta_A + theta_0 < epsilon, eta_A < 1, 4K < m - tau, lambda the constant of lem:ball-ratio-comparison at n = m, tau, k = K, c(K) > 0, and eta_occ < 1 the constant of lem:cut-ball-occupancy at level K - d (0 at d = K): c(K-d)/c(K) <= 3^k lambda^d/((1 - eta_A)(1 - eta_occ)) h(K-d)/h(K). For a tuple of r components each meeting these hypotheses alone on its own A_i, T_0i, with factors C_i, c(K-d)/c(K) <= r max_i C_i h(K-d)/h(K) (lem:component-ratio-combination). On the power-growing charged family, if its graphs are simple (the record does not say), with T_0 empty and k <= Delta/8, for large n lambda <= 1 + 17k/n and C_i <= 3^(k+1) e^(17kd/n), polynomial in N when kd = O(n Delta) (every d <= K for bounded k; d = O(n) uniformly in k <= Delta/8); the 3^tau corollary gave N^(Theta(k)).",
+        "assessment": "Working composition of lem:local-tuple-ratio (V_hi = A, mu = 0), lem:ball-ratio-comparison, lem:cut-ball-occupancy and lem:component-ratio-combination, with the family constants of prop:charge-affine-rank-gap, passed by a fresh-context medium reviewer after corrections. Decides the general-step review's test in the yes direction for tuples of polynomially many components each on the stars of at most Delta/8 vertices, at gaps with kd = O(n Delta), conditionally on the family's graphs being simple; components on many stars remain open.",
+        "record": "[Local tuple ratio](https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows that ratio-based repair cannot make star-local error tuples cheap on the power-growing family, uniformly in the number of stars.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": "Bound components on the stars of more than Delta/8 vertices."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Star closure ratio: new relationship with cor:closed-axiom-component-ratio, cor:star-closure-ratio. Exposed degree occupancy: new relationship with cor:exposed-degree-tuple-ratio.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-16-local-tuple-ratio"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:exposed-degree-occupancy::cites::lem:high-incidence-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:high-incidence-occupancy",
+        "locator": null
+      },
+      "scope": "Its proof's collision and union-bound counts, extended by the exposed vertices' own off-T edges.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its proof's collision and union-bound counts, extended by the exposed vertices' own off-T edges."
+      }
+    },
+    {
+      "id": "lem:exposed-degree-occupancy::cites::lem:exposed-vertex-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:exposed-vertex-occupancy",
+        "locator": null
+      },
+      "scope": "The count paying 3^(h') at exposed vertices; neither statement implies the other.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The count paying 3^(h') at exposed vertices; neither statement implies the other."
+      }
+    },
+    {
+      "id": "lem:exposed-degree-occupancy::cites::lem:pin-rank-transfer",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pin-rank-transfer",
+        "locator": null
+      },
+      "scope": "Part (b): q_T(K) equals the residual graph's class count h_(G-T)(K).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Part (b): q_T(K) equals the residual graph's class count h_(G-T)(K)."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::lem:local-tuple-ratio",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:local-tuple-ratio",
+        "locator": null
+      },
+      "scope": "Its sandwich and ratio step, with the new occupancy count.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its sandwich and ratio step, with the new occupancy count."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::lem:exposed-degree-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "scope": "The occupancy count at every level k <= K.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The occupancy count at every level k <= K."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::lem:ball-ratio-comparison",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:ball-ratio-comparison",
+        "locator": null
+      },
+      "scope": "Part (i), monotonicity of the ball ratio in the level.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Part (i), monotonicity of the ball ratio in the level."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::prop:charge-affine-rank-gap",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:charge-affine-rank-gap",
+        "locator": null
+      },
+      "scope": "The power-growing family's parameters.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The power-growing family's parameters."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::cor:star-closure-ratio",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:star-closure-ratio",
+        "locator": null
+      },
+      "scope": "Its passage to the canonical ratio and family estimate; the corollary's case Y = all exposed vertices is its factor with A = V_hi, the case Y empty needs no closure inside the window.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its passage to the canonical ratio and family estimate; the corollary's case Y = all exposed vertices is its factor with A = V_hi, the case Y empty needs no closure inside the window."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::lem:cut-ball-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cut-ball-occupancy",
+        "locator": null
+      },
+      "scope": "h(K-d) >= (1 - eta_occ) B_m(K-d) in part (ii).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "h(K-d) >= (1 - eta_occ) B_m(K-d) in part (ii)."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::lem:component-ratio-combination",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:component-ratio-combination",
+        "locator": null
+      },
+      "scope": "The tuple form, r times the largest component factor.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The tuple form, r times the largest component factor."
+      }
+    },
+    {
+      "id": "lem:exposed-degree-occupancy::cites::lem:off-support-occupancy",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:off-support-occupancy",
+        "locator": null
+      },
+      "scope": "Its case V_hi empty, under 2K + tau <= 2D.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its case V_hi empty, under 2K + tau <= 2D."
+      }
+    },
+    {
+      "id": "lem:exposed-degree-occupancy::cites::cor:star-closure-ratio",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:exposed-degree-occupancy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:star-closure-ratio",
+        "locator": null
+      },
+      "scope": "The star closure the Remark recovers at Y = X_0.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The star closure the Remark recovers at Y = X_0."
+      }
+    },
+    {
+      "id": "cor:exposed-degree-tuple-ratio::cites::cor:star-local-tuple-ratio",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:exposed-degree-tuple-ratio",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:star-local-tuple-ratio",
+        "locator": null
+      },
+      "scope": "Pays 3^k on full stars through lem:high-incidence-occupancy; neither statement implies the other.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-exposed-degree-occupancy"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "1187ac2d662e3b59769bcf1bb825b7d251744e51",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Pays 3^k on full stars through lem:high-incidence-occupancy; neither statement implies the other."
+      }
+    }
+  ],
+  "topic_definitions": []
+}

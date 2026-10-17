@@ -334,7 +334,12 @@ AGENTS.md"):
   limit, never at the size written for; check there also what the recorded statements it is meant to
   escape give on it, and read each line a listing tool prints beside the source it names before the
   draft goes on (17 October 2026: a witness fit its own hypotheses in the limit while the record's
-  bound covered it there, and a listed sentence applied a lemma outside its image).
+  bound covered it there, and a listed sentence applied a lemma outside its image). Its parameters
+  are the object's own quantities, computed (the largest valid constant, an exact degree), wherever
+  a recorded statement is dismissed or compared on it; a valid smaller constant is otherwise
+  legitimate, but a recorded statement dismissed at a convention may apply at the object's value (17
+  October 2026: two recorded bounds were called inapplicable at the expansion \(n/2\) of a graph
+  whose expansion is \(33\), where they apply and are only vacuous).
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
   arithmetic.
 - Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt

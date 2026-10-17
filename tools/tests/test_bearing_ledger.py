@@ -69,6 +69,12 @@ class BearingLedgerTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'particular data-ledger'):
             ledger.validate(indented_bad)
 
+    def test_a_raw_less_than_in_tex_does_not_hide_the_witness_link(self):
+        # 17 October 2026: "\(4K=256<m-\tau=1984\)" before the link read as a tag and hid it.
+        ledger.validate(entry(witness=r'\(4K=256<m-\tau=1984\) and ' + link()))
+        with self.assertRaisesRegex(ValueError, 'particular data-ledger'):
+            ledger.validate(entry(witness=r'\(4K=256<m-\tau=1984\) and nothing linked'))
+
     def test_references_are_valid_and_scope_is_only_some(self):
         for bad in (link('', '#selection'), link('selection', ''), link('selection', '#'),
                     link('selection budget', '#selection'), '<a data-ledger="selection">missing</a>'):
