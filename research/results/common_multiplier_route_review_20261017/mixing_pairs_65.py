@@ -95,12 +95,10 @@ def main():
         S01 = S01 + x
     assert len(single) == 332 == len(S01), f'control: {len(single)}, {len(S01)}'
     orbits = {}
-    for A in ((0, 1), (0, 1, 2)):
-        for size in (2, 3):
-            for B in itertools.combinations(range(N), size):
-                if B == A:
-                    continue
-                orbits.setdefault((len(A), size, len(set(A) & set(B))), (A, B))
+    subsets = list(itertools.chain(itertools.combinations(range(N), 2), itertools.combinations(range(N), 3)))
+    for A, B in itertools.product(((0, 1), (0, 1, 2)), subsets):
+        if B != A:
+            orbits.setdefault((len(A), len(B), len(set(A) & set(B))), (A, B))
     out = {'dim_W': len(W), 'single_C_side': len(single), 'orbits': []}
     with multiprocessing.Pool(14) as pool:
         for key, (A, B) in sorted(orbits.items()):
