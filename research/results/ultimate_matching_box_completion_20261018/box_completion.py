@@ -30,6 +30,9 @@ certificate must never fire where universal completion holds.
 Refuted by: an instance where the certificate fires and the brute-force check finds completion.
 Possible because: an error in the alternating reachability or in the matchability test would show
 there.
+Decisive at these sizes: each sample is decided on its own (a firing certifies failure there), so
+no spread between seeds enters; what the sizes cannot decide is the limit, which no run reaches.
+Parallel use: the samples run in a pool of 12 worker processes, one thread each.
 Forced by counts: on the gadget the counts force only the drop (nu = 1 at radius 1, 2 at e), and on
 the tiny instances only which ones have a drop; whether a test fires depends on which vertices are
 missable, which no count fixes, so neither control is decided by its counts.
@@ -233,6 +236,7 @@ def sample(N, L, seed):
 
 
 KMAX = 60  # levels tried per sample; a sample stopped here with no firing is reported as undecided
+WORKERS = 12  # one process per sample, one thread each
 
 
 def main():
@@ -247,10 +251,13 @@ def main():
     assert c['soundness']['nuD_fires_where_holds'] == 0, c['soundness']
     assert c['kernel_against_networkx']['agree'] == 200, c['kernel_against_networkx']
     print('controls', json.dumps(c))
-    for N in args.sizes:
-        for L in (0.5, 1.0):
-            for seed in range(3):
-                lv = sample(N, L, 1000 * N + 10 * int(2 * L) + seed)
+    jobs = [(N, L, seed) for N in args.sizes for L in (0.5, 1.0) for seed in range(3)]
+    from multiprocessing import Pool
+    with Pool(min(WORKERS, len(jobs))) as pool:
+        runs = pool.starmap(sample, [(N, L, 1000 * N + 10 * int(2 * L) + seed) for N, L, seed in jobs])
+    for (N, L, seed), lv in zip(jobs, runs):
+        if True:
+            if True:
                 drops = [v for v in lv if 'cert' in v]
                 rec = dict(N=N, L=L, seed=seed, levels=lv,
                            drop_levels=len(drops),
