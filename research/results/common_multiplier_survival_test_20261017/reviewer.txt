@@ -1,0 +1,129 @@
+**Verdict: pass with corrections.** The computations check out. Three related sentences about the band review's polynomial extension are wrong, and the next step built on them contradicts itself.
+
+I read the brief, the draft, the claims excerpt, the band review's Decision, both scripts, the kernel helpers (`ann_poly`, `systems`, `members`, `positive_control`) and both JSON outputs. I ran two read-only `tools/search-claims.py` lookups (results under the Process audit) and no computations.
+
+**Correctness**
+
+- **Item 1 (scripts): no findings.**
+  - The bitmask 0 is the monomial 1, so `p1 = {0, x00, x11}` is 1+q1.
+  - The kernels, A, F, the common H-kernel and the per-error ranks are computed as the entry describes.
+  - The saved rows are all (C-kernel 16, H-side 16, rank 15), so 24·15 = 360 holds.
+  - The containment control, the positive control and the null control can each fail. The q1 control in (c) is forced by an identity, and the docstring says so.
+  - Unreported in the draft: H-side = C-kernel = 16 for every single error, so the transfer already holds error by error. The draft should say this and ask whether the joint transfer follows from the single ones.
+- **Item 2 ("every hole"): literally right for the fixed representatives in (a)–(d), but the conclusion drawn from it is wrong in three places.**
+  - **(i) Record comparison and Own statements.** Both say the extension "covers every set whose monomials leave one hole free, so the proof needs only the hole-covering case". The band Decision says the opposite: "Missing a hole is necessary for such a numbering, not sufficient". Its own example, E_1+Q_4, misses hole 4 and still has no numbering.
+    - Fix: the extension covers sets whose matching monomials share an admissible numbering under some choice of representatives. The conjecture's open content is every other case, not just "hole-covering".
+    - The same wording must change in the claim-spec relationship (conj → lem:admissible-numbering-transfer) and in next.html.
+  - **(ii) Instance (b).** The pigeon-row sums give A_C(b) = F = Ann_C(1+q1) ∩ Ann_C(1+q2) ∩ V_1. The monomials of 1+q1 and 1+q2 are 1, x00, x11, x22, x33, which miss hole 4. So (b) is not "exactly where the proved transfer stops". Drop or qualify "the computed instances lie exactly where the proved transfer stops" for (b). "Other representatives … were not examined" also leaves (a), (c) and (d) unproved to be outside the extension's reach; state this as open, not as fact.
+  - **(iii) The extension itself.** The band Decision says it "is an argument for the next research entry to register, not a claim of this review". The draft relies on it twice and calls it "reviewed there", with no source for that review. Either register it here with its proof and hypotheses, or call it an unregistered, unreviewed argument wherever it is used.
+- **Item 3 (the conjecture).** The sum form is sound:
+  - Containment holds because K+2 ≤ D lets u·c lie in C for c in C ∩ V_2.
+  - Both sides are unchanged when a member of C ∩ V_2 is added to an error.
+  - Duplicating an error leaves both sides unchanged: tuples with differing representatives give smaller intersections, which sit inside terms already in the sum.
+  - Taking q = 0, or q containing x_e, reduces to monomial errors, which is consistent.
+  - It is stronger than the data in five ways, which the Statement and the spec must list as the evidence's limits:
+    - any number of families (data: one or two);
+    - q any sum of variables, including repeated pigeons or holes and any length (data: q = two variables forming a matching);
+    - x_e meeting q's edges in any way (data: disjoint, or every edge);
+    - any K with K+2 ≤ D (data: K = 1);
+    - every n ≥ 5 (data: n = 5 and 6).
+- **Item 4 (paragraphs against sources).**
+  - **Capacity notation.** In Architecture test and Nonvacuity, "the capacity H=25" reuses H, the name of the closure. Rename it.
+  - **Nonvacuity.** "The two outcomes were both possible" cites ex:top-degree-linear-killer, which is a single linear error on 4 pigeons and 3 holes at D = 2. That does not show a positive outcome was possible here. Weaken to "not excluded by any recorded result".
+  - **Bearing, "below the top degree".** Both boards have D = 3 = ⌈n/2⌉ and K+e = 3 = D, which looks like the top degree. Check this against the review's own definition and quote it, or remove the phrase.
+  - **Smallest case.** "Not reachable … in this cycle" is not backed by any timing or growth estimate. There is no 8×7, degree-4 attempt, only the 7×6, degree-3 time. Add the attempt, or say "not attempted".
+  - **Follow-up and Owed attempt.** The deferral reason is given and is acceptable. If this is the second deferral in a row of truncated-quotient:s1, the next entry must make or drop it.
+  - **next.html contradicts itself.** It says to prove the "hole-covering case" starting from the collapsed two-factor form, whose monomials miss hole 4 (see (i) and (ii)).
+- **Unused hypotheses.** The domain-side condition "dim A_H = 0" in Nonvacuity is used only to interpret the outcome, which is fine.
+
+**Proposed title and status line**
+
+- Title: "Two-family Pang kernels".
+- Status: "Finite check and conjecture · K=1, D=3 over F_2 on 6×5 and 7×6 boards · Two-family survival test."
+
+**Suggestions (unverified)**
+
+- **Open point: F = C∩V_1 for every n ≥ 5 at K = 1.**
+  - By lem:closure-degree-locality, only degree d = 2 is needed.
+  - Apply the band extension (or lem:admissible-numbering-transfer read monomial by monomial) jointly to {1+q1, 1+q2}. Number holes 0,1,2,3 lowest, with any free hole at the top.
+  - Following the dance rule as the band Attempt quotes it, the only conflicts come from the top two used positions when only the top hole is free (n = 5):
+    - E = x33 with t = x_{a2} needs pigeon 3 before pigeon a.
+    - E = x22 with t = x_{a3} needs pigeon a before pigeon 2.
+    - So pigeon 3 first and pigeon 2 last is consistent.
+    - For n ≥ 6 there is a free hole between, and no constraint arises.
+  - If that numbering is admissible, F = Ann_H(1+q1) ∩ Ann_H(1+q2) ∩ V_1 + C∩V_1.
+  - By hand, Ann_H(1+q1) ∩ V_1 = span{q1}: matching linear coefficients force c = 0 and a_ij = 0 off {00, 11}, and the x00x11 coefficient forces a00 = a11. This agrees with (c)'s dim A_H = 1.
+  - Since span{q1} ∩ span{q2} = 0, this gives F = C∩V_1 for every n ≥ 5, over every field the extension allows.
+  - It also proves (b) at those sizes. The numbering can be checked exactly with the recorded numberings.py from check:six-by-five-numberings (whose orders, such as pigeons 3,2,1,0,4,5, are of this kind).
+  - None of this is verified: I did not read IPS Definition 2.3, B_D or T_K beyond the band Attempt's quotation.
+- **Afterwards:** what remains is (a), (c), (d) and the sum form beyond the extension. A route is the single-error transfers (all hold, 16 = 16) plus an intersection argument; I found nothing for that intersection step.
+
+**Process audit**
+
+- **Record comparison and Own statements:** "necessary" was read as "sufficient", against the cited Decision's own words. See (i).
+- **Search the draft missed.** Searching "admissible numbering polynomial errors shared numbering" returned check:six-by-five-numberings (an exact numbering search on this very board) and cor:nested-hole-joint-transfer. The draft cites neither, and the first decides whether the collapsed form, and so (b), is already reachable.
+- **next.html** names an attempt whose starting object the extension may already decide.
+- **Registration skipped.** The band Decision asked this entry to register the extension. It is not registered, no reason is given, and the extension is then relied on.
+- **Question not asked:** the per-error equality H-side = C-kernel.
+- **Negative sentence without an attempt:** "not reachable in this cycle" (Smallest case).
+- **"Reviewed there"** for the extension has no source in the supplied excerpts.
+- **Title and status** are placeholders. My proposal is above; it should be rewritten from the body after corrections.
+
+Strength count: 7. These are the Record comparison's "exactly where the proved transfer stops" / "new content is this hole-covering case"; Own statements' "the proof needs only the hole-covering case"; next.html's "the one the band review's polynomial extension leaves"; the claim-spec relationship's "covers every set … leave a hole free"; Smallest case's "not reachable"; Nonvacuity's "both possible"; and the Bearing's "below the top degree" (pending a check).
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/pf-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_survival_test_20261017/{claim-spec.json,next.html,two_family_kernel.py,transfer_series.py,two_family_kernel.json,transfer_series.json}
+
+=====
+
+**Follow-up verdict: pass with corrections.** The three wrong sentences about the band extension are fixed. What remains is three sentences that drop a qualifier or a step, one stale spec field, and a few minor wording points. I read the redraft, next.html, the claim spec, factor_numbering.py and its json, and the `dance` and `failures` code in numberings.py. I ran nothing.
+
+**Your four checks**
+
+1. **factor_numbering.py and the Record comparison's division of the instances.**
+   - The script computes what the entry says. `failures` checks every matching E in the set against every t of size at most 1 that has a dance, with t∪E a matching, and asks whether t∪E has a dance. That is the lemma's property at K=1 as the earlier reviewed check implements it.
+   - The `ranks` direction is right: in 3,0,1,4,5,2, pigeon 3 moves first and pigeon 2 last. The four failures under 3,2,1,0,4,5 are exactly t = x_{a3} for a in {0,1,4,5}, the constraint "pigeon a before pigeon 2". Both controls can fail.
+   - Your attribution is fair. My earlier parenthetical saying the order 3,2,1,0,4,5 was "of this kind" was my error: in that order pigeon 2 is second, not last.
+   - The new division is correct: (b) is explained only through the unregistered extension, "if its argument holds"; (a), (c) and (d) are open, because other representatives were not examined.
+   - Missing step for (b): the extension gives the factors' transfer, F = Ann_H(1+q_1) ∩ Ann_H(1+q_2) ∩ V_1 + C∩V_1. Getting from there to (b) needs two things the entry should state:
+     - the collapse A_C(b) = F, in one line: each error is a multiple of a factor, so lem:factor-ideal-domination (b) applies with room 1+1+1 ≤ 3; and Σ_j (1+q)x_ij = (1+q)(1+Q_i) with (1+q)Q_i in C;
+     - that the 60 errors' common H-kernel contains the factors' common H-kernel (both are 0 here).
+2. **The five limits.**
+   - The General statement and the spec's evidence list agree item by item.
+   - A sixth limit is optional to add: q_1 and q_2 are disjoint from each other.
+   - The spec's two `next_action` fields still name the old step ("from the closure's normal form", "starting from the collapsed two-factor form"). Align them with the new next step: register the extension, then prove (b).
+3. **Nonvacuity, Bearing, Smallest case, Own statements.**
+   - **Nonvacuity:** "not excluded by any recorded result" holds only for the fixed representatives. Add "other representatives were not examined", as the Record comparison does.
+   - **Bearing:** the quoted phrase is only as good as its quotation; I cannot check it against the review. "Below the system's refutation degree" is consistent with check:functional-factor-kernels at 6×5 (refutation degree 4 at five holes, D = 3). It has no record at 7×6, so either cite a source for that board or restrict the phrase to 6×5.
+   - **Smallest case:** "at that size the band review's argument already gives it" drops the condition and the H-side value. Write: "gives F = Ann_H(1+q_1) ∩ Ann_H(1+q_2) ∩ V_1 + C∩V_1 if the unregistered argument holds".
+   - **Own statements:** correct as written.
+4. **Sentences stronger than their source.**
+   - **next.html, the endpoint.** It concludes "and so Ann_C(1+q_1) ∩ Ann_C(1+q_2) ∩ V_1 = C∩V_1". That needs, beyond the numbering, the hand step Ann_H(1+q_ν) ∩ V_1 = span{q_ν} at every n, which nothing in the entry proves or computes.
+     - The hand step: coefficients on matching monomials force the constant to be 0 and every coefficient off x00, x11 to be 0, and the x00x11 coefficient forces a00 = a11. Then span{q_1} ∩ span{q_2} = 0.
+     - Fix: put this step in the next step's plan, or say the endpoint needs it.
+   - **next.html, "as found at n=5".** The constraint "pigeon of hole 3 first, pigeon of hole 2 last" comes from n = 5. There the only free hole above the used holes 0..3 is the top one, so the pigeon at the second-highest used position must move before the other. For n ≥ 6 a free hole lies above hole 3 before the top, and the constraint seems to disappear (unverified). State the general condition from the dance rule rather than the order found at n = 5. The same applies to the Follow-up paragraph's matching phrase.
+   - **Proposed title:** "Two-family Pang kernels".
+   - **Proposed status line:** "Finite check and conjecture · K=1, D=3 over F_2 on 6×5 and 7×6 boards · Two-family survival test."
+
+Strength count: 2 (Smallest case's "already gives it"; next.html's "and so … = C∩V_1"). The stale spec `next_action` fields are not counted.
+
+Files: /home/kbr/.claude/jobs/354c41d4/tmp/pf-draft.html, /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_survival_test_20261017/{claim-spec.json,next.html,factor_numbering.py,factor_numbering.json}
+
+=====
+
+**Last check verdict: text (2) is correct and can go in; text (1) needs one change before the commit.** Both texts are identical in research/branches/common-multiplier/notebook.html and research/results/common_multiplier_survival_test_20261017/entry.html. I ran nothing.
+
+**(2) The collapse step: correct, and no stronger than its sources.**
+- **F ⊆ A_C(b):** lem:factor-ideal-domination (b) applies with w = 1+q_ν (e=1), h = x_e (g=1), c_ν = 0 and K=1, so the room is 1+1+1 ≤ 3.
+- **A_C(b) ⊆ F:** over F_2 with Q_i = 1+Σ_j x_ij, Σ_j (1+q)x_ij = (1+q)(1+Q_i). So u(1+q) = Σ_j u(1+q)x_ij + u(1+q)Q_i. The term u(1+q)Q_i has degree 3 ≤ D, so it lies in C. Every edge x_ij is among the 60 errors, so the row sums are available.
+- **H-kernels:** "the 60 errors' common H-kernel contains the factors'" holds because H, the degree-3 closure of monomials, is closed under multiplication by x_e at this degree.
+- **"Both are 0 here":** the 60 errors' common H-kernel is 0 by the saved run, and the factors' kernel sits inside it, so it is 0 too. No hand step is needed for that.
+- **The chain closes:** A_C(b) = F = A_H(factors) + C∩V_1 ⊆ A_H(b) + C∩V_1 ⊆ A_C(b).
+- **Qualifier kept:** "if its argument holds" follows in the next sentence.
+
+**(1) The Architecture test's last sentence: stronger than its source.**
+- **Too narrow:** it says the hedges concern only the next attempt's proof at every n. But the unregistered extension also carries this entry's own claim that (b) is "explained by the extension, not new", at n=5. The Record comparison says this in the same entry.
+- **Hedge omitted:** it leaves out the one hedge on the computed instances themselves, that other representatives modulo C∩V_2 were not examined. That hedge bears on the conjecture and on the Nonvacuity reading, not on the next attempt.
+- **What is right:** the Architecture test's outcome, A_C = C∩V_1 at 6×5, is a computed equality and needs none of these hedges.
+- **Required change:** delete the sentence, or replace it with: "The outcome is a computed equality on the boards run; the hedges elsewhere concern the explanation of (b) through the unregistered extension, the conjecture's other representatives, and the next attempt's proof at every n."
+
+Strength count for these two texts: 1, sentence (1).
