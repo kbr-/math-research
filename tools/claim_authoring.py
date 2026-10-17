@@ -270,11 +270,13 @@ def _plain(fragment):
 
 def source_notebook(target, root=ROOT):
     """The notebook file and anchor a spec target URL points at: the main notebook, or a side notebook under
-    research/branches/NAME/ for a .../branches/NAME/#anchor link."""
+    research/branches/NAME/ for a .../branches/NAME/#anchor link or a branches/NAME/notebook.html#anchor path,
+    the form the specs write (17 October 2026: that form matched nothing, so no side-notebook entry was ever
+    compared)."""
     if '#' not in target:
         return None, None
     page, anchor = target.split('#', 1)
-    side = re.search(r'/branches/([\w.-]+)/?$', page)
+    side = re.search(r'(?:^|/)branches/([\w.-]+)/?(?:notebook\.html)?$', page)
     return (root / 'research/branches' / side.group(1) / 'notebook.html' if side else root / 'notebook.html'), anchor
 
 

@@ -210,6 +210,10 @@ class BuildTest(unittest.TestCase):
         self.assertIn('not yet in notebook.html', statement_drift(spec, path, self.root)[0][0])
         self.assertEqual(source_notebook('https://e.org/math-research/branches/side-x/#a1', self.root),
                          (self.root / 'research/branches/side-x/notebook.html', 'a1'))
+        # the form the specs write (17 October 2026: it matched nothing and fell to the main notebook)
+        self.assertEqual(source_notebook('branches/side-x/notebook.html#a1', self.root),
+                         (self.root / 'research/branches/side-x/notebook.html', 'a1'))
+        self.assertEqual(source_notebook('notebook.html#a1', self.root), (self.root / 'notebook.html', 'a1'))
         self.assertEqual(source_notebook('source.md', self.root), (None, None))
         (self.root / 'notebook.html').write_text('<article id="entry-c"><p><strong>Imported statement.</strong> '
                                                  'For \\(q<h\\) the bound holds.</p></article>')
