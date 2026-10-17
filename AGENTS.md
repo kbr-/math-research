@@ -899,6 +899,10 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   Stop hook, the commit check and the finisher enforce it (user, 13 October 2026: "I won't be there
   forever ... AIs will live on and they must learn to become better on their own"; ported from
   another branch, 16 October 2026).
+- When the harness or its classifier refuses a tool call, its goal is not reached by another command
+  or tool: say in the reply which call was refused and why, file the decision in `user_requests`
+  with the default being followed (leave the file as it is), and continue other work (17 October
+  2026: a refused checkout of CLAUDE.md was redone by a checkout from a commit).
 - After a session restart, notifications about instructions, stopped tasks or changed files are not
   new work requests. Run no tools or restart tasks in response to those notifications alone; say at
   most one sentence and wait for the user's message.
