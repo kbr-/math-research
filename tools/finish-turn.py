@@ -1104,6 +1104,38 @@ def review_test_context(body, target, summaries=None, width=400):
     return lines if len(lines) > 1 else []
 
 
+# A sentence limiting what the test's outcomes conclude: a first pattern ("drawn only", "holds only", "only for
+# the") refused 30 of 314 recorded reports, nearly all for sentences limiting a lemma or a reading, not the
+# outcomes (research/results/framework-builds-20261017/scope-quote-replay.txt), and "conclusions or outcomes ...
+# only" still 18, for "only" in other senses (scope-quote-replay-narrowed.txt).
+SCOPE_WORDS = re.compile(r'\b(?:conclusions?|outcomes?)\b[^.;]*\b(?:drawn|stated|holds?|hold) only\b', re.I)
+
+
+def scope_sentences(body, target):
+    """The sentences of review `target`'s Decisive test that limit what its outcomes conclude ("Conclusions (a)
+    and (b) are drawn only for the error sizes and pairs computed")."""
+    at = body.find(f'<article id="{target}"')
+    end = body.find('</article>', at) if at >= 0 else -1
+    if end < 0:
+        return []
+    plain = re.sub(r'\s+', ' ', html.unescape(strip_tags(report_paragraph(body[at:end], 'Decisive test'))))
+    return [s.strip() for s in re.split(r'(?<=[.;])\s+', plain) if SCOPE_WORDS.search(s)]
+
+
+def missing_scope_quotes(body, target, evidence, run=8):
+    """The scope sentences of the review an Architecture test reports that the report does not quote, by
+    `run` consecutive words of each (17 October 2026: a report wrote "absent on every partition error" where
+    the review said its conclusions are "drawn only for the error sizes and pairs computed")."""
+    have = ' '.join(re.findall(r'\w+', html.unescape(strip_tags(evidence)).lower()))
+    out = []
+    for sentence in scope_sentences(body, target):
+        words = re.findall(r'\w+', sentence.lower())
+        runs = [' '.join(words[i:i + run]) for i in range(max(1, len(words) - run + 1))]
+        if not any(r in have for r in runs):
+            out.append(sentence)
+    return out
+
+
 def architecture_context_report(body, entry):
     """Lines for the finisher to print: the context of each review the entry's Architecture test links."""
     evidence = report_paragraph(entry + '</article>', 'Architecture test')
@@ -2100,6 +2132,11 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
                 raise ValueError('Architecture test must say <strong>Decided.</strong> or <strong>Not '
                                  'decided.</strong> and which of the review\'s outcomes occurred: a test left '
                                  'unanswered is reported as not decided, not as a changed question (AGENTS.md)')
+            unquoted = missing_scope_quotes(body, target, evidence)
+            if unquoted:
+                raise ValueError(f'Architecture test must quote the scope #{target} gives its outcomes, eight '
+                                 'consecutive words of each sentence: ' + ' | '.join(unquoted) + ' (AGENTS.md: '
+                                 'relay a source with its qualifiers word for word)')
 
 
 def entry_claims(body, article):

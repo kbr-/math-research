@@ -1010,6 +1010,27 @@ class CountListingReportTest(unittest.TestCase):
         self.assertEqual(FT.absence_report(entry('Continuing: one more attempt.')), [])
 
 
+class ScopeQuoteTest(unittest.TestCase):
+    """An Architecture test quotes the scope its review gives the test's outcomes."""
+    REVIEW = ('<article id="rv" data-kind="review"><p><strong>Decisive test.</strong> Run the pairs. '
+              'Conclusions (a) and (b) are drawn only for the error sizes and pairs computed. Only one board.</p>'
+              '</article>')
+
+    def test_the_exposing_report_is_refused_and_the_quoting_one_accepted(self):
+        dropped = '<strong>Decided.</strong> Outcome (a): the candidate is absent at n = 6 on partition errors.'
+        self.assertEqual(FT.missing_scope_quotes(self.REVIEW, 'rv', dropped),
+                         ['Conclusions (a) and (b) are drawn only for the error sizes and pairs computed.'])
+        quoted = ('<strong>Decided.</strong> By the review’s own qualifier, “Conclusions (a) and (b) are drawn '
+                  'only for the error sizes and pairs computed”, it is absent on those pairs.')
+        self.assertEqual(FT.missing_scope_quotes(self.REVIEW, 'rv', quoted), [])
+
+    def test_only_in_other_senses_is_not_a_scope(self):
+        # sentences from the replay of the first patterns (scope-quote-replay*.txt), legitimate and unquoted
+        review = ('<article id="rv" data-kind="review"><p><strong>Decisive test.</strong> The lemma applies only '
+                  'to supplied maps. Its no outcome is informative only with the step that fails.</p></article>')
+        self.assertEqual(FT.scope_sentences(review, 'rv'), [])
+
+
 class AttemptCostTest(unittest.TestCase):
     """A review's Attempt that leaves a computation to the test states its cost in the same sentence."""
     DATED = '<article id="entry-2026-10-17-window-review">'
