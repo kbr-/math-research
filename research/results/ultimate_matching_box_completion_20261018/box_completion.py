@@ -53,8 +53,34 @@ import math
 
 import numpy as np
 from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import maximum_bipartite_matching
 from scipy.spatial import cKDTree
+import ctypes
+import os
+import subprocess
+
+# SciPy's maximum_bipartite_matching ran over 60 s on a level-2 graph of 4096 + 4096 vertices and
+# 46810 edges (18 October 2026, cause not diagnosed); a compiled Hopcroft-Karp kernel replaces it,
+# checked against networkx in the controls.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_SO = os.path.join(os.environ.get('TMPDIR', '/tmp'), 'box_completion_hk.so')
+subprocess.run(['g++', '-O2', '-shared', '-fPIC', '-o', _SO, os.path.join(_HERE, 'hk.cpp')], check=True)
+_hk = ctypes.CDLL(_SO).hk
+_IP = ctypes.POINTER(ctypes.c_int)
+_hk.argtypes = [ctypes.c_int, ctypes.c_int, _IP, _IP, _IP, _IP]
+_hk.restype = ctypes.c_int
+
+
+def maximum_bipartite_matching(A, perm_type='column'):
+    """Mate (column) of each row, -1 when free: the compiled Hopcroft-Karp kernel."""
+    A = csr_matrix(A)
+    A.sort_indices()
+    indptr = np.ascontiguousarray(A.indptr, dtype=np.int32)
+    indices = np.ascontiguousarray(A.indices, dtype=np.int32)
+    mx = np.empty(A.shape[0], dtype=np.int32)
+    my = np.empty(A.shape[1], dtype=np.int32)
+    _hk(A.shape[0], A.shape[1], indptr.ctypes.data_as(_IP), indices.ctypes.data_as(_IP),
+        mx.ctypes.data_as(_IP), my.ctypes.data_as(_IP))
+    return mx.astype(np.int64)
 
 
 def graph(X, Y, r):
@@ -169,6 +195,15 @@ def controls(rng):
             sound['nuD_fires'] += nuD
             sound['nuD_fires_where_holds'] += (nuD and holds)
     out['soundness'] = sound
+    import networkx as nx
+    agree = 0
+    for rep in range(200):
+        n = int(rng.integers(20, 200))
+        A = csr_matrix((rng.random((n, n)) < rng.uniform(0.005, 0.05)).astype(np.int8))
+        G = nx.algorithms.bipartite.from_biadjacency_matrix(A)
+        ref = len(nx.bipartite.maximum_matching(G, top_nodes=range(n))) // 2
+        agree += int((maximum_bipartite_matching(A) >= 0).sum()) == ref
+    out['kernel_against_networkx'] = dict(graphs=200, agree=agree)
     return out
 
 
@@ -210,6 +245,7 @@ def main():
     assert c['gadget']['cert'], c['gadget']
     assert c['soundness']['cert_fires_where_holds'] == 0, c['soundness']
     assert c['soundness']['nuD_fires_where_holds'] == 0, c['soundness']
+    assert c['kernel_against_networkx']['agree'] == 200, c['kernel_against_networkx']
     print('controls', json.dumps(c))
     for N in args.sizes:
         for L in (0.5, 1.0):
