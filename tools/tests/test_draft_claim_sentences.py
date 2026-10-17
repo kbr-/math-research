@@ -117,6 +117,18 @@ class DraftClaimSentences(unittest.TestCase):
         self.assertEqual(missing, {'entry-gone'})
         self.assertTrue(out.endswith('2 linking sentences, 2 entries, 1 not in the notebook.'))
 
+    def test_a_linked_entrys_direction_sentences_stand_beside_the_draft(self):
+        # 17 October 2026: "necessary, not sufficient" in a linked review was read as sufficient by a draft.
+        notebook = ('<article id="entry-band"><h3>Band review</h3><p class="entry-meta">Review.</p>'
+                    '<p>Missing a hole is necessary for such a numbering, not sufficient. The board has five holes.'
+                    '</p></article>')
+        draft = ('<p>The <a href="#entry-band">band review</a>\'s extension covers every set whose monomials leave '
+                 'one hole free.</p>')
+        out, _ = dcs.entry_report(draft, notebook, 0)
+        self.assertIn('  DIRECTION: Missing a hole is necessary for such a numbering, not sufficient.\n'
+                      '  [] The band review\'s extension covers every set', out)
+        self.assertNotIn('DIRECTION: The board has five holes', out)
+
     def test_width_cuts_long_lines(self):
         out, _ = dcs.report(DRAFT, REGISTRY, 20)
         self.assertIn('  REGISTERED: First lemma: holds f\n', out)

@@ -347,6 +347,10 @@ AGENTS.md"):
   has is not yet what every member can be given (17 October 2026: an item was closed from what
   matched images share with an initial segment, before the envelope certificate that gives it to
   every certificate was cited).
+- A condition taken from a record (what a lemma covers, what a numbering needs, when a test applies)
+  is written with the record's own sentence quoted beside it, never restated from the gist kept
+  while reading: a paraphrase keeps the condition and loses which way it runs (17 October 2026: a
+  review's "necessary for such a numbering, not sufficient" was restated as covering every case).
 - Write every summary (title, New mathematics, Bearing, commit message, report) last, from the final
   statement with its hypotheses and qualifiers; relay what a reviewer, agent or tool found from its
   source, with its qualifiers word for word, and explain a failing check only by quoting the lines

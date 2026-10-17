@@ -884,6 +884,21 @@ def article_header(fragment):
     return text(title.group(1)), text(status.group(1)) if status is not None else None
 
 
+# Words by which a sentence says which way a condition runs.
+DIRECTION = re.compile(r'\b(?:necessary|sufficient|suffices?|only if|if and only if|exactly when|converse(?:ly)?|'
+                       r'one direction|one-way)\b', re.I)
+
+
+def direction_sentences(body):
+    """The sentences of an entry's body that say which way a condition runs (necessary, sufficient, only if)."""
+    found = []
+    for tag, block in BLOCK.findall(body.split('</article>', 1)[0]):
+        if tag in ('h3', 'h4'):
+            continue
+        found += [text(s) for s in sentences(block) if DIRECTION.search(text(s))]
+    return found
+
+
 def entry_links(draft):
     """(entry id, section label, sentence text) for every sentence of the draft that links an entry."""
     found, heading = [], ''
@@ -901,7 +916,8 @@ def entry_links(draft):
 
 def entry_report(draft, notebook, width):
     """Per linked entry, its title and status line from the notebook, then each sentence linking it."""
-    heads = {entry: header for entry, body in ARTICLE.findall(notebook)
+    bodies = dict(ARTICLE.findall(notebook))
+    heads = {entry: header for entry, body in bodies.items()
              if (header := article_header(body)) is not None}
     found = entry_links(draft)
     lines = [f'Notebook input: {len(notebook.encode("utf-8"))} bytes; {len(heads)} entry headers.', '']
@@ -915,6 +931,10 @@ def entry_report(draft, notebook, width):
         else:
             lines.append(f'{entry}\n  TITLE: (NOT IN THE NOTEBOOK)')
             missing.add(entry)
+        # 17 October 2026: a draft read a linked entry's "necessary, not sufficient" as sufficient.  The entry's
+        # own sentences that say which way a condition runs are set beside the draft's sentences that cite it.
+        for sentence in direction_sentences(bodies.get(entry, '')):
+            lines.append(f'  DIRECTION: {cut(sentence)}')
         for linked, where, sentence in found:
             if linked == entry:
                 lines.append(f'  [{where}] {cut(sentence)}')
