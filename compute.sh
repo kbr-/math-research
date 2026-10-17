@@ -363,7 +363,9 @@ def cycle_model_use(events):
         import model_usage  # imported here: a copy of the launcher without it still exports its timing
         use = model_usage.cycle(events, root=ROOT)
     except Exception as error:  # noqa: BLE001 -- any failure is reported, the export goes on
-        use = {'measured': False, 'reason': f'the measurement failed: {type(error).__name__}: {error}'}
+        # The record keeps the error's type only: its message can name another session's transcript.
+        use = {'measured': False, 'reason': f'the measurement failed: {type(error).__name__}'}
+        print(f'Model use: {type(error).__name__}: {error}', file=sys.stderr)
     if not use.get('measured'):
         print(f"Model use not measured: {use['reason']}.", file=sys.stderr)
     elif not (use.get('limit') or {}).get('measured'):
@@ -1304,16 +1306,16 @@ def main():
                         raise ValueError('Use --stop to finalize the session before exporting its timing table')
                     data = summary(events, stop['monotonic_s'] if stop else time.monotonic())
                     recovery_summary(data, path, stop['unix_s'] if stop else time.time())
-                    if args.html_out:
+                    try:
+                        recorded = json.loads(path.with_suffix('.summary.json').read_text()).get('model_use')
+                    except (OSError, ValueError):
+                        recorded = None
+                    # A finished cycle keeps the model use measured at its first export: a later report, or
+                    # an export rerun from another session, would read a session that didn't do the cycle.
+                    if stop and recorded is not None and (recorded.get('measured') or not args.html_out):
+                        data['model_use'] = recorded
+                    elif args.html_out:
                         data['model_use'] = cycle_model_use(events)
-                    elif stop:
-                        # A later report of the finished cycle keeps the model use its export recorded.
-                        try:
-                            recorded = json.loads(path.with_suffix('.summary.json').read_text()).get('model_use')
-                        except (OSError, ValueError):
-                            recorded = None
-                        if recorded is not None:
-                            data['model_use'] = recorded
                     path.with_suffix('.summary.json').write_text(json.dumps(data, indent=2) + '\n')
                     if args.html_out:
                         args.html_out.parent.mkdir(parents=True, exist_ok=True)

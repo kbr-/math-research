@@ -448,8 +448,10 @@ class ModelUseExport(unittest.TestCase):
         with unittest.mock.patch('model_usage.cycle', broken), \
                 unittest.mock.patch('sys.stderr', stderr):
             use = compute.cycle_model_use([])
-        self.assertEqual(use, {'measured': False, 'reason': 'the measurement failed: OSError: disk gone'})
-        self.assertIn('Model use not measured: the measurement failed: OSError: disk gone', stderr.getvalue())
+        # the record keeps the type only: an error's message can name another session's transcript
+        self.assertEqual(use, {'measured': False, 'reason': 'the measurement failed: OSError'})
+        self.assertIn('Model use: OSError: disk gone', stderr.getvalue())
+        self.assertIn('Model use not measured: the measurement failed: OSError.', stderr.getvalue())
 
     def test_the_note_sentence_is_escaped(self):
         data = {'total_instrumented_s': 1.0, 'exclusive_categories_s': {'preparation': 1.0},
@@ -458,6 +460,14 @@ class ModelUseExport(unittest.TestCase):
                               'rows': [{'model': 'm', 'effort': 'e', 'total_tokens': 5, 'usd': 0.004,
                                         'unpriced_tokens': 0}]}}
         self.assertIn('Model use billed to an API key at &lt;$0.01.</p>', compute.timing_html(data, 's'))
+
+    def test_an_export_rerun_from_another_session_keeps_the_first_measurement(self):
+        self.transcript('session-under-test')
+        _, _, first = self.export({**self.env, 'CLAUDE_CODE_SESSION_ID': 'session-under-test'})
+        (self.dir / 'claude' / 'projects' / 'project' / 'later-session.jsonl').write_text('')
+        fragment, _, again = self.export({**self.env, 'CLAUDE_CODE_SESSION_ID': 'later-session'})
+        self.assertEqual(again['model_use'], first['model_use'])
+        self.assertIn('claude-opus-5-5, high', fragment)
 
     def test_an_unmeasured_cycle_keeps_the_plain_timing_report_and_says_why(self):
         fragment, stderr, summary = self.export(self.env)

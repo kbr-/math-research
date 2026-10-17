@@ -41,13 +41,13 @@ ROOT = Path(__file__).resolve().parents[1]
 PRICES = ROOT / 'tools' / 'model_prices.json'
 MARGIN_S = 900          # records this long before the start are read for the effort and model in force
 LATE_S = 120            # records may land slightly out of order: read this far past the stop
-READING_WINDOW_S = 120  # limit readings within this window of a time are one reading (stale ones are lower)
 RESET_JITTER_S = 60     # a reset time that moves by more is a new window
 WEEK_MINUTES = 10080
 SEARCH_STOP = 1 << 16   # binary search stops at this span of bytes
 KINDS = ('input', 'cache_write_5m', 'cache_write_1h', 'cache_read', 'output')
 STAMP = re.compile(rb'(?<!\\)"timestamp":\s*"(\d{4}-\d\d-\d\dT[^"]+)"')
 CLAUDE_OAUTH = 'oauth-2025-04-20'
+API_BILLING = ('ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'CLAUDE_CODE_USE_BEDROCK', 'CLAUDE_CODE_USE_VERTEX')
 AGENT_ID = {'Claude Code': 'CLAUDE_CODE_SESSION_ID', 'Codex': 'CODEX_THREAD_ID'}
 PROVIDER = {'Claude Code': 'claude', 'Codex': 'codex'}
 
@@ -92,7 +92,10 @@ def seek_time(stream, size, target):
             high = middle
         else:
             low = middle
-    return low
+    stream.seek(low)
+    if low:
+        stream.readline()  # to a line's start: the search before it then sees only whole lines
+    return stream.tell()
 
 
 def kind(name):
@@ -140,11 +143,11 @@ def records(path, low, high, markers, before=()):
         stream.seek(offset)
         late = iso(unix(high) + LATE_S)
         for line in stream:
+            if not any(marker.search(line) for marker in markers):
+                continue  # other lines can be out of order (a resumed transcript's leading snapshots)
             stamp = stamp_of(line)
             if stamp and stamp > late:
                 return
-            if not any(marker.search(line) for marker in markers):
-                continue
             try:
                 record = json.loads(line)
             except ValueError:
@@ -222,11 +225,12 @@ def claude_tokens(usage):
             'output': usage.get('output_tokens', 0) or 0}
 
 
-def claude_file(path, low, high, prices, effort=None):
-    """(tally, whether the session is billed to a plan, or None when no request record says) of one Claude Code
-    transcript's messages stamped in [low, high]. An interactive session writes no `api-request` records: its
-    messages get `effort`, the session's setting, if given."""
-    tally, oauth, seen = Tally(prices), None, set()
+def claude_file(path, low, high, effort=None):
+    """(messages, whether the session is billed to a plan, or None when no request record says) of one Claude
+    Code transcript, its messages stamped in [low, high] as (id, model, effort, tokens, prompt, fast). A message's
+    effort is the one its record states; else the latest `api-request` record's; else `effort`, the session's
+    setting, if given."""
+    messages, oauth = [], None
     for record in records(path, low, high, (ASSISTANT, API_REQUEST), before=(API_REQUEST,)):
         if record.get('type') == 'api-request':
             params = record.get('params') or {}
@@ -236,14 +240,14 @@ def claude_file(path, low, high, prices, effort=None):
         if record.get('_before') or record.get('type') != 'assistant':
             continue
         stamp, message = record.get('timestamp'), record.get('message') or {}
-        usage, ident = message.get('usage'), message.get('id')
-        if not stamp or not usage or not (low <= stamp <= high) or (ident and ident in seen):
+        usage = message.get('usage')
+        if not stamp or not usage or not (low <= stamp <= high):
             continue
-        seen.add(ident)
         tokens = claude_tokens(usage)
         prompt = tokens['input'] + tokens['cache_write_5m'] + tokens['cache_write_1h'] + tokens['cache_read']
-        tally.add(message.get('model'), effort, tokens, prompt, usage.get('speed') == 'fast')
-    return tally, oauth
+        messages.append((message.get('id'), message.get('model'), record.get('effort') or effort, tokens, prompt,
+                         usage.get('speed') == 'fast'))
+    return messages, oauth
 
 
 def claude_home():
@@ -382,32 +386,38 @@ def same_window(a, b):
     return a is not None and b is not None and abs(a - b) <= RESET_JITTER_S
 
 
-def reading_at(readings, t):
-    """The limit reading at time t: the highest of the readings in the newest window within READING_WINDOW_S
-    before t (a session that has been idle reports a stale, lower value); else the latest before t."""
-    near = [r for r in readings if t - READING_WINDOW_S <= r[0] <= t]
-    if near:
-        newest = max(r[2] or 0 for r in near)
-        return max((r for r in near if same_window(r[2] or 0, newest)), key=lambda r: r[1])
-    earlier = [r for r in readings if r[0] <= t]
-    return max(earlier, key=lambda r: r[0]) if earlier else None
+def window_at(readings, t):
+    """The reset time of the newest window read by time t, or None."""
+    seen = [r[2] or 0 for r in readings if r[0] <= t]
+    return max(seen) if seen else None
+
+
+def reading_at(readings, t, window=None):
+    """The limit at time t in `window` (by default the newest read by then): the highest reading of that window
+    made by t. Use within a window only grows, so a lower reading is stale, from a session idle since; a session
+    still in an earlier window after a reset is stale too."""
+    window = window_at(readings, t) if window is None else window
+    if window is None:
+        return None
+    values = [r[1] for r in readings if r[0] <= t and same_window(r[2] or 0, window)]
+    return max(values) if values else None
 
 
 def movement(readings, low_s, high_s):
     """The limit's movement in percentage points over [low_s, high_s], and a note when its start is read late,
     or (None, reason)."""
-    start, end, note = reading_at(readings, low_s), reading_at(readings, high_s), None
-    if start is None:
+    note, start_window = None, window_at(readings, low_s)
+    if start_window is None:
         inside = sorted(r for r in readings if low_s <= r[0] <= high_s)
         if not inside:
             return None, 'no limit reading before the cycle ended'
-        start, note = inside[0], 'its first limit reading came after the cycle began'
-    if end is None:
-        return None, 'no limit reading before the cycle ended'
-    if same_window(start[2], end[2]):
-        return max(0.0, end[1] - start[1]), note
-    old = [r[1] for r in readings if low_s <= r[0] <= high_s and same_window(r[2], start[2])]
-    return max(0.0, max(old + [start[1]]) - start[1]) + end[1], note
+        low_s, start_window, note = inside[0][0], inside[0][2] or 0, 'its first limit reading came after the cycle began'
+    start, end_window = reading_at(readings, low_s, start_window), window_at(readings, high_s)
+    end = reading_at(readings, high_s, end_window)
+    if same_window(start_window, end_window):
+        return max(0.0, end - start), note
+    # a reset inside the cycle: the old window's rise to its last reading, then the new window's level
+    return max(0.0, reading_at(readings, high_s, start_window) - start) + end, note
 
 
 def plan_price(log_dir, provider):
@@ -419,8 +429,11 @@ def plan_price(log_dir, provider):
 
 
 def main_checkout(root):
-    common = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=root,
-                            capture_output=True, text=True)
+    try:
+        common = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=root,
+                                capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return Path(root)
     return Path(common.stdout.strip()).parent if common.returncode == 0 else Path(root)
 
 
@@ -448,16 +461,26 @@ def cycle(events, root=ROOT, env=None, prices=None, claude=None, codex=None, now
         if not mine:
             return {'measured': False, 'reason': 'no transcript of the Claude Code session was found'}
         setting = env.get('CLAUDE_EFFORT')
+        keyed = any(env.get(name) for name in API_BILLING)
+        counted, unread = {'own': set(), 'everyone': set()}, 0
         for path in recent((home / 'projects').rglob('*.jsonl'), low):
             ours = path in mine
-            tally, plan = claude_file(path, low, high, prices, f'{setting} (session setting)' if ours and setting else None)
+            try:
+                fallback = f'{setting} (session setting)' if ours and setting else None
+                messages, plan = claude_file(path, low, high, fallback)
+            except OSError:
+                unread += ours  # another session's file may vanish or be unreadable: it is left out
+                continue
             if plan is None:  # no request record: this session by its environment, another one by the default
-                plan = not env.get('ANTHROPIC_API_KEY') if ours else True
+                plan = not keyed if ours else True
             if ours:
-                own.merge(tally)
                 billed = plan if billed is None else billed or plan
-            if plan:
-                everyone.merge(tally)
+            for ident, model, effort, tokens, prompt, fast in messages:
+                # a resumed or forked transcript copies earlier messages under their ids: count each once
+                for name, tally, wanted in (('own', own, ours), ('everyone', everyone, plan)):
+                    if wanted and (ident is None or ident not in counted[name]):
+                        counted[name].add(ident)
+                        tally.add(model, effort, tokens, prompt, fast)
         own.merge(judge_calls(judges, low, high, prices, session))
         everyone.merge(judge_calls(judges, low, high, prices))
         log_dir = env.get('USAGE_LOG_DIR')
@@ -468,9 +491,13 @@ def cycle(events, root=ROOT, env=None, prices=None, claude=None, codex=None, now
         mine = set(codex_thread_files(paths, session))
         if not mine:
             return {'measured': False, 'reason': 'no rollout of the Codex thread was found'}
-        readings = []
+        readings, unread = [], 0
         for path in paths:
-            tally, plan = codex_file(path, low, high, prices, readings)
+            try:
+                tally, plan = codex_file(path, low, high, prices, readings)
+            except OSError:
+                unread += path in mine
+                continue
             if path in mine:
                 own.merge(tally)
                 billed = plan if billed is None else billed or plan
@@ -490,6 +517,8 @@ def cycle(events, root=ROOT, env=None, prices=None, claude=None, codex=None, now
                        for (model, effort), row in sorted(own.rows.items(), key=lambda kv: -kv[1]['usd'])],
               'usd': round(own.usd(), 6)}
     result['unpriced_models'] = sorted({row['model'] for row in result['rows'] if row['unpriced_tokens']})
+    if unread:
+        result['unread_files'] = unread
     if not billed:
         result['limit'] = {'measured': False, 'reason': 'billed to an API key: the API-price cost is the bill'}
         return result
@@ -554,10 +583,14 @@ def note_text(use):
         return f'Model use billed to an API key at {usd_text(use["usd"])}.'
     if not limit.get('measured'):
         return f'Share of the weekly limit not measured: {limit.get("reason", "unknown")}.'
+    if not limit['moved_percent']:
+        return f'Model use: the weekly {use["agent"]} limit, read in whole points, did not move during the cycle.'
     share = f'{limit["share_percent"]:.2f}% of the weekly {use["agent"]} limit'
     if 'usd' in limit:
         share += f' (≈ {usd_text(limit["usd"])} of {limit["plan"] or "the plan"} at ${limit["usd_per_month"]:g} a month)'
-    return f'Model use: {share}, apportioned by API prices.'
+    moved = limit['moved_percent']
+    return (f'Model use: {share}, its part by API prices of the limit\'s {moved:g}-point movement, read in whole '
+            'points.')
 
 
 def main(argv=None):

@@ -482,11 +482,14 @@ subagents and the framework's judge calls; it records totals only, never the ses
 is the limit's movement over the cycle, split between this machine's sessions on the same plan by
 their use at API prices, so parallel cycles share it and use elsewhere is counted against them.
 Claude's limit is read from `USAGE_LOG_DIR/claude.jsonl`, which a Claude Code status-line command
-writes: one JSON line (`at`, `week`, `week_resets_at`) whenever the `rate_limits.seven_day` its
-input reports changes. Codex's limit is read from its rollouts; `USAGE_LOG_DIR/plans.json` gives
-each plan's monthly price for dollars. When the model use can't be measured, the export says why on
-stderr and the fragment keeps only the timing table; when only the share can't, the note says why. A
-model the price table lacks is shown unpriced: add its official prices, with their date.
+writes from the `rate_limits` its input reports: a JSON line (`at`, `week`, `week_resets_at`)
+whenever a reading differs from the last line any session wrote. Since use within a week only grows,
+the highest reading of the newest week counts and an idle session's stale, lower one is ignored.
+Readings are whole percents, so a short cycle's share rests on a movement of a point or none, as its
+note says. Codex's limit is read from its rollouts; `USAGE_LOG_DIR/plans.json` gives each plan's
+monthly price for dollars. When the model use can't be measured, the export says why on stderr and
+the fragment keeps only the timing table; when only the share can't, the note says why. A model the
+price table lacks is shown unpriced: add its official prices, with their date.
 
 Operational `research/logs/` are ignored. Archiving preserves the journal, summary, and complete
 command outputs in `research/provenance/session-records/`. Inspect the evidence for credentials and

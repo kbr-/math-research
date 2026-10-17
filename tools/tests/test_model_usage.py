@@ -67,14 +67,19 @@ class ClaudeCycleTest(Fixture):
             message(30, 'm2', 'claude-haiku-4-5-20251001', {'input_tokens': 2000, 'cache_creation_input_tokens': 400,
                                                              'cache_read_input_tokens': 0, 'output_tokens': 100}),
             message(40, 'm3', 'mystery-model', {'input_tokens': 5, 'output_tokens': 5}),
-            message(50, 'm4', opus, {'input_tokens': 0, 'cache_read_input_tokens': 1000000, 'output_tokens': 0,
-                                     'speed': 'fast'}),
+            # a record that states its effort (as every assistant record does now) is taken at its word
+            {**message(50, 'm4', opus, {'input_tokens': 0, 'cache_read_input_tokens': 1000000, 'output_tokens': 0,
+                                        'speed': 'fast'}), 'effort': 'xhigh'},
             message(60 + mu.LATE_S + 5, 'm5', opus, {'input_tokens': 999999, 'output_tokens': 0}),  # after the stop
         ])
         write(projects / self.S / 'subagents' / 'agent-1.jsonl', [
             request(55, 'low'), message(58, 's1', opus, {'input_tokens': 100, 'output_tokens': 100})])
         write(projects / f'{self.OTHER}.jsonl', [
             request(1, 'medium'), message(20, 'o1', opus, {'input_tokens': 0, 'cache_read_input_tokens': 4000000,
+                                                           'output_tokens': 0})])
+        # a fork of the other session copies its message under the same id: counted once on the machine
+        write(projects / 'session-fork.jsonl', [
+            request(2, 'medium'), message(20, 'o1', opus, {'input_tokens': 0, 'cache_read_input_tokens': 4000000,
                                                            'output_tokens': 0})])
         write(projects / f'{self.KEYED}.jsonl', [
             request(1, 'medium', betas=['claude-code-20250219']),
@@ -110,8 +115,8 @@ class ClaudeCycleTest(Fixture):
         # m1 at the effort of the request before the window: 10*4 + 1000*8 + 100000*0.2 + 500*20 per million.
         self.assertAlmostEqual(rows['claude-opus-5-5', 'high']['usd'], 0.03804)
         self.assertEqual(rows['claude-opus-5-5', 'high']['tokens']['cache_write_1h'], 1000)
-        # m4 in fast mode doubles the cache read's 0.20: 1e6 * 0.4.
-        self.assertAlmostEqual(rows['claude-opus-5-5', 'medium']['usd'], 0.4)
+        # m4, at the effort its record states, in fast mode, which doubles the cache read's 0.20: 1e6 * 0.4.
+        self.assertAlmostEqual(rows['claude-opus-5-5', 'xhigh']['usd'], 0.4)
         # m2: 2000*1 + 400*1.25 + 100*5, its cache writes unsplit and so at the API's default 5-minute price.
         self.assertAlmostEqual(rows['claude-haiku-4-5-20251001', 'medium']['usd'], 0.003)
         self.assertEqual(rows['mystery-model', 'medium']['unpriced_tokens'], 10)
@@ -133,6 +138,23 @@ class ClaudeCycleTest(Fixture):
         self.assertAlmostEqual(limit['usd'], 3 * 0.457774 / 1.258774 / 100 * 200 * 12 / 52, places=4)
         self.assertEqual(limit['plan'], 'Max 20x')
         self.assertNotIn('note', limit)
+
+    def test_an_unreadable_transcript_of_another_session_is_left_out(self):
+        home = self.build()
+        locked = home / 'projects' / 'project' / 'session-locked.jsonl'
+        write(locked, [message(20, 'x1', 'claude-opus-5-5', {'input_tokens': 1, 'output_tokens': 1})])
+        locked.chmod(0)
+        self.addCleanup(locked.chmod, 0o600)
+        use = mu.cycle(journal('Claude Code'), root=self.root, prices=self.prices, claude=home,
+                       env={'CLAUDE_CODE_SESSION_ID': self.S, 'USAGE_LOG_DIR': str(self.logs)})
+        self.assertAlmostEqual(use['usd'], 0.457774)
+        self.assertNotIn('unread_files', use)
+        mine = home / 'projects' / 'project' / self.S / 'subagents' / 'agent-1.jsonl'
+        mine.chmod(0)
+        self.addCleanup(mine.chmod, 0o600)
+        use = mu.cycle(journal('Claude Code'), root=self.root, prices=self.prices, claude=home,
+                       env={'CLAUDE_CODE_SESSION_ID': self.S, 'USAGE_LOG_DIR': str(self.logs)})
+        self.assertEqual(use['unread_files'], 1)   # its own unreadable subagent file is counted, not hidden
 
     def test_unmeasured_causes_are_named(self):
         self.assertIn('CLAUDE_CODE_SESSION_ID is not set', self.run_cycle(env={})['reason'])
@@ -167,18 +189,23 @@ class ClaudeCycleTest(Fixture):
         # another session without request records counts as plan use: 0.004 of S's 0.44344, the other
         # session's 0.8, the judges' 0.015334 and these two sessions' 0.004 each.
         self.assertAlmostEqual(use['limit']['fraction_of_machine_use'], 0.004 / 1.266774, places=6)
-        keyed = mu.cycle(journal('Claude Code'), root=self.root, env={**env, 'ANTHROPIC_API_KEY': 'k'},
-                         prices=self.prices, claude=self.dir / 'claude')
-        self.assertEqual(keyed['billing'], 'API key')
+        for name in mu.API_BILLING:
+            keyed = mu.cycle(journal('Claude Code'), root=self.root, env={**env, name: '1'},
+                             prices=self.prices, claude=self.dir / 'claude')
+            self.assertEqual(keyed['billing'], 'API key', name)
 
     def test_table_and_note(self):
         use = self.run_cycle()
         table = mu.table_html(use)
         self.assertIn('<caption>Model use</caption>', table)
-        self.assertIn('<td>claude-opus-5-5, medium</td><td class="elapsed">1.0 M</td><td class="elapsed">$0.40</td>', table)
+        self.assertIn('<td>claude-opus-5-5, xhigh</td><td class="elapsed">1.0 M</td><td class="elapsed">$0.40</td>', table)
         self.assertIn('<td>mystery-model, medium</td><td class="elapsed">10</td><td class="elapsed">unpriced</td>', table)
         self.assertEqual(mu.note_text(use), 'Model use: 1.09% of the weekly Claude Code limit (≈ $0.50 of Max 20x at '
-                                            '$200 a month), apportioned by API prices.')
+                                            "$200 a month), its part by API prices of the limit's 3-point movement, "
+                                            'read in whole points.')
+        still = {**use, 'limit': {**use['limit'], 'moved_percent': 0.0, 'share_percent': 0.0, 'usd': 0.0}}
+        self.assertEqual(mu.note_text(still), 'Model use: the weekly Claude Code limit, read in whole points, did '
+                                              'not move during the cycle.')
 
 
 class CodexCycleTest(Fixture):
@@ -263,8 +290,8 @@ class ReadingTest(unittest.TestCase):
     def test_records_in_a_large_file_match_a_full_scan(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'large.jsonl'
-            lines = [{'type': 'assistant', 'timestamp': at(second - 50000), 'n': second, 'pad': 'x' * 200}
-                     for second in range(100000)]
+            lines = [{'type': 'assistant', 'timestamp': at(second - 10000), 'n': second, 'pad': 'x' * 200}
+                     for second in range(20000)]   # 5 MB: many search blocks
             write(path, lines)
             got = [r['n'] for r in mu.records(path, at(0), at(10), (mu.ASSISTANT,)) if not r.get('_before')]
             want = [line['n'] for line in lines
@@ -283,9 +310,42 @@ class ReadingTest(unittest.TestCase):
 
     def test_a_stale_lower_reading_does_not_lower_the_limit(self):
         readings = [(100.0, 50.0, 9000), (150.0, 49.0, 9000), (160.0, 51.0, 9000), (170.0, 50.0, 9000)]
-        self.assertEqual(mu.reading_at(readings, 175.0)[1], 51.0)
-        self.assertEqual(mu.reading_at(readings, 400.0)[1], 50.0)   # nothing near: the latest before
+        self.assertEqual(mu.reading_at(readings, 175.0), 51.0)
+        self.assertEqual(mu.reading_at(readings, 400.0), 51.0)   # use within a window only grows
         self.assertIsNone(mu.reading_at(readings, 50.0))
+        # an idle session's stale 74 three seconds after 75, long before the cycle: no movement
+        self.assertEqual(mu.movement([(1.0, 75.0, 9000), (4.0, 74.0, 9000), (500.0, 75.0, 9000)], 200.0, 1000.0),
+                         (0.0, None))
+        # after a weekly reset an idle session still reports the old window: no reset inside a later cycle
+        stale = [(0.0, 90.0, 9000), (10.0, 2.0, 700000), (20.0, 90.0, 9000), (4000.0, 5.0, 700000)]
+        self.assertEqual(mu.movement(stale, 3600.0, 7200.0), (3.0, None))
+        # a reset inside the cycle: the old window's rise, then the new window's level
+        self.assertEqual(mu.movement([(0.0, 40.0, 9000), (50.0, 45.0, 9000), (60.0, 1.0, 700000)], 10.0, 100.0),
+                         (6.0, None))
+
+    def test_a_request_record_longer_than_a_search_block_still_sets_the_effort(self):
+        # Request records average about 119 KB: the search lands inside one, which must not be read as a record.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'session.jsonl'
+            long_request = {**request(-2000, 'high'), 'messages': 'x' * 300000}
+            filler = [{'type': 'progress', 'timestamp': at(-5000 + i), 'pad': 'x' * 300} for i in range(800)]
+            write(path, [*filler, long_request,
+                         message(10, 'm', 'claude-opus-5-5', {'input_tokens': 1, 'output_tokens': 1})])
+            data = path.read_bytes()
+            with open(path, 'rb') as stream:   # the search returns a line's start, never a point inside one
+                offset = mu.seek_time(stream, len(data), at(-mu.MARGIN_S))
+            self.assertEqual(data[offset - 1:offset], b'\n')
+            messages, oauth = mu.claude_file(path, at(0), at(60))
+            self.assertEqual([m[2] for m in messages], ['high'])
+            self.assertTrue(oauth)
+
+    def test_leading_records_stamped_late_do_not_end_the_read(self):
+        # A resumed transcript begins with snapshot records stamped later than the messages after them.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'resumed.jsonl'
+            write(path, [{'type': 'file-history-snapshot', 'timestamp': at(9000)},
+                         message(10, 'm', 'claude-opus-5-5', {'input_tokens': 1, 'output_tokens': 1})])
+            self.assertEqual(len(mu.claude_file(path, at(0), at(60))[0]), 1)
 
     def test_a_late_first_reading_is_said(self):
         moved, note = mu.movement([(120.0, 10.0, 9000), (190.0, 12.0, 9000)], 100.0, 200.0)
