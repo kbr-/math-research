@@ -1,0 +1,136 @@
+=== Report 1 of 4, fresh medium reviewer, pair occupancy entry, 17 October 2026 ===
+**Verdict: pass with corrections.** The lemma's proof and the proofs of (i)–(iii) hold. What needs fixing is the witness, one figure, and several summary sentences that say more than the proofs give.
+
+**Checked and correct**
+- **Quotient.** It has one coordinate per pair, and each nonzero pair class has two representatives of support one (the class of (1,0) for ψ=(1,c) is as the draft states). So the classes count as B_{m-s}(K), and the upper bound holds.
+- **Cut count.** d̄_φ ≥ (ε−π)σ holds; loops and parallel edges do no harm.
+- **Collision step.** The support bound 2K+2s holds, and the inequality |supp c'| ≥ |supp c| + d̄ − 2|∩| with goodness of c' at −φ is sound.
+- **Probability.** The estimate with m−s coordinates and the bound by (1+2β^{ε−π})^n − 1 are correct.
+- **(ii).** W∩B=0 holds under π<ε. c_C ≥ 1 follows because the characters α+w fall in distinct classes, through lem:cut-code-classes at k+e ≤ D. The bound 3^s = |(W+B)/B| holds.
+- **(iii).** The monotonicity proof in t_i is correct. η_W does fall with the level, since ε−π>0 there. Both factors are correct, including e^{sK/m} ≤ (m/(m−s))^K.
+- **Family paragraph.** m−s ≥ 7nΔ/64 and β_W < 0.27 hold; in fact η_W ≤ e^{1/8}−1 ≈ 0.13. sK/m comes to about nΔ/65536, as stated.
+- **Witness numbers** match witness-numbers.txt.
+- **Follow-up's floor** c_C(k) ≥ ρ_P(⌊(k−|α|)/2⌋) is correct.
+- **Searches.** I ran two: "quotient by span of pair vectors merged coordinates cosets cut space" and "hyperplanes covering grid uncovered points multiplication rank low weight characters". Neither found a recorded result that implies the lemma.
+
+**Required changes**
+- **Family paragraph, the bound on q.** q ≤ 1/126 is wrong. From m−s−K+1 ≥ m−D ≥ 7nΔ/64 and K ≤ nΔ/512 one gets q ≤ 1/112. This is harmless to the conclusion, but replace the figure.
+- **Family paragraph, hypotheses the test does not carry.** "π ≤ Δ/8" and "s ≤ D−K" are added hypotheses, not the test's. The test has 2s > D with no upper limit on s and no bound on π. Say that s ∈ (D−K, D] and π > Δ/8 are not covered, and carry that into the Bearing.
+- **Proof of (ii), wording.** "the domain has dimension n_C(k)" should say: the domain modulo J_D has dimension n_C(k). Characters of one class are proportional modulo J_D, and multiplying by P keeps this within degree k+e ≤ D.
+- **Nonvacuity, corollary witness.** P = 1+m_{ψ_1} is a function of the states of T={a_1,b_1}, τ=2. So it lies inside lem:local-tuple-ratio's window (K+2 ≤ D), which already bounds its ratio. "Beyond the window" holds only for the lemma's count. Use instead, for example, P = Σ_i m_{ψ_i}: e=2, it depends on 160 edges, and K+160 > D. Also, the sentence "K+2s > D (beyond lem:local-tuple-ratio's window)" compares a count with a ratio lemma. What actually shows the lemma is new is that the recorded counts q_T give only B_{m-2s}, a factor 3.9009 less.
+- **Unused hypotheses.** (i) and (ii) use only K+e ≤ D, s ≤ D and π < ε. They do not use 4K < m−s or the full 2K+2s ≤ 2D. State them per part.
+- **Degenerate cases.** "the upper bound 3^s is not attained" is unproved. Write "need not be attained".
+- **Smallest case.** The (s+1)-times-canonical bound comes from lem:sparse-weight-survival together with c(K−d) ≤ h(K−d), not from "subadditivity".
+- **Smallest case and Plainest bound, the claim "at least C(s,t) characters".** This holds only for generic q_j. For example, q_j = m_{ψ_1} for every j gives at most 3 characters. Add "generic", as the review's Operation does.
+- **Corollary summary, Bearing, claim spec and commit message.** "Counts cannot give it" and "coset counts cannot decide" are stronger than (iii). (iii) shows only that the two bounds built from c_C ≥ 1 fail. The review's own Operation, a block form of lem:local-tuple-ratio with its filtration r_j, is a count-and-rank bound that the entry did not build. Narrow these sentences to "the two bounds from c_C ≥ 1". In the Architecture test, say the block form was not built.
+- **Review paragraph, answer (2).** It drops the qualifier that the judgement used each summary's first 300 characters (coverage-judgement.txt says so). Those are the same fragments that the Process assessment's mistake (a) calls not a read. State that qualifier, or redo the judgement from full statements.
+
+**Framework**
+- **claim_reads.log.** It does what it says, but the class is not closed. A scratch script that runs `subprocess.run([... 'tools/search-claims.py','--show',ID])` and prints 300 characters still logs the claim as read; the Bash guard does not see a subprocess. Setting sys.argv[0] is one line and passes, contrary to the docstring's "cannot pass it". So "only the reader writes the log" is not "the statement was read".
+- **unbypassed_checks.** Cheapest ways around it:
+  - add the module in one commit and wire it in the next;
+  - write any five words after "Bypass tried:";
+  - add the new check as a function in an existing module. This turn's own checks, unbypassed_checks and last_turn, are of that kind, so the check could not have fired on its own commit, as its own "Bypass tried" line admits.
+- **last_turn.** The backward block read is correct, since splitting on the newline byte is safe in UTF-8 and the partial line is carried over. The timing is measured.
+- **AGENTS.md additions.** All three are general to every notebook and placed correctly.
+
+**Review paragraph**
+- Answers (1), (3) and (5) report their objections fairly. For (1), the cause (contention) is inferred, not tested.
+- Answer (4) fixes the prefix symptom, not the truncated-reading class.
+
+## Suggestions (unverified)
+- **Lower bound without the restriction to sectors untouched by pairs.** This needs no assumption on α. By lem:local-tuple-ratio's translation remark (multiplication by m_β is injective on the class span) and supp(β+w) ≤ |β| + 2wt(w), every sector satisfies c_C(k) ≥ ρ_P(⌊(k−|β_C|)/2⌋), with β_C a least-support representative. Summing over sectors gives c(k) ≥ Σ_j Δρ_P(j)·q_W(k−2j), which is the block form's lower bound. The matching upper bound is where the pairs couple: a support-one character on a pair's "other" edge costs W-weight one.
+- **Fourier picture.** F[F_3^s] ≅ F[z]/(z_i^3−1), with F ⊇ F_4 and characteristic 2, is semisimple. Then Ann(P) = I(U), where U = {z ∈ μ_3^s : P(z) ≠ 0} is the set of grid points left uncovered by the t hyperplanes 1+Σ_i a_{ji}z_i = 0. So ρ_P(j) = dim L_j|_U, the Hilbert function of U in the weight filtration. Alon–Füredi gives |U| ≥ about 3^{s−⌈t/2⌉}, far above B'_s(j) at j ≈ K/2, so U is too large to saturate. Macaulay or Clements–Lindström-type bounds go the wrong way: they bound growth from above. I found no theorem that gives the needed lower bound on growth.
+- **Plainest structured instance.** Two factors 1+a m_{ψ_i} on each of r coordinates make U a subcube of codimension r. Then ρ_P(j) = B'_{s−r}(j), and lem:ball-ratio-comparison (ii) gives the ratio ≤ λ^{d/2}·(ball ratio), λ ≈ 1+r/(s−r−j): a polynomial excess, so no counterexample there. A heuristic for generic q_j suggests ρ(j) is about B'(j)(1−r_j^3)^t, also polynomial against canonical. I found no counterexample.
+
+## Process audit
+- Title against body: accurate ("neither count bound"), no finding.
+- The Bearing, the corollary's claim summary and the commit message overstate (iii); see above.
+- The witness offered for the corollary does not exercise the step it is offered for.
+- The Architecture test does not say that the review's named Operation (the block form) was not attempted.
+- Review answer (2) drops the 300-character qualifier, and it rests on the very reads that mistake (a) disowns.
+- The commit check could not fail on the commit that introduced it.
+- The claim_reads prevention addresses the call site, not the class of mistake.
+
+Strength count: 4 (Bearing sentence, cor:pair-sector-bounds summary, commit message paragraph 2, Review (2)).
+
+=== Report 2 of 4, fresh medium reviewer, pair occupancy entry, 17 October 2026 ===
+Most corrections check out, but three items still need changes. The rewritten bypass check now misses two real wirings, Review answer (3) still gives the old check and count, and the corollary witness lacks a plainest bound.
+
+**Checked and correct**
+- q ≤ 1/112.
+- The family paragraph and the Bearing now carry their own conditions (s ≤ D−K, π ≤ Δ/8) and the uncovered cases.
+- (ii) says "domain modulo J_D".
+- The per-part Hypotheses ledger.
+- "need not be attained".
+- The Smallest case and "generic".
+- The narrowed (iii), New mathematics, Architecture test and commit message.
+- The lemma witness's 3.9009 sentence.
+- Review answers (1), (2) and (4).
+- The Reviewer's suggestions section: its Record lines are present, and it labels as verified only the Fourier reduction.
+- **(a) The Fourier reduction is correct.**
+  - F[F_3^s] is semisimple because 3 is invertible in characteristic two.
+  - F ⊇ F_4 contains the cube roots of unity. So evaluation at μ_3^s is an algebra isomorphism onto the functions on μ_3^s, and multiplication by P becomes pointwise.
+  - Pf = 0 exactly when f vanishes wherever P ≠ 0. So ker P = I(U) and ρ_P(j) = dim(L_j|_U).
+  - One caveat: "hyperplanes" holds because each q_j is linear in the z_i, by the test's definition (span of the m_{ψ_i}). If m_{2ψ_i} = z_i² were allowed, the zero sets would not be hyperplanes. Say so in one clause.
+
+**Required changes**
+- **Bypass check: the replay's 3 of 400 is not "each a real wiring, against 4 before".** The three it refuses are real: 347d1af88, d3f867dc6, and 066137371 (`from commit_message_checks import dropped_conditions`). But the new wires() drops two real wirings:
+  - **5f3b7ed74**: runs tools/test_can_fail.py by path through a subprocess (`Path(__file__).resolve().parents[1] / 'test_can_fail.py'`). This is neither spec_from_file_location nor SourceFileLoader.
+  - **dff02446e**: wires commit_message_checks into tools/git-hooks-branch/commit-msg. That file is not in CALLERS, which covers only tools/hooks/*.py. The old pattern caught it only by accident, through the module's own file.
+
+  Either detect a path run (`'m.py'` in a caller line) and add tools/git-hooks-branch/* to CALLERS, or state both misses. Then correct the commit message's sentence.
+- **Review answer (3)** still says "refuses a commit that wires a new tools module … replayed on 400 commits it would refuse 4". The code now uses a 20-commit window, and the new replay file says 3. Update it, and name the limits the docstring now states.
+- **Nonvacuity, corollary witness.** For P = Σ m_{ψ_i}, the plainest bound already decides the ratio. lem:sparse-weight-survival with c(K−d) ≤ h(K−d) gives at most 80 times canonical. The Plainest bound paragraph speaks only of the lemma; add that sentence. The witness remains valid for nonvacuity.
+- **Follow-up.** The next attempt still restricts to sectors whose representative "touches no pair". That is fine, since the general version is listed as an unverified suggestion, but the entry should not imply that the restriction is needed.
+
+**AGENTS.md**
+
+Both sentences are general and correctly placed:
+- the recording-step rule, in the item on running a tool so that it does its job;
+- the findings-listing rule, in the item on real-data runs of framework tools.
+
+The second's example ("fixtures read printed source quoting its message as two refused calls") is hard to parse. Consider rewording it.
+
+**Process audit.** The title ("neither count bound then decides the decisive test") matches the narrowed body. The status line "its count bounds shown superpolynomial over canonical" would be exact as "its two count bounds". The commit message's "each a real wiring, against 4 before" overstates: the dropped cases were real wirings. Review (3) is stale against the rewritten check. Strength count: 2 (the commit message's replay sentence, Review answer (3)).
+
+=== Report 3 of 4, fresh medium reviewer, pair occupancy entry, 17 October 2026 ===
+One change is still required: the bypass check misses loading or running a module by its bare name (details under 1). Everything else checks out.
+
+**1. Bypass check**
+- **Confirmed:** the five refusals in bypass-replay.txt are real wirings.
+- **Confirmed:** your four judgements are right. I reran the first form's word match on each commit's added caller lines:
+  - c7d4b1969: the hit is a usage line in commit_message_checks.py itself, its own file.
+  - 70a238067: the hit is a message string, `'tools/claim_refresh.py (AGENTS.md, index maintenance)'`.
+  - fc98f34b9: the hits are a pattern, `RETRIEVAL_RE … (held_sources|…`, and a message string, `'(tools/held_sources.py, …'`. The new rule does not match the latter, since the literal starts with "(".
+  - 353756321: the hit is a message string.
+- **Required:** the cheapest ways around the path-literal rule are not caught:
+  - loading by bare name: `importlib.import_module('m')`, `__import__('m')`, `runpy.run_module('m')`;
+  - running by bare name: `[sys.executable, '-m', 'm']`;
+  - a path the literal rule cannot see: `f'{TOOLS}/m.py'`, `'m' + '.py'`.
+
+  Either catch the bare-name forms with a pattern like `(import_module|__import__|run_module)\(\s*['"]m['"]` plus `'-m',\s*'m'`, or name all of these as limits in the docstring and in the commit message's "Bypass tried" line.
+
+**2. Draft**
+- Review answer (3) and the Process paragraph's replay sentence are now accurate.
+- The plainest-bound sentence for the corollary witness is correct. P has 80 characters, so R_D(P) has at most 80 nonzero coordinates, and the 80-times-canonical bound holds.
+- The hyperplane clause is correct.
+- The Follow-up's restriction clause is fine.
+- The status line ("its two count bounds") is exact.
+- The Verification gate credits me only with what my reports say I checked, including the Fourier reduction on my second reading. All three scope directions are right: (iii) and the family paragraph are less general, and (i)–(ii) more general. "Read … twice and its replays" is now three times; adjust it if you like.
+
+**3. Commit message and AGENTS.md**
+- The Framework paragraph's facts match the replay file. Its wrapping is ragged (a line ends at "AGENTS.md: a"), but every line is at most 100 characters; reflow it.
+- The reworded AGENTS.md example reads clearly, and the rule is general.
+
+Remaining required change: the bare-name ways around the bypass check, under 1. Otherwise none.
+
+=== Report 4 of 4, fresh medium reviewer, pair occupancy entry, 17 October 2026 ===
+None.
+
+- **Patterns:** the two new patterns in wires() catch all four bare-name forms: import_module('m'), __import__('m'), run_module('m') and '-m', 'm'.
+- **Tests:** test_commit_message_checks.py has all four as refused cases.
+- **Docstring:** it names a path built at run time (f'{TOOLS}/m.py', 'm' + '.py') as a limit.
+- **Replay:** the new bypass-replay.txt refuses the same 5 commits.
+- **Commit message:** no line is over 100 characters. Its "Bypass tried" line matches the code. Its new AGENTS.md clause, "a rewritten check is replayed beside its earlier form's catches", is in the working-tree diff of AGENTS.md.
+- **Gate clause:** "three times ... and its last change, the bare-name forms it asked for, once more" is accurate.

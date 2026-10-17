@@ -24,6 +24,19 @@ class ClaimReads(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(prefix='claim-reads-')
         self.root = Path(self.temporary.name)
         self.since = time.time() - 1
+        from unittest import mock
+        patcher = mock.patch.object(sys, 'argv', ['tools/notebook-excerpt.py'])   # the log's writers are the readers
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_only_the_reading_tools_write_the_log(self):
+        # 17 October 2026: a scratch script that printed 300 characters of each summary logged its claims as read.
+        from unittest import mock
+        with mock.patch.object(sys, 'argv', ['/tmp/judge_pairs.py']):
+            with self.assertRaisesRegex(ValueError, 'written only by notebook-excerpt.py, search-claims.py'):
+                claim_reads.log(self.root, ['lem:x'])
+        claim_reads.log(self.root, ['lem:x'])
+        self.assertIn('lem:x', claim_reads.read_since(self.root, self.since))
 
     def tearDown(self):
         self.temporary.cleanup()

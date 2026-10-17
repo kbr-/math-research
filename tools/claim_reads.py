@@ -32,8 +32,20 @@ CLAIM_ID = re.compile(r'(?<![\w:-])((?:' + '|'.join(re.escape(p) for p in PREFIX
 PARAGRAPHS = ('Record search', 'Record comparison', 'Record', 'Own statements', 'Bearing')
 
 
+READERS = ('notebook-excerpt.py', 'search-claims.py')   # the tools that print a claim's whole statement
+
+
 def log(root, ids):
-    """Append `ids` to the read log; a log that cannot be written is not an error."""
+    """Append `ids` to the read log; a log that cannot be written is not an error.  Only READERS, the running
+    program, may write it (17 October 2026: a scratch script that printed 300 characters of each summary logged its
+    claims as read).  This closes that call site, not the class: a script that runs a reader as a subprocess and
+    keeps a fragment of its output, or sets its own program name, still logs; the log records that a reader printed
+    the statements, not that they were read (its reviewer, 17 October 2026)."""
+    import sys
+    name = Path(sys.argv[0]).name
+    if name not in READERS:
+        raise ValueError(f'claim_reads.log is written only by {", ".join(READERS)}, which print whole statements; '
+                         f'{name} is not one of them')
     ids = sorted(set(ids))
     if not ids:
         return

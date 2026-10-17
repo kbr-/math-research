@@ -200,8 +200,9 @@ def unconfirmed(message, dropped):
 
 
 CALLERS = ('tools/finish-turn.py', 'tools/notebook-append.py', 'compute.sh', 'tools/check-claims.py',
-           'tools/commit_message_checks.py')   # and tools/hooks/*.py: the gates a refusing check is wired into
+           'tools/commit_message_checks.py', 'tools/git-hooks-branch/commit-msg', 'tools/git-hooks-branch/pre-commit')   # and tools/hooks/*.py: the gates a refusing check is wired into
 BYPASS = re.compile(r'^Bypass tried:(?:\s+\S+){5,}', re.M)
+RECENT = 20   # commits back in which an added tools module still counts as new when it is wired in
 
 
 def unbypassed_checks(added, caller_lines, message):
@@ -210,12 +211,29 @@ def unbypassed_checks(added, caller_lines, message):
     the cheapest way around the new check that was tried and what it did.  17 October 2026: a coverage check went
     into the finisher with two ways around it (a citation edge, a missing paragraph) that its reviewer, not the
     agent, found; AGENTS.md's rule to try the cheapest way around a refusing check before its commit let it through.
-    `added`: paths the commit adds; `caller_lines`: the lines the commit adds to the callers."""
+    `added`: paths the commit adds, and those added in the last RECENT commits, so that adding a module in one
+    commit and wiring it in the next does not pass; `caller_lines`: the lines the commit adds to the callers.  Its
+    limits, from its reviewer: five words of any kind pass the line's form, and a new check written as a function of
+    an existing module is not seen (this check's own commit was of that kind and could not fire on itself), nor is
+    a path built at run time (f'{TOOLS}/m.py', 'm' + '.py')."""
     modules = [Path(p).stem for p in added
                if p.startswith('tools/') and p.endswith('.py') and '/tests/' not in p and not p.startswith('tools/hooks/')]
-    # Any mention in an added caller line: "import m", "from m import f", "m.f(" and a load by the path "tools/m.py"
-    # (the three ways around a narrower pattern, tried before this check's commit).
-    wired = sorted({m for m in modules for line in caller_lines if re.search(r'(?<![\w-])' + re.escape(m) + r'(?![\w-])', line)})
+    # Wiring, not mention: "import m", "from m import f", "m.f(" and a load by the path (spec_from_file_location,
+    # SourceFileLoader), the ways around a narrower pattern tried before this check's commit; a module's own file
+    # is not its caller, and a name in a message string is not a wiring (its replay of 17 October 2026 counted
+    # both). `caller_lines` items are lines or (path, line) pairs.
+    def wires(m, line):
+        name = re.escape(m)
+        return re.search(r'\bimport\s+' + name + r'\b|\bfrom\s+' + name + r'\s+import\b|\b' + name + r'\.(?!py\b)\w+\s*\('
+                         r'|(?:spec_from_file_location|SourceFileLoader)\([^)]*\b' + name + r'\.py'
+                         # a run by path: a string literal that is the path alone ('m.py', "tools/m.py"), where a
+                         # message holds the path among other words (its reviewer: 5f3b7ed74 ran a check so)
+                         r'''|['"](?:[\w.-]*/)*''' + name + r'''\.py['"]'''
+                         # by bare name: import_module('m'), __import__('m'), run_module('m'), [..., '-m', 'm']
+                         r'''|(?:import_module|__import__|run_module)\(\s*['"]''' + name + r'''['"]'''
+                         r'''|['"]-m['"]\s*,\s*['"]''' + name + r'''['"]''', line)
+    pairs = [item if isinstance(item, tuple) else ('', item) for item in caller_lines]
+    wired = sorted({m for m in modules for path, line in pairs if Path(path).stem != m and wires(m, line)})
     return [] if not wired or BYPASS.search(message) else wired
 
 
@@ -231,10 +249,11 @@ def check_staged(message_path):
         status = 1
     staged_changed = git('diff', '--cached', '--name-only', '--diff-filter=AM').split()
     callers = [p for p in paths if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
-    caller_lines = [line[1:] for p in callers for line in git('diff', '--cached', '-U0', '--', p).splitlines()
+    caller_lines = [(p, line[1:]) for p in callers for line in git('diff', '--cached', '-U0', '--', p).splitlines()
                     if line.startswith('+') and not line.startswith('+++')]
-    for module in unbypassed_checks(git('diff', '--cached', '--name-only', '--diff-filter=A').split(), caller_lines,
-                                    message):
+    recent = git('log', f'-{RECENT}', '--diff-filter=A', '--name-only', '--format=', '--', 'tools', check=False).split()
+    for module in unbypassed_checks(git('diff', '--cached', '--name-only', '--diff-filter=A').split() + recent,
+                                    caller_lines, message):
         print(f'commit-msg: the commit wires the new check {module} into a finisher, append tool or hook; add a '
               'line "Bypass tried: ..." naming the cheapest way around it that was tried before the commit and what '
               'it did (AGENTS.md: a check that refuses an action is tried against the cheapest way around it).',
@@ -328,11 +347,13 @@ def replay_bypass(count):
     refused = 0
     for rev in revs:
         added = git('diff-tree', '--no-commit-id', '-r', '--name-only', '--diff-filter=A', rev).split()
+        added += git('log', f'-{RECENT}', '--diff-filter=A', '--name-only', '--format=', f'{rev}^', '--', 'tools',
+                     check=False).split()
         if not any(p.startswith('tools/') and p.endswith('.py') for p in added):
             continue
         changed = git('diff-tree', '--no-commit-id', '-r', '--name-only', rev).split()
         callers = [p for p in changed if p in CALLERS or (p.startswith('tools/hooks/') and p.endswith('.py'))]
-        lines = [line[1:] for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()
+        lines = [(p, line[1:]) for p in callers for line in git('show', '-U0', '--format=', rev, '--', p).splitlines()
                  if line.startswith('+') and not line.startswith('+++')]
         wired = unbypassed_checks(added, lines, git('log', '-1', '--format=%B', rev))
         if wired:

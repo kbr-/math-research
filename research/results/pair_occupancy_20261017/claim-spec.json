@@ -1,0 +1,50 @@
+{
+ "source": {
+  "record": "[Pair occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+  ],
+  "label": "Pair occupancy"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "polynomial-calculus",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "lem:pair-occupancy",
+   "summary": "Pair occupancy: in the charged character window (any graph, multigraphs included), for s vectors psi_i of support exactly two on pairwise disjoint edge pairs, W their span, pi the largest number of paired edges at a vertex, beta_W = 2 sqrt(K/(m - s)) and eta_W = (1 + 2 beta_W^(epsilon - pi))^n - 1, if 2K + 2s <= 2D and 4K < m - s then the number q_W(K) of cosets of the cut space plus W met by the support-K ball satisfies (1 - eta_W) B_(m-s)(K) <= q_W(K) <= B_(m-s)(K): each pair is one merged coordinate of the quotient by W, whose nonzero classes have representatives of support one, and the cut of a small potential keeps at least (epsilon - pi) times its support of unpaired edges, so good classes lie in distinct cosets.",
+   "assessment": "Working proof by the good-character union bound of lem:high-incidence-occupancy run on the classes of the quotient by W, the paired edges discarded.",
+   "status": "working_proof",
+   "rationale": "The per-pair occupancy at which the approximator product goal review's decisive test stopped; it refines the edge-set counts, B_(m-2s), to B_(m-s) for pair spans beyond lem:local-tuple-ratio's window.",
+   "next_action": "The rank profile of the products inside one sector, starting with sectors whose good representative touches no pair."
+  },
+  {
+   "id": "cor:pair-sector-bounds",
+   "summary": "Pair sector bounds: in lem:pair-occupancy's setting with pi < epsilon, for a nonzero P in the span of the characters of W of support at most e, K + e <= D, with c(k) the rank of f -> R_D(P f) on degree <= k and c_C(k) that rank on the characters of support <= k of a coset C of B + W: (i) c(k) = sum_C c_C(k) (lem:cut-code-sectors with S = (W+B)/B); (ii) 1 <= c_C(k) <= min(n_C(k), 3^s), W meeting B only in 0, so q_W(k) <= c(k) <= min(h(k), 3^s q_W(k)) for k <= K; (iii) the two ratio bounds these give, 3^s q_W(K-d)/q_W(K) and h(K-d)/q_W(K), exceed h(K-d)/h(K) by at least 3^s (1 - eta_W)(1 - eta_occ) and (1 - eta_occ)(1 - q) e^(sK/m), q = K/(2(m-s-K+1)), using that ball ratios B_n'(k-d)/B_n'(k) do not fall when coordinates are removed. (i) and (ii) need only K + e <= D, s <= D and pi < epsilon; (iii) also needs the lemma's hypotheses at levels K-d and K and eta_occ < 1. On the power-growing charged family, for D/2 < s <= D - K and pi <= Delta/8, both factors are N^(Omega(n)), so these two bounds built from c_C >= 1 cannot give the decisive test's yes outcome; a block form combining the counts with the ranks of P inside the sectors is not covered.",
+   "assessment": "Working composition of lem:cut-code-sectors, lem:cut-code-classes, the new lemma and lem:cut-ball-occupancy, with an elementary ball-ratio monotonicity.",
+   "status": "working_proof",
+   "rationale": "Shows that the two ratio bounds built from c_C >= 1 and the coset counts, now sharp up to 1 - eta_W, cannot give the yes outcome of the decisive test in the stated range, so a yes needs bounds on the ranks of the products inside the sectors.",
+   "next_action": "The rank profile of P inside the sectors whose good representative touches no pair, a question in the group algebra of F_3^s."
+  }
+ ],
+ "relationships": [
+  ["lem:pair-occupancy", "cites", "lem:high-incidence-occupancy", "Its good-character union bound and small-potential remark."],
+  ["lem:pair-occupancy", "cites", "lem:exposed-degree-occupancy", "The edge-set count for the paired edges, which the lemma refines for pair spans."],
+  ["lem:pair-occupancy", "cites", "lem:off-support-occupancy", "The edge-set count with V_hi empty."],
+  ["lem:pair-occupancy", "cites", "lem:cut-ball-occupancy", "The case s = 0."],
+  ["lem:pair-occupancy", "cites", "lem:cut-collision-bound", "Its second-moment form would apply the same way; not done."],
+  ["cor:pair-sector-bounds", "cites", "lem:cut-code-sectors", "Part (i): ranks add across the sectors of S = (W+B)/B."],
+  ["cor:pair-sector-bounds", "cites", "lem:cut-code-classes", "R_D(m_alpha) a nonzero multiple of its class's basis vector."],
+  ["cor:pair-sector-bounds", "cites", "lem:pair-occupancy", "The sector count at both levels."],
+  ["cor:pair-sector-bounds", "cites", "lem:coset-ratio-reduction", "Its part (i) for F_3^T, here for the span W with 3^s in place of r_tau."],
+  ["cor:pair-sector-bounds", "cites", "lem:local-tuple-ratio", "The translation remark behind c_C(k) >= 1."],
+  ["cor:pair-sector-bounds", "cites", "lem:cut-ball-occupancy", "h(K) >= (1 - eta_occ) B_m(K)."],
+  ["cor:pair-sector-bounds", "cites", "lem:ball-ratio-comparison", "The opposite direction of its coordinate-removal comparison."],
+  ["cor:pair-sector-bounds", "cites", "cor:pin-transfer-cost", "Like it, a limit of a bookkeeping, here the coset counts."],
+  ["cor:pair-sector-bounds", "cites", "prop:charge-affine-rank-gap", "The power-growing family's parameters."]
+ ],
+ "overrides": {}
+}

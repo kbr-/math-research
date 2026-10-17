@@ -448,7 +448,10 @@ AGENTS.md"):
 - Run a required tool or check so that it does its job, never in the cheapest form that passes its
   gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
   logged, a clause such as Tried: written before the action it reports): if a gate's form is a
-  burden, change the gate in the open, not its use.
+  burden, change the gate in the open, not its use. A tool's recording step (a read log, a stamp, a
+  marker) is left to the tool that does the duty it records, never called from a script of one's own
+  (17 October 2026: a scratch script that printed 300 characters of each summary logged its claims
+  as read).
 - Before every reviewer brief, reread the draft once against each item of this list and against the
   rules above on statements (free parameters at their whole range, searches under other names), item
   by item, rather than relying on having known them while drafting.
@@ -878,26 +881,31 @@ apply to new entries; do not retrofit or rewrite historical assessments.
   the change (16 October 2026: two new checks let a comment edit and a two-commit-old message
   through); likewise a threshold or filter a tool applies to records is counted over all the records
   it will read, its losses as well as its catches, before it is committed, not fitted to the case
-  that prompted it (16 October 2026: a floor fitted to one brief hid real statements). Tests run on
-  small fixtures, where work repeated per item costs nothing: a change to a framework tool that
-  reads the repository's records, or whose work grows with the directory it is given (a copy, a
-  walk, a scan), also gets one timed run against the real repository, and against the largest one it
-  will be used in; such a tool prints what its work grew with (files, megabytes), so a jump is seen
-  at its first use. That run reaches the path the change adds, and prints which path it took: a run
-  that returns early on real data has not measured the change (16 October 2026: a check's two timed
-  runs printed that it found nothing to check). What git tracks is not all source: recorded data and
-  archived output are tracked too, so a tool that needs the source is told which paths. The run uses
-  a real diff where the tool compares revisions (an unchanged base skips whole code paths), before
-  its commit, and a profile if it is slower than the work it does. Measure a change's effect before
-  claiming it: a framework commit message, a tool's docstring and help, and a queue-closure note
-  state only what was measured or checked, each figure beside the saved output it came from, written
-  after that output exists, with every measured value of the comparison it draws, not only those
-  that support it; and a mechanism (a cache, an option, a helper) needs a measured use. Other tests
-  run only on their own trigger: `formalization/tests/` needs the Lean toolchain and runs when
-  formalization tooling changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate
-  the memory controls and run only when those controls change. Scripts and tests under `research/`
-  are computations or provenance of finished one-off jobs, tied to the data of their date, and are
-  not rerun.
+  that prompted it (16 October 2026: a floor fitted to one brief hid real statements); and a rewrite
+  of such a check is replayed beside its earlier form's catches, each one it no longer makes judged
+  against its source (17 October 2026: a tightened wiring pattern dropped two real wirings while its
+  replay was read only for the false hits it lost). Tests run on small fixtures, where work repeated
+  per item costs nothing: a change to a framework tool that reads the repository's records, or whose
+  work grows with the directory it is given (a copy, a walk, a scan), also gets one timed run
+  against the real repository, and against the largest one it will be used in; such a tool prints
+  what its work grew with (files, megabytes), so a jump is seen at its first use. That run reaches
+  the path the change adds, and prints which path it took: a run that returns early on real data has
+  not measured the change (16 October 2026: a check's two timed runs printed that it found nothing
+  to check). For a check, that run also lists what it found and each finding is read against its
+  source: a fast run is not a correct one (17 October 2026: a refusal check, timed but tested only
+  on fixtures, counted two printed files that quote its message as two refused calls). What git
+  tracks is not all source: recorded data and archived output are tracked too, so a tool that needs
+  the source is told which paths. The run uses a real diff where the tool compares revisions (an
+  unchanged base skips whole code paths), before its commit, and a profile if it is slower than the
+  work it does. Measure a change's effect before claiming it: a framework commit message, a tool's
+  docstring and help, and a queue-closure note state only what was measured or checked, each figure
+  beside the saved output it came from, written after that output exists, with every measured value
+  of the comparison it draws, not only those that support it; and a mechanism (a cache, an option, a
+  helper) needs a measured use. Other tests run only on their own trigger: `formalization/tests/`
+  needs the Lean toolchain and runs when formalization tooling changes;
+  `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory controls and run only
+  when those controls change. Scripts and tests under `research/` are computations or provenance of
+  finished one-off jobs, tied to the data of their date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local memory: nothing is
   written to `~/.claude/projects/*/memory/`, and `tools/hooks/memory-gate.py` refuses such writes
   (user, 10 October 2026: "We need a mechanical check... No memories...."). State general rules, not

@@ -156,12 +156,41 @@ class BypassTest(unittest.TestCase):
         short = self.MESSAGE + 'Bypass tried: none.\n'
         self.assertEqual(cmc.unbypassed_checks(self.ADDED, self.LINES, short), ['resemblance_coverage'])
 
+    def test_a_module_added_earlier_and_wired_now_is_caught(self):
+        # Its reviewer, 17 October 2026: add the module in one commit and wire it in the next. check_staged passes
+        # the modules of the last RECENT commits with this commit's; the function sees them as added.
+        earlier = ['tools/resemblance_coverage.py']
+        self.assertEqual(cmc.unbypassed_checks([] + earlier, self.LINES, self.MESSAGE), ['resemblance_coverage'])
+        self.assertGreaterEqual(cmc.RECENT, 10)
+
     def test_the_cheapest_ways_around_are_caught(self):
         for line in ('from resemblance_coverage import validate',
                      "spec = importlib.util.spec_from_file_location('m', ROOT / 'tools/resemblance_coverage.py')"):
             self.assertEqual(cmc.unbypassed_checks(self.ADDED, [line], self.MESSAGE), ['resemblance_coverage'], line)
         self.assertIn('compute.sh', cmc.CALLERS)
         self.assertEqual(cmc.unbypassed_checks(self.ADDED, ['import resemblance_coverage_extra'], self.MESSAGE), [])
+
+    def test_a_mention_or_the_module_s_own_file_is_not_a_wiring(self):
+        # Its replay: a finisher message naming "tools/resemblance_coverage.py" and edits of the module itself.
+        mention = "raise ValueError('rebuild with python3 tools/resemblance_coverage.py SPEC')"
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, [mention], self.MESSAGE), [])
+        # The replay's false hit: "claim_refresh.py (AGENTS.md, ...)" in a message read as a call.
+        message = "'tools/resemblance_coverage.py (AGENTS.md, index maintenance)')"
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, [message], self.MESSAGE), [])
+
+    def test_a_run_by_path_and_the_branch_hooks_are_wirings(self):
+        # Its reviewer, 17 October 2026: 5f3b7ed74 ran a check by its path, and dff02446e wired one into the
+        # branch commit-msg hook; the rewritten check had dropped both.
+        by_path = "    tool = Path(__file__).resolve().parents[1] / 'resemblance_coverage.py'"
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, [by_path], self.MESSAGE), ['resemblance_coverage'])
+        self.assertIn('tools/git-hooks-branch/commit-msg', cmc.CALLERS)
+        # Its third reading: loading or running by bare name.
+        for line in ("mod = importlib.import_module('resemblance_coverage')", "__import__('resemblance_coverage')",
+                     "runpy.run_module('resemblance_coverage')",
+                     "subprocess.run([sys.executable, '-m', 'resemblance_coverage'])"):
+            self.assertEqual(cmc.unbypassed_checks(self.ADDED, [line], self.MESSAGE), ['resemblance_coverage'], line)
+        own = ('tools/resemblance_coverage.py', 'import resemblance_coverage')
+        self.assertEqual(cmc.unbypassed_checks(self.ADDED, [own], self.MESSAGE), [])
 
 
 if __name__ == '__main__':
