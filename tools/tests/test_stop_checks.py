@@ -577,6 +577,11 @@ class OfferBlockTest(unittest.TestCase):
         block = hook.offer_block('If you want, I can queue route 3 as an item on the hardness route.')
         self.assertIn('offer instead of the work', block['reason'])
 
+    def test_a_question_handed_back_is_refused(self):
+        # the stand-in review of 17 October 2026
+        block = hook.offer_block("I'm not sure which construction you mean. If you meant something else, tell me.")
+        self.assertIn('offer instead of the work', block['reason'])
+
     def test_a_record_gap_without_an_attempt_is_refused(self):
         block = hook.offer_block('Turning it back needs a compactness argument that isn\'t in the record.')
         self.assertIn('gap in the record', block['reason'])

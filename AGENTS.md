@@ -349,9 +349,12 @@ AGENTS.md"):
 - When a written rule lets the same mistake through a second time, replace or back it with a check
   in that turn, rather than citing the rule again (17 October 2026: a rule on forced controls,
   written after one, did not stop the next).
-- In a reply as in an entry, say what the record covers, or offer a direction as new, only after a
-  search of the record in the words of its objects in that turn (17 October 2026: a reply offered
-  substitutions and extension variables as unexplored, both recorded).
+- A reply to the user is held to an entry's rules: say what the record covers, or offer a direction
+  as new, only after a search of the record in the words of its objects in that turn; label a belief
+  without proof or test an untested hypothesis; settle a question by searching and testing its
+  readings rather than handing it back; and run work through the launcher as in an entry (17 October
+  2026: a reply offered substitutions and extension variables as unexplored, both recorded, and the
+  stand-in review found four more replies that broke entry rules).
 - A gap found in the record, or a promising idea met in conversation, is the next attempt: try it or
   queue it in that turn, and report it so; describing it as missing, or offering it to the user, is
   not an answer (user, 17 October 2026: "We are the ones developing the record").

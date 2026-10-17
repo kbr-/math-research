@@ -953,8 +953,10 @@ def figure_block(reply):
 # A reply that offers work instead of doing it, or names a gap in the record as if it were an answer (user, 17
 # October 2026: "Why do you have to ask me???? Ideas are worth exploring if you think they are promising!!!!" and,
 # on "nothing in the record does that": "How is that an answer to anything? We are the ones developing the record").
-OFFER = re.compile(r"[^.!?\n]*\b(?:if you (?:want|like|wish|prefer)|shall I|should I|want me to|would you like(?: me)? to|"
-                   r"let me know if)\b[^.!?\n]*", re.I)
+# "if you meant": a question handed back instead of searched and its readings tested (the stand-in review of 17
+# October 2026: "If you meant something else, tell me").
+OFFER = re.compile(r"[^.!?\n]*\b(?:if you (?:want|like|wish|prefer|meant)|shall I|should I|want me to|would you like"
+                   r"(?: me)? to|let me know if)\b[^.!?\n]*", re.I)
 RECORD_GAP = re.compile(r"[^.!?\n]*\b(?:nothing in the record|not in the record|isn't in the record|the record "
                         r"(?:lacks|has no|does not (?:have|give|contain|do)|doesn't (?:have|give|contain|do))|no recorded "
                         r"(?:argument|result|theorem|claim|statement))\b[^.!?\n]*", re.I)
