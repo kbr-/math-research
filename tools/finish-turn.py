@@ -1325,6 +1325,54 @@ def validate_baseline(text, statuses=()):
                          'exists (AGENTS.md)')
 
 
+COMPOSED_FROM = '2026-10-17'
+CLAIM_ID = re.compile(r'\b(?:lem|thm|cor|prop|conj):[a-z0-9-]+')
+COMPOSE_WORD = re.compile(r'\b(?:per|each|split|linearity|triangle inequality|free|whole range|separately|alone|'
+                          r'composed|does not apply|not apply)\b', re.I)
+
+
+def validate_composed(text, statuses=()):
+    """A proved statement that cites recorded ones is compared with what those give composed on its own class.
+
+    17 October 2026: a lemma extending a single-level chain bound to mixed levels was offered as new while the
+    cited bound applied to each layer separately, with linearity, already gave it for boundedly many layers,
+    and a cited flow bound split at a free height gave all but a factor (log N)^(1/8); the Baseline had named
+    each bound only as stated. So a Baseline that names recorded claims carries <strong>Composed.</strong>:
+    for each of them, what it gives applied to the statement's parts (each part alone, linearity, the triangle
+    inequality, its proof's free parameters over their whole range), or why it does not apply. Claims the
+    Statement cites only for a constant or a definition are not asked for; the first form, which read the
+    Statement's citations, refused 8 of 48 recorded proof entries for such citations
+    (research/provenance/framework/composed-check-replay-20261017.txt)."""
+    if not PROVED & set(statuses):
+        return
+    dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+    if not dated or dated.group(1) < COMPOSED_FROM:
+        return
+    baseline = re.search(r'<strong>Baseline\.</strong>((?:(?!</p>).)*)', text, re.S)
+    if not baseline:
+        return
+    declared = re.search(r'\bdata-claims="([^"]*)"', text)
+    own = set(declared.group(1).split()) if declared else set()
+    # The whole paragraph, the Composed clause included: a label placed first would otherwise leave nothing named.
+    cited = sorted(set(CLAIM_ID.findall(baseline.group(1))) - own)
+    if not cited:
+        return
+    given = re.search(r'<strong>Composed\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(strip_tags(given.group(1))).strip() if given else ''
+    # Each named claim needs a mention followed, within 250 characters, by a word of composition: a label
+    # placed first otherwise turns the whole paragraph, bare citations included, into the clause.
+    missing = [c for c in cited
+               if not any(COMPOSE_WORD.search(plain[m.end():m.end() + 250]) for m in re.finditer(re.escape(c), plain))]
+    if len(plain) < 80 or missing:
+        raise ValueError('This entry proves a statement whose Baseline names ' + ', '.join(cited) + ': say, after '
+                         '<strong>Composed.</strong> in its Baseline and in at least 80 characters, what each '
+                         'cited claim gives on the statement\'s own class when composed (applied to each part '
+                         'alone with linearity or the triangle inequality, its proof\'s free parameters over '
+                         'their whole range), or why it does not apply' +
+                         (' (not named there: ' + ', '.join(missing) + ')' if missing else '') +
+                         ' (AGENTS.md, order of work: plainest bound)')
+
+
 DRAFT_PROOF = re.compile(r'<strong>(?![^<]*\b(?:sketch|attempt)\b)[^<]{0,40}\b[Pp]roof\b[^<]{0,40}\.</strong>')
 NOT_PROVED_STATUS = re.compile(r'<p class="entry-meta">\s*(?:Refutation|Finite check|Conjecture)', re.I)
 
@@ -1357,6 +1405,7 @@ def validate_drafted_proofs(text, drafted):
         validate_degenerate_each(text, claims.group(1).split() if claims else [])
         validate_hypothesis_steps(text, drafted)
         validate_baseline(text, drafted)
+        validate_composed(text, drafted)
 
 
 PLAINEST_FROM = '2026-10-16'
@@ -2102,6 +2151,7 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             validate_proved_instance(text, statuses)
             validate_hypothesis_steps(text, statuses)
             validate_baseline(text, statuses)
+            validate_composed(text, statuses)
             validate_plainest(text, statuses)
             validate_unbounded_witness(text)
         else:

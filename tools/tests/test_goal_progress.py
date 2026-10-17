@@ -385,6 +385,37 @@ class BaselineTest(unittest.TestCase):
                              'degree n; the lemma saves t degrees.</p>', {'working_proof'})
 
 
+class ComposedTest(unittest.TestCase):
+    def test_a_proof_citing_recorded_bounds_composes_them(self):
+        # 17 October 2026: a mixed-level chain lemma whose Baseline named the cited single-level bound only as
+        # stated, while that bound applied per layer (with linearity) already gave it for bounded K.
+        draft = ('<article id="entry-2026-10-17-multilevel-chains" data-claims="lem:multilevel-chain-bound">'
+                 '<p><strong>Statement.</strong> On the event of lem:cut-cell-variance-bound, by '
+                 'lem:fine-grid-leighton-shor (c), every chain obeys lem:multilevel-chain-bound.</p>'
+                 '<p><strong>Baseline.</strong> lem:discrete-flow-bound (c), a loss up to a power of log N; '
+                 'lem:cut-cell-variance-bound (d), the goal\'s order at one level.</p>')
+        FT.validate_composed(draft, {'finite_check'})
+        FT.validate_composed(draft.replace('2026-10-17', '2026-10-16'), {'working_proof'})
+        with self.assertRaisesRegex(ValueError, 'Composed'):
+            FT.validate_composed(draft, {'working_proof'})
+        partial = draft.replace(
+            "at one level.</p>", "at one level. <strong>Composed.</strong> lem:cut-cell-variance-bound (d) "
+            "applied to each layer alone, with linearity, gives K C_d sqrt(N log N).</p>")
+        with self.assertRaisesRegex(ValueError, 'lem:discrete-flow-bound'):
+            FT.validate_composed(partial, {'working_proof'})
+        FT.validate_composed(partial.replace('sqrt(N log N).', 'sqrt(N log N); lem:discrete-flow-bound (c) '
+                                             'split at a free height Y* gives (log N)^(1/8).'), {'working_proof'})
+        # The label placed first does not empty the list of named claims.
+        with self.assertRaisesRegex(ValueError, 'lem:discrete-flow-bound'):
+            FT.validate_composed(draft.replace('<strong>Baseline.</strong> ', '<strong>Baseline.</strong> '
+                                               '<strong>Composed.</strong> lem:cut-cell-variance-bound (d) per '
+                                               'layer with linearity gives K C_d. '), {'working_proof'})
+        # A claim the Statement cites only for a constant, absent from the Baseline, is not asked for.
+        FT.validate_composed('<article id="entry-2026-10-17-x" data-claims="lem:x"><p><strong>Statement.'
+                             '</strong> With L_0 the constant of thm:y, every set obeys lem:x.</p><p><strong>'
+                             'Baseline.</strong> The trivial count N.</p>', {'working_proof'})
+
+
 class PlainestBoundTest(unittest.TestCase):
     def test_smallest_case_and_witness_name_the_plainest_bound(self):
         # 16 October 2026: a next attempt and a witness that bare per-cell counts already decided.
