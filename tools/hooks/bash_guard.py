@@ -789,9 +789,15 @@ def check() -> int:
         print(f"Run this command bare and read its output in full: {reason}. Do not pipe it "
               "through head, tail, sed or grep or redirect it.", file=sys.stderr)
         return 2
+    import during_run
+    # An unsourced figure in mid-turn text is refused at the next shell command, not a commit later.
+    reason = during_run.figures(payload)
+    if reason:
+        print(reason, file=sys.stderr)
+        SAID.append(reason)
+        return 2
     if "git" in command and "commit" in command:
         # A long autonomous turn never reaches the Stop hook: its promises are checked at each commit.
-        import during_run
         reason = during_run.commit(payload) or cannot_fail_tests()
         if reason:
             print(reason, file=sys.stderr)

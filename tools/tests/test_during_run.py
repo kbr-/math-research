@@ -73,12 +73,9 @@ class DuringRunTest(unittest.TestCase):
         message, asked = after(said('`rewrap_md.py` nested the list wrongly, so I fixed the lines by hand.', 'thinking'))
         self.assertIn("A tool's fault, worked around: ", message)
         self.assertEqual(asked, [])
-        # A figure with its source in its own reply is not charged to the reply before it (17 October 2026).
-        message, _ = after(said('Next I open the cycle on the lagged flow.'),
-                           said('The scan listed 3 of 544 entries (scan-block-route.txt).'))
-        self.assertIsNone(message)
+        # Figures are figures()'s, at every shell command, this commit's included; the commit does not ask twice.
         message, _ = after(said('The scan listed 3 of 544 entries.'))
-        self.assertIn('A figure without its source', message)
+        self.assertIsNone(message)
         # A gap declared to the user; one in thinking alone is none, and the judge is asked about what was said.
         message, _ = after(said('The wrapper with an error really pending is not verified.'))
         self.assertIn('A declared gap: "The wrapper with an error really pending is not verified"', message)
@@ -93,6 +90,22 @@ class DuringRunTest(unittest.TestCase):
         self.assertEqual(after(said('Only a thought.', 'thinking'))[1], [])
         # A proposed loop is the stop's to catch.
         self.assertIsNone(after(said('I will repeat the review until it reports nothing.'))[0])
+
+    def test_an_unsourced_figure_blocks_the_next_shell_command_once(self):
+        # 17 October 2026: "57 in 2.4 s" and two more mid-turn figures were refused only at the next commit.
+        def figures():
+            return hook.figures({'session_id': 's', 'transcript_path': str(self.transcript),
+                                 'tool_input': {'command': 'ls'}}, self.state)
+        self.transcript.write_text(said('The scan listed 3 of 544 entries.'))
+        self.assertIsNone(figures())                                     # what came before the first call is not judged
+        with self.transcript.open('a') as stream:
+            stream.write(said('The tests pass: 57 in 2.4 s. Next, a check.'))
+        self.assertIn('A figure without its source ("57 in 2")', figures())
+        self.assertIsNone(figures())                                     # judged once
+        with self.transcript.open('a') as stream:
+            # a figure with its source in its own reply is not charged to the reply before it
+            stream.write(said('Next I open the cycle.') + said('The scan listed 3 of 544 entries (scan-block.txt).'))
+        self.assertIsNone(figures())
 
     def test_a_check_the_branch_turns_off_does_not_run_at_a_commit(self):
         self.transcript.write_text('')

@@ -817,6 +817,17 @@ class CadenceLineTest(unittest.TestCase):
         self.assertIn('0 research entries', tool.cadence_line(self.record('research:r', 'review:r')))
         self.assertIsNone(tool.cadence_line('<section id="research-record"></section>'))
 
+    def test_a_next_step_calling_the_review_early_is_refused(self):
+        # 17 October 2026: "Six research entries follow the tenth review, so the next entry is the eleventh route
+        # review", written after five
+        said = ('<p>Six research entries follow the tenth review, so the next entry is the eleventh route '
+                'review.</p>')
+        with self.assertRaisesRegex(ValueError, '1 more come first'):
+            tool.refuse_cadence_claim(self.record(*['research:r'] * 5), said)
+        tool.refuse_cadence_claim(self.record(*['research:r'] * 6), said)
+        tool.refuse_cadence_claim(self.record(*['research:r'] * 5), '<p>One more research entry, then the '
+                                                                    'review.</p>')
+
     def test_the_period_is_the_finisher_s(self):
         finisher = importlib.util.spec_from_file_location('finisher_for_cadence', TOOLS / 'finish-turn.py')
         module = importlib.util.module_from_spec(finisher)

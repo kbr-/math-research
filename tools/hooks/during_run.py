@@ -78,8 +78,9 @@ def commit(data, directory=None):
     except OSError:
         return None
     save(path, {**state, 'offset': offset})
-    # The Stop hook's own checks of a turn, in its order.
-    off = stop_checks.checks_off(stop_checks.ROOT)
+    # The Stop hook's own checks of a turn, in its order; figures are checked at every shell command by figures()
+    # below, which runs on this call too before it, so they are not checked twice here.
+    off = set(stop_checks.checks_off(stop_checks.ROOT)) | {'figures'}
     blocked = stop_checks.turn_block(texts, calls, said, off)
     if not blocked and said.strip() and 'judge' not in off:
         verdict = judge(said, calls)
@@ -94,6 +95,28 @@ def commit(data, directory=None):
         return None
     return (f"Before this commit, in what was written since the last one: {blocked['reason']} Then commit again: this "
             'check has now seen that text.')
+
+
+def figures(data, directory=None):
+    """The message that blocks this shell command when the text written since the last shell command holds a
+    figure with no source beside it (stop_checks.figure_block), or None. At a commit alone this came a turn late:
+    on 17 October 2026 three unsourced figures in mid-turn text ("23 of 123", "1412 tests", "57 in 2.4 s") were each
+    refused only at the next commit, after the reply that carried it (the stand-in review). Each text is judged once:
+    the offset moves past it whether or not it blocks."""
+    global stop_checks
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import stop_checks
+    if 'figures' in stop_checks.checks_off(stop_checks.ROOT):
+        return None
+    path, state = load(data.get('session_id'), directory)
+    try:
+        _, _, said, offset = written_since(data.get('transcript_path') or '', state.get('figure_offset'))
+    except OSError:
+        return None
+    save(path, {**state, 'figure_offset': offset})
+    blocked = stop_checks.figure_block(said)
+    return (f"In what was written since the last command: {blocked['reason']} Correct it in your next text, naming "
+            'the source; this command runs once the text is seen.') if blocked else None
 
 
 def judge(said, calls):

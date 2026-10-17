@@ -910,6 +910,14 @@ ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n[ \t]*rests on:[ \t]*([^\n]*)$', r
 ANSWER_WORDS = 4
 
 
+def foreign_answers(draft, text):
+    """The number of answer keys in TEXT when none of them belongs to DRAFT's summing-up sentences, else 0. An
+    existing answers file is read, not rewritten; one holding another draft's answers leaves every row open (17
+    October 2026: an older entry's answers file was passed, and its listing was taken for a failed write)."""
+    held = set(re.findall(r'^([0-9a-f]{8})\b', text, re.M))
+    return len(held) if held and not held & {key for key, _, _ in summing_up(draft)} else 0
+
+
 def answers_template(draft, summaries=None):
     domain = {row[0]: row for row in domain_rows(draft, summaries or {})}
     extreme = {row[0] for row in extreme_rows(draft)}
@@ -1973,6 +1981,10 @@ def main():
                   'anchor, a file under research/ or a formula, or "none:" and why.')
         else:
             open_rows = unanswered(draft, answers.read_text())
+            foreign = foreign_answers(draft, answers.read_text())
+            if foreign:
+                print(f'\n{answers} exists and none of its {foreign} keys belongs to this draft: it holds another '
+                      "draft's answers. The form is written only to a path that does not exist yet; pass a new one.")
             print(f'\n{len(open_rows)} of {len(summing_up(draft))} summing-up sentences unanswered in {answers}'
                   + (':' if open_rows else '.'))
             for key, where, sentence in open_rows:

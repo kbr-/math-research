@@ -611,6 +611,14 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
             self.assertIn(expected, out)
         self.assertNotIn('7: text of line 7', out)                 # a long range is shown by its ends
 
+    def test_an_answers_file_of_another_draft_is_named_as_such(self):
+        # 17 October 2026: an older entry's answers file was passed, and its listing was taken for a failed write
+        form = dcs.answers_template(self.DRAFT)
+        self.assertEqual(dcs.foreign_answers(self.DRAFT, form), 0)
+        other = 'deadbeef [title] Another entry\n  rests on: its proof\n'
+        self.assertEqual(dcs.foreign_answers(self.DRAFT, other), 1)
+        self.assertEqual(dcs.foreign_answers(self.DRAFT, ''), 0)                  # an empty file is not foreign
+
     def test_summing_up_sentences_are_answered_by_key_and_a_changed_sentence_is_new(self):
         rows = dcs.summing_up(self.DRAFT)
         # 17 October 2026: the title is answered too, three titles of one entry having dropped cases of its theorem

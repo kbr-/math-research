@@ -82,7 +82,8 @@ class BashGuardTest(unittest.TestCase):
         self.assertIn("q.txt, out.txt.", notice)
         self.assertNotIn("1:", notice)
         # The case itself: the commit-time checks refused the commit whose command wrote the message.
-        stub = types.SimpleNamespace(commit=lambda payload: "A narrowing reported without its scopes.")
+        stub = types.SimpleNamespace(commit=lambda payload: "A narrowing reported without its scopes.",
+                                     figures=lambda payload: None)
         with unittest.mock.patch.dict(sys.modules, {"during_run": stub}):
             done = run("printf 'Main: x' > $T/commit_cos.txt && git commit -q -F $T/commit_cos.txt")
         self.assertEqual(done.returncode, 2)

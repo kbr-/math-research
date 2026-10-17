@@ -849,6 +849,26 @@ def cadence_line(text):
             + (f'{left} more, then the review.' if left > 0 else 'the next entry is the review.'))
 
 
+REVIEW_NEXT = re.compile(r'\bnext entry (?:is|will be) the (?:\w+ )?(?:route )?review\b', re.I)
+
+
+def refuse_cadence_claim(result, next_html):
+    """A next step that says the next entry is the route review is refused while the cadence, counted on the
+    notebook as it will be written, leaves research entries before it. On 17 October 2026 a next step called the
+    coming entry the eleventh review one research entry early; the count printed after the append came too late."""
+    if not next_html or not REVIEW_NEXT.search(strip_tags(next_html)):
+        return
+    tags = re.findall(r'<article\b[^>]*>', result[result.find('<section id="research-record"'):])
+    checks = reporting_checks()
+    kinds = (re.search(r'data-kind="([^"]*)"', tag) for tag in tags)
+    streak, _ = checks.review_cadence(match.group(1) if match else None for match in kinds)
+    left = checks.REVIEW_PERIOD - streak
+    if left > 0:
+        raise ValueError(f'the next step says the next entry is the route review, but the record has {streak} research '
+                         f'entries since the last one, so {left} more come first ({cadence_line(result)}); write the '
+                         'next step from that count (AGENTS.md: six research entries, then a review)')
+
+
 def closing_followups(source, entry, articles=None):
     """[(kind, identifier, the follow-up's text, the item's listed text)] for the follow-up list items of
     `entry` that close a listed item (Closed or Developed, a merge apart), the listed text read whole from
@@ -1081,6 +1101,7 @@ def main():
             refuse_next_structure(nxt)
             result = replace_next(path.read_text(), nxt)
             living_sections(result)
+            refuse_cadence_claim(result, nxt)
         except ValueError as err:
             sys.exit(f'notebook-append.py: {err}')
         path.write_text(result)
@@ -1096,6 +1117,7 @@ def main():
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
         refuse_item_history(result)
+        refuse_cadence_claim(result, nxt)
     except ValueError as err:
         sys.exit(f'notebook-append.py: {err}')
     path.write_text(result)
