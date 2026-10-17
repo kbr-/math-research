@@ -480,6 +480,11 @@ class NotebookAppendTests(unittest.TestCase):
                      'ones.</p></article>',
                      '<article id="c"><p>The rule is linear in the counts by its formula.</p></article>'):
             tool.refuse_unwitnessed_nonlinearity(good)
+        # 17 October 2026: the appositive form pinned to one object, in the entry that prompted the check.
+        pinned = '<article id="d"><p>The theorem does not apply to this flow, nonlinear in the counts.</p></article>'
+        with self.assertRaisesRegex(ValueError, 'without the defining relation'):
+            tool.refuse_unwitnessed_nonlinearity(pinned)
+        tool.refuse_unwitnessed_nonlinearity(pinned.replace('counts.', 'counts by the additivity witness above.'))
 
     def test_a_review_naming_a_missing_construction_must_build_one(self):
         # 17 October 2026: the ninth review's Obstacle and a Decision sending the next entry to an exclusion.

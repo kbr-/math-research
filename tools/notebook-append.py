@@ -109,7 +109,9 @@ def refuse_unbuilt_obstacle(entry):
                          'not make any attempt to construct this?")')
 
 
-NONLINEAR_CLAIM = re.compile(r'\b(?:is|are)\s+(?:not linear|nonlinear|non-linear) in the counts\b', re.I)
+NONLINEAR_CLAIM = re.compile(r'\b(?:is|are)\s+(?:not linear|nonlinear|non-linear) in the counts\b'
+                             r'|\b(?:this|that|the|its)\s+(?:\w+\s+){0,3}(?:flow|rule|map|construction|scheme)s?,\s*'
+                             r'(?:not linear|nonlinear|non-linear) in the counts\b', re.I)
 ADDITIVITY_WITNESS = re.compile(r'additiv|their sum|the sum of|superposition', re.I)
 
 
