@@ -186,10 +186,13 @@ def pass1(job):
             acc['s'][f] += x
             acc['q'][f] += x * x
         zd = dy / sig
-        for f, z in enumerate((zd, lg / sig, np.sign(zd) * np.abs(zd) ** 0.8)):
-            for k in range(2):
-                ana[f, k] += [int((np.abs(z[k]) > t).sum()) for t in T_ANA]
+        ana += exceed(np.stack([zd, lg / sig, np.sign(zd) * np.abs(zd) ** 0.8]), T_ANA)
     return acc['s'], acc['q'], ana, out
+
+
+def exceed(z, ts):
+    """Counts of |z| > t over the last two axes, for every leading index and every threshold t."""
+    return (np.abs(z)[..., None, :, :] > np.asarray(ts)[:, None, None]).sum(axis=(-2, -1))
 
 
 def pass2(job):
@@ -197,12 +200,7 @@ def pass2(job):
     per = {}
     for seed in seeds:
         dy, lg, _ = fields(J, N, seed)
-        cnt = np.zeros((2, 2, len(T_SELF)), dtype=np.int64)
-        for f, x in enumerate((dy, lg)):
-            z = (x - mean[f]) / sd[f]
-            for k in range(2):
-                cnt[f, k] = [int((np.abs(z[k]) > t).sum()) for t in T_SELF]
-        per[seed] = cnt
+        per[seed] = exceed((np.stack([dy, lg]) - mean) / sd, T_SELF)
     return per
 
 
@@ -229,8 +227,9 @@ def main():
             ana = sum(r[2] for r in r1)
             mean = S / a.seeds
             sd = np.sqrt(np.maximum(Q / a.seeds - mean ** 2, 1e-300))
+            jobs2 = [(J, N, c, mean, sd) for c in chunks]
             per = {}
-            for r in pool.map(pass2, [(J, N, c, mean, sd) for c in chunks]):
+            for r in pool.map(pass2, jobs2):
                 per.update(r)
             cnt = sum(per.values())
             half = a.seeds // 2
