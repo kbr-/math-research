@@ -484,7 +484,12 @@ AGENTS.md"):
   2026: a listed lemma, read, already answered the entry's next attempt). A cited lemma is applied
   through its proof as well as its statement: each step is run on the case, and a hypothesis no step
   uses does not limit it there (17 October 2026: a lemma stated for balanced thresholds decided an
-  unbalanced case by its own proof step, and a sub-idea was closed as open).
+  unbalanced case by its own proof step, and a sub-idea was closed as open). When the draft observes
+  that the object keeps the property a cited proof's hypothesis names, but on other sets or at
+  another level (a mean on the parent squares rather than the squares), that proof is rerun with its
+  hypothesis moved there before a new, harder statement is posed (17 October 2026: a draft noted
+  that a correction keeps the parent's mean and proposed an amplitude-bounded extension, while the
+  cited proof run one level coarser covered the correction at every amplitude).
 - When a written rule lets the same mistake through a second time, replace or back it with a check
   in that turn, rather than citing the rule again (17 October 2026: a rule on forced controls,
   written after one, did not stop the next).
