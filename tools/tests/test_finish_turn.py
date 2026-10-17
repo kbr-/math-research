@@ -31,6 +31,8 @@ ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     '<strong>Test disposition.</strong> New operation. <strong>Operation.</strong> '
     'Contract the two specified maps on their shared domain and retain the paid kernel. '
     '<strong>Prediction.</strong> Either the shared contraction is strict or the stated residual survives. '
+    '<strong>Extremal instance.</strong> The extremal of lem:class-lower-bound, on which the plainest recorded '
+    'bound gives nothing below the target. '
     'Adding an implied row changes neither quantity compared. <strong>Power.</strong> The recorded '
     'ceilings leave the outcomes apart at the sizes reachable. <strong>Record search.</strong> '
     'Searched the registry for the terms of the test; no recorded claim answers it.</p>'
@@ -59,7 +61,19 @@ class ArchitectureDisposition(unittest.TestCase):
     def new_test(self):
         return ('<strong>Test disposition.</strong> New operation. '
                 '<strong>Operation.</strong> Contract the specified maps on their common paid domain. '
-                '<strong>Prediction.</strong> A strict loss or an unchanged residual distinguishes the outcomes. ')
+                '<strong>Prediction.</strong> A strict loss or an unchanged residual distinguishes the outcomes. '
+                '<strong>Extremal instance.</strong> The extremal of lem:class-lower-bound, on which the plainest '
+                'recorded bound gives nothing below the target. ')
+
+    def test_a_new_test_names_its_extremal_instance_by_a_claim(self):
+        # 18 October 2026: a review's test was posed on a split the class's own extremal blocks.
+        bare = self.new_test().split('<strong>Extremal instance.</strong>')[0]
+        with self.assertRaisesRegex(ValueError, 'Extremal instance'):
+            self.validate(bare)
+        unnamed = bare + '<strong>Extremal instance.</strong> The hardest member of the class, not yet named here. '
+        with self.assertRaisesRegex(ValueError, 'Extremal instance'):
+            self.validate(unnamed)
+        self.validate(self.new_test())
 
     def validate(self, value, earlier=None):
         if earlier is None:
@@ -153,6 +167,7 @@ class ReviewTestContext(unittest.TestCase):
               'lem:sparse-weight-survival already covers the sparse ones.</p>'
               '<p><strong>Decisive test.</strong> <strong>Test disposition.</strong> New operation. '
               '<strong>Operation.</strong> Compare ratios. <strong>Prediction.</strong> Ratios stay canonical. '
+              '<strong>Extremal instance.</strong> The extremal of lem:class-lower-bound, decided by no recorded bound. '
               '<strong>Trivial cases.</strong> None. <strong>Power.</strong> The yes outcome is decided for '
               'polynomially many classes by lem:sparse-weight-survival. <strong>Attempt.</strong> It stops at dense '
               'components. <strong>Record search.</strong> Nothing.</p></article>')

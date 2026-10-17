@@ -562,6 +562,15 @@ def validate_test_disposition(body, article, value):
             if len(plain) < 40:
                 raise ValueError(f'A new Decisive test needs {label} describing the actual operation '
                                  'and its distinguishing predicted outcomes; the reviewer checks their content')
+        # 18 October 2026: a review posed its test on a split the class's own extremal blocks, and its
+        # falsification attempt took a case the plainest recorded bound decides; both were caught only by review.
+        field = re.search(r'<strong>Extremal instance\.</strong>(.*?)(?=<strong>|$)', value, re.S)
+        plain = html.unescape(strip_tags(field.group(1))).strip() if field else ''
+        if len(plain) < 40 or not re.search(r'\b(?:thm|lem|cor|prop|conj|ex):[a-z0-9-]+', plain):
+            raise ValueError('A new Decisive test needs <strong>Extremal instance.</strong>: the hardest member of '
+                             "the test's class named from the record (a lower-bound or extremal claim ID) and what "
+                             'the plainest recorded bound gives on it, written before the outcomes (AGENTS.md, '
+                             'order of work)')
         return
     earlier = set()
     for tag in re.finditer(r'<article\b([^>]*)>(.*?)</article>', body[:article], re.S):

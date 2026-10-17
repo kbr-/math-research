@@ -20,6 +20,8 @@ ARCHITECTURE = FT.ARCHITECTURE_HEADING + ''.join(
        ' <strong>Test disposition.</strong> New operation. '
        '<strong>Operation.</strong> Contract the two specified maps on the same paid domain. '
        '<strong>Prediction.</strong> Either the contraction is strict or the specified residual survives. '
+       '<strong>Extremal instance.</strong> The extremal of lem:class-lower-bound, on which the plainest recorded '
+       'bound gives nothing below the target. '
        ' <strong>Trivial cases.</strong> Adding an implied row changes neither quantity compared. '
        '<strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
        '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '

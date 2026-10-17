@@ -31,6 +31,8 @@ ARCHITECTURE = '<h4>Architecture review</h4>' + ''.join(
     '<strong>Test disposition.</strong> New operation. <strong>Operation.</strong> '
     'Contract the specified maps on their common paid domain. <strong>Prediction.</strong> '
     'A strict loss or surviving residual distinguishes the proposed outcomes. '
+    '<strong>Extremal instance.</strong> The extremal of lem:class-lower-bound, on which the plainest recorded '
+    'bound gives nothing below the target. '
     '<strong>Trivial cases.</strong> Adding an implied row changes neither quantity compared. '
     '<strong>Power.</strong> The recorded ceilings leave the outcomes apart at the sizes reachable. '
     '<strong>Record search.</strong> Searched the registry for the terms of the test; no recorded '
