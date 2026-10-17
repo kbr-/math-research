@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Grid flow duality](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-grid-flow-duality)",
+    "label": "Grid flow duality",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-grid-flow-duality"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:grid-flow-duality",
+      "summary": "(a) On a finite connected graph with edge costs phi_e even, convex and finite, and rho with sum zero: the minimum over edge flows theta of net outflow rho of sum_e phi_e(theta_e) equals the maximum over vertex functions u of sum u rho - sum_e phi_e*(u_head - u_tail), both attained. (b) On the k x k grid of square cells of side delta = 1/k, an edge flow theta (zero on the outer boundary) defines the lowest-order Raviart-Thomas field Phi, affine in x (first component) and in y (second) on each cell through the edge fluxes over delta, bounded, with int grad g . Phi = -sum_Q (outflow_Q/delta^2) int_Q g for Lipschitz g, and for Psi_1, Psi_2 convex nondecreasing with Psi_j(0)=0, int Psi_1(|Phi_1|/lam) + Psi_2(|Phi_2|/lam) <= delta^2 sum_e Psi_d(e)(|theta_e|/(delta lam)). (c) For alpha in [1,infinity]^2, L > 0 (the grid conditions below force L >= 128), X i.i.d. uniform, Y evenly spread, s = L sqrt(log N/N), and grids of side delta with 1/delta an integer, delta <= s/32 and N delta^2 >= 16 log N (the reduction's grid among them when L >= 132), with counts n_Q: if with probability tending to one every grid function G with sum_e delta^2 psi*_alpha_d(e)(|Delta_e G|/delta) <= 2 has sum_Q G_Q (n_Q - N delta^2) <= (L/2) sqrt(N log N), then with probability tending to one a matching has the conclusion of cor:exponential-matching-discrepancy-reduction. (d) For every lambda' > 0 and Psi_j(t) = psi_alpha_j(t/s), the minimal edge cost lambda' delta^2 sum_e Psi_d(e)(|theta_e|/(delta lambda')) over flows carrying the counts n_Q to N delta^2 equals the maximum over grid functions G of (1/s) sum_Q G_Q (n_Q - N delta^2) - lambda' sum_e delta^2 psi*_alpha_d(e)(|Delta_e G|/delta).",
+      "assessment": "Working proof: (a) finite-dimensional Fenchel-Rockafellar duality (finite costs, so the qualification holds; a linear constraint whose right side is in the range of the divergence on a connected graph), the primal attained since an even convex finite cost is constant or grows linearly; (b) the fluxes' normal continuity, divergence constant on each cell, and convexity of Psi along each affine segment, each inner edge counted twice at weight one half; (c) lem:flow-matching-bound (2) with the cell-uniform and evenly spread smearings, lambda = N/2 from a Chernoff count needing N delta^2 >= 16 log N, and h = 1/4 as in cor:exponential-matching-discrepancy-reduction, then (b), (d) and its homogeneity step; (d) is (a) with phi_e(t) = lambda' delta^2 Psi(|t|/(delta lambda')), whose conjugate is lambda' delta^2 psi*(s|v|/delta). A numerical check of (a) and (b) on 2x2 to 4x4 grids is in research/results/ultimate_matching_grid_duality_20261017.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Makes the discrete X-term class bound on grid functions sufficient for the goal directly, on any grid with 1/delta an integer, delta <= s/32 and N delta^2 >= 16 log N, without the continuous class or the Y-term, and shows the minimal flow cost on the cells to equal the penalized discrete class functional exactly, so a flow with small cost exists exactly when that functional is small, which is the discrete class bound up to constants in L: the flow route through lem:flow-matching-bound and the discrete dual route are one problem up to constants. At (2,2) on a dyadic grid, lem:discrete-flow-bound (a) supplies the premise of (c), which then gives the conclusion of thm:dyadic-flow-square-exponential for L >= max(256, 9 L_0/2), by the same dyadic flow re-routed, not as an independent proof.",
+      "next_action": "Use the discrete X-term class bound of (c) as the line's working form; the sixth review's retained test, the gap-charged bound for nested chains, is a statement about that class.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:grid-flow-duality",
+      "depends_on",
+      "lem:flow-matching-bound",
+      "Part (c) applies its part (2) to the Raviart-Thomas field of part (b)."
+    ],
+    [
+      "lem:grid-flow-duality",
+      "applies",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Part (c) follows that corollary's proof (lambda = N/2, h = 1/4, the error 0.14N, the homogeneity step) with the discrete class in place of the continuous one."
+    ],
+    [
+      "lem:grid-flow-duality",
+      "cites",
+      "lem:smeared-y-term",
+      "That lemma's (b) and the sample-point pyramids entry's reduction (a computation of that entry, not registered) already make the discrete class bound sufficient up to constants; part (c) gives it with the evenly spread smearing exactly N times Lebesgue measure, no Y-term and no halved increments."
+    ],
+    [
+      "lem:grid-flow-duality",
+      "cites",
+      "lem:discrete-flow-bound",
+      "Its (a) is the Young step, the weak-duality direction, for the dyadic flow; part (d) is the equality over all flows."
+    ]
+  ]
+}

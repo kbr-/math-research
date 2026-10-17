@@ -1,0 +1,65 @@
+Review record of entry-2026-10-17-grid-flow-duality, 17 October 2026, one fresh-context Claude Code
+medium-reviewer. Condensed in layout only.
+
+First pass. Verdict: pass with corrections. Re-derived (a), (b), (d) and found them correct; (c)
+correct step by step against lem:flow-matching-bound (2) and the reduction's proof. Checked: (a)'s
+dual max_u[<u,rho> - f*(-Delta u)], turned into the stated form by evenness of phi*, so evenness is
+used; the qualification (dom f the whole space); the primal finite. (b): out = theta_r + theta_t -
+theta_l - theta_b = delta^2 div Phi; the integration by parts with its sign; normal continuity; the
+(1-t, t) convexity bound with weight 1/2 per cell. (d): the conjugate lambda' delta^2
+Psi*(|v|/delta), Psi*(x) = psi*(s x), G = -s u. (c): both smearings probability measures with
+supports within delta and 10/sqrt N, densities at least N/2 and exactly N; the flux identity's sign;
+homogeneity with psi*(0) = 0; the error, 40/sqrt N <= s/8 needing log N >= (320/L)^2 (N about 360 at
+L = 132), then E <= 0.14N; N/2 + 0.14N < N. Required: in the Hypotheses, nu_Y = N Lebesgue, not N
+lambda; coercivity unnecessary in (a) (an even convex finite phi is constant or grows linearly, so
+the primal is always attained; phi_e(0) = 0 unused), more general at no cost; L >= 132 enters only
+through N delta^2 >= 16 log N, and the error needs N large; (c) holds on every grid with 1/delta an
+integer, delta <= s/32 and N delta^2 >= 16 log N, and with that generality a Nonvacuity witness
+exercising (c): at (2,2) on a dyadic grid, lem:discrete-flow-bound (a) gives the premise when L/2 >=
+(9/4) L_0 (unverified beyond that arithmetic); 'exists exactly when' in the Follow-up and the spec
+rationale, and the Bearing's 'nothing else', need 'up to constants', since (d) equates the minimal
+cost with the penalized functional, not with D^disc (penalized max <= cN gives D^disc <= (c + 1/2)
+sN; D^disc <= sN/2 gives penalized max <= N/2); the Owed attempt has the electrical flow's direction
+wrong (a feasible flow, an upper bound on the functional) and the asymptotics was reduced, not
+computed; the item's 'per-point tails' has a second reading, per-point displacement tails of a
+transport, to be stated; the Baseline's 'up to constants' to say how (the halved class at most 2
+D^disc, the Y-term o(sqrt(N log N))); the Plainest bound's (log N)^(3/4) was outside the excerpts.
+Unused hypotheses: coercivity and phi_e(0) = 0 in (a); the specific grid in (c); evenness cited for
+(b), which needs none. Open point (unverified): lem:discrete-flow-bound's proof already transfers a
+known flow to the edges at a factor 1 + sqrt 2, a primal-feasible point for (d); a lifting lemma
+(bilinear interpolant on cell centres corrected to the cell averages) would make the continuous
+class dominate the discrete one up to constants and remove the mesh exclusion; the optimality
+conditions of (d), a discrete Orlicz-Laplacian equation, with nearly saturated fluxes at alpha = 4,
+suggest a min-cut or coarea structure. Process audit: title a placeholder (proposed 'Cell flow
+duality and sufficiency'); the 'exactly' and 'nothing else' sentences; the Owed attempt called made
+when reduced; one reading of 'per-point tails'; a Nonvacuity witness that does not exercise (c)
+while a recorded (2,2) instance was available; Fenchel-Rockafellar recalled (acceptable, its
+finite-dimensional form to be named); hypotheses copied from the instance rather than read off the
+proof (the grid in (c), coercivity in (a)). Strength count 4.
+
+Second pass (rewritten draft). Verdict: pass with corrections. Checked and correct: (a) with
+attainment unconditional (constant or linearly growing costs; coercive on the non-constant edges;
+the projection of the affine set closed; the dual attained); (c) generalized, the Chernoff count
+(mean at least 16 log N, at most N/(16 log N) cells) and the error with N large; the Hypotheses
+paragraph; the Baseline (the halved class at most 2 D^disc; 160e sqrt N = o(sqrt(N log N))); the
+Bearing's two-sided relation (a penalized maximum <= cN gives D^disc <= (c + 1/2) sN, and D^disc <=
+sN/2 gives a penalized maximum <= N/2); the Owed attempt, now a reduction, the electrical flow an
+upper bound, the closure acceptable on the first reading; the Nonvacuity arithmetic (a dyadic delta
+in [s/64, s/32]; N delta^2 >= L^2 log N/4096 >= 16 log N exactly when L >= 256; (3/4) L_0 (1 + 2) <=
+L/2 when L >= (9/2) L_0); the title; the suggestions list. Required: 'every L > 0' needs a sentence,
+the conditions delta <= s/32 and N delta^2 >= 16 log N forcing L >= 128; the witness recovers the
+(2,2) theorem only for L >= max(256, 9 L_0/2) and not independently, lem:discrete-flow-bound (a)
+being built from that theorem's dyadic flow; the Follow-up's 'in both readings' to say the first is
+proved and the second judgement; the Plainest bound's range and factor not in the excerpts. Process
+audit: the title matches the body; strength count 3 ('every L > 0'; 'recovers by the new route'; 'in
+both readings').
+
+Third pass (the conversion added after a stand-in review's objection to the second reading).
+Verdict: pass with corrections. Correct: the doubly stochastic claim; the convexity step (C convex
+as a sum of convex nondecreasing functions of |z_j|, X_i - Y_j = (1/2) 2(x-y) + (1/2) 2b); |b_j| <=
+delta + 10/sqrt N <= s/32 + s/32 for N large; Birkhoff-von Neumann; the converse from a matching to
+a plan. Required: the disintegration defined as gamma_i = (d Unif(Q(X_i))/d nu_X)(x) gamma(dx,dy),
+P_ij = gamma_i(Omega x R_j); the additive term N max_j psi_alpha_j(1/8), not 2N psi(1/8) (valid but
+double-counted), 0 for alpha_j = infinity; 'up to constants in L' needs the rescaling psi_alpha(t/c)
+<= psi_alpha(t)/c for c >= 1 (convexity, psi(0) = 0, also for psi_infinity), a plan cost KN at scale
+s/2 giving the goal at scale cs, c = max(1, K) admissible. Strength count 1.
