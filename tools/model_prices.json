@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-17",
+  "unit": "USD per million tokens, standard tier, global endpoints",
+  "sources": [
+    "https://platform.claude.com/docs/en/about-claude/pricing",
+    "https://developers.openai.com/api/docs/pricing"
+  ],
+  "notes": [
+    "Anthropic: fast_multiplier applies to every price of a request whose usage.speed is \"fast\" (the page: fast mode doubles input and output, and prompt-caching multipliers apply on top).",
+    "Anthropic: long_context applies to a request whose prompt (input, cache writes and cache reads) exceeds above_prompt_tokens; Claude Haiku 5.5 is the only Anthropic model so priced.",
+    "OpenAI: long_context is the page's '>272K input tokens' table; the page does not say whether cached input counts or whether the threshold is per request: tools/model_usage.py applies it per request on all input tokens.",
+    "OpenAI models whose long-context price the page does not list are left out: their use is reported unpriced, not priced by guess."
+  ],
+  "models": {
+    "claude-fable-5-1": {"provider": "anthropic", "input": 10, "cache_write_5m": 12.5, "cache_write_1h": 20, "cache_read": 0.25, "output": 50},
+    "claude-fable-5": {"provider": "anthropic", "input": 10, "cache_write_5m": 12.5, "cache_write_1h": 20, "cache_read": 1, "output": 50},
+    "claude-opus-5-5": {"provider": "anthropic", "input": 4, "cache_write_5m": 5, "cache_write_1h": 8, "cache_read": 0.2, "output": 20, "fast_multiplier": 2},
+    "claude-opus-5": {"provider": "anthropic", "input": 5, "cache_write_5m": 6.25, "cache_write_1h": 10, "cache_read": 0.5, "output": 25, "fast_multiplier": 2},
+    "claude-sonnet-5-5": {"provider": "anthropic", "input": 2, "cache_write_5m": 2.5, "cache_write_1h": 4, "cache_read": 0.1, "output": 10},
+    "claude-sonnet-5": {"provider": "anthropic", "input": 2, "cache_write_5m": 2.5, "cache_write_1h": 4, "cache_read": 0.2, "output": 10},
+    "claude-haiku-5-5": {"provider": "anthropic", "input": 0.1, "cache_write_5m": 0.125, "cache_write_1h": 0.2, "cache_read": 0.01, "output": 0.5,
+                         "long_context": {"above_prompt_tokens": 100000, "input": 0.5, "cache_write_5m": 0.625, "cache_write_1h": 1, "cache_read": 0.05, "output": 2.5}},
+    "claude-haiku-4-5": {"provider": "anthropic", "input": 1, "cache_write_5m": 1.25, "cache_write_1h": 2, "cache_read": 0.1, "output": 5},
+    "gpt-6.1-sol": {"provider": "openai", "input": 2, "cache_read": 0.1, "output": 10,
+                    "long_context": {"above_prompt_tokens": 272000, "input": 4, "cache_read": 0.2, "output": 15}},
+    "gpt-6-astra": {"provider": "openai", "input": 10, "cache_read": 1, "output": 50,
+                    "long_context": {"above_prompt_tokens": 272000, "input": 20, "cache_read": 2, "output": 75}},
+    "gpt-5.6-sol": {"provider": "openai", "input": 4, "cache_read": 0.4, "output": 20,
+                    "long_context": {"above_prompt_tokens": 272000, "input": 8, "cache_read": 0.8, "output": 30}}
+  }
+}
