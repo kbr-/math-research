@@ -13,8 +13,9 @@ Refuted by: dim J different from I on some orbit, which would contradict rep_sum
 symmetry.
 Possible because: the symmetry argument assumes the closure and the representative set are permuted by hole
 permutations, which a bug in either construction would break.
-Control: dim W and, for the single error E_{0,1}, dim Ann_C = 332 and the representative sum 332 (rep_sum.json);
-asserted.
+Control: for the single error E_{0,1}, dim Ann_C = 332 and the representative sum 332 (rep_sum.json); asserted.
+(Corrected after the run: an earlier wording also listed dim W as asserted, which the code does not do; dim W = 276
+is asserted by dims_65.py.)
 Refuted by: either figure different.
 Possible because: a wrong closure or degree would change them.
 Forced by counts: nothing forces 332; the closure's degree-two part is computed.

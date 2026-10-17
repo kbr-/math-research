@@ -1,0 +1,62 @@
+{
+  "source": {
+    "record": "[Window review](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-window-review)",
+    "label": "Window review",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-window-review"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "ex:char3-separated-killer-withdrawn",
+      "summary": "Refutation of cor:quadratic-separated-kernels (d): over any field, on the functional pigeonhole system with m pigeons, 4 <= m <= N, N >= 8 holes and any degree D, x00 x11 does not kill the family-2 separated error E_00 = (1 + x22 + x33) x00 modulo the degree-D closure C, since x00 x11 E_00 = x00x11 + x00x11x22 + x00x11x33 takes the value 1 at the solution sending pigeons 0,1,2,3 to holes 0,1,5,4 (and 2 at 0,1,2,4), where every member of C vanishes; so x00 x11 is no joint killer of the separated family in characteristic 3 at m = 4, as (d) stated, and part (c)'s exclusion of that case has no recorded counterexample (the case is open).",
+      "assessment": "Refutation by evaluation at a solution, found by the review's blind stage and checked by the sole fresh-context medium reviewer at the revealed stage; holds over every field (tools/solution_check.py on the exposing case).",
+      "status": "refutation",
+      "category": "route_specific",
+      "rationale": "Withdraws a false part of a registered corollary and reopens its m = 4, characteristic 3 case.",
+      "next_action": "Decide the separated family's joint kernel at K = 2 for m = 4 in characteristic 3.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:representative-intersection-kernels",
+      "summary": "Exact F_2 computation (mixing_pairs.py, mixing_domination.py, mixing_pairs_65.py, dims_65.py, mixing_pairs_54.py, mixing_pairs_76.py with tools/pc_closure.py) on the functional pigeonhole system, comparing for pairs of errors the common kernel J modulo the closure C with a (the best single pair of representatives modulo span{Q_i}: domain common kernel plus W = C cap V_K), b (the sum over representative pairs) and I (the intersection of the per-error representative sums). At 4 pigeons, 3 holes, D = 2, K = 1, on the 33 non-congruent pairs of the ten positive-excess errors of check:top-degree-partition-kernels: dim J = 5 > 4 = dim W, a = b = 4, I = 5, stacked rank 8 below the capacity 9 with summed ranks 12, and no s of degree <= 1 has Ann_C(s) cap V_1 = J (8191 tried). At 6 pigeons, 5 holes, D = 3, K = 2, partition errors with |A| in {2,3}, on the six unordered non-congruent orbits under the holes' symmetry: J = I exceeds b by 4 or 8 (300 vs 296, 290 vs 282), while a = 292 or 282 > 276 = dim W; dim V_2 = 466, ranks 134, capacity 190, stacked ranks 166 and 176. At 5 pigeons, 4 holes, D = 2, K = 1, |A| = 2, on the non-congruent orbit: dim J = 6, a = b = 5 = dim W, I = 6; dim V_1 = 21, ranks 13, capacity 16, stacked rank 15: the intersection alone gives the survivor. At 7 pigeons, 6 holes, D = 3, K = 2, |A| = 3, on the two non-congruent orbits, dim J = a = b = I = 479 > 469 = dim W (dim V_2 = 904, ranks 362, capacity 435, stacked rank 425, mixing_pairs_76.py): one pair of representatives explains every common kernel. Domination at 5, 6 and 7 pigeons is not tested.",
+      "assessment": "Exact computation; the four-pigeon figures reproduced by the reviewer's independent computation and every script checked by the sole fresh-context medium reviewer, which re-ran none after its second stage; domination tested at four pigeons only.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "The window review's evidence that common kernels of pairs exceed every sum over representative pairs at three boards of four, certifying selection alone at two of them.",
+      "next_action": "Seven pigeons and six holes at |A| = 2 and 1: single excess, then pairs.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "ex:char3-separated-killer-withdrawn",
+      "corrects",
+      "cor:quadratic-separated-kernels",
+      "Part (d) is false: x00 x11 does not kill the family-2 error on edge (0,0) in characteristic 3, by evaluation at a solution; part (c)'s m = 4 characteristic-3 case becomes open."
+    ],
+    [
+      "check:representative-intersection-kernels",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "Its single-error representative sums, which give J = I here."
+    ],
+    [
+      "check:representative-intersection-kernels",
+      "cites",
+      "conj:representative-sum-transfer",
+      "The single-error conjecture whose joint form the check tests: the intersection of sums exceeds the sum over pairs."
+    ],
+    [
+      "check:representative-intersection-kernels",
+      "cites",
+      "lem:factor-ideal-domination",
+      "The domination clause tested at four pigeons."
+    ]
+  ]
+}
