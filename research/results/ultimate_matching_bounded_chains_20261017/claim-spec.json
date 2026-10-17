@@ -1,0 +1,58 @@
+{
+  "source": {
+    "record": "[Exponential-length chain value bound](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-bounded-chain-values)",
+    "label": "Exponential-length chain value bound",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-bounded-chain-values"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "thm:bounded-length-chains",
+      "summary": "For alpha_1, alpha_2 in (0,infinity] with 1/alpha_1 + 1/alpha_2 >= 1/2, L_0 the constant of thm:per-level-count-matchings, L > 0, levels 1 <= t_2 <= t_1 <= log N, D_j = L sqrt(log N/N) t_j^(1/alpha_j), H the pairs within D_1 in the first coordinate and G those of H within D_2 in the second, X, Y independent uniform samples of size N in [0,1]^2, and a level t' in [1, log N] with L_0 t'^(1/alpha_j) <= L t_j^(1/alpha_j) for j = 1, 2: with probability tending to one every chain of lem:two-graph-chain-duality for the 0/1 cost of length ell has value at most (ell + 1) 2N e^(-t'), and at most ell 2N e^(-t') if N min(D_1,1) min(D_2,1) >= (1+delta) log N for a fixed delta > 0; so chains of length up to e^(t' - t_2) have value at most 2N e^(-t_2) under that condition. At (4,4), t_1 = log N, t_2 = sqrt(log N), with t' = (1+lambda) t_2 and L >= L_0 (1+lambda)^(1/4), a refutation of the strict both-high mixed counts needs a chain longer than e^(lambda sqrt(log N)).",
+      "assessment": "Working proof: the per-level matching at level t' lies in G but for 2N e^(-t') pairs, and along its pairs in G the chain's level indices satisfy w >= u; the indices of uncovered vertices differ by at most ell + 1 (no Y-point isolated in H, always with probability tending to one), or ell when no Y-point is isolated in G (each box of area at least min(D_1,1) min(D_2,1) empty with probability at most N^(-(1+delta)), a union over the N points). The first bound is cor:short-chains-per-level's argument with its level free; the isolated-point step gains the factor ell/(ell+1).",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Pushes any refutation of the strict both-high mixed counts to chains longer than e^(t' - t_2), t' the highest level whose box lies in G.",
+      "next_action": "Bound the length of an optimal chain, through the range of an optimal integral dual potential or a G-matching chosen per level.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "thm:bounded-length-chains",
+      "cites",
+      "cor:short-chains-per-level",
+      "Its first bound is that corollary's argument with the level free; its second implies the corollary wherever both conditions on L hold."
+    ],
+    [
+      "thm:bounded-length-chains",
+      "cites",
+      "thm:low-level-mixed-counts",
+      "Its matching is a perfect matching of H with at most 2N e^(-t_2) pairs beyond D_2, so by weak duality it bounds every chain of every length where its level conditions hold, implying this theorem's conclusion there; its window does not reach the both-high instance."
+    ],
+    [
+      "thm:bounded-length-chains",
+      "cites",
+      "thm:windowed-mixed-counts",
+      "Likewise a perfect matching of H within the allowance where its level conditions hold, implying this theorem's conclusion there; its window does not reach the both-high instance."
+    ],
+    [
+      "thm:bounded-length-chains",
+      "depends_on",
+      "lem:two-graph-chain-duality",
+      "The chains and their level indices."
+    ],
+    [
+      "thm:bounded-length-chains",
+      "depends_on",
+      "thm:per-level-count-matchings",
+      "The per-level matching at level t'."
+    ]
+  ]
+}

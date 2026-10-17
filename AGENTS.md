@@ -186,40 +186,41 @@ growing checklists or one-off setup narratives.
   new statement's special cases. Before a required paragraph or artifact is called done, name what
   it is meant to establish in the case at hand and check that it does: a witness exercises the step
   the statement adds, a Meta names the change its commit made, a message reports a result and not an
-  intent (16 October 2026: each of the three passed its rule's wording first). Likewise a
-  prevention, a count or a check is reported as in force only beside the output of its run on the
-  case that exposed it, at the earliest stage it can run: that it exists is not that it works (16
-  October 2026: a message check announced in force missed its own case's other form, and a replay
-  count could not fail on the case it was quoted for). An example or witness offered for a claim, in
-  an entry or a reply, is written with the quantity it illustrates computed beside it, never from
-  memory of its shape, and a witness offered for a case analysis exercises each branch it is offered
-  for. A proof step that makes a term vanish by the value of a factor says where that factor sits
-  relative to every bracket or certificate around it, quoted from the construction's record (16
-  October 2026: a factor inside a commutator was used as if it stood outside, and the witness had no
-  branch where it mattered). A statement covering several parts (cases, forms, earlier lemmas it
-  refines) gives each part its own form, and a simplification true of some parts is attached to
-  those parts only. Name after `<strong>Baseline.</strong>` the construction or bound that needs no
-  idea (the obvious witness, the trivial estimate) and what the statement adds over it (the finisher
-  requires it of the same entries; 16 October 2026: a comparison omitted a multiplier that survived
-  every choice), evaluated at each cost class a part of the statement claims (a depth, a field, a
-  size): a route that fails in one class may give another part's result (17 October 2026: a
-  logarithmic-depth construction was built while the plain route, dismissed at constant depth, gave
-  it at smaller size). An example or test computed with the entry's method also gets its own
-  baseline, computed first: what the plainest available bound gives on that example. State
-  compositions as lemmas in one common setting with a complete proof, not a reference to a sketch.
-  At the start of drafting, run the entry's skeleton (its headings and labelled paragraphs, before
-  the body) through `tools/notebook-append.py DRAFT --check`, which lists each failing entry check
-  of the append and the finisher that applies to a draft, so a required paragraph is planned before
-  the work. Before the reviewer's brief, run `tools/draft_claim_sentences.py DRAFT --notebook
-  NOTEBOOK` and read each sentence that cites a claim beside that claim's registered statement, and
-  each that links an entry beside that entry's title and status line: a sentence may say no more
-  than its source, and one that draws a decision from a bound of the entry restates the bound's
-  hypotheses and error terms beside the instance and the scale decided. The tool also lists the
-  draft's sentences outside its mathematics that hold a count: read each beside the saved output the
-  count came from. A property of a recorded construction that a proof step uses (what its terms
-  contain, where a factor sits, what it specializes to) is quoted from that construction's record,
-  with its anchor, in the step: a property written from the agent's picture of the construction is
-  an untested hypothesis.
+  intent (16 October 2026: each of the three passed its rule's wording first); a reply's sentence on
+  a blocker, a retry or a prevention reports the act done, with its file or commit, or names it
+  undone (17 October 2026: a push blocker was mentioned, not filed). Likewise a prevention, a count
+  or a check is reported as in force only beside the output of its run on the case that exposed it,
+  at the earliest stage it can run: that it exists is not that it works (16 October 2026: a message
+  check announced in force missed its own case's other form, and a replay count could not fail on
+  the case it was quoted for). An example or witness offered for a claim, in an entry or a reply, is
+  written with the quantity it illustrates computed beside it, never from memory of its shape, and a
+  witness offered for a case analysis exercises each branch it is offered for. A proof step that
+  makes a term vanish by the value of a factor says where that factor sits relative to every bracket
+  or certificate around it, quoted from the construction's record (16 October 2026: a factor inside
+  a commutator was used as if it stood outside, and the witness had no branch where it mattered). A
+  statement covering several parts (cases, forms, earlier lemmas it refines) gives each part its own
+  form, and a simplification true of some parts is attached to those parts only. Name after
+  `<strong>Baseline.</strong>` the construction or bound that needs no idea (the obvious witness,
+  the trivial estimate) and what the statement adds over it (the finisher requires it of the same
+  entries; 16 October 2026: a comparison omitted a multiplier that survived every choice), evaluated
+  at each cost class a part of the statement claims (a depth, a field, a size): a route that fails
+  in one class may give another part's result (17 October 2026: a logarithmic-depth construction was
+  built while the plain route, dismissed at constant depth, gave it at smaller size). An example or
+  test computed with the entry's method also gets its own baseline, computed first: what the
+  plainest available bound gives on that example. State compositions as lemmas in one common setting
+  with a complete proof, not a reference to a sketch. At the start of drafting, run the entry's
+  skeleton (its headings and labelled paragraphs, before the body) through `tools/notebook-append.py
+  DRAFT --check`, which lists each failing entry check of the append and the finisher that applies
+  to a draft, so a required paragraph is planned before the work. Before the reviewer's brief, run
+  `tools/draft_claim_sentences.py DRAFT --notebook NOTEBOOK` and read each sentence that cites a
+  claim beside that claim's registered statement, and each that links an entry beside that entry's
+  title and status line: a sentence may say no more than its source, and one that draws a decision
+  from a bound of the entry restates the bound's hypotheses and error terms beside the instance and
+  the scale decided. The tool also lists the draft's sentences outside its mathematics that hold a
+  count: read each beside the saved output the count came from. A property of a recorded
+  construction that a proof step uses (what its terms contain, where a factor sits, what it
+  specializes to) is quoted from that construction's record, with its anchor, in the step: a
+  property written from the agent's picture of the construction is an untested hypothesis.
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use
@@ -302,7 +303,9 @@ AGENTS.md"):
   the rest of the proof a variant to compare, not the result. Apply it to the question's own objects
   as well as to the intermediate ones the method introduces (17 October 2026: a bare difference of
   certificates was applied to an intermediate sum and not to the transformed image itself, where it
-  showed the conclusion empty).
+  showed the conclusion empty). A recorded bound used as the baseline is run with each free
+  parameter of its proof at its whole range, not at the values its statement fixed (17 October 2026:
+  a corollary's argument at a free level already gave the new bound but for one length).
 - Before calling a case hard, handing a step to someone else or asking a question, take the cheapest
   step on the instance yourself: a union bound over its family's members, the default the rules
   already give, the result of the edit just made (17 October 2026: a two-block case called deep, a

@@ -229,14 +229,19 @@ So perform the following, in a loop:
   a name you coined or a count you state beside its source text open in the same view
   (`tools/notebook-excerpt.py --claims ID`, the proof it cites, the saved output), not beside your
   memory of it (17 October 2026: a lemma used by its headline, a coined shorthand that lost a
-  hypothesis, and an underived count, all in one cycle). Draft a queue item's Follow-up as
-  Continuing, and change it to Closed or Developed only after the review has read the run's figures
-  and the readings: a loop that wants the queue drained otherwise writes the closure first and reads
-  the figures as its support (17 October 2026: an item was closed on a run whose own kurtosis
-  pointed against the closure). Before a step, name what the setting it runs in brings with it (the
-  files beside it, the form the problem is computed in, the previous entry's framing) and remove or
-  translate what the step must not carry (17 October 2026: a blind reviewer's brief sat beside the
-  route it was blind to, and a primal computation was searched only in its primal form).
+  hypothesis, and an underived count, all in one cycle). A recorded result the entry compares itself
+  with is reread through its proof as well, and each relation the entry states (weaker, implied,
+  unrelated) is derived from what that proof and any duality in the record give on the entry's
+  instance (17 October 2026: a bound was called new beside a corollary whose argument, at a free
+  level, already gave it, and two constructions were called unrelated that weak duality made imply
+  it). Draft a queue item's Follow-up as Continuing, and change it to Closed or Developed only after
+  the review has read the run's figures and the readings: a loop that wants the queue drained
+  otherwise writes the closure first and reads the figures as its support (17 October 2026: an item
+  was closed on a run whose own kurtosis pointed against the closure). Before a step, name what the
+  setting it runs in brings with it (the files beside it, the form the problem is computed in, the
+  previous entry's framing) and remove or translate what the step must not carry (17 October 2026: a
+  blind reviewer's brief sat beside the route it was blind to, and a primal computation was searched
+  only in its primal form).
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without rerunning a
