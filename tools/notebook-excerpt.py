@@ -445,6 +445,8 @@ def main():
             root = Path(__file__).resolve().parents[1]
             registry = json.loads((root / 'research/claims/index.json').read_text())
             result = claim_excerpts(args.claims, registry, root=root)
+            import claim_reads
+            claim_reads.log(root, [c['id'] for c in registry.get('claims', []) if c.get('id') in set(args.claims)])
             if args.out:
                 with args.out.open('x', encoding='utf-8') as stream:
                     stream.write(result)

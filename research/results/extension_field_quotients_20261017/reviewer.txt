@@ -1,0 +1,115 @@
+Reviewer record: the extension-field quotients entry, 17 October 2026.
+One fresh-context medium-reviewer; its reports follow verbatim.
+
+=== Report 1: the first draft ===
+
+**Verdict: pass with corrections.** Parts (a)–(d) are correct as mathematics. The record comparison, the Bearing and the Follow-up are not: one result the draft's own record search returned already settles the "identified unproved step", and (d) is matched by an older, plainer route.
+
+**Checked and correct**
+- (a): the degree, the existence of the points (at most \(b\) roots, so \(|E|-b\ge\nu-b+1\)), and depth \(\max(\delta,1)+2\).
+- (b): the depth count of five.
+- (c): the \(|S|<k\) part has \(z\)-degree below \(k\) and is congruent to \(f\equiv0\bmod z^k\), so it is zero. This holds with zero \(c_{aj}\) (those terms vanish) and with cancellation only across products, because the argument is about the sum. The first-\(k\) grouping, Bezout \(h=\beta f/z^k+\alpha f/(z+1)^k\), the \(O(k^2)\) multipliers and depth five are all correct.
+- (d): the ring map, the factor matrices, depth \(\le2\lceil\log_2Q\rceil+5\) within the stated bound, and \(h\) read as a diagonal entry \(hI\).
+
+**Required changes**
+- **Size bounds in (b), (c), (d), the ledger and the spec.** \(O(Q\sum q_a)\) and the others count each affine form \(u_{aj}\) as \(O(1)\). Each has up to \(v+1\) terms. State the sizes in the supplied description's gate-and-wire size \(S\), for example \(O((Q+1)(S+Q))\). The previous entry did this ("times the length of the affine forms").
+- **Field size in (b) and (d).** \(2^r\ge Q+1\) is more than the proof uses. It needs \(\nu-b+1\) points off the roots of \(d\), so \(2^r\ge Q-2k+3\) for \(k\ge1\). The proof also says "roots are 0,1", which is false at \(k=0\). The Nonvacuity shows the slack: its 3 points sit in \(\mathbb F_8\) for every \(M\), not in \(2^r\ge2M+3\). This matters because a constant \(r\) is exactly the fixed-algebra setting below. Say (a) as \(|E|\ge\nu-b+1+\#\{\text{roots of }d\text{ in }E\}\).
+- **(c) is the previous entry's construction.** [axiom repetition syzygy](#entry-2026-10-17-axiom-repetition-syzygy), sub-idea item: "same telescoping over the first \(k\) chosen indices, with Bezout's ... gives \(\binom{q_a}k\) terms". Record comparison must say this; what (c) adds is the depth count of five and the registration.
+- **(d) has a plainer route, missing from Baseline and Record comparison.** Compute each product's \(z\)-coefficient list over \(\mathbb F_2\) by balanced convolution: depth \(1+2\lceil\log_2q_a\rceil\), size \(O(q_a^2)\). Add the lists, then apply lem:coefficient-fed-division (+3 depth). This gives size \(O(\sum_aq_a^2+Q^2)\) and depth \(2\lceil\log_2Q\rceil+5\), with no extension field: smaller than (d) by a factor \(r^3\), same depth. The Baseline's "these include majority" holds only at constant depth.
+  - Keep (d), registered as a variant of that route.
+  - Rewrite the New mathematics, title and commit sentences that present log-depth as obtained through the regular representation.
+- **The open step is already settled by the record.** thm:finite-algebra-evaluation states that for fixed \(A\) with a simple module of dimension \(\ge2\) (any \(\mathbb F_{2^r}\), \(r\ge2\)), coordinates of ordered products are not polynomial-size fixed-depth AC0[2]. Over \(\mathbb F_4\), \(\prod_i(y_i+\omega)=\omega^n(\omega^2/\omega)^{w}=\omega^{n+w}\) on Boolean \(y\), which gives MOD3 (Smolensky).
+  - So the descent of products of \(u+c\alpha\) (Follow-up, ledger, status line, New mathematics, spec) is false in general, not open.
+  - The Record search paragraph lists this theorem and dismisses it.
+  - The open question is only whether the specific Lagrange sum, whose total is binary, descends.
+- **Bearing, two errors.**
+  - (i) cor:invariant-probe-prefix-values: probe common values agree at every Boolean old point with \(T_t\), which is cheap at constant depth. So a hard \(h\) must be hard as a formal polynomial while its Boolean function is cheap. "As majority is" points the wrong way; Smolensky-type hardness of \(h\)'s Boolean function is excluded.
+  - (ii) The dividend from lem:reciprocal-probe-dividend is a circuit, not a formula. (d) covers only supplied product sums. The log-depth claim for probe values needs (a) for circuits plus a regular-representation descent of general circuits, which is not proved. (a)'s proof never uses the formula property, so state (a) for circuits.
+- **Next attempt is decided.** Since \(f=z^k(1+z)^kh\), \(h(0,y)=[z^k]f\). By cor:invariant-probe-prefix-values, no probe common value has \(h(0,\cdot)\) equal to a threshold on Boolean \(y\). A three-product family with that property therefore does not bear on the probe mechanism unless the hardness meant is formal; say which. The Smallest case's "\([z^k]f/(\ldots)\)" expression is garbled and reuses \(r\) for a bit index.
+- **Unused hypotheses.** "Monic" (only \(d\ne0\) is used). In (b), \(c_{aj}\in\{0,1\}\) beyond \(K=\mathbb F_2\).
+- **Not exercised.** The Nonvacuity is "checked by hand" without computing the interpolant. It does not exercise (c) at fixed \(k\) or (d).
+
+**Searches.** I ran two (quotient/interpolation/extension words; Boolean common values/regular representation). No registered claim states (a) or (d) for quotients. (c) is in the previous entry's prose. thm:finite-algebra-evaluation and cor:invariant-probe-prefix-values bear directly, as above.
+
+**Suggestions (unverified)**
+- **Open point.** Yes: thm:finite-algebra-evaluation with Smolensky rules out generic constant-depth descent of \(\mathbb F_{2^r}\)-affine products for each fixed \(r\ge2\); for growing \(r\) it is not covered. The remaining question is cancellation in the binary Lagrange sum.
+- **A three-product dividend.** \(f=\prod_i(1+zy_i)^M+z^M\prod_i(1+y_i)^M+(z+1)^M\) is divisible by \(B^M\) (check \(Z=z^M\in\{0,1\}\) in \(F(Z)=\prod(1+ZY_i)+Z\prod(1+Y_i)+Z+1\)). Its quotient \(G(z^M)\) has \(z^{Mm}\)-coefficients whose Boolean values are \(\binom{w-1}{m+1}\bmod2\), weight-bit (majority-like) functions. \(h\) itself is Boolean-cheap. This is a candidate for formal-only hardness, where coefficient extraction fails (cor:binary-component-depth-gap); whether it is a probe value is unchecked.
+- **(c) generalizes.** It holds for any \(d=\prod_i(z-s_i)^{k_i}\) with distinct roots in \(K\), by partial fractions, at the same depth.
+
+**Process audit**
+- **Title.** It presents three results as the entry's own. "Binary circuits of logarithmic depth" also follows from lem:coefficient-fed-division with convolution. "Constant-depth binary formulas at every fixed power" is the previous entry's construction. Only the extension-field part (a)/(b) is new.
+- **Status line.** "Stays open at its descent step" names a step the record already refutes generically.
+- **Record search.** The paragraph quotes thm:finite-algebra-evaluation as giving no descent, yet the theorem refutes the generic step. The search was run but its result not read.
+- **Bearing.** It transfers (d) to probe values outside (d)'s hypotheses, and the majority analogy contradicts cor:invariant-probe-prefix-values.
+- **Process assessment.** "Corrected before the brief" is fine. The Prevention cites an existing rule, not a check.
+- **Strength count: 7.** Title, status line, New mathematics last sentence, Bearing, Follow-up "identified unproved step", commit message last paragraph, spec assessment.
+
+Files: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_ext_quot.html, /home/kbr/.claude/jobs/d56a25e2/tmp/commit_extquot.txt, /home/kbr/dev/math-auxiliary/research/results/extension_field_quotients_20261017/claim-spec.json
+
+=== Report 2: the corrected draft ===
+
+**Verdict on the corrections: pass with corrections.** Every required change from my first report is carried out correctly. Two items below still need work: the next attempt's bearing and the new check's coverage.
+
+**1. (c) as generalized.**
+- \(L=0\) is still right with \(b_j\in K[y]\). Each term \(\prod_{j\in T}b_j w^{|T|}\prod_{j\notin T}a_j\) has \(w\)-degree at most \(|T|\), not "exactly": it is zero when a coefficient vanishes, so drop "exactly". \(L\) has \(w\)-degree below \(k_i\) and \(w^{k_i}\mid L\), so \(L=0\).
+- The partial fractions are right: \(1/d=\sum_i\alpha_i/w_i^{k_i}\) with \(\deg\alpha_i<k_i\), so \(h=\sum_i\alpha_if/w_i^{k_i}\).
+- The depth \(\delta_0+6\) holds when the undivided tail factor is written as the original \(u+cz\): depth \(\delta_0+2\) for the factor, then the product, the sum, the product with \(\alpha_i\), and the final sum.
+- I checked the Nonvacuity's closed form for \(h\) by hand from \(f/Z+f/(Z+1)\), and it is correct.
+- One mismatch in (d): the variant's depth is "the same depth up to two", but \(2\lceil\log_2(Q+1)\rceil+6\) against \(2\lceil\log_2Q\rceil+5\) differ by 3 when \(Q\) is a power of 2. Say "up to three", or state the variant as \(2\lceil\log_2Q\rceil+5\).
+
+**2. Bearing.** The figures are right:
+- depth \((2d+4)+2\);
+- size \(O((\nu-2k+1)(S_g+\nu))\) with \(S_g=O((S+2)^{d+2})\);
+- \(\nu\le S_g^{2d+4}\) (unbounded fan-in gives degree at most size to the power of depth), polynomial at fixed \(d\);
+- \(r=O(\log\nu)\).
+
+"Narrowed the mechanism to a descent" would be better written as "located the remaining step at a descent".
+
+**3. Next attempt.** I found no trivial reason that settles it mathematically. Its *bearing* is settled by the entry's own Bearing, though, and this needs a change. A middle coefficient whose Boolean function is a weight bit makes \(h\) hard as a Boolean function. By cor:invariant-probe-prefix-values, no probe common value has that property.
+- A yes would refute constant-depth division of three-product sums over \(\mathbb F_2\), but would give no hard probe value.
+- A no would close only three-product dividends in that regime, while probe dividends are general circuits.
+
+The Follow-up should state both outcomes and what each gives. Its Own statements paragraph should apply cor:invariant-probe-prefix-values.
+
+**4. The new check.** It does refuse the original sentence: the test runs the sentence as drafted, the finisher path is real, and the refusal holds until the theorem is logged. Its bypasses, cheapest first:
+- **Placement:** the same dismissal written in any paragraph other than Record search or Record comparison passes. That includes Own statements, Bearing, and the suggestions' `<strong>Record.</strong>` paragraphs, which are themselves record-search reports. The current draft's Own statements cites thm:finite-algebra-evaluation unchecked.
+- **Wording:** naming the claim in words instead of by its identifier (the docstring says so).
+- **Logging:** `--show ID` logs a read whatever is actually read, and reads logged by other sessions in the same time window count.
+
+Extending `PARAGRAPHS` to Record and Own statements is a one-line change.
+
+**Suggestions (unverified)**
+- **A pointwise form.** At Boolean \(y\), each binary affine product is \(0\) or \(z^{s_a}(z+1)^{t_a}\). So \(h_0(y)=\sum_a\chi_a\binom{t_a}{k-s_a}\bmod2\). Divisibility then forces, point by point, cancellation of at most three such terms modulo \(z^k\) and modulo \((z+1)^k\). This case analysis may settle the regime's Boolean question directly.
+
+**Process audit**
+- **Title:** "has a constant-depth circuit" overstates. The body gives depth \(\delta+2\), constant only when \(f\)'s circuit has constant depth. Write "two levels deeper", or say that the dividend has constant depth. The status line matches the body.
+- **Suggestions section:** it is headed "unverified" while each item says "Suggestion checked"; reconcile the two.
+- **Next attempt:** chosen without checking it against the entry's own Bearing (item 3).
+- **New check:** reported in the Prevention as closing the class, but it was tested only on the exposing sentence. The form most unlike it, the same dismissal in another paragraph, passes.
+- **Commit message:** the sentence calling the reviewer's dividend cheap is supported by the checked identity.
+- **Strength count: 3.** Title, the Bearing's "narrowed", and the Prevention's coverage claim.
+
+Files: /home/kbr/.claude/jobs/d56a25e2/tmp/entry_ext_quot.html, /home/kbr/dev/math-auxiliary/tools/claim_reads.py, /home/kbr/dev/math-auxiliary/tools/tests/test_claim_reads.py
+
+=== Report 3: the last corrections and the check's coverage ===
+
+**Verdict: pass, with two stale strings to fix before the commit.**
+
+**(1) Code: both checks pass.**
+- **Paragraph end.** Each label's match is lazy and stops at the next `<strong>X….</strong>` or `</p>`.
+- **'Record' matching.** The pattern needs `Record\.` immediately, so it cannot match inside "Record search." or "Record comparison.".
+- **My run.** On `<strong>Record search.</strong> thm:a-b <strong>Record.</strong> lem:c-d</p><p><strong>Recorded.</strong> lem:e-f`, `named()` returned `['thm:a-b', 'lem:c-d']`. The "Recorded." paragraph was correctly excluded.
+- **New test.** It covers Own statements, Bearing and Record.
+- **Stale strings.** Two places still name only the original two paragraphs and should list all five:
+  - the `named()` docstring;
+  - the finisher's error message, which begins "The Record search or Record comparison names…" (tools/finish-turn.py).
+
+**(2) Text: all correct.**
+- **Follow-up sentence ("A yes makes the quotient hard as a Boolean function…").** Correct, and it states both outcomes, as I asked.
+- **Own statements clause.** Correct: cor:invariant-probe-prefix-values decides the attempt's bearing on probes, not its question.
+- **Pointwise suggestion.** Labelled "Not checked" under the unverified heading. Its Record line reports the search's words and its outcome.
+- **Verification gate.** It credits me only with what my reports say, and it says the \(n\le6\) identities were checked by you, not by me. It omits one unused hypothesis I named, \(c_{aj}\in\{0,1\}\). (c)'s generalization to coefficients in \(K[y]\) removed that hypothesis, so the gate should say so.
+
+**Process audit.** The new title, "costs two levels of depth over any extension with enough points off the divisor's roots", matches (a) as proved, depth \(\delta+2\), and no longer claims constant depth or the other parts as new. **Strength count: 0.**
+
+Files: /home/kbr/dev/math-auxiliary/tools/claim_reads.py, /home/kbr/dev/math-auxiliary/tools/finish-turn.py, /home/kbr/.claude/jobs/d56a25e2/tmp/entry_ext_quot.html

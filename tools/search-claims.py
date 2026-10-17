@@ -157,6 +157,8 @@ def main(validated=False):
         selected = [c for c in data['claims'] if c['id'] == args.show]
         if not selected:
             parser.error(f'Unknown claim: {args.show}')
+        import claim_reads
+        claim_reads.log(ROOT, [args.show])
         total = 1
     else:
         if not args.list and not args.words and not any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):

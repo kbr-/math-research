@@ -905,6 +905,21 @@ def validate_next_attempt_search(entry, queries):
                              'attempt, and report what it returned (AGENTS.md)')
 
 
+def validate_named_claims_read(entry, root, since):
+    """Each registered claim a paragraph of claim_reads.PARAGRAPHS names had its statement printed in
+    the session by tools/notebook-excerpt.py --claims or tools/search-claims.py --show (tools/claim_reads.py
+    says why); the entry's own declared claims are exempt."""
+    import claim_reads
+    declared = re.search(r'\bdata-claims="([^"]*)"', entry[:entry.find('>') + 1])
+    missing = claim_reads.unread(entry, claim_reads.read_since(root, since),
+                                 declared.group(1).split() if declared else ())
+    if missing:
+        raise ValueError('A Record search, Record comparison, Record, Own statements or Bearing paragraph names '
+                         'claims whose statements were not read in this session: ' + ', '.join(missing) + '. A search listing shows a shortened summary; '
+                         'read each with tools/notebook-excerpt.py --claims ID ... --out FILE, and correct the '
+                         'paragraph by what the statements say (AGENTS.md)')
+
+
 def count_listing_report(entry, queries):
     """A line for the finisher to print, or None: the entry holds sentences with a count and the draft tool,
     which lists them for reading beside their sources, logged no run on it in the session.
@@ -2514,6 +2529,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
         print(line)
     searches = validate_searches_run(entry, [query for query in logged if not query.startswith('draft_counts ')])
     validate_next_attempt_search(entry, searches)
+    validate_named_claims_read(entry, root, first.get('unix_s', 0))
     if (root / 'research/logs/claim-searches.jsonl').exists():   # a checkout that has never searched has no log
         validate_resemblance_run(entry, searches)
     if '<strong>Record search.</strong>' in entry:

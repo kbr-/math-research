@@ -1,0 +1,76 @@
+{
+ "source": {
+  "record": "[Extension-field quotients](https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients)",
+  "targets": [
+   "https://kbr.is-a.dev/math-research/#entry-2026-10-17-extension-field-quotients"
+  ],
+  "label": "Extension-field quotients"
+ },
+ "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+ "date": "2026-10-17",
+ "topics": [
+  "frege-simulation",
+  "method-obstructions"
+ ],
+ "claims": [
+  {
+   "id": "lem:extension-field-quotients",
+   "summary": "Extension-field quotients: over a field K, for f in K[y][z] of z-degree at most nu computed by a circuit of size S (gates and wires) and depth delta>=1, and a nonzero d(z) of degree b dividing f, h = f/d equals sum over alpha in A of d(alpha)^(-1) f(alpha,y) times the Lagrange basis in z, for any nu-b+1 points A of an extension E off the roots of d (existing when |E| >= nu-b+1 plus the number of distinct roots of d in E): a circuit over E of size O((nu-b+1)(S+nu-b+1)) and depth at most delta+2, a formula when f's is. For f a supplied sum of products of factors u+cz with u, c in K[y] given by formulas of depth delta_0 (binary affine factors: delta_0<=1, c constant), total size S, factor counts q_a, Q = max q_a: (b) for K=F2 and d=(z^2+z)^k, E = F_(2^r) with 2^r >= nu-2k+1+2[k>=1] gives a formula of size O((nu-2k+1)(S+nu)) and depth delta_0+6, five for binary affine factors, every k; (c) for d = prod_i (z-s_i)^(k_i) with distinct s_i in K, h has a formula over K of size O(sum_i sum_a binom(q_a,k_i) S_a + sum_i k_i^2) and depth delta_0+6, by grouping each product's terms by their first k_i chosen indices and partial fractions (for z^k(z+1)^k and binary affine factors the construction of the axiom repetition syzygy entry's sub-idea item); (d) for K=F2 and every k, balanced convolution of the factors' coefficient lists with lem:coefficient-fed-division gives a binary circuit of size O(S + sum_a q_a^2 + nu^2) and depth delta_0 + 2 ceil(log2 Q) + 4, and the regular representation of F_(2^r) gives the same depth up to three at a size larger by r^3. Constant-depth binary descent of (b)'s summands one by one fails at fixed r>=2 by thm:finite-algebra-evaluation; descent of their binary sum is open.",
+   "assessment": "Working elementary interpolation, term-grouping and composition proof, passed by the sole fresh-context medium reviewer with corrections. No lower bound; for the invariant-probe mechanism, a probe value giving a lower bound must be hard at constant depth over F2 as a formal polynomial while cheap over an extension and cheap as a Boolean function.",
+   "status": "working_proof",
+   "rationale": "Develops the head item's sub-idea on three-product dividends: a new operation (evaluation where the divisor is a unit, with interpolation) gives every exact quotient at constant depth over an extension, and the sub-idea's binary growing-k case at constant depth is reduced to the descent of an interpolation sum.",
+   "next_action": "The regime nu <= 2k+1, where h's coefficients are f's middle coefficients and F4 suffices: whether three binary affine products with B^k | f, k growing, can have a middle coefficient whose Boolean function is a weight bit."
+  }
+ ],
+ "relationships": [
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "lem:quotient-restriction-data",
+   "Its restricted quotient data over an extension, which assert no generic growing-extension evaluator; this lemma is one, of the quotient itself."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "lem:coefficient-fed-division",
+   "Coefficientwise division, composed with convolution in part (d) at logarithmic depth."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "thm:affine-pair-division",
+   "Binary quotients of two-product sums at any k, beside this lemma's any number of products over E or at fixed k over F2."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "lem:binary-product-coordinate-formulas",
+   "Its regular-representation descent of F4-affine products, carried to F_(2^r) as the variant in part (d)."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "prop:primitive-triple-contact",
+   "Its three-product family, the lemma's witness at growing k over an extension."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "lem:reciprocal-probe-dividend",
+   "The cheap dividends B^k h of invariant probes, whose quotients the lemma computes over an extension."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "thm:finite-algebra-evaluation",
+   "Its fixed-algebra product theorem refutes term-by-term constant-depth descent of the interpolation sum at fixed r>=2."
+  ],
+  [
+   "lem:extension-field-quotients",
+   "cites",
+   "cor:invariant-probe-prefix-values",
+   "Probe common values are cheap at Boolean points, so a hard probe value must be formally hard."
+  ]
+ ],
+ "overrides": {}
+}
