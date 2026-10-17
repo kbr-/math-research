@@ -314,10 +314,13 @@ AGENTS.md"):
 - A sentence a reviewer finds wrong is replaced by one derived again from the statement and the
   records, its figures computed, not patched from the old wording; a sentence wrong twice is
   redrafted from its sources before it goes back (17 October 2026: three versions in a row of one
-  case's dismissal, each patched from the last, each wrong). So is a reviewer's lead adopted as a
-  next attempt: each statement it uses is reread for its constants, levels and ranges, and the
-  accounting is redone, before it is written down (17 October 2026: a lead written into a Follow-up
-  dropped a theorem's constant and the box growth of a raised level).
+  case's dismissal, each patched from the last, each wrong). The claim the sentence makes is
+  replaced wherever it is written (the claim spec's notes, the commit message, the living sections),
+  not only where the reviewer quoted it (17 October 2026: a spec note kept an exclusion the entry
+  had withdrawn). So is a reviewer's lead adopted as a next attempt: each statement it uses is
+  reread for its constants, levels and ranges, and the accounting is redone, before it is written
+  down (17 October 2026: a lead written into a Follow-up dropped a theorem's constant and the box
+  growth of a raised level).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved. A
   retry that passes because the check remembers the text, a rerun until a timing passes, or a rule
