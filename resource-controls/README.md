@@ -102,10 +102,13 @@ documentation](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
 `setup.py` also writes and links `mathsession-watchdog.service`, which runs
 `tools/session_watchdog.py run` every 45 seconds. It wakes a looping session of this repository
 whose turn ended without its Stop hook or goal evaluation, and flags a session waiting at a
-permission prompt; its module docstring gives the rules. The service is not started by default:
-`setup.py --start-session-watchdog [--session-watchdog-actions notify,wake]` starts it and records
-the choice, so later runs of `setup.py` (after a reboot) start it again; `--stop-session-watchdog`
-stops it and forgets the choice. Without actions it only logs, under
-`research/logs/session-watchdog/` of the main checkout. When the recorded choice stands and the
-service is down, the compaction hook `tools/hooks/resume-gate.py` says so. Its push channel is
-unverified: on 17 October 2026 a push the tool reported as requested did not reach the phone.
+permission prompt; its module docstring gives the rules. Every run of `setup.py` starts it, like the
+memory controls (user, 17 October 2026: "I want the agent to start it, like it does with the ram/cpu
+guards"), with the actions notify and wake, or those last given by `--session-watchdog-actions`
+(`none` for log only). `--stop-session-watchdog` stops it and records the stop, after which
+`setup.py` leaves it stopped and `compute.sh` stops requiring it, until `--start-session-watchdog`.
+Otherwise `compute.sh` refuses to run while it is down, with the same setup hint as for the memory
+controls, and the compaction hook `tools/hooks/resume-gate.py` says so too. It logs under
+`research/logs/session-watchdog/` of the main checkout: each event, a line whenever the sessions'
+verdicts change, and a heartbeat in `state.json` every poll. Its push channel is unverified: on 17
+October 2026 a push the tool reported as requested did not reach the phone.

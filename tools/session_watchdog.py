@@ -380,6 +380,13 @@ class Watchdog:
             if v['kind'] != 'none':
                 self.act(s, v, events)
         self.read_notifier()
+        # A heartbeat in the state file every poll; a log line when the verdicts change, so that a
+        # quiet watchdog is seen to be polling without a line per poll.
+        summary = sorted([v['session'], v['name'], v['alive'], v['kind']] for v in verdicts)
+        if summary != self.state.get('last_summary'):
+            self.log(event='poll', sessions=summary)
+            self.state['last_summary'] = summary
+        self.state['last_poll'] = iso(self.now())
         self.save()
         return verdicts
 
@@ -527,17 +534,16 @@ def wake_session(session, prompt):
 
 
 SESSION_UNIT = 'mathsession-watchdog.service'
-WANTED_FILE = 'mathsession-watchdog.wanted'
+STOPPED_FILE = 'mathsession-watchdog.stopped'
 
 
 def service_notice(runtime, active=None):
-    """A line for the agent when the user chose to run the service and it is not running, else None.
+    """A line for the agent when the service is down and the user has not stopped it, else None.
 
-    `runtime` is the main checkout's .resource-runtime, where resource-controls/setup.py records
-    the choice; `active` overrides the systemctl query, for tests.
+    `runtime` is the main checkout's .resource-runtime, where resource-controls/setup.py records a
+    stop by the user; `active` overrides the systemctl query, for tests.
     """
-    wanted = Path(runtime) / WANTED_FILE
-    if not wanted.exists():
+    if (Path(runtime) / STOPPED_FILE).exists():
         return None
     if active is None:
         try:
@@ -547,13 +553,9 @@ def service_notice(runtime, active=None):
             active = False
     if active:
         return None
-    try:
-        choice = json.loads(wanted.read_text())
-    except ValueError:
-        choice = {}
-    return (f'Session watchdog: {SESSION_UNIT}, started on {choice.get("date", "an earlier date")} by the user\'s '
-            f'choice, is not running (a reboot stops it). Rerun python3 resource-controls/setup.py, which '
-            f'starts it again with its recorded actions ({", ".join(choice.get("actions") or []) or "log only"}).')
+    return (f'Session watchdog: {SESSION_UNIT} is not running (a reboot stops it); run python3 '
+            'resource-controls/setup.py from the repository root, without asking, as for the memory controls '
+            '(COMPUTATION_RULES.md, After reboot or session resume).')
 
 
 # Replay and extraction --------------------------------------------------------------------------

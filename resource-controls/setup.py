@@ -173,7 +173,9 @@ def runtime_directory(project):
 
 
 SESSION_UNIT = 'mathsession-watchdog.service'
-WANTED_FILE = 'mathsession-watchdog.wanted'
+STOPPED_FILE = 'mathsession-watchdog.stopped'
+ACTIONS_FILE = 'mathsession-watchdog.actions'
+DEFAULT_ACTIONS = ('notify', 'wake')
 
 
 def session_watchdog_unit(checkout, claude, actions):
@@ -196,36 +198,39 @@ def session_watchdog_unit(checkout, claude, actions):
             'MemoryMax=512M\nMemorySwapMax=64M\n')
 
 
-def install_session_watchdog(build, start, actions, stop=False):
-    """Write and link the session watchdog's unit; start it only when asked, or when asked before.
+def install_session_watchdog(build, actions=None, start=False, stop=False):
+    """Write, link and start the session watchdog, like the memory controls, unless the user stopped it.
 
-    It is a second long-running service beside the memory watchdog, so it runs only by an explicit
-    choice: `--start-session-watchdog` starts it and records the choice, with its actions, in
-    WANTED_FILE, so that a rerun after a reboot starts it again with the same actions;
-    `--stop-session-watchdog` stops it and removes the record.
+    The user's choice (17 October 2026: "I want the agent to start it, like it does with the ram/cpu
+    guards"): every run of this setup starts it, with the actions DEFAULT_ACTIONS or those last
+    given by --session-watchdog-actions (recorded in ACTIONS_FILE). `--stop-session-watchdog` stops
+    it and leaves STOPPED_FILE, after which setup installs it without starting it, and compute.sh no
+    longer requires it, until `--start-session-watchdog` removes the file.
     """
-    wanted = build / WANTED_FILE
+    stopped, chosen = build / STOPPED_FILE, build / ACTIONS_FILE
     if stop:
         run('systemctl', '--user', 'stop', SESSION_UNIT)
-        wanted.unlink(missing_ok=True)
-        print(f'{SESSION_UNIT} stopped; it will not be started again by setup.', flush=True)
+        stopped.write_text(time.strftime('%Y-%m-%d %H:%M') + '\n')
+        print(f'{SESSION_UNIT} stopped; setup will not start it again until --start-session-watchdog.', flush=True)
         return
     claude = shutil.which('claude')
     if claude is None:
-        print(f'{SESSION_UNIT}: claude CLI not found; not installed.', flush=True)
-        return
+        raise RuntimeError(f'{SESSION_UNIT}: the claude CLI is not on PATH')
     if start:
-        wanted.write_text(json.dumps(dict(date=time.strftime('%Y-%m-%d %H:%M'), actions=actions)) + '\n')
-    elif wanted.exists():
-        actions, start = json.loads(wanted.read_text()).get('actions', []), True
+        stopped.unlink(missing_ok=True)
+    if actions is not None:
+        chosen.write_text(json.dumps(actions) + '\n')
+    elif chosen.exists():
+        actions = json.loads(chosen.read_text())
+    else:
+        actions = list(DEFAULT_ACTIONS)
     unit = build / SESSION_UNIT
     unit.write_text(session_watchdog_unit(build.parent, claude, actions))
     run('systemctl', '--user', 'link', '--force', str(unit))
     run('systemctl', '--user', 'daemon-reload')
-    if not start:
-        print(f'{SESSION_UNIT} installed, not started; start it with '
-              f'python3 resource-controls/setup.py --start-session-watchdog [--session-watchdog-actions notify,wake].',
-              flush=True)
+    if stopped.exists():
+        print(f'{SESSION_UNIT} installed, not started: the user stopped it on {stopped.read_text().strip()}; '
+              'python3 resource-controls/setup.py --start-session-watchdog starts it again.', flush=True)
         return
     run('systemctl', '--user', 'restart', SESSION_UNIT)
     status = run('systemctl', '--user', 'show', SESSION_UNIT, '--property=ActiveState', capture=True).stdout
@@ -238,20 +243,26 @@ def main():
     import argparse
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--start-session-watchdog', action='store_true',
-                    help=f'also start {SESSION_UNIT} (installed but stopped otherwise)')
-    ap.add_argument('--session-watchdog-actions', default='',
-                    help='comma-separated actions of the session watchdog: notify, wake (default: log only)')
+                    help=f'start {SESSION_UNIT} again after --stop-session-watchdog')
+    ap.add_argument('--session-watchdog-actions', default=None,
+                    help='comma-separated actions of the session watchdog, of notify and wake, or none for log '
+                         f'only; recorded for later runs (default: the recorded ones, else {",".join(DEFAULT_ACTIONS)})')
     ap.add_argument('--stop-session-watchdog', action='store_true',
-                    help=f'stop {SESSION_UNIT} and forget the choice to run it')
+                    help=f'stop {SESSION_UNIT}; setup and compute.sh then leave it stopped')
     args = ap.parse_args()
-    actions = [a for a in args.session_watchdog_actions.split(',') if a]
-    if set(actions) - {'notify', 'wake'}:
-        raise RuntimeError('session watchdog actions are notify and wake')
+    actions = None
+    if args.session_watchdog_actions is not None:
+        actions = [a for a in args.session_watchdog_actions.split(',') if a and a != 'none']
+        if set(actions) - set(DEFAULT_ACTIONS):
+            raise RuntimeError('session watchdog actions are notify and wake, or none')
     project = Path(__file__).resolve().parent.parent
     build = runtime_directory(project)
     for program in ('cc', 'systemctl', 'systemd-run'):
         if shutil.which(program) is None:
             raise RuntimeError(f'{program} is missing. Ask the user to install it; do not install automatically.')
+    build.mkdir(exist_ok=True)
+    # First, since it needs no empty computation group: a refusal below must not leave it down.
+    install_session_watchdog(build, actions, start=args.start_session_watchdog, stop=args.stop_session_watchdog)
     manager = run('systemctl', '--user', 'show', '--property=ControlGroup', '--value', capture=True).stdout.strip()
     if not manager.startswith('/user.slice/'):
         raise RuntimeError(f'Unexpected user manager cgroup: {manager}')
@@ -305,7 +316,6 @@ def main():
         raise RuntimeError('Combined memory watchdog did not become ready')
     print('Ready: 10 GB combined RAM + swap; no fixed split; CPUs 0-13.', flush=True)
     print('The combined watchdog polls every 2 ms; short overshoots are possible.', flush=True)
-    install_session_watchdog(build, args.start_session_watchdog, actions, stop=args.stop_session_watchdog)
     if (project / 'compute.sh').exists():
         run(str(project / 'compute.sh'), '--status')
 

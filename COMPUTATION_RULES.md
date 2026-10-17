@@ -189,7 +189,10 @@ python3 resource-controls/setup.py
 
 The agent runs this itself whenever `compute.sh` reports the controls inactive, without asking: a
 standing exception to the user's global rule against starting long-running processes, for these
-controls only.
+controls only. They include the session watchdog, `mathsession-watchdog.service` (user, 17 October
+2026: "I want the agent to start it, like it does with the ram/cpu guards"), which `compute.sh`
+requires unless the user stopped it with `setup.py --stop-session-watchdog`; see
+[resource-controls/README.md](resource-controls/README.md#session-watchdog).
 
 `setup.py` is self-contained and rerunnable: it contains the watchdog source and unit templates,
 compiles with the existing C compiler, recreates the systemd resources, and checks readiness. It

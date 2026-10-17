@@ -5,6 +5,7 @@ The fixtures under fixtures/session_watchdog/ are slim events (types, times, ids
 bounds, no content) cut by `session_watchdog.py extract` from the Common multiplier (354c41d4) and
 Talagrand (c0de408b) transcripts of 16 and 17 October 2026.
 """
+import importlib.machinery
 import importlib.util
 import json
 import tempfile
@@ -233,27 +234,62 @@ class Reading(unittest.TestCase):
 
 
 class Service(unittest.TestCase):
-    def test_notice_only_when_chosen_and_down(self):
+    def test_notice_when_down_unless_stopped_by_the_user(self):
         runtime = Path(tempfile.mkdtemp())
         self.addCleanup(lambda: __import__('shutil').rmtree(runtime))
-        self.assertIsNone(sw.service_notice(runtime, active=False))
-        (runtime / sw.WANTED_FILE).write_text(json.dumps(dict(date='2026-10-17 13:40', actions=['notify'])))
         self.assertIsNone(sw.service_notice(runtime, active=True))
         notice = sw.service_notice(runtime, active=False)
-        self.assertIn('2026-10-17 13:40', notice)
-        self.assertIn('(notify)', notice)
+        self.assertIn('run python3 resource-controls/setup.py from the repository root, without asking', notice)
+        (runtime / sw.STOPPED_FILE).write_text('2026-10-17 13:40\n')
+        self.assertIsNone(sw.service_notice(runtime, active=False))
 
     def test_setup_unit_text(self):
         spec = importlib.util.spec_from_file_location('rc_setup', TOOLS.parent / 'resource-controls' / 'setup.py')
         setup = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(setup)
-        self.assertEqual((setup.SESSION_UNIT, setup.WANTED_FILE), (sw.SESSION_UNIT, sw.WANTED_FILE))
+        self.assertEqual((setup.SESSION_UNIT, setup.STOPPED_FILE), (sw.SESSION_UNIT, sw.STOPPED_FILE))
+        spec = importlib.util.spec_from_loader('compute_cli', importlib.machinery.SourceFileLoader(
+            'compute_cli', str(TOOLS.parent / 'compute.sh')))
+        compute = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(compute)
+        self.assertEqual((compute.SESSION_WATCHDOG, compute.SESSION_WATCHDOG_STOPPED),
+                         (setup.SESSION_UNIT, setup.STOPPED_FILE))
         text = setup.session_watchdog_unit(Path('/repo'), '/home/u/.local/bin/claude', ['notify', 'wake'])
         self.assertIn('/repo/tools/session_watchdog.py" run --interval 45 --notify --wake\n', text)
         self.assertIn('PATH=/home/u/.local/bin:', text)
         self.assertIn('\nWorkingDirectory=/repo\n', text)  # systemd rejects a quoted path here
         with self.assertRaises(RuntimeError):
             setup.session_watchdog_unit(Path('/my repo'), '/c/claude', [])
+
+    def test_setup_starts_by_default_and_respects_a_stop(self):
+        spec = importlib.util.spec_from_file_location('rc_setup2', TOOLS.parent / 'resource-controls' / 'setup.py')
+        setup = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(setup)
+        build = Path(tempfile.mkdtemp()) / '.resource-runtime'
+        build.mkdir()
+        self.addCleanup(lambda: __import__('shutil').rmtree(build.parent))
+        calls = []
+
+        def fake_run(*args, capture=False):
+            calls.append(args)
+            return types.SimpleNamespace(stdout='ActiveState=active\n')
+        with mock.patch.object(setup, 'run', fake_run), \
+                mock.patch.object(setup.shutil, 'which', return_value='/u/bin/claude'):
+            setup.install_session_watchdog(build)
+            self.assertIn(('systemctl', '--user', 'restart', setup.SESSION_UNIT), calls)
+            self.assertIn('--notify --wake', (build / setup.SESSION_UNIT).read_text())
+            calls.clear()
+            setup.install_session_watchdog(build, stop=True)
+            self.assertTrue((build / setup.STOPPED_FILE).exists())
+            calls.clear()
+            setup.install_session_watchdog(build)
+            self.assertNotIn(('systemctl', '--user', 'restart', setup.SESSION_UNIT), calls)
+            setup.install_session_watchdog(build, actions=[], start=True)
+            self.assertFalse((build / setup.STOPPED_FILE).exists())
+            self.assertIn(('systemctl', '--user', 'restart', setup.SESSION_UNIT), calls)
+            self.assertIn('run --interval 45\n', (build / setup.SESSION_UNIT).read_text())
+            setup.install_session_watchdog(build)
+            self.assertIn('run --interval 45\n', (build / setup.SESSION_UNIT).read_text())
 
     def test_systemd_accepts_the_unit(self):
         """The unit text is read by systemd's own verifier, not only matched as text (a quoted
@@ -288,6 +324,14 @@ class Actions(unittest.TestCase):
     def logged(self):
         return [json.loads(line) for f in sorted((self.root / 'research/logs/session-watchdog').glob('*.jsonl'))
                 for line in f.read_text().splitlines()]
+
+    def test_poll_logs_changes_and_keeps_a_heartbeat(self):
+        with mock.patch.object(sw, 'list_sessions', return_value=[]):
+            self.w.poll()
+            self.clock[0] += 45
+            self.w.poll()
+        self.assertEqual([e['event'] for e in self.logged()], ['poll'])
+        self.assertEqual(self.w.state['last_poll'], sw.iso(self.clock[0]))
 
     def test_wakes_once_then_alerts(self):
         with mock.patch.object(sw, 'wake_session', return_value=(True, 'ok')) as wake:

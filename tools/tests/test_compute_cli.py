@@ -4,6 +4,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import signal
 import subprocess
 import sys
@@ -85,6 +86,24 @@ class InactiveControls(unittest.TestCase):
                 self.assertIn(state, str(raised.exception))
                 self.assertIn('run python3 resource-controls/setup.py from the repository root, without asking',
                               str(raised.exception))
+
+    def test_session_watchdog_down_names_the_setup_unless_stopped_by_the_user(self):
+        runtime = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, runtime)
+        down = subprocess.CompletedProcess([], 0, 'ActiveState=inactive\n', '')
+        up = subprocess.CompletedProcess([], 0, 'ActiveState=active\n', '')
+        with unittest.mock.patch.object(compute, 'runtime_directory', return_value=runtime):
+            with unittest.mock.patch.object(compute.subprocess, 'run', return_value=down):
+                with self.assertRaises(RuntimeError) as raised:
+                    compute.check_session_watchdog()
+                self.assertIn('session watchdog is not running', str(raised.exception))
+                self.assertIn('run python3 resource-controls/setup.py from the repository root, without asking',
+                              str(raised.exception))
+                (runtime / compute.SESSION_WATCHDOG_STOPPED).write_text('stopped by the user\n')
+                compute.check_session_watchdog()
+            (runtime / compute.SESSION_WATCHDOG_STOPPED).unlink()
+            with unittest.mock.patch.object(compute.subprocess, 'run', return_value=up):
+                compute.check_session_watchdog()
 
     @unittest.mock.patch.object(compute, 'check_limits')
     def test_protected_job_gets_owned_scratch_without_raw_identity(self, limits):

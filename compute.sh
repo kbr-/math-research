@@ -31,6 +31,11 @@ from recovery_evidence import observe as recovery_observe, snapshot as recovery_
 LOGS = ROOT / 'research/logs'
 SLICE = 'mathcompute.slice'
 WATCHDOG = 'mathcompute-watchdog.service'
+# The session watchdog (tools/session_watchdog.py) runs like the memory controls, unless the user stopped it
+# with setup.py --stop-session-watchdog, which leaves this file in the main checkout's .resource-runtime
+# (user, 17 October 2026: "I want the agent to start it, like it does with the ram/cpu guards").
+SESSION_WATCHDOG = 'mathsession-watchdog.service'
+SESSION_WATCHDOG_STOPPED = 'mathsession-watchdog.stopped'
 MAX_MEMORY = MAX_SWAP = 10_000_000_000
 MAX_CPUS = set(range(14))
 PHASES = ('restoration', 'reading', 'mathematics', 'formalization', 'coding', 'preparation', 'overhead',
@@ -193,6 +198,24 @@ SETUP_HINT = ("; run python3 resource-controls/setup.py from the repository root
               "(COMPUTATION_RULES.md, After reboot or session resume)")
 
 
+def runtime_directory():
+    """The main checkout's .resource-runtime, shared by all worktrees (resource-controls/setup.py)."""
+    common = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=ROOT,
+                            capture_output=True, text=True)
+    path = Path(common.stdout.strip()) if common.returncode == 0 else None
+    return path.parent / '.resource-runtime' if path and path.name == '.git' else ROOT / '.resource-runtime'
+
+
+def check_session_watchdog():
+    """Refuse while the session watchdog is down, unless the user stopped it on purpose."""
+    if (runtime_directory() / SESSION_WATCHDOG_STOPPED).exists():
+        return
+    state = subprocess.run(["systemctl", "--user", "show", SESSION_WATCHDOG, "--property=ActiveState"],
+                           capture_output=True, text=True, check=True).stdout.splitlines()
+    if "ActiveState=active" not in state:
+        raise RuntimeError("The session watchdog is not running" + SETUP_HINT)
+
+
 def check_limits():
     result = subprocess.run(
         ["systemctl", "--user", "show", SLICE, "--property=ControlGroup", "--value"],
@@ -217,6 +240,7 @@ def check_limits():
     ).stdout.splitlines()
     if "ActiveState=active" not in watchdog or "SubState=running" not in watchdog:
         raise RuntimeError("The combined RAM+swap watchdog is not running" + SETUP_HINT)
+    check_session_watchdog()
     # Ubuntu's user manager may delegate only memory and pids, not cpu/cpuset.
     # CPUAffinity= is enforced at service launch independently of delegation.
     # Verify that affinity inside the service before executing the workload.
