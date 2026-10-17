@@ -827,9 +827,21 @@ class UnreadNamedClaimsTest(unittest.TestCase):
             with (log / 'claim-reads.jsonl').open('a') as handle:
                 handle.write(json.dumps({'unix_s': time.time(), 'claims': ['thm:tree-weight-transport']}) + '\n')
             self.assertEqual(dcs.unread_named_claims(draft, root), ['lem:marginal-refinement-gain'])
-            report = dcs.unread_named_claims_report(dcs.unread_named_claims(draft, root), 0)
+            # with the finisher's marker the window is the named session's, as the finisher reads it: a claim
+            # read before the session started is unread (17 October 2026: four claims passed the 12-hour window)
+            (log / 'turn-x.jsonl').write_text(json.dumps({'event': 'start', 'unix_s': time.time() - 60}) + '\n')
+            marked = draft.replace('</article>', '<!-- TIMING turn-x --></article>')
+            with (log / 'claim-reads.jsonl').open('a') as handle:
+                handle.write(json.dumps({'unix_s': time.time() - 3600, 'claims': ['lem:marginal-refinement-gain']})
+                             + '\n')
+            self.assertEqual(dcs.unread_named_claims(draft, root), [])          # read within twelve hours
+            self.assertEqual(dcs.unread_named_claims(marked, root), ['lem:marginal-refinement-gain'])  # not in session
+            report = dcs.unread_named_claims_report(dcs.unread_named_claims(marked, root), 0)
             self.assertIn('lem:marginal-refinement-gain', report)
             self.assertIn('1 such claims.', report)
+            with (log / 'claim-reads.jsonl').open('a') as handle:
+                handle.write(json.dumps({'unix_s': time.time(), 'claims': ['lem:marginal-refinement-gain']}) + '\n')
+            self.assertEqual(dcs.unread_named_claims(marked, root), [])
 
 
 class StepFormsTest(unittest.TestCase):

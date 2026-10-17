@@ -561,16 +561,37 @@ def unread_named_claims(draft, root, now=None):
     review's Record search named six claims from search listings, whose summaries are shortened, and only the
     finisher, after the review, found that their statements had not been read; two descriptions were wrong."""
     import claim_reads
-    now = now or __import__('time').time()
+    since = None if now else session_start(root, draft)
+    if since is None:
+        since = (now or __import__('time').time()) - SEARCH_WINDOW_S
     declared = re.search(r'\bdata-claims="([^"]*)"', draft)
-    return claim_reads.unread(draft, claim_reads.read_since(root, now - SEARCH_WINDOW_S),
+    return claim_reads.unread(draft, claim_reads.read_since(root, since),
                               declared.group(1).split() if declared else ())
+
+
+def session_start(root, draft=None):
+    """The start (unix seconds) of the active timing session, the window the finisher's
+    validate_named_claims_read reads, or None outside one.  A twelve-hour window let four claims read in the
+    previous session through on 17 October 2026, which the finisher then refused."""
+    # The draft names its session in the finisher's marker <!-- TIMING TURN -->, and the finisher reads the first
+    # line of that session's journal.  (On 17 October 2026 the timing store's active turn, read from a worktree,
+    # was empty while the session ran, and the latest open journal was a test fixture's.)
+    marker = re.search(r'<!-- TIMING (\S+) -->', draft or '')
+    if not marker:
+        return None
+    try:
+        first = json.loads((pathlib.Path(root) / 'research/logs' / f'{marker.group(1)}.jsonl')
+                           .read_text().splitlines()[0])
+    except (OSError, ValueError, IndexError):
+        return None
+    return first.get('unix_s')
 
 
 def unread_named_claims_report(missing, width):
     lines = [f'  {ident}' for ident in missing]
     return '\n'.join(['Claims a Record search, Record comparison, Record, Own statements or Bearing paragraph names '
-                      'whose statements no reading tool printed in the last twelve hours; read each with '
+                      'whose statements no reading tool printed in the active timing session (else the last twelve '
+                      'hours); read each with '
                       'tools/notebook-excerpt.py --claims, and write the paragraph from the statement (the '
                       'finisher refuses them; AGENTS.md):']
                      + [line if width <= 0 else line[:width] for line in lines]
