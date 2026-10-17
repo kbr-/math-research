@@ -27,6 +27,9 @@ excess 1 through the same intersection routine.
 Refuted by: excess 0 on that example, which would mean the routine cannot see a transported killer at all.
 Possible because: a remainder or kernel bug in the routine would hide every transported killer.
 Also asserted, for part (d): q1 q2 lies in Z and not in W_2 at K = 2.
+Also computed, for family 1 alone at K = 2 (the next attempt's candidate test, added after the review): the
+excess dim(Z_1 + W_2) - dim(q1 V_1 + W_2) >= 0, q1 V_1 lying in Z_1 since q1(1 + q1) = 0; a positive excess gives
+z1 in Z_1 outside q1 V_1 + W_2, and z1 q2 kills both families at K = 3. Not predicted; reported as found.
 Baseline: the containments give dim J >= dim W_2 + 1 (W_2 and q1 q2) and dim J <= dim V_2; neither decides the
 excess, and the summed condition is not used.
 Record checked: cor:separated-family-kernels (K = 1, and q1 q2 at K = 2), lem:polynomial-numbering-transfer,
@@ -185,6 +188,12 @@ def run(m, K, families=(1, 2)):
         q['q1q2_in_Z'] = Span(Z).reduce(q1q2) == 0
         q['q1q2_in_W'] = Span(W).reduce(q1q2) == 0
         assert q['q1q2_in_Z'] and not q['q1q2_in_W'], 'part (d)'
+    if K == 2 and tuple(families) == (1,):
+        q1 = {b.bit[(0, 0)], b.bit[(1, 1)]}
+        q1V1 = [b.vec(b.times(q1, {mm})) for mm in b.basis if bin(mm).count('1') <= 1]
+        assert all(Span(Z).reduce(v) == 0 for v in q1V1), 'q1 V_1 lies in Z_1'
+        q['dim_q1V1_plus_W'] = len(Span(q1V1 + W))
+        q['family1_excess_over_q1V1'] = q['dim_Z_plus_W'] - q['dim_q1V1_plus_W']
     return q
 
 
