@@ -23,6 +23,7 @@ this computation's positive control on its own board.
 Baseline: a <= b <= I <= dim J; they decide nothing about the gaps.
 Record checked: the claims read were check:top-degree-partition-kernels and conj:representative-sum-transfer,
 with mixing_pairs.json and mixing_domination.json; none gives a, b or I at this board.
+Decisive at these sizes: exact dimensions, no seeds; one orbit with b below dim J, by one dimension or more, decides.
 Parallel use: fourteen worker processes, one per representative of the first error, one thread each; the
 measured time per orbit is printed (the window review's Attempt clause asks for the step's measured cost).
 """
