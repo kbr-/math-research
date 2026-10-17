@@ -348,6 +348,24 @@ class DegenerateCasesTest(unittest.TestCase):
                                      'by hypothesis; with no rows the bound is vacuous; blocks must be multilinear.</p>',
                                      {'working_proof'})
 
+    def test_each_declared_claim_is_named_in_the_degenerate_cases(self):
+        # 17 October 2026: degenerate inputs were tried on a lemma and none on its corollary.
+        lemma_only = '<p><strong>Degenerate cases.</strong> Lemma: with zero cost every chain has value zero.</p>'
+        claims = ['lem:two-graph-chain-duality', 'cor:short-chains-per-level']
+        with self.assertRaisesRegex(ValueError, 'cor:short-chains-per-level'):
+            FT.validate_degenerate_each(lemma_only, claims)
+        FT.validate_degenerate_each(lemma_only.replace('.</p>', '. Corollary: a chain of length zero.</p>'), claims)
+        FT.validate_degenerate_each(lemma_only.replace('.</p>', '; the corollary has no chain of length zero.</p>'),
+                                    claims)                    # the kind word in any case
+        FT.validate_degenerate_each(lemma_only, claims[:1])     # one claim: the paragraph's own check suffices
+        FT.validate_degenerate_each(lemma_only, ['lem:a', 'ex:b'])   # a finite check has no degenerate inputs
+        # Two claims of one kind are named by ID, not by the kind's word.
+        two = '<p><strong>Degenerate cases.</strong> Lemma: zero cost. Lemma: one point.</p>'
+        with self.assertRaisesRegex(ValueError, 'lem:a, lem:b'):
+            FT.validate_degenerate_each(two, ['lem:a', 'lem:b'])
+        FT.validate_degenerate_each(two.replace('Lemma: zero', 'lem:a: zero').replace('Lemma: one', 'lem:b: one'),
+                                    ['lem:a', 'lem:b'])
+
 
 class BaselineTest(unittest.TestCase):
     def test_a_registered_proof_names_the_trivial_baseline(self):

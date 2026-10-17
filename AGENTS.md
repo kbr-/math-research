@@ -310,7 +310,10 @@ AGENTS.md"):
 - A threshold, constant or range drawn from a bound is computed from the bound as displayed, at the
   instance's parameters (the saturating ones included), and says which of its parts comes from the
   bookkeeping rather than the object (17 October 2026: a budget threshold contradicted its own
-  displayed bound, and a saturating perimeter was written without its level).
+  displayed bound, and a saturating perimeter was written without its level). So is the sign a proof
+  step gives a term ("at most \(0\)", "contributes nothing", "negligible"): the term is written out
+  and evaluated at its extreme member before the sign is (17 October 2026: \(N-|T_j|\) was bounded
+  by \(0\) from its shape, and a reviewer passed it).
 - A sentence a reviewer finds wrong is replaced by one derived again from the statement and the
   records, its figures computed, not patched from the old wording; a sentence wrong twice is
   redrafted from its sources before it goes back (17 October 2026: three versions in a row of one

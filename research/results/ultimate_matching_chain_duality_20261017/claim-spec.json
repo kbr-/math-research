@@ -1,0 +1,68 @@
+{
+  "source": {
+    "record": "[Two-graph chain duality](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-two-graph-chain-duality)",
+    "label": "Two-graph chain duality",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-two-graph-chain-duality"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:two-graph-chain-duality",
+      "summary": "For a bipartite graph H on X and Y with |X| = |Y| = N and a perfect matching, and a cost c on its edges with values in {0,1,2,...}, G_k the edges of cost at most k: the least cost of a perfect matching of H equals the largest value sum_j (|S_j| - |T_j|) over chains, nonincreasing families S_j of subsets of X and T_j of Y, equal to X and Y for j small and empty for j large, with N_{G_k}(S_{j+k}) contained in T_j for every j and k >= 0. For a graph G and the 0/1 cost (1 outside G), the conditions are N_{G cap H}(S_j) in T_j and N_H(S_{j+1}) in T_j, and the least cost is the least number of edges outside G in a perfect matching of H. For real costs c >= 0 the same holds with chains indexed by real r, conditions N_{G_k}(S_{r+k}) in T_r, and value the integral of |S_r| - |T_r| dr.",
+      "assessment": "Working proof: the lower bound from the level indices u, w of the chain along any perfect matching of H and a layer cake; the upper bound from an integer point on the optimal face of the dual of the assignment program (bipartite incidence matrix totally unimodular), read through its level sets. Egervary's weighted form of Konig's theorem; not new as a duality. Real costs: real potentials and real-indexed level sets, the primal attained at a perfect matching by the integrality of the bipartite perfect-matching polytope; only the dual's integrality is dropped.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Makes the strict both-high mixed-count question exact: some perfect matching of H, the pairs within D_1 horizontally, has at most 2N e^(-t_2) pairs beyond D_2 exactly when every chain has value at most that.",
+      "next_action": "Bound the value of every chain at the both-high instance by C N e^(-t_2), controlling the number of levels; the potential range alone gives (length + 1) N e^(-t_2).",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:short-chains-per-level",
+      "summary": "For alpha_1, alpha_2 in (0,infinity] with 1/alpha_1 + 1/alpha_2 >= 1/2, L >= L_0 (1 + log 2)^(max_j 1/alpha_j) (L_0 the constant of thm:per-level-count-matchings), levels 1 <= t_2 <= t_1 <= log N with t_2 + log 2 <= log N, D_j = L sqrt(log N/N) t_j^(1/alpha_j), H the pairs within D_1 in the first coordinate and G those of H within D_2 in the second, X, Y independent uniform samples of size N in [0,1]^2: with probability tending to one, if no vertex of Y is isolated in H, every chain of lem:two-graph-chain-duality for the 0/1 cost of length at most one (at most one j with S_j neither empty nor X) has value at most 2N e^(-t_2); so if H has a perfect matching and the least number of pairs beyond D_2 over its perfect matchings exceeds 2N e^(-t_2), a chain of length at least two shows it.",
+      "assessment": "Working proof: the per-level matching at level t_2 + log 2 has all but N e^(-t_2) pairs in G; along its pairs in G the chain's level indices satisfy w >= u, and for length at most one the indices of the uncovered vertices differ by at most 2, so the value is at most 2 N e^(-t_2). The same argument gives (length + 1) N e^(-t_2) for every length.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Locates any refutation of the strict both-high mixed counts in chains of length at least two.",
+      "next_action": "Chains of length two at the both-high instance, where the potential range gives 3 N e^(-t_2), then a bound on the number of levels.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "cor:short-chains-per-level",
+      "depends_on",
+      "lem:two-graph-chain-duality",
+      "Its last clause is the lemma, and its argument the lemma's level indices."
+    ],
+    [
+      "cor:short-chains-per-level",
+      "depends_on",
+      "thm:per-level-count-matchings",
+      "The per-level matching at level t_2 + log 2 gives the matching in G."
+    ],
+    [
+      "lem:two-graph-chain-duality",
+      "cites",
+      "lem:per-level-gluing-fails",
+      "That counterexample's matching cost, nested graphs weighted by e^k, is this lemma's real cost on the complete graph, so its least value is a real-indexed chain value; its weighted deficiency sum is not derived as a chain value."
+    ],
+    [
+      "cor:short-chains-per-level",
+      "cites",
+      "thm:low-level-mixed-counts",
+      "Both concern the mixed counts at two levels: that theorem constructs a matching at low second levels; this corollary bounds short chains of the strict form's dual at levels t_2 <= t_1; neither implies the other."
+    ],
+    [
+      "lem:two-graph-chain-duality",
+      "cites",
+      "lem:grid-flow-duality",
+      "The convex flow duality on the cell grid; this is the integer assignment duality on the samples' bipartite graph."
+    ]
+  ]
+}

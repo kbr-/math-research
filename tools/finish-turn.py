@@ -1229,6 +1229,48 @@ def validate_degenerate_cases(text, statuses=()):
                          '(AGENTS.md)')
 
 
+CLAIM_KIND = {'lem': 'Lemma', 'cor': 'Corollary', 'thm': 'Theorem', 'prop': 'Proposition'}
+EACH_DEGENERATE_FROM = '2026-10-17'
+
+
+def validate_degenerate_each(text, claims):
+    """An entry declaring several claims names each in its Degenerate cases paragraph, by its ID or, when it is
+    the entry's only claim of its kind, by its kind's word (Lemma, Corollary, ...).
+
+    On 17 October 2026 an entry tried degenerate inputs on its lemma and none on its corollary, whose proof claimed
+    a nonnegative term was at most zero; the corollary's own smallest instance shows the term."""
+    claims = [c for c in claims if c.split(':')[0] in CLAIM_KIND]
+    if len(claims) < 2:
+        return
+    given = re.search(r'<strong>Degenerate cases\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = html.unescape(strip_tags(given.group(1))) if given else ''
+    kinds = [c.split(':')[0] for c in claims]
+    missing = [c for c in claims if c not in plain
+               and not (kinds.count(c.split(':')[0]) == 1
+                        and re.search(rf'\b{CLAIM_KIND[c.split(":")[0]]}\b', plain, re.I))]
+    if missing:
+        raise ValueError('This entry declares several claims; its Degenerate cases paragraph names none of: '
+                         + ', '.join(missing) + '. Try each statement on its own degenerate inputs and name it there '
+                         'by its ID, or by "Lemma", "Corollary" and the like when it is the only one of its kind '
+                         '(AGENTS.md: degenerate cases)')
+
+
+def scan_degenerate_each(plain, raw):
+    """For tools/record_scan.py: what validate_degenerate_each refuses in a past entry that has the paragraph."""
+    claims = re.search(r'data-claims="([^"]*)"', raw or '')
+    ids = claims.group(1).split() if claims else []
+    if '<strong>Degenerate cases.</strong>' not in (raw or ''):
+        return []
+    try:
+        validate_degenerate_each(raw, ids)
+    except ValueError as error:
+        return [str(error)[:220]]
+    return []
+
+
+SCAN_CHECKS = {'degenerate-each': scan_degenerate_each}
+
+
 SMALLEST_FROM = '2026-10-16'
 
 
@@ -1303,6 +1345,8 @@ def validate_drafted_proofs(text, drafted):
     validate_plainest(text, drafted)
     if drafted & PROVED:
         validate_degenerate_cases(text, drafted)
+        claims = re.search(r'data-claims="([^"]*)"', text)
+        validate_degenerate_each(text, claims.group(1).split() if claims else [])
         validate_hypothesis_steps(text, drafted)
         validate_baseline(text, drafted)
 
@@ -2008,6 +2052,9 @@ def validate_progress(body, article, close, *, check_registered_claims=True):
             statuses = {known.get(cid) for cid in entry_claims(body, article)}
             validate_structural_reason(text, statuses, entry_claims(body, article))
             validate_degenerate_cases(text, statuses)
+            dated = re.search(r'\bid="entry-(\d{4}-\d{2}-\d{2})', text)
+            if PROVED & statuses and dated and dated.group(1) >= EACH_DEGENERATE_FROM:
+                validate_degenerate_each(text, entry_claims(body, article))
             validate_proved_instance(text, statuses)
             validate_hypothesis_steps(text, statuses)
             validate_baseline(text, statuses)
