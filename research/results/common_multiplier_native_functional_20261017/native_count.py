@@ -56,6 +56,15 @@ def kernel(n, images):
     return [row for h, row in s.piv.items() if h < n]
 
 
+def xor_combination(vectors, rng):
+    """A uniformly random F_2 combination of the given vectors (an XOR, not an integer sum)."""
+    out = 0
+    for v in vectors:
+        if rng.getrandbits(1):
+            out ^= v
+    return out
+
+
 class Board:
     def __init__(self, m, n):
         self.m, self.n = m, n
@@ -119,7 +128,7 @@ def run(m, seeds, extra):
     assert len(perp) == n3 - len(W3)
     for model, (target, dimA1, draw) in {
             'H': (n2, n1, lambda rng: rng.getrandbits(n3)),
-            'C': (A2, A1, lambda rng: sum(p for p in perp if rng.getrandbits(1)))}.items():
+            'C': (A2, A1, lambda rng: xor_combination(perp, rng))}.items():
         lower = -(-target // dimA1)
         least = []
         for seed in range(seeds):
