@@ -1,0 +1,874 @@
+{
+  "base_sha256": "897feab7d9b307348d345dff8e696f6459975bfc2c068d7814d3d2635458bad0",
+  "provenance": {
+    "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+    "date": "2026-10-17",
+    "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent"
+  },
+  "submissions": [
+    {
+      "claim": {
+        "id": "lem:affine-indicator-kernel",
+        "summary": "Affine indicator kernel: for s disjoint edge pairs with psi_i of support exactly the pair, W their span, W meeting the cut space only in 0, over F containing F_4, identify F[W] with functions on chi in {0,1,2}^s (m_(psi_i)(chi) = omega^(chi_i)) and put x_i = [chi_i = 1], y_i = [chi_i = 2], z_i = x_i + y_i. (a) 1 + q_S, q_S = sum over i in S of m_(psi_i), vanishes exactly where sum_S x_i = sum_S y_i = 1 + |S| (mod 2), with indicator (sum_S x + |S|)(sum_S y + |S|) of degree <= 4. (b) For products P_a = prod_j (1 + q_(S_(a,j))), a <= M, and a nonempty set A, the intersection of c conditions, each an F_2 equation in the one-hot bits or a coordinate condition chi_i = a, together reading u coordinates, with A inside every zero set of P_a, and e = min(c, u): 1_A has degree <= 2e, P_a 1_A g = 0 for all a and g, and for 2e <= K <= D the joint kernel of f -> (R_D(P_a f))_a on degree <= K contains 1_A V_(K-2e), on which g -> R_D(1_A g) has rank >= max(1, h(K - 2e)/s_A). (c) One row S_a per product gives A cut out by 2r forms, r the F_2-rank of the rows, nonempty only if every dependency among them has even length, containing chi = 0 when every |S_a| is odd. (d) Rows S != S' of one product cover Z_(S+S') intersected with {sum_S z = 0}.",
+        "assessment": "Working proof of (a) by the parity of the counts of each value of chi_i over S and omega^2 = 1 + omega, of (b) by the pointwise product on the dual group, the one-hot monomial expansion, lem:cut-code-classes with W meeting the cut space only in 0 and lem:sparse-weight-survival, of (c) by summing the equations of a dependency, of (d) by c_(S') = c_S + |S + S'|; pending the review of its entry. The parity rule and (b) checked exactly in sector 0 on 208 instances at s <= 8.",
+        "record": "[Affine indicator kernel](https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The common killers of pair products have degree set by the rank of the chosen rows and by unions of factors, not by the number of products: the subadditive case of the product of denominators, here through the parity form of each factor's zero set.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": "For t >= 2 and M random dense products beyond K/4, a union bound over affine sets of codimension at most K/2 inside every zero set, then whether killers that are not affine indicators exist."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "check:sector-joint-kernel-sizes",
+        "summary": "Sector joint kernel sizes: in sector 0 of the pair characters (degree 2k = junta degree k in the one-hot bits), the exact F_2 joint kernel of V_k for s in {6, 7, 8}, k in {2, 3}, t in {2, 3}, M <= 7 (M <= 5 at s = 8), 156 random dense instances with independent rows and 52 coordinate instances: the parity rule held everywhere; of 132 dense instances with M >= 2, 8 had a nonzero joint kernel, none at M >= 4; the hypothesis that no single-factor affine killer of degree <= k means a zero kernel held on 124 of the 125 instances the bare count did not decide and failed on one, s = 7, k = 2, t = 3, M = 2, whose kernel is the indicator of {chi_0 = 0} intersected with {z_1 + z_4 + z_5 + z_6 = 0}, a union cover of two rows of one product. The minimum-weight bound (a nonzero function of junta degree <= k has >= 3^(s-k) nonzeros) forces the kernel to zero on 64 of the 132 dense instances with M >= 2, none of them nonzero.",
+        "assessment": "Finite check by research/results/pair_joint_kernel_20261017/joint_kernel_check.py, expectations committed before the run, packed F_2 rank cross-checked against tools/f2_span.py on 28 instances; sizes far from the window's proportions, sector 0 only; pending the review of its entry.",
+        "record": "[Affine indicator kernel](https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel)",
+        "mathematical_status": "finite_check",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Evidence on which killers exist when the bare count and the single-factor construction leave the joint kernel undecided.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": "Enumerate the affine sets of the one-hot bits at s <= 6 to test whether union covers explain every killer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cut-code-classes",
+        "summary": "In the ternary Tseitin character-pseudoideal window, characters of degree<=D share a quotient coordinate iff their exponents are in the same ternary cut-code coset. Thus h(K) counts cut-code cosets meeting the support-K ball. The relative charged phases remain truncated, not a global evaluation map.",
+        "assessment": "Working all-parameter majority-level-set proof, passed the sole medium reviewer.",
+        "record": "[Cut-code rank normalization](https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Identifies the exact unweighted filtered domain; a representation, not a lower-bound advance.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": "Test actual Frege gate representations and updated-weight support against the strict removal inequality; retain full original degree costs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Matching flat width: new relationship with thm:matching-flat-conjunction-width. Cut-code sectors: new relationship with lem:cut-code-sectors. Algebraic syndrome packing: new relationship with lem:character-syndrome-packing. Degree-weighted conditioning: new relationship with prop:charged-star-kernel. Cut-code ball growth: new relationship with cor:charged-growth-budget. Bounded weighted magnification: new relationship with cor:weighted-growth-floor. Chosen error sectors: new relationship with prop:prefix-sector-collapse. Actual-error goal review: new relationship with cor:charged-magnification-window. Source coverage review: new relationship with prop:compressed-character-commutator. Affine annihilator image: new relationship with lem:cut-ball-occupancy. Exposed reader cleanup: new relationship with thm:exposed-reader-cleanup. Independent feature transfer: new relationship with thm:independent-feature-transfer. Three-state coded batches: new relationship with lem:cut-collision-bound. Dense monomial profile: new relationship with prop:dense-monomial-error-profile. Extraction goal review: new relationship with prop:charged-thin-tail-obstruction. Integral source test: new relationship with cor:charged-matching-saturation. Minor pairing test: new relationship with cor:layered-translation-capacity. Paid reference rows: new relationship with thm:paid-reference-row-law. Charge affine gap: new relationship with prop:charge-affine-rank-gap. Disjoint feature transfer: new relationship with thm:disjoint-feature-transfer. Mixed feature transfer: new relationship with thm:mixed-feature-transfer. Refresh citing article evidence after unchanged sibling follow-up declarations; quotient scope unchanged. Cut support transfer: new relationship with thm:cut-support-transfer. Affine majority transfer: new relationship with thm:affine-majority-transfer. Weighted majority transfer: new relationship with thm:weighted-majority-transfer. Tree weight transport: new relationship with thm:tree-weight-transport. Leaf weight cleanup: new relationship with cor:leaf-weight-cleanup. Incidence weight cleanup: new relationship with thm:incidence-weight-cleanup. Local tuple ratio: new relationship with lem:local-tuple-ratio. Pin transfer cost: new relationship with cor:pin-transfer-cost. Coset ratio reduction: new relationship with lem:coset-ratio-reduction. Pair occupancy: new relationship with cor:pair-sector-bounds. Pair product rank floor: new relationship with lem:pair-product-rank-floor. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:sparse-weight-survival",
+        "summary": "In that quotient, if deg(w)<=b, w survives, and b+K<=D, with s nonzero coordinates in R_D(w), then rank(f->R_D(wf), f in V_K)>=h(K)/s. Also s<=h(b)<=sum_{j<=b}binom(m,j)2^j and log2(s)<=b log2(2m+1) for b>=1.",
+        "assessment": "Working sparse-row proof passed the sole medium reviewer: every column has exactly s nonzeros and each row at most s.",
+        "record": "[Cut-code rank normalization](https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "affine-linear-algebra",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Controls extra weighted dimension loss in the actual quotient, while later multiplier support is not maintained.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": "Test actual Frege gate representations and updated-weight support against the strict removal inequality; retain full original degree costs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Algebraic syndrome packing: new relationship with lem:character-syndrome-packing. Rank-retaining weights: new relationship with cor:repeated-conjunction-cleanup. Cut-code ball growth: new relationship with cor:charged-growth-budget. Bounded weighted magnification: new relationship with cor:weighted-growth-floor. Chosen error sectors: new relationship with prop:weighted-sector-opening. Actual-error goal review: new relationship with cor:charged-magnification-window. Circulation conjunction cost: new relationship with thm:cycle-conjunction-cost. Weighted circulation test: new relationship with prop:orbit-kernel-saturation. Actual tuple budget gap: new relationship with prop:actual-tuple-budget-gap. Circulation compression: new relationship with lem:circulation-compression-cost. Tuple magnification: new relationship with lem:tuple-growth-floor. Growing expansion flats: new relationship with cor:growing-expansion-flat-removal. Integral source test: new relationship with cor:charged-matching-saturation. Minor pairing test: new relationship with cor:layered-translation-capacity. Sparse mask survival: new relationship with lem:sparse-mask-survival. Sparse weights keep the thin tail: new relationship with cor:sparse-weight-thin-tail, prop:character-error-thin-tail. Edge-supported error ratio: new relationship with cor:edge-supported-error-ratio. Star closure ratio: new relationship with cor:star-closure-ratio. Pair product rank floor: new relationship with lem:pair-product-rank-floor. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-07-cut-code-rank-normalization"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:pair-sector-bounds",
+        "summary": "Pair sector bounds: in lem:pair-occupancy's setting with pi < epsilon, for a nonzero P in the span of the characters of W of support at most e, K + e <= D, with c(k) the rank of f -> R_D(P f) on degree <= k and c_C(k) that rank on the characters of support <= k of a coset C of B + W: (i) c(k) = sum_C c_C(k) (lem:cut-code-sectors with S = (W+B)/B); (ii) 1 <= c_C(k) <= min(n_C(k), 3^s), W meeting B only in 0, so q_W(k) <= c(k) <= min(h(k), 3^s q_W(k)) for k <= K; (iii) the two ratio bounds these give, 3^s q_W(K-d)/q_W(K) and h(K-d)/q_W(K), exceed h(K-d)/h(K) by at least 3^s (1 - eta_W)(1 - eta_occ) and (1 - eta_occ)(1 - q) e^(sK/m), q = K/(2(m-s-K+1)), using that ball ratios B_n'(k-d)/B_n'(k) do not fall when coordinates are removed. (i) and (ii) need only K + e <= D, s <= D and pi < epsilon; (iii) also needs the lemma's hypotheses at levels K-d and K and eta_occ < 1. On the power-growing charged family, for D/2 < s <= D - K and pi <= Delta/8, both factors are N^(Omega(n)), so these two bounds built from c_C >= 1 cannot give the decisive test's yes outcome; a block form combining the counts with the ranks of P inside the sectors is not covered.",
+        "assessment": "Working composition of lem:cut-code-sectors, lem:cut-code-classes, the new lemma and lem:cut-ball-occupancy, with an elementary ball-ratio monotonicity.",
+        "record": "[Pair occupancy](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Shows that the two ratio bounds built from c_C >= 1 and the coset counts, now sharp up to 1 - eta_W, cannot give the yes outcome of the decisive test in the stated range, so a yes needs bounds on the ranks of the products inside the sectors.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": "The rank profile of P inside the sectors whose good representative touches no pair, a question in the group algebra of F_3^s."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Pair product rank floor: new relationship with cor:pair-product-ratio-bound, lem:pair-product-rank-floor. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-occupancy"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:cylinder-killer-degree",
+        "summary": "Over any field, on a finite product domain X = prod_j A_j (nonempty factors) with base states and one-hot variables x_(j,a) for non-base a (degree = least polynomial degree in them), a nonzero function vanishing on a union of cylinders (partial assignments) has degree at least the transversal number of their coordinate sets; if every coordinate of a least transversal T has a state no cylinder assigns there, the product of those state indicators (each of degree <=1) attains it. On the hole-respecting assignments of the product pigeonhole system, with base state empty, the least degree of a nonzero function vanishing on the supports of monomial errors on distinct holes is the transversal number of their hole sets, which is the least degree of a surviving common killer of 1 when tau<=K and K+e is inert, or D=n with K+e<=n and K<=n-1; for tau>K there is none of degree <=K.",
+        "assessment": "Working proof passed by the sole fresh-context medium reviewer of the cylinder-killers entry with a follow-up (review record in research/results/common_multiplier_cylinder_killers_20261016); the assessment field was left at its draft value at registration and filled on 16 October 2026 from that record.",
+        "record": "[Cylinder killers](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-16-cylinder-killers)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "degree-accounting"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Gives the exact first surviving killer degree for cylinder errors on product domains, the domain-model baseline that a non-domain killer must beat.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": "Find error families whose supports defeat the top-degree transfer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Graded pairings of domain models: new relationship with lem:graded-domain-pairing. Leading-form killer bounds: new relationship with lem:leading-form-killer-bound. Block-local killers and idempotents: new relationship with lem:block-additive-degree. Block-family multiplier degree: new relationship with lem:block-family-multiplier-degree. Product board twist decided by recorded killers: new relationship with cor:top-degree-twist-scalar. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-16-cylinder-killers"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "prop:multiplier-transfer-limits",
+        "summary": "For finitely many module errors vanishing after localization and a protected element surviving there, a product of denominators kills all errors and preserves the element, with additive filtration cost. Fixed linear common-kernel survival descends across finite field extensions without degree increase. Controls: in k[x,y]/(x,y)^2 no annihilator of (x) preserves y; in k[t]/t^(m+1) annihilators of (t) first occur at degree m; in k[u,v]/(u^2,v^2) useful f=u is nilpotent and localization at it is zero; rank-one error data at t distinct evaluation points still require locator degree at least t.",
+        "assessment": "Working elementary transfer proofs and exact algebraic counterexamples, passed by the sole medium reviewer. Finite-extension scope retained for the motivating use. Support, matrix rank and scalar extension alone give no universal cheap multiplier theorem.",
+        "record": "[Compatible repair and separation](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-15-multiplier-separation)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "degree-accounting",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "general_tool",
+          "rationale": "Prevents losing nilpotent information, confusing data rank with action rank, and silently discarding degree costs in cross-field bridges.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": "Keep these controls in any proposed filtered tester or duality transfer."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Reviewed mathematics unchanged; final evidence includes explicit reboot timing limitation. Two-sided Frobenius compression: new relationship with lem:two-sided-frobenius-compression. Idempotent common denominators: new relationship with lem:idempotent-common-denominator. Family killers: new relationship with lem:pang-family-killer. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "branches/common-multiplier/notebook.html#entry-2026-10-15-multiplier-separation"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "lem:pair-product-rank-floor",
+        "summary": "Pair product rank floor: in the charged character window (over F containing F_4, multigraphs included), for s pairwise disjoint edge pairs with psi_i of support exactly the pair, pi the largest number of paired edges at a vertex, a binary t-by-s matrix C, q_j = sum_i C_ji m_(psi_i) and P = prod_(j<=t)(1 + q_j), with K >= 1, K + 2t <= D, pi < epsilon/2, rho = (epsilon - 2pi)/(2(epsilon - pi)), beta = (eK/(rho(m - 2s)))^rho < 1 and eta = (1 + 2 beta^(epsilon - pi))^n - 1, the rank c_P(K) of f -> R_D(P f) on degree <= K satisfies: (a) if C has rank t, c_P(K) >= (1 - eta) B_(m-2t)(K) >= (1 - eta)(1 - 2t/(m - K))^K B_m(K); (b) if s >= K + t, with zeta_C = sum over nonzero lambda in F_2^t of (2K/m)^|lambda^T C|, then for every b with 0 < b < s - K - t + 1, c_P(K) >= (1 - b/(s - K - t + 1))^t (1 - eta - zeta_C - s(K/m)^2/b) B_m(K). P's top part is sum over t-sets T of det(C_T) m_(psi_T) (a binary permanent is a determinant in characteristic two); for each character alpha of a good frame whose touched pairs leave C of rank t and whose psi-valued pairs avoid a pivot set T_0, alpha + psi_(T_0) is the leading class of P m_alpha in an order by support, frame and lex with T_0 first, and these classes are distinct and good; (a) uses one pivot set in every frame.",
+        "assessment": "Working proof by a leading-term triangularity, a frame-wise good-character union bound adapted from lem:pair-occupancy and a Markov bound on the psi-valued pairs, passed by a fresh-context medium reviewer after it found the first statement false for b >= s - K - t + 1; part (a), the reviewer's fixed-pivot suggestion, verified against the proof. The triangularity checked exactly in the cut-free model on 15 small instances with a zero-determinant control.",
+        "record": "[Pair product rank floor](https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "polynomial-calculus",
+          "method-obstructions"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "The first lower bound on the rank of an approximator product of pair-linear factors inside the charged window at every level K; it decides the rate scale review's decisive test against its yes outcome for rank-t products on the members computed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": "Whether M such products, each above the floor, can still share a common kernel element: the degree-K functions vanishing on the union of their nonzero sets."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "https://kbr.is-a.dev/math-research/#entry-2026-10-17-pair-product-rank-floor"
+          ],
+          "next_action": null
+        }
+      }
+    },
+    {
+      "claim": {
+        "id": "cor:growing-expansion-flat-removal",
+        "summary": "In the canonical binary charged graph quotient, 1<=K<=m/3, beta=2 sqrt(K/m)<1, eta=(1+2 beta^epsilon)^n-1<1. A surviving binary degree-b weight with s character coordinates and M proper binary affine-flat indicators of ranks r0..d, 1<=r0<=m, b+K+d<=D, admit a surviving degree-K multiplier annihilating all indicators if (2Ms/(1-eta)) exp(-r0 K/(2m))<1. Each unweighted image has relative rank <=2 exp(-min(r,m)K/(2m))/(1-eta). For graphs of degree parameter Delta=ceil(log n)^2, expansion>=Delta/4, maximum degree<=2Delta, D=floor(n Delta/64), K=floor(m/1024), eta tends to zero and r0=ceil(4096 log(8Ms)) leaves at least half the weighted domain in the common kernel eventually.",
+        "assessment": "Recovered explicit composition of flat-image, occupancy and sparse-weight theorems. Binary descent and original degree reserve retained. Graph family has log encoding length Theta(Delta), independently of inventory exponent. Does not bound support of a selected later weight or nonlinear parent errors.",
+        "record": "[Growing expansion flats](https://kbr.is-a.dev/math-research/#entry-2026-10-09-growing-expansion-flats)",
+        "mathematical_status": "working_proof",
+        "formalization": {
+          "status": "not_started",
+          "scope": "Informal proof or computation; no Lean verification.",
+          "references": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "artifacts": []
+        },
+        "topics": [
+          "ens",
+          "degree-accounting",
+          "affine-linear-algebra",
+          "polynomial-calculus"
+        ],
+        "significance": {
+          "category": "route_specific",
+          "rationale": "Useful general-affine extension on a changed allowed graph family; fixed-expansion limitation remains valid. No independent novelty or necessary goal advance claimed.",
+          "novelty": "not_claimed",
+          "publication_status": "not_applicable",
+          "references": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": "Test nonlinear parent remainder with actual surviving-domain and original-degree costs."
+        }
+      },
+      "dispositions": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "note": "Status checked against the entry and its verification gate.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": null
+        },
+        "formalization": {
+          "state": "reviewed",
+          "note": "No Lean artifact.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": null
+        },
+        "topics": {
+          "state": "reviewed",
+          "note": "Topics checked against the entry.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": null
+        },
+        "significance": {
+          "state": "reviewed",
+          "note": "Significance assessed at this checkpoint.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": null
+        },
+        "relationships": {
+          "state": "reviewed",
+          "note": "New claim; relationships recorded. Growing rank gap: new relationship with thm:growing-rank-gap-exclusion. Outside fiber diversity: new relationship with thm:fiber-diversity-source-exclusion. Growing affine residuals: new relationship with cor:growing-affine-residual-exclusion. Filtered flat coding: new relationship with cor:local-flat-source-exclusion. Dictionary goal review: new relationship with cor:quotient-rank-source-exclusion. Charged affine cores: new relationship with cor:charged-affine-core-exclusion. Clustered dictionaries: new relationship with thm:clustered-flat-batch-bound. Majority row floor: new relationship with cor:majority-row-rank-floor. Spread defect cover: new relationship with cor:conjunction-puncturing-limit, lem:coset-partition-obstruction. Common span branching: new relationship with thm:common-span-exclusion. Affine indicator kernel: new relationship with lem:affine-indicator-kernel.",
+          "targets": [
+            "../notebook.html#entry-2026-10-09-growing-expansion-flats"
+          ],
+          "next_action": null
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "lem:affine-indicator-kernel::depends_on::lem:cut-code-classes",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cut-code-classes",
+        "locator": null
+      },
+      "scope": "Characters of degree at most D in distinct cut-code cosets have independent quotient coordinates, so R_D of the indicator is nonzero.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Characters of degree at most D in distinct cut-code cosets have independent quotient coordinates, so R_D of the indicator is nonzero."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::depends_on::lem:sparse-weight-survival",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:sparse-weight-survival",
+        "locator": null
+      },
+      "scope": "The rank h(K - 2e)/s_A of multiplication by the indicator.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The rank h(K - 2e)/s_A of multiplication by the indicator."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::depends_on::cor:pair-sector-bounds",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:pair-sector-bounds",
+        "locator": null
+      },
+      "scope": "W meeting the cut space only in 0.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "W meeting the cut space only in 0."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::cites::lem:cylinder-killer-degree",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:cylinder-killer-degree",
+        "locator": null
+      },
+      "scope": "Unit rows give cylinders; part (c) with a transversal is that lemma's construction (b) in this setting.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Unit rows give cylinders; part (c) with a transversal is that lemma's construction (b) in this setting."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::cites::prop:multiplier-transfer-limits",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "prop:multiplier-transfer-limits",
+        "locator": null
+      },
+      "scope": "Its product of denominators with additive cost is part (c) with the count of products in place of the rank.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Its product of denominators with additive cost is part (c) with the count of products in place of the rank."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::cites::lem:pair-product-rank-floor",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:pair-product-rank-floor",
+        "locator": null
+      },
+      "scope": "The products of its class, whose joint kernel this entry studies.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The products of its class, whose joint kernel this entry studies."
+      }
+    },
+    {
+      "id": "lem:affine-indicator-kernel::cites::cor:growing-expansion-flat-removal",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:growing-expansion-flat-removal",
+        "locator": null
+      },
+      "scope": "Affine-flat indicators as errors there, as killers here.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "Affine-flat indicators as errors there, as killers here."
+      }
+    },
+    {
+      "id": "check:sector-joint-kernel-sizes::cites::lem:affine-indicator-kernel",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "check:sector-joint-kernel-sizes",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:affine-indicator-kernel",
+        "locator": null
+      },
+      "scope": "The killers whose sufficiency the check tests.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-10-17-affine-indicator-kernel"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fab6cf2389005c4a83104a28f46ac12cef7784a1",
+        "date": "2026-10-17",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context medium reviewer subagent",
+        "note": "The killers whose sufficiency the check tests."
+      }
+    }
+  ],
+  "topic_definitions": []
+}
