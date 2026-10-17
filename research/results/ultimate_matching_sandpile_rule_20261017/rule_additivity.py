@@ -21,6 +21,8 @@ if every run sends all mass straight to the cells in deficit.
 Control: the electrical flow, computed by solving the cycle's Laplacian, must be additive on the same pairs.
 Positive control: the deficit-first flow of the record's case (3, 1, 0, 0), thresholds 1, must differ from the
 electrical flow (1.25 on edge 1-4, 0.75 on edge 1-2) by a circulation, as the balanced-sandpile entry found by hand.
+Forced by counts: the electrical control is additive by linearity whatever the inputs, so it tests only the solver;
+the positive control's difference is divergence-free by mass conservation, so only "differs" can fail there.
 Baseline: the plainest bound is the lemma's statement that any two flows with the same divergence differ by a
 circulation; it does not decide additivity, which is a property of the rule across inputs.
 Record checked: lem:balanced-sandpile-flow (linear for fixed kernels) and the balanced-sandpile entry's Suggestion
