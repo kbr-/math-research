@@ -34,16 +34,45 @@ class RouteJudgeTest(unittest.TestCase):
 
     def test_a_detour_is_refused_unless_the_paragraph_says_not_taken_with_a_reason(self):
         said = 'The restoring-drift construction is the most direct step; this entry excludes another class.'
-        reason = route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, asker('detour'), io.StringIO())
+        reason = route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, asker('detour'), io.StringIO(), every=1)
         self.assertIn('detour', reason)
         taken = said + ' Not taken because its lemma is needed first by the construction itself.'
         self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', taken), NOTEBOOK, asker('detour'),
-                                              io.StringIO()))
+                                              io.StringIO(), every=1))
+
+    def test_the_two_research_entries_before_the_draft_reach_the_judge(self):
+        # the user, 17 October 2026: "give it the last 3 entries then"
+        old = ''.join(f'<article id="o{i}" data-kind="research"><h3>Entry {i}</h3>'
+                      f'<p><strong>Question.</strong> Question {i}?</p></article>' for i in range(3))
+        ask = asker('on-route')
+        said = 'The restoring-drift construction is built and tested here, the most direct step.'
+        route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK + old, ask, io.StringIO(), every=1)
+        self.assertNotIn('Entry 0', ask.prompt)
+        self.assertLess(ask.prompt.index('Entry 1'), ask.prompt.index('Entry 2'))
+        self.assertLess(ask.prompt.index('Entry 2'), ask.prompt.index('One more exclusion'))
+
+    def test_the_judge_reads_every_third_research_entry_only(self):
+        # the user, 17 October 2026: "Make it run once per 3 cycles"
+        said = 'The restoring-drift construction is the most direct step; this entry excludes another class.'
+        research = '<article id="x" data-kind="research"></article>'
+        for before, judged in ((0, False), (1, False), (2, True), (3, False), (5, True)):
+            with self.subTest(before=before):
+                notice = io.StringIO()
+                reason = route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK + research * before,
+                                             asker('detour'), notice)
+                self.assertEqual(reason is not None, judged)
+                if not judged:
+                    self.assertIn('not run on research entry', notice.getvalue())
+
+    def test_a_missing_shortest_route_is_refused_off_the_cadence_too(self):
+        reason = route_judge.refusal(DRAFT.replace('<p><strong>Shortest route.</strong> SAID</p>', ''), NOTEBOOK,
+                                     asker('on-route'), io.StringIO())
+        self.assertIn('Shortest route', reason)
 
     def test_on_route_passes_and_the_record_reaches_the_judge(self):
         ask = asker('on-route')
         said = 'The restoring-drift construction is built and tested here, the most direct step.'
-        self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, ask, io.StringIO()))
+        self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, ask, io.StringIO(), every=1))
         self.assertIn('restoring-drift flow', ask.prompt)
         self.assertIn('Latest review, Decision', ask.prompt)
 
@@ -52,7 +81,7 @@ class RouteJudgeTest(unittest.TestCase):
             raise haiku_judge.Failed('no answer within 90 s')
         notice = io.StringIO()
         said = 'The restoring-drift construction is the most direct step; this entry builds it.'
-        self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, down, notice))
+        self.assertIsNone(route_judge.refusal(DRAFT.replace('SAID', said), NOTEBOOK, down, notice, every=1))
         self.assertIn('not consulted', notice.getvalue())
 
 

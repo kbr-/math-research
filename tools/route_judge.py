@@ -8,9 +8,11 @@ cycles in a row had proved exclusions after the record's own obstructions named 
 The judge (Sonnet, through tools/haiku_judge.py; Haiku passed the prompting case, the linear-flow entry, as on
 route because its review had scheduled it, research/provenance/framework/route-judge-replay-20261017.txt) is given the notebook's living sections that state the goal and
 the route (Where we stand, Open statements, The remaining route, Proposed next step), the latest review's Obstacle
-and Decision, and the draft's Question, Shortest route and New mathematics paragraphs, and answers whether the
+and Decision, and the Question, Shortest route and New mathematics paragraphs of the draft and of the two research
+entries before it (PREVIOUS; the user, 17 October 2026: "give it the last 3 entries then"), and answers whether the
 draft takes the most direct step the record names toward the goal. tools/notebook-append.py calls it on every
-research entry: a verdict "detour" is refused unless the draft's Shortest route paragraph says "Not taken" with a
+third research entry of a notebook (EVERY; the user, 17 October 2026: "Make it run once per 3 cycles") and checks
+the Shortest route paragraph's presence on every one: a verdict "detour" is refused unless the draft's Shortest route paragraph says "Not taken" with a
 reason of at least eight words; a failed call lets the append through with a printed notice, so the judge never
 blocks work on its own outage.
 
@@ -47,11 +49,18 @@ step is a concrete construction, proof or test the record names; the goal or ope
 discrepancy", "build a refuting construction") is not one, so with no concrete step named, answer on-route. An entry whose
 step the direct step concretely needs first (a lemma the construction uses) is on route.
 
+The research entries just before the new one are given too, oldest first, since the judge reads only every third
+entry: judge the new entry as the latest of these, so that a run of entries orbiting the goal is seen as a run,
+and an entry continuing a step the earlier ones began is read with them.
+
 Answer with JSON only: {{"verdict": "on-route" or "detour", "shortest": "<the most direct step the record names, one
 sentence>", "reason": "<one sentence>"}}
 
 THE RECORD:
 {record}
+
+THE RESEARCH ENTRIES BEFORE IT:
+{earlier}
 
 THE NEW ENTRY:
 {entry}
@@ -104,18 +113,39 @@ def sonnet(prompt, timeout):
     return haiku_judge.ask(prompt, timeout, model=MODEL)
 
 
+PREVIOUS = 2   # the user, 17 October 2026: "give it the last 3 entries then", the draft and the two before it
+
+
+def earlier_text(notebook, count=PREVIOUS):
+    """The last COUNT research entries of the record, oldest first, each as entry_text gives it."""
+    articles = re.findall(r'<article\b[^>]*\bdata-kind="research"[^>]*>.*?</article>', notebook, re.S)[-count:]
+    return '\n\n'.join(entry_text(article) for article in articles) if count else ''
+
+
 def judge(draft, notebook, ask=sonnet):
     """The judge's answer, a dict with verdict, shortest and reason; raises haiku_judge.Failed on failure."""
-    answer = ask(PROMPT.format(record=record_text(notebook), entry=entry_text(draft)), TIMEOUT)
+    answer = ask(PROMPT.format(record=record_text(notebook), earlier=earlier_text(notebook) or '(none)',
+                               entry=entry_text(draft)), TIMEOUT)
     verdict = str(answer.get('verdict', '')).strip().lower()
     if verdict not in ('on-route', 'detour'):
         raise haiku_judge.Failed(f'the judge answered no verdict: {answer!r}')
     return {'verdict': verdict, 'shortest': str(answer.get('shortest', '')), 'reason': str(answer.get('reason', ''))}
 
 
-def refusal(draft, notebook, ask=sonnet, notice=sys.stderr):
+EVERY = 3     # the user, 17 October 2026: "Make it run once per 3 cycles"
+RESEARCH = re.compile(r'<article\b[^>]*\bdata-kind="research"')
+
+
+def due(notebook, every=EVERY):
+    """Whether the draft about to be appended is a research entry the judge reads: the notebook's 3rd, 6th, ...
+    research entry. Counted from the record, so a refused draft rewritten for the same position is judged again."""
+    return (len(RESEARCH.findall(notebook)) + 1) % every == 0
+
+
+def refusal(draft, notebook, ask=sonnet, notice=sys.stderr, every=EVERY):
     """The reason to refuse a research draft on route grounds, or None. A draft without a Shortest route paragraph
-    is refused without asking; a detour is refused unless that paragraph says "Not taken" with a reason."""
+    is refused without asking; on every EVERY-th research entry the judge is asked, and a detour is refused unless
+    that paragraph says "Not taken" with a reason."""
     said = shortest_paragraph(draft)
     if len(said) < 40:
         return ('a research entry states, in a <p><strong>Shortest route.</strong> paragraph of at least 40 '
@@ -123,6 +153,11 @@ def refusal(draft, notebook, ask=sonnet, notice=sys.stderr):
                 'takes it, or "Not taken" with the concrete reason, or, where the record names none, "No direct '
                 'route known yet" and what the exploration is to find (AGENTS.md, order of work: shortest route '
                 'first)')
+    if not due(notebook, every):
+        count = len(RESEARCH.findall(notebook)) + 1
+        print(f'route judge: not run on research entry {count} (it reads every {every}th; the next at entry '
+              f'{count + (-count) % every})', file=notice)
+        return None
     try:
         verdict = judge(draft, notebook, ask)
     except haiku_judge.Failed as error:
