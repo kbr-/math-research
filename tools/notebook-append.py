@@ -78,7 +78,9 @@ def refuse_early_review_credit(entry):
     Verification gate was still a placeholder). The record's 125 research status lines that mention a review were
     written after it, and none of their entries holds a placeholder."""
     meta = re.search(r'<p class="entry-meta">(.*?)</p>', entry, re.S)
-    if meta and REVIEW_CREDIT.search(meta.group(1)) and PLACEHOLDER.search(entry):
+    # A placeholder in the status line itself ("[status written after the review]") credits nothing.
+    status = re.sub(r'\[[^\]]*written after[^\]]*\]', ' ', meta.group(1), flags=re.I) if meta else ''
+    if REVIEW_CREDIT.search(status) and PLACEHOLDER.search(entry):
         raise ValueError('the status line credits a review while the entry still holds a "[written after ...]" '
                          'placeholder: write the status line after the review returns, from the reviewed body '
                          '(AGENTS.md: title and status line written after the review)')

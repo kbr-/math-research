@@ -426,7 +426,10 @@ class NotebookAppendTests(unittest.TestCase):
             tool.refuse_early_review_credit(early)
         for entry in (early.replace('[written after the second pass]', 'One reviewer, two passes.'),
                       early.replace('with a reviewed correction pass', 'two-choice routing'),
-                      '<article id="a4">\n<p class="entry-meta">Reviewed unsuccessful estimate.</p>\n</article>'):
+                      '<article id="a4">\n<p class="entry-meta">Reviewed unsuccessful estimate.</p>\n</article>',
+                      # 17 October 2026: the placeholder status line itself was refused.
+                      early.replace('Working proof, with a reviewed correction pass.',
+                                    '17 October 2026 · [status written after the review] · Two-choice routing.')):
             tool.refuse_early_review_credit(entry)
 
     def test_an_entry_is_refused_while_where_we_stand_is_as_committed_unless_a_reason_is_given(self):
