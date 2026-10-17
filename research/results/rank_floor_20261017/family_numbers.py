@@ -40,7 +40,7 @@ def member(log2n, alpha, m_over, pi_frac):
         log2_floor = t * math.log2(1 - kappa) + math.log2(tail)
         q = K / (2 * (m - K + 1))
         log2_ratio = 2 * t * math.log2(q) - log2_floor
-        log2_record = s * K / m * LOG2E                        # cor:pair-sector-bounds (iii): e^{sK/m}
+        log2_record = float(s) * (K / m) * LOG2E               # cor:pair-sector-bounds (iii): e^{sK/m}; s*K overflows a float
         rows.append(dict(log2n=log2n, alpha=alpha, m=f'{m_over:g} n Delta', Delta=Delta, D=f'2^{math.log2(D):.3f}',
                          K=f'2^{math.log2(K):.3f}', t=t, s=f'2^{math.log2(s):.4f}', pi=pi, rho=round(rho, 4),
                          beta=round(2 ** log2_beta, 4), log2_eta=round(log2_eta, 1), log2_zeta=f'{log2_zeta:.4e}',
