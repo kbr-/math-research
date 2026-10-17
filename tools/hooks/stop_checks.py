@@ -650,6 +650,62 @@ CAUGHT_AFTER = re.compile(r"\b(?:falls|fell) under (?:the |an )?(?:existing |rev
                           r"[^.]*|\b(?:audit|review|reviewer|check)[^.]{0,40}\bwhich caught (?:it|them|all)\b", re.I)
 
 
+# A Meta or Prevention paragraph whose change is still to be made: on 17 October 2026 a Meta said its AGENTS.md
+# addition "waits for this turn's commit", and passed the home check because the turn had changed AGENTS.md for
+# another reason (the stand-in review's fifth objection). A queued build is the allowed deferral and says so in
+# other words ("queued", "Not built in the turn"), which this does not match.
+DEFERRED = re.compile(r"[^.!?\n]*\b(?:waits? for (?:this turn's|the|its|a later|the next) commit|"
+                      r"comes? (?:with|in) (?:the next|a later|this turn's) commit|"
+                      r"\bis not (?:yet )?committed(?: yet)?\b|"
+                      r"I(?:'ll| will| am going to|'m going to| plan to| intend to) (?:add|write|commit|build|put|"
+                      r"make|record)\b|"
+                      r"(?:to be|will be) (?:added|written|committed|built) (?:with|in|after|at) "
+                      r"(?:this turn's|the next|a later|the|its) commit)[^.!?\n]*", re.I)
+
+
+def deferred_block(reply):
+    """The block for a reply whose Meta or Prevention paragraph defers its own change to a later commit, or None."""
+    for kind, start in (('Meta', META_PARAGRAPH), ('Prevention', PREVENTION_PARAGRAPH)):
+        for paragraph in sections(start, reply):
+            found = DEFERRED.search(QUOTED.sub('', paragraph))
+            if found:
+                return {'decision': 'block', 'reason': (
+                    f'A {kind} paragraph whose change is still to be made: "{" ".join(found.group(0).split())[:200]}". '
+                    'The change is made and committed before the reply that names it (AGENTS.md: the check for a '
+                    'right objection is built and committed before the reply); make it now, or queue it as a build '
+                    'with tools/lead_queue.py add and say so.')}
+    return None
+
+
+def replay_deferred(paths):
+    """Each past text of more than 200 characters in the transcripts at `paths` that deferred_block refuses, with
+    the count of texts holding a Meta or Prevention paragraph: the check is counted over past replies."""
+    texts = with_paragraph = 0
+    refused = []
+    for name in paths:
+        for line in open(name, errors='replace'):
+            if '"assistant"' not in line or '"text"' not in line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if entry.get('type') != 'assistant':
+                continue
+            for part in (entry.get('message') or {}).get('content') or []:
+                if isinstance(part, dict) and part.get('type') == 'text' and len(part.get('text', '')) > 200:
+                    text = part['text']
+                    texts += 1
+                    if sections(META_PARAGRAPH, text) or sections(PREVENTION_PARAGRAPH, text):
+                        with_paragraph += 1
+                    block = deferred_block(text)
+                    if block:
+                        refused.append(block['reason'].split('"')[1])
+    for text in refused:
+        print(f'- {text}')
+    print(f'{texts} texts read, {with_paragraph} with a Meta or Prevention paragraph; {len(refused)} refused.')
+
+
 def meta_home_block(reply, calls, changed):
     """The block for a reply whose Meta or Prevention paragraph names no file the turn changed outside the
     records (`changed`: what git shows changed since the turn's prompt), or None; a Prevention saying there
@@ -1180,7 +1236,8 @@ def main(argv):
                                      ('refusal', lambda: refusal_block(path, reply)),
                                      ('record search', lambda: record_search_block(path, reply)),
                                      ('meta home', lambda: meta_home_block(
-                                         reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
+                                         reply, calls, changed_files(ROOT, turn_start(path)) if path else [])),
+                                     ('deferred change', lambda: deferred_block(reply)))
                                     + branch_checks(turn_texts, calls, reply, ROOT))
         if name not in off)), None)
     if blocked:
@@ -1230,5 +1287,8 @@ if __name__ == '__main__':
         sys.exit(0)
     if sys.argv[1:2] == ['--replay-figures']:
         replay_figures(sys.argv[2:])
+        sys.exit(0)
+    if sys.argv[1:2] == ['--replay-deferred']:
+        replay_deferred(sys.argv[2:])
         sys.exit(0)
     sys.exit(main(sys.argv[1:]))

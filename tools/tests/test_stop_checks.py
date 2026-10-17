@@ -581,6 +581,30 @@ class UncheckedClaimTest(HookFixture):
                 self.assertEqual(self.run_hook(argv=['--global'])['decision'], 'block')
 
 
+class DeferredChangeTest(unittest.TestCase):
+    # The stand-in review of 17 October 2026: a Meta's change "waits for this turn's commit".
+    def test_a_meta_deferring_its_change_is_refused(self):
+        reply = ('**Meta.** The habit: I changed the hook for speed. For a check, that real-data run must also '
+                 'confirm its findings on the case at hand; that addition to AGENTS.md waits for this turn\'s commit.')
+        self.assertIn('still to be made', hook.deferred_block(reply)['reason'])
+        self.assertIsNotNone(hook.deferred_block('**Prevention.** I will add a test to tools/tests/test_x.py.'))
+        self.assertIsNotNone(hook.deferred_block('**Meta.** The rule is to be added with the next commit to AGENTS.md.'))
+        # The rewordings tried before the commit (research/results/general_step_review_20261017/deferred-bypass.txt).
+        for reply in ('**Meta.** That addition to AGENTS.md comes with the next commit.',
+                      '**Meta.** I plan to add it to AGENTS.md.',
+                      '**Meta.** The addition to AGENTS.md is not committed yet.'):
+            self.assertIsNotNone(hook.deferred_block(reply), reply)
+
+    def test_legitimate_sentences_with_each_phrase_pass(self):
+        for reply in (
+                '**Prevention.** Queued as guard-quote-check: Not built in the turn: the transcript lacks the text.',
+                '**Meta.** The commit check now refuses a message that waits for no review; AGENTS.md says so.',
+                '**Prevention.** The hook will refuse such a reply; its test is in tools/tests/test_stop_checks.py.',
+                '**Meta.** Earlier I said "that addition waits for this turn\'s commit"; it is now committed.',
+                'The build waits for the next commit of the other session. **Review.** Nothing else.'):
+            self.assertIsNone(hook.deferred_block(reply), reply)
+
+
 class OfferBlockTest(unittest.TestCase):
     # 17 October 2026: a reply offered to queue an idea, and another gave "isn't in the record" as an answer.
     def test_an_offer_is_refused(self):

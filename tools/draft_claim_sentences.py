@@ -441,6 +441,48 @@ def step_forms_report(draft, width):
                      + [f'{len(found)} such hypotheses.'])
 
 
+# A search the draft reports by its words, "QUERY" returned ...: on 17 October 2026 a review's draft reported two
+# searches and their results before either was run; the finisher's search check fires only at the end.
+REPORTED_SEARCH = re.compile(r'["“]([^"”]{12,400})["”]\s*(?:returned|found|gave)\b')
+SEARCH_WINDOW_S = 12 * 3600
+
+
+def search_words(query):
+    """A query's words, without the tool's options (-n 5) and in lower case."""
+    return [w for w in re.sub(r'(?:^|\s)-n\s+\d+', ' ', query).lower().split() if not w.startswith('-')]
+
+
+def unrun_searches(draft, logged):
+    """The searches the draft says returned something whose words no logged query (`logged`, query strings) has."""
+    run = {tuple(search_words(q)) for q in logged}
+    return [m.group(1) for m in REPORTED_SEARCH.finditer(text(draft))
+            if tuple(search_words(m.group(1))) not in run]
+
+
+def logged_queries(root, now=None):
+    """The queries tools/search-claims.py logged in the last SEARCH_WINDOW_S seconds."""
+    path = pathlib.Path(root) / 'research/logs/claim-searches.jsonl'
+    now = now or __import__('time').time()
+    found = []
+    for line in path.read_text().splitlines() if path.exists() else ():
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if row.get('unix_s', 0) >= now - SEARCH_WINDOW_S:
+            found.append(row.get('query', ''))
+    return found
+
+
+def unrun_searches_report(draft, logged, width):
+    found = unrun_searches(draft, logged)
+    lines = [f'  "{q}"' for q in found]
+    return '\n'.join(['Searches the draft reports as returning results that tools/search-claims.py has not logged in '
+                      'the last twelve hours; run each, then write what it returned (AGENTS.md):']
+                     + [line if width <= 0 else line[:width] for line in lines]
+                     + [f'{len(found)} such searches, of {len(logged)} logged queries compared.'])
+
+
 PART = r'(?:Sections?|Theorems?|Lemmas?|Corollar(?:y|ies)|Propositions?|Definitions?|Appendix|Remarks?)'
 NOT_READ = re.compile(r'(' + PART + r'\s+[\dA-Z][\w.]*(?:(?:\s*(?:,|and|to|–|-)\s*)[\dA-Z][\w.]*)*)'
                       r'(?:[^.;]|(?<=\d)\.(?=\d)){0,60}?\b(?:not read|unread|was not read|were not read)\b'
@@ -1502,6 +1544,7 @@ def main():
     print('\n' + vanishing_report(draft, args.width, listing))
     print('\n' + hypothesis_report(draft, args.width, listing))
     print('\n' + step_forms_report(draft, args.width))
+    print('\n' + unrun_searches_report(draft, logged_queries(ROOT), args.width))
     spec = json.loads(pathlib.Path(args.spec).read_text()) if args.spec else None
     print('\n' + unread_report(draft, registry, args.width, spec))
     print('\n' + own_summaries_report(draft, args.width))

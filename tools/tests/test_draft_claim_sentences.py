@@ -742,6 +742,22 @@ class NewListingsTest(unittest.TestCase):
         self.assertTrue({('section', '2'), ('section', '3'), ('section', '4')} <= parts, parts)
 
 
+class UnrunSearchesTest(unittest.TestCase):
+    def test_a_search_reported_before_it_was_run_is_listed(self):
+        # 17 October 2026: a review's draft reported two searches and their results before either was run.
+        draft = ('<p><strong>Record search.</strong> "rate threshold contraction per factor half the ratio" returned '
+                 'thm:a; "Hilbert function of a point set in a cost filtration" returned prop:b.</p>')
+        self.assertEqual(dcs.unrun_searches(draft, []), ['rate threshold contraction per factor half the ratio',
+                                                         'Hilbert function of a point set in a cost filtration'])
+        logged = ['-n 5 rate threshold contraction per factor half the ratio']
+        self.assertEqual(dcs.unrun_searches(draft, logged), ['Hilbert function of a point set in a cost filtration'])
+
+    def test_a_quotation_that_is_not_a_reported_search_is_not_listed(self):
+        draft = ('<p>In the lemma\'s words, "M(1-eta)^t<1 with eta the ambient ratio" holds; '
+                 'the reviewer said "a polynomial factor decides nothing".</p>')
+        self.assertEqual(dcs.unrun_searches(draft, []), [])
+
+
 class StepFormsTest(unittest.TestCase):
     def test_a_hypothesis_beside_the_weaker_form_its_step_displays(self):
         # 17 October 2026: the template's hypothesis kept while the step showed the form the lemma needed.
