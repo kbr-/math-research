@@ -120,8 +120,9 @@ def integer_pdm(w, seq):
     coef = levels[len(w)].reshape(sizes)
     pos = [i for i, x in enumerate(w) if x > 0]
     neg = [i for i, x in enumerate(w) if x < 0]
+    zero = [i for i, x in enumerate(w) if x == 0]
     rows = int(np.prod([sizes[i] for i in pos]))
-    return np.transpose(coef, pos + neg).reshape(rows, -1)
+    return np.transpose(coef, pos + neg + zero).reshape(rows, -1)
 
 
 def det(m):
