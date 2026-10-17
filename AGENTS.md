@@ -313,7 +313,10 @@ AGENTS.md"):
   source: a proof, a statement of record, or the word judgement; the reason is written from that
   source, not from the decision it is meant to support.
 - Check a witness's or construction's constraints as functions of the growing parameter, in the
-  limit, never at the size written for.
+  limit, never at the size written for; check there also what the recorded statements it is meant to
+  escape give on it, and read each line a listing tool prints beside the source it names before the
+  draft goes on (17 October 2026: a witness fit its own hypotheses in the limit while the record's
+  bound covered it there, and a listed sentence applied a lemma outside its image).
 - Recheck each step's preconditions (independence, quantifier ranges, domains), not only its
   arithmetic.
 - Write a negative sentence ("no estimate applies", "the record lacks it") only beside the attempt

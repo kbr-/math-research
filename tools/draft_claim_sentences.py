@@ -615,8 +615,47 @@ ANSWER = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n[ \t]*rests on:[ \t]*([^\n]*)$', r
 ANSWER_WORDS = 4
 
 
-def answers_template(draft):
-    return ''.join(f'{key} [{where}] {sentence}\n  rests on: \n' for key, where, sentence in summing_up(draft))
+def answers_template(draft, summaries=None):
+    domain = {row[0]: row for row in domain_rows(draft, summaries or {})}
+    form = ''.join(f'{key} [{where}] {sentence}\n  rests on: \n' + ('  within: \n' if key in domain else '')
+                   for key, where, sentence in summing_up(draft))
+    asked = {key for key, _, _ in summing_up(draft)}
+    return form + ''.join(f'{key} [{where}] {sentence}\n  within: \n'
+                          for key, (_, where, sentence, _, _) in domain.items() if key not in asked)
+
+
+# A summing-up sentence that cites a registered claim while its paragraph leaves some of the claim's symbols
+# unnamed is answered also on a line "within:": how the sentence's objects meet that claim's hypotheses.  On
+# 17 October 2026 a Bearing applied a conversion lemma to a family of grid functions that are not in the lemma's
+# image; the listing had printed the sentence among those naming fewer symbols than the claim, and its "rests
+# on:" answer, the lemma, was true.
+WITHIN = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*rests on:[^\n]*\n)?[ \t]*within:[ \t]*([^\n]*)$', re.M)
+
+
+def domain_rows(draft, summaries):
+    """[(key, section label, sentence, claim, [symbols])] for the summing-up sentences (SUMMARY paragraphs) that
+    cite a registered claim whose statement has symbols their paragraph does not name (unmentioned)."""
+    articles = re.findall(r'<article\b.*?</article>', draft, re.S)
+    found = {}
+    for article in (articles if len(articles) > 1 else [draft]):
+        for claim, where, sentence, missing in unmentioned(article, summaries):
+            if SUMMARY.match(where):
+                found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence, claim, missing))
+    return [(key, *row) for key, row in found.items()]
+
+
+def unbounded(draft, answers, summaries):
+    """The rows of domain_rows(draft) whose answer has no "within:" line of at least ANSWER_WORDS words."""
+    given = {key: answer for key, answer in WITHIN.findall(answers or '')}
+    return [row for row in domain_rows(draft, summaries) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
+
+
+def unbounded_report(rows):
+    return '\n'.join([f'{len(rows)} summing-up sentences cite a claim whose symbols their paragraph does not '
+                      'name and have no "within:" answer: say how the sentence\'s objects meet that claim\'s '
+                      'hypotheses (or which they do not, and the sentence\'s limit):']
+                     + [f'{key} [{where}] {sentence[:160]}\n  within:   ({claim}: {", ".join(missing[:8])})'
+                        for key, where, sentence, claim, missing in rows])
 
 
 def unanswered(draft, answers):
@@ -1311,8 +1350,9 @@ def main():
     open_rows = []
     if args.answers:
         answers = pathlib.Path(args.answers)
+        summaries = {c['id']: c['summary'] for c in registry['claims']}
         if not answers.exists():
-            answers.write_text(answers_template(draft))
+            answers.write_text(answers_template(draft, summaries))
             print(f'\nWrote {answers} with {len(summing_up(draft))} summing-up sentences to answer: after each, '
                   'say on its "rests on:" line what it rests on, pointing at a claim identifier, an #entry- '
                   'anchor, a file under research/ or a formula, or "none:" and why.')
@@ -1326,6 +1366,10 @@ def main():
             if gaps:
                 print(qualifier_gaps_report(gaps))
                 open_rows = open_rows + gaps
+            outside = unbounded(draft, answers.read_text(), summaries)
+            if outside:
+                print(unbounded_report(outside))
+                open_rows = open_rows + outside
     return 1 if unregistered or missing or open_rows else 0
 
 

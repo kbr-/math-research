@@ -679,6 +679,7 @@ def refuse_unanswered(entry, answers):
     import draft_claim_sentences
     rows = draft_claim_sentences.summing_up(entry)
     if not rows:
+        refuse_unbounded(entry, answers)
         return
     if answers is None:
         raise ValueError(f'{len(rows)} summing-up sentences of the entry say no, every, exactly and the like; '
@@ -692,6 +693,21 @@ def refuse_unanswered(entry, answers):
     gaps = draft_claim_sentences.qualifier_gaps(entry, answers)
     if gaps:                    # the answer admits a limit that the sentence does not carry
         raise ValueError(draft_claim_sentences.qualifier_gaps_report(gaps))
+    refuse_unbounded(entry, answers)
+
+
+def refuse_unbounded(entry, answers):
+    """Refuse an entry whose summing-up sentences cite a claim with symbols their paragraph does not name and
+    are not answered on a "within:" line (draft_claim_sentences.domain_rows)."""
+    import json
+    import draft_claim_sentences
+    registry = Path(__file__).resolve().parents[1] / 'research' / 'claims' / 'index.json'
+    if not registry.exists():
+        return
+    summaries = {c['id']: c['summary'] for c in json.loads(registry.read_text())['claims']}
+    outside = draft_claim_sentences.unbounded(entry, answers or '', summaries)
+    if outside:
+        raise ValueError(draft_claim_sentences.unbounded_report(outside))
 
 
 PUBLICATION_LINK = re.compile(r'href="(publications/[^"#]+\.tex)')

@@ -545,6 +545,23 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         changed = self.DRAFT.replace('None of the points hides', 'None of the points ever hides')
         self.assertEqual([where for _, where, _ in dcs.unanswered(changed, filled)], ['New mathematics'])
 
+    def test_a_summing_up_sentence_applying_a_claim_beyond_its_symbols_needs_a_within_answer(self):
+        # 17 October 2026: a Bearing applied a conversion lemma to grid functions outside the lemma's image.
+        summaries = {'lem:smeared-conv': 'For Y evenly spread and delta >= 20/sqrt N, every class function G has its '
+                                 'smeared discrepancy within 160 e sqrt N of the X-term of its cell averages.'}
+        draft = ('<article id="x" data-claims="lem:own"><p><strong>Goal progress.</strong> Unchanged. '
+                 '<strong>Bearing.</strong> Every chain has \\(|D(g)|\\le C\\), and by lem:smeared-conv these are bounds '
+                 'of the smeared form.</p><p><strong>Proof.</strong> By lem:smeared-conv the bound follows.</p>'
+                 '</article>')
+        self.assertEqual([row[3] for row in dcs.domain_rows(draft, summaries)],
+                         ['lem:smeared-conv'])                                                   # Proof: not asked
+        form = dcs.answers_template(draft, summaries)
+        self.assertEqual(len(dcs.unbounded(draft, form, summaries)), 1)
+        filled = form.replace('within: \n', 'within: only class functions whose cell averages are chains\n')
+        self.assertEqual(dcs.unbounded(draft, filled, summaries), [])
+        named = draft.replace('these are bounds', 'with \\(\\delta\\ge20/\\sqrt N\\) these are bounds')
+        self.assertEqual(dcs.domain_rows(named, summaries), [])                    # every symbol named: not asked
+
     def test_an_answer_that_limits_its_sentence_by_a_word_the_sentence_lacks_is_a_gap(self):
         form = dcs.answers_template(self.DRAFT)
         answer = lambda words: form.replace('rests on: \n', f'rests on: {words}\n')
