@@ -840,6 +840,16 @@ class LeadQueueTest(unittest.TestCase):
                     self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
                                               'Not built in the turn: the target branch is not checked out here. '
                                               'Tried: tools/port.py on a checkout of the target branch, refused.']), 0)
+                    # 17 October 2026: a build from a review names a saved output of a partial check, not only a tool
+                    text = ('Check it. Not built in the turn: the hook input lacks the earlier calls. Tried: '
+                            'tools/port.py on the case, which {} the exposing message.')
+                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'check-it',
+                                              'stand-in review, 17 October', text.format('reads')]), 1)
+                    Path(tmp, 'research', 'results', 'x').mkdir(parents=True)
+                    Path(tmp, 'research', 'results', 'x', 'replay.txt').write_text('1 match')
+                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'check-it',
+                                              'stand-in review, 17 October', text.format(
+                                                  'reads, research/results/x/replay.txt, missing')]), 0)
                 finally:
                     os.chdir(here)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--check', 'port-it', 's', 'Again.']), 1)
@@ -847,7 +857,9 @@ class LeadQueueTest(unittest.TestCase):
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), 'other', 's', 'No kind.', 'x']), 2)
                 self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--lead', 'other', 's', 'x']), 2)
             self.assertIn('Appended port-it, a build; 3 items in the queue.', out.getvalue())
-            self.assertIn('Appended weigh-it, an idea; 4 items in the queue.', out.getvalue())
+            self.assertIn('Appended check-it, a build; 4 items in the queue.', out.getvalue())
+            self.assertIn('names in its Tried clause the saved output of a partial check', err.getvalue())
+            self.assertIn('Appended weigh-it, an idea; 5 items in the queue.', out.getvalue())
             self.assertIn('port-it is already queued', err.getvalue())
             self.assertIn('Not built in the turn: <reason>', err.getvalue())
             self.assertIn('names no file of the repository', err.getvalue())

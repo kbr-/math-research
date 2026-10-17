@@ -2439,6 +2439,24 @@ def tried_names_file(text, root):
     return False
 
 
+REVIEW_SOURCE_RE = re.compile(r'review|stand-in', re.I)
+OUTPUT_DIRS = ('research/results/', 'research/logs/', 'research/provenance/')
+
+
+def tried_names_output(text, root):
+    """Whether the Tried clause names a saved output of a run (a file under research/results, research/logs or
+    research/provenance): 17 October 2026, three builds answering a reviewer's or stand-in's right objections were
+    queued with a Tried clause naming only files read, no partial check run in the turn."""
+    match = re.search(r'\bTried:(.*?)(?:\bNot built in the turn:|$)', text, re.I | re.S)
+    if not match:
+        return False
+    for token in re.findall(r'[\w./-]+', match.group(1)):
+        token = token.strip('.,;:')
+        if token.startswith(OUTPUT_DIRS) and (Path(root) / token).is_file():
+            return True
+    return False
+
+
 def main(argv):
     if len(argv) in (2, 3) and argv[1] == 'built':
         print('\n'.join(built(Path.cwd(), argv[2] if len(argv) == 3 else 'HEAD')), end='')
@@ -2453,6 +2471,12 @@ def main(argv):
         if argv[3] == '--build' and not tried_names_file(argv[6], Path.cwd()):
             print(f'{argv[4]}: the Tried clause names no file of the repository; name the file the attempt read or '
                   'tested (a tool, a rule file, a script), by its path from the repository root', file=sys.stderr)
+            return 1
+        if argv[3] == '--build' and REVIEW_SOURCE_RE.search(argv[5]) and not tried_names_output(argv[6], Path.cwd()):
+            print(f'{argv[4]}: a build answering a review names in its Tried clause the saved output of a partial '
+                  'check run in the turn (a file under research/results, research/logs or research/provenance), '
+                  'or is built now (AGENTS.md: the check for a right objection is built before the reply)',
+                  file=sys.stderr)
             return 1
         try:
             path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))
