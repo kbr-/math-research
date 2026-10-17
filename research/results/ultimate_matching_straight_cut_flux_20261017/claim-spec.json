@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Straight-cut forced flux](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-straight-cut-forced-flux)",
+    "label": "Straight-cut forced flux",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-straight-cut-forced-flux"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:straight-cut-forced-flux",
+      "summary": "(a) On the cell grid of side delta, rho_Q = N delta^2 - n_Q, every flow local to a set S of cells (zero on edges with one end in S, outflow rho - mean of rho over S on S) carries out of each subset A of S the net flux E_S(A), the sum over A of rho minus its mean over S; every flow carrying the counts to the background is local to the whole square. (b) For Psi convex nondecreasing with Psi(0)=0 and lambda > 0, its cost on the m edges between A and S minus A is at least m Psi(|E_S(A)|/(m lambda)), attained by spreading E_S(A) evenly. (c) On every grid with N delta^2 >= 16 log N, with probability at least 1 - 2 N^(-1.2), every rectangle S of cells (sides a, b) and every straight cut A parallel to side b have |E_S(A)| <= 2 sqrt(8 N a b log N), so at Psi = psi_4(./s), lambda = delta N/4, s = L sqrt(log N/N), the argument of (b) is at most 8 sqrt 8 sqrt(a/b)/L for every L > 0, and over any family of disjoint square blocks all straight cuts force a cost at most (N/2) psi_4(8 sqrt 8/L), 4.3e-4 N at L = 132, for every flow local to each block, hence across full grid lines for every flow.",
+      "assessment": "Working proof: (a) summing the outflow over A, the boundary of S carrying nothing; (b) Jensen over the cut's edges and monotonicity; (c) Bernstein for each axis rectangle of cells with variance at most N|R|, a union over at most N^2 rectangles, the decomposition of E_S(A) into two rectangle deviations, and the count of cut edges of disjoint blocks. One reviewer pass with corrections.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Shows what flows on the cells, two-choice routings included, are forced to carry across full grid lines (every flow) and across straight cuts of rectangles (flows local to the rectangle), and that this forced part is cheap at the reduction's scale, so no routing rule can gain on it and an obstruction through those cut totals cannot exist; the rectangle deviations are recorded on dyadic meshes no finer than 2^(-l_1) (lem:tube-localized-discrepancy (a)), and (c) gives them explicit constants on every grid, the reduction's finer grid included.",
+      "next_action": "The water-filling reduction over all levels: whether a less-loaded rule's per-point value differs from a linear function of the counts by a term of smaller fourth moment than the dyadic flow's (near-Gaussian shape; failure above exponent 2 needs a per-point variance bound in addition).",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:straight-cut-forced-flux",
+      "cites",
+      "lem:grid-flow-duality",
+      "Its (d) bounds every flow's cost below by the penalized functional; this lemma bounds the straight-cut forced part of every flow above."
+    ],
+    [
+      "lem:straight-cut-forced-flux",
+      "cites",
+      "lem:tube-localized-discrepancy",
+      "Its (a) bounds rectangle deviations up to a universal constant for small rectangles, on dyadic meshes no finer than 2^(-l_1); (c) here states them with explicit constants on every grid."
+    ],
+    [
+      "lem:straight-cut-forced-flux",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "The dyadic flow's per-point obstruction is not through straight-cut totals, which this lemma shows cheap for every flow."
+    ]
+  ]
+}
