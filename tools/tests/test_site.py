@@ -55,8 +55,17 @@ def node(script, *args, modules=None, timeout=30):
 
 class PublishedClient(unittest.TestCase):
     def test_update_behavior(self):
+        # A fixture root as in test_pages.PagesBuild: the client reads only index.html's embedded revision, and a
+        # build from the real root copied the whole record, 109.1 MB in 2.83 s on 17 October 2026, growing with
+        # every entry (research/provenance/framework/client-test-root-20261017.txt).
         with tempfile.TemporaryDirectory(prefix='math-pages-client-') as temp:
-            build(Path(temp) / 'site', 'https://example.github.io/math-research/', root=ROOT)
+            root = Path(temp) / 'root'
+            (root / 'LICENSES').mkdir(parents=True)
+            (root / 'index.html').write_text((ROOT / 'index.html').read_text())
+            (root / 'notebook.html').write_text('<h1>Example</h1>\\[x^2 + y^2 = z^2\\]')
+            (root / 'LICENSES/MIT.txt').write_text((ROOT / 'LICENSES/MIT.txt').read_text())
+            (root / 'CITATION.cff').write_text((ROOT / 'CITATION.cff').read_text())
+            build(Path(temp) / 'site', 'https://example.github.io/math-research/', root=root)
             result, _ = node('test_pages_client.js', str(Path(temp) / 'site/index.html'))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
