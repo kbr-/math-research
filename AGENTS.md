@@ -372,7 +372,10 @@ AGENTS.md"):
   had withdrawn). So is a reviewer's lead adopted as a next attempt: each statement it uses is
   reread for its constants, levels and ranges, and the accounting is redone, before it is written
   down (17 October 2026: a lead written into a Follow-up dropped a theorem's constant and the box
-  growth of a raised level).
+  growth of a raised level). So is a reviewer's correction that sorts cases ("only X can help"):
+  before it is written into the draft, it is tried on the case that separates its branches, a member
+  of each branch named from the record (17 October 2026: a review adopted "only legs anti-correlated
+  with the step can help", which missed a restoring drift that lem:restoring-drift-tail covers).
 - When a tool refuses, collides or reports something unexpected, find its cause before trying
   another route, and state the cause; an opening claim is stated only in the scope already proved. A
   retry that passes because the check remembers the text, a rerun until a timing passes, or a rule
