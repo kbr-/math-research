@@ -1,0 +1,154 @@
+{
+  "source": {
+    "record": "[Linear numbering transfer](https://kbr.is-a.dev/math-research/branches/common-multiplier/#entry-2026-10-17-linear-numbering)",
+    "label": "Linear numbering transfer",
+    "targets": [
+      "branches/common-multiplier/notebook.html#entry-2026-10-17-linear-numbering"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "polynomial-calculus"
+  ],
+  "claims": [
+    {
+      "id": "lem:polynomial-numbering-transfer",
+      "summary": "Polynomial numbering transfer: over any field, for the functional pigeonhole system (Booleanity, hole and functionality axioms, pigeon axioms Q_i = 1 - sum_j x_ij, multilinear ring) with any number m of pigeons and N holes, D <= ceil(N/2), C the degree-D closure and H that of the hole and functionality axioms alone: for a set of polynomial errors of degree <= D-K whose matching monomials x_E all have, under one numbering, the property of lem:admissible-numbering-transfer (x_{t cup E} in B_D for every x_t in T_K cap B_K with t cup E a matching), the common kernel in V_K modulo C equals the common kernel modulo H plus C cap V_K. Proof: that lemma's proof with x_E read as a polynomial, as the band review's Decision proposed.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer, with corrections adopted in a follow-up.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Extends the proved transfer from monomial to polynomial errors, Pang-form factors among them.",
+      "next_action": "Apply it to representatives of the uncollapsed two-family errors that clear a hole.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:linear-error-transfer",
+      "summary": "Linear error transfer: in the setting of lem:polynomial-numbering-transfer with 2 <= D <= ceil(N/2), K = 1 and any number of pigeons, for a set of polynomials of degree <= 1 with edge set S, a numbering has that lemma's property for {1} and S exactly when (i) no edge of S is in the hole of rank N-1, (ii) every edge of S in the hole of rank N-2 has its pigeon first, (iii) every edge of S in the hole of rank N-3 has its pigeon last; under such a numbering their common kernel in V_1 modulo C equals the common kernel modulo H plus C cap V_1. In particular when S misses three holes, or misses one hole while the edges of S in two further holes have one pigeon each, distinct. Away from the rank pair {N-3, N-2} the if direction is lem:ballot-dance-maps at two pigeons. Proof: a two-pigeon matching off the top hole fails to dance exactly when the pigeon moving first is at rank N-3 and the other at rank N-2.",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer, with corrections adopted in a follow-up.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves, at K=1, the trivial-representative transfer for every set of linear errors meeting the criterion: a special case of conj:linear-kernel-transfer's family form and, for one error, of conj:representative-sum-transfer.",
+      "next_action": "Extend the criterion to K = 2.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "cor:two-factor-kernels",
+      "summary": "Two-factor kernels: over any field, on the functional pigeonhole system with m >= 4 pigeons and N >= 5 holes at K = 1, with q1 = x00 + x11 and q2 = x22 + x33: (a) for 2 <= D <= ceil(N/2), Ann_C(1+q1) cap Ann_C(1+q2) cap V_1 = C cap V_1; (b) for 3 <= D <= ceil(N/2), the common kernel in V_1 of any set of errors of degree <= D-1 that contains, for each nu, the errors (1+q_nu)x_ij over every hole j of some pigeon i is C cap V_1, the errors (1+q_nu)x_e over every edge among them. Proof: cor:linear-error-transfer with holes ranked 0..N-1 (pigeon 3 first and 2 last at N = 5, pigeon 3 last at N = 6, any order at N >= 7) and lem:closure-degree-locality, Ann_H(1+q) cap V_1 = span{q} in characteristic 2 and 0 otherwise by matching coefficients, and for (b) the pigeon-row identity sum_j (1+q)x_ij = (1+q)(1-Q_i).",
+      "assessment": "Working proof passed by the sole fresh-context medium reviewer, with corrections adopted in a follow-up.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Proves at every size the collapsed instance of check:pang-family-kernels: two Pang-form families on every edge have no linear joint killer beyond C cap V_1.",
+      "next_action": "Prove or refute the uncollapsed instance, errors on the edges sharing nothing with q_nu.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "check:linear-numbering-criterion",
+      "summary": "Exact search (linear_criterion.py with numberings.py) on the functional pigeonhole board with 6 pigeons and 5 holes at K = 1: on 300 random edge sets with 12 random numberings each, the criterion (i)-(iii) of cor:linear-error-transfer agrees with the exact dance search on all 3600 pairs, 511 of which have the property; on 300 sets built to satisfy the criterion the search passes all 300. Controls: the factors' monomials pass under pigeons 3,0,1,4,5,2 and fail under 3,2,1,0,4,5; an edge in the top hole fails. With criterion_vs_excess.py at 5 pigeons and 4 holes, D=2, K=1, over F_2: of the 510 linear errors on pigeons 1 and 2, 163 have C-kernel larger than the trivial representative's domain side plus C cap V_1 (the positive excesses of check:top-degree-partition-kernels among them) and 216 meet the criterion under some numbering; none does both. That part decides the criterion directly, without the dance search, so it tests the criterion and cor:linear-error-transfer together.",
+      "assessment": "Exact search and kernel computation; scripts and outputs checked by the sole fresh-context medium reviewer in two passes.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Tests the criterion's equivalence against the exact search at one size.",
+      "next_action": "None beyond the corollary's proof.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:polynomial-numbering-transfer",
+      "refines",
+      "lem:admissible-numbering-transfer",
+      "The monomial lemma is its case of monomial errors; the proof is that lemma's, read for polynomials."
+    ],
+    [
+      "cor:linear-error-transfer",
+      "cites",
+      "lem:polynomial-numbering-transfer",
+      "Its transfer step."
+    ],
+    [
+      "cor:linear-error-transfer",
+      "cites",
+      "conj:representative-sum-transfer",
+      "Proves the trivial-representative equality for linear errors meeting the criterion, a special case."
+    ],
+    [
+      "cor:linear-error-transfer",
+      "cites",
+      "conj:linear-kernel-transfer",
+      "Proves its trivial-representative form under the criterion; the conjecture stays refuted by ex:top-degree-linear-killer, whose error fails clause (i)."
+    ],
+    [
+      "cor:linear-error-transfer",
+      "cites",
+      "ex:top-degree-linear-killer",
+      "Its error uses every hole and fails clause (i), consistent with the refutation."
+    ],
+    [
+      "cor:two-factor-kernels",
+      "cites",
+      "cor:linear-error-transfer",
+      "Its part (a)."
+    ],
+    [
+      "cor:two-factor-kernels",
+      "cites",
+      "lem:factor-ideal-domination",
+      "Its part (b), one inclusion."
+    ],
+    [
+      "cor:two-factor-kernels",
+      "cites",
+      "check:pang-family-kernels",
+      "Proves that check's instance (b) at every N >= 5 and over every field."
+    ],
+    [
+      "check:linear-numbering-criterion",
+      "cites",
+      "check:six-by-five-numberings",
+      "Its exact dance search."
+    ],
+    [
+      "check:linear-numbering-criterion",
+      "cites",
+      "cor:linear-error-transfer",
+      "Tests its criterion."
+    ],
+    [
+      "lem:polynomial-numbering-transfer",
+      "cites",
+      "cor:nested-hole-joint-transfer",
+      "Another sufficient condition for monomial sets, by nested hole sets."
+    ],
+    [
+      "lem:polynomial-numbering-transfer",
+      "refines",
+      "lem:functional-killer-transfer",
+      "The single-monomial transfer is a special case, through lem:admissible-numbering-transfer."
+    ],
+    [
+      "lem:polynomial-numbering-transfer",
+      "cites",
+      "conj:monomial-kernel-transfer",
+      "Proves that conjecture for monomial sets with a shared numbering, as the monomial lemma did; the conjecture stays open beyond."
+    ],
+    [
+      "cor:two-factor-kernels",
+      "cites",
+      "conj:pang-family-kernel-transfer",
+      "Proves its collapsed instance at every N >= 5; the conjecture stays open for the uncollapsed families."
+    ],
+    [
+      "check:linear-numbering-criterion",
+      "cites",
+      "check:top-degree-partition-kernels",
+      "Tests the corollary against that check's positive excesses at four holes."
+    ],
+    [
+      "lem:polynomial-numbering-transfer",
+      "cites",
+      "check:pang-family-kernels",
+      "Explains that check's collapsed instance through a shared numbering; its other instances use every hole."
+    ]
+  ]
+}

@@ -1,0 +1,100 @@
+Verdict: **pass with corrections.** All three proofs hold as written (polynomial numbering transfer, linear error transfer, two-factor kernels). The corrections are about scope, hypotheses, the record comparison and process. Two points matter most: the entry's own lemma, applied one error at a time, already reaches the stated next attempt, and the claim spec registers a computation that the draft does not contain.
+
+**Correctness: what I checked and found sound**
+- **Polynomial lemma.** Every step survives replacing x_E by a polynomial:
+  - A product x_t·x_{E'} that is not a matching (a shared hole or pigeon) lies in H. The other products are x_{t∪E'} of degree at most K+(D−K)=D, and the property puts them in T_D∩B_D. Cancellations between different pairs (t,E') do no harm.
+  - V_D/H has basis T_D, because H∩V_D is spanned by the non-matching monomials. C/H is K_D = span(B_D\T_D). Since B_D is a basis, span(T_D∩B_D)∩K_D = 0, so rE ∈ H.
+  - kE ∈ C and (H∩V_K)·E ⊆ H hold as in the monomial proof.
+- **The linear iff.** All three branches of the two-pigeon dance are right. Failure happens exactly when the pigeon moving first sits at rank N−3 and the second at N−2. The failing t exists if and only if some pigeon precedes p (clause ii) or follows p (clause iii).
+  - N=3, m=2: I checked by hand and it agrees.
+  - Edges sharing a pigeon at ranks N−2 and N−3: no numbering exists, as the clauses say.
+  - The case t=E is the t=∅ case. Clause (i) is needed: B_1 ⊆ B_D, and x_t ∈ B_1 forces b to be off the top hole.
+- **The N=5, 6, ≥7 numberings** are correct.
+- **The coefficient count** is correct over every field: c=0; a_e=0 off {00,11}; 2a_00+c = 2a_11+c = 0; a_00+a_11 = 0. This gives span{q} in characteristic 2 and 0 otherwise, and span{q1}∩span{q2} = 0.
+- **The pigeon-row converse in (b)** is correct.
+- **The script** compares the criterion with numberings.failures exactly as claimed, and the json shows 3600/3600 agreement, 511 property-holding pairs, and 300/300 built sets passing.
+- **Nonvacuity witness**: D = 3 = ⌈5/2⌉, pigeon 3 first, pigeon 2 last, hole 4 unused, dim V_1 = 31. All check.
+
+**Required changes**
+- **Unused hypothesis m≥2** (Linear error transfer, its Hypotheses bullet, and the spec of cor:linear-error-transfer). With m=1 there is no two-pigeon t, and clauses (ii) and (iii) hold trivially, so the iff still holds. Drop it; the scope becomes more general.
+- **D fixed at 3** (two-factor kernels). Part (a) holds for every 2≤D≤⌈N/2⌉ and part (b) for every 3≤D≤⌈N/2⌉; equivalently cite lem:closure-degree-locality. State the range; the scope becomes more general.
+- **(b) is stated narrower than its proof.** The converse uses only the errors (1+q_ν)x_{ij} over one full pigeon row i for each ν. The containment of C∩V_1 holds for any errors of degree ≤ D−K. So (b) holds for every error set of degree ≤2 that contains a full row for each ν. Using lem:factor-ideal-domination here is overkill: the containment is trivial, since (C∩V_1) times anything of degree ≤2 lies in C. Say so in Plainest bound or Baseline.
+- **Record comparison, lem:ballot-dance-maps.** "does not state the two-pigeon criterion" is true but too weak. At j=2 the ballot condition fails exactly when the top hole is used or the pair is {N−3, N−2}. So the "if" direction, away from that one pair, is ballot dance maps (every pigeon order). What is new is the analysis of pigeon order at that pair, plus the "only if" direction. Rewrite the sentence and "New are …" accordingly.
+- **Record comparison, "a special case of both … at every size and field".** Add "at K=1". Both conjectures allow every K with K+1≤D. Note also that conj:representative-sum-transfer is stated for single errors, so only the one-error case of the linear transfer is its special case.
+- **Claim spec does not match the draft.** The spec of check:linear-numbering-criterion includes criterion_vs_excess.py: 5 pigeons, 4 holes, 510 errors, 163 with positive excess, 216 meeting the criterion, none both. The json does record these numbers, but the draft's Computation paragraph does not mention this part, and it was not in the brief's review scope. Either add it to the entry and send it to review, or remove it from the spec. Separately, the spec of cor:linear-error-transfer omits the second "in particular" case (one missed hole plus two one-pigeon holes); that is acceptable, since it is narrower.
+- **Notation.** The lemma uses E both for errors and for monomial index sets ("x_E∈M", "Write E=Σc_{E'}x_{E'}"). Rename the errors (for example f ∈ 𝓔).
+- **Nonvacuity and Baseline.** "instance (b) of check:pang-family-kernels". The registered statement of that check carries no (a)–(d) labels, and its "dimensions 6 and 7" does not say which count is which. Quote the instance from the record entry, not by letter.
+
+**Open point: the uncollapsed instance (a) (my argument, unverified, bounded effort)**
+
+The per-error equalities do give the joint one, and the entry's own lemma supplies them. This contradicts the Smallest case and Own statements paragraphs.
+
+1. **Joint kernel as an intersection.** The joint C-kernel is always ∩_e Ann_C(E_e). If each single error has the transfer with its own numbering, the joint kernel is ∩_e (A_e + W), where A_e = Ann_H(E_e)∩V_1 and W = C∩V_1 = span{Q_k}. No closure computation is needed after that.
+2. **The space A_e.** Take E_e = x_e(1+q_1) with e=(i,j) and i,j ∉ {0,1}. A coefficient count gives A_e as the set of u = c + Σa_f x_f with:
+   - c + a_e = 0;
+   - a_00 = a_11 = 0 (in characteristic 2, a_00 = a_11 instead);
+   - a_f = 0 for every f compatible with e other than 00, 11, e;
+   - a_f free for f in row i or column j.
+
+   At 6×5 over F_2 this gives dim A_e = N+m = 11 and A_e∩W = span{Q_i}, so dim(A_e+W) = 16. That matches the check's "16".
+3. **Membership in A_e + W.** u ∈ A_e+W if and only if: for every pigeon k≠i, row k is constant off hole j (call that value −λ_k), and c + a_{ij} = Σ_{k≠i} λ_k. The λ_i term cancels.
+4. **Intersecting over the family.** Each row is constant off j for at least two holes j (N≥4), so each row is constant. In characteristic 2 the exceptions at 00 and 11 are removed by the ν=2 family, where rows 0 and 1 are ordinary. Then u ≡ a constant γ modulo W, and the remaining condition forces γ=0. Hence the joint kernel is C∩V_1.
+5. **Per-error equality.** Use the polynomial lemma with E_e alone, its monomials being x_e, x_e x00 and x_e x11. Rank hole j at 0 and holes 0 and 1 at ranks 1 and 2. For N≥6, every t∪E (at most three pigeons, the added pigeon off the top hole) appears to satisfy the ballot condition of lem:ballot-dance-maps, so it dances in every pigeon order. The binding segment is the whole board: 3 members against N−3 non-members.
+   - N=5 needs a numbering search. Alternatively, the per-error equality is already computed there over F_2 (dim 16).
+
+If this checks out, uncollapsed (a) holds for every N≥6 over any field, and at N=5 over F_2. The per-error-then-intersect step also looks general, and is worth registering.
+
+**Process audit**
+- **Title and status:** left pending (TITLE-PENDING, STATUS-PENDING). Proposed title: "Polynomial numbering transfer and a linear criterion". Proposed status line: "Working proof (K=1 corollaries; uncollapsed families open) · Linear numbering transfer".
+- **Goal progress.** "closing that family for the first architecture" overstates. The Pang-form family the survival test used is the uncollapsed one, on edges sharing nothing with q_ν. What is closed is the collapsed form: the factors, and the errors on every edge.
+- **Bearing.** "proving at every size what the survival test computed at two" overstates. At 7×6 the test computed only the uncollapsed 40 errors, which this entry does not cover. The collapsed form was computed only at 6×5.
+- **Smallest case and Own statements.** "the polynomial lemma needs a shared numbering, which the fixed representatives cannot have" misses applying it to each error separately, and "nothing tried gives the upper bound 6" sits beside a route the paragraph itself names. The Follow-up says "the per-error to joint step is not attempted" and gives no reason. The entry's own statements decide most of the attempt (see the open point above).
+- **Sub-idea.** The representatives-modulo-C∩V_2 sub-idea is shaped by the shared-numbering view. A plainer route, intersecting the per-error kernels, was not tried. A side note on why: under any numbering the linear monomials of a shared representative must still satisfy (i)–(iii). The identity x_{ij}Q_k ≡ x_{ij} − Σ_{l≠j} x_{ij}x_{kl} trades a linear monomial only for quadratic monomials that include the top hole.
+- **Review paragraph.** "committed with its count over 503 past sections" gives a count with no source in the draft. Item 1 answers a refusal-class mistake with "no further check is built", and the Meta then adds a written rule to AGENTS.md. That is prose where the class (changing input until a gate passes) calls for a check, and no reason is given for why none could be built. I did not read the AGENTS.md diff (it was outside the brief), so "added in this cycle" is unverified by me.
+- **Owed attempt.** "both are made below" holds only if the earlier entry's "(b)" is the every-edge form. The registered statement of check:pang-family-kernels does not label its instances, so I could not confirm the match.
+- **Second deferral of entry-2026-10-16-truncated-quotient:s1.** It is disclosed, with a commitment to make it or drop it next time.
+- **Claim spec.** It carries an unreviewed computation (criterion_vs_excess) that the draft does not show.
+
+Strength count: 3 (Goal progress "closing that family"; Bearing "what the survival test computed at two"; Record comparison "at every size and field" without K=1).
+
+**Suggestions (unverified)**
+- **Uncollapsed (a) at every N≥6, over any field.** Apply the polynomial lemma to each single error, using lem:ballot-dance-maps for the numbering, then intersect the spaces A_e+W as in the open point above. The argument is in the open point; the coefficient count reproduces the check's per-error 16. For N=5, run the existing numberings.py search on {x_e, x_e x00, x_e x11} for each e.
+- **A general remark to register.** When every error of a family transfers on its own, the joint C-kernel is ∩(A_ν + C∩V_K). The joint question then becomes linear algebra in V_K/(C∩V_K) on spaces computed modulo H only. Search the record under saving monotonicity, lem:saving-monotonicity and "modular law" before registering it.
+
+Files: draft /home/kbr/.claude/jobs/354c41d4/tmp/ln-draft.html; spec /home/kbr/dev/math-auxiliary/research/tmp/common-multiplier-worktree/research/results/common_multiplier_linear_numbering_20261017/claim-spec.json; criterion_vs_excess.json and criterion_vs_excess.py in the same folder.
+
+=====
+
+Follow-up verdict: **pass with corrections.** Items (1) and (3) need no correction. (2) needs one wording change, and (4) and (5) each need a change before the entry is final.
+
+**(1) Two-factor kernels (b), generalized: correct.**
+- For C∩V_1 ⊆ kernel: u has degree ≤1 and the error degree ≤D−1, so the product has degree ≤D and lies in C.
+- The converse uses one full pigeon row for each ν; the pigeon may differ between ν=1 and ν=2. The Q_i term has degree 3 ≤ D, and (a) is applied at the same D. "the other errors constrain nothing further" is right.
+- Minor: in (a), lem:closure-degree-locality is not needed. The linear transfer holds at every 2≤D≤⌈N/2⌉ directly. Either drop it from the proof and from the Hypotheses bullet, or say it is an alternative route.
+
+**(2) criterion_vs_excess.py: correct, one wording fix.**
+- `meets` tries all 24 hole orders. For each it requires: no edge at the top rank; at most one pigeon among the edges at rank N−2; at most one at rank N−3; and those two pigeons distinct. With M=5 such a pigeon order always exists, so this is exactly "(i)–(iii) under some numbering".
+- The count is right: 2 constants × (2^8−1) nonempty edge sets on rows 1 and 2 is 510.
+- `Space.__add__` re-reduces the combined basis, so `len(A+C1)` is dim(A+W), not dim A + dim W.
+- **Required change:** the computation is over F_2, since pc_closure and the spaces are binary. The Computation paragraph and the spec's sentence "of the 510 linear errors…" must say "over F_2".
+- **Note:** at 5×4 `meets` uses the criterion and never runs the dance search. So this part tests the criterion and the lemma together; a counterexample would not show which of the two failed. One clause in the paragraph should say so.
+
+**(3) Smallest case and Own statements: acceptable.**
+- The per-error route is labelled unverified and assigned to the next entry's lemma.
+- One correction: the per-error kernel of 16 was computed at 6×5 over F_2 only, which is the N=5 case. Write "over F_2" beside "16".
+- The ballot route I suggested covers N≥6. At N=5 the next lemma needs its own numbering, or the computation, which is over F_2 only. The Smallest case should say that N=5 is covered only over F_2 by computation.
+
+**(4) Record line citing prop:unit-flag-kernel-gap: required change.**
+- Its registered statement is in a different setting: a binary Boolean pseudoideal, two error kernels and the unit line, failing distributivity. It does not concern ∩(A_e+W) against ∩A_e+W for per-error transfers.
+- That the two can differ is elementary linear algebra. Example: A_1=span{a}, A_2=span{b}, W=span{a−b}. Then (A_1+W)∩(A_2+W) = span{a,b}, while A_1∩A_2+W = W.
+- Fix: cite the prop as "an instance of the same lattice failure in another setting", and give the elementary example as the reason the intersection must be computed.
+
+**(5) Review item 1: required change.**
+- The reason given for building no check rests on a statement about the Stop hook, that its refusal check covers classifier refusals only. Nothing in the brief backs it, so it is unverified by me; quote the hook's code or documentation.
+- More importantly, AGENTS.md says that a prevention not built in the turn is queued as a build item, with "Not built in the turn:" and the reason. Here a written AGENTS.md line, the one described in the Meta, stands in for that. Either queue the build (`lead_queue.py add --build`) and cite its ID, or build the check.
+
+**Spot-checks of other adopted items: no new problems.**
+- The ballot reading now in the Record comparison is right. For two pigeons: the segment {N−1} fails if the top hole is used, {N−3, N−2, N−1} fails exactly for the pair {N−3, N−2}, and longer segments pass.
+- Goal progress, Bearing, and "at K=1" in the Record comparison now match their sources.
+
+Strength count for the redraft's changed sentences: 0.
