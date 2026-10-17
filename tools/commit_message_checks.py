@@ -3,6 +3,7 @@
 
 Usage: tools/commit_message_checks.py MESSAGE_FILE          (staged changes; the commit-msg hook's call)
        tools/commit_message_checks.py --replay N             (the last N commits, each against its own diff)
+       tools/commit_message_checks.py --replay N --scripts   (the research scripts' labelled lines only)
 
 Figures: a framework commit (one that changes tools/ or compute.sh and no notebook) may state a figure (a
 count of tests, a time in seconds, N of M, a percentage, megabytes) only if each number of it appears in a
@@ -14,6 +15,9 @@ summary (a clause opened by if, when, provided, unless, at most, at least or for
 message's sentences naming that claim do not carry is listed; the commit goes through with the listing, since
 whether a dropped condition matters is for the author to judge. On 16 October 2026 a message dropped
 "Gamma > 0" and turned "at most" into "about".
+
+Scripts: a staged script under research/results must carry the labelled lines compute.sh asks of a script it
+runs there (unlabelled_scripts), since a script run from a scratch directory and copied in was never asked.
 """
 import json
 import re
@@ -155,6 +159,33 @@ def suite_after(paths, top):
             'the whole suite).')
 
 
+def compute_module(top):
+    """compute.sh loaded as a module, for its script checks (its main runs only under __main__)."""
+    from importlib.machinery import SourceFileLoader
+    return SourceFileLoader('compute_checks', str(top / 'compute.sh')).load_module()
+
+
+def unlabelled_scripts(paths, top, compute=None):
+    """'path: what it lacks' for each staged script under research/results that compute.sh would refuse to run
+    for its labelled lines (a refuting outcome or "No statement tested:", a Baseline, a Record checked, a
+    positive control).  compute.sh checks a script under research/results when it runs it there; on 17 October
+    2026 two scripts were run from scratch directories, where it checks nothing, and copied in with their
+    outputs, so the labels were never asked for.  The commit is where every copy passes."""
+    scripts = [p for p in paths if p.startswith('research/results/') and (top / p).is_file()
+               and Path(p).suffix in ('.py', '.gp', '.m2', '.sing', '.g')]
+    if not scripts or not (compute or (top / 'compute.sh').is_file()):
+        return []
+    compute = compute or compute_module(top)
+    command = ['run'] + [str(top / p) for p in scripts]
+    rel = lambda arg: str(Path(arg).relative_to(top))   # noqa: E731
+    found = [f'{rel(arg)}: ' + '; '.join(missing) for arg, missing in compute.scripts_without_refuting_outcome(command)]
+    found += [f'{rel(arg)}: a line "Baseline:"' for arg in compute.scripts_without_baseline(command)]
+    found += [f'{rel(arg)}: a line "Record checked:"' for arg in compute.scripts_without_record_check(command)]
+    found += [f'{rel(arg)}: a line "Positive control:" or "No positive control:"'
+              for arg in compute.scripts_without_positive_control(command)]
+    return found
+
+
 def check_staged(message_path):
     message = Path(message_path).read_text(encoding='utf-8', errors='replace')
     paths = git('diff', '--cached', '--name-only').split()
@@ -164,6 +195,12 @@ def check_staged(message_path):
     refusal = suite_after(paths, top)
     if refusal:
         print(refusal, file=sys.stderr)
+        status = 1
+    staged_changed = git('diff', '--cached', '--name-only', '--diff-filter=AM').split()
+    for line in unlabelled_scripts(staged_changed, top):
+        print(f'commit-msg: {line}, which compute.sh asks of a script it runs under research/results; a script '
+              'run elsewhere and copied in gets the same lines before its commit (COMPUTATION_RULES.md).',
+              file=sys.stderr)
         status = 1
     if is_framework(paths):
         missing = unsourced(message, paths, read)
@@ -182,11 +219,31 @@ def check_staged(message_path):
     return status
 
 
-def replay(count):
+def replay(count, scripts_only=False):
     """Each of the last `count` commits checked against its own diff: the figures each framework commit's message
-    states without a source, and the conditions each claim-registering commit's message drops."""
-    refused = framework = listed = registering = 0
+    states without a source, the conditions each claim-registering commit's message drops, and the research
+    scripts each adds or changes without their labelled lines; `scripts_only` skips the first two, whose reads
+    of the registry at each registering commit take most of the time (400 commits ran past 120 s)."""
+    import tempfile
+    refused = framework = listed = registering = scripts = unlabelled = 0
+    compute = compute_module(ROOT) if (ROOT / 'compute.sh').is_file() else None
+    scratch = tempfile.TemporaryDirectory(prefix='commit-replay-')
     for rev in git('log', f'-{count}', '--format=%H').split():
+        if compute:
+            changed = git('diff-tree', '--no-commit-id', '--name-only', '--diff-filter=AM', '-r', rev).split()
+            for path in [p for p in changed if p.startswith('research/results/')
+                         and Path(p).suffix in compute.REFUTATION_SUFFIXES]:
+                # Each script is written out as it was at `rev`, under a research/results path of its own.
+                root = Path(scratch.name) / rev
+                (root / path).parent.mkdir(parents=True, exist_ok=True)
+                (root / path).write_text(git('show', f'{rev}:{path}', check=False))
+                scripts += 1
+                lines = unlabelled_scripts([path], root, compute)
+                unlabelled += bool(lines)
+                for line in lines:
+                    print(f'{rev[:9]}\tscript\t{line[:160]}')
+        if scripts_only:
+            continue
         message = git('log', '-1', '--format=%B', rev)
         paths = git('diff-tree', '--no-commit-id', '--name-only', '-r', rev).split()
         read = lambda p, rev=rev: git('show', f'{rev}:{p}', check=False)   # noqa: E731
@@ -204,11 +261,14 @@ def replay(count):
                 listed += 1
                 print(f'{rev[:9]}\tcondition\t{ident}\t{condition}')
     print(f'{count} commits read: {refused} of {framework} framework commits would be refused for figures; '
-          f'{listed} conditions listed over {registering} commits that change the registry.')
+          f'{listed} conditions listed over {registering} commits that change the registry; {unlabelled} of '
+          f'{scripts} research/results scripts added or changed would be refused for labelled lines (each written '
+          'out now, so the record check\'s modification date applies to all).')
+    scratch.cleanup()
 
 
 if __name__ == '__main__':
     if sys.argv[1:2] == ['--replay']:
-        replay(int(sys.argv[2]))
+        replay(int(sys.argv[2]), scripts_only='--scripts' in sys.argv[3:])
         sys.exit(0)
     sys.exit(check_staged(sys.argv[1]))

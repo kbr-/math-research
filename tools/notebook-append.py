@@ -712,6 +712,11 @@ def refuse_unbounded(entry, answers):
     outside = draft_claim_sentences.unbounded(entry, answers or '', summaries)
     if outside:
         raise ValueError(draft_claim_sentences.unbounded_report(outside))
+    repeated = draft_claim_sentences.repeated_within(entry, answers or '', summaries)
+    if repeated:
+        raise ValueError('"within:" answers repeated word for word for sentences citing different claims; each '
+                         'says how its sentence\'s objects meet its own claim\'s hypotheses:\n'
+                         + '\n'.join(f'  {", ".join(keys)}: {text[:120]}' for text, keys in repeated))
 
 
 PUBLICATION_LINK = re.compile(r'href="(publications/[^"#]+\.tex)')

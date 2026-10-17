@@ -98,5 +98,35 @@ class SuiteAfterTest(unittest.TestCase):
             self.assertIsNone(cmc.suite_after(['tools/alone.py'], top))                     # its own tests do
 
 
+class UnlabelledScriptTest(unittest.TestCase):
+    """A research script staged without the lines compute.sh asks of a run there is refused at commit."""
+    COMPUTE = cmc.compute_module(ROOT)
+    LABELLED = ('"""Checks an identity.\nRefuted by: a nonzero difference printed for some n tested.\n'
+                'Possible because: the telescoping could drop a boundary term somewhere.\n'
+                'Baseline: the bare count of terms decides nothing about the identity here.\n'
+                'Record checked: lem:example read, and it does not decide this identity.\n"""\n')
+
+    def check(self, path, text):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / path
+            target.parent.mkdir(parents=True)
+            target.write_text(text)
+            return cmc.unlabelled_scripts([path], Path(tmp), self.COMPUTE)
+
+    def test_the_copied_in_scratch_script_is_refused(self):
+        # The exposing case's shape: a docstring and checks, none of the labelled lines.
+        found = self.check('research/results/x_20261017/check.py', '"""Check F = Z(Z+1)G for n = 1..6."""\n')
+        self.assertTrue(found and 'Refuted by' in found[0])
+
+    def test_a_labelled_script_and_a_tool_pass(self):
+        self.assertEqual(self.check('research/results/x_20261017/check.py', self.LABELLED), [])
+        self.assertEqual(self.check('tools/helper.py', '"""No labels."""\n'), [])
+
+    def test_a_script_that_tests_nothing_says_so(self):
+        text = '"""No statement tested: it converts saved outputs into one table for the entry."""\n'
+        self.assertEqual(self.check('research/results/x_20261017/table.py', text), [])
+
+
 if __name__ == '__main__':
     unittest.main()

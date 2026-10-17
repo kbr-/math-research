@@ -698,6 +698,19 @@ def unbounded(draft, answers, summaries):
     return [row for row in domain_rows(draft, summaries) if len(given.get(row[0], '').split()) < ANSWER_WORDS]
 
 
+def repeated_within(draft, answers, summaries):
+    """[(answer text, keys)] for each "within:" answer given word for word to sentences citing different claims.
+    A "within:" line says how one sentence's objects meet one claim's hypotheses, so one text for several claims
+    is a form filled before it was read: on 17 October 2026 three such lines got one generic sentence, caught
+    only when the author went back to read what the line asks."""
+    claim_of = {row[0]: row[3] for row in domain_rows(draft, summaries)}
+    by_text = {}
+    for key, answer in WITHIN.findall(answers or ''):
+        if key in claim_of and answer.split():
+            by_text.setdefault(' '.join(answer.split()).lower(), []).append(key)
+    return [(text, keys) for text, keys in by_text.items() if len({claim_of[k] for k in keys}) > 1]
+
+
 def unbounded_report(rows):
     return '\n'.join([f'{len(rows)} summing-up sentences cite a claim whose symbols their paragraph does not '
                       'name and have no "within:" answer: say how the sentence\'s objects meet that claim\'s '

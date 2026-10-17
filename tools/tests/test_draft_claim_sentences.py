@@ -562,6 +562,24 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         named = draft.replace('these are bounds', 'with \\(\\delta\\ge20/\\sqrt N\\) these are bounds')
         self.assertEqual(dcs.domain_rows(named, summaries), [])                    # every symbol named: not asked
 
+    def test_one_within_text_for_sentences_citing_different_claims_is_refused(self):
+        # 17 October 2026: three within lines, for three claims, got one generic sentence.
+        summaries = {'lem:smeared-conv': 'For Y evenly spread and delta >= 20/sqrt N, every class function G has its '
+                                         'smeared discrepancy within 160 e sqrt N of the X-term of its cell averages.',
+                     'cor:other-bound': 'For every graph with expansion epsilon and degree Delta the ratio R is at '
+                                        'most 3 when tau <= D.'}
+        draft = ('<article id="x" data-claims="lem:own"><p><strong>Goal progress.</strong> Unchanged. '
+                 '<strong>Bearing.</strong> Every chain has \\(|D(g)|\\le C\\), and by lem:smeared-conv these are bounds '
+                 'of the smeared form. Every family meets cor:other-bound, so no ratio exceeds three.</p></article>')
+        form = dcs.answers_template(draft, summaries)
+        generic = form.replace('within: \n', 'within: the head item and its sub-idea, in its own setting\n')
+        self.assertEqual(len(dcs.repeated_within(draft, generic, summaries)), 1)
+        lines = iter(['within: only chains, whose cell averages are class functions\n',
+                      'within: the families are graphs of the stated expansion and degree\n'])
+        import re
+        specific = re.sub(r'within: \n', lambda _: next(lines), form)
+        self.assertEqual(dcs.repeated_within(draft, specific, summaries), [])
+
     def test_a_follow_up_universal_needs_an_extreme_answer(self):
         # 17 October 2026: "lies on every boundary", answered by its source, was false at an extreme member.
         draft = ('<article id="x"><p><strong>Follow-up.</strong> Continuing. Next attempt: nested unions of '

@@ -14,6 +14,8 @@ literally, once, never starting or ending inside a word, and a one-line replacem
 failing that, single line breaks (never a blank line) may fall between its words, and the
 replacement takes the whole span on one line, to be rewrapped. A replacement of several lines is still placed line-aligned only.
 """
+import hashlib
+import os
 import re
 import sys
 from pathlib import Path
@@ -78,14 +80,18 @@ def main(argv):
         return 2
     path = Path(argv[1])
     # 16 October 2026: a write of the new text failed, and the next call replaced a passage with the stale file
-    # left by an earlier edit.  New text written before the old text it replaces is that case.
+    # left by an earlier edit.  A first check refused new text older than the old text, which also refused new
+    # text written first on purpose and passed a stale file touched; on 17 October 2026 a touch was used to pass
+    # it.  The new text's content is what tells: text this tool has already applied is left from an earlier edit.
     try:
-        if Path(argv[3]).stat().st_mtime + 1 < Path(argv[2]).stat().st_mtime:
-            print(f'replace_text: {argv[3]} was written before {argv[2]}: the new text is probably left from an '
-                  'earlier edit (a failed write?); write it again', file=sys.stderr)
+        digest = hashlib.sha1(Path(argv[3]).read_bytes()).hexdigest()
+        if digest in applied_digests():
+            print(f'replace_text: {argv[3]} holds text this tool has already applied in an earlier replacement: '
+                  'it is probably left from an earlier edit (a failed write?); write the new text again',
+                  file=sys.stderr)
             return 1
     except OSError:
-        pass
+        digest = None
     # 16 October 2026: a byte cut from a file written without a trailing newline left "</p" at the end of the new
     # text, and the notebook took an unclosed tag.
     try:
@@ -105,8 +111,34 @@ def main(argv):
         print(f'replace_text: {path}: {error}', file=sys.stderr)
         return 1
     path.write_text(updated)
+    if digest:
+        record_applied(digest)
     print(f'{path}: replaced the passage at line {line}')
     return 0
+
+
+def applied_log():
+    """The ignored log of the new texts applied (their SHA-1 digests); REPLACE_TEXT_LOG overrides it in tests."""
+    return Path(os.environ.get('REPLACE_TEXT_LOG')
+                or Path(__file__).resolve().parents[1] / 'research/logs/replace-text-applied.txt')
+
+
+def applied_digests():
+    try:
+        return set(applied_log().read_text().split())
+    except OSError:
+        return set()
+
+
+def record_applied(digest):
+    """Append `digest`; a log that cannot be written is not an error."""
+    try:
+        log = applied_log()
+        log.parent.mkdir(parents=True, exist_ok=True)
+        with log.open('a') as handle:
+            handle.write(digest + '\n')
+    except OSError:
+        pass
 
 
 if __name__ == '__main__':

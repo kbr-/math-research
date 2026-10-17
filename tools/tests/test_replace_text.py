@@ -19,6 +19,17 @@ PLAN = """- **A question?** Found:
 
 
 class ReplaceTextTest(unittest.TestCase):
+    def setUp(self):
+        # Each test logs the texts it applies to a log of its own, never the repository's.
+        import os
+        log = tempfile.NamedTemporaryFile(prefix='replace-text-log-', delete=False)
+        log.close()
+        self.addCleanup(os.unlink, log.name)
+        previous = os.environ.get('REPLACE_TEXT_LOG')
+        os.environ['REPLACE_TEXT_LOG'] = log.name
+        self.addCleanup(lambda: os.environ.pop('REPLACE_TEXT_LOG') if previous is None
+                        else os.environ.__setitem__('REPLACE_TEXT_LOG', previous))
+
     def test_a_reflowed_nested_item_keeps_its_level(self):
         updated, line = replace_text.replace(PLAN, '- the alert route: the receiver and route are ours.',
                                              '- the alert route: ours,\n  with a sub-point:\n  - nested.\n')
@@ -117,20 +128,28 @@ class ReplaceTextTest(unittest.TestCase):
         self.assertIn('replaced the passage at line 6', out.getvalue())
         self.assertTrue((tmp / 'plan.md').read_text().endswith('- **Next question?** Settled.\n'))
 
-    def test_new_text_older_than_the_old_text_is_refused(self):
+    def test_new_text_already_applied_is_refused_and_new_text_written_first_is_not(self):
         # 16 October 2026: a failed write left an earlier edit's new-text file, which then replaced a passage.
+        # 17 October 2026: new text written before the old text was extracted, on purpose, was refused by the
+        # earlier timestamp check, and a touch passed it; the content decides now, and a touch changes nothing.
         import os
         with tempfile.TemporaryDirectory() as d:
             tmp = Path(d)
             (tmp / 'plan.md').write_text(PLAN)
             (tmp / 'new').write_text('Settled.')
             (tmp / 'old').write_text('Answer.')
-            os.utime(tmp / 'new', (1000, 1000))
+            os.utime(tmp / 'new', (1000, 1000))                      # written first: accepted
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
+                                                    str(tmp / 'new')]), 0)
+            after = (tmp / 'plan.md').read_text()
+            (tmp / 'old').write_text('Settled.')
+            (tmp / 'new').touch()                                     # the stale file, touched: still refused
             with contextlib.redirect_stderr(io.StringIO()) as err:
                 self.assertEqual(replace_text.main(['replace_text.py', str(tmp / 'plan.md'), str(tmp / 'old'),
                                                     str(tmp / 'new')]), 1)
-            self.assertIn('written before', err.getvalue())
-            self.assertEqual((tmp / 'plan.md').read_text(), PLAN)
+            self.assertIn('already applied', err.getvalue())
+            self.assertEqual((tmp / 'plan.md').read_text(), after)
 
     def test_new_text_ending_inside_a_tag_is_refused(self):
         # 16 October 2026: a cut byte left "</p" at the end of the new text.
