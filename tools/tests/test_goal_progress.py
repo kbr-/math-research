@@ -365,6 +365,12 @@ class DegenerateCasesTest(unittest.TestCase):
             FT.validate_degenerate_each(two, ['lem:a', 'lem:b'])
         FT.validate_degenerate_each(two.replace('Lemma: zero', 'lem:a: zero').replace('Lemma: one', 'lem:b: one'),
                                     ['lem:a', 'lem:b'])
+        # One paragraph per statement: each names its own (17 October 2026: the second was not read).
+        split = ('<p><strong>Degenerate cases.</strong> thm:a: alpha = 2.</p><p>Proof.</p>'
+                 '<p><strong>Degenerate cases.</strong> lem:b: p = 1.</p>')
+        FT.validate_degenerate_each(split, ['thm:a', 'lem:b'])
+        with self.assertRaisesRegex(ValueError, 'lem:b'):
+            FT.validate_degenerate_each(split.replace('lem:b: p', 'p'), ['thm:a', 'lem:b'])
 
 
 class BaselineTest(unittest.TestCase):

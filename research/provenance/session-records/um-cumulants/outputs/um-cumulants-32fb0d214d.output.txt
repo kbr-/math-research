@@ -1,0 +1,45 @@
++ git checkout HEAD -- research/claims/index.json research/CLAIM_INDEX.md
++ /usr/bin/python3 /home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim-index.py author build --spec research/results/ultimate_matching_conditional_push_20261017/claim-spec.json --out /home/kbr/.claude/jobs/c0de408b/tmp/rp/request-cp.json --proposal /home/kbr/.claude/jobs/c0de408b/tmp/rp/index-proposed-cp.json --report /home/kbr/.claude/jobs/c0de408b/tmp/rp/proposal-check-cp.json --summaries-checked
+Entry #entry-2026-10-17-conditional-push-obstruction is not yet in research/branches/ultimate-matching/notebook.html; its statements were not compared.
+refines thm:square-mean-flow-obstruction -> thm:dyadic-flow-obstruction: recorded only when one implies the other (AGENTS.md); check it on the two statements, or use cites with the scope:
+  thm:square-mean-flow-obstruction: For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1; not necessarily a flow), local at level J - floor(theta log_2 N) for a fixed theta < min(1/1542, k…
+  thm:dyadic-flow-obstruction: For the dyadic Ajtai-Komlos-Tusnady flow Phi of thm:dyadic-flow-square-exponential with X i.i.d. uniform and any fixed L>0, each coordinate k, each alpha in (2,infinity] and each M, with probability tending to one int psi_alpha(4|Phi_k(x)|/(L sqrt(N log N))) dx >= M (psi_alpha(u)=e^(u^alpha)-1, psi_…
+  scope: Implies it at every depth constant (the dyadic flow keeps the square means); needs no linearity; worse constants.
+refines lem:conditional-push-obstruction -> thm:dyadic-flow-obstruction: recorded only when one implies the other (AGENTS.md); check it on the two statements, or use cites with the scope:
+  lem:conditional-push-obstruction: For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1), local at level j_1 = J - floor(theta log_2 N): if for a coordinate k, every x in a set G_N of mea…
+  thm:dyadic-flow-obstruction: For the dyadic Ajtai-Komlos-Tusnady flow Phi of thm:dyadic-flow-square-exponential with X i.i.d. uniform and any fixed L>0, each coordinate k, each alpha in (2,infinity] and each M, with probability tending to one int psi_alpha(4|Phi_k(x)|/(L sqrt(N log N))) dx >= M (psi_alpha(u)=e^(u^alpha)-1, psi_…
+  scope: Implies it at every depth constant (the dyadic flow keeps the push, by lem:block-lower-tail, with theta small enough); replaces linearity by a conditional push; worse constants.
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_authoring.py", line 388, in <module>
+    main()
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_authoring.py", line 377, in main
+    proposed, report = prepare(data, request)
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_authoring.py", line 142, in prepare
+    claim['reviews'][field] = make_review(after, claim, field, disposition['targets'],
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_reviews.py", line 202, in make_review
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_reviews.py", line 202, in <listcomp>
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_reviews.py", line 167, in snapshot
+    self.sha256(target)  # Load and validate the raw excerpt first.
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_reviews.py", line 151, in sha256
+    content = self.excerpt(path, anchor).encode()
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_reviews.py", line 138, in excerpt
+    return parsed.excerpt(anchor)
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/notebook-excerpt.py", line 171, in excerpt
+    node = self.anchor(name)
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/notebook-excerpt.py", line 167, in anchor
+    raise ValueError(f"Expected one section/heading anchor {name!r}; found {len(matches)}")
+ValueError: Expected one section/heading anchor 'entry-2026-10-17-conditional-push-obstruction'; found 0
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_refresh.py", line 83, in <module>
+    sys.exit(main())
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_refresh.py", line 77, in main
+    refresh(args.spec, args.out, args.proposal, args.report, summaries_checked=args.summaries_checked)
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_refresh.py", line 58, in refresh
+    run([sys.executable, tool, 'author', 'build', '--spec', str(spec), '--out', str(out),
+  File "/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim_refresh.py", line 26, in run
+    subprocess.run(command, cwd=root, check=True)
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/home/kbr/dev/math/.claude/worktrees/talagrand/tools/claim-index.py', 'author', 'build', '--spec', 'research/results/ultimate_matching_conditional_push_20261017/claim-spec.json', '--out', '/home/kbr/.claude/jobs/c0de408b/tmp/rp/request-cp.json', '--proposal', '/home/kbr/.claude/jobs/c0de408b/tmp/rp/index-proposed-cp.json', '--report', '/home/kbr/.claude/jobs/c0de408b/tmp/rp/proposal-check-cp.json', '--summaries-checked']' returned non-zero exit status 1.

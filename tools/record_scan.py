@@ -54,6 +54,7 @@ def checks():
             notebook_words['w'] = dcs.listing_words((ROOT / 'notebook.html').read_text(encoding='utf-8'))
         return notebook_words['w']
     found['vanishing-factor'] = lambda plain, raw: [s for _, s in dcs.vanishing_steps(raw, own_words())]
+    found['bearing-within'] = lambda plain, raw: [f'{c}: {s}' for _, _, s, c in dcs.class_rows(raw or '')]
     found['hypothesis-restriction'] = lambda plain, raw: [f'{r}: {s}' for r, s in
                                                           dcs.hypothesis_restrictions(raw, own_words())]
     registry = {}

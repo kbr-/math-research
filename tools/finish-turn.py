@@ -1248,8 +1248,10 @@ def validate_degenerate_each(text, claims):
     claims = [c for c in claims if c.split(':')[0] in CLAIM_KIND]
     if len(claims) < 2:
         return
-    given = re.search(r'<strong>Degenerate cases\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
-    plain = html.unescape(strip_tags(given.group(1))) if given else ''
+    # Every Degenerate cases paragraph counts: an entry with one paragraph per statement names each in its own
+    # (17 October 2026: the first paragraph alone was read and a lemma named in the second was refused).
+    given = re.findall(r'<strong>Degenerate cases\.</strong>((?:(?!</p>)(?!</li>).)*)', text, re.S)
+    plain = ' '.join(html.unescape(strip_tags(g)) for g in given)
     kinds = [c.split(':')[0] for c in claims]
     missing = [c for c in claims if c not in plain
                and not (kinds.count(c.split(':')[0]) == 1

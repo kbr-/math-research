@@ -487,6 +487,37 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
              '\\(\\beta_0\\) fixed. A path research/x:y-z and a link #prop:not-a-claim are no citations.</p>'
              '<p><strong>Follow-up.</strong> Continuing: the reach is the same at every tilt.</p></article>')
 
+    def test_a_bearing_over_a_class_answers_within_against_the_entry_s_proof(self):
+        # 17 October 2026: two drafts in a row wrote a Bearing over a wider class of flows than the theorem's
+        # hypotheses, citing no claim, and no "within:" line was asked of it.
+        draft = ('<article id="e" data-claims="thm:x ex:y"><p><strong>Goal progress.</strong> Unchanged. '
+                 '<strong>Bearing.</strong> No flow whose steps keep the means meets the cost.</p></article>')
+        rows = dcs.domain_rows(draft, {})
+        self.assertEqual([(r[1], r[3]) for r in rows], [('Goal progress', 'thm:x')])
+        # each declared proof is named; a sentence saying only that nothing was proved is not asked
+        two = draft.replace('thm:x ex:y', 'lem:w thm:x')
+        self.assertEqual([r[3] for r in dcs.domain_rows(two, {})], ['lem:w / thm:x'])
+        nothing = two.replace('No flow whose steps keep the means meets the cost.',
+                              'Unchanged: no implication toward conj:z or the conjecture is proved.')
+        self.assertEqual(dcs.domain_rows(nothing, {}), [])
+        # per clause: a class stated after a report of nothing proved is still asked
+        self.assertTrue(dcs.states_class('Unchanged: no X is proved; every flow that keeps the means fails'))
+        # positive statements holding "is proved" or "known" state a class (17 October 2026, three past sentences)
+        for asked in ('What is proved in general is a ceiling for all random majority systems with width at most n/2',
+                      'What is known unconditionally of it: the whole condition for every h with h above zero',
+                      'At the goal\'s parameters, conditionally on such cores existing, which is not known, every '
+                      'source that pairs them is excluded'):
+            self.assertTrue(dcs.states_class(asked), asked)
+        for not_asked in ('Bearing. None at the goal\'s own parameters: the results are on the system with one rule',
+                          'Nothing at the goal\'s parameters yet: the lemma decides no class that is new'):
+            self.assertFalse(dcs.states_class(not_asked), not_asked)
+        self.assertEqual(len(dcs.unbounded(draft, '', {})), 1)
+        key = rows[0][0]
+        self.assertEqual(dcs.unbounded(draft, f'{key} x\n  within: local fields keeping the means at fine levels\n',
+                                       {}), [])
+        # an entry with finite checks only is not asked
+        self.assertEqual(dcs.domain_rows(draft.replace('thm:x ', ''), {}), [])
+
     def test_a_claim_written_without_code_tags_is_cited(self):
         found = dcs.citations(self.DRAFT)
         self.assertEqual([claim for claim, _, _ in found], ['prop:local-count-reach'])
@@ -658,6 +689,9 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         self.assertIn('the answer says: as read, one direction, only', dcs.qualifier_gaps_report(gaps))
         # the registered words in quotation marks are the claim's, not the answer's limit
         self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach, "under a count only"')), [])
+        # a word inside a claim identifier is the claim's name, not a limit (17 October 2026)
+        self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('prop:local-count-reach and lem:conditional-push-bound')),
+                         [])
         # an answer that rests on nothing limits nothing; an unanswered sentence is the other check's
         self.assertEqual(dcs.qualifier_gaps(self.DRAFT, answer('none: only a statement of what was not done')), [])
         self.assertEqual(dcs.qualifier_gaps(self.DRAFT, form), [])

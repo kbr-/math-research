@@ -1,0 +1,55 @@
+{
+  "source": {
+    "record": "[Conditional push obstruction](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-conditional-push-obstruction)",
+    "label": "Conditional push obstruction",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-conditional-push-obstruction"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "thm:square-mean-flow-obstruction",
+      "summary": "For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1; not necessarily a flow), local at level J - floor(theta log_2 N) for a fixed theta < min(1/1542, kappa/6160), and a coordinate k such that every step Phi_j with j >= j_1 has on every level-j square S of side rho_j the mean of the dyadic step, int_S Phi_{j,k} = (rho_j/2) epsilon_S E_k(S) with E_k(S) the excess of the lower half of S in coordinate k and a sign epsilon_S measurable with respect to the counts of levels at most j (the coarser steps unrestricted) (as has every flow whose level steps stay in the level-j squares with zero normal flux and divergence the change of the smeared counts): for every L > 0 and alpha in (2, infinity], the integral of psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeds every constant with probability tending to one. It covers the dyadic flow, every sequential rule, the simultaneous rule and every deterministic rule, local at level j_1, routing inside the dyadic squares; the flow bound is only sufficient for the matching.",
+      "assessment": "Working proof: the square means of the running field perform a walk whose steps, the fixed means E_k(S)/(2 rho), push by sqrt(N/32) in either sign with conditional probability at least 2^-768 whatever the rule (lem:block-lower-tail); a chain of squares follows a child whose deviation keeps the sign; Chernoff and Markov for exceptional counts; Chebyshev over the level-j_1 squares by locality, as in thm:dyadic-flow-obstruction; Jensen carries the last square mean to the cost. Proposed by the entry's reviewer as an unverified sketch, verified and written out in the entry.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "Closes, for the flow bound at every pair of the curve, every local level-by-level flow measurable in the counts whose fine steps keep the dyadic square means; a flow that could serve changes those means (crossing dyadic squares, or refining along a partition adapted to the points), or is not local, or uses randomness beyond the counts, or is not built level by level.",
+      "next_action": "The adapted partition (cells cut at equal counts), where the forced means vanish.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "lem:conditional-push-obstruction",
+      "summary": "For N i.i.d. uniform points in [0,1]^2, depth J with kappa log N <= N 4^(-J) <= K log N, a level-by-level field Phi = sum_{j<J} Phi_j (Phi_j measurable with respect to the counts of levels at most j+1), local at level j_1 = J - floor(theta log_2 N): if for a coordinate k, every x in a set G_N of measure at least N^(-gamma) and every j_1 <= j < J, P(sigma_j Phi_{j,k}(x) >= h | F_j) >= p on the event that the squares S_i(x), i <= j, hold at least half their mean counts, sigma_j the sign of the running sum sum_{i<j} Phi_{i,k}(x), with a = theta log_2(1/p) + gamma, 2a < 1 - 2 theta and theta log_2(1/p) < kappa/8, then with u_N = 4 m h/(L sqrt(N log N)) and m = floor(theta log_2 N), the integral of psi_alpha(4|Phi_k|/(L sqrt(N log N))) exceeds every constant with probability tending to one when alpha is finite above 2 and u_N^alpha - a log N tends to infinity, or alpha is infinite and u_N >= 2; in particular for h = c sqrt N at every L > 0 and every alpha in (2, infinity].",
+      "assessment": "Working proof: a run of pushes along the running sum's sign at the m finest levels (chain rule, probability at least p^m), exceptional counts by Chernoff and Markov, conditional independence of the level-j_1 squares by locality and Chebyshev, as in the many-points step of thm:dyadic-flow-obstruction. Nonvacuity: the dyadic flow plus a local circulation bounded by half the push.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "The pointwise form of the obstruction, for adapted local fields outside the mean condition of thm:square-mean-flow-obstruction.",
+      "next_action": "None of its own; its use is for fields the mean condition does not cover.",
+      "novelty": "not_claimed"
+    },
+    {
+      "id": "ex:rule-conditional-pushes",
+      "summary": "Simulation, N = 16*4^J uniform points, J = 2, 3 (4000 seeds) and 4 (1400 seeds): at every level j >= 1 the simultaneous rule's probability of an increment at least half its standard deviation along the sign of the field of the coarser levels (0.320 to 0.333, averaged over positions, minimum over positions 0.270 to 0.310, against the dyadic flow's minimum 0.263 to 0.312) exceeds that against it (0.300 to 0.321) by 0.0068 to 0.0227, beyond the dyadic flow's largest difference 0.0058 in most cells and by 0.001 in the smallest.",
+      "assessment": "Finite check, expectations committed before the run (the J = 4 size run separately after the first run's allowance ended); control: the dyadic flow's symmetric pushes read as equal. An average over seeds of a conditional probability, at J <= 4; for this rule the question is settled by thm:square-mean-flow-obstruction, and the check is a consistency check.",
+      "status": "finite_check",
+      "category": "route_specific",
+      "rationale": "Measures, for the simultaneous rule, the push of lem:conditional-push-obstruction.",
+      "next_action": "None.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    ["thm:square-mean-flow-obstruction", "refines", "thm:dyadic-flow-obstruction", "Implies it at every depth constant (the dyadic flow keeps the square means); needs no linearity; worse constants."],
+    ["thm:square-mean-flow-obstruction", "depends_on", "lem:block-lower-tail", "The push of a square mean."],
+    ["thm:square-mean-flow-obstruction", "applies", "lem:sequential-rules-dyadic", "Covers every sequential rule without identifying it with the dyadic flow."],
+    ["lem:conditional-push-obstruction", "refines", "thm:dyadic-flow-obstruction", "Implies it at every depth constant (the dyadic flow keeps the push, by lem:block-lower-tail, with theta small enough); replaces linearity by a conditional push; worse constants."],
+    ["lem:conditional-push-obstruction", "depends_on", "lem:block-lower-tail", "Used in the nonvacuity witness."],
+    ["ex:rule-conditional-pushes", "cites", "lem:conditional-push-obstruction", "Measures the lemma's push for the simultaneous rule."],
+    ["ex:rule-conditional-pushes", "cites", "ex:exceedance-curve-slopes", "Same flows and level increments."]
+  ]
+}

@@ -1007,7 +1007,50 @@ def domain_rows(draft, summaries):
         for claim, where, sentence, missing in unmentioned(article, summaries):
             if SUMMARY.match(where):
                 found.setdefault(hashlib.sha1(sentence.encode()).hexdigest()[:8], (where, sentence, claim, missing))
+        for key, where, sentence, claim in class_rows(article):
+            found.setdefault(key, (where, sentence, claim, []))
     return [(key, *row) for key, row in found.items()]
+
+
+# A Goal progress sentence that states a class ("no ... that ...", "every ... whose ...") in an entry declaring a
+# proof says what the proof covers at the goal, and is answered on "within:" too, against the entry's proofs,
+# whether or not it names them.  On 17 October 2026 two drafts in a row wrote a Bearing over a wider class of
+# flows than the theorem's hypotheses, citing no claim, so no "within:" line was asked of it.  A sentence saying
+# only that nothing was proved ("no implication ... is proved") states no class and is not asked.
+CLASS = re.compile(r'\b(?:no|every|all|any|none of the)\b[^.;:]*?\b(?:whose|that|which|keeping|where|with)\b', re.I)
+# What a clause reports as not obtained ("no ... was constructed", "remains open", "gives nothing") states no class
+# covered.  Over the nine notebooks on 17 October 2026 the class pattern alone asked 118 past sentences; an
+# exclusion matching anywhere dropped 15, 3 of them wrongly (positive statements holding "is proved" or "known");
+# anchored to a negation and applied per clause, as here, it asks 92, each drop judged
+# (research/provenance/framework/bearing-within-20261017.txt).
+NOT_OBTAINED = re.compile(r'\b(?:no|not|nothing|none)\b[^;]*?\b(?:is|are|was|were|been)\s+(?:\w+\s+){0,2}(?:proved|'
+                          r'proven|established|found|supplied|constructed|obtained|certified|advanced|exhibited|shown|'
+                          r'produced|given|changed)\b'
+                          r'|\bremains?\s+(?:open|unchanged)\b|\bnot advanced\b|\bgives nothing\b|\bfinds no\b'
+                          r'|^\W*(?:Bearing\.\s*)?(?:None|Nothing)\b',
+                          re.I)
+
+
+def states_class(sentence):
+    """Whether some clause of SENTENCE (split at semicolons) states a class and does not report something not
+    obtained (a negation before the participle, 'remains open', or a clause opening with None or Nothing).
+    Known misses, both of a sentence that states a class and is not asked (the reviewer's fifth pass, 17 October
+    2026): a negation inside the class description itself ("every flow with no crossing edge is shown to fail"),
+    and a class stated after a colon in a clause that first says "gives nothing", since clauses split only at
+    semicolons."""
+    return any(CLASS.search(clause) and not NOT_OBTAINED.search(clause) for clause in sentence.split(';'))
+
+
+def class_rows(article):
+    """[(key, section label, sentence, claims)] for the Goal progress sentences of ARTICLE that state a class, when
+    ARTICLE declares a proof; claims names every declared proof, joined by ' / '."""
+    proofs = [c for c in (re.search(r'data-claims="([^"]*)"', article) or [None, ''])[1].split()
+              if c.split(':')[0] in ('thm', 'lem', 'prop', 'cor')]
+    if not proofs:
+        return []
+    return [(hashlib.sha1(sentence.encode()).hexdigest()[:8], where, sentence, ' / '.join(proofs))
+            for where, sentence in universals(article)[0]
+            if where.lower() == 'goal progress' and states_class(sentence)]
 
 
 def unbounded(draft, answers, summaries):
@@ -1083,7 +1126,10 @@ def qualifier_gaps(draft, answers):
             continue
         stated = STATED.search(answer)
         own = STATED.sub('', answer)
-        limits = {m.lower() for m in QUALIFIER.findall(re.sub(r'"[^"]*"|“[^”]*”', ' ', own))}
+        # claim identifiers are names, not limits (17 October 2026: "conditional" was read inside
+        # lem:conditional-push-obstruction)
+        unquoted = re.sub(r'"[^"]*"|“[^”]*”', ' ', own)
+        limits = {m.lower() for m in QUALIFIER.findall(CLAIM.sub(' ', unquoted))}
         missing = sorted(limits - {m.lower() for m in QUALIFIER.findall(text(sentence))})
         quote = ' '.join(plain(stated.group(1))) if stated else ''
         # the passage quoted is the entry's, lies outside the sentence asked about, and holds each missing word

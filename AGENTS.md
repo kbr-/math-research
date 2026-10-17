@@ -488,6 +488,12 @@ AGENTS.md"):
   reported beside the listing of what the check reads (`tools/record_scan.py` block-counts): a
   pattern fitted to a paraphrase matches nothing and its zero looks like a clean record (17 October
   2026: a block-count check missed every form the record writes).
+- Before choosing a method for a next attempt, apply to the goal's own quantity what the entry has
+  already computed (an average, a mean the constraints fix, a smallest case's value) through the
+  plainest properties of the cost (convexity by Jensen, monotonicity): a method that a few lines of
+  this decide is not needed (17 October 2026: a next attempt planned a fraction argument with an
+  energy bound, while Jensen applied to averages its own smallest case had computed decided the
+  whole class).
 - Before writing a script for an attempt, run the attempt by hand on its smallest nontrivial
   instance and write the outcome down; a script is written only for what that hand step leaves open,
   and each of its controls is first tried on an input where it must fail (17 October 2026: a routing
