@@ -2452,9 +2452,22 @@ def tried_names_output(text, root):
         return False
     for token in re.findall(r'[\w./-]+', match.group(1)):
         token = token.strip('.,;:')
-        if token.startswith(OUTPUT_DIRS) and (Path(root) / token).is_file():
+        if token.startswith(OUTPUT_DIRS) and (Path(root) / token).is_file() and uncommitted(root, token):
             return True
     return False
+
+
+def uncommitted(root, path):
+    """Whether a file is untracked or differs from HEAD, so that it was written since the last commit: the cycle's
+    reviewer found that any old saved output passed tried_names_output (17 October 2026). Outside a Git checkout
+    every file counts as uncommitted."""
+    def git(*args):
+        return subprocess.run(['git', '-C', str(root), *args], capture_output=True, text=True).returncode
+    if git('rev-parse', '--is-inside-work-tree') != 0:
+        return True
+    if git('ls-files', '--error-unmatch', '--', path) != 0:
+        return True
+    return git('diff', '--quiet', 'HEAD', '--', path) != 0
 
 
 def main(argv):

@@ -819,6 +819,25 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('gone is not queued', err.getvalue())
             self.assertIn('>Ported. (<a href="#entry-2026-10-07-x">source</a>)</li>', path.read_text())
 
+    def test_a_review_build_names_an_output_written_since_the_last_commit(self):
+        # 17 October 2026: the cycle's reviewer found that any old saved output passed the Tried rule.
+        import subprocess
+        with tempfile.TemporaryDirectory() as tmp:
+            run = lambda *a: subprocess.run(['git', '-C', tmp, *a], capture_output=True, check=True)  # noqa: E731
+            run('init', '-q')
+            run('config', 'user.email', 't@t')
+            run('config', 'user.name', 't')
+            Path(tmp, 'research', 'results', 'x').mkdir(parents=True)
+            Path(tmp, 'research', 'results', 'x', 'old.txt').write_text('1 match')
+            run('add', '.')
+            run('commit', '-qm', 'old')
+            text = 'Tried: a replay, {}. Not built in the turn: five words of reason here.'
+            self.assertFalse(lq.tried_names_output(text.format('research/results/x/old.txt'), tmp))
+            Path(tmp, 'research', 'results', 'x', 'new.txt').write_text('2 matches')
+            self.assertTrue(lq.tried_names_output(text.format('research/results/x/new.txt'), tmp))
+            Path(tmp, 'research', 'results', 'x', 'old.txt').write_text('3 matches')
+            self.assertTrue(lq.tried_names_output(text.format('research/results/x/old.txt'), tmp))
+
     def test_add_from_the_command_line(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp, 'notebook.html')
