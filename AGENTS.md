@@ -379,6 +379,11 @@ AGENTS.md"):
   the side of a bound), derive in its docstring from the containment or inequality which extreme the
   question needs (17 October 2026: a domain saving was taken as a maximum where the bound needs the
   minimum).
+- A conclusion carried to another case (another field or characteristic, the next value of a
+  parameter such as \(K\), a single family where two were worked) is derived again there, in the
+  draft, with the step that carries it; a case not rederived is written as not covered (17 October
+  2026: a single-family failure read from characteristic \(2\) was stated for every field, and a
+  ballot count at \(K=1\) was carried to \(K=2\), where a two-pigeon pair breaks it).
 - Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
   is listed for without it, with signs or general coefficients, and list it only if that fails (17
   October 2026: an identity valid over every field was listed as needing characteristic 2).
