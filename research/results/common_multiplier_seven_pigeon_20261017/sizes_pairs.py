@@ -73,6 +73,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--holes', type=int, required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--pair-all', action='store_true',
+                    help='pair every size from 1 to n/2, not only those with positive single excess: zero excess '
+                         'gives Ann_C(E) = U + W, but an intersection with another kernel can still exceed the sum '
+                         'over representative pairs (the reviewer, 17 October 2026)')
+    ap.add_argument('--skip-singles', action='store_true', help='singles already in sizes_pairs_n6.json')
     ap.add_argument('--known', type=int, default=None,
                     help='a size whose pairs with itself were already computed (mixing_pairs_76.json: 3 at n = 6)')
     args = ap.parse_args()
@@ -83,14 +88,17 @@ def main():
     st = mp.setup()
     out = {'holes': n, 'D': mp.D, 'K': mp.K, 'dim_V': len(st['monos']), 'dim_W': len(st['W']),
            'setup_seconds': round(time.time() - t0, 1), 'singles': [], 'pairs': []}
-    for size in range(n // 2 + 1):
+    for size in ([] if args.skip_singles else range(n // 2 + 1)):
         out['singles'].append(single(size))
         print(json.dumps(out['singles'][-1]), flush=True)
         pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
-    if n == 4:
+    if n == 4 and not args.skip_singles:
         assert [r['excess'] for r in out['singles']] == [0, 0, 1], f"control: excesses {out['singles']}"
         assert out['singles'][2]['C_side'] == 8, 'control: single kernel at |A| = 2'
-    positive = [r['size'] for r in out['singles'] if r['excess'] > 0]
+    if args.pair_all:
+        positive = list(range(1, n // 2 + 1))
+    else:
+        positive = [r['size'] for r in out['singles'] if r['excess'] > 0]
     with multiprocessing.Pool(14) as pool:
         for key, (A, B) in sorted(orbits(positive, n).items()):
             if args.known is not None and key[0] == key[1] == args.known:
@@ -99,7 +107,8 @@ def main():
             out['pairs'].append(r)
             print(json.dumps(r), flush=True)
             pathlib.Path(args.out).write_text(json.dumps(out, indent=1) + '\n')
-    if n == 4:
+    if n == 4 and args.known != 2:     # with --known 2 the control's orbit is skipped (the reviewer found the
+        # first version indexing an empty list there, so that run, sizes_pairs_n4_known.json, could not pass)
         one = [r for r in out['pairs'] if tuple(r['sizes_and_overlap']) == (2, 2, 1)][0]
         assert (one['J'], one['a'], one['b'], one['I']) == (6, 5, 5, 6), f'control: {one}'
         assert one['b'] < one['J'], 'positive control'
