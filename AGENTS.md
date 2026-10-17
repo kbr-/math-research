@@ -556,7 +556,13 @@ AGENTS.md"):
   failing tool were each set aside).
 - Before every reviewer brief, reread the draft once against each item of this list and against the
   rules above on statements (free parameters at their whole range, searches under other names), item
-  by item, rather than relying on having known them while drafting.
+  by item, rather than relying on having known them while drafting. A corrected draft is reread so
+  too before it goes back: each sentence that compares the result with the record, or poses an
+  instance, is worked at both ends of every free parameter it involves (a part empty, a part
+  everything) and on the instance's extreme members, since a correction written from the reviewer's
+  example repeats the original's one-endpoint reading (17 October 2026: a corrected Baseline omitted
+  the endpoint where one part is empty, and a smallest case left its cost unchecked on its densest
+  edges, both in the round that fixed the same class).
 
 ### Goal progress and scheduled review
 
