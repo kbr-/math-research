@@ -1,0 +1,56 @@
+Review record of entry-2026-10-17-idle-slack-sandpile, 17 October 2026, one fresh-context Claude
+Code medium-reviewer. Condensed in layout only.
+
+First pass. Verdict: fail as drafted. Both parts' arithmetic correct; (b) recomputed by hand and
+matching the exact computation, a proof of non-additivity (the rule's domain and termination to be
+stated). Main finding: step (b) of lem:balanced-sandpile-flow writes the net flow of any odometer of
+a reversible rule as c grad(v/pi), using reversibility and not balance, so the slack stage's flow
+and the balanced stage's add to a potential flow with divergence eta - mu: the slack pair is always
+the electrical flow, for every slack, with probability one. So the sub-idea's "merged" was wrong
+(decided, not open), the Baseline understated the cited lemma, part (a) as drafted is a correct
+elementary result superseded by the deterministic fact (keep it with that relation), and the
+balanced-sandpile entry's reading that slack with a second transport makes the flow nonlinear is
+wrong for the flow. Also: N^(-0.137), not N^(-0.138); the Degenerate case on F(-e_1) garbled; the
+circle bound's constant on the cell graph about sqrt(pi mu)/8 and a bound on the maximum over the
+circle, not a positive fraction; the Owed attempt imported the fifth review's Power finding, which
+concerns its own chain test; reversibility unlisted, thresholds and slack condition unnecessary for
+the flow. Record search: "slack sandpile two-stage odometer gradient potential flow sum electrical":
+lem:balanced-sandpile-flow and claims of other notebooks; nothing contains (a) or (b). Open point
+(unverified): a Gaussian lower bound for every flow is near the dual of the open problem (convex
+program over flows, dual of the class bound's form); the quartic-optimal flow on small grids is the
+strongest test. Process audit: the closure and Baseline did not apply the cited lemma's proof to the
+case; the Owed attempt's reason imported; strength count 4; title proposed "Slack sandpile pair is
+electrical".
+
+Follow-up. Verdict: pass with corrections. Checked: the deterministic (a) (the proof uses neither
+thresholds, stability nor the sign of the odometers; irreducibility used for uniqueness); the
+four-cycle Smallest case (electrical flow (3/4, 3/4, -1/4, -5/4), derivative 2 phi'(3/4) -
+phi'(1/4) - phi'(5/4) negative for every lambda as phi'(x)/x^3 increases; quadratic cost gives 0);
+N^(-0.137); the closure accepted (any flow is theta_1 plus a flow carrying eta_1 to the background,
+so a second transport by any means is the item's question). Required: "one reversible rule" where
+"fixed-kernel" stood (Bearing, Goal progress, Follow-up, Own statements, spec rationale), a
+non-reversible fixed rule or stages with different rules not being covered; the depends_on note
+("implies its (b) together with its (a)"); the duality sentence labelled unverified or worked out;
+the next attempt's Power (normalization, what a reachable-size result would change,
+ex:greedy-circulation-tails beside it, "of the cost criterion"); "corollary-free" deleted.
+Suggestion (unverified): derive the optimum's gain asymptotics before computing. Proposed title
+"Reversible sandpile stages are electrical". Strength count 7.
+
+Third pass. Verdict: pass with corrections. Checked: the Power figures (log(32^2) = 6.93, log(512^2)
+= 12.48, fourth roots 1.623 and 1.880, ratio 1.158); the description of ex:greedy-circulation-tails
+against its registered statement (its sizes are in points, N = 16*4^J, J = 6..10); the Suggestion
+checked paragraph (add 'on one instance'); the suggestions list (faithful, labelled unverified, with
+Record notes); the title against part (a). Not derived: the normalization sentence. Required: the
+Structural reason's 'linear only on each region' is false, the proportional branch sending e
+d(y)/sum d, a ratio of input-dependent quantities, and the toppling sequence changing with the
+input: say piecewise, with pieces where the toppling sequence, the sets D and the branches are
+fixed, rational on a piece, not shown linear; the extension to every load-dependent rule is a
+judgement, to be labelled or deleted; the gate's 'accepted' belongs to the second pass only; the
+gate must add this pass and not credit any reviewer with the normalization, the measured counts or
+the framework changes. Strength count 3.
+
+Fourth pass. Verdict: pass. The Smallest case's sentence giving the grid's circulations the
+dimension 'the number of cells less one', found wrong by the agent at the append, is corrected: a k
+x k grid of cells has V = k^2, E = 2k(k-1), cycle space dimension E - V + 1 = (k-1)^2, one per face;
+k = 2 gives 1, the four-cycle. The earlier form was wrong for every k >= 2, and the three earlier
+passes missed it. The Process assessment's report of it is accurate.

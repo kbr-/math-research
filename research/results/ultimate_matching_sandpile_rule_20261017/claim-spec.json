@@ -1,0 +1,46 @@
+{
+  "source": {
+    "record": "[Idle slack sandpile](https://kbr.is-a.dev/math-research/branches/ultimate-matching/#entry-2026-10-17-idle-slack-sandpile)",
+    "label": "Idle slack sandpile",
+    "targets": [
+      "branches/ultimate-matching/notebook.html#entry-2026-10-17-idle-slack-sandpile"
+    ]
+  },
+  "date": "2026-10-17",
+  "reviewer": "Claude Code with sole fresh-context medium reviewer",
+  "topics": [
+    "random-matchings"
+  ],
+  "claims": [
+    {
+      "id": "lem:idle-slack-sandpile",
+      "summary": "(a) On a finite set with a stochastic splitting rule P, irreducible and reversible with respect to pi (conductances c(x,y) = pi(x)p(x,y)), the net flow of every finite sequence of divisible-sandpile stages with this one rule, whatever their thresholds and odometers (the proof uses neither thresholds, stability nor the sign of the odometers), carrying eta to eta', is the electrical flow from eta to eta' with conductances c; in particular the slack sandpile with thresholds (1+eps) times the background followed by the balanced sandpile to the background has exactly the electrical flow, for every eps >= 0 and every sample. (b) The deficit-first divisible sandpile (scan in index order; a site above its threshold sends its excess to the neighbours below theirs in proportion to their deficits, fills them and splits any rest equally among all neighbours, or splits equally when none is below) has a net flow that is not additive in the excess: on the cycle of four cells with thresholds 0, F((2,0,-1,-1)) + F((-1,-1,2,0)) = (0,-1,0,-1) on the edges 1-2, 2-3, 3-4, 4-1 while F((1,-1,1,-1)) = (1/2,-1/2,1/2,-1/2). (c) For N i.i.d. uniform points and M square cells of mean count mu = N delta^2, with probability at least 1 - M exp(-mu h(eps)), h(eps) = (1+eps) log(1+eps) - eps, no cell holds more than (1+eps) mu points; on the reduction's grid this holds with probability tending to one for every fixed eps with h(eps) > 1089/L^2.",
+      "assessment": "Working proof: (a) step (b) of lem:balanced-sandpile-flow, which writes the net flow of any odometer of a reversible rule as c grad(v/pi) using reversibility and not balance, applied to each stage; the potentials add, and a potential flow is determined by its divergence; (b) an explicit counterexample computed by hand and in exact arithmetic (research/results/ultimate_matching_sandpile_rule_20261017/rule_additivity.py); (c) the binomial Chernoff bound and a union over the cells.",
+      "status": "working_proof",
+      "category": "route_specific",
+      "rationale": "No divisible sandpile of one reversible splitting rule, in any number of stages and with any thresholds, gives a flow other than the electrical one, which settles the queued slack-sandpile sub-idea for every slack and corrects the balanced-sandpile entry's reading that slack with a second transport makes the flow nonlinear; a fixed rule that is not reversible, or stages with different rules, are not covered, and a state-dependent splitting does leave the potential flows.",
+      "next_action": "The asymptotics of the quartic-optimal flow's gain over the electrical flow on the cell grid, derived before any computation (simulations on reachable grids separate only constant factors); if the gain is a bounded factor, a proof that it stays bounded.",
+      "novelty": "not_claimed"
+    }
+  ],
+  "relationships": [
+    [
+      "lem:idle-slack-sandpile",
+      "depends_on",
+      "lem:balanced-sandpile-flow",
+      "Part (a) applies that lemma's step (b), the net flow of an odometer of a reversible rule as a potential flow, to stages that need not be balanced and to sequences of them; with that lemma's (a), it implies that lemma's (b) for one stage, but not its (c)."
+    ],
+    [
+      "lem:idle-slack-sandpile",
+      "applies",
+      "cor:exponential-matching-discrepancy-reduction",
+      "Its grid: part (c) shows the slack stage idle there for every fixed eps with h(eps) > 1089/L^2; part (a) needs no grid."
+    ],
+    [
+      "lem:idle-slack-sandpile",
+      "cites",
+      "thm:dyadic-flow-obstruction",
+      "That theorem shows the dyadic flow's per-point values are Gaussian at the scale sqrt(N log N); every sandpile flow of one reversible rule here is the electrical flow, for which the record holds only a sketch of the same."
+    ]
+  ]
+}
