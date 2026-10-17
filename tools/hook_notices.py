@@ -7,13 +7,17 @@ Usage: tools/hook_notices.py list
 The hook prints such a notice once, after the commit, where it is easily passed over: on 11 October 2026 two were,
 their items unread.  The hook now records each notice in research/logs/hook-notices.jsonl, which Git ignores;
 `answer` records, for an item, what reading it found (built by the commit, part of it, or unrelated), in at
-least twenty characters; `list` prints the notices no answer followed, as the finisher does at each checkpoint.
-It reports and refuses nothing: an answer is a note, and nothing can tell whether the item was read."""
+least twenty characters, quoting eight consecutive words of the item's queued text when the item is found in
+its notebook; `list` prints the notices no answer followed, as the finisher does at each checkpoint.  The quote
+shows the text was before the writer, not that it was understood."""
 import json
 import re
 import sys
 import time
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_math import strip_tags  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 LOG = 'research/logs/hook-notices.jsonl'
@@ -49,11 +53,40 @@ def record(root, text, now=None):
     return len(named)
 
 
+QUOTE_WORDS = 8
+
+
+def words(fragment):
+    return re.findall(r"[a-z0-9']+", strip_tags(fragment or '').lower().replace('’', "'"))
+
+
+def item_text(root, ident, notebook):
+    """The queued text of the item, up to its nested list, or None when the notebook or the item is not found."""
+    path = Path(root) / notebook
+    if not path.exists():
+        return None
+    found = re.search(r'<li\b[^>]*\bdata-(?:build|check|idea|lead|bridge)="' + re.escape(ident) + r'"[^>]*>(.*?)'
+                      r'(?:<ul\b|</li>)', path.read_text(), re.S)
+    return found.group(1) if found else None
+
+
+def quotes(note, text, n=QUOTE_WORDS):
+    """Whether the note holds n consecutive words of the text (case and tags ignored)."""
+    said, held = words(note), ' ' + ' '.join(words(text)) + ' '
+    return any(f' {" ".join(said[i:i + n])} ' in held for i in range(len(said) - n + 1))
+
+
 def answer(root, ident, note, now=None):
     if len(' '.join(note.split())) < 20:
         raise ValueError('say what reading the item found, in at least twenty characters')
-    if not any(row.get('kind') == 'notice' and row.get('item') == ident for row in rows(root)):
+    notices = [row for row in rows(root) if row.get('kind') == 'notice' and row.get('item') == ident]
+    if not notices:
         raise ValueError(f'no recorded notice names {ident}')
+    # 17 October 2026: two notices were answered "Read the item" before their items were read.
+    text = item_text(root, ident, notices[-1].get('notebook', ''))
+    if text is not None and not quotes(note, text):
+        raise ValueError(f'quote at least {QUOTE_WORDS} consecutive words of the item\'s queued text in the note, '
+                         'so that the answer is written from the item and not from its name')
     append(root, {'unix_s': now if now is not None else time.time(), 'kind': 'answer', 'item': ident, 'note': note})
 
 

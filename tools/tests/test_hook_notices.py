@@ -51,6 +51,21 @@ class HookNoticesTest(unittest.TestCase):
             self.assertEqual(tool.main(['other'], root=tmp), 1)
 
 
+    def test_an_answer_quotes_the_items_text_when_the_item_is_found(self):
+        # 17 October 2026: two notices were answered "Read the item" before their items were read.
+        with tempfile.TemporaryDirectory() as tmp:
+            notebook = Path(tmp) / 'research/branches/x/notebook.html'
+            notebook.parent.mkdir(parents=True)
+            notebook.write_text('<li data-build="spell-count" data-source="s">Make the finisher count the spell '
+                                'of each item from its entries and refuse a fifth entry.<ul><li>sub</li></ul></li>')
+            tool.record(tmp, NOTICE.splitlines()[0], now=10)
+            with self.assertRaisesRegex(ValueError, 'quote at least 8'):
+                tool.answer(tmp, 'spell-count', 'Read the item: the commit builds no part of it at all.')
+            tool.answer(tmp, 'spell-count', 'It asks to "count the spell of each item from its entries"; the '
+                        'commit builds no part of it.', now=20)
+            self.assertEqual(tool.unanswered(tmp), [])
+
+
 class HookAndFinisherTest(unittest.TestCase):
     def load(self, name, path):
         spec = importlib.util.spec_from_file_location(name, ROOT / path)
