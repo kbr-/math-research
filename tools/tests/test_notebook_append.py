@@ -665,6 +665,19 @@ class PublicationCitationTests(unittest.TestCase):
         self.assertEqual(publication_claims.lookup(['no-such-label']), {})
 
 
+class PlainestUniformTests(unittest.TestCase):
+    def test_a_one_function_witness_names_the_plainest_uniform_bound_tried(self):
+        # 17 October 2026: the first draft's sentence, refused; the corrected one, accepted.
+        first = ('<p><strong>Nonvacuity.</strong> A chain. <strong>Plainest bound.</strong> This witness is one fixed '
+                 'function, so a bound for one function decides it. The lemma\'s content is the uniformity.</p>')
+        with self.assertRaisesRegex(ValueError, 'plainest uniform bound'):
+            tool.refuse_one_function_plainest(first)
+        fixed = first.replace('uniformity.', 'uniformity. The plainest uniform bound, Bernstein per cell with a '
+                                             'union over its subsets, loses a factor log N here.')
+        tool.refuse_one_function_plainest(fixed)
+        tool.refuse_one_function_plainest('<p><strong>Plainest bound.</strong> The bare count gives N.</p>')
+
+
 class SkeletonCheckTests(unittest.TestCase):
     """--check runs every entry-level check on a draft and lists each that fails, writing nothing."""
 

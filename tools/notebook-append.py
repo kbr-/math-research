@@ -508,6 +508,7 @@ def skeleton_check(source, entry, next_html=None, committed=None, reason=None, p
     run('closures', lambda: refuse_unquoted_closures(source, entry))
     run('publication citation', lambda: refuse_uncited_publication(entry))
     run('record lines', lambda: refuse_record_findings(entry))
+    run('plainest uniform bound', lambda: refuse_one_function_plainest(entry))
     ident = re.match(r'\s*<article\b[^>]*?\sid="([^"]+)"', entry)
     if not ident:
         return failures
@@ -713,6 +714,23 @@ def refuse_unbounded(entry, answers):
 PUBLICATION_LINK = re.compile(r'href="(publications/[^"#]+\.tex)')
 
 
+ONE_FUNCTION = re.compile(r'one function|fixed witness|one fixed', re.I)
+UNIFORM_TRIED = re.compile(r'plainest uniform bound', re.I)
+
+
+def refuse_one_function_plainest(entry):
+    """Refuse a Plainest bound paragraph that settles a fixed witness by a bound for one function without naming
+    the plainest uniform bound tried on the witness's family (a union over its members, or over the subsets of
+    each cell the statement localizes to).  On 17 October 2026 a witness was decided by such a per-cell count,
+    which the paragraph never tried; it had said only that the statement's content is its uniformity."""
+    for body in re.findall(r'<strong>Plainest bound\.</strong>(.*?)</p>', entry, re.S):
+        if ONE_FUNCTION.search(body) and not UNIFORM_TRIED.search(body):
+            raise ValueError('a Plainest bound settles a fixed witness by a bound for one function: name also, in '
+                             'the words "plainest uniform bound", the uniform bound tried on the witness\'s family '
+                             '(a union over its members, or over the subsets of each cell the statement '
+                             'localizes to) and what it gives there (AGENTS.md, Nonvacuity)')
+
+
 def refuse_uncited_publication(entry):
     """Refuse an entry with a sentence that links a publication's source file but cites no registered claim.
     Every publication statement is derived from registered claims, reached through its Lean files
@@ -785,6 +803,7 @@ def main():
     try:
         refuse_unanswered(args.entry.read_text(), args.answers.read_text() if args.answers else None)
         refuse_uncited_publication(args.entry.read_text())
+        refuse_one_function_plainest(args.entry.read_text())
         closures = refuse_unquoted_closures(path.read_text(), args.entry.read_text())
         result = append(path.read_text(), args.entry.read_text(), nxt, committed_version(path),
                         args.stand_unchanged)
