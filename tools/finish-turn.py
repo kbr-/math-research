@@ -701,6 +701,13 @@ def validate_closures(text):
     if closure_admits_unmade(plain) and not re.search(r'Closed:\s*merged into\b', text):   # a merge carries it
         raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
                          'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
+    # 17 October 2026: a closure covered one reading of its item's words ("per-point tails" as a field's Orlicz
+    # cost) and left the other (a transport's displacement tails) unwritten; its reviewer asked for both.
+    if (CLOSED_RE.search(text) and not re.search(r'Closed:\s*merged into\b', text)
+            and not re.search(r'\breadings?\b', html.unescape(strip_tags(text)), re.I)):
+        raise ValueError('An entry that closes a queue item writes the item\'s question in each reading its words '
+                         'allow, naming them readings, with what the closure covers in each (AGENTS.md, order of '
+                         'work: what the entry\'s own definition covers is not the item)')
     bare = closures_without_own_statements(text)
     if bare:
         raise ValueError(f'{len(bare)} follow-up list item(s) close a sub-idea without an <strong>Own '

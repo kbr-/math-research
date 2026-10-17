@@ -379,6 +379,11 @@ AGENTS.md"):
 - Before listing a hypothesis (a field, a characteristic, a closure type, a size), redo the step it
   is listed for without it, with signs or general coefficients, and list it only if that fails (17
   October 2026: an identity valid over every field was listed as needing characteristic 2).
+- Write a statement's hypotheses, scope and qualifiers ("exactly", "every") after its proof, from
+  what the proof's steps use and give, and its witness after that, one on which the step the
+  statement adds is used: a statement drafted first carries the instance it was drafted for (17
+  October 2026: a duality stated with coercivity and one grid, neither used, an equality summarized
+  where the proof gives one up to constants, and a witness that never used the implication).
 - Read a rule or a listed record by applying it to the case in hand (the next attempt, the instance,
   the sentence being written) and writing what it gives there, never as seen once read (17 October
   2026: a listed lemma, read, already answered the entry's next attempt). A cited lemma is applied

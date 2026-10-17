@@ -262,7 +262,8 @@ class ClosureStakesTest(unittest.TestCase):
     LEFT = '<p><strong>Not examined.</strong> Nothing the item names is left: its one object is the bound closed here.</p>'
     OWED = ('<p><strong>Owed attempt.</strong> The run its last follow-up named was made in this entry; its '
             'outcome is the table above.</p>')
-    LINK = RECORD + READ + LEFT + OWED
+    READINGS = '<p>The item\'s words allow one reading, the bound closed here.</p>'
+    LINK = RECORD + READ + LEFT + OWED + READINGS
 
     def test_a_closure_needs_stakes_and_a_reviewer_record(self):
         FT.validate_closures('<p><strong>Follow-up.</strong> Continuing: next.</p>')      # nothing closed
@@ -289,6 +290,14 @@ class ClosureStakesTest(unittest.TestCase):
         FT.validate_closures(self.STAKES.replace('Closed: superseded', 'Closed: merged into other-item')
                              + self.RECORD + self.READ)                                    # a merge names no remainder
 
+
+    def test_a_closure_names_the_readings_of_its_item(self):
+        # 17 October 2026: a closure covered one reading of "per-point tails" and left the other unwritten.
+        without = self.RECORD + self.READ + self.LEFT + self.OWED
+        with self.assertRaisesRegex(ValueError, 'reading'):
+            FT.validate_closures(self.STAKES + without)
+        FT.validate_closures(self.STAKES + without + '<p>In its first reading the item asks for a bound; in its '
+                                                     'second, for a construction; both are covered above.</p>')
 
     def test_a_closing_list_item_applies_the_entry_s_claims_in_its_own_statements(self):
         # 17 October 2026: a sub-idea closed as merged while the cited lemma's own proof step decided it.
