@@ -2439,35 +2439,38 @@ def tried_names_file(text, root):
     return False
 
 
-REVIEW_SOURCE_RE = re.compile(r'review|stand-in', re.I)
-OUTPUT_DIRS = ('research/results/', 'research/logs/', 'research/provenance/')
+USER_SOURCE_RE = re.compile(r'^\s*user\b', re.I)
+OUTPUT_DIRS = ('research/results', 'research/logs', 'research/provenance')
 
 
 def tried_names_output(text, root):
-    """Whether the Tried clause names a saved output of a run (a file under research/results, research/logs or
-    research/provenance): 17 October 2026, three builds answering a reviewer's or stand-in's right objections were
-    queued with a Tried clause naming only files read, no partial check run in the turn."""
+    """Whether the Tried clause names a non-empty, untracked file inside research/results, research/logs or
+    research/provenance (17 October 2026: builds answering a reviewer's or stand-in's objections were queued with a
+    Tried clause naming only files read). What this checks is only that such a file was written since it could
+    last have been committed; it cannot show that a check produced it or that it bears on the build, and a file
+    written only to be named passes (the cycle's reviewer listed this and the remaining bypasses)."""
     match = re.search(r'\bTried:(.*?)(?:\bNot built in the turn:|$)', text, re.I | re.S)
     if not match:
         return False
+    root = Path(root).resolve()
+    dirs = [root / d for d in OUTPUT_DIRS]
     for token in re.findall(r'[\w./-]+', match.group(1)):
         token = token.strip('.,;:')
-        if token.startswith(OUTPUT_DIRS) and (Path(root) / token).is_file() and uncommitted(root, token):
+        path = (root / token).resolve()
+        inside = any(path.is_relative_to(d) for d in dirs)
+        if inside and path.is_file() and path.stat().st_size > 0 and untracked(root, path):
             return True
     return False
 
 
-def uncommitted(root, path):
-    """Whether a file is untracked or differs from HEAD, so that it was written since the last commit: the cycle's
-    reviewer found that any old saved output passed tried_names_output (17 October 2026). Outside a Git checkout
-    every file counts as uncommitted."""
+def untracked(root, path):
+    """Whether a file is not tracked by Git (a tracked file changed since HEAD is refused: appending a byte to a
+    committed result would pass otherwise). Outside a Git checkout every file counts as untracked."""
     def git(*args):
         return subprocess.run(['git', '-C', str(root), *args], capture_output=True, text=True).returncode
     if git('rev-parse', '--is-inside-work-tree') != 0:
         return True
-    if git('ls-files', '--error-unmatch', '--', path) != 0:
-        return True
-    return git('diff', '--quiet', 'HEAD', '--', path) != 0
+    return git('ls-files', '--error-unmatch', '--', str(path)) != 0
 
 
 def main(argv):
@@ -2485,11 +2488,11 @@ def main(argv):
             print(f'{argv[4]}: the Tried clause names no file of the repository; name the file the attempt read or '
                   'tested (a tool, a rule file, a script), by its path from the repository root', file=sys.stderr)
             return 1
-        if argv[3] == '--build' and REVIEW_SOURCE_RE.search(argv[5]) and not tried_names_output(argv[6], Path.cwd()):
-            print(f'{argv[4]}: a build answering a review names in its Tried clause the saved output of a partial '
-                  'check run in the turn (a file under research/results, research/logs or research/provenance), '
-                  'or is built now (AGENTS.md: the check for a right objection is built before the reply)',
-                  file=sys.stderr)
+        if argv[3] == '--build' and not USER_SOURCE_RE.search(argv[5]) and not tried_names_output(argv[6], Path.cwd()):
+            print(f'{argv[4]}: a build not sourced from the user names in its Tried clause the saved output of a '
+                  'partial check run in the turn (a non-empty, untracked file under research/results, research/logs '
+                  'or research/provenance), or is built now (AGENTS.md: the check for a right objection is built '
+                  'before the reply)', file=sys.stderr)
             return 1
         try:
             path.write_text(add(path.read_text(), argv[3][2:], argv[4], argv[5], argv[6]))

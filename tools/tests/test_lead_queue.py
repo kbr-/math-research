@@ -835,8 +835,14 @@ class LeadQueueTest(unittest.TestCase):
             self.assertFalse(lq.tried_names_output(text.format('research/results/x/old.txt'), tmp))
             Path(tmp, 'research', 'results', 'x', 'new.txt').write_text('2 matches')
             self.assertTrue(lq.tried_names_output(text.format('research/results/x/new.txt'), tmp))
+            # the reviewer's further bypasses: a byte appended to a committed result, an empty file, a path that
+            # leaves the output folder
             Path(tmp, 'research', 'results', 'x', 'old.txt').write_text('3 matches')
-            self.assertTrue(lq.tried_names_output(text.format('research/results/x/old.txt'), tmp))
+            self.assertFalse(lq.tried_names_output(text.format('research/results/x/old.txt'), tmp))
+            Path(tmp, 'research', 'results', 'x', 'empty.txt').write_text('')
+            self.assertFalse(lq.tried_names_output(text.format('research/results/x/empty.txt'), tmp))
+            Path(tmp, 'outside.txt').write_text('x')
+            self.assertFalse(lq.tried_names_output(text.format('research/results/../../outside.txt'), tmp))
 
     def test_add_from_the_command_line(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -856,7 +862,9 @@ class LeadQueueTest(unittest.TestCase):
                 here = os.getcwd()
                 os.chdir(tmp)
                 try:
-                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 's', 'Port it. '
+                    # a source from the user is not held to the saved-output rule below
+                    self.assertEqual(lq.main(['lead_queue.py', 'add', str(path), '--build', 'port-it', 'user, 5 Oct',
+                                              'Port it. '
                                               'Not built in the turn: the target branch is not checked out here. '
                                               'Tried: tools/port.py on a checkout of the target branch, refused.']), 0)
                     # 17 October 2026: a build from a review names a saved output of a partial check, not only a tool
@@ -882,7 +890,7 @@ class LeadQueueTest(unittest.TestCase):
             self.assertIn('port-it is already queued', err.getvalue())
             self.assertIn('Not built in the turn: <reason>', err.getvalue())
             self.assertIn('names no file of the repository', err.getvalue())
-            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="s" data-after="[^"]+">Port it\. '
+            self.assertRegex(path.read_text(), r'<li data-build="port-it" data-source="user, 5 Oct" data-after="[^"]+">Port it\. '
                                                r'Not built in the turn: the target branch is not checked out here\. '
                                                r'Tried: tools/port\.py on a checkout of the target branch, refused\.</li>')
             self.assertNotIn('Again.', path.read_text())
