@@ -673,11 +673,15 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   one that presupposes its answer's form (a single reason, a negative, a named class) steers the
   stage (16 October 2026: a blind reviewer reported two such questions). Its brief opens with a line
   "BLIND STAGE" and sits in a folder of its own, which `tools/hooks/reviewer_brief.py` checks (17
-  October 2026: a brief beside the previous review's text leaked the route). List the route's
-  registered open conjectures with their evidence beside the proved results. Ask for a materially
-  different architecture or a reason none was found. Then reveal the current route for comparison
-  and the usual correctness review. Link the reviewer evidence here; do not manufacture an
-  alternative or spawn a second reviewer for this step.
+  October 2026: a brief beside the previous review's text leaked the route). The brief is drafted
+  from what the stage must not be told, written down first (the period's results, their grouping
+  into routes, the agent's ranking), and its own text names none of them; each question admits
+  "none" or "not these" (18 October 2026: a brief named 14 claim IDs, grouped them into routes and
+  asked which listed statement to try). List the route's registered open conjectures with their
+  evidence beside the proved results. Ask for a materially different architecture or a reason none
+  was found. Then reveal the current route for comparison and the usual correctness review. Link the
+  reviewer evidence here; do not manufacture an alternative or spawn a second reviewer for this
+  step.
 - **Rank normalization.** For dimension counts, ask whether losses and surviving objects are
   measured in the same quotient and whether relative contraction could replace absolute smallness.
   Otherwise state why this question does not apply.
