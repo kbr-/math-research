@@ -30,8 +30,8 @@ Refuted by: another dimension, contradicting the recorded check:functional-facto
 Possible because: a changed tool or axiom list would shift the kernel.
 Baseline: the support bound dim V_1|_S = 31 > H = 25 decides nothing; the trivial containment C cap V_1 inside A
 gives dim A >= 6, and the bare count gives dim A <= 31. Neither decides the question.
-Record checked: lem:saving-monotonicity, lem:domain-model-stacked-rank, ex:support-saving-not-inherited (upper
-bounds), lem:factor-ideal-domination and lem:factor-span-domination (lower bound F inside A, errors spanned by the
+Record checked: the upper bounds lem:saving-monotonicity, lem:domain-model-stacked-rank and
+ex:support-saving-not-inherited, lem:factor-ideal-domination and lem:factor-span-domination (lower bound F inside A, errors spanned by the
 factors 1+q_nu), check:leading-form-functional-pigeons (variables and monomials on this board, not these
 errors), conj:representative-sum-transfer (single linear
 errors), conj:functional-kernel-transfer and check:functional-factor-kernels (variables only); none gives dim A.
