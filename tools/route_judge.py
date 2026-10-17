@@ -42,7 +42,9 @@ Judge only from the text below. A review's Decision that schedules the entry doe
 can schedule detours too, so judge against the goal and the named obstacle, not the schedule. Excluding one more
 class of candidates is a detour while a candidate construction the record names is still unbuilt; proving that
 some construction cannot work is not building one. While the record names no direct step at all (no construction
-or proof route toward the goal is identified), exploring the field, obstructions included, is on route. An entry whose
+or proof route toward the goal is identified), exploring the field, obstructions included, is on route. A direct
+step is a concrete construction, proof or test the record names; the goal or open statement restated ("bound the
+discrepancy", "build a refuting construction") is not one, so with no concrete step named, answer on-route. An entry whose
 step the direct step concretely needs first (a lemma the construction uses) is on route.
 
 Answer with JSON only: {{"verdict": "on-route" or "detour", "shortest": "<the most direct step the record names, one
