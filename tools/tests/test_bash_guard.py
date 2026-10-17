@@ -171,6 +171,24 @@ class BashGuardTest(unittest.TestCase):
                      "cat > f <<'EOF'\nx\nEOF"]:
             self.assertEqual(run(good).returncode, 0, good)
 
+    def test_a_cat_reading_the_calls_stdin_is_refused(self):
+        # The prompting command: its cat waited on standard input until the call's timeout.
+        for bad in ["cd /repo && cat > /dev/null; echo \"Review ...\" > review.txt && wc -w review.txt",
+                    "cat", "cat > out.txt", "cat >> log.txt && git status", "(cat > x)", "cat - > x | wc -l",
+                    # The cheapest bypasses of the first form: a descriptor's redirection, the stdin device.
+                    "cat 2>/dev/null > x", "cat /dev/stdin > x"]:
+            with self.subTest(bad=bad):
+                result = run(bad)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn("standard input", result.stderr)
+        for good in ["cat > f <<'EOF'\nx\nEOF", "cat f.txt > out.txt", "printf 'a\\n' | cat > out.txt",
+                     "cat < in.txt > out.txt", "git log | cat", "cat a b && echo done", "grep -c 'cat > x' f",
+                     "concat > x.txt",
+                     # The false refusal of the first form: the pattern inside a quoted script argument.
+                     "python3 -c \"print('cd /r && cat > /dev/null; echo r > review.txt')\""]:
+            with self.subTest(good=good):
+                self.assertEqual(run(good).returncode, 0, good)
+
     def test_a_heredoc_replace_helper_is_refused(self):
         for helper in ("def sub(old, new):\n    pass", "def sub(path, old, new, count=1):\n    pass",
                        "pat = r'\\s+'.join(map(re.escape, old.split()))"):

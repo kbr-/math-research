@@ -1,0 +1,6 @@
+Bypass trial, 17 October 2026, of bash_guard.stdin_cat after closing the descriptor and /dev/stdin forms:
+'cat 2>/dev/null > x' -> refused
+'cat /dev/stdin > x' -> refused
+'tee x' -> passes
+'cd /r && cat > /dev/null; echo r > review.txt' -> refused
+Not covered by design: other commands that read standard input (tee, wc, sort without a file).

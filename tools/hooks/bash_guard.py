@@ -111,6 +111,54 @@ def unchained_heredoc(command: str):
     return None
 
 
+def stdin_cat(command: str):
+    """The reason when a pipeline begins with a bare cat (no file operand, at most an output redirection) and no
+    heredoc or input redirection feeds it: a tool call's standard input never ends, so the cat waits forever and
+    nothing after it runs (17 October 2026: "cat > /dev/null; echo ..." hung a call for its whole timeout)."""
+    kept, end = [], None
+    for line in command.split("\n"):
+        if end is not None:
+            end = None if line.strip() == end else end
+            continue
+        match = HEREDOC.search(line)
+        end = match.group(2) if match else None
+        kept.append("" if match else line)   # a heredoc's line feeds its command: never a stdin cat
+    lexer = shlex.shlex("\n".join(kept), posix=True, punctuation_chars=True)   # quoted text stays one word
+    lexer.whitespace = " \t\r"
+    lexer.commenters = ""
+    lexer.wordchars = "".join(chr(code) for code in range(33, 127) if chr(code) not in "\"'\\();<>|&")
+    try:
+        tokens = list(lexer)
+    except ValueError:
+        return None
+    command_start, piped, i = True, False, 0
+    while i < len(tokens):
+        token = tokens[i]
+        if token in ("\n", ";", "&&", "||", "&", "(", ")", "|"):
+            command_start, piped = True, token == "|"
+            i += 1
+            continue
+        if command_start and token == "cat" and not piped:
+            fed, operand, j = False, False, i + 1
+            while j < len(tokens) and tokens[j] not in ("\n", ";", "&&", "||", "&", ")", "|"):
+                if tokens[j] in ("<", "<<", "<<<"):
+                    fed = True
+                elif tokens[j].isdigit() and j + 1 < len(tokens) and tokens[j + 1] in (">", ">>", ">&", "<"):
+                    pass            # a file descriptor's number, as in 2>/dev/null: the redirection follows
+                elif tokens[j] in (">", ">>", ">&"):
+                    j += 1          # the redirection's target is no operand
+                elif tokens[j] not in ("-", "/dev/stdin"):
+                    operand = True
+                j += 1
+            if not fed and not operand:
+                return ("a cat with no file operand reads standard input, which a tool call never closes, so it "
+                        "waits until the timeout and nothing after it runs; give it a file, feed it a heredoc, "
+                        "or write the file with the Write tool")
+        command_start = False
+        i += 1
+    return None
+
+
 # A text-replacement helper written into a heredoc script: a function taking (old, new), or a pattern that
 # matches a passage's words across any whitespace. tools/replace_text.py is the committed, tested one.
 ADHOC_REPLACE = re.compile(r"def\s+\w+\s*\(\s*(?:\w+\s*,\s*)?old\s*,\s*new\b|\.join\(\s*map\(\s*re\.escape")
@@ -727,7 +775,7 @@ def check() -> int:
     if reason:
         print(f"Refused: {reason}.", file=sys.stderr)
         return 2
-    reason = (unchained_heredoc(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
+    reason = (unchained_heredoc(command) or stdin_cat(command) or adhoc_replace_helper(command) or tool_removed(command) or sed_in_place(command)
               or sed_ampersand(command) or staging_silenced(command) or shared_run_file_write(command)
               or subagent_transcript(command)
               or existing_result_folder(command, payload.get("cwd") or os.getcwd())
