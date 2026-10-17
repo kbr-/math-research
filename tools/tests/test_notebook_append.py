@@ -485,6 +485,9 @@ class NotebookAppendTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'without the defining relation'):
             tool.refuse_unwitnessed_nonlinearity(pinned)
         tool.refuse_unwitnessed_nonlinearity(pinned.replace('counts.', 'counts by the additivity witness above.'))
+        # A quoted form is mentioned, not asserted (the prompting entry's Prevention quotes it).
+        tool.refuse_unwitnessed_nonlinearity('<article id="e"><p>The form ("this flow, nonlinear in the counts") '
+                                             'passed the check.</p></article>')
 
     def test_a_review_naming_a_missing_construction_must_build_one(self):
         # 17 October 2026: the ninth review's Obstacle and a Decision sending the next entry to an exclusion.

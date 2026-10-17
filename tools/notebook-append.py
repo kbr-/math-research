@@ -125,7 +125,8 @@ def refuse_unwitnessed_nonlinearity(entry):
     record name a class of flows, not a property of one."""
     plain = strip_tags(entry)
     for sentence in re.split(r'(?<=[.;])\s+', ' '.join(plain.split())):
-        if NONLINEAR_CLAIM.search(sentence) and not ADDITIVITY_WITNESS.search(sentence):
+        said = re.sub(r'"[^"]{0,300}"', ' ', sentence)          # a quoted form is mentioned, not asserted
+        if NONLINEAR_CLAIM.search(said) and not ADDITIVITY_WITNESS.search(sentence):
             raise ValueError('a sentence says a rule is nonlinear (or not linear) in the counts without the defining '
                              'relation failing in it (two inputs and their sum, or additivity): "' + sentence[:200] +
                              '" (AGENTS.md: a property defined over all inputs is shown by exhibiting it fail)')
