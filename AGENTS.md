@@ -441,6 +441,10 @@ AGENTS.md"):
   (`tools/record_scan.py` block-counts): a pattern fitted to a paraphrase matches nothing and its
   zero looks like a clean record (17 October 2026: a block-count check missed every form the record
   writes).
+- Every command and every path in it serves the step at hand: before a call, drop each part whose
+  output nothing reads, and reach outside the worktree and the session's scratch only through the
+  route the framework names, since in auto mode such a reach stops the user at a prompt (17 October
+  2026: a copy of a subagent transcript to /dev/null, added for nothing, prompted the user).
 - Run a required tool or check so that it does its job, never in the cheapest form that passes its
   gate (an output cut short, a paragraph filled with placeholder words, a search run only to be
   logged, a clause such as Tried: written before the action it reports): if a gate's form is a
