@@ -317,6 +317,21 @@ class UnreviewedLabelTest(HookFixture):
         self.session('coding', 'mathematics')
         self.assertIsNotNone(self.block(framework))       # a stated limit: the words decide
 
+    def test_a_paragraph_pending_review_carries_the_label_itself(self):
+        # 17 October 2026, the stand-in review's case: the reply held "Unreviewed" in another paragraph, and this
+        # one was not counted as mathematics.
+        objected = ("Status of the decisive test (the rate scale review's, on Repair Pang block five's third turn): "
+                    "it is decided against its yes outcome for dense pair products, pending the reviewer.")
+        reply = '**Unreviewed:** the lemma holds for rank t.\n\n' + objected
+        self.assertIn('waits for a review', self.block(reply)['reason'])
+        self.session('coding')                            # no session state is needed: the words say it
+        self.assertIsNotNone(self.block(objected))
+        self.assertIsNone(self.block('**Unreviewed:** ' + objected))
+        # accepted: the phrase about a review that is not this reply's conclusion's, and other uses of the words
+        self.assertIsNone(self.block('The rank floor entry is committed; the reviewer passed it with corrections.'))
+        self.assertIsNone(self.block('The commit is pending; the reviewing tool reads the staged diff.'))
+        self.assertIsNone(self.block('The review of the earlier entry is not pending any longer.'))
+
     def test_a_bullet_of_a_list_is_read_on_its_own(self):
         self.session('mathematics')
         reply = 'Two results:\n- the suite passes\n- the rank of the kernel is nonzero'

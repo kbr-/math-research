@@ -805,9 +805,21 @@ def refuse_unanswered(entry, answers):
                          '(tools/draft_claim_sentences.py DRAFT --answers FILE writes the form)')
     left = draft_claim_sentences.unanswered(entry, answers)
     if left:
+        # Each row says which condition failed: on 17 October 2026 three answers were present but cited nothing
+        # grounded() accepts, and the message, "not answered", left their cause to be guessed.
+        given = {key: answer for key, answer in draft_claim_sentences.ANSWER.findall(answers or '')}
+
+        def why(key):
+            answer = given.get(key)
+            if answer is None:
+                return 'no "rests on:" line under this key (a sentence changed since its answer has a new key)'
+            if len(answer.split()) < draft_claim_sentences.ANSWER_WORDS:
+                return f'its "rests on:" answer has fewer than {draft_claim_sentences.ANSWER_WORDS} words'
+            return ('its "rests on:" answer cites no claim ID, #entry- anchor, research/ path or formula, and does '
+                    'not begin "none:"')
         raise ValueError(f'{len(left)} of {len(rows)} summing-up sentences are not answered in the --answers '
-                         'file (a sentence changed since its answer counts as new):\n'
-                         + '\n'.join(f'  {key} [{where}] {sentence[:160]}' for key, where, sentence in left))
+                         'file:\n' + '\n'.join(f'  {key} [{where}] {sentence[:160]}\n    {why(key)}'
+                                               for key, where, sentence in left))
     gaps = draft_claim_sentences.qualifier_gaps(entry, answers)
     if gaps:                    # the answer admits a limit that the sentence does not carry
         raise ValueError(draft_claim_sentences.qualifier_gaps_report(

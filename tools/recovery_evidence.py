@@ -29,7 +29,10 @@ def stream():
     if inherited:
         return (inherited if len(inherited)==64 and all(c in '0123456789abcdef' for c in inherited)
                 else digest(['provided-stream',inherited]))
-    for name in ('CODEX_THREAD_ID', 'CLAUDE_SESSION_ID'):
+    # Claude Code sets CLAUDE_CODE_SESSION_ID, as compute.sh and the finisher read it; CLAUDE_SESSION_ID, the only
+    # Claude name here until 17 October 2026, is set by nothing, so every Claude actor had no stream and the store
+    # reported no active turn while a session ran.
+    for name in ('CODEX_THREAD_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID'):
         if os.environ.get(name):
             return digest([name, os.environ[name]])
     return None

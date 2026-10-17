@@ -35,6 +35,17 @@ class CommitMessageLength(unittest.TestCase):
         self.assertIn('101 characters', refused.stderr)
         self.assertEqual(self.commit('T' * 101).returncode, 1)                  # the title too
 
+    def test_a_subject_split_by_a_rewrap_is_refused(self):
+        # 17 October 2026: rewrap_md.py split a 101-character subject into two lines.
+        split = ('Pair product rank floor: rank-t pair products keep rank, so their second-layer ratio is far below\n'
+                 'survival\n\nThe body.')
+        refused = self.commit(split)
+        self.assertEqual(refused.returncode, 1)
+        self.assertIn('subject continues on the second line', refused.stderr)
+        self.assertEqual(self.commit('One-line subject\n\nThe body,\nwrapped.').returncode, 0)
+        self.assertEqual(self.commit('Subject only').returncode, 0)
+        self.assertEqual(self.commit('Subject\n# a comment line git drops\n\nBody').returncode, 0)
+
     def test_characters_are_counted_not_bytes(self):
         self.assertEqual(self.commit('Title\n\n' + 'ą—' * 50).returncode, 0)   # 100 characters, 250 bytes
 

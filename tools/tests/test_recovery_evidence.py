@@ -91,6 +91,20 @@ class RecoveryTest(unittest.TestCase):
                 self.assertEqual(c.report()['unattributed_reads'],1)
             finally:c.db.close()
 
+    def test_claude_code_s_own_session_variable_gives_a_stream(self):
+        # 17 October 2026: Claude Code sets CLAUDE_CODE_SESSION_ID, and the stream read only CLAUDE_SESSION_ID,
+        # so a Claude session had no stream and the store showed no active turn while one ran.
+        from recovery_evidence import stream
+        with patch.dict(os.environ,{'CLAUDE_CODE_SESSION_ID':'abc'},clear=True):
+            code=stream()
+        with patch.dict(os.environ,{'CLAUDE_SESSION_ID':'abc'},clear=True):
+            old=stream()
+        with patch.dict(os.environ,{},clear=True):
+            self.assertIsNone(stream())
+        self.assertIsNotNone(code)
+        self.assertIsNotNone(old)
+        self.assertNotEqual(code,old)      # the name enters the digest: two variables, two streams
+
     def test_collection_failure_is_nonfatal_and_explicit(self):
         with patch.dict(os.environ,{'MATH_RECOVERY_DISABLED':'0'}),patch('recovery_evidence.Store',side_effect=OSError('secret path')):
             observe('begin',root=self.root)

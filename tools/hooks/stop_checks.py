@@ -1018,6 +1018,21 @@ def reviewer_returned(path, since, chunk=4_000_000, limit=64_000_000):
     return False
 
 
+# "while the reviewer checks" was dropped: in the replay over past replies it matched only status lines on what
+# the agent did meanwhile (research/results/rank_floor_20261017/pending-review-replay.txt).
+PENDING_REVIEW = re.compile(r'\b(?:pending (?:the |its |a |his |their )?(?:review(?:er)?|correctness review)\b'
+                            r'|awaiting (?:the |its )?review)', re.I)
+
+
+def pending_review_paragraphs(reply):
+    """The paragraphs of a reply that say their conclusion waits for a review (pending the reviewer, awaiting
+    review) without the word Unreviewed in the paragraph itself.  On 17 October 2026 "it is decided against its yes
+    outcome for dense pair products, pending the reviewer." passed unreviewed_block twice over: the reply held the
+    word elsewhere, and the word heuristic did not count the paragraph as mathematics."""
+    return [p for p in re.split(r'\n\s*\n|\n(?=\s*[-*] )', reply)
+            if PENDING_REVIEW.search(p) and 'unreviewed' not in p.lower()]
+
+
 def unreviewed_block(path, reply, root):
     """The block for a reply that reports mathematics without the Unreviewed label while the current cycle's
     mathematics has had no review (AGENTS.md: from opening until its review returns, each conclusion is labelled,
@@ -1031,6 +1046,13 @@ def unreviewed_block(path, reply, root):
     since the session started clears it, a framework reviewer's too, and the interval after a review returns but
     before its corrections are checked is not seen. Any failure of its own lets the stop through."""
     try:
+        pending = pending_review_paragraphs(reply)
+        if pending:
+            quote = ' '.join(pending[0].split())[:160]
+            return {'decision': 'block', 'reason': (
+                f'This paragraph says its conclusion waits for a review ("{quote}") and does not carry the label '
+                'itself: prefix it with **Unreviewed:** (AGENTS.md: saying later that a reviewer is checking it does '
+                'not replace the label), and answer again.')}
         if 'unreviewed' in reply.lower():
             return None
         reports = [p for p in re.split(r'\n\s*\n|\n(?=\s*[-*] )', reply) if mathematical(p)]

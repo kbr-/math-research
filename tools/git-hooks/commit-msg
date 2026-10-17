@@ -16,6 +16,19 @@ if [ -n "$long" ]; then
     printf 'commit-msg: lines over 100 characters (AGENTS.md); rewrap the message:\n%s\n' "$long" >&2
     exit 1
 fi
+# A subject on one line: the second line blank. Rewrapping a message whose subject runs past 100 characters
+# splits the subject silently, and git then takes its first half as the subject; 20 of 4855 commits of the math
+# repository had such a split, none a legitimate two-line subject (17 October 2026,
+# research/results/rank_floor_20261017/subject-line-replay.txt there).
+second=$(python3 -c '
+import sys
+lines = [l for l in open(sys.argv[1], encoding="utf-8", errors="replace").read().splitlines() if not l.startswith("#")]
+if len(lines) > 1 and lines[1].strip():
+    print(f"  subject: {lines[0][:70]}\n  second line: {lines[1][:70]}")' "$1")
+if [ -n "$second" ]; then
+    printf 'commit-msg: the subject continues on the second line, which git does not read as subject:\n%s\nShorten the subject to one line of at most 100 characters (rewrapping splits it, it does not shorten it), leave the second line blank, and commit again.\n' "$second" >&2
+    exit 1
+fi
 # A branch's own check of the message, where it has one (tools/git-hooks-branch/commit-msg).
 own="$(git rev-parse --show-toplevel)/tools/git-hooks-branch/commit-msg"
 [ -x "$own" ] || exit 0
