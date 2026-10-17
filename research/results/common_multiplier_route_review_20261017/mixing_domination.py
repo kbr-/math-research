@@ -14,10 +14,13 @@ Control: for a congruent pair (E, E + member of span{Q_i}), s = E gives Ann_C(s)
 Refuted by: no s found on a congruent pair.
 Possible because: a wrong kernel comparison would miss it.
 Forced by counts: nothing forces the count of s; 8192 elements against one 5-dimensional target.
-Positive control: the matching path itself must find, for one 5-dimensional kernel of some s, that s (added after
-the first run, whose congruent-pair control did not pass through the path that gave its zeros); asserted.
-Refuted by: no s matched for a kernel taken from the table itself.
-Possible because: a wrong span comparison would match nothing.
+Positive control: for a chosen s0 whose kernel has dimension 5, J0 = Ann_C(s0) cap V_1 is computed afresh as an
+intersection, the way J is, and the matching path must list s0 among its matches; asserted. (Third run. The
+congruent-pair control above holds by definition and does not pass through the matching path, and the second
+run's control matched a table kernel against itself, failing only if space addition were broken; the reviewer's
+follow-up found both unable to fail.)
+Refuted by: s0 missing from the matches for its own freshly computed kernel.
+Possible because: a key built from a basis in another order, or a wrong span comparison, would miss it.
 Baseline: dim Ann_C(s) is at least dim W = 4 for every s; it decides nothing.
 Record checked: lem:factor-ideal-domination (the clause's form) and mixing_pairs.json; none gives the s.
 """
@@ -49,10 +52,12 @@ def main():
         s = {monos[k] for k in range(len(monos)) if bits >> k & 1}
         K = dl.ann_poly(cC, monos, s)
         kernels.setdefault(frozenset(K.basis.values()) if len(K) == 5 else None, []).append(sorted(s))
-    # positive control of the matching path: a 5-dimensional kernel of some s must be matched by that s
-    probe = next(key for key in kernels if key is not None)
-    assert sum(len(ss) for key, ss in kernels.items()
-               if key is not None and len(tq.Space(list(key)) + tq.Space(list(probe))) == 5) >= 1, 'positive control'
+    # positive control of the matching path: for a chosen s0 with a 5-dimensional kernel, J0 = Ann_C(s0) cap V_1 is
+    # computed afresh as an intersection, the way J is, and the matching path must count s0 among its matches
+    s0 = next(ss for key, ss in kernels.items() if key is not None)[0]
+    J0 = dl.ann_poly(cC, monos, set(s0)) & dl.ann_poly(cC, monos, set(s0))
+    matched = [s for key, ss in kernels.items() if key is not None and len(tq.Space(list(key)) + J0) == 5 for s in ss]
+    assert s0 in matched, 'positive control: the matching path misses s0'
     Q = [{0} | {1 << v(i, j) for j in range(mp.N)} for i in range(mp.N + 1)]
     span_Q = {frozenset(sh) for _, sh in mp.ls.representatives(Q)}
     hits = json.loads((mp.SRC / 'row_search.json').read_text())['4x3 rows [1, 2]']['first']
