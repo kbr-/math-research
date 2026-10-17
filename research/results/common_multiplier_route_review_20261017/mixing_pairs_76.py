@@ -28,10 +28,14 @@ import importlib.util
 import json
 import multiprocessing
 import pathlib
+import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('mixing_pairs_65', HERE / 'mixing_pairs_65.py')
 mp = importlib.util.module_from_spec(spec)
+# registered under its name, so that pickling its worker function for the pool finds this same object (the first
+# run failed after its five-minute setup with "it's not the same object as mixing_pairs_65.row")
+sys.modules['mixing_pairs_65'] = mp
 spec.loader.exec_module(mp)
 mp.N, mp.D, mp.K = 6, 3, 2
 
