@@ -651,6 +651,10 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         self.assertEqual(len(dcs.unbounded(draft, form, summaries)), 1)
         filled = form.replace('within: \n', 'within: only class functions whose cell averages are chains\n')
         self.assertEqual(dcs.unbounded(draft, filled, summaries), [])
+        # 18 October 2026: a "within:" line after another answer line was read as missing.
+        later = form.replace('  within: \n', '  extreme: the chains of one layer\n'
+                                             '  within: only class functions whose cell averages are chains\n')
+        self.assertEqual(dcs.unbounded(draft, later, summaries), [])
         named = draft.replace('these are bounds', 'with \\(\\delta\\ge20/\\sqrt N\\) these are bounds')
         self.assertEqual(dcs.domain_rows(named, summaries), [])                    # every symbol named: not asked
 

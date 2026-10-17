@@ -940,7 +940,10 @@ def answers_template(draft, summaries=None):
 # 17 October 2026 a Bearing applied a conversion lemma to a family of grid functions that are not in the lemma's
 # image; the listing had printed the sentence among those naming fewer symbols than the claim, and its "rests
 # on:" answer, the lemma, was true.
-WITHIN = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]*rests on:[^\n]*\n)?[ \t]*within:[ \t]*([^\n]*)$', re.M)
+# Any of the key's other answer lines may come before it (18 October 2026: a "within:" placed after "extreme:"
+# was read as missing, and the refusal did not say where the line had to stand).
+WITHIN = re.compile(r'^([0-9a-f]{8})\b[^\n]*\n(?:[ \t]+(?!within:)[a-z][a-z ]*:[^\n]*\n)*[ \t]*within:[ \t]*([^\n]*)$',
+                    re.M)
 
 
 # A Follow-up sentence with a universal word ("every", "all", "only", "no") states a property of the next
