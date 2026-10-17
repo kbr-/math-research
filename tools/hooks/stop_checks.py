@@ -115,6 +115,53 @@ def blocks_in(entry):
 
 
 FEEDBACK = 'Stop hook feedback:'
+# A call the harness's permission classifier refused (17 October 2026: a refused checkout of CLAUDE.md was redone
+# by another command and the reply did not say it had been refused; AGENTS.md now says its goal is not reached by
+# another route, and this check makes the reply report each refusal of its turn).
+CLASSIFIER_REFUSAL = 'Permission for this action was denied'
+
+
+def turn_refusals(path):
+    """The commands or tools whose calls the permission classifier refused since the transcript's last prompt."""
+    refused, names = [], {}
+    entries = []
+    with open(path, errors='replace') as f:
+        for line in f:
+            try:
+                entries.append(json.loads(line))
+            except ValueError:
+                continue
+    for entry in reversed(entries):
+        if is_prompt(entry):
+            break
+        content = (entry.get('message') or {}).get('content')
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if block.get('type') == 'tool_use':
+                names[block.get('id')] = (block.get('name'), str((block.get('input') or {}).get('command')
+                                                                 or (block.get('input') or {}).get('file_path') or ''))
+            if block.get('type') == 'tool_result':
+                text = block.get('content')
+                text = ' '.join(t.get('text', '') for t in text) if isinstance(text, list) else str(text or '')
+                if CLASSIFIER_REFUSAL in text:
+                    refused.append(block.get('tool_use_id'))
+    return [names.get(i, ('?', '')) for i in refused]
+
+
+def refusal_block(path, reply):
+    """The block for a reply that does not report a call the classifier refused in its turn, or None."""
+    try:
+        refused = turn_refusals(path) if path else []
+    except OSError:
+        return None
+    if not refused or re.search(r'\b(?:refused|denied|blocked)\b', reply, re.I):
+        return None
+    name, what = refused[0]
+    return {'decision': 'block', 'reason': (
+        f'The permission classifier refused a call in this turn ({name}: {what[:120]}), and the reply does not say '
+        'so. Say which call was refused and why, do not reach its goal by another command, and file the decision '
+        'in user_requests with the default being followed (AGENTS.md, framework maintenance).')}
 
 
 def read_turn(path, feedback=None):
@@ -1058,6 +1105,7 @@ def main(argv):
                                      ('reviewer meta', lambda: reviewer_meta_block(path, reply)),
                                      ('unreviewed', lambda: unreviewed_block(path, reply, ROOT)),
                                      ('offer', lambda: offer_block(reply)),
+                                     ('refusal', lambda: refusal_block(path, reply)),
                                      ('meta home', lambda: meta_home_block(
                                          reply, calls, changed_files(ROOT, turn_start(path)) if path else [])))
                                     + branch_checks(turn_texts, calls, reply, ROOT))

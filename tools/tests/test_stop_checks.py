@@ -595,5 +595,33 @@ class OfferBlockTest(unittest.TestCase):
                 self.assertIsNone(hook.offer_block(reply))
 
 
+class RefusalBlockTest(unittest.TestCase):
+    # 17 October 2026: a checkout the classifier refused was redone by another command, the reply silent on it.
+    def transcript(self, refused):
+        import json
+        import os
+        import tempfile
+        result = ('Permission for this action was denied by the classifier.' if refused else 'ok')
+        lines = [{'type': 'user', 'message': {'content': 'go on'}},
+                 {'type': 'assistant', 'message': {'content': [
+                     {'type': 'tool_use', 'id': 't1', 'name': 'Bash', 'input': {'command': 'git checkout --theirs X'}}]}},
+                 {'type': 'user', 'message': {'content': [{'type': 'tool_result', 'tool_use_id': 't1',
+                                                           'content': result}]}}]
+        f = tempfile.NamedTemporaryFile('w', suffix='.jsonl', delete=False)
+        f.write('\n'.join(json.dumps(x) for x in lines) + '\n')
+        f.close()
+        self.addCleanup(os.unlink, f.name)
+        return f.name
+
+    def test_an_unreported_refusal_is_refused(self):
+        block = hook.refusal_block(self.transcript(True), 'The file is restored from the earlier commit.')
+        self.assertIn('git checkout --theirs X', block['reason'])
+
+    def test_a_reported_refusal_or_none_passes(self):
+        self.assertIsNone(hook.refusal_block(self.transcript(True),
+                                             'The classifier refused the checkout; the decision is in user_requests.'))
+        self.assertIsNone(hook.refusal_block(self.transcript(False), 'The file is restored.'))
+
+
 if __name__ == '__main__':
     unittest.main()
