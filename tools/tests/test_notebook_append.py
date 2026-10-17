@@ -744,6 +744,28 @@ class UnmeasuredDeclineTest(unittest.TestCase):
                 tool.refuse_unmeasured_decline(self.entry(text))
 
 
+class UnquotedDismissalTest(unittest.TestCase):
+    """17 October 2026: a recorded obstruction was dismissed ("which this flow changes") from the draft's picture,
+    and its own note covered the flow."""
+
+    def entry(self, text):
+        return f'<article id="e"><p><strong>Own statements.</strong> {text}</p></article>'
+
+    def test_a_dismissal_without_the_claim_s_words_is_refused(self):
+        prompting = ('thm:coarse-mean-flow-obstruction and thm:square-mean-flow-obstruction exclude fields keeping '
+                     'coarse or square means, which this flow changes, and lem:sibling-exchange-leg prices its legs')
+        with self.assertRaisesRegex(ValueError, 'without its words'):
+            tool.refuse_unquoted_dismissal(self.entry(prompting))
+
+    def test_quoted_dismissals_and_applications_pass(self):
+        for text in ('thm:x covers "a correction with zero mean on every parent", which this flow\'s corrections '
+                     'are not, so it does not apply',
+                     'lem:y gives order (log N)^(1/8) on the instance; lem:z is the bound the attempt uses',
+                     'the case is new; nothing here dismisses a claim'):
+            with self.subTest(text=text):
+                tool.refuse_unquoted_dismissal(self.entry(text))
+
+
 class UnappliedMatchesTest(unittest.TestCase):
     # The exposing case, 17 October 2026: thm:per-level-count-matchings printed beside mixed-level-counts and
     # applied nowhere in the next entry's Own statements (it was named only in its Degenerate cases).

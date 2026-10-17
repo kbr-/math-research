@@ -170,6 +170,31 @@ def refuse_unmeasured_decline(entry):
                          '"Build it. What if you are wrong.....")')
 
 
+# A recorded claim dismissed from the draft's picture of the object. On 17 October 2026 an Own statements clause
+# said thm:coarse-mean-flow-obstruction excludes "fields keeping coarse or square means, which this flow changes";
+# its note, unquoted, covers "a correction ... with zero coordinate-k mean on every level-(j-r) square ...
+# whatever it does to finer means", which the flow's corrections are, and its reviewer found the limit decided.
+# Over the record, 57 of 61 such clauses quoted nothing (research/provenance/framework/
+# unquoted-dismissal-replay-20261017.txt), against AGENTS.md's rule that a condition taken from a record is
+# quoted beside the sentence that uses it.
+CLAIM_NAMED = re.compile(r'\b(?:lem|thm|cor|prop|conj|ex):[a-z0-9-]+')
+DISMISSAL = re.compile(r'\b(?:does not (?:apply|bear|decide)|do not (?:apply|bear)|decides? nothing|which this \w+ '
+                       r'(?:changes|breaks|violates|escapes)|outside (?:its|their) (?:class|hypothes))', re.I)
+
+
+def refuse_unquoted_dismissal(entry):
+    """Each clause of an Own statements paragraph that dismisses a named claim quotes, in that clause, the claim's
+    own words it rests on (the hypothesis that fails, the class it covers)."""
+    for given in re.finditer(r'<strong>Own statements\.</strong>((?:(?!</p>)(?!</li>)(?!<strong>Record search).)*)',
+                             entry, re.S):
+        for clause in re.split(r';\s+', ' '.join(strip_tags(given.group(1)).split())):
+            if CLAIM_NAMED.search(clause) and DISMISSAL.search(clause) and '"' not in clause:
+                raise ValueError('an Own statements clause dismisses a recorded claim without its words ("'
+                                 + clause[:180] + '"): quote in the clause the hypothesis or class of the claim '
+                                 'that the case fails, read from its registered statement or proof (AGENTS.md: a '
+                                 'condition taken from a record is written with the record\'s own sentence)')
+
+
 NONTRIVIAL = re.compile(r'Nontrivial because[:,]?\s+((?:\S+\s+){7,}\S+)', re.I)
 
 
@@ -657,6 +682,7 @@ def append(source, entry, next_html=None, committed=None, reason=None, tools=Non
     refuse_trivial_smallest_case(entry)
     refuse_uncomputed_smallest_case(entry)
     refuse_unmeasured_decline(entry)
+    refuse_unquoted_dismissal(entry)
     entry = with_stand_reason(source, entry, committed, reason)
     own = branch_checks(tools)
     if own:
