@@ -541,7 +541,11 @@ Fold an `<h4>Architecture review</h4>` section into each scheduled review, with 
   required implication or the chosen route. State **Test disposition.** New operation or Retained
   exploratory. A new operation states **Operation.** and **Prediction.**: the actual operation or
   restricted hypothesis, and outcomes distinguishing it; a rewritten parameterization is not an
-  operation. A retained exploratory attempt links its earlier review after Test disposition and
+  operation. Each outcome is written as a relation among the quantities the test computes, and what
+  it means is derived from their definitions and containments, never named from the mechanism hoped
+  for (17 October 2026: an outcome "larger than the sum over choices" was called a survivor no
+  representatives explain, while a further computed quantity, the intersection of per-error sums,
+  explained it). A retained exploratory attempt links its earlier review after Test disposition and
   claims no new mechanism. The same reviewer checks this classification and the operation's content;
   the finisher checks the declaration, new-operation reports and retained-review link. Read the
   earlier reviews' tests first (`tools/notebook-excerpt.py --review-tests`). Search the registry for
