@@ -337,6 +337,26 @@ class ClosureStakesTest(unittest.TestCase):
             FT.validate_closures(parent + item.format(own=own, tail=tail, made='') + self.RECORD)
         FT.validate_closures(item.format(own='', tail=tail, made='') + self.RECORD + self.READ + self.LEFT
                              + self.OWED)                                                  # entry-level paragraphs
+        second = item.replace('a:s1', 'a:s2')
+        with self.assertRaisesRegex(ValueError, 'Owed attempt'):                           # one item masks no other
+            FT.validate_closures(parent + item.format(own=own, tail=tail, made=made)
+                                 + second.format(own=own, tail=tail, made='') + self.RECORD)
+        FT.validate_closures(parent.replace('not made and is', 'made, and is not')
+                             + item.format(own=own, tail=tail, made=made)
+                             + second.format(own=own, tail=tail, made='') + self.RECORD)  # the entry's serves it
+        merge = second.replace('Closed: answered.', 'Closed: merged into a:s1.')
+        with self.assertRaisesRegex(ValueError, 'Owed attempt'):                           # a merge exempts no other
+            FT.validate_closures(parent + merge.format(own=own, tail=tail, made='')
+                                 + second.replace('a:s2', 'a:s3').format(own=own, tail=tail, made='')
+                                 + self.RECORD)
+        closed_parent = parent.replace('Continuing.', 'Closed: answered.')
+        with self.assertRaisesRegex(ValueError, 'unmade'):                                 # mixed: an item masks not
+            FT.validate_closures(item.format(own=own, tail=tail, made=made) + closed_parent + self.RECORD
+                                 + self.READ + self.LEFT + '<p><strong>Stakes.</strong> A yes or a no changes '
+                                 'only how far a control of this kind can be trusted, in either reading.</p>')
+        top = item.replace('data-check="a:s1"', 'data-idea="a"')
+        with self.assertRaisesRegex(ValueError, 'unmade'):                                 # a top-level closure: entry's
+            FT.validate_closures(parent + top.format(own=own, tail=tail, made=made) + self.RECORD)
         with self.assertRaisesRegex(ValueError, 'unmade'):                                 # in a paragraph: the entry's
             FT.validate_closures(parent.replace('Continuing.', 'Closed: answered.')
                                  + '<p><strong>Stakes.</strong> A yes or a no changes only how far a control of '

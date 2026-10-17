@@ -220,17 +220,21 @@ growing checklists or one-off setup narratives.
   count: read each beside the saved output the count came from. A property of a recorded
   construction that a proof step uses (what its terms contain, where a factor sits, what it
   specializes to) is quoted from that construction's record, with its anchor, in the step: a
-  property written from the agent's picture of the construction is an untested hypothesis. So is a
-  modelling choice behind a computed figure (an area, a weight, the step a correction is assigned
-  to): it is written with its derivation before the figure it feeds, since checking the figure
-  checks only its last step (17 October 2026: a leg's area was halved in a smallest case, and a
-  theorem's step decomposition was not tried before a docstring said the theorem did not apply).
-  Evidence for a property of the object at hand (a construction's map, a flow's dependence on the
-  counts) is computed on that object, in the variables the property is stated in, and a prediction
-  of it is written in those variables (a tail's shape after standardizing, not its raw size); a
-  result on a model, or on inputs the object never receives, is written as the model's (17 October
-  2026: a nonlinearity in the counts was first shown on a two-value model, then on fields no counts
-  produce, before the counts themselves were tried).
+  property written from the agent's picture of the construction is an untested hypothesis; for a
+  script, its record is the code that builds the object, not a comment or docstring describing it,
+  and a figure stood in for by a neighbouring one (a mean's push for a point's, a variance from
+  memory) is such a picture too (17 October 2026: a control's flip was placed in one coordinate from
+  a script's comment while its code flipped both). So is a modelling choice behind a computed figure
+  (an area, a weight, the step a correction is assigned to): it is written with its derivation
+  before the figure it feeds, since checking the figure checks only its last step (17 October 2026:
+  a leg's area was halved in a smallest case, and a theorem's step decomposition was not tried
+  before a docstring said the theorem did not apply). Evidence for a property of the object at hand
+  (a construction's map, a flow's dependence on the counts) is computed on that object, in the
+  variables the property is stated in, and a prediction of it is written in those variables (a
+  tail's shape after standardizing, not its raw size); a result on a model, or on inputs the object
+  never receives, is written as the model's (17 October 2026: a nonlinearity in the counts was first
+  shown on a two-value model, then on fields no counts produce, before the counts themselves were
+  tried).
 - Once the question, argument and evidence are stable, make one focused correctness review of every
   new mathematical lemma, theorem, rule or encoding before assigning its status. Run the exhaustive
   checker for any rule, tree or encoding change before relying on it. Near the end of the cycle, use

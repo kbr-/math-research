@@ -711,41 +711,45 @@ def validate_closures(text):
                          'target is a .txt file with "review" in its name (pattern href="[^"]*review[^"/]*\\.txt"; '
                          'a path in plain text does not count): the reviewer reads every closure and its stakes '
                          '(AGENTS.md; user, 10 October 2026)')
-    # The closure's own paragraphs are read where it was written: a sub-idea closed in a list item of an entry
-    # whose top-level item continues has its Owed attempt in that list item, and the entry's paragraph for the
-    # parent (17 October 2026: a made sub-idea attempt was refused on the parent's unmade next attempt).
-    scope = closing_scope(text)
-    # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
-    read = closure_paragraph('Sources read', scope, text)
-    plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
-    if len(plain) < 40:
-        raise ValueError('An entry that closes a queue item says, after <strong>Sources read.</strong> and in at '
-                         'least 40 characters, which statements of each source the closure relies on were read, '
-                         'or that it relies on recorded results only (AGENTS.md)')
-    if re.search(r'abstract(s)?\s+only|only\s+(the|its|their)\s+abstract|abstract,?\s+not\s+the', plain, re.I):
-        raise ValueError('A closure may not rest on an abstract: read the statement of the theorem the closure '
-                         'relies on, or keep the item open with the reading queued (AGENTS.md)')
-    # Two closures drafted on 11 October 2026 covered the forms examined while the item named others (its
-    # sources, a construction, a consequence); reviewers overturned both.  The author lists the remainder.
-    left = closure_paragraph('Not examined', scope, text)
-    plain = html.unescape(strip_tags(left.group(1))).strip() if left else ''
-    if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
-        raise ValueError('An entry that closes a queue item says, after <strong>Not examined.</strong> and in at '
-                         'least 40 characters, what the item\'s own statement names (objects, sources, forms) that '
-                         'the entry did not examine and why the closure stands without each, or that nothing it '
-                         'names is left; an item with a named part unexamined is Continuing (AGENTS.md)')
-    # On 11 October 2026 three closures of one item were drafted while the attempt its last reviewer had
-    # named stayed unmade; each reviewer refused.  The closure accounts for that attempt in its own paragraph.
-    owed = closure_paragraph('Owed attempt', scope, text)
-    plain = html.unescape(strip_tags(owed.group(1))).strip() if owed else ''
-    if len(plain) < 40 and not re.search(r'Closed:\s*merged into\b', text):
-        raise ValueError('An entry that closes a queue item says, after <strong>Owed attempt.</strong> and in at '
-                         'least 40 characters, which attempt the item\'s latest follow-up or its reviewer named '
-                         '(a run, a source, a proof) and that it was made, with its outcome, or that none was '
-                         'named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
-    if closure_admits_unmade(plain) and not re.search(r'Closed:\s*merged into\b', text):   # a merge carries it
-        raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: an '
-                         'item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
+    # The closure's own paragraphs are read where it was written: each sub-idea closed in a list item of an entry
+    # whose top-level item continues has its own Sources read, Not examined and Owed attempt, checked item by
+    # item, the entry's paragraph serving where an item has none (17 October 2026: a made sub-idea attempt was
+    # refused on the parent's unmade one; its reviewer then found one item's paragraph masking another's).
+    scopes, rest = closing_scopes(text)
+    for scope in scopes:
+        merged = re.search(r'Closed:\s*merged into\b', scope)        # per closure: one merge exempts no other
+        # A reviewer on 10 October 2026 twice refused a closure that rested on a paper's abstract.
+        read = closure_paragraph('Sources read', scope, rest)
+        plain = html.unescape(strip_tags(read.group(1))).strip() if read else ''
+        if len(plain) < 40:
+            raise ValueError('An entry that closes a queue item says, after <strong>Sources read.</strong> and in '
+                             'at least 40 characters, which statements of each source the closure relies on were '
+                             'read, or that it relies on recorded results only (AGENTS.md)')
+        if re.search(r'abstract(s)?\s+only|only\s+(the|its|their)\s+abstract|abstract,?\s+not\s+the', plain, re.I):
+            raise ValueError('A closure may not rest on an abstract: read the statement of the theorem the closure '
+                             'relies on, or keep the item open with the reading queued (AGENTS.md)')
+        # Two closures drafted on 11 October 2026 covered the forms examined while the item named others (its
+        # sources, a construction, a consequence); reviewers overturned both.  The author lists the remainder.
+        left = closure_paragraph('Not examined', scope, rest)
+        plain = html.unescape(strip_tags(left.group(1))).strip() if left else ''
+        if len(plain) < 40 and not merged:
+            raise ValueError('An entry that closes a queue item says, after <strong>Not examined.</strong> and in '
+                             'at least 40 characters, what the item\'s own statement names (objects, sources, '
+                             'forms) that the entry did not examine and why the closure stands without each, or '
+                             'that nothing it names is left; an item with a named part unexamined is Continuing '
+                             '(AGENTS.md)')
+        # On 11 October 2026 three closures of one item were drafted while the attempt its last reviewer had
+        # named stayed unmade; each reviewer refused.  The closure accounts for that attempt in its own paragraph.
+        owed = closure_paragraph('Owed attempt', scope, rest)
+        plain = html.unescape(strip_tags(owed.group(1))).strip() if owed else ''
+        if len(plain) < 40 and not merged:
+            raise ValueError('An entry that closes a queue item says, after <strong>Owed attempt.</strong> and in '
+                             'at least 40 characters, which attempt the item\'s latest follow-up or its reviewer '
+                             'named (a run, a source, a proof) and that it was made, with its outcome, or that none '
+                             'was named; an item whose named attempt is unmade is Continuing (AGENTS.md)')
+        if closure_admits_unmade(plain) and not merged:                                 # a merge carries it
+            raise ValueError('The closing entry\'s Owed attempt paragraph says an attempt is unmade or undecided: '
+                             'an item whose named attempt is unmade is Continuing (AGENTS.md); make it, or continue')
     # 17 October 2026: a closure covered one reading of its item's words ("per-point tails" as a field's Orlicz
     # cost) and left the other (a transport's displacement tails) unwritten; its reviewer asked for both.
     if (CLOSED_RE.search(text) and not re.search(r'Closed:\s*merged into\b', text)
@@ -809,16 +813,26 @@ CLOSURE_EXCEPTION_RE = re.compile(r'\bunmade except\b|\bexcept\b[^.]*\b(?:unmade
                                   r'\b(?:is|are|stays?|left) (?:undecided|not decided|unmade)\b|\bnot made\b', re.I)
 
 
-def closing_scope(text):
-    """The text in which a closure's paragraphs are looked up first: its closing list items when every closure is
-    in one, else the entry; a paragraph a list item lacks is then read from the entry (closure_paragraph).
+# A sub-idea's closing list item; a top-level item's closure (data-idea, data-lead, data-bridge) is the entry's own
+# and is read from the entry's paragraphs, so that a list item cannot mask the entry's account of that item.
+SUB_CLOSING_RE = re.compile(r'<li\b[^>]*\bdata-(?:check|build|sub)="[^"]*"[^>]*>(?:(?!</li>).)*?'
+                            r'<strong>Follow-up\.</strong>\s*Closed\b(?:(?!</li>).)*</li>', re.S)
 
-    An entry developing a top-level item that continues may close a sub-idea in a list item; the closure's own
-    Sources read, Not examined and Owed attempt are that item's, not the entry's paragraphs for the parent."""
-    items = CLOSING_ITEM_RE.findall(text)
-    if items and sum(len(CLOSED_RE.findall(item)) for item in items) == len(CLOSED_RE.findall(text)):
-        return '\n'.join(items)
-    return text
+
+def closing_scopes(text):
+    """The texts in which closures' paragraphs are looked up first, and the entry's text outside them.
+
+    Each sub-idea's closing list item is a scope of its own; the entry's text with those items removed is
+    another when it closes something too (a top-level item, in a paragraph or a list item). A paragraph a
+    sub-idea's item lacks is read from that remainder (closure_paragraph): a known limit, since the parent's
+    paragraph then answers for the sub-idea. An entry developing a top-level item that continues may close
+    sub-ideas in list items; each closure's own Sources read, Not examined and Owed attempt are its item's."""
+    items = SUB_CLOSING_RE.findall(text)
+    rest = SUB_CLOSING_RE.sub(' ', text)
+    scopes = list(items)
+    if CLOSED_RE.search(rest) or not items:
+        scopes.append(rest)
+    return scopes, rest
 
 
 def closure_paragraph(label, scope, text):
