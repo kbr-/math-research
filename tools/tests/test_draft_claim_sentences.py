@@ -707,6 +707,11 @@ class BareClaimsAndAnswersTest(unittest.TestCase):
         self.assertEqual(len(dcs.unconversed(draft, form)), 2)
         filled = form.replace('converse: \n', 'converse: sufficient only; the cost step needs a fixed offset\n')
         self.assertEqual(dcs.unconversed(draft, filled), [])
+        # The same day a Goal progress called a reduction "an equivalent requirement up to constants".
+        equivalent = ('<p><strong>Goal progress.</strong> Unchanged: the reduction asks a flow at a coarser scale, an '
+                      'equivalent requirement up to constants.</p><p><strong>Goal progress.</strong> The two sets '
+                      'are not equivalently described here.</p>')
+        self.assertEqual([where for _, where, _ in dcs.converse_rows(equivalent)], ['Goal progress'])
 
     def test_a_sentence_using_a_declared_part_by_letter_is_listed_under_the_declared_claim(self):
         # 17 October 2026: "by (a) no fixed-kernel sandpile adds one" dropped the statement's reversibility and was

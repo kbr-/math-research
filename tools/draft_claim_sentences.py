@@ -997,8 +997,11 @@ def hypothesis_rows(draft):
 # Prediction said a proof holds "exactly while" a growth condition held, where the cost step needed only a fixed
 # offset, and a Falsification attempt said a discrepancy identity holds "only when" a field is a gradient, true for
 # every field; the listing of exactness words had printed both and was read past.
+# "equivalent" from 17 October 2026: a Goal progress called a reduction "an equivalent requirement up to
+# constants" on a converse only sketched; the widening adds 26 sentences over all past articles
+# (research/provenance/framework/converse-equivalent-replay-20261017.txt), summary claims of equivalence.
 CONVERSE = re.compile(r'\b(?:exactly (?:when|while|if)|only (?:when|if|while)|if and only if|iff|'
-                      r'necessary and sufficient)\b', re.I)
+                      r'necessary and sufficient|equivalent(?: up to| requirement| to)|equivalence of)\b', re.I)
 # Asked only of the paragraphs that sum up or pose a test, where the two exposing sentences stood: on all 2550 past
 # articles every paragraph would ask 872 of them (research/provenance/framework/converse-rows-replay-20261017.txt),
 # most in questions, statements and proofs, where "only if" is the mathematics itself.
