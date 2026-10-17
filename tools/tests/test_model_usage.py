@@ -197,9 +197,14 @@ class ClaudeCycleTest(Fixture):
     def test_table_and_note(self):
         use = self.run_cycle()
         table = mu.table_html(use)
-        self.assertIn('<caption>Model use</caption>', table)
-        self.assertIn('<td>claude-opus-5-5, xhigh</td><td class="elapsed">1.0 M</td><td class="elapsed">$0.40</td>', table)
-        self.assertIn('<td>mystery-model, medium</td><td class="elapsed">10</td><td class="elapsed">unpriced</td>', table)
+        self.assertIn('<caption>Model use (tokens)</caption>', table)
+        self.assertIn('<th scope="col">Model and effort</th><th scope="col">Input</th><th scope="col">Cache writes, '
+                      '5 min</th><th scope="col">Cache writes, 1 h</th><th scope="col">Cache reads</th>'
+                      '<th scope="col">Output</th><th scope="col">All tokens</th><th scope="col">At API prices</th>', table)
+        # m1: input 10, no 5-minute writes, 1000 one-hour writes, 100000 reads, 500 output; 101510 in all.
+        self.assertIn('<td>claude-opus-5-5, high</td><td class="elapsed">10</td><td class="elapsed">0</td><td class="elapsed">1 k</td><td class="elapsed">100 k</td><td class="elapsed">500</td><td class="elapsed">102 k</td><td class="elapsed">$0.04</td>', table)
+        self.assertIn('<td>claude-opus-5-5, xhigh</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">1.0 M</td><td class="elapsed">0</td><td class="elapsed">1.0 M</td><td class="elapsed">$0.40</td>', table)
+        self.assertIn('<td>mystery-model, medium</td><td class="elapsed">5</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">0</td><td class="elapsed">5</td><td class="elapsed">10</td><td class="elapsed">unpriced</td>', table)
         self.assertEqual(mu.note_text(use), 'Model use: 1.09% of the weekly Claude Code limit (≈ $0.50 of Max 20x at '
                                             "$200 a month), its part by API prices of the limit's 3-point movement, "
                                             'read in whole points.')

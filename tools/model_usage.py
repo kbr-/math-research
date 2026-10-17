@@ -560,20 +560,29 @@ def usd_text(value):
     return f'${value:,.2f}' if value >= 0.01 or value == 0 else '<$0.01'
 
 
+COLUMNS = (('input', 'Input'), ('cache_write_5m', 'Cache writes, 5 min'), ('cache_write_1h', 'Cache writes, 1 h'),
+           ('cache_read', 'Cache reads'), ('output', 'Output'))
+
+
 def table_html(use):
-    """The model-use table of a measured `use`, for the timing fragment."""
+    """The model-use table of a measured `use`, for the timing fragment: each kind of token in its own column."""
     from html import escape
-    rows = [f'<tr><td>{escape(row["model"])}, {escape(row["effort"])}</td><td class="elapsed">'
-            f'{tokens_text(row["total_tokens"])}</td><td class="elapsed">'
-            + escape('unpriced' if row['unpriced_tokens'] and not row['usd'] else usd_text(row['usd']))
-            + '</td></tr>' for row in use['rows']]
-    total = sum(row['total_tokens'] for row in use['rows'])
-    return '\n'.join(['<table class="timing-table model-use-table">', '<caption>Model use</caption>',
-                      '<thead><tr><th scope="col">Model and effort</th><th scope="col">Tokens</th>'
+    cell = lambda text, strong=False: (f'<td class="elapsed"><strong>{escape(text)}</strong></td>' if strong
+                                       else f'<td class="elapsed">{escape(text)}</td>')
+    rows = [f'<tr><td>{escape(row["model"])}, {escape(row["effort"])}</td>'
+            + ''.join(cell(tokens_text(row['tokens'][kind])) for kind, _ in COLUMNS)
+            + cell(tokens_text(row['total_tokens']))
+            + cell('unpriced' if row['unpriced_tokens'] and not row['usd'] else usd_text(row['usd'])) + '</tr>'
+            for row in use['rows']]
+    totals = {kind: sum(row['tokens'][kind] for row in use['rows']) for kind, _ in COLUMNS}
+    head = ''.join(f'<th scope="col">{label}</th>' for _, label in COLUMNS)
+    return '\n'.join(['<table class="timing-table model-use-table">', '<caption>Model use (tokens)</caption>',
+                      f'<thead><tr><th scope="col">Model and effort</th>{head}<th scope="col">All tokens</th>'
                       '<th scope="col">At API prices</th></tr></thead>', '<tbody>',
-                      f'<tr><th scope="row">Total</th><td class="elapsed"><strong>{tokens_text(total)}</strong></td>'
-                      f'<td class="elapsed"><strong>{escape(usd_text(use["usd"]))}</strong></td></tr>', *rows,
-                      '</tbody></table>'])
+                      '<tr><th scope="row">Total</th>'
+                      + ''.join(cell(tokens_text(totals[kind]), True) for kind, _ in COLUMNS)
+                      + cell(tokens_text(sum(totals.values())), True) + cell(usd_text(use['usd']), True) + '</tr>',
+                      *rows, '</tbody></table>'])
 
 
 def note_text(use):

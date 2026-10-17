@@ -430,10 +430,11 @@ class ModelUseExport(unittest.TestCase):
         fragment, stderr, summary = self.export({**self.env, 'CLAUDE_CODE_SESSION_ID': 'session-under-test'})
         self.assertEqual(summary['model_use']['usd'], 0.0004)
         self.assertNotIn('session-under-test', json.dumps(summary))
-        table = fragment.index('<caption>Model use</caption>')
+        table = fragment.index('<caption>Model use (tokens)</caption>')
         self.assertLess(fragment.index('<caption>Measured timing</caption>'), table)
         self.assertLess(table, fragment.index('<p class="timing-note">'))
-        self.assertIn('<td>claude-opus-5-5, high</td><td class="elapsed">1 k</td><td class="elapsed">&lt;$0.01</td>',
+        cells = ''.join(f'<td class="elapsed">{text}</td>' for text in ('0', '0', '0', '1 k', '10', '1 k', '&lt;$0.01'))
+        self.assertIn('<td>claude-opus-5-5, high</td>' + cells,
                       fragment)
         self.assertIn('Share of the weekly limit not measured: USAGE_LOG_DIR is not set', fragment)
         self.assertIn('its share of the weekly limit not: USAGE_LOG_DIR is not set', stderr)
@@ -458,7 +459,8 @@ class ModelUseExport(unittest.TestCase):
                 'failed_or_timed_out_commands': 0, 'unfinished_commands': 0,
                 'model_use': {'measured': True, 'billing': 'API key', 'usd': 0.004, 'limit': {'measured': False},
                               'rows': [{'model': 'm', 'effort': 'e', 'total_tokens': 5, 'usd': 0.004,
-                                        'unpriced_tokens': 0}]}}
+                                        'unpriced_tokens': 0, 'tokens': {'input': 5, 'cache_write_5m': 0,
+                                        'cache_write_1h': 0, 'cache_read': 0, 'output': 0}}]}}
         self.assertIn('Model use billed to an API key at &lt;$0.01.</p>', compute.timing_html(data, 's'))
 
     def test_an_export_rerun_from_another_session_keeps_the_first_measurement(self):
