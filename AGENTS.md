@@ -367,7 +367,10 @@ AGENTS.md"):
   October 2026: an identity valid over every field was listed as needing characteristic 2).
 - Read a rule or a listed record by applying it to the case in hand (the next attempt, the instance,
   the sentence being written) and writing what it gives there, never as seen once read (17 October
-  2026: a listed lemma, read, already answered the entry's next attempt).
+  2026: a listed lemma, read, already answered the entry's next attempt). A cited lemma is applied
+  through its proof as well as its statement: each step is run on the case, and a hypothesis no step
+  uses does not limit it there (17 October 2026: a lemma stated for balanced thresholds decided an
+  unbalanced case by its own proof step, and a sub-idea was closed as open).
 - When a written rule lets the same mistake through a second time, replace or back it with a check
   in that turn, rather than citing the rule again (17 October 2026: a rule on forced controls,
   written after one, did not stop the next).
